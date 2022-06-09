@@ -1,3 +1,6 @@
+/* A brief descriptive name for this app on this device, used for Send Tab and Synced Tabs. The first argument is the app name. The second argument is the device name. */
+"AppAndDeviceNameFormat" = "Приложение «%1$@» на устройстве «%2$@»";
+
 /* Accessibility label for the Menu button. */
 "AppMenuButtonAccessibilityLabel" = "Меню";
 
@@ -13,6 +16,9 @@
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "BackTitle" = "Назад";
 
+/* General settings bookmarks last visited folder toggle title */
+"BookmarksLastVisitedFolderTitle" = "Показывать недавно открытые закладки";
+
 /* Button confirming the cancellation of the download. */
 "CancelDownloadDialogCancel" = "Отмена";
 
@@ -24,6 +30,9 @@
 
 /* Alert dialog title when the user taps the cancel download icon. */
 "CancelDownloadDialogTitle" = "Отмена скачивания";
+
+/* Cancel button */
+"CancelString" = "Отмена";
 
 /* Hardware shortcut to close all tabs from the tab tray. Shown in the Discoverability overlay when the hardware Command Key is held down. */
 "CloseAllTabsFromTabTrayKeyCodeTitle" = "Закрыть все вкладки";
@@ -41,34 +50,28 @@
 "ContextMenuButtonToastNewTabOpenedLabelText" = "Открыта новая вкладка";
 
 /* The title for the button that lets you copy the url from the location bar. */
-"CopyAddressTitle" = "Скопировать адрес";
-
-/* A message explaining fault in custom search engine form. */
-"CustomEngineDuplicateErrorMessage" = "Поисковая система с таким названием или URL уже добавлена.";
-
-/* A message explaining fault in custom search engine form. */
-"CustomEngineFormErrorMessage" = "Укажите верные данные.";
+"CopyAddressTitle" = "Копировать адрес";
 
 /* The label text in the Download Cancelled toast for showing confirmation that the download was cancelled. */
 "DownloadCancelledToastLabelText" = "Скачивание отменено";
 
 /* The label text in the Download Failed toast for showing confirmation that the download has failed. */
-"DownloadFailedToastLabelText" = "Во время скачивания произошла ошибка";
+"DownloadFailedToastLabelText" = "При скачивании произошла ошибка";
 
 /* The description text in the Download progress toast for showing the number of files (1$) and download progress (2$). This string only consists of two placeholders for purposes of displaying two other strings side-by-side where 1$ is Downloads.Toast.MultipleFiles.DescriptionText and 2$ is Downloads.Toast.Progress.DescriptionText. This string should only consist of the two placeholders side-by-side separated by a single space and 1$ should come before 2$ everywhere except for right-to-left locales. */
 "DownloadMultipleFilesAndProgressToastDescriptionText" = "%1$@ %2$@";
 
 /* The description text in the Download progress toast for showing the number of files when multiple files are downloading. */
-"DownloadMultipleFilesToastDescriptionText" = "Файлы: 1 из %d";
+"DownloadMultipleFilesToastDescriptionText" = "Файлы: 1 из %d";
 
 /* The description text in the Download progress toast for showing the downloaded file size (1$) out of the total expected file size (2$). */
 "DownloadProgressToastDescriptionText" = "%1$@/%2$@";
 
 /* The button to open a new tab with the Downloads home panel */
-"DownloadsButtonTitle" = "Загрузки";
+"DownloadsButtonTitle" = "Скачанные файлы";
 
 /* Question shown to user when tapping a link that opens the App Store app */
-"ExternalLinkAppStoreConfirmationTitle" = "Открыть эту ссылку в App Store?";
+"ExternalLinkAppStoreConfirmationTitle" = "Открыть эту ссылку в App Store?";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "FindTitle" = "Найти";
@@ -95,16 +98,19 @@
 "LoginsHelperUpdateButtonTitle" = "Обновить";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
-"NewPrivateTabTitle" = "Новая приватная вкладка";
+"NewPrivateTabTitle" = "Новая вкладка инкогнито";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "NewTabTitle" = "Новая вкладка";
 
+/* No comment provided by engineer. */
+"No server found" = "Серверы не найдены";
+
 /* OK button */
-"OKString" = "ОК";
+"OKString" = "OK";
 
 /* Hardware shortcut to open a new tab from the tab tray. Shown in the Discoverability overlay when the hardware Command Key is held down. */
-"OpenNewTabFromTabTrayKeyCodeTitle" = "Открыть новую вкладку";
+"OpenNewTabFromTabTrayKeyCodeTitle" = "Откройте новую вкладку";
 
 /* Hardware shortcut open the selected tab from the tab tray. Shown in the Discoverability overlay when the hardware Command Key is held down. */
 "OpenSelectedTabFromTabTrayKeyCodeTitle" = "Открыть выбранную вкладку";
@@ -122,16 +128,16 @@
 "ReaderModeResetFontSizeAccessibilityLabel" = "Вернуться к исходному размеру шрифта";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
-"ReloadPageTitle" = "Перезагрузить страницу";
+"ReloadPageTitle" = "Обновить страницу";
 
 /* Prompt for saving a password with no username. The parameter is the hostname of the site. */
-"SaveLoginPrompt" = "Сохранить пароль для %@?";
+"SaveLoginPrompt" = "Сохранить пароль на сайте %@?";
 
 /* Prompt for saving a login. The first parameter is the username being saved. The second parameter is the hostname of the site. */
 "SaveLoginUsernamePrompt" = "Сохранить имя пользователя «%1$@» на сайте %2$@?";
 
 /* OK button to dismiss the error prompt. */
-"ScanQRCodeErrorOKButton" = "ОК";
+"ScanQRCodeErrorOKButton" = "OK";
 
 /* Text for the instructions label, displayed in the QR scanner view */
 "ScanQRCodeInstructionsLabel" = "Чтобы отсканировать QR-код, поместите его в рамку";
@@ -143,10 +149,10 @@
 "ScanQRCodePermissionErrorMessage" = "Предоставьте Brave доступ к камере: «Настройки > Конфиденциальность > Камера».";
 
 /* Title for the QR code scanner view. */
-"ScanQRCodeViewTitle" = "Сканирование QR-кода";
+"ScanQRCodeViewTitle" = "Сканируйте QR-код";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
-"SelectLocationBarTitle" = "Выбрать панель местоположения";
+"SelectLocationBarTitle" = "Выбрать адресную строку";
 
 /* Alert dialog body when the user opens the home page for the first time. */
 "SetHomePageDialogMessage" = "Этот параметр можно изменить в настройках";
@@ -161,7 +167,7 @@
 "SetHomePageDialogYes" = "Сделать домашней";
 
 /* General settings section title */
-"SettingsGeneralSectionTitle" = "Основные настройки";
+"SettingsGeneralSectionTitle" = "Основные";
 
 /* Option in settings to show a blank page when you open a new tab */
 "SettingsNewTabBlankPage" = "Открывать пустую страницу";
@@ -179,10 +185,16 @@
 "SettingsSearchEditButton" = "Изменить";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
+"showBookmarksTitle" = "Показать закладки";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
 "ShowNextTabTitle" = "Показать следующую вкладку";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "ShowPreviousTabTitle" = "Показать предыдущую вкладку";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts which is for Showing Brave Shields */
+"showShieldsTitle" = "Открыть Brave Щит";
 
 /* Hardware shortcut to open the tab tray from a tab. Shown in the Discoverability overlay when the hardware Command Key is held down. */
 "ShowTabTrayFromTabKeyCodeTitle" = "Показать все вкладки";
@@ -199,32 +211,11 @@
 /* The label indicating that all the tabs were closed */
 "TabsDeleteAllUndoTitle" = "Вкладки закрыты (%d)";
 
-/* The message that asks the user to Add the search provider explaining where the search engine will appear */
-"ThirdPartySearchAddMessage" = "Новая поисковая система появится на панели быстрого поиска.";
-
-/* The title that asks the user to Add the search provider */
-"ThirdPartySearchAddTitle" = "Добавить поисковую систему?";
-
-/* The cancel button if you do not want to add a search engine. */
-"ThirdPartySearchCancelButton" = "Отмена";
-
-/* The success message that appears after a user sucessfully adds a new search engine */
-"ThirdPartySearchEngineAdded" = "Поисковая система добавлена.";
-
-/* A title explaining that we failed to add a search engine */
-"ThirdPartySearchFailedMessage" = "Не удалось добавить поисковую систему";
-
-/* A title explaining that we failed to add a search engine */
-"ThirdPartySearchFailedTitle" = "Произошла ошибка";
-
-/* The confirmation button */
-"ThirdPartySearchOkayButton" = "ОК";
-
 /* Button to dismiss the 'Add Pass Failed' alert.  See https://support.apple.com/HT204003 for context on Wallet. */
-"UnableToAddPassErrorDismiss" = "ОК";
+"UnableToAddPassErrorDismiss" = "OK";
 
 /* Text of the 'Add Pass Failed' alert.  See https://support.apple.com/HT204003 for context on Wallet. */
-"UnableToAddPassErrorMessage" = "При добавлении карты в Кошелек произошла ошибка. Повторите попытку позже.";
+"UnableToAddPassErrorMessage" = "При добавлении iTunes Pass в Кошелек произошла ошибка. Повторите попытку позже.";
 
 /* Title of the 'Add Pass Failed' alert. See https://support.apple.com/HT204003 for context on Wallet. */
 "UnableToAddPassErrorTitle" = "Не удалось добавить iTunes Pass";
@@ -242,11 +233,8 @@
 "UpdateLoginUsernamePrompt" = "Обновить имя пользователя «%1$@» на сайте %2$@?";
 
 /* List section title for when to use Face ID */
-"UseFaceID" = "Использование Face ID";
+"UseFaceID" = "Использовать Face ID";
 
 /* List section title for when to use Touch ID */
-"UseTouchID" = "Использование Touch ID";
-
-/* No comment provided by engineer. */
-"No server found" = "Серверы не найдены";
+"UseTouchID" = "Использовать Touch ID";
 

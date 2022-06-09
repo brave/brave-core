@@ -1,29 +1,38 @@
+/* A brief descriptive name for this app on this device, used for Send Tab and Synced Tabs. The first argument is the app name. The second argument is the device name. */
+"AppAndDeviceNameFormat" = "%1$@ sur %2$@";
+
 /* Accessibility label for the Menu button. */
 "AppMenuButtonAccessibilityLabel" = "Menu";
 
 /* Toast displayed to user after copy url pressed. */
-"AppMenuCopyURLConfirmMessage" = "URL copiée dans le presse-papier";
+"AppMenuCopyURLConfirmMessage" = "URL copiée dans le presse-papiers";
 
 /* Label for the button, displayed in the menu, used to request the desktop version of the current website. */
 "AppMenuViewDesktopSiteTitleString" = "Demander la version pour ordinateur";
 
 /* Label for the button, displayed in the menu, used to request the mobile version of the current website. */
-"AppMenuViewMobileSiteTitleString" = "Demander la version pour mobiles";
+"AppMenuViewMobileSiteTitleString" = "Demander la version pour mobile";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "BackTitle" = "Retour";
+
+/* General settings bookmarks last visited folder toggle title */
+"BookmarksLastVisitedFolderTitle" = "Afficher les derniers marque-pages consultés";
 
 /* Button confirming the cancellation of the download. */
 "CancelDownloadDialogCancel" = "Annuler";
 
 /* Alert dialog body when the user taps the cancel download icon. */
-"CancelDownloadDialogMessage" = "Souhaitez-vous vraiment annuler ce téléchargement ?";
+"CancelDownloadDialogMessage" = "Voulez-vous vraiment annuler ce téléchargement ?";
 
 /* Button declining the cancellation of the download. */
 "CancelDownloadDialogResume" = "Reprendre";
 
 /* Alert dialog title when the user taps the cancel download icon. */
 "CancelDownloadDialogTitle" = "Annuler le téléchargement";
+
+/* Cancel button */
+"CancelString" = "Annuler";
 
 /* Hardware shortcut to close all tabs from the tab tray. Shown in the Discoverability overlay when the hardware Command Key is held down. */
 "CloseAllTabsFromTabTrayKeyCodeTitle" = "Fermer tous les onglets";
@@ -35,19 +44,13 @@
 "CloseTabTitle" = "Fermer l'onglet";
 
 /* The button text in the Button Toast for switching to a fresh New Tab. */
-"ContextMenuButtonToastNewTabOpenedButtonText" = "Basculer";
+"ContextMenuButtonToastNewTabOpenedButtonText" = "Changer";
 
 /* The label text in the Button Toast for switching to a fresh New Tab. */
 "ContextMenuButtonToastNewTabOpenedLabelText" = "Nouvel onglet ouvert";
 
 /* The title for the button that lets you copy the url from the location bar. */
 "CopyAddressTitle" = "Copier l'adresse";
-
-/* A message explaining fault in custom search engine form. */
-"CustomEngineDuplicateErrorMessage" = "Un moteur de recherche avec ce titre ou cette URL a déjà été ajouté.";
-
-/* A message explaining fault in custom search engine form. */
-"CustomEngineFormErrorMessage" = "Renseignez correctement tous les champs.";
 
 /* The label text in the Download Cancelled toast for showing confirmation that the download was cancelled. */
 "DownloadCancelledToastLabelText" = "Téléchargement annulé";
@@ -68,16 +71,16 @@
 "DownloadsButtonTitle" = "Téléchargements";
 
 /* Question shown to user when tapping a link that opens the App Store app */
-"ExternalLinkAppStoreConfirmationTitle" = "Ouvrir ce lien dans l'App Store";
+"ExternalLinkAppStoreConfirmationTitle" = "Ouvrir ce lien dans l'App Store ?";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
-"FindTitle" = "Rechercher";
+"FindTitle" = "Chercher";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "ForwardTitle" = "Avancer";
 
 /* The button to open a new tab with the copied link */
-"GoButtonTittle" = "OK";
+"GoButtonTittle" = "Aller";
 
 /* Message displayed when the user has a copied link on the clipboard */
 "GoToCopiedLink" = "Accéder au lien copié ?";
@@ -89,7 +92,7 @@
 "LoginsHelperDontUpdateButtonTitle" = "Ne pas mettre à jour";
 
 /* Button to save the user's password */
-"LoginsHelperSaveLoginButtonTitle" = "Enregistrer l'identifiant";
+"LoginsHelperSaveLoginButtonTitle" = "Enregistrer l'identifiant de connexion";
 
 /* Button to update the user's password */
 "LoginsHelperUpdateButtonTitle" = "Mettre à jour";
@@ -100,11 +103,14 @@
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "NewTabTitle" = "Nouvel onglet";
 
+/* No comment provided by engineer. */
+"No server found" = "Aucun serveur trouvé";
+
 /* OK button */
 "OKString" = "OK";
 
 /* Hardware shortcut to open a new tab from the tab tray. Shown in the Discoverability overlay when the hardware Command Key is held down. */
-"OpenNewTabFromTabTrayKeyCodeTitle" = "Ouvrir dans un nouvel onglet";
+"OpenNewTabFromTabTrayKeyCodeTitle" = "Ouvrir un nouvel onglet";
 
 /* Hardware shortcut open the selected tab from the tab tray. Shown in the Discoverability overlay when the hardware Command Key is held down. */
 "OpenSelectedTabFromTabTrayKeyCodeTitle" = "Ouvrir l'onglet sélectionné";
@@ -134,34 +140,34 @@
 "ScanQRCodeErrorOKButton" = "OK";
 
 /* Text for the instructions label, displayed in the QR scanner view */
-"ScanQRCodeInstructionsLabel" = "Placer le code QR dans le cadre pour qu'il soit analysé";
+"ScanQRCodeInstructionsLabel" = "Placez le code QR dans le cadre pour le scanner";
 
 /* Text of the prompt that is shown to the user when the data is invalid */
-"ScanQRCodeInvalidDataErrorMessage" = "Les données ne sont pas valides.";
+"ScanQRCodeInvalidDataErrorMessage" = "Les données ne sont pas valides";
 
 /* Text of the prompt user to setup the camera authorization. */
-"ScanQRCodePermissionErrorMessage" = "Autorisez Brave à accéder à l'appareil photo de votre appareil dans Réglages -> Confidentialité -> Appareil photo.";
+"ScanQRCodePermissionErrorMessage" = "Autorisez Brave à accéder à l'appareil photo de votre appareil dans Paramètres -> Confidentialité -> Appareil photo.";
 
 /* Title for the QR code scanner view. */
-"ScanQRCodeViewTitle" = "Analyser le code QR";
+"ScanQRCodeViewTitle" = "Scanner un code QR";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "SelectLocationBarTitle" = "Sélectionner la barre d'emplacement";
 
 /* Alert dialog body when the user opens the home page for the first time. */
-"SetHomePageDialogMessage" = "Vous pouvez modifier cette option à tout moment dans Réglages";
+"SetHomePageDialogMessage" = "Vous pouvez modifier cette option à tout moment dans les Paramètres";
 
 /* Button cancelling changes setting the home page for the first time. */
 "SetHomePageDialogNo" = "Annuler";
 
 /* Alert dialog title when the user opens the home page for the first time. */
-"SetHomePageDialogTitle" = "Souhaitez-vous utiliser cette page Web comme page d'accueil ?";
+"SetHomePageDialogTitle" = "Voulez-vous utiliser cette page Web comme page d'accueil ?";
 
 /* Button accepting changes setting the home page for the first time. */
 "SetHomePageDialogYes" = "Définir la page d'accueil";
 
 /* General settings section title */
-"SettingsGeneralSectionTitle" = "Généraux";
+"SettingsGeneralSectionTitle" = "Général";
 
 /* Option in settings to show a blank page when you open a new tab */
 "SettingsNewTabBlankPage" = "Afficher une page vierge";
@@ -170,7 +176,7 @@
 "SettingsNewTabHomePage" = "Afficher votre page d'accueil";
 
 /* Option in settings to show top sites when you open a new tab */
-"SettingsNewTabTopSites" = "Afficher vos meilleurs sites";
+"SettingsNewTabTopSites" = "Afficher vos sites principaux";
 
 /* Button displayed at the top of the search settings. */
 "SettingsSearchDoneButton" = "Terminé";
@@ -179,10 +185,16 @@
 "SettingsSearchEditButton" = "Modifier";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
+"showBookmarksTitle" = "Afficher les marque-pages";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
 "ShowNextTabTitle" = "Afficher l'onglet suivant";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "ShowPreviousTabTitle" = "Afficher l'onglet précédent";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts which is for Showing Brave Shields */
+"showShieldsTitle" = "Ouvrir Brave Shields";
 
 /* Hardware shortcut to open the tab tray from a tab. Shown in the Discoverability overlay when the hardware Command Key is held down. */
 "ShowTabTrayFromTabKeyCodeTitle" = "Afficher tous les onglets";
@@ -199,35 +211,14 @@
 /* The label indicating that all the tabs were closed */
 "TabsDeleteAllUndoTitle" = "%d onglet(s) fermé(s)";
 
-/* The message that asks the user to Add the search provider explaining where the search engine will appear */
-"ThirdPartySearchAddMessage" = "Le nouveau moteur de recherche s'affiche dans la barre de recherche rapide.";
-
-/* The title that asks the user to Add the search provider */
-"ThirdPartySearchAddTitle" = "Ajouter le moteur de recherche ?";
-
-/* The cancel button if you do not want to add a search engine. */
-"ThirdPartySearchCancelButton" = "Annuler";
-
-/* The success message that appears after a user sucessfully adds a new search engine */
-"ThirdPartySearchEngineAdded" = "Moteur de recherche ajouté.";
-
-/* A title explaining that we failed to add a search engine */
-"ThirdPartySearchFailedMessage" = "Impossible d'ajouter le moteur de recherche.";
-
-/* A title explaining that we failed to add a search engine */
-"ThirdPartySearchFailedTitle" = "Échec";
-
-/* The confirmation button */
-"ThirdPartySearchOkayButton" = "OK";
-
 /* Button to dismiss the 'Add Pass Failed' alert.  See https://support.apple.com/HT204003 for context on Wallet. */
 "UnableToAddPassErrorDismiss" = "OK";
 
 /* Text of the 'Add Pass Failed' alert.  See https://support.apple.com/HT204003 for context on Wallet. */
-"UnableToAddPassErrorMessage" = "Une erreur s'est produite lors de l'ajout d'un document au Wallet. Réessayez ultérieurement.";
+"UnableToAddPassErrorMessage" = "Une erreur s'est produite lors de l'ajout du pass à l'application Wallet. Réessayez ultérieurement.";
 
 /* Title of the 'Add Pass Failed' alert. See https://support.apple.com/HT204003 for context on Wallet. */
-"UnableToAddPassErrorTitle" = "Échec lors de l'ajout du passe";
+"UnableToAddPassErrorTitle" = "Échec de l'ajout du pass";
 
 /* The message displayed to a user when they try to open a URL that cannot be handled by Brave, or any external app. */
 "UnableToOpenURLError" = "Brave ne peut pas ouvrir la page, car l'adresse n'est pas valide.";
@@ -246,7 +237,4 @@
 
 /* List section title for when to use Touch ID */
 "UseTouchID" = "Utiliser Touch ID";
-
-/* No comment provided by engineer. */
-"No server found" = "Aucun serveur trouvé";
 

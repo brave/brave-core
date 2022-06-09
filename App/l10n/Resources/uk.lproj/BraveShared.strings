@@ -1,6 +1,12 @@
 /* About settings section title */
 "About" = "Про";
 
+/* The title of the screen explaining Brave Shields */
+"AboutBraveShields" = "Про щити Brave";
+
+/* The body of the screen explaining Brave Shields */
+"AboutBraveShieldsBody" = "Вебсайти зазвичай містять файли cookie та скрипти, що використовуються для ідентифікації вашої особи й пристрою з метою визначення ваших вподобань і відстеження дій на інших сайтах.\n\nБраузер Brave блокує ці засоби відстеження, щоб ви могли безпечно переглядати вміст у Інтернеті.";
+
 /* See http://mzl.la/1G7uHo7 */
 "AccessPhotoDeniedAlertMessage" = "Це дозволить збергіати зображення до папки «Камера».";
 
@@ -9,6 +15,12 @@
 
 /* Button to add a bookmark */
 "AddBookmark" = "Додати закладку";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
+"addBookmarkTitle" = "Додати закладку";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
+"addFavouritesTitle" = "Додати до обраного";
 
 /* Cell title for add folder action */
 "AddFolderActionCellTitle" = "Нова папка";
@@ -154,11 +166,47 @@
 /* Button to show the brave panel */
 "BravePanel" = "Панель Brave";
 
+/* No comment provided by engineer. */
+"BraveRewardsAdNotificationTitle" = "Нагороди Brave";
+
+/* No comment provided by engineer. */
+"BraveRewardsOpen" = "Відкрити";
+
 /* Brave Rewards settings title */
-"BraveRewardsTitle" = "Brave Rewards";
+"BraveRewardsTitle" = "Нагороди Brave";
+
+/* No comment provided by engineer. */
+"BraveShieldsAdvancedControls" = "Додаткові налаштування";
 
 /* No comment provided by engineer. */
 "BraveShieldsAndPrivacy" = "Brave Shields і конфіденційність";
+
+/* The number of ads and trackers blocked will be next to this */
+"BraveShieldsBlockedCountLabel" = "Рекламу й інші підозрілі елементи заблоковано";
+
+/* What the screen reader will read out when the user has VoiceOver on and taps on the question-mark info button on the shields panel */
+"BraveShieldsBlockedInfoButtonAccessibilityLabel" = "Докладніше";
+
+/* No comment provided by engineer. */
+"BraveShieldsGlobalChangeButton" = "Змінити глобальні налаштування щитів";
+
+/* No comment provided by engineer. */
+"BraveShieldsGlobalControls" = "Глобальні налаштування";
+
+/* No comment provided by engineer. */
+"BraveShieldsSiteBroken" = "Якщо вебсайт не працює, спробуйте вимкнути щити";
+
+/* Context: 'Brave Shields Up' or 'Brave Shields Down' */
+"BraveShieldsStatusTitle" = "Щити Brave";
+
+/* Context: The 'Down' in 'Brave Shields Down' */
+"BraveShieldsStatusValueDown" = "Вимкн.";
+
+/* Context: The 'Up' in 'Brave Shields Up' */
+"BraveShieldsStatusValueUp" = "Увімкн.";
+
+/* The accessibility hint spoken when focused on the main shields toggle */
+"BraveShieldsToggleHint" = "Торкніться двічі, щоб увімкнути Brave Shields";
 
 /* Sync page title */
 "BraveSync" = "Синхронізація";
@@ -168,6 +216,9 @@
 
 /* Sync settings welcome */
 "BraveSyncWelcome" = "Щоб розпочати, потрібно встановити Brave на кожен пристрій, який ви хочете синхронізувати. Щоб об’єднати усі пристрої в одну захищену мережу, створіть ланцюжок синхронізації.";
+
+/* The name of the feature */
+"bravetalk.braveTalkTitle" = "Brave Talk";
 
 /* Setting to enable the browser lock privacy feature */
 "BrowserLock" = "Блокування браузера";
@@ -229,6 +280,123 @@
 /* No comment provided by engineer. */
 "CancelButtonTitle" = "Скасувати";
 
+/* Title indicating whether the section for the algorithm used */
+"certificateViewer.algorithmTitle" = "Алгоритм";
+
+/* Title indicating whether or not a private key can be used for 'Anything' (encrypting, deriving, wrapping, verifying, signing, etc) */
+"certificateViewer.anyTitle" = "Будь-який";
+
+/* A measurement unit used in computing to indicate or how memory is used. */
+"certificateViewer.bitsUnitTitle" = "б";
+
+/* A measurement unit used in computing to indicate or how memory is used. */
+"certificateViewer.bytesUnitTitle" = "Б";
+
+/* The description for when an SSL certificate is valid */
+"certificateViewer.certificateIsValidTitle" = "Цей сертифікат дійсний";
+
+/* Section Title displaying common information */
+"certificateViewer.commonInfoTitle" = "Загальна інформація";
+
+/* Title of the section for Commonly used Name for the certificate. Example: Alias, Commonly used name, DigiCert High Assurance TLS. */
+"certificateViewer.commonNameTitle" = "Загальна назва";
+
+/* Title of the section for the certificate's issuing country or region. Example: Canada, or USA */
+"certificateViewer.countryOrRegionTitle" = "Країна або регіон";
+
+/* Title indicating whether or not a private key can be used to derive some data from another piece of data. IE: Use one key to generate another */
+"certificateViewer.deriveTitle" = "Виведення";
+
+/* Title of the section for the Domain Component such as: DNS or brave.com or a website's domain. */
+"certificateViewer.domainComponentTitle" = "Компонент домена";
+
+/* Title of the section indication which 'Encryption' algorithm was used. */
+"certificateViewer.encryptionTitle" = "Шифрування";
+
+/* Title indicating whether or not a private key can be used to encrypt data */
+"certificateViewer.encryptTitle" = "Шифрування";
+
+/* Title indicating whether the mathematical exponent used. x³, x², etc. */
+"certificateViewer.exponentTitle" = "Ступінь";
+
+/* Fingerprints/Hashes are algorithms used to determine if the certificate is legitimate */
+"certificateViewer.fingerPrintsTitle" = "Цифрові підписи";
+
+/* Section Title for Issuer Name in the SSL Certificate */
+"certificateViewer.issuerNameTitle" = "Назва видавця";
+
+/* Title indicating the size of the private or public key used in bytes. Example: KeySize - 1024 Bytes. Key Size - 2048 Bytes. */
+"certificateViewer.keySizeTitle" = "Розмір ключа";
+
+/* Title indicating what the private or public key can be used for. */
+"certificateViewer.keyUsageTitle" = "Використання ключа";
+
+/* Title of the section for the certificate's issuing city. Example: Toronto, New York, or San Francisco */
+"certificateViewer.localityTitle" = "Розміщення";
+
+/* Title indicating 'None' or no information or empty. */
+"certificateViewer.noneTitle" = "Немає";
+
+/* Certificate is 'not valid after' January 31st, 2022 for example. */
+"certificateViewer.notValidAfterTitle" = "Діє до";
+
+/* Certificate is 'not valid before' January 1st, 2022 for example. */
+"certificateViewer.notValidBeforeTitle" = "Діє після";
+
+/* Title of the section for Department of the Company. Example: Human Resources. */
+"certificateViewer.organizationalUnitTitle" = "Підрозділ організації";
+
+/* Title of the section for Name of the Company. Example: Brave Inc. */
+"certificateViewer.organizationTitle" = "Організація";
+
+/* Title indicating 'Parameters' or Input passed to a function/algorithm. */
+"certificateViewer.parametersTitle" = "Параметри";
+
+/* Information about a Public Key section title. */
+"certificateViewer.publicKeyInfoTitle" = "Інформація про відкритий ключ";
+
+/* Title indicating whether the key used is public (not private) */
+"certificateViewer.publicKeyTitle" = "Відкритий ключ";
+
+/* Certificates have a serial number to identify that it's unique */
+"certificateViewer.serialNumberTitle" = "Серійний номер";
+
+/* Do NOT translate the %@. They are place holders. Example: 'SHA256' with 'RSA' Encryption */
+"certificateViewer.signatureAlgorithmEncryptionDescription" = "%1$@ із шифруванням %2$@";
+
+/* Do NOT translate the %@. They are place holders. Example: 'ECDSA Signature' with 'SHA-256' */
+"certificateViewer.signatureAlgorithmSignatureDescription" = "Підпис %1$@ із %2$@";
+
+/* Title for the section where we display information about the algorithm used to sign the certificate */
+"certificateViewer.signatureAlgorithmTitle" = "Алгоритм підпису";
+
+/* Title of the view that states whether or not something was signed with an encryption algorithm or hash. */
+"certificateViewer.signatureTitle" = "Підпис";
+
+/* Title of the section for the certificate's issuing state or province. Example: Ontario Province or California State */
+"certificateViewer.stateOrProvinceTitle" = "Штат/провінція";
+
+/* Title of the section for the address of where the certificate came from. */
+"certificateViewer.streetAddressTitle" = "Адреса (вулиця)";
+
+/* Section Title for Subject Name in the SSL Certificate */
+"certificateViewer.subjectNameTitle" = "Назва суб’єкта";
+
+/* Title of the section for the User's ID (Identifier). */
+"certificateViewer.userIDTitle" = "Ідентифікатор користувача";
+
+/* Title of section that determines if the dates on a certificate is valid. */
+"certificateViewer.validityDatesTitle" = "Дати дії";
+
+/* Title indicating whether or not a private key can be used to verify data is legitimate */
+"certificateViewer.verifyTitle" = "Перевірити";
+
+/* Certificates have a version number */
+"certificateViewer.versionNumberTitle" = "Версія";
+
+/* Title indicating whether or not a private key can be used to wrap or enclose some data */
+"certificateViewer.wrapTitle" = "Перенесення";
+
 /* No comment provided by engineer. */
 "ClearData" = "Очищення даних";
 
@@ -242,7 +410,7 @@
 "ClearPrivateDataAlertMessage" = "Ви впевнені?";
 
 /* The button that clears private data. */
-"ClearPrivateDataAlertOkButtonTitle" = "OK";
+"ClearPrivateDataAlertOkButtonTitle" = "ОК";
 
 /* No comment provided by engineer. */
 "ClearPrivateDataAlertTitle" = "Видалити дані";
@@ -260,7 +428,10 @@
 "ClearSyncedHistoryAlertMessage" = "Це призведе до видалення всіх особистих даних, включно з даними журналу на всіх синхронізованих пристроях.";
 
 /* The confirmation button that clears history even when Sync is connected. */
-"ClearSyncedHistoryAlertOkButtoTitle" = "OK";
+"ClearSyncedHistoryAlertOkButtoTitle" = "ОК";
+
+/* Client is in an invalid state which caused the error */
+"clientErrorMessage" = "Помилка клієнта";
 
 /* Button title to close a menu. */
 "Close" = "Закрити";
@@ -281,7 +452,7 @@
 "CommonDownload" = "Завантажити";
 
 /* Text to select sharing something (example: image, video, URL) */
-"CommonShare" = "Поділитися";
+"CommonShare" = "Надіслати";
 
 /* No comment provided by engineer. */
 "Confirm" = "Підтвердити";
@@ -319,8 +490,56 @@
 /* Currently usedd search engines section name. */
 "CurrentlyUsedSearchEngines" = "Нещодавно використані пошукові системи";
 
+/* Button title for Adding Engine in navigation Bar */
+"customSearchEngine.addButtonTitle" = "Додати";
+
+/* Label explaining how to add search engine. */
+"customSearchEngine.addEngineDescription" = "Напишіть URL-адресу для пошуку та замініть запит таким: %1$s.\nНаприклад: https://youtube.com/search?q=%2$s\n(Якщо сайт підтримує OpenSearch, під час редагування цього поля ви зможете автоматично додати необхідне значення.)";
+
+/* Button title for Auto Add in header */
+"customSearchEngine.autoAddTitle" = "Автоматичне додавання";
+
+/* The warning description shown to user when custom search engine will be deleted while it is default search engine. */
+"customSearchEngine.deleteEngineAlertDescription" = "Видалення користувацької пошукової системи, якщо її встановлено за замовчуванням, автоматично змінить пошукову систему за замовчуванням.";
+
+/* The alert title shown to user when custom search engine will be deleted while it is default search engine. The parameter will be replace with name of the search engine. */
+"customSearchEngine.deleteEngineAlertTitle" = "Справді видалити систему «%@»?";
+
+/* Navigation Bar title */
+"customSearchEngine.navigationTitle" = "Додати пошукову систему";
+
+/* The message that asks the user to Add the search provider explaining where the search engine will appear */
+"customSearchEngine.thirdPartySearchEngineAddAlertDescription" = "Нова пошукова система буде відображатися на панелі швидкого пошуку.";
+
+/* The title that asks the user to Add the search provider */
+"customSearchEngine.thirdPartySearchEngineAddAlertTitle" = "Додати пошукову службу?";
+
+/* A descriotion explaining that there is error while adding a search engine */
+"customSearchEngine.thirdPartySearchEngineAddErrorDescription" = "Не вдалося додати користувацьку пошукову систему. Спробуйте ще раз пізніше.";
+
+/* A title explaining that there is error while adding a search engine */
+"customSearchEngine.thirdPartySearchEngineAddErrorTitle" = "Помилка користувацької пошукової системи";
+
+/* A message explaining a replica search engine is already added */
+"customSearchEngine.thirdPartySearchEngineDuplicateErrorDescription" = "Пошукову систему з цією назвою або URL-адресою вже додано.";
+
+/* A description explaining that there is a formatting error in URL field */
+"customSearchEngine.thirdPartySearchEngineIncorrectFormErrorDescription" = "Уведіть URL-адресу пошуку та замініть запит таким: %s.";
+
+/* A title explaining that there is a formatting error in URL field */
+"customSearchEngine.thirdPartySearchEngineIncorrectFormErrorTitle" = "Помилка запиту URL-адреси пошуку";
+
+/* A description explaining the copied url should be secure */
+"customSearchEngine.thirdPartySearchEngineInsecureURLErrorDescription" = "Можна використовувати лише дійсну захищену URL-адресу, яка починається на «https://»";
+
+/* A descriotion explaining that the fields must filled while adding a search engine. */
+"customSearchEngine.thirdPartySearchEngineMissingInfoErrorDescription" = "Будь ласка, заповніть поля «Заголовок» і «URL-адреса».";
+
 /* Title for quick-search engines settings section. */
 "CustomSearchEngines" = "Користувацькі пошукові системи";
+
+/* The success message that appears after a user sucessfully adds a new search engine */
+"custonmSearchEngine.thirdPartySearchEngineAddedToastTitle" = "Пошукову систему додано.";
 
 /* Data Saved Shield Stat */
 "DataSavedStat" = "Заощаджено\nданих (приблизно)";
@@ -354,9 +573,6 @@
 
 /* No comment provided by engineer. */
 "Delete" = "Видалити";
-
-/* Message for the alert shown when the user tries to delete a bookmarks folder */
-"DeleteBookmarksFolderAlertMessage" = "Це призведе до видалення усіх папок і закладок в них. Ви впевнені, що хочете продовжити?";
 
 /* Title for the alert shown when the user tries to delete a bookmarks folder */
 "DeleteBookmarksFolderAlertTitle" = "Видалити папку?";
@@ -410,7 +626,7 @@
 "Earlier" = "Раніше";
 
 /* No comment provided by engineer. */
-"Edit" = "Редагування";
+"Edit" = "Редагувати";
 
 /* Button to edit a bookmark */
 "EditBookmark" = "Редагування закладки";
@@ -509,7 +725,7 @@
 "FavoritesLocationFooterText" = "Розділ обраного розташовано на головному екрані. Ці закладки не синхронізуються з іншими пристроями.";
 
 /* Title for favorites cell */
-"FavoritesRootLevelCellTitle" = "Обране";
+"FavoritesRootLevelCellTitle" = "Вибране";
 
 /* No comment provided by engineer. */
 "Features" = "Функції";
@@ -529,8 +745,17 @@
 /* Accessibility label for previous result button in Find in Page Toolbar. */
 "FindInPagePreviousResultButtonAccessibilityLabel" = "Попередній результат на сторінці";
 
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
+"findInPageTitle" = "Знайти на сторінці";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
+"findNextTitle" = "Знайти далі";
+
 /* Section header for find in page option */
 "FindOnPageSectionHeader" = "На цій сторінці";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
+"findPreviousTitle" = "Знайти попереднє";
 
 /* individual blocking statistic title */
 "FingerprintingMethods" = "Способи додавання відбитків пальців";
@@ -610,6 +835,9 @@
 /* title for per-site shield toggles */
 "IndividualControls" = "Індивідуальні налаштування";
 
+/* Error message if details don't have the right type or values */
+"invalidDetailsMessage" = "Недійсні дані в запиті платежу";
+
 /* Sync Alert */
 "InvalidSyncCodeDescription" = "Неправильний код синхронізації";
 
@@ -674,7 +902,7 @@
 "LoginListDeselectAllButtonTitle" = "Зняти все виділення";
 
 /* Label displayed when no logins are found after searching. */
-"LoginListNoLoginTitle" = "Немає облікових даних";
+"LoginListNoLoginTitle" = "Імена для входу не знайдено";
 
 /* Title for Logins List View screen. */
 "LoginListScreenTitle" = "Облікові дані";
@@ -686,7 +914,7 @@
 "MediaAutoBackgrounding" = "Дозволити програвання аудіо у фоновому режимі";
 
 /* Copy password text selection menu item */
-"MenuItemCopyTitle" = "Скопіювати";
+"MenuItemCopyTitle" = "Копіювати";
 
 /* Hide password text selection menu item */
 "MenuItemHidePasswordTitle" = "Приховати";
@@ -699,6 +927,18 @@
 
 /* Abbreviation for 'Month', use full word' Month' if this word can't be shortened in your language */
 "monthAbbreviation" = "міс.";
+
+/* The body of the notification that goes out monthly to users who can claim an ads grant */
+"MonthlyAdsClaimNotificationBody" = "Торкніться, щоб отримати безкоштовні токени.";
+
+/* The title of the notification that goes out monthly to users who can claim an ads grant */
+"MonthlyAdsClaimNotificationTitle" = "Brave Rewards 💵🎁";
+
+/* No comment provided by engineer. */
+"MyFirstAdBody" = "Торкніться тут, щоб дізнатися більше.";
+
+/* No comment provided by engineer. */
+"MyFirstAdTitle" = "Це ваша перша реклама Brave";
 
 /* Bookmark title / Device name */
 "Name" = "Назва";
@@ -726,6 +966,9 @@
 
 /* New Tab title */
 "NewTab" = "Нова вкладка";
+
+/* For search suggestions prompt. This string should be short so it fits nicely on the prompt row. */
+"No" = "Ні";
 
 /* The information title displayed when there is no search reault found */
 "noSearchResultsfound" = "Пошук не дав результатів.";
@@ -784,6 +1027,99 @@
 /* The placeholder says 'Terms of Service'. So full sentence goes like: 'By turning Rewards, you agree to the Terms of Service'. */
 "ntp.turnRewardsTos" = "Увімкнувши Rewards, ви приймаєте умови документа %@.";
 
+/* Message when opting into brave Ads when region becomes available */
+"OBAdsOptInMessage" = "Заробляйте токени під час перегляду вебсайтів і винагороджуйте авторів за чудовий уміст.";
+
+/* Message when opting into brave Ads when region becomes available */
+"OBAdsOptInMessageJapan" = "Заробляйте бали під час перегляду вебсайтів і винагороджуйте авторів за чудовий уміст.";
+
+/* Title when opting into brave Ads when region becomes available */
+"OBAdsOptInTitle" = "Brave Ads уже доступний!";
+
+/* Title for ads onboarding screen */
+"OBAdsTitle" = "Brave покаже першу рекламу через";
+
+/* Title for when the user completes onboarding */
+"OBCompleteTitle" = "Тепер усе готово.";
+
+/* Button to show information on how to enable ads */
+"OBDidntSeeAdButton" = "Рекламу не було показано";
+
+/* A generic error body for onboarding */
+"OBErrorDetails" = "Під час створення гаманця сталася помилка. Спробуйте ще раз";
+
+/* No comment provided by engineer. */
+"OBErrorOkay" = "Добре";
+
+/* A generic error title for onboarding */
+"OBErrorTitle" = "Помилка";
+
+/* Button to finish onboarding and start using the app. */
+"OBFinishButton" = "Почати використання";
+
+/* Button to join Brave Rewards. */
+"OBJoinButton" = "Приєднатися";
+
+/* No comment provided by engineer. */
+"OBPrivacyConsentClipboardPermission" = "Дозволити Brave перевіряти код рекомендації в моєму буфері обміну";
+
+/* No comment provided by engineer. */
+"OBPrivacyConsentDetail" = "Ви могли завантажити Brave за рекомендацією користувача. Щоб його виявити, Brave одноразово перевірить код рекомендації у вашому буфері обміну. Буде перевірено лише наявність коду, і жодні персональні дані не буде передано. Якщо ви забороните перевірку, користувач, шо надіслав вам рекомендацію, не отримає винагороду від Brave.";
+
+/* No comment provided by engineer. */
+"OBPrivacyConsentNoButton" = "Не дозволяти перевірку";
+
+/* No comment provided by engineer. */
+"OBPrivacyConsentTitle" = "Анонімна перевірка коду рекомендації";
+
+/* No comment provided by engineer. */
+"OBPrivacyConsentYesButton" = "Дозволити одноразову перевірку буфера обміну";
+
+/* Detail text for rewards agreement onboarding screen */
+"OBRewardsAgreementDetail" = "Якщо ви торкаєтеся «Так», ви погоджуєтеся з";
+
+/* Detail text for rewards agreement onboarding screen */
+"OBRewardsAgreementDetailLink" = "Умови обслуговування";
+
+/* Detail text for rewards agreement onboarding screen */
+"OBRewardsAgreementDetailsAnd" = "та";
+
+/* Title for rewards agreement onboarding screen */
+"OBRewardsAgreementTitle" = "Нагороди Brave";
+
+/* Detail text for rewards onboarding screen */
+"OBRewardsDetail" = "Вибравши приватні рекламні оголошення Brave, кожним переглядом реклами ви підтримуєте видавців й авторів умісту.";
+
+/* Detail text for rewards onboarding screen */
+"OBRewardsDetailInAdRegion" = "Заробляйте токени під час перегляду вебсайтів і винагороджуйте авторів за чудовий уміст.";
+
+/* Detail text for rewards agreement onboarding screen */
+"OBRewardsPrivacyPolicyDetailLink" = "Політика конфіденційності";
+
+/* Title for rewards onboarding screen */
+"OBRewardsTitle" = "Нагороди Brave";
+
+/* Save button to save current selection */
+"OBSaveButton" = "Зберегти";
+
+/* Detail text for search engine onboarding screen */
+"OBSearchEngineDetail" = "Виберіть пошукову систему за замовчуванням";
+
+/* Title for search engine onboarding screen */
+"OBSearchEngineTitle" = "Вітаємо в браузері Brave!";
+
+/* Detail text for shields onboarding screen */
+"OBShieldsDetail" = "Блокування трекерів, які порушують приватність, щоб за вами не стежили в мережі";
+
+/* Title for shields onboarding screen */
+"OBShieldsTitle" = "Щити Brave";
+
+/* Button to show the Brave Rewards Ads. */
+"OBShowMeButton" = "Показати";
+
+/* Button to show Brave Rewards. */
+"OBTurnOnButton" = "Почати";
+
 /* The description text shown when there is big tech tracker among trackers. Example usage: Google, Amazon and 32 other trackers blocked */
 "onboarding.blockedAdsOnboardingBigTechInformationText" = "Заблоковано оголошень і трекерів: %1$@ та ще %2$lld";
 
@@ -813,6 +1149,15 @@
 
 /* Title for Welcome Screen in Onboarding */
 "onboarding.welcomeScreenTitle" = "Вітаємо у Brave!";
+
+/* Continue button to navigate to next onboarding screen. */
+"OnboardingContinueButton" = "Продовжити";
+
+/* Skip button to skip onboarding and start using the app. */
+"OnboardingSkipButton" = "Пропустити";
+
+/* This is a suffix statement. example: SomeChannel on Twitter */
+"OnProviderText" = "у %@";
 
 /* Context menu item for opening all folder bookmarks */
 "OpenAllBookmarks" = "Відкрити всі (%i)";
@@ -874,6 +1219,36 @@
 /* Section name for other settings. */
 "OtherSettingsSection" = "Інші налаштування";
 
+/* Title for the section for the global/default zoom level */
+"pagezoom.settings.defaultZoomLevelSectionTitle" = "Рівень масштабування сторінки за замовчуванням";
+
+/* Description for the empty Web-Page zoom view */
+"pagezoom.settings.emptyWebsitesDescription" = "Якщо буде змінено рівень масштабування сторінки, то вона відображатиметься в цьому списку. Наразі немає вебсайтів, для яких би було змінено рівень масштабування.";
+
+/* Title for the empty Web-Page zoom view */
+"pagezoom.settings.emptyWebsitesTitle" = "Немає доданих вебсайтів";
+
+/* Title of the Web-Page Zoom settings menu */
+"pagezoom.settings.menu-title" = "Масштабування сторінки";
+
+/* Title for the section for the Web-Page zoom level of other websites */
+"pagezoom.settings.otherWebsitesZoomLevelSectionTitle" = "Усі інші вебсайти";
+
+/* Title of the Web-Page Zoom reset all option */
+"pagezoom.settings.reset-all" = "Скинути все";
+
+/* Description of the Web-Page Zoom reset all option */
+"pagezoom.settings.reset-all-description" = "Скинути рівні масштабування вебсайтів";
+
+/* Title for list of websites shown in settings screen */
+"pagezoom.settings.specificWebsitesZoomLevelsSectionTitle" = "Налаштування певної сторінки";
+
+/* Title of the Web-Page Zoom screen */
+"pagezoom.settings.title" = "Налаштування масштабування сторінки";
+
+/* Title for the web-page zoom level view */
+"pagezoom.zoomView.text" = "Масштабування сторінки";
+
 /* Sync pair device settings section title */
 "Pair" = "З'єднати";
 
@@ -883,8 +1258,305 @@
 /* Label that says who took a photograph that will be displayed to the user. '%@' is a placeholder and will include be a specific person's name, example 'Bill Gates'. */
 "PhotoBy" = "Фото від %@";
 
+/* Alert Description for adding videos to playlist */
+"playList.addToPlayListAlertDescription" = "Хочете додати це відео до списку відтворення?";
+
+/* Alert Title for adding videos to playlist */
+"playList.addToPlayListAlertTitle" = "Додати у Brave Playlist";
+
+/* The title of the screen in CarPlay that contains all the audio/playback options */
+"playlist.carplayOptionsScreenTitle" = "Параметри відтворення";
+
+/* The already disabled button title with instructions telling the user they can tap it to enable playback. */
+"playlist.carplayRestartPlaybackButtonStateDisabled" = "Вимкнено. Торкніться, щоб увімкнути відтворення з початку.";
+
+/* The already enabled button title with instructions telling the user they can tap it to disable playback. */
+"playlist.carplayRestartPlaybackButtonStateEnabled" = "Увімкнено. Торкніться, щоб вимкнути відтворення з початку.";
+
+/* The description of the checkbox that allows the user to restart audio/video playback */
+"playlist.carplayRestartPlaybackOptionDetailsTitle" = "Налаштування того, чи буде відтворення об’єкта, що вже відтворювався, починатися з початку або ж продовжуватися з місця останньої зупинки";
+
+/* The title of the checkbox that allows the user to restart audio/video playback */
+"playlist.carplayRestartPlaybackOptionTitle" = "Відтворювати з початку";
+
+/* The title of the section containing settings/options in CarPlay */
+"playlist.carplaySettingsSectionTitle" = "Налаштування";
+
+/* The title of the playlist when in Carplay mode */
+"playlist.carplayTitle" = "Список відтворення Brave";
+
+/* The title of the button indicating that the user delete the offline data. (deletes the data that allows them to play offline) */
+"playlist.deleteForOfflineButtonTitle" = "Видалити офлайн-кеш";
+
+/* The description for the alert that shows up when an item is expired */
+"playList.expiredAlertDescription" = "Це відео транслювалося в прямому ефірі, або було досягнуто ліміту тривалості. Для оновлення відкрийте посилання ще раз.";
+
+/* The title for the alert that shows up when an item is expired */
+"playList.expiredAlertTitle" = "Термін дії відео закінчився";
+
+/* Text indicator on the table cell If a video is expired */
+"playList.expiredLabelTitle" = "Термін дії завершився";
+
+/* Description for load resources error alert */
+"playList.loadResourcesErrorAlertDescription" = "Виникла проблема із завантаженням ресурсу!";
+
+/* Description footer for playlist menu badge option */
+"playlist.menuBadgeOptionFooterText" = "Якщо увімкнути цю функцію, на піктограмі головного меню відображатиметься позначка про те, що медіафайли на сторінці можна додати до списку відтворення Brave.";
+
+/* Title for playlist menu badge option */
+"playlist.menuBadgeOptionTitle" = "Показувати позначку сповіщення на меню";
+
+/* Button Title of the ActionSheet/Alert Button when moving a playlist item from the Swipe-Action to a new folder */
+"playlist.movePlaylistShareActionMenuTitle" = "Перемістити…";
+
+/* Detail Text when there are no items in the playlist */
+"playList.noItemLabelDetailLabel" = "Ви можете додавати елементи до списку відтворення Brave у браузері";
+
+/* Text when there are no items in the playlist */
+"playList.noItemLabelTitle" = "Немає жодного доступного файлу";
+
+/* Title for download video error alert */
+"playList.noticeAlertTitle" = "Примітка";
+
+/* Okay Alert button title */
+"playList.okayButtonTitle" = "Добре";
+
+/* The title for the alert that shows up when an item is expired */
+"playList.pictureInPictureErrorTitle" = "На жаль, під час спроби відобразити картинку в картинці сталася помилка.";
+
+/* Footer Text for the Playlist Settings Option for Enable/Disable Auto-Play */
+"playlist.playlistAutoPlaySettingsOptionFooterText" = "Ця опція вмикає/вимикає автовідтворення під час відкриття списку відтворення. Але ця опція не впливає на автовідтворення під час завантаження наступного відео в списку.";
+
+/* Title for the Playlist Settings Option for Enable/Disable Auto-Play */
+"playlist.playlistAutoPlaySettingsOptionTitle" = "Автовідтворення";
+
+/* Auto Download turn Off Option */
+"playlist.playlistAutoSaveOptionOff" = "Вимк.";
+
+/* Auto Save turn On Option */
+"playlist.playlistAutoSaveOptionOn" = "Увімк.";
+
+/* Option Text for Auto Save Only Wi-Fi Option */
+"playlist.playlistAutoSaveOptionOnlyWifi" = "Тільки Wi-Fi";
+
+/* Description for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wi-fi) */
+"playlist.playlistAutoSaveSettingsDescription" = "Додавання відео- й аудіофайлів для використання офлайн може потребувати багато місця на вашому пристрої, а також використовувати мобільні дані";
+
+/* Footer Text for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wi-fi)) */
+"playlist.playlistAutoSaveSettingsFooterText" = "Ця опція автоматично збереже елементи вашого списку відтворення на пристрої, щоб ви могли відтворювати їх за відсутності підключення до Інтернету.";
+
+/* Title for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wi-fi) */
+"playlist.playlistAutoSaveSettingsTitle" = "Автозбереження для доступу офлайн";
+
+/* When the user's disk space is almost full */
+"playlist.playlistDiskSpaceWarningMessage" = "Додавання відео- й аудіофайлів для використання офлайн може потребувати багато місця на вашому пристрої. Видаліть деякі файли, щоб звільнити місце в пам’яті.";
+
+/* When the user's disk space is almost full */
+"playlist.playlistDiskSpaceWarningTitle" = "Пам’ять майже заповнена";
+
+/* When a video or audio is live and has no duration */
+"playlist.playlistLiveMediaStream" = "Пряма трансляція";
+
+/* Footer Text for the Playlist Settings Option for long press gesture */
+"playlist.playlistLongPressSettingsOptionFooterText" = "Якщо ввімкнено, ви можете додавати більшість відеофайлів та аудіофайлів до списку відтворення довгим натисненням.";
+
+/* Title for the Playlist Settings Option for long press gesture */
+"playlist.playlistLongPressSettingsOptionTitle" = "Увімкнути жест «Довге натиснення»";
+
+/* Text for Playlist Media & Offline Data Toggle while clearing the offline data storage in settings */
+"playlist.playlistMediaAndOfflineDataToggleOption" = "Медіафайли й офлайн-дані списків відтворення";
+
+/* Text for Playlist Offline Data Toggle while clearing the offline data storage in settings */
+"playlist.playlistOfflineDataToggleOption" = "Дані списків відтворення офлайн";
+
+/* The title for the alert that shows up when removing all videos and their offline mode storage. */
+"playList.playlistResetAlertTitle" = "Скинути";
+
+/* Footer Text for the Playlist Settings Option for resetting Playlist. */
+"playlist.playlistResetPlaylistOptionFooterText" = "Ця опція видалить усі відео зі списку відтворення, а також із офлайн-сховища.";
+
+/* Error message when saving a playlist item for offline fails */
+"playlist.playlistSaveForOfflineErrorMessage" = "На жаль, наразі цей елемент не можна зберегти для режиму офлайн.";
+
+/* Title of alert when saving a playlist item for offline mode */
+"playlist.playlistSaveForOfflineErrorTitle" = "Сталася помилка";
+
+/* Title For the Section that videos are listed */
+"playList.playListSectionTitle" = "Список відтворення";
+
+/* Footer Text for the Playlist Settings Option for Sidebar Location (Left/Right) */
+"playlist.playlistSidebarLocationFooterText" = "Це налаштування дає змогу змінити розташування списку відео з лівої сторони на праву.";
+
+/* Option Text for Sidebar Location Left */
+"playlist.playlistSidebarLocationOptionLeft" = "Ліворуч";
+
+/* Option Text for Sidebar Location Right */
+"playlist.playlistSidebarLocationOptionRight" = "Праворуч";
+
+/* Title for the Playlist Settings Option for Sidebar Location (Left/Right) */
+"playlist.playlistSidebarLocationTitle" = "Розташування бічної панелі";
+
+/* Footer Text for the Playlist Settings Option for Enable/Disable ability to start playing from the point where user last left-off */
+"playlist.playlistStartPlaybackSettingsFooterText" = "Цей параметр вмикає/вимикає можливість почати відтворення медіафайлів (відео/аудіо) з того моменту, на якому ви зупинилися минулого разу.";
+
+/* Title for the Playlist Settings Option for Enable/Disable ability to start playing from the point where user last left-off */
+"playlist.playlistStartPlaybackSettingsOptionTitle" = "Почати відтворення з місця останньої зупинки";
+
+/* Description for Playlist setting */
+"playlist.playlistWebCompatibilityDescription" = "Відключення API WebKit MediaSource";
+
+/* Title for Playlist setting */
+"playlist.playlistWebCompatibilityTitle" = "Вебсумісність";
+
+/* Body of the popover that shows when you tap on the 'Add to Playlist' button in the URL bar */
+"playlist.popoverAddBody" = "Список відтворення Brave підтримує відтворення в режимі офлайн, «зображення в зображені», безперервне відтворення й режими повторення.";
+
+/* Title of the popover that shows when you already have the current media item in your playlist and you tap on the 'Add to Playlist' button in the URL bar */
+"playlist.popoverAddedTitle" = "Цей медіафайл у вашому списку відтворення Brave";
+
+/* Title of the popover that shows when you tap on the 'Add to Playlist' button in the URL bar */
+"playlist.popoverAddTitle" = "Додати цей медіафайл до списку відтворення Brave?";
+
+/* Button title in the popover when an item is already in your playlist and you tap the 'Add to Playlist' button in the URL bar */
+"playlist.popoverOpenInBravePlaylist" = "Відкрити в списку відтворення Brave";
+
+/* Button title in the popover when an item is already in your playlist and you tap the 'Add to Playlist' button in the URL bar */
+"playlist.popoverRemoveFromBravePlaylist" = "Видалити";
+
+/* Title for removing offline mode storage */
+"playList.removeActionButtonTitle" = "Видалити";
+
+/* Message for the alert shown when the user tries to remove offline data of an item from playlist */
+"playlist.removePlaylistOfflineDataAlertMessage" = "Це призведе до видалення медіафайлу з офлайн-сховища. Ви впевнені, що хочете продовжити?";
+
+/* Title for the alert shown when the user tries to remove offline data of an item from playlist */
+"playlist.removePlaylistOfflineDataAlertTitle" = "Видалити офлайн-дані";
+
+/* Message for the alert shown when the user tries to remove a video from playlist */
+"playlist.removePlaylistVideoAlertMessage" = "Це призведе до видалення медіафайлу зі списку. Ви впевнені, що хочете продовжити?";
+
+/* Title for the alert shown when the user tries to remove an item from playlist */
+"playlist.removePlaylistVideoAlertTitle" = "Видалити медіафайл зі списку відтворення?";
+
+/* Reopen Alert button title */
+"playList.reopenButtonTitle" = "Відкрити заново";
+
+/* Text indicator on the table cell while saving a video for offline with percentage eg: %25 Saved for Offline */
+"playList.savedForOfflineLabelTitle" = "збережено для доступу офлайн";
+
+/* The title of the button indicating that the user can save a video for offline playback. (playing without internet) */
+"playlist.saveForOfflineButtonTitle" = "Зберегти для доступу офлайн";
+
+/* Text indicator on the table cell while saving a video for offline */
+"playList.savingForOfflineLabelTitle" = "Збереження для доступу офлайн…";
+
+/* Details Title of the ActionSheet/Alert when sharing a playlist item from the Swipe-Action */
+"playlist.sharePlaylistActionDetailsTitle" = "Ви можете відкрити поточний елемент у новій вкладці або надіслати його через меню спільного доступу";
+
+/* Title of the ActionSheet/Alert when sharing a playlist item from the Swipe-Action */
+"playlist.sharePlaylistActionTitle" = "Меню списка відтворення в браузері";
+
+/* Button Title of the ActionSheet/Alert Button when sharing a playlist item from the Swipe-Action */
+"playlist.sharePlaylistOpenInNewPrivateTabTitle" = "Відкрити у приватній вкладці";
+
+/* Button Title of the ActionSheet/Alert Button when sharing a playlist item from the Swipe-Action */
+"playlist.sharePlaylistOpenInNewTabTitle" = "Відкрити у новій вкладці";
+
+/* Button Title of the ActionSheet/Alert Button when sharing a playlist item from the Swipe-Action */
+"playlist.sharePlaylistShareActionMenuTitle" = "Поділитися…";
+
+/* Title for load resources error alert */
+"playList.sorryAlertTitle" = "Помилка";
+
+/* The title for the toast that shows up on a page containing a playlist item that was added to playlist */
+"playList.toastAddedToPlaylistTitle" = "Додано у Brave Playlist";
+
+/* The title for the toast button when an item was added to playlist */
+"playList.toastAddToPlaylistOpenButton" = "Відкрити";
+
+/* The title for the toast that shows up on a page containing a playlist item */
+"playList.toastAddToPlaylistTitle" = "Додати у Brave Playlist";
+
+/* The title for the toast that shows up on a page when an item that has already been added, was updated. */
+"playList.toastExitingItemPlaylistTitle" = "Подивитися у Brave Playlist";
+
+/* Footer for option to disable URL-Bar button */
+"playlist.urlBarButtonOptionFooter" = "Поруч із панеллю адреси в браузері Brave з’явиться кнопка списку відтворення. Кнопка має вигляд 4 ліній із символом +. За допомогою неї ви зможете отримати швидкий доступ до списку відтворення, а також видалити/додати медіафайли.";
+
+/* Title for option to disable URL-Bar button */
+"playlist.urlBarButtonOptionTitle" = "Додати кнопку швидкого доступу";
+
+/* The title of the button to create a new folder */
+"playlistFolders.createNewFolderButtonTitle" = "Створити";
+
+/* The title of the button that allows the user to edit the name of a folder */
+"playlistFolders.editButtonTitle" = "Редагувати";
+
+/* The title of the screen where the user edits folder names */
+"playlistFolders.editFolderScreenTitle" = "Редагування папки";
+
+/* The title of the menu option that allows the user to edit the name of a folder */
+"playlistFolders.editMenuTitle" = "Редагування папки";
+
+/* The error shown to the user when we cannot save their changes made on a folder */
+"playlistFolders.errorSavingMessage" = "На жаль, не вдалося зберегти зміни, зроблені в цій папці";
+
+/* The title of the button where the user will move an item from one folder to another folder. */
+"playlistFolders.moveFolderButtonTitle" = "Перемістити";
+
+/* The title of the section indicating the currently selected folder */
+"playlistFolders.moveFolderCurrentSectionTitle" = "Поточна папка";
+
+/* The title of the screen where the user will move an item from one folder to another folder. */
+"playlistFolders.moveFolderScreenTitle" = "Перемістити";
+
+/* %@ Should NOT be localized. It is a placeholder. Example: Brave Folder and 1 more item. */
+"playlistFolders.moveItemDescription" = "%@ та ще 1 об’єкт";
+
+/* %lld is a placeholder and should not be localized. Sometimes items can have no name. So this is a generic title to use */
+"playlistFolders.moveItemWithMultipleNoNameTitle" = "Об’єкти: %lld";
+
+/* Sometimes an item can have no name. So this is a generic title to use */
+"playlistFolders.moveItemWithNoNameTitle" = "1 об’єкт";
+
+/* %@ and %lld Should NOT be localized. They are placeholders. Example: Brave Folder and 3 more items. Music and 2 more items. */
+"playlistFolders.moveMultipleItemDescription" = "%1$@ та ще кілька об’єктів (%2$lld)";
+
+/* The title of the button to create a new folder */
+"playlistFolders.newFolderButtonTitle" = "Нова папка";
+
+/* The title of the screen to create a new folder */
+"playlistFolders.newFolderScreenTitle" = "Нова папка";
+
+/* The sub-title of the section where the user can select videos to add to the new folder being created */
+"playlistFolders.newFolderSectionSubtitle" = "Торкніться, щоб вибрати відео";
+
+/* The title of the section where the user can select videos to add to the new folder being created */
+"playlistFolders.newFolderSectionTitle" = "Додайте відео до цієї папки";
+
+/* The title of the default playlist folder */
+"playlistFolders.savedFolderTitle" = "Збережено";
+
+/* The title of the section indicating that the user should select a folder to move `%zu` items to. %lld should not be translated. It will be replaced by a number so the sentence becomes: 'Select a folder to move 10 items to.' */
+"playlistFolders.selectAFolderTitle" = "Виберіть папку, щоб перемістити ці об’єкти (%lld)";
+
+/* The sub-title of the folder. Example: This folder contains 10 Items. This folder contains 3 Items. */
+"playlistFolders.subtitleItemCount" = "Об’єкти: %lld";
+
+/* The sub-title of the folder. Example: This folder contains ONE item. This folder contains 1 Item. */
+"playlistFolders.subtitleItemSingleCount" = "1 об’єкт";
+
+/* The title of a folder when the user enters no name (untitled) */
+"playlistFolders.untitledFolderTitle" = "Папка без назви";
+
 /* Playlist menu item */
 "PlaylistMenuItem" = "Список відтворення";
+
+/* Description for closing a popover menu that is displayed. */
+"PopoverDefaultClose" = "Закрити контекстне меню";
+
+/* Description for closing the `Brave Shields` popover menu that is displayed. */
+"PopoverShieldsMenuClose" = "Закрити меню Shields";
 
 /* Label for preview action on Tab Tray Tab to add current tab to Bookmarks */
 "PreviewActionAddToBookmarksActionTitle" = "Додати до закладок";
@@ -900,6 +1572,141 @@
 
 /* Settings privacy section title */
 "Privacy" = "Приватність";
+
+/* Button text that takes user to a list of all trackers and ads we blocked. 'All time lists' refer to list of blocked trackers or websites which have the most trackers */
+"privacyHub.allTimeListsButtonText" = "Списки за весь час";
+
+/* Header text, under it we show items blocked by our ad blocker. 'All  time' sentence context is like 'All time items blocked by our ad blocker. */
+"privacyHub.allTimeListsHeader" = "Увесь час";
+
+/* Title of a section to show total count of trackers blocked by Brave */
+"privacyHub.allTimeListsTrackersView" = "Трекери й реклама";
+
+/* Title of a section to show websites containing highest amount of trackers */
+"privacyHub.allTimeListsWebsitesView" = "Вебсайти";
+
+/* Header title for a list of most frequent ads and trackers detected. */
+"privacyHub.allTimeListTrackersHeaderTitle" = "Найчастіші трекери й реклама на сайтах, що ви відвідуєте";
+
+/* Header title for a list of websites with ads and trackers. */
+"privacyHub.allTimeListWebsitesHeaderTitle" = "Сайти з найбільшою кількість трекерів і реклами";
+
+/* Displays a number of websites on which we blocked trackers, example usage: '23 sites' */
+"privacyHub.allTimeSitesCount" = "Сайти: %lld";
+
+/* Displays a number of trackers we blocked on a particular website, example usage: '23 trackers & ads' */
+"privacyHub.allTimeTrackersCount" = "Трекери й реклама: %lld";
+
+/* Title under which we display most name of the most blocked tracker or ad. */
+"privacyHub.allTimeTrackerTitle" = "Трекер і реклама";
+
+/* Title under which we display a website on which there's the highest number of trackers or ads. */
+"privacyHub.allTimeWebsiteTitle" = "Вебсайт";
+
+/* Text for a button to display a list of all alerts caught by the Brave VPN. VPN alert is a notificaion of what item has been blocked by the vpn, similar to a regular adblocker */
+"privacyHub.allVPNAlertsButtonText" = "Усі сповіщення";
+
+/* Text which explain by what type of ad blocker a given resource was blocked. Context is like: 'Blocked by Brave Shields', 'Blocked by BraveVPN */
+"privacyHub.blockedBy" = "Заблоковано:";
+
+/* It says that a ad or tracker was blocked. Think of it in context of 'A tracker X was blocked' */
+"privacyHub.blockedLabel" = "Заблоковано";
+
+/* Accessibility label for the 'clear all data' button. */
+"privacyHub.clearAllDataAccessibility" = "Очистити дані центру приватності";
+
+/* A prompt message we show to the user if they want to clear all data gathered by the Privacy Reports Feature */
+"privacyHub.clearAllDataPrompt" = "Очистити всі дані Shields?";
+
+/* Header text, under it we display blocked items from last week */
+"privacyHub.lastWeekHeader" = "Останній  тиждень";
+
+/* Do NOT localize asterisk('*') characters, they are used to make the text bold in the app. It says which tracker was blocked on how many websites, example usage: 'Google Analytics was blocked by Brave Shields on 42 sites' */
+"privacyHub.mostFrequentTrackerAndAdBody" = "Сервіс Brave Shields заблокував **%1$@** на сайтах (**%2$lld**)";
+
+/* Title under which we display a tracker which was most frequently detected by our ad blocking mechanism. */
+"privacyHub.mostFrequentTrackerAndAdTitle" = "Найчастіший трекер і реклама";
+
+/* Text of a callout that tell user they need to browser some websites first in order to see privacy stats data */
+"privacyHub.noDataCalloutBody" = "Відвідайте деякі вебсайти, щоб побачити тут дані.";
+
+/* This text is diplayed when there is no data to display to the user. The data is about blocked trackers or sites with trackers on them. */
+"privacyHub.noDataToShow" = "Немає даних для показу.";
+
+/* Text of a callout to encourage user to enable Apple notification system. */
+"privacyHub.notificationCalloutBody" = "Отримуйте щотижневі оновлення щодо конфіденційності про блокування трекерів і реклами.";
+
+/* Text of a button to encourage user to enable Apple notification system. */
+"privacyHub.notificationCalloutButtonText" = "Увімкнути сповіщення";
+
+/* Message of a notification we show to the user, on tapping it, the Privacy Hub screen will open. */
+"privacyHub.notificationMessage" = "Зведення від Brave щодо вашого захисту в Інтернеті цього тижня.";
+
+/* Title of a notification we show to the user, on tapping it, the Privacy Hub screen will open. */
+"privacyHub.notificationTitle" = "Щотижневий звіт про конфіденційність";
+
+/* Text of a button that opens up a Privacy Reports screen. */
+"privacyHub.onboardingButtonTitle" = "Відкрити центр конфіденційності";
+
+/* Text of a disclaimer that explains how the data for generating privacy reprots is stored. */
+"privacyHub.privacyReportsDisclaimer" = "Дані центру конфіденційності зберігаються локально й нікуди не надсилаються.";
+
+/* Title of main privacy hub screen. This screen shows various stats caught by Brave's ad blockers. */
+"privacyHub.privacyReportsTitle" = "Центр конфіденційності";
+
+/* Do NOT localize asterisk('*') characters, they are used to make the text bold in the app. It says which website had the most tracker per visit, example usage: 'example.com had an average of 10 trackers & ads blocked per visit ' */
+"privacyHub.riskiestWebsiteBody" = "Середня кількість трекерів і реклами, заблокованих під час відвідування сайту **%1$@**: **%2$lld**";
+
+/* Title of a website that contained the most trackers per visit. */
+"privacyHub.riskiestWebsiteTitle" = "Сайт із найбільшою кількістю трекерів";
+
+/* This text explains a setting that lets Brave monitor blocked network requests */
+"privacyHub.settingsEnableShieldsFooter" = "У центрі конфіденційності показано, скільки й чого заблоковано за допомогою Shields. Налаштування не вплинуть на лічильник Shields на сторінці нової вкладки. Дані Shields не враховуються у приватних вікнах.";
+
+/* Title of a setting that lets Brave monitor blocked network requests */
+"privacyHub.settingsEnableShieldsTitle" = "Показати дані Shields";
+
+/* This text explains a setting that lets Brave monitor blocked network requests captured by Brave VPN */
+"privacyHub.settingsEnableVPNAlertsFooter" = "Налаштування застосовується, лише якщо ви придбали підписку VPN.";
+
+/* Title of a setting that lets Brave monitor blocked network requests captured by Brave VPN */
+"privacyHub.settingsEnableVPNAlertsTitle" = "Показати оповіщення щодо VPN";
+
+/* This text explains what the button to clear datain the Privacy Hub is for. */
+"privacyHub.settingsSlearDataFooter" = "Скидає кількість заблокованих елементів у Shields.";
+
+/* Button that lets user clear all blocked requests and vpn alerts data that Brave captured for them. */
+"privacyHub.settingsSlearDataTitle" = "Очистити дані Shields";
+
+/* This label says shields, as a source of by what a resource was blocked. Think of it in context of 'Blocked by Shields' */
+"privacyHub.shieldsLabel" = "Shields";
+
+/* Type of tracker blocked by the VPN, it's a tracker contained in an email. */
+"privacyHub.vpnAlertEmailTrackerTypePlural" = "Трекери ел. адреси";
+
+/* Type of tracker blocked by the VPN, it's a tracker contained in an email. */
+"privacyHub.vpnAlertEmailTrackerTypeSingular" = "Трекер ел. адреси";
+
+/* Type of tracker blocked by the VPN, it's a tracker that asks you for your location. */
+"privacyHub.vpnAlertLocationTrackerTypePlural" = "Пінги розташування";
+
+/* Type of tracker blocked by the VPN, it's a tracker that asks you for your location. */
+"privacyHub.vpnAlertLocationTrackerTypeSingular" = "Пінг розташування";
+
+/* Type of tracker blocked by the VPN, it's a regular tracker or an ad. */
+"privacyHub.vpnAlertRegularTrackerTypePlural" = "Трекери й реклама";
+
+/* Type of tracker blocked by the VPN, it's a regular tracker or an ad. */
+"privacyHub.vpnAlertRegularTrackerTypeSingular" = "Трекер або реклама";
+
+/* Section title, this section displays vpn alerts: items which the vpn managed to block on users behalf. */
+"privacyHub.vpnAlertsHeader" = "Брандмауер Brave + оповіщення VPN";
+
+/* This label says about Brave VPN, as a source of by what the resource was blocked by. Think of it in context of 'Blocked by VPN' */
+"privacyHub.vpnLabel" = "Брандмауер + VPN";
+
+/* It shows a total count of items blocked by our VPN shields */
+"privacyHub.vpvnAlertsTotalCount" = "Загальна кількість";
 
 /* Show Brave Browser Privacy Policy page from the Privacy section in the settings. */
 "PrivacyPolicy" = "Політика конфіденційності";
@@ -973,9 +1780,6 @@
 /* Message displayed when the reader mode page could not be loaded. This message will appear only when sharing to Brave reader mode from another app. */
 "ReaderModePageCantShowDisplayText" = "Неможливо відобразити сторінку в режимі читання.";
 
-/* Title of a bar that show up when you enter reader mode. */
-"readerModeSettingsButton" = "Режим читання";
-
 /* Accessibility label for button decreasing font size in display settings of reader mode */
 "ReaderModeSmallerFontButtonAccessibilityLabel" = "Зменшити розмір шрифту";
 
@@ -985,17 +1789,89 @@
 /* Accessibility hint for the color theme setting buttons in reader mode display settings */
 "ReaderModeThemeButtonAccessibilityHint" = "Зміна кольорової теми.";
 
+/* Recent Search Clear Button */
+"RecentSearchClear" = "Видалити";
+
+/* The button title that shows when you clear all recent searches */
+"RecentSearchClearAlertButton" = "Видалити недавні запити";
+
+/* Recent Search setting title to clear recent searches */
+"RecentSearchClearDataToggleOption" = "Дані недавніх пошуків";
+
+/* Recent Search button title to disable suggestions */
+"RecentSearchDisableSuggestions" = "Вимкнути";
+
+/* Recent Search button title to enable suggestions */
+"RecentSearchEnableSuggestions" = "Увімкнути";
+
+/* Recent Search Favorites Section Title */
+"RecentSearchFavorites" = "Вибране";
+
+/* Recent Search Hide Button */
+"RecentSearchHide" = "Приховати";
+
+/* Recent Search Paste & Go Button Title */
+"RecentSearchPasteAndGo" = "Вставити та перейти";
+
+/* Recent Search 'on' text when a user searches 'on' a website */
+"RecentSearchQuickSearchOnWebsite" = "у";
+
+/* Recent Search Scanned text when a user scans a qr code */
+"RecentSearchScanned" = "Відскановано";
+
+/* Scanning a QR Code for searching body */
+"RecentSearchScannerDescriptionBody" = "Щоб здійснити пошук за QR-кодом, вирівняйте його в центрі рамки.";
+
+/* Scanning a QR Code for title */
+"RecentSearchScannerDescriptionTitle" = "Інструкції";
+
+/* Scanning a QR Code for searching */
+"RecentSearchScannerTitle" = "Сканування QR-коду";
+
+/* Recent Search Section Description */
+"RecentSearchSectionDescription" = "Функція «Недавні пошукові запити» дозволяє отримати захищений доступ до історії пошуків. Увімкнути функцію?";
+
+/* Recent Search Section Title */
+"RecentSearchSectionTitle" = "Недавні пошукові запити";
+
+/* Recent Search Show Button */
+"RecentSearchShow" = "Показати";
+
+/* Recent Search Show More button */
+"RecentSearchShowMore" = "Показати більше";
+
+/* Recent Search suggestions title when prompting to turn on suggestions */
+"RecentSearchSuggestionsTitle" = "Пошукові підказки";
+
 /* Action button for removing sync device. */
-"RemoveDevice" = "Вилучити";
+"RemoveDevice" = "Видалити";
 
 /* Button to remove a favorite */
 "RemoveFavorite" = "Вилучити зі списку обраного";
 
+/* No comment provided by engineer. */
+"ReportABrokenSite" = "Повідомити про помилки в роботі вебсайту";
+
 /* Providers the user an email page where they can submit a but report. */
 "ReportABug" = "Повідомити про помилку";
 
+/* First part of the report a broken site copy. After the colon is a new line and then a website address */
+"ReportBrokenSiteBody1" = "Повідомте розробників Brave, що за ввімкненої функції Shields вебсайт працює неправильно:";
+
+/* No comment provided by engineer. */
+"ReportBrokenSiteBody2" = "Примітка. Адресу цього вебсайту буде надіслано з номером версії Brave і вашою IP-адресою (яка не зберігатиметься).";
+
+/* No comment provided by engineer. */
+"ReportBrokenSubmitButtonTitle" = "Надіслати";
+
+/* Name of folder where restored bookmarks are retrieved */
+"RestoredBookmarksFolderName" = "Відновлені закладки";
+
+/* Name of folder where restored favorites are retrieved */
+"RestoredFavoritesFolderName" = "Відновлений список вибраного";
+
 /* Restore Tabs Affirmative Action */
-"RestoreTabAffirmativeButtonTitle" = "Гаразд";
+"RestoreTabAffirmativeButtonTitle" = "Добре";
 
 /* Restore Tabs Negative Action */
 "RestoreTabNegativeButtonTitle" = "Ні";
@@ -1021,8 +1897,350 @@
 /* Title for Brave Talk rewards opt-in screen */
 "rewards.braveTalkRewardsOptInTitle" = "Щоб здійснити безкоштовний виклик, увімкніть Brave Rewards";
 
+/* Displayed when Brave Rewards is disabled */
+"rewards.disabledBody" = "Увімкніть підтримку авторів умісту";
+
+/* Displayed in the status container when rewards is disabled */
+"rewards.disabledStatusBody" = "Brave Rewards дає змогу підтримувати авторів умісту, переглядаючи сторінки в Інтернеті.";
+
+/* Displayed when Brave Rewards is enabled */
+"rewards.enabledBody" = "Ви підтримуєте авторів умісту";
+
+/* Displayed in the status container when rewards is enabled but you're not currently supporting any publishers (0 AC count) */
+"rewards.enabledStatusBody" = "Дякуємо, що підтримуєте авторів умісту, переглядаючи сторінки в Інтернеті!";
+
+/* No comment provided by engineer. */
+"rewards.legacyWalletTransfer" = "Переказ коштів із застарілого гаманця";
+
+/* No comment provided by engineer. */
+"rewards.legacyWalletTransferStatusButtonCompletedTitle" = "Перерахування коштів на ваш старий гаманець завершено!";
+
+/* No comment provided by engineer. */
+"rewards.legacyWalletTransferStatusButtonDelayedTitle" = "Перерахування коштів на ваш гаманець відкладено…";
+
+/* No comment provided by engineer. */
+"rewards.legacyWalletTransferStatusButtonInProgressTitle" = "Перерахування коштів на ваш гаманець в процесі обробки";
+
+/* No comment provided by engineer. */
+"rewards.legacyWalletTransferStatusButtonInvalidTitle" = "Перерахування коштів на ваш старий гаманець неможливе";
+
+/* No comment provided by engineer. */
+"rewards.legacyWalletTransferStatusButtonPendingTitle" = "Статус перерахування коштів на ваш гаманець «На розгляді»";
+
+/* No comment provided by engineer. */
+"rewards.legacyWalletTransferStatusCompletedBody" = "Перерахування коштів на ваш гаманець завершено! Ваш оновлений баланс з’явиться в гаманці Brave Rewards протягом декількох хвилин.";
+
+/* Title shown above body of text explaining that their transfer is completed */
+"rewards.legacyWalletTransferStatusCompletedTitle" = "Перерахування коштів завершено!";
+
+/* No comment provided by engineer. */
+"rewards.legacyWalletTransferStatusDelayedBody" = "Перерахування коштів на ваш гаманець було відкладено, і відновлення процесу може зайняти кілька хвилин.";
+
+/* Title shown above body of text explaining that their transfer is delayed */
+"rewards.legacyWalletTransferStatusDelayedTitle" = "Перерахування коштів відкладено";
+
+/* No comment provided by engineer. */
+"rewards.legacyWalletTransferStatusInProgressBody" = "Перерахування коштів на ваш гаманець у процесі, і завершення транзакції може зайняти кілька хвилин.";
+
+/* Title shown above body of text explaining that their transfer is in progress */
+"rewards.legacyWalletTransferStatusInProgressTitle" = "Перерахування коштів у процесі";
+
+/* No comment provided by engineer. */
+"rewards.legacyWalletTransferStatusInvalidBody" = "Перерахування коштів на ваш гаманець неможливе і не може бути завершене";
+
+/* Title shown above body of text explaining that their transfer is invalid */
+"rewards.legacyWalletTransferStatusInvalidTitle" = "Перерахування коштів неможливе";
+
+/* No comment provided by engineer. */
+"rewards.legacyWalletTransferStatusPendingBody" = "Статус перерахування коштів на ваш гаманець «На розгляді», і операція має скоро завершитися.";
+
+/* Title shown above body of text explaining that their transfer is pending */
+"rewards.legacyWalletTransferStatusPendingTitle" = "Перерахування коштів на розгляді";
+
+/* Completed as in: stating that the status of the users transfer is in completed */
+"rewards.legacyWalletTransferStatusShortformCompleted" = "Завершено!";
+
+/* Delayed as in: stating that the status of the users transfer is in delayed */
+"rewards.legacyWalletTransferStatusShortformDelayed" = "Відкладено";
+
+/* In Progress as in: stating that the status of the users transfer is in progress */
+"rewards.legacyWalletTransferStatusShortformInProgress" = "У процесі";
+
+/* Invalid as in: stating that the status of the users transfer is invalid */
+"rewards.legacyWalletTransferStatusShortformInvalid" = "Неможливе";
+
+/* Pending as in: stating that the status of the users transfer is pending */
+"rewards.legacyWalletTransferStatusShortformPending" = "На розгляді";
+
+/* No comment provided by engineer. */
+"rewards.legacyWalletTransferSubtitle" = "Одноразовий переказ наявних токенів";
+
 /* The placeholders say 'Terms of Service' and 'Privacy Policy'. So full sentence goes like: 'By clicking, you agree to the Terms of Service and Privacy Policy...' */
 "rewards.optInDisclaimer" = "Продовжуючи, ви приймаєте умови документів %1$@ і %2$@. Вимкнути опцію можна будь-коли в меню «Налаштування».";
+
+/* No comment provided by engineer. */
+"rewards.settingsFooterMessage" = "Виплати у Brave Rewards тимчасово недоступні на цьому пристрої. Перекажіть кошти з наявного гаманця на гаманець на настільному комп’ютері, щоб зберегти свої токени.";
+
+/* No comment provided by engineer. */
+"rewards.settingsToggleMessage" = "Увімкніть Brave Private Ads, щоб автоматично підтримувати авторів умісту та видавців. Brave Private Ads — це конфіденційний засіб перегляду реклами з можливістю підтримки авторів умісту.";
+
+/* No comment provided by engineer. */
+"rewards.settingsToggleTitle" = "Увімкнути Brave Rewards";
+
+/* Displayed under verified publishers */
+"rewards.supportingPublisher" = "Ви підтримуєте авторів умісту подібних до цього.";
+
+/* Displayed next to a number representing the total number of publishers supported */
+"rewards.totalSupportedCount" = "Кількість авторів умісту, яких ви підтримали цього місяця.";
+
+/* No comment provided by engineer. */
+"rewards.transferNoLongerAvailableWarningMessage" = "Виконайте перенесення гаманця до 13 березня 2021 року. Після цієї дати функція перенесення стане недоступною.";
+
+/* Displayed under unverified publishers */
+"rewards.unverifiedPublisher" = "Цей автор не підтвердив особу і його не буде додано до програми підтримки авторів";
+
+/* A confirmation message shown to the user after completing a wallet transfer successfully */
+"rewards.walletTransferCompleteBody" = "Перенесення розпочато. Наявний рахунок BAT відобразиться в настільній версії гаманця Brave Rewards через кілька хвилин. Після завершення перенесення перевірте зведення сервісу Rewards у настільній версії.\n\nПід час перенесення ви можете закрити це вікно та продовжити користуватися Brave.";
+
+/* Title shown above the confirmation message after completing a wallet transfer successfully */
+"rewards.walletTransferCompleteTitle" = "Перенесення рахунку розпочато";
+
+/* Message on the alert presented if wallet transfer fails */
+"rewards.walletTransferFailureAlertMessage" = "Сервер Brave Rewards не відповідає. Спробуйте ще раз пізніше.";
+
+/* Title on the alert presented if wallet transfer fails */
+"rewards.walletTransferFailureAlertTitle" = "Помилка з’єднання";
+
+/* Describes the steps for using wallet transfer */
+"rewards.walletTransferStepsBody" = "Токени з Brave Rewards можна один раз перевести в наявний гаманець Brave Rewards на настільному комп’ютері.\n\n1. Відкрийте браузер Brave на настільному комп’ютері.\n2. Перейдіть за адресою «brave://rewards».\n3. Натисніть на пункт «QR-код».\n4. Відскануйте QR-код за допомогою пристрою.";
+
+/* Title above the steps to use wallet transfer */
+"rewards.walletTransferStepsTitle" = "Сканування одноразового коду переказу";
+
+/* Title of the legacy wallet transfer screen */
+"rewards.walletTransferTitle" = "Статус перерахування коштів на гаманець";
+
+/* No comment provided by engineer. */
+"RewardsInternalsAmount" = "Сума";
+
+/* No comment provided by engineer. */
+"RewardsInternalsAnonymous" = "Анонімно";
+
+/* No comment provided by engineer. */
+"RewardsInternalsBalanceInfoHeader" = "Інформація про баланс";
+
+/* No comment provided by engineer. */
+"RewardsInternalsClaimedAt" = "Отримано:";
+
+/* No comment provided by engineer. */
+"RewardsInternalsClaimID" = "Ідентифікатор отримання";
+
+/* No comment provided by engineer. */
+"RewardsInternalsClearLogsConfirmation" = "Дійсно очистити всі журнали Rewards?";
+
+/* No comment provided by engineer. */
+"RewardsInternalsClearLogsTitle" = "Очистити журнали";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionAmount" = "Сума внеску";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionProcessorBraveTokens" = "Токени Brave";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionProcessorNone" = "Немає";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionProcessorUphold" = "Підтвердити";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionProcessorUserFunds" = "Кошти користувача";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionsStepACOff" = "Автовнески вимкнено";
+
+/* 'AC' refers to Auto-Contribute */
+"RewardsInternalsContributionsStepACTableEmpty" = "Таблиця автовнесків порожня";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionsStepCompleted" = "Завершено";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionsStepCreds" = "Облікові дані";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionsStepExternalTransaction" = "Зовнішня транзакція";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionsStepFailed" = "Помилка";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionsStepNotEnoughFunds" = "Недостатньо коштів";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionsStepPrepare" = "Підготувати";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionsStepReserve" = "Зберегти";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionsStepRewardsOff" = "Винагороди вимкнено";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionsStepStart" = "Почати";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionsTitle" = "Внески";
+
+/* No comment provided by engineer. */
+"RewardsInternalsCreatedAt" = "Створено:";
+
+/* No comment provided by engineer. */
+"RewardsInternalsDeviceInfoHeader" = "Інформація про пристрій";
+
+/* No comment provided by engineer. */
+"RewardsInternalsEnrolled" = "Зареєстровано";
+
+/* No comment provided by engineer. */
+"RewardsInternalsEnrollmentState" = "Стан реєстрації";
+
+/* No comment provided by engineer. */
+"RewardsInternalsExpiresAt" = "Термін дії:";
+
+/* No comment provided by engineer. */
+"RewardsInternalsInvalid" = "Неможливе";
+
+/* No comment provided by engineer. */
+"RewardsInternalsKeyInfoSeed" = "Інформація про ключ";
+
+/* No comment provided by engineer. */
+"RewardsInternalsLegacyPromotion" = "Застаріла промоакція";
+
+/* No comment provided by engineer. */
+"RewardsInternalsLegacyWalletHasTransferrableBalance" = "Має доступні для переказу кошти";
+
+/* No comment provided by engineer. */
+"RewardsInternalsLegacyWalletInfoHeader" = "Інформація про застарілий гаманець";
+
+/* %d will be the number of logs currently being shown, i.e. '10 logs shown' */
+"RewardsInternalsLogsCount" = "Показано журналів: %d";
+
+/* No comment provided by engineer. */
+"RewardsInternalsLogsTitle" = "Журнали";
+
+/* No comment provided by engineer. */
+"RewardsInternalsNotEnrolled" = "Не зареєстровано";
+
+/* No comment provided by engineer. */
+"RewardsInternalsNotSupported" = "Не підтримується";
+
+/* No comment provided by engineer. */
+"RewardsInternalsProcessor" = "Обробник";
+
+/* No comment provided by engineer. */
+"RewardsInternalsPromotionStatusActive" = "Активна";
+
+/* No comment provided by engineer. */
+"RewardsInternalsPromotionStatusAttested" = "Перевірена";
+
+/* No comment provided by engineer. */
+"RewardsInternalsPromotionStatusCorrupted" = "Пошкоджена";
+
+/* No comment provided by engineer. */
+"RewardsInternalsPromotionStatusFinished" = "Завершена";
+
+/* No comment provided by engineer. */
+"RewardsInternalsPromotionStatusOver" = "Закінчена";
+
+/* No comment provided by engineer. */
+"RewardsInternalsPromotionsTitle" = "Промоакції";
+
+/* No comment provided by engineer. */
+"RewardsInternalsPublisher" = "Видавець";
+
+/* No comment provided by engineer. */
+"RewardsInternalsPublishers" = "Видавці";
+
+/* No comment provided by engineer. */
+"RewardsInternalsRetryCount" = "Кількість повторів";
+
+/* No comment provided by engineer. */
+"RewardsInternalsRewardsTypeAutoContribute" = "Автовнесок";
+
+/* No comment provided by engineer. */
+"RewardsInternalsRewardsTypeOneTimeTip" = "Одноразовий платіж";
+
+/* No comment provided by engineer. */
+"RewardsInternalsRewardsTypeRecurringTip" = "Повторюваний платіж";
+
+/* No comment provided by engineer. */
+"RewardsInternalsSharableBasicDescription" = "Інформація про гаманець, пристрій і баланс (надсилається завжди)";
+
+/* No comment provided by engineer. */
+"RewardsInternalsSharableBasicTitle" = "Основна інформація";
+
+/* No comment provided by engineer. */
+"RewardsInternalsSharableContributionsDescription" = "Будь-які внески на користь видавців через платежі чи автовнески";
+
+/* No comment provided by engineer. */
+"RewardsInternalsSharableDatabaseDescription" = "Сховище внутрішніх даних";
+
+/* No comment provided by engineer. */
+"RewardsInternalsSharableDatabaseTitle" = "База даних винагород";
+
+/* No comment provided by engineer. */
+"RewardsInternalsSharableLogsDescription" = "Зазначені журнали винагород";
+
+/* No comment provided by engineer. */
+"RewardsInternalsSharablePromotionsDescription" = "Будь-які промоакції BAT, які ви отримали або на які очікуєте від реклами чи бонусів";
+
+/* No comment provided by engineer. */
+"RewardsInternalsShare" = "Надіслати";
+
+/* 'Rewards' as in 'Brave Rewards' */
+"RewardsInternalsShareInternalsTitle" = "Надіслати внутрішні дані Rewards";
+
+/* No comment provided by engineer. */
+"RewardsInternalsSharingWarningMessage" = "Дані на цій сторінці можуть бути конфіденційними. Використовуйте їх так, ніби це закриті ключі від вашого гаманця. Стежте за тим, кому ви надсилаєте їх.";
+
+/* No comment provided by engineer. */
+"RewardsInternalsSharingWarningTitle" = "Попередження";
+
+/* No comment provided by engineer. */
+"RewardsInternalsStatus" = "Стан";
+
+/* i.e. 'Step: Started' */
+"RewardsInternalsStep" = "Етап";
+
+/* No comment provided by engineer. */
+"RewardsInternalsSupported" = "Підтримується";
+
+/* 'Rewards' as in 'Brave Rewards' */
+"RewardsInternalsTitle" = "Внутрішні дані Rewards";
+
+/* No comment provided by engineer. */
+"RewardsInternalsTotalAmount" = "Загальна сума";
+
+/* No comment provided by engineer. */
+"RewardsInternalsTotalBalance" = "Загальний баланс";
+
+/* No comment provided by engineer. */
+"RewardsInternalsType" = "Тип";
+
+/* No comment provided by engineer. */
+"RewardsInternalsValid" = "Дійсний";
+
+/* No comment provided by engineer. */
+"RewardsInternalsVersion" = "Версія";
+
+/* No comment provided by engineer. */
+"RewardsInternalsWalletCreationDate" = "Дата створення гаманця";
+
+/* No comment provided by engineer. */
+"RewardsInternalsWalletInfoHeader" = "Інформація про гаманець";
+
+/* No comment provided by engineer. */
+"RewardsInternalsWalletPaymentID" = "Платіжний ідентифікатор гаманця";
 
 /* Button to show the rewards panel */
 "RewardsPanel" = "Панель винагород";
@@ -1031,7 +2249,7 @@
 "SaveButtonTitle" = "Зберегти";
 
 /* Settings item for clearing passwords and login data */
-"SavedLogins" = "Збережені облікові дані";
+"SavedLogins" = "Збережені імена для входу";
 
 /* The title for the folder created when all bookmarks are being */
 "SavedTabsFolderTitle" = "Збережені вкладки";
@@ -1081,6 +2299,9 @@
 /* Title for the search field at the top of the Logins list screen */
 "SearchInputViewTitle" = "Пошук";
 
+/* Add Custom Search Engine Table Cell Row Title */
+"searchSettingAddCustomEngineCellTitle" = "Додавання користувацької пошукової системи";
+
 /* Navigation title for search settings. */
 "SearchSettingNavTitle" = "Пошук";
 
@@ -1107,9 +2328,6 @@
 
 /* Section header for search suggestions option */
 "SearchSuggestionsSectionHeader" = "Пошукові підказки";
-
-/* Title of an action that allows user to perform a one-click web search for selected text */
-"SearchWithBrave" = "Пошук у Brave";
 
 /* Settings security section title */
 "Security" = "Безпека";
@@ -1165,11 +2383,62 @@
 /* Title for sharing url menu item */
 "ShareWithMenuItem" = "Поділитися з…";
 
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
+"shareWithTitle" = "Поділитися з…";
+
+/* Subtitle for tracker benchmark Share */
+"shieldEducation.benchmarkAnyTierTitle" = "Вітаємо з досягненням цього рівня конфіденційності.";
+
+/* Subtitle for tracker benchmark Share */
+"shieldEducation.benchmarkExclusiveTierTitle" = "Вітаємо! Ви стали учасником ексклюзивного клубу.";
+
+/* Subtitle for tracker benchmark Share */
+"shieldEducation.benchmarkGrandTierTitle" = "Вітаємо! Ви стали Магістром.";
+
+/* Subtitle for tracker benchmark Share */
+"shieldEducation.benchmarkLegendaryTierTitle" = "Вітаємо! Ви — легенда.";
+
+/* Subtitle for tracker benchmark Share */
+"shieldEducation.benchmarkPrimeTierTitle" = "Вітаємо! Ви стали майстром.";
+
+/* Subtitle for tracker benchmark Share */
+"shieldEducation.benchmarkProfessionalTierTitle" = "Вітаємо! Ви приєдналися до професіоналів.";
+
+/* Subtitle for tracker benchmark Share */
+"shieldEducation.benchmarkSpecialTierTitle" = "Вітаємо! Неперевершеність — ваше друге ім’я.";
+
+/* Subtitle for  The parameter substituted for \"%@\" is the amount of data saved in MB. E.g.: Average Data Saved: 17.43 MB */
+"shieldEducation.domainSpecificDataSavedSubtitle" = "Середній обсяг збережених даних:\n%@ МБ";
+
+/* Action title for button at domain specific data saved pop-up */
+"shieldEducation.dontShowThisTitle" = "Більше не показувати";
+
+/* Action title for actionable Share warnings */
+"shieldEducation.shareTheNewsTitle" = "Поділитися новинами";
+
+/* Subtitle for Shield Education Tracker Ad Warning */
+"shieldEducation.trackerAdWarningSubTitle" = "Brave Shields захищає вашу конфіденційність онлайн.";
+
+/* Subtitle for Shield Education Tracker Count Share */
+"shieldEducation.trackerCountShareSubtitle" = "Вітаємо! Неперевершеність — ваше друге ім’я.";
+
+/* Title for Shield Education Tracker Count Share. The parameter substituted for \"%ld\" is the count of the trackers and ads blocked in total until present. E.g.: 5000 trackers & ads blocked */
+"shieldEducation.trackerCountShareTitle" = "Заблоковано трекерів і рекламних оголошень: %ld.";
+
+/* Subtitle for Shield Education Tracker Video Ad Block */
+"shieldEducation.videoAdBlockSubtitle" = "Відео без реклами дозволяють заощадити дані.";
+
+/* Title for Shield Education Tracker Video Ad Block */
+"shieldEducation.videoAdBlockTitle" = "Рекламу у відео заблоковано на цьому вебсайті.";
+
 /* Section title for adbblock, tracking protection, HTTPS-E, and cookies */
 "ShieldsDefaults" = "Глобальні налаштування Brave Shields за замовчуванням";
 
 /* Section footer for global shields defaults */
 "ShieldsDefaultsFooter" = "Це налаштування Shields за замовчуванням для нових вебсайтів. Якщо ви їх зміните, це не вплине на ваші налаштування для окремих вебсайтів.";
+
+/* No comment provided by engineer. */
+"ShieldsDownDisclaimer" = "Ви переглядаєте вебсайт з вимкненим засобом захисту конфіденційності від Brave. Вебсайт не працює належним чином, якщо щити увімкнено?";
 
 /* shields overview message */
 "ShieldsOverview" = "Екрани дозволяють керувати блокуванням реклами або трекерів на кожному сайті, який ви переглядаєте. Для перегляду реклами на сайті увімкніть цей параметр тут.";
@@ -1177,17 +2446,11 @@
 /* shields overview footer message */
 "ShieldsOverviewFooter" = "Примітка. Деякі сайти потребують скриптів для нормальної роботи. Цей екран вимкнено за замовчуванням.";
 
-/* Time Saved Days */
-"ShieldsTimeStatsDays" = "дн.";
-
 /* Time Saved Hours */
 "ShieldsTimeStatsHour" = "год.";
 
 /* Time Saved Minutes */
 "ShieldsTimeStatsMinutes" = "хв.";
-
-/* Time Saved Seconds */
-"ShieldsTimeStatsSeconds" = "с";
 
 /* Quick Action for 3D-Touch on the Application Icon */
 "ShortcutItemTitleNewPrivateTab" = "Нова приватна вкладка";
@@ -1196,7 +2459,112 @@
 "ShortcutItemTitleNewTab" = "Нова вкладка";
 
 /* Quick Action for 3D-Touch on the Application Icon */
-"ShortcutItemTitleQRCode" = "Сканувати QR-код";
+"ShortcutItemTitleQRCode" = "Сканування QR-коду";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeBraveNewsDescription" = "Відкрити Brave News і переглянути сьогоднішні популярні новини";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeClearHistoryDescription" = "Відкрити браузер у новій вкладці й видалити дані журналу приватного режиму";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeClearHistorySuggestedPhrase" = "Очистити журнал браузера";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeClearHistoryTitle" = "Очистити журнал браузера Brave";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeEnableVPNDescription" = "Відкрити браузер у новій вкладці й увімкнути VPN";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeEnableVPNSuggestedPhrase" = "Увімкнути VPN";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeEnableVPNTitle" = "Відкрити браузер Brave і ввімкнути VPN";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeNewPrivateTabSuggestedPhrase" = "Відкрити нову приватну вкладку";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeNewPrivateTabTitle" = "Відкрити нову приватну вкладку браузера";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeNewTabSuggestedPhrase" = "Відкрити нову вкладку";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeNewTabTitle" = "Відкрити нову вкладку браузера";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenBraveNewsTitle" = "Відкрити Brave News";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenBraveTodaySuggestedPhrase" = "Відкрити Brave News";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenPlaylistDescription" = "Почати відтворення відео зі списку відтворення";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenPlaylistSuggestedPhrase" = "Відкрити список відтворення";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenPlaylistTitle" = "Відкрити список відтворення";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeTabDescription" = "Почніть безпечний пошук в Інтернеті за допомогою Brave";
+
+/* No comment provided by engineer. */
+"shortcuts.customIntentOpenBookmarkSuggestedPhrase" = "Відкрити вебсайт із закладки";
+
+/* No comment provided by engineer. */
+"shortcuts.customIntentOpenHistorySuggestedPhrase" = "Відкрити вебсайт із журналу";
+
+/* No comment provided by engineer. */
+"shortcuts.customIntentOpenWebsiteSuggestedPhrase" = "Відкрити вебсайт";
+
+/* Description for opening Brave Settings for altering Siri shortcut. */
+"shortcuts.shortcutOpenApplicationSettingsDescription" = "Це відкриє налаштування Brave. Щоб змінити різні опції Siri, виберіть пункт меню «Siri й пошук» і виберіть відповідні параметри.";
+
+/* Button title that open application settings */
+"shortcuts.shortcutOpenApplicationSettingsTitle" = "Відкрити налаштування";
+
+/* Description of Clear Browser History Siri Shortcut in Settings Screen */
+"shortcuts.shortcutSettingsClearBrowserHistoryDescription" = "Використовувати ярлики для відкриття нової вкладки й очищення історії браузера через голосовий асистент Siri";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsClearBrowserHistoryTitle" = "Очистити журнал браузера";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsEnableVPNDescription" = "Використовувати ярлики для ввімкнення Brave VPN через голосовий асистент Siri";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsEnableVPNTitle" = "Увімкнути VPN";
+
+/* Description of Open Brave News Siri Shortcut in Settings Screen */
+"shortcuts.shortcutSettingsOpenBraveNewsDescription" = "Використовувати ярлики для відкриття нової вкладки й показування стрічки Brave News через голосовий асистент Siri";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsOpenBraveNewsTitle" = "Відкрити Brave News";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsOpenNewPrivateTabDescription" = "Використовувати ярлики для відкриття нової приватної вкладки через голосовий асистент Siri";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsOpenNewPrivateTabTitle" = "Відкрити нову приватну вкладку";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsOpenNewTabDescription" = "Використовувати ярлики для відкриття нової вкладки через голосовий асистент Siri";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsOpenNewTabTitle" = "Відкрити нову вкладку";
+
+/* Description of Open Playlist Siri Shortcut in Settings Screen */
+"shortcuts.shortcutSettingsOpenPlaylistDescription" = "Використовувати ярлики для відкриття списку відтворення через голосовий асистент Siri";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsOpenPlaylistTitle" = "Відкрити список відтворення";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsTitle" = "Ярлики Siri";
 
 /* Setting to show a bookmark button on the top level menu that triggers a panel of the user's bookmarks. */
 "ShowBookmarkButtonInTopToolbar" = "Показувати ярлик закладок";
@@ -1207,8 +2575,14 @@
 /* Show code words instead */
 "ShowCodeWords" = "Показати кодові слова";
 
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
+"showDownloadsTitle" = "Показати завантаження";
+
 /* Button to show the history list */
 "ShowHistory" = "Показати журнал";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
+"showHistoryTitle" = "Показати журнал";
 
 /* Setting preference to only show the browser tabs bar when the device is in the landscape orientation. */
 "ShowInLandscapeOnly" = "Показувати лише в альбомному режимі";
@@ -1222,8 +2596,20 @@
 /* Setting to show/hide the tabs bar */
 "ShowTabsBar" = "Показати панель вкладок";
 
+/* No comment provided by engineer. */
+"SiteReportedBody" = "Дякуємо, що повідомили розробникам Brave про проблему з вебсайтом. Ми спробуємо вирішити її якнайшвидше!";
+
+/* No comment provided by engineer. */
+"SiteReportedTitle" = "Дякуємо";
+
 /* Brave panel topmost title */
-"SiteShieldSettings" = "Екрани";
+"SiteShieldSettings" = "Shields";
+
+/* Title used when in warning pop-over when domain specific data save appears */
+"socialSharing.domainSpecificDataSavedTitle" = "Щодня я заощаджую трафік, переглядаючи вебсайти в Brave.";
+
+/* Text used for social sharing together with Brave Shield values */
+"socialSharing.shareDescriptionTitle" = "Щодня я заощаджую трафік, переглядаючи вебсайти в Brave.";
 
 /* Open search section of settings */
 "StandardTabSearch" = "Стандартна вкладка";
@@ -1240,17 +2626,35 @@
 /* Sync settings section title */
 "Sync" = "Синхронізація";
 
+/* Title of the bookmark import popup. */
+"sync.bookmarksImportPopupErrorTitle" = "Закладки";
+
+/* Message of the popup if bookmark import fails. */
+"sync.bookmarksImportPopupFailureMessage" = "Під час імпорту закладок сталася помилка";
+
+/* Message of the popup if bookmark import succeeds. */
+"sync.bookmarksImportPopupSuccessMessage" = "Закладки імпортовано";
+
 /* Information Text underneath the toggles for enable/disable different sync types for the device */
 "sync.syncConfigurationInformationText" = "Виберіть інформацію, що синхронізуватиметься між пристроями. Ці налаштування стосуватимуться лише цього пристрою.";
 
 /* Title for Sync Settings Toggle Header */
 "sync.syncSettingsTitle" = "Налаштування синхронізації";
 
+/* Text that informs a user about Brave Sync service deprecation. */
+"sync.syncV1DeprecationText" = "Скоро виходить нова версія Brave Sync, що вплине на ваші налаштування. Підготуйтеся до оновлення.";
+
 /* Message for popup when the bookmark migration fails */
 "sync.v2MigrationErrorMessage" = "Помилка перенесення закладок. Спробуйте ще раз пізніше.";
 
 /* Title for popup when the bookmark migration fails */
 "sync.v2MigrationErrorTitle" = "Помилка";
+
+/* Bookmarks migration website page description */
+"sync.v2MigrationInterstitialPageDescription" = "Деякі закладки не вдалося перенести. Ви можете додати їх уручну.";
+
+/* Bookmarks migration website title */
+"sync.v2MigrationInterstitialTitle" = "Перенесення закладок";
 
 /* Message for popup to inform the user that bookmarks migration is required for sync */
 "sync.v2MigrationMessage" = "Щоб користуватися Brave Sync, перенесіть поточні закладки на нову систему. Ця дія не призведе до видалення ваших закладок.";
@@ -1424,7 +2828,7 @@
 "TabToolbarBackButtonAccessibilityLabel" = "Назад";
 
 /* Accessibility Label for the tab toolbar Forward button */
-"TabToolbarForwardButtonAccessibilityLabel" = "Вперед";
+"TabToolbarForwardButtonAccessibilityLabel" = "Далі";
 
 /* Accessibility label for the lock icon, which is only present if the connection is secure */
 "TabToolbarLockImageAccessibilityLabel" = "Захищене з’єднання";
@@ -1448,7 +2852,7 @@
 "TabToolbarSearchAddressPlaceholderText" = "Пошук або введення адреси";
 
 /* Accessibility Label for the browser toolbar Share button */
-"TabToolbarShareButtonAccessibilityLabel" = "Поділитися";
+"TabToolbarShareButtonAccessibilityLabel" = "Надіслати";
 
 /* Accessibility Label for the tab toolbar Stop button */
 "TabToolbarStopButtonAccessibilityLabel" = "Зупинити";
@@ -1515,1452 +2919,6 @@
 
 /* History tableview section header */
 "Today" = "Сьогодні";
-
-/* Shields Trackers Stat */
-"TrackersrBlocked" = "Трекерів\nзаблоковано";
-
-/* Sync Alert */
-"UnableToConnectDescription" = "Не вдається приєднатися до групи синхронізації. Перевірте правильність введення кодових слів і спробуйте знову.";
-
-/* Sync Alert */
-"UnableToConnectTitle" = "Неможливо з'єднатися";
-
-/* Bookmark URL */
-"URL" = "URL";
-
-/* Accessibility label for address and search field, both words (Address, Search) are therefore nouns. */
-"URLBarViewLocationTextViewAccessibilityLabel" = "Адреса і пошук";
-
-/* Setting to allow user in non-english locale to use adblock rules specifc to their language */
-"UseRegionalAdblock" = "Використовувати локальний блокувальник реклами";
-
-/* Version number of Brave shown in settings */
-"VersionTemplate" = "Версія %1$@ (%2$@)";
-
-/* Label that says where to view an item. '%@' is a placeholder and will include things like 'Instagram', 'unsplash'. The full label will look like 'View  on Instagram'. */
-"ViewOn" = "Переглянути в %@";
-
-/* The date your wallet was created */
-"WalletCreationDate" = "Дата створення гаманця";
-
-/* Accessibility label for the main web content view */
-"WebContentAccessibilityLabel" = "Веб-вміст";
-
-/* Word count title */
-"WordCount" = "Кількість слів: %i";
-
-/* Abbreviation for 'Year', use full word' Yeara' if this word can't be shortened in your language */
-"yearAbbreviation" = "р.";
-
-/* Button title to confirm the deletion of a bookmarks folder */
-"YesDeleteButtonTitle" = "Так, видалити";
-
-/* History tableview section header */
-"Yesterday" = "Учора";
-
-/* The title of the screen explaining Brave Shields */
-"AboutBraveShields" = "Про щити Brave";
-
-/* The body of the screen explaining Brave Shields */
-"AboutBraveShieldsBody" = "Вебсайти зазвичай містять файли cookie та скрипти, що використовуються для ідентифікації вашої особи й пристрою з метою визначення ваших вподобань і відстеження дій на інших сайтах.\n\nБраузер Brave блокує ці засоби відстеження, щоб ви могли безпечно переглядати вміст у Інтернеті.";
-
-/* No comment provided by engineer. */
-"BraveRewardsAdNotificationTitle" = "Brave Rewards";
-
-/* No comment provided by engineer. */
-"BraveRewardsOpen" = "Відкриті";
-
-/* No comment provided by engineer. */
-"BraveShieldsAdvancedControls" = "Додаткові налаштування";
-
-/* The number of ads and trackers blocked will be next to this */
-"BraveShieldsBlockedCountLabel" = "Рекламу й інші підозрілі елементи заблоковано";
-
-/* What the screen reader will read out when the user has VoiceOver on and taps on the question-mark info button on the shields panel */
-"BraveShieldsBlockedInfoButtonAccessibilityLabel" = "Докладніше";
-
-/* No comment provided by engineer. */
-"BraveShieldsGlobalChangeButton" = "Змінити глобальні налаштування щитів";
-
-/* No comment provided by engineer. */
-"BraveShieldsGlobalControls" = "Глобальні налаштування";
-
-/* No comment provided by engineer. */
-"BraveShieldsSiteBroken" = "Якщо вебсайт не працює, спробуйте вимкнути щити";
-
-/* Context: 'Brave Shields Up' or 'Brave Shields Down' */
-"BraveShieldsStatusTitle" = "Щити Brave";
-
-/* Context: The 'Down' in 'Brave Shields Down' */
-"BraveShieldsStatusValueDown" = "Вимкн.";
-
-/* Context: The 'Up' in 'Brave Shields Up' */
-"BraveShieldsStatusValueUp" = "Увімкн.";
-
-/* The accessibility hint spoken when focused on the main shields toggle */
-"BraveShieldsToggleHint" = "Торкніться двічі, щоб увімкнути Brave Shields";
-
-/* The name of the feature */
-"bravetalk.braveTalkTitle" = "Brave Talk";
-
-/* Title indicating whether the section for the algorithm used */
-"certificateViewer.algorithmTitle" = "Алгоритм";
-
-/* Title indicating whether or not a private key can be used for 'Anything' (encrypting, deriving, wrapping, verifying, signing, etc) */
-"certificateViewer.anyTitle" = "Будь-який";
-
-/* A measurement unit used in computing to indicate or how memory is used. */
-"certificateViewer.bitsUnitTitle" = "б";
-
-/* A measurement unit used in computing to indicate or how memory is used. */
-"certificateViewer.bytesUnitTitle" = "Б";
-
-/* The description for when an SSL certificate is valid */
-"certificateViewer.certificateIsValidTitle" = "Цей сертифікат дійсний";
-
-/* Section Title displaying common information */
-"certificateViewer.commonInfoTitle" = "Загальна інформація";
-
-/* Title of the section for Commonly used Name for the certificate. Example: Alias, Commonly used name, DigiCert High Assurance TLS. */
-"certificateViewer.commonNameTitle" = "Загальна назва";
-
-/* Title of the section for the certificate's issuing country or region. Example: Canada, or USA */
-"certificateViewer.countryOrRegionTitle" = "Країна або регіон";
-
-/* Title indicating whether or not a private key can be used to derive some data from another piece of data. IE: Use one key to generate another */
-"certificateViewer.deriveTitle" = "Виведення";
-
-/* Title of the section for the Domain Component such as: DNS or brave.com or a website's domain. */
-"certificateViewer.domainComponentTitle" = "Компонент домена";
-
-/* Title of the section indication which 'Encryption' algorithm was used. */
-"certificateViewer.encryptionTitle" = "Шифрування";
-
-/* Title indicating whether or not a private key can be used to encrypt data */
-"certificateViewer.encryptTitle" = "Шифрування";
-
-/* Title indicating whether the mathematical exponent used. x³, x², etc. */
-"certificateViewer.exponentTitle" = "Ступінь";
-
-/* Fingerprints/Hashes are algorithms used to determine if the certificate is legitimate */
-"certificateViewer.fingerPrintsTitle" = "Цифрові підписи";
-
-/* Section Title for Issuer Name in the SSL Certificate */
-"certificateViewer.issuerNameTitle" = "Назва видавця";
-
-/* Title indicating the size of the private or public key used in bytes. Example: KeySize - 1024 Bytes. Key Size - 2048 Bytes. */
-"certificateViewer.keySizeTitle" = "Розмір ключа";
-
-/* Title indicating what the private or public key can be used for. */
-"certificateViewer.keyUsageTitle" = "Використання ключа";
-
-/* Title of the section for the certificate's issuing city. Example: Toronto, New York, or San Francisco */
-"certificateViewer.localityTitle" = "Розміщення";
-
-/* Title indicating 'None' or no information or empty. */
-"certificateViewer.noneTitle" = "Немає";
-
-/* Certificate is 'not valid after' January 31st, 2022 for example. */
-"certificateViewer.notValidAfterTitle" = "Діє до";
-
-/* Certificate is 'not valid before' January 1st, 2022 for example. */
-"certificateViewer.notValidBeforeTitle" = "Діє після";
-
-/* Title of the section for Department of the Company. Example: Human Resources. */
-"certificateViewer.organizationalUnitTitle" = "Підрозділ організації";
-
-/* Title of the section for Name of the Company. Example: Brave Inc. */
-"certificateViewer.organizationTitle" = "Організація";
-
-/* Title indicating 'Parameters' or Input passed to a function/algorithm. */
-"certificateViewer.parametersTitle" = "Параметри";
-
-/* Information about a Public Key section title. */
-"certificateViewer.publicKeyInfoTitle" = "Інформація про відкритий ключ";
-
-/* Title indicating whether the key used is public (not private) */
-"certificateViewer.publicKeyTitle" = "Відкритий ключ";
-
-/* Certificates have a serial number to identify that it's unique */
-"certificateViewer.serialNumberTitle" = "Серійний номер";
-
-/* Do NOT translate the %@. They are place holders. Example: 'SHA256' with 'RSA' Encryption */
-"certificateViewer.signatureAlgorithmEncryptionDescription" = "%1$@ із шифруванням %2$@";
-
-/* Do NOT translate the %@. They are place holders. Example: 'ECDSA Signature' with 'SHA-256' */
-"certificateViewer.signatureAlgorithmSignatureDescription" = "Підпис %1$@ із %2$@";
-
-/* Title for the section where we display information about the algorithm used to sign the certificate */
-"certificateViewer.signatureAlgorithmTitle" = "Алгоритм підпису";
-
-/* Title of the view that states whether or not something was signed with an encryption algorithm or hash. */
-"certificateViewer.signatureTitle" = "Підпис";
-
-/* Title of the section for the certificate's issuing state or province. Example: Ontario Province or California State */
-"certificateViewer.stateOrProvinceTitle" = "Штат/провінція";
-
-/* Title of the section for the address of where the certificate came from. */
-"certificateViewer.streetAddressTitle" = "Адреса (вулиця)";
-
-/* Section Title for Subject Name in the SSL Certificate */
-"certificateViewer.subjectNameTitle" = "Назва суб’єкта";
-
-/* Title of the section for the User's ID (Identifier). */
-"certificateViewer.userIDTitle" = "Ідентифікатор користувача";
-
-/* Title of section that determines if the dates on a certificate is valid. */
-"certificateViewer.validityDatesTitle" = "Дати дії";
-
-/* Title indicating whether or not a private key can be used to verify data is legitimate */
-"certificateViewer.verifyTitle" = "Перевірити";
-
-/* Certificates have a version number */
-"certificateViewer.versionNumberTitle" = "Версія";
-
-/* Title indicating whether or not a private key can be used to wrap or enclose some data */
-"certificateViewer.wrapTitle" = "Перенесення";
-
-/* Button title for Adding Engine in navigation Bar */
-"customSearchEngine.addButtonTitle" = "Додати";
-
-/* Label explaining how to add search engine. */
-"customSearchEngine.addEngineDescription" = "Напишіть URL-адресу для пошуку та замініть запит таким: %1$s.\nНаприклад: https://youtube.com/search?q=%2$s\n(Якщо сайт підтримує OpenSearch, під час редагування цього поля ви зможете автоматично додати необхідне значення.)";
-
-/* Button title for Auto Add in header */
-"customSearchEngine.autoAddTitle" = "Автоматичне додавання";
-
-/* The warning description shown to user when custom search engine will be deleted while it is default search engine. */
-"customSearchEngine.deleteEngineAlertDescription" = "Видалення користувацької пошукової системи, якщо її встановлено за замовчуванням, автоматично змінить пошукову систему за замовчуванням.";
-
-/* The alert title shown to user when custom search engine will be deleted while it is default search engine. The parameter will be replace with name of the search engine. */
-"customSearchEngine.deleteEngineAlertTitle" = "Справді видалити систему «%@»?";
-
-/* Navigation Bar title */
-"customSearchEngine.navigationTitle" = "Додати пошукову систему";
-
-/* The message that asks the user to Add the search provider explaining where the search engine will appear */
-"customSearchEngine.thirdPartySearchEngineAddAlertDescription" = "Нова пошукова система буде відображатися на панелі швидкого пошуку.";
-
-/* The title that asks the user to Add the search provider */
-"customSearchEngine.thirdPartySearchEngineAddAlertTitle" = "Додати пошукову службу?";
-
-/* A descriotion explaining that there is error while adding a search engine */
-"customSearchEngine.thirdPartySearchEngineAddErrorDescription" = "Не вдалося додати користувацьку пошукову систему. Спробуйте ще раз пізніше.";
-
-/* A title explaining that there is error while adding a search engine */
-"customSearchEngine.thirdPartySearchEngineAddErrorTitle" = "Помилка користувацької пошукової системи";
-
-/* A message explaining a replica search engine is already added */
-"customSearchEngine.thirdPartySearchEngineDuplicateErrorDescription" = "Пошукову систему з цією назвою або URL-адресою вже додано.";
-
-/* A description explaining that there is a formatting error in URL field */
-"customSearchEngine.thirdPartySearchEngineIncorrectFormErrorDescription" = "Уведіть URL-адресу пошуку та замініть запит таким: %s.";
-
-/* A title explaining that there is a formatting error in URL field */
-"customSearchEngine.thirdPartySearchEngineIncorrectFormErrorTitle" = "Помилка запиту URL-адреси пошуку";
-
-/* A description explaining the copied url should be secure */
-"customSearchEngine.thirdPartySearchEngineInsecureURLErrorDescription" = "Можна використовувати лише дійсну захищену URL-адресу, яка починається на «https://»";
-
-/* A descriotion explaining that the fields must filled while adding a search engine. */
-"customSearchEngine.thirdPartySearchEngineMissingInfoErrorDescription" = "Будь ласка, заповніть поля «Заголовок» і «URL-адреса».";
-
-/* The success message that appears after a user sucessfully adds a new search engine */
-"custonmSearchEngine.thirdPartySearchEngineAddedToastTitle" = "Пошукову систему додано.";
-
-/* The body of the notification that goes out monthly to users who can claim an ads grant */
-"MonthlyAdsClaimNotificationBody" = "Торкніться, щоб отримати безкоштовні токени.";
-
-/* The title of the notification that goes out monthly to users who can claim an ads grant */
-"MonthlyAdsClaimNotificationTitle" = "Brave Rewards 💵🎁";
-
-/* No comment provided by engineer. */
-"MyFirstAdBody" = "Торкніться тут, щоб дізнатися більше.";
-
-/* No comment provided by engineer. */
-"MyFirstAdTitle" = "Це ваша перша реклама Brave";
-
-/* It refers to a night mode, to a type of mode a user can change referring to website appearance. */
-"nightMode.modeTitle" = "Режим";
-
-/* A table cell subtitle for Night Mode - explanatory element for the toggle preference */
-"nightMode.sectionDescription" = "Нічний режим змінить зовнішній вигляд вебсайту та системи.";
-
-/* A table cell subtitle for Night Mode - explanatory element for the toggle preference */
-"nightMode.settingsDescription" = "Увімкнути / вимкнути нічний режим";
-
-/* A table cell title for Night Mode - defining element for the toggle */
-"nightMode.settingsTitle" = "Нічний режим";
-
-/* For search suggestions prompt. This string should be short so it fits nicely on the prompt row. */
-"No" = "Ні";
-
-/* Message when opting into brave Ads when region becomes available */
-"OBAdsOptInMessage" = "Заробляйте токени під час перегляду вебсайтів і винагороджуйте авторів за чудовий уміст.";
-
-/* Message when opting into brave Ads when region becomes available */
-"OBAdsOptInMessageJapan" = "Заробляйте бали під час перегляду вебсайтів і винагороджуйте авторів за чудовий уміст.";
-
-/* Title when opting into brave Ads when region becomes available */
-"OBAdsOptInTitle" = "Brave Ads уже доступний!";
-
-/* Title for ads onboarding screen */
-"OBAdsTitle" = "Brave покаже першу рекламу через";
-
-/* Title for when the user completes onboarding */
-"OBCompleteTitle" = "Тепер усе готово.";
-
-/* Button to show information on how to enable ads */
-"OBDidntSeeAdButton" = "Рекламу не було показано";
-
-/* A generic error body for onboarding */
-"OBErrorDetails" = "Під час створення гаманця сталася помилка. Спробуйте ще раз";
-
-/* No comment provided by engineer. */
-"OBErrorOkay" = "OK";
-
-/* A generic error title for onboarding */
-"OBErrorTitle" = "Помилка";
-
-/* Button to finish onboarding and start using the app. */
-"OBFinishButton" = "Почати використання";
-
-/* Button to join Brave Rewards. */
-"OBJoinButton" = "Приєднатися";
-
-/* No comment provided by engineer. */
-"OBPrivacyConsentClipboardPermission" = "Дозволити Brave перевіряти код рекомендації в моєму буфері обміну";
-
-/* No comment provided by engineer. */
-"OBPrivacyConsentDetail" = "Ви могли завантажити Brave за рекомендацією користувача. Щоб його виявити, Brave одноразово перевірить код рекомендації у вашому буфері обміну. Буде перевірено лише наявність коду, і жодні персональні дані не буде передано. Якщо ви забороните перевірку, користувач, шо надіслав вам рекомендацію, не отримає винагороду від Brave.";
-
-/* No comment provided by engineer. */
-"OBPrivacyConsentNoButton" = "Не дозволяти перевірку";
-
-/* No comment provided by engineer. */
-"OBPrivacyConsentTitle" = "Анонімна перевірка коду рекомендації";
-
-/* No comment provided by engineer. */
-"OBPrivacyConsentYesButton" = "Дозволити одноразову перевірку буфера обміну";
-
-/* Detail text for rewards agreement onboarding screen */
-"OBRewardsAgreementDetail" = "Якщо ви торкаєтеся «Так», ви погоджуєтеся з";
-
-/* Detail text for rewards agreement onboarding screen */
-"OBRewardsAgreementDetailLink" = "Умови обслуговування";
-
-/* Detail text for rewards agreement onboarding screen */
-"OBRewardsAgreementDetailsAnd" = "та";
-
-/* Title for rewards agreement onboarding screen */
-"OBRewardsAgreementTitle" = "Нагороди Brave";
-
-/* Detail text for rewards onboarding screen */
-"OBRewardsDetail" = "Вибравши приватні рекламні оголошення Brave, кожним переглядом реклами ви підтримуєте видавців й авторів умісту.";
-
-/* Detail text for rewards onboarding screen */
-"OBRewardsDetailInAdRegion" = "Заробляйте токени під час перегляду вебсайтів і винагороджуйте авторів за чудовий уміст.";
-
-/* Detail text for rewards agreement onboarding screen */
-"OBRewardsPrivacyPolicyDetailLink" = "Політика конфіденційності";
-
-/* Title for rewards onboarding screen */
-"OBRewardsTitle" = "Brave Rewards";
-
-/* Save button to save current selection */
-"OBSaveButton" = "Зберегти";
-
-/* Detail text for search engine onboarding screen */
-"OBSearchEngineDetail" = "Виберіть пошукову систему за замовчуванням";
-
-/* Title for search engine onboarding screen */
-"OBSearchEngineTitle" = "Вітаємо в браузері Brave!";
-
-/* Detail text for shields onboarding screen */
-"OBShieldsDetail" = "Блокування трекерів, які порушують приватність, щоб за вами не стежили в мережі";
-
-/* Title for shields onboarding screen */
-"OBShieldsTitle" = "Щити Brave";
-
-/* Button to show the Brave Rewards Ads. */
-"OBShowMeButton" = "Показати";
-
-/* Button to show Brave Rewards. */
-"OBTurnOnButton" = "Почати";
-
-/* Continue button to navigate to next onboarding screen. */
-"OnboardingContinueButton" = "Продовжити";
-
-/* Skip button to skip onboarding and start using the app. */
-"OnboardingSkipButton" = "Пропустити";
-
-/* This is a suffix statement. example: SomeChannel on Twitter */
-"OnProviderText" = "у %@";
-
-/* Title for the section for the global/default zoom level */
-"pagezoom.settings.defaultZoomLevelSectionTitle" = "Рівень масштабування сторінки за замовчуванням";
-
-/* Description for the empty Web-Page zoom view */
-"pagezoom.settings.emptyWebsitesDescription" = "Якщо буде змінено рівень масштабування сторінки, то вона відображатиметься в цьому списку. Наразі немає вебсайтів, для яких би було змінено рівень масштабування.";
-
-/* Title for the empty Web-Page zoom view */
-"pagezoom.settings.emptyWebsitesTitle" = "Немає доданих вебсайтів";
-
-/* Title of the Web-Page Zoom settings menu */
-"pagezoom.settings.menu-title" = "Масштабування сторінки";
-
-/* Title for the section for the Web-Page zoom level of other websites */
-"pagezoom.settings.otherWebsitesZoomLevelSectionTitle" = "Усі інші вебсайти";
-
-/* Title of the Web-Page Zoom reset all option */
-"pagezoom.settings.reset-all" = "Скинути все";
-
-/* Description of the Web-Page Zoom reset all option */
-"pagezoom.settings.reset-all-description" = "Скинути рівні масштабування вебсайтів";
-
-/* Title for list of websites shown in settings screen */
-"pagezoom.settings.specificWebsitesZoomLevelsSectionTitle" = "Налаштування певної сторінки";
-
-/* Title of the Web-Page Zoom screen */
-"pagezoom.settings.title" = "Налаштування масштабування сторінки";
-
-/* Title for the web-page zoom level view */
-"pagezoom.zoomView.text" = "Масштабування сторінки";
-
-/* Alert Description for adding videos to playlist */
-"playList.addToPlayListAlertDescription" = "Хочете додати це відео до списку відтворення?";
-
-/* Alert Title for adding videos to playlist */
-"playList.addToPlayListAlertTitle" = "Додати у Brave Playlist";
-
-/* The title of the screen in CarPlay that contains all the audio/playback options */
-"playlist.carplayOptionsScreenTitle" = "Параметри відтворення";
-
-/* The already disabled button title with instructions telling the user they can tap it to enable playback. */
-"playlist.carplayRestartPlaybackButtonStateDisabled" = "Вимкнено. Торкніться, щоб увімкнути відтворення з початку.";
-
-/* The already enabled button title with instructions telling the user they can tap it to disable playback. */
-"playlist.carplayRestartPlaybackButtonStateEnabled" = "Увімкнено. Торкніться, щоб вимкнути відтворення з початку.";
-
-/* The description of the checkbox that allows the user to restart audio/video playback */
-"playlist.carplayRestartPlaybackOptionDetailsTitle" = "Налаштування того, чи буде відтворення об’єкта, що вже відтворювався, починатися з початку або ж продовжуватися з місця останньої зупинки";
-
-/* The title of the checkbox that allows the user to restart audio/video playback */
-"playlist.carplayRestartPlaybackOptionTitle" = "Відтворювати з початку";
-
-/* The title of the section containing settings/options in CarPlay */
-"playlist.carplaySettingsSectionTitle" = "Налаштування";
-
-/* The title of the playlist when in Carplay mode */
-"playlist.carplayTitle" = "Список відтворення Brave";
-
-/* The title of the button indicating that the user delete the offline data. (deletes the data that allows them to play offline) */
-"playlist.deleteForOfflineButtonTitle" = "Видалити офлайн-кеш";
-
-/* The description for the alert that shows up when an item is expired */
-"playList.expiredAlertDescription" = "Це відео транслювалося в прямому ефірі, або було досягнуто ліміту тривалості. Для оновлення відкрийте посилання ще раз.";
-
-/* The title for the alert that shows up when an item is expired */
-"playList.expiredAlertTitle" = "Термін дії відео закінчився";
-
-/* Text indicator on the table cell If a video is expired */
-"playList.expiredLabelTitle" = "Термін дії закінчився";
-
-/* Description for load resources error alert */
-"playList.loadResourcesErrorAlertDescription" = "Виникла проблема із завантаженням ресурсу!";
-
-/* Description footer for playlist menu badge option */
-"playlist.menuBadgeOptionFooterText" = "Якщо увімкнути цю функцію, на піктограмі головного меню відображатиметься позначка про те, що медіафайли на сторінці можна додати до списку відтворення Brave.";
-
-/* Title for playlist menu badge option */
-"playlist.menuBadgeOptionTitle" = "Показувати позначку сповіщення на меню";
-
-/* Button Title of the ActionSheet/Alert Button when moving a playlist item from the Swipe-Action to a new folder */
-"playlist.movePlaylistShareActionMenuTitle" = "Перемістити…";
-
-/* Detail Text when there are no items in the playlist */
-"playList.noItemLabelDetailLabel" = "Ви можете додавати елементи до списку відтворення Brave у браузері";
-
-/* Text when there are no items in the playlist */
-"playList.noItemLabelTitle" = "Немає жодного доступного файлу";
-
-/* Title for download video error alert */
-"playList.noticeAlertTitle" = "Примітка";
-
-/* Okay Alert button title */
-"playList.okayButtonTitle" = "Добре";
-
-/* The title for the alert that shows up when an item is expired */
-"playList.pictureInPictureErrorTitle" = "На жаль, під час спроби відобразити картинку в картинці сталася помилка.";
-
-/* Footer Text for the Playlist Settings Option for Enable/Disable Auto-Play */
-"playlist.playlistAutoPlaySettingsOptionFooterText" = "Ця опція вмикає/вимикає автовідтворення під час відкриття списку відтворення. Але ця опція не впливає на автовідтворення під час завантаження наступного відео в списку.";
-
-/* Title for the Playlist Settings Option for Enable/Disable Auto-Play */
-"playlist.playlistAutoPlaySettingsOptionTitle" = "Автовідтворення";
-
-/* Auto Download turn Off Option */
-"playlist.playlistAutoSaveOptionOff" = "Вимк.";
-
-/* Auto Save turn On Option */
-"playlist.playlistAutoSaveOptionOn" = "Увімк.";
-
-/* Option Text for Auto Save Only Wi-Fi Option */
-"playlist.playlistAutoSaveOptionOnlyWifi" = "Тільки Wi-Fi";
-
-/* Description for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wi-fi) */
-"playlist.playlistAutoSaveSettingsDescription" = "Додавання відео- й аудіофайлів для використання офлайн може потребувати багато місця на вашому пристрої, а також використовувати мобільні дані";
-
-/* Footer Text for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wi-fi)) */
-"playlist.playlistAutoSaveSettingsFooterText" = "Ця опція автоматично збереже елементи вашого списку відтворення на пристрої, щоб ви могли відтворювати їх за відсутності підключення до Інтернету.";
-
-/* Title for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wi-fi) */
-"playlist.playlistAutoSaveSettingsTitle" = "Автозбереження для доступу офлайн";
-
-/* When the user's disk space is almost full */
-"playlist.playlistDiskSpaceWarningMessage" = "Додавання відео- й аудіофайлів для використання офлайн може потребувати багато місця на вашому пристрої. Видаліть деякі файли, щоб звільнити місце в пам’яті.";
-
-/* When the user's disk space is almost full */
-"playlist.playlistDiskSpaceWarningTitle" = "Пам’ять майже заповнена";
-
-/* When a video or audio is live and has no duration */
-"playlist.playlistLiveMediaStream" = "Пряма трансляція";
-
-/* Footer Text for the Playlist Settings Option for long press gesture */
-"playlist.playlistLongPressSettingsOptionFooterText" = "Якщо ввімкнено, ви можете додавати більшість відеофайлів та аудіофайлів до списку відтворення довгим натисненням.";
-
-/* Title for the Playlist Settings Option for long press gesture */
-"playlist.playlistLongPressSettingsOptionTitle" = "Увімкнути жест «Довге натиснення»";
-
-/* Text for Playlist Media & Offline Data Toggle while clearing the offline data storage in settings */
-"playlist.playlistMediaAndOfflineDataToggleOption" = "Медіафайли й офлайн-дані списків відтворення";
-
-/* Text for Playlist Offline Data Toggle while clearing the offline data storage in settings */
-"playlist.playlistOfflineDataToggleOption" = "Дані списків відтворення офлайн";
-
-/* The title for the alert that shows up when removing all videos and their offline mode storage. */
-"playList.playlistResetAlertTitle" = "Скинути";
-
-/* Footer Text for the Playlist Settings Option for resetting Playlist. */
-"playlist.playlistResetPlaylistOptionFooterText" = "Ця опція видалить усі відео зі списку відтворення, а також із офлайн-сховища.";
-
-/* Error message when saving a playlist item for offline fails */
-"playlist.playlistSaveForOfflineErrorMessage" = "На жаль, наразі цей елемент не можна зберегти для режиму офлайн.";
-
-/* Title of alert when saving a playlist item for offline mode */
-"playlist.playlistSaveForOfflineErrorTitle" = "На жаль, сталася помилка.";
-
-/* Title For the Section that videos are listed */
-"playList.playListSectionTitle" = "Список відтворення";
-
-/* Footer Text for the Playlist Settings Option for Sidebar Location (Left/Right) */
-"playlist.playlistSidebarLocationFooterText" = "Це налаштування дає змогу змінити розташування списку відео з лівої сторони на праву.";
-
-/* Option Text for Sidebar Location Left */
-"playlist.playlistSidebarLocationOptionLeft" = "Ліворуч";
-
-/* Option Text for Sidebar Location Right */
-"playlist.playlistSidebarLocationOptionRight" = "Праворуч";
-
-/* Title for the Playlist Settings Option for Sidebar Location (Left/Right) */
-"playlist.playlistSidebarLocationTitle" = "Розташування бічної панелі";
-
-/* Footer Text for the Playlist Settings Option for Enable/Disable ability to start playing from the point where user last left-off */
-"playlist.playlistStartPlaybackSettingsFooterText" = "Цей параметр вмикає/вимикає можливість почати відтворення медіафайлів (відео/аудіо) з того моменту, на якому ви зупинилися минулого разу.";
-
-/* Title for the Playlist Settings Option for Enable/Disable ability to start playing from the point where user last left-off */
-"playlist.playlistStartPlaybackSettingsOptionTitle" = "Почати відтворення з місця останньої зупинки";
-
-/* Description for Playlist setting */
-"playlist.playlistWebCompatibilityDescription" = "Відключення API WebKit MediaSource";
-
-/* Title for Playlist setting */
-"playlist.playlistWebCompatibilityTitle" = "Вебсумісність";
-
-/* Body of the popover that shows when you tap on the 'Add to Playlist' button in the URL bar */
-"playlist.popoverAddBody" = "Список відтворення Brave підтримує відтворення в режимі офлайн, «зображення в зображені», безперервне відтворення й режими повторення.";
-
-/* Title of the popover that shows when you already have the current media item in your playlist and you tap on the 'Add to Playlist' button in the URL bar */
-"playlist.popoverAddedTitle" = "Цей медіафайл у вашому списку відтворення Brave";
-
-/* Title of the popover that shows when you tap on the 'Add to Playlist' button in the URL bar */
-"playlist.popoverAddTitle" = "Додати цей медіафайл до списку відтворення Brave?";
-
-/* Button title in the popover when an item is already in your playlist and you tap the 'Add to Playlist' button in the URL bar */
-"playlist.popoverOpenInBravePlaylist" = "Відкрити в списку відтворення Brave";
-
-/* Button title in the popover when an item is already in your playlist and you tap the 'Add to Playlist' button in the URL bar */
-"playlist.popoverRemoveFromBravePlaylist" = "Видалити";
-
-/* Title for removing offline mode storage */
-"playList.removeActionButtonTitle" = "Видалити";
-
-/* Message for the alert shown when the user tries to remove offline data of an item from playlist */
-"playlist.removePlaylistOfflineDataAlertMessage" = "Це призведе до видалення медіафайлу з офлайн-сховища. Ви впевнені, що хочете продовжити?";
-
-/* Title for the alert shown when the user tries to remove offline data of an item from playlist */
-"playlist.removePlaylistOfflineDataAlertTitle" = "Видалити офлайн-дані";
-
-/* Message for the alert shown when the user tries to remove a video from playlist */
-"playlist.removePlaylistVideoAlertMessage" = "Це призведе до видалення медіафайлу зі списку. Ви впевнені, що хочете продовжити?";
-
-/* Title for the alert shown when the user tries to remove an item from playlist */
-"playlist.removePlaylistVideoAlertTitle" = "Видалити медіафайл зі списку відтворення?";
-
-/* Reopen Alert button title */
-"playList.reopenButtonTitle" = "Відкрити заново";
-
-/* Text indicator on the table cell while saving a video for offline with percentage eg: %25 Saved for Offline */
-"playList.savedForOfflineLabelTitle" = "збережено для доступу офлайн";
-
-/* The title of the button indicating that the user can save a video for offline playback. (playing without internet) */
-"playlist.saveForOfflineButtonTitle" = "Зберегти для доступу офлайн";
-
-/* Text indicator on the table cell while saving a video for offline */
-"playList.savingForOfflineLabelTitle" = "Збереження для доступу офлайн…";
-
-/* Details Title of the ActionSheet/Alert when sharing a playlist item from the Swipe-Action */
-"playlist.sharePlaylistActionDetailsTitle" = "Ви можете відкрити поточний елемент у новій вкладці або надіслати його через меню спільного доступу";
-
-/* Title of the ActionSheet/Alert when sharing a playlist item from the Swipe-Action */
-"playlist.sharePlaylistActionTitle" = "Меню списка відтворення в браузері";
-
-/* Button Title of the ActionSheet/Alert Button when sharing a playlist item from the Swipe-Action */
-"playlist.sharePlaylistOpenInNewPrivateTabTitle" = "Відкрити у приватній вкладці";
-
-/* Button Title of the ActionSheet/Alert Button when sharing a playlist item from the Swipe-Action */
-"playlist.sharePlaylistOpenInNewTabTitle" = "Відкрити у новій вкладці";
-
-/* Button Title of the ActionSheet/Alert Button when sharing a playlist item from the Swipe-Action */
-"playlist.sharePlaylistShareActionMenuTitle" = "Поділитися…";
-
-/* Title for load resources error alert */
-"playList.sorryAlertTitle" = "Помилка";
-
-/* The title for the toast that shows up on a page containing a playlist item that was added to playlist */
-"playList.toastAddedToPlaylistTitle" = "Додано у Brave Playlist";
-
-/* The title for the toast button when an item was added to playlist */
-"playList.toastAddToPlaylistOpenButton" = "Відкрити";
-
-/* The title for the toast that shows up on a page containing a playlist item */
-"playList.toastAddToPlaylistTitle" = "Додати у Brave Playlist";
-
-/* The title for the toast that shows up on a page when an item that has already been added, was updated. */
-"playList.toastExitingItemPlaylistTitle" = "Подивитися у Brave Playlist";
-
-/* Footer for option to disable URL-Bar button */
-"playlist.urlBarButtonOptionFooter" = "Поруч із панеллю адреси в браузері Brave з’явиться кнопка списку відтворення. Кнопка має вигляд 4 ліній із символом +. За допомогою неї ви зможете отримати швидкий доступ до списку відтворення, а також видалити/додати медіафайли.";
-
-/* Title for option to disable URL-Bar button */
-"playlist.urlBarButtonOptionTitle" = "Додати кнопку швидкого доступу";
-
-/* The title of the button to create a new folder */
-"playlistFolders.createNewFolderButtonTitle" = "Створити";
-
-/* The title of the button that allows the user to edit the name of a folder */
-"playlistFolders.editButtonTitle" = "Редагувати";
-
-/* The title of the screen where the user edits folder names */
-"playlistFolders.editFolderScreenTitle" = "Редагування папки";
-
-/* The title of the menu option that allows the user to edit the name of a folder */
-"playlistFolders.editMenuTitle" = "Редагувати папку";
-
-/* The error shown to the user when we cannot save their changes made on a folder */
-"playlistFolders.errorSavingMessage" = "На жаль, не вдалося зберегти зміни, зроблені в цій папці";
-
-/* The title of the button where the user will move an item from one folder to another folder. */
-"playlistFolders.moveFolderButtonTitle" = "Перемістити";
-
-/* The title of the section indicating the currently selected folder */
-"playlistFolders.moveFolderCurrentSectionTitle" = "Поточна папка";
-
-/* The title of the screen where the user will move an item from one folder to another folder. */
-"playlistFolders.moveFolderScreenTitle" = "Переміщення";
-
-/* %@ Should NOT be localized. It is a placeholder. Example: Brave Folder and 1 more item. */
-"playlistFolders.moveItemDescription" = "%@ та ще 1 об’єкт";
-
-/* %lld is a placeholder and should not be localized. Sometimes items can have no name. So this is a generic title to use */
-"playlistFolders.moveItemWithMultipleNoNameTitle" = "Об’єкти: %lld";
-
-/* Sometimes an item can have no name. So this is a generic title to use */
-"playlistFolders.moveItemWithNoNameTitle" = "1 об’єкт";
-
-/* %@ and %lld Should NOT be localized. They are placeholders. Example: Brave Folder and 3 more items. Music and 2 more items. */
-"playlistFolders.moveMultipleItemDescription" = "%1$@ та ще кілька об’єктів (%2$lld)";
-
-/* The title of the button to create a new folder */
-"playlistFolders.newFolderButtonTitle" = "Нова папка";
-
-/* The title of the screen to create a new folder */
-"playlistFolders.newFolderScreenTitle" = "Нова папка";
-
-/* The sub-title of the section where the user can select videos to add to the new folder being created */
-"playlistFolders.newFolderSectionSubtitle" = "Торкніться, щоб вибрати відео";
-
-/* The title of the section where the user can select videos to add to the new folder being created */
-"playlistFolders.newFolderSectionTitle" = "Додайте відео до цієї папки";
-
-/* The title of the default playlist folder */
-"playlistFolders.savedFolderTitle" = "Збережено";
-
-/* The title of the section indicating that the user should select a folder to move `%zu` items to. %lld should not be translated. It will be replaced by a number so the sentence becomes: 'Select a folder to move 10 items to.' */
-"playlistFolders.selectAFolderTitle" = "Виберіть папку, щоб перемістити ці об’єкти (%lld)";
-
-/* The title of the section indicating that the user should select a folder to move 1 item to. */
-"playlistFolders.selectASingleFolderTitle" = "Виберіть папку для переміщення 1 об’єкта";
-
-/* The sub-title of the folder. Example: This folder contains 10 Items. This folder contains 3 Items. */
-"playlistFolders.subtitleItemCount" = "Об’єкти: %lld";
-
-/* The sub-title of the folder. Example: This folder contains ONE item. This folder contains 1 Item. */
-"playlistFolders.subtitleItemSingleCount" = "1 об’єкт";
-
-/* The title of a folder when the user enters no name (untitled) */
-"playlistFolders.untitledFolderTitle" = "Папка без назви";
-
-/* Description for closing a popover menu that is displayed. */
-"PopoverDefaultClose" = "Закрити контекстне меню";
-
-/* Description for closing the `Brave Shields` popover menu that is displayed. */
-"PopoverShieldsMenuClose" = "Закрити меню Shields";
-
-/* Button text that takes user to a list of all trackers and ads we blocked. 'All time lists' refer to list of blocked trackers or websites which have the most trackers */
-"privacyHub.allTimeListsButtonText" = "Списки за весь час";
-
-/* Header text, under it we show items blocked by our ad blocker. 'All  time' sentence context is like 'All time items blocked by our ad blocker. */
-"privacyHub.allTimeListsHeader" = "Увесь час";
-
-/* Title of a section to show total count of trackers blocked by Brave */
-"privacyHub.allTimeListsTrackersView" = "Трекери й реклама";
-
-/* Title of a section to show websites containing highest amount of trackers */
-"privacyHub.allTimeListsWebsitesView" = "Вебсайти";
-
-/* Header title for a list of most frequent ads and trackers detected. */
-"privacyHub.allTimeListTrackersHeaderTitle" = "Найчастіші трекери й реклама на сайтах, що ви відвідуєте";
-
-/* Header title for a list of websites with ads and trackers. */
-"privacyHub.allTimeListWebsitesHeaderTitle" = "Сайти з найбільшою кількість трекерів і реклами";
-
-/* Displays a number of websites on which we blocked trackers, example usage: '23 sites' */
-"privacyHub.allTimeSitesCount" = "Сайти: %lld";
-
-/* Displays a number of trackers we blocked on a particular website, example usage: '23 trackers & ads' */
-"privacyHub.allTimeTrackersCount" = "Трекери й реклама: %lld";
-
-/* Title under which we display most name of the most blocked tracker or ad. */
-"privacyHub.allTimeTrackerTitle" = "Трекер і реклама";
-
-/* Title under which we display a website on which there's the highest number of trackers or ads. */
-"privacyHub.allTimeWebsiteTitle" = "Вебсайт";
-
-/* Text for a button to display a list of all alerts caught by the Brave VPN. VPN alert is a notificaion of what item has been blocked by the vpn, similar to a regular adblocker */
-"privacyHub.allVPNAlertsButtonText" = "Усі сповіщення";
-
-/* Text which explain by what type of ad blocker a given resource was blocked. Context is like: 'Blocked by Brave Shields', 'Blocked by BraveVPN */
-"privacyHub.blockedBy" = "Заблоковано:";
-
-/* It says that a ad or tracker was blocked. Think of it in context of 'A tracker X was blocked' */
-"privacyHub.blockedLabel" = "Заблоковано";
-
-/* Accessibility label for the 'clear all data' button. */
-"privacyHub.clearAllDataAccessibility" = "Очистити дані центру приватності";
-
-/* A prompt message we show to the user if they want to clear all data gathered by the Privacy Reports Feature */
-"privacyHub.clearAllDataPrompt" = "Очистити всі дані Shields?";
-
-/* Header text, under it we display blocked items from last week */
-"privacyHub.lastWeekHeader" = "Останній  тиждень";
-
-/* Do NOT localize asterisk('*') characters, they are used to make the text bold in the app. It says which tracker was blocked on how many websites, example usage: 'Google Analytics was blocked by Brave Shields on 42 sites' */
-"privacyHub.mostFrequentTrackerAndAdBody" = "Сервіс Brave Shields заблокував **%1$@** на сайтах (**%2$lld**)";
-
-/* Title under which we display a tracker which was most frequently detected by our ad blocking mechanism. */
-"privacyHub.mostFrequentTrackerAndAdTitle" = "Найчастіший трекер і реклама";
-
-/* Text of a callout that tell user they need to browser some websites first in order to see privacy stats data */
-"privacyHub.noDataCalloutBody" = "Відвідайте деякі вебсайти, щоб побачити тут дані.";
-
-/* This text is diplayed when there is no data to display to the user. The data is about blocked trackers or sites with trackers on them. */
-"privacyHub.noDataToShow" = "Немає даних для показу.";
-
-/* Text of a callout to encourage user to enable Apple notification system. */
-"privacyHub.notificationCalloutBody" = "Отримуйте щотижневі оновлення щодо конфіденційності про блокування трекерів і реклами.";
-
-/* Text of a button to encourage user to enable Apple notification system. */
-"privacyHub.notificationCalloutButtonText" = "Увімкнути сповіщення";
-
-/* Message of a notification we show to the user, on tapping it, the Privacy Hub screen will open. */
-"privacyHub.notificationMessage" = "Зведення від Brave щодо вашого захисту в Інтернеті цього тижня.";
-
-/* Title of a notification we show to the user, on tapping it, the Privacy Hub screen will open. */
-"privacyHub.notificationTitle" = "Щотижневий звіт про конфіденційність";
-
-/* Text of a button that opens up a Privacy Reports screen. */
-"privacyHub.onboardingButtonTitle" = "Відкрити центр конфіденційності";
-
-/* Text of a disclaimer that explains how the data for generating privacy reprots is stored. */
-"privacyHub.privacyReportsDisclaimer" = "Дані центру конфіденційності зберігаються локально й нікуди не надсилаються.";
-
-/* Title of main privacy hub screen. This screen shows various stats caught by Brave's ad blockers. */
-"privacyHub.privacyReportsTitle" = "Центр конфіденційності";
-
-/* Do NOT localize asterisk('*') characters, they are used to make the text bold in the app. It says which website had the most tracker per visit, example usage: 'example.com had an average of 10 trackers & ads blocked per visit ' */
-"privacyHub.riskiestWebsiteBody" = "Середня кількість трекерів і реклами, заблокованих під час відвідування сайту **%1$@**: **%2$lld**";
-
-/* Title of a website that contained the most trackers per visit. */
-"privacyHub.riskiestWebsiteTitle" = "Сайт із найбільшою кількістю трекерів";
-
-/* This text explains a setting that lets Brave monitor blocked network requests */
-"privacyHub.settingsEnableShieldsFooter" = "У центрі конфіденційності показано, скільки й чого заблоковано за допомогою Shields. Налаштування не вплинуть на лічильник Shields на сторінці нової вкладки. Дані Shields не враховуються у приватних вікнах.";
-
-/* Title of a setting that lets Brave monitor blocked network requests */
-"privacyHub.settingsEnableShieldsTitle" = "Показати дані Shields";
-
-/* This text explains a setting that lets Brave monitor blocked network requests captured by Brave VPN */
-"privacyHub.settingsEnableVPNAlertsFooter" = "Налаштування застосовується, лише якщо ви придбали підписку VPN.";
-
-/* Title of a setting that lets Brave monitor blocked network requests captured by Brave VPN */
-"privacyHub.settingsEnableVPNAlertsTitle" = "Показати оповіщення щодо VPN";
-
-/* This text explains what the button to clear datain the Privacy Hub is for. */
-"privacyHub.settingsSlearDataFooter" = "Скидає кількість заблокованих елементів у Shields.";
-
-/* Button that lets user clear all blocked requests and vpn alerts data that Brave captured for them. */
-"privacyHub.settingsSlearDataTitle" = "Очистити дані Shields";
-
-/* This label says shields, as a source of by what a resource was blocked. Think of it in context of 'Blocked by Shields' */
-"privacyHub.shieldsLabel" = "Shields";
-
-/* Type of tracker blocked by the VPN, it's a tracker contained in an email. */
-"privacyHub.vpnAlertEmailTrackerTypePlural" = "Трекери ел. адреси";
-
-/* Type of tracker blocked by the VPN, it's a tracker contained in an email. */
-"privacyHub.vpnAlertEmailTrackerTypeSingular" = "Трекер ел. адреси";
-
-/* Type of tracker blocked by the VPN, it's a tracker that asks you for your location. */
-"privacyHub.vpnAlertLocationTrackerTypePlural" = "Пінги розташування";
-
-/* Type of tracker blocked by the VPN, it's a tracker that asks you for your location. */
-"privacyHub.vpnAlertLocationTrackerTypeSingular" = "Пінг розташування";
-
-/* Type of tracker blocked by the VPN, it's a regular tracker or an ad. */
-"privacyHub.vpnAlertRegularTrackerTypePlural" = "Трекери й реклама";
-
-/* Type of tracker blocked by the VPN, it's a regular tracker or an ad. */
-"privacyHub.vpnAlertRegularTrackerTypeSingular" = "Трекер або реклама";
-
-/* Section title, this section displays vpn alerts: items which the vpn managed to block on users behalf. */
-"privacyHub.vpnAlertsHeader" = "Брандмауер Brave + оповіщення VPN";
-
-/* This label says about Brave VPN, as a source of by what the resource was blocked by. Think of it in context of 'Blocked by VPN' */
-"privacyHub.vpnLabel" = "Брандмауер + VPN";
-
-/* It shows a total count of items blocked by our VPN shields */
-"privacyHub.vpvnAlertsTotalCount" = "Загальна кількість";
-
-/* Recent Search Clear Button */
-"RecentSearchClear" = "Видалити";
-
-/* The button title that shows when you clear all recent searches */
-"RecentSearchClearAlertButton" = "Видалити недавні запити";
-
-/* Recent Search setting title to clear recent searches */
-"RecentSearchClearDataToggleOption" = "Дані недавніх пошуків";
-
-/* Recent Search button title to disable suggestions */
-"RecentSearchDisableSuggestions" = "Вимкнути";
-
-/* Recent Search button title to enable suggestions */
-"RecentSearchEnableSuggestions" = "Увімкнути";
-
-/* Recent Search Favorites Section Title */
-"RecentSearchFavorites" = "Обране";
-
-/* Recent Search Hide Button */
-"RecentSearchHide" = "Приховати";
-
-/* Recent Search Paste & Go Button Title */
-"RecentSearchPasteAndGo" = "Вставити та перейти";
-
-/* Recent Search 'on' text when a user searches 'on' a website */
-"RecentSearchQuickSearchOnWebsite" = "у";
-
-/* Recent Search Scanned text when a user scans a qr code */
-"RecentSearchScanned" = "Відскановано";
-
-/* Scanning a QR Code for searching body */
-"RecentSearchScannerDescriptionBody" = "Щоб здійснити пошук за QR-кодом, вирівняйте його в центрі рамки.";
-
-/* Scanning a QR Code for title */
-"RecentSearchScannerDescriptionTitle" = "Інструкції";
-
-/* Scanning a QR Code for searching */
-"RecentSearchScannerTitle" = "Сканування QR-коду";
-
-/* Recent Search Section Description */
-"RecentSearchSectionDescription" = "Функція «Недавні пошукові запити» дозволяє отримати захищений доступ до історії пошуків. Увімкнути функцію?";
-
-/* Recent Search Section Title */
-"RecentSearchSectionTitle" = "Недавні пошукові запити";
-
-/* Recent Search Show Button */
-"RecentSearchShow" = "Показати";
-
-/* Recent Search Show More button */
-"RecentSearchShowMore" = "Показати більше";
-
-/* Recent Search suggestions title when prompting to turn on suggestions */
-"RecentSearchSuggestionsTitle" = "Пошукові підказки";
-
-/* No comment provided by engineer. */
-"ReportABrokenSite" = "Повідомити про помилки в роботі вебсайту";
-
-/* First part of the report a broken site copy. After the colon is a new line and then a website address */
-"ReportBrokenSiteBody1" = "Повідомте розробників Brave, що за ввімкненої функції Shields вебсайт працює неправильно:";
-
-/* No comment provided by engineer. */
-"ReportBrokenSiteBody2" = "Примітка. Адресу цього вебсайту буде надіслано з номером версії Brave і вашою IP-адресою (яка не зберігатиметься).";
-
-/* No comment provided by engineer. */
-"ReportBrokenSubmitButtonTitle" = "Надіслати";
-
-/* Name of folder where restored bookmarks are retrieved */
-"RestoredBookmarksFolderName" = "Відновлені закладки";
-
-/* Name of folder where restored favorites are retrieved */
-"RestoredFavoritesFolderName" = "Відновлений список вибраного";
-
-/* Displayed when Brave Rewards is disabled */
-"rewards.disabledBody" = "Увімкніть підтримку авторів умісту";
-
-/* Displayed in the status container when rewards is disabled */
-"rewards.disabledStatusBody" = "Brave Rewards дає змогу підтримувати авторів умісту, переглядаючи сторінки в Інтернеті.";
-
-/* Displayed when Brave Rewards is enabled */
-"rewards.enabledBody" = "Ви підтримуєте авторів умісту";
-
-/* Displayed in the status container when rewards is enabled but you're not currently supporting any publishers (0 AC count) */
-"rewards.enabledStatusBody" = "Дякуємо, що підтримуєте авторів умісту, переглядаючи сторінки в Інтернеті!";
-
-/* No comment provided by engineer. */
-"rewards.legacyWalletTransfer" = "Переказ коштів із застарілого гаманця";
-
-/* No comment provided by engineer. */
-"rewards.legacyWalletTransferStatusButtonCompletedTitle" = "Перерахування коштів на ваш старий гаманець завершено!";
-
-/* No comment provided by engineer. */
-"rewards.legacyWalletTransferStatusButtonDelayedTitle" = "Перерахування коштів на ваш гаманець відкладено…";
-
-/* No comment provided by engineer. */
-"rewards.legacyWalletTransferStatusButtonInProgressTitle" = "Перерахування коштів на ваш гаманець в процесі обробки";
-
-/* No comment provided by engineer. */
-"rewards.legacyWalletTransferStatusButtonInvalidTitle" = "Перерахування коштів на ваш старий гаманець неможливе";
-
-/* No comment provided by engineer. */
-"rewards.legacyWalletTransferStatusButtonPendingTitle" = "Статус перерахування коштів на ваш гаманець «На розгляді»";
-
-/* No comment provided by engineer. */
-"rewards.legacyWalletTransferStatusCompletedBody" = "Перерахування коштів на ваш гаманець завершено! Ваш оновлений баланс з’явиться в гаманці Brave Rewards протягом декількох хвилин.";
-
-/* Title shown above body of text explaining that their transfer is completed */
-"rewards.legacyWalletTransferStatusCompletedTitle" = "Перерахування коштів завершено!";
-
-/* No comment provided by engineer. */
-"rewards.legacyWalletTransferStatusDelayedBody" = "Перерахування коштів на ваш гаманець було відкладено, і відновлення процесу може зайняти кілька хвилин.";
-
-/* Title shown above body of text explaining that their transfer is delayed */
-"rewards.legacyWalletTransferStatusDelayedTitle" = "Перерахування коштів відкладено";
-
-/* No comment provided by engineer. */
-"rewards.legacyWalletTransferStatusInProgressBody" = "Перерахування коштів на ваш гаманець у процесі, і завершення транзакції може зайняти кілька хвилин.";
-
-/* Title shown above body of text explaining that their transfer is in progress */
-"rewards.legacyWalletTransferStatusInProgressTitle" = "Перерахування коштів у процесі";
-
-/* No comment provided by engineer. */
-"rewards.legacyWalletTransferStatusInvalidBody" = "Перерахування коштів на ваш гаманець неможливе і не може бути завершене";
-
-/* Title shown above body of text explaining that their transfer is invalid */
-"rewards.legacyWalletTransferStatusInvalidTitle" = "Перерахування коштів неможливе";
-
-/* No comment provided by engineer. */
-"rewards.legacyWalletTransferStatusPendingBody" = "Статус перерахування коштів на ваш гаманець «На розгляді», і операція має скоро завершитися.";
-
-/* Title shown above body of text explaining that their transfer is pending */
-"rewards.legacyWalletTransferStatusPendingTitle" = "Перерахування коштів на розгляді";
-
-/* Completed as in: stating that the status of the users transfer is in completed */
-"rewards.legacyWalletTransferStatusShortformCompleted" = "Завершено!";
-
-/* Delayed as in: stating that the status of the users transfer is in delayed */
-"rewards.legacyWalletTransferStatusShortformDelayed" = "Відкладено";
-
-/* In Progress as in: stating that the status of the users transfer is in progress */
-"rewards.legacyWalletTransferStatusShortformInProgress" = "У процесі";
-
-/* Invalid as in: stating that the status of the users transfer is invalid */
-"rewards.legacyWalletTransferStatusShortformInvalid" = "Неможливе";
-
-/* Pending as in: stating that the status of the users transfer is pending */
-"rewards.legacyWalletTransferStatusShortformPending" = "На розгляді";
-
-/* No comment provided by engineer. */
-"rewards.legacyWalletTransferSubtitle" = "Одноразовий переказ наявних токенів";
-
-/* No comment provided by engineer. */
-"rewards.settingsFooterMessage" = "Виплати у Brave Rewards тимчасово недоступні на цьому пристрої. Перекажіть кошти з наявного гаманця на гаманець на настільному комп’ютері, щоб зберегти свої токени.";
-
-/* No comment provided by engineer. */
-"rewards.settingsToggleMessage" = "Увімкніть Brave Private Ads, щоб автоматично підтримувати авторів умісту та видавців. Brave Private Ads — це конфіденційний засіб перегляду реклами з можливістю підтримки авторів умісту.";
-
-/* No comment provided by engineer. */
-"rewards.settingsToggleTitle" = "Увімкнути Brave Rewards";
-
-/* Displayed under verified publishers */
-"rewards.supportingPublisher" = "Ви підтримуєте авторів умісту подібних до цього.";
-
-/* Displayed next to a number representing the total number of publishers supported */
-"rewards.totalSupportedCount" = "Кількість авторів умісту, яких ви підтримали цього місяця.";
-
-/* No comment provided by engineer. */
-"rewards.transferNoLongerAvailableWarningMessage" = "Виконайте перенесення гаманця до 13 березня 2021 року. Після цієї дати функція перенесення стане недоступною.";
-
-/* Displayed under unverified publishers */
-"rewards.unverifiedPublisher" = "Цей автор не підтвердив особу і його не буде додано до програми підтримки авторів";
-
-/* A confirmation message shown to the user after completing a wallet transfer successfully */
-"rewards.walletTransferCompleteBody" = "Перенесення розпочато. Наявний рахунок BAT відобразиться в настільній версії гаманця Brave Rewards через кілька хвилин. Після завершення перенесення перевірте зведення сервісу Rewards у настільній версії.\n\nПід час перенесення ви можете закрити це вікно та продовжити користуватися Brave.";
-
-/* Title shown above the confirmation message after completing a wallet transfer successfully */
-"rewards.walletTransferCompleteTitle" = "Перенесення рахунку розпочато";
-
-/* Message on the alert presented if wallet transfer fails */
-"rewards.walletTransferFailureAlertMessage" = "Сервер Brave Rewards не відповідає. Спробуйте ще раз пізніше.";
-
-/* Title on the alert presented if wallet transfer fails */
-"rewards.walletTransferFailureAlertTitle" = "Помилка з’єднання";
-
-/* Describes the steps for using wallet transfer */
-"rewards.walletTransferStepsBody" = "Токени з Brave Rewards можна один раз перевести в наявний гаманець Brave Rewards на настільному комп’ютері.\n\n1. Відкрийте браузер Brave на настільному комп’ютері.\n2. Перейдіть за адресою «brave://rewards».\n3. Натисніть на пункт «QR-код».\n4. Відскануйте QR-код за допомогою пристрою.";
-
-/* Title above the steps to use wallet transfer */
-"rewards.walletTransferStepsTitle" = "Сканування одноразового коду переказу";
-
-/* Title of the legacy wallet transfer screen */
-"rewards.walletTransferTitle" = "Статус перерахування коштів на гаманець";
-
-/* No comment provided by engineer. */
-"RewardsInternalsAmount" = "Сума";
-
-/* No comment provided by engineer. */
-"RewardsInternalsAnonymous" = "Анонімно";
-
-/* No comment provided by engineer. */
-"RewardsInternalsBalanceInfoHeader" = "Інформація про баланс";
-
-/* No comment provided by engineer. */
-"RewardsInternalsClaimedAt" = "Отримано:";
-
-/* No comment provided by engineer. */
-"RewardsInternalsClaimID" = "Ідентифікатор отримання";
-
-/* No comment provided by engineer. */
-"RewardsInternalsClearLogsConfirmation" = "Дійсно очистити всі журнали Rewards?";
-
-/* No comment provided by engineer. */
-"RewardsInternalsClearLogsTitle" = "Очистити журнали";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionAmount" = "Сума внеску";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionProcessorBraveTokens" = "Токени Brave";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionProcessorNone" = "Немає";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionProcessorUphold" = "Підтвердити";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionProcessorUserFunds" = "Кошти користувача";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionsStepACOff" = "Автовнески вимкнено";
-
-/* 'AC' refers to Auto-Contribute */
-"RewardsInternalsContributionsStepACTableEmpty" = "Таблиця автовнесків порожня";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionsStepCompleted" = "Завершено";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionsStepCreds" = "Облікові дані";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionsStepExternalTransaction" = "Зовнішня транзакція";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionsStepFailed" = "Помилка";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionsStepNotEnoughFunds" = "Недостатньо коштів";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionsStepPrepare" = "Підготувати";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionsStepReserve" = "Зберегти";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionsStepRewardsOff" = "Винагороди вимкнено";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionsStepStart" = "Початок";
-
-/* No comment provided by engineer. */
-"RewardsInternalsContributionsTitle" = "Внески";
-
-/* No comment provided by engineer. */
-"RewardsInternalsCreatedAt" = "Створено:";
-
-/* No comment provided by engineer. */
-"RewardsInternalsDeviceInfoHeader" = "Інформація про пристрій";
-
-/* No comment provided by engineer. */
-"RewardsInternalsEnrolled" = "Зареєстровано";
-
-/* No comment provided by engineer. */
-"RewardsInternalsEnrollmentState" = "Стан реєстрації";
-
-/* No comment provided by engineer. */
-"RewardsInternalsExpiresAt" = "Термін дії:";
-
-/* No comment provided by engineer. */
-"RewardsInternalsInvalid" = "Недійсний";
-
-/* No comment provided by engineer. */
-"RewardsInternalsKeyInfoSeed" = "Інформація про ключ";
-
-/* No comment provided by engineer. */
-"RewardsInternalsLegacyPromotion" = "Застаріла промоакція";
-
-/* No comment provided by engineer. */
-"RewardsInternalsLegacyWalletHasTransferrableBalance" = "Має доступні для переказу кошти";
-
-/* No comment provided by engineer. */
-"RewardsInternalsLegacyWalletInfoHeader" = "Інформація про застарілий гаманець";
-
-/* %d will be the number of logs currently being shown, i.e. '10 logs shown' */
-"RewardsInternalsLogsCount" = "Показано журналів: %d";
-
-/* No comment provided by engineer. */
-"RewardsInternalsLogsTitle" = "Журнали";
-
-/* No comment provided by engineer. */
-"RewardsInternalsNotEnrolled" = "Не зареєстровано";
-
-/* No comment provided by engineer. */
-"RewardsInternalsNotSupported" = "Не підтримується";
-
-/* No comment provided by engineer. */
-"RewardsInternalsProcessor" = "Обробник";
-
-/* No comment provided by engineer. */
-"RewardsInternalsPromotionStatusActive" = "Активна";
-
-/* No comment provided by engineer. */
-"RewardsInternalsPromotionStatusAttested" = "Перевірена";
-
-/* No comment provided by engineer. */
-"RewardsInternalsPromotionStatusCorrupted" = "Пошкоджена";
-
-/* No comment provided by engineer. */
-"RewardsInternalsPromotionStatusFinished" = "Завершена";
-
-/* No comment provided by engineer. */
-"RewardsInternalsPromotionStatusOver" = "Закінчена";
-
-/* No comment provided by engineer. */
-"RewardsInternalsPromotionsTitle" = "Промоакції";
-
-/* No comment provided by engineer. */
-"RewardsInternalsPublisher" = "Видавець";
-
-/* No comment provided by engineer. */
-"RewardsInternalsPublishers" = "Видавці";
-
-/* No comment provided by engineer. */
-"RewardsInternalsRetryCount" = "Кількість повторів";
-
-/* No comment provided by engineer. */
-"RewardsInternalsRewardsTypeAutoContribute" = "Автовнесок";
-
-/* No comment provided by engineer. */
-"RewardsInternalsRewardsTypeOneTimeTip" = "Одноразовий платіж";
-
-/* No comment provided by engineer. */
-"RewardsInternalsRewardsTypeRecurringTip" = "Повторюваний платіж";
-
-/* No comment provided by engineer. */
-"RewardsInternalsSharableBasicDescription" = "Інформація про гаманець, пристрій і баланс (надсилається завжди)";
-
-/* No comment provided by engineer. */
-"RewardsInternalsSharableBasicTitle" = "Основна інформація";
-
-/* No comment provided by engineer. */
-"RewardsInternalsSharableContributionsDescription" = "Будь-які внески на користь видавців через платежі чи автовнески";
-
-/* No comment provided by engineer. */
-"RewardsInternalsSharableDatabaseDescription" = "Сховище внутрішніх даних";
-
-/* No comment provided by engineer. */
-"RewardsInternalsSharableDatabaseTitle" = "База даних винагород";
-
-/* No comment provided by engineer. */
-"RewardsInternalsSharableLogsDescription" = "Зазначені журнали винагород";
-
-/* No comment provided by engineer. */
-"RewardsInternalsSharablePromotionsDescription" = "Будь-які промоакції BAT, які ви отримали або на які очікуєте від реклами чи бонусів";
-
-/* No comment provided by engineer. */
-"RewardsInternalsShare" = "Надіслати";
-
-/* 'Rewards' as in 'Brave Rewards' */
-"RewardsInternalsShareInternalsTitle" = "Надіслати внутрішні дані Rewards";
-
-/* No comment provided by engineer. */
-"RewardsInternalsSharingWarningMessage" = "Дані на цій сторінці можуть бути конфіденційними. Використовуйте їх так, ніби це закриті ключі від вашого гаманця. Стежте за тим, кому ви надсилаєте їх.";
-
-/* No comment provided by engineer. */
-"RewardsInternalsSharingWarningTitle" = "Попередження";
-
-/* No comment provided by engineer. */
-"RewardsInternalsStatus" = "Стан";
-
-/* i.e. 'Step: Started' */
-"RewardsInternalsStep" = "Етап";
-
-/* No comment provided by engineer. */
-"RewardsInternalsSupported" = "Підтримується";
-
-/* 'Rewards' as in 'Brave Rewards' */
-"RewardsInternalsTitle" = "Внутрішні дані Rewards";
-
-/* No comment provided by engineer. */
-"RewardsInternalsTotalAmount" = "Загальна сума";
-
-/* No comment provided by engineer. */
-"RewardsInternalsTotalBalance" = "Загальний баланс";
-
-/* No comment provided by engineer. */
-"RewardsInternalsType" = "Тип";
-
-/* No comment provided by engineer. */
-"RewardsInternalsValid" = "Дійсний";
-
-/* No comment provided by engineer. */
-"RewardsInternalsVersion" = "Версія";
-
-/* No comment provided by engineer. */
-"RewardsInternalsWalletCreationDate" = "Дата створення гаманця";
-
-/* No comment provided by engineer. */
-"RewardsInternalsWalletInfoHeader" = "Інформація про гаманець";
-
-/* No comment provided by engineer. */
-"RewardsInternalsWalletPaymentID" = "Платіжний ідентифікатор гаманця";
-
-/* Add Custom Search Engine Table Cell Row Title */
-"searchSettingAddCustomEngineCellTitle" = "Додавання користувацької пошукової системи";
-
-/* Subtitle for tracker benchmark Share */
-"shieldEducation.benchmarkAnyTierTitle" = "Вітаємо з досягненням цього рівня конфіденційності.";
-
-/* Subtitle for tracker benchmark Share */
-"shieldEducation.benchmarkExclusiveTierTitle" = "Вітаємо! Ви стали учасником ексклюзивного клубу.";
-
-/* Subtitle for tracker benchmark Share */
-"shieldEducation.benchmarkGrandTierTitle" = "Вітаємо! Ви стали Магістром.";
-
-/* Subtitle for tracker benchmark Share */
-"shieldEducation.benchmarkLegendaryTierTitle" = "Вітаємо! Ви — легенда.";
-
-/* Subtitle for tracker benchmark Share */
-"shieldEducation.benchmarkPrimeTierTitle" = "Вітаємо! Ви стали майстром.";
-
-/* Subtitle for tracker benchmark Share */
-"shieldEducation.benchmarkProfessionalTierTitle" = "Вітаємо! Ви приєдналися до професіоналів.";
-
-/* Subtitle for tracker benchmark Share */
-"shieldEducation.benchmarkSpecialTierTitle" = "Вітаємо! Неперевершеність — ваше друге ім’я.";
-
-/* Subtitle for  The parameter substituted for \"%@\" is the amount of data saved in MB. E.g.: Average Data Saved: 17.43 MB */
-"shieldEducation.domainSpecificDataSavedSubtitle" = "Середній обсяг збережених даних:\n%@ МБ";
-
-/* Action title for button at domain specific data saved pop-up */
-"shieldEducation.dontShowThisTitle" = "Більше не показувати";
-
-/* Action title for actionable Share warnings */
-"shieldEducation.shareTheNewsTitle" = "Поділитися новинами";
-
-/* Subtitle for Shield Education Tracker Ad Warning */
-"shieldEducation.trackerAdWarningSubTitle" = "Brave Shields захищає вашу конфіденційність онлайн.";
-
-/* Subtitle for Shield Education Tracker Count Share */
-"shieldEducation.trackerCountShareSubtitle" = "Вітаємо! Неперевершеність — ваше друге ім’я.";
-
-/* Title for Shield Education Tracker Count Share. The parameter substituted for \"%ld\" is the count of the trackers and ads blocked in total until present. E.g.: 5000 trackers & ads blocked */
-"shieldEducation.trackerCountShareTitle" = "Заблоковано трекерів і рекламних оголошень: %ld.";
-
-/* Subtitle for Shield Education Tracker Video Ad Block */
-"shieldEducation.videoAdBlockSubtitle" = "Відео без реклами дозволяють заощадити дані.";
-
-/* Title for Shield Education Tracker Video Ad Block */
-"shieldEducation.videoAdBlockTitle" = "Рекламу у відео заблоковано на цьому вебсайті.";
-
-/* No comment provided by engineer. */
-"ShieldsDownDisclaimer" = "Ви переглядаєте вебсайт з вимкненим засобом захисту конфіденційності від Brave. Вебсайт не працює належним чином, якщо щити увімкнено?";
-
-/* No comment provided by engineer. */
-"shortcuts.activityTypeBraveNewsDescription" = "Відкрити Brave News і переглянути сьогоднішні популярні новини";
-
-/* No comment provided by engineer. */
-"shortcuts.activityTypeClearHistoryDescription" = "Відкрити браузер у новій вкладці й видалити дані журналу приватного режиму";
-
-/* No comment provided by engineer. */
-"shortcuts.activityTypeClearHistorySuggestedPhrase" = "Очистити журнал браузера";
-
-/* No comment provided by engineer. */
-"shortcuts.activityTypeClearHistoryTitle" = "Очистити журнал браузера Brave";
-
-/* No comment provided by engineer. */
-"shortcuts.activityTypeEnableVPNDescription" = "Відкрити браузер у новій вкладці й увімкнути VPN";
-
-/* No comment provided by engineer. */
-"shortcuts.activityTypeEnableVPNSuggestedPhrase" = "Увімкнути VPN";
-
-/* No comment provided by engineer. */
-"shortcuts.activityTypeEnableVPNTitle" = "Відкрити браузер Brave і ввімкнути VPN";
-
-/* No comment provided by engineer. */
-"shortcuts.activityTypeNewPrivateTabSuggestedPhrase" = "Відкрити нову приватну вкладку";
-
-/* No comment provided by engineer. */
-"shortcuts.activityTypeNewPrivateTabTitle" = "Відкрити нову приватну вкладку браузера";
-
-/* No comment provided by engineer. */
-"shortcuts.activityTypeNewTabSuggestedPhrase" = "Відкрити нову вкладку";
-
-/* No comment provided by engineer. */
-"shortcuts.activityTypeNewTabTitle" = "Відкрити нову вкладку браузера";
-
-/* No comment provided by engineer. */
-"shortcuts.activityTypeOpenBraveNewsTitle" = "Відкрити Brave News";
-
-/* No comment provided by engineer. */
-"shortcuts.activityTypeOpenBraveTodaySuggestedPhrase" = "Відкрити Brave News";
-
-/* No comment provided by engineer. */
-"shortcuts.activityTypeOpenPlaylistDescription" = "Почати відтворення відео зі списку відтворення";
-
-/* No comment provided by engineer. */
-"shortcuts.activityTypeOpenPlaylistSuggestedPhrase" = "Відкрити список відтворення";
-
-/* No comment provided by engineer. */
-"shortcuts.activityTypeOpenPlaylistTitle" = "Відкрити список відтворення";
-
-/* No comment provided by engineer. */
-"shortcuts.activityTypeTabDescription" = "Почніть безпечний пошук в Інтернеті за допомогою Brave";
-
-/* No comment provided by engineer. */
-"shortcuts.customIntentOpenBookmarkSuggestedPhrase" = "Відкрити вебсайт із закладки";
-
-/* No comment provided by engineer. */
-"shortcuts.customIntentOpenHistorySuggestedPhrase" = "Відкрити вебсайт із журналу";
-
-/* No comment provided by engineer. */
-"shortcuts.customIntentOpenWebsiteSuggestedPhrase" = "Відкрити вебсайт";
-
-/* Description for opening Brave Settings for altering Siri shortcut. */
-"shortcuts.shortcutOpenApplicationSettingsDescription" = "Це відкриє налаштування Brave. Щоб змінити різні опції Siri, виберіть пункт меню «Siri й пошук» і виберіть відповідні параметри.";
-
-/* Button title that open application settings */
-"shortcuts.shortcutOpenApplicationSettingsTitle" = "Відкрити налаштування";
-
-/* Description of Clear Browser History Siri Shortcut in Settings Screen */
-"shortcuts.shortcutSettingsClearBrowserHistoryDescription" = "Використовувати ярлики для відкриття нової вкладки й очищення історії браузера через голосовий асистент Siri";
-
-/* No comment provided by engineer. */
-"shortcuts.shortcutSettingsClearBrowserHistoryTitle" = "Очистити журнал браузера";
-
-/* No comment provided by engineer. */
-"shortcuts.shortcutSettingsEnableVPNDescription" = "Використовувати ярлики для ввімкнення Brave VPN через голосовий асистент Siri";
-
-/* No comment provided by engineer. */
-"shortcuts.shortcutSettingsEnableVPNTitle" = "Увімкнути VPN";
-
-/* Description of Open Brave News Siri Shortcut in Settings Screen */
-"shortcuts.shortcutSettingsOpenBraveNewsDescription" = "Використовувати ярлики для відкриття нової вкладки й показування стрічки Brave News через голосовий асистент Siri";
-
-/* No comment provided by engineer. */
-"shortcuts.shortcutSettingsOpenBraveNewsTitle" = "Відкрити Brave News";
-
-/* No comment provided by engineer. */
-"shortcuts.shortcutSettingsOpenNewPrivateTabDescription" = "Використовувати ярлики для відкриття нової приватної вкладки через голосовий асистент Siri";
-
-/* No comment provided by engineer. */
-"shortcuts.shortcutSettingsOpenNewPrivateTabTitle" = "Відкрити нову приватну вкладку";
-
-/* No comment provided by engineer. */
-"shortcuts.shortcutSettingsOpenNewTabDescription" = "Використовувати ярлики для відкриття нової вкладки через голосовий асистент Siri";
-
-/* No comment provided by engineer. */
-"shortcuts.shortcutSettingsOpenNewTabTitle" = "Відкрити нову вкладку";
-
-/* Description of Open Playlist Siri Shortcut in Settings Screen */
-"shortcuts.shortcutSettingsOpenPlaylistDescription" = "Використовувати ярлики для відкриття списку відтворення через голосовий асистент Siri";
-
-/* No comment provided by engineer. */
-"shortcuts.shortcutSettingsOpenPlaylistTitle" = "Відкрити список відтворення";
-
-/* No comment provided by engineer. */
-"shortcuts.shortcutSettingsTitle" = "Ярлики Siri";
-
-/* No comment provided by engineer. */
-"SiteReportedBody" = "Дякуємо, що повідомили розробникам Brave про проблему з вебсайтом. Ми спробуємо вирішити її якнайшвидше!";
-
-/* No comment provided by engineer. */
-"SiteReportedTitle" = "Дякуємо";
-
-/* Title used when in warning pop-over when domain specific data save appears */
-"socialSharing.domainSpecificDataSavedTitle" = "Щодня я заощаджую трафік, переглядаючи вебсайти в Brave.";
-
-/* Text used for social sharing together with Brave Shield values */
-"socialSharing.shareDescriptionTitle" = "Щодня я заощаджую трафік, переглядаючи вебсайти в Brave.";
-
-/* Title of the bookmark import popup. */
-"sync.bookmarksImportPopupErrorTitle" = "Закладки";
-
-/* Message of the popup if bookmark import fails. */
-"sync.bookmarksImportPopupFailureMessage" = "Під час імпорту закладок сталася помилка";
-
-/* Message of the popup if bookmark import succeeds. */
-"sync.bookmarksImportPopupSuccessMessage" = "Закладки імпортовано";
-
-/* Text that informs a user about Brave Sync service deprecation. */
-"sync.syncV1DeprecationText" = "Скоро виходить нова версія Brave Sync, що вплине на ваші налаштування. Підготуйтеся до оновлення.";
-
-/* Bookmarks migration website page description */
-"sync.v2MigrationInterstitialPageDescription" = "Деякі закладки не вдалося перенести. Ви можете додати їх уручну.";
-
-/* Bookmarks migration website title */
-"sync.v2MigrationInterstitialTitle" = "Перенесення закладок";
 
 /* The button title for adding a user RSS feed */
 "today.addSource" = "Додати джерело";
@@ -3091,8 +3049,32 @@
 /* The header above a list of the users RSS feed sources */
 "today.yourSources" = "Ваші джерела";
 
+/* Shields Trackers Stat */
+"TrackersrBlocked" = "Трекерів\nзаблоковано";
+
 /* Prompt shown before enabling provider search queries */
 "Turn on search suggestions?" = "Увімкнути пошукові підказки?";
+
+/* Sync Alert */
+"UnableToConnectDescription" = "Не вдається приєднатися до групи синхронізації. Перевірте правильність введення кодових слів і спробуйте знову.";
+
+/* Sync Alert */
+"UnableToConnectTitle" = "Неможливо з'єднатися";
+
+/* Error message if list of Payment Instruments doesn't include BAT */
+"unsupportedInstrumentMessage" = "Інструменти оплати не підтримуються";
+
+/* Bookmark URL */
+"URL" = "URL";
+
+/* Accessibility label for address and search field, both words (Address, Search) are therefore nouns. */
+"URLBarViewLocationTextViewAccessibilityLabel" = "Адреса і пошук";
+
+/* Error message if the payment workflow is canceled by the user */
+"userCancelledMessage" = "Скасував користувач";
+
+/* Setting to allow user in non-english locale to use adblock rules specifc to their language */
+"UseRegionalAdblock" = "Використовувати локальний блокувальник реклами";
 
 /* No comment provided by engineer. */
 "UserWalletCloseButtonTitle" = "Закрити";
@@ -3103,8 +3085,14 @@
 /* No comment provided by engineer. */
 "UserWalletGenericErrorTitle" = "Сталася помилка";
 
+/* Version number of Brave shown in settings */
+"VersionTemplate" = "Версія %1$@ (%2$@)";
+
+/* Label that says where to view an item. '%@' is a placeholder and will include things like 'Instagram', 'unsplash'. The full label will look like 'View  on Instagram'. */
+"ViewOn" = "Переглянути в %@";
+
 /* Button text to buy Brave VPN */
-"vpn.buyButton" = "Купити";
+"vpn.buyButton" = "Придбати";
 
 /* Title for screen to buy the VPN. */
 "vpn.buyVPNTitle" = "Файрвол та VPN-розширення браузера Brave";
@@ -3233,7 +3221,7 @@
 "vpn.monthlySubTitle" = "Щомісячна підписка";
 
 /* Text to show user when their vpn plan has expired */
-"vpn.planExpired" = "Термін дії закінчився";
+"vpn.planExpired" = "Термін дії завершився";
 
 /* Text for a checkbox to present the user benefits for using Brave VPN */
 "vpn.popupCheckmark247Support" = "Цілодобова підтримка без вихідних";
@@ -3308,7 +3296,7 @@
 "vpn.settingsSubscriptionSection" = "Підписка";
 
 /* Table cell title for status of current VPN subscription. */
-"vpn.settingsSubscriptionStatus" = "Статус";
+"vpn.settingsSubscriptionStatus" = "Стан";
 
 /* Whether the VPN is enabled or not */
 "vpn.settingsVPNDisabled" = "Вимкнено";
@@ -3317,7 +3305,7 @@
 "vpn.settingsVPNEnabled" = "Увімкнено";
 
 /* Whether the VPN plan has expired */
-"vpn.settingsVPNExpired" = "Термін дії закінчився";
+"vpn.settingsVPNExpired" = "Термін дії завершився";
 
 /* Notification title to tell user that the vpn is turned on even in background */
 "vpn.vpnBackgroundNotificationBody" = "Brave захищатиме вас навіть у фоновому режимі.";
@@ -3369,6 +3357,12 @@
 
 /* One year lenght vpn subcription */
 "vpn.yearlySubTitle" = "Річна";
+
+/* The date your wallet was created */
+"WalletCreationDate" = "Дата створення гаманця";
+
+/* Accessibility label for the main web content view */
+"WebContentAccessibilityLabel" = "Веб-вміст";
 
 /* Temporary data that is stored on the users device to speed up future requests and interactions. */
 "websiteData.dataRecordCache" = "Кеш";
@@ -3442,18 +3436,18 @@
 /* Title for Brave Shields single stat widget on 'add widget' screen. */
 "widgets.singleStatTitle" = "Звіт про конфіденційність";
 
+/* Word count title */
+"WordCount" = "Кількість слів: %i";
+
+/* Abbreviation for 'Year', use full word' Yeara' if this word can't be shortened in your language */
+"yearAbbreviation" = "р.";
+
 /* For search suggestions prompt. This string should be short so it fits nicely on the prompt row. */
 "Yes" = "Так";
 
-/* Client is in an invalid state which caused the error */
-"clientErrorMessage" = "Помилка клієнта";
+/* Button title to confirm the deletion of a bookmarks folder */
+"YesDeleteButtonTitle" = "Так, видалити";
 
-/* Error message if details don't have the right type or values */
-"invalidDetailsMessage" = "Недійсні дані в запиті платежу";
-
-/* Error message if list of Payment Instruments doesn't include BAT */
-"unsupportedInstrumentMessage" = "Інструменти оплати не підтримуються";
-
-/* Error message if the payment workflow is canceled by the user */
-"userCancelledMessage" = "Скасував користувач";
+/* History tableview section header */
+"Yesterday" = "Учора";
 

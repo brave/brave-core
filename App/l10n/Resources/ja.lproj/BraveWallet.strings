@@ -145,9 +145,6 @@
 /* A disclaimer that appears at the bottom of an swap screen which discloses the fixed Brave fee included in the swap quotes. '%@' will be replaced by a percentage. For example: 'Quote includes a 0.875% Brave fee' */
 "wallet.braveSwapFeeDisclaimer" = "相場価格は %@ のBrave手数料を含んでいます。";
 
-/* The title shown on the wallet settings page. */
-"wallet.braveWallet" = "Braveウォレット";
-
 /* As in buying cryptocurrency */
 "wallet.buy" = "購入する";
 
@@ -350,7 +347,7 @@
 "wallet.editfCustomNetworkTitle" = "ネットワークを編集";
 
 /* A button title displayed under a Gas Fee title that allows the user to adjust the gas fee/transactions priority */
-"wallet.editGasFeeButtonTitle" = "編集する";
+"wallet.editGasFeeButtonTitle" = "動画の管理";
 
 /* A title of the edit gas screen for standard transactions */
 "wallet.editGasTitle" = "Gasを編集する";
@@ -381,6 +378,18 @@
 
 /* The title of the detail view to edit the permissions / allowance of an ERC 20 Approve transaction. */
 "wallet.editPermissionsTitle" = "権限の編集";
+
+/* The title of the button for users to click so that they connect wallet account to the dapp site(also permission given). It will be displayed at the right hand side of each account option in edit site connection screen. */
+"wallet.editSiteConnectionAccountActionConnect" = "接続";
+
+/* The title of the button for users to click so that they disconnect wallet account to the dapp site(also permission removed). It will be displayed at the right hand side of each account option in edit site connection screen. */
+"wallet.editSiteConnectionAccountActionSwitch" = "切り替える";
+
+/* The plural word that will beused in `editSiteConnectionConnectedAccount`. */
+"wallet.editSiteConnectionAccountPlural" = "アカウント";
+
+/* The singular word that will be used in `editSiteConnectionConnectedAccount`. */
+"wallet.editSiteConnectionAccountSingular" = "アカウント";
 
 /* The error alert body when something is wrong when users try to edit transaction gas fee, priority fee, nonce value or allowance value. */
 "wallet.editTransactionError" = "入力内容を確認して再度お試しください。";
@@ -487,11 +496,44 @@
 /* The title of the lock option inside the menu when user clicks the three dots button beside assets search button. */
 "wallet.lock" = "ロックする";
 
+/* The amount of current permitted wallet accounts to the dapp site. It is displayed below the origin url of the dapp site in manage site connections screen. '%lld' refers to a number, %@ is `account` for singular and `accounts` for plural (for example \"1 account\" or \"2 accounts\") */
+"wallet.manageSiteConnectionsAccount" = "%1$lld個の%2$@";
+
+/* The plural word that will beused in `manageSiteConnectionsAccount`. */
+"wallet.manageSiteConnectionsAccountPlural" = "アカウント";
+
+/* The singular word that will be used in `manageSiteConnectionsAccount`. */
+"wallet.manageSiteConnectionsAccountSingular" = "アカウント";
+
+/* The message of the alert to confirm the users wants to remove all site connections, shown on the screen to manage web3 sites account connections. */
+"wallet.manageSiteConnectionsConfirmAlertMessage" = "この操作により、すべてのウェブサイトですべてのWalletの接続許可が削除されます。";
+
+/* The title of the confirmation button in the alert to confirm the users wants to remove all site connections, shown on the screen to manage web3 sites account connections. */
+"wallet.manageSiteConnectionsConfirmAlertRemove" = "削除";
+
+/* The title of the alert to confirm the users wants to remove all site connections, shown on the screen to manage web3 sites account connections. */
+"wallet.manageSiteConnectionsConfirmAlertTitle" = "すべての許可を削除しますか？";
+
+/* The message of the alert to confirm the users wants to remove all site connections from this specific website, shown after selecting/opening a website on the screen to manage web3 sites account connections. */
+"wallet.manageSiteConnectionsDetailConfirmAlertMessage" = "この操作により、このウェブサイトですべてのWalletの接続許可が削除されます。";
+
+/* The header shown above the list of connected accounts for a single website, shown after selecting/opening a website on the screen to manage web3 sites account connections. */
+"wallet.manageSiteConnectionsDetailHeader" = "接続済みのイーサリアムアカウント";
+
+/* The filter in the search bar for the screen to manage web3 sites account connections. */
+"wallet.manageSiteConnectionsFilterPlaceholder" = "フィルター";
+
+/* The title of the button on the screen to manage web3 sites account connections that will show an alert to remove all connected website permissions. */
+"wallet.manageSiteConnectionsRemoveAll" = "すべてを削除";
+
 /* The highest the user will pay in a gas fee based on the entered gas fee details or predefined option. It is displayed above the amount */
 "wallet.maximumGasFee" = "最大手数料";
 
 /* The title of the edit gas fee screen for EIP-1559 transactions */
 "wallet.maxPriorityFeeTitle" = "優先手数料上限";
+
+/* The title shown on the wallet settings page, and the value shown when selecting the default wallet as Brave Wallet in wallet settings. */
+"wallet.module" = "Braveウォレット";
 
 /* The footer beneath the networks title in settings screen. */
 "wallet.networkFooter" = "ウォレットネットワークのカスタマイズ";
@@ -656,7 +698,7 @@
 "wallet.sendCryptoAmountTitle" = "送信する %@ の量を入力";
 
 /* A title above the cryptocurrency token/asset you are sending from. For example this would appear over a cell that has the 'BAT' token selected */
-"wallet.sendCryptoFromTitle" = "送信元";
+"wallet.sendCryptoFromTitle" = "スワップ元";
 
 /* The title of the button for users to click when they want to send the sending-transaction */
 "wallet.sendCryptoSendButtonTitle" = "送信する";
@@ -665,7 +707,7 @@
 "wallet.sendCryptoSendError" = "現在あなたのトランザクションを実行することができません。";
 
 /* A title above the address you want to send to. For example this would appear over a cell that has the 'OxFCdf***DDee' with a clipboard icon and a qr-code icon on the right hand side */
-"wallet.sendCryptoToTitle" = "送信先";
+"wallet.sendCryptoToTitle" = "スワップ先";
 
 /* The description of a send button on the buy/send/swap modal */
 "wallet.sendDescription" = "暗号資産をあるアカウントから別のアカウントに送信もしくは移動します。";
@@ -686,7 +728,7 @@
 "wallet.sendWarningAddressNotValid" = "有効なETHアドレスではありません";
 
 /* As in sent cryptocurrency from one asset to another */
-"wallet.sent" = "送信頻度";
+"wallet.sent" = "送信済";
 
 /* The title of the settings option inside the menu when user clicks the three dots button beside assets search button. */
 "wallet.settings" = "設定";
@@ -758,7 +800,7 @@
 "wallet.skipButtonTitle" = "スキップ";
 
 /* As in swapping cryptocurrency from one asset to another */
-"wallet.swap" = "スワップする";
+"wallet.swap" = "スワップ";
 
 /* A title above the amount of asset you will receive from the swap. '%@' will be replaced with a token symbol such as 'ETH' or 'BAT' */
 "wallet.swapCryptoAmountReceivingTitle" = "受け取る %@ の量（推定）";
@@ -948,4 +990,25 @@
 
 /* The title shown on the menu to access Brave Wallet */
 "wallet.wallet" = "ウォレット";
+
+/* The title of the button for users to click to go to edit site connection screen. This title indicates the user is currently not connected any his/her wallet account to the dapp. */
+"wallet.walletPanelConnect" = "接続";
+
+/* The value shown when selecting the default wallet as none / no wallet in wallet settings. */
+"wallet.walletTypeNone" = "なし";
+
+/* The title for the entry displaying the preferred option to allow web3 sites to rquest account's permission. */
+"wallet.web3PreferencesAllowSiteToRequestAccounts" = "サイトにアカウントのリクエストを許可する";
+
+/* The title for the entry displaying the current preferred default wallet is. */
+"wallet.web3PreferencesDefaultWallet" = "デフォルトのウォレット";
+
+/* The title for the entry displaying the preferred option to display web3 site notifications. */
+"wallet.web3PreferencesDisplayWeb3Notifications" = "Web3通知の表示";
+
+/* The title for the entry that by clicking will direct users to the screen to manage web3 sites account connections, and the title for the Manage Site Connections screen. */
+"wallet.web3PreferencesManageSiteConnections" = "サイトの接続管理";
+
+/* The section title for users to set up preferences for interation with web3 sites. */
+"wallet.web3PreferencesSectionTitle" = "Web3環境設定";
 

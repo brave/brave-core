@@ -1,3 +1,6 @@
+/* A brief descriptive name for this app on this device, used for Send Tab and Synced Tabs. The first argument is the app name. The second argument is the device name. */
+"AppAndDeviceNameFormat" = "%1$@ na %2$@";
+
 /* Accessibility label for the Menu button. */
 "AppMenuButtonAccessibilityLabel" = "Menu";
 
@@ -11,7 +14,10 @@
 "AppMenuViewMobileSiteTitleString" = "Otwórz wersję mobilną";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
-"BackTitle" = "Wróć";
+"BackTitle" = "Wstecz";
+
+/* General settings bookmarks last visited folder toggle title */
+"BookmarksLastVisitedFolderTitle" = "Pokaż ostatnio używane zakładki";
 
 /* Button confirming the cancellation of the download. */
 "CancelDownloadDialogCancel" = "Anuluj";
@@ -24,6 +30,9 @@
 
 /* Alert dialog title when the user taps the cancel download icon. */
 "CancelDownloadDialogTitle" = "Anuluj pobieranie";
+
+/* Cancel button */
+"CancelString" = "Anuluj";
 
 /* Hardware shortcut to close all tabs from the tab tray. Shown in the Discoverability overlay when the hardware Command Key is held down. */
 "CloseAllTabsFromTabTrayKeyCodeTitle" = "Zamknij wszystkie karty";
@@ -41,13 +50,7 @@
 "ContextMenuButtonToastNewTabOpenedLabelText" = "Otwarto nową kartę";
 
 /* The title for the button that lets you copy the url from the location bar. */
-"CopyAddressTitle" = "Skopiuj adres";
-
-/* A message explaining fault in custom search engine form. */
-"CustomEngineDuplicateErrorMessage" = "Dodano już wyszukiwarkę o tej nazwie lub adresie URL. ";
-
-/* A message explaining fault in custom search engine form. */
-"CustomEngineFormErrorMessage" = "Proszę prawidłowo wypełnić wszystkie pola.";
+"CopyAddressTitle" = "Kopiuj adres";
 
 /* The label text in the Download Cancelled toast for showing confirmation that the download was cancelled. */
 "DownloadCancelledToastLabelText" = "Pobieranie anulowane";
@@ -65,7 +68,7 @@
 "DownloadProgressToastDescriptionText" = "%1$@/%2$@";
 
 /* The button to open a new tab with the Downloads home panel */
-"DownloadsButtonTitle" = "Pobierane";
+"DownloadsButtonTitle" = "Pobrania";
 
 /* Question shown to user when tapping a link that opens the App Store app */
 "ExternalLinkAppStoreConfirmationTitle" = "Czy otworzyć to łącze w aplikacji App Store?";
@@ -74,7 +77,7 @@
 "FindTitle" = "Znajdź";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
-"ForwardTitle" = "Dalej";
+"ForwardTitle" = "Do przodu";
 
 /* The button to open a new tab with the copied link */
 "GoButtonTittle" = "Otwórz";
@@ -100,6 +103,9 @@
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "NewTabTitle" = "Nowa karta";
 
+/* No comment provided by engineer. */
+"No server found" = "Nie znaleziono serwera";
+
 /* OK button */
 "OKString" = "OK";
 
@@ -116,19 +122,19 @@
 "PasteTitle" = "Wklej";
 
 /* Accessibility message e.g. spoken by VoiceOver when Reader Mode becomes available. */
-"ReaderModeAvailableVoiceOverAnnouncement" = "Dostępny Tryb odczytu";
+"ReaderModeAvailableVoiceOverAnnouncement" = "Dostępny Tryb Czytania";
 
 /* Accessibility label for button resetting font size in display settings of reader mode */
 "ReaderModeResetFontSizeAccessibilityLabel" = "Zresetuj rozmiar tekstu";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
-"ReloadPageTitle" = "Wczytaj stronę ponownie";
+"ReloadPageTitle" = "Odśwież stronę";
 
 /* Prompt for saving a password with no username. The parameter is the hostname of the site. */
-"SaveLoginPrompt" = "Czy zapisać hasło na %@?";
+"SaveLoginPrompt" = "Zapisać hasło do %@?";
 
 /* Prompt for saving a login. The first parameter is the username being saved. The second parameter is the hostname of the site. */
-"SaveLoginUsernamePrompt" = "Czy zapisać login %1$@ na %2$@?";
+"SaveLoginUsernamePrompt" = "Zapisać login %1$@ do %2$@?";
 
 /* OK button to dismiss the error prompt. */
 "ScanQRCodeErrorOKButton" = "OK";
@@ -146,7 +152,7 @@
 "ScanQRCodeViewTitle" = "Skanuj kod QR";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
-"SelectLocationBarTitle" = "Wybierz pasek lokalizacji";
+"SelectLocationBarTitle" = "Zaznacz pasek lokalizacji";
 
 /* Alert dialog body when the user opens the home page for the first time. */
 "SetHomePageDialogMessage" = "W każdej chwili możesz ją zmienić w Ustawieniach";
@@ -179,10 +185,16 @@
 "SettingsSearchEditButton" = "Edytuj";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
+"showBookmarksTitle" = "Pokaż zakładki";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
 "ShowNextTabTitle" = "Pokaż następną kartę";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "ShowPreviousTabTitle" = "Pokaż poprzednią kartę";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts which is for Showing Brave Shields */
+"showShieldsTitle" = "Otwórz Brave Shields";
 
 /* Hardware shortcut to open the tab tray from a tab. Shown in the Discoverability overlay when the hardware Command Key is held down. */
 "ShowTabTrayFromTabKeyCodeTitle" = "Pokaż wszystkie karty";
@@ -198,27 +210,6 @@
 
 /* The label indicating that all the tabs were closed */
 "TabsDeleteAllUndoTitle" = "Zamknięte karty: %d";
-
-/* The message that asks the user to Add the search provider explaining where the search engine will appear */
-"ThirdPartySearchAddMessage" = "Na pasku szybkiego wyszukiwania pojawi się nowa wyszukiwarka.";
-
-/* The title that asks the user to Add the search provider */
-"ThirdPartySearchAddTitle" = "Czy dodać wyszukiwarkę?";
-
-/* The cancel button if you do not want to add a search engine. */
-"ThirdPartySearchCancelButton" = "Anuluj";
-
-/* The success message that appears after a user sucessfully adds a new search engine */
-"ThirdPartySearchEngineAdded" = "Dodano wyszukiwarkę!";
-
-/* A title explaining that we failed to add a search engine */
-"ThirdPartySearchFailedMessage" = "Nie udało się dodać wyszukiwarki.";
-
-/* A title explaining that we failed to add a search engine */
-"ThirdPartySearchFailedTitle" = "Nie powiodło się.";
-
-/* The confirmation button */
-"ThirdPartySearchOkayButton" = "OK";
 
 /* Button to dismiss the 'Add Pass Failed' alert.  See https://support.apple.com/HT204003 for context on Wallet. */
 "UnableToAddPassErrorDismiss" = "OK";
@@ -236,17 +227,14 @@
 "UnableToOpenURLErrorTitle" = "Nie można otworzyć strony";
 
 /* Prompt for updating a login. The first parameter is the username for which the password will be updated for. The second parameter is the hostname of the site. */
-"UpdateLoginPrompt" = "Czy zaktualizować login %1$@ na %2$@?";
+"UpdateLoginPrompt" = "Zaktualizować login %1$@ do %2$@?";
 
 /* Prompt for updating a login. The first parameter is the username for which the password will be updated for. The second parameter is the hostname of the site. */
-"UpdateLoginUsernamePrompt" = "Czy zaktualizować login %1$@ na %2$@?";
+"UpdateLoginUsernamePrompt" = "Zaktualizować login %1$@ do %2$@?";
 
 /* List section title for when to use Face ID */
 "UseFaceID" = "Użyj Face ID";
 
 /* List section title for when to use Touch ID */
 "UseTouchID" = "Użyj Touch ID";
-
-/* No comment provided by engineer. */
-"No server found" = "Nie znaleziono serwera";
 

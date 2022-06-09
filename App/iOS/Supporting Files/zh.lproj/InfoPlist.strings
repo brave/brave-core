@@ -1,16 +1,14 @@
 /* (No Comment) */
 "1Password Fill Browser Action" = "1密码填写浏览器操作";
 
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+/* Privacy - NFC Scan Usage Description */
 "NFCReaderUsageDescription" = "该应用程序需要访问 NFC 读数，以与 Yubikey 通信。";
 
 /* Privacy - Camera Usage Description */
 "NSCameraUsageDescription" = "这可使您拍照和上传照片。";
 
 /* Privacy - Face ID Usage Description */
-"NSFaceIDUsageDescription" = "这将证明您获有对 Brave 的访问权限";
+"NSFaceIDUsageDescription" = "这将证明您获有对 Brave 的访问权";
 
 /* Privacy - Location When In Use Usage Description */
 "NSLocationWhenInUseUsageDescription" = "您访问的网站可能需要您的位置。";
@@ -23,13 +21,4 @@
 
 /* (No Comment) */
 "OPML File" = "OPML 文件";
-
-/* (No Comment) */
-"ShortcutItemTitleNewPrivateTab" = "新私人标签页";
-
-/* (No Comment) */
-"ShortcutItemTitleNewTab" = "新标签页";
-
-/* (No Comment) */
-"ShortcutItemTitleQRCode" = "扫描二维码";
 

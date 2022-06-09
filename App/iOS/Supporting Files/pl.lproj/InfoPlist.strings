@@ -1,9 +1,7 @@
 /* (No Comment) */
 "1Password Fill Browser Action" = "1 Działanie przeglądarki – wypełnienie hasła";
 
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+/* Privacy - NFC Scan Usage Description */
 "NFCReaderUsageDescription" = "Aplikacja wymaga dostępu do odczytu NFC w celu komunikacji z Twoim Yubikey.";
 
 /* Privacy - Camera Usage Description */
@@ -23,13 +21,4 @@
 
 /* (No Comment) */
 "OPML File" = "Plik OPML";
-
-/* (No Comment) */
-"ShortcutItemTitleNewPrivateTab" = "Nowa karta w trybie prywatnym";
-
-/* (No Comment) */
-"ShortcutItemTitleNewTab" = "Nowa karta";
-
-/* (No Comment) */
-"ShortcutItemTitleQRCode" = "Skanuj kod QR";
 

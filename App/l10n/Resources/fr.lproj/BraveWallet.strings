@@ -145,9 +145,6 @@
 /* A disclaimer that appears at the bottom of an swap screen which discloses the fixed Brave fee included in the swap quotes. '%@' will be replaced by a percentage. For example: 'Quote includes a 0.875% Brave fee' */
 "wallet.braveSwapFeeDisclaimer" = "Le devis inclut des frais Brave de %@.";
 
-/* The title shown on the wallet settings page. */
-"wallet.braveWallet" = "Portefeuille Brave";
-
 /* As in buying cryptocurrency */
 "wallet.buy" = "Acheter";
 
@@ -382,6 +379,18 @@
 /* The title of the detail view to edit the permissions / allowance of an ERC 20 Approve transaction. */
 "wallet.editPermissionsTitle" = "Modifier les autorisations";
 
+/* The title of the button for users to click so that they connect wallet account to the dapp site(also permission given). It will be displayed at the right hand side of each account option in edit site connection screen. */
+"wallet.editSiteConnectionAccountActionConnect" = "Connexion";
+
+/* The title of the button for users to click so that they disconnect wallet account to the dapp site(also permission removed). It will be displayed at the right hand side of each account option in edit site connection screen. */
+"wallet.editSiteConnectionAccountActionSwitch" = "Changer";
+
+/* The plural word that will beused in `editSiteConnectionConnectedAccount`. */
+"wallet.editSiteConnectionAccountPlural" = "comptes";
+
+/* The singular word that will be used in `editSiteConnectionConnectedAccount`. */
+"wallet.editSiteConnectionAccountSingular" = "compte";
+
 /* The error alert body when something is wrong when users try to edit transaction gas fee, priority fee, nonce value or allowance value. */
 "wallet.editTransactionError" = "Vérifiez les valeurs saisies, puis réessayez.";
 
@@ -487,11 +496,44 @@
 /* The title of the lock option inside the menu when user clicks the three dots button beside assets search button. */
 "wallet.lock" = "Verrouiller";
 
+/* The amount of current permitted wallet accounts to the dapp site. It is displayed below the origin url of the dapp site in manage site connections screen. '%lld' refers to a number, %@ is `account` for singular and `accounts` for plural (for example \"1 account\" or \"2 accounts\") */
+"wallet.manageSiteConnectionsAccount" = "%1$lld %2$@";
+
+/* The plural word that will beused in `manageSiteConnectionsAccount`. */
+"wallet.manageSiteConnectionsAccountPlural" = "comptes";
+
+/* The singular word that will be used in `manageSiteConnectionsAccount`. */
+"wallet.manageSiteConnectionsAccountSingular" = "compte";
+
+/* The message of the alert to confirm the users wants to remove all site connections, shown on the screen to manage web3 sites account connections. */
+"wallet.manageSiteConnectionsConfirmAlertMessage" = "Cela supprimera toutes les autorisations de connexion du portefeuille pour tous les sites Web.";
+
+/* The title of the confirmation button in the alert to confirm the users wants to remove all site connections, shown on the screen to manage web3 sites account connections. */
+"wallet.manageSiteConnectionsConfirmAlertRemove" = "Supprimer";
+
+/* The title of the alert to confirm the users wants to remove all site connections, shown on the screen to manage web3 sites account connections. */
+"wallet.manageSiteConnectionsConfirmAlertTitle" = "Supprimer toutes les autorisations ?";
+
+/* The message of the alert to confirm the users wants to remove all site connections from this specific website, shown after selecting/opening a website on the screen to manage web3 sites account connections. */
+"wallet.manageSiteConnectionsDetailConfirmAlertMessage" = "Cela supprimera toutes les autorisations de connexion du portefeuille pour ce site Web.";
+
+/* The header shown above the list of connected accounts for a single website, shown after selecting/opening a website on the screen to manage web3 sites account connections. */
+"wallet.manageSiteConnectionsDetailHeader" = "Comptes Ethereum connectés";
+
+/* The filter in the search bar for the screen to manage web3 sites account connections. */
+"wallet.manageSiteConnectionsFilterPlaceholder" = "Filtrer";
+
+/* The title of the button on the screen to manage web3 sites account connections that will show an alert to remove all connected website permissions. */
+"wallet.manageSiteConnectionsRemoveAll" = "Tout supprimer";
+
 /* The highest the user will pay in a gas fee based on the entered gas fee details or predefined option. It is displayed above the amount */
 "wallet.maximumGasFee" = "Frais maximums";
 
 /* The title of the edit gas fee screen for EIP-1559 transactions */
 "wallet.maxPriorityFeeTitle" = "Frais de priorité max.";
+
+/* The title shown on the wallet settings page, and the value shown when selecting the default wallet as Brave Wallet in wallet settings. */
+"wallet.module" = "Portefeuille Brave";
 
 /* The footer beneath the networks title in settings screen. */
 "wallet.networkFooter" = "Personnalisation des réseaux du portefeuille";
@@ -684,9 +726,6 @@
 
 /* A warning that appears below the send crypto address text field, when the input `To` address is not a valid ETH address. */
 "wallet.sendWarningAddressNotValid" = "Il ne s'agit pas d'une adresse ETH valide.";
-
-/* As in sent cryptocurrency from one asset to another */
-"wallet.sent" = "Envoyé";
 
 /* The title of the settings option inside the menu when user clicks the three dots button beside assets search button. */
 "wallet.settings" = "Paramètres";
@@ -948,4 +987,25 @@
 
 /* The title shown on the menu to access Brave Wallet */
 "wallet.wallet" = "Portefeuille";
+
+/* The title of the button for users to click to go to edit site connection screen. This title indicates the user is currently not connected any his/her wallet account to the dapp. */
+"wallet.walletPanelConnect" = "Connexion";
+
+/* The value shown when selecting the default wallet as none / no wallet in wallet settings. */
+"wallet.walletTypeNone" = "Aucun";
+
+/* The title for the entry displaying the preferred option to allow web3 sites to rquest account's permission. */
+"wallet.web3PreferencesAllowSiteToRequestAccounts" = "Autoriser les sites à demander des comptes";
+
+/* The title for the entry displaying the current preferred default wallet is. */
+"wallet.web3PreferencesDefaultWallet" = "Portefeuille par défaut";
+
+/* The title for the entry displaying the preferred option to display web3 site notifications. */
+"wallet.web3PreferencesDisplayWeb3Notifications" = "Afficher les notifications Web3";
+
+/* The title for the entry that by clicking will direct users to the screen to manage web3 sites account connections, and the title for the Manage Site Connections screen. */
+"wallet.web3PreferencesManageSiteConnections" = "Gérer les connexions du site";
+
+/* The section title for users to set up preferences for interation with web3 sites. */
+"wallet.web3PreferencesSectionTitle" = "Préférences Web3";
 

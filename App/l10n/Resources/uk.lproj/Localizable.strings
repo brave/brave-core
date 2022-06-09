@@ -1,3 +1,6 @@
+/* A brief descriptive name for this app on this device, used for Send Tab and Synced Tabs. The first argument is the app name. The second argument is the device name. */
+"AppAndDeviceNameFormat" = "%1$@ на %2$@";
+
 /* Accessibility label for the Menu button. */
 "AppMenuButtonAccessibilityLabel" = "Меню";
 
@@ -13,6 +16,9 @@
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "BackTitle" = "Назад";
 
+/* General settings bookmarks last visited folder toggle title */
+"BookmarksLastVisitedFolderTitle" = "Показувати останні відвідані закладки";
+
 /* Button confirming the cancellation of the download. */
 "CancelDownloadDialogCancel" = "Скасувати";
 
@@ -24,6 +30,9 @@
 
 /* Alert dialog title when the user taps the cancel download icon. */
 "CancelDownloadDialogTitle" = "Скасувати завантаження";
+
+/* Cancel button */
+"CancelString" = "Скасувати";
 
 /* Hardware shortcut to close all tabs from the tab tray. Shown in the Discoverability overlay when the hardware Command Key is held down. */
 "CloseAllTabsFromTabTrayKeyCodeTitle" = "Закрити всі вкладки";
@@ -41,13 +50,7 @@
 "ContextMenuButtonToastNewTabOpenedLabelText" = "Відкрито нову вкладку";
 
 /* The title for the button that lets you copy the url from the location bar. */
-"CopyAddressTitle" = "Скопіювати адресу";
-
-/* A message explaining fault in custom search engine form. */
-"CustomEngineDuplicateErrorMessage" = "Пошукову систему з цією назвою або URL-адресою вже додано.";
-
-/* A message explaining fault in custom search engine form. */
-"CustomEngineFormErrorMessage" = "Заповніть усі поля правильно.";
+"CopyAddressTitle" = "Копіювати адресу";
 
 /* The label text in the Download Cancelled toast for showing confirmation that the download was cancelled. */
 "DownloadCancelledToastLabelText" = "Завантаження скасовано";
@@ -74,7 +77,7 @@
 "FindTitle" = "Знайти";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
-"ForwardTitle" = "Вперед";
+"ForwardTitle" = "Далі";
 
 /* The button to open a new tab with the copied link */
 "GoButtonTittle" = "Перейти";
@@ -100,8 +103,11 @@
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "NewTabTitle" = "Нова вкладка";
 
+/* No comment provided by engineer. */
+"No server found" = "Сервер не знайдено";
+
 /* OK button */
-"OKString" = "OK";
+"OKString" = "ОК";
 
 /* Hardware shortcut to open a new tab from the tab tray. Shown in the Discoverability overlay when the hardware Command Key is held down. */
 "OpenNewTabFromTabTrayKeyCodeTitle" = "Відкрити нову вкладку";
@@ -110,7 +116,7 @@
 "OpenSelectedTabFromTabTrayKeyCodeTitle" = "Відкрити вибрану вкладку";
 
 /* The title for the button that lets you paste and go to a URL */
-"PasteAndGoTitle" = "Вставити і перейти";
+"PasteAndGoTitle" = "Вставити та перейти";
 
 /* The title for the button that lets you paste into the location bar */
 "PasteTitle" = "Вставити";
@@ -128,10 +134,10 @@
 "SaveLoginPrompt" = "Зберегти пароль для %@?";
 
 /* Prompt for saving a login. The first parameter is the username being saved. The second parameter is the hostname of the site. */
-"SaveLoginUsernamePrompt" = "Зберегти облікові дані %1$@ для %2$@?";
+"SaveLoginUsernamePrompt" = "Зберегти пароль користувача %1$@ для %2$@?";
 
 /* OK button to dismiss the error prompt. */
-"ScanQRCodeErrorOKButton" = "OK";
+"ScanQRCodeErrorOKButton" = "ОК";
 
 /* Text for the instructions label, displayed in the QR scanner view */
 "ScanQRCodeInstructionsLabel" = "Щоб провести сканування, розташуйте QR-код усередині рамки";
@@ -146,19 +152,19 @@
 "ScanQRCodeViewTitle" = "Сканування QR-коду";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
-"SelectLocationBarTitle" = "Віберіть панель розташування";
+"SelectLocationBarTitle" = "Виберіть панель розташування";
 
 /* Alert dialog body when the user opens the home page for the first time. */
-"SetHomePageDialogMessage" = "Змінюйте параметри в будь який час у розділі «Налаштування»";
+"SetHomePageDialogMessage" = "Змінюйте параметри в будь-який час у розділі «Налаштування»";
 
 /* Button cancelling changes setting the home page for the first time. */
 "SetHomePageDialogNo" = "Скасувати";
 
 /* Alert dialog title when the user opens the home page for the first time. */
-"SetHomePageDialogTitle" = "Використовувати цю сторінку в якості домашньої?";
+"SetHomePageDialogTitle" = "Використовувати цю сторінку як домашню?";
 
 /* Button accepting changes setting the home page for the first time. */
-"SetHomePageDialogYes" = "Встановити домашню сторінку";
+"SetHomePageDialogYes" = "Установити домашню сторінку";
 
 /* General settings section title */
 "SettingsGeneralSectionTitle" = "Загальні";
@@ -177,6 +183,9 @@
 
 /* Button displayed at the top of the search settings. */
 "SettingsSearchEditButton" = "Редагувати";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
+"showBookmarksTitle" = "Показати закладки";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "ShowNextTabTitle" = "Показати наступну вкладку";
@@ -199,29 +208,8 @@
 /* The label indicating that all the tabs were closed */
 "TabsDeleteAllUndoTitle" = "Закрито вкладок: %d";
 
-/* The message that asks the user to Add the search provider explaining where the search engine will appear */
-"ThirdPartySearchAddMessage" = "Нова пошукова система буде відображатися на панелі швидкого пошуку.";
-
-/* The title that asks the user to Add the search provider */
-"ThirdPartySearchAddTitle" = "Додати пошукову службу?";
-
-/* The cancel button if you do not want to add a search engine. */
-"ThirdPartySearchCancelButton" = "Скасувати";
-
-/* The success message that appears after a user sucessfully adds a new search engine */
-"ThirdPartySearchEngineAdded" = "Пошукову систему додано!";
-
-/* A title explaining that we failed to add a search engine */
-"ThirdPartySearchFailedMessage" = "Неможливо додати пошукову службу.";
-
-/* A title explaining that we failed to add a search engine */
-"ThirdPartySearchFailedTitle" = "Помилка";
-
-/* The confirmation button */
-"ThirdPartySearchOkayButton" = "OK";
-
 /* Button to dismiss the 'Add Pass Failed' alert.  See https://support.apple.com/HT204003 for context on Wallet. */
-"UnableToAddPassErrorDismiss" = "OK";
+"UnableToAddPassErrorDismiss" = "ОК";
 
 /* Text of the 'Add Pass Failed' alert.  See https://support.apple.com/HT204003 for context on Wallet. */
 "UnableToAddPassErrorMessage" = "Під час додавання коду до Wallet сталася помилка. Спробуйте ще раз пізніше.";
@@ -246,7 +234,4 @@
 
 /* List section title for when to use Touch ID */
 "UseTouchID" = "Використання Touch ID";
-
-/* No comment provided by engineer. */
-"No server found" = "Сервер не знайдено";
 
