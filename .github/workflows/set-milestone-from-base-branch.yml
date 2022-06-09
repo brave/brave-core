@@ -2,7 +2,7 @@ name: Set PR Milestone
 
 on:
   pull_request:
-    # types: [opened, reopened, edited, ready_for_review, review_requested]
+    types: [opened, reopened, edited, ready_for_review, review_requested, closed]
     branches: [master, 1.*]
 
 jobs:
@@ -14,4 +14,12 @@ jobs:
           REPO_NAME: ${{ github.event.repository.full_name }}
           PR_NUMBER: ${{ github.event.number }}
         run: |
-          env
+          readarray -t milestones < <(gh api /repos/brave/brave-core/milestones -q '.[] | .title')
+          if [ "$GITHUB_BASE_REF" = "master" ]; then
+              milestone_selector="Nightly"
+          else
+              milestone_selector="$GITHUB_BASE_REF"
+          fi
+
+          milestone=$(printf "%s\n" "${milestones[@]}" | grep -E "$milestone_selector")
+          gh pr edit -m "$milestone"
