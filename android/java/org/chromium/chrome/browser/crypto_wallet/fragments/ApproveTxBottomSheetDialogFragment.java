@@ -30,13 +30,16 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.tabs.TabLayout;
 
 import org.chromium.base.Log;
+import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.AssetPriceTimeframe;
 import org.chromium.brave_wallet.mojom.AssetRatioService;
 import org.chromium.brave_wallet.mojom.BlockchainRegistry;
 import org.chromium.brave_wallet.mojom.BlockchainToken;
+import org.chromium.brave_wallet.mojom.BraveWalletConstants;
 import org.chromium.brave_wallet.mojom.BraveWalletService;
 import org.chromium.brave_wallet.mojom.CoinType;
 import org.chromium.brave_wallet.mojom.JsonRpcService;
+import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.brave_wallet.mojom.NetworkInfo;
 import org.chromium.brave_wallet.mojom.TransactionInfo;
 import org.chromium.brave_wallet.mojom.TransactionType;
@@ -46,12 +49,14 @@ import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletBaseActiv
 import org.chromium.chrome.browser.crypto_wallet.adapters.ApproveTxFragmentPageAdapter;
 import org.chromium.chrome.browser.crypto_wallet.listeners.TransactionConfirmationListener;
 import org.chromium.chrome.browser.crypto_wallet.observers.ApprovedTxObserver;
+import org.chromium.chrome.browser.crypto_wallet.util.ParsedTransaction;
 import org.chromium.chrome.browser.crypto_wallet.util.TokenUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.url.GURL;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.ExecutorService;
@@ -64,7 +69,6 @@ public class ApproveTxBottomSheetDialogFragment extends BottomSheetDialogFragmen
     private String mAccountName;
     private boolean mRejected;
     private boolean mApproved;
-    private double mTotalPrice;
     private ApprovedTxObserver mApprovedTxObserver;
     private ExecutorService mExecutor;
     private Handler mHandler;
@@ -95,8 +99,10 @@ public class ApproveTxBottomSheetDialogFragment extends BottomSheetDialogFragmen
         mApproved = false;
         mExecutor = Executors.newSingleThreadExecutor();
         mHandler = new Handler(Looper.getMainLooper());
+        // TODO (Wengling): To support other networks, all hard-coded chainSymbol, etc. need to be
+        // get from current network instead.
         mChainSymbol = "ETH";
-        mChainDecimals = 18;
+        mChainDecimals = Utils.ETH_DEFAULT_DECIMALS;
         mTransactionInfos = Collections.emptyList();
     }
 
@@ -112,6 +118,7 @@ public class ApproveTxBottomSheetDialogFragment extends BottomSheetDialogFragmen
         mApprovedTxObserver = approvedTxObserver;
     }
 
+    // TODO: Make these into an interface so they can be shared between fragments and activities
     private AssetRatioService getAssetRatioService() {
         Activity activity = getActivity();
         if (activity instanceof BraveWalletBaseActivity) {
@@ -148,6 +155,14 @@ public class ApproveTxBottomSheetDialogFragment extends BottomSheetDialogFragmen
         Activity activity = getActivity();
         if (activity instanceof BraveWalletBaseActivity) {
             return ((BraveWalletBaseActivity) activity).getBraveWalletService();
+        }
+        return null;
+    }
+
+    private KeyringService getKeyringService() {
+        Activity activity = getActivity();
+        if (activity instanceof BraveWalletBaseActivity) {
+            return ((BraveWalletBaseActivity) activity).getKeyringService();
         }
         return null;
     }
@@ -194,95 +209,37 @@ public class ApproveTxBottomSheetDialogFragment extends BottomSheetDialogFragmen
         ViewParent parent = view.getParent();
         ((View) parent).getLayoutParams().height = ViewGroup.LayoutParams.WRAP_CONTENT;
         JsonRpcService jsonRpcService = getJsonRpcService();
-        assert jsonRpcService != null;
-        jsonRpcService.getChainId(CoinType.ETH, chainId -> {
-            jsonRpcService.getAllNetworks(CoinType.ETH, chains -> {
-                NetworkInfo[] customNetworks = Utils.getCustomNetworks(chains);
-                TextView networkName = view.findViewById(R.id.network_name);
-                networkName.setText(
-                        Utils.getNetworkText(getActivity(), chainId, customNetworks).toString());
-                String chainSymbol = "ETH";
-                int chainDecimals = 18;
-                for (NetworkInfo chain : chains) {
-                    if (chainId.equals(chain.chainId)) {
-                        if (Utils.isCustomNetwork(chainId)) {
-                            chainSymbol = chain.symbol;
-                            chainDecimals = chain.decimals;
-                            break;
-                        }
-                    }
-                }
-                mChainSymbol = chainSymbol;
-                mChainDecimals = chainDecimals;
-                TextView txType = view.findViewById(R.id.tx_type);
-                txType.setText(getResources().getString(R.string.send));
-                if (mTxInfo.txType == TransactionType.ERC20_TRANSFER
-                        || mTxInfo.txType == TransactionType.ERC20_APPROVE) {
-                    BlockchainRegistry blockchainRegistry = getBlockchainRegistry();
-                    assert blockchainRegistry != null;
-                    TokenUtils.getAllTokensFiltered(getBraveWalletService(), blockchainRegistry,
-                            chainId, TokenUtils.TokenType.ERC20, tokens -> {
-                                boolean foundToken = false;
-                                for (BlockchainToken token : tokens) {
-                                    // Replace USDC and DAI contract addresses for Ropsten network
-                                    token.contractAddress = Utils.getContractAddress(
-                                            chainId, token.symbol, token.contractAddress);
-                                    String symbol = token.symbol;
-                                    int decimals = token.decimals;
-                                    if (mTxInfo.txType == TransactionType.ERC20_APPROVE) {
-                                        txType.setText(String.format(
-                                                getResources().getString(R.string.activate_erc20),
-                                                symbol));
-                                        symbol = mChainSymbol;
-                                        decimals = mChainDecimals;
-                                    }
-                                    if (token.contractAddress.toLowerCase(Locale.getDefault())
-                                                    .equals(mTxInfo.txDataUnion.getEthTxData1559()
-                                                                    .baseData.to.toLowerCase(
-                                                                            Locale.getDefault()))) {
-                                        fillAssetDependentControls(symbol, view, decimals);
-                                        foundToken = true;
-                                        break;
-                                    }
-                                }
-                                // Most likely we have a native asset transfer on a custom EVM
-                                // compatible network
-                                if (!foundToken) {
-                                    fillAssetDependentControls(mChainSymbol, view, mChainDecimals);
-                                }
-                            });
-                } else if (mTxInfo.txType == TransactionType.ERC721_TRANSFER_FROM
-                        || mTxInfo.txType == TransactionType.ERC721_SAFE_TRANSFER_FROM) {
-                    BlockchainRegistry blockchainRegistry = getBlockchainRegistry();
-                    assert blockchainRegistry != null;
-                    TokenUtils.getAllTokensFiltered(getBraveWalletService(), blockchainRegistry,
-                            chainId, TokenUtils.TokenType.ERC721, tokens -> {
-                                boolean foundToken = false;
-                                for (BlockchainToken token : tokens) {
-                                    if (token.contractAddress.toLowerCase(Locale.getDefault())
-                                                    .equals(mTxInfo.txDataUnion.getEthTxData1559()
-                                                                    .baseData.to.toLowerCase(
-                                                                            Locale.getDefault()))) {
-                                        fillAssetDependentControls(
-                                                token.symbol, view, token.decimals);
-                                        foundToken = true;
-                                        break;
-                                    }
-                                }
-                                // Fallback to ETH to avoid empty screen
-                                if (!foundToken) {
-                                    fillAssetDependentControls(mChainSymbol, view, mChainDecimals);
-                                }
-                            });
-                } else {
-                    if (mTxInfo.txDataUnion.getEthTxData1559()
-                                    .baseData.to.toLowerCase(Locale.getDefault())
-                                    .equals(Utils.SWAP_EXCHANGE_PROXY.toLowerCase(
-                                            Locale.getDefault()))) {
-                        txType.setText(getResources().getString(R.string.swap));
-                    }
-                    fillAssetDependentControls(mChainSymbol, view, mChainDecimals);
-                }
+        KeyringService keyringService = getKeyringService();
+        assert jsonRpcService != null && keyringService != null;
+
+        TextView networkName = view.findViewById(R.id.network_name);
+        TextView txType = view.findViewById(R.id.tx_type);
+        jsonRpcService.getNetwork(CoinType.ETH, selectedNetwork -> {
+            networkName.setText(selectedNetwork.chainName);
+            keyringService.getKeyringInfo(BraveWalletConstants.DEFAULT_KEYRING_ID, keyringInfo -> {
+                final AccountInfo[] accounts = keyringInfo.accountInfos;
+                Utils.getTxExtraInfo((BraveWalletBaseActivity) getActivity(), selectedNetwork,
+                        accounts, null, false,
+                        (assetPrices, fullTokenList, nativeAssetsBalances,
+                                blockchainTokensBalances) -> {
+                            ParsedTransaction parsedTx = ParsedTransaction.parseTransaction(mTxInfo,
+                                    selectedNetwork, accounts, assetPrices, null, fullTokenList,
+                                    nativeAssetsBalances, blockchainTokensBalances);
+
+                            if (parsedTx.getType() == TransactionType.ERC20_APPROVE) {
+                                txType.setText(String.format(
+                                        getResources().getString(R.string.activate_erc20),
+                                        parsedTx.getSymbol()));
+                            } else if (parsedTx.getIsSwap()) {
+                                txType.setText(getResources().getString(R.string.swap));
+                            } else {
+                                txType.setText(getResources().getString(R.string.send));
+                            }
+
+                            fillAssetDependentControls(view, parsedTx, selectedNetwork, accounts,
+                                    assetPrices, fullTokenList, nativeAssetsBalances,
+                                    blockchainTokensBalances);
+                        });
             });
         });
         ImageView icon = (ImageView) view.findViewById(R.id.account_picture);
@@ -344,70 +301,41 @@ public class ApproveTxBottomSheetDialogFragment extends BottomSheetDialogFragmen
                 R.string.brave_wallet_queue_reject_all, String.valueOf(mTransactionInfos.size())));
     }
 
-    private void fillAssetDependentControls(String asset, View view, int decimals) {
-        String valueToConvert = mTxInfo.txDataUnion.getEthTxData1559().baseData.value;
-        String to = mTxInfo.txDataUnion.getEthTxData1559().baseData.to;
-        double value = Utils.fromHexWei(valueToConvert, decimals);
+    private void fillAssetDependentControls(View view, ParsedTransaction parsedTx,
+            NetworkInfo selectedNetwork, AccountInfo[] accounts,
+            HashMap<String, Double> assetPrices, BlockchainToken[] fullTokenList,
+            HashMap<String, Double> nativeAssetsBalances,
+            HashMap<String, HashMap<String, Double>> blockchainTokensBalances) {
         String amountText =
                 String.format(getResources().getString(R.string.crypto_wallet_amount_asset),
-                        String.format(Locale.getDefault(), "%.4f", value), asset);
-        // TODO (Wengling): Transaction Parser
-        // (components/brave_wallet_ui/common/hooks/transaction-parser.ts)
-        if (mTxInfo.txType == TransactionType.ERC20_TRANSFER && mTxInfo.txArgs.length > 1) {
-            value = Utils.fromHexWei(mTxInfo.txArgs[1], decimals);
-            to = mTxInfo.txArgs[0];
-            amountText =
-                    String.format(getResources().getString(R.string.crypto_wallet_amount_asset),
-                            String.format(Locale.getDefault(), "%.4f", value), asset);
-        } else if ((mTxInfo.txType == TransactionType.ERC721_TRANSFER_FROM
-                           || mTxInfo.txType == TransactionType.ERC721_SAFE_TRANSFER_FROM)
-                && mTxInfo.txArgs.length > 2) {
-            to = mTxInfo.txArgs[1];
-            String tokenId = mTxInfo.txArgs[2];
-            amountText = String.format(
-                    getResources().getString(R.string.crypto_wallet_amount_asset_erc721), asset,
-                    String.format(Locale.getDefault(), "%d", (int) Utils.fromHexWei(tokenId, 0)));
-        }
+                        parsedTx.formatValueToDisplay(), parsedTx.getSymbol());
         TextView fromTo = view.findViewById(R.id.from_to);
         fromTo.setText(String.format(getResources().getString(R.string.crypto_wallet_from_to),
-                mAccountName, Utils.stripAccountAddress(mTxInfo.fromAddress),
-                Utils.stripAccountAddress(to)));
+                mAccountName, parsedTx.getSenderLabel(), parsedTx.getRecipientLabel()));
         TextView amountAsset = view.findViewById(R.id.amount_asset);
-        amountAsset.setText(amountText);
         TextView amountFiat = view.findViewById(R.id.amount_fiat);
-        final double valueFinal = value;
+        amountFiat.setText(
+                String.format(getResources().getString(R.string.crypto_wallet_amount_fiat),
+                        String.format(Locale.getDefault(), "%.2f", parsedTx.getFiatTotal())));
         if (mTxInfo.txType == TransactionType.ERC721_TRANSFER_FROM
                 || mTxInfo.txType == TransactionType.ERC721_SAFE_TRANSFER_FROM) {
-            amountFiat.setVisibility(View.GONE);
-            setupPager(asset, view, decimals);
-        } else {
-            // ETH or ERC20
-            AssetRatioService assetRatioService = getAssetRatioService();
-            assert assetRatioService != null;
-            String[] assets = {asset.toLowerCase(Locale.getDefault())};
-            String[] toCurr = {"usd"};
-            assetRatioService.getPrice(
-                    assets, toCurr, AssetPriceTimeframe.LIVE, (success, values) -> {
-                        String valueFiat = "0";
-                        if (values.length != 0) {
-                            valueFiat = values[0].price;
-                        }
-                        double price = Double.valueOf(valueFiat);
-                        mTotalPrice = valueFinal * price;
-                        amountFiat.setVisibility(View.VISIBLE);
-                        amountFiat.setText(String.format(
-                                getResources().getString(R.string.crypto_wallet_amount_fiat),
-                                String.format(Locale.getDefault(), "%.2f", mTotalPrice)));
-                        setupPager(asset, view, decimals);
-                    });
+            amountText = Utils.tokenToString(parsedTx.getErc721BlockchainToken());
+            amountFiat.setVisibility(View.GONE); // Display NFT values in the future
         }
+        amountAsset.setText(amountText);
+        setupPager(view, selectedNetwork, accounts, assetPrices, fullTokenList,
+                nativeAssetsBalances, blockchainTokensBalances);
     }
 
-    private void setupPager(String asset, View view, int decimals) {
+    private void setupPager(View view, NetworkInfo selectedNetwork, AccountInfo[] accounts,
+            HashMap<String, Double> assetPrices, BlockchainToken[] fullTokenList,
+            HashMap<String, Double> nativeAssetsBalances,
+            HashMap<String, HashMap<String, Double>> blockchainTokensBalances) {
         ViewPager viewPager = view.findViewById(R.id.navigation_view_pager);
         ApproveTxFragmentPageAdapter adapter = new ApproveTxFragmentPageAdapter(
-                getChildFragmentManager(), mTxInfo, asset, decimals, mChainSymbol, mChainDecimals,
-                mTotalPrice, getActivity(), mTransactionConfirmationListener == null);
+                getChildFragmentManager(), mTxInfo, selectedNetwork, accounts, assetPrices,
+                fullTokenList, nativeAssetsBalances, blockchainTokensBalances, getActivity(),
+                mTransactionConfirmationListener == null);
         viewPager.setAdapter(adapter);
         viewPager.setOffscreenPageLimit(adapter.getCount() - 1);
         TabLayout tabLayout = view.findViewById(R.id.tabs);

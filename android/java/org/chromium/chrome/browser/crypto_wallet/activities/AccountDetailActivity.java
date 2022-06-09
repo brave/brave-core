@@ -28,6 +28,7 @@ import org.chromium.brave_wallet.mojom.CoinType;
 import org.chromium.brave_wallet.mojom.JsonRpcService;
 import org.chromium.brave_wallet.mojom.KeyringInfo;
 import org.chromium.brave_wallet.mojom.KeyringService;
+import org.chromium.brave_wallet.mojom.NetworkInfo;
 import org.chromium.brave_wallet.mojom.TransactionInfo;
 import org.chromium.brave_wallet.mojom.TxService;
 import org.chromium.chrome.R;
@@ -120,11 +121,10 @@ public class AccountDetailActivity
         onInitialLayoutInflationComplete();
     }
 
-    private void setUpAssetList(String chainId) {
+    private void setUpAssetList(NetworkInfo selectedNetwork) {
         AccountInfo[] accountInfos = new AccountInfo[] {getThisAccountInfo()};
-        PortfolioHelper portfolioHelper = new PortfolioHelper(
-                getBraveWalletService(), getAssetRatioService(), mJsonRpcService, accountInfos);
-        portfolioHelper.setChainId(chainId);
+        PortfolioHelper portfolioHelper = new PortfolioHelper(this, accountInfos);
+        portfolioHelper.setSelectedNetwork(selectedNetwork);
         portfolioHelper.calculateBalances(() -> {
             RecyclerView rvAssets = findViewById(R.id.rv_assets);
 
@@ -142,25 +142,34 @@ public class AccountDetailActivity
         });
     }
 
-    private void fetchAccountInfo(String chainId) {
+    private void fetchAccountInfo(NetworkInfo selectedNetwork) {
         assert mKeyringService != null;
         mKeyringService.getKeyringInfo(BraveWalletConstants.DEFAULT_KEYRING_ID, keyringInfo -> {
             if (keyringInfo == null) {
                 return;
             }
-            for (AccountInfo accountInfo : keyringInfo.accountInfos) {
-                if (accountInfo.address.equals(mAddress) && accountInfo.name.equals(mName)) {
-                    AccountInfo[] accountInfos = new AccountInfo[1];
-                    accountInfos[0] = accountInfo;
-                    WalletListItemModel thisAccountItemModel = new WalletListItemModel(
-                            R.drawable.ic_eth, mName, mAddress, null, null, mIsImported);
-                    Utils.setUpTransactionList(accountInfos, mAssetRatioService, mTxService,
-                            mBlockchainRegistry, mBraveWalletService, thisAccountItemModel,
-                            findViewById(R.id.rv_transactions), this, this, mJsonRpcService,
-                            mWalletTxCoinAdapter);
-                    break;
-                }
-            }
+
+            AccountInfo[] accounts = keyringInfo.accountInfos;
+            Utils.getTxExtraInfo(this, selectedNetwork, accounts, null, false,
+                    (assetPrices, fullTokenList, nativeAssetsBalances,
+                            blockchainTokensBalances) -> {
+                        for (AccountInfo accountInfo : accounts) {
+                            if (accountInfo.address.equals(mAddress)
+                                    && accountInfo.name.equals(mName)) {
+                                AccountInfo[] accountInfos = new AccountInfo[1];
+                                accountInfos[0] = accountInfo;
+                                WalletListItemModel thisAccountItemModel =
+                                        new WalletListItemModel(R.drawable.ic_eth, mName, mAddress,
+                                                null, null, mIsImported);
+                                Utils.setUpTransactionList(this, accountInfos, thisAccountItemModel,
+                                        assetPrices, fullTokenList, nativeAssetsBalances,
+                                        blockchainTokensBalances,
+                                        findViewById(R.id.rv_transactions), this,
+                                        mWalletTxCoinAdapter);
+                                break;
+                            }
+                        }
+                    });
         });
     }
 
@@ -182,9 +191,9 @@ public class AccountDetailActivity
 
         initState();
         assert mJsonRpcService != null;
-        mJsonRpcService.getChainId(CoinType.ETH, chainId -> {
-            setUpAssetList(chainId);
-            fetchAccountInfo(chainId);
+        mJsonRpcService.getNetwork(CoinType.ETH, selectedNetwork -> {
+            setUpAssetList(selectedNetwork);
+            fetchAccountInfo(selectedNetwork);
         });
     }
 

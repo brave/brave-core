@@ -70,7 +70,7 @@ public class CryptoModel {
         this.mBraveWalletService = mBraveWalletService;
         this.mAssetRatioService = mAssetRatioService;
         mSharedData = new CryptoSharedDataImpl();
-        mPendingTxHelper = new PendingTxHelper(mTxService, new AccountInfo[0], true, null, true);
+        mPendingTxHelper = new PendingTxHelper(mTxService, new AccountInfo[0], true, true);
         mNetworkModel = new NetworkModel(mJsonRpcService, mSharedData);
     }
 

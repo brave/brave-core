@@ -24,9 +24,11 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.AssetPriceTimeframe;
-import org.chromium.brave_wallet.mojom.AssetRatioService;
+import org.chromium.brave_wallet.mojom.BlockchainToken;
 import org.chromium.brave_wallet.mojom.EthTxManagerProxy;
+import org.chromium.brave_wallet.mojom.NetworkInfo;
 import org.chromium.brave_wallet.mojom.TransactionInfo;
 import org.chromium.brave_wallet.mojom.TransactionType;
 import org.chromium.chrome.R;
@@ -34,22 +36,26 @@ import org.chromium.chrome.browser.crypto_wallet.activities.AdvanceTxSettingActi
 import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletActivity;
 import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletBaseActivity;
 import org.chromium.chrome.browser.crypto_wallet.activities.BuySendSwapActivity;
+import org.chromium.chrome.browser.crypto_wallet.util.ParsedTransaction;
+import org.chromium.chrome.browser.crypto_wallet.util.ParsedTransactionFees;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.chrome.browser.crypto_wallet.util.WalletConstants;
 
+import java.util.HashMap;
 import java.util.Locale;
 
 public class TxFragment extends Fragment {
     private TransactionInfo mTxInfo;
-    private String mAsset;
-    private int mDecimals;
-    private String mChainSymbol;
-    private int mChainDecimals;
-    private double mTotalPrice;
-    private boolean mIsEIP1559;
+    private ParsedTransaction mParsedTx;
+    private NetworkInfo mSelectedNetwork;
+    private AccountInfo[] mAccounts;
+    private HashMap<String, Double> mAssetPrices;
+    private BlockchainToken[] mFullTokenList;
+    private HashMap<String, Double> mNativeAssetsBalances;
+    private HashMap<String, HashMap<String, Double>> mBlockchainTokensBalances;
     private int mCheckedPriorityId;
     private int mPreviousCheckedPriorityId;
-    private double mEthRate;
+
     // mUpdateTxObjectManually is used to detect do we need to update dialog values
     // manually after we change gas for example or do we have it updated automatically
     // using observers. We use observers on DApps related executions, but wallet screens
@@ -57,19 +63,13 @@ public class TxFragment extends Fragment {
     private boolean mUpdateTxObjectManually;
     public static final int START_ADVANCE_SETTING_ACTIVITY_CODE = 0;
 
-    public static TxFragment newInstance(TransactionInfo txInfo, String asset, int decimals,
-            String chainSymbol, int chainDecimals, double totalPrice,
+    public static TxFragment newInstance(TransactionInfo txInfo, NetworkInfo selectedNetwork,
+            AccountInfo[] accounts, HashMap<String, Double> assetPrices,
+            BlockchainToken[] fullTokenList, HashMap<String, Double> nativeAssetsBalances,
+            HashMap<String, HashMap<String, Double>> blockchainTokensBalances,
             boolean updateTxObjectManually) {
-        return new TxFragment(txInfo, asset, decimals, chainSymbol, chainDecimals, totalPrice,
-                updateTxObjectManually);
-    }
-
-    private AssetRatioService getAssetRatioService() {
-        Activity activity = getActivity();
-        if (activity instanceof BraveWalletBaseActivity) {
-            return ((BraveWalletBaseActivity) activity).getAssetRatioService();
-        }
-        return null;
+        return new TxFragment(txInfo, selectedNetwork, accounts, assetPrices, fullTokenList,
+                nativeAssetsBalances, blockchainTokensBalances, updateTxObjectManually);
     }
 
     private EthTxManagerProxy getEthTxManagerProxy() {
@@ -80,18 +80,20 @@ public class TxFragment extends Fragment {
         return null;
     }
 
-    private TxFragment(TransactionInfo txInfo, String asset, int decimals, String chainSymbol,
-            int chainDecimals, double totalPrice, boolean updateTxObjectManually) {
+    private TxFragment(TransactionInfo txInfo, NetworkInfo selectedNetwork, AccountInfo[] accounts,
+            HashMap<String, Double> assetPrices, BlockchainToken[] fullTokenList,
+            HashMap<String, Double> nativeAssetsBalances,
+            HashMap<String, HashMap<String, Double>> blockchainTokensBalances,
+            boolean updateTxObjectManually) {
         mTxInfo = txInfo;
-        mAsset = asset;
-        mDecimals = decimals;
-        mChainSymbol = chainSymbol;
-        mChainDecimals = chainDecimals;
-        mTotalPrice = totalPrice;
-        mEthRate = 0;
+        mSelectedNetwork = selectedNetwork;
+        mAccounts = accounts;
+        mAssetPrices = assetPrices;
+        mFullTokenList = fullTokenList;
+        mNativeAssetsBalances = nativeAssetsBalances;
+        mBlockchainTokensBalances = blockchainTokensBalances;
         mCheckedPriorityId = -1;
         mPreviousCheckedPriorityId = -1;
-        mIsEIP1559 = false;
         mUpdateTxObjectManually = updateTxObjectManually;
     }
 
@@ -105,8 +107,6 @@ public class TxFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
             @Nullable Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_transaction, container, false);
-        mIsEIP1559 = !mTxInfo.txDataUnion.getEthTxData1559().maxPriorityFeePerGas.isEmpty()
-                && !mTxInfo.txDataUnion.getEthTxData1559().maxFeePerGas.isEmpty();
 
         setupView(view);
 
@@ -114,8 +114,7 @@ public class TxFragment extends Fragment {
         advanceSettingContainer.setOnClickListener(v -> {
             Intent toAdvanceTxSetting =
                     new Intent(requireActivity(), AdvanceTxSettingActivity.class);
-            String nonce = mIsEIP1559 ? mTxInfo.txDataUnion.getEthTxData1559().baseData.nonce
-                                      : mTxInfo.txDataUnion.getEthTxData().nonce;
+            String nonce = mParsedTx.getNonce();
             toAdvanceTxSetting.putExtra(WalletConstants.ADVANCE_TX_SETTING_INTENT_TX_ID, mTxInfo.id)
                     .putExtra(WalletConstants.ADVANCE_TX_SETTING_INTENT_TX_NONCE, nonce);
             startActivityForResult(toAdvanceTxSetting, START_ADVANCE_SETTING_ACTIVITY_CODE);
@@ -132,16 +131,14 @@ public class TxFragment extends Fragment {
 
                 LinearLayout gasPriceLayout = dialog.findViewById(R.id.gas_price_layout);
                 LinearLayout gasLimitLayout = dialog.findViewById(R.id.gas_limit_layout);
-                if (!mIsEIP1559) {
+                if (!mParsedTx.getIsEIP1559Transaction()) {
                     EditText gasFeeEdit = dialog.findViewById(R.id.gas_fee_edit);
                     gasFeeEdit.setText(String.format(Locale.getDefault(), "%.0f",
-                            Utils.fromHexWei(
-                                    mTxInfo.txDataUnion.getEthTxData1559().baseData.gasPrice, 9)));
+                            Utils.fromHexWei(mParsedTx.getGasPrice(), 9)));
 
                     EditText gasLimitEdit = dialog.findViewById(R.id.gas_limit_edit);
                     gasLimitEdit.setText(String.format(Locale.getDefault(), "%.0f",
-                            Utils.fromHexGWeiToGWEI(
-                                    mTxInfo.txDataUnion.getEthTxData1559().baseData.gasLimit)));
+                            Utils.fromHexGWeiToGWEI(mParsedTx.getGasLimit())));
                 } else {
                     TextView dialogTitle = dialog.findViewById(R.id.edit_gas_dialog_title);
                     dialogTitle.setText(
@@ -158,12 +155,8 @@ public class TxFragment extends Fragment {
                         ethTxManagerProxy.getGasEstimation1559(estimation -> {
                             mTxInfo.txDataUnion.getEthTxData1559().gasEstimation = estimation;
                             mCheckedPriorityId = checkedId;
-                            String gasLimit =
-                                    mTxInfo.txDataUnion.getEthTxData1559().baseData.gasLimit;
-                            String maxPriorityFeePerGas =
-                                    mTxInfo.txDataUnion.getEthTxData1559().maxPriorityFeePerGas;
-                            String maxFeePerGas =
-                                    mTxInfo.txDataUnion.getEthTxData1559().maxFeePerGas;
+                            String maxPriorityFeePerGas = mParsedTx.getMaxPriorityFeePerGas();
+                            String maxFeePerGas = mParsedTx.getMaxFeePerGas();
                             TextView currentBaseFeeMsg =
                                     dialog.findViewById(R.id.current_base_fee_msg);
                             currentBaseFeeMsg.setVisibility(View.GONE);
@@ -206,11 +199,8 @@ public class TxFragment extends Fragment {
                                 gasAmountLimitLayout.setVisibility(View.VISIBLE);
                                 EditText gasAmountLimitEdit =
                                         dialog.findViewById(R.id.gas_amount_limit_edit);
-                                gasAmountLimitEdit.setText(
-                                        String.format(Locale.getDefault(), "%.0f",
-                                                Utils.fromHexGWeiToGWEI(
-                                                        mTxInfo.txDataUnion.getEthTxData1559()
-                                                                .baseData.gasLimit)));
+                                gasAmountLimitEdit.setText(String.format(Locale.getDefault(),
+                                        "%.0f", Utils.fromHexGWeiToGWEI(mParsedTx.getGasLimit())));
                                 perGasTipLimitLayout.setVisibility(View.VISIBLE);
                                 EditText perGasTipLimitEdit =
                                         dialog.findViewById(R.id.per_gas_tip_limit_edit);
@@ -232,8 +222,8 @@ public class TxFragment extends Fragment {
                                 perGasPriceLimitEdit.addTextChangedListener(
                                         filterEIP1559TextWatcher);
                             }
-                            fillMaxFee(dialog.findViewById(R.id.maximum_fee_msg), gasLimit,
-                                    maxFeePerGas);
+                            fillMaxFee(dialog.findViewById(R.id.maximum_fee_msg),
+                                    mParsedTx.getGasLimit(), maxFeePerGas);
                         });
                     });
                     if (mCheckedPriorityId == -1) {
@@ -263,7 +253,7 @@ public class TxFragment extends Fragment {
 
                             return;
                         }
-                        if (!mIsEIP1559) {
+                        if (!mParsedTx.getIsEIP1559Transaction()) {
                             EditText gasLimitEdit = dialog.findViewById(R.id.gas_limit_edit);
                             mTxInfo.txDataUnion.getEthTxData1559().baseData.gasLimit =
                                     Utils.toHexGWeiFromGWEI(gasLimitEdit.getText().toString());
@@ -284,12 +274,9 @@ public class TxFragment extends Fragment {
                                         dialog.dismiss();
                                     });
                         } else {
-                            String gasLimit =
-                                    mTxInfo.txDataUnion.getEthTxData1559().baseData.gasLimit;
-                            String maxPriorityFeePerGas =
-                                    mTxInfo.txDataUnion.getEthTxData1559().maxPriorityFeePerGas;
-                            String maxFeePerGas =
-                                    mTxInfo.txDataUnion.getEthTxData1559().maxFeePerGas;
+                            String gasLimit = mParsedTx.getGasLimit();
+                            String maxPriorityFeePerGas = mParsedTx.getMaxPriorityFeePerGas();
+                            String maxFeePerGas = mParsedTx.getMaxFeePerGas();
                             if (mCheckedPriorityId == R.id.radio_low) {
                                 maxPriorityFeePerGas =
                                         mTxInfo.txDataUnion.getEthTxData1559()
@@ -395,68 +382,42 @@ public class TxFragment extends Fragment {
     };
 
     private void fillMaxFee(TextView textView, String gasLimit, String maxFeePerGas) {
-        double totalGas =
-                Utils.fromHexWei(Utils.multiplyHexBN(gasLimit, maxFeePerGas), mChainDecimals);
-        double price = totalGas * mEthRate;
+        final double[] gasFeeArr = ParsedTransactionFees.calcGasFee(mSelectedNetwork,
+                Utils.getOrDefault(mAssetPrices,
+                        mSelectedNetwork.symbol.toLowerCase(Locale.getDefault()), 0.0d),
+                true, gasLimit, "0", maxFeePerGas, false, null);
         textView.setText(String.format(getResources().getString(R.string.wallet_maximum_fee),
-                String.format(Locale.getDefault(), "%.2f", price),
-                String.format(Locale.getDefault(), "%.8f", totalGas)));
+                String.format(Locale.getDefault(), "%.2f", gasFeeArr[1]),
+                String.format(Locale.getDefault(), "%.8f", gasFeeArr[0])));
     }
 
     private void setupView(View view) {
+        // Re-parse transaction for mUpdateTxObjectManually
+        mParsedTx = ParsedTransaction.parseTransaction(mTxInfo, mSelectedNetwork, mAccounts,
+                mAssetPrices, null, mFullTokenList, mNativeAssetsBalances,
+                mBlockchainTokensBalances);
+
         TextView gasFeeAmount = view.findViewById(R.id.gas_fee_amount);
-        final double totalGas = mIsEIP1559
-                ? Utils.fromHexWei(Utils.multiplyHexBN(
-                                           mTxInfo.txDataUnion.getEthTxData1559().baseData.gasLimit,
-                                           mTxInfo.txDataUnion.getEthTxData1559().maxFeePerGas),
-                        mChainDecimals)
-                : Utils.fromHexWei(
-                        Utils.multiplyHexBN(
-                                mTxInfo.txDataUnion.getEthTxData1559().baseData.gasLimit,
-                                mTxInfo.txDataUnion.getEthTxData1559().baseData.gasPrice),
-                        mChainDecimals);
-        gasFeeAmount.setText(
-                String.format(getResources().getString(R.string.crypto_wallet_gas_fee_amount),
-                        String.format(Locale.getDefault(), "%.8f", totalGas), mChainSymbol));
-        String valueAsset = mTxInfo.txDataUnion.getEthTxData1559().baseData.value;
-        // TODO (Wengling): Transaction Parser
-        // (components/brave_wallet_ui/common/hooks/transaction-parser.ts)
-        String valueAssetText =
-                String.format(Locale.getDefault(), "%.8f", Utils.fromHexWei(valueAsset, mDecimals));
-        if (mTxInfo.txType == TransactionType.ERC20_TRANSFER && mTxInfo.txArgs.length > 1) {
-            valueAsset = mTxInfo.txArgs[1];
-            valueAssetText = String.format(
-                    Locale.getDefault(), "%.8f", Utils.fromHexWei(valueAsset, mDecimals));
-        } else if (mTxInfo.txType == TransactionType.ERC721_TRANSFER_FROM
-                || mTxInfo.txType == TransactionType.ERC721_SAFE_TRANSFER_FROM) {
-            valueAssetText = "1";
-        }
+        final double totalGas = mParsedTx.getGasFee();
+        gasFeeAmount.setText(String.format(
+                getResources().getString(R.string.crypto_wallet_gas_fee_amount),
+                String.format(Locale.getDefault(), "%.8f", totalGas), mSelectedNetwork.symbol));
+
+        String valueAssetText = mParsedTx.formatValueToDisplay();
         TextView totalAmount = view.findViewById(R.id.total_amount);
         totalAmount.setText(String.format(
                 getResources().getString(R.string.crypto_wallet_total_amount), valueAssetText,
-                mAsset, String.format(Locale.getDefault(), "%.8f", totalGas), mChainSymbol));
-        AssetRatioService assetRatioService = getAssetRatioService();
-        if (assetRatioService != null) {
-            String[] assets = {mChainSymbol.toLowerCase(Locale.getDefault())};
-            String[] toCurr = {"usd"};
-            assetRatioService.getPrice(
-                    assets, toCurr, AssetPriceTimeframe.LIVE, (success, values) -> {
-                        if (!success || values.length == 0) {
-                            return;
-                        }
-                        mEthRate = Double.valueOf(values[0].price);
-                        double totalPrice = totalGas * mEthRate;
-                        TextView gasFeeAmountFiat = view.findViewById(R.id.gas_fee_amount_fiat);
-                        gasFeeAmountFiat.setText(String.format(
-                                getResources().getString(R.string.crypto_wallet_amount_fiat),
-                                String.format(Locale.getDefault(), "%.2f", totalPrice)));
-                        double totalAmountPlusGas = totalPrice + mTotalPrice;
-                        TextView totalAmountFiat = view.findViewById(R.id.total_amount_fiat);
-                        totalAmountFiat.setText(String.format(
-                                getResources().getString(R.string.crypto_wallet_amount_fiat),
-                                String.format(Locale.getDefault(), "%.2f", totalAmountPlusGas)));
-                    });
-        }
+                mParsedTx.getSymbol(), String.format(Locale.getDefault(), "%.8f", totalGas),
+                mSelectedNetwork.symbol));
+
+        TextView gasFeeAmountFiat = view.findViewById(R.id.gas_fee_amount_fiat);
+        gasFeeAmountFiat.setText(
+                String.format(getResources().getString(R.string.crypto_wallet_amount_fiat),
+                        String.format(Locale.getDefault(), "%.2f", mParsedTx.getGasFeeFiat())));
+        TextView totalAmountFiat = view.findViewById(R.id.total_amount_fiat);
+        totalAmountFiat.setText(
+                String.format(getResources().getString(R.string.crypto_wallet_amount_fiat),
+                        String.format(Locale.getDefault(), "%.2f", mParsedTx.getFiatTotal())));
     }
 
     @Override
@@ -466,7 +427,7 @@ public class TxFragment extends Fragment {
                 && resultCode == Activity.RESULT_OK) {
             String nonce =
                     data.getStringExtra(WalletConstants.ADVANCE_TX_SETTING_INTENT_RESULT_NONCE);
-            if (mIsEIP1559) {
+            if (mParsedTx.getIsEIP1559Transaction()) {
                 mTxInfo.txDataUnion.getEthTxData1559().baseData.nonce = nonce;
             } else {
                 mTxInfo.txDataUnion.getEthTxData().nonce = nonce;

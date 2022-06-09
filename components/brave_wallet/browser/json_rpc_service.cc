@@ -13,6 +13,7 @@
 #include "base/environment.h"
 #include "base/json/json_writer.h"
 #include "base/no_destructor.h"
+#include "base/notreached.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
@@ -490,6 +491,36 @@ void JsonRpcService::GetBlockTrackerUrl(
 void JsonRpcService::GetAllNetworks(mojom::CoinType coin,
                                     GetAllNetworksCallback callback) {
   std::move(callback).Run(GetAllChains(prefs_, coin));
+}
+
+void JsonRpcService::GetCustomNetworks(mojom::CoinType coin,
+                                       GetCustomNetworksCallback callback) {
+  if (coin != mojom::CoinType::ETH) {
+    NOTREACHED();
+    std::move(callback).Run({});
+    return;
+  }
+
+  std::vector<std::string> chain_ids;
+  for (const auto& it : brave_wallet::GetAllEthCustomChains(prefs_)) {
+    chain_ids.push_back(it->chain_id);
+  }
+  std::move(callback).Run(std::move(chain_ids));
+}
+
+void JsonRpcService::GetKnownNetworks(mojom::CoinType coin,
+                                      GetKnownNetworksCallback callback) {
+  if (coin != mojom::CoinType::ETH) {
+    NOTREACHED();
+    std::move(callback).Run({});
+    return;
+  }
+
+  std::vector<std::string> chain_ids;
+  for (const auto& it : brave_wallet::GetAllKnownEthChains(prefs_)) {
+    chain_ids.push_back(it->chain_id);
+  }
+  std::move(callback).Run(std::move(chain_ids));
 }
 
 void JsonRpcService::GetHiddenNetworks(mojom::CoinType coin,

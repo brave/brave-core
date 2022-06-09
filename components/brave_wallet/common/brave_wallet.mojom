@@ -751,6 +751,8 @@ interface JsonRpcService {
   SetNetwork(string chain_id, CoinType coin) => (bool success);
   GetNetwork(CoinType coin) => (NetworkInfo network);
   GetAllNetworks(CoinType coin) => (array<NetworkInfo> networks);
+  GetCustomNetworks(CoinType coin) => (array<string> chain_ids);
+  GetKnownNetworks(CoinType coin) => (array<string> chain_ids);
   GetHiddenNetworks(CoinType coin) => (array<string> chain_ids);
 
   // Obtains the current network's chain ID

@@ -73,7 +73,6 @@ public class PortfolioFragment
 
     private int mPreviousCheckedRadioId;
     private int mCurrentTimeframeType;
-    private String mSelectedChainNetworkName = "";
 
     PortfolioHelper mPortfolioHelper;
 
@@ -150,17 +149,9 @@ public class PortfolioFragment
     private void updateNetwork() {
         JsonRpcService jsonRpcService = getJsonRpcService();
         assert jsonRpcService != null;
-        jsonRpcService.getChainId(CoinType.ETH, chain_id -> {
-            jsonRpcService.getAllNetworks(CoinType.ETH, chains -> {
-                NetworkInfo[] customNetworks = Utils.getCustomNetworks(chains);
-                mSelectedChainNetworkName =
-                        Utils.getNetworkText(requireActivity(), chain_id, customNetworks)
-                                .toString();
-                String strNetworkShort =
-                        Utils.getNetworkShortText(requireActivity(), chain_id, customNetworks)
-                                .toString();
-                updateAccount(strNetworkShort);
-            });
+        jsonRpcService.getNetwork(CoinType.ETH, selectedNetwork -> {
+            String strNetworkShort = Utils.getNetworkShortText(selectedNetwork);
+            updateAccount(strNetworkShort);
         });
     }
 
@@ -179,16 +170,12 @@ public class PortfolioFragment
         editVisibleAssets.setOnClickListener(v -> {
             JsonRpcService jsonRpcService = getJsonRpcService();
             assert jsonRpcService != null;
-            jsonRpcService.getAllNetworks(CoinType.ETH, chains -> {
-                NetworkInfo[] customNetworks = Utils.getCustomNetworks(chains);
-                String chainId = Utils.getNetworkConst(
-                        getActivity(), mSelectedChainNetworkName, customNetworks);
-
+            jsonRpcService.getNetwork(CoinType.ETH, selectedNetwork -> {
                 EditVisibleAssetsBottomSheetDialogFragment bottomSheetDialogFragment =
                         EditVisibleAssetsBottomSheetDialogFragment.newInstance(
                                 WalletCoinAdapter.AdapterType.EDIT_VISIBLE_ASSETS_LIST);
 
-                bottomSheetDialogFragment.setChainId(chainId);
+                bottomSheetDialogFragment.setSelectedNetwork(selectedNetwork);
                 bottomSheetDialogFragment.setDismissListener(
                         new EditVisibleAssetsBottomSheetDialogFragment.DismissListener() {
                             @Override
@@ -242,10 +229,7 @@ public class PortfolioFragment
     public void onAssetClick(BlockchainToken asset) {
         JsonRpcService jsonRpcService = getJsonRpcService();
         assert jsonRpcService != null;
-        jsonRpcService.getAllNetworks(CoinType.ETH, chains -> {
-            NetworkInfo[] customNetworks = Utils.getCustomNetworks(chains);
-            String chainId =
-                    Utils.getNetworkConst(getActivity(), mSelectedChainNetworkName, customNetworks);
+        jsonRpcService.getChainId(CoinType.ETH, chainId -> {
             Utils.openAssetDetailsActivity(getActivity(), chainId, asset.symbol, asset.name,
                     asset.tokenId, asset.contractAddress, asset.logo, asset.decimals);
         });
@@ -297,12 +281,12 @@ public class PortfolioFragment
             trendTimeframe.setText(Utils.getTimeframeString(mCurrentTimeframeType));
 
             Double currentFiatSum = mPortfolioHelper.getTotalFiatSum();
-            Double mostPreviousFiatSum = mPortfolioHelper.getMostPreviousFiatSum();
+            Double mostRecentFiatSum = mPortfolioHelper.getMostRecentFiatSum();
 
-            Double percents = ((currentFiatSum - mostPreviousFiatSum) / mostPreviousFiatSum) * 100;
+            Double percents = ((currentFiatSum - mostRecentFiatSum) / mostRecentFiatSum) * 100;
             trendPercentage.setText(
                     String.format(Locale.getDefault(), "%.2f%%", Math.abs(percents)));
-            if (mostPreviousFiatSum > currentFiatSum) {
+            if (mostRecentFiatSum > currentFiatSum) {
                 trendPercentage.setTextColor(
                         getResources().getColor(R.color.wallet_negative_trend_color));
                 trendPercentage.setCompoundDrawablesWithIntrinsicBounds(
@@ -341,9 +325,8 @@ public class PortfolioFragment
 
     private void updatePortfolioGetPendingTx(boolean getPendingTx) {
         KeyringService keyringService = getKeyringService();
-        assert keyringService != null;
         JsonRpcService jsonRpcService = getJsonRpcService();
-        assert jsonRpcService != null;
+        assert keyringService != null && jsonRpcService != null;
 
         keyringService.getKeyringInfo(BraveWalletConstants.DEFAULT_KEYRING_ID, keyringInfo -> {
             AccountInfo[] accountInfosTemp = new AccountInfo[] {};
@@ -351,16 +334,15 @@ public class PortfolioFragment
                 accountInfosTemp = keyringInfo.accountInfos;
             }
             final AccountInfo[] accountInfos = accountInfosTemp;
+            Activity activity = getActivity();
+            if (!(activity instanceof BraveWalletActivity)) return;
             if (mPortfolioHelper == null) {
-                mPortfolioHelper = new PortfolioHelper(getBraveWalletService(),
-                        getAssetRatioService(), jsonRpcService, accountInfos);
+                mPortfolioHelper =
+                        new PortfolioHelper((BraveWalletActivity) activity, accountInfos);
             }
 
-            jsonRpcService.getAllNetworks(CoinType.ETH, chains -> {
-                NetworkInfo[] customNetworks = Utils.getCustomNetworks(chains);
-                String chainId = Utils.getNetworkConst(
-                        getActivity(), mSelectedChainNetworkName, customNetworks);
-                mPortfolioHelper.setChainId(chainId);
+            jsonRpcService.getNetwork(CoinType.ETH, selectedNetwork -> {
+                mPortfolioHelper.setSelectedNetwork(selectedNetwork);
                 mPortfolioHelper.calculateBalances(() -> {
                     final String fiatSumString = String.format(
                             Locale.getDefault(), "$%,.2f", mPortfolioHelper.getTotalFiatSum());
@@ -454,8 +436,7 @@ public class PortfolioFragment
     }
 
     private void getPendingTx(AccountInfo[] accountInfos, @Nullable Runnable callback) {
-        PendingTxHelper pendingTxHelper =
-                new PendingTxHelper(getTxService(), accountInfos, false, null);
+        PendingTxHelper pendingTxHelper = new PendingTxHelper(getTxService(), accountInfos, false);
         pendingTxHelper.fetchTransactions(() -> {
             mPendingTxInfos = pendingTxHelper.getTransactions();
             if (callback != null) callback.run();
