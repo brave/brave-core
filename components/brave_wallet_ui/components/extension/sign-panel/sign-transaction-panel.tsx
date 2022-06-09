@@ -55,6 +55,7 @@ import {
 
 import { DetailColumn } from '../transaction-box/style'
 import { getSolanaSystemInstructionParamsAndType } from '../../../utils/solana-instruction-utils'
+import { Tooltip } from '../../shared'
 
 export interface Props {
   signMode: 'signTx' | 'signAllTxs'
@@ -216,7 +217,14 @@ export const SignTransactionPanel = ({ signMode }: Props) => {
         </URLText>
       }
 
-      <AccountNameText>{findAccountName(accounts, selectedQueueData?.fromAddress || '') ?? ''}</AccountNameText>
+      <Tooltip
+        text={selectedQueueData?.fromAddress || ''}
+        isAddress
+      >
+        <AccountNameText>
+          {findAccountName(accounts, selectedQueueData?.fromAddress || '') ?? ''}
+        </AccountNameText>
+      </Tooltip>
 
       <PanelTitle>{getLocale('braveWalletSignTransactionTitle')}</PanelTitle>
 
