@@ -242,7 +242,7 @@
   <message name="IDS_BRAVE_WALLET_SWAP_PRICE_IN" desc="Swap tab price label">Price in</message>
   <message name="IDS_BRAVE_WALLET_BUY_TITLE" desc="Buy tab faucet button">Test faucet</message>
   <message name="IDS_BRAVE_WALLET_BUY_DESCRIPTION" desc="Buy tab faucet description to get test crypto">Get Ether from a faucet for <ph name="SELECTED_NETWORK"><ex>Ropsten Network</ex>$1</ph></message>
-  <message name="IDS_BRAVE_WALLET_BUY_CONTINUE_BUTTON" desc="Buy tab continue button">Continue</message>
+  <message name="IDS_BRAVE_WALLET_BUY_CONTINUE_BUTTON" desc="Buy tab continue button">Select purchase method</message>
   <message name="IDS_BRAVE_WALLET_SIGN_TRANSACTION_TITLE" desc="Sign panel title">Your signature is being requested</message>
   <message name="IDS_BRAVE_WALLET_SIGN_WARNING" desc="Sign panel warning message">Note that Brave can’t verify what will happen if you sign. A signature could authorize nearly any operation in your account or on your behalf, including (but not limited to) giving total control of your account and crypto assets to the site making the request. Only sign if you’re sure you want to take this action, and trust the requesting site.</message>
   <message name="IDS_BRAVE_WALLET_SIGN_WARNING_TITLE" desc="Sign panel risk title">Sign at your own risk</message>
@@ -452,6 +452,10 @@
   <message name="IDS_BRAVE_WALLET_NOT_VALID_FIL_ADDRESS" desc="Send input not valid FIL address error">Not a valid FIL address</message>
   <message name="IDS_BRAVE_WALLET_BUY_WITH_WYRE" desc="Buy with Wyre option label">Buy with Wyre</message>
   <message name="IDS_BRAVE_WALLET_BUY_WITH_RAMP" desc="Buy with Ramp option label">Buy with Ramp</message>
+  <message name="IDS_BRAVE_WALLET_BUY_RAMP_NETWORK_NAME" desc="Ramp.Network onramp provider name">Ramp.Network</message>
+  <message name="IDS_BRAVE_WALLET_BUY_WYRE_NAME" desc="Wyre onramp provider name">Wyre</message>
+  <message name="IDS_BRAVE_WALLET_BUY_RAMP_DESCRIPTION" desc="Ramp.Network description in buy options list">Buy crypto with Visa or Mastercard.</message>
+  <message name="IDS_BRAVE_WALLET_BUY_WYRE_DESCRIPTION" desc="Wyre description in buy options list">Buy crypto with Visa or Mastercard.</message>
   <message name="IDS_BRAVE_WALLET_NETWORK_FILTER_ALL" desc="Network Filter Selector All Networks">All Networks</message>
   <message name="IDS_BRAVE_WALLET_NETWORK_FILTER_SECONDARY" desc="Network Filter Selector Secondary Networks">Secondary Networks</message>
   <message name="IDS_BRAVE_WALLET_EDIT_GAS_LIMIT_ERROR" desc="An eroor regarding an incorrect gas limit value">

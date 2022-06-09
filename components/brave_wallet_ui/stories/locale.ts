@@ -283,6 +283,11 @@ provideStrings({
   braveWalletBuyDescription: 'Get Ether from a faucet for $1',
   braveWalletBuyWyreButton: 'Continue to Wyre',
   braveWalletBuyFaucetButton: 'Get Ether',
+  braveWalletBuyContinueButton: 'Select purchase method',
+  braveWalletBuyRampNetworkName: 'Ramp.Network',
+  braveWalletBuyWyreName: 'Wyre',
+  braveWalletBuyRampDescription: 'Buy with CC/Debit or ACH. Competitive Rates.',
+  braveWalletBuyWyreDescription: 'Buy with CC/Debit or ACH. Competitive Rates.',
 
   // Sign Transaction Panel
   braveWalletSignTransactionTitle: 'Your signature is being requested',
