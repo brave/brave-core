@@ -99,6 +99,7 @@ function ConfirmTransactionPanel ({
     isERC721SafeTransferFrom,
     isERC721TransferFrom,
     isSolanaTransaction,
+    isFilecoinTransaction,
     isAssociatedTokenAccountCreation,
     onEditAllowanceSave,
     queueNextTransaction,
@@ -336,7 +337,7 @@ function ConfirmTransactionPanel ({
           onSubmit={onSelectTab('details')}
           text='Details'
         />
-        {!isSolanaTransaction &&
+        {!isSolanaTransaction && !isFilecoinTransaction &&
           <AdvancedTransactionSettingsButton
             onSubmit={onToggleAdvancedTransactionSettings}
           />

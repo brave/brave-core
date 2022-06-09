@@ -179,6 +179,16 @@ export const SectionRow = styled.div`
   height: inherit;
 `
 
+export const SectionColumn = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  width: 100%;
+  height: inherit;
+  margin-bottom: 5px;
+`
+
 export const EditButton = styled(WalletButton)`
   font-family: Poppins;
   font-style: normal;
