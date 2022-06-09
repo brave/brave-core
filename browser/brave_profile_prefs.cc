@@ -426,7 +426,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   // We can turn customization mode on when we have add-shortcut feature.
   registry->SetDefaultPrefValue(ntp_prefs::kNtpUseMostVisitedTiles,
                                 base::Value(true));
-  registry->RegisterBooleanPref(kEnableWindowClosingConfirm, false);
+  registry->RegisterBooleanPref(kEnableWindowClosingConfirm, true);
   RegisterDefaultBraveBrowserPromptPrefs(registry);
 #endif
 

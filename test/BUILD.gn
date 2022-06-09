@@ -596,7 +596,10 @@ static_library("browser_test_support") {
     "base/brave_test_launcher_delegate.h",
   ]
 
-  deps = [ "//chrome/browser" ]
+  deps = [
+    "//brave/browser/ui",
+    "//chrome/browser",
+  ]
 }
 
 static_library("browser_tests_runner") {

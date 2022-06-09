@@ -6,6 +6,7 @@
 #include "brave/test/base/brave_test_launcher_delegate.h"
 
 #include "brave/app/brave_main_delegate.h"
+#include "brave/browser/ui/brave_browser.h"
 #include "build/build_config.h"
 
 #if BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
@@ -20,6 +21,10 @@ BraveTestLauncherDelegate::BraveTestLauncherDelegate(
 #if BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
   first_run::internal::ForceFirstRunDialogShownForTesting(false);
 #endif
+
+  // Suppress browser window closing dialog during the test.
+  // It can cause some tests timeout.
+  BraveBrowser::SuppressBrowserWindowClosingDialogForTesting(true);
 }
 
 BraveTestLauncherDelegate::~BraveTestLauncherDelegate() = default;
