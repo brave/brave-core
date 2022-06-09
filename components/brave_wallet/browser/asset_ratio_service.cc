@@ -233,45 +233,6 @@ void AssetRatioService::OnGetPriceHistory(
 }
 
 // static
-GURL AssetRatioService::GetEstimatedTimeURL(const std::string& gas_price) {
-  std::string spec = base::StringPrintf(
-      "%sv2/etherscan/"
-      "passthrough?module=gastracker&action=gasestimate&gasprice=%s",
-      base_url_for_test_.is_empty() ? kAssetRatioBaseURL
-                                    : base_url_for_test_.spec().c_str(),
-      gas_price.c_str());
-  return GURL(spec);
-}
-
-void AssetRatioService::GetEstimatedTime(const std::string& gas_price,
-                                         GetEstimatedTimeCallback callback) {
-  auto internal_callback =
-      base::BindOnce(&AssetRatioService::OnGetEstimatedTime,
-                     weak_ptr_factory_.GetWeakPtr(), std::move(callback));
-  api_request_helper_->Request("GET", GetEstimatedTimeURL(gas_price), "", "",
-                               true, std::move(internal_callback));
-}
-
-void AssetRatioService::OnGetEstimatedTime(
-    GetEstimatedTimeCallback callback,
-    const int status,
-    const std::string& body,
-    const base::flat_map<std::string, std::string>& headers) {
-  if (status < 200 || status > 299) {
-    std::move(callback).Run(false, "");
-    return;
-  }
-
-  const std::string seconds = ParseEstimatedTime(body);
-  if (seconds.empty()) {
-    std::move(callback).Run(false, "");
-    return;
-  }
-
-  std::move(callback).Run(true, seconds);
-}
-
-// static
 GURL AssetRatioService::GetTokenInfoURL(const std::string& contract_address) {
   std::string spec = base::StringPrintf(
       "%sv2/etherscan/"
