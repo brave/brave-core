@@ -879,9 +879,15 @@ TEST(BraveWalletUtilsUnitTest, GetChain) {
 }
 
 TEST(BraveWalletUtilsUnitTest, GetAllKnownEthNetworkIds) {
-  EXPECT_EQ(GetAllKnownEthNetworkIds(),
-            std::vector<std::string>({"mainnet", "rinkeby", "ropsten", "goerli",
-                                      "kovan", "http://localhost:7545/"}));
+  const std::vector<std::string> expected_network_ids(
+      {"mainnet", mojom::kPolygonMainnetChainId,
+       mojom::kBinanceSmartChainMainnetChainId, mojom::kCeloMainnetChainId,
+       mojom::kAvalancheMainnetChainId, mojom::kFantomMainnetChainId,
+       mojom::kOptimismMainnetChainId, "rinkeby", "ropsten", "goerli", "kovan",
+       "http://localhost:7545/"});
+  ASSERT_EQ(GetAllKnownNetworksForTesting().size(),
+            expected_network_ids.size());
+  EXPECT_EQ(GetAllKnownEthNetworkIds(), expected_network_ids);
 }
 
 TEST(BraveWalletUtilsUnitTest, GetKnownEthNetworkId) {
@@ -940,6 +946,12 @@ TEST(BraveWalletUtilsUnitTest, GetNetworkId) {
   EXPECT_EQ(GetNetworkId(&prefs, mojom::CoinType::ETH, "chain_id"), "chain_id");
   EXPECT_EQ(GetNetworkId(&prefs, mojom::CoinType::ETH, "chain_id2"),
             "chain_id2");
+  EXPECT_EQ(
+      GetNetworkId(&prefs, mojom::CoinType::ETH, mojom::kPolygonMainnetChainId),
+      mojom::kPolygonMainnetChainId);
+  EXPECT_EQ(GetNetworkId(&prefs, mojom::CoinType::ETH,
+                         mojom::kBinanceSmartChainMainnetChainId),
+            mojom::kBinanceSmartChainMainnetChainId);
 
   EXPECT_EQ(GetNetworkId(&prefs, mojom::CoinType::SOL, mojom::kSolanaMainnet),
             "mainnet");
