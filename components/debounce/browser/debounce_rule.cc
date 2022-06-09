@@ -8,8 +8,8 @@
 #include <memory>
 #include <utility>
 #include <vector>
-
 #include "base/base64url.h"
+#include "base/strings/escape.h"
 #include "base/strings/stringprintf.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/browser_thread.h"
@@ -28,6 +28,16 @@ const char kAction[] = "action";
 const char kPrependScheme[] = "prepend_scheme";
 const char kParam[] = "param";
 const char kPref[] = "pref";
+
+// Max memory per regex: 2kb. This is just an upper bound
+const int64_t kMaxMemoryPerRegexPattern = 2 << 10;
+
+// Max length of regex pattern
+// RE2 is O(n) for input string of length n
+// (https://github.com/google/re2/wiki/WhyRE2)
+// Max size of a URL is capped anyway.
+// Also cap the length of regex pattern to be extra safe
+const int64_t kMaxLengthRegexPattern = 100;
 }  // namespace
 
 namespace debounce {
@@ -111,7 +121,6 @@ const std::string DebounceRule::GetETLDForDebounce(const std::string& host) {
 void DebounceRule::ParseRules(base::Value::List root,
                               std::vector<std::unique_ptr<DebounceRule>>* rules,
                               base::flat_set<std::string>* host_cache) {
-  DCHECK(!content::BrowserThread::CurrentlyOn(content::BrowserThread::UI));
   std::vector<std::string> hosts;
   base::JSONValueConverter<DebounceRule> converter;
   for (base::Value& it : root) {
@@ -148,6 +157,38 @@ bool DebounceRule::CheckPrefForRule(const PrefService* prefs) const {
   return true;
 }
 
+bool DebounceRule::ValidateAndParsePatternRegex(
+    const std::string& pattern,
+    const std::string& path,
+    std::string* parsed_value) const {
+  if (pattern.length() > kMaxLengthRegexPattern) {
+    LOG(WARNING) << "Debounce regex pattern exceeds max length: "
+                 << kMaxLengthRegexPattern;
+    return false;
+  }
+  re2::RE2::Options options;
+  options.set_max_mem(kMaxMemoryPerRegexPattern);
+  const re2::RE2 pattern_regex(pattern, options);
+
+  if (!pattern_regex.ok()) {
+    LOG(WARNING) << "Debounce rule has param: " << pattern
+                 << " which is an invalid regex pattern";
+    return false;
+  }
+  if (pattern_regex.NumberOfCapturingGroups() != 1) {
+    LOG(WARNING) << "Debounce rule has param: " << pattern
+                 << " which captures != 1 groups";
+    return false;
+  }
+
+  if (!RE2::PartialMatch(path, pattern_regex, parsed_value)) {
+    LOG(WARNING) << "Debounce rule with param: " << param_
+                 << " was unable to capture string";
+    return false;
+  }
+  return true;
+}
+
 bool DebounceRule::Apply(const GURL& original_url,
                          GURL* final_url,
                          const PrefService* prefs) const {
@@ -175,21 +216,22 @@ bool DebounceRule::Apply(const GURL& original_url,
   if (action_ == kDebounceRegexPath) {
     // Important: Apply param regex to ONLY the path of original URL.
     auto path = original_url.path();
-    const re2::RE2 pattern_regex(param_);
-    if (!pattern_regex.ok()) {
-      LOG(WARNING) << "Debounce rule has param: " << param_
-                   << " which is an invalid regex pattern";
+
+    if (!ValidateAndParsePatternRegex(param_, path, &unescaped_value)) {
+      LOG(INFO) << "Debounce regex parsing failed";
       return false;
     }
-    if (pattern_regex.NumberOfCapturingGroups() != 1) {
-      LOG(WARNING) << "Debounce rule has param: " << param_
-                   << " which captures != 1 groups";
-      return false;
-    }
-    if (!RE2::PartialMatch(path, pattern_regex, &unescaped_value)) {
-      LOG(INFO) << "Debounce rule with param: " << param_
-                << " was unable to capture string despite match";
-      return false;
+
+    // Unescape the URL
+    // This is identical to QueryIterator::GetUnescapedValue() in url_util.cc,
+    // which is what is used for query parameters when we call
+    // net::GetValueForKeyInQuery
+    if (!unescaped_value.empty()) {
+      unescaped_value = base::UnescapeURLComponent(
+          unescaped_value,
+          base::UnescapeRule::SPACES | base::UnescapeRule::PATH_SEPARATORS |
+              base::UnescapeRule::URL_SPECIAL_CHARS_EXCEPT_PATH_SEPARATORS |
+              base::UnescapeRule::REPLACE_PLUS_WITH_SPACE);
     }
 
     // unescaped_value now has a string; we will check if the captured value is

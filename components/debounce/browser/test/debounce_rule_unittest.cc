@@ -13,17 +13,7 @@
 
 namespace debounce {
 
-TEST(DebounceRuleUnitTest, DebounceActionChecking) {
-  DebounceAction field = kDebounceNoAction;
-  EXPECT_TRUE(DebounceRule::ParseDebounceAction("regex-path", &field));
-  EXPECT_EQ(kDebounceRegexPath, field);
-  EXPECT_TRUE(DebounceRule::ParseDebounceAction("base64,redirect", &field));
-  EXPECT_EQ(kDebounceBase64DecodeAndRedirectToParam, field);
-  EXPECT_TRUE(DebounceRule::ParseDebounceAction("redirect", &field));
-  EXPECT_EQ(kDebounceRedirectToParam, field);
-  EXPECT_FALSE(DebounceRule::ParseDebounceAction("abc", &field));
-}
-
+// Helper methods
 std::vector<std::unique_ptr<DebounceRule>> StringToRules(std::string contents) {
   absl::optional<base::Value> root = base::JSONReader::Read(contents);
   std::vector<std::unique_ptr<DebounceRule>> rules;
@@ -48,6 +38,17 @@ void CheckApplyResult(DebounceRule* rule,
                       bool expected_error) {
   TestingPrefServiceSimple prefs;
   CheckApplyResult(rule, original_url, expected_url, &prefs, expected_error);
+}
+
+TEST(DebounceRuleUnitTest, DebounceActionChecking) {
+  DebounceAction field = kDebounceNoAction;
+  EXPECT_TRUE(DebounceRule::ParseDebounceAction("regex-path", &field));
+  EXPECT_EQ(kDebounceRegexPath, field);
+  EXPECT_TRUE(DebounceRule::ParseDebounceAction("base64,redirect", &field));
+  EXPECT_EQ(kDebounceBase64DecodeAndRedirectToParam, field);
+  EXPECT_TRUE(DebounceRule::ParseDebounceAction("redirect", &field));
+  EXPECT_EQ(kDebounceRedirectToParam, field);
+  EXPECT_FALSE(DebounceRule::ParseDebounceAction("abc", &field));
 }
 
 // Note: we use json as the delimiter for the raw-string-literals for the test
@@ -279,6 +280,129 @@ TEST(DebounceRuleUnitTest, PrefDoesNotExist) {
 
   for (const std::unique_ptr<DebounceRule>& rule : rules) {
     CheckApplyResult(rule.get(), GURL("https://test.com/brave.com"), "", true);
+  }
+}
+
+TEST(DebounceRuleUnitTest, DeAmpUrl) {
+  TestingPrefServiceSimple prefs;
+  prefs.registry()->RegisterBooleanPref("brave.de_amp.enabled", true);
+
+  const std::string contents = R"json(
+
+      [{
+          "include": [
+              "*://*.cdn.ampproject.org/c/s/*"
+          ],
+          "exclude": [
+          ],
+          "action": "regex-path",
+          "prepend_scheme": "https",
+          "pref": "brave.de_amp.enabled",
+          "param": "^/c/s/(.*)$"
+      }]
+      
+      )json";
+  std::vector<std::unique_ptr<DebounceRule>> rules = StringToRules(contents);
+
+  for (const std::unique_ptr<DebounceRule>& rule : rules) {
+    CheckApplyResult(rule.get(),
+                     GURL("https://www-theverge-com.cdn.ampproject.org/c/s/"
+                          "www.theverge.com/platform/amp/2018/9/20/17881766/"
+                          "bing-google-amp-support-mobile-news"),
+                     "https://www.theverge.com/platform/amp/2018/9/20/17881766/"
+                     "bing-google-amp-support-mobile-news",
+                     &prefs, false);
+  }
+}
+
+TEST(DebounceRuleUnitTest, DotomiTrackerUrl) {
+  const std::string contents = R"json(
+
+      [{
+          "include": [
+              "*://*.dotomi.com/links-t/*"
+          ],
+          "exclude": [
+          ],
+          "action": "regex-path",
+          "param": "^/links-t/[0-9]*/type/dlg/sid/---/(.*)$"
+      }]
+      
+      )json";
+  std::vector<std::unique_ptr<DebounceRule>> rules = StringToRules(contents);
+
+  // From https://github.com/brave/brave-browser/issues/22429
+  auto* tracker_url =
+      "https://cj.dotomi.com/links-t/123/type/dlg/sid/---/https://"
+      "www.carhartt.com/product/123/nintendo-one";
+  auto* target_url = "https://www.carhartt.com/product/123/nintendo-one";
+
+  for (const std::unique_ptr<DebounceRule>& rule : rules) {
+    CheckApplyResult(rule.get(), GURL(tracker_url), target_url, false);
+  }
+}
+
+TEST(DebounceRuleUnitTest, UrlEncoded) {
+  const std::string contents = R"json(
+
+      [{
+          "include": [
+              "*://prf.hn/click/*"
+          ],
+          "exclude": [
+          ],
+          "action": "regex-path",
+          "param": "^/click/camref:[0-9a-zA-Z]*/pubref:[0-9a-zA-Z-]*/destination:(.*)$"
+      }]
+      
+      )json";
+  std::vector<std::unique_ptr<DebounceRule>> rules = StringToRules(contents);
+
+  // From https://github.com/brave/brave-browser/issues/22429
+  auto* tracker_url =
+      "https://prf.hn/click/camref:1011l7xH5/"
+      "pubref:cn-182c2c19daa548769cf89ef10d5a5af3-dtp/"
+      "destination:https%3A%2F%2Fwww.test.com%2Ftest1%2Ftest2";
+  auto* target_url = "https://www.test.com/test1/test2";
+
+  for (const std::unique_ptr<DebounceRule>& rule : rules) {
+    CheckApplyResult(rule.get(), GURL(tracker_url), target_url, false);
+  }
+}
+
+TEST(DebounceRuleUnitTest, AnrdoezrsTrackerUrl) {
+  const std::string contents = R"json(
+
+      [{
+          "include": [
+              "*://*.anrdoezrs.net/links/*"
+          ],
+          "exclude": [
+          ],
+          "action": "regex-path",
+          "param": "^/links/[0-9]*/type/dlg/sid/[-_a-zA-Z]*/(.*)$"
+      }]
+      
+      )json";
+  std::vector<std::unique_ptr<DebounceRule>> rules = StringToRules(contents);
+
+  // From https://github.com/brave/brave-browser/issues/22429
+  auto* tracker_url_1 =
+      "https://www.anrdoezrs.net/links/123/type/dlg/sid/---/https://"
+      "www.carhartt.com/product/123/nintendo-one";
+  auto* tracker_url_2 =
+      "https://www.anrdoezrs.net/links/123/type/dlg/sid/"
+      "cn-___COM_CLICK_ID___-dtp/https://www.verizon.com/deals";
+  auto* target_url_1 = "https://www.carhartt.com/product/123/nintendo-one";
+  auto* target_url_2 = "https://www.verizon.com/deals";
+  auto* tracker_url_not_match =
+      "https://www.anrdoezrs.net/links/123/type/dlg/sid/https://"
+      "www.carhartt.com/product/123/nintendo-one";
+
+  for (const std::unique_ptr<DebounceRule>& rule : rules) {
+    CheckApplyResult(rule.get(), GURL(tracker_url_1), target_url_1, false);
+    CheckApplyResult(rule.get(), GURL(tracker_url_2), target_url_2, false);
+    CheckApplyResult(rule.get(), GURL(tracker_url_not_match), "", true);
   }
 }
 

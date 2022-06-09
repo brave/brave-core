@@ -62,6 +62,9 @@ class DebounceRule {
 
  private:
   bool CheckPrefForRule(const PrefService* prefs) const;
+  bool ValidateAndParsePatternRegex(const std::string& pattern,
+                                    const std::string& path,
+                                    std::string* parsed_value) const;
   extensions::URLPatternSet include_pattern_set_;
   extensions::URLPatternSet exclude_pattern_set_;
   DebounceAction action_;
