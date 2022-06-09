@@ -15,6 +15,7 @@
 #include "brave/components/brave_ads/browser/ads_service_impl.h"
 #include "brave/components/brave_federated/brave_federated_service.h"
 #include "brave/components/brave_federated/data_store_service.h"
+#include "brave/components/brave_federated/tasks_constants.h"
 #include "chrome/browser/dom_distiller/dom_distiller_service_factory.h"
 #include "chrome/browser/history/history_service_factory.h"
 #include "chrome/browser/notifications/notification_display_service_factory.h"
@@ -28,10 +29,6 @@
 #include "brave/browser/brave_ads/tooltips/ads_tooltips_delegate_impl.h"
 #include "brave/components/brave_adaptive_captcha/brave_adaptive_captcha_service.h"
 #endif
-
-namespace {
-  constexpr char kNotificationAdTimingTask[] = "ad_notification_timing_task";
-}
 
 namespace brave_ads {
 
@@ -82,7 +79,7 @@ KeyedService* AdsServiceFactory::BuildServiceInstanceFor(
   if (federated_service) {
     ad_notification_async_data_store =
         federated_service->GetDataStoreService()->GetDataStore(
-            kNotificationAdTimingTask);
+            brave_federated::kNotificationAdTaskName);
   }
 
   auto* history_service = HistoryServiceFactory::GetInstance()->GetForProfile(

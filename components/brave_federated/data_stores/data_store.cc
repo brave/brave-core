@@ -153,7 +153,7 @@ bool DataStore::DeleteTrainingData() {
   return true;
 }
 
-void DataStore::EnforceRetentionPolicy() {
+void DataStore::PurgeTrainingDataAfterExpirationDate() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
   sql::Statement delete_statement(db_.GetUniqueStatement(
@@ -162,7 +162,10 @@ void DataStore::EnforceRetentionPolicy() {
                          task_name_.c_str(), task_name_.c_str())
           .c_str()));
   base::Time expiration_threshold =
-      base::Time::Now() - base::Seconds(max_retention_days_ * 24 * 60 * 60);
+      base::Time::Now() -
+      base::Seconds(max_retention_days_ * base::Time::kHoursPerDay *
+                    base::Time::kMinutesPerHour *
+                    base::Time::kSecondsPerMinute);
   delete_statement.BindInt64(0, expiration_threshold.ToInternalValue());
   delete_statement.BindInt(1, max_number_of_records_);
   delete_statement.Run();

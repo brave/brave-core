@@ -46,8 +46,8 @@ void AsyncDataStore::LoadTrainingData(
   data_store_.AsyncCall(&DataStore::LoadTrainingData).Then(std::move(callback));
 }
 
-void AsyncDataStore::EnforceRetentionPolicy() {
-  data_store_.AsyncCall(&DataStore::EnforceRetentionPolicy);
+void AsyncDataStore::PurgeTrainingDataAfterExpirationDate() {
+  data_store_.AsyncCall(&DataStore::PurgeTrainingDataAfterExpirationDate);
 }
 
 }  // namespace brave_federated

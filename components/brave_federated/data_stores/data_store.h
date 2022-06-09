@@ -35,7 +35,7 @@ class DataStore {
   bool AddTrainingInstance(const mojom::TrainingInstancePtr training_instance);
   bool DeleteTrainingData();
   TrainingData LoadTrainingData();
-  void EnforceRetentionPolicy();
+  void PurgeTrainingDataAfterExpirationDate();
 
  protected:
   friend class DataStoreTest;

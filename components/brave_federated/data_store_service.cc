@@ -24,12 +24,12 @@ DataStoreService::DataStoreService(const base::FilePath& db_path)
     : db_path_(db_path), weak_factory_(this) {}
 
 DataStoreService::~DataStoreService() {
-  EnforceRetentionPolicies();
+  PurgeDataStoresAfterExpirationDate();
 }
 
 void DataStoreService::OnInitComplete(bool success) {
   if (success) {
-    EnforceRetentionPolicies();
+    PurgeDataStoresAfterExpirationDate();
   }
 }
 
@@ -54,9 +54,9 @@ AsyncDataStore* DataStoreService::GetDataStore(const std::string& name) {
   return it->second.get();
 }
 
-void DataStoreService::EnforceRetentionPolicies() {
+void DataStoreService::PurgeDataStoresAfterExpirationDate() {
   for (const auto& data_store : data_stores_) {
-    data_store.second->EnforceRetentionPolicy();
+    data_store.second->PurgeTrainingDataAfterExpirationDate();
   }
 }
 

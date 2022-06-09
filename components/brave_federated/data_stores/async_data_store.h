@@ -37,7 +37,7 @@ class AsyncDataStore {
                            base::OnceCallback<void(bool)> callback);
   void LoadTrainingData(
       base::OnceCallback<void(DataStore::TrainingData)> callback);
-  void EnforceRetentionPolicy();
+  void PurgeTrainingDataAfterExpirationDate();
 
  private:
   const base::SequenceBound<DataStore> data_store_;

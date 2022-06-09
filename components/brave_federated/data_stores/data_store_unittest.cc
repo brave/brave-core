@@ -41,11 +41,10 @@ class DataStoreTest : public testing::Test {
   DataStoreTest()
       : task_environment_(base::test::TaskEnvironment::TimeSource::MOCK_TIME) {}
   void SetUp() override;
-  void TearDown() override;
 
   void ClearDatabase();
-  size_t CountRecords() const;
-  size_t CountTrainingInstances() const;
+  size_t RecordCount() const;
+  size_t TrainingInstanceCount() const;
 
   DataStore::TrainingData TrainingDataFromTestInfo();
 
@@ -66,22 +65,18 @@ void DataStoreTest::SetUp() {
   ClearDatabase();
 }
 
-void DataStoreTest::TearDown() {
-  data_store_ = nullptr;
-}
-
 void DataStoreTest::ClearDatabase() {
   EXPECT_TRUE(data_store_->DeleteTrainingData());
 }
 
-size_t DataStoreTest::CountRecords() const {
+size_t DataStoreTest::RecordCount() const {
   sql::Statement statement(data_store_->db_.GetUniqueStatement(
       "SELECT count(*) FROM test_federated_task"));
   EXPECT_TRUE(statement.Step());
   return static_cast<size_t>(statement.ColumnInt(0));
 }
 
-size_t DataStoreTest::CountTrainingInstances() const {
+size_t DataStoreTest::TrainingInstanceCount() const {
   sql::Statement statement(data_store_->db_.GetUniqueStatement(
       "SELECT count(DISTINCT training_instance_id) FROM test_federated_task"));
   EXPECT_TRUE(statement.Step());
@@ -111,8 +106,8 @@ void DataStoreTest::InitializeDataStore() {
     auto& training_instance = training_instance_pair.second;
     AddTrainingInstance(std::move(training_instance));
   }
-  EXPECT_EQ(std::size(kTestTrainingData), CountRecords());
-  EXPECT_EQ(std::size(training_data), CountTrainingInstances());
+  EXPECT_EQ(std::size(kTestTrainingData), RecordCount());
+  EXPECT_EQ(std::size(training_data), TrainingInstanceCount());
 }
 
 bool DataStoreTest::AddTrainingInstance(
@@ -130,18 +125,18 @@ bool DataStoreTest::AddTrainingInstance(
 
 TEST_F(DataStoreTest, AddTrainingInstance) {
   ClearDatabase();
-  EXPECT_EQ(0U, CountRecords());
+  EXPECT_EQ(0U, RecordCount());
   DataStore::TrainingData training_data = TrainingDataFromTestInfo();
   EXPECT_TRUE(AddTrainingInstance(std::move(training_data[0])));
-  EXPECT_EQ(1U, CountTrainingInstances());
+  EXPECT_EQ(1U, TrainingInstanceCount());
   EXPECT_TRUE(AddTrainingInstance(std::move(training_data[1])));
-  EXPECT_EQ(2U, CountTrainingInstances());
+  EXPECT_EQ(2U, TrainingInstanceCount());
 }
 
 TEST_F(DataStoreTest, LoadTrainingData) {
   InitializeDataStore();
-  EXPECT_EQ(4U, CountRecords());
-  EXPECT_EQ(2U, CountTrainingInstances());
+  EXPECT_EQ(4U, RecordCount());
+  EXPECT_EQ(2U, TrainingInstanceCount());
   auto training_data = data_store_->LoadTrainingData();
 
   for (size_t i = 0; i < std::size(kTestTrainingData) / 2; ++i) {
@@ -153,24 +148,24 @@ TEST_F(DataStoreTest, LoadTrainingData) {
 
 TEST_F(DataStoreTest, DeleteLogs) {
   InitializeDataStore();
-  EXPECT_EQ(4U, CountRecords());
+  EXPECT_EQ(4U, RecordCount());
   DataStore::TrainingData training_data = data_store_->LoadTrainingData();
-  EXPECT_EQ(training_data.size(), CountTrainingInstances());
+  EXPECT_EQ(training_data.size(), TrainingInstanceCount());
   EXPECT_TRUE(data_store_->DeleteTrainingData());
-  EXPECT_EQ(0U, CountRecords());
+  EXPECT_EQ(0U, RecordCount());
   training_data = data_store_->LoadTrainingData();
-  EXPECT_EQ(0U, CountRecords());
+  EXPECT_EQ(0U, RecordCount());
 }
 
-TEST_F(DataStoreTest, EnforceRetentionPolicy) {
+TEST_F(DataStoreTest, PurgeTrainingDataAfterExpirationDate) {
   InitializeDataStore();
-  EXPECT_EQ(4U, CountRecords());
+  EXPECT_EQ(4U, RecordCount());
   task_environment_.AdvanceClock(base::Days(31));
 
-  data_store_->EnforceRetentionPolicy();
+  data_store_->PurgeTrainingDataAfterExpirationDate();
 
   DataStore::TrainingData training_data = data_store_->LoadTrainingData();
-  EXPECT_EQ(0U, CountRecords());
+  EXPECT_EQ(0U, RecordCount());
 }
 
 }  // namespace brave_federated
