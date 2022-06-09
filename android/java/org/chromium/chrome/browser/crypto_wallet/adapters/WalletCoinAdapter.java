@@ -152,6 +152,7 @@ public class WalletCoinAdapter extends RecyclerView.Adapter<WalletCoinAdapter.Vi
             holder.text2Text.setVisibility(View.GONE);
             if (mType == AdapterType.EDIT_VISIBLE_ASSETS_LIST) {
                 holder.assetCheck.setVisibility(View.VISIBLE);
+                holder.assetCheck.setChecked(walletListItemModel.getIsUserSelected());
                 holder.assetCheck.setOnCheckedChangeListener(
                         new CompoundButton.OnCheckedChangeListener() {
                             @Override
@@ -176,7 +177,6 @@ public class WalletCoinAdapter extends RecyclerView.Adapter<WalletCoinAdapter.Vi
                                         walletListItemModel, holder.assetCheck, isChecked);
                             }
                         });
-                holder.assetCheck.setChecked(walletListItemModel.getIsUserSelected());
             }
         }
 

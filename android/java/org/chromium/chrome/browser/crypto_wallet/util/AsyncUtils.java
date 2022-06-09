@@ -16,6 +16,9 @@ import org.chromium.brave_wallet.mojom.JsonRpcService;
 import org.chromium.brave_wallet.mojom.NetworkInfo;
 import org.chromium.brave_wallet.mojom.TransactionInfo;
 import org.chromium.brave_wallet.mojom.TxService;
+import org.chromium.mojo.bindings.Callbacks;
+
+import java.util.HashMap;
 
 public class AsyncUtils {
     private final static String TAG = "AsyncUtils";
@@ -76,6 +79,8 @@ public class AsyncUtils {
 
     public static class GetBalanceResponseBaseContext extends SingleResponseBaseContext {
         public String balance;
+        public Integer decimals;
+        public String uiAmountString;
         public Integer error;
         public String errorMessage;
         public BlockchainToken userAsset;
@@ -90,6 +95,14 @@ public class AsyncUtils {
             this.error = error;
             this.errorMessage = errorMessage;
             super.fireResponseCompleteCallback();
+        }
+
+        // For GetSplTokenAccountBalance
+        public void callSplBase(String amount, Integer decimals, String uiAmountString,
+                Integer error, String errorMessage) {
+            this.decimals = decimals;
+            this.uiAmountString = uiAmountString;
+            this.callBase(amount, error, errorMessage);
         }
     }
 
@@ -129,6 +142,36 @@ public class AsyncUtils {
         public void call(String balance, Integer error, String errorMessage) {
             warnWhenError(TAG, "getBalance", error, errorMessage);
             super.callBase(balance, error, errorMessage);
+        }
+    }
+
+    public static class GetSolanaBalanceResponseContext extends GetBalanceResponseBaseContext
+            implements JsonRpcService.GetSolanaBalance_Response {
+        public GetSolanaBalanceResponseContext(Runnable responseCompleteCallback) {
+            super(responseCompleteCallback);
+        }
+
+        // Returned balance is Long instead of String
+        @Override
+        public void call(Long balance, Integer error, String errorMessage) {
+            warnWhenError(TAG, "getSolanaBalance", error, errorMessage);
+            super.callBase(String.valueOf(balance), error, errorMessage);
+        }
+    }
+
+    public static class GetSplTokenAccountBalanceResponseContext
+            extends GetBalanceResponseBaseContext
+            implements JsonRpcService.GetSplTokenAccountBalance_Response {
+        public GetSplTokenAccountBalanceResponseContext(Runnable responseCompleteCallback) {
+            super(responseCompleteCallback);
+        }
+
+        @Override
+        public void call(String amount, Byte decimals, String uiAmountString, Integer error,
+                String errorMessage) {
+            warnWhenError(TAG, "getSplTokenAccountBalance", error, errorMessage);
+            super.callSplBase(
+                    amount, Integer.valueOf(decimals), uiAmountString, error, errorMessage);
         }
     }
 
@@ -213,6 +256,51 @@ public class AsyncUtils {
         @Override
         public void call(NetworkInfo[] networkInfos) {
             this.networkInfos = networkInfos;
+            super.fireResponseCompleteCallback();
+        }
+    }
+
+    public static class FetchPricesResponseContext extends SingleResponseBaseContext
+            implements Callbacks.Callback1<HashMap<String, Double>> {
+        public HashMap<String, Double> assetPrices;
+
+        public FetchPricesResponseContext(Runnable responseCompleteCallback) {
+            super(responseCompleteCallback);
+        }
+
+        @Override
+        public void call(HashMap<String, Double> assetPrices) {
+            this.assetPrices = assetPrices;
+            super.fireResponseCompleteCallback();
+        }
+    }
+
+    public static class GetNativeAssetsBalancesResponseContext extends SingleResponseBaseContext
+            implements Callbacks.Callback1<HashMap<String, Double>> {
+        public HashMap<String, Double> nativeAssetsBalances;
+
+        public GetNativeAssetsBalancesResponseContext(Runnable responseCompleteCallback) {
+            super(responseCompleteCallback);
+        }
+
+        @Override
+        public void call(HashMap<String, Double> nativeAssetsBalances) {
+            this.nativeAssetsBalances = nativeAssetsBalances;
+            super.fireResponseCompleteCallback();
+        }
+    }
+
+    public static class GetBlockchainTokensBalancesResponseContext extends SingleResponseBaseContext
+            implements Callbacks.Callback1<HashMap<String, HashMap<String, Double>>> {
+        public HashMap<String, HashMap<String, Double>> blockchainTokensBalances;
+
+        public GetBlockchainTokensBalancesResponseContext(Runnable responseCompleteCallback) {
+            super(responseCompleteCallback);
+        }
+
+        @Override
+        public void call(HashMap<String, HashMap<String, Double>> blockchainTokensBalances) {
+            this.blockchainTokensBalances = blockchainTokensBalances;
             super.fireResponseCompleteCallback();
         }
     }
