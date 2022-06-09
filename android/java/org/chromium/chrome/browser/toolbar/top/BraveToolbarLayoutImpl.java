@@ -364,6 +364,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
 
             @Override
             public void onPageLoadStarted(Tab tab, GURL url) {
+                showWalletIcon(false);
                 if (getToolbarDataProvider().getTab() == tab) {
                     updateBraveShieldsButtonState(tab);
                 }
