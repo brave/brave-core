@@ -1,17 +1,8 @@
 diff --git a/chrome/browser/sync/chrome_sync_client.cc b/chrome/browser/sync/chrome_sync_client.cc
-index b949c22d19dc7ac956ee283645c0a34f78b392be..3d67591d44ca00c4d00f716175426d041fa505c9 100644
+index b949c22d19dc7ac956ee283645c0a34f78b392be..a8e158c6ed5aeda65e68d7a5ce0a234769864607 100644
 --- a/chrome/browser/sync/chrome_sync_client.cc
 +++ b/chrome/browser/sync/chrome_sync_client.cc
-@@ -78,6 +78,8 @@
- #include "components/sync/base/sync_util.h"
- #include "components/sync/driver/model_type_controller.h"
- #include "components/sync/driver/sync_api_component_factory.h"
-+#include "components/sync/driver/sync_service.h"
-+#include "components/sync/driver/sync_user_settings.h"
- #include "components/sync/driver/syncable_service_based_model_type_controller.h"
- #include "components/sync/model/forwarding_model_type_controller_delegate.h"
- #include "components/sync/model/model_type_store.h"
-@@ -214,7 +216,7 @@ bool IsAppSyncEnabled(Profile* profile) {
+@@ -214,7 +214,7 @@ bool IsAppSyncEnabled(Profile* profile) {
  
  }  // namespace
  
@@ -20,7 +11,7 @@ index b949c22d19dc7ac956ee283645c0a34f78b392be..3d67591d44ca00c4d00f716175426d04
      : profile_(profile), extensions_activity_monitor_(profile) {
    DCHECK_CURRENTLY_ON(BrowserThread::UI);
  
-@@ -249,7 +251,7 @@ ChromeSyncClient::ChromeSyncClient(Profile* profile)
+@@ -249,7 +249,7 @@ ChromeSyncClient::ChromeSyncClient(Profile* profile)
        BookmarkSyncServiceFactory::GetForProfile(profile_));
  
  #if BUILDFLAG(IS_ANDROID)
@@ -29,20 +20,3 @@ index b949c22d19dc7ac956ee283645c0a34f78b392be..3d67591d44ca00c4d00f716175426d04
  #else
    // TODO(crbug.com/1113597): consider destroying/notifying
    // |trusted_vault_client_| upon IdentityManager shutdown, to avoid its usages
-@@ -672,6 +674,16 @@ void ChromeSyncClient::OnLocalSyncTransportDataCleared() {
-   metrics::ClearDemographicsPrefs(profile_->GetPrefs());
- }
- 
-+void ChromeSyncClient::SetDefaultEnabledTypes(
-+    syncer::SyncService* sync_service) {
-+  DCHECK(sync_service);
-+
-+  // Default enabled types: Bookmarks
-+  syncer::UserSelectableTypeSet selected_types;
-+  selected_types.Put(syncer::UserSelectableType::kBookmarks);
-+  sync_service->GetUserSettings()->SetSelectedTypes(false, selected_types);
-+}
-+
- #if BUILDFLAG(IS_CHROMEOS_LACROS)
- // static
- void ChromeSyncClient::SkipMainProfileCheckForTesting() {
