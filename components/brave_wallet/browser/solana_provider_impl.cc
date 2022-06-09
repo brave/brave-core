@@ -88,6 +88,22 @@ void SolanaProviderImpl::Connect(absl::optional<base::Value> arg,
     }
   }
 
+  if (keyring_service_->IsLocked(mojom::kSolanaKeyringId)) {
+    // Reject the request when we are already waiting for unlock and we will
+    // also reject eagerly connect when wallet is locked.
+    if (pending_connect_callback_ || is_eagerly_connect) {
+      std::move(callback).Run(
+          mojom::SolanaProviderError::kUserRejectedRequest,
+          l10n_util::GetStringUTF8(IDS_WALLET_USER_REJECTED_REQUEST), "");
+      return;
+    }
+    pending_connect_callback_ = std::move(callback);
+    pending_connect_arg_ = std::move(arg);
+    keyring_service_->RequestUnlock();
+    delegate_->ShowPanel();
+    return;
+  }
+
   delegate_->IsAccountAllowed(
       mojom::CoinType::SOL, *account,
       base::BindOnce(&SolanaProviderImpl::ContinueConnect,
@@ -644,6 +660,13 @@ void SolanaProviderImpl::OnRequestSignAllTransactions(
     result.GetDict().Set(kSignature, std::move(signatures));
   }
   std::move(callback).Run(error, error_message, std::move(result));
+}
+
+void SolanaProviderImpl::Unlocked() {
+  if (pending_connect_callback_) {
+    Connect(std::move(pending_connect_arg_),
+            std::move(pending_connect_callback_));
+  }
 }
 
 void SolanaProviderImpl::SelectedAccountChanged(mojom::CoinType coin) {

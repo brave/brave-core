@@ -175,6 +175,23 @@ class SolanaProviderImplUnitTest : public testing::Test {
     return keyring_service_->GetHDKeyringById(id)->GetAddress(index);
   }
 
+  void LockWallet() {
+    keyring_service_->Lock();
+    // Needed so KeyringServiceObserver::Locked handler can be hit
+    // which the provider object listens to for the accountsChanged event.
+    base::RunLoop().RunUntilIdle();
+  }
+
+  void UnlockWallet() {
+    base::RunLoop run_loop;
+    keyring_service_->Unlock(
+        "brave", base::BindLambdaForTesting([&run_loop](bool success) {
+          ASSERT_TRUE(success);
+          run_loop.Quit();
+        }));
+    run_loop.Run();
+  }
+
   void AddSolanaPermission(const url::Origin& origin,
                            const std::string& address) {
     base::RunLoop run_loop;
@@ -364,6 +381,41 @@ TEST_F(SolanaProviderImplUnitTest, Connect) {
   EXPECT_EQ(error, mojom::SolanaProviderError::kSuccess);
   EXPECT_TRUE(error_message.empty());
   EXPECT_TRUE(IsConnected());
+
+  provider_->Disconnect();
+  mojom::SolanaProviderError pending_error;
+  std::string pending_error_message;
+  std::string pending_connect_account;
+  LockWallet();
+  base::RunLoop run_loop;
+  provider_->Connect(absl::nullopt, base::BindLambdaForTesting(
+                                        [&pending_error, &pending_error_message,
+                                         &pending_connect_account, &run_loop](
+                                            mojom::SolanaProviderError error,
+                                            const std::string& error_message,
+                                            const std::string& public_key) {
+                                          pending_error = error;
+                                          pending_error_message = error_message;
+                                          pending_connect_account = public_key;
+                                          run_loop.Quit();
+                                        }));
+  // Request will be rejected because it is still waiting for wallet unlock.
+  account = Connect(absl::nullopt, &error, &error_message);
+  EXPECT_TRUE(account.empty());
+  EXPECT_EQ(error, mojom::SolanaProviderError::kUserRejectedRequest);
+  EXPECT_EQ(error_message,
+            l10n_util::GetStringUTF8(IDS_WALLET_USER_REJECTED_REQUEST));
+  EXPECT_FALSE(IsConnected());
+  // Unlock wallet will continue previous connect, since permission is already
+  // granted we don't need to grant it again.
+  UnlockWallet();
+
+  // Wait for Unlocked observer to pick up previous connect
+  run_loop.Run();
+  EXPECT_EQ(pending_connect_account, address);
+  EXPECT_EQ(pending_error, mojom::SolanaProviderError::kSuccess);
+  EXPECT_TRUE(pending_error_message.empty());
+  EXPECT_TRUE(IsConnected());
 }
 
 TEST_F(SolanaProviderImplUnitTest, EagerlyConnect) {
@@ -384,10 +436,29 @@ TEST_F(SolanaProviderImplUnitTest, EagerlyConnect) {
   EXPECT_EQ(error_message,
             l10n_util::GetStringUTF8(IDS_WALLET_USER_REJECTED_REQUEST));
   EXPECT_FALSE(IsConnected());
+  // Request will be rejected when wallet is locked (no permission)
+  LockWallet();
+  account = Connect(dict.Clone(), &error, &error_message);
+  EXPECT_TRUE(account.empty());
+  EXPECT_EQ(error, mojom::SolanaProviderError::kUserRejectedRequest);
+  EXPECT_EQ(error_message,
+            l10n_util::GetStringUTF8(IDS_WALLET_USER_REJECTED_REQUEST));
+  EXPECT_FALSE(IsConnected());
+  UnlockWallet();
+
+  AddSolanaPermission(GetOrigin(), address);
+  // Request will be rejected when wallet is locked (has permission)
+  LockWallet();
+  account = Connect(dict.Clone(), &error, &error_message);
+  EXPECT_TRUE(account.empty());
+  EXPECT_EQ(error, mojom::SolanaProviderError::kUserRejectedRequest);
+  EXPECT_EQ(error_message,
+            l10n_util::GetStringUTF8(IDS_WALLET_USER_REJECTED_REQUEST));
+  EXPECT_FALSE(IsConnected());
+  UnlockWallet();
 
   // extra parameters doesn't matter
   dict.GetDict().Set("ExtraP", "aramters");
-  AddSolanaPermission(GetOrigin(), address);
   account = Connect(dict.Clone(), &error, &error_message);
   EXPECT_EQ(account, address);
   EXPECT_EQ(error, mojom::SolanaProviderError::kSuccess);
