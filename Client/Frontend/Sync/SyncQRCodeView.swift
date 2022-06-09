@@ -11,9 +11,34 @@ class SyncQRCodeView: UIImageView {
 
     contentMode = .scaleAspectFill
 
-    if let img = syncApi.getQRCodeImageV2(CGSize(width: barcodeSize, height: barcodeSize)) {
-      image = img
+    let json: String? = {
+      let hexCode = syncApi.hexSeed(fromSyncCode: syncApi.getSyncCode())
+      if hexCode.isEmpty {
+        return nil
+      }
+
+      // Typically QR Codes use isoLatin1, but it doesn't matter here
+      // as we're not encoding any special characters
+      guard let syncCodeString = BraveSyncQRCodeModel(syncHexCode: hexCode).jsonString,
+        !syncCodeString.isEmpty
+      else {
+        return nil
+      }
+      
+      return syncCodeString
+    }()
+    
+    guard let json = json else {
+      image = nil
+      return
     }
+
+    let result = QRCodeGenerator().generateQRCode(.init(data: json,
+                                                        shouldRender: true,
+                                                        renderLogoInCenter: true,
+                                                        renderModuleStyle: .circles,
+                                                        renderLocatorStyle: .rounded))
+    image = result.image ?? getQRCodeImage(json, size: CGSize(width: barcodeSize, height: barcodeSize))
   }
 
   override init(frame: CGRect) {
@@ -23,14 +48,38 @@ class SyncQRCodeView: UIImageView {
   required init?(coder aDecoder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
+  
+  private func getQRCodeImage(_ json: String, size: CGSize) -> UIImage? {
+    // Typically QR Codes use isoLatin1, but it doesn't matter here
+    // as we're not encoding any special characters
+    guard let syncCodeData = json.data(using: .utf8),
+      !syncCodeData.isEmpty
+    else {
+      return nil
+    }
 
-  func createQRFromString(_ str: String) -> CIImage? {
-    let stringData = str.data(using: String.Encoding.utf8)
-    let filter = CIFilter(name: "CIQRCodeGenerator")
+    guard let filter = CIFilter(name: "CIQRCodeGenerator") else {
+      return nil
+    }
 
-    filter?.setValue(stringData, forKey: "inputMessage")
-    filter?.setValue("H", forKey: "inputCorrectionLevel")
+    filter.do {
+      $0.setValue(syncCodeData, forKey: "inputMessage")
+      $0.setValue("H", forKey: "inputCorrectionLevel")
+    }
 
-    return filter?.outputImage
+    if let image = filter.outputImage,
+      image.extent.size.width > 0.0,
+      image.extent.size.height > 0.0 {
+      let scaleX = size.width / image.extent.size.width
+      let scaleY = size.height / image.extent.size.height
+      let transform = CGAffineTransform(scaleX: scaleX, y: scaleY)
+
+      return UIImage(
+        ciImage: image.transformed(by: transform),
+        scale: UIScreen.main.scale,
+        orientation: .up)
+    }
+
+    return nil
   }
 }
