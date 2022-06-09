@@ -32,11 +32,15 @@ bool ParseFeedItem(const base::Value& feed_item_raw,
             << *feed_item_raw.FindStringKey("title");
     return false;
   }
-  auto image_url_raw = *feed_item_raw.FindStringKey("padded_img");
-  // Filter out non-image articles
+  // Support either padded_img or img fields, preferring img
+  auto image_url_raw = *feed_item_raw.FindStringKey("img");
   if (image_url_raw.empty()) {
-    VLOG(2) << "Found feed item with missing image. Url: " << url_raw;
-    return false;
+    image_url_raw = *feed_item_raw.FindStringKey("padded_img");
+    // Filter out non-image articles
+    if (image_url_raw.empty()) {
+      VLOG(2) << "Found feed item with missing image. Url: " << url_raw;
+      return false;
+    }
   }
   auto publisher_id = *feed_item_raw.FindStringKey("publisher_id");
   if (publisher_id.empty()) {
