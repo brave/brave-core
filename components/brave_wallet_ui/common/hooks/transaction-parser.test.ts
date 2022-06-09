@@ -294,7 +294,7 @@ describe('useTransactionParser hook', () => {
          */
 
         const mockTransactionInfo = getMockedTransactionInfo()
-        const mockTxData = mockTransactionInfo.txDataUnion.ethTxData1559
+        const mockTxData: BraveWallet.TxData1559 = mockTransactionInfo.txDataUnion.ethTxData1559!
 
         const { result: { current: transactionParser } } = renderHook(() => useTransactionParser(
           mockNetwork,
@@ -305,14 +305,14 @@ describe('useTransactionParser hook', () => {
               '0x1': '1000000000000000000' // 1 ETH
             },
             tokenBalanceRegistry: {
-              [mockTxData!.baseData.to.toLowerCase()]: '0'
+              [mockTxData.baseData.to.toLowerCase()]: '0'
             }
           }],
           mockAssetPrices,
           [
             {
               ...mockERC20Token,
-              contractAddress: mockTxData!.baseData.to.toLowerCase()
+              contractAddress: mockTxData.baseData.to.toLowerCase()
             }
           ],
           []
@@ -330,9 +330,9 @@ describe('useTransactionParser hook', () => {
             filTxData: undefined,
             solanaTxData: {} as any,
             ethTxData1559: {
-              ...mockTxData!,
+              ...mockTxData,
               baseData: {
-                ...mockTxData!.baseData,
+                ...mockTxData.baseData,
                 value: '0x0',
                 gasLimit: '0x5208', // 21000
                 gasPrice: '0x22ecb25c00' // 150 Gwei
