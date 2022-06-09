@@ -1,5 +1,5 @@
 diff --git a/chrome/android/chrome_public_apk_tmpl.gni b/chrome/android/chrome_public_apk_tmpl.gni
-index 87220dc9a01a1c7eaeebc8e6a456cfa69372860e..c6d6d23ee78665166a8488d134812ae504d956f8 100644
+index 6fb71709dd398673f7950c0d33b39565bbd83ffe..6d5affe1eaac2cd8e27a9179ba25661bed0bb386 100644
 --- a/chrome/android/chrome_public_apk_tmpl.gni
 +++ b/chrome/android/chrome_public_apk_tmpl.gni
 @@ -181,6 +181,7 @@ template("chrome_public_common_apk_or_module_tmpl") {
@@ -10,7 +10,7 @@ index 87220dc9a01a1c7eaeebc8e6a456cfa69372860e..c6d6d23ee78665166a8488d134812ae5
  
      # Note most of these, with the exception of resource_exclusion_exceptions,
      # are currently duplicated in system_webview_apk_tmpl.gni.
-@@ -290,6 +291,7 @@ template("chrome_public_common_apk_or_module_tmpl") {
+@@ -277,6 +278,7 @@ template("chrome_public_common_apk_or_module_tmpl") {
        if (!defined(proguard_configs)) {
          proguard_configs = []
        }
