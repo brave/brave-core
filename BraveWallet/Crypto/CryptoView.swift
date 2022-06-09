@@ -144,6 +144,7 @@ public struct CryptoView: View {
                   sendTokenStore: store.openSendTokenStore(destination.initialToken),
                   completion: { success in
                     if success {
+                      store.closeBSSStores()
                       dismissAction?()
                     }
                   },
@@ -159,6 +160,7 @@ public struct CryptoView: View {
                   swapTokensStore: store.openSwapTokenStore(destination.initialToken),
                   completion: { success in
                     if success {
+                      store.closeBSSStores()
                       dismissAction?()
                     }
                   },
