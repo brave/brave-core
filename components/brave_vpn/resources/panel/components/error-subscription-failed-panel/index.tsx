@@ -33,7 +33,7 @@ function ErrorSubscriptionFailed () {
           {getLocale('braveVpnPaymentFailure')}
         </S.ReasonTitle>
         <S.ReasonDesc>
-          {getLocale('braveVpnPaymentFailureReason')}
+          {getLocale('braveVpnPaymentFailureReason').replace('$1', getLocale('braveVpn'))}
         </S.ReasonDesc>
         <S.ActionArea>
           <Button
