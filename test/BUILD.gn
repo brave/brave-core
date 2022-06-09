@@ -802,6 +802,7 @@ if (!is_android) {
       "//brave/components/resources:strings_grit",
       "//brave/components/skus/common",
       "//brave/components/tor",
+      "//brave/renderer/skus:browser_tests",
       "//brave/renderer/test:browser_tests",
       "//brave/vendor/bat-native-ads",
       "//brave/vendor/bat-native-ledger",

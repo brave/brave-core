@@ -73,16 +73,14 @@ void SkusJSHandler::AddJavaScriptObjectToFrame(v8::Local<v8::Context> context) {
   }
 
   // window.chrome.braveSkus
-  v8::Local<v8::Object> skus_obj;
-  v8::Local<v8::Value> skus_value;
-  if (chrome_obj->Get(context, gin::StringToV8(isolate, "braveSkus"))
-          .ToLocal(&skus_value) &&
-      skus_value->IsObject())
-    return;
   gin::Handle<SkusJSHandler> handler = gin::CreateHandle(isolate, this);
   CHECK(!handler.IsEmpty());
+  v8::PropertyDescriptor skus_desc(handler.ToV8(), false);
+  skus_desc.set_configurable(false);
+
   chrome_obj
-      ->Set(context, gin::StringToSymbol(isolate, "braveSkus"), handler.ToV8())
+      ->DefineProperty(isolate->GetCurrentContext(),
+                       gin::StringToV8(isolate, "braveSkus"), skus_desc)
       .Check();
 }
 
