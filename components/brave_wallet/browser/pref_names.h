@@ -24,6 +24,8 @@ extern const char kBraveWalletSelectedNetworks[];
 extern const char kBraveWalletUserAssets[];
 // Added 10/2021 to migrate contract address to an empty string for ETH.
 extern const char kBraveWalletUserAssetEthContractAddressMigrated[];
+// Added 06/2022 to add native assets of preloading networks to user assets.
+extern const char kBraveWalletUserAssetsAddPreloadingNetworksMigrated[];
 extern const char kBraveWalletAutoLockMinutes[];
 extern const char kSupportEip1559OnLocalhostChain[];
 // Added 02/2022 to migrate ethereum transactions to be under ethereum coin
