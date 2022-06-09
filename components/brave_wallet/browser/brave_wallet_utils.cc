@@ -960,14 +960,15 @@ std::string GetKnownEthNetworkId(const std::string& chain_id) {
   if (!subdomain.empty())
     return subdomain;
 
-  // Separate check for localhost in known networks as it is predefined but
-  // does not have infura subdomain.
-  if (chain_id == mojom::kLocalhostChainId) {
-    for (const auto& network : kKnownEthNetworks) {
-      if (network.chain_id == chain_id) {
-        return GURL(network.rpc_urls.front()).spec();
-      }
-    }
+  // For known networks not in kInfuraSubdomains:
+  //   localhost: Use the first RPC URL.
+  //   other: Use chain ID like other custom networks.
+  for (const auto& network : kKnownEthNetworks) {
+    if (network.chain_id != chain_id)
+      continue;
+    if (chain_id == mojom::kLocalhostChainId)
+      return GURL(network.rpc_urls.front()).spec();
+    return chain_id;
   }
 
   return "";
