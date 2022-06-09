@@ -257,6 +257,10 @@ constexpr char kBraveWalletSolanaProviderName[] =
     "Enable Brave Wallet Solana provider support";
 constexpr char kBraveWalletSolanaProviderDescription[] =
     "Solana provider support for native Brave Wallet";
+constexpr char kBraveWalletDappsSupportName[] =
+    "Enable Brave Wallet Dapps support";
+constexpr char kBraveWalletDappsSupportDescription[] =
+    "Brave Wallet Dapps support";
 
 constexpr char kBraveNewsName[] = "Enable Brave News";
 constexpr char kBraveNewsDescription[] =
@@ -398,7 +402,13 @@ const flags_ui::FeatureEntry::Choice kBraveSkusEnvChoices[] = {
      flag_descriptions::kBraveWalletSolanaProviderDescription,                 \
      kOsDesktop | kOsAndroid,                                                  \
      FEATURE_VALUE_TYPE(                                                       \
-      brave_wallet::features::kBraveWalletSolanaProviderFeature)},
+      brave_wallet::features::kBraveWalletSolanaProviderFeature)},             \
+     {"brave-wallet-dapps-support",                                            \
+     flag_descriptions::kBraveWalletDappsSupportName,                          \
+     flag_descriptions::kBraveWalletDappsSupportDescription,                   \
+     kOsDesktop | kOsAndroid,                                                  \
+     FEATURE_VALUE_TYPE(                                                       \
+      brave_wallet::features::kBraveWalletDappsSupportFeature)},
 
 #define BRAVE_NEWS_FEATURE_ENTRIES                                         \
     {"brave-news",                                                         \
