@@ -13,6 +13,8 @@ import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
 
 import java.util.Arrays;
 import java.util.Locale;
@@ -31,6 +33,21 @@ public class Blockies {
         }
 
         return createIcon(address);
+    }
+
+    public static Drawable createBackground(String address, boolean lowerCase) {
+        if (lowerCase) {
+            address = address.toLowerCase(Locale.getDefault());
+        }
+
+        seedrand(address);
+        String color = createColor();
+        createColor(); // skip dark color
+        String spotColor = createColor(); // use 3rd vibrant color
+        GradientDrawable gd = new GradientDrawable(GradientDrawable.Orientation.TOP_BOTTOM,
+                new int[] {Color.parseColor(spotColor), Color.parseColor(color)});
+        gd.setCornerRadius(0f);
+        return gd;
     }
 
     private static Bitmap createIcon(String address) {
@@ -176,6 +193,7 @@ public class Blockies {
         final Rect rect = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
 
         paint.setAntiAlias(true);
+        paint.setFilterBitmap(true);
         canvas.drawARGB(0, 0, 0, 0);
         paint.setColor(color);
         canvas.drawCircle(

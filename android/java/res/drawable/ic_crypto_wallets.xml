@@ -1,10 +1,17 @@
+<!-- Copyright (c) 2022 The Brave Authors. All rights reserved.
+     This Source Code Form is subject to the terms of the Mozilla Public
+     License, v. 2.0. If a copy of the MPL was not distributed with this file,
+     You can obtain one at http://mozilla.org/MPL/2.0/. -->
+     
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
-    android:width="20dp"
-    android:height="20dp"
-    android:viewportWidth="24"
-    android:viewportHeight="24">
-  <path
-      android:pathData="M2.3876,5.0409C2.3876,3.7983 3.3949,2.791 4.6376,2.791H16.9048C18.4047,2.791 19.6476,3.8917 19.8695,5.3295C21.2973,5.56 22.3876,6.7982 22.3876,8.291V17.291C22.3876,18.9478 21.0444,20.291 19.3876,20.291H5.3876C3.7307,20.291 2.3876,18.9478 2.3876,17.291V5.0409ZM4.3876,7.2772V17.291C4.3876,17.8432 4.8353,18.291 5.3876,18.291H19.3876C19.9399,18.291 20.3876,17.8432 20.3876,17.291V16.5H15.3186C13.6618,16.5 12.3186,15.1569 12.3186,13.5V12.2C12.3186,10.5431 13.6618,9.2 15.3186,9.2H20.3876V8.291C20.3876,7.7387 19.9399,7.2909 19.3876,7.2909H4.6376C4.5531,7.2909 4.4697,7.2863 4.3876,7.2772ZM20.3876,11.2H15.3186C14.7663,11.2 14.3186,11.6477 14.3186,12.2V13.5C14.3186,14.0523 14.7663,14.5 15.3186,14.5H20.3876V11.2ZM4.3876,5.0409C4.3876,5.179 4.4995,5.2909 4.6376,5.2909H17.771C17.5981,4.9921 17.275,4.7909 16.9048,4.7909H4.6376C4.4995,4.7909 4.3876,4.9029 4.3876,5.0409Z"
-      android:fillColor="@color/shield_text_color"
-      android:fillType="evenOdd"/>
+android:width="22dp"
+android:height="20dp"
+android:viewportWidth="22"
+android:viewportHeight="20">
+<path
+    android:pathData="M17.856,3.912V3.666C17.856,2.561 16.961,1.666 15.856,1.666H2.677C1.935,1.666 1.333,2.268 1.333,3.01V3.01C1.333,3.752 1.935,4.354 2.677,4.354H18.5C19.604,4.354 20.5,5.25 20.5,6.354V8.557M20.5,8.557H13.908C12.804,8.557 11.908,9.453 11.908,10.557V12.256C11.908,13.361 12.804,14.256 13.908,14.256H20.5M20.5,8.557V14.256M20.5,14.256V16.333C20.5,17.437 19.605,18.333 18.5,18.333H3.333C2.229,18.333 1.333,17.437 1.333,16.333V3.01"
+    android:strokeLineJoin="round"
+    android:strokeWidth="1.75"
+    android:fillColor="#00000000"
+    android:strokeColor="@color/brave_wallet_day_night_toolbar_icon_color"/>
 </vector>
