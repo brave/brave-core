@@ -184,16 +184,7 @@ extension BrowserViewController {
   }
 
   private func presentWallet() {
-    let privateMode = PrivateBrowsingManager.shared.isPrivateBrowsing
-    guard let walletStore = WalletStore.from(privateMode: privateMode) else {
-      log.error("Failed to load wallet. One or more services were unavailable")
-      return
-    }
-    self.onPendingRequestUpdatedCancellable = walletStore.onPendingRequestUpdated
-      .sink { [weak self] _ in
-        self?.updateURLBarWalletButton()
-      }
-
+    guard let walletStore = self.walletStore ?? newWalletStore() else { return }
     let vc = WalletHostingViewController(walletStore: walletStore, faviconRenderer: FavIconImageRenderer())
     vc.delegate = self
     self.dismiss(animated: true) {

@@ -281,6 +281,9 @@ public class CryptoStore: ObservableObject {
       return true
     }
     let pendingRequest = await fetchPendingWebpageRequest()
+    if self.pendingRequest == nil {
+      self.pendingRequest = pendingRequest
+    }
     return pendingRequest != nil
   }
 
@@ -296,7 +299,6 @@ public class CryptoStore: ObservableObject {
       walletService.notifySignMessageRequestProcessed(approved, id: id)
     }
     pendingRequest = nil
-    prepare()
   }
 }
 

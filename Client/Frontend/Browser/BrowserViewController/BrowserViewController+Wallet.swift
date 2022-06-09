@@ -72,16 +72,24 @@ extension CryptoStore {
 }
 
 extension BrowserViewController {
-  func presentWalletPanel(tab: Tab) {
+  /// Initializes a new WalletStore for displaying the wallet, setting up an observer to notify
+  /// when the pending request is updated so we can update the wallet url bar button.
+  func newWalletStore() -> WalletStore? {
     let privateMode = PrivateBrowsingManager.shared.isPrivateBrowsing
     guard let walletStore = WalletStore.from(privateMode: privateMode) else {
-      return
+      log.error("Failed to load wallet. One or more services were unavailable")
+      return nil
     }
+    self.walletStore = walletStore
     self.onPendingRequestUpdatedCancellable = walletStore.onPendingRequestUpdated
       .sink { [weak self] _ in
         self?.updateURLBarWalletButton()
       }
-    
+    return walletStore
+  }
+  
+  func presentWalletPanel(tab: Tab) {
+    guard let walletStore = self.walletStore ?? newWalletStore() else { return }
     let origin = tab.getOrigin()
     let controller = WalletPanelHostingController(
       walletStore: walletStore,
