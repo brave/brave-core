@@ -19,9 +19,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.widget.AppCompatRadioButton;
 import androidx.appcompat.widget.SwitchCompat;
 import androidx.appcompat.widget.Toolbar;
 
@@ -55,31 +57,35 @@ public class BraveVpnSupportActivity extends AsyncInitializationActivity {
         SwitchCompat networkTypeSwitch = findViewById(R.id.network_type_switch);
         SwitchCompat cellularCarrierSwitch = findViewById(R.id.cellular_carrier_switch);
 
-        LinearLayout otherIssuesLayout = findViewById(R.id.other_issues_layout);
-
-        CheckBox otherIssueCheckbox1 = findViewById(R.id.other_issue_checkbox_1);
-        CheckBox otherIssueCheckbox2 = findViewById(R.id.other_issue_checkbox_2);
-        CheckBox otherIssueCheckbox3 = findViewById(R.id.other_issue_checkbox_3);
-        CheckBox otherIssueCheckbox4 = findViewById(R.id.other_issue_checkbox_4);
-        CheckBox otherIssueCheckbox5 = findViewById(R.id.other_issue_checkbox_5);
+        RadioGroup otherIssuesRadioGroup = findViewById(R.id.other_issues_radiogroup);
 
         TextView otherIssuesText = findViewById(R.id.other_issues_text);
         otherIssuesText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (otherIssuesLayout.isShown()) {
+                if (otherIssuesRadioGroup.isShown()) {
                     otherIssuesText.setCompoundDrawablesWithIntrinsicBounds(
                             0, 0, R.drawable.ic_toggle_down, 0);
-                    otherIssuesLayout.setVisibility(View.GONE);
+                    otherIssuesRadioGroup.setVisibility(View.GONE);
                 } else {
                     otherIssuesText.setCompoundDrawablesWithIntrinsicBounds(
                             0, 0, R.drawable.ic_toggle_up, 0);
-                    otherIssuesLayout.setVisibility(View.VISIBLE);
+                    otherIssuesRadioGroup.setVisibility(View.VISIBLE);
                 }
             }
         });
 
         Button btnContinueToEmail = findViewById(R.id.btn_continue_to_email);
+        otherIssuesRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                if (!btnContinueToEmail.isEnabled()) {
+                    btnContinueToEmail.setEnabled(true);
+                    btnContinueToEmail.setBackgroundResource(R.drawable.orange_rounded_button);
+                }
+            }
+        });
+
         btnContinueToEmail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -112,21 +118,9 @@ public class BraveVpnSupportActivity extends AsyncInitializationActivity {
                 }
 
                 bodyText.append("\n\nOther Issue\n");
-                if (otherIssueCheckbox1.isChecked()) {
-                    bodyText.append(otherIssueCheckbox1.getText() + "\n");
-                }
-                if (otherIssueCheckbox2.isChecked()) {
-                    bodyText.append(otherIssueCheckbox2.getText() + "\n");
-                }
-                if (otherIssueCheckbox3.isChecked()) {
-                    bodyText.append(otherIssueCheckbox3.getText() + "\n");
-                }
-                if (otherIssueCheckbox4.isChecked()) {
-                    bodyText.append(otherIssueCheckbox4.getText() + "\n");
-                }
-                if (otherIssueCheckbox5.isChecked()) {
-                    bodyText.append(otherIssueCheckbox5.getText() + "\n");
-                }
+                AppCompatRadioButton checkedRadioButton =
+                        findViewById(otherIssuesRadioGroup.getCheckedRadioButtonId());
+                bodyText.append(checkedRadioButton.getText() + "\n");
                 bodyText.append("\n\nPlatform\n")
                         .append("Android"
                                 + "\n");
