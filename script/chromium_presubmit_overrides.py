@@ -177,9 +177,25 @@ def CheckParseErrors(original_check, input_api, output_api, *args, **kwargs):
 @chromium_presubmit_utils.override_check(globals())
 def CheckMPArchApiUsage(original_check, input_api, output_api, *args,
                         **kwargs):
-    def AffectedFiles(self, original_method, *_, **__):
-        return original_method(False, self.FilterSourceFile)
+    def AffectedFiles(self, original_method, include_deletes, *_, **__):
+        return original_method(include_deletes, self.FilterSourceFile)
 
     with chromium_presubmit_utils.override_scope_function(
             input_api, AffectedFiles):
         return original_check(input_api, output_api, *args, **kwargs)
+
+
+# Changes from upstream:
+# 1. Skip chromium_src/ files.
+@chromium_presubmit_utils.override_check(globals())
+def CheckForCcIncludes(original_check, input_api, output_api):
+    def AffectedFiles(self, original_method, include_deletes, *_, **__):
+        files_to_skip = input_api.DEFAULT_FILES_TO_SKIP + (
+            r'^chromium_src[\\/]', )
+        sources = lambda x: self.FilterSourceFile(x,
+                                                  files_to_skip=files_to_skip)
+        return original_method(include_deletes, sources)
+
+    with chromium_presubmit_utils.override_scope_function(
+            input_api, AffectedFiles):
+        return original_check(input_api, output_api)
