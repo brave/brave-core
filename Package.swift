@@ -299,6 +299,7 @@ let package = Package(
         "BraveUI",
         .product(name: "Lottie", package: "lottie-ios")
       ],
+      resources: [.copy("vpncheckmark.json")],
       plugins: ["CurrentBundleGenPlugin"]
     ),
     .testTarget(name: "SharedTests", dependencies: ["Shared"]),
