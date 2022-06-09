@@ -65,7 +65,11 @@ public struct PrivacyReportsManager {
   }
   
   public static func consolidateData(dayRange range: Int = 30) {
-    if Date() < Preferences.PrivacyReports.nextConsolidationDate.value {
+    if Preferences.PrivacyReports.nextConsolidationDate.value == nil {
+      Preferences.PrivacyReports.nextConsolidationDate.value = Date().advanced(by: 7.days)
+    }
+      
+    if let consolidationDate = Preferences.PrivacyReports.nextConsolidationDate.value, Date() < consolidationDate {
       return
     }
     
