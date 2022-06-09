@@ -266,6 +266,8 @@ bool DebounceRule::Apply(const GURL& original_url,
     auto new_url_spec =
         base::StringPrintf("%s://%s", scheme.c_str(), unescaped_value.c_str());
     new_url = GURL(new_url_spec);
+    if (new_url.is_valid())
+      DCHECK(new_url.scheme() == scheme);
   }
 
   // Failsafe: ensure we got a valid URL out of the param.
