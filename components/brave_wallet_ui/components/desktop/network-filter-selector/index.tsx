@@ -95,7 +95,10 @@ function NetworkFilterSelector () {
                 <SubDropDown>
                   {sortedNetworks.filter((n) =>
                     n.coin === network.coin &&
-                    n.symbol.toLowerCase() === network.symbol.toLowerCase())
+                    n.symbol.toLowerCase() === network.symbol.toLowerCase() &&
+                    // Optimism's native asset is considered ETH, so we want to make sure
+                    // we dont include it under Ethereum's submenu.
+                    n.chainId !== BraveWallet.OPTIMISM_MAINNET_CHAIN_ID)
                     .map((subNetwork) =>
                       <NetworkFilterItem
                         key={`${subNetwork.chainId + subNetwork.chainName}`}
