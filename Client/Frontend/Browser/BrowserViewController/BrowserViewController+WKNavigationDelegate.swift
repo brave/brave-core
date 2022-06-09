@@ -387,13 +387,19 @@ extension BrowserViewController: WKNavigationDelegate {
 
     // Check if this response should be downloaded.
     let cookieStore = webView.configuration.websiteDataStore.httpCookieStore
-    if let downloadHelper = DownloadHelper(request: request, response: response, cookieStore: cookieStore, canShowInWebView: canShowInWebView, forceDownload: forceDownload, browserViewController: self) {
+    if let downloadHelper = DownloadHelper(request: request, response: response, cookieStore: cookieStore, canShowInWebView: canShowInWebView, forceDownload: forceDownload) {
       // Clear the pending download web view so that subsequent navigations from the same
       // web view don't invoke another download.
       pendingDownloadWebView = nil
 
+      let downloadAlertAction: (HTTPDownload) -> Void = { [weak self] download in
+        self?.downloadQueue.enqueue(download)
+      }
+
       // Open our helper and cancel this response from the webview.
-      downloadHelper.open()
+      if let downloadAlert = downloadHelper.downloadAlert(from: view, okAction: downloadAlertAction) {
+        present(downloadAlert, animated: true, completion: nil)
+      }
       decisionHandler(.cancel)
       return
     }

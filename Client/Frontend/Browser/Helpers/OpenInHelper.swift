@@ -47,10 +47,9 @@ extension String {
 class DownloadHelper: NSObject {
   fileprivate let request: URLRequest
   fileprivate let preflightResponse: URLResponse
-  fileprivate let cookieStore: WKHTTPCookieStore
-  fileprivate let browserViewController: BrowserViewController
+  fileprivate let cookieStore: WKHTTPCookieStore  
 
-  required init?(request: URLRequest?, response: URLResponse, cookieStore: WKHTTPCookieStore, canShowInWebView: Bool, forceDownload: Bool, browserViewController: BrowserViewController) {
+  required init?(request: URLRequest?, response: URLResponse, cookieStore: WKHTTPCookieStore, canShowInWebView: Bool, forceDownload: Bool) {
     guard let request = request else {
       return nil
     }
@@ -65,13 +64,12 @@ class DownloadHelper: NSObject {
 
     self.cookieStore = cookieStore
     self.request = request
-    self.preflightResponse = response
-    self.browserViewController = browserViewController
+    self.preflightResponse = response    
   }
 
-  func open() {
+  func downloadAlert(from view: UIView, okAction: @escaping (HTTPDownload) -> Void) -> UIAlertController? {
     guard let host = request.url?.host, let filename = request.url?.lastPathComponent else {
-      return
+      return nil
     }
 
     let download = HTTPDownload(cookieStore: cookieStore, preflightResponse: preflightResponse, request: request)
@@ -80,7 +78,7 @@ class DownloadHelper: NSObject {
 
     let title = "\(filename) - \(host)"
 
-    let alert = UIAlertController(title: title, message: nil, preferredStyle: .actionSheet)
+    let downloadAlert = UIAlertController(title: title, message: nil, preferredStyle: .actionSheet)
 
     var downloadActionText = Strings.download
     // The download can be of undetermined size, adding expected size only if it's available.
@@ -89,22 +87,21 @@ class DownloadHelper: NSObject {
     }
 
     let okAction = UIAlertAction(title: downloadActionText, style: .default) { _ in
-      self.browserViewController.downloadQueue.enqueue(download)
+      okAction(download)
     }
 
     let cancelAction = UIAlertAction(title: Strings.cancelButtonTitle, style: .cancel)
 
-    alert.addAction(okAction)
-    alert.addAction(cancelAction)
+    downloadAlert.addAction(okAction)
+    downloadAlert.addAction(cancelAction)
 
-    alert.popoverPresentationController?.do {
-      guard let view = browserViewController.view else { return }
+    downloadAlert.popoverPresentationController?.do {      
       $0.sourceView = view
       $0.sourceRect = CGRect(x: view.bounds.midX, y: view.bounds.maxY - 16, width: 0, height: 0)
       $0.permittedArrowDirections = []
     }
 
-    browserViewController.present(alert, animated: true, completion: nil)
+    return downloadAlert
   }
 }
 
