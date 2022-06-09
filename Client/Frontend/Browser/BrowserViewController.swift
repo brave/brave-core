@@ -195,6 +195,9 @@ public class BrowserViewController: UIViewController, BrowserViewControllerDeleg
   var widgetFaviconFetchers: [FaviconFetcher] = []
   let deviceCheckClient: DeviceCheckClient?
 
+  /// The currently open WalletStore
+  weak var walletStore: WalletStore?
+
   public init(
     profile: Profile,
     diskImageStore: DiskImageStore?,
@@ -2374,7 +2377,9 @@ extension BrowserViewController: TabDelegate {
   @MainActor
   private func isPendingRequestAvailable() async -> Bool {
     let privateMode = PrivateBrowsingManager.shared.isPrivateBrowsing
-    guard let cryptoStore = CryptoStore.from(privateMode: privateMode) else {
+    /// If we have an open `WalletStore`, use that so we can assign the pending request if the wallet is open,
+    /// which allows us to store the new `PendingRequest` triggering a modal presentation for that request.
+    guard let cryptoStore = self.walletStore?.cryptoStore ?? CryptoStore.from(privateMode: privateMode) else {
       return false
     }
     if await cryptoStore.isPendingRequestAvailable() {

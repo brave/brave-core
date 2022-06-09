@@ -71,6 +71,7 @@ class Tab: NSObject {
   var walletProviderJS: String?
   var isWalletIconVisible: Bool = false {
     didSet {
+      guard oldValue != isWalletIconVisible else { return }
       tabDelegate?.updateURLBarWalletButton()
     }
   }
