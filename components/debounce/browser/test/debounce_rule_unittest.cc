@@ -283,7 +283,7 @@ TEST(DebounceRuleUnitTest, PrefDoesNotExist) {
   }
 }
 
-TEST(DebounceRuleUnitTest, DeAmpUrl) {
+TEST(DebounceRuleUnitTest, ArbitrarySubdomainInInclude) {
   TestingPrefServiceSimple prefs;
   prefs.registry()->RegisterBooleanPref("brave.de_amp.enabled", true);
 
@@ -315,34 +315,7 @@ TEST(DebounceRuleUnitTest, DeAmpUrl) {
   }
 }
 
-TEST(DebounceRuleUnitTest, DotomiTrackerUrl) {
-  const std::string contents = R"json(
-
-      [{
-          "include": [
-              "*://*.dotomi.com/links-t/*"
-          ],
-          "exclude": [
-          ],
-          "action": "regex-path",
-          "param": "^/links-t/[0-9]*/type/dlg/sid/---/(.*)$"
-      }]
-      
-      )json";
-  std::vector<std::unique_ptr<DebounceRule>> rules = StringToRules(contents);
-
-  // From https://github.com/brave/brave-browser/issues/22429
-  auto* tracker_url =
-      "https://cj.dotomi.com/links-t/123/type/dlg/sid/---/https://"
-      "www.carhartt.com/product/123/nintendo-one";
-  auto* target_url = "https://www.carhartt.com/product/123/nintendo-one";
-
-  for (const std::unique_ptr<DebounceRule>& rule : rules) {
-    CheckApplyResult(rule.get(), GURL(tracker_url), target_url, false);
-  }
-}
-
-TEST(DebounceRuleUnitTest, UrlEncoded) {
+TEST(DebounceRuleUnitTest, UrlEncodedDestinationUrl) {
   const std::string contents = R"json(
 
       [{
@@ -370,7 +343,7 @@ TEST(DebounceRuleUnitTest, UrlEncoded) {
   }
 }
 
-TEST(DebounceRuleUnitTest, AnrdoezrsTrackerUrl) {
+TEST(DebounceRuleUnitTest, CatchMultiplePathsForSameInclude) {
   const std::string contents = R"json(
 
       [{
