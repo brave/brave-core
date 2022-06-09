@@ -8,11 +8,11 @@ import UIKit
 import SwiftUI
 
 private struct XorshiftRandomNumberGenerator: RandomNumberGenerator {
-  var x: UInt32
-  var y: UInt32
-  var z: UInt32
-  var w: UInt32
-
+  var x: Int32
+  var y: Int32
+  var z: Int32
+  var w: Int32
+  
   mutating func next() -> UInt64 {
     let t = x ^ (x << 11)
     x = y
@@ -33,12 +33,12 @@ class Blockies {
 
   init(seed: String) {
     let startIndex = seed.startIndex
-    var xorSeed: [UInt32] = [0, 0, 0, 0]
+    var xorSeed: [Int32] = [0, 0, 0, 0]
     for i in 0..<seed.count {
       let index = i % 4
-      let a: UInt32 = xorSeed[index] &* (2 << 4)
-      let b: UInt32 = xorSeed[index]
-      let c: UInt32 = UInt32(seed[seed.index(startIndex, offsetBy: i)].asciiValue ?? 0)
+      let a: Int32 = xorSeed[index] &* (2 << 4)
+      let b: Int32 = xorSeed[index]
+      let c: Int32 = Int32(seed[seed.index(startIndex, offsetBy: i)].asciiValue ?? 0)
       xorSeed[index] = (a &- b &+ c)
     }
     self.generator = .init(
@@ -50,7 +50,7 @@ class Blockies {
   }
 
   func makeColor() -> UIColor {
-    let normalized = Double(generator.next()) / Double(UInt32.max)
+    let normalized = Double(generator.next()) / Double(Int32.max)
     return UIColor(rgb: colors[Int(floor(normalized * 100)) % colors.count])
   }
 
@@ -65,7 +65,7 @@ class Blockies {
       for _ in 0..<length {
         var row: [Double] = []
         for _ in 0..<dataLength {
-          let normalized = Double((generator.next() >> 0)) / Double(UInt32.max)
+          let normalized = Double((generator.next() >> 0)) / Double(Int32.max)
           let skewed = floor(normalized * 2.3)
           row.append(skewed)
         }
@@ -105,7 +105,7 @@ struct Blockie: View {
   var address: String
 
   var body: some View {
-    Image(uiImage: Blockies(seed: address).image(length: 8, scale: 16))
+    Image(uiImage: Blockies(seed: address.lowercased()).image(length: 8, scale: 16))
       .resizable()
       .blur(radius: 8, opaque: true)
       .clipShape(Circle())
@@ -115,7 +115,7 @@ struct Blockie: View {
 struct BlockieMaterial: View {
   
   init(address: String) {
-    self.blockies = Blockies(seed: address)
+    self.blockies = Blockies(seed: address.lowercased())
   }
   
   private let blockies: Blockies
