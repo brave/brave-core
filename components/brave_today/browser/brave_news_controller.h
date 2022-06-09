@@ -40,6 +40,8 @@ class HistoryService;
 
 namespace brave_news {
 
+constexpr char PADDED_IMAGE_URL_PATH_ENDING[] = ".pad";
+
 // Browser-side handler for Brave News mojom API, 1 per profile
 // Orchestrates FeedController and PublishersController for data, as well as
 // owning prefs data.

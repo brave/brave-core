@@ -13,6 +13,7 @@
 
 #include "base/bind.h"
 #include "base/guid.h"
+#include "base/strings/string_util.h"
 #include "base/time/time.h"
 #include "base/values.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
@@ -225,10 +226,8 @@ void BraveNewsController::GetImageData(const GURL& padded_image_url,
   // will contain (Brave's PrivateCDN) padding or
   // be a direct image
   const auto file_name = padded_image_url.path();
-  const std::string ending = ".pad";
-  const bool is_padded =
-      (file_name.compare(file_name.length() - ending.length(), ending.length(),
-                         ending) == 0);
+  const bool is_padded = base::EndsWith(file_name, PADDED_IMAGE_URL_PATH_ENDING,
+                                        base::CompareCase::INSENSITIVE_ASCII);
   VLOG(3) << "is padded: " << is_padded;
   // Make the request
   private_cdn_request_helper_.DownloadToString(
