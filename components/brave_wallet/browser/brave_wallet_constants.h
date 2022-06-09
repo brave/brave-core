@@ -287,6 +287,7 @@ constexpr webui::LocalizedString kLocalizedStrings[] = {
     {"braveWalletPreset50", IDS_BRAVE_WALLET_PRESET50},
     {"braveWalletPreset75", IDS_BRAVE_WALLET_PRESET75},
     {"braveWalletPreset100", IDS_BRAVE_WALLET_PRESET100},
+    {"braveWalletUnsupportedNetwork", IDS_BRAVE_WALLET_UNSUPPORTED_NETWORK},
     {"braveWalletNetworkETH", IDS_BRAVE_WALLET_NETWORK_E_T_H},
     {"braveWalletNetworkMain", IDS_BRAVE_WALLET_NETWORK_MAIN},
     {"braveWalletNetworkTest", IDS_BRAVE_WALLET_NETWORK_TEST},
@@ -658,7 +659,7 @@ constexpr webui::LocalizedString kLocalizedStrings[] = {
     {"braveWalletHelpCenter", IDS_BRAVE_WALLET_HELP_CENTER},
     {"braveWalletHelpCenterText", IDS_BRAVE_WALLET_HELP_CENTER_TEXT}};
 
-// Swap constants
+// 0x swap constants
 constexpr char kRopstenSwapBaseAPIURL[] = "https://ropsten.api.0x.org/";
 // As of 22-02-2022, this address is controlled by @onyb.
 constexpr char kRopstenFeeRecipient[] =
@@ -674,6 +675,12 @@ constexpr char kBuyTokenPercentageFee[] = "0.00875";
 constexpr char kFeeRecipient[] = "0xbd9420A98a7Bd6B89765e5715e169481602D9c3d";
 constexpr char kAffiliateAddress[] =
     "0xbd9420A98a7Bd6B89765e5715e169481602D9c3d";
+
+// Jupiter swap constants
+constexpr char kSolanaSwapBaseAPIURL[] = "https://quote-api.jup.ag/";
+constexpr char kSolanaBuyTokenFeeBps[] = "85";
+constexpr char kSolanaFeeRecipient[] =
+    "8eekKfUAGSJbq3CdA2TmHb8tKuyzd5gtEas3MYAtXzrT";
 
 constexpr int64_t kBlockTrackerDefaultTimeInSeconds = 20;
 
