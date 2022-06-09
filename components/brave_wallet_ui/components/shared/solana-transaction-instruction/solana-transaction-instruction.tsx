@@ -80,7 +80,7 @@ export const SolanaTransactionInstruction: React.FC<Props> = ({
                       text={value.toString()}
                       position='left'
                     >
-                      {'Phantom' || formattedParamValue}
+                      {formattedParamValue}
                     </Tooltip>
                   : <samp>{formattedParamValue}</samp>
                 }

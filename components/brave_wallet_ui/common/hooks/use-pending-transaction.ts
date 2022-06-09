@@ -16,6 +16,7 @@ import { reduceAccountDisplayName } from '../../utils/reduce-account-name'
 import { findAccountName } from '../../utils/account-utils'
 import { getLocale } from '../../../common/locale'
 import { getNetworkFromTXDataUnion } from '../../utils/network-utils'
+import { reduceAddress } from '../../utils/reduce-address'
 
 // Custom Hooks
 import { useTransactionParser } from './transaction-parser'
@@ -146,10 +147,12 @@ export const usePendingTransactions = () => {
     }).toDataURL()
   }, [transactionDetails?.recipient])
 
-  const fromAccountName = React.useMemo(() => reduceAccountDisplayName(
-    (transactionInfo?.fromAddress && findAccountName(accounts, transactionInfo.fromAddress)) ?? '',
-    11
-  ), [accounts, transactionInfo?.fromAddress])
+  const fromAccountName = React.useMemo(() => {
+    return reduceAccountDisplayName(
+      findAccountName(accounts, transactionInfo?.fromAddress ?? '') ?? '',
+      11
+    ) || reduceAddress(transactionInfo?.fromAddress ?? '')
+  }, [accounts, transactionInfo?.fromAddress])
 
   const transactionTitle = React.useMemo(
     (): string =>

@@ -10,12 +10,13 @@ import { useSelector } from 'react-redux'
 import { WalletState } from '../../../constants/types'
 
 // Utils
-import { reduceAddress } from '../../../utils/reduce-address'
 import { reduceNetworkDisplayName } from '../../../utils/network-utils'
 import Amount from '../../../utils/amount'
 import { getLocale } from '../../../../common/locale'
+
 // Hooks
 import { usePendingTransactions } from '../../../common/hooks/use-pending-transaction'
+
 // Components
 import Tooltip from '../../shared/tooltip/index'
 import CreateSiteOrigin from '../../shared/create-site-origin/index'
@@ -85,7 +86,6 @@ export const ConfirmSolanaTransactionPanel = ({
   // custom hooks
   const pendingTxInfo = usePendingTransactions()
   const {
-    fromAccountName,
     fromAddress,
     fromOrb,
     isConfirmButtonDisabled,
@@ -98,7 +98,8 @@ export const ConfirmSolanaTransactionPanel = ({
     transactionsNetwork,
     transactionsQueueLength,
     transactionTitle,
-    isSolanaDappTransaction
+    isSolanaDappTransaction,
+    fromAccountName
   } = pendingTxInfo
 
   // state
@@ -158,14 +159,19 @@ export const ConfirmSolanaTransactionPanel = ({
         >
           <AccountNameText>{fromAccountName}</AccountNameText>
         </Tooltip>
-        <ArrowIcon />
-        <Tooltip
-          text={transactionDetails.recipient}
-          isAddress={true}
-          position='right'
-        >
-          <AccountNameText>{reduceAddress(transactionDetails.recipient)}</AccountNameText>
-        </Tooltip>
+
+        {transactionDetails.recipient && transactionDetails.recipient !== fromAddress &&
+          <>
+            <ArrowIcon />
+            <Tooltip
+              text={transactionDetails.recipient}
+              isAddress={true}
+              position='right'
+            >
+              <AccountNameText>{transactionDetails.recipientLabel}</AccountNameText>
+            </Tooltip>
+          </>
+        }
       </FromToRow>
 
       <TransactionTypeText>{transactionTitle}</TransactionTypeText>

@@ -168,7 +168,7 @@ export function useTransactionParser (
   )
   const { findAssetPrice, computeFiatAmount } = usePricing(spotPrices)
   const getBalance = useBalance([selectedNetwork])
-  const getAddressLabel = useAddressLabels(accounts)
+  const { getAddressLabel } = useAddressLabels(accounts)
 
   const networkSpotPrice = React.useMemo(
     () => findAssetPrice(selectedNetwork.symbol),
