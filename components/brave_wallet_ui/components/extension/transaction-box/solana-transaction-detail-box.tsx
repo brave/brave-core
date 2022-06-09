@@ -34,8 +34,6 @@ export const SolanaTransactionDetailBox = ({
   instructions,
   txType
 }: Props) => {
-  // const data = solanaTxData
-
   if (!data) {
     return (
       <CodeSnippet>

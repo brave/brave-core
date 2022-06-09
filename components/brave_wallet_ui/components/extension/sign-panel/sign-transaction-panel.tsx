@@ -66,6 +66,10 @@ enum SignDataSteps {
   SignData = 1
 }
 
+const onClickLearnMore = () => {
+  window.open('https://support.brave.com/hc/en-us/articles/4409513799693', '_blank')
+}
+
 export const SignTransactionPanel = ({ signMode }: Props) => {
   // redux
   const dispatch = useDispatch()
@@ -106,7 +110,7 @@ export const SignTransactionPanel = ({ signMode }: Props) => {
   }, [selectedQueueData])
 
   // methods
-  const onCancel = () => {
+  const onCancel = React.useCallback(() => {
     if (!selectedQueueData) {
       return
     }
@@ -135,9 +139,9 @@ export const SignTransactionPanel = ({ signMode }: Props) => {
         }))
       }
     }
-  }
+  }, [selectedQueueData, accounts, signMode])
 
-  const onSign = () => {
+  const onSign = React.useCallback(() => {
     if (!selectedQueueData) {
       return
     }
@@ -161,23 +165,19 @@ export const SignTransactionPanel = ({ signMode }: Props) => {
         }))
       }
     }
-  }
+  }, [selectedQueueData, accounts, signMode])
 
-  const onContinueSigning = () => {
+  const onContinueSigning = React.useCallback(() => {
     setSignStep(SignDataSteps.SignData)
-  }
+  }, [])
 
-  const onClickLearnMore = () => {
-    window.open('https://support.brave.com/hc/en-us/articles/4409513799693', '_blank')
-  }
-
-  const onQueueNextSignTransaction = () => {
+  const onQueueNextSignTransaction = React.useCallback(() => {
     if (signTransactionQueueInfo.queueNumber === signTransactionQueueInfo.queueLength) {
       setSelectedQueueData(selectedQueueData)
       return
     }
     setSelectedQueueData(signTransactionData[signTransactionQueueInfo.queueNumber])
-  }
+  }, [signTransactionQueueInfo, selectedQueueData, signTransactionData])
 
   // effects
   React.useEffect(() => {
@@ -185,7 +185,6 @@ export const SignTransactionPanel = ({ signMode }: Props) => {
   }, [signTransactionData])
 
   // render
-
   return (
     <StyledWrapper>
 
