@@ -6,13 +6,22 @@
 import { getLocale } from '$web-common/locale'
 import { BraveWallet, BuyOption } from '../constants/types'
 
+import RampIcon from '../assets/svg-icons/ramp-icon.svg'
+import WyreIcon from '../assets/svg-icons/wyre-icon.svg'
+
 export const BuyOptions: BuyOption[] = [
   {
     id: BraveWallet.OnRampProvider.kRamp,
-    label: getLocale('braveWalletBuyWithRamp')
+    actionText: getLocale('braveWalletBuyWithRamp'),
+    icon: RampIcon,
+    name: getLocale('braveWalletBuyRampNetworkName'),
+    description: getLocale('braveWalletBuyRampDescription')
   },
   {
     id: BraveWallet.OnRampProvider.kWyre,
-    label: getLocale('braveWalletBuyWithWyre')
+    actionText: getLocale('braveWalletBuyWithWyre'),
+    icon: WyreIcon,
+    name: getLocale('braveWalletBuyWyreName'),
+    description: getLocale('braveWalletBuyWyreDescription')
   }
 ]

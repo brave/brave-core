@@ -37,7 +37,7 @@ import { mockPageState } from './mock-data/mock-page-state'
 import { createPageReducer } from '../page/reducers/page_reducer'
 import * as Lib from '../common/async/__mocks__/lib'
 import { LibContext } from '../common/context/lib.context'
-import { mockAccountAssetOptions, mockNewAssetOptions } from './mock-data/mock-asset-options'
+import { mockNewAssetOptions } from './mock-data/mock-asset-options'
 import { createSendCryptoReducer } from '../common/reducers/send_crypto_reducer'
 import { mockSendCryptoState } from './mock-data/send-crypto-state'
 import { mockOriginInfo } from './mock-data/mock-origin-info'
@@ -305,12 +305,10 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
   const [selectedNetwork] = React.useState<BraveWallet.NetworkInfo>(mockNetworks[0])
   const [, setSelectedAccount] = React.useState<UserAccountType>(mockUserAccounts[0])
   const [showAddModal, setShowAddModal] = React.useState<boolean>(false)
-  const [buyAmount, setBuyAmount] = React.useState('')
   const [isRestoring, setIsRestoring] = React.useState<boolean>(false)
   const [importAccountError, setImportAccountError] = React.useState<boolean>(false)
   const [selectedWidgetTab, setSelectedWidgetTab] = React.useState<BuySendSwapTypes>('buy')
   const [showVisibleAssetsModal, setShowVisibleAssetsModal] = React.useState<boolean>(false)
-  const [selectedBuyOption, setSelectedBuyOption] = React.useState<BraveWallet.OnRampProvider>(BraveWallet.OnRampProvider.kRamp)
 
   const onToggleRestore = () => {
     setIsRestoring(!isRestoring)
@@ -438,16 +436,8 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
     setShowAddModal(!showAddModal)
   }
 
-  const onSubmitBuy = (asset: BraveWallet.BlockchainToken) => {
-    alert(`Buy ${asset.symbol} asset`)
-  }
-
   const onSelectAccount = (account: UserAccountType) => {
     setSelectedAccount(account)
-  }
-
-  const onSetBuyAmount = (value: string) => {
-    setBuyAmount(value)
   }
 
   const onRemoveAccount = () => {
@@ -589,16 +579,8 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
             <WalletWidgetStandIn>
               <BuySendSwap
                 selectedTab={selectedWidgetTab}
-                buyAmount={buyAmount}
-                onSubmitBuy={onSubmitBuy}
-                onSetBuyAmount={onSetBuyAmount}
                 onSelectAccount={onSelectAccount}
                 onSelectTab={setSelectedWidgetTab}
-                buyAssetOptions={mockAccountAssetOptions}
-                wyreAssetOptions={mockAccountAssetOptions}
-                rampAssetOptions={mockAccountAssetOptions}
-                selectedBuyOption={selectedBuyOption}
-                onSelectBuyOption={setSelectedBuyOption}
               />
               <SweepstakesBanner />
             </WalletWidgetStandIn>
