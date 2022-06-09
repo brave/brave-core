@@ -6,6 +6,7 @@
 import Foundation
 import SwiftUI
 import BraveCore
+import BraveShared
 import Security
 import Strings
 import LocalAuthentication
@@ -88,19 +89,25 @@ public class KeyringStore: ObservableObject {
 
   private let keyringService: BraveWalletKeyringService
   private var cancellable: AnyCancellable?
+  private let keychain: KeychainType
 
-  public init(keyringService: BraveWalletKeyringService) {
+  public init(
+    keyringService: BraveWalletKeyringService,
+    keychain: KeychainType = Keychain()
+  ) {
     self.keyringService = keyringService
+    self.keychain = keychain
+    
     self.keyringService.add(self)
     updateKeyringInfo()
     self.keyringService.defaultKeyringInfo { [self] keyringInfo in
       isOnboardingVisible = !keyringInfo.isKeyringCreated
-      if Self.isKeychainPasswordStored && isOnboardingVisible {
+      if isKeychainPasswordStored && isOnboardingVisible {
         // If a user deletes the app and they had a stored user password in the past that keychain item
         // stays persisted. When we grab the keyring for the first time we should check to see if they have
         // a wallet created _and_ also have a password stored because if they do then it is no longer valid
         // and should be removed.
-        Self.resetKeychainStoredPassword()
+        resetKeychainStoredPassword()
       }
     }
     cancellable = NotificationCenter.default
@@ -201,7 +208,7 @@ public class KeyringStore: ObservableObject {
         // Restoring from wallet means you already have your phrase backed up
         self.notifyWalletBackupComplete()
         self.updateKeyringInfo()
-        Self.resetKeychainStoredPassword()
+        self.resetKeychainStoredPassword()
       }
       completion?(isMnemonicValid)
     }
@@ -273,86 +280,26 @@ public class KeyringStore: ObservableObject {
 
   // MARK: - Keychain
 
-  private static let passwordKeychainKey = "brave-wallet-password"
+  static let passwordKeychainKey = "brave-wallet-password"
 
   /// Stores the users wallet password in the keychain so that they may unlock using biometrics/passcode
-  static func storePasswordInKeychain(_ password: String) -> OSStatus {
-    guard let passwordData = password.data(using: .utf8) else { return errSecInvalidData }
-    #if targetEnvironment(simulator)
-    // There is a bug with iOS 15 simulators when attempting to add a keychain item with
-    // `kSecAttrAccessControl` set. This of course means that on simulator we will not ask for biometrics
-    // and it will just auto-fill the password field but at least to set it up you still need to enable
-    // biometrics on the simulator
-    //
-    // Last checked: Xcode 13.1 (13A1030d)
-    let query: [String: Any] = [
-      kSecClass as String: kSecClassGenericPassword,
-      kSecAttrAccount as String: passwordKeychainKey,
-      kSecValueData as String: passwordData,
-    ]
-    #else
-    let accessControl = SecAccessControlCreateWithFlags(
-      nil,
-      kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly,
-      .userPresence,
-      nil
-    )
-    let query: [String: Any] = [
-      kSecClass as String: kSecClassGenericPassword,
-      kSecAttrAccount as String: passwordKeychainKey,
-      kSecAttrAccessControl as String: accessControl as Any,
-      kSecValueData as String: passwordData,
-    ]
-    #endif
-    return SecItemAdd(query as CFDictionary, nil)
+  func storePasswordInKeychain(_ password: String) -> OSStatus {
+    keychain.storePasswordInKeychain(key: Self.passwordKeychainKey, password: password)
   }
 
   @discardableResult
-  static func resetKeychainStoredPassword() -> Bool {
-    let query: [String: Any] = [
-      kSecClass as String: kSecClassGenericPassword,
-      kSecAttrAccount as String: passwordKeychainKey,
-    ]
-    let status = SecItemDelete(query as CFDictionary)
-    return status == errSecSuccess
+  func resetKeychainStoredPassword() -> Bool {
+    keychain.resetPasswordInKeychain(key: Self.passwordKeychainKey)
   }
 
-  static var isKeychainPasswordStored: Bool {
-    let context = LAContext()
-    context.interactionNotAllowed = true
-    let query: [String: Any] = [
-      kSecClass as String: kSecClassGenericPassword,
-      kSecAttrAccount as String: passwordKeychainKey,
-      kSecMatchLimit as String: kSecMatchLimitOne,
-      kSecUseAuthenticationContext as String: context,
-    ]
-    let status = SecItemCopyMatching(query as CFDictionary, nil)
-    #if targetEnvironment(simulator)
-    // See comment in `storePasswordInKeychain(_:)`
-    return status == errSecSuccess
-    #else
-    return status == errSecInteractionNotAllowed
-    #endif
+  var isKeychainPasswordStored: Bool {
+    keychain.isPasswordStoredInKeychain(key: Self.passwordKeychainKey)
   }
 
   /// Retreives a users stored wallet password using biometrics or passcode or nil if they have not saved
   /// it to the keychain
-  static func retrievePasswordFromKeychain() -> String? {
-    let query: [String: Any] = [
-      kSecClass as String: kSecClassGenericPassword,
-      kSecAttrAccount as String: passwordKeychainKey,
-      kSecMatchLimit as String: kSecMatchLimitOne,
-      kSecReturnData as String: true,
-    ]
-    var passwordData: AnyObject?
-    let status = SecItemCopyMatching(query as CFDictionary, &passwordData)
-    guard status == errSecSuccess,
-      let data = passwordData as? Data,
-      let password = String(data: data, encoding: .utf8)
-    else {
-      return nil
-    }
-    return password
+  func retrievePasswordFromKeychain() -> String? {
+    keychain.getPasswordFromKeychain(key: Self.passwordKeychainKey)
   }
 }
 

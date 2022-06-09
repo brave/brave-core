@@ -37,7 +37,7 @@ struct BiometricsPasscodeEntryView: View {
     keyringStore.validate(password: password) { isValid in
       if isValid {
         // store password in keychain
-        if case let status = KeyringStore.storePasswordInKeychain(password),
+        if case let status = keyringStore.storePasswordInKeychain(password),
            status != errSecSuccess {
           self.isShowingKeychainError = true
         } else {
