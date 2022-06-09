@@ -334,24 +334,29 @@ const base::Value::List* GetEthCustomNetworksList(PrefService* prefs) {
 }
 
 std::vector<mojom::NetworkInfoPtr> MergeEthChains(
-    std::vector<mojom::NetworkInfoPtr> custom_chains,
-    std::vector<mojom::NetworkInfoPtr> known_chains) {
-  std::unordered_set<std::string> ids;
-  for (const auto& chain : custom_chains) {
-    ids.insert(chain->chain_id);
-  }
-
+    std::vector<mojom::NetworkInfoPtr> known_chains,
+    std::vector<mojom::NetworkInfoPtr> custom_chains) {
   std::vector<mojom::NetworkInfoPtr> result;
-  // Put all known chains to result, but skip any custom chain_ids.
-  for (auto& chain : known_chains) {
-    if (ids.count(chain->chain_id))
-      continue;
-    result.push_back(std::move(chain));
+  // Put all known chains to result, replace with custom one if chain_id
+  // matches.
+  for (auto& known_chain : known_chains) {
+    bool add_known_chain = true;
+    for (auto& custom_chain : custom_chains) {
+      if (custom_chain && custom_chain->chain_id == known_chain->chain_id) {
+        result.push_back(std::move(custom_chain));
+        add_known_chain = false;
+        break;
+      }
+    }
+    if (add_known_chain) {
+      result.push_back(std::move(known_chain));
+    }
   }
 
-  // Put all custom chains to result.
-  for (auto& chain : custom_chains) {
-    result.push_back(std::move(chain));
+  // Put all remaining custom chains to result.
+  for (auto& custom_chain : custom_chains) {
+    if (custom_chain)
+      result.push_back(std::move(custom_chain));
   }
 
   return result;
@@ -895,8 +900,8 @@ GURL GetNetworkURL(PrefService* prefs,
 std::vector<mojom::NetworkInfoPtr> GetAllChains(PrefService* prefs,
                                                 mojom::CoinType coin) {
   if (coin == mojom::CoinType::ETH) {
-    return MergeEthChains(GetAllEthCustomChains(prefs),
-                          GetAllKnownEthChains(prefs));
+    return MergeEthChains(GetAllKnownEthChains(prefs),
+                          GetAllEthCustomChains(prefs));
   } else if (coin == mojom::CoinType::SOL) {
     return GetAllKnownSolChains();
   } else if (coin == mojom::CoinType::FIL) {

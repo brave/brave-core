@@ -53,9 +53,14 @@
                     $i18n{walletNetworkEdit}
                   </button>
                   <button class="dropdown-item" id="remove"
-                      hidden=[[isActiveNetwork]]
+                      hidden=[[!canRemoveNetwork]]
                       on-click="onDeleteActionTapped_">
                     $i18n{walletNetworkRemove}
+                  </button>
+                  <button class="dropdown-item" id="reset"
+                      hidden=[[!canResetNetwork]]
+                      on-click="onResetActionTapped_">
+                    $i18n{walletNetworkReset}
                   </button>
                   <button class="dropdown-item" id="set-active"
                       hidden=[[isActiveNetwork]]
