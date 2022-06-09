@@ -845,7 +845,7 @@ void AdsImpl::OnNotificationAdClicked(const NotificationAdInfo& ad) {
       {ad.segment, mojom::NotificationAdEventType::kClicked});
 
   CovariateManager::Get()->SetNotificationAdEvent(
-      NotificationAdEvent::kClicked);
+      mojom::NotificationAdEventType::kClicked);
   CovariateManager::Get()->LogTrainingInstance();
 }
 
@@ -857,7 +857,7 @@ void AdsImpl::OnNotificationAdDismissed(const NotificationAdInfo& ad) {
       {ad.segment, mojom::NotificationAdEventType::kDismissed});
 
   CovariateManager::Get()->SetNotificationAdEvent(
-      NotificationAdEvent::kDismissed);
+      mojom::NotificationAdEventType::kDismissed);
   CovariateManager::Get()->LogTrainingInstance();
 }
 
@@ -866,7 +866,7 @@ void AdsImpl::OnNotificationAdTimedOut(const NotificationAdInfo& ad) {
       {ad.segment, mojom::NotificationAdEventType::kTimedOut});
 
   CovariateManager::Get()->SetNotificationAdEvent(
-      NotificationAdEvent::kTimedOut);
+      mojom::NotificationAdEventType::kTimedOut);
   CovariateManager::Get()->LogTrainingInstance();
 }
 

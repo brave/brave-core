@@ -35,7 +35,7 @@ TEST_F(BatAdsCovariateManagerTest, GetTrainingInstanceWithSetters) {
   // Arrange
   CovariateManager::Get()->SetNotificationAdServedAt(Now());
   CovariateManager::Get()->SetNotificationAdEvent(
-      NotificationAdEvent::kClicked);
+      mojom::NotificationAdEventType::kClicked);
 
   // Act
   brave_federated::mojom::TrainingInstancePtr training_covariates =

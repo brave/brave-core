@@ -34,7 +34,7 @@ TEST_F(BatAdsFederatedLogEntriesNotificationAdEventTest, GetValue) {
   NotificationAdEvent notification_ad_event;
 
   // Act
-  notification_ad_event.SetEvent(NotificationAdEvent::kClicked);
+  notification_ad_event.SetEventType(mojom::NotificationAdEventType::kClicked);
   const std::string value = notification_ad_event.GetValue();
 
   // Assert
@@ -47,7 +47,8 @@ TEST_F(BatAdsFederatedLogEntriesNotificationAdEventTest,
   NotificationAdEvent notification_ad_event;
 
   // Act
-  notification_ad_event.SetEvent(NotificationAdEvent::kDismissed);
+  notification_ad_event.SetEventType(
+      mojom::NotificationAdEventType::kDismissed);
   const std::string value = notification_ad_event.GetValue();
 
   // Assert

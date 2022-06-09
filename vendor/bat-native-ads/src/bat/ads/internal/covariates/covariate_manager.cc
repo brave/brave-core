@@ -192,9 +192,9 @@ void CovariateManager::SetNotificationAdServedAt(const base::Time time) {
 }
 
 void CovariateManager::SetNotificationAdEvent(
-    NotificationAdEvent::Event event) {
+    mojom::NotificationAdEventType event_type) {
   auto notification_ad_event = std::make_unique<NotificationAdEvent>();
-  notification_ad_event->SetEvent(event);
+  notification_ad_event->SetEventType(event_type);
   SetLogEntry(std::move(notification_ad_event));
 }
 

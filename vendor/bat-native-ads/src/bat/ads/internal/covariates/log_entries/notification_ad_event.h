@@ -9,23 +9,18 @@
 #include <string>
 
 #include "bat/ads/internal/covariates/covariate_log_entry_interface.h"
+#include "bat/ads/public/interfaces/ads.mojom.h"
 
 namespace ads {
 
 class NotificationAdEvent final : public CovariateLogEntryInterface {
  public:
-  enum Event {
-    kClicked,
-    kDismissed,
-    kTimedOut
-  };
-
   NotificationAdEvent();
   NotificationAdEvent(const NotificationAdEvent&) = delete;
   NotificationAdEvent& operator=(const NotificationAdEvent&) = delete;
   ~NotificationAdEvent() override;
 
-  void SetEvent(const Event event);
+  void SetEventType(const mojom::NotificationAdEventType event_type);
 
   // CovariateLogEntryInterface:
   brave_federated::mojom::DataType GetDataType() const override;
@@ -33,7 +28,8 @@ class NotificationAdEvent final : public CovariateLogEntryInterface {
   std::string GetValue() const override;
 
  private:
-  Event event_ = kTimedOut;
+  mojom::NotificationAdEventType event_type_ =
+      mojom::NotificationAdEventType::kTimedOut;
 };
 
 }  // namespace ads

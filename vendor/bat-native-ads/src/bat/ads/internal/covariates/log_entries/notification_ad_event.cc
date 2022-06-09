@@ -5,17 +5,15 @@
 
 #include "bat/ads/internal/covariates/log_entries/notification_ad_event.h"
 
-#include "bat/ads/internal/base/strings/string_conversions_util.h"
-#include "brave/components/l10n/browser/locale_helper.h"
-
 namespace ads {
 
 NotificationAdEvent::NotificationAdEvent() = default;
 
 NotificationAdEvent::~NotificationAdEvent() = default;
 
-void NotificationAdEvent::SetEvent(const Event event) {
-  event_ = event;
+void NotificationAdEvent::SetEventType(
+    const mojom::NotificationAdEventType event_type) {
+  event_type_ = event_type;
 }
 
 brave_federated::mojom::DataType NotificationAdEvent::GetDataType() const {
@@ -27,13 +25,16 @@ brave_federated::mojom::CovariateType NotificationAdEvent::GetType() const {
 }
 
 std::string NotificationAdEvent::GetValue() const {
-  if (event_ == kClicked) {
-    return "clicked";
-  } else if (event_ == kDismissed) {
-    return "dismissed";
+  switch (event_type_) {
+    case mojom::NotificationAdEventType::kClicked:
+      return "clicked";
+    case mojom::NotificationAdEventType::kDismissed:
+      return "dismissed";
+    case mojom::NotificationAdEventType::kTimedOut:
+      return "timedOut";
+    default:
+      return "unknown";
   }
-
-  return "timedOut";
 }
 
 }  // namespace ads
