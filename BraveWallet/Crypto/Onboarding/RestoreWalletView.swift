@@ -89,7 +89,7 @@ private struct RestoreWalletView: View {
         if !success {
           restoreError = .invalidPhrase
         } else {
-          KeyringStore.resetKeychainStoredPassword()
+          keyringStore.resetKeychainStoredPassword()
           if isBiometricsAvailable {
             keyringStore.isRestoreFromUnlockBiometricsPromptVisible = true
           } else {
@@ -216,7 +216,7 @@ private struct RestoreWalletView: View {
           keyringStore.markOnboardingCompleted()
         }
         // Store password in keychain
-        if enabled, case let status = KeyringStore.storePasswordInKeychain(password),
+        if enabled, case let status = keyringStore.storePasswordInKeychain(password),
           status != errSecSuccess {
           let isPublic = AppConstants.buildChannel.isPublic
           let alert = UIAlertController(

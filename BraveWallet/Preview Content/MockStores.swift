@@ -5,6 +5,7 @@
 
 import Foundation
 import BraveCore
+import BraveShared
 
 #if DEBUG
 
@@ -165,7 +166,8 @@ extension SettingsStore {
     .init(
       keyringService: MockKeyringService(),
       walletService: MockBraveWalletService(),
-      txService: MockTxService()
+      txService: MockTxService(),
+      keychain: TestableKeychain()
     )
   }
 }

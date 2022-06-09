@@ -44,7 +44,7 @@ struct UnlockWalletView: View {
   }
 
   private func fillPasswordFromKeychain() {
-    if let password = KeyringStore.retrievePasswordFromKeychain() {
+    if let password = keyringStore.retrievePasswordFromKeychain() {
       self.password = password
       unlock()
     }
@@ -87,7 +87,7 @@ struct UnlockWalletView: View {
                 tf.becomeFirstResponder()
               })
               .textFieldStyle(BraveValidatedTextFieldStyle(error: unlockError))
-            if KeyringStore.isKeychainPasswordStored, let icon = biometricsIcon {
+            if keyringStore.isKeychainPasswordStored, let icon = biometricsIcon {
               Button(action: fillPasswordFromKeychain) {
                 icon
                   .imageScale(.large)

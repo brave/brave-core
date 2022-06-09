@@ -132,7 +132,7 @@ private struct CreateWalletView: View {
       .background(
         BiometricsPromptView(isPresented: $isShowingBiometricsPrompt) { enabled, navController in
           // Store password in keychain
-          if enabled, case let status = KeyringStore.storePasswordInKeychain(password),
+          if enabled, case let status = keyringStore.storePasswordInKeychain(password),
             status != errSecSuccess {
             let isPublic = AppConstants.buildChannel.isPublic
             let alert = UIAlertController(

@@ -7,6 +7,7 @@ import Foundation
 import LocalAuthentication
 import BraveCore
 import Data
+import BraveShared
 
 public class SettingsStore: ObservableObject {
   /// The number of minutes to wait until the Brave Wallet is automatically locked
@@ -18,7 +19,7 @@ public class SettingsStore: ObservableObject {
 
   /// If we should attempt to unlock via biometrics (Face ID / Touch ID)
   var isBiometricsUnlockEnabled: Bool {
-    KeyringStore.isKeychainPasswordStored && isBiometricsAvailable
+    keychain.isPasswordStoredInKeychain(key: KeyringStore.passwordKeychainKey) && isBiometricsAvailable
   }
 
   /// If the device has biometrics available
@@ -36,20 +37,25 @@ public class SettingsStore: ObservableObject {
   private let keyringService: BraveWalletKeyringService
   private let walletService: BraveWalletBraveWalletService
   private let txService: BraveWalletTxService
+  private let keychain: KeychainType
 
   public init(
     keyringService: BraveWalletKeyringService,
     walletService: BraveWalletBraveWalletService,
-    txService: BraveWalletTxService
+    txService: BraveWalletTxService,
+    keychain: KeychainType = Keychain()
   ) {
     self.keyringService = keyringService
     self.walletService = walletService
     self.txService = txService
+    self.keychain = keychain
 
+    keyringService.add(self)
     keyringService.autoLockMinutes { [self] minutes in
       self.autoLockInterval = .init(value: minutes)
     }
     
+    walletService.add(self)
     walletService.defaultBaseCurrency { [self] currencyCode in
       self.currencyCode = CurrencyCode(code: currencyCode)
     }
@@ -57,8 +63,11 @@ public class SettingsStore: ObservableObject {
 
   func reset() {
     walletService.reset()
-    KeyringStore.resetKeychainStoredPassword()
+    keychain.resetPasswordInKeychain(key: KeyringStore.passwordKeychainKey)
     Domain.clearAllEthereumPermissions()
+    Preferences.Wallet.defaultWallet.reset()
+    Preferences.Wallet.allowEthereumProviderAccountRequests.reset()
+    Preferences.Wallet.displayWeb3Notifications.reset()
   }
 
   func resetTransaction() {
@@ -88,6 +97,56 @@ public class SettingsStore: ObservableObject {
   
   func closeManageSiteConnectionStore() {
     manageSiteConnectionsStore = nil
+  }
+}
+
+extension SettingsStore: BraveWalletKeyringServiceObserver {
+  public func keyringCreated(_ keyringId: String) {
+  }
+  
+  public func keyringRestored(_ keyringId: String) {
+  }
+  
+  public func keyringReset() {
+  }
+  
+  public func locked() {
+  }
+  
+  public func unlocked() {
+  }
+  
+  public func backedUp() {
+  }
+  
+  public func accountsChanged() {
+  }
+  
+  public func autoLockMinutesChanged() {
+    keyringService.autoLockMinutes { [weak self] minutes in
+      self?.autoLockInterval = .init(value: minutes)
+    }
+  }
+  
+  public func selectedAccountChanged(_ coin: BraveWallet.CoinType) {
+  }
+}
+
+extension SettingsStore: BraveWalletBraveWalletServiceObserver {
+  public func onActiveOriginChanged(_ originInfo: BraveWallet.OriginInfo) {
+  }
+  
+  public func onDefaultWalletChanged(_ wallet: BraveWallet.DefaultWallet) {
+  }
+  
+  public func onDefaultBaseCurrencyChanged(_ currency: String) {
+    currencyCode = CurrencyCode(code: currency)
+  }
+  
+  public func onDefaultBaseCryptocurrencyChanged(_ cryptocurrency: String) {
+  }
+  
+  public func onNetworkListChanged() {
   }
 }
 

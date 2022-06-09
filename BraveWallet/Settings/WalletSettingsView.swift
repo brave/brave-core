@@ -207,7 +207,7 @@ public struct WalletSettingsView: View {
     if enabled {
       self.isShowingBiometricsPasswordEntry = true
     } else {
-      KeyringStore.resetKeychainStoredPassword()
+      keyringStore.resetKeychainStoredPassword()
     }
   }
 }
