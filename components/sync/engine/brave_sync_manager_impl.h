@@ -8,6 +8,7 @@
 
 #include <string>
 
+#include "base/callback_forward.h"
 #include "components/sync/engine/sync_manager_impl.h"
 
 namespace syncer {
@@ -22,6 +23,8 @@ class BraveSyncManagerImpl : public SyncManagerImpl {
   ~BraveSyncManagerImpl() override;
 
   void StartSyncingNormally(base::Time last_poll_time) override;
+
+  void PermanentlyDeleteAccount(base::OnceClosure callback) override;
 };
 
 }  // namespace syncer
