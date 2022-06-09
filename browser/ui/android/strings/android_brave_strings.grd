@@ -2758,6 +2758,9 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_SHOW_AUTOCOMPLETE_IN_ADDRESS_BAR" desc="Title for a checkbox in Settings that controls whether to show autocompletion in the address bar.">
         Show autocomplete in address bar
     </message>
+    <message name="IDS_SHOW_AUTOCOMPLETE_IN_ADDRESS_BAR_SUMMARY" desc="Summary for a checkbox in Settings that controls whether to show autocompletion in the address bar.">
+            Displays website suggestions based on your bookmarks and browsing history.
+    </message>
     <message name="IDS_BRAVE_WALLET_NETWORKS_TITLE" desc="Brave wallet networks pref title text">
       Networks
     </message>
