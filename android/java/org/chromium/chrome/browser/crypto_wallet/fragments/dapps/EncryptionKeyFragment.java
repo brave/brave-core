@@ -106,10 +106,10 @@ public class EncryptionKeyFragment extends Fragment implements View.OnClickListe
                     getViewLifecycleOwner(), chainIdAndInfosPair -> {
                         String chainId = chainIdAndInfosPair.first;
                         NetworkInfo[] cryptoNetworks = chainIdAndInfosPair.second;
+                        NetworkInfo network =
+                                Utils.getNetworkInfoByChainId(chainId, cryptoNetworks);
                         if (!TextUtils.isEmpty(chainId) && cryptoNetworks.length > 0) {
-                            mNetworkName.setText(
-                                    Utils.getNetworkText(requireActivity(), chainId, cryptoNetworks)
-                                            .toString());
+                            mNetworkName.setText(network.chainName);
                         }
                     });
 

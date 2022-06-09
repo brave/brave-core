@@ -9,75 +9,59 @@ import org.chromium.base.Log;
 import org.chromium.brave_wallet.mojom.AssetPrice;
 import org.chromium.brave_wallet.mojom.AssetPriceTimeframe;
 import org.chromium.brave_wallet.mojom.AssetRatioService;
-import org.chromium.brave_wallet.mojom.AssetTimePrice;
+import org.chromium.brave_wallet.mojom.BlockchainToken;
 import org.chromium.chrome.browser.crypto_wallet.util.AsyncUtils;
+import org.chromium.mojo.bindings.Callbacks;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Locale;
 
 public class AssetsPricesHelper {
     private static String TAG = "AssetsPricesHelper";
-    private AssetRatioService mAssetRatioService;
-    private HashSet<String> mAssets;
-    private HashMap<String, Double> mAssetsPrices;
 
-    public AssetsPricesHelper(AssetRatioService assetRatioService, HashSet<String> assets) {
-        assert assetRatioService != null;
-        assert assets != null;
-        mAssetRatioService = assetRatioService;
-        mAssets = assets;
-        mAssetsPrices = new HashMap<String, Double>();
-    }
-
-    public HashMap<String, Double> getAssetsPrices() {
-        return mAssetsPrices;
-    }
-
-    public void fetchPrices(Runnable runWhenDone) {
+    public static void fetchPrices(AssetRatioService assetRatioService, BlockchainToken[] assets,
+            Callbacks.Callback1<HashMap<String, Double>> callback) {
+        HashMap<String, Double> assetsPrices = new HashMap<String, Double>();
         AsyncUtils.MultiResponseHandler pricesMultiResponse =
-                new AsyncUtils.MultiResponseHandler(mAssets.size());
+                new AsyncUtils.MultiResponseHandler(assets.length);
         ArrayList<AsyncUtils.GetPriceResponseContext> pricesContexts =
                 new ArrayList<AsyncUtils.GetPriceResponseContext>();
-        Iterator<String> iter = mAssets.iterator();
-        while (iter.hasNext()) {
-            String asset = iter.next();
-            String[] fromAssets = new String[] {asset.toLowerCase(Locale.getDefault())};
+
+        for (BlockchainToken asset : assets) {
+            String assetSymbolLower = asset.symbol.toLowerCase(Locale.getDefault());
+            String[] fromAssets = new String[] {assetSymbolLower};
             String[] toAssets = new String[] {"usd"};
 
             AsyncUtils.GetPriceResponseContext priceContext =
                     new AsyncUtils.GetPriceResponseContext(
                             pricesMultiResponse.singleResponseComplete);
-
             pricesContexts.add(priceContext);
 
-            mAssetRatioService.getPrice(
+            assetRatioService.getPrice(
                     fromAssets, toAssets, AssetPriceTimeframe.LIVE, priceContext);
         }
 
         pricesMultiResponse.setWhenAllCompletedAction(() -> {
             for (AsyncUtils.GetPriceResponseContext priceContext : pricesContexts) {
-                if (!priceContext.success) {
+                if (!priceContext.success || priceContext.prices.length != 1) {
                     continue;
                 }
 
-                assert priceContext.prices.length == 1;
                 Double usdPerToken = 0.0d;
-                String toConvert = "0.0";
-                if (priceContext.prices.length == 1) {
-                    toConvert = priceContext.prices[0].price;
-                }
+                final AssetPrice thisPrice = priceContext.prices[0];
+                final String toConvert = thisPrice.price != null ? thisPrice.price : "0.0";
                 try {
                     usdPerToken = Double.parseDouble(toConvert);
-                } catch (NullPointerException | NumberFormatException ex) {
-                    Log.e(TAG, "Cannot parse " + toConvert + ", " + ex);
-                    return;
+                } catch (NumberFormatException ex) {
+                    Log.e(TAG,
+                            "Cannot parse " + toConvert + ", Token: "
+                                    + String.valueOf(thisPrice.fromAsset) + ", " + ex);
+                    continue;
                 }
-                mAssetsPrices.put(priceContext.prices[0].fromAsset, usdPerToken);
+                assetsPrices.put(thisPrice.fromAsset.toLowerCase(Locale.getDefault()), usdPerToken);
             }
-            runWhenDone.run();
+            callback.call(assetsPrices);
         });
     }
 }
