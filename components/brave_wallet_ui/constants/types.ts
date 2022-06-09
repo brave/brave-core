@@ -673,7 +673,7 @@ export enum CoinTypesMap {
 
 export type BuyOption = {
   id: BraveWallet.OnRampProvider
-  icon: any
+  icon: string
   name: string
   description: string
   actionText: string

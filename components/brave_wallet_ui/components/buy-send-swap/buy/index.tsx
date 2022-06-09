@@ -83,13 +83,13 @@ function Buy (props: Props) {
     onChangeBuyView('assets', 'from')
   }, [onChangeBuyView])
 
-  const onContinue = () => {
+  const onContinue = React.useCallback(() => {
     setShowBuyOptions(true)
-  }
+  }, [])
 
-  const onBack = () => {
+  const onBack = React.useCallback(() => {
     setShowBuyOptions(false)
-  }
+  }, [])
 
   const isSelectedNetworkSupported = React.useMemo(() => {
     return [...rampAssetOptions, ...wyreAssetOptions]

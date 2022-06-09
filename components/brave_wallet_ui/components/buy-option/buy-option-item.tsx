@@ -28,7 +28,7 @@ export const BuyOptionItem = (props: Props) => {
 
   const onClick = React.useCallback(() => {
     onSelect(id)
-  }, [onSelect])
+  }, [onSelect, id])
 
   return (
     <StyledWrapper>

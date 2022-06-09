@@ -6,8 +6,8 @@
 import { getLocale } from '$web-common/locale'
 import { BraveWallet, BuyOption } from '../constants/types'
 
-import * as RampIcon from '../assets/svg-icons/ramp-icon.svg'
-import * as WyreIcon from '../assets/svg-icons/wyre-icon.svg'
+import RampIcon from '../assets/svg-icons/ramp-icon.svg'
+import WyreIcon from '../assets/svg-icons/wyre-icon.svg'
 
 export const BuyOptions: BuyOption[] = [
   {
