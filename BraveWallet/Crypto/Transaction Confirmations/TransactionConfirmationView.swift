@@ -132,7 +132,7 @@ struct TransactionConfirmationView: View {
         }
         .frame(width: min(faviconSize, maxFaviconSize), height: min(faviconSize, maxFaviconSize))
         .clipShape(RoundedRectangle(cornerRadius: 4, style: .continuous))
-        OriginText(urlOrigin: originInfo.origin)
+        Text(urlOrigin: originInfo.origin)
           .font(.subheadline)
           .foregroundColor(Color(.braveLabel))
           .multilineTextAlignment(.center)

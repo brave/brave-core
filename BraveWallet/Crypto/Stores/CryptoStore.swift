@@ -11,6 +11,8 @@ enum PendingRequest: Equatable {
   case switchChain(BraveWallet.SwitchChainRequest)
   case addSuggestedToken(BraveWallet.AddSuggestTokenRequest)
   case signMessage([BraveWallet.SignMessageRequest])
+  case getEncryptionPublicKey(BraveWallet.GetEncryptionPublicKeyRequest)
+  case decrypt(BraveWallet.DecryptRequest)
 }
 
 extension PendingRequest: Identifiable {
@@ -21,6 +23,8 @@ extension PendingRequest: Identifiable {
     case let .switchChain(chainRequest): return "switchChain-\(chainRequest.chainId)"
     case let .addSuggestedToken(tokenRequest): return "addSuggestedToken-\(tokenRequest.token.id)"
     case let .signMessage(signRequests): return "signMessage-\(signRequests.map(\.id))"
+    case let .getEncryptionPublicKey(request): return "getEncryptionPublicKey-\(request.address)-\(request.originInfo.origin)"
+    case let .decrypt(request): return "decrypt-\(request.address)-\(request.originInfo.origin)"
     }
   }
 }
@@ -30,6 +34,8 @@ enum WebpageRequestResponse: Equatable {
   case addNetwork(approved: Bool, chainId: String)
   case addSuggestedToken(approved: Bool, contractAddresses: [String])
   case signMessage(approved: Bool, id: Int32)
+  case getEncryptionPublicKey(approved: Bool, originInfo: BraveWallet.OriginInfo)
+  case decrypt(approved: Bool, originInfo: BraveWallet.OriginInfo)
 }
 
 public class CryptoStore: ObservableObject {
@@ -268,6 +274,10 @@ public class CryptoStore: ObservableObject {
       return .switchChain(switchRequest)
     } else if let addTokenRequest = await walletService.pendingAddSuggestTokenRequests().first {
       return .addSuggestedToken(addTokenRequest)
+    } else if let getEncryptionPublicKeyRequest = await walletService.pendingGetEncryptionPublicKeyRequests().first {
+      return .getEncryptionPublicKey(getEncryptionPublicKeyRequest)
+    } else if let decryptRequest = await walletService.pendingDecryptRequests().first {
+      return .decrypt(decryptRequest)
     } else {
       return nil
     }
@@ -297,6 +307,10 @@ public class CryptoStore: ObservableObject {
       walletService.notifyAddSuggestTokenRequestsProcessed(approved, contractAddresses: contractAddresses)
     case let .signMessage(approved, id):
       walletService.notifySignMessageRequestProcessed(approved, id: id)
+    case let .getEncryptionPublicKey(approved, originInfo):
+      walletService.notifyGetPublicKeyRequestProcessed(approved, origin: originInfo.origin)
+    case let .decrypt(approved, originInfo):
+      walletService.notifyDecryptRequestProcessed(approved, origin: originInfo.origin)
     }
     pendingRequest = nil
   }

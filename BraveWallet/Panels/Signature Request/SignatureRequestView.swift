@@ -65,7 +65,7 @@ struct SignatureRequestView: View {
             Text(account.name)
               .font(.subheadline.weight(.semibold))
               .foregroundColor(Color(.secondaryBraveLabel))
-            OriginText(urlOrigin: currentRequest.originInfo.origin)
+            Text(urlOrigin: currentRequest.originInfo.origin)
               .font(.caption)
               .foregroundColor(Color(.braveLabel))
               .multilineTextAlignment(.center)
