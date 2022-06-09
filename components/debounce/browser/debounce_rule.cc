@@ -29,15 +29,15 @@ const char kPrependScheme[] = "prepend_scheme";
 const char kParam[] = "param";
 const char kPref[] = "pref";
 
-// Max memory per regex: 2kb. This is just an upper bound
-const int64_t kMaxMemoryPerRegexPattern = 2 << 10;
+// Max memory per regex: 4kb. This is just an upper bound
+const int64_t kMaxMemoryPerRegexPattern = 2 << 11;
 
 // Max length of regex pattern
 // RE2 is O(n) for input string of length n
 // (https://github.com/google/re2/wiki/WhyRE2)
 // Max size of a URL is capped anyway.
 // Also cap the length of regex pattern to be extra safe
-const int64_t kMaxLengthRegexPattern = 100;
+const int64_t kMaxLengthRegexPattern = 200;
 }  // namespace
 
 namespace debounce {
