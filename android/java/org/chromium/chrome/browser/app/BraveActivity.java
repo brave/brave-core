@@ -147,6 +147,7 @@ import org.chromium.chrome.browser.util.BraveConstants;
 import org.chromium.chrome.browser.util.BraveDbUtil;
 import org.chromium.chrome.browser.util.ConfigurationUtils;
 import org.chromium.chrome.browser.util.PackageUtils;
+import org.chromium.chrome.browser.util.TabUtils;
 import org.chromium.chrome.browser.vpn.BraveVpnNativeWorker;
 import org.chromium.chrome.browser.vpn.BraveVpnObserver;
 import org.chromium.chrome.browser.vpn.activities.BraveVpnProfileActivity;
@@ -286,7 +287,7 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
         } else if (id == R.id.set_default_browser) {
             BraveSetDefaultBrowserUtils.showBraveSetDefaultBrowserDialog(BraveActivity.this, true);
         } else if (id == R.id.brave_talk_id) {
-            openNewOrSelectExistingTab(BRAVE_TALK_URL);
+            TabUtils.openUrlInNewTab(false, BRAVE_TALK_URL);
         } else if (id == R.id.brave_rewards_id) {
             openNewOrSelectExistingTab(BRAVE_REWARDS_SETTINGS_URL);
         } else if (id == R.id.brave_wallet_id) {
