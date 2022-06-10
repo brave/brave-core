@@ -2052,7 +2052,7 @@ void AdsServiceImpl::OnGetHistory(GetHistoryCallback callback,
 
   // Build the list structure required by the webUI
   int uuid = 0;
-  base::ListValue list;
+  base::Value::List list;
 
   for (const auto& item : history.items) {
     base::Value::Dict history_item_dict;
@@ -2070,7 +2070,7 @@ void AdsServiceImpl::OnGetHistory(GetHistoryCallback callback,
     list.Append(std::move(dict));
   }
 
-  std::move(callback).Run(list);
+  std::move(callback).Run(std::move(list));
 }
 
 void AdsServiceImpl::OnGetStatementOfAccounts(

@@ -97,7 +97,7 @@ class RewardsDOMHandler
   void GetContributionList(const base::Value::List& args);
   void GetAdsData(const base::Value::List& args);
   void GetAdsHistory(const base::Value::List& args);
-  void OnGetAdsHistory(const base::ListValue& history);
+  void OnGetAdsHistory(base::Value::List history);
   void ToggleAdThumbUp(const base::Value::List& args);
   void OnToggleAdThumbUp(const std::string& json);
   void ToggleAdThumbDown(const base::Value::List& args);
@@ -1245,7 +1245,8 @@ void RewardsDOMHandler::GetAdsData(const base::Value::List& args) {
   base::Value::Dict ads_data;
   ads_data.Set("adsIsSupported", ads_service_->IsSupportedLocale());
   ads_data.Set("adsEnabled", ads_service_->IsEnabled());
-  ads_data.Set("adsPerHour", static_cast<int>(ads_service_->GetNotificationAdsPerHour()));
+  ads_data.Set("adsPerHour",
+               static_cast<int>(ads_service_->GetNotificationAdsPerHour()));
   ads_data.Set(kAdsSubdivisionTargeting,
                ads_service_->GetSubdivisionTargetingCode());
   ads_data.Set(kAutoDetectedSubdivisionTargeting,
@@ -1276,12 +1277,13 @@ void RewardsDOMHandler::GetAdsHistory(const base::Value::List& args) {
                                           weak_factory_.GetWeakPtr()));
 }
 
-void RewardsDOMHandler::OnGetAdsHistory(const base::ListValue& ads_history) {
+void RewardsDOMHandler::OnGetAdsHistory(base::Value::List ads_history) {
   if (!IsJavascriptAllowed()) {
     return;
   }
 
-  CallJavascriptFunction("brave_rewards.adsHistory", ads_history);
+  CallJavascriptFunction("brave_rewards.adsHistory",
+                         base::Value(std::move(ads_history)));
 }
 
 void RewardsDOMHandler::ToggleAdThumbUp(const base::Value::List& args) {
