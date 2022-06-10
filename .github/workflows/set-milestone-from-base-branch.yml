@@ -2,7 +2,7 @@ name: Set PR Milestone
 
 on:
   pull_request:
-    types: [opened, reopened, edited, ready_for_review, review_requested, closed]
+    types: [closed]
     branches: [master, 1.*]
 
 jobs:
@@ -22,4 +22,4 @@ jobs:
           fi
 
           milestone=$(printf "%s\n" "${milestones[@]}" | grep -E "$milestone_selector")
-          gh pr edit -m "$milestone"
+          gh pr "$PR_NUMBER" -R "$REPO_NAME" edit -m "$milestone"
