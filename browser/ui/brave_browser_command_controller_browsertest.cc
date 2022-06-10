@@ -101,7 +101,6 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerTest,
   // Test normal browser's brave commands status.
   auto* command_controller = browser()->command_controller();
   EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_REWARDS));
-  EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_ADBLOCK));
 
 #if BUILDFLAG(ENABLE_TOR)
   EXPECT_FALSE(
@@ -138,7 +137,6 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerTest,
   auto* private_browser = CreateIncognitoBrowser();
   auto* command_controller = private_browser->command_controller();
   EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_REWARDS));
-  EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_ADBLOCK));
 
 #if BUILDFLAG(ENABLE_TOR)
   EXPECT_FALSE(
@@ -172,8 +170,6 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerTest,
   auto* command_controller = guest_browser->command_controller();
   EXPECT_FALSE(command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_REWARDS));
 
-  EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_ADBLOCK));
-
 #if BUILDFLAG(ENABLE_TOR)
   EXPECT_FALSE(
       command_controller->IsCommandEnabled(IDC_NEW_TOR_CONNECTION_FOR_SITE));
@@ -202,8 +198,6 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerTest,
   EXPECT_TRUE(tor_browser->profile()->IsTor());
   auto* command_controller = tor_browser->command_controller();
   EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_REWARDS));
-
-  EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_ADBLOCK));
 
   EXPECT_TRUE(
       command_controller->IsCommandEnabled(IDC_NEW_TOR_CONNECTION_FOR_SITE));

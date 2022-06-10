@@ -158,7 +158,6 @@ IN_PROC_BROWSER_TEST_F(BraveAppMenuBrowserTest, MenuOrderTest) {
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
     IDC_SHOW_BRAVE_VPN_PANEL,
 #endif
-    IDC_SHOW_BRAVE_ADBLOCK,
     IDC_ADD_NEW_PROFILE,
     IDC_OPEN_GUEST_PROFILE,
     IDC_SHOW_BRAVE_WEBCOMPAT_REPORTER
@@ -193,7 +192,6 @@ IN_PROC_BROWSER_TEST_F(BraveAppMenuBrowserTest, MenuOrderTest) {
     IDC_SHOW_BRAVE_WALLET,
     IDC_MANAGE_EXTENSIONS,
     IDC_SHOW_BRAVE_SYNC,
-    IDC_SHOW_BRAVE_ADBLOCK,
     IDC_ADD_NEW_PROFILE,
     IDC_OPEN_GUEST_PROFILE,
     IDC_SHOW_BRAVE_WEBCOMPAT_REPORTER
@@ -226,7 +224,7 @@ IN_PROC_BROWSER_TEST_F(BraveAppMenuBrowserTest, MenuOrderTest) {
   DCHECK(guest_browser);
   EXPECT_TRUE(guest_browser->profile()->IsGuestSession());
   std::vector<int> commands_in_order_for_guest_profile = {
-      IDC_NEW_TAB, IDC_NEW_WINDOW, IDC_SHOW_DOWNLOADS, IDC_SHOW_BRAVE_ADBLOCK,
+      IDC_NEW_TAB, IDC_NEW_WINDOW, IDC_SHOW_DOWNLOADS,
       IDC_SHOW_BRAVE_WEBCOMPAT_REPORTER};
   CheckCommandsAreInOrderInMenuModel(guest_browser,
                                      commands_in_order_for_guest_profile);
@@ -267,7 +265,6 @@ IN_PROC_BROWSER_TEST_F(BraveAppMenuBrowserTest, MenuOrderTest) {
       IDC_SHOW_DOWNLOADS,
       IDC_SHOW_BRAVE_WALLET,
       IDC_SHOW_BRAVE_SYNC,
-      IDC_SHOW_BRAVE_ADBLOCK,
       IDC_ADD_NEW_PROFILE,
       IDC_OPEN_GUEST_PROFILE,
       IDC_SHOW_BRAVE_WEBCOMPAT_REPORTER};

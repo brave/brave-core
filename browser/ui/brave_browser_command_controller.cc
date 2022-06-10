@@ -132,7 +132,6 @@ void BraveBrowserCommandController::InitBraveCommandState() {
     if (syncer::IsSyncAllowedByFlag())
       UpdateCommandForBraveSync();
   }
-  UpdateCommandForBraveAdblock();
   UpdateCommandForWebcompatReporter();
 #if BUILDFLAG(ENABLE_TOR)
   UpdateCommandForTor();
@@ -163,10 +162,6 @@ void BraveBrowserCommandController::InitBraveCommandState() {
 
 void BraveBrowserCommandController::UpdateCommandForBraveRewards() {
   UpdateCommandEnabled(IDC_SHOW_BRAVE_REWARDS, true);
-}
-
-void BraveBrowserCommandController::UpdateCommandForBraveAdblock() {
-  UpdateCommandEnabled(IDC_SHOW_BRAVE_ADBLOCK, true);
 }
 
 void BraveBrowserCommandController::UpdateCommandForWebcompatReporter() {
@@ -258,9 +253,6 @@ bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
       break;
     case IDC_SHOW_BRAVE_REWARDS:
       brave::ShowBraveRewards(browser_);
-      break;
-    case IDC_SHOW_BRAVE_ADBLOCK:
-      brave::ShowBraveAdblock(browser_);
       break;
     case IDC_SHOW_BRAVE_WEBCOMPAT_REPORTER:
       brave::ShowWebcompatReporter(browser_);

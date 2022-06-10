@@ -47,7 +47,7 @@ class BraveAppMenuModel : public AppMenuModel {
   void InsertBraveMenuItems();
   void InsertAlternateProfileItems();
   int GetIndexOfBraveRewardsItem() const;
-  int GetIndexOfBraveAdBlockItem() const;
+  int GetLastIndexOfSecondSection() const;
   int GetIndexOfBraveSyncItem() const;
   int GetIndexOfBraveVPNItem() const;
 #if BUILDFLAG(ENABLE_SIDEBAR)
