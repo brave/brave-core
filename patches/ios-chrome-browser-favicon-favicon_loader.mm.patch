@@ -1,0 +1,13 @@
+diff --git a/ios/chrome/browser/favicon/favicon_loader.mm b/ios/chrome/browser/favicon/favicon_loader.mm
+index 3304fb2e6737bff121aeed5ac95e4abcf5a504a8..0d5f36fc6b7d73e66a4e18e190047e54f2f156fb 100644
+--- a/ios/chrome/browser/favicon/favicon_loader.mm
++++ b/ios/chrome/browser/favicon/favicon_loader.mm
+@@ -49,7 +49,7 @@
+ 
+ FaviconLoader::FaviconLoader(favicon::LargeIconService* large_icon_service)
+     : large_icon_service_(large_icon_service),
+-      favicon_cache_([[NSCache alloc] init]) {}
++      favicon_cache_(nullptr) {}
+ FaviconLoader::~FaviconLoader() {}
+ 
+ // TODO(pinkerton): How do we update the favicon if it's changed on the web?
