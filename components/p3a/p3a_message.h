@@ -40,7 +40,7 @@ base::Value GenerateP3AMessageDict(base::StringPiece metric_name,
                                    uint64_t metric_value,
                                    const MessageMetainfo& meta);
 
-std::string GenerateP3AStarMessage(std::string metric_name,
+std::string GenerateP3AStarMessage(base::StringPiece metric_name,
                                    uint64_t metric_value,
                                    const MessageMetainfo& meta);
 

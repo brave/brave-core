@@ -26,14 +26,14 @@ struct MessageMetainfo;
 
 class BraveP3AStarManager {
  public:
-  using StarMessageCallback =
-      base::RepeatingCallback<void(const char* histogram_name,
-                                   uint8_t epoch,
-                                   std::string serialized_message)>;
+  using StarMessageCallback = base::RepeatingCallback<void(
+      const char* histogram_name,
+      uint8_t epoch,
+      std::unique_ptr<std::string> serialized_message)>;
 
   BraveP3AStarManager(
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
-      StarMessageCallback message_created_callback,
+      StarMessageCallback message_callback,
       const GURL& randomness_server_url,
       bool use_local_randomness);
   ~BraveP3AStarManager();
@@ -68,7 +68,7 @@ class BraveP3AStarManager {
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
   std::unique_ptr<network::SimpleURLLoader> url_loader_;
 
-  StarMessageCallback message_created_callback_;
+  StarMessageCallback message_callback_;
 
   GURL randomness_server_url_;
   bool use_local_randomness_;

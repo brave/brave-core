@@ -30,12 +30,12 @@ class BraveP3ALogStore : public metrics::LogStore {
    public:
     // Prepares a string representaion of an entry.
     virtual std::string SerializeLog(base::StringPiece histogram_name,
-                                     uint64_t value) = 0;
+                                     uint64_t value,
+                                     bool is_star) = 0;
     virtual ~Delegate() {}
   };
 
-  BraveP3ALogStore(Delegate* delegate,
-                   PrefService* local_state);
+  BraveP3ALogStore(Delegate* delegate, PrefService* local_state, bool is_star);
 
   ~BraveP3ALogStore() override;
 
@@ -53,6 +53,7 @@ class BraveP3ALogStore : public metrics::LogStore {
   const std::string& staged_log() const override;
   // This will replace `staged_log` once we migrate to JSON pings.
   std::string staged_log_type() const;
+  const std::string& staged_log_key() const;
   const std::string& staged_log_hash() const override;
   const std::string& staged_log_signature() const override;
   absl::optional<uint64_t> staged_log_user_id() const override;
@@ -84,6 +85,8 @@ class BraveP3ALogStore : public metrics::LogStore {
     base::Time sent_timestamp;  // At the moment only for debugging purposes.
   };
 
+  const char* GetPrefName() const;
+
   Delegate* const delegate_ = nullptr;  // Weak.
   PrefService* const local_state_ = nullptr;
 
@@ -97,6 +100,8 @@ class BraveP3ALogStore : public metrics::LogStore {
   // Not used for now.
   std::string staged_log_hash_;
   std::string staged_log_signature_;
+
+  bool is_star_;
 };
 
 }  // namespace brave

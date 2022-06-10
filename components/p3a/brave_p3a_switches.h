@@ -20,9 +20,10 @@ constexpr char kP3ADoNotRandomizeUploadInterval[] =
 constexpr char kP3ARotationIntervalSeconds[] = "p3a-rotation-interval-seconds";
 
 // P3A cloud backend URL.
-constexpr char kP3AUploadServerUrl[] = "p3a-upload-server-url";
-
-constexpr char kP2AUploadServerUrl[] = "p2a-upload-server-url";
+constexpr char kP3AJsonUploadUrl[] = "p3a-json-upload-url";
+constexpr char kP2AJsonUploadUrl[] = "p2a-json-upload-url";
+constexpr char kP3AStarUploadUrl[] = "p3a-star-upload-url";
+constexpr char kP2AStarUploadUrl[] = "p2a-star-upload-url";
 
 // Do not try to resent values even if a cloud returned an HTTP error, just
 // continue the normal process.

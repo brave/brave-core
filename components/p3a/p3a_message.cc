@@ -49,7 +49,7 @@ base::Value GenerateP3AMessageDict(base::StringPiece metric_name,
   return result;
 }
 
-std::string GenerateP3AStarMessage(std::string metric_name,
+std::string GenerateP3AStarMessage(base::StringPiece metric_name,
                                    uint64_t metric_value,
                                    const MessageMetainfo& meta) {
   base::Time::Exploded exploded;
@@ -57,7 +57,7 @@ std::string GenerateP3AStarMessage(std::string metric_name,
   DCHECK_GE(exploded.year, 999);
 
   std::array<std::array<std::string, 2>, kP3AStarAttributeCount> attributes = {{
-      {"metric_name", metric_name},
+      {"metric_name", std::string(metric_name)},
       {"metric_value", base::NumberToString(metric_value)},
       {"version", meta.version},
       {"yoi", base::NumberToString(exploded.year)},

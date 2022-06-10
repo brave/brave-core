@@ -54,12 +54,12 @@ net::NetworkTrafficAnnotationTag RandomnessRequestAnnotation() {
 
 BraveP3AStarManager::BraveP3AStarManager(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
-    StarMessageCallback message_created_callback,
+    StarMessageCallback message_callback,
     const GURL& randomness_server_url,
     bool use_local_randomness)
     : current_public_key_(nested_star::get_ppoprf_null_public_key()),
       url_loader_factory_(url_loader_factory),
-      message_created_callback_(message_created_callback),
+      message_callback_(message_callback),
       randomness_server_url_(randomness_server_url),
       use_local_randomness_(use_local_randomness) {}
 
@@ -104,7 +104,9 @@ bool BraveP3AStarManager::StartMessagePreparation(const char* histogram_name,
       return false;
     }
 
-    message_created_callback_.Run(histogram_name, epoch, msg_output);
+    message_callback_.Run(
+        histogram_name, epoch,
+        std::unique_ptr<std::string>(new std::string(msg_output)));
   } else {
     SendRandomnessRequest(histogram_name, epoch, std::move(prepare_res.state),
                           std::string(req_res.data));
@@ -146,15 +148,19 @@ void BraveP3AStarManager::HandleRandomnessResponse(
   if (!response_body || response_body->empty()) {
     LOG(ERROR)
         << "BraveP3AStarManager: no response body from randomness server";
+    message_callback_.Run(histogram_name, epoch, nullptr);
     return;
   }
   std::string final_msg;
   if (!ConstructFinalMessage(randomness_request_state, *response_body,
                              &final_msg)) {
+    message_callback_.Run(histogram_name, epoch, nullptr);
     return;
   }
 
-  message_created_callback_.Run(histogram_name, epoch, final_msg);
+  message_callback_.Run(
+      histogram_name, epoch,
+      std::unique_ptr<std::string>(new std::string(final_msg)));
 }
 
 bool BraveP3AStarManager::ConstructFinalMessage(

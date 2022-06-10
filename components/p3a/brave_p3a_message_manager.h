@@ -9,8 +9,8 @@
 #include <memory>
 #include <string>
 
+#include "base/memory/ref_counted.h"
 #include "base/strings/string_piece_forward.h"
-#include "base/timer/wall_clock_timer.h"
 #include "brave/components/p3a/brave_p3a_log_store.h"
 #include "brave/components/p3a/brave_p3a_message_manager_config.h"
 #include "brave/components/p3a/p3a_message.h"
@@ -24,8 +24,10 @@ class SharedURLLoaderFactory;
 namespace brave {
 
 class BraveP3AScheduler;
+class BraveP3ARotationScheduler;
 class BraveP3AUploader;
 class BraveP3ANewUploader;
+class BraveP3AStarLogStore;
 class BraveP3AStarManager;
 
 class BraveP3AMessageManager : public BraveP3ALogStore::Delegate {
@@ -49,21 +51,23 @@ class BraveP3AMessageManager : public BraveP3ALogStore::Delegate {
   // Updates things that change over time: week of survey, etc.
   void UpdateMessageMeta();
 
-  void StartScheduledUpload();
+  void StartScheduledUpload(bool is_star);
+  void StartScheduledStarPrep();
 
-  void OnLogUploadComplete(int response_code, int error_code, bool was_https);
+  void OnLogUploadComplete(bool is_ok, int response_code, bool is_star);
 
-  void OnStarMessageCreated(const char* histogram_name,
-                            uint8_t epoch,
-                            std::string serialized_message);
+  void OnNewStarMessage(const char* histogram_name,
+                        uint8_t epoch,
+                        std::unique_ptr<std::string> serialized_message);
 
   // Restart the uploading process (i.e. mark all values as unsent).
-  void DoRotation();
+  void DoJsonRotation();
 
-  void UpdateRotationTimer();
+  void DoStarRotation();
 
   std::string SerializeLog(base::StringPiece histogram_name,
-                           const uint64_t value) override;
+                           const uint64_t value,
+                           bool is_star) override;
 
   PrefService* local_state_ = nullptr;
 
@@ -72,15 +76,19 @@ class BraveP3AMessageManager : public BraveP3ALogStore::Delegate {
   MessageManagerConfig config_;
 
   // Components:
-  std::unique_ptr<BraveP3ALogStore> log_store_;
+  std::unique_ptr<BraveP3ALogStore> json_log_store_;
+  std::unique_ptr<BraveP3ALogStore> star_prep_log_store_;
+  std::unique_ptr<BraveP3AStarLogStore> star_send_log_store_;
+
   // See `brave_p3a_new_uploader.h`
   std::unique_ptr<BraveP3ANewUploader> new_uploader_;
-  std::unique_ptr<BraveP3AScheduler> upload_scheduler_;
+  std::unique_ptr<BraveP3AScheduler> json_upload_scheduler_;
+  std::unique_ptr<BraveP3AScheduler> star_prep_scheduler_;
+  std::unique_ptr<BraveP3AScheduler> star_upload_scheduler_;
 
   std::unique_ptr<BraveP3AStarManager> star_manager_;
 
-  // Once fired we restart the overall uploading process.
-  base::WallClockTimer rotation_timer_;
+  std::unique_ptr<BraveP3ARotationScheduler> rotation_scheduler_;
 };
 
 }  // namespace brave

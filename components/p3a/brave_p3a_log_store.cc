@@ -18,7 +18,8 @@
 namespace brave {
 
 namespace {
-constexpr char kPrefName[] = "p3a.logs";
+constexpr char kJsonPrefName[] = "p3a.logs";
+constexpr char kStarPrepPrefName[] = "p3a.logs.star_prep";
 constexpr char kLogValueKey[] = "value";
 constexpr char kLogSentKey[] = "sent";
 constexpr char kLogTimestampKey[] = "timestamp";
@@ -42,8 +43,9 @@ bool IsActualMetric(base::StringPiece histogram_name) {
 }  // namespace
 
 BraveP3ALogStore::BraveP3ALogStore(Delegate* delegate,
-                                   PrefService* local_state)
-    : delegate_(delegate), local_state_(local_state) {
+                                   PrefService* local_state,
+                                   bool is_star)
+    : delegate_(delegate), local_state_(local_state), is_star_(is_star) {
   DCHECK(delegate_);
   DCHECK(local_state);
 }
@@ -51,7 +53,12 @@ BraveP3ALogStore::BraveP3ALogStore(Delegate* delegate,
 BraveP3ALogStore::~BraveP3ALogStore() = default;
 
 void BraveP3ALogStore::RegisterPrefs(PrefRegistrySimple* registry) {
-  registry->RegisterDictionaryPref(kPrefName);
+  registry->RegisterDictionaryPref(kJsonPrefName);
+  registry->RegisterDictionaryPref(kStarPrepPrefName);
+}
+
+const char* BraveP3ALogStore::GetPrefName() const {
+  return is_star_ ? kStarPrepPrefName : kJsonPrefName;
 }
 
 void BraveP3ALogStore::UpdateValue(const std::string& histogram_name,
@@ -64,7 +71,7 @@ void BraveP3ALogStore::UpdateValue(const std::string& histogram_name,
   }
 
   // Update the persistent value.
-  DictionaryPrefUpdate update(local_state_, kPrefName);
+  DictionaryPrefUpdate update(local_state_, GetPrefName());
   update->SetPath({histogram_name, kLogValueKey},
                   base::Value(base::NumberToString(value)));
   update->SetPath({histogram_name, kLogSentKey}, base::Value(entry.sent));
@@ -76,7 +83,7 @@ void BraveP3ALogStore::RemoveValueIfExists(const std::string& histogram_name) {
   unsent_entries_.erase(histogram_name);
 
   // Update the persistent value.
-  DictionaryPrefUpdate update(local_state_, kPrefName);
+  DictionaryPrefUpdate update(local_state_, GetPrefName());
   update->RemovePath(histogram_name);
 
   if (has_staged_log() && staged_entry_key_ == histogram_name) {
@@ -87,7 +94,7 @@ void BraveP3ALogStore::RemoveValueIfExists(const std::string& histogram_name) {
 
 void BraveP3ALogStore::ResetUploadStamps() {
   // Clear log entries flags.
-  DictionaryPrefUpdate update(local_state_, kPrefName);
+  DictionaryPrefUpdate update(local_state_, GetPrefName());
   for (auto& pair : log_) {
     if (pair.second.sent) {
       DCHECK(!pair.second.sent_timestamp.is_null());
@@ -139,6 +146,12 @@ std::string BraveP3ALogStore::staged_log_type() const {
   return "p3a";
 }
 
+const std::string& BraveP3ALogStore::staged_log_key() const {
+  DCHECK(!staged_entry_key_.empty());
+
+  return staged_entry_key_;
+}
+
 const std::string& BraveP3ALogStore::staged_log_hash() const {
   NOTREACHED();
   return staged_log_hash_;
@@ -162,7 +175,8 @@ void BraveP3ALogStore::StageNextLog() {
   DCHECK(!log_.find(staged_entry_key_)->second.sent);
 
   uint64_t staged_entry_value = log_[staged_entry_key_].value;
-  staged_log_ = delegate_->SerializeLog(staged_entry_key_, staged_entry_value);
+  staged_log_ =
+      delegate_->SerializeLog(staged_entry_key_, staged_entry_value, is_star_);
 
   VLOG(2) << "BraveP3ALogStore::StageNextLog: staged " << staged_entry_key_;
 }
@@ -178,7 +192,7 @@ void BraveP3ALogStore::DiscardStagedLog() {
   log_iter->second.MarkAsSent();
 
   // Update the persistent value.
-  DictionaryPrefUpdate update(local_state_, kPrefName);
+  DictionaryPrefUpdate update(local_state_, GetPrefName());
   update->SetPath({log_iter->first, kLogSentKey},
                   base::Value(log_iter->second.sent));
   update->SetPath({log_iter->first, kLogTimestampKey},
@@ -203,7 +217,7 @@ void BraveP3ALogStore::LoadPersistedUnsentLogs() {
   DCHECK(log_.empty());
   DCHECK(unsent_entries_.empty());
 
-  DictionaryPrefUpdate update(local_state_, kPrefName);
+  DictionaryPrefUpdate update(local_state_, GetPrefName());
   base::Value* list = update.Get();
   for (auto dict_item : list->DictItems()) {
     LogEntry entry;

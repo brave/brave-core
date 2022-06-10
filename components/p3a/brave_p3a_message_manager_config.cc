@@ -53,9 +53,13 @@ void LoadBool(base::CommandLine* cmdline,
 MessageManagerConfig::MessageManagerConfig()
     : average_upload_interval(base::Seconds(kDefaultUploadIntervalSeconds)),
       randomize_upload_interval(true),
-      p3a_upload_server_url(BUILDFLAG(P3A_JSON_SERVER_URL)),
-      p2a_upload_server_url(BUILDFLAG(P2A_JSON_SERVER_URL)),
-      star_randomness_url(BUILDFLAG(STAR_RANDOMNESS_SERVER_URL)) {}
+      p3a_json_upload_url(BUILDFLAG(P3A_JSON_UPLOAD_URL)),
+      p2a_json_upload_url(BUILDFLAG(P2A_JSON_UPLOAD_URL)),
+      p3a_star_upload_url(BUILDFLAG(P3A_STAR_UPLOAD_URL)),
+      p2a_star_upload_url(BUILDFLAG(P2A_STAR_UPLOAD_URL)),
+      star_randomness_url(BUILDFLAG(STAR_RANDOMNESS_UPLOAD_URL)) {}
+
+MessageManagerConfig::~MessageManagerConfig() {}
 
 void MessageManagerConfig::LoadFromCommandLine() {
   base::CommandLine* cmdline = base::CommandLine::ForCurrentProcess();
@@ -70,8 +74,10 @@ void MessageManagerConfig::LoadFromCommandLine() {
   LoadTimeDelta(cmdline, switches::kP3ARotationIntervalSeconds,
                 &rotation_interval);
 
-  LoadURL(cmdline, switches::kP3AUploadServerUrl, &p3a_upload_server_url);
-  LoadURL(cmdline, switches::kP2AUploadServerUrl, &p2a_upload_server_url);
+  LoadURL(cmdline, switches::kP3AJsonUploadUrl, &p3a_json_upload_url);
+  LoadURL(cmdline, switches::kP2AJsonUploadUrl, &p2a_json_upload_url);
+  LoadURL(cmdline, switches::kP3AStarUploadUrl, &p3a_star_upload_url);
+  LoadURL(cmdline, switches::kP2AStarUploadUrl, &p2a_star_upload_url);
   LoadURL(cmdline, switches::kP3AStarRandomnessUrl, &star_randomness_url);
 
   LoadBool(cmdline, switches::kP3AIgnoreServerErrors, &ignore_server_errors);

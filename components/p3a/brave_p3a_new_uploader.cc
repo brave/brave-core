@@ -19,14 +19,89 @@ namespace {
 
 // TODO(iefremov): Provide more details for the traffic annotation.
 net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotation(
-    base::StringPiece upload_type) {
-  if (upload_type == "p3a") {
-    return net::DefineNetworkTrafficAnnotation("p3a", R"(
+    base::StringPiece log_type,
+    bool is_star) {
+  if (is_star) {
+    if (log_type == "p3a") {
+      return net::DefineNetworkTrafficAnnotation("p3a", R"(
+          semantics {
+            sender: "Brave Privacy-Preserving Product Analytics Uploader"
+            description:
+              "Report of anonymized usage statistics. For more info, see "
+              "https://brave.com/P3A"
+            trigger:
+              "Reports are automatically generated on startup and at intervals "
+              "while Brave is running."
+            data:
+              "A base64 encoded encrypted payload with anonymized usage data."
+              "Encryption is performed using STAR to protect user anonymity."
+              "See https://arxiv.org/abs/2109.10074 for more information."
+            destination: WEBSITE
+          }
+          policy {
+            cookies_allowed: NO
+            setting:
+              "Users can enable or disable it in brave://settings/privacy"
+             policy_exception_justification:
+               "Not implemented."
+          })");
+    }
+    DCHECK_EQ(log_type, "p2a");
+    return net::DefineNetworkTrafficAnnotation("p2a", R"(
         semantics {
-          sender: "Brave Privacy-Preserving Product Analytics Uploader"
+          sender: "Brave Privacy-Preserving Ad Analytics Uploader"
           description:
             "Report of anonymized usage statistics. For more info, see "
-            "https://brave.com/P3A"
+            "https://github.com/brave/brave-browser/wiki/"
+            "Randomized-Response-for-Private-Advertising-Analytics"
+          trigger:
+            "Reports are automatically generated on startup and at intervals "
+            "while Brave is running."
+          data:
+            "A base64 encoded encrypted payload with anonymized usage data."
+            "Encryption is performed using STAR to protect user anonymity."
+            "See https://arxiv.org/abs/2109.10074 for more information."
+          destination: WEBSITE
+        }
+        policy {
+          cookies_allowed: NO
+          setting:
+            "Users can enable or disable it by enabling or disabling Brave "
+            "rewards or ads in brave://rewards."
+           policy_exception_justification:
+             "Not implemented."
+        })");
+  } else {
+    if (log_type == "p3a") {
+      return net::DefineNetworkTrafficAnnotation("p3a", R"(
+          semantics {
+            sender: "Brave Privacy-Preserving Product Analytics Uploader"
+            description:
+              "Report of anonymized usage statistics. For more info, see "
+              "https://brave.com/P3A"
+            trigger:
+              "Reports are automatically generated on startup and at intervals "
+              "while Brave is running."
+            data:
+              "A json document with anonymized usage data."
+            destination: WEBSITE
+          }
+          policy {
+            cookies_allowed: NO
+            setting:
+              "Users can enable or disable it in brave://settings/privacy"
+             policy_exception_justification:
+               "Not implemented."
+          })");
+    }
+    DCHECK_EQ(log_type, "p2a");
+    return net::DefineNetworkTrafficAnnotation("p2a", R"(
+        semantics {
+          sender: "Brave Privacy-Preserving Ad Analytics Uploader"
+          description:
+            "Report of anonymized usage statistics. For more info, see "
+            "https://github.com/brave/brave-browser/wiki/"
+            "Randomized-Response-for-Private-Advertising-Analytics"
           trigger:
             "Reports are automatically generated on startup and at intervals "
             "while Brave is running."
@@ -37,58 +112,41 @@ net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotation(
         policy {
           cookies_allowed: NO
           setting:
-            "Users can enable or disable it in brave://settings/privacy"
+            "Users can enable or disable it by enabling or disabling Brave "
+            "rewards or ads in brave://rewards."
            policy_exception_justification:
              "Not implemented."
         })");
   }
-  DCHECK_EQ(upload_type, "p2a");
-  return net::DefineNetworkTrafficAnnotation("p2a", R"(
-      semantics {
-        sender: "Brave Privacy-Preserving Ad Analytics Uploader"
-        description:
-          "Report of anonymized usage statistics. For more info, see "
-          "https://github.com/brave/brave-browser/wiki/"
-          "Randomized-Response-for-Private-Advertising-Analytics"
-        trigger:
-          "Reports are automatically generated on startup and at intervals "
-          "while Brave is running."
-        data:
-          "A json document with anonymized usage data."
-        destination: WEBSITE
-      }
-      policy {
-        cookies_allowed: NO
-        setting:
-          "Users can enable or disable it by enabling or disabling Brave "
-          "rewards or ads in brave://rewards."
-         policy_exception_justification:
-           "Not implemented."
-      })");
 }
 
 }  // namespace
 
 BraveP3ANewUploader::BraveP3ANewUploader(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
-    const GURL& p3a_endpoint,
-    const GURL& p2a_endpoint,
-    const UploadCallback& on_upload_complete)
+    UploadCompleteCallback upload_callback,
+    const GURL& p3a_json_endpoint,
+    const GURL& p2a_json_endpoint,
+    const GURL& p3a_star_endpoint,
+    const GURL& p2a_star_endpoint)
     : url_loader_factory_(url_loader_factory),
-      p3a_endpoint_(p3a_endpoint),
-      p2a_endpoint_(p2a_endpoint),
-      on_upload_complete_(on_upload_complete) {}
+      p3a_json_endpoint_(p3a_json_endpoint),
+      p2a_json_endpoint_(p2a_json_endpoint),
+      p3a_star_endpoint_(p3a_star_endpoint),
+      p2a_star_endpoint_(p2a_star_endpoint),
+      upload_callback_(upload_callback) {}
 
 BraveP3ANewUploader::~BraveP3ANewUploader() = default;
 
 void BraveP3ANewUploader::UploadLog(const std::string& compressed_log_data,
-                                    const std::string& upload_type) {
+                                    const std::string& log_type,
+                                    bool is_star) {
   auto resource_request = std::make_unique<network::ResourceRequest>();
-  if (upload_type == "p2a") {
-    resource_request->url = p2a_endpoint_;
+  if (log_type == "p2a") {
+    resource_request->url = is_star ? p2a_star_endpoint_ : p2a_json_endpoint_;
     resource_request->headers.SetHeader("X-Brave-P2A", "?1");
-  } else if (upload_type == "p3a") {
-    resource_request->url = p3a_endpoint_;
+  } else if (log_type == "p3a") {
+    resource_request->url = is_star ? p3a_star_endpoint_ : p3a_json_endpoint_;
     resource_request->headers.SetHeader("X-Brave-P3A", "?1");
   } else {
     NOTREACHED();
@@ -98,26 +156,28 @@ void BraveP3ANewUploader::UploadLog(const std::string& compressed_log_data,
   resource_request->method = "POST";
 
   url_loader_ = network::SimpleURLLoader::Create(
-      std::move(resource_request), GetNetworkTrafficAnnotation(upload_type));
-  url_loader_->AttachStringForUpload(compressed_log_data, "application/json");
+      std::move(resource_request),
+      GetNetworkTrafficAnnotation(log_type, is_star));
+  url_loader_->AttachStringForUpload(
+      compressed_log_data, is_star ? "text/plain" : "application/json");
 
-  url_loader_->DownloadToStringOfUnboundedSizeUntilCrashAndDie(
+  url_loader_->DownloadHeadersOnly(
       url_loader_factory_.get(),
       base::BindOnce(&BraveP3ANewUploader::OnUploadComplete,
-                     base::Unretained(this)));
+                     base::Unretained(this), is_star));
 }
 
 void BraveP3ANewUploader::OnUploadComplete(
-    std::unique_ptr<std::string> response_body) {
+    bool is_star,
+    scoped_refptr<net::HttpResponseHeaders> headers) {
   int response_code = -1;
-  if (url_loader_->ResponseInfo() && url_loader_->ResponseInfo()->headers)
-    response_code = url_loader_->ResponseInfo()->headers->response_code();
-
-  int error_code = url_loader_->NetError();
-
-  bool was_https = url_loader_->GetFinalURL().SchemeIs(url::kHttpsScheme);
+  if (headers) {
+    response_code = headers->response_code();
+  }
+  bool is_ok = url_loader_->NetError() != net::OK || response_code < 200 ||
+               response_code > 299;
   url_loader_.reset();
-  on_upload_complete_.Run(response_code, error_code, was_https);
+  upload_callback_.Run(is_ok, response_code, is_star);
 }
 
 }  // namespace brave

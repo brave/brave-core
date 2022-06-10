@@ -5,9 +5,11 @@ buildflag_header("buildflags") {
   header = "buildflags.h"
   flags = [
     "BRAVE_P3A_ENABLED=$brave_p3a_enabled",
-    "P3A_JSON_SERVER_URL=\"$p3a_json_server_url\"",
-    "P2A_JSON_SERVER_URL=\"$p2a_json_server_url\"",
-    "STAR_RANDOMNESS_SERVER_URL=\"star_randomness_server_url\"",
+    "P3A_JSON_UPLOAD_URL=\"$p3a_json_upload_url\"",
+    "P2A_JSON_UPLOAD_URL=\"$p2a_json_upload_url\"",
+    "P3A_STAR_UPLOAD_URL=\"$p3a_star_upload_url\"",
+    "P2A_STAR_UPLOAD_URL=\"$p2a_star_upload_url\"",
+    "STAR_RANDOMNESS_UPLOAD_URL=\"star_randomness_upload_url\"",
   ]
 }
 
@@ -21,13 +23,16 @@ static_library("p3a") {
     "brave_p3a_message_manager.h",
     "brave_p3a_message_manager_config.cc",
     "brave_p3a_message_manager_config.h",
-    "brave_p3a_message_manager_utils.h",
     "brave_p3a_new_uploader.cc",
     "brave_p3a_new_uploader.h",
+    "brave_p3a_rotation_scheduler.cc",
+    "brave_p3a_rotation_scheduler.h",
     "brave_p3a_scheduler.cc",
     "brave_p3a_scheduler.h",
     "brave_p3a_service.cc",
     "brave_p3a_service.h",
+    "brave_p3a_star_log_store.cc",
+    "brave_p3a_star_log_store.h",
     "brave_p3a_star_manager.cc",
     "brave_p3a_star_manager.h",
     "brave_p3a_switches.h",

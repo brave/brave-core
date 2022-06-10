@@ -18,8 +18,10 @@ struct MessageManagerConfig {
   // Interval between rotations, only used for testing from the command line.
   base::TimeDelta rotation_interval;
 
-  GURL p3a_upload_server_url;
-  GURL p2a_upload_server_url;
+  GURL p3a_json_upload_url;
+  GURL p2a_json_upload_url;
+  GURL p3a_star_upload_url;
+  GURL p2a_star_upload_url;
   GURL star_randomness_url;
 
   bool ignore_server_errors = false;
@@ -27,6 +29,7 @@ struct MessageManagerConfig {
   bool use_local_randomness = false;
 
   MessageManagerConfig();
+  ~MessageManagerConfig();
 
   void LoadFromCommandLine();
 };

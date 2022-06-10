@@ -5,6 +5,7 @@
 
 #include "brave/components/p3a/brave_p3a_message_manager.h"
 
+#include "base/bind.h"
 #include "base/i18n/timezone.h"
 #include "base/json/json_writer.h"
 #include "base/logging.h"
@@ -12,12 +13,15 @@
 #include "brave/components/brave_referrals/common/pref_names.h"
 #include "brave/components/brave_stats/browser/brave_stats_updater_util.h"
 #include "brave/components/p3a/brave_p3a_log_store.h"
-#include "brave/components/p3a/brave_p3a_message_manager_utils.h"
 #include "brave/components/p3a/brave_p3a_new_uploader.h"
+#include "brave/components/p3a/brave_p3a_rotation_scheduler.h"
 #include "brave/components/p3a/brave_p3a_scheduler.h"
+#include "brave/components/p3a/brave_p3a_star_log_store.h"
 #include "brave/components/p3a/brave_p3a_star_manager.h"
 #include "brave/components/p3a/pref_names.h"
 #include "brave/components/version_info/version_info.h"
+#include "brave/vendor/brave_base/random.h"
+#include "components/metrics/log_store.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
@@ -26,7 +30,14 @@ namespace brave {
 
 namespace {
 
-constexpr char kLastRotationTimeStampPref[] = "p3a.last_rotation_timestamp";
+const size_t kMaxEpochsToRetain = 4;
+
+base::TimeDelta GetRandomizedUploadInterval(
+    base::TimeDelta average_upload_interval) {
+  const auto delta = base::Seconds(
+      brave_base::random::Geometric(average_upload_interval.InSecondsF()));
+  return delta;
+}
 
 }  // namespace
 
@@ -42,146 +53,190 @@ BraveP3AMessageManager::~BraveP3AMessageManager() {}
 
 void BraveP3AMessageManager::RegisterPrefs(PrefRegistrySimple* registry) {
   BraveP3ALogStore::RegisterPrefs(registry);
-  registry->RegisterTimePref(kLastRotationTimeStampPref, {});
+  BraveP3AStarLogStore::RegisterPrefs(registry);
 }
 
 void BraveP3AMessageManager::Init(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory) {
-  // Init log store.
-  log_store_.reset(new BraveP3ALogStore(this, local_state_));
-  log_store_->LoadPersistedUnsentLogs();
-
-  // Do rotation if needed.
-  const base::Time last_rotation =
-      local_state_->GetTime(kLastRotationTimeStampPref);
-  if (last_rotation.is_null()) {
-    DoRotation();
-  } else {
-    if (!config_.rotation_interval.is_zero()) {
-      if (base::Time::Now() - last_rotation > config_.rotation_interval) {
-        DoRotation();
-      }
-    }
-    if (base::Time::Now() > NextMonday(last_rotation)) {
-      DoRotation();
-    }
-  }
+  // Init log stores.
+  json_log_store_.reset(new BraveP3ALogStore(this, local_state_, false));
+  json_log_store_->LoadPersistedUnsentLogs();
+  star_prep_log_store_.reset(new BraveP3ALogStore(this, local_state_, true));
+  star_prep_log_store_->LoadPersistedUnsentLogs();
+  star_send_log_store_.reset(
+      new BraveP3AStarLogStore(local_state_, kMaxEpochsToRetain));
+  star_send_log_store_->LoadPersistedUnsentLogs();
 
   // Init other components.
   new_uploader_.reset(new BraveP3ANewUploader(
-      url_loader_factory, GURL(config_.p3a_upload_server_url),
-      GURL(config_.p2a_upload_server_url)));
-
-  upload_scheduler_.reset(new BraveP3AScheduler(
-      base::BindRepeating(&BraveP3AMessageManager::StartScheduledUpload,
+      url_loader_factory,
+      base::BindRepeating(&BraveP3AMessageManager::OnLogUploadComplete,
                           base::Unretained(this)),
-      (config_.randomize_upload_interval
-           ? base::BindRepeating(GetRandomizedUploadInterval,
-                                 config_.average_upload_interval)
-           : base::BindRepeating([](base::TimeDelta x) { return x; },
-                                 config_.average_upload_interval))));
+      GURL(config_.p3a_json_upload_url), GURL(config_.p2a_json_upload_url),
+      GURL(config_.p3a_star_upload_url), GURL(config_.p2a_star_upload_url)));
 
-  upload_scheduler_->Start();
-  if (!rotation_timer_.IsRunning()) {
-    UpdateRotationTimer();
-  }
+  base::RepeatingCallback<base::TimeDelta(void)> schedule_interval_callback =
+      config_.randomize_upload_interval
+          ? base::BindRepeating(GetRandomizedUploadInterval,
+                                config_.average_upload_interval)
+          : base::BindRepeating([](base::TimeDelta x) { return x; },
+                                config_.average_upload_interval);
+
+  json_upload_scheduler_.reset(new BraveP3AScheduler(
+      base::BindRepeating(&BraveP3AMessageManager::StartScheduledUpload,
+                          base::Unretained(this), false),
+      schedule_interval_callback));
+  star_prep_scheduler_.reset(new BraveP3AScheduler(
+      base::BindRepeating(&BraveP3AMessageManager::StartScheduledStarPrep,
+                          base::Unretained(this)),
+      schedule_interval_callback));
+  star_upload_scheduler_.reset(new BraveP3AScheduler(
+      base::BindRepeating(&BraveP3AMessageManager::StartScheduledUpload,
+                          base::Unretained(this), true),
+      schedule_interval_callback));
+
+  json_upload_scheduler_->Start();
+  star_prep_scheduler_->Start();
+  star_upload_scheduler_->Start();
+
+  rotation_scheduler_.reset(new BraveP3ARotationScheduler(
+      local_state_, config_.rotation_interval,
+      base::BindRepeating(&BraveP3AMessageManager::DoJsonRotation,
+                          base::Unretained(this)),
+      base::BindRepeating(&BraveP3AMessageManager::DoStarRotation,
+                          base::Unretained(this))));
 
   star_manager_.reset(new BraveP3AStarManager(
       url_loader_factory,
-      base::BindRepeating(&BraveP3AMessageManager::OnStarMessageCreated,
+      base::BindRepeating(&BraveP3AMessageManager::OnNewStarMessage,
                           base::Unretained(this)),
       GURL(config_.star_randomness_url), config_.use_local_randomness));
 
   VLOG(2) << "BraveP3AMessageManager parameters are:"
           << ", average_upload_interval_ = " << config_.average_upload_interval
           << ", randomize_upload_interval_ = "
-          << config_.randomize_upload_interval << ", p3a_upload_server_url_ = "
-          << config_.p3a_upload_server_url.spec()
-          << ", p2a_upload_server_url_ = "
-          << config_.p2a_upload_server_url.spec()
+          << config_.randomize_upload_interval
+          << ", p3a_json_upload_url_ = " << config_.p3a_json_upload_url.spec()
+          << ", p2a_json_upload_url_ = " << config_.p2a_json_upload_url.spec()
+          << ", p3a_star_upload_url_ = " << config_.p3a_star_upload_url.spec()
+          << ", p2a_star_upload_url_ = " << config_.p2a_star_upload_url.spec()
           << ", rotation_interval_ = " << config_.rotation_interval;
 }
 
 void BraveP3AMessageManager::UpdateMetricValue(base::StringPiece histogram_name,
                                                size_t bucket) {
-  log_store_->UpdateValue(std::string(histogram_name), bucket);
+  json_log_store_->UpdateValue(std::string(histogram_name), bucket);
+  star_prep_log_store_->UpdateValue(std::string(histogram_name), bucket);
 }
 
 void BraveP3AMessageManager::RemoveMetricValue(
     base::StringPiece histogram_name) {
-  log_store_->RemoveValueIfExists(std::string(histogram_name));
+  json_log_store_->RemoveValueIfExists(std::string(histogram_name));
+  star_prep_log_store_->RemoveValueIfExists(std::string(histogram_name));
 }
 
-void BraveP3AMessageManager::DoRotation() {
-  VLOG(2) << "BraveP3AMessageManager doing rotation at " << base::Time::Now();
-  log_store_->ResetUploadStamps();
-  UpdateRotationTimer();
-
-  local_state_->SetTime(kLastRotationTimeStampPref, base::Time::Now());
+void BraveP3AMessageManager::DoJsonRotation() {
+  VLOG(2) << "BraveP3AMessageManager doing json rotation at "
+          << base::Time::Now();
+  json_log_store_->ResetUploadStamps();
 }
 
-void BraveP3AMessageManager::UpdateRotationTimer() {
-  base::Time now = base::Time::Now();
-  base::Time next_rotation = config_.rotation_interval.is_zero()
-                                 ? NextMonday(now)
-                                 : now + config_.rotation_interval;
-  if (now >= next_rotation) {
-    // Should never happen, but let's stay on the safe side.
-    NOTREACHED();
-    return;
-  }
-  rotation_timer_.Start(FROM_HERE, next_rotation, this,
-                        &BraveP3AMessageManager::DoRotation);
-
-  VLOG(2) << "BraveP3AMessageManager new rotation timer will fire at "
-          << next_rotation << " after " << next_rotation - now;
+void BraveP3AMessageManager::DoStarRotation() {
+  VLOG(2) << "BraveP3AMessageManager doing star rotation at "
+          << base::Time::Now();
+  star_prep_log_store_->ResetUploadStamps();
 }
 
-void BraveP3AMessageManager::OnLogUploadComplete(int response_code,
-                                                 int error_code,
-                                                 bool was_https) {
-  const bool upload_succeeded = response_code == 200;
-  bool ok = upload_succeeded;
-  if (config_.ignore_server_errors) {
-    ok = true;
-  }
-  VLOG(2) << "BraveP3AMessageManager::UploadFinished ok = " << ok
+void BraveP3AMessageManager::OnLogUploadComplete(bool is_ok,
+                                                 int response_code,
+                                                 bool is_star) {
+  VLOG(2) << "BraveP3AMessageManager::UploadFinished ok = " << is_ok
           << " HTTP response = " << response_code;
-  if (ok) {
-    log_store_->DiscardStagedLog();
+  if (config_.ignore_server_errors) {
+    is_ok = true;
   }
-  upload_scheduler_->UploadFinished(ok);
+  if (is_ok) {
+    json_log_store_->DiscardStagedLog();
+  }
+  json_upload_scheduler_->UploadFinished(is_ok);
 }
 
-void BraveP3AMessageManager::OnStarMessageCreated(
+void BraveP3AMessageManager::OnNewStarMessage(
     const char* histogram_name,
     uint8_t epoch,
-    std::string serialized_message) {}
+    std::unique_ptr<std::string> serialized_message) {
+  if (!serialized_message) {
+    star_upload_scheduler_->UploadFinished(false);
+    return;
+  }
+  star_upload_scheduler_->UploadFinished(true);
+  star_send_log_store_->UpdateMessage(histogram_name, epoch,
+                                      *serialized_message);
+}
 
-void BraveP3AMessageManager::StartScheduledUpload() {
-  VLOG(2) << "BraveP3AMessageManager::StartScheduledUpload at "
-          << base::Time::Now();
-  if (!log_store_->has_unsent_logs()) {
+void BraveP3AMessageManager::StartScheduledUpload(bool is_star) {
+  bool p3a_enabled = local_state_->GetBoolean(brave::kP3AEnabled);
+  if (!p3a_enabled) {
+    return;
+  }
+  metrics::LogStore* log_store;
+  BraveP3AScheduler* scheduler;
+  std::string logging_prefix = "BraveP3AMessageManager::StartScheduledUpload (";
+  if (is_star) {
+    log_store = star_send_log_store_.get();
+    scheduler = star_upload_scheduler_.get();
+    logging_prefix += "STAR";
+  } else {
+    log_store = json_log_store_.get();
+    scheduler = json_upload_scheduler_.get();
+    logging_prefix += "JSON";
+  }
+  logging_prefix += ")";
+  VLOG(2) << logging_prefix << " at " << base::Time::Now();
+  if (!log_store->has_unsent_logs()) {
     // We continue to schedule next uploads since new histogram values can
     // come up at any moment. Maybe it's worth to add a method with more
     // appropriate name for this situation.
-    upload_scheduler_->UploadFinished(true);
+    scheduler->UploadFinished(true);
     // Nothing to stage.
-    VLOG(2) << "StartScheduledUpload - Nothing to stage.";
+    VLOG(2) << logging_prefix << " - Nothing to stage.";
     return;
   }
-  if (!log_store_->has_staged_log()) {
-    log_store_->StageNextLog();
+  if (!log_store->has_staged_log()) {
+    log_store->StageNextLog();
   }
 
-  // Only upload if service is enabled.
+  const std::string log = log_store->staged_log();
+  const std::string log_type = is_star ? star_send_log_store_->staged_log_type()
+                                       : json_log_store_->staged_log_type();
+  VLOG(2) << logging_prefix << " - Uploading " << log.size() << " bytes "
+          << "of type " << log_type;
+  new_uploader_->UploadLog(log, log_type, is_star);
+}
+
+void BraveP3AMessageManager::StartScheduledStarPrep() {
   bool p3a_enabled = local_state_->GetBoolean(brave::kP3AEnabled);
-  if (p3a_enabled) {
-    const std::string log = log_store_->staged_log();
-    const std::string log_type = log_store_->staged_log_type();
-    VLOG(2) << "StartScheduledUpload - Uploading " << log.size() << " bytes "
-            << "of type " << log_type;
-    new_uploader_->UploadLog(log, log_type);
+  if (!p3a_enabled) {
+    return;
+  }
+  VLOG(2) << "BraveP3AMessageManager::StartScheduledStarPrep - starting";
+  if (!star_prep_log_store_->has_unsent_logs()) {
+    star_upload_scheduler_->UploadFinished(true);
+    VLOG(2)
+        << "BraveP3AMessageManager::StartScheduledStarPrep - Nothing to stage.";
+    return;
+  }
+  if (!star_prep_log_store_->has_staged_log()) {
+    star_prep_log_store_->StageNextLog();
+  }
+
+  const std::string log = star_prep_log_store_->staged_log();
+  const std::string log_key = star_prep_log_store_->staged_log_key();
+  VLOG(2) << "BraveP3AMessageManager::StartScheduledStarPrep - Requesting "
+             "randomness for log";
+  // TODO(djandries): replace '1' with actual current epoch
+  if (!star_manager_->StartMessagePreparation(log_key.c_str(), 1, log)) {
+    star_upload_scheduler_->UploadFinished(false);
   }
 }
 
@@ -221,16 +276,21 @@ void BraveP3AMessageManager::UpdateMessageMeta() {
 
 std::string BraveP3AMessageManager::SerializeLog(
     base::StringPiece histogram_name,
-    const uint64_t value) {
+    const uint64_t value,
+    bool is_star) {
   UpdateMessageMeta();
 
-  base::Value p3a_json_value =
-      GenerateP3AMessageDict(histogram_name, value, message_meta_);
-  std::string p3a_json_message;
-  const bool ok = base::JSONWriter::Write(p3a_json_value, &p3a_json_message);
-  DCHECK(ok);
+  if (is_star) {
+    return GenerateP3AStarMessage(histogram_name, value, message_meta_);
+  } else {
+    base::Value p3a_json_value =
+        GenerateP3AMessageDict(histogram_name, value, message_meta_);
+    std::string p3a_json_message;
+    const bool ok = base::JSONWriter::Write(p3a_json_value, &p3a_json_message);
+    DCHECK(ok);
 
-  return p3a_json_message;
+    return p3a_json_message;
+  }
 }
 
 }  // namespace brave
