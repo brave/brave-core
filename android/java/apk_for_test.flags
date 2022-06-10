@@ -469,6 +469,14 @@
     public <init>(...);
 }
 
+-keep class org.chromium.chrome.browser.partnerbookmarks.PartnerBookmarksDelegateImpl {
+    public <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.partnerbookmarks.BravePartnerBookmarksDelegateImpl {
+    public <init>(...);
+}
+
 -keep class org.chromium.chrome.browser.share.send_tab_to_self.ManageAccountDevicesLinkView {
     public <init>(...);
     *** inflateIfVisible(...);
