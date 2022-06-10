@@ -1,0 +1,12 @@
+diff --git a/ios/chrome/common/ui/favicon/favicon_attributes.h b/ios/chrome/common/ui/favicon/favicon_attributes.h
+index d6825c2916761ca445a71f49f86252bfa1032fe5..73a05ed2f08f204e642cc9e8e69b462ab031f7c8 100644
+--- a/ios/chrome/common/ui/favicon/favicon_attributes.h
++++ b/ios/chrome/common/ui/favicon/favicon_attributes.h
+@@ -9,6 +9,7 @@
+ 
+ // Attributes of a favicon. A favicon is represented either with an image or
+ // with a fallback monogram of a given color and background color.
++OBJC_EXPORT
+ @interface FaviconAttributes : NSObject <NSCoding>
+ 
+ // Favicon image. Can be nil. If it is nil, monogram string and color are
