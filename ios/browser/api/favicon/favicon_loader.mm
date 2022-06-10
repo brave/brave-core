@@ -5,18 +5,14 @@
 
 #include "brave/ios/browser/api/favicon/favicon_loader.h"
 #include "base/strings/sys_string_conversions.h"
-#include "brave/ios/browser/api/favicon/favicon_attributes.h"
-#include "components/favicon/core/large_icon_service.h"
 #include "components/favicon_base/favicon_types.h"
 #include "ios/chrome/browser/application_context.h"
 #include "ios/chrome/browser/browser_state/chrome_browser_state.h"
 #include "ios/chrome/browser/browser_state/chrome_browser_state_manager.h"
-#import "ios/chrome/browser/favicon/favicon_loader.h"
-#include "ios/chrome/browser/favicon/favicon_service_factory.h"
+#include "ios/chrome/browser/favicon/favicon_loader.h"
 #include "ios/chrome/browser/favicon/ios_chrome_favicon_loader_factory.h"
 #include "ios/chrome/common/ui/favicon/favicon_attributes.h"
 #import "ios/chrome/common/ui/favicon/favicon_constants.h"
-#include "ios/chrome/common/ui/favicon/favicon_view.h"
 #import "net/base/mac/url_conversions.h"
 
 #if !defined(__has_feature) || !__has_feature(objc_arc)
@@ -32,10 +28,6 @@ BraveFaviconLoaderSize const BraveFaviconLoaderSizeDesiredMedium =
     static_cast<NSInteger>(kDesiredMediumFaviconSizePt);
 
 // MARK: - Implementation
-
-@interface BraveFaviconAttributes (Private)
-- (instancetype)initWithAttributes:(FaviconAttributes*)attributes;
-@end
 
 @interface BraveFaviconLoader () {
   FaviconLoader* favicon_loader_;
@@ -73,37 +65,32 @@ BraveFaviconLoaderSize const BraveFaviconLoaderSizeDesiredMedium =
               sizeInPoints:(BraveFaviconLoaderSize)sizeInPoints
            minSizeInPoints:(BraveFaviconLoaderSize)minSizeInPoints
     fallbackToGoogleServer:(bool)fallbackToGoogleServer
-                completion:
-                    (void (^)(BraveFaviconAttributes* attributes))completion {
-  favicon_loader_->FaviconForPageUrl(
-      net::GURLWithNSURL(url), sizeInPoints, minSizeInPoints,
-      fallbackToGoogleServer, ^(FaviconAttributes* attributes) {
-        completion(
-            [[BraveFaviconAttributes alloc] initWithAttributes:attributes]);
-      });
+                completion:(void (^)(FaviconAttributes* attributes))completion {
+  favicon_loader_->FaviconForPageUrl(net::GURLWithNSURL(url), sizeInPoints,
+                                     minSizeInPoints, fallbackToGoogleServer,
+                                     ^(FaviconAttributes* attributes) {
+                                       completion(attributes);
+                                     });
 }
 
 - (void)faviconForPageURLOrHost:(NSURL*)url
                    sizeInPoints:(BraveFaviconLoaderSize)sizeInPoints
-                     completion:(void (^)(BraveFaviconAttributes* attributes))
-                                    completion {
+                     completion:
+                         (void (^)(FaviconAttributes* attributes))completion {
   favicon_loader_->FaviconForPageUrlOrHost(
       net::GURLWithNSURL(url), sizeInPoints, ^(FaviconAttributes* attributes) {
-        completion(
-            [[BraveFaviconAttributes alloc] initWithAttributes:attributes]);
+        completion(attributes);
       });
 }
 
 - (void)faviconForIconURL:(NSURL*)url
              sizeInPoints:(BraveFaviconLoaderSize)sizeInPoints
           minSizeInPoints:(BraveFaviconLoaderSize)minSizeInPoints
-               completion:
-                   (void (^)(BraveFaviconAttributes* attributes))completion {
-  favicon_loader_->FaviconForIconUrl(
-      net::GURLWithNSURL(url), sizeInPoints, minSizeInPoints,
-      ^(FaviconAttributes* attributes) {
-        completion(
-            [[BraveFaviconAttributes alloc] initWithAttributes:attributes]);
-      });
+               completion:(void (^)(FaviconAttributes* attributes))completion {
+  favicon_loader_->FaviconForIconUrl(net::GURLWithNSURL(url), sizeInPoints,
+                                     minSizeInPoints,
+                                     ^(FaviconAttributes* attributes) {
+                                       completion(attributes);
+                                     });
 }
 @end
