@@ -118,6 +118,21 @@ class Tab: NSObject {
   fileprivate var lastRequest: URLRequest?
   var restoring: Bool = false
   var pendingScreenshot = false
+  
+  /// The url set after a successful navigation. This will also set the `url` property.
+  ///
+  /// - Note: Unlike the `url` property, which may be set during pre-navigation,
+  /// the `committedURL` is only assigned when navigation was committed..
+  var committedURL: URL? {
+    willSet {
+      url = newValue
+      previousComittedURL = committedURL
+    }
+  }
+  
+  /// The previous url that was set before `comittedURL` was set again
+  private(set) var previousComittedURL: URL?
+  
   var url: URL? {
     didSet {
       if let _url = url, let internalUrl = InternalURL(_url), internalUrl.isAuthorized {

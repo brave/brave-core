@@ -174,16 +174,29 @@ class UserScriptManager {
   /// The first part is handled by an ad-block rule and enabled via a `deAmpEnabled` boolean in `AdBlockStats`
   /// The third part is handled by debouncing amp links and handled by debouncing logic in `DebouncingResourceDownloader`
   private let deAMPUserScript: WKUserScript? = {
-    guard let path = Bundle.current.path(forResource: "DeAMP", ofType: "js"), let source: String = try? String(contentsOfFile: path) else {
+    guard let path = Bundle.current.path(forResource: "DeAMP", ofType: "js"), var source: String = try? String(contentsOfFile: path) else {
       log.error("Failed to load cookie control user script")
       return nil
     }
+    
+    do {
+      let arguments = try UserScriptHelper.makeDeAmpScriptParamters()
+      
+      source = [
+        source,
+        "window.braveDeAmp(\(arguments))",
+        "delete window.braveDeAmp"
+      ].joined(separator: "\n")
 
-    return WKUserScript.create(
-      source: source,
-      injectionTime: .atDocumentStart,
-      forMainFrameOnly: true,
-      in: .defaultClient)
+      return WKUserScript.create(
+        source: source,
+        injectionTime: .atDocumentStart,
+        forMainFrameOnly: true,
+        in: .defaultClient)
+    } catch {
+      assertionFailure(error.localizedDescription)
+      return nil
+    }
   }()
 
   // PaymentRequestUserScript is injected at document start to handle
