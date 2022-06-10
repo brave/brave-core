@@ -10,7 +10,6 @@ window.braveFarble = (args) => {
   // Adds slight randization when reading data for audio files
   // Randomization is determined by the fudge factor
   const farbleAudio = (fudgeFactor) => {
-    const farbledChannels = new WeakMap()
     const braveNacl = window.nacl
     delete window.nacl
 
@@ -58,32 +57,9 @@ window.braveFarble = (args) => {
     const getChannelData = window.AudioBuffer.prototype.getChannelData
     window.AudioBuffer.prototype.getChannelData = function () {
       const channelData = Reflect.apply(getChannelData, this, arguments)
-      let hashes = farbledChannels.get(channelData)
-
-      // First let's check if we already farbled this set
-      if (hashes !== undefined) {
-        // We had this data set farbled already.
-        // Lets see if it changed it's shape since then.
-        const hash = hashArray(channelData)
-
-        if (hashes.has(hash)) {
-          // We already farbled this version of the channel data
-          // Let's not farble it again
-          return channelData
-        }
-      } else {
-        // If we dont have any hashes of farbled data at all for this
-        // channel, then we trivially haven't hashed this channel data yet.
-        hashes = new Set()
-        farbledChannels.set(channelData, hashes)
-      }
-
-      // Farble the array and store the hash of this
-      // so that we don't farble the same data again.
-      farbleArrayData(channelData)
-      const hash = hashArray(channelData)
-      hashes.add(hash)
-
+      // TODO: @JS Add more optimized audio farbling.
+      // Will be done as a future PR of #5482 here:
+      // https://github.com/brave/brave-ios/pull/5485
       return channelData
     }
 
