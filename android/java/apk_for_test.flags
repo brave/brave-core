@@ -42,12 +42,12 @@
 
 -keep class org.chromium.chrome.browser.suggestions.tile.MostVisitedTilesMediator {
     public <init>(...);
-    *** updateTileGridPlaceholderVisibility(...);
+    *** updateTilePlaceholderVisibility(...);
 }
 
 -keep class org.chromium.chrome.browser.suggestions.tile.BraveMostVisitedTilesMediator {
     public <init>(...);
-    *** updateTileGridPlaceholderVisibility(...);
+    *** updateTilePlaceholderVisibility(...);
 }
 
 -keep class org.chromium.chrome.browser.ntp.NewTabPage {

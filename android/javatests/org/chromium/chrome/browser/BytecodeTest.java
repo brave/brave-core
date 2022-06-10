@@ -374,7 +374,7 @@ public class BytecodeTest {
                 "inflateIfVisible", true, void.class));
         Assert.assertTrue(methodExists(
                 "org/chromium/chrome/browser/suggestions/tile/MostVisitedTilesMediator",
-                "updateTileGridPlaceholderVisibility", true, void.class));
+                "updateTilePlaceholderVisibility", true, void.class));
     }
 
     @Test
