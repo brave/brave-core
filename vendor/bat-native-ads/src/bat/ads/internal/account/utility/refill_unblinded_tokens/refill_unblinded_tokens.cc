@@ -5,6 +5,7 @@
 
 #include "bat/ads/internal/account/utility/refill_unblinded_tokens/refill_unblinded_tokens.h"
 
+#include <cstdint>
 #include <functional>
 #include <utility>
 

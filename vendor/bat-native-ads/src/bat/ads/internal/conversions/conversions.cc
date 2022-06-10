@@ -6,6 +6,7 @@
 #include "bat/ads/internal/conversions/conversions.h"
 
 #include <algorithm>
+#include <cstdint>
 #include <iterator>
 #include <set>
 
@@ -35,9 +36,12 @@ namespace ads {
 
 namespace {
 
-constexpr base::TimeDelta kConvertAfter = base::Days(1);
-constexpr base::TimeDelta kDebugConvertAfter = base::Minutes(10);
-constexpr base::TimeDelta kExpiredConvertAfter = base::Minutes(1);
+constexpr int64_t kConvertAfterSeconds =
+    base::Time::kHoursPerDay * base::Time::kSecondsPerHour;
+constexpr int64_t kDebugConvertAfterSeconds =
+    10 * base::Time::kSecondsPerMinute;
+constexpr int64_t kExpiredConvertAfterSeconds =
+    1 * base::Time::kSecondsPerMinute;
 constexpr char kSearchInUrl[] = "url";
 
 bool HasObservationWindowForAdEventExpired(const int observation_window,
@@ -396,10 +400,10 @@ void Conversions::AddItemToQueue(
   conversion_queue_item.advertiser_public_key =
       verifiable_conversion.public_key;
   conversion_queue_item.ad_type = ad_event.type;
-  const base::TimeDelta delay = g_is_debug ? kDebugConvertAfter : kConvertAfter;
-  const base::TimeDelta rand_delay =
-      base::Seconds(brave_base::random::Geometric(delay.InSeconds()));
-  conversion_queue_item.process_at = base::Time::Now() + rand_delay;
+  const int64_t rand_delay = static_cast<int64_t>(brave_base::random::Geometric(
+      g_is_debug ? kDebugConvertAfterSeconds : kConvertAfterSeconds));
+  conversion_queue_item.process_at =
+      base::Time::Now() + base::Seconds(rand_delay);
 
   database::table::ConversionQueue database_table;
   database_table.Save({conversion_queue_item}, [=](const bool success) {
@@ -534,8 +538,9 @@ void Conversions::StartTimer(
   if (now < conversion_queue_item.process_at) {
     delay = conversion_queue_item.process_at - now;
   } else {
-    delay = base::Seconds(
-        brave_base::random::Geometric(kExpiredConvertAfter.InSeconds()));
+    const int64_t rand_delay = static_cast<int64_t>(
+        brave_base::random::Geometric(kExpiredConvertAfterSeconds));
+    delay = base::Seconds(rand_delay);
   }
 
   const base::Time process_queue_at = timer_.Start(

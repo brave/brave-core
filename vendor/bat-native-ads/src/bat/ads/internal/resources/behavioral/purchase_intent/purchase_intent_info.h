@@ -6,6 +6,7 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_RESOURCES_BEHAVIORAL_PURCHASE_INTENT_PURCHASE_INTENT_INFO_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_RESOURCES_BEHAVIORAL_PURCHASE_INTENT_PURCHASE_INTENT_INFO_H_
 
+#include <cstdint>
 #include <memory>
 #include <string>
 #include <vector>
@@ -33,7 +34,7 @@ struct PurchaseIntentInfo final {
       base::Value resource_value,
       std::string* error_message);
 
-  int version = 0;
+  uint16_t version = 0;
   std::vector<PurchaseIntentSiteInfo> sites;
   std::vector<PurchaseIntentSegmentKeywordInfo> segment_keywords;
   std::vector<PurchaseIntentFunnelKeywordInfo> funnel_keywords;

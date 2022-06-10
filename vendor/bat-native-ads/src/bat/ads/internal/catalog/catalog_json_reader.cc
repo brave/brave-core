@@ -5,6 +5,8 @@
 
 #include "bat/ads/internal/catalog/catalog_json_reader.h"
 
+#include <cstdint>
+
 #include "base/check.h"
 #include "base/notreached.h"
 #include "base/strings/string_number_conversions.h"
@@ -38,7 +40,7 @@ absl::optional<CatalogInfo> ReadCatalog(const std::string& json) {
 
   catalog.version = document["version"].GetInt();
 
-  const int ping = document["ping"].GetInt();
+  const int64_t ping = document["ping"].GetInt64();
   catalog.ping = base::Milliseconds(ping);
 
   // Campaigns

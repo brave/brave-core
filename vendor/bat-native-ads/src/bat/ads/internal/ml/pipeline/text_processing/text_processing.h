@@ -6,6 +6,7 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ML_PIPELINE_TEXT_PROCESSING_TEXT_PROCESSING_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ML_PIPELINE_TEXT_PROCESSING_TEXT_PROCESSING_H_
 
+#include <cstdint>
 #include <memory>
 #include <string>
 
@@ -49,8 +50,8 @@ class TextProcessing final {
 
  private:
   bool is_initialized_ = false;
-  int version_ = 0;
-  std::string timestamp_;
+  uint16_t version_ = 0;
+  std::string timestamp_ = "";
   std::string locale_ = "en";
   TransformationVector transformations_;
   model::Linear linear_model_;

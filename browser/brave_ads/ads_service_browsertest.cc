@@ -3,7 +3,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include <cstdint>
 #include <map>
 #include <memory>
 #include <string>
@@ -406,28 +405,28 @@ IN_PROC_BROWSER_TEST_F(BraveAdsBrowserTest,
                        PRE_BraveAdsMigrateDefaultAdsPerHourFromVersion9) {
   GetPrefs()->SetInteger(brave_ads::prefs::kVersion, 9);
 
-  GetPrefs()->SetInteger(ads::prefs::kAdsPerHour, -1);
+  GetPrefs()->SetInt64(ads::prefs::kAdsPerHour, -1);
   ASSERT_TRUE(GetPrefs()->HasPrefPath(ads::prefs::kAdsPerHour));
 }
 
 IN_PROC_BROWSER_TEST_F(BraveAdsBrowserTest,
                        BraveAdsMigrateDefaultAdsPerHourFromVersion9) {
   EXPECT_FALSE(GetPrefs()->HasPrefPath(ads::prefs::kAdsPerHour));
-  EXPECT_EQ(-1, GetPrefs()->GetInteger(ads::prefs::kAdsPerHour));
+  EXPECT_EQ(-1, GetPrefs()->GetInt64(ads::prefs::kAdsPerHour));
 }
 
 IN_PROC_BROWSER_TEST_F(BraveAdsBrowserTest,
                        PRE_BraveAdsMigrateLegacyDefaultPerHourFromVersion9) {
   GetPrefs()->SetInteger(brave_ads::prefs::kVersion, 9);
 
-  GetPrefs()->SetInteger(ads::prefs::kAdsPerHour, 2);
+  GetPrefs()->SetInt64(ads::prefs::kAdsPerHour, 2);
   ASSERT_TRUE(GetPrefs()->HasPrefPath(ads::prefs::kAdsPerHour));
 }
 
 IN_PROC_BROWSER_TEST_F(BraveAdsBrowserTest,
                        BraveAdsMigrateLegacyDefaultPerHourFromVersion9) {
   EXPECT_FALSE(GetPrefs()->HasPrefPath(ads::prefs::kAdsPerHour));
-  EXPECT_EQ(-1, GetPrefs()->GetInteger(ads::prefs::kAdsPerHour));
+  EXPECT_EQ(-1, GetPrefs()->GetInt64(ads::prefs::kAdsPerHour));
 }
 
 IN_PROC_BROWSER_TEST_F(
@@ -441,7 +440,7 @@ IN_PROC_BROWSER_TEST_F(
 IN_PROC_BROWSER_TEST_F(BraveAdsBrowserTest,
                        BraveAdsMigrateAdsPerHourForFreshInstallFromVersion9) {
   EXPECT_FALSE(GetPrefs()->HasPrefPath(ads::prefs::kAdsPerHour));
-  EXPECT_EQ(-1, GetPrefs()->GetInteger(ads::prefs::kAdsPerHour));
+  EXPECT_EQ(-1, GetPrefs()->GetInt64(ads::prefs::kAdsPerHour));
 }
 
 IN_PROC_BROWSER_TEST_F(
@@ -449,28 +448,28 @@ IN_PROC_BROWSER_TEST_F(
     PRE_BraveAdsMigrateAdsPerHourForIssue17155FromVersion10) {
   GetPrefs()->SetInteger(brave_ads::prefs::kVersion, 10);
 
-  GetPrefs()->SetInteger(ads::prefs::kAdsPerHour, 0);
+  GetPrefs()->SetInt64(ads::prefs::kAdsPerHour, 0);
   ASSERT_TRUE(GetPrefs()->HasPrefPath(ads::prefs::kAdsPerHour));
 }
 
 IN_PROC_BROWSER_TEST_F(BraveAdsBrowserTest,
                        BraveAdsMigrateAdsPerHourForIssue17155FromVersion10) {
   EXPECT_FALSE(GetPrefs()->HasPrefPath(ads::prefs::kAdsPerHour));
-  EXPECT_EQ(-1, GetPrefs()->GetInteger(ads::prefs::kAdsPerHour));
+  EXPECT_EQ(-1, GetPrefs()->GetInt64(ads::prefs::kAdsPerHour));
 }
 
 IN_PROC_BROWSER_TEST_F(BraveAdsBrowserTest,
                        PRE_BraveAdsMigrateDefaultAdsPerHourFromVersion10) {
   GetPrefs()->SetInteger(brave_ads::prefs::kVersion, 10);
 
-  GetPrefs()->SetInteger(ads::prefs::kAdsPerHour, -1);
+  GetPrefs()->SetInt64(ads::prefs::kAdsPerHour, -1);
   ASSERT_TRUE(GetPrefs()->HasPrefPath(ads::prefs::kAdsPerHour));
 }
 
 IN_PROC_BROWSER_TEST_F(BraveAdsBrowserTest,
                        BraveAdsMigrateDefaultAdsPerHourFromVersion10) {
   EXPECT_FALSE(GetPrefs()->HasPrefPath(ads::prefs::kAdsPerHour));
-  EXPECT_EQ(-1, GetPrefs()->GetInteger(ads::prefs::kAdsPerHour));
+  EXPECT_EQ(-1, GetPrefs()->GetInt64(ads::prefs::kAdsPerHour));
 }
 
 IN_PROC_BROWSER_TEST_F(
@@ -484,7 +483,7 @@ IN_PROC_BROWSER_TEST_F(
 IN_PROC_BROWSER_TEST_F(BraveAdsBrowserTest,
                        BraveAdsMigrateAdsPerHourForFreshInstallFromVersion10) {
   EXPECT_FALSE(GetPrefs()->HasPrefPath(ads::prefs::kAdsPerHour));
-  EXPECT_EQ(-1, GetPrefs()->GetInteger(ads::prefs::kAdsPerHour));
+  EXPECT_EQ(-1, GetPrefs()->GetInt64(ads::prefs::kAdsPerHour));
 }
 
 class BraveAdsUpgradeBrowserTest

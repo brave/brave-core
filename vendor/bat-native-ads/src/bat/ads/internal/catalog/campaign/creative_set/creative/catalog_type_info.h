@@ -6,6 +6,7 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_CATALOG_CAMPAIGN_CREATIVE_SET_CREATIVE_CATALOG_TYPE_INFO_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_CATALOG_CAMPAIGN_CREATIVE_SET_CREATIVE_CATALOG_TYPE_INFO_H_
 
+#include <cstdint>
 #include <string>
 
 namespace ads {
@@ -22,7 +23,7 @@ struct CatalogTypeInfo final {
   std::string code;
   std::string name;
   std::string platform;
-  int version = 0;
+  uint64_t version = 0;
 };
 
 }  // namespace ads

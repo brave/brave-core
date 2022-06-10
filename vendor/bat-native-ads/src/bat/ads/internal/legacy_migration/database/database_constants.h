@@ -6,11 +6,13 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_LEGACY_MIGRATION_DATABASE_DATABASE_CONSTANTS_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_LEGACY_MIGRATION_DATABASE_DATABASE_CONSTANTS_H_
 
+#include <cstdint>
+
 namespace ads {
 namespace database {
 
-constexpr int kVersion = 24;
-constexpr int kCompatibleVersion = 24;
+constexpr int32_t kVersion = 24;
+constexpr int32_t kCompatibleVersion = 24;
 
 }  // namespace database
 }  // namespace ads
