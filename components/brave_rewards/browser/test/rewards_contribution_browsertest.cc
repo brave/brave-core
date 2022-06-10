@@ -394,6 +394,10 @@ IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest,
       https_server_.get(),
       "3zsistemi.si");
 
+  // The pending tips processor may not process tips that were created less than
+  // a second ago. Wait to make sure all tips are processed.
+  base::PlatformThread::Sleep(base::Milliseconds(1100));
+
   // Refresh publisher list
   RefreshPublisherListUsingRewardsPopup();
 
