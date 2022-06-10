@@ -1,16 +1,8 @@
 diff --git a/third_party/blink/renderer/modules/plugins/dom_plugin_array.cc b/third_party/blink/renderer/modules/plugins/dom_plugin_array.cc
-index 2bb7e4138da4e9b31734e4ee3b5e26e7399bcffd..864933cfb0438ec698db71b2b3b753df52ed2b64 100644
+index 8f4d9db3ee6ec9061c542dadb85e65e13da974fd..864933cfb0438ec698db71b2b3b753df52ed2b64 100644
 --- a/third_party/blink/renderer/modules/plugins/dom_plugin_array.cc
 +++ b/third_party/blink/renderer/modules/plugins/dom_plugin_array.cc
-@@ -170,7 +170,6 @@ HeapVector<Member<DOMMimeType>> DOMPluginArray::GetFixedMimeTypeArray() {
- }
- 
- bool DOMPluginArray::IsPdfViewerAvailable() {
--  DCHECK(should_return_fixed_plugin_data_);
-   auto* data = GetPluginData();
-   if (!data)
-     return false;
-@@ -196,6 +195,7 @@ void DOMPluginArray::UpdatePluginData() {
+@@ -195,6 +195,7 @@ void DOMPluginArray::UpdatePluginData() {
      }
      return;
    }
@@ -18,7 +10,7 @@ index 2bb7e4138da4e9b31734e4ee3b5e26e7399bcffd..864933cfb0438ec698db71b2b3b753df
    PluginData* data = GetPluginData();
    if (!data) {
      dom_plugins_.clear();
-@@ -217,6 +217,7 @@ void DOMPluginArray::UpdatePluginData() {
+@@ -216,6 +217,7 @@ void DOMPluginArray::UpdatePluginData() {
        }
      }
    }
