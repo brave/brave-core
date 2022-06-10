@@ -398,6 +398,9 @@
   <message name="IDS_SETTINGS_SITE_SETTINGS_USE_EPHEMERAL_STORAGE" desc="Label for sites in site settings enabling cookies cleanup when all windows with the site are clsoed.">
     Clear on site close
   </message>
+  <message name="IDS_SETTINGS_BRAVE_ENABLE_DO_NOT_TRACK_DIALOG_TEXT" desc="The text of a confirmation dialog that confirms that the user want to send the 'Do Not Track' header">
+    Enabling "Do not track" means that a request to not be tracked will be included each time you browse to a new website. Any effect depends on whether the website responds to this request, and how it's interpreted. For example, some websites may respond by only showing you ads that aren't based on other sites you've visited. Even with this "Do not track" request in place, many websites will still collect and use your browsing data. <ph name="BEGIN_LINK">&lt;a target="_blank" href="$1"&gt;</ph>Learn more<ph name="END_LINK">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph>
+  </message>
 
   <!-- Settings / Privacy and security / Security -->
   <!-- Safe browsing -->
