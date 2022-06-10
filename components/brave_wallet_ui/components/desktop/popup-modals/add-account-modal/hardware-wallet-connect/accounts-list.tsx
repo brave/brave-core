@@ -20,9 +20,7 @@ import {
   HardwareWalletDerivationPathsMapping
 } from './types'
 import {
-  FilecoinNetwork,
-  FilecoinNetworkTypes,
-  FilecoinNetworkLocaleMapping
+  FilecoinNetwork
 } from '../../../../../common/hardware/types'
 import { BraveWallet, WalletAccountType, CreateAccountOptionsType } from '../../../../../constants/types'
 import { getLocale } from '../../../../../../common/locale'
@@ -47,7 +45,6 @@ interface Props {
   onAddAccounts: () => void
   getBalance: (address: string, coin: BraveWallet.CoinType) => Promise<string>
   filecoinNetwork: FilecoinNetwork
-  onChangeFilecoinNetwork: (network: FilecoinNetwork) => void
   selectedAccountType: CreateAccountOptionsType
 }
 
@@ -64,8 +61,6 @@ export default function (props: Props) {
     onLoadMore,
     onAddAccounts,
     getBalance,
-    filecoinNetwork,
-    onChangeFilecoinNetwork,
     selectedAccountType
   } = props
   const [filteredAccountList, setFilteredAccountList] = React.useState<BraveWallet.HardwareWalletAccount[]>([])
@@ -115,7 +110,7 @@ export default function (props: Props) {
     <>
       <SelectRow>
         <SelectWrapper>
-          {selectedAccountType.coin !== BraveWallet.CoinType.FIL ? (
+          {selectedAccountType.coin !== BraveWallet.CoinType.FIL && (
             <Select value={selectedDerivationScheme} onChange={setSelectedDerivationScheme}>
               {Object.keys(derivationPathsEnum).map((path, index) => {
                 const pathValue = derivationPathsEnum[path]
@@ -123,17 +118,6 @@ export default function (props: Props) {
                 return (
                   <div data-value={pathValue} key={index}>
                     {pathLocale}
-                  </div>
-                )
-              })}
-            </Select>
-          ) : (
-            <Select value={filecoinNetwork} onChange={onChangeFilecoinNetwork}>
-              {FilecoinNetworkTypes.map((network, index) => {
-                const networkLocale = FilecoinNetworkLocaleMapping[network]
-                return (
-                  <div data-value={network} key={index}>
-                    {networkLocale}
                   </div>
                 )
               })}

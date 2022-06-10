@@ -61,13 +61,5 @@ export type GetAccountsHardwareOperationResult = HardwareOperationResult & {
   payload?: BraveWallet.HardwareWalletAccount[]
 }
 
-// Did not create a string for these yet since it is
-// likely these names will be returned from another service
-// that will be localized.
-export const FilecoinNetworkLocaleMapping = {
-  [BraveWallet.FILECOIN_MAINNET]: 'Filecoin Mainnet',
-  [BraveWallet.FILECOIN_TESTNET]: 'Filecoin Testnet'
-}
-
 // Batch size of accounts imported from the device in one step.
 export const DerivationBatchSize = 4
