@@ -37,7 +37,7 @@
 // kBraveWalletUserAssets
 // {
 //    "ethereum": {
-//      "mainnet": {  // network_id
+//      "mainnet": // network_id
 //        [
 //          {
 //            "address": "",
@@ -72,14 +72,13 @@
 //          ...
 //        ]
 //      },
-//      "rinkeby": {
+//      "rinkeby": [
 //        ...
-//      },
+//      ],
 //      ...
-//      }
 //    },
 //    "solana": {
-//      "mainnet": {  // network_id
+//      "mainnet":  // network_id
 //        [
 //          {
 //            "address": "",
@@ -93,7 +92,6 @@
 //          },
 //          ...
 //        ]
-//      },
 //      ...
 //    }
 // }
@@ -130,6 +128,19 @@ base::CheckedContiguousIterator<T> FindAsset(
       });
 
   return iter;
+}
+
+base::Value GetEthNativeAssetFromChain(
+    const brave_wallet::mojom::NetworkInfoPtr& chain) {
+  base::Value native_asset(base::Value::Type::DICTIONARY);
+  native_asset.SetStringKey("address", "");
+  native_asset.SetStringKey("name", chain->symbol_name);
+  native_asset.SetStringKey("symbol", chain->symbol);
+  native_asset.SetBoolKey("is_erc20", false);
+  native_asset.SetBoolKey("is_erc721", false);
+  native_asset.SetIntKey("decimals", chain->decimals);
+  native_asset.SetBoolKey("visible", true);
+  return native_asset;
 }
 
 }  // namespace
@@ -665,17 +676,50 @@ void BraveWalletService::MigrateMultichainUserAssets(PrefService* prefs) {
 }
 
 // static
+void BraveWalletService::MigrateUserAssetsAddPreloadingNetworks(
+    PrefService* prefs) {
+  if (prefs->GetBoolean(kBraveWalletUserAssetsAddPreloadingNetworksMigrated))
+    return;
+
+  if (!prefs->HasPrefPath(kBraveWalletUserAssets)) {
+    prefs->SetBoolean(kBraveWalletUserAssetsAddPreloadingNetworksMigrated,
+                      true);
+    return;
+  }
+
+  DictionaryPrefUpdate update(prefs, kBraveWalletUserAssets);
+  base::Value* user_assets_pref = update.Get();
+
+  // For each user asset list in ethereum known chains, check if it has the
+  // native token (address is empty) in the list already, if not, insert a
+  // native asset at the beginning based on the network info.
+
+  std::vector<mojom::NetworkInfoPtr> chains;
+  GetAllKnownEthChains(nullptr, &chains);
+  for (const auto& chain : chains) {
+    const std::string network_id = GetKnownEthNetworkId(chain->chain_id);
+    DCHECK(!network_id.empty());
+    const auto path = base::StrCat({kEthereumPrefKey, ".", network_id});
+    base::Value* user_assets_list = user_assets_pref->FindListPath(path);
+    if (!user_assets_list) {
+      user_assets_list =
+          user_assets_pref->SetPath(path, base::Value(base::Value::Type::LIST));
+      user_assets_list->Append(GetEthNativeAssetFromChain(chain));
+      continue;
+    }
+
+    auto it = FindAsset(user_assets_list, "", "", false);
+    if (it == user_assets_list->GetList().end())
+      user_assets_list->Insert(user_assets_list->GetList().begin(),
+                               GetEthNativeAssetFromChain(chain));
+  }
+
+  prefs->SetBoolean(kBraveWalletUserAssetsAddPreloadingNetworksMigrated, true);
+}
+
+// static
 base::Value BraveWalletService::GetDefaultEthereumAssets() {
   base::Value user_assets(base::Value::Type::DICTIONARY);
-
-  base::Value eth(base::Value::Type::DICTIONARY);
-  eth.SetKey("address", base::Value(""));
-  eth.SetKey("name", base::Value("Ethereum"));
-  eth.SetKey("symbol", base::Value("ETH"));
-  eth.SetKey("is_erc20", base::Value(false));
-  eth.SetKey("is_erc721", base::Value(false));
-  eth.SetKey("decimals", base::Value(18));
-  eth.SetKey("visible", base::Value(true));
 
   base::Value bat(base::Value::Type::DICTIONARY);
   bat.SetKey("address",
@@ -688,13 +732,18 @@ base::Value BraveWalletService::GetDefaultEthereumAssets() {
   bat.SetKey("visible", base::Value(true));
   bat.SetKey("logo", base::Value("bat.png"));
 
-  // Show ETH and BAT by default for mainnet, and ETH for other known networks.
-  std::vector<std::string> network_ids = GetAllKnownEthNetworkIds();
-  for (const auto& network_id : network_ids) {
+  // Show ETH and BAT by default for mainnet, and the native token for other
+  // known networks.
+  std::vector<mojom::NetworkInfoPtr> chains;
+  GetAllKnownEthChains(nullptr, &chains);
+  for (const auto& chain : chains) {
+    const std::string network_id = GetKnownEthNetworkId(chain->chain_id);
+    DCHECK(!network_id.empty());
     base::Value* user_assets_list =
         user_assets.SetKey(network_id, base::Value(base::Value::Type::LIST));
-    user_assets_list->Append(eth.Clone());
-    if (network_id == "mainnet")
+    user_assets_list->Append(GetEthNativeAssetFromChain(chain));
+
+    if (chain->chain_id == mojom::kMainnetChainId)
       user_assets_list->Append(bat.Clone());
   }
 
