@@ -72,4 +72,15 @@ class UserScriptHelper {
 
     return userScriptTypes
   }
+  
+  static func makeDeAmpScriptParamters() throws -> String {
+    let arguments: [String: String] = [
+      "handlerName": DeAmpHelper.scriptMessageHandlerName(),
+      "securityToken": UserScriptManager.securityTokenString
+    ]
+    
+    let encoder = JSONEncoder()
+    let data = try encoder.encode(arguments)
+    return String(data: data, encoding: .utf8)!
+  }
 }

@@ -5,12 +5,20 @@
 
 "use strict";
 
-(_ => {
+window.braveDeAmp = (args) => {
   const W = window
   const D = W.document
+  const securityToken = args.securityToken
 
   let timesToCheck = 20
   let intervalId
+  
+  const sendMessage = (destURL) => {
+    return webkit.messageHandlers[args.handlerName].postMessage({
+      securityToken: securityToken,
+      destURL: destURL.href
+    })
+  }
 
   const checkIfShouldStopChecking = _ => {
     timesToCheck -= 1
@@ -36,7 +44,7 @@
     }
 
     const canonicalLinkElm = D.querySelector('head > link[rel="canonical"][href^="http"]')
-    if (!canonicalLinkElm === null) {
+    if (canonicalLinkElm === null || canonicalLinkElm === undefined) {
       // didn't find a link elm.
       checkIfShouldStopChecking()
       return
@@ -49,9 +57,15 @@
       
       if (W.location.href == destUrl.href || !(destUrl.protocol === 'http:' || destUrl.protocol === 'https:')) {
         // Only handle http/https and only if the canoncial url is different than the current url
+        // Also add a check the referrer to prevent an infinite load loop in some cases
         return
       }
-      W.location.replace(destUrl.href)
+      
+      sendMessage(destUrl).then(deAmp => {
+        if (deAmp) {
+          W.location.replace(destUrl.href)
+        }
+      })
     } catch (_) {
       // Invalid canonical URL detected
       W.clearInterval(intervalId)
@@ -61,4 +75,6 @@
 
   intervalId = W.setInterval(checkForAmp, 250)
   checkForAmp()
-})()
+}
+
+// Invoke the method and delete the function
