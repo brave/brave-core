@@ -12,7 +12,6 @@ import * as WalletActions from '../actions/wallet_actions'
 
 // utils
 import Amount from '../../utils/amount'
-import { reduceAccountDisplayName } from '../../utils/reduce-account-name'
 import { findAccountName } from '../../utils/account-utils'
 import { getLocale } from '../../../common/locale'
 import { getNetworkFromTXDataUnion } from '../../utils/network-utils'
@@ -148,10 +147,7 @@ export const usePendingTransactions = () => {
   }, [transactionDetails?.recipient])
 
   const fromAccountName = React.useMemo(() => {
-    return reduceAccountDisplayName(
-      findAccountName(accounts, transactionInfo?.fromAddress ?? '') ?? '',
-      11
-    ) || reduceAddress(transactionInfo?.fromAddress ?? '')
+    return findAccountName(accounts, transactionInfo?.fromAddress ?? '') ?? reduceAddress(transactionInfo?.fromAddress ?? '')
   }, [accounts, transactionInfo?.fromAddress])
 
   const transactionTitle = React.useMemo(
@@ -159,8 +155,8 @@ export const usePendingTransactions = () => {
       isSolanaDappTransaction
         ? getLocale('braveWalletApproveTransaction')
         : transactionDetails?.isSwap
-            ? getLocale('braveWalletSwap')
-            : getLocale('braveWalletSend')
+          ? getLocale('braveWalletSwap')
+          : getLocale('braveWalletSend')
     , [isSolanaDappTransaction, transactionDetails?.isSwap])
 
   const isConfirmButtonDisabled = React.useMemo(() => {
@@ -263,6 +259,7 @@ export const usePendingTransactions = () => {
     transactionsNetwork,
     transactionsQueueLength,
     transactionTitle,
+    sendOptions: transactionInfo?.txDataUnion.solanaTxData?.sendOptions,
     updateUnapprovedTransactionGasFields,
     updateUnapprovedTransactionNonce
   }

@@ -484,4 +484,10 @@
   <message name="IDS_BRAVE_WALLET_SOLANA_PARAM_KEY_TOPUBKEY" desc="Name of Solana instruction 'toPubkey' param">To Address: </message>  
   <message name="IDS_BRAVE_WALLET_SOLANA_PARAM_KEY_LAMPORTS" desc="Name of Solana instruction 'lamports' param">Amount: </message>  
   <message name="IDS_BRAVE_WALLET_SOLANA_PARAM_KEY_NEWACCOUNTPUBKEY" desc="Name of Solana instruction 'newAccountPubkey' param">New Account: </message>  
+  <message name="IDS_BRAVE_WALLET_SOLANA_ACCOUNTS" desc="Name of Solana instruction 'accounts' param">Accounts:</message>  
+  <message name="IDS_BRAVE_WALLET_SOLANA_DATA" desc="Name of Solana instruction 'data' param">Data:</message>  
+  <message name="IDS_BRAVE_WALLET_SOLANA_PROGRAM_ID" desc="Name of Solana instruction 'programID' param">Program ID:</message>  
+  <message name="IDS_BRAVE_WALLET_SOLANA_MAX_RETRIES" desc="Name of Solana instruction 'programID' param">Max Retries:</message>  
+  <message name="IDS_BRAVE_WALLET_SOLANA_PREFLIGHT_COMMITMENT" desc="Name of Solana instruction 'programID' param">Preflight Commitment:</message>  
+  <message name="IDS_BRAVE_WALLET_SOLANA_SKIP_PREFLIGHT" desc="Name of Solana instruction 'programID' param">Skip Preflight:</message>  
 </grit-part>

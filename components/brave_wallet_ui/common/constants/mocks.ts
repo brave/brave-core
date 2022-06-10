@@ -146,6 +146,20 @@ export const mockAccount: WalletAccountType = {
   tokenBalanceRegistry: {}
 }
 
+export const mockSolanaAccount: WalletAccountType = {
+  id: 'mockId-2',
+  name: 'MockSolanaAccount',
+  address: '5sDWP4vCRgDrGsmS1RRuWGRWKo5mhP5wKw8RNqK6zRer',
+  nativeBalanceRegistry: {
+    [BraveWallet.SOLANA_MAINNET]: '1000000000',
+    [BraveWallet.SOLANA_DEVNET]: '1000000000',
+    [BraveWallet.SOLANA_TESTNET]: '1000000000'
+  },
+  coin: BraveWallet.CoinType.SOL,
+  accountType: 'Primary',
+  tokenBalanceRegistry: {}
+}
+
 export const mockAssetPrices: BraveWallet.AssetPrice[] = [
   {
     fromAsset: 'ETH',
@@ -221,7 +235,7 @@ export const mockSolDappSignTransactionRequest: BraveWallet.SignTransactionReque
     'eTldPlusOne': 'csb.app'
   },
   'id': 0,
-  'fromAddress': '5sDWP4vCRgDrGsmS1RRuWGRWKo5mhP5wKw8RNqK6zRer',
+  'fromAddress': mockSolanaAccount.address,
   'txData': {
     'ethTxData': undefined,
     'ethTxData1559': undefined,
@@ -229,7 +243,7 @@ export const mockSolDappSignTransactionRequest: BraveWallet.SignTransactionReque
     'solanaTxData': {
       'recentBlockhash': 'B7Kg79jDm48LMdB4JB2hu82Yfsuz5xYm2cQDBYmKdDSn',
       'lastValidBlockHeight': 0 as unknown as bigint,
-      'feePayer': '5sDWP4vCRgDrGsmS1RRuWGRWKo5mhP5wKw8RNqK6zRer',
+      'feePayer': mockSolanaAccount.address,
       'toWalletAddress': '',
       'splTokenMintAddress': '',
       'lamports': 0 as unknown as bigint,
@@ -240,27 +254,28 @@ export const mockSolDappSignTransactionRequest: BraveWallet.SignTransactionReque
           'programId': '11111111111111111111111111111111',
           'accountMetas': [
             {
-              'pubkey': '5sDWP4vCRgDrGsmS1RRuWGRWKo5mhP5wKw8RNqK6zRer',
+              'pubkey': mockSolanaAccount.address,
               'isSigner': true,
               'isWritable': true
             },
             {
-              'pubkey': '5sDWP4vCRgDrGsmS1RRuWGRWKo5mhP5wKw8RNqK6zRer',
+              'pubkey': mockSolanaAccount.address,
               'isSigner': true,
               'isWritable': true
             }
           ],
           'data': [2, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0]
         }
-      ]
+      ],
+      'sendOptions': undefined
     }
   }
 }
 
-// selectedPendingTransaction
-export const mockSolDappSignAndSendTransactionRequest: BraveWallet.TransactionInfo = {
+// BraveWallet.TransactionInfo (selectedPendingTransaction)
+export const mockSolDappSignAndSendTransactionRequest = {
   'id': 'e1eae32d-5bc2-40ac-85e5-2a4a5fbe8a5f',
-  'fromAddress': '5sDWP4vCRgDrGsmS1RRuWGRWKo5mhP5wKw8RNqK6zRer',
+  'fromAddress': mockSolanaAccount.address,
   'txHash': '',
   'txDataUnion': {
     'ethTxData': undefined,
@@ -269,7 +284,7 @@ export const mockSolDappSignAndSendTransactionRequest: BraveWallet.TransactionIn
     'solanaTxData': {
       'recentBlockhash': 'C115cyMDVoGGYNd4r8vFy5qPJEUdoJQQCXMYYKQTQimn',
       'lastValidBlockHeight': 0 as unknown as bigint,
-      'feePayer': '5sDWP4vCRgDrGsmS1RRuWGRWKo5mhP5wKw8RNqK6zRer',
+      'feePayer': mockSolanaAccount.address,
       'toWalletAddress': '',
       'splTokenMintAddress': '',
       'lamports': 0 as unknown as bigint,
@@ -280,12 +295,12 @@ export const mockSolDappSignAndSendTransactionRequest: BraveWallet.TransactionIn
           'programId': '11111111111111111111111111111111',
           'accountMetas': [
             {
-              'pubkey': '5sDWP4vCRgDrGsmS1RRuWGRWKo5mhP5wKw8RNqK6zRer',
+              'pubkey': mockSolanaAccount.address,
               'isSigner': true,
               'isWritable': true
             },
             {
-              'pubkey': '5sDWP4vCRgDrGsmS1RRuWGRWKo5mhP5wKw8RNqK6zRer',
+              'pubkey': mockSolanaAccount.address,
               'isSigner': true,
               'isWritable': true
             }
@@ -326,16 +341,16 @@ export const mockSolDappSignAllTransactionsRequest: BraveWallet.SignAllTransacti
     'eTldPlusOne': 'csb.app'
   },
   'id': 3,
-  'fromAddress': '5sDWP4vCRgDrGsmS1RRuWGRWKo5mhP5wKw8RNqK6zRer',
+  'fromAddress': mockSolanaAccount.address,
   'txDatas': [
     {
       'ethTxData': undefined,
       'ethTxData1559': undefined,
       'filTxData': undefined,
-     'solanaTxData': {
-       'recentBlockhash': '8Yq6DGZBh9oEJsCVhUjTqN9kPiLoeYJ7J4n9TnpPYjqW',
-       'lastValidBlockHeight': 0 as unknown as bigint,
-        'feePayer': '5sDWP4vCRgDrGsmS1RRuWGRWKo5mhP5wKw8RNqK6zRer',
+      'solanaTxData': {
+        'recentBlockhash': '8Yq6DGZBh9oEJsCVhUjTqN9kPiLoeYJ7J4n9TnpPYjqW',
+        'lastValidBlockHeight': 0 as unknown as bigint,
+        'feePayer': mockSolanaAccount.address,
         'toWalletAddress': '',
         'splTokenMintAddress': '',
         'lamports': 0 as unknown as bigint,
@@ -345,18 +360,19 @@ export const mockSolDappSignAllTransactionsRequest: BraveWallet.SignAllTransacti
           'programId': '11111111111111111111111111111111',
           'accountMetas': [
             {
-              'pubkey': '5sDWP4vCRgDrGsmS1RRuWGRWKo5mhP5wKw8RNqK6zRer',
+              'pubkey': mockSolanaAccount.address,
               'isSigner': true,
               'isWritable': true
             },
             {
-              'pubkey': '5sDWP4vCRgDrGsmS1RRuWGRWKo5mhP5wKw8RNqK6zRer',
+              'pubkey': mockSolanaAccount.address,
               'isSigner': true,
               'isWritable': true
             }
           ],
           'data': [2, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0]
-        }]
+        }],
+        'sendOptions': undefined
       }
     },
     {
@@ -366,7 +382,7 @@ export const mockSolDappSignAllTransactionsRequest: BraveWallet.SignAllTransacti
       'solanaTxData': {
         'recentBlockhash': '8Yq6DGZBh9oEJsCVhUjTqN9kPiLoeYJ7J4n9TnpPYjqW',
         'lastValidBlockHeight': 0 as unknown as bigint,
-        'feePayer': '5sDWP4vCRgDrGsmS1RRuWGRWKo5mhP5wKw8RNqK6zRer',
+        'feePayer': mockSolanaAccount.address,
         'toWalletAddress': '',
         'splTokenMintAddress': '',
         'lamports': 0 as unknown as bigint,
@@ -377,19 +393,20 @@ export const mockSolDappSignAllTransactionsRequest: BraveWallet.SignAllTransacti
             'programId': '11111111111111111111111111111111',
             'accountMetas': [
               {
-                'pubkey': '5sDWP4vCRgDrGsmS1RRuWGRWKo5mhP5wKw8RNqK6zRer',
+                'pubkey': mockSolanaAccount.address,
                 'isSigner': true,
                 'isWritable': true
               },
               {
-                'pubkey': '5sDWP4vCRgDrGsmS1RRuWGRWKo5mhP5wKw8RNqK6zRer',
+                'pubkey': mockSolanaAccount.address,
                 'isSigner': true,
                 'isWritable': true
               }
             ],
             'data': [2, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0]
           }
-        ]
+        ],
+        'sendOptions': undefined
       }
     }
   ]

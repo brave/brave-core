@@ -548,6 +548,11 @@ provideStrings({
   braveWalletSolanaParamKeyFromPubkey: 'From Address: ',
   braveWalletSolanaParamKeyToPubkey: 'To Address: ',
   braveWalletSolanaParamKeyLamports: 'Amount: ',
-  braveWalletSolanaParamKeyNewAccountPubkey: 'New Account: '
-
+  braveWalletSolanaParamKeyNewAccountPubkey: 'New Account: ',
+  braveWalletSolanaAccounts: 'Accounts:',
+  braveWalletSolanaData: 'Data:',
+  braveWalletSolanaProgramID: 'Program ID:',
+  braveWalletSolanaMaxRetries: 'Max Retries:',
+  braveWalletSolanaPreflightCommitment: 'Preflight Commitment:',
+  braveWalletSolanaSkipPreflight: 'Skip Preflight:'
 })

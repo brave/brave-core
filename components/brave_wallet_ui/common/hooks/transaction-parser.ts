@@ -326,6 +326,11 @@ export function useTransactionParser (
 
               return acc
             }
+            case 'Unknown': {
+              if (!to) {
+                to = solTxData?.instructions[0].accountMetas[0].pubkey.toString() ?? ''
+              }
+            }
             default: return acc.plus(lamportsAmount)
           }
         }, new Amount(0)) ?? 0

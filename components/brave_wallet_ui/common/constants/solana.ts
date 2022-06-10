@@ -16,4 +16,21 @@ export const SOLANA_SYSTEM_INSTRUCTION_DECODERS = {
   'Transfer': 'decodeTransfer',
   'TransferWithSeed': 'decodeTransferWithSeed',
   'WithdrawNonceAccount': 'decodeNonceWithdraw'
-} as const
+} as const // Record<Solana.SystemInstructionType, keyof typeof Solana.SystemInstruction>
+
+export const SOLANA_VOTE_PROGRAM_INSTRUCTION_DECODERS = {
+  'Authorize': 'decodeAuthorize',
+  'InitializeAccount': 'decodeInitializeAccount',
+  'Withdraw': 'decodeWithdraw'
+} as const // Record<Solana.VoteInstructionType, keyof typeof Solana.VoteInstruction>
+
+export const SOLANA_STAKE_PROGRAM_INSTRUCTION_DECODERS = {
+  'Authorize': 'decodeAuthorize',
+  'AuthorizeWithSeed': 'decodeAuthorizeWithSeed',
+  'Deactivate': 'decodeDeactivate',
+  'Delegate': 'decodeDelegate',
+  'Initialize': 'decodeInitialize',
+  'Merge': 'decodeMerge',
+  'Split': 'decodeSplit',
+  'Withdraw': 'decodeWithdraw'
+} as const // Record<Solana.StakeInstructionType, keyof typeof Solana.StakeInstruction>

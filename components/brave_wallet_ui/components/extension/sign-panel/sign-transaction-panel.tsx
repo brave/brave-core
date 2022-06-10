@@ -54,7 +54,7 @@ import {
 } from '../shared-panel-styles'
 
 import { DetailColumn } from '../transaction-box/style'
-import { getSolanaSystemInstructionParamsAndType } from '../../../utils/solana-instruction-utils'
+import { getSolanaTransactionInstructionParamsAndType } from '../../../utils/solana-instruction-utils'
 import { Tooltip } from '../../shared'
 
 export interface Props {
@@ -73,6 +73,7 @@ const onClickLearnMore = () => {
 export const SignTransactionPanel = ({ signMode }: Props) => {
   // redux
   const dispatch = useDispatch()
+  const selectedNetwork = useSelector(({ wallet }: { wallet: WalletState }) => wallet.selectedNetwork)
   const accounts = useSelector(({ wallet }: { wallet: WalletState }) => wallet.accounts)
   const signTransactionRequests = useSelector(({ panel }: { panel: PanelState }) => panel.signTransactionRequests)
   const signAllTransactionsRequests = useSelector(({ panel }: { panel: PanelState }) => panel.signAllTransactionsRequests)
@@ -189,7 +190,7 @@ export const SignTransactionPanel = ({ signMode }: Props) => {
     <StyledWrapper>
 
       <TopRow>
-        <NetworkText>{'Solana'}</NetworkText>
+        <NetworkText>{selectedNetwork.chainName}</NetworkText>
         {signTransactionQueueInfo.queueLength > 1 &&
           <QueueStepRow>
             <QueueStepText>{signTransactionQueueInfo.queueNumber} {getLocale('braveWalletQueueOf')} {signTransactionQueueInfo.queueLength}</QueueStepText>
@@ -252,7 +253,7 @@ export const SignTransactionPanel = ({ signMode }: Props) => {
                 {instructions?.map((instruction, index) => {
                   return <SolanaTransactionInstruction
                     key={index}
-                    typedInstructionWithParams={getSolanaSystemInstructionParamsAndType(instruction)}
+                    typedInstructionWithParams={getSolanaTransactionInstructionParamsAndType(instruction)}
                   />
                 })}
               </DetailColumn>

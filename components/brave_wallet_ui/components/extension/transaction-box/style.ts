@@ -59,7 +59,7 @@ export const DetailColumn = styled(DetailRow)`
 
 export const DetailText = styled.span`
   font-family: Poppins;
-  font-size: 12px;
+  font-size: 11px;
   line-height: 18px;
   letter-spacing: 0.01em;
   color: ${(p) => p.theme.color.text01};

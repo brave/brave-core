@@ -6,8 +6,12 @@
 import * as Solana from '@solana/web3.js'
 
 // utils
-import { getLocale } from '$web-common/locale'
-import { SOLANA_SYSTEM_INSTRUCTION_DECODERS } from '../common/constants/solana'
+import { getLocale } from '../../common/locale'
+import {
+  SOLANA_STAKE_PROGRAM_INSTRUCTION_DECODERS,
+  SOLANA_SYSTEM_INSTRUCTION_DECODERS,
+  SOLANA_VOTE_PROGRAM_INSTRUCTION_DECODERS
+} from '../common/constants/solana'
 
 // types
 import { BraveWallet } from '../constants/types'
@@ -15,6 +19,7 @@ import { BraveWallet } from '../constants/types'
 export type TypedSolanaInstructionWithParams = {
   instruction: Solana.TransactionInstruction
 } & (
+  // System Program
   | { params: Solana.AdvanceNonceParams, type: 'AdvanceNonceAccount' }
   | { params: Solana.AllocateParams, type: 'Allocate' }
   | { params: Solana.AllocateWithSeedParams, type: 'AllocateWithSeed' }
@@ -28,9 +33,29 @@ export type TypedSolanaInstructionWithParams = {
   | { params: Solana.TransferParams, type: 'Transfer' }
   | { params: Solana.TransferWithSeedParams, type: 'TransferWithSeed' }
   | { params: Solana.WithdrawNonceParams, type: 'WithdrawNonceAccount' }
+
+  // Vote Program
+  | { params: Solana.AuthorizeVoteParams, type: 'Authorize' }
+  | { params: Solana.CreateVoteAccountParams, type: 'InitializeAccount' }
+  | { params: Solana.WithdrawFromVoteAccountParams, type: 'Withdraw' }
+
+  // Staking
+  | { params: Solana.AuthorizeStakeParams, type: 'Authorize' }
+  | { params: Solana.AuthorizeWithSeedStakeParams, type: 'AuthorizeWithSeed' }
+  | { params: Solana.DeactivateStakeParams, type: 'Deactivate' }
+  | { params: Solana.DelegateStakeParams, type: 'Delegate' }
+  | { params: Solana.InitializeStakeParams, type: 'Initialize' }
+  | { params: Solana.MergeStakeParams, type: 'Merge' }
+  | { params: Solana.SplitStakeParams, type: 'Split' }
+  | { params: Solana.WithdrawStakeParams, type: 'Withdraw' }
+
+  // Unknown
+  | { params: {}, type: 'Unknown' }
 )
 
-type SolanaInstructionParams = Solana.AdvanceNonceParams
+type SolanaInstructionParams =
+  // System Program
+  & Solana.AdvanceNonceParams
   & Solana.AllocateParams
   & Solana.AllocateWithSeedParams
   & Solana.AllocateWithSeedParams
@@ -44,9 +69,27 @@ type SolanaInstructionParams = Solana.AdvanceNonceParams
   & Solana.TransferWithSeedParams
   & Solana.WithdrawNonceParams
 
+  // Voting
+  & Solana.AuthorizeVoteParams
+  & Solana.CreateVoteAccountParams
+  & Solana.WithdrawFromVoteAccountParams
+
+  // Staking
+  & Solana.MergeStakeParams
+  & Solana.SplitStakeParams
+  & Solana.DelegateStakeParams
+  & Solana.WithdrawStakeParams
+  & Solana.AuthorizeStakeParams
+  & Solana.DeactivateStakeParams
+  & Solana.InitializeStakeParams
+  & Solana.CreateStakeAccountParams
+  & Solana.SplitStakeWithSeedParams
+  & Solana.AuthorizeWithSeedStakeParams
+  & Solana.CreateStakeAccountWithSeedParams
+
 export type SolanaInstructionParamKeys = keyof SolanaInstructionParams
 
-export const getSolanaSystemInstructionParamsAndType = ({
+export const getSolanaTransactionInstructionParamsAndType = ({
   accountMetas,
   data,
   programId
@@ -61,11 +104,29 @@ export const getSolanaSystemInstructionParamsAndType = ({
     }))
   })
 
-  const instructionType = Solana.SystemInstruction.decodeInstructionType(instruction)
+  let instructionType = 'Unknown'
+  let params = {}
 
-  const params = Solana.SystemInstruction[
-    SOLANA_SYSTEM_INSTRUCTION_DECODERS[instructionType]
-  ](instruction) || {}
+  if (instruction.programId.equals(Solana.SystemProgram.programId)) {
+    instructionType = Solana.SystemInstruction.decodeInstructionType(instruction)
+    params = Solana.SystemInstruction[
+      SOLANA_SYSTEM_INSTRUCTION_DECODERS[instructionType]
+    ](instruction) || {}
+  }
+
+  if (instruction.programId.equals(Solana.VoteProgram.programId)) {
+    instructionType = Solana.VoteInstruction.decodeInstructionType(instruction)
+    params = Solana.VoteInstruction[
+      SOLANA_VOTE_PROGRAM_INSTRUCTION_DECODERS[instructionType]
+    ](instruction) || {}
+  }
+
+  if (instruction.programId.equals(Solana.StakeProgram.programId)) {
+    instructionType = Solana.StakeInstruction.decodeInstructionType(instruction)
+    params = Solana.StakeInstruction[
+      SOLANA_STAKE_PROGRAM_INSTRUCTION_DECODERS[instructionType]
+    ](instruction)
+  }
 
   return {
     instruction,
@@ -76,7 +137,7 @@ export const getSolanaSystemInstructionParamsAndType = ({
 
 export const getTypedSolanaTxInstructions = (solTxData: BraveWallet.SolanaTxData): TypedSolanaInstructionWithParams[] => {
   const instructions: TypedSolanaInstructionWithParams[] = (solTxData?.instructions || []).map((instruction) => {
-    return getSolanaSystemInstructionParamsAndType(instruction)
+    return getSolanaTransactionInstructionParamsAndType(instruction)
   })
   return instructions || []
 }

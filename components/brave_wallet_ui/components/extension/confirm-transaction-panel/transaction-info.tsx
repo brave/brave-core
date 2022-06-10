@@ -31,7 +31,8 @@ export const TransactionInfo = ({
     isERC721TransferFrom,
     isSolanaTransaction,
     isFilecoinTransaction,
-    transactionsNetwork
+    transactionsNetwork,
+    sendOptions
   } = usePendingTransactions()
 
   // redux
@@ -176,9 +177,31 @@ export const TransactionInfo = ({
 
     {transactionDetails.insufficientFundsForGasError === false &&
       transactionDetails.insufficientFundsError &&
-        <TransactionText hasError={true}>
-          {getLocale('braveWalletSwapInsufficientBalance')}
-        </TransactionText>
+      <TransactionText hasError={true}>
+        {getLocale('braveWalletSwapInsufficientBalance')}
+      </TransactionText>
+    }
+
+    {sendOptions &&
+      <Divider />
+    }
+    {sendOptions?.maxRetries &&
+      <>
+        <TransactionTitle>{getLocale('braveWalletSolanaMaxRetries')}</TransactionTitle>
+        <TransactionTypeText>{Number(sendOptions.maxRetries.maxRetries)}</TransactionTypeText>
+      </>
+    }
+    {sendOptions?.preflightCommitment &&
+      <>
+        <TransactionTitle>{getLocale('braveWalletSolanaPreflightCommitment')}</TransactionTitle>
+        <TransactionTypeText>{sendOptions.preflightCommitment}</TransactionTypeText>
+      </>
+    }
+    {sendOptions?.skipPreflight &&
+      <>
+        <TransactionTitle>{getLocale('braveWalletSolanaSkipPreflight')}</TransactionTitle>
+        <TransactionTypeText>{sendOptions.skipPreflight.skipPreflight.toString()}</TransactionTypeText>
+      </>
     }
   </>
 }

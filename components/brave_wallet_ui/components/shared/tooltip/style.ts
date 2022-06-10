@@ -8,6 +8,7 @@ interface StyleProps {
 export const StyledWrapper = styled.div`
   display: inline-block;
   position: relative;
+  cursor: default;
 `
 
 export const Tip = styled.div<StyleProps>`
