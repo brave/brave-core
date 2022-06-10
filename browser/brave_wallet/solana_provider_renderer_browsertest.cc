@@ -6,6 +6,7 @@
 #include "base/containers/flat_map.h"
 #include "base/feature_list.h"
 #include "base/memory/weak_ptr.h"
+#include "base/path_service.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/test/scoped_feature_list.h"
@@ -17,6 +18,7 @@
 #include "brave/components/brave_wallet/common/solana_utils.h"
 #include "brave/components/brave_wallet/renderer/resource_helper.h"
 #include "brave/components/brave_wallet/resources/grit/brave_wallet_script_generated.h"
+#include "brave/components/constants/brave_paths.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_commands.h"
@@ -31,6 +33,7 @@
 #include "mojo/public/cpp/bindings/remote.h"
 #include "mojo/public/cpp/bindings/self_owned_receiver.h"
 #include "net/dns/mock_host_resolver.h"
+#include "net/test/embedded_test_server/embedded_test_server.h"
 #include "ui/base/l10n/l10n_util.h"
 
 using brave_wallet::mojom::SolanaProviderError;
@@ -453,11 +456,16 @@ class TestBraveContentBrowserClient : public BraveContentBrowserClient {
 
 class SolanaProviderRendererTest : public InProcessBrowserTest {
  public:
-  SolanaProviderRendererTest() {
+  SolanaProviderRendererTest()
+      : https_server_(net::EmbeddedTestServer::TYPE_HTTPS) {
     feature_list_.InitWithFeatures(
         {brave_wallet::features::kBraveWalletSolanaFeature,
          brave_wallet::features::kBraveWalletSolanaProviderFeature},
         {});
+    brave::RegisterPathProvider();
+    base::FilePath test_data_dir;
+    base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);
+    https_server_.ServeFilesFromDirectory(test_data_dir);
   }
 
   void SetUpCommandLine(base::CommandLine* command_line) override {
@@ -480,7 +488,7 @@ class SolanaProviderRendererTest : public InProcessBrowserTest {
     content::SetBrowserClientForTesting(&test_content_browser_client_);
     mock_cert_verifier_.mock_cert_verifier()->set_default_result(net::OK);
     host_resolver()->AddRule("*", "127.0.0.1");
-
+    ASSERT_TRUE(https_server_.Start());
     ASSERT_TRUE(test_server_handle_ =
                     embedded_test_server()->StartAndReturnHandle());
 
@@ -513,6 +521,7 @@ class SolanaProviderRendererTest : public InProcessBrowserTest {
   }
 
  protected:
+  net::EmbeddedTestServer https_server_;
   TestBraveContentBrowserClient test_content_browser_client_;
   base::test::ScopedFeatureList feature_list_;
 
@@ -1035,10 +1044,10 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, NonConfigurable) {
 }
 
 IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, Block3PIframe) {
-  GURL top_url(embedded_test_server()->GetURL("a.com", "/iframe.html"));
+  GURL top_url(https_server_.GetURL("a.com", "/iframe.html"));
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), top_url));
   // third party
-  GURL iframe_url_3p(embedded_test_server()->GetURL("b.com", "/"));
+  GURL iframe_url_3p(https_server_.GetURL("b.com", "/simple.html"));
   EXPECT_TRUE(
       NavigateIframeToURL(web_contents(browser()), "test", iframe_url_3p));
 
@@ -1051,10 +1060,38 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, Block3PIframe) {
   EXPECT_TRUE(content::EvalJs(iframe_rfh, kEvalSolana).ExtractBool());
 
   // same party
-  GURL iframe_url_1p(embedded_test_server()->GetURL("a.com", "/"));
+  GURL iframe_url_1p(https_server_.GetURL("a.com", "/simple.html"));
   EXPECT_TRUE(
       NavigateIframeToURL(web_contents(browser()), "test", iframe_url_1p));
   iframe_rfh = ChildFrameAt(main_frame, 0);
   ASSERT_TRUE(iframe_rfh);
   EXPECT_FALSE(content::EvalJs(iframe_rfh, kEvalSolana).ExtractBool());
+}
+
+IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, SecureContextOnly) {
+  // Secure context HTTPS server
+  GURL url = https_server_.GetURL("a.com", "/simple.html");
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
+  constexpr char kEvalSolana[] = "typeof window.solana !== 'undefined'";
+  content::RenderFrameHost* main_frame =
+      web_contents(browser())->GetMainFrame();
+  EXPECT_TRUE(content::EvalJs(main_frame, kEvalSolana).ExtractBool());
+
+  // Insecure context
+  url = embedded_test_server()->GetURL("a.com", "/simple.html");
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
+  main_frame = web_contents(browser())->GetMainFrame();
+  EXPECT_FALSE(content::EvalJs(main_frame, kEvalSolana).ExtractBool());
+
+  // Secure context localhost HTTP
+  url = embedded_test_server()->GetURL("localhost", "/simple.html");
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
+  main_frame = web_contents(browser())->GetMainFrame();
+  EXPECT_TRUE(content::EvalJs(main_frame, kEvalSolana).ExtractBool());
+
+  // Secure context 127.0.0.1 HTTP
+  url = embedded_test_server()->GetURL("localhost", "/simple.html");
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
+  main_frame = web_contents(browser())->GetMainFrame();
+  EXPECT_TRUE(content::EvalJs(main_frame, kEvalSolana).ExtractBool());
 }
