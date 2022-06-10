@@ -51,6 +51,10 @@
 #include "components/version_info/version_info.h"
 #endif
 
+#if !BUILDFLAG(IS_ANDROID)
+#include "brave/browser/ui/tabs/features.h"
+#endif
+
 using brave_shields::features::kBraveAdblockCnameUncloaking;
 using brave_shields::features::kBraveAdblockCollapseBlockedElements;
 using brave_shields::features::kBraveAdblockCookieListDefault;
@@ -337,6 +341,9 @@ constexpr char kRestrictWebSocketsPoolDescription[] =
 constexpr char kPlaylistName[] = "Playlist";
 constexpr char kPlaylistDescription[] = "Enables Playlist";
 
+constexpr char kBraveVerticalTabsName[] = "Vertical tabs";
+constexpr char kBraveVerticalTabsDescription[] =
+    "Uses vertical tabs instead of tabstrip";
 }  // namespace
 
 }  // namespace flag_descriptions
@@ -491,6 +498,16 @@ uint16_t AllowForDevVersion(uint16_t os) {
 #else
 #define PLAYLIST_FEATURE_ENTRIES
 #endif
+#if BUILDFLAG(IS_ANDROID)
+#define BRAVE_VERTICAL_TABS_FEATURE_ENTRY
+#else
+#define BRAVE_VERTICAL_TABS_FEATURE_ENTRY \
+    {kBraveVerticalTabsFeatureInternalName,  \
+    flag_descriptions::kBraveVerticalTabsName, \
+    flag_descriptions::kBraveVerticalTabsDescription, \
+    kOsDesktop, \
+    FEATURE_VALUE_TYPE(features::kBraveVerticalTabs)},
+#endif  // BUILDFLAG(IS_ANDROID)
 
 #define BRAVE_ABOUT_FLAGS_FEATURE_ENTRIES                                   \
     {"use-dev-updater-url",                                                 \
@@ -626,4 +643,5 @@ uint16_t AllowForDevVersion(uint16_t os) {
     SPEEDREADER_FEATURE_ENTRIES                                             \
     BRAVE_TRANSLATE_GO_FEATURE_ENTRIES                                      \
     BRAVE_FEDERATED_FEATURE_ENTRIES                                         \
-    PLAYLIST_FEATURE_ENTRIES
+    PLAYLIST_FEATURE_ENTRIES \
+    BRAVE_VERTICAL_TABS_FEATURE_ENTRY

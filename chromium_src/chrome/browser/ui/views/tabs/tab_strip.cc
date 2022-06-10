@@ -5,9 +5,13 @@
 
 #include "chrome/browser/ui/views/tabs/tab_strip.h"
 #include "brave/browser/ui/views/tabs/brave_tab_hover_card_controller.h"
+#include "brave/browser/ui/views/tabs/brave_tab_container.h"
+#include "brave/browser/ui/views/tabs/brave_vertical_tab_utils.h"
 
 #define TabHoverCardController BraveTabHoverCardController
+#define TabContainer BraveTabContainer
 
 #include "src/chrome/browser/ui/views/tabs/tab_strip.cc"
 
 #undef TabHoverCardController
+#undef TabContainer

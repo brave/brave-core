@@ -7,6 +7,7 @@
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_FRAME_BROWSER_VIEW_H_
 
 #include "brave/browser/ui/brave_browser_window.h"
+#include "brave/browser/ui/views/frame/brave_browser_view_layout.h"
 
 #define BrowserViewLayoutDelegateImpl \
   BrowserViewLayoutDelegateImpl;      \
@@ -19,7 +20,13 @@
 #define MaybeShowReadingListInSidePanelIPH \
   virtual MaybeShowReadingListInSidePanelIPH
 
+#define GetTabStripVisible virtual GetTabStripVisible
+#define BrowserViewLayout BraveBrowserViewLayout
+
 #include "src/chrome/browser/ui/views/frame/browser_view.h"
+
+#undef BrowserViewLayout
+#undef GetTabStripVisible
 #undef BrowserViewLayoutDelegateImpl
 #undef BrowserWindow
 #undef MaybeShowReadingListInSidePanelIPH

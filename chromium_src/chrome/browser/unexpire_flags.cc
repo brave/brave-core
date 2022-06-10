@@ -17,14 +17,22 @@ namespace flags {
 
 bool IsFlagExpired(const flags_ui::FlagsStorage* storage,
                    const char* internal_name) {
+  static auto features_available_for_nightly_and_develpment = {
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
-  version_info::Channel channel = chrome::GetChannel();
-  // Enable VPN feature only for nightly/development.
-  if (base::LowerCaseEqualsASCII(kBraveVPNFeatureInternalName, internal_name) &&
-      channel == version_info::Channel::STABLE) {
-    return true;
-  }
+    kBraveVPNFeatureInternalName,
 #endif
+    kBraveVerticalTabsFeatureInternalName,
+  };
+
+  for (auto* feature_name : features_available_for_nightly_and_develpment) {
+    if (!base::LowerCaseEqualsASCII(feature_name, internal_name))
+      continue;
+
+    if (chrome::GetChannel() == version_info::Channel::STABLE)
+      return true;
+
+    break;
+  }
 
   return IsFlagExpired_ChromiumImpl(storage, internal_name);
 }

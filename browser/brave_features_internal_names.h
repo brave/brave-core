@@ -7,5 +7,6 @@
 #define BRAVE_BROWSER_BRAVE_FEATURES_INTERNAL_NAMES_H_
 
 constexpr char kBraveVPNFeatureInternalName[] = "brave-vpn";
+constexpr char kBraveVerticalTabsFeatureInternalName[] = "brave-vertical-tabs";
 
 #endif  // BRAVE_BROWSER_BRAVE_FEATURES_INTERNAL_NAMES_H_

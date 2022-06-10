@@ -7,6 +7,7 @@
 
 #include <algorithm>
 
+#include "brave/browser/ui/views/tabs/brave_vertical_tab_utils.h"
 #include "chrome/browser/ui/layout_constants.h"
 #include "chrome/browser/ui/views/tabs/new_tab_button.h"
 #include "chrome/browser/ui/views/tabs/tab_strip.h"
@@ -58,17 +59,27 @@ void BraveNewTabButton::PaintIcon(gfx::Canvas* canvas) {
   // will be 50% of width.
   gfx::ScopedCanvas scoped_canvas(canvas);
   // Offset that we want to use
-  const int correct_offset = (GetContentsBounds().width() / 2);
+  const int correct_h_offset = (GetContentsBounds().width() / 2);
   // Incorrect offset that base class will use
   const int chromium_offset = GetCornerRadius();
   // Difference
-  const int offset = correct_offset - chromium_offset;
+  const int h_offset = correct_h_offset - chromium_offset;
   // Shim base implementation's painting
-  canvas->Translate(gfx::Vector2d(offset, offset));
+  if (ShouldShowVerticalTabs()) {
+    const int correct_v_offset = (GetContentsBounds().height() / 2);
+    const int v_offset = correct_v_offset - chromium_offset;
+    canvas->Translate(gfx::Vector2d(h_offset, v_offset));
+  } else {
+    canvas->Translate(gfx::Vector2d(h_offset, h_offset));
+  }
+
   NewTabButton::PaintIcon(canvas);
 }
 
 gfx::Insets BraveNewTabButton::GetInsets() const {
+  if (ShouldShowVerticalTabs())
+    return {};
+
   // Give an additional left margin to make more space from tab.
   // TabStripRegionView::UpdateNewTabButtonBorder() gives this button's inset.
   // So, adding more insets here is easy solution.

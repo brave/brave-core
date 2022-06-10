@@ -9,10 +9,13 @@
 
 BraveContentsLayoutManager::BraveContentsLayoutManager(
     views::View* sidebar_container_view,
+    views::View* vertical_tabs_container,
     views::View* contents_container_view)
     : sidebar_container_view_(sidebar_container_view),
+      vertical_tabs_container_(vertical_tabs_container),
       contents_container_view_(contents_container_view) {
-  DCHECK(sidebar_container_view_);
+  DCHECK(sidebar_container_view_ || vertical_tabs_container_)
+      << "At least one of these should be valid";
   DCHECK(contents_container_view_);
 }
 
@@ -24,12 +27,18 @@ void BraveContentsLayoutManager::Layout(views::View* host) {
   int height = host->height();
   int width = host->width();
 
-  const int sidebar_width = sidebar_container_view_->GetPreferredSize().width();
-  const gfx::Rect sidebar_bounds(0, 0, sidebar_width, height);
-  gfx::Rect contents_bounds(sidebar_width, 0, width - sidebar_width, height);
+  int x = 0;
+  for (const auto view : {sidebar_container_view_, vertical_tabs_container_}) {
+    if (!view)
+      continue;
 
-  sidebar_container_view_->SetBoundsRect(
-      host_->GetMirroredRect(sidebar_bounds));
+    gfx::Rect bounds(x, 0, view->GetPreferredSize().width(), height);
+    view->SetBoundsRect(bounds);
+    x = bounds.right();
+    width -= bounds.width();
+  }
+
+  gfx::Rect contents_bounds(x, 0, width, height);
   contents_container_view_->SetBoundsRect(
       host_->GetMirroredRect(contents_bounds));
 }
