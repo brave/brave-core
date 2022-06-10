@@ -18,9 +18,13 @@
 #define ShouldDrawStrokes   \
   UnUsed() { return true; } \
   virtual bool ShouldDrawStrokes
-
+#define GetDragContext                        \
+  Unused_GetDragContext() { return nullptr; } \
+  friend class BraveTabStrip;                 \
+  friend class BraveTabDragContext;           \
+  virtual TabDragContext* GetDragContext
 #include "src/chrome/browser/ui/views/tabs/tab_strip.h"
-
+#undef GetDragContext
 #undef ShouldDrawStrokes
 #undef UpdateHoverCard
 

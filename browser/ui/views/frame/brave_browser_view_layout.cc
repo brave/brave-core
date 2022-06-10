@@ -4,6 +4,7 @@
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
 #include "brave/browser/ui/views/frame/brave_browser_view_layout.h"
+#include "brave/browser/ui/views/tabs/brave_vertical_tab_utils.h"
 
 void BraveBrowserViewLayout::LayoutSidePanelView(
     views::View* side_panel,
@@ -12,4 +13,12 @@ void BraveBrowserViewLayout::LayoutSidePanelView(
   // is the parent of chromium's side panel). We simply
   // use flex layout to put it to the side of the content view.
   return;
-}
+
+  BraveBrowserViewLayout::~BraveBrowserViewLayout() = default;
+
+  int BraveBrowserViewLayout::LayoutTabStripRegion(int top) {
+    if (tabs::ShouldShowVerticalTabs())
+      return top;
+
+    return BrowserViewLayout::LayoutTabStripRegion(top);
+  }

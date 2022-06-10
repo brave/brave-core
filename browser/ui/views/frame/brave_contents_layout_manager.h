@@ -7,13 +7,19 @@
 #define BRAVE_BROWSER_UI_VIEWS_FRAME_BRAVE_CONTENTS_LAYOUT_MANAGER_H_
 
 #include "base/memory/raw_ptr.h"
+<<<<<<< HEAD
 #include "chrome/browser/ui/views/frame/contents_layout_manager.h"
+    =======
+#include "ui/views/layout/layout_manager.h"
+    >>>>>>> ab1b081e33 ([Experiment] Vertical tabs)
 
-class BraveContentsLayoutManager : public ContentsLayoutManager {
+    class BraveContentsLayoutManager : public ContentsLayoutManager {
  public:
   BraveContentsLayoutManager(views::View* devtools_view,
                              views::View* contents_view,
-                             views::View* sidebar_container_view);
+                             views::View* sidebar_container_view,
+                             views::View* vertical_tabs_container);
+  ~BraveContentsLayoutManager() override;
 
   BraveContentsLayoutManager(const BraveContentsLayoutManager&) = delete;
   BraveContentsLayoutManager& operator=(const BraveContentsLayoutManager&) =
@@ -26,6 +32,7 @@ class BraveContentsLayoutManager : public ContentsLayoutManager {
 
  private:
   raw_ptr<views::View> sidebar_container_view_ = nullptr;
+  raw_ptr<views::View> vertical_tabs_container_ = nullptr;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_FRAME_BRAVE_CONTENTS_LAYOUT_MANAGER_H_

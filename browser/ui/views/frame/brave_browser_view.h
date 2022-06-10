@@ -71,6 +71,7 @@ class BraveBrowserView : public BrowserView {
   gfx::Rect GetShieldsBubbleRect() override;
   void ShowSpeedreaderWebUIBubble(Browser* browser) override;
   void HideSpeedreaderWebUIBubble() override;
+  bool GetTabStripVisible() const override;
 
 #if BUILDFLAG(ENABLE_SIDEBAR)
   views::View* sidebar_host_view() { return sidebar_host_view_; }
@@ -107,6 +108,8 @@ class BraveBrowserView : public BrowserView {
   raw_ptr<SidebarContainerView> sidebar_container_view_ = nullptr;
   raw_ptr<views::View> sidebar_host_view_ = nullptr;
 #endif
+
+  raw_ptr<views::View> vertical_tabs_container_ = nullptr;
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   BraveVPNPanelController vpn_panel_controller_{this};

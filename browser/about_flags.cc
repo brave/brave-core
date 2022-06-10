@@ -29,6 +29,7 @@
 #include "brave/components/speedreader/common/buildflags.h"
 #include "brave/components/translate/core/common/brave_translate_features.h"
 #include "brave/components/translate/core/common/buildflags.h"
+#include "build/build_config.h"
 #include "components/content_settings/core/common/features.h"
 #include "components/translate/core/browser/translate_prefs.h"
 #include "net/base/features.h"
@@ -48,6 +49,10 @@
 
 #if BUILDFLAG(ENABLE_PLAYLIST)
 #include "brave/components/playlist/features.h"
+#endif
+
+#if defined(TOOLKIT_VIEWS)
+#include "brave/browser/ui/views/tabs/features.h"
 #endif
 
 using brave_shields::features::kBraveAdblockCnameUncloaking;
@@ -368,6 +373,11 @@ constexpr char kAllowCertainClientHintsDescription[] =
     "Allows setting certain request client hints (sec-ch-ua, sec-ch-ua-mobile, "
     "sec-ch-ua-platform)";
 
+#if defined(TOOLKIT_VIEWS)
+constexpr char kBraveVerticalTabsName[] = "Vertical tabs";
+constexpr char kBraveVerticalTabsDescription[] =
+    "Uses vertical tabs instead of tabstrip";
+#endif
 }  // namespace
 
 }  // namespace flag_descriptions
@@ -512,6 +522,17 @@ constexpr char kAllowCertainClientHintsDescription[] =
 #else
 #define PLAYLIST_FEATURE_ENTRIES
 #endif
+
+#if defined(TOOLKIT_VIEWS)
+#define BRAVE_VERTICAL_TABS_FEATURE_ENTRY \
+    {"brave-vertical-tabs",  \
+    flag_descriptions::kBraveVerticalTabsName, \
+    flag_descriptions::kBraveVerticalTabsDescription, \
+    kOsWin | kOsMac, \
+    FEATURE_VALUE_TYPE(tabs::features::kBraveVerticalTabs)},
+#else
+#define BRAVE_VERTICAL_TABS_FEATURE_ENTRY
+#endif  // defined(TOOLKIT_VIEWS)
 
 #define BRAVE_ABOUT_FLAGS_FEATURE_ENTRIES                                   \
     {"use-dev-updater-url",                                                 \
@@ -665,4 +686,5 @@ constexpr char kAllowCertainClientHintsDescription[] =
     SPEEDREADER_FEATURE_ENTRIES                                             \
     BRAVE_TRANSLATE_GO_FEATURE_ENTRIES                                      \
     BRAVE_FEDERATED_FEATURE_ENTRIES                                         \
-    PLAYLIST_FEATURE_ENTRIES
+    PLAYLIST_FEATURE_ENTRIES                                                \
+    BRAVE_VERTICAL_TABS_FEATURE_ENTRY

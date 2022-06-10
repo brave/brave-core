@@ -11,15 +11,16 @@
 #include "brave/browser/ui/views/side_panel/brave_side_panel.h"
 #include "brave/browser/ui/views/tabs/brave_browser_tab_strip_controller.h"
 #include "brave/browser/ui/views/tabs/brave_tab_strip.h"
+#include "brave/browser/ui/views/tabs/brave_vertical_tab_utils.h"
 #include "brave/browser/ui/views/toolbar/brave_toolbar_view.h"
 #include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/views/frame/tab_strip_region_view.h"
 #include "chrome/browser/ui/views/side_panel/side_panel.h"
 
+#define BrowserViewLayout BraveBrowserViewLayout
 #define ToolbarView BraveToolbarView
 #define BrowserTabStripController BraveBrowserTabStripController
 #define TabStrip BraveTabStrip
-#define BrowserViewLayout BraveBrowserViewLayout
 #define SidePanel BraveSidePanel
 
 #include "src/chrome/browser/ui/views/frame/browser_view.cc"

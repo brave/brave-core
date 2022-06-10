@@ -26,6 +26,7 @@ class BraveBrowserNonClientFrameViewMac : public BrowserNonClientFrameViewMac {
  private:
   // BrowserNonClientFrameViewMac overrides:
   void OnPaint(gfx::Canvas* canvas) override;
+  int GetTopInset(bool restored) const override;
 
   std::unique_ptr<BraveWindowFrameGraphic> frame_graphic_;
 };
