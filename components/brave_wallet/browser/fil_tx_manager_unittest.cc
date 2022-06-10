@@ -70,8 +70,9 @@ class FilTxManagerUnitTest : public testing::Test {
                 &url_loader_factory_)) {}
 
   void SetUp() override {
-    feature_list_.InitAndEnableFeature(
-        brave_wallet::features::kBraveWalletFilecoinFeature);
+    feature_list_.InitAndEnableFeatureWithParameters(
+        brave_wallet::features::kBraveWalletFilecoinFeature,
+        {{brave_wallet::features::kFilecoinTestnetEnabled.name, "true"}});
 
     brave_wallet::RegisterProfilePrefs(prefs_.registry());
     json_rpc_service_.reset(

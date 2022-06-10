@@ -236,6 +236,7 @@ source_set("hd_keyring") {
 
   deps = [
     ":transaction",
+    ":utils",
     "internal:hd_key",
     "//base",
     "//brave/components/brave_wallet/common",
