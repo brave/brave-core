@@ -6,6 +6,7 @@
 #include "bat/ads/internal/deprecated/confirmations/confirmation_state_manager.h"
 
 #include <algorithm>
+#include <cstdint>
 #include <utility>
 
 #include "base/check_op.h"

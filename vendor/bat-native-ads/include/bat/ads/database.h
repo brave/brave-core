@@ -6,6 +6,7 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_INCLUDE_BAT_ADS_DATABASE_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_INCLUDE_BAT_ADS_DATABASE_H_
 
+#include <cstdint>
 #include <memory>
 
 #include "base/memory/memory_pressure_listener.h"
@@ -34,8 +35,8 @@ class ADS_EXPORT Database final {
 
  private:
   mojom::DBCommandResponse::Status Initialize(
-      const int version,
-      const int compatible_version,
+      const int32_t version,
+      const int32_t compatible_version,
       mojom::DBCommandResponse* command_response);
 
   mojom::DBCommandResponse::Status Execute(mojom::DBCommand* command);
@@ -46,8 +47,8 @@ class ADS_EXPORT Database final {
       mojom::DBCommand* command,
       mojom::DBCommandResponse* command_response);
 
-  mojom::DBCommandResponse::Status Migrate(const int version,
-                                           const int compatible_version);
+  mojom::DBCommandResponse::Status Migrate(const int32_t version,
+                                           const int32_t compatible_version);
 
   void OnErrorCallback(const int error, sql::Statement* statement);
 

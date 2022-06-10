@@ -80,7 +80,7 @@ void BatAdsImpl::OnTextLoaded(const int32_t tab_id,
   ads_->OnTextLoaded(tab_id, redirect_chain, text);
 }
 
-void BatAdsImpl::OnUserGesture(const uint32_t page_transition_type) {
+void BatAdsImpl::OnUserGesture(const int32_t page_transition_type) {
   ads_->OnUserGesture(page_transition_type);
 }
 

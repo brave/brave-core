@@ -115,8 +115,8 @@ void AdsTabHelper::DidFinishNavigation(
   }
 
   if (navigation_handle->HasUserGesture()) {
-    const uint32_t page_transition =
-        static_cast<uint32_t>(navigation_handle->GetPageTransition());
+    const int32_t page_transition =
+        static_cast<int32_t>(navigation_handle->GetPageTransition());
 
     ads_service_->OnUserGesture(page_transition);
   }

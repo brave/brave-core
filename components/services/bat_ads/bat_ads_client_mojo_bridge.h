@@ -112,7 +112,9 @@ class BatAdsClientMojoBridge
   int64_t GetInt64Pref(const std::string& path) const override;
   void SetInt64Pref(const std::string& path, const int64_t value) override;
   uint64_t GetUint64Pref(const std::string& path) const override;
-  void SetUint64Pref(const std::string& path, const uint64_t value) override;
+  void SetUint64Pref(
+      const std::string& path,
+      const uint64_t value) override;
   base::Time GetTimePref(const std::string& path) const override;
   void SetTimePref(const std::string& path, const base::Time value) override;
   void ClearPref(const std::string& path) override;

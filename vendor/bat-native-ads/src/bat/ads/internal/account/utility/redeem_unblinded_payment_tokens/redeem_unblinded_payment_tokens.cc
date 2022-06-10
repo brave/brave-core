@@ -5,6 +5,7 @@
 
 #include "bat/ads/internal/account/utility/redeem_unblinded_payment_tokens/redeem_unblinded_payment_tokens.h"
 
+#include <cstdint>
 #include <functional>
 #include <utility>
 
@@ -30,8 +31,10 @@ namespace {
 
 constexpr base::TimeDelta kRetryAfter = base::Minutes(1);
 constexpr base::TimeDelta kExpiredNextTokenRedemptionAfter = base::Minutes(1);
-constexpr base::TimeDelta kNextTokenRedemptionAfter = base::Hours(24);
-constexpr base::TimeDelta kDebugNextTokenRedemptionAfter = base::Minutes(25);
+constexpr int64_t kNextTokenRedemptionAfterSeconds =
+    24 * base::Time::kSecondsPerHour;
+constexpr int64_t kDebugNextTokenRedemptionAfterSeconds =
+    25 * base::Time::kSecondsPerMinute;
 
 }  // namespace
 
@@ -210,18 +213,20 @@ base::TimeDelta RedeemUnblindedPaymentTokens::CalculateTokenRedemptionDelay() {
 }
 
 base::Time RedeemUnblindedPaymentTokens::CalculateNextTokenRedemptionDate() {
-  base::TimeDelta delay;
+  const base::Time now = base::Time::Now();
+
+  int64_t delay;
 
   if (!g_is_debug) {
-    delay = kNextTokenRedemptionAfter;
+    delay = kNextTokenRedemptionAfterSeconds;
   } else {
-    delay = kDebugNextTokenRedemptionAfter;
+    delay = kDebugNextTokenRedemptionAfterSeconds;
   }
 
-  const base::TimeDelta rand_delay =
-      base::Seconds(brave_base::random::Geometric(delay.InSeconds()));
+  const int64_t rand_delay =
+      static_cast<int64_t>(brave_base::random::Geometric(delay));
 
-  return base::Time::Now() + rand_delay;
+  return now + base::Seconds(rand_delay);
 }
 
 }  // namespace ads

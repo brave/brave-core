@@ -5,6 +5,8 @@
 
 #include "bat/ads/internal/serving/notification_ad_serving.h"
 
+#include <cstdint>
+
 #include "base/check.h"
 #include "base/rand_util.h"
 #include "base/time/time.h"
@@ -161,7 +163,7 @@ void Serving::MaybeServeAd() {
 ///////////////////////////////////////////////////////////////////////////////
 
 void Serving::OnAdsPerHourPrefChanged() {
-  const int ads_per_hour = settings::GetAdsPerHour();
+  const int64_t ads_per_hour = settings::GetAdsPerHour();
   BLOG(1, "Maximum ads per hour changed to " << ads_per_hour);
 
   if (!ShouldServeAdsAtRegularIntervals()) {
@@ -224,13 +226,13 @@ void Serving::MaybeServeAdAtNextRegularInterval() {
     return;
   }
 
-  const int ads_per_hour = settings::GetAdsPerHour();
+  const int64_t ads_per_hour = settings::GetAdsPerHour();
   if (ads_per_hour == 0) {
     return;
   }
 
-  const base::TimeDelta delay =
-      base::Seconds(base::Time::kSecondsPerHour / ads_per_hour);
+  const int64_t seconds = base::Time::kSecondsPerHour / ads_per_hour;
+  const base::TimeDelta delay = base::Seconds(seconds);
   const base::Time serve_ad_at = MaybeServeAdAfter(delay);
   BLOG(1, "Maybe serve notification ad " << FriendlyDateAndTime(serve_ad_at));
 }

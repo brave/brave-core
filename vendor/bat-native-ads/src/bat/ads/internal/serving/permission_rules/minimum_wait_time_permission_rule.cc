@@ -5,6 +5,8 @@
 
 #include "bat/ads/internal/serving/permission_rules/minimum_wait_time_permission_rule.h"
 
+#include <cstdint>
+
 #include "base/time/time.h"
 #include "bat/ads/ad_type.h"
 #include "bat/ads/confirmation_type.h"
@@ -47,7 +49,7 @@ std::string MinimumWaitTimePermissionRule::GetLastMessage() const {
 
 bool MinimumWaitTimePermissionRule::DoesRespectCap(
     const std::vector<base::Time>& history) {
-  const int ads_per_hour = settings::GetAdsPerHour();
+  const uint64_t ads_per_hour = settings::GetAdsPerHour();
   if (ads_per_hour == 0) {
     return false;
   }

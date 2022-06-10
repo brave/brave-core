@@ -5,6 +5,7 @@
 
 #include "bat/ads/internal/base/timer/timer.h"
 
+#include <cstdint>
 #include <utility>
 
 #include "base/check.h"
@@ -36,10 +37,11 @@ base::Time Timer::Start(const base::Location& location,
 base::Time Timer::StartWithPrivacy(const base::Location& location,
                                    const base::TimeDelta delay,
                                    base::OnceClosure user_task) {
-  const base::TimeDelta rand_delay =
-      base::Seconds(brave_base::random::Geometric(delay.InSeconds()));
+  const int64_t rand_delay_in_seconds =
+      static_cast<int64_t>(brave_base::random::Geometric(delay.InSeconds()));
 
-  return Start(location, rand_delay, std::move(user_task));
+  return Start(location, base::Seconds(rand_delay_in_seconds),
+               std::move(user_task));
 }
 
 bool Timer::IsRunning() const {

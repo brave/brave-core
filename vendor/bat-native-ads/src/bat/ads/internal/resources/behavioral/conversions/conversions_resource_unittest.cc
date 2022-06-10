@@ -44,7 +44,7 @@ TEST_F(BatAdsConversionsResourceTest, Get) {
       resource.get()->conversion_id_patterns;
 
   // Assert
-  EXPECT_EQ(2U, conversion_id_patterns.size());
+  EXPECT_EQ(2u, conversion_id_patterns.size());
 }
 
 }  // namespace resource

@@ -286,7 +286,7 @@ void AdsImpl::OnTextLoaded(const int32_t tab_id,
   text_classification_processor_->Process(text);
 }
 
-void AdsImpl::OnUserGesture(const uint32_t page_transition_type) {
+void AdsImpl::OnUserGesture(const int32_t page_transition_type) {
   if (!IsInitialized()) {
     return;
   }

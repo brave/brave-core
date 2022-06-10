@@ -34,7 +34,7 @@ TEST_F(BatAdsMinimumWaitTimePermissionRuleTest, AllowAdIfThereIsNoAdsHistory) {
 
 TEST_F(BatAdsMinimumWaitTimePermissionRuleTest, AllowAdIfDoesNotExceedCap) {
   // Arrange
-  AdsClientHelper::Get()->SetIntegerPref(prefs::kAdsPerHour, 5);
+  AdsClientHelper::Get()->SetInt64Pref(prefs::kAdsPerHour, 5);
 
   RecordAdEvent(AdType::kNotificationAd, ConfirmationType::kServed);
 
@@ -50,7 +50,7 @@ TEST_F(BatAdsMinimumWaitTimePermissionRuleTest, AllowAdIfDoesNotExceedCap) {
 
 TEST_F(BatAdsMinimumWaitTimePermissionRuleTest, DoNotAllowAdIfExceedsCap) {
   // Arrange
-  AdsClientHelper::Get()->SetIntegerPref(prefs::kAdsPerHour, 5);
+  AdsClientHelper::Get()->SetInt64Pref(prefs::kAdsPerHour, 5);
 
   RecordAdEvent(AdType::kNotificationAd, ConfirmationType::kServed);
 
