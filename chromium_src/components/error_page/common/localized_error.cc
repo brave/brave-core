@@ -4,7 +4,6 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "components/url_formatter/url_formatter.h"
-#include "net/base/escape.h"
 #include "url/gurl.h"
 
 namespace error_page {
@@ -33,6 +32,6 @@ std::u16string GetFailedUrlString(GURL failed_url) {
 
   return url_formatter::FormatUrl(
       failed_url, url_formatter::kFormatUrlOmitNothing,
-      net::UnescapeRule::NORMAL, nullptr, nullptr, nullptr);
+      base::UnescapeRule::NORMAL, nullptr, nullptr, nullptr);
 }
 }  // namespace error_page

@@ -12,7 +12,6 @@
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
 #include "base/memory/ref_counted_memory.h"
-#include "base/task/post_task.h"
 #include "base/task/thread_pool.h"
 #include "brave/browser/ntp_background_images/constants.h"
 #include "brave/components/constants/pref_names.h"
@@ -29,10 +28,20 @@
 #include "content/public/browser/web_contents.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
+#include "services/data_decoder/public/cpp/data_decoder.h"
 #include "third_party/skia/include/core/SkBitmap.h"
 #include "ui/gfx/codec/png_codec.h"
 #include "ui/gfx/image/image.h"
 #include "url/gurl.h"
+
+namespace {
+
+data_decoder::DataDecoder* GetDataDecoder() {
+  static base::NoDestructor<data_decoder::DataDecoder> data_decoder;
+  return data_decoder.get();
+}
+
+}  // namespace
 
 BraveNewTabPageHandler::BraveNewTabPageHandler(
     mojo::PendingReceiver<brave_new_tab_page::mojom::PageHandler>
@@ -136,7 +145,7 @@ void BraveNewTabPageHandler::OnGotImageFile(absl::optional<std::string> input) {
 
   // Send image body to image decoder in isolated process.
   GetImageDecoder()->DecodeImage(
-      *input, gfx::Size() /* No particular size desired. */,
+      *input, gfx::Size() /* No particular size desired. */, GetDataDecoder(),
       base::BindOnce(&BraveNewTabPageHandler::OnImageDecoded,
                      weak_factory_.GetWeakPtr()));
 }
@@ -170,9 +179,9 @@ void BraveNewTabPageHandler::OnSavedEncodedImage(bool success) {
 }
 
 void BraveNewTabPageHandler::DeleteSanitizedImageFile() {
-  base::ThreadPool::PostTask(FROM_HERE, {base::MayBlock()},
-                             base::BindOnce(base::GetDeleteFileCallback(),
-                                            GetSanitizedImageFilePath()));
+  base::ThreadPool::PostTask(
+      FROM_HERE, {base::MayBlock()},
+      base::GetDeleteFileCallback(GetSanitizedImageFilePath()));
 }
 
 base::FilePath BraveNewTabPageHandler::GetSanitizedImageFilePath() const {

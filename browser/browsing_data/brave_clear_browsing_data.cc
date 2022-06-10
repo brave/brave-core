@@ -40,8 +40,8 @@ class BrowsingDataRemovalWatcher
 
  private:
   bool GetClearBrowsingDataOnExitSettings(const Profile* profile,
-                                          int* remove_mask,
-                                          int* origin_mask);
+                                          uint64_t* remove_mask,
+                                          uint64_t* origin_mask);
   void Wait();
 
   int num_profiles_to_clear_ = 0;
@@ -58,15 +58,15 @@ class BrowsingDataRemovalWatcher
 // remove_mask and the origin_mask for the same functionality not on exit.
 bool BrowsingDataRemovalWatcher::GetClearBrowsingDataOnExitSettings(
     const Profile* profile,
-    int* remove_mask,
-    int* origin_mask) {
+    uint64_t* remove_mask,
+    uint64_t* origin_mask) {
   DCHECK(remove_mask);
   DCHECK(origin_mask);
   const PrefService* prefs = profile->GetPrefs();
   *remove_mask = 0;
   *origin_mask = 0;
 
-  int site_data_mask = chrome_browsing_data_remover::DATA_TYPE_SITE_DATA;
+  uint64_t site_data_mask = chrome_browsing_data_remover::DATA_TYPE_SITE_DATA;
   // Don't try to clear LSO data if it's not supported.
   if (!prefs->GetBoolean(prefs::kClearPluginLSODataEnabled))
     site_data_mask &= ~chrome_browsing_data_remover::DATA_TYPE_PLUGIN_DATA;
@@ -129,8 +129,8 @@ void BrowsingDataRemovalWatcher::ClearBrowsingDataForLoadedProfiles(
   for (Profile* profile : profiles) {
     if (profile->IsOffTheRecord())
       continue;
-    int remove_mask;
-    int origin_mask;
+    uint64_t remove_mask;
+    uint64_t origin_mask;
     if (!GetClearBrowsingDataOnExitSettings(profile, &remove_mask,
                                             &origin_mask))
       continue;

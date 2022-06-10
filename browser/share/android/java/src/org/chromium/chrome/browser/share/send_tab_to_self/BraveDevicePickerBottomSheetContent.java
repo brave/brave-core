@@ -11,9 +11,9 @@ import android.widget.ListView;
 import org.chromium.components.browser_ui.bottomsheet.BottomSheetController;
 
 public class BraveDevicePickerBottomSheetContent extends DevicePickerBottomSheetContent {
-    public BraveDevicePickerBottomSheetContent(Context context, String url, String title,
-            long navigationTime, BottomSheetController controller) {
-        super(context, url, title, navigationTime, controller);
+    public BraveDevicePickerBottomSheetContent(
+            Context context, String url, String title, BottomSheetController controller) {
+        super(context, url, title, controller);
     }
 
     public void createManageDevicesLink(ListView deviceListView) {

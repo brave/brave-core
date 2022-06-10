@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/bookmarks/BUILD.gn b/chrome/browser/resources/bookmarks/BUILD.gn
-index 1e13b5171c6ad90d77330dbb293d3ff58ef0d916..a47be402d1cd4077357afe09018ad68677a3e7d9 100644
+index 227ce792eccdbbde61964306df4c0897accc4cc7..5e63b744aa6ca1a3744d2bbc671f45a8d385f589 100644
 --- a/chrome/browser/resources/bookmarks/BUILD.gn
 +++ b/chrome/browser/resources/bookmarks/BUILD.gn
 @@ -50,6 +50,7 @@ generate_grd("build_grd") {

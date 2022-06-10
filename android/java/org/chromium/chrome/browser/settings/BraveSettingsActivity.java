@@ -19,7 +19,13 @@ public class BraveSettingsActivity extends SettingsActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         menu.clear();
         getMenuInflater().inflate(R.menu.exit_settings_menu, menu);
-        return true;
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        menu.removeItem(R.id.menu_id_general_help);
+        return super.onPrepareOptionsMenu(menu);
     }
 
     @Override

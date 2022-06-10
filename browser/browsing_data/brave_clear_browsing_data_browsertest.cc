@@ -11,7 +11,6 @@
 #include "base/memory/raw_ptr.h"
 #include "base/path_service.h"
 #include "base/run_loop.h"
-#include "base/task/post_task.h"
 #include "base/task/single_thread_task_runner.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/browsing_data/brave_clear_browsing_data.h"
@@ -41,6 +40,7 @@
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "content/public/test/test_navigation_observer.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "url/url_constants.h"
 
 using content::BraveClearBrowsingData;
@@ -141,7 +141,8 @@ class BraveClearDataOnExitTest
     expected_remove_data_call_count_ = count;
   }
 
-  void SetExpectedRemoveDataRemovalMasks(int remove_mask, int origin_mask) {
+  void SetExpectedRemoveDataRemovalMasks(uint64_t remove_mask,
+                                         uint64_t origin_mask) {
     expected_remove_mask_ = remove_mask;
     expected_origin_mask_ = origin_mask;
   }
@@ -161,7 +162,7 @@ class BraveClearDataOnExitTest
                             true);
   }
 
-  int GetRemoveMaskAll() {
+  uint64_t GetRemoveMaskAll() {
     return chrome_browsing_data_remover::DATA_TYPE_HISTORY |
            content::BrowsingDataRemover::DATA_TYPE_DOWNLOADS |
            content::BrowsingDataRemover::DATA_TYPE_CACHE |
@@ -171,20 +172,20 @@ class BraveClearDataOnExitTest
            chrome_browsing_data_remover::DATA_TYPE_CONTENT_SETTINGS;
   }
 
-  int GetOriginMaskAll() {
+  uint64_t GetOriginMaskAll() {
     return content::BrowsingDataRemover::ORIGIN_TYPE_PROTECTED_WEB |
            content::BrowsingDataRemover::ORIGIN_TYPE_UNPROTECTED_WEB;
   }
 
   // BraveClearBrowsingData::OnExitTestingCallback implementation.
   void BeforeClearOnExitRemoveData(content::BrowsingDataRemover* remover,
-                                   int remove_mask,
-                                   int origin_mask) override {
+                                   uint64_t remove_mask,
+                                   uint64_t origin_mask) override {
     remove_data_call_count_++;
 
-    if (expected_remove_mask_ != -1)
+    if (expected_remove_mask_)
       EXPECT_EQ(expected_remove_mask_, remove_mask);
-    if (expected_origin_mask_ != -1)
+    if (expected_origin_mask_)
       EXPECT_EQ(expected_origin_mask_, origin_mask);
   }
 
@@ -192,8 +193,8 @@ class BraveClearDataOnExitTest
   unsigned int browsers_count_ = 1u;
   int remove_data_call_count_ = 0;
   int expected_remove_data_call_count_ = 0;
-  int expected_remove_mask_ = -1;
-  int expected_origin_mask_ = -1;
+  absl::optional<uint64_t> expected_remove_mask_;
+  absl::optional<uint64_t> expected_origin_mask_;
 };
 
 IN_PROC_BROWSER_TEST_F(BraveClearDataOnExitTest, NoPrefsSet) {

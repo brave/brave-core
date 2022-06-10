@@ -21,10 +21,10 @@
 #include "base/files/file_path.h"
 #include "base/location.h"
 #include "base/logging.h"
+#include "base/strings/escape.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
 #include "base/supports_user_data.h"
-#include "base/task/post_task.h"
 #include "base/task/thread_pool.h"
 #include "base/time/time.h"
 #include "base/values.h"
@@ -38,7 +38,6 @@
 #include "ios/chrome/browser/browser_state/chrome_browser_state.h"
 #include "ios/chrome/browser/browser_state/chrome_browser_state_manager.h"
 #include "ios/chrome/browser/favicon/favicon_service_factory.h"
-#include "net/base/escape.h"
 #include "ui/base/l10n/l10n_util.h"
 
 using bookmarks::BookmarkCodec;
@@ -290,7 +289,7 @@ class Writer : public base::RefCountedThreadSafe<Writer> {
         break;
 
       case CONTENT:
-        utf8_string = net::EscapeForHTML(text);
+        utf8_string = base::EscapeForHTML(text);
         break;
 
       default:

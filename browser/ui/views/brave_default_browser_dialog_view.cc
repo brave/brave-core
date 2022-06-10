@@ -133,7 +133,6 @@ BraveDefaultBrowserDialogView::CreateNonClientFrameView(views::Widget* widget) {
   std::unique_ptr<views::BubbleBorder> border =
       std::make_unique<views::BubbleBorder>(views::BubbleBorder::FLOAT, kShadow,
                                             gfx::kPlaceholderColor);
-  border->set_use_theme_background_color(true);
   if (GetParams().round_corners)
     border->SetCornerRadius(GetCornerRadius());
   frame->SetFootnoteView(DisownFootnoteView());

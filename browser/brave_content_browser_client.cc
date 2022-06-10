@@ -14,7 +14,6 @@
 #include "base/json/json_reader.h"
 #include "base/strings/strcat.h"
 #include "base/system/sys_info.h"
-#include "base/task/post_task.h"
 #include "brave/browser/brave_browser_main_extra_parts.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/brave_shields/brave_shields_web_contents_observer.h"
@@ -384,10 +383,9 @@ BraveContentBrowserClient::BraveContentBrowserClient() {}
 BraveContentBrowserClient::~BraveContentBrowserClient() {}
 
 std::unique_ptr<content::BrowserMainParts>
-BraveContentBrowserClient::CreateBrowserMainParts(
-    content::MainFunctionParams parameters) {
+BraveContentBrowserClient::CreateBrowserMainParts(bool is_integration_test) {
   std::unique_ptr<content::BrowserMainParts> main_parts =
-      ChromeContentBrowserClient::CreateBrowserMainParts(std::move(parameters));
+      ChromeContentBrowserClient::CreateBrowserMainParts(is_integration_test);
   ChromeBrowserMainParts* chrome_main_parts =
       static_cast<ChromeBrowserMainParts*>(main_parts.get());
   chrome_main_parts->AddParts(std::make_unique<BraveBrowserMainExtraParts>());

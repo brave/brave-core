@@ -82,7 +82,7 @@ void DatabaseManager::CreateOrOpen(ResultCallback callback) {
         NotifyDidCreateOrOpenDatabase();
 
         DCHECK(response->result->get_value()->which() ==
-               mojom::DBValue::Tag::INT_VALUE);
+               mojom::DBValue::Tag::kIntValue);
         const int from_version = response->result->get_value()->get_int_value();
         MaybeMigrate(from_version, callback);
       });

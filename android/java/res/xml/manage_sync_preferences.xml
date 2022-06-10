@@ -43,13 +43,18 @@
         android:persistent="false"/>
 
     <org.chromium.chrome.browser.ui.brave_tricks.checkbox_to_switch.CheckBoxPreference
-        android:key="sync_recent_tabs"
-        android:title="@string/sync_recent_tabs"
+        android:key="sync_passwords"
+        android:title="@string/sync_passwords"
         android:persistent="false"/>
 
     <org.chromium.chrome.browser.ui.brave_tricks.checkbox_to_switch.CheckBoxPreference
-        android:key="sync_passwords"
-        android:title="@string/sync_passwords"
+        android:key="sync_reading_list"
+        android:title="@string/sync_reading_list"
+        android:persistent="false"/>
+
+    <org.chromium.chrome.browser.ui.brave_tricks.checkbox_to_switch.CheckBoxPreference
+        android:key="sync_recent_tabs"
+        android:title="@string/sync_recent_tabs"
         android:persistent="false"/>
 
     <org.chromium.chrome.browser.ui.brave_tricks.checkbox_to_switch.CheckBoxPreference

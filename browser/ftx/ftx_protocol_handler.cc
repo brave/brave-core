@@ -11,7 +11,6 @@
 
 #include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
-#include "base/task/post_task.h"
 #include "brave/browser/ftx/ftx_service_factory.h"
 #include "brave/components/constants/url_constants.h"
 #include "brave/components/ftx/browser/ftx_service.h"
@@ -20,7 +19,6 @@
 #include "content/public/browser/browser_task_traits.h"
 #include "content/public/browser/browser_thread.h"
 #include "content/public/browser/render_frame_host.h"
-#include "net/base/escape.h"
 #include "net/base/url_util.h"
 #include "url/origin.h"
 
@@ -93,8 +91,8 @@ void HandleFTXProtocol(const GURL& url,
                        bool has_user_gesture,
                        const absl::optional<url::Origin>& initiator) {
   DCHECK(IsFTXProtocol(url));
-  base::PostTask(
-      FROM_HERE, {content::BrowserThread::UI},
+  content::GetUIThreadTaskRunner({})->PostTask(
+      FROM_HERE,
       base::BindOnce(&LoadNewTabURL, url, std::move(web_contents_getter),
                      page_transition, has_user_gesture, initiator));
 }

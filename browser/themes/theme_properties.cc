@@ -46,8 +46,6 @@ absl::optional<SkColor> MaybeGetDefaultColorForBraveLightUi(int id) {
       return kLightToolbarIcon;
     case ThemeProperties::COLOR_TOOLBAR_BUTTON_ICON_INACTIVE:
       return color_utils::AlphaBlend(kLightToolbarIcon, kLightToolbar, 0.3f);
-    case ThemeProperties::COLOR_DOWNLOAD_SHELF_BUTTON_TEXT:
-      return gfx::kBraveGrey800;  // 0x3b, 0x3e, 0x4f
     case BraveThemeProperties::COLOR_ICON_BASE:
       return SkColorSetRGB(0x49, 0x50, 0x57);
     case BraveThemeProperties::COLOR_TOGGLE_BUTTON_THUMB_ON_COLOR:
@@ -144,8 +142,6 @@ absl::optional<SkColor> MaybeGetDefaultColorForBraveDarkUi(int id) {
       return kDarkToolbarIcon;
     case ThemeProperties::COLOR_TOOLBAR_BUTTON_ICON_INACTIVE:
       return color_utils::AlphaBlend(kDarkToolbarIcon, kDarkToolbar, 0.3f);
-    case ThemeProperties::COLOR_DOWNLOAD_SHELF_BUTTON_TEXT:
-      return SK_ColorWHITE;
     case BraveThemeProperties::COLOR_ICON_BASE:
       return SkColorSetRGB(0xC2, 0xC4, 0xCF);
     case BraveThemeProperties::COLOR_TOGGLE_BUTTON_THUMB_ON_COLOR:

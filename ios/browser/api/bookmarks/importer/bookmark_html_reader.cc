@@ -11,6 +11,7 @@
 #include "base/callback.h"
 #include "base/files/file_util.h"
 #include "base/i18n/icu_string_conversions.h"
+#include "base/strings/escape.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
@@ -21,7 +22,6 @@
 #include "components/search_engines/search_terms_data.h"
 #include "components/search_engines/template_url.h"
 #include "net/base/data_url.h"
-#include "net/base/escape.h"
 #include "url/gurl.h"
 #include "url/url_constants.h"
 
@@ -339,7 +339,7 @@ bool ParseFolderNameFromLine(const std::string& lineDt,
 
   base::CodepageToUTF16(line.substr(tag_end, end - tag_end), charset.c_str(),
                         base::OnStringConversionError::SKIP, folder_name);
-  *folder_name = net::UnescapeForHTML(*folder_name);
+  *folder_name = base::UnescapeForHTML(*folder_name);
 
   std::string attribute_list =
       line.substr(std::size(kFolderOpen), tag_end - std::size(kFolderOpen) - 1);
@@ -409,14 +409,14 @@ bool ParseBookmarkFromLine(const std::string& lineDt,
   // Title
   base::CodepageToUTF16(line.substr(tag_end, end - tag_end), charset.c_str(),
                         base::OnStringConversionError::SKIP, title);
-  *title = net::UnescapeForHTML(*title);
+  *title = base::UnescapeForHTML(*title);
 
   // URL
   if (GetAttribute(attribute_list, kHrefAttribute, &value)) {
     std::u16string url16;
     base::CodepageToUTF16(value, charset.c_str(),
                           base::OnStringConversionError::SKIP, &url16);
-    url16 = net::UnescapeForHTML(url16);
+    url16 = base::UnescapeForHTML(url16);
 
     *url = GURL(url16);
   }
@@ -429,7 +429,7 @@ bool ParseBookmarkFromLine(const std::string& lineDt,
   if (GetAttribute(attribute_list, kShortcutURLAttribute, &value)) {
     base::CodepageToUTF16(value, charset.c_str(),
                           base::OnStringConversionError::SKIP, shortcut);
-    *shortcut = net::UnescapeForHTML(*shortcut);
+    *shortcut = base::UnescapeForHTML(*shortcut);
   }
 
   // Add date
@@ -445,7 +445,7 @@ bool ParseBookmarkFromLine(const std::string& lineDt,
   if (GetAttribute(attribute_list, kPostDataAttribute, &value)) {
     base::CodepageToUTF16(value, charset.c_str(),
                           base::OnStringConversionError::SKIP, post_data);
-    *post_data = net::UnescapeForHTML(*post_data);
+    *post_data = base::UnescapeForHTML(*post_data);
   }
 
   return true;
@@ -480,7 +480,7 @@ bool ParseMinimumBookmarkFromLine(const std::string& lineDt,
   // Title
   base::CodepageToUTF16(line.substr(tag_end, end - tag_end), charset.c_str(),
                         base::OnStringConversionError::SKIP, title);
-  *title = net::UnescapeForHTML(*title);
+  *title = base::UnescapeForHTML(*title);
 
   // URL
   std::string value;
@@ -490,7 +490,7 @@ bool ParseMinimumBookmarkFromLine(const std::string& lineDt,
       std::u16string url16;
       base::CodepageToUTF16(value, charset.c_str(),
                             base::OnStringConversionError::SKIP, &url16);
-      url16 = net::UnescapeForHTML(url16);
+      url16 = base::UnescapeForHTML(url16);
 
       *url = GURL(url16);
     } else {

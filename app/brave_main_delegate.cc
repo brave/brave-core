@@ -12,7 +12,6 @@
 #include "base/base_switches.h"
 #include "base/lazy_instance.h"
 #include "base/path_service.h"
-#include "base/task/post_task.h"
 #include "base/time/time.h"
 #include "brave/app/brave_command_line_helper.h"
 #include "brave/browser/brave_content_browser_client.h"

@@ -284,6 +284,7 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/site_settings/BraveWalletEthereumConnectedSitesPreference.java",
   "../../brave/android/java/org/chromium/chrome/browser/site_settings/DesktopModePreferences.java",
   "../../brave/android/java/org/chromium/chrome/browser/site_settings/PlayYTVideoInBrowserPreferences.java",
+  "../../brave/android/java/org/chromium/chrome/browser/suggestions/tile/BraveMostVisitedTilesMediator.java",
   "../../brave/android/java/org/chromium/chrome/browser/suggestions/tile/BraveTileView.java",
   "../../brave/android/java/org/chromium/chrome/browser/sync/BraveSyncDevices.java",
   "../../brave/android/java/org/chromium/chrome/browser/sync/settings/BraveManageSyncSettings.java",
@@ -292,7 +293,6 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/toolbar/BraveIncognitoToggleTabLayout.java",
   "../../brave/android/java/org/chromium/chrome/browser/toolbar/BraveToolbarManager.java",
   "../../brave/android/java/org/chromium/chrome/browser/toolbar/bottom/BookmarksButton.java",
-  "../../brave/android/java/org/chromium/chrome/browser/toolbar/bottom/BottomTabSwitcherActionMenuCoordinator.java",
   "../../brave/android/java/org/chromium/chrome/browser/toolbar/bottom/BottomToolbarConfiguration.java",
   "../../brave/android/java/org/chromium/chrome/browser/toolbar/bottom/BottomToolbarCoordinator.java",
   "../../brave/android/java/org/chromium/chrome/browser/toolbar/bottom/BottomToolbarNewTabButton.java",
@@ -305,7 +305,6 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/toolbar/bottom/BrowsingModeBottomToolbarModel.java",
   "../../brave/android/java/org/chromium/chrome/browser/toolbar/bottom/BrowsingModeBottomToolbarViewBinder.java",
   "../../brave/android/java/org/chromium/chrome/browser/toolbar/bottom/SearchAccelerator.java",
-  "../../brave/android/java/org/chromium/chrome/browser/toolbar/bottom/ShareButton.java",
   "../../brave/android/java/org/chromium/chrome/browser/toolbar/bottom/TabSwitcherBottomToolbarCoordinator.java",
   "../../brave/android/java/org/chromium/chrome/browser/toolbar/bottom/TabSwitcherBottomToolbarMediator.java",
   "../../brave/android/java/org/chromium/chrome/browser/toolbar/bottom/TabSwitcherBottomToolbarModel.java",
@@ -387,6 +386,7 @@ brave_browser_ui_android_appmenu_internal_sources = [
 
 brave_browser_ui_android_toolbar_sources = [
   "//brave/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/bottom/BraveBottomControlsMediator.java",
+  "//brave/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/top/BottomTabSwitcherActionMenuCoordinator.java",
   "//brave/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/top/BraveToolbarLayout.java",
 ]
 

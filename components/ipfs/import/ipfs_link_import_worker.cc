@@ -7,7 +7,6 @@
 
 #include <utility>
 
-#include "base/task/post_task.h"
 #include "base/task/task_runner_util.h"
 #include "base/task/thread_pool.h"
 #include "brave/components/ipfs/ipfs_network_utils.h"
@@ -91,7 +90,7 @@ void IpfsLinkImportWorker::RemoveDownloadedFile() {
   if (!temp_file_path_.empty()) {
     base::ThreadPool::PostTask(
         FROM_HERE, {base::TaskPriority::BEST_EFFORT, base::MayBlock()},
-        base::BindOnce(base::GetDeleteFileCallback(), temp_file_path_));
+        base::GetDeleteFileCallback(temp_file_path_));
     temp_file_path_ = base::FilePath();
   }
 }

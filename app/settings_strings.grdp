@@ -300,10 +300,10 @@
     <ph name="NETWORK_NAME">$1<ex>Visa</ex></ph> ending in <ph name="LAST_FOUR_DIGITS">$2<ex>1234</ex></ph>
   </message>
   <message name="IDS_AUTOFILL_ADD_VIRTUAL_CARD" desc="The text shown in the secondary action menu button to enroll a card in the virtual card feature. Virtual cards are credit cards generated from the actual cards and provide extra security.">
-    Add virtual card
+    Turn on virtual card
   </message>
   <message name="IDS_AUTOFILL_REMOVE_VIRTUAL_CARD" desc="The text shown in the secondary action menu button to unenroll a card from the virtual card feature. Virtual cards are credit cards generated from the actual cards and provide extra security.">
-    Remove virtual card
+    Turn off virtual card
   </message>
   <message name="IDS_AUTOFILL_EDIT_SERVER_CREDIT_CARD" desc="The text shown in the secondary action menu button to direct users to pay.google.com to edit the information of credit cards stored in Google Payments.">
     Edit in Google Pay
@@ -1059,6 +1059,9 @@
   <message name="IDS_SETTINGS_CLEAR_COOKIES_AND_SITE_DATA_SUMMARY_BASIC_WITH_EXCEPTION" desc="A summary for the 'Cookies and site data' option in the 'Clear Browsing Data' screen, explaining that deleting cookies and site data will sign the user out of most websites but your Brave sign in will stay.">
     Signs you out of most sites. You'll stay signed in to your Brave sync chain so your synced data can be cleared.
   </message>
+  <message name="IDS_SETTINGS_CLEAR_COOKIES_AND_SITE_DATA_SUMMARY_BASIC_MAIN_PROFILE" desc="A summary for the 'Cookies and site data' option in the 'Clear Browsing Data' screen, explaining that deleting cookies and site data will sign the user out of most websites but your Brave sign in will stay.">
+    Signs you out of most sites. You won't be signed out of your Brave sync chain.
+  </message>
   <message name="IDS_SETTINGS_CLEAR_BROWSING_HISTORY_SUMMARY" desc="A subtext for the basic tab explaining browsing history.">
     Clears history, including in the search box
   </message>
@@ -1450,7 +1453,7 @@
     Help sites fight fraud and distinguish bots from profiles
   </message>
   <message name="IDS_SETTINGS_PRIVACY_SANDBOX_LEARN_MORE_DIALOG_TITLE" desc="Title of a page The page is broken up into two sections because there are two APIs a website can use in order to target ads: the Topics API and the FLEDGE API. There is some friction between the page title and the name of the control. The name of the control is “Browser-based ad personalization”. (We wanted to use the simpler “Ad personalization” but we need to distinguish this Brave setting from the Brave sync chain setting (https://adssettings.google.com/authenticated)). The page should ideally read “About Browser-base ad personalization” but we didn’t want the title to wrap to a new line, so we shortened it. But the two sections on this page describe both ways a site can target ads to the user if the user is part of trials (which would mean that “Browser-based ad personalization” is on for them).">
-    About ad personalization
+    About Browser-based ad personalization
   </message>
   <message name="IDS_SETTINGS_PRIVACY_SANDBOX_LEARN_MORE_DIALOG_FLEDGE_TITLE" desc="FLEDGE API A sub title that describes the second of 2 ways a site can get info from Brave in order to target ads to the user.">
     Sites you visit that define your interests
@@ -1501,7 +1504,7 @@
     For example, if you visit a site to buy shoes for a marathon, the site might define your interest as running marathons. Later, if you visit a different site to register for a race, that site can show you an ad for running shoes based on your interests.
   </message>
   <message name="IDS_SETTINGS_PRIVACY_SANDBOX_AD_PERSONALIZATION_DIALOG_FLEDGE_LEARN_MORE_3" desc="Third learn more description of the website-based interests section of the 'ad personalization' dialog.">
-    The list of sites that define your interests is deleted and refreshed each month. A site you visit again might appear on the list again. Or you can remove a site if you don't want that site to ever define interests for you.
+    To protect your privacy, we auto-delete sites from the list that are older than 4 weeks. A site you visit again might appear on the list again. Or you can remove a site if you don't want that site to ever define interests for you.
   </message>
   <message name="IDS_SETTINGS_PRIVACY_SANDBOX_AD_MEASUREMENT_DIALOG_TITLE" desc="Card title of the Ad measurement API section of the Privacy Sandbox settings.">
     Ad measurement
@@ -1907,13 +1910,13 @@
     Turn off
   </message>
   <message name="IDS_SETTINGS_ENABLE_DO_NOT_TRACK" desc="The label of the checkbox to enable/disable sending the 'Do Not track' header">
-    Send a "Do not track" request with your browsing traffic
+    Send a "Do Not Track" request with your browsing traffic
   </message>
   <message name="IDS_SETTINGS_ENABLE_DO_NOT_TRACK_DIALOG_TITLE" desc="The title of a confirmation dialog that confirms that the user want to send the 'Do Not Track' header">
-    Do not track
+    Do Not Track
   </message>
   <message name="IDS_SETTINGS_ENABLE_DO_NOT_TRACK_DIALOG_TEXT" desc="The text of a confirmation dialog that confirms that the user want to send the 'Do Not Track' header">
-    Enabling “Do not track” means that a request to not be tracked will be included each time you browse to a new website. Any effect depends on whether the website responds to this request, and how it's interpreted. For example, some websites may respond by only showing you ads that aren't based on other sites you've visited. Even with this “Do not track” request in place, many websites will still collect and use your browsing data. <ph name="BEGIN_LINK">&lt;a target="_blank" href="$1"&gt;</ph>Learn more<ph name="END_LINK">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph>
+    Enabling "Do Not Track" means that a request will be included with your browsing traffic. Any effect depends on whether a website responds to the request, and how the request is interpreted. For example, some websites may respond to this request by showing you ads that aren't based on other websites you've visited. Many websites will still collect and use your browsing data - for example to improve security, to provide content, services, ads and recommendations on their websites, and to generate reporting statistics. <ph name="BEGIN_LINK">&lt;a target="_blank" href="$1"&gt;</ph>Learn more<ph name="END_LINK">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph>
   </message>
   <message name="IDS_SETTINGS_PERMISSIONS" desc="Name of the settings page which allows users to manage permissions and site content settings">
     Permissions and content settings
@@ -2386,6 +2389,21 @@
   <message name="IDS_SETTINGS_SITE_SETTINGS_DEVICE_USE_BLOCKED_EXCEPTIONS" desc="Label for the blocked exceptions site list of the device use content setting.">
     Not allowed to know when you're actively using your device
   </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_FEDERATED_IDENTITY_API_DESCRIPTION" desc="Description of the third-party sign-in content setting.">
+    Lets you sign in to websites using the account you have with an identity service
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_FEDERATED_IDENTITY_API_ALLOWED" desc="Label for the enabled option of the third-party sign-in content setting.">
+    Sites can show sign-in prompts from identity services
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_FEDERATED_IDENTITY_API_BLOCKED" desc="Label for the disabled option of the third-party sign-in content setting.">
+    Block sign-in prompts from identity services
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_FEDERATED_IDENTITY_API_ALLOWED_EXCEPTIONS" desc="Label for the allowed exceptions site list of the third-party sign-in content setting.">
+    Allowed to show third-party sign-in prompts
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_FEDERATED_IDENTITY_API_BLOCKED_EXCEPTIONS" desc="Label for the blocked exceptions site list of the third-party sign-in content setting.">
+    Not allowed to show third-party sign-in prompts
+  </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_FILE_SYSTEM_WRITE_DESCRIPTION" desc="Description of the file system write content setting.">
     Sites usually access files and folders on your device for features like automatically saving your work
   </message>
@@ -2608,7 +2626,7 @@
   <message name="IDS_SETTINGS_SITE_SETTINGS_PROTECTED_CONTENT_BLOCKED_SUB_LABEL" desc="Sub label for the disabled option of the protected content content setting.">
     Media with a copyright might not play
   </message>
-  <if expr="chromeos_ash or is_win">
+  <if expr="chromeos_ash or chromeos_lacros or is_win">
     <message name="IDS_SETTINGS_SITE_SETTINGS_PROTECTED_CONTENT_IDENTIFIERS_EXPLANATION" desc="Text that is displayed on the Protected Content section of Content Settings. This text explains that enabling protected content may require using a uniquely identifiable machine identifier.">
       Sites may also need to recognize your device using an identifier
     </message>
@@ -2629,6 +2647,11 @@
     </message>
     <message name="IDS_SETTINGS_SITE_SETTINGS_PROTECTED_CONTENT_IDENTIFIERS_BLOCKED_EXCEPTIONS" desc="Label for the blocked exceptions site list of the protected content content setting.">
       Not allowed to use identifiers to play protected content
+    </message>
+  </if>
+  <if expr="is_win and _google_chrome">
+    <message name="IDS_SETTINGS_SITE_SETTINGS_PROTECTED_CONTENT_IDENTIFIERS_ALLOWED_SUB_LABEL" desc="A subtitle for the ‘Protected Content IDs’ setting, shown if user chooses to allow Protected Content IDs. This text explains that enabling protected content IDs may result in live captioning not working.">
+      Brave Live Caption might not work
     </message>
   </if>
   <message name="IDS_SETTINGS_SITE_SETTINGS_PROTOCOL_HANDLERS_DESCRIPTION" desc="Description of the protocol handlers content setting.">
@@ -3532,6 +3555,9 @@
   </message>
   <message name="IDS_SETTINGS_FIXED_WIDTH_FONT_LABEL" desc="Label for the fixed width font dropdown menu in settings.">
     Fixed-width font
+  </message>
+  <message name="IDS_SETTINGS_MATH_FONT_LABEL" desc="Label for the mathematical font dropdown menu in settings.">
+    Mathematical font
   </message>
   <message name="IDS_SETTINGS_MINIMUM_FONT_SIZE_LABEL" desc="Label for the minimum font size slider in settings.">
     Minimum font size

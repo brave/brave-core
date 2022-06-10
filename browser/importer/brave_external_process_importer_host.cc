@@ -11,7 +11,6 @@
 #include "base/bind.h"
 #include "base/files/file_util.h"
 #include "base/json/json_reader.h"
-#include "base/task/post_task.h"
 #include "base/task/thread_pool.h"
 #include "brave/browser/importer/brave_importer_p3a.h"
 #include "brave/common/importer/chrome_importer_utils.h"

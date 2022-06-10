@@ -35,4 +35,10 @@ void SyncSessionDurationsMetricsRecorder::
     OnErrorStateOfRefreshTokenUpdatedForAccount(
         const CoreAccountInfo& account_info,
         const GoogleServiceAuthError& error) {}
+bool SyncSessionDurationsMetricsRecorder::IsSignedIn() const {
+  return false;
+}
+bool SyncSessionDurationsMetricsRecorder::IsSyncing() const {
+  return false;
+}
 }  // namespace syncer

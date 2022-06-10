@@ -24,11 +24,11 @@
 #include "base/json/json_string_value_serializer.h"
 #include "base/json/json_writer.h"
 #include "base/logging.h"
+#include "base/strings/escape.h"
 #include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
 #include "base/strings/stringprintf.h"
 #include "base/strings/utf_string_conversions.h"
-#include "base/task/post_task.h"
 #include "base/task/sequenced_task_runner.h"
 #include "base/task/task_runner_util.h"
 #include "base/task/thread_pool.h"
@@ -69,7 +69,6 @@
 #include "content/public/browser/service_process_host.h"
 #include "content/public/browser/storage_partition.h"
 #include "content/public/browser/url_data_source.h"
-#include "net/base/escape.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "net/base/url_util.h"
 #include "net/http/http_status_code.h"
@@ -804,7 +803,7 @@ void RewardsServiceImpl::RestorePublishers() {
 }
 
 std::string RewardsServiceImpl::URIEncode(const std::string& value) {
-  return net::EscapeQueryParamValue(value, false);
+  return base::EscapeQueryParamValue(value, false);
 }
 
 void RewardsServiceImpl::Shutdown() {

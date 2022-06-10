@@ -8,7 +8,6 @@
 #include <utility>
 
 #include "base/json/json_reader.h"
-#include "base/task/post_task.h"
 #include "base/threading/sequenced_task_runner_handle.h"
 #include "brave/components/skus/browser/pref_names.h"
 #include "brave/components/skus/browser/rs/cxx/src/lib.rs.h"

@@ -16,7 +16,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import org.chromium.base.ApiCompatibilityUtils;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.AppHooks;
-import org.chromium.chrome.browser.compositor.layouts.OverviewModeBehavior;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.theme.ThemeColorProvider;
 import org.chromium.chrome.browser.theme.ThemeColorProvider.ThemeColorObserver;
@@ -40,9 +39,6 @@ class BrowsingModeBottomToolbarMediator implements ThemeColorObserver {
 
     /** The model for the browsing mode bottom toolbar that holds all of its state. */
     private final BrowsingModeBottomToolbarModel mModel;
-
-    /** The overview mode manager. */
-    private OverviewModeBehavior mOverviewModeBehavior;
 
     /** A provider that notifies components when the theme color changes.*/
     private ThemeColorProvider mThemeColorProvider;

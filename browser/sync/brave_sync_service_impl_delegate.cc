@@ -10,7 +10,6 @@
 
 #include "base/callback_helpers.h"
 #include "base/metrics/histogram_functions.h"
-#include "base/task/post_task.h"
 #include "base/threading/thread_task_runner_handle.h"
 #include "brave/components/sync/driver/brave_sync_service_impl.h"
 #include "components/sync_device_info/device_info_sync_service.h"

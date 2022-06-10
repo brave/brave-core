@@ -57,6 +57,10 @@ static_library("network_time_helper") {
     "//base",
     "//components/network_time",
   ]
+
+  if (is_ios) {
+    deps += [ "//ios/web/public" ]
+  }
 }
 
 source_set("prefs") {

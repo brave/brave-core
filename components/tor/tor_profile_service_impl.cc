@@ -10,7 +10,7 @@
 #include <utility>
 
 #include "base/bind.h"
-#include "base/task/post_task.h"
+#include "base/task/thread_pool.h"
 #include "brave/components/tor/pref_names.h"
 #include "brave/components/tor/tor_constants.h"
 #include "brave/net/proxy_resolution/proxy_config_service_tor.h"
@@ -83,9 +83,10 @@ class TorProxyLookupClient : public network::mojom::ProxyLookupClient {
   mojo::PendingRemote<network::mojom::ProxyLookupClient>
   GetProxyLookupClient() {
     mojo::PendingRemote<network::mojom::ProxyLookupClient> pending_remote =
-        receiver_.BindNewPipeAndPassRemote(base::CreateSingleThreadTaskRunner(
-            {content::BrowserThread::UI,
-             content::BrowserTaskType::kPreconnect}));
+        receiver_.BindNewPipeAndPassRemote(
+            base::ThreadPool::CreateSingleThreadTaskRunner(
+                {content::BrowserThread::UI,
+                 content::BrowserTaskType::kPreconnect}));
     receiver_.set_disconnect_handler(base::BindOnce(
         &TorProxyLookupClient::OnProxyLookupComplete, base::Unretained(this),
         net::ERR_ABORTED, absl::nullopt));

@@ -8,7 +8,9 @@
 
 #include "brave/browser/ui/brave_browser_window.h"
 
-#define BRAVE_BROWSER_VIEW_H friend class BraveBrowserView;
+#define BrowserViewLayoutDelegateImpl \
+  BrowserViewLayoutDelegateImpl;      \
+  friend class BraveBrowserView
 #define BrowserWindow BraveBrowserWindow
 #define GetContentsLayoutManager     \
   GetContentsLayoutManager_Unused(); \
@@ -18,7 +20,7 @@
   virtual MaybeShowReadingListInSidePanelIPH
 
 #include "src/chrome/browser/ui/views/frame/browser_view.h"
-#undef BRAVE_BROWSER_VIEW_H
+#undef BrowserViewLayoutDelegateImpl
 #undef BrowserWindow
 #undef MaybeShowReadingListInSidePanelIPH
 #undef GetContentsLayoutManager

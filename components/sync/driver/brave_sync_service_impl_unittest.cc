@@ -263,8 +263,7 @@ TEST_F(BraveSyncServiceImplTest, ForcedSetDecryptionPassphrase) {
   EXPECT_TRUE(
       brave_sync_service_impl()->GetUserSettings()->IsPassphraseRequired());
 
-  brave_sync_service_impl()->OnEngineInitialized(
-      WeakHandle<DataTypeDebugInfoListener>(), true, false);
+  brave_sync_service_impl()->OnEngineInitialized(true, false);
   EXPECT_FALSE(
       brave_sync_service_impl()->GetUserSettings()->IsPassphraseRequired());
 

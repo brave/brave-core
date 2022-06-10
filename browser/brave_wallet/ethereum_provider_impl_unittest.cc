@@ -399,7 +399,7 @@ class EthereumProviderImplUnitTest : public testing::Test {
   void ResetEthereumPermission(const url::Origin& origin,
                                size_t from_index = 0) {
     permissions::BraveWalletPermissionContext::ResetPermission(
-        ContentSettingsType::BRAVE_ETHEREUM, browser_context(), origin,
+        blink::PermissionType::BRAVE_ETHEREUM, browser_context(), origin,
         from(from_index));
   }
 

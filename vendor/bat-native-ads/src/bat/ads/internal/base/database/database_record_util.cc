@@ -22,30 +22,30 @@ mojom::DBRecordPtr CreateRecord(
   int column = 0;
 
   for (const auto& binding : bindings) {
-    mojom::DBValuePtr value = mojom::DBValue::New();
+    mojom::DBValuePtr value;
     switch (binding) {
       case mojom::DBCommand::RecordBindingType::STRING_TYPE: {
-        value->set_string_value(statement->ColumnString(column));
+        value = mojom::DBValue::NewStringValue(statement->ColumnString(column));
         break;
       }
 
       case mojom::DBCommand::RecordBindingType::INT_TYPE: {
-        value->set_int_value(statement->ColumnInt(column));
+        value = mojom::DBValue::NewIntValue(statement->ColumnInt(column));
         break;
       }
 
       case mojom::DBCommand::RecordBindingType::INT64_TYPE: {
-        value->set_int64_value(statement->ColumnInt64(column));
+        value = mojom::DBValue::NewInt64Value(statement->ColumnInt64(column));
         break;
       }
 
       case mojom::DBCommand::RecordBindingType::DOUBLE_TYPE: {
-        value->set_double_value(statement->ColumnDouble(column));
+        value = mojom::DBValue::NewDoubleValue(statement->ColumnDouble(column));
         break;
       }
 
       case mojom::DBCommand::RecordBindingType::BOOL_TYPE: {
-        value->set_bool_value(statement->ColumnBool(column));
+        value = mojom::DBValue::NewBoolValue(statement->ColumnBool(column));
         break;
       }
     }
