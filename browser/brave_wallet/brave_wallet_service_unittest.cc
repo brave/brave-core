@@ -6,6 +6,7 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include <string>
 
+#include "base/json/json_reader.h"
 #include "base/memory/raw_ptr.h"
 #include "base/test/bind.h"
 #include "base/test/metrics/histogram_tester.h"
@@ -747,40 +748,42 @@ TEST_F(BraveWalletServiceUnitTest, GetUserAssets) {
 TEST_F(BraveWalletServiceUnitTest, DefaultAssets) {
   mojom::BlockchainTokenPtr eth_token = GetEthToken();
   mojom::BlockchainTokenPtr bat_token = GetBatToken();
-  std::vector<std::string> ids = {
-      mojom::kMainnetChainId, mojom::kRinkebyChainId, mojom::kRopstenChainId,
-      mojom::kGoerliChainId,  mojom::kKovanChainId,   mojom::kLocalhostChainId};
-  for (const auto& id : ids) {
-    eth_token->chain_id = id;
-    bat_token->chain_id = id;
+
+  for (const auto& chain : GetAllKnownEthChains(nullptr)) {
+    auto native_asset = mojom::BlockchainToken::New(
+        "", chain->symbol_name, "", false, false, chain->symbol,
+        chain->decimals, true, "", "", chain->chain_id, mojom::CoinType::ETH);
     std::vector<mojom::BlockchainTokenPtr> tokens;
-    GetUserAssets(id, mojom::CoinType::ETH, &tokens);
-    if (id == mojom::kMainnetChainId) {
+    GetUserAssets(chain->chain_id, mojom::CoinType::ETH, &tokens);
+    if (chain->chain_id == mojom::kMainnetChainId) {
       EXPECT_EQ(tokens.size(), 2u);
       EXPECT_EQ(eth_token, tokens[0]);
       EXPECT_EQ(bat_token, tokens[1]);
     } else {
+      SCOPED_TRACE(testing::PrintToString(chain->chain_id));
       EXPECT_EQ(tokens.size(), 1u);
-      EXPECT_EQ(eth_token, tokens[0]);
+      EXPECT_EQ(native_asset, tokens[0]);
     }
   }
 
   mojom::BlockchainTokenPtr sol_token = sol_token_->Clone();
   for (const auto& chain : GetAllKnownSolChains()) {
+    SCOPED_TRACE(testing::PrintToString(chain->chain_id));
     std::vector<mojom::BlockchainTokenPtr> tokens;
     sol_token->chain_id = chain->chain_id;
     GetUserAssets(chain->chain_id, mojom::CoinType::SOL, &tokens);
-    EXPECT_EQ(tokens.size(), 1u) << chain->chain_id;
-    EXPECT_EQ(sol_token, tokens[0]) << chain->chain_id;
+    EXPECT_EQ(tokens.size(), 1u);
+    EXPECT_EQ(sol_token, tokens[0]);
   }
 
   mojom::BlockchainTokenPtr fil_token = fil_token_->Clone();
   for (const auto& chain : GetAllKnownFilChains()) {
+    SCOPED_TRACE(testing::PrintToString(chain->chain_id));
     std::vector<mojom::BlockchainTokenPtr> tokens;
     fil_token->chain_id = chain->chain_id;
     GetUserAssets(chain->chain_id, mojom::CoinType::FIL, &tokens);
-    EXPECT_EQ(tokens.size(), 1u) << chain->chain_id;
-    EXPECT_EQ(fil_token, tokens[0]) << chain->chain_id;
+    EXPECT_EQ(tokens.size(), 1u);
+    EXPECT_EQ(fil_token, tokens[0]);
   }
 }
 
@@ -1488,6 +1491,79 @@ TEST_F(BraveWalletServiceUnitTest, MigrateMultichainUserAssets) {
   EXPECT_EQ(*filecoin_dict, BraveWalletService::GetDefaultFilecoinAssets());
 
   EXPECT_FALSE(GetPrefs()->HasPrefPath(kBraveWalletUserAssetsDeprecated));
+}
+
+TEST_F(BraveWalletServiceUnitTest, MigrateUserAssetsAddPreloadingNetworks) {
+  ASSERT_FALSE(GetPrefs()->GetBoolean(
+      kBraveWalletUserAssetsAddPreloadingNetworksMigrated));
+
+  // Test cases covered:
+  // 1. Network that has existing native asset -> no change.
+  // 2. Network with existing custom tokens -> native asset should be inserted
+  //    at first.
+  // 3. Network with empty asset list -> should append native asset.
+  std::string json = R"({
+    "ethereum": {
+      "mainnet": [
+        {
+          "address": "",
+          "name": "Ethereum",
+          "symbol": "ETH",
+          "is_erc20": false,
+          "is_erc721": false,
+          "decimals": 18,
+          "visible": false
+        }
+      ],
+      "0xfa": [
+        {
+          "address":"0x6a31Aca4d2f7398F04d9B6ffae2D898d9A8e7938",
+          "coingecko_id":"",
+          "decimals":18,
+          "is_erc20":true,
+          "is_erc721":false,
+          "logo":"https://brave.com/logo.jpg",
+          "name":"WTRTL",
+          "symbol":"WTRTL",
+          "token_id":"",
+          "visible":true
+        }
+      ],
+      "0x89": []
+    }
+  })";
+  auto user_assets_value = base::JSONReader::Read(json);
+  ASSERT_TRUE(user_assets_value);
+  GetPrefs()->Set(kBraveWalletUserAssets, *user_assets_value);
+
+  ASSERT_TRUE(GetPrefs()->HasPrefPath(kBraveWalletUserAssets));
+  BraveWalletService::MigrateUserAssetsAddPreloadingNetworks(GetPrefs());
+
+  auto wtrtl = mojom::BlockchainToken::New(
+      "0x6a31Aca4d2f7398F04d9B6ffae2D898d9A8e7938", "WTRTL",
+      "https://brave.com/logo.jpg", true, false, "WTRTL", 18, true, "", "",
+      mojom::kFantomMainnetChainId, mojom::CoinType::ETH);
+  for (const auto& chain : GetAllKnownEthChains(nullptr)) {
+    auto native_asset = mojom::BlockchainToken::New(
+        "", chain->symbol_name, "", false, false, chain->symbol,
+        chain->decimals, true, "", "", chain->chain_id, mojom::CoinType::ETH);
+    std::vector<mojom::BlockchainTokenPtr> tokens;
+    GetUserAssets(chain->chain_id, mojom::CoinType::ETH, &tokens);
+
+    if (chain->chain_id == mojom::kMainnetChainId)
+      native_asset->visible = false;
+
+    if (chain->chain_id == mojom::kFantomMainnetChainId) {
+      EXPECT_EQ(tokens.size(), 2u);
+      EXPECT_EQ(tokens[1], wtrtl);
+    } else {
+      EXPECT_EQ(tokens.size(), 1u);
+    }
+    EXPECT_EQ(tokens[0], native_asset);
+  }
+
+  EXPECT_TRUE(GetPrefs()->GetBoolean(
+      kBraveWalletUserAssetsAddPreloadingNetworksMigrated));
 }
 
 TEST_F(BraveWalletServiceUnitTest, RecordWalletNoUse) {

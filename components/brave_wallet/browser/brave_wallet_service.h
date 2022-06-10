@@ -66,6 +66,7 @@ class BraveWalletService : public KeyedService,
 
   static void MigrateUserAssetEthContractAddress(PrefService* prefs);
   static void MigrateMultichainUserAssets(PrefService* prefs);
+  static void MigrateUserAssetsAddPreloadingNetworks(PrefService* prefs);
 
   static base::Value GetDefaultEthereumAssets();
   static base::Value GetDefaultSolanaAssets();
