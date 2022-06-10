@@ -179,18 +179,19 @@ void BraveRewardsGetPublisherInfoFunction::OnGetPublisherInfo(
     return;
   }
 
-  base::Value dict(base::Value::Type::DICTIONARY);
-  dict.SetStringKey("publisherKey", info->id);
-  dict.SetStringKey("name", info->name);
-  dict.SetIntKey("percentage", info->percent);
-  dict.SetIntKey("status", static_cast<int>(info->status));
-  dict.SetBoolKey("excluded",
-                  info->excluded == ledger::type::PublisherExclude::EXCLUDED);
-  dict.SetStringKey("url", info->url);
-  dict.SetStringKey("provider", info->provider);
-  dict.SetStringKey("favIconUrl", info->favicon_url);
+  base::Value::Dict dict;
+  dict.Set("publisherKey", info->id);
+  dict.Set("name", info->name);
+  dict.Set("percentage", static_cast<int>(info->percent));
+  dict.Set("status", static_cast<int>(info->status));
+  dict.Set("excluded",
+           info->excluded == ledger::type::PublisherExclude::EXCLUDED);
+  dict.Set("url", info->url);
+  dict.Set("provider", info->provider);
+  dict.Set("favIconUrl", info->favicon_url);
 
-  Respond(TwoArguments(base::Value(static_cast<int>(result)), std::move(dict)));
+  Respond(TwoArguments(base::Value(static_cast<int>(result)),
+                       base::Value(std::move(dict))));
 }
 
 BraveRewardsSetPublisherIdForTabFunction::
@@ -301,18 +302,19 @@ void BraveRewardsGetPublisherPanelInfoFunction::OnGetPublisherPanelInfo(
     return;
   }
 
-  base::Value dict(base::Value::Type::DICTIONARY);
-  dict.SetStringKey("publisherKey", info->id);
-  dict.SetStringKey("name", info->name);
-  dict.SetIntKey("percentage", info->percent);
-  dict.SetIntKey("status", static_cast<int>(info->status));
-  dict.SetBoolKey("excluded",
-                  info->excluded == ledger::type::PublisherExclude::EXCLUDED);
-  dict.SetStringKey("url", info->url);
-  dict.SetStringKey("provider", info->provider);
-  dict.SetStringKey("favIconUrl", info->favicon_url);
+  base::Value::Dict dict;
+  dict.Set("publisherKey", info->id);
+  dict.Set("name", info->name);
+  dict.Set("percentage", static_cast<int>(info->percent));
+  dict.Set("status", static_cast<int>(info->status));
+  dict.Set("excluded",
+           info->excluded == ledger::type::PublisherExclude::EXCLUDED);
+  dict.Set("url", info->url);
+  dict.Set("provider", info->provider);
+  dict.Set("favIconUrl", info->favicon_url);
 
-  Respond(TwoArguments(base::Value(static_cast<int>(result)), std::move(dict)));
+  Respond(TwoArguments(base::Value(static_cast<int>(result)),
+                       base::Value(std::move(dict))));
 }
 
 BraveRewardsSavePublisherInfoFunction::
@@ -373,10 +375,10 @@ ExtensionFunction::ResponseAction BraveRewardsTipSiteFunction::Run() {
                             base::NumberToString(params->tab_id)));
   }
 
-  auto params_dict = std::make_unique<base::DictionaryValue>();
-  params_dict->SetString("publisherKey", params->publisher_key);
-  params_dict->SetString("entryPoint", params->entry_point);
-  params_dict->SetString(
+  base::Value::Dict params_dict;
+  params_dict.Set("publisherKey", params->publisher_key);
+  params_dict.Set("entryPoint", params->entry_point);
+  params_dict.Set(
       "url", contents ? contents->GetLastCommittedURL().spec() : std::string());
   ::brave_rewards::OpenTipDialog(contents, std::move(params_dict));
 
@@ -491,20 +493,20 @@ void BraveRewardsTipUserFunction::ShowTipDialog() {
     return;
   }
 
-  base::Value media_meta_data_dict(base::Value::Type::DICTIONARY);
-  media_meta_data_dict.SetStringKey("mediaType", params->media_type);
-  media_meta_data_dict.SetStringKey("publisherKey", params->publisher_key);
-  media_meta_data_dict.SetStringKey("publisherName", params->publisher_name);
-  media_meta_data_dict.SetStringKey("publisherScreenName",
-                                    params->publisher_screen_name);
-  media_meta_data_dict.SetStringKey("postId", params->post_id);
-  media_meta_data_dict.SetStringKey("postTimestamp", params->post_timestamp);
-  media_meta_data_dict.SetStringKey("postText", params->post_text);
+  base::Value::Dict media_meta_data_dict;
+  media_meta_data_dict.Set("mediaType", params->media_type);
+  media_meta_data_dict.Set("publisherKey", params->publisher_key);
+  media_meta_data_dict.Set("publisherName", params->publisher_name);
+  media_meta_data_dict.Set("publisherScreenName",
+                           params->publisher_screen_name);
+  media_meta_data_dict.Set("postId", params->post_id);
+  media_meta_data_dict.Set("postTimestamp", params->post_timestamp);
+  media_meta_data_dict.Set("postText", params->post_text);
 
-  auto params_dict = std::make_unique<base::DictionaryValue>();
-  params_dict->SetString("publisherKey", params->publisher_key);
-  params_dict->SetString("url", params->url);
-  params_dict->SetPath("mediaMetaData", std::move(media_meta_data_dict));
+  base::Value::Dict params_dict;
+  params_dict.Set("publisherKey", params->publisher_key);
+  params_dict.Set("url", params->url);
+  params_dict.Set("mediaMetaData", std::move(media_meta_data_dict));
 
   ::brave_rewards::OpenTipDialog(contents, std::move(params_dict));
 }
@@ -549,8 +551,8 @@ BraveRewardsGetRewardsParametersFunction::Run() {
   Profile* profile = Profile::FromBrowserContext(browser_context());
   auto* rewards_service = RewardsServiceFactory::GetForProfile(profile);
   if (!rewards_service) {
-    base::Value data(base::Value::Type::DICTIONARY);
-    return RespondNow(OneArgument(std::move(data)));
+    base::Value::Dict data;
+    return RespondNow(OneArgument(base::Value(std::move(data))));
   }
 
   rewards_service->GetRewardsParameters(base::BindOnce(
@@ -581,7 +583,7 @@ void BraveRewardsGetRewardsParametersFunction::OnGetRewardsParameters(
 
   base::Value::Dict payout_status;
   for (const auto& [key, value] : parameters->payout_status) {
-    payout_status->Set(key, value);
+    payout_status.Set(key, value);
   }
   data.Set("payoutStatus", std::move(payout_status));
 
@@ -595,8 +597,8 @@ ExtensionFunction::ResponseAction BraveRewardsGetBalanceReportFunction::Run() {
   Profile* profile = Profile::FromBrowserContext(browser_context());
   auto* rewards_service = RewardsServiceFactory::GetForProfile(profile);
   if (!rewards_service) {
-    base::Value data(base::Value::Type::DICTIONARY);
-    return RespondNow(OneArgument(std::move(data)));
+    base::Value::Dict data;
+    return RespondNow(OneArgument(base::Value(std::move(data))));
   }
 
   std::unique_ptr<brave_rewards::GetBalanceReport::Params> params(
@@ -1049,8 +1051,8 @@ ExtensionFunction::ResponseAction BraveRewardsFetchBalanceFunction::Run() {
   RewardsService* rewards_service =
       RewardsServiceFactory::GetForProfile(profile);
   if (!rewards_service) {
-    base::DictionaryValue balance_value;
-    return RespondNow(OneArgument(std::move(balance_value)));
+    base::Value::Dict balance_value;
+    return RespondNow(OneArgument(base::Value(std::move(balance_value))));
   }
 
   rewards_service->FetchBalance(

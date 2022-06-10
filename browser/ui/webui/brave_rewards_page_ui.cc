@@ -678,8 +678,7 @@ void RewardsDOMHandler::OnGetRewardsParameters(
     }
 
     data.Set("rate", parameters->rate);
-    data.Set("autoContributeChoice",
-                      parameters->auto_contribute_choice);
+    data.Set("autoContributeChoice", parameters->auto_contribute_choice);
     data.Set("autoContributeChoices", std::move(auto_contribute_choices));
     data.Set("payoutStatus", std::move(payout_status));
   }
