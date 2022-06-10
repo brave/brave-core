@@ -117,15 +117,23 @@ extension BraveWallet.NetworkInfo: Identifiable {
   }
 
   public var isCustom: Bool {
-    let ethNetworks = [
+    /// Will be able to get known/custom networks after
+    /// https://github.com/brave/brave-ios/issues/5489
+    let knownEthNetworks = [
       BraveWallet.MainnetChainId,
       BraveWallet.RinkebyChainId,
       BraveWallet.RopstenChainId,
       BraveWallet.GoerliChainId,
       BraveWallet.KovanChainId,
       BraveWallet.LocalhostChainId,
+      BraveWallet.PolygonMainnetChainId,
+      BraveWallet.BinanceSmartChainMainnetChainId,
+      BraveWallet.CeloMainnetChainId,
+      BraveWallet.AvalancheMainnetChainId,
+      BraveWallet.FantomMainnetChainId,
+      BraveWallet.OptimismMainnetChainId
     ]
-    return !ethNetworks.contains(id)
+    return !knownEthNetworks.contains(id)
   }
 }
 
