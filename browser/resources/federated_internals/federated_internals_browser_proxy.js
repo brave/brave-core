@@ -1,4 +1,4 @@
-import {PageCallbackRouter, PageHandlerFactory, PageHandlerRemote} from './federated_internals.mojom-webui.js';
+import {PageCallbackRouter, PageHandlerFactory, PageHandlerRemote} from './brave/browser/ui/webui/brave_federated/federated_internals.mojom-webui.js';
 
 export class FederatedInternalsBrowserProxy {
   handler;
