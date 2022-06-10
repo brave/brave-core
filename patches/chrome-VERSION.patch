@@ -1,5 +1,9 @@
 diff --git a/chrome/VERSION b/chrome/VERSION
+<<<<<<< HEAD
 index 486af5c4bf400ffc63a9cbba6f9e3cc8a211d81d..7cfbe9fc91f7f98cbf867bf9e47722029aab0c19 100644
+=======
+index c3a01a53c77bc6a35c479d9fe8a1f9b2cd8b74ad..2f4ebdcbd4a729940719ac7452f16baf10204960 100644
+>>>>>>> ad44293f94 (Prototype vertical tabs)
 --- a/chrome/VERSION
 +++ b/chrome/VERSION
 @@ -1,4 +1,4 @@
@@ -9,4 +13,8 @@ index 486af5c4bf400ffc63a9cbba6f9e3cc8a211d81d..7cfbe9fc91f7f98cbf867bf9e4772202
 -PATCH=42
 +MINOR=1
 +BUILD=41
+<<<<<<< HEAD
 +PATCH=57
+=======
++PATCH=29
+>>>>>>> ad44293f94 (Prototype vertical tabs)

@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/ui/views/tabs/tab_container.cc b/chrome/browser/ui/views/tabs/tab_container.cc
+index 01e937339b0291a63b9da8e0ec0248609819ad64..7946608c2a016902411d5671536b3e3eabc77a08 100644
+--- a/chrome/browser/ui/views/tabs/tab_container.cc
++++ b/chrome/browser/ui/views/tabs/tab_container.cc
+@@ -759,6 +759,8 @@ gfx::Size TabContainer::GetMinimumSize() const {
+ }
+ 
+ gfx::Size TabContainer::CalculatePreferredSize() const {
++  BRAVE_UI_VIEWS_TABS_TAB_CONTAINER_CALCULATE_PREFERRED_SIZE_FOR_VERT_TABS
++
+   int preferred_width;
+   // The tab container needs to always exactly fit the bounds of the tabs so
+   // that NTB can be laid out just to the right of the rightmost tab. When the

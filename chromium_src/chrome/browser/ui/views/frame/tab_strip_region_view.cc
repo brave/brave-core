@@ -8,6 +8,9 @@
 
 #define NewTabButton BraveNewTabButton
 #define TabSearchButton BraveTabSearchButton
+#define BRAVE_UI_VIEWS_FRAME_TAB_STRIP_REGION_CHANGE_ORIENTATION \
+  layout_manager_->SetOrientation(views::LayoutOrientation::kVertical);
 #include "src/chrome/browser/ui/views/frame/tab_strip_region_view.cc"
+#undef BRAVE_UI_VIEWS_FRAME_TAB_STRIP_REGION_CHANGE_ORIENTATION
 #undef TabSearchButton
 #undef NewTabButton

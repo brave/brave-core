@@ -94,6 +94,8 @@ class BraveBrowserView : public BrowserView {
   void OnWindowClosingConfirmResponse(bool allowed_to_close);
   BraveBrowser* GetBraveBrowser() const;
 
+  void InitVerticalTabs();
+
 #if BUILDFLAG(ENABLE_SIDEBAR)
   sidebar::Sidebar* InitSidebar() override;
   ContentsLayoutManager* GetContentsLayoutManager() const override;
@@ -107,6 +109,8 @@ class BraveBrowserView : public BrowserView {
   raw_ptr<SidebarContainerView> sidebar_container_view_ = nullptr;
   raw_ptr<views::View> sidebar_host_view_ = nullptr;
 #endif
+
+  raw_ptr<views::View> vertical_tabs_container_ = nullptr;
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   BraveVPNPanelController vpn_panel_controller_{this};

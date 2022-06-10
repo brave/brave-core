@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/ui/views/frame/tab_strip_region_view.cc b/chrome/browser/ui/views/frame/tab_strip_region_view.cc
+index ecbcbe032bea5b0f628b26a2a6dcb0d72485ab9e..b3774f262987c4eaf371a0ade6c902d5cf39a4b7 100644
+--- a/chrome/browser/ui/views/frame/tab_strip_region_view.cc
++++ b/chrome/browser/ui/views/frame/tab_strip_region_view.cc
+@@ -128,6 +128,8 @@ TabStripRegionView::TabStripRegionView(std::unique_ptr<TabStrip> tab_strip) {
+ 
+   SetProperty(views::kElementIdentifierKey, kTabStripRegionElementId);
+ 
++ BRAVE_UI_VIEWS_FRAME_TAB_STRIP_REGION_CHANGE_ORIENTATION 
++
+ #if BUILDFLAG(IS_CHROMEOS)
+   if (base::FeatureList::IsEnabled(features::kChromeOSTabSearchCaptionButton))
+     return;

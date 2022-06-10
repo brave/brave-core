@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/ui/views/tabs/tab_strip_layout_helper.cc b/chrome/browser/ui/views/tabs/tab_strip_layout_helper.cc
+index 0beed83f3ffc530a8392e40230da88fe309229c1..99a48438bb0a357fc8eab799b619ae5ee761efc0 100644
+--- a/chrome/browser/ui/views/tabs/tab_strip_layout_helper.cc
++++ b/chrome/browser/ui/views/tabs/tab_strip_layout_helper.cc
+@@ -272,6 +272,8 @@ std::vector<gfx::Rect> TabStripLayoutHelper::CalculateIdealBounds(
+     tab_widths.emplace_back(state, layout_constants, size_info);
+   }
+ 
++  BRAVE_UI_VIEWS_TABS_TAB_STRIP_LAYOUT_HELPER_CALCULATE_BOUNDS_FOR_VERT_TABS
++
+   return CalculateTabBounds(layout_constants, tab_widths, tabstrip_width);
+ }
+ 
