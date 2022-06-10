@@ -39,22 +39,22 @@ BraveAutocompleteSchemeClassifier::GetInputTypeForScheme(
     return metrics::OmniboxInputType::EMPTY;
   }
   if (base::IsStringASCII(scheme) &&
-      base::LowerCaseEqualsASCII(scheme, kBraveUIScheme)) {
+      base::EqualsCaseInsensitiveASCII(scheme, kBraveUIScheme)) {
     return metrics::OmniboxInputType::URL;
   }
 
 #if BUILDFLAG(ENABLE_BRAVE_WEBTORRENT)
   if (base::IsStringASCII(scheme) &&
       webtorrent::IsWebtorrentPrefEnabled(profile_) &&
-      base::LowerCaseEqualsASCII(scheme, kMagnetScheme)) {
+      base::EqualsCaseInsensitiveASCII(scheme, kMagnetScheme)) {
     return metrics::OmniboxInputType::URL;
   }
 #endif
 
 #if BUILDFLAG(ENABLE_IPFS)
   if (base::IsStringASCII(scheme) &&
-      (base::LowerCaseEqualsASCII(scheme, ipfs::kIPFSScheme) ||
-       base::LowerCaseEqualsASCII(scheme, ipfs::kIPNSScheme))) {
+      (base::EqualsCaseInsensitiveASCII(scheme, ipfs::kIPFSScheme) ||
+       base::EqualsCaseInsensitiveASCII(scheme, ipfs::kIPNSScheme))) {
     return metrics::OmniboxInputType::URL;
   }
 #endif
