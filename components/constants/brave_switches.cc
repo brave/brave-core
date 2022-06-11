@@ -37,6 +37,9 @@ const char kDisableMachineId[] = "disable-machine-id";
 // what you are doing.
 const char kDisableEncryptionWin[] = "disable-encryption-win";
 
+// Keeps old history that is older than 90 days.
+const char kKeepOldHistory[] = "keep-old-history";
+    
 // Use custom update interval in sec
 const char kComponentUpdateIntervalInSec[] = "component-update-interval-in-sec";
 

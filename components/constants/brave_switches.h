@@ -27,6 +27,8 @@ extern const char kDarkMode[];
 extern const char kDisableMachineId[];
 
 extern const char kDisableEncryptionWin[];
+  
+extern const char kKeepOldHistory[];
 
 extern const char kComponentUpdateIntervalInSec[];
 
