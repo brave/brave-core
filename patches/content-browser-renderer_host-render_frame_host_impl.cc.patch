@@ -1,5 +1,5 @@
 diff --git a/content/browser/renderer_host/render_frame_host_impl.cc b/content/browser/renderer_host/render_frame_host_impl.cc
-index 9f68f4f7fa57aba2365297c2df2a04f828a7781f..c0caed590e36eead98f35b90e7841de96f3e45f6 100644
+index 9f68f4f7fa57aba2365297c2df2a04f828a7781f..a4f5262ca725545518bcd6af3b5b9d505267dd23 100644
 --- a/content/browser/renderer_host/render_frame_host_impl.cc
 +++ b/content/browser/renderer_host/render_frame_host_impl.cc
 @@ -2090,6 +2090,18 @@ void RenderFrameHostImpl::AddMessageToConsole(
@@ -32,3 +32,12 @@ index 9f68f4f7fa57aba2365297c2df2a04f828a7781f..c0caed590e36eead98f35b90e7841de9
  #if defined(OS_ANDROID)
  void RenderFrameHostImpl::UpdateUserGestureCarryoverInfo() {
    delegate_->UpdateUserGestureCarryoverInfo();
+@@ -5308,7 +5324,7 @@ void RenderFrameHostImpl::SuddenTerminationDisablerChanged(
+       has_pagehide_handler_ = present;
+       break;
+     case blink::mojom::SuddenTerminationDisablerType::kUnloadHandler:
+-      DCHECK_NE(has_unload_handler_, present);
++      //DCHECK_NE(has_unload_handler_, present);
+       has_unload_handler_ = present;
+       break;
+     case blink::mojom::SuddenTerminationDisablerType::kVisibilityChangeHandler:
