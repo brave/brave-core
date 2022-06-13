@@ -17,7 +17,7 @@ import {
 import { BuyOptions } from '../../../options/buy-with-options'
 import { useAssets, useLib } from '../../../common/hooks'
 import { useSelector } from 'react-redux'
-import { isSelectedAssetInAssetOptions } from '../../../utils/asset-utils'
+import { getRampAssetSymbol, isSelectedAssetInAssetOptions } from '../../../utils/asset-utils'
 import { SelectBuyOption } from '../select-buy-option/select-buy-option'
 
 export interface Props {
@@ -47,8 +47,12 @@ function Buy (props: Props) {
   const { getBuyAssetUrl } = useLib()
 
   const onSubmitBuy = React.useCallback((buyOption: BraveWallet.OnRampProvider) => {
+    const asset = buyOption === BraveWallet.OnRampProvider.kRamp
+      ? { ...selectedAsset, symbol: getRampAssetSymbol(selectedAsset) }
+      : selectedAsset
+
     getBuyAssetUrl({
-      asset: selectedAsset,
+      asset,
       onRampProvider: buyOption,
       chainId: selectedNetwork.chainId,
       address: selectedAccount.address,
