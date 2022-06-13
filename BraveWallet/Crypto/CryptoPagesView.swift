@@ -242,7 +242,7 @@ private class CryptoPagesViewController: TabbedPageViewController {
 
 private class ConfirmationsButton: SpringButton {
   private let imageView = UIImageView(
-    image: UIImage(imageLiteralResourceName: "brave.bell.badge")
+    image: UIImage(braveSystemNamed: "brave.bell.badge")!
       .applyingSymbolConfiguration(.init(pointSize: 18))
   ).then {
     $0.tintColor = .white

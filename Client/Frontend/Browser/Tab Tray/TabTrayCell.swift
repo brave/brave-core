@@ -4,9 +4,9 @@
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import Foundation
-import BraveUI
 import Shared
 import UIKit
+import DesignSystem
 
 class TabCell: UICollectionViewCell {
 

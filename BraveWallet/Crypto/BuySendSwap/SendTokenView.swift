@@ -5,7 +5,7 @@
 
 import SwiftUI
 import Strings
-import BraveUI
+import DesignSystem
 import BigNumber
 
 struct SendTokenView: View {

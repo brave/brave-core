@@ -6,8 +6,11 @@
 import Foundation
 import SwiftUI
 import LocalAuthentication
-import BraveUI
+import DesignSystem
 import Strings
+#if DEBUG
+import BraveUI // For Previews PopupView
+#endif
 
 struct EnableBiometricsView: View {
   var action: (_ enable: Bool) -> Void

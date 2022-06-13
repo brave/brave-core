@@ -380,11 +380,11 @@ class BraveNewsSectionProvider: NSObject, NTPObservableSectionProvider {
         }
       }
       var openInNewTab: UIAction {
-        .init(title: Strings.openNewTabButtonTitle, image: UIImage(named: "brave.plus"), handler: mapDeferredHandler(openInNewTabHandler))
+        .init(title: Strings.openNewTabButtonTitle, image: UIImage(braveSystemNamed: "brave.plus"), handler: mapDeferredHandler(openInNewTabHandler))
       }
 
       var openInNewPrivateTab: UIAction {
-        .init(title: Strings.openNewPrivateTabButtonTitle, image: UIImage(named: "brave.shades"), handler: mapDeferredHandler(openInNewPrivateTabHandler))
+        .init(title: Strings.openNewPrivateTabButtonTitle, image: UIImage(braveSystemNamed: "brave.shades"), handler: mapDeferredHandler(openInNewPrivateTabHandler))
       }
       let openActions: [UIAction] = [
         openInNewTab,
@@ -428,11 +428,11 @@ class BraveNewsSectionProvider: NSObject, NTPObservableSectionProvider {
       }
 
       var openInNewTab: UIAction {
-        .init(title: Strings.openNewTabButtonTitle, image: UIImage(named: "brave.plus"), handler: mapDeferredHandler(openInNewTabHandler))
+        .init(title: Strings.openNewTabButtonTitle, image: UIImage(braveSystemNamed: "brave.plus"), handler: mapDeferredHandler(openInNewTabHandler))
       }
 
       var openInNewPrivateTab: UIAction {
-        .init(title: Strings.openNewPrivateTabButtonTitle, image: UIImage(named: "brave.shades"), handler: mapDeferredHandler(openInNewPrivateTabHandler))
+        .init(title: Strings.openNewPrivateTabButtonTitle, image: UIImage(braveSystemNamed: "brave.shades"), handler: mapDeferredHandler(openInNewPrivateTabHandler))
       }
 
       var disableSource: UIAction {

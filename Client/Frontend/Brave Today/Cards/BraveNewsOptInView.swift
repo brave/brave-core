@@ -6,6 +6,7 @@
 import Foundation
 import Lottie
 import BraveUI
+import DesignSystem
 import Shared
 import UIKit
 

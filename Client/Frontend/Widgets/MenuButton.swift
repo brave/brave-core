@@ -5,7 +5,7 @@
 
 import Foundation
 import UIKit
-import BraveUI
+import DesignSystem
 
 /// The button which displays a more icon (`•••`) and a set of badges
 class MenuButton: ToolbarButton {

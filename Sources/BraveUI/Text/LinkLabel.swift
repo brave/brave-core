@@ -3,6 +3,7 @@
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import UIKit
+import DesignSystem
 
 /// A Label that allows clickable links (or data-detectors)
 final public class LinkLabel: UITextView {

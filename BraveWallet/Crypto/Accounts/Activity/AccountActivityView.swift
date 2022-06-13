@@ -6,8 +6,8 @@
 import UIKit
 import BraveCore
 import SwiftUI
-import BraveUI
 import Strings
+import DesignSystem
 
 struct AccountActivityView: View {
   @ObservedObject var keyringStore: KeyringStore
@@ -169,7 +169,7 @@ private struct AccountActivityHeaderView: View {
       HStack {
         Button(action: { action(false) }) {
           HStack {
-            Image("brave.qr-code")
+            Image(braveSystemName: "brave.qr-code")
               .font(.body)
             Text(Strings.Wallet.detailsButtonTitle)
               .font(.footnote.weight(.bold))
@@ -177,7 +177,7 @@ private struct AccountActivityHeaderView: View {
         }
         Button(action: { action(true) }) {
           HStack {
-            Image("brave.edit")
+            Image(braveSystemName: "brave.edit")
               .font(.body)
             Text(Strings.Wallet.renameButtonTitle)
               .font(.footnote.weight(.bold))

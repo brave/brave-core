@@ -5,6 +5,7 @@
 
 import Foundation
 import BraveUI
+import DesignSystem
 import Shared
 import UIKit
 

@@ -7,6 +7,7 @@ import Foundation
 import UIKit
 import SnapKit
 import BraveUI
+import DesignSystem
 import BraveShared
 import Shared
 

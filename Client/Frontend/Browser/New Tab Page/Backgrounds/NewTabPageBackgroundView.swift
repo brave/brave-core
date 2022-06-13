@@ -5,7 +5,7 @@
 
 import UIKit
 import SnapKit
-import BraveUI
+import DesignSystem
 
 /// Non-interactive contents that appear behind the New Tab Page contents
 class NewTabPageBackgroundView: UIView {

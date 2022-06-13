@@ -6,6 +6,7 @@
 import SwiftUI
 import BraveUI
 import Shared
+import DesignSystem
 
 struct PlaylistMenuButton: View {
   var isAdded: Bool

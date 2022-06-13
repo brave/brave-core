@@ -7,6 +7,7 @@ import SwiftUI
 import BraveUI
 import Shared
 import BraveShared
+import DesignSystem
 
 private let log = Logger.browserLogger
 

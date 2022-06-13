@@ -5,6 +5,7 @@
 
 import Foundation
 import SwiftUI
+import DesignSystem
 
 /// Presents a SwiftUI view heirarchy in a popup that displays in the center of the screen
 public class PopupViewController<Content: View>: UIViewController, UIViewControllerTransitioningDelegate, BasicAnimationControllerDelegate {

@@ -5,7 +5,7 @@
 
 import SwiftUI
 import BraveCore
-import BraveUI
+import DesignSystem
 import Strings
 
 struct AccountPrivateKeyView: View {

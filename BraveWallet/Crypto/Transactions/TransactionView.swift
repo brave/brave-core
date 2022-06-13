@@ -8,6 +8,7 @@ import SwiftUI
 import BraveCore
 import Swift
 import Strings
+import DesignSystem
 
 /// Displays a summary of a given transaction
 struct TransactionView: View {
@@ -153,7 +154,7 @@ struct TransactionView: View {
           .foregroundColor(Color(.bravePrimary))
         if let (fee, fiat) = gasFee {
           HStack(spacing: 4) {
-            Image("brave.coins.4")
+            Image(braveSystemName: "brave.coins.4")
             Text(
               String.localizedStringWithFormat(
                 Strings.Wallet.transactionSummaryFee,

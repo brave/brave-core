@@ -5,6 +5,7 @@
 
 import Strings
 import SwiftUI
+import DesignSystem
 
 struct SensitiveTextView: View {
   
@@ -32,7 +33,7 @@ struct SensitiveTextView: View {
         Button(action: {
           UIPasteboard.general.setSecureString(text)
         }) {
-          Text("\(Strings.Wallet.copyToPasteboard) \(Image("brave.clipboard"))")
+          Text("\(Strings.Wallet.copyToPasteboard) \(Image(braveSystemName: "brave.clipboard"))")
             .font(.subheadline)
             .foregroundColor(Color(.braveBlurpleTint))
         }

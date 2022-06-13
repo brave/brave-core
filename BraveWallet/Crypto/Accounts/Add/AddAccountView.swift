@@ -5,6 +5,7 @@
 
 import SwiftUI
 import BraveUI
+import DesignSystem
 import Strings
 
 struct AddAccountView: View {

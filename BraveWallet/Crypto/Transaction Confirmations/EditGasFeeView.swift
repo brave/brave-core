@@ -5,7 +5,7 @@
 
 import Foundation
 import BraveCore
-import BraveUI
+import DesignSystem
 import SwiftUI
 import Strings
 import BigNumber
