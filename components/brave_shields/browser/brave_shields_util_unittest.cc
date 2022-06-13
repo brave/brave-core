@@ -5,15 +5,18 @@
 
 #include <memory>
 
-#include "brave/browser/brave_shields/cookie_pref_service_factory.h"
+#include "base/files/scoped_temp_dir.h"
+#include "brave/browser/profiles/brave_profile_manager.h"
 #include "brave/components/brave_shields/browser/brave_shields_p3a.h"
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
-#include "brave/components/brave_shields/browser/cookie_pref_service.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
 #include "brave/components/brave_shields/common/features.h"
 #include "build/build_config.h"
+#include "chrome/browser/browser_process.h"
 #include "chrome/browser/content_settings/cookie_settings_factory.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
+#include "chrome/test/base/scoped_testing_local_state.h"
+#include "chrome/test/base/testing_browser_process.h"
 #include "chrome/test/base/testing_profile.h"
 #include "components/content_settings/core/browser/cookie_settings.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
@@ -21,6 +24,7 @@
 #include "components/content_settings/core/common/pref_names.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/test/browser_task_environment.h"
+#include "content/public/test/test_utils.h"
 #include "net/base/features.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "url/gurl.h"
@@ -34,15 +38,25 @@ using brave_shields::features::kBraveDomainBlock;
 
 class BraveShieldsUtilTest : public testing::Test {
  public:
-  BraveShieldsUtilTest() = default;
+  BraveShieldsUtilTest() : local_state_(TestingBrowserProcess::GetGlobal()) {}
   BraveShieldsUtilTest(const BraveShieldsUtilTest&) = delete;
   BraveShieldsUtilTest& operator=(const BraveShieldsUtilTest&) = delete;
   ~BraveShieldsUtilTest() override = default;
 
   void SetUp() override {
-    profile_ = std::make_unique<TestingProfile>();
-    brave_shields::CookiePrefServiceFactory::GetForBrowserContext(
-        profile_.get());
+    ASSERT_TRUE(temp_dir_.CreateUniqueTempDir());
+    TestingBrowserProcess::GetGlobal()->SetProfileManager(
+        CreateProfileManagerForTest());
+    TestingProfile::Builder builder;
+    builder.SetPath(temp_dir_.GetPath());
+    profile_ = builder.Build();
+    g_browser_process->profile_manager()->InitProfileUserPrefs(profile_.get());
+  }
+
+  void TearDown() override {
+    profile_.reset();
+    TestingBrowserProcess::GetGlobal()->SetProfileManager(nullptr);
+    content::RunAllTasksUntilIdle();
   }
 
   TestingProfile* profile() { return profile_.get(); }
@@ -55,8 +69,15 @@ class BraveShieldsUtilTest : public testing::Test {
   }
 
  private:
+  std::unique_ptr<BraveProfileManager> CreateProfileManagerForTest() {
+    return std::make_unique<BraveProfileManagerWithoutInit>(
+        temp_dir_.GetPath());
+  }
+
+  base::ScopedTempDir temp_dir_;
   content::BrowserTaskEnvironment task_environment_;
   std::unique_ptr<TestingProfile> profile_;
+  ScopedTestingLocalState local_state_;
 };
 
 class BraveShieldsUtilDomainBlockFeatureTest : public BraveShieldsUtilTest {
