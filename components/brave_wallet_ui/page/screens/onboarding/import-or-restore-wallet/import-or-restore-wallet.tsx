@@ -4,12 +4,16 @@
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 
 // utils
 import { getLocale } from '../../../../../common/locale'
 
-// routes
-import { WalletRoutes } from '../../../../constants/types'
+// types
+import { PageState, WalletRoutes } from '../../../../constants/types'
+
+// actions
+import { WalletPageActions } from '../../../actions'
 
 // images
 import ImportFromMetaMaskSvg from '../../../../assets/svg-icons/onboarding/import-from-metamask.svg'
@@ -35,6 +39,20 @@ import {
 } from './import-or-restore-wallet.style'
 
 export const OnboardingImportOrRestoreWallet = () => {
+  // redux
+  const dispatch = useDispatch()
+  const importWalletError = useSelector(({ page }: { page: PageState }) => page.importWalletError)
+
+  // effects
+  React.useEffect(() => {
+    // reset any pending import errors
+    if (importWalletError?.hasError) {
+      dispatch(WalletPageActions.setImportWalletError({
+        hasError: false
+      }))
+    }
+  }, [importWalletError?.hasError])
+
   // render
   return (
     <WalletPageLayout>

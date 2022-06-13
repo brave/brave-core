@@ -49,7 +49,8 @@ export const _WalletOnboardingConcept = () => {
         mnemonic: undefined,
         isCryptoWalletsInitialized: false,
         isMetaMaskInitialized: true,
-        setupStillInProgress: true
+        setupStillInProgress: true,
+        isImportWalletsCheckComplete: true
       }}
     >
       <Container />
