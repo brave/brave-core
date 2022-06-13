@@ -44,10 +44,13 @@
 #include "services/data_decoder/public/cpp/test_support/in_process_data_decoder.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
 #include "services/network/test/test_url_loader_factory.h"
+#include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "url/gurl.h"
 #include "url/origin.h"
+
+using testing::ElementsAreArray;
 
 namespace brave_wallet {
 
@@ -1094,6 +1097,24 @@ TEST_F(JsonRpcServiceUnitTest, GetAllNetworks) {
           }));
   base::RunLoop().RunUntilIdle();
   ASSERT_TRUE(callback_is_called);
+}
+
+TEST_F(JsonRpcServiceUnitTest, GetHiddenNetworks) {
+  base::MockCallback<mojom::JsonRpcService::GetHiddenNetworksCallback> callback;
+
+  EXPECT_CALL(callback, Run(ElementsAreArray<std::string>({})));
+  json_rpc_service_->GetHiddenNetworks(mojom::CoinType::ETH, callback.Get());
+  testing::Mock::VerifyAndClearExpectations(&callback);
+
+  AddHiddenNetwork(prefs(), mojom::CoinType::ETH, "0x123");
+  EXPECT_CALL(callback, Run(ElementsAreArray({"0x123"})));
+  json_rpc_service_->GetHiddenNetworks(mojom::CoinType::ETH, callback.Get());
+  testing::Mock::VerifyAndClearExpectations(&callback);
+
+  RemoveHiddenNetwork(prefs(), mojom::CoinType::ETH, "0x123");
+  EXPECT_CALL(callback, Run(ElementsAreArray<std::string>({})));
+  json_rpc_service_->GetHiddenNetworks(mojom::CoinType::ETH, callback.Get());
+  testing::Mock::VerifyAndClearExpectations(&callback);
 }
 
 TEST_F(JsonRpcServiceUnitTest, EnsResolverGetContentHash) {

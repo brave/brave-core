@@ -187,6 +187,10 @@ BraveWalletService::BraveWalletService(
       base::BindRepeating(&BraveWalletService::OnNetworkListChanged,
                           base::Unretained(this)));
   pref_change_registrar_.Add(
+      kBraveWalletHiddenNetworks,
+      base::BindRepeating(&BraveWalletService::OnNetworkListChanged,
+                          base::Unretained(this)));
+  pref_change_registrar_.Add(
       kBraveWalletSelectedNetworks,
       base::BindRepeating(&BraveWalletService::OnNetworkChanged,
                           weak_ptr_factory_.GetWeakPtr()));

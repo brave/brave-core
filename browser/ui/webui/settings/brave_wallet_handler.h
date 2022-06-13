@@ -39,6 +39,8 @@ class BraveWalletHandler : public settings::SettingsPageUIHandler {
   void GetNetworksList(const base::Value::List& args);
   void AddEthereumChain(const base::Value::List& args);
   void SetActiveNetwork(const base::Value::List& args);
+  void AddHiddenNetwork(const base::Value::List& args);
+  void RemoveHiddenNetwork(const base::Value::List& args);
 
   PrefService* GetPrefs();
 
