@@ -28,5 +28,3 @@ extension Preferences {
       static let vpnHostDisplayName = Option<String?>(key: "vpn.host-location", default: nil)
     }
 }
-
-

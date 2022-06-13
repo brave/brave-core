@@ -18,6 +18,7 @@ let package = Package(
     .library(name: "BraveCore", targets: ["BraveCore", "MaterialComponents"]),
     .library(name: "BraveShared", targets: ["BraveShared"]),
     .library(name: "BraveUI", targets: ["BraveUI"]),
+    .library(name: "DesignSystem", targets: ["DesignSystem"]),
     .library(name: "BraveWallet", targets: ["BraveWallet"]),
     .library(name: "Data", targets: ["Data"]),
     .library(name: "Storage", targets: ["Storage", "sqlcipher"]),
@@ -56,6 +57,7 @@ let package = Package(
         "BraveWallet",
         "BraveCore",
         "BraveUI",
+        "DesignSystem",
         "Data",
         "Storage",
         "GCDWebServers",
@@ -229,6 +231,7 @@ let package = Package(
       dependencies: [
         "BraveShared",
         "Strings",
+        "DesignSystem",
         .product(name: "Markdown", package: "swift-markdown"),
         "PanModal",
         "SDWebImage",
@@ -239,6 +242,10 @@ let package = Package(
         "Static",
         .product(name: "Lottie", package: "lottie-ios")
       ],
+      plugins: ["CurrentBundleGenPlugin"]
+    ),
+    .target(
+      name: "DesignSystem",
       plugins: ["CurrentBundleGenPlugin"]
     ),
     .binaryTarget(name: "BraveCore", path: "node_modules/brave-core-ios/BraveCore.xcframework"),
@@ -262,6 +269,7 @@ let package = Package(
         "BraveCore",
         "BraveShared",
         "BraveUI",
+        "DesignSystem",
         "Strings",
         "PanModal",
         "SDWebImage",

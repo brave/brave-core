@@ -3,7 +3,7 @@
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import UIKit
-import BraveUI
+import DesignSystem
 import Shared
 
 /// A big UISwitch that has a fancy animated gradient when its turned on

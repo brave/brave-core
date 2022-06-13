@@ -8,6 +8,7 @@ import BraveUI
 import Strings
 import BraveShared
 import BraveCore
+import DesignSystem
 
 struct SuggestedNetworkView: View {
   enum Mode: Equatable {
@@ -277,7 +278,7 @@ struct SuggestedNetworkView: View {
       handleAction(approved: true)
     }) {
       HStack {
-        Image("brave.checkmark.circle.fill")
+        Image(braveSystemName: "brave.checkmark.circle.fill")
         Text(actionButtonTitle)
           .multilineTextAlignment(.center)
       }

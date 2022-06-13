@@ -9,6 +9,7 @@ import BraveCore
 import SnapKit
 import Introspect
 import Strings
+import DesignSystem
 
 struct PortfolioView: View {
   var cryptoStore: CryptoStore

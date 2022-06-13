@@ -6,7 +6,7 @@
 import Foundation
 import SwiftUI
 import Introspect
-import BraveUI
+import DesignSystem
 import Strings
 
 struct SetupCryptoView: View {

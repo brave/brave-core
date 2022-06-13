@@ -4,7 +4,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import SwiftUI
-import BraveUI
+import DesignSystem
 import Strings
 import LocalAuthentication
 

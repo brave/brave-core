@@ -6,7 +6,7 @@
 import Foundation
 import UIKit
 import Combine
-import BraveUI
+import DesignSystem
 
 private let tabBarHeight: CGFloat = 40.0
 

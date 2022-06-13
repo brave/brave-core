@@ -6,7 +6,7 @@
 import Foundation
 import SwiftUI
 import LocalAuthentication
-import BraveUI
+import DesignSystem
 import Strings
 import struct Shared.AppConstants
 

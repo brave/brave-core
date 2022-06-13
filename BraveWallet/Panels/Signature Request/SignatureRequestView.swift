@@ -7,7 +7,7 @@ import SwiftUI
 import Strings
 import BraveCore
 import BraveShared
-import BraveUI
+import DesignSystem
 
 struct SignatureRequestView: View {
   var requests: [BraveWallet.SignMessageRequest]

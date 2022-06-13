@@ -6,7 +6,7 @@
 import SwiftUI
 import Strings
 import BraveCore
-import BraveUI
+import DesignSystem
 
 struct AddSuggestedTokenView: View {
   var token: BraveWallet.BlockchainToken
@@ -121,7 +121,7 @@ struct AddSuggestedTokenView: View {
       onDismiss()
     }) {
       HStack {
-        Image("brave.checkmark.circle.fill")
+        Image(braveSystemName: "brave.checkmark.circle.fill")
         Text(Strings.Wallet.add)
           .multilineTextAlignment(.center)
       }

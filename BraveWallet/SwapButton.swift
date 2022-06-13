@@ -6,6 +6,7 @@
 import Foundation
 import UIKit
 import BraveUI
+import DesignSystem
 import Strings
 
 class SwapButton: SpringButton {

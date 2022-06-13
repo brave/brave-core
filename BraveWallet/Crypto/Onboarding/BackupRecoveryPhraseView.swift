@@ -5,7 +5,7 @@
 
 import Foundation
 import SwiftUI
-import BraveUI
+import DesignSystem
 import Strings
 
 struct BackupRecoveryPhraseView: View {
@@ -71,7 +71,7 @@ struct BackupRecoveryPhraseView: View {
         }
         .padding(.horizontal)
         Button(action: copyRecoveryPhrase) {
-          Text("\(Strings.Wallet.copyToPasteboard) \(Image("brave.clipboard"))")
+          Text("\(Strings.Wallet.copyToPasteboard) \(Image(braveSystemName: "brave.clipboard"))")
             .font(.subheadline.bold())
             .foregroundColor(Color(.braveBlurpleTint))
         }

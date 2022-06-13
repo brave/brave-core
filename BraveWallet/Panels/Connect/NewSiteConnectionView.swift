@@ -6,7 +6,7 @@
 import SwiftUI
 import Strings
 import BraveShared
-import BraveUI
+import DesignSystem
 import BraveCore
 
 /// A view to display to a user to allow them to setup a connection to a dApp for the first time.
@@ -97,7 +97,7 @@ public struct NewSiteConnectionView: View {
                 Spacer()
                 Group {
                   if selectedAccounts.contains(account.id) {
-                    Image("brave.checkmark.circle.fill")
+                    Image(braveSystemName: "brave.checkmark.circle.fill")
                       .foregroundColor(Color(.braveSuccessLabel))
                   } else {
                     Image(systemName: "circle")
@@ -177,7 +177,7 @@ public struct NewSiteConnectionView: View {
       .listRowBackground(Color(.braveGroupedBackground))
       Section {
         HStack(spacing: 12) {
-          Image("brave.checkmark.circle.fill")
+          Image(braveSystemName: "brave.checkmark.circle.fill")
             .imageScale(.large)
           Text(Strings.Wallet.newSiteConnectConfirmationMessage)
             .multilineTextAlignment(.leading)

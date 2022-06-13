@@ -6,7 +6,7 @@
 import Foundation
 import SwiftUI
 import BraveCore
-import BraveUI
+import DesignSystem
 import Strings
 
 extension BraveWallet.AssetTimePrice: DataPoint {

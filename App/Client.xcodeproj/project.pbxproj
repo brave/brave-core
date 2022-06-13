@@ -15,6 +15,7 @@
 		279A9BC42823370100F40FC6 /* XCGLogger in Frameworks */ = {isa = PBXBuildFile; productRef = 279A9BC32823370100F40FC6 /* XCGLogger */; };
 		279A9BCC2823370100F40FC6 /* SwiftKeychainWrapper in Frameworks */ = {isa = PBXBuildFile; productRef = 279A9BCB2823370100F40FC6 /* SwiftKeychainWrapper */; };
 		279A9BCE2823370100F40FC6 /* SDWebImage in Frameworks */ = {isa = PBXBuildFile; productRef = 279A9BCD2823370100F40FC6 /* SDWebImage */; };
+		279C432E2853E51E00A9F708 /* DesignSystem in Frameworks */ = {isa = PBXBuildFile; productRef = 279C432D2853E51E00A9F708 /* DesignSystem */; };
 		27AAA115283D2BC6004C9B5E /* BraveWidgetsModels in Frameworks */ = {isa = PBXBuildFile; productRef = 27AAA114283D2BC6004C9B5E /* BraveWidgetsModels */; };
 		27AD20C326851C5400889AA7 /* BraveCore.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27AD20C226851C5400889AA7 /* BraveCore.xcframework */; };
 		27AD20C426851C5400889AA7 /* BraveCore.xcframework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 27AD20C226851C5400889AA7 /* BraveCore.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -33,7 +34,6 @@
 		27FA21872837FB0100FA2C45 /* HTTPSE in Frameworks */ = {isa = PBXBuildFile; productRef = 27FA21862837FB0100FA2C45 /* HTTPSE */; };
 		27FA21892837FB0100FA2C45 /* Shared in Frameworks */ = {isa = PBXBuildFile; productRef = 27FA21882837FB0100FA2C45 /* Shared */; };
 		27FA218B2837FB0100FA2C45 /* Storage in Frameworks */ = {isa = PBXBuildFile; productRef = 27FA218A2837FB0100FA2C45 /* Storage */; };
-		27FA218D2837FB2700FA2C45 /* BraveUI in Frameworks */ = {isa = PBXBuildFile; productRef = 27FA218C2837FB2700FA2C45 /* BraveUI */; };
 		27FA21A42838019000FA2C45 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 27FA21902838018E00FA2C45 /* InfoPlist.strings */; };
 		27FDCED82835B3D300E78FAD /* SharedStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27FDCED72835B3D300E78FAD /* SharedStrings.swift */; };
 		27FDCEDA2835B5AA00E78FAD /* BraveStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27FDCED92835B5AA00E78FAD /* BraveStrings.swift */; };
@@ -321,8 +321,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				27FA218D2837FB2700FA2C45 /* BraveUI in Frameworks */,
 				27FA217B2837F95400FA2C45 /* Strings in Frameworks */,
+				279C432E2853E51E00A9F708 /* DesignSystem in Frameworks */,
 				CA0391B6271E1023000EB13C /* SwiftUI.framework in Frameworks */,
 				27AAA115283D2BC6004C9B5E /* BraveWidgetsModels in Frameworks */,
 				27FA217D2837F9EE00FA2C45 /* BraveShared in Frameworks */,
@@ -658,8 +658,8 @@
 			packageProductDependencies = (
 				27FA217A2837F95400FA2C45 /* Strings */,
 				27FA217C2837F9EE00FA2C45 /* BraveShared */,
-				27FA218C2837FB2700FA2C45 /* BraveUI */,
 				27AAA114283D2BC6004C9B5E /* BraveWidgetsModels */,
+				279C432D2853E51E00A9F708 /* DesignSystem */,
 			);
 			productName = BraveWidgetsExtension;
 			productReference = CA0391B2271E1023000EB13C /* BraveWidgetsExtension.appex */;
@@ -2753,6 +2753,10 @@
 			package = 27756B0D25AD08FA00C129AF /* XCRemoteSwiftPackageReference "SDWebImage" */;
 			productName = SDWebImage;
 		};
+		279C432D2853E51E00A9F708 /* DesignSystem */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = DesignSystem;
+		};
 		27AAA114283D2BC6004C9B5E /* BraveWidgetsModels */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = BraveWidgetsModels;
@@ -2792,10 +2796,6 @@
 		27FA218A2837FB0100FA2C45 /* Storage */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = Storage;
-		};
-		27FA218C2837FB2700FA2C45 /* BraveUI */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = BraveUI;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

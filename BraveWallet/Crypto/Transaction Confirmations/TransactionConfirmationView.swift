@@ -5,9 +5,9 @@
 
 import SwiftUI
 import BraveCore
-import BraveUI
 import BigNumber
 import Strings
+import DesignSystem
 
 struct TransactionConfirmationView: View {
 
@@ -335,7 +335,7 @@ struct TransactionConfirmationView: View {
                     )
                   ) {
                     HStack {
-                      Image("brave.gear")
+                      Image(braveSystemName: "brave.gear")
                         .foregroundColor(Color(.braveBlurpleTint))
                       Text(Strings.Wallet.advancedSettingsTransaction)
                         .frame(maxWidth: .infinity, alignment: .leading)

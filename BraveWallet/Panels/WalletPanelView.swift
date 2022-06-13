@@ -6,7 +6,7 @@
 import Foundation
 import SwiftUI
 import BraveCore
-import BraveUI
+import DesignSystem
 import Strings
 import Data
 
@@ -57,7 +57,7 @@ public struct WalletPanelContainerView: View {
         presentWalletWithContext?(.panelUnlockOrSetup)
       } label: {
         HStack(spacing: 4) {
-          Image("brave.unlock")
+          Image(braveSystemName: "brave.unlock")
           Text(Strings.Wallet.walletPanelUnlockWallet)
         }
       }
@@ -220,7 +220,7 @@ struct WalletPanelView: View {
   
   private var pendingRequestsButton: some View {
     Button(action: { presentWalletWithContext(.pendingRequests) }) {
-      Image("brave.bell.badge")
+      Image(braveSystemName: "brave.bell.badge")
         .foregroundColor(.white)
         .frame(minWidth: 30, minHeight: 44)
         .contentShape(Rectangle())
@@ -359,7 +359,7 @@ struct WalletPanelView: View {
             Button {
               presentBuySendSwap()
             } label: {
-              Image("brave.arrow.left.arrow.right")
+              Image(braveSystemName: "brave.arrow.left.arrow.right")
                 .imageScale(.large)
                 .padding(.horizontal, 44)
                 .padding(.vertical, 8)
@@ -370,7 +370,7 @@ struct WalletPanelView: View {
             Button {
               presentWalletWithContext(.transactionHistory)
             } label: {
-              Image("brave.history")
+              Image(braveSystemName: "brave.history")
                 .imageScale(.large)
                 .padding(.horizontal, 44)
                 .padding(.vertical, 8)

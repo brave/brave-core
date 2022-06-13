@@ -146,13 +146,13 @@ private extension WidgetShortcut {
     case .newPrivateTab:
       return shortcutsImage(with: "brave.shades")
     case .bookmarks:
-      return shortcutsImage(with: "menu_bookmarks")
+      return Image(uiImage: UIImage(named: "menu_bookmarks")!)
     case .history:
-      return shortcutsImage(with: "brave.history")
+      return Image(uiImage: UIImage(named: "brave.history")!)
     case .downloads:
-      return shortcutsImage(with: "brave.downloads")
+      return Image(uiImage: UIImage(named: "brave.downloads")!)
     case .playlist:
-      return shortcutsImage(with: "brave.playlist")
+      return Image(uiImage: UIImage(named: "brave.playlist")!)
     @unknown default:
       assertionFailure()
       return Image(systemName: "xmark.octagon")
@@ -163,7 +163,7 @@ private extension WidgetShortcut {
     let fallbackImage = Image(systemName: "xmark.octagon")
 
     guard
-      let image = UIImage(named: name)?
+      let image = UIImage(braveSystemNamed: name)?
         .applyingSymbolConfiguration(.init(font: .systemFont(ofSize: 20)))?
         .template
     else {
@@ -181,19 +181,22 @@ private struct ShortcutsView: View {
     VStack(spacing: 8) {
       // TODO: Would be nice to export handling this url to `BraveShared`.
       // Now it's hardcoded here and in `NavigationRouter`.
-      if let url = URL(string: "brave://shortcut?path=0"),
-        let image = UIImage(named: "brave-logo-no-bg-small") {
+      if let url = URL(string: "brave://shortcut?path=0") {
         Link(
           destination: url,
           label: {
-            Label(Strings.Widgets.shortcutsEnterURLButton, uiImage: image)
-              .foregroundColor(Color(UIColor.braveLabel))
-              .frame(maxWidth: .infinity)
-              .frame(height: 44)
-              .background(
-                Color(UIColor.braveBackground)
-                  .clipShape(ContainerRelativeShape())
-              )
+            Label {
+              Text(Strings.Widgets.shortcutsEnterURLButton)
+            } icon: {
+              Image("brave-logo-no-bg-small")
+            }
+            .foregroundColor(Color(UIColor.braveLabel))
+            .frame(maxWidth: .infinity)
+            .frame(height: 44)
+            .background(
+              Color(UIColor.braveBackground)
+                .clipShape(ContainerRelativeShape())
+            )
           })
       }
       HStack(spacing: 8) {
@@ -220,7 +223,7 @@ struct ShortcutsWidget_Previews: PreviewProvider {
   static var previews: some View {
     ShortcutsView(slots: [.newTab, .newPrivateTab, .bookmarks])
       .previewContext(WidgetPreviewContext(family: .systemMedium))
-    ShortcutsView(slots: [.downloads, .history, .newPrivateTab])
+    ShortcutsView(slots: [.downloads, .history, .playlist])
       .previewContext(WidgetPreviewContext(family: .systemMedium))
     ShortcutsView(slots: [.newTab])
       .previewContext(WidgetPreviewContext(family: .systemMedium))

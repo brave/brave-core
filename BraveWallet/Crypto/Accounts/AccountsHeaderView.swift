@@ -5,6 +5,7 @@
 
 import SwiftUI
 import Strings
+import DesignSystem
 
 struct AccountsHeaderView: View {
   @ObservedObject var keyringStore: KeyringStore
@@ -18,7 +19,7 @@ struct AccountsHeaderView: View {
     HStack {
       Button(action: { isPresentingBackup = true }) {
         HStack {
-          Image("brave.safe")
+          Image(braveSystemName: "brave.safe")
             .foregroundColor(Color(.braveLabel))
           Text(Strings.Wallet.accountBackup)
             .font(.subheadline.weight(.medium))

@@ -9,7 +9,7 @@ import BraveShared
 import Shared
 import SnapKit
 import Data
-import BraveUI
+import DesignSystem
 
 private class ToastShadowView: UIView {
   private var shadowLayer: CAShapeLayer?

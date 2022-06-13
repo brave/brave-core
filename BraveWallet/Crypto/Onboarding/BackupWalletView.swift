@@ -5,7 +5,7 @@
 
 import Foundation
 import SwiftUI
-import BraveUI
+import DesignSystem
 import Strings
 
 struct BackupWalletView: View {
