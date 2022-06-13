@@ -24,3 +24,14 @@ extension Image {
     self.init(name, bundle: .current)
   }
 }
+
+extension Label where Title == Text, Icon == Image {
+  /// Creates a label with a brave system icon image and a title generated from a string.
+  public init<S: StringProtocol>(_ title: S, braveSystemImage name: String) {
+    self.init {
+      Text(title)
+    } icon: {
+      Image(braveSystemName: name)
+    }
+  }
+}

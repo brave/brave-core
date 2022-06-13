@@ -91,12 +91,12 @@ struct CryptoPagesView: View {
           Button(action: {
             keyringStore.lock()
           }) {
-            Label(Strings.Wallet.lock, image: "brave.lock")
+            Label(Strings.Wallet.lock, braveSystemImage: "brave.lock")
               .imageScale(.medium)  // Menu inside nav bar implicitly gets large
           }
           Divider()
           Button(action: { isShowingSettings = true }) {
-            Label(Strings.Wallet.settings, image: "brave.gear")
+            Label(Strings.Wallet.settings, braveSystemImage: "brave.gear")
               .imageScale(.medium)  // Menu inside nav bar implicitly gets large
           }
         } label: {
