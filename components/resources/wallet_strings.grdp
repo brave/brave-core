@@ -104,7 +104,7 @@
   <message name="IDS_BRAVE_WALLET_BUTTON_COPIED" desc="Confirmation that text has been copied to clipboard">Copied</message>
   <message name="IDS_BRAVE_WALLET_BUTTON_VERIFY" desc="General Verify button">Verify</message>
   <message name="IDS_BRAVE_WALLET_WELCOME_TITLE" desc="Onboarding welcome screen title">Welcome to the new Brave Wallet</message>
-  <message name="IDS_BRAVE_WALLET_WELCOME_DESCRIPTION" desc="Onboarding welcome screen description">Hold crypto assets in your custody. Track portfolio performance, and interact with web 3 DApps. Trade, invest, borrow, and lend with DeFi. All right from the Brave privacy browser. No extensions, no download required.</message>
+  <message name="IDS_BRAVE_WALLET_WELCOME_DESCRIPTION" desc="Onboarding welcome screen description">Hold crypto assets in your custody. Track portfolio performance, and interact with Web3 DApps. Trade, invest, borrow, and lend with DeFi. All right from the Brave privacy browser. No extensions, no download required.</message>
   <message name="IDS_BRAVE_WALLET_WELCOME_BUTTON" desc="Onboarding get started button">Get Started</message>
   <message name="IDS_BRAVE_WALLET_WELCOME_RESTORE_BUTTON" desc="Restore screen button">Restore</message>
   <message name="IDS_BRAVE_WALLET_BACKUP_INTRO_TITLE" desc="Backup screen title">Back up your crypto wallet</message>
@@ -137,7 +137,7 @@
   <message name="IDS_BRAVE_WALLET_BACKUP_WARNING_TEXT" desc="Backup warning banner description">Back up your wallet now to protect your assets and ensure you never lose access.</message>
   <message name="IDS_BRAVE_WALLET_BACKUP_BUTTON" desc="Backup warning banner back up button">Back up now</message>
   <message name="IDS_BRAVE_WALLET_DISMISS_BUTTON" desc="Backup warning banner dismiss button">Dismiss</message>
-  <message name="IDS_BRAVE_WALLET_DEFAULT_WALLET_BANNER" desc="Default wallet banner description">Brave Wallet is not set as your default wallet and will not respond to web3 DApps. Visit settings to change your default wallet.</message>
+  <message name="IDS_BRAVE_WALLET_DEFAULT_WALLET_BANNER" desc="Default wallet banner description">Brave Wallet is not set as your default wallet and will not respond to Web3 DApps. Visit settings to change your default wallet.</message>
   <message name="IDS_BRAVE_WALLET_RESTORE_TITE" desc="Restore Wallet screen title">Restore primary crypto accounts</message>
   <message name="IDS_BRAVE_WALLET_RESTORE_DESCRIPTION" desc="Restore Wallet screen description">Enter your recovery phrase to restore your Brave wallet crypto account.</message>
   <message name="IDS_BRAVE_WALLET_RESTORE_ERROR" desc="Restore Wallet screen recovery error">The recovery phrase entered is invalid.</message>
@@ -148,8 +148,8 @@
   <message name="IDS_BRAVE_WALLET_TOOL_TIP_COPY_TO_CLIPBOARD" desc="General tooltip copy to clipboard">Copy to Clipboard</message>
   <message name="IDS_BRAVE_WALLET_ACCOUNTS_PRIMARY" desc="Accounts screen primary accounts title">Primary crypto accounts</message>
   <message name="IDS_BRAVE_WALLET_ACCOUNTS_SECONDARY" desc="Accounts screen secondary accounts title">Imported accounts</message>
-  <message name="IDS_BRAVE_WALLET_ACCOUNTS_SECONDARY_DISCLAIMER" desc="Accounts screen primary description">You can create primary accounts in Brave Wallet that may be backed up or restored from your recovery phrase. To learn more about account types visit account help</message>
-  <message name="IDS_BRAVE_WALLET_ACCOUNTS_PRIMARY_DISCLAIMER" desc="Accounts screen secondary description">These accounts can be used with web 3 DApps, and can be shown in your portfolio. However, note that secondary accounts cannot be restored via recovery phrase from your primary account backup.</message>
+  <message name="IDS_BRAVE_WALLET_ACCOUNTS_PRIMARY_DISCLAIMER" desc="Accounts screen primary description">You can create primary accounts in Brave Wallet that may be backed up or restored from your recovery phrase. To learn more about account types visit account help.</message>
+  <message name="IDS_BRAVE_WALLET_ACCOUNTS_SECONDARY_DISCLAIMER" desc="Accounts screen secondary description">These accounts can be used with Web3 DApps, and can be shown in your portfolio. However, note that secondary accounts cannot be restored via recovery phrase from your primary account backup.</message>
   <message name="IDS_BRAVE_WALLET_ACCOUNTS_ASSETS" desc="Accounts screen assets title">Assets</message>
   <message name="IDS_BRAVE_WALLET_ACCOUNTS_EDIT_VISIBLE_ASSETS" desc="Accounts screen visible assets button">Visible assets</message>
   <message name="IDS_BRAVE_WALLET_ADD_ACCOUNT_CREATE" desc="Add account modal create button">Create</message>
@@ -166,7 +166,7 @@
   <message name="IDS_BRAVE_WALLET_ADD_ACCOUNT_HARDWARE" desc="Add account modal hardware button">Hardware</message>
   <message name="IDS_BRAVE_WALLET_ADD_ACCOUNT_CONNECT" desc="Add account modal connect button">Connect</message>
   <message name="IDS_BRAVE_WALLET_ADD_ACCOUNT_PLACEHOLDER" desc="Add account modal input placholder">Account name</message>
-  <message name="IDS_BRAVE_WALLET_IMPORT_ACCOUNT_DISCLAIMER" desc="Add account modal account disclaimer">These accounts can be used with web 3 DApps, and can be shown in your portfolio. However, note that secondary accounts cannot be restored via recovery phrase from your primary account backup.</message>
+  <message name="IDS_BRAVE_WALLET_IMPORT_ACCOUNT_DISCLAIMER" desc="Add account modal account disclaimer">These accounts can be used with Web3 DApps, and can be shown in your portfolio. However, note that secondary accounts cannot be restored via recovery phrase from your primary account backup.</message>
   <message name="IDS_BRAVE_WALLET_IMPORT_ACCOUNT_PLACEHOLDER" desc="Add account modal import input placeholder">Paste private key from clipboard</message>
   <message name="IDS_BRAVE_WALLET_IMPORT_ACCOUNT_KEY" desc="Add account modal import private key selector">Private key</message>
   <message name="IDS_BRAVE_WALLET_IMPORT_ACCOUNT_FILE" desc="Add account modal import JSON file selector">JSON file</message>
@@ -299,7 +299,7 @@
   <message name="IDS_BRAVE_WALLET_PANEL_NOT_CONNECTED" desc="Brave Wallet panel disconnected status">Connect</message>
   <message name="IDS_BRAVE_WALLET_PANEL_VIEW_ACCOUNT_ASSETS" desc="Brave Wallet panel view account assets button">View account assets</message>
   <message name="IDS_BRAVE_WALLET_ASSETS_PANEL_TITLE" desc="Brave Wallet assets panel title">Account assets</message>
-  <message name="IDS_BRAVE_WALLET_WELCOME_PANEL_DESCRIPTION" desc="Brave Wallet welcome panel description">Use this panel to securely access web3 and all your crypto assets.</message>
+  <message name="IDS_BRAVE_WALLET_WELCOME_PANEL_DESCRIPTION" desc="Brave Wallet welcome panel description">Use this panel to securely access Web3 and all your crypto assets.</message>
   <message name="IDS_BRAVE_WALLET_WELCOME_PANEL_BUTTON" desc="Brave Wallet welcome panel call to action button">Learn more</message>
   <message name="IDS_BRAVE_WALLET_TRANSACTION_DETAIL_BOX_FUNCTION" desc="Transaction detail box function label">FUNCTION TYPE</message>
   <message name="IDS_BRAVE_WALLET_TRANSACTION_DETAIL_BOX_HEX" desc="Transaction detail box hex data label">HEX DATA</message>
@@ -313,13 +313,13 @@
   <message name="IDS_BRAVE_WALLET_IMPORT_FROM_EXTERNAL_PASSWORD_CHECK" desc="Import external wallet screen same password button">Use the same password</message>
   <message name="IDS_BRAVE_WALLET_IMPORT_META_MASK_TITLE" desc="Import MetaMask screen title">MetaMask</message>
   <message name="IDS_BRAVE_WALLET_IMPORT_TITLE" desc="Import screen title">Import from <ph name="WALLET_EXTENSION"><ex>MetaMask</ex>$1</ph></message>
-  <message name="IDS_BRAVE_WALLET_IMPORT_DESCRIPTION" desc="Import MetaMask screen description">Import your <ph name="WALLET_EXTENSION"><ex>MetaMask</ex>$1</ph> accounts into Brave Wallet. Enjoy a faster and more secure way to manage crypto assets and interact with web 3 DApps.</message>
+  <message name="IDS_BRAVE_WALLET_IMPORT_DESCRIPTION" desc="Import MetaMask screen description">Import your <ph name="WALLET_EXTENSION"><ex>MetaMask</ex>$1</ph> accounts into Brave Wallet. Enjoy a faster and more secure way to manage crypto assets and interact with Web3 DApps.</message>
   <message name="IDS_BRAVE_WALLET_IMPORT_META_MASK_INPUT" desc="Import MetaMask screen password input placeholder">MetaMask password</message>
   <message name="IDS_BRAVE_WALLET_IMPORT_BRAVE_LEGACY_TITLE" desc="Import CryptoWallets screen title">crypto wallets</message>
   <message name="IDS_BRAVE_WALLET_CRYPTO_WALLETS_DETECTED" desc="Wallet Welcome screen detected crypto wallets title">Existing crypto wallets detected</message>
   <message name="IDS_BRAVE_WALLET_CRYPTO_WALLETS_DESCRIPTION_ONE" desc="Wallet welcome screen detected crypto wallets first description">When you click &quot;Get started&quot; you&apos;ll import your previous Crypto Wallet to the new Brave Wallet experience, and enjoy all the benefits outlined above. Give it a try, and let us know what you think!</message>
   <message name="IDS_BRAVE_WALLET_CRYPTO_WALLETS_DESCRIPTION_TWO" desc="Wallet welcome screen detected crypto wallets second description">If you&apos;d rather skip the import and keep the old Crypto Wallets experience, just navigate to the Brave Browser <ph name="LINK_BEFORE">$1</ph>Settings<ph name="LINK_AFTER">$2</ph> and change the default back to Crypto Wallets. You can also import, try the new Brave Wallet, and change back at any time.</message>
-  <message name="IDS_BRAVE_WALLET_IMPORT_BRAVE_LEGACY_DESCRIPTION" desc="Import CryptoWallets screen description">Enter your existing crypto wallets password to import to Brave Wallet. Enjoy a faster and more secure way to manage crypto assets and interact with web 3 DApps.</message>
+  <message name="IDS_BRAVE_WALLET_IMPORT_BRAVE_LEGACY_DESCRIPTION" desc="Import CryptoWallets screen description">Enter your existing crypto wallets password to import to Brave Wallet. Enjoy a faster and more secure way to manage crypto assets and interact with Web3 DApps.</message>
   <message name="IDS_BRAVE_WALLET_IMPORT_BRAVE_LEGACY_INPUT" desc="Import CryptoWallets screen password input placeholder">Crypto wallets password</message>
   <message name="IDS_BRAVE_WALLET_IMPORT_BRAVE_LEGACY_ALT_BUTTON" desc="Import CryptoWallets screen lost password button">I’ve lost my password and recovery phrase, create a new wallet.</message>
   <message name="IDS_BRAVE_WALLET_CONNECT_HARDWARE_PANEL_CONNECTED" desc="Connect Hardware panel connected status"><ph name="DEVICE_NAME"><ex>Ledger</ex>$1</ph> connected</message>
