@@ -11,7 +11,6 @@
 
 #include "base/feature_list.h"
 #include "base/strings/string_util.h"
-#include "base/task/post_task.h"
 #include "base/values.h"
 #include "brave/components/adblock_rust_ffi/src/wrapper.h"
 #include "brave/components/brave_shields/browser/ad_block_engine.h"
@@ -248,8 +247,8 @@ void AdBlockRegionalServiceManager::EnableFilterList(const std::string& uuid,
 
   // Update preferences to reflect enabled/disabled state of specified
   // filter list
-  base::PostTask(
-      FROM_HERE, {content::BrowserThread::UI},
+  content::GetUIThreadTaskRunner({})->PostTask(
+      FROM_HERE,
       base::BindOnce(&AdBlockRegionalServiceManager::UpdateFilterListPrefs,
                      weak_factory_.GetWeakPtr(), uuid, enabled));
 }

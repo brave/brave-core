@@ -19,7 +19,7 @@
 
 #if BUILDFLAG(IS_ANDROID)
 #include "brave/browser/permissions/brave_wallet_permission_prompt_android.h"
-#include "components/permissions/android/permission_prompt_android.h"
+#include "components/permissions/android/permission_prompt/permission_prompt_android.h"
 #endif
 
 bool ChromePermissionsClient::BraveCanBypassEmbeddingOriginCheck(

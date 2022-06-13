@@ -226,6 +226,24 @@
   <message name="IDS_SETTINGS_ABOUT_PAGE_FIRMWARE_UPDATES" desc="Text of the button for the surface which allows users to update all their peripheral firmwares in one place.">
     Firmware updates
   </message>
+  <message name="IDS_SETTINGS_ABOUT_PAGE_CONSUMER_AUTO_UPDATE_TOGGLE_TITLE" desc="Text of the auto update toggle feature.">
+    Updates
+  </message>
+  <message name="IDS_SETTINGS_ABOUT_PAGE_CONSUMER_AUTO_UPDATE_TOGGLE_DESCRIPTION" desc="Text of the auto update toggle feature description.">
+    Get the latest features and security improvements.
+  </message>
+  <message name="IDS_SETTINGS_ABOUT_PAGE_CONSUMER_AUTO_UPDATE_TOGGLE_DIALOG_TITLE" desc="Text of the auto update toggle feature dialog.">
+    Turn off automatic updates?
+  </message>
+  <message name="IDS_SETTINGS_ABOUT_PAGE_CONSUMER_AUTO_UPDATE_TOGGLE_DIALOG_DESCRIPTION" desc="Text of the auto update toggle feature dialog description.">
+    Your device may no longer work properly, and you may experience security and performance issues. Turning off updates may also impact your right to make legal claims if you experience any issues.
+  </message>
+  <message name="IDS_SETTINGS_ABOUT_PAGE_CONSUMER_AUTO_UPDATE_TOGGLE_TURN_OFF_BUTTON" desc="Text of the auto update toggle feature dialog turn off button.">
+    Turn off
+  </message>
+  <message name="IDS_SETTINGS_ABOUT_PAGE_CONSUMER_AUTO_UPDATE_TOGGLE_KEEP_UPDATES_BUTTON" desc="Text of the auto update toggle feature dialog keep update button.">
+    Keep updates
+  </message>
 
   <!-- Profiles (OS settings) -->
   <message name="IDS_OS_SETTINGS_PROFILE_NAME" desc="Label with device account first name, showing which user is currently signed in.">
@@ -784,59 +802,6 @@
   </message>
   <message name="IDS_OS_SETTINGS_AMBIENT_MODE_TEMPERATURE_UNIT_CELSIUS" desc="Label for the radio button to choose celsius as the preferred temperature unit.">
     Celsius
-  </message>
-
-  <!-- Dark Mode Page -->
-  <message name="IDS_OS_SETTINGS_DARK_MODE_TITLE" desc="Label for row in settings page that opens the dark mode settings page to schedule enabling and disabling dark mode time and modes.">
-    Dark theme
-  </message>
-  <message name="IDS_OS_SETTINGS_DARK_MODE_ON" desc="Label for the toggle row in dark mode settings page when it is enabled.">
-    On
-  </message>
-  <message name="IDS_OS_SETTINGS_DARK_MODE_OFF" desc="Label for the toggle row in dark mode settings page when it is disabled.">
-    Off
-  </message>
-  <message name="IDS_OS_SETTINGS_DARK_MODE_THEMED_RADIO_GROUP_TITLE" desc="The title of the radio group that allows the user to configure the accent color of the dark mode.">
-    Accent color
-  </message>
-  <message name="IDS_OS_SETTINGS_DARK_MODE_THEMED_RADIO_GROUP_DESCRIPTION" desc="The description of the radio group that allows the user to configure the accent color of the dark mode.">
-    Choose the color theme for Launcher, shelf, Quick Settings, and more
-  </message>
-  <message name="IDS_OS_SETTINGS_DARK_MODE_THEMED_ON" desc="Label for the checkbox which set the color mode is computed based on the user's wallpaper.">
-    Based on your wallpaper
-  </message>
-  <message name="IDS_OS_SETTINGS_DARK_MODE_THEMED_OFF" desc="Label for the checkbox which set the color mode to default color than calculated from the current wallpaper.">
-    Neutral
-  </message>
-    <message name="IDS_SETTINGS_DARK_MODE_ON_AT_SUNSET" desc="The sub label for the automatic schedule which explains that Dark Mode will turn on automatically at sunset.">
-    Dark mode will turn on automatically at sunset
-  </message>
-  <message name="IDS_SETTINGS_DARK_MODE_OFF_AT_SUNRISE" desc="The sub label for the automatic schedule which explains that Dark Mode will turn off automatically at sunrise.">
-    Dark mode will turn off automatically at sunrise
-  </message>
-  <message name="IDS_SETTINGS_DARK_MODE_SCHEDULE_CUSTOM" desc="The label of the option to set a custom schedule of the Dark Mode feature.">
-    Custom
-  </message>
-  <message name="IDS_SETTINGS_DARK_MODE_SCHEDULE_LABEL" desc="The label for the automatic schedule section of the Dark Mode feature.">
-    Schedule
-  </message>
-  <message name="IDS_SETTINGS_DARK_MODE_SCHEDULE_NEVER" desc="The label of the option to turn off the automatic schedule of the Dark Mode feature.">
-    Never
-  </message>
-  <message name="IDS_SETTINGS_DARK_MODE_SCHEDULE_SUNSET_TO_SUNRISE" desc="The label of the option to set the automatic schedule of the Dark Mode feature to turn on at sunset and off at sunrise.">
-    Sunset to sunrise
-  </message>
-  <message name="IDS_SETTINGS_DARK_MODE_SUBLABEL_SUNSET_TO_SUNRISE_OFF" desc="The sub label for row in personalization settings page that indicates that dark mode is off and will be automatically turned on at sunset.">
-    Off / Will turn on automatically at sunset
-  </message>
-  <message name="IDS_SETTINGS_DARK_MODE_SUBLABEL_SUNSET_TO_SUNRISE_ON" desc="The sub label for row in personalization settings page that indicates that dark mode is on and will be automatically turned off at sunrise.">
-    On / Will turn off automatically at sunrise
-  </message>
-  <message name="IDS_SETTINGS_DARK_MODE_SUBLABEL_CUSTOM_OFF" desc="The sub label for row in personalization settings page that indicates that dark mode is off and will be automatically turned on at the user's custom start time.">
-    Off / Will turn on automatically at <ph name="TIME">$1<ex>6:30 PM</ex></ph>
-  </message>
-  <message name="IDS_SETTINGS_DARK_MODE_SUBLABEL_CUSTOM_ON" desc="The sub label for row in personalization settings page that indicates dark mode is on and will be automatically turned off at the user's custom end time.">
-    On / Will turn off automatically at <ph name="TIME">$1<ex>10:45 AM</ex></ph>
   </message>
 
   <!-- Search and Assistant section. -->
@@ -3104,25 +3069,25 @@ Press an assigned switch or key to remove assignment.
     Recent Brave tabs
   </message>
   <message name="IDS_SETTINGS_MULTIDEVICE_PHONE_HUB_APPS_SECTION_TITLE" desc="The title of the Phone Hub Apps section on the settings page.">
-    Messaging apps
+    Apps
   </message>
   <message name="IDS_SETTINGS_MULTIDEVICE_PHONE_HUB_APPS_AND_NOTIFICATIONS_SECTION_TITLE" desc="The title of the Phone Hub Apps and Notifications combined section on the settings page.">
-    Notifications and messaging apps
+    Notifications and apps
   </message>
   <message name="IDS_SETTINGS_MULTIDEVICE_PHONE_HUB_CAMERA_ROLL_AND_NOTIFICATIONS_SECTION_TITLE" desc="The title of the Phone Hub Camera Roll and Notifications combined section on the settings page.">
     Recent photos and notifications
   </message>
   <message name="IDS_SETTINGS_MULTIDEVICE_PHONE_HUB_CAMERA_ROLL_AND_APPS_SECTION_TITLE" desc="The title of the Phone Hub Camera Roll and Apps combined section on the settings page.">
-    Recent photos and messaging apps
+    Recent photos and apps
   </message>
   <message name="IDS_SETTINGS_MULTIDEVICE_PHONE_HUB_CAMERA_ROLL_NOTIFICATIONS_AND_APPS_SECTION_TITLE" desc="The title of the Phone Hub Camera Roll, Notifications and Apps combined section on the settings page.">
-    Recent photos, notifications, and messaging apps
+    Recent photos, notifications, and apps
   </message>
   <message name="IDS_SETTINGS_MULTIDEVICE_PHONE_HUB_SUMMARY" desc="Description of for the 'Phone Hub' setting. This feature lets the user stay productive on ChromeOS by ensuring that their phones' apps, content, and connectivity are available on their ChromeOS device.">
     Access your phone's capabilities from your <ph name="DEVICE_TYPE">$1<ex>Chromebook</ex></ph>
   </message>
-  <message name="IDS_SETTINGS_MULTIDEVICE_PHONE_HUB_CAMERA_ROLL_SUMMARY" desc="Description of for the 'Phone Hub Camera Roll' setting. This feature populates most recent photos from a connected Android phone to ChromeOS devices.">
-    View your phone's recent photos and media on your <ph name="DEVICE_TYPE">$1<ex>Chromebook</ex></ph>
+  <message name="IDS_SETTINGS_MULTIDEVICE_PHONE_HUB_CAMERA_ROLL_SUMMARY" desc="Description of for the 'Phone Hub Camera Roll' setting. This feature populates most recent photos from a connected Android phone to Chrome OS devices.">
+    View your phone's photos and media
   </message>
   <message name="IDS_SETTINGS_MULTIDEVICE_PHONE_HUB_NOTIFICATIONS_SUMMARY" desc="Description of for the 'Phone Hub Notifications' setting. This feature mirrors notifications from a connected Android phone to ChromeOS devices.">
     View, dismiss, and reply to your phone’s notifications
@@ -3130,20 +3095,20 @@ Press an assigned switch or key to remove assignment.
   <message name="IDS_SETTINGS_MULTIDEVICE_PHONE_HUB_TASK_CONTINUATION_SUMMARY" desc="Description of for the 'Phone Hub Task Continuation' setting. This feature lets users resume in-app actions and chrome tabs that are open on a connected Android phone from ChromeOS devices.">
     View recent Brave tabs from your phone
   </message>
-  <message name="IDS_SETTINGS_MULTIDEVICE_PHONE_HUB_APPS_SUMMARY" desc="Description of for the 'Phone Hub Apps' setting. This feature lets users streaming apps from a Android phone to ChromeOS device.">
-    Stream your phone’s messaging apps
+  <message name="IDS_SETTINGS_MULTIDEVICE_PHONE_HUB_APPS_SUMMARY" desc="Description of for the 'Phone Hub Apps' setting. This feature lets users streaming apps from a Android phone to Chrome OS device.">
+    Stream your phone's apps
   </message>
-  <message name="IDS_SETTINGS_MULTIDEVICE_PHONE_HUB_APPS_AND_NOTIFICATIONS_SUMMARY" desc="Description of for the 'Phone Hub Apps and Notifications' setting. This feature mirrors notifications and lets users streaming apps from a Android phone to ChromeOS device.">
-    View, dismiss, and reply to your phone’s notifications. Stream your phone’s messaging apps.
+  <message name="IDS_SETTINGS_MULTIDEVICE_PHONE_HUB_APPS_AND_NOTIFICATIONS_SUMMARY" desc="Description of for the 'Phone Hub Apps and Notifications' setting. This feature mirrors notifications and lets users streaming apps from a Android phone to Chrome OS device.">
+    View your phone's notifications and apps
   </message>
   <message name="IDS_SETTINGS_MULTIDEVICE_PHONE_HUB_CAMERA_ROLL_AND_NOTIFICATIONS_SUMMARY" desc="Description of for the 'Phone Hub Camera Roll and Notifications' combined setting.">
-    View your phone's recent photos, media, and notifications on your <ph name="DEVICE_TYPE">$1<ex>Chromebook</ex></ph>
+    View your phone's photos, media, and notifications
   </message>
   <message name="IDS_SETTINGS_MULTIDEVICE_PHONE_HUB_CAMERA_ROLL_AND_APPS_SUMMARY" desc="Description of for the 'Phone Hub Camera Roll and Apps' combined setting.">
-    View your phone's recent photos and media. Stream your phone’s messaging apps.
+    View your phone's photos, media, and apps
   </message>
   <message name="IDS_SETTINGS_MULTIDEVICE_PHONE_HUB_CAMERA_ROLL_NOTIFICATIONS_AND_APPS_SUMMARY" desc="Description of for the 'Phone Hub Camera Roll, Notifications and Apps' combined setting.">
-    View your phone's recent photos, media, and notifications. Stream your phone’s messaging apps.
+    View your phone's photos, media, notifications, and apps
   </message>
   <message name="IDS_SETTINGS_MULTIDEVICE_PHONE_HUB_TASK_CONTINUATION_DISABLED_SUMMARY" desc="Description of for the 'Phone Hub Task Continuation' setting when Brave sync is not enabled. This feature lets users resume in-app actions and chrome tabs that are open on a connected Android phone from ChromeOS devices.">
     Turn on <ph name="LINK1_BEGIN">&lt;a id="chromeSyncLink"&gt;</ph>Brave Sync<ph name="LINK1_END">&lt;/a&gt;</ph> to view recent Brave tabs. <ph name="LINK2_BEGIN">&lt;a target="_blank" id="learnMoreLink" href="$1<ex>https://google.com/</ex>"&gt;</ph>Learn More<ph name="LINK2_END">&lt;/a&gt;</ph>
@@ -3208,6 +3173,9 @@ Press an assigned switch or key to remove assignment.
   <message name="IDS_SETTINGS_MULTIDEVICE_NOTIFICATION_ACCESS_PROHIBITED_DISABLED_BY_ADMIN_TOOLTIP" desc="Tooltip shown to users when hovering the help icon in settings next to the Phone Hub notification syncing feature. The tooltip describes how users with notification access disabled by their phones' administrator cannot opt into this feature.">
     Notification syncing is disabled by your phone's administrator
   </message>
+  <message name="IDS_SETTINGS_MULTIDEVICE_APPS_ACCESS_PROHIBITED_DISABLED_BY_ADMIN_TOOLTIP" desc="Tooltip shown to users when hovering the help icon in settings next to the Phone Hub apps streaming feature. The tooltip describes how users with apps access disabled by their phones' administrator cannot opt into this feature.">
+    Apps streaming is disabled by your phone's administrator.
+  </message>
   <message name="IDS_SETTINGS_MULTIDEVICE_NOTIFICATION_ACCESS_SETUP_DIALOG_GET_STARTED_BUTTON_LABEL" desc="The label to a button in the Phone Hub notification opt-in flow that appears when the dialog first opens. Clicking the button will allow the user to try enabling the feature.">
     Get started
   </message>
@@ -3249,6 +3217,21 @@ Press an assigned switch or key to remove assignment.
   </message>
   <message name="IDS_SETTINGS_MULTIDEVICE_PERMISSIONS_SETUP_DIALOG_OPERATION_INSTRUCTIONS" desc="The text shown in the dialog containing the phone permissions opt-in flow. Alerts the user that to enable notifications and apps permissionss on the phone.">
     Go to your phone to review a few more permissions. Make sure your phone's Bluetooth and Wi-Fi are turned on.
+  </message>
+  <message name="IDS_SETTINGS_MULTIDEVICE_PERMISSIONS_SETUP_DIALOG_COULD_NOT_ESTABLISH_CONNECTION_TITLE" desc="The title of the dialog containing the phone permissions opt-in flow when the device is unable to establish a connection to the phone.">
+    Can't establish connection
+  </message>
+  <message name="IDS_SETTINGS_MULTIDEVICE_PERMISSIONS_SETUP_DIALOG_COULD_NOT_ESTABLISH_CONNECTION_SUMMARY" desc="The text shown in the dialog containing the phone permissions opt-in flow. Alerts the user that the device is unable to establish a connection to the phone.">
+    Something went wrong. Make sure your phone is close by, unlocked, and Bluetooth and Wi-Fi are turned on.
+  </message>
+  <message name="IDS_SETTINGS_MULTIDEVICE_PERMISSIONS_SETUP_DIALOG_CONNECTION_LOST_WITH_PHONE_SUMMARY" desc="The text shown in the dialog containing the phone permissions opt-in flow when the device loses its connection to the phone.">
+    Can't maintain a connection with your phone. Make sure your phone is close by, unlocked, and Bluetooth and Wi-Fi are turned on.
+  </message>
+  <message name="IDS_SETTINGS_MULTIDEVICE_PERMISSIONS_SETUP_DIALOG_NOTIFICATION_ACCESS_PROHIBITED_TITLE" desc="The title of the dialog containing the phone permissions opt-in flow when the phone's account notification streaming is prohibited.">
+    Can't use this account
+  </message>
+  <message name="IDS_SETTINGS_MULTIDEVICE_PERMISSIONS_SETUP_DIALOG_NOTIFICATION_ACCESS_PROHIBITED_SUMMARY" desc="The text shown in the dialog containing the phone permissions opt-in flow when the phone's account notification streaming is prohibited.">
+    You can't view your phone's notifications on this managed account. Try again with a different account. <ph name="LINK_BEGIN">&lt;a target="_blank" href="$1<ex>https://google.com/</ex>"&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
   </message>
   <message name="IDS_SETTINGS_MULTIDEVICE_PERMISSIONS_SETUP_DIALOG_COMPLETED_TITLE" desc="The title shown in the dialog containing the phone permissions opt-in flow when the feature is successfully turned on.">
     Your phone and <ph name="DEVICE_TYPE">$1<ex>Chromebook</ex></ph> are connected
@@ -4187,11 +4170,8 @@ Press an assigned switch or key to remove assignment.
       Help improve ChromeOS features and performance
     </message>
   </if>
-  <message name="IDS_SETTINGS_ENABLE_LOGGING_TOGGLE_OWNER_DESC" desc="The description of the checkbox to enable/disable crash and user metrics logging in ChromeOS for the owner of the device.">
+  <message name="IDS_SETTINGS_ENABLE_LOGGING_TOGGLE_DESC" desc="The description of the checkbox to enable/disable crash and user metrics logging in ChromeOS for user of the device.">
     Automatically sends crash reports as well as diagnostic and usage data to Brave
-  </message>
-  <message name="IDS_SETTINGS_ENABLE_LOGGING_TOGGLE_USER_DESC" desc="The description of the checkbox to enable/disable user metrics logging in ChromeOS for non-owners of the device.">
-    Automatically sends diagnostic and usage data to Brave
   </message>
   <message name="IDS_SETTINGS_ENABLE_SUGGESTED_CONTENT_TITLE" desc="The label of the checkbox to enable/disable Suggested Content in ChromeOS settings. Suggested Content includes app search recommendations and website recommendations which can show up in places such as the launcher search and suggestion chips.">
     Suggest new content to explore

@@ -16,7 +16,6 @@
 #include "base/memory/ref_counted.h"
 #include "base/strings/sys_string_conversions.h"
 #include "base/system/sys_info.h"
-#include "base/task/post_task.h"
 #include "base/task/thread_pool.h"
 #import "brave/browser/mac/su_updater.h"
 #include "brave/browser/update_util.h"

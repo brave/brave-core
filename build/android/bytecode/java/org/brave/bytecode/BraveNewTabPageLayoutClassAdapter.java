@@ -15,19 +15,13 @@ public class BraveNewTabPageLayoutClassAdapter extends BraveClassVisitor {
 
     public BraveNewTabPageLayoutClassAdapter(ClassVisitor visitor) {
         super(visitor);
+
+        deleteField(sBraveNewTabPageLayoutClassName, "mMvTilesContainerLayout");
+        makeProtectedField(sNewTabPageLayoutClassName, "mMvTilesContainerLayout");
+
         makePublicMethod(sNewTabPageLayoutClassName, "insertSiteSectionView");
-        addMethodAnnotation(sBraveNewTabPageLayoutClassName, "insertSiteSectionView",
-                "Ljava/lang/Override;");
-
-        deleteField(sBraveNewTabPageLayoutClassName, "mSiteSectionView");
-        makeProtectedField(sNewTabPageLayoutClassName, "mSiteSectionView");
-
-        deleteField(sBraveNewTabPageLayoutClassName, "mTileGroup");
-        makeProtectedField(sNewTabPageLayoutClassName, "mTileGroup");
-
-        makePublicMethod(sNewTabPageLayoutClassName, "updateTileGridPlaceholderVisibility");
-        addMethodAnnotation(sBraveNewTabPageLayoutClassName, "updateTileGridPlaceholderVisibility",
-                "Ljava/lang/Override;");
+        addMethodAnnotation(
+                sBraveNewTabPageLayoutClassName, "insertSiteSectionView", "Ljava/lang/Override;");
 
         changeSuperName(sNewTabPageLayoutClassName, sNewTabPageLayoutSuperClassName);
     }

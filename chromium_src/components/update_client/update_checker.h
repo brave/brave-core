@@ -42,9 +42,7 @@ class SequentialUpdateChecker : public UpdateChecker {
       PersistedData* persistent);
 
   void CheckForUpdates(
-      const std::string& session_id,
-      const std::vector<std::string>& ids_checked,
-      const IdToComponentPtrMap& components,
+      scoped_refptr<UpdateContext> update_context,
       const base::flat_map<std::string, std::string>& additional_attributes,
       UpdateCheckCallback update_check_callback) override;
 
@@ -68,14 +66,10 @@ class SequentialUpdateChecker : public UpdateChecker {
   const scoped_refptr<Configurator> config_;
   PersistedData* metadata_ = nullptr;
 
-  // Store the parameters to CheckForUpdates(...), so we can pass them multiple
-  // times to the original UpdateChecker implementation.
-  std::string session_id_;
-  // Needs to be a pointer because the values in IdToComponentPtrMap are of
-  // type std::unique_ptr, which we can't copy. Furthermore, it is okay to keep
-  // this pointer because IdToComponentPtrMap resides in in UpdateContext, which
-  // outlives this class.
-  const IdToComponentPtrMap* components_;
+  // This update conext instance is stored locally and then used to create
+  // individidual UpdateContext instances based on each application id.
+  scoped_refptr<UpdateContext> update_context_;
+
   base::flat_map<std::string, std::string> additional_attributes_;
   UpdateCheckCallback update_check_callback_;
 

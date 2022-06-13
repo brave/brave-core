@@ -24,8 +24,13 @@ rust_cxx("cxx") {
 }
 
 source_set("shim") {
-  visibility = [ ":*", "//brave/components/skus/browser" ]
+  visibility = [
+    ":*",
+    "//brave/components/skus/browser",
+  ]
   sources = [ "src/shim.h" ]
+
+  public_deps = [ "//third_party/abseil-cpp:absl" ]
 
   deps = [
     "//base",

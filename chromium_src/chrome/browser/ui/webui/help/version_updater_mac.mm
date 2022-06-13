@@ -5,6 +5,7 @@
 #include "chrome/browser/ui/webui/help/version_updater_mac.h"
 
 #include "base/mac/foundation_util.h"
+#include "base/strings/escape.h"
 #include "base/strings/sys_string_conversions.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/browser/sparkle_buildflags.h"
@@ -13,7 +14,6 @@
 #include "chrome/browser/obsolete_system/obsolete_system.h"
 #include "chrome/grit/chromium_strings.h"
 #include "chrome/grit/generated_resources.h"
-#include "net/base/escape.h"
 #include "ui/base/l10n/l10n_util.h"
 
 #if BUILDFLAG(ENABLE_SPARKLE)
@@ -191,7 +191,7 @@ void VersionUpdaterMac::UpdateStatus(NSDictionary* dictionary) {
       message += brave_l10n::GetLocalizedResourceUTF16String(
           IDS_UPGRADE_ERROR_DETAILS);
       message += u"<br/><pre>";
-      message += base::UTF8ToUTF16(net::EscapeForHTML(error_messages));
+      message += base::UTF8ToUTF16(base::EscapeForHTML(error_messages));
       message += u"</pre>";
     }
   }

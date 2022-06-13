@@ -7,7 +7,6 @@
 
 #include "base/metrics/user_metrics.h"
 #include "base/path_service.h"
-#include "base/task/post_task.h"
 #include "base/task/sequenced_task_runner.h"
 #include "base/task/thread_pool.h"
 #include "brave/ios/browser/browser_state/brave_browser_state_keyed_service_factories.h"

@@ -10,7 +10,6 @@
 
 #include "base/containers/contains.h"
 #include "base/feature_list.h"
-#include "base/task/post_task.h"
 #include "brave/browser/net/brave_ad_block_csp_network_delegate_helper.h"
 #include "brave/browser/net/brave_ad_block_tp_network_delegate_helper.h"
 #include "brave/browser/net/brave_common_static_redirect_network_delegate_helper.h"
@@ -201,8 +200,8 @@ void BraveRequestHandler::RunCallbackForRequestIdentifier(
       callbacks_.find(request_identifier);
   // We intentionally do the async call to maintain the proper flow
   // of URLLoader callbacks.
-  base::PostTask(FROM_HERE, {content::BrowserThread::UI},
-                 base::BindOnce(std::move(it->second), rv));
+  content::GetUIThreadTaskRunner({})->PostTask(
+      FROM_HERE, base::BindOnce(std::move(it->second), rv));
 }
 
 // TODO(iefremov): Merge all callback containers into one and run only one loop

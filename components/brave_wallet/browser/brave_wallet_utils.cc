@@ -1184,16 +1184,4 @@ std::string GetWeb3ClientVersion() {
       "BraveWallet/v%s", version_info::GetBraveChromiumVersionNumber().c_str());
 }
 
-absl::optional<ContentSettingsType> CoinTypeToContentSettingsType(
-    mojom::CoinType coin_type) {
-  switch (coin_type) {
-    case mojom::CoinType::ETH:
-      return ContentSettingsType::BRAVE_ETHEREUM;
-    case mojom::CoinType::SOL:
-      return ContentSettingsType::BRAVE_SOLANA;
-    default:
-      return absl::nullopt;
-  }
-}
-
 }  // namespace brave_wallet

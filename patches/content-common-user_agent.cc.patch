@@ -1,5 +1,5 @@
 diff --git a/content/common/user_agent.cc b/content/common/user_agent.cc
-index 4d6a3c4e2303762403b3076c10d349c81f7e0520..0ccf3ba0201af1e5c6ce0e173b48610f6f073891 100644
+index bc2f280dfcc3a2a603f8abd68274cf620e00839b..3ebe3d424c9ddcb456a92833c47cf5f4ec9e6062 100644
 --- a/content/common/user_agent.cc
 +++ b/content/common/user_agent.cc
 @@ -330,6 +330,7 @@ std::string GetAndroidOSInfo(

@@ -6,6 +6,8 @@
 #ifndef BRAVE_COMPONENTS_PERMISSIONS_BRAVE_PERMISSION_MANAGER_H_
 #define BRAVE_COMPONENTS_PERMISSIONS_BRAVE_PERMISSION_MANAGER_H_
 
+#include <vector>
+
 #include "components/permissions/permission_manager.h"
 
 namespace permissions {
@@ -23,9 +25,25 @@ class BravePermissionManager : public PermissionManager {
                           const GURL& requesting_origin,
                           const GURL& embedding_origin) const override;
 
-  void ResetPermissionViaContentSetting(ContentSettingsType type,
-                                        const GURL& requesting_origin,
-                                        const GURL& embedding_origin);
+  void RequestPermissionsForOrigin(
+      const std::vector<blink::PermissionType>& permissions,
+      content::RenderFrameHost* render_frame_host,
+      const GURL& requesting_origin,
+      bool user_gesture,
+      base::OnceCallback<
+          void(const std::vector<blink::mojom::PermissionStatus>&)> callback);
+
+  blink::mojom::PermissionStatus GetPermissionStatusForOrigin(
+      blink::PermissionType permission,
+      content::RenderFrameHost* render_frame_host,
+      const GURL& requesting_origin);
+
+  void ResetPermission(blink::PermissionType permission,
+                       const GURL& requesting_origin,
+                       const GURL& embedding_origin) override;
+
+  using PermissionManager::GetPermissionStatus;
+  using PermissionManager::ResetPermission;
 };
 
 }  // namespace permissions

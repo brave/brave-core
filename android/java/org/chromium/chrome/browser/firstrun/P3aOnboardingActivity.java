@@ -29,6 +29,7 @@ import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveRewardsHelper;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.customtabs.CustomTabActivity;
+import org.chromium.chrome.browser.firstrun.BraveFirstRunFlowSequencer;
 import org.chromium.chrome.browser.night_mode.GlobalNightModeStateProviderHolder;
 import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
@@ -44,7 +45,7 @@ public class P3aOnboardingActivity extends FirstRunActivityBase {
     private boolean mInitializeViewsDone;
     private boolean mInvokePostWorkAtInitializeViews;
     private boolean mIsP3aEnabled;
-    private FirstRunFlowSequencer mFirstRunFlowSequencer;
+    private BraveFirstRunFlowSequencer mFirstRunFlowSequencer;
     private CheckBox mP3aOnboardingCheckbox;
     private Button mBtnContinue;
 
@@ -168,8 +169,9 @@ public class P3aOnboardingActivity extends FirstRunActivityBase {
     public void onBackPressed() {}
 
     @Override
-    protected void triggerLayoutInflation() {
-        mFirstRunFlowSequencer = new FirstRunFlowSequencer(this) {
+    public void triggerLayoutInflation() {
+        super.triggerLayoutInflation();
+        mFirstRunFlowSequencer = new BraveFirstRunFlowSequencer(this) {
             @Override
             public void onFlowIsKnown(Bundle freProperties) {
                 initializeViews();

@@ -21,7 +21,6 @@
 #include "base/rand_util.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_piece_forward.h"
-#include "base/task/post_task.h"
 #include "base/trace_event/trace_event.h"
 #include "brave/components/brave_prochlo/prochlo_message.pb.h"
 #include "brave/components/brave_referrals/common/pref_names.h"
@@ -327,11 +326,9 @@ void BraveP3AService::OnHistogramChanged(const char* histogram_name,
   // Shortcut for the special values, see |kSuspendedMetricValue|
   // description for details.
   if (IsSuspendedMetric(histogram_name, sample)) {
-    base::PostTask(FROM_HERE, {content::BrowserThread::UI},
-                   base::BindOnce(&BraveP3AService::OnHistogramChangedOnUI,
-                                  this,
-                                  histogram_name,
-                                  kSuspendedMetricValue,
+    content::GetUIThreadTaskRunner({})->PostTask(
+        FROM_HERE, base::BindOnce(&BraveP3AService::OnHistogramChangedOnUI,
+                                  this, histogram_name, kSuspendedMetricValue,
                                   kSuspendedMetricBucket));
     return;
   }
@@ -361,8 +358,8 @@ void BraveP3AService::OnHistogramChanged(const char* histogram_name,
     bucket = DirectEncodingProtocol::Perturb(bucket_count, bucket);
   }
 
-  base::PostTask(FROM_HERE, {content::BrowserThread::UI},
-                 base::BindOnce(&BraveP3AService::OnHistogramChangedOnUI, this,
+  content::GetUIThreadTaskRunner({})->PostTask(
+      FROM_HERE, base::BindOnce(&BraveP3AService::OnHistogramChangedOnUI, this,
                                 histogram_name, sample, bucket));
 }
 

@@ -7,7 +7,7 @@
 
 #include "base/path_service.h"
 #include "base/run_loop.h"
-#include "base/task/post_task.h"
+#include "base/task/thread_pool.h"
 #include "base/test/thread_test_helper.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/common/brave_paths.h"
@@ -62,7 +62,8 @@ void BaseLocalDataFilesBrowserTest::WaitForService() {
       g_brave_browser_process->local_data_files_service()->GetTaskRunner()));
   ASSERT_TRUE(tr_helper->Run());
   scoped_refptr<base::ThreadTestHelper> io_helper(new base::ThreadTestHelper(
-      base::CreateSingleThreadTaskRunner({BrowserThread::IO}).get()));
+      base::ThreadPool::CreateSingleThreadTaskRunner({BrowserThread::IO})
+          .get()));
   ASSERT_TRUE(io_helper->Run());
   base::RunLoop().RunUntilIdle();
 }

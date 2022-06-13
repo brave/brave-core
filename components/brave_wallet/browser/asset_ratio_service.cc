@@ -13,7 +13,6 @@
 #include "base/strings/stringprintf.h"
 #include "brave/common/brave_services_key.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
-#include "net/base/escape.h"
 #include "net/base/load_flags.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "services/network/public/cpp/simple_url_loader.h"

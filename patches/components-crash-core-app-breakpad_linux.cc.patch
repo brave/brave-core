@@ -1,8 +1,8 @@
 diff --git a/components/crash/core/app/breakpad_linux.cc b/components/crash/core/app/breakpad_linux.cc
-index 823e49a234e3dd31bf6527c2e4efa96f3d23f1f2..0c1ca2d57dc686a7df1d841d5e73061d28af6ded 100644
+index 4ed2558351e37dde0eb35b6eb32f442346ff2490..1a2a82195298e376c4d3ba4dc560bf253cbf7ba4 100644
 --- a/components/crash/core/app/breakpad_linux.cc
 +++ b/components/crash/core/app/breakpad_linux.cc
-@@ -1460,7 +1460,7 @@ bool IsValidCrashReportId(const char* buf, size_t bytes_read,
+@@ -1462,7 +1462,7 @@ bool IsValidCrashReportId(const char* buf, size_t bytes_read,
    return my_strcmp(buf, "_sys_cr_finished") == 0;
  #else
    for (size_t i = 0; i < bytes_read; ++i) {
@@ -11,7 +11,7 @@ index 823e49a234e3dd31bf6527c2e4efa96f3d23f1f2..0c1ca2d57dc686a7df1d841d5e73061d
        return false;
    }
    return true;
-@@ -1955,7 +1955,7 @@ void HandleCrashDump(const BreakpadInfo& info) {
+@@ -1957,7 +1957,7 @@ void HandleCrashDump(const BreakpadInfo& info) {
        if (upload_child > 0) {
          IGNORE_RET(sys_close(fds[1]));  // Close write end of pipe.
  

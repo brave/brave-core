@@ -29,12 +29,6 @@ public class BravePreferenceFragment extends PreferenceFragmentCompat {
     protected static final int STORAGE_PERMISSION_IMPORT_REQUEST_CODE = STORAGE_PERMISSION_EXPORT_REQUEST_CODE + 1;
 
     @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        setHasOptionsMenu(true);
-        super.onActivityCreated(savedInstanceState);
-    }
-
-    @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         menu.clear();
         inflater.inflate(R.menu.exit_settings_menu, menu);
@@ -52,6 +46,7 @@ public class BravePreferenceFragment extends PreferenceFragmentCompat {
 
     @Override
     public void onCreatePreferences(Bundle bundle, String s) {
+        setHasOptionsMenu(true);
     }
 
     @Override

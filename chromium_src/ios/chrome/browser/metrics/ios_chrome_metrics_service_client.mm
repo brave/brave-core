@@ -17,7 +17,6 @@
 #include "base/metrics/persistent_histogram_allocator.h"
 #include "base/path_service.h"
 #include "base/process/process_metrics.h"
-#include "base/task/post_task.h"
 #include "base/task/thread_pool.h"
 #include "components/metrics/metrics_log_uploader.h"
 #include "components/metrics/metrics_provider.h"
@@ -57,8 +56,8 @@ void DeleteFileMetrics() {
         FROM_HERE,
         {base::MayBlock(), base::TaskPriority::BEST_EFFORT,
          base::TaskShutdownBehavior::SKIP_ON_SHUTDOWN},
-        base::BindOnce(base::GetDeletePathRecursivelyCallback(),
-                       std::move(browser_metrics_upload_dir)));
+        base::GetDeletePathRecursivelyCallback(
+            std::move(browser_metrics_upload_dir)));
   }
 }
 

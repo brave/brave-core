@@ -13,15 +13,15 @@ NS_ASSUME_NONNULL_BEGIN
 /// The |SkeletonType| and |TopDomainEntry| are mirrored in trie_entry.h. These
 /// are used to insert and read nodes from the Trie.
 /// The type of skeleton in the trie node.
-typedef NSInteger BraveSpoofCheckerSkeletonType NS_TYPED_ENUM
-    NS_SWIFT_NAME(URLSpoofChecker.SkeletonType);
+typedef NSInteger BraveSpoofCheckerSkeletonType
+    NS_TYPED_ENUM NS_SWIFT_NAME(URLSpoofChecker.SkeletonType);
 OBJC_EXPORT BraveSpoofCheckerSkeletonType const
     BraveSpoofCheckerSkeletonTypeFull;
 OBJC_EXPORT BraveSpoofCheckerSkeletonType const
     BraveSpoofCheckerSkeletonTypeSeparatorsRemoved;
 
-typedef NSInteger BraveSpoofCheckerLookalikeURLMatchType NS_TYPED_ENUM
-    NS_SWIFT_NAME(URLSpoofChecker.LookalikeURLMatchType);
+typedef NSInteger BraveSpoofCheckerLookalikeURLMatchType
+    NS_TYPED_ENUM NS_SWIFT_NAME(URLSpoofChecker.LookalikeURLMatchType);
 
 OBJC_EXPORT BraveSpoofCheckerLookalikeURLMatchType const
     BraveSpoofCheckerLookalikeURLMatchTypeNone;

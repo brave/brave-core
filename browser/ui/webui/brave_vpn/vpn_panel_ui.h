@@ -13,12 +13,12 @@
 #include "brave/components/brave_vpn/mojom/brave_vpn.mojom.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/web_ui_message_handler.h"
+#include "content/public/browser/webui_config.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/receiver.h"
 #include "ui/webui/mojo_bubble_web_ui_controller.h"
 #include "ui/webui/untrusted_web_ui_controller.h"
-#include "ui/webui/webui_config.h"
 
 // In the style of MojoBubbleWebUIController but for UntrustedWebUI instead
 class VPNPanelUI : public ui::UntrustedWebUIController,
@@ -58,7 +58,7 @@ class VPNPanelUI : public ui::UntrustedWebUIController,
   WEB_UI_CONTROLLER_TYPE_DECL();
 };
 
-class UntrustedVPNPanelUIConfig : public ui::WebUIConfig {
+class UntrustedVPNPanelUIConfig : public content::WebUIConfig {
  public:
   UntrustedVPNPanelUIConfig();
   ~UntrustedVPNPanelUIConfig() override = default;

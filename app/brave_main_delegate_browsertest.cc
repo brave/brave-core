@@ -25,7 +25,6 @@
 #include "components/permissions/features.h"
 #include "components/privacy_sandbox/privacy_sandbox_features.h"
 #include "components/reading_list/features/reading_list_switches.h"
-#include "components/security_state/core/features.h"
 #include "components/shared_highlighting/core/common/shared_highlighting_features.h"
 #include "content/public/browser/render_view_host.h"
 #include "content/public/common/content_features.h"
@@ -94,7 +93,9 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
   const base::Feature* disabled_features[] = {
     &autofill::features::kAutofillEnableAccountWalletStorage,
     &autofill::features::kAutofillEnableOfferNotificationForPromoCodes,
+    &autofill::features::kAutofillSaveCardUiExperiment,
     &autofill::features::kAutofillServerCommunication,
+    &autofill::features::kAutofillUpstreamAllowAdditionalEmailDomains,
     &blink::features::kAdInterestGroupAPI,
     &blink::features::kBrowsingTopics,
     &blink::features::kAllowURNsInIframes,
@@ -107,6 +108,7 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
     &blink::features::kParakeet,
     &blink::features::kPrerender2,
     &blink::features::kPrivacySandboxAdsAPIs,
+    &blink::features::kSharedStorageAPI,
     &blink::features::kSpeculationRulesPrefetchProxy,
     &blink::features::kTextFragmentAnchor,
     &commerce::kCommerceDeveloper,
@@ -119,6 +121,7 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
     &features::kCopyLinkToText,
 #endif
     &features::kDigitalGoodsApi,
+    &features::kEarlyHintsPreloadForNavigation,
     &features::kFedCm,
     &features::kFirstPartySets,
     &features::kIdleDetection,
@@ -132,6 +135,9 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
     &features::kPrivacySandboxAdsAPIsOverride,
     &features::kSignedExchangeSubresourcePrefetch,
     &features::kSubresourceWebBundles,
+#if !BUILDFLAG(IS_ANDROID)
+    &features::kTrustSafetySentimentSurvey,
+#endif
     &features::kWebOTP,
     &history_clusters::features::kOnDeviceClustering,
     &history_clusters::internal::kHistoryClustersInternalsPage,
@@ -156,7 +162,6 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
     &privacy_sandbox::kPrivacySandboxSettings3,
     &reading_list::switches::kReadLater,
     &shared_highlighting::kSharedHighlightingAmp,
-    &shared_highlighting::kSharedHighlightingV2,
 #if !BUILDFLAG(IS_ANDROID)
     &translate::kTFLiteLanguageDetectionEnabled,
 #endif
@@ -168,19 +173,19 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
 
 IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, EnabledFeatures) {
   const base::Feature* enabled_features[] = {
-    &media::kEnableTabMuting,
+    &autofill::features::kAutofillDisableShadowHeuristics,
     &blink::features::kPrefetchPrivacyChanges,
     &blink::features::kReducedReferrerGranularity,
 #if BUILDFLAG(IS_WIN)
     &features::kWinrtGeolocationImplementation,
 #endif
+    &media::kEnableTabMuting,
     &net::features::kPartitionConnectionsByNetworkIsolationKey,
     &net::features::kPartitionExpectCTStateByNetworkIsolationKey,
     &net::features::kPartitionHttpServerPropertiesByNetworkIsolationKey,
     &net::features::kPartitionSSLSessionsByNetworkIsolationKey,
     &net::features::kSplitHostCacheByNetworkIsolationKey,
     &password_manager::features::kPasswordImport,
-    &security_state::features::kSafetyTipUI,
   };
 
   for (const auto* feature : enabled_features)

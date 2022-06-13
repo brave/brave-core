@@ -11,7 +11,8 @@
 // affect other included header files from this header file.
 #define devtools_global_overrides_origin_ \
   devtools_global_overrides_origin_;      \
-  friend class BravePermissionManager
+  friend class BravePermissionManager;    \
+  GURL forced_requesting_origin_;
 
 #define GetCanonicalOrigin virtual GetCanonicalOrigin
 #include "src/components/permissions/permission_manager.h"

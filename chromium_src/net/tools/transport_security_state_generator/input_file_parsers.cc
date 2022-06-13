@@ -13,8 +13,12 @@ namespace net {
 
 namespace transport_security_state {
 
-bool ParseCertificatesFile(base::StringPiece certs_input, Pinsets* pinsets) {
-  base::StringPiece brave_certs = R"brave_certs(TestSPKI
+bool ParseCertificatesFile(base::StringPiece certs_input,
+                           Pinsets* pinsets,
+                           base::Time* timestamp) {
+  base::StringPiece brave_certs = R"brave_certs(PinsListTimestamp
+1649894400
+TestSPKI
 sha256/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=
 
 # =====BEGIN BRAVE ROOTS ASC=====
@@ -351,7 +355,7 @@ tL4ndQavEi51mI38AjEAi/V3bNTIZargCyzuFJ0nN6T5U6VR5CmD1/iQMVtCnwr1
 # =====END BRAVE ROOTS ASC=====
 )brave_certs";
 
-  return ParseCertificatesFile_ChromiumImpl(brave_certs, pinsets);
+  return ParseCertificatesFile_ChromiumImpl(brave_certs, pinsets, timestamp);
 }
 
 bool ParseJSON(base::StringPiece json,

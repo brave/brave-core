@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/bookmarks/command_manager.ts b/chrome/browser/resources/bookmarks/command_manager.ts
-index c52fce66001c4e77274c66bbabd262e2e73e97a9..eed0aaa1f1e93e81c812382b9c7851a74e8b9a28 100644
+index 04ad6214da5d8afe5f920f21b29e5f36242e638c..dd0d01c8a686707ed2fc8ab63948c14f65939500 100644
 --- a/chrome/browser/resources/bookmarks/command_manager.ts
 +++ b/chrome/browser/resources/bookmarks/command_manager.ts
 @@ -428,7 +428,7 @@ export class BookmarksCommandManagerElement extends

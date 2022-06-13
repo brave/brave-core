@@ -18,7 +18,6 @@
 #include "base/mac/foundation_util.h"
 #include "base/path_service.h"
 #include "base/strings/sys_string_conversions.h"
-#include "base/task/post_task.h"
 #include "base/task/sequenced_task_runner.h"
 #include "base/task/thread_pool.h"
 #include "base/values.h"
@@ -118,8 +117,9 @@ void BraveBookmarksExportObserver::OnExportFinished(Result result) {
       };
 
   __weak BraveBookmarksExporter* weakSelf = self;
-  base::PostTask(FROM_HERE, {web::WebThread::UI},
-                 base::BindOnce(start_export, weakSelf, filePath, listener));
+  base::ThreadPool::PostTask(
+      FROM_HERE, {web::WebThread::UI},
+      base::BindOnce(start_export, weakSelf, filePath, listener));
 }
 
 - (void)exportToFile:(NSString*)filePath

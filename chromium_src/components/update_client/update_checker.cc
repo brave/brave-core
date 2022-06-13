@@ -21,43 +21,55 @@ SequentialUpdateChecker::~SequentialUpdateChecker() {
 }
 
 void SequentialUpdateChecker::CheckForUpdates(
-    const std::string& session_id,
-    const std::vector<std::string>& ids_checked,
-    const IdToComponentPtrMap& components,
+    scoped_refptr<UpdateContext> update_context,
     const base::flat_map<std::string, std::string>& additional_attributes,
     UpdateCheckCallback update_check_callback) {
+  DCHECK(thread_checker_.CalledOnValidThread());
+  DCHECK(!update_context->components_to_check_for_updates.empty());
   VLOG(3) << "> CheckForUpdates";
 
-  DCHECK(thread_checker_.CalledOnValidThread());
-  DCHECK(!ids_checked.empty());
-
-  for (const auto& app_id : ids_checked) {
-    VLOG(3) << ">  * " << app_id;
-    remaining_ids_.push_back(app_id);
-  }
-
-  session_id_ = session_id;
-  components_ = &components;
+  update_context_ = std::move(update_context);
   additional_attributes_ = additional_attributes;
   update_check_callback_ = std::move(update_check_callback);
 
-  CheckNext();
+  for (const auto& id : update_context_->components_to_check_for_updates) {
+    remaining_ids_.push_back(id);
+  }
 
+  CheckNext();
   VLOG(3) << "< CheckForUpdates";
 }
 
 void SequentialUpdateChecker::CheckNext() {
   VLOG(3) << "> CheckNext()";
   DCHECK(!remaining_ids_.empty());
-  std::string id = remaining_ids_.front();
+  DCHECK(update_context_);
+
+  const auto id = remaining_ids_.front();
   remaining_ids_.pop_front();
-  std::vector<std::string> id_vector = {id};
+
+  scoped_refptr<UpdateContext> context = new UpdateContext(
+      update_context_->config, update_context_->is_foreground,
+      update_context_->is_install, {id},
+      update_context_->crx_state_change_callback,
+      update_context_->notify_observers_callback,
+      // We don't pass a context callback here because UpdateChecker doesn't use
+      // it. This is instead done by UpdateEngine, which calls us.
+      base::DoNothing(), update_context_->persisted_data);
+
+  auto& component = context->components[id];
+  auto& crx_component = update_context_->components[id]->crx_component();
+  component->set_crx_component(*crx_component);
+  component->set_previous_version(crx_component->version);
+  component->set_previous_fp(crx_component->fingerprint);
+  context->components_to_check_for_updates.push_back(id);
 
   update_checker_ = UpdateChecker::Create(config_, metadata_);
   update_checker_->CheckForUpdates(
-      session_id_, id_vector, *components_, additional_attributes_,
+      context, additional_attributes_,
       base::BindOnce(&SequentialUpdateChecker::UpdateResultAvailable,
                      base::Unretained(this)));
+
   VLOG(3) << "< CheckNext()";
 }
 
@@ -66,8 +78,8 @@ void SequentialUpdateChecker::UpdateResultAvailable(
     ErrorCategory error_category,
     int error,
     int retry_after_sec) {
-  VLOG(3) << "< UpdateResultAvailable(" << error << ")";
   DCHECK(thread_checker_.CalledOnValidThread());
+  VLOG(3) << "< UpdateResultAvailable(" << error << ")";
 
   if (!error) {
     DCHECK(results);
@@ -77,7 +89,7 @@ void SequentialUpdateChecker::UpdateResultAvailable(
 
   bool done = error || remaining_ids_.empty();
 
-  if (done)
+  if (done) {
     base::ThreadTaskRunnerHandle::Get()->PostTask(
         FROM_HERE,
         base::BindOnce(
@@ -85,8 +97,11 @@ void SequentialUpdateChecker::UpdateResultAvailable(
             error ? absl::nullopt
                   : absl::make_optional<ProtocolParser::Results>(results_),
             error_category, error, retry_after_sec));
-  else
+
+    remaining_ids_.clear();
+  } else {
     CheckNext();
+  }
   VLOG(3) << "> UpdateResultAvailable(" << error << ")";
 }
 

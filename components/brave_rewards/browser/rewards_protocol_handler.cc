@@ -8,15 +8,14 @@
 #include <string>
 #include <utility>
 
+#include "base/strings/escape.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_piece_forward.h"
 #include "base/strings/string_util.h"
-#include "base/task/post_task.h"
 #include "bat/ledger/buildflags.h"
 #include "brave/components/brave_rewards/common/url_constants.h"
 #include "content/public/browser/browser_task_traits.h"
 #include "content/public/browser/browser_thread.h"
-#include "net/base/escape.h"
 
 namespace {
 
@@ -29,10 +28,7 @@ GURL TranslateUrl(const GURL& url) {
   std::string query;
 
   if (url.has_query()) {
-    query = base::StrCat({
-      "?",
-      net::EscapeExternalHandlerValue(url.query())
-    });
+    query = base::StrCat({"?", base::EscapeExternalHandlerValue(url.query())});
   }
 
   base::ReplaceFirstSubstringAfterOffset(&path, 0, "/", "");
@@ -105,8 +101,8 @@ void HandleRewardsProtocol(const GURL& url,
                            ui::PageTransition page_transition,
                            bool has_user_gesture) {
   DCHECK(url.SchemeIs(kRewardsScheme));
-  base::PostTask(
-      FROM_HERE, {content::BrowserThread::UI},
+  content::GetUIThreadTaskRunner({})->PostTask(
+      FROM_HERE,
       base::BindOnce(&LoadRewardsURL, url, std::move(web_contents_getter),
                      page_transition, has_user_gesture));
 }

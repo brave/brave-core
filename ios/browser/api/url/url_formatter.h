@@ -10,8 +10,8 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-typedef NSInteger BraveURLSchemeDisplay NS_TYPED_ENUM
-    NS_SWIFT_NAME(URLFormatter.SchemeDisplay);
+typedef NSInteger BraveURLSchemeDisplay
+    NS_TYPED_ENUM NS_SWIFT_NAME(URLFormatter.SchemeDisplay);
 
 OBJC_EXPORT BraveURLSchemeDisplay const BraveURLSchemeDisplayShow;
 OBJC_EXPORT BraveURLSchemeDisplay const BraveURLSchemeDisplayOmitHttpAndHttps;

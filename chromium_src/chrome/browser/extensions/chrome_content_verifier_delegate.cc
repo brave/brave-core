@@ -38,7 +38,6 @@
 #include "extensions/common/manifest.h"
 #include "extensions/common/manifest_url_handlers.h"
 #include "net/base/backoff_entry.h"
-#include "net/base/escape.h"
 
 #if BUILDFLAG(IS_CHROMEOS_ASH)
 #include "chrome/browser/extensions/extension_assets_manager_chromeos.h"
