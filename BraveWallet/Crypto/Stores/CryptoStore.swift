@@ -291,7 +291,7 @@ public class CryptoStore: ObservableObject {
       return true
     }
     let pendingRequest = await fetchPendingWebpageRequest()
-    if self.pendingRequest == nil {
+    if self.pendingRequest == nil, pendingRequest != nil {
       self.pendingRequest = pendingRequest
     }
     return pendingRequest != nil
