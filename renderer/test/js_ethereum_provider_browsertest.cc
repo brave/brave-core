@@ -68,7 +68,9 @@ class JSEthereumProviderBrowserTest : public InProcessBrowserTest {
     mock_cert_verifier_.mock_cert_verifier()->set_default_result(net::OK);
     // Map all hosts to localhost.
     host_resolver()->AddRule("*", "127.0.0.1");
-    EXPECT_TRUE(https_server_.Start());
+    ASSERT_TRUE(https_server_.Start());
+    ASSERT_TRUE(test_server_handle_ =
+                    embedded_test_server()->StartAndReturnHandle());
   }
 
   content::WebContents* web_contents() {
@@ -90,6 +92,7 @@ class JSEthereumProviderBrowserTest : public InProcessBrowserTest {
   }
 
  protected:
+  net::test_server::EmbeddedTestServerHandle test_server_handle_;
   content::ContentMockCertVerifier mock_cert_verifier_;
   net::EmbeddedTestServer https_server_;
 };
@@ -212,7 +215,7 @@ IN_PROC_BROWSER_TEST_F(JSEthereumProviderBrowserTest, Block3PIframe) {
   GURL top_url(https_server_.GetURL("a.com", "/iframe.html"));
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), top_url));
   // third party
-  GURL iframe_url_3p(https_server_.GetURL("b.com", "/"));
+  GURL iframe_url_3p(https_server_.GetURL("b.com", "/simple.html"));
   EXPECT_TRUE(NavigateIframeToURL(web_contents(), "test", iframe_url_3p));
 
   constexpr char kEvalEthereum[] = R"(typeof window.ethereum === 'undefined')";
@@ -227,4 +230,27 @@ IN_PROC_BROWSER_TEST_F(JSEthereumProviderBrowserTest, Block3PIframe) {
   iframe_rfh = ChildFrameAt(main_frame(), 0);
   ASSERT_TRUE(iframe_rfh);
   EXPECT_FALSE(content::EvalJs(iframe_rfh, kEvalEthereum).ExtractBool());
+}
+
+IN_PROC_BROWSER_TEST_F(JSEthereumProviderBrowserTest, SecureContextOnly) {
+  // Secure context HTTPS server
+  GURL url = https_server_.GetURL("a.com", "/simple.html");
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
+  constexpr char kEvalEthereum[] = "typeof window.ethereum !== 'undefined'";
+  EXPECT_TRUE(content::EvalJs(main_frame(), kEvalEthereum).ExtractBool());
+
+  // Insecure context
+  url = embedded_test_server()->GetURL("a.com", "/empty.html");
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
+  EXPECT_FALSE(content::EvalJs(main_frame(), kEvalEthereum).ExtractBool());
+
+  // Secure context localhost HTTP
+  url = embedded_test_server()->GetURL("localhost", "/empty.html");
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
+  EXPECT_TRUE(content::EvalJs(main_frame(), kEvalEthereum).ExtractBool());
+
+  // Secure context 127.0.0.1 HTTP
+  url = embedded_test_server()->GetURL("localhost", "/empty.html");
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
+  EXPECT_TRUE(content::EvalJs(main_frame(), kEvalEthereum).ExtractBool());
 }
