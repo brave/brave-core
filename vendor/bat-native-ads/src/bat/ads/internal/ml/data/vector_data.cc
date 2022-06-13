@@ -8,6 +8,7 @@
 #include <limits>
 #include <numeric>
 #include <utility>
+#include <iostream>
 
 #include "base/check_op.h"
 
@@ -136,6 +137,61 @@ double operator*(const VectorData& lhs, const VectorData& rhs) {
   return dot_product;
 }
 
+void VectorData::VectorAddElementWise(const VectorData& v_add) {
+  if (!storage_->dimension_count() || !v_add.storage_->dimension_count()) {
+    return;
+  }
+
+  if (storage_->dimension_count() != v_add.storage_->dimension_count()) {
+    return;
+  }
+
+  size_t v_base_index = 0;
+  size_t v_add_index = 0;
+  while (v_base_index < storage_->GetSize() &&
+         v_add_index < v_add.storage_->GetSize()) {
+    if (storage_->GetPointAt(v_base_index) ==
+        v_add.storage_->GetPointAt(v_add_index)) {
+      storage_->values()[v_base_index] += v_add.storage_->values()[v_add_index];
+      ++v_base_index;
+      ++v_add_index;
+    } else {
+      if (storage_->GetPointAt(v_base_index) <
+          v_add.storage_->GetPointAt(v_add_index)) {
+        ++v_base_index;
+      } else {
+        ++v_add_index;
+      }
+    }
+  }
+}
+
+void VectorData::VectorDivideByScalar(float scalar) {
+  if (!storage_->dimension_count()) {
+    return;
+  }
+
+  size_t v_index = 0;
+  while (v_index < storage_->GetSize()) {
+    storage_->values()[v_index] /= scalar;
+    ++v_index;
+  }
+}
+
+float VectorData::VectorSumElements() {
+  if (!storage_->dimension_count()) {
+    return 0.0;
+  }
+
+  float elements_sum = 0.0;
+  size_t v_index = 0;
+  while (v_index < storage_->GetSize()) {
+    elements_sum += storage_->values()[v_index];
+    ++v_index;
+  }
+  return elements_sum;
+}
+
 void VectorData::Normalize() {
   const auto vector_length = sqrt(
       std::accumulate(storage_->values().cbegin(), storage_->values().cend(),
@@ -149,6 +205,10 @@ void VectorData::Normalize() {
   }
 }
 
+int VectorData::GetDimensionCount() const {
+  return storage_->dimension_count();
+}
+
 int VectorData::GetDimensionCountForTesting() const {
   return storage_->dimension_count();
 }
@@ -156,6 +216,24 @@ int VectorData::GetDimensionCountForTesting() const {
 const std::vector<float>& VectorData::GetValuesForTesting() const {
   return storage_->values();
 }
+
+const std::string VectorData::GetVectorAsString() const {
+  if (!storage_->dimension_count()) {
+    return "";
+  }
+
+  std::string vector_str = "";
+  int v_index = 0;
+  int storage_size = storage_->GetSize();
+  while (v_index < storage_size) {
+    vector_str += std::to_string(storage_->values()[v_index]);
+    if (v_index < storage_size - 1) {
+      vector_str += " ";
+    }
+    ++v_index;
+  }
+  return vector_str;
+};
 
 }  // namespace ml
 }  // namespace ads

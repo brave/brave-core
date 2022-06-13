@@ -28,6 +28,7 @@
 #include "bat/ads/internal/base/platform/platform_helper.h"
 #include "bat/ads/internal/base/search_engine/search_engine_results_page_util.h"
 #include "bat/ads/internal/base/search_engine/search_engine_util.h"
+#include "bat/ads/internal/base/strings/string_html_parse_util.h"
 #include "bat/ads/internal/base/strings/string_strip_util.h"
 #include "bat/ads/internal/base/time/time_formatting_util.h"
 #include "bat/ads/internal/base/url/url_util.h"
@@ -54,11 +55,13 @@
 #include "bat/ads/internal/processors/behavioral/bandits/epsilon_greedy_bandit_processor.h"
 #include "bat/ads/internal/processors/behavioral/purchase_intent/purchase_intent_processor.h"
 #include "bat/ads/internal/processors/contextual/text_classification/text_classification_processor.h"
+#include "bat/ads/internal/processors/contextual/text_embedding/text_embedding_processor.h"
 #include "bat/ads/internal/resources/behavioral/anti_targeting/anti_targeting_resource.h"
 #include "bat/ads/internal/resources/behavioral/bandits/epsilon_greedy_bandit_resource.h"
 #include "bat/ads/internal/resources/behavioral/conversions/conversions_resource.h"
 #include "bat/ads/internal/resources/behavioral/purchase_intent/purchase_intent_resource.h"
 #include "bat/ads/internal/resources/contextual/text_classification/text_classification_resource.h"
+#include "bat/ads/internal/resources/contextual/text_embedding/text_embedding_resource.h"
 #include "bat/ads/internal/resources/country_components.h"
 #include "bat/ads/internal/resources/language_components.h"
 #include "bat/ads/internal/serving/inline_content_ad_serving.h"
@@ -102,6 +105,8 @@ AdsImpl::AdsImpl(AdsClient* ads_client)
   purchase_intent_resource_ = std::make_unique<resource::PurchaseIntent>();
   text_classification_resource_ =
       std::make_unique<resource::TextClassification>();
+  text_embedding_resource_ =
+      std::make_unique<resource::TextEmbedding>();
 
   epsilon_greedy_bandit_processor_ =
       std::make_unique<processor::EpsilonGreedyBandit>();
@@ -110,6 +115,9 @@ AdsImpl::AdsImpl(AdsClient* ads_client)
   text_classification_processor_ =
       std::make_unique<processor::TextClassification>(
           text_classification_resource_.get());
+  text_embedding_processor_ =
+      std::make_unique<processor::TextEmbedding>(
+          text_embedding_resource_.get());
 
   token_generator_ = std::make_unique<privacy::TokenGenerator>();
   account_ = std::make_unique<Account>(token_generator_.get());
@@ -214,6 +222,7 @@ void AdsImpl::ChangeLocale(const std::string& locale) {
   conversions_resource_->Load();
   purchase_intent_resource_->Load();
   text_classification_resource_->Load();
+  text_embedding_resource_->Load();
 }
 
 void AdsImpl::OnPrefChanged(const std::string& path) {
@@ -240,6 +249,13 @@ void AdsImpl::OnHtmlLoaded(const int32_t tab_id,
     return;
   }
   last_html_loaded_hash_ = hash;
+
+  const std::string og = ParseTagAttribute(html, "og:description", "content");
+  std::string og_stripped = StripNonAlphaCharacters(og);
+  std::transform(og_stripped.begin(), og_stripped.end(), og_stripped.begin(), ::tolower);
+  if (og_stripped.length() > 0) {
+    text_embedding_processor_->Process(og_stripped);
+  }
 
   transfer_->MaybeTransferAd(tab_id, redirect_chain);
 
@@ -394,6 +410,7 @@ void AdsImpl::OnWalletUpdated(const std::string& id, const std::string& seed) {
 void AdsImpl::OnResourceComponentUpdated(const std::string& id) {
   if (kComponentLanguageIds.find(id) != kComponentLanguageIds.end()) {
     text_classification_resource_->Load();
+    text_embedding_resource_->Load();
   } else if (kComponentCountryIds.find(id) != kComponentCountryIds.end()) {
     purchase_intent_resource_->Load();
     anti_targeting_resource_->Load();

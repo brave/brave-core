@@ -234,6 +234,53 @@ absl::optional<PipelineInfo> ParsePipelineValue(base::Value resource_value) {
   return pipeline_info;
 }
 
+absl::optional<PipelineEmbeddingInfo> ParsePipelineEmbedding(base::Value resource_value) {
+  if (!resource_value.is_dict()) {
+    return absl::nullopt;
+  }
+
+  absl::optional<int> version_value = resource_value.FindIntKey("version");
+  if (!version_value.has_value()) {
+    return absl::nullopt;
+  }
+  int version = version_value.value();
+
+  std::string* timestamp_value = resource_value.FindStringKey("timestamp");
+  if (!timestamp_value) {
+    return absl::nullopt;
+  }
+  std::string timestamp = *timestamp_value;
+
+  std::string* locale_value = resource_value.FindStringKey("locale");
+  if (!locale_value) {
+    return absl::nullopt;
+  }
+  std::string locale = *locale_value;
+
+  base::Value* embeddings_value = resource_value.FindDictKey("embeddings");
+  if (!embeddings_value) {
+    return absl::nullopt;
+  }
+  int embeddings_dim = 1;
+  std::map<std::string, VectorData> embeddings;
+  for (const auto [token, vec] : embeddings_value->GetDict()) {
+    const auto vector = std::move(vec.GetList());
+    std::vector<float> embedding;
+    embedding.reserve(vector.size());
+    for (const base::Value& v_raw : vector) {
+      double v = std::stod(v_raw.GetString());
+      embedding.push_back(v);
+    }
+    embeddings[token] = VectorData(std::move(embedding));
+    embeddings_dim = embeddings[token].GetDimensionCount();
+  }
+
+  absl::optional<PipelineEmbeddingInfo> pipeline_embedding_info =
+      PipelineEmbeddingInfo(version, timestamp, locale, embeddings_dim, embeddings);
+
+  return pipeline_embedding_info;
+}
+
 }  // namespace pipeline
 }  // namespace ml
 }  // namespace ads

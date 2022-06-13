@@ -17,9 +17,11 @@
 #include "bat/ads/history_item_info.h"
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/base/logging_util.h"
+#include "bat/ads/internal/ml/data/vector_data.h"
 #include "bat/ads/internal/deprecated/client/client_info.h"
 #include "bat/ads/internal/deprecated/json/json_helper.h"
 #include "bat/ads/internal/features/text_classification_features.h"
+#include "bat/ads/internal/features/text_embedding_features.h"
 #include "bat/ads/internal/history/history.h"
 #include "bat/ads/internal/history/history_constants.h"
 #include "bat/ads/internal/resources/behavioral/purchase_intent/purchase_intent_signal_history_info.h"
@@ -517,6 +519,28 @@ ClientStateManager::GetTextClassificationProbabilitiesHistory() {
   DCHECK(is_initialized_);
 
   return client_->text_classification_probabilities;
+}
+
+void ClientStateManager::AppendTextEmbeddingToHistory(
+    const ml::VectorData& text_embedding) {
+  DCHECK(is_initialized_);
+
+  client_->text_embeddings.push_front(text_embedding);
+
+  const size_t maximum_entries =
+      targeting::features::GetTextEmbeddingsHistorySize();
+  if (client_->text_embeddings.size() > maximum_entries) {
+    client_->text_embeddings.resize(maximum_entries);
+  }
+
+  Save();
+}
+
+const targeting::TextEmbeddingList& 
+ClientStateManager::GetTextEmbeddingHistory() {
+  DCHECK(is_initialized_);
+
+  return client_->text_embeddings;
 }
 
 void ClientStateManager::RemoveAllHistory() {

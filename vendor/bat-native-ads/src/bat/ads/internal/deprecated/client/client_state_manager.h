@@ -13,6 +13,7 @@
 #include "base/containers/circular_deque.h"
 #include "bat/ads/ad_content_action_types.h"
 #include "bat/ads/ads_aliases.h"
+#include "bat/ads/internal/ml/data/vector_data.h"
 #include "bat/ads/category_content_action_types.h"
 #include "bat/ads/internal/creatives/creative_ad_info_aliases.h"
 #include "bat/ads/internal/deprecated/client/preferences/filtered_advertiser_info_aliases.h"
@@ -21,6 +22,7 @@
 #include "bat/ads/internal/deprecated/client/preferences/saved_ad_info_aliases.h"
 #include "bat/ads/internal/serving/targeting/models/behavioral/purchase_intent/purchase_intent_aliases.h"
 #include "bat/ads/internal/serving/targeting/models/contextual/text_classification/text_classification_aliases.h"
+#include "bat/ads/internal/serving/targeting/models/contextual/text_embedding/text_embedding_aliases.h"
 
 namespace base {
 class Time;
@@ -102,6 +104,9 @@ class ClientStateManager final {
       const targeting::TextClassificationProbabilitiesMap& probabilities);
   const targeting::TextClassificationProbabilitiesList&
   GetTextClassificationProbabilitiesHistory();
+
+  void AppendTextEmbeddingToHistory(const ml::VectorData& text_embedding);
+  const targeting::TextEmbeddingList& GetTextEmbeddingHistory();
 
   std::string GetVersionCode() const;
   void SetVersionCode(const std::string& value);

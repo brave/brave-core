@@ -36,6 +36,31 @@ PipelineInfo::PipelineInfo(const int& version,
   transformations = GetTransformationVectorDeepCopy(new_transformations);
 }
 
+PipelineEmbeddingInfo::PipelineEmbeddingInfo() = default;
+
+PipelineEmbeddingInfo::PipelineEmbeddingInfo(const PipelineEmbeddingInfo& info) {
+  version = info.version;
+  timestamp = info.timestamp;
+  locale = info.locale;
+  embeddings_dim = info.embeddings_dim;
+  embeddings = info.embeddings;
+}
+
+PipelineEmbeddingInfo::~PipelineEmbeddingInfo() = default;
+
+PipelineEmbeddingInfo::PipelineEmbeddingInfo(const int& version,
+                           const std::string& timestamp,
+                           const std::string& locale,
+                           const int& embeddings_dim,
+                           const std::map<std::string, VectorData>& embeddings)
+    : version(version),
+      timestamp(timestamp),
+      locale(locale),
+      embeddings_dim(embeddings_dim),
+      embeddings(embeddings) {
+  return;
+}
+
 }  // namespace pipeline
 }  // namespace ml
 }  // namespace ads

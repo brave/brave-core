@@ -61,6 +61,7 @@ namespace processor {
 class EpsilonGreedyBandit;
 class PurchaseIntent;
 class TextClassification;
+class TextEmbedding;
 }  // namespace processor
 
 namespace resource {
@@ -69,6 +70,7 @@ class Conversions;
 class EpsilonGreedyBandit;
 class PurchaseIntent;
 class TextClassification;
+class TextEmbedding;
 }  // namespace resource
 
 class Account;
@@ -341,11 +343,13 @@ class AdsImpl final : public Ads,
       epsilon_greedy_bandit_resource_;
   std::unique_ptr<resource::PurchaseIntent> purchase_intent_resource_;
   std::unique_ptr<resource::TextClassification> text_classification_resource_;
+  std::unique_ptr<resource::TextEmbedding> text_embedding_resource_;
 
   std::unique_ptr<processor::EpsilonGreedyBandit>
       epsilon_greedy_bandit_processor_;
   std::unique_ptr<processor::PurchaseIntent> purchase_intent_processor_;
   std::unique_ptr<processor::TextClassification> text_classification_processor_;
+  std::unique_ptr<processor::TextEmbedding> text_embedding_processor_;
 
   std::unique_ptr<privacy::TokenGenerator> token_generator_;
   std::unique_ptr<Account> account_;

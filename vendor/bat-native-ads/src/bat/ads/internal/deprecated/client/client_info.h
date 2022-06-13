@@ -16,6 +16,7 @@
 #include "bat/ads/internal/deprecated/client/preferences/ad_preferences_info.h"
 #include "bat/ads/internal/serving/targeting/models/behavioral/purchase_intent/purchase_intent_aliases.h"
 #include "bat/ads/internal/serving/targeting/models/contextual/text_classification/text_classification_aliases.h"
+#include "bat/ads/internal/serving/targeting/models/contextual/text_embedding/text_embedding_aliases.h"
 
 namespace ads {
 
@@ -35,6 +36,7 @@ struct ClientInfo final {
   base::Time serve_ad_at;
   targeting::TextClassificationProbabilitiesList
       text_classification_probabilities;
+  targeting::TextEmbeddingList text_embeddings;
   targeting::PurchaseIntentSignalHistoryMap purchase_intent_signal_history;
   std::string version_code;
 };

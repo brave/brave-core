@@ -139,6 +139,26 @@ bool ClientInfo::FromJson(const std::string& json) {
     }
   }
 
+  if (document.HasMember("textEmbeddingsHistory")) {
+    for (const auto& embedding :
+         document["textEmbeddingsHistory"].GetArray()) {
+
+      const std::string embedding_str = embedding["embedding"].GetString();
+      DCHECK(!embedding_str.empty());
+
+      std::vector<float> new_embedding;
+      char embedding_c[embedding_str.length() + 1];
+      std::strcpy(embedding_c, embedding_str.c_str());
+      char *dim_value = std::strtok(embedding_c, " ");
+      while (dim_value != NULL) {
+        new_embedding.push_back(std::stof(dim_value));
+        dim_value = strtok(NULL, " ");
+      }
+
+      text_embeddings.push_back(ml::VectorData(new_embedding));
+    }
+  }
+
   if (document.HasMember("version_code")) {
     version_code = document["version_code"].GetString();
   }
@@ -237,6 +257,20 @@ void SaveToJson(JsonWriter* writer, const ClientInfo& info) {
     }
 
     writer->EndArray();
+
+    writer->EndObject();
+  }
+  writer->EndArray();
+
+  writer->String("textEmbeddingsHistory");
+  writer->StartArray();
+  for (const auto& embedding : info.text_embeddings) {
+    writer->StartObject();
+
+    writer->String("embedding");
+    const std::string embedding_str = embedding.GetVectorAsString();
+    DCHECK(!embedding_str.empty());
+    writer->String(embedding_str.c_str());
 
     writer->EndObject();
   }
