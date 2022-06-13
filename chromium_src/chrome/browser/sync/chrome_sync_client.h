@@ -8,11 +8,14 @@
 
 #include "components/sync/driver/sync_client.h"
 
+#define profile profile, bool is_rewards_chrome_sync_client = false
+
 #define OnLocalSyncTransportDataCleared                             \
 SetDefaultEnabledTypes(syncer::SyncService* sync_service) override; \
 void OnLocalSyncTransportDataCleared
 
 #include "src/chrome/browser/sync/chrome_sync_client.h"
 #undef OnLocalSyncTransportDataCleared
+#undef profile
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_SYNC_CHROME_SYNC_CLIENT_H_
