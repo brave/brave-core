@@ -35,69 +35,70 @@
             android:paddingEnd="32dp"
             android:textSize="16sp"
             android:drawablePadding="32dp"
-            app:drawableEndCompat="@drawable/ic_toggle_down"
+            app:drawableEndCompat="@drawable/ic_toggle_up"
             android:text="@string/other_issues"/>
 
-        <LinearLayout
-            android:id="@+id/other_issues_layout"
+        <RadioGroup
+            android:id="@+id/other_issues_radiogroup"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
-            android:visibility="gone"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:visibility="visible">
 
-            <android.widget.CheckBox
-                android:id="@+id/other_issue_checkbox_1"
+            <androidx.appcompat.widget.AppCompatRadioButton
+                android:id="@+id/other_issue_radiobutton_1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layoutDirection="rtl"
+                android:padding="16dp"
                 android:text="@string/cannot_connect_to_vpn"
-                android:layoutDirection="rtl"
-                android:layout_marginStart="24dp"
-                android:padding="16dp"
-                android:textSize="16sp"/>
+                android:textSize="16sp" />
 
-            <android.widget.CheckBox
-                android:id="@+id/other_issue_checkbox_2"
+            <androidx.appcompat.widget.AppCompatRadioButton
+                android:id="@+id/other_issue_radiobutton_2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layoutDirection="rtl"
+                android:padding="16dp"
                 android:text="@string/no_internet"
-                android:layoutDirection="rtl"
-                android:layout_marginStart="24dp"
-                android:padding="16dp"
-                android:textSize="16sp"/>
+                android:textSize="16sp" />
 
-            <android.widget.CheckBox
-                android:id="@+id/other_issue_checkbox_3"
+            <androidx.appcompat.widget.AppCompatRadioButton
+                android:id="@+id/other_issue_radiobutton_3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layoutDirection="rtl"
+                android:padding="16dp"
                 android:text="@string/slow_connection"
-                android:layoutDirection="rtl"
-                android:layout_marginStart="24dp"
-                android:padding="16dp"
-                android:textSize="16sp"/>
+                android:textSize="16sp" />
 
-            <android.widget.CheckBox
-                android:id="@+id/other_issue_checkbox_4"
+            <androidx.appcompat.widget.AppCompatRadioButton
+                android:id="@+id/other_issue_radiobutton_4"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layoutDirection="rtl"
+                android:padding="16dp"
                 android:text="@string/website_doesnt_work"
-                android:layoutDirection="rtl"
-                android:layout_marginStart="24dp"
-                android:padding="16dp"
-                android:textSize="16sp"/>
+                android:textSize="16sp" />
 
-            <android.widget.CheckBox
-                android:id="@+id/other_issue_checkbox_5"
+            <androidx.appcompat.widget.AppCompatRadioButton
+                android:id="@+id/other_issue_radiobutton_5"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/other"
-                android:layoutDirection="rtl"
                 android:layout_marginStart="24dp"
+                android:layoutDirection="rtl"
                 android:padding="16dp"
-                android:textSize="16sp"/>
+                android:text="@string/other"
+                android:textSize="16sp" />
 
-        </LinearLayout>
+        </RadioGroup>
+
 
         <androidx.appcompat.widget.SwitchCompat
             android:id="@+id/vpn_hostname_switch"
@@ -178,7 +179,8 @@
             android:layout_marginEnd="16dp"
             android:layout_marginTop="16dp"
             android:layout_marginBottom="16dp"
-            android:background="@drawable/orange_rounded_button"
+            android:background="@drawable/set_default_rounded_button_disabled"
+            android:enabled="false"
             android:text="@string/continue_to_email"
             android:textAllCaps="false"
             android:textColor="@android:color/white"
