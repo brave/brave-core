@@ -10,6 +10,7 @@
 #include "base/base64.h"
 #include "base/json/json_reader.h"
 #include "base/strings/string_number_conversions.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/fil_transaction.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/fil_address.h"
@@ -35,12 +36,7 @@ bool GetBLSPublicKey(const std::vector<uint8_t>& private_key,
 }
 }  // namespace
 
-FilecoinKeyring::FilecoinKeyring(const std::string& chain_id) {
-  network_prefix_ = (chain_id == brave_wallet::mojom::kFilecoinMainnet)
-                        ? mojom::kFilecoinMainnet
-                        : mojom::kFilecoinTestnet;
-}
-
+FilecoinKeyring::FilecoinKeyring() = default;
 FilecoinKeyring::~FilecoinKeyring() = default;
 
 // static
@@ -135,29 +131,17 @@ void FilecoinKeyring::RestoreFilecoinAccount(
   }
 }
 
-void FilecoinKeyring::ChainChangedEvent(const std::string& chain_id,
-                                        mojom::CoinType coin) {
-  if (coin != mojom::CoinType::FIL) {
-    return;
-  }
-  auto* network = (chain_id == brave_wallet::mojom::kFilecoinMainnet)
-                      ? mojom::kFilecoinMainnet
-                      : mojom::kFilecoinTestnet;
-
-  if (network_prefix_ != network) {
-    accounts_.clear();
-    network_prefix_ = *network;
-  }
-}
-
 std::string FilecoinKeyring::GetAddressInternal(HDKeyBase* hd_key_base) const {
   if (!hd_key_base)
     return std::string();
   HDKey* hd_key = static_cast<HDKey*>(hd_key_base);
-
+  // TODO(cypt4): Get network from settings.
   return FilAddress::FromUncompressedPublicKey(
              hd_key->GetUncompressedPublicKey(),
-             mojom::FilecoinAddressProtocol::SECP256K1, network_prefix_)
+             mojom::FilecoinAddressProtocol::SECP256K1,
+             // See description of IsFilecoinTestnetEnabled
+             IsFilecoinTestnetEnabled() ? mojom::kFilecoinTestnet
+                                        : mojom::kFilecoinMainnet)
       .EncodeAsString();
 }
 

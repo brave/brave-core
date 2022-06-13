@@ -6,6 +6,8 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_COMMON_FEATURES_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_COMMON_FEATURES_H_
 
+#include "base/metrics/field_trial_params.h"
+
 namespace base {
 struct Feature;
 }  // namespace base
@@ -18,6 +20,8 @@ extern const base::Feature kBraveWalletFilecoinFeature;
 extern const base::Feature kBraveWalletSolanaFeature;
 extern const base::Feature kBraveWalletSolanaProviderFeature;
 extern const base::Feature kBraveWalletDappsSupportFeature;
+
+extern const base::FeatureParam<bool> kFilecoinTestnetEnabled;
 
 }  // namespace features
 }  // namespace brave_wallet

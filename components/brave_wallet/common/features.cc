@@ -36,5 +36,8 @@ const base::Feature kBraveWalletDappsSupportFeature {
 #endif
 };
 
+const base::FeatureParam<bool> kFilecoinTestnetEnabled = {
+    &kBraveWalletFilecoinFeature, "filecoin_testnet_enabled", false};
+
 }  // namespace features
 }  // namespace brave_wallet
