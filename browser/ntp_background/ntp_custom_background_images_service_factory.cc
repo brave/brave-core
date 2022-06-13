@@ -3,23 +3,21 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
-#include "brave/browser/ntp_background_images/ntp_custom_background_images_service_factory.h"
+#include "brave/browser/ntp_background/ntp_custom_background_images_service_factory.h"
 
 #include <memory>
 
-#include "brave/browser/ntp_background_images/ntp_custom_background_images_service_delegate.h"
+#include "brave/browser/ntp_background/ntp_custom_background_images_service_delegate.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/components/ntp_background_images/browser/ntp_custom_background_images_service.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
 
-namespace ntp_background_images {
-
 // static
-NTPCustomBackgroundImagesService*
+ntp_background_images::NTPCustomBackgroundImagesService*
 NTPCustomBackgroundImagesServiceFactory::GetForContext(
     content::BrowserContext* context) {
-  return static_cast<NTPCustomBackgroundImagesService*>(
+  return static_cast<ntp_background_images::NTPCustomBackgroundImagesService*>(
       GetInstance()->GetServiceForBrowserContext(context, true));
 }
 
@@ -44,9 +42,7 @@ KeyedService* NTPCustomBackgroundImagesServiceFactory::BuildServiceInstanceFor(
   if (!brave::IsRegularProfile(context))
     return nullptr;
 
-  return new NTPCustomBackgroundImagesService(
+  return new ntp_background_images::NTPCustomBackgroundImagesService(
       std::make_unique<NTPCustomBackgroundImagesServiceDelegate>(
           Profile::FromBrowserContext(context)));
 }
-
-}  // namespace ntp_background_images

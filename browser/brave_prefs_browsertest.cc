@@ -16,6 +16,7 @@
 #include "brave/components/brave_wayback_machine/buildflags.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
+#include "brave/components/ntp_background_images/buildflags/buildflags.h"
 #include "build/build_config.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/prefetch/pref_names.h"
@@ -53,6 +54,10 @@
 #include "chrome/test/base/android/android_browser_test.h"
 #else
 #include "chrome/test/base/in_process_browser_test.h"
+#endif
+
+#if BUILDFLAG(ENABLE_CUSTOM_BACKGROUND)
+#include "brave/browser/ntp_background/ntp_background_prefs.h"
 #endif
 
 using BraveProfilePrefsBrowserTest = PlatformBrowserTest;
@@ -139,6 +144,13 @@ IN_PROC_BROWSER_TEST_F(BraveProfilePrefsBrowserTest, MiscBravePrefs) {
 #if BUILDFLAG(ENABLE_BRAVE_VPN) && !BUILDFLAG(IS_ANDROID)
   EXPECT_TRUE(chrome_test_utils::GetProfile(this)->GetPrefs()->GetBoolean(
       brave_vpn::prefs::kBraveVPNShowButton));
+#endif
+
+#if BUILDFLAG(ENABLE_CUSTOM_BACKGROUND)
+  EXPECT_TRUE(chrome_test_utils::GetProfile(this)->GetPrefs()->GetDictionary(
+      NTPBackgroundPrefs::kPrefName));
+  EXPECT_FALSE(chrome_test_utils::GetProfile(this)->GetPrefs()->HasPrefPath(
+      NTPBackgroundPrefs::kDeprecatedPrefName));
 #endif
 }
 

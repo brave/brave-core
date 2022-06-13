@@ -3,18 +3,16 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
-#ifndef BRAVE_BROWSER_NTP_BACKGROUND_IMAGES_NTP_CUSTOM_BACKGROUND_IMAGES_SERVICE_DELEGATE_H_
-#define BRAVE_BROWSER_NTP_BACKGROUND_IMAGES_NTP_CUSTOM_BACKGROUND_IMAGES_SERVICE_DELEGATE_H_
+#ifndef BRAVE_BROWSER_NTP_BACKGROUND_NTP_CUSTOM_BACKGROUND_IMAGES_SERVICE_DELEGATE_H_
+#define BRAVE_BROWSER_NTP_BACKGROUND_NTP_CUSTOM_BACKGROUND_IMAGES_SERVICE_DELEGATE_H_
 
 #include "base/memory/raw_ptr.h"
 #include "brave/components/ntp_background_images/browser/ntp_custom_background_images_service.h"
 
 class Profile;
 
-namespace ntp_background_images {
-
 class NTPCustomBackgroundImagesServiceDelegate
-    : public NTPCustomBackgroundImagesService::Delegate {
+    : public ntp_background_images::NTPCustomBackgroundImagesService::Delegate {
  public:
   explicit NTPCustomBackgroundImagesServiceDelegate(Profile* profile);
   ~NTPCustomBackgroundImagesServiceDelegate() override;
@@ -31,6 +29,4 @@ class NTPCustomBackgroundImagesServiceDelegate
   raw_ptr<Profile> profile_ = nullptr;
 };
 
-}  // namespace ntp_background_images
-
-#endif  // BRAVE_BROWSER_NTP_BACKGROUND_IMAGES_NTP_CUSTOM_BACKGROUND_IMAGES_SERVICE_DELEGATE_H_
+#endif  // BRAVE_BROWSER_NTP_BACKGROUND_NTP_CUSTOM_BACKGROUND_IMAGES_SERVICE_DELEGATE_H_

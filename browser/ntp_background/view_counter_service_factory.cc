@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
-#include "brave/browser/ntp_background_images/view_counter_service_factory.h"
+#include "brave/browser/ntp_background/view_counter_service_factory.h"
 
 #include <memory>
 
@@ -27,7 +27,7 @@
 #include "content/public/browser/url_data_source.h"
 
 #if BUILDFLAG(ENABLE_CUSTOM_BACKGROUND)
-#include "brave/browser/ntp_background_images/ntp_custom_background_images_service_factory.h"
+#include "brave/browser/ntp_background/ntp_custom_background_images_service_factory.h"
 #endif
 
 namespace ntp_background_images {
@@ -70,8 +70,7 @@ KeyedService* ViewCounterServiceFactory::BuildServiceInstanceFor(
       is_supported_locale = ads_service->IsSupportedLocale();
     }
     content::URLDataSource::Add(
-        browser_context,
-        std::make_unique<NTPBackgroundImagesSource>(service));
+        browser_context, std::make_unique<NTPBackgroundImagesSource>(service));
     content::URLDataSource::Add(
         browser_context, std::make_unique<NTPSponsoredImagesSource>(service));
 
@@ -90,7 +89,7 @@ KeyedService* ViewCounterServiceFactory::BuildServiceInstanceFor(
 }
 
 void ViewCounterServiceFactory::RegisterProfilePrefs(
-     user_prefs::PrefRegistrySyncable* registry) {
+    user_prefs::PrefRegistrySyncable* registry) {
   ViewCounterService::RegisterProfilePrefs(registry);
 }
 

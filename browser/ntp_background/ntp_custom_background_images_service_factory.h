@@ -3,20 +3,20 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_BROWSER_NTP_BACKGROUND_IMAGES_NTP_CUSTOM_BACKGROUND_IMAGES_SERVICE_FACTORY_H_
-#define BRAVE_BROWSER_NTP_BACKGROUND_IMAGES_NTP_CUSTOM_BACKGROUND_IMAGES_SERVICE_FACTORY_H_
+#ifndef BRAVE_BROWSER_NTP_BACKGROUND_NTP_CUSTOM_BACKGROUND_IMAGES_SERVICE_FACTORY_H_
+#define BRAVE_BROWSER_NTP_BACKGROUND_NTP_CUSTOM_BACKGROUND_IMAGES_SERVICE_FACTORY_H_
 
 #include "base/memory/singleton.h"
 #include "components/keyed_service/content/browser_context_keyed_service_factory.h"
 
 namespace ntp_background_images {
-
 class NTPCustomBackgroundImagesService;
+}
 
 class NTPCustomBackgroundImagesServiceFactory
     : public BrowserContextKeyedServiceFactory {
  public:
-  static NTPCustomBackgroundImagesService* GetForContext(
+  static ntp_background_images::NTPCustomBackgroundImagesService* GetForContext(
       content::BrowserContext* context);
   static NTPCustomBackgroundImagesServiceFactory* GetInstance();
 
@@ -37,6 +37,4 @@ class NTPCustomBackgroundImagesServiceFactory
       content::BrowserContext* context) const override;
 };
 
-}  // namespace ntp_background_images
-
-#endif  // BRAVE_BROWSER_NTP_BACKGROUND_IMAGES_NTP_CUSTOM_BACKGROUND_IMAGES_SERVICE_FACTORY_H_
+#endif  // BRAVE_BROWSER_NTP_BACKGROUND_NTP_CUSTOM_BACKGROUND_IMAGES_SERVICE_FACTORY_H_
