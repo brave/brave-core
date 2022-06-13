@@ -15,7 +15,6 @@
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/brave_wallet/json_rpc_service_factory.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
-#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/fil_transaction.h"
 #include "brave/components/brave_wallet/browser/filecoin_keyring.h"
 #include "brave/components/brave_wallet/browser/hd_keyring.h"
@@ -549,17 +548,6 @@ class KeyringServiceUnitTest : public testing::Test {
         }));
     run_loop.Run();
     return checksum_address;
-  }
-  bool SetNetwork(const std::string& chain_id, mojom::CoinType coin) {
-    bool result;
-    base::RunLoop run_loop;
-    json_rpc_service_->SetNetwork(chain_id, coin,
-                                  base::BindLambdaForTesting([&](bool success) {
-                                    result = success;
-                                    run_loop.Quit();
-                                  }));
-    run_loop.Run();
-    return result;
   }
 
   static bool Lock(KeyringService* service) {
@@ -1419,128 +1407,6 @@ TEST_F(KeyringServiceUnitTest, GetAccountPathByIndex) {
             "m/44'/501'/3'/0'");
 }
 
-TEST_F(KeyringServiceUnitTest, MigrationImportedFilecoinPrefs) {
-  base::test::ScopedFeatureList feature_list;
-  feature_list.InitAndEnableFeature(
-      brave_wallet::features::kBraveWalletFilecoinFeature);
-  base::Value imported_accounts(base::Value::Type::LIST);
-  base::Value f_address(base::Value::Type::DICTIONARY);
-  f_address.SetStringKey(kAccountAddress,
-                         "f1h4n7rphclbmwyjcp6jrdiwlfcuwbroxy3jvg33q");
-  f_address.SetStringKey("account_name", "1");
-  f_address.SetIntKey("coin_type", 461);
-  f_address.SetStringKey("encrypted_private_key", "key");
-  base::Value t_address(base::Value::Type::DICTIONARY);
-  t_address.SetStringKey(kAccountAddress,
-                         "t3h4n7rphclbmwyjcp6jrdiwlfcuwbroxy3jvg33q");
-  t_address.SetStringKey("account_name", "2");
-  t_address.SetIntKey("coin_type", 461);
-  t_address.SetStringKey("encrypted_private_key", "key2");
-  imported_accounts.Append(f_address.Clone());
-  imported_accounts.Append(t_address.Clone());
-
-  base::Value filecoin_keyring(base::Value::Type::DICTIONARY);
-  filecoin_keyring.SetKey(kImportedAccounts, std::move(imported_accounts));
-  base::Value wallet_keyrings(base::Value::Type::DICTIONARY);
-  wallet_keyrings.SetKey("filecoin", std::move(filecoin_keyring));
-  GetPrefs()->Set(kBraveWalletKeyrings, std::move(wallet_keyrings));
-  KeyringService::MigrateObsoleteProfilePrefs(GetPrefs());
-  {
-    SetNetwork(brave_wallet::mojom::kFilecoinMainnet, mojom::CoinType::FIL);
-    auto* value = KeyringService::GetImportedAccountsPrefForKeyring(
-        GetPrefs(), mojom::kFilecoinKeyringId);
-    EXPECT_TRUE(value->is_list());
-    EXPECT_EQ(value->GetList().size(), 1u);
-    EXPECT_EQ(value->GetList()[0], f_address);
-  }
-  {
-    SetNetwork(brave_wallet::mojom::kFilecoinTestnet, mojom::CoinType::FIL);
-    auto* value = KeyringService::GetImportedAccountsPrefForKeyring(
-        GetPrefs(), mojom::kFilecoinKeyringId);
-    EXPECT_TRUE(value->is_list());
-    EXPECT_EQ(value->GetList().size(), 1u);
-    EXPECT_EQ(value->GetList()[0], t_address);
-  }
-  {
-    SetNetwork(brave_wallet::mojom::kLocalhostChainId, mojom::CoinType::FIL);
-    auto* value = KeyringService::GetImportedAccountsPrefForKeyring(
-        GetPrefs(), mojom::kFilecoinKeyringId);
-    EXPECT_TRUE(value->is_list());
-    EXPECT_EQ(value->GetList().size(), 1u);
-    EXPECT_EQ(value->GetList()[0], t_address);
-  }
-}
-
-TEST_F(KeyringServiceUnitTest, MigrationImportedHardwareFilecoinPrefs) {
-  base::test::ScopedFeatureList feature_list;
-  feature_list.InitAndEnableFeature(
-      brave_wallet::features::kBraveWalletFilecoinFeature);
-  base::Value account_metas(base::Value::Type::DICTIONARY);
-  base::Value f_address(base::Value::Type::DICTIONARY);
-  f_address.SetStringKey(kAccountAddress,
-                         "f1h4n7rphclbmwyjcp6jrdiwlfcuwbroxy3jvg33q");
-  f_address.SetStringKey("account_name", "1");
-  f_address.SetIntKey("coin_type", 461);
-  f_address.SetStringKey("encrypted_private_key", "key");
-  base::Value t_address(base::Value::Type::DICTIONARY);
-  t_address.SetStringKey(kAccountAddress,
-                         "t3h4n7rphclbmwyjcp6jrdiwlfcuwbroxy3jvg33q");
-  t_address.SetStringKey("account_name", "2");
-  t_address.SetIntKey("coin_type", 461);
-  t_address.SetStringKey("encrypted_private_key", "key2");
-  account_metas.SetKey("f1h4n7rphclbmwyjcp6jrdiwlfcuwbroxy3jvg33q",
-                       f_address.Clone());
-  account_metas.SetKey("t3h4n7rphclbmwyjcp6jrdiwlfcuwbroxy3jvg33q",
-                       t_address.Clone());
-  base::Value device(base::Value::Type::DICTIONARY);
-  EXPECT_EQ(account_metas.GetDict().size(), 2u);
-  device.SetKey("Ledger", std::move(account_metas));
-
-  base::Value filecoin_keyring(base::Value::Type::DICTIONARY);
-  filecoin_keyring.SetKey("hardware", std::move(device));
-  base::Value wallet_keyrings(base::Value::Type::DICTIONARY);
-  wallet_keyrings.SetKey("filecoin", std::move(filecoin_keyring));
-  GetPrefs()->Set(kBraveWalletKeyrings, std::move(wallet_keyrings));
-  KeyringService::MigrateObsoleteProfilePrefs(GetPrefs());
-  {
-    SetNetwork(brave_wallet::mojom::kFilecoinMainnet, mojom::CoinType::FIL);
-    auto* value = KeyringService::GetHardwareAccountsPrefForKeyringUpdate(
-        GetPrefs(), mojom::kFilecoinKeyringId);
-
-    EXPECT_TRUE(value->is_dict());
-    auto* device = value->FindDictPath("Ledger");
-    EXPECT_TRUE(device);
-    EXPECT_EQ(device->GetDict().size(), 1u);
-    EXPECT_EQ(
-        *value->FindPath("Ledger.f1h4n7rphclbmwyjcp6jrdiwlfcuwbroxy3jvg33q"),
-        f_address);
-  }
-  {
-    SetNetwork(brave_wallet::mojom::kFilecoinTestnet, mojom::CoinType::FIL);
-    auto* value = KeyringService::GetHardwareAccountsPrefForKeyringUpdate(
-        GetPrefs(), mojom::kFilecoinKeyringId);
-    EXPECT_TRUE(value->is_dict());
-    auto* ledger = value->FindDictPath("Ledger");
-    EXPECT_TRUE(ledger);
-    EXPECT_EQ(ledger->GetDict().size(), 1u);
-    EXPECT_EQ(
-        *value->FindPath("Ledger.t3h4n7rphclbmwyjcp6jrdiwlfcuwbroxy3jvg33q"),
-        t_address);
-  }
-  {
-    SetNetwork(brave_wallet::mojom::kLocalhostChainId, mojom::CoinType::FIL);
-    auto* value = KeyringService::GetHardwareAccountsPrefForKeyringUpdate(
-        GetPrefs(), mojom::kFilecoinKeyringId);
-    EXPECT_TRUE(value->is_dict());
-    auto* ledger = value->FindDictPath("Ledger");
-    EXPECT_TRUE(ledger);
-    EXPECT_EQ(ledger->GetDict().size(), 1u);
-    EXPECT_EQ(
-        *value->FindPath("Ledger.t3h4n7rphclbmwyjcp6jrdiwlfcuwbroxy3jvg33q"),
-        t_address);
-  }
-}
-
 TEST_F(KeyringServiceUnitTest, MigrationPrefs) {
   GetPrefs()->SetString(kBraveWalletPasswordEncryptorSalt, "test_salt");
   GetPrefs()->SetString(kBraveWalletPasswordEncryptorNonce, "test_nonce");
@@ -2155,23 +2021,22 @@ TEST_F(KeyringServiceUnitTest, HardwareAccounts) {
       "0x111", "m/44'/60'/1'/0/0", "name 1", "Ledger", "device1",
       mojom::CoinType::ETH));
   new_accounts.push_back(mojom::HardwareWalletAccount::New(
-      "t1h3n7rphclbmwyjcp6jrdiwlfcuwbroxy3jvg33q", "m/44'/461'/0'/0/0",
-      "name 2", "Ledger", "device1", mojom::CoinType::FIL));
+      "0x264", "m/44'/461'/0'/0/0", "name 2", "Ledger", "device1",
+      mojom::CoinType::FIL));
   new_accounts.push_back(mojom::HardwareWalletAccount::New(
       "0xEA0", "m/44'/60'/2'/0/0", "name 3", "Ledger", "device2",
       mojom::CoinType::ETH));
   new_accounts.push_back(mojom::HardwareWalletAccount::New(
-      "t3h4n7rphclbmwyjcp6jrdiwlfcuwbroxy3jvg33q", "m/44'/461'/2'/0/0",
-      "filecoin 1", "Ledger", "device2", mojom::CoinType::FIL));
+      "0xFIL", "m/44'/461'/2'/0/0", "filecoin 1", "Ledger", "device2",
+      mojom::CoinType::FIL));
   new_accounts.push_back(mojom::HardwareWalletAccount::New(
       "0x222", "m/44'/60'/3'/0/0", "name 4", "Ledger", "device1",
       mojom::CoinType::ETH));
-  SetNetwork(brave_wallet::mojom::kFilecoinTestnet, mojom::CoinType::FIL);
+
   EXPECT_FALSE(observer.AccountsChangedFired());
   service.AddHardwareAccounts(std::move(new_accounts));
   EXPECT_TRUE(service.IsHardwareAccount("0x111"));
-  EXPECT_TRUE(
-      service.IsHardwareAccount("t1h3n7rphclbmwyjcp6jrdiwlfcuwbroxy3jvg33q"));
+  EXPECT_TRUE(service.IsHardwareAccount("0x264"));
   base::RunLoop().RunUntilIdle();
   EXPECT_TRUE(observer.AccountsChangedFired());
   observer.Reset();
@@ -2225,16 +2090,14 @@ TEST_F(KeyringServiceUnitTest, HardwareAccounts) {
           const auto& accounts = keyring_info->account_infos;
           EXPECT_EQ(accounts.size(), 2u);
 
-          EXPECT_EQ(accounts[0]->address,
-                    "t1h3n7rphclbmwyjcp6jrdiwlfcuwbroxy3jvg33q");
+          EXPECT_EQ(accounts[0]->address, "0x264");
           EXPECT_EQ(accounts[0]->name, "name 2");
           EXPECT_EQ(accounts[0]->is_imported, false);
           ASSERT_TRUE(accounts[0]->hardware);
           EXPECT_EQ(accounts[0]->hardware->device_id, "device1");
           EXPECT_EQ(accounts[0]->coin, mojom::CoinType::FIL);
 
-          EXPECT_EQ(accounts[1]->address,
-                    "t3h4n7rphclbmwyjcp6jrdiwlfcuwbroxy3jvg33q");
+          EXPECT_EQ(accounts[1]->address, "0xFIL");
           EXPECT_EQ(accounts[1]->name, "filecoin 1");
           EXPECT_EQ(accounts[1]->is_imported, false);
           ASSERT_TRUE(accounts[1]->hardware);
@@ -2251,14 +2114,14 @@ TEST_F(KeyringServiceUnitTest, HardwareAccounts) {
   base::RunLoop().RunUntilIdle();
   EXPECT_TRUE(observer.AccountsChangedFired());
   observer.Reset();
+
   ASSERT_FALSE(GetPrefs()
                    ->GetDictionary(kBraveWalletKeyrings)
                    ->FindPath("default.hardware.device1.account_metas.0x111"));
 
   ASSERT_FALSE(GetPrefs()
                    ->GetDictionary(kBraveWalletKeyrings)
-                   ->FindPath("default.hardware.t.device1.account_metas."
-                              "t1h3n7rphclbmwyjcp6jrdiwlfcuwbroxy3jvg33q"));
+                   ->FindPath("default.hardware.device1.account_metas.0x264"));
 
   ASSERT_TRUE(GetPrefs()
                   ->GetDictionary(kBraveWalletKeyrings)
@@ -2266,8 +2129,7 @@ TEST_F(KeyringServiceUnitTest, HardwareAccounts) {
 
   ASSERT_TRUE(GetPrefs()
                   ->GetDictionary(kBraveWalletKeyrings)
-                  ->FindPath("filecoin.hardware.t.device2.account_metas."
-                             "t3h4n7rphclbmwyjcp6jrdiwlfcuwbroxy3jvg33q"));
+                  ->FindPath("filecoin.hardware.device2.account_metas.0xFIL"));
 
   ASSERT_FALSE(observer.AccountsChangedFired());
   service.RemoveHardwareAccount("0xEA0", mojom::CoinType::ETH);
@@ -2309,15 +2171,13 @@ TEST_F(KeyringServiceUnitTest, HardwareAccounts) {
                    ->GetDictionary(kBraveWalletKeyrings)
                    ->FindPath("default.hardware.device2"));
 
-  service.RemoveHardwareAccount("t3h4n7rphclbmwyjcp6jrdiwlfcuwbroxy3jvg33q",
-                                mojom::CoinType::FIL);
+  service.RemoveHardwareAccount("0xFIL", mojom::CoinType::FIL);
   base::RunLoop().RunUntilIdle();
   EXPECT_TRUE(observer.AccountsChangedFired());
   observer.Reset();
   ASSERT_FALSE(GetPrefs()
                    ->GetDictionary(kBraveWalletKeyrings)
-                   ->FindPath("filecoin.hardware.device2.account_metas."
-                              "t3h4n7rphclbmwyjcp6jrdiwlfcuwbroxy3jvg33q"));
+                   ->FindPath("filecoin.hardware.device2.account_metas.0xFIL"));
 }
 
 TEST_F(KeyringServiceUnitTest, AutoLock) {
@@ -3586,153 +3446,6 @@ TEST_F(KeyringServiceAccountDiscoveryUnitTest, RestoreWalletTwice) {
   EXPECT_EQ(2, observer.AccountsChangedFiredCount());
   // Second restore: 20 attempts more after Account 10 is added.
   EXPECT_THAT(requested_addresses, ElementsAreArray(&saved_addresses()[1], 30));
-}
-
-TEST_F(KeyringServiceUnitTest, AccountMetasForFilecoinKeyring) {
-  base::test::ScopedFeatureList feature_list;
-  feature_list.InitWithFeatures(
-      {brave_wallet::features::kBraveWalletFilecoinFeature}, {});
-
-  KeyringService service(json_rpc_service(), GetPrefs());
-  SetNetwork(brave_wallet::mojom::kFilecoinTestnet, mojom::CoinType::FIL);
-  EXPECT_TRUE(
-      service.CreateEncryptorForKeyring("brave", mojom::kFilecoinKeyringId));
-  ASSERT_TRUE(service.CreateKeyringInternal(
-      brave_wallet::mojom::kFilecoinKeyringId, kMnemonic1, false));
-  auto* keyring =
-      service.GetHDKeyringById(brave_wallet::mojom::kFilecoinKeyringId);
-  keyring->AddAccounts(2);
-
-  EXPECT_EQ(GetCurrentChainId(GetPrefs(), mojom::CoinType::FIL),
-            brave_wallet::mojom::kFilecoinTestnet);
-  const std::string address1 = keyring->GetAddress(0);
-  const std::string name1 = "Filecoin Account 1";
-  const std::string account_path1 = KeyringService::GetAccountPathByIndex(
-      0, brave_wallet::mojom::kFilecoinKeyringId);
-  const std::string address2 = keyring->GetAddress(1);
-  const std::string name2 = "Filecoin Account 2";
-  const std::string account_path2 = KeyringService::GetAccountPathByIndex(
-      1, brave_wallet::mojom::kFilecoinKeyringId);
-
-  KeyringService::SetAccountMetaForKeyring(GetPrefs(), account_path1, name1,
-                                           address1, mojom::kFilecoinKeyringId);
-  KeyringService::SetAccountMetaForKeyring(GetPrefs(), account_path2, name2,
-                                           address2, mojom::kFilecoinKeyringId);
-
-  const base::Value* account_metas = KeyringService::GetPrefForKeyring(
-      GetPrefs(), kAccountMetas, mojom::kFilecoinKeyringId);
-  ASSERT_NE(account_metas, nullptr);
-  std::string prefix = GetCurrentFilecoinNetworkPrefix(GetPrefs());
-  const base::Value* account_metas_for_network = account_metas->FindKey(prefix);
-  EXPECT_TRUE(account_metas_for_network);
-
-  EXPECT_EQ(account_metas_for_network->FindPath(account_path1 + ".account_name")
-                ->GetString(),
-            name1);
-  EXPECT_EQ(account_metas_for_network->FindPath(account_path2 + ".account_name")
-                ->GetString(),
-            name2);
-  EXPECT_EQ(KeyringService::GetAccountNameForKeyring(GetPrefs(), account_path1,
-                                                     mojom::kFilecoinKeyringId),
-            name1);
-  EXPECT_EQ(KeyringService::GetAccountAddressForKeyring(
-                GetPrefs(), account_path1, mojom::kFilecoinKeyringId),
-            address1);
-  EXPECT_EQ(KeyringService::GetAccountNameForKeyring(GetPrefs(), account_path2,
-                                                     mojom::kFilecoinKeyringId),
-            name2);
-  EXPECT_EQ(KeyringService::GetAccountAddressForKeyring(
-                GetPrefs(), account_path2, mojom::kFilecoinKeyringId),
-            address2);
-  EXPECT_EQ(service.GetAccountMetasNumberForKeyring(mojom::kFilecoinKeyringId),
-            2u);
-  EXPECT_EQ(service.GetAccountMetasNumberForKeyring("keyring1"), 0u);
-
-  // GetAccountInfosForKeyring should work even if the keyring is locked
-  service.Lock();
-  std::vector<mojom::AccountInfoPtr> account_infos =
-      service.GetAccountInfosForKeyring(mojom::kFilecoinKeyringId);
-  EXPECT_EQ(account_infos.size(), 2u);
-  EXPECT_EQ(account_infos[0]->address, address1);
-  EXPECT_EQ(account_infos[0]->name, name1);
-  EXPECT_EQ(account_infos[1]->address, address2);
-  EXPECT_EQ(account_infos[1]->name, name2);
-}
-
-TEST_F(KeyringServiceUnitTest, SwitchAccountsOnNetworkChange) {
-  base::test::ScopedFeatureList feature_list;
-  feature_list.InitWithFeatures(
-      {brave_wallet::features::kBraveWalletFilecoinFeature}, {});
-
-  KeyringService service(json_rpc_service(), GetPrefs());
-  EXPECT_TRUE(
-      service.CreateEncryptorForKeyring("brave", mojom::kFilecoinKeyringId));
-
-  ASSERT_TRUE(service.CreateKeyringInternal(
-      brave_wallet::mojom::kFilecoinKeyringId, kMnemonic1, false));
-
-  auto* keyring =
-      service.GetHDKeyringById(brave_wallet::mojom::kFilecoinKeyringId);
-
-  SetNetwork(brave_wallet::mojom::kFilecoinMainnet, mojom::CoinType::FIL);
-  base::RunLoop().RunUntilIdle();
-  service.AddAccountForKeyring(mojom::kFilecoinKeyringId, "");
-  service.AddAccountForKeyring(mojom::kFilecoinKeyringId, "");
-  EXPECT_EQ(keyring->GetAccountsNumber(), 2u);
-  const std::string f_address1 = keyring->GetAddress(0);
-  const std::string f_address2 = keyring->GetAddress(1);
-  {
-    std::vector<mojom::AccountInfoPtr> account_infos =
-        service.GetAccountInfosForKeyring(mojom::kFilecoinKeyringId);
-    EXPECT_EQ(account_infos.size(), 2u);
-    EXPECT_EQ(account_infos[0]->address, f_address1);
-    EXPECT_EQ(account_infos[1]->address, f_address2);
-    EXPECT_EQ(FilAddress::FromAddress(f_address1).network(),
-              brave_wallet::mojom::kFilecoinMainnet);
-    EXPECT_EQ(FilAddress::FromAddress(f_address2).network(),
-              brave_wallet::mojom::kFilecoinMainnet);
-  }
-
-  SetNetwork(brave_wallet::mojom::kFilecoinTestnet, mojom::CoinType::FIL);
-  base::RunLoop().RunUntilIdle();
-  service.AddAccountForKeyring(mojom::kFilecoinKeyringId, "");
-  service.AddAccountForKeyring(mojom::kFilecoinKeyringId, "");
-
-  EXPECT_EQ(keyring->GetAccountsNumber(), 2u);
-  const std::string t_address1 = keyring->GetAddress(0);
-  const std::string t_address2 = keyring->GetAddress(1);
-  {
-    std::vector<mojom::AccountInfoPtr> account_infos =
-        service.GetAccountInfosForKeyring(mojom::kFilecoinKeyringId);
-    EXPECT_EQ(account_infos.size(), 2u);
-    EXPECT_EQ(account_infos[0]->address, t_address1);
-    EXPECT_EQ(account_infos[1]->address, t_address2);
-    EXPECT_EQ(FilAddress::FromAddress(t_address1).network(),
-              brave_wallet::mojom::kFilecoinTestnet);
-    EXPECT_EQ(FilAddress::FromAddress(t_address2).network(),
-              brave_wallet::mojom::kFilecoinTestnet);
-  }
-  SetNetwork(brave_wallet::mojom::kLocalhostChainId, mojom::CoinType::FIL);
-  base::RunLoop().RunUntilIdle();
-  service.AddAccountForKeyring(mojom::kFilecoinKeyringId, "");
-  service.AddAccountForKeyring(mojom::kFilecoinKeyringId, "");
-  EXPECT_EQ(keyring->GetAccountsNumber(), 4u);
-  const std::string t_address3 = keyring->GetAddress(2);
-  const std::string t_address4 = keyring->GetAddress(3);
-  {
-    std::vector<mojom::AccountInfoPtr> account_infos =
-        service.GetAccountInfosForKeyring(mojom::kFilecoinKeyringId);
-    EXPECT_EQ(account_infos.size(), 4u);
-    EXPECT_EQ(account_infos[0]->address, t_address1);
-    EXPECT_EQ(account_infos[1]->address, t_address2);
-    EXPECT_EQ(account_infos[2]->address, t_address3);
-    EXPECT_EQ(account_infos[3]->address, t_address4);
-
-    EXPECT_EQ(FilAddress::FromAddress(t_address3).network(),
-              brave_wallet::mojom::kFilecoinTestnet);
-    EXPECT_EQ(FilAddress::FromAddress(t_address4).network(),
-              brave_wallet::mojom::kFilecoinTestnet);
-  }
 }
 
 }  // namespace brave_wallet

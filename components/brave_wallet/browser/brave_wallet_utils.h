@@ -26,6 +26,7 @@ namespace brave_wallet {
 
 bool IsNativeWalletEnabled();
 bool IsFilecoinEnabled();
+bool IsFilecoinTestnetEnabled();
 bool IsSolanaEnabled();
 bool IsDappsSupportEnabled();
 
@@ -125,8 +126,6 @@ mojom::NetworkInfoPtr GetChain(PrefService* prefs,
 
 // Get the current chain ID for coin from kBraveWalletSelectedNetworks pref.
 std::string GetCurrentChainId(PrefService* prefs, mojom::CoinType coin);
-
-std::string GetCurrentFilecoinNetworkPrefix(PrefService* prefs);
 
 // Returns the first URL to use that:
 // 1. Has no variables in it like ${INFURA_API_KEY}

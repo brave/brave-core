@@ -112,9 +112,6 @@ async function updateAccountInfo (store: Store) {
 }
 
 async function updateCoinAccountNetworkInfo (store: Store, coin: BraveWallet.CoinType) {
-  if (coin === BraveWallet.CoinType.FIL) {
-    await store.dispatch(refreshKeyringInfo())
-  }
   const { accounts, networkList } = getWalletState(store)
   if (accounts.length === 0) {
     return
