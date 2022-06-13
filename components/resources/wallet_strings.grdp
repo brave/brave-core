@@ -130,7 +130,7 @@
   <message name="IDS_BRAVE_WALLET_VERIFY_RECOVERY_PHRASE_INSTRUCTIONS" desc="Verify Recovery phrase screen description">Click the <ph name="FIRST_BEFORE">$1</ph>First(1st)<ph name="FIRST_AFTER">$2</ph>, <ph name="THIRD_BEFORE">$3</ph>Third(3rd)<ph name="THIRD_AFTER">$4</ph>, and <ph name="LAST_BEFORE">$5</ph>Last(12th)<ph name="LAST_AFTER">$6</ph> word of your recovery phrase.</message>
   <message name="IDS_BRAVE_WALLET_VERIFY_PHRASE_ERROR" desc="Verify Recovery phrase screen error">Recovery phrase didn't match</message>
   <message name="IDS_BRAVE_WALLET_CREATE_PASSWORD_TITLE" desc="Create Password screen title">Create a new password</message>
-  <message name="IDS_BRAVE_WALLET_CREATE_PASSWORD_DESCRIPTION" desc="Create Password screen description">You will need to enter the password to access your wallet from your Browser.</message>
+  <message name="IDS_BRAVE_WALLET_CREATE_PASSWORD_DESCRIPTION" desc="Create Password screen description">You will need this password to access your Brave Wallet.</message>
   <message name="IDS_BRAVE_WALLET_CREATE_PASSWORD_INPUT" desc="Create Password screen password input">Enter new password</message>
   <message name="IDS_BRAVE_WALLET_CONFIRM_PASSWORD_INPUT" desc="Create Password screen confirm password input">Re-enter password</message>
   <message name="IDS_BRAVE_WALLET_CREATE_PASSWORD_ERROR" desc="Create Password screen password input error">Password criteria doesn't match.</message>
@@ -543,8 +543,6 @@
   <message name="IDS_BRAVE_WALLET_ORDINAL_FIRST" desc="First list item label">First</message>
   <message name="IDS_BRAVE_WALLET_ORDINAL_THIRD" desc="Third list item label">Third</message>
   <message name="IDS_BRAVE_WALLET_ORDINAL_LAST" desc="Last list item label">Last</message>
-  
-  
   <message name="IDS_BRAVE_WALLET_ONBOARDING_SUCCESS_TITLE" desc="Wallet is ready for use message">Congrats! Your wallet is ready</message>
   <message name="IDS_BRAVE_WALLET_ONBOARDING_SUCCESS_DESCRIPTION" desc="Wallet access description">Now you can easily access your wallet any time from the wallet icon in Brave Browser.</message>
   <message name="IDS_BRAVE_WALLET_GO_TO_PORTFOLIO_BUTTON" desc="Link to wallet portfolio page">Go To Portfolio</message>
@@ -555,10 +553,14 @@
   <message name="IDS_BRAVE_WALLET_ARTICLE_LINK_WHATS_A_RECOVERY_PHRASE" desc="Title of article link 'What’s a recovery phrase?'">What’s a recovery phrase?</message>
   <message name="IDS_BRAVE_WALLET_ARTICLE_LINK_WHAT_ARE_DAPPS" desc="Title of article link 'What are DApps?'">What are DApps?</message>
   <message name="IDS_BRAVE_WALLET_ARTICLE_LINK_WHAT_IS_WEB3" desc="Title of article link 'What’s web 3?'">What’s web 3?</message>
-  
+  <message name="IDS_BRAVE_WALLET_METAMASK_EXTENSION_DETECTED" desc="Detected MetaMask Extenstion for import title">We detected the MetaMask extension in your browser</message>
+  <message name="IDS_BRAVE_WALLET_METAMASK_EXTENSION_IMPORT_DESCRIPTION" desc="Detected MetaMask Extenstion import description">By entering the password you can Import your MetaMask wallet to Brave Wallet easily.</message>
   <message name="IDS_BRAVE_WALLET_IMPORT_OR_RESTORE_WALLET_TITLE" desc="Title to Import or Restore Wallet onboarding screen">Connect to your existing wallet</message>
   <message name="IDS_BRAVE_WALLET_IMPORT_OR_RESTORE_DESCRIPTION" desc="Description of Import or Restore Wallet onboarding screen">By connecting to your wallet, you may need to enter your 12 word recovery phrase to restore/import. We support Ethereum wallet at this time.</message>
   <message name="IDS_BRAVE_WALLET_RESTORE_MY_BRAVE_WALLET" desc="Button text to restore from an existing Brave Wallet">Restore my Brave Wallet</message>
   <message name="IDS_BRAVE_WALLET_IMPORT_FROM_META_MASK" desc="Button text to restore from an existing MetaMask wallet">Import from MetaMask</message>
   <message name="IDS_BRAVE_WALLET_CREATE_WALLET_INSTEAD_LINK" desc="A navigation link to create a new wallet">Never mind, I’ll create a new wallet</message>
+  <message name="IDS_BRAVE_WALLET_IMPORT_FROM_META_MASK_SEED_INSTRUCTIONS" desc="Instructions for importing a MetaMask wallet via recovery phrase">Type your MetaMask 12 words recovery phrase.</message>
+  <message name="IDS_BRAVE_WALLET_METAMASK_PASSWORD_INPUT_PLACEHOLDER" desc="Placeholder text for MetaMask password input">Type MetaMask password</message>
+  <message name="IDS_BRAVE_WALLET_INPUT_LABEL_PASSWORD" desc="Password input field label">Password</message>
 </grit-part>

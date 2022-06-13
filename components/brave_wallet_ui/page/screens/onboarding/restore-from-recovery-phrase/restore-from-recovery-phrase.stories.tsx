@@ -10,12 +10,42 @@ import { OnboardingRestoreFromRecoveryPhrase } from './restore-from-recovery-phr
 
 export const _OnboardingRestoreFromRecoveryPhrase = () => {
   return <WalletPageStory>
-    <OnboardingRestoreFromRecoveryPhrase />
+    <OnboardingRestoreFromRecoveryPhrase restoreFrom='seed' />
   </WalletPageStory>
 }
 
 _OnboardingRestoreFromRecoveryPhrase.story = {
   name: 'Restore From Recovery Phrase'
+}
+
+export const _OnboardingRestoreFromMetaMaskExtension = () => {
+  return <WalletPageStory
+    pageStateOverride={{
+      isMetaMaskInitialized: true,
+      isImportWalletsCheckComplete: true
+    }}
+  >
+    <OnboardingRestoreFromRecoveryPhrase restoreFrom='metamask' />
+  </WalletPageStory>
+}
+
+_OnboardingRestoreFromMetaMaskExtension.story = {
+  name: 'Restore From MetaMask (Extension)'
+}
+
+export const _OnboardingRestoreFromMetaMaskSeed = () => {
+  return <WalletPageStory
+    pageStateOverride={{
+      isMetaMaskInitialized: false,
+      isImportWalletsCheckComplete: true
+    }}
+  >
+    <OnboardingRestoreFromRecoveryPhrase restoreFrom='metamask-seed' />
+  </WalletPageStory>
+}
+
+_OnboardingRestoreFromMetaMaskSeed.story = {
+  name: 'Restore From MetaMask (Seed)'
 }
 
 export default _OnboardingRestoreFromRecoveryPhrase

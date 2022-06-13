@@ -40,6 +40,7 @@ import { WalletPageLayout } from '../../../../components/desktop'
 import { StepsNavigation } from '../../../../components/desktop/steps-navigation/steps-navigation'
 import { NavButton } from '../../../../components/extension'
 import { LoadingSkeleton, PasswordInput } from '../../../../components/shared'
+import { ErrorText } from '../../../../components/shared/password-input/style'
 
 enum RestoreFromOtherWalletSteps {
   phrase = 'phrase',
@@ -75,6 +76,7 @@ export const OnboardingRestoreFromRecoveryPhrase = ({
   const invalidMnemonic = useSelector(({ page }: { page: PageState }) => page.invalidMnemonic)
   const isMetaMaskInitialized = useSelector(({ page }: { page: PageState }) => page.isMetaMaskInitialized)
   const isImportWalletsCheckComplete = useSelector(({ page }: { page: PageState }) => page.isImportWalletsCheckComplete)
+  const importWalletError = useSelector(({ page }: { page: PageState }) => page.importWalletError)
 
   // computed
   const isImportingFromMetaMaskExtenstion = restoreFrom === 'metamask'
@@ -93,6 +95,13 @@ export const OnboardingRestoreFromRecoveryPhrase = ({
   )
 
   // methods
+  const checkMetaMaskImportPassword = React.useCallback(() => {
+    dispatch(WalletPageActions.importFromMetaMask({
+      password: metaMaskPassword,
+      newPassword: '' // required arg, just checking import Password
+    }))
+  }, [metaMaskPassword])
+
   const toggleShowPhrase = React.useCallback(() => {
     setIsPhraseShown(prev => !prev)
   }, [])
@@ -130,7 +139,7 @@ export const OnboardingRestoreFromRecoveryPhrase = ({
     }))
 
     history.push(WalletRoutes.OnboardingComplete)
-  }, [phraseInput, password, invalidMnemonic, isPasswordValid, isImportingFromMetaMaskExtenstion])
+  }, [isPasswordValid, phraseInput, password, invalidMnemonic, isImportingFromMetaMaskExtenstion])
 
   const onPhraseInputChanged = React.useCallback((event: React.ChangeEvent<
     HTMLInputElement | HTMLTextAreaElement
@@ -166,8 +175,16 @@ export const OnboardingRestoreFromRecoveryPhrase = ({
   }, [])
 
   const onContinueClicked = React.useCallback(() => {
+    // reset previous errors
+    if (importWalletError?.hasError) {
+      dispatch(WalletPageActions.setImportWalletError({
+        hasError: false
+      }))
+    }
+
     if (currentStep === RestoreFromOtherWalletSteps.currentPassword && metaMaskPassword) {
       // TODO, check import & pw?
+      checkMetaMaskImportPassword()
       return setCurrentStep(RestoreFromOtherWalletSteps.newPassword)
     }
     if (currentStep === RestoreFromOtherWalletSteps.phrase && !invalidMnemonic) {
@@ -177,7 +194,14 @@ export const OnboardingRestoreFromRecoveryPhrase = ({
       // TODO: check for MM and use alternative restore method?
       return restoreWallet()
     }
-  }, [currentStep, invalidMnemonic, isPasswordValid, restoreWallet])
+  }, [
+    importWalletError?.hasError,
+    currentStep, metaMaskPassword,
+    invalidMnemonic,
+    isPasswordValid,
+    restoreWallet,
+    checkMetaMaskImportPassword
+  ])
 
   const onGoBack = React.useCallback(() => {
     if (
@@ -195,7 +219,16 @@ export const OnboardingRestoreFromRecoveryPhrase = ({
     if (event.key === 'Enter') {
       onContinueClicked()
     }
-  }, [onContinueClicked, invalidMnemonic])
+  }, [onContinueClicked])
+
+  const onMetaMaskPasswordChange = React.useCallback((value: string): void => {
+    if (importWalletError?.hasError) {
+      dispatch(WalletPageActions.setImportWalletError({
+        hasError: false
+      }))
+    }
+    setMetaMaskPassword(value)
+  }, [importWalletError?.hasError])
 
   // memos
   const RecoveryInput = React.useMemo(() => {
@@ -220,22 +253,25 @@ export const OnboardingRestoreFromRecoveryPhrase = ({
 
   const pageText = React.useMemo(() => {
     switch (currentStep) {
-      // getLocale
+      // currently only for metamask import - TODO: legacy wallets
       case RestoreFromOtherWalletSteps.currentPassword: return {
-        title: 'We detected the MetaMask extension in your browser', // currently only for metamask import
-        description: 'By entering the password you can Import your MetaMask wallet to Brave Wallet easily.'
+        title: getLocale('braveWalletMetaMaskExtensionDetected'),
+        description: getLocale('braveWalletMetaMaskExtensionImportDescription')
       }
 
-      // getLocale
       case RestoreFromOtherWalletSteps.newPassword: return {
         title: getLocale('braveWalletCreatePasswordTitle'),
         description: getLocale('braveWalletCreatePasswordDescription')
       }
 
-      // getLocale
       case RestoreFromOtherWalletSteps.phrase: return {
-        title: restoreFrom !== 'seed' ? 'Import from MetaMask' : getLocale('braveWalletRecoveryPhraseBackupTitle'),
-        description: restoreFrom !== 'seed' ? 'Type your MetaMask 12 words recovery phrase.' : getLocale('braveWalletRecoveryPhraseBackupWarning')
+        title: restoreFrom !== 'seed'
+          ? getLocale('braveWalletImportFromMetaMask')
+          : getLocale('braveWalletRecoveryPhraseBackupTitle'),
+
+        description: restoreFrom !== 'seed'
+          ? getLocale('braveWalletImportFromMetaMaskSeedInstructions')
+          : getLocale('braveWalletRecoveryPhraseBackupWarning')
       }
 
       default: return { title: '', description: '' }
@@ -272,6 +308,29 @@ export const OnboardingRestoreFromRecoveryPhrase = ({
       return setCurrentStep(RestoreFromOtherWalletSteps.currentPassword)
     }
   }, [isImportWalletsCheckComplete, isImportingFromMetaMaskExtenstion, currentStep])
+
+  React.useEffect(() => {
+    // return to password screen if the import password was incorrect
+    if (
+      currentStep === RestoreFromOtherWalletSteps.newPassword &&
+      importWalletError?.hasError &&
+      importWalletError.errorMessage === getLocale('braveWalletImportPasswordError')
+    ) {
+      setCurrentStep(RestoreFromOtherWalletSteps.currentPassword)
+      return
+    }
+
+    // clear other errors on step change
+    if (
+      currentStep === RestoreFromOtherWalletSteps.newPassword &&
+      importWalletError?.hasError &&
+      importWalletError.errorMessage
+    ) {
+      dispatch(WalletPageActions.setImportWalletError({
+        hasError: false
+      }))
+    }
+  }, [currentStep, importWalletError])
 
   // render
   return (
@@ -338,19 +397,14 @@ export const OnboardingRestoreFromRecoveryPhrase = ({
             <>
               <PasswordInput
                 autoFocus={true}
-                onChange={setMetaMaskPassword}
+                onChange={onMetaMaskPasswordChange}
                 value={metaMaskPassword}
-                error={''}
-                hasError={false}
-                placeholder={
-                  // getLocale
-                  'Type MataMask password'
-                }
+                error={importWalletError?.errorMessage || ''}
+                hasError={importWalletError?.hasError}
+                onKeyDown={handleKeyDown}
+                placeholder={getLocale('braveWalletMetaMaskPasswordInputPlaceholder')}
                 name='mmPassword'
-                label={
-                  // getLocale
-                  'Password'
-                }
+                label={getLocale('braveWalletInputLabelPassword')}
               />
 
               <VerticalSpace space='100px' />
@@ -358,11 +412,18 @@ export const OnboardingRestoreFromRecoveryPhrase = ({
           }
 
           {currentStep === RestoreFromOtherWalletSteps.newPassword &&
-            <NewPasswordInput
-              autoFocus={true}
-              onSubmit={restoreWallet}
-              onChange={handlePasswordChange}
-            />
+            <>
+              <NewPasswordInput
+                autoFocus={true}
+                onSubmit={restoreWallet}
+                onChange={handlePasswordChange}
+              />
+              {importWalletError?.hasError &&
+                <ErrorText>
+                  {importWalletError.errorMessage}
+                </ErrorText>
+              }
+            </>
           }
 
           {!isCheckingExtensions &&

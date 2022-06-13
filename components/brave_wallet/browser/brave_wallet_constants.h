@@ -730,7 +730,6 @@ constexpr webui::LocalizedString kLocalizedStrings[] = {
     {"braveWalletOrdinalFirst", IDS_BRAVE_WALLET_ORDINAL_FIRST},
     {"braveWalletOrdinalThird", IDS_BRAVE_WALLET_ORDINAL_THIRD},
     {"braveWalletOrdinalLast", IDS_BRAVE_WALLET_ORDINAL_LAST},
-
     {"braveWalletOnboardingSuccessTitle",
      IDS_BRAVE_WALLET_ONBOARDING_SUCCESS_TITLE},
     {"braveWalletOnboardingSuccessDescription",
@@ -758,9 +757,18 @@ constexpr webui::LocalizedString kLocalizedStrings[] = {
     {"braveWalletRestoreMyBraveWallet",
      IDS_BRAVE_WALLET_RESTORE_MY_BRAVE_WALLET},
     {"braveWalletImportFromMetaMask", IDS_BRAVE_WALLET_IMPORT_FROM_META_MASK},
+    {"braveWalletImportFromMetaMaskSeedInstructions",
+     IDS_BRAVE_WALLET_IMPORT_FROM_META_MASK_SEED_INSTRUCTIONS},
     {"braveWalletCreateWalletInsteadLink",
      IDS_BRAVE_WALLET_CREATE_WALLET_INSTEAD_LINK},
-
+    {"braveWalletImportPasswordError", IDS_BRAVE_WALLET_IMPORT_PASSWORD_ERROR},
+    {"braveWalletMetaMaskExtensionDetected",
+     IDS_BRAVE_WALLET_METAMASK_EXTENSION_DETECTED},
+    {"braveWalletMetaMaskExtensionImportDescription",
+     IDS_BRAVE_WALLET_METAMASK_EXTENSION_IMPORT_DESCRIPTION},
+    {"braveWalletMetaMaskPasswordInputPlaceholder",
+     IDS_BRAVE_WALLET_METAMASK_PASSWORD_INPUT_PLACEHOLDER},
+    {"braveWalletInputLabelPassword", IDS_BRAVE_WALLET_INPUT_LABEL_PASSWORD},
     {"braveWalletWhatIsACryptoWallet",
      IDS_BRAVE_WALLET_WHAT_IS_A_CRYPTO_WALLET}};
 
