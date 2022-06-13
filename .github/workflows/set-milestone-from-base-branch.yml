@@ -1,6 +1,7 @@
 name: Set PR Milestone
 
 on:
+  workflow_dispatch:
   pull_request:
     types: [closed]
     branches: [master, 1.*]
