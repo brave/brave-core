@@ -370,7 +370,8 @@ public class ApproveTxBottomSheetDialogFragment extends BottomSheetDialogFragmen
             ViewPager viewPager = view.findViewById(R.id.navigation_view_pager);
             ApproveTxFragmentPageAdapter adapter =
                     new ApproveTxFragmentPageAdapter(getChildFragmentManager(), mTxInfo, asset,
-                            decimals, mChainSymbol, mChainDecimals, mTotalPrice, getActivity());
+                            decimals, mChainSymbol, mChainDecimals, mTotalPrice, getActivity(),
+                            mTransactionConfirmationListener == null);
             viewPager.setAdapter(adapter);
             viewPager.setOffscreenPageLimit(adapter.getCount() - 1);
             TabLayout tabLayout = view.findViewById(R.id.tabs);

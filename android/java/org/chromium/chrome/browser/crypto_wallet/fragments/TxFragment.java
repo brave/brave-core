@@ -50,11 +50,18 @@ public class TxFragment extends Fragment {
     private int mCheckedPriorityId;
     private int mPreviousCheckedPriorityId;
     private double mEthRate;
+    // mUpdateTxObjectManually is used to detect do we need to update dialog values
+    // manually after we change gas for example or do we have it updated automatically
+    // using observers. We use observers on DApps related executions, but wallet screens
+    // don't use them. It would be good to eventually migrate to observers everywhere.
+    private boolean mUpdateTxObjectManually;
     public static final int START_ADVANCE_SETTING_ACTIVITY_CODE = 0;
 
     public static TxFragment newInstance(TransactionInfo txInfo, String asset, int decimals,
-            String chainSymbol, int chainDecimals, double totalPrice) {
-        return new TxFragment(txInfo, asset, decimals, chainSymbol, chainDecimals, totalPrice);
+            String chainSymbol, int chainDecimals, double totalPrice,
+            boolean updateTxObjectManually) {
+        return new TxFragment(txInfo, asset, decimals, chainSymbol, chainDecimals, totalPrice,
+                updateTxObjectManually);
     }
 
     private AssetRatioService getAssetRatioService() {
@@ -74,7 +81,7 @@ public class TxFragment extends Fragment {
     }
 
     private TxFragment(TransactionInfo txInfo, String asset, int decimals, String chainSymbol,
-            int chainDecimals, double totalPrice) {
+            int chainDecimals, double totalPrice, boolean updateTxObjectManually) {
         mTxInfo = txInfo;
         mAsset = asset;
         mDecimals = decimals;
@@ -85,6 +92,7 @@ public class TxFragment extends Fragment {
         mCheckedPriorityId = -1;
         mPreviousCheckedPriorityId = -1;
         mIsEIP1559 = false;
+        mUpdateTxObjectManually = updateTxObjectManually;
     }
 
     @Override
@@ -270,7 +278,9 @@ public class TxFragment extends Fragment {
                                         if (!success) {
                                             return;
                                         }
-                                        setupView(view);
+                                        if (mUpdateTxObjectManually) {
+                                            setupView(view);
+                                        }
                                         dialog.dismiss();
                                     });
                         } else {
@@ -321,7 +331,9 @@ public class TxFragment extends Fragment {
                                         if (!success) {
                                             return;
                                         }
-                                        setupView(view);
+                                        if (mUpdateTxObjectManually) {
+                                            setupView(view);
+                                        }
                                         dialog.dismiss();
                                     });
                         }
