@@ -113,8 +113,12 @@ class OpenSearchEngine: NSObject, NSSecureCoding {
   /**
      * Returns the search URL for the given query.
      */
-  func searchURLForQuery(_ query: String, locale: Locale = Locale.current) -> URL? {
-    return getURLFromTemplate(searchTemplate, query: query, locale: locale)
+  func searchURLForQuery(_ query: String, locale: Locale = Locale.current, isBraveSearchPromotion: Bool = false) -> URL? {
+    return getURLFromTemplate(
+      searchTemplate,
+      query: query,
+      locale: locale,
+      isBraveSearchPromotion: isBraveSearchPromotion)
   }
 
   /**
@@ -172,7 +176,7 @@ class OpenSearchEngine: NSObject, NSSecureCoding {
     return nil
   }
 
-  fileprivate func getURLFromTemplate(_ searchTemplate: String, query: String, locale: Locale) -> URL? {
+  fileprivate func getURLFromTemplate(_ searchTemplate: String, query: String, locale: Locale, isBraveSearchPromotion: Bool = false) -> URL? {
     guard let escapedQuery = query.addingPercentEncoding(withAllowedCharacters: .searchTermsAllowed) else {
       return nil
     }
@@ -199,7 +203,13 @@ class OpenSearchEngine: NSObject, NSSecureCoding {
         of: RegionalClientComponent, with: regionalClientParam(locale),
         options: .literal, range: nil)
 
-    return URL(string: urlString)
+    var searchUrl = URL(string: urlString)
+    
+    if isBraveSearchPromotion {
+      searchUrl = searchUrl?.withQueryParam("action", value: "makeDefault")
+    }
+    
+    return searchUrl
   }
 
   private func regionalClientParam(_ locale: Locale) -> String {
