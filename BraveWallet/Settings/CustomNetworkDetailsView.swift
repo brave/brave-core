@@ -422,7 +422,7 @@ struct CustomNetworkDetailsView: View {
       Text(item.wrappedValue.input)
         .contextMenu {
           Button(action: { UIPasteboard.general.string = item.wrappedValue.input }) {
-            Label(Strings.Wallet.copyToPasteboard, image: "brave.clipboard")
+            Label(Strings.Wallet.copyToPasteboard, braveSystemImage: "brave.clipboard")
           }
         }
     } else {

@@ -242,11 +242,11 @@ struct WalletPanelView: View {
   private var menuButton: some View {
     Menu {
       Button(action: { keyringStore.lock() }) {
-        Label(Strings.Wallet.lock, image: "brave.lock")
+        Label(Strings.Wallet.lock, braveSystemImage: "brave.lock")
       }
       Divider()
       Button(action: { presentWalletWithContext(.settings) }) {
-        Label(Strings.Wallet.settings, image: "brave.gear")
+        Label(Strings.Wallet.settings, braveSystemImage: "brave.gear")
       }
     } label: {
       Image(systemName: "ellipsis")

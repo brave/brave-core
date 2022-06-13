@@ -72,7 +72,7 @@ struct AccountPicker: View {
       if #available(iOS 15.0, *) {
         Menu {
           Button(action: copyAddress) {
-            Label(Strings.Wallet.copyAddressButtonTitle, image: "brave.clipboard")
+            Label(Strings.Wallet.copyAddressButtonTitle, braveSystemImage: "brave.clipboard")
           }
         } label: {
           accountView

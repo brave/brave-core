@@ -165,7 +165,7 @@ struct SignatureRequestView: View {
         onDismiss()
       }
     }) {
-      Label(Strings.Wallet.sign, image: "brave.key")
+      Label(Strings.Wallet.sign, braveSystemImage: "brave.key")
         .imageScale(.large)
     }
     .buttonStyle(BraveFilledButtonStyle(size: .large))

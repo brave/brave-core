@@ -57,7 +57,7 @@ struct AccountsHeaderView: View {
             networkStore: networkStore,
             keyringStore: keyringStore)
         ) {
-          Label(Strings.Wallet.settings, image: "brave.gear")
+          Label(Strings.Wallet.settings, braveSystemImage: "brave.gear")
             .labelStyle(.iconOnly)
         }
       }

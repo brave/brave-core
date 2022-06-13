@@ -134,7 +134,7 @@ struct SendTokenView: View {
                 sendTokenStore.sendAddress = string
               }
             }) {
-              Label(Strings.Wallet.pasteFromPasteboard, image: "brave.clipboard")
+              Label(Strings.Wallet.pasteFromPasteboard, braveSystemImage: "brave.clipboard")
                 .labelStyle(.iconOnly)
                 .foregroundColor(Color(.primaryButtonTint))
                 .font(.body)
@@ -143,7 +143,7 @@ struct SendTokenView: View {
             Button(action: {
               isShowingScanner = true
             }) {
-              Label(Strings.Wallet.scanQRCodeAccessibilityLabel, image: "brave.qr-code")
+              Label(Strings.Wallet.scanQRCodeAccessibilityLabel, braveSystemImage: "brave.qr-code")
                 .labelStyle(.iconOnly)
                 .foregroundColor(Color(.primaryButtonTint))
                 .font(.body)

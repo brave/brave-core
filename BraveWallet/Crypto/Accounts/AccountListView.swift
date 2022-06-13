@@ -32,7 +32,7 @@ struct AccountListView: View {
               Button(action: {
                 UIPasteboard.general.string = account.address
               }) {
-                Label(Strings.Wallet.copyAddressButtonTitle, image: "brave.clipboard")
+                Label(Strings.Wallet.copyAddressButtonTitle, braveSystemImage: "brave.clipboard")
               }
             }
           }
