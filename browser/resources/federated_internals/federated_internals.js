@@ -40,20 +40,25 @@ function onDataStoreChanged() {
         thead.removeChild(thead.firstChild);
       }
 
+      let title = "trainingInstanceId"
+      const th = document.createElement('th');
+      th.textContent = title;
+      th.className = 'data-store-feature-'+ title;
+      thead.appendChild(th);
       Object.keys(logs[0].covariates[0]).forEach(function(title) {
           const th = document.createElement('th');
           th.textContent = title;
           th.className = 'data-store-feature-'+ title;
-      
-          const thead = $('data-store-headers');
           thead.appendChild(th);
       });
+
+      console.log(logs);
 
       for (const [training_instance_id, training_instance] of Object.entries(logs)) {
         training_instance.covariates.forEach(function(covariate) {
           const tr = document.createElement('tr');
-          appendTD(tr, covariate.trainingInstanceId, 'data-store-feature-trainingInstanceId');
-          appendTD(tr, covariate.featureName, 'data-store-feature-featureName');
+          appendTD(tr, training_instance_id, 'data-store-feature-trainingInstanceId');
+          appendTD(tr, covariate.type, 'data-store-feature-type');
           appendTD(tr, covariate.dataType, 'data-store-feature-dataType');
           appendTD(tr, covariate.value, 'data-store-feature-value');
       
