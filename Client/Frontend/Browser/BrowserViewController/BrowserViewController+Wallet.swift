@@ -279,11 +279,12 @@ extension Tab: BraveWalletEventsListener {
   
   func chainChangedEvent(_ chainId: String) {
     Task { @MainActor in
-      guard let provider = walletProvider,
-            case let currentChainId = await provider.chainId(),
-            chainId != currentChainId else { return }
+      /// Temporary fix for #5404
+      /// Ethereum properties have been updated correctly, however, dapp is not updated unless there is a reload
+      /// We keep the same as Metamask, that, we will reload tab on chain changes.
       emitEthereumEvent(.ethereumChainChanged(chainId: chainId))
       updateEthereumProperties()
+      reload()
     }
   }
   
