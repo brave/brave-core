@@ -3167,6 +3167,7 @@ extension BrowserViewController: ToolbarUrlActionsDelegate {
     switch action {
     case .openInCurrentTab:
       finishEditingAndSubmit(url, visitType: visitType)
+      updateURLBarWalletButton()
     case .openInNewTab(let isPrivate):
       let tab = tabManager.addTab(PrivilegedRequest(url: url) as URLRequest, afterTab: tabManager.selectedTab, isPrivate: isPrivate)
       if isPrivate && !PrivateBrowsingManager.shared.isPrivateBrowsing {
@@ -3187,6 +3188,7 @@ extension BrowserViewController: ToolbarUrlActionsDelegate {
           })
         show(toast: toast)
       }
+      updateURLBarWalletButton()
     case .copy:
       UIPasteboard.general.url = url
     case .share:
