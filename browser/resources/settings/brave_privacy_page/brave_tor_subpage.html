@@ -23,7 +23,8 @@
 </style>
 <div id="torBridgesControls">
   <settings-toggle-button id="useBridges" class="hr" label="$i18n{torUseBridgesTitle}"
-    sub-label="$i18n{torUseBridgesDesc}" checked="[[isUsingBridges_]]" on-change="onUseBridgesChange_">
+    sub-label="$i18n{torUseBridgesDesc}" learn-more-url="https://tb-manual.torproject.org/en-US/bridges/"
+    checked="[[isUsingBridges_]]" on-change="onUseBridgesChange_">
   </settings-toggle-button>
   <settings-radio-group id="brigdesGroup" no-set-pref selectable-elements="settings-collapse-radio-button"
     on-change="onUsageSelect_" hidden="[[!isUsingBridges_]]">
@@ -55,7 +56,8 @@
     </settings-collapse-radio-button>
   </settings-radio-group>
   <br>
-  <cr-button id="apply" on-click="setBridgesConfig_" hidden="true">$i18n{torApplyChangesButton}</cr-button>
+  <cr-button id="apply" class="action-button" on-click="setBridgesConfig_" hidden="true">$i18n{torApplyChangesButton}
+  </cr-button>
 </div>
 <template is="dom-if" if="[[showRequestBridgesDialog_]]" restamp>
   <request-bridges-dialog id="requestBridgesDialog" on-close="showRequestBridgesDialogClosed_">

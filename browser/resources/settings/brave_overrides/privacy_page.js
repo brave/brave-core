@@ -105,8 +105,7 @@ RegisterPolymerTemplateModifications({
         pages.insertAdjacentHTML('beforeend', `
           <template is="dom-if" route-path="/privacy/tor">
           <settings-subpage id="tor" page-title="${I18nBehavior.i18n('torConnectionSettingsTitle')}"
-              associated-control="[[$$('#torLinkRow')]]"
-              learn-more-url="${I18nBehavior.i18n('torConnectionSettingsDesc')}">
+              associated-control="[[$$('#torLinkRow')]]">
             <settings-brave-tor-subpage prefs="{{prefs}}"
             </settings-brave-tor-subpage>
           </settings-subpage>
