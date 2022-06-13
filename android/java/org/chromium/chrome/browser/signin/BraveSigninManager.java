@@ -81,9 +81,6 @@ public class BraveSigninManager implements SigninManager {
     }
 
     @Override
-    public void onFirstRunCheckDone() {}
-
-    @Override
     public IdentityManager getIdentityManager() {
         return mIdentityManager;
     }
