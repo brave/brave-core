@@ -14,7 +14,6 @@
 #include "base/location.h"
 #include "base/logging.h"
 #include "base/path_service.h"
-#include "base/task/post_task.h"
 #include "base/task/task_traits.h"
 #include "build/build_config.h"
 
@@ -114,8 +113,7 @@ void BraveTorPluggableTransportUpdater::Cleanup() {
   const base::FilePath component_dir =
       user_data_dir_.AppendASCII(kTorPluggableTransportComponentId);
   GetTaskRunner()->PostTask(
-      FROM_HERE,
-      base::BindOnce(base::GetDeletePathRecursivelyCallback(), component_dir));
+      FROM_HERE, base::GetDeletePathRecursivelyCallback(component_dir));
 }
 
 bool BraveTorPluggableTransportUpdater::IsReady() const {

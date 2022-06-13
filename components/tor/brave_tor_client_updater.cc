@@ -146,21 +146,17 @@ void BraveTorClientUpdater::Cleanup() {
   base::FilePath tor_component_dir =
       user_data_dir_.AppendASCII(kTorClientComponentId);
   task_runner_->PostTask(
-      FROM_HERE, base::BindOnce(base::GetDeletePathRecursivelyCallback(),
-                                tor_component_dir));
+      FROM_HERE, base::GetDeletePathRecursivelyCallback(tor_component_dir));
   task_runner_->PostTask(
-      FROM_HERE, base::BindOnce(base::GetDeletePathRecursivelyCallback(),
-                                GetTorDataPath()));
+      FROM_HERE, base::GetDeletePathRecursivelyCallback(GetTorDataPath()));
   task_runner_->PostTask(
-      FROM_HERE, base::BindOnce(base::GetDeletePathRecursivelyCallback(),
-                                GetTorWatchPath()));
+      FROM_HERE, base::GetDeletePathRecursivelyCallback(GetTorWatchPath()));
 }
 
 void BraveTorClientUpdater::RemoveObsoleteFiles() {
   // tor log
   base::FilePath tor_log = GetTorDataPath().AppendASCII("tor.log");
-  task_runner_->PostTask(
-      FROM_HERE, base::BindOnce(base::GetDeleteFileCallback(), tor_log));
+  task_runner_->PostTask(FROM_HERE, base::GetDeleteFileCallback(tor_log));
 }
 
 void BraveTorClientUpdater::SetTorPath(

@@ -16,7 +16,6 @@
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
 #include "base/strings/stringprintf.h"
-#include "base/task/post_task.h"
 #include "base/task/sequenced_task_runner.h"
 #include "base/task/task_traits.h"
 #include "base/threading/sequenced_task_runner_handle.h"
@@ -591,6 +590,16 @@ void TorControl::SetupBridges(const std::vector<std::string>& bridges,
           base::BindOnce(&TorControl::OnBrigdesConfigured,
                          weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
   }
+}
+
+void TorControl::OnPluggableTransportsConfigured(
+    base::OnceCallback<void(bool error)> callback,
+    bool error,
+    const std::string& status,
+    const std::string& reply) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(io_sequence_checker_);
+  VLOG(1) << __func__ << " " << reply;
+  std::move(callback).Run(error || status != "250" || reply != "OK");
 }
 
 void TorControl::OnBrigdesConfigured(

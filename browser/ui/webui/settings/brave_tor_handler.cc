@@ -19,7 +19,6 @@
 #include "base/strings/strcat.h"
 #include "base/strings/stringprintf.h"
 #include "base/strings/utf_string_conversions.h"
-#include "base/task/post_task.h"
 #include "base/task/thread_pool.h"
 #include "base/values.h"
 #include "brave/browser/tor//tor_profile_service_factory.h"
@@ -170,7 +169,7 @@ class BridgeRequest : public content::WebContentsObserver {
       image_decoder_ = std::make_unique<ImageDecoderImpl>();
     }
 
-    image_decoder_->DecodeImage(image_data, {},
+    image_decoder_->DecodeImage(image_data, {}, /*data_decoder=*/nullptr,
                                 base::BindOnce(&BridgeRequest::OnCaptchaDecoded,
                                                weak_factory_.GetWeakPtr()));
   }
