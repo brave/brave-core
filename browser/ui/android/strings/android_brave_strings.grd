@@ -2939,7 +2939,7 @@ If you don't accept this request, VPN will not reconnect and your internet conne
       Select account(s)
     </message>
     <message name="IDS_PERMISSIONS_CONNECT_BRAVE_WALLET_ACCOUNTS_TITLE" desc="Title text for a request to connect a wallet for an accounts section.">
-      New account
+      Accounts
     </message>
     <message name="IDS_PERMISSIONS_CONNECT_BRAVE_WALLET_WARNING_TITLE" desc="Title text for a request to connect a wallet for a warning section.">
       Only connect with sites you trust.
@@ -3045,10 +3045,10 @@ If you don't accept this request, VPN will not reconnect and your internet conne
       Network
     </message>
     <message name="IDS_BRAVE_WALLET_ALLOW_ADD_NETWORK_DESCRIPTION" desc="Add network panel description">
-      This will allow this network to be used within Brave Wallet.
+      This will allow this network to be used within Brave Wallet. Learn more.
     </message>
-    <message name="IDS_BRAVE_WALLET" desc="Brave Wallet text for string detection with localization">
-      Brave Wallet
+    <message name="IDS_BRAVE_WALLET_LEARN_MORE" desc="Learn more text for string detection with localization">
+      Learn more.
     </message>
     <message name="IDS_BRAVE_WALLET_ALLOW_ADD_NETWORK_HEADING" desc="Add network panel title">
       Allow this site to add a network?

@@ -102,7 +102,7 @@ public class AddSwitchChainNetworkFragment extends BaseDAppsFragment {
             btnAddSwitchNetwork.setText(R.string.approve);
             SpannableString addChainHeading = Utils.createSpannableString(
                     getString(R.string.brave_wallet_allow_add_network_description),
-                    getString(R.string.brave_wallet), new ClickableSpan() {
+                    getString(R.string.brave_wallet_learn_more), new ClickableSpan() {
                         @Override
                         public void onClick(@NonNull View widget) {
                             TabUtils.openUrlInNewTab(false, Utils.BRAVE_SUPPORT_URL);
