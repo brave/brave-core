@@ -368,11 +368,14 @@ mojom::NetworkInfoPtr GetKnownEthChain(PrefService* prefs,
       continue;
 
     auto result = network.Clone();
-    if (chain_id == brave_wallet::mojom::kLocalhostChainId)
-      result->data->set_eth_data(mojom::NetworkInfoDataETH::New(
-          prefs->GetBoolean(kSupportEip1559OnLocalhostChain)));
     if (result->rpc_urls.empty())
       result->rpc_urls.push_back(GetInfuraURLForKnownChainId(chain_id));
+
+    if (prefs && chain_id == brave_wallet::mojom::kLocalhostChainId) {
+      result->data->set_eth_data(mojom::NetworkInfoDataETH::New(
+          prefs->GetBoolean(kSupportEip1559OnLocalhostChain)));
+    }
+
     return result;
   }
   return nullptr;
@@ -953,8 +956,6 @@ std::string GetKnownNetworkId(mojom::CoinType coin,
 std::string GetNetworkId(PrefService* prefs,
                          mojom::CoinType coin,
                          const std::string& chain_id) {
-  DCHECK(prefs);
-
   if (chain_id.empty())
     return "";
 
@@ -962,6 +963,7 @@ std::string GetNetworkId(PrefService* prefs,
   if (!id.empty())
     return id;
 
+  DCHECK(prefs);
   if (coin == mojom::CoinType::ETH) {
     std::vector<mojom::NetworkInfoPtr> custom_chains;
     GetAllEthCustomChains(prefs, &custom_chains);
