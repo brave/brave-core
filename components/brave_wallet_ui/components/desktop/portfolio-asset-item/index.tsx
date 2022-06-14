@@ -114,7 +114,7 @@ const PortfolioAssetItem = (props: Props) => {
         <StyledWrapper disabled={token.isErc721 || isLoading} onClick={action}>
           <NameAndIcon>
             <IconsWrapper>
-              {isLoading
+              {!token.logo
                 ? <LoadingSkeleton
                   circle={true}
                   width={40}
@@ -131,7 +131,7 @@ const PortfolioAssetItem = (props: Props) => {
               }
             </IconsWrapper>
             <NameColumn>
-              {isLoading
+              {!token.name && !token.symbol
                 ? <>
                   <LoadingSkeleton width={assetNameSkeletonWidth} height={18} />
                   <Spacer />
@@ -155,17 +155,24 @@ const PortfolioAssetItem = (props: Props) => {
               size='small'
               hideBalances={hideBalances ?? false}
             >
-              {isLoading
-                ? <>
-                  <LoadingSkeleton width={100} height={20} />
-                </>
-                : <>
-                  {!token.isErc721 &&
+
+              {!token.isErc721 &&
+                <>
+                  {formattedFiatBalance ? (
                     <FiatBalanceText>{formattedFiatBalance}</FiatBalanceText>
-                  }
-                  <AssetBalanceText>{formattedAssetBalance}</AssetBalanceText>
+                  ) : (
+                    <>
+                      <LoadingSkeleton width={60} height={18} />
+                      <Spacer />
+                    </>
+                  )}
                 </>
               }
+              {formattedAssetBalance ? (
+                <AssetBalanceText>{formattedAssetBalance}</AssetBalanceText>
+              ) : (
+                <LoadingSkeleton width={60} height={18} />
+              )}
             </WithHideBalancePlaceholder>
           </BalanceColumn>
         </StyledWrapper>
