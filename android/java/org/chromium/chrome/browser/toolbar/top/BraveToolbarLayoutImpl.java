@@ -347,6 +347,14 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
         updateBraveShieldsButtonState(getToolbarDataProvider().getTab());
         mTabModelSelectorTabObserver = new TabModelSelectorTabObserver(selector) {
             @Override
+            protected void onTabRegistered(Tab tab) {
+                super.onTabRegistered(tab);
+                if (tab.isIncognito()) {
+                    showWalletIcon(false);
+                }
+            }
+
+            @Override
             public void onShown(Tab tab, @TabSelectionType int type) {
                 // Update shields button state when visible tab is changed.
                 updateBraveShieldsButtonState(tab);
