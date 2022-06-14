@@ -39,7 +39,8 @@ function Buy (props: Props) {
   const {
     selectedNetwork,
     selectedAccount,
-    defaultCurrencies
+    defaultCurrencies,
+    selectedCurrency
   } = useSelector(({ wallet }: { wallet: WalletState }) => wallet)
 
   // Custom Hooks
@@ -50,13 +51,13 @@ function Buy (props: Props) {
     const asset = buyOption === BraveWallet.OnRampProvider.kRamp
       ? { ...selectedAsset, symbol: getRampAssetSymbol(selectedAsset) }
       : selectedAsset
-
     getBuyAssetUrl({
       asset,
       onRampProvider: buyOption,
       chainId: selectedNetwork.chainId,
       address: selectedAccount.address,
-      amount: buyAmount
+      amount: buyAmount,
+      currencyCode: selectedCurrency ? selectedCurrency.currencyCode : 'USD'
     })
       .then(url => {
         chrome.tabs.create({ url }, () => {
@@ -95,6 +96,10 @@ function Buy (props: Props) {
     setShowBuyOptions(false)
   }, [])
 
+  const onShowCurrencySelection = React.useCallback(() => {
+    onChangeBuyView('currencies', 'from')
+  }, [onChangeBuyView])
+
   const isSelectedNetworkSupported = React.useMemo(() => {
     return [...rampAssetOptions, ...wyreAssetOptions]
       .map(asset => asset.chainId.toLowerCase())
@@ -120,6 +125,7 @@ function Buy (props: Props) {
               selectedAsset={selectedAsset}
               selectedNetwork={selectedNetwork}
               onShowSelection={onShowAssets}
+              onShowCurrencySelection={onShowCurrencySelection}
               autoFocus={true}
             />
           }

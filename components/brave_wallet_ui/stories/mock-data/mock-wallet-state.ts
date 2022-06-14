@@ -151,6 +151,26 @@ const mockNetworkList = [
   }
 ]
 
+const mockCurrency: BraveWallet.OnRampCurrency = {
+  currencyCode: 'USD',
+  currencyName: 'United States Dollar',
+  providers: []
+}
+
+const mockCurrencies: BraveWallet.OnRampCurrency[] = [
+  mockCurrency,
+  {
+    currencyCode: 'EUR',
+    currencyName: 'Euro',
+    providers: []
+  },
+  {
+    currencyCode: 'GBP',
+    currencyName: 'British Pound Sterling',
+    providers: []
+  }
+]
+
 export const mockWalletState: WalletState = {
   accounts: [
     mockAccount
@@ -316,5 +336,7 @@ export const mockWalletState: WalletState = {
       isImported: false,
       hardware: undefined
     }
-  ]
+  ],
+  onRampCurrencies: mockCurrencies,
+  selectedCurrency: mockCurrency
 }

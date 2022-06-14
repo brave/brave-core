@@ -234,6 +234,8 @@ export interface WalletState {
   defaultNetworks: BraveWallet.NetworkInfo[]
   selectedNetworkFilter: BraveWallet.NetworkInfo
   defaultAccounts: BraveWallet.AccountInfo[]
+  onRampCurrencies: BraveWallet.OnRampCurrency[]
+  selectedCurrency: BraveWallet.OnRampCurrency | undefined
 }
 
 export interface PanelState {
@@ -479,6 +481,7 @@ export type BuySendSwapViewTypes =
   | 'acounts'
   | 'networks'
   | 'assets'
+  | 'currencies'
 
 export type OrderTypes =
   | 'market'
