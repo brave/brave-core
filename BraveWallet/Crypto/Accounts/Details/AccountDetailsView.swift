@@ -152,7 +152,7 @@ private struct AccountDetailsHeaderView: View {
         )
       Button(action: { UIPasteboard.general.string = address }) {
         HStack {
-          Text(address.truncatedAddress)
+          Text(address)
             .foregroundColor(Color(.secondaryBraveLabel))
           Label(Strings.Wallet.copyToPasteboard, braveSystemImage: "brave.clipboard")
             .labelStyle(.iconOnly)

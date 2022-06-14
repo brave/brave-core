@@ -42,4 +42,11 @@ extension String {
     // Check the length and the rest of the char is a hex digit
     return hex.count == 40 && hex.allSatisfy(\.isHexDigit)
   }
+  
+  /// Insert zero-width space every character inside account address string
+  var zwspAddress: String {
+    return map {
+      String($0) + "\u{200b}"
+    }.joined()
+  }
 }

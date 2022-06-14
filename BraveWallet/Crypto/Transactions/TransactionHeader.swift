@@ -31,15 +31,23 @@ struct TransactionHeader: View {
         Group {
           if sizeCategory.isAccessibilityCategory {
             VStack {
-              Text(fromAccountName)
+              AddressView(address: fromAccountAddress) {
+                Text(fromAccountName)
+              }
               Image(systemName: "arrow.down")
-              Text(toAccountName)
+              AddressView(address: toAccountAddress) {
+                Text(toAccountName)
+              }
             }
           } else {
             HStack {
-              Text(fromAccountName)
+              AddressView(address: fromAccountAddress) {
+                Text(fromAccountName)
+              }
               Image(systemName: "arrow.right")
-              Text(toAccountName)
+              AddressView(address: toAccountAddress) {
+                Text(toAccountName)
+              }
             }
           }
         }

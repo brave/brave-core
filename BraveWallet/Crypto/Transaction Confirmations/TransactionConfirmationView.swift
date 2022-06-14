@@ -71,8 +71,10 @@ struct TransactionConfirmationView: View {
   /// View showing the currently selected account with a blockie
   @ViewBuilder private var accountView: some View {
     HStack {
-      Text(keyringStore.selectedAccount.address.truncatedAddress)
-        .fontWeight(.semibold)
+      AddressView(address: keyringStore.selectedAccount.address) {
+        Text(keyringStore.selectedAccount.address.truncatedAddress)
+          .fontWeight(.semibold)
+      }
       Blockie(address: keyringStore.selectedAccount.address)
         .frame(width: blockieSize, height: blockieSize)
     }
