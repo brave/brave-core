@@ -9,7 +9,6 @@ import {
   Redirect,
   Route,
   Switch
-  // ,useHistory
 } from 'react-router'
 
 // components
@@ -21,29 +20,22 @@ import { OnboardingWelcome } from './welcome/onboarding-welcome'
 import { OnboardingImportOrRestoreWallet } from './import-or-restore-wallet/import-or-restore-wallet'
 import { OnboardingSuccess } from './onboarding-success/onboarding-success'
 import { OnboardingRestoreFromRecoveryPhrase } from './restore-from-recovery-phrase/restore-from-recovery-phrase'
+import { OnboardingDisclosures } from './disclosures/disclosures'
 
 // types
 import { PageState, WalletRoutes } from '../../../constants/types'
 
-// actions
-// import * as WalletPageActions from '../../actions/wallet_page_actions'
-
 export const OnboardingRoutes = () => {
-  // routing
-  // let history = useHistory()
-
   // redux
   const isMetaMaskInitialized = useSelector(({ page }: { page: PageState }) => page.isMetaMaskInitialized)
-
-  // methods
-  // const onSkipBackup = React.useCallback(() => {
-  //   dispatch(WalletPageActions.walletSetupComplete())
-  //   history.push(WalletRoutes.Portfolio)
-  // }, [])
 
   // render
   return (
     <Switch>
+
+      <Route path={WalletRoutes.OnboardingDisclosures} exact>
+        <OnboardingDisclosures />
+      </Route>
 
       <Route path={WalletRoutes.OnboardingCreatePassword} exact>
         <OnboardingCreatePassword />

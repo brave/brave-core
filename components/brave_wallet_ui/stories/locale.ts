@@ -108,6 +108,12 @@ provideStrings({
   braveWalletWelcomeIAlreadyHaveAWallet: 'I already have a wallet',
   braveWalletWelcomeRestoreButton: 'Restore',
 
+  // Wallet Onboarding Disclosures
+  braveWalletDisclosuresTitle: 'Before we begin',
+  braveWalletDisclosuresDescription: 'We require that you acknowledge the items below',
+  braveWalletSelfCustodyDisclosureCheckboxText: 'I understand this is a self-custody wallet and I’m responsible for my funds and assets. Brave can NOT access my wallet or reverse transactions on my behalf.',
+  braveWalletTermsOfServiceCheckboxText: 'I have read and agree to the Terms of Service',
+
   // Backup Wallet Intro (v2)
   braveWalletOnboardingRecoveryPhraseBackupIntroTitle: 'Before you start backing up wallet',
   braveWalletOnboardingRecoveryPhraseBackupIntroDescription: 'The 12 word recovery phrase that will be provided next step is a private key that allows you to access your wallet if you lose your devices.',

@@ -768,6 +768,13 @@ constexpr webui::LocalizedString kLocalizedStrings[] = {
      IDS_BRAVE_WALLET_METAMASK_PASSWORD_INPUT_PLACEHOLDER},
     {"braveWalletInputLabelPassword", IDS_BRAVE_WALLET_INPUT_LABEL_PASSWORD},
     {"braveWalletLearnAboutMyWallet", IDS_BRAVE_WALLET_LEARN_ABOUT_MY_WALLET},
+    {"braveWalletDisclosuresTitle", IDS_BRAVE_WALLET_DISCLOSURES_TITLE},
+    {"braveWalletDisclosuresDescription",
+     IDS_BRAVE_WALLET_DISCLOSURES_DESCRIPTION},
+    {"braveWalletSelfCustodyDisclosureCheckboxText",
+     IDS_BRAVE_WALLET_SELF_CUSTODY_DISCLOSURE_CHECKBOX_TEXT},
+    {"braveWalletTermsOfServiceCheckboxText",
+     IDS_BRAVE_WALLET_TERMS_OF_SERVICE_CHECKBOX_TEXT},
     {"braveWalletWhatIsACryptoWallet",
      IDS_BRAVE_WALLET_WHAT_IS_A_CRYPTO_WALLET}};
 
