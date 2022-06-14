@@ -117,13 +117,22 @@ struct SuggestedNetworkView: View {
   
   private var headerView: some View {
     VStack {
-      HStack(spacing: 8) {
-        Spacer()
-        Text(keyringStore.selectedAccount.address.truncatedAddress)
-          .fontWeight(.semibold)
-        Blockie(address: keyringStore.selectedAccount.address)
-          .frame(width: min(blockieSize, maxBlockieSize), height: min(blockieSize, maxBlockieSize))
-          .aspectRatio(1, contentMode: .fit)
+      Menu {
+        Text(keyringStore.selectedAccount.address.zwspAddress)
+        Button(action: {
+          UIPasteboard.general.string = keyringStore.selectedAccount.address
+        }) {
+          Label(Strings.Wallet.copyAddressButtonTitle, image: "brave.clipboard")
+        }
+      } label: {
+        HStack(spacing: 8) {
+          Spacer()
+          Text(keyringStore.selectedAccount.address.truncatedAddress)
+            .fontWeight(.semibold)
+          Blockie(address: keyringStore.selectedAccount.address)
+            .frame(width: min(blockieSize, maxBlockieSize), height: min(blockieSize, maxBlockieSize))
+            .aspectRatio(1, contentMode: .fit)
+        }
       }
       .accessibilityLabel(Strings.Wallet.selectedAccountAccessibilityLabel)
       .accessibilityValue("\(keyringStore.selectedAccount.name), \(keyringStore.selectedAccount.address.truncatedAddress)")
@@ -194,6 +203,7 @@ struct SuggestedNetworkView: View {
       .opacity(sizeCategory.isAccessibilityCategory ? 0 : 1)
       .accessibility(hidden: sizeCategory.isAccessibilityCategory)
     }
+    .listStyle(InsetGroupedListStyle())
     .navigationTitle(navigationTitle)
     .navigationBarTitleDisplayMode(.inline)
     .overlay(

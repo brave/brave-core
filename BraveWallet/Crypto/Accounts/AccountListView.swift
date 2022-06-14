@@ -22,17 +22,12 @@ struct AccountListView: View {
           header: WalletListHeaderView(title: Text(Strings.Wallet.accountsPageTitle))
         ) {
           ForEach(keyringStore.keyring.accountInfos) { account in
-            Button(action: {
-              keyringStore.selectedAccount = account
-              onDismiss()
-            }) {
-              AccountView(address: account.address, name: account.name)
-            }
-            .contextMenu {
+            AddressView(address: keyringStore.selectedAccount.address) {
               Button(action: {
-                UIPasteboard.general.string = account.address
+                keyringStore.selectedAccount = account
+                onDismiss()
               }) {
-                Label(Strings.Wallet.copyAddressButtonTitle, braveSystemImage: "brave.clipboard")
+                AccountView(address: account.address, name: account.name)
               }
             }
           }

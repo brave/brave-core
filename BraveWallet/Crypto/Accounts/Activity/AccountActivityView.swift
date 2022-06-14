@@ -162,8 +162,10 @@ private struct AccountActivityHeaderView: View {
       VStack(spacing: 4) {
         Text(account.name)
           .fontWeight(.semibold)
-        Text(account.address.truncatedAddress)
-          .font(.footnote)
+        AddressView(address: account.address) {
+          Text(account.address.truncatedAddress)
+            .font(.footnote)
+        }
       }
       .padding(.bottom, 12)
       HStack {

@@ -93,7 +93,9 @@ public struct NewSiteConnectionView: View {
               }
             } label: {
               HStack {
-                AccountView(address: account.address, name: account.name)
+                AddressView(address: account.address) {
+                  AccountView(address: account.address, name: account.name)
+                }
                 Spacer()
                 Group {
                   if selectedAccounts.contains(account.id) {

@@ -56,7 +56,9 @@ struct AssetDetailView: View {
         } else {
           ForEach(assetDetailStore.accounts) { viewModel in
             HStack {
-              AccountView(address: viewModel.account.address, name: viewModel.account.name)
+              AddressView(address: viewModel.account.address) {
+                AccountView(address: viewModel.account.address, name: viewModel.account.name)
+              }
               let showFiatPlaceholder = viewModel.fiatBalance.isEmpty && assetDetailStore.isLoadingPrice
               let showBalancePlaceholder = viewModel.balance.isEmpty && assetDetailStore.isLoadingAccountBalances
               VStack(alignment: .trailing) {

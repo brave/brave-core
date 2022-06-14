@@ -343,8 +343,11 @@ struct WalletPanelView: View {
             VStack(spacing: 4) {
               Text(keyringStore.selectedAccount.name)
                 .font(.headline)
-              Text(keyringStore.selectedAccount.address.truncatedAddress)
-                .font(.callout)
+              AddressView(address: keyringStore.selectedAccount.address) {
+                Text(keyringStore.selectedAccount.address.truncatedAddress)
+                  .font(.callout)
+                  .multilineTextAlignment(.center)
+              }
             }
           }
           VStack(spacing: 4) {

@@ -127,13 +127,17 @@ struct EditSiteConnectionView: View {
             let action = editAction(for: account)
             if sizeCategory.isAccessibilityCategory {
               VStack {
-                AccountView(address: account.address, name: account.name)
+                AddressView(address: account.address) {
+                  AccountView(address: account.address, name: account.name)
+                }
                 Spacer()
                 editButton(action: action, account: account)
               }
             } else {
               HStack {
-                AccountView(address: account.address, name: account.name)
+                AddressView(address: account.address) {
+                  AccountView(address: account.address, name: account.name)
+                }
                 Spacer()
                 editButton(action: action, account: account)
               }
