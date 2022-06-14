@@ -1,0 +1,18 @@
+diff --git a/third_party/blink/renderer/core/permissions_policy/permissions_policy_features.json5 b/third_party/blink/renderer/core/permissions_policy/permissions_policy_features.json5
+index 76fe42aaa939ad82d8984efb5c55830c4e82ee68..4c9caabeb93555f539e59fb01d23d6a989f6bba7 100644
+--- a/third_party/blink/renderer/core/permissions_policy/permissions_policy_features.json5
++++ b/third_party/blink/renderer/core/permissions_policy/permissions_policy_features.json5
+@@ -382,5 +382,13 @@
+       permissions_policy_name: "local-fonts",
+       depends_on: ["FontAccess"],
+     },
++    {
++      name: "Ethereum",
++      permissions_policy_name: "ethereum"
++    },
++    {
++      name: "Solana",
++      permissions_policy_name: "solana"
++    },
+   ],
+ }
