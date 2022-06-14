@@ -127,6 +127,7 @@ gin::ObjectTemplateBuilder JSSolanaProvider::GetObjectTemplateBuilder(
     v8::Isolate* isolate) {
   return gin::Wrappable<JSSolanaProvider>::GetObjectTemplateBuilder(isolate)
       .SetProperty("isPhantom", &JSSolanaProvider::GetIsPhantom)
+      .SetProperty("isBraveWallet", &JSSolanaProvider::GetIsBraveWallet)
       .SetProperty("isConnected", &JSSolanaProvider::GetIsConnected)
       .SetProperty("publicKey", &JSSolanaProvider::GetPublicKey)
       .SetMethod("connect", &JSSolanaProvider::Connect)
@@ -184,6 +185,10 @@ void JSSolanaProvider::OnRemoteDisconnect() {
 }
 
 bool JSSolanaProvider::GetIsPhantom(gin::Arguments* arguments) {
+  return true;
+}
+
+bool JSSolanaProvider::GetIsBraveWallet(gin::Arguments* arguments) {
   return true;
 }
 
