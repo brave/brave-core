@@ -135,9 +135,9 @@ class AdBlockSubpage extends AdBlockSubpageBase {
     if (last_update_attempt === 0) {
       return '—'
     } else if (last_successful_update_attempt === 0) {
-      return this.i18n('adblockSubscribeUrlDownloadFailed')
+      return `<mark>${this.i18n('adblockSubscribeUrlDownloadFailed')}<mark>`
     } else if (last_successful_update_attempt !== last_update_attempt) {
-      return `${last_updated_pretty_text} ${this.i18n('adblockSubscribeUrlUpdateFailed')}`
+      return `${last_updated_pretty_text} <mark>${this.i18n('adblockSubscribeUrlUpdateFailed')}</mark>`
     } else {
       return last_updated_pretty_text
     }
