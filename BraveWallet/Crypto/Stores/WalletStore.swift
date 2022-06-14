@@ -72,6 +72,7 @@ public class WalletStore {
             ethTxManagerProxy: ethTxManagerProxy
           )
           self.onPendingRequestCancellable = self.cryptoStore?.$pendingRequest
+            .removeDuplicates()
             .sink { [weak self] _ in
               self?.onPendingRequestUpdated.send()
             }

@@ -32,27 +32,18 @@ struct AccountTransactionListView: View {
       Section(
         header: WalletListHeaderView(title: Text(Strings.Wallet.transactionsTitle))
       ) {
-        if activityStore.transactions.isEmpty {
+        if activityStore.transactionSummaries.isEmpty {
           emptyTextView(Strings.Wallet.noTransactions)
         } else {
-          ForEach(activityStore.transactions) { tx in
-            Button(action: { self.transactionDetails = tx }) {
-              TransactionView(
-                info: tx,
-                keyringStore: keyringStore,
-                networkStore: networkStore,
-                visibleTokens: activityStore.assets.map(\.token),
-                allTokens: activityStore.allTokens,
-                displayAccountCreator: false,
-                assetRatios: assetRatios,
-                currencyCode: activityStore.currencyCode
-              )
+          ForEach(activityStore.transactionSummaries) { txSummary in
+            Button(action: { self.transactionDetails = txSummary.txInfo }) {
+              TransactionSummaryView(summary: txSummary)
             }
             .contextMenu {
-              if !tx.txHash.isEmpty {
+              if !txSummary.txHash.isEmpty {
                 Button(action: {
                   if let baseURL = self.networkStore.selectedChain.blockExplorerUrls.first.map(URL.init(string:)),
-                     let url = baseURL?.appendingPathComponent("tx/\(tx.txHash)") {
+                     let url = baseURL?.appendingPathComponent("tx/\(txSummary.txHash)") {
                     openWalletURL?(url)
                   }
                 }) {

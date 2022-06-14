@@ -79,28 +79,19 @@ struct AssetDetailView: View {
       Section(
         header: WalletListHeaderView(title: Text(Strings.Wallet.transactionsTitle))
       ) {
-        if assetDetailStore.transactions.isEmpty {
+        if assetDetailStore.transactionSummaries.isEmpty {
           Text(Strings.Wallet.noTransactions)
             .font(.footnote)
         } else {
-          ForEach(assetDetailStore.transactions, id: \.id) { tx in
-            Button(action: { self.transactionDetails = tx }) {
-              TransactionView(
-                info: tx,
-                keyringStore: keyringStore,
-                networkStore: networkStore,
-                visibleTokens: [assetDetailStore.token],
-                allTokens: [], // AssetDetailView is specific to a single token
-                displayAccountCreator: true,
-                assetRatios: [assetDetailStore.token.symbol.lowercased(): assetDetailStore.assetPriceValue],
-                currencyCode: assetDetailStore.currencyCode
-              )
+          ForEach(assetDetailStore.transactionSummaries) { txSummary in
+            Button(action: { self.transactionDetails = txSummary.txInfo }) {
+              TransactionSummaryView(summary: txSummary, displayAccountCreator: true)
             }
             .contextMenu {
-              if !tx.txHash.isEmpty {
+              if !txSummary.txHash.isEmpty {
                 Button(action: {
                   if let baseURL = self.networkStore.selectedChain.blockExplorerUrls.first.map(URL.init(string:)),
-                    let url = baseURL?.appendingPathComponent("tx/\(tx.txHash)") {
+                     let url = baseURL?.appendingPathComponent("tx/\(txSummary.txHash)") {
                     openWalletURL?(url)
                   }
                 }) {

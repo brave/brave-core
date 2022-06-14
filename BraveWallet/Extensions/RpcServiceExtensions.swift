@@ -56,6 +56,21 @@ extension BraveWalletJsonRpcService {
     }
   }
   
+  /// Obtain the decimal balance of an `BlockchainToken` for a given account
+  ///
+  /// If the call fails for some reason or the resulting wei cannot be converted,
+  /// `completion` will be called with `nil`
+  @MainActor func balance(
+    for token: BraveWallet.BlockchainToken,
+    in account: BraveWallet.AccountInfo
+  ) async -> Double? {
+    await withCheckedContinuation { continuation in
+      balance(for: token, in: account) { value in
+        continuation.resume(returning: value)
+      }
+    }
+  }
+  
   /// Obtain the decimal balance in `BDouble` of an `BlockchainToken` for a given account
   /// with certain decimal format style
   ///
