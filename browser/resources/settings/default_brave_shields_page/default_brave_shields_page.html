@@ -62,7 +62,7 @@
         on-change="onAdControlChange_">
       <template is="dom-repeat" items="[[adControlTypes_]]">
         <option value="[[item.value]]"
-            selected="[[controlEqual(item.value, adControlType_)]]">
+            selected="[[controlEqual_(item.value, adControlType_)]]">
           [[item.name]]
         </option>
       </template>
@@ -86,7 +86,7 @@
         on-change="onFingerprintingControlChange_">
       <template is="dom-repeat" items="[[fingerprintingControlTypes_]]">
         <option value="[[item.value]]"
-            selected="[[controlEqual(item.value, fingerprintingControlType_)]]">
+            selected="[[controlEqual_(item.value, fingerprintingControlType_)]]">
           [[item.name]]
         </option>
       </template>
@@ -98,7 +98,7 @@
         on-change="onCookieControlChange_">
       <template is="dom-repeat" items="[[cookieControlTypes_]]">
         <option value="[[item.value]]"
-            selected="[[controlEqual(item.value, cookieControlType_)]]">
+            selected="[[controlEqual_(item.value, cookieControlType_)]]">
           [[item.name]]
         </option>
       </template>
