@@ -83,10 +83,8 @@ class TorProxyLookupClient : public network::mojom::ProxyLookupClient {
   mojo::PendingRemote<network::mojom::ProxyLookupClient>
   GetProxyLookupClient() {
     mojo::PendingRemote<network::mojom::ProxyLookupClient> pending_remote =
-        receiver_.BindNewPipeAndPassRemote(
-            base::ThreadPool::CreateSingleThreadTaskRunner(
-                {content::BrowserThread::UI,
-                 content::BrowserTaskType::kPreconnect}));
+        receiver_.BindNewPipeAndPassRemote(content::GetUIThreadTaskRunner(
+            {content::BrowserTaskType::kPreconnect}));
     receiver_.set_disconnect_handler(base::BindOnce(
         &TorProxyLookupClient::OnProxyLookupComplete, base::Unretained(this),
         net::ERR_ABORTED, absl::nullopt));
