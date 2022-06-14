@@ -35,6 +35,7 @@ class BraveWalletProviderDelegateImpl : public BraveWalletProviderDelegate,
       const BraveWalletProviderDelegateImpl&) = delete;
   ~BraveWalletProviderDelegateImpl() override;
 
+  bool IsTabVisible() override;
   void ShowPanel() override;
   void WalletInteractionDetected() override;
   void ShowWalletOnboarding() override;

@@ -999,6 +999,23 @@ void EthereumProviderImpl::CommonRequestOrSendAsync(base::Value input_value,
     return;
   }
 
+  // That check prevents from pop ups from backgrounded pages.
+  // We need to add any method that requires a dialog to interact with.
+  if ((method == kEthRequestAccounts || method == kAddEthereumChainMethod ||
+       method == kSwitchEthereumChainMethod || method == kEthSendTransaction ||
+       method == kEthSign || method == kPersonalSign ||
+       method == kPersonalEcRecover || method == kEthSignTypedDataV3 ||
+       method == kEthSignTypedDataV4 || method == kEthGetEncryptionPublicKey ||
+       method == kEthDecrypt || method == kWalletWatchAsset ||
+       method == kRequestPermissionsMethod) &&
+      !delegate_->IsTabVisible()) {
+    SendErrorOnRequest(
+        mojom::ProviderError::kResourceUnavailable,
+        l10n_util::GetStringUTF8(IDS_WALLET_TAB_IS_NOT_ACTIVE_ERROR),
+        std::move(callback), base::Value());
+    return;
+  }
+
   if (method == kEthAccounts) {
     GetAllowedAccounts(
         false,
@@ -1243,6 +1260,13 @@ void EthereumProviderImpl::ContinueRequestEthereumPermissions(
 }
 
 void EthereumProviderImpl::Enable(EnableCallback callback) {
+  if (!delegate_->IsTabVisible()) {
+    SendErrorOnRequest(
+        mojom::ProviderError::kResourceUnavailable,
+        l10n_util::GetStringUTF8(IDS_WALLET_TAB_IS_NOT_ACTIVE_ERROR),
+        std::move(callback), base::Value());
+    return;
+  }
   RequestEthereumPermissions(std::move(callback), base::Value(), "",
                              delegate_->GetOrigin());
   delegate_->WalletInteractionDetected();
