@@ -121,6 +121,7 @@ void SolanaTxManager::OnGetLatestBlockhash(std::unique_ptr<SolanaTxMeta> meta,
 
   json_rpc_service_->SendSolanaTransaction(
       meta->tx()->GetSignedTransaction(keyring_service_),
+      meta->tx()->send_options(),
       base::BindOnce(&SolanaTxManager::OnSendSolanaTransaction,
                      weak_ptr_factory_.GetWeakPtr(), meta->id(),
                      std::move(callback)));

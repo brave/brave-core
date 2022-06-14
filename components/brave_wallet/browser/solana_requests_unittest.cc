@@ -26,8 +26,28 @@ TEST(SolanaRequestsUnitTest, getTokenAccountBalance) {
 
 TEST(SolanaRequestsUnitTest, sendTransaction) {
   ASSERT_EQ(
-      sendTransaction("signed_tx"),
+      sendTransaction("signed_tx", absl::nullopt),
       R"({"id":1,"jsonrpc":"2.0","method":"sendTransaction","params":["signed_tx",{"encoding":"base64"}]})");
+
+  std::string expected_json_string = R"(
+      {
+        "id":1,"jsonrpc":"2.0","method":"sendTransaction",
+        "params":["signed_tx", {
+          "encoding": "base64",
+          "maxRetries": 18446744073709551615,
+          "preflightCommitment": "confirmed",
+          "skipPreflight": true
+        }]
+      }
+  )";
+  auto expected_json = base::JSONReader::Read(expected_json_string);
+  ASSERT_TRUE(expected_json);
+  std::string json_string = sendTransaction(
+      "signed_tx",
+      SolanaTransaction::SendOptions(UINT64_MAX, "confirmed", true));
+  auto json = base::JSONReader::Read(json_string);
+  ASSERT_TRUE(json);
+  EXPECT_EQ(*json, *expected_json);
 }
 
 TEST(SolanaRequestsUnitTest, getLatestBlockhash) {

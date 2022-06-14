@@ -296,12 +296,31 @@ v8::Local<v8::Promise> JSSolanaProvider::SignAndSendTransaction(
     return v8::Local<v8::Promise>();
   }
 
+  absl::optional<base::Value> send_options = absl::nullopt;
+  v8::Local<v8::Value> v8_send_options;
+  if (arguments->Length() > 1 && !arguments->GetNext(&v8_send_options)) {
+    arguments->ThrowTypeError(
+        l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
+    return v8::Local<v8::Promise>();
+  }
+  if (!v8_send_options.IsEmpty()) {
+    std::unique_ptr<base::Value> send_options_value =
+        v8_value_converter_->FromV8Value(v8_send_options,
+                                         isolate->GetCurrentContext());
+    if (!send_options_value || !send_options_value->is_dict()) {
+      arguments->ThrowTypeError(
+          l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
+      return v8::Local<v8::Promise>();
+    }
+    send_options = std::move(*send_options_value);
+  }
+
   auto global_context(
       v8::Global<v8::Context>(isolate, isolate->GetCurrentContext()));
   auto promise_resolver(
       v8::Global<v8::Promise::Resolver>(isolate, resolver.ToLocalChecked()));
   solana_provider_->SignAndSendTransaction(
-      *serialized_message,
+      *serialized_message, std::move(send_options),
       base::BindOnce(&JSSolanaProvider::OnSignAndSendTransaction,
                      weak_ptr_factory_.GetWeakPtr(), std::move(global_context),
                      std::move(promise_resolver), isolate));

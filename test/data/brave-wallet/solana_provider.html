@@ -44,9 +44,9 @@
       })
   }
 
-  function solanaSignAndSendTransaction(serializedTx) {
+  function solanaSignAndSendTransaction(serializedTx, sendOptions) {
     const tx = window._brave_solana.createTransaction(serializedTx)
-    window.solana.signAndSendTransaction(tx)
+    window.solana.signAndSendTransaction(tx, sendOptions)
       .then(result => {
         signAndSendTransactionResult = result.signature
         window.domAutomationController.send('result ready')

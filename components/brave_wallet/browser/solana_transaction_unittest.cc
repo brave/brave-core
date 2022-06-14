@@ -20,6 +20,7 @@
 #include "brave/components/brave_wallet/browser/solana_account_meta.h"
 #include "brave/components/brave_wallet/browser/solana_instruction.h"
 #include "brave/components/brave_wallet/common/brave_wallet_constants.h"
+#include "brave/components/brave_wallet/common/brave_wallet_types.h"
 #include "brave/components/brave_wallet/common/features.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
@@ -321,7 +322,12 @@ TEST_F(SolanaTransactionUnitTest, FromToSolanaTxData) {
   transaction.set_to_wallet_address(to_account);
   transaction.set_lamports(10000000u);
   transaction.set_tx_type(mojom::TransactionType::SolanaSystemTransfer);
+  transaction.set_send_options(
+      SolanaTransaction::SendOptions(1, "confirmed", true));
 
+  auto mojom_send_options = mojom::SolanaSendTransactionOptions::New(
+      mojom::OptionalMaxRetries::New(1), "confirmed",
+      mojom::OptionalSkipPreflight::New(true));
   auto solana_tx_data = transaction.ToSolanaTxData();
   ASSERT_TRUE(solana_tx_data);
   EXPECT_EQ(solana_tx_data->recent_blockhash, recent_blockhash);
@@ -333,6 +339,7 @@ TEST_F(SolanaTransactionUnitTest, FromToSolanaTxData) {
   EXPECT_EQ(solana_tx_data->amount, 0u);
   EXPECT_EQ(solana_tx_data->tx_type,
             mojom::TransactionType::SolanaSystemTransfer);
+  EXPECT_EQ(solana_tx_data->send_options, mojom_send_options);
 
   ASSERT_EQ(solana_tx_data->instructions.size(), 1u);
   EXPECT_EQ(solana_tx_data->instructions[0]->program_id,
@@ -374,6 +381,8 @@ TEST_F(SolanaTransactionUnitTest, FromToValue) {
   transaction.set_to_wallet_address(to_account);
   transaction.set_lamports(10000000u);
   transaction.set_tx_type(mojom::TransactionType::SolanaSystemTransfer);
+  transaction.set_send_options(
+      SolanaTransaction::SendOptions(1, "confirmed", true));
 
   base::Value value = transaction.ToValue();
   auto expect_tx_value = base::JSONReader::Read(R"(
@@ -405,7 +414,12 @@ TEST_F(SolanaTransactionUnitTest, FromToValue) {
         "spl_token_mint_address": "",
         "lamports": "10000000",
         "amount": "0",
-        "tx_type": 6
+        "tx_type": 6,
+        "send_options": {
+          "maxRetries": "1",
+          "preflightCommitment": "confirmed",
+          "skipPreflight": true
+        }
       }
   )");
 
@@ -423,6 +437,24 @@ TEST_F(SolanaTransactionUnitTest, FromToValue) {
     EXPECT_FALSE(SolanaMessage::FromValue(*invalid_value))
         << ":" << invalid_value_string;
   }
+}
+
+TEST_F(SolanaTransactionUnitTest, SendOptionsFromValueMaxRetries) {
+  auto value =
+      base::JSONReader::Read(R"({"maxRetries": "18446744073709551615"})");
+  auto options = SolanaTransaction::SendOptions::FromValue(std::move(value));
+  EXPECT_EQ(options->max_retries, UINT64_MAX);
+  value = base::JSONReader::Read(R"({"maxRetries": 9007199254740991})");
+  options = SolanaTransaction::SendOptions::FromValue(std::move(value));
+  EXPECT_EQ(options->max_retries, kMaxSafeIntegerUint64);
+
+  // Unexpected type or no maxRetries.
+  value = base::JSONReader::Read(R"({"maxRetries": {}})");
+  options = SolanaTransaction::SendOptions::FromValue(std::move(value));
+  EXPECT_FALSE(options->max_retries);
+  value = base::JSONReader::Read(R"({})");
+  options = SolanaTransaction::SendOptions::FromValue(std::move(value));
+  EXPECT_FALSE(options->max_retries);
 }
 
 TEST_F(SolanaTransactionUnitTest, SetTxType) {

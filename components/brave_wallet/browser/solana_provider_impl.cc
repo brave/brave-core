@@ -34,6 +34,7 @@ constexpr char kOnlyIfTrustedOption[] = "onlyIfTrusted";
 constexpr char kMessage[] = "message";
 constexpr char kPublicKey[] = "publicKey";
 constexpr char kSignature[] = "signature";
+constexpr char kOptions[] = "options";
 
 }  // namespace
 
@@ -313,6 +314,7 @@ void SolanaProviderImpl::OnSignAllTransactionsRequestProcessed(
 
 void SolanaProviderImpl::SignAndSendTransaction(
     const std::string& encoded_serialized_msg,
+    absl::optional<base::Value> send_options,
     SignAndSendTransactionCallback callback) {
   absl::optional<std::string> account =
       keyring_service_->GetSelectedAccount(mojom::CoinType::SOL);
@@ -339,6 +341,9 @@ void SolanaProviderImpl::SignAndSendTransaction(
 
   SolanaTransaction tx = SolanaTransaction(std::move(*msg));
   tx.set_tx_type(mojom::TransactionType::SolanaDappSignAndSendTransaction);
+  tx.set_send_options(
+      SolanaTransaction::SendOptions::FromValue(std::move(send_options)));
+
   tx_service_->AddUnapprovedTransaction(
       mojom::TxDataUnion::NewSolanaTxData(tx.ToSolanaTxData()),
       tx.message()->fee_payer(), delegate_->GetOrigin(),
@@ -494,7 +499,11 @@ void SolanaProviderImpl::Request(base::Value arg, RequestCallback callback) {
           base::Value(base::Value::Type::DICTIONARY));
       return;
     }
-    SignAndSendTransaction(*message, std::move(callback));
+    base::Value::Dict* options_dict = params->FindDict(kOptions);
+    absl::optional<base::Value> options = absl::nullopt;
+    if (options_dict)
+      options = base::Value(std::move(*options_dict));
+    SignAndSendTransaction(*message, std::move(options), std::move(callback));
   } else if (*method == solana::kSignAllTransactions) {
     const base::Value::List* messages = params->FindList(kMessage);
     if (!messages) {

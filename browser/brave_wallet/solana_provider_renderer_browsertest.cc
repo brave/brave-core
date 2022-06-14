@@ -5,6 +5,7 @@
 
 #include "base/containers/flat_map.h"
 #include "base/feature_list.h"
+#include "base/json/json_reader.h"
 #include "base/memory/weak_ptr.h"
 #include "base/path_service.h"
 #include "base/strings/strcat.h"
@@ -329,9 +330,18 @@ class TestSolanaProvider final : public brave_wallet::mojom::SolanaProvider {
   }
   void SignAndSendTransaction(
       const std::string& encoded_serialized_msg,
+      absl::optional<base::Value> send_options,
       SignAndSendTransactionCallback callback) override {
     EXPECT_EQ(encoded_serialized_msg,
               brave_wallet::Base58Encode(kSerializedMessage));
+
+    auto expect_send_options = base::JSONReader::Read(
+        R"({"maxRetries": 9007199254740991,
+            "preflightCommitment": "confirmed",
+            "skipPreflight": true})");
+    ASSERT_TRUE(expect_send_options);
+    EXPECT_EQ(send_options, send_options_);
+
     base::Value result(base::Value::Type::DICTIONARY);
     if (error_ == SolanaProviderError::kSuccess) {
       result.SetStringKey("publicKey", kTestPublicKey);
@@ -376,6 +386,10 @@ class TestSolanaProvider final : public brave_wallet::mojom::SolanaProvider {
     error_message_ = error_message;
   }
 
+  void SetSendOptions(absl::optional<base::Value> options) {
+    send_options_ = std::move(options);
+  }
+
   void SetEmitEmptyAccountChanged(bool value) {
     emit_empty_account_changed_ = value;
   }
@@ -388,6 +402,7 @@ class TestSolanaProvider final : public brave_wallet::mojom::SolanaProvider {
   SolanaProviderError error_ = SolanaProviderError::kSuccess;
   std::string error_message_;
   bool emit_empty_account_changed_ = false;
+  absl::optional<base::Value> send_options_;
   mojo::Remote<brave_wallet::mojom::SolanaEventsListener> events_listener_;
 };
 
@@ -856,20 +871,43 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, SignAllTransactions) {
 
 IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, SignAndSendTransaction) {
   const std::string serialized_tx_str = VectorToArrayString(kSerializedTx);
+  const std::string send_options =
+      R"({"maxRetries": 9007199254740991,
+          "preflightCommitment": "confirmed",
+          "skipPreflight": true})";
+  const std::string tx_with_send_options =
+      base::StrCat({"(window._brave_solana.createTransaction(new Uint8Array([",
+                    serialized_tx_str, "])), ", send_options, ")"});
+
+  TestSolanaProvider* provider = test_content_browser_client_.GetProvider(
+      web_contents(browser())->GetMainFrame());
+  ASSERT_TRUE(provider);
+  provider->SetSendOptions(base::JSONReader::Read(send_options));
+
+  auto send_options_result =
+      EvalJs(web_contents(browser()),
+             SignAndSendTransactionScript(tx_with_send_options),
+             content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
+  EXPECT_EQ(base::Value(true), send_options_result.value);
+
+  provider->SetSendOptions(absl::nullopt);
   const std::string tx =
       base::StrCat({"(window._brave_solana.createTransaction(new Uint8Array([",
                     serialized_tx_str, "])))"});
+
   auto result =
       EvalJs(web_contents(browser()), SignAndSendTransactionScript(tx),
              content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
   EXPECT_EQ(base::Value(true), result.value);
 
   // allow extra parameters
-  const std::string tx2 = base::StrCat({"(", tx, ", {})"});
+  provider->SetSendOptions(base::Value(base::Value::Type::DICTIONARY));
+  const std::string tx2 = base::StrCat({"(", tx, ", {}, {})"});
   auto result2 =
       EvalJs(web_contents(browser()), SignAndSendTransactionScript(tx2),
              content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
   EXPECT_EQ(base::Value(true), result2.value);
+  provider->SetSendOptions(absl::nullopt);
 
   // no arg
   auto result3 =
@@ -886,10 +924,6 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, SignAndSendTransaction) {
   EXPECT_EQ(
       base::Value(l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS)),
       result4.value);
-
-  TestSolanaProvider* provider = test_content_browser_client_.GetProvider(
-      web_contents(browser())->GetMainFrame());
-  ASSERT_TRUE(provider);
 
   provider->SetError(SolanaProviderError::kUserRejectedRequest, kErrorMessage);
 
