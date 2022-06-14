@@ -24,6 +24,7 @@ typedef void (^GetAllowedAccountsCallback)(bool success,
 
 OBJC_EXPORT
 @protocol BraveWalletProviderDelegate
+- (bool)isTabVisible;
 - (void)showPanel;
 - (URLOriginIOS*)getOrigin;
 - (void)walletInteractionDetected;
