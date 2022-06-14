@@ -36,13 +36,15 @@ interface OnboardingNewWalletStepsNavigationProps extends Omit<StepsNavigationPr
 export const OnboardingNewWalletStepsNavigation = ({
   currentStep,
   preventSkipAhead,
-  goBackUrl
+  goBackUrl,
+  onSkip
 }: OnboardingNewWalletStepsNavigationProps) => {
   return <StepsNavigation
     steps={NEW_WALLET_STEPS}
     goBackUrl={goBackUrl}
     currentStep={currentStep}
     preventSkipAhead={preventSkipAhead}
+    onSkip={onSkip}
   />
 }
 
@@ -96,12 +98,14 @@ interface OnboardingRestoreWalletStepsNavigationProps extends Omit<StepsNavigati
 export const OnboardingRestoreWalletStepsNavigation = ({
   currentStep,
   preventSkipAhead,
-  goBackUrl
+  goBackUrl,
+  onSkip
 }: OnboardingRestoreWalletStepsNavigationProps) => {
   return <StepsNavigation
     steps={RESTORE_WALLET_STEPS}
     goBackUrl={goBackUrl}
     currentStep={currentStep}
     preventSkipAhead={preventSkipAhead}
+    onSkip={onSkip}
   />
 }

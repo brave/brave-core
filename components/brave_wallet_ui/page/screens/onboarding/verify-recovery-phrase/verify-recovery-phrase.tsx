@@ -78,6 +78,7 @@ export const OnboardingVerifyRecoveryPhrase = () => {
           <OnboardingNewWalletStepsNavigation
             goBackUrl={WalletRoutes.OnboardingExplainRecoveryPhrase}
             currentStep={WalletRoutes.OnboardingVerifyRecoveryPhrase}
+            onSkip={onNextStep}
           />
 
           <TitleAndDescriptionContainer>
