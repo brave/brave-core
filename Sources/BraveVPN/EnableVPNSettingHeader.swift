@@ -69,12 +69,22 @@ public class EnableVPNSettingHeader: UIView {
     $0.backgroundColor = BraveVPNCommonUI.UX.purpleBackgroundColor
   }
 
-  private let backgroundImage = UIImageView(image: UIImage(named: "enable_vpn_settings_banner", in: .current, compatibleWith: nil)!).then {
+  private let backgroundImage = UIImageView().then {
+    if let image = UIImage(named: "enable_vpn_settings_banner", in: .current, compatibleWith: nil) {
+      $0.image = image
+    } else {
+      assertionFailure("Could not find asset for background image")
+    }
     $0.contentMode = .scaleAspectFill
   }
 
   private let closeButton = UIButton().then {
-    $0.setImage(UIImage(named: "card_close", in: .current, compatibleWith: nil)!, for: .normal)
+    if let image = UIImage(named: "card_close", in: .current, compatibleWith: nil) {
+      $0.setImage(image, for: .normal)
+    } else {
+      assertionFailure("Could not find asset for close button")
+    }
+    
     $0.tintColor = .white
   }
 
