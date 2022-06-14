@@ -198,14 +198,14 @@ public abstract class BraveWalletBaseActivity extends AsyncInitializationActivit
 
     @Override
     public void onDestroy() {
-        mKeyringService.close();
-        mAssetRatioService.close();
-        mBlockchainRegistry.close();
-        mJsonRpcService.close();
-        mTxService.close();
-        mEthTxManagerProxy.close();
-        mSolanaTxManagerProxy.close();
-        mBraveWalletService.close();
+        if (mKeyringService != null) mKeyringService.close();
+        if (mAssetRatioService != null) mAssetRatioService.close();
+        if (mBlockchainRegistry != null) mBlockchainRegistry.close();
+        if (mJsonRpcService != null) mJsonRpcService.close();
+        if (mTxService != null) mTxService.close();
+        if (mEthTxManagerProxy != null) mEthTxManagerProxy.close();
+        if (mSolanaTxManagerProxy != null) mSolanaTxManagerProxy.close();
+        if (mBraveWalletService != null) mBraveWalletService.close();
         super.onDestroy();
     }
 
