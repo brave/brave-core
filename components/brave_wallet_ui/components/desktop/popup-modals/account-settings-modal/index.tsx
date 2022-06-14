@@ -198,6 +198,11 @@ const AddAccountModal = (props: Props) => {
             <WarningWrapper>
               <WarningText>{getLocale('braveWalletAccountSettingsDisclaimer')}</WarningText>
             </WarningWrapper>
+            {showPrivateKey && account.coin === BraveWallet.CoinType.FIL &&
+            <WarningWrapper>
+               <WarningText>{getLocale('braveWalletFilExportPrivateKeyFormatDescription')}</WarningText>
+            </WarningWrapper>
+            }
             {showPrivateKey &&
               <Tooltip text={getLocale('braveWalletToolTipCopyToClipboard')}>
                 <PrivateKeyBubble onClick={onCopyPrivateKey}>{privateKey}</PrivateKeyBubble>
