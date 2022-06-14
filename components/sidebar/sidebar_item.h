@@ -21,8 +21,14 @@ struct SidebarItem {
     kBraveTalk,
     kWallet,
     kBookmarks,
+    kReadingList,
     kHistory,
   };
+
+  static SidebarItem Create(const std::u16string& title,
+                            Type type,
+                            BuiltInItemType built_in_item_type,
+                            bool open_in_panel);
 
   static SidebarItem Create(const GURL& url,
                             const std::u16string& title,

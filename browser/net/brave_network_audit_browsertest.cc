@@ -309,7 +309,7 @@ IN_PROC_BROWSER_TEST_F(BraveNetworkAuditTest, BasicTests) {
   auto* sidebar_model = sidebar_controller->model();
   auto all_items = sidebar_model->GetAllSidebarItems();
   const int item_num = all_items.size();
-  const int builtin_panel_item_total = 1;
+  const int builtin_panel_item_total = 2;
   int builtin_panel_item_count = 0;
   for (int i = 0; i < item_num; ++i) {
     auto item = all_items[i];

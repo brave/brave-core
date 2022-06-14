@@ -45,12 +45,19 @@ SidebarItem GetBuiltInItemForType(SidebarItem::BuiltInItemType type) {
                                  SidebarItem::Type::kTypeBuiltIn,
                                  SidebarItem::BuiltInItemType::kWallet, false);
     case SidebarItem::BuiltInItemType::kBookmarks:
-      return SidebarItem::Create(GURL(kSidebarBookmarksURL),
-                                 brave_l10n::GetLocalizedResourceUTF16String(
+      return SidebarItem::Create(brave_l10n::GetLocalizedResourceUTF16String(
                                      IDS_SIDEBAR_BOOKMARKS_ITEM_TITLE),
                                  SidebarItem::Type::kTypeBuiltIn,
                                  SidebarItem::BuiltInItemType::kBookmarks,
                                  true);
+    case SidebarItem::BuiltInItemType::kReadingList:
+      return SidebarItem::Create(
+          // TODO(petemill): Have these items created under brave/browser
+          // so that we can access common strings, like IDS_READ_LATER_TITLE.
+          brave_l10n::GetLocalizedResourceUTF16String(
+              IDS_SIDEBAR_READING_LIST_ITEM_TITLE),
+          SidebarItem::Type::kTypeBuiltIn,
+          SidebarItem::BuiltInItemType::kReadingList, true);
     case SidebarItem::BuiltInItemType::kHistory:
       return SidebarItem::Create(GURL("chrome://history/"),
                                  brave_l10n::GetLocalizedResourceUTF16String(
@@ -70,7 +77,7 @@ SidebarItem::BuiltInItemType GetBuiltInItemTypeForURL(const std::string& url) {
   if (url == "chrome://wallet/")
     return SidebarItem::BuiltInItemType::kWallet;
 
-  if (url == kSidebarBookmarksURL || url == "chrome://bookmarks/")
+  if (url == "chrome://bookmarks/")
     return SidebarItem::BuiltInItemType::kBookmarks;
 
   if (url == "chrome://history/")
@@ -91,6 +98,8 @@ std::vector<SidebarItem> GetDefaultSidebarItems() {
   items.push_back(GetBuiltInItemForType(SidebarItem::BuiltInItemType::kWallet));
   items.push_back(
       GetBuiltInItemForType(SidebarItem::BuiltInItemType::kBookmarks));
+  items.push_back(
+      GetBuiltInItemForType(SidebarItem::BuiltInItemType::kReadingList));
   return items;
 }
 

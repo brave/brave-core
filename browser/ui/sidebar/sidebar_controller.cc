@@ -10,7 +10,6 @@
 #include "brave/browser/ui/brave_browser.h"
 #include "brave/browser/ui/sidebar/sidebar.h"
 #include "brave/browser/ui/sidebar/sidebar_model.h"
-#include "brave/browser/ui/sidebar/sidebar_model_data.h"
 #include "brave/browser/ui/sidebar/sidebar_service_factory.h"
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
 #include "brave/components/sidebar/sidebar_service.h"
@@ -67,6 +66,7 @@ void SidebarController::ActivateItemAt(int index,
   DCHECK_GE(index, -1);
   if (index == -1) {
     sidebar_model_->SetActiveIndex(index);
+    UpdateSidebarVisibility();
     return;
   }
 
@@ -74,6 +74,7 @@ void SidebarController::ActivateItemAt(int index,
   // Only an item for panel can get activated.
   if (item.open_in_panel) {
     sidebar_model_->SetActiveIndex(index);
+    UpdateSidebarVisibility();
     return;
   }
 
@@ -134,8 +135,6 @@ void SidebarController::LoadAtTab(const GURL& url) {
 
 void SidebarController::OnShowSidebarOptionChanged(
     SidebarService::ShowSidebarOption option) {
-  // Clear active state whenever sidebar enabled state is changed.
-  ActivateItemAt(-1);
   UpdateSidebarVisibility();
 }
 

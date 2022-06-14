@@ -433,6 +433,10 @@ gfx::ImageSkia SidebarItemsContentsView::GetImageForBuiltInItems(
       focused_image_resource = IDR_SIDEBAR_BOOKMARKS_FOCUSED;
       normal_image_icon = &kSidebarBookmarksIcon;
       break;
+    case sidebar::SidebarItem::BuiltInItemType::kReadingList:
+      focused_image_resource = IDR_SIDEBAR_READING_LIST_FOCUSED;
+      normal_image_icon = &kSidebarReadingListIcon;
+      break;
     case sidebar::SidebarItem::BuiltInItemType::kHistory:
       focused_image_resource = IDR_SIDEBAR_HISTORY_FOCUSED;
       normal_image_icon = &kSidebarHistoryIcon;

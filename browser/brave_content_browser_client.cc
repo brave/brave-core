@@ -186,11 +186,6 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #include "brave/browser/ethereum_remote_client/ethereum_remote_client_service_factory.h"
 #endif
 
-#if BUILDFLAG(ENABLE_SIDEBAR)
-#include "brave/browser/ui/webui/sidebar/sidebar.mojom.h"
-#include "brave/browser/ui/webui/sidebar/sidebar_bookmarks_ui.h"
-#endif
-
 #if !BUILDFLAG(IS_ANDROID)
 #include "brave/browser/new_tab/new_tab_shows_navigation_throttle.h"
 #include "brave/browser/ui/webui/brave_federated/federated_internals.mojom.h"
@@ -592,11 +587,6 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
         federated_internals::mojom::PageHandlerFactory,
         brave_federated::FederatedInternalsUI>(map);
   }
-#endif
-
-#if BUILDFLAG(ENABLE_SIDEBAR)
-  chrome::internal::RegisterWebUIControllerInterfaceBinder<
-      sidebar::mojom::BookmarksPageHandlerFactory, SidebarBookmarksUI>(map);
 #endif
 
 // Brave News

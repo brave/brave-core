@@ -75,7 +75,7 @@ bool CanUseSidebar(Browser* browser) {
 // if sidebar panel already has bookmarks item.
 GURL ConvertURLToBuiltInItemURL(const GURL& url) {
   if (url == GURL(chrome::kChromeUIBookmarksURL))
-    return GURL(kSidebarBookmarksURL);
+    return GURL(chrome::kChromeUIBookmarksSidePanelURL);
 
   if (url.host() == kBraveTalkHost)
     return GURL(kBraveTalkURL);
