@@ -22,4 +22,19 @@ export const Nav = () => {
   </Router>
 }
 
+export const NavWithSkip = () => {
+  return <Router>
+    <Route path={'/:currentStep'}>
+      {({ match }) => (
+        <StepsNavigation
+          steps={['1', '2', '3']}
+          currentStep={match?.params.currentStep || '1'}
+          goBack={() => alert('go back')}
+          onSkip={() => alert('skip')}
+        />
+      )}
+    </Route>
+  </Router>
+}
+
 export default Nav

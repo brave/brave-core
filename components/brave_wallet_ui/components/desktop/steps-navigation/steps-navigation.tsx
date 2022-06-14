@@ -15,22 +15,25 @@ import { WalletRoutes } from 'components/brave_wallet_ui/constants/types'
 // style
 import { BackIcon } from '../../buy-send-swap/select-header/style'
 import { BackButton, DotsWrapper, FlexBox, Wrapper } from './steps-navigation.style'
+import { LinkText } from '../../../page/screens/onboarding/backup-recovery-phrase/onboarding-backup-recovery-phrase.style'
 
 export interface StepsNavigationProps<T extends string> {
-  readonly steps: T[]
   currentStep: T
-  goBackUrl?: WalletRoutes
   goBack?: () => void
+  goBackUrl?: WalletRoutes
+  onSkip?: () => void
   preventSkipAhead?: boolean
+  readonly steps: T[]
 }
 
 export const StepsNavigation: <T extends string>(
   props: StepsNavigationProps<T>
 ) => JSX.Element = ({
+  currentStep,
   goBack,
   goBackUrl,
+  onSkip,
   preventSkipAhead,
-  currentStep,
   steps
 }) => {
   // routing
@@ -74,7 +77,12 @@ export const StepsNavigation: <T extends string>(
         })}
       </DotsWrapper>
 
-      <FlexBox />
+      {onSkip
+          ? <LinkText onClick={onSkip}>
+              {getLocale('braveWalletBackupButtonSkip')}
+            </LinkText>
+          : <FlexBox />
+      }
 
     </Wrapper>
   )
