@@ -1,0 +1,15 @@
+import("//testing/test.gni")
+
+source_set("p3a_utils_unit_tests") {
+  testonly = true
+  sources = [ "//brave/components/p3a_utils/feature_usage_unittest.cc" ]
+
+  deps = [
+    "//base/test:test_support",
+    "//brave/components/p3a_utils",
+    "//components/prefs",
+    "//components/prefs:test_support",
+    "//content/test:test_support",
+    "//testing/gtest",
+  ]
+}

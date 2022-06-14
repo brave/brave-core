@@ -12,6 +12,7 @@
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
 #include "brave/components/brave_shields/common/brave_shield_utils.h"
 #include "brave/components/p3a/brave_p3a_utils.h"
+#include "brave/components/p3a_utils/bucket.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
@@ -21,7 +22,6 @@ namespace brave_shields {
 namespace {
 
 constexpr int kDomainCountBuckets[] = {0, 5, 10, 20, 30};
-constexpr int kDomainCountBucketCount = 6;
 
 constexpr ControlType kFPSettingOrder[] = {
     ControlType::ALLOW, ControlType::DEFAULT, ControlType::BLOCK};
@@ -158,18 +158,10 @@ void RecordShieldsDomainSettingCounts(PrefService* profile_prefs,
       profile_prefs, is_fingerprint, global_setting, false);
   VLOG(1) << "BraveShieldsP3A: Recording counts: is_fp=" << is_fingerprint
           << " above=" << above_total << " below=" << below_total;
-  int above_bucket_val =
-      std::lower_bound(kDomainCountBuckets, std::end(kDomainCountBuckets),
-                       above_total) -
-      kDomainCountBuckets;
-  int below_bucket_val =
-      std::lower_bound(kDomainCountBuckets, std::end(kDomainCountBuckets),
-                       below_total) -
-      kDomainCountBuckets;
-  base::UmaHistogramExactLinear(above_hg_name, above_bucket_val,
-                                kDomainCountBucketCount);
-  base::UmaHistogramExactLinear(below_hg_name, below_bucket_val,
-                                kDomainCountBucketCount);
+  p3a_utils::RecordToHistogramBucket(above_hg_name, kDomainCountBuckets,
+                                     above_total);
+  p3a_utils::RecordToHistogramBucket(below_hg_name, kDomainCountBuckets,
+                                     below_total);
 }
 
 void RecordShieldsDomainSettingCountsWithChange(PrefService* profile_prefs,
