@@ -732,7 +732,6 @@ constexpr webui::LocalizedString kLocalizedStrings[] = {
      IDS_BRAVE_WALLET_ONBOARDING_SUCCESS_TITLE},
     {"braveWalletOnboardingSuccessDescription",
      IDS_BRAVE_WALLET_ONBOARDING_SUCCESS_DESCRIPTION},
-    {"braveWalletGoToPortfolioButton", IDS_BRAVE_WALLET_GO_TO_PORTFOLIO_BUTTON},
     {"braveWalletArticleLinkHowToUseAWallet",
      IDS_BRAVE_WALLET_ARTICLE_LINK_HOW_TO_USE_A_WALLET},
     {"braveWalletArticleLinkWhatsTheBestWallet",
@@ -747,7 +746,6 @@ constexpr webui::LocalizedString kLocalizedStrings[] = {
      IDS_BRAVE_WALLET_ARTICLE_LINK_WHAT_ARE_DAPPS},
     {"braveWalletArticleLinkWhatIsWeb3",
      IDS_BRAVE_WALLET_ARTICLE_LINK_WHAT_IS_WEB3},
-
     {"braveWalletImportOrRestoreWalletTitle",
      IDS_BRAVE_WALLET_IMPORT_OR_RESTORE_WALLET_TITLE},
     {"braveWalletImportOrRestoreDescription",
@@ -775,6 +773,8 @@ constexpr webui::LocalizedString kLocalizedStrings[] = {
      IDS_BRAVE_WALLET_SELF_CUSTODY_DISCLOSURE_CHECKBOX_TEXT},
     {"braveWalletTermsOfServiceCheckboxText",
      IDS_BRAVE_WALLET_TERMS_OF_SERVICE_CHECKBOX_TEXT},
+    {"braveWalletBuyCryptoButton", IDS_BRAVE_WALLET_BUY_CRYPTO_BUTTON},
+    {"braveWalletDepositCryptoButton", IDS_BRAVE_WALLET_DEPOSIT_CRYPTO_BUTTON},
     {"braveWalletWhatIsACryptoWallet",
      IDS_BRAVE_WALLET_WHAT_IS_A_CRYPTO_WALLET}};
 

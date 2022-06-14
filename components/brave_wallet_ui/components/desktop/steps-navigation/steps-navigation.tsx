@@ -10,12 +10,12 @@ import { useHistory, Link, NavLink } from 'react-router-dom'
 import { getLocale } from '$web-common/locale'
 
 // routes
-import { WalletRoutes } from 'components/brave_wallet_ui/constants/types'
+import { WalletRoutes } from '../../../constants/types'
 
 // style
+import { LinkText } from '../../../components/shared/style'
 import { BackIcon } from '../../buy-send-swap/select-header/style'
 import { BackButton, DotsWrapper, FlexBox, Wrapper } from './steps-navigation.style'
-import { LinkText } from '../../../page/screens/onboarding/backup-recovery-phrase/onboarding-backup-recovery-phrase.style'
 
 export interface StepsNavigationProps<T extends string> {
   currentStep: T

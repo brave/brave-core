@@ -544,7 +544,6 @@
   <message name="IDS_BRAVE_WALLET_ORDINAL_LAST" desc="Last list item label">Last</message>
   <message name="IDS_BRAVE_WALLET_ONBOARDING_SUCCESS_TITLE" desc="Wallet is ready for use message">Congratulations on setting up your Brave Wallet!</message>
   <message name="IDS_BRAVE_WALLET_ONBOARDING_SUCCESS_DESCRIPTION" desc="Wallet access description">Now you can easily access your wallet any time from the wallet icon in Brave Browser.</message>
-  <message name="IDS_BRAVE_WALLET_GO_TO_PORTFOLIO_BUTTON" desc="Link to wallet portfolio page">Go To Portfolio</message>
   <message name="IDS_BRAVE_WALLET_ARTICLE_LINK_HOW_TO_USE_A_WALLET" desc="Title of article link 'How to use a crypto wallet?'">How to use a crypto wallet?</message>
   <message name="IDS_BRAVE_WALLET_ARTICLE_LINK_WHATS_THE_BEST_WALLET" desc="Title of article link 'What’s the best crypto wallet?'">What’s the best crypto wallet?</message>
   <message name="IDS_BRAVE_WALLET_ARTICLE_LINK_WHATS_A_CRYPTO_BROWSER" desc="Title of article link 'What’s a crypto browser?'">What’s a crypto browser?</message>
@@ -567,4 +566,6 @@
   <message name="IDS_BRAVE_WALLET_DISCLOSURES_DESCRIPTION" desc="Description text for Wallet Disclosures page">We require that you acknowledge the items below</message>
   <message name="IDS_BRAVE_WALLET_SELF_CUSTODY_DISCLOSURE_CHECKBOX_TEXT" desc="Self-custody wallet responsibility acknowledgement text">I understand this is a self-custody wallet and I’m responsible for my funds and assets. Brave can NOT access my wallet or reverse transactions on my behalf.</message>
   <message name="IDS_BRAVE_WALLET_TERMS_OF_SERVICE_CHECKBOX_TEXT" desc="Wallet Terms of Service acknowledgement text">I have read and agree to the <ph name="LINK_BEFORE">$1</ph>Terms of Service<ph name="LINK_AFTER">$2</ph></message>
+  <message name="IDS_BRAVE_WALLET_BUY_CRYPTO_BUTTON" desc="Buy Crypto button text">Buy Crypto</message>
+  <message name="IDS_BRAVE_WALLET_DEPOSIT_CRYPTO_BUTTON" desc="Deposit Crypto button text">Deposit</message>
 </grit-part>

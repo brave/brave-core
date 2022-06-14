@@ -20,6 +20,22 @@ import CloseSvg from '../../assets/svg-icons/close.svg'
 import { Link } from 'react-router-dom'
 
 // Text
+export const LinkText = styled.a`
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 600;
+  font-size: 14px;
+  letter-spacing: 0.01em;
+  color: ${(p) => p.theme.color.interactive05};
+  margin: 0px;
+  cursor: pointer;
+  vertical-align: middle;
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+  justify-content: center;
+`
+
 export const ErrorText = styled.span`
   font-family: Poppins;
   font-size: 12px;
