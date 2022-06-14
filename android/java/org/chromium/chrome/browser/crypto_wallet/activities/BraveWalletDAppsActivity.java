@@ -5,6 +5,8 @@
 
 package org.chromium.chrome.browser.crypto_wallet.activities;
 
+import static org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletDAppsActivity.ActivityType.GET_ENCRYPTION_PUBLIC_KEY_REQUEST;
+
 import android.content.Intent;
 import android.util.Log;
 
@@ -16,12 +18,12 @@ import org.chromium.brave_wallet.mojom.BraveWalletConstants;
 import org.chromium.brave_wallet.mojom.CoinType;
 import org.chromium.brave_wallet.mojom.TransactionInfo;
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.crypto_wallet.fragments.ApproveTxBottomSheetDialogFragment;
 import org.chromium.chrome.browser.crypto_wallet.fragments.dapps.AddSwitchChainNetworkFragment;
 import org.chromium.chrome.browser.crypto_wallet.fragments.dapps.AddTokenFragment;
-import org.chromium.chrome.browser.crypto_wallet.fragments.dapps.BaseDAppsBottomSheetDialogFragment;
-import org.chromium.chrome.browser.crypto_wallet.fragments.dapps.BaseDAppsFragment;
 import org.chromium.chrome.browser.crypto_wallet.fragments.dapps.ConnectAccountFragment;
+import org.chromium.chrome.browser.crypto_wallet.fragments.dapps.EncryptionKeyFragment;
 import org.chromium.chrome.browser.crypto_wallet.fragments.dapps.SignMessageFragment;
 import org.chromium.chrome.browser.crypto_wallet.listeners.TransactionConfirmationListener;
 import org.chromium.chrome.browser.crypto_wallet.util.PendingTxHelper;
@@ -46,7 +48,8 @@ public class BraveWalletDAppsActivity extends BraveWalletBaseActivity
         CONNECT_ACCOUNT(4),
         CONFIRM_TRANSACTION(5),
         DECRYPT_REQUEST(6),
-        GET_ENCRYPTION_PUBLIC_KEY_REQUEST(7);
+        GET_ENCRYPTION_PUBLIC_KEY_REQUEST(7),
+        FINISH(8);
 
         private int value;
         private static Map map = new HashMap<>();
@@ -78,6 +81,27 @@ public class BraveWalletDAppsActivity extends BraveWalletBaseActivity
         Intent intent = getIntent();
         mActivityType = ActivityType.valueOf(
                 intent.getIntExtra("activityType", ActivityType.ADD_ETHEREUM_CHAIN.getValue()));
+        BraveActivity activity = BraveActivity.getBraveActivity();
+        if (activity != null) {
+            activity.getWalletModel().getCryptoModel().mProcessNextDAppsRequest.observe(
+                    this, activityType -> {
+                        if (activityType == null) return;
+                        switch (activityType) {
+                            case GET_ENCRYPTION_PUBLIC_KEY_REQUEST:
+                                processPendingDappsRequest();
+                                break;
+                            case FINISH:
+                                finish();
+                                // need to clear the state for a fresh state next time
+                                // TODO (pavi): update the flow with dapps model
+                                // (under-development) and get rid of explicit clear state call
+                                activity.getWalletModel().getCryptoModel().clearDappsState();
+                                break;
+                            default:
+                                break;
+                        }
+                    });
+        }
         onInitialLayoutInflationComplete();
     }
 
@@ -87,11 +111,13 @@ public class BraveWalletDAppsActivity extends BraveWalletBaseActivity
         processPendingDappsRequest();
     }
 
+    // TODO (pavi): use mProcessNextDAppsRequest and remove this callback
     @Override
     public void onAddRequestProcessed(boolean hasMoreRequests) {
         processPendingAddSwitchRequest(hasMoreRequests);
     }
 
+    // TODO (pavi): use mProcessNextDAppsRequest and remove this callback
     @Override
     public void onSwitchRequestProcessed(boolean hasMoreRequests) {
         processPendingAddSwitchRequest(hasMoreRequests);
@@ -191,13 +217,8 @@ public class BraveWalletDAppsActivity extends BraveWalletBaseActivity
             mFragment = new ConnectAccountFragment();
         } else if (mActivityType == ActivityType.DECRYPT_REQUEST) {
             // TODO(sergz): Implement decrypt request screen
-        } else if (mActivityType == ActivityType.GET_ENCRYPTION_PUBLIC_KEY_REQUEST) {
-            // TODO(sergz): Implement get encryption public key request screen
-            // We will need to use the below construction for a message
-            // SpannableStringBuilder spBuilder = new SpannableStringBuilder();
-            // spBuilder.append(Utils.geteTLD(mCurrentSignMessageRequest.originInfo.eTldPlusOne));
-            // spBuilder.append(" ");
-            // spBuilder.append(getString(R.string.brave_wallet_provide_encryption_key_description));
+        } else if (mActivityType == GET_ENCRYPTION_PUBLIC_KEY_REQUEST) {
+            mFragment = EncryptionKeyFragment.newInstance(mActivityType);
         }
         showCurrentFragment();
     }

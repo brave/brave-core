@@ -128,6 +128,10 @@ public class SignMessageFragment extends BaseDAppsBottomSheetDialogFragment {
 
     private void updateAccount() {
         getKeyringService().getSelectedAccount(CoinType.ETH, address -> {
+            if (address == null) {
+                getActivity().finish();
+                return;
+            }
             getKeyringService().getKeyringInfo(
                     BraveWalletConstants.DEFAULT_KEYRING_ID, keyringInfo -> {
                         if (keyringInfo == null) {
