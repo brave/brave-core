@@ -17,6 +17,7 @@ export const LinkText = styled.a`
   letter-spacing: 0.01em;
   color: ${(p) => p.theme.color.interactive05};
   margin: 0px;
+  cursor: pointer;
 `
 
 // buttons
