@@ -28,7 +28,7 @@ const fingerprintModeOptions = [
 
 function GlobalSettings () {
   const onAdBlockListsClick = () => {
-    chrome.tabs.create({ url: 'chrome://settings/shields/content-filters', active: true })
+    chrome.tabs.create({ url: 'chrome://settings/shields/filters', active: true })
   }
 
   const onSettingsClick = () => {

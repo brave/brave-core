@@ -282,12 +282,12 @@ IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest, RewriteAdblock) {
     EXPECT_STREQ(base::UTF16ToUTF8(
                      browser()->location_bar_model()->GetFormattedFullURL())
                      .c_str(),
-                 "brave://settings/shields/content-filters");
+                 "brave://settings/shields/filters");
     EXPECT_EQ(browser()->location_bar_model()->GetURL(),
-              GURL("chrome://settings/shields/content-filters"));
+              GURL("chrome://settings/shields/filters"));
     EXPECT_EQ(
         contents->GetController().GetLastCommittedEntry()->GetVirtualURL(),
-        GURL("chrome://settings/shields/content-filters"));
+        GURL("chrome://settings/shields/filters"));
   }
 }
 
