@@ -5,6 +5,9 @@
 
 #include "bat/ads/internal/covariates/log_entries/notification_ad_event.h"
 
+#include <sstream>
+
+#include "bat/ads/confirmation_type.h"
 #include "bat/ads/internal/base/unittest/unittest_base.h"
 
 // npm run test -- brave_unit_tests --filter=BatAdsFederatedLogEntries*
@@ -29,42 +32,55 @@ TEST_F(BatAdsFederatedLogEntriesNotificationAdEventTest, GetDataType) {
   EXPECT_EQ(brave_federated::mojom::DataType::kBool, data_type);
 }
 
-TEST_F(BatAdsFederatedLogEntriesNotificationAdEventTest, GetValue) {
+TEST_F(BatAdsFederatedLogEntriesNotificationAdEventTest, GetValueWhenClicked) {
   // Arrange
   NotificationAdEvent notification_ad_event;
+  mojom::NotificationAdEventType clicked =
+      mojom::NotificationAdEventType::kClicked;
 
   // Act
-  notification_ad_event.SetEventType(mojom::NotificationAdEventType::kClicked);
+  notification_ad_event.SetEventType(clicked);
   const std::string value = notification_ad_event.GetValue();
 
+  std::stringstream ss;
+  ss << clicked;
+
   // Assert
-  EXPECT_EQ("clicked", value);
+  EXPECT_EQ(ss.str(), value);
 }
 
 TEST_F(BatAdsFederatedLogEntriesNotificationAdEventTest,
        GetValueWhenDismissed) {
   // Arrange
   NotificationAdEvent notification_ad_event;
+  mojom::NotificationAdEventType dismissed =
+      mojom::NotificationAdEventType::kDismissed;
 
   // Act
-  notification_ad_event.SetEventType(
-      mojom::NotificationAdEventType::kDismissed);
+  notification_ad_event.SetEventType(dismissed);
   const std::string value = notification_ad_event.GetValue();
 
+  std::stringstream ss;
+  ss << dismissed;
+
   // Assert
-  EXPECT_EQ("dismissed", value);
+  EXPECT_EQ(ss.str(), value);
 }
 
-TEST_F(BatAdsFederatedLogEntriesNotificationAdEventTest,
-       GetValueWithoutSetInteraction) {
+TEST_F(BatAdsFederatedLogEntriesNotificationAdEventTest, GetValueWhenTimeout) {
   // Arrange
   NotificationAdEvent notification_ad_event;
+  mojom::NotificationAdEventType timed_out =
+      mojom::NotificationAdEventType::kTimedOut;
 
   // Act
   const std::string value = notification_ad_event.GetValue();
 
+  std::stringstream ss;
+  ss << timed_out;
+
   // Assert
-  EXPECT_EQ("timedOut", value);
+  EXPECT_EQ(ss.str(), value);
 }
 
 }  // namespace ads

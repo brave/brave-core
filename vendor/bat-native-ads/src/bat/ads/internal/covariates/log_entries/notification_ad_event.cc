@@ -5,6 +5,10 @@
 
 #include "bat/ads/internal/covariates/log_entries/notification_ad_event.h"
 
+#include <sstream>
+
+#include "bat/ads/confirmation_type.h"
+
 namespace ads {
 
 NotificationAdEvent::NotificationAdEvent() = default;
@@ -25,16 +29,9 @@ brave_federated::mojom::CovariateType NotificationAdEvent::GetType() const {
 }
 
 std::string NotificationAdEvent::GetValue() const {
-  switch (event_type_) {
-    case mojom::NotificationAdEventType::kClicked:
-      return "clicked";
-    case mojom::NotificationAdEventType::kDismissed:
-      return "dismissed";
-    case mojom::NotificationAdEventType::kTimedOut:
-      return "timedOut";
-    default:
-      return "unknown";
-  }
+  std::stringstream ss;
+  ss << event_type_;
+  return ss.str();
 }
 
 }  // namespace ads
