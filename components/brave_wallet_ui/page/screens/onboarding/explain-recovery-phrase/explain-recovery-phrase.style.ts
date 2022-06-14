@@ -39,6 +39,16 @@ export const BannerText = styled.span`
   color: ${(p) => p.theme.color.text};
 `
 
+export const CenteredRow = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  margin-top: 12px;
+  margin-bottom: 6px;
+`
+
 export const WarningCircle = styled.div`
   width: 50px;
   height: 50px;

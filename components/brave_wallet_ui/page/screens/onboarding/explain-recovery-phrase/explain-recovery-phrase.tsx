@@ -17,7 +17,8 @@ import {
   BannerCard,
   WarningCircle,
   ImportantText,
-  BannerText
+  BannerText,
+  CenteredRow
 } from './explain-recovery-phrase.style'
 
 // utils
@@ -33,6 +34,7 @@ import ExamplePhrase from './images/example-recovery-phrase.svg'
 import { WalletPageLayout } from '../../../../components/desktop'
 import { NavButton } from '../../../../components/extension'
 import { OnboardingNewWalletStepsNavigation } from '../components/onboarding-steps-navigation/onboarding-steps-navigation'
+import { ArticleLinkBubble } from '../onboarding-success/components/article-link-bubble/article-link-bubble'
 
 const importantTextParts = splitStringForTag(getLocale('braveWalletRecoveryPhraseBackupWarningImportant'))
 
@@ -59,6 +61,14 @@ export const OnboardingRecoveryPhraseExplainer = () => {
           <div>
             <Title>{getLocale('braveWalletOnboardingRecoveryPhraseBackupIntroTitle')}</Title>
             <Description>{getLocale('braveWalletOnboardingRecoveryPhraseBackupIntroDescription')}</Description>
+            <CenteredRow>
+              <ArticleLinkBubble
+                icon='key'
+                iconBackgroundColor='red200'
+                text={getLocale('braveWalletArticleLinkWhatsARecoveryPhrase')}
+                url='https://brave.com/learn/wallet-recovery-phrase/'
+              />
+            </CenteredRow>
           </div>
 
           <img width='376px' height='118px' src={ExamplePhrase} />
