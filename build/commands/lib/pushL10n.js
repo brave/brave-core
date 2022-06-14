@@ -12,12 +12,7 @@ const pushL10n = (options) => {
       options.with_missing_translations ? '--with_missing_translations' : ''
   if (options.extension) {
     const extensionPath = options.extension_path
-    if (options.extension === 'ethereum-remote-client') {
-      l10nUtil.getEthereumRemoteClientPaths(extensionPath).forEach((sourceStringPath) => {
-        util.run('/Python39/python', ['script/push-l10n.py', '--source_string_path', sourceStringPath], cmdOptions)
-      })
-      return
-    } else if (options.extension === 'greaselion') {
+    if (options.extension === 'greaselion') {
       l10nUtil.getGreaselionScriptPaths(extensionPath).forEach((sourceStringPath) => {
         util.run('python', ['script/push-l10n.py', '--source_string_path', sourceStringPath], cmdOptions)
       })

@@ -80,8 +80,7 @@ def main():
     upload_source_strings_desc(source_string_path, filename)
 
     # Upload local translations if requested
-    if ('ethereum-remote-client' in source_string_path or
-           'brave-site-specific-scripts' in source_string_path or
+    if ('brave-site-specific-scripts' in source_string_path or
            args.with_translations or args.with_missing_translations):
         if ext == '.grd':
             upload_grd_translations_to_transifex(source_string_path, filename,

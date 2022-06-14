@@ -185,14 +185,14 @@ program
 
 program
   .command('pull_l10n')
-  .option('--extension <extension>', 'Scope this command to localize a Brave extension such as ethereum-remote-client')
+  .option('--extension <extension>', 'Scope this command to localize a Brave extension such as greaselion')
   .option('--grd_path <grd_path>', `Relative path to match end of full GRD path, e.g: 'generated_resources.grd'.`)
   .option('--debug', `Dumps downloaded content for one language into TransifexCurrent.txt file in the temp directory.`)
   .action(pullL10n)
 
 program
   .command('push_l10n')
-  .option('--extension <extension>', 'Scope this command to localize a Brave extension such as ethereum-remote-client')
+  .option('--extension <extension>', 'Scope this command to localize a Brave extension such as greaselion')
   .option('--extension_path <extension_path>', 'Local path for extension')
   .option('--grd_path <grd_path>', `Relative path to match end of full GRD path, e.g: 'generated_resources.grd'.`)
   .option('--with_translations', 'Push local translations. WARNING: this will overwrite translations in Tansifex.')

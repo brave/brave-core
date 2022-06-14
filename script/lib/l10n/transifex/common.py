@@ -47,6 +47,7 @@ def should_use_transifex_for_file(source_string_path, filename):
     return slug in transifex_handled_slugs or slug.startswith('greaselion_')
 
 
+# pylint: disable=inconsistent-return-statements
 def transifex_name_from_filename(source_file_path, filename):
     ext = os.path.splitext(source_file_path)[1]
     if 'brave_components_strings' in source_file_path:
@@ -59,11 +60,9 @@ def transifex_name_from_filename(source_file_path, filename):
         return 'brave_extension'
     if 'brave_rewards' in source_file_path:
         return 'rewards_extension'
-    if 'ethereum-remote-client/app' in source_file_path:
-        return 'ethereum_remote_client_extension'
     assert False, ('JSON files should be mapped explicitly, this '
                    f'one is not: {source_file_path}')
-
+# pylint: enable=inconsistent-return-statements
 
 def transifex_name_from_greaselion_script_name(script_name):
     match = re.search(('brave-site-specific-scripts/scripts/(.*)/_locales/' +
@@ -114,18 +113,10 @@ def get_acceptable_json_lang_codes(langs_dir_path):
     # Source language for Brave locales
     lang_codes.discard('en_US')
 
-    # Source language for ethereum-remote-client
-    lang_codes.discard('en')
-
     # Files that are not locales
     lang_codes.discard('.DS_Store')
     lang_codes.discard('index.json')
 
-    # ethereum-remote-client has these unsupported locales
-    lang_codes.discard('tml')
-    lang_codes.discard('hn')
-    lang_codes.discard('ph')
-    lang_codes.discard('ht')
     return sorted(lang_codes)
 
 
