@@ -9,7 +9,7 @@ import BraveCore
 class AccountActivityStore: ObservableObject {
   private(set) var account: BraveWallet.AccountInfo
   @Published private(set) var assets: [AssetViewModel] = []
-  @Published private(set) var transactions: [BraveWallet.TransactionInfo] = []
+  @Published var transactionSummaries: [TransactionSummary] = []
   @Published private(set) var allTokens: [BraveWallet.BlockchainToken] = []
   @Published private(set) var currencyCode: String = CurrencyCode.usd.code {
     didSet {
@@ -55,66 +55,92 @@ class AccountActivityStore: ObservableObject {
   }
 
   func update() {
-    fetchAssets()
-    fetchTransactions()
-  }
-
-  private func fetchAssets() {
-    rpcService.network { [self] network in
-      let chainId = network.chainId
-      blockchainRegistry.allTokens(chainId, coin: network.coin) { [self] allTokens in
-        self.allTokens = allTokens
-      }
-      walletService.userAssets(chainId, coin: network.coin) { [self] tokens in
-        var updatedAssets = tokens.map {
-          AssetViewModel(token: $0, decimalBalance: 0, price: "", history: [])
-        }
-        let updatedTokens = updatedAssets.map(\.token)
-        // fetch price & balance for each asset
-        let dispatchGroup = DispatchGroup()
-        dispatchGroup.enter()
-        assetRatioService.price(
-          updatedTokens.map { $0.symbol.lowercased() },
-          toAssets: [currencyFormatter.currencyCode],
-          timeframe: .oneDay) { success, prices in
-            defer { dispatchGroup.leave() }
-            for price in prices {
-              if let index = updatedAssets.firstIndex(where: {
-                $0.token.symbol.caseInsensitiveCompare(price.fromAsset) == .orderedSame
-              }) {
-                updatedAssets[index].price = price.price
-              }
-            }
-          }
-        for token in updatedTokens {
-          dispatchGroup.enter()
-          rpcService.balance(for: token, in: account) { value in
-            defer { dispatchGroup.leave() }
-            if let value = value, let index = updatedAssets.firstIndex(where: {
-              $0.token.symbol.caseInsensitiveCompare(token.symbol) == .orderedSame
-            }) {
-              updatedAssets[index].decimalBalance = value
-            }
-          }
-        }
-        dispatchGroup.notify(queue: .main) {
-          self.assets = updatedAssets
-        }
-      }
+    Task { @MainActor in
+      let network = await rpcService.network(.eth)
+      let keyring = await keyringService.defaultKeyringInfo()
+      let allTokens: [BraveWallet.BlockchainToken] = await blockchainRegistry.allTokens(network.chainId, coin: .eth)
+      let userVisibleTokens: [BraveWallet.BlockchainToken] = await walletService.userAssets(network.chainId, coin: .eth)
+      self.assets = await fetchAssets(network: network, userVisibleTokens: userVisibleTokens)
+      let assetRatios = self.assets.reduce(into: [String: Double](), {
+        $0[$1.token.symbol.lowercased()] = Double($1.price)
+      })
+      self.transactionSummaries = await fetchTransactionSummarys(
+        network: network,
+        accountInfos: keyring.accountInfos,
+        userVisibleTokens: userVisibleTokens,
+        allTokens: allTokens,
+        assetRatios: assetRatios
+      )
     }
   }
 
-  private func fetchTransactions() {
-    txService.allTransactionInfo(.eth, from: account.address) { transactions in
-      self.transactions =
-        transactions
-        .sorted(by: { $0.createdTime > $1.createdTime })
+  @MainActor private func fetchAssets(
+    network: BraveWallet.NetworkInfo,
+    userVisibleTokens: [BraveWallet.BlockchainToken]
+  ) async -> [AssetViewModel] {
+    var updatedAssets = userVisibleTokens.map {
+      AssetViewModel(token: $0, decimalBalance: 0, price: "", history: [])
     }
+    // fetch price for each asset
+    let (_, prices) = await assetRatioService.price(
+      userVisibleTokens.map { $0.symbol.lowercased() },
+      toAssets: [currencyFormatter.currencyCode],
+      timeframe: .oneDay
+    )
+    for price in prices {
+      if let index = updatedAssets.firstIndex(where: {
+        $0.token.symbol.caseInsensitiveCompare(price.fromAsset) == .orderedSame
+      }) {
+        updatedAssets[index].price = price.price
+      }
+    }
+    // fetch balance for each asset
+    typealias TokenBalance = (token: BraveWallet.BlockchainToken, balance: Double?)
+    let tokenBalances = await withTaskGroup(of: [TokenBalance].self) { group -> [TokenBalance] in
+      for token in userVisibleTokens {
+        group.addTask {
+          let balance = await self.rpcService.balance(for: token, in: self.account)
+          return [TokenBalance(token, balance)]
+        }
+      }
+      return await group.reduce([TokenBalance](), { $0 + $1 })
+    }
+    // update assets with balance
+    for tokenBalance in tokenBalances {
+      if let value = tokenBalance.balance, let index = updatedAssets.firstIndex(where: {
+        $0.token.symbol.caseInsensitiveCompare(tokenBalance.token.symbol) == .orderedSame
+      }) {
+        updatedAssets[index].decimalBalance = value
+      }
+    }
+    return updatedAssets
+  }
+  
+  @MainActor private func fetchTransactionSummarys(
+    network: BraveWallet.NetworkInfo,
+    accountInfos: [BraveWallet.AccountInfo],
+    userVisibleTokens: [BraveWallet.BlockchainToken],
+    allTokens: [BraveWallet.BlockchainToken],
+    assetRatios: [String: Double]
+  ) async -> [TransactionSummary] {
+    await txService.allTransactionInfo(.eth, from: account.address)
+      .sorted(by: { $0.createdTime > $1.createdTime })
+      .map { transaction in
+        TransactionParser.transactionSummary(
+          from: transaction,
+          network: network,
+          accountInfos: accountInfos,
+          visibleTokens: userVisibleTokens,
+          allTokens: allTokens,
+          assetRatios: assetRatios,
+          currencyFormatter: currencyFormatter
+        )
+      }
   }
   
   #if DEBUG
   func previewTransactions() {
-    transactions = [.previewConfirmedSwap, .previewConfirmedSend, .previewConfirmedERC20Approve]
+    transactionSummaries = [.previewConfirmedSwap, .previewConfirmedSend, .previewConfirmedERC20Approve]
   }
   #endif
 }
@@ -169,10 +195,10 @@ extension AccountActivityStore: BraveWalletJsonRpcServiceObserver {
 
 extension AccountActivityStore: BraveWalletTxServiceObserver {
   func onNewUnapprovedTx(_ txInfo: BraveWallet.TransactionInfo) {
-    transactions.insert(txInfo, at: 0)
+    update()
   }
   func onTransactionStatusChanged(_ txInfo: BraveWallet.TransactionInfo) {
-    fetchTransactions()
+    update()
   }
   func onUnapprovedTxUpdated(_ txInfo: BraveWallet.TransactionInfo) {
   }

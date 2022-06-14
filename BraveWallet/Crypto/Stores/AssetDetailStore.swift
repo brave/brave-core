@@ -36,7 +36,7 @@ class AssetDetailStore: ObservableObject {
   }
   @Published private(set) var isLoadingAccountBalances: Bool = false
   @Published private(set) var accounts: [AccountAssetViewModel] = []
-  @Published private(set) var transactions: [BraveWallet.TransactionInfo] = []
+  @Published private(set) var transactionSummaries: [TransactionSummary] = []
   @Published private(set) var isBuySupported: Bool = true
   @Published private(set) var currencyCode: String = CurrencyCode.usd.code {
     didSet {
@@ -89,109 +89,114 @@ class AssetDetailStore: ObservableObject {
     $0.numberStyle = .percent
     $0.maximumFractionDigits = 2
   }
-
-  func update() {
-    isLoadingPrice = true
-    isLoadingChart = true
-
-    blockchainRegistry.buyTokens(.wyre, chainId: BraveWallet.MainnetChainId) { [self] tokens in
-      isBuySupported = tokens.first(where: { $0.symbol.lowercased() == token.symbol.lowercased() }) != nil
-    }
-
-    keyringService.defaultKeyringInfo { [self] keyring in
-      accounts = keyring.accountInfos.map {
-        .init(account: $0, decimalBalance: 0.0, balance: "", fiatBalance: "")
+  
+  public func update() {
+    Task { @MainActor in
+      self.isLoadingPrice = true
+      self.isLoadingChart = true
+      let buyTokens = await blockchainRegistry.buyTokens(.wyre, chainId: BraveWallet.MainnetChainId)
+      self.isBuySupported = buyTokens.first(where: { $0.symbol.lowercased() == token.symbol.lowercased() }) != nil
+      // fetch accounts
+      let keyring = await keyringService.defaultKeyringInfo()
+      var updatedAccounts = keyring.accountInfos.map {
+        AccountAssetViewModel(account: $0, decimalBalance: 0.0, balance: "", fiatBalance: "")
       }
-      assetRatioService.price(
-        [token.symbol],
-        toAssets: [currencyFormatter.currencyCode, "btc"],
-        timeframe: timeframe
-      ) { [weak self] success, prices in
-        guard let self = self else { return }
-        self.isLoadingPrice = false
-        self.isInitialState = false
-        if let assetPrice = prices.first(where: { $0.toAsset.caseInsensitiveCompare(self.currencyFormatter.currencyCode) == .orderedSame }),
-          let value = Double(assetPrice.price) {
-          self.assetPriceValue = value
-          self.price = self.currencyFormatter.string(from: NSNumber(value: value)) ?? ""
-          if let deltaValue = Double(assetPrice.assetTimeframeChange) {
-            self.priceIsDown = deltaValue < 0
-            self.priceDelta = self.percentFormatter.string(from: NSNumber(value: deltaValue / 100.0)) ?? ""
-          }
-          for index in 0..<self.accounts.count {
-            self.accounts[index].fiatBalance = self.currencyFormatter.string(from: NSNumber(value: self.accounts[index].decimalBalance * self.assetPriceValue)) ?? ""
-          }
+      // fetch prices for the asset
+      let (_, prices) = await assetRatioService.price([token.symbol], toAssets: [currencyFormatter.currencyCode, "btc"], timeframe: timeframe)
+      self.isLoadingPrice = false
+      self.isInitialState = false
+      if let assetPrice = prices.first(where: { $0.toAsset.caseInsensitiveCompare(self.currencyFormatter.currencyCode) == .orderedSame }),
+        let value = Double(assetPrice.price) {
+        self.assetPriceValue = value
+        self.price = self.currencyFormatter.string(from: NSNumber(value: value)) ?? ""
+        if let deltaValue = Double(assetPrice.assetTimeframeChange) {
+          self.priceIsDown = deltaValue < 0
+          self.priceDelta = self.percentFormatter.string(from: NSNumber(value: deltaValue / 100.0)) ?? ""
         }
-        if let assetPrice = prices.first(where: { $0.toAsset == "btc" }) {
-          self.btcRatio = "\(assetPrice.price) BTC"
+        for index in 0..<updatedAccounts.count {
+          updatedAccounts[index].fiatBalance = self.currencyFormatter.string(from: NSNumber(value: updatedAccounts[index].decimalBalance * self.assetPriceValue)) ?? ""
         }
       }
-      assetRatioService.priceHistory(
-        token.symbol,
-        vsAsset: currencyFormatter.currencyCode,
-        timeframe: timeframe
-      ) { [weak self] success, history in
-        guard let self = self else { return }
-        self.isLoadingChart = false
-        self.priceHistory = history
+      if let assetPrice = prices.first(where: { $0.toAsset == "btc" }) {
+        self.btcRatio = "\(assetPrice.price) BTC"
       }
-      fetchAccountBalances()
-      fetchTransactions()
+      // fetch price history for the asset
+      let (_, priceHistory) = await assetRatioService.priceHistory(token.symbol, vsAsset: currencyFormatter.currencyCode, timeframe: timeframe)
+      self.isLoadingChart = false
+      self.priceHistory = priceHistory
+      
+      self.accounts = await fetchAccountBalances(updatedAccounts, keyring: keyring)
+      let assetRatios = [token.symbol.lowercased(): assetPriceValue]
+      self.transactionSummaries = await fetchTransactionSummarys(keyring: keyring, assetRatios: assetRatios)
     }
   }
-
-  func fetchAccountBalances() {
+  
+  @MainActor private func fetchAccountBalances(
+    _ accountAssetViewModels: [AccountAssetViewModel],
+    keyring: BraveWallet.KeyringInfo
+  ) async -> [AccountAssetViewModel] {
+    var accountAssetViewModels = accountAssetViewModels
     isLoadingAccountBalances = true
-    keyringService.defaultKeyringInfo { [self] keyring in
-      let group = DispatchGroup()
+    typealias AccountBalance = (account: BraveWallet.AccountInfo, balance: Double?)
+    let tokenBalances = await withTaskGroup(of: [AccountBalance].self) { group -> [AccountBalance] in
       for account in keyring.accountInfos {
-        group.enter()
-        rpcService.balance(for: token, in: account) { [self] value in
-          defer { group.leave() }
-          if let index = accounts.firstIndex(where: { $0.account.address == account.address }) {
-            accounts[index].decimalBalance = value ?? 0.0
-            accounts[index].balance = String(format: "%.4f", value ?? 0.0)
-            accounts[index].fiatBalance = self.currencyFormatter.string(from: NSNumber(value: self.accounts[index].decimalBalance * assetPriceValue)) ?? ""
-          }
+        group.addTask {
+          let balance = await self.rpcService.balance(for: self.token, in: account)
+          return [AccountBalance(account, balance)]
         }
       }
-      group.notify(queue: .main) {
-        self.isLoadingAccountBalances = false
+      return await group.reduce([AccountBalance](), { $0 + $1 })
+    }
+    for tokenBalance in tokenBalances {
+      if let index = accounts.firstIndex(where: { $0.account.address == tokenBalance.account.address }) {
+        accountAssetViewModels[index].decimalBalance = tokenBalance.balance ?? 0.0
+        accountAssetViewModels[index].balance = String(format: "%.4f", tokenBalance.balance ?? 0.0)
+        accountAssetViewModels[index].fiatBalance = self.currencyFormatter.string(from: NSNumber(value: accountAssetViewModels[index].decimalBalance * assetPriceValue)) ?? ""
       }
     }
+    self.isLoadingAccountBalances = false
+    return accountAssetViewModels
   }
-
-  func fetchTransactions() {
-    rpcService.network { [weak self] network in
-      guard let self = self else { return }
-      self.keyringService.defaultKeyringInfo { keyring in
-        var allTransactions: [BraveWallet.TransactionInfo] = []
-        let group = DispatchGroup()
-        for account in keyring.accountInfos {
-          group.enter()
-          self.txService.allTransactionInfo(.eth, from: account.address) { txs in
-            defer { group.leave() }
-            allTransactions.append(contentsOf: txs)
-          }
-        }
-        group.notify(queue: .main) {
-          self.transactions =
-            allTransactions
-            .filter { tx in
-              switch tx.txType {
-              case .erc20Approve, .erc20Transfer:
-                let toAddress = tx.txDataUnion.ethTxData1559?.baseData.to
-                return toAddress == self.token.contractAddress
-              case .ethSend, .other, .erc721TransferFrom, .erc721SafeTransferFrom:
-                return network.symbol.caseInsensitiveCompare(self.token.symbol) == .orderedSame
-              @unknown default:
-                return false
-              }
-            }
-            .sorted(by: { $0.createdTime > $1.createdTime })
+  
+  @MainActor private func fetchTransactionSummarys(
+    keyring: BraveWallet.KeyringInfo,
+    assetRatios: [String: Double]
+  ) async -> [TransactionSummary] {
+    let network = await rpcService.network(.eth)
+    let allTransactions = await withTaskGroup(of: [BraveWallet.TransactionInfo].self) { group -> [BraveWallet.TransactionInfo] in
+      for account in keyring.accountInfos {
+        group.addTask {
+          await self.txService.allTransactionInfo(.eth, from: account.address)
         }
       }
+      return await group.reduce([BraveWallet.TransactionInfo](), { partialResult, prior in
+        return partialResult + prior
+      })
     }
+    return allTransactions
+      .filter { tx in
+        switch tx.txType {
+        case .erc20Approve, .erc20Transfer:
+          let toAddress = tx.txDataUnion.ethTxData1559?.baseData.to
+          return toAddress == self.token.contractAddress
+        case .ethSend, .ethSwap, .other, .erc721TransferFrom, .erc721SafeTransferFrom:
+          return network.symbol.caseInsensitiveCompare(self.token.symbol) == .orderedSame
+        @unknown default:
+          return false
+        }
+      }
+      .sorted(by: { $0.createdTime > $1.createdTime })
+      .map { transaction in
+        TransactionParser.transactionSummary(
+          from: transaction,
+          network: network,
+          accountInfos: keyring.accountInfos,
+          visibleTokens: [token],
+          allTokens: [],
+          assetRatios: assetRatios,
+          currencyFormatter: self.currencyFormatter
+        )
+      }
   }
 }
 
@@ -200,13 +205,7 @@ extension AssetDetailStore: BraveWalletKeyringServiceObserver {
   }
 
   func accountsChanged() {
-    keyringService.defaultKeyringInfo { [self] keyring in
-      accounts = keyring.accountInfos.map {
-        .init(account: $0, decimalBalance: 0.0, balance: "", fiatBalance: "")
-      }
-      fetchAccountBalances()
-      fetchTransactions()
-    }
+    update()
   }
 
   func keyringCreated(_ keyringId: String) {
@@ -233,11 +232,10 @@ extension AssetDetailStore: BraveWalletKeyringServiceObserver {
 
 extension AssetDetailStore: BraveWalletJsonRpcServiceObserver {
   func chainChangedEvent(_ chainId: String, coin: BraveWallet.CoinType) {
-    fetchAccountBalances()
     DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
       // There's some async gap between the chain changing and the EthTxService having the the correct
       // chain which results in fetching the _previous_ chains transactions
-      self.fetchTransactions()
+      self.update()
     }
   }
   func onAddEthereumChainRequestCompleted(_ chainId: String, error: String) {
@@ -252,7 +250,7 @@ extension AssetDetailStore: BraveWalletTxServiceObserver {
   func onUnapprovedTxUpdated(_ txInfo: BraveWallet.TransactionInfo) {
   }
   func onTransactionStatusChanged(_ txInfo: BraveWallet.TransactionInfo) {
-    fetchTransactions()
+    update()
   }
 }
 

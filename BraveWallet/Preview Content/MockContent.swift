@@ -23,6 +23,21 @@ extension BraveWallet.BlockchainToken {
     chainId: "",
     coin: .eth
   )
+  
+  static let previewDaiToken: BraveWallet.BlockchainToken = .init(
+    contractAddress: "0xad6d458402f60fd3bd25163575031acdce07538d",
+    name: "Dai Stablecoin",
+    logo: "",
+    isErc20: false,
+    isErc721: false,
+    symbol: "DAI",
+    decimals: 18,
+    visible: false,
+    tokenId: "",
+    coingeckoId: "",
+    chainId: "",
+    coin: .eth
+  )
 }
 
 extension BraveWallet.AccountInfo {
@@ -100,6 +115,7 @@ extension BraveWallet.TransactionInfo {
       originInfo: .init()
     )
   }
+  /// Approved Unlimited DAI
   static var previewConfirmedERC20Approve: BraveWallet.TransactionInfo {
     BraveWallet.TransactionInfo(
       id: "19819c05-612a-47c5-84b0-e95045d15b37",
@@ -111,7 +127,7 @@ extension BraveWallet.TransactionInfo {
             nonce: "0x5",
             gasPrice: "0x0",
             gasLimit: "0x520ca",
-            to: "0xad6d458402f60fd3bd25163575031acdce07538d",
+            to: BraveWallet.BlockchainToken.previewDaiToken.contractAddress,
             value: "0x0",
             data: _transactionBase64ToData("CV6nswAAAAAAAAAAAAAAAOWSQnoK7Okt4+3uHxjgFXwFhhVk//////////////////////////////////////////8=")
           ),
@@ -137,4 +153,22 @@ extension BraveWallet.TransactionInfo {
   }
 }
 
+extension TransactionSummary {
+  
+  static var previewConfirmedSend = previewSummary(from: .previewConfirmedSend)
+  static var previewConfirmedSwap = previewSummary(from: .previewConfirmedSwap)
+  static var previewConfirmedERC20Approve = previewSummary(from: .previewConfirmedERC20Approve)
+  
+  static func previewSummary(from txInfo: BraveWallet.TransactionInfo) -> Self {
+    TransactionParser.transactionSummary(
+      from: txInfo,
+      network: .mockMainnet,
+      accountInfos: [.previewAccount],
+      visibleTokens: [.previewToken, .previewDaiToken],
+      allTokens: [],
+      assetRatios: [BraveWallet.BlockchainToken.previewToken.symbol.lowercased(): 1],
+      currencyFormatter: .usdCurrencyFormatter
+    )
+  }
+}
 #endif

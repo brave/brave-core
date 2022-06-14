@@ -10,4 +10,12 @@ extension BraveWalletKeyringService {
   func defaultKeyringInfo(_ completion: @escaping (BraveWallet.KeyringInfo) -> Void) {
     keyringInfo(BraveWallet.DefaultKeyringId, completion: completion)
   }
+  
+  @MainActor func defaultKeyringInfo() async -> BraveWallet.KeyringInfo {
+    await withCheckedContinuation { continuation in
+      keyringInfo(BraveWallet.DefaultKeyringId) { keyring in
+        continuation.resume(returning: keyring)
+      }
+    }
+  }
 }
