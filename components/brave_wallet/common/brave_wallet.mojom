@@ -524,6 +524,12 @@ interface BlockchainRegistry {
   // Obtains the URL used for buying assets.
   GetBuyUrl(OnRampProvider provider, string chain_id, string address, string symbol, string amount) => (string url, string? error);
 
+ // Obtains the URL for buying assets specifying currency
+  GetBuyUrlV1(OnRampProvider provider, string chain_id, string address, string symbol, string amount, string currencyCode) => (string url, string? error);
+  
+  // Get currencies list
+  GetOnRampCurrencies() => (array<OnRampCurrency> currencies);
+  
   // Returns list of prepopulated networks.
   GetPrepopulatedNetworks() => (array<NetworkInfo> networks);
 };
@@ -1320,4 +1326,10 @@ enum RequestPermissionsError {
   kNone = 0,
   kRequestInProgress = 1,
   kInternal = 2
+};
+
+struct OnRampCurrency {
+  string currency_code;
+  string currency_name;
+  array<OnRampProvider> providers;
 };

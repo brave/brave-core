@@ -99,7 +99,9 @@ const defaultState: WalletState = {
   defaultNetworks: [] as BraveWallet.NetworkInfo[],
   defaultAccounts: [] as BraveWallet.AccountInfo[],
   selectedNetworkFilter: AllNetworksOption,
-  solFeeEstimates: undefined
+  solFeeEstimates: undefined,
+  onRampCurrencies: [] as BraveWallet.OnRampCurrency[],
+  selectedCurrency: undefined
 }
 
 const getAccountType = (info: AccountInfo) => {
@@ -525,6 +527,20 @@ export const createWalletReducer = (initialState: WalletState) => {
     return {
       ...state,
       isTestNetworksEnabled: payload
+    }
+  })
+
+  reducer.on(WalletActions.setOnRampCurrencies, (state: WalletState, payload: BraveWallet.OnRampCurrency[]): WalletState => {
+    return {
+      ...state,
+      onRampCurrencies: payload
+    }
+  })
+
+  reducer.on(WalletActions.selectCurrency, (state: WalletState, payload: BraveWallet.OnRampCurrency): WalletState => {
+    return {
+      ...state,
+      selectedCurrency: payload
     }
   })
 

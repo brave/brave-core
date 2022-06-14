@@ -56,6 +56,7 @@ export function useAssets () {
 
   const [wyreAssetOptions, setWyreAssetOptions] = React.useState<BraveWallet.BlockchainToken[]>([])
   const [rampAssetOptions, setRampAssetOptions] = React.useState<BraveWallet.BlockchainToken[]>([])
+
   React.useEffect(() => {
     // Prevent calling getBuyAssets if the selectedNetwork is
     // not supported.

@@ -163,4 +163,20 @@ const std::vector<mojom::BlockchainToken>& GetRampBuyTokens() {
   return *tokens;
 }
 
+const std::vector<mojom::OnRampCurrency>& GetOnRampCurrenciesList() {
+  static base::NoDestructor<std::vector<mojom::OnRampCurrency>> currencies({
+      {"USD",
+       "United States Dollar",
+       {mojom::OnRampProvider::kWyre, mojom::OnRampProvider::kRamp}},
+      {"EUR",
+       "Euro",
+       {mojom::OnRampProvider::kWyre, mojom::OnRampProvider::kRamp}},
+      {"GBP",
+       "British Pound Sterling",
+       {mojom::OnRampProvider::kWyre, mojom::OnRampProvider::kRamp}},
+  });
+
+  return *currencies;
+}
+
 }  // namespace brave_wallet

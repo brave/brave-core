@@ -266,6 +266,8 @@ provideStrings({
   braveWalletSelectNetwork: 'Select network',
   braveWalletSelectAsset: 'Select from',
   braveWalletSearchAsset: 'Search coins',
+  braveWalletSelectCurrency: 'Select currency',
+  braveWalletSearchCurrency: 'Search currencies',
 
   // Swap
   braveWalletSwapFrom: 'Amount',
