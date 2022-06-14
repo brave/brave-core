@@ -10,6 +10,15 @@ export const IntroImg = styled.img`
   margin-bottom: 40px;
 `
 
+export const CloseButtonContainer = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end;
+  margin-bottom: 44px;
+`
+
 export const IntroContainer = styled.div`
   width: 365px;
   display: flex;
@@ -26,8 +35,7 @@ export const ArticleLinksContainer = styled.div`
   gap: 24px;
   align-items: center;
   justify-content: center;
-  margin-top: 40px;
-  margin-bottom: 40px;
+  margin-bottom: 60px;
 `
 
 export const ButtonContainer = styled.div`

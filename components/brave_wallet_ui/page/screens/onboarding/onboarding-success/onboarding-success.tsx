@@ -22,72 +22,22 @@ import { WalletPageActions } from '../../../actions'
 // components
 import { WalletPageLayout } from '../../../../components/desktop'
 import { NavButton } from '../../../../components/extension'
-import { ArticleLinkBubble, ArticleLinkBubbleProps } from './components/article-link-bubble/article-link-bubble'
 
 // styles
 import {
   Description,
   Title,
-  OnboardingWrapper
+  StyledWrapper,
+  MainWrapper
 } from '../onboarding.style'
 import {
   ArticleLinksContainer,
   ButtonContainer,
   IntroContainer,
-  IntroImg
+  IntroImg,
+  CloseButtonContainer
 } from './onboarding-success.style'
-
-const ARTICLES: ArticleLinkBubbleProps[] = [
-  {
-    icon: 'wallet',
-    iconBackgroundColor: 'purple400',
-    text: getLocale('braveWalletArticleLinkHowToUseAWallet'),
-    url: 'https://brave.com/learn/what-is-crypto-wallet/#how-to-use-a-crypto-wallet'
-  },
-  {
-    icon: 'wallet-with-coins',
-    iconBackgroundColor: 'yellow500',
-    text: getLocale('braveWalletArticleLinkWhatsTheBestWallet'),
-    url: 'https://brave.com/learn/what-is-best-crypto-wallet/'
-  },
-  {
-    icon: 'smartphone-desktop',
-    iconBackgroundColor: 'green600',
-    text: getLocale('braveWalletArticleLinkWhatsACryptoBrowser'),
-    url: 'https://brave.com/learn/what-are-crypto-browsers/'
-  },
-  {
-    icon: 'crypto-wallets',
-    iconBackgroundColor: 'magenta400',
-    text: getLocale('braveWalletArticleLinkWalletsBasics'),
-    url: 'https://brave.com/learn/what-is-crypto-wallet/'
-  },
-  {
-    icon: 'key',
-    iconBackgroundColor: 'red200',
-    text: getLocale('braveWalletArticleLinkWhatsARecoveryPhrase'),
-    url: 'https://brave.com/learn/wallet-recovery-phrase/'
-  },
-  {
-    icon: 'ipfs',
-    iconBackgroundColor: 'orange300',
-    text: getLocale('braveWalletArticleLinkWhatAreDapps'),
-    url: 'https://brave.com/learn/what-are-dapps/'
-  },
-  {
-    icon: 'grid',
-    iconBackgroundColor: 'blue300',
-    text: getLocale('braveWalletArticleLinkWhatIsWeb3'),
-    url: 'https://brave.com/learn/what-is-web3/'
-  }
-]
-
-const ArticleLinks = ARTICLES.map((article) => (
-  <ArticleLinkBubble
-    key={article.text}
-    {...article}
-  />
-))
+import { LinkText } from '../backup-recovery-phrase/onboarding-backup-recovery-phrase.style'
 
 export const OnboardingSuccess = () => {
   // routing
@@ -104,23 +54,37 @@ export const OnboardingSuccess = () => {
 
   // render
   return <WalletPageLayout>
-    <OnboardingWrapper>
+
+    <MainWrapper>
+      <StyledWrapper>
+        <CloseButtonContainer>
+          <LinkText onClick={onComplete}>
+            {getLocale('braveWalletTransactionFailedModalClose')}
+          </LinkText>
+        </CloseButtonContainer>
+      </StyledWrapper>
 
       <IntroContainer>
         <Title>{
           getLocale('braveWalletOnboardingSuccessTitle')
         }</Title>
 
-        <Description textAlign='center'>{
+        <Description>{
           getLocale('braveWalletOnboardingSuccessDescription')
         }</Description>
 
-        <IntroImg src={WalletAccessSvg} height={118} />
+        <IntroImg src={WalletAccessSvg} height={138} />
 
       </IntroContainer>
 
       <ArticleLinksContainer>
-        {ArticleLinks}
+        <LinkText
+          rel="noreferrer"
+          target='_blank'
+          href='https://brave.com/learn/what-is-crypto-wallet/#how-to-use-a-crypto-wallet'
+        >
+          {getLocale('braveWalletLearnAboutMyWallet')}
+        </LinkText>
       </ArticleLinksContainer>
 
       <ButtonContainer>
@@ -132,6 +96,6 @@ export const OnboardingSuccess = () => {
 
       </ButtonContainer>
 
-    </OnboardingWrapper>
+    </MainWrapper>
   </WalletPageLayout>
 }
