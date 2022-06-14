@@ -21,7 +21,7 @@ import {
 } from './disclosures.style'
 
 // utils
-import { getLocale } from '../../../../../common/locale'
+import { getLocale, getLocaleWithTag } from '../../../../../common/locale'
 
 // routes
 import { WalletRoutes } from '../../../../constants/types'
@@ -31,6 +31,7 @@ import { Checkbox } from 'brave-ui'
 import { WalletPageLayout } from '../../../../components/desktop'
 import { NavButton } from '../../../../components/extension'
 import { OnboardingNewWalletStepsNavigation } from '../components/onboarding-steps-navigation/onboarding-steps-navigation'
+import { LinkText } from '../backup-recovery-phrase/onboarding-backup-recovery-phrase.style'
 
 export const OnboardingDisclosures = () => {
   // routing
@@ -44,6 +45,21 @@ export const OnboardingDisclosures = () => {
   const isNextStepEnabled = React.useMemo(() => {
     return isResponsibilityCheckboxChecked && isTermsCheckboxChecked
   }, [isResponsibilityCheckboxChecked, isTermsCheckboxChecked])
+
+  const termsOfServiceText = React.useMemo(() => {
+    const text = getLocaleWithTag('braveWalletTermsOfServiceCheckboxText')
+    return <span key={text.duringTag}>
+      {text.beforeTag}
+      <LinkText
+        href='https://brave.com' // TODO
+        target='_blank'
+        rel='noopener noreferrer'
+      >
+        {text.duringTag}
+      </LinkText>
+      {text.afterTag}
+    </span>
+  }, [])
 
   // methods
   const nextStep = React.useCallback(() => {
@@ -98,9 +114,7 @@ export const OnboardingDisclosures = () => {
             >
               <div data-key='isTermsCheckboxChecked'>
                 <CheckboxText>
-                  <p>
-                    {getLocale('braveWalletTermsOfServiceCheckboxText')}
-                  </p>
+                    {termsOfServiceText}
                   <VerticalSpace space='4px' />
                 </CheckboxText>
               </div>
