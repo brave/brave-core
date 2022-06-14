@@ -11,7 +11,7 @@ import { getTransactionStatusString } from '../../../utils/tx-utils'
 import { toProperCase } from '../../../utils/string-utils'
 import { mojoTimeDeltaToJSDate } from '../../../../common/mojomUtils'
 import Amount from '../../../utils/amount'
-import { getNetworkFromTXDataUnion } from '../../../utils/network-utils'
+import { getNetworkFromTXDataUnion, getCoinFromTxDataUnion } from '../../../utils/network-utils'
 
 import { getLocale } from '../../../../common/locale'
 import {
@@ -168,6 +168,8 @@ const TransactionDetailPanel = (props: Props) => {
     liveTransaction.txType === BraveWallet.TransactionType.SolanaSPLTokenTransfer ||
     liveTransaction.txType === BraveWallet.TransactionType.SolanaSPLTokenTransferWithAssociatedTokenAccountCreation
 
+  const isFilecoinTransaction = getCoinFromTxDataUnion(liveTransaction.txDataUnion) === BraveWallet.CoinType.FIL
+
   return (
     <StyledWrapper>
       <Header
@@ -269,6 +271,7 @@ const TransactionDetailPanel = (props: Props) => {
 
       {[BraveWallet.TransactionStatus.Approved, BraveWallet.TransactionStatus.Submitted].includes(transactionDetails.status) &&
         !isSolanaTransaction &&
+        !isFilecoinTransaction &&
         <DetailRow>
           <DetailTitle />
           <StatusRow>
@@ -280,6 +283,7 @@ const TransactionDetailPanel = (props: Props) => {
       }
       {transactionDetails.status === BraveWallet.TransactionStatus.Error &&
         !isSolanaTransaction &&
+        !isFilecoinTransaction &&
         <DetailRow>
           <DetailTitle />
           <StatusRow>

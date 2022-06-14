@@ -17,6 +17,7 @@ import { formatDateAsRelative } from '../../../utils/datetime-utils'
 import { mojoTimeDeltaToJSDate } from '../../../../common/mojomUtils'
 import Amount from '../../../utils/amount'
 import { copyToClipboard } from '../../../utils/copy-to-clipboard'
+import { getCoinFromTxDataUnion } from '../../../utils/network-utils'
 
 // Hooks
 import { useExplorer, useTransactionParser } from '../../../common/hooks'
@@ -85,6 +86,8 @@ const PortfolioTransactionItem = (props: Props) => {
     transaction.txType === BraveWallet.TransactionType.SolanaSystemTransfer ||
     transaction.txType === BraveWallet.TransactionType.SolanaSPLTokenTransfer ||
     transaction.txType === BraveWallet.TransactionType.SolanaSPLTokenTransferWithAssociatedTokenAccountCreation
+
+  const isFilecoinTransaction = getCoinFromTxDataUnion(transaction.txDataUnion) === BraveWallet.CoinType.FIL
 
   // custom hooks
   const transactionsNetwork = useTransactionsNetwork(transaction)
@@ -304,7 +307,7 @@ const PortfolioTransactionItem = (props: Props) => {
               {transactionDetails.symbol}
               {
                 transaction.txType === BraveWallet.TransactionType.ERC721TransferFrom ||
-                transaction.txType === BraveWallet.TransactionType.ERC721SafeTransferFrom
+                  transaction.txType === BraveWallet.TransactionType.ERC721SafeTransferFrom
                   ? ' ' + transactionDetails.erc721TokenId
                   : ''
               }
@@ -424,6 +427,7 @@ const PortfolioTransactionItem = (props: Props) => {
 
             {[BraveWallet.TransactionStatus.Submitted, BraveWallet.TransactionStatus.Approved].includes(transactionDetails.status) &&
               !isSolanaTransaction &&
+              !isFilecoinTransaction &&
               <TransactionPopupItem
                 onClick={onClickSpeedupTransaction}
                 text={getLocale('braveWalletTransactionSpeedup')}
@@ -432,6 +436,7 @@ const PortfolioTransactionItem = (props: Props) => {
 
             {[BraveWallet.TransactionStatus.Submitted, BraveWallet.TransactionStatus.Approved].includes(transactionDetails.status) &&
               !isSolanaTransaction &&
+              !isFilecoinTransaction &&
               <TransactionPopupItem
                 onClick={onClickCancelTransaction}
                 text={getLocale('braveWalletTransactionCancel')}
@@ -440,6 +445,7 @@ const PortfolioTransactionItem = (props: Props) => {
 
             {[BraveWallet.TransactionStatus.Error].includes(transactionDetails.status) &&
               !isSolanaTransaction &&
+              !isFilecoinTransaction &&
               <TransactionPopupItem
                 onClick={onClickRetryTransaction}
                 text={getLocale('braveWalletTransactionRetry')}
