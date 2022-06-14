@@ -767,6 +767,7 @@ constexpr webui::LocalizedString kLocalizedStrings[] = {
     {"braveWalletMetaMaskPasswordInputPlaceholder",
      IDS_BRAVE_WALLET_METAMASK_PASSWORD_INPUT_PLACEHOLDER},
     {"braveWalletInputLabelPassword", IDS_BRAVE_WALLET_INPUT_LABEL_PASSWORD},
+    {"braveWalletLearnAboutMyWallet", IDS_BRAVE_WALLET_LEARN_ABOUT_MY_WALLET},
     {"braveWalletWhatIsACryptoWallet",
      IDS_BRAVE_WALLET_WHAT_IS_A_CRYPTO_WALLET}};
 

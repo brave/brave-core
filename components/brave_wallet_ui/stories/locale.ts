@@ -111,7 +111,7 @@ provideStrings({
   // Backup Wallet Intro (v2)
   braveWalletOnboardingRecoveryPhraseBackupIntroTitle: 'Before you start backing up wallet',
   braveWalletOnboardingRecoveryPhraseBackupIntroDescription: 'The 12 word recovery phrase that will be provided next step is a private key that allows you to access your wallet if you lose your devices.',
-  braveWalletRecoveryPhraseBackupWarningImportant: '$1Important:$2 Brave cannot recover your secret recovery phrase. Keep it safe, never share this phrase with anyone.',
+  braveWalletRecoveryPhraseBackupWarningImportant: '$1Important:$2 Never share your recovery phrase. Anyone with this phrase can take your assets forever.',
 
   // Backup Wallet Intro (v1)
   braveWalletBackupIntroTitle: 'Back up your crypto wallet',
@@ -163,9 +163,10 @@ provideStrings({
   braveWalletPasswordStrengthTooltipContainsSpecialChar: '1 special character',
 
   // Wallet Onboarding Success
-  braveWalletOnboardingSuccessTitle: 'Congrats! Your wallet is ready',
+  braveWalletOnboardingSuccessTitle: 'Congratulations on setting up your Brave Wallet!',
   braveWalletOnboardingSuccessDescription: 'Now you can easily access your wallet any time from the wallet icon in Brave Browser.',
   braveWalletGoToPortfolioButton: 'Go To Portfolio',
+  braveWalletLearnAboutMyWallet: 'Learn more about my new wallet',
 
   // Wallet Onboarding Success Article Links
   braveWalletArticleLinkHowToUseAWallet: 'How to use a crypto wallet?',

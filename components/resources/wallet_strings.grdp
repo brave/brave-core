@@ -535,14 +535,14 @@
   <message name="IDS_BRAVE_WALLET_ONBOARDING_RECOVERY_PHRASE_BACKUP_INTRO_TITLE" desc="Title before backing up wallet">Before you start backing up wallet</message>
   <message name="IDS_BRAVE_WALLET_ONBOARDING_RECOVERY_PHRASE_BACKUP_INTRO_DESCRIPTION" desc="Recovery phrase backup warning">The 12 word recovery phrase that will be provided next step is a private key that allows you to access your wallet if you lose your devices.</message>
   <message name="IDS_BRAVE_WALLET_RECOVERY_PHRASE_BACKUP_WARNING" desc="A warning regarding recovery phrase safety">Brave cannot recover your secret recovery phrase. Keep it safe, never share this phrase with anyone.</message>
-  <message name="IDS_BRAVE_WALLET_RECOVERY_PHRASE_BACKUP_WARNING_IMPORTANT" desc="An important warning regarding recovery phrase safety"><ph name="TAG_BEFORE">$1</ph>Important: <ph name="TAG_AFTER">$2</ph>Brave cannot recover your secret recovery phrase. Keep it safe, never share this phrase with anyone.</message>
+  <message name="IDS_BRAVE_WALLET_RECOVERY_PHRASE_BACKUP_WARNING_IMPORTANT" desc="An important warning regarding recovery phrase safety"><ph name="TAG_BEFORE">$1</ph>Important: <ph name="TAG_AFTER">$2</ph>Never share your recovery phrase. Anyone with this phrase can take your assets forever.</message>
   <message name="IDS_BRAVE_WALLET_RECOVERY_PHRASE_BACKUP_TITLE" desc="Title to recovery phrase backup screen">Next, let's back up your wallet.</message>
   <message name="IDS_BRAVE_WALLET_COPIED_TO_CLIPBOARD" desc="Alert confirming that a value was copied to the system clipboard">Copied to clipboard</message>
   <message name="IDS_BRAVE_WALLET_CLICK_TO_SEE_RECOVERY_PHRASE" desc="Reveal hidden recovery phrase button text">Click here to see phrase</message>
   <message name="IDS_BRAVE_WALLET_ORDINAL_FIRST" desc="First list item label">First</message>
   <message name="IDS_BRAVE_WALLET_ORDINAL_THIRD" desc="Third list item label">Third</message>
   <message name="IDS_BRAVE_WALLET_ORDINAL_LAST" desc="Last list item label">Last</message>
-  <message name="IDS_BRAVE_WALLET_ONBOARDING_SUCCESS_TITLE" desc="Wallet is ready for use message">Congrats! Your wallet is ready</message>
+  <message name="IDS_BRAVE_WALLET_ONBOARDING_SUCCESS_TITLE" desc="Wallet is ready for use message">Congratulations on setting up your Brave Wallet!</message>
   <message name="IDS_BRAVE_WALLET_ONBOARDING_SUCCESS_DESCRIPTION" desc="Wallet access description">Now you can easily access your wallet any time from the wallet icon in Brave Browser.</message>
   <message name="IDS_BRAVE_WALLET_GO_TO_PORTFOLIO_BUTTON" desc="Link to wallet portfolio page">Go To Portfolio</message>
   <message name="IDS_BRAVE_WALLET_ARTICLE_LINK_HOW_TO_USE_A_WALLET" desc="Title of article link 'How to use a crypto wallet?'">How to use a crypto wallet?</message>
@@ -562,4 +562,5 @@
   <message name="IDS_BRAVE_WALLET_IMPORT_FROM_META_MASK_SEED_INSTRUCTIONS" desc="Instructions for importing a MetaMask wallet via recovery phrase">Type your MetaMask 12 words recovery phrase.</message>
   <message name="IDS_BRAVE_WALLET_METAMASK_PASSWORD_INPUT_PLACEHOLDER" desc="Placeholder text for MetaMask password input">Type MetaMask password</message>
   <message name="IDS_BRAVE_WALLET_INPUT_LABEL_PASSWORD" desc="Password input field label">Password</message>
+  <message name="IDS_BRAVE_WALLET_LEARN_ABOUT_MY_WALLET" desc="Link to an article explaining crypto wallets">Learn more about my new wallet</message>
 </grit-part>
