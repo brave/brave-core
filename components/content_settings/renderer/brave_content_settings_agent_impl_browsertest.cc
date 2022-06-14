@@ -384,12 +384,12 @@ class BraveContentSettingsAgentImplBrowserTest : public InProcessBrowserTest {
     EXPECT_THAT(
         EvalJs(frame, "localStorage").error,
         ::testing::StartsWith(
-            "a JavaScript error:\nError: Failed to read the 'localStorage' "
+            "a JavaScript error: \"Error: Failed to read the 'localStorage' "
             "property from 'Window': Access is denied for this document.\n"));
     EXPECT_THAT(
         EvalJs(frame, "sessionStorage").error,
         ::testing::StartsWith(
-            "a JavaScript error:\nError: Failed to read the 'sessionStorage' "
+            "a JavaScript error: \"Error: Failed to read the 'sessionStorage' "
             "property from 'Window': Access is denied for this document.\n"));
   }
 
