@@ -566,5 +566,5 @@
   <message name="IDS_BRAVE_WALLET_DISCLOSURES_TITLE" desc="Title text for Wallet Disclosures page">Before we begin</message>
   <message name="IDS_BRAVE_WALLET_DISCLOSURES_DESCRIPTION" desc="Description text for Wallet Disclosures page">We require that you acknowledge the items below</message>
   <message name="IDS_BRAVE_WALLET_SELF_CUSTODY_DISCLOSURE_CHECKBOX_TEXT" desc="Self-custody wallet responsibility acknowledgement text">I understand this is a self-custody wallet and I’m responsible for my funds and assets. Brave can NOT access my wallet or reverse transactions on my behalf.</message>
-  <message name="IDS_BRAVE_WALLET_TERMS_OF_SERVICE_CHECKBOX_TEXT" desc="Wallet Terms of Service acknowledgement text">I have read and agree to the Terms of Service</message>
+  <message name="IDS_BRAVE_WALLET_TERMS_OF_SERVICE_CHECKBOX_TEXT" desc="Wallet Terms of Service acknowledgement text">I have read and agree to the <ph name="LINK_BEFORE">$1</ph>Terms of Service<ph name="LINK_AFTER">$2</ph></message>
 </grit-part>
