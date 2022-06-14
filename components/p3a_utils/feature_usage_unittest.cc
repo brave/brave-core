@@ -31,6 +31,7 @@ class FeatureUsageTest : public testing::Test {
     PrefRegistrySimple* registry = pref_service_.registry();
     RegisterFeatureUsagePrefs(registry, kFirstUsagePrefName, kLastUsagePrefName,
                               kUsedSecondDayPrefName, kDaysInMonthPrefName);
+    task_environment_.AdvanceClock(base::Days(2));
   }
 
   void RecordFeatureUsage() {

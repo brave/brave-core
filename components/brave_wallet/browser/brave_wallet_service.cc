@@ -27,6 +27,7 @@
 #include "brave/components/brave_wallet/common/solana_utils.h"
 #include "brave/components/brave_wallet/common/value_conversion_utils.h"
 #include "brave/components/brave_wallet/common/web3_provider_constants.h"
+#include "brave/components/p3a_utils/feature_usage.h"
 #include "brave/components/time_period_storage/weekly_storage.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/prefs/pref_service.h"
@@ -799,15 +800,15 @@ base::Value BraveWalletService::GetDefaultFilecoinAssets() {
 }
 
 void BraveWalletService::OnP3ATimerFired() {
-  RecordWalletUsage();
+  RecordWalletUsage(false);
 }
 
 void BraveWalletService::OnWalletUnlockPreferenceChanged(
     const std::string& pref_name) {
-  RecordWalletUsage();
+  RecordWalletUsage(true);
 }
 
-void BraveWalletService::RecordWalletUsage() {
+void BraveWalletService::RecordWalletUsage(bool unlocked) {
   VLOG(1) << "Wallet P3A: starting report";
   base::Time wallet_last_used = prefs_->GetTime(kBraveWalletLastUnlockTime);
   base::Time first_p3a_report = prefs_->GetTime(kBraveWalletP3AFirstReportTime);
@@ -829,6 +830,20 @@ void BraveWalletService::RecordWalletUsage() {
   prefs_->SetTime(kBraveWalletP3ALastReportTime, base::Time::Now());
   if (first_p3a_report.is_null())
     prefs_->SetTime(kBraveWalletP3AFirstReportTime, base::Time::Now());
+
+  if (unlocked) {
+    p3a_utils::RecordFeatureUsage(prefs_, kBraveWalletP3AFirstUnlockTime,
+                                  kBraveWalletP3ALastUnlockTime);
+  } else {
+    // Maybe record existing timestamp in case the user is not new.
+    p3a_utils::MaybeRecordFeatureExistingUsageTimestamp(
+        prefs_, kBraveWalletP3AFirstUnlockTime, kBraveWalletP3ALastUnlockTime,
+        wallet_last_used);
+  }
+
+  p3a_utils::RecordFeatureNewUserReturning(
+      prefs_, kBraveWalletP3AFirstUnlockTime, kBraveWalletP3ALastUnlockTime,
+      kBraveWalletP3AUsedSecondDay, kBraveWalletNewUserReturningHistogramName);
 }
 
 void BraveWalletService::WriteStatsToHistogram(base::Time wallet_last_used,

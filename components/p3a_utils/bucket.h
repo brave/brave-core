@@ -16,6 +16,8 @@ template <std::size_t N>
 void RecordToHistogramBucket(const char* histogram_name,
                              const int (&buckets)[N],
                              int value) {
+  DCHECK(histogram_name);
+  DCHECK_GE(value, 0);
   const int* it_count = std::lower_bound(buckets, std::end(buckets), value);
   int answer = it_count - buckets;
   base::UmaHistogramExactLinear(histogram_name, answer, std::size(buckets) + 1);

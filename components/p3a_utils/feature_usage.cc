@@ -18,16 +18,17 @@ void RegisterFeatureUsagePrefs(PrefRegistrySimple* registry,
                                const char* last_use_time_pref_name,
                                const char* used_second_day_pref_name,
                                const char* days_in_month_used_pref_name) {
-  if (first_use_time_pref_name) {
-    registry->RegisterTimePref(first_use_time_pref_name, base::Time());
-  }
-  if (last_use_time_pref_name) {
-    registry->RegisterTimePref(last_use_time_pref_name, base::Time());
-  }
-  if (used_second_day_pref_name) {
+  DCHECK(registry);
+  DCHECK(first_use_time_pref_name);
+  DCHECK(last_use_time_pref_name);
+
+  registry->RegisterTimePref(first_use_time_pref_name, base::Time());
+  registry->RegisterTimePref(last_use_time_pref_name, base::Time());
+
+  if (used_second_day_pref_name != nullptr) {
     registry->RegisterBooleanPref(used_second_day_pref_name, false);
   }
-  if (days_in_month_used_pref_name) {
+  if (days_in_month_used_pref_name != nullptr) {
     registry->RegisterListPref(days_in_month_used_pref_name);
   }
 }
@@ -35,6 +36,10 @@ void RegisterFeatureUsagePrefs(PrefRegistrySimple* registry,
 void RecordFeatureUsage(PrefService* prefs,
                         const char* first_use_time_pref_name,
                         const char* last_use_time_pref_name) {
+  DCHECK(prefs);
+  DCHECK(first_use_time_pref_name);
+  DCHECK(last_use_time_pref_name);
+
   base::Time now_midnight = base::Time::Now().LocalMidnight();
   prefs->SetTime(last_use_time_pref_name, now_midnight);
   if (prefs->GetTime(first_use_time_pref_name).is_null()) {
@@ -42,11 +47,38 @@ void RecordFeatureUsage(PrefService* prefs,
   }
 }
 
+void MaybeRecordFeatureExistingUsageTimestamp(
+    PrefService* prefs,
+    const char* first_use_time_pref_name,
+    const char* last_use_time_pref_name,
+    base::Time external_last_use_timestamp) {
+  DCHECK(prefs);
+  DCHECK(first_use_time_pref_name);
+  DCHECK(last_use_time_pref_name);
+
+  if (!prefs->GetTime(first_use_time_pref_name).is_null() ||
+      external_last_use_timestamp.is_null()) {
+    return;
+  }
+  // If first use time is null and external ts is not,
+  // set the last use time to the external ts so the user does not appear new
+  // in the "new user returning" metric
+  prefs->SetTime(first_use_time_pref_name,
+                 external_last_use_timestamp - base::Days(90));
+  prefs->SetTime(last_use_time_pref_name, external_last_use_timestamp);
+}
+
 void RecordFeatureNewUserReturning(PrefService* prefs,
                                    const char* first_use_time_pref_name,
                                    const char* last_use_time_pref_name,
                                    const char* used_second_day_pref_name,
                                    const char* histogram_name) {
+  DCHECK(prefs);
+  DCHECK(first_use_time_pref_name);
+  DCHECK(last_use_time_pref_name);
+  DCHECK(used_second_day_pref_name);
+  DCHECK(histogram_name);
+
   base::Time last_use_time = prefs->GetTime(last_use_time_pref_name);
   base::Time first_use_time = prefs->GetTime(first_use_time_pref_name);
   int answer = 0;
@@ -85,11 +117,16 @@ void RecordFeatureDaysInMonthUsed(PrefService* prefs,
                                   const char* last_use_time_pref_name,
                                   const char* days_in_month_used_pref_name,
                                   const char* histogram_name) {
+  DCHECK(prefs);
+  DCHECK(last_use_time_pref_name);
+  DCHECK(days_in_month_used_pref_name);
+  DCHECK(histogram_name);
+
   if (prefs->GetTime(last_use_time_pref_name).is_null()) {
-    // Don't report if News was never used
+    // Don't report if feature was never used
     return;
   }
-  // How many days was News used in the last month?
+  // How many days was the feature used in the last month?
   constexpr int buckets[] = {0, 1, 2, 5, 10, 15, 20, 100};
   MonthlyStorage storage(prefs, days_in_month_used_pref_name);
   if (is_add) {
@@ -101,6 +138,10 @@ void RecordFeatureDaysInMonthUsed(PrefService* prefs,
 void RecordFeatureLastUsageTimeMetric(PrefService* prefs,
                                       const char* last_use_time_pref_name,
                                       const char* histogram_name) {
+  DCHECK(prefs);
+  DCHECK(last_use_time_pref_name);
+  DCHECK(histogram_name);
+
   base::Time last_use_time = prefs->GetTime(last_use_time_pref_name);
   if (last_use_time.is_null()) {
     return;
