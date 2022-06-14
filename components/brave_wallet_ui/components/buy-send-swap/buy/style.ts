@@ -1,6 +1,7 @@
 import styled from 'styled-components'
 import RampIcon from '../../../assets/svg-icons/ramp-icon.svg'
 import WyreIcon from '../../../assets/svg-icons/wyre-icon.svg'
+import { WalletButton } from '../../shared/style'
 
 export const StyledWrapper = styled.div`
   display: flex;
@@ -62,4 +63,23 @@ export const RampLogo = styled(LogoBase)`
 
 export const Spacer = styled.div`
   margin-bottom: 30px;
+`
+
+export const ContinueButton = styled(WalletButton)`
+  display: flex;
+  align-items: center;
+  width: 100%;
+  border: none;
+  color: ${(p) => p.theme.color.text02};
+  font-family: Poppins;
+  font-weight: 400;
+  box-sizing: border-box;
+  background-color: ${(p) => p.theme.color.background02};
+  border: ${(p) => `1px solid ${p.theme.color.divider01}`};
+  padding: 9px 12px;
+  border-radius: 12px;
+  cursor: ${p => p.disabled ? 'auto' : 'pointer'};
+  font-size: 14px;
+  line-height: 20px;
+  letter-spacing: 0.01em;
 `

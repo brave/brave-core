@@ -3,7 +3,6 @@ import { useSelector } from 'react-redux'
 import {
   BuySendSwapTypes,
   UserAccountType,
-  BraveWallet,
   BuySupportedChains,
   WalletState
 } from '../../constants/types'
@@ -18,36 +17,19 @@ import { useSwap, useHasAccount, usePrevNetwork } from '../../common/hooks'
 
 export interface Props {
   selectedTab: BuySendSwapTypes
-  buyAmount: string
-  buyAssetOptions: BraveWallet.BlockchainToken[]
-  onSubmitBuy: (asset: BraveWallet.BlockchainToken) => void
   onSelectAccount: (account: UserAccountType) => void
-  onSetBuyAmount: (value: string) => void
   onSelectTab: (tab: BuySendSwapTypes) => void
-  selectedBuyOption: BraveWallet.OnRampProvider
-  onSelectBuyOption: (optionId: BraveWallet.OnRampProvider) => void
-  wyreAssetOptions: BraveWallet.BlockchainToken[]
-  rampAssetOptions: BraveWallet.BlockchainToken[]
 }
 
 function BuySendSwap (props: Props) {
   const {
     selectedTab,
-    buyAmount,
-    buyAssetOptions,
-    onSubmitBuy,
     onSelectAccount,
-    onSetBuyAmount,
-    onSelectTab,
-    selectedBuyOption,
-    onSelectBuyOption,
-    rampAssetOptions,
-    wyreAssetOptions
+    onSelectTab
   } = props
 
   // redux
   const {
-    networkList,
     selectedNetwork,
     defaultCurrencies
   } = useSelector((state: { wallet: WalletState }) => state.wallet)
@@ -101,18 +83,8 @@ function BuySendSwap (props: Props) {
           {selectedTab === 'buy' &&
             <Buy
               defaultCurrencies={defaultCurrencies}
-              networkList={networkList}
-              buyAmount={buyAmount}
               onSelectAccount={onSelectAccount}
-              onSubmit={onSubmitBuy}
-              onSetBuyAmount={onSetBuyAmount}
-              selectedNetwork={selectedNetwork}
               showHeader={true}
-              assetOptions={buyAssetOptions}
-              wyreAssetOptions={wyreAssetOptions}
-              rampAssetOptions={rampAssetOptions}
-              selectedBuyOption={selectedBuyOption}
-              onSelectBuyOption={onSelectBuyOption}
             />
           }
         </>

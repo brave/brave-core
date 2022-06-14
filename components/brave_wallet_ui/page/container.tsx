@@ -35,15 +35,8 @@ import { SweepstakesBanner } from '../components/desktop/sweepstakes-banner'
 
 import {
   getBalance,
-  getBuyAssetUrl,
   onConnectHardwareWallet
 } from '../common/async/lib'
-
-// Hooks
-import { useAssets } from '../common/hooks'
-
-// Utils
-import { getRampAssetSymbol } from '../utils/asset-utils'
 
 type Props = {
   wallet: WalletState
@@ -67,7 +60,6 @@ function Container (props: Props) {
     networkList,
     transactions,
     selectedNetwork,
-    selectedAccount,
     hasInitialized,
     transactionSpotPrices,
     defaultWallet,
@@ -90,13 +82,9 @@ function Container (props: Props) {
 
   // const [view, setView] = React.useState<NavTypes>('crypto')
   const [inputValue, setInputValue] = React.useState<string>('')
-  const [buyAmount, setBuyAmount] = React.useState('')
   const [selectedWidgetTab, setSelectedWidgetTab] = React.useState<BuySendSwapTypes>('buy')
   const [showVisibleAssetsModal, setShowVisibleAssetsModal] = React.useState<boolean>(false)
   const [sessionRoute, setSessionRoute] = React.useState<string | undefined>(undefined)
-  const [selectedBuyOption, setSelectedBuyOption] = React.useState<BraveWallet.OnRampProvider>(BraveWallet.OnRampProvider.kRamp)
-
-  const { buyAssetOptions, wyreAssetOptions, rampAssetOptions } = useAssets()
 
   const onToggleShowRestore = React.useCallback(() => {
     if (walletLocation === WalletRoutes.Restore) {
@@ -115,10 +103,6 @@ function Container (props: Props) {
       history.push(WalletRoutes.Restore)
     }
   }, [walletLocation])
-
-  const onSetBuyAmount = (value: string) => {
-    setBuyAmount(value)
-  }
 
   const onSelectAccount = (account: WalletAccountType) => {
     props.walletActions.selectAccount(account)
@@ -180,19 +164,6 @@ function Container (props: Props) {
       onHideAddModal()
     }
   }
-
-  const onSubmitBuy = React.useCallback((asset: BraveWallet.BlockchainToken) => {
-    const buyAsset = selectedBuyOption === BraveWallet.OnRampProvider.kRamp ? { ...asset, symbol: getRampAssetSymbol(asset) } : asset
-    getBuyAssetUrl({
-      asset: buyAsset,
-      onRampProvider: selectedBuyOption,
-      chainId: selectedNetwork.chainId,
-      address: selectedAccount.address,
-      amount: buyAmount
-    })
-      .then(url => window.open(url, '_blank'))
-      .catch(e => console.error(e))
-  }, [getBuyAssetUrl, selectedBuyOption, selectedNetwork, selectedAccount, buyAmount])
 
   const onAddHardwareAccounts = (selected: BraveWallet.HardwareWalletAccount[]) => {
     props.walletPageActions.addHardwareAccounts(selected)
@@ -420,16 +391,8 @@ function Container (props: Props) {
         <WalletWidgetStandIn>
           <BuySendSwap
             selectedTab={selectedWidgetTab}
-            buyAmount={buyAmount}
-            buyAssetOptions={buyAssetOptions}
-            onSetBuyAmount={onSetBuyAmount}
-            onSubmitBuy={onSubmitBuy}
             onSelectAccount={onSelectAccount}
             onSelectTab={setSelectedWidgetTab}
-            selectedBuyOption={selectedBuyOption}
-            onSelectBuyOption={setSelectedBuyOption}
-            wyreAssetOptions={wyreAssetOptions}
-            rampAssetOptions={rampAssetOptions}
           />
           <SweepstakesBanner />
         </WalletWidgetStandIn>
