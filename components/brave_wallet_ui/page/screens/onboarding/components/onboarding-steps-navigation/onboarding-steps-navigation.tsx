@@ -15,6 +15,7 @@ import { StepsNavigation, StepsNavigationProps } from '../../../../../components
 // New wallet Steps
 //
 type OnboardingNewWalletSteps =
+  | WalletRoutes.OnboardingDisclosures
   | WalletRoutes.OnboardingBackupRecoveryPhrase
   | WalletRoutes.OnboardingBackupWallet
   | WalletRoutes.OnboardingComplete
@@ -24,6 +25,7 @@ type OnboardingNewWalletSteps =
   | WalletRoutes.OnboardingWelcome
 
 const NEW_WALLET_STEPS: OnboardingNewWalletSteps[] = [
+  WalletRoutes.OnboardingDisclosures,
   WalletRoutes.OnboardingCreatePassword,
   WalletRoutes.OnboardingExplainRecoveryPhrase,
   WalletRoutes.OnboardingBackupRecoveryPhrase,

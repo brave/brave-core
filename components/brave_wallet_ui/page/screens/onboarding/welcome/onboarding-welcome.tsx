@@ -50,7 +50,7 @@ export const OnboardingWelcome = () => {
         <NavButton
           buttonType='primary'
           text={getLocale('braveWalletWelcomeButton')}
-          url={WalletRoutes.OnboardingCreatePassword}
+          url={WalletRoutes.OnboardingDisclosures}
         />
 
         <NavButton

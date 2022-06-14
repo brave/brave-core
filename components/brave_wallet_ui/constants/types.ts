@@ -600,6 +600,7 @@ export enum WalletRoutes {
   // onboarding
   Onboarding = '/crypto/onboarding',
   OnboardingWelcome = '/crypto/onboarding/welcome',
+  OnboardingDisclosures = '/crypto/onboarding/disclosures',
 
   // onboarding (new wallet)
   OnboardingCreatePassword = '/crypto/onboarding/create-password',
