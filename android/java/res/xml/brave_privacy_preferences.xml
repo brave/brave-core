@@ -117,6 +117,7 @@
         <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
             android:key="show_autocomplete_in_address_bar"
             android:title="@string/show_autocomplete_in_address_bar"
+            android:summary="@string/show_autocomplete_in_address_bar_summary"
             android:order="25"
             android:persistent="false"/>
         <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
