@@ -640,12 +640,21 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, NonWritable) {
   EXPECT_EQ(base::Value(true), result6.value);
 }
 
-IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, IsPhantom) {
-  auto result =
+IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, IsPhantomAndIsBraveWallet) {
+  ASSERT_TRUE(ExecJs(
+      web_contents(browser()),
+      "window.solana.isPhantom = 123; window.solana.isBraveWallet = 456"));
+  // Both are non-writable
+  auto result1 =
       EvalJs(web_contents(browser()),
              "window.domAutomationController.send(window.solana.isPhantom)",
              content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
-  EXPECT_EQ(base::Value(true), result.value);
+  EXPECT_EQ(base::Value(true), result1.value);
+  auto result2 =
+      EvalJs(web_contents(browser()),
+             "window.domAutomationController.send(window.solana.isBraveWallet)",
+             content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
+  EXPECT_EQ(base::Value(true), result2.value);
 }
 
 IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, Connect) {
