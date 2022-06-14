@@ -17,7 +17,7 @@ private let log = Logger.browserLogger
 
 class BraveVPNContactFormViewController: TableViewController {
 
-  private let supportEmail = "brave@guardianapp.com"
+  private let supportEmail = "braveios@guardianapp.com"
 
   init() {
     super.init(style: .grouped)
@@ -291,6 +291,9 @@ class BraveVPNContactFormViewController: TableViewController {
       body.append(Strings.VPN.contactFormAppVersion)
       body.append("\n\(appVersion)\n\n")
     }
+      
+    body.append(Strings.VPN.contactFormPlatform)
+    body.append("\n\(UIDevice.current.systemName)\n\n")
 
     if let timezone = contactForm.timezone {
       body.append(Strings.VPN.contactFormTimezone)
