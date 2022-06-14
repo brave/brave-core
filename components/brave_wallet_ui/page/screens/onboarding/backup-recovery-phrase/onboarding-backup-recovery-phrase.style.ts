@@ -9,17 +9,6 @@ import { WalletButton } from '../../../../components/shared/style'
 import ClipboardIcon from '../../../../assets/svg-icons/clipboard-icon.svg'
 import DownloadIcon from '../../../../assets/svg-icons/download-icon.svg'
 
-export const LinkText = styled.a`
-  font-family: 'Poppins';
-  font-style: normal;
-  font-weight: 600;
-  font-size: 14px;
-  letter-spacing: 0.01em;
-  color: ${(p) => p.theme.color.interactive05};
-  margin: 0px;
-  cursor: pointer;
-`
-
 // buttons
 export const CopyButton = styled(WalletButton)`
   cursor: pointer;

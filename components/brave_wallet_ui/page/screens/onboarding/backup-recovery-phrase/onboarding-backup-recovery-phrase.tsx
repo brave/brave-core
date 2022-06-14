@@ -18,7 +18,8 @@ import { useTemporaryCopyToClipboard } from '../../../../common/hooks/use-tempor
 // styles
 import {
   ToggleVisibilityButton,
-  GreenCheckmark
+  GreenCheckmark,
+  LinkText
 } from '../../../../components/shared/style'
 import {
   Description,
@@ -35,8 +36,7 @@ import {
 import {
   CopiedToClipboardContainer,
   CopyButton,
-  DownloadButton,
-  LinkText
+  DownloadButton
 } from './onboarding-backup-recovery-phrase.style'
 
 // components

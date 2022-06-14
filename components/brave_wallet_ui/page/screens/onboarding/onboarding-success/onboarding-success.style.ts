@@ -5,6 +5,9 @@
 
 import styled from 'styled-components'
 
+// icons
+import DownloadIcon from '../../../../assets/svg-icons/download-icon.svg'
+
 export const IntroImg = styled.img`
   margin-top: 16px;
   margin-bottom: 40px;
@@ -42,10 +45,26 @@ export const ButtonContainer = styled.div`
   display: flex;
   flex: 1;
   flex-direction: column;
-  gap: 20px;
+  gap: 24px;
+
+  text-align: center;
+
   & > * {
     width: 100%;
   }
 
   margin-bottom: 80px;
+`
+
+export const DepositIcon = styled.div`
+  cursor: pointer;
+  outline: none;
+  border: none;
+  mask-image: url(${DownloadIcon});
+  mask-position: center;
+  mask-repeat: no-repeat;
+  mask-size: 14px;
+  background-color: ${(p) => p.theme.color.interactive05};
+  height: 14px;
+  width: 14px;
 `

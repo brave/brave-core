@@ -28,10 +28,10 @@ import { WalletRoutes } from '../../../../constants/types'
 
 // components
 import { Checkbox } from 'brave-ui'
-import { WalletPageLayout } from '../../../../components/desktop'
-import { NavButton } from '../../../../components/extension'
+import { LinkText } from '../../../../components/shared/style'
+import WalletPageLayout from '../../../../components/desktop/wallet-page-layout/index'
+import { NavButton } from '../../../../components/extension/buttons/nav-button/index'
 import { OnboardingNewWalletStepsNavigation } from '../components/onboarding-steps-navigation/onboarding-steps-navigation'
-import { LinkText } from '../backup-recovery-phrase/onboarding-backup-recovery-phrase.style'
 
 export const OnboardingDisclosures = () => {
   // routing

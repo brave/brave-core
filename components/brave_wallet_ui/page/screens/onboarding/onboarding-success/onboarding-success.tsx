@@ -20,10 +20,11 @@ import { WalletRoutes } from '../../../../constants/types'
 import { WalletPageActions } from '../../../actions'
 
 // components
-import { WalletPageLayout } from '../../../../components/desktop'
-import { NavButton } from '../../../../components/extension'
+import WalletPageLayout from '../../../../components/desktop/wallet-page-layout/index'
+import { NavButton } from '../../../../components/extension/buttons/nav-button/index'
 
 // styles
+import { LinkText } from '../../../../components/shared/style'
 import {
   Description,
   Title,
@@ -35,9 +36,9 @@ import {
   ButtonContainer,
   IntroContainer,
   IntroImg,
-  CloseButtonContainer
+  CloseButtonContainer,
+  DepositIcon
 } from './onboarding-success.style'
-import { LinkText } from '../backup-recovery-phrase/onboarding-backup-recovery-phrase.style'
 
 export const OnboardingSuccess = () => {
   // routing
@@ -90,9 +91,14 @@ export const OnboardingSuccess = () => {
       <ButtonContainer>
         <NavButton
           buttonType='primary'
-          text={getLocale('braveWalletGoToPortfolioButton')}
+          text={getLocale('braveWalletBuyCryptoButton')}
           onSubmit={onComplete}
         />
+
+        <LinkText>
+          <DepositIcon />
+          {getLocale('braveWalletDepositCryptoButton')}
+        </LinkText>
 
       </ButtonContainer>
 

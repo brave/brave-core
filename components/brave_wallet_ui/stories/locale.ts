@@ -172,7 +172,8 @@ provideStrings({
   // Wallet Onboarding Success
   braveWalletOnboardingSuccessTitle: 'Congratulations on setting up your Brave Wallet!',
   braveWalletOnboardingSuccessDescription: 'Now you can easily access your wallet any time from the wallet icon in Brave Browser.',
-  braveWalletGoToPortfolioButton: 'Go To Portfolio',
+  braveWalletBuyCryptoButton: 'Buy Crypto',
+  braveWalletDepositCryptoButton: 'Deposit',
   braveWalletLearnAboutMyWallet: 'Learn more about my new wallet',
 
   // Wallet Onboarding Success Article Links
