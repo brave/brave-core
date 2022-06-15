@@ -482,10 +482,7 @@ export function useTransactionParser (
           decimals: sellToken.decimals,
           insufficientFundsError: insufficientTokenFunds,
           insufficientFundsForGasError: insufficientNativeFunds,
-
-          // Set isSwap=false to differentiate ETHSwap from SwapExchangeProxy
-          // case.
-          isSwap: false,
+          isSwap: true,
           sellToken,
           sellAmount: sellAmountBN
             .format(6),
