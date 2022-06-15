@@ -13,18 +13,17 @@
 #include "bat/ads/internal/serving/serving_features.h"
 
 namespace ads {
+namespace promoted_content_ads {
 
 namespace {
 constexpr base::TimeDelta kTimeConstraint = base::Hours(1);
 }  // namespace
 
-PromotedContentAdsPerHourPermissionRule::
-    PromotedContentAdsPerHourPermissionRule() = default;
+AdsPerHourPermissionRule::AdsPerHourPermissionRule() = default;
 
-PromotedContentAdsPerHourPermissionRule::
-    ~PromotedContentAdsPerHourPermissionRule() = default;
+AdsPerHourPermissionRule::~AdsPerHourPermissionRule() = default;
 
-bool PromotedContentAdsPerHourPermissionRule::ShouldAllow() {
+bool AdsPerHourPermissionRule::ShouldAllow() {
   const std::vector<base::Time>& history =
       GetAdEvents(AdType::kPromotedContentAd, ConfirmationType::kServed);
 
@@ -37,15 +36,16 @@ bool PromotedContentAdsPerHourPermissionRule::ShouldAllow() {
   return true;
 }
 
-std::string PromotedContentAdsPerHourPermissionRule::GetLastMessage() const {
+std::string AdsPerHourPermissionRule::GetLastMessage() const {
   return last_message_;
 }
 
-bool PromotedContentAdsPerHourPermissionRule::DoesRespectCap(
+bool AdsPerHourPermissionRule::DoesRespectCap(
     const std::vector<base::Time>& history) {
   return DoesHistoryRespectRollingTimeConstraint(
       history, kTimeConstraint,
       features::GetMaximumPromotedContentAdsPerHour());
 }
 
+}  // namespace promoted_content_ads
 }  // namespace ads
