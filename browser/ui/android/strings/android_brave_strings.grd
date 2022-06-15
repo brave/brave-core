@@ -3022,13 +3022,15 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_FRAGMENT_SIGN_MESSAGE_DESCRIPTION" desc="Sign message dialog description.">
       Your signature is being requested
     </message>
-    <!-- Don't delete, we will use them soon in GET_ENCRYPTION_PUBLIC_KEY_REQUEST screen for DApps-->
-    <!--<message name="IDS_FRAGMENT_PROVIDE_ENCRYPTION_KEY_MESSAGE" desc="Provide encryption key title message dialog description.">
+    <message name="IDS_BRAVE_WALLET_PROVIDE_ENCRYPTION_KEY_TITLE" desc="Provide encryption key title message dialog description.">
       A DApp is requesting your public encryption key
     </message>
     <message name="IDS_BRAVE_WALLET_PROVIDE_ENCRYPTION_KEY_DESCRIPTION" desc="Provide encryption key panel details">
       is requesting your wallets public encryption key. If you consent to providing this key, the site will be able to compose encrypted messages to you.
-    </message> -->
+    </message>
+    <message name="IDS_BRAVE_WALLET_PROVIDE_ENCRYPTION_KEY_BUTTON" desc="Provide encryption key panel provide button">
+      Provide
+    </message>
     <message name="IDS_BRAVE_WALLET_ALLOW_ADD_NETWORK_NAME" desc="Add network panel name label">
       Network name
     </message>
