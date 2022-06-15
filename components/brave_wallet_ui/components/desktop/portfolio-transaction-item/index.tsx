@@ -224,7 +224,7 @@ const PortfolioTransactionItem = (props: Props) => {
         )
       }
 
-      case transactionDetails.isSwap: {
+      case transaction.txType !== BraveWallet.TransactionType.ETHSwap && transactionDetails.isSwap: {
         return (
           <DetailRow>
             <DetailTextDark>
