@@ -95,4 +95,5 @@ export type ImportFromExternalWalletPayloadType = {
 export type ImportWalletErrorPayloadType = {
   hasError: boolean
   errorMessage?: string
+  incrementAttempts?: boolean
 }

@@ -284,6 +284,7 @@ export interface PageState {
   isCryptoWalletsInitialized: boolean
   isMetaMaskInitialized: boolean
   isImportWalletsCheckComplete: boolean
+  importWalletAttempts: number
 }
 
 export interface WalletPageState {

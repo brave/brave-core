@@ -3,13 +3,19 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
+import { FC } from 'react'
 import styled from 'styled-components'
+import { Link } from 'react-router-dom'
 
 // types
 import { BraveWallet } from '../../constants/types'
+import IThemeProps from 'brave-ui/src/theme/theme-interface'
 
 // utils
 import { stripERC20TokenImageURL } from '../../utils/string-utils'
+
+// components
+import { LoaderIcon } from 'brave-ui/components/icons'
 
 // images & icons
 import transparent40x40Image from '../../assets/png-icons/transparent40x40.png'
@@ -17,7 +23,6 @@ import EyeOnIcon from '../../assets/svg-icons/eye-on-icon.svg'
 import EyeOffIcon from '../../assets/svg-icons/eye-off-icon.svg'
 import CheckmarkSvg from '../../assets/svg-icons/big-checkmark.svg'
 import CloseSvg from '../../assets/svg-icons/close.svg'
-import { Link } from 'react-router-dom'
 
 // Text
 export const LinkText = styled.a`
@@ -108,6 +113,17 @@ export const ErrorXIcon = styled.div`
   margin-right: 10px;
   margin-bottom: 10px;
   display: inline-block;
+`
+
+export const LoadingIcon = styled(LoaderIcon as FC<{}>)<{
+  size: string
+  color: keyof IThemeProps['color']
+  opacity: number
+}>`
+  color: ${p => p.theme.color[p.color]};
+  height: ${(p) => p.size};
+  width: ${(p) => p.size};
+  opacity: ${(p) => p.opacity};
 `
 
 // Buttons
