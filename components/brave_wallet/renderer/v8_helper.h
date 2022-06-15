@@ -44,8 +44,11 @@ void ExecuteScript(blink::WebLocalFrame* web_frame, const std::string script);
 // By default we allow extensions to overwrite the window.[provider] object
 // but if the user goes into settings and explicitly selects to use Brave Wallet
 // then we will block modifications to window.[provider] here.
-void SetProviderNonWritable(blink::WebLocalFrame* web_frame,
-                            const std::string& provider);
+void SetProviderNonWritable(v8::Local<v8::Context> context,
+                            v8::Local<v8::Object> global,
+                            v8::Local<v8::Value> provider_obj,
+                            v8::Local<v8::String> provider_name,
+                            bool is_enumerable);
 
 }  // namespace brave_wallet
 

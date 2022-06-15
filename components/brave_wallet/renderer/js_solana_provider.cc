@@ -103,10 +103,21 @@ void JSSolanaProvider::Install(bool allow_overwrite_window_solana,
       gin::Handle<JSSolanaProvider> provider =
           gin::CreateHandle(isolate, new JSSolanaProvider(render_frame));
       CHECK(!provider.IsEmpty());
-      global
-          ->Set(context, gin::StringToSymbol(isolate, "solana"),
-                provider.ToV8())
-          .Check();
+      if (!allow_overwrite_window_solana) {
+        SetProviderNonWritable(context, global, provider.ToV8(),
+                               gin::StringToV8(isolate, "solana"), true);
+      } else {
+        global
+            ->Set(context, gin::StringToSymbol(isolate, "solana"),
+                  provider.ToV8())
+            .Check();
+      }
+
+      // This is to prevent window._brave_solana from being defined and set
+      // non-configurable before we call our internal functions.
+      v8::Local<v8::Object> internal_solana_obj = v8::Object::New(isolate);
+      SetProviderNonWritable(context, global, internal_solana_obj,
+                             gin::StringToV8(isolate, "_brave_solana"), false);
     } else {
       render_frame->GetWebFrame()->AddMessageToConsole(
           blink::WebConsoleMessage(blink::mojom::ConsoleMessageLevel::kWarning,
@@ -115,9 +126,6 @@ void JSSolanaProvider::Install(bool allow_overwrite_window_solana,
     }
   }
   blink::WebLocalFrame* web_frame = render_frame->GetWebFrame();
-  if (!allow_overwrite_window_solana) {
-    SetProviderNonWritable(web_frame, "solana");
-  }
   if (is_main_world) {
     ExecuteScript(web_frame, *g_provider_script);
   }
