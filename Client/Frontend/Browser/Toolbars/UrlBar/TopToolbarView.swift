@@ -262,6 +262,8 @@ class TopToolbarView: UIView, ToolbarProtocol {
         self?.updateColors(PrivateBrowsingManager.shared.isPrivateBrowsing)
       }
       .store(in: &cancellables)
+    
+    updateURLBarButtonsVisibility()
   }
 
   @available(*, unavailable)
