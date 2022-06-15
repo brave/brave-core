@@ -15,11 +15,9 @@ namespace debounce {
 
 // Helper methods
 std::vector<std::unique_ptr<DebounceRule>> StringToRules(std::string contents) {
-  absl::optional<base::Value> root = base::JSONReader::Read(contents);
-  std::vector<std::unique_ptr<DebounceRule>> rules;
-  base::flat_set<std::string> host_cache;
-  DebounceRule::ParseRules(std::move(root->GetList()), &rules, &host_cache);
-  return rules;
+  auto parsed = DebounceRule::ParseRules(contents);
+  EXPECT_TRUE(parsed.has_value());
+  return std::move(parsed.value().first);
 }
 
 void CheckApplyResult(DebounceRule* rule,

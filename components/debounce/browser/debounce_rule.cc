@@ -9,8 +9,11 @@
 #include <utility>
 #include <vector>
 #include "base/base64url.h"
+#include "base/json/json_reader.h"
 #include "base/strings/escape.h"
 #include "base/strings/stringprintf.h"
+
+#include "base/types/expected.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/browser_thread.h"
 #include "extensions/common/url_pattern.h"
@@ -118,12 +121,21 @@ const std::string DebounceRule::GetETLDForDebounce(const std::string& host) {
 }
 
 // static
-void DebounceRule::ParseRules(base::Value::List root,
-                              std::vector<std::unique_ptr<DebounceRule>>* rules,
-                              base::flat_set<std::string>* host_cache) {
+base::expected<std::pair<std::vector<std::unique_ptr<DebounceRule>>,
+                         base::flat_set<std::string>>,
+               std::string>
+DebounceRule::ParseRules(const std::string& contents) {
+  if (contents.empty()) {
+    return base::unexpected("Could not obtain debounce configuration");
+  }
+  absl::optional<base::Value> root = base::JSONReader::Read(contents);
+  if (!root) {
+    return base::unexpected("Failed to parse debounce configuration");
+  }
   std::vector<std::string> hosts;
+  std::vector<std::unique_ptr<DebounceRule>> rules;
   base::JSONValueConverter<DebounceRule> converter;
-  for (base::Value& it : root) {
+  for (base::Value& it : root->GetList()) {
     std::unique_ptr<DebounceRule> rule = std::make_unique<DebounceRule>();
     if (!converter.Convert(it, rule.get()))
       continue;
@@ -135,9 +147,10 @@ void DebounceRule::ParseRules(base::Value::List root,
           hosts.push_back(std::move(etldp1));
       }
     }
-    rules->push_back(std::move(rule));
+    rules.push_back(std::move(rule));
   }
-  *host_cache = std::move(hosts);
+  return std::pair<std::vector<std::unique_ptr<DebounceRule>>,
+                   base::flat_set<std::string>>(std::move(rules), hosts);
 }
 
 bool DebounceRule::CheckPrefForRule(const PrefService* prefs) const {

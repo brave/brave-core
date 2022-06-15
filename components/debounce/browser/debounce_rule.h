@@ -8,10 +8,13 @@
 
 #include <memory>
 #include <string>
+#include <utility>
 #include <vector>
 
 #include "base/containers/flat_set.h"
 #include "base/json/json_value_converter.h"
+#include "base/strings/escape.h"
+#include "base/types/expected.h"
 #include "base/values.h"
 #include "components/prefs/pref_service.h"
 #include "extensions/common/url_pattern_set.h"
@@ -46,9 +49,10 @@ class DebounceRule {
                                   DebounceAction* field);
   static bool ParsePrependScheme(base::StringPiece value,
                                  DebouncePrependScheme* field);
-  static void ParseRules(base::Value::List root,
-                         std::vector<std::unique_ptr<DebounceRule>>* rules,
-                         base::flat_set<std::string>* host_cache);
+  static base::expected<std::pair<std::vector<std::unique_ptr<DebounceRule>>,
+                                  base::flat_set<std::string>>,
+                        std::string>
+  ParseRules(const std::string& contents);
   static const std::string GetETLDForDebounce(const std::string& host);
   static bool GetURLPatternSetFromValue(const base::Value* value,
                                         extensions::URLPatternSet* result);

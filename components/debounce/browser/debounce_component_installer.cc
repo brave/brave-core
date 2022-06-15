@@ -11,9 +11,11 @@
 #include "base/base_paths.h"
 #include "base/bind.h"
 #include "base/command_line.h"
+#include "base/containers/flat_set.h"
 #include "base/json/json_reader.h"
 #include "base/logging.h"
 #include "base/task/thread_pool.h"
+#include "base/types/expected.h"
 #include "brave/components/brave_component_updater/browser/dat_file_util.h"
 #include "brave/components/brave_component_updater/browser/local_data_files_service.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
@@ -44,18 +46,15 @@ void DebounceComponentInstaller::LoadDirectlyFromResourcePath() {
 
 void DebounceComponentInstaller::OnDATFileDataReady(
     const std::string& contents) {
-  if (contents.empty()) {
-    VLOG(1) << "Could not obtain debounce configuration";
-    return;
-  }
-  absl::optional<base::Value> root = base::JSONReader::Read(contents);
-  if (!root) {
-    VLOG(1) << "Failed to parse debounce configuration";
+  auto parsed = DebounceRule::ParseRules(contents);
+  if (!parsed.has_value()) {
+    LOG(WARNING) << parsed.error();
     return;
   }
   rules_.clear();
   host_cache_.clear();
-  DebounceRule::ParseRules(std::move(root->GetList()), &rules_, &host_cache_);
+  rules_ = std::move(parsed.value().first);
+  host_cache_ = parsed.value().second;
   for (Observer& observer : observers_)
     observer.OnRulesReady(this);
 }
