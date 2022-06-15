@@ -120,6 +120,7 @@ import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
 import org.chromium.chrome.browser.preferences.BravePreferenceKeys;
 import org.chromium.chrome.browser.preferences.SharedPreferencesManager;
 import org.chromium.chrome.browser.profiles.Profile;
+import org.chromium.chrome.browser.settings.BackgroundImagesPreferences;
 import org.chromium.chrome.browser.settings.BraveNewsPreferences;
 import org.chromium.chrome.browser.settings.SettingsLauncherImpl;
 import org.chromium.chrome.browser.suggestions.tile.TileGroup;
@@ -297,43 +298,47 @@ public class BraveNewTabPageLayout extends NewTabPageLayout implements Connectio
     }
 
     private void showFallBackNTPLayout() {
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+                new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
+                        LinearLayout.LayoutParams.WRAP_CONTENT));
         if (mBraveStatsViewFallBackLayout != null
                 && mBraveStatsViewFallBackLayout.getParent() != null) {
             ((ViewGroup) mBraveStatsViewFallBackLayout.getParent())
                     .removeView(mBraveStatsViewFallBackLayout);
-        }
-        LayoutInflater inflater =
-                (LayoutInflater) mActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        mBraveStatsViewFallBackLayout = inflater.inflate(R.layout.brave_stats_layout, null);
-        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
-            new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT));
-        int margin = dpToPx(mActivity, 16);
-        layoutParams.setMargins(margin, margin, margin, margin);
-        mBraveStatsViewFallBackLayout.setLayoutParams(layoutParams);
-        mBraveStatsViewFallBackLayout.requestLayout();
-
-        mBraveStatsViewFallBackLayout.findViewById(R.id.brave_stats_title_layout)
-                .setVisibility(View.GONE);
-        mBraveStatsViewFallBackLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            @SuppressLint("SourceLockedOrientationActivity")
-            public void onClick(View v) {
-                mActivity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-                checkForBraveStats();
             }
-        });
-        BraveStatsUtil.updateBraveStatsLayout(mBraveStatsViewFallBackLayout);
-        mainLayout.addView(mBraveStatsViewFallBackLayout, 0);
-        int insertionPoint = mainLayout.indexOfChild(findViewById(R.id.ntp_middle_spacer)) + 1;
-        if (mSiteSectionView.getParent() != null) {
-            ((ViewGroup) mSiteSectionView.getParent()).removeView(mSiteSectionView);
-        }
-        mSiteSectionView.setBackgroundResource(R.drawable.rounded_dark_bg_alpha);
-        mSiteSectionView.setLayoutParams(layoutParams);
-        mSiteSectionView.requestLayout();
-        mainLayout.addView(mSiteSectionView, insertionPoint);
+            LayoutInflater inflater =
+                    (LayoutInflater) mActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            mBraveStatsViewFallBackLayout = inflater.inflate(R.layout.brave_stats_layout, null);
+            int margin = dpToPx(mActivity, 16);
+            layoutParams.setMargins(margin, margin, margin, margin);
+            mBraveStatsViewFallBackLayout.setLayoutParams(layoutParams);
+            mBraveStatsViewFallBackLayout.requestLayout();
+
+            mBraveStatsViewFallBackLayout.findViewById(R.id.brave_stats_title_layout)
+                    .setVisibility(View.GONE);
+            mBraveStatsViewFallBackLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                @SuppressLint("SourceLockedOrientationActivity")
+                public void onClick(View v) {
+                    mActivity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+                    checkForBraveStats();
+                }
+            });
+            BraveStatsUtil.updateBraveStatsLayout(mBraveStatsViewFallBackLayout);
+            mainLayout.addView(mBraveStatsViewFallBackLayout, 0);
+
+            if (ContextUtils.getAppSharedPreferences().getBoolean(
+                        BackgroundImagesPreferences.PREF_SHOW_TOP_SITES, true)) {
+                int insertionPoint =
+                        mainLayout.indexOfChild(findViewById(R.id.ntp_middle_spacer)) + 1;
+                if (mSiteSectionView.getParent() != null) {
+                    ((ViewGroup) mSiteSectionView.getParent()).removeView(mSiteSectionView);
+                }
+                mSiteSectionView.setBackgroundResource(R.drawable.rounded_dark_bg_alpha);
+                mSiteSectionView.setLayoutParams(layoutParams);
+                mSiteSectionView.requestLayout();
+                mainLayout.addView(mSiteSectionView, insertionPoint);
+            }
     }
 
     protected void updateTileGridPlaceholderVisibility() {
