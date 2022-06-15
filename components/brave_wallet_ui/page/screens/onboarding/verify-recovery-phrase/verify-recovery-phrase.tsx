@@ -59,6 +59,10 @@ export const OnboardingVerifyRecoveryPhrase = () => {
     setNextStepEnabled(doesWordOrderMatch)
   }, [])
 
+  const onSkip = React.useCallback(() => {
+    history.push(WalletRoutes.OnboardingComplete)
+  }, [])
+
   const onNextStep = React.useCallback(() => {
     dispatch(WalletPageActions.walletBackupComplete())
     history.push(WalletRoutes.OnboardingComplete)
@@ -78,7 +82,7 @@ export const OnboardingVerifyRecoveryPhrase = () => {
           <OnboardingNewWalletStepsNavigation
             goBackUrl={WalletRoutes.OnboardingExplainRecoveryPhrase}
             currentStep={WalletRoutes.OnboardingVerifyRecoveryPhrase}
-            onSkip={onNextStep}
+            onSkip={onSkip}
           />
 
           <TitleAndDescriptionContainer>
