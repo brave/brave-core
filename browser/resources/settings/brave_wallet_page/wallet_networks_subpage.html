@@ -35,13 +35,15 @@
           preserve-focus risk-selection>
         <template>
           <div on-dblclick=onItemDoubleClick>
-            <div class="settings-box">
+            <div class="settings-box" data-test-chain-id$="[[getDataTestId(item)]]">
               <div class$=[[getNetworkItemClass(item)]]>
-                <div><span hidden="[[hideNativeCurrencyInfo]]">({{item.nativeCurrency.name}}) </span>{{item.chainName}}</div>
+                <div class="chainName">
+                  <span hidden="[[hideNativeCurrencyInfo]]">({{item.nativeCurrency.name}}) </span>
+                  {{item.chainName}}
+                </div>
                 <div class="secondary">[[getItemDescritionText(item)]]</div>
               </div>
               <cr-icon-button class$="[[getHideButtonClass(hiddenNetworks, item)]]"
-                              title$="text"
                               hidden=[[!canHideNetwork_(item)]]
                               on-click="onHideButtonClicked_"
                               on-dblclick="onEmptyDoubleClick"

@@ -818,6 +818,7 @@ if (!is_android) {
       "//components/commerce/core:feature_list",
       "//components/gcm_driver:gcm_buildflags",
       "//components/history_clusters/core",
+      "//components/javascript_dialogs",
       "//components/lens",
       "//components/metrics_services_manager",
       "//components/optimization_guide/core",

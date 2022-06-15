@@ -36,7 +36,7 @@ function SelectNetworkItem (props: Props) {
 
   // render
   return (
-    <StyledWrapper onClick={onSelectNetwork}>
+    <StyledWrapper onClick={onSelectNetwork} data-test-chain-id={'chain-' + network.chainId}>
       <LeftSide>
         <CreateNetworkIcon network={network} marginRight={14} />
         <NetworkName>{network.chainName}</NetworkName>

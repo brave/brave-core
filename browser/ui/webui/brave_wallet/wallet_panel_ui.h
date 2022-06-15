@@ -39,6 +39,8 @@ class WalletPanelUI : public ui::MojoBubbleWebUIController,
   void SetDeactivationCallback(
       base::RepeatingCallback<void(bool)> deactivation_callback);
 
+  static bool& DisableCSPForTesting();
+
  private:
   // brave_wallet::mojom::PanelHandlerFactory:
   void CreatePanelHandler(

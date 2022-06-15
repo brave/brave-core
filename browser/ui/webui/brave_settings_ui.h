@@ -26,6 +26,8 @@ class BraveSettingsUI : public settings::SettingsUI {
 
   static void AddResources(content::WebUIDataSource* html_source,
                            Profile* profile);
+  static bool& DisableCSPForTesting();
+  static bool& ExposeElementsForTesting();
 };
 
 #endif  // BRAVE_BROWSER_UI_WEBUI_BRAVE_SETTINGS_UI_H_
