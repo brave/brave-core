@@ -1,24 +1,21 @@
-# Copyright (c) 2021 The Brave Authors. All rights reserved.
+# Copyright (c) 2022 The Brave Authors. All rights reserved.
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
-assert(!is_ios)
+import("//brave/components/brave_vpn/buildflags/buildflags.gni")
 
-source_set("renderer") {
+assert(enable_brave_vpn)
+
+source_set("android") {
   sources = [
-    "skus_js_handler.cc",
-    "skus_js_handler.h",
-    "skus_render_frame_observer.cc",
-    "skus_render_frame_observer.h",
+    "vpn_render_frame_observer.cc",
+    "vpn_render_frame_observer.h",
   ]
 
   deps = [
     "//base",
-    "//brave/components/brave_vpn/buildflags",
-    "//brave/components/brave_vpn/mojom",
-    "//brave/components/skus/common",
-    "//brave/components/skus/common:mojom",
+    "//brave/components/brave_vpn",
     "//content/public/renderer",
     "//gin",
     "//mojo/public/cpp/bindings",
@@ -28,3 +25,4 @@ source_set("renderer") {
     "//v8",
   ]
 }
+

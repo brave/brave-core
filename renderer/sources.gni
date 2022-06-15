@@ -3,6 +3,8 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
+import("//brave/components/brave_vpn/buildflags/buildflags.gni")
+
 brave_chrome_renderer_sources = [
   "//brave/renderer/brave_content_renderer_client.cc",
   "//brave/renderer/brave_content_renderer_client.h",
@@ -25,3 +27,8 @@ brave_chrome_renderer_public_deps = [
   "//third_party/blink/public:blink",
   "//third_party/blink/public/common",
 ]
+
+if (enable_brave_vpn && is_android) {
+  brave_chrome_renderer_public_deps +=
+      [ "//brave/components/brave_vpn/renderer/android" ]
+}

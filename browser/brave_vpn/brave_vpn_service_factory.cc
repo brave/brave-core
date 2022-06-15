@@ -10,6 +10,7 @@
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/skus/skus_service_factory.h"
 #include "brave/components/brave_vpn/brave_vpn_service.h"
+#include "brave/components/brave_vpn/brave_vpn_utils.h"
 #include "brave/components/skus/common/features.h"
 #include "build/build_config.h"
 #include "chrome/browser/profiles/incognito_helpers.h"
@@ -18,10 +19,6 @@
 #include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/storage_partition.h"
-
-#if BUILDFLAG(IS_MAC) || BUILDFLAG(IS_WIN)
-#include "brave/components/brave_vpn/brave_vpn_utils.h"
-#endif
 
 #if BUILDFLAG(IS_WIN)
 #include "brave/browser/brave_vpn/dns/brave_vpn_dns_observer_factory.h"
@@ -68,13 +65,8 @@ BraveVpnServiceFactory::~BraveVpnServiceFactory() = default;
 
 KeyedService* BraveVpnServiceFactory::BuildServiceInstanceFor(
     content::BrowserContext* context) const {
-  // TODO(simonhong): Can we use this check for android?
-  // For now, vpn is disabled by default on desktop but not sure on
-  // android.
-#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC)
   if (!IsBraveVPNEnabled())
     return nullptr;
-#endif
 
   auto* default_storage_partition = context->GetDefaultStoragePartition();
   auto shared_url_loader_factory =

@@ -81,6 +81,9 @@ interface ServiceHandler {
 
   [EnableIfNot=is_android]
   CreateSupportTicket(string email, string subject, string body) => (bool success, string response);
+
+  [EnableIf=is_android]
+  GetPurchaseToken() => (string token);
 };
 
 // WebUI-side handler for requests from the browser.
