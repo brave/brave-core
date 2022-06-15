@@ -298,6 +298,8 @@ export default function useSend () {
           .multiplyByDecimals(selectedSendAsset.decimals).toNumber().toString(),
         coin: selectedAccount.coin
       } as SendFilTransactionParams))
+      setToAddressOrUrl('')
+      setSendAmount('')
       return
     }
     if (selectedSendAsset.isErc721 || selectedSendAsset.isErc20) { return }
