@@ -67,11 +67,11 @@ export const OnboardingRoutes = () => {
         />
       </Route>
 
-      {/*
       <Route path={WalletRoutes.OnboardingImportCryptoWallets} exact>
-        <OnboardingImportMetaMaskOrLegacy />
+        <OnboardingRestoreFromRecoveryPhrase
+          restoreFrom='legacy'
+        />
       </Route>
-      */}
 
       <Route path={WalletRoutes.OnboardingComplete} exact>
         <OnboardingSuccess />
