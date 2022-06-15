@@ -12,7 +12,10 @@ import {
   TimeDelta,
   WalletAccountType
 } from '../../constants/types'
-import { MAX_UINT256 } from '../constants/magics'
+import {
+  MAX_UINT256,
+  NATIVE_ASSET_CONTRACT_ADDRESS_0X
+} from '../constants/magics'
 
 // Utils
 import Amount from '../../utils/amount'
@@ -426,7 +429,7 @@ export function useTransactionParser (
         const fillTokens = (fillContracts || [])
           .map(path => '0x' + path)
           .map(address =>
-            address === '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'
+            address === NATIVE_ASSET_CONTRACT_ADDRESS_0X
               ? nativeAsset
               : findToken(address) || nativeAsset)
 
@@ -454,9 +457,9 @@ export function useTransactionParser (
           ? new Amount(gasFee).gt(accountNativeBalance)
           : undefined
 
-        const tokenBalance = getBalance(account, token)
-        const insufficientTokenFunds = tokenBalance !== ''
-          ? sellAmountWeiBN.gt(tokenBalance)
+        const sellTokenBalance = getBalance(account, sellToken)
+        const insufficientTokenFunds = sellTokenBalance !== ''
+          ? sellAmountWeiBN.gt(sellTokenBalance)
           : undefined
 
         const sellAmountBN = sellAmountWeiBN
