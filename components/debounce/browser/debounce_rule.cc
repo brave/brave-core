@@ -60,7 +60,7 @@ bool DebounceRule::ParseDebounceAction(base::StringPiece value,
   } else if (value == "regex-path") {
     *field = kDebounceRegexPath;
   } else {
-    LOG(WARNING) << "Found unknown debouncing action: " << value;
+    VLOG(1) << "Found unknown debouncing action: " << value;
     return false;
   }
   return true;
@@ -74,7 +74,7 @@ bool DebounceRule::ParsePrependScheme(base::StringPiece value,
   } else if (value == "https") {
     *field = kDebounceSchemePrependHttps;
   } else {
-    LOG(WARNING) << "Found unknown scheme: " << value;
+    VLOG(1) << "Found unknown scheme: " << value;
     return false;
   }
   return true;
@@ -94,7 +94,7 @@ bool DebounceRule::GetURLPatternSetFromValue(
       base::Value::AsListValue(*value),
       URLPattern::SCHEME_HTTP | URLPattern::SCHEME_HTTPS, false, &error);
   if (!valid)
-    LOG(WARNING) << error;
+    VLOG(1) << error;
   return valid;
 }
 
@@ -158,12 +158,12 @@ bool DebounceRule::CheckPrefForRule(const PrefService* prefs) const {
   if (!pref_.empty()) {
     auto* pref = prefs->FindPreference(pref_);
     if (!pref) {
-      LOG(WARNING) << "Pref specified in debounce.json not valid: " << pref_;
+      VLOG(1) << "Pref specified in debounce.json not valid: " << pref_;
       return false;
     }
     if (!pref->GetValue()->GetBool()) {
-      LOG(INFO) << "Pref " << pref->name()
-                << " specified in debounce.json is false";
+      VLOG(1) << "Pref " << pref->name()
+              << " specified in debounce.json is false";
       return false;
     }
   }
@@ -175,8 +175,8 @@ bool DebounceRule::ValidateAndParsePatternRegex(
     const std::string& path,
     std::string* parsed_value) const {
   if (pattern.length() > kMaxLengthRegexPattern) {
-    LOG(WARNING) << "Debounce regex pattern exceeds max length: "
-                 << kMaxLengthRegexPattern;
+    VLOG(1) << "Debounce regex pattern exceeds max length: "
+            << kMaxLengthRegexPattern;
     return false;
   }
   re2::RE2::Options options;
@@ -184,19 +184,19 @@ bool DebounceRule::ValidateAndParsePatternRegex(
   const re2::RE2 pattern_regex(pattern, options);
 
   if (!pattern_regex.ok()) {
-    LOG(WARNING) << "Debounce rule has param: " << pattern
-                 << " which is an invalid regex pattern";
+    VLOG(1) << "Debounce rule has param: " << pattern
+            << " which is an invalid regex pattern";
     return false;
   }
   if (pattern_regex.NumberOfCapturingGroups() != 1) {
-    LOG(WARNING) << "Debounce rule has param: " << pattern
-                 << " which captures != 1 groups";
+    VLOG(1) << "Debounce rule has param: " << pattern
+            << " which captures != 1 groups";
     return false;
   }
 
   if (!RE2::PartialMatch(path, pattern_regex, parsed_value)) {
-    LOG(WARNING) << "Debounce rule with param: " << param_
-                 << " was unable to capture string";
+    VLOG(1) << "Debounce rule with param: " << param_
+            << " was unable to capture string";
     return false;
   }
   return true;
@@ -231,7 +231,7 @@ bool DebounceRule::Apply(const GURL& original_url,
     auto path = original_url.path();
 
     if (!ValidateAndParsePatternRegex(param_, path, &unescaped_value)) {
-      LOG(INFO) << "Debounce regex parsing failed";
+      VLOG(1) << "Debounce regex parsing failed";
       return false;
     }
 
@@ -265,9 +265,9 @@ bool DebounceRule::Apply(const GURL& original_url,
   // valid i.e. has a scheme, we treat this as an erroneous rule and do not
   // apply it.
   if (prepend_scheme_ && new_url.is_valid()) {
-    LOG(WARNING) << "Debounce rule with param: " << param_
-                 << " and prepend scheme " << prepend_scheme_
-                 << " got a valid URL, treating as erroneous rule";
+    VLOG(1) << "Debounce rule with param: " << param_ << " and prepend scheme "
+            << prepend_scheme_
+            << " got a valid URL, treating as erroneous rule";
     return false;
   }
   // If there is a prepend_scheme specified AND the URL is not valid, prepend
