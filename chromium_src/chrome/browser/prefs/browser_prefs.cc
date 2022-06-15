@@ -85,8 +85,6 @@ void MigrateObsoleteProfilePrefs(Profile* profile) {
       profile->GetPrefs());
   brave_wallet::MigrateObsoleteProfilePrefs(profile->GetPrefs());
 
-  // Added 04/2021
-  profile->GetPrefs()->ClearPref(kAlternativeSearchEngineProviderInTor);
   // Added 05/2021
   profile->GetPrefs()->ClearPref(kBraveTodayIntroDismissed);
   // Added 07/2021

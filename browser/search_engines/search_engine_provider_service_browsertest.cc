@@ -7,6 +7,7 @@
 #include "brave/browser/profile_resetter/brave_profile_resetter.h"
 #include "brave/browser/profiles/brave_profile_manager.h"
 #include "brave/browser/profiles/profile_util.h"
+#include "brave/browser/search_engines/pref_names.h"
 #include "brave/browser/search_engines/search_engine_provider_service_factory.h"
 #include "brave/browser/search_engines/search_engine_provider_util.h"
 #include "brave/browser/tor/tor_profile_manager.h"

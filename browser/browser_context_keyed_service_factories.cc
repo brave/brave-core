@@ -22,7 +22,6 @@
 #include "brave/browser/ethereum_remote_client/buildflags/buildflags.h"
 #include "brave/browser/ntp_background_images/view_counter_service_factory.h"
 #include "brave/browser/permissions/permission_lifetime_manager_factory.h"
-#include "brave/browser/search_engines/search_engine_provider_service_factory.h"
 #include "brave/browser/search_engines/search_engine_tracker.h"
 #include "brave/browser/skus/skus_service_factory.h"
 #include "brave/components/brave_adaptive_captcha/buildflags/buildflags.h"
@@ -36,6 +35,7 @@
 #endif
 
 #if !BUILDFLAG(IS_ANDROID)
+#include "brave/browser/search_engines/search_engine_provider_service_factory.h"
 #include "brave/browser/ui/bookmark/bookmark_prefs_service_factory.h"
 #else
 #include "brave/browser/ntp_background_images/android/ntp_background_images_bridge.h"
@@ -72,12 +72,12 @@ void EnsureBrowserContextKeyedServiceFactoriesBuilt() {
 #if BUILDFLAG(ENABLE_TOR)
   TorProfileServiceFactory::GetInstance();
 #endif
-  SearchEngineProviderServiceFactory::GetInstance();
   SearchEngineTrackerFactory::GetInstance();
   ntp_background_images::ViewCounterServiceFactory::GetInstance();
 
 #if !BUILDFLAG(IS_ANDROID)
   BookmarkPrefsServiceFactory::GetInstance();
+  SearchEngineProviderServiceFactory::GetInstance();
 #else
   ntp_background_images::NTPBackgroundImagesBridgeFactory::GetInstance();
 #endif
