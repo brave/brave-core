@@ -100,6 +100,7 @@ provideStrings({
   braveWalletButtonCopy: 'Copy',
   braveWalletButtonCopied: 'Copied',
   braveWalletButtonVerify: 'Verify',
+  braveWalletButtonClose: 'Close',
 
   // Wallet Onboarding Welcome
   braveWalletWelcomeTitle: 'Welcome to the new Brave Wallet',
@@ -621,7 +622,6 @@ provideStrings({
   braveWalletTransactionFailedViewErrorCTA: 'View error',
   braveWalletTransactionFailedReceiptCTA: 'Receipt',
   braveWalletTransactionFailedModalTitle: 'Error code',
-  braveWalletTransactionFailedModalClose: 'Close',
 
   // Complete
   braveWalletTransactionCompleteSwapHeaderTitle: 'Swapped $1 to $2',

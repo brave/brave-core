@@ -101,7 +101,7 @@ const ErrorDetail = (props: ModalProps) => {
       <ButtonRow>
         <NavButton
           buttonType='primary'
-          text={getLocale('braveWalletTransactionFailedModalClose')}
+          text={getLocale('braveWalletButtonClose')}
           onSubmit={onClose}
         />
       </ButtonRow>
