@@ -617,13 +617,14 @@
   __weak BraveBookmarksAPI* weak_bookmarks_api = self;
   auto search_with_query =
       ^(NSString* query, NSUInteger maxCount,
-        std::function<void(NSArray<IOSBookmarkNode*>*)> completion) {
+        void (^completion)(NSArray<IOSBookmarkNode*>*)) {
         BraveBookmarksAPI* bookmarks_api = weak_bookmarks_api;
         if (!bookmarks_api) {
           completion(@[]);
           return;
         }
 
+        DCHECK_CURRENTLY_ON(web::WebThread::UI);
         DCHECK(bookmarks_api->bookmark_model_->loaded());
 
         bookmarks::QueryFields queryFields;
@@ -643,8 +644,8 @@
         completion(nodes);
       };
 
-  base::ThreadPool::PostTask(
-      FROM_HERE, {web::WebThread::UI},
+  web::GetUIThreadTaskRunner({})->PostTask(
+      FROM_HERE,
       base::BindOnce(search_with_query, query, maxCount, completion));
 }
 
