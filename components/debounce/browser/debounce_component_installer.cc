@@ -46,15 +46,15 @@ void DebounceComponentInstaller::LoadDirectlyFromResourcePath() {
 
 void DebounceComponentInstaller::OnDATFileDataReady(
     const std::string& contents) {
-  auto parsed = DebounceRule::ParseRules(contents);
-  if (!parsed.has_value()) {
-    LOG(WARNING) << parsed.error();
+  auto parsed_rules = DebounceRule::ParseRules(contents);
+  if (!parsed_rules.has_value()) {
+    LOG(WARNING) << parsed_rules.error();
     return;
   }
   rules_.clear();
   host_cache_.clear();
-  rules_ = std::move(parsed.value().first);
-  host_cache_ = parsed.value().second;
+  rules_ = std::move(parsed_rules.value().first);
+  host_cache_ = parsed_rules.value().second;
   for (Observer& observer : observers_)
     observer.OnRulesReady(this);
 }
