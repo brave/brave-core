@@ -978,7 +978,7 @@ TEST_F(BraveWalletUtilsUnitTest, GetChain) {
   EXPECT_EQ(GetChain(&prefs, "f", mojom::CoinType::FIL), fil_mainnet.Clone());
 }
 
-TEST_F(BraveWalletUtilsUnitTest, GetAllKnownEthNetworkIds) {
+TEST(BraveWalletUtilsUnitTest, GetAllKnownEthNetworkIds) {
   const std::vector<std::string> expected_network_ids(
       {"mainnet", mojom::kPolygonMainnetChainId,
        mojom::kBinanceSmartChainMainnetChainId, mojom::kCeloMainnetChainId,
