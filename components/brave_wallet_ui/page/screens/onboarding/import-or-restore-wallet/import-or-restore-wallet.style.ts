@@ -42,16 +42,29 @@ export const CardButton = styled(WalletLink)`
     outline-color: ${p => p.theme.palette.blurple300};
     outline-width: 2px;
   }
+`
+
+export const CardButtonTextContainer = styled.div`
+
+  max-width: 70%;
 
   & > p {
     font-family: 'Poppins';
     font-style: normal;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 18px;
+    letter-spacing: 0.02em;
+    color: ${(p) => p.theme.color.text03};
+    text-align: left;
+    margin: 2px;
+  }
+  
+  & > p:first-of-type {
     font-weight: 500;
     font-size: 14px;
-    line-height: 26px;
-    letter-spacing: 0.02em;
     color: ${(p) => p.theme.color.text01};
-    text-align: left;
+    line-height: 26px;
   }
 `
 
