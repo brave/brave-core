@@ -468,4 +468,5 @@
   <message name="IDS_WALLET_TRANSACTION_STATUS_UPDATE_MESSAGE_TITLE_CONFIRMED" desc="Notification message title when transaction confirmed">Transaction confirmed</message>
   <message name="IDS_WALLET_TRANSACTION_STATUS_UPDATE_MESSAGE_TITLE_ERROR" desc="Notification message title when transaction error">Transaction error</message>
  <message name="IDS_WALLET_TRANSACTION_STATUS_UPDATE_MESSAGE_TITLE_DROPPED" desc="Notification message title when transaction dropped">Transaction dropped</message>  
+ <message name="IDS_WALLET_TAB_IS_NOT_ACTIVE_ERROR" desc="Error message if it comes from an inactive tab">The tab is not active</message>
 </grit-part>

@@ -31,6 +31,7 @@ class BraveWalletProviderDelegate {
       delete;
   virtual ~BraveWalletProviderDelegate() = default;
 
+  virtual bool IsTabVisible() = 0;
   virtual void ShowPanel() = 0;
   virtual void WalletInteractionDetected() = 0;
   virtual void ShowWalletOnboarding() = 0;

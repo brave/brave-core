@@ -17,6 +17,7 @@
 #include "brave/components/permissions/contexts/brave_wallet_permission_context.h"
 #include "components/content_settings/core/common/content_settings.h"
 #include "content/public/browser/render_frame_host.h"
+#include "content/public/browser/visibility.h"
 #include "content/public/browser/web_contents.h"
 
 namespace brave_wallet {
@@ -91,6 +92,12 @@ BraveWalletProviderDelegateImpl::~BraveWalletProviderDelegateImpl() = default;
 url::Origin BraveWalletProviderDelegateImpl::GetOrigin() const {
   auto* rfh = content::RenderFrameHost::FromID(host_id_);
   return rfh ? rfh->GetLastCommittedOrigin() : url::Origin();
+}
+
+bool BraveWalletProviderDelegateImpl::IsTabVisible() {
+  return web_contents_
+             ? web_contents_->GetVisibility() == content::Visibility::VISIBLE
+             : false;
 }
 
 void BraveWalletProviderDelegateImpl::ShowPanel() {
