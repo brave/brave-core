@@ -17,11 +17,10 @@ class Time;
 
 namespace ads {
 
-class InlineContentAdsPerDayPermissionRule final
-    : public PermissionRuleInterface {
+class AdsPerDayPermissionRule final : public PermissionRuleInterface {
  public:
-  InlineContentAdsPerDayPermissionRule();
-  ~InlineContentAdsPerDayPermissionRule() override;
+  AdsPerDayPermissionRule();
+  ~AdsPerDayPermissionRule() override;
 
   bool ShouldAllow() override;
 
@@ -30,10 +29,8 @@ class InlineContentAdsPerDayPermissionRule final
  private:
   bool DoesRespectCap(const std::vector<base::Time>& history);
 
-  InlineContentAdsPerDayPermissionRule(
-      const InlineContentAdsPerDayPermissionRule&) = delete;
-  InlineContentAdsPerDayPermissionRule& operator=(
-      const InlineContentAdsPerDayPermissionRule&) = delete;
+  AdsPerDayPermissionRule(const AdsPerDayPermissionRule&) = delete;
+  AdsPerDayPermissionRule& operator=(const AdsPerDayPermissionRule&) = delete;
 
   std::string last_message_;
 };
