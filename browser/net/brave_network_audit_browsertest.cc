@@ -76,15 +76,15 @@ bool isPrivateURL(const GURL& url) {
   return false;
 }
 
-bool PerformNetworkAuditProcess(base::Value* events) {
-  DCHECK(events && events->is_list());
+bool PerformNetworkAuditProcess(base::Value::List* events) {
+  DCHECK(events);
 
   bool failed = false;
-  events->EraseListValueIf([&failed](base::Value& event_value) {
-    base::DictionaryValue* event_dict;
-    EXPECT_TRUE(event_value.GetAsDictionary(&event_dict));
+  events->EraseIf([&failed](base::Value& event_value) {
+    base::Value::Dict* event_dict = event_value.GetIfDict();
+    EXPECT_TRUE(event_dict);
 
-    absl::optional<int> event_type = event_dict->FindIntPath("type");
+    absl::optional<int> event_type = event_dict->FindInt("type");
     EXPECT_TRUE(event_type.has_value());
 
     // Showing these helps determine which URL requests which don't
@@ -94,11 +94,11 @@ bool PerformNetworkAuditProcess(base::Value* events) {
       return false;
     }
 
-    const base::Value* source_dict = event_dict->FindDictPath("source");
+    const auto* source_dict = event_dict->FindDict("source");
     EXPECT_TRUE(source_dict);
 
     // Consider URL requests only.
-    absl::optional<int> source_type = source_dict->FindIntPath("type");
+    absl::optional<int> source_type = source_dict->FindInt("type");
     EXPECT_TRUE(source_type.has_value());
 
     if (static_cast<net::NetLogSourceType>(source_type.value()) !=
@@ -107,16 +107,16 @@ bool PerformNetworkAuditProcess(base::Value* events) {
     }
 
     // Discard events without URLs in the parameters.
-    if (!event_dict->FindKey("params"))
+    if (!event_dict->Find("params"))
       return true;
 
-    const base::Value* params_dict2 = event_dict->FindDictPath("params");
+    const auto* params_dict2 = event_dict->FindDict("params");
     EXPECT_TRUE(params_dict2);
 
-    if (!params_dict2->FindKey("url"))
+    if (!params_dict2->Find("url"))
       return true;
 
-    const std::string* url_str = params_dict2->FindStringPath("url");
+    const std::string* url_str = params_dict2->FindString("url");
     EXPECT_TRUE(url_str);
 
     GURL url(*url_str);
@@ -171,7 +171,7 @@ bool PerformNetworkAuditProcess(base::Value* events) {
   return !failed;
 }
 
-void WriteNetworkAuditResultsToDisk(const base::DictionaryValue& results_dic,
+void WriteNetworkAuditResultsToDisk(const base::Value::Dict& results_dic,
                                     const base::FilePath& path) {
   std::string results;
   JSONFileValueSerializer serializer(path);
@@ -248,18 +248,18 @@ class BraveNetworkAuditTest : public InProcessBrowserTest {
     ASSERT_TRUE(parsed.has_value());
 
     // Ensure the root value is a dictionary.
-    base::DictionaryValue* main;
-    ASSERT_TRUE(parsed->GetAsDictionary(&main));
+    auto* main = parsed->GetIfDict();
+    ASSERT_TRUE(parsed);
 
     // Ensure it has a "constants" property.
-    base::Value* constants = main->FindDictPath("constants");
-    ASSERT_TRUE(constants && constants->is_dict());
-    ASSERT_FALSE(constants->DictEmpty());
+    auto* constants = main->FindDict("constants");
+    ASSERT_TRUE(constants);
+    ASSERT_FALSE(constants->empty());
 
     // Ensure it has an "events" property.
-    base::Value* events = main->FindListPath("events");
-    ASSERT_TRUE(events && events->is_list());
-    ASSERT_FALSE(events->GetList().empty());
+    auto* events = main->FindList("events");
+    ASSERT_TRUE(events);
+    ASSERT_FALSE(events->empty());
 
     EXPECT_TRUE(PerformNetworkAuditProcess(events))
         << "network-audit FAILED. Import " << net_log_path_.AsUTF8Unsafe()
