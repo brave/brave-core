@@ -18,6 +18,7 @@
 #include "brave/browser/brave_ads/ads_service_factory.h"
 #include "brave/browser/ntp_background_images/view_counter_service_factory.h"
 #include "brave/browser/profiles/profile_util.h"
+#include "brave/browser/search_engines/pref_names.h"
 #include "brave/browser/search_engines/search_engine_provider_util.h"
 #include "brave/browser/ui/webui/new_tab_page/brave_new_tab_ui.h"
 #include "brave/components/brave_perf_predictor/common/pref_names.h"
@@ -311,11 +312,6 @@ void BraveNewTabMessageHandler::OnJavascriptAllowed() {
     // Private New Tab Page preferences
     pref_change_registrar_.Add(
         kUseAlternativeSearchEngineProvider,
-        base::BindRepeating(
-            &BraveNewTabMessageHandler::OnPrivatePropertiesChanged,
-            base::Unretained(this)));
-    pref_change_registrar_.Add(
-        kAlternativeSearchEngineProviderInTor,
         base::BindRepeating(
             &BraveNewTabMessageHandler::OnPrivatePropertiesChanged,
             base::Unretained(this)));

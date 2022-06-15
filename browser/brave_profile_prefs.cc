@@ -167,10 +167,6 @@ void RegisterProfilePrefsForMigration(
   // Restore "Other Bookmarks" migration
   registry->RegisterBooleanPref(kOtherBookmarksMigrated, false);
 
-  // Added 04/2021
-  registry->RegisterIntegerPref(
-      kAlternativeSearchEngineProviderInTor,
-      TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_INVALID);
   // Added 05/2021
   registry->RegisterBooleanPref(kBraveTodayIntroDismissed, false);
 
@@ -368,6 +364,16 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   if (brave_search::IsDefaultAPIEnabled()) {
     brave_search::BraveSearchDefaultHost::RegisterProfilePrefs(registry);
   }
+
+  // Restore default behaviour for Android until we figure out if we want this
+  // option there.
+#if BUILDFLAG(IS_ANDROID)
+  bool allow_open_search_engines = true;
+#else
+  bool allow_open_search_engines = false;
+#endif
+  registry->RegisterBooleanPref(prefs::kAddOpenSearchEngines,
+                                allow_open_search_engines);
 
   // Binance widget
 #if BUILDFLAG(BINANCE_ENABLED)

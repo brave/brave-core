@@ -8,7 +8,7 @@
 #include <memory>
 #include <vector>
 
-#include "brave/components/constants/pref_names.h"
+#include "brave/browser/search_engines/pref_names.h"
 #include "brave/components/search_engines/brave_prepopulated_engines.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/search_engines/template_url_service_factory.h"
