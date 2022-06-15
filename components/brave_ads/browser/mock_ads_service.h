@@ -78,6 +78,8 @@ class MockAdsService : public AdsService {
                void(const std::string&,
                     const std::string&,
                     ads::mojom::NewTabPageAdEventType));
+  MOCK_METHOD2(OnFailedToServeNewTabPageAd,
+               void(const std::string&, const std::string&));
 
   MOCK_METHOD3(TriggerPromotedContentAdEvent,
                void(const std::string&,

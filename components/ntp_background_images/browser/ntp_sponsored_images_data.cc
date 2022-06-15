@@ -347,8 +347,8 @@ base::Value NTPSponsoredImagesData::GetBackgroundByAdInfo(
     }
   }
   if (campaign_index == campaigns.size()) {
-    LOG(ERROR) << "Ad campaign wasn't found in NTP sposored images data: "
-               << ad_info.campaign_id;
+    VLOG(0) << "Ad campaign wasn't found in NTP sposored images data: "
+            << ad_info.campaign_id;
     return base::Value();
   }
 
@@ -361,16 +361,19 @@ base::Value NTPSponsoredImagesData::GetBackgroundByAdInfo(
     }
   }
   if (background_index == sponsored_backgrounds.size()) {
-    LOG(ERROR) << "Creative instance wasn't found in NTP sposored images data: "
-               << ad_info.creative_instance_id;
+    VLOG(0) << "Creative instance wasn't found in NTP sposored images data: "
+            << ad_info.creative_instance_id;
     return base::Value();
   }
 
-  if (!AdInfoMatchesSponsoredImage(ad_info, campaign_index, background_index)) {
-    LOG(WARNING) << "Served creative info does not fully match with NTP "
-                    "sponsored images metadata. Campaign id: "
-                 << ad_info.campaign_id
-                 << ". Creative instance id: " << ad_info.creative_instance_id;
+  if (VLOG_IS_ON(0)) {
+    if (!AdInfoMatchesSponsoredImage(ad_info, campaign_index,
+                                     background_index)) {
+      VLOG(0) << "Served creative info does not fully match with NTP "
+                 "sponsored images metadata. Campaign id: "
+              << ad_info.campaign_id
+              << ". Creative instance id: " << ad_info.creative_instance_id;
+    }
   }
 
   base::Value data = GetBackgroundAt(campaign_index, background_index);

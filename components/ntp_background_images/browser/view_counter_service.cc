@@ -187,7 +187,14 @@ base::Value ViewCounterService::GetCurrentBrandedWallpaperByAdInfo() const {
     return base::Value();
   }
 
-  return GetCurrentBrandedWallpaperData()->GetBackgroundByAdInfo(*ad_info);
+  base::Value branded_wallpaper_data =
+      GetCurrentBrandedWallpaperData()->GetBackgroundByAdInfo(*ad_info);
+  if (!branded_wallpaper_data.is_dict()) {
+    ads_service_->OnFailedToServeNewTabPageAd(ad_info->placement_id,
+                                              ad_info->creative_instance_id);
+  }
+
+  return branded_wallpaper_data;
 }
 
 base::Value ViewCounterService::GetCurrentBrandedWallpaperFromModel() const {

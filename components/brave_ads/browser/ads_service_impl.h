@@ -161,6 +161,9 @@ class AdsServiceImpl : public AdsService,
       const std::string& placement_id,
       const std::string& creative_instance_id,
       const ads::mojom::NewTabPageAdEventType event_type) override;
+  void OnFailedToServeNewTabPageAd(
+      const std::string& placement_id,
+      const std::string& creative_instance_id) override;
 
   void TriggerPromotedContentAdEvent(
       const std::string& placement_id,
@@ -513,6 +516,7 @@ class AdsServiceImpl : public AdsService,
   std::unique_ptr<ads::Database> database_;
 
   absl::optional<ads::NewTabPageAdInfo> prefetched_new_tab_page_ad_info_;
+  absl::optional<base::Time> purge_orphaned_new_tab_page_ad_events_time_;
 
   ui::IdleState last_idle_state_;
   int last_idle_time_;

@@ -136,6 +136,9 @@ class AdsService : public KeyedService {
       const std::string& placement_id,
       const std::string& creative_instance_id,
       const ads::mojom::NewTabPageAdEventType event_type) = 0;
+  virtual void OnFailedToServeNewTabPageAd(
+      const std::string& placement_id,
+      const std::string& creative_instance_id) = 0;
 
   virtual void TriggerPromotedContentAdEvent(
       const std::string& placement_id,

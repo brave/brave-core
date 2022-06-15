@@ -34,6 +34,7 @@
 #include "brave/components/ntp_background_images/browser/ntp_custom_background_images_service.h"
 #endif
 
+using testing::_;
 using testing::Return;
 
 namespace ntp_background_images {
@@ -432,6 +433,7 @@ TEST_F(NTPBackgroundImagesViewCounterTest, SponsoredImageAdFrequencyCapped) {
   EXPECT_CALL(ads_service_, IsEnabled()).WillOnce(Return(true));
   EXPECT_CALL(ads_service_, GetPrefetchedNewTabPageAd())
       .WillOnce(Return(absl::nullopt));
+  EXPECT_CALL(ads_service_, OnFailedToServeNewTabPageAd(_, _)).Times(0);
 
   base::Value si_wallpaper = TryGetFirstSponsoredImageWallpaper();
   EXPECT_TRUE(si_wallpaper.FindBoolKey(ntp_background_images::kIsBackgroundKey)
@@ -451,6 +453,7 @@ TEST_F(NTPBackgroundImagesViewCounterTest, SponsoredImageAdServed) {
   EXPECT_CALL(ads_service_, IsEnabled()).WillOnce(Return(true));
   EXPECT_CALL(ads_service_, GetPrefetchedNewTabPageAd())
       .WillOnce(Return(ad_info));
+  EXPECT_CALL(ads_service_, OnFailedToServeNewTabPageAd(_, _)).Times(0);
 
   base::Value si_wallpaper = TryGetFirstSponsoredImageWallpaper();
   EXPECT_FALSE(si_wallpaper.FindBoolKey(ntp_background_images::kIsBackgroundKey)
@@ -465,6 +468,27 @@ TEST_F(NTPBackgroundImagesViewCounterTest, SponsoredImageAdServed) {
   EXPECT_EQ(
       ad_info.placement_id,
       *(si_wallpaper.FindStringKey(ntp_background_images::kWallpaperIDKey)));
+}
+
+TEST_F(NTPBackgroundImagesViewCounterTest, WrongSponsoredImageAdServed) {
+  InitBackgroundAndSponsoredImageWallpapers();
+
+  ads::NewTabPageAdInfo ad_info = CreateNewTabPageAdInfo();
+  ad_info.creative_instance_id = "wrong_creative_instance_id";
+  EXPECT_FALSE(AdInfoMatchesSponsoredImage(ad_info, 0, 1));
+
+  EXPECT_CALL(ads_service_, IsEnabled()).WillOnce(Return(true));
+  EXPECT_CALL(ads_service_, GetPrefetchedNewTabPageAd())
+      .WillOnce(Return(ad_info));
+  EXPECT_CALL(ads_service_, OnFailedToServeNewTabPageAd(_, _));
+
+  base::Value si_wallpaper = TryGetFirstSponsoredImageWallpaper();
+  EXPECT_TRUE(si_wallpaper.FindBoolKey(ntp_background_images::kIsBackgroundKey)
+                  .value_or(false));
+  EXPECT_FALSE(si_wallpaper.FindStringKey(
+      ntp_background_images::kCreativeInstanceIDKey));
+  EXPECT_FALSE(
+      si_wallpaper.FindStringKey(ntp_background_images::kWallpaperIDKey));
 }
 
 }  // namespace ntp_background_images
