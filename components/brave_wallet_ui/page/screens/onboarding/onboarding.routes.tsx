@@ -4,7 +4,6 @@
 // You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { useSelector } from 'react-redux'
 import {
   Redirect,
   Route,
@@ -23,12 +22,9 @@ import { OnboardingRestoreFromRecoveryPhrase } from './restore-from-recovery-phr
 import { OnboardingDisclosures } from './disclosures/disclosures'
 
 // types
-import { PageState, WalletRoutes } from '../../../constants/types'
+import { WalletRoutes } from '../../../constants/types'
 
 export const OnboardingRoutes = () => {
-  // redux
-  const isMetaMaskInitialized = useSelector(({ page }: { page: PageState }) => page.isMetaMaskInitialized)
-
   // render
   return (
     <Switch>
@@ -63,7 +59,7 @@ export const OnboardingRoutes = () => {
 
       <Route path={WalletRoutes.OnboardingImportMetaMask} exact>
         <OnboardingRestoreFromRecoveryPhrase
-          restoreFrom={isMetaMaskInitialized ? 'metamask' : 'metamask-seed'}
+          restoreFrom={'metamask'}
         />
       </Route>
 

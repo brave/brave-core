@@ -202,6 +202,7 @@ provideStrings({
   braveWalletImportFromMetaMaskSeedInstructions: 'Type your MetaMask 12 words recovery phrase.',
   braveWalletMetaMaskExtensionDetected: 'We detected the MetaMask extension in your browser',
   braveWalletMetaMaskExtensionImportDescription: 'By entering the password you can Import your MetaMask wallet to Brave Wallet easily.',
+  braveWalletRestoreMyBraveWalletInstructions: 'Type your Brave Wallet 12 words recovery phrase.',
 
   // Lock Screen
   braveWalletEnterYourPassword: 'Enter your Brave Wallet password',

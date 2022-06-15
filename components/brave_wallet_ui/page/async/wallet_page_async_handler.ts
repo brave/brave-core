@@ -197,7 +197,8 @@ handler.on(WalletPageActions.importFromCryptoWallets.getType(), async (store: St
   }
   store.dispatch(WalletPageActions.setImportWalletError({
     hasError: !result.success,
-    errorMessage: result.errorMessage ?? undefined
+    errorMessage: result.errorMessage ?? undefined,
+    incrementAttempts: true
   }))
 })
 
@@ -212,7 +213,8 @@ handler.on(WalletPageActions.importFromMetaMask.getType(), async (store: Store, 
   }
   store.dispatch(WalletPageActions.setImportWalletError({
     hasError: !result.success,
-    errorMessage: result.errorMessage ?? undefined
+    errorMessage: result.errorMessage ?? undefined,
+    incrementAttempts: true
   }))
 })
 
