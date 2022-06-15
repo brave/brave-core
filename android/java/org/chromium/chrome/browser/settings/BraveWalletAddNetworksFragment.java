@@ -25,6 +25,7 @@ import org.chromium.brave_wallet.mojom.NetworkInfo;
 import org.chromium.brave_wallet.mojom.ProviderError;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.crypto_wallet.JsonRpcServiceFactory;
+import org.chromium.chrome.browser.crypto_wallet.util.AndroidUtils;
 import org.chromium.mojo.bindings.ConnectionErrorHandler;
 import org.chromium.mojo.system.MojoException;
 
@@ -49,11 +50,14 @@ public class BraveWalletAddNetworksFragment extends Fragment implements Connecti
     private JsonRpcService mJsonRpcService;
     private String mChainId;
     private EditText mChainIdEditText;
+    private boolean mIsActiveNetwork;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getActivity().setTitle(R.string.brave_wallet_networks_title);
+        mIsActiveNetwork =
+                getArguments().getBoolean(ADD_NETWORK_FRAGMENT_ARG_ACTIVE_NETWORK, false);
         InitJsonRpcService();
     }
 
@@ -69,9 +73,8 @@ public class BraveWalletAddNetworksFragment extends Fragment implements Connecti
         final View view = inflater.inflate(R.layout.brave_wallet_add_network, container, false);
 
         Button btAdd = view.findViewById(R.id.add);
-        boolean activeNetwork =
-                getArguments().getBoolean(ADD_NETWORK_FRAGMENT_ARG_ACTIVE_NETWORK, false);
-        if (!activeNetwork) {
+
+        if (!mIsActiveNetwork) {
             btAdd.setOnClickListener(v -> {
                 if (!validateInputsAddChain(view)) {
                     // We have some errors in inputs
@@ -149,6 +152,11 @@ public class BraveWalletAddNetworksFragment extends Fragment implements Connecti
         if (chain.blockExplorerUrls.length > 0) {
             EditText blockExplorerUrls = view.findViewById(R.id.block_explorer_urls);
             blockExplorerUrls.setText(chain.blockExplorerUrls[0]);
+        }
+        if (mIsActiveNetwork) {
+            AndroidUtils.disableViewsByIds(view, R.id.chain_id, R.id.chain_currency_decimals,
+                    R.id.chain_name, R.id.chain_currency_name, R.id.chain_currency_symbol,
+                    R.id.rpc_urls, R.id.icon_urls, R.id.block_explorer_urls);
         }
     }
 
