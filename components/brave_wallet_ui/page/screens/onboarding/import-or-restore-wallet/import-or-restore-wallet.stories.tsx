@@ -9,7 +9,9 @@ import WalletPageStory from '../../../../stories/wrappers/wallet-page-story-wrap
 import { OnboardingImportOrRestoreWallet } from './import-or-restore-wallet'
 
 export const _OnboardingImportOrRestoreWallet = () => {
-  return <WalletPageStory>
+  return <WalletPageStory
+    pageStateOverride={{ isCryptoWalletsInitialized: true }}
+  >
     <OnboardingImportOrRestoreWallet />
   </WalletPageStory>
 }

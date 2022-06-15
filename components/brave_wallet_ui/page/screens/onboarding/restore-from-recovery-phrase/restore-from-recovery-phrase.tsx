@@ -55,14 +55,14 @@ const RESTORE_FROM_PHRASE_STEPS: RestoreFromOtherWalletSteps[] = [
   RestoreFromOtherWalletSteps.complete
 ]
 
-const RESTORE_FROM_METAMASK_STEPS: RestoreFromOtherWalletSteps[] = [
+const RESTORE_FROM_EXTENSION_STEPS: RestoreFromOtherWalletSteps[] = [
   RestoreFromOtherWalletSteps.currentPassword,
   RestoreFromOtherWalletSteps.newPassword,
   RestoreFromOtherWalletSteps.complete
 ]
 
 interface Props {
-  restoreFrom: 'metamask' | 'seed' | 'metamask-seed'
+  restoreFrom: 'metamask' | 'seed' | 'metamask-seed' | 'legacy'
 }
 
 export const OnboardingRestoreFromRecoveryPhrase = ({
@@ -75,32 +75,45 @@ export const OnboardingRestoreFromRecoveryPhrase = ({
   const dispatch = useDispatch()
   const invalidMnemonic = useSelector(({ page }: { page: PageState }) => page.invalidMnemonic)
   const isMetaMaskInitialized = useSelector(({ page }: { page: PageState }) => page.isMetaMaskInitialized)
+  const isLegacyCryptoWalletsInitialized = useSelector(({ page }: { page: PageState }) => page.isCryptoWalletsInitialized)
   const isImportWalletsCheckComplete = useSelector(({ page }: { page: PageState }) => page.isImportWalletsCheckComplete)
   const importWalletError = useSelector(({ page }: { page: PageState }) => page.importWalletError)
 
   // computed
-  const isImportingFromMetaMaskExtenstion = restoreFrom === 'metamask'
+  const isImportingFromMetaMaskExtension = restoreFrom === 'metamask'
+  const isImportingFromLegacyExtension = restoreFrom === 'legacy'
+  const isImportingFromExtension = isImportingFromMetaMaskExtension || isImportingFromLegacyExtension
   const isCheckingExtensions = restoreFrom !== 'seed' && !isImportWalletsCheckComplete
 
   // state
   const [isPasswordValid, setIsPasswordValid] = React.useState(false)
   const [password, setPassword] = React.useState('')
-  const [metaMaskPassword, setMetaMaskPassword] = React.useState('')
+  const [extensionPassword, setExtensionPassword] = React.useState('')
   const [isPhraseShown, setIsPhraseShown] = React.useState(false)
   const [phraseInput, setPhraseInput] = React.useState('')
   const [currentStep, setCurrentStep] = React.useState<RestoreFromOtherWalletSteps>(
-    isImportingFromMetaMaskExtenstion
+    isImportingFromExtension
       ? RestoreFromOtherWalletSteps.currentPassword
       : RestoreFromOtherWalletSteps.phrase
   )
 
   // methods
-  const checkMetaMaskImportPassword = React.useCallback(() => {
-    dispatch(WalletPageActions.importFromMetaMask({
-      password: metaMaskPassword,
-      newPassword: '' // required arg, just checking import Password
-    }))
-  }, [metaMaskPassword])
+  const checkImportPassword = React.useCallback(() => {
+    if (isImportingFromMetaMaskExtension) {
+      dispatch(WalletPageActions.importFromMetaMask({
+        password: extensionPassword,
+        newPassword: '' // required arg, just checking import Password
+      }))
+      return
+    }
+
+    if (isImportingFromLegacyExtension) {
+      dispatch(WalletPageActions.importFromCryptoWallets({
+        password: extensionPassword,
+        newPassword: '' // required arg, just checking import Password
+      }))
+    }
+  }, [isImportingFromMetaMaskExtension, isImportingFromLegacyExtension, extensionPassword])
 
   const toggleShowPhrase = React.useCallback(() => {
     setIsPhraseShown(prev => !prev)
@@ -117,9 +130,17 @@ export const OnboardingRestoreFromRecoveryPhrase = ({
       return
     }
 
-    if (isImportingFromMetaMaskExtenstion) {
+    if (isImportingFromMetaMaskExtension) {
       dispatch(WalletPageActions.importFromMetaMask({
-        password: metaMaskPassword,
+        password: extensionPassword,
+        newPassword: password
+      }))
+      return
+    }
+
+    if (isImportingFromLegacyExtension) {
+      dispatch(WalletPageActions.importFromCryptoWallets({
+        password: extensionPassword,
         newPassword: password
       }))
       return
@@ -139,7 +160,7 @@ export const OnboardingRestoreFromRecoveryPhrase = ({
     }))
 
     history.push(WalletRoutes.OnboardingComplete)
-  }, [isPasswordValid, phraseInput, password, invalidMnemonic, isImportingFromMetaMaskExtenstion])
+  }, [isPasswordValid, phraseInput, password, invalidMnemonic, isImportingFromMetaMaskExtension, isImportingFromLegacyExtension])
 
   const onPhraseInputChanged = React.useCallback((event: React.ChangeEvent<
     HTMLInputElement | HTMLTextAreaElement
@@ -174,6 +195,15 @@ export const OnboardingRestoreFromRecoveryPhrase = ({
     setIsPasswordValid(isValid)
   }, [])
 
+  const onExtensionPasswordChange = React.useCallback((value: string): void => {
+    if (importWalletError?.hasError) {
+      dispatch(WalletPageActions.setImportWalletError({
+        hasError: false
+      }))
+    }
+    setExtensionPassword(value)
+  }, [importWalletError?.hasError])
+
   const onContinueClicked = React.useCallback(() => {
     // reset previous errors
     if (importWalletError?.hasError) {
@@ -182,25 +212,23 @@ export const OnboardingRestoreFromRecoveryPhrase = ({
       }))
     }
 
-    if (currentStep === RestoreFromOtherWalletSteps.currentPassword && metaMaskPassword) {
-      // TODO, check import & pw?
-      checkMetaMaskImportPassword()
+    if (currentStep === RestoreFromOtherWalletSteps.currentPassword && extensionPassword) {
+      checkImportPassword()
       return setCurrentStep(RestoreFromOtherWalletSteps.newPassword)
     }
     if (currentStep === RestoreFromOtherWalletSteps.phrase && !invalidMnemonic) {
       return setCurrentStep(RestoreFromOtherWalletSteps.newPassword)
     }
     if (currentStep === RestoreFromOtherWalletSteps.newPassword && isPasswordValid) {
-      // TODO: check for MM and use alternative restore method?
       return restoreWallet()
     }
   }, [
     importWalletError?.hasError,
-    currentStep, metaMaskPassword,
+    currentStep, extensionPassword,
     invalidMnemonic,
     isPasswordValid,
     restoreWallet,
-    checkMetaMaskImportPassword
+    checkImportPassword
   ])
 
   const onGoBack = React.useCallback(() => {
@@ -220,15 +248,6 @@ export const OnboardingRestoreFromRecoveryPhrase = ({
       onContinueClicked()
     }
   }, [onContinueClicked])
-
-  const onMetaMaskPasswordChange = React.useCallback((value: string): void => {
-    if (importWalletError?.hasError) {
-      dispatch(WalletPageActions.setImportWalletError({
-        hasError: false
-      }))
-    }
-    setMetaMaskPassword(value)
-  }, [importWalletError?.hasError])
 
   // memos
   const RecoveryInput = React.useMemo(() => {
@@ -253,10 +272,13 @@ export const OnboardingRestoreFromRecoveryPhrase = ({
 
   const pageText = React.useMemo(() => {
     switch (currentStep) {
-      // currently only for metamask import - TODO: legacy wallets
       case RestoreFromOtherWalletSteps.currentPassword: return {
-        title: getLocale('braveWalletMetaMaskExtensionDetected'),
-        description: getLocale('braveWalletMetaMaskExtensionImportDescription')
+        title: restoreFrom === 'metamask'
+          ? getLocale('braveWalletMetaMaskExtensionDetected')
+          : getLocale('braveWalletCryptoWalletsDetected'),
+        description: restoreFrom === 'metamask'
+          ? getLocale('braveWalletMetaMaskExtensionImportDescription')
+          : getLocale('braveWalletImportBraveLegacyDescription')
       }
 
       case RestoreFromOtherWalletSteps.newPassword: return {
@@ -280,34 +302,30 @@ export const OnboardingRestoreFromRecoveryPhrase = ({
 
   // effects
   React.useEffect(() => {
-    if (
-      restoreFrom !== 'seed' &&
-      !isMetaMaskInitialized &&
-      !isImportWalletsCheckComplete
-    ) {
-      // check if MM is installed
+    if (isCheckingExtensions) {
+      // check if MM or legacy wallet is installed
       dispatch(WalletPageActions.checkWalletsToImport())
     }
-  }, [restoreFrom, isCheckingExtensions, isMetaMaskInitialized])
+  }, [isCheckingExtensions])
 
   React.useEffect(() => {
     if (
-      restoreFrom === 'seed' || // only watching during metamask import
+      restoreFrom === 'seed' || // only watching during metamask or legacy import
       !isImportWalletsCheckComplete // wait for redux store to be ready
     ) {
       return
     }
 
-    // switch to phrase input if MM was not detected
-    if (currentStep === RestoreFromOtherWalletSteps.currentPassword && !isMetaMaskInitialized) {
+    // switch to phrase input if MM or legacy wallet was not detected
+    if (currentStep === RestoreFromOtherWalletSteps.currentPassword && !isMetaMaskInitialized && !isLegacyCryptoWalletsInitialized) {
       return setCurrentStep(RestoreFromOtherWalletSteps.phrase)
     }
 
-    // switch to password input if MM was detected
-    if (currentStep === RestoreFromOtherWalletSteps.phrase && isMetaMaskInitialized) {
+    // switch to password input if MM or legacy wallet was detected
+    if (currentStep === RestoreFromOtherWalletSteps.phrase && (isMetaMaskInitialized || isLegacyCryptoWalletsInitialized)) {
       return setCurrentStep(RestoreFromOtherWalletSteps.currentPassword)
     }
-  }, [isImportWalletsCheckComplete, isImportingFromMetaMaskExtenstion, currentStep])
+  }, [restoreFrom, isImportWalletsCheckComplete, currentStep, isMetaMaskInitialized, isLegacyCryptoWalletsInitialized])
 
   React.useEffect(() => {
     // return to password screen if the import password was incorrect
@@ -339,7 +357,7 @@ export const OnboardingRestoreFromRecoveryPhrase = ({
         <StyledWrapper>
 
           <StepsNavigation
-            steps={restoreFrom === 'metamask' ? RESTORE_FROM_METAMASK_STEPS : RESTORE_FROM_PHRASE_STEPS}
+            steps={isImportingFromExtension ? RESTORE_FROM_EXTENSION_STEPS : RESTORE_FROM_PHRASE_STEPS}
             currentStep={currentStep}
             goBack={onGoBack}
             preventSkipAhead
@@ -349,7 +367,9 @@ export const OnboardingRestoreFromRecoveryPhrase = ({
             {
               isCheckingExtensions
               ? <>
-                  <Title>{'checking for wallet extensions...'}</Title>
+                  <Title>
+                    {getLocale('braveWalletCheckingInstalledExtensions')}
+                  </Title>
                 </>
               : <>
                 <Title>{pageText.title}</Title>
@@ -397,13 +417,17 @@ export const OnboardingRestoreFromRecoveryPhrase = ({
             <>
               <PasswordInput
                 autoFocus={true}
-                onChange={onMetaMaskPasswordChange}
-                value={metaMaskPassword}
+                onChange={onExtensionPasswordChange}
+                value={extensionPassword}
                 error={importWalletError?.errorMessage || ''}
                 hasError={importWalletError?.hasError}
                 onKeyDown={handleKeyDown}
-                placeholder={getLocale('braveWalletMetaMaskPasswordInputPlaceholder')}
-                name='mmPassword'
+                placeholder={
+                  restoreFrom === 'metamask'
+                    ? getLocale('braveWalletMetaMaskPasswordInputPlaceholder')
+                    : getLocale('braveWalletImportBraveLegacyInput')
+                }
+                name='extensionPassword'
                 label={getLocale('braveWalletInputLabelPassword')}
               />
 
@@ -433,7 +457,7 @@ export const OnboardingRestoreFromRecoveryPhrase = ({
                 text={getLocale('braveWalletButtonContinue')}
                 onSubmit={onContinueClicked}
                 disabled={
-                  isImportingFromMetaMaskExtenstion && currentStep === RestoreFromOtherWalletSteps.currentPassword && !metaMaskPassword ||
+                  isImportingFromExtension && currentStep === RestoreFromOtherWalletSteps.currentPassword && !extensionPassword ||
                   restoreFrom === 'seed' && !phraseInput ||
                   currentStep === RestoreFromOtherWalletSteps.phrase && invalidMnemonic ||
                   currentStep === RestoreFromOtherWalletSteps.newPassword && !isPasswordValid

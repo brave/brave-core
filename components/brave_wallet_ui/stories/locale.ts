@@ -185,13 +185,16 @@ provideStrings({
   braveWalletArticleLinkWhatIsWeb3: 'What’s web 3?',
 
   // Onboarding import or restore wallet page
+  braveWalletCheckingInstalledExtensions: 'Checking for wallet extensions...',
   braveWalletImportOrRestoreWalletTitle: 'Connect to your existing wallet',
   braveWalletImportOrRestoreDescription: 'By connecting to your wallet, you may need to enter your 12 word recovery phrase to restore/import. We support Ethereum wallet at this time.',
   braveWalletRestoreMyBraveWallet: 'Restore my Brave Wallet',
   braveWalletCreateWalletInsteadLink: 'Never mind, I’ll create a new wallet',
-  braveWalletImportPasswordError: 'Password is not correct',
-
   braveWalletImportFromMetaMask: 'Import from MetaMask',
+  braveWalletImportFromLegacy: 'Import from legacy Brave crypto wallets',
+
+  // onboarding import wallet screen
+  braveWalletImportPasswordError: 'Password is not correct',
   braveWalletMetaMaskPasswordInputPlaceholder: 'Type MetaMask password',
   braveWalletImportFromMetaMaskSeedInstructions: 'Type your MetaMask 12 words recovery phrase.',
   braveWalletMetaMaskExtensionDetected: 'We detected the MetaMask extension in your browser',
@@ -480,7 +483,7 @@ provideStrings({
   braveWalletCryptoWalletsDescriptionOne: 'When you click Get started youll import your previous Crypto Wallet to the new Brave Wallet experience, and enjoy all the benefits outlined above. Give it a try, and let us know what you think!',
   braveWalletCryptoWalletsDescriptionTwo: 'If youd rather skip the import and keep the old Crypto Wallets experience, just navigate to the Brave Browser $1Settings$2 and change the default back to Crypto Wallets. You can also import, try the new Brave Wallet, and change back at any time.',
   braveWalletImportBraveLegacyDescription: 'Enter your existing crypto wallets password to import to Brave Wallet. Enjoy a faster and more secure way to manage crypto assets and interact with Web3 DApps.',
-  braveWalletImportBraveLegacyInput: 'Crypto wallets password',
+  braveWalletImportBraveLegacyInput: 'Type Crypto wallets password',
   braveWalletImportBraveLegacyAltButton: 'I’ve lost my password and recovery phrase, create a new wallet.',
 
   // Connect Hardware Wallet Panel
