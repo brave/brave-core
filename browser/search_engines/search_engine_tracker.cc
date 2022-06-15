@@ -46,6 +46,7 @@ void RecordSearchEngineP3A(const GURL& search_engine_url,
     }
   }
 
+  LOG(ERROR) << __func__ << " ###### " << search_engine_url;
   UMA_HISTOGRAM_ENUMERATION(kDefaultSearchEngineMetric, answer);
 }
 

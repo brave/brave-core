@@ -50,14 +50,16 @@ class SearchEngineProviderP3ATest : public InProcessBrowserTest {
 };
 
 IN_PROC_BROWSER_TEST_F(SearchEngineProviderP3ATest, DefaultSearchEngineP3A) {
-  // Check that the metric is reported on startup.
-  histogram_tester_->ExpectUniqueSample(kDefaultSearchEngineMetric,
-                                        SearchEngineP3A::kBrave, 1);
-
   auto* service =
       TemplateURLServiceFactory::GetForProfile(browser()->profile());
   search_test_utils::WaitForTemplateURLServiceToLoad(service);
 
+  LOG(ERROR) << __func__ << " #### ";
+  // Check that the metric is reported on startup.
+  histogram_tester_->ExpectUniqueSample(kDefaultSearchEngineMetric,
+                                        SearchEngineP3A::kBrave, 1);
+
+  LOG(ERROR) << __func__ << " #### ";
   // Check that changing the default engine triggers emitting of a new value.
   auto ddg_data = TemplateURLPrepopulateData::GetPrepopulatedEngine(
       browser()->profile()->GetPrefs(),
@@ -65,18 +67,24 @@ IN_PROC_BROWSER_TEST_F(SearchEngineProviderP3ATest, DefaultSearchEngineP3A) {
   TemplateURL ddg_url(*ddg_data);
 
   service->SetUserSelectedDefaultSearchProvider(&ddg_url);
+
+  LOG(ERROR) << __func__ << " #### ";
   histogram_tester_->ExpectBucketCount(kDefaultSearchEngineMetric,
                                        SearchEngineP3A::kDuckDuckGo, 1);
 
+  LOG(ERROR) << __func__ << " #### ";
   // Check switching back to original engine.
   auto brave_data = TemplateURLPrepopulateData::GetPrepopulatedEngine(
       browser()->profile()->GetPrefs(),
       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BRAVE);
   TemplateURL brave_url(*brave_data);
   service->SetUserSelectedDefaultSearchProvider(&brave_url);
+
+  LOG(ERROR) << __func__ << " #### ";
   histogram_tester_->ExpectBucketCount(kDefaultSearchEngineMetric,
                                        SearchEngineP3A::kBrave, 2);
 
+  LOG(ERROR) << __func__ << " #### ";
   // Check that incognito or TOR profiles do not emit the metric.
   CreateIncognitoBrowser();
 #if BUILDFLAG(ENABLE_TOR)
@@ -87,16 +95,16 @@ IN_PROC_BROWSER_TEST_F(SearchEngineProviderP3ATest, DefaultSearchEngineP3A) {
 }
 
 IN_PROC_BROWSER_TEST_F(SearchEngineProviderP3ATest, SwitchSearchEngineP3A) {
+  // Load service for switching the default search engine.
+  auto* service =
+      TemplateURLServiceFactory::GetForProfile(browser()->profile());
+  search_test_utils::WaitForTemplateURLServiceToLoad(service);
+
   // Check that the metric is reported on startup.
   // For some reason we record kNoSwitch twice, even though
   // kDefaultSearchEngineMetric is only updated once at this point.
   histogram_tester_->ExpectUniqueSample(kSwitchSearchEngineMetric,
                                         SearchEngineSwitchP3A::kNoSwitch, 2);
-
-  // Load service for switching the default search engine.
-  auto* service =
-      TemplateURLServiceFactory::GetForProfile(browser()->profile());
-  search_test_utils::WaitForTemplateURLServiceToLoad(service);
 
   // Check that changing the default engine triggers emission of a new value.
   auto ddg_data = TemplateURLPrepopulateData::GetPrepopulatedEngine(
