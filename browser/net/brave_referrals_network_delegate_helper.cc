@@ -20,11 +20,11 @@ int OnBeforeStartTransaction_ReferralsWork(
     std::shared_ptr<BraveRequestInfo> ctx) {
   // If the domain for this request matches one of our target domains,
   // set the associated custom headers.
-  const base::DictionaryValue* request_headers_dict = nullptr;
+  const base::Value::Dict* request_headers_dict = nullptr;
   if (!BraveReferralsHeaders::GetInstance()->GetMatchingReferralHeaders(
           &request_headers_dict, ctx->request_url))
     return net::OK;
-  for (const auto it : request_headers_dict->DictItems()) {
+  for (const auto it : *request_headers_dict) {
     if (it.first == kBravePartnerHeader) {
       headers->SetHeader(it.first, it.second.GetString());
       ctx->set_headers.insert(it.first);
