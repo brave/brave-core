@@ -90,28 +90,25 @@ bool FilecoinKeyring::DecodeImportPayload(
 }
 
 // static
-bool FilecoinKeyring::GetProtocolFromAddress(
-    const std::string& address,
-    mojom::FilecoinAddressProtocol* result) {
+absl::optional<mojom::FilecoinAddressProtocol>
+FilecoinKeyring::GetProtocolFromAddress(const std::string& address) {
   if (address.size() < 2) {
-    return false;
+    return absl::nullopt;
   }
   const char protocol_symbol = address[1];
   switch (protocol_symbol) {
     case '1': {
-      *result = mojom::FilecoinAddressProtocol::SECP256K1;
-      return true;
+      return mojom::FilecoinAddressProtocol::SECP256K1;
     }
     case '3': {
-      *result = mojom::FilecoinAddressProtocol::BLS;
-      return true;
+      return mojom::FilecoinAddressProtocol::BLS;
     }
     default: {
       NOTREACHED() << "Unknown filecoin protocol";
-      return false;
+      return absl::nullopt;
     }
   }
-  return false;
+  return absl::nullopt;
 }
 
 std::string FilecoinKeyring::GetEncodedPrivateKey(const std::string& address) {
@@ -119,20 +116,22 @@ std::string FilecoinKeyring::GetEncodedPrivateKey(const std::string& address) {
   if (!key) {
     return "";
   }
-  return FilecoinKeyring::GetExportEncodedJSON(
+  return GetExportEncodedJSON(
       base::Base64Encode(static_cast<HDKey*>(key)->private_key()), address);
 }
 // static
 std::string FilecoinKeyring::GetExportEncodedJSON(
     const std::string& base64_encoded_private_key,
     const std::string& address) {
-  mojom::FilecoinAddressProtocol protocol;
-  if (!GetProtocolFromAddress(address, &protocol)) {
+  absl::optional<mojom::FilecoinAddressProtocol> protocol =
+      GetProtocolFromAddress(address);
+  if (!protocol) {
     return "";
   }
   std::string json = base::StringPrintf(
       "{\"Type\":\"%s\",\"PrivateKey\":\"%s\"}",
-      protocol == mojom::FilecoinAddressProtocol::BLS ? "bls" : "secp256k1",
+      protocol.value() == mojom::FilecoinAddressProtocol::BLS ? "bls"
+                                                              : "secp256k1",
       base64_encoded_private_key.c_str());
   return base::ToLowerASCII(base::HexEncode(json.data(), json.size()));
 }
@@ -169,6 +168,8 @@ std::string FilecoinKeyring::ImportFilecoinAccount(
   return address.EncodeAsString();
 }
 
+// This method is used when filecoin account is imported because
+// we need to know which protocol to use, so private_key is just not enough.
 void FilecoinKeyring::RestoreFilecoinAccount(
     const std::vector<uint8_t>& input_key,
     const std::string& address) {
