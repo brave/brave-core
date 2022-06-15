@@ -5,6 +5,14 @@
 
 import styled from 'styled-components'
 
+// assets
+import BraveWalletSvg from '../../../../assets/svg-icons/onboarding/brave-wallet.svg'
+import BraveWalletSvgDark from '../../../../assets/svg-icons/onboarding/brave-wallet-dark.svg'
+import MMSvg from '../../../../assets/svg-icons/onboarding/import-from-metamask.svg'
+import MMSvgDark from '../../../../assets/svg-icons/onboarding/import-from-metamask-dark.svg'
+import LegacyWalletSvg from '../../../../assets/svg-icons/onboarding/reset-to-brave-wallet.svg'
+import LegacyWalletSvgDark from '../../../../assets/svg-icons/onboarding/reset-to-brave-wallet-dark.svg'
+
 // styles
 import { WalletLink } from '../../../../components/shared/style'
 
@@ -15,7 +23,7 @@ export const CardButton = styled(WalletLink)`
   box-sizing: border-box;
   width: 376px;
   min-height: 88px;
-  background: #FFFFFF;
+  background: ${(p) => p.theme.color.background02};
   border: 1px solid ${(p) => p.theme.color.divider01};
   border-radius: 8px;
 
@@ -43,6 +51,7 @@ export const CardButton = styled(WalletLink)`
     line-height: 26px;
     letter-spacing: 0.02em;
     color: ${(p) => p.theme.color.text01};
+    text-align: left;
   }
 `
 
@@ -53,4 +62,40 @@ export const LinkRow = styled.div`
   align-items: center;
   justify-content: flex-start;
   margin-top: 20px;
+`
+
+export const MetaMaskIcon = styled.div`
+  width: 80px;
+  height: 80px;
+  background-image: url(${MMSvg});
+  background-size: 100%;
+  background-repeat: no-repeat;
+  background-position: center;
+  @media (prefers-color-scheme: dark) {
+    background-image: url(${MMSvgDark});
+  }
+`
+
+export const LegacyWalletIcon = styled.div`
+  width: 80px;
+  height: 80px;
+  background-image: url(${LegacyWalletSvg});
+  background-repeat: no-repeat;
+  background-size: 100%;
+  background-position: center;
+  @media (prefers-color-scheme: dark) {
+    background-image: url(${LegacyWalletSvgDark});
+  }
+`
+
+export const BraveWalletIcon = styled.div`
+  width: 80px;
+  height: 80px;
+  background-image: url(${BraveWalletSvg});
+  background-repeat: no-repeat;
+  background-size: 100%;
+  background-position: center;
+  @media (prefers-color-scheme: dark) {
+    background-image: url(${BraveWalletSvgDark});
+  }
 `

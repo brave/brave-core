@@ -777,6 +777,9 @@ constexpr webui::LocalizedString kLocalizedStrings[] = {
      IDS_BRAVE_WALLET_TERMS_OF_SERVICE_CHECKBOX_TEXT},
     {"braveWalletBuyCryptoButton", IDS_BRAVE_WALLET_BUY_CRYPTO_BUTTON},
     {"braveWalletDepositCryptoButton", IDS_BRAVE_WALLET_DEPOSIT_CRYPTO_BUTTON},
+    {"braveWalletCheckingInstalledExtensions",
+     IDS_BRAVE_WALLET_CHECKING_INSTALLED_EXTENSIONS},
+    {"braveWalletImportFromLegacy", IDS_BRAVE_WALLET_IMPORT_FROM_LEGACY},
     {"braveWalletWhatIsACryptoWallet",
      IDS_BRAVE_WALLET_WHAT_IS_A_CRYPTO_WALLET}};
 

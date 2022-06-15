@@ -15,10 +15,6 @@ import { PageState, WalletRoutes } from '../../../../constants/types'
 // actions
 import { WalletPageActions } from '../../../actions'
 
-// images
-import ImportFromMetaMaskSvg from '../../../../assets/svg-icons/onboarding/import-from-metamask.svg'
-import BraveWalletSvg from '../../../../assets/svg-icons/onboarding/brave-wallet.svg'
-
 // components
 import { WalletPageLayout } from '../../../../components/desktop'
 import { StepsNavigation } from '../../../../components/desktop/steps-navigation/steps-navigation'
@@ -34,14 +30,19 @@ import {
 } from '../onboarding.style'
 
 import {
+  BraveWalletIcon,
  CardButton,
- LinkRow
+ LegacyWalletIcon,
+ LinkRow,
+ MetaMaskIcon
 } from './import-or-restore-wallet.style'
 
 export const OnboardingImportOrRestoreWallet = () => {
   // redux
   const dispatch = useDispatch()
   const importWalletError = useSelector(({ page }: { page: PageState }) => page.importWalletError)
+  const isImportWalletsCheckComplete = useSelector(({ page }: { page: PageState }) => page.isImportWalletsCheckComplete)
+  const isLegacyCryptoWalletsInitialized = useSelector(({ page }: { page: PageState }) => page.isCryptoWalletsInitialized)
 
   // effects
   React.useEffect(() => {
@@ -52,6 +53,13 @@ export const OnboardingImportOrRestoreWallet = () => {
       }))
     }
   }, [importWalletError?.hasError])
+
+  React.useEffect(() => {
+    if (!isImportWalletsCheckComplete) {
+      // check if MM or legacy wallet is installed
+      dispatch(WalletPageActions.checkWalletsToImport())
+    }
+  }, [isImportWalletsCheckComplete])
 
   // render
   return (
@@ -80,8 +88,7 @@ export const OnboardingImportOrRestoreWallet = () => {
             <p>
               {getLocale('braveWalletRestoreMyBraveWallet')}
             </p>
-
-            <img src={BraveWalletSvg} height="50px" />
+            <BraveWalletIcon />
           </CardButton>
 
           <CardButton
@@ -90,9 +97,19 @@ export const OnboardingImportOrRestoreWallet = () => {
             <p>
               {getLocale('braveWalletImportFromMetaMask')}
             </p>
-
-            <img src={ImportFromMetaMaskSvg} height="50px" />
+            <MetaMaskIcon />
           </CardButton>
+
+          {isLegacyCryptoWalletsInitialized &&
+            <CardButton
+              to={WalletRoutes.OnboardingImportMetaMask}
+            >
+              <p>
+                {getLocale('braveWalletImportFromLegacy')}
+              </p>
+              <LegacyWalletIcon />
+            </CardButton>
+          }
 
           <LinkRow>
             <WalletLink
