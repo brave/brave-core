@@ -189,10 +189,12 @@ provideStrings({
   braveWalletCheckingInstalledExtensions: 'Checking for wallet extensions...',
   braveWalletImportOrRestoreWalletTitle: 'Connect to your existing wallet',
   braveWalletImportOrRestoreDescription: 'By connecting to your wallet, you may need to enter your 12 word recovery phrase to restore/import. We support Ethereum wallet at this time.',
-  braveWalletRestoreMyBraveWallet: 'Restore my Brave Wallet',
-  braveWalletCreateWalletInsteadLink: 'Never mind, I’ll create a new wallet',
+  braveWalletRestoreMyBraveWallet: 'Restore from seed phrase',
+  braveWalletRestoreMyBraveWalletDescription: '12-24 words',
   braveWalletImportFromMetaMask: 'Import from MetaMask',
+  braveWalletImportFromMetaMaskDescription: 'Use your MetaMask password to import your seed phrase',
   braveWalletImportFromLegacy: 'Import from legacy Brave crypto wallets',
+  braveWalletCreateWalletInsteadLink: 'Never mind, I’ll create a new wallet',
 
   // onboarding import wallet screen
   braveWalletImportPasswordError: 'Password is not correct',

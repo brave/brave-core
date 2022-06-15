@@ -32,6 +32,7 @@ import {
 import {
   BraveWalletIcon,
  CardButton,
+ CardButtonTextContainer,
  LegacyWalletIcon,
  LinkRow,
  MetaMaskIcon
@@ -85,18 +86,28 @@ export const OnboardingImportOrRestoreWallet = () => {
           <CardButton
             to={WalletRoutes.OnboardingRestoreWallet}
           >
-            <p>
-              {getLocale('braveWalletRestoreMyBraveWallet')}
-            </p>
+            <CardButtonTextContainer>
+              <p>
+                {getLocale('braveWalletRestoreMyBraveWallet')}
+              </p>
+              <p>
+                {getLocale('braveWalletRestoreMyBraveWalletDescription')}
+              </p>
+            </CardButtonTextContainer>
             <BraveWalletIcon />
           </CardButton>
 
           <CardButton
             to={WalletRoutes.OnboardingImportMetaMask}
           >
-            <p>
-              {getLocale('braveWalletImportFromMetaMask')}
-            </p>
+            <CardButtonTextContainer>
+              <p>
+                {getLocale('braveWalletImportFromMetaMask')}
+              </p>
+              <p>
+                {getLocale('braveWalletImportFromMetaMaskDescription')}
+              </p>
+            </CardButtonTextContainer>
             <MetaMaskIcon />
           </CardButton>
 
@@ -104,9 +115,11 @@ export const OnboardingImportOrRestoreWallet = () => {
             <CardButton
               to={WalletRoutes.OnboardingImportMetaMask}
             >
-              <p>
-                {getLocale('braveWalletImportFromLegacy')}
-              </p>
+              <CardButtonTextContainer>
+                <p>
+                  {getLocale('braveWalletImportFromLegacy')}
+                </p>
+              </CardButtonTextContainer>
               <LegacyWalletIcon />
             </CardButton>
           }
