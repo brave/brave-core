@@ -13,18 +13,17 @@
 #include "bat/ads/internal/serving/serving_features.h"
 
 namespace ads {
+namespace new_tab_page_ads {
 
 namespace {
 constexpr base::TimeDelta kTimeConstraint = base::Hours(1);
 }  // namespace
 
-NewTabPageAdsPerHourPermissionRule::NewTabPageAdsPerHourPermissionRule() =
-    default;
+AdsPerHourPermissionRule::AdsPerHourPermissionRule() = default;
 
-NewTabPageAdsPerHourPermissionRule::~NewTabPageAdsPerHourPermissionRule() =
-    default;
+AdsPerHourPermissionRule::~AdsPerHourPermissionRule() = default;
 
-bool NewTabPageAdsPerHourPermissionRule::ShouldAllow() {
+bool AdsPerHourPermissionRule::ShouldAllow() {
   const std::vector<base::Time>& history =
       GetAdEvents(AdType::kNewTabPageAd, ConfirmationType::kServed);
 
@@ -36,14 +35,15 @@ bool NewTabPageAdsPerHourPermissionRule::ShouldAllow() {
   return true;
 }
 
-std::string NewTabPageAdsPerHourPermissionRule::GetLastMessage() const {
+std::string AdsPerHourPermissionRule::GetLastMessage() const {
   return last_message_;
 }
 
-bool NewTabPageAdsPerHourPermissionRule::DoesRespectCap(
+bool AdsPerHourPermissionRule::DoesRespectCap(
     const std::vector<base::Time>& history) {
   return DoesHistoryRespectRollingTimeConstraint(
       history, kTimeConstraint, features::GetMaximumNewTabPageAdsPerHour());
 }
 
+}  // namespace new_tab_page_ads
 }  // namespace ads
