@@ -1244,6 +1244,7 @@ if (is_android) {
       "//chrome/browser/safe_browsing/android:java",
       "//chrome/browser/safety_check/android:java",
       "//chrome/browser/settings:test_support_java",
+      "//chrome/browser/share:java",
       "//chrome/browser/tab:java",
       "//chrome/browser/tabmodel:java",
       "//chrome/browser/ui/android/appmenu:java",
