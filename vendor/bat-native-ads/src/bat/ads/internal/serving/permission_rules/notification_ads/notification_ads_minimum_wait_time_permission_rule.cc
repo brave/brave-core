@@ -1,9 +1,9 @@
-/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+/* Copyright (c) 2022 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "bat/ads/internal/serving/permission_rules/minimum_wait_time_permission_rule.h"
+#include "bat/ads/internal/serving/permission_rules/notification_ads/notification_ads_minimum_wait_time_permission_rule.h"
 
 #include <cstdint>
 
@@ -16,6 +16,7 @@
 #include "bat/ads/internal/settings/settings.h"
 
 namespace ads {
+namespace notification_ads {
 
 namespace {
 constexpr int kMinimumWaitTimeCap = 1;
@@ -36,7 +37,8 @@ bool MinimumWaitTimePermissionRule::ShouldAllow() {
       GetAdEvents(AdType::kNotificationAd, ConfirmationType::kServed);
 
   if (!DoesRespectCap(history)) {
-    last_message_ = "Ad cannot be shown as minimum wait time has not passed";
+    last_message_ =
+        "Notification ad cannot be shown as minimum wait time has not passed";
     return false;
   }
 
@@ -61,4 +63,5 @@ bool MinimumWaitTimePermissionRule::DoesRespectCap(
                                                  kMinimumWaitTimeCap);
 }
 
+}  // namespace notification_ads
 }  // namespace ads

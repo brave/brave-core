@@ -1,9 +1,9 @@
-/* Copyright (c) 2020 The Brave Authors. All rights reserved.
+/* Copyright (c) 2022 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "bat/ads/internal/serving/permission_rules/minimum_wait_time_permission_rule.h"
+#include "bat/ads/internal/serving/permission_rules/notification_ads/notification_ads_minimum_wait_time_permission_rule.h"
 
 #include "bat/ads/internal/ad_events/ad_event_unittest_util.h"
 #include "bat/ads/internal/ads_client_helper.h"
@@ -13,15 +13,18 @@
 // npm run test -- brave_unit_tests --filter=BatAds*
 
 namespace ads {
+namespace notification_ads {
 
-class BatAdsMinimumWaitTimePermissionRuleTest : public UnitTestBase {
+class BatAdsNotificationAdsMinimumWaitTimePermissionRuleTest
+    : public UnitTestBase {
  protected:
-  BatAdsMinimumWaitTimePermissionRuleTest() = default;
+  BatAdsNotificationAdsMinimumWaitTimePermissionRuleTest() = default;
 
-  ~BatAdsMinimumWaitTimePermissionRuleTest() override = default;
+  ~BatAdsNotificationAdsMinimumWaitTimePermissionRuleTest() override = default;
 };
 
-TEST_F(BatAdsMinimumWaitTimePermissionRuleTest, AllowAdIfThereIsNoAdsHistory) {
+TEST_F(BatAdsNotificationAdsMinimumWaitTimePermissionRuleTest,
+       AllowAdIfThereIsNoAdsHistory) {
   // Arrange
 
   // Act
@@ -32,7 +35,8 @@ TEST_F(BatAdsMinimumWaitTimePermissionRuleTest, AllowAdIfThereIsNoAdsHistory) {
   EXPECT_TRUE(is_allowed);
 }
 
-TEST_F(BatAdsMinimumWaitTimePermissionRuleTest, AllowAdIfDoesNotExceedCap) {
+TEST_F(BatAdsNotificationAdsMinimumWaitTimePermissionRuleTest,
+       AllowAdIfDoesNotExceedCap) {
   // Arrange
   AdsClientHelper::Get()->SetInt64Pref(prefs::kAdsPerHour, 5);
 
@@ -48,7 +52,8 @@ TEST_F(BatAdsMinimumWaitTimePermissionRuleTest, AllowAdIfDoesNotExceedCap) {
   EXPECT_TRUE(is_allowed);
 }
 
-TEST_F(BatAdsMinimumWaitTimePermissionRuleTest, DoNotAllowAdIfExceedsCap) {
+TEST_F(BatAdsNotificationAdsMinimumWaitTimePermissionRuleTest,
+       DoNotAllowAdIfExceedsCap) {
   // Arrange
   AdsClientHelper::Get()->SetInt64Pref(prefs::kAdsPerHour, 5);
 
@@ -64,4 +69,5 @@ TEST_F(BatAdsMinimumWaitTimePermissionRuleTest, DoNotAllowAdIfExceedsCap) {
   EXPECT_FALSE(is_allowed);
 }
 
+}  // namespace notification_ads
 }  // namespace ads

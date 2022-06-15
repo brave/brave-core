@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "bat/ads/internal/serving/permission_rules/notification_ads/ads_per_hour_permission_rule.h"
+#include "bat/ads/internal/serving/permission_rules/notification_ads/notification_ads_per_hour_permission_rule.h"
 
 #include "base/time/time.h"
 #include "bat/ads/ad_type.h"
@@ -14,6 +14,7 @@
 #include "bat/ads/internal/settings/settings.h"
 
 namespace ads {
+namespace notification_ads {
 
 namespace {
 constexpr base::TimeDelta kTimeConstraint = base::Hours(1);
@@ -56,4 +57,5 @@ bool AdsPerHourPermissionRule::DoesRespectCap(
   return DoesHistoryRespectRollingTimeConstraint(history, kTimeConstraint, cap);
 }
 
+}  // namespace notification_ads
 }  // namespace ads
