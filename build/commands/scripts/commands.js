@@ -261,7 +261,7 @@ program
   .action(util.format)
 
 program
-  .command('mass-rename')
+  .command('mass_rename')
   .action(util.massRename)
 
 program
