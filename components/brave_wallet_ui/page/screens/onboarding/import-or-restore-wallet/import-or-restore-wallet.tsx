@@ -113,7 +113,7 @@ export const OnboardingImportOrRestoreWallet = () => {
 
           {isLegacyCryptoWalletsInitialized &&
             <CardButton
-              to={WalletRoutes.OnboardingImportMetaMask}
+              to={WalletRoutes.OnboardingImportCryptoWallets}
             >
               <CardButtonTextContainer>
                 <p>

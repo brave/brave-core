@@ -318,11 +318,15 @@ export const OnboardingRestoreFromRecoveryPhrase = ({
 
     // switch to phrase input if MM or legacy wallet was not detected
     if (currentStep === RestoreFromOtherWalletSteps.currentPassword && !isMetaMaskInitialized && !isLegacyCryptoWalletsInitialized) {
-      return setCurrentStep(RestoreFromOtherWalletSteps.phrase)
+      return history.push(WalletRoutes.OnboardingRestoreWallet)
     }
 
-    // switch to password input if MM or legacy wallet was detected
-    if (currentStep === RestoreFromOtherWalletSteps.phrase && (isMetaMaskInitialized || isLegacyCryptoWalletsInitialized)) {
+    // switch to password input if MM was detected
+    if (
+      currentStep === RestoreFromOtherWalletSteps.phrase &&
+      restoreFrom === 'metamask-seed' &&
+      isMetaMaskInitialized
+    ) {
       return setCurrentStep(RestoreFromOtherWalletSteps.currentPassword)
     }
   }, [restoreFrom, isImportWalletsCheckComplete, currentStep, isMetaMaskInitialized, isLegacyCryptoWalletsInitialized])
