@@ -13,18 +13,17 @@
 #include "bat/ads/internal/serving/serving_features.h"
 
 namespace ads {
+namespace search_result_ads {
 
 namespace {
 constexpr base::TimeDelta kTimeConstraint = base::Hours(1);
 }  // namespace
 
-SearchResultAdsPerHourPermissionRule::SearchResultAdsPerHourPermissionRule() =
-    default;
+AdsPerHourPermissionRule::AdsPerHourPermissionRule() = default;
 
-SearchResultAdsPerHourPermissionRule::~SearchResultAdsPerHourPermissionRule() =
-    default;
+AdsPerHourPermissionRule::~AdsPerHourPermissionRule() = default;
 
-bool SearchResultAdsPerHourPermissionRule::ShouldAllow() {
+bool AdsPerHourPermissionRule::ShouldAllow() {
   const std::vector<base::Time>& history =
       GetAdEvents(AdType::kSearchResultAd, ConfirmationType::kServed);
 
@@ -36,14 +35,15 @@ bool SearchResultAdsPerHourPermissionRule::ShouldAllow() {
   return true;
 }
 
-std::string SearchResultAdsPerHourPermissionRule::GetLastMessage() const {
+std::string AdsPerHourPermissionRule::GetLastMessage() const {
   return last_message_;
 }
 
-bool SearchResultAdsPerHourPermissionRule::DoesRespectCap(
+bool AdsPerHourPermissionRule::DoesRespectCap(
     const std::vector<base::Time>& history) {
   return DoesHistoryRespectRollingTimeConstraint(
       history, kTimeConstraint, features::GetMaximumSearchResultAdsPerHour());
 }
 
+}  // namespace search_result_ads
 }  // namespace ads

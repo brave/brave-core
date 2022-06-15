@@ -15,6 +15,7 @@
 // npm run test -- brave_unit_tests --filter=BatAds*
 
 namespace ads {
+namespace search_result_ads {
 
 class BatAdsSearchResultAdsPerDayPermissionRuleTest : public UnitTestBase {
  protected:
@@ -41,7 +42,7 @@ TEST_F(BatAdsSearchResultAdsPerDayPermissionRuleTest,
   // Arrange
 
   // Act
-  SearchResultAdsPerDayPermissionRule permission_rule;
+  AdsPerDayPermissionRule permission_rule;
   const bool is_allowed = permission_rule.ShouldAllow();
 
   // Assert
@@ -55,7 +56,7 @@ TEST_F(BatAdsSearchResultAdsPerDayPermissionRuleTest,
   RecordAdEvents(AdType::kSearchResultAd, ConfirmationType::kServed, count);
 
   // Act
-  SearchResultAdsPerDayPermissionRule permission_rule;
+  AdsPerDayPermissionRule permission_rule;
   const bool is_allowed = permission_rule.ShouldAllow();
 
   // Assert
@@ -71,7 +72,7 @@ TEST_F(BatAdsSearchResultAdsPerDayPermissionRuleTest,
   FastForwardClockBy(base::Days(1));
 
   // Act
-  SearchResultAdsPerDayPermissionRule permission_rule;
+  AdsPerDayPermissionRule permission_rule;
   const bool is_allowed = permission_rule.ShouldAllow();
 
   // Assert
@@ -87,11 +88,12 @@ TEST_F(BatAdsSearchResultAdsPerDayPermissionRuleTest,
   FastForwardClockBy(base::Hours(23));
 
   // Act
-  SearchResultAdsPerDayPermissionRule permission_rule;
+  AdsPerDayPermissionRule permission_rule;
   const bool is_allowed = permission_rule.ShouldAllow();
 
   // Assert
   EXPECT_FALSE(is_allowed);
 }
 
+}  // namespace search_result_ads
 }  // namespace ads
