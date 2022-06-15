@@ -156,7 +156,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout implements Connectio
     private static final String TAG = "BraveNewTabPageView";
     private static final String BRAVE_REF_URL = "https://brave.com/r/";
     private static final String BRAVE_LEARN_MORE_URL =
-            "https://brave.com/privacy/browser/#brave-today";
+            "https://brave.com/privacy/browser/#brave-news";
     private static final int ITEMS_PER_PAGE = 18;
     private static final int MINIMUM_VISIBLE_HEIGHT_THRESHOLD = 50;
     private static final int NEWS_SCROLL_TO_TOP_NEW = -1;
