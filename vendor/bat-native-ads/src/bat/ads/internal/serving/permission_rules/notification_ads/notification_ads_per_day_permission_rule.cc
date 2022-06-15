@@ -28,7 +28,7 @@ bool AdsPerDayPermissionRule::ShouldAllow() {
       GetAdEvents(AdType::kNotificationAd, ConfirmationType::kServed);
 
   if (!DoesRespectCap(history)) {
-    last_message_ = "You have exceeded the allowed ads per day";
+    last_message_ = "You have exceeded the allowed notification ads per day";
     return false;
   }
 

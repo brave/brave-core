@@ -35,7 +35,7 @@ bool AdsPerHourPermissionRule::ShouldAllow() {
       GetAdEvents(AdType::kNotificationAd, ConfirmationType::kServed);
 
   if (!DoesRespectCap(history)) {
-    last_message_ = "You have exceeded the allowed ads per hour";
+    last_message_ = "You have exceeded the allowed notification ads per hour";
     return false;
   }
 
