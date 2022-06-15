@@ -35,7 +35,7 @@ export const LinkText = styled.a`
   margin: 0px;
   cursor: pointer;
   vertical-align: middle;
-  display: flex;
+  display: inline-flex;
   flex-direction: row;
   gap: 8px;
   justify-content: center;

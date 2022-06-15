@@ -13,7 +13,7 @@ export const CheckboxText = styled.div`
   padding: 0;
   
   & > p {
-    padding-top: 0px;
+    padding-top: 4px;
     padding-left: 14px;
     text-align: left;
     vertical-align: top;

@@ -48,7 +48,7 @@ export const OnboardingDisclosures = () => {
 
   const termsOfServiceText = React.useMemo(() => {
     const text = getLocaleWithTag('braveWalletTermsOfServiceCheckboxText')
-    return <span key={text.duringTag}>
+    return <p key={text.duringTag}>
       {text.beforeTag}
       <LinkText
         href='https://brave.com' // TODO
@@ -58,7 +58,7 @@ export const OnboardingDisclosures = () => {
         {text.duringTag}
       </LinkText>
       {text.afterTag}
-    </span>
+    </p>
   }, [])
 
   // methods
@@ -98,7 +98,7 @@ export const OnboardingDisclosures = () => {
             >
               <div data-key='isResponsibilityCheckboxChecked'>
                 <CheckboxText>
-                <VerticalSpace space='40px' />
+                <VerticalSpace space='48px' />
                 <p>
                   {getLocale('braveWalletSelfCustodyDisclosureCheckboxText')}
                 </p>
