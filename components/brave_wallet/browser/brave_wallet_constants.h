@@ -271,6 +271,8 @@ constexpr webui::LocalizedString kLocalizedStrings[] = {
     {"braveWalletAddAsset", IDS_BRAVE_WALLET_ADD_ASSET},
     {"braveWalletAccountSettingsDisclaimer",
      IDS_BRAVE_WALLET_ACCOUNT_SETTINGS_DISCLAIMER},
+    {"braveWalletFilExportPrivateKeyFormatDescription",
+     IDS_BRAVE_WALLET_FIL_EXPORT_PRIVATE_KEY_FORMAT_DESCRIPTION},
     {"braveWalletAccountSettingsShowKey",
      IDS_BRAVE_WALLET_ACCOUNT_SETTINGS_SHOW_KEY},
     {"braveWalletAccountSettingsHideKey",
