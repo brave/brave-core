@@ -1024,6 +1024,10 @@ void KeyringService::GetPrivateKeyForImportedAccount(
       encoded_private_key = Base58Encode(private_key);
     } else if (keyring_id == mojom::kFilecoinKeyringId) {
       encoded_private_key = base::Base64Encode(private_key);
+      std::string json =
+          FilecoinKeyring::GetExportEncodedJSON(encoded_private_key, address);
+      std::move(callback).Run(!json.empty(), json);
+      return;
     } else {
       encoded_private_key = base::ToLowerASCII(base::HexEncode(private_key));
     }

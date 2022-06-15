@@ -61,7 +61,7 @@ void HDKeyring::RemoveAccount() {
 bool HDKeyring::AddImportedAddress(const std::string& address,
                                    std::unique_ptr<HDKeyBase> hd_key) {
   // Account already exists
-  if (imported_accounts_[address])
+  if (imported_accounts_.find(address) != imported_accounts_.end())
     return false;
   // Check if it is duplicate in derived accounts
   for (size_t i = 0; i < accounts_.size(); ++i) {
