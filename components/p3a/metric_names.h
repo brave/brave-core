@@ -47,6 +47,8 @@ constexpr inline auto kCollectedHistograms =
     "Brave.Rewards.WalletState",
     "Brave.Savings.BandwidthSavingsMB",
     "Brave.Search.DefaultEngine.4",
+    "Brave.Search.Promo.Banner",
+    "Brave.Search.Promo.Button",
     "Brave.Search.SwitchEngine",
     "Brave.Shields.AdBlockSetting",
     "Brave.Shields.DomainAdsSettingsAboveGlobal",

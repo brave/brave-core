@@ -27,6 +27,7 @@ class BraveOmniboxClientImpl : public ChromeOmniboxClient {
   bool IsAutocompleteEnabled() const override;
 
   void OnInputAccepted(const AutocompleteMatch& match) override;
+  void OnURLOpenedFromOmnibox(OmniboxLog* log) override;
 
  private:
   raw_ptr<Profile> profile_ = nullptr;

@@ -10,6 +10,7 @@
 #include "base/logging.h"
 #include "brave/browser/themes/theme_properties.h"
 #include "brave/browser/ui/views/omnibox/brave_omnibox_result_view.h"
+#include "brave/components/brave_search_conversion/p3a.h"
 #include "brave/components/l10n/common/locale_util.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "brave/grit/brave_theme_resources.h"
@@ -17,6 +18,7 @@
 #include "chrome/browser/ui/layout_constants.h"
 #include "chrome/browser/ui/omnibox/omnibox_theme.h"
 #include "chrome/browser/ui/views/chrome_typography.h"
+#include "components/prefs/pref_service.h"
 #include "components/strings/grit/components_strings.h"
 #include "components/vector_icons/vector_icons.h"
 #include "third_party/skia/include/core/SkPath.h"
@@ -245,11 +247,13 @@ END_METADATA
 }  // namespace
 
 BraveSearchConversionPromotionView::BraveSearchConversionPromotionView(
-    BraveOmniboxResultView* result_view)
+    BraveOmniboxResultView* result_view,
+    PrefService* local_state)
     : result_view_(result_view),
       mouse_enter_exit_handler_(base::BindRepeating(
           &BraveSearchConversionPromotionView::UpdateHoverState,
-          base::Unretained(this))) {
+          base::Unretained(this))),
+      local_state_(local_state) {
   SetLayoutManager(std::make_unique<views::FlexLayout>());
   mouse_enter_exit_handler_.ObserveMouseEnterExitOn(this);
 }
@@ -284,6 +288,8 @@ void BraveSearchConversionPromotionView::SetTypeAndInput(
   }
 
   UpdateState();
+
+  brave_search_conversion::p3a::RecordOmniboxPromoShown(local_state_, type);
 }
 
 void BraveSearchConversionPromotionView::OnSelectionStateChanged(
@@ -301,6 +307,7 @@ void BraveSearchConversionPromotionView::UpdateState() {
 }
 
 void BraveSearchConversionPromotionView::OpenMatch() {
+  brave_search_conversion::p3a::RecordOmniboxPromoTrigger(local_state_, type_);
   result_view_->OpenMatch();
 }
 
