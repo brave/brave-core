@@ -132,16 +132,16 @@ public class AssetDetailActivity
         btnBuy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Utils.openBuySendSwapActivity(
-                        AssetDetailActivity.this, BuySendSwapActivity.ActivityType.BUY);
+                Utils.openBuySendSwapActivity(AssetDetailActivity.this,
+                        BuySendSwapActivity.ActivityType.BUY, mAssetSymbol);
             }
         });
         Button btnSend = findViewById(R.id.btn_send);
         btnSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Utils.openBuySendSwapActivity(
-                        AssetDetailActivity.this, BuySendSwapActivity.ActivityType.SEND);
+                Utils.openBuySendSwapActivity(AssetDetailActivity.this,
+                        BuySendSwapActivity.ActivityType.SEND, mAssetSymbol);
             }
         });
         Button btnSwap = findViewById(R.id.btn_swap);
