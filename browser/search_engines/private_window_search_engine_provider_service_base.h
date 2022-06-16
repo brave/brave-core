@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_BROWSER_SEARCH_ENGINES_SEARCH_ENGINE_PROVIDER_SERVICE_H_
-#define BRAVE_BROWSER_SEARCH_ENGINES_SEARCH_ENGINE_PROVIDER_SERVICE_H_
+#ifndef BRAVE_BROWSER_SEARCH_ENGINES_PRIVATE_WINDOW_SEARCH_ENGINE_PROVIDER_SERVICE_BASE_H_
+#define BRAVE_BROWSER_SEARCH_ENGINES_PRIVATE_WINDOW_SEARCH_ENGINE_PROVIDER_SERVICE_BASE_H_
 
 #include <string>
 
@@ -15,14 +15,15 @@ class Profile;
 class TemplateURL;
 class TemplateURLService;
 
-class SearchEngineProviderService : public KeyedService {
+class PrivateWindowSearchEngineProviderServiceBase : public KeyedService {
  public:
-  explicit SearchEngineProviderService(Profile* otr_profile);
-  ~SearchEngineProviderService() override;
+  explicit PrivateWindowSearchEngineProviderServiceBase(Profile* otr_profile);
+  ~PrivateWindowSearchEngineProviderServiceBase() override;
 
-  SearchEngineProviderService(const SearchEngineProviderService&) = delete;
-  SearchEngineProviderService& operator=(const SearchEngineProviderService&) =
-      delete;
+  PrivateWindowSearchEngineProviderServiceBase(
+      const PrivateWindowSearchEngineProviderServiceBase&) = delete;
+  PrivateWindowSearchEngineProviderServiceBase& operator=(
+      const PrivateWindowSearchEngineProviderServiceBase&) = delete;
 
  protected:
   bool ShouldUseExtensionSearchProvider() const;
@@ -39,4 +40,4 @@ class SearchEngineProviderService : public KeyedService {
   bool CouldAddExtensionTemplateURL(const TemplateURL* url);
 };
 
-#endif  // BRAVE_BROWSER_SEARCH_ENGINES_SEARCH_ENGINE_PROVIDER_SERVICE_H_
+#endif  // BRAVE_BROWSER_SEARCH_ENGINES_PRIVATE_WINDOW_SEARCH_ENGINE_PROVIDER_SERVICE_BASE_H_

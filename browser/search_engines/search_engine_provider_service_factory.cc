@@ -8,6 +8,7 @@
 #include <string>
 
 #include "brave/browser/profiles/profile_util.h"
+#include "brave/browser/search_engines/normal_window_search_engine_provider_service.h"
 #include "brave/browser/search_engines/private_window_search_engine_provider_service.h"
 #include "brave/browser/search_engines/tor_window_search_engine_provider_service.h"
 #include "brave/components/search_engines/brave_prepopulated_engines.h"
@@ -32,20 +33,13 @@ KeyedService* InitializeSearchEngineProviderServiceIfNeeded(Profile* profile) {
   }
 
   if (profile->IsRegularProfile()) {
-    return new SearchEngineProviderService(profile->GetOriginalProfile());
+    return new NormalWindowSearchEngineProviderService(profile);
   }
 
   return nullptr;
 }
 
 }  // namespace
-
-// static
-SearchEngineProviderService* SearchEngineProviderServiceFactory::GetForProfile(
-    Profile* profile) {
-  return static_cast<SearchEngineProviderService*>(
-      GetInstance()->GetServiceForBrowserContext(profile, true));
-}
 
 // static
 SearchEngineProviderServiceFactory*

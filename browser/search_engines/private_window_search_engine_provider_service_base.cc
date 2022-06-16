@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/search_engines/search_engine_provider_service.h"
+#include "brave/browser/search_engines/private_window_search_engine_provider_service_base.h"
 
 #include <memory>
 #include <utility>
@@ -21,18 +21,19 @@
 #include "extensions/browser/extension_prefs.h"
 #endif
 
-SearchEngineProviderService::SearchEngineProviderService(Profile* otr_profile)
+PrivateWindowSearchEngineProviderServiceBase::
+    PrivateWindowSearchEngineProviderServiceBase(Profile* otr_profile)
     : otr_profile_(otr_profile),
       original_template_url_service_(TemplateURLServiceFactory::GetForProfile(
           otr_profile_->GetOriginalProfile())),
       otr_template_url_service_(
-          TemplateURLServiceFactory::GetForProfile(otr_profile_)) {
-  brave::SetDefaultPrivateSearchProvider(otr_profile_->GetOriginalProfile());
-}
+          TemplateURLServiceFactory::GetForProfile(otr_profile_)) {}
 
-SearchEngineProviderService::~SearchEngineProviderService() = default;
+PrivateWindowSearchEngineProviderServiceBase::
+    ~PrivateWindowSearchEngineProviderServiceBase() = default;
 
-void SearchEngineProviderService::UseExtensionSearchProvider() {
+void PrivateWindowSearchEngineProviderServiceBase::
+    UseExtensionSearchProvider() {
 #if BUILDFLAG(ENABLE_EXTENSIONS)
   DCHECK(ShouldUseExtensionSearchProvider());
 
@@ -90,11 +91,12 @@ void SearchEngineProviderService::UseExtensionSearchProvider() {
 #endif
 }
 
-bool SearchEngineProviderService::ShouldUseExtensionSearchProvider() const {
+bool PrivateWindowSearchEngineProviderServiceBase::
+    ShouldUseExtensionSearchProvider() const {
   return original_template_url_service_->IsExtensionControlledDefaultSearch();
 }
 
-bool SearchEngineProviderService::CouldAddExtensionTemplateURL(
+bool PrivateWindowSearchEngineProviderServiceBase::CouldAddExtensionTemplateURL(
     const TemplateURL* url) {
   DCHECK(url);
   DCHECK_NE(TemplateURL::NORMAL, url->type());

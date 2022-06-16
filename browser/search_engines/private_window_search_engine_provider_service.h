@@ -9,13 +9,13 @@
 #include <string>
 
 #include "base/scoped_observation.h"
-#include "brave/browser/search_engines/search_engine_provider_service.h"
+#include "brave/browser/search_engines/private_window_search_engine_provider_service_base.h"
 #include "components/prefs/pref_member.h"
 #include "components/search_engines/template_url_service.h"
 #include "components/search_engines/template_url_service_observer.h"
 
 class PrivateWindowSearchEngineProviderService
-    : public SearchEngineProviderService,
+    : public PrivateWindowSearchEngineProviderServiceBase,
       public TemplateURLServiceObserver {
  public:
   explicit PrivateWindowSearchEngineProviderService(Profile* otr_profile);

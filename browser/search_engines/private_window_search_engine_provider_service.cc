@@ -13,8 +13,8 @@
 #include "components/search_engines/template_url.h"
 
 PrivateWindowSearchEngineProviderService::
-PrivateWindowSearchEngineProviderService(Profile* otr_profile)
-    : SearchEngineProviderService(otr_profile) {
+    PrivateWindowSearchEngineProviderService(Profile* otr_profile)
+    : PrivateWindowSearchEngineProviderServiceBase(otr_profile) {
   DCHECK(otr_profile->IsIncognitoProfile());
   private_search_provider_guid_.Init(
       prefs::kSyncedDefaultPrivateSearchProviderGUID,
@@ -61,7 +61,7 @@ void PrivateWindowSearchEngineProviderService::
 }
 
 void PrivateWindowSearchEngineProviderService::Shutdown() {
-  SearchEngineProviderService::Shutdown();
+  PrivateWindowSearchEngineProviderServiceBase::Shutdown();
   observation_.Reset();
 }
 

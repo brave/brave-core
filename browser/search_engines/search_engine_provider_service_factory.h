@@ -27,9 +27,6 @@ class SearchEngineProviderServiceFactory
   static SearchEngineProviderServiceFactory* GetInstance();
 
  private:
-  // Only for test.
-  static SearchEngineProviderService* GetForProfile(Profile* profile);
-
   friend
       struct base::DefaultSingletonTraits<SearchEngineProviderServiceFactory>;
   SearchEngineProviderServiceFactory();
