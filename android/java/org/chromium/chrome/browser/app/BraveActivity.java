@@ -348,7 +348,6 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
         });
     }
 
-
     private void setWalletBadgeVisibility(boolean visibile) {
         BraveToolbarLayoutImpl layout = getBraveToolbarLayout();
         if (layout != null) {
