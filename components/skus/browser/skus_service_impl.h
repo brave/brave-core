@@ -72,9 +72,11 @@ class SkusServiceImpl : public KeyedService, public mojom::SkusService {
 
   // mojom::SkusService
   void RefreshOrder(
+      const std::string& domain,
       const std::string& order_id,
       skus::mojom::SkusService::RefreshOrderCallback callback) override;
   void FetchOrderCredentials(
+      const std::string& domain,
       const std::string& order_id,
       skus::mojom::SkusService::FetchOrderCredentialsCallback callback)
       override;
@@ -86,6 +88,7 @@ class SkusServiceImpl : public KeyedService, public mojom::SkusService {
   void CredentialSummary(
       const std::string& domain,
       skus::mojom::SkusService::CredentialSummaryCallback callback) override;
+  ::rust::Box<skus::CppSDK>& GetOrCreateSDK(const std::string& domain);
 
  private:
   void OnCredentialSummary(
@@ -93,8 +96,9 @@ class SkusServiceImpl : public KeyedService, public mojom::SkusService {
       mojom::SkusService::CredentialSummaryCallback callback,
       const std::string& summary_string);
 
-  std::unique_ptr<skus::SkusContextImpl> context_;
-  ::rust::Box<skus::CppSDK> sdk_;
+  raw_ptr<PrefService> prefs_;
+  scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
+  std::unordered_map<std::string, ::rust::Box<skus::CppSDK>> sdk_;
   mojo::ReceiverSet<mojom::SkusService> receivers_;
   base::WeakPtrFactory<SkusServiceImpl> weak_factory_{this};
 };
