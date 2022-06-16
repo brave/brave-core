@@ -7,8 +7,6 @@
 
 #include <sstream>
 
-#include "bat/ads/confirmation_type.h"
-
 namespace ads {
 
 NotificationAdEvent::NotificationAdEvent() = default;
@@ -21,7 +19,7 @@ void NotificationAdEvent::SetEventType(
 }
 
 brave_federated::mojom::DataType NotificationAdEvent::GetDataType() const {
-  return brave_federated::mojom::DataType::kBool;
+  return brave_federated::mojom::DataType::kString;
 }
 
 brave_federated::mojom::CovariateType NotificationAdEvent::GetType() const {

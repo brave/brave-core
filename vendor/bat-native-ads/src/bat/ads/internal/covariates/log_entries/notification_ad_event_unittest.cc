@@ -7,21 +7,31 @@
 
 #include <sstream>
 
-#include "bat/ads/confirmation_type.h"
 #include "bat/ads/internal/base/unittest/unittest_base.h"
 
 // npm run test -- brave_unit_tests --filter=BatAdsFederatedLogEntries*
 
 namespace ads {
 
-class BatAdsFederatedLogEntriesNotificationAdEventTest : public UnitTestBase {
- protected:
-  BatAdsFederatedLogEntriesNotificationAdEventTest() = default;
+namespace {
 
-  ~BatAdsFederatedLogEntriesNotificationAdEventTest() override = default;
-};
+std::string GetValueForEventType(
+    const mojom::NotificationAdEventType event_type) {
+  NotificationAdEvent notification_ad_event;
+  notification_ad_event.SetEventType(event_type);
+  return notification_ad_event.GetValue();
+}
 
-TEST_F(BatAdsFederatedLogEntriesNotificationAdEventTest, GetDataType) {
+std::string GetEventTypeAsString(
+    const mojom::NotificationAdEventType event_type) {
+  std::stringstream ss;
+  ss << event_type;
+  return ss.str();
+}
+
+}  // namespace
+
+TEST(BatAdsFederatedLogEntriesNotificationAdEventTest, GetDataType) {
   NotificationAdEvent notification_ad_event;
 
   // Act
@@ -29,58 +39,46 @@ TEST_F(BatAdsFederatedLogEntriesNotificationAdEventTest, GetDataType) {
       notification_ad_event.GetDataType();
 
   // Assert
-  EXPECT_EQ(brave_federated::mojom::DataType::kBool, data_type);
+  EXPECT_EQ(brave_federated::mojom::DataType::kString, data_type);
 }
 
-TEST_F(BatAdsFederatedLogEntriesNotificationAdEventTest, GetValueWhenClicked) {
+TEST(BatAdsFederatedLogEntriesNotificationAdEventTest, GetValueWhenClicked) {
   // Arrange
-  NotificationAdEvent notification_ad_event;
-  mojom::NotificationAdEventType clicked =
+  mojom::NotificationAdEventType event_type =
       mojom::NotificationAdEventType::kClicked;
 
   // Act
-  notification_ad_event.SetEventType(clicked);
-  const std::string value = notification_ad_event.GetValue();
-
-  std::stringstream ss;
-  ss << clicked;
+  const std::string value = GetValueForEventType(event_type);
 
   // Assert
-  EXPECT_EQ(ss.str(), value);
+  const std::string expected_value = GetEventTypeAsString(event_type);
+  EXPECT_EQ(expected_value, value);
 }
 
-TEST_F(BatAdsFederatedLogEntriesNotificationAdEventTest,
-       GetValueWhenDismissed) {
+TEST(BatAdsFederatedLogEntriesNotificationAdEventTest, GetValueWhenDismissed) {
   // Arrange
-  NotificationAdEvent notification_ad_event;
-  mojom::NotificationAdEventType dismissed =
+  mojom::NotificationAdEventType event_type =
       mojom::NotificationAdEventType::kDismissed;
 
   // Act
-  notification_ad_event.SetEventType(dismissed);
-  const std::string value = notification_ad_event.GetValue();
-
-  std::stringstream ss;
-  ss << dismissed;
+  const std::string value = GetValueForEventType(event_type);
 
   // Assert
-  EXPECT_EQ(ss.str(), value);
+  const std::string expected_value = GetEventTypeAsString(event_type);
+  EXPECT_EQ(expected_value, value);
 }
 
-TEST_F(BatAdsFederatedLogEntriesNotificationAdEventTest, GetValueWhenTimeout) {
+TEST(BatAdsFederatedLogEntriesNotificationAdEventTest, GetValueWhenTimeout) {
   // Arrange
-  NotificationAdEvent notification_ad_event;
-  mojom::NotificationAdEventType timed_out =
+  mojom::NotificationAdEventType event_type =
       mojom::NotificationAdEventType::kTimedOut;
 
   // Act
-  const std::string value = notification_ad_event.GetValue();
-
-  std::stringstream ss;
-  ss << timed_out;
+  const std::string value = GetValueForEventType(event_type);
 
   // Assert
-  EXPECT_EQ(ss.str(), value);
+  const std::string expected_value = GetEventTypeAsString(event_type);
+  EXPECT_EQ(expected_value, value);
 }
 
 }  // namespace ads
