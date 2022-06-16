@@ -65,6 +65,7 @@ struct TransactionHeader: View {
         Text(urlOrigin: originInfo.origin)
           .foregroundColor(Color(.braveLabel))
           .font(.subheadline)
+          .multilineTextAlignment(.center)
           .padding(.top, 8) // match vertical padding for tx type, value & fiat VStack
       }
       VStack(spacing: 4) {

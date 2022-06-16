@@ -42,13 +42,13 @@ public struct NewSiteConnectionView: View {
           Image(uiImage: image)
             .resizable()
             .scaledToFit()
-            .frame(width: min(faviconSize, maxFaviconSize), height: min(faviconSize, maxFaviconSize))
             .background(Color(.braveDisabled))
             .clipShape(RoundedRectangle(cornerRadius: 4, style: .continuous))
         } else {
           ProgressView()
         }
       }
+      .frame(width: min(faviconSize, maxFaviconSize), height: min(faviconSize, maxFaviconSize))
     }
     Text(urlOrigin: urlOrigin)
       .font(.subheadline)
