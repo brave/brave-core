@@ -408,6 +408,21 @@ Config.prototype.buildArgs = function () {
     args.use_vaapi = true
   }
 
+  // Enable Page Graph only in desktop builds.
+  if (this.targetOS !== 'android' && this.targetOS !== 'ios') {
+    args.enable_brave_page_graph = true
+  } else {
+    args.enable_brave_page_graph = false
+  }
+  // Enable Page Graph WebAPI probes only in dev/nightly builds.
+  if (args.enable_brave_page_graph &&
+      (!this.isBraveReleaseBuild() || this.channel === 'dev' ||
+       this.channel === 'nightly')) {
+    args.enable_brave_page_graph_webapi_probes = true
+  } else {
+    args.enable_brave_page_graph_webapi_probes = false
+  }
+
   if (this.targetOS) {
     args.target_os = this.targetOS;
   }
