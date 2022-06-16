@@ -11,7 +11,6 @@
 #include "base/feature_list.h"
 #include "base/metrics/histogram_macros.h"
 #include "base/strings/stringprintf.h"
-#include "base/task/post_task.h"
 #include "brave/browser/net/brave_request_handler.h"
 #include "brave/components/brave_shields/browser/adblock_stub_response.h"
 #include "brave/components/brave_shields/common/features.h"

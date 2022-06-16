@@ -203,4 +203,16 @@ GURL GetConnectWithSiteWebUIURL(const GURL& webui_base_url,
   return webui_base_url.ReplaceComponents(replacements);
 }
 
+absl::optional<blink::PermissionType> CoinTypeToPermissionType(
+    mojom::CoinType coin_type) {
+  switch (coin_type) {
+    case mojom::CoinType::ETH:
+      return blink::PermissionType::BRAVE_ETHEREUM;
+    case mojom::CoinType::SOL:
+      return blink::PermissionType::BRAVE_SOLANA;
+    default:
+      return absl::nullopt;
+  }
+}
+
 }  // namespace brave_wallet

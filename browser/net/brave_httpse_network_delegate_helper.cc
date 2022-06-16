@@ -9,7 +9,6 @@
 #include <memory>
 #include <string>
 
-#include "base/task/post_task.h"
 #include "base/threading/scoped_blocking_call.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/brave_shields/brave_shields_web_contents_observer.h"

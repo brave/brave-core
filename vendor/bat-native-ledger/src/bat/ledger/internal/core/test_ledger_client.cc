@@ -12,9 +12,9 @@
 #include "base/callback_helpers.h"
 #include "base/logging.h"
 #include "base/path_service.h"
+#include "base/strings/escape.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/threading/sequenced_task_runner_handle.h"
-#include "net/base/escape.h"
 #include "net/http/http_status_code.h"
 
 namespace ledger {
@@ -117,7 +117,7 @@ void TestLedgerClient::FetchFavIcon(const std::string& url,
 }
 
 std::string TestLedgerClient::URIEncode(const std::string& value) {
-  return net::EscapeQueryParamValue(value, false);
+  return base::EscapeQueryParamValue(value, false);
 }
 
 void TestLedgerClient::LoadURL(mojom::UrlRequestPtr request,

@@ -15,12 +15,12 @@
 #include "base/files/file_enumerator.h"
 #include "base/files/file_util.h"
 #include "base/guid.h"
-#include "base/task/post_task.h"
 #include "base/task/thread_pool.h"
 #include "brave/components/ipfs/blob_context_getter_factory.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/ipfs/ipfs_constants.h"
 #include "content/public/browser/browser_task_traits.h"
+#include "content/public/browser/browser_thread.h"
 #include "net/base/mime_util.h"
 #include "services/network/public/cpp/resource_request.h"
 #include "services/network/public/cpp/simple_url_loader.h"
@@ -263,8 +263,8 @@ void CreateRequestForFile(
   content_type += " boundary=";
   content_type += mime_boundary;
 
-  base::PostTaskAndReplyWithResult(
-      FROM_HERE, {base::MayBlock(), content::BrowserThread::IO},
+  content::GetIOThreadTaskRunner({})->PostTaskAndReplyWithResult(
+      FROM_HERE,
       base::BindOnce(&CreateResourceRequest, std::move(blob_builder_callback),
                      content_type, blob_context_getter_factory),
       std::move(request_callback));
@@ -300,8 +300,8 @@ void CreateRequestForFileList(
   content_type += " boundary=";
   content_type += mime_boundary;
 
-  base::PostTaskAndReplyWithResult(
-      FROM_HERE, {base::MayBlock(), content::BrowserThread::IO},
+  content::GetIOThreadTaskRunner({})->PostTaskAndReplyWithResult(
+      FROM_HERE,
       base::BindOnce(&CreateResourceRequest, std::move(blob_builder_callback),
                      content_type, blob_context_getter_factory),
       std::move(request_callback));
@@ -329,8 +329,8 @@ void CreateRequestForText(const std::string& text,
   content_type += " boundary=";
   content_type += mime_boundary;
 
-  base::PostTaskAndReplyWithResult(
-      FROM_HERE, {base::MayBlock(), content::BrowserThread::IO},
+  content::GetIOThreadTaskRunner({})->PostTaskAndReplyWithResult(
+      FROM_HERE,
       base::BindOnce(&CreateResourceRequest, std::move(blob_builder_callback),
                      content_type, context_factory),
       std::move(request_callback));

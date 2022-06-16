@@ -12,7 +12,6 @@
 #include "base/no_destructor.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_number_conversions.h"
-#include "base/task/post_task.h"
 #include "brave/common/network_constants.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
@@ -593,12 +592,11 @@ void BravePrefProvider::UpdateCookieRules(ContentSettingsType content_type,
   if (initialized_ && (content_type == ContentSettingsType::BRAVE_COOKIES ||
                        content_type == ContentSettingsType::BRAVE_SHIELDS)) {
     // PostTask here to avoid content settings autolock DCHECK
-    base::PostTask(
-        FROM_HERE,
-        {content::BrowserThread::UI, base::TaskPriority::USER_VISIBLE},
-        base::BindOnce(&BravePrefProvider::NotifyChanges,
-                       weak_factory_.GetWeakPtr(),
-                       std::move(brave_cookie_updates), incognito));
+    content::GetUIThreadTaskRunner({base::TaskPriority::USER_VISIBLE})
+        ->PostTask(FROM_HERE,
+                   base::BindOnce(&BravePrefProvider::NotifyChanges,
+                                  weak_factory_.GetWeakPtr(),
+                                  std::move(brave_cookie_updates), incognito));
   }
 }
 

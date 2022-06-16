@@ -10,7 +10,7 @@
 #include "brave/browser/permissions/brave_ethereum_permission_prompt_dialog_controller_android.h"
 #include "brave/components/brave_wallet/browser/permission_utils.h"
 #include "brave/components/permissions/contexts/brave_wallet_permission_context.h"
-#include "components/permissions/android/permission_prompt_android.h"
+#include "components/permissions/android/permission_prompt/permission_prompt_android.h"
 #include "content/public/browser/web_contents.h"
 
 BraveWalletPermissionPrompt::BraveWalletPermissionPrompt(

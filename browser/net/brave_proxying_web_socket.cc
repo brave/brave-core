@@ -11,7 +11,6 @@
 #include "base/containers/flat_set.h"
 #include "base/strings/string_util.h"
 #include "base/strings/stringprintf.h"
-#include "base/task/post_task.h"
 #include "brave/browser/net/brave_request_handler.h"
 #include "brave/common/network_constants.h"
 #include "content/public/browser/browser_context.h"

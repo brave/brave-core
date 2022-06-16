@@ -10,7 +10,6 @@
 #include <utility>
 
 #include "base/rand_util.h"
-#include "base/task/post_task.h"
 #include "base/task/thread_pool.h"
 #include "brave/components/ipfs/blob_context_getter_factory.h"
 #include "brave/components/ipfs/ipfs_constants.h"

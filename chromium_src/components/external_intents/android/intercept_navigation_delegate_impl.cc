@@ -6,6 +6,7 @@
 #include <string>
 
 #include "base/memory/raw_ptr.h"
+#include "base/strings/escape.h"
 #include "brave/common/pref_names.h"
 #include "components/external_intents/android/jni_headers/InterceptNavigationDelegateImpl_jni.h"
 #include "components/navigation_interception/intercept_navigation_delegate.h"
@@ -15,7 +16,6 @@
 #include "content/public/browser/browser_thread.h"
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/web_contents.h"
-#include "net/base/escape.h"
 #include "url/gurl.h"
 
 namespace external_intents {
@@ -34,7 +34,7 @@ class BraveInterceptNavigationDelegate : public InterceptNavigationDelegate {
 
   bool ShouldIgnoreNavigation(
       content::NavigationHandle* navigation_handle) override {
-    if (ShouldPlayVideoInBrowser(GURL(net::EscapeExternalHandlerValue(
+    if (ShouldPlayVideoInBrowser(GURL(base::EscapeExternalHandlerValue(
             navigation_handle->GetURL().spec()))))
       return false;
 

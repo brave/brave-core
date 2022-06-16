@@ -12,7 +12,7 @@
 #include "base/files/file_util.h"
 #include "base/guid.h"
 #include "base/strings/utf_string_conversions.h"
-#include "base/task/post_task.h"
+#include "base/task/task_runner_util.h"
 #include "base/task/thread_pool.h"
 #include "brave/browser/ipfs/import/save_package_observer.h"
 #include "brave/browser/ipfs/ipfs_service_factory.h"
@@ -223,8 +223,7 @@ void IpfsImportController::OnDownloadFinished(
     case download::DownloadItem::CANCELLED:
       base::ThreadPool::PostTask(
           FROM_HERE, {base::TaskPriority::BEST_EFFORT, base::MayBlock()},
-          base::BindOnce(base::GetDeletePathRecursivelyCallback(),
-                         path.DirName()));
+          base::GetDeletePathRecursivelyCallback(path.DirName()));
       break;
     default:
       NOTREACHED();
@@ -289,8 +288,7 @@ void IpfsImportController::OnWebPageImportCompleted(
     const ipfs::ImportedData& data) {
   base::ThreadPool::PostTask(
       FROM_HERE, {base::TaskPriority::BEST_EFFORT, base::MayBlock()},
-      base::BindOnce(base::GetDeletePathRecursivelyCallback(),
-                     imported_direcory.DirName()));
+      GetDeletePathRecursivelyCallback(imported_direcory.DirName()));
   OnImportCompleted(data);
 }
 

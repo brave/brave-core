@@ -48,7 +48,7 @@ void Initialize::OnCreateOrOpen(mojom::DBCommandResponsePtr response,
   }
 
   if (!response->result || response->result->get_value()->which() !=
-                               mojom::DBValue::Tag::INT_VALUE) {
+                               mojom::DBValue::Tag::kIntValue) {
     last_message_ = "Invalid response result type";
     callback(/* success */ false);
     return;

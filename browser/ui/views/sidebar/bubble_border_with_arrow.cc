@@ -72,7 +72,7 @@ void BubbleBorderWithArrow::Paint(const views::View& view,
   cc::PaintFlags flags;
   flags.setAntiAlias(true);
   flags.setStyle(cc::PaintFlags::kFill_Style);
-  flags.setColor(background_color());
+  flags.setColor(color());
 
   gfx::RectF bounds(view.GetLocalBounds());
   bounds.Inset(gfx::InsetsF(

@@ -10,6 +10,7 @@
 #include "base/test/scoped_feature_list.h"
 #include "brave/components/brave_wallet/browser/permission_utils.h"
 #include "brave/components/brave_wallet/common/features.h"
+#include "brave/components/permissions/brave_permission_manager.h"
 #include "brave/components/permissions/contexts/brave_wallet_permission_context.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/permissions/permission_manager_factory.h"
@@ -85,8 +86,8 @@ class PermissionManagerBrowserTest : public InProcessBrowserTest {
     https_server()->ServeFilesFromSourceDirectory(GetChromeTestDataDir());
     ASSERT_TRUE(https_server()->Start());
 
-    permission_manager_ =
-        PermissionManagerFactory::GetForProfile(browser()->profile());
+    permission_manager_ = static_cast<permissions::BravePermissionManager*>(
+        PermissionManagerFactory::GetForProfile(browser()->profile()));
   }
 
   PermissionRequestManager* GetPermissionRequestManager() {
@@ -106,7 +107,7 @@ class PermissionManagerBrowserTest : public InProcessBrowserTest {
   }
 
   net::EmbeddedTestServer* https_server() { return &https_server_; }
-  PermissionManager* permission_manager() { return permission_manager_; }
+  BravePermissionManager* permission_manager() { return permission_manager_; }
 
   bool IsPendingGroupedRequestsEmpty(ContentSettingsType type) {
     PermissionContextBase* context =
@@ -116,7 +117,7 @@ class PermissionManagerBrowserTest : public InProcessBrowserTest {
 
  protected:
   net::test_server::EmbeddedTestServer https_server_;
-  raw_ptr<PermissionManager> permission_manager_ = nullptr;
+  raw_ptr<BravePermissionManager> permission_manager_ = nullptr;
 
  private:
   base::test::ScopedFeatureList scoped_feature_list_;
@@ -131,18 +132,22 @@ IN_PROC_BROWSER_TEST_F(PermissionManagerBrowserTest, RequestPermissions) {
   struct {
     std::vector<std::string> addresses;
     ContentSettingsType type;
+    blink::PermissionType permission;
   } cases[] = {{{"0xaf5Ad1E10926C0Ee4af4eDAC61DD60E853753f8A",
                  "0xaf5Ad1E10926C0Ee4af4eDAC61DD60E853753f8B"},
-                ContentSettingsType::BRAVE_ETHEREUM},
+                ContentSettingsType::BRAVE_ETHEREUM,
+                blink::PermissionType::BRAVE_ETHEREUM},
                {{"BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8",
                  "JDqrvDz8d8tFCADashbUKQDKfJZFobNy13ugN65t1wvV"},
-                ContentSettingsType::BRAVE_SOLANA}};
+                ContentSettingsType::BRAVE_SOLANA,
+                blink::PermissionType::BRAVE_SOLANA}};
   for (size_t i = 0; i < sizeof(cases) / sizeof(cases[0]); ++i) {
     const std::vector<std::string>& addresses = cases[i].addresses;
     RequestType request_type = ContentSettingsTypeToRequestType(cases[i].type);
     EXPECT_TRUE(IsPendingGroupedRequestsEmpty(cases[i].type)) << "case: " << i;
 
-    std::vector<ContentSettingsType> types(addresses.size(), cases[i].type);
+    std::vector<blink::PermissionType> permissions(addresses.size(),
+                                                   cases[i].permission);
     std::vector<url::Origin> sub_request_origins(addresses.size());
     for (size_t j = 0; j < addresses.size(); ++j) {
       ASSERT_TRUE(brave_wallet::GetSubRequestOrigin(
@@ -158,8 +163,8 @@ IN_PROC_BROWSER_TEST_F(PermissionManagerBrowserTest, RequestPermissions) {
     auto observer = std::make_unique<PermissionRequestManagerObserver>(
         permission_request_manager);
 
-    permission_manager()->RequestPermissions(
-        types, web_contents()->GetMainFrame(), origin.GetURL(), true,
+    permission_manager()->RequestPermissionsForOrigin(
+        permissions, web_contents()->GetMainFrame(), origin.GetURL(), true,
         base::DoNothing());
 
     content::RunAllTasksUntilIdle();
@@ -195,8 +200,8 @@ IN_PROC_BROWSER_TEST_F(PermissionManagerBrowserTest, RequestPermissions) {
     }
 
     observer->Reset();
-    permission_manager()->RequestPermissions(
-        types, web_contents()->GetMainFrame(), origin.GetURL(), true,
+    permission_manager()->RequestPermissionsForOrigin(
+        permissions, web_contents()->GetMainFrame(), origin.GetURL(), true,
         base::DoNothing());
 
     content::RunAllTasksUntilIdle();
@@ -243,12 +248,15 @@ IN_PROC_BROWSER_TEST_F(PermissionManagerBrowserTest,
   struct {
     std::vector<std::string> addresses;
     ContentSettingsType type;
+    blink::PermissionType permission;
   } cases[] = {{{"0xaf5Ad1E10926C0Ee4af4eDAC61DD60E853753f8C",
                  "0xaf5Ad1E10926C0Ee4af4eDAC61DD60E853753f8D"},
-                ContentSettingsType::BRAVE_ETHEREUM},
+                ContentSettingsType::BRAVE_ETHEREUM,
+                blink::PermissionType::BRAVE_ETHEREUM},
                {{"BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8",
                  "JDqrvDz8d8tFCADashbUKQDKfJZFobNy13ugN65t1wvV"},
-                ContentSettingsType::BRAVE_SOLANA}};
+                ContentSettingsType::BRAVE_SOLANA,
+                blink::PermissionType::BRAVE_SOLANA}};
   for (size_t i = 0; i < sizeof(cases) / sizeof(cases[0]); ++i) {
     ASSERT_TRUE(AddTabAtIndexToBrowser(browser(), 0, url,
                                        ui::PAGE_TRANSITION_TYPED, true));
@@ -258,7 +266,8 @@ IN_PROC_BROWSER_TEST_F(PermissionManagerBrowserTest,
     RequestType request_type = ContentSettingsTypeToRequestType(cases[i].type);
     EXPECT_TRUE(IsPendingGroupedRequestsEmpty(cases[i].type)) << "case: " << i;
 
-    std::vector<ContentSettingsType> types(addresses.size(), cases[i].type);
+    std::vector<blink::PermissionType> permissions(addresses.size(),
+                                                   cases[i].permission);
     std::vector<url::Origin> sub_request_origins(addresses.size());
     for (size_t j = 0; j < addresses.size(); ++j) {
       ASSERT_TRUE(brave_wallet::GetSubRequestOrigin(
@@ -275,8 +284,8 @@ IN_PROC_BROWSER_TEST_F(PermissionManagerBrowserTest,
     auto observer = std::make_unique<PermissionRequestManagerObserver>(
         permission_request_manager);
 
-    permission_manager()->RequestPermissions(
-        types, web_contents()->GetMainFrame(), origin.GetURL(), true,
+    permission_manager()->RequestPermissionsForOrigin(
+        permissions, web_contents()->GetMainFrame(), origin.GetURL(), true,
         base::DoNothing());
 
     content::RunAllTasksUntilIdle();
@@ -314,12 +323,15 @@ IN_PROC_BROWSER_TEST_F(PermissionManagerBrowserTest,
   struct {
     std::vector<std::string> addresses;
     ContentSettingsType type;
+    blink::PermissionType permission;
   } cases[] = {{{"0xaf5Ad1E10926C0Ee4af4eDAC61DD60E853753f8A",
                  "0xaf5Ad1E10926C0Ee4af4eDAC61DD60E853753f8B"},
-                ContentSettingsType::BRAVE_ETHEREUM},
+                ContentSettingsType::BRAVE_ETHEREUM,
+                blink::PermissionType::BRAVE_ETHEREUM},
                {{"BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8",
                  "JDqrvDz8d8tFCADashbUKQDKfJZFobNy13ugN65t1wvV"},
-                ContentSettingsType::BRAVE_SOLANA}};
+                ContentSettingsType::BRAVE_SOLANA,
+                blink::PermissionType::BRAVE_SOLANA}};
 
   GURL top_url(https_server()->GetURL("a.test", "/iframe.html"));
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), top_url));
@@ -331,10 +343,11 @@ IN_PROC_BROWSER_TEST_F(PermissionManagerBrowserTest,
   for (size_t i = 0; i < sizeof(cases) / sizeof(cases[0]); ++i) {
     // Will return empty responses without prompt.
     BraveWalletPermissionContext::RequestPermissions(
-        cases[i].type, iframe_rfh, cases[i].addresses,
-        base::BindOnce([](const std::vector<ContentSetting>& responses) {
-          EXPECT_TRUE(responses.empty());
-        }));
+        cases[i].permission, iframe_rfh, cases[i].addresses,
+        base::BindOnce(
+            [](const std::vector<blink::mojom::PermissionStatus>& responses) {
+              EXPECT_TRUE(responses.empty());
+            }));
 
     content::RunAllTasksUntilIdle();
     EXPECT_TRUE(IsPendingGroupedRequestsEmpty(cases[i].type)) << "case: " << i;

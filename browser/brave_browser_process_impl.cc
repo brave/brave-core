@@ -10,7 +10,6 @@
 
 #include "base/bind.h"
 #include "base/path_service.h"
-#include "base/task/post_task.h"
 #include "base/task/thread_pool.h"
 #include "brave/browser/brave_shields/ad_block_subscription_download_manager_getter.h"
 #include "brave/browser/brave_stats/brave_stats_updater.h"

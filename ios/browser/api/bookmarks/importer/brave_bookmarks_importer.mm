@@ -16,7 +16,6 @@
 #include "base/path_service.h"
 #include "base/stl_util.h"
 #include "base/strings/sys_string_conversions.h"
-#include "base/task/post_task.h"
 #include "base/task/sequenced_task_runner.h"
 #include "base/task/thread_pool.h"
 #include "brave/ios/browser/api/bookmarks/importer/bookmark_html_reader.h"
@@ -149,9 +148,10 @@
             };
 
         // Import into the Profile/ChromeBrowserState on the main-thread.
-        base::PostTask(FROM_HERE, {web::WebThread::UI},
-                       base::BindOnce(complete_import, std::move(bookmarks),
-                                      top_level_folder_name, listener));
+        base::ThreadPool::PostTask(
+            FROM_HERE, {web::WebThread::UI},
+            base::BindOnce(complete_import, std::move(bookmarks),
+                           top_level_folder_name, listener));
       } else {
         listener(BraveBookmarksImporterStateCompleted,
                  [importer convertToIOSImportedBookmarks:bookmarks]);
@@ -197,9 +197,9 @@
 
   // Import into the Profile/ChromeBrowserState on the main-thread.
   __weak BraveBookmarksImporter* weakSelf = self;
-  base::PostTask(FROM_HERE, {web::WebThread::UI},
-                 base::BindOnce(start_import, weakSelf, bookmarks,
-                                top_level_folder_name, listener));
+  base::ThreadPool::PostTask(FROM_HERE, {web::WebThread::UI},
+                             base::BindOnce(start_import, weakSelf, bookmarks,
+                                            top_level_folder_name, listener));
 }
 
 // MARK: - Private

@@ -106,16 +106,18 @@ TEST_F(BraveTemplateURLServiceUtilTest, GetSearchProvidersUsingKeywordResult) {
 
   TemplateURL::OwnedTemplateURLVector template_urls;
   int new_resource_keyword_version = 0;
+  int new_resource_starter_pack_version = 0;
 
   prefs_.SetInteger(kCountryIDAtInstall, 'U' << 8 | 'S');
-  GetSearchProvidersUsingKeywordResult(result, nullptr, &prefs_, &template_urls,
-                                       default_turl.get(), SearchTermsData(),
-                                       &new_resource_keyword_version, nullptr);
+  GetSearchProvidersUsingKeywordResult(
+      result, nullptr, &prefs_, &template_urls, default_turl.get(),
+      SearchTermsData(), &new_resource_keyword_version,
+      &new_resource_starter_pack_version, nullptr);
 
   // Verify count and order.
-  EXPECT_EQ(local_turls.size(), template_urls.size());
-  TestDefaultOrder(template_urls, {":g", ":d", ":q", ":b", ":sp", ":ya",
-                                   "random1", "random2"});
+  TestDefaultOrder(template_urls,
+                   {":g", ":d", ":q", ":b", ":sp", ":ya", "random1", "random2",
+                    "@bookmarks", "@history"});
 }
 
 TEST_F(BraveTemplateURLServiceUtilTest,
@@ -133,14 +135,16 @@ TEST_F(BraveTemplateURLServiceUtilTest,
                                     InitKeywordResult(&prefs_, local_turls));
   TemplateURL::OwnedTemplateURLVector template_urls;
   int new_resource_keyword_version = 0;
+  int new_resource_starter_pack_version = 0;
 
   // Check Germany.
   prefs_.SetInteger(kCountryIDAtInstall, 'D' << 8 | 'E');
-  GetSearchProvidersUsingKeywordResult(result, nullptr, &prefs_, &template_urls,
-                                       default_turl.get(), SearchTermsData(),
-                                       &new_resource_keyword_version, nullptr);
+  GetSearchProvidersUsingKeywordResult(
+      result, nullptr, &prefs_, &template_urls, default_turl.get(),
+      SearchTermsData(), &new_resource_keyword_version,
+      &new_resource_starter_pack_version, nullptr);
 
   // Verify count and order.
-  EXPECT_EQ(local_turls.size(), template_urls.size());
-  TestDefaultOrder(template_urls, {":d", ":q", ":g", ":b", ":sp", ":ya"});
+  TestDefaultOrder(template_urls, {":d", ":q", ":g", ":b", ":sp", ":ya",
+                                   "@bookmarks", "@history"});
 }

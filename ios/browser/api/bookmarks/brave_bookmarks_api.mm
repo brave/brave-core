@@ -10,7 +10,6 @@
 #include "base/containers/stack.h"
 #include "base/guid.h"
 #include "base/strings/sys_string_conversions.h"
-#include "base/task/post_task.h"
 #include "base/task/sequenced_task_runner.h"
 #include "base/task/thread_pool.h"
 #include "brave/ios/browser/api/bookmarks/bookmark_model_listener_ios.h"
@@ -644,7 +643,7 @@
         completion(nodes);
       };
 
-  base::PostTask(
+  base::ThreadPool::PostTask(
       FROM_HERE, {web::WebThread::UI},
       base::BindOnce(search_with_query, query, maxCount, completion));
 }

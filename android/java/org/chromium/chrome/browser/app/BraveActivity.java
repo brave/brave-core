@@ -1438,7 +1438,7 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
     }
 
     public int getToolbarShadowHeight() {
-        View toolbarShadow = findViewById(R.id.toolbar_shadow);
+        View toolbarShadow = findViewById(R.id.toolbar_hairline);
         assert toolbarShadow != null;
         if (toolbarShadow != null) {
             return toolbarShadow.getHeight();
@@ -1447,7 +1447,7 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
     }
 
     public int getToolbarBottom() {
-        View toolbarShadow = findViewById(R.id.toolbar_shadow);
+        View toolbarShadow = findViewById(R.id.toolbar_hairline);
         assert toolbarShadow != null;
         if (toolbarShadow != null) {
             return toolbarShadow.getBottom();

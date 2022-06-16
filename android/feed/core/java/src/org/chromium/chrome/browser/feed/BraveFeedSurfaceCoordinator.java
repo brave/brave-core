@@ -31,6 +31,7 @@ import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tabmodel.TabModelSelector;
 import org.chromium.chrome.browser.toolbar.top.Toolbar;
 import org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManager;
+import org.chromium.chrome.browser.xsurface.FeedLaunchReliabilityLogger.SurfaceType;
 import org.chromium.components.browser_ui.bottomsheet.BottomSheetController;
 import org.chromium.ui.UiUtils;
 import org.chromium.ui.base.WindowAndroid;
@@ -52,17 +53,17 @@ public class BraveFeedSurfaceCoordinator extends FeedSurfaceCoordinator {
             @Nullable ScrollableContainerDelegate externalScrollableContainerDelegate,
             @NewTabPageLaunchOrigin int launchOrigin,
             PrivacyPreferencesManagerImpl privacyPreferencesManager,
-            @NonNull Supplier<Toolbar> toolbarSupplier,
-            FeedLaunchReliabilityLoggingState launchReliabilityLoggingState,
-            @Nullable FeedSwipeRefreshLayout swipeRefreshLayout, boolean overScrollDisabled,
-            @Nullable ViewGroup viewportView, FeedActionDelegate actionDelegate,
-            HelpAndFeedbackLauncher helpAndFeedbackLauncher) {
+            @NonNull Supplier<Toolbar> toolbarSupplier, @SurfaceType int surfaceType,
+            long embeddingSurfaceCreatedTimeNs, @Nullable FeedSwipeRefreshLayout swipeRefreshLayout,
+            boolean overScrollDisabled, @Nullable ViewGroup viewportView,
+            FeedActionDelegate actionDelegate, HelpAndFeedbackLauncher helpAndFeedbackLauncher,
+            TabModelSelector tabModelSelector) {
         super(activity, snackbarManager, windowAndroid, snapScrollHelper, ntpHeader, toolbarHeight,
                 showDarkBackground, delegate, profile, isPlaceholderShownInitially,
                 bottomSheetController, shareDelegateSupplier, externalScrollableContainerDelegate,
-                launchOrigin, privacyPreferencesManager, toolbarSupplier,
-                launchReliabilityLoggingState, swipeRefreshLayout, overScrollDisabled, viewportView,
-                actionDelegate, helpAndFeedbackLauncher);
+                launchOrigin, privacyPreferencesManager, toolbarSupplier, surfaceType,
+                embeddingSurfaceCreatedTimeNs, swipeRefreshLayout, overScrollDisabled, viewportView,
+                actionDelegate, helpAndFeedbackLauncher, tabModelSelector);
     }
 
     public void createScrollViewForPolicy() {
@@ -97,9 +98,5 @@ public class BraveFeedSurfaceCoordinator extends FeedSurfaceCoordinator {
 
     public NestedScrollView getScrollViewForPolicy() {
         return mScrollViewForPolicy;
-    }
-
-    public boolean isReliabilityLoggingEnabled() {
-        return false;
     }
 }

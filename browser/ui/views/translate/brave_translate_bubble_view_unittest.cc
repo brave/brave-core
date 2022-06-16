@@ -18,8 +18,7 @@ namespace {
 class MockTranslateBubbleModel : public TranslateBubbleModel {
  public:
   explicit MockTranslateBubbleModel(TranslateBubbleModel::ViewState view_state)
-      : view_state_transition_(view_state),
-        error_type_(translate::TranslateErrors::NONE),
+      : error_type_(translate::TranslateErrors::NONE),
         original_language_index_(0),
         target_language_index_(1),
         never_translate_language_(false),
@@ -32,22 +31,22 @@ class MockTranslateBubbleModel : public TranslateBubbleModel {
         translation_declined_(false),
         original_language_index_on_translation_(-1),
         target_language_index_on_translation_(-1),
-        can_add_site_to_never_prompt_list_(true) {}
+        can_add_site_to_never_prompt_list_(true) {
+    DCHECK_NE(VIEW_STATE_SOURCE_LANGUAGE, view_state);
+    DCHECK_NE(VIEW_STATE_TARGET_LANGUAGE, view_state);
+    current_view_state_ = view_state;
+  }
 
   TranslateBubbleModel::ViewState GetViewState() const override {
-    return view_state_transition_.view_state();
+    return current_view_state_;
   }
 
   void SetViewState(TranslateBubbleModel::ViewState view_state) override {
-    view_state_transition_.SetViewState(view_state);
+    current_view_state_ = view_state;
   }
 
   void ShowError(translate::TranslateErrors::Type error_type) override {
     error_type_ = error_type;
-  }
-
-  void GoBackFromAdvanced() override {
-    view_state_transition_.GoBackFromAdvanced();
   }
 
   int GetNumberOfSourceLanguages() const override { return 1000; }
@@ -137,7 +136,7 @@ class MockTranslateBubbleModel : public TranslateBubbleModel {
     can_add_site_to_never_prompt_list_ = value;
   }
 
-  TranslateBubbleViewStateTransition view_state_transition_;
+  ViewState current_view_state_;
   translate::TranslateErrors::Type error_type_;
   int original_language_index_;
   int target_language_index_;
@@ -187,7 +186,7 @@ class MockBraveTranslateBubbleView : public BraveTranslateBubbleView {
 
 class BraveTranslateBubbleViewTest : public ChromeViewsTestBase {
  public:
-  BraveTranslateBubbleViewTest() {}
+  BraveTranslateBubbleViewTest() = default;
 
  protected:
   void SetUp() override {

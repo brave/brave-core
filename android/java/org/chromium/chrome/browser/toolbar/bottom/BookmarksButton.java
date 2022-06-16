@@ -15,7 +15,6 @@ import androidx.core.content.ContextCompat;
 import org.chromium.base.ApiCompatibilityUtils;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.ActivityTabProvider;
-import org.chromium.chrome.browser.compositor.layouts.OverviewModeBehavior;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.theme.ThemeColorProvider;
 import org.chromium.chrome.browser.theme.ThemeColorProvider.ThemeColorObserver;
@@ -50,8 +49,7 @@ public class BookmarksButton extends ChromeImageButton implements ThemeColorObse
     }
 
     @Override
-    public void onThemeColorChanged(int color, boolean shouldAnimate) {
-    }
+    public void onThemeColorChanged(int color, boolean shouldAnimate) {}
 
     @Override
     public void onTintChanged(ColorStateList tint, int brandedColorScheme) {
@@ -69,15 +67,10 @@ public class BookmarksButton extends ChromeImageButton implements ThemeColorObse
         } else {
             setImageResource(R.drawable.btn_bookmark);
             ApiCompatibilityUtils.setImageTintList(this, mCurrentTint);
-            setContentDescription(
-                    getContext().getString(R.string.accessibility_menu_bookmark));
+            setContentDescription(getContext().getString(R.string.accessibility_menu_bookmark));
         }
         setEnabled(editingAllowed);
     }
-    
-    public void setOverviewModeBehavior(OverviewModeBehavior overviewModeBehavior) {
-    }
-    
-    public void updateButtonEnabledState(Tab tab) {
-    }
+
+    public void updateButtonEnabledState(Tab tab) {}
 }

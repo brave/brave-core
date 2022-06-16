@@ -43,8 +43,7 @@ void BindNull(mojom::DBCommand* command, const int_fast16_t index) {
 
   mojom::DBCommandBindingPtr binding = mojom::DBCommandBinding::New();
   binding->index = index;
-  binding->value = mojom::DBValue::New();
-  binding->value->set_null_value(0);
+  binding->value = mojom::DBValue::NewNullValue(0);
 
   command->bindings.push_back(std::move(binding));
 }
@@ -54,8 +53,7 @@ void BindInt(mojom::DBCommand* command, const int index, const int32_t value) {
 
   mojom::DBCommandBindingPtr binding = mojom::DBCommandBinding::New();
   binding->index = index;
-  binding->value = mojom::DBValue::New();
-  binding->value->set_int_value(value);
+  binding->value = mojom::DBValue::NewIntValue(value);
 
   command->bindings.push_back(std::move(binding));
 }
@@ -67,8 +65,7 @@ void BindInt64(mojom::DBCommand* command,
 
   mojom::DBCommandBindingPtr binding = mojom::DBCommandBinding::New();
   binding->index = index;
-  binding->value = mojom::DBValue::New();
-  binding->value->set_int64_value(value);
+  binding->value = mojom::DBValue::NewInt64Value(value);
 
   command->bindings.push_back(std::move(binding));
 }
@@ -80,8 +77,7 @@ void BindDouble(mojom::DBCommand* command,
 
   mojom::DBCommandBindingPtr binding = mojom::DBCommandBinding::New();
   binding->index = index;
-  binding->value = mojom::DBValue::New();
-  binding->value->set_double_value(value);
+  binding->value = mojom::DBValue::NewDoubleValue(value);
 
   command->bindings.push_back(std::move(binding));
 }
@@ -91,8 +87,7 @@ void BindBool(mojom::DBCommand* command, const int index, const bool value) {
 
   mojom::DBCommandBindingPtr binding = mojom::DBCommandBinding::New();
   binding->index = index;
-  binding->value = mojom::DBValue::New();
-  binding->value->set_bool_value(value);
+  binding->value = mojom::DBValue::NewBoolValue(value);
 
   command->bindings.push_back(std::move(binding));
 }
@@ -104,8 +99,7 @@ void BindString(mojom::DBCommand* command,
 
   mojom::DBCommandBindingPtr binding = mojom::DBCommandBinding::New();
   binding->index = index;
-  binding->value = mojom::DBValue::New();
-  binding->value->set_string_value(value);
+  binding->value = mojom::DBValue::NewStringValue(value);
 
   command->bindings.push_back(std::move(binding));
 }
@@ -113,7 +107,7 @@ void BindString(mojom::DBCommand* command,
 int ColumnInt(mojom::DBRecord* record, const size_t index) {
   DCHECK(record);
   DCHECK_LT(index, record->fields.size());
-  DCHECK_EQ(mojom::DBValue::Tag::INT_VALUE, record->fields.at(index)->which());
+  DCHECK_EQ(mojom::DBValue::Tag::kIntValue, record->fields.at(index)->which());
 
   return record->fields.at(index)->get_int_value();
 }
@@ -121,7 +115,7 @@ int ColumnInt(mojom::DBRecord* record, const size_t index) {
 int64_t ColumnInt64(mojom::DBRecord* record, const size_t index) {
   DCHECK(record);
   DCHECK_LT(index, record->fields.size());
-  DCHECK_EQ(mojom::DBValue::Tag::INT64_VALUE,
+  DCHECK_EQ(mojom::DBValue::Tag::kInt64Value,
             record->fields.at(index)->which());
 
   return record->fields.at(index)->get_int64_value();
@@ -130,7 +124,7 @@ int64_t ColumnInt64(mojom::DBRecord* record, const size_t index) {
 double ColumnDouble(mojom::DBRecord* record, const size_t index) {
   DCHECK(record);
   DCHECK_LT(index, record->fields.size());
-  DCHECK_EQ(mojom::DBValue::Tag::DOUBLE_VALUE,
+  DCHECK_EQ(mojom::DBValue::Tag::kDoubleValue,
             record->fields.at(index)->which());
 
   return record->fields.at(index)->get_double_value();
@@ -139,7 +133,7 @@ double ColumnDouble(mojom::DBRecord* record, const size_t index) {
 bool ColumnBool(mojom::DBRecord* record, const size_t index) {
   DCHECK(record);
   DCHECK_LT(index, record->fields.size());
-  DCHECK_EQ(mojom::DBValue::Tag::BOOL_VALUE, record->fields.at(index)->which());
+  DCHECK_EQ(mojom::DBValue::Tag::kBoolValue, record->fields.at(index)->which());
 
   return record->fields.at(index)->get_bool_value();
 }
@@ -147,7 +141,7 @@ bool ColumnBool(mojom::DBRecord* record, const size_t index) {
 std::string ColumnString(mojom::DBRecord* record, const size_t index) {
   DCHECK(record);
   DCHECK_LT(index, record->fields.size());
-  DCHECK_EQ(mojom::DBValue::Tag::STRING_VALUE,
+  DCHECK_EQ(mojom::DBValue::Tag::kStringValue,
             record->fields.at(index)->which());
 
   return record->fields.at(index)->get_string_value();

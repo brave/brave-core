@@ -17,7 +17,6 @@
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
 #include "base/guid.h"
-#include "base/task/post_task.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/ntp_background_images/view_counter_service_factory.h"
 #include "brave/build/android/jni_headers/NTPBackgroundImagesBridge_jni.h"

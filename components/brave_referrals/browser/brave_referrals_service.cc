@@ -20,7 +20,6 @@
 #include "base/strings/string_util.h"
 #include "base/strings/stringprintf.h"
 #include "base/system/sys_info.h"
-#include "base/task/post_task.h"
 #include "base/task/thread_pool.h"
 #include "base/values.h"
 #include "brave/common/network_constants.h"
@@ -429,14 +428,14 @@ void BraveReferralsService::SetFirstRunTime(
 
 void BraveReferralsService::PerformFinalizationChecks() {
   // Delete the promo code preference, if appropriate.
-  base::PostTask(
-      FROM_HERE, {content::BrowserThread::UI},
+  content::GetUIThreadTaskRunner({})->PostTask(
+      FROM_HERE,
       base::BindOnce(&BraveReferralsService::MaybeDeletePromoCodePref,
                      weak_factory_.GetWeakPtr()));
 
   // Check for referral finalization, if appropriate.
-  base::PostTask(
-      FROM_HERE, {content::BrowserThread::UI},
+  content::GetUIThreadTaskRunner({})->PostTask(
+      FROM_HERE,
       base::BindOnce(&BraveReferralsService::MaybeCheckForReferralFinalization,
                      weak_factory_.GetWeakPtr()));
 }

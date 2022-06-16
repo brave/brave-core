@@ -143,11 +143,9 @@ void BraveSyncServiceImpl::ResumeDeviceObserver() {
 }
 
 void BraveSyncServiceImpl::OnEngineInitialized(
-    const WeakHandle<DataTypeDebugInfoListener>& debug_info_listener,
     bool success,
     bool is_first_time_sync_configure) {
-  SyncServiceImpl::OnEngineInitialized(debug_info_listener, success,
-                                       is_first_time_sync_configure);
+  SyncServiceImpl::OnEngineInitialized(success, is_first_time_sync_configure);
   if (!IsEngineInitialized()) {
     return;
   }

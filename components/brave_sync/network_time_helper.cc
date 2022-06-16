@@ -8,10 +8,21 @@
 #include <utility>
 
 #include "base/sequence_checker.h"
-#include "base/task/post_task.h"
 #include "components/network_time/network_time_tracker.h"
+
+#if defined(OS_IOS)
+#include "ios/web/public/thread/web_task_traits.h"
+#include "ios/web/public/thread/web_thread.h"
+#else
 #include "content/public/browser/browser_task_traits.h"
 #include "content/public/browser/browser_thread.h"
+#endif  // defined(OS_IOS)
+
+#if defined(OS_IOS)
+using web::GetUIThreadTaskRunner;
+#else
+using content::GetUIThreadTaskRunner;
+#endif  // defined(OS_IOS)
 
 namespace brave_sync {
 
@@ -34,8 +45,8 @@ void NetworkTimeHelper::GetNetworkTime(GetNetworkTimeCallback cb) {
     std::move(cb).Run(network_time_for_test_);
     return;
   }
-  base::PostTask(FROM_HERE, {content::BrowserThread::UI},
-                 base::BindOnce(&NetworkTimeHelper::GetNetworkTimeOnUIThread,
+  GetUIThreadTaskRunner({})->PostTask(
+      FROM_HERE, base::BindOnce(&NetworkTimeHelper::GetNetworkTimeOnUIThread,
                                 weak_ptr_factory_.GetWeakPtr(), std::move(cb)));
 }
 

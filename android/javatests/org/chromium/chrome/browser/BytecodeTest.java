@@ -60,6 +60,7 @@ import org.chromium.chrome.browser.omnibox.suggestions.basic.BasicSuggestionProc
 import org.chromium.chrome.browser.omnibox.suggestions.mostvisited.ExploreIconProvider;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.share.ShareDelegateImpl;
+import org.chromium.chrome.browser.suggestions.tile.TileRenderer;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tabmodel.AsyncTabParamsManager;
 import org.chromium.chrome.browser.tabmodel.ChromeTabCreator;
@@ -90,6 +91,7 @@ import org.chromium.components.browser_ui.site_settings.PermissionInfo;
 import org.chromium.components.browser_ui.site_settings.SiteSettingsCategory;
 import org.chromium.components.browser_ui.site_settings.Website;
 import org.chromium.components.browser_ui.site_settings.WebsiteAddress;
+import org.chromium.components.browser_ui.widget.displaystyle.UiConfig;
 import org.chromium.components.browser_ui.widget.scrim.ScrimCoordinator;
 import org.chromium.components.permissions.PermissionDialogController;
 import org.chromium.content_public.browser.BrowserContextHandle;
@@ -248,8 +250,6 @@ public class BytecodeTest {
                 "shouldCloseAppWithZeroTabs", false, null));
         Assert.assertTrue(methodExists("org/chromium/chrome/browser/ntp/NewTabPageLayout",
                 "insertSiteSectionView", false, null));
-        Assert.assertTrue(methodExists("org/chromium/chrome/browser/ntp/NewTabPageLayout",
-                "updateTileGridPlaceholderVisibility", false, null));
         Assert.assertTrue(methodExists("org/chromium/chrome/browser/query_tiles/QueryTileSection",
                 "getMaxRowsForMostVisitedTiles", false, null));
         Assert.assertTrue(
@@ -293,9 +293,7 @@ public class BytecodeTest {
         Assert.assertTrue(methodExists("org/chromium/chrome/browser/bookmarks/BraveBookmarkUtils",
                 "addOrEditBookmark", false, null));
         Assert.assertTrue(methodExists("org/chromium/chrome/browser/bookmarks/BookmarkUtils",
-                "showBookmarkBottomSheet", false, null));
-        Assert.assertTrue(methodExists("org/chromium/chrome/browser/bookmarks/BookmarkUtils",
-                "addBookmarkAndShowSnackbar", false, null));
+                "addOrEditBookmark", false, null));
         Assert.assertTrue(
                 methodExists("org/chromium/components/permissions/BravePermissionDialogModel",
                         "getModel", false, null));
@@ -304,11 +302,6 @@ public class BytecodeTest {
         Assert.assertTrue(methodExists(
                 "org/chromium/chrome/browser/search_engines/settings/SearchEngineSettings",
                 "createAdapterIfNecessary", false, null));
-        Assert.assertTrue(methodExists("org/chromium/chrome/browser/feed/FeedSurfaceCoordinator",
-                "isReliabilityLoggingEnabled", false, null));
-        Assert.assertTrue(
-                methodExists("org/chromium/chrome/browser/feed/BraveFeedSurfaceCoordinator",
-                        "isReliabilityLoggingEnabled", false, null));
         Assert.assertTrue(methodExists("org/chromium/chrome/browser/feed/FeedSurfaceMediator",
                 "destroyPropertiesForStream", false, null));
         Assert.assertTrue(methodExists("org/chromium/chrome/browser/theme/ThemeUtils",
@@ -365,6 +358,9 @@ public class BytecodeTest {
         Assert.assertTrue(methodExists(
                 "org/chromium/chrome/browser/share/send_tab_to_self/DevicePickerBottomSheetContent",
                 "createManageDevicesLink", true, void.class, ListView.class));
+        Assert.assertTrue(methodExists(
+                "org/chromium/chrome/browser/suggestions/tile/MostVisitedTilesMediator",
+                "updateTileGridPlaceholderVisibility", true, void.class));
     }
 
     @Test
@@ -449,8 +445,8 @@ public class BytecodeTest {
                 StatusBarColorController.class, AppMenuDelegate.class,
                 ActivityLifecycleDispatcher.class, Supplier.class, BottomSheetController.class,
                 Supplier.class, TabContentManager.class, TabCreatorManager.class,
-                OneshotSupplier.class, SnackbarManager.class, JankTracker.class, Supplier.class,
-                OneshotSupplier.class, OmniboxPedalDelegate.class, boolean.class));
+                SnackbarManager.class, JankTracker.class, Supplier.class, OneshotSupplier.class,
+                OmniboxPedalDelegate.class, Supplier.class, boolean.class));
         Assert.assertTrue(constructorsMatch(
                 "org/chromium/chrome/browser/toolbar/bottom/BottomControlsMediator",
                 "org/chromium/chrome/browser/toolbar/bottom/BraveBottomControlsMediator",
@@ -547,17 +543,18 @@ public class BytecodeTest {
         Assert.assertTrue(constructorsMatch(
                 "org/chromium/chrome/browser/share/send_tab_to_self/DevicePickerBottomSheetContent",
                 "org/chromium/chrome/browser/share/send_tab_to_self/BraveDevicePickerBottomSheetContent",
-                Context.class, String.class, String.class, long.class,
-                BottomSheetController.class));
+                Context.class, String.class, String.class, BottomSheetController.class));
+        Assert.assertTrue(constructorsMatch(
+                "org/chromium/chrome/browser/suggestions/tile/MostVisitedTilesMediator",
+                "org/chromium/chrome/browser/suggestions/tile/BraveMostVisitedTilesMediator",
+                Resources.class, UiConfig.class, ViewGroup.class, ViewStub.class,
+                TileRenderer.class, PropertyModel.class, boolean.class, boolean.class,
+                boolean.class, Runnable.class, Runnable.class));
     }
 
     @Test
     @SmallTest
     public void testFieldsExist() throws Exception {
-        Assert.assertTrue(fieldExists(
-                "org/chromium/chrome/browser/ntp/NewTabPageLayout", "mSiteSectionView"));
-        Assert.assertTrue(
-                fieldExists("org/chromium/chrome/browser/ntp/NewTabPageLayout", "mTileGroup"));
         Assert.assertTrue(fieldExists(
                 "org/chromium/chrome/browser/feed/FeedSurfaceCoordinator", "mNtpHeader"));
         Assert.assertTrue(fieldExists(
@@ -574,6 +571,8 @@ public class BytecodeTest {
                 fieldExists("org/chromium/chrome/browser/ntp/NewTabPage", "mFeedSurfaceProvider"));
         Assert.assertTrue(
                 fieldExists("org/chromium/chrome/browser/ntp/NewTabPage", "mToolbarSupplier"));
+        Assert.assertTrue(
+                fieldExists("org/chromium/chrome/browser/ntp/NewTabPage", "mTabModelSelector"));
         Assert.assertTrue(fieldExists(
                 "org/chromium/chrome/browser/omnibox/suggestions/editurl/EditUrlSuggestionProcessor",
                 "mHasClearedOmniboxForFocus"));
@@ -587,6 +586,9 @@ public class BytecodeTest {
         Assert.assertTrue(
                 fieldExists("org/chromium/chrome/browser/sync/settings/ManageSyncSettings",
                         "mSyncPaymentsIntegration"));
+        Assert.assertTrue(
+                fieldExists("org/chromium/chrome/browser/sync/settings/ManageSyncSettings",
+                        "mSyncReadingList"));
         Assert.assertTrue(fieldExists(
                 "org/chromium/chrome/browser/sync/settings/ManageSyncSettings", "mTurnOffSync"));
         Assert.assertTrue(
@@ -644,8 +646,6 @@ public class BytecodeTest {
                 "org/chromium/chrome/browser/toolbar/ToolbarManager", "mTabContentManager"));
         Assert.assertTrue(fieldExists(
                 "org/chromium/chrome/browser/toolbar/ToolbarManager", "mTabCreatorManager"));
-        Assert.assertTrue(fieldExists("org/chromium/chrome/browser/toolbar/ToolbarManager",
-                "mOverviewModeBehaviorSupplier"));
         Assert.assertTrue(fieldExists(
                 "org/chromium/chrome/browser/toolbar/ToolbarManager", "mSnackbarManager"));
         Assert.assertTrue(
@@ -700,6 +700,8 @@ public class BytecodeTest {
         Assert.assertTrue(
                 fieldExists("org/chromium/chrome/browser/omnibox/suggestions/AutocompleteMediator",
                         "mNativeInitialized", true, boolean.class));
+        Assert.assertTrue(fieldExists(
+                "org/chromium/chrome/browser/ntp/NewTabPageLayout", "mMvTilesContainerLayout"));
     }
 
     @Test

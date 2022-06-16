@@ -165,7 +165,9 @@ if (!is_ios) {
     deps = [
       ":utils",
       "//base",
+      "//brave/components/brave_wallet/common:mojom",
       "//components/permissions:permissions_common",
+      "//third_party/blink/public/common",
       "//third_party/re2",
       "//url",
     ]

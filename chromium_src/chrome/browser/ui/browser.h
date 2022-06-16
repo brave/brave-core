@@ -13,14 +13,14 @@
 #define ShouldDisplayFavicon virtual ShouldDisplayFavicon
 #define TryToCloseWindow virtual TryToCloseWindow
 #define ResetTryToCloseWindow virtual ResetTryToCloseWindow
-#define BRAVE_BROWSER_H              \
- private:                            \
-  friend class BookmarkPrefsService; \
-  friend class BraveBrowser;
+#define FullscreenControllerInteractiveTest \
+  FullscreenControllerInteractiveTest;      \
+  friend class BookmarkPrefsService;        \
+  friend class BraveBrowser
 
 #include "src/chrome/browser/ui/browser.h"
 
-#undef BRAVE_BROWSER_H
+#undef FullscreenControllerInteractiveTest
 #undef ResetTryToCloseWindow
 #undef TryToCloseWindow
 #undef ShouldDisplayFavicon
