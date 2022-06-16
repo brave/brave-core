@@ -605,6 +605,10 @@ export enum WalletRoutes {
   // onboarding complete
   OnboardingComplete = '/crypto/onboarding/complete',
 
+  // fund wallet page
+  FundWalletPage = '/crypto/fund-wallet',
+  DepositFundsPage = '/crypto/deposit-funds',
+
   // accounts
   Accounts = '/crypto/accounts',
   Account = '/crypto/accounts/:id',
