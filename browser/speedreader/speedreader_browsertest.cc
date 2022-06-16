@@ -10,7 +10,7 @@
 #include "brave/browser/speedreader/speedreader_service_factory.h"
 #include "brave/browser/speedreader/speedreader_tab_helper.h"
 #include "brave/components/constants/brave_paths.h"
-#include "brave/components/speedreader/features.h"
+#include "brave/components/speedreader/common/features.h"
 #include "brave/components/speedreader/speedreader_service.h"
 #include "brave/components/speedreader/speedreader_util.h"
 #include "chrome/browser/profiles/keep_alive/profile_keep_alive_types.h"

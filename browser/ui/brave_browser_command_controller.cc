@@ -18,7 +18,7 @@
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/sidebar/buildflags/buildflags.h"
-#include "brave/components/speedreader/features.h"
+#include "brave/components/speedreader/common/buildflags.h"
 #include "chrome/app/chrome_command_ids.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
@@ -37,6 +37,10 @@
 
 #if BUILDFLAG(ENABLE_SIDEBAR)
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
+#endif
+
+#if BUILDFLAG(ENABLE_SPEEDREADER)
+#include "brave/components/speedreader/common/features.h"
 #endif
 
 namespace {
@@ -151,10 +155,12 @@ void BraveBrowserCommandController::InitBraveCommandState() {
   UpdateCommandEnabled(IDC_ADD_NEW_PROFILE, add_new_profile_enabled);
   UpdateCommandEnabled(IDC_OPEN_GUEST_PROFILE, open_guest_profile_enabled);
 
+#if BUILDFLAG(ENABLE_SPEEDREADER)
   if (base::FeatureList::IsEnabled(speedreader::kSpeedreaderFeature)) {
     UpdateCommandEnabled(IDC_SPEEDREADER_ICON_ONCLICK, true);
     UpdateCommandEnabled(IDC_DISTILL_PAGE, false);
   }
+#endif
 #if BUILDFLAG(ENABLE_IPFS_LOCAL_NODE)
   UpdateCommandEnabled(IDC_APP_MENU_IPFS_OPEN_FILES, true);
 #endif

@@ -11,7 +11,7 @@
 #include "base/path_service.h"
 #include "base/threading/thread_restrictions.h"
 #include "brave/components/constants/brave_paths.h"
-#include "brave/components/speedreader/features.h"
+#include "brave/components/speedreader/common/features.h"
 #include "brave/components/speedreader/rust/ffi/speedreader.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "url/gurl.h"

@@ -1,0 +1,29 @@
+import("//brave/components/speedreader/common/buildflags.gni")
+import("//build/buildflag_header.gni")
+import("//mojo/public/tools/bindings/mojom.gni")
+
+buildflag_header("buildflags") {
+  header = "buildflags.h"
+  flags = [
+    "ENABLE_SPEEDREADER=$enable_speedreader",
+    "ENABLE_SPEEDREADER_FEATURE=$enable_speedreader_feature",
+  ]
+}
+
+static_library("common") {
+  sources = [
+    "features.cc",
+    "features.h",
+  ]
+
+  public_deps = [
+    ":buildflags",
+    "//base",
+  ]
+}
+
+mojom("mojom") {
+  sources = [ "speedreader.mojom" ]
+
+  public_deps = [ "//mojo/public/mojom/base" ]
+}

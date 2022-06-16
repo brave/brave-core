@@ -25,7 +25,7 @@
 #include "brave/components/skus/browser/skus_utils.h"
 #include "brave/components/skus/browser/switches.h"
 #include "brave/components/skus/common/features.h"
-#include "brave/components/speedreader/buildflags.h"
+#include "brave/components/speedreader/common/buildflags.h"
 #include "brave/components/translate/core/common/brave_translate_features.h"
 #include "brave/components/translate/core/common/buildflags.h"
 #include "net/base/features.h"
@@ -36,7 +36,7 @@
 #endif
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
-#include "brave/components/speedreader/features.h"
+#include "brave/components/speedreader/common/features.h"
 #endif
 
 #if BUILDFLAG(ENABLE_IPFS)

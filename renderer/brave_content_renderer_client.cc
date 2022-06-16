@@ -15,6 +15,7 @@
 #include "brave/components/cosmetic_filters/renderer/cosmetic_filters_js_render_frame_observer.h"
 #include "brave/components/skus/common/features.h"
 #include "brave/components/skus/renderer/skus_render_frame_observer.h"
+#include "brave/components/speedreader/common/buildflags.h"
 #include "brave/renderer/brave_render_thread_observer.h"
 #include "brave/renderer/brave_wallet/brave_wallet_render_frame_observer.h"
 #include "chrome/common/chrome_isolated_world_ids.h"
@@ -23,6 +24,11 @@
 #include "third_party/blink/public/platform/web_runtime_features.h"
 #include "third_party/blink/public/web/modules/service_worker/web_service_worker_context_proxy.h"
 #include "url/gurl.h"
+
+#if BUILDFLAG(ENABLE_SPEEDREADER)
+#include "brave/components/speedreader/common/features.h"
+#include "brave/components/speedreader/renderer/speedreader_render_frame_observer.h"
+#endif
 
 BraveContentRendererClient::BraveContentRendererClient()
     : ChromeContentRendererClient() {}
@@ -94,6 +100,13 @@ void BraveContentRendererClient::RenderFrameCreated(
     new skus::SkusRenderFrameObserver(render_frame,
                                       content::ISOLATED_WORLD_ID_GLOBAL);
   }
+
+#if BUILDFLAG(ENABLE_SPEEDREADER)
+  if (base::FeatureList::IsEnabled(speedreader::kSpeedreaderFeature)) {
+    new speedreader::SpeedreaderRenderFrameObserver(
+        render_frame, content::ISOLATED_WORLD_ID_CONTENT_END + 1);
+  }
+#endif
 }
 
 void BraveContentRendererClient::RunScriptsAtDocumentStart(

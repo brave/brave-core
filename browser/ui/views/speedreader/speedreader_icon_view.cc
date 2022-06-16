@@ -15,7 +15,7 @@
 #include "brave/browser/speedreader/speedreader_tab_helper.h"
 #include "brave/browser/themes/theme_properties.h"
 #include "brave/components/l10n/common/locale_util.h"
-#include "brave/components/speedreader/features.h"
+#include "brave/components/speedreader/common/features.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/app/chrome_command_ids.h"
 #include "chrome/browser/ui/omnibox/omnibox_theme.h"

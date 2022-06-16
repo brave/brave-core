@@ -67,7 +67,7 @@
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/sidebar/buildflags/buildflags.h"
 #include "brave/components/skus/common/skus_sdk.mojom.h"
-#include "brave/components/speedreader/buildflags.h"
+#include "brave/components/speedreader/common/buildflags.h"
 #include "brave/components/speedreader/speedreader_util.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "brave/components/translate/core/common/brave_translate_switches.h"
@@ -437,6 +437,17 @@ void BraveContentBrowserClient::
             std::move(receiver), render_frame_host);
       },
       &render_frame_host));
+
+#if BUILDFLAG(ENABLE_SPEEDREADER)
+  associated_registry.AddInterface(base::BindRepeating(
+      [](content::RenderFrameHost* render_frame_host,
+         mojo::PendingAssociatedReceiver<speedreader::mojom::SpeedreaderHost>
+             receiver) {
+        speedreader::SpeedreaderTabHelper::BindSpeedreaderHost(
+            std::move(receiver), render_frame_host);
+      },
+      &render_frame_host));
+#endif
 
   ChromeContentBrowserClient::
       RegisterAssociatedInterfaceBindersForRenderFrameHost(render_frame_host,

@@ -13,7 +13,7 @@
 #include "brave/components/brave_sync/features.h"
 #include "brave/components/constants/brave_constants.h"
 #include "brave/components/constants/pref_names.h"
-#include "brave/components/speedreader/buildflags.h"
+#include "brave/components/speedreader/common/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "brave/components/translate/core/common/brave_translate_features.h"
 #include "build/build_config.h"
