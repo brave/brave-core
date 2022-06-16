@@ -68,9 +68,10 @@ TemplateURLData CreateTestSearchEngine() {
 IN_PROC_BROWSER_TEST_F(SearchEngineProviderServiceTest,
                        PRE_PrivateSearchProviderMigrationTest) {
   auto* profile = browser()->profile();
-  profile->GetPrefs()->SetBoolean(kShowAlternativeSearchEngineProviderToggle,
+  profile->GetPrefs()->SetBoolean(
+      kShowAlternativePrivateSearchEngineProviderToggle, true);
+  profile->GetPrefs()->SetBoolean(kUseAlternativePrivateSearchEngineProvider,
                                   true);
-  profile->GetPrefs()->SetBoolean(kUseAlternativeSearchEngineProvider, true);
   profile->GetPrefs()->ClearPref(
       prefs::kSyncedDefaultPrivateSearchProviderGUID);
 }
@@ -79,9 +80,9 @@ IN_PROC_BROWSER_TEST_F(SearchEngineProviderServiceTest,
                        PrivateSearchProviderMigrationTest) {
   auto* profile = browser()->profile();
   EXPECT_FALSE(profile->GetPrefs()->GetBoolean(
-      kShowAlternativeSearchEngineProviderToggle));
-  EXPECT_FALSE(
-      profile->GetPrefs()->GetBoolean(kUseAlternativeSearchEngineProvider));
+      kShowAlternativePrivateSearchEngineProviderToggle));
+  EXPECT_FALSE(profile->GetPrefs()->GetBoolean(
+      kUseAlternativePrivateSearchEngineProvider));
   EXPECT_FALSE(profile->GetPrefs()
                    ->GetString(prefs::kSyncedDefaultPrivateSearchProviderGUID)
                    .empty());

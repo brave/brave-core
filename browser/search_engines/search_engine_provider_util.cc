@@ -30,9 +30,10 @@ bool IsRegionForQwant(Profile* profile) {
 
 void RegisterSearchEngineProviderPrefsForMigration(
     user_prefs::PrefRegistrySyncable* registry) {
-  registry->RegisterBooleanPref(kUseAlternativeSearchEngineProvider, false);
-  registry->RegisterBooleanPref(kShowAlternativeSearchEngineProviderToggle,
+  registry->RegisterBooleanPref(kUseAlternativePrivateSearchEngineProvider,
                                 false);
+  registry->RegisterBooleanPref(
+      kShowAlternativePrivateSearchEngineProviderToggle, false);
 }
 
 void MigrateSearchEngineProviderPrefs(Profile* profile) {
@@ -43,8 +44,9 @@ void MigrateSearchEngineProviderPrefs(Profile* profile) {
 
   const bool need_migrate =
       profile->GetPrefs()->GetBoolean(
-          kShowAlternativeSearchEngineProviderToggle) &&
-      profile->GetPrefs()->GetBoolean(kUseAlternativeSearchEngineProvider);
+          kShowAlternativePrivateSearchEngineProviderToggle) &&
+      profile->GetPrefs()->GetBoolean(
+          kUseAlternativePrivateSearchEngineProvider);
 
   if (!need_migrate)
     return;
@@ -73,8 +75,9 @@ void MigrateSearchEngineProviderPrefs(Profile* profile) {
 
   // From now on, user will not see DDG toggle button and can control search
   // provider for private window via settings.
-  profile->GetPrefs()->ClearPref(kShowAlternativeSearchEngineProviderToggle);
-  profile->GetPrefs()->ClearPref(kUseAlternativeSearchEngineProvider);
+  profile->GetPrefs()->ClearPref(
+      kShowAlternativePrivateSearchEngineProviderToggle);
+  profile->GetPrefs()->ClearPref(kUseAlternativePrivateSearchEngineProvider);
 }
 
 void SetDefaultPrivateSearchProvider(Profile* profile) {

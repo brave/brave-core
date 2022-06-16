@@ -122,10 +122,10 @@ base::DictionaryValue GetPrivatePropertiesDictionary(PrefService* prefs) {
   base::DictionaryValue private_data;
   private_data.SetBoolean(
       "useAlternativePrivateSearchEngine",
-      prefs->GetBoolean(kUseAlternativeSearchEngineProvider));
+      prefs->GetBoolean(kUseAlternativePrivateSearchEngineProvider));
   private_data.SetBoolean(
       "showAlternativePrivateSearchEngineToggle",
-      prefs->GetBoolean(kShowAlternativeSearchEngineProviderToggle));
+      prefs->GetBoolean(kShowAlternativePrivateSearchEngineProviderToggle));
   return private_data;
 }
 
@@ -311,7 +311,7 @@ void BraveNewTabMessageHandler::OnJavascriptAllowed() {
   if (IsPrivateNewTab(profile_)) {
     // Private New Tab Page preferences
     pref_change_registrar_.Add(
-        kUseAlternativeSearchEngineProvider,
+        kUseAlternativePrivateSearchEngineProvider,
         base::BindRepeating(
             &BraveNewTabMessageHandler::OnPrivatePropertiesChanged,
             base::Unretained(this)));
