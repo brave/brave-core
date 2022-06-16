@@ -17,7 +17,8 @@ import {
   SupportedTestNetworks,
   SendEthTransactionParams,
   SendFilTransactionParams,
-  SendSolTransactionParams
+  SendSolTransactionParams,
+  SupportedOnRampNetworks
 } from '../../constants/types'
 import * as WalletActions from '../actions/wallet_actions'
 
@@ -25,6 +26,7 @@ import * as WalletActions from '../actions/wallet_actions'
 import { getNetworkInfo, getNetworksByCoinType, getTokensCoinType } from '../../utils/network-utils'
 import { getTokenParam, getFlattenedAccountBalances } from '../../utils/api-utils'
 import Amount from '../../utils/amount'
+import { getUniqueAssets } from '../../utils/asset-utils'
 
 import getAPIProxy from './bridge'
 import { Dispatch, State, Store } from './types'
@@ -195,6 +197,32 @@ export async function getBuyAssets (onRampProvider: BraveWallet.OnRampProvider, 
   return (await blockchainRegistry.getBuyTokens(
     onRampProvider,
     chainId)).tokens
+}
+
+export const getAllBuyAssets = async (): Promise<BraveWallet.BlockchainToken[]> => {
+  const { blockchainRegistry } = getAPIProxy()
+
+  const results = await Promise.all(
+    [
+      BraveWallet.OnRampProvider.kRamp,
+      BraveWallet.OnRampProvider.kWyre
+    ].map(providerId =>
+      Promise.all(
+        SupportedOnRampNetworks.map(chainId =>
+          blockchainRegistry.getBuyTokens(providerId, chainId)
+        )
+      )
+    )
+  )
+
+  const tokens = getUniqueAssets(results.flat().flatMap(r => r.tokens))
+    // add logo to tokens
+    .map((token) => ({
+      ...token,
+      logo: `chrome://erc-token-images/${token.logo}`
+    })) as BraveWallet.BlockchainToken[]
+
+  return tokens
 }
 
 export function getKeyringIdFromCoin (coin: BraveWallet.CoinType): BraveKeyrings {
