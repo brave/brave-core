@@ -5,6 +5,7 @@
 
 package org.chromium.chrome.browser.settings;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
@@ -13,9 +14,11 @@ import android.view.View;
 import androidx.preference.Preference;
 import androidx.recyclerview.widget.RecyclerView;
 
+import org.chromium.base.ContextUtils;
 import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.crypto_wallet.KeyringServiceFactory;
+import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
 import org.chromium.components.browser_ui.settings.SettingsUtils;
 import org.chromium.mojo.bindings.ConnectionErrorHandler;
 import org.chromium.mojo.system.MojoException;
@@ -24,15 +27,36 @@ public class BraveWalletPreferences
         extends BravePreferenceFragment implements ConnectionErrorHandler {
     private static final String PREF_BRAVE_WALLET_AUTOLOCK = "pref_brave_wallet_autolock";
     private static final String PREF_BRAVE_WALLET_RESET = "pref_brave_wallet_reset";
+    private static final String BRAVE_WALLET_WEB3_NOTIFICATION_SWITCH = "web3_notifications_switch";
+    // A global preference, default state is on
+    public static final String PREF_BRAVE_WALLET_WEB3_NOTIFICATIONS =
+            "pref_brave_wallet_web3_notifications";
 
     private BraveWalletAutoLockPreferences mPrefAutolock;
     private KeyringService mKeyringService;
+    private ChromeSwitchPreference mWeb3NotificationsSwitch;
+
+    public static boolean getPrefWeb3NotificationsEnabled() {
+        SharedPreferences sharedPreferences = ContextUtils.getAppSharedPreferences();
+
+        return sharedPreferences.getBoolean(PREF_BRAVE_WALLET_WEB3_NOTIFICATIONS, true);
+    }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
         mPrefAutolock = (BraveWalletAutoLockPreferences) findPreference(PREF_BRAVE_WALLET_AUTOLOCK);
+        mWeb3NotificationsSwitch =
+                (ChromeSwitchPreference) findPreference(BRAVE_WALLET_WEB3_NOTIFICATION_SWITCH);
+        mWeb3NotificationsSwitch.setChecked(
+                BraveWalletPreferences.getPrefWeb3NotificationsEnabled());
+        mWeb3NotificationsSwitch.setOnPreferenceChangeListener(
+                (Preference preference, Object newValue) -> {
+                    setPrefWeb3NotificationsEnabled((boolean) newValue);
+
+                    return true;
+                });
 
         InitKeyringService();
     }
@@ -85,5 +109,12 @@ public class BraveWalletPreferences
                 }
             });
         }
+    }
+
+    public void setPrefWeb3NotificationsEnabled(boolean enabled) {
+        SharedPreferences sharedPreferences = ContextUtils.getAppSharedPreferences();
+        SharedPreferences.Editor sharedPreferencesEditor = sharedPreferences.edit();
+        sharedPreferencesEditor.putBoolean(PREF_BRAVE_WALLET_WEB3_NOTIFICATIONS, enabled);
+        sharedPreferencesEditor.apply();
     }
 }
