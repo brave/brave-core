@@ -53,6 +53,11 @@ export const OnboardingSuccess = () => {
     history.push(WalletRoutes.Portfolio)
   }, [])
 
+  const onClickBuyCrypto = React.useCallback(() => {
+    dispatch(WalletPageActions.walletSetupComplete(true))
+    history.push(WalletRoutes.FundWalletPage)
+  }, [])
+
   // render
   return <WalletPageLayout>
 
@@ -92,7 +97,7 @@ export const OnboardingSuccess = () => {
         <NavButton
           buttonType='primary'
           text={getLocale('braveWalletBuyCryptoButton')}
-          onSubmit={onComplete}
+          onSubmit={onClickBuyCrypto}
         />
 
         <LinkText>
