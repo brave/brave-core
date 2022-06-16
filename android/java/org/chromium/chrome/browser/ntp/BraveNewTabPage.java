@@ -26,6 +26,7 @@ import org.chromium.chrome.browser.lifecycle.ActivityLifecycleDispatcher;
 import org.chromium.chrome.browser.privacy.settings.PrivacyPreferencesManagerImpl;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.share.ShareDelegate;
+import org.chromium.chrome.browser.share.crow.CrowButtonDelegate;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tabmodel.TabModelSelector;
 import org.chromium.chrome.browser.toolbar.top.Toolbar;
@@ -51,11 +52,12 @@ public class BraveNewTabPage extends NewTabPage {
             NativePageHost nativePageHost, Tab tab, String url,
             BottomSheetController bottomSheetController,
             Supplier<ShareDelegate> shareDelegateSupplier, WindowAndroid windowAndroid,
-            JankTracker jankTracker, Supplier<Toolbar> toolbarSupplier) {
+            JankTracker jankTracker, Supplier<Toolbar> toolbarSupplier,
+            CrowButtonDelegate crowButtonDelegate) {
         super(activity, browserControlsStateProvider, activityTabProvider, snackbarManager,
                 lifecycleDispatcher, tabModelSelector, isTablet, uma, isInNightMode, nativePageHost,
                 tab, url, bottomSheetController, shareDelegateSupplier, windowAndroid, jankTracker,
-                toolbarSupplier);
+                toolbarSupplier, crowButtonDelegate);
 
         assert mNewTabPageLayout instanceof BraveNewTabPageLayout;
         if (mNewTabPageLayout instanceof BraveNewTabPageLayout) {
@@ -68,7 +70,8 @@ public class BraveNewTabPage extends NewTabPage {
     protected void initializeMainView(Activity activity, WindowAndroid windowAndroid,
             SnackbarManager snackbarManager, NewTabPageUma uma, boolean isInNightMode,
             BottomSheetController bottomSheetController,
-            Supplier<ShareDelegate> shareDelegateSupplier, String url) {
+            Supplier<ShareDelegate> shareDelegateSupplier, CrowButtonDelegate crowButtonDelegate,
+            String url) {
         // Override surface provider
         Profile profile = Profile.fromWebContents(mTab.getWebContents());
 
