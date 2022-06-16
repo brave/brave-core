@@ -14,6 +14,10 @@
 
 namespace brave_wallet {
 
+bool BraveWalletProviderDelegateBridge::IsTabVisible() {
+  return [bridge_ isTabVisible];
+}
+
 void BraveWalletProviderDelegateBridge::ShowPanel() {
   [bridge_ showPanel];
 }

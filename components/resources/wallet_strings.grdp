@@ -461,4 +461,5 @@
   <message name="IDS_WALLET_FIL_SEND_TRANSACTION_TO" desc="Error message if transaction 'to' is empty">Transaction data 'to' must be specified</message>
   <message name="IDS_WALLET_FIL_SEND_TRANSACTION_FROM_INVALID" desc="Transaction data is not validated">Transaction data 'from' must be a valid Filecoin address</message>
   <message name="IDS_BRAVE_WALLET_LEDGER_FILECOIN_UNLOCK_ERROR" desc="Error message if unable to unlock Filecoin app on Ledger">Ledger device locked</message>
+  <message name="IDS_WALLET_TAB_IS_NOT_ACTIVE_ERROR" desc="Error message if it comes from an inactive tab">The tab is not active</message>
 </grit-part>

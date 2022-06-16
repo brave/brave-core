@@ -25,6 +25,7 @@ class BraveWalletProviderDelegateBridge
  private:
   __weak id<BraveWalletProviderDelegate> bridge_;
 
+  bool IsTabVisible() override;
   void ShowPanel() override;
   void WalletInteractionDetected() override;
   url::Origin GetOrigin() const override;
