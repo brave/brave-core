@@ -319,3 +319,35 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, ReloadContent) {
   EXPECT_EQ(speedreader::DistillState::kSpeedreaderOnDisabledPage,
             tab_helper_2->PageDistillState());
 }
+
+IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, ShowOriginalPage) {
+  ToggleSpeedreader();
+  NavigateToPageSynchronously(kTestPageReadable);
+  auto* web_contents = ActiveWebContents();
+
+  constexpr int kIsolatedWorldId = content::ISOLATED_WORLD_ID_CONTENT_END + 1;
+
+  constexpr const char kClickLink[] =
+      R"js(
+    (function() {
+      const link = document.getElementById('show-original-page');
+      link.click();
+    })();
+  )js";
+
+  ASSERT_TRUE(content::ExecJs(web_contents, kClickLink,
+                              content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
+                              kIsolatedWorldId));
+  content::WaitForLoadStop(web_contents);
+  auto* tab_helper =
+      speedreader::SpeedreaderTabHelper::FromWebContents(web_contents);
+  EXPECT_EQ(speedreader::DistillState::kSpeedreaderOnDisabledPage,
+            tab_helper->PageDistillState());
+  EXPECT_TRUE(tab_helper->IsEnabledForSite());
+
+  // Click on speedreader button
+  ClickReaderButton();
+  content::WaitForLoadStop(web_contents);
+  EXPECT_EQ(speedreader::DistillState::kSpeedreaderMode,
+            tab_helper->PageDistillState());
+}
