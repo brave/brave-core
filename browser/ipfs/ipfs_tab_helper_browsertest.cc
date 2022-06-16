@@ -349,7 +349,15 @@ IN_PROC_BROWSER_TEST_F(IpfsTabHelperBrowserTest, ResolvedIPFSLinkBad) {
   EXPECT_EQ(helper->GetIPFSResolvedURL().spec(), result);
 }
 
-IN_PROC_BROWSER_TEST_F(IpfsTabHelperBrowserTest, ResolvedIPFSLinkBackward) {
+// Some tests are failing for Windows x86 CI,
+// See https://github.com/brave/brave-browser/issues/22767
+#if BUILDFLAG(IS_WIN) && defined(ARCH_CPU_X86)
+#define MAYBE_ResolvedIPFSLinkBackward DISABLED_ResolvedIPFSLinkBackward
+#else
+#define MAYBE_ResolvedIPFSLinkBackward ResolvedIPFSLinkBackward
+#endif
+IN_PROC_BROWSER_TEST_F(IpfsTabHelperBrowserTest,
+                       MAYBE_ResolvedIPFSLinkBackward) {
   ASSERT_TRUE(
       ipfs::IPFSTabHelper::MaybeCreateForWebContents(active_contents()));
   ipfs::IPFSTabHelper* helper =
