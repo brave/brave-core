@@ -31,7 +31,9 @@ const SkColor kLightOmniboxText = SkColorSetRGB(0x42, 0x42, 0x42);
 #if BUILDFLAG(IS_LINUX)
 bool IsUsingSystemTheme(const CustomThemeSupplier* theme_supplier) {
   return theme_supplier &&
-         theme_supplier->get_theme_type() == CustomThemeSupplier::NATIVE_X11;
+         theme_supplier->get_theme_type() ==
+             ui::ColorProviderManager::ThemeInitializerSupplier::ThemeType::
+                 kNativeX11;
 }
 #endif
 
