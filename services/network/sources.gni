@@ -1,0 +1,13 @@
+# Copyright 2022 The Brave Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+import("//brave/components/brave_page_graph/common/buildflags.gni")
+
+brave_services_network_network_service_deps =
+    [ "//brave/components/brave_page_graph/common:buildflags" ]
+
+if (enable_brave_page_graph) {
+  brave_services_network_network_service_deps +=
+      [ "//brave/components/brave_page_graph/common" ]
+}

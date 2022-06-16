@@ -114,7 +114,8 @@ void AdBlockService::ShouldStartRequest(
     bool* did_match_rule,
     bool* did_match_exception,
     bool* did_match_important,
-    std::string* mock_data_url) {
+    std::string* mock_data_url,
+    std::unique_ptr<BlockDecision>* block_decision) {
   DCHECK(GetTaskRunner()->RunsTasksInCurrentSequence());
   if (aggressive_blocking ||
       base::FeatureList::IsEnabled(
@@ -124,7 +125,8 @@ void AdBlockService::ShouldStartRequest(
           net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES)) {
     default_service()->ShouldStartRequest(
         url, resource_type, tab_host, aggressive_blocking, did_match_rule,
-        did_match_exception, did_match_important, mock_data_url);
+        did_match_exception, did_match_important, mock_data_url,
+        block_decision);
     if (did_match_important && *did_match_important) {
       return;
     }
@@ -132,21 +134,21 @@ void AdBlockService::ShouldStartRequest(
 
   regional_service_manager()->ShouldStartRequest(
       url, resource_type, tab_host, aggressive_blocking, did_match_rule,
-      did_match_exception, did_match_important, mock_data_url);
+      did_match_exception, did_match_important, mock_data_url, block_decision);
   if (did_match_important && *did_match_important) {
     return;
   }
 
   subscription_service_manager()->ShouldStartRequest(
       url, resource_type, tab_host, aggressive_blocking, did_match_rule,
-      did_match_exception, did_match_important, mock_data_url);
+      did_match_exception, did_match_important, mock_data_url, block_decision);
   if (did_match_important && *did_match_important) {
     return;
   }
 
   custom_filters_service()->ShouldStartRequest(
       url, resource_type, tab_host, aggressive_blocking, did_match_rule,
-      did_match_exception, did_match_important, mock_data_url);
+      did_match_exception, did_match_important, mock_data_url, block_decision);
 }
 
 absl::optional<std::string> AdBlockService::GetCspDirectives(

@@ -513,14 +513,16 @@ void AdBlockSubscriptionServiceManager::ShouldStartRequest(
     bool* did_match_rule,
     bool* did_match_exception,
     bool* did_match_important,
-    std::string* mock_data_url) {
+    std::string* mock_data_url,
+    std::unique_ptr<BlockDecision>* block_decision) {
   base::AutoLock lock(subscription_services_lock_);
   for (const auto& subscription_service : subscription_services_) {
     auto info = GetInfo(subscriptions_, subscription_service.first);
     if (info && info->enabled) {
       subscription_service.second->ShouldStartRequest(
           url, resource_type, tab_host, aggressive_blocking, did_match_rule,
-          did_match_exception, did_match_important, mock_data_url);
+          did_match_exception, did_match_important, mock_data_url,
+          block_decision);
       if (did_match_important && *did_match_important) {
         return;
       }

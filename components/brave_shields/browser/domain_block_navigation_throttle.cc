@@ -46,7 +46,7 @@ bool ShouldBlockDomainOnTaskRunner(
   ad_block_service->ShouldStartRequest(
       url, blink::mojom::ResourceType::kMainFrame, url.host(),
       aggressive_blocking, &did_match_rule, &did_match_exception,
-      &did_match_important, &mock_data_url);
+      &did_match_important, &mock_data_url, nullptr);
   return (did_match_important || (did_match_rule && !did_match_exception));
 }
 

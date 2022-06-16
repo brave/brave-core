@@ -129,6 +129,7 @@ pub unsafe extern "C" fn engine_match(
     did_match_rule: *mut bool,
     did_match_exception: *mut bool,
     did_match_important: *mut bool,
+    filter: *mut *mut c_char,
     redirect: *mut *mut c_char,
 ) {
     let url = CStr::from_ptr(url).to_str().unwrap();
@@ -151,6 +152,13 @@ pub unsafe extern "C" fn engine_match(
     *did_match_rule |= blocker_result.matched;
     *did_match_exception |= blocker_result.exception.is_some();
     *did_match_important |= blocker_result.important;
+    *filter = match blocker_result.filter {
+        Some(x) => match CString::new(x) {
+            Ok(y) => y.into_raw(),
+            _ => ptr::null_mut(),
+        },
+        None => ptr::null_mut(),
+    };
     *redirect = match blocker_result.redirect {
         Some(Redirection::Resource(x)) => match CString::new(x) {
             Ok(y) => y.into_raw(),

@@ -14,6 +14,7 @@
 #include "base/containers/contains.h"
 #include "base/feature_list.h"
 #include "base/strings/utf_string_conversions.h"
+#include "brave/components/brave_page_graph/common/buildflags.h"
 #include "brave/components/brave_shields/common/brave_shield_utils.h"
 #include "brave/components/brave_shields/common/features.h"
 #include "components/content_settings/core/common/content_settings_pattern.h"
@@ -139,6 +140,14 @@ bool BraveContentSettingsAgentImpl::AllowScript(bool enabled_per_settings) {
 
 void BraveContentSettingsAgentImpl::DidNotAllowScript() {
   if (!blocked_script_url_.is_empty()) {
+#if BUILDFLAG(ENABLE_BRAVE_PAGE_GRAPH)
+    blink::WebPageGraph* page_graph =
+        render_frame()->GetWebFrame()->GetWebPageGraph();
+    if (page_graph) {
+      page_graph->RegisterResourceBlockJavaScript(blocked_script_url_);
+    }
+#endif  // BUILDFLAG(ENABLE_BRAVE_PAGE_GRAPH)
+
     BraveSpecificDidBlockJavaScript(
         base::UTF8ToUTF16(blocked_script_url_.spec()));
     blocked_script_url_ = GURL::EmptyGURL();
@@ -357,6 +366,30 @@ void BraveContentSettingsAgentImpl::SetAllowScriptsFromOriginsOnce(
 
 void BraveContentSettingsAgentImpl::SetReduceLanguageEnabled(bool enabled) {
   reduce_language_enabled_ = enabled;
+}
+
+void BraveContentSettingsAgentImpl::RegisterResourceBlockAd(
+    const GURL& url,
+    const std::string& rule) {
+#if BUILDFLAG(ENABLE_BRAVE_PAGE_GRAPH)
+  blink::WebPageGraph* page_graph =
+      render_frame()->GetWebFrame()->GetWebPageGraph();
+  if (page_graph) {
+    page_graph->RegisterResourceBlockAd(url, rule);
+  }
+#endif  // BUILDFLAG(ENABLE_BRAVE_PAGE_GRAPH)
+}
+
+void BraveContentSettingsAgentImpl::RegisterResourceBlockTracker(
+    const GURL& url,
+    const std::string& host) {
+#if BUILDFLAG(ENABLE_BRAVE_PAGE_GRAPH)
+  blink::WebPageGraph* page_graph =
+      render_frame()->GetWebFrame()->GetWebPageGraph();
+  if (page_graph) {
+    page_graph->RegisterResourceBlockTracker(url, host);
+  }
+#endif  // BUILDFLAG(ENABLE_BRAVE_PAGE_GRAPH)
 }
 
 void BraveContentSettingsAgentImpl::BindBraveShieldsReceiver(

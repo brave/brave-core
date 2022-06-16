@@ -1,0 +1,3 @@
+# Inline upstream rules.
+from lib.import_inline import inline_file
+inline_file('third_party/blink/public/DEPS', globals(), locals())

@@ -81,6 +81,10 @@ class BraveContentSettingsAgentImpl
   void SetAllowScriptsFromOriginsOnce(
       const std::vector<std::string>& origins) override;
   void SetReduceLanguageEnabled(bool enabled) override;
+  void RegisterResourceBlockAd(const GURL& url,
+                               const std::string& rule) override;
+  void RegisterResourceBlockTracker(const GURL& url,
+                                    const std::string& host) override;
 
   void BindBraveShieldsReceiver(
       mojo::PendingAssociatedReceiver<brave_shields::mojom::BraveShields>

@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/public/devtools_protocol/browser_protocol.pdl b/third_party/blink/public/devtools_protocol/browser_protocol.pdl
-index 9f91968bd89a024f6269dfcbdd82b29011001ade..54ecee20944f47bdc8abf4c5b4aa825b3187b6dd 100644
+index 9f91968bd89a024f6269dfcbdd82b29011001ade..10de917f43ce557911892366df3bfb29f252352c 100644
 --- a/third_party/blink/public/devtools_protocol/browser_protocol.pdl
 +++ b/third_party/blink/public/devtools_protocol/browser_protocol.pdl
 @@ -7079,6 +7079,8 @@ domain Page
@@ -11,3 +11,26 @@ index 9f91968bd89a024f6269dfcbdd82b29011001ade..54ecee20944f47bdc8abf4c5b4aa825b
  
    # Reason for a permissions policy feature to be disabled.
    experimental type PermissionsPolicyBlockReason extends string
+@@ -7539,6 +7541,22 @@ domain Page
+   # Enables page domain notifications.
+   command enable
+ 
++  # Generates a Page Graph report for the page.
++  experimental command generatePageGraph
++    returns
++      # Generated page graph GraphML.
++      string data
++
++  # Generates a report from a node's Page Graph info.
++  experimental command generatePageGraphNodeReport
++    parameters
++      # Id of the element to report on.
++      DOM.NodeId nodeId
++    returns
++      # Generated report lines
++      array of string report
++
++
+   command getAppManifest
+     returns
+       # Manifest location.

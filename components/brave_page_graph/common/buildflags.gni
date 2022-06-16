@@ -1,0 +1,11 @@
+# Copyright 2022 The Brave Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+declare_args() {
+  enable_brave_page_graph = is_win || is_mac || is_linux
+  enable_brave_page_graph_webapi_probes = false
+}
+
+assert(!enable_brave_page_graph_webapi_probes ||
+       enable_brave_page_graph_webapi_probes == enable_brave_page_graph)

@@ -11,6 +11,7 @@
 
 #include "base/feature_list.h"
 #include "base/strings/utf_string_conversions.h"
+#include "brave/components/brave_page_graph/common/buildflags.h"
 #include "brave/components/brave_perf_predictor/browser/perf_predictor_tab_helper.h"
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
@@ -119,10 +120,38 @@ void BraveShieldsWebContentsObserver::BindBraveShieldsHost(
 
 // static
 void BraveShieldsWebContentsObserver::DispatchBlockedEvent(
+    const BlockDecision* block_decision,
     const GURL& request_url,
     int frame_tree_node_id,
     const std::string& block_type) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
+
+#if BUILDFLAG(ENABLE_BRAVE_PAGE_GRAPH)
+  if (block_decision && (block_decision->IsAdBlockDecision() ||
+                         block_decision->IsTrackerBlockDecision())) {
+    if (WebContents* web_contents =
+            WebContents::FromFrameTreeNodeId(frame_tree_node_id)) {
+      auto& remote =
+          BraveShieldsWebContentsObserver::FromWebContents(web_contents)
+              ->GetBraveShieldsRemote(web_contents->GetMainFrame());
+      if (remote) {
+        const AdBlockDecision* const ad_block_decision =
+            block_decision->AsAdBlockDecision();
+        if (ad_block_decision) {
+          remote->RegisterResourceBlockAd(request_url,
+                                          ad_block_decision->Rule());
+        }
+
+        const TrackerBlockDecision* const tracker_block_decision =
+            block_decision->AsTrackerBlockDecision();
+        if (tracker_block_decision) {
+          remote->RegisterResourceBlockTracker(request_url,
+                                               tracker_block_decision->Host());
+        }
+      }
+    }
+  }
+#endif  // BUILDFLAG(ENABLE_BRAVE_PAGE_GRAPH)
 
   auto subresource = request_url.spec();
   WebContents* web_contents =

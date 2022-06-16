@@ -1,0 +1,12 @@
+diff --git a/BUILD.gn b/BUILD.gn
+index 00770169bf5aa2e6d4eb55ec379a1d939934185f..06acd0ccf47227b6bda0b70f294aac58c0bdb1fc 100644
+--- a/BUILD.gn
++++ b/BUILD.gn
+@@ -2623,6 +2623,7 @@ v8_header_set("v8_headers") {
+     ":cppgc_headers",
+     ":v8_version",
+   ]
++  import("//brave/v8/sources.gni") sources += brave_v8_headers_sources public_deps += brave_v8_headers_public_deps
+ }
+ 
+ if (v8_generate_external_defines_header) {

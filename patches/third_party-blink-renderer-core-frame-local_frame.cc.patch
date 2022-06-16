@@ -1,0 +1,12 @@
+diff --git a/third_party/blink/renderer/core/frame/local_frame.cc b/third_party/blink/renderer/core/frame/local_frame.cc
+index fccb4b6dc2da482f10f1ea011931361d9fd96d06..0573305d696ce635ec87c5f87f7bbbeb8437837c 100644
+--- a/third_party/blink/renderer/core/frame/local_frame.cc
++++ b/third_party/blink/renderer/core/frame/local_frame.cc
+@@ -1532,6 +1532,7 @@ LocalFrame::LocalFrame(LocalFrameClient* client,
+   idleness_detector_ = MakeGarbageCollected<IdlenessDetector>(this, clock);
+   attribution_src_loader_ = MakeGarbageCollected<AttributionSrcLoader>(this);
+   inspector_task_runner_->InitIsolate(isolate);
++  BRAVE_LOCAL_FRAME_CONSTRUCTOR
+ 
+   if (IsOutermostMainFrame()) {
+     intersection_state_.occlusion_state =

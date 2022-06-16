@@ -182,6 +182,7 @@ EngineFlags ShouldBlockRequestOnTaskRunner(
   if (!ctx->initiator_url.is_valid()) {
     return previous_result;
   }
+  std::unique_ptr<brave_shields::BlockDecision> block_decision;
   const std::string source_host = ctx->initiator_url.host();
 
   GURL url_to_check;
@@ -201,12 +202,14 @@ EngineFlags ShouldBlockRequestOnTaskRunner(
       url_to_check, ctx->resource_type, source_host,
       ctx->aggressive_blocking || force_aggressive,
       &previous_result.did_match_rule, &previous_result.did_match_exception,
-      &previous_result.did_match_important, &ctx->mock_data_url);
+      &previous_result.did_match_important, &ctx->mock_data_url,
+      &block_decision);
 
   if (previous_result.did_match_important ||
       (previous_result.did_match_rule &&
        !previous_result.did_match_exception)) {
     ctx->blocked_by = kAdBlocked;
+    ctx->block_decision = std::move(block_decision);
   }
 
   return previous_result;
@@ -221,7 +224,8 @@ void OnShouldBlockRequestResult(
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   if (ctx->blocked_by == kAdBlocked) {
     brave_shields::BraveShieldsWebContentsObserver::DispatchBlockedEvent(
-        ctx->request_url, ctx->frame_tree_node_id, brave_shields::kAds);
+        ctx->block_decision.get(), ctx->request_url, ctx->frame_tree_node_id,
+        brave_shields::kAds);
   } else if (then_check_uncloaked) {
     // This will be deleted by `AdblockCnameResolveHostClient::OnComplete`.
     new AdblockCnameResolveHostClient(std::move(next_callback), task_runner,

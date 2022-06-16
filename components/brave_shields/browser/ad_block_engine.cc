@@ -18,6 +18,7 @@
 #include "base/strings/utf_string_conversions.h"
 #include "brave/components/adblock_rust_ffi/src/wrapper.h"
 #include "brave/components/brave_component_updater/browser/dat_file_util.h"
+#include "brave/components/brave_shields/common/block_decision.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
@@ -101,14 +102,16 @@ AdBlockEngine::AdBlockEngine() : ad_block_client_(new adblock::Engine()) {}
 
 AdBlockEngine::~AdBlockEngine() {}
 
-void AdBlockEngine::ShouldStartRequest(const GURL& url,
-                                       blink::mojom::ResourceType resource_type,
-                                       const std::string& tab_host,
-                                       bool aggressive_blocking,
-                                       bool* did_match_rule,
-                                       bool* did_match_exception,
-                                       bool* did_match_important,
-                                       std::string* mock_data_url) {
+void AdBlockEngine::ShouldStartRequest(
+    const GURL& url,
+    blink::mojom::ResourceType resource_type,
+    const std::string& tab_host,
+    bool aggressive_blocking,
+    bool* did_match_rule,
+    bool* did_match_exception,
+    bool* did_match_important,
+    std::string* mock_data_url,
+    std::unique_ptr<BlockDecision>* block_decision) {
   // Determine third-party here so the library doesn't need to figure it out.
   // CreateFromNormalizedTuple is needed because SameDomainOrHost needs
   // a URL or origin and not a string to a host name.
@@ -116,10 +119,14 @@ void AdBlockEngine::ShouldStartRequest(const GURL& url,
       url,
       url::Origin::CreateFromNormalizedTuple("https", tab_host.c_str(), 80),
       INCLUDE_PRIVATE_REGISTRIES);
+  std::string filter;
   ad_block_client_->matches(url.spec(), url.host(), tab_host, is_third_party,
                             ResourceTypeToString(resource_type), did_match_rule,
-                            did_match_exception, did_match_important,
+                            did_match_exception, did_match_important, &filter,
                             mock_data_url);
+  if (block_decision) {
+    *block_decision = std::make_unique<AdBlockDecision>(filter);
+  }
 
   // LOG(ERROR) << "AdBlockEngine::ShouldStartRequest(), host: "
   //  << tab_host

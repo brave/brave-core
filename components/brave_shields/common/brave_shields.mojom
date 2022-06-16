@@ -5,6 +5,7 @@
 module brave_shields.mojom;
 
 import "mojo/public/mojom/base/string16.mojom";
+import "url/mojom/url.mojom";
 
 interface BraveShieldsHost {
   // Notify the browser process that JavaScript execution has been blocked,
@@ -20,4 +21,10 @@ interface BraveShields {
   // Tell the associated RenderFrame(s) whether "reduce language
   // identifiability" is enabled.
   SetReduceLanguageEnabled(bool enabled);
+
+  // Record that a resource was blocked by an ad filter.
+  RegisterResourceBlockAd(url.mojom.Url url, string rule);
+
+  // Record that a resource was blocked by a tracker filter.
+  RegisterResourceBlockTracker(url.mojom.Url url, string host);
 };

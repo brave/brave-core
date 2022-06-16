@@ -1,0 +1,12 @@
+diff --git a/services/network/BUILD.gn b/services/network/BUILD.gn
+index 3011d078106235834404642390ad2dfc248c5426..4c98c9106cdc9afffe7061a6bf7a606a64e4ef33 100644
+--- a/services/network/BUILD.gn
++++ b/services/network/BUILD.gn
+@@ -322,6 +322,7 @@ component("network_service") {
+   }
+ 
+   defines = [ "IS_NETWORK_SERVICE_IMPL" ]
++  import("//brave/services/network/sources.gni") deps += brave_services_network_network_service_deps
+ }
+ 
+ if (is_linux || is_chromeos) {

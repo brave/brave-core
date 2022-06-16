@@ -1,0 +1,504 @@
+/* Copyright (c) 2019 The Brave Software Team. Distributed under the MPL2
+ * license. This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+#ifndef BRAVE_THIRD_PARTY_BLINK_RENDERER_CORE_BRAVE_PAGE_GRAPH_PAGE_GRAPH_H_
+#define BRAVE_THIRD_PARTY_BLINK_RENDERER_CORE_BRAVE_PAGE_GRAPH_PAGE_GRAPH_H_
+
+#include <map>
+#include <memory>
+#include <string>
+#include <vector>
+
+#include "base/time/time.h"
+#include "brave/third_party/blink/public/web/web_page_graph.h"
+#include "brave/third_party/blink/renderer/core/brave_page_graph/blink_probe_types.h"
+#include "brave/third_party/blink/renderer/core/brave_page_graph/page_graph_context.h"
+#include "brave/third_party/blink/renderer/core/brave_page_graph/requests/request_tracker.h"
+#include "brave/third_party/blink/renderer/core/brave_page_graph/scripts/script_tracker.h"
+#include "brave/third_party/blink/renderer/core/brave_page_graph/types.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
+#include "third_party/blink/renderer/core/core_export.h"
+#include "third_party/blink/renderer/core/dom/dom_node_ids.h"
+#include "third_party/blink/renderer/core/execution_context/execution_context.h"
+#include "third_party/blink/renderer/core/inspector/console_message.h"
+#include "third_party/blink/renderer/core/inspector/protocol/protocol.h"
+#include "third_party/blink/renderer/core/inspector/protocol/dom.h"
+#include "third_party/blink/renderer/platform/heap/garbage_collected.h"
+#include "third_party/blink/renderer/platform/heap/member.h"
+#include "third_party/blink/renderer/platform/supplementable.h"
+#include "third_party/blink/renderer/platform/wtf/text/wtf_string.h"
+
+namespace base {
+class UnguessableToken;
+}  // namespace base
+
+namespace brave_page_graph {
+
+class GraphEdge;
+class GraphNode;
+class NodeActor;
+class NodeAdFilter;
+class NodeBinding;
+class NodeExtensions;
+class NodeFingerprintingFilter;
+class NodeHTML;
+class NodeHTMLElement;
+class NodeHTMLText;
+class NodeParser;
+class NodeResource;
+class NodeShields;
+class NodeShield;
+class NodeStorage;
+class NodeStorageCookieJar;
+class NodeStorageLocalStorage;
+class NodeStorageRoot;
+class NodeStorageSessionStorage;
+class NodeTrackerFilter;
+class NodeJSBuiltin;
+class NodeJSWebAPI;
+class RequestTracker;
+class ScriptTracker;
+struct TrackedRequestRecord;
+
+}  // namespace brave_page_graph
+
+namespace blink {
+
+class ExecutionContext;
+class LocalFrame;
+class Node;
+class CharacterData;
+class Element;
+class DocumentLoader;
+class ExceptionState;
+class ConsoleMessage;
+class KURL;
+class ResourceError;
+struct ResourceLoaderOptions;
+class ResourceResponse;
+class CoreProbeSink;
+class ResourceRequest;
+class Resource;
+class BlobDataHandle;
+class ClassicScript;
+class EventTarget;
+class EncodedFormData;
+class ModuleScriptCreationParams;
+class ReferrerScriptInfo;
+
+enum class RenderBlockingBehavior : uint8_t;
+enum class ResourceType : uint8_t;
+
+// ID generation rules:
+//   * blink::DOMNodeId is a global counter.
+//   * Request Id (uint64_t identifier) is a global counter.
+//   * Script Id (int script_id) is a v8::Isolate-bound counter.
+//
+// Concepts relation:
+//   * LocalFrame : LocalDOMWindow (ExecutionContext) : Document = 1 : 1 : 1 at
+//     any point in time, but the mapping may change over time.
+//   * LocalFrame : DocumentLoader = 1 : 1
+//
+// See for details:
+// https://docs.google.com/document/d/1aitSOucL0VHZa9Z2vbRJSyAIsAz24kX8LFByQ5xQnUg/edit
+// https://docs.google.com/presentation/d/1pHjF3TNCX--j0ss3SK09pXlVOFK0Cdq6HkMcOzcov1o/edit#slide=id.g4983c55b2d55fcc7_42
+
+class CORE_EXPORT PageGraph : public GarbageCollected<PageGraph>,
+                              public Supplement<LocalFrame>,
+                              public WebPageGraph,
+                              public brave_page_graph::PageGraphContext {
+ public:
+  static const char kSupplementName[];
+  static PageGraph* From(LocalFrame&);
+  static void ProvideTo(LocalFrame&);
+
+  explicit PageGraph(LocalFrame& local_frame);
+  ~PageGraph() override;
+
+  void Trace(Visitor* visitor) const override;
+
+  // *** CoreProbe handlers ***
+  // Node tracking:
+  void NodeCreated(blink::Node* node);
+  void RegisterPageGraphNodeFullyCreated(blink::Node* node);
+  void DidInsertDOMNode(blink::Node* node);
+  void WillRemoveDOMNode(blink::Node* node);
+  // Node attributes tracking:
+  void DidModifyDOMAttr(blink::Element* element,
+                        const blink::QualifiedName& name,
+                        const AtomicString& value);
+  void DidRemoveDOMAttr(blink::Element* element,
+                        const blink::QualifiedName& name);
+  // Document/navigation tracking:
+  void DidCommitLoad(blink::LocalFrame*, blink::DocumentLoader*);
+  void WillSendNavigationRequest(uint64_t identifier,
+                                 blink::DocumentLoader* loader,
+                                 const blink::KURL&,
+                                 const AtomicString& http_method,
+                                 blink::EncodedFormData*);
+  // Requests tracking:
+  void WillSendRequest(blink::DocumentLoader* loader,
+                       const blink::KURL& fetch_context_url,
+                       const blink::ResourceRequest& request,
+                       const blink::ResourceResponse& redirect_response,
+                       const blink::ResourceLoaderOptions& options,
+                       blink::ResourceType resource_type,
+                       blink::RenderBlockingBehavior render_blocking_behavior,
+                       base::TimeTicks timestamp);
+  void DidReceiveResourceResponse(uint64_t identifier,
+                                  blink::DocumentLoader* loader,
+                                  const blink::ResourceResponse& response,
+                                  const blink::Resource* cached_resource);
+  void DidReceiveData(uint64_t identifier,
+                      blink::DocumentLoader* loader,
+                      const char* data,
+                      uint64_t data_length);
+  void DidReceiveBlob(uint64_t identifier,
+                      blink::DocumentLoader* loader,
+                      blink::BlobDataHandle*);
+  void DidFinishLoading(uint64_t identifier,
+                        blink::DocumentLoader* loader,
+                        base::TimeTicks finish_time,
+                        int64_t encoded_data_length,
+                        int64_t decoded_body_length,
+                        bool should_report_corb_blocking);
+  void DidFailLoading(
+      blink::CoreProbeSink* sink,
+      uint64_t identifier,
+      blink::DocumentLoader* loader,
+      const blink::ResourceError&,
+      const base::UnguessableToken& devtools_frame_or_worker_token);
+  // Script/module compilation tracking:
+  void RegisterPageGraphScriptCompilation(
+      blink::ExecutionContext* execution_context,
+      const blink::ReferrerScriptInfo& referrer_info,
+      const blink::ClassicScript& classic_script,
+      v8::Local<v8::Script> script);
+  void RegisterPageGraphModuleCompilation(
+      blink::ExecutionContext* execution_context,
+      const blink::ReferrerScriptInfo& referrer_info,
+      const blink::ModuleScriptCreationParams& params,
+      v8::Local<v8::Module> script);
+  void RegisterPageGraphScriptCompilationFromAttr(
+      blink::EventTarget* event_target,
+      const String& function_name,
+      const String& script_body,
+      v8::Local<v8::Function> compiled_function);
+  // WebAPI calls tracking:
+  void RegisterPageGraphBindingEvent(blink::ExecutionContext* execution_context,
+                                     const char* name,
+                                     blink::PageGraphBindingType type,
+                                     blink::PageGraphBindingEvent event);
+  void RegisterPageGraphWebAPICallWithResult(
+      blink::ExecutionContext* execution_context,
+      const char* name,
+      const blink::PageGraphBlinkReceiverData& receiver_data,
+      const blink::PageGraphBlinkArgs& args,
+      const blink::ExceptionState* exception_state,
+      const absl::optional<String>& result);
+  // Event listeners tracking:
+  void RegisterPageGraphEventListenerAdd(
+      blink::EventTarget* event_target,
+      const String& event_type,
+      blink::RegisteredEventListener* registered_listener);
+  void RegisterPageGraphEventListenerRemove(
+      blink::EventTarget* event_target,
+      const String& event_type,
+      blink::RegisteredEventListener* registered_listener);
+  // Console message tracking:
+  void ConsoleMessageAdded(blink::ConsoleMessage* console_message);
+  // *** CoreProbe handlers end ***
+
+  // *** v8 handlers ***
+  void RegisterV8ScriptCompilationFromEval(v8::Isolate* isolate,
+                                           const int script_id,
+                                           v8::Local<v8::String> source);
+  void RegisterV8JSBuiltinCall(v8::Isolate* isolate,
+                               const char* builtin_name,
+                               const std::vector<std::string>& args,
+                               const std::string* result);
+  // *** v8 handlers end ***
+
+  // PageGraphContext:
+  base::TimeTicks GetGraphStartTime() const override;
+  brave_page_graph::GraphItemId GetNextGraphItemId() override;
+  void AddGraphItem(
+      std::unique_ptr<brave_page_graph::GraphItem> graph_item) override;
+
+  void GenerateReportForNode(const blink::DOMNodeId node_id,
+                             blink::protocol::Array<String>& report);
+  String ToGraphML() const;
+
+ private:
+#define PAGE_GRAPH_USING_DECL(type) using type = brave_page_graph::type
+  PAGE_GRAPH_USING_DECL(Binding);
+  PAGE_GRAPH_USING_DECL(BindingEvent);
+  PAGE_GRAPH_USING_DECL(BindingType);
+  PAGE_GRAPH_USING_DECL(EdgeList);
+  PAGE_GRAPH_USING_DECL(EventListenerId);
+  PAGE_GRAPH_USING_DECL(FingerprintingRule);
+  PAGE_GRAPH_USING_DECL(GraphEdge);
+  PAGE_GRAPH_USING_DECL(GraphItemId);
+  PAGE_GRAPH_USING_DECL(GraphItemUniquePtrList);
+  PAGE_GRAPH_USING_DECL(GraphNode);
+  PAGE_GRAPH_USING_DECL(InspectorId);
+  PAGE_GRAPH_USING_DECL(MethodName);
+  PAGE_GRAPH_USING_DECL(NodeActor);
+  PAGE_GRAPH_USING_DECL(NodeAdFilter);
+  PAGE_GRAPH_USING_DECL(NodeBinding);
+  PAGE_GRAPH_USING_DECL(NodeExtensions);
+  PAGE_GRAPH_USING_DECL(NodeFingerprintingFilter);
+  PAGE_GRAPH_USING_DECL(NodeHTML);
+  PAGE_GRAPH_USING_DECL(NodeHTMLElement);
+  PAGE_GRAPH_USING_DECL(NodeHTMLText);
+  PAGE_GRAPH_USING_DECL(NodeJSBuiltin);
+  PAGE_GRAPH_USING_DECL(NodeJSWebAPI);
+  PAGE_GRAPH_USING_DECL(NodeList);
+  PAGE_GRAPH_USING_DECL(NodeParser);
+  PAGE_GRAPH_USING_DECL(NodeResource);
+  PAGE_GRAPH_USING_DECL(NodeShield);
+  PAGE_GRAPH_USING_DECL(NodeShields);
+  PAGE_GRAPH_USING_DECL(NodeStorageCookieJar);
+  PAGE_GRAPH_USING_DECL(NodeStorageLocalStorage);
+  PAGE_GRAPH_USING_DECL(NodeStorageRoot);
+  PAGE_GRAPH_USING_DECL(NodeStorageSessionStorage);
+  PAGE_GRAPH_USING_DECL(NodeTrackerFilter);
+  PAGE_GRAPH_USING_DECL(RequestTracker);
+  PAGE_GRAPH_USING_DECL(RequestURL);
+  PAGE_GRAPH_USING_DECL(ScriptData);
+  PAGE_GRAPH_USING_DECL(ScriptId);
+  PAGE_GRAPH_USING_DECL(ScriptPosition);
+  PAGE_GRAPH_USING_DECL(ScriptTracker);
+  PAGE_GRAPH_USING_DECL(StorageLocation);
+  PAGE_GRAPH_USING_DECL(TrackedRequestRecord);
+#undef PAGE_GRAPH_USING_DECL
+
+  struct ExecutionContextNodes {
+    raw_ptr<NodeParser> parser_node;
+    raw_ptr<NodeExtensions> extensions_node;
+  };
+
+  NodeHTML* GetHTMLNode(const blink::DOMNodeId node_id) const;
+  NodeHTMLElement* GetHTMLElementNode(const blink::DOMNodeId node_id) const;
+  NodeHTMLText* GetHTMLTextNode(const blink::DOMNodeId node_id) const;
+  NodeHTMLElement* RegisterAndGetHTMLElementNode(blink::Node* node);
+  void RegisterCurrentlyConstructedNode(blink::Node* node);
+
+  void RegisterDocumentNodeCreated(blink::Document* node);
+  void RegisterHTMLTextNodeCreated(blink::CharacterData* node);
+  void RegisterHTMLElementNodeCreated(blink::Node* node);
+  void RegisterHTMLTextNodeInserted(blink::Node* node,
+                                    blink::Node* parent_node,
+                                    const blink::DOMNodeId before_sibling_id);
+  void RegisterHTMLElementNodeInserted(
+      blink::Node* node,
+      blink::Node* parent_node,
+      const blink::DOMNodeId before_sibling_id);
+  void RegisterHTMLTextNodeRemoved(blink::Node* node);
+  void RegisterHTMLElementNodeRemoved(blink::Node* node);
+
+  void RegisterEventListenerAdd(blink::Node* node,
+                                const String& event_type,
+                                const EventListenerId listener_id,
+                                ScriptId listener_script_id);
+  void RegisterEventListenerRemove(blink::Node* node,
+                                   const String& event_type,
+                                   const EventListenerId listener_id,
+                                   ScriptId listener_script_id);
+
+  void RegisterInlineStyleSet(blink::Node* node,
+                              const String& attr_name,
+                              const String& attr_value);
+  void RegisterInlineStyleDelete(blink::Node* node, const String& attr_name);
+  void RegisterAttributeSet(blink::Node* node,
+                            const String& attr_name,
+                            const String& attr_value);
+  void RegisterAttributeDelete(blink::Node* node, const String& attr_name);
+
+  void RegisterTextNodeChange(blink::Node* node, const String& new_text);
+
+  void DoRegisterRequestStart(const InspectorId request_id,
+                              GraphNode* requesting_node,
+                              const std::string& local_url,
+                              const std::string& resource_type);
+  void PossiblyWriteRequestsIntoGraph(
+      scoped_refptr<const TrackedRequestRecord> record);
+  void RegisterRequestStartFromElm(const blink::DOMNodeId node_id,
+                                   const InspectorId request_id,
+                                   const blink::KURL& url,
+                                   const std::string& resource_type);
+  void RegisterRequestStartFromCurrentScript(
+      blink::ExecutionContext* execution_context,
+      const InspectorId request_id,
+      const blink::KURL& url,
+      const std::string& resource_type);
+  void RegisterRequestStartFromScript(
+      blink::ExecutionContext* execution_context,
+      const ScriptId script_id,
+      const InspectorId request_id,
+      const blink::KURL& url,
+      const std::string& resource_type);
+  void RegisterRequestStartFromCSSOrLink(blink::DocumentLoader* loader,
+                                         const InspectorId request_id,
+                                         const blink::KURL& url,
+                                         const std::string& resource_type);
+  void RegisterRequestStartForDocument(blink::Document* document,
+                                       const InspectorId request_id,
+                                       const blink::KURL& url,
+                                       const bool is_main_frame);
+  void RegisterRequestComplete(const InspectorId request_id,
+                               int64_t encoded_data_length);
+  void RegisterRequestCompleteForDocument(const InspectorId request_id,
+                                          const int64_t size);
+  void RegisterRequestError(const InspectorId request_id);
+
+  void RegisterResourceBlockAd(const blink::WebURL& url,
+                               const std::string& rule) override;
+  void RegisterResourceBlockTracker(const blink::WebURL& url,
+                                    const std::string& host) override;
+  void RegisterResourceBlockJavaScript(const blink::WebURL& url) override;
+  void RegisterResourceBlockFingerprinting(const blink::WebURL& url,
+                                           const FingerprintingRule& rule);
+
+  void RegisterScriptCompilation(blink::ExecutionContext* execution_context,
+                                 const ScriptId script_id,
+                                 const ScriptData& script_data);
+  void RegisterScriptCompilationFromAttr(
+      blink::ExecutionContext* execution_context,
+      const ScriptId script_id,
+      const ScriptData& script_data);
+  void RegisterScriptCompilationFromEval(
+      blink::ExecutionContext* execution_context,
+      const ScriptId script_id,
+      const ScriptData& script_data);
+
+  void RegisterStorageRead(blink::ExecutionContext* execution_context,
+                           const String& key,
+                           const String& value,
+                           const StorageLocation location);
+  void RegisterStorageWrite(blink::ExecutionContext* execution_context,
+                            const String& key,
+                            const String& value,
+                            const StorageLocation location);
+  void RegisterStorageDelete(blink::ExecutionContext* execution_context,
+                             const String& key,
+                             const StorageLocation location);
+  void RegisterStorageClear(blink::ExecutionContext* execution_context,
+                            const StorageLocation location);
+
+  void RegisterWebAPICall(blink::ExecutionContext* execution_context,
+                          const MethodName& method,
+                          const std::vector<String>& arguments);
+  void RegisterWebAPIResult(blink::ExecutionContext* execution_context,
+                            const MethodName& method,
+                            const String& result);
+
+  void RegisterJSBuiltInCall(blink::ExecutionContext* execution_context,
+                             const char* builtin_name,
+                             const std::vector<std::string>& args);
+  void RegisterJSBuiltInResponse(blink::ExecutionContext* execution_context,
+                                 const char* builtin_name,
+                                 const std::string& result);
+
+  void RegisterBindingEvent(blink::ExecutionContext* execution_context,
+                            const Binding binding,
+                            const BindingType binding_type,
+                            const BindingEvent binding_event);
+
+  NodeActor* GetCurrentActingNode(
+      blink::ExecutionContext* execution_context,
+      ScriptPosition* out_script_position = nullptr);
+  ScriptId GetExecutingScriptId(
+      blink::ExecutionContext* execution_context,
+      ScriptPosition* out_script_position = nullptr) const;
+
+  NodeResource* GetResourceNodeForUrl(const std::string& url);
+  NodeAdFilter* GetAdFilterNodeForRule(const std::string& rule);
+  NodeTrackerFilter* GetTrackerFilterNodeForHost(const std::string& host);
+  NodeFingerprintingFilter* GetFingerprintingFilterNodeForRule(
+      const FingerprintingRule& rule);
+  NodeBinding* GetBindingNode(const Binding binding,
+                              const BindingType binding_type);
+  NodeJSWebAPI* GetJSWebAPINode(const MethodName& method);
+  NodeJSBuiltin* GetJSBuiltinNode(const MethodName& method);
+
+  // Return true if this PageGraph instance is instrumenting the top level
+  // frame tree.
+  bool IsRootFrame() const;
+
+  // The blink assigned frame id for the local root's frame.
+  const std::string frame_id_;
+  // Script tracker helper.
+  ScriptTracker script_tracker_;
+  // Page Graph start time stamp.
+  base::TimeTicks start_;
+  // Data structure for keeping track of all the in-air requests that
+  // have been made, but have not completed.
+  RequestTracker request_tracker_;
+  // Monotonically increasing counter, used so that we can replay the
+  // the graph's construction if needed.
+  GraphItemId id_counter_ = 0;
+
+  // These vectors own all of the items that are shared and indexed across
+  // the rest of the graph.  All the other pointers (the weak pointers)
+  // do not own their data.
+  GraphItemUniquePtrList graph_items_;
+  EdgeList edges_;
+  NodeList nodes_;
+
+  // Non-owning references to singleton items in the graph. (the owning
+  // references will be in the above vectors).
+  blink::HeapHashMap<blink::Member<ExecutionContext>, ExecutionContextNodes>
+      execution_context_nodes_;
+
+  // Tracks nodes currently being constructed. This is used to properly handle
+  // events that may occur during node construction such as attribute change,
+  // child node insert, etc.
+  // bool=true is set when a node has been speculatively registered.
+  base::flat_map<blink::UntracedMember<blink::Node>, bool>
+      currently_constructed_nodes_;
+
+  // Index structure for looking up HTML nodes.
+  // This map does not own the references.
+  std::map<blink::DOMNodeId, raw_ptr<NodeHTMLElement>> element_nodes_;
+  std::map<blink::DOMNodeId, raw_ptr<NodeHTMLText>> text_nodes_;
+
+  // Makes sure we don't have more than one node in the graph representing
+  // a single URL (not required for correctness, but keeps things tidier
+  // and makes some kinds of queries nicer).
+  std::map<RequestURL, raw_ptr<NodeResource>> resource_nodes_;
+
+  // Index structure for looking up binding nodes.
+  // This map does not own the references.
+  std::map<Binding, raw_ptr<NodeBinding>> binding_nodes_;
+  // Index structure for storing and looking up webapi nodes.
+  // This map does not own the references.
+  std::map<MethodName, raw_ptr<NodeJSWebAPI>> js_webapi_nodes_;
+  // Index structure for storing and looking up nodes representing built
+  // in JS funcs and methods. This map does not own the references.
+  std::map<MethodName, raw_ptr<NodeJSBuiltin>> js_builtin_nodes_;
+
+  // Index structure for looking up filter nodes.
+  // These maps do not own the references.
+  std::map<std::string, raw_ptr<NodeAdFilter>> ad_filter_nodes_;
+  std::map<std::string, raw_ptr<NodeTrackerFilter>> tracker_filter_nodes_;
+  std::map<FingerprintingRule, raw_ptr<NodeFingerprintingFilter>>
+      fingerprinting_filter_nodes_;
+
+  raw_ptr<NodeShields> shields_node_;
+  raw_ptr<NodeShield> ad_shield_node_;
+  raw_ptr<NodeShield> tracker_shield_node_;
+  raw_ptr<NodeShield> js_shield_node_;
+  raw_ptr<NodeShield> fingerprinting_shield_node_;
+
+  raw_ptr<NodeStorageRoot> storage_node_;
+  raw_ptr<NodeStorageCookieJar> cookie_jar_node_;
+  raw_ptr<NodeStorageLocalStorage> local_storage_node_;
+  raw_ptr<NodeStorageSessionStorage> session_storage_node_;
+};
+
+}  // namespace blink
+
+#endif  // BRAVE_THIRD_PARTY_BLINK_RENDERER_CORE_BRAVE_PAGE_GRAPH_PAGE_GRAPH_H_

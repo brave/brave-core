@@ -464,21 +464,23 @@ const util = {
     // Return true when original file of |file| should be touched.
     const applyFileFilter = (file) => {
       // Only include overridable files.
+      const supported_exts = ['.cc','.h', '.mm', '.mojom', '.py'];
       const ext = path.extname(file)
-      if (ext !== '.cc' && ext !== '.h' && ext !== '.mm' && ext !== '.mojom') {
-        return false
-      }
-      return true
+      return supported_exts.includes(ext)
     }
 
     const chromiumSrcDir = path.join(config.srcDir, 'brave', 'chromium_src')
+    const pythonModulesDir = path.join(chromiumSrcDir, 'python_modules')
     var sourceFiles = util.walkSync(chromiumSrcDir, applyFileFilter)
     const additionalGen = getAdditionalGenLocation()
 
     // Touch original files by updating mtime.
     const chromiumSrcDirLen = chromiumSrcDir.length
+    const pythonModulesDirLen = pythonModulesDir.length
     sourceFiles.forEach(chromiumSrcFile => {
-      const relativeChromiumSrcFile = chromiumSrcFile.slice(chromiumSrcDirLen)
+      const relativeChromiumSrcFile = path.extname(chromiumSrcFile) == '.py' ?
+          chromiumSrcFile.slice(pythonModulesDirLen) :
+          chromiumSrcFile.slice(chromiumSrcDirLen)
       let overriddenFile = path.join(config.srcDir, relativeChromiumSrcFile)
       if (fs.existsSync(overriddenFile)) {
         // If overriddenFile is older than file in chromium_src, touch it to trigger rebuild.
@@ -619,12 +621,13 @@ const util = {
     const buildArgsStr = util.buildArgsToString(config.buildArgs())
     const buildArgsFile = path.join(config.outputDir, 'brave_build_args.txt')
     const buildNinjaFile = path.join(config.outputDir, 'build.ninja')
+    const gnArgsFile = path.join(config.outputDir, 'args.gn')
     const prevBuildArgs = fs.existsSync(buildArgsFile) ?
       fs.readFileSync(buildArgsFile) : undefined
 
     const shouldRunGnGen = config.force_gn_gen ||
-      !fs.existsSync(buildNinjaFile) || !prevBuildArgs ||
-      prevBuildArgs != buildArgsStr
+      !fs.existsSync(buildNinjaFile) || !fs.existsSync(gnArgsFile) ||
+      !prevBuildArgs || prevBuildArgs != buildArgsStr
 
     if (shouldRunGnGen) {
       // `gn gen` can modify args.gn even if it's failed.
@@ -799,7 +802,7 @@ const util = {
     let reset = forceReset
 
     // base args
-    const initialArgs = ['sync', '--nohooks']
+    const initialArgs = ['sync', '--nohooks', '--force']
     const chromiumArgs = ['--revision', 'src@' + config.getProjectRef('chrome')]
     const resetArgs = ['--reset', '--with_tags', '--with_branch_heads', '--upstream']
 

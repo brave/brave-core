@@ -181,6 +181,8 @@ const Config = function () {
   this.braveAndroidKeystorePassword = getNPMConfig(['brave_android_keystore_password'])
   this.braveAndroidKeyPassword = getNPMConfig(['brave_android_key_password'])
   this.braveVariationsServerUrl = getNPMConfig(['brave_variations_server_url']) || ''
+  this.enableBravePageGraph = getNPMConfig(['enable_brave_page_graph'], true)
+  this.enableBravePageGraphWebAPIProbes = getNPMConfig(['enable_brave_page_graph_webapi_probes'], false)
   this.nativeRedirectCCDir = path.join(this.srcDir, 'out', 'redirect_cc')
   this.use_goma = getNPMConfig(['brave_use_goma']) || false
   this.goma_offline = false
@@ -318,6 +320,8 @@ Config.prototype.buildArgs = function () {
     sparkle_dsa_private_key_file: this.sparkleDSAPrivateKeyFile,
     sparkle_eddsa_private_key: this.sparkleEdDSAPrivateKey,
     sparkle_eddsa_public_key: this.sparkleEdDSAPublicKey,
+    enable_brave_page_graph: this.enableBravePageGraph,
+    enable_brave_page_graph_webapi_probes: this.enableBravePageGraphWebAPIProbes,
     use_goma: this.use_goma,
     ...this.extraGnArgs,
   }

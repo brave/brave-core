@@ -1,0 +1,12 @@
+diff --git a/third_party/blink/renderer/bindings/core/v8/js_event_handler_for_content_attribute.cc b/third_party/blink/renderer/bindings/core/v8/js_event_handler_for_content_attribute.cc
+index 18108a283b6740c7a4095977cf5cc07d96831e6a..80a2f3f418f64f59b4267452af9c7cbc50c60df7 100644
+--- a/third_party/blink/renderer/bindings/core/v8/js_event_handler_for_content_attribute.cc
++++ b/third_party/blink/renderer/bindings/core/v8/js_event_handler_for_content_attribute.cc
+@@ -234,6 +234,7 @@ v8::Local<v8::Value> JSEventHandlerForContentAttribute::GetCompiledHandler(
+   // and whose callback context is settings object.
+   compiled_function->SetName(V8String(isolate, function_name_));
+   SetCompiledHandler(script_state_of_event_target, compiled_function);
++  BRAVE_JS_EVENT_HANDLER_FOR_CONTENT_ATTRIBUTE_GET_COMPILED_HANDLER
+ 
+   return JSEventHandler::GetListenerObject(event_target);
+ }

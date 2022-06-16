@@ -18,6 +18,7 @@ brave_browser_brave_shields_deps = [
   "//base",
   "//brave/browser:browser_process",
   "//brave/common",
+  "//brave/components/brave_page_graph/common:buildflags",
   "//brave/components/brave_perf_predictor/browser",
   "//brave/components/brave_shields/browser",
   "//brave/components/brave_shields/common",

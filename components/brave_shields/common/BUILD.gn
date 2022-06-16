@@ -4,6 +4,8 @@ static_library("common") {
   sources = [
     "adblock_domain_resolver.cc",
     "adblock_domain_resolver.h",
+    "block_decision.cc",
+    "block_decision.h",
     "brave_shield_utils.cc",
     "brave_shield_utils.h",
     "features.cc",

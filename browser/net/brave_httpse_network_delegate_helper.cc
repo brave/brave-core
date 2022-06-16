@@ -13,6 +13,7 @@
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/brave_shields/brave_shields_web_contents_observer.h"
 #include "brave/components/brave_shields/browser/https_everywhere_service.h"
+#include "brave/components/brave_shields/common/block_decision.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
 #include "content/public/browser/browser_thread.h"
 #include "net/base/net_errors.h"
@@ -41,6 +42,7 @@ void OnBeforeURLRequest_HttpsePostFileWork(
   if (!ctx->new_url_spec.empty() &&
     ctx->new_url_spec != ctx->request_url.spec()) {
     brave_shields::BraveShieldsWebContentsObserver::DispatchBlockedEvent(
+        new brave_shields::HTTPUpgradableResourceBlockDecision(),
         ctx->request_url, ctx->frame_tree_node_id,
         brave_shields::kHTTPUpgradableResources);
   }
@@ -93,6 +95,7 @@ int OnBeforeURLRequest_HttpsePreFileWork(
     } else {
       if (!ctx->new_url_spec.empty()) {
         brave_shields::BraveShieldsWebContentsObserver::DispatchBlockedEvent(
+            new brave_shields::HTTPUpgradableResourceBlockDecision(),
             ctx->request_url, ctx->frame_tree_node_id,
             brave_shields::kHTTPUpgradableResources);
       }

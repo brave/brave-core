@@ -1,0 +1,28 @@
+diff --git a/third_party/blink/renderer/core/dom/events/event_target.cc b/third_party/blink/renderer/core/dom/events/event_target.cc
+index 77197717821e5a815b399a80586d0f3d2d0cd8f5..69efd5f8fced58dc5ad1a42b3af6e92405541187 100644
+--- a/third_party/blink/renderer/core/dom/events/event_target.cc
++++ b/third_party/blink/renderer/core/dom/events/event_target.cc
+@@ -496,6 +496,7 @@ bool EventTarget::AddEventListenerInternal(
+   bool added = EnsureEventTargetData().event_listener_map.Add(
+       event_type, listener, options, &registered_listener);
+   if (added) {
++    BRAVE_EVENT_TARGET_ADD_EVENT_LISTENER_INTERNAL
+     if (options->hasSignal()) {
+       // Instead of passing the entire |options| here, which could create a
+       // circular reference due to |options| holding a Member<AbortSignal>, just
+@@ -626,6 +627,7 @@ bool EventTarget::RemoveEventListenerInternal(
+                                     &index_of_removed_listener,
+                                     &registered_listener))
+     return false;
++  BRAVE_EVENT_TARGET_REMOVE_EVENT_LISTENER_INTERNAL
+ 
+   // Notify firing events planning to invoke the listener at 'index' that
+   // they have one less listener to invoke.
+@@ -684,6 +686,7 @@ bool EventTarget::SetAttributeEventListener(const AtomicString& event_type,
+       listener->async_task_context()->Schedule(GetExecutionContext(),
+                                                event_type);
+     }
++    BRAVE_EVENT_TARGET_SET_ATTRIBUTE_EVENT_LISTENER
+     registered_listener->SetCallback(listener);
+     return true;
+   }

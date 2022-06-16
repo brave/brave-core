@@ -1,0 +1,69 @@
+/* Copyright (c) 2019 The Brave Software Team. Distributed under the MPL2
+ * license. This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+#include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/edge/event_listener/edge_event_listener_action.h"
+
+#include "base/strings/string_number_conversions.h"
+#include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/node/actor/node_actor.h"
+#include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/node/actor/node_script.h"
+#include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/node/html/node_html_element.h"
+#include "brave/third_party/blink/renderer/core/brave_page_graph/graphml.h"
+
+namespace brave_page_graph {
+
+EdgeEventListenerAction::EdgeEventListenerAction(
+    GraphItemContext* context,
+    NodeActor* out_node,
+    NodeHTMLElement* in_node,
+    const std::string& event_type,
+    const EventListenerId listener_id,
+    NodeActor* listener_script)
+    : GraphEdge(context, out_node, in_node),
+      event_type_(event_type),
+      listener_id_(listener_id),
+      listener_script_(listener_script) {}
+
+EdgeEventListenerAction::~EdgeEventListenerAction() = default;
+
+ScriptId EdgeEventListenerAction::GetListenerScriptId() const {
+  if (auto* node_script =
+          blink::DynamicTo<NodeScript>(listener_script_.get())) {
+    return node_script->GetScriptId();
+  }
+  return 0;
+}
+
+ItemDesc EdgeEventListenerAction::GetItemDesc() const {
+  return GraphEdge::GetItemDesc() + " [" + event_type_ + "]" +
+         " [listener id: " + base::NumberToString(listener_id_) + "]" +
+         " [listener script id: " +
+         base::NumberToString(GetListenerScriptId()) + "]";
+}
+
+void EdgeEventListenerAction::AddGraphMLAttributes(
+    xmlDocPtr doc,
+    xmlNodePtr parent_node) const {
+  GraphEdge::AddGraphMLAttributes(doc, parent_node);
+  GraphMLAttrDefForType(kGraphMLAttrDefKey)
+      ->AddValueNode(doc, parent_node, event_type_);
+  GraphMLAttrDefForType(kGraphMLAttrDefEventListenerId)
+      ->AddValueNode(doc, parent_node, listener_id_);
+  GraphMLAttrDefForType(kGraphMLAttrDefScriptIdForEdge)
+      ->AddValueNode(doc, parent_node, GetListenerScriptId());
+}
+
+bool EdgeEventListenerAction::IsEdgeEventListenerAction() const {
+  return true;
+}
+
+bool EdgeEventListenerAction::IsEdgeEventListenerAdd() const {
+  return false;
+}
+
+bool EdgeEventListenerAction::IsEdgeEventListenerRemove() const {
+  return false;
+}
+
+}  // namespace brave_page_graph

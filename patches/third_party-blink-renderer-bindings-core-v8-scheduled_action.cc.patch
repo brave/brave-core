@@ -1,0 +1,21 @@
+diff --git a/third_party/blink/renderer/bindings/core/v8/scheduled_action.cc b/third_party/blink/renderer/bindings/core/v8/scheduled_action.cc
+index aa1d9cc6a5a7475934d684508713391aaad923e2..7b4c979f3989cb477f621be029a965487da329ba 100644
+--- a/third_party/blink/renderer/bindings/core/v8/scheduled_action.cc
++++ b/third_party/blink/renderer/bindings/core/v8/scheduled_action.cc
+@@ -77,6 +77,7 @@ ScheduledAction::ScheduledAction(ScriptState* script_state,
+           To<LocalDOMWindow>(target),
+           BindingSecurity::ErrorReportOption::kDoNotReport)) {
+     code_ = handler;
++    BRAVE_SCHEDULED_ACTION_STRING_CODE_CONSTRUCTOR
+   } else {
+     UseCounter::Count(target, WebFeature::kScheduledActionIgnored);
+   }
+@@ -148,7 +149,7 @@ void ScheduledAction::Execute(ExecutionContext* context) {
+   // TODO(crbug.com/1133238): Plumb base URL etc. from the initializing script.
+   DVLOG(1) << "ScheduledAction::execute " << this << ": executing from source";
+   ClassicScript* script =
+-      ClassicScript::Create(code_, KURL(), KURL(), ScriptFetchOptions(),
++      ClassicScript::Create(code_, KURL(), KURL(), GetScriptFetchOptions(),
+                             ScriptSourceLocationType::kEvalForScheduledAction,
+                             SanitizeScriptErrors::kDoNotSanitize);
+   script->RunScriptOnScriptState(script_state_->Get());

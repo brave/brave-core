@@ -59,7 +59,7 @@
       base::SysNSStringToUTF8(url), base::SysNSStringToUTF8(host),
       base::SysNSStringToUTF8(tabHost), isThirdParty,
       base::SysNSStringToUTF8(resourceType), &did_match_rule,
-      &did_match_exception, &did_match_important, &redirect);
+      &did_match_exception, &did_match_important, nullptr, &redirect);
   auto result = [[AdblockEngineMatchResult alloc] init];
   result.didMatchRule = did_match_rule;
   result.didMatchException = did_match_exception;

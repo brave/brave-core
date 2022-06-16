@@ -10,6 +10,7 @@
 #include <set>
 #include <string>
 
+#include "brave/components/brave_shields/common/block_decision.h"
 #include "net/base/network_isolation_key.h"
 #include "net/http/http_request_headers.h"
 #include "net/http/http_response_headers.h"
@@ -89,6 +90,9 @@ struct BraveRequestInfo {
   size_t next_url_request_index = 0;
 
   content::BrowserContext* browser_context = nullptr;
+
+  std::unique_ptr<brave_shields::BlockDecision> block_decision;
+
   net::HttpRequestHeaders* headers = nullptr;
   // The following two sets are populated by |OnBeforeStartTransactionCallback|.
   // |set_headers| contains headers which values were added or modified.

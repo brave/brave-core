@@ -16,6 +16,7 @@
 #include "base/files/file_path.h"
 #include "base/task/sequenced_task_runner.h"
 #include "brave/components/brave_component_updater/browser/brave_component.h"
+#include "brave/components/brave_shields/common/block_decision.h"
 #include "third_party/blink/public/mojom/loader/resource_load_info.mojom-shared.h"
 #include "url/gurl.h"
 
@@ -32,14 +33,16 @@ class BaseBraveShieldsService {
   virtual ~BaseBraveShieldsService();
   bool Start();
   bool IsInitialized() const;
-  virtual void ShouldStartRequest(const GURL& url,
-                                  blink::mojom::ResourceType resource_type,
-                                  const std::string& tab_host,
-                                  bool aggressive_blocking,
-                                  bool* did_match_rule,
-                                  bool* did_match_exception,
-                                  bool* did_match_important,
-                                  std::string* mock_data_url);
+  virtual void ShouldStartRequest(
+      const GURL& url,
+      blink::mojom::ResourceType resource_type,
+      const std::string& tab_host,
+      bool aggressive_blocking,
+      bool* did_match_rule,
+      bool* did_match_exception,
+      bool* did_match_important,
+      std::string* mock_data_url,
+      std::unique_ptr<BlockDecision>* block_decision);
 
   scoped_refptr<base::SequencedTaskRunner> GetTaskRunner();
 

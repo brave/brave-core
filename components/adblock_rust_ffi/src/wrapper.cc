@@ -99,11 +99,19 @@ void Engine::matches(const std::string& url,
                      bool* did_match_rule,
                      bool* did_match_exception,
                      bool* did_match_important,
+                     std::string* filter,
                      std::string* redirect) {
+  char* filter_char_ptr = nullptr;
   char* redirect_char_ptr = nullptr;
   engine_match(raw, url.c_str(), host.c_str(), tab_host.c_str(), is_third_party,
                resource_type.c_str(), did_match_rule, did_match_exception,
-               did_match_important, &redirect_char_ptr);
+               did_match_important, &filter_char_ptr, &redirect_char_ptr);
+  if (filter_char_ptr) {
+    if (filter) {
+      *filter = filter_char_ptr;
+    }
+    c_char_buffer_destroy(filter_char_ptr);
+  }
   if (redirect_char_ptr) {
     if (redirect) {
       *redirect = redirect_char_ptr;

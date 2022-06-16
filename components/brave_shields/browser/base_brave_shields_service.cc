@@ -52,7 +52,8 @@ void BaseBraveShieldsService::ShouldStartRequest(
     bool* did_match_rule,
     bool* did_match_exception,
     bool* did_match_important,
-    std::string* mock_data_url) {}
+    std::string* mock_data_url,
+    std::unique_ptr<BlockDecision>* block_decision) {}
 
 scoped_refptr<base::SequencedTaskRunner>
 BaseBraveShieldsService::GetTaskRunner() {

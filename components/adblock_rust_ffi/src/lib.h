@@ -87,6 +87,7 @@ void engine_match(struct C_Engine* engine,
                   bool* did_match_rule,
                   bool* did_match_exception,
                   bool* did_match_important,
+                  char** filter,
                   char** redirect);
 
 /**
