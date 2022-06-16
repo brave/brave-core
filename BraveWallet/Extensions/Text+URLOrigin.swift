@@ -19,7 +19,8 @@ extension Text {
         let originStart = origin[origin.startIndex..<range.lowerBound]
         let etldPlusOne = origin[range.lowerBound..<range.upperBound]
         let originEnd = origin[range.upperBound...]
-        self = Text(originStart) + Text(etldPlusOne).bold() + Text(originEnd)
+        let zwspEtldPlusOne = "\u{200b}\(String(etldPlusOne))"
+        self = Text(originStart) + Text(zwspEtldPlusOne).bold() + Text(originEnd)
       } else {
         self = Text(origin)
       }
