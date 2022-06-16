@@ -1,17 +1,22 @@
 use core::fmt;
 use core::fmt::Display;
 
+use http::StatusCode;
 use std::error::Error;
 use std::time::Duration;
 
+use crate::models::APIError;
+
+use serde_json::Value;
+
 /// Internal errors.  Most application-level developers will likely not
 /// need to pay any attention to these.
-#[derive(Clone, Debug, Eq, PartialEq, Hash)]
+#[derive(Clone, Debug, Eq, PartialEq)]
 pub enum InternalError {
     RequestFailed,
-    InternalServer(http::StatusCode),
-    BadRequest(http::StatusCode),
-    UnhandledStatus(http::StatusCode),
+    InternalServer(APIError),
+    BadRequest(APIError),
+    UnhandledStatus(APIError),
     RetryLater(Option<Duration>),
     NotFound,
     SerializationFailed,
@@ -36,28 +41,41 @@ impl Display for InternalError {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         match self {
             InternalError::RequestFailed => write!(f, "HTTP request failed"),
-            InternalError::InternalServer(status) => {
+            InternalError::InternalServer(app_err) => {
                 write!(
                     f,
                     "Server internal error: {} {}",
-                    status.as_str(),
-                    status.canonical_reason().unwrap_or("unknown")
+                    StatusCode::from_u16(app_err.code)
+                        .unwrap_or(StatusCode::INTERNAL_SERVER_ERROR)
+                        .as_str(),
+                    StatusCode::from_u16(app_err.code)
+                        .unwrap_or(StatusCode::INTERNAL_SERVER_ERROR)
+                        .canonical_reason()
+                        .unwrap_or("unknown")
                 )
             }
-            InternalError::BadRequest(status) => {
+            InternalError::BadRequest(app_err) => {
                 write!(
                     f,
-                    "Bad client request: {} {}",
-                    status.as_str(),
-                    status.canonical_reason().unwrap_or("unknown")
+                    "Bad client request: {} {} - {} {}",
+                    StatusCode::from_u16(app_err.code).unwrap_or(StatusCode::BAD_REQUEST).as_str(),
+                    StatusCode::from_u16(app_err.code)
+                        .unwrap_or(StatusCode::BAD_REQUEST)
+                        .canonical_reason()
+                        .unwrap_or("unknown"),
+                    app_err.error_code,
+                    app_err.data.get("validationErrors").unwrap_or(&Value::Null)
                 )
             }
-            InternalError::UnhandledStatus(status) => {
+            InternalError::UnhandledStatus(app_err) => {
                 write!(
                     f,
                     "Unhandled request status: {} {}",
-                    status.as_str(),
-                    status.canonical_reason().unwrap_or("unknown")
+                    StatusCode::from_u16(app_err.code).unwrap_or(StatusCode::BAD_REQUEST).as_str(),
+                    StatusCode::from_u16(app_err.code)
+                        .unwrap_or(StatusCode::BAD_REQUEST)
+                        .canonical_reason()
+                        .unwrap_or("unknown")
                 )
             }
             InternalError::RetryLater(after) => write!(
@@ -108,13 +126,19 @@ impl Display for InternalError {
 
 impl Error for InternalError {}
 
+impl From<(InternalError, usize)> for InternalError {
+    fn from((e, _attempt): (InternalError, usize)) -> Self {
+        e
+    }
+}
+
 impl From<serde_json::Error> for InternalError {
     fn from(_: serde_json::Error) -> Self {
         InternalError::SerializationFailed
     }
 }
 
-#[derive(Clone, Debug, Eq, PartialEq, Hash)]
+#[derive(Clone, Debug, Eq, PartialEq)]
 pub struct SkusError(pub(crate) InternalError);
 
 impl Display for SkusError {

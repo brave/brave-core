@@ -65,16 +65,12 @@ pub fn initialize(
         let env = env.parse::<Environment>().or(Err("invalid environment"))?;
 
         let level_filter = match log_level {
-            Some(log_level) => log_level
-                .parse::<LevelFilter>()
-                .or(Err("invalid log level"))?,
+            Some(log_level) => log_level.parse::<LevelFilter>().or(Err("invalid log level"))?,
             None => LevelFilter::DEBUG,
         };
 
         skus::tracing::subscriber::set_global_default(
-            Registry::default()
-                .with(WASMLayer::new(WASMLayerConfig::default()))
-                .with(level_filter),
+            Registry::default().with(WASMLayer::new(WASMLayerConfig::default())).with(level_filter),
         )
         .expect("default global");
 
@@ -137,21 +133,31 @@ impl JSSDK {
         let sdk = self.sdk.clone();
 
         let future = async move {
-            let window: ChromeWindow = web_sys::window()
-                .ok_or("couldn't get window")?
-                .dyn_into()
-                .unwrap();
+            let window: ChromeWindow =
+                web_sys::window().ok_or("couldn't get window")?.dyn_into().unwrap();
             if let Some(chrome) = window.chrome() {
                 if let Some(skus) = chrome.braveSkus() {
                     return JsFuture::from(skus.refresh_order(&order_id)).await;
                 }
             }
 
-            let order = sdk
-                .refresh_order(&order_id)
-                .await
-                .map_err(|e| e.to_string())?;
-            Ok(JsValue::from_serde(&order).unwrap())
+            let order = sdk.refresh_order(&order_id).await.map_err(|e| JsError::from(e))?;
+            let js_value = serde_wasm_bindgen::to_value(&order)?;
+            Ok(js_value)
+        };
+
+        future_to_promise(future)
+    }
+
+    #[wasm_bindgen]
+    pub fn submit_receipt(&self, order_id: String, receipt: String) -> js_sys::Promise {
+        let sdk = self.sdk.clone();
+
+        let future = async move {
+            let resp =
+                sdk.submit_receipt(&order_id, &receipt).await.map_err(|e| JsError::from(e))?;
+            let js_value = serde_wasm_bindgen::to_value(&resp)?;
+            Ok(js_value)
         };
 
         future_to_promise(future)
@@ -165,8 +171,9 @@ impl JSSDK {
             let order = sdk
                 .submit_order_credentials_to_sign(&order_id)
                 .await
-                .map_err(|e| e.to_string())?;
-            Ok(JsValue::from_serde(&order).unwrap())
+                .map_err(|e| JsError::from(e))?;
+            let js_value = serde_wasm_bindgen::to_value(&order)?;
+            Ok(js_value)
         };
 
         future_to_promise(future)
@@ -177,21 +184,18 @@ impl JSSDK {
         let sdk = self.sdk.clone();
 
         let future = async move {
-            let window: ChromeWindow = web_sys::window()
-                .ok_or("couldn't get window")?
-                .dyn_into()
-                .unwrap();
+            let window: ChromeWindow =
+                web_sys::window().ok_or("couldn't get window")?.dyn_into().unwrap();
             if let Some(chrome) = window.chrome() {
                 if let Some(skus) = chrome.braveSkus() {
                     return JsFuture::from(skus.fetch_order_credentials(&order_id)).await;
                 }
             }
 
-            let order = sdk
-                .fetch_order_credentials(&order_id)
-                .await
-                .map_err(|e| e.to_string())?;
-            Ok(JsValue::from_serde(&order).unwrap())
+            let order =
+                sdk.fetch_order_credentials(&order_id).await.map_err(|e| JsError::from(e))?;
+            let js_value = serde_wasm_bindgen::to_value(&order)?;
+            Ok(js_value)
         };
 
         future_to_promise(future)
@@ -202,11 +206,10 @@ impl JSSDK {
         let sdk = self.sdk.clone();
 
         let future = async move {
-            let order = sdk
-                .delete_order_credentials(&order_id)
-                .await
-                .map_err(|e| e.to_string())?;
-            Ok(JsValue::from_serde(&order).unwrap())
+            let order =
+                sdk.delete_order_credentials(&order_id).await.map_err(|e| JsError::from(e))?;
+            let js_value = serde_wasm_bindgen::to_value(&order)?;
+            Ok(js_value)
         };
 
         future_to_promise(future)
@@ -228,12 +231,13 @@ impl JSSDK {
                 }
             }
 
-            if let Some(credential_summary) = sdk
-                .matching_credential_summary(&subdomain)
-                .await
-                .map_err(|e| e.to_string())?
+            if let Some(credential_summary) =
+                sdk.matching_credential_summary(&subdomain).await.map_err(|e| JsError::from(e))?
             {
-                return Ok(JsValue::from_serde(&credential_summary).unwrap());
+                return {
+                    let js_value = serde_wasm_bindgen::to_value(&credential_summary)?;
+                    Ok(js_value)
+                };
             }
 
             Ok(JsValue::UNDEFINED)
@@ -257,9 +261,12 @@ impl JSSDK {
             if let Some(credential_summary) = sdk
                 .matching_order_credential_summary(&order_id, &subdomain.unwrap_or(host))
                 .await
-                .map_err(|e| e.to_string())?
+                .map_err(|e| JsError::from(e))?
             {
-                return Ok(JsValue::from_serde(&credential_summary).unwrap());
+                return {
+                    let js_value = serde_wasm_bindgen::to_value(&credential_summary)?;
+                    Ok(js_value)
+                };
             }
 
             Ok(JsValue::UNDEFINED)
@@ -280,8 +287,9 @@ impl JSSDK {
             let presentation = sdk
                 .prepare_credentials_presentation(&origin, &path.unwrap_or_else(|| "/".to_string()))
                 .await
-                .map_err(|e| e.to_string())?;
-            Ok(JsValue::from_serde(&presentation).unwrap())
+                .map_err(|e| JsError::from(e))?;
+            let js_value = serde_wasm_bindgen::to_value(&presentation)?;
+            Ok(js_value)
         };
 
         future_to_promise(future)
@@ -306,7 +314,7 @@ impl JSSDK {
                 &path.unwrap_or_else(|| "/".to_string()),
             )
             .await
-            .map_err(|e| e.to_string())?;
+            .map_err(|e| JsError::from(e))?;
             Ok(JsValue::UNDEFINED)
         };
 
@@ -331,7 +339,7 @@ impl JSSDK {
                     &path.unwrap_or_else(|| "/".to_string()),
                 )
                 .await
-                .map_err(|e| e.to_string())?
+                .map_err(|e| JsError::from(e))?
             {
                 return Ok(JsValue::from_str(&cred));
             }
@@ -348,9 +356,7 @@ impl KVClient for JSClient {
 
     #[allow(clippy::needless_lifetimes)]
     fn get_store<'a>(&'a self) -> Result<RefMut<'a, JSStorage>, errors::InternalError> {
-        self.local_storage
-            .try_borrow_mut()
-            .or(Err(errors::InternalError::BorrowFailed))
+        self.local_storage.try_borrow_mut().or(Err(errors::InternalError::BorrowFailed))
     }
 }
 
@@ -387,12 +393,8 @@ impl KVStore for JSStorage {
 #[async_trait(?Send)]
 impl HTTPClient for JSClient {
     fn set_cookie(&self, value: &str) {
-        let document = web_sys::window()
-            .unwrap()
-            .document()
-            .unwrap()
-            .dyn_into::<HtmlDocument>()
-            .unwrap();
+        let document =
+            web_sys::window().unwrap().document().unwrap().dyn_into::<HtmlDocument>().unwrap();
 
         tracing::debug!("set cookie: {}", value);
         document.set_cookie(value).unwrap();
@@ -427,10 +429,7 @@ impl HTTPClient for JSClient {
         let request = Request::new_with_str_and_init(&req.uri().to_string(), &opts).unwrap();
 
         for (key, value) in req.headers().iter() {
-            request
-                .headers()
-                .set(key.as_str(), value.to_str().unwrap())
-                .unwrap();
+            request.headers().set(key.as_str(), value.to_str().unwrap()).unwrap();
         }
 
         let r = JsFuture::from(window.fetch_with_request(&request))

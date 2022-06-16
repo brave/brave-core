@@ -3,7 +3,8 @@ use core::convert::{TryFrom, TryInto};
 use chrono::{DateTime, Utc};
 use futures_retry::FutureRetry;
 use serde::{Deserialize, Serialize};
-use tracing::instrument;
+use std::str;
+use tracing::{event, instrument, Level};
 
 #[cfg(feature = "e2e_test")]
 use serde_json::{json, to_vec};
@@ -118,24 +119,6 @@ impl TryFrom<OrderResponse> for Order {
     }
 }
 
-#[derive(Debug, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase")]
-struct SubmitReceiptResponse {
-    external_id: String,
-    vendor: String,
-}
-
-impl TryFrom<SubmitReceiptResponse> for SubmitReceipt {
-    type Error = SkusError;
-
-    fn try_from(sr_resp: SubmitReceiptResponse) -> Result<Self, Self::Error> {
-        Ok(SubmitReceipt {
-            external_id: sr_resp.external_id,
-            vendor: sr_resp.vendor,
-        })
-    }
-}
-
 impl<U> SDK<U>
 where
     U: HTTPClient + StorageClient,
@@ -226,24 +209,22 @@ where
 
     #[instrument]
     // submit_receipt allows for order proof of payment
-    pub async fn submit_receipt(
-        &self,
-        order_id: &str,
-        receipt: &str,
-    ) -> Result<SubmitReceipt, SkusError> {
+    pub async fn submit_receipt(&self, order_id: &str, receipt: &str) -> Result<(), InternalError> {
+        event!(Level::DEBUG, order_id = order_id, "submit_receipt called");
         let request_with_retries = FutureRetry::new(
             || async {
                 let mut builder = http::Request::builder();
                 builder.method("POST");
-                builder.uri(format!(
-                    "{}/v1/orders/{}/submit-receipt",
-                    self.base_url, order_id
-                ));
+                builder.uri(format!("{}/v1/orders/{}/submit-receipt", self.base_url, order_id));
 
-                let receipt_bytes : Vec<u8> = receipt.as_bytes().to_vec();
+                let receipt_bytes: Vec<u8> = receipt.as_bytes().to_vec();
                 let req = builder.body(receipt_bytes).unwrap();
                 let resp = self.fetch(req).await?;
-
+                event!(
+                    Level::DEBUG,
+                    response = str::from_utf8(resp.body()).unwrap(),
+                    "submit_receipt called"
+                );
                 match resp.status() {
                     http::StatusCode::OK => Ok(resp),
                     http::StatusCode::NOT_FOUND => Err(InternalError::NotFound),
@@ -252,16 +233,15 @@ where
             },
             HttpHandler::new(3, "Submit order receipt", &self.client),
         );
-        let (resp, _) = request_with_retries.await?;
 
-        let sr_resp: SubmitReceiptResponse = serde_json::from_slice(resp.body())?;
-        let sr_resp: SubmitReceipt = sr_resp.try_into()?;
+        request_with_retries.await?;
 
-        Ok(sr_resp)
+        Ok(())
     }
 
     #[instrument]
     pub async fn refresh_order(&self, order_id: &str) -> Result<Order, SkusError> {
+        event!(Level::DEBUG, order_id = order_id, "refresh_order called",);
         let order = self.fetch_order(order_id).await?;
         self.client.upsert_order(&order).await?;
         Ok(order)
