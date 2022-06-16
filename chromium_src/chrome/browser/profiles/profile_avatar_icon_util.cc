@@ -191,8 +191,6 @@ base::flat_map<std::string, base::Value> GetDefaultProfileAvatarIconAndLabel(
     SkColor fill_color,
     SkColor stroke_color,
     bool selected) {
-  std::unique_ptr<base::DictionaryValue> avatar_info(
-      new base::DictionaryValue());
   gfx::Image icon = profiles::GetPlaceholderAvatarIconWithColors(
       fill_color, stroke_color, kAvatarIconSize);
   size_t index = profiles::GetPlaceholderAvatarIndex();
