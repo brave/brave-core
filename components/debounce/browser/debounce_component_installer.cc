@@ -11,9 +11,11 @@
 #include "base/base_paths.h"
 #include "base/bind.h"
 #include "base/command_line.h"
+#include "base/containers/flat_set.h"
 #include "base/json/json_reader.h"
 #include "base/logging.h"
 #include "base/task/thread_pool.h"
+#include "base/types/expected.h"
 #include "brave/components/brave_component_updater/browser/dat_file_util.h"
 #include "brave/components/brave_component_updater/browser/local_data_files_service.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
@@ -44,33 +46,15 @@ void DebounceComponentInstaller::LoadDirectlyFromResourcePath() {
 
 void DebounceComponentInstaller::OnDATFileDataReady(
     const std::string& contents) {
-  if (contents.empty()) {
-    VLOG(1) << "Could not obtain debounce configuration";
-    return;
-  }
-  absl::optional<base::Value> root = base::JSONReader::Read(contents);
-  if (!root) {
-    VLOG(1) << "Failed to parse debounce configuration";
+  auto parsed_rules = DebounceRule::ParseRules(contents);
+  if (!parsed_rules.has_value()) {
+    LOG(WARNING) << parsed_rules.error();
     return;
   }
   rules_.clear();
   host_cache_.clear();
-  std::vector<std::string> hosts;
-  base::JSONValueConverter<DebounceRule> converter;
-  for (base::Value& it : root->GetList()) {
-    std::unique_ptr<DebounceRule> rule = std::make_unique<DebounceRule>();
-    if (!converter.Convert(it, rule.get()))
-      continue;
-    for (const URLPattern& pattern : rule->include_pattern_set()) {
-      if (!pattern.host().empty()) {
-        const std::string etldp1 = GetETLDForDebounce(pattern.host());
-        if (!etldp1.empty())
-          hosts.push_back(std::move(etldp1));
-      }
-    }
-    rules_.push_back(std::move(rule));
-  }
-  host_cache_ = std::move(hosts);
+  rules_ = std::move(parsed_rules.value().first);
+  host_cache_ = parsed_rules.value().second;
   for (Observer& observer : observers_)
     observer.OnRulesReady(this);
 }
@@ -81,13 +65,6 @@ void DebounceComponentInstaller::OnComponentReady(
     const std::string& manifest) {
   resource_dir_ = install_dir.AppendASCII(kDebounceConfigFileVersion);
   LoadDirectlyFromResourcePath();
-}
-
-const std::string DebounceComponentInstaller::GetETLDForDebounce(
-    const std::string& host) const {
-  return net::registry_controlled_domains::GetDomainAndRegistry(
-      host, net::registry_controlled_domains::PrivateRegistryFilter::
-                EXCLUDE_PRIVATE_REGISTRIES);
 }
 
 }  // namespace debounce

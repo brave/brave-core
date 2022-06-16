@@ -14,6 +14,7 @@
 #include "brave/components/debounce/browser/debounce_service.h"
 #include "brave/components/debounce/common/features.h"
 #include "chrome/browser/profiles/incognito_helpers.h"
+#include "chrome/browser/profiles/profile.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
 #include "components/keyed_service/core/keyed_service.h"
 
@@ -49,7 +50,8 @@ KeyedService* DebounceServiceFactory::BuildServiceInstanceFor(
   if (g_brave_browser_process)
     component_installer =
         g_brave_browser_process->debounce_component_installer();
-  return new DebounceService(component_installer);
+  return new DebounceService(component_installer,
+                             Profile::FromBrowserContext(context)->GetPrefs());
 }
 
 content::BrowserContext* DebounceServiceFactory::GetBrowserContextToUse(
