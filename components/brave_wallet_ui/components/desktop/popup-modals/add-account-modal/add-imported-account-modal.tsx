@@ -8,7 +8,8 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useHistory, useParams } from 'react-router'
 
 // utils
-import { getLocale } from '$web-common/locale'
+import { FILECOIN_FORMAT_DESCRIPTION_URL } from '../../../../common/constants/urls'
+import { getLocale, getLocaleWithTag } from '$web-common/locale'
 import { copyToClipboard } from '../../../../utils/copy-to-clipboard'
 
 // options
@@ -37,6 +38,11 @@ import {
   SelectWrapper,
   StyledWrapper
 } from './style'
+
+import {
+  WarningText,
+  WarningWrapper
+} from '../account-settings-modal/style'
 
 interface Params {
   accountTypeName: string
@@ -187,6 +193,9 @@ export const ImportAccountModal = () => {
     ? getLocale('braveWalletCreateAccountImportAccount').replace('$1', selectedAccountType.name)
     : getLocale('braveWalletAddAccountImport')
 
+  const filPrivateKeyFormatDescriptionTextParts =
+      getLocaleWithTag('braveWalletFilImportPrivateKeyFormatDescription')
+
   // render
   return (
     <PopupModal title={modalTitle} onClose={onClickClose}>
@@ -205,6 +214,17 @@ export const ImportAccountModal = () => {
           <ImportDisclaimer>
             <DisclaimerText>{getLocale('braveWalletImportAccountDisclaimer')}</DisclaimerText>
           </ImportDisclaimer>
+
+          {selectedAccountType?.coin === BraveWallet.CoinType.FIL &&
+            <WarningWrapper>
+               <WarningText>
+                 {filPrivateKeyFormatDescriptionTextParts.beforeTag}
+                  <a target='_blank' href={FILECOIN_FORMAT_DESCRIPTION_URL}>
+                    {filPrivateKeyFormatDescriptionTextParts.duringTag}
+                  </a>
+                {filPrivateKeyFormatDescriptionTextParts.afterTag}</WarningText>
+            </WarningWrapper>
+          }
 
           {selectedAccountType?.coin === BraveWallet.CoinType.ETH &&
             <SelectWrapper>

@@ -122,6 +122,10 @@ export const WarningText = styled.span`
   letter-spacing: 0.01em;
   text-align: center;
   color: ${(p) => p.theme.color.text02};
+  a {
+    color: inherit;
+    text-decoration: underline;
+  }
 `
 
 export const PrivateKeyBubble = styled(WalletButton)`
