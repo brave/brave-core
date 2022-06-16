@@ -74,6 +74,9 @@ class LedgerClientIOS : public ledger::LedgerClient {
   void RunDBTransaction(
       ledger::type::DBTransactionPtr transaction,
       ledger::client::RunDBTransactionCallback callback) override;
+  void RunDBTransaction(
+      ledger::type::DBTransactionPtr transaction,
+      ledger::client::RunDBTransactionCallback2 callback) override;
   void GetCreateScript(
       ledger::client::GetCreateScriptCallback callback) override;
   void PendingContributionSaved(const ledger::type::Result result) override;
@@ -82,6 +85,14 @@ class LedgerClientIOS : public ledger::LedgerClient {
   void DeleteLog(ledger::client::ResultCallback callback) override;
   absl::optional<std::string> EncryptString(const std::string& value) override;
   absl::optional<std::string> DecryptString(const std::string& value) override;
+  void OnBackUpVgBodies(
+      bool delay,
+      ledger::type::Result result,
+      std::vector<sync_pb::VgBodySpecifics> vg_bodies) override;
+  void OnBackUpVgSpendStatuses(
+      bool delay,
+      ledger::type::Result result,
+      std::vector<sync_pb::VgSpendStatusSpecifics> vg_spend_statuses) override;
 };
 
 #endif  // BRAVE_IOS_BROWSER_API_LEDGER_LEDGER_CLIENT_IOS_H_

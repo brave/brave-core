@@ -148,6 +148,12 @@ void LedgerClientIOS::RunDBTransaction(
     ledger::client::RunDBTransactionCallback callback) {
   [bridge_ runDBTransaction:std::move(transaction) callback:callback];
 }
+void LedgerClientIOS::RunDBTransaction(
+    ledger::type::DBTransactionPtr transaction,
+    ledger::client::RunDBTransactionCallback2 callback) {
+  [bridge_ runDBTransaction:std::move(transaction)
+                  callback2:std::move(callback)];
+}
 void LedgerClientIOS::GetCreateScript(
     ledger::client::GetCreateScriptCallback callback) {
   [bridge_ getCreateScript:callback];
@@ -173,3 +179,11 @@ absl::optional<std::string> LedgerClientIOS::DecryptString(
     const std::string& value) {
   return [bridge_ decryptString:value];
 }
+void LedgerClientIOS::OnBackUpVgBodies(
+    bool delay,
+    ledger::type::Result result,
+    std::vector<sync_pb::VgBodySpecifics> vg_bodies) {}
+void LedgerClientIOS::OnBackUpVgSpendStatuses(
+    bool delay,
+    ledger::type::Result result,
+    std::vector<sync_pb::VgSpendStatusSpecifics> vg_spend_statuses) {}

@@ -63,6 +63,8 @@
 - (void)reconcileStampReset;
 - (void)runDBTransaction:(ledger::type::DBTransactionPtr)transaction
                 callback:(ledger::client::RunDBTransactionCallback)callback;
+- (void)runDBTransaction:(ledger::type::DBTransactionPtr)transaction
+               callback2:(ledger::client::RunDBTransactionCallback2)callback;
 - (void)getCreateScript:(ledger::client::GetCreateScriptCallback)callback;
 - (void)pendingContributionSaved:(const ledger::type::Result)result;
 - (void)clearAllNotifications;

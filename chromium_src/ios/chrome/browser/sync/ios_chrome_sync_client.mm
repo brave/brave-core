@@ -5,6 +5,8 @@
 
 #include "ios/chrome/browser/sync/ios_chrome_sync_client.h"
 
+#include "components/sync/driver/sync_user_settings.h"
+
 #define IOSChromeSyncClient IOSChromeSyncClient_ChromiumImpl
 #include "src/ios/chrome/browser/sync/ios_chrome_sync_client.mm"
 #undef IOSChromeSyncClient
@@ -20,4 +22,13 @@ IOSChromeSyncClient::CreateDataTypeControllers(
       syncer::READING_LIST, syncer::SEND_TAB_TO_SELF, syncer::USER_CONSENTS};
   return component_factory_->CreateCommonDataTypeControllers(disabled_types,
                                                              sync_service);
+}
+
+void IOSChromeSyncClient::SetDefaultEnabledTypes(
+    syncer::SyncService* sync_service) {
+  DCHECK(sync_service);
+
+  syncer::UserSelectableTypeSet selected_types;
+  selected_types.Put(syncer::UserSelectableType::kBookmarks);
+  sync_service->GetUserSettings()->SetSelectedTypes(false, selected_types);
 }
