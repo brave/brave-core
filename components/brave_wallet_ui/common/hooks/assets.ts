@@ -48,12 +48,19 @@ export function useAssets () {
     transactionSpotPrices: spotPrices
   } = useSelector((state: { wallet: WalletState }) => state.wallet)
 
+  // custom hooks
   const isMounted = useIsMounted()
-  const { getBuyAssets } = useLib()
-
+  const { getBuyAssets, getAllBuyAssets } = useLib()
   const { computeFiatAmount } = usePricing(spotPrices)
   const getBalance = useBalance(networkList)
 
+  // state
+  const [wyreAssetOptions, setWyreAssetOptions] = React.useState<BraveWallet.BlockchainToken[]>([])
+  const [rampAssetOptions, setRampAssetOptions] = React.useState<BraveWallet.BlockchainToken[]>([])
+  const [sardineAssetOptions, setSardineAssetOptions] = React.useState<BraveWallet.BlockchainToken[]>([])
+  const [allBuyAssetOptions, setAllBuyAssetOptions] = React.useState<BraveWallet.BlockchainToken[]>([])
+
+  // memos
   const assetsByNetwork = React.useMemo(() => {
     if (!userVisibleTokensInfo) {
       return []
@@ -65,10 +72,6 @@ export function useAssets () {
       token.coin === selectedNetwork.coin
     )
   }, [userVisibleTokensInfo, selectedNetwork])
-
-  const [wyreAssetOptions, setWyreAssetOptions] = React.useState<BraveWallet.BlockchainToken[]>([])
-  const [rampAssetOptions, setRampAssetOptions] = React.useState<BraveWallet.BlockchainToken[]>([])
-  const [sardineAssetOptions, setSardineAssetOptions] = React.useState<BraveWallet.BlockchainToken[]>([])
 
   React.useEffect(() => {
     // Prevent calling getBuyAssets if the selectedNetwork is
@@ -92,6 +95,7 @@ export function useAssets () {
         setWyreAssetOptions(wyreAssetOptions)
         setRampAssetOptions(rampAssetOptions)
         setSardineAssetOptions(sardineAssetOptions)
+        setAllBuyAssetOptions([...wyreAssetOptions, ...rampAssetOptions, ...sardineAssetOptions])
       }
     }
 
@@ -125,18 +129,22 @@ export function useAssets () {
     return [...rampAssetOptions, ...wyreAssetOptions, ...sardineAssetOptions].filter(asset => asset.chainId === selectedNetwork.chainId)
   }, [rampAssetOptions, wyreAssetOptions, sardineAssetOptions, selectedNetwork])
 
-  const buyAssetOptionsAllChains = React.useMemo(() => {
-    return [...rampAssetOptions, ...wyreAssetOptions]
-  }, [rampAssetOptions, wyreAssetOptions, selectedNetwork])
+  // methods
+  const getAllBuyOptionsAllChains = React.useCallback(() => {
+    getAllBuyAssets()
+      .then(result => {
+        isMounted && setAllBuyAssetOptions(result)
+      })
+  }, [getAllBuyAssets, isMounted])
 
   return {
     sendAssetOptions: assetsByNetwork,
     buyAssetOptions,
-    buyAssetOptionsAllChains,
     rampAssetOptions,
     wyreAssetOptions,
-    sardineAssetOptions,
-    panelUserAssetList: assetsByValueAndNetwork
+    panelUserAssetList: assetsByValueAndNetwork,
+    allBuyAssetOptions,
+    getAllBuyOptionsAllChains
   }
 }
 
