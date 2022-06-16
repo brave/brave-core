@@ -3,13 +3,28 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "brave/components/brave_search_conversion/utils.h"
+#include "brave/components/omnibox/browser/promotion_provider.h"
+#include "brave/components/omnibox/browser/promotion_utils.h"
 #include "brave/components/omnibox/browser/suggested_sites_provider.h"
 #include "brave/components/omnibox/browser/topsites_provider.h"
 
-#define BRAVE_AUTOCOMPLETE_CONTROLLER_AUTOCOMPLETE_CONTROLLER         \
-  providers_.push_back(new TopSitesProvider(provider_client_.get())); \
-  providers_.push_back(new SuggestedSitesProvider(provider_client_.get()));
+using brave_search_conversion::IsBraveSearchConversionFetureEnabled;
+
+#define BRAVE_AUTOCOMPLETE_CONTROLLER_AUTOCOMPLETE_CONTROLLER               \
+  providers_.push_back(new TopSitesProvider(provider_client_.get()));       \
+  providers_.push_back(new SuggestedSitesProvider(provider_client_.get())); \
+  if (IsBraveSearchConversionFetureEnabled() &&                             \
+      !provider_client_->IsOffTheRecord())                                  \
+    providers_.push_back(new PromotionProvider(provider_client_.get()));
+
+// This sort should be done in the middle of
+// AutocompleteController::UpdateResult() because result should be updated
+// before notifying at the last of UpdateResult().
+#define BRAVE_AUTOCOMPLETE_CONTROLLER_UPDATE_RESULT \
+  SortBraveSearchPromotionMatch(&result_);
 
 #include "src/components/omnibox/browser/autocomplete_controller.cc"
-#undef BRAVE_AUTOCOMPLETE_CONTROLLER_AUTOCOMPLETE_CONTROLLER
 
+#undef BRAVE_AUTOCOMPLETE_CONTROLLER_UPDATE_RESULT
+#undef BRAVE_AUTOCOMPLETE_CONTROLLER_AUTOCOMPLETE_CONTROLLER
