@@ -29,17 +29,25 @@ import {
   ClickAwayArea
 } from './style'
 
-function NetworkFilterSelector () {
+function NetworkFilterSelector ({
+  networkListSubset
+}: {
+  networkListSubset?: BraveWallet.NetworkInfo[]
+}) {
   const [showNetworkFilter, setShowNetworkFilter] = React.useState<boolean>(false)
 
   // redux
   const {
     selectedNetworkFilter,
-    networkList,
+    networkList: reduxNetworkList,
     isTestNetworksEnabled
   } = useSelector(({ wallet }: { wallet: WalletState }) => wallet)
 
   const dispatch = useDispatch()
+
+  const networkList = React.useMemo(() => {
+    return networkListSubset || reduxNetworkList
+  }, [networkListSubset, reduxNetworkList])
 
   const sortedNetworks = React.useMemo(() => {
     const onlyMainnets = networkList.filter((network) => SupportedTopLevelChainIds.includes(network.chainId))
