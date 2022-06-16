@@ -9,6 +9,7 @@
 #include <utility>
 
 #include "base/memory/singleton.h"
+#include "brave/components/brave_vpn/mojom/brave_vpn.mojom.h"
 #include "build/build_config.h"
 #include "components/keyed_service/content/browser_context_keyed_service_factory.h"
 
@@ -25,6 +26,10 @@ class BraveVpnServiceFactory : public BrowserContextKeyedServiceFactory {
 
   BraveVpnServiceFactory(const BraveVpnServiceFactory&) = delete;
   BraveVpnServiceFactory& operator=(const BraveVpnServiceFactory&) = delete;
+
+  static void BindForContext(
+      content::BrowserContext* context,
+      mojo::PendingReceiver<brave_vpn::mojom::ServiceHandler> receiver);
 
  private:
   friend struct base::DefaultSingletonTraits<BraveVpnServiceFactory>;

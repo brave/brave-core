@@ -70,8 +70,6 @@ const BraveCoreSwitch BraveCoreSwitchVModule =
     base::SysUTF8ToNSString(switches::kVModule);
 const BraveCoreSwitch BraveCoreSwitchSyncURL =
     base::SysUTF8ToNSString(syncer::kSyncServiceURL);
-const BraveCoreSwitch BraveCoreSwitchSkusEnvironment =
-    base::SysUTF8ToNSString(skus::switches::kSkusEnv);
 
 @interface BraveCoreMain () {
   std::unique_ptr<BraveWebClient> _webClient;

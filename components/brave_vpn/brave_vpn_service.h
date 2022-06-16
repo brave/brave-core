@@ -15,6 +15,7 @@
 #include "base/sequence_checker.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
 #include "brave/components/brave_vpn/mojom/brave_vpn.mojom.h"
+#include "brave/components/skus/browser/skus_utils.h"
 #include "brave/components/skus/common/skus_sdk.mojom.h"
 #include "build/build_config.h"
 #include "components/keyed_service/core/keyed_service.h"
@@ -84,7 +85,7 @@ class BraveVpnService :
 #if !BUILDFLAG(IS_ANDROID)
   void ToggleConnection();
   void RemoveVPNConnnection();
-
+  std::string GetCurrentEnvironment() const { return current_env_; }
   bool is_connected() const {
     return connection_state_ == mojom::ConnectionState::CONNECTED;
   }
@@ -92,7 +93,7 @@ class BraveVpnService :
     return purchased_state_ == mojom::PurchasedState::PURCHASED;
   }
   mojom::ConnectionState connection_state() const { return connection_state_; }
-
+  void ReloadPurchasedState();
   void BindInterface(mojo::PendingReceiver<mojom::ServiceHandler> receiver);
 
   // mojom::vpn::ServiceHandler
@@ -113,7 +114,7 @@ class BraveVpnService :
   void GetSupportData(GetSupportDataCallback callback) override;
 #endif  // !BUILDFLAG(IS_ANDROID)
 
-  void LoadPurchasedState();
+  void LoadPurchasedState(const std::string& domain) override;
 
   using ResponseCallback =
       base::OnceCallback<void(const std::string&, bool success)>;
@@ -247,11 +248,13 @@ class BraveVpnService :
       const std::string& body,
       const base::flat_map<std::string, std::string>& headers);
   mojom::PurchasedState GetPurchasedStateSync() const;
-  void SetPurchasedState(mojom::PurchasedState state);
+  void SetPurchasedState(const std::string& env, mojom::PurchasedState state);
   void EnsureMojoConnected();
   void OnMojoConnectionError();
-  void OnCredentialSummary(const std::string& summary_string);
+  void OnCredentialSummary(const std::string& domain,
+                           const std::string& summary_string);
   void OnPrepareCredentialsPresentation(
+      const std::string& domain,
       const std::string& credential_as_cookie);
 
 #if !BUILDFLAG(IS_ANDROID)
@@ -280,6 +283,7 @@ class BraveVpnService :
       skus_service_getter_;
   mojo::Remote<skus::mojom::SkusService> skus_service_;
   absl::optional<mojom::PurchasedState> purchased_state_;
+  std::string current_env_ = skus::GetDefaultEnvironment();
   mojo::RemoteSet<mojom::ServiceObserver> observers_;
   api_request_helper::APIRequestHelper api_request_helper_;
   std::string skus_credential_;

@@ -19,8 +19,7 @@ bool IsBraveVPNEnabled() {
          base::FeatureList::IsEnabled(skus::features::kSkusFeature);
 }
 
-std::string GetManageUrl() {
-  const std::string env = skus::GetEnvironment();
+std::string GetManageUrl(const std::string& env) {
   if (env == skus::kEnvProduction)
     return brave_vpn::kManageUrlProd;
   if (env == skus::kEnvStaging)

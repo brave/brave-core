@@ -10,6 +10,7 @@
 #include <string>
 #include <vector>
 
+#include "brave/components/brave_vpn/mojom/brave_vpn.mojom.h"
 #include "brave/components/skus/common/skus_sdk.mojom.h"
 #include "content/public/renderer/render_frame.h"
 #include "content/public/renderer/render_frame_observer.h"
@@ -84,13 +85,15 @@ class SkusJSHandler {
   // window.brave.skus.credential_summary
   v8::Local<v8::Promise> CredentialSummary(v8::Isolate* isolate,
                                            std::string domain);
-  void OnCredentialSummary(v8::Global<v8::Promise::Resolver> promise_resolver,
+  void OnCredentialSummary(const std::string& domain,
+                           v8::Global<v8::Promise::Resolver> promise_resolver,
                            v8::Isolate* isolate,
                            v8::Global<v8::Context> context_old,
                            const std::string& response);
 
   content::RenderFrame* render_frame_;
   mojo::Remote<skus::mojom::SkusService> skus_service_;
+  mojo::Remote<brave_vpn::mojom::ServiceHandler> vpn_service_;
 };
 
 }  // namespace skus

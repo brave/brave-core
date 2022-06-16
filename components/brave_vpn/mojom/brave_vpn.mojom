@@ -57,6 +57,9 @@ interface ServiceHandler {
 
   [EnableIfNot=is_android]
   Disconnect();
+  
+  [EnableIfNot=is_android]
+  LoadPurchasedState(string domain);
 
   // Gets all region from internal cache which is fetched from Guardian API
   [EnableIfNot=is_android]

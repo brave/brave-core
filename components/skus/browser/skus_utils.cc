@@ -7,8 +7,8 @@
 
 #include "base/command_line.h"
 #include "base/notreached.h"
+#include "base/strings/string_util.h"
 #include "brave/components/skus/browser/pref_names.h"
-#include "brave/components/skus/browser/switches.h"
 #include "components/pref_registry/pref_registry_syncable.h"
 
 namespace skus {
@@ -20,25 +20,16 @@ namespace skus {
 constexpr char kProductTalk[] = "talk";
 constexpr char kProductVPN[] = "vpn";
 
-std::string GetEnvironment() {
-  auto* cmd = base::CommandLine::ForCurrentProcess();
-  if (!cmd->HasSwitch(switches::kSkusEnv)) {
+std::string GetDefaultEnvironment() {
 #if defined(OFFICIAL_BUILD)
     return kEnvProduction;
 #else
     return kEnvDevelopment;
 #endif
-  }
-
-  const std::string value = cmd->GetSwitchValueASCII(switches::kSkusEnv);
-  DCHECK(value == kEnvProduction || value == kEnvStaging ||
-         value == kEnvDevelopment);
-  return value;
 }
 
-std::string GetDomain(std::string prefix) {
-  std::string environment = GetEnvironment();
-
+std::string GetDomain(const std::string& prefix,
+                      const std::string& environment) {
   DCHECK(prefix == kProductTalk || prefix == kProductVPN);
 
   if (environment == kEnvProduction) {
@@ -52,6 +43,15 @@ std::string GetDomain(std::string prefix) {
   NOTREACHED();
 
   return "";
+}
+
+std::string GetEnvironmentForDomain(const std::string& domain) {
+  if (base::EndsWith(domain, "brave.com"))
+    return kEnvProduction;
+  if (base::EndsWith(domain, "bravesoftware.com"))
+    return kEnvStaging;
+
+  return kEnvDevelopment;
 }
 
 void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {

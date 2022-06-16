@@ -152,8 +152,9 @@ BraveVpnService::BraveVpnService(
   // when profile has cached region list because region list is fetched
   // and cached only when user purchased at least once.
   auto* preference = prefs_->FindPreference(prefs::kBraveVPNRegionList);
-  if (preference && !preference->IsDefaultValue())
-    LoadPurchasedState();
+  if (preference && !preference->IsDefaultValue()) {
+    ReloadPurchasedState();
+  }
 }
 #endif
 
@@ -164,6 +165,10 @@ BraveVpnService::~BraveVpnService() {
 }
 
 #if !BUILDFLAG(IS_ANDROID)
+void BraveVpnService::ReloadPurchasedState() {
+  LoadPurchasedState(skus::GetDomain("vpn", current_env_));
+}
+
 void BraveVpnService::ScheduleBackgroundRegionDataFetch() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   if (region_data_update_timer_.IsRunning())
@@ -490,7 +495,7 @@ void BraveVpnService::OnFetchRegionList(bool background_fetch,
 
   if (!background_fetch && !success) {
     VLOG(2) << "Failed to get region list";
-    SetPurchasedState(PurchasedState::FAILED);
+    SetPurchasedState(current_env_, PurchasedState::FAILED);
     return;
   }
 
@@ -516,7 +521,7 @@ void BraveVpnService::OnFetchRegionList(bool background_fetch,
   // Don't update purchased state during the background fetching.
   if (!background_fetch) {
     VLOG(2) << "Got invalid region list";
-    SetPurchasedState(PurchasedState::FAILED);
+    SetPurchasedState(current_env_, PurchasedState::FAILED);
   }
 }
 
@@ -553,7 +558,7 @@ void BraveVpnService::OnFetchTimezones(const std::string& timezones_list,
 
   // Can set as purchased state now regardless of timezone fetching result.
   // We use default one picked from region list as a device region on failure.
-  SetPurchasedState(PurchasedState::PURCHASED);
+  SetPurchasedState(current_env_, PurchasedState::PURCHASED);
 }
 
 void BraveVpnService::SetDeviceRegionWithTimezone(
@@ -683,8 +688,8 @@ void BraveVpnService::SetSelectedRegion(mojom::RegionPtr region_ptr) {
 
 void BraveVpnService::GetProductUrls(GetProductUrlsCallback callback) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  std::move(callback).Run(
-      mojom::ProductUrls::New(kFeedbackUrl, kAboutUrl, GetManageUrl()));
+  std::move(callback).Run(mojom::ProductUrls::New(kFeedbackUrl, kAboutUrl,
+                                                  GetManageUrl(current_env_)));
 }
 
 void BraveVpnService::CreateSupportTicket(
@@ -787,11 +792,12 @@ void BraveVpnService::ParseAndCacheHostnames(
 
   // Get subscriber credentials and then get EAP credentials with it to create
   // OS VPN entry.
-  VLOG(2) << __func__ << " : request subscriber credential";
+  VLOG(2) << __func__ << " : request subscriber credential:"
+          << GetBraveVPNPaymentsEnv(current_env_);
   GetSubscriberCredentialV12(
       base::BindOnce(&BraveVpnService::OnGetSubscriberCredentialV12,
                      base::Unretained(this)),
-      GetBraveVPNPaymentsEnv(), skus_credential_);
+      GetBraveVPNPaymentsEnv(current_env_), skus_credential_);
 }
 
 void BraveVpnService::OnGetSubscriberCredentialV12(
@@ -896,13 +902,14 @@ void BraveVpnService::GetPurchasedState(GetPurchasedStateCallback callback) {
   std::move(callback).Run(value);
 }
 
-void BraveVpnService::LoadPurchasedState() {
+void BraveVpnService::LoadPurchasedState(const std::string& domain) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  if (GetPurchasedStateSync() == PurchasedState::LOADING)
+  auto requested_env = skus::GetEnvironmentForDomain(domain);
+  if (current_env_ == requested_env &&
+      purchased_state_ == PurchasedState::LOADING)
     return;
-
   if (!purchased_state_.has_value())
-    SetPurchasedState(PurchasedState::LOADING);
+    SetPurchasedState(requested_env, PurchasedState::LOADING);
 
 #if !BUILDFLAG(IS_ANDROID) && !defined(OFFICIAL_BUILD)
   auto* cmd = base::CommandLine::ForCurrentProcess();
@@ -910,8 +917,9 @@ void BraveVpnService::LoadPurchasedState() {
     skus_credential_ =
         cmd->GetSwitchValueASCII(switches::kBraveVPNTestMonthlyPass);
     LoadCachedRegionData();
+    current_env_ = requested_env;
     if (!regions_.empty()) {
-      SetPurchasedState(PurchasedState::PURCHASED);
+      SetPurchasedState(current_env_, PurchasedState::PURCHASED);
     } else {
       FetchRegionData(false);
     }
@@ -923,19 +931,20 @@ void BraveVpnService::LoadPurchasedState() {
 
   EnsureMojoConnected();
   skus_service_->CredentialSummary(
-      skus::GetDomain("vpn"),
-      base::BindOnce(&BraveVpnService::OnCredentialSummary,
-                     base::Unretained(this)));
+      domain, base::BindOnce(&BraveVpnService::OnCredentialSummary,
+                             base::Unretained(this), domain));
 }
 
-void BraveVpnService::OnCredentialSummary(const std::string& summary_string) {
+void BraveVpnService::OnCredentialSummary(const std::string& domain,
+                                          const std::string& summary_string) {
+  auto env = skus::GetEnvironmentForDomain(domain);
   std::string summary_string_trimmed;
   base::TrimWhitespaceASCII(summary_string, base::TrimPositions::TRIM_ALL,
                             &summary_string_trimmed);
   if (summary_string_trimmed.length() == 0) {
     // no credential found; person needs to login
     VLOG(1) << __func__ << " : No credential found; user needs to login!";
-    SetPurchasedState(PurchasedState::NOT_PURCHASED);
+    SetPurchasedState(env, PurchasedState::NOT_PURCHASED);
     return;
   }
 
@@ -952,22 +961,24 @@ void BraveVpnService::OnCredentialSummary(const std::string& summary_string) {
       // if a credential is ready, we can present it
       EnsureMojoConnected();
       skus_service_->PrepareCredentialsPresentation(
-          skus::GetDomain("vpn"), "*",
+          domain, "*",
           base::BindOnce(&BraveVpnService::OnPrepareCredentialsPresentation,
-                         base::Unretained(this)));
+                         base::Unretained(this), domain));
     } else {
       VLOG(1) << __func__ << " : Credential appears to be expired.";
-      SetPurchasedState(PurchasedState::EXPIRED);
+      SetPurchasedState(env, PurchasedState::EXPIRED);
     }
   } else {
     VLOG(1) << __func__ << " : Got invalid credential summary!";
-    SetPurchasedState(PurchasedState::FAILED);
+    SetPurchasedState(env, PurchasedState::FAILED);
   }
 }
 
 void BraveVpnService::OnPrepareCredentialsPresentation(
+    const std::string& domain,
     const std::string& credential_as_cookie) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  auto env = skus::GetEnvironmentForDomain(domain);
   // Credential is returned in cookie format.
   net::CookieInclusionStatus status;
   net::ParsedCookie credential_cookie(credential_as_cookie, &status);
@@ -976,12 +987,12 @@ void BraveVpnService::OnPrepareCredentialsPresentation(
   // or maybe it can be considered FAILED status?
   if (!credential_cookie.IsValid()) {
     VLOG(1) << __func__ << " : FAILED credential_cookie.IsValid";
-    SetPurchasedState(PurchasedState::FAILED);
+    SetPurchasedState(env, PurchasedState::FAILED);
     return;
   }
   if (!status.IsInclude()) {
     VLOG(1) << __func__ << " : FAILED status.IsInclude";
-    SetPurchasedState(PurchasedState::FAILED);
+    SetPurchasedState(env, PurchasedState::FAILED);
     return;
   }
 
@@ -994,23 +1005,23 @@ void BraveVpnService::OnPrepareCredentialsPresentation(
       url::DecodeURLMode::kUTF8OrIsomorphic, &unescaped);
   std::string credential;
   base::UTF16ToUTF8(unescaped.data(), unescaped.length(), &credential);
-
+  current_env_ = env;
   skus_credential_ = credential;
 
   if (skus_credential_.empty()) {
     VLOG(2) << __func__ << " : Got empty skus credentials";
-    SetPurchasedState(PurchasedState::NOT_PURCHASED);
+    SetPurchasedState(env, PurchasedState::NOT_PURCHASED);
     return;
   }
 
 #if BUILDFLAG(IS_ANDROID)
-  SetPurchasedState(PurchasedState::PURCHASED);
+  SetPurchasedState(env, PurchasedState::PURCHASED);
 #else
   LoadCachedRegionData();
 
   // Only fetch when we don't have cache.
   if (!regions_.empty()) {
-    SetPurchasedState(PurchasedState::PURCHASED);
+    SetPurchasedState(env, PurchasedState::PURCHASED);
   } else {
     FetchRegionData(false);
   }
@@ -1020,13 +1031,15 @@ void BraveVpnService::OnPrepareCredentialsPresentation(
 #endif
 }
 
-void BraveVpnService::SetPurchasedState(PurchasedState state) {
+void BraveVpnService::SetPurchasedState(const std::string& env,
+                                        PurchasedState state) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  if (GetPurchasedStateSync() == state)
+  if (GetPurchasedStateSync() == state || env != current_env_)
     return;
 
   purchased_state_ = state;
-  VLOG(1) << "SetPurchasedState: " << purchased_state_.value();
+
+  VLOG(1) << "SetPurchasedState: " << GetPurchasedStateSync();
 
   for (const auto& obs : observers_)
     obs->OnPurchasedStateChanged(purchased_state_.value());

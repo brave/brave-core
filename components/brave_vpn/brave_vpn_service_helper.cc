@@ -51,8 +51,7 @@ mojom::Region GetRegionFromValue(const base::Value& value) {
 //
 // When the vendor receives a credential from us during auth, it also includes
 // the environment. The vendor then can do a lookup using Payment Service.
-std::string GetBraveVPNPaymentsEnv() {
-  const std::string env = skus::GetEnvironment();
+std::string GetBraveVPNPaymentsEnv(const std::string& env) {
   if (env == skus::kEnvProduction)
     return "";
   // Use same value.

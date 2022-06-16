@@ -23,7 +23,6 @@
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/ntp_background_images/browser/features.h"
 #include "brave/components/skus/browser/skus_utils.h"
-#include "brave/components/skus/browser/switches.h"
 #include "brave/components/skus/common/features.h"
 #include "brave/components/speedreader/buildflags.h"
 #include "brave/components/translate/core/common/brave_translate_features.h"
@@ -179,12 +178,6 @@ constexpr char kBraveVPNDescription[] = "Experimental native VPN support";
 
 constexpr char kBraveSkusSdkName[] = "Enable experimental SKU SDK";
 constexpr char kBraveSkusSdkDescription[] = "Experimental SKU SDK support";
-constexpr char kBraveSkusEnvName[] = "Experimental SKU Environment";
-constexpr char kBraveSkusEnvDescription[] =
-    "Choose Experimental SKU Environment";
-constexpr char kBraveSkusProdEnvName[] = "production";
-constexpr char kBraveSkusStagingEnvName[] = "staging";
-constexpr char kBraveSkusDevEnvName[] = "development";
 
 constexpr char kBraveShieldsV1Name[] = "Enable Brave Shields v1";
 constexpr char kBraveShieldsV1Description[] =
@@ -308,16 +301,6 @@ constexpr char kRestrictWebSocketsPoolName[] = "Restrict WebSockets pool";
 constexpr char kRestrictWebSocketsPoolDescription[] =
     "Limits simultaneous active WebSockets connections per eTLD+1";
 
-const flags_ui::FeatureEntry::Choice kBraveSkusEnvChoices[] = {
-    {flags_ui::kGenericExperimentChoiceDefault, "", ""},
-    {flag_descriptions::kBraveSkusProdEnvName, skus::switches::kSkusEnv,
-     skus::kEnvProduction},
-    {flag_descriptions::kBraveSkusStagingEnvName, skus::switches::kSkusEnv,
-     skus::kEnvStaging},
-    {flag_descriptions::kBraveSkusDevEnvName, skus::switches::kSkusEnv,
-     skus::kEnvDevelopment},
-};
-
 }  // namespace
 
 }  // namespace flag_descriptions
@@ -343,11 +326,6 @@ const flags_ui::FeatureEntry::Choice kBraveSkusEnvChoices[] = {
      flag_descriptions::kBraveSkusSdkDescription,       \
      kOsMac | kOsWin | kOsAndroid,                      \
      FEATURE_VALUE_TYPE(skus::features::kSkusFeature)}, \
-    {"skus-environment",                                \
-     flag_descriptions::kBraveSkusEnvName,              \
-     flag_descriptions::kBraveSkusEnvDescription,       \
-     kOsMac | kOsWin | kOsAndroid,                      \
-     MULTI_VALUE_TYPE(flag_descriptions::kBraveSkusEnvChoices)},
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
 #define SPEEDREADER_FEATURE_ENTRIES \

@@ -11,7 +11,7 @@
 namespace brave_vpn {
 
 bool IsBraveVPNEnabled();
-std::string GetManageUrl();
+std::string GetManageUrl(const std::string& env);
 
 }  // namespace brave_vpn
 

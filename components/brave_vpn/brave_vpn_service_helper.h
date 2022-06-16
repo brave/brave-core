@@ -21,7 +21,7 @@ namespace brave_vpn {
 struct Hostname;
 
 bool ValidateCachedRegionData(const base::Value& region_value);
-std::string GetBraveVPNPaymentsEnv();
+std::string GetBraveVPNPaymentsEnv(const std::string& env);
 
 base::Value GetValueFromRegion(const mojom::Region& region);
 std::unique_ptr<Hostname> PickBestHostname(

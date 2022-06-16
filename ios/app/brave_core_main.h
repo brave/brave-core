@@ -38,10 +38,6 @@ OBJC_EXPORT const BraveCoreSwitch BraveCoreSwitchVModule;
 ///
 /// Expected value: A URL string
 OBJC_EXPORT const BraveCoreSwitch BraveCoreSwitchSyncURL;
-/// Overrides the SKUs environment. Defaults to production (when not provided)
-///
-/// Expected value: `production`, `development`, or `staging`
-OBJC_EXPORT const BraveCoreSwitch BraveCoreSwitchSkusEnvironment;
 
 typedef bool (^BraveCoreLogHandler)(int severity,
                                     NSString* file,
