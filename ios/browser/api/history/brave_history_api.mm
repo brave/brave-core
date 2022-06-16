@@ -11,6 +11,7 @@
 #include "components/history/core/browser/history_types.h"
 #include "ios/chrome/browser/history/history_service_factory.h"
 #include "ios/chrome/browser/history/web_history_service_factory.h"
+#include "ios/web/public/thread/web_task_traits.h"
 #include "ios/web/public/thread/web_thread.h"
 #include "net/base/mac/url_conversions.h"
 #include "ui/base/page_transition_types.h"
@@ -156,75 +157,78 @@
 }
 
 - (void)removeAllWithCompletion:(void (^)())completion {
-  DCHECK_CURRENTLY_ON(web::WebThread::UI);
-  DCHECK(history_service_->backend_loaded());
-
   // Deletes entire History and from all synced devices
-  __weak BraveHistoryAPI* weakSelf = self;
-  history_service_->DeleteLocalAndRemoteHistoryBetween(
-      web_history_service_, base::Time::Min(), base::Time::Max(),
-      base::BindOnce(
-          ^(std::function<void()> completion) {
-            if (!weakSelf)
-              return;
-            completion();
-          },
-          completion),
-      &tracker_);
+  __weak BraveHistoryAPI* weak_history_api = self;
+  auto delete_history = ^(void (^completion)()) {
+    BraveHistoryAPI* historyAPI = weak_history_api;
+    if (!historyAPI) {
+      completion();
+      return;
+    }
+
+    DCHECK_CURRENTLY_ON(web::WebThread::UI);
+    DCHECK(historyAPI->history_service_->backend_loaded());
+
+    historyAPI->history_service_->DeleteLocalAndRemoteHistoryBetween(
+        historyAPI->web_history_service_, base::Time::Min(), base::Time::Max(),
+        base::BindOnce(completion), &historyAPI->tracker_);
+  };
+
+  web::GetUIThreadTaskRunner({})->PostTask(
+      FROM_HERE, base::BindOnce(delete_history, completion));
 }
 
 - (void)searchWithQuery:(NSString*)query
                maxCount:(NSUInteger)maxCount
              completion:(void (^)(NSArray<IOSHistoryNode*>* historyResults))
                             completion {
-  DCHECK_CURRENTLY_ON(web::WebThread::UI);
-  DCHECK(history_service_->backend_loaded());
+  __weak BraveHistoryAPI* weak_history_api = self;
+  auto search_with_query = ^(NSString* query, NSUInteger maxCount,
+                             void (^completion)(NSArray<IOSHistoryNode*>*)) {
+    BraveHistoryAPI* historyAPI = weak_history_api;
+    if (!historyAPI) {
+      completion(@[]);
+      return;
+    }
 
-  // Check Query is empty for Fetching all history
-  // The entered query can be nil or empty String
-  BOOL fetchAllHistory = !query || [query length] == 0;
-  std::u16string queryString =
-      fetchAllHistory ? std::u16string() : base::SysNSStringToUTF16(query);
+    DCHECK_CURRENTLY_ON(web::WebThread::UI);
+    DCHECK(historyAPI->history_service_->backend_loaded());
 
-  // Creating fetch options for querying history
-  history::QueryOptions options;
-  options.duplicate_policy =
-      fetchAllHistory ? history::QueryOptions::REMOVE_DUPLICATES_PER_DAY
-                      : history::QueryOptions::REMOVE_ALL_DUPLICATES;
-  options.max_count = fetchAllHistory ? 0 : static_cast<int>(maxCount);
-  options.matching_algorithm =
-      query_parser::MatchingAlgorithm::ALWAYS_PREFIX_SEARCH;
+    // Check Query is empty for Fetching all history
+    // The entered query can be nil or empty String
+    BOOL fetchAllHistory = !query || [query length] == 0;
+    std::u16string queryString =
+        fetchAllHistory ? std::u16string() : base::SysNSStringToUTF16(query);
 
-  __weak BraveHistoryAPI* weakSelf = self;
-  history_service_->QueryHistory(
-      queryString, options,
-      base::BindOnce(
-          ^(std::function<void(NSArray<IOSHistoryNode*>*)> completion,
-            history::QueryResults results) {
-            BraveHistoryAPI* historyAPI = weakSelf;
-            if (!historyAPI) {
-              completion(@[]);
-              return;
-            }
+    // Creating fetch options for querying history
+    history::QueryOptions options;
+    options.duplicate_policy =
+        fetchAllHistory ? history::QueryOptions::REMOVE_DUPLICATES_PER_DAY
+                        : history::QueryOptions::REMOVE_ALL_DUPLICATES;
+    options.max_count = fetchAllHistory ? 0 : static_cast<int>(maxCount);
+    options.matching_algorithm =
+        query_parser::MatchingAlgorithm::ALWAYS_PREFIX_SEARCH;
 
-            completion([historyAPI onHistoryResults:std::move(results)]);
-          },
-          completion),
-      &tracker_);
-}
+    historyAPI->history_service_->QueryHistory(
+        queryString, options, base::BindOnce(^(history::QueryResults results) {
+          NSMutableArray<IOSHistoryNode*>* historyNodes =
+              [[NSMutableArray alloc] init];
+          for (const auto& result : results) {
+            IOSHistoryNode* historyNode = [[IOSHistoryNode alloc]
+                initWithURL:net::NSURLWithGURL(result.url())
+                      title:base::SysUTF16ToNSString(result.title())
+                  dateAdded:result.visit_time().ToNSDate()];
+            [historyNodes addObject:historyNode];
+          }
 
-- (NSArray<IOSHistoryNode*>*)onHistoryResults:(history::QueryResults)results {
-  NSMutableArray<IOSHistoryNode*>* historyNodes = [[NSMutableArray alloc] init];
+          completion(historyNodes);
+        }),
+        &historyAPI->tracker_);
+  };
 
-  for (const auto& result : results) {
-    IOSHistoryNode* historyNode = [[IOSHistoryNode alloc]
-        initWithURL:net::NSURLWithGURL(result.url())
-              title:base::SysUTF16ToNSString(result.title())
-          dateAdded:result.visit_time().ToNSDate()];
-    [historyNodes addObject:historyNode];
-  }
-
-  return [historyNodes copy];
+  web::GetUIThreadTaskRunner({})->PostTask(
+      FROM_HERE,
+      base::BindOnce(search_with_query, query, maxCount, completion));
 }
 
 @end
