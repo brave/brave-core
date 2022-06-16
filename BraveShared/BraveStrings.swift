@@ -2606,7 +2606,7 @@ extension Strings {
 
     public static let contactFormDoNotEditText =
       NSLocalizedString("vpn.contactFormDoNotEditText", tableName: "BraveShared", bundle: .strings,
-        value: "Please do not edit any information below",
+        value: "Brave doesn’t track you or know how you use our app, so we don’t know how you've set up VPN. Please share info about the issue you're experiencing and we'll do our best to resolve it as soon as we can.",
         comment: "Text to tell user to not modify support info below email's body.")
 
     public static let contactFormTitle =
