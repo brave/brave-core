@@ -886,14 +886,13 @@ void BraveVpnService::AddObserver(
 }
 
 mojom::PurchasedState BraveVpnService::GetPurchasedStateSync() const {
-  return purchased_state_.has_value() ? purchased_state_.value()
-                                      : mojom::PurchasedState::NOT_PURCHASED;
+  return purchased_state_.value_or(mojom::PurchasedState::NOT_PURCHASED);
 }
 
 void BraveVpnService::GetPurchasedState(GetPurchasedStateCallback callback) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   auto value = GetPurchasedStateSync();
-  VLOG(2) << __func__ << " : " << static_cast<int>(value);
+  VLOG(2) << __func__ << " : " << value;
   std::move(callback).Run(value);
 }
 
