@@ -25,4 +25,11 @@ void WalletInteractionDetected(content::WebContents* web_contents) {
       base::android::AttachCurrentThread(), web_contents->GetJavaWebContents());
 }
 
+bool IsWeb3NotificationAllowed() {
+  JNIEnv* env = base::android::AttachCurrentThread();
+
+  return Java_BraveWalletProviderDelegateImplHelper_isWeb3NotificationAllowed(
+      env);
+}
+
 }  // namespace brave_wallet

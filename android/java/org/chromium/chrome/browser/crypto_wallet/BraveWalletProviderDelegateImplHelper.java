@@ -8,6 +8,7 @@ package org.chromium.chrome.browser.crypto_wallet;
 import org.chromium.base.annotations.CalledByNative;
 import org.chromium.base.annotations.JNINamespace;
 import org.chromium.chrome.browser.app.BraveActivity;
+import org.chromium.chrome.browser.settings.BraveWalletPreferences;
 import org.chromium.content_public.browser.WebContents;
 
 @JNINamespace("brave_wallet")
@@ -16,7 +17,7 @@ public class BraveWalletProviderDelegateImplHelper {
     public static void showPanel() {
         BraveActivity activity = BraveActivity.getBraveActivity();
         if (activity != null) {
-            activity.showWalletPanel();
+            activity.showWalletPanel(false);
         }
     }
 
@@ -34,5 +35,10 @@ public class BraveWalletProviderDelegateImplHelper {
         if (activity != null) {
             activity.walletInteractionDetected(webContents);
         }
+    }
+
+    @CalledByNative
+    public static boolean isWeb3NotificationAllowed() {
+        return BraveWalletPreferences.getPrefWeb3NotificationsEnabled();
     }
 }
