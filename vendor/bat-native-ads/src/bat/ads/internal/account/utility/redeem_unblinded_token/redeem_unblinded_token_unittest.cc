@@ -105,7 +105,7 @@ TEST_F(BatAdsRedeemUnblindedTokenTest, RedeemUnblindedTokenIfAdsAreEnabled) {
       .Times(1);
 
   EXPECT_CALL(*redeem_unblinded_token_delegate_mock_,
-              OnFailedToRedeemUnblindedToken(_, _))
+              OnFailedToRedeemUnblindedToken(_, _, _))
       .Times(0);
 
   redeem_unblinded_token_->Redeem(confirmation);
@@ -141,7 +141,9 @@ TEST_F(BatAdsRedeemUnblindedTokenTest,
       .Times(0);
 
   EXPECT_CALL(*redeem_unblinded_token_delegate_mock_,
-              OnFailedToRedeemUnblindedToken(expected_confirmation, true))
+              OnFailedToRedeemUnblindedToken(expected_confirmation,
+                                             /* should_retry */ true,
+                                             /* should_backoff */ true))
       .Times(1);
 
   redeem_unblinded_token_->Redeem(confirmation);
@@ -202,7 +204,7 @@ TEST_F(BatAdsRedeemUnblindedTokenTest,
       .Times(1);
 
   EXPECT_CALL(*redeem_unblinded_token_delegate_mock_,
-              OnFailedToRedeemUnblindedToken(_, _))
+              OnFailedToRedeemUnblindedToken(_, _, _))
       .Times(0);
 
   redeem_unblinded_token_->Redeem(confirmation);
@@ -219,7 +221,7 @@ TEST_F(
   const URLEndpoints& endpoints = {
       {// Create confirmation request
        R"(/v2/confirmation/d990ed8d-d739-49fb-811b-c2e02158fb60/eyJwYXlsb2FkIjoie1wiYmxpbmRlZFBheW1lbnRUb2tlblwiOlwiRXY1SkU0LzlUWkkvNVRxeU45SldmSjFUbzBIQndRdzJyV2VBUGNkalgzUT1cIixcImJ1aWxkQ2hhbm5lbFwiOlwidGVzdFwiLFwiY3JlYXRpdmVJbnN0YW5jZUlkXCI6XCI3MDgyOWQ3MS1jZTJlLTQ0ODMtYTRjMC1lMWUyYmVlOTY1MjBcIixcInBheWxvYWRcIjp7fSxcInBsYXRmb3JtXCI6XCJ0ZXN0XCIsXCJ0eXBlXCI6XCJ2aWV3XCJ9Iiwic2lnbmF0dXJlIjoiRkhiczQxY1h5eUF2SnkxUE9HVURyR1FoeUtjRkVMSXVJNU5yT3NzT2VLbUV6N1p5azZ5aDhweDQ0WmFpQjZFZkVRc0pWMEpQYmJmWjVUMGt2QmhEM0E9PSIsInQiOiJWV0tFZEliOG5Nd21UMWVMdE5MR3VmVmU2TlFCRS9TWGpCcHlsTFlUVk1KVFQrZk5ISTJWQmQyenRZcUlwRVdsZWF6TiswYk5jNGF2S2ZrY3YyRkw3Zz09In0=)",
-       {{net::HTTP_BAD_REQUEST, ""}}},
+       {{net::HTTP_OK, ""}}},
       {// Fetch payment token request
        R"(/v2/confirmation/d990ed8d-d739-49fb-811b-c2e02158fb60/paymentToken)",
        {{net::HTTP_NOT_FOUND, ""}}}};
@@ -252,7 +254,60 @@ TEST_F(
       .Times(0);
 
   EXPECT_CALL(*redeem_unblinded_token_delegate_mock_,
-              OnFailedToRedeemUnblindedToken(expected_confirmation, true))
+              OnFailedToRedeemUnblindedToken(expected_confirmation,
+                                             /* should_retry */ true,
+                                             /* should_backoff */ false))
+      .Times(1);
+
+  redeem_unblinded_token_->Redeem(confirmation);
+
+  // Assert
+}
+
+TEST_F(
+    BatAdsRedeemUnblindedTokenTest,
+    FailAndRetryToRedeemUnblindedTokenDueToFetchPaymentTokenRespondingWithAcceptedIfAdsAreEnabled) {  // NOLINT
+  // Arrange
+  AdsClientHelper::Get()->SetBooleanPref(prefs::kEnabled, true);
+
+  const URLEndpoints& endpoints = {
+      {// Create confirmation request
+       R"(/v2/confirmation/d990ed8d-d739-49fb-811b-c2e02158fb60/eyJwYXlsb2FkIjoie1wiYmxpbmRlZFBheW1lbnRUb2tlblwiOlwiRXY1SkU0LzlUWkkvNVRxeU45SldmSjFUbzBIQndRdzJyV2VBUGNkalgzUT1cIixcImJ1aWxkQ2hhbm5lbFwiOlwidGVzdFwiLFwiY3JlYXRpdmVJbnN0YW5jZUlkXCI6XCI3MDgyOWQ3MS1jZTJlLTQ0ODMtYTRjMC1lMWUyYmVlOTY1MjBcIixcInBheWxvYWRcIjp7fSxcInBsYXRmb3JtXCI6XCJ0ZXN0XCIsXCJ0eXBlXCI6XCJ2aWV3XCJ9Iiwic2lnbmF0dXJlIjoiRkhiczQxY1h5eUF2SnkxUE9HVURyR1FoeUtjRkVMSXVJNU5yT3NzT2VLbUV6N1p5azZ5aDhweDQ0WmFpQjZFZkVRc0pWMEpQYmJmWjVUMGt2QmhEM0E9PSIsInQiOiJWV0tFZEliOG5Nd21UMWVMdE5MR3VmVmU2TlFCRS9TWGpCcHlsTFlUVk1KVFQrZk5ISTJWQmQyenRZcUlwRVdsZWF6TiswYk5jNGF2S2ZrY3YyRkw3Zz09In0=)",
+       {{net::HTTP_OK, ""}}},
+      {// Fetch payment token request
+       R"(/v2/confirmation/d990ed8d-d739-49fb-811b-c2e02158fb60/paymentToken)",
+       {{net::HTTP_ACCEPTED, ""}}}};
+  MockUrlRequest(ads_client_mock_, endpoints);
+
+  BuildAndSetIssuers();
+
+  privacy::SetUnblindedTokens(1);
+
+  const ConfirmationInfo& confirmation =
+      BuildConfirmation("d990ed8d-d739-49fb-811b-c2e02158fb60",
+                        "8b742869-6e4a-490c-ac31-31b49130098a",
+                        "546fe7b0-5047-4f28-a11c-81f14edcf0f6",
+                        ConfirmationType::kViewed, AdType::kAdNotification);
+
+  // Act
+  ConfirmationInfo expected_confirmation = confirmation;
+  expected_confirmation.was_created = true;
+
+  EXPECT_CALL(*redeem_unblinded_token_delegate_mock_, OnDidSendConfirmation(_))
+      .Times(0);
+
+  EXPECT_CALL(*redeem_unblinded_token_delegate_mock_,
+              OnFailedToSendConfirmation(_, _))
+      .Times(0);
+
+  EXPECT_CALL(*redeem_unblinded_token_delegate_mock_,
+              OnDidRedeemUnblindedToken(_, _))
+      .Times(0);
+
+  EXPECT_CALL(*redeem_unblinded_token_delegate_mock_,
+              OnFailedToRedeemUnblindedToken(expected_confirmation,
+                                             /* should_retry */ true,
+                                             /* should_backoff */ false))
       .Times(1);
 
   redeem_unblinded_token_->Redeem(confirmation);
@@ -302,7 +357,9 @@ TEST_F(
       .Times(0);
 
   EXPECT_CALL(*redeem_unblinded_token_delegate_mock_,
-              OnFailedToRedeemUnblindedToken(expected_confirmation, true))
+              OnFailedToRedeemUnblindedToken(expected_confirmation,
+                                             /* should_retry */ true,
+                                             /* should_backoff */ true))
       .Times(1);
 
   redeem_unblinded_token_->Redeem(confirmation);
@@ -352,7 +409,7 @@ TEST_F(BatAdsRedeemUnblindedTokenTest, SendConfirmationIfAdsIsDisabled) {
       .Times(0);
 
   EXPECT_CALL(*redeem_unblinded_token_delegate_mock_,
-              OnFailedToRedeemUnblindedToken(_, _))
+              OnFailedToRedeemUnblindedToken(_, _, _))
       .Times(0);
 
   redeem_unblinded_token_->Redeem(confirmation);
@@ -393,7 +450,7 @@ TEST_F(BatAdsRedeemUnblindedTokenTest,
       .Times(0);
 
   EXPECT_CALL(*redeem_unblinded_token_delegate_mock_,
-              OnFailedToRedeemUnblindedToken(_, _))
+              OnFailedToRedeemUnblindedToken(_, _, _))
       .Times(0);
 
   redeem_unblinded_token_->Redeem(confirmation);
@@ -434,7 +491,7 @@ TEST_F(BatAdsRedeemUnblindedTokenTest,
       .Times(0);
 
   EXPECT_CALL(*redeem_unblinded_token_delegate_mock_,
-              OnFailedToRedeemUnblindedToken(_, _))
+              OnFailedToRedeemUnblindedToken(_, _, _))
       .Times(0);
 
   redeem_unblinded_token_->Redeem(confirmation);
@@ -475,7 +532,7 @@ TEST_F(BatAdsRedeemUnblindedTokenTest,
       .Times(0);
 
   EXPECT_CALL(*redeem_unblinded_token_delegate_mock_,
-              OnFailedToRedeemUnblindedToken(_, _))
+              OnFailedToRedeemUnblindedToken(_, _, _))
       .Times(0);
 
   redeem_unblinded_token_->Redeem(confirmation);
