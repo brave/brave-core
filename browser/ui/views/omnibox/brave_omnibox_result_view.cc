@@ -12,6 +12,7 @@
 #include "brave/components/brave_search_conversion/types.h"
 #include "brave/components/brave_search_conversion/utils.h"
 #include "brave/components/omnibox/browser/promotion_utils.h"
+#include "chrome/browser/browser_process.h"
 #include "chrome/browser/ui/views/omnibox/omnibox_popup_contents_view.h"
 #include "chrome/browser/ui/views/omnibox/omnibox_suggestion_button_row_view.h"
 #include "components/omnibox/browser/autocomplete_controller.h"
@@ -89,8 +90,9 @@ void BraveOmniboxResultView::UpdateForBraveSearchConversion() {
   button_row_->SetVisible(false);
 
   if (!brave_search_promotion_view_) {
-    brave_search_promotion_view_ = AddChildView(
-        std::make_unique<BraveSearchConversionPromotionView>(this));
+    brave_search_promotion_view_ =
+        AddChildView(std::make_unique<BraveSearchConversionPromotionView>(
+            this, g_browser_process->local_state()));
   }
 
   brave_search_promotion_view_->SetVisible(true);
