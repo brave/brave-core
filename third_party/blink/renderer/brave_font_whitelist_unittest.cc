@@ -42,7 +42,7 @@ TEST(BraveFontWhitelistTest, Platforms) {
 
 #if BUILDFLAG(IS_MAC)
   EXPECT_EQ(brave::CanRestrictFontFamiliesOnThisPlatform(), true);
-  EXPECT_EQ(allowed.size(), 271UL);
+  EXPECT_EQ(allowed.size(), 282UL);
 #elif BUILDFLAG(IS_WIN)
   EXPECT_EQ(brave::CanRestrictFontFamiliesOnThisPlatform(), true);
   EXPECT_EQ(allowed.size(), 311UL);
@@ -104,11 +104,12 @@ TEST(BraveFontWhitelistTest, Locales) {
 }
 
 TEST(BraveFontWhitelistTest, KnownFonts) {
-  const std::array<std::tuple<base::StringPiece, bool>, 6> test_cases = {
+  const std::array<std::tuple<base::StringPiece, bool>, 7> test_cases = {
 #if BUILDFLAG(IS_MAC)
     std::make_tuple<>("Arial Unicode MS", true),
     std::make_tuple<>("Calibri", false),
     std::make_tuple<>("Gill Sans", true),
+    std::make_tuple<>("Helvetica", true),
     std::make_tuple<>("Helvetica Neue", true),
     std::make_tuple<>("Menlo", true),
     std::make_tuple<>("Franklin Gothic Medium", false),
@@ -116,6 +117,7 @@ TEST(BraveFontWhitelistTest, KnownFonts) {
     std::make_tuple<>("Arial Unicode MS", false),
     std::make_tuple<>("Calibri", true),
     std::make_tuple<>("Gill Sans", false),
+    std::make_tuple<>("Helvetica", false),
     std::make_tuple<>("Helvetica Neue", false),
     std::make_tuple<>("Menlo", false),
     std::make_tuple<>("Franklin Gothic Medium", true),
@@ -123,6 +125,7 @@ TEST(BraveFontWhitelistTest, KnownFonts) {
     std::make_tuple<>("Arial Unicode MS", false),
     std::make_tuple<>("Calibri", false),
     std::make_tuple<>("Gill Sans", false),
+    std::make_tuple<>("Helvetica", false),
     std::make_tuple<>("Helvetica Neue", false),
     std::make_tuple<>("Menlo", false),
     std::make_tuple<>("Franklin Gothic Medium", false),
