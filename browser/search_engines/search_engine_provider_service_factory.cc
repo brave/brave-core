@@ -5,14 +5,13 @@
 
 #include "brave/browser/search_engines/search_engine_provider_service_factory.h"
 
+#include <string>
+
 #include "brave/browser/profiles/profile_util.h"
-#include "brave/browser/search_engines/guest_window_search_engine_provider_service.h"
+#include "brave/browser/search_engines/normal_window_search_engine_provider_service.h"
 #include "brave/browser/search_engines/private_window_search_engine_provider_service.h"
-#include "brave/browser/search_engines/search_engine_provider_util.h"
 #include "brave/browser/search_engines/tor_window_search_engine_provider_service.h"
-#include "brave/components/constants/pref_names.h"
 #include "brave/components/search_engines/brave_prepopulated_engines.h"
-#include "build/build_config.h"
 #include "chrome/browser/profiles/incognito_helpers.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/search_engines/template_url_service_factory.h"
@@ -24,42 +23,23 @@ namespace {
 
 // Factory owns service object.
 KeyedService* InitializeSearchEngineProviderServiceIfNeeded(Profile* profile) {
-  // Regardless of qwant region, tor profile needs controller to store
-  // previously set search engine provider.
+  // Set search engine handler for tor or private profile.
   if (profile->IsTor()) {
     return new TorWindowSearchEngineProviderService(profile);
   }
 
-  // Guest profile in qwant region doesn't need special handling of search
-  // engine provider because its newtab doesn't have ddg toggle button.
-  if (brave::IsRegionForQwant(profile))
-    return nullptr;
-
-  if (brave::IsGuestProfile(profile) && profile->IsOffTheRecord()) {
-    return new GuestWindowSearchEngineProviderService(profile);
-  }
-
-  // In non qwant region, controller is also needed for private profile.
-  // We use separate TemplateURLService for normal and off the recored profile.
-  // That means changing normal profile's provider doesn't affect otr profile's.
-  // This controller monitor's normal profile's service and apply its change to
-  // otr profile to use same provider.
-  // Private profile's setting is shared with normal profile's setting.
   if (profile->IsIncognitoProfile()) {
     return new PrivateWindowSearchEngineProviderService(profile);
+  }
+
+  if (profile->IsRegularProfile()) {
+    return new NormalWindowSearchEngineProviderService(profile);
   }
 
   return nullptr;
 }
 
 }  // namespace
-
-// static
-SearchEngineProviderService* SearchEngineProviderServiceFactory::GetForProfile(
-    Profile* profile) {
-  return static_cast<SearchEngineProviderService*>(
-      GetInstance()->GetServiceForBrowserContext(profile, true));
-}
 
 // static
 SearchEngineProviderServiceFactory*
@@ -101,18 +81,9 @@ SearchEngineProviderServiceFactory::ServiceIsCreatedWithBrowserContext() const {
 
 void SearchEngineProviderServiceFactory::RegisterProfilePrefs(
     user_prefs::PrefRegistrySyncable* registry) {
-  registry->RegisterBooleanPref(kUseAlternativeSearchEngineProvider, false);
-  registry->RegisterBooleanPref(kShowAlternativeSearchEngineProviderToggle,
-                                false);
   registry->RegisterBooleanPref(prefs::kDefaultSearchProviderByExtension,
                                 false);
-  // Restore default behaviour for Android until we figure out if we want this
-  // option there.
-#if BUILDFLAG(IS_ANDROID)
-  bool allow_open_search_engines = true;
-#else
-  bool allow_open_search_engines = false;
-#endif
-  registry->RegisterBooleanPref(prefs::kAddOpenSearchEngines,
-                                allow_open_search_engines);
+  registry->RegisterStringPref(prefs::kSyncedDefaultPrivateSearchProviderGUID,
+                               std::string(),
+                               user_prefs::PrefRegistrySyncable::SYNCABLE_PREF);
 }

@@ -18,6 +18,7 @@
 #include "brave/browser/brave_ads/ads_service_factory.h"
 #include "brave/browser/ntp_background_images/view_counter_service_factory.h"
 #include "brave/browser/profiles/profile_util.h"
+#include "brave/browser/search_engines/pref_names.h"
 #include "brave/browser/search_engines/search_engine_provider_util.h"
 #include "brave/browser/ui/webui/new_tab_page/brave_new_tab_ui.h"
 #include "brave/components/brave_perf_predictor/common/pref_names.h"
@@ -121,10 +122,10 @@ base::DictionaryValue GetPrivatePropertiesDictionary(PrefService* prefs) {
   base::DictionaryValue private_data;
   private_data.SetBoolean(
       "useAlternativePrivateSearchEngine",
-      prefs->GetBoolean(kUseAlternativeSearchEngineProvider));
+      prefs->GetBoolean(kUseAlternativePrivateSearchEngineProvider));
   private_data.SetBoolean(
       "showAlternativePrivateSearchEngineToggle",
-      prefs->GetBoolean(kShowAlternativeSearchEngineProviderToggle));
+      prefs->GetBoolean(kShowAlternativePrivateSearchEngineProviderToggle));
   return private_data;
 }
 
@@ -310,12 +311,7 @@ void BraveNewTabMessageHandler::OnJavascriptAllowed() {
   if (IsPrivateNewTab(profile_)) {
     // Private New Tab Page preferences
     pref_change_registrar_.Add(
-        kUseAlternativeSearchEngineProvider,
-        base::BindRepeating(
-            &BraveNewTabMessageHandler::OnPrivatePropertiesChanged,
-            base::Unretained(this)));
-    pref_change_registrar_.Add(
-        kAlternativeSearchEngineProviderInTor,
+        kUseAlternativePrivateSearchEngineProvider,
         base::BindRepeating(
             &BraveNewTabMessageHandler::OnPrivatePropertiesChanged,
             base::Unretained(this)));
@@ -458,7 +454,11 @@ void BraveNewTabMessageHandler::HandleGetNewTabAdsData(
 
 void BraveNewTabMessageHandler::HandleToggleAlternativeSearchEngineProvider(
     const base::Value::List& args) {
-  brave::ToggleUseAlternativeSearchEngineProvider(profile_);
+  // Alternative search related code will not be used.
+  // Cleanup "toggleAlternativePrivateSearchEngine" message handler when it's
+  // deleted from NTP Webui.
+  // https://github.com/brave/brave-browser/issues/23493
+  NOTREACHED();
 }
 
 void BraveNewTabMessageHandler::HandleSaveNewTabPagePref(

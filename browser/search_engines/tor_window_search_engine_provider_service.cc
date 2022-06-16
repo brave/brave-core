@@ -13,9 +13,9 @@
 #include "components/search_engines/template_url_prepopulate_data.h"
 #include "components/search_engines/template_url_service.h"
 
-TorWindowSearchEngineProviderService::
-TorWindowSearchEngineProviderService(Profile* otr_profile)
-    : SearchEngineProviderService(otr_profile) {
+TorWindowSearchEngineProviderService::TorWindowSearchEngineProviderService(
+    Profile* otr_profile)
+    : PrivateWindowSearchEngineProviderServiceBase(otr_profile) {
   DCHECK(otr_profile->IsTor());
 
   auto provider_data = TemplateURLDataFromPrepopulatedEngine(
@@ -31,7 +31,7 @@ TorWindowSearchEngineProviderService::~TorWindowSearchEngineProviderService() =
     default;
 
 void TorWindowSearchEngineProviderService::Shutdown() {
-  SearchEngineProviderService::Shutdown();
+  PrivateWindowSearchEngineProviderServiceBase::Shutdown();
   observation_.Reset();
 }
 

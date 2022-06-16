@@ -3,21 +3,17 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/search_engines/search_engine_provider_service.h"
+#include "brave/browser/search_engines/private_window_search_engine_provider_service_base.h"
 
+#include <memory>
 #include <utility>
-#include <vector>
 
 #include "brave/browser/search_engines/search_engine_provider_util.h"
-#include "brave/components/constants/pref_names.h"
-#include "brave/components/search_engines/brave_prepopulated_engines.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/search_engines/template_url_service_factory.h"
 #include "components/prefs/pref_service.h"
-#include "components/search_engines/prepopulated_engines.h"
 #include "components/search_engines/search_engines_pref_names.h"
 #include "components/search_engines/template_url_data_util.h"
-#include "components/search_engines/template_url_prepopulate_data.h"
 #include "components/search_engines/template_url_service.h"
 #include "extensions/buildflags/buildflags.h"
 
@@ -25,73 +21,19 @@
 #include "extensions/browser/extension_prefs.h"
 #endif
 
-SearchEngineProviderService::SearchEngineProviderService(
-    Profile* otr_profile)
+PrivateWindowSearchEngineProviderServiceBase::
+    PrivateWindowSearchEngineProviderServiceBase(Profile* otr_profile)
     : otr_profile_(otr_profile),
-      original_template_url_service_(
-          TemplateURLServiceFactory::GetForProfile(
-              otr_profile_->GetOriginalProfile())),
+      original_template_url_service_(TemplateURLServiceFactory::GetForProfile(
+          otr_profile_->GetOriginalProfile())),
       otr_template_url_service_(
-          TemplateURLServiceFactory::GetForProfile(otr_profile_)) {
-  use_alternative_search_engine_provider_.Init(
-      kUseAlternativeSearchEngineProvider,
-      otr_profile_->GetOriginalProfile()->GetPrefs(),
-      base::BindRepeating(&SearchEngineProviderService::OnPreferenceChanged,
-                          base::Unretained(this)));
+          TemplateURLServiceFactory::GetForProfile(otr_profile_)) {}
 
-  std::vector<TemplateURLPrepopulateData::BravePrepopulatedEngineID>
-      alt_search_providers = {
-          TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_DUCKDUCKGO,
-          TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_DUCKDUCKGO_DE,
-          TemplateURLPrepopulateData::
-              PREPOPULATED_ENGINE_ID_DUCKDUCKGO_AU_NZ_IE
-      };
+PrivateWindowSearchEngineProviderServiceBase::
+    ~PrivateWindowSearchEngineProviderServiceBase() = default;
 
-  std::unique_ptr<TemplateURLData> data;
-  for (const auto& id : alt_search_providers) {
-    data = TemplateURLPrepopulateData::GetPrepopulatedEngine(
-        otr_profile->GetPrefs(), id);
-    if (data)
-      break;
-  }
-
-  // There should ALWAYS be one entry
-  DCHECK(data);
-  alternative_search_engine_url_.reset(new TemplateURL(*data));
-}
-
-SearchEngineProviderService::~SearchEngineProviderService() = default;
-
-void SearchEngineProviderService::OnPreferenceChanged(
-    const std::string& pref_name) {
-  DCHECK(pref_name == kUseAlternativeSearchEngineProvider);
-  DCHECK(!brave::IsRegionForQwant(otr_profile_));
-
-  OnUseAlternativeSearchEngineProviderChanged();
-}
-
-bool
-SearchEngineProviderService::UseAlternativeSearchEngineProvider() const {
-  return use_alternative_search_engine_provider_.GetValue();
-}
-
-void SearchEngineProviderService::ChangeToAlternativeSearchEngineProvider() {
-  otr_template_url_service_->SetUserSelectedDefaultSearchProvider(
-      alternative_search_engine_url_.get());
-}
-
-void SearchEngineProviderService::ChangeToNormalWindowSearchEngineProvider() {
-  auto* default_provider =
-      original_template_url_service_->GetDefaultSearchProvider();
-  if (!default_provider)
-    return;
-
-  TemplateURL normal_url(default_provider->data());
-  otr_template_url_service_->SetUserSelectedDefaultSearchProvider(
-      &normal_url);
-}
-
-void SearchEngineProviderService::UseExtensionSearchProvider() {
+void PrivateWindowSearchEngineProviderServiceBase::
+    UseExtensionSearchProvider() {
 #if BUILDFLAG(ENABLE_EXTENSIONS)
   DCHECK(ShouldUseExtensionSearchProvider());
 
@@ -149,11 +91,12 @@ void SearchEngineProviderService::UseExtensionSearchProvider() {
 #endif
 }
 
-bool SearchEngineProviderService::ShouldUseExtensionSearchProvider() const {
+bool PrivateWindowSearchEngineProviderServiceBase::
+    ShouldUseExtensionSearchProvider() const {
   return original_template_url_service_->IsExtensionControlledDefaultSearch();
 }
 
-bool SearchEngineProviderService::CouldAddExtensionTemplateURL(
+bool PrivateWindowSearchEngineProviderServiceBase::CouldAddExtensionTemplateURL(
     const TemplateURL* url) {
   DCHECK(url);
   DCHECK_NE(TemplateURL::NORMAL, url->type());

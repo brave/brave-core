@@ -13,26 +13,19 @@
 #include "components/search_engines/template_url.h"
 
 PrivateWindowSearchEngineProviderService::
-PrivateWindowSearchEngineProviderService(Profile* otr_profile)
-    : SearchEngineProviderService(otr_profile) {
+    PrivateWindowSearchEngineProviderService(Profile* otr_profile)
+    : PrivateWindowSearchEngineProviderServiceBase(otr_profile) {
   DCHECK(otr_profile->IsIncognitoProfile());
-
-  if (brave::UseAlternativeSearchEngineProviderEnabled(otr_profile)) {
-    brave::SetShowAlternativeSearchEngineProviderToggle(otr_profile);
-  }
-
-  const bool use_extension_provider = ShouldUseExtensionSearchProvider();
-  otr_profile->GetPrefs()->SetBoolean(prefs::kDefaultSearchProviderByExtension,
-                                      use_extension_provider);
-
-  if (use_extension_provider) {
-    UseExtensionSearchProvider();
-  } else {
-    ConfigureSearchEngineProvider();
-  }
+  private_search_provider_guid_.Init(
+      prefs::kSyncedDefaultPrivateSearchProviderGUID,
+      otr_profile_->GetOriginalProfile()->GetPrefs(),
+      base::BindRepeating(
+          &PrivateWindowSearchEngineProviderService::OnPreferenceChanged,
+          base::Unretained(this)));
+  UpdateExtensionPrefsAndProvider();
 
   // Monitor normal profile's search engine changing because private window
-  // should that search engine provider when alternative search engine isn't
+  // should use that search engine provider when extension search provider is
   // used.
   observation_.Observe(original_template_url_service_);
 }
@@ -41,37 +34,43 @@ PrivateWindowSearchEngineProviderService::
     ~PrivateWindowSearchEngineProviderService() = default;
 
 void PrivateWindowSearchEngineProviderService::
-OnUseAlternativeSearchEngineProviderChanged() {
-  // If extension search provider is used, user can't change DSE by toggling.
-  if (ShouldUseExtensionSearchProvider())
-    return;
-
-  ConfigureSearchEngineProvider();
-}
-
-void PrivateWindowSearchEngineProviderService::
-ConfigureSearchEngineProvider() {
-  DCHECK(!ShouldUseExtensionSearchProvider());
-
-  UseAlternativeSearchEngineProvider()
-      ? ChangeToAlternativeSearchEngineProvider()
-      : ChangeToNormalWindowSearchEngineProvider();
-}
-
-void PrivateWindowSearchEngineProviderService::OnTemplateURLServiceChanged() {
+    UpdateExtensionPrefsAndProvider() {
   const bool use_extension_provider = ShouldUseExtensionSearchProvider();
   otr_profile_->GetPrefs()->SetBoolean(prefs::kDefaultSearchProviderByExtension,
                                        use_extension_provider);
 
   if (use_extension_provider) {
     UseExtensionSearchProvider();
-    return;
+  } else {
+    ConfigurePrivateWindowSearchEngineProvider();
   }
+}
 
-  ConfigureSearchEngineProvider();
+void PrivateWindowSearchEngineProviderService::OnTemplateURLServiceChanged() {
+  UpdateExtensionPrefsAndProvider();
+}
+
+void PrivateWindowSearchEngineProviderService::
+    ConfigurePrivateWindowSearchEngineProvider() {
+  if (auto* template_url =
+          original_template_url_service_->GetTemplateURLForGUID(
+              private_search_provider_guid_.GetValue())) {
+    otr_template_url_service_->SetUserSelectedDefaultSearchProvider(
+        template_url);
+  }
 }
 
 void PrivateWindowSearchEngineProviderService::Shutdown() {
-  SearchEngineProviderService::Shutdown();
+  PrivateWindowSearchEngineProviderServiceBase::Shutdown();
   observation_.Reset();
+}
+
+void PrivateWindowSearchEngineProviderService::OnPreferenceChanged(
+    const std::string& pref_name) {
+  // Don't update when extension's search provider is activated.
+  // It has more higher priority than settings configuration.
+  if (ShouldUseExtensionSearchProvider())
+    return;
+
+  ConfigurePrivateWindowSearchEngineProvider();
 }

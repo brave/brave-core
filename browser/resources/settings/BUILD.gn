@@ -122,6 +122,7 @@ preprocess_if_expr("preprocess_generated") {
     "enable_tor=$enable_tor",
     "enable_brave_wayback_machine=$enable_brave_wayback_machine",
     "enable_brave_vpn=$enable_brave_vpn",
+    "enable_extensions=$enable_extensions",
   ]
   in_folder = target_gen_dir
   out_folder =
@@ -154,7 +155,8 @@ preprocess_if_expr("preprocess_generated") {
     "brave_privacy_page/brave_privacy_page_browser_proxy.m.js",
     "brave_rewards_page/brave_rewards_browser_proxy.m.js",
     "brave_rewards_page/brave_rewards_page.js",
-    "brave_search_engines_page/brave_search_engines_page.m.js",
+    "brave_search_engines_page/brave_search_engines_page.js",
+    "brave_search_engines_page/brave_search_engines_page_browser_proxy.m.js",
     "brave_sync_page/brave_sync_code_dialog.js",
     "brave_sync_page/brave_sync_configure.js",
     "brave_sync_page/brave_sync_page.js",

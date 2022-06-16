@@ -9,7 +9,7 @@
 #include <memory>
 
 #include "base/scoped_observation.h"
-#include "brave/browser/search_engines/search_engine_provider_service.h"
+#include "brave/browser/search_engines/private_window_search_engine_provider_service_base.h"
 #include "components/search_engines/template_url_service.h"
 #include "components/search_engines/template_url_service_observer.h"
 
@@ -19,8 +19,9 @@ struct TemplateURLData;
 // The purpose of this service for tor is making user changed search engine
 // provider persist across the sessions.
 // Also, BraveProfileManager::SetNonPersonalProfilePrefs() overrides for it.
-class TorWindowSearchEngineProviderService : public SearchEngineProviderService,
-                                             public TemplateURLServiceObserver {
+class TorWindowSearchEngineProviderService
+    : public PrivateWindowSearchEngineProviderServiceBase,
+      public TemplateURLServiceObserver {
  public:
   explicit TorWindowSearchEngineProviderService(Profile* otr_profile);
   ~TorWindowSearchEngineProviderService() override;
