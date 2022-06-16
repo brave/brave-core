@@ -73,7 +73,8 @@ class Confirmations final : public RedeemUnblindedTokenDelegate {
                                  const privacy::UnblindedPaymentTokenInfo&
                                      unblinded_payment_token) override;
   void OnFailedToRedeemUnblindedToken(const ConfirmationInfo& confirmation,
-                                      const bool should_retry) override;
+                                      const bool should_retry,
+                                      const bool should_backoff) override;
 
   raw_ptr<ConfirmationsDelegate> delegate_ = nullptr;
 
