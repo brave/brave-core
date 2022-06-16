@@ -99,23 +99,12 @@ void BraveOmniboxClientImpl::OnInputAccepted(const AutocompleteMatch& match) {
   }
 }
 
-void BraveOmniboxClientImpl::OnTextChanged(
-    const AutocompleteMatch& current_match,
-    bool user_input_in_progress,
-    const std::u16string& user_text,
-    const AutocompleteResult& result,
-    bool has_focus) {
-  // Cache current input for checking whether current match is search promotion
-  // match or not when current input is accepted.
-  user_text_ = user_text;
-}
-
 void BraveOmniboxClientImpl::OnURLOpenedFromOmnibox(OmniboxLog* log) {
-  if (log->selected_index > 0 &&
-      IsBraveSearchPromotionMatch(log->result.match_at(log->selected_index),
-                                  user_text_)) {
+  if (log->selected_index <= 0)
+    return;
+  const auto match = log->result.match_at(log->selected_index);
+  if (IsBraveSearchPromotionMatch(match)) {
     brave_search_conversion::p3a::RecordOmniboxPromoTrigger(
-        g_browser_process->local_state(),
-        brave_search_conversion::GetConversionType());
+        g_browser_process->local_state(), GetConversionTypeFromMatch(match));
   }
 }
