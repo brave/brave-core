@@ -23,6 +23,54 @@
 #error "This file requires ARC support."
 #endif
 
+namespace brave {
+namespace ios {
+sync_pb::SyncEnums::DeviceType
+    SyncDeviceTypeFromSyncEnumsDeviceType(SyncDeviceType deviceType) {
+  switch (deviceType) {
+    case SyncDeviceTypeUnset:
+      return sync_pb::SyncEnums::DeviceType::SyncEnums_DeviceType_TYPE_UNSET;
+    case SyncDeviceTypeWin:
+      return sync_pb::SyncEnums::DeviceType::SyncEnums_DeviceType_TYPE_WIN;
+    case SyncDeviceTypeMac:
+      return sync_pb::SyncEnums::DeviceType::SyncEnums_DeviceType_TYPE_MAC;
+    case SyncDeviceTypeLinux:
+      return sync_pb::SyncEnums::DeviceType::SyncEnums_DeviceType_TYPE_LINUX;
+    case SyncDeviceTypeCros:
+      return sync_pb::SyncEnums::DeviceType::SyncEnums_DeviceType_TYPE_CROS;
+    case SyncDeviceTypeOther:
+      return sync_pb::SyncEnums::DeviceType::SyncEnums_DeviceType_TYPE_OTHER;
+     case SyncDeviceTypePhone:
+      return sync_pb::SyncEnums::DeviceType::SyncEnums_DeviceType_TYPE_PHONE;
+    default:
+      return sync_pb::SyncEnums::DeviceType::SyncEnums_DeviceType_TYPE_UNSET;
+  }
+}
+
+SyncDeviceType SyncEnumsDeviceTypeFromSyncDeviceType(
+    sync_pb::SyncEnums::DeviceType deviceType) {
+  switch (deviceType) {
+    case sync_pb::SyncEnums::DeviceType::SyncEnums_DeviceType_TYPE_UNSET:
+      return SyncDeviceTypeUnset;
+    case sync_pb::SyncEnums::DeviceType::SyncEnums_DeviceType_TYPE_WIN:
+      return SyncDeviceTypeWin;
+    case sync_pb::SyncEnums::DeviceType::SyncEnums_DeviceType_TYPE_MAC:
+      return SyncDeviceTypeMac;
+    case sync_pb::SyncEnums::DeviceType::SyncEnums_DeviceType_TYPE_LINUX:
+      return SyncDeviceTypeLinux;
+    case sync_pb::SyncEnums::DeviceType::SyncEnums_DeviceType_TYPE_CROS:
+      return SyncDeviceTypeCros;
+    case sync_pb::SyncEnums::DeviceType::SyncEnums_DeviceType_TYPE_OTHER:
+      return SyncDeviceTypeOther;
+    case sync_pb::SyncEnums::DeviceType::SyncEnums_DeviceType_TYPE_PHONE:
+      return SyncDeviceTypePhone;
+    default:
+      return SyncDeviceTypeUnset;
+  }
+}
+}  // namespace ios
+}  // namespace brave
+
 #pragma mark - IOSOpenDistantTab
 
 @implementation IOSOpenDistantTab
@@ -122,7 +170,7 @@
 }
 
 - (void)dealloc {
-  _chromeBrowserState = NULL;
+  _chromeBrowserState = nullptr;
 }
 
 
@@ -135,22 +183,41 @@
   auto syncedSessions =
       std::make_unique<synced_sessions::SyncedSessions>(syncService);
 
-  // Getting DistantTabSet from SyncSessions
-  std::vector<synced_sessions::DistantTabsSet> displayedTabs;
-
   NSMutableArray<IOSOpenDistantSession*>* distantSessionList = [[NSMutableArray alloc] init];
 
-  for (size_t s = 0; s < syncedSessions->GetSessionCount(); s++) {
+  for (size_t sessionIndex = 0; sessionIndex < syncedSessions->GetSessionCount(); sessionIndex++) {
     const synced_sessions::DistantSession* session =
-        syncedSessions->GetSession(s);
+        syncedSessions->GetSession(sessionIndex);
 
-    // TODO: Fill up the session detail
-    synced_sessions::DistantTabsSet distant_tabs;
-    distant_tabs.session_tag = session->tag;
-    displayedTabs.push_back(distant_tabs);
+    NSArray<IOSOpenDistantTab*>* distantTabs = [self onDistantTabResults:session->tabs];
+
+    IOSOpenDistantSession* distantSession = [[IOSOpenDistantSession alloc] 
+        initWithName:base::SysUTF8ToNSString(session->name)
+          sessionTag:base::SysUTF8ToNSString(session->tag)
+         dateCreated:session->modified_time.ToNSDate()
+          deviceType:brave::ios::SyncEnumsDeviceTypeFromSyncDeviceType(session->device_type)
+                tabs:distantTabs];
+    [distantSessionList addObject: distantSession];
   }
 
   completion([distantSessionList copy]);
+}
+
+- (NSArray<IOSOpenDistantTab*>*)onDistantTabResults:
+    (const std::vector<std::unique_ptr<synced_sessions::DistantTab>> &)distantTabList {
+  NSMutableArray<IOSOpenDistantTab*>* distantTabs = [[NSMutableArray alloc] init];
+
+  for (const auto& tab : distantTabList) {
+    IOSOpenDistantTab* distantTab = [[IOSOpenDistantTab alloc] 
+        initWithURL:net::NSURLWithGURL(tab->virtual_url)
+              title:base::SysUTF16ToNSString(tab->title)
+              tabId:tab->tab_id.id()
+         sessionTag:base::SysUTF8ToNSString(tab->session_tag)];
+
+    [distantTabs addObject: distantTab];
+  }
+
+  return [distantTabs copy];
 }
 
 @end
