@@ -699,6 +699,15 @@ export const SupportedCoinTypes = [
   BraveWallet.CoinType.FIL
 ]
 
+export const SupportedOnRampNetworks = [
+  BraveWallet.SOLANA_MAINNET,
+  BraveWallet.MAINNET_CHAIN_ID, // ETH
+  BraveWallet.POLYGON_MAINNET_CHAIN_ID,
+  BraveWallet.BINANCE_SMART_CHAIN_MAINNET_CHAIN_ID,
+  BraveWallet.CELO_MAINNET_CHAIN_ID,
+  BraveWallet.AVALANCHE_MAINNET_CHAIN_ID
+]
+
 export const SupportedTestNetworks = [
   BraveWallet.RINKEBY_CHAIN_ID,
   BraveWallet.ROPSTEN_CHAIN_ID,
