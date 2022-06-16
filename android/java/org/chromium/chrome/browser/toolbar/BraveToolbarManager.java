@@ -31,8 +31,8 @@ import org.chromium.chrome.browser.bookmarks.BookmarkBridge;
 import org.chromium.chrome.browser.browser_controls.BrowserControlsSizer;
 import org.chromium.chrome.browser.compositor.CompositorViewHolder;
 import org.chromium.chrome.browser.compositor.Invalidator;
+import org.chromium.chrome.browser.compositor.bottombar.ephemeraltab.EphemeralTabCoordinator;
 import org.chromium.chrome.browser.compositor.layouts.LayoutManagerImpl;
-import org.chromium.chrome.browser.compositor.layouts.OverviewModeBehavior;
 import org.chromium.chrome.browser.compositor.layouts.content.TabContentManager;
 import org.chromium.chrome.browser.findinpage.FindToolbarManager;
 import org.chromium.chrome.browser.fullscreen.FullscreenManager;
@@ -56,7 +56,6 @@ import org.chromium.chrome.browser.tasks.tab_management.TabManagementModuleProvi
 import org.chromium.chrome.browser.tasks.tab_management.TabUiFeatureUtilities;
 import org.chromium.chrome.browser.theme.TopUiThemeColorProvider;
 import org.chromium.chrome.browser.toolbar.bottom.BottomControlsCoordinator;
-import org.chromium.chrome.browser.toolbar.bottom.BottomTabSwitcherActionMenuCoordinator;
 import org.chromium.chrome.browser.toolbar.bottom.BottomToolbarConfiguration;
 import org.chromium.chrome.browser.toolbar.bottom.BottomToolbarVariationManager;
 import org.chromium.chrome.browser.toolbar.bottom.BraveBottomControlsCoordinator;
@@ -65,6 +64,7 @@ import org.chromium.chrome.browser.toolbar.bottom.ScrollingBottomViewResourceFra
 import org.chromium.chrome.browser.toolbar.menu_button.BraveMenuButtonCoordinator;
 import org.chromium.chrome.browser.toolbar.menu_button.MenuButtonCoordinator;
 import org.chromium.chrome.browser.toolbar.top.ActionModeController;
+import org.chromium.chrome.browser.toolbar.top.BottomTabSwitcherActionMenuCoordinator;
 import org.chromium.chrome.browser.toolbar.top.BraveTopToolbarCoordinator;
 import org.chromium.chrome.browser.toolbar.top.ToolbarActionModeCallback;
 import org.chromium.chrome.browser.toolbar.top.ToolbarControlContainer;
@@ -111,7 +111,6 @@ public class BraveToolbarManager extends ToolbarManager {
     private Supplier<Boolean> mIsWarmOnResumeSupplier;
     private TabContentManager mTabContentManager;
     private TabCreatorManager mTabCreatorManager;
-    private OneshotSupplier<OverviewModeBehavior> mOverviewModeBehaviorSupplier;
     private SnackbarManager mSnackbarManager;
 
     // Own members.
@@ -154,13 +153,13 @@ public class BraveToolbarManager extends ToolbarManager {
             @NonNull BottomSheetController bottomSheetController,
             @NonNull Supplier<Boolean> isWarmOnResumeSupplier,
             @NonNull TabContentManager tabContentManager,
-            @NonNull TabCreatorManager tabCreatorManager,
-            @NonNull OneshotSupplier<OverviewModeBehavior> overviewModeBehaviorSupplier,
-            @NonNull SnackbarManager snackbarManager, JankTracker jankTracker,
+            @NonNull TabCreatorManager tabCreatorManager, @NonNull SnackbarManager snackbarManager,
+            JankTracker jankTracker,
             @NonNull Supplier<MerchantTrustSignalsCoordinator>
                     merchantTrustSignalsCoordinatorSupplier,
             OneshotSupplier<TabReparentingController> tabReparentingControllerSupplier,
             @NonNull OmniboxPedalDelegate omniboxPedalDelegate,
+            Supplier<EphemeralTabCoordinator> ephemeralTabCoordinatorSupplier,
             boolean initializeWithIncognitoColors) {
         super(activity, controlsSizer, fullscreenManager, controlContainer, compositorViewHolder,
                 urlFocusChangedCallback, topUiThemeColorProvider, tabObscuringHandler,
@@ -173,9 +172,9 @@ public class BraveToolbarManager extends ToolbarManager {
                 isInOverviewModeSupplier, modalDialogManagerSupplier, statusBarColorController,
                 appMenuDelegate, activityLifecycleDispatcher, startSurfaceParentTabSupplier,
                 bottomSheetController, isWarmOnResumeSupplier, tabContentManager, tabCreatorManager,
-                overviewModeBehaviorSupplier, snackbarManager, jankTracker,
-                merchantTrustSignalsCoordinatorSupplier, tabReparentingControllerSupplier,
-                omniboxPedalDelegate, initializeWithIncognitoColors);
+                snackbarManager, jankTracker, merchantTrustSignalsCoordinatorSupplier,
+                tabReparentingControllerSupplier, omniboxPedalDelegate,
+                ephemeralTabCoordinatorSupplier, initializeWithIncognitoColors);
 
         mOmniboxFocusStateSupplier = omniboxFocusStateSupplier;
         mLayoutStateProviderSupplier = layoutStateProviderSupplier;
@@ -222,7 +221,7 @@ public class BraveToolbarManager extends ToolbarManager {
                         mBottomSheetController, mActivityLifecycleDispatcher,
                         mIsWarmOnResumeSupplier, mTabModelSelector, mTabContentManager,
                         mCompositorViewHolder, mCompositorViewHolder::getDynamicResourceLoader,
-                        mTabCreatorManager, mShareDelegateSupplier, mOverviewModeBehaviorSupplier,
+                        mTabCreatorManager, mShareDelegateSupplier, mLayoutStateProviderSupplier,
                         mSnackbarManager);
             }
             mBottomControlsCoordinatorSupplier.set(new BraveBottomControlsCoordinator(

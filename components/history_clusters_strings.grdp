@@ -8,7 +8,7 @@
   <message name="IDS_HISTORY_CLUSTERS_ENABLE_MENU_ITEM_LABEL" desc="A label for the menu item to turn on the Journeys feature, which collects different search and browsing activities related to a single topic into a single place, and organizes them by topic. See glossary entry for meaning of 'Journeys'.">
     Turn on Journeys
   </message>
-  <message name="IDS_HISTORY_CLUSTERS_JOURNEYS_TAB_LABEL" desc="A label for the section in Brave History (chrome://history) where Journeys are collected and shown to the user. See glossary entry for meaning of 'Journeys'.">
+  <message name="IDS_HISTORY_CLUSTERS_JOURNEYS_TAB_LABEL" desc="A label for the section in Brave History (chrome://history) where Journeys are collected and shown to the user. See glossary entry for meaning of 'Journeys'." formatter_data="android_java">
     Journeys
   </message>
   <message name="IDS_HISTORY_CLUSTERS_LIST_TAB_LABEL" desc="A label for the section in Brave History (chrome://history) where a list of history items are shown to the user.">
@@ -43,5 +43,8 @@
   </message>
   <message name="IDS_HISTORY_CLUSTERS_SHOW_MORE_BUTTON_LABEL" desc="A label for the button that expands the view showing more history items.">
     Show more
+  </message>
+  <message name="IDS_HISTORY_CLUSTERS_SEARCH_YOUR_JOURNEYS" desc="A label for the hint text for the search box in Brave Journeys." formatter_data="android_java">
+    Search your Journeys
   </message>
 </grit-part>

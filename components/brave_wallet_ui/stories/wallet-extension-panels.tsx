@@ -33,6 +33,10 @@ import {
   SelectAccount,
   CreateAccountTab
 } from '../components/buy-send-swap'
+import { TransactionSubmitted } from '../components/extension/post-confirmation/submitted'
+import { TransactionConfirming } from '../components/extension/post-confirmation/confirming'
+import { TransactionFailed } from '../components/extension/post-confirmation/failed'
+import { TransactionComplete } from '../components/extension/post-confirmation/complete'
 import {
   BraveWallet,
   WalletAccountType,
@@ -609,17 +613,7 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
   const [selectedWyreAsset, setSelectedWyreAsset] = React.useState<BraveWallet.BlockchainToken>(mockEthToken)
   const [, setSelectedAsset] = React.useState<BraveWallet.BlockchainToken>(mockBasicAttentionToken)
   const [showSelectAsset, setShowSelectAsset] = React.useState<boolean>(false)
-  const [buyAmount, setBuyAmount] = React.useState('')
   const [selectedTransaction, setSelectedTransaction] = React.useState<BraveWallet.TransactionInfo | undefined>(transactionList[1][0])
-  const [selectedBuyOption, setSelectedBuyOption] = React.useState(BraveWallet.OnRampProvider.kRamp)
-
-  const onSetBuyAmount = (value: string) => {
-    setBuyAmount(value)
-  }
-
-  const onSubmitBuy = () => {
-    alert(`Buy ${selectedWyreAsset.symbol} asset`)
-  }
 
   const onChangeSendView = (view: BuySendSwapViewTypes) => {
     if (view === 'assets') {
@@ -847,18 +841,9 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
                       }
                       {selectedPanel === 'buy' &&
                         <Buy
-                          defaultCurrencies={mockDefaultCurrencies}
                           onChangeBuyView={onChangeSendView}
-                          onInputChange={onSetBuyAmount}
-                          onSubmit={onSubmitBuy}
                           selectedAsset={selectedWyreAsset}
-                          buyAmount={buyAmount}
-                          selectedNetwork={selectedNetwork}
-                          networkList={[]}
-                          selectedBuyOption={selectedBuyOption}
-                          onSelectBuyOption={setSelectedBuyOption}
-                          rampAssetOptions={mockAccountAssetOptions}
-                          wyreAssetOptions={mockAccountAssetOptions} />
+                        />
                       }
                       {selectedPanel === 'sitePermissions' &&
                         <SitePermissions
@@ -1070,14 +1055,95 @@ _RecentTransaction.story = {
 
 export const _CreateAccount = () => {
   return (
-    <StyledCreateAccountPanel>
-      <CreateAccountTab
-        prevNetwork={mockNetworks[0]}
-      />
-    </StyledCreateAccountPanel>
+    <Provider store={createStoreWithCustomState(mockCustomStoreState)}>
+      <StyledCreateAccountPanel>
+        <CreateAccountTab
+          prevNetwork={mockNetworks[0]}
+        />
+      </StyledCreateAccountPanel>
+    </Provider>
   )
 }
 
 _CreateAccount.story = {
   name: 'Create Account Tab'
+}
+
+export const _TransactionSubmitted = () => {
+  return (
+    <Provider store={createStoreWithCustomState(mockCustomStoreState)}>
+      <StyledExtensionWrapper>
+        <TransactionSubmitted
+          headerTitle='Swap 0.01 ETH to 32.2583 USDC'
+          onClose={() => alert('Close panel screen')}
+        />
+      </StyledExtensionWrapper>
+    </Provider>
+  )
+}
+
+_TransactionSubmitted.story = {
+  name: 'Transaction Submitted'
+}
+
+export const _TransactionConfirming = () => {
+  return (
+    <Provider store={createStoreWithCustomState(mockCustomStoreState)}>
+      <StyledExtensionWrapper>
+        <TransactionConfirming
+          headerTitle='Swap 0.01 ETH to 32.2583 USDC'
+          confirmations={8}
+          confirmationsNeeded={12}
+          onClose={() => alert('Close panel screen')}
+        />
+      </StyledExtensionWrapper>
+    </Provider>
+  )
+}
+
+_TransactionConfirming.story = {
+  name: 'Transaction Confirming'
+}
+
+export const _TransactionComplete = () => {
+  return (
+    <Provider store={createStoreWithCustomState(mockCustomStoreState)}>
+      <StyledExtensionWrapper>
+        <TransactionComplete
+          headerTitle='Swap 0.01 ETH to 32.2583 USDC'
+          description='32.2583 USDC has been successfully deposited into your wallet.'
+          isPrimaryCTADisabled={false}
+          onClose={() => alert('Close panel screen')}
+          onClickPrimaryCTA={() => alert('Clicked primary CTA')}
+          onClickSecondaryCTA={() => alert('Clicked secondary CTA')}
+        />
+      </StyledExtensionWrapper>
+    </Provider>
+  )
+}
+
+_TransactionComplete.story = {
+  name: 'Transaction Complete'
+}
+
+export const _TransactionFailed = () => {
+  return (
+    <Provider store={createStoreWithCustomState(mockCustomStoreState)}>
+      <StyledExtensionWrapper>
+        <TransactionFailed
+          headerTitle='Swap 0.01 ETH to 32.2583 USDC'
+          isPrimaryCTADisabled={false}
+          errorDetailTitle='Try raising slippage'
+          errorDetailContent='[ethjs-query] while formatting outputs from RPC ‘{“value”: {“code”:-32603,”data”: {“code”-32603,”message”:”Internal error”}}}’'
+          onClose={() => alert('Close panel screen')}
+          onClickPrimaryCTA={() => alert('Clicked primary CTA')}
+          onClickSecondaryCTA={() => alert('Clicked secondary CTA')}
+        />
+      </StyledExtensionWrapper>
+    </Provider>
+  )
+}
+
+_TransactionFailed.story = {
+  name: 'Transaction Failed'
 }

@@ -34,6 +34,8 @@ class Serving final {
   Serving(geographic::SubdivisionTargeting* subdivision_targeting,
           resource::AntiTargeting* anti_targeting_resource);
   ~Serving();
+  Serving(const Serving&) = delete;
+  Serving& operator=(const Serving&) = delete;
 
   void AddObserver(InlineContentServingObserver* observer);
   void RemoveObserver(InlineContentServingObserver* observer);

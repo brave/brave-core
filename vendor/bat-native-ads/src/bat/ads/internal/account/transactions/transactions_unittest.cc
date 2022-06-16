@@ -6,9 +6,8 @@
 #include "bat/ads/internal/account/transactions/transactions.h"
 
 #include "bat/ads/internal/account/transactions/transactions_unittest_util.h"
-#include "bat/ads/internal/base/unittest_base.h"
-#include "bat/ads/internal/base/unittest_time_util.h"
-#include "bat/ads/internal/base/unittest_util.h"
+#include "bat/ads/internal/base/unittest/unittest_base.h"
+#include "bat/ads/internal/base/unittest/unittest_time_util.h"
 #include "bat/ads/transaction_info.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
@@ -27,7 +26,7 @@ TEST_F(BatAdsTransactionsTest, Add) {
 
   // Act
   const TransactionInfo& transaction = transactions::Add(
-      "42a33833-0a08-4cbb-ab3e-458e020221ab", 0.01, AdType::kAdNotification,
+      "42a33833-0a08-4cbb-ab3e-458e020221ab", 0.01, AdType::kNotificationAd,
       ConfirmationType::kViewed,
       [](const bool success, const TransactionInfo& transaction) {
         ASSERT_TRUE(success);
@@ -49,13 +48,13 @@ TEST_F(BatAdsTransactionsTest, GetForDateRange) {
   // Arrange
   TransactionList transactions;
 
-  AdvanceClock(TimeFromString("31 October 2020", /* is_local */ true));
+  AdvanceClockTo(TimeFromString("31 October 2020", /* is_local */ true));
 
   const TransactionInfo& transaction_1 =
       BuildTransaction(0.01, ConfirmationType::kViewed);
   transactions.push_back(transaction_1);
 
-  AdvanceClock(TimeFromString("18 November 2020", /* is_local */ true));
+  AdvanceClockTo(TimeFromString("18 November 2020", /* is_local */ true));
 
   const TransactionInfo& transaction_2 =
       BuildTransaction(0.0, ConfirmationType::kDismissed);

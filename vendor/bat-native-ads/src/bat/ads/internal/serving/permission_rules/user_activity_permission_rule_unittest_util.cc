@@ -5,13 +5,13 @@
 
 #include "bat/ads/internal/serving/permission_rules/user_activity_permission_rule_unittest_util.h"
 
-#include "bat/ads/internal/user_interaction/browsing/user_activity.h"
+#include "bat/ads/internal/user_interaction/browsing/user_activity_manager.h"
 
 namespace ads {
 
 void ForceUserActivityPermissionRule() {
-  UserActivity::Get()->RecordEvent(UserActivityEventType::kOpenedNewTab);
-  UserActivity::Get()->RecordEvent(UserActivityEventType::kClosedTab);
+  UserActivityManager::Get()->RecordEvent(UserActivityEventType::kOpenedNewTab);
+  UserActivityManager::Get()->RecordEvent(UserActivityEventType::kClosedTab);
 }
 
 }  // namespace ads

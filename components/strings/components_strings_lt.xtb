@@ -714,7 +714,6 @@ Kitu atveju tai bus užblokuota pagal jūsų privatumo nustatymus. Taip turinys,
 <translation id="2972581237482394796">&amp;Atlikti iš naujo</translation>
 <translation id="2977665033722899841">„<ph name="ROW_NAME"/>“, šiuo metu pasirinkta. <ph name="ROW_CONTENT"/></translation>
 <translation id="2978824962390592855">Opera</translation>
-<translation id="1536541482996273580">Inkognito skirtuko atidarymas</translation>
 <translation id="2985398929374701810">Įveskite tinkamą adresą</translation>
 <translation id="2986368408720340940">Šis paėmimo metodas nepasiekiamas. Išbandykite kitą metodą.</translation>
 <translation id="2987034854559945715">Nėra jokių atitinkančių funkcijų</translation>
@@ -2936,6 +2935,7 @@ Papildoma išsami informacija:
 <translation id="40442660395682483">Kad galėtumėte naršyti privačiai, atidarykite naują inkognito skirtuką</translation>
 <translation id="7627159832789643445"><ph name="LAUNCH_INCOGNITO_FOCUSED_FRIENDLY_MATCH_TEXT"/>, paspauskite „Tab“, tada paspauskite „Enter“, kad atvertumėte naują inkognito langą ir galėtumėte naršyti privačiai</translation>
 <translation id="3711639027736550870">Kad atvertumėte naują inkognito skirtuką ir galėtumėte naršyti privačiai, paspauskite mygtuką „Atidaryti inkognito skirtuką“ ir paspauskite „Enter“</translation>
+<translation id="1536541482996273580">Atidaryti inkognito skirtuką</translation>
 <translation id="5549245478906381817">Atidarykite inkognito langą</translation>
 <translation id="5497977785983089120">Kad galėtumėte naršyti privačiai, atidarykite naują inkognito langą</translation>
 <translation id="1819281525814582516"><ph name="LAUNCH_INCOGNITO_FOCUSED_FRIENDLY_MATCH_TEXT"/>, kad atidarytumėte naują inkognito langą ir galėtumėte naršyti privačiai, paspauskite „Tab“, tada paspauskite „Enter“</translation>

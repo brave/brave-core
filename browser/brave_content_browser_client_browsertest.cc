@@ -166,7 +166,7 @@ IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest, CanLoadChromeURL) {
 
 IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest, CanLoadCustomBravePages) {
   std::vector<std::string> pages{
-      "adblock",
+      "ipfs-internals",
       "rewards",
   };
 
@@ -263,6 +263,31 @@ IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest, RewriteChromeSync) {
                      .spec()
                      .c_str(),
                  "chrome://settings/braveSync");
+  }
+}
+
+IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest, RewriteAdblock) {
+  std::vector<std::string> schemes{
+      "brave://",
+      "chrome://",
+  };
+
+  for (const std::string& scheme : schemes) {
+    content::WebContents* contents =
+        browser()->tab_strip_model()->GetActiveWebContents();
+    ASSERT_TRUE(
+        ui_test_utils::NavigateToURL(browser(), GURL(scheme + "adblock")));
+    ASSERT_TRUE(WaitForLoadStop(contents));
+
+    EXPECT_STREQ(base::UTF16ToUTF8(
+                     browser()->location_bar_model()->GetFormattedFullURL())
+                     .c_str(),
+                 "brave://settings/shields/filters");
+    EXPECT_EQ(browser()->location_bar_model()->GetURL(),
+              GURL("chrome://settings/shields/filters"));
+    EXPECT_EQ(
+        contents->GetController().GetLastCommittedEntry()->GetVirtualURL(),
+        GURL("chrome://settings/shields/filters"));
   }
 }
 

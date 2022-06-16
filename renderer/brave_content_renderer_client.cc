@@ -43,6 +43,8 @@ void BraveContentRendererClient::
         "FileSystemAccessAPIExperimental", false);
   }
   blink::WebRuntimeFeatures::EnableFeatureFromString("Serial", false);
+  blink::WebRuntimeFeatures::EnableFeatureFromString(
+      "SpeculationRulesPrefetchProxy", false);
 }
 
 BraveContentRendererClient::~BraveContentRendererClient() = default;

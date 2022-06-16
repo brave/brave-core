@@ -4359,7 +4359,7 @@ Vil du starte <ph name="CONTROL_PANEL_APPLET_NAME"/>?</translation>
 <translation id="5280426389926346830">Vil du oprette en genvej?</translation>
 <translation id="5281013262333731149">Åbnes i: <ph name="OPEN_BROWSER"/></translation>
 <translation id="528208740344463258">Installer den påkrævede opdatering, før du kan downloade og bruge Android-apps. Du kan ikke bruge din <ph name="DEVICE_TYPE"/>, mens den opdaterer. Din <ph name="DEVICE_TYPE"/> genstartes, når opdateringen er færdig.</translation>
-<translation id="5282733140964383898">Hvis du aktiverer "Do Not Track", medtages der en anmodning i din browsertrafik. Anmodningens virkning afhænger af, om et website reagerer på den, og hvordan anmodningen fortolkes. Nogle websites kan f.eks. reagere på denne anmodning ved at vise dig annoncer, der ikke er baseret på andre websites, du har besøgt. Mange websites vil stadig indsamle og bruge dine browserdata, f.eks. for at forbedre sikkerheden, for at levere indhold, tjenester, annoncer og anbefalinger på websitene og for at generere statistik til rapportering. <ph name="BEGIN_LINK"/>Få flere oplysninger<ph name="END_LINK"/></translation>
+<translation id="4039256732955431945">Hvis du aktiverer "Do Not Track", medtages der en anmodning i din browsertrafik. Anmodningens virkning afhænger af, om et website reagerer på den, og hvordan anmodningen fortolkes. Nogle websites kan f.eks. reagere på denne anmodning ved at vise dig annoncer, der ikke er baseret på andre websites, du har besøgt. Mange websites vil stadig indsamle og bruge dine browserdata, f.eks. for at forbedre sikkerheden, for at levere indhold, tjenester, annoncer og anbefalinger på websitene og for at generere statistik til rapportering. <ph name="BEGIN_LINK"/>Få flere oplysninger<ph name="END_LINK"/></translation>
 <translation id="5283677936944177147">Ups! Systemet kunne ikke bestemme enhedsmodellen eller serienummeret.</translation>
 <translation id="5284445933715251131">Fortsæt download</translation>
 <translation id="5285635972691565180">Skærm <ph name="DISPLAY_ID"/></translation>
@@ -4376,7 +4376,7 @@ Vil du starte <ph name="CONTROL_PANEL_APPLET_NAME"/>?</translation>
 <translation id="5297082477358294722">Adgangskoden blev gemt. Se og administrer gemte adgangskoder på din <ph name="SAVED_PASSWORDS_STORE"/>.</translation>
 <translation id="5297946558563358707">Vis øjeikonet for privatliv nederst til højre på din skærm, når en anden person kigger på din skærm</translation>
 <translation id="5298219193514155779">Tema oprettet af</translation>
-<translation id="5299109548848736476">Do Not Track</translation>
+<translation id="1839179167864984545">Do Not Track</translation>
 <translation id="5299558715747014286">Se og administrer dine fanegupper</translation>
 <translation id="5300287940468717207">Vil du nulstille websitetilladelserne?</translation>
 <translation id="5300426565656326054">Browserbaseret annoncetilpasning</translation>
@@ -7844,7 +7844,7 @@ Opbevar din nøglefil på et sikkert sted. Du skal bruge den til at oprette nye 
 <translation id="8785622406424941542">Styluspen</translation>
 <translation id="8786824282808281903">Når dit barn ser dette ikon, kan fingeraftrykket bruges til at identificere barnet eller godkende køb.</translation>
 <translation id="8787575090331305835">{NUM_TABS,plural, =1{Unavngivet gruppe – 1 fane}one{Unavngivet gruppe – # fane}other{Unavngivet gruppe – # faner}}</translation>
-<translation id="8791534160414513928">Send en anmodning om "Do Not Track" sammen med din browsertrafik</translation>
+<translation id="163839281363975279">Send en anmodning om "Do Not Track" sammen med din browsertrafik</translation>
 <translation id="879413103056696865">Mens hotspottet er aktivt, vil din <ph name="PHONE_NAME"/>:</translation>
 <translation id="8795916974678578410">Nyt vindue</translation>
 <translation id="8797459392481275117">Oversæt aldrig dette website</translation>

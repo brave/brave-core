@@ -12,7 +12,7 @@
       android:layout_height="wrap_content" >
 
   <FrameLayout android:id="@+id/brave_wallet_button_layout"
-      android:layout_width="@dimen/toolbar_button_width"
+      android:layout_width="45dp"
       android:orientation="vertical"
       android:background="@drawable/modern_toolbar_background_grey_end_segment"
       android:layout_marginTop="8dp"
@@ -27,37 +27,19 @@
           android:layout_gravity="center"
           android:contentDescription="@string/accessibility_toolbar_btn_brave_wallet" />
 
-      <org.chromium.chrome.browser.BraveBadge
-            android:id="@+id/brave_wallet_badge_small"
-            android:layout_width="16dp"
-            android:layout_height="16dp"
-            android:layout_marginStart="28dp"
-            android:layout_marginTop="6dp"
-            android:gravity="center"
-            android:visibility="invisible"
-            android:background="@drawable/brave_badge_shields_background_small"
-            android:textColor="@android:color/white"
-            android:translationZ="1dp"
-            android:fontFamily="sans-serif-bold"
-            android:textSize="12sp" />
-
-      <org.chromium.chrome.browser.BraveBadge
-            android:id="@+id/brave_wallet_badge_large"
-            android:layout_width="18dp"
-            android:layout_height="16dp"
-            android:layout_marginStart="28dp"
-            android:layout_marginTop="6dp"
-            android:gravity="center"
-            android:visibility="invisible"
-            android:background="@drawable/brave_badge_shields_background_large"
-            android:textColor="@android:color/white"
-            android:translationZ="1dp"
-            android:fontFamily="sans-serif-bold"
-            android:textSize="12sp" />
+      <View
+          android:id="@+id/wallet_notfication_badge"
+          android:layout_width="10dp"
+          android:layout_height="10dp"
+          android:layout_marginTop="7dp"
+          android:layout_marginEnd="6dp"
+          android:layout_gravity="end"
+          android:visibility="gone"
+          android:background="@drawable/brave_rewards_circle"/>
   </FrameLayout>
 
   <FrameLayout android:id="@+id/brave_shields_button_layout"
-      android:layout_width="@dimen/toolbar_button_width"
+      android:layout_width="45dp"
       android:orientation="vertical"
       android:background="@drawable/modern_toolbar_background_grey_end_segment"
       android:layout_marginTop="8dp"
@@ -101,7 +83,7 @@
   </FrameLayout>
 
   <FrameLayout android:id="@+id/brave_rewards_button_layout"
-      android:layout_width="@dimen/toolbar_button_width"
+      android:layout_width="45dp"
       android:orientation="vertical"
       android:layout_marginTop="8dp"
       android:background="@drawable/modern_toolbar_background_grey_end_segment"

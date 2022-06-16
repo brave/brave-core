@@ -20,6 +20,7 @@ namespace ads {
 struct ConfirmationInfo final {
   ConfirmationInfo();
   ConfirmationInfo(const ConfirmationInfo& info);
+  ConfirmationInfo& operator=(const ConfirmationInfo& info);
   ~ConfirmationInfo();
 
   bool operator==(const ConfirmationInfo& rhs) const;

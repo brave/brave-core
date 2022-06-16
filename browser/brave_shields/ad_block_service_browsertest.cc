@@ -15,7 +15,6 @@
 #include "base/memory/raw_ptr.h"
 #include "base/path_service.h"
 #include "base/strings/stringprintf.h"
-#include "base/task/post_task.h"
 #include "base/test/thread_test_helper.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/net/brave_ad_block_tp_network_delegate_helper.h"
@@ -167,6 +166,10 @@ void AdBlockServiceTest::AssertTagExists(const std::string& tag,
       g_brave_browser_process->ad_block_service()->TagExistsForTest(tag);
   ASSERT_EQ(exists_default, expected_exists);
 
+  base::AutoLock lock(g_brave_browser_process->ad_block_service()
+                          ->regional_service_manager()
+                          ->regional_services_lock_);
+
   for (const auto& regional_service :
        g_brave_browser_process->ad_block_service()
            ->regional_service_manager()
@@ -268,6 +271,9 @@ bool AdBlockServiceTest::InstallRegionalAdBlockExtension(
     g_brave_browser_process->ad_block_service()
         ->regional_service_manager()
         ->EnableFilterList(uuid, true);
+    base::AutoLock lock(g_brave_browser_process->ad_block_service()
+                            ->regional_service_manager()
+                            ->regional_services_lock_);
     EXPECT_EQ(g_brave_browser_process->ad_block_service()
                   ->regional_service_manager()
                   ->regional_services_.size(),
@@ -795,6 +801,8 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
     ASSERT_EQ(subscriptions[0].last_update_attempt, base::Time());
     ASSERT_EQ(subscriptions[0].last_successful_update_attempt, base::Time());
     ASSERT_EQ(subscriptions[0].enabled, true);
+    ASSERT_EQ(subscriptions[0].homepage, absl::nullopt);
+    ASSERT_EQ(subscriptions[0].title, absl::nullopt);
   }
 
   // Ensure that the subscription gets update attempts, and ultimately is
@@ -841,6 +849,8 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
     ASSERT_EQ(subscriptions[0].last_successful_update_attempt,
               subscriptions[0].last_update_attempt);
     ASSERT_EQ(subscriptions[0].enabled, false);
+    ASSERT_EQ(subscriptions[0].homepage, "https://example.com/list.txt");
+    ASSERT_EQ(subscriptions[0].title, "Test list");
   }
 
   EXPECT_EQ(true,

@@ -40,6 +40,8 @@ PublicKey::PublicKey(const challenge_bypass_ristretto::PublicKey& public_key)
 
 PublicKey::PublicKey(const PublicKey& other) = default;
 
+PublicKey& PublicKey::operator=(const PublicKey& info) = default;
+
 PublicKey::~PublicKey() = default;
 
 bool PublicKey::operator==(const PublicKey& rhs) const {

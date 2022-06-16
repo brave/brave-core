@@ -40,3 +40,4 @@ const char kShieldsPanelHost[] = "brave-shields.top-chrome";
 const char kSidebarBookmarksHost[] = "sidebar-bookmarks.top-chrome";
 const char kFederatedInternalsURL[] = "brave://federated-internals";
 const char kFederatedInternalsHost[] = "federated-internals";
+const char kContentFiltersPath[] = "shields/filters";

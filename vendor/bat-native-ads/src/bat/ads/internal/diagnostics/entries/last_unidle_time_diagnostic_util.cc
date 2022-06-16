@@ -9,7 +9,7 @@
 #include <utility>
 
 #include "base/time/time.h"
-#include "bat/ads/internal/diagnostics/diagnostics.h"
+#include "bat/ads/internal/diagnostics/diagnostic_manager.h"
 #include "bat/ads/internal/diagnostics/entries/last_unidle_time_diagnostic_entry.h"
 
 namespace ads {
@@ -19,7 +19,8 @@ void SetLastUnIdleTimeDiagnosticEntry() {
       std::make_unique<LastUnIdleTimeDiagnosticEntry>();
   last_unidle_time_diagnostic_entry->SetLastUnIdleTime(base::Time::Now());
 
-  Diagnostics::Get()->SetEntry(std::move(last_unidle_time_diagnostic_entry));
+  DiagnosticManager::Get()->SetEntry(
+      std::move(last_unidle_time_diagnostic_entry));
 }
 
 }  // namespace ads

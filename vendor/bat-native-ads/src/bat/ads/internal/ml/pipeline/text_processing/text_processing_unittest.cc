@@ -11,9 +11,8 @@
 
 #include "base/test/values_test_util.h"
 #include "base/values.h"
-#include "bat/ads/internal/base/unittest_base.h"
-#include "bat/ads/internal/base/unittest_file_util.h"
-#include "bat/ads/internal/base/unittest_util.h"
+#include "bat/ads/internal/base/unittest/unittest_base.h"
+#include "bat/ads/internal/base/unittest/unittest_file_util.h"
 #include "bat/ads/internal/ml/data/data.h"
 #include "bat/ads/internal/ml/data/text_data.h"
 #include "bat/ads/internal/ml/data/vector_data.h"
@@ -58,12 +57,9 @@ TEST_F(BatAdsTextProcessingPipelineTest, BuildSimplePipeline) {
   const std::string kTestString = "Test String";
 
   TransformationVector transformations;
-  LowercaseTransformation lowercase;
-  transformations.push_back(
-      std::make_unique<LowercaseTransformation>(lowercase));
-  HashedNGramsTransformation hashed_ngrams(3, std::vector<int>{1, 2, 3});
-  transformations.push_back(
-      std::make_unique<HashedNGramsTransformation>(hashed_ngrams));
+  transformations.push_back(std::make_unique<LowercaseTransformation>());
+  transformations.push_back(std::make_unique<HashedNGramsTransformation>(
+      3, std::vector<int>{1, 2, 3}));
 
   const std::map<std::string, VectorData> weights = {
       {"class_1", VectorData({1.0, 2.0, 3.0})},
@@ -73,15 +69,16 @@ TEST_F(BatAdsTextProcessingPipelineTest, BuildSimplePipeline) {
   const std::map<std::string, double> biases = {
       {"class_1", 0.0}, {"class_2", 0.0}, {"class_3", 0.0}};
 
-  const model::Linear linear_model(weights, biases);
-  const pipeline::TextProcessing pipeline =
-      pipeline::TextProcessing(transformations, linear_model);
-
   const VectorData data_point_3({1.0, 0.0, 0.0});
 
-  // Act
+  model::Linear linear_model(weights, biases);
   const PredictionMap data_point_3_predictions =
       linear_model.Predict(data_point_3);
+
+  const pipeline::TextProcessing pipeline = pipeline::TextProcessing(
+      std::move(transformations), std::move(linear_model));
+
+  // Act
   const PredictionMap predictions = pipeline.GetTopPredictions(kTestString);
 
   // Assert
@@ -116,7 +113,7 @@ TEST_F(BatAdsTextProcessingPipelineTest, TestLoadFromValue) {
   std::vector<PredictionMap> prediction_maps(train_texts.size());
   for (size_t i = 0; i < train_texts.size(); i++) {
     const std::unique_ptr<Data> text_data =
-        std::make_unique<TextData>(TextData(train_texts[i]));
+        std::make_unique<TextData>(train_texts[i]);
     const PredictionMap prediction_map =
         text_processing_pipeline.Apply(text_data);
     prediction_maps[i] = prediction_map;
@@ -241,10 +238,9 @@ TEST_F(BatAdsTextProcessingPipelineTest, TextCMCCrashTest) {
   // Assert
   ASSERT_GT(predictions.size(), kMinPredictionsSize);
   ASSERT_LT(predictions.size(), kMaxPredictionsSize);
-  ASSERT_TRUE(predictions.count("personal finance-personal finance"));
+  ASSERT_TRUE(predictions.count("crypto-crypto"));
   for (const auto& prediction : predictions) {
-    EXPECT_TRUE(prediction.second <=
-                predictions.at("personal finance-personal finance"));
+    EXPECT_TRUE(prediction.second <= predictions.at("crypto-crypto"));
   }
 }
 

@@ -45,9 +45,11 @@ void BraveWalletRenderFrameObserver::DidCreateScriptContext(
     js_ethereum_provider_.reset();
     return;
   }
+
   // Wallet provider objects won't be generated for third party iframe
-  if (!render_frame()->IsMainFrame() &&
-      render_frame()->GetWebFrame()->IsCrossOriginToOutermostMainFrame()) {
+  if ((!render_frame()->IsMainFrame() &&
+       render_frame()->GetWebFrame()->IsCrossOriginToOutermostMainFrame()) ||
+      !render_frame()->GetWebFrame()->GetDocument().IsSecureContext()) {
     return;
   }
 

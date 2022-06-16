@@ -10,6 +10,7 @@
 #include "bat/ads/internal/account/transactions/transactions_database_table.h"
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/base/logging_util.h"
+#include "bat/ads/internal/deprecated/confirmations/confirmation_state_manager.h"
 #include "bat/ads/internal/legacy_migration/rewards/legacy_rewards_migration_util.h"
 #include "bat/ads/pref_names.h"
 #include "bat/ads/transaction_info_aliases.h"
@@ -19,8 +20,6 @@ namespace ads {
 namespace rewards {
 
 namespace {
-
-constexpr char kFilename[] = "confirmations.json";
 
 void OnFailedToMigrate(InitializeCallback callback) {
   BLOG(0, "Failed to migrate rewards state");
@@ -46,7 +45,7 @@ void Migrate(InitializeCallback callback) {
   BLOG(3, "Loading confirmations state");
 
   AdsClientHelper::Get()->Load(
-      kFilename, [=](const bool success, const std::string& json) {
+      kConfirmationsFilename, [=](const bool success, const std::string& json) {
         if (!success) {
           // Confirmations state does not exist
           OnDidMigrate(callback);

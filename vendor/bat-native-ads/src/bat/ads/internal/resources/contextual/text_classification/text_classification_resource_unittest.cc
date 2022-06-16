@@ -8,9 +8,8 @@
 #include <string>
 #include <utility>
 
-#include "bat/ads/internal/base/unittest_base.h"
-#include "bat/ads/internal/base/unittest_file_util.h"
-#include "bat/ads/internal/base/unittest_util.h"
+#include "bat/ads/internal/base/unittest/unittest_base.h"
+#include "bat/ads/internal/base/unittest/unittest_file_util.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
@@ -18,10 +17,12 @@ using testing::_;
 using testing::Invoke;
 
 namespace {
+
 constexpr char kInvalidJsonResourceFile[] =
     "feibnmjhecfbjpeciancnchbmlobenjn_invalid_json";
 constexpr char kNotExistantResourceFile[] =
     "feibnmjhecfbjpeciancnchbmlobenjn_not_existant";
+
 }  // namespace
 
 namespace ads {
@@ -40,7 +41,7 @@ TEST_F(BatAdsTextClassificationResourceTest, Load) {
 
   // Act
   resource.Load();
-  task_environment()->RunUntilIdle();
+  task_environment_.RunUntilIdle();
 
   // Assert
   EXPECT_TRUE(resource.IsInitialized());
@@ -62,7 +63,7 @@ TEST_F(BatAdsTextClassificationResourceTest, LoadInvalidJsonResource) {
 
   // Act
   resource.Load();
-  task_environment()->RunUntilIdle();
+  task_environment_.RunUntilIdle();
 
   // Assert
   EXPECT_FALSE(resource.IsInitialized());
@@ -84,7 +85,7 @@ TEST_F(BatAdsTextClassificationResourceTest, LoadNotExistantJsonResource) {
 
   // Act
   resource.Load();
-  task_environment()->RunUntilIdle();
+  task_environment_.RunUntilIdle();
 
   // Assert
   EXPECT_FALSE(resource.IsInitialized());
@@ -101,7 +102,7 @@ TEST_F(BatAdsTextClassificationResourceTest, LoadNotInitializedFile) {
 
   // Act
   resource.Load();
-  task_environment()->RunUntilIdle();
+  task_environment_.RunUntilIdle();
 
   // Assert
   EXPECT_FALSE(resource.IsInitialized());

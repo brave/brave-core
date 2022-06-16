@@ -7,8 +7,7 @@
 
 #include "bat/ads/internal/ad_events/ad_event_unittest_util.h"
 #include "bat/ads/internal/ads_client_helper.h"
-#include "bat/ads/internal/base/unittest_base.h"
-#include "bat/ads/internal/base/unittest_util.h"
+#include "bat/ads/internal/base/unittest/unittest_base.h"
 #include "bat/ads/pref_names.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
@@ -37,7 +36,7 @@ TEST_F(BatAdsMinimumWaitTimePermissionRuleTest, AllowAdIfDoesNotExceedCap) {
   // Arrange
   AdsClientHelper::Get()->SetInt64Pref(prefs::kAdsPerHour, 5);
 
-  RecordAdEvent(AdType::kAdNotification, ConfirmationType::kServed);
+  RecordAdEvent(AdType::kNotificationAd, ConfirmationType::kServed);
 
   FastForwardClockBy(base::Minutes(12));
 
@@ -53,7 +52,7 @@ TEST_F(BatAdsMinimumWaitTimePermissionRuleTest, DoNotAllowAdIfExceedsCap) {
   // Arrange
   AdsClientHelper::Get()->SetInt64Pref(prefs::kAdsPerHour, 5);
 
-  RecordAdEvent(AdType::kAdNotification, ConfirmationType::kServed);
+  RecordAdEvent(AdType::kNotificationAd, ConfirmationType::kServed);
 
   FastForwardClockBy(base::Minutes(11));
 

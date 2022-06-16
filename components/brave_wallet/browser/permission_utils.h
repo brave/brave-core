@@ -10,7 +10,9 @@
 #include <string>
 #include <vector>
 
+#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "components/permissions/request_type.h"
+#include "third_party/blink/public/common/permissions/permission_utils.h"
 
 class GURL;
 namespace url {
@@ -75,6 +77,9 @@ bool GetSubRequestOrigin(permissions::RequestType type,
 GURL GetConnectWithSiteWebUIURL(const GURL& webui_base_url,
                                 const std::vector<std::string>& accounts,
                                 const url::Origin& origin);
+
+absl::optional<blink::PermissionType> CoinTypeToPermissionType(
+    mojom::CoinType coin_type);
 
 }  // namespace brave_wallet
 

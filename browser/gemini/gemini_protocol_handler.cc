@@ -11,7 +11,7 @@
 
 #include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
-#include "base/task/post_task.h"
+#include "base/task/thread_pool.h"
 #include "brave/browser/gemini/gemini_service_factory.h"
 #include "brave/components/constants/url_constants.h"
 #include "brave/components/gemini/browser/gemini_service.h"
@@ -21,7 +21,6 @@
 #include "content/public/browser/browser_thread.h"
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/web_contents.h"
-#include "net/base/escape.h"
 #include "net/base/url_util.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 #include "ui/base/page_transition_types.h"
@@ -81,8 +80,8 @@ void HandleGeminiProtocol(const GURL& url,
                           bool has_user_gesture,
                           const absl::optional<url::Origin>& initiator) {
   DCHECK(IsGeminiProtocol(url));
-  base::PostTask(
-      FROM_HERE, {content::BrowserThread::UI},
+  content::GetUIThreadTaskRunner({})->PostTask(
+      FROM_HERE,
       base::BindOnce(&LoadNewTabURL, url, std::move(web_contents_getter),
                      page_transition, has_user_gesture, initiator));
 }

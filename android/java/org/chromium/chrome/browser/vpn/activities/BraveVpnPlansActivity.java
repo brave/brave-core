@@ -91,6 +91,9 @@ public class BraveVpnPlansActivity extends BraveVpnParentActivity {
                 getPackageName().equals(BraveConstants.BRAVE_PRODUCTION_PACKAGE_NAME)
                         ? InAppPurchaseWrapper.RELEASE_YEARLY_SUBSCRIPTION
                         : InAppPurchaseWrapper.NIGHTLY_YEARLY_SUBSCRIPTION);
+        TextView monthlySubscriptionText = findViewById(R.id.monthly_subscription_text);
+        monthlySubscriptionText.setText(
+                String.format(getResources().getString(R.string.monthly_subscription), ""));
 
         if (monthlySkuDetails != null && yearlySkuDetails != null) {
             mMonthlySelectorLayout = findViewById(R.id.monthly_selector_layout);
@@ -136,6 +139,7 @@ public class BraveVpnPlansActivity extends BraveVpnParentActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_brave_vpn, menu);
         MenuItem item = menu.findItem(R.id.restore);
+        item.setVisible(true);
         if (mShouldShowRestoreMenu) {
             mShouldShowRestoreMenu = false;
             item.setVisible(true);
@@ -148,8 +152,6 @@ public class BraveVpnPlansActivity extends BraveVpnParentActivity {
                 mYearlySelectorLayout.setAlpha(0.4f);
                 mYearlySelectorLayout.setOnClickListener(null);
             }
-        } else {
-            item.setVisible(false);
         }
         return true;
     }

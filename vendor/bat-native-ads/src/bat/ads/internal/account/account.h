@@ -20,6 +20,10 @@
 
 namespace ads {
 
+namespace privacy {
+class TokenGeneratorInterface;
+}  // namespace privacy
+
 class AdType;
 class Confirmations;
 class ConfirmationType;
@@ -30,10 +34,6 @@ class Wallet;
 struct IssuersInfo;
 struct WalletInfo;
 
-namespace privacy {
-class TokenGeneratorInterface;
-}  // namespace privacy
-
 class Account final : public ConfirmationsDelegate,
                       public IssuersDelegate,
                       public RedeemUnblindedPaymentTokensDelegate,
@@ -41,38 +41,40 @@ class Account final : public ConfirmationsDelegate,
  public:
   explicit Account(privacy::TokenGeneratorInterface* token_generator);
   ~Account() override;
+  Account(const Account&) = delete;
+  Account& operator=(const Account&) = delete;
 
   void AddObserver(AccountObserver* observer);
   void RemoveObserver(AccountObserver* observer);
 
   void OnPrefChanged(const std::string& path);
 
-  bool SetWallet(const std::string& id, const std::string& seed);
-  WalletInfo GetWallet() const;
+  void SetWallet(const std::string& id, const std::string& seed);
+  const WalletInfo& GetWallet() const;
 
   void MaybeGetIssuers() const;
 
   void Deposit(const std::string& creative_instance_id,
                const AdType& ad_type,
-               const ConfirmationType& confirmation_type);
+               const ConfirmationType& confirmation_type) const;
 
   void GetStatement(StatementCallback callback) const;
 
-  void ProcessClearingCycle();
+  void ProcessClearingCycle() const;
 
  private:
-  void OnEnabledPrefChanged();
+  void OnEnabledPrefChanged() const;
 
   void ProcessDeposit(const std::string& creative_instance_id,
                       const AdType& ad_type,
                       const ConfirmationType& confirmation_type,
                       const double value) const;
 
-  void ProcessUnclearedTransactions();
+  void ProcessUnclearedTransactions() const;
 
-  void TopUpUnblindedTokens();
+  void WalletDidChange(const WalletInfo& wallet) const;
 
-  void Reset();
+  void TopUpUnblindedTokens() const;
 
   void NotifyWalletDidUpdate(const WalletInfo& wallet) const;
   void NotifyWalletDidChange(const WalletInfo& wallet) const;

@@ -30,8 +30,7 @@ class SearchResultAdRendererThrottle : public blink::URLLoaderThrottle {
       const blink::WebURLRequest& request);
 
   SearchResultAdRendererThrottle(
-      mojo::PendingRemote<brave_ads::mojom::BraveAdsHost> brave_ads_remote,
-      std::string creative_instance_id);
+      mojo::PendingRemote<brave_ads::mojom::BraveAdsHost> brave_ads_remote);
   ~SearchResultAdRendererThrottle() override;
 
   SearchResultAdRendererThrottle(const SearchResultAdRendererThrottle&) =
@@ -50,7 +49,6 @@ class SearchResultAdRendererThrottle : public blink::URLLoaderThrottle {
       bool event_triggered);
 
   mojo::PendingRemote<brave_ads::mojom::BraveAdsHost> brave_ads_pending_remote_;
-  std::string creative_instance_id_;
   base::WeakPtrFactory<SearchResultAdRendererThrottle> weak_factory_{this};
 };
 

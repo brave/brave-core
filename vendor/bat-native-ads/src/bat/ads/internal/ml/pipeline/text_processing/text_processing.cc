@@ -10,9 +10,9 @@
 
 #include "base/check.h"
 #include "base/values.h"
+#include "bat/ads/internal/base/strings/string_strip_util.h"
 #include "bat/ads/internal/ml/data/text_data.h"
 #include "bat/ads/internal/ml/data/vector_data.h"
-#include "bat/ads/internal/ml/ml_transformation_util.h"
 #include "bat/ads/internal/ml/pipeline/pipeline_info.h"
 #include "bat/ads/internal/ml/pipeline/pipeline_util.h"
 #include "bat/ads/internal/ml/transformation/hashed_ngrams_transformation.h"
@@ -47,19 +47,19 @@ TextProcessing::TextProcessing() : is_initialized_(false) {}
 
 TextProcessing::~TextProcessing() = default;
 
-TextProcessing::TextProcessing(const TransformationVector& transformations,
-                               const model::Linear& linear_model)
+TextProcessing::TextProcessing(TransformationVector transformations,
+                               model::Linear linear_model)
     : is_initialized_(true) {
-  linear_model_ = linear_model;
-  transformations_ = GetTransformationVectorDeepCopy(transformations);
+  linear_model_ = std::move(linear_model);
+  transformations_ = std::move(transformations);
 }
 
-void TextProcessing::SetInfo(const PipelineInfo& info) {
+void TextProcessing::SetInfo(PipelineInfo info) {
   version_ = info.version;
   timestamp_ = info.timestamp;
   locale_ = info.locale;
-  linear_model_ = info.linear_model;
-  transformations_ = GetTransformationVectorDeepCopy(info.transformations);
+  linear_model_ = std::move(info.linear_model);
+  transformations_ = std::move(info.transformations);
 }
 
 bool TextProcessing::FromValue(base::Value resource_value) {
@@ -67,7 +67,7 @@ bool TextProcessing::FromValue(base::Value resource_value) {
       ParsePipelineValue(std::move(resource_value));
 
   if (pipeline_info.has_value()) {
-    SetInfo(pipeline_info.value());
+    SetInfo(std::move(pipeline_info.value()));
     is_initialized_ = true;
   } else {
     is_initialized_ = false;
@@ -78,29 +78,29 @@ bool TextProcessing::FromValue(base::Value resource_value) {
 
 PredictionMap TextProcessing::Apply(
     const std::unique_ptr<Data>& input_data) const {
-  VectorData vector_data;
-  size_t transformation_count = transformations_.size();
+  const size_t transformation_count = transformations_.size();
 
   if (!transformation_count) {
     DCHECK(input_data->GetType() == DataType::kVector);
-    vector_data = *static_cast<VectorData*>(input_data.get());
-  } else {
-    std::unique_ptr<Data> current_data = transformations_[0]->Apply(input_data);
-    for (size_t i = 1; i < transformation_count; ++i) {
-      current_data = transformations_[i]->Apply(current_data);
-    }
-
-    DCHECK(current_data->GetType() == DataType::kVector);
-    vector_data = *static_cast<VectorData*>(current_data.get());
+    const VectorData* vector_data = static_cast<VectorData*>(input_data.get());
+    return linear_model_.GetTopPredictions(*vector_data);
   }
 
-  return linear_model_.GetTopPredictions(vector_data);
+  std::unique_ptr<Data> current_data = transformations_[0]->Apply(input_data);
+  for (size_t i = 1; i < transformation_count; ++i) {
+    current_data = transformations_[i]->Apply(current_data);
+  }
+
+  DCHECK(current_data->GetType() == DataType::kVector);
+  const VectorData* vector_data = static_cast<VectorData*>(current_data.get());
+  return linear_model_.GetTopPredictions(*vector_data);
 }
 
 const PredictionMap TextProcessing::GetTopPredictions(
     const std::string& html) const {
-  TextData text_data(html);
-  PredictionMap predictions = Apply(std::make_unique<TextData>(text_data));
+  std::string stripped_html = StripNonAlphaCharacters(html);
+  PredictionMap predictions =
+      Apply(std::make_unique<TextData>(std::move(stripped_html)));
   double expected_prob =
       1.0 / std::max(1.0, static_cast<double>(predictions.size()));
   PredictionMap rtn;

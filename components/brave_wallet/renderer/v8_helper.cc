@@ -7,12 +7,12 @@
 
 #include <utility>
 
-#include "base/strings/stringprintf.h"
 #include "gin/converter.h"
 #include "third_party/blink/public/web/web_local_frame.h"
 #include "third_party/blink/public/web/web_script_source.h"
 #include "v8/include/v8-function.h"
 #include "v8/include/v8-microtask-queue.h"
+#include "v8/include/v8-object.h"
 
 namespace brave_wallet {
 
@@ -96,19 +96,16 @@ void ExecuteScript(blink::WebLocalFrame* web_frame, const std::string script) {
       blink::WebScriptSource(blink::WebString::FromUTF8(script)));
 }
 
-void SetProviderNonWritable(blink::WebLocalFrame* web_frame,
-                            const std::string& provider) {
-  const char* provider_str = provider.c_str();
-  const std::string script = base::StringPrintf(
-      R"(;(function() {
-           Object.defineProperty(window, '%s', {
-             value: window.%s,
-             configurable: false,
-             writable: false
-           });
-    })();)",
-      provider_str, provider_str);
-  ExecuteScript(web_frame, script);
+void SetProviderNonWritable(v8::Local<v8::Context> context,
+                            v8::Local<v8::Object> global,
+                            v8::Local<v8::Value> provider_obj,
+                            v8::Local<v8::String> provider_name,
+                            bool is_enumerable) {
+  v8::PropertyDescriptor desc(provider_obj, false);
+  desc.set_configurable(false);
+  if (!is_enumerable)
+    desc.set_enumerable(false);
+  global->DefineProperty(context, provider_name, desc).Check();
 }
 
 }  // namespace brave_wallet

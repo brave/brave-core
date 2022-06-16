@@ -12,6 +12,7 @@
 #include "base/json/json_writer.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/components/skus/browser/skus_utils.h"
+#include "net/base/network_change_notifier.h"
 #include "net/cookies/cookie_inclusion_status.h"
 #include "net/cookies/parsed_cookie.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
@@ -103,7 +104,12 @@ std::string GetSubscriberCredentialFromJson(const std::string& json) {
   return subscriber_credential == nullptr ? ""
                                           : subscriber_credential->GetString();
 }
-
+#if !BUILDFLAG(IS_ANDROID)
+bool IsNetworkAvailable() {
+  return net::NetworkChangeNotifier::GetConnectionType() !=
+         net::NetworkChangeNotifier::CONNECTION_NONE;
+}
+#endif
 }  // namespace
 
 namespace brave_vpn {
@@ -136,6 +142,18 @@ BraveVpnService::BraveVpnService(
   observed_.Observe(GetBraveVPNConnectionAPI());
 
   GetBraveVPNConnectionAPI()->set_target_vpn_entry_name(kBraveVPNEntryName);
+
+  // To get proper connection state, we need to load purchased state.
+  // Connection state will be checked after we confirm that this profile
+  // is purchased user.
+  // However, purchased state loading makes additional network request.
+  // We should not make this network request for fresh user.
+  // To prevent this, we load purchased state at startup only
+  // when profile has cached region list because region list is fetched
+  // and cached only when user purchased at least once.
+  auto* preference = prefs_->FindPreference(prefs::kBraveVPNRegionList);
+  if (preference && !preference->IsDefaultValue())
+    LoadPurchasedState();
 }
 #endif
 
@@ -198,6 +216,11 @@ void BraveVpnService::UpdateAndNotifyConnectionStateChange(
     bool force) {
   // this is a simple state machine for handling connection state
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  // Ignore connection state change request for non purchased user.
+  // This can be happened when user controls vpn via os settings.
+  if (!is_purchased_user())
+    return;
+
   if (connection_state_ == state)
     return;
 #if BUILDFLAG(IS_WIN)
@@ -265,8 +288,9 @@ void BraveVpnService::OnConnectFailed() {
 void BraveVpnService::OnDisconnected() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   VLOG(2) << __func__;
-
-  UpdateAndNotifyConnectionStateChange(ConnectionState::DISCONNECTED);
+  UpdateAndNotifyConnectionStateChange(!IsNetworkAvailable()
+                                           ? ConnectionState::CONNECT_FAILED
+                                           : ConnectionState::DISCONNECTED);
 
   if (needs_connect_) {
     needs_connect_ = false;
@@ -300,6 +324,11 @@ void BraveVpnService::RemoveVPNConnnection() {
 
 void BraveVpnService::Connect() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  if (!IsNetworkAvailable()) {
+    UpdateAndNotifyConnectionStateChange(ConnectionState::CONNECT_FAILED);
+    return;
+  }
+
   if (connection_state_ == ConnectionState::DISCONNECTING ||
       connection_state_ == ConnectionState::CONNECTING) {
     VLOG(2) << __func__ << ": Current state: " << connection_state_

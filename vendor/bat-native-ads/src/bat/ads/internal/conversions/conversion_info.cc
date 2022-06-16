@@ -5,13 +5,15 @@
 
 #include "bat/ads/internal/conversions/conversion_info.h"
 
-#include "bat/ads/internal/base/number_util.h"
+#include "bat/ads/internal/base/numbers/number_util.h"
 
 namespace ads {
 
 ConversionInfo::ConversionInfo() = default;
 
 ConversionInfo::ConversionInfo(const ConversionInfo& info) = default;
+
+ConversionInfo& ConversionInfo::operator=(const ConversionInfo& info) = default;
 
 ConversionInfo::~ConversionInfo() = default;
 

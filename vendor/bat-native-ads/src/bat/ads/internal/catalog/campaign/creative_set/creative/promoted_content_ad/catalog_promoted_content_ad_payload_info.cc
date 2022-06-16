@@ -13,6 +13,10 @@ CatalogPromotedContentAdPayloadInfo::CatalogPromotedContentAdPayloadInfo() =
 CatalogPromotedContentAdPayloadInfo::CatalogPromotedContentAdPayloadInfo(
     const CatalogPromotedContentAdPayloadInfo& info) = default;
 
+CatalogPromotedContentAdPayloadInfo&
+CatalogPromotedContentAdPayloadInfo::operator=(
+    const CatalogPromotedContentAdPayloadInfo& info) = default;
+
 CatalogPromotedContentAdPayloadInfo::~CatalogPromotedContentAdPayloadInfo() =
     default;
 

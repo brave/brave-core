@@ -1,6 +1,5 @@
 import styled from 'styled-components'
-import { ArrowRightIcon } from 'brave-ui/components/icons'
-
+import { ArrowRightIcon, LoaderIcon } from 'brave-ui/components/icons'
 import { WarningBoxIcon } from '../shared-panel-styles'
 
 import {
@@ -179,6 +178,16 @@ export const SectionRow = styled.div`
   height: inherit;
 `
 
+export const SectionColumn = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  width: 100%;
+  height: inherit;
+  margin-bottom: 5px;
+`
+
 export const EditButton = styled(WalletButton)`
   font-family: Poppins;
   font-style: normal;
@@ -261,4 +270,37 @@ export const WarningIcon = styled(WarningBoxIcon)`
   width: 14px;
   height: 14px;
   margin-right: 6px;
+`
+
+export const ConfirmingButton = styled(WalletButton)`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: default;
+  border-radius: 40px;
+  padding: 8px 16px;
+  outline: none;
+  margin: 0px;
+  background-color: ${(p) => p.theme.color.disabled};
+  border: none;
+`
+
+export const ConfirmingButtonText = styled.span`
+  font-style: normal;
+  font-weight: 600;
+  font-size: 13px;
+  line-height: 20px;
+  text-align: center;
+  color: ${(p) => p.theme.color.interactive07};
+  flex: none;
+  order: 1;
+  flex-grow: 0;
+  margin: 0px 8px;
+`
+
+export const LoadIcon = styled(LoaderIcon)`
+  color: ${p => p.theme.color.interactive08};
+  height: 25px;
+  width: 24px;
+  opacity: .4;
 `

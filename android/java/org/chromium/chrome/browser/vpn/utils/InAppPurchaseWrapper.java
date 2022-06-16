@@ -74,6 +74,11 @@ public class InAppPurchaseWrapper {
         return result;
     }
 
+    public boolean isMonthlySubscription(String productId) {
+        return productId.equals(NIGHTLY_MONTHLY_SUBSCRIPTION)
+                || productId.equals(RELEASE_MONTHLY_SUBSCRIPTION);
+    }
+
     public void startBillingServiceConnection(Context context) {
         mBillingClient = BillingClient.newBuilder(context)
                                  .enablePendingPurchases()
@@ -189,14 +194,18 @@ public class InAppPurchaseWrapper {
     }
 
     BillingClientStateListener billingClientStateListener = new BillingClientStateListener() {
+        private int retryCount;
         @Override
         public void onBillingServiceDisconnected() {
-            connectToBillingService();
+            retryCount++;
+            if (retryCount <= 3) {
+                connectToBillingService();
+            }
         }
-
         @Override
         public void onBillingSetupFinished(@NonNull BillingResult billingResult) {
             if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
+                retryCount = 0;
                 querySkuDetailsAsync(NIGHTLY_SUBS_SKUS);
                 querySkuDetailsAsync(RELEASE_SUBS_SKUS);
             }

@@ -14,7 +14,8 @@ class PrefService;
 namespace brave_news {
 namespace p3a {
 
-constexpr char kEverInteractedHistogramName[] = "Brave.Today.HasEverInteracted";
+constexpr char kDaysInMonthUsedCountHistogramName[] =
+    "Brave.Today.DaysInMonthUsedCount";
 constexpr char kWeeklySessionCountHistogramName[] =
     "Brave.Today.WeeklySessionCount";
 constexpr char kWeeklyMaxCardVisitsHistogramName[] =
@@ -29,10 +30,13 @@ constexpr char kDirectFeedsTotalHistogramName[] =
     "Brave.Today.DirectFeedsTotal";
 constexpr char kWeeklyAddedDirectFeedsHistogramName[] =
     "Brave.Today.WeeklyAddedDirectFeedsCount";
+constexpr char kLastUsageTimeHistogramName[] = "Brave.Today.LastUsageTime";
+constexpr char kNewUserReturningHistogramName[] =
+    "Brave.Today.NewUserReturning";
 
-void RecordAtStart(PrefService* prefs);
-void RecordEverInteracted();
-void RecordWeeklySessionCount(PrefService* prefs, bool is_add);
+void RecordAtInit(PrefService* prefs);
+void RecordAtSessionStart(PrefService* prefs);
+
 void RecordWeeklyMaxCardVisitsCount(PrefService* prefs,
                                     uint64_t cards_visited_session_total_count);
 void RecordWeeklyMaxCardViewsCount(PrefService* prefs,
@@ -42,7 +46,6 @@ void RecordWeeklyAddedDirectFeedsCount(PrefService* prefs, int change);
 void RecordDirectFeedsTotal(PrefService* prefs);
 void RecordTotalCardViews(PrefService* prefs,
                           uint64_t cards_viewed_session_total_count);
-void ResetCurrSessionTotalViewsCount(PrefService* prefs);
 void RegisterProfilePrefs(PrefRegistrySimple* registry);
 
 }  // namespace p3a

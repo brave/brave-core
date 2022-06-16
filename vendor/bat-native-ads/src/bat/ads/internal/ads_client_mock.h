@@ -20,6 +20,8 @@ class AdsClientMock : public AdsClient {
  public:
   AdsClientMock();
   ~AdsClientMock() override;
+  AdsClientMock(const AdsClientMock&) = delete;
+  AdsClientMock& operator=(const AdsClientMock&) = delete;
 
   MOCK_CONST_METHOD0(IsNetworkConnectionAvailable, bool());
 
@@ -32,7 +34,7 @@ class AdsClientMock : public AdsClient {
   MOCK_CONST_METHOD0(CanShowBackgroundNotifications, bool());
 
   MOCK_METHOD1(ShowNotification,
-               void(const AdNotificationInfo& ad_notification));
+               void(const NotificationAdInfo& notification_ad));
 
   MOCK_METHOD1(CloseNotification, void(const std::string& uuid));
 

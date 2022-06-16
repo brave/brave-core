@@ -15,6 +15,7 @@ namespace ads {
 struct ADS_EXPORT NewTabPageAdWallpaperInfo final {
   NewTabPageAdWallpaperInfo();
   NewTabPageAdWallpaperInfo(const NewTabPageAdWallpaperInfo& info);
+  NewTabPageAdWallpaperInfo& operator=(const NewTabPageAdWallpaperInfo& info);
   ~NewTabPageAdWallpaperInfo();
 
   GURL image_url;

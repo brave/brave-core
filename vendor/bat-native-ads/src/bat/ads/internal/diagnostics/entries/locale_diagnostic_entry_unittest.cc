@@ -5,8 +5,8 @@
 
 #include "bat/ads/internal/diagnostics/entries/locale_diagnostic_entry.h"
 
-#include "bat/ads/internal/base/unittest_base.h"
-#include "bat/ads/internal/base/unittest_util.h"
+#include "bat/ads/internal/base/unittest/unittest_base.h"
+#include "bat/ads/internal/base/unittest/unittest_mock_util.h"
 #include "bat/ads/internal/diagnostics/diagnostic_entry_types.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds.*

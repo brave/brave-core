@@ -5,9 +5,9 @@
 
 #include "bat/ads/internal/conversions/conversions_database_table.h"
 
-#include "bat/ads/internal/base/http_status_code.h"
-#include "bat/ads/internal/base/unittest_base.h"
-#include "bat/ads/internal/base/unittest_util.h"
+#include "bat/ads/internal/base/net/http/http_status_code.h"
+#include "bat/ads/internal/base/unittest/unittest_base.h"
+#include "bat/ads/internal/base/unittest/unittest_mock_util.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
@@ -22,17 +22,17 @@ class BatAdsConversionsDatabaseTableIntegrationTest : public UnitTestBase {
   void SetUp() override {
     UnitTestBase::SetUpForTesting(/* is_integration_test */ true);
   }
+
+  void SetUpMocks() override {
+    const URLEndpoints endpoints = {
+        {"/v9/catalog", {{net::HTTP_OK, "/catalog.json"}}}};
+    MockUrlRequest(ads_client_mock_, endpoints);
+  }
 };
 
 TEST_F(BatAdsConversionsDatabaseTableIntegrationTest,
        GetConversionsFromCatalogEndpoint) {
   // Arrange
-  const URLEndpoints endpoints = {
-      {"/v9/catalog", {{net::HTTP_OK, "/catalog.json"}}}};
-
-  MockUrlRequest(ads_client_mock_, endpoints);
-
-  InitializeAds();
 
   // Act
 

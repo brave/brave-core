@@ -179,7 +179,7 @@ bool NotificationHelperMac::CanShowBackgroundNotifications() const {
   return true;
 }
 
-bool NotificationHelperMac::ShowMyFirstAdNotification() {
+bool NotificationHelperMac::ShowMyFirstNotificationAd() {
   return false;
 }
 

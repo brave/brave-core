@@ -15,10 +15,6 @@
 
 namespace ads {
 
-namespace targeting {
-struct UserModelInfo;
-}  // namespace targeting
-
 namespace geographic {
 class SubdivisionTargeting;
 }  // namespace geographic
@@ -27,12 +23,14 @@ namespace resource {
 class AntiTargeting;
 }  // namespace resource
 
+namespace targeting {
+struct UserModelInfo;
+}  // namespace targeting
+
 namespace inline_content_ads {
 
 class EligibleAdsBase {
  public:
-  EligibleAdsBase(geographic::SubdivisionTargeting* subdivision_targeting,
-                  resource::AntiTargeting* anti_targeting_resource);
   virtual ~EligibleAdsBase();
 
   virtual void GetForUserModel(
@@ -43,6 +41,9 @@ class EligibleAdsBase {
   void set_last_served_ad(const AdInfo& ad) { last_served_ad_ = ad; }
 
  protected:
+  EligibleAdsBase(geographic::SubdivisionTargeting* subdivision_targeting,
+                  resource::AntiTargeting* anti_targeting_resource);
+
   raw_ptr<geographic::SubdivisionTargeting> subdivision_targeting_ =
       nullptr;  // NOT OWNED
 

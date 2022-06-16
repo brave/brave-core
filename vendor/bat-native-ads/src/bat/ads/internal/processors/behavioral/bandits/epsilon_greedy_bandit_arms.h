@@ -17,6 +17,8 @@ class EpsilonGreedyBanditArms final {
  public:
   EpsilonGreedyBanditArms();
   ~EpsilonGreedyBanditArms();
+  EpsilonGreedyBanditArms(const EpsilonGreedyBanditArms&) = delete;
+  EpsilonGreedyBanditArms& operator=(const EpsilonGreedyBanditArms&) = delete;
 
   static EpsilonGreedyBanditArmMap FromJson(const std::string& json);
   static std::string ToJson(const EpsilonGreedyBanditArmMap& arms);

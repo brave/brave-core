@@ -11,8 +11,8 @@
 #include "bat/ads/ad_type.h"
 #include "bat/ads/confirmation_type.h"
 #include "bat/ads/internal/ad_events/ad_events.h"
-#include "bat/ads/internal/base/platform_helper.h"
-#include "bat/ads/internal/base/time_constraint_util.h"
+#include "bat/ads/internal/base/platform/platform_helper.h"
+#include "bat/ads/internal/base/time/time_constraint_util.h"
 #include "bat/ads/internal/settings/settings.h"
 
 namespace ads {
@@ -33,7 +33,7 @@ bool MinimumWaitTimePermissionRule::ShouldAllow() {
   }
 
   const std::vector<base::Time>& history =
-      GetAdEvents(AdType::kAdNotification, ConfirmationType::kServed);
+      GetAdEvents(AdType::kNotificationAd, ConfirmationType::kServed);
 
   if (!DoesRespectCap(history)) {
     last_message_ = "Ad cannot be shown as minimum wait time has not passed";

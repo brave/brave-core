@@ -8,8 +8,7 @@
 #include <vector>
 
 #include "base/test/scoped_feature_list.h"
-#include "bat/ads/internal/base/unittest_base.h"
-#include "bat/ads/internal/base/unittest_util.h"
+#include "bat/ads/internal/base/unittest/unittest_base.h"
 #include "bat/ads/internal/user_interaction/browsing/user_activity_features.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
@@ -48,8 +47,8 @@ class BatAdsUserActivityPermissionRuleTest : public UnitTestBase {
 TEST_F(BatAdsUserActivityPermissionRuleTest,
        AllowAdIfUserActivityScoreIsEqualToTheThreshold) {
   // Arrange
-  UserActivity::Get()->RecordEvent(UserActivityEventType::kOpenedNewTab);
-  UserActivity::Get()->RecordEvent(UserActivityEventType::kClosedTab);
+  UserActivityManager::Get()->RecordEvent(UserActivityEventType::kOpenedNewTab);
+  UserActivityManager::Get()->RecordEvent(UserActivityEventType::kClosedTab);
 
   // Act
   UserActivityPermissionRule permission_rule;
@@ -62,10 +61,10 @@ TEST_F(BatAdsUserActivityPermissionRuleTest,
 TEST_F(BatAdsUserActivityPermissionRuleTest,
        AllowAdIfUserActivityScoreIsGreaterThanTheThreshold) {
   // Arrange
-  UserActivity::Get()->RecordEvent(UserActivityEventType::kOpenedNewTab);
-  UserActivity::Get()->RecordEvent(
+  UserActivityManager::Get()->RecordEvent(UserActivityEventType::kOpenedNewTab);
+  UserActivityManager::Get()->RecordEvent(
       UserActivityEventType::kTabStartedPlayingMedia);
-  UserActivity::Get()->RecordEvent(UserActivityEventType::kClosedTab);
+  UserActivityManager::Get()->RecordEvent(UserActivityEventType::kClosedTab);
 
   // Act
   UserActivityPermissionRule permission_rule;
@@ -78,7 +77,7 @@ TEST_F(BatAdsUserActivityPermissionRuleTest,
 TEST_F(BatAdsUserActivityPermissionRuleTest,
        DoNotAllowAdIfUserActivityScoreIsLessThanTheThreshold) {
   // Arrange
-  UserActivity::Get()->RecordEvent(UserActivityEventType::kOpenedNewTab);
+  UserActivityManager::Get()->RecordEvent(UserActivityEventType::kOpenedNewTab);
 
   // Act
   UserActivityPermissionRule permission_rule;

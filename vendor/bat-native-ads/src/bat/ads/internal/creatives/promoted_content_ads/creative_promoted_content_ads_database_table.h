@@ -43,6 +43,9 @@ class CreativePromotedContentAds final : public TableInterface {
  public:
   CreativePromotedContentAds();
   ~CreativePromotedContentAds() override;
+  CreativePromotedContentAds(const CreativePromotedContentAds&) = delete;
+  CreativePromotedContentAds& operator=(const CreativePromotedContentAds&) =
+      delete;
 
   void Save(const CreativePromotedContentAdList& creative_promoted_content_ads,
             ResultCallback callback);

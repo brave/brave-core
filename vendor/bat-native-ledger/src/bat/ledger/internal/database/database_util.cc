@@ -28,8 +28,7 @@ void BindNull(
 
   auto binding = type::DBCommandBinding::New();
   binding->index = index;
-  binding->value = type::DBValue::New();
-  binding->value->set_null_value(0);
+  binding->value = type::DBValue::NewNullValue(0);
   command->bindings.push_back(std::move(binding));
 }
 
@@ -43,8 +42,7 @@ void BindInt(
 
   auto binding = type::DBCommandBinding::New();
   binding->index = index;
-  binding->value = type::DBValue::New();
-  binding->value->set_int_value(value);
+  binding->value = type::DBValue::NewIntValue(value);
   command->bindings.push_back(std::move(binding));
 }
 
@@ -58,8 +56,7 @@ void BindInt64(
 
   auto binding = type::DBCommandBinding::New();
   binding->index = index;
-  binding->value = type::DBValue::New();
-  binding->value->set_int64_value(value);
+  binding->value = type::DBValue::NewInt64Value(value);
   command->bindings.push_back(std::move(binding));
 }
 
@@ -73,8 +70,7 @@ void BindDouble(
 
   auto binding = type::DBCommandBinding::New();
   binding->index = index;
-  binding->value = type::DBValue::New();
-  binding->value->set_double_value(value);
+  binding->value = type::DBValue::NewDoubleValue(value);
   command->bindings.push_back(std::move(binding));
 }
 
@@ -88,8 +84,7 @@ void BindBool(
 
   auto binding = type::DBCommandBinding::New();
   binding->index = index;
-  binding->value = type::DBValue::New();
-  binding->value->set_bool_value(value);
+  binding->value = type::DBValue::NewBoolValue(value);
   command->bindings.push_back(std::move(binding));
 }
 
@@ -103,8 +98,7 @@ void BindString(
 
   auto binding = type::DBCommandBinding::New();
   binding->index = index;
-  binding->value = type::DBValue::New();
-  binding->value->set_string_value(value);
+  binding->value = type::DBValue::NewStringValue(value);
   command->bindings.push_back(std::move(binding));
 }
 
@@ -133,7 +127,7 @@ int GetIntColumn(type::DBRecord* record, const int index) {
     return 0;
   }
 
-  if (record->fields.at(index)->which() != type::DBValue::Tag::INT_VALUE) {
+  if (!record->fields.at(index)->is_int_value()) {
     DCHECK(false);
     return 0;
   }
@@ -146,7 +140,7 @@ int64_t GetInt64Column(type::DBRecord* record, const int index) {
     return 0;
   }
 
-  if (record->fields.at(index)->which() != type::DBValue::Tag::INT64_VALUE) {
+  if (!record->fields.at(index)->is_int64_value()) {
     DCHECK(false);
     return 0;
   }
@@ -159,7 +153,7 @@ double GetDoubleColumn(type::DBRecord* record, const int index) {
     return 0.0;
   }
 
-  if (record->fields.at(index)->which() != type::DBValue::Tag::DOUBLE_VALUE) {
+  if (!record->fields.at(index)->is_double_value()) {
     DCHECK(false);
     return 0.0;
   }
@@ -172,7 +166,7 @@ bool GetBoolColumn(type::DBRecord* record, const int index) {
     return false;
   }
 
-  if (record->fields.at(index)->which() != type::DBValue::Tag::BOOL_VALUE) {
+  if (!record->fields.at(index)->is_bool_value()) {
     DCHECK(false);
     return false;
   }
@@ -185,7 +179,7 @@ std::string GetStringColumn(type::DBRecord* record, const int index) {
     return "";
   }
 
-  if (record->fields.at(index)->which() != type::DBValue::Tag::STRING_VALUE) {
+  if (!record->fields.at(index)->is_string_value()) {
     DCHECK(false);
     return "";
   }

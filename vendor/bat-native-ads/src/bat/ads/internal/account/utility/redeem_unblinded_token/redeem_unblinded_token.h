@@ -13,16 +13,18 @@
 
 namespace ads {
 
-struct ConfirmationInfo;
-
 namespace privacy {
 struct UnblindedPaymentTokenInfo;
 }  // namespace privacy
+
+struct ConfirmationInfo;
 
 class RedeemUnblindedToken final {
  public:
   RedeemUnblindedToken();
   ~RedeemUnblindedToken();
+  RedeemUnblindedToken(const RedeemUnblindedToken&) = delete;
+  RedeemUnblindedToken& operator=(const RedeemUnblindedToken&) = delete;
 
   void set_delegate(RedeemUnblindedTokenDelegate* delegate) {
     DCHECK_EQ(delegate_, nullptr);

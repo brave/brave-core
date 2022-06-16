@@ -40,11 +40,6 @@ export const ReasonDesc = styled.p`
   padding-bottom: 24px;
 `
 
-export const IconBox = styled.div`
-  width: 62px;
-  height: 62px;
-`
-
 export const ActionArea = styled.div`
   width: 100%;
   display: grid;
@@ -53,21 +48,5 @@ export const ActionArea = styled.div`
     &:first-child {
       margin-bottom: 10px;
     }
-  }
-`
-
-export const ButtonText = styled.button`
-  --border-color: transparent;
-  color: ${(p) => p.theme.color.interactive05};
-  font-family: ${(p) => p.theme.fontFamily.heading};
-  font-size: 13px;
-  font-weight: 600;
-  padding: 13px 4px;
-  background: transparent;
-  cursor: pointer;
-  border: 2px solid var(--border-color);
-
-  &:focus-visible {
-    --border-color: ${(p) => p.theme.color.focusBorder};
   }
 `

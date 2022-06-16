@@ -14,14 +14,14 @@
 #include "bat/ads/internal/account/utility/redeem_unblinded_payment_tokens/redeem_unblinded_payment_tokens_url_request_builder.h"
 #include "bat/ads/internal/account/utility/redeem_unblinded_payment_tokens/redeem_unblinded_payment_tokens_user_data_builder.h"
 #include "bat/ads/internal/ads_client_helper.h"
-#include "bat/ads/internal/base/http_status_code.h"
 #include "bat/ads/internal/base/logging_util.h"
-#include "bat/ads/internal/base/time_formatting_util.h"
-#include "bat/ads/internal/deprecated/confirmations/confirmations_state.h"
+#include "bat/ads/internal/base/net/http/http_status_code.h"
+#include "bat/ads/internal/base/time/time_formatting_util.h"
+#include "bat/ads/internal/base/url/url_request_string_util.h"
+#include "bat/ads/internal/base/url/url_response_string_util.h"
+#include "bat/ads/internal/deprecated/confirmations/confirmation_state_manager.h"
 #include "bat/ads/internal/privacy/tokens/unblinded_payment_tokens/unblinded_payment_token_info.h"
 #include "bat/ads/internal/privacy/tokens/unblinded_payment_tokens/unblinded_payment_tokens.h"
-#include "bat/ads/internal/server/url/url_request_string_util.h"
-#include "bat/ads/internal/server/url/url_response_string_util.h"
 #include "bat/ads/pref_names.h"
 #include "brave_base/random.h"
 
@@ -62,13 +62,12 @@ void RedeemUnblindedPaymentTokens::MaybeRedeemAfterDelay(
 
   wallet_ = wallet;
 
-  const base::TimeDelta delay = CalculateTokenRedemptionDelay();
+  const base::Time redeem_at =
+      timer_.Start(FROM_HERE, CalculateTokenRedemptionDelay(),
+                   base::BindOnce(&RedeemUnblindedPaymentTokens::Redeem,
+                                  base::Unretained(this)));
 
-  const base::Time time =
-      timer_.Start(delay, base::BindOnce(&RedeemUnblindedPaymentTokens::Redeem,
-                                         base::Unretained(this)));
-
-  BLOG(1, "Redeem unblinded payment tokens " << FriendlyDateAndTime(time));
+  BLOG(1, "Redeem unblinded payment tokens " << FriendlyDateAndTime(redeem_at));
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -78,7 +77,9 @@ void RedeemUnblindedPaymentTokens::Redeem() {
 
   BLOG(1, "RedeemUnblindedPaymentTokens");
 
-  if (ConfirmationsState::Get()->get_unblinded_payment_tokens()->IsEmpty()) {
+  if (ConfirmationStateManager::Get()
+          ->get_unblinded_payment_tokens()
+          ->IsEmpty()) {
     BLOG(1, "No unblinded payment tokens to redeem");
 
     ScheduleNextTokenRedemption();
@@ -90,7 +91,9 @@ void RedeemUnblindedPaymentTokens::Redeem() {
   is_processing_ = true;
 
   const privacy::UnblindedPaymentTokenList& unblinded_payment_tokens =
-      ConfirmationsState::Get()->get_unblinded_payment_tokens()->GetAllTokens();
+      ConfirmationStateManager::Get()
+          ->get_unblinded_payment_tokens()
+          ->GetAllTokens();
 
   RedeemUnblindedPaymentTokensUserDataBuilder user_data_builder(
       unblinded_payment_tokens);
@@ -116,7 +119,7 @@ void RedeemUnblindedPaymentTokens::OnRedeem(
   BLOG(6, UrlResponseToString(url_response));
   BLOG(7, UrlResponseHeadersToString(url_response));
 
-  if (url_response.status_code == net::HTTP_UPGRADE_REQUIRED) {
+  if (url_response.status_code == net::kHttpUpgradeRequired) {
     BLOG(1,
          "Failed to redeem unblinded payment token as a browser upgrade is "
          "required");
@@ -137,9 +140,9 @@ void RedeemUnblindedPaymentTokens::OnDidRedeemUnblindedPaymentTokens(
 
   retry_timer_.Stop();
 
-  ConfirmationsState::Get()->get_unblinded_payment_tokens()->RemoveTokens(
+  ConfirmationStateManager::Get()->get_unblinded_payment_tokens()->RemoveTokens(
       unblinded_payment_tokens);
-  ConfirmationsState::Get()->Save();
+  ConfirmationStateManager::Get()->Save();
 
   if (delegate_) {
     delegate_->OnDidRedeemUnblindedPaymentTokens(unblinded_payment_tokens);
@@ -170,8 +173,9 @@ void RedeemUnblindedPaymentTokens::ScheduleNextTokenRedemption() {
 
 void RedeemUnblindedPaymentTokens::Retry() {
   const base::Time retry_at = retry_timer_.StartWithPrivacy(
-      kRetryAfter, base::BindOnce(&RedeemUnblindedPaymentTokens::OnRetry,
-                                  base::Unretained(this)));
+      FROM_HERE, kRetryAfter,
+      base::BindOnce(&RedeemUnblindedPaymentTokens::OnRetry,
+                     base::Unretained(this)));
 
   if (delegate_) {
     delegate_->OnWillRetryRedeemingUnblindedPaymentTokens(retry_at);

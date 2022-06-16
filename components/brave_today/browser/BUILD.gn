@@ -36,7 +36,7 @@ static_library("browser") {
     "//brave/components/brave_today/common:mojom",
     "//brave/components/l10n/browser",
     "//brave/components/l10n/common",
-    "//brave/components/weekly_storage",
+    "//brave/components/time_period_storage",
     "//components/history/core/browser",
     "//components/keyed_service/core",
     "//components/prefs",

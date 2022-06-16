@@ -5,28 +5,21 @@
 
 #include "bat/ads/internal/ml/data/text_data.h"
 
+#include <utility>
+
 namespace ads {
 namespace ml {
 
 TextData::TextData() : Data(DataType::kText) {}
 
-TextData::TextData(const TextData& text_data) : Data(DataType::kText) {
-  text_ = text_data.GetText();
-}
+TextData::TextData(std::string text)
+    : Data(DataType::kText), text_(std::move(text)) {}
 
-TextData::TextData(const std::string& text)
-    : Data(DataType::kText), text_(text) {}
-
-std::string TextData::GetText() const {
+const std::string& TextData::GetText() const {
   return text_;
 }
 
 TextData::~TextData() = default;
-
-TextData& TextData::operator=(const TextData& text_data) {
-  text_ = text_data.GetText();
-  return *this;
-}
 
 }  // namespace ml
 }  // namespace ads

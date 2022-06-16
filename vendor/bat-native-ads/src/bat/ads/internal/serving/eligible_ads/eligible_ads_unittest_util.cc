@@ -7,15 +7,15 @@
 
 #include "bat/ads/ad_type.h"
 #include "bat/ads/internal/ad_events/ad_events_database_table_unittest_util.h"
-#include "bat/ads/internal/deprecated/client/client.h"
+#include "bat/ads/internal/deprecated/client/client_state_manager.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace ads {
 
 void ResetEligibleAds(const AdType& type) {
-  Client::Get()->ResetAllSeenAdsForType(type);
+  ClientStateManager::Get()->ResetAllSeenAdsForType(type);
 
-  Client::Get()->ResetAllSeenAdvertisersForType(type);
+  ClientStateManager::Get()->ResetAllSeenAdvertisersForType(type);
 
   database::table::ad_events::Reset(
       [](const bool success) { ASSERT_TRUE(success); });

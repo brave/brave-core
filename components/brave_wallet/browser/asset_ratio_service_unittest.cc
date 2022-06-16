@@ -39,16 +39,6 @@ void OnGetPriceHistory(
   *callback_run = true;
 }
 
-void OnGetEstimatedTime(bool* callback_run,
-                        bool expected_success,
-                        const std::string& expected_result,
-                        bool success,
-                        const std::string& result) {
-  EXPECT_EQ(expected_success, success);
-  EXPECT_EQ(expected_result, result);
-  *callback_run = true;
-}
-
 }  // namespace
 
 namespace brave_wallet {
@@ -282,56 +272,6 @@ TEST_F(AssetRatioServiceUnitTest, GetPriceHistoryUnexpectedResponse) {
       base::BindOnce(&OnGetPriceHistory, &callback_run, false,
                      std::move(expected_price_history_response)));
 
-  base::RunLoop().RunUntilIdle();
-  EXPECT_TRUE(callback_run);
-}
-
-TEST_F(AssetRatioServiceUnitTest, GetEstimatedTime) {
-  SetInterceptor(R"(
-    {
-      "payload": {
-        "status": "1",
-        "message": "",
-        "result": "3615"
-      },
-      "lastUpdated": "2021-09-22T21:45:40.015Z"
-    }
-  )");
-
-  bool callback_run = false;
-  asset_ratio_service_->GetEstimatedTime(
-      "2000000000",
-      base::BindOnce(&OnGetEstimatedTime, &callback_run, true, "3615"));
-  base::RunLoop().RunUntilIdle();
-  EXPECT_TRUE(callback_run);
-}
-
-TEST_F(AssetRatioServiceUnitTest, GetEstimatedTimeEmptyResult) {
-  SetInterceptor(R"(
-    {
-      "payload": {
-        "status": "1",
-        "message": "",
-        "result": ""
-      },
-      "lastUpdated": "2021-09-22T21:45:40.015Z"
-    }
-  )");
-
-  bool callback_run = false;
-  asset_ratio_service_->GetEstimatedTime(
-      "2000000000",
-      base::BindOnce(&OnGetEstimatedTime, &callback_run, false, ""));
-  base::RunLoop().RunUntilIdle();
-  EXPECT_TRUE(callback_run);
-}
-
-TEST_F(AssetRatioServiceUnitTest, GetEstimatedTimeServerError) {
-  SetErrorInterceptor("error");
-  bool callback_run = false;
-  asset_ratio_service_->GetEstimatedTime(
-      "2000000000",
-      base::BindOnce(&OnGetEstimatedTime, &callback_run, false, ""));
   base::RunLoop().RunUntilIdle();
   EXPECT_TRUE(callback_run);
 }

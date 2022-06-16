@@ -19,6 +19,8 @@ class SearchResultAd final : public SearchResultAdObserver {
  public:
   SearchResultAd();
   ~SearchResultAd() override;
+  SearchResultAd(const SearchResultAd&) = delete;
+  SearchResultAd& operator=(const SearchResultAd&) = delete;
 
   void AddObserver(SearchResultAdObserver* observer);
   void RemoveObserver(SearchResultAdObserver* observer);

@@ -9,6 +9,7 @@ import ConnectedHeader from './connected-header'
 import WelcomePanel from './welcome-panel'
 import Panel from './panel'
 import PanelHeader from './panel-header'
+import { PanelHeaderSlim } from './panel-header-slim'
 import SignPanel from './sign-panel'
 import AllowAddChangeNetworkPanel from './allow-add-change-network-panel'
 import ConfirmTransactionPanel from './confirm-transaction-panel'
@@ -38,6 +39,7 @@ export {
   ConnectedHeader,
   Panel,
   PanelHeader,
+  PanelHeaderSlim,
   WelcomePanel,
   SignPanel,
   AllowAddChangeNetworkPanel,

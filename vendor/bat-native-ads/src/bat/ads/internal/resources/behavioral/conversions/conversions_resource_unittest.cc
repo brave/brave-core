@@ -5,8 +5,8 @@
 
 #include "bat/ads/internal/resources/behavioral/conversions/conversions_resource.h"
 
-#include "bat/ads/internal/base/unittest_base.h"
-#include "bat/ads/internal/base/unittest_util.h"
+#include "bat/ads/internal/base/unittest/unittest_base.h"
+#include "bat/ads/internal/resources/behavioral/conversions/conversions_info.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
@@ -26,7 +26,7 @@ TEST_F(BatAdsConversionsResourceTest, Load) {
 
   // Act
   resource.Load();
-  task_environment()->RunUntilIdle();
+  task_environment_.RunUntilIdle();
 
   // Assert
   const bool is_initialized = resource.IsInitialized();
@@ -37,7 +37,7 @@ TEST_F(BatAdsConversionsResourceTest, Get) {
   // Arrange
   Conversions resource;
   resource.Load();
-  task_environment()->RunUntilIdle();
+  task_environment_.RunUntilIdle();
 
   // Act
   ConversionIdPatternMap conversion_id_patterns =

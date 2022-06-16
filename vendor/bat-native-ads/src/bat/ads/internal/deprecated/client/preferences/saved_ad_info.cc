@@ -14,6 +14,8 @@ SavedAdInfo::SavedAdInfo() = default;
 
 SavedAdInfo::SavedAdInfo(const SavedAdInfo& ad) = default;
 
+SavedAdInfo& SavedAdInfo::operator=(const SavedAdInfo& info) = default;
+
 SavedAdInfo::~SavedAdInfo() = default;
 
 std::string SavedAdInfo::ToJson() const {

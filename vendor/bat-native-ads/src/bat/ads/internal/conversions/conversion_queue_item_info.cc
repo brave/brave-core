@@ -5,13 +5,16 @@
 
 #include "bat/ads/internal/conversions/conversion_queue_item_info.h"
 
-#include "bat/ads/internal/base/number_util.h"
+#include "bat/ads/internal/base/numbers/number_util.h"
 
 namespace ads {
 
 ConversionQueueItemInfo::ConversionQueueItemInfo() = default;
 
 ConversionQueueItemInfo::ConversionQueueItemInfo(
+    const ConversionQueueItemInfo& info) = default;
+
+ConversionQueueItemInfo& ConversionQueueItemInfo::operator=(
     const ConversionQueueItemInfo& info) = default;
 
 ConversionQueueItemInfo::~ConversionQueueItemInfo() = default;

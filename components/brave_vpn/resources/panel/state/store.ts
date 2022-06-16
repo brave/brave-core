@@ -27,6 +27,9 @@ const observer = {
       case PurchasedState.PURCHASED:
         store.dispatch(Actions.purchaseConfirmed())
         break
+      case PurchasedState.FAILED:
+        store.dispatch(Actions.purchaseFailed())
+        break
       case PurchasedState.NOT_PURCHASED:
         store.dispatch(Actions.showSellView())
         break

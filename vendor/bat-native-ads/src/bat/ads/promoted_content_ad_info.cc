@@ -15,6 +15,9 @@ PromotedContentAdInfo::PromotedContentAdInfo() = default;
 PromotedContentAdInfo::PromotedContentAdInfo(
     const PromotedContentAdInfo& info) = default;
 
+PromotedContentAdInfo& PromotedContentAdInfo::operator=(
+    const PromotedContentAdInfo& info) = default;
+
 PromotedContentAdInfo::~PromotedContentAdInfo() = default;
 
 bool PromotedContentAdInfo::IsValid() const {

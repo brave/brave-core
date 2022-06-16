@@ -258,14 +258,14 @@ pub fn extract_dom<S: ::std::hash::BuildHasher>(
 
     // Calls html5ever::serialize() with IncludeNode for us.
     let mut content: String = match top_candidate.as_element() {
-        Some(x) if x.name.local == local_name!("span") => {
-            let name = QualName::new(None, ns!(), local_name!("div"));
-            let div = dom.create_element(name, vec![], ElementFlags::default());
-            dom.reparent_children(&top_candidate, &div);
+        Some(x) if x.name.local != local_name!("body") => {
+            let name = QualName::new(None, ns!(), local_name!("body"));
+            let body = dom.create_element(name, vec![], ElementFlags::default());
+            dom.reparent_children(&top_candidate, &body);
 
             // Our CSS formats based on id="article".
-            dom::set_attr("id", "article", div.clone(), true);
-            div.to_string()
+            dom::set_attr("id", "article", body.clone(), true);
+            body.to_string()
         }
         _ => top_candidate.to_string(),
     };

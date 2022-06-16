@@ -20,6 +20,7 @@
 #include "brave/components/brave_wallet/browser/solana_account_meta.h"
 #include "brave/components/brave_wallet/browser/solana_instruction.h"
 #include "brave/components/brave_wallet/common/brave_wallet_constants.h"
+#include "brave/components/brave_wallet/common/brave_wallet_types.h"
 #include "brave/components/brave_wallet/common/features.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
@@ -231,6 +232,77 @@ TEST_F(SolanaTransactionUnitTest, GetSignedTransaction) {
   EXPECT_TRUE(transaction.GetSignedTransaction(keyring_service()).empty());
 }
 
+TEST_F(SolanaTransactionUnitTest, FromSignedTransactionBytes) {
+  EXPECT_FALSE(
+      SolanaTransaction::FromSignedTransactionBytes(std::vector<uint8_t>()));
+  // size exceeds kSolanaMaxTxSize
+  EXPECT_FALSE(SolanaTransaction::FromSignedTransactionBytes(
+      std::vector<uint8_t>(1234, 1)));
+
+  // Data from SolanaTransactionUnitTest.GetSignedTransaction
+  const std::vector<uint8_t> valid_signed_tx_with_two_signer(
+      {2,   204, 127, 175, 133, 20,  97,  41,  39,  106, 79,  38,  41,  221,
+       89,  38,  223, 218, 63,  117, 68,  237, 45,  169, 94,  53,  56,  233,
+       159, 107, 110, 171, 152, 241, 104, 11,  121, 164, 73,  210, 252, 42,
+       235, 214, 82,  107, 225, 218, 70,  128, 175, 10,  17,  45,  190, 13,
+       100, 169, 164, 104, 207, 112, 145, 133, 2,   54,  115, 88,  109, 108,
+       123, 97,  39,  185, 100, 244, 248, 224, 182, 51,  40,  54,  151, 223,
+       15,  86,  126, 161, 53,  72,  107, 159, 23,  72,  82,  18,  31,  99,
+       52,  175, 135, 38,  202, 71,  215, 64,  171, 122, 99,  178, 217, 144,
+       109, 88,  75,  198, 137, 92,  222, 109, 229, 52,  138, 101, 182, 42,
+       134, 216, 4,   2,   0,   1,   3,   161, 51,  89,  91,  115, 210, 217,
+       212, 76,  159, 171, 200, 40,  150, 157, 70,  197, 71,  24,  44,  209,
+       108, 143, 4,   58,  251, 215, 62,  201, 172, 159, 197, 255, 224, 228,
+       245, 94,  238, 23,  132, 206, 40,  82,  249, 219, 203, 103, 158, 110,
+       219, 93,  249, 143, 134, 207, 172, 179, 76,  67,  6,   169, 164, 149,
+       38,  0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,
+       0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,
+       0,   0,   0,   0,   0,   131, 191, 83,  201, 108, 193, 222, 255, 176,
+       67,  136, 209, 219, 42,  6,   169, 240, 137, 142, 185, 169, 6,   17,
+       87,  123, 6,   42,  55,  162, 64,  120, 91,  1,   2,   2,   0,   1,
+       12,  2,   0,   0,   0,   128, 150, 152, 0,   0,   0,   0,   0});
+  const std::vector<uint8_t> signatures(
+      {204, 127, 175, 133, 20,  97,  41,  39,  106, 79,  38,  41,  221,
+       89,  38,  223, 218, 63,  117, 68,  237, 45,  169, 94,  53,  56,
+       233, 159, 107, 110, 171, 152, 241, 104, 11,  121, 164, 73,  210,
+       252, 42,  235, 214, 82,  107, 225, 218, 70,  128, 175, 10,  17,
+       45,  190, 13,  100, 169, 164, 104, 207, 112, 145, 133, 2,   54,
+       115, 88,  109, 108, 123, 97,  39,  185, 100, 244, 248, 224, 182,
+       51,  40,  54,  151, 223, 15,  86,  126, 161, 53,  72,  107, 159,
+       23,  72,  82,  18,  31,  99,  52,  175, 135, 38,  202, 71,  215,
+       64,  171, 122, 99,  178, 217, 144, 109, 88,  75,  198, 137, 92,
+       222, 109, 229, 52,  138, 101, 182, 42,  134, 216, 4});
+
+  for (size_t i = 1; i < valid_signed_tx_with_two_signer.size(); ++i) {
+    EXPECT_FALSE(SolanaTransaction::FromSignedTransactionBytes(
+        std::vector<uint8_t>(valid_signed_tx_with_two_signer.begin() + i,
+                             valid_signed_tx_with_two_signer.end())));
+  }
+
+  std::string from_account = "BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8";
+  std::string to_account = "JDqrvDz8d8tFCADashbUKQDKfJZFobNy13ugN65t1wvV";
+  std::string recent_blockhash = "9sHcv6xwn9YkB8nxTUGKDwPwNnmqVp5oAXxU8Fdkm4J6";
+  uint64_t last_valid_block_height = 0;
+  auto instruction = SolanaInstruction(
+      // Program ID
+      kSolanaSystemProgramId,
+      // Accounts
+      {SolanaAccountMeta(from_account, true, true),
+       SolanaAccountMeta(to_account, true, true)},
+      // Data
+      {2, 0, 0, 0, 128, 150, 152, 0, 0, 0, 0, 0});
+  auto transaction = SolanaTransaction(
+      recent_blockhash, last_valid_block_height, from_account, {instruction});
+
+  auto result = SolanaTransaction::FromSignedTransactionBytes(
+      valid_signed_tx_with_two_signer);
+  ASSERT_TRUE(result);
+  // original transaction doesn't have signature
+  EXPECT_NE(*result, transaction);
+  EXPECT_EQ(*result->message(), *transaction.message());
+  EXPECT_EQ(result->signatures(), signatures);
+}
+
 TEST_F(SolanaTransactionUnitTest, FromToSolanaTxData) {
   std::string from_account = "BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8";
   std::string to_account = "JDqrvDz8d8tFCADashbUKQDKfJZFobNy13ugN65t1wvV";
@@ -250,7 +322,12 @@ TEST_F(SolanaTransactionUnitTest, FromToSolanaTxData) {
   transaction.set_to_wallet_address(to_account);
   transaction.set_lamports(10000000u);
   transaction.set_tx_type(mojom::TransactionType::SolanaSystemTransfer);
+  transaction.set_send_options(
+      SolanaTransaction::SendOptions(1, "confirmed", true));
 
+  auto mojom_send_options = mojom::SolanaSendTransactionOptions::New(
+      mojom::OptionalMaxRetries::New(1), "confirmed",
+      mojom::OptionalSkipPreflight::New(true));
   auto solana_tx_data = transaction.ToSolanaTxData();
   ASSERT_TRUE(solana_tx_data);
   EXPECT_EQ(solana_tx_data->recent_blockhash, recent_blockhash);
@@ -262,6 +339,7 @@ TEST_F(SolanaTransactionUnitTest, FromToSolanaTxData) {
   EXPECT_EQ(solana_tx_data->amount, 0u);
   EXPECT_EQ(solana_tx_data->tx_type,
             mojom::TransactionType::SolanaSystemTransfer);
+  EXPECT_EQ(solana_tx_data->send_options, mojom_send_options);
 
   ASSERT_EQ(solana_tx_data->instructions.size(), 1u);
   EXPECT_EQ(solana_tx_data->instructions[0]->program_id,
@@ -303,6 +381,8 @@ TEST_F(SolanaTransactionUnitTest, FromToValue) {
   transaction.set_to_wallet_address(to_account);
   transaction.set_lamports(10000000u);
   transaction.set_tx_type(mojom::TransactionType::SolanaSystemTransfer);
+  transaction.set_send_options(
+      SolanaTransaction::SendOptions(1, "confirmed", true));
 
   base::Value value = transaction.ToValue();
   auto expect_tx_value = base::JSONReader::Read(R"(
@@ -334,7 +414,12 @@ TEST_F(SolanaTransactionUnitTest, FromToValue) {
         "spl_token_mint_address": "",
         "lamports": "10000000",
         "amount": "0",
-        "tx_type": 6
+        "tx_type": 6,
+        "send_options": {
+          "maxRetries": "1",
+          "preflightCommitment": "confirmed",
+          "skipPreflight": true
+        }
       }
   )");
 
@@ -354,21 +439,43 @@ TEST_F(SolanaTransactionUnitTest, FromToValue) {
   }
 }
 
+TEST_F(SolanaTransactionUnitTest, SendOptionsFromValueMaxRetries) {
+  auto value =
+      base::JSONReader::Read(R"({"maxRetries": "18446744073709551615"})");
+  auto options = SolanaTransaction::SendOptions::FromValue(std::move(value));
+  EXPECT_EQ(options->max_retries, UINT64_MAX);
+  value = base::JSONReader::Read(R"({"maxRetries": 9007199254740991})");
+  options = SolanaTransaction::SendOptions::FromValue(std::move(value));
+  EXPECT_EQ(options->max_retries, kMaxSafeIntegerUint64);
+
+  // Unexpected type or no maxRetries.
+  value = base::JSONReader::Read(R"({"maxRetries": {}})");
+  options = SolanaTransaction::SendOptions::FromValue(std::move(value));
+  EXPECT_FALSE(options->max_retries);
+  value = base::JSONReader::Read(R"({})");
+  options = SolanaTransaction::SendOptions::FromValue(std::move(value));
+  EXPECT_FALSE(options->max_retries);
+}
+
 TEST_F(SolanaTransactionUnitTest, SetTxType) {
   auto tx = SolanaTransaction(
       "", 0, "BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8", {});
-  int solana_min = static_cast<int>(mojom::TransactionType::Other);
-  int solana_max = static_cast<int>(
-      mojom::TransactionType::
-          SolanaSPLTokenTransferWithAssociatedTokenAccountCreation);
   int max = static_cast<int>(mojom::TransactionType::kMaxValue);
+  const base::flat_set<mojom::TransactionType> valid_types = {
+      mojom::TransactionType::Other,
+      mojom::TransactionType::SolanaSystemTransfer,
+      mojom::TransactionType::SolanaSPLTokenTransfer,
+      mojom::TransactionType::
+          SolanaSPLTokenTransferWithAssociatedTokenAccountCreation,
+      mojom::TransactionType::SolanaDappSignAndSendTransaction,
+      mojom::TransactionType::SolanaDappSignTransaction};
   for (int i = 0; i <= max; i++) {
     auto type = static_cast<mojom::TransactionType>(i);
-    if (i < solana_min || i > solana_max) {
-      EXPECT_DCHECK_DEATH(tx.set_tx_type(type));
-    } else {
+    if (valid_types.contains(type)) {
       tx.set_tx_type(type);
       EXPECT_EQ(tx.tx_type(), type);
+    } else {
+      EXPECT_DCHECK_DEATH(tx.set_tx_type(type));
     }
   }
 }

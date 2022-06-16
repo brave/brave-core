@@ -13,7 +13,6 @@
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/components/brave_rewards/browser/rewards_service_impl.h"
 #include "brave/components/brave_rewards/browser/rewards_service_observer.h"
-#include "brave/components/brave_rewards/browser/switches.h"
 #include "brave/components/brave_rewards/browser/test_util.h"
 #include "brave/components/brave_rewards/common/features.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
@@ -69,8 +68,6 @@ class RewardsServiceTest : public testing::Test {
   void SetMockLocale(const std::string& locale) {
     locale_helper_mock_ =
         std::make_unique<NiceMock<brave_l10n::LocaleHelperMock>>();
-    brave_l10n::LocaleHelper::GetInstance()->set_for_testing(
-        locale_helper_mock_.get());
     ON_CALL(*locale_helper_mock_, GetLocale()).WillByDefault(Return(locale));
   }
 

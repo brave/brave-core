@@ -3,8 +3,7 @@ import {
   BraveWallet,
   BuySendSwapViewTypes,
   ToOrFromType,
-  DefaultCurrencies,
-  BuyOption
+  BuyOption, WalletState
 } from '../../../constants/types'
 import { NavButton } from '../../extension'
 import SwapInputComponent from '../swap-input-component'
@@ -13,52 +12,61 @@ import { getLocale } from '../../../../common/locale'
 // Styled Components
 import {
   StyledWrapper,
-  FaucetTitle,
-  FaucetWrapper,
-  FaucetDescription,
-  Spacer,
-  RampLogo,
-  WyreLogo
+  Spacer
 } from './style'
-import BuyWithButton from '../../buy-with-button'
 import { BuyOptions } from '../../../options/buy-with-options'
-import { isSelectedAssetInAssetOptions } from '../../../utils/asset-utils'
+import { useAssets, useLib } from '../../../common/hooks'
+import { useSelector } from 'react-redux'
+import { getRampAssetSymbol, isSelectedAssetInAssetOptions } from '../../../utils/asset-utils'
+import { SelectBuyOption } from '../select-buy-option/select-buy-option'
 
 export interface Props {
   selectedAsset: BraveWallet.BlockchainToken
-  selectedNetwork: BraveWallet.NetworkInfo
-  buyAmount: string
-  networkList: BraveWallet.NetworkInfo[]
-  defaultCurrencies: DefaultCurrencies
-  onSubmit: () => void
-  onInputChange: (value: string, name: string) => void
   onChangeBuyView: (view: BuySendSwapViewTypes, option?: ToOrFromType) => void
-  selectedBuyOption: BraveWallet.OnRampProvider
-  onSelectBuyOption: (optionId: BraveWallet.OnRampProvider) => void
-  wyreAssetOptions: BraveWallet.BlockchainToken[]
-  rampAssetOptions: BraveWallet.BlockchainToken[]
 }
 
 function Buy (props: Props) {
   const {
-    selectedNetwork,
     selectedAsset,
-    buyAmount,
-    networkList,
-    defaultCurrencies,
-    onInputChange,
-    onSubmit,
-    onChangeBuyView,
-    selectedBuyOption,
-    onSelectBuyOption,
-    wyreAssetOptions,
-    rampAssetOptions
+    onChangeBuyView
   } = props
+
+  const [buyAmount, setBuyAmount] = React.useState('')
+  const [showBuyOptions, setShowBuyOptions] = React.useState<boolean>(false)
   const [buyOptions, setBuyOptions] = React.useState<BuyOption[]>(BuyOptions)
 
-  const onShowAssets = () => {
-    onChangeBuyView('assets', 'from')
-  }
+  // Redux
+  const {
+    selectedNetwork,
+    selectedAccount,
+    defaultCurrencies
+  } = useSelector(({ wallet }: { wallet: WalletState }) => wallet)
+
+  // Custom Hooks
+  const { wyreAssetOptions, rampAssetOptions } = useAssets()
+  const { getBuyAssetUrl } = useLib()
+
+  const onSubmitBuy = React.useCallback((buyOption: BraveWallet.OnRampProvider) => {
+    const asset = buyOption === BraveWallet.OnRampProvider.kRamp
+      ? { ...selectedAsset, symbol: getRampAssetSymbol(selectedAsset) }
+      : selectedAsset
+
+    getBuyAssetUrl({
+      asset,
+      onRampProvider: buyOption,
+      chainId: selectedNetwork.chainId,
+      address: selectedAccount.address,
+      amount: buyAmount
+    })
+      .then(url => {
+        chrome.tabs.create({ url }, () => {
+          if (chrome.runtime.lastError) {
+            console.error('tabs.create failed: ' + chrome.runtime.lastError.message)
+          }
+        })
+      })
+      .catch(e => console.error(e))
+  }, [getBuyAssetUrl, selectedNetwork, selectedAccount, buyAmount, selectedAsset])
 
   React.useEffect(() => {
     const supportingBuyOptions = BuyOptions.filter(buyOption => {
@@ -75,21 +83,17 @@ function Buy (props: Props) {
     setBuyOptions(supportingBuyOptions)
   }, [selectedAsset, wyreAssetOptions, rampAssetOptions])
 
-  React.useEffect(() => {
-    if (buyOptions.length > 0) {
-      onSelectBuyOption(buyOptions[0]?.id)
-    }
-  }, [buyOptions])
+  const onShowAssets = React.useCallback(() => {
+    onChangeBuyView('assets', 'from')
+  }, [onChangeBuyView])
 
-  const networkName = React.useMemo((): string => {
-    return networkList.find((network) => network.chainId === selectedNetwork.chainId)?.chainName ?? ''
-  }, [networkList, selectedNetwork])
+  const onContinue = React.useCallback(() => {
+    setShowBuyOptions(true)
+  }, [])
 
-  const buyWithLabel = React.useMemo(() => {
-    const selected = buyOptions.find(option => option.id === selectedBuyOption)
-
-    return selected !== undefined ? selected.label : ''
-  }, [selectedBuyOption])
+  const onBack = React.useCallback(() => {
+    setShowBuyOptions(false)
+  }, [])
 
   const isSelectedNetworkSupported = React.useMemo(() => {
     return [...rampAssetOptions, ...wyreAssetOptions]
@@ -99,41 +103,35 @@ function Buy (props: Props) {
 
   return (
     <StyledWrapper>
-      {isSelectedNetworkSupported ? (
-        <SwapInputComponent
-          defaultCurrencies={defaultCurrencies}
-          componentType='buyAmount'
-          onInputChange={onInputChange}
-          selectedAssetInputAmount={buyAmount}
-          inputName='buy'
-          selectedAsset={selectedAsset}
-          selectedNetwork={selectedNetwork}
-          onShowSelection={onShowAssets}
-          autoFocus={true}
+      {showBuyOptions
+        ? <SelectBuyOption
+          buyOptions={buyOptions}
+          onSelect={onSubmitBuy}
+          onBack={onBack}
         />
-      ) : (
-        <FaucetWrapper>
-          <FaucetTitle>{getLocale('braveWalletBuyTitle')}</FaucetTitle>
-          <FaucetDescription>{getLocale('braveWalletBuyDescription').replace('$1', networkName)}</FaucetDescription>
-        </FaucetWrapper>
-      )}
-
-      <BuyWithButton
-        options={buyOptions}
-        value={selectedBuyOption}
-        onSelect={onSelectBuyOption}
-        disabled={buyOptions?.length === 1}
-      >
-        {selectedBuyOption === BraveWallet.OnRampProvider.kRamp ? <RampLogo /> : <WyreLogo />}
-        {buyWithLabel}
-      </BuyWithButton>
-      <Spacer />
-      <NavButton
-        disabled={false}
-        buttonType='primary'
-        text={getLocale('braveWalletBuyContinueButton')}
-        onSubmit={onSubmit}
-      />
+        : <>
+          {isSelectedNetworkSupported &&
+            <SwapInputComponent
+              defaultCurrencies={defaultCurrencies}
+              componentType='buyAmount'
+              onInputChange={setBuyAmount}
+              selectedAssetInputAmount={buyAmount}
+              inputName='buy'
+              selectedAsset={selectedAsset}
+              selectedNetwork={selectedNetwork}
+              onShowSelection={onShowAssets}
+              autoFocus={true}
+            />
+          }
+          <Spacer />
+          <NavButton
+            disabled={false}
+            buttonType='primary'
+            text={getLocale('braveWalletBuyContinueButton')}
+            onSubmit={onContinue}
+          />
+        </>
+      }
     </StyledWrapper>
   )
 }

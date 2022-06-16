@@ -4349,7 +4349,7 @@ og Ctrl + Alt + lysstyrke ned for å zoome ut.</translation>
 <translation id="5280426389926346830">Vil du opprette en snarvei?</translation>
 <translation id="5281013262333731149">Åpnes i <ph name="OPEN_BROWSER"/></translation>
 <translation id="528208740344463258">Du må installere en oppdatering før du kan laste ned og bruke Android-apper. Du kan ikke bruke <ph name="DEVICE_TYPE"/> mens den oppdateres. <ph name="DEVICE_TYPE"/> starter på nytt når installasjonen er ferdig.</translation>
-<translation id="5282733140964383898">Hvis du aktiverer «Ikke spor», blir en forespørsel sendt med nettlesertrafikken din. Eventuelle virkninger avhenger av om nettstedet svarer på forespørselen, og hvordan forespørselen tolkes. Noen nettsteder kan for eksempel svare på forespørselen ved å vise deg annonser som ikke er basert på nettsteder du har besøkt. Mange nettsteder samler inn og bruker nettleserdataene dine likevel, for å forbedre sikkerheten og levere innhold, tjenester, annonser og anbefalinger på nettstedet – i tillegg til å generere rapporteringsstatistikk. <ph name="BEGIN_LINK"/>Finn ut mer<ph name="END_LINK"/></translation>
+<translation id="4039256732955431945">Hvis du aktiverer «Ikke spor», blir en forespørsel sendt med nettlesertrafikken din. Eventuelle virkninger avhenger av om nettstedet svarer på forespørselen, og hvordan forespørselen tolkes. Noen nettsteder kan for eksempel svare på forespørselen ved å vise deg annonser som ikke er basert på nettsteder du har besøkt. Mange nettsteder samler inn og bruker nettleserdataene dine likevel, for å forbedre sikkerheten og levere innhold, tjenester, annonser og anbefalinger på nettstedet – i tillegg til å generere rapporteringsstatistikk. <ph name="BEGIN_LINK"/>Finn ut mer<ph name="END_LINK"/></translation>
 <translation id="5283677936944177147">Beklager. Systemet kunne ikke fastslå enhetens modell eller serienummer.</translation>
 <translation id="5284445933715251131">Fortsett nedlastingen</translation>
 <translation id="5285635972691565180">Skjerm <ph name="DISPLAY_ID"/></translation>
@@ -4366,7 +4366,7 @@ og Ctrl + Alt + lysstyrke ned for å zoome ut.</translation>
 <translation id="5297082477358294722">Passordet er lagret. Se og administrer lagrede passord på <ph name="SAVED_PASSWORDS_STORE"/> din.</translation>
 <translation id="5297946558563358707">Når noen andre ser på skjermen din, vises Personvern-øyeikonet nederst til høyre på skjermen</translation>
 <translation id="5298219193514155779">Tema opprettet av</translation>
-<translation id="5299109548848736476">Ingen sporing</translation>
+<translation id="1839179167864984545">Ingen sporing</translation>
 <translation id="5299558715747014286">se og administrere fanegruppene dine</translation>
 <translation id="5300287940468717207">Vil du tilbakestille nettstedstillatelsene?</translation>
 <translation id="5300426565656326054">Nettleserbasert personlig tilpasning av annonser</translation>
@@ -7831,7 +7831,7 @@ Jeg tror ikke det er nødvendig å blokkere dette nettstedet.</translation>
 <translation id="8785622406424941542">Pekepenn</translation>
 <translation id="8786824282808281903">Når barnet ser dette ikonet, kan barnet bruke fingeravtrykket sitt til å identifisere seg eller godkjenne kjøp.</translation>
 <translation id="8787575090331305835">{NUM_TABS,plural, =1{Gruppe uten navn – 1 fane}other{Gruppe uten navn – # faner}}</translation>
-<translation id="8791534160414513928">Send en «Ingen sporing»-forespørsel med nettrafikken din</translation>
+<translation id="163839281363975279">Send en «Ingen sporing»-forespørsel med nettrafikken din</translation>
 <translation id="879413103056696865">Når Wi-Fi-sonen er på, kommer <ph name="PHONE_NAME"/> til å</translation>
 <translation id="8795916974678578410">Nytt vindu</translation>
 <translation id="8797459392481275117">Oversett aldri dette nettstedet</translation>

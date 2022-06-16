@@ -145,13 +145,15 @@ void JSEthereumProvider::AddJavaScriptObjectToFrame(
                                  v8::MicrotasksScope::kDoNotRunMicrotasks);
 
   if (is_main_world) {
-    CreateEthereumObject(isolate, context);
+    CreateEthereumObject(isolate, context, allow_overwrite_window_ethereum);
   }
-  InjectInitScript(allow_overwrite_window_ethereum, is_main_world);
+  InjectInitScript(is_main_world);
 }
 
-void JSEthereumProvider::CreateEthereumObject(v8::Isolate* isolate,
-                                              v8::Local<v8::Context> context) {
+void JSEthereumProvider::CreateEthereumObject(
+    v8::Isolate* isolate,
+    v8::Local<v8::Context> context,
+    bool allow_overwrite_window_ethereum) {
   v8::Local<v8::Object> global = context->Global();
   v8::Local<v8::Object> ethereum_obj;
   v8::Local<v8::Object> metamask_obj;
@@ -161,8 +163,14 @@ void JSEthereumProvider::CreateEthereumObject(v8::Isolate* isolate,
       !ethereum_value->IsObject()) {
     ethereum_obj = v8::Object::New(isolate);
     metamask_obj = v8::Object::New(isolate);
-    global->Set(context, gin::StringToSymbol(isolate, "ethereum"), ethereum_obj)
-        .Check();
+    if (!allow_overwrite_window_ethereum) {
+      SetProviderNonWritable(context, global, ethereum_obj,
+                             gin::StringToV8(isolate, "ethereum"), true);
+    } else {
+      global
+          ->Set(context, gin::StringToSymbol(isolate, "ethereum"), ethereum_obj)
+          .Check();
+    }
     ethereum_obj
         ->Set(context, gin::StringToSymbol(isolate, "_metamask"), metamask_obj)
         .Check();
@@ -519,12 +527,8 @@ v8::Local<v8::Promise> JSEthereumProvider::IsUnlocked() {
   return resolver.ToLocalChecked()->GetPromise();
 }
 
-void JSEthereumProvider::InjectInitScript(bool allow_overwrite_window_ethereum,
-                                          bool is_main_world) {
+void JSEthereumProvider::InjectInitScript(bool is_main_world) {
   blink::WebLocalFrame* web_frame = render_frame_->GetWebFrame();
-  if (!allow_overwrite_window_ethereum) {
-    SetProviderNonWritable(web_frame, "ethereum");
-  }
   if (is_main_world) {
     ExecuteScript(web_frame, *g_provider_script);
   }

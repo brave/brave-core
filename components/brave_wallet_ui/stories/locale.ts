@@ -99,7 +99,7 @@ provideStrings({
 
   // Wallet Onboarding Welcome
   braveWalletWelcomeTitle: 'Welcome to the new Brave Wallet',
-  braveWalletWelcomeDescription: 'Hold crypto assets in your custody. Track portfolio performance, and interact with web 3 DApps. Trade, invest, borrow, and lend with DeFi. All right from the Brave privacy browser. No extensions, no download required.',
+  braveWalletWelcomeDescription: 'Hold crypto assets in your custody. Track portfolio performance, and interact with Web3 DApps. Trade, invest, borrow, and lend with DeFi. All right from the Brave privacy browser. No extensions, no download required.',
   braveWalletWelcomeButton: 'Get Started',
   braveWalletWelcomeRestoreButton: 'Restore',
 
@@ -148,7 +148,7 @@ provideStrings({
   braveWalletDismissButton: 'Dismiss',
 
   // Default Wallet Banner
-  braveWalletDefaultWalletBanner: 'Brave Wallet is not set as your default wallet and will not respond to web3 DApps. Visit settings to change your default wallet.',
+  braveWalletDefaultWalletBanner: 'Brave Wallet is not set as your default wallet and will not respond to Web3 DApps. Visit settings to change your default wallet.',
 
   // Restore Screen
   braveWalletRestoreTite: 'Restore primary crypto accounts',
@@ -166,7 +166,7 @@ provideStrings({
   braveWalletAccountsPrimary: 'Primary crypto accounts',
   braveWalletAccountsPrimaryDisclaimer: 'You can create primary accounts in Brave Wallet that may be backed up or restored from your recovery phrase. To learn more about account types visit account help',
   braveWalletAccountsSecondary: 'Imported accounts',
-  braveWalletAccountsSecondaryDisclaimer: 'These accounts can be used with web 3 DApps, and can be shown in your portfolio. However, note that secondary accounts cannot be restored via recovery phrase from your primary account backup.',
+  braveWalletAccountsSecondaryDisclaimer: 'These accounts can be used with Web3 DApps, and can be shown in your portfolio. However, note that secondary accounts cannot be restored via recovery phrase from your primary account backup.',
   braveWalletAccountsAssets: 'Assets',
   braveWalletAccountsEditVisibleAssets: 'Visible assets',
 
@@ -187,7 +187,7 @@ provideStrings({
   braveWalletFilecoinPrivateKeyProtocol: 'Private key $1',
 
   // Import Account
-  braveWalletImportAccountDisclaimer: 'These accounts can be used with web 3 DApps, and can be shown in your portfolio. However, note that secondary accounts cannot be restored via recovery phrase from your primary account backup.',
+  braveWalletImportAccountDisclaimer: 'These accounts can be used with Web3 DApps, and can be shown in your portfolio. However, note that secondary accounts cannot be restored via recovery phrase from your primary account backup.',
   braveWalletImportAccountPlaceholder: 'Paste private key from clipboard',
   braveWalletImportAccountKey: 'Private key',
   braveWalletImportAccountFile: 'JSON file',
@@ -283,6 +283,11 @@ provideStrings({
   braveWalletBuyDescription: 'Get Ether from a faucet for $1',
   braveWalletBuyWyreButton: 'Continue to Wyre',
   braveWalletBuyFaucetButton: 'Get Ether',
+  braveWalletBuyContinueButton: 'Select purchase method',
+  braveWalletBuyRampNetworkName: 'Ramp.Network',
+  braveWalletBuyWyreName: 'Wyre',
+  braveWalletBuyRampDescription: 'Buy with CC/Debit or ACH. Competitive Rates.',
+  braveWalletBuyWyreDescription: 'Buy with CC/Debit or ACH. Competitive Rates.',
 
   // Sign Transaction Panel
   braveWalletSignTransactionTitle: 'Your signature is being requested',
@@ -348,7 +353,7 @@ provideStrings({
   braveWalletAssetsPanelTitle: 'Account assets',
 
   // Wallet Welcome Panel
-  braveWalletWelcomePanelDescription: 'Use this panel to securely access web3 and all your crypto assets.',
+  braveWalletWelcomePanelDescription: 'Use this panel to securely access Web3 and all your crypto assets.',
   braveWalletWelcomePanelButton: 'Learn more',
 
   // Site Permissions Panel
@@ -377,7 +382,7 @@ provideStrings({
   // Import from MetaMask
   braveWalletImportTitle: 'Import from $1',
   braveWalletImportMetaMaskTitle: 'MetaMask',
-  braveWalletImportDescription: 'Import your $1 accounts into Brave Wallet. Enjoy a faster and more secure way to manage crypto assets and interact with web 3 DApps.',
+  braveWalletImportDescription: 'Import your $1 accounts into Brave Wallet. Enjoy a faster and more secure way to manage crypto assets and interact with Web3 DApps.',
   braveWalletImportMetaMaskInput: 'MetaMask password',
 
   // Import from Legacy Wallet
@@ -385,7 +390,7 @@ provideStrings({
   braveWalletCryptoWalletsDetected: 'Existing crypto wallets detected',
   braveWalletCryptoWalletsDescriptionOne: 'When you click Get started youll import your previous Crypto Wallet to the new Brave Wallet experience, and enjoy all the benefits outlined above. Give it a try, and let us know what you think!',
   braveWalletCryptoWalletsDescriptionTwo: 'If youd rather skip the import and keep the old Crypto Wallets experience, just navigate to the Brave Browser $1Settings$2 and change the default back to Crypto Wallets. You can also import, try the new Brave Wallet, and change back at any time.',
-  braveWalletImportBraveLegacyDescription: 'Enter your existing crypto wallets password to import to Brave Wallet. Enjoy a faster and more secure way to manage crypto assets and interact with web 3 DApps.',
+  braveWalletImportBraveLegacyDescription: 'Enter your existing crypto wallets password to import to Brave Wallet. Enjoy a faster and more secure way to manage crypto assets and interact with Web3 DApps.',
   braveWalletImportBraveLegacyInput: 'Crypto wallets password',
   braveWalletImportBraveLegacyAltButton: 'I’ve lost my password and recovery phrase, create a new wallet.',
 
@@ -495,5 +500,35 @@ provideStrings({
 
   // Network Filter
   braveWalletNetworkFilterAll: 'All Networks',
-  braveWalletNetworkFilterSecondary: 'Secondary Networks'
+  braveWalletNetworkFilterSecondary: 'Secondary Networks',
+
+  // Transaction post-confirmation
+
+  // Submitted
+  braveWalletTransactionSubmittedTitle: 'Transaction submitted',
+  braveWalletTransactionSubmittedDescription: 'Transaction has been successfully sent to the network and awaits confirmation.',
+
+  // Failed
+  braveWalletTransactionFailedHeaderTitle: '$1 was returned to your wallet',
+  braveWalletTransactionFailedTitle: 'Transaction failed',
+  braveWalletTransactionFailedDescription: 'Transaction was failed due to a large price movement. Increase slippage tolerance to succeed at a larger price movement.',
+  braveWalletTransactionFailedSwapNextCTA: 'New trade',
+  braveWalletTransactionFailedNextCTA: 'New transaction',
+  braveWalletTransactionFailedViewErrorCTA: 'View error',
+  braveWalletTransactionFailedReceiptCTA: 'Receipt',
+  braveWalletTransactionFailedModalTitle: 'Error code',
+  braveWalletTransactionFailedModalClose: 'Close',
+
+  // Complete
+  braveWalletTransactionCompleteSwapHeaderTitle: 'Swapped $1 to $2',
+  braveWalletTransactionCompleteTitle: 'Transaction complete!',
+  braveWalletTransactionCompleteSwapDescription: '$1 has been successfully deposited into your wallet.',
+  braveWalletTransactionCompleteNextCTA: 'Done',
+  braveWalletTransactionCompleteReceiptCTA: 'Receipt',
+
+  // Confirming
+  braveWalletTransactionConfirmingTitle: 'Transaction is processing',
+  // [FIXME]: change the wording after ETH2.
+  braveWalletTransactionConfirmingDescription: 'Transaction was successfully included in a block. To avoid the risk of double spending, we recommend waiting for block confirmations.',
+  braveWalletTransactionConfirmingText: 'Confirming'
 })

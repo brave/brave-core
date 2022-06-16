@@ -14,10 +14,9 @@
 #include <vector>
 
 #include "base/memory/weak_ptr.h"
-#include "base/task/sequenced_task_runner.h"
 #include "base/values.h"
-#include "bat/ledger/internal/ledger_database_impl.h"
 #include "bat/ledger/ledger_client.h"
+#include "bat/ledger/public/ledger_database.h"
 
 namespace ledger {
 
@@ -168,17 +167,16 @@ class TestLedgerClient : public LedgerClient {
   using LogCallback = base::RepeatingCallback<void(const std::string&)>;
   void SetLogCallbackForTesting(LogCallback callback);
 
-  LedgerDatabaseImpl* database() { return ledger_database_.get(); }
+  LedgerDatabase* database() { return &ledger_database_; }
 
  private:
   void LoadURLAfterDelay(mojom::UrlRequestPtr request,
                          client::LoadURLCallback callback);
 
-  void RunDBTransactionCompleted(client::RunDBTransactionCallback callback,
-                                 mojom::DBCommandResponsePtr response);
+  void RunDBTransactionAfterDelay(mojom::DBTransactionPtr transaction,
+                                  client::RunDBTransactionCallback callback);
 
-  scoped_refptr<base::SequencedTaskRunner> task_runner_;
-  std::unique_ptr<LedgerDatabaseImpl> ledger_database_;
+  LedgerDatabase ledger_database_;
   base::Value state_store_;
   base::Value option_store_;
   std::list<TestNetworkResult> network_results_;

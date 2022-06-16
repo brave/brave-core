@@ -10,7 +10,7 @@
 #include "base/strings/string_number_conversions.h"
 #include "bat/ads/history_info.h"
 #include "bat/ads/history_item_info.h"
-#include "bat/ads/internal/covariates/covariates_constants.h"
+#include "bat/ads/internal/covariates/covariate_constants.h"
 #include "bat/ads/internal/history/history.h"
 
 namespace ads {
@@ -24,8 +24,7 @@ brave_federated::mojom::DataType AverageClickthroughRate::GetDataType() const {
   return brave_federated::mojom::DataType::kDouble;
 }
 
-brave_federated::mojom::CovariateType
-AverageClickthroughRate::GetCovariateType() const {
+brave_federated::mojom::CovariateType AverageClickthroughRate::GetType() const {
   return brave_federated::mojom::CovariateType::kAverageClickthroughRate;
 }
 

@@ -974,7 +974,8 @@ void EthereumProviderImpl::SendErrorOnRequest(const mojom::ProviderError& error,
 void EthereumProviderImpl::CommonRequestOrSendAsync(base::Value input_value,
                                                     RequestCallback callback) {
   mojom::ProviderError error = mojom::ProviderError::kUnsupportedMethod;
-  std::string error_message = "Generic processing error";
+  std::string error_message =
+      l10n_util::GetStringUTF8(IDS_WALLET_REQUEST_PROCESSING_ERROR);
   DCHECK(json_rpc_service_);
   std::string input_json;
   if (!base::JSONWriter::Write(input_value, &input_json) ||
@@ -996,6 +997,23 @@ void EthereumProviderImpl::CommonRequestOrSendAsync(base::Value input_value,
   if (!GetEthJsonRequestInfo(normalized_json_request, &id, &method, nullptr)) {
     SendErrorOnRequest(error, error_message, std::move(callback),
                        base::Value());
+    return;
+  }
+
+  // That check prevents from pop ups from backgrounded pages.
+  // We need to add any method that requires a dialog to interact with.
+  if ((method == kEthRequestAccounts || method == kAddEthereumChainMethod ||
+       method == kSwitchEthereumChainMethod || method == kEthSendTransaction ||
+       method == kEthSign || method == kPersonalSign ||
+       method == kPersonalEcRecover || method == kEthSignTypedDataV3 ||
+       method == kEthSignTypedDataV4 || method == kEthGetEncryptionPublicKey ||
+       method == kEthDecrypt || method == kWalletWatchAsset ||
+       method == kRequestPermissionsMethod) &&
+      !delegate_->IsTabVisible()) {
+    SendErrorOnRequest(
+        mojom::ProviderError::kResourceUnavailable,
+        l10n_util::GetStringUTF8(IDS_WALLET_TAB_IS_NOT_ACTIVE_ERROR),
+        std::move(callback), base::Value());
     return;
   }
 
@@ -1243,6 +1261,13 @@ void EthereumProviderImpl::ContinueRequestEthereumPermissions(
 }
 
 void EthereumProviderImpl::Enable(EnableCallback callback) {
+  if (!delegate_->IsTabVisible()) {
+    SendErrorOnRequest(
+        mojom::ProviderError::kResourceUnavailable,
+        l10n_util::GetStringUTF8(IDS_WALLET_TAB_IS_NOT_ACTIVE_ERROR),
+        std::move(callback), base::Value());
+    return;
+  }
   RequestEthereumPermissions(std::move(callback), base::Value(), "",
                              delegate_->GetOrigin());
   delegate_->WalletInteractionDetected();
@@ -1458,7 +1483,7 @@ void EthereumProviderImpl::OnTransactionStatusChanged(
   } else if (tx_status == mojom::TransactionStatus::Error) {
     formed_response = GetProviderErrorDictionary(
         mojom::ProviderError::kInternalError,
-        l10n_util::GetStringUTF8(IDS_WALLET_ETH_SEND_TRANSACTION_ERROR));
+        l10n_util::GetStringUTF8(IDS_WALLET_SEND_TRANSACTION_ERROR));
     reject = true;
   }
   std::move(add_tx_callbacks_[tx_meta_id])

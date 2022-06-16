@@ -5,6 +5,8 @@
 
 #include "chrome/browser/ui/cocoa/first_run_dialog_controller.h"
 
+#include <algorithm>
+
 #include "base/i18n/rtl.h"
 #include "base/mac/scoped_nsobject.h"
 #include "base/strings/sys_string_conversions.h"
@@ -32,44 +34,14 @@
 }
 
 - (void)loadView {
-  constexpr int kDialogWidth = 400;
+  constexpr int kDialogMinWidth = 400;
   constexpr int kPadding = 24;
   constexpr int kLabelSpacing = 16;
-  constexpr int kContentsWidth = kDialogWidth - (2 * kPadding);
   constexpr int kTopPadding = 20;
   constexpr int kButtonTopMargin = 40;
   constexpr int kButtonBottomMargin = 20;
   constexpr int kButtonHorizontalMargin = 20;
-
-  // After calculating all controls' proper height based on |kContentsWidth|,
-  // window's height will be calculated.
-  std::u16string headerString =
-      brave_l10n::GetLocalizedResourceUTF16String(IDS_FIRSTRUN_DLG_HEADER_TEXT);
-  base::i18n::AdjustStringForLocaleDirection(&headerString);
-  NSTextField* headerLabel =
-      [TextFieldUtils labelWithString:base::SysUTF16ToNSString(headerString)];
-  [headerLabel setFont:[NSFont systemFontOfSize:16.0
-                                         weight:NSFontWeightSemibold]];
-  [headerLabel sizeToFit];
-  int defaultHeight = NSHeight(headerLabel.frame);
-  int numOfLines =
-      static_cast<int>(NSWidth(headerLabel.frame)) / kContentsWidth + 1;
-  [headerLabel
-      setFrame:NSMakeRect(0, 0, kContentsWidth, defaultHeight * numOfLines)];
-
-  std::u16string contentsString = brave_l10n::GetLocalizedResourceUTF16String(
-      IDS_FIRSTRUN_DLG_CONTENTS_TEXT);
-  base::i18n::AdjustStringForLocaleDirection(&contentsString);
-  NSTextField* contentsLabel =
-      [TextFieldUtils labelWithString:base::SysUTF16ToNSString(contentsString)];
-  [contentsLabel setFont:[NSFont systemFontOfSize:15.0
-                                           weight:NSFontWeightRegular]];
-  [contentsLabel sizeToFit];
-  defaultHeight = NSHeight(contentsLabel.frame);
-  numOfLines =
-      static_cast<int>(NSWidth(contentsLabel.frame)) / kContentsWidth + 1;
-  [contentsLabel
-      setFrame:NSMakeRect(0, 0, kContentsWidth, defaultHeight * numOfLines)];
+  constexpr int kButtonSpacing = 3;
 
   NSButton* maybeLaterButton =
       [ButtonUtils buttonWithTitle:l10n_util::GetNSString(
@@ -85,6 +57,43 @@
                target:self];
   [makeDefaultButton setKeyEquivalent:kKeyEquivalentReturn];
   [makeDefaultButton sizeToFit];
+
+  // Calculate proper dialog width that can include two buttons.
+  const int preferredDialogWidth = NSWidth(maybeLaterButton.frame) +
+                                   NSWidth(makeDefaultButton.frame) +
+                                   2 * kButtonHorizontalMargin + kButtonSpacing;
+  const int dialogWidth = std::max(kDialogMinWidth, preferredDialogWidth);
+  const int contentsWidth = dialogWidth - (2 * kPadding);
+
+  // After calculating all controls' proper height based on |contentsWidth|,
+  // window's height will be calculated.
+  std::u16string headerString =
+      brave_l10n::GetLocalizedResourceUTF16String(IDS_FIRSTRUN_DLG_HEADER_TEXT);
+  base::i18n::AdjustStringForLocaleDirection(&headerString);
+  NSTextField* headerLabel =
+      [TextFieldUtils labelWithString:base::SysUTF16ToNSString(headerString)];
+  [headerLabel setFont:[NSFont systemFontOfSize:16.0
+                                         weight:NSFontWeightSemibold]];
+  [headerLabel sizeToFit];
+  int defaultHeight = NSHeight(headerLabel.frame);
+  int numOfLines =
+      static_cast<int>(NSWidth(headerLabel.frame)) / contentsWidth + 1;
+  [headerLabel
+      setFrame:NSMakeRect(0, 0, contentsWidth, defaultHeight * numOfLines)];
+
+  std::u16string contentsString = brave_l10n::GetLocalizedResourceUTF16String(
+      IDS_FIRSTRUN_DLG_CONTENTS_TEXT);
+  base::i18n::AdjustStringForLocaleDirection(&contentsString);
+  NSTextField* contentsLabel =
+      [TextFieldUtils labelWithString:base::SysUTF16ToNSString(contentsString)];
+  [contentsLabel setFont:[NSFont systemFontOfSize:15.0
+                                           weight:NSFontWeightRegular]];
+  [contentsLabel sizeToFit];
+  defaultHeight = NSHeight(contentsLabel.frame);
+  numOfLines =
+      static_cast<int>(NSWidth(contentsLabel.frame)) / contentsWidth + 1;
+  [contentsLabel
+      setFrame:NSMakeRect(0, 0, contentsWidth, defaultHeight * numOfLines)];
 
   // It's time to calculate window's height as we can get all controls' final
   // heights.
@@ -109,7 +118,7 @@
                                  : [NSColor whiteColor];
 
   base::scoped_nsobject<NSView> content_view([[NSView alloc]
-      initWithFrame:NSMakeRect(0, 0, kDialogWidth, windowHeight)]);
+      initWithFrame:NSMakeRect(0, 0, dialogWidth, windowHeight)]);
   self.view = content_view.get();
   [self.view setValue:backgroundColor forKey:@"backgroundColor"];
   [self.view addSubview:headerLabel];
@@ -129,7 +138,7 @@
   [contentsLabel setFrame:frame];
 
   frame = makeDefaultButton.frame;
-  frame.origin.x = kDialogWidth - kButtonHorizontalMargin - NSWidth(frame);
+  frame.origin.x = dialogWidth - kButtonHorizontalMargin - NSWidth(frame);
   if (base::i18n::IsRTL()) {
     frame.origin.x = kButtonHorizontalMargin;
   }
@@ -137,7 +146,6 @@
       NSMinY(contentsLabel.frame) - kButtonTopMargin - NSHeight(frame);
   [makeDefaultButton setFrame:frame];
 
-  constexpr int kButtonSpacing = 3;
   frame = maybeLaterButton.frame;
   frame.origin.x =
       NSMinX(makeDefaultButton.frame) - kButtonSpacing - NSWidth(frame);

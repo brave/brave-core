@@ -296,6 +296,7 @@ function isGreaselionURL (url: string) {
     'github.com',
     'reddit.com',
     'twitch.tv',
+    'twitter.com',
     'vimeo.com',
     'youtube.com'
   ]
@@ -327,12 +328,12 @@ export async function fetchPublisherInfo (tabId: number) {
 
 function getPublisherPlatform (name: string) {
   switch (name) {
-    case 'twitter':
-    case 'youtube':
-    case 'twitch':
-    case 'reddit':
-    case 'vimeo':
     case 'github':
+    case 'reddit':
+    case 'twitch':
+    case 'twitter':
+    case 'vimeo':
+    case 'youtube':
       return name
   }
   return null

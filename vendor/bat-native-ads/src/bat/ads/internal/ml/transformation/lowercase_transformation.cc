@@ -6,6 +6,7 @@
 #include "bat/ads/internal/ml/transformation/lowercase_transformation.h"
 
 #include <string>
+#include <utility>
 
 #include "base/check.h"
 #include "base/strings/string_util.h"
@@ -18,6 +19,9 @@ namespace ml {
 LowercaseTransformation::LowercaseTransformation()
     : Transformation(TransformationType::kLowercase) {}
 
+LowercaseTransformation::LowercaseTransformation(
+    LowercaseTransformation&& transformation) noexcept = default;
+
 LowercaseTransformation::~LowercaseTransformation() = default;
 
 std::unique_ptr<Data> LowercaseTransformation::Apply(
@@ -28,7 +32,7 @@ std::unique_ptr<Data> LowercaseTransformation::Apply(
 
   std::string lowercase_text = base::ToLowerASCII(text_data->GetText());
 
-  return std::make_unique<TextData>(TextData(lowercase_text));
+  return std::make_unique<TextData>(std::move(lowercase_text));
 }
 
 }  // namespace ml

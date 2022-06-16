@@ -10,7 +10,7 @@
 #include <string>
 #include <utility>
 
-#include "bat/ads/internal/deprecated/client/client.h"
+#include "bat/ads/internal/deprecated/client/client_state_manager.h"
 #include "bat/ads/internal/features/purchase_intent_features.h"
 #include "bat/ads/internal/serving/targeting/models/behavioral/purchase_intent/purchase_intent_aliases.h"
 
@@ -52,7 +52,7 @@ SegmentList PurchaseIntent::GetSegments() const {
   SegmentList segments;
 
   const PurchaseIntentSignalHistoryMap history =
-      Client::Get()->GetPurchaseIntentSignalHistory();
+      ClientStateManager::Get()->GetPurchaseIntentSignalHistory();
 
   if (history.empty()) {
     return segments;

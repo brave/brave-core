@@ -10,9 +10,9 @@
 #include "bat/ads/confirmation_type.h"
 #include "bat/ads/internal/ad_events/ad_events.h"
 #include "bat/ads/internal/base/logging_util.h"
-#include "bat/ads/internal/base/url_util.h"
-#include "bat/ads/internal/tab_manager/tab_info.h"
-#include "bat/ads/internal/tab_manager/tab_manager.h"
+#include "bat/ads/internal/base/url/url_util.h"
+#include "bat/ads/internal/tabs/tab_info.h"
+#include "bat/ads/internal/tabs/tab_manager.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 #include "url/gurl.h"
 
@@ -67,12 +67,12 @@ void Transfer::TransferAd(const int32_t tab_id,
 
   transferring_ad_tab_id_ = tab_id;
 
-  const base::Time time =
-      timer_.Start(kTransferAdAfter, base::BindOnce(&Transfer::OnTransferAd,
-                                                    base::Unretained(this),
-                                                    tab_id, redirect_chain));
+  const base::Time transfer_ad_at = timer_.Start(
+      FROM_HERE, kTransferAdAfter,
+      base::BindOnce(&Transfer::OnTransferAd, base::Unretained(this), tab_id,
+                     redirect_chain));
 
-  NotifyWillTransferAd(last_clicked_ad_, time);
+  NotifyWillTransferAd(last_clicked_ad_, transfer_ad_at);
 }
 
 void Transfer::OnTransferAd(const int32_t tab_id,

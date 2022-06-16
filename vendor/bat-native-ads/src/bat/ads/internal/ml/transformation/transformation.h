@@ -19,7 +19,6 @@ class Transformation {
  public:
   explicit Transformation(const TransformationType& type);
 
-  Transformation(const Transformation& t);
   virtual ~Transformation();
 
   TransformationType GetType() const;

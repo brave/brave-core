@@ -14,6 +14,7 @@
 #include "base/memory/raw_ptr.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/synchronization/lock.h"
+#include "base/thread_annotations.h"
 #include "base/values.h"
 #include "brave/components/adblock_rust_ffi/src/wrapper.h"
 #include "brave/components/brave_component_updater/browser/brave_component.h"
@@ -98,7 +99,7 @@ class AdBlockRegionalServiceManager
   base::Lock regional_services_lock_;
   std::map<std::string,
            std::unique_ptr<AdBlockEngine, base::OnTaskRunnerDeleter>>
-      regional_services_;
+      regional_services_ GUARDED_BY(regional_services_lock_);
   std::map<std::string, std::unique_ptr<AdBlockRegionalFiltersProvider>>
       regional_filters_providers_;
   std::map<std::string, std::unique_ptr<AdBlockService::SourceProviderObserver>>

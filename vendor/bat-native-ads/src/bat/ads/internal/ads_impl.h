@@ -15,30 +15,31 @@
 #include "bat/ads/history_filter_types.h"
 #include "bat/ads/history_sort_types.h"
 #include "bat/ads/internal/account/account_observer.h"
-#include "bat/ads/internal/ad_events/ad_notifications/ad_notification_observer.h"
 #include "bat/ads/internal/ad_events/inline_content_ads/inline_content_ad_observer.h"
 #include "bat/ads/internal/ad_events/new_tab_page_ads/new_tab_page_ad_observer.h"
+#include "bat/ads/internal/ad_events/notification_ads/notification_ad_observer.h"
 #include "bat/ads/internal/ad_events/promoted_content_ads/promoted_content_ad_observer.h"
 #include "bat/ads/internal/ad_events/search_result_ads/search_result_ad_observer.h"
 #include "bat/ads/internal/catalog/catalog_observer.h"
 #include "bat/ads/internal/conversions/conversions_observer.h"
-#include "bat/ads/internal/serving/ad_notification_serving_observer.h"
+#include "bat/ads/internal/database/database_manager_observer.h"
 #include "bat/ads/internal/serving/inline_content_ad_serving_observer.h"
 #include "bat/ads/internal/serving/new_tab_page_ad_serving_observer.h"
+#include "bat/ads/internal/serving/notification_ad_serving_observer.h"
 #include "bat/ads/internal/transfer/transfer_observer.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
-
-class GURL;
 
 namespace base {
 class Time;
 }  // namespace base
 
+class GURL;
+
 namespace ads {
 
-namespace ad_notifications {
-class Serving;
-}  // namespace ad_notifications
+namespace geographic {
+class SubdivisionTargeting;
+}  // namespace geographic
 
 namespace inline_content_ads {
 class Serving;
@@ -48,15 +49,19 @@ namespace new_tab_page_ads {
 class Serving;
 }  // namespace new_tab_page_ads
 
+namespace notification_ads {
+class Serving;
+}  // namespace notification_ads
+
+namespace privacy {
+class TokenGenerator;
+}  // namespace privacy
+
 namespace processor {
 class EpsilonGreedyBandit;
 class PurchaseIntent;
 class TextClassification;
 }  // namespace processor
-
-namespace geographic {
-class SubdivisionTargeting;
-}  // namespace geographic
 
 namespace resource {
 class AntiTargeting;
@@ -66,65 +71,56 @@ class PurchaseIntent;
 class TextClassification;
 }  // namespace resource
 
-namespace database {
-class Initialize;
-}  // namespace database
-
-namespace privacy {
-class TokenGenerator;
-class TokenGeneratorInterface;
-}  // namespace privacy
-
 class Account;
-class Diagnostics;
-class AdNotification;
-class AdNotifications;
-class Transfer;
 class AdsClientHelper;
 class BrowserManager;
 class Catalog;
-class Client;
+class ClientStateManager;
+class ConfirmationStateManager;
 class Conversions;
-class ConfirmationsState;
-class CovariateLogs;
+class CovariateManager;
+class DatabaseManager;
+class DiagnosticManager;
 class InlineContentAd;
 class NewTabPageAd;
+class NotificationAd;
+class NotificationAdManager;
 class PromotedContentAd;
 class SearchResultAd;
 class TabManager;
-class UserActivity;
+class Transfer;
+class UserActivityManager;
 struct AdInfo;
-struct AdNotificationInfo;
 struct CatalogInfo;
-struct HistoryInfo;
 struct ConversionQueueItemInfo;
+struct HistoryInfo;
 struct InlineContentAdInfo;
 struct NewTabPageAdInfo;
+struct NotificationAdInfo;
 struct PromotedContentAdInfo;
 struct SearchResultAdInfo;
 struct WalletInfo;
 
 class AdsImpl final : public Ads,
                       public AccountObserver,
-                      public AdNotificationObserver,
-                      public AdNotificationServingObserver,
                       public CatalogObserver,
-                      public TransferObserver,
+                      public ConversionsObserver,
+                      public DatabaseManagerObserver,
                       public InlineContentAdObserver,
                       public InlineContentServingObserver,
-                      public ConversionsObserver,
                       public NewTabPageAdObserver,
                       public NewTabPageServingObserver,
+                      public NotificationAdObserver,
+                      public NotificationAdServingObserver,
                       public PromotedContentAdObserver,
-                      public SearchResultAdObserver {
+                      public SearchResultAdObserver,
+                      public TransferObserver {
  public:
   explicit AdsImpl(AdsClient* ads_client);
   ~AdsImpl() override;
 
   AdsImpl(const AdsImpl&) = delete;
   AdsImpl& operator=(const AdsImpl&) = delete;
-
-  void SetForTesting(privacy::TokenGeneratorInterface* token_generator);
 
   bool IsInitialized() const;
 
@@ -167,11 +163,11 @@ class AdsImpl final : public Ads,
 
   void OnResourceComponentUpdated(const std::string& id) override;
 
-  bool GetAdNotification(const std::string& placement_id,
-                         AdNotificationInfo* ad_notification) override;
-  void TriggerAdNotificationEvent(
+  bool GetNotificationAd(const std::string& placement_id,
+                         NotificationAdInfo* notification_ad) override;
+  void TriggerNotificationAdEvent(
       const std::string& placement_id,
-      const mojom::AdNotificationEventType event_type) override;
+      const mojom::NotificationAdEventType event_type) override;
 
   void GetNewTabPageAd(GetNewTabPageAdCallback callback) override;
   void TriggerNewTabPageAdEvent(
@@ -224,15 +220,13 @@ class AdsImpl final : public Ads,
   bool ToggleFlaggedAd(const std::string& json) override;
 
  private:
-  void set(privacy::TokenGeneratorInterface* token_generator);
-
   void InitializeBrowserManager();
   void InitializeDatabase(InitializeCallback callback);
   void MigrateConversions(InitializeCallback callback);
   void MigrateRewards(InitializeCallback callback);
   void LoadClientState(InitializeCallback callback);
-  void LoadConfirmationsState(InitializeCallback callback);
-  void LoadAdNotificationsState(InitializeCallback callback);
+  void LoadConfirmationState(InitializeCallback callback);
+  void LoadNotificationAdState(InitializeCallback callback);
   void Initialized(InitializeCallback callback);
 
   void Start();
@@ -241,10 +235,18 @@ class AdsImpl final : public Ads,
 
   void MaybeFetchCatalog();
 
-  void MaybeServeAdNotification();
+  void MaybeServeNotificationAd();
 
-  bool ShouldServeAdNotificationsAtRegularIntervals() const;
-  void MaybeServeAdNotificationsAtRegularIntervals();
+  bool ShouldServeNotificationAdsAtRegularIntervals() const;
+  void MaybeServeNotificationAdsAtRegularIntervals();
+
+  // DatabaseManagerObserver:
+  void OnWillMigrateDatabase(const int from_version,
+                             const int to_version) override;
+  void OnDidMigrateDatabase(const int from_version,
+                            const int to_version) override;
+  void OnFailedToMigrateDatabase(const int from_version,
+                                 const int to_version) override;
 
   // AccountObserver:
   void OnWalletDidUpdate(const WalletInfo& wallet) override;
@@ -260,17 +262,17 @@ class AdsImpl final : public Ads,
   // CatalogObserver:
   void OnDidUpdateCatalog(const CatalogInfo& catalog) override;
 
-  // AdNotificationServingObserver:
-  void OnDidServeAdNotification(const AdNotificationInfo& ad) override;
+  // NotificationAdServingObserver:
+  void OnDidServeNotificationAd(const NotificationAdInfo& ad) override;
 
-  // AdNotificationObserver:
-  void OnAdNotificationViewed(const AdNotificationInfo& ad) override;
-  void OnAdNotificationClicked(const AdNotificationInfo& ad) override;
-  void OnAdNotificationDismissed(const AdNotificationInfo& ad) override;
-  void OnAdNotificationTimedOut(const AdNotificationInfo& ad) override;
-  void OnAdNotificationEventFailed(
+  // NotificationAdObserver:
+  void OnNotificationAdViewed(const NotificationAdInfo& ad) override;
+  void OnNotificationAdClicked(const NotificationAdInfo& ad) override;
+  void OnNotificationAdDismissed(const NotificationAdInfo& ad) override;
+  void OnNotificationAdTimedOut(const NotificationAdInfo& ad) override;
+  void OnNotificationAdEventFailed(
       const std::string& placement_id,
-      const mojom::AdNotificationEventType event_type) override;
+      const mojom::NotificationAdEventType event_type) override;
 
   // NewTabPageServingObserver:
   void OnDidServeNewTabPageAd(const NewTabPageAdInfo& ad) override;
@@ -322,38 +324,52 @@ class AdsImpl final : public Ads,
   bool is_initialized_ = false;
 
   std::unique_ptr<AdsClientHelper> ads_client_helper_;
-  std::unique_ptr<Diagnostics> diagnostics_;
+
   std::unique_ptr<BrowserManager> browser_manager_;
+  std::unique_ptr<ClientStateManager> client_state_manager_;
+  std::unique_ptr<ConfirmationStateManager> confirmation_state_manager_;
+  std::unique_ptr<CovariateManager> covariate_manager_;
+  std::unique_ptr<DatabaseManager> database_manager_;
+  std::unique_ptr<DiagnosticManager> diagnostic_manager_;
+  std::unique_ptr<NotificationAdManager> notification_ad_manager_;
   std::unique_ptr<TabManager> tab_manager_;
-  std::unique_ptr<privacy::TokenGenerator> token_generator_;
-  std::unique_ptr<Account> account_;
-  std::unique_ptr<processor::EpsilonGreedyBandit>
-      epsilon_greedy_bandit_processor_;
-  std::unique_ptr<resource::EpsilonGreedyBandit>
-      epsilon_greedy_bandit_resource_;
-  std::unique_ptr<resource::TextClassification> text_classification_resource_;
-  std::unique_ptr<processor::TextClassification> text_classification_processor_;
-  std::unique_ptr<resource::PurchaseIntent> purchase_intent_resource_;
-  std::unique_ptr<processor::PurchaseIntent> purchase_intent_processor_;
+  std::unique_ptr<UserActivityManager> user_activity_manager_;
+
   std::unique_ptr<resource::AntiTargeting> anti_targeting_resource_;
   std::unique_ptr<resource::Conversions> conversions_resource_;
-  std::unique_ptr<geographic::SubdivisionTargeting> subdivision_targeting_;
-  std::unique_ptr<ad_notifications::Serving> ad_notification_serving_;
-  std::unique_ptr<AdNotification> ad_notification_;
-  std::unique_ptr<AdNotifications> ad_notifications_;
+  std::unique_ptr<resource::EpsilonGreedyBandit>
+      epsilon_greedy_bandit_resource_;
+  std::unique_ptr<resource::PurchaseIntent> purchase_intent_resource_;
+  std::unique_ptr<resource::TextClassification> text_classification_resource_;
+
+  std::unique_ptr<processor::EpsilonGreedyBandit>
+      epsilon_greedy_bandit_processor_;
+  std::unique_ptr<processor::PurchaseIntent> purchase_intent_processor_;
+  std::unique_ptr<processor::TextClassification> text_classification_processor_;
+
+  std::unique_ptr<privacy::TokenGenerator> token_generator_;
+  std::unique_ptr<Account> account_;
+
   std::unique_ptr<Catalog> catalog_;
-  std::unique_ptr<Transfer> transfer_;
-  std::unique_ptr<inline_content_ads::Serving> inline_content_ad_serving_;
+
+  std::unique_ptr<geographic::SubdivisionTargeting> subdivision_targeting_;
+
   std::unique_ptr<InlineContentAd> inline_content_ad_;
-  std::unique_ptr<Client> client_;
-  std::unique_ptr<ConfirmationsState> confirmations_state_;
-  std::unique_ptr<Conversions> conversions_;
-  std::unique_ptr<new_tab_page_ads::Serving> new_tab_page_ad_serving_;
+  std::unique_ptr<inline_content_ads::Serving> inline_content_ad_serving_;
+
   std::unique_ptr<NewTabPageAd> new_tab_page_ad_;
+  std::unique_ptr<new_tab_page_ads::Serving> new_tab_page_ad_serving_;
+
+  std::unique_ptr<NotificationAd> notification_ad_;
+  std::unique_ptr<notification_ads::Serving> notification_ad_serving_;
+
   std::unique_ptr<PromotedContentAd> promoted_content_ad_;
+
   std::unique_ptr<SearchResultAd> search_result_ad_;
-  std::unique_ptr<UserActivity> user_activity_;
-  std::unique_ptr<CovariateLogs> covariate_logs_;
+
+  std::unique_ptr<Conversions> conversions_;
+
+  std::unique_ptr<Transfer> transfer_;
 
   uint32_t last_html_loaded_hash_ = 0;
   uint32_t last_text_loaded_hash_ = 0;

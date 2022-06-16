@@ -11,13 +11,13 @@
 namespace brave_ads {
 namespace features {
 
-const base::Feature kAdNotifications{"AdNotifications",
+const base::Feature kNotificationAds{"AdNotifications",
                                      base::FEATURE_ENABLED_BY_DEFAULT};
 
-const base::Feature kCustomAdNotifications{"CustomAdNotifications",
+const base::Feature kCustomNotificationAds{"CustomAdNotifications",
                                            base::FEATURE_DISABLED_BY_DEFAULT};
 
-const base::Feature kAllowedToFallbackToCustomAdNotifications{
+const base::Feature kAllowedToFallbackToCustomNotificationAds{
     "AllowedToFallbackToCustomAdNotifications",
     base::FEATURE_ENABLED_BY_DEFAULT};
 
@@ -36,177 +36,177 @@ const char kFieldTrialParameterShouldSupportMultipleDisplays[] =
     "should_support_multiple_displays";
 const bool kDefaultShouldSupportMultipleDisplays = false;
 
-// Set to true to fallback to custom ad notifications if native notifications
+// Set to true to fallback to custom notification ads if native notifications
 // are disabled or false to never fallback
-const char kFieldTrialParameterCanFallbackToCustomAdNotifications[] =
+const char kFieldTrialParameterCanFallbackToCustomNotificationAds[] =
     "can_fallback_to_custom_notifications";
-const bool kDefaultCanFallbackToCustomAdNotifications = false;
+const bool kDefaultCanFallbackToCustomNotificationAds = false;
 
 // Ad notification timeout in seconds. Set to 0 to never time out
-const char kFieldTrialParameterAdNotificationTimeout[] =
+const char kFieldTrialParameterNotificationAdTimeout[] =
     "ad_notification_timeout";
 #if !BUILDFLAG(IS_ANDROID)
-const int kDefaultAdNotificationTimeout = 120;
+const int kDefaultNotificationAdTimeout = 120;
 #else
-const int kDefaultAdNotificationTimeout = 30;
+const int kDefaultNotificationAdTimeout = 30;
 #endif
 
 #if !BUILDFLAG(IS_ANDROID)
 
 // Ad notification fade animation duration in milliseconds
-const char kFieldTrialParameterAdNotificationFadeDuration[] =
+const char kFieldTrialParameterNotificationAdFadeDuration[] =
     "ad_notification_fade_duration";
-const int kDefaultAdNotificationFadeDuration = 200;
+const int kDefaultNotificationAdFadeDuration = 200;
 
 // Ad notification dark mode background color
-const char kFieldTrialParameterAdNotificationDarkModeBackgroundColor[] =
+const char kFieldTrialParameterNotificationAdDarkModeBackgroundColor[] =
     "ad_notification_dark_mode_background_color";
 // Default color value is SkColorSetRGB(0x20, 0x23, 0x27);
-const char kDefaultAdNotificationDarkModeBackgroundColor[] = "202327";
+const char kDefaultNotificationAdDarkModeBackgroundColor[] = "202327";
 
-const char kFieldTrialParameterShouldAttachAdNotificationToBrowserWindow[] =
+const char kFieldTrialParameterShouldAttachNotificationAdToBrowserWindow[] =
     "should_attached_ad_notification_to_browser_window";
-const bool kDefaultShouldAttachAdNotificationToBrowserWindow = false;
+const bool kDefaultShouldAttachNotificationAdToBrowserWindow = false;
 
 // Ad notification normalized display coordinate for the x component should be
 // between 0.0 and 1.0; coordinates outside this range will be adjusted to fit
 // the work area. Set to 0.0 for left, 0.5 for center or 1.0 for right
-const char kFieldTrialParameterAdNotificationNormalizedDisplayCoordinateX[] =
+const char kFieldTrialParameterNotificationAdNormalizedDisplayCoordinateX[] =
     "ad_notification_normalized_display_coordinate_x";
 #if BUILDFLAG(IS_WIN)
-const double kDefaultAdNotificationNormalizedDisplayCoordinateX = 1.0;
+const double kDefaultNotificationAdNormalizedDisplayCoordinateX = 1.0;
 #elif BUILDFLAG(IS_MAC)
-const double kDefaultAdNotificationNormalizedDisplayCoordinateX = 1.0;
+const double kDefaultNotificationAdNormalizedDisplayCoordinateX = 1.0;
 #elif BUILDFLAG(IS_LINUX)
-const double kDefaultAdNotificationNormalizedDisplayCoordinateX = 1.0;
+const double kDefaultNotificationAdNormalizedDisplayCoordinateX = 1.0;
 #endif
 
 // Ad notification x inset within the display's work area specified in screen
 // coordinates
-const char kFieldTrialParameterAdNotificationInsetX[] =
+const char kFieldTrialParameterNotificationAdInsetX[] =
     "ad_notification_inset_x";
 #if BUILDFLAG(IS_WIN)
-const int kDefaultAdNotificationInsetX = -370;
+const int kDefaultNotificationAdInsetX = -370;
 #elif BUILDFLAG(IS_MAC)
 const int kNativeNotificationWidth = 360;
-const int kDefaultAdNotificationInsetX = -(10 + kNativeNotificationWidth);
+const int kDefaultNotificationAdInsetX = -(10 + kNativeNotificationWidth);
 #elif BUILDFLAG(IS_LINUX)
-const int kDefaultAdNotificationInsetX = -13;
+const int kDefaultNotificationAdInsetX = -13;
 #endif
 
 // Ad notification normalized display coordinate for the y component should be
 // between 0.0 and 1.0; coordinates outside this range will be adjusted to fit
 // the work area. Set to 0.0 for top, 0.5 for middle or 1.0 for bottom
-const char kFieldTrialParameterAdNotificationNormalizedDisplayCoordinateY[] =
+const char kFieldTrialParameterNotificationAdNormalizedDisplayCoordinateY[] =
     "ad_notification_normalized_display_coordinate_y";
 #if BUILDFLAG(IS_WIN)
-const double kDefaultAdNotificationNormalizedDisplayCoordinateY = 1.0;
+const double kDefaultNotificationAdNormalizedDisplayCoordinateY = 1.0;
 #elif BUILDFLAG(IS_MAC)
-const double kDefaultAdNotificationNormalizedDisplayCoordinateY = 0.0;
+const double kDefaultNotificationAdNormalizedDisplayCoordinateY = 0.0;
 #elif BUILDFLAG(IS_LINUX)
-const double kDefaultAdNotificationNormalizedDisplayCoordinateY = 0.0;
+const double kDefaultNotificationAdNormalizedDisplayCoordinateY = 0.0;
 #endif
 
 // Ad notification y inset within the display's work area specified in screen
 // coordinates
-const char kFieldTrialParameterAdNotificationInsetY[] =
+const char kFieldTrialParameterNotificationAdInsetY[] =
     "ad_notification_inset_y";
 #if BUILDFLAG(IS_WIN)
-const int kDefaultAdNotificationInsetY = -10;
+const int kDefaultNotificationAdInsetY = -10;
 #elif BUILDFLAG(IS_MAC)
-const int kDefaultAdNotificationInsetY = 11;
+const int kDefaultNotificationAdInsetY = 11;
 #elif BUILDFLAG(IS_LINUX)
-const int kDefaultAdNotificationInsetY = 18;
+const int kDefaultNotificationAdInsetY = 18;
 #endif
 
 #endif  // !BUILDFLAG(IS_ANDROID)
 
 }  // namespace
 
-bool IsAdNotificationsEnabled() {
-  return base::FeatureList::IsEnabled(kAdNotifications);
+bool IsNotificationAdsEnabled() {
+  return base::FeatureList::IsEnabled(kNotificationAds);
 }
 
 bool ShouldSupportMultipleDisplays() {
   return GetFieldTrialParamByFeatureAsBool(
-      kAdNotifications, kFieldTrialParameterShouldSupportMultipleDisplays,
+      kNotificationAds, kFieldTrialParameterShouldSupportMultipleDisplays,
       kDefaultShouldSupportMultipleDisplays);
 }
 
-bool CanFallbackToCustomAdNotifications() {
+bool CanFallbackToCustomNotificationAds() {
   return GetFieldTrialParamByFeatureAsBool(
-      kAdNotifications, kFieldTrialParameterCanFallbackToCustomAdNotifications,
-      kDefaultCanFallbackToCustomAdNotifications);
+      kNotificationAds, kFieldTrialParameterCanFallbackToCustomNotificationAds,
+      kDefaultCanFallbackToCustomNotificationAds);
 }
 
-int AdNotificationTimeout() {
+int NotificationAdTimeout() {
   return GetFieldTrialParamByFeatureAsInt(
-      kAdNotifications, kFieldTrialParameterAdNotificationTimeout,
-      kDefaultAdNotificationTimeout);
+      kNotificationAds, kFieldTrialParameterNotificationAdTimeout,
+      kDefaultNotificationAdTimeout);
 }
 
-bool IsCustomAdNotificationsEnabled() {
-  return base::FeatureList::IsEnabled(kCustomAdNotifications);
+bool IsCustomNotificationAdsEnabled() {
+  return base::FeatureList::IsEnabled(kCustomNotificationAds);
 }
 
 #if !BUILDFLAG(IS_ANDROID)
 
-int AdNotificationFadeDuration() {
+int NotificationAdFadeDuration() {
   return GetFieldTrialParamByFeatureAsInt(
-      kCustomAdNotifications, kFieldTrialParameterAdNotificationFadeDuration,
-      kDefaultAdNotificationFadeDuration);
+      kCustomNotificationAds, kFieldTrialParameterNotificationAdFadeDuration,
+      kDefaultNotificationAdFadeDuration);
 }
 
-std::string AdNotificationDarkModeBackgroundColor() {
+std::string NotificationAdDarkModeBackgroundColor() {
   const std::string param_value = GetFieldTrialParamValueByFeature(
-      kCustomAdNotifications,
-      kFieldTrialParameterAdNotificationDarkModeBackgroundColor);
+      kCustomNotificationAds,
+      kFieldTrialParameterNotificationAdDarkModeBackgroundColor);
 
   if (param_value.empty()) {
-    return kDefaultAdNotificationDarkModeBackgroundColor;
+    return kDefaultNotificationAdDarkModeBackgroundColor;
   }
 
   return param_value;
 }
 
-bool ShouldAttachAdNotificationToBrowserWindow() {
+bool ShouldAttachNotificationAdToBrowserWindow() {
   return GetFieldTrialParamByFeatureAsBool(
-      kCustomAdNotifications,
-      kFieldTrialParameterShouldAttachAdNotificationToBrowserWindow,
-      kDefaultShouldAttachAdNotificationToBrowserWindow);
+      kCustomNotificationAds,
+      kFieldTrialParameterShouldAttachNotificationAdToBrowserWindow,
+      kDefaultShouldAttachNotificationAdToBrowserWindow);
 }
 
-double AdNotificationNormalizedDisplayCoordinateX() {
+double NotificationAdNormalizedDisplayCoordinateX() {
   return GetFieldTrialParamByFeatureAsDouble(
-      kCustomAdNotifications,
-      kFieldTrialParameterAdNotificationNormalizedDisplayCoordinateX,
-      kDefaultAdNotificationNormalizedDisplayCoordinateX);
+      kCustomNotificationAds,
+      kFieldTrialParameterNotificationAdNormalizedDisplayCoordinateX,
+      kDefaultNotificationAdNormalizedDisplayCoordinateX);
 }
 
-int AdNotificationInsetX() {
+int NotificationAdInsetX() {
   return GetFieldTrialParamByFeatureAsInt(
-      kCustomAdNotifications, kFieldTrialParameterAdNotificationInsetX,
-      kDefaultAdNotificationInsetX);
+      kCustomNotificationAds, kFieldTrialParameterNotificationAdInsetX,
+      kDefaultNotificationAdInsetX);
 }
 
-double AdNotificationNormalizedDisplayCoordinateY() {
+double NotificationAdNormalizedDisplayCoordinateY() {
   return GetFieldTrialParamByFeatureAsDouble(
-      kCustomAdNotifications,
-      kFieldTrialParameterAdNotificationNormalizedDisplayCoordinateY,
-      kDefaultAdNotificationNormalizedDisplayCoordinateY);
+      kCustomNotificationAds,
+      kFieldTrialParameterNotificationAdNormalizedDisplayCoordinateY,
+      kDefaultNotificationAdNormalizedDisplayCoordinateY);
 }
 
-int AdNotificationInsetY() {
+int NotificationAdInsetY() {
   return GetFieldTrialParamByFeatureAsInt(
-      kCustomAdNotifications, kFieldTrialParameterAdNotificationInsetY,
-      kDefaultAdNotificationInsetY);
+      kCustomNotificationAds, kFieldTrialParameterNotificationAdInsetY,
+      kDefaultNotificationAdInsetY);
 }
 
 #endif  // !BUILDFLAG(IS_ANDROID)
 
-bool IsAllowedToFallbackToCustomAdNotificationsEnabled() {
+bool IsAllowedToFallbackToCustomNotificationAdsEnabled() {
   return base::FeatureList::IsEnabled(
-      kAllowedToFallbackToCustomAdNotifications);
+      kAllowedToFallbackToCustomNotificationAds);
 }
 
 bool IsRequestAdsEnabledApiEnabled() {

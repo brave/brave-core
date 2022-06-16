@@ -17,7 +17,7 @@
 #include "bat/ads/internal/ad_events/ad_events.h"
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/base/instance_id_util.h"
-#include "bat/ads/internal/base/unittest_time_util.h"
+#include "bat/ads/internal/base/unittest/unittest_time_util.h"
 #include "bat/ads/internal/creatives/creative_ad_info.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -74,7 +74,7 @@ AdEventInfo BuildAdEvent(const std::string& placement_id,
                          const ConfirmationType& confirmation_type) {
   AdEventInfo ad_event;
 
-  ad_event.type = AdType::kAdNotification;
+  ad_event.type = AdType::kNotificationAd;
   ad_event.confirmation_type = confirmation_type;
   ad_event.placement_id = placement_id;
   ad_event.campaign_id = "604df73f-bc6e-4583-a56d-ce4e243c8537";

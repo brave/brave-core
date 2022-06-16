@@ -714,7 +714,6 @@ Muussa tapauksessa tämä estetään tietosuoja-asetuksilla. Jos sallit tämän,
 <translation id="2972581237482394796">&amp;Tee uudelleen</translation>
 <translation id="2977665033722899841"><ph name="ROW_NAME"/>, tällä hetkellä valittuna. <ph name="ROW_CONTENT"/></translation>
 <translation id="2978824962390592855">Ooppera</translation>
-<translation id="1536541482996273580">Avaa incognito-välilehti</translation>
 <translation id="2985398929374701810">Anna kelvollinen osoite.</translation>
 <translation id="2986368408720340940">Tämä noutotapa ei ole käytettävissä. Kokeile toista tapaa.</translation>
 <translation id="2987034854559945715">Ei hakua vastaavia ominaisuuksia</translation>
@@ -2937,6 +2936,7 @@ Lisätietoja:
 <translation id="40442660395682483">Avaa uusi yksityinen välilehti yksityistä selaamista varten</translation>
 <translation id="7627159832789643445"><ph name="LAUNCH_INCOGNITO_FOCUSED_FRIENDLY_MATCH_TEXT"/>, paina sarkainta ja sitten Enter-näppäintä avataksesi uuden yksityisen välilehden yksityistä selaamista varten</translation>
 <translation id="3711639027736550870">Avaa yksityinen välilehti -painike ja paina Enter-näppäintä, jotta voit avata uuden yksityisen välilehden yksityistä selaamista varten</translation>
+<translation id="1536541482996273580">Avaa yksityinen välilehti</translation>
 <translation id="5549245478906381817">Avaa yksityinen ikkuna</translation>
 <translation id="5497977785983089120">Avaa uusi yksityinen ikkuna yksityistä selaamista varten</translation>
 <translation id="1819281525814582516"><ph name="LAUNCH_INCOGNITO_FOCUSED_FRIENDLY_MATCH_TEXT"/>, paina välilehteä, sitten Enter-näppäintä avataksesi uuden yksityisen ikkunan yksityistä selaamista varten</translation>

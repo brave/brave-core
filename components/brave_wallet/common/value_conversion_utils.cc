@@ -14,6 +14,18 @@
 
 namespace brave_wallet {
 
+absl::optional<std::string> ExtractChainIdFromValue(
+    const base::Value::Dict* dict) {
+  if (!dict)
+    return absl::nullopt;
+
+  const std::string* chain_id = dict->FindString("chainId");
+  if (!chain_id) {
+    return absl::nullopt;
+  }
+  return *chain_id;
+}
+
 mojom::NetworkInfoPtr ValueToEthNetworkInfo(const base::Value& value) {
   mojom::NetworkInfo chain;
   const base::DictionaryValue* params_dict = nullptr;

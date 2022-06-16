@@ -10,8 +10,8 @@
 #include <string>
 #include <vector>
 
-#include "bat/ads/ad_notification_info.h"
 #include "bat/ads/ads_client.h"
+#include "bat/ads/notification_ad_info.h"
 #include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
 #include "mojo/public/cpp/bindings/associated_remote.h"
 #include "mojo/public/cpp/bindings/pending_associated_remote.h"
@@ -41,7 +41,7 @@ class BatAdsClientMojoBridge
   bool IsBrowserActive() const override;
   bool IsBrowserInFullScreenMode() const override;
 
-  void ShowNotification(const ads::AdNotificationInfo& info) override;
+  void ShowNotification(const ads::NotificationAdInfo& info) override;
   bool ShouldShowNotifications() override;
   void CloseNotification(const std::string& placement_id) override;
 

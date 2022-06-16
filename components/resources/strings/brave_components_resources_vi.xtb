@@ -256,14 +256,6 @@
 <translation id="8218538368080510976">Lỗi: Khu vực không được hỗ trợ</translation>
 <translation id="5382684862562314222">BAT chưa được hỗ trợ trong khu vực của bạn trên Uphold.</translation>
 <translation id="9074594632540931067">Lỗi: BAT không khả dụng</translation>
-<translation id="413458922997276130">Tài khoản của bạn tại Uphold hiện đang bị khóa.</translation>
-<translation id="3579959767665130790">Lỗi: Tài khoản bị chặn</translation>
-<translation id="6554308597291659562">Uphold được yêu cầu thu thập thêm một chút thông tin về bạn trước khi bật đầy đủ chức năng của tài khoản Uphold. Vui lòng thử lại sau khi bạn đã gửi thông tin này vào tài khoản Uphold của mình.</translation>
-<translation id="6996157559236886133">Lỗi: Chức năng tài khoản Uphold bị giới hạn</translation>
-<translation id="819370426249314592">Tài khoản của bạn tại Uphold vẫn đang chờ xử lý.</translation>
-<translation id="4530453398914580957">Lỗi: Treo tài khoản</translation>
-<translation id="2388470740942086608">Tài khoản của bạn tại Uphold hiện đang bị hạn chế.</translation>
-<translation id="3605236342612716051">Lỗi: Tài khoản bị hạn chế</translation>
 <translation id="3274650021044762770">Đã xảy ra vấn đề khi xác thực yêu cầu của trình duyệt kết nối Phần thưởng Brave với tài khoản <ph name="PROVIDER"/> của bạn. Bạn có thể <ph name="BEGIN_LINK"/>liên hệ hỗ trợ<ph name="END_LINK"/> để được trợ giúp thêm.</translation>
 <translation id="1316066811927496401">Lỗi: Không thể xác thực yêu cầu</translation>
 <translation id="1737873393693460829">Với việc bật [[title]], bạn đồng ý với <ph name="BEGIN_LINK1"/>Điều khoản Dịch vụ<ph name="END_LINK1"/> và <ph name="BEGIN_LINK2"/>Chính sách Quyền riêng tư<ph name="END_LINK2"/>.</translation>
@@ -674,7 +666,6 @@
 <translation id="8328137586971750853">Brave sẽ sử dụng Infura để đưa ra lệnh gọi Ethereum JSON-RPC tới hợp đồng thông minh từ Ethereum Name Service để xử lý các yêu cầu tra cứu tên miền .eth. Nếu bạn bật tính năng này thì Infura sẽ thấy tên miền .eth mà bạn đang cố gắng truy cập nhưng họ sẽ không thể thấy các tên miền khác. Xem <ph name="BEGIN_INFURA_TOU_LINK"/>điều khoản sử dụng<ph name="END_INFURA_TOU_LINK"/> và <ph name="BEGIN_INFURA_PRIVACY_LINK"/>chính sách bảo mật <ph name="END_INFURA_PRIVACY_LINK"/> của Infura.</translation>
 <translation id="7378412287463452336">Tiếp tục sử dụng máy chủ Infura</translation>
 <translation id="2356070529366658676">Yêu cầu</translation>
-<translation id="2218918398178303658">DNS qua HTTPS</translation>
 <translation id="1448289340149908413">Ethereum</translation>
 <translation id="2468755552460246661">Tên miền Đã chặn</translation>
 <translation id="6393849031898466746">Trang web này có thể cố gắng theo dõi bạn trên các trang web khác</translation>
@@ -820,7 +811,6 @@
 <translation id="4232775951515678071">Không lấy được loại cho giao dịch</translation>
 <translation id="2080935885647755539">Không lấy được phí xăng cho giao dịch EIP-1559</translation>
 <translation id="4843814354611030845">Người dùng đã từ chối giao dịch này</translation>
-<translation id="1462494615260983714">Lỗi khi xử lý giao dịch</translation>
 <translation id="4886059598718763020">'<ph name="VALUE"/>' không được phép ký tin nhắn</translation>
 <translation id="8719220598078667817">Ký giao dịch không thành công</translation>
 <translation id="875506212625074179">Phản hồi mã chuỗi không hợp lệ từ dịch vụ RPC</translation>
@@ -868,7 +858,7 @@
 <translation id="1191686659164947414">Giao dịch có thể được chạy trước</translation>
 <translation id="632241521608275119">Tỷ lệ trượt giá</translation>
 <translation id="4500473291496079954">Hết hạn trong</translation>
-<translation id="8093033115658137576">Địa chỉ hoặc URL của 0x</translation>
+<translation id="2236833281018938257">Địa chỉ hoặc URL của 0x</translation>
 <translation id="2860280209982026951">Brave sử dụng <ph name="LINK_BEFORE"/>0x<ph name="LINK_AFTER"/> làm bộ tổng hợp DEX.</translation>
 <translation id="151946611346774041">0x sẽ xử lý địa chỉ Ethereum và địa chỉ IP để thực hiện một giao dịch (bao gồm nhận báo giá). 0x sẽ CHỈ sử dụng dữ liệu này cho mục đích xử lý giao dịch.</translation>
 <translation id="4626407663177532837">Báo giá bao gồm một khoản phí Brave 0,875%.</translation>
@@ -1152,6 +1142,7 @@
 <translation id="3327639091470204775">Không thể kết nối đến cầu Trezor</translation>
 <translation id="6672377693827764095">Lỗi nội bộ, không thể lấy tài khoản</translation>
 <translation id="6889920539620318793">Đặt làm hoạt động</translation>
+<translation id="1462494615260983714">Lỗi khi xử lý giao dịch</translation>
 <translation id="8933250418452564886">Không tìm được giao dịch phần cứng, hãy thử lại</translation>
 <translation id="5999974802900788338">Đã nhận lỗi từ thiết bị phần cứng, có lẽ bạn cần xác nhận giao dịch trên thiết bị của bạn</translation>
 <translation id="8523768065044261559">Lỗi khi xử lý giao dịch, hãy thử lại</translation>

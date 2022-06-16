@@ -10,8 +10,8 @@
 #include "base/memory/raw_ptr.h"
 #include "bat/ads/internal/account/utility/redeem_unblinded_payment_tokens/redeem_unblinded_payment_tokens_delegate.h"
 #include "bat/ads/internal/account/wallet/wallet_info.h"
-#include "bat/ads/internal/base/backoff_timer.h"
-#include "bat/ads/internal/base/timer.h"
+#include "bat/ads/internal/base/timer/backoff_timer.h"
+#include "bat/ads/internal/base/timer/timer.h"
 #include "bat/ads/internal/privacy/tokens/unblinded_payment_tokens/unblinded_payment_token_info_aliases.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
 
@@ -26,6 +26,9 @@ class RedeemUnblindedPaymentTokens final {
  public:
   RedeemUnblindedPaymentTokens();
   ~RedeemUnblindedPaymentTokens();
+  RedeemUnblindedPaymentTokens(const RedeemUnblindedPaymentTokens&) = delete;
+  RedeemUnblindedPaymentTokens& operator=(const RedeemUnblindedPaymentTokens&) =
+      delete;
 
   void set_delegate(RedeemUnblindedPaymentTokensDelegate* delegate) {
     DCHECK_EQ(delegate_, nullptr);

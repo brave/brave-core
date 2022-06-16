@@ -13,6 +13,7 @@ import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.URLUtil;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -33,6 +34,7 @@ import org.chromium.brave_wallet.mojom.SignMessageRequest;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.crypto_wallet.adapters.SignMessagePagerAdapter;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
+import org.chromium.url.GURL;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,6 +52,7 @@ public class SignMessageFragment extends BaseDAppsBottomSheetDialogFragment {
     private TextView mNetworkName;
     private Button mBtCancel;
     private Button mBtSign;
+    private TextView mWebSite;
     private ExecutorService mExecutor;
     private Handler mHandler;
 
@@ -75,6 +78,7 @@ public class SignMessageFragment extends BaseDAppsBottomSheetDialogFragment {
 
         mBtCancel = view.findViewById(R.id.fragment_sign_msg_btn_cancel);
         mBtSign = view.findViewById(R.id.fragment_sign_msg_btn_sign);
+        mWebSite = view.findViewById(R.id.domain);
         initComponents();
 
         return view;
@@ -113,11 +117,21 @@ public class SignMessageFragment extends BaseDAppsBottomSheetDialogFragment {
                 mBtCancel.setOnClickListener(v -> { notifySignMessageRequestProcessed(false); });
                 mBtSign.setOnClickListener(v -> { notifySignMessageRequestProcessed(true); });
             }
+            if (mCurrentSignMessageRequest.originInfo != null
+                    && URLUtil.isValidUrl(mCurrentSignMessageRequest.originInfo.originSpec)) {
+                mWebSite.setText(
+                        Utils.geteTLD(new GURL(mCurrentSignMessageRequest.originInfo.originSpec),
+                                mCurrentSignMessageRequest.originInfo.eTldPlusOne));
+            }
         });
     }
 
     private void updateAccount() {
         getKeyringService().getSelectedAccount(CoinType.ETH, address -> {
+            if (address == null) {
+                getActivity().finish();
+                return;
+            }
             getKeyringService().getKeyringInfo(
                     BraveWalletConstants.DEFAULT_KEYRING_ID, keyringInfo -> {
                         if (keyringInfo == null) {
@@ -127,7 +141,8 @@ public class SignMessageFragment extends BaseDAppsBottomSheetDialogFragment {
                             if (address.equals(accountInfo.address)) {
                                 Utils.setBlockiesBitmapResource(
                                         mExecutor, mHandler, mAccountImage, address, true);
-                                mAccountName.setText(accountInfo.name);
+                                String accountText = accountInfo.name + "\n" + address;
+                                mAccountName.setText(accountText);
                                 break;
                             }
                         }

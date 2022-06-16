@@ -5,13 +5,15 @@
 
 #include "bat/ads/internal/creatives/creative_ad_info.h"
 
-#include "bat/ads/internal/base/number_util.h"
+#include "bat/ads/internal/base/numbers/number_util.h"
 
 namespace ads {
 
 CreativeAdInfo::CreativeAdInfo() = default;
 
 CreativeAdInfo::CreativeAdInfo(const CreativeAdInfo& info) = default;
+
+CreativeAdInfo& CreativeAdInfo::operator=(const CreativeAdInfo& info) = default;
 
 CreativeAdInfo::~CreativeAdInfo() = default;
 

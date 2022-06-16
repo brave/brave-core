@@ -67,7 +67,7 @@ public class RadioButtonGroupUnstoppableDomainsResolveMethodPreference
     @Override
     public void onCheckedChanged(RadioGroup group, int checkedId) {
         for (int i = 0; i < OPTIONS_SIZE; i++) {
-            if (mButtons.get(i).isChecked()) {
+            if (mButtons.get(i) != null && mButtons.get(i).isChecked()) {
                 mSetting = i;
                 mSettingRadioButton = mButtons.get(i);
                 break;

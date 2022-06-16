@@ -16,10 +16,6 @@
 
 namespace ads {
 
-namespace targeting {
-struct UserModelInfo;
-}  // namespace targeting
-
 namespace geographic {
 class SubdivisionTargeting;
 }  // namespace geographic
@@ -28,6 +24,10 @@ namespace resource {
 class AntiTargeting;
 }  // namespace resource
 
+namespace targeting {
+struct UserModelInfo;
+}  // namespace targeting
+
 namespace inline_content_ads {
 
 class EligibleAdsV2 final : public EligibleAdsBase {
@@ -35,6 +35,8 @@ class EligibleAdsV2 final : public EligibleAdsBase {
   EligibleAdsV2(geographic::SubdivisionTargeting* subdivision_targeting,
                 resource::AntiTargeting* anti_targeting);
   ~EligibleAdsV2() override;
+  EligibleAdsV2(const EligibleAdsV2&) = delete;
+  EligibleAdsV2& operator=(const EligibleAdsV2&) = delete;
 
   void GetForUserModel(
       const targeting::UserModelInfo& user_model,

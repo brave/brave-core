@@ -13,8 +13,7 @@
 #include "base/json/json_writer.h"
 #include "base/strings/stringprintf.h"
 #include "base/values.h"
-#include "bat/ads/internal/base/crypto_util.h"
-#include "bat/ads/internal/privacy/challenge_bypass_ristretto/blinded_token.h"
+#include "bat/ads/internal/base/crypto/crypto_util.h"
 #include "bat/ads/internal/server/headers/via_header_util.h"
 #include "bat/ads/internal/server/url/hosts/server_host_util.h"
 
@@ -84,7 +83,7 @@ std::string RequestSignedTokensUrlRequestBuilder::BuildDigestHeaderValue(
     const std::string& body) const {
   DCHECK(!body.empty());
 
-  const std::vector<uint8_t> body_sha256 = security::Sha256Hash(body);
+  const std::vector<uint8_t> body_sha256 = security::Sha256(body);
   const std::string body_sha256_base64 = base::Base64Encode(body_sha256);
 
   return base::StringPrintf("SHA-256=%s", body_sha256_base64.c_str());

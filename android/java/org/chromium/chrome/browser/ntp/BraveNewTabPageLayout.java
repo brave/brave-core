@@ -120,6 +120,7 @@ import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
 import org.chromium.chrome.browser.preferences.BravePreferenceKeys;
 import org.chromium.chrome.browser.preferences.SharedPreferencesManager;
 import org.chromium.chrome.browser.profiles.Profile;
+import org.chromium.chrome.browser.settings.BackgroundImagesPreferences;
 import org.chromium.chrome.browser.settings.BraveNewsPreferences;
 import org.chromium.chrome.browser.settings.SettingsLauncherImpl;
 import org.chromium.chrome.browser.suggestions.tile.TileGroup;
@@ -155,7 +156,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout implements Connectio
     private static final String TAG = "BraveNewTabPageView";
     private static final String BRAVE_REF_URL = "https://brave.com/r/";
     private static final String BRAVE_LEARN_MORE_URL =
-            "https://brave.com/privacy/browser/#brave-today";
+            "https://brave.com/privacy/browser/#brave-news";
     private static final int ITEMS_PER_PAGE = 18;
     private static final int MINIMUM_VISIBLE_HEIGHT_THRESHOLD = 50;
     private static final int NEWS_SCROLL_TO_TOP_NEW = -1;
@@ -165,6 +166,10 @@ public class BraveNewTabPageLayout extends NewTabPageLayout implements Connectio
     private static final String BRAVE_RECYCLERVIEW_OFFSET_POSITION =
             "recyclerview_offset_position_";
 
+    // To delete in bytecode, parent variable will be used instead.
+    private ViewGroup mMvTilesContainerLayout;
+
+    // Own members.
     private View mBraveStatsViewFallBackLayout;
 
     private ImageView mBgImageView;
@@ -182,14 +187,11 @@ public class BraveNewTabPageLayout extends NewTabPageLayout implements Connectio
     private ViewGroup mainLayout;
     private DatabaseHelper mDatabaseHelper;
 
-    private ViewGroup mSiteSectionView;
-    private TileGroup mTileGroup;
     private LottieAnimationView mBadgeAnimationView;
 
     private Tab mTab;
     private Activity mActivity;
     private LinearLayout superReferralSitesLayout;
-    private TextView mTopsiteErrorMessage;
 
     // Brave news
     private BraveNewsAdapterFeedCard mAdapterFeedCard;
@@ -298,43 +300,48 @@ public class BraveNewTabPageLayout extends NewTabPageLayout implements Connectio
     }
 
     private void showFallBackNTPLayout() {
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+                new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
+                        LinearLayout.LayoutParams.WRAP_CONTENT));
         if (mBraveStatsViewFallBackLayout != null
                 && mBraveStatsViewFallBackLayout.getParent() != null) {
             ((ViewGroup) mBraveStatsViewFallBackLayout.getParent())
                     .removeView(mBraveStatsViewFallBackLayout);
-        }
-        LayoutInflater inflater =
-                (LayoutInflater) mActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        mBraveStatsViewFallBackLayout = inflater.inflate(R.layout.brave_stats_layout, null);
-        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
-            new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT));
-        int margin = dpToPx(mActivity, 16);
-        layoutParams.setMargins(margin, margin, margin, margin);
-        mBraveStatsViewFallBackLayout.setLayoutParams(layoutParams);
-        mBraveStatsViewFallBackLayout.requestLayout();
-
-        mBraveStatsViewFallBackLayout.findViewById(R.id.brave_stats_title_layout)
-                .setVisibility(View.GONE);
-        mBraveStatsViewFallBackLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            @SuppressLint("SourceLockedOrientationActivity")
-            public void onClick(View v) {
-                mActivity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-                checkForBraveStats();
             }
-        });
-        BraveStatsUtil.updateBraveStatsLayout(mBraveStatsViewFallBackLayout);
-        mainLayout.addView(mBraveStatsViewFallBackLayout, 0);
-        int insertionPoint = mainLayout.indexOfChild(findViewById(R.id.ntp_middle_spacer)) + 1;
-        if (mSiteSectionView.getParent() != null) {
-            ((ViewGroup) mSiteSectionView.getParent()).removeView(mSiteSectionView);
-        }
-        mSiteSectionView.setBackgroundResource(R.drawable.rounded_dark_bg_alpha);
-        mSiteSectionView.setLayoutParams(layoutParams);
-        mSiteSectionView.requestLayout();
-        mainLayout.addView(mSiteSectionView, insertionPoint);
+            LayoutInflater inflater =
+                    (LayoutInflater) mActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            mBraveStatsViewFallBackLayout = inflater.inflate(R.layout.brave_stats_layout, null);
+            int margin = dpToPx(mActivity, 16);
+            layoutParams.setMargins(margin, margin, margin, margin);
+            mBraveStatsViewFallBackLayout.setLayoutParams(layoutParams);
+            mBraveStatsViewFallBackLayout.requestLayout();
+
+            mBraveStatsViewFallBackLayout.findViewById(R.id.brave_stats_title_layout)
+                    .setVisibility(View.GONE);
+            mBraveStatsViewFallBackLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                @SuppressLint("SourceLockedOrientationActivity")
+                public void onClick(View v) {
+                    mActivity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+                    checkForBraveStats();
+                }
+            });
+            BraveStatsUtil.updateBraveStatsLayout(mBraveStatsViewFallBackLayout);
+            mainLayout.addView(mBraveStatsViewFallBackLayout, 0);
+
+            if (ContextUtils.getAppSharedPreferences().getBoolean(
+                        BackgroundImagesPreferences.PREF_SHOW_TOP_SITES, true)) {
+                int insertionPoint =
+                        mainLayout.indexOfChild(findViewById(R.id.ntp_middle_spacer)) + 1;
+                if (mMvTilesContainerLayout.getParent() != null) {
+                    ((ViewGroup) mMvTilesContainerLayout.getParent())
+                            .removeView(mMvTilesContainerLayout);
+                }
+                mMvTilesContainerLayout.setBackgroundResource(R.drawable.rounded_dark_bg_alpha);
+                mMvTilesContainerLayout.setLayoutParams(layoutParams);
+                mMvTilesContainerLayout.requestLayout();
+                mainLayout.addView(mMvTilesContainerLayout, insertionPoint);
+            }
     }
 
     protected void updateTileGridPlaceholderVisibility() {
@@ -355,21 +362,15 @@ public class BraveNewTabPageLayout extends NewTabPageLayout implements Connectio
         }
     }
 
-    @SuppressLint("VisibleForTests")
     protected void insertSiteSectionView() {
         mainLayout = findViewById(R.id.ntp_main_layout);
-
-        mSiteSectionView = NewTabPageLayout.inflateSiteSection(mainLayout);
-        ViewGroup.LayoutParams layoutParams = mSiteSectionView.getLayoutParams();
-        layoutParams.width = ViewGroup.LayoutParams.WRAP_CONTENT;
-        // If the explore sites section exists as its own section, then space it more closely.
-        int variation = ExploreSitesBridge.getVariation();
-        if (ExploreSitesBridge.isEnabled(variation)) {
-            ((MarginLayoutParams) layoutParams).bottomMargin =
-                getResources().getDimensionPixelOffset(
-                    R.dimen.tile_grid_layout_vertical_spacing);
-        }
-        mSiteSectionView.setLayoutParams(layoutParams);
+        mMvTilesContainerLayout = (ViewGroup) LayoutInflater.from(mainLayout.getContext())
+                                          .inflate(R.layout.mv_tiles_container, mainLayout, false);
+        mMvTilesContainerLayout.setVisibility(View.VISIBLE);
+        // The page contents are initially hidden; otherwise they'll be drawn centered on the
+        // page before the tiles are available and then jump upwards to make space once the
+        // tiles are available.
+        if (getVisibility() != View.VISIBLE) setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -584,7 +585,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout implements Connectio
                     (LinearLayout.LayoutParams) mImageCreditLayout.getLayoutParams();
 
             int imageCreditCorrection = NTPUtil.correctImageCreditLayoutTopPosition(
-                    mNtpImageGlobal, mSiteSectionView.getHeight());
+                    mNtpImageGlobal, mMvTilesContainerLayout.getHeight());
             if (toTop) {
                 imageCreditCorrection = 0;
             }
@@ -1405,18 +1406,20 @@ public class BraveNewTabPageLayout extends NewTabPageLayout implements Connectio
     public void initialize(NewTabPageManager manager, Activity activity,
             TileGroup.Delegate tileGroupDelegate, boolean searchProviderHasLogo,
             boolean searchProviderIsGoogle, FeedSurfaceScrollDelegate scrollDelegate,
-            ContextMenuManager contextMenuManager, TouchEnabledDelegate touchEnabledDelegate,
-            UiConfig uiConfig, Supplier<Tab> tabProvider,
+            TouchEnabledDelegate touchEnabledDelegate, UiConfig uiConfig,
             ActivityLifecycleDispatcher lifecycleDispatcher, NewTabPageUma uma, boolean isIncognito,
             WindowAndroid windowAndroid) {
         super.initialize(manager, activity, tileGroupDelegate, searchProviderHasLogo,
-                searchProviderIsGoogle, scrollDelegate, contextMenuManager, touchEnabledDelegate,
-                uiConfig, tabProvider, lifecycleDispatcher, uma, isIncognito, windowAndroid);
+                searchProviderIsGoogle, scrollDelegate, touchEnabledDelegate, uiConfig,
+                lifecycleDispatcher, uma, isIncognito, windowAndroid);
 
         assert (activity instanceof BraveActivity);
         mActivity = activity;
-        mTabProvider = tabProvider;
         ((BraveActivity) mActivity).dismissShieldsTooltip();
+    }
+
+    public void setTabProvider(Supplier<Tab> tabProvider) {
+        mTabProvider = tabProvider;
     }
 
     private void showNTPImage(NTPImage ntpImage) {
@@ -1424,13 +1427,14 @@ public class BraveNewTabPageLayout extends NewTabPageLayout implements Connectio
         Point size = new Point();
         display.getSize(size);
 
-        mSiteSectionView.post(new Runnable() {
+        mMvTilesContainerLayout.post(new Runnable() {
             @Override
             public void run() {
                 correctPosition(false);
             }
         });
-        NTPUtil.updateOrientedUI(mActivity, this, size, ntpImage, mSiteSectionView.getHeight());
+        NTPUtil.updateOrientedUI(
+                mActivity, this, size, ntpImage, mMvTilesContainerLayout.getHeight());
 
         ImageView mSponsoredLogo = (ImageView) findViewById(R.id.sponsored_logo);
         FloatingActionButton mSuperReferralLogo = (FloatingActionButton) findViewById(R.id.super_referral_logo);
@@ -1787,27 +1791,6 @@ public class BraveNewTabPageLayout extends NewTabPageLayout implements Connectio
 
     private TabImpl getTabImpl() {
         return (TabImpl) getTab();
-    }
-
-    @Override
-    public void onTileCountChanged() {
-        new Handler().postDelayed(() -> {
-            if (mTileGroup != null && mTileGroup.isEmpty()) {
-                correctPosition(false);
-            }
-        }, 100);
-
-        if (mTopsiteErrorMessage == null) {
-            return;
-        }
-
-        boolean showPlaceholder =
-                mTileGroup != null && mTileGroup.hasReceivedData() && mTileGroup.isEmpty();
-        if (!showPlaceholder) {
-            mTopsiteErrorMessage.setVisibility(View.GONE);
-        } else {
-            mTopsiteErrorMessage.setVisibility(View.VISIBLE);
-        }
     }
 
     @Override

@@ -9,9 +9,8 @@
 
 #include "base/test/scoped_feature_list.h"
 #include "bat/ads/internal/ad_events/ad_event_unittest_util.h"
-#include "bat/ads/internal/base/unittest_base.h"
-#include "bat/ads/internal/base/unittest_time_util.h"
-#include "bat/ads/internal/base/unittest_util.h"
+#include "bat/ads/internal/base/unittest/unittest_base.h"
+#include "bat/ads/internal/base/unittest/unittest_time_util.h"
 #include "bat/ads/internal/serving/eligible_ads/exclusion_rules/exclusion_rule_features.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
@@ -77,12 +76,12 @@ TEST_F(BatAdsTransferredExclusionRuleTest,
   AdEventList ad_events;
 
   const AdEventInfo ad_event =
-      BuildAdEvent(creative_ad_2, AdType::kAdNotification,
+      BuildAdEvent(creative_ad_2, AdType::kNotificationAd,
                    ConfirmationType::kTransferred, Now());
 
   ad_events.push_back(ad_event);
 
-  task_environment_.FastForwardBy(base::Hours(47));
+  FastForwardClockBy(base::Hours(47));
 
   // Act
   TransferredExclusionRule exclusion_rule(ad_events);
@@ -118,7 +117,7 @@ TEST_F(BatAdsTransferredExclusionRuleTest,
   AdEventList ad_events;
 
   const AdEventInfo ad_event_1 =
-      BuildAdEvent(creative_ad_2, AdType::kAdNotification,
+      BuildAdEvent(creative_ad_2, AdType::kNotificationAd,
                    ConfirmationType::kTransferred, Now());
   ad_events.push_back(ad_event_1);
 
@@ -137,7 +136,7 @@ TEST_F(BatAdsTransferredExclusionRuleTest,
                    ConfirmationType::kTransferred, Now());
   ad_events.push_back(ad_event_3);
 
-  task_environment_.FastForwardBy(base::Hours(47));
+  FastForwardClockBy(base::Hours(47));
 
   // Act
   TransferredExclusionRule exclusion_rule(ad_events);
@@ -169,12 +168,12 @@ TEST_F(BatAdsTransferredExclusionRuleTest,
   AdEventList ad_events;
 
   const AdEventInfo ad_event =
-      BuildAdEvent(creative_ad, AdType::kAdNotification,
+      BuildAdEvent(creative_ad, AdType::kNotificationAd,
                    ConfirmationType::kTransferred, Now());
 
   ad_events.push_back(ad_event);
 
-  task_environment_.FastForwardBy(base::Hours(47));
+  FastForwardClockBy(base::Hours(47));
 
   // Act
   TransferredExclusionRule exclusion_rule(ad_events);
@@ -206,12 +205,12 @@ TEST_F(BatAdsTransferredExclusionRuleTest,
   AdEventList ad_events;
 
   const AdEventInfo ad_event =
-      BuildAdEvent(creative_ad, AdType::kAdNotification,
+      BuildAdEvent(creative_ad, AdType::kNotificationAd,
                    ConfirmationType::kTransferred, Now());
 
   ad_events.push_back(ad_event);
 
-  task_environment_.FastForwardBy(base::Hours(47));
+  FastForwardClockBy(base::Hours(47));
 
   // Act
   TransferredExclusionRule exclusion_rule(ad_events);
@@ -243,12 +242,12 @@ TEST_F(BatAdsTransferredExclusionRuleTest,
   AdEventList ad_events;
 
   const AdEventInfo ad_event =
-      BuildAdEvent(creative_ad, AdType::kAdNotification,
+      BuildAdEvent(creative_ad, AdType::kNotificationAd,
                    ConfirmationType::kTransferred, Now());
 
   ad_events.push_back(ad_event);
 
-  task_environment_.FastForwardBy(base::Hours(48));
+  FastForwardClockBy(base::Hours(48));
 
   // Act
   TransferredExclusionRule exclusion_rule(ad_events);
@@ -284,12 +283,12 @@ TEST_F(BatAdsTransferredExclusionRuleTest,
   AdEventList ad_events;
 
   const AdEventInfo ad_event =
-      BuildAdEvent(creative_ad_2, AdType::kAdNotification,
+      BuildAdEvent(creative_ad_2, AdType::kNotificationAd,
                    ConfirmationType::kTransferred, Now());
 
   ad_events.push_back(ad_event);
 
-  task_environment_.FastForwardBy(base::Hours(48));
+  FastForwardClockBy(base::Hours(48));
 
   // Act
   TransferredExclusionRule exclusion_rule(ad_events);

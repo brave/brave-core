@@ -7,19 +7,22 @@
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_CATALOG_CATALOG_H_
 
 #include "base/observer_list.h"
-#include "bat/ads/internal/base/backoff_timer.h"
-#include "bat/ads/internal/base/timer.h"
+#include "bat/ads/internal/base/timer/backoff_timer.h"
+#include "bat/ads/internal/base/timer/timer.h"
 #include "bat/ads/internal/catalog/catalog_observer.h"
+#include "bat/ads/internal/database/database_manager_observer.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
 
 namespace ads {
 
 struct CatalogInfo;
 
-class Catalog final {
+class Catalog final : public DatabaseManagerObserver {
  public:
   Catalog();
-  ~Catalog();
+  ~Catalog() override;
+  Catalog(const Catalog&) = delete;
+  Catalog& operator=(const Catalog&) = delete;
 
   void AddObserver(CatalogObserver* observer);
   void RemoveObserver(CatalogObserver* observer);
@@ -36,6 +39,10 @@ class Catalog final {
 
   void NotifyDidUpdateCatalog(const CatalogInfo& catalog) const;
   void NotifyFailedToUpdateCatalog() const;
+
+  // DatabaseManagerObserver:
+  void OnDidMigrateDatabase(const int from_version,
+                            const int to_version) override;
 
   base::ObserverList<CatalogObserver> observers_;
 

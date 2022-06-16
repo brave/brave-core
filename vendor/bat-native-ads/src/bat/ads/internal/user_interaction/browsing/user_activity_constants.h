@@ -8,7 +8,7 @@
 
 namespace ads {
 
-const int kMaximumHistoryItems = 3600;
+constexpr int kMaximumHistoryItems = 3600;
 
 }  // namespace ads
 

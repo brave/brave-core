@@ -35,6 +35,20 @@ class SettingsWalletNetworksSubpage extends SettingsWalletNetworksSubpageBase {
         },
       },
 
+      knownNetworks: {
+        type: Array,
+        value() {
+          return [];
+        },
+      },
+
+      customNetworks: {
+        type: Array,
+        value() {
+          return [];
+        },
+      },
+
       showAddWalletNetworkDialog_: {
         type: Boolean,
         value: false,
@@ -47,6 +61,14 @@ class SettingsWalletNetworksSubpage extends SettingsWalletNetworksSubpageBase {
       isActiveNetwork: {
         type: Boolean,
         value: true
+      },
+      canRemoveNetwork: {
+        type: Boolean,
+        value: true,
+      },
+      canResetNetwork: {
+        type: Boolean,
+        value: true,
       }
     }
   }
@@ -68,16 +90,40 @@ class SettingsWalletNetworksSubpage extends SettingsWalletNetworksSubpageBase {
     this.updateNetworks()
   }
 
-  getNetworkItemClass(chainId) {
-    if (!this.isDefaultNetwork(chainId)) {
-      return "flex cr-padded-text hovered"
+  getNetworkItemClass(item) {
+    if (this.isDefaultNetwork(item.chainId)) {
+      return "flex cr-padded-text active-network"
     }
     return "flex cr-padded-text"
+  }
+
+  getHideButtonClass(hiddenNetworks, item) {
+    if (hiddenNetworks.indexOf(item.chainId) > -1) {
+      return "icon-visibility-off"
+    }
+    return "icon-visibility"
   }
 
   isDefaultNetwork(chainId) {
     return (chainId ===
         this.getPref('brave.wallet.selected_networks').value['ethereum'])
+  }
+
+  canRemoveNetwork_(item) {
+    if (this.isActiveNetwork) return false
+
+    return this.knownNetworks.indexOf(item.chainId) == -1
+  }
+
+  canHideNetwork_(item) {
+    return !this.isDefaultNetwork(item.chainId);
+  }
+
+  canResetNetwork_(item) {
+    return (
+      this.knownNetworks.indexOf(item.chainId) > -1 &&
+      this.customNetworks.indexOf(item.chainId) > -1
+    )
   }
 
   hideNativeCurrencyInfo(item) {
@@ -115,6 +161,19 @@ class SettingsWalletNetworksSubpage extends SettingsWalletNetworksSubpageBase {
         then(success => { this.updateNetworks() })
   }
 
+  onResetActionTapped_(event) {
+    const chainId = this.selectedNetwork.chainId
+    const chainName = this.selectedNetwork.chainName
+    this.selectedNetwork = {}
+    this.$$("cr-action-menu").close()
+    var message = this.i18n("walletResetNetworkConfirmation", chainName)
+    if (!window.confirm(message)) return
+
+    this.browserProxy_.resetEthereumChain(chainId).then((success) => {
+      this.updateNetworks()
+    })
+  }
+
   onAddNetworkTap_(item) {
     this.showAddWalletNetworkDialog_ = true
   }
@@ -124,11 +183,18 @@ class SettingsWalletNetworksSubpage extends SettingsWalletNetworksSubpageBase {
     this.showAddWalletNetworkDialog_ = true
   }
 
+  onEmptyDoubleClick(event) {
+    event.stopPropagation();
+  }
+
   updateNetworks() {
-    this.browserProxy_.getCustomNetworksList().then(payload => {
+    this.browserProxy_.getNetworksList().then(payload => {
       if (!payload)
         return
-      this.networks = JSON.parse(payload)
+      this.networks = payload.networks
+      this.knownNetworks = payload.knownNetworks
+      this.customNetworks = payload.customNetworks
+      this.hiddenNetworks = payload.hiddenNetworks
       this.notifyKeylist()
     })
   }
@@ -139,9 +205,24 @@ class SettingsWalletNetworksSubpage extends SettingsWalletNetworksSubpageBase {
     this.updateNetworks()
   }
 
+  onHideButtonClicked_(event) {
+    const chainId = event.model.item.chainId
+    if (this.hiddenNetworks.indexOf(event.model.item.chainId) > -1) {
+      this.browserProxy_.removeHiddenNetwork(chainId).then((success) => {
+        this.updateNetworks()
+      })
+    } else {
+      this.browserProxy_.addHiddenNetwork(chainId).then((success) => {
+        this.updateNetworks()
+      })
+    }
+  }
+
   onNetworkMenuTapped_(event) {
     this.selectedNetwork = event.model.item
     this.isActiveNetwork = this.isDefaultNetwork(this.selectedNetwork.chainId)
+    this.canRemoveNetwork = this.canRemoveNetwork_(this.selectedNetwork)
+    this.canResetNetwork = this.canResetNetwork_(this.selectedNetwork)
     const actionMenu =
         /** @type {!CrActionMenuElement} */ (this.$$('#network-menu').get());
     actionMenu.showAt(event.target);

@@ -23,6 +23,7 @@ public class BraveManageSyncSettings extends ManageSyncSettings {
     private Preference mReviewSyncData;
 
     private CheckBoxPreference mSyncPaymentsIntegration;
+    private CheckBoxPreference mSyncReadingList;
 
     @Override
     public void onCreatePreferences(@Nullable Bundle savedInstanceState, String rootKey) {
@@ -36,5 +37,6 @@ public class BraveManageSyncSettings extends ManageSyncSettings {
         findPreference(PREF_ADVANCED_CATEGORY).setVisible(false);
 
         mSyncPaymentsIntegration.setVisible(false);
+        mSyncReadingList.setVisible(false);
     }
 }

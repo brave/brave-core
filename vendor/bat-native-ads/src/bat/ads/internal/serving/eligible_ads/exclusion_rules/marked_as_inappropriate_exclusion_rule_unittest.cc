@@ -6,9 +6,8 @@
 #include "bat/ads/internal/serving/eligible_ads/exclusion_rules/marked_as_inappropriate_exclusion_rule.h"
 
 #include "bat/ads/ad_content_info.h"
-#include "bat/ads/internal/base/unittest_base.h"
-#include "bat/ads/internal/base/unittest_util.h"
-#include "bat/ads/internal/deprecated/client/client.h"
+#include "bat/ads/internal/base/unittest/unittest_base.h"
+#include "bat/ads/internal/deprecated/client/client_state_manager.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
@@ -52,7 +51,7 @@ TEST_F(BatAdsMarkedAsInappropriateExclusionRuleTest, DoNotAllowAd) {
   ad_content.creative_set_id = kCreativeSetId;
   ad_content.is_flagged = false;
 
-  Client::Get()->ToggleFlaggedAd(ad_content);
+  ClientStateManager::Get()->ToggleFlaggedAd(ad_content);
 
   // Act
   MarkedAsInappropriateExclusionRule exclusion_rule;

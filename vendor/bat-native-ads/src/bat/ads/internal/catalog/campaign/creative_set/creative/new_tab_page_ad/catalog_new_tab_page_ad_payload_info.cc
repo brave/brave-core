@@ -12,6 +12,9 @@ CatalogNewTabPageAdPayloadInfo::CatalogNewTabPageAdPayloadInfo() = default;
 CatalogNewTabPageAdPayloadInfo::CatalogNewTabPageAdPayloadInfo(
     const CatalogNewTabPageAdPayloadInfo& info) = default;
 
+CatalogNewTabPageAdPayloadInfo& CatalogNewTabPageAdPayloadInfo::operator=(
+    const CatalogNewTabPageAdPayloadInfo& info) = default;
+
 CatalogNewTabPageAdPayloadInfo::~CatalogNewTabPageAdPayloadInfo() = default;
 
 bool CatalogNewTabPageAdPayloadInfo::operator==(

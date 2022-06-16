@@ -54,7 +54,6 @@ import {
 import { useBalance } from '../../../../common/hooks'
 
 // Actions
-import { WalletActions } from '../../../../common/actions'
 import { WalletPageActions } from '../../../../page/actions'
 
 export interface Props {
@@ -171,13 +170,6 @@ export const Account = (props: Props) => {
     }
     dispatch(WalletPageActions.removeImportedAccount({ address, coin }))
   }, [])
-
-  // effects
-  React.useEffect(() => {
-    if (selectedAccount) {
-      dispatch(WalletActions.selectAccount(selectedAccount))
-    }
-  }, [selectedAccount])
 
   // redirect (asset not found)
   if (!selectedAccount) {

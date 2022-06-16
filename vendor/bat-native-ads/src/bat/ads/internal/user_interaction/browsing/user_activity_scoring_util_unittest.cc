@@ -8,10 +8,9 @@
 #include <vector>
 
 #include "base/test/scoped_feature_list.h"
-#include "bat/ads/internal/base/unittest_base.h"
-#include "bat/ads/internal/base/unittest_util.h"
-#include "bat/ads/internal/user_interaction/browsing/user_activity.h"
+#include "bat/ads/internal/base/unittest/unittest_base.h"
 #include "bat/ads/internal/user_interaction/browsing/user_activity_features.h"
+#include "bat/ads/internal/user_interaction/browsing/user_activity_manager.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
@@ -48,8 +47,8 @@ class BatAdsUserActivityScoringUtilTest : public UnitTestBase {
 
 TEST_F(BatAdsUserActivityScoringUtilTest, WasUserActive) {
   // Arrange
-  UserActivity::Get()->RecordEvent(UserActivityEventType::kOpenedNewTab);
-  UserActivity::Get()->RecordEvent(UserActivityEventType::kClosedTab);
+  UserActivityManager::Get()->RecordEvent(UserActivityEventType::kOpenedNewTab);
+  UserActivityManager::Get()->RecordEvent(UserActivityEventType::kClosedTab);
 
   // Act
   const bool was_user_active = WasUserActive();
@@ -70,7 +69,7 @@ TEST_F(BatAdsUserActivityScoringUtilTest, WasUserInactive) {
 
 TEST_F(BatAdsUserActivityScoringUtilTest, WasUserInactiveIfBelowThreshold) {
   // Arrange
-  UserActivity::Get()->RecordEvent(UserActivityEventType::kOpenedNewTab);
+  UserActivityManager::Get()->RecordEvent(UserActivityEventType::kOpenedNewTab);
 
   // Act
   const bool was_user_active = WasUserActive();
@@ -82,12 +81,12 @@ TEST_F(BatAdsUserActivityScoringUtilTest, WasUserInactiveIfBelowThreshold) {
 TEST_F(BatAdsUserActivityScoringUtilTest,
        WasUserInactiveAfterTimeWindowHasElapsed) {
   // Arrange
-  UserActivity::Get()->RecordEvent(UserActivityEventType::kOpenedNewTab);
-  UserActivity::Get()->RecordEvent(UserActivityEventType::kClosedTab);
+  UserActivityManager::Get()->RecordEvent(UserActivityEventType::kOpenedNewTab);
+  UserActivityManager::Get()->RecordEvent(UserActivityEventType::kClosedTab);
 
   const base::TimeDelta elapsed_time_window =
       user_activity::features::GetTimeWindow() + base::Seconds(1);
-  AdvanceClock(elapsed_time_window);
+  AdvanceClockBy(elapsed_time_window);
 
   // Act
   const bool was_user_active = WasUserActive();

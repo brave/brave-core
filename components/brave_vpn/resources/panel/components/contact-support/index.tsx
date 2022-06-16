@@ -5,11 +5,12 @@ import TextInput, { Textarea } from '$web-components/input'
 import Toggle from '$web-components/toggle'
 import { getLocale } from '../../../../../common/locale'
 import * as S from './style'
+import { ErrorLabel } from '../general'
 import getPanelBrowserAPI, * as BraveVPN from '../../api/panel_browser_api'
 import { CaratStrongLeftIcon } from 'brave-ui/components/icons'
 
 interface Props {
-  onCloseContactSupport: React.MouseEventHandler<HTMLButtonElement>
+  onCloseContactSupport: () => void
 }
 
 interface ContactSupportInputFields {
@@ -45,7 +46,7 @@ function ContactSupport (props: Props) {
   const [showErrors, setShowErrors] = React.useState(false)
   // Undefined for never sent, true for is sending, false for has completed
   const [isSubmitting, setIsSubmitting] = React.useState<boolean>()
-  const [, setRemoteSubmissionError] = React.useState<string>()
+  const [isRemoteSubmissionError, setRemoteSubmissionError] = React.useState<boolean>(false)
 
   // Get possible values to submit
   React.useEffect(() => {
@@ -88,7 +89,7 @@ function ContactSupport (props: Props) {
 
   const handleSubmit = async () => {
     // Clear error about last submission
-    setRemoteSubmissionError(undefined)
+    setRemoteSubmissionError(false)
     // Handle submission when not valid, show user
     // which fields are required
     if (!isValid) {
@@ -102,15 +103,18 @@ function ContactSupport (props: Props) {
       (formData.shareAppVersion ? `App version: ${supportData?.appVersion}\n` : '') +
       (formData.shareHostname ? `Hostname: ${supportData?.hostname}\n` : '')
 
-    // TODO: this will return a bool (success) and string (message)
-    await getPanelBrowserAPI().serviceHandler.createSupportTicket(
+    const { success } = await getPanelBrowserAPI().serviceHandler.createSupportTicket(
       formData.contactEmail,
       formData.problemSubject,
       fullIssueBody
     )
 
-    // TODO: handle error case, if any?
     setIsSubmitting(false)
+    setRemoteSubmissionError(!success)
+
+    if (success) {
+      props.onCloseContactSupport()
+    }
   }
 
   const handlePrivacyPolicyClick = () => {
@@ -213,6 +217,11 @@ function ContactSupport (props: Props) {
           <S.Notes>
             <p>{getLocale('braveVpnSupportNotes')}</p>
           </S.Notes>
+          {isRemoteSubmissionError &&
+          <ErrorLabel>
+            {getLocale('braveVpnSupportTicketFailed')}
+          </ErrorLabel>
+          }
           <Button
             type={'submit'}
             isPrimary

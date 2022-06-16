@@ -15,8 +15,8 @@
     padding-inline-end: var(--cr-section-padding);
     padding-inline-start: var(--cr-section-indent-padding);
   }
-  .hovered {
-    cursor: pointer;
+  .active-network {
+    font-weight: bold;
   }
 </style>
 
@@ -36,12 +36,21 @@
         <template>
           <div on-dblclick=onItemDoubleClick>
             <div class="settings-box">
-              <div class$=[[getNetworkItemClass(item.chainId)]]>
+              <div class$=[[getNetworkItemClass(item)]]>
                 <div><span hidden="[[hideNativeCurrencyInfo]]">({{item.nativeCurrency.name}}) </span>{{item.chainName}}</div>
                 <div class="secondary">[[getItemDescritionText(item)]]</div>
               </div>
+              <cr-icon-button class$="[[getHideButtonClass(hiddenNetworks, item)]]"
+                              title$="text"
+                              hidden=[[!canHideNetwork_(item)]]
+                              on-click="onHideButtonClicked_"
+                              on-dblclick="onEmptyDoubleClick"
+                              focus-row-control focus-type="remove">
+              </cr-icon-button>
+              <div class="separator" hidden=[[!canHideNetwork_(item)]]></div>
               <cr-icon-button class="icon-more-vert"
                               on-click="onNetworkMenuTapped_"
+                              on-dblclick="onEmptyDoubleClick"
                               itemName=[[item.name]]
                               focus-type="menu">
               </cr-icon-button>
@@ -53,9 +62,14 @@
                     $i18n{walletNetworkEdit}
                   </button>
                   <button class="dropdown-item" id="remove"
-                      hidden=[[isActiveNetwork]]
+                      hidden=[[!canRemoveNetwork]]
                       on-click="onDeleteActionTapped_">
                     $i18n{walletNetworkRemove}
+                  </button>
+                  <button class="dropdown-item" id="reset"
+                      hidden=[[!canResetNetwork]]
+                      on-click="onResetActionTapped_">
+                    $i18n{walletNetworkReset}
                   </button>
                   <button class="dropdown-item" id="set-active"
                       hidden=[[isActiveNetwork]]

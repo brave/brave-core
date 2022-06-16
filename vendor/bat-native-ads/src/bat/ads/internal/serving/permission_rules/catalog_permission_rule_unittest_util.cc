@@ -6,7 +6,7 @@
 #include "bat/ads/internal/serving/permission_rules/catalog_permission_rule_unittest_util.h"
 
 #include "base/time/time.h"
-#include "bat/ads/internal/base/unittest_time_util.h"
+#include "bat/ads/internal/base/unittest/unittest_time_util.h"
 #include "bat/ads/internal/catalog/catalog_util.h"
 
 namespace ads {

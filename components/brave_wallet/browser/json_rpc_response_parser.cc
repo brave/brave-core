@@ -27,6 +27,14 @@ bool ParseSingleStringResult(const std::string& json, std::string* result) {
   return true;
 }
 
+absl::optional<std::string> ParseSingleStringResult(const std::string& json) {
+  std::string result;
+  if (!ParseSingleStringResult(json, &result))
+    return absl::nullopt;
+
+  return result;
+}
+
 bool ParseResult(const std::string& json, base::Value* result) {
   DCHECK(result);
   base::JSONReader::ValueWithError value_with_error =

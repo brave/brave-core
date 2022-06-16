@@ -12,10 +12,12 @@
 
 namespace ads {
 
-class IssuersUrlRequestBuilder : UrlRequestBuilderInterface {
+class IssuersUrlRequestBuilder : public UrlRequestBuilderInterface {
  public:
   IssuersUrlRequestBuilder();
   ~IssuersUrlRequestBuilder() override;
+  IssuersUrlRequestBuilder(const IssuersUrlRequestBuilder&) = delete;
+  IssuersUrlRequestBuilder& operator=(const IssuersUrlRequestBuilder&) = delete;
 
   mojom::UrlRequestPtr Build() override;
 

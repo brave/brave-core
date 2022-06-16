@@ -11,6 +11,8 @@ AdInfo::AdInfo() = default;
 
 AdInfo::AdInfo(const AdInfo& info) = default;
 
+AdInfo& AdInfo::operator=(const AdInfo& info) = default;
+
 AdInfo::~AdInfo() = default;
 
 bool AdInfo::operator==(const AdInfo& rhs) const {

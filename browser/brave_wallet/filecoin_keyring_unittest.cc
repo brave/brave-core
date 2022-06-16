@@ -98,7 +98,7 @@ TEST(FilecoinKeyring, ImportFilecoinSECP) {
   ASSERT_FALSE(input_key.empty());
   std::vector<uint8_t> private_key(input_key.begin(), input_key.end());
 
-  FilecoinKeyring keyring(brave_wallet::mojom::kLocalhostChainId);
+  FilecoinKeyring keyring;
   auto address =
       keyring.ImportFilecoinAccount(private_key, mojom::kFilecoinTestnet,
                                     mojom::FilecoinAddressProtocol::SECP256K1);
@@ -116,7 +116,7 @@ TEST(FilecoinKeyring, ImportFilecoinBLS) {
   ASSERT_TRUE(FilecoinKeyring::DecodeImportPayload(private_key_hex,
                                                    &private_key, &protocol));
   EXPECT_EQ(protocol, mojom::FilecoinAddressProtocol::BLS);
-  FilecoinKeyring keyring(brave_wallet::mojom::kLocalhostChainId);
+  FilecoinKeyring keyring;
   std::string address = keyring.ImportFilecoinAccount(
       private_key, mojom::kFilecoinTestnet, protocol);
   EXPECT_EQ(address,
@@ -168,7 +168,7 @@ TEST(FilecoinKeyring, fil_private_key_public_key) {
 }
 
 TEST(FilecoinKeyring, SignTransaction) {
-  FilecoinKeyring keyring(brave_wallet::mojom::kLocalhostChainId);
+  FilecoinKeyring keyring;
   EXPECT_FALSE(keyring.SignTransaction(nullptr));
 
   auto transaction = FilTransaction::FromTxData(mojom::FilTxData::New(

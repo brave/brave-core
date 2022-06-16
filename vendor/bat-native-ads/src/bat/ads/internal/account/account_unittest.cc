@@ -16,12 +16,12 @@
 #include "bat/ads/internal/account/transactions/transactions_unittest_util.h"
 #include "bat/ads/internal/account/wallet/wallet_info.h"
 #include "bat/ads/internal/ads_client_helper.h"
-#include "bat/ads/internal/base/http_status_code.h"
-#include "bat/ads/internal/base/unittest_base.h"
-#include "bat/ads/internal/base/unittest_time_util.h"
-#include "bat/ads/internal/base/unittest_util.h"
-#include "bat/ads/internal/creatives/ad_notifications/creative_ad_notification_info_aliases.h"
-#include "bat/ads/internal/creatives/ad_notifications/creative_ad_notifications_database_table.h"
+#include "bat/ads/internal/base/net/http/http_status_code.h"
+#include "bat/ads/internal/base/unittest/unittest_base.h"
+#include "bat/ads/internal/base/unittest/unittest_mock_util.h"
+#include "bat/ads/internal/base/unittest/unittest_time_util.h"
+#include "bat/ads/internal/creatives/notification_ads/creative_notification_ad_info_aliases.h"
+#include "bat/ads/internal/creatives/notification_ads/creative_notification_ads_database_table.h"
 #include "bat/ads/internal/privacy/tokens/token_generator_mock.h"
 #include "bat/ads/internal/privacy/tokens/unblinded_tokens/unblinded_tokens_unittest_util.h"
 #include "bat/ads/pref_names.h"
@@ -57,8 +57,8 @@ class BatAdsAccountTest : public AccountObserver, public UnitTestBase {
 
   ~BatAdsAccountTest() override = default;
 
-  void Save(const CreativeAdNotificationList& creative_ads) {
-    database::table::CreativeAdNotifications database_table;
+  void Save(const CreativeNotificationAdList& creative_ads) {
+    database::table::CreativeNotificationAds database_table;
     database_table.Save(creative_ads,
                         [](const bool success) { ASSERT_TRUE(success); });
   }
@@ -204,7 +204,6 @@ TEST_F(BatAdsAccountTest, GetIssuersIfAdsAreEnabled) {
           ]
         }
         )"}}}};
-
   MockUrlRequest(ads_client_mock_, endpoints);
 
   account_->MaybeGetIssuers();
@@ -272,7 +271,6 @@ TEST_F(BatAdsAccountTest, DoNotGetIssuersIfAdsAreDisabled) {
           ]
         }
         )"}}}};
-
   MockUrlRequest(ads_client_mock_, endpoints);
 
   account_->MaybeGetIssuers();
@@ -339,7 +337,6 @@ TEST_F(BatAdsAccountTest, DoNotGetInvalidIssuers) {
           ]
         }
         )"}}}};
-
   MockUrlRequest(ads_client_mock_, endpoints);
 
   account_->MaybeGetIssuers();
@@ -386,7 +383,6 @@ TEST_F(BatAdsAccountTest, DoNotGetMissingPaymentIssuers) {
           ]
         }
         )"}}}};
-
   MockUrlRequest(ads_client_mock_, endpoints);
 
   account_->MaybeGetIssuers();
@@ -440,7 +436,6 @@ TEST_F(BatAdsAccountTest, DepositForCash) {
               }
             }
           )"}}}};
-
   MockUrlRequest(ads_client_mock_, endpoints);
 
   BuildAndSetIssuers();
@@ -457,9 +452,9 @@ TEST_F(BatAdsAccountTest, DepositForCash) {
 
   privacy::SetUnblindedTokens(1);
 
-  CreativeAdNotificationList creative_ads;
+  CreativeNotificationAdList creative_ads;
   CreativeDaypartInfo daypart_info;
-  CreativeAdNotificationInfo info;
+  CreativeNotificationAdInfo info;
   info.creative_instance_id = "3519f52c-46a4-4c48-9c2b-c264c0067f04";
   info.creative_set_id = "c2ba3e7d-f688-4bc4-a053-cbe7ac1e6123";
   info.campaign_id = "84197fc8-830a-4a8e-8339-7a70c2bfa104";
@@ -485,7 +480,7 @@ TEST_F(BatAdsAccountTest, DepositForCash) {
   Save(creative_ads);
 
   // Act
-  account_->Deposit(info.creative_instance_id, AdType::kAdNotification,
+  account_->Deposit(info.creative_instance_id, AdType::kNotificationAd,
                     ConfirmationType::kViewed);
 
   // Assert
@@ -499,7 +494,7 @@ TEST_F(BatAdsAccountTest, DepositForCash) {
   expected_transaction.created_at = Now();
   expected_transaction.creative_instance_id = info.creative_instance_id;
   expected_transaction.value = 1.0;
-  expected_transaction.ad_type = AdType::kAdNotification;
+  expected_transaction.ad_type = AdType::kNotificationAd;
   expected_transaction.confirmation_type = ConfirmationType::kViewed;
   expected_transactions.push_back(expected_transaction);
 
@@ -528,7 +523,7 @@ TEST_F(BatAdsAccountTest, DepositForNonCash) {
 
   // Act
   account_->Deposit("3519f52c-46a4-4c48-9c2b-c264c0067f04",
-                    AdType::kAdNotification, ConfirmationType::kClicked);
+                    AdType::kNotificationAd, ConfirmationType::kClicked);
 
   // Assert
   EXPECT_TRUE(did_process_deposit_);
@@ -542,7 +537,7 @@ TEST_F(BatAdsAccountTest, DepositForNonCash) {
   expected_transaction.creative_instance_id =
       "3519f52c-46a4-4c48-9c2b-c264c0067f04";
   expected_transaction.value = 0.0;
-  expected_transaction.ad_type = AdType::kAdNotification;
+  expected_transaction.ad_type = AdType::kNotificationAd;
   expected_transaction.confirmation_type = ConfirmationType::kClicked;
   expected_transactions.push_back(expected_transaction);
 
@@ -567,9 +562,9 @@ TEST_F(BatAdsAccountTest, DoNotDepositCashIfCreativeInstanceIdDoesNotExist) {
   }
   ON_CALL(*token_generator_mock_, Generate(_)).WillByDefault(Return(tokens));
 
-  CreativeAdNotificationList creative_ads;
+  CreativeNotificationAdList creative_ads;
   CreativeDaypartInfo daypart_info;
-  CreativeAdNotificationInfo info;
+  CreativeNotificationAdInfo info;
   info.creative_instance_id = "3519f52c-46a4-4c48-9c2b-c264c0067f04";
   info.creative_set_id = "c2ba3e7d-f688-4bc4-a053-cbe7ac1e6123";
   info.campaign_id = "84197fc8-830a-4a8e-8339-7a70c2bfa104";
@@ -596,7 +591,7 @@ TEST_F(BatAdsAccountTest, DoNotDepositCashIfCreativeInstanceIdDoesNotExist) {
 
   // Act
   account_->Deposit("eaa6224a-876d-4ef8-a384-9ac34f238631",
-                    AdType::kAdNotification, ConfirmationType::kViewed);
+                    AdType::kNotificationAd, ConfirmationType::kViewed);
 
   // Assert
   EXPECT_FALSE(did_process_deposit_);
@@ -615,7 +610,7 @@ TEST_F(BatAdsAccountTest, GetStatement) {
   // Arrange
   TransactionList transactions;
 
-  AdvanceClock(TimeFromString("31 October 2020", /* is_local */ true));
+  AdvanceClockTo(TimeFromString("31 October 2020", /* is_local */ true));
 
   const TransactionInfo& transaction_1 =
       BuildTransaction(0.01, ConfirmationType::kViewed);
@@ -625,7 +620,7 @@ TEST_F(BatAdsAccountTest, GetStatement) {
       BuildTransaction(0.01, ConfirmationType::kViewed, Now());
   transactions.push_back(transaction_2);
 
-  AdvanceClock(TimeFromString("18 November 2020", /* is_local */ true));
+  AdvanceClockTo(TimeFromString("18 November 2020", /* is_local */ true));
 
   const TransactionInfo& transaction_3 =
       BuildTransaction(0.01, ConfirmationType::kViewed);
@@ -635,7 +630,7 @@ TEST_F(BatAdsAccountTest, GetStatement) {
       BuildTransaction(0.01, ConfirmationType::kViewed, Now());
   transactions.push_back(transaction_4);
 
-  AdvanceClock(TimeFromString("25 December 2020", /* is_local */ true));
+  AdvanceClockTo(TimeFromString("25 December 2020", /* is_local */ true));
 
   const TransactionInfo& transaction_5 =
       BuildTransaction(0.01, ConfirmationType::kViewed);

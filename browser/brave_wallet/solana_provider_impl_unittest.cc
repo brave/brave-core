@@ -6,15 +6,23 @@
 #include "brave/components/brave_wallet/browser/solana_provider_impl.h"
 
 #include "base/feature_list.h"
+#include "base/json/json_reader.h"
 #include "base/memory/raw_ptr.h"
 #include "base/test/bind.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/brave_wallet/brave_wallet_provider_delegate_impl.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
 #include "brave/browser/brave_wallet/keyring_service_factory.h"
+#include "brave/browser/brave_wallet/tx_service_factory.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
+#include "brave/components/brave_wallet/browser/solana_account_meta.h"
+#include "brave/components/brave_wallet/browser/solana_instruction.h"
+#include "brave/components/brave_wallet/browser/solana_message.h"
+#include "brave/components/brave_wallet/browser/tx_service.h"
+#include "brave/components/brave_wallet/common/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/common/features.h"
+#include "brave/components/brave_wallet/common/solana_utils.h"
 #include "chrome/test/base/testing_profile.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/permissions/permission_request_manager.h"
@@ -27,6 +35,12 @@
 namespace brave_wallet {
 
 namespace {
+
+constexpr char kEncodedSerializedMsg[] =
+    "QwE1eawcSfggJRAUzH1a5gqbULPVraB9W4m138wSFvQNmnhL4utKzctTrLQUxLVQs7RHwJhskf"
+    "X6xTwbQXWhz2wavFwaZekuiAcJNNYeE36SK5JWq8SX3M6vqEAC3GW456M38RzhsQK5oVYYW69J"
+    "UxtUCXVBexiK";
+
 class TestEventsListener : public mojom::SolanaEventsListener {
  public:
   TestEventsListener() {}
@@ -64,6 +78,7 @@ class TestEventsListener : public mojom::SolanaEventsListener {
  private:
   mojo::Receiver<mojom::SolanaEventsListener> observer_receiver_{this};
 };
+
 }  // namespace
 
 class SolanaProviderImplUnitTest : public testing::Test {
@@ -88,8 +103,10 @@ class SolanaProviderImplUnitTest : public testing::Test {
     brave_wallet_service_ =
         brave_wallet::BraveWalletServiceFactory::GetServiceForContext(
             browser_context());
+    tx_service_ =
+        brave_wallet::TxServiceFactory::GetServiceForContext(browser_context());
     provider_ = std::make_unique<SolanaProviderImpl>(
-        keyring_service_, brave_wallet_service_,
+        keyring_service_, brave_wallet_service_, tx_service_,
         std::make_unique<brave_wallet::BraveWalletProviderDelegateImpl>(
             web_contents(), web_contents()->GetMainFrame()));
     observer_.reset(new TestEventsListener());
@@ -158,6 +175,23 @@ class SolanaProviderImplUnitTest : public testing::Test {
     return keyring_service_->GetHDKeyringById(id)->GetAddress(index);
   }
 
+  void LockWallet() {
+    keyring_service_->Lock();
+    // Needed so KeyringServiceObserver::Locked handler can be hit
+    // which the provider object listens to for the accountsChanged event.
+    base::RunLoop().RunUntilIdle();
+  }
+
+  void UnlockWallet() {
+    base::RunLoop run_loop;
+    keyring_service_->Unlock(
+        "brave", base::BindLambdaForTesting([&run_loop](bool success) {
+          ASSERT_TRUE(success);
+          run_loop.Quit();
+        }));
+    run_loop.Run();
+  }
+
   void AddSolanaPermission(const url::Origin& origin,
                            const std::string& address) {
     base::RunLoop run_loop;
@@ -216,6 +250,89 @@ class SolanaProviderImplUnitTest : public testing::Test {
     return signature_out;
   }
 
+  base::Value SignAndSendTransaction(
+      const std::string& encoded_serialized_message,
+      mojom::SolanaProviderError expected_error,
+      const std::string& expected_error_message) {
+    base::Value result_out(base::Value::Type::DICTIONARY);
+    base::RunLoop run_loop;
+    provider_->SignAndSendTransaction(
+        encoded_serialized_message, absl::nullopt,
+        base::BindLambdaForTesting([&](mojom::SolanaProviderError error,
+                                       const std::string& error_message,
+                                       base::Value result) {
+          EXPECT_EQ(error, expected_error);
+          EXPECT_EQ(error_message, expected_error_message);
+          result_out = std::move(result);
+          run_loop.Quit();
+        }));
+    run_loop.Run();
+    return result_out;
+  }
+
+  std::vector<uint8_t> SignTransaction(
+      const std::string& encoded_serialized_message,
+      mojom::SolanaProviderError expected_error,
+      const std::string& expected_error_message) {
+    std::vector<uint8_t> result_out;
+    base::RunLoop run_loop;
+    provider_->SignTransaction(
+        encoded_serialized_message,
+        base::BindLambdaForTesting([&](mojom::SolanaProviderError error,
+                                       const std::string& error_message,
+                                       const std::vector<uint8_t>& result) {
+          EXPECT_EQ(error, expected_error);
+          EXPECT_EQ(error_message, expected_error_message);
+          result_out = std::move(result);
+          run_loop.Quit();
+        }));
+    run_loop.Run();
+    return result_out;
+  }
+
+  std::vector<std::vector<uint8_t>> SignAllTransactions(
+      const std::vector<std::string>& encoded_serialized_messages,
+      mojom::SolanaProviderError expected_error,
+      const std::string& expected_error_message) {
+    std::vector<std::vector<uint8_t>> result_out;
+    base::RunLoop run_loop;
+    provider_->SignAllTransactions(
+        encoded_serialized_messages,
+        base::BindLambdaForTesting(
+            [&](mojom::SolanaProviderError error,
+                const std::string& error_message,
+                const std::vector<std::vector<uint8_t>>& result) {
+              EXPECT_EQ(error, expected_error);
+              EXPECT_EQ(error_message, expected_error_message);
+              result_out = std::move(result);
+              run_loop.Quit();
+            }));
+    run_loop.Run();
+    return result_out;
+  }
+
+  base::Value Request(const std::string& json,
+                      mojom::SolanaProviderError expected_error,
+                      const std::string& expected_error_message) {
+    base::Value result_out(base::Value::Type::DICTIONARY);
+    auto value = base::JSONReader::Read(json);
+    if (!value)
+      return result_out;
+    base::RunLoop run_loop;
+    provider_->Request(
+        value->Clone(),
+        base::BindLambdaForTesting([&](mojom::SolanaProviderError error,
+                                       const std::string& error_message,
+                                       base::Value result) {
+          EXPECT_EQ(error, expected_error);
+          EXPECT_EQ(error_message, expected_error_message);
+          result_out = std::move(result);
+          run_loop.Quit();
+        }));
+    run_loop.Run();
+    return result_out;
+  }
+
   bool IsConnected() {
     bool result = false;
     base::RunLoop run_loop;
@@ -234,6 +351,7 @@ class SolanaProviderImplUnitTest : public testing::Test {
  private:
   raw_ptr<KeyringService> keyring_service_ = nullptr;
   raw_ptr<BraveWalletService> brave_wallet_service_ = nullptr;
+  raw_ptr<TxService> tx_service_ = nullptr;
   std::unique_ptr<content::TestWebContents> web_contents_;
   content::BrowserTaskEnvironment browser_task_environment_;
   content::TestWebContentsFactory factory_;
@@ -263,6 +381,41 @@ TEST_F(SolanaProviderImplUnitTest, Connect) {
   EXPECT_EQ(error, mojom::SolanaProviderError::kSuccess);
   EXPECT_TRUE(error_message.empty());
   EXPECT_TRUE(IsConnected());
+
+  provider_->Disconnect();
+  mojom::SolanaProviderError pending_error;
+  std::string pending_error_message;
+  std::string pending_connect_account;
+  LockWallet();
+  base::RunLoop run_loop;
+  provider_->Connect(absl::nullopt, base::BindLambdaForTesting(
+                                        [&pending_error, &pending_error_message,
+                                         &pending_connect_account, &run_loop](
+                                            mojom::SolanaProviderError error,
+                                            const std::string& error_message,
+                                            const std::string& public_key) {
+                                          pending_error = error;
+                                          pending_error_message = error_message;
+                                          pending_connect_account = public_key;
+                                          run_loop.Quit();
+                                        }));
+  // Request will be rejected because it is still waiting for wallet unlock.
+  account = Connect(absl::nullopt, &error, &error_message);
+  EXPECT_TRUE(account.empty());
+  EXPECT_EQ(error, mojom::SolanaProviderError::kUserRejectedRequest);
+  EXPECT_EQ(error_message,
+            l10n_util::GetStringUTF8(IDS_WALLET_USER_REJECTED_REQUEST));
+  EXPECT_FALSE(IsConnected());
+  // Unlock wallet will continue previous connect, since permission is already
+  // granted we don't need to grant it again.
+  UnlockWallet();
+
+  // Wait for Unlocked observer to pick up previous connect
+  run_loop.Run();
+  EXPECT_EQ(pending_connect_account, address);
+  EXPECT_EQ(pending_error, mojom::SolanaProviderError::kSuccess);
+  EXPECT_TRUE(pending_error_message.empty());
+  EXPECT_TRUE(IsConnected());
 }
 
 TEST_F(SolanaProviderImplUnitTest, EagerlyConnect) {
@@ -283,10 +436,29 @@ TEST_F(SolanaProviderImplUnitTest, EagerlyConnect) {
   EXPECT_EQ(error_message,
             l10n_util::GetStringUTF8(IDS_WALLET_USER_REJECTED_REQUEST));
   EXPECT_FALSE(IsConnected());
+  // Request will be rejected when wallet is locked (no permission)
+  LockWallet();
+  account = Connect(dict.Clone(), &error, &error_message);
+  EXPECT_TRUE(account.empty());
+  EXPECT_EQ(error, mojom::SolanaProviderError::kUserRejectedRequest);
+  EXPECT_EQ(error_message,
+            l10n_util::GetStringUTF8(IDS_WALLET_USER_REJECTED_REQUEST));
+  EXPECT_FALSE(IsConnected());
+  UnlockWallet();
+
+  AddSolanaPermission(GetOrigin(), address);
+  // Request will be rejected when wallet is locked (has permission)
+  LockWallet();
+  account = Connect(dict.Clone(), &error, &error_message);
+  EXPECT_TRUE(account.empty());
+  EXPECT_EQ(error, mojom::SolanaProviderError::kUserRejectedRequest);
+  EXPECT_EQ(error_message,
+            l10n_util::GetStringUTF8(IDS_WALLET_USER_REJECTED_REQUEST));
+  EXPECT_FALSE(IsConnected());
+  UnlockWallet();
 
   // extra parameters doesn't matter
   dict.GetDict().Set("ExtraP", "aramters");
-  AddSolanaPermission(GetOrigin(), address);
   account = Connect(dict.Clone(), &error, &error_message);
   EXPECT_EQ(account, address);
   EXPECT_EQ(error, mojom::SolanaProviderError::kSuccess);
@@ -434,6 +606,141 @@ TEST_F(SolanaProviderImplUnitTest, SignMessage) {
   EXPECT_EQ(requests[1]->message, "BRAVE");
   EXPECT_EQ(requests[2]->message, "0x4252415645");
   EXPECT_EQ(requests[3]->message, "BRAVE");
+}
+
+TEST_F(SolanaProviderImplUnitTest, GetDeserializedMessage) {
+  CreateWallet();
+  AddAccount();
+  const std::string address = GetAddressByIndex(0);
+  EXPECT_FALSE(provider_->GetDeserializedMessage("", address));
+
+  SolanaInstruction instruction(kSolanaSystemProgramId,
+                                {SolanaAccountMeta(address, true, true),
+                                 SolanaAccountMeta(address, false, true)},
+                                {2, 0, 0, 0, 128, 150, 152, 0, 0, 0, 0, 0});
+  SolanaMessage msg("9sHcv6xwn9YkB8nxTUGKDwPwNnmqVp5oAXxU8Fdkm4J6", 0, address,
+                    {instruction});
+
+  auto serialized_msg = msg.Serialize(nullptr);
+  ASSERT_TRUE(serialized_msg);
+
+  auto deserialized_msg =
+      provider_->GetDeserializedMessage(Base58Encode(*serialized_msg), address);
+  EXPECT_TRUE(deserialized_msg);
+
+  // Test current selected account is not the same as the fee payer in the
+  // serialized message.
+  deserialized_msg = provider_->GetDeserializedMessage(
+      Base58Encode(*serialized_msg),
+      "3Lu176FQzbQJCc8iL9PnmALbpMPhZeknoturApnXRDJw");
+  EXPECT_FALSE(deserialized_msg);
+
+  // Mutiple signers should return absl::nullopt.
+  SolanaInstruction instruction2(
+      kSolanaSystemProgramId,
+      {SolanaAccountMeta(address, true, true),
+       SolanaAccountMeta("3Lu176FQzbQJCc8iL9PnmALbpMPhZeknoturApnXRDJw", true,
+                         true)},
+      {2, 0, 0, 0, 128, 150, 152, 0, 0, 0, 0, 0});
+  SolanaMessage msg2("9sHcv6xwn9YkB8nxTUGKDwPwNnmqVp5oAXxU8Fdkm4J6", 0, address,
+                     {instruction2});
+  serialized_msg = msg2.Serialize(nullptr);
+  ASSERT_TRUE(serialized_msg);
+
+  deserialized_msg =
+      provider_->GetDeserializedMessage(Base58Encode(*serialized_msg), address);
+  EXPECT_FALSE(deserialized_msg);
+}
+
+TEST_F(SolanaProviderImplUnitTest, SignTransactionAPIs) {
+  CreateWallet();
+  AddAccount();
+  std::string address = GetAddressByIndex(0);
+  SetSelectedAccount(address, mojom::CoinType::SOL);
+  Navigate(GURL("https://brave.com"));
+
+  // Disconnected state will be rejcted.
+  ASSERT_FALSE(IsConnected());
+  auto value = SignAndSendTransaction(
+      kEncodedSerializedMsg, mojom::SolanaProviderError::kUnauthorized,
+      l10n_util::GetStringUTF8(IDS_WALLET_NOT_AUTHED));
+  EXPECT_EQ(value, base::Value(base::Value::Type::DICTIONARY));
+  auto signed_tx = SignTransaction(
+      kEncodedSerializedMsg, mojom::SolanaProviderError::kUnauthorized,
+      l10n_util::GetStringUTF8(IDS_WALLET_NOT_AUTHED));
+  EXPECT_EQ(signed_tx, std::vector<uint8_t>());
+  auto signed_txs = SignAllTransactions(
+      {kEncodedSerializedMsg}, mojom::SolanaProviderError::kUnauthorized,
+      l10n_util::GetStringUTF8(IDS_WALLET_NOT_AUTHED));
+  EXPECT_EQ(signed_txs, std::vector<std::vector<uint8_t>>());
+
+  AddSolanaPermission(GetOrigin(), address);
+  Connect(absl::nullopt, nullptr, nullptr);
+  ASSERT_TRUE(IsConnected());
+
+  // Test message can't be deserialized.
+  value = SignAndSendTransaction(
+      "", mojom::SolanaProviderError::kInternalError,
+      l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+  EXPECT_EQ(value, base::Value(base::Value::Type::DICTIONARY));
+  signed_tx =
+      SignTransaction("", mojom::SolanaProviderError::kInternalError,
+                      l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+  EXPECT_EQ(signed_tx, std::vector<uint8_t>());
+  signed_txs =
+      SignAllTransactions({""}, mojom::SolanaProviderError::kInternalError,
+                          l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+  EXPECT_EQ(signed_txs, std::vector<std::vector<uint8_t>>());
+}
+
+TEST_F(SolanaProviderImplUnitTest, Request) {
+  // no method
+  base::Value result =
+      Request(R"({params: {}})", mojom::SolanaProviderError::kParsingError,
+              l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
+  EXPECT_TRUE(result.GetDict().empty());
+
+  // params not dictionary
+  result = Request(R"({method: "connect", params: []})",
+                   mojom::SolanaProviderError::kParsingError,
+                   l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
+  EXPECT_TRUE(result.GetDict().empty());
+
+  // no params for non connect and disconnect
+  for (const std::string& method : {"signTransaction", "signAndSendTransaction",
+                                    "signAllTransactions", "signMessage"}) {
+    result = Request(
+        base::StringPrintf(R"({method: "%s", params: {}})", method.c_str()),
+        mojom::SolanaProviderError::kParsingError,
+        l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
+    EXPECT_TRUE(result.GetDict().empty());
+  }
+
+  // method not found
+  result =
+      Request(R"({method: "newMethod", params: {}})",
+              mojom::SolanaProviderError::kMethodNotFound,
+              l10n_util::GetStringUTF8(IDS_WALLET_REQUEST_PROCESSING_ERROR));
+  EXPECT_TRUE(result.GetDict().empty());
+  result = Request(
+      R"({method: "newMethod"})", mojom::SolanaProviderError::kMethodNotFound,
+      l10n_util::GetStringUTF8(IDS_WALLET_REQUEST_PROCESSING_ERROR));
+  EXPECT_TRUE(result.GetDict().empty());
+
+  for (const std::string& method : {"signTransaction", "signAndSendTransaction",
+                                    "signAllTransactions", "signMessage"}) {
+    constexpr char json[] =
+        R"({method: %s,
+            params: {message: %s}
+        })";
+
+    // errors should be propagated
+    result =
+        Request(base::StringPrintf(json, method.c_str(), kEncodedSerializedMsg),
+                mojom::SolanaProviderError::kUnauthorized,
+                l10n_util::GetStringUTF8(IDS_WALLET_NOT_AUTHED));
+    EXPECT_TRUE(result.GetDict().empty());
+  }
 }
 
 }  // namespace brave_wallet

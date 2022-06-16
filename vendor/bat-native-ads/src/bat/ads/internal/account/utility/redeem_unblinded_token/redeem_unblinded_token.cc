@@ -23,8 +23,10 @@
 #include "bat/ads/internal/account/utility/redeem_unblinded_token/create_confirmation_util.h"
 #include "bat/ads/internal/account/utility/redeem_unblinded_token/fetch_payment_token_url_request_builder.h"
 #include "bat/ads/internal/ads_client_helper.h"
-#include "bat/ads/internal/base/http_status_code.h"
 #include "bat/ads/internal/base/logging_util.h"
+#include "bat/ads/internal/base/net/http/http_status_code.h"
+#include "bat/ads/internal/base/url/url_request_string_util.h"
+#include "bat/ads/internal/base/url/url_response_string_util.h"
 #include "bat/ads/internal/privacy/challenge_bypass_ristretto/batch_dleq_proof.h"
 #include "bat/ads/internal/privacy/challenge_bypass_ristretto/blinded_token.h"
 #include "bat/ads/internal/privacy/challenge_bypass_ristretto/public_key.h"
@@ -32,8 +34,6 @@
 #include "bat/ads/internal/privacy/challenge_bypass_ristretto/token.h"
 #include "bat/ads/internal/privacy/challenge_bypass_ristretto/unblinded_token.h"
 #include "bat/ads/internal/privacy/tokens/unblinded_payment_tokens/unblinded_payment_token_info.h"
-#include "bat/ads/internal/server/url/url_request_string_util.h"
-#include "bat/ads/internal/server/url/url_response_string_util.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ads {
@@ -89,7 +89,7 @@ void RedeemUnblindedToken::OnCreateConfirmation(
   BLOG(7, UrlResponseHeadersToString(url_response));
 
   if (confirmation.credential.empty()) {
-    if (url_response.status_code == net::HTTP_IM_A_TEAPOT) {
+    if (url_response.status_code == net::kHttpImATeapot) {
       OnDidSendConfirmation(confirmation);
       return;
     } else if (url_response.status_code == net::HTTP_CONFLICT) {
@@ -98,7 +98,7 @@ void RedeemUnblindedToken::OnCreateConfirmation(
     } else if (url_response.status_code == net::HTTP_BAD_REQUEST) {
       OnFailedToSendConfirmation(confirmation, /* should_retry */ false);
       return;
-    } else if (url_response.status_code == net::HTTP_UPGRADE_REQUIRED) {
+    } else if (url_response.status_code == net::kHttpUpgradeRequired) {
       BLOG(1, "Failed to create confirmation as a browser upgrade is required");
       OnFailedToRedeemUnblindedToken(confirmation, /* should_retry */ false);
       return;
@@ -153,7 +153,7 @@ void RedeemUnblindedToken::OnFetchPaymentToken(
     BLOG(1, "Payment token is not ready");
     OnFailedToRedeemUnblindedToken(confirmation, /* should_retry */ true);
     return;
-  } else if (url_response.status_code == net::HTTP_UPGRADE_REQUIRED) {
+  } else if (url_response.status_code == net::kHttpUpgradeRequired) {
     BLOG(1, "Failed to fetch payment token as a browser upgrade is required");
     OnFailedToRedeemUnblindedToken(confirmation, /* should_retry */ false);
     return;

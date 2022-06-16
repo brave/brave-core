@@ -10,11 +10,14 @@ namespace ads {
 CreativeNewTabPageAdInfo::CreativeNewTabPageAdInfo() = default;
 
 CreativeNewTabPageAdInfo::CreativeNewTabPageAdInfo(
-    const CreativeNewTabPageAdInfo& info) = default;
-
-CreativeNewTabPageAdInfo::CreativeNewTabPageAdInfo(
     const CreativeAdInfo& creative_ad)
     : CreativeAdInfo(creative_ad) {}
+
+CreativeNewTabPageAdInfo::CreativeNewTabPageAdInfo(
+    const CreativeNewTabPageAdInfo& info) = default;
+
+CreativeNewTabPageAdInfo& CreativeNewTabPageAdInfo::operator=(
+    const CreativeNewTabPageAdInfo& info) = default;
 
 CreativeNewTabPageAdInfo::~CreativeNewTabPageAdInfo() = default;
 

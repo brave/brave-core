@@ -275,7 +275,7 @@ Polymer({
     }
   },
   addNewNetwork: function(payload) {
-    this.browserProxy_.addEthereumChain(JSON.stringify(payload))
+    this.browserProxy_.addEthereumChain(payload)
       .then(([success, errorMessage]) => {
         this.setSubmissionResult(success, errorMessage)
         if (success) {

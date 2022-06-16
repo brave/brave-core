@@ -76,6 +76,10 @@ export interface RPCResponseType {
   transactions: RPCTransactionType[]
 }
 
+export type PanelHeaderSizes =
+  | 'regular'
+  | 'slim'
+
 export interface PanelTitleObjectType {
   title: string
   id: PanelTypes
@@ -669,7 +673,10 @@ export enum CoinTypesMap {
 
 export type BuyOption = {
   id: BraveWallet.OnRampProvider
-  label: string
+  icon: string
+  name: string
+  description: string
+  actionText: string
 }
 
 export type OriginInfo = {

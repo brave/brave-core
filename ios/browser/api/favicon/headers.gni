@@ -1,0 +1,5 @@
+browser_api_favicon_public_headers = [
+  "//brave/ios/browser/api/favicon/favicon_loader.h",
+  "//brave/ios/browser/api/favicon/favicon_view.h",
+  "//brave/ios/browser/api/favicon/favicon_attributes.h",
+]

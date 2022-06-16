@@ -40,7 +40,7 @@
 - (void)save:(const std::string&)name
        value:(const std::string&)value
     callback:(ads::ResultCallback)callback;
-- (void)showNotification:(const ads::AdNotificationInfo&)info;
+- (void)showNotification:(const ads::NotificationAdInfo&)info;
 - (void)closeNotification:(const std::string&)id;
 - (void)recordAdEventForId:(const std::string&)id
                     adType:(const std::string&)ad_type

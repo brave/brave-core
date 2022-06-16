@@ -1,0 +1,19 @@
+static_library("time_period_storage") {
+  sources = [
+    "daily_storage.cc",
+    "daily_storage.h",
+    "monthly_storage.cc",
+    "monthly_storage.h",
+    "time_period_storage.cc",
+    "time_period_storage.h",
+    "weekly_event_storage.cc",
+    "weekly_event_storage.h",
+    "weekly_storage.cc",
+    "weekly_storage.h",
+  ]
+
+  deps = [
+    "//base:base",
+    "//components/prefs",
+  ]
+}

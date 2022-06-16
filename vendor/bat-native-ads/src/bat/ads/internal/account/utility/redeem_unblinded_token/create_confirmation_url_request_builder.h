@@ -16,11 +16,16 @@
 
 namespace ads {
 
-class CreateConfirmationUrlRequestBuilder final : UrlRequestBuilderInterface {
+class CreateConfirmationUrlRequestBuilder final
+    : public UrlRequestBuilderInterface {
  public:
   explicit CreateConfirmationUrlRequestBuilder(
       const ConfirmationInfo& confirmation);
   ~CreateConfirmationUrlRequestBuilder() override;
+  CreateConfirmationUrlRequestBuilder(
+      const CreateConfirmationUrlRequestBuilder&) = delete;
+  CreateConfirmationUrlRequestBuilder operator=(
+      const CreateConfirmationUrlRequestBuilder&) = delete;
 
   mojom::UrlRequestPtr Build() override;
 

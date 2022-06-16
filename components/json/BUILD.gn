@@ -15,7 +15,6 @@ source_set("brave_json_unit_tests") {
   sources = [ "//brave/components/json/json_parser_unittest.cc" ]
   deps = [
     "//brave/components/json/rs:cxx",
-    "//brave/components/json/rs:cxx_gen",
     "//testing/gtest",
   ]
 }  # source_set("brave_wallet_unit_tests")

@@ -10,6 +10,10 @@ namespace ads {
 
 struct CreativeNewTabPageAdWallpaperFocalPointInfo final {
   CreativeNewTabPageAdWallpaperFocalPointInfo();
+  CreativeNewTabPageAdWallpaperFocalPointInfo(
+      const CreativeNewTabPageAdWallpaperFocalPointInfo& info);
+  CreativeNewTabPageAdWallpaperFocalPointInfo& operator=(
+      const CreativeNewTabPageAdWallpaperFocalPointInfo& info);
   ~CreativeNewTabPageAdWallpaperFocalPointInfo();
 
   bool operator==(const CreativeNewTabPageAdWallpaperFocalPointInfo& rhs) const;

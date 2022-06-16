@@ -55,7 +55,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="2dp"
-        android:layout_marginBottom="2dp"
+        android:layout_marginBottom="10dp"
         android:text="@string/permissions_connect_brave_wallet_accounts_title"
         android:textColor="@color/wallet_text_color"
         android:textSize="14sp" />
@@ -101,6 +101,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="6dp"
+                android:layout_marginTop="4dp"
                 android:text="@string/permissions_connect_brave_wallet_warning_title"
                 android:textColor="@color/wallet_text_color"
                 android:textSize="14sp" />

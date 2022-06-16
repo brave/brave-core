@@ -22,6 +22,7 @@
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/brave_search/browser/brave_search_default_host.h"
 #include "brave/components/brave_search/common/brave_search_utils.h"
+#include "brave/components/brave_search_conversion/utils.h"
 #include "brave/components/brave_shields/browser/brave_farbling_service.h"
 #include "brave/components/brave_shields/browser/brave_shields_p3a.h"
 #include "brave/components/brave_shields/common/pref_names.h"
@@ -431,9 +432,11 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   // We can turn customization mode on when we have add-shortcut feature.
   registry->SetDefaultPrefValue(ntp_prefs::kNtpUseMostVisitedTiles,
                                 base::Value(true));
-  registry->RegisterBooleanPref(kEnableWindowClosingConfirm, false);
+  registry->RegisterBooleanPref(kEnableWindowClosingConfirm, true);
   RegisterDefaultBraveBrowserPromptPrefs(registry);
 #endif
+
+  brave_search_conversion::RegisterPrefs(registry);
 
   registry->SetDefaultPrefValue(prefs::kEnableMediaRouter, base::Value(false));
 

@@ -267,7 +267,6 @@ Brave nu poate recupera setările.</translation>
 <translation id="2925193881330501265">Ați fost conectat(ă) la Brave ca <ph name="USER_EMAIL_ADDRESS"/>. Utilizați același cont pentru a vă conecta din nou.</translation>
 <translation id="6915252145142862992">Aceasta este o instalare secundară a browserului Brave și nu poate fi setat ca browser prestabilit.</translation>
 <translation id="1975057837349076194">Dacă o setare nu apare în pagină, încearcă <ph name="LINK_BEGIN"/>Setările sistemului de operare Brave<ph name="LINK_END"/></translation>
-<translation id="1743665722170667430">Extensiile, aplicațiile și temele din surse necunoscute pot să dăuneze dispozitivului. Brave recomandă să le instalezi numai din <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/></translation>
 <translation id="7685904775439037072">Odată ce Brave are acces, site-urile web îți vor putea solicita accesul.</translation>
 <translation id="828406390101464081">Următoarele conturi nu sunt conectate la niciun profil Brave. Dacă vrei să folosești un cont într-un alt profil, mai întâi elimină profilul respectiv.</translation>
 <translation id="2061155704815580583">Brave necesită permisiuni pentru locație pentru acest site</translation>
@@ -327,6 +326,7 @@ Permisiunile pe care le-ați oferit deja site-urilor și aplicațiilor se pot ap
 <translation id="5359574361379286250">Dacă doriți să utilizați cont doar o singură dată, puteți utiliza <ph name="GUEST_LINK_BEGIN"/>Modul pentru invitați<ph name="GUEST_LINK_END"/> în browserul Brave. Dacă doriți să creați un cont pentru altcineva, <ph name="LINK_BEGIN"/>adăugați un nou profil<ph name="LINK_END"/> în <ph name="DEVICE_TYPE"/>
 
 Permisiunile pe care le-ați acordat deja site-urilor web și aplicațiilor se pot aplica și acestui cont. Vă puteți gestiona lanțurile de sincronizare în <ph name="SETTINGS_LINK_BEGIN"/>Setări<ph name="SETTINGS_LINK_END"/>.</translation>
+<translation id="1743665722170667430">Extensiile, aplicațiile și temele din surse necunoscute pot afecta dispozitivul dvs. Brave recomandă să le instalați numai din <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/></translation>
 <translation id="1299765473362724475">Avertisment: Brave nu poate împiedica extensiile să înregistreze istoricul de navigare. Pentru a dezactiva această extensie în modul incognito, debifați această opțiune.</translation>
 <translation id="1448049584457347995">Pentru mai multă siguranță în Brave, am dezactivat câteva extensii care nu sunt incluse în <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> și care este posibil să fi fost adăugate fără știrea dvs.</translation>
 <translation id="8848045066928358658">Pentru mai multă siguranță în Brave, am dezactivat următoarea extensie care nu este inclusă în <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> și care este posibil să fi fost adăugată fără știrea ta.</translation>

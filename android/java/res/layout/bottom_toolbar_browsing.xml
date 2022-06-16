@@ -66,15 +66,6 @@
         android:contentDescription="@string/accessibility_toolbar_btn_tabswitcher_toggle_default"
         app:menuVerticalOverlapAnchor="false" />
 
-    <org.chromium.chrome.browser.toolbar.bottom.ShareButton
-        android:id="@+id/bottom_share_button"
-        android:src="@drawable/ic_share_white_24dp"
-        app:tint="@color/default_icon_color_tint_list"
-        android:visibility="gone"
-        android:background="?attr/selectableItemBackgroundBorderless"
-        android:contentDescription="@string/share"
-        style="@style/SplitToolbarButton" />
-
     <include layout="@layout/toolbar_space" />
 
     <include layout="@layout/bottom_toolbar_menu_button" style="@style/SplitToolbarButton" />

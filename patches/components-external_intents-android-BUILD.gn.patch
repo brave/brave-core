@@ -1,8 +1,8 @@
 diff --git a/components/external_intents/android/BUILD.gn b/components/external_intents/android/BUILD.gn
-index 44c58770bcda86deda5e0115b27faf9ba860a337..1d200154d5f4db50c82164fc5479538821987625 100644
+index 054e7ab45846eb43d506b285b1286b40ac89abac..c81c2b6a104f3a6725e51edc51866b2fc1a48968 100644
 --- a/components/external_intents/android/BUILD.gn
 +++ b/components/external_intents/android/BUILD.gn
-@@ -64,6 +64,7 @@ static_library("android") {
+@@ -58,6 +58,7 @@ static_library("android") {
      "//components/navigation_interception",
      "//content/public/browser",
    ]

@@ -1423,9 +1423,6 @@ Are you sure you want to do this?
       <message name="IDS_PRIVACY_STATS" desc="Private stats title text.">
         Privacy Stats
       </message>
-      <message name="IDS_BINANCE" desc="Binance title text.">
-        Binance
-      </message>
       <message name="IDS_SUMMARY" desc="Binance detail section title.">
         Summary
       </message>
@@ -1856,7 +1853,7 @@ Are you sure you want to do this?
       Use biometrics to quickly unlock your wallet without entering your password.
     </message>
     <message name="IDS_MENU_BRAVE_WALLET" desc="Brave Wallet menu item text">
-      Wallet (beta)
+      Wallet
     </message>
     <message name="IDS_RESTORE_CRYPTO_TEXT" desc="Brave Wallet onboarding text">
       Enter your recovery phrase to restore your Brave Wallet crypto account.
@@ -1930,6 +1927,24 @@ Are you sure you want to do this?
     <message name="IDS_KOVAN" desc="Brave Wallet network selection button text(network name)" translateable="false">
       Kovan Test Network
     </message>
+    <message name="IDS_POLYGON" desc="Brave Wallet network selection button text(network name)" translateable="false">
+      Polygon Mainnet
+    </message>
+    <message name="IDS_BINANCE" desc="Brave Wallet network selection button text(network name)" translateable="false">
+      Binance Smart Chain Mainnet
+    </message>
+    <message name="IDS_CELO" desc="Brave Wallet network selection button text(network name)" translateable="false">
+      Celo Mainnet
+    </message>
+    <message name="IDS_AVALANCHE" desc="Brave Wallet network selection button text(network name)" translateable="false">
+      Avalanche C-Chain
+    </message>
+    <message name="IDS_FANTOM" desc="Brave Wallet network selection button text(network name)" translateable="false">
+      Fantom Opera
+    </message>
+    <message name="IDS_OPTIMISM" desc="Brave Wallet network selection button text(network name)" translateable="false">
+      Optimism
+    </message>
     <message name="IDS_LOCALHOST" desc="Brave Wallet network selection button text(network name)" translateable="false">
       Localhost
     </message>
@@ -1947,6 +1962,24 @@ Are you sure you want to do this?
     </message>
     <message name="IDS_KOVAN_SHORT" desc="Brave Wallet network selection button text(network name short)" translateable="false">
       Kovan
+    </message>
+    <message name="IDS_POLYGON_SHORT" desc="Brave Wallet network selection button text(network name short)" translateable="false">
+      Polygon
+    </message>
+    <message name="IDS_BINANCE_SHORT" desc="Brave Wallet network selection button text(network name short)" translateable="false">
+      Binance
+    </message>
+    <message name="IDS_CELO_SHORT" desc="Brave Wallet network selection button text(network name short)" translateable="false">
+      Celo
+    </message>
+    <message name="IDS_AVALANCHE_SHORT" desc="Brave Wallet network selection button text(network name short)" translateable="false">
+      Avalanche
+    </message>
+    <message name="IDS_FANTOM_SHORT" desc="Brave Wallet network selection button text(network name short)" translateable="false">
+      Fantom
+    </message>
+    <message name="IDS_OPTIMISM_SHORT" desc="Brave Wallet network selection button text(network name short)" translateable="false">
+      Optimism
     </message>
     <message name="IDS_MARKET_PRICE_IN" desc="Brave Wallet buy-send-swap section text">
       Market Price in <ph name="ASSET">%1$s<ex>ETH</ex></ph>
@@ -2172,10 +2205,10 @@ Are you sure you want to do this?
       All plans include a free 7-day trial!
     </message>
     <message name="IDS_MONTHLY_SUBSCRIPTION" desc="Brave VPN plan text">
-      Monthly subscription
+      Monthly subscription <ph name="TRIAL_TEXT">%1$s</ph>
     </message>
     <message name="IDS_YEARLY_SUBSCRIPTION" desc="Brave VPN plan text">
-      Yearly subscription
+      Yearly subscription <ph name="TRIAL_TEXT">%1$s</ph>
     </message>
     <message name="IDS_RENEWS_MONTHLY" desc="Brave VPN plan text">
       Renews monthly
@@ -2235,9 +2268,6 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     </message>
     <message name="IDS_PURCHASE_TOKEN_VERIFICATION_FAILED" desc="Brave VPN profile text">
       Your subscription has expired. You can subscribe again at any time.
-    </message>
-    <message name="IDS_BRAVE_VPN_NOTIFICATION_MESSAGE" desc="Brave VPN notification message">
-      VPN is running in the background
     </message>
     <message name="IDS_SUBSCRIPTION" desc="Brave VPN settings section title">
       Subscription
@@ -2327,7 +2357,7 @@ If you don't accept this request, VPN will not reconnect and your internet conne
       Reset VPN configuration
     </message>
     <message name="IDS_RESET_VPN_CONFIG_DIALOG_MESSAGE" desc="Brave Vpn reset configuration dialog message">
-      Are you sure you want to reset vpn configuration?
+      Are you sure you want to reset VPN configuration?
     </message>
     <message name="IDS_AUTOMATIC" desc="Brave Vpn default server location text">
       Automatic
@@ -2396,7 +2426,7 @@ If you don't accept this request, VPN will not reconnect and your internet conne
       Apps
     </message> -->
     <message name="IDS_CRYPTO_WALLET_FROM_TO" desc="From address -> to address" translateable="false">
-      <ph name="FROM">%1$s<ex>0xabcd...</ex></ph> -> <ph name="TO">%2$s<ex>0xabcd...</ex></ph>
+      <ph name="FROM_NAME">%1$s<ex>Account1</ex></ph>\n <ph name="FROM_ADDRESS">%2$s<ex>0xabcd...</ex></ph> ->\n<ph name="TO">%3$s<ex>0xabcd...</ex></ph>
     </message>
     <message name="IDS_CRYPTO_WALLET_AMOUNT_ASSET" desc="Amount Asset" translateable="false">
       <ph name="AMOUNT">%1$s<ex>0.0001</ex></ph> <ph name="ASSET">%2$s<ex>ETH</ex></ph>
@@ -2728,6 +2758,9 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_SHOW_AUTOCOMPLETE_IN_ADDRESS_BAR" desc="Title for a checkbox in Settings that controls whether to show autocompletion in the address bar.">
         Show autocomplete in address bar
     </message>
+    <message name="IDS_SHOW_AUTOCOMPLETE_IN_ADDRESS_BAR_SUMMARY" desc="Summary for a checkbox in Settings that controls whether to show autocompletion in the address bar.">
+            Displays website suggestions based on your bookmarks and browsing history.
+    </message>
     <message name="IDS_BRAVE_WALLET_NETWORKS_TITLE" desc="Brave wallet networks pref title text">
       Networks
     </message>
@@ -2840,7 +2873,7 @@ If you don't accept this request, VPN will not reconnect and your internet conne
       Select account(s)
     </message>
     <message name="IDS_PERMISSIONS_CONNECT_BRAVE_WALLET_ACCOUNTS_TITLE" desc="Title text for a request to connect a wallet for an accounts section.">
-      New account
+      Accounts
     </message>
     <message name="IDS_PERMISSIONS_CONNECT_BRAVE_WALLET_WARNING_TITLE" desc="Title text for a request to connect a wallet for a warning section.">
       Only connect with sites you trust.
@@ -2921,10 +2954,16 @@ If you don't accept this request, VPN will not reconnect and your internet conne
       Disconnect
     </message>
     <message name="IDS_FRAGMENT_SIGN_MESSAGE_DESCRIPTION" desc="Sign message dialog description.">
+      Your signature is being requested
+    </message>
+    <message name="IDS_BRAVE_WALLET_PROVIDE_ENCRYPTION_KEY_TITLE" desc="Provide encryption key title message dialog description.">
       A DApp is requesting your public encryption key
     </message>
     <message name="IDS_BRAVE_WALLET_PROVIDE_ENCRYPTION_KEY_DESCRIPTION" desc="Provide encryption key panel details">
       is requesting your wallets public encryption key. If you consent to providing this key, the site will be able to compose encrypted messages to you.
+    </message>
+    <message name="IDS_BRAVE_WALLET_PROVIDE_ENCRYPTION_KEY_BUTTON" desc="Provide encryption key panel provide button">
+      Provide
     </message>
     <message name="IDS_BRAVE_WALLET_ALLOW_ADD_NETWORK_NAME" desc="Add network panel name label">
       Network name
@@ -2942,10 +2981,10 @@ If you don't accept this request, VPN will not reconnect and your internet conne
       Network
     </message>
     <message name="IDS_BRAVE_WALLET_ALLOW_ADD_NETWORK_DESCRIPTION" desc="Add network panel description">
-      This will allow this network to be used within Brave Wallet.
+      This will allow this network to be used within Brave Wallet. Learn more.
     </message>
-    <message name="IDS_BRAVE_WALLET" desc="Brave Wallet text for string detection with localization">
-      Brave Wallet
+    <message name="IDS_BRAVE_WALLET_LEARN_MORE" desc="Learn more text for string detection with localization">
+      Learn more.
     </message>
     <message name="IDS_BRAVE_WALLET_ALLOW_ADD_NETWORK_HEADING" desc="Add network panel title">
       Allow this site to add a network?
@@ -2976,6 +3015,36 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     </message>
     <message name="IDS_SETTINGS_ETHEREUM_TITLE" desc="Title for Ethereum section in site settings" translateable="false">
       Ethereum
+    </message>
+    <message name="IDS_SHOW_TOP_SITES" desc="New tab page settings title">
+      Show Top sites
+    </message>
+    <message name="IDS_CONNECTED_TO_HOST" desc="Brave Vpn notification statistics text">
+      Connected to <ph name="VALUE">%1$s</ph>
+    </message>
+    <message name="IDS_TRANSFER_BYTES" desc="Brave Vpn notification statistics text" translateable="false">
+      <ph name="VALUE">%1$s<ex>0.0</ex></ph> B
+    </message>
+    <message name="IDS_TRANSFER_GIBIBYTES" desc="Brave Vpn notification statistics text" translateable="false">
+      <ph name="VALUE">%1$s<ex>0.0</ex></ph> GB
+    </message>
+    <message name="IDS_TRANSFER_KIBIBYTES" desc="Brave Vpn notification statistics text" translateable="false">
+      <ph name="VALUE">%1$s<ex>0.0</ex></ph> KB
+    </message>
+    <message name="IDS_TRANSFER_MIBIBYTES" desc="Brave Vpn notification statistics text" translateable="false">
+      <ph name="VALUE">%1$s<ex>0.0</ex></ph> MB
+    </message>
+    <message name="IDS_TRANSFER_RX_TX" desc="Brave Vpn notification statistics text" translateable="false">
+      \u2193<ph name="RX">%1$s</ph>, \u2191<ph name="TX">%2$s</ph>
+    </message>
+    <message name="IDS_TRANSFER_TIBIBYTES" desc="Brave Vpn notification statistics text" translateable="false">
+      <ph name="VALUE">%1$s<ex>0.0</ex></ph> TB
+    </message>
+    <message name="IDS_DISCONNECT" desc="Brave Vpn notification disconnect text" translateable="false">
+      Disconnect
+    </message>
+    <message name="IDS_TRIAL" desc="Brave VPN trial text">
+      Trial
     </message>
   </messages>
   </release>

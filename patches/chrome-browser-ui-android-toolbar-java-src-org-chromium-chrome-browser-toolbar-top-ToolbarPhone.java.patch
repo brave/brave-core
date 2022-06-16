@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarPhone.java b/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarPhone.java
-index ec510f1ed886ea21a1ea28f48e31c3e35cac75ae..c0911dd50f42c84da5b612caac086580f4b5e31f 100644
+index deaabb2adebb846be31daee4b6c05593aed1d6b5..ccc3d9d48ba8e527936daf4b1c55183dabb2cbd1 100644
 --- a/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarPhone.java
 +++ b/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarPhone.java
 @@ -426,6 +426,7 @@ public class ToolbarPhone extends ToolbarLayout implements OnClickListener, TabC
@@ -34,7 +34,7 @@ index ec510f1ed886ea21a1ea28f48e31c3e35cac75ae..c0911dd50f42c84da5b612caac086580
          TraceEvent.begin("ToolbarPhone.updateLocationBarLayoutForExpansionAnimation");
          FrameLayout.LayoutParams locationBarLayoutParams =
                  mLocationBar.getPhoneCoordinator().getFrameLayoutParams();
-@@ -2155,6 +2159,7 @@ public class ToolbarPhone extends ToolbarLayout implements OnClickListener, TabC
+@@ -2148,6 +2152,7 @@ public class ToolbarPhone extends ToolbarLayout implements OnClickListener, TabC
          } else {
              populateUrlClearExpansionAnimatorSet(animators);
          }

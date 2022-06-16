@@ -16,6 +16,8 @@ AdContentInfo::AdContentInfo() = default;
 
 AdContentInfo::AdContentInfo(const AdContentInfo& info) = default;
 
+AdContentInfo& AdContentInfo::operator=(const AdContentInfo& info) = default;
+
 AdContentInfo::~AdContentInfo() = default;
 
 bool AdContentInfo::operator==(const AdContentInfo& rhs) const {
@@ -179,7 +181,7 @@ bool AdContentInfo::FromJson(const std::string& json) {
   if (document.HasMember("type") && document["type"].IsString()) {
     type = AdType(document["type"].GetString());
   } else {
-    type = AdType::kAdNotification;
+    type = AdType::kNotificationAd;
   }
 
   if (document.HasMember("uuid")) {

@@ -13,8 +13,10 @@
 #include <string>
 #include <vector>
 
+#include "base/time/time.h"
 #include "base/timer/timer.h"
 #include "bat/ledger/ledger.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ledger {
 class LedgerImpl;
@@ -45,6 +47,8 @@ class Unverified {
 
   void OnRemovePendingContribution(type::Result result);
 
+  void ProcessNext();
+
   void OnContributeUnverifiedBalance(
       type::Result result,
       type::BalancePtr properties);
@@ -57,8 +61,11 @@ class Unverified {
       const type::Result result,
       const uint64_t pending_contribution_id);
 
+  void ProcessingCompleted();
+
   LedgerImpl* ledger_;  // NOT OWNED
   base::OneShotTimer unverified_publishers_timer_;
+  absl::optional<base::Time> processing_start_time_;
 };
 
 }  // namespace contribution

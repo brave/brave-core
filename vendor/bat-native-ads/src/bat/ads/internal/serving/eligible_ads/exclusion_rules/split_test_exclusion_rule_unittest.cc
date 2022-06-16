@@ -6,8 +6,7 @@
 #include "bat/ads/internal/serving/eligible_ads/exclusion_rules/split_test_exclusion_rule.h"
 
 #include "base/metrics/field_trial.h"
-#include "bat/ads/internal/base/unittest_base.h"
-#include "bat/ads/internal/base/unittest_util.h"
+#include "bat/ads/internal/base/unittest/unittest_base.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 

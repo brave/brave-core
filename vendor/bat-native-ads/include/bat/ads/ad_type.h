@@ -17,14 +17,16 @@ class AdType final {
  public:
   enum Value {
     kUndefined,
-    kAdNotification,
+    kNotificationAd,
     kNewTabPageAd,
     kPromotedContentAd,
     kInlineContentAd,
     kSearchResultAd
   };
 
-  AdType() = default;
+  AdType();
+  AdType(const AdType&);
+  AdType& operator=(const AdType&);
 
   // Allow implicit conversion of the enum value to this wrapper
   constexpr AdType(const Value& value)  // NOLINT(runtime/explicit)

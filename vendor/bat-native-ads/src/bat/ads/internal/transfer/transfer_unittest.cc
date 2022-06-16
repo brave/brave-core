@@ -7,8 +7,7 @@
 
 #include <memory>
 
-#include "bat/ads/internal/base/unittest_base.h"
-#include "bat/ads/internal/base/unittest_util.h"
+#include "bat/ads/internal/base/unittest/unittest_base.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
@@ -97,7 +96,7 @@ TEST_F(BatAdsTransferTest,
 
 TEST_F(BatAdsTransferTest, DoNotTransferAdIfTheSameAdIsAlreadyTransferring) {
   // Arrange
-  const AdInfo ad = BuildAdForType(AdType::kAdNotification);
+  const AdInfo ad = BuildAdForType(AdType::kNotificationAd);
   transfer_->set_last_clicked_ad(ad);
 
   TabManager::Get()->OnUpdated(1, GURL("https://brave.com"),
@@ -161,7 +160,7 @@ TEST_F(BatAdsTransferTest,
 
 TEST_F(BatAdsTransferTest, FailToTransferAdIfNotVisible) {
   // Arrange
-  const AdInfo ad = BuildAdForType(AdType::kAdNotification);
+  const AdInfo ad = BuildAdForType(AdType::kNotificationAd);
   transfer_->set_last_clicked_ad(ad);
 
   TabManager::Get()->OnUpdated(1, GURL("https://brave.com"),

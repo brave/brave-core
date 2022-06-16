@@ -17,6 +17,9 @@ class Data {
 
   virtual ~Data();
 
+  Data(const Data&) = delete;
+  Data& operator=(const Data&) = delete;
+
   DataType GetType() const;
 
  protected:

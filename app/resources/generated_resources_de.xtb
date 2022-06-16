@@ -4339,7 +4339,7 @@ Möchtest du <ph name="CONTROL_PANEL_APPLET_NAME"/> starten?</translation>
 <translation id="5280426389926346830">Verknüpfung erstellen?</translation>
 <translation id="5281013262333731149">Wird in <ph name="OPEN_BROWSER"/> geöffnet</translation>
 <translation id="528208740344463258">Wenn du Android-Apps herunterladen und verwenden möchtest, musst du zuerst dieses erforderliche Update installieren. Du kannst dein <ph name="DEVICE_TYPE"/> während des Updates nicht nutzen. Nach Abschluss der Installation wird dein <ph name="DEVICE_TYPE"/> neu gestartet.</translation>
-<translation id="5282733140964383898">Wenn du „Do Not Track“ aktivierst, wird eine Anfrage in deine Browseraufrufe aufgenommen. Welche Auswirkungen dies hat, hängt davon ab, ob eine Website auf die Anfrage reagiert und wie diese interpretiert wird. Einige Websites reagieren möglicherweise auf die Anfrage, indem sie Anzeigen einblenden, die nicht auf anderen von dir besuchten Websites basieren. Viele Websites erfassen und nutzen dennoch deine Browserdaten, etwa zur Verbesserung der Sicherheit, zur Bereitstellung von Inhalten, Diensten, Anzeigen und Empfehlungen auf der Website sowie zur Erstellung von Berichtsstatistiken. <ph name="BEGIN_LINK"/>Weitere Informationen<ph name="END_LINK"/></translation>
+<translation id="4039256732955431945">Wenn du „Do Not Track“ aktivierst, wird eine Anfrage in deine Browseraufrufe aufgenommen. Welche Auswirkungen dies hat, hängt davon ab, ob eine Website auf die Anfrage reagiert und wie diese interpretiert wird. Einige Websites reagieren möglicherweise auf die Anfrage, indem sie Anzeigen einblenden, die nicht auf anderen von dir besuchten Websites basieren. Viele Websites erfassen und nutzen dennoch deine Browserdaten, etwa zur Verbesserung der Sicherheit, zur Bereitstellung von Inhalten, Diensten, Anzeigen und Empfehlungen auf der Website sowie zur Erstellung von Berichtsstatistiken. <ph name="BEGIN_LINK"/>Weitere Informationen<ph name="END_LINK"/></translation>
 <translation id="5283677936944177147">Hoppla! Das System konnte das Gerätemodell oder die Seriennummer nicht erkennen.</translation>
 <translation id="5284445933715251131">Download fortsetzen</translation>
 <translation id="5285635972691565180">Bildschirm <ph name="DISPLAY_ID"/></translation>
@@ -4356,7 +4356,7 @@ Möchtest du <ph name="CONTROL_PANEL_APPLET_NAME"/> starten?</translation>
 <translation id="5297082477358294722">Passwort gespeichert. Gespeicherte Passwörter kannst du in deinem <ph name="SAVED_PASSWORDS_STORE"/> aufrufen und verwalten</translation>
 <translation id="5297946558563358707">Wenn andere auf deinen Bildschirm blicken, wird unten rechts das Augensymbol für die Privatsphäre angezeigt</translation>
 <translation id="5298219193514155779">Design von</translation>
-<translation id="5299109548848736476">Do Not Track</translation>
+<translation id="1839179167864984545">Do Not Track</translation>
 <translation id="5299558715747014286">Tabgruppen ansehen und verwalten</translation>
 <translation id="5300287940468717207">Websiteberechtigungen zurücksetzen?</translation>
 <translation id="5300426565656326054">Browserbasierte personalisierte Werbung</translation>
@@ -7819,7 +7819,7 @@ Speichere deine Schlüsseldatei an einem sicheren Ort. Du benötigst die Datei, 
 <translation id="8785622406424941542">Eingabestift</translation>
 <translation id="8786824282808281903">Wenn dein Kind dieses Symbol sieht, kann es mit einem Fingerabdruck seine Identität bestätigen oder Käufe genehmigen.</translation>
 <translation id="8787575090331305835">{NUM_TABS,plural, =1{Unbenannte Gruppe – 1 Tab}other{Unbenannte Gruppe – # Tab}}</translation>
-<translation id="8791534160414513928">Bei Browserzugriffen eine „Do Not Track“-Anforderung mitsenden</translation>
+<translation id="163839281363975279">Bei Browserzugriffen eine „Do Not Track“-Anforderung mitsenden</translation>
 <translation id="879413103056696865">Während der Hotspot aktiviert ist, wird dein <ph name="PHONE_NAME"/> Folgendes tun:</translation>
 <translation id="8795916974678578410">Neues Fenster</translation>
 <translation id="8797459392481275117">Diese Website nie übersetzen</translation>

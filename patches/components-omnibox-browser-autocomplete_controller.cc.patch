@@ -1,5 +1,5 @@
 diff --git a/components/omnibox/browser/autocomplete_controller.cc b/components/omnibox/browser/autocomplete_controller.cc
-index b939925eab7309c1e10c650383a109ed805d1321..7b7a6e7488f1ecd12939f8fc63516d933aefa7df 100644
+index ff15bdf15bea85017a929dce305c275e6c82ccc6..0520d5c853bd8f890015c115b0fa31c5a73d37d0 100644
 --- a/components/omnibox/browser/autocomplete_controller.cc
 +++ b/components/omnibox/browser/autocomplete_controller.cc
 @@ -305,6 +305,7 @@ AutocompleteController::AutocompleteController(
@@ -10,3 +10,11 @@ index b939925eab7309c1e10c650383a109ed805d1321..7b7a6e7488f1ecd12939f8fc63516d93
    }
    // It's important that the HistoryURLProvider gets added after SearchProvider:
    // AutocompleteController::Start() calls each providers' Start() function
+@@ -813,6 +814,7 @@ void AutocompleteController::UpdateResult(
+     AutocompleteResult::LogUpdateMetrics(last_result_for_logging, result_,
+                                          in_start_);
+   }
++  BRAVE_AUTOCOMPLETE_CONTROLLER_UPDATE_RESULT
+ 
+   // Below are all annotations after the match list is ready.
+ #if !BUILDFLAG(IS_IOS)

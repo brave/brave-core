@@ -5,7 +5,7 @@
 
 #include "bat/ads/internal/server/url/hosts/server_host_util.h"
 
-#include "bat/ads/internal/base/unittest_util.h"
+#include "bat/ads/internal/base/unittest/unittest_mock_util.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
@@ -14,7 +14,7 @@ namespace ads {
 
 TEST(BatAdsServerHostUtilTest, GetStaticHost) {
   // Arrange
-  SetEnvironment(mojom::Environment::kProduction);
+  MockEnvironment(mojom::Environment::kProduction);
 
   // Act
   const std::string host = server::GetStaticHost();
@@ -26,7 +26,7 @@ TEST(BatAdsServerHostUtilTest, GetStaticHost) {
 
 TEST(BatAdsServerHostUtilTest, GetGeoHost) {
   // Arrange
-  SetEnvironment(mojom::Environment::kProduction);
+  MockEnvironment(mojom::Environment::kProduction);
 
   // Act
   const std::string host = server::GetGeoHost();
@@ -38,7 +38,7 @@ TEST(BatAdsServerHostUtilTest, GetGeoHost) {
 
 TEST(BatAdsServerHostUtilTest, GetNonAnonymousHost) {
   // Arrange
-  SetEnvironment(mojom::Environment::kProduction);
+  MockEnvironment(mojom::Environment::kProduction);
 
   // Act
   const std::string host = server::GetNonAnonymousHost();
@@ -50,7 +50,7 @@ TEST(BatAdsServerHostUtilTest, GetNonAnonymousHost) {
 
 TEST(BatAdsServerHostUtilTest, GetAnonymousHost) {
   // Arrange
-  SetEnvironment(mojom::Environment::kProduction);
+  MockEnvironment(mojom::Environment::kProduction);
 
   // Act
   const std::string host = server::GetAnonymousHost();

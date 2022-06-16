@@ -4339,7 +4339,7 @@ y Ctrl + Alt + Disminuir brillo para alejar.</translation>
 <translation id="5280426389926346830">¿Deseas crear un acceso directo?</translation>
 <translation id="5281013262333731149">Se abre en: <ph name="OPEN_BROWSER"/></translation>
 <translation id="528208740344463258">Para descargar y usar las apps de Android, debes instalar esta actualización obligatoria. No puedes usar tu <ph name="DEVICE_TYPE"/> mientras se actualiza. Tu <ph name="DEVICE_TYPE"/> se reiniciará cuando se haya completado la instalación.</translation>
-<translation id="5282733140964383898">Si habilitas la opción "No realizar seguimiento", se incluirá una solicitud con el tráfico de navegación. Los efectos dependerán de si algún sitio web responde a dicha solicitud y de cómo se interpreta. Por ejemplo, algunos sitios web pueden responder a la solicitud a través de la publicación de anuncios que no se basan en los sitios web que visitaste. Muchos sitios web continuarán recopilando y usando tus datos de navegación para, por ejemplo, mejorar la seguridad, generar estadísticas para informes y ofrecer contenido, servicios, anuncios y recomendaciones. <ph name="BEGIN_LINK"/>Más información<ph name="END_LINK"/></translation>
+<translation id="4039256732955431945">Si habilitas la opción "No realizar seguimiento", se incluirá una solicitud con el tráfico de navegación. Los efectos dependerán de si algún sitio web responde a dicha solicitud y de cómo se interpreta. Por ejemplo, algunos sitios web pueden responder a la solicitud a través de la publicación de anuncios que no se basan en los sitios web que visitaste. Muchos sitios web continuarán recopilando y usando tus datos de navegación para, por ejemplo, mejorar la seguridad, generar estadísticas para informes y ofrecer contenido, servicios, anuncios y recomendaciones. <ph name="BEGIN_LINK"/>Más información<ph name="END_LINK"/></translation>
 <translation id="5283677936944177147">El sistema no pudo determinar el modelo del dispositivo ni el número de serie.</translation>
 <translation id="5284445933715251131">Continuar con la descarga</translation>
 <translation id="5285635972691565180">Pantalla <ph name="DISPLAY_ID"/></translation>
@@ -4356,7 +4356,7 @@ y Ctrl + Alt + Disminuir brillo para alejar.</translation>
 <translation id="5297082477358294722">Se guardó la contraseña. Puedes ver y administrar las contraseñas guardadas en tu <ph name="SAVED_PASSWORDS_STORE"/>.</translation>
 <translation id="5297946558563358707">Cuando otra persona observa tu pantalla, se muestra el ícono del ojo (visualización privada) en la esquina inferior derecha de la pantalla</translation>
 <translation id="5298219193514155779">Tema creado por</translation>
-<translation id="5299109548848736476">No realizar seguimiento</translation>
+<translation id="1839179167864984545">No realizar seguimiento</translation>
 <translation id="5299558715747014286">Ver y administrar tus grupos de pestañas</translation>
 <translation id="5300287940468717207">¿Quieres restablecer los permisos de sitios?</translation>
 <translation id="5300426565656326054">Personalización de anuncios basada en el navegador</translation>
@@ -5411,7 +5411,7 @@ Puedes asignar varios interruptores a esta acción.</translation>
 <translation id="6367097275976877956">¿Deseas activar BraveVox, el lector de pantalla integrado de Brave OS? En ese caso, presiona la barra espaciadora.</translation>
 <translation id="6367985768157257101">¿Quieres recibir contenido mediante Compartir con Nearby?</translation>
 <translation id="6368276408895187373">Habilitado: <ph name="VARIATION_NAME"/></translation>
-<translation id="636850387210749493">Registro de empresa</translation>
+<translation id="636850387210749493">Inscripción empresarial</translation>
 <translation id="6370021412472292592">No se pudo cargar el manifiesto.</translation>
 <translation id="6374077068638737855">Iceweasel</translation>
 <translation id="6374469231428023295">Volver a intentar</translation>
@@ -7823,7 +7823,7 @@ Mantén el archivo de clave en un lugar seguro. Debes crear las nuevas versiones
 <translation id="8785622406424941542">Pluma stylus</translation>
 <translation id="8786824282808281903">Cuando vea este ícono, tu hijo podrá identificarse o aprobar compras con su huella dactilar.</translation>
 <translation id="8787575090331305835">{NUM_TABS,plural, =1{Grupo sin nombre - 1 pestaña}other{Grupo sin nombre - # pestañas}}</translation>
-<translation id="8791534160414513928">Enviar solicitud de "No realizar seguimiento" con el tráfico de navegación</translation>
+<translation id="163839281363975279">Enviar solicitud de "No realizar seguimiento" con el tráfico de navegación</translation>
 <translation id="879413103056696865">Mientras el hotspot esté activado, tu número <ph name="PHONE_NAME"/> podrá:</translation>
 <translation id="8795916974678578410">Nueva ventana</translation>
 <translation id="8797459392481275117">Nunca traducir este sitio</translation>

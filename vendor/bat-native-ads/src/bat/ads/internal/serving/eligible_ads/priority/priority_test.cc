@@ -4,16 +4,17 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "base/guid.h"
-#include "bat/ads/internal/base/http_status_code.h"
-#include "bat/ads/internal/base/unittest_base.h"
-#include "bat/ads/internal/base/unittest_time_util.h"
-#include "bat/ads/internal/base/unittest_util.h"
-#include "bat/ads/internal/creatives/ad_notifications/creative_ad_notifications_database_table.h"
+#include "bat/ads/internal/base/net/http/http_status_code.h"
+#include "bat/ads/internal/base/unittest/unittest_base.h"
+#include "bat/ads/internal/base/unittest/unittest_mock_util.h"
+#include "bat/ads/internal/base/unittest/unittest_time_util.h"
+#include "bat/ads/internal/creatives/notification_ads/creative_notification_ads_database_table.h"
 #include "bat/ads/internal/geographic/subdivision/subdivision_targeting.h"
 #include "bat/ads/internal/resources/behavioral/anti_targeting/anti_targeting_resource.h"
-#include "bat/ads/internal/serving/ad_notification_serving.h"
 #include "bat/ads/internal/serving/eligible_ads/eligible_ads_unittest_util.h"
+#include "bat/ads/internal/serving/notification_ad_serving.h"
 #include "bat/ads/internal/serving/permission_rules/user_activity_permission_rule_unittest_util.h"
+#include "bat/ads/notification_ad_info.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
@@ -27,17 +28,17 @@ namespace ads {
 
 namespace {
 
-Matcher<const AdNotificationInfo&> DoesMatchCreativeInstanceId(
+Matcher<const NotificationAdInfo&> DoesMatchCreativeInstanceId(
     const std::string& creative_instance_id) {
   return AllOf(Field("creative_instance_id",
-                     &AdNotificationInfo::creative_instance_id,
+                     &NotificationAdInfo::creative_instance_id,
                      creative_instance_id));
 }
 
 void ServeAd() {
   geographic::SubdivisionTargeting subdivision_targeting;
   resource::AntiTargeting anti_targeting_resource;
-  ad_notifications::Serving serving(&subdivision_targeting,
+  notification_ads::Serving serving(&subdivision_targeting,
                                     &anti_targeting_resource);
 
   serving.MaybeServeAd();
@@ -45,19 +46,23 @@ void ServeAd() {
 
 }  // namespace
 
-class BatAdsPriorityTest : public UnitTestBase {
+class BatAdsPriorityIntegrationTest : public UnitTestBase {
  protected:
-  BatAdsPriorityTest()
+  BatAdsPriorityIntegrationTest()
       : database_table_(
-            std::make_unique<database::table::CreativeAdNotifications>()) {}
+            std::make_unique<database::table::CreativeNotificationAds>()) {}
 
-  ~BatAdsPriorityTest() override = default;
+  ~BatAdsPriorityIntegrationTest() override = default;
 
   void SetUp() override {
-    ASSERT_TRUE(CopyFileFromTestPathToTempDir(
-        "confirmations_with_unblinded_tokens.json", "confirmations.json"));
-
     UnitTestBase::SetUpForTesting(/* is_integration_test */ true);
+
+    ForceUserActivityPermissionRule();
+  }
+
+  void SetUpMocks() override {
+    CopyFileFromTestPathToTempPath("confirmations_with_unblinded_tokens.json",
+                                   kConfirmationsFilename);
 
     const URLEndpoints endpoints = {
         {"/v9/catalog", {{net::HTTP_OK, "/empty_catalog.json"}}},
@@ -97,14 +102,10 @@ class BatAdsPriorityTest : public UnitTestBase {
         }
         )"}}}};
     MockUrlRequest(ads_client_mock_, endpoints);
-
-    InitializeAds();
-
-    ForceUserActivityPermissionRule();
   }
 
-  CreativeAdNotificationInfo BuildCreativeAdNotification() {
-    CreativeAdNotificationInfo creative_ad;
+  CreativeNotificationAdInfo BuildCreativeNotificationAd() {
+    CreativeNotificationAdInfo creative_ad;
 
     creative_ad.creative_instance_id =
         base::GUID::GenerateRandomV4().AsLowercaseString();
@@ -137,30 +138,30 @@ class BatAdsPriorityTest : public UnitTestBase {
 
   void ServeAdForIterations(const int iterations) {
     for (int i = 0; i < iterations; i++) {
-      ResetEligibleAds(AdType::kAdNotification);
+      ResetEligibleAds(AdType::kNotificationAd);
 
       geographic::SubdivisionTargeting subdivision_targeting;
       resource::AntiTargeting anti_targeting_resource;
-      ad_notifications::Serving serving(&subdivision_targeting,
+      notification_ads::Serving serving(&subdivision_targeting,
                                         &anti_targeting_resource);
 
       serving.MaybeServeAd();
     }
   }
 
-  void Save(const CreativeAdNotificationList& creative_ads) {
+  void Save(const CreativeNotificationAdList& creative_ads) {
     database_table_->Save(creative_ads,
                           [](const bool success) { ASSERT_TRUE(success); });
   }
 
-  std::unique_ptr<database::table::CreativeAdNotifications> database_table_;
+  std::unique_ptr<database::table::CreativeNotificationAds> database_table_;
 };
 
-TEST_F(BatAdsPriorityTest, PrioritizeDeliveryForSingleAd) {
+TEST_F(BatAdsPriorityIntegrationTest, PrioritizeDeliveryForSingleAd) {
   // Arrange
-  CreativeAdNotificationList creative_ads;
+  CreativeNotificationAdList creative_ads;
 
-  CreativeAdNotificationInfo creative_ad = BuildCreativeAdNotification();
+  CreativeNotificationAdInfo creative_ad = BuildCreativeNotificationAd();
   creative_ad.priority = 3;
   creative_ads.push_back(creative_ad);
 
@@ -176,7 +177,7 @@ TEST_F(BatAdsPriorityTest, PrioritizeDeliveryForSingleAd) {
   // Assert
 }
 
-TEST_F(BatAdsPriorityTest, PrioritizeDeliveryForNoAds) {
+TEST_F(BatAdsPriorityIntegrationTest, PrioritizeDeliveryForNoAds) {
   // Arrange
 
   // Act
@@ -187,19 +188,19 @@ TEST_F(BatAdsPriorityTest, PrioritizeDeliveryForNoAds) {
   // Assert
 }
 
-TEST_F(BatAdsPriorityTest, PrioritizeDeliveryForMultipleAds) {
+TEST_F(BatAdsPriorityIntegrationTest, PrioritizeDeliveryForMultipleAds) {
   // Arrange
-  CreativeAdNotificationList creative_ads;
+  CreativeNotificationAdList creative_ads;
 
-  CreativeAdNotificationInfo creative_ad_1 = BuildCreativeAdNotification();
+  CreativeNotificationAdInfo creative_ad_1 = BuildCreativeNotificationAd();
   creative_ad_1.priority = 3;
   creative_ads.push_back(creative_ad_1);
 
-  CreativeAdNotificationInfo creative_ad_2 = BuildCreativeAdNotification();
+  CreativeNotificationAdInfo creative_ad_2 = BuildCreativeNotificationAd();
   creative_ad_2.priority = 2;
   creative_ads.push_back(creative_ad_2);
 
-  CreativeAdNotificationInfo creative_ad_3 = BuildCreativeAdNotification();
+  CreativeNotificationAdInfo creative_ad_3 = BuildCreativeNotificationAd();
   creative_ad_3.priority = 4;
   creative_ads.push_back(creative_ad_3);
 

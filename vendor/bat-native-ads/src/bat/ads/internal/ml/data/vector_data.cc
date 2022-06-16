@@ -67,7 +67,8 @@ VectorData::VectorData(const VectorData& vector_data)
   storage_ = std::make_unique<VectorDataStorage>(*vector_data.storage_);
 }
 
-VectorData::VectorData(VectorData&& vector_data) : Data(DataType::kVector) {
+VectorData::VectorData(VectorData&& vector_data) noexcept
+    : Data(DataType::kVector) {
   storage_ = std::move(vector_data.storage_);
 }
 
@@ -98,7 +99,7 @@ VectorData& VectorData::operator=(const VectorData& vector_data) {
   return *this;
 }
 
-VectorData& VectorData::operator=(VectorData&& vector_data) {
+VectorData& VectorData::operator=(VectorData&& vector_data) noexcept {
   storage_ = std::move(vector_data.storage_);
   return *this;
 }

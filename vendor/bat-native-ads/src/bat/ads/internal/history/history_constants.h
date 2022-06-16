@@ -9,7 +9,7 @@
 namespace ads {
 namespace history {
 
-const int kDays = 30;
+constexpr int kDays = 30;
 
 }  // namespace history
 }  // namespace ads

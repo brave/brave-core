@@ -13,11 +13,16 @@
 
 namespace ads {
 
-class FetchPaymentTokenUrlRequestBuilder final : UrlRequestBuilderInterface {
+class FetchPaymentTokenUrlRequestBuilder final
+    : public UrlRequestBuilderInterface {
  public:
   explicit FetchPaymentTokenUrlRequestBuilder(
       const ConfirmationInfo& confirmation);
   ~FetchPaymentTokenUrlRequestBuilder() override;
+  FetchPaymentTokenUrlRequestBuilder(
+      const FetchPaymentTokenUrlRequestBuilder&) = delete;
+  FetchPaymentTokenUrlRequestBuilder operator=(
+      const FetchPaymentTokenUrlRequestBuilder&) = delete;
 
   mojom::UrlRequestPtr Build() override;
 

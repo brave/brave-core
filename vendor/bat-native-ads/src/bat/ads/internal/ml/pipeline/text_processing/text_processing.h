@@ -15,7 +15,7 @@
 
 namespace base {
 class Value;
-}
+}  // namespace base
 
 namespace ads {
 namespace ml {
@@ -30,15 +30,15 @@ class TextProcessing final {
       std::string* error_message);
 
   TextProcessing();
-  TextProcessing(const TransformationVector& transformations,
-                 const model::Linear& linear_model);
+  TextProcessing(TransformationVector transformations,
+                 model::Linear linear_model);
   ~TextProcessing();
   TextProcessing(const TextProcessing& pipeline) = delete;
   TextProcessing& operator=(const TextProcessing& pipeline) = delete;
 
   bool IsInitialized() const;
 
-  void SetInfo(const PipelineInfo& info);
+  void SetInfo(PipelineInfo info);
 
   bool FromValue(base::Value resource_value);
 

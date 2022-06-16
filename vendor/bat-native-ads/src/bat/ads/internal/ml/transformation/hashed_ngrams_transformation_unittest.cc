@@ -5,8 +5,7 @@
 
 #include "bat/ads/internal/ml/transformation/hashed_ngrams_transformation.h"
 
-#include "bat/ads/internal/base/unittest_base.h"
-#include "bat/ads/internal/base/unittest_util.h"
+#include "bat/ads/internal/base/unittest/unittest_base.h"
 #include "bat/ads/internal/ml/data/text_data.h"
 #include "bat/ads/internal/ml/data/vector_data.h"
 
@@ -28,7 +27,7 @@ TEST_F(BatAdsHashedNGramsTest, HashingTest) {
   const size_t kExpectedElementCount = 10;
   const std::string kTestString = "tiny";
   const std::unique_ptr<Data> text_data =
-      std::make_unique<TextData>(TextData(kTestString));
+      std::make_unique<TextData>(kTestString);
 
   const HashedNGramsTransformation hashed_ngrams;
 
@@ -55,7 +54,7 @@ TEST_F(BatAdsHashedNGramsTest, CustomHashingTest) {
   const int kHashBucketCount = 3;
   const std::string kTestString = "tiny";
   const std::unique_ptr<Data> text_data =
-      std::make_unique<TextData>(TextData(kTestString));
+      std::make_unique<TextData>(kTestString);
 
   const HashedNGramsTransformation hashed_ngrams(kHashBucketCount,
                                                  std::vector<int>{1, 2, 3});

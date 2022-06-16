@@ -21,6 +21,8 @@ class GeoTargets final : public TableInterface {
  public:
   GeoTargets();
   ~GeoTargets() override;
+  GeoTargets(const GeoTargets&) = delete;
+  GeoTargets& operator=(const GeoTargets&) = delete;
 
   void InsertOrUpdate(mojom::DBTransaction* transaction,
                       const CreativeAdList& creative_ads);

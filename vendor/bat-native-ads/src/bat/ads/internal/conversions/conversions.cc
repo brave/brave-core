@@ -19,8 +19,8 @@
 #include "bat/ads/internal/ad_events/ad_events_database_table.h"
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/base/logging_util.h"
-#include "bat/ads/internal/base/time_formatting_util.h"
-#include "bat/ads/internal/base/url_util.h"
+#include "bat/ads/internal/base/time/time_formatting_util.h"
+#include "bat/ads/internal/base/url/url_util.h"
 #include "bat/ads/internal/conversions/conversion_queue_database_table.h"
 #include "bat/ads/internal/conversions/conversion_queue_item_info.h"
 #include "bat/ads/internal/conversions/conversions_database_table.h"
@@ -335,11 +335,10 @@ void Conversions::Convert(
     const AdEventInfo& ad_event,
     const VerifiableConversionInfo& verifiable_conversion) {
   BLOG(1, "Conversion for "
-              << ad_event.type.ToString() << " with campaign id "
-              << ad_event.campaign_id << ", creative set id "
-              << ad_event.creative_set_id << ", creative instance id "
-              << ad_event.creative_instance_id << " and advertiser id "
-              << ad_event.advertiser_id);
+              << ad_event.type << " with campaign id " << ad_event.campaign_id
+              << ", creative set id " << ad_event.creative_set_id
+              << ", creative instance id " << ad_event.creative_instance_id
+              << " and advertiser id " << ad_event.advertiser_id);
 
   AddItemToQueue(ad_event, verifiable_conversion);
 }
@@ -450,7 +449,7 @@ void Conversions::FailedToConvertQueueItem(
     const ConversionQueueItemInfo& conversion_queue_item) {
   BLOG(1,
        "Failed to convert "
-           << conversion_queue_item.ad_type.ToString() << " with campaign id "
+           << conversion_queue_item.ad_type << " with campaign id "
            << conversion_queue_item.campaign_id << ", creative set id "
            << conversion_queue_item.creative_set_id << ", creative instance id "
            << conversion_queue_item.creative_instance_id
@@ -466,7 +465,7 @@ void Conversions::ConvertedQueueItem(
     const ConversionQueueItemInfo& conversion_queue_item) {
   BLOG(1,
        "Successfully converted "
-           << conversion_queue_item.ad_type.ToString() << " with campaign id "
+           << conversion_queue_item.ad_type << " with campaign id "
            << conversion_queue_item.campaign_id << ", creative set id "
            << conversion_queue_item.creative_set_id << ", creative instance id "
            << conversion_queue_item.creative_instance_id
@@ -544,12 +543,11 @@ void Conversions::StartTimer(
     delay = base::Seconds(rand_delay);
   }
 
-  const base::Time time = timer_.Start(
-      delay,
+  const base::Time process_queue_at = timer_.Start(
+      FROM_HERE, delay,
       base::BindOnce(&Conversions::ProcessQueue, base::Unretained(this)));
 
-  BLOG(1, "Convert " << conversion_queue_item.ad_type.ToString()
-                     << " with campaign id "
+  BLOG(1, "Convert " << conversion_queue_item.ad_type << " with campaign id "
                      << conversion_queue_item.campaign_id
                      << ", creative set id "
                      << conversion_queue_item.creative_set_id
@@ -557,7 +555,7 @@ void Conversions::StartTimer(
                      << conversion_queue_item.creative_instance_id
                      << " and advertiser id "
                      << conversion_queue_item.advertiser_id << " "
-                     << FriendlyDateAndTime(time));
+                     << FriendlyDateAndTime(process_queue_at));
 }
 
 void Conversions::NotifyConversion(

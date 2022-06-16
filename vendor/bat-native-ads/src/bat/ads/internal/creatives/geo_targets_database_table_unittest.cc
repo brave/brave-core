@@ -5,30 +5,18 @@
 
 #include "bat/ads/internal/creatives/geo_targets_database_table.h"
 
-#include <memory>
-
-#include "bat/ads/internal/base/unittest_base.h"
-#include "bat/ads/internal/base/unittest_util.h"
+#include "testing/gtest/include/gtest/gtest.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
 namespace ads {
 
-class BatAdsGeoTargetsDatabaseTableTest : public UnitTestBase {
- protected:
-  BatAdsGeoTargetsDatabaseTableTest()
-      : database_table_(std::make_unique<database::table::GeoTargets>()) {}
-
-  ~BatAdsGeoTargetsDatabaseTableTest() override = default;
-
-  std::unique_ptr<database::table::GeoTargets> database_table_;
-};
-
-TEST_F(BatAdsGeoTargetsDatabaseTableTest, TableName) {
+TEST(BatAdsGeoTargetsDatabaseTableTest, TableName) {
   // Arrange
+  database::table::GeoTargets database_table;
 
   // Act
-  const std::string table_name = database_table_->GetTableName();
+  const std::string table_name = database_table.GetTableName();
 
   // Assert
   const std::string expected_table_name = "geo_targets";

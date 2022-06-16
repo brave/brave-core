@@ -9,9 +9,10 @@
 
 #include "base/json/json_writer.h"
 #include "base/values.h"
-#include "bat/ads/internal/base/unittest_base.h"
-#include "bat/ads/internal/base/unittest_time_util.h"
-#include "bat/ads/internal/base/unittest_util.h"
+#include "bat/ads/ads.h"
+#include "bat/ads/internal/base/unittest/unittest_base.h"
+#include "bat/ads/internal/base/unittest/unittest_mock_util.h"
+#include "bat/ads/internal/base/unittest/unittest_time_util.h"
 #include "bat/ads/internal/catalog/catalog_util.h"
 #include "bat/ads/internal/conversions/conversion_queue_item_unittest_util.h"
 #include "third_party/re2/src/re2/re2.h"
@@ -40,18 +41,17 @@ class BatAdsConfirmationUserDataTest : public UnitTestBase {
 
 TEST_F(BatAdsConfirmationUserDataTest, BuildForNonConversionConfirmationType) {
   // Arrange
-  MockPlatformHelper(platform_helper_mock_, PlatformType::kWindows);
-  SetBuildChannel(BuildChannelType::kRelease);
+  MockBuildChannel(BuildChannelType::kRelease);
   MockLocaleHelper(locale_helper_mock_, "en-US");
+  MockPlatformHelper(platform_helper_mock_, PlatformType::kWindows);
+
   SetCatalogId(kCatalogId);
 
-  mojom::SysInfo sys_info;
-  sys_info.is_uncertain_future = false;
-  SetSysInfo(sys_info);
+  SysInfo().is_uncertain_future = false;
 
   const base::Time time =
       TimeFromString("November 18 2020 12:34:56.789", /* is_local */ false);
-  AdvanceClock(time);
+  AdvanceClockTo(time);
 
   // Act
   BuildAndSaveConversionQueueItem(kConversionId, kAdvertiserPublicKey);
@@ -71,18 +71,17 @@ TEST_F(BatAdsConfirmationUserDataTest, BuildForNonConversionConfirmationType) {
 
 TEST_F(BatAdsConfirmationUserDataTest, BuildForConversionConfirmationType) {
   // Arrange
-  MockPlatformHelper(platform_helper_mock_, PlatformType::kWindows);
-  SetBuildChannel(BuildChannelType::kRelease);
+  MockBuildChannel(BuildChannelType::kRelease);
   MockLocaleHelper(locale_helper_mock_, "en-US");
+  MockPlatformHelper(platform_helper_mock_, PlatformType::kWindows);
+
   SetCatalogId(kCatalogId);
 
-  mojom::SysInfo sys_info;
-  sys_info.is_uncertain_future = false;
-  SetSysInfo(sys_info);
+  SysInfo().is_uncertain_future = false;
 
   const base::Time time =
       TimeFromString("November 18 2020 12:34:56.789", /* is_local */ false);
-  AdvanceClock(time);
+  AdvanceClockTo(time);
 
   // Act
   BuildAndSaveConversionQueueItem(kConversionId, kAdvertiserPublicKey);

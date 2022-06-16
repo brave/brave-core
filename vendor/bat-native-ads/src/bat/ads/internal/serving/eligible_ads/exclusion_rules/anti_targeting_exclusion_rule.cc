@@ -9,7 +9,7 @@
 #include <memory>
 
 #include "base/strings/stringprintf.h"
-#include "bat/ads/internal/base/url_util.h"
+#include "bat/ads/internal/base/url/url_util.h"
 #include "bat/ads/internal/resources/behavioral/anti_targeting/anti_targeting_resource.h"
 
 namespace ads {

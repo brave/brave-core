@@ -8,9 +8,8 @@
 #include <vector>
 
 #include "bat/ads/internal/ad_events/ad_event_unittest_util.h"
-#include "bat/ads/internal/base/unittest_base.h"
-#include "bat/ads/internal/base/unittest_time_util.h"
-#include "bat/ads/internal/base/unittest_util.h"
+#include "bat/ads/internal/base/unittest/unittest_base.h"
+#include "bat/ads/internal/base/unittest/unittest_time_util.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
@@ -56,7 +55,7 @@ TEST_F(BatAdsDailyCapExclusionRuleTest, AllowAdIfDoesNotExceedCap) {
   AdEventList ad_events;
 
   const AdEventInfo ad_event = BuildAdEvent(
-      creative_ad, AdType::kAdNotification, ConfirmationType::kServed, Now());
+      creative_ad, AdType::kNotificationAd, ConfirmationType::kServed, Now());
 
   ad_events.push_back(ad_event);
 
@@ -81,7 +80,7 @@ TEST_F(BatAdsDailyCapExclusionRuleTest,
   AdEventList ad_events;
 
   const AdEventInfo ad_event = BuildAdEvent(
-      creative_ad_2, AdType::kAdNotification, ConfirmationType::kServed, Now());
+      creative_ad_2, AdType::kNotificationAd, ConfirmationType::kServed, Now());
 
   ad_events.push_back(ad_event);
 
@@ -102,11 +101,11 @@ TEST_F(BatAdsDailyCapExclusionRuleTest, AllowAdIfDoesNotExceedCapWithin1Day) {
   AdEventList ad_events;
 
   const AdEventInfo ad_event = BuildAdEvent(
-      creative_ad, AdType::kAdNotification, ConfirmationType::kServed, Now());
+      creative_ad, AdType::kNotificationAd, ConfirmationType::kServed, Now());
 
   ad_events.push_back(ad_event);
 
-  task_environment_.FastForwardBy(base::Hours(23));
+  FastForwardClockBy(base::Hours(23));
 
   // Act
   DailyCapExclusionRule exclusion_rule(ad_events);
@@ -125,11 +124,11 @@ TEST_F(BatAdsDailyCapExclusionRuleTest, AllowAdIfDoesNotExceedCapAfter1Day) {
   AdEventList ad_events;
 
   const AdEventInfo ad_event = BuildAdEvent(
-      creative_ad, AdType::kAdNotification, ConfirmationType::kServed, Now());
+      creative_ad, AdType::kNotificationAd, ConfirmationType::kServed, Now());
 
   ad_events.push_back(ad_event);
 
-  task_environment_.FastForwardBy(base::Days(1));
+  FastForwardClockBy(base::Days(1));
 
   // Act
   DailyCapExclusionRule exclusion_rule(ad_events);
@@ -148,7 +147,7 @@ TEST_F(BatAdsDailyCapExclusionRuleTest, DoNotAllowAdIfExceedsCap) {
   AdEventList ad_events;
 
   const AdEventInfo ad_event = BuildAdEvent(
-      creative_ad, AdType::kAdNotification, ConfirmationType::kServed, Now());
+      creative_ad, AdType::kNotificationAd, ConfirmationType::kServed, Now());
 
   ad_events.push_back(ad_event);
   ad_events.push_back(ad_event);

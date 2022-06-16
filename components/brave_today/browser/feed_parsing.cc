@@ -95,16 +95,16 @@ bool ParseFeedItem(const base::Value& feed_item_raw,
       return false;
     }
     item->data = std::move(metadata);
-    feed_item->get()->set_promoted_article(std::move(item));
+    *feed_item = mojom::FeedItem::NewPromotedArticle(std::move(item));
   } else if (content_type == "product") {
     auto item = mojom::Deal::New();
     item->offers_category = *feed_item_raw.FindStringKey("offers_category");
     item->data = std::move(metadata);
-    feed_item->get()->set_deal(std::move(item));
+    *feed_item = mojom::FeedItem::NewDeal(std::move(item));
   } else if (content_type == "article") {
     auto item = mojom::Article::New();
     item->data = std::move(metadata);
-    feed_item->get()->set_article(std::move(item));
+    *feed_item = mojom::FeedItem::NewArticle(std::move(item));
   } else {
     // Do not error if unknown content_type is discovered, it could
     // be a future use.
@@ -130,8 +130,7 @@ bool ParseFeedItems(const std::string& json,
     return false;
   }
   for (const base::Value& feed_item_raw : records_v->GetList()) {
-    auto item = mojom::FeedItem::New();
-    std::string item_hash;
+    mojom::FeedItemPtr item;
     if (ParseFeedItem(feed_item_raw, &item)) {
       feed_items->push_back(std::move(item));
     }

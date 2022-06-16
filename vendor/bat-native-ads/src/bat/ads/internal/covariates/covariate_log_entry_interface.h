@@ -17,7 +17,7 @@ class CovariateLogEntryInterface {
   virtual ~CovariateLogEntryInterface() = default;
 
   virtual brave_federated::mojom::DataType GetDataType() const = 0;
-  virtual brave_federated::mojom::CovariateType GetCovariateType() const = 0;
+  virtual brave_federated::mojom::CovariateType GetType() const = 0;
   virtual std::string GetValue() const = 0;
 };
 

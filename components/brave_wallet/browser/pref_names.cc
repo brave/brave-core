@@ -25,11 +25,14 @@ const char kBraveWalletP3AFirstReportTime[] =
 const char kBraveWalletP3AWeeklyStorage[] =
     "brave.wallet.wallet_p3a_weekly_storage";
 const char kBraveWalletCustomNetworks[] = "brave.wallet.custom_networks";
+const char kBraveWalletHiddenNetworks[] = "brave.wallet.hidden_networks";
 const char kBraveWalletSelectedNetworks[] = "brave.wallet.selected_networks";
 const char kBraveWalletKeyrings[] = "brave.wallet.keyrings";
 const char kBraveWalletUserAssets[] = "brave.wallet.wallet_user_assets";
 const char kBraveWalletUserAssetEthContractAddressMigrated[] =
     "brave.wallet.user.asset.eth_contract_address_migrated";
+const char kBraveWalletUserAssetsAddPreloadingNetworksMigrated[] =
+    "brave.wallet.user.assets.add_preloading_networks_migrated";
 const char kBraveWalletAutoLockMinutes[] = "brave.wallet.auto_lock_minutes";
 const char kSupportEip1559OnLocalhostChain[] =
     "brave.wallet.support_eip1559_on_localhost_chain";

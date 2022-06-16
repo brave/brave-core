@@ -16,8 +16,8 @@
 #include "base/json/json_value_converter.h"
 #include "base/json/values_util.h"
 #include "base/strings/string_util.h"
-#include "base/task/post_task.h"
 #include "base/task/thread_pool.h"
+#include "base/thread_annotations.h"
 #include "base/time/time.h"
 #include "base/values.h"
 #include "brave/components/adblock_rust_ffi/src/wrapper.h"
@@ -52,6 +52,19 @@ bool ParseTimeValue(const base::Value* value, base::Time* field) {
   return true;
 }
 
+bool ParseOptionalStringField(const base::Value* value,
+                              absl::optional<std::string>* field) {
+  if (value == nullptr) {
+    *field = absl::nullopt;
+    return true;
+  } else if (!value->is_string()) {
+    return false;
+  } else {
+    *field = value->GetString();
+    return true;
+  }
+}
+
 const base::TimeDelta kListUpdateInterval = base::Days(7);
 const base::TimeDelta kListRetryInterval = base::Hours(1);
 const base::TimeDelta kListCheckInitialDelay = base::Minutes(1);
@@ -75,6 +88,10 @@ const base::FilePath::CharType kSubscriptionsDir[] =
 
 }  // namespace
 
+SubscriptionInfo::SubscriptionInfo() {}
+SubscriptionInfo::~SubscriptionInfo() {}
+SubscriptionInfo::SubscriptionInfo(const SubscriptionInfo&) = default;
+
 void SubscriptionInfo::RegisterJSONConverter(
     base::JSONValueConverter<SubscriptionInfo>* converter) {
   // The `subscription_url` field is skipped, as it's not stored within the
@@ -88,6 +105,10 @@ void SubscriptionInfo::RegisterJSONConverter(
       "last_successful_update_attempt",
       &SubscriptionInfo::last_successful_update_attempt, &ParseTimeValue);
   converter->RegisterBoolField("enabled", &SubscriptionInfo::enabled);
+  converter->RegisterCustomValueField<absl::optional<std::string>>(
+      "homepage", &SubscriptionInfo::homepage, &ParseOptionalStringField);
+  converter->RegisterCustomValueField<absl::optional<std::string>>(
+      "title", &SubscriptionInfo::title, &ParseOptionalStringField);
 }
 
 AdBlockSubscriptionServiceManager::AdBlockSubscriptionServiceManager(
@@ -201,8 +222,11 @@ void AdBlockSubscriptionServiceManager::CreateSubscription(
     const GURL& sub_url) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
-  if (base::Contains(subscription_services_, sub_url)) {
-    return;
+  {
+    base::AutoLock lock(subscription_services_lock_);
+    if (base::Contains(subscription_services_, sub_url)) {
+      return;
+    }
   }
 
   SubscriptionInfo info;
@@ -222,7 +246,9 @@ void AdBlockSubscriptionServiceManager::CreateSubscription(
           GetSubscriptionPath(sub_url).Append(kCustomSubscriptionListText));
   auto observer = std::make_unique<AdBlockService::SourceProviderObserver>(
       subscription_service->AsWeakPtr(), subscription_filters_provider.get(),
-      resource_provider_, task_runner_);
+      resource_provider_, task_runner_,
+      base::BindRepeating(&AdBlockSubscriptionServiceManager::OnListMetadata,
+                          weak_ptr_factory_.GetWeakPtr(), sub_url));
 
   {
     base::AutoLock lock(subscription_services_lock_);
@@ -241,10 +267,12 @@ void AdBlockSubscriptionServiceManager::CreateSubscription(
 std::vector<SubscriptionInfo>
 AdBlockSubscriptionServiceManager::GetSubscriptions() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  base::AutoLock lock(subscription_services_lock_);
+
   auto infos = std::vector<SubscriptionInfo>();
 
   for (const auto& subscription_service : subscription_services_) {
-    auto info = GetInfo(subscription_service.first);
+    auto info = GetInfo(subscriptions_, subscription_service.first);
     DCHECK(info);
     infos.push_back(*info);
   }
@@ -255,7 +283,13 @@ AdBlockSubscriptionServiceManager::GetSubscriptions() {
 void AdBlockSubscriptionServiceManager::EnableSubscription(const GURL& sub_url,
                                                            bool enabled) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  auto info = GetInfo(sub_url);
+
+  absl::optional<SubscriptionInfo> info;
+  {
+    base::AutoLock lock(subscription_services_lock_);
+    info = GetInfo(subscriptions_, sub_url);
+  }
+
   DCHECK(info);
 
   info->enabled = enabled;
@@ -320,6 +354,40 @@ void AdBlockSubscriptionServiceManager::OnGetDownloadManager(
       base::DoNothing());
 }
 
+void AdBlockSubscriptionServiceManager::OnListMetadata(
+    const GURL& sub_url,
+    const adblock::FilterListMetadata& metadata) {
+  // The engine will have loaded new list metadata; read it and update local
+  // preferences with the new values.
+
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+
+  absl::optional<SubscriptionInfo> info;
+  {
+    base::AutoLock lock(subscription_services_lock_);
+    info = GetInfo(subscriptions_, sub_url);
+  }
+
+  if (!info)
+    return;
+
+  // Title can only be set once - only set it if an existing title does not
+  // exist
+  if (!info->title && metadata.title) {
+    info->title = absl::make_optional(*metadata.title);
+  }
+
+  if (metadata.homepage) {
+    info->homepage = absl::make_optional(*metadata.homepage);
+  } else {
+    info->homepage = absl::nullopt;
+  }
+
+  UpdateSubscriptionPrefs(sub_url, *info);
+
+  NotifyObserversOfServiceEvent();
+}
+
 void AdBlockSubscriptionServiceManager::SetUpdateIntervalsForTesting(
     base::TimeDelta* initial_delay,
     base::TimeDelta* retry_interval) {
@@ -331,9 +399,11 @@ void AdBlockSubscriptionServiceManager::SetUpdateIntervalsForTesting(
       base::DoNothing());
 }
 
+// static
 absl::optional<SubscriptionInfo> AdBlockSubscriptionServiceManager::GetInfo(
+    const std::unique_ptr<base::DictionaryValue>& subscriptions,
     const GURL& sub_url) {
-  auto* list_subscription_dict = subscriptions_->FindKey(sub_url.spec());
+  auto* list_subscription_dict = subscriptions->FindKey(sub_url.spec());
   if (!list_subscription_dict)
     return absl::nullopt;
 
@@ -371,8 +441,10 @@ void AdBlockSubscriptionServiceManager::LoadSubscriptionServices() {
               GetSubscriptionPath(sub_url).Append(kCustomSubscriptionListText));
       auto observer = std::make_unique<AdBlockService::SourceProviderObserver>(
           subscription_service->AsWeakPtr(),
-          subscription_filters_provider.get(), resource_provider_,
-          task_runner_);
+          subscription_filters_provider.get(), resource_provider_, task_runner_,
+          base::BindRepeating(
+              &AdBlockSubscriptionServiceManager::OnListMetadata,
+              weak_ptr_factory_.GetWeakPtr(), sub_url));
 
       subscription_services_.insert(
           std::make_pair(sub_url, std::move(subscription_service)));
@@ -402,6 +474,12 @@ void AdBlockSubscriptionServiceManager::UpdateSubscriptionPrefs(
   subscription_dict.SetKey(
       "last_successful_update_attempt",
       base::TimeToValue(info.last_successful_update_attempt));
+  if (info.homepage) {
+    subscription_dict.SetKey("homepage", base::Value(*info.homepage));
+  }
+  if (info.title) {
+    subscription_dict.SetKey("title", base::Value(*info.title));
+  }
   subscriptions_dict->SetKey(sub_url.spec(), std::move(subscription_dict));
 
   // TODO(bridiver) - change to pref registrar
@@ -443,7 +521,7 @@ void AdBlockSubscriptionServiceManager::ShouldStartRequest(
     std::string* mock_data_url) {
   base::AutoLock lock(subscription_services_lock_);
   for (const auto& subscription_service : subscription_services_) {
-    auto info = GetInfo(subscription_service.first);
+    auto info = GetInfo(subscriptions_, subscription_service.first);
     if (info && info->enabled) {
       subscription_service.second->ShouldStartRequest(
           url, resource_type, tab_host, aggressive_blocking, did_match_rule,
@@ -458,6 +536,8 @@ void AdBlockSubscriptionServiceManager::ShouldStartRequest(
 void AdBlockSubscriptionServiceManager::EnableTag(const std::string& tag,
                                                   bool enabled) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  base::AutoLock lock(subscription_services_lock_);
+
   for (const auto& subscription_service : subscription_services_) {
     subscription_service.second->EnableTag(tag, enabled);
   }
@@ -466,6 +546,8 @@ void AdBlockSubscriptionServiceManager::EnableTag(const std::string& tag,
 void AdBlockSubscriptionServiceManager::AddResources(
     const std::string& resources) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  base::AutoLock lock(subscription_services_lock_);
+
   for (const auto& subscription_service : subscription_services_) {
     subscription_service.second->AddResources(resources);
   }
@@ -479,7 +561,7 @@ AdBlockSubscriptionServiceManager::UrlCosmeticResources(
   base::AutoLock lock(subscription_services_lock_);
   for (auto it = subscription_services_.begin();
        it != subscription_services_.end(); it++) {
-    auto info = GetInfo(it->first);
+    auto info = GetInfo(subscriptions_, it->first);
     if (info && info->enabled) {
       absl::optional<base::Value> next_value =
           it->second->UrlCosmeticResources(url);
@@ -505,7 +587,7 @@ base::Value AdBlockSubscriptionServiceManager::HiddenClassIdSelectors(
   base::AutoLock lock(subscription_services_lock_);
   for (auto it = subscription_services_.begin();
        it != subscription_services_.end(); it++) {
-    auto info = GetInfo(it->first);
+    auto info = GetInfo(subscriptions_, it->first);
     if (info && info->enabled) {
       base::Value next_value =
           it->second->HiddenClassIdSelectors(classes, ids, exceptions);
@@ -528,7 +610,12 @@ void AdBlockSubscriptionServiceManager::OnSubscriptionDownloaded(
   if (subscription_filters_provider == subscription_filters_providers_.end())
     return;
 
-  auto info = GetInfo(sub_url);
+  absl::optional<SubscriptionInfo> info;
+  {
+    base::AutoLock lock(subscription_services_lock_);
+    info = GetInfo(subscriptions_, sub_url);
+  }
+
   if (!info)
     return;
 
@@ -548,7 +635,12 @@ void AdBlockSubscriptionServiceManager::OnSubscriptionDownloaded(
 
 void AdBlockSubscriptionServiceManager::OnSubscriptionDownloadFailure(
     const GURL& sub_url) {
-  auto info = GetInfo(sub_url);
+  absl::optional<SubscriptionInfo> info;
+  {
+    base::AutoLock lock(subscription_services_lock_);
+    info = GetInfo(subscriptions_, sub_url);
+  }
+
   if (!info)
     return;
 
@@ -559,6 +651,7 @@ void AdBlockSubscriptionServiceManager::OnSubscriptionDownloadFailure(
 }
 
 void AdBlockSubscriptionServiceManager::NotifyObserversOfServiceEvent() {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   for (auto& observer : observers_) {
     observer.OnServiceUpdateEvent();
   }

@@ -8,9 +8,8 @@
 #include "base/test/scoped_feature_list.h"
 #include "bat/ads/internal/account/statement/ad_rewards_features.h"
 #include "bat/ads/internal/account/transactions/transactions_unittest_util.h"
-#include "bat/ads/internal/base/unittest_base.h"
-#include "bat/ads/internal/base/unittest_time_util.h"
-#include "bat/ads/internal/base/unittest_util.h"
+#include "bat/ads/internal/base/unittest/unittest_base.h"
+#include "bat/ads/internal/base/unittest/unittest_time_util.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
@@ -33,14 +32,14 @@ TEST_F(BatAdsNextPaymentDateUtilTest,
   scoped_feature_list.InitAndEnableFeatureWithParameters(features::kAdRewards,
                                                          parameters);
 
-  AdvanceClock(TimeFromString("1 January 2020", /* is_local */ false));
+  AdvanceClockTo(TimeFromString("1 January 2020", /* is_local */ false));
 
   TransactionList transactions;
   const TransactionInfo& transaction =
       BuildTransaction(0.01, ConfirmationType::kViewed, Now());
   transactions.push_back(transaction);
 
-  AdvanceClock(TimeFromString("1 February 2020", /* is_local */ false));
+  AdvanceClockTo(TimeFromString("1 February 2020", /* is_local */ false));
 
   const base::Time next_token_redemption_at =
       TimeFromString("5 February 2020", /* is_local */ false);
@@ -65,7 +64,7 @@ TEST_F(BatAdsNextPaymentDateUtilTest,
   scoped_feature_list.InitAndEnableFeatureWithParameters(features::kAdRewards,
                                                          parameters);
 
-  AdvanceClock(TimeFromString("1 February 2020", /* is_local */ false));
+  AdvanceClockTo(TimeFromString("1 February 2020", /* is_local */ false));
 
   const TransactionList transactions;
 
@@ -92,7 +91,7 @@ TEST_F(BatAdsNextPaymentDateUtilTest,
   scoped_feature_list.InitAndEnableFeatureWithParameters(features::kAdRewards,
                                                          parameters);
 
-  AdvanceClock(TimeFromString("31 January 2020", /* is_local */ false));
+  AdvanceClockTo(TimeFromString("31 January 2020", /* is_local */ false));
 
   TransactionList transactions;
   const TransactionInfo& transaction =
@@ -123,7 +122,7 @@ TEST_F(
   scoped_feature_list.InitAndEnableFeatureWithParameters(features::kAdRewards,
                                                          parameters);
 
-  AdvanceClock(TimeFromString("11 January 2020", /* is_local */ false));
+  AdvanceClockTo(TimeFromString("11 January 2020", /* is_local */ false));
 
   const TransactionList transactions;
 
@@ -151,7 +150,7 @@ TEST_F(
   scoped_feature_list.InitAndEnableFeatureWithParameters(features::kAdRewards,
                                                          parameters);
 
-  AdvanceClock(TimeFromString("31 January 2020", /* is_local */ false));
+  AdvanceClockTo(TimeFromString("31 January 2020", /* is_local */ false));
 
   const TransactionList transactions;
 

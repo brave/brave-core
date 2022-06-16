@@ -23,6 +23,7 @@ namespace ads {
 struct ADS_EXPORT TransactionInfo final {
   TransactionInfo();
   TransactionInfo(const TransactionInfo& info);
+  TransactionInfo& operator=(const TransactionInfo& info);
   ~TransactionInfo();
 
   bool operator==(const TransactionInfo& rhs) const;

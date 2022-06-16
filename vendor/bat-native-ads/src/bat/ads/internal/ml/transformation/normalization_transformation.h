@@ -16,6 +16,10 @@ namespace ml {
 class NormalizationTransformation final : public Transformation {
  public:
   NormalizationTransformation();
+  NormalizationTransformation(
+      NormalizationTransformation&& transformation) noexcept;
+  NormalizationTransformation& operator=(
+      NormalizationTransformation&& transformation) = delete;
   ~NormalizationTransformation() override;
 
   std::unique_ptr<Data> Apply(

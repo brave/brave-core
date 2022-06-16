@@ -10,10 +10,10 @@
 
 #include "base/guid.h"
 #include "base/test/scoped_feature_list.h"
-#include "bat/ads/internal/base/unittest_util.h"
-#include "bat/ads/internal/creatives/ad_notifications/creative_ad_notification_info.h"
-#include "bat/ads/internal/creatives/ad_notifications/creative_ad_notification_info_aliases.h"
-#include "bat/ads/internal/creatives/ad_notifications/creative_ad_notification_unittest_util.h"
+#include "bat/ads/internal/creatives/notification_ads/creative_notification_ad_info.h"
+#include "bat/ads/internal/creatives/notification_ads/creative_notification_ad_info_aliases.h"
+#include "bat/ads/internal/creatives/notification_ads/creative_notification_ad_unittest_util.h"
+#include "testing/gtest/include/gtest/gtest.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
@@ -21,34 +21,34 @@ namespace ads {
 
 TEST(BatAdsEligibleAdsPredictorUtilTest, GroupCreativeAdsByCreativeInstanceId) {
   // Arrange
-  CreativeAdNotificationList creative_ads;
+  CreativeNotificationAdList creative_ads;
 
-  CreativeAdNotificationInfo creative_ad_1 = BuildCreativeAdNotification();
+  CreativeNotificationAdInfo creative_ad_1 = BuildCreativeNotificationAd();
   creative_ad_1.segment = "foo-bar1";
   creative_ads.push_back(creative_ad_1);
 
-  CreativeAdNotificationInfo creative_ad_2 = BuildCreativeAdNotification();
+  CreativeNotificationAdInfo creative_ad_2 = BuildCreativeNotificationAd();
   creative_ad_2.segment = "foo-bar2";
   creative_ads.push_back(creative_ad_2);
 
-  CreativeAdNotificationInfo creative_ad_3 = BuildCreativeAdNotification();
+  CreativeNotificationAdInfo creative_ad_3 = BuildCreativeNotificationAd();
   creative_ad_3.segment = "foo-bar3";
   creative_ads.push_back(creative_ad_3);
 
-  CreativeAdNotificationInfo creative_ad_4 = BuildCreativeAdNotification();
+  CreativeNotificationAdInfo creative_ad_4 = BuildCreativeNotificationAd();
   creative_ad_4.creative_instance_id = creative_ad_2.creative_instance_id;
   creative_ad_4.segment = "foo-bar4";
   creative_ads.push_back(creative_ad_4);
 
   // Act
-  const CreativeAdPredictorMap<CreativeAdNotificationInfo>
+  const CreativeAdPredictorMap<CreativeNotificationAdInfo>
       creative_ad_predictors =
           GroupCreativeAdsByCreativeInstanceId(creative_ads);
 
   // Assert
   ASSERT_EQ(3U, creative_ad_predictors.size());
 
-  const AdPredictorInfo<CreativeAdNotificationInfo> ad_predictor =
+  const AdPredictorInfo<CreativeNotificationAdInfo> ad_predictor =
       creative_ad_predictors.at(creative_ad_2.creative_instance_id);
   const SegmentList& expected_segments = {"foo-bar2", "foo-bar4"};
   EXPECT_EQ(expected_segments, ad_predictor.segments);
@@ -57,10 +57,10 @@ TEST(BatAdsEligibleAdsPredictorUtilTest, GroupCreativeAdsByCreativeInstanceId) {
 TEST(BatAdsEligibleAdsPredictorUtilTest,
      GroupCreativeAdsByCreativeInstanceIdForEmptyAds) {
   // Arrange
-  CreativeAdNotificationList creative_ads;
+  CreativeNotificationAdList creative_ads;
 
   // Act
-  const CreativeAdPredictorMap<CreativeAdNotificationInfo>
+  const CreativeAdPredictorMap<CreativeNotificationAdInfo>
       creative_ad_predictors =
           GroupCreativeAdsByCreativeInstanceId(creative_ads);
 
@@ -80,10 +80,10 @@ TEST(BatAdsEligibleAdsPredictorUtilTest,
   scoped_feature_list.InitWithFeaturesAndParameters(
       {{features::kEligibleAds, kEligibleAdsParameters}}, {});
 
-  CreativeAdNotificationInfo creative_ad = BuildCreativeAdNotification();
+  CreativeNotificationAdInfo creative_ad = BuildCreativeNotificationAd();
   creative_ad.segment = "foo-bar";
 
-  AdPredictorInfo<CreativeAdNotificationInfo> ad_predictor;
+  AdPredictorInfo<CreativeNotificationAdInfo> ad_predictor;
   ad_predictor.creative_ad = creative_ad;
   ad_predictor.segments = {creative_ad.segment};
   ad_predictor.does_match_intent_child_segments = 1;
@@ -103,10 +103,10 @@ TEST(BatAdsEligibleAdsPredictorUtilTest,
 TEST(BatAdsEligibleAdsPredictorUtilTest,
      ComputePredictorScoreWithDefaultWeights) {
   // Arrange
-  CreativeAdNotificationInfo creative_ad = BuildCreativeAdNotification();
+  CreativeNotificationAdInfo creative_ad = BuildCreativeNotificationAd();
   creative_ad.segment = "foo-bar";
 
-  AdPredictorInfo<CreativeAdNotificationInfo> ad_predictor;
+  AdPredictorInfo<CreativeNotificationAdInfo> ad_predictor;
   ad_predictor.creative_ad = creative_ad;
   ad_predictor.segments = {creative_ad.segment};
   ad_predictor.does_match_intent_child_segments = 1;
@@ -128,7 +128,7 @@ TEST(BatAdsEligibleAdsPredictorUtilTest,
 TEST(BatAdsEligibleAdsPredictorUtilTest,
      ComputePredictorScoreWithEmptyAdFeatures) {
   // Arrange
-  AdPredictorInfo<CreativeAdNotificationInfo> ad_predictor;
+  AdPredictorInfo<CreativeNotificationAdInfo> ad_predictor;
 
   // Act
   ad_predictor.score = ComputePredictorScore(ad_predictor);

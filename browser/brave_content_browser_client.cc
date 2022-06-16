@@ -14,7 +14,6 @@
 #include "base/json/json_reader.h"
 #include "base/strings/strcat.h"
 #include "base/system/sys_info.h"
-#include "base/task/post_task.h"
 #include "brave/browser/brave_browser_main_extra_parts.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/brave_shields/brave_shields_web_contents_observer.h"
@@ -318,11 +317,16 @@ void MaybeBindSolanaProvider(
   if (!brave_wallet_service)
     return;
 
+  auto* tx_service = brave_wallet::TxServiceFactory::GetServiceForContext(
+      frame_host->GetBrowserContext());
+  if (!tx_service)
+    return;
+
   content::WebContents* web_contents =
       content::WebContents::FromRenderFrameHost(frame_host);
   mojo::MakeSelfOwnedReceiver(
       std::make_unique<brave_wallet::SolanaProviderImpl>(
-          keyring_service, brave_wallet_service,
+          keyring_service, brave_wallet_service, tx_service,
           std::make_unique<brave_wallet::BraveWalletProviderDelegateImpl>(
               web_contents, frame_host)),
       std::move(receiver));
@@ -379,10 +383,9 @@ BraveContentBrowserClient::BraveContentBrowserClient() {}
 BraveContentBrowserClient::~BraveContentBrowserClient() {}
 
 std::unique_ptr<content::BrowserMainParts>
-BraveContentBrowserClient::CreateBrowserMainParts(
-    content::MainFunctionParams parameters) {
+BraveContentBrowserClient::CreateBrowserMainParts(bool is_integration_test) {
   std::unique_ptr<content::BrowserMainParts> main_parts =
-      ChromeContentBrowserClient::CreateBrowserMainParts(std::move(parameters));
+      ChromeContentBrowserClient::CreateBrowserMainParts(is_integration_test);
   ChromeBrowserMainParts* chrome_main_parts =
       static_cast<ChromeBrowserMainParts*>(main_parts.get());
   chrome_main_parts->AddParts(std::make_unique<BraveBrowserMainExtraParts>());
@@ -840,6 +843,17 @@ bool BraveContentBrowserClient::HandleURLOverrideRewrite(
     *url = url->ReplaceComponents(replacements);
     return true;
   }
+
+#if !BUILDFLAG(IS_ANDROID)
+  if (url->host() == kAdblockHost) {
+    GURL::Replacements replacements;
+    replacements.SetSchemeStr(content::kChromeUIScheme);
+    replacements.SetHostStr(chrome::kChromeUISettingsHost);
+    replacements.SetPathStr(kContentFiltersPath);
+    *url = url->ReplaceComponents(replacements);
+    return false;
+  }
+#endif
 
   // no special win10 welcome page
   if (url->host() == chrome::kChromeUIWelcomeHost) {

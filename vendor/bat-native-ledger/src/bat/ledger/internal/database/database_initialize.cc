@@ -59,9 +59,7 @@ void DatabaseInitialize::OnInitialize(
     return;
   }
 
-  if (!response->result ||
-      response->result->get_value()->which() !=
-      type::DBValue::Tag::INT_VALUE) {
+  if (!response->result || !response->result->get_value()->is_int_value()) {
     BLOG(0, "DB init failed");
     callback(type::Result::DATABASE_INIT_FAILED);
     return;

@@ -18,6 +18,9 @@ class Data;
 class LowercaseTransformation final : public Transformation {
  public:
   LowercaseTransformation();
+  LowercaseTransformation(LowercaseTransformation&& transformation) noexcept;
+  LowercaseTransformation& operator=(LowercaseTransformation&& transformation) =
+      delete;
   ~LowercaseTransformation() override;
 
   std::unique_ptr<Data> Apply(

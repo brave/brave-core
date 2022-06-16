@@ -114,6 +114,10 @@ class BraveShieldsPage extends BraveShieldsPageBase {
     router.navigateTo(router.getRoutes().SHIELDS_ADBLOCK);
   }
 
+  controlEqual_ (val1, val2) {
+    return val1 === val2
+  }
+
   onAdControlChange_ () {
     const setting = this.$.adControlType.value
     const adControlType = (setting !== 'allow')

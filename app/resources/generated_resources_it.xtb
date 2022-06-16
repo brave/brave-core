@@ -4342,7 +4342,7 @@ e Ctrl + Alt + Riduzione luminosità per diminuire lo zoom.</translation>
 <translation id="5280426389926346830">Vuoi creare una scorciatoia?</translation>
 <translation id="5281013262333731149">Si apre in: <ph name="OPEN_BROWSER"/></translation>
 <translation id="528208740344463258">Per scaricare e utilizzare le app Android, devi prima installare questo aggiornamento obbligatorio. Mentre il tuo dispositivo <ph name="DEVICE_TYPE"/> viene aggiornato, non puoi utilizzarlo. Il dispositivo <ph name="DEVICE_TYPE"/> verrà riavviato al termine dell'installazione.</translation>
-<translation id="5282733140964383898">Se attivi "Non tenere traccia", viene inclusa una richiesta con il tuo traffico di navigazione. Gli eventuali effetti dipendono dalla risposta o meno di un sito web alla richiesta e dalla modalità di interpretazione della richiesta. Ad esempio, alcuni siti web potrebbero rispondere alla richiesta visualizzando annunci non basati su altri siti web che hai visitato. Molti siti web raccoglieranno e utilizzeranno comunque i tuoi dati di navigazione per diversi scopi, ad esempio per aumentare la sicurezza, fornire contenuti, servizi, annunci e consigli sui loro siti web o generare statistiche sui rapporti. <ph name="BEGIN_LINK"/>Ulteriori informazioni<ph name="END_LINK"/></translation>
+<translation id="4039256732955431945">Se attivi "Non tenere traccia", viene inclusa una richiesta con il tuo traffico di navigazione. Gli eventuali effetti dipendono dalla risposta o meno di un sito web alla richiesta e dalla modalità di interpretazione della richiesta. Ad esempio, alcuni siti web potrebbero rispondere alla richiesta visualizzando annunci non basati su altri siti web che hai visitato. Molti siti web raccoglieranno e utilizzeranno comunque i tuoi dati di navigazione per diversi scopi, ad esempio per aumentare la sicurezza, fornire contenuti, servizi, annunci e consigli sui loro siti web o generare statistiche sui rapporti. <ph name="BEGIN_LINK"/>Ulteriori informazioni<ph name="END_LINK"/></translation>
 <translation id="5283677936944177147">Spiacenti, il sistema non è riuscito a stabilire il modello o il numero di serie del dispositivo.</translation>
 <translation id="5284445933715251131">Continua il download</translation>
 <translation id="5285635972691565180">Schermo <ph name="DISPLAY_ID"/></translation>
@@ -4359,7 +4359,7 @@ e Ctrl + Alt + Riduzione luminosità per diminuire lo zoom.</translation>
 <translation id="5297082477358294722">Password salvata. Visualizza e gestisci le password salvate in <ph name="SAVED_PASSWORDS_STORE"/>.</translation>
 <translation id="5297946558563358707">Quando qualcuno osserva il tuo schermo, mostra l'icona Privacy a forma di occhio nell'angolo inferiore destro dello schermo</translation>
 <translation id="5298219193514155779">Tema creato da</translation>
-<translation id="5299109548848736476">Non tenere traccia</translation>
+<translation id="1839179167864984545">Non tenere traccia</translation>
 <translation id="5299558715747014286">Visualizza e gestisci i gruppi delle tue schede</translation>
 <translation id="5300287940468717207">Vuoi reimpostare le autorizzazioni dei siti?</translation>
 <translation id="5300426565656326054">Personalizzazione degli annunci basata sul browser</translation>
@@ -7823,7 +7823,7 @@ Conserva il file di chiave in un luogo sicuro. Ti servirà per creare nuove vers
 <translation id="8785622406424941542">Stilo</translation>
 <translation id="8786824282808281903">Quando tuo figlio vede questa icona può usare l'impronta per l'identificazione o per approvare gli acquisti.</translation>
 <translation id="8787575090331305835">{NUM_TABS,plural, =1{Gruppo senza nome - 1 scheda}other{Gruppo senza nome - # schede}}</translation>
-<translation id="8791534160414513928">Invia una richiesta "Non tenere traccia" con il tuo traffico di navigazione</translation>
+<translation id="163839281363975279">Invia una richiesta "Non tenere traccia" con il tuo traffico di navigazione</translation>
 <translation id="879413103056696865">Quando l'hotspot è attivo, il tuo <ph name="PHONE_NAME"/>:</translation>
 <translation id="8795916974678578410">Nuova finestra</translation>
 <translation id="8797459392481275117">Non tradurre mai questo sito</translation>

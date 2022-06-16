@@ -53,16 +53,21 @@ void CancelClose() {
 class WindowClosingConfirmBrowserTest : public InProcessBrowserTest {
  public:
   void SetUpOnMainThread() override {
+    BraveBrowser::SuppressBrowserWindowClosingDialogForTesting(false);
+
     InProcessBrowserTest::SetUpOnMainThread();
 
     PrefService* prefs = browser()->profile()->GetPrefs();
-    // Disabled by default.
-    EXPECT_FALSE(prefs->GetBoolean(kEnableWindowClosingConfirm));
-
-    // Enable for testing.
-    prefs->SetBoolean(kEnableWindowClosingConfirm, true);
+    // Enabled by default.
+    EXPECT_TRUE(prefs->GetBoolean(kEnableWindowClosingConfirm));
 
     SetDialogCreationCallback();
+  }
+
+  void TearDownOnMainThread() override {
+    BraveBrowser::SuppressBrowserWindowClosingDialogForTesting(true);
+
+    InProcessBrowserTest::TearDownOnMainThread();
   }
 
   void SetDialogCreationCallback() {

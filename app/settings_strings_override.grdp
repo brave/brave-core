@@ -103,7 +103,9 @@
   <if expr="is_win and _google_chrome">
     </if>
 
-  <if expr="chromeos_ash or is_win">
+  <if expr="chromeos_ash or chromeos_lacros or is_win">
+    </if>
+  <if expr="is_win and _google_chrome">
     </if>
   <message name="IDS_SETTINGS_COOKIES_BLOCK_THIRD_PARTY_INCOGNITO" desc="Label for block third party cookies in Private radio toggle">
     Block third-party cookies in Private

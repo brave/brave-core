@@ -25,24 +25,6 @@
     removeAllListeners: {
       value: SolanaEventEmitter.removeAllListeners,
       writable: false
-    },
-    createPublickey: {
-      value: (base58Str) => {
-        console.warn('This API is intended for internal use.')
-        const solanaWeb3 = require('@solana/web3.js')
-        const result = new Object()
-        result.publicKey = new solanaWeb3.PublicKey(base58Str)
-        return result
-      },
-      writable: false
-    },
-    createTransaction: {
-      value: (serializedTx) => {
-        console.warn('This API is intended for internal use.')
-        const solanaWeb3 = require('@solana/web3.js')
-        return solanaWeb3.Transaction.from(new Uint8Array(serializedTx))
-      },
-      writable: false
     }
   })
 })()

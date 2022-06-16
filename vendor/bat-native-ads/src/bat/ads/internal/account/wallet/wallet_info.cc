@@ -11,10 +11,16 @@ WalletInfo::WalletInfo() = default;
 
 WalletInfo::WalletInfo(const WalletInfo& info) = default;
 
+WalletInfo& WalletInfo::operator=(const WalletInfo& info) = default;
+
 WalletInfo::~WalletInfo() = default;
 
 bool WalletInfo::IsValid() const {
   return !id.empty() && !secret_key.empty();
+}
+
+bool WalletInfo::HasChanged(const WalletInfo& rhs) const {
+  return rhs.IsValid() && (*this != rhs);
 }
 
 bool WalletInfo::operator==(const WalletInfo& rhs) const {

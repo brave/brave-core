@@ -13,6 +13,7 @@ namespace ads {
 struct CatalogSegmentInfo final {
   CatalogSegmentInfo();
   CatalogSegmentInfo(const CatalogSegmentInfo& info);
+  CatalogSegmentInfo& operator=(const CatalogSegmentInfo& info);
   ~CatalogSegmentInfo();
 
   bool operator==(const CatalogSegmentInfo& rhs) const;

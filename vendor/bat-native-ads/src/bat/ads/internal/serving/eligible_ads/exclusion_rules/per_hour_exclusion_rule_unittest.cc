@@ -6,9 +6,8 @@
 #include "bat/ads/internal/serving/eligible_ads/exclusion_rules/per_hour_exclusion_rule.h"
 
 #include "bat/ads/internal/ad_events/ad_event_unittest_util.h"
-#include "bat/ads/internal/base/unittest_base.h"
-#include "bat/ads/internal/base/unittest_time_util.h"
-#include "bat/ads/internal/base/unittest_util.h"
+#include "bat/ads/internal/base/unittest/unittest_base.h"
+#include "bat/ads/internal/base/unittest/unittest_time_util.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
@@ -48,7 +47,7 @@ TEST_F(BatAdsPerHourExclusionRuleTest, AdAllowedAfter1Hour) {
   AdEventList ad_events;
 
   const AdEventInfo ad_event = BuildAdEvent(
-      creative_ad, AdType::kAdNotification, ConfirmationType::kServed, Now());
+      creative_ad, AdType::kNotificationAd, ConfirmationType::kServed, Now());
 
   ad_events.push_back(ad_event);
 
@@ -70,7 +69,7 @@ TEST_F(BatAdsPerHourExclusionRuleTest, AdAllowedAfter1HourForMultipleTypes) {
   AdEventList ad_events;
 
   const AdEventInfo ad_event_1 = BuildAdEvent(
-      creative_ad, AdType::kAdNotification, ConfirmationType::kServed, Now());
+      creative_ad, AdType::kNotificationAd, ConfirmationType::kServed, Now());
   ad_events.push_back(ad_event_1);
 
   const AdEventInfo ad_event_2 = BuildAdEvent(
@@ -104,7 +103,7 @@ TEST_F(BatAdsPerHourExclusionRuleTest, DoNotAllowTheSameAdWithin1Hour) {
   AdEventList ad_events;
 
   const AdEventInfo ad_event = BuildAdEvent(
-      creative_ad, AdType::kAdNotification, ConfirmationType::kServed, Now());
+      creative_ad, AdType::kNotificationAd, ConfirmationType::kServed, Now());
 
   ad_events.push_back(ad_event);
 

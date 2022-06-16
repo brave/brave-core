@@ -18,6 +18,7 @@ public class BraveVpnPrefUtils {
     private static final String PREF_BRAVE_VPN_CALLOUT_SETTINGS = "brave_vpn_callout_settings";
     private static final String PREF_BRAVE_VPN_SUBSCRIPTION_PURCHASE =
             "brave_vpn_subscription_purchase";
+    private static final String PREF_BRAVE_VPN_PAYMENT_STATE = "brave_vpn_payment_state";
     private static final String PREF_BRAVE_VPN_HOSTNAME = "brave_vpn_hostname";
     private static final String PREF_BRAVE_VPN_HOSTNAME_DISPLAY = "brave_vpn_hostname_display";
     private static final String PREF_BRAVE_VPN_PURCHASE_TOKEN = "brave_vpn_purchase_token";
@@ -81,6 +82,16 @@ public class BraveVpnPrefUtils {
         SharedPreferences.Editor sharedPreferencesEditor = mSharedPreferences.edit();
         sharedPreferencesEditor.putBoolean(PREF_BRAVE_VPN_SUBSCRIPTION_PURCHASE, newValue);
         sharedPreferencesEditor.apply();
+    }
+
+    public static void setPaymentState(int newValue) {
+        SharedPreferences.Editor sharedPreferencesEditor = mSharedPreferences.edit();
+        sharedPreferencesEditor.putInt(PREF_BRAVE_VPN_PAYMENT_STATE, newValue);
+        sharedPreferencesEditor.apply();
+    }
+
+    public static boolean isTrialSubscription() {
+        return mSharedPreferences.getInt(PREF_BRAVE_VPN_PAYMENT_STATE, 0) == 2;
     }
 
     public static boolean isResetConfiguration() {

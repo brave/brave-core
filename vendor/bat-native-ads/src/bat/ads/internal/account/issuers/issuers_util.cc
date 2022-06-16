@@ -12,7 +12,7 @@
 #include "bat/ads/internal/account/issuers/issuer_info_aliases.h"
 #include "bat/ads/internal/account/issuers/issuers_info.h"
 #include "bat/ads/internal/ads_client_helper.h"
-#include "bat/ads/internal/deprecated/confirmations/confirmations_state.h"
+#include "bat/ads/internal/deprecated/confirmations/confirmation_state_manager.h"
 #include "bat/ads/pref_names.h"
 
 namespace ads {
@@ -50,14 +50,14 @@ bool IsIssuerValid(const IssuerInfo& issuer) {
 void SetIssuers(const IssuersInfo& issuers) {
   AdsClientHelper::Get()->SetIntegerPref(prefs::kIssuerPing, issuers.ping);
 
-  ConfirmationsState::Get()->SetIssuers(issuers.issuers);
-  ConfirmationsState::Get()->Save();
+  ConfirmationStateManager::Get()->SetIssuers(issuers.issuers);
+  ConfirmationStateManager::Get()->Save();
 }
 
 IssuersInfo GetIssuers() {
   IssuersInfo issuers;
   issuers.ping = AdsClientHelper::Get()->GetIntegerPref(prefs::kIssuerPing);
-  issuers.issuers = ConfirmationsState::Get()->GetIssuers();
+  issuers.issuers = ConfirmationStateManager::Get()->GetIssuers();
 
   return issuers;
 }

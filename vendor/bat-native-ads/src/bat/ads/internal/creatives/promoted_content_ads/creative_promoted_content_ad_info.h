@@ -14,8 +14,10 @@ namespace ads {
 
 struct CreativePromotedContentAdInfo final : CreativeAdInfo {
   CreativePromotedContentAdInfo();
-  CreativePromotedContentAdInfo(const CreativePromotedContentAdInfo& info);
   explicit CreativePromotedContentAdInfo(const CreativeAdInfo& creative_ad);
+  CreativePromotedContentAdInfo(const CreativePromotedContentAdInfo& info);
+  CreativePromotedContentAdInfo& operator=(
+      const CreativePromotedContentAdInfo& info);
   ~CreativePromotedContentAdInfo();
 
   bool operator==(const CreativePromotedContentAdInfo& rhs) const;

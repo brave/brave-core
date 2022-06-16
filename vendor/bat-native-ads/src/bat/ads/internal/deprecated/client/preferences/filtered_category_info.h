@@ -13,6 +13,7 @@ namespace ads {
 struct FilteredCategoryInfo final {
   FilteredCategoryInfo();
   FilteredCategoryInfo(const FilteredCategoryInfo& info);
+  FilteredCategoryInfo& operator=(const FilteredCategoryInfo& info);
   ~FilteredCategoryInfo();
 
   std::string ToJson() const;

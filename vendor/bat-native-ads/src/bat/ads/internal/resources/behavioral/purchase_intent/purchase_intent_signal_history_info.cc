@@ -10,7 +10,7 @@
 #include "base/json/json_writer.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/values.h"
-#include "bat/ads/internal/base/number_util.h"
+#include "bat/ads/internal/base/numbers/number_util.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ads {
@@ -50,6 +50,9 @@ PurchaseIntentSignalHistoryInfo::PurchaseIntentSignalHistoryInfo(
     : created_at(created_at), weight(weight) {}
 
 PurchaseIntentSignalHistoryInfo::PurchaseIntentSignalHistoryInfo(
+    const PurchaseIntentSignalHistoryInfo& info) = default;
+
+PurchaseIntentSignalHistoryInfo& PurchaseIntentSignalHistoryInfo::operator=(
     const PurchaseIntentSignalHistoryInfo& info) = default;
 
 PurchaseIntentSignalHistoryInfo::~PurchaseIntentSignalHistoryInfo() = default;

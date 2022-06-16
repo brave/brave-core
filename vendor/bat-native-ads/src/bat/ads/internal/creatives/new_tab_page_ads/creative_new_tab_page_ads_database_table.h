@@ -44,6 +44,8 @@ class CreativeNewTabPageAds final : public TableInterface {
  public:
   CreativeNewTabPageAds();
   ~CreativeNewTabPageAds() override;
+  CreativeNewTabPageAds(const CreativeNewTabPageAds&) = delete;
+  CreativeNewTabPageAds& operator=(const CreativeNewTabPageAds&) = delete;
 
   void Save(const CreativeNewTabPageAdList& creative_ads,
             ResultCallback callback);

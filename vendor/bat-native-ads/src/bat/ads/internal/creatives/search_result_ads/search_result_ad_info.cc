@@ -12,6 +12,9 @@ SearchResultAdInfo::SearchResultAdInfo() = default;
 SearchResultAdInfo::SearchResultAdInfo(const SearchResultAdInfo& info) =
     default;
 
+SearchResultAdInfo& SearchResultAdInfo::operator=(
+    const SearchResultAdInfo& info) = default;
+
 SearchResultAdInfo::~SearchResultAdInfo() = default;
 
 bool SearchResultAdInfo::IsValid() const {

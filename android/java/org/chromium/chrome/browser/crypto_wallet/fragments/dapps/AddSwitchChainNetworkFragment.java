@@ -13,6 +13,7 @@ import android.text.style.ClickableSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.URLUtil;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -27,6 +28,7 @@ import com.google.android.material.tabs.TabLayoutMediator;
 import org.chromium.brave_wallet.mojom.AddChainRequest;
 import org.chromium.brave_wallet.mojom.CoinType;
 import org.chromium.brave_wallet.mojom.NetworkInfo;
+import org.chromium.brave_wallet.mojom.OriginInfo;
 import org.chromium.brave_wallet.mojom.SwitchChainRequest;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.BraveActivity;
@@ -59,6 +61,7 @@ public class AddSwitchChainNetworkFragment extends BaseDAppsFragment {
     private List<TwoLineItemDataSource> networks;
     private List<TwoLineItemDataSource> details;
     private ImageView mFavicon;
+    private TextView mSiteTv;
     private FaviconHelper mFaviconHelper;
     private DefaultFaviconHelper mDefaultFaviconHelper;
 
@@ -102,7 +105,7 @@ public class AddSwitchChainNetworkFragment extends BaseDAppsFragment {
             btnAddSwitchNetwork.setText(R.string.approve);
             SpannableString addChainHeading = Utils.createSpannableString(
                     getString(R.string.brave_wallet_allow_add_network_description),
-                    getString(R.string.brave_wallet), new ClickableSpan() {
+                    getString(R.string.brave_wallet_learn_more), new ClickableSpan() {
                         @Override
                         public void onClick(@NonNull View widget) {
                             TabUtils.openUrlInNewTab(false, Utils.BRAVE_SUPPORT_URL);
@@ -141,13 +144,8 @@ public class AddSwitchChainNetworkFragment extends BaseDAppsFragment {
             }
         });
         mFavicon = view.findViewById(R.id.fragment_add_token_iv_domain_icon);
-        TextView siteTv = view.findViewById(R.id.fragment_add_token_tv_site);
-        GURL siteUrl = Utils.getCurentTabUrl();
-        if (siteUrl != null) {
-            getBraveWalletService().geteTldPlusOneFromOrigin(Utils.getCurrentMojomOrigin(),
-                    origin -> { siteTv.setText(Utils.geteTLD(origin.eTldPlusOne)); });
-            showFavIcon(siteUrl.getOrigin());
-        }
+        mSiteTv = view.findViewById(R.id.fragment_add_token_tv_site);
+
         return view;
     }
 
@@ -189,6 +187,7 @@ public class AddSwitchChainNetworkFragment extends BaseDAppsFragment {
                         mNetworkInfo = mAddChainRequest.networkInfo;
                         hasMultipleAddSwitchChainRequest = addChainRequests.length > 1;
                         updateState();
+                        fillOriginInfo(mAddChainRequest.originInfo);
                     });
         } else if (mPanelType == SWITCH_ETHEREUM_CHAIN) {
             mBraveWalletBaseActivity.getJsonRpcService().getPendingSwitchChainRequests(
@@ -205,7 +204,16 @@ public class AddSwitchChainNetworkFragment extends BaseDAppsFragment {
                                         }
                                     }
                                 });
+                        fillOriginInfo(mSwitchChainRequest.originInfo);
                     });
+        }
+    }
+
+    private void fillOriginInfo(OriginInfo originInfo) {
+        if (originInfo != null && URLUtil.isValidUrl(originInfo.originSpec)) {
+            GURL url = new GURL(originInfo.originSpec);
+            mSiteTv.setText(Utils.geteTLD(url, originInfo.eTldPlusOne));
+            showFavIcon(url);
         }
     }
 

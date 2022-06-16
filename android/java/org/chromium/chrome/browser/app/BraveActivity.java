@@ -348,6 +348,14 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
         });
     }
 
+
+    private void setWalletBadgeVisibility(boolean visibile) {
+        BraveToolbarLayoutImpl layout = getBraveToolbarLayout();
+        if (layout != null) {
+            layout.updateWalletBadgeVisibility(visibile);
+        }
+    }
+
     private void maybeShowPendingTransactions() {
         assert walletModel != null;
         // trigger to observer to refresh data to process the pending request
@@ -400,6 +408,31 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
 
                 return;
             }
+            maybeShowGetEncryptionPublicKeyRequestLayout();
+        });
+    }
+
+    private void maybeShowGetEncryptionPublicKeyRequestLayout() {
+        assert mBraveWalletService != null;
+        mBraveWalletService.getPendingGetEncryptionPublicKeyRequests(requests -> {
+            if (requests != null && requests.length != 0) {
+                openBraveWalletDAppsActivity(
+                        BraveWalletDAppsActivity.ActivityType.GET_ENCRYPTION_PUBLIC_KEY_REQUEST);
+
+                return;
+            }
+            maybeShowDecryptRequestLayout();
+        });
+    }
+
+    private void maybeShowDecryptRequestLayout() {
+        assert mBraveWalletService != null;
+        mBraveWalletService.getPendingDecryptRequests(requests -> {
+            if (requests != null && requests.length != 0) {
+                openBraveWalletDAppsActivity(BraveWalletDAppsActivity.ActivityType.DECRYPT_REQUEST);
+
+                return;
+            }
             BraveToolbarLayoutImpl layout = getBraveToolbarLayout();
             if (layout != null) {
                 layout.showWalletPanel();
@@ -447,7 +480,13 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
         BraveToolbarLayoutImpl layout = getBraveToolbarLayout();
         if (layout != null) {
             layout.showWalletIcon(true);
+            updateWalletBadgeVisibility();
         }
+    }
+
+    private void updateWalletBadgeVisibility() {
+        assert walletModel != null;
+        walletModel.getDappsModel().updateWalletBadgeVisibility();
     }
 
     private void verifySubscription() {
@@ -470,11 +509,13 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
     public void onVerifyPurchaseToken(String jsonResponse, boolean isSuccess) {
         if (isSuccess) {
             Long purchaseExpiry = BraveVpnUtils.getPurchaseExpiryDate(jsonResponse);
+            int paymentState = BraveVpnUtils.getPaymentState(jsonResponse);
             if (purchaseExpiry > 0 && purchaseExpiry >= System.currentTimeMillis()) {
                 BraveVpnPrefUtils.setPurchaseToken(mPurchaseToken);
                 BraveVpnPrefUtils.setProductId(mProductId);
                 BraveVpnPrefUtils.setPurchaseExpiry(purchaseExpiry);
                 BraveVpnPrefUtils.setSubscriptionPurchase(true);
+                BraveVpnPrefUtils.setPaymentState(paymentState);
                 if (BraveVpnPrefUtils.isResetConfiguration()) {
                     BraveVpnUtils.dismissProgressDialog();
                     BraveVpnUtils.openBraveVpnProfileActivity(BraveActivity.this);
@@ -630,6 +671,7 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
         // If active tab is private, set private DSE as an active DSE.
         BraveSearchEngineUtils.updateActiveDSE(tab.isIncognito());
         BraveStatsUtil.removeShareStatsFile();
+        updateWalletBadgeVisibility();
     }
 
     @Override
@@ -1292,6 +1334,9 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
                                 BraveWalletDAppsActivity.ActivityType.CONFIRM_TRANSACTION);
                     }
                 });
+        walletModel.getDappsModel().mWalletIconNotificationVisible.removeObservers(this);
+        walletModel.getDappsModel().mWalletIconNotificationVisible.observe(
+                this, visible -> { setWalletBadgeVisibility(visible); });
     }
 
     private void showBraveRateDialog() {
@@ -1451,7 +1496,7 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
     }
 
     public int getToolbarShadowHeight() {
-        View toolbarShadow = findViewById(R.id.toolbar_shadow);
+        View toolbarShadow = findViewById(R.id.toolbar_hairline);
         assert toolbarShadow != null;
         if (toolbarShadow != null) {
             return toolbarShadow.getHeight();
@@ -1460,7 +1505,7 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
     }
 
     public int getToolbarBottom() {
-        View toolbarShadow = findViewById(R.id.toolbar_shadow);
+        View toolbarShadow = findViewById(R.id.toolbar_hairline);
         assert toolbarShadow != null;
         if (toolbarShadow != null) {
             return toolbarShadow.getBottom();

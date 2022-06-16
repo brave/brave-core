@@ -10,9 +10,16 @@
 
 class GURL;
 
+namespace network {
+struct ResourceRequest;
+}  // namespace network
+
 namespace brave_ads {
 
-std::string GetCreativeInstanceIdFromSearchAdsViewedUrl(const GURL& url);
+bool IsSearchResultAdViewedConfirmationUrl(const GURL& url);
+
+std::string GetViewedSearchResultAdCreativeInstanceId(
+    const network::ResourceRequest& request);
 
 }  // namespace brave_ads
 

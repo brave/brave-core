@@ -6,10 +6,9 @@
 #include "bat/ads/internal/account/transactions/transactions_database_table.h"
 
 #include "bat/ads/internal/account/transactions/transactions_unittest_util.h"
-#include "bat/ads/internal/base/container_util.h"
-#include "bat/ads/internal/base/unittest_base.h"
-#include "bat/ads/internal/base/unittest_time_util.h"
-#include "bat/ads/internal/base/unittest_util.h"
+#include "bat/ads/internal/base/containers/container_util.h"
+#include "bat/ads/internal/base/unittest/unittest_base.h"
+#include "bat/ads/internal/base/unittest/unittest_time_util.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
@@ -49,7 +48,7 @@ TEST_F(BatAdsTransactionsDatabaseTableTest, SaveTransactions) {
       BuildTransaction(0.01, ConfirmationType::kViewed, DistantFuture());
   transactions.push_back(info_1);
 
-  AdvanceClock(base::Days(5));
+  AdvanceClockBy(base::Days(5));
 
   const TransactionInfo& info_2 =
       BuildTransaction(0.03, ConfirmationType::kClicked);
@@ -103,7 +102,7 @@ TEST_F(BatAdsTransactionsDatabaseTableTest, GetTransactionsForDateRange) {
       BuildTransaction(0.01, ConfirmationType::kViewed, DistantFuture());
   transactions.push_back(info_1);
 
-  AdvanceClock(base::Days(5));
+  AdvanceClockBy(base::Days(5));
 
   const TransactionInfo& info_2 =
       BuildTransaction(0.03, ConfirmationType::kClicked);
@@ -190,9 +189,9 @@ TEST_F(BatAdsTransactionsDatabaseTableTest, DeleteTransactions) {
 
 TEST_F(BatAdsTransactionsDatabaseTableTest, TableName) {
   // Arrange
+  database::table::Transactions database_table;
 
   // Act
-  database::table::Transactions database_table;
   const std::string table_name = database_table.GetTableName();
 
   // Assert

@@ -5,16 +5,18 @@
 
 #include "bat/ads/ad_event_history.h"
 
-#include "bat/ads/internal/base/unittest_base.h"
-#include "bat/ads/internal/base/unittest_time_util.h"
+#include "bat/ads/internal/base/unittest/unittest_base.h"
+#include "bat/ads/internal/base/unittest/unittest_time_util.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
 namespace ads {
 
 namespace {
+
 constexpr char kID1[] = "26330bea-9b8c-4cd3-b04a-1c74cbdf701e";
 constexpr char kID2[] = "5b2f108c-e176-4a3e-8e7c-fe67fb3db518";
+
 }  // namespace
 
 class BatAdsAdEventHistoryTest : public UnitTestBase {
@@ -42,11 +44,11 @@ class BatAdsAdEventHistoryTest : public UnitTestBase {
 
 TEST_F(BatAdsAdEventHistoryTest, RecordAdEventForNewType) {
   // Arrange
-  RecordAdEvent(kID1, AdType::kAdNotification, ConfirmationType::kViewed);
+  RecordAdEvent(kID1, AdType::kNotificationAd, ConfirmationType::kViewed);
 
   // Act
   const std::vector<base::Time>& history =
-      GetAdEvents(AdType::kAdNotification, ConfirmationType::kViewed);
+      GetAdEvents(AdType::kNotificationAd, ConfirmationType::kViewed);
 
   // Assert
   const std::vector<base::Time>& expected_history = {Now()};
@@ -55,12 +57,12 @@ TEST_F(BatAdsAdEventHistoryTest, RecordAdEventForNewType) {
 
 TEST_F(BatAdsAdEventHistoryTest, RecordAdEventForExistingType) {
   // Arrange
-  RecordAdEvent(kID1, AdType::kAdNotification, ConfirmationType::kViewed);
-  RecordAdEvent(kID1, AdType::kAdNotification, ConfirmationType::kViewed);
+  RecordAdEvent(kID1, AdType::kNotificationAd, ConfirmationType::kViewed);
+  RecordAdEvent(kID1, AdType::kNotificationAd, ConfirmationType::kViewed);
 
   // Act
   const std::vector<base::Time>& history =
-      GetAdEvents(AdType::kAdNotification, ConfirmationType::kViewed);
+      GetAdEvents(AdType::kNotificationAd, ConfirmationType::kViewed);
 
   // Assert
   const std::vector<base::Time>& expected_history = {Now(), Now()};
@@ -69,12 +71,12 @@ TEST_F(BatAdsAdEventHistoryTest, RecordAdEventForExistingType) {
 
 TEST_F(BatAdsAdEventHistoryTest, RecordAdEventForMultipleIds) {
   // Arrange
-  RecordAdEvent(kID1, AdType::kAdNotification, ConfirmationType::kViewed);
-  RecordAdEvent(kID2, AdType::kAdNotification, ConfirmationType::kViewed);
+  RecordAdEvent(kID1, AdType::kNotificationAd, ConfirmationType::kViewed);
+  RecordAdEvent(kID2, AdType::kNotificationAd, ConfirmationType::kViewed);
 
   // Act
   const std::vector<base::Time>& history =
-      GetAdEvents(AdType::kAdNotification, ConfirmationType::kViewed);
+      GetAdEvents(AdType::kNotificationAd, ConfirmationType::kViewed);
 
   // Assert
   const std::vector<base::Time>& expected_history = {Now(), Now()};
@@ -83,12 +85,12 @@ TEST_F(BatAdsAdEventHistoryTest, RecordAdEventForMultipleIds) {
 
 TEST_F(BatAdsAdEventHistoryTest, RecordAdEventForMultipleTypes) {
   // Arrange
-  RecordAdEvent(kID1, AdType::kAdNotification, ConfirmationType::kViewed);
+  RecordAdEvent(kID1, AdType::kNotificationAd, ConfirmationType::kViewed);
   RecordAdEvent(kID1, AdType::kNewTabPageAd, ConfirmationType::kClicked);
 
   // Act
   const std::vector<base::Time>& history =
-      GetAdEvents(AdType::kAdNotification, ConfirmationType::kViewed);
+      GetAdEvents(AdType::kNotificationAd, ConfirmationType::kViewed);
 
   // Assert
   const std::vector<base::Time>& expected_history = {Now()};
@@ -97,15 +99,15 @@ TEST_F(BatAdsAdEventHistoryTest, RecordAdEventForMultipleTypes) {
 
 TEST_F(BatAdsAdEventHistoryTest, PurgeHistoryOlderThan) {
   // Arrange
-  RecordAdEvent(kID1, AdType::kAdNotification, ConfirmationType::kViewed);
+  RecordAdEvent(kID1, AdType::kNotificationAd, ConfirmationType::kViewed);
 
   FastForwardClockBy(base::Days(1) + base::Seconds(1));
 
-  RecordAdEvent(kID1, AdType::kAdNotification, ConfirmationType::kViewed);
+  RecordAdEvent(kID1, AdType::kNotificationAd, ConfirmationType::kViewed);
 
   // Act
   const std::vector<base::Time>& history =
-      GetAdEvents(AdType::kAdNotification, ConfirmationType::kViewed);
+      GetAdEvents(AdType::kNotificationAd, ConfirmationType::kViewed);
 
   // Assert
   const std::vector<base::Time>& expected_history = {Now()};

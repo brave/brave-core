@@ -13,6 +13,9 @@ UnblindedTokenInfo::UnblindedTokenInfo() = default;
 UnblindedTokenInfo::UnblindedTokenInfo(
     const UnblindedTokenInfo& unblinded_token) = default;
 
+UnblindedTokenInfo& UnblindedTokenInfo::operator=(
+    const UnblindedTokenInfo& info) = default;
+
 UnblindedTokenInfo::~UnblindedTokenInfo() = default;
 
 bool UnblindedTokenInfo::operator==(const UnblindedTokenInfo& rhs) const {

@@ -167,9 +167,6 @@
       <message name="IDS_SHOW_BRAVE_REWARDS" desc="The show Brave Rewards menu in the app menu">
         Brave Rewards
       </message>
-      <message name="IDS_SHOW_BRAVE_ADBLOCK" desc="The show Brave Ad Block menu in the app menu">
-        Brave Ad Block
-      </message>
       <if expr="use_titlecase">
         <message name="IDS_SHOW_BRAVE_WEBCOMPAT_REPORTER" desc="The menu item to report a broken site in the app menu">
           Report a Broken Site
@@ -322,6 +319,9 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
       </message>
       <message name="IDS_LOCATION_BAR_ONION_AVAILABLE_TOOLTIP_TEXT" desc="The tooltip text for onion available button.">
         Open using .onion address
+      </message>
+      <message name="IDS_CONTENT_CONTEXT_FORCE_PASTE" desc="The name of the context menu item to paste without triggering onpaste handlers">
+        Force Paste
       </message>
       <message name="IDS_CONTENT_CONTEXT_IMPORT_IPFS" desc="The name of the IPFS context menu item for renderer">
         Import to IPFS
@@ -574,6 +574,34 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
         <message name="IDS_WINDOW_CLOSING_CONFIRM_DLG_DONT_ASK_AGAIN_LABEL" desc="The text for checkbox in the dialog">
           Don't ask me again
         </message>
+        <!-- Brave search conversion promotion -->
+        <message name="IDS_BRAVE_SEARCH_CONVERSION_INPUT_APPEND_LABEL" desc="The text that appended to the input query in button type match">
+          - Brave Search
+        </message>
+        <message name="IDS_BRAVE_SEARCH_CONVERSION_PROMOTION_DESC_LABEL" desc="The text for detailed description about brave search in promotion match">
+          Support independent search with better privacy. Brave search doesn't track you, your queries, or your clicks. 
+        </message>
+        <message name="IDS_BRAVE_SEARCH_CONVERSION_PROMOTION_DESC_LABEL_FIRST_PART" desc="The text for finding the first sentence from above. Both should have the same translation.">
+          Support independent search with better privacy.
+        </message>
+        <message name="IDS_BRAVE_SEARCH_CONVERSION_PROMOTION_BANNER_TITLE" desc="The text for the banner type title">
+          Support independent search with better privacy
+        </message>
+        <message name="IDS_BRAVE_SEARCH_CONVERSION_PROMOTION_BANNER_DESC" desc="The text for the banner type description">
+          Brave search doesn't track you, your queries, or your clicks.
+        </message>
+        <message name="IDS_BRAVE_SEARCH_CONVERSION_TRY_BUTTON_LABEL" desc="The text for the try button in the promotion match">
+          Try Brave Search
+        </message>
+        <message name="IDS_BRAVE_SEARCH_CONVERSION_DISMISS_BUTTON_TOOLTIP" desc="The tooltip text for the dismiss button in a promotion match">
+          Dismiss brave search conversion
+        </message>
+        <message name="IDS_BRAVE_SEARCH_CONVERSION_DISMISS_BUTTON_LABEL" desc="The text for the dismiss button in a promotion match">
+          Dismiss
+        </message>
+        <message name="IDS_ACC_BRAVE_SEARCH_CONVERSION_DISMISS_BUTTON" desc="Announcement when the dismiss button is focused.">">
+          Dismiss brave search conversion, press Enter to remove this suggestion
+        </message>
       </if>
 
       <!-- Brave Ads -->
@@ -583,11 +611,11 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
       <message name="IDS_UTILITY_PROCESS_LEDGER_NAME" desc="The utility process running ledger">
         Bat Ledger Service
       </message>
-      <message name="IDS_BRAVE_ADS_AD_NOTIFICATION_CLOSE_BUTTON" desc="Text to be spoken for the ad notification close button">
+      <message name="IDS_BRAVE_ADS_NOTIFICATION_AD_CLOSE_BUTTON" desc="Text to be spoken for the notification ad close button">
         Close
       </message>
-      <message name="IDS_BRAVE_ADS_AD_NOTIFICATION_ACCESSIBLE_NAME" desc="Text to be spoken when an ad notification is shown">
-        Brave Ad Notification
+      <message name="IDS_BRAVE_ADS_NOTIFICATION_AD_ACCESSIBLE_NAME" desc="Text to be spoken when a notification ad is shown">
+        Brave Notification Ad
       </message>
 
       <!-- Brave Search -->

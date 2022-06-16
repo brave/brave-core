@@ -41,6 +41,10 @@
 #include "ui/base/l10n/l10n_util.h"
 #include "url/origin.h"
 
+#if !BUILDFLAG(IS_ANDROID)
+#include "chrome/browser/ui/hats/mock_trust_safety_sentiment_service.h"
+#endif
+
 namespace {
 
 class TestInterestGroupManager : public content::InterestGroupManager {
@@ -70,12 +74,20 @@ class PrivacySandboxServiceTest : public testing::Test {
   void SetUp() override {
     InitializePrefsBeforeStart();
 
+#if !BUILDFLAG(IS_ANDROID)
+    mock_sentiment_service_ =
+        std::make_unique<::testing::NiceMock<MockTrustSafetySentimentService>>(
+            profile());
+#endif
     privacy_sandbox_service_ = std::make_unique<PrivacySandboxService>(
         PrivacySandboxSettingsFactory::GetForProfile(profile()),
         CookieSettingsFactory::GetForProfile(profile()).get(),
         profile()->GetPrefs(), policy_service(), sync_service(),
         identity_test_env()->identity_manager(), test_interest_group_manager(),
         profile_metrics::BrowserProfileType::kRegular, browsing_data_remover(),
+#if !BUILDFLAG(IS_ANDROID)
+        mock_sentiment_service(),
+#endif
         mock_browsing_topics_service());
   }
 
@@ -110,6 +122,11 @@ class PrivacySandboxServiceTest : public testing::Test {
   browsing_topics::MockBrowsingTopicsService* mock_browsing_topics_service() {
     return mock_browsing_topics_service_;
   }
+#if !BUILDFLAG(IS_ANDROID)
+  MockTrustSafetySentimentService* mock_sentiment_service() {
+    return mock_sentiment_service_.get();
+  }
+#endif
 
  private:
   content::BrowserTaskEnvironment browser_task_environment_;
@@ -123,4 +140,7 @@ class PrivacySandboxServiceTest : public testing::Test {
 
   std::unique_ptr<PrivacySandboxService> privacy_sandbox_service_;
   browsing_topics::MockBrowsingTopicsService* mock_browsing_topics_service_;
+#if !BUILDFLAG(IS_ANDROID)
+  std::unique_ptr<MockTrustSafetySentimentService> mock_sentiment_service_;
+#endif
 };

@@ -21,6 +21,8 @@ class Segments final : public TableInterface {
  public:
   Segments();
   ~Segments() override;
+  Segments(const Segments&) = delete;
+  Segments& operator=(const Segments&) = delete;
 
   void InsertOrUpdate(mojom::DBTransaction* transaction,
                       const CreativeAdList& creative_ads);

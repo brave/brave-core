@@ -12,9 +12,11 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,7 +27,6 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.view.menu.MenuBuilder;
-import androidx.appcompat.widget.PopupMenu;
 
 import org.chromium.base.SysUtils;
 import org.chromium.brave_wallet.mojom.AccountInfo;
@@ -75,6 +76,7 @@ public class BraveWalletPanel implements DialogInterface {
     private Handler mHandler;
     private BraveWalletPanelServices mBraveWalletPanelServices;
     private ImageView mAccountChangeAnchor;
+    private View mContainerConstraintLayout;
 
     public interface BraveWalletPanelServices {
         AssetRatioService getAssetRatioService();
@@ -119,41 +121,58 @@ public class BraveWalletPanel implements DialogInterface {
         setUpViews();
     }
 
-    public void showPopupMenu() {
-        PopupMenu menu = new PopupMenu(mOptionsImage.getContext(), (View) mOptionsImage);
-        menu.getMenuInflater().inflate(R.menu.menu_dapps_panel, menu.getMenu());
-        menu.setOnMenuItemClickListener(item -> {
-            if (item.getItemId() == R.id.action_lock_wallet) {
-                mBraveWalletPanelServices.getKeyringService().lock();
-                dismiss();
-            } else if (item.getItemId() == R.id.action_connected_sites) {
-                BraveActivity activity = BraveActivity.getBraveActivity();
-                if (activity != null) {
-                    activity.openBraveConnectedSitesSettings();
-                    dismiss();
-                }
-            } else if (item.getItemId() == R.id.action_settings) {
-                BraveActivity activity = BraveActivity.getBraveActivity();
-                if (activity != null) {
-                    activity.openBraveWalletSettings();
-                    dismiss();
-                }
-            } else if (item.getItemId() == R.id.action_view_on_block_explorer) {
-                BraveActivity activity = BraveActivity.getBraveActivity();
-                if (activity != null) {
-                    mBraveWalletPanelServices.getKeyringService().getSelectedAccount(
-                            CoinType.ETH, address -> {
-                                activity.viewOnBlockExplorer(address);
-                                dismiss();
-                            });
-                }
+    private void showPopupMenu() {
+        // On Android 6 and 7 androidx.appcompat.widget.PopupMenu crashes with an exception
+        // `android.view.WindowManager$BadTokenException: Unable to add window --
+        // token android.view.ViewRootImpl$W@f1adfa6 is not valid; is your activity running?`
+        // The same exception appears if we try anchor to a panel's view. That's why we
+        // use android.widget.PopupMenu and anchor to an URL bar there.
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.N_MR1) {
+            androidx.appcompat.widget.PopupMenu menu = new androidx.appcompat.widget.PopupMenu(
+                    mOptionsImage.getContext(), (View) mOptionsImage);
+            menu.getMenuInflater().inflate(R.menu.menu_dapps_panel, menu.getMenu());
+            menu.setOnMenuItemClickListener(item -> { return handleMenuItemClick(item); });
+
+            if (menu.getMenu() instanceof MenuBuilder) {
+                ((MenuBuilder) menu.getMenu()).setOptionalIconsVisible(true);
             }
-            return true;
-        });
-        if (menu.getMenu() instanceof MenuBuilder) {
-            ((MenuBuilder) menu.getMenu()).setOptionalIconsVisible(true);
+            menu.show();
+        } else {
+            android.widget.PopupMenu menu = new android.widget.PopupMenu(
+                    mAnchorViewHost.getContext(), (View) mAnchorViewHost);
+            menu.getMenuInflater().inflate(R.menu.menu_dapps_panel, menu.getMenu());
+            menu.setOnMenuItemClickListener(item -> { return handleMenuItemClick(item); });
+            menu.show();
         }
-        menu.show();
+    }
+
+    private boolean handleMenuItemClick(MenuItem item) {
+        if (item.getItemId() == R.id.action_lock_wallet) {
+            mBraveWalletPanelServices.getKeyringService().lock();
+            dismiss();
+        } else if (item.getItemId() == R.id.action_connected_sites) {
+            BraveActivity activity = BraveActivity.getBraveActivity();
+            if (activity != null) {
+                activity.openBraveConnectedSitesSettings();
+                dismiss();
+            }
+        } else if (item.getItemId() == R.id.action_settings) {
+            BraveActivity activity = BraveActivity.getBraveActivity();
+            if (activity != null) {
+                activity.openBraveWalletSettings();
+                dismiss();
+            }
+        } else if (item.getItemId() == R.id.action_view_on_block_explorer) {
+            BraveActivity activity = BraveActivity.getBraveActivity();
+            if (activity != null) {
+                mBraveWalletPanelServices.getKeyringService().getSelectedAccount(
+                        CoinType.ETH, address -> {
+                            activity.viewOnBlockExplorer(address);
+                            dismiss();
+                        });
+            }
+        }
+        return true;
     }
 
     public void showLikePopDownMenu() {
@@ -251,6 +270,8 @@ public class BraveWalletPanel implements DialogInterface {
 
     private void updateAccountInfo(String selectedAccount) {
         Utils.setBlockiesBitmapResource(mExecutor, mHandler, mAccountImage, selectedAccount, true);
+        Utils.setBlockiesBackground(
+                mExecutor, mHandler, mContainerConstraintLayout, selectedAccount, true);
         for (AccountInfo accountInfo : mAccountInfos) {
             if (accountInfo.address.equals(selectedAccount)) {
                 mAccountName.setText(accountInfo.name);
@@ -352,6 +373,7 @@ public class BraveWalletPanel implements DialogInterface {
             }
         });
         mPopupWindow.setContentView(mPopupView);
+        mContainerConstraintLayout = mPopupView.findViewById(R.id.container_constraint_panel);
         mAccountImage = mPopupView.findViewById(R.id.iv_dapps_panel_account_image);
         mAccountName = mPopupView.findViewById(R.id.tv_dapps_panel_from_to);
         mAccountAddress = mPopupView.findViewById(R.id.tv_dapps_panel_account_address);

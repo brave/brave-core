@@ -5,13 +5,16 @@
 
 #include "bat/ads/internal/user_interaction/browsing/user_activity_event_info.h"
 
-#include "bat/ads/internal/base/number_util.h"
+#include "bat/ads/internal/base/numbers/number_util.h"
 
 namespace ads {
 
 UserActivityEventInfo::UserActivityEventInfo() = default;
 
 UserActivityEventInfo::UserActivityEventInfo(
+    const UserActivityEventInfo& info) = default;
+
+UserActivityEventInfo& UserActivityEventInfo::operator=(
     const UserActivityEventInfo& info) = default;
 
 UserActivityEventInfo::~UserActivityEventInfo() = default;

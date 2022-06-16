@@ -9,9 +9,8 @@
 
 #include "base/json/json_writer.h"
 #include "base/values.h"
-#include "bat/ads/internal/base/unittest_base.h"
-#include "bat/ads/internal/base/unittest_util.h"
-#include "testing/gtest/include/gtest/gtest.h"
+#include "bat/ads/internal/base/unittest/unittest_base.h"
+#include "bat/ads/internal/base/unittest/unittest_mock_util.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
@@ -40,8 +39,8 @@ class BatAdsLocaleUserDataTest : public UnitTestBase {
 
 TEST_F(BatAdsLocaleUserDataTest, GetLocaleForNonReleaseBuildChannel) {
   // Arrange
+  MockBuildChannel(BuildChannelType::kNightly);
   MockLocaleHelper(locale_helper_mock_, "en-US");
-  SetBuildChannel(BuildChannelType::kNightly);
 
   // Act
   const std::string json = GetLocaleAsJson();
@@ -54,8 +53,8 @@ TEST_F(BatAdsLocaleUserDataTest, GetLocaleForNonReleaseBuildChannel) {
 
 TEST_F(BatAdsLocaleUserDataTest, GetLocaleForReleaseBuildChannel) {
   // Arrange
+  MockBuildChannel(BuildChannelType::kRelease);
   MockLocaleHelper(locale_helper_mock_, "en-US");
-  SetBuildChannel(BuildChannelType::kRelease);
 
   // Act
   const std::string json = GetLocaleAsJson();
@@ -68,7 +67,7 @@ TEST_F(BatAdsLocaleUserDataTest, GetLocaleForReleaseBuildChannel) {
 
 TEST_F(BatAdsLocaleUserDataTest, GetLocaleForCountryNotInAnonymitySet) {
   // Arrange
-  SetBuildChannel(BuildChannelType::kRelease);
+  MockBuildChannel(BuildChannelType::kRelease);
   MockLocaleHelper(locale_helper_mock_, "en-MC");
 
   // Act
@@ -83,7 +82,7 @@ TEST_F(BatAdsLocaleUserDataTest, GetLocaleForCountryNotInAnonymitySet) {
 TEST_F(BatAdsLocaleUserDataTest,
        GetLocaleForCountryNotInAnonymitySetButShouldClassifyAsOther) {
   // Arrange
-  SetBuildChannel(BuildChannelType::kRelease);
+  MockBuildChannel(BuildChannelType::kRelease);
   MockLocaleHelper(locale_helper_mock_, "en-CX");
 
   // Act

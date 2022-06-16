@@ -16,6 +16,8 @@ struct CatalogPromotedContentAdPayloadInfo final {
   CatalogPromotedContentAdPayloadInfo();
   CatalogPromotedContentAdPayloadInfo(
       const CatalogPromotedContentAdPayloadInfo& info);
+  CatalogPromotedContentAdPayloadInfo& operator=(
+      const CatalogPromotedContentAdPayloadInfo& info);
   ~CatalogPromotedContentAdPayloadInfo();
 
   bool operator==(const CatalogPromotedContentAdPayloadInfo& rhs) const;

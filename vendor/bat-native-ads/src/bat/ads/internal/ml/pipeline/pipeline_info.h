@@ -17,14 +17,15 @@ namespace pipeline {
 
 struct PipelineInfo final {
   PipelineInfo();
-  PipelineInfo(const PipelineInfo& info);
+  PipelineInfo(PipelineInfo&& info) noexcept;
+  PipelineInfo& operator=(PipelineInfo&& info) noexcept;
   ~PipelineInfo();
 
-  PipelineInfo(const int& version,
+  PipelineInfo(const int version,
                const std::string& timestamp,
                const std::string& locale,
-               const TransformationVector& transformations,
-               const model::Linear& linear_model);
+               TransformationVector transformations,
+               model::Linear linear_model);
 
   int version;
   std::string timestamp;

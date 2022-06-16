@@ -11,6 +11,9 @@ CatalogTypeInfo::CatalogTypeInfo() = default;
 
 CatalogTypeInfo::CatalogTypeInfo(const CatalogTypeInfo& info) = default;
 
+CatalogTypeInfo& CatalogTypeInfo::operator=(const CatalogTypeInfo& info) =
+    default;
+
 CatalogTypeInfo::~CatalogTypeInfo() = default;
 
 bool CatalogTypeInfo::operator==(const CatalogTypeInfo& rhs) const {

@@ -6,7 +6,7 @@
 #include "bat/ads/internal/serving/permission_rules/full_screen_mode_permission_rule.h"
 
 #include "bat/ads/internal/ads_client_helper.h"
-#include "bat/ads/internal/base/platform_helper.h"
+#include "bat/ads/internal/base/platform/platform_helper.h"
 #include "bat/ads/internal/serving/permission_rules/permission_rule_features.h"
 
 namespace ads {

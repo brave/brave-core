@@ -2,6 +2,7 @@ import * as React from 'react'
 import Button from '$web-components/button'
 
 import * as S from './style'
+import { ButtonText, IconBox } from '../general'
 import { AlertCircleIcon } from 'brave-ui/components/icons'
 import { getLocale } from '../../../../../common/locale'
 import { useSelector, useDispatch } from '../../state/hooks'
@@ -31,9 +32,9 @@ function ErrorPanel (props: Props) {
   return (
     <S.Box>
       <S.PanelContent>
-        <S.IconBox>
+        <IconBox>
           <AlertCircleIcon color='#84889C' />
-        </S.IconBox>
+        </IconBox>
         <S.ReasonTitle>{getLocale('braveVpnUnableConnectToServer')}</S.ReasonTitle>
         <S.ReasonDesc>
           {getLocale('braveVpnUnableConnectInfo').replace(/\$\d+/g, (match) => matches[match])}
@@ -47,12 +48,12 @@ function ErrorPanel (props: Props) {
           >
             {getLocale('braveVpnTryAgain')}
           </Button>
-          <S.ButtonText onClick={handleChooseServer}>
+          <ButtonText onClick={handleChooseServer}>
             {getLocale('braveVpnChooseAnotherServer')}
-          </S.ButtonText>
-          <S.ButtonText onClick={props.showContactSupport}>
+          </ButtonText>
+          <ButtonText onClick={props.showContactSupport}>
             {getLocale('braveVpnContactSupport')}
-          </S.ButtonText>
+          </ButtonText>
         </S.ActionArea>
       </S.PanelContent>
     </S.Box>

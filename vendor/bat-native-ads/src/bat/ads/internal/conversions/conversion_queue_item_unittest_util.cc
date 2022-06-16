@@ -5,7 +5,7 @@
 
 #include "bat/ads/internal/conversions/conversion_queue_item_unittest_util.h"
 
-#include "bat/ads/internal/base/unittest_time_util.h"
+#include "bat/ads/internal/base/unittest/unittest_time_util.h"
 #include "bat/ads/internal/conversions/conversion_queue_database_table.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -37,7 +37,7 @@ ConversionQueueItemInfo BuildConversionQueueItem(
   conversion_queue_item.advertiser_id = kAdvertiserId;
   conversion_queue_item.conversion_id = conversion_id;
   conversion_queue_item.advertiser_public_key = advertiser_public_key;
-  conversion_queue_item.ad_type = AdType::kAdNotification;
+  conversion_queue_item.ad_type = AdType::kNotificationAd;
   conversion_queue_item.process_at = Now();
 
   return conversion_queue_item;

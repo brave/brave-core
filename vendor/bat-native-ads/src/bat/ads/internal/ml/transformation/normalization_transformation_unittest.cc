@@ -8,8 +8,7 @@
 #include <string>
 #include <vector>
 
-#include "bat/ads/internal/base/unittest_base.h"
-#include "bat/ads/internal/base/unittest_util.h"
+#include "bat/ads/internal/base/unittest/unittest_base.h"
 #include "bat/ads/internal/ml/data/text_data.h"
 #include "bat/ads/internal/ml/data/vector_data.h"
 #include "bat/ads/internal/ml/ml_aliases.h"
@@ -33,8 +32,7 @@ TEST_F(BatAdsNormalizationTest, NormalizationTest) {
   const double kTolerance = 1e-7;
 
   std::string kTestString = "quite a small test string";
-  TextData text_data(kTestString);
-  std::unique_ptr<Data> data = std::make_unique<TextData>(text_data);
+  std::unique_ptr<Data> data = std::make_unique<TextData>(kTestString);
 
   HashedNGramsTransformation hashed_ngrams(10, std::vector<int>{3, 4});
   NormalizationTransformation normalization;
@@ -71,17 +69,13 @@ TEST_F(BatAdsNormalizationTest, ChainingTest) {
 
   TransformationVector chain;
 
-  const LowercaseTransformation lowercase;
-  chain.push_back(std::make_unique<LowercaseTransformation>(lowercase));
+  chain.push_back(std::make_unique<LowercaseTransformation>());
 
-  const HashedNGramsTransformation hashed_ngrams;
-  chain.push_back(std::make_unique<HashedNGramsTransformation>(hashed_ngrams));
+  chain.push_back(std::make_unique<HashedNGramsTransformation>());
 
-  const NormalizationTransformation normalization;
-  chain.push_back(std::make_unique<NormalizationTransformation>(normalization));
+  chain.push_back(std::make_unique<NormalizationTransformation>());
 
-  const TextData text_data(kTestString);
-  std::unique_ptr<Data> data = std::make_unique<TextData>(text_data);
+  std::unique_ptr<Data> data = std::make_unique<TextData>(kTestString);
 
   // Act
   for (size_t i = 0; i < chain.size(); ++i) {

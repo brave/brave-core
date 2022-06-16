@@ -11,6 +11,8 @@ CatalogInfo::CatalogInfo() = default;
 
 CatalogInfo::CatalogInfo(const CatalogInfo& info) = default;
 
+CatalogInfo& CatalogInfo::operator=(const CatalogInfo& info) = default;
+
 CatalogInfo::~CatalogInfo() = default;
 
 }  // namespace ads

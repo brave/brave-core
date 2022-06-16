@@ -99,11 +99,15 @@
   <message name="IDS_BRAVE_VPN_FEATURE_5" desc="Key feature for selling advertising">
     24/7 support
   </message>
-
+  <message name="IDS_BRAVE_VPN_SUPPORT_TICKET_FAILED" desc="Label to show failed response from support ticket creation request">
+    Failed to create support ticket, check your connection.
+  </message>
   <message name="IDS_BRAVE_VPN_LOADING" desc="Label to show below loader icon">
     One moment while loading…
   </message>
-
+  <message name="IDS_BRAVE_VPN_PURCHASE_FAILED " desc="Label to show when purchase status failed">
+    Unable to check the status of your purchase. This could be caused by a network problem.
+  </message>
   <message name="IDS_BRAVE_VPN_EDIT_PAYMENT" desc="Button title to update payment information">
     Edit payment method
   </message>
@@ -113,7 +117,7 @@
   </message>
 
   <message name="IDS_BRAVE_VPN_PAYMENT_FAILURE_REASON" desc="A long form on the consequence of failed payment">
-    Looks like your most recent payment for did not go through. Access to this subscription will pause until the payment issue is resolved. Try to edit your payment method, or contact Brave support.
+    Looks like your most recent payment for <ph name="VALUE">$1<ex>VPN Subscription</ex></ph> did not go through. Access to this subscription will pause until the payment issue is resolved. Try to edit your payment method, or contact Brave support.
   </message>
 
   <message name="IDS_BRAVE_VPN_SUPPORT_EMAIL" desc="Label above email input on VPN support">
@@ -190,5 +194,13 @@
 
   <message name="IDS_BRAVE_VPN_DNS_CHANGE_ALERT" desc="A text shown to user when he changed DNS settings with Brave VPN enabled">
     Turning off secure DNS or using default servers on Windows may reveal the names of the sites you visit to your Internet service provider. Brave does not recommend doing this. Do you want to do it anyways?
+  </message>
+
+  <message name="IDS_BRAVE_VPN_DNS_POLICY_ALERT" desc="A text shown to user when he enabled Brave VPN with disabled DoH by policies">
+    Secure DNS is disabled by your organization's policies. Using Brave VPN without Secure DNS may reveal the names of the sites you visit to your Internet service provider or organization.
+  </message>
+
+  <message name="IDS_BRAVE_VPN_DNS_POLICY_CHECKBOX" desc="A text shown to user on dialog's checkbpox when he enabled Brave VPN with disabled DoH by policies">
+    Do not warn me about this anymore.
   </message>
 </grit-part>

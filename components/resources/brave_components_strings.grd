@@ -480,6 +480,9 @@
       <message name="IDS_BRAVE_REWARDS_LOCAL_COMPLIMENT_TWEET" desc="">
         I just tipped <ph name="NAME">$1<ex>user</ex></ph> using the Brave Browser. Check it out at https://brave.com/tips.
       </message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_COMPLIMENT_TWEET_UNVERIFIED_PUBLISHER" desc="Text of a tweet after tipping an unverified creator.">
+        Love that <ph name="HASHTAG">$1<ex>#</ex></ph>Brave lets me support creators! Just tipped <ph name="NAME">$2<ex>user</ex></ph> with <ph name="HASHTAG2">$3<ex>#</ex></ph>BAT. If they verify at https://creators.brave.com before <ph name="DATE">$4<ex>Jan 2, 2023</ex></ph>, the BAT is theirs!
+      </message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_COMPLIMENT_TWEET_HASHTAG" desc="">TipWithBrave</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_CONFIRMATION_TYPE_CLICK" desc="">Clicked</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_CONFIRMATION_TYPE_DISMISS" desc="">Dismissed</message>

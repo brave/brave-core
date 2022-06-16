@@ -9,9 +9,9 @@
 
 #include "base/test/scoped_feature_list.h"
 #include "bat/ads/internal/ad_events/ad_event_unittest_util.h"
-#include "bat/ads/internal/base/unittest_base.h"
-#include "bat/ads/internal/base/unittest_time_util.h"
-#include "bat/ads/internal/base/unittest_util.h"
+#include "bat/ads/internal/base/unittest/unittest_base.h"
+#include "bat/ads/internal/base/unittest/unittest_mock_util.h"
+#include "bat/ads/internal/base/unittest/unittest_time_util.h"
 #include "bat/ads/internal/serving/eligible_ads/exclusion_rules/exclusion_rule_features.h"
 #include "bat/ads/pref_names.h"
 
@@ -20,11 +20,9 @@
 namespace ads {
 
 namespace {
-
 const std::vector<std::string> kCreativeSetIds = {
     "654f10df-fbc4-4a92-8d43-2edf73734a60",
     "465f10df-fbc4-4a92-8d43-4edf73734a60"};
-
 }  // namespace
 
 class BatAdsConversionExclusionRuleTest : public UnitTestBase {
@@ -52,8 +50,8 @@ TEST_F(BatAdsConversionExclusionRuleTest, AllowAdIfThereIsNoConversionHistory) {
 TEST_F(BatAdsConversionExclusionRuleTest,
        DoNotAllowAdIfShouldNotAllowConversionTracking) {
   // Arrange
-  ads_client_mock_->SetBooleanPref(prefs::kShouldAllowConversionTracking,
-                                   false);
+  AdsClientHelper::Get()->SetBooleanPref(prefs::kShouldAllowConversionTracking,
+                                         false);
 
   CreativeAdInfo creative_ad;
   creative_ad.creative_set_id = kCreativeSetIds.at(0);
@@ -61,7 +59,7 @@ TEST_F(BatAdsConversionExclusionRuleTest,
   AdEventList ad_events;
 
   const AdEventInfo ad_event =
-      BuildAdEvent(creative_ad, AdType::kAdNotification,
+      BuildAdEvent(creative_ad, AdType::kNotificationAd,
                    ConfirmationType::kConversion, Now());
 
   ad_events.push_back(ad_event);
@@ -82,7 +80,7 @@ TEST_F(BatAdsConversionExclusionRuleTest, DoNotAllowAdIfAlreadyConverted) {
   AdEventList ad_events;
 
   const AdEventInfo ad_event =
-      BuildAdEvent(creative_ad, AdType::kAdNotification,
+      BuildAdEvent(creative_ad, AdType::kNotificationAd,
                    ConfirmationType::kConversion, Now());
 
   ad_events.push_back(ad_event);
@@ -116,7 +114,7 @@ TEST_F(BatAdsConversionExclusionRuleTest,
   AdEventList ad_events;
 
   const AdEventInfo ad_event =
-      BuildAdEvent(creative_ad, AdType::kAdNotification,
+      BuildAdEvent(creative_ad, AdType::kNotificationAd,
                    ConfirmationType::kConversion, Now());
 
   ad_events.push_back(ad_event);
@@ -140,7 +138,7 @@ TEST_F(BatAdsConversionExclusionRuleTest, AllowAdIfNotAlreadyConverted) {
   AdEventList ad_events;
 
   const AdEventInfo ad_event =
-      BuildAdEvent(creative_ad_2, AdType::kAdNotification,
+      BuildAdEvent(creative_ad_2, AdType::kNotificationAd,
                    ConfirmationType::kConversion, Now());
 
   ad_events.push_back(ad_event);

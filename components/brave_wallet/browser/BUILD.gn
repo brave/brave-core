@@ -136,9 +136,8 @@ static_library("browser") {
     "//brave/components/filecoin/rs:cxx",
     "//brave/components/ipfs",
     "//brave/components/json/rs:cxx",
-    "//brave/components/json/rs:cxx_gen",
     "//brave/components/resources:strings_grit",
-    "//brave/components/weekly_storage:weekly_storage",
+    "//brave/components/time_period_storage",
     "//components/component_updater",
     "//components/content_settings/core/browser",
     "//components/keyed_service/core",
@@ -165,7 +164,9 @@ if (!is_ios) {
     deps = [
       ":utils",
       "//base",
+      "//brave/components/brave_wallet/common:mojom",
       "//components/permissions:permissions_common",
+      "//third_party/blink/public/common",
       "//third_party/re2",
       "//url",
     ]
@@ -235,6 +236,7 @@ source_set("hd_keyring") {
 
   deps = [
     ":transaction",
+    ":utils",
     "internal:hd_key",
     "//base",
     "//brave/components/brave_wallet/common",
@@ -242,11 +244,10 @@ source_set("hd_keyring") {
     "//brave/components/brave_wallet/common:mojom",
     "//brave/components/brave_wallet/common:solana_utils",
     "//brave/components/filecoin/rs:cxx",
-    "//brave/components/filecoin/rs:cxx_gen",
     "//crypto",
   ]
 
-  public_deps = [ "//brave/components/brave_wallet/rust:rust-rs" ]
+  public_deps = [ "//brave/components/brave_wallet/rust:cxx" ]
 }
 
 source_set("transaction") {
@@ -270,8 +271,6 @@ source_set("transaction") {
     "//brave/components/brave_wallet/common",
     "//brave/components/brave_wallet/common:mojom",
     "//brave/components/filecoin/rs:cxx",
-    "//brave/components/filecoin/rs:cxx_gen",
     "//brave/components/json/rs:cxx",
-    "//brave/components/json/rs:cxx_gen",
   ]
 }

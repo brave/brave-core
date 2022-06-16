@@ -15,6 +15,7 @@ void RegisterProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterListPref(kBraveVPNRegionList);
   registry->RegisterStringPref(kBraveVPNDeviceRegion, "");
   registry->RegisterStringPref(kBraveVPNSelectedRegion, "");
+  registry->RegisterBooleanPref(kBraveVPNShowDNSPolicyWarningDialog, true);
 }
 
 }  // namespace prefs

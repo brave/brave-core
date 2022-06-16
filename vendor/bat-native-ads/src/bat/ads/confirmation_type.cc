@@ -27,6 +27,13 @@ constexpr char kConversionConfirmationType[] = "conversion";
 
 }  // namespace
 
+ConfirmationType::ConfirmationType() = default;
+
+ConfirmationType::ConfirmationType(const ConfirmationType&) = default;
+
+ConfirmationType& ConfirmationType::operator=(const ConfirmationType&) =
+    default;
+
 ConfirmationType::ConfirmationType(const std::string& value) {
   if (value == kUndefinedConfirmationType) {
     value_ = kUndefined;

@@ -4358,7 +4358,7 @@ och Ctrl + Alt + Minska ljusstyrka för att zooma ut.</translation>
 <translation id="5280426389926346830">Vill du skapa en genväg?</translation>
 <translation id="5281013262333731149">Öppnas i <ph name="OPEN_BROWSER"/></translation>
 <translation id="528208740344463258">Om du vill ladda ned och använda Android-appar måste du först installera den här obligatoriska uppdateringen. Du kan inte använda <ph name="DEVICE_TYPE"/> medan uppdateringen installeras. <ph name="DEVICE_TYPE"/> startas om när installationen är slutförd.</translation>
-<translation id="5282733140964383898">Om du aktiverar Do Not Track innebär det att en begäran skickas med webbtrafiken. Vad som händer sedan beror på om webbplatserna svarar på din begäran och hur begäran tolkas. En del webbplatser kan till exempel svara genom att visa annonser som inte baseras på webbplatser du har besökt tidigare. Många webbplatser fortsätter att samla in och använda din webbinformation, till exempel för att förbättra säkerheten, för att erbjuda innehåll, tjänster, annonser och rekommendationer på sina webbplatser och för att generera statistik för rapporteringsändamål. <ph name="BEGIN_LINK"/>Läs mer<ph name="END_LINK"/></translation>
+<translation id="4039256732955431945">Om du aktiverar Do Not Track innebär det att en begäran skickas med webbtrafiken. Vad som händer sedan beror på om webbplatserna svarar på din begäran och hur begäran tolkas. En del webbplatser kan till exempel svara genom att visa annonser som inte baseras på webbplatser du har besökt tidigare. Många webbplatser fortsätter att samla in och använda din webbinformation, till exempel för att förbättra säkerheten, för att erbjuda innehåll, tjänster, annonser och rekommendationer på sina webbplatser och för att generera statistik för rapporteringsändamål. <ph name="BEGIN_LINK"/>Läs mer<ph name="END_LINK"/></translation>
 <translation id="5283677936944177147">Hoppsan! Det gick inte att fastställa enhetsmodell eller serienummer.</translation>
 <translation id="5284445933715251131">Fortsätt nedladdning</translation>
 <translation id="5285635972691565180">Skärm <ph name="DISPLAY_ID"/></translation>
@@ -4375,7 +4375,7 @@ och Ctrl + Alt + Minska ljusstyrka för att zooma ut.</translation>
 <translation id="5297082477358294722">Lösenordet sparades. Visa och hantera sparade lösenord i <ph name="SAVED_PASSWORDS_STORE"/></translation>
 <translation id="5297946558563358707">Visa ögonikonen för integritet nere till höger på skärmen när någon annan tittar på skärmen</translation>
 <translation id="5298219193514155779">Temat skapades av</translation>
-<translation id="5299109548848736476">Do Not Track</translation>
+<translation id="1839179167864984545">Do Not Track</translation>
 <translation id="5299558715747014286">Visa och hantera dina flikgrupper</translation>
 <translation id="5300287940468717207">Vill du återställa webbplatsernas behörigheter?</translation>
 <translation id="5300426565656326054">Webbläsarbaserad annonsanpassning</translation>
@@ -7842,7 +7842,7 @@ Spara nyckelfilen på ett säkert ställe. Den behövs om du ska skapa nya versi
 <translation id="8785622406424941542">E-penna</translation>
 <translation id="8786824282808281903">När den här ikonen visas kan ditt barn använda sitt fingeravtryck för att identifiera sig eller godkänna köp.</translation>
 <translation id="8787575090331305835">{NUM_TABS,plural, =1{Namnlös grupp – 1 flik}other{Namnlös grupp – # flikar}}</translation>
-<translation id="8791534160414513928">Skicka en begäran om att inte spåra med webbtrafik</translation>
+<translation id="163839281363975279">Skicka en begäran om att inte spåra med webbtrafik</translation>
 <translation id="879413103056696865">När den trådlösa surfzonen är aktiverad sker följande i <ph name="PHONE_NAME"/>:</translation>
 <translation id="8795916974678578410">Nytt fönster</translation>
 <translation id="8797459392481275117">Översätt aldrig den här webbplatsen</translation>

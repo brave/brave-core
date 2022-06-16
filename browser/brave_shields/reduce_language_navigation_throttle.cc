@@ -95,9 +95,9 @@ void ReduceLanguageNavigationThrottle::UpdateHeaders() {
   std::string languages =
       pref_service->Get(language::prefs::kAcceptLanguages)->GetString();
   std::string first_language = language::GetFirstLanguage(languages);
-  // Potentially add a fake q value after the language code.
-  std::vector<std::string> q_values = {";q=0.5", ";q=0.6", ";q=0.7",
-                                       ";q=0.8", ";q=0.9", ""};
+  // Add a fake q value after the language code.
+  std::vector<std::string> q_values = {";q=0.5", ";q=0.6", ";q=0.7", ";q=0.8",
+                                       ";q=0.9"};
   brave::FarblingPRNG prng;
   auto* profile = Profile::FromBrowserContext(context);
   if (g_brave_browser_process->brave_farbling_service()

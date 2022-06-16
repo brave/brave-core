@@ -13,7 +13,6 @@
 #include "base/strings/stringprintf.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/constants/brave_services_key.h"
-#include "net/base/escape.h"
 #include "net/base/load_flags.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "services/network/public/cpp/simple_url_loader.h"
@@ -230,45 +229,6 @@ void AssetRatioService::OnGetPriceHistory(
   }
 
   std::move(callback).Run(true, std::move(values));
-}
-
-// static
-GURL AssetRatioService::GetEstimatedTimeURL(const std::string& gas_price) {
-  std::string spec = base::StringPrintf(
-      "%sv2/etherscan/"
-      "passthrough?module=gastracker&action=gasestimate&gasprice=%s",
-      base_url_for_test_.is_empty() ? kAssetRatioBaseURL
-                                    : base_url_for_test_.spec().c_str(),
-      gas_price.c_str());
-  return GURL(spec);
-}
-
-void AssetRatioService::GetEstimatedTime(const std::string& gas_price,
-                                         GetEstimatedTimeCallback callback) {
-  auto internal_callback =
-      base::BindOnce(&AssetRatioService::OnGetEstimatedTime,
-                     weak_ptr_factory_.GetWeakPtr(), std::move(callback));
-  api_request_helper_->Request("GET", GetEstimatedTimeURL(gas_price), "", "",
-                               true, std::move(internal_callback));
-}
-
-void AssetRatioService::OnGetEstimatedTime(
-    GetEstimatedTimeCallback callback,
-    const int status,
-    const std::string& body,
-    const base::flat_map<std::string, std::string>& headers) {
-  if (status < 200 || status > 299) {
-    std::move(callback).Run(false, "");
-    return;
-  }
-
-  const std::string seconds = ParseEstimatedTime(body);
-  if (seconds.empty()) {
-    std::move(callback).Run(false, "");
-    return;
-  }
-
-  std::move(callback).Run(true, seconds);
 }
 
 // static

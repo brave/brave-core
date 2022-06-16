@@ -206,18 +206,12 @@ RegisterPolymerTemplateModifications({
     const titleEl = document.createElement('h1')
     titleEl.id = 'settingsHeader'
     titleEl.textContent = loadTimeData.getString('settings')
-    const topMenuEl = templateContent.querySelector('#topMenu')
-    if (!topMenuEl) {
-      console.error('[Brave Settings Overrides] Could not find topMenu element to add title after')
+    const menuEl = templateContent.querySelector('#menu')
+    if (!menuEl) {
+      console.error('[Brave Settings Overrides] Could not find menu element to add title after')
     } else {
-      topMenuEl.insertAdjacentElement('afterbegin', titleEl)
+      menuEl.insertAdjacentElement('afterbegin', titleEl)
     }
-    // Advanced text
-    const advancedToggle = templateContent.querySelector('#advancedButton span')
-    if (!advancedToggle) {
-      console.error('[Brave Settings Overrides] Could not find advancedButton to modify text')
-    }
-    advancedToggle.textContent = loadTimeData.getString('braveAdditionalSettingsTitle')
     // Add 'Get Started' item
     const peopleEl = getMenuElement(templateContent, '/people')
     const getStartedEl = createMenuElement(

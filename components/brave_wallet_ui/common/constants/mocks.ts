@@ -58,12 +58,64 @@ export const mockNetwork: BraveWallet.NetworkInfo = {
   chainId: '0x1',
   chainName: 'Ethereum Main Net',
   rpcUrls: ['https://mainnet.infura.io/v3/'],
-  blockExplorerUrls: ['https://etherscan.io/'],
+  blockExplorerUrls: ['https://etherscan.io'],
   symbol: 'ETH',
   symbolName: 'Ethereum',
   decimals: 18,
   iconUrls: [],
   coin: BraveWallet.CoinType.ETH,
+  data: undefined
+}
+
+export const mockFilecoinMainnetNetwork: BraveWallet.NetworkInfo = {
+  chainId: 'f',
+  chainName: 'Filecoin Mainnet',
+  rpcUrls: ['https://api.node.glif.io/rpc/v0'],
+  blockExplorerUrls: ['https://filscan.io/tipset/message-detail'],
+  symbol: 'FIL',
+  symbolName: 'Filecoin',
+  decimals: 18,
+  iconUrls: [],
+  coin: BraveWallet.CoinType.FIL,
+  data: undefined
+}
+
+export const mockFilecoinTestnetNetwork: BraveWallet.NetworkInfo = {
+  chainId: 't',
+  chainName: 'Filecoin Testnet',
+  rpcUrls: ['https://calibration.node.glif.io/rpc/v0'],
+  blockExplorerUrls: ['https://calibration.filscan.io/tipset/message-detail'],
+  symbol: 'FIL',
+  symbolName: 'Filecoin',
+  decimals: 18,
+  iconUrls: [],
+  coin: BraveWallet.CoinType.FIL,
+  data: undefined
+}
+
+export const mockSolanaMainnetNetwork: BraveWallet.NetworkInfo = {
+  chainId: '0x65',
+  chainName: 'Solana Mainnet Beta',
+  rpcUrls: ['https://mainnet-beta-solana.brave.com/rpc'],
+  blockExplorerUrls: ['https://explorer.solana.com'],
+  symbol: 'SOL',
+  symbolName: 'Solana',
+  decimals: 9,
+  iconUrls: [],
+  coin: BraveWallet.CoinType.SOL,
+  data: undefined
+}
+
+export const mockSolanaTestnetNetwork: BraveWallet.NetworkInfo = {
+  chainId: '0x66',
+  chainName: 'Solana Testnet',
+  rpcUrls: ['https://testnet-solana.brave.com/rpc'],
+  blockExplorerUrls: ['https://explorer.solana.com?cluster=testnet'],
+  symbol: 'SOL',
+  symbolName: 'Solana',
+  decimals: 9,
+  iconUrls: [],
+  coin: BraveWallet.CoinType.SOL,
   data: undefined
 }
 

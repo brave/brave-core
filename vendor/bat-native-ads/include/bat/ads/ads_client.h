@@ -21,7 +21,7 @@ class Time;
 
 namespace ads {
 
-struct AdNotificationInfo;
+struct NotificationAdInfo;
 
 class ADS_EXPORT AdsClient {
  public:
@@ -43,8 +43,8 @@ class ADS_EXPORT AdsClient {
   // backgrounded.
   virtual bool CanShowBackgroundNotifications() const = 0;
 
-  // Display |ad_notification| on the screen.
-  virtual void ShowNotification(const AdNotificationInfo& ad_notification) = 0;
+  // Display |notification_ad| on the screen.
+  virtual void ShowNotification(const NotificationAdInfo& notification_ad) = 0;
 
   // Close the notification for the specified |uuid|.
   virtual void CloseNotification(const std::string& uuid) = 0;

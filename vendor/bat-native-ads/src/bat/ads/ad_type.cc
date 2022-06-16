@@ -14,7 +14,7 @@ namespace {
 // Do not change the following string values as they are used for persisting and
 // restoring state
 constexpr char kUndefinedType[] = "";
-constexpr char kAdNotificationType[] = "ad_notification";
+constexpr char kNotificationAdType[] = "ad_notification";
 constexpr char kNewTabPageAdType[] = "new_tab_page_ad";
 constexpr char kPromotedContentAdType[] = "promoted_content_ad";
 constexpr char kInlineContentAdType[] = "inline_content_ad";
@@ -22,11 +22,17 @@ constexpr char kSearchResultAdType[] = "search_result_ad";
 
 }  // namespace
 
+AdType::AdType() = default;
+
+AdType::AdType(const AdType&) = default;
+
+AdType& AdType::operator=(const AdType&) = default;
+
 AdType::AdType(const std::string& value) {
   if (value == kUndefinedType) {
     value_ = kUndefined;
-  } else if (value == kAdNotificationType) {
-    value_ = kAdNotification;
+  } else if (value == kNotificationAdType) {
+    value_ = kNotificationAd;
   } else if (value == kNewTabPageAdType) {
     value_ = kNewTabPageAd;
   } else if (value == kPromotedContentAdType) {
@@ -47,8 +53,8 @@ AdType::AdType(const mojom::AdType value) {
       break;
     }
 
-    case mojom::AdType::kAdNotification: {
-      value_ = kAdNotification;
+    case mojom::AdType::kNotificationAd: {
+      value_ = kNotificationAd;
       break;
     }
 
@@ -84,8 +90,8 @@ std::string AdType::ToString() const {
       return kUndefinedType;
     }
 
-    case kAdNotification: {
-      return kAdNotificationType;
+    case kNotificationAd: {
+      return kNotificationAdType;
     }
 
     case kNewTabPageAd: {

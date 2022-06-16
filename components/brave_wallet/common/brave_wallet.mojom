@@ -170,7 +170,14 @@ interface SolanaProvider {
   // { publicKey: <base58 encoded string>,
   //   signature:  <base58 encoded string>
   // }
-  SignAndSendTransaction(string encoded_serialized_msg)
+  // Optional argument send_options:
+  //   { maxRetries?: <number>,
+  //     preflightCommitment?: <string>,
+  //     skipPreflight?: <boolean>
+  //   }
+  SignAndSendTransaction(
+      string encoded_serialized_msg,
+      mojo_base.mojom.DeprecatedDictionaryValue? send_options)
     => (SolanaProviderError error, string error_message,
         mojo_base.mojom.DeprecatedDictionaryValue result);
   // It takes a byte array and an optional display encoding for
@@ -572,10 +579,6 @@ interface AssetRatioService {
       AssetPriceTimeframe timeframe) =>
           (bool success, array<AssetTimePrice> values);
 
-  // Gas estimation APIs
-  GetEstimatedTime(string gas_price /* decimal string in wei */) =>
-      (bool success, string seconds);
-
   // Obtain token info via contract address through etherscan API.
   // This is only for Ethereum mainnet.
   GetTokenInfo(string contract_address) => (BlockchainToken? token);
@@ -705,6 +708,20 @@ struct DecryptRequest {
   string? unsafe_message;
 };
 
+struct OptionalMaxRetries {
+  uint64 max_retries;
+};
+
+struct OptionalSkipPreflight {
+  bool skip_preflight;
+};
+
+struct SolanaSendTransactionOptions {
+  OptionalMaxRetries? max_retries;
+  string? preflight_commitment;
+  OptionalSkipPreflight? skip_preflight;
+};
+
 // Deals with the ETH JSON RPC API, as well as things like the user's current
 // network.
 interface JsonRpcService {
@@ -723,6 +740,7 @@ interface JsonRpcService {
   SetNetwork(string chain_id, CoinType coin) => (bool success);
   GetNetwork(CoinType coin) => (NetworkInfo network);
   GetAllNetworks(CoinType coin) => (array<NetworkInfo> networks);
+  GetHiddenNetworks(CoinType coin) => (array<string> chain_ids);
 
   // Obtains the current network's chain ID
   GetChainId(CoinType coin) => (string chain_id);
@@ -758,7 +776,7 @@ interface JsonRpcService {
   UnstoppableDomainsGetEthAddr(string domain) => (string address, ProviderError error, string error_message);
 
   // Used for making requests to the currently selected EVM compatible node for
-  // coin ETH and other nodes with corresponding coin types 
+  // coin ETH and other nodes with corresponding coin types
   Request(string json_payload, bool auto_retry_on_network_change, mojo_base.mojom.Value id, CoinType coin) => (mojo_base.mojom.Value id, mojo_base.mojom.Value formed_response, bool reject, string first_allowed_account, bool update_bind_js_properties);
 
   // Adds an observer for the events of JsonRpcService
@@ -811,7 +829,9 @@ enum TransactionType {
   SolanaSPLTokenTransfer = 7,
   SolanaSPLTokenTransferWithAssociatedTokenAccountCreation = 8,
   ERC1155SafeTransferFrom = 9,
-  ETHSwap = 10
+  ETHSwap = 10,
+  SolanaDappSignAndSendTransaction = 11,
+  SolanaDappSignTransaction = 12
 };
 
 struct FilTxData {
@@ -975,6 +995,20 @@ struct SignMessageRequest {
   CoinType coin;
 };
 
+struct SignTransactionRequest {
+  OriginInfo origin_info;
+  int32 id;
+  string from_address;
+  TxDataUnion tx_data;
+};
+
+struct SignAllTransactionsRequest {
+  OriginInfo origin_info;
+  int32 id;
+  string from_address;
+  array<TxDataUnion> tx_datas;
+};
+
 enum ExternalWalletType {
   CryptoWallets,
   MetaMask
@@ -1077,6 +1111,16 @@ interface BraveWalletService {
   GetPendingSignMessageRequests() => (array<SignMessageRequest> requests);
   NotifySignMessageHardwareRequestProcessed(bool approved, int32 id, string signature, string error);
 
+  GetPendingSignTransactionRequests() => (array<SignTransactionRequest> requests);
+  // Used for UI notifying native when the user apprrove/reject sign
+  // transaction request.
+  NotifySignTransactionRequestProcessed(bool approved, int32 id);
+
+  GetPendingSignAllTransactionsRequests() => (array<SignAllTransactionsRequest> requests);
+  // Used for UI notifying native when the user apprrove/reject sign all
+  // transactions request.
+  NotifySignAllTransactionsRequestProcessed(bool approved, int32 id);
+
   // Used for UI notifying native when the user apprrove/reject add suggest
   // token requests.
   NotifyAddSuggestTokenRequestsProcessed(bool approved, array<string> contract_addresses);
@@ -1136,6 +1180,10 @@ struct SolanaTxData {
   uint64 amount;
   TransactionType tx_type;
   array<SolanaInstruction> instructions;
+
+  // Currently it might be specified by solana.signAndSendTransaction provider
+  // API as the options to be passed to sendTransaction RPC call.
+  SolanaSendTransactionOptions? send_options;
 };
 
 // This is used by BraveWalletProviderDelegate::RequestPermissions for us to

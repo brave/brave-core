@@ -50,17 +50,17 @@ TEST(BatAdsTotalsUserDataTest, GetTotals) {
 
   const privacy::UnblindedPaymentTokenInfo unblinded_payment_token_1 =
       privacy::CreateUnblindedPaymentToken(ConfirmationType::kViewed,
-                                           AdType::kAdNotification);
+                                           AdType::kNotificationAd);
   unblinded_payment_tokens.push_back(unblinded_payment_token_1);
 
   const privacy::UnblindedPaymentTokenInfo unblinded_payment_token_2 =
       privacy::CreateUnblindedPaymentToken(ConfirmationType::kViewed,
-                                           AdType::kAdNotification);
+                                           AdType::kNotificationAd);
   unblinded_payment_tokens.push_back(unblinded_payment_token_2);
 
   const privacy::UnblindedPaymentTokenInfo unblinded_payment_token_3 =
       privacy::CreateUnblindedPaymentToken(ConfirmationType::kClicked,
-                                           AdType::kAdNotification);
+                                           AdType::kNotificationAd);
   unblinded_payment_tokens.push_back(unblinded_payment_token_3);
 
   const privacy::UnblindedPaymentTokenInfo unblinded_payment_token_4 =

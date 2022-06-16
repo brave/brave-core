@@ -10,11 +10,11 @@
 #include "base/bind.h"
 #include "brave/browser/brave_wallet/brave_wallet_context_utils.h"
 #include "brave/common/brave_renderer_configuration.mojom.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/de_amp/browser/de_amp_util.h"
 #include "brave/components/de_amp/common/pref_names.h"
-#include "build/build_config.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/common/pref_names.h"
 #include "components/prefs/pref_service.h"
@@ -98,14 +98,10 @@ void BraveRendererUpdater::UpdateRenderer(
       brave_wallet_web3_provider_.GetValue());
 
   bool brave_use_native_wallet =
-#if BUILDFLAG(IS_ANDROID)
-      false;
-#else
       (default_wallet ==
            brave_wallet::mojom::DefaultWallet::BraveWalletPreferExtension ||
        default_wallet == brave_wallet::mojom::DefaultWallet::BraveWallet) &&
-      is_wallet_allowed_for_context_;
-#endif
+      is_wallet_allowed_for_context_ && brave_wallet::IsDappsSupportEnabled();
 
   bool allow_overwrite_window_web3_provider =
       default_wallet ==

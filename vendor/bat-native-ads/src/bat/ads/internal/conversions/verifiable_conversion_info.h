@@ -13,6 +13,7 @@ namespace ads {
 struct VerifiableConversionInfo final {
   VerifiableConversionInfo();
   VerifiableConversionInfo(const VerifiableConversionInfo& info);
+  VerifiableConversionInfo& operator=(const VerifiableConversionInfo& info);
   ~VerifiableConversionInfo();
 
   bool operator==(const VerifiableConversionInfo& rhs) const;

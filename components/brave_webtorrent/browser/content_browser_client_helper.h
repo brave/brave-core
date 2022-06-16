@@ -9,9 +9,9 @@
 #include <string>
 #include <utility>
 
+#include "base/strings/escape.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
-#include "base/task/post_task.h"
 #include "brave/components/brave_webtorrent/browser/webtorrent_util.h"
 #include "brave/components/constants/url_constants.h"
 #include "chrome/browser/external_protocol/external_protocol_handler.h"
@@ -23,7 +23,6 @@
 #include "extensions/browser/extension_registry.h"
 #include "extensions/common/constants.h"
 #include "extensions/common/extension_set.h"
-#include "net/base/escape.h"
 
 namespace webtorrent {
 
@@ -34,15 +33,15 @@ static GURL TranslateMagnetURL(const GURL& url) {
         "/extension/brave_webtorrent.html?%s"}));
   std::string translatedSpec(extension_page_url.spec());
   base::ReplaceFirstSubstringAfterOffset(
-      &translatedSpec, 0, "%s",
-      net::EscapeQueryParamValue(url.spec(), true));
+      &translatedSpec, 0, "%s", base::EscapeQueryParamValue(url.spec(), true));
   return GURL(translatedSpec);
 }
 
 static GURL TranslateTorrentUIURLReversed(const GURL& url) {
-  GURL translatedURL(net::UnescapeURLComponent(
-      url.query(), net::UnescapeRule::URL_SPECIAL_CHARS_EXCEPT_PATH_SEPARATORS |
-                       net::UnescapeRule::PATH_SEPARATORS));
+  GURL translatedURL(base::UnescapeURLComponent(
+      url.query(),
+      base::UnescapeRule::URL_SPECIAL_CHARS_EXCEPT_PATH_SEPARATORS |
+          base::UnescapeRule::PATH_SEPARATORS));
   GURL::Replacements replacements;
   replacements.SetRefStr(url.ref_piece());
   return translatedURL.ReplaceComponents(replacements);
@@ -123,8 +122,8 @@ static void HandleMagnetProtocol(
     const absl::optional<url::Origin>& initiating_origin,
     content::WeakDocumentPtr initiator_document) {
   DCHECK(url.SchemeIs(kMagnetScheme));
-  base::PostTask(
-      FROM_HERE, {content::BrowserThread::UI},
+  content::GetUIThreadTaskRunner({})->PostTask(
+      FROM_HERE,
       base::BindOnce(&LoadOrLaunchMagnetURL, url, web_contents_getter,
                      page_transition, has_user_gesture, is_in_fenced_frame_tree,
                      initiating_origin, std::move(initiator_document)));

@@ -17,27 +17,27 @@ struct Feature;
 namespace brave_ads {
 namespace features {
 
-extern const base::Feature kAdNotifications;
-bool IsAdNotificationsEnabled();
+extern const base::Feature kNotificationAds;
+bool IsNotificationAdsEnabled();
 bool ShouldSupportMultipleDisplays();
-bool CanFallbackToCustomAdNotifications();
-bool AllowedToFallbackToCustomAdNotifications();
-int AdNotificationTimeout();
+bool CanFallbackToCustomNotificationAds();
+bool AllowedToFallbackToCustomNotificationAds();
+int NotificationAdTimeout();
 
-extern const base::Feature kCustomAdNotifications;
-bool IsCustomAdNotificationsEnabled();
+extern const base::Feature kCustomNotificationAds;
+bool IsCustomNotificationAdsEnabled();
 #if !BUILDFLAG(IS_ANDROID)
-int AdNotificationFadeDuration();
-std::string AdNotificationDarkModeBackgroundColor();
-bool ShouldAttachAdNotificationToBrowserWindow();
-double AdNotificationNormalizedDisplayCoordinateX();
-int AdNotificationInsetX();
-double AdNotificationNormalizedDisplayCoordinateY();
-int AdNotificationInsetY();
+int NotificationAdFadeDuration();
+std::string NotificationAdDarkModeBackgroundColor();
+bool ShouldAttachNotificationAdToBrowserWindow();
+double NotificationAdNormalizedDisplayCoordinateX();
+int NotificationAdInsetX();
+double NotificationAdNormalizedDisplayCoordinateY();
+int NotificationAdInsetY();
 #endif  // !BUILDFLAG(IS_ANDROID)
 
-extern const base::Feature kAllowedToFallbackToCustomAdNotifications;
-bool IsAllowedToFallbackToCustomAdNotificationsEnabled();
+extern const base::Feature kAllowedToFallbackToCustomNotificationAds;
+bool IsAllowedToFallbackToCustomNotificationAdsEnabled();
 
 extern const base::Feature kRequestAdsEnabledApi;
 bool IsRequestAdsEnabledApiEnabled();

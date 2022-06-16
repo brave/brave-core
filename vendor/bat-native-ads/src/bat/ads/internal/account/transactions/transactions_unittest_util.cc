@@ -10,7 +10,7 @@
 #include "bat/ads/ad_type.h"
 #include "bat/ads/confirmation_type.h"
 #include "bat/ads/internal/account/transactions/transactions_database_table.h"
-#include "bat/ads/internal/base/unittest_time_util.h"
+#include "bat/ads/internal/base/unittest/unittest_time_util.h"
 #include "bat/ads/transaction_info.h"
 #include "third_party/googletest/src/googletest/include/gtest/gtest.h"
 
@@ -32,7 +32,7 @@ TransactionInfo BuildTransaction(const double value,
   transaction.creative_instance_id =
       base::GUID::GenerateRandomV4().AsLowercaseString();
   transaction.value = value;
-  transaction.ad_type = AdType::kAdNotification;
+  transaction.ad_type = AdType::kNotificationAd;
   transaction.confirmation_type = confirmation_type;
   transaction.reconciled_at = reconciled_at;
 

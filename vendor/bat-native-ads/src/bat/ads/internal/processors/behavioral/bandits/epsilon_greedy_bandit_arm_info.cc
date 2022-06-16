@@ -5,7 +5,7 @@
 
 #include "bat/ads/internal/processors/behavioral/bandits/epsilon_greedy_bandit_arm_info.h"
 
-#include "bat/ads/internal/base/number_util.h"
+#include "bat/ads/internal/base/numbers/number_util.h"
 
 namespace ads {
 namespace targeting {
@@ -13,6 +13,9 @@ namespace targeting {
 EpsilonGreedyBanditArmInfo::EpsilonGreedyBanditArmInfo() = default;
 
 EpsilonGreedyBanditArmInfo::EpsilonGreedyBanditArmInfo(
+    const EpsilonGreedyBanditArmInfo& info) = default;
+
+EpsilonGreedyBanditArmInfo& EpsilonGreedyBanditArmInfo::operator=(
     const EpsilonGreedyBanditArmInfo& info) = default;
 
 EpsilonGreedyBanditArmInfo::~EpsilonGreedyBanditArmInfo() = default;

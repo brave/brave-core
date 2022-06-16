@@ -5,13 +5,17 @@
 
 #include "bat/ads/internal/catalog/campaign/creative_set/catalog_creative_set_info.h"
 
-#include "bat/ads/internal/base/number_util.h"
+#include "bat/ads/internal/base/numbers/number_util.h"
+#include "bat/ads/internal/base/platform/platform_helper.h"
 
 namespace ads {
 
 CatalogCreativeSetInfo::CatalogCreativeSetInfo() = default;
 
 CatalogCreativeSetInfo::CatalogCreativeSetInfo(
+    const CatalogCreativeSetInfo& info) = default;
+
+CatalogCreativeSetInfo& CatalogCreativeSetInfo::operator=(
     const CatalogCreativeSetInfo& info) = default;
 
 CatalogCreativeSetInfo::~CatalogCreativeSetInfo() = default;
@@ -23,7 +27,7 @@ bool CatalogCreativeSetInfo::operator==(
          total_max == rhs.total_max && DoubleEquals(value, rhs.value) &&
          split_test_group == rhs.split_test_group && segments == rhs.segments &&
          oses == rhs.oses &&
-         creative_ad_notifications == rhs.creative_ad_notifications &&
+         creative_notification_ads == rhs.creative_notification_ads &&
          creative_inline_content_ads == rhs.creative_inline_content_ads &&
          creative_new_tab_page_ads == rhs.creative_new_tab_page_ads &&
          creative_promoted_content_ads == rhs.creative_promoted_content_ads &&

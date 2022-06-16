@@ -14,6 +14,8 @@ FlaggedAdInfo::FlaggedAdInfo() = default;
 
 FlaggedAdInfo::FlaggedAdInfo(const FlaggedAdInfo& info) = default;
 
+FlaggedAdInfo& FlaggedAdInfo::operator=(const FlaggedAdInfo& info) = default;
+
 FlaggedAdInfo::~FlaggedAdInfo() = default;
 
 std::string FlaggedAdInfo::ToJson() const {

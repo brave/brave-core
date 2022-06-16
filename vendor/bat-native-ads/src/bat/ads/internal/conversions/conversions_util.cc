@@ -11,9 +11,8 @@
 
 #include "base/base64.h"
 #include "base/check_op.h"
-#include "bat/ads/internal/base/base64_util.h"
-#include "bat/ads/internal/base/crypto_util.h"
-#include "bat/ads/internal/base/key_pair_info.h"
+#include "bat/ads/internal/base/crypto/crypto_util.h"
+#include "bat/ads/internal/base/crypto/key_pair_info.h"
 #include "bat/ads/internal/conversions/verifiable_conversion_envelope_info.h"
 #include "bat/ads/internal/conversions/verifiable_conversion_info.h"
 #include "third_party/re2/src/re2/re2.h"
@@ -56,7 +55,12 @@ absl::optional<VerifiableConversionEnvelopeInfo> SealEnvelope(
   plaintext.insert(plaintext.end(), kVacCipherTextLength - plaintext.size(), 0);
   DCHECK_EQ(kVacCipherTextLength, plaintext.size());
 
-  const std::vector<uint8_t> public_key = Base64ToBytes(public_key_base64);
+  const absl::optional<std::vector<uint8_t>> public_key_optional =
+      base::Base64Decode(public_key_base64);
+  if (!public_key_optional) {
+    return absl::nullopt;
+  }
+  const std::vector<uint8_t>& public_key = public_key_optional.value();
   if (public_key.size() != kCryptoBoxPublicKeyBytes) {
     return absl::nullopt;
   }

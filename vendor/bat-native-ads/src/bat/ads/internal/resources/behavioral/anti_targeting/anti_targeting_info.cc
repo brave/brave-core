@@ -18,6 +18,9 @@ AntiTargetingInfo::AntiTargetingInfo() = default;
 
 AntiTargetingInfo::AntiTargetingInfo(const AntiTargetingInfo& info) = default;
 
+AntiTargetingInfo& AntiTargetingInfo::operator=(const AntiTargetingInfo& info) =
+    default;
+
 AntiTargetingInfo::~AntiTargetingInfo() = default;
 
 // static

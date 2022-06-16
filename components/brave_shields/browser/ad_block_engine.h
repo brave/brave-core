@@ -17,6 +17,7 @@
 #include "base/memory/weak_ptr.h"
 #include "base/observer_list_types.h"
 #include "base/values.h"
+#include "brave/components/adblock_rust_ffi/src/wrapper.h"
 #include "brave/components/brave_component_updater/browser/dat_file_util.h"
 #include "third_party/blink/public/mojom/loader/resource_load_info.mojom-shared.h"
 #include "url/gurl.h"
@@ -25,7 +26,8 @@ using brave_component_updater::DATFileDataBuffer;
 
 namespace adblock {
 class Engine;
-}
+struct FilterListMetadata;
+}  // namespace adblock
 
 class AdBlockServiceTest;
 class BraveAdBlockTPNetworkDelegateHelperTest;
@@ -67,9 +69,10 @@ class AdBlockEngine : public base::SupportsWeakPtr<AdBlockEngine> {
       const std::vector<std::string>& ids,
       const std::vector<std::string>& exceptions);
 
-  void Load(bool deserialize,
-            const DATFileDataBuffer& dat_buf,
-            const std::string& resources_json);
+  absl::optional<adblock::FilterListMetadata> Load(
+      bool deserialize,
+      const DATFileDataBuffer& dat_buf,
+      const std::string& resources_json);
 
   class TestObserver : public base::CheckedObserver {
    public:
@@ -83,8 +86,9 @@ class AdBlockEngine : public base::SupportsWeakPtr<AdBlockEngine> {
   void AddKnownTagsToAdBlockInstance();
   void UpdateAdBlockClient(std::unique_ptr<adblock::Engine> ad_block_client,
                            const std::string& resources_json);
-  void OnListSourceLoaded(const DATFileDataBuffer& filters,
-                          const std::string& resources_json);
+  adblock::FilterListMetadata OnListSourceLoaded(
+      const DATFileDataBuffer& filters,
+      const std::string& resources_json);
 
   void OnDATLoaded(const DATFileDataBuffer& dat_buf,
                    const std::string& resources_json);

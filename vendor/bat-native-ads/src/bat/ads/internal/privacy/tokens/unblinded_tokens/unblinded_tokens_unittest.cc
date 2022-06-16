@@ -9,8 +9,7 @@
 #include <vector>
 
 #include "base/values.h"
-#include "bat/ads/internal/base/unittest_base.h"
-#include "bat/ads/internal/base/unittest_util.h"
+#include "bat/ads/internal/base/unittest/unittest_base.h"
 #include "bat/ads/internal/privacy/tokens/unblinded_tokens/unblinded_tokens_unittest_util.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
@@ -142,8 +141,7 @@ TEST_F(BatAdsUnblindedTokensTest, SetTokensWithEmptyList) {
   get_unblinded_tokens()->SetTokens(unblinded_tokens);
 
   // Assert
-  const int count = get_unblinded_tokens()->Count();
-  EXPECT_EQ(0, count);
+  EXPECT_TRUE(privacy::get_unblinded_tokens()->IsEmpty());
 }
 
 TEST_F(BatAdsUnblindedTokensTest, SetTokensFromList) {
@@ -191,8 +189,7 @@ TEST_F(BatAdsUnblindedTokensTest, SetTokensFromListWithEmptyList) {
   get_unblinded_tokens()->SetTokensFromList(list);
 
   // Assert
-  const int count = get_unblinded_tokens()->Count();
-  EXPECT_EQ(0, count);
+  EXPECT_TRUE(privacy::get_unblinded_tokens()->IsEmpty());
 }
 
 TEST_F(BatAdsUnblindedTokensTest, AddTokens) {
@@ -353,8 +350,7 @@ TEST_F(BatAdsUnblindedTokensTest, RemoveAllTokens) {
   get_unblinded_tokens()->RemoveAllTokens();
 
   // Assert
-  const int count = get_unblinded_tokens()->Count();
-  EXPECT_EQ(0, count);
+  EXPECT_TRUE(privacy::get_unblinded_tokens()->IsEmpty());
 }
 
 TEST_F(BatAdsUnblindedTokensTest, RemoveAllTokensWithEmptyList) {
@@ -364,8 +360,7 @@ TEST_F(BatAdsUnblindedTokensTest, RemoveAllTokensWithEmptyList) {
   get_unblinded_tokens()->RemoveAllTokens();
 
   // Assert
-  const int count = get_unblinded_tokens()->Count();
-  EXPECT_EQ(0, count);
+  EXPECT_TRUE(privacy::get_unblinded_tokens()->IsEmpty());
 }
 
 TEST_F(BatAdsUnblindedTokensTest, TokenExists) {

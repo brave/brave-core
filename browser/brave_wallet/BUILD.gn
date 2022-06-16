@@ -58,12 +58,14 @@ source_set("brave_wallet_delegate") {
     "//brave/browser/brave_wallet",
     "//brave/components/brave_wallet/browser",
     "//brave/components/brave_wallet/browser:constants",
+    "//brave/components/brave_wallet/browser:permission_utils",
     "//brave/components/brave_wallet/browser:utils",
     "//brave/components/brave_wallet/common:mojom",
     "//brave/components/resources:strings_grit",
     "//chrome/browser/profiles:profile",
     "//components/content_settings/core/common",
     "//components/permissions",
+    "//components/permissions:permissions",
     "//content/public/browser",
     "//mojo/public/cpp/bindings",
   ]
@@ -162,7 +164,7 @@ source_set("unit_tests") {
     "//brave/components/brave_wallet/browser:utils",
     "//brave/components/brave_wallet/common",
     "//brave/components/brave_wallet/common:mojom",
-    "//brave/components/filecoin/rs:cxx_gen",
+    "//brave/components/filecoin/rs:cxx",
     "//brave/components/l10n/common",
     "//brave/components/resources:strings_grit",
     "//brave/components/version_info",
@@ -180,6 +182,7 @@ source_set("unit_tests") {
     deps += [
       ":brave_wallet_delegate",
       "//brave/components/brave_wallet/common:common_constants",
+      "//brave/components/brave_wallet/common:solana_utils",
     ]
     if (enable_extensions) {
       sources += [ "external_wallets_importer_unittest.cc" ]

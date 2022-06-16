@@ -89,6 +89,13 @@ reducer.on(Actions.purchaseConfirmed, (state): RootState => {
   }
 })
 
+reducer.on(Actions.purchaseFailed, (state): RootState => {
+  return {
+    ...state,
+    currentView: ViewType.PurchaseFailed
+  }
+})
+
 reducer.on(Actions.showSellView, (state): RootState => {
   return {
     ...state,

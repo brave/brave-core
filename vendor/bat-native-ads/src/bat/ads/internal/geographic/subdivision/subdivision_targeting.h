@@ -8,8 +8,8 @@
 
 #include <string>
 
-#include "bat/ads/internal/base/backoff_timer.h"
-#include "bat/ads/internal/base/timer.h"
+#include "bat/ads/internal/base/timer/backoff_timer.h"
+#include "bat/ads/internal/base/timer/timer.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
@@ -20,6 +20,8 @@ class SubdivisionTargeting final {
  public:
   SubdivisionTargeting();
   ~SubdivisionTargeting();
+  SubdivisionTargeting(const SubdivisionTargeting&) = delete;
+  SubdivisionTargeting& operator=(const SubdivisionTargeting&) = delete;
 
   void OnPrefChanged(const std::string& path);
 

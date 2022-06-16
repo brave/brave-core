@@ -16,7 +16,6 @@
 
 #include "base/base64.h"
 #include "base/bind.h"
-#include "base/command_line.h"
 #include "base/feature_list.h"
 #include "base/files/file_util.h"
 #include "base/files/important_file_writer.h"
@@ -25,12 +24,11 @@
 #include "base/json/json_string_value_serializer.h"
 #include "base/json/json_writer.h"
 #include "base/logging.h"
-#include "base/strings/string_number_conversions.h"
+#include "base/strings/escape.h"
 #include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
 #include "base/strings/stringprintf.h"
 #include "base/strings/utf_string_conversions.h"
-#include "base/task/post_task.h"
 #include "base/task/sequenced_task_runner.h"
 #include "base/task/task_runner_util.h"
 #include "base/task/thread_pool.h"
@@ -38,7 +36,7 @@
 #include "base/time/time.h"
 #include "bat/ads/pref_names.h"
 #include "bat/ledger/global_constants.h"
-#include "bat/ledger/ledger_database.h"
+#include "bat/ledger/public/ledger_database.h"
 #include "brave/browser/brave_ads/ads_service_factory.h"
 #include "brave/browser/ui/webui/brave_rewards_source.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
@@ -51,7 +49,6 @@
 #include "brave/components/brave_rewards/browser/rewards_service_observer.h"
 #include "brave/components/brave_rewards/browser/service_sandbox_type.h"
 #include "brave/components/brave_rewards/browser/static_values.h"
-#include "brave/components/brave_rewards/browser/switches.h"
 #include "brave/components/brave_rewards/common/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/common/features.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
@@ -72,7 +69,6 @@
 #include "content/public/browser/service_process_host.h"
 #include "content/public/browser/storage_partition.h"
 #include "content/public/browser/url_data_source.h"
-#include "net/base/escape.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "net/base/url_util.h"
 #include "net/http/http_status_code.h"
@@ -355,9 +351,6 @@ RewardsServiceImpl::~RewardsServiceImpl() {
   }
 #endif
 
-  if (ledger_database_) {
-    file_task_runner_->DeleteSoon(FROM_HERE, ledger_database_.release());
-  }
   StopNotificationTimers();
 }
 
@@ -463,8 +456,8 @@ void RewardsServiceImpl::StartLedgerProcessIfNecessary() {
     return;
   }
 
-  ledger_database_.reset(
-      ledger::LedgerDatabase::CreateInstance(publisher_info_db_path_));
+  ledger_database_ = base::SequenceBound<ledger::LedgerDatabase>(
+      file_task_runner_, publisher_info_db_path_);
 
   BLOG(1, "Starting ledger process");
 
@@ -490,16 +483,7 @@ void RewardsServiceImpl::StartLedgerProcessIfNecessary() {
 
   SetDebug(false);
 
-  const base::CommandLine& command_line =
-      *base::CommandLine::ForCurrentProcess();
-
-  if (command_line.HasSwitch(switches::kRewards)) {
-    std::string options = command_line.GetSwitchValueASCII(switches::kRewards);
-
-    if (!options.empty()) {
-      HandleFlags(options);
-    }
-  }
+  HandleFlags(RewardsFlags::ForCurrentProcess());
 
   bat_ledger_service_->Create(
       bat_ledger_client_receiver_.BindNewEndpointAndPassRemote(),
@@ -819,7 +803,7 @@ void RewardsServiceImpl::RestorePublishers() {
 }
 
 std::string RewardsServiceImpl::URIEncode(const std::string& value) {
-  return net::EscapeQueryParamValue(value, false);
+  return base::EscapeQueryParamValue(value, false);
 }
 
 void RewardsServiceImpl::Shutdown() {
@@ -1479,9 +1463,7 @@ void RewardsServiceImpl::Reset() {
   bat_ledger_client_receiver_.reset();
   bat_ledger_service_.reset();
   ready_ = std::make_unique<base::OneShotEvent>();
-  bool success =
-      file_task_runner_->DeleteSoon(FROM_HERE, ledger_database_.release());
-  BLOG_IF(1, !success, "Database was not released");
+  ledger_database_.Reset();
   BLOG(1, "Successfully reset rewards service");
 }
 
@@ -2347,119 +2329,51 @@ void RewardsServiceImpl::Log(
 }
 
 // static
-void RewardsServiceImpl::HandleFlags(const std::string& options) {
-  std::vector<std::string> flags = base::SplitString(
-      options, ",", base::KEEP_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
-
-  for (const auto& flag : flags) {
-    if (flag.empty()) {
-      continue;
-    }
-
-    std::vector<std::string> values = base::SplitString(
-      flag, "=", base::KEEP_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
-
-    if (values.size() != 2) {
-      continue;
-    }
-
-    std::string name = base::ToLowerASCII(values[0]);
-    std::string value = values[1];
-
-    if (value.empty()) {
-      continue;
-    }
-
-    if (name == "staging") {
-      ledger::type::Environment environment;
-      std::string lower = base::ToLowerASCII(value);
-
-      if (lower == "true" || lower == "1") {
-        environment = ledger::type::Environment::STAGING;
-      } else {
-        environment = ledger::type::Environment::PRODUCTION;
-      }
-
-      SetEnvironment(environment);
-      continue;
-    }
-
-    if (name == "debug") {
-      bool is_debug;
-      std::string lower = base::ToLowerASCII(value);
-
-      if (lower == "true" || lower == "1") {
-        is_debug = true;
-      } else {
-        is_debug = false;
-      }
-
-      SetDebug(is_debug);
-      continue;
-    }
-
-    if (name == "reconcile-interval") {
-      int reconcile_int;
-      bool success = base::StringToInt(value, &reconcile_int);
-
-      if (success && reconcile_int > 0) {
-        SetReconcileInterval(reconcile_int);
-      }
-
-      continue;
-    }
-
-    if (name == "retry-interval") {
-      int retry_interval;
-      bool success = base::StringToInt(value, &retry_interval);
-
-      if (success && retry_interval > 0) {
-        SetRetryInterval(retry_interval);
-      }
-
-      continue;
-    }
-
-    if (name == "development") {
-      ledger::type::Environment environment;
-      std::string lower = base::ToLowerASCII(value);
-
-      if (lower == "true" || lower == "1") {
-        environment = ledger::type::Environment::DEVELOPMENT;
-        SetEnvironment(environment);
-      }
-
-      continue;
-    }
-
-    if (name == "gemini-retries") {
-      int retries;
-      bool success = base::StringToInt(value, &retries);
-
-      if (success && retries >= 0) {
-        SetGeminiRetries(retries);
-      }
-
-      continue;
-    }
-
-    // The "persist-logs" command-line flag is deprecated and will be removed
-    // in a future version. Use --enable-features=BraveRewardsVerboseLogging
-    // instead.
-    if (name == "persist-logs") {
-      const std::string lower = base::ToLowerASCII(value);
-      if (lower == "true" || lower == "1") {
-        persist_log_level_ = kDiagnosticLogMaxVerboseLevel;
-      }
-    }
-
-    if (name == "countryid") {
-      int country_id;
-      if (base::StringToInt(value, &country_id)) {
-        country_id_ = country_id;
-      }
+void RewardsServiceImpl::HandleFlags(const RewardsFlags& flags) {
+  if (flags.environment) {
+    switch (*flags.environment) {
+      case RewardsFlags::Environment::kDevelopment:
+        SetEnvironment(ledger::type::Environment::DEVELOPMENT);
+        break;
+      case RewardsFlags::Environment::kStaging:
+        SetEnvironment(ledger::type::Environment::STAGING);
+        break;
+      case RewardsFlags::Environment::kProduction:
+        SetEnvironment(ledger::type::Environment::PRODUCTION);
+        break;
     }
   }
+
+  if (flags.debug) {
+    SetDebug(true);
+  }
+
+  if (flags.reconcile_interval) {
+    SetReconcileInterval(*flags.reconcile_interval);
+  }
+
+  if (flags.retry_interval) {
+    SetRetryInterval(*flags.retry_interval);
+  }
+
+  if (flags.gemini_retries) {
+    SetGeminiRetries(*flags.gemini_retries);
+  }
+
+  // The "persist-logs" command-line flag is deprecated and will be removed
+  // in a future version. Use --enable-features=BraveRewardsVerboseLogging
+  // instead.
+  if (flags.persist_logs) {
+    persist_log_level_ = kDiagnosticLogMaxVerboseLevel;
+  }
+
+  if (flags.country_id) {
+    country_id_ = *flags.country_id;
+  }
+}
+
+void RewardsServiceImpl::HandleFlagsForTesting(const std::string& input) {
+  return HandleFlags(RewardsFlags::Parse(input));
 }
 
 void RewardsServiceImpl::SetBackupCompleted() {
@@ -3167,29 +3081,14 @@ void RewardsServiceImpl::ReconcileStampReset() {
   }
 }
 
-ledger::type::DBCommandResponsePtr RunDBTransactionOnFileTaskRunner(
-    ledger::type::DBTransactionPtr transaction,
-    ledger::LedgerDatabase* database) {
-  auto response = ledger::type::DBCommandResponse::New();
-  if (!database) {
-    response->status = ledger::type::DBCommandResponse::Status::RESPONSE_ERROR;
-  } else {
-    database->RunTransaction(std::move(transaction), response.get());
-  }
-
-  return response;
-}
-
 void RewardsServiceImpl::RunDBTransaction(
     ledger::type::DBTransactionPtr transaction,
     ledger::client::RunDBTransactionCallback callback) {
   DCHECK(ledger_database_);
-  base::PostTaskAndReplyWithResult(
-      file_task_runner_.get(), FROM_HERE,
-      base::BindOnce(&RunDBTransactionOnFileTaskRunner, std::move(transaction),
-                     ledger_database_.get()),
-      base::BindOnce(&RewardsServiceImpl::OnRunDBTransaction, AsWeakPtr(),
-                     std::move(callback)));
+  ledger_database_.AsyncCall(&ledger::LedgerDatabase::RunTransaction)
+      .WithArgs(std::move(transaction))
+      .Then(base::BindOnce(&RewardsServiceImpl::OnRunDBTransaction, AsWeakPtr(),
+                           std::move(callback)));
 }
 
 void RewardsServiceImpl::OnRunDBTransaction(

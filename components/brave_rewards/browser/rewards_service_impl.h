@@ -22,12 +22,14 @@
 #include "base/observer_list.h"
 #include "base/one_shot_event.h"
 #include "base/sequence_checker.h"
+#include "base/threading/sequence_bound.h"
 #include "base/values.h"
 #include "bat/ledger/ledger.h"
 #include "bat/ledger/ledger_client.h"
 #include "brave/components/brave_rewards/browser/diagnostic_log.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
 #include "brave/components/brave_rewards/browser/rewards_service_private_observer.h"
+#include "brave/components/brave_rewards/common/rewards_flags.h"
 #include "brave/components/greaselion/browser/buildflags/buildflags.h"
 #include "brave/components/services/bat_ledger/public/interfaces/bat_ledger.mojom.h"
 #include "build/build_config.h"
@@ -203,7 +205,8 @@ class RewardsServiceImpl : public RewardsService,
   void GetRewardsInternalsInfo(
       GetRewardsInternalsInfoCallback callback) override;
 
-  void HandleFlags(const std::string& options);
+  void HandleFlags(const RewardsFlags& flags);
+  void HandleFlagsForTesting(const std::string& input);
   void SetEnvironment(ledger::type::Environment environment);
   void GetEnvironment(GetEnvironmentCallback callback);
   void SetDebug(bool debug);
@@ -793,7 +796,7 @@ class RewardsServiceImpl : public RewardsService,
   const base::FilePath publisher_list_path_;
 
   std::unique_ptr<DiagnosticLog> diagnostic_log_;
-  std::unique_ptr<ledger::LedgerDatabase> ledger_database_;
+  base::SequenceBound<ledger::LedgerDatabase> ledger_database_;
   std::unique_ptr<RewardsNotificationServiceImpl> notification_service_;
   base::ObserverList<RewardsServicePrivateObserver> private_observers_;
   std::unique_ptr<RewardsServiceObserver> extension_observer_;

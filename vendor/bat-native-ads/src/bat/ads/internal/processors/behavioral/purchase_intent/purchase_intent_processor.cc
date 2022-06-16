@@ -12,10 +12,10 @@
 #include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
 #include "bat/ads/internal/base/logging_util.h"
-#include "bat/ads/internal/base/search_engine_results_page_util.h"
-#include "bat/ads/internal/base/string_util.h"
-#include "bat/ads/internal/base/url_util.h"
-#include "bat/ads/internal/deprecated/client/client.h"
+#include "bat/ads/internal/base/search_engine/search_engine_results_page_util.h"
+#include "bat/ads/internal/base/strings/string_strip_util.h"
+#include "bat/ads/internal/base/url/url_util.h"
+#include "bat/ads/internal/deprecated/client/client_state_manager.h"
 #include "bat/ads/internal/processors/behavioral/purchase_intent/purchase_intent_signal_info.h"
 #include "bat/ads/internal/resources/behavioral/purchase_intent/purchase_intent_info.h"
 #include "bat/ads/internal/resources/behavioral/purchase_intent/purchase_intent_resource.h"
@@ -39,8 +39,8 @@ void AppendIntentSignalToHistory(
     history.created_at = purchase_intent_signal.created_at;
     history.weight = purchase_intent_signal.weight;
 
-    Client::Get()->AppendToPurchaseIntentSignalHistoryForSegment(segment,
-                                                                 history);
+    ClientStateManager::Get()->AppendToPurchaseIntentSignalHistoryForSegment(
+        segment, history);
   }
 }
 

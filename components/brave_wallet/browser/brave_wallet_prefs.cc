@@ -64,6 +64,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterListPref(kBraveWalletP3AWeeklyStorage);
   registry->RegisterDictionaryPref(kBraveWalletKeyrings);
   registry->RegisterDictionaryPref(kBraveWalletCustomNetworks);
+  registry->RegisterDictionaryPref(kBraveWalletHiddenNetworks);
   registry->RegisterDictionaryPref(kBraveWalletSelectedNetworks,
                                    GetDefaultSelectedNetworks());
   registry->RegisterDictionaryPref(kBraveWalletUserAssets,
@@ -107,11 +108,16 @@ void RegisterProfilePrefsForMigration(
 
   // Added 04/2022
   registry->RegisterDictionaryPref(kBraveWalletUserAssetsDeprecated);
+
+  // Added 06/2022
+  registry->RegisterBooleanPref(
+      kBraveWalletUserAssetsAddPreloadingNetworksMigrated, false);
 }
 
 void ClearJsonRpcServiceProfilePrefs(PrefService* prefs) {
   DCHECK(prefs);
   prefs->ClearPref(kBraveWalletCustomNetworks);
+  prefs->ClearPref(kBraveWalletHiddenNetworks);
   prefs->ClearPref(kBraveWalletSelectedNetworks);
   prefs->ClearPref(kSupportEip1559OnLocalhostChain);
 }
@@ -143,6 +149,9 @@ void MigrateObsoleteProfilePrefs(PrefService* prefs) {
   // Added 04/22 to have coin_type as the top level, also rename
   // contract_address key to address.
   BraveWalletService::MigrateMultichainUserAssets(prefs);
+
+  // Added 06/22 to have native tokens for all preloading networks.
+  BraveWalletService::MigrateUserAssetsAddPreloadingNetworks(prefs);
 
   JsonRpcService::MigrateMultichainNetworks(prefs);
 

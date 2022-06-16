@@ -44,7 +44,7 @@ static_library("browser") {
     "//brave/components/l10n/common",
     "//brave/components/ntp_background_images/buildflags",
     "//brave/components/ntp_background_images/common",
-    "//brave/components/weekly_storage",
+    "//brave/components/time_period_storage",
     "//brave/vendor/bat-native-ads",
     "//components/component_updater",
     "//components/keyed_service/core",

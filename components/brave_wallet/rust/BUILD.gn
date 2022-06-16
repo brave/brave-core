@@ -5,6 +5,6 @@ rust_crate("rust_lib") {
   inputs = [ "lib.rs" ]
 }
 
-rust_cxx("rust-rs") {
+rust_cxx("cxx") {
   input = [ "lib.rs" ]
 }

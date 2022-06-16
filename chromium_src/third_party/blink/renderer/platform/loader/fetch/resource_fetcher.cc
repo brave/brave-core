@@ -26,7 +26,7 @@ String ResourceFetcher::GetContextCacheIdentifier() const {
   if (!base::FeatureList::IsEnabled(features::kPartitionBlinkMemoryCache)) {
     return MemoryCache::DefaultCacheIdentifier();
   }
-  if (!properties_->IsMainFrame()) {
+  if (!properties_->IsOutermostMainFrame()) {
     if (auto cache_identifier =
             Context().GetCacheIdentifierIfCrossSiteSubframe()) {
       return cache_identifier;

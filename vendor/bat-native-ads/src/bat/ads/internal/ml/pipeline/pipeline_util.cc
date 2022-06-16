@@ -14,7 +14,6 @@
 #include "base/values.h"
 #include "bat/ads/internal/ml/data/vector_data.h"
 #include "bat/ads/internal/ml/ml_aliases.h"
-#include "bat/ads/internal/ml/ml_transformation_util.h"
 #include "bat/ads/internal/ml/pipeline/pipeline_info.h"
 #include "bat/ads/internal/ml/transformation/hashed_ngrams_transformation.h"
 #include "bat/ads/internal/ml/transformation/lowercase_transformation.h"
@@ -45,13 +44,12 @@ absl::optional<TransformationVector> ParsePipelineTransformations(
 
     if (parsed_transformation_type.compare("TO_LOWER") == 0) {
       transformations.value().push_back(
-          std::make_unique<LowercaseTransformation>(LowercaseTransformation()));
+          std::make_unique<LowercaseTransformation>());
     }
 
     if (parsed_transformation_type.compare("NORMALIZE") == 0) {
       transformations.value().push_back(
-          std::make_unique<NormalizationTransformation>(
-              NormalizationTransformation()));
+          std::make_unique<NormalizationTransformation>());
     }
 
     if (parsed_transformation_type.compare("HASHED_NGRAMS") == 0) {
@@ -85,9 +83,9 @@ absl::optional<TransformationVector> ParsePipelineTransformations(
           return absl::nullopt;
         }
       }
-      HashedNGramsTransformation hashed_ngrams(num_buckets, ngram_range);
       transformations.value().push_back(
-          std::make_unique<HashedNGramsTransformation>(hashed_ngrams));
+          std::make_unique<HashedNGramsTransformation>(num_buckets,
+                                                       ngram_range));
     }
   }
 
@@ -181,7 +179,7 @@ absl::optional<model::Linear> ParsePipelineClassifier(
   }
 
   absl::optional<model::Linear> linear_model =
-      model::Linear(weights, specified_biases);
+      model::Linear(std::move(weights), std::move(specified_biases));
   return linear_model;
 }
 
@@ -217,21 +215,15 @@ absl::optional<PipelineInfo> ParsePipelineValue(base::Value resource_value) {
     return absl::nullopt;
   }
 
-  const absl::optional<model::Linear> linear_model_optional =
+  absl::optional<model::Linear> linear_model_optional =
       ParsePipelineClassifier(resource_value.FindKey("classifier"));
   if (!linear_model_optional.has_value()) {
     return absl::nullopt;
   }
 
-  TransformationVector transformations =
-      GetTransformationVectorDeepCopy(transformations_optional.value());
-
-  const model::Linear linear_model = linear_model_optional.value();
-
-  absl::optional<PipelineInfo> pipeline_info =
-      PipelineInfo(version, timestamp, locale, transformations, linear_model);
-
-  return pipeline_info;
+  return PipelineInfo(version, timestamp, locale,
+                      std::move(transformations_optional.value()),
+                      std::move(linear_model_optional.value()));
 }
 
 }  // namespace pipeline

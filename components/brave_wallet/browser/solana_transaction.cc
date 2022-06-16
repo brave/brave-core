@@ -14,9 +14,136 @@
 #include "brave/components/brave_wallet/browser/solana_instruction.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/brave_wallet_constants.h"
+#include "brave/components/brave_wallet/common/brave_wallet_types.h"
 #include "brave/components/brave_wallet/common/solana_utils.h"
 
 namespace brave_wallet {
+
+namespace {
+
+constexpr char kSendOptions[] = "send_options";
+
+// Below are using camel cases so we can handle the parameters from dApp
+// requests directly with the same key.
+constexpr char kMaxRetries[] = "maxRetries";
+constexpr char kPreflightCommitment[] = "preflightCommitment";
+constexpr char kSkipPreflight[] = "skipPreflight";
+
+bool IsValidCommitmentString(const std::string& commitment) {
+  return commitment == "processed" || commitment == "confirmed" ||
+         commitment == "finalized";
+}
+
+}  // namespace
+
+SolanaTransaction::SendOptions::SendOptions() = default;
+SolanaTransaction::SendOptions::~SendOptions() = default;
+SolanaTransaction::SendOptions::SendOptions(
+    const SolanaTransaction::SendOptions&) = default;
+SolanaTransaction::SendOptions::SendOptions(
+    absl::optional<uint64_t> max_retries_param,
+    absl::optional<std::string> preflight_commitment_param,
+    absl::optional<bool> skip_preflight_param)
+    : max_retries(std::move(max_retries_param)),
+      preflight_commitment(std::move(preflight_commitment_param)),
+      skip_preflight(std::move(skip_preflight_param)) {}
+
+bool SolanaTransaction::SendOptions::operator==(
+    const SolanaTransaction::SendOptions& options) const {
+  return max_retries == options.max_retries &&
+         preflight_commitment == options.preflight_commitment &&
+         skip_preflight == options.skip_preflight;
+}
+
+bool SolanaTransaction::SendOptions::operator!=(
+    const SolanaTransaction::SendOptions& options) const {
+  return !operator==(options);
+}
+
+// static
+absl::optional<SolanaTransaction::SendOptions>
+SolanaTransaction::SendOptions::FromValue(absl::optional<base::Value> value) {
+  if (!value)
+    return absl::nullopt;
+  return FromValue(*value);
+}
+
+// static
+absl::optional<SolanaTransaction::SendOptions>
+SolanaTransaction::SendOptions::FromValue(const base::Value& value) {
+  const base::Value::Dict* options_dict = value.GetIfDict();
+  if (!options_dict)
+    return absl::nullopt;
+
+  SolanaTransaction::SendOptions options;
+
+  if (auto* max_retries_string = options_dict->FindString(kMaxRetries)) {
+    // Type of maxRetries is string when it's from preference values.
+    uint64_t max_retries = 0;
+    if (base::StringToUint64(*max_retries_string, &max_retries)) {
+      options.max_retries = max_retries;
+    }
+  } else if (auto max_retries_number = options_dict->FindDouble(kMaxRetries)) {
+    // Type of maxRetries is number when it's from dApp requests.
+    // We cap the maximum to 2^53-1 here for double precision, it's safe here
+    // because it does not make sense for dApps to set maxRetries that large.
+    if (*max_retries_number >= 0 &&
+        *max_retries_number <= static_cast<double>(kMaxSafeIntegerUint64)) {
+      options.max_retries = max_retries_number;
+    }
+  }
+
+  auto* commitment = options_dict->FindString(kPreflightCommitment);
+  if (commitment && IsValidCommitmentString(*commitment)) {
+    options.preflight_commitment = *commitment;
+  }
+  options.skip_preflight = options_dict->FindBool(kSkipPreflight);
+
+  return options;
+}
+
+base::Value SolanaTransaction::SendOptions::ToValue() const {
+  base::Value options(base::Value::Type::DICTIONARY);
+  if (max_retries)
+    options.SetStringKey(kMaxRetries, base::NumberToString(*max_retries));
+  if (preflight_commitment)
+    options.SetStringKey(kPreflightCommitment, *preflight_commitment);
+  if (skip_preflight)
+    options.SetBoolKey(kSkipPreflight, *skip_preflight);
+  return options;
+}
+
+// static
+absl::optional<SolanaTransaction::SendOptions>
+SolanaTransaction::SendOptions::FromMojomSendOptions(
+    mojom::SolanaSendTransactionOptionsPtr mojom_options) {
+  if (!mojom_options)
+    return absl::nullopt;
+
+  SendOptions options;
+  if (mojom_options->max_retries)
+    options.max_retries = mojom_options->max_retries->max_retries;
+  if (mojom_options->skip_preflight)
+    options.skip_preflight = mojom_options->skip_preflight->skip_preflight;
+  if (mojom_options->preflight_commitment &&
+      IsValidCommitmentString(*mojom_options->preflight_commitment)) {
+    options.preflight_commitment = mojom_options->preflight_commitment;
+  }
+  return options;
+}
+
+mojom::SolanaSendTransactionOptionsPtr
+SolanaTransaction::SendOptions::ToMojomSendOptions() const {
+  auto send_options = mojom::SolanaSendTransactionOptions::New();
+  if (max_retries)
+    send_options->max_retries = mojom::OptionalMaxRetries::New(*max_retries);
+  if (preflight_commitment)
+    send_options->preflight_commitment = *preflight_commitment;
+  if (skip_preflight)
+    send_options->skip_preflight =
+        mojom::OptionalSkipPreflight::New(*skip_preflight);
+  return send_options;
+}
 
 SolanaTransaction::SolanaTransaction(
     const std::string& recent_blockhash,
@@ -31,15 +158,23 @@ SolanaTransaction::SolanaTransaction(
 SolanaTransaction::SolanaTransaction(SolanaMessage&& message)
     : message_(std::move(message)) {}
 
+SolanaTransaction::SolanaTransaction(SolanaMessage&& message,
+                                     const std::vector<uint8_t>& signatures)
+    : message_(std::move(message)), signatures_(signatures) {}
+
 SolanaTransaction::SolanaTransaction(const SolanaTransaction&) = default;
 SolanaTransaction::~SolanaTransaction() = default;
 
 bool SolanaTransaction::operator==(const SolanaTransaction& tx) const {
-  return message_ == tx.message_ &&
+  return message_ == tx.message_ && signatures_ == tx.signatures_ &&
          to_wallet_address_ == tx.to_wallet_address_ &&
          spl_token_mint_address_ == tx.spl_token_mint_address_ &&
          tx_type_ == tx.tx_type_ && lamports_ == tx.lamports_ &&
-         amount_ == tx.amount_;
+         amount_ == tx.amount_ && send_options_ == tx.send_options_;
+}
+
+bool SolanaTransaction::operator!=(const SolanaTransaction& tx) const {
+  return !operator==(tx);
 }
 
 // Get serialized and signed transaction.
@@ -47,15 +182,16 @@ bool SolanaTransaction::operator==(const SolanaTransaction& tx) const {
 // A compact-array is serialized as the array length, followed by each array
 // item. The array length is a special multi-byte encoding called compact-u16.
 // See https://docs.solana.com/developing/programming-model/transactions.
-std::string SolanaTransaction::GetSignedTransaction(
+absl::optional<std::vector<uint8_t>>
+SolanaTransaction::GetSignedTransactionBytes(
     KeyringService* keyring_service) const {
   if (!keyring_service)
-    return "";
+    return absl::nullopt;
 
   std::vector<std::string> signers;
   auto message_bytes = message_.Serialize(&signers);
   if (!message_bytes || signers.empty())
-    return "";
+    return absl::nullopt;
 
   std::vector<uint8_t> transaction_bytes;
   // Compact array of signatures.
@@ -72,9 +208,16 @@ std::string SolanaTransaction::GetSignedTransaction(
                            message_bytes->end());
 
   if (transaction_bytes.size() > kSolanaMaxTxSize)
-    return "";
+    return absl::nullopt;
+  return transaction_bytes;
+}
 
-  return base::Base64Encode(transaction_bytes);
+std::string SolanaTransaction::GetSignedTransaction(
+    KeyringService* keyring_service) const {
+  auto transaction_bytes = GetSignedTransactionBytes(keyring_service);
+  if (!transaction_bytes)
+    return "";
+  return base::Base64Encode(*transaction_bytes);
 }
 
 std::string SolanaTransaction::GetBase64EncodedMessage() const {
@@ -92,6 +235,11 @@ mojom::SolanaTxDataPtr SolanaTransaction::ToSolanaTxData() const {
   solana_tx_data->tx_type = tx_type_;
   solana_tx_data->lamports = lamports_;
   solana_tx_data->amount = amount_;
+
+  if (send_options_) {
+    solana_tx_data->send_options = send_options_->ToMojomSendOptions();
+  }
+
   return solana_tx_data;
 }
 
@@ -104,15 +252,19 @@ base::Value SolanaTransaction::ToValue() const {
   dict.SetIntKey("tx_type", static_cast<int>(tx_type_));
   dict.SetStringKey("lamports", base::NumberToString(lamports_));
   dict.SetStringKey("amount", base::NumberToString(amount_));
+  if (send_options_)
+    dict.SetKey(kSendOptions, send_options_->ToValue());
 
   return dict;
 }
 
 void SolanaTransaction::set_tx_type(mojom::TransactionType tx_type) {
-  DCHECK(tx_type >= mojom::TransactionType::Other &&
-         tx_type <=
-             mojom::TransactionType::
-                 SolanaSPLTokenTransferWithAssociatedTokenAccountCreation);
+  DCHECK((tx_type >= mojom::TransactionType::Other &&
+          tx_type <=
+              mojom::TransactionType::
+                  SolanaSPLTokenTransferWithAssociatedTokenAccountCreation) ||
+         tx_type == mojom::TransactionType::SolanaDappSignAndSendTransaction ||
+         tx_type == mojom::TransactionType::SolanaDappSignTransaction);
   tx_type_ = tx_type;
 }
 
@@ -159,6 +311,9 @@ absl::optional<SolanaTransaction> SolanaTransaction::FromValue(
   if (!amount_string || !base::StringToUint64(*amount_string, &amount))
     return absl::nullopt;
   tx.set_amount(amount);
+  const base::Value* send_options_value = value.FindDictKey(kSendOptions);
+  if (send_options_value)
+    tx.set_send_options(SendOptions::FromValue(*send_options_value));
 
   return tx;
 }
@@ -177,7 +332,36 @@ std::unique_ptr<SolanaTransaction> SolanaTransaction::FromSolanaTxData(
   tx->set_tx_type(solana_tx_data->tx_type);
   tx->set_lamports(solana_tx_data->lamports);
   tx->set_amount(solana_tx_data->amount);
+  tx->set_send_options(SendOptions::FromMojomSendOptions(
+      std::move(solana_tx_data->send_options)));
+
   return tx;
+}
+
+// static
+absl::optional<SolanaTransaction> SolanaTransaction::FromSignedTransactionBytes(
+    const std::vector<uint8_t>& bytes) {
+  if (bytes.empty() || bytes.size() > kSolanaMaxTxSize)
+    return absl::nullopt;
+
+  size_t index = 0;
+  auto ret = CompactU16Decode(bytes, index);
+  if (!ret)
+    return absl::nullopt;
+  const uint16_t num_of_signatures = std::get<0>(*ret);
+  index += std::get<1>(*ret);
+  if (index + num_of_signatures * kSolanaSignatureSize > bytes.size())
+    return absl::nullopt;
+  const std::vector<uint8_t> signatures(
+      bytes.begin() + index,
+      bytes.begin() + index + num_of_signatures * kSolanaSignatureSize);
+  index += num_of_signatures * kSolanaSignatureSize;
+  auto message = SolanaMessage::Deserialize(
+      std::vector<uint8_t>(bytes.begin() + index, bytes.end()));
+  if (!message)
+    return absl::nullopt;
+
+  return SolanaTransaction(std::move(*message), signatures);
 }
 
 }  // namespace brave_wallet

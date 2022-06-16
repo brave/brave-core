@@ -5,7 +5,7 @@
 
 #include "bat/ads/internal/catalog/campaign/catalog_campaign_info.h"
 
-#include "bat/ads/internal/base/number_util.h"
+#include "bat/ads/internal/base/numbers/number_util.h"
 
 namespace ads {
 
@@ -13,6 +13,9 @@ CatalogCampaignInfo::CatalogCampaignInfo() = default;
 
 CatalogCampaignInfo::CatalogCampaignInfo(const CatalogCampaignInfo& info) =
     default;
+
+CatalogCampaignInfo& CatalogCampaignInfo::operator=(
+    const CatalogCampaignInfo& info) = default;
 
 CatalogCampaignInfo::~CatalogCampaignInfo() = default;
 

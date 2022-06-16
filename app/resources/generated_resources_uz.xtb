@@ -4382,7 +4382,7 @@ kichiklashtirish uchun Ctrl+Alt+Yorqinlikni pasaytirish tugmalarini bosing.</tra
 <translation id="5280426389926346830">Yorliq yaratilsinmi?</translation>
 <translation id="5281013262333731149"><ph name="OPEN_BROWSER"/> ilovasida ochiladi</translation>
 <translation id="528208740344463258">Android ilovalarni yuklab olish va ishlatish uchun avval kerakli yangilanish o‘rnatilishi lozim. <ph name="DEVICE_TYPE"/> qurilmasi yangilanayotganda undan foydalana olmaysiz. O‘rnatish tugagandan keyin <ph name="DEVICE_TYPE"/> qurilmasi qayta ishga tushadi.</translation>
-<translation id="5282733140964383898">Agar “Kuzatilmasin” parametri yoniq bo‘lsa, brauzer so‘rovlariga maxsus buyruq qo‘shiladi. Natijasi sayt so‘rovga javob berishi va so‘rov qanday ma’noda tushunilganligiga bog‘liq bo‘ladi. Masalan, qaysi sahifalarga kirganligingizdan qat’i nazar, ba’zi saytlarda reklama e’lonlari ko‘rsatilishi mumkin. Boshqa saytlar esa brauzer faoliyati haqidagi ma’lumotlarni to‘plashda (masalan, xavfsizlikni takomillashtirish, veb-saytlarida kontent, xizmatlar va reklama ko‘rsatish hamda hisobot uchun statistika yig‘ish) va bu ma’lumotlardan foydalanishda davom etmoqda. <ph name="BEGIN_LINK"/>Batafsil<ph name="END_LINK"/></translation>
+<translation id="4039256732955431945">Agar “Kuzatilmasin” parametri yoniq bo‘lsa, brauzer so‘rovlariga maxsus buyruq qo‘shiladi. Natijasi sayt so‘rovga javob berishi va so‘rov qanday ma’noda tushunilganligiga bog‘liq bo‘ladi. Masalan, qaysi sahifalarga kirganligingizdan qat’i nazar, ba’zi saytlarda reklama e’lonlari ko‘rsatilishi mumkin. Boshqa saytlar esa brauzer faoliyati haqidagi ma’lumotlarni to‘plashda (masalan, xavfsizlikni takomillashtirish, veb-saytlarida kontent, xizmatlar va reklama ko‘rsatish hamda hisobot uchun statistika yig‘ish) va bu ma’lumotlardan foydalanishda davom etmoqda. <ph name="BEGIN_LINK"/>Batafsil<ph name="END_LINK"/></translation>
 <translation id="5283677936944177147">Qurilma modeli yoki seriya raqamini aniqlab bo‘lmadi.</translation>
 <translation id="5284445933715251131">Yuklab olishda davom etish</translation>
 <translation id="5285635972691565180"><ph name="DISPLAY_ID"/>-ekran</translation>
@@ -4400,7 +4400,7 @@ kichiklashtirish uchun Ctrl+Alt+Yorqinlikni pasaytirish tugmalarini bosing.</tra
 <translation id="5297082477358294722">Parol saqlandi. <ph name="SAVED_PASSWORDS_STORE"/> omboridagi saqlangan parollarni ko‘rish va boshqarish.</translation>
 <translation id="5297946558563358707">Biror kishi ekraningizga qarasa, ekranning pastki oʻng burchagida koʻz belgisi chiqadi</translation>
 <translation id="5298219193514155779">Mavzu muallifi:</translation>
-<translation id="5299109548848736476">Kuzatilmasin</translation>
+<translation id="1839179167864984545">Kuzatilmasin</translation>
 <translation id="5299558715747014286">Varaq guruhlarini koʻrish va boshqarish</translation>
 <translation id="5300287940468717207">Sayt huquqlari tiklansinmi?</translation>
 <translation id="5300426565656326054">Reklamalarni brauzer asosida moslashtirish</translation>
@@ -7905,7 +7905,7 @@ Kalit faylini ishonchli joyda saqlang. U kengaytmaning yangi versiyalarini yarat
 <translation id="8785622406424941542">Stilus</translation>
 <translation id="8786824282808281903">Farzandingiz bu belgini koʻrganda, kimligini yoki xaridlarni tasdiqlash uchun barmoq izidan foydalanishi mumkin.</translation>
 <translation id="8787575090331305835">{NUM_TABS,plural, =1{Nomsiz guruh – 1 ta varaq}other{Nomsiz guruh – # ta varaq}}</translation>
-<translation id="8791534160414513928">Chiquvchi trafik kuzatilmasligi so‘rovini jo‘natish</translation>
+<translation id="163839281363975279">Chiquvchi trafik kuzatilmasligi so‘rovini jo‘natish</translation>
 <translation id="879413103056696865">Hotspot yoniq ekanligida, <ph name="PHONE_NAME"/>:</translation>
 <translation id="8795916974678578410">Yangi oyna</translation>
 <translation id="8797459392481275117">Bu sayt hech qachon tarjima qilinmasin</translation>

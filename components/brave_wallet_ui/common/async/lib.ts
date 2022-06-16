@@ -501,10 +501,19 @@ export function refreshFullNetworkList () {
       return networkList.networks
     }))
     const flattenedNetworkList = getFullNetworkList.flat(1)
-    const networkList =
+    let networkList =
       isTestNetworksEnabled.isEnabled
         ? flattenedNetworkList
         : flattenedNetworkList.filter((network) => !SupportedTestNetworks.includes(network.chainId))
+
+    const defaultEthChainId = (await jsonRpcService.getChainId(BraveWallet.CoinType.ETH)).chainId
+    const hiddenEthNetworkList = (await jsonRpcService.getHiddenNetworks(BraveWallet.CoinType.ETH)).chainIds
+    networkList = networkList.filter((network: BraveWallet.NetworkInfo) => {
+      return !(network.coin === BraveWallet.CoinType.ETH &&
+        network.chainId !== defaultEthChainId &&
+        hiddenEthNetworkList.includes(network.chainId))
+    })
+
     dispatch(WalletActions.setAllNetworks(networkList))
   }
 }

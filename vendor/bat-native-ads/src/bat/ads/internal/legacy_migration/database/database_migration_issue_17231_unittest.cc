@@ -3,10 +3,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "bat/ads/internal/base/container_util.h"
-#include "bat/ads/internal/base/unittest_base.h"
-#include "bat/ads/internal/base/unittest_time_util.h"
-#include "bat/ads/internal/base/unittest_util.h"
+#include "base/time/time.h"
+#include "bat/ads/internal/base/containers/container_util.h"
+#include "bat/ads/internal/base/unittest/unittest_base.h"
+#include "bat/ads/internal/base/unittest/unittest_time_util.h"
 #include "bat/ads/internal/conversions/conversion_info.h"
 #include "bat/ads/internal/conversions/conversion_queue_database_table.h"
 #include "bat/ads/internal/conversions/conversion_queue_item_info.h"
@@ -22,11 +22,9 @@ class BatAdsDatabaseMigrationIssue17231Test : public UnitTestBase {
 
   ~BatAdsDatabaseMigrationIssue17231Test() override = default;
 
-  void SetUp() override {
-    ASSERT_TRUE(CopyFileFromTestPathToTempDir("database_issue_17231.sqlite",
-                                              "database.sqlite"));
-
-    UnitTestBase::SetUpForTesting(/* is_integration_test */ false);
+  void SetUpMocks() override {
+    CopyFileFromTestPathToTempPath("database_issue_17231.sqlite",
+                                   kDatabaseFilename);
   }
 };
 
@@ -41,7 +39,7 @@ TEST_F(BatAdsDatabaseMigrationIssue17231Test, ConversionQueueDatabase) {
         ASSERT_TRUE(success);
 
         ConversionQueueItemInfo conversion_queue_item;
-        conversion_queue_item.ad_type = AdType::kAdNotification;
+        conversion_queue_item.ad_type = AdType::kNotificationAd;
         conversion_queue_item.campaign_id =
             "6ee347d9-acec-4a80-b108-e9335a5cbd39";
         conversion_queue_item.creative_set_id =
@@ -52,7 +50,7 @@ TEST_F(BatAdsDatabaseMigrationIssue17231Test, ConversionQueueDatabase) {
             "80ec0ddb-8dbb-4009-8192-1528faa411ae";
         conversion_queue_item.conversion_id =
             "425fb519-f6c0-407f-98f6-cfff8f2b1ec7";
-        conversion_queue_item.process_at = TimestampToTime(1627581449);
+        conversion_queue_item.process_at = base::Time::FromDoubleT(1627581449);
 
         ConversionQueueItemList expected_conversion_queue_items;
         expected_conversion_queue_items.push_back(conversion_queue_item);
@@ -67,7 +65,7 @@ TEST_F(BatAdsDatabaseMigrationIssue17231Test, ConversionsDatabase) {
   // Arrange
   database::table::Conversions database_table;
 
-  AdvanceClock(TimeFromString("28 July 2021", /* is_local */ false));
+  AdvanceClockTo(TimeFromString("28 July 2021", /* is_local */ false));
 
   // Act
   database_table.GetAll([](const bool success,
@@ -561,7 +559,8 @@ TEST_F(BatAdsDatabaseMigrationIssue17231Test, ConversionsDatabase) {
       expected_conversion.type = types.at(i);
       expected_conversion.url_pattern = url_patterns.at(i);
       expected_conversion.observation_window = observation_windows.at(i);
-      expected_conversion.expire_at = TimestampToTime(expiry_timestamps.at(i));
+      expected_conversion.expire_at =
+          base::Time::FromDoubleT(expiry_timestamps.at(i));
       expected_conversions.push_back(expected_conversion);
     }
 

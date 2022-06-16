@@ -14,6 +14,7 @@
 #include "components/permissions/permission_context_base.h"
 #include "components/permissions/permission_request_id.h"
 #include "components/permissions/request_type.h"
+#include "third_party/blink/public/common/permissions/permission_utils.h"
 #include "url/origin.h"
 
 class GURL;
@@ -51,10 +52,11 @@ class BraveWalletPermissionContext : public PermissionContextBase {
                          BrowserPermissionCallback callback) override;
 
   static void RequestPermissions(
-      ContentSettingsType content_settings_type,
+      blink::PermissionType permission,
       content::RenderFrameHost* rfh,
       const std::vector<std::string>& addresses,
-      base::OnceCallback<void(const std::vector<ContentSetting>&)> callback);
+      base::OnceCallback<
+          void(const std::vector<blink::mojom::PermissionStatus>&)> callback);
   static bool HasRequestsInProgress(content::RenderFrameHost* rfh,
                                     permissions::RequestType request_type);
 
@@ -63,29 +65,29 @@ class BraveWalletPermissionContext : public PermissionContextBase {
   static void Cancel(content::WebContents* web_contents);
 
   static void GetAllowedAccounts(
-      ContentSettingsType content_settings_type,
+      blink::PermissionType permission,
       content::RenderFrameHost* rfh,
       const std::vector<std::string>& addresses,
       base::OnceCallback<void(bool, const std::vector<std::string>&)> callback);
 
-  static bool AddPermission(ContentSettingsType content_settings_type,
+  static bool AddPermission(blink::PermissionType permission,
                             content::BrowserContext* context,
                             const url::Origin& origin,
                             const std::string& account);
-  static bool HasPermission(ContentSettingsType content_settings_type,
+  static bool HasPermission(blink::PermissionType permission,
                             content::BrowserContext* context,
                             const url::Origin& origin,
                             const std::string& account,
                             bool* has_permission);
-  static bool ResetPermission(ContentSettingsType content_settings_type,
+  static bool ResetPermission(blink::PermissionType permission,
                               content::BrowserContext* context,
                               const url::Origin& origin,
                               const std::string& account);
 
   static std::vector<std::string> GetWebSitesWithPermission(
-      ContentSettingsType content_settings_type,
+      blink::PermissionType permission,
       content::BrowserContext* context);
-  static bool ResetWebSitePermission(ContentSettingsType content_settings_type,
+  static bool ResetWebSitePermission(blink::PermissionType permission,
                                      content::BrowserContext* context,
                                      const std::string& formed_website);
 

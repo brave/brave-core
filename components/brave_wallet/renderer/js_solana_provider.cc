@@ -34,6 +34,7 @@ namespace brave_wallet {
 namespace {
 
 static base::NoDestructor<std::string> g_provider_script("");
+static base::NoDestructor<std::string> g_provider_internal_script("");
 
 }  // namespace
 
@@ -43,6 +44,10 @@ JSSolanaProvider::JSSolanaProvider(content::RenderFrame* render_frame)
   if (g_provider_script->empty()) {
     *g_provider_script = LoadDataResource(
         IDR_BRAVE_WALLET_SCRIPT_SOLANA_PROVIDER_SCRIPT_BUNDLE_JS);
+  }
+  if (g_provider_internal_script->empty()) {
+    *g_provider_internal_script = LoadDataResource(
+        IDR_BRAVE_WALLET_SCRIPT_SOLANA_PROVIDER_INTERNAL_SCRIPT_BUNDLE_JS);
   }
   EnsureConnected();
   v8_value_converter_->SetStrategy(&strategy_);
@@ -98,10 +103,21 @@ void JSSolanaProvider::Install(bool allow_overwrite_window_solana,
       gin::Handle<JSSolanaProvider> provider =
           gin::CreateHandle(isolate, new JSSolanaProvider(render_frame));
       CHECK(!provider.IsEmpty());
-      global
-          ->Set(context, gin::StringToSymbol(isolate, "solana"),
-                provider.ToV8())
-          .Check();
+      if (!allow_overwrite_window_solana) {
+        SetProviderNonWritable(context, global, provider.ToV8(),
+                               gin::StringToV8(isolate, "solana"), true);
+      } else {
+        global
+            ->Set(context, gin::StringToSymbol(isolate, "solana"),
+                  provider.ToV8())
+            .Check();
+      }
+
+      // This is to prevent window._brave_solana from being defined and set
+      // non-configurable before we call our internal functions.
+      v8::Local<v8::Object> internal_solana_obj = v8::Object::New(isolate);
+      SetProviderNonWritable(context, global, internal_solana_obj,
+                             gin::StringToV8(isolate, "_brave_solana"), false);
     } else {
       render_frame->GetWebFrame()->AddMessageToConsole(
           blink::WebConsoleMessage(blink::mojom::ConsoleMessageLevel::kWarning,
@@ -110,9 +126,6 @@ void JSSolanaProvider::Install(bool allow_overwrite_window_solana,
     }
   }
   blink::WebLocalFrame* web_frame = render_frame->GetWebFrame();
-  if (!allow_overwrite_window_solana) {
-    SetProviderNonWritable(web_frame, "solana");
-  }
   if (is_main_world) {
     ExecuteScript(web_frame, *g_provider_script);
   }
@@ -122,6 +135,7 @@ gin::ObjectTemplateBuilder JSSolanaProvider::GetObjectTemplateBuilder(
     v8::Isolate* isolate) {
   return gin::Wrappable<JSSolanaProvider>::GetObjectTemplateBuilder(isolate)
       .SetProperty("isPhantom", &JSSolanaProvider::GetIsPhantom)
+      .SetProperty("isBraveWallet", &JSSolanaProvider::GetIsBraveWallet)
       .SetProperty("isConnected", &JSSolanaProvider::GetIsConnected)
       .SetProperty("publicKey", &JSSolanaProvider::GetPublicKey)
       .SetMethod("connect", &JSSolanaProvider::Connect)
@@ -179,6 +193,10 @@ void JSSolanaProvider::OnRemoteDisconnect() {
 }
 
 bool JSSolanaProvider::GetIsPhantom(gin::Arguments* arguments) {
+  return true;
+}
+
+bool JSSolanaProvider::GetIsBraveWallet(gin::Arguments* arguments) {
   return true;
 }
 
@@ -291,12 +309,31 @@ v8::Local<v8::Promise> JSSolanaProvider::SignAndSendTransaction(
     return v8::Local<v8::Promise>();
   }
 
+  absl::optional<base::Value> send_options = absl::nullopt;
+  v8::Local<v8::Value> v8_send_options;
+  if (arguments->Length() > 1 && !arguments->GetNext(&v8_send_options)) {
+    arguments->ThrowTypeError(
+        l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
+    return v8::Local<v8::Promise>();
+  }
+  if (!v8_send_options.IsEmpty()) {
+    std::unique_ptr<base::Value> send_options_value =
+        v8_value_converter_->FromV8Value(v8_send_options,
+                                         isolate->GetCurrentContext());
+    if (!send_options_value || !send_options_value->is_dict()) {
+      arguments->ThrowTypeError(
+          l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
+      return v8::Local<v8::Promise>();
+    }
+    send_options = std::move(*send_options_value);
+  }
+
   auto global_context(
       v8::Global<v8::Context>(isolate, isolate->GetCurrentContext()));
   auto promise_resolver(
       v8::Global<v8::Promise::Resolver>(isolate, resolver.ToLocalChecked()));
   solana_provider_->SignAndSendTransaction(
-      *serialized_message,
+      *serialized_message, std::move(send_options),
       base::BindOnce(&JSSolanaProvider::OnSignAndSendTransaction,
                      weak_ptr_factory_.GetWeakPtr(), std::move(global_context),
                      std::move(promise_resolver), isolate));
@@ -543,7 +580,6 @@ void JSSolanaProvider::OnSignAndSendTransaction(
   v8::Local<v8::Context> context = global_context.Get(isolate);
   v8::Local<v8::Value> v8_result;
   if (error == mojom::SolanaProviderError::kSuccess) {
-    // const base::Value result_value(std::move(result));
     v8_result = v8_value_converter_->ToV8Value(&result, context);
   } else {
     std::unique_ptr<base::Value> formed_response =
@@ -737,11 +773,13 @@ absl::optional<std::string> JSSolanaProvider::GetSerializedMessage(
 v8::Local<v8::Value> JSSolanaProvider::CreatePublicKey(
     v8::Local<v8::Context> context,
     const std::string& base58_str) {
+  // Internal object for CreatePublicKey and CreateTransaction
+  ExecuteScript(render_frame_->GetWebFrame(), *g_provider_internal_script);
   const base::Value public_key_value(base58_str);
   std::vector<v8::Local<v8::Value>> args;
   args.push_back(v8_value_converter_->ToV8Value(&public_key_value, context));
   v8::MaybeLocal<v8::Value> public_key_result =
-      CallMethodOfObject(render_frame_->GetWebFrame(), u"solana",
+      CallMethodOfObject(render_frame_->GetWebFrame(), u"_brave_solana",
                          u"createPublickey", std::move(args));
 
   return public_key_result.ToLocalChecked();
@@ -750,12 +788,14 @@ v8::Local<v8::Value> JSSolanaProvider::CreatePublicKey(
 v8::Local<v8::Value> JSSolanaProvider::CreateTransaction(
     v8::Local<v8::Context> context,
     const std::vector<uint8_t> serialized_tx) {
+  // Internal object for CreatePublicKey and CreateTransaction
+  ExecuteScript(render_frame_->GetWebFrame(), *g_provider_internal_script);
   const base::Value serialized_tx_value(serialized_tx);
   std::vector<v8::Local<v8::Value>> args;
   args.push_back(v8_value_converter_->ToV8Value(&serialized_tx_value, context));
 
   v8::MaybeLocal<v8::Value> transaction_result =
-      CallMethodOfObject(render_frame_->GetWebFrame(), u"solana",
+      CallMethodOfObject(render_frame_->GetWebFrame(), u"_brave_solana",
                          u"createTransaction", std::move(args));
 
   return transaction_result.ToLocalChecked();

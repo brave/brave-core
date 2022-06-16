@@ -7,9 +7,8 @@
 
 #include <memory>
 
-#include "bat/ads/internal/base/container_util.h"
-#include "bat/ads/internal/base/unittest_base.h"
-#include "bat/ads/internal/base/unittest_util.h"
+#include "bat/ads/internal/base/containers/container_util.h"
+#include "bat/ads/internal/base/unittest/unittest_base.h"
 #include "bat/ads/internal/creatives/inline_content_ads/creative_inline_content_ad_unittest_util.h"
 #include "bat/ads/internal/creatives/inline_content_ads/creative_inline_content_ads_database_table.h"
 #include "bat/ads/internal/geographic/subdivision/subdivision_targeting.h"

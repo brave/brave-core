@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/history/history.ts b/chrome/browser/resources/history/history.ts
-index bdada409b9e774b92350788186c6c2dfab40d023..31bff354c6d0ab4da248e3372637b5612b3d8692 100644
+index d14eb35c4e9f1a9be3762f7df2cd610b373cd1ba..018d26fcbb36e532e56acc1403a63d7bfbb6f41f 100644
 --- a/chrome/browser/resources/history/history.ts
 +++ b/chrome/browser/resources/history/history.ts
 @@ -2,6 +2,8 @@
@@ -10,4 +10,4 @@ index bdada409b9e774b92350788186c6c2dfab40d023..31bff354c6d0ab4da248e3372637b561
 +import './brave_overrides/index.js';
  import './app.js';
  
- export {CrActionMenuElement} from 'chrome://resources/cr_elements/cr_action_menu/cr_action_menu.js';
+ export {BrowserProxyImpl} from 'chrome://resources/cr_components/history_clusters/browser_proxy.js';

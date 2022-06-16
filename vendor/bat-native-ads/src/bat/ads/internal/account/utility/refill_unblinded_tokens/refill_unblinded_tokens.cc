@@ -18,10 +18,12 @@
 #include "bat/ads/internal/account/utility/refill_unblinded_tokens/get_signed_tokens_url_request_builder.h"
 #include "bat/ads/internal/account/utility/refill_unblinded_tokens/request_signed_tokens_url_request_builder.h"
 #include "bat/ads/internal/ads_client_helper.h"
-#include "bat/ads/internal/base/http_status_code.h"
 #include "bat/ads/internal/base/logging_util.h"
-#include "bat/ads/internal/base/time_formatting_util.h"
-#include "bat/ads/internal/deprecated/confirmations/confirmations_state.h"
+#include "bat/ads/internal/base/net/http/http_status_code.h"
+#include "bat/ads/internal/base/time/time_formatting_util.h"
+#include "bat/ads/internal/base/url/url_request_string_util.h"
+#include "bat/ads/internal/base/url/url_response_string_util.h"
+#include "bat/ads/internal/deprecated/confirmations/confirmation_state_manager.h"
 #include "bat/ads/internal/privacy/challenge_bypass_ristretto/batch_dleq_proof.h"
 #include "bat/ads/internal/privacy/challenge_bypass_ristretto/blinded_token_util.h"
 #include "bat/ads/internal/privacy/challenge_bypass_ristretto/public_key.h"
@@ -32,8 +34,6 @@
 #include "bat/ads/internal/privacy/tokens/unblinded_tokens/unblinded_token_info.h"
 #include "bat/ads/internal/privacy/tokens/unblinded_tokens/unblinded_token_info_aliases.h"
 #include "bat/ads/internal/privacy/tokens/unblinded_tokens/unblinded_tokens.h"
-#include "bat/ads/internal/server/url/url_request_string_util.h"
-#include "bat/ads/internal/server/url/url_response_string_util.h"
 #include "brave/components/brave_adaptive_captcha/buildflags/buildflags.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
@@ -59,7 +59,7 @@ RefillUnblindedTokens::~RefillUnblindedTokens() {
 }
 
 void RefillUnblindedTokens::MaybeRefill(const WalletInfo& wallet) {
-  if (!ConfirmationsState::Get()->IsInitialized() || is_processing_ ||
+  if (!ConfirmationStateManager::Get()->IsInitialized() || is_processing_ ||
       retry_timer_.IsRunning()) {
     return;
   }
@@ -85,10 +85,11 @@ void RefillUnblindedTokens::MaybeRefill(const WalletInfo& wallet) {
   }
 
   if (!ShouldRefillUnblindedTokens()) {
-    BLOG(1, "No need to refill unblinded tokens as we already have "
-                << ConfirmationsState::Get()->get_unblinded_tokens()->Count()
-                << " unblinded tokens which is above the minimum threshold of "
-                << kMinimumUnblindedTokens);
+    BLOG(1,
+         "No need to refill unblinded tokens as we already have "
+             << ConfirmationStateManager::Get()->get_unblinded_tokens()->Count()
+             << " unblinded tokens which is above the minimum threshold of "
+             << kMinimumUnblindedTokens);
     return;
   }
 
@@ -138,7 +139,7 @@ void RefillUnblindedTokens::OnRequestSignedTokens(
   BLOG(6, UrlResponseToString(url_response));
   BLOG(7, UrlResponseHeadersToString(url_response));
 
-  if (url_response.status_code == net::HTTP_UPGRADE_REQUIRED) {
+  if (url_response.status_code == net::kHttpUpgradeRequired) {
     BLOG(1, "Failed to request signed tokens as a browser upgrade is required");
     OnFailedToRefillUnblindedTokens(/* should_retry */ false);
     return;
@@ -190,7 +191,7 @@ void RefillUnblindedTokens::OnGetSignedTokens(
   BLOG(6, UrlResponseToString(url_response));
   BLOG(7, UrlResponseHeadersToString(url_response));
 
-  if (url_response.status_code == net::HTTP_UPGRADE_REQUIRED) {
+  if (url_response.status_code == net::kHttpUpgradeRequired) {
     BLOG(1, "Failed to get signed tokens as a browser upgrade is required");
     OnFailedToRefillUnblindedTokens(/* should_retry */ false);
     return;
@@ -323,15 +324,17 @@ void RefillUnblindedTokens::OnGetSignedTokens(
     unblinded_tokens.push_back(unblinded_token);
   }
 
-  ConfirmationsState::Get()->get_unblinded_tokens()->AddTokens(
+  ConfirmationStateManager::Get()->get_unblinded_tokens()->AddTokens(
       unblinded_tokens);
-  ConfirmationsState::Get()->Save();
+  ConfirmationStateManager::Get()->Save();
 
-  BLOG(1, "Added " << unblinded_tokens.size()
-                   << " unblinded tokens, you now "
-                      "have "
-                   << ConfirmationsState::Get()->get_unblinded_tokens()->Count()
-                   << " unblinded tokens");
+  BLOG(1,
+       "Added "
+           << unblinded_tokens.size()
+           << " unblinded tokens, you now "
+              "have "
+           << ConfirmationStateManager::Get()->get_unblinded_tokens()->Count()
+           << " unblinded tokens");
 
   OnDidRefillUnblindedTokens();
 }
@@ -365,7 +368,7 @@ void RefillUnblindedTokens::OnFailedToRefillUnblindedTokens(
 
 void RefillUnblindedTokens::Retry() {
   const base::Time retry_at = retry_timer_.StartWithPrivacy(
-      kRetryAfter,
+      FROM_HERE, kRetryAfter,
       base::BindOnce(&RefillUnblindedTokens::OnRetry, base::Unretained(this)));
 
   if (delegate_) {
@@ -388,7 +391,7 @@ void RefillUnblindedTokens::OnRetry() {
 }
 
 bool RefillUnblindedTokens::ShouldRefillUnblindedTokens() const {
-  if (ConfirmationsState::Get()->get_unblinded_tokens()->Count() >=
+  if (ConfirmationStateManager::Get()->get_unblinded_tokens()->Count() >=
       kMinimumUnblindedTokens) {
     return false;
   }
@@ -398,7 +401,7 @@ bool RefillUnblindedTokens::ShouldRefillUnblindedTokens() const {
 
 int RefillUnblindedTokens::CalculateAmountOfTokensToRefill() const {
   return kMaximumUnblindedTokens -
-         ConfirmationsState::Get()->get_unblinded_tokens()->Count();
+         ConfirmationStateManager::Get()->get_unblinded_tokens()->Count();
 }
 
 }  // namespace ads

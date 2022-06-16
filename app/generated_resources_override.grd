@@ -123,7 +123,7 @@ are declared in tools/grit/grit_rule.gni.
       <if expr="not is_android">
         </if>
 
-      <if expr="enable_printing">
+      <if expr="enable_basic_printing">
         </if>
 
       <if expr="enable_vr">
@@ -144,11 +144,11 @@ are declared in tools/grit/grit_rule.gni.
       <if expr="not use_titlecase">
         </if>
 
-      <if expr="chromeos_ash">
+      <if expr="chromeos_ash or chromeos_lacros">
         </if>
       <if expr="is_macosx">
         </if>
-      <if expr="not chromeos_ash and not is_macosx and toolkit_views">
+      <if expr="not chromeos_ash and not chromeos_lacros and not is_macosx and toolkit_views">
         </if>
       <if expr="not is_android">
         <if expr="is_macosx">
@@ -457,7 +457,7 @@ are declared in tools/grit/grit_rule.gni.
         </if>
       <if expr="not reven">
         </if>
-      <if expr="chromeos_ash">
+      <if expr="chromeos_ash or chromeos_lacros">
         </if>
 
       <if expr="enable_extensions">
@@ -508,7 +508,12 @@ are declared in tools/grit/grit_rule.gni.
       <if expr="chromeos_lacros">
         </if>
 
+      <if expr="not use_titlecase">
+        </if>
       <if expr="use_titlecase">
+        </if>
+      
+       <if expr="use_titlecase">
         </if>
       <if expr="not use_titlecase">
         </if>
@@ -595,10 +600,6 @@ are declared in tools/grit/grit_rule.gni.
         </if>
       <if expr="not use_titlecase">
         </if>
-      <if expr="use_titlecase">
-        </if>
-      <if expr="not use_titlecase">
-        </if>
       <if expr="is_win">
         </if>
       <if expr="use_titlecase">
@@ -619,11 +620,24 @@ are declared in tools/grit/grit_rule.gni.
       <if expr="not use_titlecase">
         </if>
       <if expr="not is_android">
+        <if expr="not use_titlecase">
+          </if>
+        <if expr="use_titlecase">
+          </if>
+
         <if expr="use_titlecase">
           </if>
         <if expr="not use_titlecase">
           </if>
-        </if>
+        <if expr="not use_titlecase">
+          </if>
+        <if expr="use_titlecase">
+          </if>
+        <if expr="not use_titlecase">
+          </if>
+        <if expr="use_titlecase">
+          </if>
+      </if>
       <if expr="is_android">
         </if>
 
@@ -679,9 +693,6 @@ are declared in tools/grit/grit_rule.gni.
         <if expr="use_titlecase">
           </if>
       </if>
-
-      <if expr="enable_side_search">
-        </if>
 
       <if expr="not use_titlecase">
         </if>
@@ -831,15 +842,6 @@ are declared in tools/grit/grit_rule.gni.
       <if expr="chromeos_ash">
         </if>
 
-      <if expr="not use_titlecase">
-        <if expr="chromeos_ash">
-          </if>
-        <if expr="not chromeos_ash">
-          </if>
-      </if>
-      <if expr="use_titlecase">
-        </if>
-
       <if expr="not is_android">
         <if expr="not chromeos_ash">
           </if>
@@ -936,11 +938,11 @@ are declared in tools/grit/grit_rule.gni.
 
       <if expr="toolkit_views">
         </if>
-      <if expr="chromeos_ash">
+      <if expr="chromeos_ash or chromeos_lacros">
         </if>
       <if expr="is_macosx">
         </if>
-      <if expr="not chromeos_ash and not is_macosx and toolkit_views">
+      <if expr="not chromeos_ash and not chromeos_lacros and not is_macosx and toolkit_views">
         </if>
       <if expr="chromeos_ash">
         </if>

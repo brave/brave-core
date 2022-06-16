@@ -10,24 +10,24 @@
 #include <vector>
 
 #include "bat/ads/internal/account/wallet/wallet_info.h"
+#include "bat/ads/internal/privacy/challenge_bypass_ristretto/blinded_token.h"
 #include "bat/ads/internal/server/url/url_request_builder_interface.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
 #include "url/gurl.h"
 
 namespace ads {
 
-namespace privacy {
-namespace cbr {
-class BlindedToken;
-}  // namespace cbr
-}  // namespace privacy
-
-class RequestSignedTokensUrlRequestBuilder final : UrlRequestBuilderInterface {
+class RequestSignedTokensUrlRequestBuilder final
+    : public UrlRequestBuilderInterface {
  public:
   RequestSignedTokensUrlRequestBuilder(
       const WalletInfo& wallet,
       const std::vector<privacy::cbr::BlindedToken>& tokens);
   ~RequestSignedTokensUrlRequestBuilder() override;
+  RequestSignedTokensUrlRequestBuilder(
+      const RequestSignedTokensUrlRequestBuilder&) = delete;
+  RequestSignedTokensUrlRequestBuilder& operator=(
+      const RequestSignedTokensUrlRequestBuilder&) = delete;
 
   mojom::UrlRequestPtr Build() override;
 

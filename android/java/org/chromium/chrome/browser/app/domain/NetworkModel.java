@@ -3,25 +3,46 @@ package org.chromium.chrome.browser.app.domain;
 import android.text.TextUtils;
 
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import org.chromium.brave_wallet.mojom.BraveWalletConstants;
 import org.chromium.brave_wallet.mojom.JsonRpcService;
 import org.chromium.brave_wallet.mojom.JsonRpcServiceObserver;
+import org.chromium.brave_wallet.mojom.NetworkInfo;
 import org.chromium.mojo.system.MojoException;
+import org.chromium.mojo.system.Pair;
 
 public class NetworkModel implements JsonRpcServiceObserver {
-    private final JsonRpcService mJsonRpcService;
+    private JsonRpcService mJsonRpcService;
     private final MutableLiveData<String> _mChainId;
-    public LiveData<String> mChainId;
+    private final MutableLiveData<NetworkInfo[]> _mCryptoNetworks;
     private final CryptoSharedData mSharedData;
+    public final LiveData<String> mChainId;
+    public final LiveData<NetworkInfo[]> mCryptoNetworks;
+    public final MediatorLiveData<Pair<String, NetworkInfo[]>> mPairChainAndNetwork =
+            new MediatorLiveData<>();
 
     public NetworkModel(JsonRpcService jsonRpcService, CryptoSharedData sharedData) {
         mJsonRpcService = jsonRpcService;
         mSharedData = sharedData;
         _mChainId = new MutableLiveData<>(BraveWalletConstants.MAINNET_CHAIN_ID);
+        _mCryptoNetworks = new MutableLiveData<>();
         mChainId = _mChainId;
+        mCryptoNetworks = _mCryptoNetworks;
         jsonRpcService.addObserver(this);
+        mPairChainAndNetwork.setValue(Pair.create("", new NetworkInfo[] {}));
+        mPairChainAndNetwork.addSource(_mChainId, chainId -> {
+            mPairChainAndNetwork.setValue(Pair.create(chainId, _mCryptoNetworks.getValue()));
+        });
+        mPairChainAndNetwork.addSource(_mCryptoNetworks, networks -> {
+            mPairChainAndNetwork.setValue(Pair.create(_mChainId.getValue(), networks));
+        });
+    }
+
+    public void resetServices(JsonRpcService jsonRpcService) {
+        mJsonRpcService = jsonRpcService;
+        init();
     }
 
     public void init() {
@@ -34,6 +55,8 @@ public class NetworkModel implements JsonRpcServiceObserver {
             }
             _mChainId.postValue(id);
         });
+        mJsonRpcService.getAllNetworks(mSharedData.getCoinType(),
+                networkInfos -> { _mCryptoNetworks.postValue(networkInfos); });
     }
 
     @Override
@@ -42,7 +65,9 @@ public class NetworkModel implements JsonRpcServiceObserver {
     }
 
     @Override
-    public void onAddEthereumChainRequestCompleted(String chainId, String error) {}
+    public void onAddEthereumChainRequestCompleted(String chainId, String error) {
+        init();
+    }
 
     @Override
     public void onIsEip1559Changed(String chainId, boolean isEip1559) {}

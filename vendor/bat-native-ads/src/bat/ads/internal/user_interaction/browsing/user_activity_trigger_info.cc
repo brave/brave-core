@@ -5,13 +5,16 @@
 
 #include "bat/ads/internal/user_interaction/browsing/user_activity_trigger_info.h"
 
-#include "bat/ads/internal/base/number_util.h"
+#include "bat/ads/internal/base/numbers/number_util.h"
 
 namespace ads {
 
 UserActivityTriggerInfo::UserActivityTriggerInfo() = default;
 
 UserActivityTriggerInfo::UserActivityTriggerInfo(
+    const UserActivityTriggerInfo& info) = default;
+
+UserActivityTriggerInfo& UserActivityTriggerInfo::operator=(
     const UserActivityTriggerInfo& info) = default;
 
 UserActivityTriggerInfo::~UserActivityTriggerInfo() = default;

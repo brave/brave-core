@@ -36,9 +36,17 @@
 }
 
 -keep class org.chromium.chrome.browser.ntp.NewTabPageLayout {
+    *** mMvTilesContainerLayout;
     *** insertSiteSectionView(...);
-    *** mSiteSectionView;
-    *** mTileGroup;
+}
+
+-keep class org.chromium.chrome.browser.suggestions.tile.MostVisitedTilesMediator {
+    public <init>(...);
+    *** updateTileGridPlaceholderVisibility(...);
+}
+
+-keep class org.chromium.chrome.browser.suggestions.tile.BraveMostVisitedTilesMediator {
+    public <init>(...);
     *** updateTileGridPlaceholderVisibility(...);
 }
 
@@ -48,6 +56,7 @@
     *** mNewTabPageLayout;
     *** mFeedSurfaceProvider;
     *** mToolbarSupplier;
+    *** mTabModelSelector;
     *** updateSearchProviderHasLogo(...);
 }
 
@@ -69,6 +78,7 @@
     *** mSyncEncryption;
     *** mReviewSyncData;
     *** mSyncPaymentsIntegration;
+    *** mSyncReadingList;
     *** mTurnOffSync;
 }
 
@@ -129,7 +139,6 @@
     *** mIsWarmOnResumeSupplier;
     *** mTabContentManager;
     *** mTabCreatorManager;
-    *** mOverviewModeBehaviorSupplier;
     *** mSnackbarManager;
     *** onOrientationChange(...);
     *** updateBookmarkButtonStatus(...);
@@ -195,8 +204,7 @@
 }
 
 -keep class org.chromium.chrome.browser.bookmarks.BookmarkUtils {
-    *** showBookmarkBottomSheet(...);
-    *** addBookmarkAndShowSnackbar(...);
+    *** addOrEditBookmark(...);
 }
 
 -keep class org.chromium.chrome.browser.toolbar.BraveToolbarManager {
@@ -326,14 +334,12 @@
     *** mActivity;
     *** mNtpHeader;
     *** mRootView;
-    *** isReliabilityLoggingEnabled(...);
 }
 
 -keep class org.chromium.chrome.browser.feed.BraveFeedSurfaceCoordinator {
     *** mScrollViewForPolicy;
     *** mNtpHeader;
     *** mRootView;
-    *** isReliabilityLoggingEnabled(...);
 }
 
 -keep class org.chromium.chrome.browser.feed.FeedSurfaceMediator {
@@ -471,3 +477,7 @@
     public <init>(...);
     *** createManageDevicesLink(...);
 }
+
+-keep class org.chromium.chrome.browser.ChromeApplicationImpl
+
+-keep class org.chromium.chrome.browser.BraveApplicationImplBase

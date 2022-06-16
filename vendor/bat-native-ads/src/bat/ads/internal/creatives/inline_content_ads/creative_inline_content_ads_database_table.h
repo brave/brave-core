@@ -46,6 +46,8 @@ class CreativeInlineContentAds final : public TableInterface {
  public:
   CreativeInlineContentAds();
   ~CreativeInlineContentAds() override;
+  CreativeInlineContentAds(const CreativeInlineContentAds&) = delete;
+  CreativeInlineContentAds& operator=(const CreativeInlineContentAds&) = delete;
 
   void Save(const CreativeInlineContentAdList& creative_inline_content_ads,
             ResultCallback callback);

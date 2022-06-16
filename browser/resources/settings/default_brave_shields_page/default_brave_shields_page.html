@@ -62,7 +62,7 @@
         on-change="onAdControlChange_">
       <template is="dom-repeat" items="[[adControlTypes_]]">
         <option value="[[item.value]]"
-            selected="[[controlEqual(item.value, adControlType_)]]">
+            selected="[[controlEqual_(item.value, adControlType_)]]">
           [[item.name]]
         </option>
       </template>
@@ -86,7 +86,7 @@
         on-change="onFingerprintingControlChange_">
       <template is="dom-repeat" items="[[fingerprintingControlTypes_]]">
         <option value="[[item.value]]"
-            selected="[[controlEqual(item.value, fingerprintingControlType_)]]">
+            selected="[[controlEqual_(item.value, fingerprintingControlType_)]]">
           [[item.name]]
         </option>
       </template>
@@ -98,20 +98,14 @@
         on-change="onCookieControlChange_">
       <template is="dom-repeat" items="[[cookieControlTypes_]]">
         <option value="[[item.value]]"
-            selected="[[controlEqual(item.value, cookieControlType_)]]">
+            selected="[[controlEqual_(item.value, cookieControlType_)]]">
           [[item.name]]
         </option>
       </template>
     </select>
   </div>
-  <settings-toggle-button
-    class="cr-row"
-    pref="{{prefs.brave.reduce_language}}"
-    label="$i18n{reduceLanguageControlLabel}"
-    sub-label="$i18n{reduceLanguageDesc}">
-  </settings-toggle-button>
 </div>
-<settings-animated-pages id="content-filters" section="shields">
+<settings-animated-pages id="filters" section="shields">
   <div route-path="default">
     <cr-link-row 
       id="contentFiltersRow"
@@ -121,7 +115,7 @@
       on-click="onAdblockPageClick_"
     ></cr-link-row>
   </div>
-  <template is="dom-if" route-path="/shields/content-filters">
+  <template is="dom-if" route-path="/shields/filters">
     <settings-subpage page-title="Content filters">
       <adblock-subpage></adblock-subpage>
     </settings-subpage>

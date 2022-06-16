@@ -15,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
+import android.webkit.URLUtil;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -47,6 +48,7 @@ import org.chromium.chrome.browser.crypto_wallet.listeners.TransactionConfirmati
 import org.chromium.chrome.browser.crypto_wallet.observers.ApprovedTxObserver;
 import org.chromium.chrome.browser.crypto_wallet.util.TokenUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
+import org.chromium.url.GURL;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -321,6 +323,13 @@ public class ApproveTxBottomSheetDialogFragment extends BottomSheetDialogFragmen
             });
             refreshListContentUi();
         }
+
+        if (mTxInfo.originInfo != null && URLUtil.isValidUrl(mTxInfo.originInfo.originSpec)) {
+            TextView domain = view.findViewById(R.id.domain);
+            domain.setVisibility(View.VISIBLE);
+            domain.setText(Utils.geteTLD(
+                    new GURL(mTxInfo.originInfo.originSpec), mTxInfo.originInfo.eTldPlusOne));
+        }
     }
 
     public void setTxList(List<TransactionInfo> transactionInfos) {
@@ -361,7 +370,8 @@ public class ApproveTxBottomSheetDialogFragment extends BottomSheetDialogFragmen
         }
         TextView fromTo = view.findViewById(R.id.from_to);
         fromTo.setText(String.format(getResources().getString(R.string.crypto_wallet_from_to),
-                mAccountName, Utils.stripAccountAddress(to)));
+                mAccountName, Utils.stripAccountAddress(mTxInfo.fromAddress),
+                Utils.stripAccountAddress(to)));
         TextView amountAsset = view.findViewById(R.id.amount_asset);
         amountAsset.setText(amountText);
         TextView amountFiat = view.findViewById(R.id.amount_fiat);
@@ -395,9 +405,9 @@ public class ApproveTxBottomSheetDialogFragment extends BottomSheetDialogFragmen
 
     private void setupPager(String asset, View view, int decimals) {
         ViewPager viewPager = view.findViewById(R.id.navigation_view_pager);
-        ApproveTxFragmentPageAdapter adapter =
-                new ApproveTxFragmentPageAdapter(getChildFragmentManager(), mTxInfo, asset,
-                        decimals, mChainSymbol, mChainDecimals, mTotalPrice, getActivity());
+        ApproveTxFragmentPageAdapter adapter = new ApproveTxFragmentPageAdapter(
+                getChildFragmentManager(), mTxInfo, asset, decimals, mChainSymbol, mChainDecimals,
+                mTotalPrice, getActivity(), mTransactionConfirmationListener == null);
         viewPager.setAdapter(adapter);
         viewPager.setOffscreenPageLimit(adapter.getCount() - 1);
         TabLayout tabLayout = view.findViewById(R.id.tabs);

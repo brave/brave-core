@@ -14,7 +14,12 @@ namespace features {
 const base::Feature kNativeBraveWalletFeature{"NativeBraveWallet",
                                               base::FEATURE_ENABLED_BY_DEFAULT};
 const base::Feature kBraveWalletFilecoinFeature{
-    "BraveWalletFilecoin", base::FEATURE_DISABLED_BY_DEFAULT};
+#if BUILDFLAG(IS_ANDROID)
+  "BraveWalletFilecoin", base::FEATURE_DISABLED_BY_DEFAULT
+#else
+  "BraveWalletFilecoin", base::FEATURE_ENABLED_BY_DEFAULT
+#endif
+};
 
 const base::Feature kBraveWalletSolanaFeature{
 #if BUILDFLAG(IS_ANDROID)
@@ -26,6 +31,12 @@ const base::Feature kBraveWalletSolanaFeature{
 
 const base::Feature kBraveWalletSolanaProviderFeature{
     "BraveWalletSolanaProvider", base::FEATURE_DISABLED_BY_DEFAULT};
+
+const base::Feature kBraveWalletDappsSupportFeature{
+    "BraveWalletDappsSupport", base::FEATURE_ENABLED_BY_DEFAULT};
+
+const base::FeatureParam<bool> kFilecoinTestnetEnabled = {
+    &kBraveWalletFilecoinFeature, "filecoin_testnet_enabled", false};
 
 }  // namespace features
 }  // namespace brave_wallet

@@ -11,7 +11,6 @@
 
 #include "base/feature_list.h"
 #include "base/strings/string_util.h"
-#include "base/task/post_task.h"
 #include "base/values.h"
 #include "brave/components/adblock_rust_ffi/src/wrapper.h"
 #include "brave/components/brave_shields/browser/ad_block_engine.h"
@@ -181,6 +180,7 @@ absl::optional<std::string> AdBlockRegionalServiceManager::GetCspDirectives(
     const GURL& url,
     blink::mojom::ResourceType resource_type,
     const std::string& tab_host) {
+  base::AutoLock lock(regional_services_lock_);
   absl::optional<std::string> csp_directives = absl::nullopt;
 
   for (const auto& regional_service : regional_services_) {
@@ -248,8 +248,8 @@ void AdBlockRegionalServiceManager::EnableFilterList(const std::string& uuid,
 
   // Update preferences to reflect enabled/disabled state of specified
   // filter list
-  base::PostTask(
-      FROM_HERE, {content::BrowserThread::UI},
+  content::GetUIThreadTaskRunner({})->PostTask(
+      FROM_HERE,
       base::BindOnce(&AdBlockRegionalServiceManager::UpdateFilterListPrefs,
                      weak_factory_.GetWeakPtr(), uuid, enabled));
 }

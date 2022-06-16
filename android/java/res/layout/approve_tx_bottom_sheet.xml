@@ -65,6 +65,20 @@
         app:srcCompat="@drawable/ic_eth_24" />
 
     <TextView
+        android:id="@+id/domain"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="16dp"
+        android:gravity="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/account_picture"
+        android:textColor="@color/wallet_text_color"
+        android:textSize="15sp"
+        android:visibility="gone" />
+
+    <TextView
         android:id="@+id/from_to"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -75,7 +89,7 @@
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/account_picture" />
+        app:layout_constraintTop_toBottomOf="@+id/domain" />
 
     <TextView
         android:id="@+id/tx_type"

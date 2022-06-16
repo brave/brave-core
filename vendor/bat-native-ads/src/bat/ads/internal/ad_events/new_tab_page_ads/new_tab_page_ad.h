@@ -20,6 +20,8 @@ class NewTabPageAd final : public NewTabPageAdObserver {
  public:
   NewTabPageAd();
   ~NewTabPageAd() override;
+  NewTabPageAd(const NewTabPageAd&) = delete;
+  NewTabPageAd& operator=(const NewTabPageAd&) = delete;
 
   void AddObserver(NewTabPageAdObserver* observer);
   void RemoveObserver(NewTabPageAdObserver* observer);

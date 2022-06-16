@@ -13,6 +13,9 @@ CatalogInlineContentAdPayloadInfo::CatalogInlineContentAdPayloadInfo() =
 CatalogInlineContentAdPayloadInfo::CatalogInlineContentAdPayloadInfo(
     const CatalogInlineContentAdPayloadInfo& info) = default;
 
+CatalogInlineContentAdPayloadInfo& CatalogInlineContentAdPayloadInfo::operator=(
+    const CatalogInlineContentAdPayloadInfo& info) = default;
+
 CatalogInlineContentAdPayloadInfo::~CatalogInlineContentAdPayloadInfo() =
     default;
 

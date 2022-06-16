@@ -18,6 +18,7 @@ namespace ads {
 struct ADS_EXPORT HistoryItemInfo final {
   HistoryItemInfo();
   HistoryItemInfo(const HistoryItemInfo& info);
+  HistoryItemInfo& operator=(const HistoryItemInfo& info);
   ~HistoryItemInfo();
 
   bool operator==(const HistoryItemInfo& rhs) const;

@@ -18,6 +18,9 @@ PurchaseIntentSiteInfo::PurchaseIntentSiteInfo(const SegmentList& segments,
 PurchaseIntentSiteInfo::PurchaseIntentSiteInfo(
     const PurchaseIntentSiteInfo& info) = default;
 
+PurchaseIntentSiteInfo& PurchaseIntentSiteInfo::operator=(
+    const PurchaseIntentSiteInfo& info) = default;
+
 PurchaseIntentSiteInfo::~PurchaseIntentSiteInfo() = default;
 
 bool PurchaseIntentSiteInfo::operator==(

@@ -16,6 +16,7 @@ namespace ads {
 struct ADS_EXPORT PromotedContentAdInfo final : AdInfo {
   PromotedContentAdInfo();
   PromotedContentAdInfo(const PromotedContentAdInfo& info);
+  PromotedContentAdInfo& operator=(const PromotedContentAdInfo& info);
   ~PromotedContentAdInfo();
 
   bool IsValid() const;

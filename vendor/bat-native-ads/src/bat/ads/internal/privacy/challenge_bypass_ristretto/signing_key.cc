@@ -56,6 +56,8 @@ SigningKey::SigningKey(
 
 SigningKey::SigningKey(const SigningKey& other) = default;
 
+SigningKey& SigningKey::operator=(const SigningKey& info) = default;
+
 SigningKey::~SigningKey() = default;
 
 bool SigningKey::operator==(const SigningKey& rhs) const {

@@ -11,8 +11,8 @@
 
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
-#include "bat/ads/internal/user_interaction/browsing/user_activity.h"
 #include "bat/ads/internal/user_interaction/browsing/user_activity_features.h"
+#include "bat/ads/internal/user_interaction/browsing/user_activity_manager.h"
 #include "bat/ads/internal/user_interaction/browsing/user_activity_trigger_info.h"
 #include "bat/ads/internal/user_interaction/browsing/user_activity_util.h"
 

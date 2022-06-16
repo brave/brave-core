@@ -20,6 +20,8 @@ class PromotedContentAd final : public PromotedContentAdObserver {
  public:
   PromotedContentAd();
   ~PromotedContentAd() override;
+  PromotedContentAd(const PromotedContentAd&) = delete;
+  PromotedContentAd& operator=(const PromotedContentAd&) = delete;
 
   void AddObserver(PromotedContentAdObserver* observer);
   void RemoveObserver(PromotedContentAdObserver* observer);

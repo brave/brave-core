@@ -14,16 +14,17 @@
 #include "base/time/time.h"
 #include "bat/ads/ads.h"
 #include "bat/ads/internal/ads_client_helper.h"
-#include "bat/ads/internal/base/http_status_code.h"
 #include "bat/ads/internal/base/logging_util.h"
-#include "bat/ads/internal/base/time_formatting_util.h"
+#include "bat/ads/internal/base/net/http/http_status_code.h"
+#include "bat/ads/internal/base/time/time_formatting_util.h"
+#include "bat/ads/internal/base/url/url_request_string_util.h"
+#include "bat/ads/internal/base/url/url_response_string_util.h"
 #include "bat/ads/internal/catalog/catalog_constants.h"
 #include "bat/ads/internal/catalog/catalog_info.h"
 #include "bat/ads/internal/catalog/catalog_json_reader.h"
 #include "bat/ads/internal/catalog/catalog_url_request_builder.h"
 #include "bat/ads/internal/catalog/catalog_util.h"
-#include "bat/ads/internal/server/url/url_request_string_util.h"
-#include "bat/ads/internal/server/url/url_response_string_util.h"
+#include "bat/ads/internal/database/database_manager.h"
 
 namespace ads {
 
@@ -35,9 +36,13 @@ constexpr base::TimeDelta kDebugCatalogPing = base::Minutes(15);
 
 }  // namespace
 
-Catalog::Catalog() = default;
+Catalog::Catalog() {
+  DatabaseManager::Get()->AddObserver(this);
+}
 
-Catalog::~Catalog() = default;
+Catalog::~Catalog() {
+  DatabaseManager::Get()->RemoveObserver(this);
+}
 
 void Catalog::AddObserver(CatalogObserver* observer) {
   DCHECK(observer);
@@ -89,7 +94,7 @@ void Catalog::OnFetch(const mojom::UrlResponse& url_response) {
     BLOG(1, "Catalog is up to date");
     FetchAfterDelay();
     return;
-  } else if (url_response.status_code == net::HTTP_UPGRADE_REQUIRED) {
+  } else if (url_response.status_code == net::kHttpUpgradeRequired) {
     BLOG(1, "Failed to fetch catalog as a browser upgrade is required");
     NotifyFailedToUpdateCatalog();
     return;
@@ -139,16 +144,18 @@ void Catalog::FetchAfterDelay() {
       g_is_debug ? kDebugCatalogPing : GetCatalogPing();
 
   const base::Time fetch_at = timer_.StartWithPrivacy(
-      delay, base::BindOnce(&Catalog::Fetch, base::Unretained(this)));
+      FROM_HERE, delay,
+      base::BindOnce(&Catalog::Fetch, base::Unretained(this)));
 
   BLOG(1, "Fetch catalog " << FriendlyDateAndTime(fetch_at));
 }
 
 void Catalog::Retry() {
-  const base::Time time = retry_timer_.StartWithPrivacy(
-      kRetryAfter, base::BindOnce(&Catalog::OnRetry, base::Unretained(this)));
+  const base::Time retry_at = retry_timer_.StartWithPrivacy(
+      FROM_HERE, kRetryAfter,
+      base::BindOnce(&Catalog::OnRetry, base::Unretained(this)));
 
-  BLOG(1, "Retry fetching catalog " << FriendlyDateAndTime(time));
+  BLOG(1, "Retry fetching catalog " << FriendlyDateAndTime(retry_at));
 }
 
 void Catalog::OnRetry() {
@@ -167,6 +174,11 @@ void Catalog::NotifyFailedToUpdateCatalog() const {
   for (CatalogObserver& observer : observers_) {
     observer.OnFailedToUpdateCatalog();
   }
+}
+
+void Catalog::OnDidMigrateDatabase(const int from_version,
+                                   const int to_version) {
+  ResetCatalog();
 }
 
 }  // namespace ads

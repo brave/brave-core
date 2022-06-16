@@ -5,13 +5,16 @@
 
 #include "bat/ads/internal/account/confirmations/confirmation_info.h"
 
-#include "bat/ads/internal/base/number_util.h"
+#include "bat/ads/internal/base/numbers/number_util.h"
 
 namespace ads {
 
 ConfirmationInfo::ConfirmationInfo() = default;
 
 ConfirmationInfo::ConfirmationInfo(const ConfirmationInfo& info) = default;
+
+ConfirmationInfo& ConfirmationInfo::operator=(const ConfirmationInfo& info) =
+    default;
 
 ConfirmationInfo::~ConfirmationInfo() = default;
 

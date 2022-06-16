@@ -21,6 +21,8 @@ class UnblindedPaymentTokens final {
  public:
   UnblindedPaymentTokens();
   ~UnblindedPaymentTokens();
+  UnblindedPaymentTokens(const UnblindedPaymentTokens&) = delete;
+  UnblindedPaymentTokens& operator=(const UnblindedPaymentTokens&) = delete;
 
   UnblindedPaymentTokenInfo GetToken() const;
   UnblindedPaymentTokenList GetAllTokens() const;

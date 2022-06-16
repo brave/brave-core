@@ -6,7 +6,6 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_PRIVACY_CHALLENGE_BYPASS_RISTRETTO_VERIFICATION_KEY_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_PRIVACY_CHALLENGE_BYPASS_RISTRETTO_VERIFICATION_KEY_H_
 
-#include <ostream>
 #include <string>
 
 #include "third_party/abseil-cpp/absl/types/optional.h"
@@ -25,6 +24,8 @@ class VerificationKey {
  public:
   explicit VerificationKey(
       const challenge_bypass_ristretto::VerificationKey& verification_key);
+  VerificationKey(const VerificationKey& verification_key);
+  VerificationKey& operator=(const VerificationKey& verification_key);
   ~VerificationKey();
 
   challenge_bypass_ristretto::VerificationKey get() const {
@@ -39,9 +40,6 @@ class VerificationKey {
  private:
   challenge_bypass_ristretto::VerificationKey verification_key_;
 };
-
-std::ostream& operator<<(std::ostream& os,
-                         const VerificationKey& verification_key);
 
 }  // namespace cbr
 }  // namespace privacy

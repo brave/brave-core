@@ -15,7 +15,7 @@ static_library("browser") {
     "//base",
     "//brave/components/brave_search/common",
     "//brave/components/brave_search/common:mojom",
-    "//brave/components/weekly_storage",
+    "//brave/components/time_period_storage",
     "//components/prefs",
     "//components/search_engines",
     "//net",

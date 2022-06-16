@@ -269,6 +269,9 @@ CHAR_LIMIT guidelines:
       <message name="IDS_NOTIFICATION_CATEGORY_FEATURE_GUIDE" desc="Label for a category of notifications that is used to promote features in chrome to improve user engagement and browsing experience [CHAR_LIMIT=32]">
         Brave tips
       </message>
+      <message name="IDS_NOTIFICATION_CATEGORY_BLUETOOTH" desc="Label for bluetooth-related notifications, within a list of notification categories. [CHAR_LIMIT=32]">
+        Bluetooth
+      </message>
 
       <message name="IDS_UNSUPPORTED" desc="Message displayed to the user when an attempted action is not supported.">
         Unsupported
@@ -551,8 +554,17 @@ CHAR_LIMIT guidelines:
       <message name="IDS_AUTOFILL_VIRTUAL_CARD_ENROLLMENT_DIALOG_CARD_CONTAINER_TITLE" desc="Text describing how the virtual card will be shown to the user in autofill suggestions.">
         Virtual card
       </message>
+      <message name="IDS_AUTOFILL_VIRTUAL_CARD_ENROLLMENT_DIALOG_CARD_LABEL" desc="Notifies the user that their virtual card card is linked with a card on their account.">
+        Linked with <ph name="CARD_DETAIL">%1$s<ex>Visa  ....1234</ex></ph>
+      </message>
       <message name="IDS_AUTOFILL_VIRTUAL_CARD_ENROLLMENT_INFOBAR_CARD_PREFIX" desc="Notifies the user that their virtual card card is linked with a card on their account.">
         linked with
+      </message>
+      <message name="IDS_AUTOFILL_CARD_EDITOR_VIRTUAL_CARD_TURN_ON_BUTTON_LABEL" desc="Label shown on the button that the user clicks on to enroll into virtual cards.">
+        Turn on
+      </message>
+      <message name="IDS_AUTOFILL_CARD_EDITOR_VIRTUAL_CARD_TURN_OFF_BUTTON_LABEL" desc="Label shown on the button that the user clicks on to unenroll from virtual cards.">
+        Turn off
       </message>
 
        <!-- Payment Request section preview strings -->
@@ -581,8 +593,8 @@ CHAR_LIMIT guidelines:
       <message name="IDS_PASSWORD_SETTINGS_TITLE" desc="Title for the settings screen with saved passwords and the header for the list of saved passwords in that screen. [CHAR_LIMIT=32]">
         Passwords
       </message>
-      <message name="IDS_PASSWORD_SETTINGS_TITLE_GPM" desc="Title for the settings menu item leading to the Password Manager UI surface. This allows users to e.g. manage their saved passwords, toggle saving and auto-sign-in on/off, etc. [CHAR_LIMIT=32]">
-        Password Manager
+      <message name="IDS_PASSWORD_SETTINGS_TITLE_GPM" desc="Title for the settings menu item leading to the Password Manager UI surface. This allows users to e.g. manage their saved passwords, toggle saving and auto-sign-in on/off, etc. The NEW label is displayed until the user clicks on this menu item at least once. [CHAR_LIMIT=32]">
+        Password Manager <ph name="BEGIN_NEW">&lt;new&gt;</ph>New<ph name="END_NEW">&lt;/new&gt;</ph>
       </message>
       <message name="IDS_PASSWORD_SETTINGS_SAVE_PASSWORDS" desc="Title for the checkbox toggling whether passwords are saved or not. [CHAR_LIMIT=32]">
         Save passwords
@@ -1036,6 +1048,24 @@ Trust tokens improve privacy on the web and can’t be used to find out who you 
       </message>
       <message name="IDS_PRIVACY_SANDBOX_NOTICE_DESCRIPTION_THREE" desc="A conclusion paragraph for the entire page. It sits beneath the “More control over the ads you see” subtitle but it’s no more associated with that topic than “Limit sharing between sites”.* “in Brave settings”: The URL is chrome://settings/privacySandbox. We don’t make it a live link because we need the users to stay in this moment until they make a choice.">
         You can learn more about these features in Brave settings.
+      </message>
+      <message name="IDS_PRIVACY_SANDBOX_NOTICE_SHEET_CONTENT_DESCRIPTION" desc="The content description for the Privacy Sandbox prompt bottom sheet. Read as accessibility string when tapping on the bottom sheet." translateable="false">
+        Privacy Sandbox prompt
+      </message>
+      <message name="IDS_PRIVACY_SANDBOX_NOTICE_SHEET_OPENED_HALF" desc="The accessibility string read when the Privacy Sandbox prompt bottom sheet is half opened." translateable="false">
+        Privacy Sandbox prompt opened at half height
+      </message>
+      <message name="IDS_PRIVACY_SANDBOX_NOTICE_SHEET_OPENED_FULL" desc="The accessibility string read when the Privacy Sandbox prompt bottom sheet is fully opened." translateable="false">
+        Privacy Sandbox prompt opened at full height
+      </message>
+      <message name="IDS_PRIVACY_SANDBOX_NOTICE_SHEET_CLOSED_DESCRIPTION" desc="The accessibility string read when the Privacy Sandbox prompt bottom sheet is closed." translateable="false">
+        Privacy Sandbox prompt closed
+      </message>
+      <message name="IDS_PRIVACY_SANDBOX_NOTICE_SHEET_TITLE" desc="" translateable="false">
+        Help us build a better web
+      </message>
+      <message name="IDS_PRIVACY_SANDBOX_NOTICE_SHEET_DESCRIPTION" desc="" translateable="false">
+        During trials, Brave is exploring ways to limit spam, fraud, and sharing between sites. Brave also estimates your interests that sites can use to show you ads. You can manage your interests in settings.
       </message>
 
       <!-- Secure DNS Settings.  Used by //chrome/browser/privacy. -->
@@ -1939,6 +1969,9 @@ Your Brave account may have other forms of browsing history like searches and ac
       <message name="IDS_SYNC_PASSWORDS" desc="Title for preference which enables sync'ing of passwords. [CHAR_LIMIT=32]">
         Passwords
       </message>
+      <message name="IDS_SYNC_READING_LIST" desc="Title for preference which enables sync'ing of reading list. [CHAR_LIMIT=32]">
+        Reading list
+      </message>
       <message name="IDS_SYNC_RECENT_TABS" desc="Title for preference which enables sync'ing of open tabs. [CHAR_LIMIT=32]">
         Open tabs
       </message>
@@ -2387,9 +2420,6 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       <message name="IDS_APP_BANNER_ADD" desc="A button in an app banner to confirm adding a site to homescreen">
         Add
       </message>
-      <message name="IDS_WEBAPK_INSTALL_IN_PROGRESS" desc="Indicates that an installation for the WebAPK for the specific website is already in progress.">
-        Still adding previous site
-      </message>
       <message name="IDS_NOTIFICATION_WEBAPK_INSTALL_IN_PROGRESS" desc="Indicates that the adding of a WebAPK is in progress.">
         Adding <ph name="WEBAPK_NAME">%1$s<ex>Progressive Web Apps</ex></ph>...
       </message>
@@ -2398,9 +2428,6 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       </message>
       <message name="IDS_IPH_PWA_INSTALL_AVAILABLE_TEXT" desc="The in-product-help message for PWAs that can be installed to the device.">
         Install this app
-      </message>
-      <message name="IDS_IPH_UPDATED_CONNECTION_SECURITY_INDICATORS" desc="A short paragraph explaining a secure site to the user.">
-        The site’s connection is secure unless Brave tells you otherwise.
       </message>
       <message name="IDS_IPH_BUBBLE_ADD_TO_HOME_SCREEN" desc="The in-product-help text bubble message encouraging users to add a commonly visited webpage to the home screen.">
         To get here quicker, add this page to your Home screen
@@ -2436,6 +2463,9 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       </message>
       <message name="IDS_PAGE_INFO_CONNECTION_PAINT_PREVIEW" desc="Message to display in the page info bubble when viewing a preview of a page.">
         You are viewing a preview of this page
+      </message>
+      <message name="IDS_PAGE_INFO_MORE_ABOUT_THIS_PAGE" desc="Link in page info to learn more about the current page. Opens a website with details on the source and more information about the topic of a site.">
+        More about this page
       </message>
 
 <message name="IDS_PAGE_INFO_IPH" desc="Message to in InProductHelp bubble to make users aware of changing permissions in PageInfo.">
@@ -2870,11 +2900,23 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
         Not <ph name="EMAIL">%1$s<ex>john.doe@example.com</ex></ph>?
       </message>
       <!-- Strings for signin promos when Unified Consent is enabled. -->
+      <message name="IDS_SYNC_PROMO_TITLE_BOOKMARKS" desc="This string is the headline of a card that appears when the user opens Brave's bookmarks; the user may be signed in to Brave, but isn't syncing their Brave data. The line below this string is 'Sync to get your bookmarks from your other devices'. [CHAR_LIMIT=70]" meaning="This headline means that the user can get the bookmarks from their computer on their phone, and their phone's bookmarks on their computer. We want users to read this card and tap the 'Continue' button and turn on sync. The tone should be inviting.">
+        Get all your bookmarks
+      </message>
+      <message name="IDS_SYNC_PROMO_DESCRIPTION_BOOKMARKS" desc="This string is the body of a card that appears when the user opens Brave's bookmarks; the user may be signed in to Brave, but isn't syncing their Brave data. The headline above this string is 'Get all your bookmarks'. There's no character limit but try to keep the translation under 120 characters." meaning="This message means that the user can get the bookmarks from their computer on their phone, and their phone's bookmarks on their computer. We want users to read this card and tap the 'Continue' button and turn on sync. The tone should be inviting.">
+        Sync to get your bookmarks from your other devices
+      </message>
       <message name="IDS_SIGNIN_PROMO_DESCRIPTION_BOOKMARKS" desc="Description string for 'Continue as' signin promo shown in Bookmarks screen.">
         To get your bookmarks on all your devices, turn on sync
       </message>
       <message name="IDS_SIGNIN_PROMO_DESCRIPTION_BOOKMARKS_NO_ACCOUNT" desc="Description string for 'Continue as' signin promo shown in Bookmarks screen. This version of the string is shown when there are no accounts on the device.">
         To get your bookmarks on all your devices, sign in and turn on sync
+      </message>
+      <message name="IDS_SYNC_PROMO_TITLE_NTP_CONTENT_SUGGESTIONS" desc="This string is the headline of a card that appears when the user visits Brave's new tab page; the user may be signed in to Brave, but isn't syncing their Brave data. The line below this string is 'Sync to get the most relevant content from Brave'. [CHAR_LIMIT=70]" meaning="This headline means that the user is missing out on more interesting and relevant news articles. We want users to read this card and tap the 'Continue' button and turn on sync. The tone should be inviting.">
+        See stories for you
+      </message>
+      <message name="IDS_SYNC_PROMO_DESCRIPTION_NTP_CONTENT_SUGGESTIONS" desc="This string is the body of a card that appears when the user visits Brave's new tab page; the user may be signed in to Brave, but isn't syncing their Brave data. The headline above this string is 'See stories for you'. There's no character limit but try to keep the translation under 120 characters." meaning="This message means that the user is missing out on more interesting and relevant news articles. We want users to read this card and tap the 'Continue' button and turn on sync. The tone should be inviting.">
+        Sync to get the most relevant content form Brave
       </message>
       <message name="IDS_SIGNIN_PROMO_DESCRIPTION_NTP_CONTENT_SUGGESTIONS" desc="Description string for 'Continue as' signin promo shown in NTP content suggestions screen. This version of the string is shown when there are no accounts on the device.">
         To get personalized content suggested by Brave, turn on sync
@@ -2882,11 +2924,23 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       <message name="IDS_SIGNIN_PROMO_DESCRIPTION_NTP_CONTENT_SUGGESTIONS_NO_ACCOUNT" desc="Description string for 'Continue as' signin promo shown in NTP content suggestions screen. This version of the string is shown when there are no accounts on the device.">
         To get personalized content suggested by Brave, sign in and turn on sync
       </message>
+      <message name="IDS_SYNC_PROMO_TITLE_RECENT_TABS" desc="This string is the headline of a card that appears when the user opens Brave's recent tabs. The user may be signed in to Brave, but isn't syncing their Brave data. The line below this string is 'Sync to get your tabs from your other devices'. [CHAR_LIMIT=70]" meaning="This headline means that the user can see some of their recent tabs from their computer on their phone, and their phone's recent tabs on their computer. We want users to read this card and tap the 'Continue' button and turn on sync. The tone should be inviting.">
+        Continue from another device
+      </message>
+      <message name="IDS_SYNC_PROMO_DESCRIPTION_RECENT_TABS" desc="This string is the body of a card that appears when the user opens Brave's recent tabs. The user may be signed in to Brave, but isn't syncing their Brave data. There's no character limit but try to keep the translation under 120 characters." meaning="The headline above this string is 'Continue from another device'. This message means that the user can see some of their recent tabs from their computer on their phone, and their phone's recent tabs on their computer. We want users to read this card and tap the 'Continue' button and turn on sync. The tone should be inviting.">
+        Sync to get your tabs from your other devices
+      </message>
       <message name="IDS_SIGNIN_PROMO_DESCRIPTION_RECENT_TABS" desc="Description string for 'Continue as' signin promo shown in Recent Tabs screen.">
         To get your tabs from your other devices, turn on sync
       </message>
       <message name="IDS_SIGNIN_PROMO_DESCRIPTION_RECENT_TABS_NO_ACCOUNT" desc="Description string for 'Continue as' signin promo shown in Recent Tabs screen. This version of the string is shown when there are no accounts on the device.">
         To get your tabs from your other devices, sign in and turn on sync
+      </message>
+      <message name="IDS_SYNC_PROMO_TITLE_SETTINGS" desc="This string is the headline of a card that appears when the user opens Brave's settings; the user may be signed in to Brave, but isn't syncing their Brave data. The line below this string is 'Sync to get your passwords, bookmarks and more on all your devices'. [CHAR_LIMIT=70]" meaning="This headline means that the user can use Chrome more easily by syncing their passwords, bookmarks, settings, and more.. We want users to read this card and tap the 'Continue' button and turn on sync. The tone should be inviting.">
+        Browse more easily
+      </message>
+      <message name="IDS_SYNC_PROMO_DESCRIPTION_SETTINGS" desc="This string is the body of a card that appears when the user opens Brave's settings; the user may be signed in to Brave, but isn't syncing their Brave data. The headline above this string is 'Browse more easily'. There's no character limit but try to keep the translation under 120 characters." meaning="This message means that the user can use Chrome more easily by syncing their passwords, bookmarks, settings, and more.. We want users to read this card and tap the 'Continue' button and turn on sync. The tone should be inviting.">
+        Sync to get your passwords, bookmarks and more on all your other devices.
       </message>
       <message name="IDS_SIGNIN_PROMO_DESCRIPTION_SETTINGS" desc="Description string for 'Continue as' signin promo shown in Settings screen. Turning on sync enables syncing browser settings, autofill data, bookmarks, passwords, history and other data used for browser personalization.">
         To sync and personalize across devices, turn on sync
@@ -2899,6 +2953,9 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       </message>
       <message name="IDS_SYNC_PROMO_TURN_ON_SYNC" desc="Button that the user can press if they want to turn on sync with this account.">
         Turn on sync
+      </message>
+      <message name="IDS_SYNC_PROMO_CONTINUE" desc="This string is the button of a card that asks the user to turn on sync; the user may be signed in to Brave, but isn't syncing their Brave data. We want users to read this card and consider tapping the 'Continue' button and turn on sync. [CHAR_LIMIT=30] instead." meaning="Open the screen where the user can turn on sync">
+        Continue
       </message>
 
       <message name="IDS_EXTERNAL_APP_RESTRICTED_ACCESS_ERROR" desc="A message shown to the user if Brave receives a file view request to something Brave does not have access to view.">
@@ -3077,6 +3134,15 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       </message>
       <message name="IDS_FEED_BACK_TO_TOP_PROMPT" desc="A prompt for the user to click in order to go back to the top of the feed.">
         Back to top
+      </message>
+      <message name="IDS_RECENT_TABS_BULK_CLOSURE" desc="Text for a Recent Tabs Page &gt; Recently closed row item that represents multiple tabs closed together. Can be used for the following cases: 1) at least two tabs closed at the same time, 2) at least one tab group and at least one tab closed at the same time, 3) at least two tab groups closed at the same time. TAB_COUNT is the total number of tabs closed in the action including grouped tabs.">
+        <ph name="TAB_COUNT">%1$s<ex>6</ex></ph> tabs
+      </message>
+      <message name="IDS_RECENT_TABS_GROUP_CLOSURE_WITH_TITLE" desc="Text for a Recent Tabs Page &gt; Recently Closed row item that represents a single group of tabs closed together that had a user specified group title. TITLE_OF_GROUP is the user specified title of the group.">
+        Tab group - <ph name="TITLE_OF_GROUP">%1$s<ex>shopping</ex></ph>
+      </message>
+      <message name="IDS_RECENT_TABS_GROUP_CLOSURE_WITHOUT_TITLE" desc="Text for a Recent Tabs Page &gt; Recently Closed row item that represents a single group of tabs closed together that does not have a user specified title. TAB_COUNT is the total number of tabs closed in the group.">
+        Tab group - <ph name="TAB_COUNT">%1$s<ex>5</ex></ph> tabs
       </message>
 
       <!-- Explore sites strings -->
@@ -3458,21 +3524,6 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       <message name="IDS_BOOKMARK_NO_RESULT" desc="Text explaining that no bookmarks are found to match a search query">
         Can’t find that bookmark. Check your spelling or add a new bookmark.
       </message>
-      <message name="IDS_BOOKMARKS_BOTTOM_SHEET_TITLE" desc="The title for the bookmark bottom sheet, shown when trying to add a bookmark. Translation should match TC ID 9191031968346938109.">
-        Add to
-      </message>
-      <message name="IDS_BOOKMARKS_BOTTOM_SHEET_CONTENT_DESCRIPTION" desc="The content description for the bookmark bottom sheet. Read as accessibility string when tapping on the bottom sheet.">
-        List of bookmark folders
-      </message>
-      <message name="IDS_BOOKMARKS_BOTTOM_SHEET_OPENED_HALF" desc="The accessibility string read when the bookmark bottom sheet is half opened.">
-        List of bookmark folders opened at half height
-      </message>
-      <message name="IDS_BOOKMARKS_BOTTOM_SHEET_OPENED_FULL" desc="The accessibility string read when the bookmark bottom sheet is fully opened.">
-        List of bookmark folders opened at full height
-      </message>
-      <message name="IDS_BOOKMARKS_BOTTOM_SHEET_CLOSED" desc="The accessibility string read when the bookmark bottom sheet is closed.">
-        List of bookmark folders is closed
-      </message>
       <message name="IDS_EDIT_BOOKMARK" desc="The string prompting the user to edit the content of a bookmark. [CHAR_LIMIT=30]">
         Edit bookmark
       </message>
@@ -3570,9 +3621,6 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       </message>
 
       <!-- Read later strings -->
-      <message name="IDS_READING_LIST_TITLE_NEW" desc="The title for the reading list with a new text.">
-        Reading list <ph name="BEGIN_NEW">&lt;new&gt;</ph>New<ph name="END_NEW">&lt;/new&gt;</ph>
-      </message>
       <message name="IDS_READING_LIST_READ" desc="The header for the read section in the reading list UI.">
         Read
       </message>
@@ -3600,9 +3648,6 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       </message>
       <message name="IDS_READING_LIST_NO_UNREAD_PAGES" desc="The text as reading list folder subtitle to inform the user that there is no reading list articles.">
         No unread pages
-      </message>
-      <message name="IDS_READING_LIST_INTRO_TEXT" desc="The text on the reading list in product help bubble and other UIs to introduce the feature to the user.">
-        Save this page for later and get a reminder
       </message>
       <message name="IDS_READING_LIST_SAVE_PAGES_FOR_LATER" desc="The text on the reading list in product help bubble to introduce the feature to the user.">
         Add pages to your reading list for later
@@ -3739,13 +3784,8 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
         Private mode
       </message>
 
-      <message name="IDS_ACCESSIBILITY_TOOLBAR_BTN_TABSWITCHER_TOGGLE" desc="Content description for the button that enters or leaves the tab switcher. [ICU Syntax]">
-        {OPEN_TABS, plural,
-          =1 {<ph name="OPEN_TABS_ONE">%1$d<ex>1</ex></ph> open tab, tap to switch tabs}
-          other {<ph name="OPEN_TABS_MANY">%1$d<ex>8</ex></ph> open tabs, tap to switch tabs}}
-      </message>
       <message name="IDS_ACCESSIBILITY_TOOLBAR_BTN_TABSWITCHER_TOGGLE_DEFAULT" desc="Placeholder content description for the button that enters or leaves the tab switcher.">
-        open tabs
+        Switch or close tabs
       </message>
       <message name="IDS_ACCESSIBILITY_TOOLBAR_BTN_IDENTITY_DISC" desc="The content description for a toolbar button displaying user profile picture. Tapping on this button navigates to 'Sync and Brave services' page in settings">
         Manage account
@@ -3812,6 +3852,9 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       </message>
       <message name="IDS_ACCESSIBILITY_OMNIBOX_PEDAL" desc="Announce focused Brave Action Button on the Omnibox Suggestions List. List of known Action buttons is defined here: https://source.chromium.org/chromium/chromium/src/+/main:chrome/browser/ui/omnibox/omnibox_pedal_implementations.cc">
         Brave action button: <ph name="ACTION">%s<ex>clear browsing data</ex></ph>
+      </message>
+      <message name="IDS_ACCESSIBILITY_OMNIBOX_SUGGESTED_ITEMS" desc="Announcement about the presence and volume of suggestions below the Omnibox.">
+        <ph name="SUGGESTIONS_COUNT">%d<ex>12</ex></ph> suggested items in list below.
       </message>
 
       <message name="IDS_ACCESSIBILITY_SHARE_SELECTED_ITEMS" desc="Content description for the button to share selected items. [ICU Syntax]">
@@ -5197,6 +5240,11 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
         chrome_image_<ph name="CURRENT_TIMESTAMP_MS">%1$s<ex>1582667748515</ex></ph>
       </message>
 
+      <!-- Share Crow strings -->
+      <message name="IDS_CROW_IPH" desc="In product help string for Crow feature">
+        Show thanks to this creator
+      </message>
+
       <!-- Chime DFM module strings -->
       <message name="IDS_CHIME_MODULE_TITLE" desc="Text shown when the chime module is referenced in install start, success, failure UI (e.g. in IDS_MODULE_INSTALL_START_TEXT, which will expand to 'Installing Brave Notifications Platform for Brave…').">
         Brave Notifications Platform
@@ -5385,7 +5433,13 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       <message name="IDS_ACCOUNT_SELECTION_SHEET_TITLE_EXPLICIT" desc="Header for sign in sheet. Sheet is shown to prompt user for sign in consent.">
         Sign in to <ph name="SITE_ETLD_PLUS_ONE">%1$s<ex>rp.example</ex></ph> with <ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE">%2$s<ex>idp.com</ex></ph>
       </message>
-      <message name="IDS_ACCOUNT_SELECTION_DATA_SHARING_CONSENT_NO_TOS" desc="The consent text shown to the user before sign up when there are no terms of service.">
+      <message name="IDS_ACCOUNT_SELECTION_DATA_SHARING_CONSENT_NO_PP_OR_TOS" desc="The consent text shown to the user before sign up when there is no privacy policy or terms of service.">
+      To continue, <ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE">%1$s<ex>idp.com</ex></ph> will share your name, email address, and profile picture with this site.
+      </message>
+      <message name="IDS_ACCOUNT_SELECTION_DATA_SHARING_CONSENT_NO_PP" desc="The consent text shown to the user before sign up when there is no privacy policy.">
+      To continue, <ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE">%1$s<ex>idp.com</ex></ph> will share your name, email address, and profile picture with this site. See this site's <ph name="BEGIN_LINK1">&lt;link_terms_of_service&gt;</ph>terms of service<ph name="END_LINK1">&lt;/link_terms_of_service&gt;</ph>.
+      </message>
+      <message name="IDS_ACCOUNT_SELECTION_DATA_SHARING_CONSENT_NO_TOS" desc="The consent text shown to the user before sign up when there is no terms of service.">
       To continue, <ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE">%1$s<ex>idp.com</ex></ph> will share your name, email address, and profile picture with this site. See this site's <ph name="BEGIN_LINK1">&lt;link_privacy_policy&gt;</ph>privacy policy<ph name="END_LINK1">&lt;/link_privacy_policy&gt;</ph>.
       </message>
       <message name="IDS_ACCOUNT_SELECTION_DATA_SHARING_CONSENT" desc="The consent text shown to the user before sign up.">
@@ -5498,6 +5552,18 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       </message>
       <message name="IDS_MANAGEMENT_LEARN_MORE" desc="The learn more link on chrome://management page that provides more information about managed devices.">
         <ph name="BEGIN_LINK">&lt;LINK&gt;</ph>Learn More<ph name="END_LINK">&lt;/LINK&gt;</ph>
+      </message>
+      <message name="IDS_PASSWORD_UPDATE_DIALOG_TITLE" desc="The title for the dialog asking if user wants to update password.">
+        Update password?
+      </message>
+      <message name="IDS_PASSWORD_EDIT_DIALOG_SYNCED_FOOTER_GOOGLE" desc="Footer for a dialog which allows users to see and edit passwords while saving/updating a new credential. Displayed for users who are syncing passwords.">
+        You can use saved passwords on any device. They're saved to Brave Password Manager for <ph name="ACCOUNT">%1$s<ex>user@gmail.com</ex></ph>.
+      </message>
+      <message name="IDS_PASSWORD_EDIT_DIALOG_UNSYNCED_FOOTER_GOOGLE" desc="Footer for a dialog which allows users to see and edit passwords while saving/updating a new credential. Displayed for users who are not syncing passwords.">
+        Passwords are saved to Brave Password Manager on this device
+      </message>
+      <message name="IDS_PASSWORD_EDIT_DIALOG_UNSYNCED_FOOTER" desc="Footer for a dialog which allows users to see and edit passwords while saving/updating a new credential. Displayed for users who are not syncing passwords.">
+        Passwords are saved to Password Manager on this device
       </message>
     </messages>
   </release>
