@@ -2055,6 +2055,18 @@ BATLedgerBridge(BOOL,
       }));
 }
 
+- (void)runDBTransaction:(ledger::type::DBTransactionPtr)transaction
+               callback2:(ledger::client::RunDBTransactionCallback2)callback {
+  __weak BraveLedger* weakSelf = self;
+  DCHECK(rewardsDatabase);
+  rewardsDatabase.AsyncCall(&ledger::LedgerDatabase::RunTransaction)
+      .WithArgs(std::move(transaction))
+      .Then(base::BindOnce(^(ledger::type::DBCommandResponsePtr response) {
+        if (weakSelf)
+          std::move(callback).Run(std::move(response));
+      }));
+}
+
 - (void)pendingContributionSaved:(const ledger::type::Result)result {
   for (BraveLedgerObserver* observer in [self.observers copy]) {
     if (observer.pendingContributionAdded) {

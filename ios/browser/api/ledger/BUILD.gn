@@ -54,4 +54,9 @@ ios_objc_mojom_wrappers("ledger_mojom_wrappers") {
   mojom_target =
       "//brave/vendor/bat-native-ledger/include/bat/ledger/public/interfaces"
   sources = [ "//brave/vendor/bat-native-ledger/include/bat/ledger/public/interfaces/ledger.mojom" ]
+  exclude_types = [
+    "VgBody",
+    "VgBodyToken",
+    "VgSpendStatus",
+  ]
 }

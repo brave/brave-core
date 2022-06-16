@@ -30,6 +30,8 @@ class IOSChromeSyncClient : public IOSChromeSyncClient_ChromiumImpl {
   // BrowserSyncClient implementation.
   syncer::DataTypeController::TypeVector CreateDataTypeControllers(
       syncer::SyncService* sync_service) override;
+
+  void SetDefaultEnabledTypes(syncer::SyncService* sync_service) override;
 };
 
 #endif  // BRAVE_CHROMIUM_SRC_IOS_CHROME_BROWSER_SYNC_IOS_CHROME_SYNC_CLIENT_H__
