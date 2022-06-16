@@ -4,86 +4,88 @@
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 (function() {
-
-function post(method, payload) {
-  return new Promise((resolve, reject) => {
-    webkit.messageHandlers.$<handler>.postMessage({
-      "securitytoken": "$<security_token>",
-      "method": method,
-      "args": JSON.stringify(payload)
-    })
-    .then(resolve, (errorJSON) => {
-      try {
-        reject(JSON.parse(errorJSON))
-      } catch(e) {
-        reject(errorJSON)
-      }
-    })
-  })
-}
-
-Object.defineProperty(window, 'ethereum', {
-  configurable: true,
-  value: {
-    chainId: undefined,
-    networkVersion: undefined,
-    selectedAddress: undefined,
-    request: function (args) /* -> Promise<unknown> */  {
-      return post('request', args)
-    },
-    isConnected: function() /* -> bool */ {
-      return true;
-    },
-    enable: function() /* -> void */ {
-      return post('enable', {})
-    },
-    // ethereum.sendAsync(payload: JsonRpcRequest, callback: JsonRpcCallback): void;
-    sendAsync: function(payload, callback) {
-      post('sendAsync', payload)
-        .then((response) => { 
-          callback(null, response)
-        })
-        .catch((response) => { 
-          callback(response, null)
-        })
-    },
-    /*
-    Available overloads for send:
-      ethereum.send(payload: JsonRpcRequest, callback: JsonRpcCallback): void;
-      ethereum.send(method: string, params?: Array<unknown>): Promise<JsonRpcResponse>;
-    */
-    send: function(
-      methodOrPayload /* : string or JsonRpcRequest */, 
-      paramsOrCallback /*  : Array<unknown> or JsonRpcCallback */
-    ) {
-      var payload = {
-        method: '',
-        params: {}
-      }
-      if (typeof methodOrPayload === 'string') {
-        payload.method = methodOrPayload
-        payload.params = paramsOrCallback
-        return post('send', payload)
-      } else {
-        payload.params = methodOrPayload
-        if (paramsOrCallback != undefined) {
-          post('send', payload)
-            .then((response) => { 
-              paramsOrCallback(null, response)
-            })
-            .catch((response) => { 
-              paramsOrCallback(response, null)
-            }) 
-        } else {
-          // Unsupported usage of send
-          throw TypeError('Insufficient number of arguments.')
+  
+if (window.isSecureContext) {
+  function post(method, payload) {
+    return new Promise((resolve, reject) => {
+      webkit.messageHandlers.$<handler>.postMessage({
+        "securitytoken": "$<security_token>",
+        "method": method,
+        "args": JSON.stringify(payload)
+      })
+      .then(resolve, (errorJSON) => {
+        try {
+          reject(JSON.parse(errorJSON))
+        } catch(e) {
+          reject(errorJSON)
         }
-      }
-    },
-    isUnlocked: function() /* -> Promise<boolean> */ {
-      return post('isUnlocked', {})
-    },
+      })
+    })
   }
-});
-
+  
+  Object.defineProperty(window, 'ethereum', {
+    configurable: true,
+    value: {
+      chainId: undefined,
+      networkVersion: undefined,
+      selectedAddress: undefined,
+      request: function (args) /* -> Promise<unknown> */  {
+        return post('request', args)
+      },
+      isConnected: function() /* -> bool */ {
+        return true;
+      },
+      enable: function() /* -> void */ {
+        return post('enable', {})
+      },
+      // ethereum.sendAsync(payload: JsonRpcRequest, callback: JsonRpcCallback): void;
+      sendAsync: function(payload, callback) {
+        post('sendAsync', payload)
+          .then((response) => {
+            callback(null, response)
+          })
+          .catch((response) => {
+            callback(response, null)
+          })
+      },
+      /*
+      Available overloads for send:
+        ethereum.send(payload: JsonRpcRequest, callback: JsonRpcCallback): void;
+        ethereum.send(method: string, params?: Array<unknown>): Promise<JsonRpcResponse>;
+      */
+      send: function(
+        methodOrPayload /* : string or JsonRpcRequest */,
+        paramsOrCallback /*  : Array<unknown> or JsonRpcCallback */
+      ) {
+        var payload = {
+          method: '',
+          params: {}
+        }
+        if (typeof methodOrPayload === 'string') {
+          payload.method = methodOrPayload
+          payload.params = paramsOrCallback
+          return post('send', payload)
+        } else {
+          payload.params = methodOrPayload
+          if (paramsOrCallback != undefined) {
+            post('send', payload)
+              .then((response) => {
+                paramsOrCallback(null, response)
+              })
+              .catch((response) => {
+                paramsOrCallback(response, null)
+              })
+          } else {
+            // Unsupported usage of send
+            throw TypeError('Insufficient number of arguments.')
+          }
+        }
+      },
+      isUnlocked: function() /* -> Promise<boolean> */ {
+        return post('isUnlocked', {})
+      },
+    }
+  });
+}
+  
 })();

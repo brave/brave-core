@@ -477,7 +477,14 @@ class UserScriptManager {
            tab?.isPrivate == false,
            Preferences.Wallet.WalletType(rawValue: Preferences.Wallet.defaultWallet.value) == .brave {
           $0.addUserScript(script)
-          if let providerJS = walletProviderJS {
+          if var providerJS = walletProviderJS {
+            providerJS = """
+            (function() {
+              if (window.isSecureContext) {
+                \(providerJS)
+              }
+            })();
+            """
             $0.addUserScript(.init(source: providerJS, injectionTime: .atDocumentStart, forMainFrameOnly: true, in: .page))
           }
         }
