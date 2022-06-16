@@ -44,24 +44,34 @@ import {
 } from '../../style'
 
 interface Props {
+  userAssetList: UserAssetInfoType[]
+  networks: BraveWallet.NetworkInfo[]
+
   tokenPrices: BraveWallet.AssetPrice[]
   defaultCurrencies: DefaultCurrencies
-  userAssetList: UserAssetInfoType[]
   hideBalances: boolean
-  networks: BraveWallet.NetworkInfo[]
   onSelectAsset: (asset: BraveWallet.BlockchainToken | undefined) => void
+
+  // renderToken: (item: UserAssetInfoType) => JSX.Element
+  // hideAddButton?: boolean
+  // enableScroll?: boolean
+  // maxListHeight?: string
 }
 
-export const TokenLists = (props: Props) => {
-  const {
-    tokenPrices,
-    defaultCurrencies,
-    userAssetList,
-    hideBalances,
-    networks,
-    onSelectAsset
-  } = props
+export const TokenLists = ({
+  userAssetList,
+  networks,
 
+  tokenPrices,
+  defaultCurrencies,
+  hideBalances,
+  onSelectAsset
+
+  // renderToken,
+  // enableScroll,
+  // hideAddButton,
+  // maxListHeight
+}: Props) => {
   // routing
   const history = useHistory()
 
@@ -75,7 +85,7 @@ export const TokenLists = (props: Props) => {
   const [searchValue, setSearchValue] = React.useState<string>('')
 
   // memos
-  const filteredAssetList: UserAssetInfoType[] = React.useMemo(() => {
+  const filteredAssetList = React.useMemo(() => {
     if (searchValue === '') {
       return userAssetList
     }
@@ -89,14 +99,23 @@ export const TokenLists = (props: Props) => {
     })
   }, [searchValue, userAssetList])
 
-  const nonFungibleTokens: UserAssetInfoType[] = React.useMemo(
-    () =>
-      filteredAssetList.filter((token) => token.asset.isErc721
-      ),
-    [filteredAssetList])
+  const [fungibleTokens, nonFungibleTokens] = React.useMemo(
+    () => {
+      let fungible = []
+      let nonFungible = []
+      for (const token of filteredAssetList) {
+        if (token.asset.isErc721) {
+          nonFungible.push(token)
+        } else {
+          fungible.push(token)
+        }
+      }
+      return [fungible, nonFungible]
+    },
+    [filteredAssetList]
+  )
 
   const sortedAssetList: UserAssetInfoType[] = React.useMemo(() => {
-    const fungibleTokens = filteredAssetList.filter((asset) => !asset.asset.isErc721)
     if (
       selectedAssetFilter.id === 'highToLow' ||
       selectedAssetFilter.id === 'lowToHigh'
@@ -112,12 +131,27 @@ export const TokenLists = (props: Props) => {
       })
     }
     return fungibleTokens
-  }, [filteredAssetList, selectedAssetFilter, computeFiatAmount])
+  }, [fungibleTokens, selectedAssetFilter, computeFiatAmount])
+
+  // const listUi = React.useMemo(() => {
+  //   return <>
+  //     {fungibleTokens.map(renderToken)}
+
+  //     {nonFungibleTokens.length !== 0 &&
+  //       <>
+  //         <Spacer />
+  //         <DividerText>{getLocale('braveWalletTopNavNFTS')}</DividerText>
+  //         <SubDivider />
+  //         {nonFungibleTokens.map(renderToken)}
+  //       </>
+  //     }
+  //   </>
+  // }, [fungibleTokens, nonFungibleTokens, renderToken])
 
   // methods
 
   // This filters a list of assets when the user types in search bar
-  const onFilterAssets = React.useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
+  const onSearchValueChange = React.useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchValue(event.target.value)
   }, [])
 
@@ -129,10 +163,22 @@ export const TokenLists = (props: Props) => {
   return (
     <>
       <FilterTokenRow>
-        <SearchBar placeholder={getLocale('braveWalletSearchText')} action={onFilterAssets} />
-        <NetworkFilterSelector />
+        <SearchBar
+          placeholder={getLocale('braveWalletsearchValue')}
+          action={onSearchValueChange}
+          value={searchValue}
+        />
+        <NetworkFilterSelector networkListSubset={networks} />
         <AssetFilterSelector />
       </FilterTokenRow>
+
+      {/* {enableScroll
+        ? <ScrollableColumn maxHeight={maxListHeight}>
+            {listUi}
+          </ScrollableColumn>
+        : listUi
+      } */}
+
       {selectedAssetFilter.id !== 'nfts' ? (
         <>
           {sortedAssetList.map((item) =>
