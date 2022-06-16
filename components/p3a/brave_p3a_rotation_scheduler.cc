@@ -14,8 +14,6 @@ namespace brave {
 namespace {
 
 constexpr char kLastJsonRotationTimeStampPref[] = "p3a.last_rotation_timestamp";
-constexpr char kLastStarRotationTimeStampPref[] =
-    "p3a.last_star_rotation_timestamp";
 
 base::Time NextMonday(base::Time time) {
   base::Time::Exploded exploded;
@@ -46,13 +44,11 @@ BraveP3ARotationScheduler::BraveP3ARotationScheduler(
       star_rotation_callback_(star_rotation_callback),
       local_state_(local_state),
       json_rotation_interval_(json_rotation_interval) {
-  InitStarTimer();
   InitJsonTimer();
 }
 
 void BraveP3ARotationScheduler::RegisterPrefs(PrefRegistrySimple* registry) {
   registry->RegisterTimePref(kLastJsonRotationTimeStampPref, {});
-  registry->RegisterTimePref(kLastStarRotationTimeStampPref, {});
 }
 
 BraveP3ARotationScheduler::~BraveP3ARotationScheduler() {}
@@ -62,24 +58,24 @@ void BraveP3ARotationScheduler::InitJsonTimer() {
   const base::Time last_rotation =
       local_state_->GetTime(kLastJsonRotationTimeStampPref);
   if (last_rotation.is_null()) {
-    star_rotation_callback_.Run();
+    json_rotation_callback_.Run();
   } else {
     if (!json_rotation_interval_.is_zero()) {
       if (base::Time::Now() - last_rotation > json_rotation_interval_) {
-        star_rotation_callback_.Run();
+        json_rotation_callback_.Run();
       }
     }
     if (base::Time::Now() > NextMonday(last_rotation)) {
-      star_rotation_callback_.Run();
+      json_rotation_callback_.Run();
     }
   }
   UpdateJsonTimer();
 }
 
-void BraveP3ARotationScheduler::InitStarTimer() {
-  // TODO(djandries): add rotation check logic here
-
-  UpdateStarTimer();
+void BraveP3ARotationScheduler::InitStarTimer(base::Time next_epoch_time) {
+  star_rotation_timer_.Start(
+      FROM_HERE, next_epoch_time, this,
+      &BraveP3ARotationScheduler::HandleStarTimerTrigger);
 }
 
 void BraveP3ARotationScheduler::UpdateJsonTimer() {
@@ -100,10 +96,6 @@ void BraveP3ARotationScheduler::UpdateJsonTimer() {
           << next_rotation << " after " << next_rotation - now;
 }
 
-void BraveP3ARotationScheduler::UpdateStarTimer() {
-  // TODO(djandries): add rotation timer update logic here
-}
-
 void BraveP3ARotationScheduler::HandleJsonTimerTrigger() {
   local_state_->SetTime(kLastJsonRotationTimeStampPref, base::Time::Now());
   UpdateJsonTimer();
@@ -111,8 +103,6 @@ void BraveP3ARotationScheduler::HandleJsonTimerTrigger() {
 }
 
 void BraveP3ARotationScheduler::HandleStarTimerTrigger() {
-  local_state_->SetTime(kLastStarRotationTimeStampPref, base::Time::Now());
-  UpdateStarTimer();
   star_rotation_callback_.Run();
 }
 

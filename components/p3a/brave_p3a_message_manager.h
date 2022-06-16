@@ -30,6 +30,8 @@ class BraveP3ANewUploader;
 class BraveP3AStarLogStore;
 class BraveP3AStarManager;
 
+struct RandomnessServerInfo;
+
 class BraveP3AMessageManager : public BraveP3ALogStore::Delegate {
  public:
   BraveP3AMessageManager(PrefService* local_state,
@@ -59,6 +61,8 @@ class BraveP3AMessageManager : public BraveP3ALogStore::Delegate {
   void OnNewStarMessage(const char* histogram_name,
                         uint8_t epoch,
                         std::unique_ptr<std::string> serialized_message);
+
+  void OnRandomnessServerInfoReady(RandomnessServerInfo* server_info);
 
   // Restart the uploading process (i.e. mark all values as unsent).
   void DoJsonRotation();

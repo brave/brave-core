@@ -17,7 +17,6 @@
 #include "base/no_destructor.h"
 #include "base/rand_util.h"
 #include "base/strings/string_piece_forward.h"
-#include "base/task/post_task.h"
 #include "brave/components/p3a/brave_p2a_protocols.h"
 #include "brave/components/p3a/brave_p3a_message_manager.h"
 #include "brave/components/p3a/metric_names.h"

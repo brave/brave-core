@@ -28,12 +28,11 @@ class BraveP3ARotationScheduler {
 
   static void RegisterPrefs(PrefRegistrySimple* registry);
 
+  void InitStarTimer(base::Time next_epoch_time);
+
  private:
   void InitJsonTimer();
-  void InitStarTimer();
-
   void UpdateJsonTimer();
-  void UpdateStarTimer();
 
   void HandleJsonTimerTrigger();
   void HandleStarTimerTrigger();

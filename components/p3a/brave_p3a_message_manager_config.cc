@@ -79,6 +79,8 @@ void MessageManagerConfig::LoadFromCommandLine() {
   LoadURL(cmdline, switches::kP3AStarUploadUrl, &p3a_star_upload_url);
   LoadURL(cmdline, switches::kP2AStarUploadUrl, &p2a_star_upload_url);
   LoadURL(cmdline, switches::kP3AStarRandomnessUrl, &star_randomness_url);
+  LoadURL(cmdline, switches::kP3AStarRandomnessInfoUrl,
+          &star_randomness_info_url);
 
   LoadBool(cmdline, switches::kP3AIgnoreServerErrors, &ignore_server_errors);
   LoadBool(cmdline, switches::kP3AUseLocalRandomness, &use_local_randomness);

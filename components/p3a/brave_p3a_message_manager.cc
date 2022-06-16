@@ -54,6 +54,7 @@ BraveP3AMessageManager::~BraveP3AMessageManager() {}
 void BraveP3AMessageManager::RegisterPrefs(PrefRegistrySimple* registry) {
   BraveP3ALogStore::RegisterPrefs(registry);
   BraveP3AStarLogStore::RegisterPrefs(registry);
+  BraveP3AStarManager::RegisterPrefs(registry);
 }
 
 void BraveP3AMessageManager::Init(
@@ -96,7 +97,6 @@ void BraveP3AMessageManager::Init(
       schedule_interval_callback));
 
   json_upload_scheduler_->Start();
-  star_prep_scheduler_->Start();
   star_upload_scheduler_->Start();
 
   rotation_scheduler_.reset(new BraveP3ARotationScheduler(
@@ -107,10 +107,13 @@ void BraveP3AMessageManager::Init(
                           base::Unretained(this))));
 
   star_manager_.reset(new BraveP3AStarManager(
-      url_loader_factory,
+      local_state_, url_loader_factory,
       base::BindRepeating(&BraveP3AMessageManager::OnNewStarMessage,
                           base::Unretained(this)),
-      GURL(config_.star_randomness_url), config_.use_local_randomness));
+      base::BindRepeating(&BraveP3AMessageManager::OnRandomnessServerInfoReady,
+                          base::Unretained(this)),
+      config_.star_randomness_url, config_.star_randomness_info_url,
+      config_.use_local_randomness));
 
   VLOG(2) << "BraveP3AMessageManager parameters are:"
           << ", average_upload_interval_ = " << config_.average_upload_interval
@@ -144,7 +147,9 @@ void BraveP3AMessageManager::DoJsonRotation() {
 void BraveP3AMessageManager::DoStarRotation() {
   VLOG(2) << "BraveP3AMessageManager doing star rotation at "
           << base::Time::Now();
+  star_prep_scheduler_->Stop();
   star_prep_log_store_->ResetUploadStamps();
+  star_manager_->UpdateRandomnessServerInfo();
 }
 
 void BraveP3AMessageManager::OnLogUploadComplete(bool is_ok,
@@ -172,6 +177,17 @@ void BraveP3AMessageManager::OnNewStarMessage(
   star_upload_scheduler_->UploadFinished(true);
   star_send_log_store_->UpdateMessage(histogram_name, epoch,
                                       *serialized_message);
+}
+
+void BraveP3AMessageManager::OnRandomnessServerInfoReady(
+    RandomnessServerInfo* server_info) {
+  if (server_info == nullptr) {
+    return;
+  }
+  star_send_log_store_->SetCurrentEpoch(server_info->current_epoch);
+  star_send_log_store_->LoadPersistedUnsentLogs();
+  star_prep_scheduler_->Start();
+  rotation_scheduler_->InitStarTimer(server_info->next_epoch_time);
 }
 
 void BraveP3AMessageManager::StartScheduledUpload(bool is_star) {
@@ -234,8 +250,7 @@ void BraveP3AMessageManager::StartScheduledStarPrep() {
   const std::string log_key = star_prep_log_store_->staged_log_key();
   VLOG(2) << "BraveP3AMessageManager::StartScheduledStarPrep - Requesting "
              "randomness for log";
-  // TODO(djandries): replace '1' with actual current epoch
-  if (!star_manager_->StartMessagePreparation(log_key.c_str(), 1, log)) {
+  if (!star_manager_->StartMessagePreparation(log_key.c_str(), log)) {
     star_upload_scheduler_->UploadFinished(false);
   }
 }

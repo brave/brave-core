@@ -30,6 +30,7 @@ constexpr char kP2AStarUploadUrl[] = "p2a-star-upload-url";
 constexpr char kP3AIgnoreServerErrors[] = "p3a-ignore-server-errors";
 
 constexpr char kP3AStarRandomnessUrl[] = "p3a-star-randomness-url";
+constexpr char kP3AStarRandomnessInfoUrl[] = "p3a-star-randomness-info-url";
 constexpr char kP3AUseLocalRandomness[] = "p3a-use-local-randomness";
 
 }  // namespace switches

@@ -12,8 +12,12 @@
 #include "base/callback.h"
 #include "base/memory/ref_counted.h"
 #include "base/strings/string_piece_forward.h"
+#include "base/time/time.h"
 #include "brave/components/nested_star/src/lib.rs.h"
 #include "url/gurl.h"
+
+class PrefService;
+class PrefRegistrySimple;
 
 namespace network {
 class SharedURLLoaderFactory;
@@ -24,22 +28,35 @@ namespace brave {
 
 struct MessageMetainfo;
 
+struct RandomnessServerInfo {
+  uint8_t current_epoch;
+  base::Time next_epoch_time;
+};
+
 class BraveP3AStarManager {
  public:
   using StarMessageCallback = base::RepeatingCallback<void(
       const char* histogram_name,
       uint8_t epoch,
       std::unique_ptr<std::string> serialized_message)>;
+  using RandomnessServerInfoCallback =
+      base::RepeatingCallback<void(RandomnessServerInfo* server_info)>;
 
   BraveP3AStarManager(
+      PrefService* local_state,
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
       StarMessageCallback message_callback,
+      RandomnessServerInfoCallback info_callback,
       const GURL& randomness_server_url,
+      const GURL& randomness_server_info_url,
       bool use_local_randomness);
   ~BraveP3AStarManager();
 
+  static void RegisterPrefs(PrefRegistrySimple* registry);
+
+  void UpdateRandomnessServerInfo();
+
   bool StartMessagePreparation(const char* histogram_name,
-                               uint8_t epoch,
                                std::string serialized_log);
 
   bool ConstructFinalMessage(
@@ -49,6 +66,8 @@ class BraveP3AStarManager {
       std::string* output);
 
  private:
+  void RequestRandomnessServerInfo();
+
   void SendRandomnessRequest(
       const char* histogram_name,
       uint8_t epoch,
@@ -63,14 +82,24 @@ class BraveP3AStarManager {
           randomness_request_state,
       std::unique_ptr<std::string> response_body);
 
+  void HandleRandomnessServerInfoResponse(
+      std::unique_ptr<std::string> response_body);
+
   ::rust::Box<nested_star::PPOPRFPublicKeyWrapper> current_public_key_;
 
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
-  std::unique_ptr<network::SimpleURLLoader> url_loader_;
+  std::unique_ptr<network::SimpleURLLoader> rnd_url_loader_;
+  std::unique_ptr<network::SimpleURLLoader> rnd_info_url_loader_;
+
+  PrefService* local_state_;
 
   StarMessageCallback message_callback_;
+  RandomnessServerInfoCallback info_callback_;
+
+  std::unique_ptr<RandomnessServerInfo> rnd_server_info_;
 
   GURL randomness_server_url_;
+  GURL randomness_server_info_url_;
   bool use_local_randomness_;
 };
 
