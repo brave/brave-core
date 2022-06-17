@@ -985,58 +985,6 @@ void KeyringService::ImportAccountFromJson(const std::string& account_name,
   std::move(callback).Run(true, *address);
 }
 
-std::vector<uint8_t> KeyringService::GetPrivateKeyFromKeyring(
-    const std::string& address,
-    const std::string& keyring_id) {
-  for (const auto& imported_account_info :
-       GetImportedAccountsForKeyring(prefs_, keyring_id)) {
-    if (imported_account_info.account_address == address) {
-      std::string private_key_decoded;
-      if (!base::Base64Decode(imported_account_info.encrypted_private_key,
-                              &private_key_decoded))
-        continue;
-      std::vector<uint8_t> private_key;
-      if (!encryptors_[keyring_id]->Decrypt(
-              ToSpan(private_key_decoded),
-              GetOrCreateNonceForKeyring(keyring_id), &private_key)) {
-        continue;
-      }
-      return private_key;
-    }
-  }
-  return std::vector<uint8_t>();
-}
-
-void KeyringService::GetPrivateKeyForImportedAccount(
-    const std::string& address,
-    mojom::CoinType coin,
-    GetPrivateKeyForImportedAccountCallback callback) {
-  const std::string keyring_id = GetKeyringIdForCoin(coin);
-  if (address.empty() || !encryptors_[keyring_id]) {
-    std::move(callback).Run(false, "");
-    return;
-  }
-  std::vector<uint8_t> private_key =
-      GetPrivateKeyFromKeyring(address, keyring_id);
-  if (!private_key.empty()) {
-    std::string encoded_private_key;
-    if (keyring_id == mojom::kSolanaKeyringId) {
-      encoded_private_key = Base58Encode(private_key);
-    } else if (keyring_id == mojom::kFilecoinKeyringId) {
-      encoded_private_key = base::Base64Encode(private_key);
-      std::string json =
-          FilecoinKeyring::GetExportEncodedJSON(encoded_private_key, address);
-      std::move(callback).Run(!json.empty(), json);
-      return;
-    } else {
-      encoded_private_key = base::ToLowerASCII(base::HexEncode(private_key));
-    }
-    std::move(callback).Run(true, encoded_private_key);
-    return;
-  }
-  std::move(callback).Run(false, "");
-}
-
 HDKeyring* KeyringService::GetHDKeyringById(
     const std::string& keyring_id) const {
   if (keyrings_.contains(keyring_id))

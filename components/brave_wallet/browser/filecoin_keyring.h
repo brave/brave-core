@@ -41,8 +41,8 @@ class FilecoinKeyring : public HDKeyring {
                                           const std::string& address);
 
  private:
-  static bool GetProtocolFromAddress(const std::string& address,
-                                     mojom::FilecoinAddressProtocol* protocol);
+  static absl::optional<mojom::FilecoinAddressProtocol> GetProtocolFromAddress(
+      const std::string& address);
   std::string GetAddressInternal(HDKeyBase* hd_key_base) const override;
 };
 

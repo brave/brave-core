@@ -494,10 +494,6 @@ interface KeyringService {
   ImportAccountFromJson(string accountName, string password, string json)
     => (bool success, string address);
 
-  // Obtains the private key for an imported account
-  GetPrivateKeyForImportedAccount(string address, CoinType coin)
-    => (bool success, string privateKey);
-
   // Removes an imported account
   RemoveImportedAccount(string address, CoinType coin) => (bool success);
 
