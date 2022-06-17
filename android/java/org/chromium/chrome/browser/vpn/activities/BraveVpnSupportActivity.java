@@ -90,7 +90,7 @@ public class BraveVpnSupportActivity extends AsyncInitializationActivity {
             @Override
             public void onClick(View v) {
                 StringBuilder bodyText = new StringBuilder(
-                        "\n\n\n\n\n#### Please do not edit any information below ####\n");
+                        "\n\n\n\n\n#### Brave doesn’t track you or know how you use our app, so we don’t know how you’ve set up VPN. Please share info about the issue you’re experiencing and we’ll do our best to resolve it as soon as we can. ####\n");
                 if (vpnHostnameSwitch.isChecked()) {
                     bodyText.append("\n\nVPN Hostname\n" + BraveVpnPrefUtils.getHostname());
                 }
