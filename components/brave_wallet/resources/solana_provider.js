@@ -14,6 +14,10 @@
       value: SolanaEventEmitter.on,
       writable: false
     },
+    off: {
+      value: SolanaEventEmitter.off,
+      writable: false
+    },
     emit: {
       value: SolanaEventEmitter.emit,
       writable: false
