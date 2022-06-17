@@ -49,32 +49,20 @@ bool ParseAssetPrice(const std::string& json,
           json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
                     base::JSONParserOptions::JSON_PARSE_RFC);
   absl::optional<base::Value>& records_v = value_with_error.value;
-  if (!records_v) {
+  if (!records_v || !records_v->is_dict()) {
     LOG(ERROR) << "Invalid response, could not parse JSON, JSON is: " << json;
     return false;
   }
 
-  const base::DictionaryValue* response_dict;
-  if (!records_v->GetAsDictionary(&response_dict)) {
-    return false;
-  }
-
-  auto* payload = response_dict->FindPath("payload");
+  const auto& response_dict = records_v->GetDict();
+  const auto* payload = response_dict.FindDict("payload");
   if (!payload) {
     return false;
   }
 
-  const base::DictionaryValue* payload_dict;
-  if (!payload->GetAsDictionary(&payload_dict)) {
-    return false;
-  }
-
   for (const std::string& from_asset : from_assets) {
-    const base::Value* from_asset_value =
-        payload_dict->FindDictPath(from_asset);
-    const base::DictionaryValue* from_asset_dict;
-    if (!from_asset_value ||
-        !from_asset_value->GetAsDictionary(&from_asset_dict)) {
+    const auto* from_asset_dict = payload->FindDictByDottedPath(from_asset);
+    if (!from_asset_dict) {
       return false;
     }
 
@@ -84,7 +72,7 @@ bool ParseAssetPrice(const std::string& json,
       asset_price->to_asset = to_asset;
 
       absl::optional<double> to_price =
-          from_asset_dict->FindDoublePath(to_asset);
+          from_asset_dict->FindDoubleByDottedPath(to_asset);
       if (!to_price) {
         return false;
       }
@@ -92,7 +80,7 @@ bool ParseAssetPrice(const std::string& json,
       std::string to_asset_timeframe_key =
           base::StringPrintf("%s_timeframe_change", to_asset.c_str());
       absl::optional<double> to_timeframe_change =
-          from_asset_dict->FindDoublePath(to_asset_timeframe_key);
+          from_asset_dict->FindDoubleByDottedPath(to_asset_timeframe_key);
       if (!to_timeframe_change) {
         return false;
       }
@@ -123,42 +111,28 @@ bool ParseAssetPriceHistory(const std::string& json,
           json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
                     base::JSONParserOptions::JSON_PARSE_RFC);
   absl::optional<base::Value>& records_v = value_with_error.value;
-  if (!records_v) {
+  if (!records_v || !records_v->is_dict()) {
     LOG(ERROR) << "Invalid response, could not parse JSON, JSON is: " << json;
     return false;
   }
 
-  const base::DictionaryValue* response_dict;
-  if (!records_v->GetAsDictionary(&response_dict)) {
-    return false;
-  }
-
-  auto* payload = response_dict->FindPath("payload");
+  const auto& response_dict = records_v->GetDict();
+  const auto* payload = response_dict.FindDict("payload");
   if (!payload) {
     return false;
   }
 
-  const base::DictionaryValue* payload_dict;
-  if (!payload->GetAsDictionary(&payload_dict)) {
-    return false;
-  }
-
-  auto* prices_list = payload->FindPath("prices");
+  const auto* prices_list = payload->FindList("prices");
   if (!prices_list) {
     return false;
   }
 
-  const base::ListValue* list_of_lists;
-  if (!prices_list->GetAsList(&list_of_lists)) {
-    return false;
-  }
-
-  for (const auto& date_price_list_it : list_of_lists->GetList()) {
-    const base::ListValue* date_price_list;
-    if (!date_price_list_it.GetAsList(&date_price_list)) {
+  for (const auto& date_price_list_it : *prices_list) {
+    const auto* date_price_list = date_price_list_it.GetIfList();
+    if (!date_price_list) {
       return false;
     }
-    auto it = date_price_list->GetList().begin();
+    auto it = date_price_list->begin();
     const auto& date_value = *it;
     const auto& price_value = *(++it);
 
@@ -197,17 +171,13 @@ std::string ParseEstimatedTime(const std::string& json) {
           json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
                     base::JSONParserOptions::JSON_PARSE_RFC);
   absl::optional<base::Value>& records_v = value_with_error.value;
-  if (!records_v) {
+  if (!records_v || !records_v->is_dict()) {
     LOG(ERROR) << "Invalid response, could not parse JSON, JSON is: " << json;
     return "";
   }
 
-  const base::DictionaryValue* response_dict;
-  if (!records_v->GetAsDictionary(&response_dict)) {
-    return "";
-  }
-
-  const std::string* result = response_dict->FindStringPath("payload.result");
+  const std::string* result =
+      records_v->GetDict().FindStringByDottedPath("payload.result");
   return result ? *result : "";
 }
 
@@ -254,45 +224,43 @@ mojom::BlockchainTokenPtr ParseTokenInfo(const std::string& json,
           json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
                     base::JSONParserOptions::JSON_PARSE_RFC);
   absl::optional<base::Value>& records_v = value_with_error.value;
-  if (!records_v) {
+  if (!records_v || !records_v->is_dict()) {
     LOG(ERROR) << "Invalid response, could not parse JSON, JSON is: " << json;
     return nullptr;
   }
 
-  const base::DictionaryValue* response_dict;
-  if (!records_v->GetAsDictionary(&response_dict))
+  const auto& response_dict = records_v->GetDict();
+  const auto* result = response_dict.FindListByDottedPath("payload.result");
+  if (!result)
     return nullptr;
 
-  const base::Value* result = response_dict->FindListPath("payload.result");
-  if (!result || !result->is_list())
+  if (result->size() != 1)
+    return nullptr;
+  const auto* token = (*result)[0].GetIfDict();
+  if (!token)
     return nullptr;
 
-  const auto& result_list = result->GetList();
-  if (result_list.size() != 1 || !result_list[0].is_dict())
-    return nullptr;
-  const base::Value* token = &result_list[0];
-
-  const std::string* contract_address = token->FindStringKey("contractAddress");
+  const std::string* contract_address = token->FindString("contractAddress");
   if (!contract_address)
     return nullptr;
   const auto eth_addr = EthAddress::FromHex(*contract_address);
   if (eth_addr.IsEmpty())
     return nullptr;
 
-  const std::string* name = token->FindStringKey("tokenName");
+  const std::string* name = token->FindString("tokenName");
   if (!name || name->empty())
     return nullptr;
 
-  const std::string* symbol = token->FindStringKey("symbol");
+  const std::string* symbol = token->FindString("symbol");
   if (!symbol || symbol->empty())
     return nullptr;
 
-  const std::string* decimals_string = token->FindStringKey("divisor");
+  const std::string* decimals_string = token->FindString("divisor");
   int decimals = 0;
   if (!decimals_string || !base::StringToInt(*decimals_string, &decimals))
     return nullptr;
 
-  const std::string* token_type = token->FindStringKey("tokenType");
+  const std::string* token_type = token->FindString("tokenType");
   if (!token_type)
     return nullptr;
 
