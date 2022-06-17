@@ -23,7 +23,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class BraveNewsUtils {
-    public static final int BRAVE_NEWS_VIEWD_CARD_TIME = 100; // milliseconds
+    public static final int BRAVE_NEWS_VIEWD_CARD_TIME = 1000; // milliseconds
     private static Map<Integer, DisplayAd> sCurrentDisplayAds;
 
     public static String getPromotionIdItem(FeedItemsCard items) {
