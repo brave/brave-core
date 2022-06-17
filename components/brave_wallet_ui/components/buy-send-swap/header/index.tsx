@@ -4,9 +4,10 @@ import { BuySendSwapViewTypes, WalletState } from '../../../constants/types'
 import { reduceAddress } from '../../../utils/reduce-address'
 import { reduceAccountDisplayName } from '../../../utils/reduce-account-name'
 import { create } from 'ethereum-blockies'
-import { copyToClipboard } from '../../../utils/copy-to-clipboard'
 import { Tooltip, SelectNetworkButton } from '../../shared'
 import { getLocale } from '../../../../common/locale'
+import { useCopy } from '../../../common/hooks'
+
 // Styled Components
 import {
   StyledWrapper,
@@ -33,6 +34,9 @@ function SwapHeader (props: Props) {
 
   const { onChangeSwapView } = props
 
+  // hooks
+  const { copied, copyText } = useCopy()
+
   const onShowAccounts = () => {
     onChangeSwapView('acounts')
   }
@@ -42,7 +46,7 @@ function SwapHeader (props: Props) {
   }
 
   const onCopyToClipboard = async () => {
-    await copyToClipboard(selectedAccount.address)
+    await copyText(selectedAccount.address)
   }
 
   const orb = React.useMemo(() => {
@@ -55,7 +59,11 @@ function SwapHeader (props: Props) {
         <AccountCircle onClick={onShowAccounts} orb={orb}>
           <SwitchIcon />
         </AccountCircle>
-        <Tooltip text={getLocale('braveWalletToolTipCopyToClipboard')}>
+        <Tooltip
+          text={getLocale('braveWalletToolTipCopyToClipboard')}
+          actionText={getLocale('braveWalletToolTipCopiedToClipboard')}
+          isActionVisible={copied}
+        >
           <AccountAndAddress onClick={onCopyToClipboard}>
             <AccountName>{reduceAccountDisplayName(selectedAccount.name, 11)}</AccountName>
             <AccountAddress>{reduceAddress(selectedAccount.address)}</AccountAddress>

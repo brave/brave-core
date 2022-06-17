@@ -61,3 +61,7 @@ export const Pointer = styled.div<StyleProps>`
   border-width: 0 7px 8px 7px;
   border-color: transparent transparent ${(p) => p.theme.palette.black} transparent;
 `
+
+export const ActionNotification = styled(Tip)`
+  background: ${p => p.theme.palette.blurple500};
+`
