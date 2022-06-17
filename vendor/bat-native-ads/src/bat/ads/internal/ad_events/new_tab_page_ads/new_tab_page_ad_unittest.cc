@@ -233,6 +233,8 @@ TEST_F(BatAdsNewTabPageAdTest, FireEventIfNotExceededAdsPerHourCap) {
 
   FireAdEvents(ad_event, ads_per_hour - 1);
 
+  AdvanceClockBy(base::Minutes(5));  // Advance past minimum wait time
+
   const std::string placement_id =
       base::GUID::GenerateRandomV4().AsLowercaseString();
 

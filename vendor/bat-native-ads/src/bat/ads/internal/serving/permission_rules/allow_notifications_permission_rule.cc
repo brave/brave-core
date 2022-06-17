@@ -15,7 +15,7 @@ AllowNotificationsPermissionRule::~AllowNotificationsPermissionRule() = default;
 
 bool AllowNotificationsPermissionRule::ShouldAllow() {
   if (!DoesRespectCap()) {
-    last_message_ = "Notifications not allowed";
+    last_message_ = "System notifications not allowed";
     return false;
   }
 

@@ -13,18 +13,17 @@
 #include "bat/ads/internal/serving/serving_features.h"
 
 namespace ads {
+namespace search_result_ads {
 
 namespace {
 constexpr base::TimeDelta kTimeConstraint = base::Days(1);
 }  // namespace
 
-SearchResultAdsPerDayPermissionRule::SearchResultAdsPerDayPermissionRule() =
-    default;
+AdsPerDayPermissionRule::AdsPerDayPermissionRule() = default;
 
-SearchResultAdsPerDayPermissionRule::~SearchResultAdsPerDayPermissionRule() =
-    default;
+AdsPerDayPermissionRule::~AdsPerDayPermissionRule() = default;
 
-bool SearchResultAdsPerDayPermissionRule::ShouldAllow() {
+bool AdsPerDayPermissionRule::ShouldAllow() {
   const std::vector<base::Time>& history =
       GetAdEvents(AdType::kSearchResultAd, ConfirmationType::kServed);
 
@@ -36,14 +35,15 @@ bool SearchResultAdsPerDayPermissionRule::ShouldAllow() {
   return true;
 }
 
-std::string SearchResultAdsPerDayPermissionRule::GetLastMessage() const {
+std::string AdsPerDayPermissionRule::GetLastMessage() const {
   return last_message_;
 }
 
-bool SearchResultAdsPerDayPermissionRule::DoesRespectCap(
+bool AdsPerDayPermissionRule::DoesRespectCap(
     const std::vector<base::Time>& history) {
   return DoesHistoryRespectRollingTimeConstraint(
       history, kTimeConstraint, features::GetMaximumSearchResultAdsPerDay());
 }
 
+}  // namespace search_result_ads
 }  // namespace ads

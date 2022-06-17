@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "bat/ads/internal/serving/permission_rules/notification_ads/ads_per_day_permission_rule.h"
+#include "bat/ads/internal/serving/permission_rules/notification_ads/notification_ads_per_day_permission_rule.h"
 
 #include <vector>
 
@@ -15,6 +15,7 @@
 // npm run test -- brave_unit_tests --filter=BatAds*
 
 namespace ads {
+namespace notification_ads {
 
 class BatAdsAdsPerDayPermissionRuleTest : public UnitTestBase {
  protected:
@@ -90,4 +91,5 @@ TEST_F(BatAdsAdsPerDayPermissionRuleTest, DoNotAllowAdIfExceedsCapWithin1Day) {
   EXPECT_FALSE(is_allowed);
 }
 
+}  // namespace notification_ads
 }  // namespace ads

@@ -15,6 +15,7 @@
 // npm run test -- brave_unit_tests --filter=BatAds*
 
 namespace ads {
+namespace inline_content_ads {
 
 class BatAdsInlineContentAdsPerHourPermissionRuleTest : public UnitTestBase {
  protected:
@@ -41,7 +42,7 @@ TEST_F(BatAdsInlineContentAdsPerHourPermissionRuleTest,
   // Arrange
 
   // Act
-  InlineContentAdsPerHourPermissionRule permission_rule;
+  AdsPerHourPermissionRule permission_rule;
   const bool is_allowed = permission_rule.ShouldAllow();
 
   // Assert
@@ -55,7 +56,7 @@ TEST_F(BatAdsInlineContentAdsPerHourPermissionRuleTest,
   RecordAdEvents(AdType::kInlineContentAd, ConfirmationType::kServed, count);
 
   // Act
-  InlineContentAdsPerHourPermissionRule permission_rule;
+  AdsPerHourPermissionRule permission_rule;
   const bool is_allowed = permission_rule.ShouldAllow();
 
   // Assert
@@ -71,7 +72,7 @@ TEST_F(BatAdsInlineContentAdsPerHourPermissionRuleTest,
   FastForwardClockBy(base::Hours(1));
 
   // Act
-  InlineContentAdsPerHourPermissionRule permission_rule;
+  AdsPerHourPermissionRule permission_rule;
   const bool is_allowed = permission_rule.ShouldAllow();
 
   // Assert
@@ -87,11 +88,12 @@ TEST_F(BatAdsInlineContentAdsPerHourPermissionRuleTest,
   FastForwardClockBy(base::Minutes(59));
 
   // Act
-  InlineContentAdsPerHourPermissionRule permission_rule;
+  AdsPerHourPermissionRule permission_rule;
   const bool is_allowed = permission_rule.ShouldAllow();
 
   // Assert
   EXPECT_FALSE(is_allowed);
 }
 
+}  // namespace inline_content_ads
 }  // namespace ads

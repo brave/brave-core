@@ -27,12 +27,12 @@ bool PermissionRules::HasPermission() const {
     return false;
   }
 
-  PromotedContentAdsPerDayPermissionRule ads_per_day_permission_rule;
+  AdsPerDayPermissionRule ads_per_day_permission_rule;
   if (!ShouldAllow(&ads_per_day_permission_rule)) {
     return false;
   }
 
-  PromotedContentAdsPerHourPermissionRule ads_per_hour_permission_rule;
+  AdsPerHourPermissionRule ads_per_hour_permission_rule;
   if (!ShouldAllow(&ads_per_hour_permission_rule)) {
     return false;
   }

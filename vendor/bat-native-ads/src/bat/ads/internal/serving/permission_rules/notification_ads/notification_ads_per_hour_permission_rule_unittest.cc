@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "bat/ads/internal/serving/permission_rules/notification_ads/ads_per_hour_permission_rule.h"
+#include "bat/ads/internal/serving/permission_rules/notification_ads/notification_ads_per_hour_permission_rule.h"
 
 #include <cstdint>
 
@@ -16,6 +16,7 @@
 // npm run test -- brave_unit_tests --filter=BatAds*
 
 namespace ads {
+namespace notification_ads {
 
 class BatAdsAdsPerHourPermissionRuleTest : public UnitTestBase {
  protected:
@@ -129,4 +130,5 @@ TEST_F(BatAdsAdsPerHourPermissionRuleTest,
   EXPECT_FALSE(is_allowed);
 }
 
+}  // namespace notification_ads
 }  // namespace ads
