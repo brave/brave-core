@@ -16,6 +16,7 @@
 #include "bat/ads/history_info.h"
 #include "bat/ads/history_sort_types.h"
 #include "bat/ads/inline_content_ad_info.h"
+#include "bat/ads/new_tab_page_ad_info.h"
 #include "brave/components/services/bat_ads/bat_ads_client_mojo_bridge.h"
 
 using std::placeholders::_1;
@@ -136,6 +137,15 @@ void BatAdsImpl::TriggerNotificationAdEvent(
   ads_->TriggerNotificationAdEvent(placement_id, event_type);
 }
 
+void BatAdsImpl::GetNewTabPageAd(GetNewTabPageAdCallback callback) {
+  auto* holder = new CallbackHolder<GetNewTabPageAdCallback>(
+      AsWeakPtr(), std::move(callback));
+
+  auto get_new_tab_page_ad_callback =
+      std::bind(BatAdsImpl::OnGetNewTabPageAd, holder, _1, _2);
+  ads_->GetNewTabPageAd(get_new_tab_page_ad_callback);
+}
+
 void BatAdsImpl::TriggerNewTabPageAdEvent(
     const std::string& placement_id,
     const std::string& creative_instance_id,
@@ -184,8 +194,16 @@ void BatAdsImpl::TriggerSearchResultAdEvent(
 }
 
 void BatAdsImpl::PurgeOrphanedAdEventsForType(
-    const ads::mojom::AdType ad_type) {
-  ads_->PurgeOrphanedAdEventsForType(ad_type);
+    const ads::mojom::AdType ad_type,
+    PurgeOrphanedAdEventsForTypeCallback callback) {
+  auto* holder = new CallbackHolder<PurgeOrphanedAdEventsForTypeCallback>(
+      AsWeakPtr(), std::move(callback));
+
+  auto purge_ad_events_for_type_callback =
+      std::bind(BatAdsImpl::OnPurgeOrphanedAdEventsForType, holder, _1);
+
+  ads_->PurgeOrphanedAdEventsForType(ad_type,
+                                     purge_ad_events_for_type_callback);
 }
 
 void BatAdsImpl::RemoveAllHistory(
@@ -308,6 +326,19 @@ void BatAdsImpl::OnShutdown(CallbackHolder<ShutdownCallback>* holder,
   delete holder;
 }
 
+// static
+void BatAdsImpl::OnGetNewTabPageAd(
+    CallbackHolder<GetNewTabPageAdCallback>* holder,
+    const bool success,
+    const ads::NewTabPageAdInfo& ad) {
+  DCHECK(holder);
+  if (holder->is_valid()) {
+    std::move(holder->get()).Run(success, ad.ToJson());
+  }
+
+  delete holder;
+}
+
 void BatAdsImpl::OnGetInlineContentAd(
     CallbackHolder<GetInlineContentAdCallback>* holder,
     const bool success,
@@ -327,6 +358,16 @@ void BatAdsImpl::OnTriggerSearchResultAdEvent(
     const ads::mojom::SearchResultAdEventType event_type) {
   if (holder->is_valid()) {
     std::move(holder->get()).Run(success, placement_id, event_type);
+  }
+
+  delete holder;
+}
+
+void BatAdsImpl::OnPurgeOrphanedAdEventsForType(
+    CallbackHolder<PurgeOrphanedAdEventsForTypeCallback>* holder,
+    const bool success) {
+  if (holder->is_valid()) {
+    std::move(holder->get()).Run(success);
   }
 
   delete holder;

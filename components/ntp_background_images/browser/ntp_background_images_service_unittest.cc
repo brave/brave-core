@@ -31,6 +31,7 @@ constexpr char kTestEmptyComponent[] = R"(
 constexpr char kTestSponsoredImages[] = R"(
     {
         "schemaVersion": 1,
+        "campaignId": "fb7ee174-5430-4fb9-8e97-29bf14e8d828",
         "logo": {
           "imageUrl":  "logo.png",
           "alt": "Technikke: For music lovers",
@@ -44,6 +45,7 @@ constexpr char kTestSponsoredImages[] = R"(
             },
             {
               "imageUrl": "background-2.jpg",
+              "creativeInstanceId": "c0d61af3-3b85-4af4-a3cc-cf1b3dd40e70",
               "logo": {
                 "imageUrl": "logo-2.png",
                 "alt": "logo2",
@@ -63,6 +65,7 @@ constexpr char kTestSponsoredImagesWithMultipleCampaigns[] = R"(
         "schemaVersion": 1,
         "campaigns": [
           {
+            "campaignId": "fb7ee174-5430-4fb9-8e97-29bf14e8d828",
             "logo": {
               "imageUrl":  "logo.png",
               "alt": "Technikke: For music lovers",
@@ -76,6 +79,7 @@ constexpr char kTestSponsoredImagesWithMultipleCampaigns[] = R"(
                 },
                 {
                   "imageUrl": "background-2.jpg",
+                  "creativeInstanceId": "c0d61af3-3b85-4af4-a3cc-cf1b3dd40e70",
                   "logo": {
                     "imageUrl": "logo-2.png",
                     "alt": "logo2",
@@ -90,6 +94,7 @@ constexpr char kTestSponsoredImagesWithMultipleCampaigns[] = R"(
             ]
           },
           {
+            "campaignId": "b4fa7661-235f-457e-9911-3de6ec19cfd3",
             "logo": {
               "imageUrl":  "logo-3.png",
               "alt": "Technikke: For music lovers",
@@ -99,6 +104,7 @@ constexpr char kTestSponsoredImagesWithMultipleCampaigns[] = R"(
             "wallpapers": [
                 {
                   "imageUrl": "background-4.jpg",
+                  "creativeInstanceId": "1744602b-253b-47b2-909b-f9b248a6b681",
                   "focalPoint": { "x": 696, "y": 691 }
                 },
                 {
@@ -292,6 +298,7 @@ TEST_F(NTPBackgroundImagesServiceTest, InternalDataTest) {
   // Above json data has 3 wallpapers.
   EXPECT_EQ(1UL, si_data->campaigns.size());
   const auto campaign = si_data->campaigns[0];
+  EXPECT_FALSE(campaign.campaign_id.empty());
   const size_t image_count = 3;
   EXPECT_EQ(image_count, campaign.backgrounds.size());
   EXPECT_EQ(696, campaign.backgrounds[0].focal_point.x());
@@ -304,6 +311,9 @@ TEST_F(NTPBackgroundImagesServiceTest, InternalDataTest) {
   EXPECT_EQ(0, campaign.backgrounds[2].focal_point.x());
   EXPECT_EQ(base::FilePath::FromUTF8Unsafe("background-3.jpg"),
             campaign.backgrounds[2].image_file.BaseName());
+  EXPECT_TRUE(campaign.backgrounds[0].creative_instance_id.empty());
+  EXPECT_FALSE(campaign.backgrounds[1].creative_instance_id.empty());
+  EXPECT_TRUE(campaign.backgrounds[2].creative_instance_id.empty());
   EXPECT_TRUE(observer.on_si_updated_);
   EXPECT_FALSE(
       observer.si_data_->campaigns[0].backgrounds[0].logo.alt_text.empty());
@@ -420,6 +430,7 @@ TEST_F(NTPBackgroundImagesServiceTest, MultipleCampaignsTest) {
   EXPECT_FALSE(si_data->IsSuperReferral());
   EXPECT_EQ(2UL, si_data->campaigns.size());
   const auto campaign_0 = si_data->campaigns[0];
+  EXPECT_FALSE(campaign_0.campaign_id.empty());
   EXPECT_EQ(3UL, campaign_0.backgrounds.size());
   EXPECT_EQ(base::FilePath::FromUTF8Unsafe("background-1.jpg"),
             campaign_0.backgrounds[0].image_file.BaseName());
@@ -427,8 +438,12 @@ TEST_F(NTPBackgroundImagesServiceTest, MultipleCampaignsTest) {
             campaign_0.backgrounds[0].logo.image_file.BaseName());
   EXPECT_EQ(base::FilePath::FromUTF8Unsafe("logo-2.png"),
             campaign_0.backgrounds[1].logo.image_file.BaseName());
+  EXPECT_TRUE(campaign_0.backgrounds[0].creative_instance_id.empty());
+  EXPECT_FALSE(campaign_0.backgrounds[1].creative_instance_id.empty());
+  EXPECT_TRUE(campaign_0.backgrounds[2].creative_instance_id.empty());
 
   const auto campaign_1 = si_data->campaigns[1];
+  EXPECT_FALSE(campaign_1.campaign_id.empty());
   EXPECT_EQ(2UL, campaign_1.backgrounds.size());
   EXPECT_EQ(base::FilePath::FromUTF8Unsafe("background-4.jpg"),
             campaign_1.backgrounds[0].image_file.BaseName());
@@ -436,6 +451,8 @@ TEST_F(NTPBackgroundImagesServiceTest, MultipleCampaignsTest) {
             campaign_1.backgrounds[1].image_file.BaseName());
   EXPECT_EQ(base::FilePath::FromUTF8Unsafe("logo-4.png"),
             campaign_1.backgrounds[1].logo.image_file.BaseName());
+  EXPECT_FALSE(campaign_1.backgrounds[0].creative_instance_id.empty());
+  EXPECT_TRUE(campaign_1.backgrounds[1].creative_instance_id.empty());
 
   service_->RemoveObserver(&observer);
 }

@@ -242,6 +242,12 @@ absl::optional<CatalogInfo> ReadCatalog(const std::string& json) {
             creative.payload.wallpapers.push_back(wallpaper);
           }
 
+          if (creative.payload.wallpapers.empty()) {
+            BLOG(1, "Invalid wallpapers for creative instance id "
+                        << creative_instance_id);
+            continue;
+          }
+
           creative_set.creative_new_tab_page_ads.push_back(creative);
         } else if (code == "promoted_content_all_v1") {
           CatalogCreativePromotedContentAdInfo creative;

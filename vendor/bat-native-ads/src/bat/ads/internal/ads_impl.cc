@@ -481,14 +481,18 @@ void AdsImpl::TriggerSearchResultAdEvent(
       });
 }
 
-void AdsImpl::PurgeOrphanedAdEventsForType(const mojom::AdType ad_type) {
-  PurgeOrphanedAdEvents(ad_type, [ad_type](const bool success) {
+void AdsImpl::PurgeOrphanedAdEventsForType(
+    const mojom::AdType ad_type,
+    PurgeOrphanedAdEventsForTypeCallback callback) {
+  PurgeOrphanedAdEvents(ad_type, [ad_type, callback](const bool success) {
     if (!success) {
       BLOG(0, "Failed to purge orphaned ad events for " << ad_type);
       return;
     }
 
     BLOG(1, "Successfully purged orphaned ad events for " << ad_type);
+
+    callback(success);
   });
 }
 

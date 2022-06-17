@@ -16,6 +16,10 @@
 #include "ui/gfx/geometry/point.h"
 #include "ui/gfx/geometry/rect.h"
 
+namespace ads {
+struct NewTabPageAdInfo;
+}  // namespace ads
+
 namespace ntp_background_images {
 
 struct TopSite {
@@ -64,7 +68,8 @@ struct SponsoredBackground {
   // For unit test.
   SponsoredBackground(const base::FilePath& image_file_path,
                       const gfx::Point& point,
-                      const Logo& test_logo);
+                      const Logo& test_logo,
+                      const std::string& creative_instance_id);
   SponsoredBackground(const SponsoredBackground&);
 
   ~SponsoredBackground();
@@ -78,6 +83,7 @@ struct Campaign {
 
   bool IsValid() const;
 
+  std::string campaign_id;
   std::vector<SponsoredBackground> backgrounds;
 };
 
@@ -103,9 +109,14 @@ struct NTPSponsoredImagesData {
                          const base::FilePath& installed_dir);
 
   base::Value GetBackgroundAt(size_t campaign_index, size_t background_index);
+  base::Value GetBackgroundByAdInfo(const ads::NewTabPageAdInfo& ad_info);
 
   bool IsSuperReferral() const;
   void PrintCampaignsParsingResult() const;
+
+  bool AdInfoMatchesSponsoredImage(const ads::NewTabPageAdInfo& ad_info,
+                                   size_t campaign_index,
+                                   size_t background_index) const;
 
   std::string url_prefix;
 

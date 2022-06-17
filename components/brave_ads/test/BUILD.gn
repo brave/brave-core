@@ -82,6 +82,7 @@ source_set("brave_ads_unit_tests") {
     "//brave/vendor/bat-native-ads/src/bat/ads/internal/ad_events/ad_events_database_table_unittest_util.cc",
     "//brave/vendor/bat-native-ads/src/bat/ads/internal/ad_events/ad_events_database_table_unittest_util.h",
     "//brave/vendor/bat-native-ads/src/bat/ads/internal/ad_events/inline_content_ads/inline_content_ad_unittest.cc",
+    "//brave/vendor/bat-native-ads/src/bat/ads/internal/ad_events/new_tab_page_ads/new_tab_page_ad_if_ads_disabled_unittest.cc",
     "//brave/vendor/bat-native-ads/src/bat/ads/internal/ad_events/new_tab_page_ads/new_tab_page_ad_unittest.cc",
     "//brave/vendor/bat-native-ads/src/bat/ads/internal/ad_events/notification_ads/notification_ad_unittest.cc",
     "//brave/vendor/bat-native-ads/src/bat/ads/internal/ad_events/promoted_content_ads/promoted_content_ad_unittest.cc",
@@ -343,6 +344,7 @@ source_set("brave_ads_unit_tests") {
     "//brave/vendor/bat-native-ads/src/bat/ads/internal/user_interaction/browsing/user_activity_scoring_util_unittest.cc",
     "//brave/vendor/bat-native-ads/src/bat/ads/internal/user_interaction/browsing/user_activity_util_unittest.cc",
     "//brave/vendor/bat-native-ads/src/bat/ads/internal/user_interaction/idle_detection/idle_time_unittest.cc",
+    "//brave/vendor/bat-native-ads/src/bat/ads/new_tab_page_ad_info_unittest.cc",
   ]
 
   deps = [

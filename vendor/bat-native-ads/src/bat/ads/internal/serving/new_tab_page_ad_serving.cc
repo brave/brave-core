@@ -110,8 +110,11 @@ bool Serving::ServeAd(const NewTabPageAdInfo& ad,
                       GetNewTabPageAdCallback callback) const {
   DCHECK(ad.IsValid());
 
-  // TODO(https://github.com/brave/brave-browser/issues/14015): Add logging for
-  // wallpapers
+  if (ad.wallpapers.empty()) {
+    callback(/* success */ false, ad);
+    return false;
+  }
+
   BLOG(1, "Serving new tab page ad:\n"
               << "  placementId: " << ad.placement_id << "\n"
               << "  creativeInstanceId: " << ad.creative_instance_id << "\n"
@@ -122,7 +125,11 @@ bool Serving::ServeAd(const NewTabPageAdInfo& ad,
               << "  companyName: " << ad.company_name << "\n"
               << "  imageUrl: " << ad.image_url << "\n"
               << "  alt: " << ad.alt << "\n"
-              << "  targetUrl: " << ad.target_url);
+              << "  targetUrl: " << ad.target_url << "\n"
+              << "  wallpaperImageUrl: " << ad.wallpapers[0].image_url << "\n"
+              << "  wallpaperFocalPointX: " << ad.wallpapers[0].focal_point.x
+              << "\n"
+              << "  wallpaperFocalPointY: " << ad.wallpapers[0].focal_point.y);
 
   callback(/* success */ true, ad);
 
