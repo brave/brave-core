@@ -7,6 +7,8 @@
 
 #include "base/callback_forward.h"
 #include "base/feature_list.h"
+#include "base/json/json_reader.h"
+#include "base/json/json_writer.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/run_loop.h"
 #include "base/test/scoped_feature_list.h"
@@ -27,11 +29,95 @@
 #include "content/public/browser/browser_context.h"
 #include "content/public/test/browser_task_environment.h"
 #include "net/base/mock_network_change_notifier.h"
-#include "services/network/test/test_shared_url_loader_factory.h"
+#include "services/data_decoder/public/cpp/test_support/in_process_data_decoder.h"
+#include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
+#include "services/network/test/test_url_loader_factory.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_vpn {
+
+namespace {
+const char kTestVpnOrders[] = R"(
+{
+    "credentials":
+    {
+        "items":
+        {
+            "424bc657-633f-4fcc-bd8e-92a51c8e4971":
+            {
+                "creds":
+                [
+                    {
+                        "expires_at": "{year}-05-13T00:00:00",
+                        "issued_at": "2022-05-11T00:00:00",
+                        "item_id": "424bc657-633f-4fcc-bd8e-92a51c8e4971",
+                        "token": "q7gunpfaAVvnoP6uvnLaZHLivyky1VmF4NqryK3Hx+dq67LNtA3KLx8251Pc5tLH"
+                    }
+                ],
+                "item_id": "424bc657-633f-4fcc-bd8e-92a51c8e4971",
+                "type": "time-limited"
+            }
+        }
+    },
+    "orders":
+    {
+        "33a8231a-7c69-47bd-a061-2045b9b1b890":
+        {
+            "created_at": "2022-06-13T13:05:17.144570",
+            "currency": "USD",
+            "expires_at": "{year}-06-14T14:36:02.579641",
+            "id": "33a8231a-7c69-47bd-a061-2045b9b1b890",
+            "items":
+            [
+                {
+                    "created_at": "2022-06-13T14:35:28.313786",
+                    "credential_type": "time-limited",
+                    "currency": "USD",
+                    "description": "Brave VPN",
+                    "id": "424bc657-633f-4fcc-bd8e-92a51c8e4971",
+                    "location": "{domain}",
+                    "order_id": "33a8231a-7c69-47bd-a061-2045b9b1b890",
+                    "price": 9.99,
+                    "quantity": 1,
+                    "sku": "brave-vpn-premium",
+                    "subtotal": 9.99,
+                    "updated_at": "2022-06-13T14:35:28.313786"
+                }
+            ],
+            "last_paid_at": "2022-06-13T13:06:49.466083",
+            "location": "{domain}",
+            "merchant_id": "brave.com",
+            "metadata":
+            {
+                "stripe_checkout_session_id": null
+            },
+            "status": "paid",
+            "total_price": 9.99,
+            "updated_at": "2022-06-13T13:06:49.465232"
+        }
+    }
+}
+          )";
+
+std::string GenerateTestingCreds(const std::string& domain,
+                                 bool active_subscription = true) {
+  auto value = base::JSONReader::Read(kTestVpnOrders);
+  std::string json;
+  base::JSONWriter::WriteWithOptions(
+      value.value(), base::JSONWriter::OPTIONS_PRETTY_PRINT, &json);
+
+  auto now = base::Time::Now();
+  base::Time::Exploded exploded;
+  now.LocalExplode(&exploded);
+  std::string year =
+      std::to_string(active_subscription ? exploded.year + 1 : 0);
+  base::ReplaceSubstringsAfterOffset(&json, 0, "{year}", year);
+  base::ReplaceSubstringsAfterOffset(&json, 0, "{domain}", domain);
+  return json;
+}
+
+}  // namespace
 
 using ConnectionState = mojom::ConnectionState;
 using PurchasedState = mojom::PurchasedState;
@@ -75,19 +161,20 @@ class BraveVPNServiceTest : public testing::Test {
   void SetUp() override {
     skus::RegisterProfilePrefs(pref_service_.registry());
     prefs::RegisterProfilePrefs(pref_service_.registry());
-
+    shared_url_loader_factory_ =
+        base::MakeRefCounted<network::WeakWrapperSharedURLLoaderFactory>(
+            &url_loader_factory_);
+    url_loader_factory_.SetInterceptor(base::BindRepeating(
+        &BraveVPNServiceTest::Interceptor, base::Unretained(this)));
     // Setup required for SKU (dependency of VPN)
-    auto url_loader_factory =
-        base::MakeRefCounted<network::TestSharedURLLoaderFactory>();
-    skus_service_ = std::make_unique<skus::SkusServiceImpl>(&pref_service_,
-                                                            url_loader_factory);
+    skus_service_ = std::make_unique<skus::SkusServiceImpl>(
+        &pref_service_, url_loader_factory_.GetSafeWeakWrapper());
     ResetVpnService();
   }
 
   void ResetVpnService() {
     service_ = std::make_unique<BraveVpnService>(
-        base::MakeRefCounted<network::TestSharedURLLoaderFactory>(),
-        &pref_service_,
+        url_loader_factory_.GetSafeWeakWrapper(), &pref_service_,
         base::BindRepeating(&BraveVPNServiceTest::GetSkusService,
                             base::Unretained(this)));
   }
@@ -99,9 +186,18 @@ class BraveVPNServiceTest : public testing::Test {
     return static_cast<skus::SkusServiceImpl*>(skus_service_.get())
         ->MakeRemote();
   }
+  void SetInterceptorResponse(const std::string& response) {
+    https_response_ = response;
+  }
+  void Interceptor(const network::ResourceRequest& request) {
+    url_loader_factory_.ClearResponses();
+    url_loader_factory_.AddResponse(request.url.spec(), https_response_);
+  }
+
   void AddObserver(mojo::PendingRemote<mojom::ServiceObserver> observer) {
     service_->AddObserver(std::move(observer));
   }
+
   void OnFetchRegionList(bool background_fetch,
                          const std::string& region_list,
                          bool success) {
@@ -161,6 +257,8 @@ class BraveVPNServiceTest : public testing::Test {
 
   void Connect() { service_->Connect(); }
 
+  PrefService* prefs() { return &pref_service_; }
+
   void Disconnect() { service_->Disconnect(); }
 
   void CreateVPNConnection() { service_->CreateVPNConnection(); }
@@ -173,7 +271,9 @@ class BraveVPNServiceTest : public testing::Test {
                                     bool success) {
     service_->OnGetSubscriberCredentialV12(subscriber_credential, success);
   }
-
+  std::string GetCurrentEnvironment() {
+    return service_->GetCurrentEnvironment();
+  }
   void OnGetProfileCredentials(const std::string& profile_credential,
                                bool success) {
     service_->OnGetProfileCredentials(profile_credential, success);
@@ -360,9 +460,19 @@ class BraveVPNServiceTest : public testing::Test {
       )";
   }
 
-  void ExpectPurchasedStateChange(TestBraveVPNServiceObserver* observer,
-                                  const std::string& env,
-                                  PurchasedState state) {
+  std::string SetupTestingStoreForEnv(const std::string& env,
+                                      bool active_subscription = true) {
+    std::string domain = skus::GetDomain("vpn", env);
+    auto testing_payload = GenerateTestingCreds(domain, active_subscription);
+    base::Value state(base::Value::Type::DICT);
+    state.SetStringKey("skus:" + env, testing_payload);
+    prefs()->Set(skus::prefs::kSkusState, std::move(state));
+    SetInterceptorResponse(GetRegionsData());
+    return domain;
+  }
+  void SetAndExpectPurchasedStateChange(TestBraveVPNServiceObserver* observer,
+                                        const std::string& env,
+                                        PurchasedState state) {
     observer->ResetPurchasedState();
     SetPurchasedState(env, state);
     base::RunLoop().RunUntilIdle();
@@ -370,11 +480,15 @@ class BraveVPNServiceTest : public testing::Test {
     EXPECT_EQ(observer->GetPurchasedState().value(), state);
   }
 
+  std::string https_response_;
   base::test::ScopedFeatureList scoped_feature_list_;
   content::BrowserTaskEnvironment task_environment_;
   sync_preferences::TestingPrefServiceSyncable pref_service_;
   std::unique_ptr<skus::SkusServiceImpl> skus_service_;
   std::unique_ptr<BraveVpnService> service_;
+  network::TestURLLoaderFactory url_loader_factory_;
+  scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
+  data_decoder::test::InProcessDataDecoder in_process_data_decoder_;
 };
 
 TEST(BraveVPNFeatureTest, FeatureTest) {
@@ -678,11 +792,12 @@ TEST_F(BraveVPNServiceTest, SetPurchasedState) {
   AddObserver(observer.GetReceiver());
   EXPECT_EQ(PurchasedState::NOT_PURCHASED, GetPurchasedStateSync());
 
-  ExpectPurchasedStateChange(&observer, env, PurchasedState::LOADING);
-  ExpectPurchasedStateChange(&observer, env, PurchasedState::EXPIRED);
-  ExpectPurchasedStateChange(&observer, env, PurchasedState::FAILED);
-  ExpectPurchasedStateChange(&observer, env, PurchasedState::NOT_PURCHASED);
-  ExpectPurchasedStateChange(&observer, env, PurchasedState::PURCHASED);
+  SetAndExpectPurchasedStateChange(&observer, env, PurchasedState::LOADING);
+  SetAndExpectPurchasedStateChange(&observer, env, PurchasedState::EXPIRED);
+  SetAndExpectPurchasedStateChange(&observer, env, PurchasedState::FAILED);
+  SetAndExpectPurchasedStateChange(&observer, env,
+                                   PurchasedState::NOT_PURCHASED);
+  SetAndExpectPurchasedStateChange(&observer, env, PurchasedState::PURCHASED);
 
   SetPurchasedState(env, PurchasedState::PURCHASED);
   base::RunLoop().RunUntilIdle();
@@ -728,7 +843,101 @@ TEST_F(BraveVPNServiceTest, LoadPurchasedState) {
   // Observer event not called second time because the state is not changed.
   EXPECT_FALSE(observer.GetPurchasedState().has_value());
   // Observer called when state will be changed.
-  ExpectPurchasedStateChange(&observer, env, PurchasedState::PURCHASED);
+  SetAndExpectPurchasedStateChange(&observer, env, PurchasedState::PURCHASED);
+}
+
+TEST_F(BraveVPNServiceTest, LoadPurchasedStateForAnotherEnv) {
+  auto development = SetupTestingStoreForEnv(skus::GetDefaultEnvironment());
+  EXPECT_EQ(skus::GetEnvironmentForDomain(development),
+            skus::GetDefaultEnvironment());
+  TestBraveVPNServiceObserver observer;
+  AddObserver(observer.GetReceiver());
+  EXPECT_EQ(PurchasedState::NOT_PURCHASED, GetPurchasedStateSync());
+  EXPECT_EQ(GetCurrentEnvironment(), skus::GetDefaultEnvironment());
+  LoadPurchasedState(development);
+  base::RunLoop().RunUntilIdle();
+  // Successfully set purchased state for dev env.
+  EXPECT_TRUE(observer.GetPurchasedState().has_value());
+  EXPECT_EQ(observer.GetPurchasedState().value(), PurchasedState::PURCHASED);
+  EXPECT_EQ(GetCurrentEnvironment(), skus::GetDefaultEnvironment());
+
+  observer.ResetPurchasedState();
+  auto staging = SetupTestingStoreForEnv(skus::kEnvStaging);
+  EXPECT_EQ(skus::GetEnvironmentForDomain(staging), skus::kEnvStaging);
+  EXPECT_EQ(GetCurrentEnvironment(), skus::GetDefaultEnvironment());
+  LoadPurchasedState(staging);
+  base::RunLoop().RunUntilIdle();
+  // Successfully changed purchased state for dev env.
+  EXPECT_TRUE(observer.GetPurchasedState().has_value());
+  EXPECT_EQ(observer.GetPurchasedState().value(), PurchasedState::PURCHASED);
+  EXPECT_EQ(GetCurrentEnvironment(), skus::kEnvStaging);
+}
+
+TEST_F(BraveVPNServiceTest, LoadPurchasedStateForAnotherEnvFailed) {
+  auto development = SetupTestingStoreForEnv(skus::GetDefaultEnvironment());
+  EXPECT_EQ(skus::GetEnvironmentForDomain(development),
+            skus::GetDefaultEnvironment());
+  TestBraveVPNServiceObserver observer;
+  AddObserver(observer.GetReceiver());
+  EXPECT_EQ(PurchasedState::NOT_PURCHASED, GetPurchasedStateSync());
+  EXPECT_EQ(GetCurrentEnvironment(), skus::GetDefaultEnvironment());
+  EXPECT_FALSE(observer.GetPurchasedState().has_value());
+
+  LoadPurchasedState(development);
+  base::RunLoop().RunUntilIdle();
+  // Successfully set purchased state for dev env.
+  EXPECT_TRUE(observer.GetPurchasedState().has_value());
+  EXPECT_EQ(observer.GetPurchasedState().value(), PurchasedState::PURCHASED);
+  EXPECT_EQ(GetCurrentEnvironment(), skus::GetDefaultEnvironment());
+  EXPECT_EQ(GetPurchasedStateSync(), PurchasedState::PURCHASED);
+
+  observer.ResetPurchasedState();
+  SetInterceptorResponse("");
+  std::string staging = skus::GetDomain("vpn", skus::kEnvStaging);
+  EXPECT_EQ(GetCurrentEnvironment(), skus::kEnvDevelopment);
+  EXPECT_FALSE(observer.GetPurchasedState().has_value());
+  // no order found for staging.
+  LoadPurchasedState(staging);
+  base::RunLoop().RunUntilIdle();
+  // The purchased state was not changed from dev env.
+  EXPECT_FALSE(observer.GetPurchasedState().has_value());
+  EXPECT_EQ(GetCurrentEnvironment(), skus::kEnvDevelopment);
+  EXPECT_EQ(GetPurchasedStateSync(), PurchasedState::PURCHASED);
+
+  observer.ResetPurchasedState();
+  staging = SetupTestingStoreForEnv(skus::kEnvStaging, false);
+  EXPECT_EQ(GetCurrentEnvironment(), skus::kEnvDevelopment);
+  EXPECT_FALSE(observer.GetPurchasedState().has_value());
+  // No region data for staging.
+  SetInterceptorResponse("");
+  LoadPurchasedState(staging);
+  base::RunLoop().RunUntilIdle();
+  // The purchased state was not changed from dev env.
+  EXPECT_FALSE(observer.GetPurchasedState().has_value());
+  EXPECT_EQ(GetCurrentEnvironment(), skus::kEnvDevelopment);
+  EXPECT_EQ(GetPurchasedStateSync(), PurchasedState::PURCHASED);
+
+  observer.ResetPurchasedState();
+  staging = SetupTestingStoreForEnv(skus::kEnvStaging, false);
+  EXPECT_EQ(GetCurrentEnvironment(), skus::kEnvDevelopment);
+  EXPECT_FALSE(observer.GetPurchasedState().has_value());
+  // Inactive staging subscription.
+  OnCredentialSummary(staging, R"({ "active": false } )");
+  // The purchased state was not changed from dev env.
+  EXPECT_FALSE(observer.GetPurchasedState().has_value());
+  EXPECT_EQ(GetCurrentEnvironment(), skus::kEnvDevelopment);
+  EXPECT_EQ(GetPurchasedStateSync(), PurchasedState::PURCHASED);
+
+  observer.ResetPurchasedState();
+  staging = SetupTestingStoreForEnv(skus::kEnvStaging, false);
+  EXPECT_EQ(GetCurrentEnvironment(), skus::kEnvDevelopment);
+  EXPECT_FALSE(observer.GetPurchasedState().has_value());
+  // Invalid staging subscription.
+  OnCredentialSummary(staging, R"([])");
+  // The purchased state was not changed from dev env.
+  EXPECT_FALSE(observer.GetPurchasedState().has_value());
+  EXPECT_EQ(GetCurrentEnvironment(), skus::kEnvDevelopment);
+  EXPECT_EQ(GetPurchasedStateSync(), PurchasedState::PURCHASED);
 }
 
 }  // namespace brave_vpn

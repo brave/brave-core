@@ -8,6 +8,7 @@
 
 #include <memory>
 #include <string>
+#include <unordered_map>
 
 #include "base/memory/weak_ptr.h"
 #include "brave/components/skus/browser/rs/cxx/src/shim.h"

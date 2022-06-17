@@ -85,7 +85,7 @@ class BraveVpnService :
 #if !BUILDFLAG(IS_ANDROID)
   void ToggleConnection();
   void RemoveVPNConnnection();
-  std::string GetCurrentEnvironment() const { return current_env_; }
+  const std::string& GetCurrentEnvironment() const { return current_env_; }
   bool is_connected() const {
     return connection_state_ == mojom::ConnectionState::CONNECTED;
   }
@@ -249,6 +249,7 @@ class BraveVpnService :
       const base::flat_map<std::string, std::string>& headers);
   mojom::PurchasedState GetPurchasedStateSync() const;
   void SetPurchasedState(const std::string& env, mojom::PurchasedState state);
+  void SetCurrentEnvironment(const std::string& env);
   void EnsureMojoConnected();
   void OnMojoConnectionError();
   void OnCredentialSummary(const std::string& domain,

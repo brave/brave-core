@@ -10,6 +10,7 @@
 #include "base/strings/string_util.h"
 #include "brave/components/skus/browser/pref_names.h"
 #include "components/pref_registry/pref_registry_syncable.h"
+#include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 
 namespace skus {
 
@@ -46,12 +47,16 @@ std::string GetDomain(const std::string& prefix,
 }
 
 std::string GetEnvironmentForDomain(const std::string& domain) {
-  if (base::EndsWith(domain, "brave.com"))
+  auto base_domain = GetDomainAndRegistry(
+      domain, net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES);
+  if (base_domain == "brave.com")
     return kEnvProduction;
-  if (base::EndsWith(domain, "bravesoftware.com"))
+  if (base_domain == "bravesoftware.com")
     return kEnvStaging;
-
-  return kEnvDevelopment;
+  if (base_domain == "brave.software")
+    return kEnvDevelopment;
+  NOTIMPLEMENTED();
+  return "";
 }
 
 void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {

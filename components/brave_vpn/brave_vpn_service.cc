@@ -917,7 +917,7 @@ void BraveVpnService::LoadPurchasedState(const std::string& domain) {
     skus_credential_ =
         cmd->GetSwitchValueASCII(switches::kBraveVPNTestMonthlyPass);
     LoadCachedRegionData();
-    current_env_ = requested_env;
+    SetCurrentEnvironment(requested_env);
     if (!regions_.empty()) {
       SetPurchasedState(current_env_, PurchasedState::PURCHASED);
     } else {
@@ -1005,14 +1005,16 @@ void BraveVpnService::OnPrepareCredentialsPresentation(
       url::DecodeURLMode::kUTF8OrIsomorphic, &unescaped);
   std::string credential;
   base::UTF16ToUTF8(unescaped.data(), unescaped.length(), &credential);
-  current_env_ = env;
-  skus_credential_ = credential;
-
-  if (skus_credential_.empty()) {
-    VLOG(2) << __func__ << " : Got empty skus credentials";
+  if (credential.empty()) {
     SetPurchasedState(env, PurchasedState::NOT_PURCHASED);
     return;
   }
+  if (GetCurrentEnvironment() != env) {
+    // Change environment because we have successfully authorized with new one.
+    SetCurrentEnvironment(env);
+  }
+
+  skus_credential_ = credential;
 
 #if BUILDFLAG(IS_ANDROID)
   SetPurchasedState(env, PurchasedState::PURCHASED);
@@ -1034,15 +1036,19 @@ void BraveVpnService::OnPrepareCredentialsPresentation(
 void BraveVpnService::SetPurchasedState(const std::string& env,
                                         PurchasedState state) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  if (GetPurchasedStateSync() == state || env != current_env_)
+  if (GetPurchasedStateSync() == state || env != current_env_) {
     return;
+  }
 
   purchased_state_ = state;
 
-  VLOG(1) << "SetPurchasedState: " << GetPurchasedStateSync();
-
   for (const auto& obs : observers_)
     obs->OnPurchasedStateChanged(purchased_state_.value());
+}
+
+void BraveVpnService::SetCurrentEnvironment(const std::string& env) {
+  current_env_ = env;
+  purchased_state_.reset();
 }
 
 void BraveVpnService::EnsureMojoConnected() {

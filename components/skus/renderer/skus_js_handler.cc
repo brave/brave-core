@@ -155,7 +155,6 @@ v8::Local<v8::Promise> SkusJSHandler::RefreshOrder(v8::Isolate* isolate,
       base::BindOnce(&SkusJSHandler::OnRefreshOrder, base::Unretained(this),
                      std::move(promise_resolver), isolate,
                      std::move(context_old)));
-  DLOG(INFO) << "resolver";
   return resolver.ToLocalChecked()->GetPromise();
 }
 
