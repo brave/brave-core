@@ -10,6 +10,8 @@ brave_browser_themes_deps = []
 if (!is_android) {
   brave_browser_themes_sources += [
     "//brave/browser/themes/brave_dark_mode_utils.cc",
+    "//brave/browser/themes/brave_private_window_theme_supplier.cc",
+    "//brave/browser/themes/brave_private_window_theme_supplier.h",
     "//brave/browser/themes/brave_theme_helper.cc",
     "//brave/browser/themes/brave_theme_helper.h",
     "//brave/browser/themes/brave_theme_helper_utils.cc",
@@ -31,9 +33,12 @@ if (!is_android) {
     "//brave/components/brave_vpn/buildflags",
     "//brave/components/constants",
     "//brave/components/sidebar/buildflags",
+    "//chrome/browser/ui",
+    "//chrome/browser/ui/color:color_headers",
     "//chrome/common",
     "//components/pref_registry",
     "//components/prefs",
+    "//ui/color",
     "//ui/gfx",
     "//ui/native_theme",
   ]

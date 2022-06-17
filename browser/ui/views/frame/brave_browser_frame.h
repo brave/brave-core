@@ -7,19 +7,26 @@
 #define BRAVE_BROWSER_UI_VIEWS_FRAME_BRAVE_BROWSER_FRAME_H_
 
 #include "base/memory/raw_ptr.h"
+#include "base/memory/scoped_refptr.h"
 #include "chrome/browser/ui/views/frame/browser_frame.h"
+
+class CustomThemeSupplier;
 
 class BraveBrowserFrame : public BrowserFrame {
  public:
   explicit BraveBrowserFrame(BrowserView* browser_view);
   BraveBrowserFrame(const BraveBrowserFrame&) = delete;
   BraveBrowserFrame& operator=(const BraveBrowserFrame&) = delete;
+  ~BraveBrowserFrame() override;
 
   // BrowserFrame overrides:
   const ui::NativeTheme* GetNativeTheme() const override;
+  ui::ColorProviderManager::ThemeInitializerSupplier* GetCustomTheme()
+      const override;
 
  private:
   raw_ptr<BrowserView> view_ = nullptr;
+  scoped_refptr<CustomThemeSupplier> theme_supplier_;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_FRAME_BRAVE_BROWSER_FRAME_H_

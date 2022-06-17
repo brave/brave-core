@@ -5,6 +5,8 @@
 
 #include "chrome/browser/ui/color/chrome_color_mixer.h"
 
+#include "brave/browser/ui/color/brave_color_mixer.h"
+
 #define AddChromeColorMixer AddChromeColorMixer_ChromiumImpl
 #include "src/chrome/browser/ui/color/chrome_color_mixer.cc"
 #undef AddChromeColorMixer
@@ -13,13 +15,13 @@ namespace {
 
 void AddBraveColorMixer(ui::ColorProvider* provider,
                         const ui::ColorProviderManager::Key& key) {
-  const bool dark_mode =
-      key.color_mode == ui::ColorProviderManager::ColorMode::kDark;
-  ui::ColorMixer& mixer = provider->AddMixer();
+  // Apply brave theme when there is no custom theme.
+  if (key.custom_theme)
+    return;
 
-  // Download shelf colors.
-  mixer[kColorDownloadShelfButtonText] = {dark_mode ? SK_ColorWHITE
-                                                    : gfx::kBraveGrey800};
+  key.color_mode == ui::ColorProviderManager::ColorMode::kDark
+      ? AddBraveDarkThemeColorMixer(provider, key)
+      : AddBraveLightThemeColorMixer(provider, key);
 }
 
 }  // namespace
