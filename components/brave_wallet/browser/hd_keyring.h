@@ -48,7 +48,7 @@ class HDKeyring {
   std::string GetDiscoveryAddress(size_t index) const;
   // Find private key by address (it would be hex or base58 depends on
   // underlying hd key
-  std::string GetEncodedPrivateKey(const std::string& address);
+  virtual std::string GetEncodedPrivateKey(const std::string& address);
 
   std::vector<uint8_t> SignMessage(const std::string& address,
                                    const std::vector<uint8_t>& message);

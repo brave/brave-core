@@ -2814,11 +2814,11 @@ TEST_F(KeyringServiceUnitTest, ImportFilecoinAccounts) {
       EXPECT_TRUE(service.IsKeyringCreated(mojom::kFilecoinKeyringId));
     }
 
-    std::string private_key;
+    std::string payload;
     EXPECT_TRUE(
         GetPrivateKeyForImportedAccount(&service, imported_accounts[i].address,
-                                        mojom::CoinType::FIL, &private_key));
-    EXPECT_EQ(imported_accounts[i].private_key, private_key);
+                                        mojom::CoinType::FIL, &payload));
+    EXPECT_EQ(imported_accounts[i].import_payload, payload);
   }
   // filecoin keyring will be lazily created in first FIL import
   auto* filecoin_keyring =
@@ -2902,10 +2902,10 @@ TEST_F(KeyringServiceUnitTest, ImportFilecoinAccounts) {
             amount - 1);
   // private key should also be available now
   private_key.clear();
-  EXPECT_TRUE(
-      GetPrivateKeyForImportedAccount(&service, imported_accounts[0].address,
-                                      mojom::CoinType::FIL, &private_key));
-  EXPECT_EQ(imported_accounts[0].private_key, private_key);
+  std::string payload;
+  EXPECT_TRUE(GetPrivateKeyForImportedAccount(
+      &service, imported_accounts[0].address, mojom::CoinType::FIL, &payload));
+  EXPECT_EQ(imported_accounts[0].import_payload, payload);
 
   auto* default_keyring =
       service.GetHDKeyringById(brave_wallet::mojom::kDefaultKeyringId);

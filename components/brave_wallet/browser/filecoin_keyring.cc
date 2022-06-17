@@ -10,6 +10,7 @@
 #include "base/base64.h"
 #include "base/json/json_reader.h"
 #include "base/strings/string_number_conversions.h"
+#include "base/strings/stringprintf.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/fil_transaction.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
@@ -87,6 +88,54 @@ bool FilecoinKeyring::DecodeImportPayload(
   *private_key_out = std::vector<uint8_t>(private_key_decoded.begin(),
                                           private_key_decoded.end());
   return true;
+}
+
+// static
+bool FilecoinKeyring::GetProtocolFromAddress(
+    const std::string& address,
+    mojom::FilecoinAddressProtocol* result) {
+  if (address.size() < 2) {
+    return false;
+  }
+  const char protocol_symbol = address[1];
+  switch (protocol_symbol) {
+    case '1': {
+      *result = mojom::FilecoinAddressProtocol::SECP256K1;
+      return true;
+    }
+    case '3': {
+      *result = mojom::FilecoinAddressProtocol::BLS;
+      return true;
+    }
+    default: {
+      NOTREACHED() << "Unknown filecoin protocol";
+      return false;
+    }
+  }
+  return false;
+}
+
+std::string FilecoinKeyring::GetEncodedPrivateKey(const std::string& address) {
+  HDKeyBase* key = GetHDKeyFromAddress(address);
+  if (!key) {
+    return "";
+  }
+  return FilecoinKeyring::GetExportEncodedJSON(
+      base::Base64Encode(static_cast<HDKey*>(key)->private_key()), address);
+}
+// static
+std::string FilecoinKeyring::GetExportEncodedJSON(
+    const std::string& base64_encoded_private_key,
+    const std::string& address) {
+  mojom::FilecoinAddressProtocol protocol;
+  if (!GetProtocolFromAddress(address, &protocol)) {
+    return "";
+  }
+  std::string json = base::StringPrintf(
+      "{\"Type\":\"%s\",\"PrivateKey\":\"%s\"}",
+      protocol == mojom::FilecoinAddressProtocol::BLS ? "bls" : "secp256k1",
+      base64_encoded_private_key.c_str());
+  return base::ToLowerASCII(base::HexEncode(json.data(), json.size()));
 }
 
 std::string FilecoinKeyring::ImportFilecoinAccount(
