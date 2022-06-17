@@ -33,6 +33,7 @@ protocol TabDelegate {
   func stopMediaPlayback(_ tab: Tab)
   func showWalletNotification(_ tab: Tab)
   func updateURLBarWalletButton()
+  func isTabVisible(_ tab: Tab) -> Bool
 }
 
 @objc

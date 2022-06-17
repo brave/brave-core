@@ -2363,6 +2363,10 @@ extension BrowserViewController: TabDelegate {
     }
     notificationsPresenter.display(notification: walletNotificaton, from: self)
   }
+  
+  func isTabVisible(_ tab: Tab) -> Bool {
+    tabManager.selectedTab === tab
+  }
 
   func updateURLBarWalletButton() {
     let shouldShowWalletButton = tabManager.selectedTab?.isWalletIconVisible == true
