@@ -369,6 +369,74 @@ TEST(BatAdsServingFeaturesTest, DisabledMaximumNewTabPageAdsPerHour) {
             maximum_new_tab_page_ads_per_hour);
 }
 
+TEST(BatAdsServingFeaturesTest, NewTabPageAdsMinimumWaitTime) {
+  // Arrange
+  std::vector<base::test::ScopedFeatureList::FeatureAndParams> enabled_features;
+  base::FieldTrialParams kServingParameters;
+  kServingParameters["new_tab_page_ads_minimum_wait_time"] = "10m";
+  enabled_features.push_back({kServing, kServingParameters});
+
+  const std::vector<base::Feature> disabled_features;
+
+  base::test::ScopedFeatureList scoped_feature_list;
+  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
+                                                    disabled_features);
+
+  // Act
+  const base::TimeDelta new_tab_page_ads_minimum_wait_time =
+      GetNewTabPageAdsMinimumWaitTime();
+
+  // Assert
+  const base::TimeDelta expected_new_tab_page_ads_minimum_wait_time =
+      base::Minutes(10);
+  EXPECT_EQ(expected_new_tab_page_ads_minimum_wait_time,
+            new_tab_page_ads_minimum_wait_time);
+}
+
+TEST(BatAdsServingFeaturesTest, DefaultNewTabPageAdsMinimumWaitTime) {
+  // Arrange
+  const std::vector<base::test::ScopedFeatureList::FeatureAndParams>
+      enabled_features;
+
+  const std::vector<base::Feature> disabled_features;
+
+  base::test::ScopedFeatureList scoped_feature_list;
+  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
+                                                    disabled_features);
+  // Act
+  const base::TimeDelta new_tab_page_ads_minimum_wait_time =
+      GetNewTabPageAdsMinimumWaitTime();
+
+  // Assert
+  const base::TimeDelta expected_new_tab_page_ads_minimum_wait_time =
+      base::Minutes(5);
+  EXPECT_EQ(expected_new_tab_page_ads_minimum_wait_time,
+            new_tab_page_ads_minimum_wait_time);
+}
+
+TEST(BatAdsServingFeaturesTest, DisabledNewTabPageAdsMinimumWaitTime) {
+  // Arrange
+  const std::vector<base::test::ScopedFeatureList::FeatureAndParams>
+      enabled_features;
+
+  std::vector<base::Feature> disabled_features;
+  disabled_features.push_back(kServing);
+
+  base::test::ScopedFeatureList scoped_feature_list;
+  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
+                                                    disabled_features);
+
+  // Act
+  const base::TimeDelta new_tab_page_ads_minimum_wait_time =
+      GetNewTabPageAdsMinimumWaitTime();
+
+  // Assert
+  const base::TimeDelta expected_new_tab_page_ads_minimum_wait_time =
+      base::Minutes(5);
+  EXPECT_EQ(expected_new_tab_page_ads_minimum_wait_time,
+            new_tab_page_ads_minimum_wait_time);
+}
+
 TEST(BatAdsServingFeaturesTest, MaximumNewTabPageAdsPerDay) {
   // Arrange
   std::vector<base::test::ScopedFeatureList::FeatureAndParams> enabled_features;
