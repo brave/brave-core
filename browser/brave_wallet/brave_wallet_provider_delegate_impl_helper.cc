@@ -43,6 +43,12 @@ void ShowWalletOnboarding(content::WebContents* web_contents) {
 
 void WalletInteractionDetected(content::WebContents* web_contents) {}
 
+// Desktop uses a panel to show all notifications instead of a dialog
+// on Android for permissions
+bool IsWeb3NotificationAllowed() {
+  return true;
+}
+
 void SetCallbackForNewSetupNeededForTesting(
     base::OnceCallback<void()> callback) {
   g_NewSetupNeededForTestingCallback = std::move(callback);

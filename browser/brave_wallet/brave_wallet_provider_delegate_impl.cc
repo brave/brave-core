@@ -130,6 +130,11 @@ void BraveWalletProviderDelegateImpl::RequestPermissions(
     mojom::CoinType type,
     const std::vector<std::string>& accounts,
     RequestPermissionsCallback callback) {
+  if (!IsWeb3NotificationAllowed()) {
+    std::move(callback).Run(mojom::RequestPermissionsError::kNone,
+                            std::vector<std::string>());
+    return;
+  }
   auto request_type = CoinTypeToPermissionRequestType(type);
   auto permission = CoinTypeToPermissionType(type);
   if (!request_type || !permission) {

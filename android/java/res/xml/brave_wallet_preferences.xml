@@ -19,6 +19,12 @@
         android:title="@string/brave_wallet_networks_title"
         android:summary="@string/brave_wallet_networks_summary" />
 
+    <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
+        android:key="web3_notifications_switch"
+        android:title="@string/brave_wallet_show_web3_notifications"
+        android:summaryOn="@string/text_on"
+        android:summaryOff="@string/text_off" />
+
     <org.chromium.chrome.browser.settings.BraveWalletResetTxHistoryAndNoncePreference
         android:key="pref_brave_wallet_tx_history_and_nonce_reset"
         android:title="@string/brave_wallet_clear_tx_and_nonce_setting_title"

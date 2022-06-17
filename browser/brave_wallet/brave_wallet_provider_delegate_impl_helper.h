@@ -26,6 +26,10 @@ void ShowWalletOnboarding(content::WebContents* web_contents);
 // Triggers when any kind interaction from a DApp is detected
 void WalletInteractionDetected(content::WebContents* web_contents);
 
+// Check are web3 notifications allowed or not. Used on Android to
+// show or not a permissions prompt dialog
+bool IsWeb3NotificationAllowed();
+
 #if !BUILDFLAG(IS_ANDROID)
 void SetCallbackForNewSetupNeededForTesting(base::OnceCallback<void()>);
 #endif
