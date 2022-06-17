@@ -161,6 +161,7 @@ provideStrings({
 
   // Tool Tips
   braveWalletToolTipCopyToClipboard: 'Copy to Clipboard',
+  braveWalletToolTipCopiedToClipboard: 'Copied!',
 
   // Accounts Tab
   braveWalletAccountsPrimary: 'Primary crypto accounts',

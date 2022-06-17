@@ -163,6 +163,8 @@ constexpr webui::LocalizedString kLocalizedStrings[] = {
     {"braveWalletRestoreFormText", IDS_BRAVE_WALLET_RESTORE_FORM_TEXT},
     {"braveWalletToolTipCopyToClipboard",
      IDS_BRAVE_WALLET_TOOL_TIP_COPY_TO_CLIPBOARD},
+    {"braveWalletToolTipCopiedToClipboard",
+     IDS_BRAVE_WALLET_TOOL_TIP_COPIED_TO_CLIPBOARD},
     {"braveWalletAccountsPrimary", IDS_BRAVE_WALLET_ACCOUNTS_PRIMARY},
     {"braveWalletAccountsPrimaryDisclaimer",
      IDS_BRAVE_WALLET_ACCOUNTS_PRIMARY_DISCLAIMER},

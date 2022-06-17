@@ -3,19 +3,22 @@ import * as React from 'react'
 import {
   StyledWrapper,
   Tip,
-  Pointer
+  Pointer,
+  ActionNotification
 } from './style'
 
 export interface Props {
   children?: React.ReactNode
   position?: 'left' | 'right'
   text: string
+  actionText?: string
   isVisible: boolean
   isAddress?: boolean
+  isActionVisible?: boolean
 }
 
 function Tooltip (props: Props) {
-  const { children, text, position, isVisible, isAddress } = props
+  const { children, actionText, text, position, isVisible, isAddress, isActionVisible } = props
   const [active, setActive] = React.useState(false)
 
   const showTip = () => {
@@ -32,7 +35,7 @@ function Tooltip (props: Props) {
       onMouseLeave={hideTip}
     >
       {children}
-      {active && isVisible && (
+      {active && isVisible && !isActionVisible && (
         <>
           <Pointer position={position ?? 'center'} />
           <Tip
@@ -43,6 +46,7 @@ function Tooltip (props: Props) {
           </Tip>
         </>
       )}
+      {isActionVisible && <ActionNotification position='center'>{actionText}</ActionNotification>}
     </StyledWrapper>
   )
 }
