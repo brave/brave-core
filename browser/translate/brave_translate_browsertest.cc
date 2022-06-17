@@ -74,10 +74,10 @@ google.translate = (function() {
     }
   };
 })();
-cr.googleTranslate.onLoadCSS("https://translate.googleapis.com/static/translateelement.css");
+cr.googleTranslate.onLoadCSS("https://translate.googleapis.com/translate_static/css/translateelement.css");
 
 // Will call cr.googleTranslate.onTranslateElementLoad():
-cr.googleTranslate.onLoadJavascript("https://translate.googleapis.com/static/main.js");
+cr.googleTranslate.onLoadJavascript("https://translate.googleapis.com/translate_static/js/element/main.js");
 )";
 
 const char kXhrPromiseTemplate[] = R"(
@@ -196,12 +196,12 @@ class BraveTranslateBrowserTest : public InProcessBrowserTest {
         .WillOnce(Return(std::make_tuple(net::HttpStatusCode::HTTP_OK,
                                          "text/javascript", kTestScript)));
 
-    EXPECT_CALL(backend_request_, Call("/static/translateelement.css"))
+    EXPECT_CALL(backend_request_, Call("/translate_static/css/translateelement.css"))
         .WillRepeatedly(
             Return(std::make_tuple(net::HttpStatusCode::HTTP_OK, "text/css",
                                    "body{background-color:#AAA}")));
 
-    EXPECT_CALL(backend_request_, Call("/static/main.js"))
+    EXPECT_CALL(backend_request_, Call("/translate_static/js/element/main.js"))
         .WillOnce(Return(
             std::make_tuple(net::HttpStatusCode::HTTP_OK, "text/javascript",
                             "cr.googleTranslate.onTranslateElementLoad()")));

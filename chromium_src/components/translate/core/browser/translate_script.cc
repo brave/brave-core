@@ -31,7 +31,6 @@ const char* kRedirectAllRequestsToSecurityOrigin = R"(
   const useGoogleTranslateEndpoint = %s;
   const securityOriginHost = new URL(securityOrigin).host;
   const redirectToSecurityOrigin = (url) => {
-    console.log(url)
     let new_url = new URL(url);
     if (useGoogleTranslateEndpoint && new_url.pathname === '/translate_a/t') {
       new_url.host = 'translate.googleapis.com';
