@@ -18,6 +18,7 @@
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/content_settings/core/browser/brave_content_settings_utils.h"
+#include "brave/components/content_settings/core/common/content_settings_util.h"
 #include "build/build_config.h"
 #include "components/content_settings/core/browser/content_settings_pref.h"
 #include "components/content_settings/core/browser/website_settings_registry.h"
@@ -328,7 +329,7 @@ void BravePrefProvider::MigrateShieldsSettingsV2ToV3() {
     // Replace first party placeholder with actual pattern
     if (new_rule.primary_pattern == first_party) {
       new_rule.primary_pattern =
-          brave_shields::CreatePrimaryPattern(new_rule.secondary_pattern);
+          content_settings::CreatePrimaryPattern(new_rule.secondary_pattern);
     }
     new_rules.push_back(std::move(new_rule));
   }
