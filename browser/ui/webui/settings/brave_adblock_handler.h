@@ -49,7 +49,7 @@ class BraveAdBlockHandler : public settings::SettingsPageUIHandler,
 
   void RefreshSubscriptionsList();
 
-  std::unique_ptr<base::ListValue> GetSubscriptions();
+  base::Value::List GetSubscriptions();
 
   Profile* profile_ = nullptr;
 

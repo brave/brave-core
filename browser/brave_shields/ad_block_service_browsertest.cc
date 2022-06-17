@@ -2367,8 +2367,8 @@ IN_PROC_BROWSER_TEST_F(DefaultCookieListFlagEnabledTest, ListEnabled) {
                            ->GetRegionalLists();
     // Although never explicitly enabled, it should be presented as enabled by
     // default at first.
-    ASSERT_EQ(1UL, lists->GetList().size());
-    EXPECT_EQ(true, lists->GetList()[0].FindKey("enabled")->GetBool());
+    ASSERT_EQ(1UL, lists.size());
+    EXPECT_EQ(true, *lists[0].GetDict().FindBool("enabled"));
   }
 
   // Enable the filter list, and then disable it again.
@@ -2392,7 +2392,7 @@ IN_PROC_BROWSER_TEST_F(DefaultCookieListFlagEnabledTest, ListEnabled) {
                            ->regional_service_manager()
                            ->GetRegionalLists();
     // It should be actually disabled now.
-    ASSERT_EQ(1UL, lists->GetList().size());
-    EXPECT_EQ(false, lists->GetList()[0].FindKey("enabled")->GetBool());
+    ASSERT_EQ(1UL, lists.size());
+    EXPECT_EQ(true, *lists[0].GetDict().FindBool("enabled"));
   }
 }
