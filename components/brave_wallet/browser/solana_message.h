@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_SOLANA_MESSAGE_H_
 
 #include <string>
+#include <utility>
 #include <vector>
 
 #include "base/gtest_prod_util.h"
@@ -32,7 +33,9 @@ class SolanaMessage {
 
   absl::optional<std::vector<uint8_t>> Serialize(
       std::vector<std::string>* signers) const;
-  static absl::optional<SolanaMessage> Deserialize(
+
+  // Returns a pair of SolanaMessage and number of signers.
+  static absl::optional<std::pair<SolanaMessage, uint8_t>> Deserialize(
       const std::vector<uint8_t>& bytes);
 
   void set_recent_blockhash(const std::string& recent_blockhash) {
