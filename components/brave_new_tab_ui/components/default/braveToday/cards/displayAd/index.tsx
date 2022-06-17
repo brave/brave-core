@@ -37,7 +37,7 @@ export default function CardDisplayAd (props: Props) {
     let onItemViewed = props.onViewedDisplayAd
     const observer = new VisibilityTimer(() => {
       onItemViewed({ ad: content })
-    }, 100, innerRef.current)
+    }, 1000, innerRef.current)
     observer.startTracking()
     return () => {
       observer.stopTracking()
