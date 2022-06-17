@@ -3091,6 +3091,36 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_BRAVE_WALLET_SHOW_WEB3_NOTIFICATIONS" desc="Brave wallet show web3 notifications preference title text">
       Display Web3 notifications
     </message>
+    <message name="IDS_SUPPORT_EMAIL_TEXT" desc="Vpn support email text">
+      \n\n\n\n#### Brave doesn’t track you or know how you use our app, so we don’t know how you’ve set up VPN. Please share info about the issue you’re experiencing and we’ll do our best to resolve it as soon as we can. ####\n\n
+    </message>
+    <message name="IDS_VPN_HOST_TEXT" desc="Vpn support email text">
+      \n\nVPN Hostname\n <ph name="VALUE">%1$s</ph>
+    </message>
+    <message name="IDS_SUBSCRIPTION_TYPE_TEXT" desc="Vpn support email text">
+      \n\nSubscription Type\n <ph name="VALUE">%1$s</ph>
+    </message>
+    <message name="IDS_PLAYSTORE_TOKEN_TEXT" desc="Vpn support email text">
+      \n\nPlaystore Token\n <ph name="VALUE">%1$s</ph>
+    </message>
+    <message name="IDS_APP_VERSION_TEXT" desc="Vpn support email text">
+      \n\nApp Version\n <ph name="VALUE">%1$s</ph>
+    </message>
+    <message name="IDS_TIMEZONE_TEXT" desc="Vpn support email text">
+      \n\nTimezone\n
+    </message>
+    <message name="IDS_NETWORK_TYPE_TEXT" desc="Vpn support email text">
+      \n\nNetwork Type\n
+    </message>
+    <message name="IDS_CELLULAR_CARRIER_TEXT" desc="Vpn support email text">
+      \n\nCellular Carrier\n
+    </message>
+    <message name="IDS_OTHER_ISSUE_TEXT" desc="Vpn support email text">
+      \n\nOther Issue\n
+    </message>
+    <message name="IDS_PLATFORM_TEXT" desc="Vpn support email text">
+      \n\nPlatform\n
+    </message>
   </messages>
   </release>
 </grit>

@@ -89,41 +89,48 @@ public class BraveVpnSupportActivity extends AsyncInitializationActivity {
         btnContinueToEmail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                StringBuilder bodyText = new StringBuilder(
-                        "\n\n\n\n\n#### Brave doesn’t track you or know how you use our app, so we don’t know how you’ve set up VPN. Please share info about the issue you’re experiencing and we’ll do our best to resolve it as soon as we can. ####\n");
+                StringBuilder bodyText =
+                        new StringBuilder(getResources().getString(R.string.support_email_text));
                 if (vpnHostnameSwitch.isChecked()) {
-                    bodyText.append("\n\nVPN Hostname\n" + BraveVpnPrefUtils.getHostname());
+                    bodyText.append(String.format(getResources().getString(R.string.vpn_host_text),
+                            BraveVpnPrefUtils.getHostname()));
                 }
                 if (subscriptionTypeSwitch.isChecked()) {
-                    bodyText.append("\n\nSubscription Type\n" + BraveVpnPrefUtils.getProductId());
+                    bodyText.append(
+                            String.format(getResources().getString(R.string.subscription_type_text),
+                                    BraveVpnPrefUtils.getProductId()));
                 }
                 if (appReceiptSwitch.isChecked()) {
                     bodyText.append(
-                            "\n\nPlay store token\n" + BraveVpnPrefUtils.getPurchaseToken());
+                            String.format(getResources().getString(R.string.playstore_token_text),
+                                    BraveVpnPrefUtils.getPurchaseToken()));
                 }
                 if (appVersionSwitch.isChecked()) {
-                    bodyText.append("\n\nApp Version\n"
-                            + AboutChromeSettings.getApplicationVersion(
-                                    BraveVpnSupportActivity.this,
-                                    AboutSettingsBridge.getApplicationVersion()));
+                    bodyText.append(String.format(
+                            getResources().getString(R.string.app_version_text),
+                            AboutChromeSettings.getApplicationVersion(BraveVpnSupportActivity.this,
+                                    AboutSettingsBridge.getApplicationVersion())));
                 }
                 if (timezoneSwitch.isChecked()) {
-                    bodyText.append("\n\nTimezone\n").append(TimeZone.getDefault().getID());
+                    bodyText.append(getResources().getString(R.string.timezone_text))
+                            .append(TimeZone.getDefault().getID());
                 }
                 if (networkTypeSwitch.isChecked()) {
-                    bodyText.append("\n\nNetwork Type\n").append(getNetworkType());
+                    bodyText.append(getResources().getString(R.string.network_type_text))
+                            .append(getNetworkType());
                 }
                 if (cellularCarrierSwitch.isChecked()) {
-                    bodyText.append("\n\nCellular Carrier\n").append(getCellularCarrier());
+                    bodyText.append(getResources().getString(R.string.cellular_carrier_text))
+                            .append(getCellularCarrier());
                 }
 
-                bodyText.append("\n\nOther Issue\n");
+                bodyText.append(getResources().getString(R.string.other_issue_text));
                 AppCompatRadioButton checkedRadioButton =
                         findViewById(otherIssuesRadioGroup.getCheckedRadioButtonId());
-                bodyText.append(checkedRadioButton.getText() + "\n");
-                bodyText.append("\n\nPlatform\n")
-                        .append("Android"
-                                + "\n");
+                bodyText.append(checkedRadioButton.getText()).append("\n");
+                bodyText.append(getResources().getString(R.string.platform_text))
+                        .append("Android")
+                        .append("\n");
 
                 composeEmail(bodyText.toString());
             }
