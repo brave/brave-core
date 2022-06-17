@@ -10,27 +10,25 @@
 #include <string>
 #include <vector>
 
+#include "base/values.h"
 #include "brave/components/brave_vpn/mojom/brave_vpn.mojom.h"
-
-namespace base {
-class Value;
-}  // namespace base
 
 namespace brave_vpn {
 
 struct Hostname;
 
-bool ValidateCachedRegionData(const base::Value& region_value);
+bool ValidateCachedRegionData(const base::Value::List& region_value);
 std::string GetBraveVPNPaymentsEnv(const std::string& env);
 
 base::Value GetValueFromRegion(const mojom::Region& region);
 std::unique_ptr<Hostname> PickBestHostname(
     const std::vector<Hostname>& hostnames);
-std::vector<Hostname> ParseHostnames(const base::Value& hostnames);
-std::vector<mojom::Region> ParseRegionList(const base::Value& region_list);
-base::Value GetValueWithTicketInfos(const std::string& email,
-                                    const std::string& subject,
-                                    const std::string& body);
+std::vector<Hostname> ParseHostnames(const base::Value::List& hostnames);
+std::vector<mojom::Region> ParseRegionList(
+    const base::Value::List& region_list);
+base::Value::Dict GetValueWithTicketInfos(const std::string& email,
+                                          const std::string& subject,
+                                          const std::string& body);
 mojom::RegionPtr GetRegionPtrWithNameFromRegionList(
     const std::string& name,
     const std::vector<mojom::Region> region_list);

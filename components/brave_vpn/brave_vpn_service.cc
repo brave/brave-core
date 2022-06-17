@@ -25,7 +25,6 @@
 #include "base/notreached.h"
 #include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
-#include "base/values.h"
 #include "brave/components/brave_vpn/brave_vpn_constants.h"
 #include "brave/components/brave_vpn/brave_vpn_service_helper.h"
 #include "brave/components/brave_vpn/brave_vpn_utils.h"
@@ -77,9 +76,9 @@ GURL GetURLWithPath(const std::string& host, const std::string& path) {
   return GURL(std::string(url::kHttpsScheme) + "://" + host).Resolve(path);
 }
 
-std::string CreateJSONRequestBody(const base::Value& dict) {
+std::string CreateJSONRequestBody(base::ValueView node) {
   std::string json;
-  base::JSONWriter::Write(dict, &json);
+  base::JSONWriter::Write(node, &json);
   return json;
 }
 
@@ -89,20 +88,14 @@ std::string GetSubscriberCredentialFromJson(const std::string& json) {
           json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
                     base::JSONParserOptions::JSON_PARSE_RFC);
   absl::optional<base::Value>& records_v = value_with_error.value;
-  if (!records_v) {
+  if (!records_v && records_v->is_dict()) {
     VLOG(1) << __func__ << "Invalid response, could not parse JSON.";
     return "";
   }
 
-  const base::DictionaryValue* response_dict;
-  if (!records_v->GetAsDictionary(&response_dict)) {
-    return "";
-  }
-
-  const base::Value* subscriber_credential =
-      records_v->FindKey("subscriber-credential");
-  return subscriber_credential == nullptr ? ""
-                                          : subscriber_credential->GetString();
+  const auto& dict = records_v->GetDict();
+  const auto* subscriber_credential = dict.FindString("subscriber-credential");
+  return subscriber_credential == nullptr ? "" : *subscriber_credential;
 }
 #if !BUILDFLAG(IS_ANDROID)
 bool IsNetworkAvailable() {
@@ -465,12 +458,12 @@ void BraveVpnService::LoadCachedRegionData() {
     return;
 
   // If cached one is outdated, don't use it.
-  if (!ValidateCachedRegionData(*preference->GetValue())) {
+  if (!ValidateCachedRegionData(preference->GetValue()->GetList())) {
     VLOG(2) << __func__ << " : Cached data is outdate. Will get fetch latest.";
     return;
   }
 
-  if (ParseAndCacheRegionList(*preference->GetValue())) {
+  if (ParseAndCacheRegionList(preference->GetValue()->GetList())) {
     VLOG(2) << __func__ << " : Loaded cached region list";
     return;
   }
@@ -481,11 +474,11 @@ void BraveVpnService::LoadCachedRegionData() {
 void BraveVpnService::SetRegionListToPrefs() {
   DCHECK(!regions_.empty());
 
-  base::Value regions_list(base::Value::Type::LIST);
+  base::Value::List regions_list;
   for (const auto& region : regions_) {
     regions_list.Append(GetValueFromRegion(region));
   }
-  prefs_->Set(prefs::kBraveVPNRegionList, std::move(regions_list));
+  prefs_->Set(prefs::kBraveVPNRegionList, base::Value(std::move(regions_list)));
 }
 
 void BraveVpnService::OnFetchRegionList(bool background_fetch,
@@ -503,11 +496,11 @@ void BraveVpnService::OnFetchRegionList(bool background_fetch,
   absl::optional<base::Value> value = base::JSONReader::Read(region_list);
   if (value && value->is_list()) {
     if (background_fetch) {
-      ParseAndCacheRegionList(*value, true);
+      ParseAndCacheRegionList(value->GetList(), true);
       return;
     }
 
-    if (ParseAndCacheRegionList(*value, true)) {
+    if (ParseAndCacheRegionList(value->GetList(), true)) {
       VLOG(2) << "Got valid region list";
       // Set default device region and it'll be updated when received valid
       // timezone info.
@@ -526,12 +519,10 @@ void BraveVpnService::OnFetchRegionList(bool background_fetch,
   }
 }
 
-bool BraveVpnService::ParseAndCacheRegionList(const base::Value& region_value,
-                                              bool save_to_prefs) {
+bool BraveVpnService::ParseAndCacheRegionList(
+    const base::Value::List& region_value,
+    bool save_to_prefs) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  DCHECK(region_value.is_list());
-  if (!region_value.is_list())
-    return false;
 
   regions_ = ParseRegionList(region_value);
   VLOG(2) << __func__ << " : has regionlist: " << !regions_.empty();
@@ -552,7 +543,7 @@ void BraveVpnService::OnFetchTimezones(const std::string& timezones_list,
   absl::optional<base::Value> value = base::JSONReader::Read(timezones_list);
   if (success && value && value->is_list()) {
     VLOG(2) << "Got valid timezones list";
-    SetDeviceRegionWithTimezone(*value);
+    SetDeviceRegionWithTimezone(value->GetList());
   } else {
     VLOG(2) << "Failed to get invalid timezones list";
   }
@@ -563,27 +554,26 @@ void BraveVpnService::OnFetchTimezones(const std::string& timezones_list,
 }
 
 void BraveVpnService::SetDeviceRegionWithTimezone(
-    const base::Value& timezones_value) {
+    const base::Value::List& timezones_value) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  DCHECK(timezones_value.is_list());
 
   const std::string current_time_zone = GetCurrentTimeZone();
   if (current_time_zone.empty())
     return;
 
-  for (const auto& timezones : timezones_value.GetList()) {
+  for (const auto& timezones : timezones_value) {
     DCHECK(timezones.is_dict());
     if (!timezones.is_dict())
       continue;
 
-    const std::string* region_name = timezones.FindStringKey("name");
+    const std::string* region_name = timezones.GetDict().FindString("name");
     if (!region_name)
       continue;
-    const base::Value* timezone_list_value = timezones.FindKey("timezones");
-    if (!timezone_list_value || !timezone_list_value->is_list())
+    const auto* timezone_list_value = timezones.GetDict().FindList("timezones");
+    if (!timezone_list_value)
       continue;
 
-    for (const auto& timezone : timezone_list_value->GetList()) {
+    for (const auto& timezone : *timezone_list_value) {
       DCHECK(timezone.is_string());
       if (!timezone.is_string())
         continue;
@@ -747,7 +737,7 @@ void BraveVpnService::OnFetchHostnames(const std::string& region,
 
   absl::optional<base::Value> value = base::JSONReader::Read(hostnames);
   if (value && value->is_list()) {
-    ParseAndCacheHostnames(region, *value);
+    ParseAndCacheHostnames(region, value->GetList());
     return;
   }
 
@@ -757,15 +747,8 @@ void BraveVpnService::OnFetchHostnames(const std::string& region,
 
 void BraveVpnService::ParseAndCacheHostnames(
     const std::string& region,
-    const base::Value& hostnames_value) {
+    const base::Value::List& hostnames_value) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  DCHECK(hostnames_value.is_list());
-  if (!hostnames_value.is_list()) {
-    VLOG(2) << __func__ << " : failed to parse hostnames for " << region;
-    UpdateAndNotifyConnectionStateChange(ConnectionState::CONNECT_FAILED);
-    return;
-  }
-
   std::vector<Hostname> hostnames = ParseHostnames(hostnames_value);
 
   if (hostnames.empty()) {
@@ -849,8 +832,9 @@ void BraveVpnService::OnGetProfileCredentials(
   if (value && value->is_dict()) {
     constexpr char kUsernameKey[] = "eap-username";
     constexpr char kPasswordKey[] = "eap-password";
-    const std::string* username = value->FindStringKey(kUsernameKey);
-    const std::string* password = value->FindStringKey(kPasswordKey);
+    const auto& dict = value->GetDict();
+    const std::string* username = dict.FindString(kUsernameKey);
+    const std::string* password = dict.FindString(kPasswordKey);
     if (!username || !password) {
       VLOG(2) << __func__ << " : it's invalid profile credential";
       UpdateAndNotifyConnectionStateChange(ConnectionState::CONNECT_FAILED);
@@ -962,9 +946,8 @@ void BraveVpnService::OnCredentialSummary(const std::string& domain,
   absl::optional<base::Value>& records_v = value_with_error.value;
 
   if (records_v && records_v->is_dict()) {
-    const base::Value* active = records_v->FindKey("active");
-    bool has_credential = active && active->is_bool() && active->GetBool();
-    if (has_credential) {
+    auto active = records_v->GetDict().FindBool("active").value_or(false);
+    if (active) {
       VLOG(1) << __func__ << " : Active credential found!";
       // if a credential is ready, we can present it
       EnsureMojoConnected();
@@ -1118,8 +1101,8 @@ void BraveVpnService::GetHostnamesForRegion(ResponseCallback callback,
       base::BindOnce(&BraveVpnService::OnGetResponse,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
   GURL base_url = GetURLWithPath(kVpnHost, kHostnameForRegion);
-  base::Value dict(base::Value::Type::DICTIONARY);
-  dict.SetStringKey("region", region);
+  base::Value::Dict dict;
+  dict.Set("region", region);
   std::string request_body = CreateJSONRequestBody(dict);
   OAuthRequest(base_url, "POST", request_body, std::move(internal_callback));
 }
@@ -1132,8 +1115,8 @@ void BraveVpnService::GetProfileCredentials(
       base::BindOnce(&BraveVpnService::OnGetResponse,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
   GURL base_url = GetURLWithPath(hostname, kProfileCredential);
-  base::Value dict(base::Value::Type::DICTIONARY);
-  dict.SetStringKey("subscriber-credential", subscriber_credential);
+  base::Value::Dict dict;
+  dict.Set("subscriber-credential", subscriber_credential);
   std::string request_body = CreateJSONRequestBody(dict);
   OAuthRequest(base_url, "POST", request_body, std::move(internal_callback));
 }
@@ -1147,10 +1130,10 @@ void BraveVpnService::GetWireguardProfileCredentials(
       base::BindOnce(&BraveVpnService::OnGetResponse,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
   GURL base_url = GetURLWithPath(hostname, kCredential);
-  base::Value dict(base::Value::Type::DICTIONARY);
-  dict.SetStringKey("subscriber-credential", subscriber_credential);
-  dict.SetStringKey("public-key", public_key);
-  dict.SetStringKey("transport-protocol", "wireguard");
+  base::Value::Dict dict;
+  dict.Set("subscriber-credential", subscriber_credential);
+  dict.Set("public-key", public_key);
+  dict.Set("transport-protocol", "wireguard");
   std::string request_body = CreateJSONRequestBody(dict);
   OAuthRequest(base_url, "POST", request_body, std::move(internal_callback));
 }
@@ -1166,9 +1149,9 @@ void BraveVpnService::VerifyCredentials(
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
   GURL base_url =
       GetURLWithPath(hostname, kCredential + client_id + "/verify-credentials");
-  base::Value dict(base::Value::Type::DICTIONARY);
-  dict.SetStringKey("subscriber-credential", subscriber_credential);
-  dict.SetStringKey("api-auth-token", api_auth_token);
+  base::Value::Dict dict;
+  dict.Set("subscriber-credential", subscriber_credential);
+  dict.Set("api-auth-token", api_auth_token);
   std::string request_body = CreateJSONRequestBody(dict);
   OAuthRequest(base_url, "POST", request_body, std::move(internal_callback));
 }
@@ -1184,9 +1167,9 @@ void BraveVpnService::InvalidateCredentials(
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
   GURL base_url = GetURLWithPath(
       hostname, kCredential + client_id + "/invalidate-credentials");
-  base::Value dict(base::Value::Type::DICTIONARY);
-  dict.SetStringKey("subscriber-credential", subscriber_credential);
-  dict.SetStringKey("api-auth-token", api_auth_token);
+  base::Value::Dict dict;
+  dict.Set("subscriber-credential", subscriber_credential);
+  dict.Set("api-auth-token", api_auth_token);
   std::string request_body = CreateJSONRequestBody(dict);
   OAuthRequest(base_url, "POST", request_body, std::move(internal_callback));
 }
@@ -1200,11 +1183,11 @@ void BraveVpnService::VerifyPurchaseToken(ResponseCallback callback,
       base::BindOnce(&BraveVpnService::OnGetResponse,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
   GURL base_url = GetURLWithPath(kVpnHost, kVerifyPurchaseToken);
-  base::Value dict(base::Value::Type::DICTIONARY);
-  dict.SetStringKey("purchase-token", purchase_token);
-  dict.SetStringKey("product-id", product_id);
-  dict.SetStringKey("product-type", product_type);
-  dict.SetStringKey("bundle-id", bundle_id);
+  base::Value::Dict dict;
+  dict.Set("purchase-token", purchase_token);
+  dict.Set("product-id", product_id);
+  dict.Set("product-type", product_type);
+  dict.Set("bundle-id", bundle_id);
   std::string request_body = CreateJSONRequestBody(dict);
   OAuthRequest(base_url, "POST", request_body, std::move(internal_callback));
 }
@@ -1262,12 +1245,12 @@ void BraveVpnService::GetSubscriberCredential(
       base::BindOnce(&BraveVpnService::OnGetSubscriberCredential,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
   GURL base_url = GetURLWithPath(kVpnHost, kCreateSubscriberCredentialV12);
-  base::Value dict(base::Value::Type::DICTIONARY);
-  dict.SetStringKey("product-type", product_type);
-  dict.SetStringKey("product-id", product_id);
-  dict.SetStringKey("validation-method", validation_method);
-  dict.SetStringKey("purchase-token", purchase_token);
-  dict.SetStringKey("bundle-id", bundle_id);
+  base::Value::Dict dict;
+  dict.Set("product-type", product_type);
+  dict.Set("product-id", product_id);
+  dict.Set("validation-method", validation_method);
+  dict.Set("purchase-token", purchase_token);
+  dict.Set("bundle-id", bundle_id);
   std::string request_body = CreateJSONRequestBody(dict);
   OAuthRequest(base_url, "POST", request_body, std::move(internal_callback));
 }
@@ -1298,9 +1281,9 @@ void BraveVpnService::GetSubscriberCredentialV12(
 
   const GURL base_url =
       GetURLWithPath(kVpnHost, kCreateSubscriberCredentialV12);
-  base::Value dict(base::Value::Type::DICTIONARY);
-  dict.SetStringKey("validation-method", "brave-premium");
-  dict.SetStringKey("brave-vpn-premium-monthly-pass", monthly_pass);
+  base::Value::Dict dict;
+  dict.Set("validation-method", "brave-premium");
+  dict.Set("brave-vpn-premium-monthly-pass", monthly_pass);
   std::string request_body = CreateJSONRequestBody(dict);
   OAuthRequest(base_url, "POST", request_body, std::move(internal_callback),
                {{"Brave-Payments-Environment", payments_environment}});
