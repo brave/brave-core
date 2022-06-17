@@ -10,6 +10,7 @@
 
 #include "base/containers/flat_map.h"
 #include "bat/ads/internal/covariates/covariate_log_entry_interface.h"
+#include "bat/ads/public/interfaces/ads.mojom.h"
 #include "brave/components/brave_federated/public/interfaces/brave_federated.mojom.h"
 
 namespace base {
@@ -40,7 +41,7 @@ class CovariateManager final {
   brave_federated::mojom::TrainingInstancePtr GetTrainingInstance() const;
 
   void SetNotificationAdServedAt(const base::Time time);
-  void SetNotificationAdClicked(bool clicked);
+  void SetNotificationAdEvent(const mojom::NotificationAdEventType event_type);
   void LogTrainingInstance();
 
  private:

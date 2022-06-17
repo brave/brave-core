@@ -37,6 +37,7 @@
 #include "bat/ads/internal/conversions/conversion_queue_item_info.h"
 #include "bat/ads/internal/conversions/conversions.h"
 #include "bat/ads/internal/covariates/covariate_manager.h"
+#include "bat/ads/internal/covariates/log_entries/notification_ad_event.h"
 #include "bat/ads/internal/creatives/notification_ads/notification_ad_manager.h"
 #include "bat/ads/internal/creatives/search_result_ads/search_result_ad_info.h"
 #include "bat/ads/internal/database/database_manager.h"
@@ -842,7 +843,8 @@ void AdsImpl::OnNotificationAdClicked(const NotificationAdInfo& ad) {
   epsilon_greedy_bandit_processor_->Process(
       {ad.segment, mojom::NotificationAdEventType::kClicked});
 
-  CovariateManager::Get()->SetNotificationAdClicked(true);
+  CovariateManager::Get()->SetNotificationAdEvent(
+      mojom::NotificationAdEventType::kClicked);
   CovariateManager::Get()->LogTrainingInstance();
 }
 
@@ -853,7 +855,8 @@ void AdsImpl::OnNotificationAdDismissed(const NotificationAdInfo& ad) {
   epsilon_greedy_bandit_processor_->Process(
       {ad.segment, mojom::NotificationAdEventType::kDismissed});
 
-  CovariateManager::Get()->SetNotificationAdClicked(false);
+  CovariateManager::Get()->SetNotificationAdEvent(
+      mojom::NotificationAdEventType::kDismissed);
   CovariateManager::Get()->LogTrainingInstance();
 }
 
@@ -861,7 +864,8 @@ void AdsImpl::OnNotificationAdTimedOut(const NotificationAdInfo& ad) {
   epsilon_greedy_bandit_processor_->Process(
       {ad.segment, mojom::NotificationAdEventType::kTimedOut});
 
-  CovariateManager::Get()->SetNotificationAdClicked(false);
+  CovariateManager::Get()->SetNotificationAdEvent(
+      mojom::NotificationAdEventType::kTimedOut);
   CovariateManager::Get()->LogTrainingInstance();
 }
 

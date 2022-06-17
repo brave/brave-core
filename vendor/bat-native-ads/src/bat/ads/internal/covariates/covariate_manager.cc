@@ -14,7 +14,7 @@
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/covariates/log_entries/average_clickthrough_rate.h"
 #include "bat/ads/internal/covariates/log_entries/last_notification_ad_was_clicked.h"
-#include "bat/ads/internal/covariates/log_entries/notification_ad_clicked.h"
+#include "bat/ads/internal/covariates/log_entries/notification_ad_event.h"
 #include "bat/ads/internal/covariates/log_entries/notification_ad_served_at.h"
 #include "bat/ads/internal/covariates/log_entries/number_of_user_activity_events.h"
 #include "bat/ads/internal/covariates/log_entries/time_since_last_user_activity_event.h"
@@ -189,10 +189,11 @@ void CovariateManager::SetNotificationAdServedAt(const base::Time time) {
   SetLogEntry(std::move(notification_ad_served_at));
 }
 
-void CovariateManager::SetNotificationAdClicked(bool clicked) {
-  auto notification_ad_clicked = std::make_unique<NotificationAdClicked>();
-  notification_ad_clicked->SetClicked(clicked);
-  SetLogEntry(std::move(notification_ad_clicked));
+void CovariateManager::SetNotificationAdEvent(
+    const mojom::NotificationAdEventType event_type) {
+  auto notification_ad_event = std::make_unique<NotificationAdEvent>();
+  notification_ad_event->SetEventType(event_type);
+  SetLogEntry(std::move(notification_ad_event));
 }
 
 void CovariateManager::LogTrainingInstance() {
