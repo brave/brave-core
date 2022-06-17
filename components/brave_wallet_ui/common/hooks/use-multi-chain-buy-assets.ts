@@ -1,0 +1,86 @@
+// Copyright (c) 2022 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// you can obtain one at http://mozilla.org/MPL/2.0/.
+
+import * as React from 'react'
+import { useSelector } from 'react-redux'
+
+// utils
+import { getNetworkInfo } from '../../utils/network-utils'
+
+// types
+import { BraveWallet, SupportedOnRampNetworks, WalletState } from '../../constants/types'
+
+// Hooks
+import { useIsMounted } from './useIsMounted'
+import { useLib } from './useLib'
+import { BuyOptions } from '../../options/buy-with-options'
+import { isSelectedAssetInAssetOptions } from '../../utils/asset-utils'
+
+export function useMultiChainBuyAssets () {
+  // redux
+  const { networkList } = useSelector(({ wallet }: { wallet: WalletState }) => wallet)
+
+  // custom hooks
+  const isMounted = useIsMounted()
+  const { getAllBuyAssets } = useLib()
+
+  // state
+  const [selectedAsset, setSelectedAsset] = React.useState<BraveWallet.BlockchainToken | undefined>()
+  const [options, setOptions] = React.useState<
+    {
+      wyreAssetOptions: BraveWallet.BlockchainToken[]
+      rampAssetOptions: BraveWallet.BlockchainToken[]
+      allAssetOptions: BraveWallet.BlockchainToken[]
+    }
+  >({
+    wyreAssetOptions: [],
+    rampAssetOptions: [],
+    allAssetOptions: []
+  })
+
+  // memos
+  const buyAssetNetworks = React.useMemo(() => {
+    return networkList.filter(n =>
+      SupportedOnRampNetworks.includes(n.chainId)
+    )
+  }, [networkList])
+
+  const selectedAssetNetwork = React.useMemo(() => {
+    return selectedAsset ? getNetworkInfo(selectedAsset.chainId, selectedAsset.coin, buyAssetNetworks) : undefined
+  }, [selectedAsset, buyAssetNetworks])
+
+  const selectedAssetBuyOptions = React.useMemo(() => {
+    return selectedAsset
+      ? BuyOptions.filter(buyOption => {
+          return isSelectedAssetInAssetOptions(
+            selectedAsset,
+            buyOption.id === BraveWallet.OnRampProvider.kWyre
+              ? options.wyreAssetOptions
+              : buyOption.id === BraveWallet.OnRampProvider.kRamp ? options.rampAssetOptions : []
+          )
+        })
+      : []
+  }, [selectedAsset, options])
+
+  // methods
+  const getAllBuyOptionsAllChains = React.useCallback(() => {
+    getAllBuyAssets()
+      .then(result => {
+        if (isMounted) {
+          setOptions(result)
+        }
+      })
+  }, [getAllBuyAssets, isMounted])
+
+  return {
+    ...options,
+    selectedAsset,
+    setSelectedAsset,
+    selectedAssetNetwork,
+    selectedAssetBuyOptions,
+    buyAssetNetworks,
+    getAllBuyOptionsAllChains
+  }
+}

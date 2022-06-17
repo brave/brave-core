@@ -4,7 +4,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import * as BraveWallet from 'gen/brave/components/brave_wallet/common/brave_wallet.mojom.m.js'
-import { getRampNetworkPrefix } from './string-utils'
+import { getRampNetworkPrefix, httpifyIpfsUrl } from './string-utils'
 
 export const getUniqueAssets = (assets: BraveWallet.BlockchainToken[]) => {
   return assets.filter((asset, index) => {
@@ -14,7 +14,10 @@ export const getUniqueAssets = (assets: BraveWallet.BlockchainToken[]) => {
   })
 }
 
-export const isSelectedAssetInAssetOptions = (selectedAsset: BraveWallet.BlockchainToken, assetOptions: BraveWallet.BlockchainToken[]) => {
+export const isSelectedAssetInAssetOptions = (
+  selectedAsset: BraveWallet.BlockchainToken,
+  assetOptions: BraveWallet.BlockchainToken[]
+) => {
   return assetOptions.findIndex(asset => {
     return asset.contractAddress.toLowerCase() === selectedAsset?.contractAddress.toLowerCase() &&
       asset.chainId === selectedAsset.chainId &&
@@ -62,3 +65,14 @@ export const auroraSupportedContractAddresses = [
   '0x4691937a7508860f876c9c0a2a617e7d9e945d4b', // WOO
   '0x0bc529c00c6401aef6d220be8c6ea1667f6ad93e' // YFI
 ].map(contractAddress => contractAddress.toLowerCase())
+
+export const addLogoToToken = (token: BraveWallet.BlockchainToken) => {
+  return {
+    ...token,
+    logo: token.logo?.startsWith('ipfs://')
+      ? httpifyIpfsUrl(token.logo)
+      : token.logo?.startsWith('data:image/')
+        ? token.logo
+        : `chrome://erc-token-images/${token.logo}`
+  }
+}
