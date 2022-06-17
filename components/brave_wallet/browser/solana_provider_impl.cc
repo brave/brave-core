@@ -152,26 +152,25 @@ absl::optional<SolanaMessage> SolanaProviderImpl::GetDeserializedMessage(
     return absl::nullopt;
   }
 
-  auto msg = SolanaMessage::Deserialize(message_bytes);
-  if (!msg) {
+  auto msg_and_num_of_signers = SolanaMessage::Deserialize(message_bytes);
+  if (!msg_and_num_of_signers) {
     return absl::nullopt;
   }
+  auto& msg = msg_and_num_of_signers->first;
+  auto& num_of_signers = msg_and_num_of_signers->second;
 
   // Sanity check after deserialization:
   // 1. Fee payer should be the current selected account.
-  // 2. Serialize the created message object and encode in Base58 will be the
   //    same as original encoded message.
-  // 3. Only one signer (the fee payer) is allowed, we do not support multisig
+  // 2. Only one signer (the fee payer) is allowed, we do not support multisig
   //    for dApp requests currently.
-  if (account != msg->fee_payer())
+  // Note: We cannot check Base58Encode(msg->Serialize()) is equal to the
+  // original encoded message passed in because the order of accounts with the
+  // same is_signer and is_writable value can be different between different
+  // implementation. See https://github.com/brave/brave-browser/issues/23542
+  // for more details.
+  if (account != msg.fee_payer() || num_of_signers != 1)
     return absl::nullopt;
-  std::vector<std::string> signers;
-  auto serialized_message = msg->Serialize(&signers);
-  if (!serialized_message ||
-      Base58Encode(*serialized_message) != encoded_serialized_msg ||
-      signers.size() != 1) {
-    return absl::nullopt;
-  }
 
   return msg;
 }
