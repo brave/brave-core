@@ -30,7 +30,8 @@ export const NextButtonRow = styled.div`
   align-self: center;
   align-items: center;
   justify-content: center;
-  width: 100px;
+  min-width: 100px;
+  max-width: 226px;
   margin-bottom: 28px;
 `
 
