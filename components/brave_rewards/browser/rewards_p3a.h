@@ -13,12 +13,9 @@
 
 #include "base/containers/flat_map.h"
 #include "base/strings/string_piece.h"
+#include "base/values.h"
 
 class PrefService;
-
-namespace base {
-class DictionaryValue;
-}
 
 namespace brave_rewards {
 namespace p3a {
@@ -89,7 +86,7 @@ void RecordAdsEnabledDuration(PrefService* prefs, bool ads_enabled);
 double CalcWalletBalance(base::flat_map<std::string, double> wallets,
                          double user_funds);
 
-void ExtractAndLogStats(const base::DictionaryValue& dict);
+void ExtractAndLogStats(const base::Value::Dict& dict);
 
 }  // namespace p3a
 }  // namespace brave_rewards

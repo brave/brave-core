@@ -377,12 +377,10 @@ class UpholdStateMachine : public RewardsStateBrowserTest,
 
     absl::optional<base::Value> value = base::JSONReader::Read(json);
     if (value && value->is_dict()) {
-      base::DictionaryValue* dictionary = nullptr;
-      if (value->GetAsDictionary(&dictionary)) {
-        suffix += to_string(dictionary->FindIntKey("status").value_or(-1));
-        suffix += to_string("token", dictionary->FindStringKey("token"));
-        suffix += to_string("address", dictionary->FindStringKey("address"));
-      }
+      const auto& dict = value->GetDict();
+      suffix += to_string(dict.FindInt("status").value_or(-1));
+      suffix += to_string("token", dict.FindString("token"));
+      suffix += to_string("address", dict.FindString("address"));
     }
 
     return suffix;
@@ -395,7 +393,8 @@ class UpholdStateMachine : public RewardsStateBrowserTest,
                               .str();
   }
 
-  static std::string to_string(const std::string& key, std::string* value) {
+  static std::string to_string(const std::string& key,
+                               const std::string* value) {
     std::string suffix{'_' + key};
 
     if (value) {
