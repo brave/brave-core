@@ -80,8 +80,9 @@ TEST(SolanaMessageUnitTest, SerializeDeserialize) {
   // Deserialize and serialize message again should have the same byte array.
   auto deserialized_message = SolanaMessage::Deserialize(*message_bytes);
   ASSERT_TRUE(deserialized_message);
+  EXPECT_EQ(deserialized_message->second, 1u);
   signers.clear();
-  auto serialized_message = deserialized_message->Serialize(&signers);
+  auto serialized_message = deserialized_message->first.Serialize(&signers);
   ASSERT_TRUE(serialized_message);
   EXPECT_EQ(serialized_message, *message_bytes);
   EXPECT_EQ(signers, std::vector<std::string>({kFromAccount}));
