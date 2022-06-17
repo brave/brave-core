@@ -1052,9 +1052,6 @@ Trust tokens improve privacy on the web and can’t be used to find out who you 
       <message name="IDS_PRIVACY_SANDBOX_NOTICE_DESCRIPTION_THREE" desc="A conclusion paragraph for the entire page. It sits beneath the “More control over the ads you see” subtitle but it’s no more associated with that topic than “Limit sharing between sites”.* “in Brave settings”: The URL is chrome://settings/privacySandbox. We don’t make it a live link because we need the users to stay in this moment until they make a choice.">
         You can learn more about these features in Brave settings.
       </message>
-      <message name="IDS_PRIVACY_SANDBOX_NOTICE_SHEET_CONTENT_DESCRIPTION" desc="The content description for the Privacy Sandbox prompt bottom sheet. Read as accessibility string when tapping on the bottom sheet.">
-        Privacy Sandbox prompt
-      </message>
       <message name="IDS_PRIVACY_SANDBOX_NOTICE_SHEET_OPENED_HALF" desc="The accessibility string read when the Privacy Sandbox prompt bottom sheet is half opened.">
         Privacy Sandbox prompt opened at half height
       </message>
@@ -1152,6 +1149,9 @@ Your Brave account may have other forms of browsing history like searches and ac
       </message>
       <message name="IDS_CLEAR_SEARCH_HISTORY_LINK_OTHER_FORMS" desc="Text informing the user that they can clear their Brave data using MyActivity when their Default Search Engine is not Brave.">
         <ph name="BEGIN_LINK1">&lt;link1&gt;</ph>Other forms of activity<ph name="END_LINK1">&lt;/link1&gt;</ph> may be saved in your Brave sync chain when you’re signed in. You can delete them anytime.
+      </message>
+      <message name="IDS_SIGN_OUT_OF_CHROME_LINK" desc="The text is displayed in a footer in a dialog to clear browsing data. The link ‘sign out of Brave’ opens a dialog where the user can confirm if they want to sign out of Brave.">
+          To sign out of your Brave sync chain on all websites, <ph name="BEGIN_LINK1">&lt;link1&gt;</ph>sign out of Brave<ph name="END_LINK1">&lt;/link1&gt;</ph>.
       </message>
       <message name="IDS_CLEAR_SEARCH_HISTORY_NON_GOOGLE_DSE" desc="Text informing the user about the way to clear their search history when their Default Search Engine is not Brave.">
         Your search engine is <ph name="dse">%1$s<ex>Bing</ex></ph>. See their instructions for deleting your search history, if applicable.
@@ -2961,7 +2961,7 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
         Use Brave your way
       </message>
       <message name="IDS_SYNC_PROMO_DESCRIPTION_SETTINGS" desc="This string is the body of a card that appears when the user opens Brave's settings; the user may be signed in to Brave, but isn't syncing their Brave data. The headline above this string is 'Browse more easily'. There's no character limit but try to keep the translation under 120 characters." meaning="This message means that the user can use Chrome more easily by syncing their passwords, bookmarks, settings, and more.. We want users to read this card and tap the 'Continue' button and turn on sync. The tone should be inviting.">
-        Sync to get your passwords, bookmarks and more on all your devices
+        Sync to get your passwords, bookmarks and more on your other devices
       </message>
       <message name="IDS_SIGNIN_PROMO_DESCRIPTION_SETTINGS" desc="Description string for 'Continue as' signin promo shown in Settings screen. Turning on sync enables syncing browser settings, autofill data, bookmarks, passwords, history and other data used for browser personalization.">
         To sync and personalize across devices, turn on sync
