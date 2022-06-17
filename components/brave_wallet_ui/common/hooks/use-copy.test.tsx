@@ -1,8 +1,6 @@
 import { renderHook, act } from '@testing-library/react-hooks'
 import { useCopy } from './use-copy'
 
-// jest.useFakeTimers()
-
 describe('useCopy Hook', () => {
   it('should have false as initial state', () => {
     const { result } = renderHook(() => useCopy())
