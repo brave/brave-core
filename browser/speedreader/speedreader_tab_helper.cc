@@ -346,6 +346,9 @@ void SpeedreaderTabHelper::DidStopLoading() {
 
 void SpeedreaderTabHelper::DOMContentLoaded(
     content::RenderFrameHost* render_frame_host) {
+  if (!PageWantsDistill(distill_state_))
+    return;
+
   constexpr int kIsolatedWorldId = content::ISOLATED_WORLD_ID_CONTENT_END + 1;
 
   constexpr const char16_t kAddShowOriginalPageLink[] =
