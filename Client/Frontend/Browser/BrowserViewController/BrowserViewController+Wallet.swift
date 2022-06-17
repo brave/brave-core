@@ -261,6 +261,10 @@ extension Tab: BraveWalletProviderDelegate {
   func showWalletOnboarding() {
     showPanel()
   }
+  
+  func isTabVisible() -> Bool {
+    tabDelegate?.isTabVisible(self) ?? false
+  }
 }
 
 extension Tab: BraveWalletEventsListener {
