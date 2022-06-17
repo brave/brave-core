@@ -354,7 +354,7 @@ void SpeedreaderTabHelper::DOMContentLoaded(
       const link = document.getElementById('show-original-page');
       if (!link)
         return;
-      link.innerHTML = '$1';
+      link.text = '$1';
       link.addEventListener('click', (e) => {
         window.speedreader.showOriginalPage();
       })
