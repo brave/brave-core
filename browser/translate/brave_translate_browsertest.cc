@@ -196,7 +196,8 @@ class BraveTranslateBrowserTest : public InProcessBrowserTest {
         .WillOnce(Return(std::make_tuple(net::HttpStatusCode::HTTP_OK,
                                          "text/javascript", kTestScript)));
 
-    EXPECT_CALL(backend_request_, Call("/translate_static/css/translateelement.css"))
+    EXPECT_CALL(backend_request_,
+                Call("/translate_static/css/translateelement.css"))
         .WillRepeatedly(
             Return(std::make_tuple(net::HttpStatusCode::HTTP_OK, "text/css",
                                    "body{background-color:#AAA}")));
