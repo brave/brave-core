@@ -31,10 +31,14 @@ const char* kRedirectAllRequestsToSecurityOrigin = R"(
   const useGoogleTranslateEndpoint = %s;
   const securityOriginHost = new URL(securityOrigin).host;
   const redirectToSecurityOrigin = (url) => {
+    console.log(url)
     let new_url = new URL(url);
-    if (useGoogleTranslateEndpoint && new_url.pathname === '/translate') {
+    if (useGoogleTranslateEndpoint && new_url.pathname === '/translate_a/t') {
       new_url.host = 'translate.googleapis.com';
-      new_url.pathname = '/translate_a/t';
+
+      // Remove API key
+      new_url.searchParams.set('key', '');
+
       return new_url.toString();
     }
     new_url.host = securityOriginHost;

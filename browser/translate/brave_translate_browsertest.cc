@@ -74,10 +74,10 @@ google.translate = (function() {
     }
   };
 })();
-cr.googleTranslate.onLoadCSS("https://translate.brave.com/static/translateelement.css");
+cr.googleTranslate.onLoadCSS("https://translate.googleapis.com/static/translateelement.css");
 
 // Will call cr.googleTranslate.onTranslateElementLoad():
-cr.googleTranslate.onLoadJavascript("https://translate.brave.com/static/main.js");
+cr.googleTranslate.onLoadJavascript("https://translate.googleapis.com/static/main.js");
 )";
 
 const char kXhrPromiseTemplate[] = R"(
@@ -130,7 +130,9 @@ class BraveTranslateBrowserTest : public InProcessBrowserTest {
     // Remap translate.brave.com requests to the https test server.
     const std::string host_port = https_server_->host_port_pair().ToString();
     command_line->AppendSwitchASCII(network::switches::kHostResolverRules,
-                                    "MAP translate.brave.com:443 " + host_port);
+                                    "MAP translate.brave.com:443 " + host_port +
+                                        ", MAP translate.google.com:443 " +
+                                        host_port);
   }
 
   void SetUpInProcessBrowserTestFixture() override {
@@ -150,6 +152,9 @@ class BraveTranslateBrowserTest : public InProcessBrowserTest {
 
     // We don't support CORS preflights on the backend.
     EXPECT_NE(request.method, net::test_server::METHOD_OPTIONS);
+
+    EXPECT_FALSE(request.GetURL().DomainIs("translate.googleapis.com"))
+        << "Found a request to google backend " << request.GetURL();
 
     if (request.GetURL().path() == "/translate") {
       const auto query = request.GetURL().query();
@@ -272,16 +277,17 @@ IN_PROC_BROWSER_TEST_F(BraveTranslateBrowserTest, InternalTranslation) {
             EvalTranslateJs("getComputedStyle(document.body).getPropertyValue('"
                             "background-color')"));
 
-  // Simulate a translate request to translate.brave.com and check that it works
-  // well.
-  EXPECT_CALL(backend_request_, Call("/translate"))
+  // Simulate a translate request to googleapis.com and check that the
+  // redirections works well.
+  EXPECT_CALL(backend_request_, Call("/translate_a/t"))
       .WillOnce(Return(std::make_tuple(net::HttpStatusCode::HTTP_OK,
                                        "application/json", "[\"This\"]")));
   EXPECT_EQ(
       "[\"This\"]",
       EvalTranslateJs(base::StringPrintf(
           kXhrPromiseTemplate, "response",
-          "https://translate.brave.com/translate?query=something", "true")));
+          "https://translate.googleapis.com/translate_a/t?query=something",
+          "true")));
 
   // Check that we haven't tried to update the language lists.
   auto* language_list =
