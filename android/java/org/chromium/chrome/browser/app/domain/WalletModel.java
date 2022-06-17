@@ -45,7 +45,8 @@ public class WalletModel {
                 mJsonRpcService, mEthTxManagerProxy, mSolanaTxManagerProxy, mBraveWalletService,
                 mAssetRatioService);
         mDappsModel = new DappsModel(mJsonRpcService, mBraveWalletService, mCryptoModel.getPendingTxHelper());
-        mKeyringModel = new KeyringModel(keyringService, mCryptoModel.getSharedData());
+        mKeyringModel =
+                new KeyringModel(keyringService, mCryptoModel.getSharedData(), braveWalletService);
         init();
     }
 
@@ -65,7 +66,7 @@ public class WalletModel {
                 mJsonRpcService, mEthTxManagerProxy, mSolanaTxManagerProxy, mBraveWalletService,
                 mAssetRatioService);
         mDappsModel.resetServices(mJsonRpcService, mBraveWalletService, mCryptoModel.getPendingTxHelper());
-        mKeyringModel.resetService(mKeyringService);
+        mKeyringModel.resetService(mKeyringService, braveWalletService);
         init();
     }
 
