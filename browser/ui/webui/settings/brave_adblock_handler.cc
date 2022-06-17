@@ -265,7 +265,7 @@ base::Value::List BraveAdBlockHandler::GetSubscriptions() {
   base::Time now = base::Time::Now();
 
   for (const auto& subscription : list_subscriptions) {
-    auto dict = std::make_unique<base::DictionaryValue>();
+    base::Value::Dict dict;
 
     base::TimeDelta relative_time_delta =
         now - subscription.last_successful_update_attempt;
@@ -274,14 +274,13 @@ base::Value::List BraveAdBlockHandler::GetSubscriptions() {
         ui::TimeFormat::Format::FORMAT_ELAPSED,
         ui::TimeFormat::Length::LENGTH_LONG, relative_time_delta);
 
-    dict->SetStringKey("subscription_url",
-                       subscription.subscription_url.spec());
-    dict->SetBoolKey("enabled", subscription.enabled);
-    dict->SetDouble("last_update_attempt",
-                    subscription.last_update_attempt.ToJsTime());
-    dict->SetDouble("last_successful_update_attempt",
-                    subscription.last_successful_update_attempt.ToJsTime());
-    dict->SetStringKey("last_updated_pretty_text", time_str);
+    dict.Set("subscription_url", subscription.subscription_url.spec());
+    dict.Set("enabled", subscription.enabled);
+    dict.Set("last_update_attempt",
+             subscription.last_update_attempt.ToJsTime());
+    dict.Set("last_successful_update_attempt",
+             subscription.last_successful_update_attempt.ToJsTime());
+    dict.Set("last_updated_pretty_text", time_str);
 
     list_value.Append(std::move(dict));
   }

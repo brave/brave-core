@@ -2393,6 +2393,6 @@ IN_PROC_BROWSER_TEST_F(DefaultCookieListFlagEnabledTest, ListEnabled) {
                            ->GetRegionalLists();
     // It should be actually disabled now.
     ASSERT_EQ(1UL, lists.size());
-    EXPECT_EQ(true, *lists[0].GetDict().FindBool("enabled"));
+    EXPECT_EQ(false, *lists[0].GetDict().FindBool("enabled"));
   }
 }
