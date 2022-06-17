@@ -23,15 +23,11 @@ import androidx.viewpager2.widget.ViewPager2;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
-import org.chromium.brave_wallet.mojom.AccountInfo;
-import org.chromium.brave_wallet.mojom.BraveWalletConstants;
-import org.chromium.brave_wallet.mojom.BraveWalletService;
 import org.chromium.brave_wallet.mojom.CoinType;
-import org.chromium.brave_wallet.mojom.JsonRpcService;
-import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.brave_wallet.mojom.NetworkInfo;
 import org.chromium.brave_wallet.mojom.SignMessageRequest;
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.crypto_wallet.adapters.SignMessagePagerAdapter;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.url.GURL;
@@ -127,27 +123,19 @@ public class SignMessageFragment extends BaseDAppsBottomSheetDialogFragment {
     }
 
     private void updateAccount() {
-        getKeyringService().getSelectedAccount(CoinType.ETH, address -> {
-            if (address == null) {
-                getActivity().finish();
-                return;
-            }
-            getKeyringService().getKeyringInfo(
-                    BraveWalletConstants.DEFAULT_KEYRING_ID, keyringInfo -> {
-                        if (keyringInfo == null) {
-                            return;
-                        }
-                        for (AccountInfo accountInfo : keyringInfo.accountInfos) {
-                            if (address.equals(accountInfo.address)) {
-                                Utils.setBlockiesBitmapResource(
-                                        mExecutor, mHandler, mAccountImage, address, true);
-                                String accountText = accountInfo.name + "\n" + address;
-                                mAccountName.setText(accountText);
-                                break;
-                            }
-                        }
+        BraveActivity activity = BraveActivity.getBraveActivity();
+        if (activity != null) {
+            activity.getWalletModel()
+                    .getKeyringModel()
+                    .getSelectedAccountOrAccountPerOrigin()
+                    .observe(getViewLifecycleOwner(), accountInfo -> {
+                        if (accountInfo == null) return;
+                        Utils.setBlockiesBitmapResource(
+                                mExecutor, mHandler, mAccountImage, accountInfo.address, true);
+                        String accountText = accountInfo.name + "\n" + accountInfo.address;
+                        mAccountName.setText(accountText);
                     });
-        });
+        }
     }
 
     private void updateNetwork() {
