@@ -11,16 +11,16 @@ namespace skus {
 
 TEST(SkusUtilsUnittest, GetDefaultEnvironment) {
 #if defined(OFFICIAL_BUILD)
-    EXPECT_EQ(GetDefaultEnvironment(), kEnvProduction);
+  EXPECT_EQ(GetDefaultEnvironment(), kEnvProduction);
 #else
-    EXPECT_EQ(GetDefaultEnvironment(), kEnvDevelopment);
+  EXPECT_EQ(GetDefaultEnvironment(), kEnvDevelopment);
 #endif
 }
 
 TEST(SkusUtilsUnittest, GetEnvironmentForDomain) {
   EXPECT_EQ(GetEnvironmentForDomain("account.brave.com"), kEnvProduction);
   EXPECT_EQ(GetEnvironmentForDomain("vpn.brave.com"), kEnvProduction);
-  
+
   EXPECT_EQ(GetEnvironmentForDomain("vpn.bravesoftware.com"), kEnvStaging);
   EXPECT_EQ(GetEnvironmentForDomain("account.bravesoftware.com"), kEnvStaging);
 
@@ -29,14 +29,20 @@ TEST(SkusUtilsUnittest, GetEnvironmentForDomain) {
 }
 
 TEST(SkusUtilsUnittest, GetDomain) {
-  EXPECT_EQ(GetEnvironmentForDomain(GetDomain("vpn", kEnvDevelopment)), kEnvDevelopment);
-  EXPECT_EQ(GetEnvironmentForDomain(GetDomain("talk", kEnvDevelopment)), kEnvDevelopment);
-  
-  EXPECT_EQ(GetEnvironmentForDomain(GetDomain("vpn", kEnvStaging)), kEnvStaging);
-  EXPECT_EQ(GetEnvironmentForDomain(GetDomain("talk", kEnvStaging)), kEnvStaging);
-  
-  EXPECT_EQ(GetEnvironmentForDomain(GetDomain("vpn", kEnvProduction)), kEnvProduction);
-  EXPECT_EQ(GetEnvironmentForDomain(GetDomain("talk", kEnvProduction)), kEnvProduction);
+  EXPECT_EQ(GetEnvironmentForDomain(GetDomain("vpn", kEnvDevelopment)),
+            kEnvDevelopment);
+  EXPECT_EQ(GetEnvironmentForDomain(GetDomain("talk", kEnvDevelopment)),
+            kEnvDevelopment);
+
+  EXPECT_EQ(GetEnvironmentForDomain(GetDomain("vpn", kEnvStaging)),
+            kEnvStaging);
+  EXPECT_EQ(GetEnvironmentForDomain(GetDomain("talk", kEnvStaging)),
+            kEnvStaging);
+
+  EXPECT_EQ(GetEnvironmentForDomain(GetDomain("vpn", kEnvProduction)),
+            kEnvProduction);
+  EXPECT_EQ(GetEnvironmentForDomain(GetDomain("talk", kEnvProduction)),
+            kEnvProduction);
 }
 
-}  // namespcae skus
+}  // namespace skus

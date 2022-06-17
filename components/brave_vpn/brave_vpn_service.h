@@ -249,6 +249,7 @@ class BraveVpnService :
       const base::flat_map<std::string, std::string>& headers);
   mojom::PurchasedState GetPurchasedStateSync() const;
   void SetPurchasedState(const std::string& env, mojom::PurchasedState state);
+  void SetCurrentEnvironment(const std::string& env);
   void EnsureMojoConnected();
   void OnMojoConnectionError();
   void OnCredentialSummary(const std::string& domain,
