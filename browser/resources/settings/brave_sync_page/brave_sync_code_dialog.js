@@ -90,11 +90,17 @@ Polymer({
   },
 
   handleChooseMobile_: function() {
-    this.codeType = 'qr'
+    this.codeType = null
+    window.setTimeout(() => {
+      this.codeType = 'qr'
+    }, 0)
   },
 
   handleChooseComputer_: function() {
-    this.codeType = 'words'
+    this.codeType = null
+    window.setTimeout(() => {
+      this.codeType = 'words'
+    }, 0)
   },
 
   handleSyncCodeCopy_: function() {
