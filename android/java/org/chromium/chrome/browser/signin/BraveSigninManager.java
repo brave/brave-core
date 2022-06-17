@@ -36,6 +36,11 @@ public class BraveSigninManager implements SigninManager {
     }
 
     @Override
+    public boolean isSignOutAllowed() {
+        return false;
+    }
+
+    @Override
     public boolean isSigninSupported() {
         return false;
     }
