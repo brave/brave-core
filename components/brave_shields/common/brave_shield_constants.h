@@ -11,8 +11,6 @@
 #include "components/grit/brave_components_strings.h"
 #include "ui/base/webui/web_ui_util.h"
 
-#define FPL FILE_PATH_LITERAL
-
 namespace brave_shields {
 
 const char kAds[] = "shieldsAds";
@@ -38,7 +36,7 @@ const char kObsoleteFingerprinting[] = "fingerprinting";
 
 // Filename for cached text from a custom filter list subscription
 const base::FilePath::CharType kCustomSubscriptionListText[] =
-    FPL("list_text.txt");
+    FILE_PATH_LITERAL("list_text.txt");
 
 const char kCookieListUuid[] = "AC023D22-AE88-4060-A978-4FEEEC4221693";
 

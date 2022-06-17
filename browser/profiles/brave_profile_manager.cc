@@ -110,6 +110,7 @@ void BraveProfileManager::InitProfileUserPrefs(Profile* profile) {
   ProfileManager::InitProfileUserPrefs(profile);
   brave::RecordInitialP3AValues(profile);
   brave::SetDefaultSearchVersion(profile, profile->IsNewProfile());
+  brave::SetDefaultThirdPartyCookieBlockValue(profile);
 }
 
 void BraveProfileManager::DoFinalInitForServices(Profile* profile,

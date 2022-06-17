@@ -11,7 +11,6 @@
 #include "brave/browser/brave_news/brave_news_controller_factory.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/browser/brave_shields/ad_block_pref_service_factory.h"
-#include "brave/browser/brave_shields/cookie_pref_service_factory.h"
 #include "brave/browser/brave_wallet/asset_ratio_service_factory.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
 #include "brave/browser/brave_wallet/json_rpc_service_factory.h"
@@ -64,7 +63,6 @@ void EnsureBrowserContextKeyedServiceFactoriesBuilt() {
   brave_federated::BraveFederatedServiceFactory::GetInstance();
   brave_rewards::RewardsServiceFactory::GetInstance();
   brave_shields::AdBlockPrefServiceFactory::GetInstance();
-  brave_shields::CookiePrefServiceFactory::GetInstance();
   debounce::DebounceServiceFactory::GetInstance();
 #if BUILDFLAG(ENABLE_GREASELION)
   greaselion::GreaselionServiceFactory::GetInstance();

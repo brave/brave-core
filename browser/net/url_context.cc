@@ -154,7 +154,7 @@ std::shared_ptr<brave::BraveRequestInfo> BraveRequestInfo::MakeCTX(
   // use only tab_origin. Since we recreate BraveRequestInfo during consequent
   // stages of navigation, |tab_origin| changes and so does |allow_referrers|
   // flag, which is not what we want for determining referrers.
-  ctx->allow_referrers = brave_shields::AllowReferrers(
+  ctx->allow_referrers = brave_shields::AreReferrersAllowed(
       map,
       ctx->redirect_source.is_empty() ? ctx->tab_origin : ctx->redirect_source);
   ctx->upload_data = GetUploadData(request);

@@ -393,10 +393,7 @@ test("brave_unit_tests") {
   if (binance_enabled) {
     sources +=
         [ "//brave/components/binance/browser/binance_json_parser_unittest.cc" ]
-    deps += [
-      "//brave/components/binance/browser",
-      "//brave/components/content_settings/core/common",
-    ]
+    deps += [ "//brave/components/binance/browser" ]
   }
 
   if (gemini_enabled) {
@@ -404,7 +401,6 @@ test("brave_unit_tests") {
         [ "//brave/components/gemini/browser/gemini_json_parser_unittest.cc" ]
     deps += [
       "//brave/components/binance/browser",
-      "//brave/components/content_settings/core/common",
       "//brave/components/gemini/browser",
     ]
   }

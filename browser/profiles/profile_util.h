@@ -60,6 +60,10 @@ void RecordInitialP3AValues(Profile* profile);
 // missing this value are backfilled to the first version introduced.
 void SetDefaultSearchVersion(Profile* profile, bool is_new_profile);
 
+// Sets the default value for Cookie Controls Mode to 'Block Third Party'
+// instead of 'Block Third Party in Incognito'
+void SetDefaultThirdPartyCookieBlockValue(Profile* profile);
+
 }  // namespace brave
 
 namespace chrome {

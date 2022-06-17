@@ -11,7 +11,7 @@ import Button from '$web-components/button'
 
 function MainPanel () {
   const [isExpanded, setIsExpanded] = React.useState(false)
-  const { siteBlockInfo } = React.useContext(DataContext)
+  const { siteBlockInfo, getSiteSettings } = React.useContext(DataContext)
 
   const braveShieldsStatusText = splitStringForTag(siteBlockInfo?.isShieldsEnabled ? getLocale('braveShieldsUp') : getLocale('braveShieldsDown'))
   const braveShieldsBrokenText = splitStringForTag(getLocale('braveShieldsBroken'))
@@ -21,6 +21,9 @@ function MainPanel () {
 
   const handleToggleChange = async (isOn: boolean) => {
     await getPanelBrowserAPI().dataHandler.setBraveShieldsEnabled(isOn)
+    if (isOn) {
+      if (getSiteSettings) getSiteSettings()
+    }
   }
 
   const handleReportSite = async () => {
