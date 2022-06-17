@@ -57,6 +57,10 @@ export const getBuyAssets = () => new Promise<BraveWallet.BlockchainToken[]>((re
   resolve(mockBuyAssetList)
 })
 
+export const getAllBuyAssets = () => new Promise<BraveWallet.BlockchainToken[]>((resolve) => {
+  resolve(mockBuyAssetList)
+})
+
 export const setMockedBuyAssets = (newList: BraveWallet.BlockchainToken[]) => {
   mockBuyAssetList = newList
 }
