@@ -8,14 +8,17 @@ import { useHistory } from 'react-router'
 import { useSelector } from 'react-redux'
 
 // styles
-import {} from './fund-wallet.style'
+// import {} from './fund-wallet.style'
 
 // utils
-import { getLocale } from '../../../../common/locale'
+import { getNetworkInfo } from '../../../utils/network-utils'
+// import { getLocale } from '../../../../common/locale'
 
 // routes, types, options
 import { BraveWallet, SupportedOnRampNetworks, UserAssetInfoType, WalletRoutes, WalletState } from '../../../constants/types'
 import { AllNetworksOption } from '../../../options/network-filter-options'
+
+// action
 
 // hooks
 import { useAssets } from '../../../common/hooks'
@@ -47,20 +50,30 @@ export const FundWalletScreen = () => {
   const [filteredList, setFilteredList] = React.useState<UserAssetInfoType[]>([])
   const [buyAmount, setBuyAmount] = React.useState('')
   const [selectedAsset, setSelectedAsset] = React.useState<BraveWallet.BlockchainToken | undefined>()
+  const [isShowingAllOptions, setIsShowingAllOptions] = React.useState(false)
 
   // custom hooks
   const { allBuyAssetOptions, getAllBuyOptionsAllChains } = useAssets()
 
   // memos
+  const buyAssetNetworks = React.useMemo(() => {
+    return networkList.filter(n =>
+      SupportedOnRampNetworks.includes(n.chainId)
+    )
+  }, [networkList])
+
   const isNextStepEnabled = React.useMemo(() => {
-    return false
-  }, [])
+    return !!selectedAsset
+  }, [selectedAsset])
+
+  const selectedAssetNetwork = React.useMemo(() => {
+    return selectedAsset ? getNetworkInfo(selectedAsset.chainId, selectedAsset.coin, buyAssetNetworks) : undefined
+  }, [selectedAsset, buyAssetNetworks])
 
   const assetsForFilteredNetwork = React.useMemo(() => {
     const assets = selectedNetworkFilter.chainId === AllNetworksOption.chainId
       ? allBuyAssetOptions
-      : allBuyAssetOptions
-          .filter(({ chainId }) => selectedNetworkFilter.chainId === chainId)
+      : allBuyAssetOptions.filter(({ chainId }) => selectedNetworkFilter.chainId === chainId)
 
     return assets.map(asset => ({ asset, assetBalance: '1' }))
   }, [selectedNetworkFilter.chainId, allBuyAssetOptions])
@@ -80,8 +93,22 @@ export const FundWalletScreen = () => {
 
   React.useEffect(() => {
     // default to showing the first 5 assets
-    setFilteredList(assetsForFilteredNetwork.slice(0, 5))
-  }, [assetsForFilteredNetwork])
+    if (!isShowingAllOptions) {
+      setFilteredList(assetsForFilteredNetwork.slice(0, 5))
+    }
+    if (isShowingAllOptions) {
+      setFilteredList(assetsForFilteredNetwork)
+    }
+  }, [isShowingAllOptions, assetsForFilteredNetwork])
+
+  React.useEffect(() => {
+    // filter to show only top results on chain switch
+    // also unselect asset on chain switch
+    if (selectedNetworkFilter) {
+      setIsShowingAllOptions(false)
+      setSelectedAsset(undefined)
+    }
+  }, [selectedNetworkFilter])
 
   // render
   return (
@@ -100,7 +127,7 @@ export const FundWalletScreen = () => {
               selectedAssetInputAmount={buyAmount}
               inputName='buy'
               selectedAsset={selectedAsset}
-              selectedNetwork={selectedNetworkFilter}
+              selectedNetwork={selectedAssetNetwork || selectedNetworkFilter}
               // onShowSelection={onShowAssets}
               autoFocus={true}
             />
@@ -112,27 +139,31 @@ export const FundWalletScreen = () => {
               tokenPrices={transactionSpotPrices}
               networks={[
                 AllNetworksOption,
-                ...networkList.filter(n =>
-                  SupportedOnRampNetworks.includes(n.chainId)
-                )
+                ...buyAssetNetworks
               ]}
               onSetFilteredAssetList={setFilteredList}
               onSelectAsset={(asset) => () => setSelectedAsset(asset)}
               hideBalances={true}
             />
 
+            {assetsForFilteredNetwork.length > 5 && !isShowingAllOptions &&
+              <LinkText onClick={() => setIsShowingAllOptions(true)}>
+                More
+                {/* // getLocale TODO */}
+              </LinkText>
+            }
+
           </div>
 
           <NextButtonRow>
-
-            <LinkText>
-              More
-              {/* // getLocale TODO */}
-            </LinkText>
-
             <NavButton
               buttonType='primary'
-              text={getLocale('braveWalletButtonContinue')}
+              text={
+                selectedAsset
+                  ? 'Choose purchase method...'
+                  : 'Choose an asset'
+                // getLocale('braveWalletChoosePurchaseMethod')
+              }
               onSubmit={nextStep}
               disabled={!isNextStepEnabled}
             />
