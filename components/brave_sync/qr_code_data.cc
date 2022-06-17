@@ -13,7 +13,6 @@
 #include "base/logging.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/time/time.h"
-#include "base/values.h"
 
 // Example of the JSON:
 // {
@@ -47,20 +46,18 @@ std::unique_ptr<QrCodeData> QrCodeData::CreateWithActualDate(
       base::Time::Now() + base::Minutes(kMinutesFromNowForValidCode)));
 }
 
-std::unique_ptr<base::DictionaryValue> QrCodeData::ToValue() const {
-  auto dict = std::make_unique<base::DictionaryValue>();
-  dict->SetString("version", base::NumberToString(version));
-  dict->SetString("sync_code_hex", sync_code_hex);
-  dict->SetString("not_after", base::NumberToString(ToEpochSeconds(not_after)));
+base::Value::Dict QrCodeData::ToValue() const {
+  base::Value::Dict dict;
+  dict.Set("version", base::NumberToString(version));
+  dict.Set("sync_code_hex", sync_code_hex);
+  dict.Set("not_after", base::NumberToString(ToEpochSeconds(not_after)));
   return dict;
 }
 
 std::string QrCodeData::ToJson() {
   auto dict = ToValue();
-  CHECK(dict);
-
   std::string json_string;
-  if (!base::JSONWriter::Write(*dict.get(), &json_string)) {
+  if (!base::JSONWriter::Write(dict, &json_string)) {
     VLOG(1) << "Writing QR data to JSON failed";
     json_string = std::string();
   }

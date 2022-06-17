@@ -10,12 +10,7 @@
 #include <string>
 
 #include "base/time/time.h"
-
-namespace base {
-
-class DictionaryValue;
-
-}  // namespace base
+#include "base/values.h"
 
 namespace brave_sync {
 
@@ -41,7 +36,7 @@ class QrCodeData {
   QrCodeData();
   QrCodeData(const std::string& sync_code_hex, const base::Time& not_after);
 
-  std::unique_ptr<base::DictionaryValue> ToValue() const;
+  base::Value::Dict ToValue() const;
 };
 
 }  // namespace brave_sync
