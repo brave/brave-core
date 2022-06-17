@@ -4,24 +4,25 @@
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { useHistory } from 'react-router'
 import { useSelector } from 'react-redux'
 
 // styles
 // import {} from './fund-wallet.style'
 
 // utils
-import { getNetworkInfo } from '../../../utils/network-utils'
+import { getRampAssetSymbol } from '../../../utils/asset-utils'
 // import { getLocale } from '../../../../common/locale'
 
-// routes, types, options
-import { BraveWallet, SupportedOnRampNetworks, UserAssetInfoType, WalletRoutes, WalletState } from '../../../constants/types'
-import { AllNetworksOption } from '../../../options/network-filter-options'
+// routes, types
+import { BraveWallet, UserAssetInfoType, WalletState } from '../../../constants/types'
 
-// action
+// options
+import { AllNetworksOption } from '../../../options/network-filter-options'
+import { SelectBuyOption } from '../../../components/buy-send-swap/select-buy-option/select-buy-option'
 
 // hooks
-import { useAssets } from '../../../common/hooks'
+import { useLib } from '../../../common/hooks'
+import { useMultiChainBuyAssets } from '../../../common/hooks/use-multi-chain-buy-assets'
 
 // style
 import { LinkText } from '../../../components/shared/style'
@@ -35,13 +36,9 @@ import SwapInputComponent from '../../../components/buy-send-swap/swap-input-com
 import TokenLists from '../../../components/desktop/views/portfolio/components/token-lists'
 
 export const FundWalletScreen = () => {
-  // routing
-  const history = useHistory()
-
   // redux
   const {
     defaultCurrencies,
-    networkList,
     transactionSpotPrices,
     selectedNetworkFilter
   } = useSelector(({ wallet }: { wallet: WalletState }) => wallet)
@@ -49,26 +46,25 @@ export const FundWalletScreen = () => {
   // state
   const [filteredList, setFilteredList] = React.useState<UserAssetInfoType[]>([])
   const [buyAmount, setBuyAmount] = React.useState('')
-  const [selectedAsset, setSelectedAsset] = React.useState<BraveWallet.BlockchainToken | undefined>()
   const [isShowingAllOptions, setIsShowingAllOptions] = React.useState(false)
+  const [showBuyOptions, setShowBuyOptions] = React.useState<boolean>(false)
 
   // custom hooks
-  const { allBuyAssetOptions, getAllBuyOptionsAllChains } = useAssets()
+  const {
+    allAssetOptions: allBuyAssetOptions,
+    getAllBuyOptionsAllChains,
+    selectedAsset,
+    selectedAssetNetwork,
+    setSelectedAsset,
+    selectedAssetBuyOptions,
+    buyAssetNetworks
+  } = useMultiChainBuyAssets()
+  const { getBuyAssetUrl } = useLib()
 
   // memos
-  const buyAssetNetworks = React.useMemo(() => {
-    return networkList.filter(n =>
-      SupportedOnRampNetworks.includes(n.chainId)
-    )
-  }, [networkList])
-
   const isNextStepEnabled = React.useMemo(() => {
-    return !!selectedAsset
-  }, [selectedAsset])
-
-  const selectedAssetNetwork = React.useMemo(() => {
-    return selectedAsset ? getNetworkInfo(selectedAsset.chainId, selectedAsset.coin, buyAssetNetworks) : undefined
-  }, [selectedAsset, buyAssetNetworks])
+    return !!selectedAsset && !!buyAmount
+  }, [selectedAsset, buyAmount])
 
   const assetsForFilteredNetwork = React.useMemo(() => {
     const assets = selectedNetworkFilter.chainId === AllNetworksOption.chainId
@@ -81,10 +77,41 @@ export const FundWalletScreen = () => {
   // methods
   const nextStep = React.useCallback(() => {
     if (isNextStepEnabled) {
-      history.push(WalletRoutes.DepositFundsPage)
+      setShowBuyOptions(true)
     }
   }, [isNextStepEnabled])
 
+  const onSubmitBuy = React.useCallback((buyOption: BraveWallet.OnRampProvider) => {
+    if (!selectedAsset || !selectedAssetNetwork) {
+      return
+    }
+
+    const asset = buyOption === BraveWallet.OnRampProvider.kRamp
+      ? { ...selectedAsset, symbol: getRampAssetSymbol(selectedAsset) }
+      : selectedAsset
+
+    getBuyAssetUrl({
+      asset,
+      onRampProvider: buyOption,
+      chainId: selectedAssetNetwork.chainId,
+      address: '', // TODO: selectedAccount.address,
+      amount: buyAmount
+    })
+      .then(url => {
+        chrome.tabs.create({ url }, () => {
+          if (chrome.runtime.lastError) {
+            console.error('tabs.create failed: ' + chrome.runtime.lastError.message)
+          }
+        })
+      })
+      .catch(e => console.error(e))
+  }, [selectedAsset, selectedAssetNetwork, getBuyAssetUrl, buyAmount])
+
+  const onBack = React.useCallback(() => {
+    setShowBuyOptions(false)
+  }, [])
+
+  // effects
   React.useEffect(() => {
     if (assetsForFilteredNetwork.length === 0) {
       getAllBuyOptionsAllChains()
@@ -119,55 +146,67 @@ export const FundWalletScreen = () => {
           {/* TODO: Nav Here */}
 
           {/* Content */}
-          <div>
-            <SwapInputComponent
-              defaultCurrencies={defaultCurrencies}
-              componentType='buyAmount'
-              onInputChange={setBuyAmount}
-              selectedAssetInputAmount={buyAmount}
-              inputName='buy'
-              selectedAsset={selectedAsset}
-              selectedNetwork={selectedAssetNetwork || selectedNetworkFilter}
-              // onShowSelection={onShowAssets}
-              autoFocus={true}
+          {!showBuyOptions &&
+            <>
+              <div>
+                <SwapInputComponent
+                  defaultCurrencies={defaultCurrencies}
+                  componentType='buyAmount'
+                  onInputChange={setBuyAmount}
+                  selectedAssetInputAmount={buyAmount}
+                  inputName='buy'
+                  selectedAsset={selectedAsset}
+                  selectedNetwork={selectedAssetNetwork || selectedNetworkFilter}
+                  // onShowSelection={onShowAssets}
+                  autoFocus={true}
+                />
+
+                <TokenLists
+                  defaultCurrencies={defaultCurrencies}
+                  userAssetList={assetsForFilteredNetwork}
+                  filteredAssetList={filteredList}
+                  tokenPrices={transactionSpotPrices}
+                  networks={[
+                    AllNetworksOption,
+                    ...buyAssetNetworks
+                  ]}
+                  onSetFilteredAssetList={setFilteredList}
+                  onSelectAsset={(asset) => () => setSelectedAsset(asset)}
+                  hideBalances={true}
+                />
+
+                {assetsForFilteredNetwork.length > 5 && !isShowingAllOptions &&
+                  <LinkText onClick={() => setIsShowingAllOptions(true)}>
+                    More
+                    {/* // getLocale TODO */}
+                  </LinkText>
+                }
+
+              </div>
+
+              <NextButtonRow>
+                <NavButton
+                  buttonType='primary'
+                  text={
+                    selectedAsset
+                      ? 'Choose purchase method...'
+                      : 'Choose an asset'
+                    // getLocale('braveWalletChoosePurchaseMethod')
+                  }
+                  onSubmit={nextStep}
+                  disabled={!isNextStepEnabled}
+                />
+              </NextButtonRow>
+            </>
+          }
+
+          {showBuyOptions &&
+            <SelectBuyOption
+              buyOptions={selectedAssetBuyOptions}
+              onSelect={onSubmitBuy}
+              onBack={onBack}
             />
-
-            <TokenLists
-              defaultCurrencies={defaultCurrencies}
-              userAssetList={assetsForFilteredNetwork}
-              filteredAssetList={filteredList}
-              tokenPrices={transactionSpotPrices}
-              networks={[
-                AllNetworksOption,
-                ...buyAssetNetworks
-              ]}
-              onSetFilteredAssetList={setFilteredList}
-              onSelectAsset={(asset) => () => setSelectedAsset(asset)}
-              hideBalances={true}
-            />
-
-            {assetsForFilteredNetwork.length > 5 && !isShowingAllOptions &&
-              <LinkText onClick={() => setIsShowingAllOptions(true)}>
-                More
-                {/* // getLocale TODO */}
-              </LinkText>
-            }
-
-          </div>
-
-          <NextButtonRow>
-            <NavButton
-              buttonType='primary'
-              text={
-                selectedAsset
-                  ? 'Choose purchase method...'
-                  : 'Choose an asset'
-                // getLocale('braveWalletChoosePurchaseMethod')
-              }
-              onSubmit={nextStep}
-              disabled={!isNextStepEnabled}
-            />
-          </NextButtonRow>
+          }
 
         </StyledWrapper>
       </MainWrapper>

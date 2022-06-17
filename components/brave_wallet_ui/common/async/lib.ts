@@ -28,7 +28,7 @@ import { getNetworkInfo, getNetworksByCoinType, getTokensCoinType } from '../../
 import { getTokenParam, getFlattenedAccountBalances } from '../../utils/api-utils'
 import Amount from '../../utils/amount'
 import { sortTransactionByDate } from '../../utils/tx-utils'
-import { getUniqueAssets } from '../../utils/asset-utils'
+import { addLogoToToken, getUniqueAssets } from '../../utils/asset-utils'
 
 import getAPIProxy from './bridge'
 import { Dispatch, State, Store } from './types'
@@ -201,30 +201,36 @@ export async function getBuyAssets (onRampProvider: BraveWallet.OnRampProvider, 
     chainId)).tokens
 }
 
-export const getAllBuyAssets = async (): Promise<BraveWallet.BlockchainToken[]> => {
+export const getAllBuyAssets = async (): Promise<{
+  rampAssetOptions: BraveWallet.BlockchainToken[]
+  wyreAssetOptions: BraveWallet.BlockchainToken[]
+  allAssetOptions: BraveWallet.BlockchainToken[]
+}> => {
   const { blockchainRegistry } = getAPIProxy()
+  const { kRamp, kWyre } = BraveWallet.OnRampProvider
 
-  const results = await Promise.all(
-    [
-      BraveWallet.OnRampProvider.kRamp,
-      BraveWallet.OnRampProvider.kWyre
-    ].map(providerId =>
-      Promise.all(
-        SupportedOnRampNetworks.map(chainId =>
-          blockchainRegistry.getBuyTokens(providerId, chainId)
-        )
-      )
-    )
+  const rampAssetsPromises = await Promise.all(
+    SupportedOnRampNetworks.map(chainId => blockchainRegistry.getBuyTokens(kRamp, chainId))
+  )
+  const wyreAssetsPromises = await Promise.all(
+    SupportedOnRampNetworks.map(chainId => blockchainRegistry.getBuyTokens(kWyre, chainId))
   )
 
-  const tokens = getUniqueAssets(results.flat().flatMap(r => r.tokens))
-    // add logo to tokens
-    .map((token) => ({
-      ...token,
-      logo: `chrome://erc-token-images/${token.logo}`
-    })) as BraveWallet.BlockchainToken[]
+  const rampAssetOptions: BraveWallet.BlockchainToken[] = rampAssetsPromises
+    .flatMap(p => p.tokens)
+    .map(addLogoToToken)
 
-  return tokens
+  const wyreAssetOptions: BraveWallet.BlockchainToken[] = wyreAssetsPromises
+    .flatMap(p => p.tokens)
+    .map(addLogoToToken)
+
+  const results = {
+    rampAssetOptions,
+    wyreAssetOptions,
+    allAssetOptions: getUniqueAssets([...rampAssetOptions, ...wyreAssetOptions])
+  }
+
+  return results
 }
 
 export function getKeyringIdFromCoin (coin: BraveWallet.CoinType): BraveKeyrings {
