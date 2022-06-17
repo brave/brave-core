@@ -10,6 +10,7 @@
 #include "bat/ads/confirmation_type.h"
 #include "bat/ads/internal/ad_events/ad_events.h"
 #include "bat/ads/internal/base/time/time_constraint_util.h"
+#include "bat/ads/internal/serving/serving_features.h"
 
 namespace ads {
 namespace new_tab_page_ads {
@@ -41,8 +42,9 @@ std::string MinimumWaitTimePermissionRule::GetLastMessage() const {
 
 bool MinimumWaitTimePermissionRule::DoesRespectCap(
     const std::vector<base::Time>& history) {
-  return DoesHistoryRespectRollingTimeConstraint(history, base::Minutes(5),
-                                                 kMinimumWaitTimeCap);
+  return DoesHistoryRespectRollingTimeConstraint(
+      history, features::GetNewTabPageAdsMinimumWaitTime(),
+      kMinimumWaitTimeCap);
 }
 
 }  // namespace new_tab_page_ads

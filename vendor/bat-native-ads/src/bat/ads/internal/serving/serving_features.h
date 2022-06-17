@@ -8,6 +8,10 @@
 
 #include "base/feature_list.h"
 
+namespace base {
+class TimeDelta;
+}  // namespace base
+
 namespace ads {
 namespace features {
 
@@ -25,6 +29,7 @@ int GetMaximumInlineContentAdsPerDay();
 
 int GetMaximumNewTabPageAdsPerHour();
 int GetMaximumNewTabPageAdsPerDay();
+base::TimeDelta GetNewTabPageAdsMinimumWaitTime();
 
 int GetMaximumPromotedContentAdsPerHour();
 int GetMaximumPromotedContentAdsPerDay();

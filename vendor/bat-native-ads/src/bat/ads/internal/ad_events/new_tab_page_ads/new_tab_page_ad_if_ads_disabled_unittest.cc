@@ -50,7 +50,7 @@ class BatAdsNewTabPageAdIfAdsDisabledTest : public NewTabPageAdObserver,
   ~BatAdsNewTabPageAdIfAdsDisabledTest() override = default;
 
   void SetUp() override {
-    UnitTestBase::SetUpForTesting(/* integration_test */ false);
+    UnitTestBase::SetUp();
 
     AdsClientHelper::Get()->SetBooleanPref(prefs::kEnabled, false);
   }
@@ -251,8 +251,12 @@ TEST_F(BatAdsNewTabPageAdIfAdsDisabledTest,
   const int ads_per_hour = features::GetMaximumNewTabPageAdsPerHour();
 
   FireAdEvents(ad_event, ads_per_hour - 1);
+  ExpectAdEventCountEquals(ConfirmationType::kViewed, ads_per_hour - 1);
 
-  const std::string& placement_id = base::GenerateGUID();
+  const std::string placement_id =
+      base::GUID::GenerateRandomV4().AsLowercaseString();
+
+  AdvanceClockBy(features::GetNewTabPageAdsMinimumWaitTime());
 
   // Act
   new_tab_page_ad_->FireEvent(placement_id, creative_ad.creative_instance_id,
@@ -275,7 +279,8 @@ TEST_F(BatAdsNewTabPageAdIfAdsDisabledTest,
 
   FireAdEvents(ad_event, ads_per_hour);
 
-  const std::string& placement_id = base::GenerateGUID();
+  const std::string placement_id =
+      base::GUID::GenerateRandomV4().AsLowercaseString();
 
   // Act
   new_tab_page_ad_->FireEvent(placement_id, creative_ad.creative_instance_id,
@@ -298,9 +303,10 @@ TEST_F(BatAdsNewTabPageAdIfAdsDisabledTest,
 
   FireAdEvents(ad_event, ads_per_day - 1);
 
-  AdvanceClockBy(base::Hours(1));
+  AdvanceClockBy(base::Days(1) - base::Seconds(1));
 
-  const std::string& placement_id = base::GenerateGUID();
+  const std::string placement_id =
+      base::GUID::GenerateRandomV4().AsLowercaseString();
 
   // Act
   new_tab_page_ad_->FireEvent(placement_id, creative_ad.creative_instance_id,
@@ -323,9 +329,10 @@ TEST_F(BatAdsNewTabPageAdIfAdsDisabledTest,
 
   FireAdEvents(ad_event, ads_per_day);
 
-  AdvanceClockBy(base::Hours(1));
+  AdvanceClockBy(base::Days(1) - base::Seconds(1));
 
-  const std::string& placement_id = base::GenerateGUID();
+  const std::string placement_id =
+      base::GUID::GenerateRandomV4().AsLowercaseString();
 
   // Act
   new_tab_page_ad_->FireEvent(placement_id, creative_ad.creative_instance_id,

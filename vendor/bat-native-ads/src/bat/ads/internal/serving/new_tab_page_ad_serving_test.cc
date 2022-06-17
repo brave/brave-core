@@ -221,6 +221,8 @@ TEST_F(BatAdsNewTabPageServingIntegrationTest,
     FireAdEvent(ad_event1);
   }
 
+  AdvanceClockBy(features::GetNewTabPageAdsMinimumWaitTime());
+
   // Act
   serving_->MaybeServeAd(
       [&creative_ad2](const bool success, const NewTabPageAdInfo& ad) {
