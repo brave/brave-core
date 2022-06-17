@@ -237,6 +237,7 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
 }
 
 + (void)setSysInfo:(AdsSysInfo*)sysInfo {
+  ads::SysInfo().did_override_command_line_args_flag = false;
   ads::SysInfo().is_uncertain_future = sysInfo.isUncertainFuture;
 }
 
