@@ -414,6 +414,7 @@ base::flat_set<base::StringPiece> kAllowedFontFamilies =
         "Gill Sans Nova Light",
         "Gill Sans Nova Light Italic",
         "Gill Sans Nova Ultra Bold",
+        "Helvetica",
         "HoloLens MDL2 Assets",
         "Impact",
         "Ink Free",

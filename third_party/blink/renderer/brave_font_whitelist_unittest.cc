@@ -45,7 +45,7 @@ TEST(BraveFontWhitelistTest, Platforms) {
   EXPECT_EQ(allowed.size(), 282UL);
 #elif BUILDFLAG(IS_WIN)
   EXPECT_EQ(brave::CanRestrictFontFamiliesOnThisPlatform(), true);
-  EXPECT_EQ(allowed.size(), 311UL);
+  EXPECT_EQ(allowed.size(), 312UL);
 #else
   EXPECT_EQ(brave::CanRestrictFontFamiliesOnThisPlatform(), false);
   EXPECT_EQ(allowed.size(), 0UL);
@@ -117,7 +117,7 @@ TEST(BraveFontWhitelistTest, KnownFonts) {
     std::make_tuple<>("Arial Unicode MS", false),
     std::make_tuple<>("Calibri", true),
     std::make_tuple<>("Gill Sans", false),
-    std::make_tuple<>("Helvetica", false),
+    std::make_tuple<>("Helvetica", true),
     std::make_tuple<>("Helvetica Neue", false),
     std::make_tuple<>("Menlo", false),
     std::make_tuple<>("Franklin Gothic Medium", true),
