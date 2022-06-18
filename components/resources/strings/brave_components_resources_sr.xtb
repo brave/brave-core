@@ -258,7 +258,6 @@
 <translation id="5382684862562314222">BAT nije podržan u vašem regionu na servisu Uphold.</translation>
 <translation id="9074594632540931067">Greška: BAT nedostupan</translation>
 <translation id="5376524136040178759">Prema platformi Uphold, trenutno postoje neka ograničenja vašeg Uphold naloga. Prijavite se na svoj Uphold nalog i proverite da li ima nekih obaveštenja ili preostalih zahteva za nalog koje treba ispuniti, a zatim pokušajte ponovo. Na primer, možda je potrebno da platformi Uphold prosledite više informacija.</translation>
-<translation id="6996157559236886133">Greška:  Ograničena funkcionalnost Uphold naloga</translation>
 <translation id="3274650021044762770">Došlo je do problema pri potvrđivanju zahteva pretraživača za povezivanje vaših Brave nagrada sa vašim <ph name="PROVIDER"/> nalogom. Možete <ph name="BEGIN_LINK"/>kontaktirati sa podrškom<ph name="END_LINK"/> radi dodatne pomoći.</translation>
 <translation id="1316066811927496401">Greška: Zahtev nije mogao biti potvrđen</translation>
 <translation id="1737873393693460829">Uključivanjem [[title]], prihvatate <ph name="BEGIN_LINK1"/>Uslove korišćenja usluge<ph name="END_LINK1"/> i <ph name="BEGIN_LINK2"/>Politiku privatnosti<ph name="END_LINK2"/>.</translation>
@@ -1289,4 +1288,12 @@
 <translation id="4548946945059463969">Prikazati saldo na ekranu</translation>
 <translation id="242959166945779492">Nemate ništa na stanju na vašem računu. Posetite FTX da biste nešto imali.</translation>
 <translation id="6996157559236886133">Greška:  Ograničena funkcionalnost Uphold naloga</translation>
+<translation id="8303434745767477417">Čuvajte kripto sredstva pod svojim nadzorom. Pratite učinak portfolija i vršite interakciju sa veb 3 decentralizovanim aplikacijama (dapps). Trgujte, investirajte, uzimajte i dajte zajmove pomoću decentralizovanih finansija (DeFi). Sva prava iz Brave privatnog pregledača. Bez proširenja i potrebe za preuzimanjem.</translation>
+<translation id="4075073132992924258">Brave novčanik nije podešen kao vaš standardni novčanik i neće reagovati na veb 3 decentralizovane aplikacije (dapps). Idite na podešavanja da biste promenili svoj standardni novčanik.</translation>
+<translation id="5668765612885835803">Možete da kreirate primarne naloge u Brave novčaniku za koje može biti napravljena rezervna kopija ili koji mogu biti vraćeni u prethodno stanje pomoću vaše fraze za oporavak. Da biste saznali više o tipovima naloga, pogledajte pomoć za naloge</translation>
+<translation id="2471916999505901943">Ovi nalozi mogu da se koriste sa veb 3 decentralizovanim aplikacijama (dapps) i mogu biti prikazani u vašem portfoliju. Međutim, uzmite u obzir da sekundarni nalozi ne mogu biti vraćeni u prethodno stanje pomoću fraze za oporavak sa rezervne kopije vašeg primarnog naloga.</translation>
+<translation id="5723696625900399845">Koristite ovaj panel za bezbedan pristup na web3 i svim vašim kripto sredstvima.</translation>
+<translation id="8897114903450789862">Uvezite vaše <ph name="WALLET_EXTENSION"/> račune u Brave novčanik. Uživajte u bržem i bezbednijem načinu rukovanja kripto imovinom i interakcijom sa web 3 DApps.</translation>
+<translation id="3301259443293676544">Unesite lozinku za postojeće kripto novčanike da biste uvezli Brave novčanik. Uživajte u bržem i bezbednijem upravljanju kripto sredstvima i interakciji sa veb 3 decentralizovanim aplikacijama (dapps).</translation>
+<translation id="1898254156730880135">Izgleda da vaša poslednja uplata nije prošla. Pristup ovoj pretplati će se pauzirati dok se problem sa plaćanjem ne reši. Pokušajte da izmenite način plaćanja ili se obratite Brave podršci.</translation>
 </translationbundle>

@@ -258,7 +258,6 @@
 <translation id="5382684862562314222">Le BAT n'est pas encore pris en charge dans votre région sur Uphold.</translation>
 <translation id="9074594632540931067">Erreur : BAT indisponible</translation>
 <translation id="5376524136040178759">Selon Uphold, votre compte fait actuellement l'objet de limitations. Veuillez vous connecter à votre compte Uphold pour vérifier que vous n'avez pas reçu d'avertissement ou que vous n'avez pas d'action à effectuer, puis réessayez. Par exemple, vous devez peut-être communiquer des informations supplémentaires à Uphold.</translation>
-<translation id="6996157559236886133">Erreur : fonctionnalités du compte Uphold limitées</translation>
 <translation id="3274650021044762770">Impossible de valider la demande de connexion de vos récompenses Brave à votre compte <ph name="PROVIDER"/> par votre navigateur. <ph name="BEGIN_LINK"/>Contactez l'assistance<ph name="END_LINK"/> pour obtenir de l'aide.</translation>
 <translation id="1316066811927496401">Erreur : la demande n'a pas pu être validée</translation>
 <translation id="1737873393693460829">En activant [[title]], vous acceptez les <ph name="BEGIN_LINK1"/>conditions d'utilisation<ph name="END_LINK1"/> et la <ph name="BEGIN_LINK2"/>politique de confidentialité<ph name="END_LINK2"/>.</translation>
@@ -1289,4 +1288,12 @@
 <translation id="4548946945059463969">Afficher vos soldes à l'écran</translation>
 <translation id="242959166945779492">Le solde de votre compte est nul. Accédez à FTX pour acheter des devises.</translation>
 <translation id="6996157559236886133">Erreur : fonctionnalités du compte Uphold limitées</translation>
+<translation id="8303434745767477417">Conservez les actifs cryptos que vous détenez. Suivez les performances de votre portefeuille et interagissez avec des DApps web3. Négociez, investissez, empruntez et prêtez avec FiDé. Tout cela directement depuis le navigateur privé Brave. Aucune extension ni aucun téléchargement requis.</translation>
+<translation id="4075073132992924258">Le portefeuille Brave n'est pas défini comme votre portefeuille par défaut et ne répondra pas aux DApps web3. Accédez aux paramètres pour modifier votre portefeuille par défaut.</translation>
+<translation id="5668765612885835803">Dans le portefeuille Brave, vous pouvez créer des comptes principaux qui peuvent être sauvegardés ou restaurés à partir de votre phrase de récupération. Pour en savoir plus sur les types de comptes disponibles, reportez-vous à l'aide dédiée aux comptes</translation>
+<translation id="2471916999505901943">Ces comptes peuvent être utilisés avec des DApps Web3 et ils peuvent être affichés dans votre portefeuille. Cependant, notez que les comptes secondaires ne peuvent pas être restaurés par la phrase de récupération à partir de votre compte principal de récupération.</translation>
+<translation id="5723696625900399845">Utilisez ce panneau pour accéder en toute sécurité au domaine web3 et à tous vos actifs cryptos.</translation>
+<translation id="8897114903450789862">Importez vos comptes <ph name="WALLET_EXTENSION"/> dans le portefeuille Brave. Profitez d'un moyen plus rapide et plus sûr de gérer les actifs cryptos et d'interagir avec les DApps Web3.</translation>
+<translation id="3301259443293676544">Saisissez le mot de passe de vos portefeuilles cryptos existants pour les importer vers le portefeuille Brave. Profitez d'un moyen plus rapide et plus sûr de gérer les actifs cryptos et d'interagir avec les DApps Web3.</translation>
+<translation id="1898254156730880135">Votre dernier paiement ne semble pas avoir abouti. Cet abonnement va être interrompu jusqu'à ce que le problème soit résolu. Essayez de modifier votre mode de paiement ou contactez l'assistance Brave.</translation>
 </translationbundle>

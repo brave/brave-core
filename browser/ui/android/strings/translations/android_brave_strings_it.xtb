@@ -898,4 +898,9 @@ Se non accetti questa richiesta, la VPN non si riconnetterà e la tua connession
 <translation id="9218430445555521422">Imposta di defult</translation>
 <translation id="6369495274982305511">Vuoi davvero ripristinare il portafoglio? Se non hai eseguito un backup, perderai tutti i dati dell’account (inclusi tutti i fondi associati). Digita “<ph name="CONFIRMATION_PHRASE"/>” per confermare.</translation>
 <translation id="64394831139134288">Il mio portafoglio</translation>
+<translation id="1264320790738638119">La verifica dell’acquisto non è riuscita, riprova.</translation>
+<translation id="8905950042180169719">La VPN è in esecuzione in background</translation>
+<translation id="404414664190867625">ERRORE!!\nCausato da un utente che annulla il flusso di acquisto.</translation>
+<translation id="3515141458161417228">ERRORE!!\nAcquisto non riuscito.</translation>
+<translation id="5665084657857645952">L’autorizzazione è stata annullata</translation>
 </translationbundle>

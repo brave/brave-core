@@ -928,4 +928,5 @@ Bu talebi kabul etmezseniz VPN yeniden bağlanmaz ve internet bağlantınız gü
 <translation id="9218430445555521422">Varsayılan olarak ayarla</translation>
 <translation id="6369495274982305511">Cüzdanınızı sıfırlamak istediğinizden emin misiniz? Eğer cüzdanınız yedeklenmediyse, sıfırlamak (tüm ilişkili paralar da dahil olmak üzere) tüm hesap verilerinizi kaybetmenize sebep olabilir. Onaylamak için "<ph name="CONFIRMATION_PHRASE"/>" yazın.</translation>
 <translation id="64394831139134288">Cüzdanım</translation>
+<translation id="8905950042180169719">VPN arka planda çalışıyor</translation>
 </translationbundle>

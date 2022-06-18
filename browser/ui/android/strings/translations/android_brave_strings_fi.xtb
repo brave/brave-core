@@ -899,4 +899,9 @@ Jos et hyväksy tätä pyyntöä, yhteyttä VPN:ään ei muodosta uudelleen ja I
 <translation id="9218430445555521422">Aseta oletusselaimeksi</translation>
 <translation id="6369495274982305511">Haluatko varmasti nollata lompakkosi? Jos lompakkoasi ei ole varmuuskopioitu, nollaus johtaa kaikkien tilitietojen menetykseen (mukaan lukien kaikki siihen liittyvät varat). Vahvista kirjoittamalla <ph name="CONFIRMATION_PHRASE"/>.</translation>
 <translation id="64394831139134288">Oma lompakkoni</translation>
+<translation id="1264320790738638119">Oston vahvistus epäonnistui. Yritä uudelleen.</translation>
+<translation id="8905950042180169719">VPN on käynnissä taustalla</translation>
+<translation id="404414664190867625">VIRHE!!\nSyynä on käyttäjän peruuttama ostos.</translation>
+<translation id="3515141458161417228">VIRHE!!\nOstaminen epäonnistui..</translation>
+<translation id="5665084657857645952">Lupa peruutettiin</translation>
 </translationbundle>

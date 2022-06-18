@@ -258,7 +258,6 @@
 <translation id="5382684862562314222">Az Upholdban a BAT egyelőre nem támogatott az Ön régiójában.</translation>
 <translation id="9074594632540931067">Hiba: BAT nem elérhető</translation>
 <translation id="5376524136040178759">Az Uphold szerint jelenleg korlátozottan elérhető az Ön Uphold fiókja. Lépjen be az Uphold fiókjába, és ellenőrizze, kapott-e valamilyen figyelmeztetést, vagy meg kell-e felelnie valami követelménynek a fiókban, majd próbálkozzon újra. Elképzelhető, hogy további információt kell nyújtania az Uphold számára.</translation>
-<translation id="6996157559236886133">Hiba: korlátozott Uphold-fiókfunkciók</translation>
 <translation id="3274650021044762770">Probléma lépett fel a böngészője kérésének érvényesítésével, amely a Brave jutalmak és a(z) <ph name="PROVIDER"/> fiók összekapcsolására vonatkozott. További segítségért <ph name="BEGIN_LINK"/>lépjen kapcsolatba az ügyfélszolgálattal<ph name="END_LINK"/>.</translation>
 <translation id="1316066811927496401">Hiba: a kérést nem lehetett érvényesíteni</translation>
 <translation id="1737873393693460829">A(z) [[title]] bekapcsolásával elfogadja a <ph name="BEGIN_LINK1"/>Szolgáltatási feltételeket<ph name="END_LINK1"/> és az <ph name="BEGIN_LINK2"/>Adatvédelmi szabályzatot<ph name="END_LINK2"/>.</translation>
@@ -1289,4 +1288,12 @@
 <translation id="4548946945059463969">Az egyenlegek mutatása a képernyőn</translation>
 <translation id="242959166945779492">Fiókja nem rendelkezik egyenleggel. A beszerzéshez látogasson el az FTX-re.</translation>
 <translation id="6996157559236886133">Hiba: korlátozott Uphold-fiókfunkciók</translation>
+<translation id="8303434745767477417">Tartson magánál letétben kriptoeszközöket. Kövesse nyomon a portfóliója teljesítményét és lépjen interakcióba web 3 decentralizált applikációkkal. Kereskedjen, fektessen be, vegyen fel kölcsönt, és adjon kölcsön a DeFi-vel. Mindezt egyenesen a Brave adatvédelmi böngészőből. Nincsenek bővítmények és a letöltés sem szükséges.</translation>
+<translation id="4075073132992924258">A Brave pénztárca nem az alapértelmezett tárcája, és nem válaszol web3 decentralizált applikációknak. Ugorjon a beállításokhoz, hogy módosítsa az alapértelmezett tárcáját.</translation>
+<translation id="5668765612885835803">Létrehozhat elsődleges számlákat a Brave pénztárcában, amelyekről biztonsági másolat készíthető, illetve visszaállítható a helyreállítási kifejezéssel. A számlatípusokkal kapcsolatos további tudnivalókat a fiókokkal kapcsolatos súgóban talál.</translation>
+<translation id="2471916999505901943">Ezeket a számlákat web 3 decentralizált applikációkkal lehet használni és megjeleníteni a portfóliójában, viszont nem lehet őket helyreállítani a helyreállítási kifejezéssel az elsődleges számlájának a biztonsági mentéséről.</translation>
+<translation id="5723696625900399845">A panel segítségével biztonságosan hozzáférhet a web3-hoz és összes kriptoeszközéhez.</translation>
+<translation id="8897114903450789862">Importálja <ph name="WALLET_EXTENSION"/> fiókjait a Brave Walletbe. Élvezze a kriptoeszközök kezelésének gyorsabb és biztonságosabb módját, és lépjen interakcióba web 3 DAppokkal.</translation>
+<translation id="3301259443293676544">Adja meg a már meglévő kriptotárcája jelszavát a Brave pénztárcába való importáláshoz. Élvezze, hogy gyorsabb és biztonságosabb módon kezelheti a kriptoeszközeit és léphet interakcióba web 3 decentralizált applikációkkal.</translation>
+<translation id="1898254156730880135">Úgy tűnik, legutóbbi befizetése sikertelen volt. Az előfizetéshez történő hozzáférés szüneteltetve lesz, amíg a fizetési probléma meg nem oldódik. Próbálja meg módosítani a fizetési módot, vagy forduljon a Brave ügyfélszolgálatához.</translation>
 </translationbundle>

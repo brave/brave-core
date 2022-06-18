@@ -256,7 +256,6 @@
 <translation id="8218538368080510976">Fout: regio niet ondersteund</translation>
 <translation id="5382684862562314222">BAT wordt in Uphold nog niet ondersteund in jouw regio.</translation>
 <translation id="9074594632540931067">Fout: BAT niet beschikbaar</translation>
-<translation id="6996157559236886133">Fout: beperkte Uphold-accountfunctionaliteit</translation>
 <translation id="3274650021044762770">Er is een probleem opgetreden bij het valideren van het verzoek van uw browser om Brave Beloningen te koppelen aan uw <ph name="PROVIDER"/>-account. U kunt <ph name="BEGIN_LINK"/>contact opnemen met de ondersteuning <ph name="END_LINK"/> als u meer hulp nodig hebt.</translation>
 <translation id="1316066811927496401">Fout: verzoek kan niet worden gevalideerd</translation>
 <translation id="1737873393693460829">Door [[title]] in the schakelen, ga je akkoord met de <ph name="BEGIN_LINK1"/>Servicevoorwaarden<ph name="END_LINK1"/> en het <ph name="BEGIN_LINK2"/>Privacybeleid<ph name="END_LINK2"/>.</translation>
@@ -1255,4 +1254,13 @@
 <translation id="4548946945059463969">Uw saldo tonen</translation>
 <translation id="242959166945779492">Je hebt geen saldo in je account. Ga naar FTX om saldo toe te voegen.</translation>
 <translation id="6996157559236886133">Fout: beperkte Uphold-accountfunctionaliteit</translation>
+<translation id="2236833281018938257">0x-adres of URL</translation>
+<translation id="8303434745767477417">Houd cryptoassets in je eigen bezit. Volg portfolioprestaties en communiceer met web 3 DApps. Verhandel, investeer, leen en leen uit met DeFi. Dit allemaal rechtstreeks vanuit de Brave-privébrowser. Er zijn geen extensies of downloads vereist.</translation>
+<translation id="4075073132992924258">Brave-wallet is niet ingesteld als je standaardwallet en reageert niet op web3 Dapps. Ga naar Instellingen om je standaardwallet bij te werken.</translation>
+<translation id="5668765612885835803">U kunt primaire accounts in de Brave-wallet maken waarvan mogelijk een back-up bestaat of die kunnen worden hersteld vanuit uw herstelwoorden. Voor meer informatie over accounttypen gaat u naar de Help voor accounts</translation>
+<translation id="2471916999505901943">Deze accounts kunnen gebruikt worden met web 3 DApps en kunnen worden weergegeven in uw portfolio. Houd er echter rekening mee dat secondaire accounts niet kunnen worden hersteld met de herstelzin vanuit de back-up van uw primaire account.</translation>
+<translation id="5723696625900399845">Gebruik dit scherm om veilig toegang te krijgen tot web3 en al uw cryptoassets.</translation>
+<translation id="8897114903450789862">Importeer je <ph name="WALLET_EXTENSION"/>-accounts in Brave-wallet. Profiteer van een snellere en veiligere manier om cryptoassets te beheren en met web 3 DApps te communiceren.</translation>
+<translation id="3301259443293676544">Voer je bestaande cryptowalletwachtwoord in om naar je Brave-wallet te importeren. Profiteer van een snellere en veiligere manier om cryptoassets te beheren en om met web 3 DApps te communiceren</translation>
+<translation id="1898254156730880135">Het lijkt erop dat uw meest recente betaling is mislukt. De toegang tot dit abonnement wordt gepauzeerd totdat het betalingsprobleem is opgelost. Probeer uw betaalmethode te bewerken of neem contact op met de Brave-ondersteuning.</translation>
 </translationbundle>

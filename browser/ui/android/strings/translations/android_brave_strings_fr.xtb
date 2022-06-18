@@ -927,4 +927,5 @@ Si vous n'acceptez pas cette demande, le VPN ne se reconnectera pas et votre con
 <translation id="9218430445555521422">Définir comme navigateur par défaut</translation>
 <translation id="6369495274982305511">Voulez-vous vraiment réinitialiser votre portefeuille ? Si votre portefeuille n'est pas sauvegardé, vous perdrez toutes les données de votre compte (y compris tous les fonds associés). Tapez "<ph name="CONFIRMATION_PHRASE"/>" pour confirmer.</translation>
 <translation id="64394831139134288">Mon portefeuille</translation>
+<translation id="8905950042180169719">Le VPN s'exécute en arrière-plan</translation>
 </translationbundle>

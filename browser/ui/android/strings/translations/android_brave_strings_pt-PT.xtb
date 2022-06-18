@@ -929,4 +929,5 @@ Se não aceitar este pedido, a VPN não voltará a ligar e a sua ligação à In
 <translation id="9218430445555521422">Definir como predefinição</translation>
 <translation id="6369495274982305511">Tem a certeza de que pretende repor a carteira? Ao repor a carteira, irá perder todos os dados da conta (incluindo todos os fundos associados), se não existir uma cópia de segurança da mesma. Introduza "<ph name="CONFIRMATION_PHRASE"/>" para confirmar.</translation>
 <translation id="64394831139134288">A minha carteira</translation>
+<translation id="8905950042180169719">O VPN está a ser executado em segundo plano</translation>
 </translationbundle>

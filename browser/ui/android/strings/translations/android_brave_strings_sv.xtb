@@ -899,4 +899,9 @@ Om du inte accepterar denna begäran kommer VPN inte att ansluta igen och din in
 <translation id="9218430445555521422">Använd som standard</translation>
 <translation id="6369495274982305511">Vill du återställa plånboken? Om din plånbok inte säkerhetskopieras kommer du att förlora alla kontouppgifter (inklusive eventuella associerade medel) om du återställer. Skriv in "<ph name="CONFIRMATION_PHRASE"/>" för att bekräfta.</translation>
 <translation id="64394831139134288">Min plånbok</translation>
+<translation id="1264320790738638119">Verifiering av köpet misslyckades. Försök igen.</translation>
+<translation id="8905950042180169719">VPN körs i bakgrunden</translation>
+<translation id="404414664190867625">FEL!!\nOrsakas av att en användare avbryter köpflödet.</translation>
+<translation id="3515141458161417228">ERROR!!\nKöpet misslyckades..</translation>
+<translation id="5665084657857645952">Behörighet annullerades</translation>
 </translationbundle>

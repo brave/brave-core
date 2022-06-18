@@ -108,7 +108,6 @@ lub zmień później w <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="2571596981920752023">karty: <ph name="NUMBER_OF_TABS"/></translation>
 <translation id="2515126961943087659">Usługa reklam Bat</translation>
 <translation id="7924918279836988121">Usługa Ledger Bat</translation>
-<translation id="6040143037577758943">Zamknij</translation>
 <translation id="6665472986740899785">Powiadomienie reklamowe Brave</translation>
 <translation id="4174337572777167894">Projekt Web Discovery</translation>
 <translation id="8659271182272561965">Przekaż anonimowo niektóre dane wyszukiwania i przeglądania, aby pomóc w doskonaleniu wyszukiwarki Brave.</translation>
@@ -508,4 +507,5 @@ lub zmień później w <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="6040143037577758943">Zamknij</translation>
 <translation id="5600566490506283344">Powiadomienie Brave Ad</translation>
 <translation id="4395160081588457461">Popatrz i poczuj</translation>
+<translation id="7942180974165298215">Blokada reklam Brave</translation>
 </translationbundle>

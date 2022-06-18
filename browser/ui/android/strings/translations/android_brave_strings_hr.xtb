@@ -929,4 +929,5 @@ Ako ne prihvatite taj zahtjev, mreža VPN ponovno se ne spaja i nema zaštite va
 <translation id="9218430445555521422">Postavi kao zadano</translation>
 <translation id="6369495274982305511">Sigurno želite ponovno postaviti novčanik? Ako ne postoji sigurnosna kopija novčanika, ponovnim postavljanjem prouzročava se gubitak svih podataka računa (uključujući sva povezana sredstva). Upišite „<ph name="CONFIRMATION_PHRASE"/>” za potvrđivanje.</translation>
 <translation id="64394831139134288">Moj novčanik</translation>
+<translation id="8905950042180169719">Mreža VPN radi u pozadini</translation>
 </translationbundle>

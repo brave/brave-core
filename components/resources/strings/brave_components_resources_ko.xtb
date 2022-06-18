@@ -258,7 +258,6 @@
 <translation id="5382684862562314222">거주하고 계신 지역에서는 Uphold에 BAT가 아직 지원되지 않습니다.</translation>
 <translation id="9074594632540931067">오류: BAT 이용 불가</translation>
 <translation id="5376524136040178759">Uphold의 규정에 따라 현재 귀하의 Uphold 계정에 몇 가지 제한이 걸려 있습니다. Uphold 계정에 로그인하여 이에 대한 알림이 있는지, 완료해야 하는 계정 요건이 남아있는지 확인한 다음 다시 시도하세요. 예를 들어, Uphold에 정보를 제출하는 과정이 남아있을 수 있습니다.</translation>
-<translation id="6996157559236886133">오류: Uphold 계정 기능 제한</translation>
 <translation id="3274650021044762770">브라우저가 Brave Rewards를 <ph name="PROVIDER"/> 계정에 연결하는 요청을 보냈으나 유효성 검증에 문제가 있습니다. <ph name="BEGIN_LINK"/>지원팀에 문의<ph name="END_LINK"/>하여 도움을 받으세요.</translation>
 <translation id="1316066811927496401">오류: 요청의 유효성을 검증할 수 없습니다.</translation>
 <translation id="1737873393693460829">[[title]] 기능을 켜면 <ph name="BEGIN_LINK1"/>이용약관<ph name="END_LINK1"/> 및 <ph name="BEGIN_LINK2"/>개인정보처리방침<ph name="END_LINK2"/>에 동의하게 됩니다.</translation>
@@ -1289,4 +1288,12 @@
 <translation id="4548946945059463969">화면에 잔액 표시</translation>
 <translation id="242959166945779492">계정 내에 잔액이 없습니다. FTX를 방문하여 구매하세요.</translation>
 <translation id="6996157559236886133">오류: Uphold 계정 기능 제한</translation>
+<translation id="8303434745767477417">보호관리 계정에 암호화폐 자산 보유. 포트폴리오 실적 추적, web 3 DApps를 이용. DeFi로 거래, 투자, 대출, 대부까지. Brave 프라이버시 브라우저에서 모두 이용합니다. 확장 프로그램도, 다운로드도 필요하지 않습니다.</translation>
+<translation id="4075073132992924258">Brave 월렛이 기본 월렛으로 설정되어 있지 않아 web3 DApps에 응답할 수 없습니다. 설정을 방문하여 기본 월렛을 변경하세요.</translation>
+<translation id="5668765612885835803">Brave 월렛에 주사용 계정을 만들 수 있으며, 유사시 복구 문구로 백업 및 복구할 수 있습니다. 계정 유형에 대해 알아보려면 계정 도움말을 방문하세요.</translation>
+<translation id="2471916999505901943">이들 계정은 web 3 DApps와 함께 사용하여 포트폴리오에 표시할 수 있지만, 주사용 계정 백업의 복구 문구를 통해서는 보조 계정을 복원할 수 없습니다.</translation>
+<translation id="5723696625900399845">이 패널을 사용하면 web3 및 모든 암호화폐 자산에 안전하게 액세스할 수 있습니다.</translation>
+<translation id="8897114903450789862"><ph name="WALLET_EXTENSION"/> 계정을 Brave 월렛 속으로 가져오세요. 더욱 빠르고 안전하게 암호화폐 자산을 관리하고 web 3 DApps를 이용하세요.</translation>
+<translation id="3301259443293676544">기존 암호화폐 월렛 비밀번호를 입력하면 Brave 계정으로 가져옵니다. 더욱 빠르고 안전하게 암호화폐 자산을 관리하고 web 3 DApps를 이용하세요.</translation>
+<translation id="1898254156730880135">최근 결제에 문제가 생긴 것 같습니다. 결제 문제가 해결될 때까지 이 구독 액세스가 일시 중지됩니다. 결제 수단을 편집해보거나 Brave 지원에 문의하세요.</translation>
 </translationbundle>

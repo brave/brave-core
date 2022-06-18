@@ -908,4 +908,5 @@ Nếu bạn không chấp nhận yêu cầu này, VPN sẽ không kết nối l�
 <translation id="9218430445555521422">Đặt làm mặc định</translation>
 <translation id="6369495274982305511">Bạn có chắc chắn muốn đặt lại ví của mình không? Nếu ví của bạn không được sao lưu, đặt lại sẽ khiến bạn mất hết tất cả dữ liệu tài khoản (bao gồm mọi khoản tiền liên quan). Nhập "<ph name="CONFIRMATION_PHRASE"/>" để xác nhận.</translation>
 <translation id="64394831139134288">Ví của tôi</translation>
+<translation id="8905950042180169719">VPN đang chạy dưới nền</translation>
 </translationbundle>

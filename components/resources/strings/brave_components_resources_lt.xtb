@@ -264,7 +264,6 @@ Window with Tor“ ir vėl įjunkite. Vis dar turite problemų?</translation>
 <translation id="5382684862562314222">„Uphold“ dar nepalaiko BAT jūsų regione.</translation>
 <translation id="9074594632540931067">Klaida: BAT nepasiekiami</translation>
 <translation id="5376524136040178759">„Uphold“ duomenimis, šiuo metu taikomi tam tikri apribojimai jūsų „Uphold“ sąskaitai. Prisijunkite prie savo „Uphold“ sąskaitos ir patikrinkite, ar yra pranešimų arba likusių įvykdyti reikalavimų, tada bandykite dar kartą. Pavyzdžiui, gali prireikti, kad „Uphold“ suteiktumėte daugiau informacijos.</translation>
-<translation id="6996157559236886133">Klaida: apribotos „Uphold“ paskyros funkcijos</translation>
 <translation id="3274650021044762770">Kilo problema patvirtinant jūsų naršyklės užklausą prijungti „Brave Rewards“ prie jūsų paskyros. Galite kreiptis į <ph name="PROVIDER"/> palaikymo tarnybą, kad gautumėte <ph name="BEGIN_LINK"/> <ph name="END_LINK"/> daugiau pagalbos.</translation>
 <translation id="1316066811927496401">Klaida: prašymo patvirtinti nepavyko</translation>
 <translation id="1737873393693460829">Įjungdami [[title]] sutinkate su <ph name="BEGIN_LINK1"/>paslaugų teikimo sąlygomis<ph name="END_LINK1"/> ir <ph name="BEGIN_LINK2"/>privatumo politika<ph name="END_LINK2"/>.</translation>
@@ -1295,4 +1294,12 @@ Window with Tor“ ir vėl įjunkite. Vis dar turite problemų?</translation>
 <translation id="4548946945059463969">Likučius matykite ekrane</translation>
 <translation id="242959166945779492">Jūsų sąskaitoje likučio nėra. Apsilankykite FTX ir šiek tiek įsigykite.</translation>
 <translation id="6996157559236886133">Klaida: apribotos „Uphold“ paskyros funkcijos</translation>
+<translation id="8303434745767477417">Laikykite kriptoaktyvus savo žinioje. Stebėkite investicijų portfelio rezultatus ir sąveikaukite su „Web3 DApps“. Prekiaukite, skolinkitės ir skolinkite naudodami „DeFi“ tiesiai privačioje naršyklėje „Brave“. Jokių plėtinių ar atsisiuntimų.</translation>
+<translation id="4075073132992924258">„Brave“ piniginė nenustatyta kaip numatytoji, todėl nereaguos į „Web3 DApps“. Apsilankykite nustatymų srityje ir pakeiskite numatytąją piniginę.</translation>
+<translation id="5668765612885835803">Galite susikurti pagrindines „Brave“ piniginės sąskaitas, kurias galima atkurti naudojant atkūrimo frazę arba daryti jų atsargines kopijas. Jei norite apie sąskaitų tipus sužinoti daugiau, apsilankykite sąskaitų žinyne</translation>
+<translation id="2471916999505901943">Šias sąskaitas galima naudoti kartu su „Web3 DApps“ ir jos gali būti rodomos jūsų profilyje. Vis dėlto atminkite, kad, įvedus pagrindinės sąskaitos atkūrimo iš atsarginės kopijos frazę, atkurti antrinių sąskaitų negalima.</translation>
+<translation id="5723696625900399845">Naudokite šį skydelį saugiai prieigai prie web3 ir viso savo kriptografinio turinio.</translation>
+<translation id="8897114903450789862">Importuokite savo <ph name="WALLET_EXTENSION"/> sąskaitas į „Brave“ piniginę. Mėgaukitės greitesniu ir saugesniu būdu valdyti kriptovaliutų išteklius ir sąveikauti su žiniatinklio „3 DApps“.</translation>
+<translation id="3301259443293676544">Įveskite esamą kriptovaliutų piniginių slaptažodį, kad importuotumėte į „Brave“ piniginę. Tvarkykite kriptoaktyvus sparčiau ir saugiau bei sąveikaukite naudodami „Web3 DApps“.</translation>
+<translation id="1898254156730880135">Atrodo, kad jūsų pastarasis mokėjimas nepavyko. Prieiga prie šios prenumeratos bus pristabdyta, kol mokėjimo problema bus išspręsta. Pabandykite redaguoti mokėjimo metodą arba susisiekite su „Brave“ pagalbos tarnyba.</translation>
 </translationbundle>

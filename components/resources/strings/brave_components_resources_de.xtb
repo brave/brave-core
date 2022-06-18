@@ -258,7 +258,6 @@
 <translation id="5382684862562314222">BAT wird in Ihrer Region auf Uphold noch nicht unterstützt.</translation>
 <translation id="9074594632540931067">Fehler: BAT nicht verfügbar</translation>
 <translation id="5376524136040178759">Laut Uphold gibt es derzeit einige Einschränkungen für Ihr Uphold-Konto. Bitte melden Sie sich bei Ihrem Uphold-Konto an und sehen Sie nach, ob es noch Hinweise oder verbleibende Kontoanforderungen zu vervollständigen gibt, und versuchen Sie es dann erneut. Es könnte sein, dass Sie weitere Informationen an Uphold übermitteln müssen.</translation>
-<translation id="6996157559236886133">Fehler: Eingeschränkte Funktionalität des Uphold-Kontos</translation>
 <translation id="3274650021044762770">Bei der Überprüfung der Anfrage Ihres Browsers, Ihre Brave Belohnungen mit Ihrem <ph name="PROVIDER"/>-Konto zu verbinden, ist ein Problem aufgetreten. Sie können <ph name="BEGIN_LINK"/>sich an den Support wenden<ph name="END_LINK"/>, um weitere Hilfe zu erhalten.</translation>
 <translation id="1316066811927496401">Fehler: Anfrage konnte nicht validiert werden</translation>
 <translation id="1737873393693460829">Durch Aktivieren von [[title]] akzeptieren Sie die <ph name="BEGIN_LINK1"/>Nutzungsbedingungen<ph name="END_LINK1"/> und <ph name="BEGIN_LINK2"/>Datenschutzerklärung<ph name="END_LINK2"/>.</translation>
@@ -1289,4 +1288,12 @@ hat <ph name="NUMBER"/> Tracker, Anzeigen und mehr blockiert</translation>
 <translation id="4548946945059463969">Guthabenanzeige erlauben</translation>
 <translation id="242959166945779492">Sie haben kein Guthaben auf Ihrem Konto. Gehen Sie zu FTX, um welches zu kaufen.</translation>
 <translation id="6996157559236886133">Fehler: Eingeschränkte Funktionalität des Uphold-Kontos</translation>
+<translation id="8303434745767477417">Halten Sie Krypto-Assets in Ihrer Verwahrung. Verfolgen Sie die Portfolioleistung und interagieren Sie mit Web-3-DApps. Handeln, investieren, leihen und verleihen Sie mit DeFi. Alles direkt über den Brave-Datenschutzbrowser. Keine Erweiterungen, kein Download erforderlich.</translation>
+<translation id="4075073132992924258">Brave Wallet ist nicht als Standard-Wallet festgelegt und reagiert nicht auf web3-DApps. Wechseln Sie zu den Einstellungen, um Ihre Standard-Wallet zu ändern.</translation>
+<translation id="5668765612885835803">Sie können in Ihrer Brave-Wallet primäre Konten erstellen, die von Ihrer Wiederherstellungsphrase gesichert oder damit wiederhergestellt werden können. Weitere Informationen zu Kontotypen finden Sie in der Kontohilfe</translation>
+<translation id="2471916999505901943">Diese Konten können mit Web 3 DApps verwendet und in Ihrem Portfolio angezeigt werden. Beachten Sie jedoch, dass sekundäre Konten nicht über die Wiederherstellungsphrase aus Ihrem primären Konto-Backup wiederhergestellt werden können.</translation>
+<translation id="5723696625900399845">Verwenden Sie dieses Panel, um sicher auf web3 und alle Ihre Krypto-Assets zuzugreifen.</translation>
+<translation id="8897114903450789862">Importieren Sie Ihre <ph name="WALLET_EXTENSION"/>-Konten in Brave Wallet. Profitieren Sie von einer schnelleren und sichereren Methode, Krypto-Assets zu verwalten und mit web 3 DApps zu interagieren.</translation>
+<translation id="3301259443293676544">Geben Sie Ihr bestehendes Krypto-Wallet-Passwort ein, um es in Brave Wallet zu importieren. Genießen Sie eine schnellere und sicherere Möglichkeit, Krypto-Assets zu verwalten und mit Web-3-DApps zu interagieren.</translation>
+<translation id="1898254156730880135">Anscheinend ist Ihre letzte Zahlung nicht durchgegangen. Der Zugriff auf dieses Abonnement wird pausiert, bis das Zahlungsproblem gelöst wurde. Ändern Sie Ihre Zahlungsmethode oder wenden Sie sich an den Brave-Support.</translation>
 </translationbundle>

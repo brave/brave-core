@@ -256,7 +256,6 @@
 <translation id="8218538368080510976">Pogreška: regija nije podržana</translation>
 <translation id="5382684862562314222">Još se ne podržava BAT u vašoj regiji putem usluge Uphold.</translation>
 <translation id="9074594632540931067">Greška: BAT nije dostupan</translation>
-<translation id="6996157559236886133">Pogreška: Ograničena funkcionalnost računa za uslugu Uphold</translation>
 <translation id="3274650021044762770">Nastao je problem pri potvrđivanju zahtjeva preglednika za povezivanje Nagrada Brave s računom <ph name="PROVIDER"/>. Možete se <ph name="BEGIN_LINK"/> obratiti službi za korisničku podršku <ph name="END_LINK"/> za pomoć.</translation>
 <translation id="1316066811927496401">Pogreška: Nije moguće potvrditi zahtjev</translation>
 <translation id="1737873393693460829">Uključivanjem [[title]] pristajete na <ph name="BEGIN_LINK1"/>uvjete pružanja usluge<ph name="END_LINK1"/> i <ph name="BEGIN_LINK2"/>pravilnik o privatnosti<ph name="END_LINK2"/>.</translation>
@@ -1255,4 +1254,13 @@ Blokirano <ph name="NUMBER"/> element/a/ata za praćenje, oglas/a i više</trans
 <translation id="4548946945059463969">Otkrij svoje raspoložive iznose na ekranu</translation>
 <translation id="242959166945779492">Nemate raspoloživih iznosa na svom računu. Posjetite FTX da biste ih kupili.</translation>
 <translation id="6996157559236886133">Pogreška: Ograničena funkcionalnost računa za uslugu Uphold</translation>
+<translation id="2236833281018938257">Adresa 0x ili URL</translation>
+<translation id="8303434745767477417">Čuvajte kriptoimovinu. Pratite učinak portfelja i upotrebljavajte 3 mrežne decentralizirane aplikacije. Mijenjajte, ulažite, posuđujte i pozajmljujte pomoću DeFija. Sve izravno iz privatnog preglednika Braver. Ne trebaju proširenja ni preuzimanja.</translation>
+<translation id="4075073132992924258">Novčanik preglednika Brave Wallet nije vaš zadani novčanik i njime se ne reagira na 3 mrežne decentralizirane aplikacije. Idite na postavke za promjenu zadanog novčanika.</translation>
+<translation id="5668765612885835803">Možete stvarati primarne račune u novčaniku Brave koje možete sigurnosno kopirati ili vratiti pomoću svoje rečenice za oporavak. Da biste doznali više o vrstama računa, posjetite stranicu pomoći za račun</translation>
+<translation id="2471916999505901943">Ti se računi mogu upotrijebiti s 3 mrežne decentralizirane aplikacije i mogu se prikazati u vašem portfelju. Međutim, imajte na umu da se sekundarni računi ne mogu vratiti pomoću rečenice za oporavak iz sigurnosne kopije vašeg primarnog računa.</translation>
+<translation id="5723696625900399845">Upotrijebite ovu ploču za sigurno pristupanje mreži web3 i čitavoj svojoj kriptoimovini.</translation>
+<translation id="8897114903450789862">Uvezite svoje račune<ph name="WALLET_EXTENSION"/> u novčanik Brave. Uživajte u bržem i sigurnijem načinu upravljanja kriptoimovinom i interakcije s decentraliziranim aplikacijama Web3.</translation>
+<translation id="3301259443293676544">Upišite lozinku svojih postojećih novčanika za kriptovalute za uvoz u novčanik preglednika Brave. Uživajte u bržem i sigurnijem načinu upravljanja kriptoimovinom i upotrijebite 3 mrežne decentralizirane aplikacije.</translation>
+<translation id="1898254156730880135">Izgleda da vaše najnedavnije plaćanje nije prošlo. Zaustavlja se pristup ovoj pretplati dok se problem s plaćanjem ne riješi. Pokušajte urediti svoj način plaćanja ili se obratite podršci društva Brave.</translation>
 </translationbundle>

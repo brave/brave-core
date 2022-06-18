@@ -108,7 +108,6 @@
 <translation id="2571596981920752023">탭 <ph name="NUMBER_OF_TABS"/>개</translation>
 <translation id="2515126961943087659">Bat 광고 서비스</translation>
 <translation id="7924918279836988121">배트 원장 서비스</translation>
-<translation id="6040143037577758943">닫기</translation>
 <translation id="6665472986740899785">Brave 알림 광고</translation>
 <translation id="4174337572777167894">웹 디스커버리 프로젝트</translation>
 <translation id="8659271182272561965">익명 검색 및 인터넷 사용 기록 데이터 일부를 보내 Brave Search 개선에 도움을 주세요.</translation>
@@ -509,4 +508,5 @@
 <translation id="6040143037577758943">닫기</translation>
 <translation id="5600566490506283344">Brave 광고 알림</translation>
 <translation id="4395160081588457461">보고 느끼기</translation>
+<translation id="7942180974165298215">Brave 광고 차단</translation>
 </translationbundle>

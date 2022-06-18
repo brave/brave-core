@@ -929,4 +929,5 @@ Si no la aceptas, la VPN no se volverá a conectar y tu conexión a Internet no 
 <translation id="9218430445555521422">Establecer como predeterminado</translation>
 <translation id="6369495274982305511">¿Seguro que quieres restablecer tu cartera? Si no hay guardada una copia de seguridad, podrías perder todos los datos de la cuenta (incluidos los fondos asociados a ella). Escribe "<ph name="CONFIRMATION_PHRASE"/>" para confirmar.</translation>
 <translation id="64394831139134288">Mi cartera</translation>
+<translation id="8905950042180169719">La VPN se está ejecutando en segundo plano</translation>
 </translationbundle>

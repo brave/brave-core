@@ -928,4 +928,5 @@ Hvis du ikke godkender denne anmodning, vil VPN-forbindelsen ikke blive genopret
 <translation id="9218430445555521422">Indstil som standard</translation>
 <translation id="6369495274982305511">Er du sikker på, at du vil nulstille din wallet? Hvis du ikke har sikkerhedskopieret den, vil du miste alle dine kontodata (deriblandt alle tilknyttede midler), hvis du nulstiller. Skriv "<ph name="CONFIRMATION_PHRASE"/>" for at bekræfte.</translation>
 <translation id="64394831139134288">My tegnebog</translation>
+<translation id="8905950042180169719">VPN kører i baggrunden</translation>
 </translationbundle>

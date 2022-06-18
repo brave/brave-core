@@ -258,7 +258,6 @@
 <translation id="5382684862562314222">Hindi pa sinusuportahan ang BAT sa iyong rehiyon sa Uphold.</translation>
 <translation id="9074594632540931067">Error: Hindi available ang BAT</translation>
 <translation id="5376524136040178759">Ayon sa Uphold, kasalukuyang may ilang limitasyon sa iyong Uphold account. Mag-log in sa iyong Uphold account at tingnan kung may anumang mga paunawa o natitirang kinakailangan sa account na kinakailangang kumpletuhin, pagkatapos ay subukan ulit. Halimbawa, puwede kang magsumite ng higit pang impormasyon sa Uphold.</translation>
-<translation id="6996157559236886133">Error: Limitadong kakayanan ng Uphold account</translation>
 <translation id="3274650021044762770">Nagkaproblema sa pag-validate sa kahilingan ng iyong browser na ikonekta ang Mga Reward ng Brave sa iyong <ph name="PROVIDER"/> account. Puwede kang <ph name="BEGIN_LINK"/>makipag-ugnayan sa suporta<ph name="END_LINK"/> para sa higit pang tulong.</translation>
 <translation id="1316066811927496401">Error: Hindi ma-validate ang kahilingan</translation>
 <translation id="1737873393693460829">Sa pamamagitan ng pag-on sa [[title]], sumasang-ayon ka sa <ph name="BEGIN_LINK1"/>Mga Tuntunin ng Serbisyo<ph name="END_LINK1"/> at <ph name="BEGIN_LINK2"/>Patakaran sa Privacy<ph name="END_LINK2"/>.</translation>
@@ -1289,4 +1288,12 @@
 <translation id="4548946945059463969">Ipakita ang iyong mga balanse sa screen</translation>
 <translation id="242959166945779492">Wala kang anumang balanse sa iyong account. Bisitahin ang FTX para bumili ng ganito.</translation>
 <translation id="6996157559236886133">Error: Limitadong kakayanan ng Uphold account</translation>
+<translation id="8303434745767477417">Alagaan ang iyong mga asset ng cryptocurrency. I-track ang performance ng portfolio, at makipag-ugnayan sa mga web 3 DApp. Mag-trade, mag-invest, humiram, at magpahiram gamit ang DeFi. Iyon na ang lahat para sa pribadong browser ng Brave. Walang mga extension, walang kinakailangang pag-download.</translation>
+<translation id="4075073132992924258">Hindi pa naitakda bilang iyong default na wallet ang Brave Wallet, at hindi ito tutugon sa mga web3 DApp. Bisitahin ang mga setting para palitan ang iyong default na wallet.</translation>
+<translation id="5668765612885835803">Maaari kang gumawa ng pangunahin na mga account sa Brave Wallet na maaaring i-back up o panatilihin galing sa parirala sa pagbawi. Bisitahain ang tulong sa account para mas matuto pa sa uri ng mga account</translation>
+<translation id="2471916999505901943">Ang mga account na ito ay pwedeng gamitin kasama ang mga web 3 DApp, at puwedeng ipakita sa iyong portfolio. Gayunpaman, tandaang ang mga pangalawang account ay hindi maibabalik sa pamamagitan ng parirala ng pagbawi mula sa backup ng iyong pangunahing account.</translation>
+<translation id="5723696625900399845">Gamitin ang panel na ito para secure na ma-access ang web3 at lahat ng iyong asset na crypto.</translation>
+<translation id="8897114903450789862">I-import ang iyong  <ph name="WALLET_EXTENSION"/> account sa Brave Wallet. I-enjoy ang mas mabilis at mas secure na paraan ng pamamahala ng mga crypto na asset at gumamit ng web 3 DApps.</translation>
+<translation id="3301259443293676544">Ilagay ang iyong password sa mga kasalukuyang wallet ng cryptocurrency na ii-import sa Brave Wallet. I-enjoy ang mas mabilis at mas ligtas na paraan para pamahalaan ang mga asset ng cryptocurrency at makipag-ugnayan sa mga web 3 DApp.</translation>
+<translation id="1898254156730880135">Mukhang ang pinakahuli mong pagbabayad ay hindi natuloy. Mapo-pause ang access sa subscription na ito hanggang sa malutas ang isyu sa pagbabayad. Subukang i-edit ang iyong paraan ng pagbabayad, o makipag-ugnayan sa suporta sa Brave.</translation>
 </translationbundle>

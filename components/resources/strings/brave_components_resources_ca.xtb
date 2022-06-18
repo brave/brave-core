@@ -258,7 +258,6 @@
 <translation id="5382684862562314222">El BAT a les carteres Uphold encara no s'admet a la teva regió.</translation>
 <translation id="9074594632540931067">Error: BAT no disponible</translation>
 <translation id="5376524136040178759">Segons Uphold, actualment hi ha algunes limitacions en el teu compte d'Uphold. Accedeix al teu compte d'Uphold, comprova si hi ha alguna notificació o requisits del compte que falti completar i torna-ho a provar. Per exemple, potser has d'introduir més informació a Uphold.</translation>
-<translation id="6996157559236886133">Error: Funcionalitat limitada del compte d'Uphold</translation>
 <translation id="3274650021044762770">Hi ha hagut un problema en validar la sol·licitud del teu navegador per connectar el compte de Recompenses de Brave al teu compte d'<ph name="PROVIDER"/>. Pots <ph name="BEGIN_LINK"/>contactar amb l'equip de suport<ph name="END_LINK"/> per obtenir més ajuda.</translation>
 <translation id="1316066811927496401">Error: la sol·licitud no s'ha pogut validar</translation>
 <translation id="1737873393693460829">En activar [[title]], acceptes les <ph name="BEGIN_LINK1"/>Condicions del servei<ph name="END_LINK1"/> i la <ph name="BEGIN_LINK2"/>Política de privacitat<ph name="END_LINK2"/>.</translation>
@@ -1289,4 +1288,12 @@
 <translation id="4548946945059463969">Mostra els teus saldos a la pantalla</translation>
 <translation id="242959166945779492">No tens cap balanç al teu compte. Visita FTX per comprar-ne algunes.</translation>
 <translation id="6996157559236886133">Error: Funcionalitat limitada del compte d'Uphold</translation>
+<translation id="8303434745767477417">Mantingueu actius en criptomoneda sota la vostra custòdia. Feu un seguiment del rendiment de la cartera i interactueu amb aplicacions descentralitzades de Web3. Comercialitzeu, invertiu, manlleveu i presteu amb DeFi. Tot des del navegador de privadesa de Brave. Sense extensions ni descàrregues.</translation>
+<translation id="4075073132992924258">La cartera de Brave no està configurada com a cartera predeterminada i no respondrà a les aplicaciones descentralitzades de Web3. Aneu a la configuració per canviar la cartera predeterminada.</translation>
+<translation id="5668765612885835803">Podeu crear comptes primaris a la cartera de Brave que es poden copiar o restaurar des de la vostra frase de recuperació. Per obtenir més informació sobre els tipus de comptes, visiteu l'ajuda del compte</translation>
+<translation id="2471916999505901943">Aquests comptes es poden utilitzar amb aplicacions descentralitzades de Web3 i els podeu veure a la vostra cartera. Tanmateix, tingueu en compte que els comptes secundaris no es poden restaurar mitjançant una frase de recuperació de la còpia de seguretat del vostre compte principal.</translation>
+<translation id="5723696625900399845">Fes servir aquest panell per accedir a web3 i a tots els teus actius en criptomoneda de forma segura.</translation>
+<translation id="8897114903450789862">Importa els teus comptes <ph name="WALLET_EXTENSION"/> al moneder de criptomoneda. Gaudeix d'una manera més ràpida i segura de gestionar actius de criptomoneda i interactuar amb el web 3 DApps.</translation>
+<translation id="3301259443293676544">Introduïu la vostra contrasenya actual de les carteres de criptomoneda per importar-la a la cartera de Brave. Gaudiu d'una manera més ràpida i segura de gestionar actius en criptomoneda i interactueu amb aplicacions descentralitzades de Web3.</translation>
+<translation id="1898254156730880135">Sembla que el teu pagament més recent no s'ha realitzat. L'accés a aquesta subscripció s'aturarà fins que es resolgui el problema del pagament. Prova d'editar el teu mètode de pagament, o posa't en contacte amb l'assistència de Brave.</translation>
 </translationbundle>

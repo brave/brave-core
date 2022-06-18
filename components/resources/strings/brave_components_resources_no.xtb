@@ -258,7 +258,6 @@
 <translation id="5382684862562314222">BAT støttes ikke enda i regionen din på Uphold.</translation>
 <translation id="9074594632540931067">Feil: BAT utilgjengelig</translation>
 <translation id="5376524136040178759">Ifølge Uphold er det for tiden visse begrensninger på Uphold-kontoen din. Logg på Uphold-kontoen og se om du har fått noen varsler eller om det er flere trinn du må fullføre i kontoen, og prøv på nytt. Det kan for eksempel være at Uphold vil be deg legge inn ytterligere informasjon.</translation>
-<translation id="6996157559236886133">Feil: Begrenset Uphold-kontofunksjonalitet</translation>
 <translation id="3274650021044762770">Det oppstod et problem ved bekreftelse av nettleserforespørselen for å koble Brave Rewards til <ph name="PROVIDER"/>-kontoen din. Du kan <ph name="BEGIN_LINK"/>kontakte brukerstøtten<ph name="END_LINK"/> for mer hjelp.</translation>
 <translation id="1316066811927496401">Feil: Forespørselen kunne ikke valideres</translation>
 <translation id="1737873393693460829">Ved å skru på [[title]], samtykker du til <ph name="BEGIN_LINK1"/>bruksvilkårene<ph name="END_LINK1"/> og <ph name="BEGIN_LINK2"/>retningslinjene for personvern<ph name="END_LINK2"/>.</translation>
@@ -1288,4 +1287,12 @@
 <translation id="4548946945059463969">Avslør saldoene dine på skjermen</translation>
 <translation id="242959166945779492">Saldoen på kontoen din er tom. Besøk FTX for å endre dette.</translation>
 <translation id="6996157559236886133">Feil: Begrenset Uphold-kontofunksjonalitet</translation>
+<translation id="8303434745767477417">Ha et inventar av kryptoressurser. Hold øye med hvordan porteføljen din gjør det, og ha interaksjon med web 3 DApps. Handle, invester, lån og lån ut med DeFi – alt dette rett i den private Brave-nettleseren. Ingen utvidelser eller nedlastinger kreves.</translation>
+<translation id="4075073132992924258">Brave-lommeboken er ikke angitt som standardlommebok, og kommer ikke til å respondere på web3 DApps. Gå til innstillingene for å endre standardlommebok.</translation>
+<translation id="5668765612885835803">Du kan opprette primærkontoer i Brave-lommeboken som kan sikkerhetskopieres eller gjenopprettes ved hjelp av gjenopprettingsfrasen din. Du finner mer informasjon om kontotyper på hjelpesidene</translation>
+<translation id="2471916999505901943">Disse kontoene kan brukes med web 3 DApps, og kan vises i porteføljen din. Vær imidlertid oppmerksom på at sekundære kontoer ikke kan gjenopprettes ved hjelp av sikkerhetsfrasen fra backupen av primærkontoen din.</translation>
+<translation id="5723696625900399845">Bruk dette panelet til å få tilgang til web3 og alle kryptoressursene dine på en sikker måte.</translation>
+<translation id="8897114903450789862">Importer <ph name="WALLET_EXTENSION"/>-kontoene dine til Brave Wallet. Nyt en raskere og sikrere måte å administrere kryptoaktiva og samhandle med web 3 DApps.</translation>
+<translation id="3301259443293676544">Skriv inn det eksisterende CryptoWallet-passordet for å importere til Brave-lommeboken. Dra nytte av en raskere og sikrere måte å administrere kryptoressurser og ha interaksjon med web 3 DApps på.</translation>
+<translation id="1898254156730880135">Det ser ut til at den siste betalingen ikke gikk gjennom. Tilgangen til dette abonnementet settes på pause til problemet er løst. Prøv å endre betalingsmåte, eller kontakt Brave-brukerstøtten.</translation>
 </translationbundle>

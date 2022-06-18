@@ -927,4 +927,5 @@ Ako ne budete prihvatili ovaj zahtev, VPN se neće ponovo povezati i vaša veza 
 <translation id="9218430445555521422">Подеси као подразумеван</translation>
 <translation id="6369495274982305511">Da li ste sigurni da želite da resetujete svoj novčanik? Ako nemate rezervnu kopiju vašeg novčanika, njegovo resetovanje će dovesti do toga da izgubite sve podatke o nalogu (uključujući i sva povezana sredstva). Ukucajte „<ph name="CONFIRMATION_PHRASE"/>“ za potvrdu.</translation>
 <translation id="64394831139134288">Moj novčanik</translation>
+<translation id="8905950042180169719">VPN radi u pozadini</translation>
 </translationbundle>

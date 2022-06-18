@@ -258,7 +258,6 @@
 <translation id="5382684862562314222">BAT belum didukung di dompet Uphold wilayah Anda.</translation>
 <translation id="9074594632540931067">Kesalahan: BAT tidak tersedia</translation>
 <translation id="5376524136040178759">Menurut Uphold, saat ini terdapat batasan pada akun Uphold Anda. Silakan masuk ke akun Uphold Anda dan periksa apakah terdapat pemberitahuan atau persyaratan akun yang masih harus dipenuhi, lalu cobalah lagi. Contohnya, Anda mungkin perlu menyerahkan informasi lebih banyak kepada Uphold.</translation>
-<translation id="6996157559236886133">Kesalahan: Fungsionalitas terbatas akun Uphold</translation>
 <translation id="3274650021044762770">Terdapat masalah saat memvalidasi permintaan peramban Anda untuk menghubungkan Brave Rewards ke akun <ph name="PROVIDER"/> Anda. Anda dapat <ph name="BEGIN_LINK"/>menghubungi dukungan pelanggan<ph name="END_LINK"/> untuk bantuan lebih lanjut.</translation>
 <translation id="1316066811927496401">Kesalahan: Permintaan tidak dapat divalidasi</translation>
 <translation id="1737873393693460829">Dengan mengaktifkan [[title]], Anda setuju dengan <ph name="BEGIN_LINK1"/>Syarat Layanan<ph name="END_LINK1"/> and <ph name="BEGIN_LINK2"/>Kebijakan Privasi<ph name="END_LINK2"/>.</translation>
@@ -1289,4 +1288,12 @@
 <translation id="4548946945059463969">Tampilkan saldo Anda pada layar</translation>
 <translation id="242959166945779492">Anda tidak memiliki saldo apa pun di akun Anda. Kunjungi FTX untuk membelinya.</translation>
 <translation id="6996157559236886133">Kesalahan: Fungsionalitas terbatas akun Uphold</translation>
+<translation id="8303434745767477417">Pertahankan aset kripto dalam penyimpanan Anda. Lacak kinerja portofolio, dan berinteraksi dengan web 3 DApps. Perdagangkan, investasikan, pinjam, dan pinjamkan dengan DeFi. Seluruhnya langsung dari perambah privasi Brave. Tanpa ekstensi, tanpa perlu mengunduh.</translation>
+<translation id="4075073132992924258">Brave Wallet tidak diatur sebagai dompet bawaan Anda dan tidak akan merespons ke web3 DApps. Lihat pengaturan untuk mengganti dompet bawaan Anda.</translation>
+<translation id="5668765612885835803">Anda dapat membuat akun primer di Dompet Brave yang mungkin telah didukung atau dipulihkan dari frasa pemulihan Anda. Untuk mempelajari lebih lanjut tentang jenis akun, silakan hubungi bantuan akun</translation>
+<translation id="2471916999505901943">Akun ini dapat digunakan dengan web 3 DApps, dan dapat ditampilkan di portofolio Anda. Namun, perhatikan bahwa akun sekunder tidak dapat dipulihkan melalui frasa pemulihan dari cadangan akun primer Anda.</translation>
+<translation id="5723696625900399845">Gunakan panel ini untuk mengakses web3 dan semua aset kripto Anda secara aman.</translation>
+<translation id="8897114903450789862">Impor akun <ph name="WALLET_EXTENSION"/> Anda ke Brave Wallet. Nikmati cara yang lebih cepat dan lebih aman untuk mengelola aset kripto dan berinteraksi dengan web 3 DApps.</translation>
+<translation id="3301259443293676544">Masukkan kata sandi dompet kripto Anda yang ada untuk diimpor ke Brave Wallet. Nikmati cara yang lebih cepat dan lebih aman untuk mengelola aset kripto dan berinteraksi dengan web 3 DApps.</translation>
+<translation id="1898254156730880135">Sepertinya pembayaran terakhir Anda tidak terproses. Akses ke paket langganan ini akan dihentikan sementara hingga masalah pembayaran ini selesai. Cobalah mengedit metode pembayaran Anda, atau hubungi pendukung Brave.</translation>
 </translationbundle>

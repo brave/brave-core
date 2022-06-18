@@ -108,7 +108,6 @@
 <translation id="2571596981920752023"><ph name="NUMBER_OF_TABS"/> علامة تبويب</translation>
 <translation id="2515126961943087659">خدمة إعلانات Bat</translation>
 <translation id="7924918279836988121">خدمة دفتر الأستاذ من Bat</translation>
-<translation id="6040143037577758943">إغلاق</translation>
 <translation id="6665472986740899785">إعلان إشعارات Brave</translation>
 <translation id="4174337572777167894">مشروع اكتشاف الويب</translation>
 <translation id="8659271182272561965">المساهمة بإجراء بحث مجهول &amp; تصفح البيانات لتحسين مستوى Brave Search.</translation>
@@ -512,4 +511,5 @@
 <translation id="6040143037577758943">إغلاق</translation>
 <translation id="5600566490506283344">إشعار Brave Ad</translation>
 <translation id="4395160081588457461">النظر &amp; والإحساس</translation>
+<translation id="7942180974165298215">Brave لحظر الإعلانات</translation>
 </translationbundle>

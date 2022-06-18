@@ -109,7 +109,6 @@ vindue med Tor</translation>
 <translation id="2571596981920752023"><ph name="NUMBER_OF_TABS"/> faner</translation>
 <translation id="2515126961943087659">Bat-annonceservice</translation>
 <translation id="7924918279836988121">Bat Regnskabsservice</translation>
-<translation id="6040143037577758943">Luk</translation>
 <translation id="6665472986740899785">Brave-notifikationsannonce</translation>
 <translation id="4174337572777167894">Web Discovery-projekt</translation>
 <translation id="8659271182272561965">Bidrag med anonym søge- &amp; browsingdata for at forbedre Brave Search.</translation>
@@ -511,4 +510,5 @@ DU kan læse <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>instruktioner om hvordan 
 <translation id="6040143037577758943">Luk</translation>
 <translation id="5600566490506283344">Brave annoncenotifikation</translation>
 <translation id="4395160081588457461">Se og mærk</translation>
+<translation id="7942180974165298215">Brave Annonceblokering</translation>
 </translationbundle>

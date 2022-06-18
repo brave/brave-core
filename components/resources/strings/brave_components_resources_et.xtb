@@ -258,7 +258,6 @@
 <translation id="5382684862562314222">Teie piirkonnas Uphold veel BAT-i ei toeta.</translation>
 <translation id="9074594632540931067">Tõrge: BAT pole saadaval</translation>
 <translation id="5376524136040178759">Upholdi andmetel kehtivad teie Upholdi kontole praegu mõned piirangud. Logige oma Upholdi kontole sisse ja kontrollige, kas on mingeid teateid või seni täitmata nõudeid konto suhtes, seejärel proovige uuesti. Näiteks peate võib-olla esitama Upholdile lisateavet.</translation>
-<translation id="6996157559236886133">Tõrge: Upholdi konto piiratud funktsionaalsus</translation>
 <translation id="3274650021044762770">Ilmnes probleem teie brauseri taotluse valideerimisel, et ühendada Brave'i Preemiad teenusepakkuja <ph name="PROVIDER"/> kontoga. Kui vajate veel abi, võite pöörduda <ph name="BEGIN_LINK"/>kasutajatoe<ph name="END_LINK"/> poole.</translation>
 <translation id="1316066811927496401">Tõrge: taotlust ei õnnestunud valideerida.</translation>
 <translation id="1737873393693460829">Lülitades sisse funktsiooni [[title]], nõustute <ph name="BEGIN_LINK1"/>teenusetingimuste<ph name="END_LINK1"/> ja <ph name="BEGIN_LINK2"/>privaatsuspoliitikaga<ph name="END_LINK2"/>.</translation>
@@ -1289,4 +1288,12 @@
 <translation id="4548946945059463969">Näita kuval oma saldosid</translation>
 <translation id="242959166945779492">Teie konto saldo on tühi. Külastage FTXi, et vahendeid osta.</translation>
 <translation id="6996157559236886133">Tõrge: Upholdi konto piiratud funktsionaalsus</translation>
+<translation id="8303434745767477417">Hoidke krüptovarad oma valduses. Saate jälgida portfelli tootlust ja suhelda Web 3 detsentraliseeritud rakenduste abil. Kauplemine, investeerimine, laenamine ja laenu andmine DeFi kaudu. Kõik otse Brave'i privaatsest brauserist. Ei mingeid laiendusi, ei mingit allalaadimist.</translation>
+<translation id="4075073132992924258">Brave'i rahakott ei ole määratud teie vaikerahakotiks ega reageeri Web 3 detsentraliseeritud rakendustele. Oma vaikerahakoti muutmiseks avage seaded.</translation>
+<translation id="5668765612885835803">Brave'i rahakotis saate luua põhikontod, mida saab varundada või taastefraasi abil taastada. Kui soovite kontotüüpide kohta lisateavet, vaadake konto spikrit</translation>
+<translation id="2471916999505901943">Neid kontosid saab kasutada koos Web 3 detsentraliseeritud rakendustega ja kuvada teie portfellis. Pidage aga meeles, et teiseseid kontosid ei saa taastefraasi abil põhikonto varukoopiast taastada.</translation>
+<translation id="5723696625900399845">Kasutage seda paneeli, et saada turvaline ligipääs Web3-le ja kõigile oma krüptovaradele.</translation>
+<translation id="8897114903450789862">Importige oma laienduse <ph name="WALLET_EXTENSION"/> kontod Brave'i rahakotti. Saate nautida kiiremat ja turvalisemat krüptovarade haldamise viisi ning suhelda Web 3 detsentraliseeritud rakenduste abil.</translation>
+<translation id="3301259443293676544">Brave'i rahakotti importimiseks sisestage oma olemasoleva krüptorahakoti parool. Saate nautida kiiremat ja turvalisemat krüptovarade haldamise viisi ning suhelda Web 3 detsentraliseeritud rakenduste abil.</translation>
+<translation id="1898254156730880135">Tundub, et teie viimane makse ei läinud läbi. Juurdepääs sellele tellimusele peatatakse kuni makseprobleemi lahendamiseni. Proovige muuta oma makseviisi või võtke ühendust Brave'i klienditoega.</translation>
 </translationbundle>

@@ -256,7 +256,6 @@
 <translation id="8218538368080510976">Errore: area geografica non disponibile</translation>
 <translation id="5382684862562314222">BAT non è ancora supportato nella tua area geografica su Uphold.</translation>
 <translation id="9074594632540931067">Errore: BAT non disponibile</translation>
-<translation id="6996157559236886133">Errore: funzionalità limitata del conto Uphold</translation>
 <translation id="3274650021044762770">Si è verificato un problema e non è stata approvata la richiesta effettuata dal browser di collegare le Ricompense Brave al tuo account <ph name="PROVIDER"/>. Se hai bisogno di aiuto <ph name="BEGIN_LINK"/>contatta l’assistenza<ph name="END_LINK"/>.</translation>
 <translation id="1316066811927496401">Errore: la richiesta non è convalidabile</translation>
 <translation id="1737873393693460829">Attivando [[title]], accetti i <ph name="BEGIN_LINK1"/>Termini di servizio<ph name="END_LINK1"/> e l’<ph name="BEGIN_LINK2"/>Informativa sulla privacy<ph name="END_LINK2"/>.</translation>
@@ -1255,4 +1254,13 @@ Abbiamo bloccato <ph name="NUMBER"/> contenuti tra sistemi di tracciamento, annu
 <translation id="4548946945059463969">Mostra il tuo saldo sullo schermo</translation>
 <translation id="242959166945779492">Non hai alcun saldo sul tuo conto. Visita FTX per acquistarne un po'.</translation>
 <translation id="6996157559236886133">Errore: funzionalità del conto Uphold limitata</translation>
+<translation id="2236833281018938257">Indirizzo 0x o URL</translation>
+<translation id="8303434745767477417">Tieni le criptovalute sotto la tua custodia. Traccia le prestazioni del portfolio e interagisci con le dApp web 3. Scambia, investi, prendi in prestito e presta con DeFi. Tutto direttamente dal browser della privacy Brave. Non sono richiesti né estensioni né download.</translation>
+<translation id="4075073132992924258">Il portafoglio Brave non è impostato come portafoglio predefinito e non risponderà alle dApp web3. Vai nelle impostazioni per modificare il tuo portafoglio predefinito.</translation>
+<translation id="5668765612885835803">Nel portafoglio di Brave puoi creare dei conti principali per cui è disponibile il backup o il ripristino con frase di recupero. Per maggiori informazioni sui vari tipi di conto, consulta la guida relativa ai conti</translation>
+<translation id="2471916999505901943">Questi conti si possono usare con le dApp web 3 e sono visibili nel portfolio. Tieni però presente che i conti secondari non si possono ripristinare con il backup effettuato sul conto principale tramite frase di ripristino.</translation>
+<translation id="5723696625900399845">Utilizza questo pannello per accedere in modo sicuro a web3 e a tutte le risorse cripto.</translation>
+<translation id="8897114903450789862">Importa i tuoi account <ph name="WALLET_EXTENSION"/> nel portafoglio Brave, per un modo più veloce e sicuro di gestire le criptovalute e interagire con le dApp web 3.</translation>
+<translation id="3301259443293676544">Inserisci la password dei tuoi portafogli di criptovalute esistenti per importare il portafoglio Brave. Goditi un modo più veloce e sicuro per gestire le criptovalute e interagire con le dApp web 3.</translation>
+<translation id="1898254156730880135">Il tuo ultimo pagamento non sembra essere andato a buon fine. L’accesso a questo abbonamento sarà sospeso finché non si risolverà il problema con il pagamento. Prova a modificare il metodo di pagamento o contatta l’assistenza di Brave.</translation>
 </translationbundle>

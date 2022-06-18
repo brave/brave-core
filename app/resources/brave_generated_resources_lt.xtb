@@ -108,7 +108,6 @@ Arba vėliau pakeiskite dalyje <ph name="SETTINGS_EXTENIONS_LINK"/>.</translatio
 <translation id="2571596981920752023"><ph name="NUMBER_OF_TABS"/> skirtukai (-ų)</translation>
 <translation id="2515126961943087659">„Bat Ads“ paslauga</translation>
 <translation id="7924918279836988121">BAT žurnalo paslauga</translation>
-<translation id="6040143037577758943">Uždaryti</translation>
 <translation id="6665472986740899785">„Brave“ reklamos pranešimas</translation>
 <translation id="4174337572777167894">Žiniatinklio pažinimo projektas</translation>
 <translation id="8659271182272561965">Prisidėkite anonimiškais paieškos ir naršymo duomenimis bei padėkite patikslinti „Brave“ paieškos rezultatus.</translation>
@@ -510,4 +509,5 @@ Ar tikrai norite tai padaryti?</translation>
 <translation id="6040143037577758943">Uždaryti</translation>
 <translation id="5600566490506283344">„Brave Ad“ pranešimas</translation>
 <translation id="4395160081588457461">Išvaizda ir turinys</translation>
+<translation id="7942180974165298215">„Brave Ad Block“</translation>
 </translationbundle>

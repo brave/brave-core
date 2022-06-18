@@ -899,4 +899,9 @@ Als je dit verzoek niet accepteert, maakt VPN niet opnieuw verbinding en is je i
 <translation id="9218430445555521422">Instellen als standaard</translation>
 <translation id="6369495274982305511">Weet je zeker dat je je wallet opnieuw wilt instellen? Als je geen back-up van je wallet hebt, gaan alle accountgegevens verloren (inclusief het eventuele saldo) wanneer je je wallet opnieuw instelt. Typ <ph name="CONFIRMATION_PHRASE"/> om te bevestigen.</translation>
 <translation id="64394831139134288">Mijn wallet</translation>
+<translation id="1264320790738638119">Verificatie van aankoop mislukt. Probeer het opnieuw.</translation>
+<translation id="8905950042180169719">VPN wordt uitgevoerd op de achtergrond</translation>
+<translation id="404414664190867625">FOUT!\nVeroorzaakt door een gebruiker die de aankoop heeft geannuleerd.</translation>
+<translation id="3515141458161417228">FOUT!\nAankoop mislukt...</translation>
+<translation id="5665084657857645952">Toestemming werd geannuleerd</translation>
 </translationbundle>

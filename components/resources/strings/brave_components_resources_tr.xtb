@@ -258,7 +258,6 @@
 <translation id="5382684862562314222">Uphold'da BAT henüz sizin bölgenizde desteklenmiyor.</translation>
 <translation id="9074594632540931067">Hata: BAT kullanılamıyor</translation>
 <translation id="5376524136040178759">Uphold'a göre şu anda Uphold hesabınızda bazı sınırlamalar mevcut. Lütfen Uphold hesabınıza giriş yapın ve tamamlamanız gereken herhangi bir bildirim veya kalan hesap gereksinimleri olup olmadığını kontrol edin, ardından tekrar deneyin. Örneğin, Uphold'a daha fazla bilgi göndermeniz gerekiyor olabilir.</translation>
-<translation id="6996157559236886133">Hata: Sınırlı Uphold hesabı işlevleri</translation>
 <translation id="3274650021044762770">Tarayıcınızın Brave Ödüllerini <ph name="PROVIDER"/> hesabınıza bağlama talebi doğrulanırken bir sorun oluştu. Daha fazla yardım için <ph name="BEGIN_LINK"/>destekle iletişime geçebilirsiniz.<ph name="END_LINK"/></translation>
 <translation id="1316066811927496401">Hata: Talep doğrulanamadı</translation>
 <translation id="1737873393693460829">[[title]] öğesini açarak <ph name="BEGIN_LINK1"/>Hizmet Koşullarını<ph name="END_LINK1"/> ve <ph name="BEGIN_LINK2"/>Gizlilik Politikasını<ph name="END_LINK2"/> kabul edersiniz.</translation>
@@ -1289,4 +1288,12 @@
 <translation id="4548946945059463969">Bakiyenizi ekranda gösterin</translation>
 <translation id="242959166945779492">Hesabınızda bakiye yok. Satın almak için FTX'i ziyaret edin.</translation>
 <translation id="6996157559236886133">Hata: Sınırlı Uphold hesabı işlevleri</translation>
+<translation id="8303434745767477417">Kripto varlıklarınızı himayenizde tutun. Portföy performansınızı izleyin ve web 3 DApps ile etkileşime geçin. DeFi sayesinde alım-satım yapın, yatırım yapın, ödünç alın ve ödünç verin. Hepsi doğrudan Brave gizlilik tarayıcısı üzerinden. Eklentiye, indirmeye gerek yok.</translation>
+<translation id="4075073132992924258">Brave Cüzdan varsayılan cüzdanınız olarak ayarlanmamış ve web3 DApps'e yanıt vermeyecek. Varsayılan cüzdanınızı değiştirmek için ayarları ziyaret edin.</translation>
+<translation id="5668765612885835803">Brave Cüzdan'da, yedeklenebilecek ve kurtarma tümcenizle geri alınabilecek birincil hesaplar oluşturabilirsiniz. Hesap tipleri hakkında daha fazlasını öğrenmek için hesap yardım bölümünü ziyaret edin</translation>
+<translation id="2471916999505901943">Bu hesaplar web 3 DApps ile kullanılabilir ve portföyünüzde görüntülenebilir. Fakat ikincil hesapların ana hesap yedeğinizdeki kurtarma cümlesiyle geri yüklenemeyeceğini unutmayın.</translation>
+<translation id="5723696625900399845">Web3 ve tüm kripto varlıklarınıza güvenli bir şekilde erişmek için bu paneli kullanın.</translation>
+<translation id="8897114903450789862"><ph name="WALLET_EXTENSION"/> hesaplarınızı Brave Cüzdan'a aktarın. Kripto varlıkları yönetmenin ve web 3 DApps'le etkileşim kurmanın daha hızlı ve daha güvenli bir yolunun keyfini sürün.</translation>
+<translation id="3301259443293676544">Brave Cüzdan'a aktarmak için var olan kripto cüzdan şifrelerinizi girin. Kripto varlıklarınızı yönetmenin ve web 3 DApps ile etkileşime geçmenin daha hızlı ve daha güvenli bir yolunun tadını çıkarın.</translation>
+<translation id="1898254156730880135">Görünüşe göre son ödemeniz yerine ulaşmamış. Bu aboneliğe erişim ödeme sorunu çözülene dek durdurulacaktır. Ödeme metodunuzu düzenlemeyi deneyin veya Brave destek birimiyle iletişime geçin.</translation>
 </translationbundle>

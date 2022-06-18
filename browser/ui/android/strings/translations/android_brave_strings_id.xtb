@@ -928,4 +928,5 @@ Jika Anda tidak menerima permintaan ini, VPN tidak akan tersambung kembali dan s
 <translation id="9218430445555521422">Setel sebagai default</translation>
 <translation id="6369495274982305511">Anda yakin ingin mengatur ulang dompet Anda? Jika dompet Anda tidak dicadangkan, mengatur ulang akan menyebabkan Anda kehilangan semua data akun (termasuk dana terkait). Ketik <ph name="CONFIRMATION_PHRASE"/> untuk mengonfirmasi.</translation>
 <translation id="64394831139134288">Dompet saya</translation>
+<translation id="8905950042180169719">VPN berfungsi di latar belakang</translation>
 </translationbundle>

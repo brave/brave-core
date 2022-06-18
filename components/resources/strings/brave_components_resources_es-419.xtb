@@ -258,7 +258,6 @@
 <translation id="5382684862562314222">Uphold aún no admite BAT en tu región.</translation>
 <translation id="9074594632540931067">Error: no hay BAT</translation>
 <translation id="5376524136040178759">Según Uphold, tu cuenta de Uphold presenta algunas limitaciones en este momento. Inicia sesión en Uphold y comprueba si tienes algún aviso o requisito de cuenta pendientes. Después, inténtalo de nuevo. Por ejemplo, es posible que Uphold necesite que le envíes más información.</translation>
-<translation id="6996157559236886133">Error: Cuenta de Uphold con funcionalidades limitadas</translation>
 <translation id="3274650021044762770">Hubo un problema al validar la solicitud del navegador para vincular Recompensas de Brave con tu cuenta de <ph name="PROVIDER"/>. Si necesitas ayuda, puedes <ph name="BEGIN_LINK"/>contactar con el servicio de asistencia<ph name="END_LINK"/>.</translation>
 <translation id="1316066811927496401">Error: no se pudo validar la solicitud</translation>
 <translation id="1737873393693460829">Al activar [[title]], aceptas las <ph name="BEGIN_LINK1"/>condiciones del servicio<ph name="END_LINK1"/> y la <ph name="BEGIN_LINK2"/>política de privacidad<ph name="END_LINK2"/>.</translation>
@@ -1289,4 +1288,12 @@ Se han bloqueado <ph name="NUMBER"/> rastreadores, anuncios y otros elementos</t
 <translation id="4548946945059463969">Muestra tus saldos en la pantalla</translation>
 <translation id="242959166945779492">No tienes ningún saldo en tu cuenta. Visita FTX para adquirir un poco.</translation>
 <translation id="6996157559236886133">Error: Cuenta de Uphold con funcionalidades limitadas</translation>
+<translation id="8303434745767477417">Conserve criptoactivos bajo su custodia. Realice un seguimiento del rendimiento de la cartera e interactúe con aplicaciones descentralizadas de Web 3. Gracias a las finanzas descentralizadas, podrá intercambiar criptoactivos, invertirlos, tomarlos prestados y prestarlos. Todo desde el navegador de Brave para proteger su privacidad. No se requieren extensiones ni descargas.</translation>
+<translation id="4075073132992924258">Como la billetera Brave no se configuró como su billetera predeterminada, no responderá a las aplicaciones descentralizadas de Web 3. Diríjase a los ajustes para cambiar su billetera predeterminada.</translation>
+<translation id="5668765612885835803">En la billetera de Brave, puedes crear cuentas principales que se pueden respaldar o restaurar con la frase de recuperación. Para obtener más información sobre los tipos de cuentas disponibles, consulta la sección de ayuda.</translation>
+<translation id="2471916999505901943">Estas cuentas pueden usarse con aplicaciones descentralizadas de Web3 y pueden aparecer en tu billetera. Sin embargo, ten en cuenta que las cuentas secundarias no pueden restaurarse con una frase de recuperación partiendo de la copia de seguridad de tu cuenta principal.</translation>
+<translation id="5723696625900399845">Usa este panel para acceder de forma segura a Web3 y a todos tus criptoactivos.</translation>
+<translation id="8897114903450789862">Importe sus cuentas de <ph name="WALLET_EXTENSION"/> a Brave Wallet y disfrute de un modo más rápido y seguro para gestionar sus criptoactivos e interactuar con las aplicaciones descentralizadas de Web3.</translation>
+<translation id="3301259443293676544">Introduzca la contraseña de su billetera de criptomonedas para importarla a la billetera Brave. Aproveche una forma más rápida y segura de administrar criptoactivos e interactuar con aplicaciones descentralizadas de Web 3.</translation>
+<translation id="1898254156730880135">Parece que el pago más reciente no se ha procesado. El acceso a esta suscripción se pondrá en pausa hasta que se resuelva el problema con el pago. Intenta editar la forma de pago o habla con el equipo de asistencia de Brave.</translation>
 </translationbundle>

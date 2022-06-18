@@ -928,4 +928,5 @@
 <translation id="9218430445555521422">设为默认浏览器</translation>
 <translation id="6369495274982305511">确定要重置钱包吗？如果您的钱包没有备份，重置将导致您丢失所有账户数据（包括所有关联的资金）。输入“<ph name="CONFIRMATION_PHRASE"/>”确认。</translation>
 <translation id="64394831139134288">我的钱包</translation>
+<translation id="8905950042180169719">VPN 正在后台运行</translation>
 </translationbundle>

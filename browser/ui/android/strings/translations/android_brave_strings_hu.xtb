@@ -927,4 +927,5 @@ Ha nem fogadja el ezt a kérelmet, a VPN nem kapcsolódik újra, és az internet
 <translation id="9218430445555521422">Beállítás alapértelmezettként</translation>
 <translation id="6369495274982305511">Biztosan visszaállítja a pénztárcáját? Ha a pénztárcáról nem készült biztonsági mentés, a visszaállítással elveszíti az összes fiókadatot (beleértve a kapcsolódó forrásokat). A megerősítéshez írja be a következőt: "<ph name="CONFIRMATION_PHRASE"/>".</translation>
 <translation id="64394831139134288">Saját pénztárcám</translation>
+<translation id="8905950042180169719">A VPN a háttérben fut</translation>
 </translationbundle>

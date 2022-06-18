@@ -258,7 +258,6 @@
 <translation id="5382684862562314222">Uphold nu acceptă încă BAT în regiunea dvs.</translation>
 <translation id="9074594632540931067">Eroare: token-ul BAT nu este disponibil</translation>
 <translation id="5376524136040178759">Potrivit Uphold, în prezent există anumite limitări privind contul dvs. Uphold. Vă rugăm să vă conectați la contul Uphold și să verificați dacă mai sunt notificări sau dacă mai aveți de îndeplinit anumite cerințe privind contul, apoi încercați din nou. De exemplu, ar putea fi necesar să trimiteți mai multe informații către Uphold.</translation>
-<translation id="6996157559236886133">Eroare: cont Uphold limitat</translation>
 <translation id="3274650021044762770">A apărut o problemă la validarea solicitării browserului de conectare a recompenselor Brave la contul dvs. <ph name="PROVIDER"/>. Puteți <ph name="BEGIN_LINK"/>contacta departamentul de asistență<ph name="END_LINK"/> pentru ajutor suplimentar.</translation>
 <translation id="1316066811927496401">Eroare: solicitarea nu a putut fi validată</translation>
 <translation id="1737873393693460829">Prin activarea [[title]], acceptați <ph name="BEGIN_LINK1"/>Termenii de utilizare<ph name="END_LINK1"/> și <ph name="BEGIN_LINK2"/>Politica de confidențialitate<ph name="END_LINK2"/>.</translation>
@@ -1289,4 +1288,12 @@
 <translation id="4548946945059463969">Afișați soldurile pe ecran</translation>
 <translation id="242959166945779492">Nu aveți niciun sold în contul dvs. Accesați FTX pentru a achiziționa.</translation>
 <translation id="6996157559236886133">Eroare: cont Uphold limitat</translation>
+<translation id="8303434745767477417">Țineți criptomonedele în custodia dvs. Urmăriți performanța portofoliului și interacționați cu aplicații descentralizate web 3. Tranzacționați, investiți, oferiți și obțineți împrumuturi cu DeFi, totul din browserul Brave, care protejează confidențialitatea dvs. Nu aveți nevoie de extensii și nu trebuie să descărcați nimic.</translation>
+<translation id="4075073132992924258">Portofelul Brave nu este setat ca portofel implicit și nu va răspunde la aplicațiile descentralizate web 3. Modificați portofelul implicit din setări.</translation>
+<translation id="5668765612885835803">Puteți crea conturi principale în portofelul Brave după care puteți crea copii de rezervă sau pe care le puteți restabili cu ajutorul expresiei de recuperare. Pentru informații suplimentare despre tipurile de conturi, accesați secțiunea de ajutor a contului</translation>
+<translation id="2471916999505901943">Aceste conturi pot fi utilizate cu aplicații descentralizate web 3 și pot fi afișate în portofoliul dvs. Cu toate acestea, conturile secundare nu pot fi restabilite cu expresia de recuperare din copia de rezervă a contului principal.</translation>
+<translation id="5723696625900399845">Utilizați acest panou pentru a accesa securizat web3 și alte elemente crypto.</translation>
+<translation id="8897114903450789862">Importați conturile dvs. <ph name="WALLET_EXTENSION"/> în Brave Wallet. Beneficiați de un mod mai rapid și mai sigur de gestionare a activelor de criptomonede și de interacțiune cu aplicațiile descentralizate web 3.</translation>
+<translation id="3301259443293676544">Introduceți parola pentru portofelele existente de criptomonede pentru importarea în portofelul Brave. Beneficiați de o modalitate mai rapidă și mai sigură de a gestiona activele de criptomonede și interacționați cu aplicațiile descentralizate web 3.</translation>
+<translation id="1898254156730880135">Se pare că cea mai recentă plată nu a reușit. Accesul la acest abonament va fi întrerupt până când problema legată de plată va fi remediată. Încercați să modificați metoda de plată sau contactați asistența Brave.</translation>
 </translationbundle>

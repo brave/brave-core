@@ -108,7 +108,6 @@
 <translation id="2571596981920752023">Вкладок: <ph name="NUMBER_OF_TABS"/></translation>
 <translation id="2515126961943087659">Рекламный сервис BAT</translation>
 <translation id="7924918279836988121">Служба учета BAT-транзакций</translation>
-<translation id="6040143037577758943">Близко</translation>
 <translation id="6665472986740899785">Всплывающая реклама Brave</translation>
 <translation id="4174337572777167894">Web Discovery Project</translation>
 <translation id="8659271182272561965">Анонимно предоставлять Brave Search данные поиска и сведения о действиях в браузере для улучшения работы сервиса</translation>
@@ -509,4 +508,5 @@
 <translation id="6040143037577758943">Закрыть</translation>
 <translation id="5600566490506283344">Уведомление о рекламе Brave</translation>
 <translation id="4395160081588457461">Смотрите и ощущайте</translation>
+<translation id="7942180974165298215">Блокировка рекламы Brave</translation>
 </translationbundle>

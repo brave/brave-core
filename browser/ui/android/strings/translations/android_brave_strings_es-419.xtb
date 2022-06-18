@@ -928,4 +928,5 @@ Si no acepta esta solicitud, la VPN no se volverá a conectar y su conexión a I
 <translation id="9218430445555521422">Establecer como predeterminado</translation>
 <translation id="6369495274982305511">¿Confirmas que deseas restablecer tu billetera? Si no hiciste una copia de seguridad de tu billetera, perderás todos los datos de la cuenta al reestablecerla (incluidos los fondos asociados a esta). Escribe "<ph name="CONFIRMATION_PHRASE"/>" para confirmar.</translation>
 <translation id="64394831139134288">Mi billetera</translation>
+<translation id="8905950042180169719">La VPN se está ejecutando en segundo plano</translation>
 </translationbundle>

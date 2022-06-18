@@ -108,7 +108,6 @@ También puedes cambiar los permisos más adelante en <ph name="SETTINGS_EXTENIO
 <translation id="2571596981920752023"><ph name="NUMBER_OF_TABS"/> pestañas</translation>
 <translation id="2515126961943087659">Servicio de Anuncios Bat</translation>
 <translation id="7924918279836988121">Servicio Bat Ledger</translation>
-<translation id="6040143037577758943">Cerrar</translation>
 <translation id="6665472986740899785">Anuncio de notificación de Brave</translation>
 <translation id="4174337572777167894">Proyecto de descubrimiento web</translation>
 <translation id="8659271182272561965">Contribuye con algunos datos de búsqueda y navegación anónimos para mejorar Brave Search.</translation>
@@ -510,4 +509,5 @@ Comprueba que un dispositivo tuyo haya generado estas palabras clave.
 <translation id="6040143037577758943">Cerrar</translation>
 <translation id="5600566490506283344">Notificación de publicidad de Brave</translation>
 <translation id="4395160081588457461">Aspecto de Escudos</translation>
+<translation id="7942180974165298215">Brave Ad Block</translation>
 </translationbundle>

@@ -258,7 +258,6 @@
 <translation id="5382684862562314222">BAT nie jest jeszcze obsługiwany portfelu Uphold w Twoim regionie.</translation>
 <translation id="9074594632540931067">Błąd: BAT niedostępny</translation>
 <translation id="5376524136040178759">Według serwisu Uphold na Twoim koncie Uphold obowiązują obecnie pewne ograniczenia. Zaloguj się na swoje konto i sprawdź, czy nie ma jakichś powiadomień lub pozostałych wymagań związanych z kontem, które należy spełnić, a następnie spróbuj ponownie. Na przykład może być wymagane przesłanie dalszych informacji do serwisu Uphold.</translation>
-<translation id="6996157559236886133">Błąd: ograniczona funkcjonalność konta Uphold</translation>
 <translation id="3274650021044762770">Wystąpił problem podczas potwierdzania żądania przeglądarki w celu połączenia nagród Brave z kontem <ph name="PROVIDER"/> Możesz <ph name="BEGIN_LINK"/>skontaktować się z pomocą techniczną <ph name="END_LINK"/>, aby uzyskać pomoc.</translation>
 <translation id="1316066811927496401">Błąd: nie można potwierdzić żądania</translation>
 <translation id="1737873393693460829">Włączając [[title]], zgadzasz się na <ph name="BEGIN_LINK1"/>Warunki użytkowania<ph name="END_LINK1"/> i <ph name="BEGIN_LINK2"/>Politykę prywatności<ph name="END_LINK2"/>.</translation>
@@ -1289,4 +1288,12 @@
 <translation id="4548946945059463969">Pokaż swoje salda na ekranie</translation>
 <translation id="242959166945779492">Nie masz żadnych środków na swoim koncie. Odwiedź FTX, aby je nabyć.</translation>
 <translation id="6996157559236886133">Błąd: ograniczona funkcjonalność konta Uphold</translation>
+<translation id="8303434745767477417">Przechowuj kryptoaktywa. Śledź wyniki portfela i wchodź w interakcje z aplikacjami web 3 DApps. Handluj, inwestuj i pożyczaj, korzystając z DeFi. A wszystko to z poziomu prywatnej przeglądarki Brave, bez konieczności instalowania wtyczek i dodatkowych pobrań.</translation>
+<translation id="4075073132992924258">Portfel Brave nie jest ustawiony jako portfel domyślny i nie będzie odpowiadał aplikacjom web3 DApps. Przejdź do ustawień, aby zmienić domyślny portfel.</translation>
+<translation id="5668765612885835803">Możesz utworzyć główne konta w portfelu Brace, których kopie zapasowe możesz utworzyć lub odzyskać za pomocą wyrażenia odzyskiwania. Aby dowiedzieć się więcej o typach kont, odwiedź dział pomocy związany z kontem</translation>
+<translation id="2471916999505901943">Z kont tych można korzystać w połączeniu z aplikacjami web 3 DApps i można je wyświetlać w Twoim portfelu. Pamiętaj jednak, że kont dodatkowych nie można przywrócić za pomocą wyrażenia odzyskiwania przypisanego do kopii zapasowej konta głównego.</translation>
+<translation id="5723696625900399845">Użyj tego panelu, aby uzyskać bezpieczny dostęp do web3 i wszystkich kryptoaktywów.</translation>
+<translation id="8897114903450789862">Zaimportuj konta <ph name="WALLET_EXTENSION"/> do portfela Brave. Korzystaj z szybszej i bezpieczniejszej metody zarządzania kryptoaktywami i interakcji ze zdecentralizowanymi aplikacjami (DApps) Web 3.</translation>
+<translation id="3301259443293676544">Wprowadź hasło do istniejących portfeli kryptowalutowych, aby importować je do portfela Brave. Korzystaj z szybszej i bezpieczniejszej metody zarządzania kryptoaktywami i wchodzenia w interakcje z aplikacjami web 3 DApps.</translation>
+<translation id="1898254156730880135">Wygląda na to, że Twoja ostatnia płatność się nie powiodła. Dostęp do tej subskrypcji zostanie wstrzymany do chwili rozwiązania problemu dotyczącego płatności. Spróbuj edytować metodę płatności lub skontaktuj się ze wsparciem Brave.</translation>
 </translationbundle>

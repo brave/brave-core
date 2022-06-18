@@ -927,4 +927,5 @@
 <translation id="9218430445555521422">기본 브라우저로 설정</translation>
 <translation id="6369495274982305511">월렛을 초기화하시겠습니까? 월렛이 백업되어 있지 않은 경우 초기화하면 모든 계정 데이터(그 안에 담긴 자금 포함)를 잃을 수 있습니다. 확인하려면 "<ph name="CONFIRMATION_PHRASE"/>"를 직접 입력하세요.</translation>
 <translation id="64394831139134288">내 월렛</translation>
+<translation id="8905950042180169719">백그라운드에서 VPN 실행 중</translation>
 </translationbundle>

@@ -258,7 +258,6 @@
 <translation id="5382684862562314222">BAT bado haitumiki katika eneo lako kwenye pochi za Uphold.</translation>
 <translation id="9074594632540931067">Hitilafu: BAT haipatikani</translation>
 <translation id="5376524136040178759">Kulingana na Uphold, kwa sasa kuna vikwazo fulani kwenye akaunti yako ya Uphold. Tafadhali ingia kwenye akaunti yako ya Uphold na uangalie ikiwa kuna arifa zozote au masharti ya akaunti yaliyosalia ya kukamilisha, kisha ujaribu tena. Kwa mfano, huenda ukahitaji kuwasilisha maelezo zaidi kwa Uphold.</translation>
-<translation id="6996157559236886133">Hitilafu: Utendakazi uliozuiliwa wa akaunti ya Uphold</translation>
 <translation id="3274650021044762770">Kulikuwa na hitilafu wakati wa kuhalalisha ombi la kivinjari chako la kuunganisha Zawadi za Brave kwenye akaunti yako ya <ph name="PROVIDER"/>. Unaweza <ph name="BEGIN_LINK"/>kuwasiliana na wasaidizi wa <ph name="END_LINK"/> kwa usaidizi zaidi.</translation>
 <translation id="1316066811927496401">Hitilafu: Ombi halikuweza kuthibitishwa</translation>
 <translation id="1737873393693460829">Kwa kuwasha [[title]], unakubali <ph name="BEGIN_LINK1"/>Sheria na Masharti<ph name="END_LINK1"/> na <ph name="BEGIN_LINK2"/>Sera ya Faragha<ph name="END_LINK2"/>.</translation>
@@ -1289,4 +1288,12 @@
 <translation id="4548946945059463969">Tambua masalio yako kwenye skrini</translation>
 <translation id="242959166945779492">Huna salio lolote katika akaunti yako. Tembelea FTX ili ununue kadhaa.</translation>
 <translation id="6996157559236886133">Hitilafu: Utendakazi uliozuiliwa wa akaunti ya Uphold</translation>
+<translation id="8303434745767477417">Zuia rasilimali za crypto. Fuatilia utendaji wa potifolio na utumie web 3 DApps. Fanya biashara, wekeza, omba na ukopeshe na DeFi. Zote kutoka kivinjari cha faragha cha Brave. Hakuna viendelezi, hakuna kipakuliwa kinachohitajika.</translation>
+<translation id="4075073132992924258">Brave Wallet haijawekwa kuwa pochi yako chaguomsingi na haitajibu web3 DApps. Tembelea mipangilio ili ubadilishe pochi yako chaguomsingi.</translation>
+<translation id="5668765612885835803">Unaweza kuunda akaunti za msingi kwenye Pochi ya Brave ambazo zinaweza kunakiliwa au kurejeshwa kwenye awamu yako ya kurejesha. Ili kujifunza zaidi kuhusu aina za akaunti tembelea msaada wa akaunti</translation>
+<translation id="2471916999505901943">Akaunti hizi zinaweza kutumiwa na programu za tovuti za 3 D na zinaweza kuonyeshwa katika potifolio yako. Hata hivyo, fahamu kwamba akaunti mbadala haziwezi kurejeshwa kupitia kwa fungu la maneno la urejeshaji kutoka kwenye nakala yako ya akaunti ya msingi.</translation>
+<translation id="5723696625900399845">Tumia paneli hii kufikia web3 kwa usalama na rasilimali zako zote za crypto.</translation>
+<translation id="8897114903450789862">Leta akauti zako za <ph name="WALLET_EXTENSION"/> kwenye Brave Wallet. Furahia njia ya haraka na salama zaidi ili kudhibiti rasilimali za crypto na kutumia web 3 DApps.</translation>
+<translation id="3301259443293676544">Weka nenosiri lako la crypto wallets lililopo ili ulete hadi Brave Wallet. Furahia njia ya haraka na salama zaidi kudhibiti rasilimali za crypto na utumie web 3 DApps.</translation>
+<translation id="1898254156730880135">Inaonekana kwamba malipo yako ya hivi karibuni zaidi hayakufaulu. Ufikiaji kwa usajili huu utasitishwa hadi tatizo la malipo litakapotatuliwa. Jaribu kuhariri njia ya kulipa au uwasiliane na wasaidizi wa Brave.</translation>
 </translationbundle>

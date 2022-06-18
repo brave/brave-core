@@ -258,7 +258,6 @@
 <translation id="5382684862562314222">O uso de BAT ainda não é aceito na sua região no Uphold.</translation>
 <translation id="9074594632540931067">Erro: BAT indisponível</translation>
 <translation id="5376524136040178759">De acordo com o Uphold, atualmente existem algumas limitações na sua conta Uphold. Faça login na sua conta Uphold e verifique se há algum aviso ou requisito de conta restante a ser preenchido e tente novamente. Por exemplo, talvez você precise enviar mais informações para o Uphold.</translation>
-<translation id="6996157559236886133">Erro: funcionalidades da conta do Uphold limitadas</translation>
 <translation id="3274650021044762770">Houve um problema ao validar a solicitação do seu navegador para conectar sua conta das Recompensas Brave à sua conta do <ph name="PROVIDER"/>. Você pode <ph name="BEGIN_LINK"/>entrar em contato com o suporte<ph name="END_LINK"/> para obter ajuda.</translation>
 <translation id="1316066811927496401">Erro: não foi possível validar a solicitação</translation>
 <translation id="1737873393693460829">Ao ativar [[title]], você concorda com os <ph name="BEGIN_LINK1"/>Termos de Serviço<ph name="END_LINK1"/> e com a <ph name="BEGIN_LINK2"/>Política de Privacidade<ph name="END_LINK2"/>.</translation>
@@ -1289,4 +1288,12 @@
 <translation id="4548946945059463969">Revelar seus saldos na tela</translation>
 <translation id="242959166945779492">Você não tem nenhum saldo na sua conta. Acesse o FTX para adquirir saldo.</translation>
 <translation id="6996157559236886133">Erro: funcionalidades da conta do Uphold limitadas</translation>
+<translation id="8303434745767477417">Guarde criptoativos em custódia. Monitore o desempenho do portfólio e interaja com dapps Web 3. Negocie, solicite e faça empréstimos e invista com DeFi. Tudo isso diretamente na privacidade do navegador Brave. Sem necessidade de extensões nem downloads.</translation>
+<translation id="4075073132992924258">A Carteira Brave não está configurada como sua carteira padrão e não responderá a dapps Web 3. Acesse as configurações para alterar sua carteira padrão.</translation>
+<translation id="5668765612885835803">Você pode criar contas principais na Carteira Brave que podem ser armazenadas em backup ou restauradas por meio da sua frase de recuperação. Para saber mais sobre os tipos de conta, acesse a ajuda da conta</translation>
+<translation id="2471916999505901943">Essas contas podem ser usadas com dapps Web 3 e podem ser exibidas no seu portfólio. No entanto, tenha em mente que contas secundárias não podem ser restauradas por meio da frase de recuperação a partir do backup da sua conta principal.</translation>
+<translation id="5723696625900399845">Use este painel para acessar com segurança o web3 e todos os seus criptoativos.</translation>
+<translation id="8897114903450789862">Importe suas contas do <ph name="WALLET_EXTENSION"/> para a Carteira Brave. Conheça uma forma mais rápida e segura de gerenciar criptoativos e interagir com dapps Web 3.</translation>
+<translation id="3301259443293676544">Insira suas senhas de carteiras de criptomoedas existentes para importar para a Carteira Brave. Desfrute de uma forma mais rápida e segura de gerenciar criptoativos e interagir com dapps Web 3.</translation>
+<translation id="1898254156730880135">Parece que seu pagamento mais recente não foi processado. O acesso a esta assinatura será interrompido até o problema com o pagamento ser resolvido. Tente editar sua forma de pagamento ou entre em contato com o suporte do Brave.</translation>
 </translationbundle>

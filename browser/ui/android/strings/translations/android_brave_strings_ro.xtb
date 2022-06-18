@@ -928,4 +928,5 @@ Dacă nu acceptați această solicitare, nu se va realiza reconectarea la VPN, i
 <translation id="9218430445555521422">Setează ca prestabilit</translation>
 <translation id="6369495274982305511">Sigur doriți să resetați portofelul dvs.? Dacă nu ați realizat o copie de rezervă după portofel, resetarea va duce la pierderea tuturor datelor privind contul (inclusiv a fondurilor asociate). Tastați „<ph name="CONFIRMATION_PHRASE"/>” pentru a confirma.</translation>
 <translation id="64394831139134288">Portofelul meu</translation>
+<translation id="8905950042180169719">VPN-ul rulează în fundal</translation>
 </translationbundle>

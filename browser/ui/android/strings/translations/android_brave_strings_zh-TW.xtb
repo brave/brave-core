@@ -926,4 +926,5 @@
 <translation id="9218430445555521422">設定為預設瀏覽器</translation>
 <translation id="6369495274982305511">您確定要重設您的錢包嗎？若您沒有備份錢包，重設將會導致所有帳戶資料 (包含任何相關聯的資金) 遺失。輸入「<ph name="CONFIRMATION_PHRASE"/>」以確認。</translation>
 <translation id="64394831139134288">我的錢包</translation>
+<translation id="8905950042180169719">VPN 正在背景執行</translation>
 </translationbundle>

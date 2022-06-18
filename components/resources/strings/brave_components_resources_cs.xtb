@@ -256,7 +256,6 @@
 <translation id="8218538368080510976">Chyba: Oblast není podporována</translation>
 <translation id="5382684862562314222">Služba BAT zatím není ve vašem regionu v systému Uphold podporována.</translation>
 <translation id="9074594632540931067">Chyba: Služba BAT není dostupná</translation>
-<translation id="6996157559236886133">Chyba: Omezená funkčnost účtu Uphold</translation>
 <translation id="3274650021044762770">Při ověřování požadavku prohlížeče na připojení odměn Brave k vašemu účtu<ph name="PROVIDER"/> došlo k chybě. Pro pomoc se můžete <ph name="BEGIN_LINK"/>obrátit na podporu<ph name="END_LINK"/>.</translation>
 <translation id="1316066811927496401">Chyba: požadavek se nepodařilo ověřit</translation>
 <translation id="1737873393693460829">Zapnutím [[title]] vyjadřujete souhlas s <ph name="BEGIN_LINK1"/>Podmínkami služby<ph name="END_LINK1"/> a <ph name="BEGIN_LINK2"/>Zásadami ochrany osobních údajů<ph name="END_LINK2"/>.</translation>
@@ -1265,4 +1264,12 @@
 <translation id="4548946945059463969">Odhalit vaše zůstatky na obrazovce</translation>
 <translation id="242959166945779492">Na účtu nemáte žádný zůstatek. Navštivte FTX a proveďte nákup.</translation>
 <translation id="6996157559236886133">Chyba: Omezená funkčnost účtu Uphold</translation>
+<translation id="8303434745767477417">Držte kryptoaktiva ve své úschově. Sledujte výkonnost portfolia a komunikujte s webovými 3 DApps. Obchodujte, investujte, půjčujte si a půjčujte s DeFi. To vše přímo ze soukromého prohlížeče Brave. Nejsou nutná žádná rozšíření ani stahování.</translation>
+<translation id="4075073132992924258">Peněženka Brave Wallet není nastavena jako výchozí peněženka a nebude reagovat na webové aplikace DApps3. Pro změnu výchozí peněženky přejděte do nastavení.</translation>
+<translation id="5668765612885835803">V peněžence Brave můžete vytvářet primární účty, které mohou být zálohovány nebo obnovovány z fráze pro obnovení. Chcete-li se dozvědět více o typech účtů, navštivte nápovědu.</translation>
+<translation id="2471916999505901943">Tyto účty lze používat s webovými aplikacemi 3 DApps a lze je zobrazit ve vašem portfoliu. Upozorňujeme však, že sekundární účty nelze obnovit pomocí fráze pro obnovení ze zálohy primárního účtu.</translation>
+<translation id="5723696625900399845">Pomocí tohoto panelu můžete bezpečně přistupovat k webu3 a všem svým krypto aktivům.</translation>
+<translation id="8897114903450789862"><ph name="WALLET_EXTENSION"/> účty do peněženky Brave. Užijte si rychlejší a bezpečnější způsob správy kryptoaktiv a interakce s webovými 3 DApps.</translation>
+<translation id="3301259443293676544">Zadejte heslo své stávající kryptopeněženky a importujte ji do peněženky Brave Wallet. Užijte si rychlejší a bezpečnější způsob správy kryptoaktiv a interakce s webovými 3 DApps.</translation>
+<translation id="1898254156730880135">Vypadá to, že vaše poslední platba neproběhla. Přístup k tomuto odběru bude pozastaven, dokud se problém s platbou nevyřeší. Zkuste upravit platební metodu nebo kontaktujte podporu služby Brave.</translation>
 </translationbundle>

@@ -928,4 +928,5 @@ Jika anda tidak menerima permintaan ini, VPN tidak akan bersambung semula dan sa
 <translation id="9218430445555521422">Tetapkan sebagai lalai</translation>
 <translation id="6369495274982305511">Adakah anda pasti anda mahu menetapkan semula dompet anda? Jika dompet anda tidak disandarkan, penetapan semula akan menyebabkan anda kehilangan semua data akaun (termasuk sebarang dana yang berkaitan). Taip "<ph name="CONFIRMATION_PHRASE"/>" untuk mengesahkan.</translation>
 <translation id="64394831139134288">Dompet saya</translation>
+<translation id="8905950042180169719">VPN sedang berjalan di latar belakang</translation>
 </translationbundle>

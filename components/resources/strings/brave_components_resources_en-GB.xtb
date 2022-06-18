@@ -258,7 +258,6 @@
 <translation id="5382684862562314222">BAT is not yet supported in your region on Uphold.</translation>
 <translation id="9074594632540931067">Error: BAT unavailable</translation>
 <translation id="5376524136040178759">According to Uphold, there are currently some limitations on your Uphold account. Please log in to your Uphold account and check whether there are any notices or remaining account requirements to complete, then try again. For example, you may need to submit more information to Uphold.</translation>
-<translation id="6996157559236886133">Error: Limited Uphold account functionality</translation>
 <translation id="3274650021044762770">There was a problem validating your browser's request to connect Brave Rewards to your <ph name="PROVIDER"/> account. You can <ph name="BEGIN_LINK"/>contact support<ph name="END_LINK"/> for more help.</translation>
 <translation id="1316066811927496401">Error: Request could not be validated</translation>
 <translation id="1737873393693460829">By turning on [[title]], you agree to the <ph name="BEGIN_LINK1"/>Terms of Service<ph name="END_LINK1"/> and <ph name="BEGIN_LINK2"/>Privacy Policy<ph name="END_LINK2"/>.</translation>
@@ -1289,4 +1288,12 @@
 <translation id="4548946945059463969">Reveal your balances on screen</translation>
 <translation id="242959166945779492">You do not have any balances in your account. Visit FTX to purchase some.</translation>
 <translation id="6996157559236886133">Error: Limited Uphold account functionality</translation>
+<translation id="8303434745767477417">Hold crypto assets in your custody. Track portfolio performance, and interact with web 3 DApps. Trade, invest, borrow and lend with DeFi. All right from the Brave privacy browser. No extensions, no download required.</translation>
+<translation id="4075073132992924258">Brave Wallet is not set as your default wallet and will not respond to web3 DApps. Visit settings to change your default wallet.</translation>
+<translation id="5668765612885835803">You can create primary accounts in Brave Wallet that may be backed up or restored from your recovery phrase. To learn more about account types visit account help</translation>
+<translation id="2471916999505901943">These accounts can be used with web 3 DApps and can be shown in your portfolio. However, note that secondary accounts cannot be restored via recovery phrase from your primary account backup.</translation>
+<translation id="5723696625900399845">Use this panel to securely access web3 and all your crypto assets.</translation>
+<translation id="8897114903450789862">Import your <ph name="WALLET_EXTENSION"/> accounts into Brave Wallet. Enjoy a faster and more secure way to manage crypto assets and interact with web3 DApps.</translation>
+<translation id="3301259443293676544">Enter your existing crypto wallets password to import to Brave Wallet. Enjoy a faster and more secure way to manage crypto assets and interact with web 3 DApps.</translation>
+<translation id="1898254156730880135">Looks like your most recent payment did not go through. Access to this subscription will pause until the payment issue is resolved. Try to edit your payment method, or contact Brave support.</translation>
 </translationbundle>

@@ -256,7 +256,6 @@
 <translation id="8218538368080510976">Virhe: Aluetta ei tueta</translation>
 <translation id="5382684862562314222">BATtia ei vielä tueta alueesi Uphold-lompakoissa.</translation>
 <translation id="9074594632540931067">Virhe: BAT ei ole saatavilla</translation>
-<translation id="6996157559236886133">Virhe: Rajoitettu Uphold-tilin toiminnallisuus</translation>
 <translation id="3274650021044762770">Ilmeni ongelma, kun selaimesi pyyntöä liittää Brave-palkintosi <ph name="PROVIDER"/>-tiliisi vahvistettiin. Voit <ph name="BEGIN_LINK"/>ottaa yhteyttä tukeen<ph name="END_LINK"/> saadaksesi apua.</translation>
 <translation id="1316066811927496401">Virhe: pyyntöä ei voitu vahvistaa</translation>
 <translation id="1737873393693460829">Käynnistämällä [[title]] hyväksyt <ph name="BEGIN_LINK1"/>käyttöehdot<ph name="END_LINK1"/> ja <ph name="BEGIN_LINK2"/>yksityisyyskäytännön<ph name="END_LINK2"/>.</translation>
@@ -1255,4 +1254,13 @@
 <translation id="4548946945059463969">Näytä saldosi näytöllä</translation>
 <translation id="242959166945779492">Sinulla ei ole yhtään saldoa tililläsi. Käy FTX:ssä ostaaksesi valuuttoja.</translation>
 <translation id="6996157559236886133">Virhe: Rajoitettu Uphold-tilin toiminnallisuus</translation>
+<translation id="2236833281018938257">0x-osoite tai -url</translation>
+<translation id="8303434745767477417">Pidä kryptovaroja mukanasi. Seuraa portfolion kehitystä ja ole vuorovaikutuksessa web3-sovellusten ja hajautettujen sovellusten kanssa. Vaihda, sijoita ja lainaa DeFillä avulla. Kaikki tämä suoraan yksityisestä Brave-selaimesta. Ei laajennuksia, ei latausta.</translation>
+<translation id="4075073132992924258">Brave Wallet -lompakkoa ei ole määritetty oletusarvoiseksi lompakoksi, eikä se vastaa web3-sovelluksiin tai hajautettuihin sovelluksiin. Siirry asetuksiin vaihtaaksesi oletusarvoista lompakkoa.</translation>
+<translation id="5668765612885835803">Voit luoda ensisijaiset tilit Brave-lompakossa, jotka voidaan varmuuskopioida tai palauttaa palautuslauseellasi. Jos haluat lukea lisää eri tyyppisistä tileistä, käy tilien ohjesivulla</translation>
+<translation id="2471916999505901943">Näitä tilejä voidaan käyttää web3-sovellusten ja hajautettujen sovellusten kanssa. Huomaa, että toissijaisia tilejä ei voida palauttaa palautuslauseella ensisijaisen tilin varmuuskopiotiedoista.</translation>
+<translation id="5723696625900399845">Käytä suojatusti web3:a ja kaikkia kryptovarojasi tämän paneelin avulla.</translation>
+<translation id="8897114903450789862">Tuo <ph name="WALLET_EXTENSION"/>-tilit Brave Wallet -lompakkoon. Nauti nopeammasta ja turvallisemmasta tavasta hallita kryptovaroja ja olla vuorovaikutuksessa web3-sovellusten ja hajautettujen sovellusten kanssa.</translation>
+<translation id="3301259443293676544">Tuo Brave Wallet -lompakkoon antamalla olemassa olevien kryptolompakkojen salasana. Nauti nopeammasta ja turvallisemmasta tavasta hallita kryptovaroja ja olla vuorovaikutuksessa web3-sovellusten ja hajautettujen sovellusten kanssa.</translation>
+<translation id="1898254156730880135">Näyttää siltä, että viimeisin maksusi ei mennyt läpi. Pääsy tähän tilaukseen keskeytetään, kunnes maksuongelma on ratkaistu. Muokkaa maksutapaasi tai ota yhteyttä Brave-tukeen.</translation>
 </translationbundle>

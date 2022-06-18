@@ -258,7 +258,6 @@
 <translation id="5382684862562314222">您所在地區的 Uphold 服務尚未支援 BAT。</translation>
 <translation id="9074594632540931067">錯誤：無法使用 BAT</translation>
 <translation id="5376524136040178759">根據 Uphold，您的 Uphold 帳戶目前受到一些限制。請登入您的 Uphold 帳戶，檢查是否有任何通知或其他帳戶要求需要完成 (像是您可能需要提交更多資訊給 Uphold)，然後再試一次。</translation>
-<translation id="6996157559236886133">錯誤：Uphold 帳戶功能受限</translation>
 <translation id="3274650021044762770">驗證瀏覽器請求以將 Brave 獎勵連結至您的 <ph name="PROVIDER"/> 帳戶時發生問題。您可以<ph name="BEGIN_LINK"/>聯絡支援團隊<ph name="END_LINK"/>，尋求進一步協助。</translation>
 <translation id="1316066811927496401">錯誤：無法驗證請求</translation>
 <translation id="1737873393693460829">開啟 [[title]] 即表示您同意<ph name="BEGIN_LINK1"/>服務條款<ph name="END_LINK1"/>與<ph name="BEGIN_LINK2"/>隱私權政策<ph name="END_LINK2"/>。</translation>
@@ -1289,4 +1288,12 @@
 <translation id="4548946945059463969">在螢幕上顯示您的餘額</translation>
 <translation id="242959166945779492">您的帳戶中沒有任何餘額。請造訪 FTX 購買。</translation>
 <translation id="6996157559236886133">錯誤：Uphold 帳戶功能受限</translation>
+<translation id="8303434745767477417">保管加密資產。追蹤投資組合表現，並與 web 3 DApps 互動。使用 DeFi 交易、投資、借貸和貸款。所有這一切皆可在 Brave 私密瀏覽器中完成。無需延伸組件，無需下載。</translation>
+<translation id="4075073132992924258">Brave 錢包未設定為您的預設錢包，不會回應 web3 DApps。請造訪設定以變更您的預設錢包。</translation>
+<translation id="5668765612885835803">您可以在 Brave 錢包中建立主帳戶，此帳戶能備份或以還原片語還原。若要深入瞭解帳戶類型，請前往帳戶說明</translation>
+<translation id="2471916999505901943">這些帳戶可以與 web 3 DApp 一起使用，亦可顯示在您的投資組合中。但請注意，不能透過主帳戶備份中的還原片語還原次要帳戶。</translation>
+<translation id="5723696625900399845">使用此面板安全存取 web3 和您的所有加密貨幣資產。</translation>
+<translation id="8897114903450789862">將您的 <ph name="WALLET_EXTENSION"/> 帳戶匯入至 Brave 錢包。以更快、更安全的方式管理加密貨幣資產以及與 web 3 DApps 互動。</translation>
+<translation id="3301259443293676544">輸入您現有的加密幣錢包密碼以匯入至 Brave 錢包。享受以更快、更安全的方式管理加密資產以及與 web 3 DApps 互動。</translation>
+<translation id="1898254156730880135">您最近的一筆付款並未成功。付款問題解決之前，您將無法存取此訂閱項目。請嘗試編輯付款方式，或與 Brave 支援人員聯絡。</translation>
 </translationbundle>

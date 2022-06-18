@@ -929,4 +929,5 @@ If you don't accept this request, VPN will not reconnect and your Internet conne
 <translation id="9218430445555521422">Set as default</translation>
 <translation id="6369495274982305511">Are you sure you want to reset your wallet? If your wallet is not backed up, resetting will cause you to lose all account data (including any associated funds). Type "<ph name="CONFIRMATION_PHRASE"/>" to confirm.</translation>
 <translation id="64394831139134288">My wallet</translation>
+<translation id="8905950042180169719">VPN is running in the background</translation>
 </translationbundle>

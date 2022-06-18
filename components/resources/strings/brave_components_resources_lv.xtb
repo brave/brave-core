@@ -258,7 +258,6 @@
 <translation id="5382684862562314222">BAT jūsu reģionā Uphold makos vēl netiek atbalstīts.</translation>
 <translation id="9074594632540931067">Kļūda: BAT nav pieejams</translation>
 <translation id="5376524136040178759">Atbilstoši Uphold pašlaik jūsu Uphold kontam ir piemēroti daži ierobežojumi. Lūdzu, piesakieties savā Uphold kontā un pārbaudiet, vai tajā ir kādi paziņojumi vai citas konta prasības, kas jāizpilda, tad mēģiniet vēlreiz. Piemēram, jums, iespējams, jāiesniedz vairāk informācijas Uphold.</translation>
-<translation id="6996157559236886133">Kļūda: ierobežota Uphold konta funkcionalitāte</translation>
 <translation id="3274650021044762770">Radās problēma, apstiprinot jūsu pārlūka pieprasījumu savienot Brave Rewards ar jūsu <ph name="PROVIDER"/> kontu. Jūs varat <ph name="BEGIN_LINK"/>sazināties ar atbalsta dienestu<ph name="END_LINK"/>, lai saņemtu palīdzību.</translation>
 <translation id="1316066811927496401">Kļūda: pieprasījumu nevarēja apstiprināt</translation>
 <translation id="1737873393693460829">Ieslēdzot [[title]], jūs piekrītat <ph name="BEGIN_LINK1"/>pakalpojumu sniegšanas noteikumiem<ph name="END_LINK1"/> un <ph name="BEGIN_LINK2"/>konfidencialitātes politikai<ph name="END_LINK2"/>.</translation>
@@ -1289,4 +1288,12 @@ Bloķēti <ph name="NUMBER"/> izsekotāji, reklāmas un cits</translation>
 <translation id="4548946945059463969">Atklājiet savu bilanci ekrānā</translation>
 <translation id="242959166945779492">Jūsu kontā nav atlikuma. Apmeklējiet FTX, lai iegādātos valūtu.</translation>
 <translation id="6996157559236886133">Kļūda: ierobežota Uphold konta funkcionalitāte</translation>
+<translation id="8303434745767477417">Turiet kripto līdzekļus savā īpašumā. Sekojiet portfeļa efektivitātei un darbojieties ar tīmekļa 3 DApps. Tirgojieties, ieguldiet, aizņemieties un aizdodiet ar DeFi. Brave privātuma pārlūks to atbalsta. Bez paplašinājumiem, bez lejupielādes.</translation>
+<translation id="4075073132992924258">Brave maks nav iestatīts kā noklusējuma maks, un tas nereaģēs uz web3 DApp. Dodieties uz iestatījumiem, lai mainītu noklusējuma maku.</translation>
+<translation id="5668765612885835803">Jūs varat izveidot primāros kontus Brave makā, ko iespējams kopēt vai atjaunot, izmantojot jūsu atkopšanas frāzi. Lai uzzinātu vairāk par konta veidiem, apmeklējiet sadaļu par konta palīdzību</translation>
+<translation id="2471916999505901943">Šos kontus var izmantot ar tīmekļa 3 DApps, un tos var parādīt jūsu portfelī. Tomēr ņemiet vērā, ka sekundāros kontus nevar atjaunot, izmantojot atkopšanas frāzi no primārā dublējuma konta.</translation>
+<translation id="5723696625900399845">Izmantojiet šo paneli, lai droši piekļūtu web3 un visiem kriptoaktīviem.</translation>
+<translation id="8897114903450789862">Importējiet savus <ph name="WALLET_EXTENSION"/> kontus uz Brave maciņu. Izmantojiet ātrāku un drošāku veidu, kā pārvaldīt kriptovalūtas aktīvus un komunicēt ar 3 DApps.</translation>
+<translation id="3301259443293676544">Ievadiet esošo kriptovalūtas maku paroli, lai importētu to Brave makā. Izbaudiet ātrāku un drošāku veidu, kā pārvaldīt kriptovalūtu līdzekļus un mijiedarboties ar tīmekļa 3 DApps.</translation>
+<translation id="1898254156730880135">Šķiet, jūsu pēdējais maksājums neizdevās. Piekļuve šim abonementam tiks apturēta līdz maksājuma problēmas atrisināšanai. Mēģiniet labot maksāšanas metodi vai sazinieties ar Brave atbalsta dienestu.</translation>
 </translationbundle>

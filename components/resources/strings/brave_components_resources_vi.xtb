@@ -258,7 +258,6 @@
 <translation id="5382684862562314222">BAT chưa được hỗ trợ trong khu vực của bạn trên Uphold.</translation>
 <translation id="9074594632540931067">Lỗi: BAT không khả dụng</translation>
 <translation id="5376524136040178759">Theo Uphold, hiện tại có một số hạn chế đối với tài khoản Uphold của bạn. Vui lòng đăng nhập vào tài khoản Uphold của bạn và kiểm tra xem có bất kỳ thông báo nào hay còn yêu cầu tài khoản nào cần hoàn thành hay không, sau đó thử lại. Ví dụ: bạn có thể cần gửi thêm thông tin cho Uphold.</translation>
-<translation id="6996157559236886133">Lỗi: Chức năng tài khoản Uphold bị giới hạn</translation>
 <translation id="3274650021044762770">Đã xảy ra vấn đề khi xác thực yêu cầu của trình duyệt kết nối Phần thưởng Brave với tài khoản <ph name="PROVIDER"/> của bạn. Bạn có thể <ph name="BEGIN_LINK"/>liên hệ hỗ trợ<ph name="END_LINK"/> để được trợ giúp thêm.</translation>
 <translation id="1316066811927496401">Lỗi: Không thể xác thực yêu cầu</translation>
 <translation id="1737873393693460829">Với việc bật [[title]], bạn đồng ý với <ph name="BEGIN_LINK1"/>Điều khoản Dịch vụ<ph name="END_LINK1"/> và <ph name="BEGIN_LINK2"/>Chính sách Quyền riêng tư<ph name="END_LINK2"/>.</translation>
@@ -1267,4 +1266,12 @@
 <translation id="4548946945059463969">Tiết lộ số dư của bạn trên màn hình</translation>
 <translation id="242959166945779492">Bạn không có bất kỳ số dư nào trong tài khoản của mình. Hãy truy cập FTX để mua.</translation>
 <translation id="6996157559236886133">Lỗi: Chức năng tài khoản Uphold bị giới hạn</translation>
+<translation id="8303434745767477417">Nắm giữ tài sản mã hóa trong lòng bàn tay. Theo dõi hiệu suất danh mục và tương tác với các ứng dụng phi tập trung web 3. Giao dịch, đầu tư, vay và cho vay với DeFi. Tất cả ngay từ trình duyệt riêng tư Brave. Không yêu cầu phần mở rộng, tải xuống.</translation>
+<translation id="4075073132992924258">Ví Brave không được đặt làm ví mặc định của bạn và sẽ không phản hồi với các ứng dụng phi tập trung web 3. Hãy vào cài đặt để thay đổi ví mặc định của bạn.</translation>
+<translation id="5668765612885835803">Bạn có thể tạo tài khoản chính trong Ví Brave có thể được sao lưu hoặc khôi phục từ cụm từ khôi phục của bạn. Để tìm hiểu thêm về các loại tài khoản, vui lòng truy cập trợ giúp tài khoản</translation>
+<translation id="2471916999505901943">Những tài khoản này có thể được sử dụng với các ứng dụng phi tập trung web 3 và có thể được hiển thị trong danh mục của bạn. Tuy nhiên, hãy lưu ý rằng không thể khôi phục tài khoản phụ bằng cụm từ khôi phục từ bản sao lưu tài khoản chính của bạn.</translation>
+<translation id="5723696625900399845">Sử dụng bảng điều khiển này để truy cập an toàn vào web3 và tất cả các tài sản tiền điện tử của bạn.</translation>
+<translation id="8897114903450789862">Nhập từ tài khoản <ph name="WALLET_EXTENSION"/> của bạn vào Ví Brave. Tận hưởng cách thức quản lý tài sản mã hóa và tương tác với các ứng dụng phi tập trung web 3 nhanh hơn và bảo mật hơn.</translation>
+<translation id="3301259443293676544">Nhập mật khẩu ví tiền mã hóa hiện tại của bạn để nhập vào Ví Brave. Tận hưởng một phương thức nhanh hơn và bảo mật hơn để quản lý tài sản tiền mã hóa và tương tác với các ứng dụng phi tập trung web 3.</translation>
+<translation id="1898254156730880135">Có vẻ như khoản thanh toán gần đây nhất của bạn đã không thành công. Quyền truy cập vào đăng ký này sẽ tạm dừng cho đến khi vấn đề thanh toán được giải quyết. Hãy cố gắng chỉnh sửa phương thức thanh toán của bạn hoặc liên hệ với bộ phận hỗ trợ của Brave.</translation>
 </translationbundle>

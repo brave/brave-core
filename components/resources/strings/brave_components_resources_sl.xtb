@@ -258,7 +258,6 @@
 <translation id="5382684862562314222">BAT še ni podprt v vaši regiji v okviru Uphold.</translation>
 <translation id="9074594632540931067">Napaka: BAT ni na voljo</translation>
 <translation id="5376524136040178759">Po podatkih Uphold so v računu Uphold trenutno določene omejitve. Prijavite se v svoj račun Uphold in preverite, ali so na računu še kakšna obvestila ali preostale zahteve, ki jih morate izpolniti, nato pa poskusite znova. Morda boste morali na primer podjetju Uphold predložiti več informacij.</translation>
-<translation id="6996157559236886133">Napaka: omejena funkcionalnost računa Uphold</translation>
 <translation id="3274650021044762770">Pri preverjanju zahteve brskalnika za povezavo Brave Rewards z vašim računom <ph name="PROVIDER"/> je prišlo do težave. Obrnite se <ph name="BEGIN_LINK"/>na podporo<ph name="END_LINK"/> za več podrobnosti.</translation>
 <translation id="1316066811927496401">Napaka: Zahteve ni bilo mogoče potrditi</translation>
 <translation id="1737873393693460829">Če vklopite [[title]], se strinjate s <ph name="BEGIN_LINK1"/>pogoji storitve<ph name="END_LINK1"/> in <ph name="BEGIN_LINK2"/>s politiko zasebnosti<ph name="END_LINK2"/>.</translation>
@@ -1289,4 +1288,12 @@
 <translation id="4548946945059463969">Razkrijte svoje stanje na zaslonu</translation>
 <translation id="242959166945779492">Na vašem računu ni nobenih sredstev. Obiščite FTX, če jih želite kupiti.</translation>
 <translation id="6996157559236886133">Napaka: omejena funkcionalnost računa Uphold</translation>
+<translation id="8303434745767477417">V lasti imejte kripto sredstva. Sledite uspešnosti portfelja in sodelujte z aplikacijami web3 DApps. Trgujte, vlagajte, izposojajte in posojajte z DeFi. Vse v brskalniku zasebnosti Brave. Brez razširitev, prenos ni potreben.</translation>
+<translation id="4075073132992924258">Brave denarnica ni nastavljena kot privzeta denarnica in se ne odziva na aplikacije DA3 web3. POjdite v nastavitve, če želite privzeto denarnico spremeniti.</translation>
+<translation id="5668765612885835803">V denarnici Wallet lahko ustvarite primarne račune, ki jih je mogoče varnostno kopirati ali obnoviti iz vaše obnovitvene fraze. Če želite izvedeti več o vrstah računov, obiščite pomoč za račun</translation>
+<translation id="2471916999505901943">Ti računi se lahko uporabljajo z aplikacijami web3 DApps in so lahko prikazani v vašem portfelju. Pri tem pa upoštevajte, da sekundarnih računov ni mogoče obnoviti s frazo za obnovitev iz varnostne kopije primarnega računa.</translation>
+<translation id="5723696625900399845">Uporabite to ploščo za varen dostop do web3 in vseh svojih kripto sredstev.</translation>
+<translation id="8897114903450789862">Uvozite svoje <ph name="WALLET_EXTENSION"/> račune v Brave denarnico. Uživajte v hitrejšem in varnejšem načinu za upravljanje kripto sredstev in interakcijo s spletnimi aplikacijami 3 DApps.</translation>
+<translation id="3301259443293676544">Vnesite obstoječe geslo za kripto denarnice za uvoz v Brave Wallet. Uživajte v hitrejšem in varnejšem načinu upravljanja kriptovalut in v interakciji s web 3 DApps.</translation>
+<translation id="1898254156730880135">Zdi se, da vaše zadnje plačilo ni bilo uspešno. Dostop do te naročnine bo prekinjen, dokler ne bo odpravljena težava s plačilom. Poskusite urediti način plačila ali se obrnite na podporo Brave.</translation>
 </translationbundle>

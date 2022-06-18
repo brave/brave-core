@@ -108,7 +108,6 @@
 <translation id="2571596981920752023"><ph name="NUMBER_OF_TABS"/> καρτέλες</translation>
 <translation id="2515126961943087659">Υπηρεσία διαφημίσεων BAT</translation>
 <translation id="7924918279836988121">Υπηρεσία Bat Ledger</translation>
-<translation id="6040143037577758943">Κλείσιμο</translation>
 <translation id="6665472986740899785">Διαφήμιση Ειδοποίησης Brave</translation>
 <translation id="4174337572777167894">Web Discovery Project</translation>
 <translation id="8659271182272561965">Συμβολή σε κάποια ανώνυμη αναζήτηση &amp; περιήγηση δεδομένων για βελτίωση της Αναζήτησης Brave.</translation>
@@ -511,4 +510,5 @@
 <translation id="6040143037577758943">Κλείσιμο</translation>
 <translation id="5600566490506283344">Ειδοποίηση Διαφήμισης Brave</translation>
 <translation id="4395160081588457461">Δες &amp; νιώσε</translation>
+<translation id="7942180974165298215">Αποκλεισμός Διαφήμισης Brave</translation>
 </translationbundle>

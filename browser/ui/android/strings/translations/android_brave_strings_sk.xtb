@@ -927,4 +927,5 @@ Ak túto žiadosť neprijmete, VPN sa znova nepripojí a vaše pripojenie na int
 <translation id="9218430445555521422">Nastaviť ako predvolený</translation>
 <translation id="6369495274982305511">Naozaj chcete resetovať svoju peňaženku? Ak nemáte peňaženku zálohovanú, resetovanie spôsobí, že prídete o všetky údaje účtu (vrátane všetkých súvisiacich finančných prostriedkov). Na potvrdenie napíšte „<ph name="CONFIRMATION_PHRASE"/>“.</translation>
 <translation id="64394831139134288">Moja peňaženka</translation>
+<translation id="8905950042180169719">VPN beží na pozadí</translation>
 </translationbundle>

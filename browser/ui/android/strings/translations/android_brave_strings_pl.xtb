@@ -928,4 +928,5 @@ Jeżeli nie zaakceptujesz tego żądania, połączenie z VPN nie zostanie ponown
 <translation id="9218430445555521422">Ustaw jako domyślną</translation>
 <translation id="6369495274982305511">Czy na pewno chcesz zresetować portfel? Jeśli nie utworzono kopii zapasowej portfela, zresetowanie spowoduje utratę wszystkich danych konta (w tym wszelkich skojarzonych środków). Wpisz „<ph name="CONFIRMATION_PHRASE"/>”, aby potwierdzić.</translation>
 <translation id="64394831139134288">Mój portfel</translation>
+<translation id="8905950042180169719">VPN pracuje w tle</translation>
 </translationbundle>

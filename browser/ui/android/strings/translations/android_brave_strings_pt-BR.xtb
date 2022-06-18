@@ -926,4 +926,5 @@ Se você não aceitar essa solicitação, a VPN não se reconectará, e sua cone
 <translation id="9218430445555521422">Definir como padrão</translation>
 <translation id="6369495274982305511">Tem certeza de que deseja redefinir sua carteira? Se sua carteira não for armazenada em backup, a redefinição fará com que você perca todos os dados da conta (incluindo todos os fundos associados). Digite "<ph name="CONFIRMATION_PHRASE"/>" para confirmar.</translation>
 <translation id="64394831139134288">Minha carteira</translation>
+<translation id="8905950042180169719">A VPN está em execução em segundo plano</translation>
 </translationbundle>

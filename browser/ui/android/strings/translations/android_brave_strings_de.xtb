@@ -926,4 +926,5 @@ Wenn Sie diese Anfrage nicht akzeptieren, wird das VPN nicht erneut verbunden un
 <translation id="9218430445555521422">Als Standardbrowser festlegen</translation>
 <translation id="6369495274982305511">Möchten Sie Ihre Wallet wirklich zurücksetzen? Wenn Ihre Wallet nicht gesichert wird, führt das Zurücksetzen dazu, dass alle Ihre Kontodaten (einschließlich zugehöriger Geldmittel) verloren gehen. Geben Sie zur Bestätigung "<ph name="CONFIRMATION_PHRASE"/>" ein.</translation>
 <translation id="64394831139134288">Meine Wallet</translation>
+<translation id="8905950042180169719">VPN läuft im Hintergrund</translation>
 </translationbundle>

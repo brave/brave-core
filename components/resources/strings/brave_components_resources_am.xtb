@@ -258,7 +258,6 @@
 <translation id="5382684862562314222">BAT በ Uphold ላይ ባለው ክልልዎ ውስጥ አልተፈቀደም።</translation>
 <translation id="9074594632540931067">ስህተት፡ BAT አይገኝም</translation>
 <translation id="5376524136040178759">በUphold መሠረት በአሁኑ ጊዜ በእርስዎ የUphold መለያ ላይ አንዳንድ ገደቦች አሉ። እባክዎ ወደ የUphold መለያዎ ይግቡና ለማጠናቀቅ ማሳወቂያዎች ወይም ቀሪ የመለያ መስፈርቶች መኖራቸውን ያረጋግጡ እና እንደገና ይሞክሩ። ለምሳሌ፣ ተጨማሪ መረጃን ወደ Uphold ማስገባት ሊኖርብዎ ይችላል።</translation>
-<translation id="6996157559236886133">ስህተት፡ የተገደበ የማቆየት መለያ ተግባር</translation>
 <translation id="3274650021044762770">የብሬቭ ሽልማቶችን ከእርስዎ<ph name="PROVIDER"/> መለያ ጋር ለማገናኘት የማሰሻዎን ጥያቄ ማረጋገጥ ላይ ችግር አጋጥሟል። ለተጨማሪ እርዳታ <ph name="BEGIN_LINK"/>ድጋፍ ሰጭ<ph name="END_LINK"/> ማግኘት ይችላሉ።</translation>
 <translation id="1316066811927496401">ስህተት: ጥያቄዎ ተቀባይነት አላገኘም</translation>
 <translation id="1737873393693460829">[[title]] 'ን በማብራት፣ በ <ph name="BEGIN_LINK1"/>የአገልግሎት ውሎች<ph name="END_LINK1"/> እና በ <ph name="BEGIN_LINK2"/>ግላዊነት ፖሊሲ<ph name="END_LINK2"/> ይስማማሉ።</translation>
@@ -1309,4 +1308,12 @@
 <translation id="4548946945059463969">ቀሪ ሂሳብዎን በማያ ገጽ ላይ ያሳዩ</translation>
 <translation id="242959166945779492">በመለያዎ ውስጥ ምንም ቀሪ ሂሳቦች የሉዎትም። የተወሰኑትን ለመግዛት FTX ን ይጎብኙ።</translation>
 <translation id="6996157559236886133">ስህተት፡ የተገደበ የማቆየት መለያ ተግባር</translation>
+<translation id="8303434745767477417">በእርስዎ ጥበቃ ውስጥ የ crypto ንብረቶችን ይያዙ። የፖርትፎሊዮ አፈፃፀምን ይከታተሉ እና ከድር 3 DApps ጋር ይገናኙ። ከ DeFi ጋር ይገበያዩ ፣ ኢንቨስት ያድርጉ ፣ ያበድሩ እና ያበድሩ። ደህና ከ Brave የግላዊነት አሳሽ። ምንም ቅጥያዎች ፣ ማውረድ አያስፈልግም።</translation>
+<translation id="4075073132992924258">Brave Wallet እንደ ነባር wallet አልተዋቀረም እና ለድር 3 DApps ምላሽ አይሰጥም። ነባሪ የኪስ walletዎን ለመለወጥ ቅንብሮችን ይጎብኙ።</translation>
+<translation id="5668765612885835803">በ Brave Wallet ውስጥ የመጀመሪያ ደረጃ መለያዎችን መፍጠር ይችላሉ፣ ይህም ከመልሶ ማግኛ ደረጃዎ ምትኬ ሊቀመጥ ወይም ወደነበረበት ሊመለስ ይችላል። ስለመለያ ዓይነቶች የበለጠ ለማወቅ የመለያ እገዛን ይጎብኙ</translation>
+<translation id="2471916999505901943">እነዚህ መለያዎች በድር 3 DApps ጥቅም ላይ ሊውሉ እና በእርስዎ ፖርትፎሊዮ ውስጥ ሊታዩ ይችላሉ። ሆኖም፣ ከዋናው የመጠባበቂያ ቅጂዎ በመልሶ ማግኛ ሐረግ በኩል ሁለተኛ መለያዎች ወደነበሩበት መመለስ እንደማይችሉ ልብ ይበሉ።</translation>
+<translation id="5723696625900399845">ዌብ3ን እና ሁሉንም የክሪፕቶ ንብረቶች ደህንነቱ በተጠበቀ ሁኔታ ለመድረስ ይህንን ፓንል ይጠቀሙ።</translation>
+<translation id="8897114903450789862">የ <ph name="WALLET_EXTENSION"/> መለያዎችዎን ወደ Brave Wallet ያስመጡ። የ crypto ንብረቶችን ለማስተዳደር እና ከድር 3 DApps ጋር ለመገናኘት በፈጣን እና ደህንነቱ የተጠበቀ መንገድ ይደሰቱ።</translation>
+<translation id="3301259443293676544">ወደ Brave wallet ለማስመጣት ነባር የ crypto wallets ይለፍ ቃልዎን ያስገቡ። Crypto ንብረቶችን ለማስተዳደር እና ከድር 3 DApps ጋር መስተጋብር ለመፍጠር ፈጣን እና ደህንነቱ በተጠበቀ መንገድ ይደሰቱ።</translation>
+<translation id="1898254156730880135">የቅርብ ጊዜ ክፍያዎ ያልተፈጸመ ይመስላል። የክፍያው ችግር እስኪፈታ ድረስ የዚህ ምዝገባ መዳረሻ ባለበት ይቆማል። የመክፈያ ዘዴዎን ለማርትዕ ይሞክሩ ወይም የ Brave ድጋፍን ያግኙ።</translation>
 </translationbundle>

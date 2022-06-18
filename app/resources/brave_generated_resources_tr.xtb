@@ -109,7 +109,6 @@ Veya şu adresten daha sonra değiştirin: <ph name="SETTINGS_EXTENIONS_LINK"/>.
 <translation id="2571596981920752023"><ph name="NUMBER_OF_TABS"/> sekme</translation>
 <translation id="2515126961943087659">Bat Reklam Servisi</translation>
 <translation id="7924918279836988121">Bat Ledger Servisi</translation>
-<translation id="6040143037577758943">Kapat</translation>
 <translation id="6665472986740899785">Brave Bildirim Reklamı</translation>
 <translation id="4174337572777167894">Web Keşif Projesi</translation>
 <translation id="8659271182272561965">Brave Arama'yı daha iyi hale getirmek için anonim arama &amp; tarayıcı verilerinizle katkıda bulunun.</translation>
@@ -511,4 +510,5 @@ Veya şu adresten daha sonra değiştirin: <ph name="SETTINGS_EXTENIONS_LINK"/>.
 <translation id="6040143037577758943">Kapat</translation>
 <translation id="5600566490506283344">Brave Reklam Bildirimi</translation>
 <translation id="4395160081588457461">Bak &amp; hisset</translation>
+<translation id="7942180974165298215">Brave Reklam Engelleme</translation>
 </translationbundle>

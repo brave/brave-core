@@ -930,4 +930,5 @@ Si no accepteu la sol·licitud, la VPN no es tornarà a connectar i la vostra co
 <translation id="9218430445555521422">Estableix com a predeterminat</translation>
 <translation id="6369495274982305511">Confirmes que vols restablir la cartera? Si la teva cartera no té una còpia de seguretat, la reinicialització et farà perdre totes les dades del compte (incloent-hi els fons associats). Escriu "<ph name="CONFIRMATION_PHRASE"/>" per confirmar-ho.</translation>
 <translation id="64394831139134288">La meva cartera</translation>
+<translation id="8905950042180169719">La VPN s'està executant en segon pla</translation>
 </translationbundle>

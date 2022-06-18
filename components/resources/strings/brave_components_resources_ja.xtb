@@ -261,7 +261,6 @@
 <translation id="5382684862562314222">お住まいの地域では、UpholdでBATがサポートされていません。</translation>
 <translation id="9074594632540931067">エラー: BATの利用不可</translation>
 <translation id="5376524136040178759">Upholdによると、現在お客様のUpholdアカウントに何らかの制限があるようです。Upholdアカウントにログインし、お知らせまたは満たすべきアカウント要件がないかご確認ください (Upholdに送信すべき追加の情報など)。その後、もう一度お試しください。</translation>
-<translation id="6996157559236886133">エラー: Upholdアカウントの機能が制限されています</translation>
 <translation id="3274650021044762770">Braveリワードをお使いの<ph name="PROVIDER"/>アカウントに接続するためのブラウザリクエストの検証中に問題が発生しました。<ph name="BEGIN_LINK"/>サポートに連絡<ph name="END_LINK"/>してヘルプを依頼してください。</translation>
 <translation id="1316066811927496401">エラー: リクエストを検証できませんでした</translation>
 <translation id="1737873393693460829">[[title]]をオンにすることで、<ph name="BEGIN_LINK1"/>利用規約<ph name="END_LINK1"/>および<ph name="BEGIN_LINK2"/>プライバシーポリシー<ph name="END_LINK2"/>に同意するものとします。</translation>
@@ -1291,4 +1290,12 @@
 <translation id="4548946945059463969">画面に残高を表示</translation>
 <translation id="242959166945779492">アカウントに残高がありません。購入するにはFTXへ移動します。</translation>
 <translation id="6996157559236886133">エラー: Upholdアカウントの機能が制限されています</translation>
+<translation id="8303434745767477417">あなたの管理下に暗号資産を保持します。ポートフォリオのパフォーマンスを追跡し、Web 3 DApp とやり取りします。DeFi で取引、投資、借り入れ、貸し出しを行います。Brave プライバシーブラウザからご利用いただけます。拡張機能やダウンロードは必要ありません。</translation>
+<translation id="4075073132992924258">Brave Wallet はデフォルトのウォレットとして設定されておらず、Web 3 DApp に応答しません。設定にアクセスして、デフォルトのウォレットを変更します。</translation>
+<translation id="5668765612885835803">Braveウォレットでは、リカバリフレーズからバックアップまたは復元できるプライマリアカウントを作成することができます。アカウントの種類についての詳細は、アカウントのヘルプをご覧ください</translation>
+<translation id="2471916999505901943">これらのアカウントは、Web 3 DApps で使用でき、ポートフォリオに表示できます。ただし、プライマリアカウントのバックアップからリカバリフレーズを使用してセカンダリアカウントを復元することはできないことに注意してください。</translation>
+<translation id="5723696625900399845">このパネルを使用して、Web3とすべての暗号資産に安全にアクセスできます</translation>
+<translation id="8897114903450789862">お使いの<ph name="WALLET_EXTENSION"/>アカウントをBraveウォレットにインポートします。暗号資産の管理やWeb 3 DAppsとのやりとりを、より速く、より安全に行うことができます。</translation>
+<translation id="3301259443293676544">Brave Wallet にインポートする既存の暗号資産ウォレットのパスワードを入力します。暗号資産の管理と Web 3 DApp とのやり取りを、より高速で安全に行うことができます。</translation>
+<translation id="1898254156730880135">直近のお支払いが完了しなかったようです。お支払いの問題が解決されるまで、このサブスクリプションへのアクセスは一時停止されます。お支払い方法を変更するか、Braveサポートまでお問い合わせください。</translation>
 </translationbundle>

@@ -108,7 +108,6 @@ O baguhin mamaya sa <ph name="SETTINGS_EXTENIONS_LINK"/></translation>
 <translation id="2571596981920752023"><ph name="NUMBER_OF_TABS"/> tab</translation>
 <translation id="2515126961943087659">Serbisyo ng Mga Ad ng Bat</translation>
 <translation id="7924918279836988121">Serbisyong Ledger ng Bat</translation>
-<translation id="6040143037577758943">Isara</translation>
 <translation id="6665472986740899785">Brave Notification Ad</translation>
 <translation id="4174337572777167894">Web Discovery Project</translation>
 <translation id="8659271182272561965">Mag-ambag ng ilang anonymous na paghahanap at data mula sa pag-browse para pahusayin ang Brave Search.</translation>
@@ -510,4 +509,5 @@ O baguhin mamaya sa <ph name="SETTINGS_EXTENIONS_LINK"/></translation>
 <translation id="6040143037577758943">Isara</translation>
 <translation id="5600566490506283344">Notification ng Brave Ad</translation>
 <translation id="4395160081588457461">Hitsura at dating</translation>
+<translation id="7942180974165298215">Pag-block ng Ad ng Brave</translation>
 </translationbundle>
