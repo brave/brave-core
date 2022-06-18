@@ -135,6 +135,21 @@
     "message": "توجد مشكلة في مكافآت Brave. الرجاء المحاولة مرة أخرى.",
     "description": ""
   },
+  "rewardsLogInToSeeBalance": {
+    "message": "$begin_bold$سجّل الدخول إلى $provider$ $end_bold$لمعرفة رصيدك",
+    "description": "",
+    "placeholders": {
+      "begin_bold": {
+        "content": "$1"
+      },
+      "provider": {
+        "content": "$2"
+      },
+      "end_bold": {
+        "content": "$3"
+      }
+    }
+  },
   "rewardsPaymentCheckStatus": {
     "message": "تحقق من الحالة",
     "description": ""

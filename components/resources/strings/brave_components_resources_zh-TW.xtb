@@ -236,6 +236,7 @@
 <translation id="1911900517212490188">輸入的恢復金鑰不再受到支援。請到<ph name="BEGIN_LINK"/>這裡<ph name="END_LINK"/>取得新的金鑰。</translation>
 <translation id="7583327070390027131">下次給每月小費的日期</translation>
 <translation id="6231182869178328516">我剛剛使用 Brave Browser 打賞 <ph name="NAME"/>。到https://brave.com/tips 看看吧。</translation>
+<translation id="5916536234616514390">我喜歡 <ph name="HASHTAG"/>Brave 讓我支持創作者！我剛支付 <ph name="HASHTAG2"/>BAT 的小費給 <ph name="NAME"/>。如果對方在 <ph name="DATE"/>前於 https://creators.brave.com 完成驗證，就能該筆小費！</translation>
 <translation id="8404935570206006581">Brave 小費</translation>
 <translation id="3082557070674409251">已點擊</translation>
 <translation id="7119308337584989771">已解除</translation>
@@ -256,6 +257,8 @@
 <translation id="8218538368080510976">錯誤：不支援此地區</translation>
 <translation id="5382684862562314222">您所在地區的 Uphold 服務尚未支援 BAT。</translation>
 <translation id="9074594632540931067">錯誤：無法使用 BAT</translation>
+<translation id="5376524136040178759">根據 Uphold，您的 Uphold 帳戶目前受到一些限制。請登入您的 Uphold 帳戶，檢查是否有任何通知或其他帳戶要求需要完成 (像是您可能需要提交更多資訊給 Uphold)，然後再試一次。</translation>
+<translation id="6996157559236886133">錯誤：Uphold 帳戶功能受限</translation>
 <translation id="3274650021044762770">驗證瀏覽器請求以將 Brave 獎勵連結至您的 <ph name="PROVIDER"/> 帳戶時發生問題。您可以<ph name="BEGIN_LINK"/>聯絡支援團隊<ph name="END_LINK"/>，尋求進一步協助。</translation>
 <translation id="1316066811927496401">錯誤：無法驗證請求</translation>
 <translation id="1737873393693460829">開啟 [[title]] 即表示您同意<ph name="BEGIN_LINK1"/>服務條款<ph name="END_LINK1"/>與<ph name="BEGIN_LINK2"/>隱私權政策<ph name="END_LINK2"/>。</translation>
@@ -273,6 +276,8 @@
 <translation id="5112354605357157725">繼續登入</translation>
 <translation id="1280764044837262633"><ph name="PROVIDER"/> 需要至少 <ph name="AMOUNT"/> BAT 餘額，方可建立帳號。若您先前已連線至帳戶，</translation>
 <translation id="1892970806832316900">暫緩至 <ph name="DATE"/></translation>
+<translation id="7849926087559412554">糟糕！您的瀏覽器無法接收 Brave 私密廣告。</translation>
+<translation id="5177429570315095022">您的瀏覽器需要更新，才能繼續看到廣告。</translation>
 <translation id="752216563428219524">廣告未初始化，請重新整理頁面。</translation>
 <translation id="7422678632904904341">金額：</translation>
 <translation id="6969783933307596818">每 5 秒自動重新整理</translation>
@@ -753,6 +758,7 @@
 <translation id="7306880305145342514">恭喜！您的 <ph name="MONTH"/>獎勵已入帳！</translation>
 <translation id="3007207731685398329">您 <ph name="AMOUNT"/> 的 <ph name="MONTH"/>獎勵將在 <ph name="DAYS"/>內入帳</translation>
 <translation id="5878420576943709750">您 <ph name="AMOUNT"/> 的 <ph name="MONTH"/>獎勵即將入帳。敬請留意！</translation>
+<translation id="3825131544027418568"><ph name="BEGIN_BOLD"/>登入 <ph name="PROVIDER"/><ph name="END_BOLD"/> 以查看您的餘額</translation>
 <translation id="2659764755126740206">到我的<ph name="PROVIDER"/>帳戶</translation>
 <translation id="1165667598801520610">增加資金</translation>
 <translation id="2394961582378297792">已登出</translation>
@@ -792,6 +798,7 @@
 <translation id="167698752210114155">發生內部錯誤</translation>
 <translation id="2326876601333401685">不支援這種 RPC 方法。</translation>
 <translation id="1128992132632883337">發生回應剖析錯誤</translation>
+<translation id="5382339341735118861">發生一般要求處理錯誤</translation>
 <translation id="1680597601664421644">匯入的助憶鍵不適用於 Brave 錢包</translation>
 <translation id="4641919696349069826">要求已在進行中</translation>
 <translation id="872806943696014633">交易資料缺失</translation>
@@ -811,11 +818,13 @@
 <translation id="4232775951515678071">無法獲取交易的類型</translation>
 <translation id="2080935885647755539">無法獲取 EIP-1559 交易的 GAS 費用</translation>
 <translation id="4843814354611030845">使用者已拒絕交易</translation>
+<translation id="1462494615260983714">處理交易時發生錯誤</translation>
 <translation id="4886059598718763020">'<ph name="VALUE"/>' 未獲授權簽署訊息</translation>
 <translation id="8719220598078667817">無法簽署交易</translation>
 <translation id="875506212625074179">來自 RPC 服務的區塊鏈 ID 回應無效</translation>
 <translation id="5486744676117070166">無法取得下一個 nonce 值</translation>
 <translation id="6180576227145734714">交易資料 'to' 在指定時必須為有效的位址</translation>
+<translation id="6688162556547723415">使用者尚未針對所要求的方法和/或帳戶給予授權。</translation>
 <translation id="4958950550253325418">Defi 應用程式</translation>
 <translation id="735961408871282410">NFT 市場</translation>
 <translation id="7740287852186792672">搜尋結果</translation>
@@ -858,7 +867,8 @@
 <translation id="1191686659164947414">交易可能超前</translation>
 <translation id="632241521608275119">滑點容許範圍</translation>
 <translation id="4500473291496079954">到期時間</translation>
-<translation id="2236833281018938257">0x 位址或 url</translation>
+<translation id="2236833281018938257">錢包位址或 URL</translation>
+<translation id="928500657730628112">錢包位址</translation>
 <translation id="2860280209982026951">Brave 使用 <ph name="LINK_BEFORE"/>0x<ph name="LINK_AFTER"/> 做為 DEX 彙總工具。</translation>
 <translation id="151946611346774041">0x 將會處理 Ethereum 位址和 IP 位址以履行交易 (包括取得報價)。0x 只會將此資料用於處理交易的用途。</translation>
 <translation id="4626407663177532837">報價已含 0.875% Brave 手續費。</translation>
@@ -866,7 +876,7 @@
 <translation id="6575120282593094155">您還沒有 <ph name="ACCOUNT_TYPE"/> 帳戶，要現在建立嗎？</translation>
 <translation id="2704606927547763573">已複製</translation>
 <translation id="1420318137760245955">歡迎使用新 Brave 錢包</translation>
-<translation id="8303434745767477417">保管加密資產。追蹤投資組合表現，並與 web 3 DApps 互動。使用 DeFi 交易、投資、借貸和貸款。所有這一切皆可在 Brave 私密瀏覽器中完成。無需延伸組件，無需下載。</translation>
+<translation id="3671745544278414606">保管加密貨幣資產，追蹤投資組合效能，並與 Web3 DApps 互動。使用 DeFi 交易、投資、借貸和出借資金。這一切都能在 Brave 私密瀏覽器中完成。無需安裝擴充功能及下載。</translation>
 <translation id="6972754398087986839">開始使用</translation>
 <translation id="375882617301124395">備份您的加密錢包</translation>
 <translation id="180032279811483155">下一步您將看到 <ph name="RECOVERY_PHRASE_LENGTH"/> 字的還原片語，可用來還原您的主加密貨幣帳戶。請妥善保管。還原片語是忘記密碼、裝置遺失或遭竊或者想切換錢包時，重新獲得帳戶存取權限的唯一方式。</translation>
@@ -895,7 +905,7 @@
 <translation id="163697698769819510">請立即備份您的錢包以保護您的資產，並確保您永遠不會失去存取權限。</translation>
 <translation id="1018806299114415224">現在備份</translation>
 <translation id="5234764350956374838">關閉</translation>
-<translation id="4075073132992924258">Brave 錢包未設定為您的預設錢包，不會回應 web3 DApps。請造訪設定以變更您的預設錢包。</translation>
+<translation id="1400709719911593089">Brave 錢包尚未設為您的預設錢包，因此不會回應 Web3 DApps。如要變更預設錢包，請前往設定。</translation>
 <translation id="4362717653795263052">還原主要加密貨幣帳戶</translation>
 <translation id="3038077262567136741">輸入還原片語來復原您的 Brave 錢包加密貨幣帳戶。</translation>
 <translation id="955918646509748368">輸入的還原片語無效。</translation>
@@ -906,8 +916,8 @@
 <translation id="8624315169751085215">複製到剪貼簿</translation>
 <translation id="1121335910737476837">主要加密貨幣帳戶</translation>
 <translation id="6969147029062037757">匯入的帳戶</translation>
-<translation id="5668765612885835803">您可以在 Brave 錢包中建立主帳戶，此帳戶能備份或以還原片語還原。若要深入瞭解帳戶類型，請前往帳戶說明</translation>
-<translation id="2471916999505901943">這些帳戶可以與 web 3 DApp 一起使用，亦可顯示在您的投資組合中。但請注意，不能透過主帳戶備份中的還原片語還原次要帳戶。</translation>
+<translation id="4057718162494343222">您可以在 Brave 錢包中建立主要帳戶，以執行備份作業或從還原階段復原。如要深入瞭解帳戶類型，請參閱帳戶說明。</translation>
+<translation id="1011614786846182272">這些帳戶可與 Web3 DApps 搭配使用，並顯示在您的投資組合中。不過請注意，次要帳戶無法在還原階段從主要帳戶的備份中復原。</translation>
 <translation id="1940465339426637378">資產</translation>
 <translation id="2236507293802791911">可見資產</translation>
 <translation id="7525067979554623046">建立</translation>
@@ -989,6 +999,7 @@
 <translation id="8569380433211549748">價格</translation>
 <translation id="2490428413101944234">測試水管</translation>
 <translation id="3352959425838279177">從水管獲取 Ether 以用於 <ph name="SELECTED_NETWORK"/></translation>
+<translation id="6449626816252815844">選取購買方式</translation>
 <translation id="8009571545960303544">正在請求您的簽署</translation>
 <translation id="5294062982587710720">請注意，Brave 無法驗證您簽名後會發生什麼。簽名可以授權別人進行帳戶的幾乎任何操作，包括（但不限於）將您的帳戶和加密資產的完全控制權交給提出請求的網站。因此只有在您確定要採取此操作並信任請求的網站時才簽名。</translation>
 <translation id="3474375934783434676">簽名風險自擔</translation>
@@ -1037,7 +1048,7 @@
 <translation id="3890989020011724401">新帳戶</translation>
 <translation id="7257603403519636638">檢視帳戶資產</translation>
 <translation id="2092132085082887098">帳戶資產</translation>
-<translation id="5723696625900399845">使用此面板安全存取 web3 和您的所有加密貨幣資產。</translation>
+<translation id="4612979983851181941">您可以使用此面板安全存取 Web3 和您的所有加密貨幣資產。</translation>
 <translation id="4460220693591349571">功能類型</translation>
 <translation id="838933475572692615">十六進位資料</translation>
 <translation id="2240831799756994975">位元組</translation>
@@ -1049,13 +1060,13 @@
 <translation id="7739762330714405363">使用相同密碼</translation>
 <translation id="1085027414516521238">MetaMask</translation>
 <translation id="7102907656918333773">匯入自 <ph name="WALLET_EXTENSION"/></translation>
-<translation id="8897114903450789862">將您的 <ph name="WALLET_EXTENSION"/> 帳戶匯入至 Brave 錢包。以更快、更安全的方式管理加密貨幣資產以及與 web 3 DApps 互動。</translation>
+<translation id="1737856990004825123">將您的 <ph name="WALLET_EXTENSION"/> 帳戶匯入 Brave 錢包。以更快速、更安全的方式管理加密貨幣資產，並與 Web3 DApps 互動。</translation>
 <translation id="4237840336687249184">MetaMask 密碼</translation>
 <translation id="2381605201035323535">加密錢包</translation>
 <translation id="2770851145415891830">偵測到現有加密幣錢包</translation>
 <translation id="4938145712652668388">按一下「開始」時，您之前的加密錢包將匯入至新的 Brave 錢包，並享受上述所有益處。試試吧，讓我們知道您的想法！</translation>
 <translation id="2237759620789871865">如果您想跳過匯入，而保留舊的 Crypto Wallets 體驗，只需導覽到 Brave 瀏覽器的<ph name="LINK_BEFORE"/>設定<ph name="LINK_AFTER"/>，將預設值變更回 Crypto Wallets。您亦可匯入、嘗試新的 Brave 錢包，以及隨時變更回來。</translation>
-<translation id="3301259443293676544">輸入您現有的加密幣錢包密碼以匯入至 Brave 錢包。享受以更快、更安全的方式管理加密資產以及與 web 3 DApps 互動。</translation>
+<translation id="5590175005414413980">輸入您現有的加密貨幣錢包密碼，以匯入 Brave 錢包。以更快速、更安全的方式管理加密貨幣資產，並與 Web3 DApps 互動。</translation>
 <translation id="9099900965604225657">加密幣錢包密碼</translation>
 <translation id="4020495774166914146">我遺失了密碼與還原片語，建立新錢包。</translation>
 <translation id="6344138931392227467"><ph name="DEVICE_NAME"/> 已連線</translation>
@@ -1111,6 +1122,7 @@
 <translation id="1599636444563952897">支出限制權限允許 <ph name="SITE_ORIGIN"/> 提取和支出下列限額：</translation>
 <translation id="4512871563176965522">自訂津貼</translation>
 <translation id="749944179568745958">不是有效的 ETH 位址</translation>
+<translation id="2832270987629018596">並非有效的 SOL 位址</translation>
 <translation id="882486206986535424">不是有效的位址</translation>
 <translation id="6825399159373612149">網域 <ph name="DOMAIN_NAME"/> 未註冊</translation>
 <translation id="8971278306757462297">收件地址是您自己的地址</translation>
@@ -1142,7 +1154,6 @@
 <translation id="3327639091470204775">無法連線 Trezor Bridge</translation>
 <translation id="6672377693827764095">內部錯誤，無法提取帳戶</translation>
 <translation id="6889920539620318793">設定為啟用</translation>
-<translation id="1462494615260983714">處理交易時發生錯誤</translation>
 <translation id="8933250418452564886">無法找到硬體交易，請再試一次</translation>
 <translation id="5999974802900788338">收到來自硬體裝置的錯誤，您可能需要在裝置上確認交易</translation>
 <translation id="8523768065044261559">處理交易有誤，請再試一次</translation>
@@ -1164,11 +1175,19 @@
 <translation id="6423985584914773314">此 FIL 地址無效</translation>
 <translation id="3898731124813934210">以 Wyre 購買</translation>
 <translation id="5522073372365069684">以 Ramp 購買</translation>
+<translation id="8725252491405767337">Ramp.Network</translation>
+<translation id="7623800836425615432">Wyre</translation>
+<translation id="7667423728712601865">使用 Visa 或 Mastercard 購買加密貨幣。</translation>
 <translation id="8528916244724490964">所有網路</translation>
 <translation id="2781668117338732220">次要網路</translation>
 <translation id="2816106784624007524">Gas 上限必須為大於 0 的整數</translation>
 <translation id="3354376789153561654">請指定「收款人」交易資料</translation>
 <translation id="8728991256628663004">「付款人」交易資料必須是有效的 Filecoin 位址</translation>
+<translation id="7003028930816622496">Ledger 裝置已遭鎖定</translation>
+<translation id="3939390290522058485">按一下這裡即可查看 <ph name="VALUE"/> 交易詳細資訊</translation>
+<translation id="2317956709076373213">交易已確認</translation>
+<translation id="310693998838023022">交易錯誤</translation>
+<translation id="6395870673621520684">交易已廢除</translation>
 <translation id="3155170474926428993">Tor 啟動程式</translation>
 <translation id="3745016858329272300">一般資訊</translation>
 <translation id="4045404575593562245">Tor 控制事件</translation>
@@ -1183,6 +1202,7 @@
 <translation id="7709075156958117386">如果此網站感覺不太正常，請嘗試將 Shields 停用。
     <ph name="LINK_BEFORE"/>注意：這麼做可能會減損 Brave 的隱私防護。<ph name="LINK_AFTER"/></translation>
 <translation id="8377155647357436161">已封鎖追蹤程式、廣告等 <ph name="LINK_BEFORE"/>了解更多<ph name="LINK_AFTER"/></translation>
+<translation id="7604553853176833536">未受 Brave Shields 保護 <ph name="LINK_BEFORE"/>深入瞭解<ph name="LINK_AFTER"/></translation>
 <translation id="650318023204990401">進階控制</translation>
 <translation id="5799940914270080805">變更這些設定可能會使網站無法正常運作。</translation>
 <translation id="9204041448536398473">全域防護設定</translation>
@@ -1208,6 +1228,8 @@
 <translation id="3795015906457257780">目前您是在缺少 Brave 隱私防護的情況下檢視這個網站。</translation>
 <translation id="7194012750329511146">Brave Shields
 已封鎖 <ph name="NUMBER"/> 個追蹤程式、廣告等項目</translation>
+<translation id="4292121526390005808">封鎖 scripts</translation>
+<translation id="3541307549916475335">Brave VPN 面板 UI</translation>
 <translation id="1742469581923031760">連線中…</translation>
 <translation id="1287487756047817908">正在中斷連線…</translation>
 <translation id="2325196879156848326">連線失敗</translation>
@@ -1225,9 +1247,11 @@
 <translation id="3181339219453722970">選擇您的 VPN 位置</translation>
 <translation id="1751947227857853925">快速且不限流量，最高 100 Mbps</translation>
 <translation id="1400240082805528049">24/7 支援</translation>
+<translation id="1693568075761612600">無法建立支援工單，請檢查您的連線。</translation>
 <translation id="8463313539532697053">正在載入 …，請稍候</translation>
+<translation id="4317307602527599178">無法檢查您的購買狀態，原因可能是網路發生問題。</translation>
 <translation id="4613076894734402086">編輯付款方式</translation>
-<translation id="1898254156730880135">您最近的一筆付款並未成功。付款問題解決之前，您將無法存取此訂閱項目。請嘗試編輯付款方式，或與 Brave 支援人員聯絡。</translation>
+<translation id="8373427068383038263">您最近針對 <ph name="VALUE"/>的付款並未成功。付款問題解決之前，我們將暫停您對此訂閱項目的存取權限。請嘗試編輯付款方式，或與 Brave 支援人員聯絡。</translation>
 <translation id="1839021455997460752">您的電子郵件地址</translation>
 <translation id="5154702632169343078">主旨</translation>
 <translation id="6625978880678465492">請選擇一項原因</translation>
@@ -1244,6 +1268,9 @@
 <translation id="6676791921618140305">作業系統版本：</translation>
 <translation id="1156325797949437777">此支援服務由 Guardian 共同提供。</translation>
 <translation id="3307461350293459700">VPN 連線失敗。請嘗試重新連線，並請務必按一下「允許」，啟用 Brave 的 VPN 設定。</translation>
+<translation id="7261518280726313829">無論您是在 Windows 上關閉安全 DNS 或使用預設伺服器，您的網際網路服務供應商都有可能得知您所造訪網站的名稱。Brave 不建議您這麼做。是否還要繼續操作？</translation>
+<translation id="888284761945060750">安全 DNS 已根據您組織的政策停用。只要您在缺少安全 DNS 的情況下使用 Brave VPN，您的網際網路服務供應商或組織就有可能得知您所造訪網站的名稱。</translation>
+<translation id="1657858090675311947">不必再警告我這項風險。</translation>
 <translation id="7586151660465233733"><ph name="SITE_NAME"/> 上的更多市場</translation>
 <translation id="952067063131306699">檢視市場並在 FTX 上交易加密貨幣</translation>
 <translation id="5963745988819586370">市場</translation>

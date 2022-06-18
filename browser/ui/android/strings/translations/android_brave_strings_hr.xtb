@@ -84,7 +84,20 @@
 <translation id="6587448235155023666">Vaše se promjene primjenjuju sljedeći puta kada pokrene preglednik Brave</translation>
 <translation id="8701563696941209024">SADA PONOVNO POKRENI</translation>
 <translation id="834487290629916192">KASNIJE</translation>
+<translation id="7207456302801184289">Dobro došli u Brave</translation>
+<translation id="4117451092682672487">Pojednostavljena privatnost.</translation>
+<translation id="7909375417585209817">Kad je Brave postavljen kao zadani preglednik, svaka veza koju dodirnete otvara se uz zaštite privatnosti preglednika Brave.</translation>
+<translation id="5148943178722443958">Pomognite poboljšati Brave.</translation>
+<translation id="6188781052835527980">Pošaljite anonimna dijagnostička izvješća ako doživite pad ili zamrzavanje preglednika.</translation>
+<translation id="1929905278861178845">Podijelite potpuno privatne i anonimne uvide u proizvod o tome koje značajke upotrebljavaju korisnici preglednika Brave.</translation>
+<translation id="2877653791257935258">Upišite naziv ili URL mrežnog mjesta</translation>
+<translation id="5329830149661250028">Pogledajte po čemu se Brave razlikuje: Bez oglasa. Bez elemenata za praćenje. Mnogo brže učitavanje stranice.</translation>
+<translation id="3545804467215833536">Dodirnite za prikaz štitova Brave</translation>
+<translation id="1724327820822194498">Pogledajte sve loše stvari koje je Brave blokirao štitovima na svakoj stranici.</translation>
+<translation id="5386259141409498372">Blokirani su oglasi <ph name="BIG_TECH"/> i <ph name="TRACKER"/> ostali oglasi i elementi za praćenje</translation>
+<translation id="3092683655478890840">Blokirani su oglasi <ph name="TRACKER_COUNT"/> i emelenti za praćenje</translation>
 <translation id="8281886186245836920">Preskoči</translation>
+<translation id="6165508094623778733">Saznajte više</translation>
 <translation id="986879628471635371">Uvođenje rješavanja problema</translation>
 <translation id="5808759341041733958">Odaberi zadanu tražilicu</translation>
 <translation id="1331593888918588693">Uvijek možete promijeniti svoju preferenciju kasnije u postavkama aplikacije.</translation>
@@ -112,12 +125,12 @@
 <translation id="1166682575529520472">Mjesečno</translation>
 <translation id="1628742278973105368">Vaša se prva mjesečna napojnica šalje dana:</translation>
 <translation id="298349922412901215">NAPOMENA: Ovaj se stvaratelj nije još prijavio za primanje doprinosa od korisnika preglednika Brave. Nastojat ćemo mu ustupiti doprinose dok se ne potvrde ili do isteka 90 dana.</translation>
-<translation id="635752162765375187">NAPOMENA: Ovaj autor trenutačno ne može primati napojnice iz vašeg novčanika. Sve napojnice koje mu pošaljete ostaju na čekanju u vašem novčaniku i automatski se ponovno pokušavaju poslati tijekom 90  dana.</translation>
+<translation id="635752162765375187">NAPOMENA: Ovaj stvaratelj trenutačno nije konfiguriran za primanje savjeta od vaše usluge skrbničkog novčanika za Nagrade. Svaki vaš savjet ostat će na čekanju i automatski će se pokušavati slati 90 dana.</translation>
 <translation id="1910721550319506122">Dobro došli!</translation>
 <translation id="3165726837666415756">Pošaljite napojnicu da biste podržali ovo mrežno mjesto. Na taj se način zahvaljujete za stvaranje odličnog sadržaja. Stvarateljima se sadržaja isplaćuju napojnice tijekom prvog tjedna svakog kalendarskog mjeseca.</translation>
 <translation id="1704859330137112950">Ako ovo mrežno mjesto želite kontinuirano podržavati, postavite mjesečne napojnice.</translation>
 <translation id="245015745140252435">Iznos napojnice</translation>
-<translation id="7873874596836611687">raspoloživo stanje u novčaniku:</translation>
+<translation id="7873874596836611687">Stanje nagrada:</translation>
 <translation id="2573313946367623146">pošalji moju napojnicu</translation>
 <translation id="3250511771491660127">Neka bude na mjesečnoj osnovi</translation>
 <translation id="7658239707568436148">Odustani</translation>
@@ -137,7 +150,7 @@
 <translation id="8220228041552340594">LISTOPAD</translation>
 <translation id="8280223431922155812">STUDENI</translation>
 <translation id="4254029385847607686">PROSINAC</translation>
-<translation id="4258022280942725182">Vaš novčanik</translation>
+<translation id="4258022280942725182">Vaše Nagrade Brave</translation>
 <translation id="3960619311638643872">VPN preglednika Brave</translation>
 <translation id="1772301834467143364">Novosti Brave</translation>
 <translation id="7760215798627399379"><ph name="VALUE"/> USD</translation>
@@ -172,8 +185,8 @@ mjeseca...</translation>
 <translation id="8689997599821157251">Zaradili ste</translation>
 <translation id="7550470870580166294">Nedovoljna sredstva</translation>
 <translation id="2775064702681588061">Na vašem se računu za Brave Rewards očekuje depozit.</translation>
-<translation id="2630264552940126640">Izradi sigurnosnu kopiju novčanika</translation>
-<translation id="238922425564381955">Izradite sigurnosnu kopiju novčanika Brave.</translation>
+<translation id="2630264552940126640">Izradi sigurnosnu kopiju Nagrada Brave</translation>
+<translation id="238922425564381955">Izradite sigurnosnu kopiju Nagrada Brave.</translation>
 <translation id="2323069945529668668">Joj, ne!</translation>
 <translation id="7510166204621526816">Poslužitelj za Brave Rewards ne reagira. Trudimo se to popraviti što prije.</translation>
 <translation id="683765328936486920">na usluzi YouTube</translation>
@@ -549,7 +562,7 @@ Sigurno želite to napraviti?</translation>
 <translation id="5493402808936397665">Omogućite biometriju da biste brzo otključali novčanik bez unosa zaporke.</translation>
 <translation id="8030647312184163932">Otključavanje otiskom prsta</translation>
 <translation id="4090490645603511157">Upotrijebite biometriju za brzo otključavanje novčanika bez upisivanja lozinke.</translation>
-<translation id="1544192797660353713">Novčanik (beta)</translation>
+<translation id="1544192797660353713">Novčanik</translation>
 <translation id="6901810042765869341">Unesite svoju rečenicu za oporavak da biste vratili svoj račun za kriptovalute Brave Wallet.</translation>
 <translation id="9120654436199628567">Obnavljanje računa za kriptovalute</translation>
 <translation id="4811736040444856406">Prikaži rečenicu za oporavak</translation>
@@ -613,7 +626,7 @@ Sigurno želite to napraviti?</translation>
 <translation id="8239147115686034860">Automatski zaključaj novčanik preglednika Brave</translation>
 <translation id="414639769490080648">Broj minuta čekanja dok se novčanik preglednika Brave automatski ne zaključa</translation>
 <translation id="4993345308607970390">Ponovno postavi Novčanik Brave</translation>
-<translation id="4322846864135539519">Sigurno želite ponovno postaviti novčanik? Ako ne postoji sigurnosna kopija novčanika, ponovnim postavljanjem prouzročava se gubitak svih podataka računa (uključujući sva povezana sredstva). Upišite „<ph name="CONFIRMATION_PHRASE"/>” za potvrđivanje.</translation>
+<translation id="4322846864135539519">Jeste li sigurni da želite ponovno postaviti nagrade u pregledniku Brave? Ako vaš novčanik nije sigurnosno kopiran, ponovno postavljanje uzrokovat će gubitak svih podataka o računu (uključujući sva povezana sredstva). Upišite „<ph name="CONFIRMATION_PHRASE"/>” za potvrdu.</translation>
 <translation id="4862812525895306758">Očisti informacije o transakcijama i broju nonce</translation>
 <translation id="5693968582510626466">Uklanjanje transakcija može biti korisno za razvojne inženjere ili pri uklanjanju sadržaja na lokalnom poslužitelju</translation>
 <translation id="5421107279168565467">Sigurno želite ponovno postaviti sve informacije o transakciji i broju nonce? Tu mogućnost upotrebljavaju uglavnom razvojni inženjeri koji upravljaju lokalnim testnim poslužiteljem. Upišite „<ph name="CONFIRMATION_PHRASE"/>” za potvrdu.</translation>
@@ -633,8 +646,8 @@ Sigurno želite to napraviti?</translation>
 <translation id="1190117345570417902">Upotrebljava siguran šifriran tunel Wireguard mreže VPN</translation>
 <translation id="1571230671455380494">Nikada ne dijelimo ili prodajemo vaše informacije</translation>
 <translation id="276866628038850725">Svim planovima uključuje se besplatno 7-dnevno razdoblje probnog rada!</translation>
-<translation id="7280825497485894053">Mjesečna pretplata</translation>
-<translation id="3001303523417455986">Godišnja pretplata</translation>
+<translation id="1532536259167115948">Mjesečna pretplata <ph name="TRIAL_TEXT"/></translation>
+<translation id="6344668702581136255">Godišnja pretplata <ph name="TRIAL_TEXT"/></translation>
 <translation id="6748319398471481216">Mjesečno obnavljanje</translation>
 <translation id="7734634586133069282"><ph name="MONTHLY_AMOUNT"/> / m.</translation>
 <translation id="1163809943099641131">Jedna godina</translation>
@@ -655,8 +668,7 @@ Sigurno želite to napraviti?</translation>
 Ako ne prihvatite taj zahtjev, mreža VPN ponovno se ne spaja i nema zaštite vaše internetske veze.</translation>
 <translation id="2429299231491852747">Prihvati zahtjev za povezivanje</translation>
 <translation id="3428909627460825679">Neuspješna izrada profila za mrežu VPN. Pokušajte ponovno.</translation>
-<translation id="1264320790738638119">Potvrda kupnje neuspješna. Pokušajte ponovno.</translation>
-<translation id="8905950042180169719">Mreža VPN radi u pozadini</translation>
+<translation id="1264320790738638119">Vaša je pretplata istekla. Možete se ponovno pretplatiti u bilo kojem trenutku.</translation>
 <translation id="8681480718817027245">Pretplata</translation>
 <translation id="7805768142964895445">Status</translation>
 <translation id="5747552184818312860">Istječe</translation>
@@ -684,15 +696,15 @@ Ako ne prihvatite taj zahtjev, mreža VPN ponovno se ne spaja i nema zaštite va
 <translation id="1219475260382643267">Mrežno mjesto ne radi</translation>
 <translation id="7138678301420049075">Ostalo</translation>
 <translation id="4827315939627587219">Ponovno postavi konfiguraciju mreže VPN</translation>
-<translation id="6883280223123252086">Sigurno želite ponovno postaviti konfiguraciju mreže VPN?</translation>
+<translation id="1705662265912724430">Jeste li sigurni da želite ponovno postaviti konfiguraciju VPN-a?</translation>
 <translation id="604124094241169006">Automatski</translation>
 <translation id="7475580600756356589">Povezivanje s poslužiteljem. Pričekajte trenutak...</translation>
 <translation id="1342728075788541348">Odspajanje od poslužitelja. Pričekajte trenutak...</translation>
 <translation id="669072536454692117">Uspješno obavljena pretplata</translation>
 <translation id="1187506504156101449">Neuspješna potvrda kupnje:</translation>
 <translation id="8420522105268941892">Već ste pretplaćeni na pretplatu. Pokušajte vratiti pretplatu.</translation>
-<translation id="404414664190867625">POGREŠKA!\nProuzročena korisnikovim otkazivanjem toka kupnje.</translation>
-<translation id="3515141458161417228">POGREŠKA!!\nKupnja neuspješna..</translation>
+<translation id="404414664190867625">Odustali ste od kupnje pretplate.</translation>
+<translation id="3515141458161417228">Kupnja nije uspjela. Obratite se podršci za Google Play.</translation>
 <translation id="6452181791372256707">Odbaci</translation>
 <translation id="8030852056903932865">Odobri</translation>
 <translation id="1597199892790541240">Naknada za gorivo</translation>
@@ -727,6 +739,7 @@ Ako ne prihvatite taj zahtjev, mreža VPN ponovno se ne spaja i nema zaštite va
 <translation id="2199215899212542417">VRSTA FUNKCIJE: <ph name="FTYPE"/></translation>
 <translation id="4803003663447398145">Nema podataka</translation>
 <translation id="9061799688859969073"><ph name="ACCOUNT_NAME"/> poslao<ph name="CRYPTO_VALUE"/> <ph name="ASSET"/> ($<ph name="FIAT_VALUE"/>) –<ph name="DATE"/></translation>
+<translation id="1148985422232712046">Račun <ph name="ACCOUNT_NAME"/> poslao je <ph name="ASSET"/> br.<ph name="ASSET_ID"/> - <ph name="DATE"/></translation>
 <translation id="2911329628253651823"><ph name="ACCOUNT_NAME"/> odobrio je <ph name="ASSET"/> – <ph name="DATE"/></translation>
 <translation id="7400134344541309180">Odobreno neograničeno <ph name="ASSET"/> – <ph name="PROXY"/></translation>
 <translation id="2428770727194227378"><ph name="ACCOUNT_NAME"/> razmjena – <ph name="DATE"/></translation>
@@ -791,6 +804,7 @@ Ako ne prihvatite taj zahtjev, mreža VPN ponovno se ne spaja i nema zaštite va
 <translation id="7732576862074737148">≈ <ph name="VALUE"/> USD</translation>
 <translation id="3079421456571897484"><ph name="VALUE"/> BAT/A</translation>
 <translation id="5802665280774361839">Prikaži automatsko završavanje u adresnoj traci</translation>
+<translation id="8982438328166986164">Prikazuju se prijedlozi mrežnih mjesta na temelju vaših oznaka i povijesti pregledavanja.</translation>
 <translation id="1241283133946520352">Mreže</translation>
 <translation id="1062463687579789365">Prilagođavanje mreža novčanika</translation>
 <translation id="2512821599885971349">Dodaj mrežu</translation>
@@ -825,7 +839,6 @@ Ako ne prihvatite taj zahtjev, mreža VPN ponovno se ne spaja i nema zaštite va
 <translation id="3586752056660754651">Registracija</translation>
 <translation id="6592721981110586529">Poveži se s novčanikom Brave</translation>
 <translation id="329813193938846695">Odaberite račune</translation>
-<translation id="3890989020011724401">Novi račun</translation>
 <translation id="291375746846291973">Povežite se samo s mrežnim mjestima u koja imate povjerenja.</translation>
 <translation id="385051799172605136">Natrag</translation>
 <translation id="1060221736464994328">Dopustiti ovom mrežnom mjestu promjenu mreže?</translation>
@@ -842,24 +855,34 @@ Ako ne prihvatite taj zahtjev, mreža VPN ponovno se ne spaja i nema zaštite va
 <translation id="85136472535634474">Otvori postavke VPN-a</translation>
 <translation id="8352805003811526272">Ponovno postavljanje konfiguracije...</translation>
 <translation id="6809312301323611382">Već ste odabrali isti poslužitelj.</translation>
-<translation id="5665084657857645952">Dopuštenje otkazano</translation>
+<translation id="5665084657857645952">Zaustavili ste instalaciju profila VPN-a.</translation>
 <translation id="9106265941552476098">Odbij<ph name="TRANSACTION_LENGTH"/> transakciju/e/a</translation>
 <translation id="523862956770478816">Dopuštenja za mrežno mjesto</translation>
 <translation id="2141313140218636977"><ph name="VALUE"/> povezan/a/ih račun/a</translation>
+<translation id="3890989020011724401">Novi račun</translation>
 <translation id="4305817255990598646">Promijeni</translation>
 <translation id="4804818685124855865">Prekini vezu</translation>
 <translation id="8009571545960303544">Vaš se potpis zahtijeva</translation>
+<translation id="3484981968509595506">Decentralizirana aplikacija traži vaš javni ključ za šifriranje</translation>
+<translation id="2291002548681057345">traži javni ključ za šifriranje vašeg novčanika. Ako pristanete dati taj ključ, mrežno mjesto moći će vam sastaviti šifrirane poruke.</translation>
+<translation id="3340247553212049934">Pružiti</translation>
 <translation id="1982257600591932657">Naziv mreže</translation>
 <translation id="5052727830821470769">URL mreže</translation>
 <translation id="4822132585477111396">Identifikacijska oznaka bloka</translation>
 <translation id="7131971375297699539">Simbol valute</translation>
 <translation id="7982789257301363584">Mreža</translation>
-<translation id="2521480044079508357">Time se omogućuje upotreba mreže unutar značajke Brave Wallet.</translation>
+<translation id="7540715999708954128">To će omogućiti upotrebu ove mreže unutar novčanika Brave. Saznajte više.</translation>
+<translation id="8759753423332885148">Saznajte više.</translation>
 <translation id="4717431746210146708">Dopustiti ovom mrežnom mjestu dodavanje mreže?</translation>
 <translation id="3378339846292573874">Dodaj predloženi token</translation>
 <translation id="2322227405137827074">Želite li uvesti ovaj token?</translation>
 <translation id="1324417023773393937">Preglednik Brave</translation>
 <translation id="6044189892950611565">Kanal obavijesti preglednika Brave</translation>
+<translation id="1173919438868967364">Odabir računa</translation>
+<translation id="8922793255489232731">Nije bilo moguće pronaći odgovarajuću vremensku zonu za : <ph name="VALUE"/></translation>
+<translation id="8231907121684689093">Prikaz najpopularnijih mrežnih mjesta</translation>
+<translation id="6471216025161697462">Povezano s <ph name="VALUE"/></translation>
+<translation id="1968852757206592413">Probna verzija</translation>
 <translation id="6602036279006002239">NAPOMENA: Ovaj autor trenutačno ne može primati napojnice iz vašeg novčanika. Sve napojnice koje mu pošaljete ostaju na čekanju u vašem novčaniku i automatski se ponovno pokušavaju poslati tijekom 90  dana.</translation>
 <translation id="3370968821559864204">raspoloživo stanje u novčaniku:</translation>
 <translation id="3780605330121608425">Vaš novčanik</translation>

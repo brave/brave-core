@@ -2,7 +2,6 @@
 <!DOCTYPE translationbundle>
 <translationbundle lang="ta">
 <translation id="3333887201479867589">பிரேவ் வெகுமதிகள்</translation>
-<translation id="7942180974165298215">பிரேவ் விளம்பர தடுப்பு</translation>
 <translation id="4615489450165434530">உடைந்த தளத்தைப் புகாரளி</translation>
 <translation id="1209739344687072997">உடைந்த தளத்தைப் புகாரளி</translation>
 <translation id="6406506848690869874">ஒத்திசைவு</translation>
@@ -51,6 +50,7 @@
 <translation id="1324417023773393937">பிரேவ் உலாவி</translation>
 <translation id="6873781976650514089">இந்த அமைப்பு</translation>
 <translation id="2515126961943087659">Bat விளம்பரங்கள் சேவை</translation>
+<translation id="6040143037577758943">மூடு</translation>
 <translation id="1516554614404600536">பிரேவ் கருவிக்குறிப்பு</translation>
 <translation id="1181037720776840403">நீக்கு</translation>
 <translation id="7961015016161918242">எப்போதும் இல்லை</translation>
@@ -79,7 +79,6 @@
 <translation id="8487693399751278191">இப்போது புத்தகக்குறிகளை இறக்கு...</translation>
 <translation id="2557899542277210112">விரைவு அணுகலுக்கு, உமது புத்தகக்குறிகளை இங்கே புத்தகக்குறி பட்டையில் வை.</translation>
 <translation id="8722651357687610395">இயல்புநிலையாக பிரேவை அமை</translation>
-<translation id="3400357268283240774">கூடுதல் அமைப்புகள்</translation>
 <translation id="9156965752763025780">அடுத்த முறை நீங்கள் Brave ஐ மீண்டும் தொடங்கும்போது உங்கள் மாற்றங்கள் செயல்படும்.</translation>
 <translation id="7179921470347911571">இப்போது மறுயேவு</translation>
 <translation id="4472575034687746823">தொடங்குக</translation>
@@ -112,6 +111,9 @@
 <translation id="7390783310074170337">இயல்புநிலை பார்வை</translation>
 <translation id="130615081792797568">எளிய பார்வை</translation>
 <translation id="2360360976480535628">மேம்பட்ட பார்வை</translation>
+<translation id="7791543448312431591">சேர்</translation>
+<translation id="6745592621698551453">இப்போது புதுப்பி</translation>
+<translation id="802154636333426148">பதிவிறக்க முடியவில்லை</translation>
 <translation id="8798099450830957504">இயல்புநிலை</translation>
 <translation id="4851215387785619212">பிரேவ் தனிப்பட்ட விளம்பரங்கள்</translation>
 <translation id="6112368337882254910">தானாக-பங்களி</translation>

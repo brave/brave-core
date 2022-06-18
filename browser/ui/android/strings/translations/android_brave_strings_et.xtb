@@ -84,7 +84,20 @@
 <translation id="6587448235155023666">Muudatused jõustuvad järgmine kord, kui Brave’i taaskäivitate</translation>
 <translation id="8701563696941209024">TAASKÄIVITA KOHE</translation>
 <translation id="834487290629916192">HILJEM</translation>
+<translation id="7207456302801184289">Tere tulemast Brave'i</translation>
+<translation id="4117451092682672487">Privaatsus on nüüd lihtne.</translation>
+<translation id="7909375417585209817">Kui kasutate vaikimisi Brave'i, kasutatakse iga puudutatud lingi avamisel Brave'i privaatsuskaitseid.</translation>
+<translation id="5148943178722443958">Aidake Brave'i paremaks muuta.</translation>
+<translation id="6188781052835527980">Saatke anonüümne diagnostikaaruanne, kui kogete krahhi minekut või hangumist.</translation>
+<translation id="1929905278861178845">Jagage täiesti privaatselt ja anonüümselt tooteteavet funktsioonide kohta, mida Brave'i kasutajad tarvitavad.</translation>
+<translation id="2877653791257935258">Sisestage veebisaidi nimi või URL</translation>
+<translation id="5329830149661250028">Vaadake, mille poolest Brave erineb: ei mingeid reklaame, ei mingeid jälgijaid. Lehe laadimine on palju kiirem.</translation>
+<translation id="3545804467215833536">Puudutage Brave'i kaitsete kuvamiseks</translation>
+<translation id="1724327820822194498">Vaadake, millist jama Brave on igal lehel oma kaitsete abil blokeerinud.</translation>
+<translation id="5386259141409498372">Blokeeritud on ettevõtete <ph name="BIG_TECH"/> ja <ph name="TRACKER"/> muud reklaamid ning jälgijad</translation>
+<translation id="3092683655478890840">Blokeeritud on <ph name="TRACKER_COUNT"/> muud reklaami ja jälgijat</translation>
 <translation id="8281886186245836920">Jäta vahele</translation>
+<translation id="6165508094623778733">Lisateave</translation>
 <translation id="986879628471635371">Abi võimalustega tutvumine</translation>
 <translation id="5808759341041733958">Vali vaikeotsingumootor</translation>
 <translation id="1331593888918588693">Oma eelistusi on võimalik hiljem muuta rakenduse sätetes.</translation>
@@ -112,12 +125,12 @@
 <translation id="1166682575529520472">Iga kuu</translation>
 <translation id="1628742278973105368">Teie esimene igakuine preemia saadetakse:</translation>
 <translation id="298349922412901215">Autor ei ole veel end registreerinud ega saa vastu võtta Brave'i kasutajate panuseid. Üritame tasu maksta kuni kinnituse saamiseni või kuni möödub 90 päeva.</translation>
-<translation id="635752162765375187">MÄRKUS: see looja ei ole praegu konfigureeritud teie rahakotist preemiaid saama. Kõik saadetud preemiad jäävad teie rahakotti ootele ja neid proovitakse 90 päeva jooksul automaatselt uuesti saata.</translation>
+<translation id="635752162765375187">MÄRKUS: see looja ei ole praegu konfigureeritud teie Preemiate kolmanda osapoole rahakotiteenuse kaudu preemiaid saama. Kõik saadetud preemiad jäävad ootele ja neid proovitakse 90 päeva jooksul automaatselt uuesti saata.</translation>
 <translation id="1910721550319506122">Tere tulemast!</translation>
 <translation id="3165726837666415756">Saad seda saiti toetada preemiat saates. See on viis tänada neid suurepärase sisu eest. Kinnitatud sisu loojad saavad preemiate eest tasu iga kalendrikuu esimesel nädalal.</translation>
 <translation id="1704859330137112950">Kui soovite, saate selle saidi pidevaks toetamiseks määrata igakuised preemiad.</translation>
 <translation id="245015745140252435">Premeeri summa</translation>
-<translation id="7873874596836611687">rahakoti saldo:</translation>
+<translation id="7873874596836611687">Preemiate saldo:</translation>
 <translation id="2573313946367623146">saada minu preemia</translation>
 <translation id="3250511771491660127">Muuda see igakuiseks</translation>
 <translation id="7658239707568436148">Tühista</translation>
@@ -137,7 +150,7 @@
 <translation id="8220228041552340594">OKTOOBER</translation>
 <translation id="8280223431922155812">NOVEMBER</translation>
 <translation id="4254029385847607686">DETSEMBER</translation>
-<translation id="4258022280942725182">Teie rahakott</translation>
+<translation id="4258022280942725182">Teie Brave'i Preemiad</translation>
 <translation id="3960619311638643872">Brave'i VPN</translation>
 <translation id="1772301834467143364">Brave'i uudised</translation>
 <translation id="7760215798627399379"><ph name="VALUE"/> USD</translation>
@@ -172,8 +185,8 @@ pole...</translation>
 <translation id="8689997599821157251">Olete teeninud</translation>
 <translation id="7550470870580166294">Ebapiisavad vahendid</translation>
 <translation id="2775064702681588061">Sinu Brave Rewards konto ootab sissemakset.</translation>
-<translation id="2630264552940126640">Rahakoti varundamine</translation>
-<translation id="238922425564381955">Varundage oma Brave'i rahakotti</translation>
+<translation id="2630264552940126640">Varunda Brave'i Preemiad</translation>
+<translation id="238922425564381955">Varundage oma Brave'i Preemiad.</translation>
 <translation id="2323069945529668668">Oi ei!</translation>
 <translation id="7510166204621526816">Brave Rewardsi server hetkel ei vasta. Parandame selle võimalikult kiiresti.</translation>
 <translation id="683765328936486920">YouTube'is</translation>
@@ -549,7 +562,7 @@ Kas soovite seda kindlasti teha?</translation>
 <translation id="5493402808936397665">Lubage biomeetriliste andmete kasutamine, et avada oma rahakott kiiresti ilma parooli sisestamata.</translation>
 <translation id="8030647312184163932">Sõrmejäljega avamine</translation>
 <translation id="4090490645603511157">Kasutage biomeetriat, et avada rahakott kiiresti parooli sisestamata.</translation>
-<translation id="1544192797660353713">Rahakott (beeta)</translation>
+<translation id="1544192797660353713">Rahakott</translation>
 <translation id="6901810042765869341">Sisestage oma taastamise lause, et taastada oma Brave'i rahakoti krüptokonto.</translation>
 <translation id="9120654436199628567">Krüptokonto taastamine</translation>
 <translation id="4811736040444856406">Näita taastamise lauset</translation>
@@ -613,7 +626,7 @@ Kas soovite seda kindlasti teha?</translation>
 <translation id="8239147115686034860">Lukusta Brave'i rahakott automaatselt</translation>
 <translation id="414639769490080648">Minutite arv enne Brave’i rahakoti automaatset lukustamist</translation>
 <translation id="4993345308607970390">Brave'i rahakoti lähtestamine</translation>
-<translation id="4322846864135539519">Kas soovite kindlasti rahakoti lähtestada? Kui rahakott ei ole varundatud, siis kaotate lähtestamise korral kõik kontoandmed (sealhulgas kõik seotud rahalised vahendid). Tippige kinnituseks „<ph name="CONFIRMATION_PHRASE"/>“.</translation>
+<translation id="4322846864135539519">Kas soovite kindlasti oma Brave'i Preemiad lähtestada? Kui rahakott ei ole varundatud, siis kaotate lähtestamise korral kõik kontoandmed (sealhulgas kõik seotud rahalised vahendid). Tippige kinnituseks „<ph name="CONFIRMATION_PHRASE"/>“.</translation>
 <translation id="4862812525895306758">Kustuta tehingu- ja nonsiteave</translation>
 <translation id="5693968582510626466">Tehingute kustutamine võib olla kasulik arendajatele või kohalikus serveris oleku kustutamisel.</translation>
 <translation id="5421107279168565467">Kas soovite kindlasti lähtestada tehingu- ja nonsiteabe? Seda valikut kasutavad enamasti kohalikku testserverit käitavad arendajad. Tippige kinnituseks „<ph name="CONFIRMATION_PHRASE"/>“.</translation>
@@ -633,8 +646,8 @@ Kas soovite seda kindlasti teha?</translation>
 <translation id="1190117345570417902">Kasutab Wireguardi turvalist krüptitud VPN-i tunnelit</translation>
 <translation id="1571230671455380494">Me ei jaga ega müü teie andmeid kunagi</translation>
 <translation id="276866628038850725">Kõik plaanid sisaldavad tasuta 7-päevast prooviperioodi.</translation>
-<translation id="7280825497485894053">Kuupõhine tellimus</translation>
-<translation id="3001303523417455986">Aastapõhine tellimus</translation>
+<translation id="1532536259167115948">Kuupõhine tellimus <ph name="TRIAL_TEXT"/></translation>
+<translation id="6344668702581136255">Aastapõhine tellimus <ph name="TRIAL_TEXT"/></translation>
 <translation id="6748319398471481216">Uuendatakse igakuiselt</translation>
 <translation id="7734634586133069282"><ph name="MONTHLY_AMOUNT"/> kuus</translation>
 <translation id="1163809943099641131">Üks aasta</translation>
@@ -655,8 +668,7 @@ Kas soovite seda kindlasti teha?</translation>
 Kui te selle taotlusega ei nõustu, siis VPN-i ühendust ei taastata ja teie internetiühendus pole turvatud.</translation>
 <translation id="2429299231491852747">Nõustuge ühendusetaotlusega</translation>
 <translation id="3428909627460825679">VPN-i profiili loomine nurjus. Proovige uuesti.</translation>
-<translation id="1264320790738638119">Ostu kinnitamine nurjus. Proovige uuesti.</translation>
-<translation id="8905950042180169719">VPN töötab taustal</translation>
+<translation id="1264320790738638119">Teie tellimus on lõppenud. Saate igal ajal uuesti tellida.</translation>
 <translation id="8681480718817027245">Tellimus</translation>
 <translation id="7805768142964895445">Olek</translation>
 <translation id="5747552184818312860">Aegub</translation>
@@ -684,15 +696,15 @@ Kui te selle taotlusega ei nõustu, siis VPN-i ühendust ei taastata ja teie int
 <translation id="1219475260382643267">Veebisait ei toimi</translation>
 <translation id="7138678301420049075">Muu</translation>
 <translation id="4827315939627587219">Lähtesta VPN-i konfiguratsioon</translation>
-<translation id="6883280223123252086">Kas soovite kindlasti lähtestada VPN-i konfiguratsiooni?</translation>
+<translation id="1705662265912724430">Kas soovite kindlasti lähtestada VPN-i konfiguratsiooni?</translation>
 <translation id="604124094241169006">Automaatne</translation>
 <translation id="7475580600756356589">Ühenduse loomine teie serveriga … See peaks võtma vaid hetke ...</translation>
 <translation id="1342728075788541348">Ühenduse katkestamine teie serveriga … See peaks võtma vaid hetke ...</translation>
 <translation id="669072536454692117">Tellimuse sooritamine õnnestus</translation>
 <translation id="1187506504156101449">Ostu kinnitamine nurjus:</translation>
 <translation id="8420522105268941892">Olete juba selle tellimuse tellija. Proovige tellimus taastada.</translation>
-<translation id="404414664190867625">TÕRGE!!\nPõhjustas kasutajapoolne ostuvoo tühistamine.</translation>
-<translation id="3515141458161417228">TÕRGE!!\nOstmine nurjus.</translation>
+<translation id="404414664190867625">Olete tellimuse ostu katkestanud.</translation>
+<translation id="3515141458161417228">Ostmine nurjus. Võtke ühendust Google Play tugiteenindusega.</translation>
 <translation id="6452181791372256707">Lükka tagasi</translation>
 <translation id="8030852056903932865">Kinnita</translation>
 <translation id="1597199892790541240">Gaasi hind</translation>
@@ -727,6 +739,7 @@ Kui te selle taotlusega ei nõustu, siis VPN-i ühendust ei taastata ja teie int
 <translation id="2199215899212542417">FUNKTSIOONI TÜÜP: <ph name="FTYPE"/></translation>
 <translation id="4803003663447398145">Andmeid pole</translation>
 <translation id="9061799688859969073"><ph name="ACCOUNT_NAME"/> saatis <ph name="CRYPTO_VALUE"/> <ph name="ASSET"/> ($<ph name="FIAT_VALUE"/>) – <ph name="DATE"/></translation>
+<translation id="1148985422232712046"><ph name="ACCOUNT_NAME"/> saatis <ph name="ASSET"/> nr <ph name="ASSET_ID"/> – <ph name="DATE"/></translation>
 <translation id="2911329628253651823"><ph name="ACCOUNT_NAME"/> kinnitas <ph name="ASSET"/> – <ph name="DATE"/></translation>
 <translation id="7400134344541309180">Kinnitati piiramatu <ph name="ASSET"/> – <ph name="PROXY"/></translation>
 <translation id="2428770727194227378"><ph name="ACCOUNT_NAME"/> vahetustehing – <ph name="DATE"/></translation>
@@ -791,6 +804,7 @@ Kui te selle taotlusega ei nõustu, siis VPN-i ühendust ei taastata ja teie int
 <translation id="7732576862074737148">≈ <ph name="VALUE"/> USD</translation>
 <translation id="3079421456571897484"><ph name="VALUE"/> BAT-i</translation>
 <translation id="5802665280774361839">Näita aadressiribal automaatse täitmise teavet</translation>
+<translation id="8982438328166986164">Näitab teie järjehoidjate ja sirvimisajaloo põhjal veebisaitide soovitusi.</translation>
 <translation id="1241283133946520352">Võrgud</translation>
 <translation id="1062463687579789365">Rahakoti võrkude kohandamine</translation>
 <translation id="2512821599885971349">Lisa võrk</translation>
@@ -825,7 +839,6 @@ Kui te selle taotlusega ei nõustu, siis VPN-i ühendust ei taastata ja teie int
 <translation id="3586752056660754651">Allkirjasta</translation>
 <translation id="6592721981110586529">Ühendamine Brave'i rahakotiga</translation>
 <translation id="329813193938846695">Valige konto (d)</translation>
-<translation id="3890989020011724401">Uus konto</translation>
 <translation id="291375746846291973">Ühendage ainult saitidega, mida usaldate.</translation>
 <translation id="385051799172605136">Tagasi</translation>
 <translation id="1060221736464994328">Kas lubada sellel veebisaidil võrku vahetada?</translation>
@@ -842,24 +855,34 @@ Kui te selle taotlusega ei nõustu, siis VPN-i ühendust ei taastata ja teie int
 <translation id="85136472535634474">Ava VPN-i seaded</translation>
 <translation id="8352805003811526272">Konfiguratsiooni lähtestamine ...</translation>
 <translation id="6809312301323611382">Olete juba valinud sama serveri.</translation>
-<translation id="5665084657857645952">Luba tühistati</translation>
+<translation id="5665084657857645952">Olete peatanud VPN-i profiili installimise.</translation>
 <translation id="9106265941552476098">Lükka tagasi <ph name="TRANSACTION_LENGTH"/> tehingut.</translation>
 <translation id="523862956770478816">Veebisaidi õigused</translation>
 <translation id="2141313140218636977"><ph name="VALUE"/> kontot on ühendatud</translation>
+<translation id="3890989020011724401">Uus konto</translation>
 <translation id="4305817255990598646">Vaheta</translation>
 <translation id="4804818685124855865">Katkesta ühendus</translation>
 <translation id="8009571545960303544">Taotletakse teie allkirja</translation>
+<translation id="3484981968509595506">Detsentraliseeritud rakendus küsib teie avalikku krüptovõtit</translation>
+<translation id="2291002548681057345">küsib teie rahakoti avalikku krüptovõtit. Kui nõustute selle võtme andmisega, saab see veebisait koostada teile krüptitud sõnumeid.</translation>
+<translation id="3340247553212049934">Pakkuda</translation>
 <translation id="1982257600591932657">Võrgu nimi</translation>
 <translation id="5052727830821470769">Võrgu URL</translation>
 <translation id="4822132585477111396">Ahela ID</translation>
 <translation id="7131971375297699539">Valuuta tähis</translation>
 <translation id="7982789257301363584">Võrk</translation>
-<translation id="2521480044079508357">See võimaldab kasutada seda võrku Brave'i rahakotis.</translation>
+<translation id="7540715999708954128">See võimaldab kasutada seda võrku Brave'i rahakotis. Lugege lähemalt.</translation>
+<translation id="8759753423332885148">Lisateave.</translation>
 <translation id="4717431746210146708">Kas lubada sellel veebisaidil võrku lisada?</translation>
 <translation id="3378339846292573874">Lisage soovitatud token</translation>
 <translation id="2322227405137827074">Kas soovite selle tokeni importida?</translation>
 <translation id="1324417023773393937">Brave'i brauser</translation>
 <translation id="6044189892950611565">Brave'i brauseri teavituskanal</translation>
+<translation id="1173919438868967364">Konto valimine</translation>
+<translation id="8922793255489232731">Ei õnnestunud saada sobivat ajavööndit: <ph name="VALUE"/></translation>
+<translation id="8231907121684689093">Kuva parimad veebisaidid</translation>
+<translation id="6471216025161697462">Ühendatud võrguga <ph name="VALUE"/></translation>
+<translation id="1968852757206592413">Proov</translation>
 <translation id="6602036279006002239">MÄRKUS: see looja ei ole praegu konfigureeritud teie rahakotist preemiaid saama. Kõik saadetud preemiad jäävad teie rahakotti ootele ja neid proovitakse 90 päeva jooksul automaatselt uuesti saata.</translation>
 <translation id="3370968821559864204">rahakoti saldo:</translation>
 <translation id="3780605330121608425">Teie rahakott</translation>

@@ -2,7 +2,6 @@
 <!DOCTYPE translationbundle>
 <translationbundle lang="iw">
 <translation id="3333887201479867589">תגמולי Brave</translation>
-<translation id="7942180974165298215">Brave חוסם מודעות</translation>
 <translation id="4615489450165434530">דווח/י על אתר לא תקין</translation>
 <translation id="1209739344687072997">דווח/י על אתר לא תקין</translation>
 <translation id="6406506848690869874">סנכרון</translation>
@@ -42,6 +41,7 @@
 <translation id="3094628781200061820">פרסם והחזר קבצים מ-IPFS</translation>
 <translation id="7398397225367092613">.בצל</translation>
 <translation id="406832631167785034">לפתוח באמצעות כתובת onion.</translation>
+<translation id="4759098689276706664">הדבקה ישירה</translation>
 <translation id="4901618511712685702">יבוא אל IPFS</translation>
 <translation id="6794469945030154569">עמוד זה</translation>
 <translation id="5037852323412456577">תמונה שנבחרה</translation>
@@ -69,7 +69,7 @@
 <translation id="3425600262621021599">פתח קישור בחלון פרטי ב-Tor</translation>
 <translation id="3229091547987707389">ייבוא ושתף ספרייה</translation>
 <translation id="5029193871181468990">הסתרת סמל Brave Rewards</translation>
-<translation id="7595540212376041331">הסתרה של אייקון הארנק בסרגל הפעולות</translation>
+<translation id="7595540212376041331">הסתרת האייקון של Brave Wallet</translation>
 <translation id="4928988318462976765">חנות תוספי רשת</translation>
 <translation id="9181207987584064303">הצג בחנות תוספי רשת</translation>
 <translation id="3161744659507801211">אזהרה: Brave אינו יכול למנוע מתוספים לתעד את היסטוריית הגלישה שלכם.</translation>
@@ -108,6 +108,8 @@
 <translation id="2571596981920752023"><ph name="NUMBER_OF_TABS"/> כרטיסיות</translation>
 <translation id="2515126961943087659">שירות Bat Ads</translation>
 <translation id="7924918279836988121">שירות יומן BAT</translation>
+<translation id="6040143037577758943">סגירה</translation>
+<translation id="6665472986740899785">התראת Brave Ad</translation>
 <translation id="4174337572777167894">Web Discovery Project</translation>
 <translation id="8659271182272561965">תרמו קצת לחיפוש אנונימי ונתוני גלישה כדי לשפר את Brave Search.</translation>
 <translation id="1516554614404600536">Brave Tooltip</translation>
@@ -182,7 +184,6 @@
 <translation id="6817415381278637662">הגדירו את Brave כדפדפן ברירת המחדל שלכם כדי לקבל את הגנת הפרטיות של Brave בכל דף אינטרנט שאתם פותחים.</translation>
 <translation id="8722651357687610395">הגדר/י את Brave כברירת מחדל</translation>
 <translation id="2370739752330685659">אולי מאוחר יותר</translation>
-<translation id="3400357268283240774">הגדרות נוספות</translation>
 <translation id="9156965752763025780">‏השינויים שביצעת ייכנסו לתוקף בפעם הבאה שתפעיל מחדש את Brave‏.</translation>
 <translation id="7179921470347911571">הפעלה מחדש כעת</translation>
 <translation id="4472575034687746823">תחילת העבודה</translation>
@@ -237,6 +238,29 @@
 <translation id="7390783310074170337">תצוגת ברירת מחדל</translation>
 <translation id="130615081792797568">תצוגה רגילה</translation>
 <translation id="2360360976480535628">תצוגה מתקדמת</translation>
+<translation id="6486983549008741930">סינון תוכן</translation>
+<translation id="8694564340481124390">מאפשר הפעלה של מסננים מותאמים אישית שחוסמים מטרדים ומעקבים מבוססי מיקום או שפה.</translation>
+<translation id="6522618763902154348">מאפשר הפעלה של מסננים מותאמים אישית שחוסמים 
+<ph name="BEGIN_LINK"/> מטרדים ומעקבים מבוססי מיקום או שפה<ph name="END_LINK"/>.</translation>
+<translation id="3482656215021340727">הוספת רשימות סינון מותאמות אישית</translation>
+<translation id="1020877116991797978">הוספה של רשימות נוספות שנוצרו על ידי הקהילה המהימנה שלך ומתוחזקות על ידה.</translation>
+<translation id="7617831480435794399">הירשם כמנוי רק לרשימות שמקורן בישויות שיש לך אמון בהן. הדפדפן יבדוק מעת לעת אם קיימים עדכונים לרשימות בכתובת ה-URL שתזין. פעולה זו תחשוף את כתובת ה-IP שלך לשרת של ישות זו.</translation>
+<translation id="2831397936251948638">יצירת פילטרים מותאמים אישית</translation>
+<translation id="4618274268052410139">באפשרותך להוסיף מסננים מותאמים אישית שיצרת בעצמך, אחד בכל שורה, בשדה למטה. יש להקפיד להשתמש<ph name="BEGIN_LINK"/>בתחביר של מסנן Adblock<ph name="END_LINK"/>.</translation>
+<translation id="7791543448312431591">הוסף</translation>
+<translation id="571950783952070673">רשימת כתובות אינטרנט</translation>
+<translation id="9204006549413740506">עדכון אחרון</translation>
+<translation id="6745592621698551453">עדכן כעת</translation>
+<translation id="5334844597069022743">הצג מקור</translation>
+<translation id="4720556299488643018">בטל הרשמה כמנוי</translation>
+<translation id="6532106788206463496">שמירת שינויים</translation>
+<translation id="4516904298421534459">רשימות מסננים</translation>
+<translation id="4435215931544457255">רשימות פופולריות נוספות מאת הקהילה. לתשומך לבך, הפעלת מסננים רבים מדי תפחית את מהירויות הגלישה.</translation>
+<translation id="802154636333426148">ההורדה נכשלה</translation>
+<translation id="7889605993994647168">העדכון כשל</translation>
+<translation id="5438573563213942361">רשימות מותאמות אישית</translation>
+<translation id="4182731739150761577">הצג רשימה מלאה</translation>
+<translation id="1340263054776016283">יש להזין את כתובת האתר של רשימת הסינון</translation>
 <translation id="6821903322090655051">Brave Rewards מושבתים</translation>
 <translation id="413570371620795359">פתח לוח תגמולים כדי לאפשר ולהתחיל לעבוד</translation>
 <translation id="3849957491997306859">זוהה אוטומטית</translation>
@@ -323,6 +347,10 @@
 <translation id="5093410893656857925">בחרו סוג מכשיר</translation>
 <translation id="4581190919849683048">עם איזה סוג מכשיר ברצונך לסנכרן?</translation>
 <translation id="4112587618563511470">קוד סנכרון לא חוקי, נא לבדוק ולנסות שוב.</translation>
+<translation id="3995714999835224798">הקוד אינו חוקי</translation>
+<translation id="859506441384380749">הקוד יוצר בידי גרסה של Brave שהוצאה משימוש, יש לשדרג את המכשיר האחר תחילה.</translation>
+<translation id="3132642509209154999">פג תוקפו של הקוד. יש לייצור קוד חדש במכשיר השני ולנסות שוב.</translation>
+<translation id="2859229680945501779">קוד זה אינו חוקי. אנא בדקו שהזמן ואזור הזמן מוגדרים כהלכה במכשיר שלכם.</translation>
 <translation id="2339730291919608488">השאר שרשרת סנכרון</translation>
 <translation id="115699408012835975">אם תאפס/י את הסנכרון, יהיה עליך להזין מחדש קוד סנכרון ממכשיר אחר על מנת לסנכרן באמצעותו. האם הנך בטוח/ה שברצונך להמשיך?</translation>
 <translation id="6092564993102418148">האם אתם בטוחים שברצונכם להסיר את המכשיר שנבחר משרשרת הסנכרון?</translation>
@@ -393,6 +421,7 @@
 <translation id="1062463687579789365">התאמה אישית של רשתות הארנק</translation>
 <translation id="2234108191702901162">לא ניתן להוסיף רשת</translation>
 <translation id="8996633027318264334">האם ברצונך למחוק את <ph name="KEY_NAME"/>?</translation>
+<translation id="7893578599666249602">בטוח/ה שברצונך לאפס את <ph name="KEY_NAME"/>?</translation>
 <translation id="2618193846561624884">האם ברצונך לעדכן את הרשת הקיימת?</translation>
 <translation id="9170907049676078643">שיטה לפתרון משאבי IPFS</translation>
 <translation id="1327977588028644528">שער</translation>

@@ -2,7 +2,6 @@
 <!DOCTYPE translationbundle>
 <translationbundle lang="ko">
 <translation id="3333887201479867589">Brave Rewards</translation>
-<translation id="7942180974165298215">Brave 광고 차단</translation>
 <translation id="4615489450165434530">작동이 멈춘 사이트 보고</translation>
 <translation id="1209739344687072997">작동이 멈춘 사이트 보고</translation>
 <translation id="6406506848690869874">동기화</translation>
@@ -43,6 +42,7 @@
 <translation id="3094628781200061820">IPFS에서 게시 및 파일 받기</translation>
 <translation id="7398397225367092613">.onion</translation>
 <translation id="406832631167785034">.onion 주소를 사용하여 열기</translation>
+<translation id="4759098689276706664">강제 붙여넣기</translation>
 <translation id="4901618511712685702">IPFS로 가져오기</translation>
 <translation id="6794469945030154569">이 페이지</translation>
 <translation id="5037852323412456577">선택한 이미지</translation>
@@ -70,7 +70,7 @@
 <translation id="3425600262621021599">Tor를 이용해 Brave 비공개 윈도우에서 링크 열기</translation>
 <translation id="3229091547987707389">디렉토리 가져오기 및 공유</translation>
 <translation id="5029193871181468990">Brave Rewards 아이콘 숨기기</translation>
-<translation id="7595540212376041331">툴바에서 Brave 월렛 아이콘 숨기기</translation>
+<translation id="7595540212376041331">Brave 월렛 아이콘 숨기기</translation>
 <translation id="4928988318462976765">웹 익스텐션 스토어</translation>
 <translation id="9181207987584064303">웹 익스텐션 스토어에서 보기</translation>
 <translation id="3161744659507801211">경고: Brave는 확장 기능이 여러분의 브라우징 기록을 기록하는 것을 막을 수 없습니다.</translation>
@@ -108,6 +108,8 @@
 <translation id="2571596981920752023">탭 <ph name="NUMBER_OF_TABS"/>개</translation>
 <translation id="2515126961943087659">Bat 광고 서비스</translation>
 <translation id="7924918279836988121">배트 원장 서비스</translation>
+<translation id="6040143037577758943">닫기</translation>
+<translation id="6665472986740899785">Brave 알림 광고</translation>
 <translation id="4174337572777167894">웹 디스커버리 프로젝트</translation>
 <translation id="8659271182272561965">익명 검색 및 인터넷 사용 기록 데이터 일부를 보내 Brave Search 개선에 도움을 주세요.</translation>
 <translation id="1516554614404600536">Brave 툴팁</translation>
@@ -183,7 +185,6 @@
 <translation id="6817415381278637662">Brave를 기본 브라우저로 설정하여, 모든 웹페이지에서 Brave의 프라이버시 보호 기능을 마음껏 누리세요.</translation>
 <translation id="8722651357687610395">Brave를 기본으로 설정</translation>
 <translation id="2370739752330685659">나중에</translation>
-<translation id="3400357268283240774">추가 설정</translation>
 <translation id="9156965752763025780">변경사항은 다음에 Brave을 다시 시작할 때 적용됩니다.</translation>
 <translation id="7179921470347911571">지금 다시 실행</translation>
 <translation id="4472575034687746823">시작하기</translation>
@@ -238,6 +239,28 @@
 <translation id="7390783310074170337">기본 보기</translation>
 <translation id="130615081792797568">간단한 보기</translation>
 <translation id="2360360976480535628">고급 보기</translation>
+<translation id="6486983549008741930">콘텐츠 필터링</translation>
+<translation id="8694564340481124390">맞춤 필터를 활성화하여 특정 지역 및 언어에 특화된 트래커 등 짜증나는 요소를 차단합니다.</translation>
+<translation id="6522618763902154348">맞춤 필터를 활성화하여 특정 지역 및 언어에 특화된 트래커 등 <ph name="BEGIN_LINK"/>짜증나는 요소<ph name="END_LINK"/>를 차단합니다.</translation>
+<translation id="3482656215021340727">맞춤 필터 목록 추가</translation>
+<translation id="1020877116991797978">신뢰할 수 있는 커뮤니티가 만들고 관리하는 목록을 추가합니다.</translation>
+<translation id="7617831480435794399">출처를 신뢰할 수 있는 목록만 구독하세요. 입력하신 URL에서 받은 목록 업데이트를 브라우저가 주기적으로 확인하며 이 과정에서 귀하의 IP 주소가 해당 서버에 공개됩니다.</translation>
+<translation id="2831397936251948638">맞춤 필터 만들기</translation>
+<translation id="4618274268052410139">만들어둔 맞춤 필터를 아래 필드에 한 줄씩 추가합니다. <ph name="BEGIN_LINK"/>Adblock 필터 문법<ph name="END_LINK"/>을 사용하세요.</translation>
+<translation id="7791543448312431591">추가</translation>
+<translation id="571950783952070673">목록 URL</translation>
+<translation id="9204006549413740506">최근 업데이트</translation>
+<translation id="6745592621698551453">지금 업데이트</translation>
+<translation id="5334844597069022743">소스 보기</translation>
+<translation id="4720556299488643018">구독 취소</translation>
+<translation id="6532106788206463496">변경사항 저장</translation>
+<translation id="4516904298421534459">필터 목록</translation>
+<translation id="4435215931544457255">추가적인 인기 커뮤니티 목록입니다. 너무 많은 필터를 활성화하면 브라우징 속도가 느려집니다.</translation>
+<translation id="802154636333426148">다운로드 실패</translation>
+<translation id="7889605993994647168">업데이트 실패</translation>
+<translation id="5438573563213942361">맞춤 목록</translation>
+<translation id="4182731739150761577">전체 목록 보기</translation>
+<translation id="1340263054776016283">필터 목록 URL 입력</translation>
 <translation id="6821903322090655051">Brave Rewards가 비활성화되어 있습니다.</translation>
 <translation id="413570371620795359">Rewards 패널을 열고 활성화하여 시작하세요.</translation>
 <translation id="3849957491997306859">자동 감지됨</translation>
@@ -324,6 +347,10 @@
 <translation id="5093410893656857925">장치 형태를 고르세요</translation>
 <translation id="4581190919849683048">동기화하려는 장치 유형은?</translation>
 <translation id="4112587618563511470">잘못된 동기화 코드입니다. 확인하고 다시 시도하세요.</translation>
+<translation id="3995714999835224798">유효하지 않은 코드</translation>
+<translation id="859506441384380749">이 코드는 더 이상 지원되지 않는 Brave 구버전에서 생성되었습니다. 다른 기기를 먼저 업그레이드하세요.</translation>
+<translation id="3132642509209154999">만료된 코드입니다. 다른 기기에서 새 코드를 생성하고 다시 시도하세요.</translation>
+<translation id="2859229680945501779">유효하지 않은 코드입니다. 디바이스에 시간과 시간대가 제대로 설정되어 있는지 확인하세요.</translation>
 <translation id="2339730291919608488">동기화 체인에서 나가기</translation>
 <translation id="115699408012835975">동기화를 재설정하면 동기화를 위해 다른 장치에서 동기화 코드를 다시 입력해야 합니다. 정말 계속할까요?</translation>
 <translation id="6092564993102418148">선택한 기기를 동기화 체인에서 제거하시겠습니까?</translation>
@@ -394,6 +421,7 @@
 <translation id="1062463687579789365">월렛 네트워크 사용자 지정</translation>
 <translation id="2234108191702901162">네트워크를 추가할 수 없음</translation>
 <translation id="8996633027318264334"><ph name="KEY_NAME"/>를 삭제하시겠습니까?</translation>
+<translation id="7893578599666249602"><ph name="KEY_NAME"/>을(를) 초기화하시겠습니까?</translation>
 <translation id="2618193846561624884">기존 네트워크를 업데이트하시겠습니까?</translation>
 <translation id="9170907049676078643">IPFS 리소스 리졸빙에 사용하는 방법</translation>
 <translation id="1327977588028644528">게이트웨이</translation>

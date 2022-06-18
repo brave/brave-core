@@ -84,7 +84,20 @@
 <translation id="6587448235155023666">अगली बार जब आप Brave को पुनः लॉन्च करेंगे तो आपके परिवर्तन प्रभावी होंगे</translation>
 <translation id="8701563696941209024">अब पुनः लॉन्च करें</translation>
 <translation id="834487290629916192">बाद में</translation>
+<translation id="7207456302801184289">क्रोमियम में आपका स्वागत है</translation>
+<translation id="4117451092682672487">प्राइवेसी. आसान हो गई है.</translation>
+<translation id="7909375417585209817">जब Brave डिफ़ॉल्ट के तौर पर सेट होता है, तो आप जिस भी लिंक को खोलते हैं, वह Brave की प्राइवेसी सुरक्षा की सुविधा के साथ खुलता है.</translation>
+<translation id="5148943178722443958">Brave को बेहतर बनाने में मदद करें.</translation>
+<translation id="6188781052835527980">अगर आप क्रैश या फ़्रीज़ का सामना करते हैं, तो अनाम डायग्नोस्टिक रिपोर्ट भेजें.</translation>
+<translation id="1929905278861178845">Brave के यूज़र जिन सुविधाओं का इस्तेमाल कर रहे हैं, उन प्रोडक्ट के बारे में पूरी तरह से गोपनीय और अनाम जानकारी शेयर करें.</translation>
+<translation id="2877653791257935258">किसी वेबसाइट का नाम या URL टाइप करें</translation>
+<translation id="5329830149661250028">Brave का कमाल देखें : कोई विज्ञापन नहीं. कोई ट्रैकर नहीं. बहुत तेज़ी से पेज का खुलना.</translation>
+<translation id="3545804467215833536">Brave शील्ड देखने के लिए टैप करें</translation>
+<translation id="1724327820822194498">वह सभी बेकार चीजें देखें, जो Brave ने हर पेज पर शील्ड के ज़रिए ब्लॉक की हैं.</translation>
+<translation id="5386259141409498372"><ph name="BIG_TECH"/> और <ph name="TRACKER"/> अन्य विज्ञापन और ट्रैकर ब्लॉक किए गए</translation>
+<translation id="3092683655478890840"><ph name="TRACKER_COUNT"/> विज्ञापन और ट्रैकर ब्लॉक किए गए</translation>
 <translation id="8281886186245836920">अभी नहीं</translation>
+<translation id="6165508094623778733">ज़्यादा जानें</translation>
 <translation id="986879628471635371">शुरुआत करने में समस्या निवारण</translation>
 <translation id="5808759341041733958">डिफ़ॉल्ट खोज इंजन चुनें</translation>
 <translation id="1331593888918588693">आप बाद में ऐप सेटिंग्स में हमेशा अपनी पसंद बदल सकते हैं।</translation>
@@ -112,12 +125,12 @@
 <translation id="1166682575529520472">मासिक</translation>
 <translation id="1628742278973105368">आपका पहला मासिक टिप को भेजा जाएगा:</translation>
 <translation id="298349922412901215">नोट: इस निर्माता ने अभी तक Brave उपयोगकर्ताओं से योगदान प्राप्त करने के लिए साइन अप नहीं किया है। जब तक वे सत्यापन नहीं करते, या 90 दिन नहीं बीत जाते, तब तक हम योगदान देने का प्रयास करते रहेंगे।</translation>
-<translation id="635752162765375187">नोट: यह निर्माता वर्तमान में आपके वॉलेट से टिप्स प्राप्त करने के लिए कॉन्फ़िगर नहीं किया गया है. आपके द्वारा की गई कोई भी टिप आपके वॉलेट में पेंडिंग रहेगी और 90 दिनों तक अपने आप दोबारा कोशिश करती रहेगी.</translation>
+<translation id="635752162765375187">ध्यान दें : यह क्रिएटर इस समय आपके रिवॉर्ड कस्टोडियल वॉलेट सेवा से टिप पाने के लिए कॉन्फ़िगर नहीं हुए हैं. आप जो भी टिप देंगे वह पेंडिंग रहेगी और 90 दिनों तक अपने-आप पूरी होने की कोशिश करती रहेगी.</translation>
 <translation id="1910721550319506122">स्वागत!</translation>
 <translation id="3165726837666415756">आप टिप भेजकर इस साइट का सहयोग कर सकते हैं। यह शानदार सामग्री बनाने के लिए उन्हें धन्यवाद देने का एक तरीका है। सत्यापित सामग्री निर्माताओं को प्रत्येक कैलेंडर माह के पहले सप्ताह के दौरान उनके टिप का भुगतान किया जाता है।</translation>
 <translation id="1704859330137112950">यदि आप चाहते हैं, तो आप हमेशा के तौर पर इस साइट का सहयोग करने के लिए मासिक टिप्स को निर्धारित कर सकते हैं.</translation>
 <translation id="245015745140252435">राशि पर टिप करें</translation>
-<translation id="7873874596836611687">वॉलेट बैलेंस:</translation>
+<translation id="7873874596836611687">रिवॉर्ड बैलेंस :</translation>
 <translation id="2573313946367623146">मेरी टिप भेजें</translation>
 <translation id="3250511771491660127">इसे मासिक बनाएं</translation>
 <translation id="7658239707568436148">रद्द करना</translation>
@@ -137,7 +150,7 @@
 <translation id="8220228041552340594">अक्टूबर</translation>
 <translation id="8280223431922155812">नवम्बर</translation>
 <translation id="4254029385847607686">दिसम्बर</translation>
-<translation id="4258022280942725182">आपका वॉलेट</translation>
+<translation id="4258022280942725182">आपका Brave Rewards</translation>
 <translation id="3960619311638643872">Brave VPN</translation>
 <translation id="1772301834467143364">Brave News</translation>
 <translation id="7760215798627399379"><ph name="VALUE"/> USD</translation>
@@ -171,8 +184,8 @@
 <translation id="8689997599821157251">आपने अर्जित किया है</translation>
 <translation id="7550470870580166294">अपर्याप्त धन</translation>
 <translation id="2775064702681588061">आपका Brave Rewards खाता धनराशि की प्रतीक्षा कर रहा है।</translation>
-<translation id="2630264552940126640">बैकअप बटुआ</translation>
-<translation id="238922425564381955">कृपया अपने Brave बटुए को बैकअप करें।</translation>
+<translation id="2630264552940126640">Brave Rewards का बैकअप लें</translation>
+<translation id="238922425564381955">कृपया अपने Brave Reward का बैकअप लें.</translation>
 <translation id="2323069945529668668">उह ओह!</translation>
 <translation id="7510166204621526816">ब्रेव इनाम सर्वर जवाब नहीं दे रहा है. हम इसे जल्द से जल्द ठीक करने का प्रयास करेंगे.</translation>
 <translation id="683765328936486920">YouTube पर</translation>
@@ -545,7 +558,7 @@
 <translation id="5493402808936397665">अपना पासवर्ड डाले बिना अपने वॉलेट को जल्दी से अनलॉक करने के लिए बायोमेट्रिक्स चालू करें.</translation>
 <translation id="8030647312184163932">फिंगरप्रिंट अनलॉक किया गया</translation>
 <translation id="4090490645603511157">अपना पासवर्ड डाले बिना अपने वॉलेट को जल्दी से अनलॉक करने के लिए बायोमेट्रिक्स का इस्तेमाल करें.</translation>
-<translation id="1544192797660353713">वॉलेट (बीटा)</translation>
+<translation id="1544192797660353713">वॉलेट</translation>
 <translation id="6901810042765869341">अपने Brave वॉलेट क्रिप्टो अकाउंट को रिस्टोर करने के लिए अपना रिकवरी फ्रेज़ एंटर करें.</translation>
 <translation id="9120654436199628567">क्रिप्टो अकाउंट रिस्टोर करें</translation>
 <translation id="4811736040444856406">रिकवरी फ्रेज़ दिखाएँ</translation>
@@ -609,7 +622,7 @@
 <translation id="8239147115686034860">Brave Wallet को अपने आप लॉक करें</translation>
 <translation id="414639769490080648">Brave Wallet को अपने आप लॉक होने तक इंतज़ार करने के लिए मिनटों की संख्या</translation>
 <translation id="4993345308607970390">Brave वॉलेट रीसेट करें</translation>
-<translation id="4322846864135539519">क्या आप वाकई अपने वॉलेट को रीसेट करना चाहते हैं? अगर आपके वॉलेट का बैकअप नहीं लिया गया है, तो रीसेट करने से अकाउंट का पूरा डेटा खो जाएगा (इससे जुड़े फ़ंड के साथ). कन्फ़र्म करने के लिए "<ph name="CONFIRMATION_PHRASE"/>" टाइप करें.</translation>
+<translation id="4322846864135539519">क्या आप Brave रिवॉर्ड को वाकई रीसेट करना चाहते हैं. अगर आपके वॉलेट का बैकअप नहीं लिया गया है, तो रीसेट करने से अकाउंट का सारा डेटा (इससे जुड़े सभी फ़ंड के साथ) मिट जाएगा. कन्फ़र्म करने के लिए "<ph name="CONFIRMATION_PHRASE"/>" टाइप करें.</translation>
 <translation id="4862812525895306758">लेन-देन और नॉन्स की जानकारी मिटाएँ</translation>
 <translation id="5693968582510626466">ट्रांजेक्शन हटाने से स्थानीय सर्वर पर स्टेट क्लियर करते समय या डेवलपर्स के लिए उपयोगी हो सकता है</translation>
 <translation id="5421107279168565467">क्या आप वाकई लेन-देन और नॉन्स की जानकारी को मिटाना चाहते हैं? इस विकल्प का इस्तेमाल आमतौर पर लोकल टेस्ट सर्वर चलाने वाले डेवलपर करते हैं. कन्फ़र्म करने के लिए  "<ph name="CONFIRMATION_PHRASE"/>" टाइप करें.</translation>
@@ -629,8 +642,8 @@
 <translation id="1190117345570417902">Wireguard के सुरक्षित और एन्क्रिप्ट किए गए VPN टनल का इस्तेमाल करता है</translation>
 <translation id="1571230671455380494">हम आपकी जानकारी कभी शेयर नहीं करते या बेचते नहीं हैं</translation>
 <translation id="276866628038850725">सभी प्लान में एक फ़्री 7-दिन का ट्रायल शामिल है!</translation>
-<translation id="7280825497485894053">हर महीने का सब्सक्रिप्शन</translation>
-<translation id="3001303523417455986">सालाना सब्सक्रिप्शन</translation>
+<translation id="1532536259167115948">मासिक सदस्यता <ph name="TRIAL_TEXT"/></translation>
+<translation id="6344668702581136255">सालाना सदस्यता <ph name="TRIAL_TEXT"/></translation>
 <translation id="6748319398471481216">हर महीने रिन्यू होता है</translation>
 <translation id="7734634586133069282"><ph name="MONTHLY_AMOUNT"/> / महीने.</translation>
 <translation id="1163809943099641131">एक साल</translation>
@@ -651,8 +664,7 @@
 यदि आप इस अनुरोध को स्वीकार नहीं करते हैं, तो VPN फिर से कनेक्ट नहीं होगा और आपका इंटरनेट कनेक्शन सुरक्षित नहीं होगा.</translation>
 <translation id="2429299231491852747">कनेक्शन अनुरोध स्वीकार करें</translation>
 <translation id="3428909627460825679">VPN प्रोफ़ाइल नहीं बन पाया. कृपया दोबारा कोशिश करें.</translation>
-<translation id="1264320790738638119">खरीदारी का वेरिफ़िकेशन पूरा नहीं हो सका. कृपया फिर से कोशिश करें.</translation>
-<translation id="8905950042180169719">VPN बैकग्राउंड में चल रहा है</translation>
+<translation id="1264320790738638119">आपकी सदस्यता की समय-सीमा खत्म हो गई है. आप किसी भी समय फिर से सदस्यता ले सकते हैं.</translation>
 <translation id="8681480718817027245">सब्सक्रिप्शन</translation>
 <translation id="7805768142964895445">स्थिति</translation>
 <translation id="5747552184818312860">समय सीमा समाप्ति दिनांक</translation>
@@ -680,15 +692,15 @@
 <translation id="1219475260382643267">वेबसाइट काम नहीं कर रही</translation>
 <translation id="7138678301420049075">अन्य</translation>
 <translation id="4827315939627587219">VPN कॉन्फ़िगरेशन रीसेट करें</translation>
-<translation id="6883280223123252086">क्या आप वाकई अपना VPN कॉन्फ़िगरेशन रीसेट करना चाहते हैं?</translation>
+<translation id="1705662265912724430">क्या आप वाकई अपना VPN कॉन्फ़िगरेशन रीसेट करना चाहते हैं?</translation>
 <translation id="604124094241169006">स्वचालित</translation>
 <translation id="7475580600756356589">अपने सर्वर से कनेक्ट हो रहा है. बस ज़रा सा वक़्त लगेगा...</translation>
 <translation id="1342728075788541348">आपके सर्वर से डिस्कनेक्ट हो रहा है. बस ज़रा सा वक़्त लगेगा...</translation>
 <translation id="669072536454692117">सब्सक्रिप्शन सफ़लतापूर्वक ले लिया गया</translation>
 <translation id="1187506504156101449">ख़रीदारी स्वीकार नहीं हो पाई:</translation>
 <translation id="8420522105268941892">आप पहले ही सब्सक्रिप्शन के लिए सब्स्क्राइब कर चुके हैं. सब्सक्रिप्शन को रिस्टोर करने की कोशिश करें.</translation>
-<translation id="404414664190867625">गड़बड़ी!!\nकिसी उपयोगकर्ता द्वारा खरीदारी की प्रक्रिया को कैंसिल करने की वजह.</translation>
-<translation id="3515141458161417228">गड़बड़ी हुई!!\nखरीदारी नहीं हो पाई..</translation>
+<translation id="404414664190867625">आपने सदस्यता खरीदने का प्रोसेस बीच में छोड़ दिया है.</translation>
+<translation id="3515141458161417228">खरीदारी पूरी नहीं हो सकी. कृपया Google Play की सपोर्ट टीम से संपर्क करें.</translation>
 <translation id="6452181791372256707">अस्‍वीकार करें</translation>
 <translation id="8030852056903932865">स्वीकृत</translation>
 <translation id="1597199892790541240">गैस शुल्क</translation>
@@ -723,6 +735,7 @@
 <translation id="2199215899212542417">फ़ंक्शन का प्रकार : <ph name="FTYPE"/></translation>
 <translation id="4803003663447398145">कोई डेटा नहीं</translation>
 <translation id="9061799688859969073"><ph name="ACCOUNT_NAME"/> ने <ph name="CRYPTO_VALUE"/> <ph name="ASSET"/> ($<ph name="FIAT_VALUE"/>) - <ph name="DATE"/> भेजा</translation>
+<translation id="1148985422232712046"><ph name="ACCOUNT_NAME"/> ने <ph name="ASSET"/> #<ph name="ASSET_ID"/> भेजा है - <ph name="DATE"/></translation>
 <translation id="2911329628253651823"><ph name="ACCOUNT_NAME"/> ने <ph name="ASSET"/> - <ph name="DATE"/> स्वीकृत किया है</translation>
 <translation id="7400134344541309180"><ph name="ASSET"/> - <ph name="PROXY"/>की असीमित स्वीकृति</translation>
 <translation id="2428770727194227378"><ph name="ACCOUNT_NAME"/> बदलें - <ph name="DATE"/></translation>
@@ -787,6 +800,7 @@
 <translation id="7732576862074737148">≈ <ph name="VALUE"/> USD</translation>
 <translation id="3079421456571897484"><ph name="VALUE"/> BAT</translation>
 <translation id="5802665280774361839">पता बार में ऑटोकम्पलीट दिखाएँ</translation>
+<translation id="8982438328166986164">आपके बुकमार्क और पिछली ब्राउज़िंग के आधार पर वेबसाइट के सुझाव दिखाता है.</translation>
 <translation id="1241283133946520352">नेटवर्क</translation>
 <translation id="1062463687579789365">वॉलेट नेटवर्क में मनचाहे बदलाव</translation>
 <translation id="2512821599885971349">नेटवर्क जोड़ें</translation>
@@ -821,7 +835,6 @@
 <translation id="3586752056660754651">साइन</translation>
 <translation id="6592721981110586529">Brave वॉलेट से कनेक्ट करें</translation>
 <translation id="329813193938846695">अकाउंट चुनें</translation>
-<translation id="3890989020011724401">नया अकाउंट</translation>
 <translation id="291375746846291973">केवल उन साइटों से कनेक्ट करें जिन पर आप भरोसा करते हैं।</translation>
 <translation id="385051799172605136">वापस</translation>
 <translation id="1060221736464994328">क्या इस साइट को नेटवर्क बदलने की इजाज़त देंगे?</translation>
@@ -838,24 +851,34 @@
 <translation id="85136472535634474">VPN सेटिंग खोलें</translation>
 <translation id="8352805003811526272">कॉन्फ़िगरेशन को रीसेट करना ...</translation>
 <translation id="6809312301323611382">आपने पहले से ही वही सर्वर चुन रखा है</translation>
-<translation id="5665084657857645952">इजाज़त नामंज़ूर कर दी गई</translation>
+<translation id="5665084657857645952">आपने VPN प्रोफ़ाइल का इंस्टॉलेशन रोक दिया है.</translation>
 <translation id="9106265941552476098"><ph name="TRANSACTION_LENGTH"/> ट्रांजैक्शन को नामंज़ूर करें</translation>
 <translation id="523862956770478816">साइट से जुड़ी इजाज़त</translation>
 <translation id="2141313140218636977"><ph name="VALUE"/> अकाउंट जुड़े हुए हैं</translation>
+<translation id="3890989020011724401">नया अकाउंट</translation>
 <translation id="4305817255990598646">स्विच</translation>
 <translation id="4804818685124855865">डिस्कनेक्ट</translation>
 <translation id="8009571545960303544">आपके हस्ताक्षर का अनुरोध किया जा रहा है</translation>
+<translation id="3484981968509595506">एक DApp आपके पब्लिक एनक्रिप्शन पासवर्ड का अनुरोध कर रहा है</translation>
+<translation id="2291002548681057345">आपके वॉलेट के पब्लिक एनक्रिप्शन की का अनुरोध कर रहा है. अगर आप यह की देने पर सहमति देते हैं, तो साइट आपके लिए एनक्रिप्ट किए हुए मैसेज बना पाएगी.</translation>
+<translation id="3340247553212049934">प्रदान करें</translation>
 <translation id="1982257600591932657">नेटवर्क का नाम</translation>
 <translation id="5052727830821470769">नेटवर्क URL</translation>
 <translation id="4822132585477111396">चेन आई.डी.</translation>
 <translation id="7131971375297699539">करेंसी का चिन्ह</translation>
 <translation id="7982789257301363584">नेटवर्क</translation>
-<translation id="2521480044079508357">यह इस नेटवर्क को Brave Wallet में उपयोग करने की अनुमति देगा.</translation>
+<translation id="7540715999708954128">इससे यह नेटवर्क Brave वॉलेट में इस्तेमाल किया जा सकेगा. और जानें.</translation>
+<translation id="8759753423332885148">और जानें।</translation>
 <translation id="4717431746210146708">इस साइट को एक नेटवर्क जोड़ने की अनुमति दें?</translation>
 <translation id="3378339846292573874">सुझाए गए टोकन जोड़ें</translation>
 <translation id="2322227405137827074">क्या आप इन टोकन को इम्पोर्ट करना चाहेंगे?</translation>
 <translation id="1324417023773393937">Brave ब्राउज़र</translation>
 <translation id="6044189892950611565">Brave Browser के लिए नोटिफ़िकेशन चैनल</translation>
+<translation id="1173919438868967364">अकाउंट चुनें</translation>
+<translation id="8922793255489232731"><ph name="VALUE"/> : के लिए मिलता-जुलता टाइमज़ोन नहीं मिला</translation>
+<translation id="8231907121684689093">मुख्य साइट दिखाएँ</translation>
+<translation id="6471216025161697462"><ph name="VALUE"/> से कनेक्ट किया गया है</translation>
+<translation id="1968852757206592413">ट्रायल</translation>
 <translation id="6602036279006002239">नोट: यह निर्माता वर्तमान में आपके वॉलेट से टिप्स प्राप्त करने के लिए कॉन्फ़िगर नहीं किया गया है. आपके द्वारा की गई कोई भी टिप आपके वॉलेट में पेंडिंग रहेगी और 90 दिनों तक अपने आप दोबारा कोशिश करती रहेगी.</translation>
 <translation id="3370968821559864204">वॉलेट बैलेंस:</translation>
 <translation id="3780605330121608425">आपका वॉलेट</translation>

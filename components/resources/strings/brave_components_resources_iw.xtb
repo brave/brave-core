@@ -236,6 +236,7 @@
 <translation id="1911900517212490188">מפתח השחזור שהוזן אינו נתמך עוד. נא לבקר ב-<ph name="BEGIN_LINK"/>here<ph name="END_LINK"/> כדי לקבל מפתח חדש.</translation>
 <translation id="7583327070390027131">תאריך הטיפ החודשי הבא</translation>
 <translation id="6231182869178328516">הרגע נתתי טיפ <ph name="NAME"/> באמצעות דפדפן Brave. אפשר לראות את זה ב-https://brave.com/tips.</translation>
+<translation id="5916536234616514390">אני מרוצה מזה ש-<ph name="HASHTAG"/>Brave מאפשר לי לתמוך ביוצרים! בדיוק נתתי טיפ של <ph name="HASHTAG2"/> BAT ל-<ph name="NAME"/>. ברגע שיתבצע אימות בכתובת https://creators.brave.com לפני <ph name="DATE"/>, ה-BAT יעבור!</translation>
 <translation id="8404935570206006581">תנו טיפ עם Brave</translation>
 <translation id="3082557070674409251">נלחץ</translation>
 <translation id="7119308337584989771">נדחה</translation>
@@ -256,6 +257,8 @@
 <translation id="8218538368080510976">שגיאה: האזור אינו נתמך</translation>
 <translation id="5382684862562314222">BAT עדין לא נתמך באזור שלך ב-Uphold.</translation>
 <translation id="9074594632540931067">שגיאה: BAT אינו זמין</translation>
+<translation id="5376524136040178759">לפי Uphold, יש כרגע כמה מגבלות על חשבון ה-Uphold שלך. עליך להתחבר לחשבון ה-Uphold שלך ולבדוק אם יש הודעות או דרישות חשבון שעליך להשלים, ולאחר מכן לנסות שוב. לדוגמה, ייתכן ויש צורך לשלוח ל-Uphold מידע נוסף.</translation>
+<translation id="6996157559236886133">שגיאה: פונקציונליות מוגבלת של חשבון Uphold</translation>
 <translation id="3274650021044762770">הייתה בעיה באימות בקשת הדפדפן שלך לחבר Brave Rewards שלך    <ph name="PROVIDER"/>חֶשְׁבּוֹן. אתה יכול <ph name="BEGIN_LINK"/>צור קשר עם תמיכת הלקוחות<ph name="END_LINK"/> לקבלת עזרה נוספת.</translation>
 <translation id="1316066811927496401">שגיאה: לא ניתן לאמת את הבקשה</translation>
 <translation id="1737873393693460829">על ידי הפעלת [[title]], הנכם מסכימים ל-<ph name="BEGIN_LINK1"/>תנאי השירות<ph name="END_LINK1"/> ו-<ph name="BEGIN_LINK2"/>ומדיניות הפרטיות<ph name="END_LINK2"/>.</translation>
@@ -273,6 +276,8 @@
 <translation id="5112354605357157725">המשך להתחברות</translation>
 <translation id="1280764044837262633"><ph name="PROVIDER"/> דורש יתרה מינימלית של <ph name="AMOUNT"/> BAT ליצירת חשבון. אם התחברת לחשבון בעבר,</translation>
 <translation id="1892970806832316900">מושהה עד <ph name="DATE"/></translation>
+<translation id="7849926087559412554">אופס! הדפדפן שלך לא יכול לקבל Brave Ads פרטיות.</translation>
+<translation id="5177429570315095022">עליך לעדכן את הדפדפן שלך כדי להמשיך ולראות מודעות.</translation>
 <translation id="752216563428219524">פרסומות לא אותחלו, נא לרענן את הדף.</translation>
 <translation id="7422678632904904341">סכום:</translation>
 <translation id="6969783933307596818">רענן אוטומטית כל 5 שניות</translation>
@@ -754,6 +759,7 @@
 <translation id="7306880305145342514">ברכותינו! התגמולים שלכם עבור <ph name="MONTH"/>הגיעו!</translation>
 <translation id="3007207731685398329">התגמולים שלכם עבור <ph name="AMOUNT"/><ph name="MONTH"/> יגיעו בעוד<ph name="DAYS"/>.</translation>
 <translation id="5878420576943709750">התגמולים שלכם עבור <ph name="AMOUNT"/><ph name="MONTH"/> בדרך. שימו לב!</translation>
+<translation id="3825131544027418568"><ph name="BEGIN_BOLD"/> עליך להתחבר אל <ph name="PROVIDER"/><ph name="END_BOLD"/> כדי לראות את היתרה שלך</translation>
 <translation id="2659764755126740206">עבור אל חשבון ה-<ph name="PROVIDER"/> שלי</translation>
 <translation id="1165667598801520610">הוספת כספים</translation>
 <translation id="2394961582378297792">התנתק</translation>
@@ -794,6 +800,7 @@
 <translation id="167698752210114155">קרתה שגיאה פנימית</translation>
 <translation id="2326876601333401685">לא קיימת תמיכה בשיטת RPC זו.</translation>
 <translation id="1128992132632883337">אירעה שגיאת ניתוח תגובה</translation>
+<translation id="5382339341735118861">בעת עיבוד הבקשה אירעה שגיאה כללית</translation>
 <translation id="1680597601664421644">מסייע הזיכרון המיובא אינו תקף לגבי Brave Wallet</translation>
 <translation id="4641919696349069826">בקשה כבר נמצאת בביצוע</translation>
 <translation id="872806943696014633">חסרים נתוני עסקאות</translation>
@@ -813,11 +820,13 @@
 <translation id="4232775951515678071">קבלת הסוג של העסקה נכשלה</translation>
 <translation id="2080935885647755539">השגת עמלת הדלק לעסקת EIP-1559 נכשלה</translation>
 <translation id="4843814354611030845">המשתמש דחה את העסקה</translation>
+<translation id="1462494615260983714">שגיאה בעיבוד העסקה</translation>
 <translation id="4886059598718763020">'<ph name="VALUE"/>'אינו מורשה לחתום על הודעה</translation>
 <translation id="8719220598078667817">חתימת העסקה נכשלה</translation>
 <translation id="875506212625074179">תגובת מזהה שרשרת לא חוקית משירות RPC</translation>
 <translation id="5486744676117070166">לא ניתן היה לקבל את הערך הבא</translation>
 <translation id="6180576227145734714">נתוני העסקה 'אל' חייבים להיות כתובת תקינה בעת ציון</translation>
+<translation id="6688162556547723415">השיטה ו/או החשבון המבוקש לא אושרו על ידי המשתמש/ת.</translation>
 <translation id="4958950550253325418">אפליקציות DeFi</translation>
 <translation id="735961408871282410">שווקי NFT</translation>
 <translation id="7740287852186792672">תוצאות חיפוש</translation>
@@ -860,7 +869,8 @@
 <translation id="1191686659164947414">העסקה ניתנת להטרמה</translation>
 <translation id="632241521608275119">רגישות למעידה</translation>
 <translation id="4500473291496079954">בתוקף עד</translation>
-<translation id="2236833281018938257">0x כתובת או url</translation>
+<translation id="2236833281018938257">כתובת ארנק או כתובת אתר</translation>
+<translation id="928500657730628112">כתובת ארנק</translation>
 <translation id="2860280209982026951">Brave משתמש ב<ph name="LINK_BEFORE"/>0x<ph name="LINK_AFTER"/> כאגרגטור של נתוני DEX .</translation>
 <translation id="151946611346774041">העיבוד של כתובת Ethereum וכתובת ה-IP יתבצע באמצעות Ox כדי להשלים עסקה (כולל קבלת הצעות מחיר). המידע ישמש את Ox אך ורק למטרות הטיפול בעסקה.</translation>
 <translation id="4626407663177532837">הצעת המחיר כוללת עמלת Brave של 0.875%.</translation>
@@ -868,7 +878,7 @@
 <translation id="6575120282593094155">עדיין אין לך <ph name="ACCOUNT_TYPE"/> חשבון. ליצור אחד עכשיו?</translation>
 <translation id="2704606927547763573">הועתק</translation>
 <translation id="1420318137760245955">ברוכים הבאים ל-Brave Wallet החדש</translation>
-<translation id="8303434745767477417">החזק בנכסי קריפטו במשמורת שלך. עקוב אחר ביצועי תיק ההשקעות וקיים אינטראקציה עם אפליקציות 3D. סחור, השקע, לווה והלווה באמצעות DeFi. הכל ישר מדפדפן הפרטיות Brave. ללא תוספות, ללא צורך בהורדה.</translation>
+<translation id="3671745544278414606">החזיקו בנכסי קריפטו תחת ידכם. עקבו אחר ביצועי תיק ההשקעות, עשו שימוש ב-DApps של Web3. סחרו, השקיעו, קחו והעניקו הלוואות באמצעות DeFi. הכל היישר מדפדפן הפרטיות Brave. ללא הרחבות, וללא צורך בהורדה.</translation>
 <translation id="6972754398087986839">תחילת העבודה</translation>
 <translation id="375882617301124395">גבה את ארנק הקריפטו שלך</translation>
 <translation id="180032279811483155">בצעד הבא תראה’ ביטוי שחזור בן <ph name="RECOVERY_PHRASE_LENGTH"/> מילים, שבו תוכל להשתמש לשחזור חשבונות הקריפטו העיקריים שלך. שמור אותו במקום בטוח. ביטוי השחזור שלך היא הדרך היחידה להחזיר את הגישה לחשבון במקרה של סיסמה שנשכחה, מכשיר שאבד או נגנב, או אם אתה רוצה להחליף ארנק.</translation>
@@ -897,7 +907,7 @@
 <translation id="163697698769819510">מומלץ לבצע גיבוי של הארנק שלך עכשיו כדי להגן על הנכסים שלך ולהבטיח שלעולם לא תאבד לך הגישה.</translation>
 <translation id="1018806299114415224">גבה כעת</translation>
 <translation id="5234764350956374838">סגור</translation>
-<translation id="4075073132992924258">Brave Wallet אינו מוגדר כארנק ברירת המחדל שלך ולא יגיב ל- Web 3 DApps.  כנס להגדרות כדי לשנות את ארנק ברירת המחדל שלך.</translation>
+<translation id="1400709719911593089">Brave Wallet אינו מוגדר כארנק ברירת המחדל שלך ולא יגיב ל-DApps של Web3. עליך להיכנס להגדרות כדי לשנות את ארנק ברירת המחדל שלך.</translation>
 <translation id="4362717653795263052">שחזר חשבונות קריפטו עיקריים</translation>
 <translation id="3038077262567136741">הזן את ביטוי השחזור שלך כדי לשחזר את חשבון הקריפטו של ארנק Brave שלך.</translation>
 <translation id="955918646509748368">ביטוי השחזור שהוזן אינו תקין.</translation>
@@ -908,8 +918,8 @@
 <translation id="8624315169751085215">העתק ללוח מודעות</translation>
 <translation id="1121335910737476837">חשבונות קריפטו עיקריים</translation>
 <translation id="6969147029062037757">חשבונות מיובאים</translation>
-<translation id="5668765612885835803">אתה יכול ליצור חשבונות ראשיים בארנק Brave שעשויים להיות מגובים או משוחזרים מביטוי השחזור שלך. למידע נוסף על סוגי חשבונות בקר בעזרה לחשבון</translation>
-<translation id="2471916999505901943">ניתן להשתמש בחשבונות אלה עם Web 3 DApps וניתן להציג אותם בתיק ההשקעות שלכם. עם זאת, שימו לב שלא ניתן לשחזר חשבונות משניים באמצעות ביטוי שחזור מהגיבוי הראשי של החשבון שלך.</translation>
+<translation id="4057718162494343222">באפשרותך ליצור חשבונות ראשיים בארנק Brave שאותם ניתן לגבות או לשחזר באמצעות ביטוי השחזור שלך. למידע נוסף על סוגי חשבונות, יש לבקר בעמוד העזרה של החשבון.</translation>
+<translation id="1011614786846182272">ניתן להשתמש בחשבונות אלה עם DApps של Web3 וניתן להציג אותם בתיק ההשקעות שלך. עם זאת, עליך לדעת כי  אין אפשרות לשחזר חשבונות משניים באמצעות ביטוי שחזור מהגיבוי הראשי של החשבון שלך.</translation>
 <translation id="1940465339426637378">נכסים</translation>
 <translation id="2236507293802791911">ערוך נכסים גלויים</translation>
 <translation id="7525067979554623046">צור</translation>
@@ -991,6 +1001,7 @@
 <translation id="8569380433211549748">מחיר ב</translation>
 <translation id="2490428413101944234">בדיקת ברז (Faucet)</translation>
 <translation id="3352959425838279177">קבל Ether מן ברז עבור <ph name="SELECTED_NETWORK"/></translation>
+<translation id="6449626816252815844">יש לבחור אמצעי תשלום</translation>
 <translation id="8009571545960303544">נדרשת חתימתך</translation>
 <translation id="5294062982587710720">שים לב כי Brave לא יכול לאמת מה יקרה אם תחתום. חתימה יכולה לאשר כמעט כל פעולה בחשבונך או בשמך, כולל (אך לא מוגבל ל)מתן שליטה מוחלטת בחשבונך ובנכסי הקריפטו לאתר המבקש את הבקשה. חתום רק אם אתה בטוח שאתה רוצה לבצע פעולה זו וסומך על האתר המבקש.</translation>
 <translation id="3474375934783434676">הירשם על אחריותך בלבד</translation>
@@ -1039,7 +1050,7 @@
 <translation id="3890989020011724401">חשבון חדש</translation>
 <translation id="7257603403519636638">הצג נכסים בחשבון</translation>
 <translation id="2092132085082887098">נכסים בחשבון</translation>
-<translation id="5723696625900399845">השתמש בפאנל זה כדי לגשת בצורה מאובטחת ל-web3 ולכל נכסי המטבעות הקריפטו שלך.</translation>
+<translation id="4612979983851181941">באפשרותך להשתמש בפאנל זה כדי לגשת בצורה מאובטחת אל Web3 ולכל נכסי הקריפטו שלך.</translation>
 <translation id="4460220693591349571">סוג פונקציה</translation>
 <translation id="838933475572692615">נתוני HEX</translation>
 <translation id="2240831799756994975">בתים</translation>
@@ -1051,13 +1062,13 @@
 <translation id="7739762330714405363">השתמש באותה סיסמה</translation>
 <translation id="1085027414516521238">MetaMask</translation>
 <translation id="7102907656918333773">ייבוא מן <ph name="WALLET_EXTENSION"/></translation>
-<translation id="8897114903450789862">ייבא את <ph name="WALLET_EXTENSION"/>חשבונות הנכנסים ל-Brave Wallet. תהנה מדרך מהירה ובטוחה יותר לנהל נכסי קריפטו ולקיים אינטראקציה עם Web 3 DApps.</translation>
+<translation id="1737856990004825123">באפשרותך לייבא את חשבונות ה-<ph name="WALLET_EXTENSION"/>  שלך אל Brave Wallet, ולהנות מדרך מהירה ובטוחה יותר לנהל נכסי קריפטו ואינטראקציה עם DApps של Web3.</translation>
 <translation id="4237840336687249184">סיסמה ל-MetaMask</translation>
 <translation id="2381605201035323535">ארנקי קריפטו</translation>
 <translation id="2770851145415891830">זוהה ארנק קריפטו קיים</translation>
 <translation id="4938145712652668388">כאשר תלחץ על "התחל" תייבא את ה-Crypto Wallet הקודם שלך לחוויית ה-Brave Wallet, ותיהנה מכל היתרונות המתוארים לעיל. נסה וספר לנו מה אתה חושב!</translation>
 <translation id="2237759620789871865">אם אתה מעדיף לדלג על הייבוא ולשמור על חוויית ה-Crypto Wallets הישנה, פשוט נווט להגדרות Brave Browser <ph name="LINK_BEFORE"/>ושנה את <ph name="LINK_AFTER"/>ברירת המחדל בחזרה ל-Crypto Wallets. תוכל גם לייבא, לנסות את ה-Brave Wallet החדש ולשנות בכל עת.</translation>
-<translation id="3301259443293676544">הזן את סיסמת ארנק הקריפטו הנוכחית שלך כדי לייבא ארנק ל-Brave Wallet. תהנה מדרך מהירה ובטוחה יותר לנהל נכסי קריפטו ואינטראקציה עם Web 3 DApps.</translation>
+<translation id="5590175005414413980">עליך להזין את סיסמת ארנק הקריפטו הנוכחית שלך כדי לייבא ארנק אל Brave Wallet, ולהנות מדרך מהירה ובטוחה יותר לנהל נכסי קריפטו ואינטראקציה עם DApps של Web3.</translation>
 <translation id="9099900965604225657">סיסמת ארנקי הקריפטו</translation>
 <translation id="4020495774166914146">איבדתי את הסיסמא וביטוי השחזור שלי, צור ארנק חדש.</translation>
 <translation id="6344138931392227467"><ph name="DEVICE_NAME"/> מחובר</translation>
@@ -1113,6 +1124,7 @@
 <translation id="1599636444563952897">הרשאת מגבלת הוצאה מאפשרת <ph name="SITE_ORIGIN"/>למשוך ולהוציא עד לסכום הבא:</translation>
 <translation id="4512871563176965522">קצבה מותאמת אישית</translation>
 <translation id="749944179568745958">כתובת ETH לא חוקית</translation>
+<translation id="2832270987629018596">כתובת SOL לא חוקית</translation>
 <translation id="882486206986535424">כתובת לא חוקית</translation>
 <translation id="6825399159373612149">דומיין <ph name="DOMAIN_NAME"/> אינו רשום</translation>
 <translation id="8971278306757462297">כתובת הנמען היא הכתובת של עצמך</translation>
@@ -1144,7 +1156,6 @@
 <translation id="3327639091470204775">לא ניתן להתחבר לגשר Trezor</translation>
 <translation id="6672377693827764095">שגיאה פנימית, לא ניתן לאחזר החשבונות</translation>
 <translation id="6889920539620318793">הגדר כפעיל</translation>
-<translation id="1462494615260983714">שגיאה בעיבוד העסקה</translation>
 <translation id="8933250418452564886">לא ניתן למצוא עסקת חומרה, יש לנסות שוב</translation>
 <translation id="5999974802900788338">התקבלה שגיאה מהתקן חומרה, ייתכן שעליך לאשר את העסקה במכשיר שלך</translation>
 <translation id="8523768065044261559">שגיאה בטיפול בעסקה, יש לנסות שוב</translation>
@@ -1166,11 +1177,19 @@
 <translation id="6423985584914773314">כתובת FIL לא חוקית</translation>
 <translation id="3898731124813934210">לרכישה באמצעות Wyre</translation>
 <translation id="5522073372365069684">לרכישה באמצעות Ramp</translation>
+<translation id="8725252491405767337">Ramp.Network</translation>
+<translation id="7623800836425615432">Wyre</translation>
+<translation id="7667423728712601865">רכשו קריפטו באמצעות ויזה או מאסטרקארד.</translation>
 <translation id="8528916244724490964">כל הרשתות</translation>
 <translation id="2781668117338732220">רשתות משניות</translation>
 <translation id="2816106784624007524">הגבלת הדלק חייבת להיות מספר שלם הגדול מאפס</translation>
 <translation id="3354376789153561654">יש לציין את נתוני העסקה 'אל'</translation>
 <translation id="8728991256628663004">נתוני העסקה 'מאת' חייבים להיות כתובת Filecoin חוקית</translation>
+<translation id="7003028930816622496">התקן Ledger נעול</translation>
+<translation id="3939390290522058485">כדי לבדוק את פרטי העסקה עבור <ph name="VALUE"/>, יש ללחוץ כאן</translation>
+<translation id="2317956709076373213">העסקה אושרה</translation>
+<translation id="310693998838023022">שגיאה בהשלמת העסקה</translation>
+<translation id="6395870673621520684">העסקה נפלה</translation>
 <translation id="3155170474926428993">דפדפן Tor</translation>
 <translation id="3745016858329272300">מידע כללי</translation>
 <translation id="4045404575593562245">אירועי שליטת Tor</translation>
@@ -1185,6 +1204,7 @@
 <translation id="7709075156958117386">אם יש בעיה באתר, נסו שלא להפעיל הגנות. <ph name="LINK_BEFORE"/> שימו לב: ייתכן והגנות הפרטיות של Brave יצטמצמו.<ph name="LINK_AFTER"/></translation>
 <translation id="8377155647357436161">עוקבים, מודעות ועוד חסומים <ph name="LINK_BEFORE"/>
 למידע נוסף<ph name="LINK_AFTER"/></translation>
+<translation id="7604553853176833536">ללא ההגנה של Brave Shields <ph name="LINK_BEFORE"/> לפרטים נוספים <ph name="LINK_AFTER"/></translation>
 <translation id="650318023204990401">בקרות מתקדמות</translation>
 <translation id="5799940914270080805">שינוי ההגדרות הללו עלול לגרום לבעיות באתרים.</translation>
 <translation id="9204041448536398473">הגדרות מגנים גלובלי</translation>
@@ -1210,6 +1230,8 @@
 <translation id="3795015906457257780">הצפייה שלך באתר זה נעשית בלי הגנת הפרטיות של Brave.</translation>
 <translation id="7194012750329511146">ההגנות של Brave 
 <ph name="NUMBER"/> חוסמות אפשרויות מעקב, פרסומות ועוד</translation>
+<translation id="4292121526390005808">פקודות חסומות</translation>
+<translation id="3541307549916475335">Brave VPN Panel UI</translation>
 <translation id="1742469581923031760">מתחבר…</translation>
 <translation id="1287487756047817908">מתנתק…</translation>
 <translation id="2325196879156848326">ההתחברות נכשלה</translation>
@@ -1227,9 +1249,11 @@
 <translation id="3181339219453722970">בחר את מיקום ה-VPN שלך</translation>
 <translation id="1751947227857853925">מהיר וללא הגבלה עד 100 Mbps</translation>
 <translation id="1400240082805528049">תמיכה 24/7</translation>
+<translation id="1693568075761612600">יצירת טופס הפנייה לתמיכה נכשלה, עליך לבדוק את החיבור שלך.</translation>
 <translation id="8463313539532697053">יש להמתין בזמן טעינת…</translation>
+<translation id="4317307602527599178">לא ניתן היה לבדוק את סטטוס הרכישה שלך. ייתכן והסיבה לכך היא בעיה ברשת.</translation>
 <translation id="4613076894734402086">עריכת אמצעי תשלום</translation>
-<translation id="1898254156730880135">נראה שהתשלום האחרון שלך עבור לא עבר. הגישה למנוי תושהה עד לפתרון סוגיית התשלום. עליך לנסות לערוך את אמצעי התשלום שלך, או לפנות לתמיכה של Brave.</translation>
+<translation id="8373427068383038263">נראה שהתשלום האחרון שלך עבור <ph name="VALUE"/> לא עבר. הגישה למנוי זה תושהה עד לפתרון בעיית התשלום. עליך לנסות לערוך את אמצעי התשלום שלך, או לפנות לתמיכה של Brave.</translation>
 <translation id="1839021455997460752">כתובת האימייל שלך</translation>
 <translation id="5154702632169343078">נושא</translation>
 <translation id="6625978880678465492">יש לבחור סיבה</translation>
@@ -1246,6 +1270,9 @@
 <translation id="6676791921618140305">גרסת מערכת ההפעלה:</translation>
 <translation id="1156325797949437777">התמיכה מוענקת בשיתוף Guardian.</translation>
 <translation id="3307461350293459700">חיבור ה-VPN נכשל. יש לנסות להתחבר שוב, ולהקפיד ללחוץ על ׳אפשר׳ כדי להפעיל את תצורת ה-VPN של Brave.</translation>
+<translation id="7261518280726313829">כיבוי DNS מאובטח או שימוש בשרתי ברירת מחדל במערכת Windows עלולים לחשוף בפני ספק האינטרנט שלך את שמות האתרים בהם ביקרת. Brave ממליץ שלא לעשות את זה. האם ברצונך לעשות זאת בכל מקרה?</translation>
+<translation id="888284761945060750">בהתאם למדיניות הארגון שלך, נעשתה השבתה של DNS מאובטח. שימוש ב-Brave VPN ללא הפעלה של DNS מאובטח עלול לחשוף בפני ספק האינטרנט או הארגון שלך את שמות האתרים בהם ביקרת.</translation>
+<translation id="1657858090675311947">אין לי עניין באזהרות נוספות בנושא</translation>
 <translation id="7586151660465233733">שווקים נוספים ב-<ph name="SITE_NAME"/></translation>
 <translation id="952067063131306699">צפו בשווקים וקנו קריפטו ב-FTX</translation>
 <translation id="5963745988819586370">שווקים</translation>

@@ -2,7 +2,6 @@
 <!DOCTYPE translationbundle>
 <translationbundle lang="nl">
 <translation id="3333887201479867589">Brave Rewards</translation>
-<translation id="7942180974165298215">Brave Advertentieblokkeerder</translation>
 <translation id="4615489450165434530">Meld een gebroken site</translation>
 <translation id="1209739344687072997">Meld een gebroken site</translation>
 <translation id="6406506848690869874">Sync</translation>
@@ -70,7 +69,6 @@ Of voer later wijzigingen door via <ph name="SETTINGS_EXTENIONS_LINK"/>.</transl
 <translation id="3425600262621021599">Een link in een Brave privévenster met Tor openen</translation>
 <translation id="3229091547987707389">Een directory importeren en delen</translation>
 <translation id="5029193871181468990">Brave Beloningen-pictogram verbergen</translation>
-<translation id="7595540212376041331">Brave Wallet-pictogram verbergen op werkbalk</translation>
 <translation id="4928988318462976765">Web Extensions Store</translation>
 <translation id="9181207987584064303">Bekijken in Web Extensions Store</translation>
 <translation id="3161744659507801211">Waarschuwing: Brave kan niet voorkomen dat extensies uw browsergeschiedenis opslaan.</translation>
@@ -108,6 +106,7 @@ Of voer later wijzigingen door via <ph name="SETTINGS_EXTENIONS_LINK"/>.</transl
 <translation id="2571596981920752023"><ph name="NUMBER_OF_TABS"/> tabbladen</translation>
 <translation id="2515126961943087659">Bat Ads-service</translation>
 <translation id="7924918279836988121">Batregisterservice</translation>
+<translation id="6040143037577758943">Sluit</translation>
 <translation id="4174337572777167894">Web Discovery Project</translation>
 <translation id="8659271182272561965">Draag wat anonieme zoek- en browsegegevens bij om Brave Search te verfijnen.</translation>
 <translation id="1516554614404600536">Tooltip van Brave</translation>
@@ -183,7 +182,6 @@ Of voer later wijzigingen door via <ph name="SETTINGS_EXTENIONS_LINK"/>.</transl
 <translation id="6817415381278637662">Stel Brave in als je standaardbrowser om gebruik te kunnen maken van de privacybescherming van Brave op elke webpagina die je opent.</translation>
 <translation id="8722651357687610395">Stel Brave in als standaard</translation>
 <translation id="2370739752330685659">Misschien later</translation>
-<translation id="3400357268283240774">Aanvullende instellingen</translation>
 <translation id="9156965752763025780">Je wijzigingen worden toegepast wanneer je Brave opnieuw start.</translation>
 <translation id="7179921470347911571">Nu Opnieuw Opstarten</translation>
 <translation id="4472575034687746823">Aan de slag</translation>
@@ -239,6 +237,14 @@ suggesties voor automatisch aanvullen</translation>
 <translation id="7390783310074170337">Standaard weergave</translation>
 <translation id="130615081792797568">Eenvoudig overzicht</translation>
 <translation id="2360360976480535628">Geavanceerde weergave</translation>
+<translation id="7617831480435794399">Abonneer je alleen op lijsten van entiteiten die je kent. Je browser zal regelmatig controleren of er lijstbijwerkingen zijn van de URL's die je invoert, waarbij jouw IP-adres wordt getoond aan hun server.</translation>
+<translation id="7791543448312431591">Toevoegen</translation>
+<translation id="9204006549413740506">Laatst bijgewerkt</translation>
+<translation id="6745592621698551453">Nu updaten</translation>
+<translation id="5334844597069022743">Bron bekijken</translation>
+<translation id="4720556299488643018">Afmelden</translation>
+<translation id="4516904298421534459">Lijsten filteren</translation>
+<translation id="802154636333426148">Downloaden mislukt</translation>
 <translation id="6821903322090655051">Brave-beloningen zijn uitgeschakeld</translation>
 <translation id="413570371620795359">Open het venster Beloningen om in te schakelen en aan de slag te gaan</translation>
 <translation id="3849957491997306859">Automatisch gedetecteerd</translation>
@@ -325,6 +331,9 @@ suggesties voor automatisch aanvullen</translation>
 <translation id="5093410893656857925">Apparaattype kiezen</translation>
 <translation id="4581190919849683048">Naar welk type apparaat wil je synchroniseren?</translation>
 <translation id="4112587618563511470">Ongeldige synchronisatie code, check and probeer opnieuw.</translation>
+<translation id="859506441384380749">Deze code is gegenereerd door een verouderde versie van Brave; upgrade eerst uw andere apparaat</translation>
+<translation id="3132642509209154999">Deze code is verlopen. Genereer een nieuwe code op je andere apparaat en probeer het opnieuw.</translation>
+<translation id="2859229680945501779">Deze code is ongeldig. Controleer of de tijd en tijdzone correct zijn ingesteld op uw apparaat.</translation>
 <translation id="2339730291919608488">Synchronisatieketen verlaten</translation>
 <translation id="115699408012835975">Als je de Synchronisatie opnieuw instelt, moet je een synchronisatie code van een ander apparaat opnieuw invoeren. Ben je er zeker van om door te gaan?</translation>
 <translation id="6092564993102418148">Weet u zeker dat u het geselecteerde apparaat wilt verwijderen uit de synchronisatieketen?</translation>

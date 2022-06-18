@@ -84,7 +84,20 @@
 <translation id="6587448235155023666">আপনি পরবর্তীকালে Brave পুনরায় চালু করার সময় আপনার পরিবর্তনগুলি কার্যকর হবে</translation>
 <translation id="8701563696941209024">এখনই পুনরায় চালু করুন</translation>
 <translation id="834487290629916192">পরে</translation>
+<translation id="7207456302801184289">Brave-এ আপনাকে স্বাগত</translation>
+<translation id="4117451092682672487">গোপনীয়তা। সহজ করা হয়েছে।</translation>
+<translation id="7909375417585209817">ডিফল্ট হিসাবে Brave-এর মাধ্যমে, আপনি যে লিঙ্কেই ক্লিক করবেন সেটি Brave-এর গোপনীয়তা সুরক্ষার মাধ্যমে খুলবে।</translation>
+<translation id="5148943178722443958">Brave কে আরও ভালো করে তুলতে সাহায্য করুন৷।</translation>
+<translation id="6188781052835527980">আপনি ক্রাশ বা ফ্রিজের অভিজ্ঞতা লাভ করলে বেনামী ডায়াগোনস্টিক রিপোর্ট পাঠান।</translation>
+<translation id="1929905278861178845">Brave-এর ইউজাররা কী ধরনের ফিচার ব্যবহার করে সেই সম্পর্কে সম্পূর্ণ ব্যক্তিগত ও বেনামী প্রোডাক্টের তথ্য শেয়ার করুন।</translation>
+<translation id="2877653791257935258">ওয়েবসাইটের নাম বা URL লিখুন</translation>
+<translation id="5329830149661250028">Brave-এর পার্থক্য দেখুন: কোনও বিজ্ঞাপন নেই। কোনও ট্র্যাকার নেই। পেজ দ্রুত লোড হওয়ার উপায়।</translation>
+<translation id="3545804467215833536">Brave Shields দেখতে ট্যাপ করুন</translation>
+<translation id="1724327820822194498">শিল্ডের সাথে প্রতিটি পেজে Brave ব্লকের সব খারাপ জিনিসগুলো দেখুন।</translation>
+<translation id="5386259141409498372"><ph name="BIG_TECH"/> এবং অন্য <ph name="TRACKER"/>টি বিজ্ঞাপন &amp; ট্র্যাকার ব্লক করা আছে</translation>
+<translation id="3092683655478890840"><ph name="TRACKER_COUNT"/>টি বিজ্ঞাপন &amp; ট্র্যাকার ব্লক করা হয়েছে</translation>
 <translation id="8281886186245836920">ছেড়ে যান</translation>
+<translation id="6165508094623778733">আরো জানুন</translation>
 <translation id="986879628471635371">অনবোর্ডের সমস্যা সমাধান</translation>
 <translation id="5808759341041733958">ডিফল্ট সার্চ ইঞ্জিন বেছে নিন</translation>
 <translation id="1331593888918588693">অ্যাপ সেটিংসে আপনি পরে সবসময় আপনার পছন্দ পরিবর্তন করতে পারবেন।</translation>
@@ -112,12 +125,12 @@
 <translation id="1166682575529520472">মাসিক</translation>
 <translation id="1628742278973105368">আপনার প্রথম মাসিক বখশিশ পাঠানো হবে এই তারিখে:</translation>
 <translation id="298349922412901215">দ্রষ্টব্য: এই নির্মাতাটি Brave ব্যবহারকারীদের কাছ থেকে অবদান নেওয়ার জন্য এখনও পর্যন্ত সাইন আপ করেননি। তারা যাচাই না করা পর্যন্ত বা 90 দিন কেটে যাওয়ার আগে পর্যন্ত আমরা অবদান রাখার চেষ্টা চালিয়ে যাব।</translation>
-<translation id="635752162765375187">দ্রষ্টব্য: এই স্রষ্টা বর্তমানে আপনার ওয়ালেট থেকে টিপগুলো পাওয়ার জন্য কনফিগার করা নেই। আপনার করা যে কোনও টিপ আপনার ওয়ালেটে পড়ে থাকবে এবং 90 দিন পরে স্বয়ংক্রিয়ভাবে পুনঃপ্রচেষ্টা করবে।</translation>
+<translation id="635752162765375187">দ্রষ্টব্য: এই নির্মাতাটিকে বর্তমানে আপনার রিওয়ার্ডসের কাস্টোডিয়াল ওয়ালেট পরিষেবা থেকে টিপসগুলি গ্রহণ করার মতো কনফিগার করা নেই। আপনার পাঠানো যে কোনও টিপ আপনার ওয়ালেটে পড়ে থাকবে এবং 90 দিন পরে স্বয়ংক্রিয়ভাবে পুনরায় চেষ্টা করবে।</translation>
 <translation id="1910721550319506122">স্বাগত!</translation>
 <translation id="3165726837666415756">আপনি একটি পরামর্শ পাঠানোর মাধ্যমে এই সাইটটি সমর্থন করতে পারেন। এইভাবে আপনি দারুণ সামগ্রীটি তৈরি করার জন্য তাদেরকে ধন্যবাদ জানাতে পারেন। ক্যালেন্ডারের প্রতি মাসের প্রথম সপ্তাহের মধ্যে যাচাইকৃত সামগ্রী নির্মাতাদেরকে তাদের পরামর্শগুলির জন্য অর্থপ্রদান করা হয়।</translation>
 <translation id="1704859330137112950">যদি আপনি চান, তবে আপনি অবিরতভাবে এই সাইটটিকে সমর্থন করতে মাসিক টিপগুলির সময় নির্ধারণ করতে পারেন।</translation>
 <translation id="245015745140252435">দানের পরিমান</translation>
-<translation id="7873874596836611687">ওয়ালেট ব্যালেন্স</translation>
+<translation id="7873874596836611687">পুরষ্কার ব্যালেন্স:</translation>
 <translation id="2573313946367623146">আমার পরামর্শ পাঠান</translation>
 <translation id="3250511771491660127">এটি মাসিক করে দিন</translation>
 <translation id="7658239707568436148">বাতিল করুন</translation>
@@ -137,7 +150,7 @@
 <translation id="8220228041552340594">অক্টোবর</translation>
 <translation id="8280223431922155812">নভেম্বর</translation>
 <translation id="4254029385847607686">ডিসেম্বর</translation>
-<translation id="4258022280942725182">আপনার ওয়ালেট</translation>
+<translation id="4258022280942725182">আপনার Brave রিওয়ার্ডস</translation>
 <translation id="3960619311638643872">Brave VPN</translation>
 <translation id="1772301834467143364">Brave নিউজ</translation>
 <translation id="7760215798627399379"><ph name="VALUE"/> USD</translation>
@@ -172,8 +185,8 @@
 <translation id="8689997599821157251">আপনি অর্জন করেছেন</translation>
 <translation id="7550470870580166294">অপর্যাপ্ত তহবিল</translation>
 <translation id="2775064702681588061">আপনার Brave পুরস্কারের অ্যাকাউন্ট একটি জমার জন্য অপেক্ষা করছে।</translation>
-<translation id="2630264552940126640">ওয়ালেটের ব্যাকআপ নিন</translation>
-<translation id="238922425564381955">অনুগ্রহ করে আপনার Brave ওয়ালেটটিতে ব্যাকআপ নিন।</translation>
+<translation id="2630264552940126640">Brave রিওয়ার্ডস-এর ব্যাক আপ নিন</translation>
+<translation id="238922425564381955">অনুগ্রহ করে আপনার Brave রিওয়ার্ডস-এর ব্যাকআপ নিন।</translation>
 <translation id="2323069945529668668">ওহহো!</translation>
 <translation id="7510166204621526816">Brave পুরস্কারের সার্ভারটি কাজ করছে না। আমরা যত তাড়াতাড়ি সম্ভব এটির সমাধান করব।</translation>
 <translation id="683765328936486920">YouTube এ</translation>
@@ -549,7 +562,7 @@
 <translation id="5493402808936397665">আপনার পাসওয়ার্ড না লিখে দ্রুত আপনার ওয়ালেট আনলক করতে বায়োমেট্রিক্স সক্রিয় করুন।</translation>
 <translation id="8030647312184163932">ফিঙ্গারপ্রিন্ট আনলক করুন</translation>
 <translation id="4090490645603511157">আপনার পাসওয়ার্ড না লিখে দ্রুত আপনার ওয়ালেট আনলক করতে বায়োমেট্রিক্স ব্যবহার করুন।</translation>
-<translation id="1544192797660353713">ওয়ালেট (বিটা)</translation>
+<translation id="1544192797660353713">ওয়ালেট</translation>
 <translation id="6901810042765869341">আপনার Brave ওয়ালেট ক্রিপ্টো অ্যাকাউন্ট রিস্টোর করতে আপনার রিকভারি বাক্যাংশটি লিখুন।</translation>
 <translation id="9120654436199628567">ক্রিপ্টো অ্যাকাউন্ট রিস্টোর করুন</translation>
 <translation id="4811736040444856406">রিকভারি বাক্যাংশ দেখান</translation>
@@ -613,7 +626,7 @@
 <translation id="8239147115686034860">স্বয়ংক্রিয়ভাবে Brave ওয়ালেট লক করুন</translation>
 <translation id="414639769490080648">Brave ওয়ালেট স্বয়ং স্বয়ংক্রিয়ভাবে লক না হওয়া অবধি অপেক্ষারত মিনিটের সংখ্যা</translation>
 <translation id="4993345308607970390">Brave ওয়ালেট রিসেট করুন</translation>
-<translation id="4322846864135539519">আপনি কি আপনার ওয়ালেট রিসেট করার বিষয়ে নিশ্চিত? যদি আপনার ওয়ালেটের ব্যাক আপ নেওয়া না হয় তাহলে রিসেট করার ফলে আপনি সমস্ত অ্যাকাউন্টের ডেটা (যেকোনো সংশ্লিষ্ট তহবিল সহ) হারাবেন। নিশ্চিত করতে "<ph name="CONFIRMATION_PHRASE"/>" টাইপ করুন।</translation>
+<translation id="4322846864135539519">আপনি কি সত্যিই আপনার Brave পুরস্কার রিসেট করতে চান? যদি আপনার ওয়ালেটের ব্যাক আপ নেওয়া না হয় তাহলে রিসেট করার ফলে আপনি সমস্ত অ্যাকাউন্টের ডেটা (যেকোনো সংশ্লিষ্ট তহবিল সহ) হারাবেন। নিশ্চিত করতে "<ph name="CONFIRMATION_PHRASE"/>" টাইপ করুন।</translation>
 <translation id="4862812525895306758">লেনদেন এবং অপ্রত্যাশিত তথ্য পরিষ্কার করুন</translation>
 <translation id="5693968582510626466">লেনদেনগুলো সাফ করা ডেভেলপারদের জন্য বা একটি স্থানীয় সার্ভারে অবস্থা সাফ করার জন্য উপকারী হতে পারে</translation>
 <translation id="5421107279168565467">আপনি কি আপনার ওয়ালেটের সব লেনদেন এবং বর্তমান তথ্য রিসেট করার বিষয়ে নিশ্চিত? এই বিকল্পটি বেশিরভাগ ক্ষেত্রে একটি স্থানীয় টেস্ট সার্ভার চালনাকারী ডেভেলপাররা ব্যবহার করেন। নিশ্চিত করতে "<ph name="CONFIRMATION_PHRASE"/>" টাইপ করুন।</translation>
@@ -633,8 +646,8 @@
 <translation id="1190117345570417902">Wireguard নিরাপদ এনক্রিপ্ট করা VPN টানেল ব্যবহার করে</translation>
 <translation id="1571230671455380494">আমরা কখনও আপনার তথ্য শেয়ার বা বিক্রি করি না</translation>
 <translation id="276866628038850725">সমস্ত প্ল্যান সহ বিনামূল্যে একটি 7 দিনের ট্রায়াল!</translation>
-<translation id="7280825497485894053">মাসিক সাবস্ক্রিপশন</translation>
-<translation id="3001303523417455986">বাত্সরিক সাবস্ক্রিপশন</translation>
+<translation id="1532536259167115948">মাসিক সদস্যতা <ph name="TRIAL_TEXT"/></translation>
+<translation id="6344668702581136255">বার্ষিক সাবস্ক্রিপশন <ph name="TRIAL_TEXT"/></translation>
 <translation id="6748319398471481216">মাসিক রিনিউ হয়</translation>
 <translation id="7734634586133069282"><ph name="MONTHLY_AMOUNT"/> / মাস।</translation>
 <translation id="1163809943099641131">এক বছর</translation>
@@ -655,8 +668,7 @@
 আপনি যদি এই অনুরোধ গ্রহণ না করেন, VPN পুনরায় সংযোগ করবে না এবং আপনার ইন্টারনেট সংযোগ সুরক্ষিত হবে না।</translation>
 <translation id="2429299231491852747">সংযোগের অনুরোধ স্বীকার করুন</translation>
 <translation id="3428909627460825679">Vpn প্রোফাইল তৈরি করা যায়নি। অনুগ্রহ করে আবার চেষ্টা করুন।</translation>
-<translation id="1264320790738638119">কেনার যাচাইকরণ ব্যর্থ হয়েছে। অনুগ্রহ করে আবার চেষ্টা করুন।</translation>
-<translation id="8905950042180169719">পটভূমিতে VPN চলছে</translation>
+<translation id="1264320790738638119">আপনার সদস্যতার মেয়াদ ফুরিয়ে গেছে। আপনি যে কোনো সময় আবার সদস্যতা নিতে পারবেন।</translation>
 <translation id="8681480718817027245">সাবস্ক্রিপশন</translation>
 <translation id="7805768142964895445">স্থিতি</translation>
 <translation id="5747552184818312860">মেয়াদ শেষ হবে</translation>
@@ -684,15 +696,15 @@
 <translation id="1219475260382643267">ওয়েবসাইট কাজ করে না</translation>
 <translation id="7138678301420049075">অন্যান্য</translation>
 <translation id="4827315939627587219">VPN কনফিগারেশন রিসেট করুন</translation>
-<translation id="6883280223123252086">আপনি কি vpn কনফিগারেশন পুনরায় সেট করতে চান?</translation>
+<translation id="1705662265912724430">আপনি কি VPN কনফিগারেশন পুনরায় সেট করতে চান?</translation>
 <translation id="604124094241169006">স্বয়ংক্রিয়</translation>
 <translation id="7475580600756356589">আপনার সার্ভারের সাথে সংযুক্ত হচ্ছে। একটু সময় নেওয়া উচিত...</translation>
 <translation id="1342728075788541348">আপনার সার্ভার থেকে সংযোগ বিচ্ছিন্ন করা হচ্ছে। একটু সময় নেওয়া উচিত...</translation>
 <translation id="669072536454692117">সাবস্ক্রিপশন সফলভাবে উপযোগ করা হয়েছে</translation>
 <translation id="1187506504156101449">ক্রয়ের স্বীকৃতি দিতে ব্যর্থ :</translation>
 <translation id="8420522105268941892">আপনি ইতিমধ্যে সাবস্ক্রিপশনে সাবস্ক্রাইব করেছেন। সাবস্ক্রিপশন পুনরুদ্ধার করার চেষ্টা করুন।</translation>
-<translation id="404414664190867625">ত্রুটি!!\nএকজন ব্যবহারকারীর কারণে কেনার প্রবাহটি বাতিল করা হচ্ছে।</translation>
-<translation id="3515141458161417228">ত্রুটি!!\nকেনা ব্যর্থ হয়েছে..</translation>
+<translation id="404414664190867625">আপনি আপনার সদস্যতা ক্রয় প্রস্থান করেছেন।</translation>
+<translation id="3515141458161417228">কেনাকাটা করা যায়নি। অনুগ্রহ করে Google Play সহায়তায় যোগাযোগ করুন।</translation>
 <translation id="6452181791372256707">প্রত্যাখ্যান</translation>
 <translation id="8030852056903932865">অনুমোদন করুন</translation>
 <translation id="1597199892790541240">গ্যাস ফী</translation>
@@ -727,6 +739,7 @@
 <translation id="2199215899212542417">ফাংশনের প্রকার: <ph name="FTYPE"/></translation>
 <translation id="4803003663447398145">কোনো ডেটা নেই</translation>
 <translation id="9061799688859969073"><ph name="ACCOUNT_NAME"/> পাঠানো হয়েছে <ph name="CRYPTO_VALUE"/> <ph name="ASSET"/> ($<ph name="FIAT_VALUE"/>) - <ph name="DATE"/></translation>
+<translation id="1148985422232712046"><ph name="ACCOUNT_NAME"/> <ph name="ASSET"/> #<ph name="ASSET_ID"/> - <ph name="DATE"/> পাঠিয়েছে</translation>
 <translation id="2911329628253651823"><ph name="ACCOUNT_NAME"/> <ph name="ASSET"/> - <ph name="DATE"/>-এ অনুমোদিত করেছে</translation>
 <translation id="7400134344541309180">আল্টিমেটেড <ph name="ASSET"/> অনুমোদিত হয়েছে - <ph name="PROXY"/></translation>
 <translation id="2428770727194227378"><ph name="ACCOUNT_NAME"/> সোয়াইপ করুন - <ph name="DATE"/></translation>
@@ -791,6 +804,7 @@
 <translation id="7732576862074737148">≈ <ph name="VALUE"/> USD</translation>
 <translation id="3079421456571897484"><ph name="VALUE"/> BAT</translation>
 <translation id="5802665280774361839">ঠিকানা বারে স্বতঃসম্পূর্ণ দেখান</translation>
+<translation id="8982438328166986164">আপনার বুকমার্ক ও ব্রাউজিংয়ের ইতিহাসের ভিত্তিতে ডিসপ্লে ওয়েবসাইটের পরামর্শ দেওয়া হয়।</translation>
 <translation id="1241283133946520352">নেটওয়ার্কসমূহ</translation>
 <translation id="1062463687579789365">ওয়ালেট নেটওয়ার্ক কাস্টমাইজেশন</translation>
 <translation id="2512821599885971349">নেটওয়ার্ক যোগ করুন</translation>
@@ -825,7 +839,6 @@
 <translation id="3586752056660754651">স্বাক্ষর করুন</translation>
 <translation id="6592721981110586529">Brave ওয়ালেটের সাথে সংযোগ করুন</translation>
 <translation id="329813193938846695">অ্যাকাউন্ট (গুলি) নির্বাচন করুন</translation>
-<translation id="3890989020011724401">নতুন আ্যাকাউন্ট</translation>
 <translation id="291375746846291973">শুধুমাত্র আপনার বিশ্বাস সাইটের সাথে সংযুক্ত হন।</translation>
 <translation id="385051799172605136">ফিরুন</translation>
 <translation id="1060221736464994328">এই সাইটটিকে নেটওয়ার্ক স্যুইচ করার অনুমতি দেবেন?</translation>
@@ -842,24 +855,34 @@
 <translation id="85136472535634474">VPN সেটিংস খুলুন</translation>
 <translation id="8352805003811526272">কনফিগারেশন রিসেট করা হচ্ছে ...</translation>
 <translation id="6809312301323611382">আপনি ইতিমধ্যেই একই সার্ভার নির্বাচন করে ফেলেছেন।</translation>
-<translation id="5665084657857645952">অনুমতি বাতিল করা হয়েছে</translation>
+<translation id="5665084657857645952">আপনি VPN প্রোফাইলের ইনস্টলেশন বন্ধ করেছেন।</translation>
 <translation id="9106265941552476098"><ph name="TRANSACTION_LENGTH"/> লেনদেন প্রত্যাখ্যান করুন</translation>
 <translation id="523862956770478816">সাইটের অনুমতি</translation>
 <translation id="2141313140218636977"><ph name="VALUE"/>টি অ্যাকাউন্ট সযুক্ত আছে</translation>
+<translation id="3890989020011724401">নতুন আ্যাকাউন্ট</translation>
 <translation id="4305817255990598646">পাল্টান</translation>
 <translation id="4804818685124855865">সংযোগ বিচ্ছিন্ন করুন</translation>
 <translation id="8009571545960303544">আপনার স্বাক্ষরের অনুরোধ জানানো হয়েছে</translation>
+<translation id="3484981968509595506">একটি DApp আপনাকে সর্বজনীন এনক্রিপশন কী পাঠানোর অনুরোধ করছে।</translation>
+<translation id="2291002548681057345">আপনার ওয়ালেট পাবলিক এনক্রিপশন কী দরকার। আপনি এই কী দিতে সম্মতি জানালে, সাইট আপনার জন্য এনক্রিপ্টেড মেসেজ লিখতে পারবে।</translation>
+<translation id="3340247553212049934">সরবরাহ করুন</translation>
 <translation id="1982257600591932657">নেটওয়ার্কের নাম</translation>
 <translation id="5052727830821470769">নেটওয়ার্ক URL</translation>
 <translation id="4822132585477111396">চেন আইডি</translation>
 <translation id="7131971375297699539">মুদ্রার প্রতীক</translation>
 <translation id="7982789257301363584">নেটওয়ার্ক</translation>
-<translation id="2521480044079508357">এটি Brave ওয়ালেটের মধ্যে এই নেটওয়ার্কটি ব্যবহার করার অনুমতি দেবে।</translation>
+<translation id="7540715999708954128">এটি Brave ওয়ালেটের মধ্যে এই নেটওয়ার্কটি ব্যবহার করার অনুমতি দেবে। আরও জানুন।</translation>
+<translation id="8759753423332885148">আরও জানুন।</translation>
 <translation id="4717431746210146708">এই সাইটটিকে একটি নেটওয়ার্ক যুক্ত করার অনুমতি দেবেন?</translation>
 <translation id="3378339846292573874">প্রস্তাবিত টোকেন যোগ করুন</translation>
 <translation id="2322227405137827074">আপনি কি এই টোকেনটি ইম্পোর্ট করতে চান?</translation>
 <translation id="1324417023773393937">Brave ব্রাউজার</translation>
 <translation id="6044189892950611565">Brave ব্রাউজারের জন্য বিজ্ঞপ্তির চ্যানেল</translation>
+<translation id="1173919438868967364">অ্যাকাউন্ট নির্বাচন করুন</translation>
+<translation id="8922793255489232731">এর জন্য ম্যাচিং টাইমজোন পাওয়া যায়নি: <ph name="VALUE"/></translation>
+<translation id="8231907121684689093">শীর্ষ স্থানীয় সাইটগুলি দেখান</translation>
+<translation id="6471216025161697462"><ph name="VALUE"/>-এ সংযুক্ত হয়েছে</translation>
+<translation id="1968852757206592413">ট্রায়াল</translation>
 <translation id="6602036279006002239">দ্রষ্টব্য: এই স্রষ্টা বর্তমানে আপনার ওয়ালেট থেকে টিপগুলো পাওয়ার জন্য কনফিগার করা নেই। আপনার করা যে কোনও টিপ আপনার ওয়ালেটে পড়ে থাকবে এবং 90 দিন পরে স্বয়ংক্রিয়ভাবে পুনঃপ্রচেষ্টা করবে।</translation>
 <translation id="3370968821559864204">ওয়ালেট ব্যালেন্স</translation>
 <translation id="3780605330121608425">আপনার ওয়ালেট</translation>

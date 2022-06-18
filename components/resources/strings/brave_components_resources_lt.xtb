@@ -242,6 +242,7 @@ Window with Tor“ ir vėl įjunkite. Vis dar turite problemų?</translation>
 <translation id="1911900517212490188">Įvestas atkūrimo kodas daugiau nepalaikomas. Norėdami gauti naują kodą, apsilankykite <ph name="BEGIN_LINK"/>here<ph name="END_LINK"/>.</translation>
 <translation id="7583327070390027131">Kita mėnesinių arbatpinigių data</translation>
 <translation id="6231182869178328516">Naudodamasis „Brave“ naršykle ką tik daviau arbatpinigių <ph name="NAME"/>. Daugiau apie tai galite sužinoti adresu https://brave.com/tips.</translation>
+<translation id="5916536234616514390">Man patinka, kad <ph name="HASHTAG"/>„Brave“ leidžia paremti kūrėjus! Ką tik <ph name="NAME"/> daviau <ph name="HASHTAG2"/>BAT. Jei jis patvirtins https://creators.brave.com iki <ph name="DATE"/>, BAT priklausys jam!</translation>
 <translation id="8404935570206006581">TipWithBrave</translation>
 <translation id="3082557070674409251">Spustelėta</translation>
 <translation id="7119308337584989771">Atsisakyta</translation>
@@ -262,6 +263,8 @@ Window with Tor“ ir vėl įjunkite. Vis dar turite problemų?</translation>
 <translation id="8218538368080510976">Klaida: regionas nepalaikomas</translation>
 <translation id="5382684862562314222">„Uphold“ dar nepalaiko BAT jūsų regione.</translation>
 <translation id="9074594632540931067">Klaida: BAT nepasiekiami</translation>
+<translation id="5376524136040178759">„Uphold“ duomenimis, šiuo metu taikomi tam tikri apribojimai jūsų „Uphold“ sąskaitai. Prisijunkite prie savo „Uphold“ sąskaitos ir patikrinkite, ar yra pranešimų arba likusių įvykdyti reikalavimų, tada bandykite dar kartą. Pavyzdžiui, gali prireikti, kad „Uphold“ suteiktumėte daugiau informacijos.</translation>
+<translation id="6996157559236886133">Klaida: apribotos „Uphold“ paskyros funkcijos</translation>
 <translation id="3274650021044762770">Kilo problema patvirtinant jūsų naršyklės užklausą prijungti „Brave Rewards“ prie jūsų paskyros. Galite kreiptis į <ph name="PROVIDER"/> palaikymo tarnybą, kad gautumėte <ph name="BEGIN_LINK"/> <ph name="END_LINK"/> daugiau pagalbos.</translation>
 <translation id="1316066811927496401">Klaida: prašymo patvirtinti nepavyko</translation>
 <translation id="1737873393693460829">Įjungdami [[title]] sutinkate su <ph name="BEGIN_LINK1"/>paslaugų teikimo sąlygomis<ph name="END_LINK1"/> ir <ph name="BEGIN_LINK2"/>privatumo politika<ph name="END_LINK2"/>.</translation>
@@ -279,6 +282,8 @@ Window with Tor“ ir vėl įjunkite. Vis dar turite problemų?</translation>
 <translation id="5112354605357157725">Tęskite prisijungimą</translation>
 <translation id="1280764044837262633"><ph name="PROVIDER"/> reikalauja, kad minimalus likutis būtų <ph name="AMOUNT"/> BAT, kad galėtumėte susikurti paskyrą. Jei paskyrą prijungėte anksčiau,</translation>
 <translation id="1892970806832316900">Laukiama iki <ph name="DATE"/></translation>
+<translation id="7849926087559412554">Oi! Jūsų naršyklė negali priimti „Brave“ privačios reklamos.</translation>
+<translation id="5177429570315095022">Reikia atnaujinti jūsų naršyklę, kad toliau matytumėte reklamas.</translation>
 <translation id="752216563428219524">Reklamos neinicijuotos, atnaujinkite puslapį.</translation>
 <translation id="7422678632904904341">Suma:</translation>
 <translation id="6969783933307596818">Automatiškai atnaujinti kas 5 sekundes</translation>
@@ -759,6 +764,7 @@ Window with Tor“ ir vėl įjunkite. Vis dar turite problemų?</translation>
 <translation id="7306880305145342514">Sveikiname! Gavote atlygį už šį mėnesį – <ph name="MONTH"/></translation>
 <translation id="3007207731685398329"><ph name="AMOUNT"/> atlygį už šį mėnesį – <ph name="MONTH"/> – gausite po <ph name="DAYS"/></translation>
 <translation id="5878420576943709750">Jūsų <ph name="AMOUNT"/> atlygis už šį mėnesį – <ph name="MONTH"/> – jau pakeliui. Užsukite patikrinti!</translation>
+<translation id="3825131544027418568"><ph name="BEGIN_BOLD"/>Prisijunkite prie „ <ph name="PROVIDER"/>“<ph name="END_BOLD"/>, kad pamatytumėte savo likutį</translation>
 <translation id="2659764755126740206">Eiti į mano <ph name="PROVIDER"/> paskyrą</translation>
 <translation id="1165667598801520610">Pridėti lėšų</translation>
 <translation id="2394961582378297792">Atsijungta</translation>
@@ -798,6 +804,7 @@ Window with Tor“ ir vėl įjunkite. Vis dar turite problemų?</translation>
 <translation id="167698752210114155">Įvyko vidinė klaida</translation>
 <translation id="2326876601333401685">Šis RPC metodas nepalaikomas.</translation>
 <translation id="1128992132632883337">Įvyko atsakymo analizės klaida</translation>
+<translation id="5382339341735118861">Įvyko bendro pobūdžio užklausos apdorojimo klaida</translation>
 <translation id="1680597601664421644">Importuojama mnemonika „Brave“ piniginei yra netinkama</translation>
 <translation id="4641919696349069826">Užklausa jau vykdoma</translation>
 <translation id="872806943696014633">Nėra operacijos duomenų</translation>
@@ -817,11 +824,13 @@ Window with Tor“ ir vėl įjunkite. Vis dar turite problemų?</translation>
 <translation id="4232775951515678071">Gauti operacijos tipo nepavyko</translation>
 <translation id="2080935885647755539">Gauti operacijos EIP-1559 mokesčių už dujas nepavyko</translation>
 <translation id="4843814354611030845">Naudotojas atmetė operaciją</translation>
+<translation id="1462494615260983714">Apdorojant operaciją įvyko klaida</translation>
 <translation id="4886059598718763020">„<ph name="VALUE"/>“ neturi įgaliojimų pasirašyti pranešimą</translation>
 <translation id="8719220598078667817">Nepavyko pasirašyti sandorio</translation>
 <translation id="875506212625074179">Neteisingas grandinės ID atsakymas iš RPC paslaugos</translation>
 <translation id="5486744676117070166">Nepavyko gauti kitos nonce vertės</translation>
 <translation id="6180576227145734714">Nurodžius su operacijos duomenimis susijęs gavėjas turi būti tinkamas adresas.</translation>
+<translation id="6688162556547723415">Naudotojas nepatvirtino prašomo metodo ir (arba) sąskaitos.</translation>
 <translation id="4958950550253325418">„Defi“ programos</translation>
 <translation id="735961408871282410">NFT rinkos</translation>
 <translation id="7740287852186792672">Paieškos rezultatai</translation>
@@ -864,7 +873,8 @@ Window with Tor“ ir vėl įjunkite. Vis dar turite problemų?</translation>
 <translation id="1191686659164947414">Operacija galėjo būti paveikta kenkėjiškų veiksmų</translation>
 <translation id="632241521608275119">Nesutapimo paklaida</translation>
 <translation id="4500473291496079954">Baigia galioti po</translation>
-<translation id="2236833281018938257">0x adresas arba URL</translation>
+<translation id="2236833281018938257">Piniginės adresas arba URL</translation>
+<translation id="928500657730628112">Piniginės adresas</translation>
 <translation id="2860280209982026951">„Brave“ <ph name="LINK_BEFORE"/>0x<ph name="LINK_AFTER"/> naudoja kaip DEX rinktuvą.</translation>
 <translation id="151946611346774041">0x apdoros eterio adreso ir IP adreso informaciją, kad įvykdytų operaciją (įskaitant pasiūlymų gavimą). 0x šiuos duomenis naudos TIK operacijų apdorojimo tikslais.</translation>
 <translation id="4626407663177532837">Į pasiūlymą įtrauktas 0,875% „Brave“ mokestis.</translation>
@@ -872,7 +882,7 @@ Window with Tor“ ir vėl įjunkite. Vis dar turite problemų?</translation>
 <translation id="6575120282593094155">Dar neturite <ph name="ACCOUNT_TYPE"/> paskyros. Sukurti paskyrą dabar?</translation>
 <translation id="2704606927547763573">Nukopij.</translation>
 <translation id="1420318137760245955">Sveiki, tai naujoji „Brave“ piniginė</translation>
-<translation id="8303434745767477417">Laikykite kriptoaktyvus savo žinioje. Stebėkite investicijų portfelio rezultatus ir sąveikaukite su „Web3 DApps“. Prekiaukite, skolinkitės ir skolinkite naudodami „DeFi“ tiesiai privačioje naršyklėje „Brave“. Jokių plėtinių ar atsisiuntimų.</translation>
+<translation id="3671745544278414606">Laikykite kriptoaktyvus savo žinioje. Stebėkite investicijų portfelio rezultatus ir sąveikaukite naudodami „Web3 DApps“. Prekiaukite, skolinkitės ir skolinkite naudodami „DeFi“ tiesiai privačioje naršyklėje „Brave“. Jokių plėtinių ar atsisiuntimų.</translation>
 <translation id="6972754398087986839">Darbo pradžia</translation>
 <translation id="375882617301124395">Susikurkite atsarginę kriptovaliutos piniginės kopiją</translation>
 <translation id="180032279811483155">Atlikdami kitą veiksmą, matysite <ph name="RECOVERY_PHRASE_LENGTH"/> žodžių atkūrimo frazę, kurią galėsite panaudoti pagrindinėms kriptovaliutos sąskaitoms atkurti. Laikykite frazę saugioje vietoje. Ši atkūrimo frazė yra vienintelis būdas atgauti prieigą prie sąskaitos pamiršus slaptažodį, praradus įrenginį ar įvykus įrenginio vagystei, arba norint pereiti nuo vienos piniginės prie kitos.</translation>
@@ -901,7 +911,7 @@ Window with Tor“ ir vėl įjunkite. Vis dar turite problemų?</translation>
 <translation id="163697698769819510">Susikurkite atsarginę piniginės kopiją dabar, kad apsaugotumėte savo turtą ir pasirūpintumėte, kad niekada neprarastumėte prieigos.</translation>
 <translation id="1018806299114415224">Kurti atsarginę kopiją dabar</translation>
 <translation id="5234764350956374838">Atsisakyti</translation>
-<translation id="4075073132992924258">„Brave“ piniginė nenustatyta kaip numatytoji, todėl nereaguos į „Web3 DApps“. Apsilankykite nustatymų srityje ir pakeiskite numatytąją piniginę.</translation>
+<translation id="1400709719911593089">„Brave“ piniginė nenustatyta kaip numatytoji, todėl nereaguos į „Web3 DApps“. Eikite į nustatymus ir pakeiskite numatytąją piniginę.</translation>
 <translation id="4362717653795263052">Atkurkite pagrindines kriptovaliutų sąskaitas</translation>
 <translation id="3038077262567136741">Įveskite atkūrimo frazę ir atkurkite „Brave“ piniginės kriptovaliutos sąskaitą.</translation>
 <translation id="955918646509748368">Įvesta atkūrimo frazė yra neteisinga.</translation>
@@ -912,8 +922,8 @@ Window with Tor“ ir vėl įjunkite. Vis dar turite problemų?</translation>
 <translation id="8624315169751085215">Kopijuoti į iškarpinę</translation>
 <translation id="1121335910737476837">Pagrindinės kriptovaliutų sąskaitos</translation>
 <translation id="6969147029062037757">Importuotos paskyros</translation>
-<translation id="5668765612885835803">Galite susikurti pagrindines „Brave“ piniginės sąskaitas, kurias galima atkurti naudojant atkūrimo frazę arba daryti jų atsargines kopijas. Jei norite apie sąskaitų tipus sužinoti daugiau, apsilankykite sąskaitų žinyne</translation>
-<translation id="2471916999505901943">Šias sąskaitas galima naudoti kartu su „Web3 DApps“ ir jos gali būti rodomos jūsų profilyje. Vis dėlto atminkite, kad, įvedus pagrindinės sąskaitos atkūrimo iš atsarginės kopijos frazę, atkurti antrinių sąskaitų negalima.</translation>
+<translation id="4057718162494343222">Galite susikurti pagrindines „Brave“ piniginės sąskaitas, kurias galima atkurti naudojant atkūrimo frazę arba daryti jų atsargines kopijas. Jei norite apie sąskaitų tipus sužinoti daugiau, apsilankykite sąskaitų žinyne.</translation>
+<translation id="1011614786846182272">Šias sąskaitas galima naudoti kartu su „Web3 DApps“ ir jos gali būti rodomos jūsų portfelyje. Nepaisant to atminkite, kad įvedus pagrindinės sąskaitos atkūrimo iš atsarginės kopijos frazę atkurti antrinių sąskaitų negalima.</translation>
 <translation id="1940465339426637378">Turtas</translation>
 <translation id="2236507293802791911">Rodomi aktyvai</translation>
 <translation id="7525067979554623046">Sukurti</translation>
@@ -995,6 +1005,7 @@ Window with Tor“ ir vėl įjunkite. Vis dar turite problemų?</translation>
 <translation id="8569380433211549748">Kaina</translation>
 <translation id="2490428413101944234">Testuoti čiaupą</translation>
 <translation id="3352959425838279177">Gaukite eterių iš maišytuvo (angl. „faucet“) už <ph name="SELECTED_NETWORK"/></translation>
+<translation id="6449626816252815844">Pasirinkti pirkimo metodą</translation>
 <translation id="8009571545960303544">Prašoma jūsų parašo</translation>
 <translation id="5294062982587710720">Atminkite, kad „Brave“ negali atsakyti už tai, kas nutiks pasirašius. Parašas gali suteikti įgaliojimą atlikti beveik bet kokį su jūsų sąskaita susijusį veiksmą arba jūsų vardu, įskaitant (bet neapsiribojant) suteikti visišką jūsų sąskaitos ir kriptovaliutų aktyvų kontrolę svetainei, kuri teikia užklausą. Pasirašykite tik tuo atveju, kai esate įsitikinę, jog norite atlikti šį veiksmą ir pasitikite užklausą teikiančia svetaine.</translation>
 <translation id="3474375934783434676">Pasirašydami prisiimate sau visą atsakomybę</translation>
@@ -1043,7 +1054,7 @@ Window with Tor“ ir vėl įjunkite. Vis dar turite problemų?</translation>
 <translation id="3890989020011724401">Nauja paskyra</translation>
 <translation id="7257603403519636638">Peržiūrėti sąskaitos išteklius</translation>
 <translation id="2092132085082887098">Sąskaitos ištekliai</translation>
-<translation id="5723696625900399845">Naudokite šį skydelį saugiai prieigai prie web3 ir viso savo kriptografinio turinio.</translation>
+<translation id="4612979983851181941">Naudokite šį skydelį saugiai prieigai prie „Web3“ ir visų savo kriptovaliutų išteklių.</translation>
 <translation id="4460220693591349571">FUNKCIJOS TIPAS</translation>
 <translation id="838933475572692615">ŠEŠIOLIKTAINIAI DUOMENYS</translation>
 <translation id="2240831799756994975">BAITAI</translation>
@@ -1055,13 +1066,13 @@ Window with Tor“ ir vėl įjunkite. Vis dar turite problemų?</translation>
 <translation id="7739762330714405363">Naudoti tą patį slaptažodį</translation>
 <translation id="1085027414516521238">„MetaMask“</translation>
 <translation id="7102907656918333773">Importuoti iš <ph name="WALLET_EXTENSION"/></translation>
-<translation id="8897114903450789862">Importuokite savo <ph name="WALLET_EXTENSION"/> sąskaitas į „Brave“ piniginę. Mėgaukitės greitesniu ir saugesniu būdu valdyti kriptovaliutų išteklius ir sąveikauti su žiniatinklio „3 DApps“.</translation>
+<translation id="1737856990004825123">Importuokite savo <ph name="WALLET_EXTENSION"/> sąskaitas į „Brave“ piniginę. Mėgaukitės greitesniu ir saugesniu būdu valdyti kriptovaliutų išteklius ir sąveikauti naudodami „Web3 DApps“.</translation>
 <translation id="4237840336687249184">„MetaMask“ slaptažodis</translation>
 <translation id="2381605201035323535">kriptovaliutų piniginių</translation>
 <translation id="2770851145415891830">Aptikta esamų kriptovaliutų piniginių</translation>
 <translation id="4938145712652668388">Spustelėję „Pradėti“ ankstesnę kriptovaliutų piniginę importuosite į naująją „Brave“ piniginę ir galėsite naudotis visais pirmiau nurodytais privalumais. Išbandykite ir pateikite mums savo nuomonę!</translation>
 <translation id="2237759620789871865">Jei norėtumėte praleisti importavimą ir išlaikyti seną kriptovaliutų piniginių patirtį, tiesiog eikite į „Brave“ naršyklės <ph name="LINK_BEFORE"/>nuostatas<ph name="LINK_AFTER"/> ir pakeiskite numatytąsias nuostatas atgal į kriptovaliutų pinigines. Taip pat galite importuoti, išmėginti naująją „Brave“ piniginę ir bet kada vėl pakeisti nuostatas.</translation>
-<translation id="3301259443293676544">Įveskite esamą kriptovaliutų piniginių slaptažodį, kad importuotumėte į „Brave“ piniginę. Tvarkykite kriptoaktyvus sparčiau ir saugiau bei sąveikaukite naudodami „Web3 DApps“.</translation>
+<translation id="5590175005414413980">Įveskite esamą kriptovaliutų piniginių slaptažodį, kad importuotumėte į „Brave“ piniginę. Tvarkykite kriptoaktyvus sparčiau ir saugiau, taip pat sąveikaukite naudodami „Web3 DApps“.</translation>
 <translation id="9099900965604225657">Kriptovaliutų piniginių slaptažodis</translation>
 <translation id="4020495774166914146">Pamiršau slaptažodį ir atkūrimo frazę, sukurti naują piniginę.</translation>
 <translation id="6344138931392227467"><ph name="DEVICE_NAME"/> prijungtas</translation>
@@ -1117,6 +1128,7 @@ Window with Tor“ ir vėl įjunkite. Vis dar turite problemų?</translation>
 <translation id="1599636444563952897">Pagal leistiną išlaidų limitą <ph name="SITE_ORIGIN"/> leidžiama išimti ir išleisti daugiausia šią sumą:</translation>
 <translation id="4512871563176965522">Pritaikytoji išmokama suma</translation>
 <translation id="749944179568745958">Netinkamas ETH adresas</translation>
+<translation id="2832270987629018596">Netinkamas SOL adresas</translation>
 <translation id="882486206986535424">Netinkamas adresas</translation>
 <translation id="6825399159373612149">Domenas <ph name="DOMAIN_NAME"/> nėra registruotas</translation>
 <translation id="8971278306757462297">Gavimo adresas yra jūsų pačių adresas</translation>
@@ -1148,7 +1160,6 @@ Window with Tor“ ir vėl įjunkite. Vis dar turite problemų?</translation>
 <translation id="3327639091470204775">Nepavyksta prisijungti prie „Trezor“ tilto</translation>
 <translation id="6672377693827764095">Vidinė klaida, nepavyko įkelti sąskaitų</translation>
 <translation id="6889920539620318793">Nustatyti kaip aktyvų</translation>
-<translation id="1462494615260983714">Apdorojant operaciją įvyko klaida</translation>
 <translation id="8933250418452564886">Aparatinės įrangos operacijos rasti nepavyko, bandykite dar kartą</translation>
 <translation id="5999974802900788338">Iš aparatinio įrenginio gauta klaida, tikriausiai turite patvirtinti operaciją savo įrenginyje</translation>
 <translation id="8523768065044261559">Apdorojant operaciją įvyko klaida, bandykite dar kartą</translation>
@@ -1170,11 +1181,19 @@ Window with Tor“ ir vėl įjunkite. Vis dar turite problemų?</translation>
 <translation id="6423985584914773314">Netinkamas FIL adresas</translation>
 <translation id="3898731124813934210">Pirkti naudojant Wyre</translation>
 <translation id="5522073372365069684">Pirkti naudojant Ramp</translation>
+<translation id="8725252491405767337">Ramp.Network</translation>
+<translation id="7623800836425615432">Wyre</translation>
+<translation id="7667423728712601865">Įsigykite kriptovaliutų, naudodami „Visa“ arba „Mastercard“.</translation>
 <translation id="8528916244724490964">Visi tinklai</translation>
 <translation id="2781668117338732220">Papildomi tinklai</translation>
 <translation id="2816106784624007524">Dujų limitas turi būti sveikasis skaičius, didesnis už 0</translation>
 <translation id="3354376789153561654">Turi būti nurodyti operacijos duomenys „kam“</translation>
 <translation id="8728991256628663004">Operacijos duomenys „nuo“ turi būti galiojantis „Filecoin“ adresas</translation>
+<translation id="7003028930816622496">„Ledger“ įrenginys užrakintas</translation>
+<translation id="3939390290522058485">Spustelėkite čia, jei norite patikrinti <ph name="VALUE"/> operacijos informaciją</translation>
+<translation id="2317956709076373213">Operacija patvirtinta</translation>
+<translation id="310693998838023022">Operacijos klaida</translation>
+<translation id="6395870673621520684">Operacija atmesta</translation>
 <translation id="3155170474926428993">„Tor“ paleidimo priemonė</translation>
 <translation id="3745016858329272300">Bendroji informacija</translation>
 <translation id="4045404575593562245">„Tor“ valdymo įvykiai</translation>
@@ -1189,6 +1208,7 @@ Window with Tor“ ir vėl įjunkite. Vis dar turite problemų?</translation>
 <translation id="7709075156958117386">Jei ši svetainė neveikia, pabandykite išjungti skydus. 
     <ph name="LINK_BEFORE"/>Pastaba. Dėl to gali sumažėti „Brave“ privatumo apsauga.<ph name="LINK_AFTER"/></translation>
 <translation id="8377155647357436161">Sekikliai, reklamos ir kt. užblokuoti <ph name="LINK_BEFORE"/>Sužinoti daugiau<ph name="LINK_AFTER"/></translation>
+<translation id="7604553853176833536">Neapsaugota „Brave“ skydais <ph name="LINK_BEFORE"/>Sužinoti daugiau<ph name="LINK_AFTER"/></translation>
 <translation id="650318023204990401">Išplėstiniai valdikliai</translation>
 <translation id="5799940914270080805">Pakeitus šiuos nustatymus svetainės gali neveikti.</translation>
 <translation id="9204041448536398473">Visuotinių skydų nuostatos</translation>
@@ -1214,6 +1234,8 @@ Window with Tor“ ir vėl įjunkite. Vis dar turite problemų?</translation>
 <translation id="3795015906457257780">Šią svetainę peržiūrite be „Brave“ privatumo apsaugos.</translation>
 <translation id="7194012750329511146">„Brave“ skydai
 <ph name="NUMBER"/> sekikliai, reklamos ir kt. užblokuoti</translation>
+<translation id="4292121526390005808">Užblokuoti scenarijai</translation>
+<translation id="3541307549916475335">„Brave“ VPN skydelio UI</translation>
 <translation id="1742469581923031760">Jungiamasi...</translation>
 <translation id="1287487756047817908">Atsijungiama...</translation>
 <translation id="2325196879156848326">Ryšio užmegzti nepavyko</translation>
@@ -1231,9 +1253,11 @@ Window with Tor“ ir vėl įjunkite. Vis dar turite problemų?</translation>
 <translation id="3181339219453722970">Pasirinkti savo VPN vietą</translation>
 <translation id="1751947227857853925">Spartus ir neribotas, iki 100 Mb/s</translation>
 <translation id="1400240082805528049">Palaikymas visą parą, kiekvieną dieną</translation>
+<translation id="1693568075761612600">Nepavyko sukurti pagalbos bilieto, patikrinkite ryšį.</translation>
 <translation id="8463313539532697053">Palaukite, kol įkeliama …</translation>
+<translation id="4317307602527599178">Nepavyko patikrinti jūsų pirkinio būsenos. Taip gali būti dėl tinklo problemos.</translation>
 <translation id="4613076894734402086">Redaguoti mokėjimo metodą</translation>
-<translation id="1898254156730880135">Atrodo, kad jūsų pastarasis mokėjimas nepavyko. Prieiga prie šios prenumeratos bus pristabdyta, kol mokėjimo problema bus išspręsta. Pabandykite redaguoti mokėjimo metodą arba susisiekite su „Brave“ pagalbos tarnyba.</translation>
+<translation id="8373427068383038263">Atrodo, kad jūsų pastarasis mokėjimas už <ph name="VALUE"/> nepavyko. Prieiga prie šios prenumeratos bus pristabdyta, kol mokėjimo problema bus išspręsta. Pabandykite redaguoti mokėjimo metodą arba susisiekite su „Brave“ pagalbos tarnyba.</translation>
 <translation id="1839021455997460752">Jūsų el. pašto adresas</translation>
 <translation id="5154702632169343078">Tema</translation>
 <translation id="6625978880678465492">Pasirinkite priežastį</translation>
@@ -1250,6 +1274,9 @@ Window with Tor“ ir vėl įjunkite. Vis dar turite problemų?</translation>
 <translation id="6676791921618140305">OS versija:</translation>
 <translation id="1156325797949437777">Pagalba teikiama bendradarbiaujant su „Guardian“.</translation>
 <translation id="3307461350293459700">Ryšio su VPN užmegzti nepavyko. Pabandykite prisijungti dar kartą ir būtinai spustelėkite „Leisti“, kad įgalintumėte „Brave“ VPN konfigūraciją.</translation>
+<translation id="7261518280726313829">Išjungus saugų DNS arba naudojant numatytuosius „Windows“ serverius, jūsų interneto paslaugų teikėjui gali būti atskleisti svetainių, kuriose lankotės, pavadinimai. „Brave“ to daryti nerekomenduoja. Ar vis tiek norite tai daryti?</translation>
+<translation id="888284761945060750">Saugus DNS yra išjungtas pagal jūsų organizacijos politiką. Naudojant „Brave“ VPN be saugaus DNS jūsų interneto paslaugų teikėjui arba organizacijai gali būti atskleisti svetainių, kuriose lankotės, pavadinimai.</translation>
+<translation id="1657858090675311947">Daugiau manęs apie tai neįspėti.</translation>
 <translation id="7586151660465233733">Daugiau rinkų svetainėje <ph name="SITE_NAME"/></translation>
 <translation id="952067063131306699">FTX galite peržiūrėti rinkas ir prekiauti kriptovaliutomis</translation>
 <translation id="5963745988819586370">Rinkos</translation>
