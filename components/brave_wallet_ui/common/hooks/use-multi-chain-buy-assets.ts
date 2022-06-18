@@ -8,6 +8,7 @@ import { useSelector } from 'react-redux'
 
 // utils
 import { getNetworkInfo } from '../../utils/network-utils'
+import { getRampAssetSymbol, isSelectedAssetInAssetOptions } from '../../utils/asset-utils'
 
 // types
 import { BraveWallet, SupportedOnRampNetworks, WalletState } from '../../constants/types'
@@ -16,7 +17,6 @@ import { BraveWallet, SupportedOnRampNetworks, WalletState } from '../../constan
 import { useIsMounted } from './useIsMounted'
 import { useLib } from './useLib'
 import { BuyOptions } from '../../options/buy-with-options'
-import { isSelectedAssetInAssetOptions } from '../../utils/asset-utils'
 
 export function useMultiChainBuyAssets () {
   // redux
@@ -24,9 +24,10 @@ export function useMultiChainBuyAssets () {
 
   // custom hooks
   const isMounted = useIsMounted()
-  const { getAllBuyAssets } = useLib()
+  const { getAllBuyAssets, getBuyAssetUrl } = useLib()
 
   // state
+  const [buyAmount, setBuyAmount] = React.useState('')
   const [selectedAsset, setSelectedAsset] = React.useState<BraveWallet.BlockchainToken | undefined>()
   const [options, setOptions] = React.useState<
     {
@@ -74,6 +75,35 @@ export function useMultiChainBuyAssets () {
       })
   }, [getAllBuyAssets, isMounted])
 
+  const openBuyAssetLink = React.useCallback(({ buyOption, depositAddress }: {
+    buyOption: BraveWallet.OnRampProvider
+    depositAddress: string
+  }) => {
+    if (!selectedAsset || !selectedAssetNetwork) {
+      return
+    }
+
+    const asset = buyOption === BraveWallet.OnRampProvider.kRamp
+      ? { ...selectedAsset, symbol: getRampAssetSymbol(selectedAsset) }
+      : selectedAsset
+
+    getBuyAssetUrl({
+      asset,
+      onRampProvider: buyOption,
+      chainId: selectedAssetNetwork.chainId,
+      address: depositAddress,
+      amount: buyAmount
+    })
+      .then(url => {
+        chrome.tabs.create({ url }, () => {
+          if (chrome.runtime.lastError) {
+            console.error('tabs.create failed: ' + chrome.runtime.lastError.message)
+          }
+        })
+      })
+      .catch(e => console.error(e))
+  }, [getBuyAssetUrl, selectedAssetNetwork, buyAmount, selectedAsset])
+
   return {
     ...options,
     selectedAsset,
@@ -81,6 +111,9 @@ export function useMultiChainBuyAssets () {
     selectedAssetNetwork,
     selectedAssetBuyOptions,
     buyAssetNetworks,
-    getAllBuyOptionsAllChains
+    getAllBuyOptionsAllChains,
+    buyAmount,
+    setBuyAmount,
+    openBuyAssetLink
   }
 }

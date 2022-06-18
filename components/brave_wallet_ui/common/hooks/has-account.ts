@@ -28,14 +28,14 @@ export function useHasAccount () {
   }, [accounts, selectedNetwork])
 
   const needsAccount = React.useMemo((): boolean => {
-    if (selectedNetwork.coin === BraveWallet.CoinType.SOL) {
-      return !hasSolAccount
+    const { coin } = selectedNetwork
+    switch (coin) {
+      case BraveWallet.CoinType.SOL: return !hasSolAccount
+      case BraveWallet.CoinType.FIL: return !hasFilAccount
+      default: return false
     }
-    if (selectedNetwork.coin === BraveWallet.CoinType.FIL) {
-      return !hasFilAccount
-    }
-    return false
   }, [hasSolAccount, hasFilAccount, selectedNetwork])
+
   return {
     hasSolAccount,
     hasFilAccount,

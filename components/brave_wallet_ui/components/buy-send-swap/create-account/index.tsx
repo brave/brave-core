@@ -18,6 +18,7 @@ import { NavButton } from '../../extension'
 
 // Utils
 import { getLocale } from '../../../../common/locale'
+import { suggestNewAccountName } from '../../../utils/address-utils'
 
 // Styled Components
 import {
@@ -28,7 +29,7 @@ import {
 
 export interface Props {
   isPanel?: boolean
-  prevNetwork: BraveWallet.NetworkInfo | undefined
+  prevNetwork?: BraveWallet.NetworkInfo | undefined
 }
 
 function CreateAccountTab (props: Props) {
@@ -44,9 +45,8 @@ function CreateAccountTab (props: Props) {
   const dispatch = useDispatch()
 
   const suggestedAccountName = React.useMemo((): string => {
-    const accountTypeLength = accounts.filter((account) => account.coin === selectedNetwork.coin).length + 1
-    return `${selectedNetwork.symbolName} ${getLocale('braveWalletAccount')} ${accountTypeLength}`
-  }, [selectedNetwork, accounts])
+    return suggestNewAccountName(accounts, selectedNetwork)
+  }, [accounts, selectedNetwork])
 
   const onCancelCreateAccount = React.useCallback(() => {
     dispatch(WalletActions.selectNetwork(prevNetwork ?? networkList[0]))
