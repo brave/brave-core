@@ -4,24 +4,29 @@
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { useSelector } from 'react-redux'
+import {
+  useDispatch,
+  useSelector
+} from 'react-redux'
 
 // styles
 // import {} from './fund-wallet.style'
 
 // utils
-import { getRampAssetSymbol } from '../../../utils/asset-utils'
 // import { getLocale } from '../../../../common/locale'
 
-// routes, types
+// types
 import { BraveWallet, UserAssetInfoType, WalletState } from '../../../constants/types'
+
+// actions
+import { WalletActions } from '../../../common/actions'
 
 // options
 import { AllNetworksOption } from '../../../options/network-filter-options'
 import { SelectBuyOption } from '../../../components/buy-send-swap/select-buy-option/select-buy-option'
 
 // hooks
-import { useLib } from '../../../common/hooks'
+import { useHasAccount, useLib } from '../../../common/hooks'
 import { useMultiChainBuyAssets } from '../../../common/hooks/use-multi-chain-buy-assets'
 
 // style
@@ -34,18 +39,20 @@ import { NavButton } from '../../../components/extension/buttons/nav-button/inde
 import OnboardingDisclosures from '../onboarding/disclosures/disclosures'
 import SwapInputComponent from '../../../components/buy-send-swap/swap-input-component'
 import TokenLists from '../../../components/desktop/views/portfolio/components/token-lists'
+import { CreateAccountTab } from '../../../components/buy-send-swap'
 
 export const FundWalletScreen = () => {
   // redux
+  const dispatch = useDispatch()
   const {
     defaultCurrencies,
     transactionSpotPrices,
-    selectedNetworkFilter
+    selectedNetworkFilter,
+    selectedAccount
   } = useSelector(({ wallet }: { wallet: WalletState }) => wallet)
 
   // state
   const [filteredList, setFilteredList] = React.useState<UserAssetInfoType[]>([])
-  const [buyAmount, setBuyAmount] = React.useState('')
   const [isShowingAllOptions, setIsShowingAllOptions] = React.useState(false)
   const [showBuyOptions, setShowBuyOptions] = React.useState<boolean>(false)
 
@@ -57,9 +64,13 @@ export const FundWalletScreen = () => {
     selectedAssetNetwork,
     setSelectedAsset,
     selectedAssetBuyOptions,
-    buyAssetNetworks
+    buyAssetNetworks,
+    buyAmount,
+    setBuyAmount,
+    openBuyAssetLink
   } = useMultiChainBuyAssets()
   const { getBuyAssetUrl } = useLib()
+  const { needsAccount } = useHasAccount()
 
   // memos
   const isNextStepEnabled = React.useMemo(() => {
@@ -76,36 +87,23 @@ export const FundWalletScreen = () => {
 
   // methods
   const nextStep = React.useCallback(() => {
-    if (isNextStepEnabled) {
-      setShowBuyOptions(true)
+    if (!isNextStepEnabled || !selectedAssetNetwork) {
+      return
     }
+    dispatch(WalletActions.selectNetwork(selectedAssetNetwork))
+    setShowBuyOptions(true)
   }, [isNextStepEnabled])
 
   const onSubmitBuy = React.useCallback((buyOption: BraveWallet.OnRampProvider) => {
     if (!selectedAsset || !selectedAssetNetwork) {
       return
     }
-
-    const asset = buyOption === BraveWallet.OnRampProvider.kRamp
-      ? { ...selectedAsset, symbol: getRampAssetSymbol(selectedAsset) }
-      : selectedAsset
-
-    getBuyAssetUrl({
-      asset,
-      onRampProvider: buyOption,
-      chainId: selectedAssetNetwork.chainId,
-      address: '', // TODO: selectedAccount.address,
-      amount: buyAmount
+    openBuyAssetLink({
+      buyOption,
+      // TODO: allow address input?
+      depositAddress: selectedAccount.address
     })
-      .then(url => {
-        chrome.tabs.create({ url }, () => {
-          if (chrome.runtime.lastError) {
-            console.error('tabs.create failed: ' + chrome.runtime.lastError.message)
-          }
-        })
-      })
-      .catch(e => console.error(e))
-  }, [selectedAsset, selectedAssetNetwork, getBuyAssetUrl, buyAmount])
+  }, [selectedAsset, selectedAssetNetwork, getBuyAssetUrl, buyAmount, selectedAccount])
 
   const onBack = React.useCallback(() => {
     setShowBuyOptions(false)
@@ -146,7 +144,9 @@ export const FundWalletScreen = () => {
           {/* TODO: Nav Here */}
 
           {/* Content */}
-          {!showBuyOptions &&
+          {needsAccount && <CreateAccountTab /> }
+
+          {!needsAccount && !showBuyOptions &&
             <>
               <div>
                 <SwapInputComponent
@@ -200,12 +200,17 @@ export const FundWalletScreen = () => {
             </>
           }
 
-          {showBuyOptions &&
-            <SelectBuyOption
-              buyOptions={selectedAssetBuyOptions}
-              onSelect={onSubmitBuy}
-              onBack={onBack}
-            />
+          {!needsAccount && showBuyOptions &&
+            <>
+              <p>
+                Address: {selectedAccount.address}
+              </p>
+              <SelectBuyOption
+                buyOptions={selectedAssetBuyOptions}
+                onSelect={onSubmitBuy}
+                onBack={onBack}
+              />
+            </>
           }
 
         </StyledWrapper>
