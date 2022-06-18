@@ -135,6 +135,21 @@
     "message": "Radusies kļūda saistībā ar Brave balvām. Lūdzu, mēģiniet vēlreiz vēlāk.",
     "description": ""
   },
+  "rewardsLogInToSeeBalance": {
+    "message": "$begin_bold$Pierakstieties $provider$ $end_bold$, lai apskatītu savu atlikumu",
+    "description": "",
+    "placeholders": {
+      "begin_bold": {
+        "content": "$1"
+      },
+      "provider": {
+        "content": "$2"
+      },
+      "end_bold": {
+        "content": "$3"
+      }
+    }
+  },
   "rewardsPaymentCheckStatus": {
     "message": "Pārbaudīt statusu",
     "description": ""

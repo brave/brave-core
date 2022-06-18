@@ -135,6 +135,21 @@
     "message": "Brave nagrade ima problema. Molimo Vas pokušajte kasnije.",
     "description": ""
   },
+  "rewardsLogInToSeeBalance": {
+    "message": "$begin_bold$Prijavite se na $provider$ $end_bold$da biste videli svoj saldo",
+    "description": "",
+    "placeholders": {
+      "begin_bold": {
+        "content": "$1"
+      },
+      "provider": {
+        "content": "$2"
+      },
+      "end_bold": {
+        "content": "$3"
+      }
+    }
+  },
   "rewardsPaymentCheckStatus": {
     "message": "Proveri status",
     "description": ""

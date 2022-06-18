@@ -135,6 +135,21 @@
     "message": "Nagkakaproblema ang Mga Reward ng Brave. Pakisubukang muli sa ibang pagkakataon.",
     "description": ""
   },
+  "rewardsLogInToSeeBalance": {
+    "message": "$begin_bold$Mag-log in sa $provider$ $end_bold$para makita ang iyong balanse",
+    "description": "",
+    "placeholders": {
+      "begin_bold": {
+        "content": "$1"
+      },
+      "provider": {
+        "content": "$2"
+      },
+      "end_bold": {
+        "content": "$3"
+      }
+    }
+  },
   "rewardsPaymentCheckStatus": {
     "message": "I-check ang kalagayan",
     "description": ""

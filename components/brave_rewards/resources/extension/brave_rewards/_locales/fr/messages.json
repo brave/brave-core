@@ -135,6 +135,21 @@
     "message": "Brave Récompenses a un problème. Veuillez réessayer plus tard.",
     "description": ""
   },
+  "rewardsLogInToSeeBalance": {
+    "message": "$begin_bold$Connectez-vous à $provider$ $end_bold$pour voir votre solde",
+    "description": "",
+    "placeholders": {
+      "begin_bold": {
+        "content": "$1"
+      },
+      "provider": {
+        "content": "$2"
+      },
+      "end_bold": {
+        "content": "$3"
+      }
+    }
+  },
   "rewardsPaymentCheckStatus": {
     "message": "Vérifier l'état",
     "description": ""

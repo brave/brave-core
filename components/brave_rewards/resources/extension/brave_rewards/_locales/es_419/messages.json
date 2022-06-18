@@ -135,6 +135,21 @@
     "message": "Ha ocurrido un error en Brave Rewards. Vuelve a intentarlo más tarde.",
     "description": ""
   },
+  "rewardsLogInToSeeBalance": {
+    "message": "$begin_bold$Inicia sesión en $provider$$end_bold$ para consultar tu saldo",
+    "description": "",
+    "placeholders": {
+      "begin_bold": {
+        "content": "$1"
+      },
+      "provider": {
+        "content": "$2"
+      },
+      "end_bold": {
+        "content": "$3"
+      }
+    }
+  },
   "rewardsPaymentCheckStatus": {
     "message": "Comprobar estado",
     "description": ""

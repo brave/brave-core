@@ -299,6 +299,7 @@
 <translation id="1717218214683051432">მოძრაობის სენსორები</translation>
 <translation id="1717494416764505390">საფოსტო ყუთი 3</translation>
 <translation id="1718029547804390981">დოკუმენტი ანოტირებისთვის მეტისმეტად დიდია</translation>
+<translation id="1720941539803966190">სახელმძღვანელოს დახურვა</translation>
 <translation id="1721424275792716183">* ველი აუცილებელია</translation>
 <translation id="1727613060316725209">სერთიფიკატი ძალაშია</translation>
 <translation id="1727741090716970331">მიუთითეთ ბარათის სწორი ნომერი</translation>
@@ -458,7 +459,6 @@
 <translation id="2185836064961771414">ამერიკული ფეხბურთი</translation>
 <translation id="2187317261103489799">ამოცნობა (ნაგულისხმევი)</translation>
 <translation id="2188375229972301266">მრავალად გახვრეტა ქვემოთ</translation>
-<translation id="2257044501874719257">თქვენ მიერ ახლახან გამოყენებული პაროლი ნაპოვნია გაჟონილ მონაცემებში. თქვენი ანგარიშის დაცვის მიზნით, Brave პაროლების მმართველი გირჩევთ, ახლავე შეცვალოთ ის, შემდეგ კი შეამოწმოთ თქვენი შენახული პაროლები.</translation>
 <translation id="219906046732893612">რემონტი</translation>
 <translation id="2202020181578195191">შეიყვანეთ მოქმედების ვადის გასვლის სწორი წელი</translation>
 <translation id="22081806969704220">ლანგარი 3</translation>
@@ -469,6 +469,7 @@
 <translation id="2215727959747642672">ფაილების რედაქტირება</translation>
 <translation id="2215963164070968490">ძაღლები</translation>
 <translation id="2218879909401188352"><ph name="BEGIN_BOLD"/><ph name="SITE"/><ph name="END_BOLD"/>-ზე შეტევის შედეგად თქვენს მოწყობილობაზე შეიძლება დაინსტალირდეს სახიფათო აპები, რომლებსაც შეუძლია თქვენი მოწყობილობის დაზიანება, მობილური სერვისის საფასურის ფარულად გაზრდა თუ პერსონალური ინფორმაციის მოპარვა. <ph name="BEGIN_LEARN_MORE_LINK"/>შეიტყვეთ მეტი<ph name="END_LEARN_MORE_LINK"/></translation>
+<translation id="2219658597883514593">სახელმძღვანელოს თავიდან გაშვება</translation>
 <translation id="2224337661447660594">ინტერნეტ-კავშირი არ არის</translation>
 <translation id="2230458221926704099">გაასწორეთ თქვენი კავშირი <ph name="BEGIN_LINK"/>დიაგნოსტიკური აპის<ph name="END_LINK"/> მეშვეობით</translation>
 <translation id="2239100178324503013">ახლავე გაგზავნა</translation>
@@ -604,7 +605,6 @@
 <translation id="259821504105826686">ფოტო და ციფრული ხელოვნება</translation>
 <translation id="2601150049980261779">რომანტიკული ფილმები</translation>
 <translation id="2604589665489080024">პოპ-მუსიკა</translation>
-<translation id="2609632851001447353">ვარიაციები</translation>
 <translation id="2610561535971892504">დააწკაპუნეთ დასაკოპირებლად</translation>
 <translation id="2618023639789766142">C10 (კონვერტი)</translation>
 <translation id="2623663032199728144">შეიძლება გთხოვოთ თქვენი ეკრანების შესახებ ინფრმაციის გამოყენება</translation>
@@ -631,6 +631,7 @@
 <translation id="2676271551327853224">Roc-8K</translation>
 <translation id="2677696497921480781">დაბადებისა და სახელების დღეები</translation>
 <translation id="2677748264148917807">დატოვება</translation>
+<translation id="5597413561928518510">უსაფრთხო და სწრაფი ანგარიშსწორებისთვის შეინახეთ თქვენი ბარათისა და ბილინგის ინფორმაცია თქვენს Brave ანგარიშში (<ph name="USER_EMAIL"/>)</translation>
 <translation id="2684561033061424857">11x12</translation>
 <translation id="2687555958734450033">საუკეთესოდ მორგება</translation>
 <translation id="2688969097326701645">გაგრძელება</translation>
@@ -876,6 +877,7 @@
 <translation id="3399952811970034796">მიწოდების მისამართი</translation>
 <translation id="3402261774528610252">საიტის ჩასატვირთად გამოიყენებოდა TLS 1.0 ან TLS 1.1, რომელიც მოძველებულია და მომავალში გაუქმდება. გაუქმების შემდეგ მომხმარებლები ვეღარ შეძლებენ ამ საიტის ჩატვირთვას. სერვერზე უნდა გააქტიურდეს TLS 1.2 ან უფრო ახალი ვერსია.</translation>
 <translation id="3405664148539009465">შრიფტების მორგება</translation>
+<translation id="3407789382767355356">სისტემაში შესვლა მესამე მხარის მეშვეობით</translation>
 <translation id="3409896703495473338">უსაფრთხოების პარამეტრების მართვა</translation>
 <translation id="3414952576877147120">ზომა:</translation>
 <translation id="3417660076059365994">თქვენ მიერ ატვირთული ან დართული ფაილები გასაანალიზებლად გაეგზავნება Google Cloud-ს ან მესამე მხარეს. მაგალითად, შეიძლება შესრულდეს მათი სკანირება მათში სენსიტიური მონაცემების ან მავნე კოდის აღმოსაჩენად.</translation>
@@ -1026,6 +1028,7 @@
 <translation id="3810973564298564668">მართვა</translation>
 <translation id="3816482573645936981">მნიშვნელობა (ჩანაცვლებული)</translation>
 <translation id="382518646247711829">თუ იყენებთ პროქსის სერვერს…</translation>
+<translation id="3826050100957962900">სისტემაში შესვლა მესამე მხარის მეშვეობით</translation>
 <translation id="3827112369919217609">აბსოლუტური</translation>
 <translation id="3827666161959873541">საოჯახო ფილმები</translation>
 <translation id="3828924085048779000">ცარიელი პაროლი ნებადართული არ არის.</translation>
@@ -1038,6 +1041,7 @@
 <translation id="3858027520442213535">განახლების თარიღი და დრო</translation>
 <translation id="3858860766373142691">სახელი</translation>
 <translation id="3872834068356954457">მეცნიერება</translation>
+<translation id="3875783148670536197">ინსტრუქციის ნახვა</translation>
 <translation id="3881478300875776315">ნაკლები ხაზის ჩვენება</translation>
 <translation id="3884278016824448484">კონფლიქტური მოწყობილობის იდენტიფიკატორი</translation>
 <translation id="3885155851504623709">სამოქალაქო ოლქი</translation>
@@ -1070,6 +1074,7 @@
 <translation id="3973234410852337861"><ph name="HOST_NAME"/> დაბლოკილია</translation>
 <translation id="3978338123949022456">ძიების რეჟიმი, აკრიფეთ საძიებო მოთხოვნა და დააჭირეთ Enter-ს, <ph name="KEYWORD_SUFFIX"/>-ით რომ მოიძიოთ</translation>
 <translation id="398470910934384994">ფრინველები</translation>
+<translation id="3985750352229496475">მისამართების მართვა…</translation>
 <translation id="3986705137476756801">პირდაპირი სუბტიტრების დროებით გამორთვა</translation>
 <translation id="3987940399970879459">1 მბაიტზე ნაკლები</translation>
 <translation id="3990250421422698716">კიდის წანაცვლება</translation>
@@ -1175,6 +1180,7 @@
 <translation id="4305666528087210886">თქვენს ფაილზე წვდომა ვერ მოხერხდა</translation>
 <translation id="4306529830550717874">გსურთ, შეინახოთ მისამართი?</translation>
 <translation id="4306812610847412719">გაცვლის ბუფერი</translation>
+<translation id="4310070645992025887">მოიძიეთ თქვენს პროცესებში</translation>
 <translation id="4312613361423056926">B2</translation>
 <translation id="4312866146174492540">დაბლოკვა (ნაგულისხმევი)</translation>
 <translation id="4314815835985389558">სინქრონიზაციის მართვა</translation>
@@ -1278,6 +1284,7 @@
 <translation id="7265018635737406618">Brave-ის მინიშნებების ნახვის ღილაკი, Brave-ის ფუნქციების შესახებ ინფორმაციისთვის დააჭირეთ კლავიშს Enter</translation>
 <translation id="8338928872956435647">Brave-ის მინიშნებების ნახვა</translation>
 <translation id="4617273035598175554">გრაფიკული და ანიმაციური პროგრამული უზრუნველყოფა</translation>
+<translation id="4627165777145349100">დამატებითი ინფორმაცია ამ გვერდის შესახებ</translation>
 <translation id="6398431831028858802">ამ წესების განსაზღვრა Brave პროფილის დონეზე ვერ მოხერხდება, ამიტომ ისინი იგნორირებული იქნება.</translation>
 <translation id="4628948037717959914">ფოტო</translation>
 <translation id="4631649115723685955">ქეშბექი მიბმულია</translation>
@@ -1417,6 +1424,7 @@
 <translation id="5011561501798487822">აღმოჩენილია ენა</translation>
 <translation id="5015510746216210676">მოწყობილობის სახელი:</translation>
 <translation id="5017554619425969104">თქვენ მიერ კოპირებული ტექსტი</translation>
+<translation id="5017828934289857214">მოგვიანებით შეხსენება</translation>
 <translation id="5018422839182700155">ამ გვერდის გახსნა ვერ მოხერხდა</translation>
 <translation id="5019198164206649151">სარეზერვო საცავი ცუდ მდგომარეობაშია</translation>
 <translation id="5020776957610079374">მსოფლიო მუსიკა</translation>
@@ -1648,6 +1656,7 @@
 <translation id="5624120631404540903">პაროლების მართვა</translation>
 <translation id="5629630648637658800">წესის პარამეტრები ვერ ჩაიტვირთა</translation>
 <translation id="5631439013527180824">მოწყობილობის არასწორი მართვის ჟეტონი</translation>
+<translation id="5632485077360054581">ინსტრუქციის ნახვა</translation>
 <translation id="5633066919399395251"><ph name="BEGIN_BOLD"/><ph name="SITE"/><ph name="END_BOLD"/>-ზე ამჟამად მყოფმა თავდამსხმელებმა შეიძლება ცადონ თქვენს კომპიუტერზე ისეთი სახიფათო პროგრამების ინსტალაცია, რომლებსაც თქვენი ინფორმაციის (მაგალითად, ფოტოების, პაროლების, შეტყობინებების და საკრედიტო ბარათების მონაცემების) მოპარვა ან წაშლა შეუძლია. <ph name="BEGIN_LEARN_MORE_LINK"/>შეიტყვეთ მეტი<ph name="END_LEARN_MORE_LINK"/></translation>
 <translation id="563324245173044180">შეცდომაში შემყვანი კონტენტი დაბლოკილია.</translation>
 <translation id="5633259641094592098">საკულტო და ინდი ფილმები</translation>
@@ -1765,6 +1774,7 @@
 <translation id="5989320800837274978">არ არის მითითებული არც ფიქსირებული პროქსი სერვერი, არც .pac სკრიპტის URL.</translation>
 <translation id="5992691462791905444">საინჟინრო დაკეცვა Z-ის ფორმით</translation>
 <translation id="7409510288691071929">თქვენს Brave ანგარიშში თქვენი ინფორმაციის, კონფიდენციალურობისა და უსაფრთხოების მართვა</translation>
+<translation id="3494641719937626561">თქვენ მიერ ახლახან გამოყენებული პაროლი ნაპოვნია გაჟონილ მონაცემებში. თქვენი ანგარიშის დაცვის მიზნით, Brave პაროლების მმართველი გირჩევთ, ახლავე შეცვალოთ ის და შეამოწმოთ თქვენი შენახული პაროლები.</translation>
 <translation id="6000758707621254961">მოთხოვნაზე „<ph name="SEARCH_TEXT"/>“ მოიძებნა <ph name="RESULT_COUNT"/> შედეგი</translation>
 <translation id="6006484371116297560">კლასიკური</translation>
 <translation id="6008122969617370890">მიმდევრობა N-დან 1-მდე</translation>
@@ -1803,6 +1813,7 @@
 <translation id="6061154937977953833">ჭიდაობა</translation>
 <translation id="6064217302520318294">ეკრანის დაბლოკვა</translation>
 <translation id="6064602040258638498">ვაუჩერები და ფასდაკლებები</translation>
+<translation id="6078813287646374487">ამ გვერდის შესახებ დამატებითი ინფორმაციის ჩვენება</translation>
 <translation id="6080696365213338172">თქვენ მიიღეთ წვდომა შიგთავსზე ადმინისტრატორის სერტიფიკატის გამოყენებით. <ph name="DOMAIN"/>-ზე გაგზავნილ მონაცემებზე შეიძლება მიიღოს წვდომა ადმინისტრატორმა.</translation>
 <translation id="6087312102907839798">დაკავშირებული ძიებები</translation>
 <translation id="6094273045989040137">ანოტირება</translation>
@@ -1881,6 +1892,7 @@
 <translation id="6337133576188860026">გამოთავისუფლდება <ph name="SIZE"/> ან ნაკლები. ზოგიერთი საიტი შემდეგი მონახულებისას შეიძლება უფრო ნელა ჩაიტვირთოს.</translation>
 <translation id="6337534724793800597">ფილტრის წესები სახელის მიხედვით</translation>
 <translation id="6340739886198108203">ადმინისტრატორის წესების მიხედვით, ეკრანის ანაბეჭდების ან ჩანაწერების გაკეთება არ არის რეკომენდებული, როცა ხილულია კონფიდენციალური კონტენტი:</translation>
+<translation id="6348220984832452017">აქტიური ვარიაციები</translation>
 <translation id="6349101878882523185"><ph name="APP_NAME"/>-ის ინსტალაცია</translation>
 <translation id="6353505687280762741">{COUNT,plural, =0{არცერთი}=1{1 პაროლი (<ph name="DOMAIN_LIST"/>-ისთვის, სინქრონიზებული)}=2{2 პაროლი (<ph name="DOMAIN_LIST"/>-ისთვის, სინქრონიზებული)}other{# პაროლი (<ph name="DOMAIN_LIST"/>-ისთვის, სინქრონიზებული)}}</translation>
 <translation id="6358450015545214790">რას ნიშნავს ეს?</translation>
@@ -1910,7 +1922,6 @@
 <translation id="7772223497488184427">Brave პაროლის შეცვლა</translation>
 <translation id="6433490469411711332">საკონტაქტო ინფორმაციის რედაქტირება</translation>
 <translation id="6433595998831338502"><ph name="HOST_NAME"/>-მა უარყო დაკავშირება.</translation>
-<translation id="6438025220577812695">მე თვითონ შევცვლი</translation>
 <translation id="6440503408713884761">იგნორირებული</translation>
 <translation id="6443406338865242315">თქვენ მიერ დაინსტალირებული გაფართოებები და დანამატები</translation>
 <translation id="6446163441502663861">Kahu (კონვერტი)</translation>
@@ -2042,6 +2053,7 @@
 <translation id="6839929833149231406">რეგიონი</translation>
 <translation id="6846340164947227603">ვირტუალური ბარათის ნომრის გამოყენება…</translation>
 <translation id="6852204201400771460">გსურთ აპის გადატვირთვა?</translation>
+<translation id="6857776781123259569">პაროლების მართვა…</translation>
 <translation id="686485648936420384">სამომხმარებლო რესურსები</translation>
 <translation id="6865412394715372076">ამ ბარათის დადასტურება ამჟამად ვერ მოხერხდება</translation>
 <translation id="6869334554832814367">პერსონალური სესხები</translation>
@@ -2365,6 +2377,7 @@
 <translation id="7669271284792375604">თავდამსხმელებმა ამ საიტზე შეიძლება მოტყუებით დაგაინსტალირებინონ პროგრამები, რომლებიც უარყოფითად იმოქმედებს ვების დათვალიერების პროცესზე (მაგალითად, შეიძლება შეიცვალოს თქვენი მთავარი გვერდი ან თქვენ მიერ მონახულებულ საიტებზე რეკლამა გამოჩნდეს).</translation>
 <translation id="7669907849388166732">{COUNT,plural, =1{კონფიდენციალურად მონიშნულ მონაცემებთან დაკავშირებით განხორციელებული ქმედებები (შესვლის შემდეგ განხორციელდა 1 ქმედება). <ph name="BEGIN_LINK"/>შეიტყვეთ მეტი<ph name="END_LINK"/>}other{კონფიდენციალურად მონიშნულ მონაცემებთან დაკავშირებით განხორციელებული ქმედებები (შესვლის შემდეგ განხორციელდა # ქმედება). <ph name="BEGIN_LINK"/>შეიტყვეთ მეტი<ph name="END_LINK"/>}}</translation>
 <translation id="7673278391011283842">საფოსტო ყუთი 6</translation>
+<translation id="7675325315208090829">გადახდის მეთოდების მართვა…</translation>
 <translation id="7676643023259824263">გაცვლის ბუფერში ტექსტის ძიება, <ph name="TEXT"/></translation>
 <translation id="4628681623692678085">თქვენი დათვალიერების ისტორიის ნახვა და მართვა Brave პარამეტრებიდან</translation>
 <translation id="7679947978757153706">ბეისბოლი</translation>
@@ -2623,6 +2636,7 @@
 <ph name="DEBUG_INFO"/></translation>
 <translation id="8424582179843326029"><ph name="FIRST_LABEL"/> <ph name="SECOND_LABEL"/> <ph name="THIRD_LABEL"/></translation>
 <translation id="8428213095426709021">პარამეტრები</translation>
+<translation id="8428634594422941299">გასაგებია</translation>
 <translation id="5808418475906247813"><ph name="MANAGE_COOKIES_FOCUSED_FRIENDLY_MATCH_TEXT"/>, ქუქი-ჩანაწერების პარამეტრების Brave-ის პარამეტრებიდან სამართავად დააჭირეთ კლავიშს Tab, შემდეგ კი Enter-ს</translation>
 <translation id="8433057134996913067">ამ მოქმედებით ვებსაიტების უმეტესობიდან გამოხვალთ.</translation>
 <translation id="8434840396568290395">შინაური ცხოველები</translation>
@@ -2725,6 +2739,7 @@
 <translation id="8763927697961133303">USB მოწყობილობა</translation>
 <translation id="7736544743887840328">ამჟამად გახსნილი ყველა ინკოგნიტო ფანჯრის დახურვა</translation>
 <translation id="8766943070169463815">გაიხსნა უსაფრთხო გადახდის ავტორიზაციის ფურცელი</translation>
+<translation id="8767765348545497220">დამხმარე ბუშტის დახურვა</translation>
 <translation id="877985182522063539">A4</translation>
 <translation id="8785658048882205566">მოტოციკლები</translation>
 <translation id="8790007591277257123">წაშლის &amp;გამეორება</translation>
@@ -2737,6 +2752,7 @@
 <translation id="8806285662264631610">სააბაზანოს და ტანის პროდუქცია</translation>
 <translation id="8807160976559152894">შემოჭრა თითოეული გვერდის შემდეგ</translation>
 <translation id="7527893726197732596">Brave-ის პარამეტრები</translation>
+<translation id="8813277370772331957">მოგვიანებით შეხსენება</translation>
 <translation id="7674607358106534914"><ph name="UPDATE_CHROME_FOCUSED_FRIENDLY_MATCH_TEXT"/>, Brave-ის პარამეტრებიდან Brave-ის გასაახლებლად დააჭირეთ კლავიშს Tab, შემდეგ კი Enter-ს</translation>
 <translation id="882338992931677877">ინდივიდუალური სათავსო</translation>
 <translation id="1723247378009489676">ინკოგნიტო ფანჯრების დახურვის ღილაკი, ამჟამად გახსნილი ყველა ინკოგნიტო ფანჯრის დასახურად დააჭირეთ კლავიშს Enter</translation>

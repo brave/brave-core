@@ -291,6 +291,7 @@
 <translation id="1717218214683051432">Сензори за движение</translation>
 <translation id="1717494416764505390">Пощенска кутия 3</translation>
 <translation id="1718029547804390981">Документът е твърде голям за добавяне на пояснения</translation>
+<translation id="1720941539803966190">Затваряне на урока</translation>
 <translation id="1721424275792716183">* Полето е задължително</translation>
 <translation id="1727613060316725209">Сертификатът е валиден</translation>
 <translation id="1727741090716970331">Добавяне на валиден номер на карта</translation>
@@ -451,7 +452,6 @@
 <translation id="2185836064961771414">Американски футбол</translation>
 <translation id="2187317261103489799">Откриване (по подразбиране)</translation>
 <translation id="2188375229972301266">Няколко перфорации в долната част</translation>
-<translation id="2257044501874719257">Паролата, която току-що използвахте, е разкрита при нарушение на сигурността на данните. За да защитите профилите си, мениджърът на паролите в Brave ви препоръчва да я промените сега и след това да проверите запазените си пароли.</translation>
 <translation id="219906046732893612">Подобрение на дома</translation>
 <translation id="2202020181578195191">Въведете валидна година на изтичане</translation>
 <translation id="22081806969704220">Тава 3</translation>
@@ -462,6 +462,7 @@
 <translation id="2215727959747642672">Редактиране на файлове</translation>
 <translation id="2215963164070968490">Кучета</translation>
 <translation id="2218879909401188352">Понастоящем извършители на атака срещу <ph name="BEGIN_BOLD"/><ph name="SITE"/><ph name="END_BOLD"/> могат да инсталират опасни приложения, които да повредят устройството ви, да добавят скрити такси към сметката ви за мобилни услуги или да откраднат личната ви информация. <ph name="BEGIN_LEARN_MORE_LINK"/>Научете повече<ph name="END_LEARN_MORE_LINK"/></translation>
+<translation id="2219658597883514593">Рестартиране на урока</translation>
 <translation id="2224337661447660594">Няма достъп до интернет</translation>
 <translation id="2230458221926704099">Поправете връзката си посредством <ph name="BEGIN_LINK"/>приложението за диагностика<ph name="END_LINK"/></translation>
 <translation id="2239100178324503013">Изпращане сега</translation>
@@ -596,7 +597,6 @@
 <translation id="259821504105826686">Фотографски и цифрови изкуства</translation>
 <translation id="2601150049980261779">Романтични филми</translation>
 <translation id="2604589665489080024">Поп музика</translation>
-<translation id="2609632851001447353">Вариации</translation>
 <translation id="2610561535971892504">Кликнете, за да копирате</translation>
 <translation id="2618023639789766142">C10 (плик)</translation>
 <translation id="2623663032199728144">Може да извежда запитвания за използване на информацията за екраните ви</translation>
@@ -623,6 +623,7 @@
 <translation id="2676271551327853224">Roc-8K</translation>
 <translation id="2677696497921480781">Рождени и имени дни</translation>
 <translation id="2677748264148917807">Излизане</translation>
+<translation id="5597413561928518510">Запазете картата и данните си за таксуване в профила си в Brave <ph name="USER_EMAIL"/>, за да плащате по-бързо и сигурно</translation>
 <translation id="2684561033061424857">11 x 12</translation>
 <translation id="2687555958734450033">Напасване</translation>
 <translation id="2688969097326701645">Да, продължаване</translation>
@@ -865,6 +866,7 @@
 <translation id="3399952811970034796">Адрес за бърза доставка</translation>
 <translation id="3402261774528610252">Връзката, чрез която се зарежда този сайт, използва TLS 1.0 или TLS 1.1. Тези версии са оттеглени и ще бъдат деактивирани в бъдеще. Когато това стане, потребителите няма да могат да зареждат сайта. Сървърът трябва да активира TLS 1.2 или по-нова версия.</translation>
 <translation id="3405664148539009465">Персонализиране на шрифтовете</translation>
+<translation id="3407789382767355356">подкани за вход от трети страни</translation>
 <translation id="3409896703495473338">Управление на настройките за сигурност</translation>
 <translation id="3414952576877147120">Размер:</translation>
 <translation id="3417660076059365994">Качените или прикачените от вас файлове се изпращат до Google Cloud или до трети страни за анализ. Възможно е например да бъдат сканирани за чувствителни данни или злонамерен софтуер.</translation>
@@ -1015,6 +1017,7 @@
 <translation id="3810973564298564668">Управление</translation>
 <translation id="3816482573645936981">Стойност (заменена)</translation>
 <translation id="382518646247711829">Ако използвате прокси сървър...</translation>
+<translation id="3826050100957962900">Подкани за вход от трети страни</translation>
 <translation id="3827112369919217609">Абсолютно</translation>
 <translation id="3827666161959873541">Семейни филми</translation>
 <translation id="3828924085048779000">Не може пропускът да не се попълни.</translation>
@@ -1027,6 +1030,7 @@
 <translation id="3858027520442213535">Актуализиране на датата и часа</translation>
 <translation id="3858860766373142691">Име</translation>
 <translation id="3872834068356954457">Наука</translation>
+<translation id="3875783148670536197">Покажете ми как</translation>
 <translation id="3881478300875776315">Показване на по-малко редове</translation>
 <translation id="3884278016824448484">Идентификационният номер на устройството е несъвместим</translation>
 <translation id="3885155851504623709">Енория</translation>
@@ -1059,6 +1063,7 @@
 <translation id="3973234410852337861">Хостът <ph name="HOST_NAME"/> е блокиран</translation>
 <translation id="3978338123949022456">Режим на търсене. Въведете заявка и натиснете Enter, за да търсите със <ph name="KEYWORD_SUFFIX"/></translation>
 <translation id="398470910934384994">Птици</translation>
+<translation id="3985750352229496475">Управление на адресите…</translation>
 <translation id="3986705137476756801">Изключване на „Надписи на живо“ засега</translation>
 <translation id="3987940399970879459">По-малко от 1 МБ</translation>
 <translation id="3990250421422698716">Разделно офсетово отпечатване</translation>
@@ -1169,6 +1174,7 @@
 <translation id="4305666528087210886">Няма достъп до файла</translation>
 <translation id="4306529830550717874">Да се запази ли адресът?</translation>
 <translation id="4306812610847412719">буферна памет</translation>
+<translation id="4310070645992025887">Търсете в пътуванията си</translation>
 <translation id="4312613361423056926">B2</translation>
 <translation id="4312866146174492540">Блокиране (по подразбиране)</translation>
 <translation id="4314815835985389558">Управление на синхронизирането</translation>
@@ -1270,6 +1276,7 @@
 <translation id="7265018635737406618">Бутон за преглед на съветите за Brave. Натиснете Enter, за да научите повече за функциите на браузъра</translation>
 <translation id="8338928872956435647">Вижте съветите за Brave</translation>
 <translation id="4617273035598175554">Софтуер за графика и анимация</translation>
+<translation id="4627165777145349100">Още за тази страница</translation>
 <translation id="6398431831028858802">Това правило не може да се зададе на ниво потребителски профил в Brave и ще бъде пренебрегнато.</translation>
 <translation id="4628948037717959914">Снимка</translation>
 <translation id="4631649115723685955">Опцията за връщане на пари при покупка е свързана</translation>
@@ -1407,6 +1414,7 @@
 <translation id="5011561501798487822">Установен език</translation>
 <translation id="5015510746216210676">Име на компютъра:</translation>
 <translation id="5017554619425969104">Копиран от вас текст</translation>
+<translation id="5017828934289857214">Напомняне по-късно</translation>
 <translation id="5018422839182700155">Тази страница не може да се отвори</translation>
 <translation id="5019198164206649151">Допълнителното хранилище е в лошо състояние</translation>
 <translation id="5020776957610079374">Световна музика</translation>
@@ -1637,6 +1645,7 @@
 <translation id="5624120631404540903">Управление на паролите</translation>
 <translation id="5629630648637658800">Зареждането на настройките за правилото не бе успешно</translation>
 <translation id="5631439013527180824">Невалидно означение за управление на устройството</translation>
+<translation id="5632485077360054581">Покажете ми как</translation>
 <translation id="5633066919399395251">Извършители на атака, понастоящем използващи <ph name="BEGIN_BOLD"/><ph name="SITE"/><ph name="END_BOLD"/>, може да опитат да инсталират опасни програми на компютъра ви, които крадат или изтриват информацията ви (например снимки, пароли, съобщения и номера на кредитни карти). <ph name="BEGIN_LEARN_MORE_LINK"/>Научете повече<ph name="END_LEARN_MORE_LINK"/></translation>
 <translation id="563324245173044180">Блокирахме измамно съдържание.</translation>
 <translation id="5633259641094592098">Култови и независими филми</translation>
@@ -1754,6 +1763,7 @@
 <translation id="5989320800837274978">Не са посочени нито фиксирани прокси сървъри, нито URL адрес на скрипт във формат .pac.</translation>
 <translation id="5992691462791905444">Z-образно сгъване на A3 до размер A4</translation>
 <translation id="7409510288691071929">Управление на информацията ви и настройките за поверителност и сигурност в профила ви в Brave</translation>
+<translation id="3494641719937626561">Паролата, която току-що използвахте, е разкрита при нарушение на сигурността на данните. За да защитите профилите си, Brave Мениджър на пароли ви препоръчва да я промените сега и да проверите запазените си пароли.</translation>
 <translation id="6000758707621254961"><ph name="RESULT_COUNT"/> резултата за „<ph name="SEARCH_TEXT"/>“</translation>
 <translation id="6006484371116297560">Класическа тема</translation>
 <translation id="6008122969617370890">Подредба от N до 1</translation>
@@ -1792,6 +1802,7 @@
 <translation id="6061154937977953833">Борба</translation>
 <translation id="6064217302520318294">Заключване на екрана</translation>
 <translation id="6064602040258638498">Талони и оферти за отстъпка</translation>
+<translation id="6078813287646374487">Показване на още информация за тази страница</translation>
 <translation id="6080696365213338172">Осъществихте достъп до съдържанието посредством осигурен от администратора сертификат. Данните, които предоставите на <ph name="DOMAIN"/>, могат да бъдат прихванати от администратора ви.</translation>
 <translation id="6087312102907839798">Сродни търсения</translation>
 <translation id="6094273045989040137">Добавяне на пояснения</translation>
@@ -1869,6 +1880,7 @@
 <translation id="6337133576188860026">Ще освободите по-малко от <ph name="SIZE"/>. Някои сайтове може да се заредят по-бавно при следващото ви посещение.</translation>
 <translation id="6337534724793800597">Филтриране на правилата по име</translation>
 <translation id="6340739886198108203">Според администраторско правило не се препоръчва правенето на екранни снимки или записи, когато се вижда поверително съдържание:</translation>
+<translation id="6348220984832452017">Активни варианти</translation>
 <translation id="6349101878882523185">Инсталиране на <ph name="APP_NAME"/></translation>
 <translation id="6353505687280762741">{COUNT,plural, =0{Няма}=1{1 парола (за <ph name="DOMAIN_LIST"/>, синхронизирана)}=2{2 пароли (за <ph name="DOMAIN_LIST"/>, синхронизирани)}other{# пароли (за <ph name="DOMAIN_LIST"/>, синхронизирани)}}</translation>
 <translation id="6358450015545214790">Какво означават тези неща?</translation>
@@ -1898,7 +1910,6 @@
 <translation id="7772223497488184427">Промяна на паролата за Brave</translation>
 <translation id="6433490469411711332">Редактиране на информацията за връзка</translation>
 <translation id="6433595998831338502"><ph name="HOST_NAME"/> отказа да установи връзка.</translation>
-<translation id="6438025220577812695">Аз ще я променя</translation>
 <translation id="6440503408713884761">Пренебрегнато</translation>
 <translation id="6443406338865242315">Кои разширения и приставки сте инсталирали</translation>
 <translation id="6446163441502663861">Kahu (плик)</translation>
@@ -2030,6 +2041,7 @@
 <translation id="6839929833149231406">Район</translation>
 <translation id="6846340164947227603">Използване на номер на виртуална карта...</translation>
 <translation id="6852204201400771460">Искате ли да презаредите приложението?</translation>
+<translation id="6857776781123259569">Управление на паролите…</translation>
 <translation id="686485648936420384">Потребителски ресурси</translation>
 <translation id="6865412394715372076">Тази карта не може да бъде потвърдена в момента</translation>
 <translation id="6869334554832814367">Потребителски заеми</translation>
@@ -2343,6 +2355,7 @@
 <translation id="7669271284792375604">Извършителите на атаки, използващи този сайт, може да опитат да ви подведат да инсталирате програми, които вредят на сърфирането ви (например, като променят началната ви страница или показват допълнителни реклами в посещаваните от вас сайтове).</translation>
 <translation id="7669907849388166732">{COUNT,plural, =1{Действията с данни, означени като поверителни (1 действие след влизането в профила). <ph name="BEGIN_LINK"/>Научете повече<ph name="END_LINK"/>}other{Действията с данни, означени като поверителни (# действия след влизането в профила). <ph name="BEGIN_LINK"/>Научете повече<ph name="END_LINK"/>}}</translation>
 <translation id="7673278391011283842">Пощенска кутия 6</translation>
+<translation id="7675325315208090829">Управление на начините на плащане…</translation>
 <translation id="7676643023259824263">Търсене на текста от буферната памет, <ph name="TEXT"/></translation>
 <translation id="4628681623692678085">Преглед и управление на историята ви на сърфиране в настройките на Brave</translation>
 <translation id="7679947978757153706">Бейзбол</translation>
@@ -2600,6 +2613,7 @@
 <ph name="DEBUG_INFO"/></translation>
 <translation id="8424582179843326029"><ph name="FIRST_LABEL"/>, <ph name="SECOND_LABEL"/>, <ph name="THIRD_LABEL"/></translation>
 <translation id="8428213095426709021">Настройки</translation>
+<translation id="8428634594422941299">Разбрах</translation>
 <translation id="5808418475906247813"><ph name="MANAGE_COOKIES_FOCUSED_FRIENDLY_MATCH_TEXT"/>. Натиснете Tab и след това Enter, за да управлявате предпочитанията си за „бисквитките“ от настройките на Brave</translation>
 <translation id="8433057134996913067">Ще излезете от повечето уебсайтове.</translation>
 <translation id="8434840396568290395">Домашни любимци</translation>
@@ -2701,6 +2715,7 @@
 <translation id="8761567432415473239">Brave Безопасно сърфиране наскоро <ph name="BEGIN_LINK"/>откри опасни програми<ph name="END_LINK"/> на <ph name="SITE"/>.</translation>
 <translation id="8763927697961133303">USB устройство</translation>
 <translation id="8766943070169463815">Листът за удостоверяване на идентификационни данни за сигурни плащания е отворен</translation>
+<translation id="8767765348545497220">Затваряне на балончето за помощ</translation>
 <translation id="877985182522063539">A4</translation>
 <translation id="8785658048882205566">Мотоциклети</translation>
 <translation id="8790007591277257123">&amp;Възстановяване на изтриването</translation>
@@ -2713,6 +2728,7 @@
 <translation id="8806285662264631610">Продукти за баня и за тялото</translation>
 <translation id="8807160976559152894">Отрязване след всяка страница</translation>
 <translation id="7527893726197732596">Настройки на Brave</translation>
+<translation id="8813277370772331957">Напомняне по-късно</translation>
 <translation id="7674607358106534914"><ph name="UPDATE_CHROME_FOCUSED_FRIENDLY_MATCH_TEXT"/>. Натиснете Tab и след това – Enter, за да актуализирате Brave от настройките</translation>
 <translation id="882338992931677877">Слот за ръчно подаване</translation>
 <translation id="883848425547221593">Други отметки</translation>
