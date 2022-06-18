@@ -45,7 +45,9 @@
 <translation id="6587448235155023666">அடுத்த முறை நீங்கள் பிரேவை மறுஏவும்போது உங்கள் மாற்றங்கள் செயல்படும்.</translation>
 <translation id="8701563696941209024">இப்போது மறுஏவு</translation>
 <translation id="834487290629916192">பின்னர்</translation>
+<translation id="7207456302801184289">பிரேவுக்கு வரவேற்கிறோம்</translation>
 <translation id="8281886186245836920">தவிர்</translation>
+<translation id="6165508094623778733">மேலும் அறிக</translation>
 <translation id="5808759341041733958">இயல்புநிலை தேடுபொறியை தெரிவுசெய்</translation>
 <translation id="1331593888918588693">உம் விருப்பத்தேர்வை எப்போது வேண்டுமானாலும் செயலி அமைப்புகளில் மாற்றலாம்.</translation>
 <translation id="5806601733251372221">பிரேவ் கவசங்கள்</translation>
@@ -63,7 +65,6 @@
 <translation id="1166682575529520472">மாதாந்திர</translation>
 <translation id="1910721550319506122">வாருங்கள்!</translation>
 <translation id="245015745140252435">துணுக்குதவி தொகை</translation>
-<translation id="7873874596836611687">பணப்பை கையிருப்பு:</translation>
 <translation id="2573313946367623146">என் துணுக்குதவியை அனுப்பு</translation>
 <translation id="3250511771491660127">இதை மாதந்திரமாக்கு</translation>
 <translation id="7658239707568436148">ரத்துசெய்</translation>
@@ -81,7 +82,6 @@
 <translation id="8220228041552340594">அக்டொபர்</translation>
 <translation id="8280223431922155812">நவம்பர்</translation>
 <translation id="4254029385847607686">டிசம்பர்</translation>
-<translation id="4258022280942725182">உம் பணப்பை</translation>
 <translation id="1165667598801520610">நிதி சேர்</translation>
 <translation id="8428213095426709021">அமைப்புகள்</translation>
 <translation id="8918760045046434238">துணுக்குதவியை அனுப்பு...</translation>
@@ -98,8 +98,6 @@
 <translation id="3453206261112715431">இலவச கிள்ளாக்கு நல்கை</translation>
 <translation id="6417420737057016607">பிரேவ் விளம்பரங்கள்</translation>
 <translation id="7550470870580166294">போதாத நிதிகள்</translation>
-<translation id="2630264552940126640">பணப்பையைப் பிரதியெடு</translation>
-<translation id="238922425564381955">உம் பிரேவ் பணப்பையைப் பிரதியெடுக்கவும்.</translation>
 <translation id="2323069945529668668">அட டா!</translation>
 <translation id="7510166204621526816">பிரேவ் வெகுமதிகள் தேக்கம் பதிலளிக்கவில்லை. கூடிய விரைவில் இதை சரிசெய்திடுவோம்.</translation>
 <translation id="683765328936486920">யூடியூபில்</translation>
@@ -228,7 +226,7 @@
 <translation id="2359808026110333948">தொடர்க</translation>
 <translation id="6896758677409633944">நகலெடு</translation>
 <translation id="7665369617277396874">கணக்கைச் சேர்</translation>
-<translation id="1544192797660353713">பணப்பை (வெள்ளோட்டம்)</translation>
+<translation id="1544192797660353713">பணப்பை</translation>
 <translation id="3943857333388298514">ஒட்டு</translation>
 <translation id="6518133107902771759">சரிபார்</translation>
 <translation id="3157931365184549694">மீட்டமை</translation>
@@ -282,5 +280,6 @@
 <translation id="4804818685124855865">தொடர்பைத் துண்டி</translation>
 <translation id="5052727830821470769">பிணைய உரலி</translation>
 <translation id="7982789257301363584">நெட்வொர்க்</translation>
+<translation id="8759753423332885148">மேலும் அறிக.</translation>
 <translation id="1324417023773393937">பிரேவ் உலாவி</translation>
 </translationbundle>

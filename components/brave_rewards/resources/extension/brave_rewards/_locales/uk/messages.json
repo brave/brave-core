@@ -135,6 +135,21 @@
     "message": "У Винагород Brave сталася проблема. Будь ласка, спробуйте пізніше.",
     "description": ""
   },
+  "rewardsLogInToSeeBalance": {
+    "message": "$begin_bold$Увійдіть у $provider$ $end_bold$, щоб переглянути баланс",
+    "description": "",
+    "placeholders": {
+      "begin_bold": {
+        "content": "$1"
+      },
+      "provider": {
+        "content": "$2"
+      },
+      "end_bold": {
+        "content": "$3"
+      }
+    }
+  },
   "rewardsPaymentCheckStatus": {
     "message": "Перевірити статус",
     "description": ""

@@ -135,6 +135,21 @@
     "message": "Brave Rewards ima težave. Poskusite znova kasneje.",
     "description": ""
   },
+  "rewardsLogInToSeeBalance": {
+    "message": "$begin_bold$Za ogled stanja se prijavite v $provider$$end_bold$ ",
+    "description": "",
+    "placeholders": {
+      "begin_bold": {
+        "content": "$1"
+      },
+      "provider": {
+        "content": "$2"
+      },
+      "end_bold": {
+        "content": "$3"
+      }
+    }
+  },
   "rewardsPaymentCheckStatus": {
     "message": "Preverite stanje",
     "description": ""

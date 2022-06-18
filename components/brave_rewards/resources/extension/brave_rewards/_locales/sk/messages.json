@@ -135,6 +135,21 @@
     "message": "Brave rewards majú nejaký problém. Prosím, skúste to znovu.",
     "description": ""
   },
+  "rewardsLogInToSeeBalance": {
+    "message": "$begin_bold$Prihláste sa do $provider$ $end_bold$, aby ste videli svoj zostatok.",
+    "description": "",
+    "placeholders": {
+      "begin_bold": {
+        "content": "$1"
+      },
+      "provider": {
+        "content": "$2"
+      },
+      "end_bold": {
+        "content": "$3"
+      }
+    }
+  },
   "rewardsPaymentCheckStatus": {
     "message": "Skontrolovať stav",
     "description": ""

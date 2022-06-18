@@ -84,7 +84,20 @@
 <translation id="6587448235155023666">ستسري التغييرات في المرة التالية التي تعيد فيها تشغيل متصفح Brave</translation>
 <translation id="8701563696941209024">إعادة بدء التشغيل الآن</translation>
 <translation id="834487290629916192">لاحقاً</translation>
+<translation id="7207456302801184289">‏مرحبًا بك في Brave</translation>
+<translation id="4117451092682672487">الخصوصية. أصبحت أبسط.</translation>
+<translation id="7909375417585209817">باستخدام Brave كافتراضي، يفتح كل رابط تنقر عليه بحماية خصوصية Brave.</translation>
+<translation id="5148943178722443958">ساعد في تحسين Brave.</translation>
+<translation id="6188781052835527980">أرسل تقارير تشخيص مجهولة المصدر إذا واجهت عطلًا أو تجميدًا.</translation>
+<translation id="1929905278861178845">شارك نتائج تحليلات المنتج الخاصة والمجهولة تمامًا حول الميزات التي يستخدمها مستخدمو Brave.</translation>
+<translation id="2877653791257935258">كتابة اسم موقع ويب أو عنوان URL</translation>
+<translation id="5329830149661250028">شاهد اختلاف Brave: لا توجد إعلانات. لا توجد أجهزة تعقب. طريقة أسرع لتحميل الصفحة.</translation>
+<translation id="3545804467215833536">انقر لعرض Brave Shields</translation>
+<translation id="1724327820822194498">شاهد كل الأشياء السيئة، تم حظر Brave، في كل صفحة، باستخدام Shields.</translation>
+<translation id="5386259141409498372"><ph name="BIG_TECH"/> و<ph name="TRACKER"/> إعلانات أخرى &amp; تم حظر أجهزة التعقب</translation>
+<translation id="3092683655478890840"><ph name="TRACKER_COUNT"/> إعلانات &amp;تم حظر أجهزة التعقب</translation>
 <translation id="8281886186245836920">تخطّي</translation>
+<translation id="6165508094623778733">اعرف المزيد</translation>
 <translation id="986879628471635371">استكشاف الأخطاء وإصلاحها أثناء عمل الخدمة</translation>
 <translation id="5808759341041733958">اختر محرك البحث الافتراضي</translation>
 <translation id="1331593888918588693">يمكنك دائماً تغيير تفضيلاتك لاحقاً في إعدادات التطبيق.</translation>
@@ -112,12 +125,12 @@
 <translation id="1166682575529520472">شهريًا</translation>
 <translation id="1628742278973105368">سيتم إرسال إكراميتك الشهرية الأولى في:</translation>
 <translation id="298349922412901215">ملاحظة: لم يقم منشئ المحتوى هذا بتسجيل الاشتراك حتى الآن لتلقي مساهمات من مستخدمي Brave. سنستمر في محاولة تقديم المساهمة حتى يقوم بإجراء التحقق وتأكيد بياناته، أو إلى أن يمر 90 يوماً.</translation>
-<translation id="635752162765375187">ملاحظة: هذا المنشئ غير مهيأ حاليًا لتلقي إكرامية من محفظتك. ستبقى أي مكافأة تقدمها معلقة في محفظتك وسيتم إعادة المحاولة تلقائيًا لمدة 90 يومًا.</translation>
+<translation id="635752162765375187">ملاحظة: لم يجر إعداد هذا المنشئ حاليًا لتلقي إكراميات من خدمة المحفظة المستضافة للمكافآت الخاصة بك. كما تبقى أي إكراميات تقدمها معلقة وتتم إعادة المحاولة تلقائيًا لمدة 90 يومًا.</translation>
 <translation id="1910721550319506122">مرحباً بك!</translation>
 <translation id="3165726837666415756">يمكنك دعم هذا الموقع عن طريق إرسال نصائح. إنها طريقة لشكرهم لإنشائهم محتوى رائع. يتقاضى منشئو المحتوى الذين تم التحقق منهم وتأكيد بياناتهم مبالغ مقابل نصائحهم خلال الأسبوع الأول من كل شهر.</translation>
 <translation id="1704859330137112950">إذا كنت ترغب في ذلك، يمكنك جدولة مكافآت شهرية لدعم هذا الموقع على أساس مستمر.</translation>
 <translation id="245015745140252435">مبلغ المكافأة</translation>
-<translation id="7873874596836611687">رصيد المحفظة:</translation>
+<translation id="7873874596836611687">رصيد المكافآت:</translation>
 <translation id="2573313946367623146">أرسل نصيحتي</translation>
 <translation id="3250511771491660127">اجعل هذا شهرياً</translation>
 <translation id="7658239707568436148">إلغاء</translation>
@@ -137,7 +150,7 @@
 <translation id="8220228041552340594">أكتوبر/تشرين الأول</translation>
 <translation id="8280223431922155812">نوفمبر/ تشرين الثاني</translation>
 <translation id="4254029385847607686">ديسمبر/كانون الأول</translation>
-<translation id="4258022280942725182">محفظتك</translation>
+<translation id="4258022280942725182">مكافآت Brave الخاصة بك</translation>
 <translation id="3960619311638643872">Brave VPN</translation>
 <translation id="1772301834467143364">Brave News</translation>
 <translation id="7760215798627399379"><ph name="VALUE"/> USD</translation>
@@ -171,8 +184,8 @@
 <translation id="8689997599821157251">لقد ربحت</translation>
 <translation id="7550470870580166294">الرصيد لا يكفي</translation>
 <translation id="2775064702681588061">ينتظر حساب Brave Rewards الخاص بك إيداعًا.</translation>
-<translation id="2630264552940126640">عمل نسخة احتياطية عن المحفظة</translation>
-<translation id="238922425564381955">يرجى عمل نسخة احتياطية عن محفظة Brave الخاصة بك.</translation>
+<translation id="2630264552940126640">النسخة الاحتياطية لمكافآت Brave</translation>
+<translation id="238922425564381955">يرجى إجراء نسخة احتياطية لمكافآت Brave الخاصة بك.</translation>
 <translation id="2323069945529668668">آه!</translation>
 <translation id="7510166204621526816">خادم مكافآت Brave لا يستجيب. سوف نصلح هذا في أقرب وقت ممكن.</translation>
 <translation id="683765328936486920">على يوتيوب</translation>
@@ -542,7 +555,7 @@
 <translation id="5493402808936397665">قم بتفعيل خيار الدخول بالبصمة لفتح محفظتك بسرعة دون إدخال كلمة المرور الخاصة بك.</translation>
 <translation id="8030647312184163932">فتح القفل ببصمة الإصبع</translation>
 <translation id="4090490645603511157">استخدم المقاييس الحيوية لفتح محفظتك بسرعة دون حاجة لإدخال كلمة المرور.</translation>
-<translation id="1544192797660353713">المحفظة (تجريبية)</translation>
+<translation id="1544192797660353713">المحفظة</translation>
 <translation id="6901810042765869341">أدخل عبارة الاسترداد الخاصة بك لاستعادة حساب التشفير crypto لـ Brave Wallet الخاص بك.</translation>
 <translation id="9120654436199628567">استعادة حساب العملة المشفرة</translation>
 <translation id="4811736040444856406">عرض عبارة الاسترداد</translation>
@@ -606,7 +619,7 @@
 <translation id="8239147115686034860">قفل Brave Wallet تلقائيًا</translation>
 <translation id="414639769490080648">عدد دقائق الانتظار حتى يتم قفل Brave Wallet تلقائيًا</translation>
 <translation id="4993345308607970390">إعادة تعيين محفظة Brave</translation>
-<translation id="4322846864135539519">هل أنت متأكد أنك تريد إعادة ضبط محفظتك؟ إذا لم يتم نسخ محفظتك احتياطيًا، فستؤدي إعادة التعيين إلى فقد جميع بيانات الحساب (بما في ذلك أي أموال مرتبطة). اكتب "<ph name="CONFIRMATION_PHRASE"/> للتأكيد.</translation>
+<translation id="4322846864135539519">هل أنت متأكد من أنك تريد إعادة تعيين مكافآت Brave Rewards؟ إذا لم يتم نسخ محفظتك احتياطيًا، فستؤدي إعادة التعيين إلى فقد جميع بيانات الحساب (بما في ذلك أي أموال مرتبطة). اكتب "<ph name="CONFIRMATION_PHRASE"/>" للتأكيد.</translation>
 <translation id="4862812525895306758">محو المعاملة &amp; معلومات الرقم الخاص</translation>
 <translation id="5693968582510626466">قد يكون مسح التداولات مفيدًا للمطورين أو عند مسح الحالة على خادم محلي</translation>
 <translation id="5421107279168565467">هل أنت متأكد من أنك تريد إعادة تعيين المعاملة ومعلومات الرقم الخاص؟ يستخدم هذا الخيار في الغالب من قبل المطورين الذين يقومون بتشغيل خادم اختبار محلي. اكتب "<ph name="CONFIRMATION_PHRASE"/> " للتأكيد.</translation>
@@ -626,8 +639,8 @@
 <translation id="1190117345570417902">يستخدم نفق شبكة VPN المشفر الآمن من Wireguard</translation>
 <translation id="1571230671455380494">نحن لا نشارك أو نبيع المعلومات الخاصة بك</translation>
 <translation id="276866628038850725">تتضمن جميع الخطط إصدارًا تجريبيًا مجانيًا لمدة 7 أيام!</translation>
-<translation id="7280825497485894053">اشتراك شهري</translation>
-<translation id="3001303523417455986">اشتراك سنوي</translation>
+<translation id="1532536259167115948">الاشتراك الشهري <ph name="TRIAL_TEXT"/></translation>
+<translation id="6344668702581136255">الاشتراك السنوي <ph name="TRIAL_TEXT"/></translation>
 <translation id="6748319398471481216">يتجدد شهريًا</translation>
 <translation id="7734634586133069282"><ph name="MONTHLY_AMOUNT"/> / mo.</translation>
 <translation id="1163809943099641131">ٍسنة واحدة</translation>
@@ -648,8 +661,7 @@
 إذا لم تقبل هذا الطلب، فلن يتم إعادة اتصال VPN ولن يتم تأمين اتصالك بالإنترنت.</translation>
 <translation id="2429299231491852747">قبول طلب الاتصال</translation>
 <translation id="3428909627460825679">تعذّر إنشاء ملف تعريف Vpn. يُرجى المحاولة مرة أخرى.</translation>
-<translation id="1264320790738638119">فشل التحقق من الشراء. يُرجى المحاولة مرة اخرى.</translation>
-<translation id="8905950042180169719">VPN قيد التشغيل في الخلفية</translation>
+<translation id="1264320790738638119">انتهت صلاحية اشتراكك. يمكنك الاشتراك مرة أخرى في أي وقت.</translation>
 <translation id="8681480718817027245">اشتراك</translation>
 <translation id="7805768142964895445">الحالة</translation>
 <translation id="5747552184818312860">تاريخ انتهاء الصلاحية</translation>
@@ -677,15 +689,15 @@
 <translation id="1219475260382643267">الموقع لا يعمل</translation>
 <translation id="7138678301420049075">أخرى</translation>
 <translation id="4827315939627587219">إعادة ضبط تكوين VPN</translation>
-<translation id="6883280223123252086">هل أنت متأكد من أنك تريد إعادة ضبط تكوين vpn؟</translation>
+<translation id="1705662265912724430">هل أنت متأكد من أنك تريد إعادة تعيين تكوين VPN؟</translation>
 <translation id="604124094241169006">تلقائي</translation>
 <translation id="7475580600756356589">الاتصال بالخادم الخاص بك. يجب أن يستغرق لحظة فقط ...</translation>
 <translation id="1342728075788541348">قطع الاتصال من الخادم الخاص بك. يجب أن يستغرق لحظة فقط ...</translation>
 <translation id="669072536454692117">تم استهلاك الاشتراك بنجاح</translation>
 <translation id="1187506504156101449">تعذّر الإقرار بالشراء:</translation>
 <translation id="8420522105268941892">أنت مشترك بالفعل في الاشتراك. حاول استعادة الاشتراك.</translation>
-<translation id="404414664190867625">ERROR!!\nتسبب أحد المستخدمين في إلغاء تدفق الشراء.</translation>
-<translation id="3515141458161417228">خطأ!!\nفشلت عملية الشراء..</translation>
+<translation id="404414664190867625">لقد أنهيت شراء اشتراكك.</translation>
+<translation id="3515141458161417228">فشلت عملية الشراء. يُرجى الاتصال بدعم Google Play.</translation>
 <translation id="6452181791372256707">رفض</translation>
 <translation id="8030852056903932865">موافق</translation>
 <translation id="1597199892790541240">رسوم الجاس</translation>
@@ -720,6 +732,7 @@
 <translation id="2199215899212542417">نوع الوظيفة:<ph name="FTYPE"/></translation>
 <translation id="4803003663447398145">لا توجد بيانات</translation>
 <translation id="9061799688859969073"><ph name="ACCOUNT_NAME"/>تم إرسال<ph name="CRYPTO_VALUE"/><ph name="ASSET"/>($<ph name="FIAT_VALUE"/>) - <ph name="DATE"/></translation>
+<translation id="1148985422232712046">تم إرسال <ph name="ACCOUNT_NAME"/>  <ph name="ASSET"/> #<ph name="ASSET_ID"/> - <ph name="DATE"/></translation>
 <translation id="2911329628253651823"><ph name="ACCOUNT_NAME"/>تمت الموافقة<ph name="ASSET"/><ph name="DATE"/></translation>
 <translation id="7400134344541309180">تمت الموافقة بشكل غير محدود <ph name="ASSET"/><ph name="PROXY"/></translation>
 <translation id="2428770727194227378"><ph name="ACCOUNT_NAME"/>تبديل - <ph name="DATE"/></translation>
@@ -784,6 +797,7 @@
 <translation id="7732576862074737148">≈<ph name="VALUE"/>دولار أمريكي</translation>
 <translation id="3079421456571897484"><ph name="VALUE"/> لعملة BAT</translation>
 <translation id="5802665280774361839">إظهار الإكمال التلقائي في شريط العناوين</translation>
+<translation id="8982438328166986164">يعرض اقتراحات مواقع الويب بناءً على الإشارات المرجعية وسجل التصفح.</translation>
 <translation id="1241283133946520352">الشبكات</translation>
 <translation id="1062463687579789365">تخصيص شبكات المحفظة</translation>
 <translation id="2512821599885971349">إضافة شبكة</translation>
@@ -818,7 +832,6 @@
 <translation id="3586752056660754651">توقيع</translation>
 <translation id="6592721981110586529">الاتصال بمحفظة Brave</translation>
 <translation id="329813193938846695">حدد الحساب (الحسابات)</translation>
-<translation id="3890989020011724401">حساب جديد</translation>
 <translation id="291375746846291973">تواصل فقط مع المواقع التي تثق بها.</translation>
 <translation id="385051799172605136">الرجوع إلى الوراء</translation>
 <translation id="1060221736464994328">هل تسمح لهذا الموقع بتبديل الشبكة؟</translation>
@@ -835,22 +848,32 @@
 <translation id="85136472535634474">فتح إعدادات VPN</translation>
 <translation id="8352805003811526272">جارِ إعادة تعيين التهيئة ...</translation>
 <translation id="6809312301323611382">لقد حدّدت الخادم نفسه بالفعل.</translation>
-<translation id="5665084657857645952">تم إلغاء الإذن</translation>
+<translation id="5665084657857645952">لقد قمت بإيقاف تثبيت ملف تعريف VPN.</translation>
 <translation id="9106265941552476098">رفض <ph name="TRANSACTION_LENGTH"/> معاملات</translation>
 <translation id="523862956770478816">أذونات الموقع</translation>
 <translation id="2141313140218636977"><ph name="VALUE"/> حساب متصل</translation>
+<translation id="3890989020011724401">حساب جديد</translation>
 <translation id="4305817255990598646">تبديل</translation>
 <translation id="4804818685124855865">قطع الاتصال</translation>
 <translation id="8009571545960303544">جاري طلب توقيعك</translation>
+<translation id="3484981968509595506">يطلب DApp مفتاح التشفير العام الخاص بك</translation>
+<translation id="2291002548681057345">يطلب مفتاح التشفير العام لمحافظك. إذا وافقت على تقديم هذا المفتاح، فسيكون الموقع قادرًا على إنشاء رسائل مشفرة لك.</translation>
+<translation id="3340247553212049934">تزويد</translation>
 <translation id="1982257600591932657">اسم الشبكة</translation>
 <translation id="5052727830821470769">عنوان URL للشبكة</translation>
 <translation id="4822132585477111396">معرّف السلسلة</translation>
 <translation id="7131971375297699539">رمز العملة</translation>
 <translation id="7982789257301363584">الشبكة</translation>
-<translation id="2521480044079508357">سيسمح هذا باستخدام هذه الشبكة داخل Brave Wallet.</translation>
+<translation id="7540715999708954128">سيسمح هذا باستخدام هذه الشبكة داخل Brave Wallet. تعرّف على المزيد.</translation>
+<translation id="8759753423332885148">اعرف المزيد.</translation>
 <translation id="4717431746210146708">هل تسمح لهذا الموقع بإضافة شبكة؟</translation>
 <translation id="3378339846292573874">إضافة عملة رمزية مقترحة</translation>
 <translation id="2322227405137827074">هل ترغب في استيراد هذه العملة الرمزية؟</translation>
 <translation id="1324417023773393937">متصفح Brave</translation>
 <translation id="6044189892950611565">قناة الإشعار لمتصفح Brave</translation>
+<translation id="1173919438868967364">تحديد حساب</translation>
+<translation id="8922793255489232731">تعذّر الحصول على المنطقة الزمنية المطابقة لـ: <ph name="VALUE"/></translation>
+<translation id="8231907121684689093">عرض أهم المواقع</translation>
+<translation id="6471216025161697462">متصل بـ <ph name="VALUE"/></translation>
+<translation id="1968852757206592413">إصدار تجريبي</translation>
 </translationbundle>

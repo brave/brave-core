@@ -135,6 +135,21 @@
     "message": "Brave 奖励出现了问题。请稍后再试。",
     "description": ""
   },
+  "rewardsLogInToSeeBalance": {
+    "message": "$begin_bold$ 登录到 $provider$ $end_bold$ 查看您的余额",
+    "description": "",
+    "placeholders": {
+      "begin_bold": {
+        "content": "$1"
+      },
+      "provider": {
+        "content": "$2"
+      },
+      "end_bold": {
+        "content": "$3"
+      }
+    }
+  },
   "rewardsPaymentCheckStatus": {
     "message": "检查状态",
     "description": ""

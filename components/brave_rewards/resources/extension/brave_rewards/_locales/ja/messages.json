@@ -135,6 +135,21 @@
     "message": "Brave リワードに問題が発生しました。時間をおいて、もう一度試してみてください。",
     "description": ""
   },
+  "rewardsLogInToSeeBalance": {
+    "message": "$begin_bold$ $provider$にログイン$end_bold$して残高を確認",
+    "description": "",
+    "placeholders": {
+      "begin_bold": {
+        "content": "$1"
+      },
+      "provider": {
+        "content": "$2"
+      },
+      "end_bold": {
+        "content": "$3"
+      }
+    }
+  },
   "rewardsPaymentCheckStatus": {
     "message": "ステータスを確認",
     "description": ""
