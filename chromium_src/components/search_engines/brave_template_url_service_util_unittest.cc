@@ -117,7 +117,7 @@ TEST_F(BraveTemplateURLServiceUtilTest, GetSearchProvidersUsingKeywordResult) {
   // Verify count and order.
   TestDefaultOrder(template_urls,
                    {":g", ":d", ":q", ":b", ":sp", ":ya", "random1", "random2",
-                    "@bookmarks", "@history"});
+                    "@bookmarks", "@history", "@tabs"});
 }
 
 TEST_F(BraveTemplateURLServiceUtilTest,
@@ -146,5 +146,5 @@ TEST_F(BraveTemplateURLServiceUtilTest,
 
   // Verify count and order.
   TestDefaultOrder(template_urls, {":d", ":q", ":g", ":b", ":sp", ":ya",
-                                   "@bookmarks", "@history"});
+                                   "@bookmarks", "@history", "@tabs"});
 }
