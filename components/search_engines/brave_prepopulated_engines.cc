@@ -13,7 +13,7 @@ namespace TemplateURLPrepopulateData {
 
 // IMPORTANT! Make sure to bump this value if you make changes to the
 // engines below or add/remove engines.
-const int kBraveCurrentDataVersion = 19;
+const int kBraveCurrentDataVersion = 20;
 // DO NOT CHANGE THIS ONE. Used for backfilling kBraveDefaultSearchVersion.
 const int kBraveFirstTrackedDataVersion = 6;
 
@@ -145,7 +145,7 @@ const PrepopulatedEngine brave_ecosia =
                        "e8eb07a6"
 #endif
                        "&q={searchTerms}&addon=brave",
-                       "https://ac.ecosia.org/?q={searchTerms}",
+                       "https://ac.ecosia.org/autocomplete?q={searchTerms}&type=list",
                        NULL,
                        PREPOPULATED_ENGINE_ID_ECOSIA);
 
