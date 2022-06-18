@@ -55,6 +55,7 @@
 <translation id="124678866338384709">Close current tab</translation>
 <translation id="1246905108078336582">Remove suggestion from clipboard?</translation>
 <translation id="1996480094660735607">Brave doodle: <ph name="DOODLE_DESCRIPTION"/></translation>
+<translation id="1263231323834454256">Reading list</translation>
 <translation id="1266864766717917324">Couldn't share <ph name="CONTENT_TYPE"/></translation>
 <translation id="1283039547216852943">Tap to expand</translation>
 <translation id="1285310382777185058">Change language</translation>
@@ -82,6 +83,7 @@ When you delete your browsing history – all or for a specific site – you als
 <translation id="1383876407941801731">Search</translation>
 <translation id="1384704387250346179">Translate image with Google Lens <ph name="BEGIN_NEW"/>New<ph name="END_NEW"/></translation>
 <translation id="1386674309198842382">Active <ph name="LAST_UPDATED"/> days ago</translation>
+<translation id="13931502444227376">To continue, <ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE"/> will share your name, email address and profile picture with this site. See this site's <ph name="BEGIN_LINK1"/>Terms of Service<ph name="END_LINK1"/>.</translation>
 <translation id="1397811292916898096">Search with <ph name="PRODUCT_NAME"/></translation>
 <translation id="5857638389580847844">You can change your mind at any time in Brave settings. The trials run alongside the current way that ads get served, so you won’t see changes right away.</translation>
 <translation id="1406000523432664303">‘Do Not Track’</translation>
@@ -105,6 +107,7 @@ When you delete your browsing history – all or for a specific site – you als
 <translation id="1493287004536771723">You’re following <ph name="SITE_NAME"/></translation>
 <translation id="1506061864768559482">Search engine</translation>
 <translation id="1513352483775369820">Bookmarks and web history</translation>
+<translation id="1513814250881909472">Sync to get your tabs from your other devices</translation>
 <translation id="1513858653616922153">Delete password</translation>
 <translation id="1518421282666914498">Emotion GIF <ph name="CURRENT_DATE_ISO"/></translation>
 <translation id="1521774566618522728">Active today</translation>
@@ -114,6 +117,7 @@ When you delete your browsing history – all or for a specific site – you als
 <translation id="1705567146636171298">Update Brave</translation>
 <translation id="1571304935088121812">Copy username</translation>
 <translation id="1592864538817356322">Standard protection:</translation>
+<translation id="1594635596540195766"><ph name="SUGGESTIONS_COUNT"/> suggested items in list below.</translation>
 <translation id="1977195831772110829"><ph name="BEGIN_BOLD"/>How you can manage your data:<ph name="END_BOLD"/> To protect your privacy, we auto-delete your interests that are older than four weeks. As you keep browsing, an interest might appear on the list again. Or you can remove interests that you don’t want Brave to consider.</translation>
 <translation id="1628019612362412531">{NUM_SELECTED,plural, =1{Remove 1 selected item}other{Remove # selected items}}</translation>
 <translation id="3122582044404611732">Discover new content on Brave’s homepage</translation>
@@ -126,18 +130,18 @@ When you delete your browsing history – all or for a specific site – you als
 <translation id="1672586136351118594">Don‘t show again</translation>
 <translation id="1680919990519905526">Shop image with Google Lens <ph name="BEGIN_NEW"/>New<ph name="END_NEW"/></translation>
 <translation id="1682195225331129001">Try now</translation>
-<translation id="1697284962337958118">Add to</translation>
 <translation id="1702543251015153180">Change your Dark theme settings?</translation>
 <translation id="1702907158640575240">Managed browser</translation>
+<translation id="1710099199314114079">Switch or close tabs</translation>
 <translation id="1718835860248848330">Last hour</translation>
 <translation id="1724977129262658800">Unlock to edit your password</translation>
 <translation id="6493900814829428590">You can browse and search faster when Brave preloads pages that it thinks you might visit</translation>
 <translation id="173522743738009831">About Privacy Sandbox</translation>
 <translation id="1736419249208073774">Explore</translation>
 <translation id="1749561566933687563">Sync your bookmarks</translation>
+<translation id="1750259112639922169">Tab group – <ph name="TAB_COUNT"/> tabs</translation>
 <translation id="17513872634828108">Open tabs</translation>
 <translation id="1754404134430936718">Text copied</translation>
-<translation id="1772137089884020309">List of bookmark folders is closed</translation>
 <translation id="1779766957982586368">Close window</translation>
 <translation id="1791662854739702043">Installed</translation>
 <translation id="1792959175193046959">Change the default download location at any time</translation>
@@ -162,6 +166,7 @@ When you delete your browsing history – all or for a specific site – you als
 <translation id="1928696683969751773">Updates</translation>
 <translation id="1875543012935658554">Reopen Brave.</translation>
 <translation id="1933845786846280168">Selected Tab</translation>
+<translation id="193571872656840963">Show thanks to this creator</translation>
 <translation id="1943432128510653496">Save passwords</translation>
 <translation id="1952172573699511566">Websites will show text in your preferred language, when possible.</translation>
 <translation id="1959679933317802873">Waiting for content</translation>
@@ -176,6 +181,7 @@ When you delete your browsing history – all or for a specific site – you als
 <translation id="1995884366040846621">To continue, <ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE"/> will share your name, email address and profile picture with this site. See this site's <ph name="BEGIN_LINK1"/>privacy policy<ph name="END_LINK1"/>.</translation>
 <translation id="2000419248597011803">Sends some cookies and searches from the address bar and search box to your default search engine</translation>
 <translation id="6968892567705775281">Include surrounding text in Brave searches?</translation>
+<translation id="469737985790683149">Sync to get the most relevant content from Brave</translation>
 <translation id="2013642289801508067">{FILE_COUNT,plural, =1{# File}other{# Files}}</translation>
 <translation id="2020309681647789787">You’ll have your history on all your synced devices, so you can continue what you were doing</translation>
 <translation id="2021896219286479412">Full screen site controls</translation>
@@ -241,7 +247,6 @@ Tap any word to search. To refine your search, touch and hold to select more or 
 <translation id="2353636109065292463">Checking your Internet connection</translation>
 <translation id="2767094839186957509">Brave Privacy Policy</translation>
 <translation id="2359808026110333948">Continue</translation>
-<translation id="2369533728426058518">open tabs</translation>
 <translation id="2386938421315164605">Hide and unhide topics</translation>
 <translation id="2390510615457643724">Do you want to download <ph name="FILE_NAME"/><ph name="FILE_SIZE"/> again?</translation>
 <translation id="2394602618534698961">Files that you download appear here</translation>
@@ -260,6 +265,7 @@ Touch and hold any word to search. To refine your search, select more or fewer w
 <translation id="2461822463642141190">Current</translation>
 <translation id="2542068854151299295">Sign in to get the most out of Brave</translation>
 <translation id="247737702124049222">Image descriptions are on</translation>
+<translation id="2481251096908459228">See stories for you</translation>
 <translation id="2482878487686419369">Notifications</translation>
 <translation id="2485422356828889247">Uninstall</translation>
 <translation id="6361779936989026201">Brave Assistant in Brave</translation>
@@ -299,6 +305,7 @@ Touch and hold any word to search. To refine your search, select more or fewer w
 <translation id="2651091186440431324">{FILE_COUNT,plural, =1{# Audio file}other{# Audio files}}</translation>
 <translation id="265156376773362237">Standard preloading</translation>
 <translation id="2656405586795711023">Web apps</translation>
+<translation id="2700802943130197326">Sync to get your passwords, bookmarks and more on all your other devices.</translation>
 <translation id="2702516483241149200">New: Share a link that scrolls to this text</translation>
 <translation id="2704606927547763573">Copied</translation>
 <translation id="2707726405694321444">Refresh page</translation>
@@ -550,6 +557,7 @@ Touch and hold any word to search. To refine your search, select more or fewer w
 <translation id="4162867837470729563">List of sharing options at full height.</translation>
 <translation id="4165986682804962316">Site settings</translation>
 <translation id="4170011742729630528">The service is not available; try again later.</translation>
+<translation id="4177222230309051052">Get all your bookmarks</translation>
 <translation id="4181841719683918333">Languages</translation>
 <translation id="4195643157523330669">Open in new tab</translation>
 <translation id="4196597275619698563">Create card</translation>
@@ -569,7 +577,6 @@ Touch and hold any word to search. To refine your search, select more or fewer w
 <translation id="6299940168852877221">By using Brave, you agree to the <ph name="BEGIN_TOS_LINK"/>Brave Terms of Service<ph name="END_TOS_LINK"/>, and the <ph name="BEGIN_ATOS_LINK"/>Brave and Chrome OS additional Terms of Service<ph name="END_ATOS_LINK"/>. The <ph name="BEGIN_PRIVACY_LINK"/>Privacy Policy<ph name="END_PRIVACY_LINK"/> also applies.</translation>
 <translation id="4298388696830689168">Linked sites</translation>
 <translation id="4303044213806199882">chrome_screenshot_<ph name="CURRENT_TIMESTAMP_MS"/></translation>
-<translation id="4304713468139749426">Password Manager</translation>
 <translation id="4307992518367153382">Basics</translation>
 <translation id="4320177379694898372">No internet connection</translation>
 <translation id="4321739720395210191">Can't open your camera. Restart your device and try again.</translation>
@@ -624,6 +631,7 @@ Your Brave sync chain may have other forms of browsing history such as searches 
 <translation id="4594952190837476234">This offline page is from <ph name="CREATION_TIME"/> and may differ from the online version.</translation>
 <translation id="4616150815774728855">Open <ph name="WEBAPK_NAME"/></translation>
 <translation id="4619564267100705184">Verify that it's you</translation>
+<translation id="4627165777145349100">More about this page</translation>
 <translation id="4634124774493850572">Use password</translation>
 <translation id="4640331037679501949">{NUM_PASSWORDS,plural, =1{1 compromised password}other{# compromised passwords}}</translation>
 <translation id="4650364565596261010">System default</translation>
@@ -650,6 +658,7 @@ Your Brave sync chain may have other forms of browsing history such as searches 
 <translation id="4758061975920522644">Share image only</translation>
 <translation id="4759238208242260848">Downloads</translation>
 <translation id="4763480195061959176">video</translation>
+<translation id="4766313118839197559">Passwords are saved to Password Manager on this device</translation>
 <translation id="4766678251456904326">Add account to device</translation>
 <translation id="4791358705705538979">Helps you complete tasks, such as checkout, throughout the web</translation>
 <translation id="4794291718671962615">(<ph name="MEGABYTES"/>) <ph name="URL"/></translation>
@@ -701,6 +710,7 @@ To change this setting, <ph name="BEGIN_LINK"/>reset sync<ph name="END_LINK"/></
 <translation id="4987271110129728827">Can’t find that page. Check your spelling or try a web search.</translation>
 <translation id="4988526792673242964">Pages</translation>
 <translation id="5001388021414335527">Follow this site here</translation>
+<translation id="500351648694011114">Browse more easily</translation>
 <translation id="6447211988989208781">Brave activity controls</translation>
 <translation id="5005141133360250920">Reaction deleted</translation>
 <translation id="5005498671520578047">Copy password</translation>
@@ -744,6 +754,7 @@ To change this setting, <ph name="BEGIN_LINK"/>reset sync<ph name="END_LINK"/></
 <translation id="5246093389635966745">Edit toolbar shortcut</translation>
 <translation id="526421993248218238">Can't load this page</translation>
 <translation id="5271967389191913893">Device cannot open the content to be downloaded.</translation>
+<translation id="5274286919938458946">Linked with <ph name="CARD_DETAIL"/></translation>
 <translation id="5292796745632149097">Send to</translation>
 <translation id="5300426565656326054">Browser-based ad personalisation</translation>
 <translation id="5304593522240415983">This field cannot be blank</translation>
@@ -755,9 +766,9 @@ To change this setting, <ph name="BEGIN_LINK"/>reset sync<ph name="END_LINK"/></
 <translation id="5329858041417644019">Your browser is not managed</translation>
 <translation id="5342314432463739672">Permission requests</translation>
 <translation id="5355191726083956201">Enhanced protection is on</translation>
-<translation id="5368958499335451666">{OPEN_TABS,plural, =1{<ph name="OPEN_TABS_ONE"/> open tab, tap to switch tabs}other{<ph name="OPEN_TABS_MANY"/> open tabs, tap to switch tabs}}</translation>
 <translation id="5375577065097716013">Search image with Google Lens <ph name="BEGIN_NEW"/>New<ph name="END_NEW"/></translation>
 <translation id="5376898820269806588">Reaction changed</translation>
+<translation id="5401851137404501592">To continue, <ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE"/> will share your name, email address and profile picture with this site.</translation>
 <translation id="5403644198645076998">Only allow certain sites</translation>
 <translation id="5409881200985013443">Submit <ph name="ONE_TIME_CODE"/> on <ph name="CLIENT_NAME"/>?</translation>
 <translation id="5414836363063783498">Verifying…</translation>
@@ -849,6 +860,7 @@ To change this setting, <ph name="BEGIN_LINK"/>reset sync<ph name="END_LINK"/></
 <translation id="5864419784173784555">Waiting for another download…</translation>
 <translation id="6538479075382111079">Automatically sends usage statistics and crash reports to Brave</translation>
 <translation id="5869522115854928033">Saved passwords</translation>
+<translation id="5869789175361934029">Continue from another device</translation>
 <translation id="5604589745019948682">To follow a site, go to the site, open the Brave menu and tap Follow.</translation>
 <translation id="5880748256563468367">Go to feed</translation>
 <translation id="9037412730408024068">To help you complete tasks, Brave will receive the URLs and contents of sites on which you use Assistant, as well as information that you submit through Assistant</translation>
@@ -903,6 +915,7 @@ Privacy Sandbox trials are still in active development and are available in sele
 <translation id="7087658909840709934">Preloads pages that Brave thinks that you are likely to visit.</translation>
 <translation id="6186394685773237175">No compromised passwords found</translation>
 <translation id="6192907950379606605">Get image descriptions</translation>
+<translation id="8367262879301982880">Passwords are saved to Brave Password Manager on this device</translation>
 <translation id="620197886010707372">Open app for <ph name="APPNAME"/> with Google Play?</translation>
 <translation id="6203593061661911168">Download will start when on Wi-Fi</translation>
 <translation id="6210748933810148297">Not <ph name="EMAIL"/>?</translation>
@@ -926,6 +939,7 @@ For example, some websites may respond to this request by showing you ads that a
 <translation id="6324997754869598316">(Error <ph name="ERROR_CODE"/>)</translation>
 <translation id="6333140779060797560">Share via <ph name="APPLICATION"/></translation>
 <translation id="6337234675334993532">Encryption</translation>
+<translation id="6340910702212418132">Password Manager <ph name="BEGIN_NEW"/>New<ph name="END_NEW"/></translation>
 <translation id="6341580099087024258">Ask where to save files</translation>
 <translation id="6342069812937806050">Just now</translation>
 <translation id="6343495912647200061">{SHIPPING_ADDRESS,plural, =1{<ph name="SHIPPING_ADDRESS_PREVIEW"/>\u2026 and <ph name="NUMBER_OF_ADDITIONAL_ADDRESSES"/> more}other{<ph name="SHIPPING_ADDRESS_PREVIEW"/>\u2026 and <ph name="NUMBER_OF_ADDITIONAL_ADDRESSES"/> more}}</translation>
@@ -958,7 +972,6 @@ For example, some websites may respond to this request by showing you ads that a
 <translation id="6475951671322991020">Download video</translation>
 <translation id="6477928892249167417">These sites seem important to you:</translation>
 <translation id="6482749332252372425"><ph name="FILE_NAME"/> download failed due to lack of storage space.</translation>
-<translation id="6489610539826642779">Reading list <ph name="BEGIN_NEW"/>New<ph name="END_NEW"/></translation>
 <translation id="6496823230996795692">To use <ph name="APP_NAME"/> for the first time, please connect to the Internet.</translation>
 <translation id="650224091954855786">{FILE_COUNT,plural, =1{File downloaded}other{# downloads complete}}</translation>
 <translation id="3960299545138990065">Restart Brave</translation>
@@ -1018,7 +1031,6 @@ For example, some websites may respond to this request by showing you ads that a
 <translation id="6756507620369789050">Share feedback</translation>
 <translation id="6767294960381293877">List of devices to share a tab with, opened at half height.</translation>
 <translation id="6770602306803890733">Improves security for you and everyone on the web</translation>
-<translation id="6783942555455976443">Save this page for later and get a reminder</translation>
 <translation id="8174975477247159780">Brave and Chrome OS additional Terms of Service</translation>
 <translation id="6795633245022906657">Quickly open a new tab. To edit this shortcut, go to Settings.</translation>
 <translation id="6802555630140434547">The window will be closed</translation>
@@ -1086,8 +1098,8 @@ For example, some websites may respond to this request by showing you ads that a
 <translation id="7177873915659574692">Can't create QR code. URL is more than <ph name="CHARACTER_LIMIT"/> characters.</translation>
 <translation id="7631741717293858595">You can learn more about these features in Brave settings.</translation>
 <translation id="718226107353899806">You can add up to <ph name="MAX_NUM_REACTIONS"/> reactions</translation>
+<translation id="7183693674623539380">Tab group – <ph name="TITLE_OF_GROUP"/></translation>
 <translation id="8355565210555500987">Keeps you safe on Brave and may be used to improve your security in other Brave apps when you are signed in.</translation>
-<translation id="718926126787620637">List of bookmark folders opened at full height</translation>
 <translation id="7191430249889272776">Tab opened in background.</translation>
 <translation id="7196215469483532480">Privacy guide explanation opened at full height</translation>
 <translation id="7208109991155904980">Reaction moved</translation>
@@ -1107,7 +1119,6 @@ For example, some websites may respond to this request by showing you ads that a
 <translation id="1382596880054356475">Offline. Brave can’t check your passwords.</translation>
 <translation id="7313188324932846546">Tap to set up sync</translation>
 <translation id="7332075081379534664">Sign-in succeeded</translation>
-<translation id="7333031090786104871">Still adding previous site</translation>
 <translation id="7339898014177206373">New window</translation>
 <translation id="7340958967809483333">Options for Discover</translation>
 <translation id="7352339641508007922">Drag to take a long screenshot</translation>
@@ -1118,7 +1129,6 @@ For example, some websites may respond to this request by showing you ads that a
 <translation id="7375125077091615385">Type:</translation>
 <translation id="7376560087009844242">By including more of a page’s text, you might see better results when using Touch to Search. You can always visit <ph name="BEGIN_LINK"/>settings<ph name="END_LINK"/> to change this.</translation>
 <translation id="7379900596734708416">Dark theme for sites is available</translation>
-<translation id="4541178433047068373">The site’s connection is secure unless Brave tells you otherwise.</translation>
 <translation id="7400418766976504921">URL</translation>
 <translation id="724102042129299115">Brave First Run Experience</translation>
 <translation id="741204030948306876">Yes, I'm in</translation>
@@ -1227,6 +1237,7 @@ For example, some websites may respond to this request by showing you ads that a
 <translation id="7961015016161918242">Never</translation>
 <translation id="7961926449547174351">You have disabled storage access. Please go to settings to enable it.</translation>
 <translation id="7963646190083259054">Vendor:</translation>
+<translation id="2939504940637874963">You can use saved passwords on any device. They're saved to Brave Password Manager for <ph name="ACCOUNT"/>.</translation>
 <translation id="7968014550143838305">Added to reading list</translation>
 <translation id="7971136598759319605">Active 1 day ago</translation>
 <translation id="7975379999046275268">Preview page <ph name="BEGIN_NEW"/>New<ph name="END_NEW"/></translation>
@@ -1277,6 +1288,7 @@ For example, some websites may respond to this request by showing you ads that a
 <translation id="8216351761227087153">Watch</translation>
 <translation id="8218052821161047641">Fast page</translation>
 <translation id="8218622182176210845">Manage your account</translation>
+<translation id="8221656072740924283">Continue</translation>
 <translation id="8223642481677794647">Feed card menu</translation>
 <translation id="8250920743982581267">Documents</translation>
 <translation id="5138664332909611586">This page uses too much memory, so Brave removed some content.</translation>
@@ -1382,6 +1394,7 @@ For example, some websites may respond to this request by showing you ads that a
 <translation id="8730621377337864115">Done</translation>
 <translation id="8746155870861185046">Share highlight</translation>
 <translation id="8748850008226585750">Contents hidden</translation>
+<translation id="8756969031206844760">Update password?</translation>
 <translation id="8766529642647037772">Create a highlighted link like this one?</translation>
 <translation id="8773160212632396039">Processing request</translation>
 <translation id="8788265440806329501">Navigation history is closed</translation>
@@ -1407,10 +1420,10 @@ For example, some websites may respond to this request by showing you ads that a
 <translation id="8909135823018751308">Share…</translation>
 <translation id="2684652081942622950">Brave sync chain</translation>
 <translation id="8920114477895755567">Waiting for details of parents.</translation>
+<translation id="8921980840204105660">Sync to get your bookmarks from your other devices</translation>
 <translation id="8922289737868596582">Download pages from the More Options button to use them offline</translation>
 <translation id="8924575305646776101"><ph name="BEGIN_LINK"/>Learn more<ph name="END_LINK"/></translation>
 <translation id="892496902842311796"><ph name="LANG"/> is ready</translation>
-<translation id="8928626432984354940">List of bookmark folders opened at half height</translation>
 <translation id="6894658278639191411">To help you complete tasks, Brave will receive the URLs and contents of sites on which you use Assistant, as well as information that you submit through Assistant. This information may be stored in your Brave sync chain. You can turn off Assistant in Brave settings.</translation>
 <translation id="1174893863889683998">Remove your Brave activity from Digital Wellbeing?</translation>
 <translation id="8942627711005830162">Open in other window</translation>
@@ -1470,7 +1483,6 @@ For example, some websites may respond to this request by showing you ads that a
 <translation id="932327136139879170">Home</translation>
 <translation id="938850635132480979">Error: <ph name="ERROR_CODE"/></translation>
 <translation id="939598580284253335">Enter passphrase</translation>
-<translation id="948039501338975565">List of bookmark folders</translation>
 <translation id="5406914950576900927">Brave can use <ph name="BEGIN_BOLD"/>Sogou<ph name="END_BOLD"/> for search in China. You can change this in <ph name="BEGIN_LINK"/>Settings<ph name="END_LINK"/>.</translation>
 <translation id="962979164594783469">Install this app</translation>
 <translation id="96681097142096641">View simplified page?</translation>
@@ -1479,6 +1491,7 @@ For example, some websites may respond to this request by showing you ads that a
 <translation id="981121421437150478">Offline</translation>
 <translation id="983192555821071799">Close all tabs</translation>
 <translation id="987264212798334818">General</translation>
+<translation id="992745192656291733"><ph name="TAB_COUNT"/> tabs</translation>
 <translation id="996149300115483134">Feed card menu is closed</translation>
 <translation id="5186185447130319458">Private</translation>
 <translation id="5711390076756601471">Lock Private tabs when you leave Brave</translation>

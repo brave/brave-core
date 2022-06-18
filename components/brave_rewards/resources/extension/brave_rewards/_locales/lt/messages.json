@@ -135,6 +135,21 @@
     "message": "Kilo problemų su „Brave Rewards“. Bandykite dar kartą vėliau.",
     "description": ""
   },
+  "rewardsLogInToSeeBalance": {
+    "message": "$begin_bold$Prisijunkite prie „$provider$“$end_bold$, kad pamatytumėte savo likutį",
+    "description": "",
+    "placeholders": {
+      "begin_bold": {
+        "content": "$1"
+      },
+      "provider": {
+        "content": "$2"
+      },
+      "end_bold": {
+        "content": "$3"
+      }
+    }
+  },
   "rewardsPaymentCheckStatus": {
     "message": "Tikrinti būseną",
     "description": ""

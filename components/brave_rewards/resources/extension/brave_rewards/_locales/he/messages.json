@@ -135,6 +135,21 @@
     "message": "Brave Rewards נתקל בבעיה. אנא נסו שוב מאוחר יותר.",
     "description": ""
   },
+  "rewardsLogInToSeeBalance": {
+    "message": "$begin_bold$עליך להתחבר אל $provider$$end_bold$ כדי לראות את היתרה שלך",
+    "description": "",
+    "placeholders": {
+      "begin_bold": {
+        "content": "$1"
+      },
+      "provider": {
+        "content": "$2"
+      },
+      "end_bold": {
+        "content": "$3"
+      }
+    }
+  },
   "rewardsPaymentCheckStatus": {
     "message": "בדקו את המצב",
     "description": ""

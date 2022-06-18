@@ -236,6 +236,7 @@
 <translation id="1911900517212490188">Kekunci pemulihan yang dimasukkan tidak lagi disokong. Sila kunjungi <ph name="BEGIN_LINK"/>di sini<ph name="END_LINK"/> untuk mendapatkan kekunci baru.</translation>
 <translation id="7583327070390027131">Tarikh tip bulanan seterusnya</translation>
 <translation id="6231182869178328516">Saya baru memberikan tip kepada <ph name="NAME"/> menggunakan Pelayar Brave. Cubalah di https://brave.com/tips.</translation>
+<translation id="5916536234616514390">Saya suka kerana <ph name="HASHTAG"/>Brave membolehkan saya menyokong pencipta! Hanya berikan tip <ph name="NAME"/> dengan <ph name="HASHTAG2"/>BAT. Jika mereka mengesahkan di https://creators.brave.com sebelum <ph name="DATE"/>, BAT tersebut adalah milik mereka!</translation>
 <translation id="8404935570206006581">BerikanTipDenganBrave</translation>
 <translation id="3082557070674409251">Diklik</translation>
 <translation id="7119308337584989771">Dibuang</translation>
@@ -256,6 +257,8 @@
 <translation id="8218538368080510976">Ralat: Wilayah tidak disokong</translation>
 <translation id="5382684862562314222">BAT belum lagi disokong di rantau anda di Uphold.</translation>
 <translation id="9074594632540931067">Ralat: BAT tidak tersedia</translation>
+<translation id="5376524136040178759">Menurut Uphold, terdapat beberapa had pada akaun Uphold anda buat masa ini. Sila log masuk ke akaun Uphold anda dan semak sama ada terdapat sebarang notis atau masih ada keperluan akaun untuk dilengkapkan, kemudian cuba lagi. Sebagai contoh, anda mungkin perlu menyerahkan maklumat lanjut kepada Uphold.</translation>
+<translation id="6996157559236886133">Ralat: Kefungsian akaun Uphold yang terhad</translation>
 <translation id="3274650021044762770">Terdapat masalah dalam membuat pengesahan terhadap permintaan penyemak imbas anda untuk menghubungkan Brave Rewards dengan akaun <ph name="PROVIDER"/> anda. Anda boleh <ph name="BEGIN_LINK"/>menghubungi sokongan<ph name="END_LINK"/> untuk mendapatkan bantuan lanjut.</translation>
 <translation id="1316066811927496401">Ralat: Permintaan tidak dapat disahkan</translation>
 <translation id="1737873393693460829">Dengan menekan buka pada [[title]], anda bersetuju dengan <ph name="BEGIN_LINK1"/>Terma Perkhidmatan<ph name="END_LINK1"/> dan <ph name="BEGIN_LINK2"/>Polisi Privasi<ph name="END_LINK2"/>.</translation>
@@ -273,6 +276,8 @@
 <translation id="5112354605357157725">Teruskan untuk log masuk</translation>
 <translation id="1280764044837262633"><ph name="PROVIDER"/> memerlukan baki minimum sebanyak <ph name="AMOUNT"/> BAT untuk mencipta akaun. Sekiranya anda menyambung akaun sebelum ini,</translation>
 <translation id="1892970806832316900">Menunggu hingga <ph name="DATE"/></translation>
+<translation id="7849926087559412554">Op! Pelayar anda tidak boleh menerima Iklan Peribadi Brave.</translation>
+<translation id="5177429570315095022">Pelayar anda perlu dikemas kini untuk meneruskan paparan iklan.</translation>
 <translation id="752216563428219524">Iklan tidak dimulakan, sila segarkan semula halaman.</translation>
 <translation id="7422678632904904341">Jumlah:</translation>
 <translation id="6969783933307596818">Segarkan semula setiap 5 saat</translation>
@@ -753,6 +758,7 @@
 <translation id="7306880305145342514">Tahniah! Ganjaran <ph name="MONTH"/> anda telah tiba!</translation>
 <translation id="3007207731685398329">Ganjaran <ph name="AMOUNT"/> <ph name="MONTH"/> anda akan tiba dalam tempoh <ph name="DAYS"/></translation>
 <translation id="5878420576943709750">Ganjaran <ph name="AMOUNT"/> <ph name="MONTH"/> anda sedang dalam perjalanan. Pastikan anda tidak ketinggalan!</translation>
+<translation id="3825131544027418568"><ph name="BEGIN_BOLD"/>Log masuk ke <ph name="PROVIDER"/><ph name="END_BOLD"/> untuk melihat baki anda</translation>
 <translation id="2659764755126740206">Pergi ke akaun <ph name="PROVIDER"/> saya</translation>
 <translation id="1165667598801520610">Tambah Dana</translation>
 <translation id="2394961582378297792">Dilog keluar</translation>
@@ -792,6 +798,7 @@
 <translation id="167698752210114155">Satu ralat dalaman telah berlaku</translation>
 <translation id="2326876601333401685">Kaedah RPC ini tidak disokong.</translation>
 <translation id="1128992132632883337">Ralat penghuraian respons telah berlaku</translation>
+<translation id="5382339341735118861">Ralat pemprosesan permintaan umum telah berlaku</translation>
 <translation id="1680597601664421644">Mnemonik yang diimport tidak sah untuk Brave Wallet</translation>
 <translation id="4641919696349069826">Satu permintan telah berlangsung</translation>
 <translation id="872806943696014633">Data transaksi tidak wujud</translation>
@@ -811,11 +818,13 @@
 <translation id="4232775951515678071">Gagal mendapatkan jenis untuk transaksi</translation>
 <translation id="2080935885647755539">Gagal mendapatkan fi gas untuk transaksi EIP-1559</translation>
 <translation id="4843814354611030845">Pengguna menolak transaksi</translation>
+<translation id="1462494615260983714">Ralat memproses transaksi</translation>
 <translation id="4886059598718763020">'<ph name="VALUE"/>' tidak dibenarkan untuk menandatangan mesej</translation>
 <translation id="8719220598078667817">Gagal menandatangani transaksi</translation>
 <translation id="875506212625074179">Respons ID rantaian tidak sah daripada perkhidmatan RPC</translation>
 <translation id="5486744676117070166">Gagal mendapat nilai nonce seterusnya</translation>
 <translation id="6180576227145734714">Data transaksi 'kepada' mestilah alamat yang sah apabila dinyatakan</translation>
+<translation id="6688162556547723415">Kaedah dan/atau akaun yang diminta belum dibenarkan oleh pengguna.</translation>
 <translation id="4958950550253325418">Aplikasi DeFi</translation>
 <translation id="735961408871282410">Pasaran sehenti NFT</translation>
 <translation id="7740287852186792672">Hasil carian</translation>
@@ -858,7 +867,8 @@
 <translation id="1191686659164947414">Transaksi mungkin digunakan terlebih dahulu</translation>
 <translation id="632241521608275119">Toleransi gelinciran</translation>
 <translation id="4500473291496079954">Tamat tempoh dalam</translation>
-<translation id="2236833281018938257">alamat 0x atau url</translation>
+<translation id="2236833281018938257">Alamat atau URL Dompet</translation>
+<translation id="928500657730628112">Alamat dompet</translation>
 <translation id="2860280209982026951">Brave menggunakan <ph name="LINK_BEFORE"/>0x<ph name="LINK_AFTER"/> sebagai agregator DEX.</translation>
 <translation id="151946611346774041">0x akan memproses alamat Ethereum dan alamat IP untuk memenuhi transaksi (termasuk mendapatkan sebut harga). 0x HANYA akan menggunakan data ini untuk tujuan pemprosesan transaksi.</translation>
 <translation id="4626407663177532837">Sebut harga termasuk yuran Brave sebanyak 0.875%.</translation>
@@ -866,7 +876,7 @@
 <translation id="6575120282593094155">Anda belum lagi mempunyai akaun <ph name="ACCOUNT_TYPE"/> . Buat akaun sekarang?</translation>
 <translation id="2704606927547763573">Disalin</translation>
 <translation id="1420318137760245955">Selamat datang ke Dompet Brave yang baharu</translation>
-<translation id="8303434745767477417">Tahan aset kripto dalam jagaan anda. Jejak prestasi portfolio, dan berinteraksi dengan aplikasi nyahpusat web 3. Dagangkan, labur, pinjam, dan beri pinjam dengan DeFi. Semuanya daripada pelayar privasi Brave. Tiada sambungan dan muat turut diperlukan.</translation>
+<translation id="3671745544278414606">Simpan aset kripto dalam jagaan anda. Jejaki prestasi portfolio, dan berinteraksi dengan Web3 DApps. Dagangan, labur, pinjam, dan beri pinjaman dengan DeFi. Semuanya terus daripada pelayar privasi Brave. Tiada sambungan, dan muat turun tidak diperlukan</translation>
 <translation id="6972754398087986839">Bermula</translation>
 <translation id="375882617301124395">Sandarkan dompet kripto anda</translation>
 <translation id="180032279811483155">Dalam langkah seterusnya, anda’ akan melihat frasa pemulihan <ph name="RECOVERY_PHRASE_LENGTH"/> patah perkataan, yang boleh anda gunakan untuk memulihkan akaun kripto utama anda. Simpan frasa pemulihan di tempat yang selamat. Frasa pemulihan anda merupakan satu-satunya cara untuk mendapatkan semula akses akaun anda sekiranya terlupa kata laluan, peranti hilang atau dicuri atau anda ingin menukar dompet.</translation>
@@ -895,7 +905,7 @@
 <translation id="163697698769819510">Buat sandaran dompet anda sekarang untuk melindungi aset anda dan memastikan anda tidak akan kehilangan akses.</translation>
 <translation id="1018806299114415224">Buat sandaran sekarang</translation>
 <translation id="5234764350956374838">Singkirkan</translation>
-<translation id="4075073132992924258">Brave Wallet tidak ditetapkan sebagai dompet lalai anda dan tidak akan memberi respons terhadap webApps DApps. Lawati tetapan dan ubah dompet lalai anda.</translation>
+<translation id="1400709719911593089">Dompet Brave tidak ditetapkan sebagai dompet lalai anda dan tidak akan memberikan tindak balas terhadap Web3 DApps. Lawati tetapan untuk mengubah dompet lalai anda.</translation>
 <translation id="4362717653795263052">Pulihkan akaun kripto utama</translation>
 <translation id="3038077262567136741">Masukkan frasa pemulihan anda untuk memulihkan akaun kripto dompet Brave anda.</translation>
 <translation id="955918646509748368">Frasa pemulihan yang anda masukkan tidak sah.</translation>
@@ -906,8 +916,8 @@
 <translation id="8624315169751085215">Salin ke Papan Klip</translation>
 <translation id="1121335910737476837">Akaun kripto utama</translation>
 <translation id="6969147029062037757">Akaun yang diimport</translation>
-<translation id="5668765612885835803">Anda boleh mencipta akaun utama dalam Dompet Brave yang mungkin disandarkan atau dipulihkan daripada frasa pemulihan anda. Untuk mengetahui lebih lanjut tentang jenis akaun, lawati bantuan akaun.</translation>
-<translation id="2471916999505901943">Akaun ini dapat digunakan dengan web 3 DApps, dan dapat ditunjukkan dalam portfolio anda. Namun, sila ambil perhatian bahawa akaun kedua tidak dapat dipulihkan melalui frasa pemulihan daripada sandaran akaun utama anda.</translation>
+<translation id="4057718162494343222">Anda boleh mencipta akaun utama dalam Dompet Brave yang mungkin disandarkan atau dipulihkan daripada frasa pemulihan anda. Untuk mengetahui lebih lanjut tentang jenis akaun, lawati bantuan akaun.</translation>
+<translation id="1011614786846182272">Akaun ini dapat digunakan dengan Web3 DApps, dan dapat ditunjukkan dalam portfolio anda. Namun demikian, sila ambil perhatian bahawa akaun kedua tidak dapat dipulihkan melalui frasa pemulihan daripada sandaran akaun utama anda.</translation>
 <translation id="1940465339426637378">Aset</translation>
 <translation id="2236507293802791911">Aset boleh dilihat</translation>
 <translation id="7525067979554623046">Cipta</translation>
@@ -989,6 +999,7 @@
 <translation id="8569380433211549748">Harga dalam</translation>
 <translation id="2490428413101944234">Ujian faucet</translation>
 <translation id="3352959425838279177">Dapatkan Ether daripada faucet untuk <ph name="SELECTED_NETWORK"/></translation>
+<translation id="6449626816252815844">Pilih kaedah pembayaran</translation>
 <translation id="8009571545960303544">Tandatangan anda sedang diminta</translation>
 <translation id="5294062982587710720">Sila ambil perhatian bahawa Brave tidak dapat mengesahkan kesan akibat daripada penandatangan anda.  Tandatangan boleh membenarkan hampir semua operasi di akaun anda atau bagi pihak anda, termasuk (tetapi tidak terhad kepada) memberikan kawalan sepenuhnya terhadap akaun dan aset kripto anda ke laman web yang membuat permintaan tersebut. Hanya tandatangan jika anda pasti dengan tindakan ini, dan mempercayai laman web tersebut.</translation>
 <translation id="3474375934783434676">Tandatangan atas risiko anda sendiri.</translation>
@@ -1037,7 +1048,7 @@
 <translation id="3890989020011724401">Akaun baharu</translation>
 <translation id="7257603403519636638">Lihat aset akaun</translation>
 <translation id="2092132085082887098">Aset akaun</translation>
-<translation id="5723696625900399845">Gunakan panel ini untuk mengakses web3 dan semua aset kripto anda dengan selamat.</translation>
+<translation id="4612979983851181941">Gunakan panel ini untuk mengakses Web3 dan semua aset kripto anda dengan selamat.</translation>
 <translation id="4460220693591349571">JENIS FUNGSI</translation>
 <translation id="838933475572692615">DATA HEX</translation>
 <translation id="2240831799756994975">BAIT</translation>
@@ -1049,13 +1060,13 @@
 <translation id="7739762330714405363">Gunakan kata laluan yang sama</translation>
 <translation id="1085027414516521238">MetaMask</translation>
 <translation id="7102907656918333773">Import daripada <ph name="WALLET_EXTENSION"/></translation>
-<translation id="8897114903450789862">Import <ph name="WALLET_EXTENSION"/> akaun anda ke Dompet Brave. Nikmati cara yang lebih pantas dan selamat untuk mengurus aset kripto dan berinteraksi melalui web 3 DApps.</translation>
+<translation id="1737856990004825123">Import akaun <ph name="WALLET_EXTENSION"/> anda ke dalam Dompet Brave. Nikmati cara yang lebih pantas dan selamat untuk mengurus aset kripto dan berinteraksi melalui Web3 DApps.</translation>
 <translation id="4237840336687249184">Kata laluan MetaMask</translation>
 <translation id="2381605201035323535">dompet kripto</translation>
 <translation id="2770851145415891830">Dompet kripto sedia ada dikesan</translation>
 <translation id="4938145712652668388">Apabila anda klik "Bermula" anda akan mengimport Crypto Wallets anda yang sebelumnya ke Brave Wallet yang baharu, dan menikmati semua manfaat yang dinyatakan di atas. Cubanya dan beritahu kami pendapat anda!</translation>
 <translation id="2237759620789871865">Sekiranya anda mahu melangkau import dan mengekalkan pengalaman Crypto Wallets yang terdahulu, hanya perlu navigasi ke Brave Browser <ph name="LINK_BEFORE"/>Tetapan<ph name="LINK_AFTER"/> dan tukar lalai kembali kepada Crypto Wallets. Anda juga boleh mengimport, mencuba Dompet Brave yang baharu, dan menukar kembali pada bila-bila masa.</translation>
-<translation id="3301259443293676544">Masukkan kata laluan sedia ada dompet kripto untuk mengimport ke Brave Wallet. Nikmati cara yang lebih pantas dan selamat untuk menguruskan aset kripto dan berinteraksi melalui web 3 DApps.</translation>
+<translation id="5590175005414413980">Masukkan kata laluan dompet kripto anda yang sedia ada untuk mengimport ke Dompet Brave. Nikmati cara yang lebih pantas dan selamat untuk mengurus aset kripto dan berinteraksi melalui Web3 DApps.</translation>
 <translation id="9099900965604225657">Kata laluan dompet kripto</translation>
 <translation id="4020495774166914146">Saya telah kehilangan kata laluan dan frasa pemulihan, cipta dompet baharu.</translation>
 <translation id="6344138931392227467"><ph name="DEVICE_NAME"/> disambungkan</translation>
@@ -1111,6 +1122,7 @@
 <translation id="1599636444563952897">Kebenaran had belanja membenarkan <ph name="SITE_ORIGIN"/> untuk mengeluarkan dan berbelanja sehingga jumlah berikut:</translation>
 <translation id="4512871563176965522">Elaun tersuai</translation>
 <translation id="749944179568745958">Bukan alamat ETH yang sah</translation>
+<translation id="2832270987629018596">Bukan alamat SOL yang sah</translation>
 <translation id="882486206986535424">Bukan alamat yang sah</translation>
 <translation id="6825399159373612149">Domain <ph name="DOMAIN_NAME"/> tidak didaftarkan</translation>
 <translation id="8971278306757462297">Alamat penerima ialah alamat anda sendiri</translation>
@@ -1142,7 +1154,6 @@
 <translation id="3327639091470204775">Tidak dapat menyambung ke jambatan Trezor</translation>
 <translation id="6672377693827764095">Ralat dalaman, Gagal untuk mendapatkan akaun</translation>
 <translation id="6889920539620318793">Tetapkan sebagai aktif</translation>
-<translation id="1462494615260983714">Ralat memproses transaksi</translation>
 <translation id="8933250418452564886">Tidak dapat mencari transaksi perkakasan, sila cuba lagi</translation>
 <translation id="5999974802900788338">Menerima ralat dari peranti perkakasan, mungkin anda perlu mengesahkan transaksi pada peranti anda</translation>
 <translation id="8523768065044261559">Ralat memproses transaksi, sila cuba lagi</translation>
@@ -1164,11 +1175,19 @@
 <translation id="6423985584914773314">Bukan alamat FIL yang sah</translation>
 <translation id="3898731124813934210">Beli dengan Wyre</translation>
 <translation id="5522073372365069684">Beli dengan Ramp</translation>
+<translation id="8725252491405767337">Ramp.Network</translation>
+<translation id="7623800836425615432">Wyre</translation>
+<translation id="7667423728712601865">Beli kripto dengan Visa atau Mastercard.</translation>
 <translation id="8528916244724490964">Semua Rangkaian</translation>
 <translation id="2781668117338732220">Rangkaian Kedua</translation>
 <translation id="2816106784624007524">Had gas mestilah dalam bentuk nombor bulat yang lebih besar daripada 0</translation>
 <translation id="3354376789153561654">Data transaksi 'kepada' perlu ditentukan</translation>
 <translation id="8728991256628663004">Data transaksi 'daripada' mestilah alamat Filecoin yang sah</translation>
+<translation id="7003028930816622496">Peranti lejar dikunci</translation>
+<translation id="3939390290522058485">Klik di sini untuk menyemak butiran transaksi untuk <ph name="VALUE"/></translation>
+<translation id="2317956709076373213">Transaksi disahkan</translation>
+<translation id="310693998838023022">Ralat transaksi</translation>
+<translation id="6395870673621520684">Transaksi menurun</translation>
 <translation id="3155170474926428993">Pelancar Tor</translation>
 <translation id="3745016858329272300">Maklumat Umum</translation>
 <translation id="4045404575593562245">Acara Kawalan Tor</translation>
@@ -1183,6 +1202,7 @@
 <translation id="7709075156958117386">Jika laman ini kelihatan terjejas, cuba Shields ke bawah. 
     <ph name="LINK_BEFORE"/>Perhatian: tindakan ini mungkin mengurangkan perlindungan privasi Brave.<ph name="LINK_AFTER"/></translation>
 <translation id="8377155647357436161">Penjejak, iklan dan lagi sekatan<ph name="LINK_BEFORE"/>Ketahui lebih lanjut<ph name="LINK_AFTER"/></translation>
+<translation id="7604553853176833536">Tidak dilindungi oleh Brave Shields <ph name="LINK_BEFORE"/>Ketahui lebih lanjut <ph name="LINK_AFTER"/></translation>
 <translation id="650318023204990401">Kawalan lanjutan</translation>
 <translation id="5799940914270080805">Tindakan mengubah tetapan ini boleh menjejaskan laman.</translation>
 <translation id="9204041448536398473">Tetapan Perisai Global</translation>
@@ -1208,6 +1228,8 @@
 <translation id="3795015906457257780">Anda memaparkan laman ini tanpa perlindungan privasi Brave.</translation>
 <translation id="7194012750329511146">Brave Shields
 <ph name="NUMBER"/> Penjejak, iklan, dan pelbagai lagi disekat</translation>
+<translation id="4292121526390005808">Halang skrip</translation>
+<translation id="3541307549916475335">UI Panel VPN Brave</translation>
 <translation id="1742469581923031760">Menyambung…</translation>
 <translation id="1287487756047817908">Memutuskan sambungan…</translation>
 <translation id="2325196879156848326">Sambungan Gagal</translation>
@@ -1225,9 +1247,11 @@
 <translation id="3181339219453722970">Pilih lokasi VPN anda</translation>
 <translation id="1751947227857853925">Cepat dan tanpa had sehingga 100 Mbps</translation>
 <translation id="1400240082805528049">Sokongan 24/7</translation>
+<translation id="1693568075761612600">Gagal mencipta tiket sokongan, semak sambungan anda.</translation>
 <translation id="8463313539532697053">Sekejap semasa memuatkan…</translation>
+<translation id="4317307602527599178">Tidak dapat menyemak status pembelian anda. Hal ini mungkin disebabkan oleh masalah rangkaian.</translation>
 <translation id="4613076894734402086">Edit kaedah pembayaran</translation>
-<translation id="1898254156730880135">Nampaknya pembayaran terkini anda tidak dihantar. Akses kepada langganan ini akan dijedakan sehingga isu pembayaran diselesaikan. Cuba edit kaedah pembayaran anda atau hubungi sokongan Brave.</translation>
+<translation id="8373427068383038263">Nampaknya pembayaran terkini anda untuk <ph name="VALUE"/> tidak dihantar. Akses kepada langganan ini akan dijedakan sehingga isu pembayaran selesai. Cuba edit kaedah pembayaran anda atau hubungi sokongan Brave.</translation>
 <translation id="1839021455997460752">Alamat e-mel anda</translation>
 <translation id="5154702632169343078">Subjek</translation>
 <translation id="6625978880678465492">Sila pilih sebab</translation>
@@ -1244,6 +1268,9 @@
 <translation id="6676791921618140305">Versi OS:</translation>
 <translation id="1156325797949437777">Sokongan diberikan dengan kerjasama Guardian.</translation>
 <translation id="3307461350293459700">Sambungan VPN gagal. Sila cuba sambung sekali lagi dan pastikan anda klik pada Benarkan bagi mendayakan konfigurasi VPN Brave.</translation>
+<translation id="7261518280726313829">Tindakan mematikan DNS selamat atau menggunakan pelayan lalai pada Windows mungkin akan mendedahkan nama tapak yang anda lawati kepada penyedia perkhidmatan Internet anda. Brave tidak mengesyorkan perkara ini dilakukan. Adakah anda masih mahu melakukannya?</translation>
+<translation id="888284761945060750">DNS selamat dilumpuhkan oleh dasar organisasi anda. Penggunaan VPN Brave tanpa DNS selamat mungkin akan mendedahkan nama tapak yang anda lawati kepada penyedia perkhidmatan Internet atau organisasi anda.</translation>
+<translation id="1657858090675311947">Jangan berikan amaran kepada saya lagi tentang perkara ini.</translation>
 <translation id="7586151660465233733">Lebih banyak pasaran di <ph name="SITE_NAME"/></translation>
 <translation id="952067063131306699">Lihat pasaran dan dagang kripto di FTX</translation>
 <translation id="5963745988819586370">Pasaran</translation>

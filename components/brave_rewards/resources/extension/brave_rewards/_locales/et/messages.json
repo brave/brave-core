@@ -135,6 +135,21 @@
     "message": "Brave Rewards ei ole praegu saadaval. Proovige hiljem uuesti.",
     "description": ""
   },
+  "rewardsLogInToSeeBalance": {
+    "message": "Oma saldo vaatamiseks $begin_bold$logige sisse$end_bold$ platvormile $provider$.",
+    "description": "",
+    "placeholders": {
+      "begin_bold": {
+        "content": "$1"
+      },
+      "provider": {
+        "content": "$2"
+      },
+      "end_bold": {
+        "content": "$3"
+      }
+    }
+  },
   "rewardsPaymentCheckStatus": {
     "message": "Kontrolli olekut",
     "description": ""

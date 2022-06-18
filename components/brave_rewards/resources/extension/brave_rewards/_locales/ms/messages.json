@@ -135,6 +135,21 @@
     "message": "Ganjaran Brave mengalami masalah. Sila cuba sebentar lagi.",
     "description": ""
   },
+  "rewardsLogInToSeeBalance": {
+    "message": "$begin_bold$Log masuk ke $provider$$end_bold$ untuk lihat baki anda",
+    "description": "",
+    "placeholders": {
+      "begin_bold": {
+        "content": "$1"
+      },
+      "provider": {
+        "content": "$2"
+      },
+      "end_bold": {
+        "content": "$3"
+      }
+    }
+  },
   "rewardsPaymentCheckStatus": {
     "message": "Periksa status",
     "description": ""

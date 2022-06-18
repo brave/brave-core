@@ -135,6 +135,21 @@
     "message": "Wystąpił problem z nagrodami przeglądarki Brave. Spróbuj ponownie później.",
     "description": ""
   },
+  "rewardsLogInToSeeBalance": {
+    "message": "$begin_bold$Zaloguj się do $provider$ $end_bold$, aby sprawdzić saldo",
+    "description": "",
+    "placeholders": {
+      "begin_bold": {
+        "content": "$1"
+      },
+      "provider": {
+        "content": "$2"
+      },
+      "end_bold": {
+        "content": "$3"
+      }
+    }
+  },
   "rewardsPaymentCheckStatus": {
     "message": "Sprawdź status",
     "description": ""
