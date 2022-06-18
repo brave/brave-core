@@ -852,4 +852,11 @@ Se non accetti questa richiesta, la VPN non si riconnetterà e la tua connession
 <translation id="2322227405137827074">Vuoi importare questo token?</translation>
 <translation id="1324417023773393937">Browser Brave</translation>
 <translation id="6044189892950611565">Canale di notifica per il browser di Brave</translation>
+<translation id="635752162765375187">N.B.: questo autore non ha ancora eseguito la configurazione necessaria  per ricevere donazioni dal tuo portafoglio. Le tue donazioni resteranno in attesa nel portafoglio; riproveremo automaticamente per 90 giorni.</translation>
+<translation id="7873874596836611687">saldo del portafoglio:</translation>
+<translation id="4322846864135539519">Vuoi davvero ripristinare il portafoglio? Se non hai eseguito un backup, perderai tutti i dati dell’account (inclusi tutti i fondi associati). Digita “<ph name="CONFIRMATION_PHRASE"/>” per confermare.</translation>
+<translation id="1264320790738638119">La verifica dell’acquisto non è riuscita, riprova.</translation>
+<translation id="404414664190867625">ERRORE!!\nCausato da un utente che annulla il flusso di acquisto.</translation>
+<translation id="3515141458161417228">ERRORE!!\nAcquisto non riuscito.</translation>
+<translation id="5665084657857645952">L’autorizzazione è stata annullata</translation>
 </translationbundle>

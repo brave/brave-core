@@ -853,4 +853,11 @@ Om du inte accepterar denna begäran kommer VPN inte att ansluta igen och din in
 <translation id="2322227405137827074">Vill du importera denna token?</translation>
 <translation id="1324417023773393937">Brave-webbläsaren</translation>
 <translation id="6044189892950611565">Aviseringskanal för Brave webbläsare</translation>
+<translation id="635752162765375187">OBS: Den här innehållsskaparen har inte ställts in för att kunna ta emot dricks från din plånbok. Om du dricksar reserveras beloppet som väntande och nya försök görs i 90 dagar.</translation>
+<translation id="7873874596836611687">plånbokssaldo:</translation>
+<translation id="4322846864135539519">Vill du återställa plånboken? Om din plånbok inte säkerhetskopieras kommer du att förlora alla kontouppgifter (inklusive eventuella associerade medel) om du återställer. Skriv in "<ph name="CONFIRMATION_PHRASE"/>" för att bekräfta.</translation>
+<translation id="1264320790738638119">Verifiering av köpet misslyckades. Försök igen.</translation>
+<translation id="404414664190867625">FEL!!\nOrsakas av att en användare avbryter köpflödet.</translation>
+<translation id="3515141458161417228">ERROR!!\nKöpet misslyckades..</translation>
+<translation id="5665084657857645952">Behörighet annullerades</translation>
 </translationbundle>
