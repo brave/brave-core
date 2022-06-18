@@ -15,7 +15,7 @@ namespace {
 
 constexpr int kMaximumHtmlLengthToClassify = (1 << 20);
 constexpr int kMaximumSubLen = 6;
-constexpr int kDefaultBucketCount = 10000;
+constexpr int kDefaultBucketCount = 10'000;
 
 }  // namespace
 

@@ -60,7 +60,7 @@ constexpr int kDefaultMaximumSearchResultAdsPerDay = 40;
 
 constexpr char kFieldTrialParameterBrowsingHistoryMaxCount[] =
     "browsing_history_max_count";
-constexpr int kDefaultBrowsingHistoryMaxCount = 5000;
+constexpr int kDefaultBrowsingHistoryMaxCount = 5'000;
 constexpr char kFieldTrialParameterBrowsingHistoryDaysAgo[] =
     "browsing_history_days_ago";
 constexpr int kDefaultBrowsingHistoryDaysAgo = 180;
