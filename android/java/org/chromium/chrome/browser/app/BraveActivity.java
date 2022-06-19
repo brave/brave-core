@@ -446,10 +446,14 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
         }
     }
 
-    public void showWalletPanel() {
+    public void showWalletPanel(boolean ignoreWeb3NotificationPreference) {
         BraveToolbarLayoutImpl layout = getBraveToolbarLayout();
         if (layout != null) {
             layout.showWalletIcon(true);
+        }
+        if (!ignoreWeb3NotificationPreference
+                && !BraveWalletPreferences.getPrefWeb3NotificationsEnabled()) {
+            return;
         }
         assert mKeyringService != null;
         mKeyringService.isLocked(locked -> {
@@ -465,6 +469,9 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
         BraveToolbarLayoutImpl layout = getBraveToolbarLayout();
         if (layout != null) {
             layout.showWalletIcon(true);
+            if (!BraveWalletPreferences.getPrefWeb3NotificationsEnabled()) {
+                return;
+            }
             layout.showWalletPanel();
         }
     }

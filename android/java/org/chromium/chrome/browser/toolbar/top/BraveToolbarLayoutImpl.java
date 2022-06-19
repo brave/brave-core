@@ -955,7 +955,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
         if (activity == null) {
             return;
         }
-        activity.showWalletPanel();
+        activity.showWalletPanel(true);
     }
 
     private void showWalletPanelInternal(View v) {
