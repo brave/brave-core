@@ -338,8 +338,8 @@
   },
   "dependencies": {
     "@brave/react-virtualized-auto-sizer": "^1.0.4",
-    "@dnd-kit/core": "6.0.3",
-    "@dnd-kit/sortable": "7.0.0",
+    "@dnd-kit/core": "6.0.5",
+    "@dnd-kit/sortable": "7.0.1",
     "@glif/filecoin-wallet-provider": "2.0.0-beta.12",
     "@ledgerhq/hw-app-eth": "6.24.1",
     "@ledgerhq/hw-transport-webhid": "6.24.1",
