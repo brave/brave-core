@@ -71,11 +71,11 @@ function TopSite (props: Props) {
     const handleClickOutside = (e: Event) => {
       if (!tileMenuRef.current || tileMenuRef.current.contains(e.target)) { return }
       setShowMenu(false)
-    };
+    }
 
     const handleKeyPress = (e: KeyboardEvent) => {
       if (e.key === 'Escape') { setShowMenu(false) }
-    };
+    }
 
     document.addEventListener('mousedown', handleClickOutside)
     document.addEventListener('keydown', handleKeyPress)
@@ -83,7 +83,7 @@ function TopSite (props: Props) {
       document.removeEventListener('mousedown', handleClickOutside)
       document.removeEventListener('keydown', handleKeyPress)
     }
-  }, []);
+  }, [])
 
   const handleShowTileMenu = useCallback((e: React.MouseEvent) => {
     e.preventDefault()
