@@ -24,7 +24,6 @@ import java.util.TimeZone;
 
 public class BraveVpnApiResponseUtils {
     public static void queryPurchaseFailed(Activity activity) {
-        BraveVpnPrefUtils.setPurchaseToken("");
         BraveVpnPrefUtils.setProductId("");
         BraveVpnPrefUtils.setPurchaseExpiry(0L);
         BraveVpnPrefUtils.setSubscriptionPurchase(false);
