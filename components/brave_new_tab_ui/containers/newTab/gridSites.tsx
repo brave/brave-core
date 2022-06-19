@@ -7,7 +7,7 @@
 import { AutoScrollOptions, DndContext, DragEndEvent, KeyboardSensor, MouseSensor, PointerActivationConstraint, TouchSensor, useDndContext, useSensor, useSensors } from '@dnd-kit/core'
 import { SortableContext } from '@dnd-kit/sortable'
 import * as React from 'react'
-import { useCallback, useRef } from 'react'
+import { useRef } from 'react'
 import * as gridSitesActions from '../../actions/grid_sites_actions'
 // Types
 import * as newTabActions from '../../actions/new_tab_actions'
@@ -68,19 +68,6 @@ function TopSitesList (props: Props) {
   const pageCount = Math.min(MAX_PAGES, Math.ceil(numSites / maxGridSize))
   const pages = [...Array(pageCount).keys()]
 
-  const onSortEnd = useCallback((e: DragEndEvent) => {
-    e.activatorEvent.preventDefault()
-
-    const draggingIndex = gridSites.findIndex(s => s.id === e.active.id)
-    const droppedIndex = gridSites.findIndex(s => s.id === e.over?.id)
-
-    if (draggingIndex === undefined || droppedIndex === undefined) { return }
-
-    if (gridSites[droppedIndex].defaultSRTopSite || !props.customLinksEnabled) { return }
-
-    props.actions.tilesReordered(gridSites, draggingIndex, droppedIndex)
-  }, [gridSites, props.actions.tilesReordered, props.customLinksEnabled])
-
   const mouseSensor = useSensor(MouseSensor, { activationConstraint })
   const touchSensor = useSensor(TouchSensor, { activationConstraint })
   const keyboardSensor = useSensor(KeyboardSensor, {})
@@ -88,14 +75,25 @@ function TopSitesList (props: Props) {
 
   return <PagesContainer>
     <GridPagesContainer customLinksEnabled={customLinksEnabled} ref={gridPagesContainerRef as any}>
-      <DndContext onDragEnd={onSortEnd} autoScroll={autoScrollOptions} sensors={sensors}>
+      <DndContext onDragEnd={(e: DragEndEvent) => {
+        e.activatorEvent.preventDefault()
+
+        const draggingIndex = gridSites.findIndex(s => s.id === e.active.id)
+        const droppedIndex = gridSites.findIndex(s => s.id === e.over?.id)
+
+        if (draggingIndex === undefined || droppedIndex === undefined) { return }
+
+        if (gridSites[droppedIndex].defaultSRTopSite || !props.customLinksEnabled) { return }
+
+        props.actions.tilesReordered(gridSites, draggingIndex, droppedIndex)
+      }} autoScroll={autoScrollOptions} sensors={sensors}>
         <SortableContext items={gridSites}>
           {pages.map(page => <TopSitesPage key={page} page={page} maxGridSize={maxGridSize} {...props} />)}
           <TopSiteDragOverlay sites={gridSites} />
         </SortableContext>
       </DndContext>
     </GridPagesContainer>
-    {customLinksEnabled && <GridPageButtons numPages={pageCount} pageContainerRef={gridPagesContainerRef}/>}
+    {customLinksEnabled && <GridPageButtons numPages={pageCount} pageContainerRef={gridPagesContainerRef} />}
   </PagesContainer>
 }
 

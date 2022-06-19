@@ -7,7 +7,7 @@ import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
 import { getScrollableParents, useParentScrolled } from '../../helpers/scrolling'
 import * as React from 'react'
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import * as ReactDOM from 'react-dom'
 import { getLocale } from '../../../common/locale'
 import * as gridSitesActions from '../../actions/grid_sites_actions'
@@ -85,23 +85,6 @@ function TopSite (props: Props) {
     }
   }, [])
 
-  const handleShowTileMenu = useCallback((e: React.MouseEvent) => {
-    e.preventDefault()
-    setShowMenu(true)
-  }, [])
-
-  const handleIgnoreTopSite = useCallback((site: NewTab.Site, e: React.MouseEvent) => {
-    e.preventDefault()
-    setShowMenu(false)
-    props.actions.tileRemoved(site.url)
-  }, [props.actions.tileRemoved])
-
-  const handleEditTopSite = useCallback((site: NewTab.Site, e: React.MouseEvent) => {
-    e.preventDefault()
-    setShowMenu(false)
-    props.onShowEditTopSite(site)
-  }, [props.onShowEditTopSite])
-
   const [editMenuRef, setEditMenuRef] = useState<HTMLElement | null>(null)
   const [scrollableParent] = getScrollableParents(editMenuRef)
 
@@ -125,21 +108,32 @@ function TopSite (props: Props) {
   return <SiteTile site={props.siteData} draggable={sortable} isMenuShowing={showMenu}>
     {!siteData.defaultSRTopSite
       ? <TileActionsContainer>
-        <TileAction ref={setEditMenuRef} onClick={handleShowTileMenu}>
+        <TileAction ref={setEditMenuRef} onClick={(e) => {
+          e.preventDefault()
+          setShowMenu(true)
+        }}>
           <EditIcon />
         </TileAction>
       </TileActionsContainer>
       : null}
-      {showMenu && ReactDOM.createPortal(<TileMenu ref={tileMenuRef} style={editMenuStyle}>
-        <TileMenuItem onClick={e => handleEditTopSite(siteData, e)}>
-          <EditMenuIcon />
-          {getLocale('editSiteTileMenuItem')}
-        </TileMenuItem>
-        <TileMenuItem onClick={e => handleIgnoreTopSite(siteData, e)}>
-          <TrashIcon />
-          {getLocale('removeTileMenuItem')}
-        </TileMenuItem>
-      </TileMenu>, scrollableParent)}
+    {showMenu && ReactDOM.createPortal(<TileMenu ref={tileMenuRef} style={editMenuStyle}>
+      <TileMenuItem onClick={e => {
+        e.preventDefault()
+        setShowMenu(false)
+        props.onShowEditTopSite(siteData)
+      }}>
+        <EditMenuIcon />
+        {getLocale('editSiteTileMenuItem')}
+      </TileMenuItem>
+      <TileMenuItem onClick={e => {
+        e.preventDefault()
+        setShowMenu(false)
+        props.actions.tileRemoved(siteData.url)
+      }}>
+        <TrashIcon />
+        {getLocale('removeTileMenuItem')}
+      </TileMenuItem>
+    </TileMenu>, scrollableParent)}
   </SiteTile>
 }
 
