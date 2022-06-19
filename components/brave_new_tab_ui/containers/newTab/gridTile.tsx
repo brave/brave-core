@@ -67,43 +67,36 @@ function TopSite (props: Props) {
   const sortable = useSortable({ id: siteData.id, disabled: isSortable })
   const [showMenu, setShowMenu] = useState(false)
 
-  const handleClickOutside = useCallback((e: Event) => {
-    if (!tileMenuRef.current || tileMenuRef.current.contains(e.target)) { return }
-    setShowMenu(false)
-  }, [])
-
-  const handleMoveOutside = useCallback((e: Event) => {
-    if (!tileMenuRef.current || tileMenuRef.current.contains(e.target)) { return }
-    setShowMenu(false)
-  }, [])
-
-  const onKeyPressSettings = useCallback((e: KeyboardEvent) => {
-    if (e.key === 'Escape') { setShowMenu(false) }
-  }, [])
-
   useEffect(() => {
+    const handleClickOutside = (e: Event) => {
+      if (!tileMenuRef.current || tileMenuRef.current.contains(e.target)) { return }
+      setShowMenu(false)
+    };
+
+    const handleKeyPress = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') { setShowMenu(false) }
+    };
+
     document.addEventListener('mousedown', handleClickOutside)
-    document.addEventListener('mouseMove', handleMoveOutside)
-    document.addEventListener('keydown', onKeyPressSettings)
+    document.addEventListener('keydown', handleKeyPress)
     return () => {
       document.removeEventListener('mousedown', handleClickOutside)
-      document.removeEventListener('mousemove', handleMoveOutside)
-      document.removeEventListener('keydown', onKeyPressSettings)
+      document.removeEventListener('keydown', handleKeyPress)
     }
-  }, [handleClickOutside, handleMoveOutside, onKeyPressSettings])
+  }, []);
 
-  const onShowTileMenu = useCallback((e: React.MouseEvent) => {
+  const handleShowTileMenu = useCallback((e: React.MouseEvent) => {
     e.preventDefault()
     setShowMenu(true)
   }, [])
 
-  const onIgnoredTopSite = useCallback((site: NewTab.Site, e: React.MouseEvent) => {
+  const handleIgnoreTopSite = useCallback((site: NewTab.Site, e: React.MouseEvent) => {
     e.preventDefault()
     setShowMenu(false)
     props.actions.tileRemoved(site.url)
   }, [props.actions.tileRemoved])
 
-  const onEditTopSite = useCallback((site: NewTab.Site, e: React.MouseEvent) => {
+  const handleEditTopSite = useCallback((site: NewTab.Site, e: React.MouseEvent) => {
     e.preventDefault()
     setShowMenu(false)
     props.onShowEditTopSite(site)
@@ -132,17 +125,17 @@ function TopSite (props: Props) {
   return <SiteTile site={props.siteData} draggable={sortable} isMenuShowing={showMenu}>
     {!siteData.defaultSRTopSite
       ? <TileActionsContainer>
-        <TileAction ref={editMenuRef as any} onClick={onShowTileMenu}>
+        <TileAction ref={editMenuRef as any} onClick={handleShowTileMenu}>
           <EditIcon />
         </TileAction>
       </TileActionsContainer>
       : null}
       {showMenu && ReactDOM.createPortal(<TileMenu ref={tileMenuRef} style={editMenuStyle}>
-        <TileMenuItem onClick={e => onEditTopSite(siteData, e)}>
+        <TileMenuItem onClick={e => handleEditTopSite(siteData, e)}>
           <EditMenuIcon />
           {getLocale('editSiteTileMenuItem')}
         </TileMenuItem>
-        <TileMenuItem onClick={e => onIgnoredTopSite(siteData, e)}>
+        <TileMenuItem onClick={e => handleIgnoreTopSite(siteData, e)}>
           <TrashIcon />
           {getLocale('removeTileMenuItem')}
         </TileMenuItem>
