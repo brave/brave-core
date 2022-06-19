@@ -158,17 +158,31 @@ void JSEthereumProvider::CreateEthereumObject(
   v8::Local<v8::Object> ethereum_obj;
   v8::Local<v8::Object> metamask_obj;
   v8::Local<v8::Value> ethereum_value;
+  v8::Local<v8::Proxy> ethereum_proxy;
+  v8::Local<v8::Object> ethereum_proxy_handler_obj;
   if (!global->Get(context, gin::StringToV8(isolate, "ethereum"))
            .ToLocal(&ethereum_value) ||
       !ethereum_value->IsObject()) {
+    ethereum_proxy_handler_obj = v8::Object::New(isolate);
+    BindFunctionToObject(
+        isolate, ethereum_proxy_handler_obj, "deleteProperty",
+        base::BindRepeating(&JSEthereumProvider::ProxyDeletePropertyHandler,
+                            base::Unretained(this)));
+
     ethereum_obj = v8::Object::New(isolate);
+    if (!v8::Proxy::New(context, ethereum_obj, ethereum_proxy_handler_obj)
+             .ToLocal(&ethereum_proxy)) {
+      return;
+    }
+
     metamask_obj = v8::Object::New(isolate);
     if (!allow_overwrite_window_ethereum) {
-      SetProviderNonWritable(context, global, ethereum_obj,
+      SetProviderNonWritable(context, global, ethereum_proxy,
                              gin::StringToV8(isolate, "ethereum"), true);
     } else {
       global
-          ->Set(context, gin::StringToSymbol(isolate, "ethereum"), ethereum_obj)
+          ->Set(context, gin::StringToSymbol(isolate, "ethereum"),
+                ethereum_proxy)
           .Check();
     }
     ethereum_obj
@@ -385,6 +399,10 @@ v8::Local<v8::Promise> JSEthereumProvider::Send(gin::Arguments* args) {
                      nullptr, std::move(promise_resolver), isolate, true));
 
   return resolver.ToLocalChecked()->GetPromise();
+}
+
+bool JSEthereumProvider::ProxyDeletePropertyHandler(gin::Arguments* args) {
+  return true;
 }
 
 void JSEthereumProvider::SendAsync(gin::Arguments* args) {
