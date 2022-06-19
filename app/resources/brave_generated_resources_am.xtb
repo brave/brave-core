@@ -2,7 +2,6 @@
 <!DOCTYPE translationbundle>
 <translationbundle lang="am">
 <translation id="3333887201479867589">ናይ Brave ሽልማታት</translation>
-<translation id="7942180974165298215">ብሬቭ ኣድ ብሎክ</translation>
 <translation id="4615489450165434530">የተሰበረ ገጽን ሪፖርት ያድርጉ</translation>
 <translation id="1209739344687072997">የተሰበረ ገጽን ሪፖርት ያድርጉ</translation>
 <translation id="6406506848690869874">አመሳስል</translation>
@@ -43,6 +42,7 @@
 <translation id="3094628781200061820">ፋይሎችን ከ IPFS ያትሙ እና ሰርስሮ ያውጡ</translation>
 <translation id="7398397225367092613">.onion</translation>
 <translation id="406832631167785034">የ using .onion ኣድራሻ ይክፈቱ</translation>
+<translation id="4759098689276706664">በግድ ለጥፍ</translation>
 <translation id="4901618511712685702">ወደ IPFS ያስመጡ</translation>
 <translation id="6794469945030154569">ይህ ገጽ</translation>
 <translation id="5037852323412456577">የተመረጠ ምስል</translation>
@@ -70,7 +70,7 @@
 <translation id="3425600262621021599">Torን በመጠቀም ሊንኩን በ Brave የግል መስኮት ይክፈቱ።</translation>
 <translation id="3229091547987707389">ማውጫ አስመጣ እና አጋራ</translation>
 <translation id="5029193871181468990">የBrave Rewards አዶን ደብቅ</translation>
-<translation id="7595540212376041331">በመሳሪያ አሞሌ ላይ የ Brave Wallet አዶን ይደብቁ</translation>
+<translation id="7595540212376041331">የBrave ዋሌት አዶን ደብቅ</translation>
 <translation id="4928988318462976765">የድረገጽ ተቀጥላ ማከማቻ</translation>
 <translation id="9181207987584064303">የድር ቅጥያዎችን መደብር ውስጥ ይመልከቱ።</translation>
 <translation id="3161744659507801211">ማስጠንቀቂያ፡ Brave ቅጥያዎች የእርስዎን የአሰሳ ታሪክ እንዳይመዘግቡ ሊያግድ አይችልም።</translation>
@@ -111,6 +111,7 @@
 ትሮች</translation>
 <translation id="2515126961943087659">የባት የማስታወቂያ አገልግሎት</translation>
 <translation id="7924918279836988121">የBat Ledger አገልግሎት</translation>
+<translation id="6665472986740899785">የBrave ማሳወቂያ ማስታወቂያ</translation>
 <translation id="4174337572777167894">Web Discovery Project</translation>
 <translation id="8659271182272561965">Brave Searchን ለማሻሻል የተወሰነ የስም አልባ የፍለጋ &amp; የአሰሳ ውሂብ አስተዋጾ ያድርጉ።</translation>
 <translation id="1516554614404600536">Brave  መሣሪያ ጠቃሚ ምክር</translation>
@@ -186,7 +187,6 @@
 <translation id="6817415381278637662">በከፈቱት በእያንዳንዱ ድረ-ገጽ ላይ የ Brave ን ግላዊነት ጥበቃ ለማግኘት Brave ን እንደ ነባሪ አሳሽዎ አድርገው ያቀናብሩ።</translation>
 <translation id="8722651357687610395">Braveን እንደ ነባሪ አድርገው ያቀናብሩት</translation>
 <translation id="2370739752330685659">ምናልባት በኋላ</translation>
-<translation id="3400357268283240774">ተጨማሪ ቅንብሮች</translation>
 <translation id="9156965752763025780">ለውጦችዎ Brave በሚያስጀምሩበት ቀጣዩ ጊዜ ላይ ይተገበራሉ።</translation>
 <translation id="7179921470347911571">አሁን እንደገና ያስጀምሩ</translation>
 <translation id="4472575034687746823">ይጀምሩ</translation>
@@ -241,6 +241,28 @@
 <translation id="7390783310074170337">ነባሪ እይታ</translation>
 <translation id="130615081792797568">ቀላል እይታ</translation>
 <translation id="2360360976480535628">የላቀ እይታ</translation>
+<translation id="6486983549008741930">ይዘት ማጣራት</translation>
+<translation id="8694564340481124390">ክልላዊ እና ቋንቋ-ተኮር መከታተያዎችና ብስጭቶችን የሚከለክሉ ብጁ ማጣሪያዎችን ያንቁ።</translation>
+<translation id="6522618763902154348">ክልላዊ እና ቋንቋ-ተኮር መከታተያዎች እና    <ph name="BEGIN_LINK"/>ብስጭቶች<ph name="END_LINK"/>ን የሚከለክሉ ብጁ ማጣሪያዎችን ያንቁ።</translation>
+<translation id="3482656215021340727">ብጁ የማጣሪያ ዝርዝሮችን ያክሉ</translation>
+<translation id="1020877116991797978">በሚያምኑት ማህበረሰብ የተፈጠሩና የተያዙ ተጨማሪ ዝርዝሮችን ያክሉ።</translation>
+<translation id="7617831480435794399">ከሚያምኗቸው አካላት ባገኟቸው ዝርዝሮች ብቻ ይመዝግቡ። የ IP አድራሻዎን ለሰርቨራቸው በማሳየት በአሳሽዎ ከሚያስገቡት URL ዝርዝር ዝመናዎችን በየጊዜው ይፈትሻል።</translation>
+<translation id="2831397936251948638">ብጁ ማጣሪያዎችን ይፍጠሩ</translation>
+<translation id="4618274268052410139">ከዚህ በታች ባለው መስክ ውስጥ የፈጠሯቸውን ብጁ ማጣሪያዎችን በመስመር አንድ ያክሉ። <ph name="BEGIN_LINK"/>የAdblock ማጣሪያ አገባብ <ph name="END_LINK"/>ን መጠቀምዎን ያረጋግጡ።</translation>
+<translation id="7791543448312431591">አክል</translation>
+<translation id="571950783952070673">የዝርዝር ዩአርኤል</translation>
+<translation id="9204006549413740506">መጨረሻ የተሻሻለው</translation>
+<translation id="6745592621698551453">አሁን አዘምን</translation>
+<translation id="5334844597069022743">የእይታ ምንጭ</translation>
+<translation id="4720556299488643018">ከደንበኝነት ምዝገባ መውጣት</translation>
+<translation id="6532106788206463496">ለውጦችን ያስቀምጡ</translation>
+<translation id="4516904298421534459">የማጣሪያ ዝርዝሮች</translation>
+<translation id="4435215931544457255">ተጨማሪ የታዋቂ ማህበረሰብ ዝርዝሮች። በጣም ብዙ ማጣሪያዎችን ማንቃት የአሰሳ ፍጥነትን እንደሚቀንስ ልብ ይበሉ።</translation>
+<translation id="802154636333426148">ማውረድ አልተሳካም</translation>
+<translation id="7889605993994647168">ማዘመን አልተሳካም</translation>
+<translation id="5438573563213942361">ብጁ ዝርዝሮች</translation>
+<translation id="4182731739150761577">ሙሉ ዝርዝር አሳይ</translation>
+<translation id="1340263054776016283">የማጣሪያ ዝርዝር ዩአርኤልን ያስገቡ</translation>
 <translation id="6821903322090655051">የ Brave Rewards ሽልማት ታግደዋል</translation>
 <translation id="413570371620795359">ለማስቻል እና ለማስጀመር የሽልማት ፓነልን ይክፈቱ</translation>
 <translation id="3849957491997306859">በራስ-ፈልግ</translation>
@@ -327,6 +349,10 @@
 <translation id="5093410893656857925">የመሳሪያውን አይነት ይምረጡ</translation>
 <translation id="4581190919849683048">ከየትኛው መሣሪያ ጋር ማመሳሰል ይፈልጋሉ?</translation>
 <translation id="4112587618563511470">ልክ ያልሆነ የማመሳሰል ኮድ ፣ እባክዎ ያረጋግጡ እና እንደገና ይሞክሩ።</translation>
+<translation id="3995714999835224798">ይህ ኮድ ትክክለኛ አይደለም</translation>
+<translation id="859506441384380749">ይህ ኮድ የተፈጠረው ከአገልግሎት ውጭ በሆነው የ Brave ስሪት ነው፣ እባክዎ መጀመሪያ ሌላው መሳሪያዎን ያሻሽሉ።</translation>
+<translation id="3132642509209154999">ይህ ኮድ ጊዜው አልፎበታል። እባክዎ በሌላኛው መሳሪያዎ ላይ አዲስ በማመንጨት እንደገና ሞክሩ።</translation>
+<translation id="2859229680945501779">ይህ ኮድ ልክ ያልሆነ ነው። እባክዎ ሰዓቱ እና የሰዓት ዞን በመሳሪያዎ ላይ በትክክል መዘጋጀታቸውን ያረጋግጡ።</translation>
 <translation id="2339730291919608488">ከማመሳሰል ሰንሰለት ይውጡ</translation>
 <translation id="115699408012835975">ማመሳሰልን ዳግም ካቀናበሩ እሱን ለማመሳሰል ከሌላ መሣሪያ ላይ የአስምር ኮድ ድጋሚ ማስገባት ይኖርብዎታል። እርግጠኛ ነዎት ለመቀጠል ይፈልጋሉ?</translation>
 <translation id="6092564993102418148">እርግጠኛ ነዎት የተመረጠውን መሳሪያ ከማመሳሰል ሰንሰለት ላይ ማስወገድ ይፈልጋሉ?</translation>
@@ -395,6 +421,7 @@
 <translation id="1062463687579789365">የዋሌት ኔትዎርኮችን ማበጀት</translation>
 <translation id="2234108191702901162">አውታረ መረቡን ማከል አልተቻለም</translation>
 <translation id="8996633027318264334">እርግጠና ነዎት <ph name="KEY_NAME"/>ን መሰረዝ ይፈልጋሉ??</translation>
+<translation id="7893578599666249602">በእውነት <ph name="KEY_NAME"/>ን ዳግም ማስጀመር ይፈልጋሉ?</translation>
 <translation id="2618193846561624884">አሁን ያለውን አውታረ መረብ ማዘመን ይፈልጋሉ?</translation>
 <translation id="9170907049676078643">የ IPFS ሀብቶችን የፍታት ዘዴ</translation>
 <translation id="1327977588028644528">አግባቢ ፍኖት</translation>
@@ -482,4 +509,5 @@
 <translation id="6040143037577758943">ዝጋ</translation>
 <translation id="5600566490506283344">የ Brave Ad ማስታወቂያ</translation>
 <translation id="4395160081588457461">ይመልከቱ &amp; ይሰማዎ</translation>
+<translation id="7942180974165298215">ብሬቭ ኣድ ብሎክ</translation>
 </translationbundle>

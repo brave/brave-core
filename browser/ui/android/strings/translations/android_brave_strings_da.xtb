@@ -84,7 +84,20 @@
 <translation id="6587448235155023666">Dine ændringer træder i kraft næste gang du genstarter Brave</translation>
 <translation id="8701563696941209024">GENÅBN NU</translation>
 <translation id="834487290629916192">SENERE</translation>
+<translation id="7207456302801184289">Velkommen til Brave</translation>
+<translation id="4117451092682672487">Privatliv. Gjort enkelt.</translation>
+<translation id="7909375417585209817">Med Brave som din standardbrowser bliver alle links, du åbner, åbnet med  Braves privatlivsbeskyttelse.</translation>
+<translation id="5148943178722443958">Hjælp med at gøre Brave bedre.</translation>
+<translation id="6188781052835527980">Indsend en anonym fejlmelding, hvis du oplever et netværkssammenbrud, eller at skærmen fryser.</translation>
+<translation id="1929905278861178845">Del indsigter fuldstændig privat og anonymt om, hvilke funktioner som Braves brugere anvender.</translation>
+<translation id="2877653791257935258">Indtast en websides navn eller URL</translation>
+<translation id="5329830149661250028">Brave gør en forskel: Ingen annoncer. Ingen sporingsenheder. Meget hurtigere indlæsningshastighed.</translation>
+<translation id="3545804467215833536">Klik for at se Brave Shields</translation>
+<translation id="1724327820822194498">Med Shields kan du se alt det skadelige fra hver eneste side, som Brave har blokeret.</translation>
+<translation id="5386259141409498372"><ph name="BIG_TECH"/> og <ph name="TRACKER"/> andre annoncer &amp; trackere blokeret</translation>
+<translation id="3092683655478890840"><ph name="TRACKER_COUNT"/> annoncer &amp; trackere blokeret</translation>
 <translation id="8281886186245836920">Spring over</translation>
+<translation id="6165508094623778733">Få mere at vide</translation>
 <translation id="986879628471635371">Onboarding for fejlfinding</translation>
 <translation id="5808759341041733958">Vælg standard-søgemaskine</translation>
 <translation id="1331593888918588693">Du kan altid ændre dine indstillinger senere under app-indstillingerne.</translation>
@@ -112,12 +125,12 @@
 <translation id="1166682575529520472">Månedlig</translation>
 <translation id="1628742278973105368">Dine første månedlige drikkepenge vil blive sendt:</translation>
 <translation id="298349922412901215">BEMÆRK: Denne skaber har endnu ikke tilmeldt sig til at modtage bidrag fra Brave-brugere. Vi prøver fortsat at bidrage, indtil de verificeres, eller indtil 90 dage er gået.</translation>
-<translation id="635752162765375187">BEMÆRK: Denne indholdsskaber er i øjeblikket ikke konfigureret til at modtage drikkepenge fra din tegnebog. Dine drikkepenge vi forblive i din tegnebog, og de vil forsøge at blive overført automatisk i 90 dage.</translation>
+<translation id="635752162765375187">BEMÆRK: Denne indholdsskaber er i øjeblikket ikke konfigureret til at modtage drikkepenge fra din sikrede Belønninger-tegnebog. Dine drikkepenge vi forblive i din tegnebog, og vi vil forsøge at overføre dem automatisk i 90 dage.</translation>
 <translation id="1910721550319506122">Velkommen!</translation>
 <translation id="3165726837666415756">Du kan støtte denne side ved at sende drikkepenge. Det er en måde at takke dem på, for at lave godt indhold. Bekræftede indholdsskabere bliver betalt for deres tips i den første uge af hver kalendermåned.</translation>
 <translation id="1704859330137112950">Hvis du vil, kan du planlægge månedlige donationer for at støtte denne side på en kontinuerlig basis.</translation>
 <translation id="245015745140252435">Donationsbeløb</translation>
-<translation id="7873874596836611687">pungsaldo:</translation>
+<translation id="7873874596836611687">Belønninger-saldo:</translation>
 <translation id="2573313946367623146">send mine drikkepenge</translation>
 <translation id="3250511771491660127">Gør dette månedligt</translation>
 <translation id="7658239707568436148">Annuller</translation>
@@ -137,7 +150,7 @@
 <translation id="8220228041552340594">OKTOBER</translation>
 <translation id="8280223431922155812">NOVEMBER</translation>
 <translation id="4254029385847607686">DECEMBER</translation>
-<translation id="4258022280942725182">Din tegnebog</translation>
+<translation id="4258022280942725182">Dine Brave Belønninger</translation>
 <translation id="3960619311638643872">Brave VPN</translation>
 <translation id="1772301834467143364">Brave News</translation>
 <translation id="7760215798627399379"><ph name="VALUE"/> USD</translation>
@@ -172,8 +185,8 @@ måned...</translation>
 <translation id="8689997599821157251">Du har tjent</translation>
 <translation id="7550470870580166294">Utilstrækkeligt Beløb</translation>
 <translation id="2775064702681588061">Din Brave Rewards-konto venter på en indbetaling.</translation>
-<translation id="2630264552940126640">Sikkerhedskopiér Tegnebog</translation>
-<translation id="238922425564381955">Sikkerhedskopiér venligst din Brave Tegnebog.</translation>
+<translation id="2630264552940126640">Backup Brave Belønninger</translation>
+<translation id="238922425564381955">Sikkerhedskopiér din Brave Belønninger.</translation>
 <translation id="2323069945529668668">Åh åh!</translation>
 <translation id="7510166204621526816">Brave Rewards-serveren svarer ikke. Vi vil rette dette så snart som muligt.</translation>
 <translation id="683765328936486920">på YouTube</translation>
@@ -548,7 +561,7 @@ Er du sikker på, du vil gennemføre?</translation>
 <translation id="5493402808936397665">Slå biometriske data til, så du hurtigt kan låse din tegnebog op uden at indtaste adgangskode.</translation>
 <translation id="8030647312184163932">Fingeraftrykoplåsning</translation>
 <translation id="4090490645603511157">Brug biometriske data, så du hurtigt kan låse din tegnebog op uden at indtaste adgangskode.</translation>
-<translation id="1544192797660353713">Wallet (beta)</translation>
+<translation id="1544192797660353713">Wallet</translation>
 <translation id="6901810042765869341">Indtast din gendannelsessætning for at gendanne din Brave Wallet med kryptovaluta.</translation>
 <translation id="9120654436199628567">Gendan kryptokonto</translation>
 <translation id="4811736040444856406">Vis gendannelsessætning</translation>
@@ -612,7 +625,7 @@ Er du sikker på, du vil gennemføre?</translation>
 <translation id="8239147115686034860">Låser automatisk Brave Wallet</translation>
 <translation id="414639769490080648">Antallet minutter, indtil Brave Wallet automatisk bliver låst</translation>
 <translation id="4993345308607970390">Nulstil Brave Wallet</translation>
-<translation id="4322846864135539519">Er du sikker på, at du vil nulstille din wallet? Hvis du ikke har sikkerhedskopieret den, vil du miste alle dine kontodata (deriblandt alle tilknyttede midler), hvis du nulstiller. Skriv "<ph name="CONFIRMATION_PHRASE"/>" for at bekræfte.</translation>
+<translation id="4322846864135539519">Er du sikker på, at du vil nulstille dine Brave Rewards? Hvis du ikke har sikkerhedskopieret din wallet, vil du miste alle dine kontodata (inklusive alle tilknyttede midler). Skriv "<ph name="CONFIRMATION_PHRASE"/>" for at bekræfte.</translation>
 <translation id="4862812525895306758">Ryd transaktion og nonce-information</translation>
 <translation id="5693968582510626466">At rydde transaktioner kan være nyttigt for udviklere eller når status ryddes på en lokal server</translation>
 <translation id="5421107279168565467">Er du sikker på, at du vil nulstille transaktionen og nonce-information? Denne indstilling bruges som regel af udviklere, der kører en lokal testserver. Skriv "<ph name="CONFIRMATION_PHRASE"/>" for at bekræfte.</translation>
@@ -632,8 +645,8 @@ Er du sikker på, du vil gennemføre?</translation>
 <translation id="1190117345570417902">Bruger Wireguard sikker, krypteret VPN-tunnel</translation>
 <translation id="1571230671455380494">Vi deler eller sælger aldrig din information</translation>
 <translation id="276866628038850725">Alle abonnementer indeholder en gratis prøveperiode på 7 dage!</translation>
-<translation id="7280825497485894053">Månedlig abonnement</translation>
-<translation id="3001303523417455986">Årligt abonnement</translation>
+<translation id="1532536259167115948">Månedligt abonnement <ph name="TRIAL_TEXT"/></translation>
+<translation id="6344668702581136255">Årligt abonnement <ph name="TRIAL_TEXT"/></translation>
 <translation id="6748319398471481216">Forny månedlig</translation>
 <translation id="7734634586133069282"><ph name="MONTHLY_AMOUNT"/> / md.</translation>
 <translation id="1163809943099641131">Et år</translation>
@@ -654,8 +667,7 @@ Er du sikker på, du vil gennemføre?</translation>
 Hvis du ikke godkender denne anmodning, vil VPN-forbindelsen ikke blive genoprettet og din internetforbindelse er ikke sikker.</translation>
 <translation id="2429299231491852747">Acceptér forbindelsesanmodning</translation>
 <translation id="3428909627460825679">VPN-profil kunne ikke oprettes. Prøv igen.</translation>
-<translation id="1264320790738638119">Bekræftelse af køb mislykkedes. Prøv igen.</translation>
-<translation id="8905950042180169719">VPN kører i baggrunden</translation>
+<translation id="1264320790738638119">Dit abonnement er udløbet. Du kan altid tilmelde dig igen.</translation>
 <translation id="8681480718817027245">Abonnement</translation>
 <translation id="7805768142964895445">Status</translation>
 <translation id="5747552184818312860">Udløber</translation>
@@ -683,15 +695,15 @@ Hvis du ikke godkender denne anmodning, vil VPN-forbindelsen ikke blive genopret
 <translation id="1219475260382643267">Hjemmesiden virker ikke</translation>
 <translation id="7138678301420049075">Andet</translation>
 <translation id="4827315939627587219">Nulstil VPN-konfiguration</translation>
-<translation id="6883280223123252086">Er du sikker på, du vil nulstille VPN-konfiguration?</translation>
+<translation id="1705662265912724430">Er du sikker på, du vil nulstille VPN-konfiguration?</translation>
 <translation id="604124094241169006">Automatisk</translation>
 <translation id="7475580600756356589">Opretter forbindelse til din server. Det bør kun tage et øjeblik ...</translation>
 <translation id="1342728075788541348">Afbryder forbindelsen til din server. Burde kun tage et øjeblik ...</translation>
 <translation id="669072536454692117">Abonnement genoprettet</translation>
 <translation id="1187506504156101449">Kunne ikke bekræfte køb :</translation>
 <translation id="8420522105268941892">Du er allerede tilmeldt dette abonnement. Prøv at gendanne abonnementet.</translation>
-<translation id="404414664190867625">FEJL!!\nForårsaget af en bruger, der annullerede købsprocessen.</translation>
-<translation id="3515141458161417228">FEJL!!\nKøb mislykkedes ...</translation>
+<translation id="404414664190867625">Du har annulleret dit abonnementskøb.</translation>
+<translation id="3515141458161417228">Køb mislykkedes. Kontakt venligst Google Play-support.</translation>
 <translation id="6452181791372256707">Afvis</translation>
 <translation id="8030852056903932865">Godkend</translation>
 <translation id="1597199892790541240">Brændstofgebyr</translation>
@@ -726,6 +738,7 @@ Hvis du ikke godkender denne anmodning, vil VPN-forbindelsen ikke blive genopret
 <translation id="2199215899212542417">FUNKTIONSTYPE: <ph name="FTYPE"/></translation>
 <translation id="4803003663447398145">Ingen data</translation>
 <translation id="9061799688859969073"><ph name="ACCOUNT_NAME"/> sendte <ph name="CRYPTO_VALUE"/> <ph name="ASSET"/> ($<ph name="FIAT_VALUE"/>) - <ph name="DATE"/></translation>
+<translation id="1148985422232712046"><ph name="ACCOUNT_NAME"/> sendt<ph name="ASSET"/> #<ph name="ASSET_ID"/> -<ph name="DATE"/></translation>
 <translation id="2911329628253651823"><ph name="ACCOUNT_NAME"/> godkendte <ph name="ASSET"/> - <ph name="DATE"/></translation>
 <translation id="7400134344541309180">Ubegrænset godkendelse af <ph name="ASSET"/> - <ph name="PROXY"/></translation>
 <translation id="2428770727194227378"><ph name="ACCOUNT_NAME"/> skift - <ph name="DATE"/></translation>
@@ -790,6 +803,7 @@ Hvis du ikke godkender denne anmodning, vil VPN-forbindelsen ikke blive genopret
 <translation id="7732576862074737148">≈ <ph name="VALUE"/> USD</translation>
 <translation id="3079421456571897484"><ph name="VALUE"/> BAT</translation>
 <translation id="5802665280774361839">Vis autofuldførelse i addressefeltet</translation>
+<translation id="8982438328166986164">Viser hjemmesideforslag baseret på dine bogmærker og søgehistorik.</translation>
 <translation id="1241283133946520352">Netværk</translation>
 <translation id="1062463687579789365">Tilpasning af Wallet-netværk</translation>
 <translation id="2512821599885971349">Tilføj netværk</translation>
@@ -824,7 +838,6 @@ Hvis du ikke godkender denne anmodning, vil VPN-forbindelsen ikke blive genopret
 <translation id="3586752056660754651">Underskriv</translation>
 <translation id="6592721981110586529">Forbind til Brave Wallet</translation>
 <translation id="329813193938846695">Vælg beløb</translation>
-<translation id="3890989020011724401">Ny konto</translation>
 <translation id="291375746846291973">Forbind kun med websteder, du stoler på.</translation>
 <translation id="385051799172605136">Tilbage</translation>
 <translation id="1060221736464994328">Tillad denne side at skifte netværk?</translation>
@@ -841,24 +854,34 @@ Hvis du ikke godkender denne anmodning, vil VPN-forbindelsen ikke blive genopret
 <translation id="85136472535634474">Åbn VPN-indstillinger</translation>
 <translation id="8352805003811526272">Nulstiller konfiguration ...</translation>
 <translation id="6809312301323611382">Du har allerede valgt den samme server.</translation>
-<translation id="5665084657857645952">Tilladelse blev annulleret</translation>
+<translation id="5665084657857645952">Du har afbrudt installationen af VPN-profilen.</translation>
 <translation id="9106265941552476098">Afvis <ph name="TRANSACTION_LENGTH"/>-transaktioner</translation>
 <translation id="523862956770478816">Sidetilladelser</translation>
 <translation id="2141313140218636977"><ph name="VALUE"/> konti forbundet</translation>
+<translation id="3890989020011724401">Ny konto</translation>
 <translation id="4305817255990598646">Skift</translation>
 <translation id="4804818685124855865">Afbryd</translation>
 <translation id="8009571545960303544">Din signatur er ønsket</translation>
+<translation id="3484981968509595506">En DApp anmoder om din offentlige krypteringsnøgle</translation>
+<translation id="2291002548681057345">anmoder om din wallets offentlige krypteringsnøgle. Hvis du giver dit samtykke til at give nøglen, vil siden kunne udarbejde krypterede beskeder til dig.</translation>
+<translation id="3340247553212049934">Giv</translation>
 <translation id="1982257600591932657">Netværksnavn</translation>
 <translation id="5052727830821470769">Netværks-url</translation>
 <translation id="4822132585477111396">Kæde-ID</translation>
 <translation id="7131971375297699539">Valutasymbol</translation>
 <translation id="7982789257301363584">Netværk</translation>
-<translation id="2521480044079508357">Dette giver tilladelse til, at netværket bruges inden i Brave Wallet.</translation>
+<translation id="7540715999708954128">Dette giver tilladelse til, at netværket bruges inden i Brave Wallet. Læs mere.</translation>
+<translation id="8759753423332885148">Lær mere.</translation>
 <translation id="4717431746210146708">Tillad denne side at tilføje te netværk?</translation>
 <translation id="3378339846292573874">Tilføj foreslåede token</translation>
 <translation id="2322227405137827074">Ønsker du at tilføje dette token?</translation>
 <translation id="1324417023773393937">Brave Browser</translation>
 <translation id="6044189892950611565">Notifikationskanal for Brave Browser</translation>
+<translation id="1173919438868967364">Vælg konto</translation>
+<translation id="8922793255489232731">Kunne ikke lokalisere en matchende tidszone til : <ph name="VALUE"/></translation>
+<translation id="8231907121684689093">Vis topsider</translation>
+<translation id="6471216025161697462">Forbundet til <ph name="VALUE"/></translation>
+<translation id="1968852757206592413">Prøveperiode</translation>
 <translation id="6602036279006002239">BEMÆRK: Denne indholdsskaber er i øjeblikket ikke konfigureret til at modtage drikkepenge fra din tegnebog. Dine drikkepenge vi forblive i din tegnebog, og de vil forsøge at blive overført automatisk i 90 dage.</translation>
 <translation id="3370968821559864204">pungsaldo:</translation>
 <translation id="3780605330121608425">Din tegnebog</translation>
@@ -905,4 +928,5 @@ Hvis du ikke godkender denne anmodning, vil VPN-forbindelsen ikke blive genopret
 <translation id="9218430445555521422">Indstil som standard</translation>
 <translation id="6369495274982305511">Er du sikker på, at du vil nulstille din wallet? Hvis du ikke har sikkerhedskopieret den, vil du miste alle dine kontodata (deriblandt alle tilknyttede midler), hvis du nulstiller. Skriv "<ph name="CONFIRMATION_PHRASE"/>" for at bekræfte.</translation>
 <translation id="64394831139134288">My tegnebog</translation>
+<translation id="8905950042180169719">VPN kører i baggrunden</translation>
 </translationbundle>

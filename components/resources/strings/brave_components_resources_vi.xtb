@@ -236,6 +236,7 @@
 <translation id="1911900517212490188">Khóa khôi phục đã nhập không được hỗ trợ nữa. Vui lòng truy cập <ph name="BEGIN_LINK"/>here<ph name="END_LINK"/> để lấy khóa mới.</translation>
 <translation id="7583327070390027131">Ngày tiền thưởng hàng tháng tiếp theo</translation>
 <translation id="6231182869178328516">Tôi vừa thưởng <ph name="NAME"/> thông qua Trình duyệt Brave. Xem thêm tại https://brave.com/tips.</translation>
+<translation id="5916536234616514390">Rất thích khi <ph name="HASHTAG"/>Brave cho tôi hỗ trợ các nhà sáng tạo! Vừa thưởng cho <ph name="NAME"/> with <ph name="HASHTAG2"/>BAT. Nếu họ xác nhận tại https://creators.brave.com trước <ph name="DATE"/> thì BAT sẽ được chuyển sang cho họ!</translation>
 <translation id="8404935570206006581">TipWithBrave</translation>
 <translation id="3082557070674409251">Đã nhấp</translation>
 <translation id="7119308337584989771">Đã loại bỏ</translation>
@@ -256,6 +257,7 @@
 <translation id="8218538368080510976">Lỗi: Khu vực không được hỗ trợ</translation>
 <translation id="5382684862562314222">BAT chưa được hỗ trợ trong khu vực của bạn trên Uphold.</translation>
 <translation id="9074594632540931067">Lỗi: BAT không khả dụng</translation>
+<translation id="5376524136040178759">Theo Uphold, hiện tại có một số hạn chế đối với tài khoản Uphold của bạn. Vui lòng đăng nhập vào tài khoản Uphold của bạn và kiểm tra xem có bất kỳ thông báo nào hay còn yêu cầu tài khoản nào cần hoàn thành hay không, sau đó thử lại. Ví dụ: bạn có thể cần gửi thêm thông tin cho Uphold.</translation>
 <translation id="3274650021044762770">Đã xảy ra vấn đề khi xác thực yêu cầu của trình duyệt kết nối Phần thưởng Brave với tài khoản <ph name="PROVIDER"/> của bạn. Bạn có thể <ph name="BEGIN_LINK"/>liên hệ hỗ trợ<ph name="END_LINK"/> để được trợ giúp thêm.</translation>
 <translation id="1316066811927496401">Lỗi: Không thể xác thực yêu cầu</translation>
 <translation id="1737873393693460829">Với việc bật [[title]], bạn đồng ý với <ph name="BEGIN_LINK1"/>Điều khoản Dịch vụ<ph name="END_LINK1"/> và <ph name="BEGIN_LINK2"/>Chính sách Quyền riêng tư<ph name="END_LINK2"/>.</translation>
@@ -811,6 +813,7 @@
 <translation id="4232775951515678071">Không lấy được loại cho giao dịch</translation>
 <translation id="2080935885647755539">Không lấy được phí xăng cho giao dịch EIP-1559</translation>
 <translation id="4843814354611030845">Người dùng đã từ chối giao dịch này</translation>
+<translation id="1462494615260983714">Lỗi khi xử lý giao dịch</translation>
 <translation id="4886059598718763020">'<ph name="VALUE"/>' không được phép ký tin nhắn</translation>
 <translation id="8719220598078667817">Ký giao dịch không thành công</translation>
 <translation id="875506212625074179">Phản hồi mã chuỗi không hợp lệ từ dịch vụ RPC</translation>
@@ -858,7 +861,7 @@
 <translation id="1191686659164947414">Giao dịch có thể được chạy trước</translation>
 <translation id="632241521608275119">Tỷ lệ trượt giá</translation>
 <translation id="4500473291496079954">Hết hạn trong</translation>
-<translation id="2236833281018938257">Địa chỉ hoặc URL của 0x</translation>
+<translation id="2236833281018938257">Địa chỉ ví hay URL</translation>
 <translation id="2860280209982026951">Brave sử dụng <ph name="LINK_BEFORE"/>0x<ph name="LINK_AFTER"/> làm bộ tổng hợp DEX.</translation>
 <translation id="151946611346774041">0x sẽ xử lý địa chỉ Ethereum và địa chỉ IP để thực hiện một giao dịch (bao gồm nhận báo giá). 0x sẽ CHỈ sử dụng dữ liệu này cho mục đích xử lý giao dịch.</translation>
 <translation id="4626407663177532837">Báo giá bao gồm một khoản phí Brave 0,875%.</translation>
@@ -866,7 +869,7 @@
 <translation id="6575120282593094155">Bạn chưa có tài khoản <ph name="ACCOUNT_TYPE"/>. Tạo tài khoản ngay bây giờ?</translation>
 <translation id="2704606927547763573">Đã sao chép</translation>
 <translation id="1420318137760245955">Chào mừng đến với Ví Brave</translation>
-<translation id="8303434745767477417">Nắm giữ tài sản mã hóa trong lòng bàn tay. Theo dõi hiệu suất danh mục và tương tác với các ứng dụng phi tập trung web 3. Giao dịch, đầu tư, vay và cho vay với DeFi. Tất cả ngay từ trình duyệt riêng tư Brave. Không yêu cầu phần mở rộng, tải xuống.</translation>
+<translation id="3671745544278414606">Nắm giữ tài sản mã hóa trong lòng bàn tay. Theo dõi hiệu suất danh mục và tương tác với các ứng dụng Web3 DApps. Giao dịch, đầu tư, vay và cho vay với DeFi. Tất cả ngay từ trình duyệt riêng tư Brave. Không yêu cầu phần mở rộng, tải xuống.</translation>
 <translation id="6972754398087986839">Get Started</translation>
 <translation id="375882617301124395">Sao lưu ví tiền mã hóa của bạn</translation>
 <translation id="180032279811483155">Trong bước tiếp theo, bạn sẽ thấy <ph name="RECOVERY_PHRASE_LENGTH"/>cụm từ khôi phục mà bạn có thể sử dụng để khôi phục tài khoản tiền điện tử chính của mình. Lưu cụm từ này ở một nơi an toàn. Cụm từ khôi phục của bạn là cách duy nhất để lấy lại quyền truy cập tài khoản trong trường hợp quên mật khẩu, thiết bị bị mất hoặc bị đánh cắp hoặc bạn muốn chuyển đổi ví.</translation>
@@ -895,7 +898,7 @@
 <translation id="163697698769819510">Sao lưu ví của bạn ngay bây giờ để bảo vệ tài sản của bạn và đảm bảo bạn không bao giờ mất quyền truy cập.</translation>
 <translation id="1018806299114415224">Sao lưu ngay</translation>
 <translation id="5234764350956374838">Dismiss</translation>
-<translation id="4075073132992924258">Ví Brave không được đặt làm ví mặc định của bạn và sẽ không phản hồi với các ứng dụng phi tập trung web 3. Hãy vào cài đặt để thay đổi ví mặc định của bạn.</translation>
+<translation id="1400709719911593089">Ví Brave không được đặt làm ví mặc định của bạn và sẽ không phản hồi với các ứng dụng Web3 DApps. Hãy vào cài đặt để thay đổi ví mặc định của bạn.</translation>
 <translation id="4362717653795263052">Khôi phục tài khoản tiền mã hóa chính</translation>
 <translation id="3038077262567136741">Nhập cụm từ khôi phục của bạn để khôi phục tài khoản tiền mã hóa ví Brave của bạn.</translation>
 <translation id="955918646509748368">Cụm từ khôi phục nhập vào không hợp lệ.</translation>
@@ -906,8 +909,8 @@
 <translation id="8624315169751085215">Sao chép vào Bộ nhớ đệm</translation>
 <translation id="1121335910737476837">Tài khoản tiền mã hóa chính</translation>
 <translation id="6969147029062037757">Các tài khoản đã nhập khẩu</translation>
-<translation id="5668765612885835803">Bạn có thể tạo tài khoản chính trong Ví Brave có thể được sao lưu hoặc khôi phục từ cụm từ khôi phục của bạn. Để tìm hiểu thêm về các loại tài khoản, vui lòng truy cập trợ giúp tài khoản</translation>
-<translation id="2471916999505901943">Những tài khoản này có thể được sử dụng với các ứng dụng phi tập trung web 3 và có thể được hiển thị trong danh mục của bạn. Tuy nhiên, hãy lưu ý rằng không thể khôi phục tài khoản phụ bằng cụm từ khôi phục từ bản sao lưu tài khoản chính của bạn.</translation>
+<translation id="4057718162494343222">Bạn có thể tạo tài khoản chính trong Ví Brave có thể được sao lưu hoặc khôi phục từ cụm từ khôi phục của bạn. Để tìm hiểu thêm về các loại tài khoản, vui lòng truy cập trợ giúp tài khoản.</translation>
+<translation id="1011614786846182272">Những tài khoản này có thể được sử dụng với các ứng dụng Web3 DApps và có thể được hiển thị trong danh mục của bạn. Tuy nhiên, hãy lưu ý rằng không thể khôi phục tài khoản phụ bằng cụm từ khôi phục từ bản sao lưu tài khoản chính của bạn.</translation>
 <translation id="1940465339426637378">Tài sản</translation>
 <translation id="2236507293802791911">Tài sản nhìn thấy được</translation>
 <translation id="7525067979554623046">Tạo</translation>
@@ -989,6 +992,7 @@
 <translation id="8569380433211549748">Giá bằng</translation>
 <translation id="2490428413101944234">Kiểm tra vòi nước</translation>
 <translation id="3352959425838279177">Nhận Ether từ vòi nước cho <ph name="SELECTED_NETWORK"/></translation>
+<translation id="6449626816252815844">Chọn phương thức mua hàng</translation>
 <translation id="8009571545960303544">Chữ ký của bạn đang được yêu cầu</translation>
 <translation id="5294062982587710720">Lưu ý rằng Brave không thể xác thực điều gì sẽ xảy ra nếu bạn ký. Một chữ ký có thể cho phép hầu như mọi thao tác trong tài khoản của bạn hoặc thay mặt bạn, bao gồm (nhưng không chỉ giới hạn ở) việc cấp toàn quyền kiểm soát tài khoản và tài sản kỹ thuật số của bạn cho trang web đưa ra yêu cầu. Chỉ ký nếu bạn chắc chắn rằng mình muốn thực hiện hành động này và tin tưởng trang web yêu cầu.</translation>
 <translation id="3474375934783434676">Tự chịu trách nhiệm khi ký</translation>
@@ -1037,7 +1041,7 @@
 <translation id="3890989020011724401">Tài khoản mới</translation>
 <translation id="7257603403519636638">Xem tài sản tài khoản</translation>
 <translation id="2092132085082887098">Tài sản tài khoản</translation>
-<translation id="5723696625900399845">Sử dụng bảng điều khiển này để truy cập an toàn vào web3 và tất cả các tài sản tiền điện tử của bạn.</translation>
+<translation id="4612979983851181941">Sử dụng bảng điều khiển này để truy cập an toàn vào Web3 và tất cả các tài sản tiền điện tử của bạn.</translation>
 <translation id="4460220693591349571">LOẠI CHỨC NĂNG</translation>
 <translation id="838933475572692615">DỮ LIỆU HEX</translation>
 <translation id="2240831799756994975">BYTE</translation>
@@ -1049,13 +1053,13 @@
 <translation id="7739762330714405363">Sử dụng mật khẩu giống nhau</translation>
 <translation id="1085027414516521238">MetaMask</translation>
 <translation id="7102907656918333773">Nhập từ <ph name="WALLET_EXTENSION"/></translation>
-<translation id="8897114903450789862">Nhập từ tài khoản <ph name="WALLET_EXTENSION"/> của bạn vào Ví Brave. Tận hưởng cách thức quản lý tài sản mã hóa và tương tác với các ứng dụng phi tập trung web 3 nhanh hơn và bảo mật hơn.</translation>
+<translation id="1737856990004825123">Nhập từ tài khoản <ph name="WALLET_EXTENSION"/> của bạn vào Ví Brave. Tận hưởng cách thức quản lý tài sản mã hóa và tương tác với các ứng dụng Web3 DApps nhanh hơn và bảo mật hơn.</translation>
 <translation id="4237840336687249184">Mật khẩu MetaMask</translation>
 <translation id="2381605201035323535">ví tiền mã hóa</translation>
 <translation id="2770851145415891830">Đã phát hiện ví tiền mã hóa hiện hành</translation>
 <translation id="4938145712652668388">Khi bạn nhấp vào "Bắt đầu" bạn sẽ nhập Ví tiền mã hóa trước đây vào trải nghiệm Ví Brave mới và tận hưởng tất cả các lợi ích được nêu ra ở trên. Hãy dùng thử và cho chúng tôi biết suy nghĩ của bạn!</translation>
 <translation id="2237759620789871865">Nếu bạn muốn bỏ qua việc nhập và giữ lại trải nghiệm Ví tiền mã hóa cũ, chỉ cần chuyển đến Trình duyệt Brave <ph name="LINK_BEFORE"/>Cài đặt<ph name="LINK_AFTER"/> và thay đổi mặc định về Ví tiền mã hóa. Bạn cũng có thể nhập, dùng thử Ví Brave mới và thay đổi lại bất cứ lúc nào.</translation>
-<translation id="3301259443293676544">Nhập mật khẩu ví tiền mã hóa hiện tại của bạn để nhập vào Ví Brave. Tận hưởng một phương thức nhanh hơn và bảo mật hơn để quản lý tài sản tiền mã hóa và tương tác với các ứng dụng phi tập trung web 3.</translation>
+<translation id="5590175005414413980">Nhập mật khẩu ví tiền mã hóa hiện tại của bạn để nhập vào Ví Brave. Tận hưởng một phương thức nhanh hơn và bảo mật hơn để quản lý tài sản tiền mã hóa và tương tác với các ứng dụng Web3 DApps.</translation>
 <translation id="9099900965604225657">Mật khẩu ví tiền mã hóa</translation>
 <translation id="4020495774166914146">Tôi bị mất mật khẩu và cụm từ khôi phục, hãy tạo một ví mới.</translation>
 <translation id="6344138931392227467">Đã kết nối <ph name="DEVICE_NAME"/></translation>
@@ -1142,7 +1146,6 @@
 <translation id="3327639091470204775">Không thể kết nối đến cầu Trezor</translation>
 <translation id="6672377693827764095">Lỗi nội bộ, không thể lấy tài khoản</translation>
 <translation id="6889920539620318793">Đặt làm hoạt động</translation>
-<translation id="1462494615260983714">Lỗi khi xử lý giao dịch</translation>
 <translation id="8933250418452564886">Không tìm được giao dịch phần cứng, hãy thử lại</translation>
 <translation id="5999974802900788338">Đã nhận lỗi từ thiết bị phần cứng, có lẽ bạn cần xác nhận giao dịch trên thiết bị của bạn</translation>
 <translation id="8523768065044261559">Lỗi khi xử lý giao dịch, hãy thử lại</translation>
@@ -1208,6 +1211,7 @@
 <translation id="3795015906457257780">Bạn đang xem trang web này mà không có các biện pháp bảo vệ quyền riêng tư của Brave.</translation>
 <translation id="7194012750329511146">Khiên Brave 
 <ph name="NUMBER"/> Trình theo dõi, quảng cáo và hơn thế nữa bị chặn</translation>
+<translation id="4292121526390005808">Các script đã bị chặn</translation>
 <translation id="1742469581923031760">Đang kết nối…</translation>
 <translation id="1287487756047817908">Đang ngắt kết nối…</translation>
 <translation id="2325196879156848326">Kết nối không thành công</translation>
@@ -1227,7 +1231,7 @@
 <translation id="1400240082805528049">Hỗ trợ 24/7</translation>
 <translation id="8463313539532697053">Chờ một chút trong khi tải…</translation>
 <translation id="4613076894734402086">Chỉnh sửa phương thức thanh toán</translation>
-<translation id="1898254156730880135">Có vẻ như khoản thanh toán gần đây nhất của bạn đã không thành công. Quyền truy cập vào đăng ký này sẽ tạm dừng cho đến khi vấn đề thanh toán được giải quyết. Hãy cố gắng chỉnh sửa phương thức thanh toán của bạn hoặc liên hệ với bộ phận hỗ trợ của Brave.</translation>
+<translation id="8373427068383038263">Có vẻ như khoản thanh toán gần đây nhất của bạn cho <ph name="VALUE"/> không thành công. Quyền truy cập vào đăng ký này sẽ tạm dừng cho đến khi vấn đề thanh toán được giải quyết. Hãy cố gắng sửa phương thức thanh toán của bạn hoặc liên hệ với bộ phận hỗ trợ của Brave.</translation>
 <translation id="1839021455997460752">Địa chỉ email của bạn</translation>
 <translation id="5154702632169343078">Chủ đề</translation>
 <translation id="6625978880678465492">Vui lòng chọn một lý do</translation>
@@ -1262,4 +1266,12 @@
 <translation id="4548946945059463969">Tiết lộ số dư của bạn trên màn hình</translation>
 <translation id="242959166945779492">Bạn không có bất kỳ số dư nào trong tài khoản của mình. Hãy truy cập FTX để mua.</translation>
 <translation id="6996157559236886133">Lỗi: Chức năng tài khoản Uphold bị giới hạn</translation>
+<translation id="8303434745767477417">Nắm giữ tài sản mã hóa trong lòng bàn tay. Theo dõi hiệu suất danh mục và tương tác với các ứng dụng phi tập trung web 3. Giao dịch, đầu tư, vay và cho vay với DeFi. Tất cả ngay từ trình duyệt riêng tư Brave. Không yêu cầu phần mở rộng, tải xuống.</translation>
+<translation id="4075073132992924258">Ví Brave không được đặt làm ví mặc định của bạn và sẽ không phản hồi với các ứng dụng phi tập trung web 3. Hãy vào cài đặt để thay đổi ví mặc định của bạn.</translation>
+<translation id="5668765612885835803">Bạn có thể tạo tài khoản chính trong Ví Brave có thể được sao lưu hoặc khôi phục từ cụm từ khôi phục của bạn. Để tìm hiểu thêm về các loại tài khoản, vui lòng truy cập trợ giúp tài khoản</translation>
+<translation id="2471916999505901943">Những tài khoản này có thể được sử dụng với các ứng dụng phi tập trung web 3 và có thể được hiển thị trong danh mục của bạn. Tuy nhiên, hãy lưu ý rằng không thể khôi phục tài khoản phụ bằng cụm từ khôi phục từ bản sao lưu tài khoản chính của bạn.</translation>
+<translation id="5723696625900399845">Sử dụng bảng điều khiển này để truy cập an toàn vào web3 và tất cả các tài sản tiền điện tử của bạn.</translation>
+<translation id="8897114903450789862">Nhập từ tài khoản <ph name="WALLET_EXTENSION"/> của bạn vào Ví Brave. Tận hưởng cách thức quản lý tài sản mã hóa và tương tác với các ứng dụng phi tập trung web 3 nhanh hơn và bảo mật hơn.</translation>
+<translation id="3301259443293676544">Nhập mật khẩu ví tiền mã hóa hiện tại của bạn để nhập vào Ví Brave. Tận hưởng một phương thức nhanh hơn và bảo mật hơn để quản lý tài sản tiền mã hóa và tương tác với các ứng dụng phi tập trung web 3.</translation>
+<translation id="1898254156730880135">Có vẻ như khoản thanh toán gần đây nhất của bạn đã không thành công. Quyền truy cập vào đăng ký này sẽ tạm dừng cho đến khi vấn đề thanh toán được giải quyết. Hãy cố gắng chỉnh sửa phương thức thanh toán của bạn hoặc liên hệ với bộ phận hỗ trợ của Brave.</translation>
 </translationbundle>

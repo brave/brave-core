@@ -135,6 +135,21 @@
     "message": "Brave Rewards มีปัญหาอยู่ในขณะนี้ โปรดลองใหม่ภายหลัง",
     "description": ""
   },
+  "rewardsLogInToSeeBalance": {
+    "message": "$begin_bold$เข้าสู่ระบบ $provider$$end_bold$ เพื่อดูยอดคงเหลือของคุณ",
+    "description": "",
+    "placeholders": {
+      "begin_bold": {
+        "content": "$1"
+      },
+      "provider": {
+        "content": "$2"
+      },
+      "end_bold": {
+        "content": "$3"
+      }
+    }
+  },
   "rewardsPaymentCheckStatus": {
     "message": "ตรวจสอบสถานะ",
     "description": ""

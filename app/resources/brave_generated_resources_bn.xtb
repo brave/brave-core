@@ -2,7 +2,6 @@
 <!DOCTYPE translationbundle>
 <translationbundle lang="bn">
 <translation id="3333887201479867589">Brave রিওয়ার্ডস</translation>
-<translation id="7942180974165298215">Brave বিজ্ঞাপন অবরুদ্ধকারক</translation>
 <translation id="4615489450165434530">একটি ভাঙ্গা সাইটের প্রতিবেদন করুন</translation>
 <translation id="1209739344687072997">একটি ভাঙ্গা সাইটের প্রতিবেদন করুন</translation>
 <translation id="6406506848690869874">সিঙ্ক করুন</translation>
@@ -43,6 +42,7 @@
 <translation id="3094628781200061820">IPFS থেকে ফাইলগুলো প্রকাশ এবং পুনরুদ্ধার করুন</translation>
 <translation id="7398397225367092613">.onion</translation>
 <translation id="406832631167785034">.onion ঠিকানা ব্যবহার করে খুলুন</translation>
+<translation id="4759098689276706664">জোর করে পেস্ট করুন</translation>
 <translation id="4901618511712685702">IPFS-এ আমদানি করুন</translation>
 <translation id="6794469945030154569">এই পৃষ্ঠা</translation>
 <translation id="5037852323412456577">নির্বাচিত ছবি</translation>
@@ -70,7 +70,7 @@
 <translation id="3425600262621021599">Tor এর সাথে Brave ব্যক্তিগত উইন্ডোতে লিঙ্ক খুলুন</translation>
 <translation id="3229091547987707389">একটি ডিরেক্টরি পাঠান এবং শেয়ার করুন</translation>
 <translation id="5029193871181468990">Brave রিওয়ার্ড আইকন লুকান</translation>
-<translation id="7595540212376041331">টুলবারে Brave ওয়ালেট আইকন লুকান</translation>
+<translation id="7595540212376041331">Brave ওয়ালেট আইকন লুকান</translation>
 <translation id="4928988318462976765">ওয়েব এক্সটেনশন স্টোর</translation>
 <translation id="9181207987584064303">ওয়েব এক্সটেনশন স্টোরে দেখুন</translation>
 <translation id="3161744659507801211">সতর্কতা: Brave আপনার ব্রাউজিং ইতিহাস রেকর্ডিং থেকে এক্সটেনশনগুলিকে আটকাতে পারে না।</translation>
@@ -108,6 +108,7 @@
 <translation id="2571596981920752023"><ph name="NUMBER_OF_TABS"/>টি ট্যাব</translation>
 <translation id="2515126961943087659">Bat বিজ্ঞাপন পরিষেবা</translation>
 <translation id="7924918279836988121">Bat Ledger পরিষেবা</translation>
+<translation id="6665472986740899785">Brave নোটিফিকেশনের বিজ্ঞাপন</translation>
 <translation id="4174337572777167894">ওয়েব আবিষ্কার প্রকল্প</translation>
 <translation id="8659271182272561965">Brave অনুসন্ধান &amp; পরিশোধন করতে কিছু অনামী অনুসন্ধান ব্রাউজিং ডেটায় অবদান রাখুন।</translation>
 <translation id="1516554614404600536">Brave টুলটিপ</translation>
@@ -183,7 +184,6 @@
 <translation id="6817415381278637662">আপনার খোলা প্রতিটি ওয়েব পৃষ্ঠাতে Brave-এর গোপনীয়তা সুরক্ষা পেতে, Brave-কে আপনার ডিফল্ট ব্রাউজার হিসাবে সেট করুন।</translation>
 <translation id="8722651357687610395">Brave কে ডিফল্ট হিসাবে সেট করুন</translation>
 <translation id="2370739752330685659">সম্ভবত পরে</translation>
-<translation id="3400357268283240774">অতিরিক্ত সেটিংস</translation>
 <translation id="9156965752763025780">আপনার পরিবর্তনগুলি পরবর্তী সময় আপনি Brave আবার চালু হলে ফলপ্রদ হবে৷</translation>
 <translation id="7179921470347911571">এখনই রিলঞ্চ করুন</translation>
 <translation id="4472575034687746823">শুরু করুন</translation>
@@ -238,6 +238,29 @@
 <translation id="7390783310074170337">ডিফল্ট ভিউ</translation>
 <translation id="130615081792797568">সহজ ভিউ</translation>
 <translation id="2360360976480535628">উন্নত ভিউ</translation>
+<translation id="6486983549008741930">কনটেন্ট ফিল্টার করা</translation>
+<translation id="8694564340481124390">কাস্টম ফিল্টার চালু করুন যা আঞ্চলিক ও ভাষা-নির্দিষ্ট ট্র্যাকার ও অ্যানয়েন্স ব্লক করুন।</translation>
+<translation id="6522618763902154348">কাস্টম ফিল্টার চালু করুন যা আঞ্চলিক ও ভাষা-নির্দিষ্ট ট্র্যাকার ও 
+    <ph name="BEGIN_LINK"/>অ্যানয়েন্স<ph name="END_LINK"/> ব্লক করুন।</translation>
+<translation id="3482656215021340727">কাস্টম ফিল্টারের লিস্ট যোগ করুন</translation>
+<translation id="1020877116991797978">আপনার বিশ্বস্ত কমিউনিটির তৈরি করা এবং রক্ষণাবেক্ষণ করা অতিরিক্ত তালিকাগুলো যোগ করুন।</translation>
+<translation id="7617831480435794399">শুধুমাত্র আপনার বিশ্বস্ত সংস্থার থেকে তালিকার জন্য সাবস্ক্রাইব করুন। আপনার ব্রাউজার তাদের সার্ভারে আপনার IP ঠিকানা প্রকাশ করে মাঝে-মাঝে আপনার দেওয়া URL থেকে আপডেটের তালিকা দেখবে।</translation>
+<translation id="2831397936251948638">কাস্টম ফিল্টারগুলো পরিচালনা করুন</translation>
+<translation id="4618274268052410139">নিচে লাইন অনুযায়ী, ক্ষেত্রের মধ্যে আপনি যে ফিল্টার যোগ করেছেন সেই কাস্টম ফিল্টার যোগ করুন। <ph name="BEGIN_LINK"/>Adblock ফিল্টারের সিনট্যাক্স<ph name="END_LINK"/> ব্যবহারের বিষয়ে নিশ্চিত থাকুন।</translation>
+<translation id="7791543448312431591">জুড়ুন</translation>
+<translation id="571950783952070673">লিস্টের URL</translation>
+<translation id="9204006549413740506">শেষ আপডেট হয়েছে</translation>
+<translation id="6745592621698551453">এখনই আপডেট করুন</translation>
+<translation id="5334844597069022743">সূত্র দেখান</translation>
+<translation id="4720556299488643018">আনসাবস্ক্রাইব করুন</translation>
+<translation id="6532106788206463496">পরিবর্তনগুলো সেভ করুন</translation>
+<translation id="4516904298421534459">তালিকাগুলি ফিল্টার করুন</translation>
+<translation id="4435215931544457255">আরও জনপ্রিয় কমিউনিটি লিস্ট। মনে রাখবেন আরও অনেক ফিল্টার চালু করলে তা ব্রাউজিংয়ের গতি কমাবে।</translation>
+<translation id="802154636333426148">ডাউনলোড করা যায়নি</translation>
+<translation id="7889605993994647168">আপডেট ব্যর্থ হয়েছে</translation>
+<translation id="5438573563213942361">নিজের পছন্দমত ফাইলগুলি</translation>
+<translation id="4182731739150761577">সম্পূর্ণ ইতিহাস দেখান</translation>
+<translation id="1340263054776016283">ফিল্টারের লিস্ট URL দেখুন</translation>
 <translation id="6821903322090655051">Brave পুরষ্কার অক্ষম করা আছে</translation>
 <translation id="413570371620795359">চালু করে শুরু করতে পুরস্কারের প্যানেল খুলুন</translation>
 <translation id="3849957491997306859">স্বয়ংক্রিয়ভাবে সনাক্ত হয়েছে</translation>
@@ -324,6 +347,10 @@
 <translation id="5093410893656857925">ডিভাইসের ধরন পছন্দ করুন</translation>
 <translation id="4581190919849683048">আপনি কোন প্রকারের ডিভাইসের সাথে সিঙ্ক করতে চান?</translation>
 <translation id="4112587618563511470">অবৈধ সিঙ্ক কোড, অনুগ্রহ করে চেক করুন এবং আবার চেষ্টা করুন।</translation>
+<translation id="3995714999835224798">এই কোডটি অবৈধ</translation>
+<translation id="859506441384380749">এই কোডটি Brave-এর একটি অবমূল্যায়ন সংস্করণ দ্বারা তৈরি করা হয়েছে, অনুগ্রহ করে প্রথমে আপনার অন্য ডিভাইস আপগ্রেড করুন</translation>
+<translation id="3132642509209154999">এই কোডটির মেয়াদ শেষ হয়েছে। অনুগ্রহ করে আপনার অন্য ডিভাইসে একটি নতুন তৈরি করুন এবং আবার চেষ্টা করুন।</translation>
+<translation id="2859229680945501779">এই কোডটি অকার্যকর। আপনার ডিভাইসে সময় এবং টাইমজোন সঠিকভাবে সেট করা আছে কিনা অনুগ্রহ করে তা চেক করে নিন।</translation>
 <translation id="2339730291919608488">Sync শৃঙ্খল ত্যাগ করুন</translation>
 <translation id="115699408012835975">আপনি যদি সিঙ্ক রিসেট করেন তহালে এর সাথে সিঙ্ক করার জন্য আপনাকে অন্য ডিভাইস থেকে একটি সিঙ্ক কোডটি পুনরায় প্রবেশ করতে হবে। আপনি কি এগিয়ে যাওয়ার বিষয়ে নিশ্চিত?</translation>
 <translation id="6092564993102418148">আপনি কি সিঙ্ক চেন থেকে নির্বাচিত ডিভাইসটি সরিয়ে দিতে নিশ্চিত?</translation>
@@ -394,6 +421,7 @@
 <translation id="1062463687579789365">ওয়ালেট নেটওয়ার্ক কাস্টমাইজেশন</translation>
 <translation id="2234108191702901162">নেটওয়ার্ক যোগ করা যায়নি</translation>
 <translation id="8996633027318264334">আপনি কি সত্যিই <ph name="KEY_NAME"/> মুছতে চান?</translation>
+<translation id="7893578599666249602">আপনি কি সত্যিই <ph name="KEY_NAME"/> মুছতে চান?</translation>
 <translation id="2618193846561624884">আপনি কি বিদ্যমান নেটওয়ার্ক আপডেট করতে চান?</translation>
 <translation id="9170907049676078643">IPFS সংস্থানগুলি সমাধান করার পদ্ধতি</translation>
 <translation id="1327977588028644528">গেটওয়ে</translation>
@@ -481,4 +509,5 @@
 <translation id="6040143037577758943">বন্ধ</translation>
 <translation id="5600566490506283344">Brave অ্যাড বিজ্ঞপ্তি</translation>
 <translation id="4395160081588457461">দেখুন &amp; অনুভব করুন</translation>
+<translation id="7942180974165298215">Brave বিজ্ঞাপন অবরুদ্ধকারক</translation>
 </translationbundle>

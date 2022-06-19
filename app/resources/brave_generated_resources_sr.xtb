@@ -2,7 +2,6 @@
 <!DOCTYPE translationbundle>
 <translationbundle lang="sr">
 <translation id="3333887201479867589">Brave Rewards</translation>
-<translation id="7942180974165298215">Brejv blokiranje oglasa</translation>
 <translation id="4615489450165434530">Prijavite raskinutu vezu sa sajtom</translation>
 <translation id="1209739344687072997">Prijavite raskinutu vezu sa sajtom</translation>
 <translation id="6406506848690869874">Sinhronizuj</translation>
@@ -43,6 +42,7 @@ Ili kasnije promenite u <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="3094628781200061820">Objavite i preuzmite datoteke sa IPFS</translation>
 <translation id="7398397225367092613">.onion</translation>
 <translation id="406832631167785034">Otvoriti pomoću .onion adrese</translation>
+<translation id="4759098689276706664">Prinudno nalepi</translation>
 <translation id="4901618511712685702">Uvezi u IPFS</translation>
 <translation id="6794469945030154569">Ova stranica</translation>
 <translation id="5037852323412456577">Odabrana slika</translation>
@@ -70,7 +70,7 @@ Ili kasnije promenite u <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="3425600262621021599">Otvori vezu u Brave privatnom prozoru sa Tor-om</translation>
 <translation id="3229091547987707389">Uvoz i deljenje direktorijuma</translation>
 <translation id="5029193871181468990">Sakrij ikonicu Brave nagrada</translation>
-<translation id="7595540212376041331">Sakriti ikonicu Brave novčanika na traci sa alatkama</translation>
+<translation id="7595540212376041331">Sakrij ikonicu Brave novčanika</translation>
 <translation id="4928988318462976765">Prodavnica Veb proširenja</translation>
 <translation id="9181207987584064303">Prikaži u prodavnici Veb proširenja</translation>
 <translation id="3161744659507801211">Upozorenje: Brave ne može da spreči ekstenzije da snimaju vašu istoriju pregledanja</translation>
@@ -108,6 +108,7 @@ Ili kasnije promenite u <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="2571596981920752023"><ph name="NUMBER_OF_TABS"/> kartica</translation>
 <translation id="2515126961943087659">Bat Ads usluga</translation>
 <translation id="7924918279836988121">Usluga knjiženja BAT</translation>
+<translation id="6665472986740899785">Brave reklamno obaveštenje</translation>
 <translation id="4174337572777167894">Projekat istraživanja veba</translation>
 <translation id="8659271182272561965">Anonimno priložite neke podatke o pretrazi &amp; pregledanju kako biste unapredili Brave pretragu.</translation>
 <translation id="1516554614404600536">Brave Tooltip</translation>
@@ -183,7 +184,6 @@ Ili kasnije promenite u <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="6817415381278637662">Podesite Brave kao podrazumevani pretraživač kako biste dobili Brave zaštite privatnosti na svakoj veb-stranici koju otvorite.</translation>
 <translation id="8722651357687610395">Postavite Brave kao podrazumevani</translation>
 <translation id="2370739752330685659">Možda kasnije</translation>
-<translation id="3400357268283240774">Dodatna podešavanja</translation>
 <translation id="9156965752763025780">Промене ће ступити на снагу када следећи пут поново покренете Brave.</translation>
 <translation id="7179921470347911571">Ponovo pokreni sada</translation>
 <translation id="4472575034687746823">Започнимо</translation>
@@ -238,6 +238,29 @@ Ili kasnije promenite u <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="7390783310074170337">Podrazumevani prikaz</translation>
 <translation id="130615081792797568">Jednostavan prikaz</translation>
 <translation id="2360360976480535628">Prikaz više opcija</translation>
+<translation id="6486983549008741930">Filtriranje sadržaja</translation>
+<translation id="8694564340481124390">Omogućuje prilagođene filtere koji blokiraju regionalno i jezičko praćenje i smetnje.</translation>
+<translation id="6522618763902154348">Omogućuje prilagođene filtere koji blokiraju regionalno i jezičko praćenje i 
+    <ph name="BEGIN_LINK"/>smetnje<ph name="END_LINK"/>.</translation>
+<translation id="3482656215021340727">Dodavanje prilagođenih lista filtera</translation>
+<translation id="1020877116991797978">Dodajte liste koje kreira i održava vaša pouzdana zajednica.</translation>
+<translation id="7617831480435794399">Prijavite se samo za liste iz pouzdanih izvora. Vaš pretraživač će povremeno proveriti da li je ažurirana lista za URL koji ste upisali, pri čemu će otkriti vašu IP adresu njihovom serveru.</translation>
+<translation id="2831397936251948638">Kreiranje prilagođenih filtera</translation>
+<translation id="4618274268052410139">Dodajte prilagođene filtere koje ste kreirali, jedan po liniji, u polju ispod. Obavezno koristite <ph name="BEGIN_LINK"/>Adblock filter sintaksu<ph name="END_LINK"/>.</translation>
+<translation id="7791543448312431591">Dodaj</translation>
+<translation id="571950783952070673">URL adresa liste</translation>
+<translation id="9204006549413740506">Poslednje ažuriranje</translation>
+<translation id="6745592621698551453">Ажурирај одмах</translation>
+<translation id="5334844597069022743">Prikaži izvor</translation>
+<translation id="4720556299488643018">Odjavi se</translation>
+<translation id="6532106788206463496">Sačuvaj promene</translation>
+<translation id="4516904298421534459">Liste filtera</translation>
+<translation id="4435215931544457255">Dodatne liste popularne u zajednici. Uzmite u obzir da će omogućavanje previše filtera narušiti brzinu pregledača.</translation>
+<translation id="802154636333426148">Преузимање није успело</translation>
+<translation id="7889605993994647168">Ažuriranje nije uspelo</translation>
+<translation id="5438573563213942361">Prilagođene liste</translation>
+<translation id="4182731739150761577">Prikaži kompletnu listu</translation>
+<translation id="1340263054776016283">Upišite URL adresu liste filtera</translation>
 <translation id="6821903322090655051">Brave nagrade su onemogućene</translation>
 <translation id="413570371620795359">Za aktiviranje i započinjanje otvorite tablu za nagrade</translation>
 <translation id="3849957491997306859">Automatsko otkrivanje</translation>
@@ -324,6 +347,10 @@ Ili kasnije promenite u <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="5093410893656857925">Izaberite tip uređaja</translation>
 <translation id="4581190919849683048">Sa kojim tipom uređaja biste hteli da se sinhronizujete?</translation>
 <translation id="4112587618563511470">Nevažeći kod za sinhronizaciju, proverite i pokušajte ponovo.</translation>
+<translation id="3995714999835224798">Ovaj kod je nevažeći</translation>
+<translation id="859506441384380749">Ovaj kod je generisala zastarela verzija Brave pregledača. Ažurirajte najpre svoj drugi uređaj</translation>
+<translation id="3132642509209154999">Ovaj kod je istekao. Generišite nov kod na vašem drugom uređaju i pokušajte ponovo.</translation>
+<translation id="2859229680945501779">Ovaj kod je nevažeći. Proverite da li su vreme i vremenska zona ispravno podešeni na vašem uređaju.</translation>
 <translation id="2339730291919608488">Napusti lanac sinhronizacije</translation>
 <translation id="115699408012835975">Ako ponovo postavite sinhronizaciju, moraćete da ponovo unesete kod za sinhronizaciju sa drugog uređaja da biste ga sinhronizovali sa njim. Da li ste sigurni da želite da nastavite?</translation>
 <translation id="6092564993102418148">Da li ste sigurni da želite da izbrišete izabrani uređaj iz sinhronizovanog lanca?</translation>
@@ -394,6 +421,7 @@ Da li ste sigurni da želite ovo da uradite?</translation>
 <translation id="1062463687579789365">Prilagođavanje mreže novčanika</translation>
 <translation id="2234108191702901162">Nije moguće dodati mrežu</translation>
 <translation id="8996633027318264334">Da li zaista želite da izbrišete <ph name="KEY_NAME"/>?</translation>
+<translation id="7893578599666249602">Želite li zaista da resetujete <ph name="KEY_NAME"/>?</translation>
 <translation id="2618193846561624884">Da li želite da ažurirate postojeću mrežu?</translation>
 <translation id="9170907049676078643">Metoda za rešavanje IPFS resursa</translation>
 <translation id="1327977588028644528">Мрежни пролаз</translation>
@@ -481,4 +509,5 @@ Da li ste sigurni da želite ovo da uradite?</translation>
 <translation id="6040143037577758943">Затвори</translation>
 <translation id="5600566490506283344">Brave Ad obaveštenje</translation>
 <translation id="4395160081588457461">Izgled i &amp; doživljaj</translation>
+<translation id="7942180974165298215">Brejv blokiranje oglasa</translation>
 </translationbundle>

@@ -2,7 +2,6 @@
 <!DOCTYPE translationbundle>
 <translationbundle lang="zh-TW">
 <translation id="3333887201479867589">Brave Rewards</translation>
-<translation id="7942180974165298215">Brave 廣告阻擋</translation>
 <translation id="4615489450165434530">回報壞掉的網站</translation>
 <translation id="1209739344687072997">回報壞掉的網站</translation>
 <translation id="6406506848690869874">同步</translation>
@@ -43,6 +42,7 @@
 <translation id="3094628781200061820">在 IPFS 發佈並擷取檔案</translation>
 <translation id="7398397225367092613">.onion</translation>
 <translation id="406832631167785034">使用 .onion 位址開啟</translation>
+<translation id="4759098689276706664">強制貼上</translation>
 <translation id="4901618511712685702">匯入至 IPFS</translation>
 <translation id="6794469945030154569">此頁面</translation>
 <translation id="5037852323412456577">選取的圖片</translation>
@@ -70,7 +70,7 @@
 <translation id="3425600262621021599">在使用 Tor 的 Brave 隱私視窗中開啟連結</translation>
 <translation id="3229091547987707389">匯入並分享目錄</translation>
 <translation id="5029193871181468990">隱藏 Brave 獎勵圖示</translation>
-<translation id="7595540212376041331">隱藏工具列上的 Brave 錢包圖示</translation>
+<translation id="7595540212376041331">隱藏 Brave 錢包圖示</translation>
 <translation id="4928988318462976765">網路擴充功能商店</translation>
 <translation id="9181207987584064303">在「網路擴充功能商店」檢視</translation>
 <translation id="3161744659507801211">警告：Brave 無法防止擴充功能記錄您的瀏覽歷程記錄。</translation>
@@ -108,6 +108,7 @@
 <translation id="2571596981920752023"><ph name="NUMBER_OF_TABS"/> 個分頁</translation>
 <translation id="2515126961943087659">BAT 廣告服務</translation>
 <translation id="7924918279836988121">Bat 分類帳服務</translation>
+<translation id="6665472986740899785">Brave 通知廣告</translation>
 <translation id="4174337572777167894">Web 發現專案</translation>
 <translation id="8659271182272561965">貢獻一些匿名搜尋與瀏覽資料來改進 Brave 搜尋。</translation>
 <translation id="1516554614404600536">Brave 工具提示</translation>
@@ -183,7 +184,6 @@
 <translation id="6817415381278637662">快將 Brave 設為預設瀏覽器，在開啟每個網頁時享有 Brave 提供的隱私防護。</translation>
 <translation id="8722651357687610395">將 Brave 設為預設值</translation>
 <translation id="2370739752330685659">稍後再說</translation>
-<translation id="3400357268283240774">額外設定</translation>
 <translation id="9156965752763025780">你的變更將於下次重新啟動 Brave 時生效。</translation>
 <translation id="7179921470347911571">立刻重新啟動</translation>
 <translation id="4472575034687746823">開始使用</translation>
@@ -238,6 +238,29 @@
 <translation id="7390783310074170337">預設瀏覽</translation>
 <translation id="130615081792797568">簡式瀏覽</translation>
 <translation id="2360360976480535628">進階瀏覽</translation>
+<translation id="6486983549008741930">內容過濾</translation>
+<translation id="8694564340481124390">啟用自訂過濾器，封鎖特定區域和語言的追蹤器，以及惱人的內容。</translation>
+<translation id="6522618763902154348">啟用自訂過濾器，封鎖特定區域和語言的追蹤器，以及 
+    <ph name="BEGIN_LINK"/>惱人的內容<ph name="END_LINK"/>。</translation>
+<translation id="3482656215021340727">新增自訂過濾器清單</translation>
+<translation id="1020877116991797978">新增由您信任的社群所建立及維護的額外清單。</translation>
+<translation id="7617831480435794399">僅訂閱來自您信任實體的清單。您的瀏覽器會定期從您輸入的 URL 中檢查清單更新，並將您的 IP 位址向其伺服器顯示。</translation>
+<translation id="2831397936251948638">建立自訂過濾器</translation>
+<translation id="4618274268052410139">在下方欄位中新增您建立的自訂過濾器，每行僅限新增一個。請務必使用 <ph name="BEGIN_LINK"/>Adblock 過濾器語法<ph name="END_LINK"/>。</translation>
+<translation id="7791543448312431591">新增</translation>
+<translation id="571950783952070673">清單 URL</translation>
+<translation id="9204006549413740506">上次更新</translation>
+<translation id="6745592621698551453">立即更新</translation>
+<translation id="5334844597069022743">檢視來源</translation>
+<translation id="4720556299488643018">取消訂閱</translation>
+<translation id="6532106788206463496">儲存變更</translation>
+<translation id="4516904298421534459">篩選清單</translation>
+<translation id="4435215931544457255">其他熱門社群清單。請注意，啟用太多過濾器可能會導致瀏覽速度變慢。</translation>
+<translation id="802154636333426148">下載失敗</translation>
+<translation id="7889605993994647168">更新失敗</translation>
+<translation id="5438573563213942361">自訂清單</translation>
+<translation id="4182731739150761577">顯示完整清單</translation>
+<translation id="1340263054776016283">輸入過濾器清單 URL</translation>
 <translation id="6821903322090655051">Brave 獎勵已停用</translation>
 <translation id="413570371620795359">開啟 Rewards 面板即可啟用並開始使用</translation>
 <translation id="3849957491997306859">自動偵測</translation>
@@ -324,6 +347,10 @@
 <translation id="5093410893656857925">選擇裝置類型</translation>
 <translation id="4581190919849683048">您想要同步的是哪種類型的裝置？</translation>
 <translation id="4112587618563511470">無效的同步代碼，請檢查並再試一次。</translation>
+<translation id="3995714999835224798">此代碼無效</translation>
+<translation id="859506441384380749">此代碼由已淘汰的 Brave 版本產生，請先升級您的其他裝置</translation>
+<translation id="3132642509209154999">此代碼已過期，請在其他裝置上產生新的代碼，然後再試一次。</translation>
+<translation id="2859229680945501779">此程式碼無效。請確認您的裝置已正確設定時間和時區。</translation>
 <translation id="2339730291919608488">離開同步鏈結</translation>
 <translation id="115699408012835975">如果您重設同步，您將必須重新輸入從其他裝置而來的同步代碼以與其同步。您確定您想要繼續嗎？</translation>
 <translation id="6092564993102418148">您確定您想要從同步鏈移除選定的裝置嗎？</translation>
@@ -394,6 +421,7 @@
 <translation id="1062463687579789365">錢包網路自訂</translation>
 <translation id="2234108191702901162">無法新增網路</translation>
 <translation id="8996633027318264334">確定要刪除 <ph name="KEY_NAME"/> 嗎？</translation>
+<translation id="7893578599666249602">您是否真的想要重設 <ph name="KEY_NAME"/>？</translation>
 <translation id="2618193846561624884">要更新現有網路嗎？</translation>
 <translation id="9170907049676078643">解析 IPFS 資源的方法</translation>
 <translation id="1327977588028644528">閘道</translation>
@@ -481,4 +509,5 @@
 <translation id="6040143037577758943">關閉</translation>
 <translation id="5600566490506283344">Brave 廣告通知</translation>
 <translation id="4395160081588457461">外觀與感覺</translation>
+<translation id="7942180974165298215">Brave 廣告阻擋</translation>
 </translationbundle>

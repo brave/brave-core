@@ -811,6 +811,7 @@
 <translation id="4232775951515678071">Tyypin haku maksutapahtumaa varten epäonnistui</translation>
 <translation id="2080935885647755539">Gas-maksujen haku EIP-1559-maksutapahtumaa varten epäonnistui</translation>
 <translation id="4843814354611030845">Käyttäjä hylkäsi kauppatapahtuman</translation>
+<translation id="1462494615260983714">Virhe maksutapahtuman käsittelyssä</translation>
 <translation id="4886059598718763020"><ph name="VALUE"/>' ei ole valtuutettu allekirjoittamaan viestiä</translation>
 <translation id="8719220598078667817">Maksutapahtuman allekirjoitus epäonnistui</translation>
 <translation id="875506212625074179">Virheellinen ketjun tunnuksen vastaus RPC-palvelulta</translation>
@@ -858,7 +859,6 @@
 <translation id="1191686659164947414">Maksutapahtuma voidaan suorittaa etukäteen</translation>
 <translation id="632241521608275119">Myöhästymisen toleranssi</translation>
 <translation id="4500473291496079954">Vanhenee:</translation>
-<translation id="2236833281018938257">0x-osoite tai -url</translation>
 <translation id="2860280209982026951">Brave käyttää <ph name="LINK_BEFORE"/>0x:ää<ph name="LINK_AFTER"/> DEX-aggregaattorina.</translation>
 <translation id="151946611346774041">0x käsittelee Ethereum-osoitteen ja IP-osoitteen suorittaakseen tapahtuman (mukaan lukien hintatarjousten saaminen). 0x käyttää näitä tietoja VAIN tapahtumien käsittelyyn.</translation>
 <translation id="4626407663177532837">Hintatarjous sisältää 0,875 %:n Brave-maksun.</translation>
@@ -866,7 +866,6 @@
 <translation id="6575120282593094155">Sinulla ei vielä ole <ph name="ACCOUNT_TYPE"/>-tiliä. Luo sellainen nyt?</translation>
 <translation id="2704606927547763573">Kopioitu</translation>
 <translation id="1420318137760245955">Tervetuloa uuteen Brave-lompakkoon</translation>
-<translation id="8303434745767477417">Pidä kryptovaroja mukanasi. Seuraa portfolion kehitystä ja ole vuorovaikutuksessa web3-sovellusten ja hajautettujen sovellusten kanssa. Vaihda, sijoita ja lainaa DeFillä avulla. Kaikki tämä suoraan yksityisestä Brave-selaimesta. Ei laajennuksia, ei latausta.</translation>
 <translation id="6972754398087986839">Aloitusopas</translation>
 <translation id="375882617301124395">Varmuuskopioi kryptolompakkosi</translation>
 <translation id="180032279811483155">Seuraavassa vaiheessa näet <ph name="RECOVERY_PHRASE_LENGTH"/>-sanan palautuslauseen, jonka avulla voit palauttaa ensisijaiset kryptotilisi. Säilytä sitä turvallisessa paikassa. Palautuslause on ainoa tapa saada tilisi takaisin, jos salasana unohtuu, laite katoaa tai varastetaan tai jos haluat vaihtaa lompakkoa.</translation>
@@ -895,7 +894,6 @@
 <translation id="163697698769819510">Varmuuskopioi lompakkosi nyt, jotta voit suojata varojasi ja varmistaa, ettet menetä pääsyä niihin.</translation>
 <translation id="1018806299114415224">Varmuuskopioi nyt</translation>
 <translation id="5234764350956374838">Piilota</translation>
-<translation id="4075073132992924258">Brave Wallet -lompakkoa ei ole määritetty oletusarvoiseksi lompakoksi, eikä se vastaa web3-sovelluksiin tai hajautettuihin sovelluksiin. Siirry asetuksiin vaihtaaksesi oletusarvoista lompakkoa.</translation>
 <translation id="4362717653795263052">Palauta ensisijaiset kryptotilit</translation>
 <translation id="3038077262567136741">Anna palautuslause palauttaaksesi Brave Wallet -lompakon kryptotilin.</translation>
 <translation id="955918646509748368">Annettu palautuslause on virheellinen.</translation>
@@ -906,8 +904,6 @@
 <translation id="8624315169751085215">Kopioi leikepöydälle</translation>
 <translation id="1121335910737476837">Ensisijaiset kryptotilit</translation>
 <translation id="6969147029062037757">Tuodut tilit</translation>
-<translation id="5668765612885835803">Voit luoda ensisijaiset tilit Brave-lompakossa, jotka voidaan varmuuskopioida tai palauttaa palautuslauseellasi. Jos haluat lukea lisää eri tyyppisistä tileistä, käy tilien ohjesivulla</translation>
-<translation id="2471916999505901943">Näitä tilejä voidaan käyttää web3-sovellusten ja hajautettujen sovellusten kanssa. Huomaa, että toissijaisia tilejä ei voida palauttaa palautuslauseella ensisijaisen tilin varmuuskopiotiedoista.</translation>
 <translation id="1940465339426637378">Omaisuudet</translation>
 <translation id="2236507293802791911">Näkyvät varat</translation>
 <translation id="7525067979554623046">Luo</translation>
@@ -1037,7 +1033,6 @@
 <translation id="3890989020011724401">Uusi tili</translation>
 <translation id="7257603403519636638">Näytä tilin omaisuuserät</translation>
 <translation id="2092132085082887098">Tilin omaisuuserät</translation>
-<translation id="5723696625900399845">Käytä suojatusti web3:a ja kaikkia kryptovarojasi tämän paneelin avulla.</translation>
 <translation id="4460220693591349571">TOIMINTOTYYPPI</translation>
 <translation id="838933475572692615">HEX-TIEDOT</translation>
 <translation id="2240831799756994975">TAVUA</translation>
@@ -1049,13 +1044,11 @@
 <translation id="7739762330714405363">Käytä samaa salasanaa</translation>
 <translation id="1085027414516521238">MetaMask</translation>
 <translation id="7102907656918333773">Tuo kohteesta <ph name="WALLET_EXTENSION"/></translation>
-<translation id="8897114903450789862">Tuo <ph name="WALLET_EXTENSION"/>-tilit Brave Wallet -lompakkoon. Nauti nopeammasta ja turvallisemmasta tavasta hallita kryptovaroja ja olla vuorovaikutuksessa web3-sovellusten ja hajautettujen sovellusten kanssa.</translation>
 <translation id="4237840336687249184">MetaMask-salasana</translation>
 <translation id="2381605201035323535">kryptolompakot</translation>
 <translation id="2770851145415891830">Olemassa olevat kryptolompakot havaittu</translation>
 <translation id="4938145712652668388">Kun napsautat Aloita-kohtaa, tuot vanhat Crypto Wallet -lompakot uuteen Brave Wallet -kokemukseen ja pääset nauttimaan kaikista edellä mainituista eduista. Kokeile sitä ja kerro meille mielipiteesi!</translation>
 <translation id="2237759620789871865">Jos haluat mieluummin ohittaa tuonnin ja säilyttää vanhan Crypto Wallet -lompakkokokemuksen, siirry Brave-selaimen <ph name="LINK_BEFORE"/>asetuksiin<ph name="LINK_AFTER"/> ja muuta oletusarvoinen asetus Crypto Wallet -lompakoksi. Voit myös tuoda, kokeilla uutta Brave Wallet -lompakkoa ja vaihtaa takaisin milloin tahansa.</translation>
-<translation id="3301259443293676544">Tuo Brave Wallet -lompakkoon antamalla olemassa olevien kryptolompakkojen salasana. Nauti nopeammasta ja turvallisemmasta tavasta hallita kryptovaroja ja olla vuorovaikutuksessa web3-sovellusten ja hajautettujen sovellusten kanssa.</translation>
 <translation id="9099900965604225657">Kryptolompakkojen salasana</translation>
 <translation id="4020495774166914146">Olen hukannut salasanani ja palautuslauseeni, luo uusi lompakko.</translation>
 <translation id="6344138931392227467"><ph name="DEVICE_NAME"/>-laite liitetty</translation>
@@ -1142,7 +1135,6 @@
 <translation id="3327639091470204775">Trezor-siltaan ei saatu yhteyttä</translation>
 <translation id="6672377693827764095">Sisäinen virhe, tilejä ei voitu noutaa</translation>
 <translation id="6889920539620318793">Aseta aktiiviseksi</translation>
-<translation id="1462494615260983714">Virhe maksutapahtuman käsittelyssä</translation>
 <translation id="8933250418452564886">Laitteistotapahtumaa ei löydy, yritä uudelleen</translation>
 <translation id="5999974802900788338">Vastaanotettu virhe laitteistolaitteelta, sinun on luultavasti vahvistettava tapahtuma laitteellasi</translation>
 <translation id="8523768065044261559">Virhe tapahtuman käsittelyssä, yritä uudelleen</translation>
@@ -1208,6 +1200,7 @@
 <translation id="3795015906457257780">Tarkastelet tätä sivustoa ilman Braven yksityisyyssuojausta.</translation>
 <translation id="7194012750329511146">Brave-suojaukset
 <ph name="NUMBER"/> seurainta, mainosta jne. estetty</translation>
+<translation id="4292121526390005808">Estetyt skriptit</translation>
 <translation id="1742469581923031760">Yhdistetään…</translation>
 <translation id="1287487756047817908">Yhteyttä katkaistaan…</translation>
 <translation id="2325196879156848326">Yhdistäminen epäonnistui</translation>
@@ -1227,7 +1220,6 @@
 <translation id="1400240082805528049">Ympärivuorokautinen tuki</translation>
 <translation id="8463313539532697053">Odota hetki, lataus käynnissä…</translation>
 <translation id="4613076894734402086">Muokkaa maksutapaa</translation>
-<translation id="1898254156730880135">Näyttää siltä, että viimeisin maksusi ei mennyt läpi. Pääsy tähän tilaukseen keskeytetään, kunnes maksuongelma on ratkaistu. Muokkaa maksutapaasi tai ota yhteyttä Brave-tukeen.</translation>
 <translation id="1839021455997460752">Sähköpostiosoitteesi</translation>
 <translation id="5154702632169343078">Aihe</translation>
 <translation id="6625978880678465492">Valitse syy</translation>
@@ -1262,4 +1254,13 @@
 <translation id="4548946945059463969">Näytä saldosi näytöllä</translation>
 <translation id="242959166945779492">Sinulla ei ole yhtään saldoa tililläsi. Käy FTX:ssä ostaaksesi valuuttoja.</translation>
 <translation id="6996157559236886133">Virhe: Rajoitettu Uphold-tilin toiminnallisuus</translation>
+<translation id="2236833281018938257">0x-osoite tai -url</translation>
+<translation id="8303434745767477417">Pidä kryptovaroja mukanasi. Seuraa portfolion kehitystä ja ole vuorovaikutuksessa web3-sovellusten ja hajautettujen sovellusten kanssa. Vaihda, sijoita ja lainaa DeFillä avulla. Kaikki tämä suoraan yksityisestä Brave-selaimesta. Ei laajennuksia, ei latausta.</translation>
+<translation id="4075073132992924258">Brave Wallet -lompakkoa ei ole määritetty oletusarvoiseksi lompakoksi, eikä se vastaa web3-sovelluksiin tai hajautettuihin sovelluksiin. Siirry asetuksiin vaihtaaksesi oletusarvoista lompakkoa.</translation>
+<translation id="5668765612885835803">Voit luoda ensisijaiset tilit Brave-lompakossa, jotka voidaan varmuuskopioida tai palauttaa palautuslauseellasi. Jos haluat lukea lisää eri tyyppisistä tileistä, käy tilien ohjesivulla</translation>
+<translation id="2471916999505901943">Näitä tilejä voidaan käyttää web3-sovellusten ja hajautettujen sovellusten kanssa. Huomaa, että toissijaisia tilejä ei voida palauttaa palautuslauseella ensisijaisen tilin varmuuskopiotiedoista.</translation>
+<translation id="5723696625900399845">Käytä suojatusti web3:a ja kaikkia kryptovarojasi tämän paneelin avulla.</translation>
+<translation id="8897114903450789862">Tuo <ph name="WALLET_EXTENSION"/>-tilit Brave Wallet -lompakkoon. Nauti nopeammasta ja turvallisemmasta tavasta hallita kryptovaroja ja olla vuorovaikutuksessa web3-sovellusten ja hajautettujen sovellusten kanssa.</translation>
+<translation id="3301259443293676544">Tuo Brave Wallet -lompakkoon antamalla olemassa olevien kryptolompakkojen salasana. Nauti nopeammasta ja turvallisemmasta tavasta hallita kryptovaroja ja olla vuorovaikutuksessa web3-sovellusten ja hajautettujen sovellusten kanssa.</translation>
+<translation id="1898254156730880135">Näyttää siltä, että viimeisin maksusi ei mennyt läpi. Pääsy tähän tilaukseen keskeytetään, kunnes maksuongelma on ratkaistu. Muokkaa maksutapaasi tai ota yhteyttä Brave-tukeen.</translation>
 </translationbundle>

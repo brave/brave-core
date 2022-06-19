@@ -811,6 +811,7 @@
 <translation id="4232775951515678071">Det gick inte att få typen för transaktionen</translation>
 <translation id="2080935885647755539">Det gick inte att hämta gasavgifterna för EIP-1559-transaktionen</translation>
 <translation id="4843814354611030845">Användare avvisade transaktionen</translation>
+<translation id="1462494615260983714">Fel vid bearbetning av transaktionen</translation>
 <translation id="4886059598718763020">'<ph name="VALUE"/>' är inte auktoriserad för att signera meddelanden</translation>
 <translation id="8719220598078667817">Det gick inte att signera transaktionen</translation>
 <translation id="875506212625074179">Ogiltigt kedje-ID-svar från RPC-tjänsten</translation>
@@ -858,7 +859,6 @@
 <translation id="1191686659164947414">Transkationen kan vara frontrun</translation>
 <translation id="632241521608275119">Tolererade transaktionskostnader</translation>
 <translation id="4500473291496079954">Löper ut om</translation>
-<translation id="2236833281018938257">0x adresser eller url</translation>
 <translation id="2860280209982026951">Brave använder <ph name="LINK_BEFORE"/>0x<ph name="LINK_AFTER"/> som en DEX-aggregator.</translation>
 <translation id="151946611346774041">0x kommer att behandla Ethereum-adressen och IP-numret för att genomföra en transaktion (samt att hämta kurser). 0x kommer ENDAST att använda dessa data till att hantera transaktioner.</translation>
 <translation id="4626407663177532837">Offerten inkluderar en avgift på 0,875 % till Brave.</translation>
@@ -866,7 +866,6 @@
 <translation id="6575120282593094155">Du har inte ett <ph name="ACCOUNT_TYPE"/> konto. Vill du skapa ett nu?</translation>
 <translation id="2704606927547763573">Kopierat</translation>
 <translation id="1420318137760245955">Välkommen till den nya Brave Wallet</translation>
-<translation id="8303434745767477417">Håll kryptotillgångar i din förvaring. Spåra portföljprestanda och interagera med web 3 DApps. Handla, investera, låna och låna med DeFi. Okej från Brave sekretesswebbläsare. Inga tillägg, ingen hämtning krävs.</translation>
 <translation id="6972754398087986839">Komma igång</translation>
 <translation id="375882617301124395">Säkerhetskopiera din kryptoplånbok</translation>
 <translation id="180032279811483155">I nästa steg kommer du att se en återställningsfras på <ph name="RECOVERY_PHRASE_LENGTH"/> ord som du kan använda för att återställa dina primära kryptokonton. Spara den på ett säkert ställe. Din återställningsfras är det enda sättet att återfå kontoåtkomst i händelse av glömt lösenord, förlorad eller stulen enhet, eller om du vill byta plånböcker.</translation>
@@ -895,7 +894,6 @@
 <translation id="163697698769819510">Säkerhetskopiera din plånbok nu för att skydda dina tillgångar och se till att du aldrig förlorar åtkomst.</translation>
 <translation id="1018806299114415224">Säkerhetskopiera nu</translation>
 <translation id="5234764350956374838">Ta bort permanent</translation>
-<translation id="4075073132992924258">Brave Wallet är inte inställt som din standardplånbok och svarar inte på web3 DApps. Besök inställningarna för att ändra din standardplånbok.</translation>
 <translation id="4362717653795263052">Återställ primära kryptokonton</translation>
 <translation id="3038077262567136741">Ange din återställningsfras för att återställa ditt Brave wallet-kryptokonto.</translation>
 <translation id="955918646509748368">Den angivna återställningsfrasen är ogiltig.</translation>
@@ -906,8 +904,6 @@
 <translation id="8624315169751085215">Kopiera till Urklipp</translation>
 <translation id="1121335910737476837">Primära kryptokonton</translation>
 <translation id="6969147029062037757">Importerade konton</translation>
-<translation id="5668765612885835803">Du kan skapa primära konton i Brave Wallet som kan säkerhetskopieras eller återställas med din återställningsfras. Mer information om kontotyper finns i kontohjälpen</translation>
-<translation id="2471916999505901943">Dessa konton kan användas med web 3 DApps och kan visas i din portfölj. Men uppmärksamma att sekundära konton inte kan återställas via återställningsfras från din primära kontosäkerhetskopia.</translation>
 <translation id="1940465339426637378">Tillgångar</translation>
 <translation id="2236507293802791911">Synliga tillgångar</translation>
 <translation id="7525067979554623046">Skapa</translation>
@@ -1037,7 +1033,6 @@
 <translation id="3890989020011724401">Nytt konto</translation>
 <translation id="7257603403519636638">Visa kontotillgångar</translation>
 <translation id="2092132085082887098">Kontotillgångar</translation>
-<translation id="5723696625900399845">Använd den här panelen för att säkert komma åt web3 och alla dina kryptotillgångar.</translation>
 <translation id="4460220693591349571">FUNKTIONSTYP</translation>
 <translation id="838933475572692615">HEX DATA</translation>
 <translation id="2240831799756994975">BYTES</translation>
@@ -1049,13 +1044,11 @@
 <translation id="7739762330714405363">Använd samma lösenord</translation>
 <translation id="1085027414516521238">MetaMask</translation>
 <translation id="7102907656918333773">Importera från <ph name="WALLET_EXTENSION"/></translation>
-<translation id="8897114903450789862">Importera dina <ph name="WALLET_EXTENSION"/> -konton till Brave-plånboken. Njut av ett snabbare och säkrare sätt att hantera kryptotillgångar och interagera med web 3 D-appar.</translation>
 <translation id="4237840336687249184">MetaMask lösenord</translation>
 <translation id="2381605201035323535">krypto plånböcker</translation>
 <translation id="2770851145415891830">Befintliga krypto-plånböcker har upptäckts</translation>
 <translation id="4938145712652668388">När du klickar på "Kom igång" importerar du din tidigare Crypto Wallet till den nya Brave Wallet upplevelsen och njuter av alla fördelarna som beskrivs ovan. Testa och berätta vad du tycker!</translation>
 <translation id="2237759620789871865">Om du hellre hoppar över importen och behåller den gamla kryptoplånboksupplevelsen navigerar du bara till Brave-webbläsaren <ph name="LINK_BEFORE"/>Inställningar<ph name="LINK_AFTER"/> och ändrar standard tillbaka till kryptoplånböcker. Du kan även importera den nya Brave-plånboken och ändra tillbaka när som helst.</translation>
-<translation id="3301259443293676544">Ange ditt befintliga krypteringsplånbokslösenord för att importera till Brave Wallet. Njut av ett snabbare och säkrare sätt att hantera kryptotillgångar och interagera med web 3 DApps.</translation>
 <translation id="9099900965604225657">Kryptoplånböckers lösenord</translation>
 <translation id="4020495774166914146">I’ve tappat bort mitt lösenord och återställningsfras, skapa en ny plånbok.</translation>
 <translation id="6344138931392227467"><ph name="DEVICE_NAME"/> ansluten</translation>
@@ -1142,7 +1135,6 @@
 <translation id="3327639091470204775">Det gick inte att ansluta till Trezor-bryggan</translation>
 <translation id="6672377693827764095">Internt fel, kunde inte hämta konton</translation>
 <translation id="6889920539620318793">Ange som aktiv</translation>
-<translation id="1462494615260983714">Fel vid bearbetning av transaktionen</translation>
 <translation id="8933250418452564886">Det gick inte att hitta hårdvarutransaktionen, försök igen</translation>
 <translation id="5999974802900788338">Tog emot fel från hårdvaruenheten, du behöver troligtvis bekräfta transaktionen på enheten</translation>
 <translation id="8523768065044261559">Ett fel inträffade när transaktionen bearbetades, försök igen</translation>
@@ -1208,6 +1200,7 @@
 <translation id="3795015906457257780">Du visar den här webbplatsen utan Braves sekretesskydd.</translation>
 <translation id="7194012750329511146">Brave Shields
 <ph name="NUMBER"/> spårare, annonser med mera är blockerade</translation>
+<translation id="4292121526390005808">Blockerade skript</translation>
 <translation id="1742469581923031760">Ansluter…</translation>
 <translation id="1287487756047817908">Kopplar från…</translation>
 <translation id="2325196879156848326">Anslutningen misslyckades</translation>
@@ -1227,7 +1220,6 @@
 <translation id="1400240082805528049">24/7 support</translation>
 <translation id="8463313539532697053">Ett ögonblick medan inläsning sker…</translation>
 <translation id="4613076894734402086">Redigera betalningsmetod</translation>
-<translation id="1898254156730880135">Det verkar som om din senaste betalning inte gick igenom. Tillgången till denna prenumeration kommer att avbrytas tills betalningsproblemet är löst. Försök att redigera din betalningsmetod eller kontakta Brave-supporten.</translation>
 <translation id="1839021455997460752">Din e-postadress</translation>
 <translation id="5154702632169343078">Ämne</translation>
 <translation id="6625978880678465492">Välj en anledning</translation>
@@ -1262,4 +1254,13 @@
 <translation id="4548946945059463969">Visa dina saldon på skärmen</translation>
 <translation id="242959166945779492">Du har inga saldon på ditt konto. Besök FTX för att köpa.</translation>
 <translation id="6996157559236886133">Fel: Begränsad funktionalitet för Uphold-konto</translation>
+<translation id="2236833281018938257">0x adresser eller url</translation>
+<translation id="8303434745767477417">Håll kryptotillgångar i din förvaring. Spåra portföljprestanda och interagera med web 3 DApps. Handla, investera, låna och låna med DeFi. Okej från Brave sekretesswebbläsare. Inga tillägg, ingen hämtning krävs.</translation>
+<translation id="4075073132992924258">Brave Wallet är inte inställt som din standardplånbok och svarar inte på web3 DApps. Besök inställningarna för att ändra din standardplånbok.</translation>
+<translation id="5668765612885835803">Du kan skapa primära konton i Brave Wallet som kan säkerhetskopieras eller återställas med din återställningsfras. Mer information om kontotyper finns i kontohjälpen</translation>
+<translation id="2471916999505901943">Dessa konton kan användas med web 3 DApps och kan visas i din portfölj. Men uppmärksamma att sekundära konton inte kan återställas via återställningsfras från din primära kontosäkerhetskopia.</translation>
+<translation id="5723696625900399845">Använd den här panelen för att säkert komma åt web3 och alla dina kryptotillgångar.</translation>
+<translation id="8897114903450789862">Importera dina <ph name="WALLET_EXTENSION"/> -konton till Brave-plånboken. Njut av ett snabbare och säkrare sätt att hantera kryptotillgångar och interagera med web 3 D-appar.</translation>
+<translation id="3301259443293676544">Ange ditt befintliga krypteringsplånbokslösenord för att importera till Brave Wallet. Njut av ett snabbare och säkrare sätt att hantera kryptotillgångar och interagera med web 3 DApps.</translation>
+<translation id="1898254156730880135">Det verkar som om din senaste betalning inte gick igenom. Tillgången till denna prenumeration kommer att avbrytas tills betalningsproblemet är löst. Försök att redigera din betalningsmetod eller kontakta Brave-supporten.</translation>
 </translationbundle>

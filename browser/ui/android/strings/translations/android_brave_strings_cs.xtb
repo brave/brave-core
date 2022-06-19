@@ -84,7 +84,9 @@
 <translation id="6587448235155023666">Vaše změny se projeví při příštím spuštění Brave</translation>
 <translation id="8701563696941209024">SPUSTIT ZNOVU NYNÍ</translation>
 <translation id="834487290629916192">POZDĚJI</translation>
+<translation id="7207456302801184289">Vítejte v prohlížeči Brave</translation>
 <translation id="8281886186245836920">Přeskočit</translation>
+<translation id="6165508094623778733">Zjistěte více.</translation>
 <translation id="986879628471635371">Seznámení s odstraňováním problémů</translation>
 <translation id="5808759341041733958">Zvolte si výchozí vyhledávač</translation>
 <translation id="1331593888918588693">Své předvolby můžete později kdykoli změnit v nastavení aplikace.</translation>
@@ -112,12 +114,12 @@
 <translation id="1166682575529520472">Měsíčně</translation>
 <translation id="1628742278973105368">Váš první měsíční příspěvek bude odeslán:</translation>
 <translation id="298349922412901215">POZNÁMKY: Tento tvůrce se zatím nepřihlásil k přijímání příspěvků od uživatelů Brave. Budeme se nadále pokoušet příspěvek provést, dokud tvůrce nebude ověřen nebo dokud neuběhne 90 dní.</translation>
-<translation id="635752162765375187">POZNÁMKA: Tento program není v současné době nakonfigurován tak, aby přijímal spropitné z vaší peněženky. Veškeré spropitné, které vytvoříte, zůstane ve vaší peněžence nevyřízené a bude se automaticky opakovat po dobu 90 dnů.</translation>
+<translation id="635752162765375187">POZNÁMKA: Nastavení tohoto tvůrce nejsou v této chvíli konfigurována tak, aby mohl přijímat příspěvky z Odměn ve vaší svěřené peněžence. Jakékoli odeslání příspěvku se bude po dobu 90 dnů automaticky opakovat.</translation>
 <translation id="1910721550319506122">Vítejte!</translation>
 <translation id="3165726837666415756">Tuto stránku můžete podpořit posláním příspěvku. Je to způsob, jak poděkovat za skvělý obsah. Ověření tvůrci obsahu dostávají za příspěvky zaplaceno během prvního týdne každého kalendářního měsíce.</translation>
 <translation id="1704859330137112950">Budete-li chtít, můžete nastavit měsíční příspěvky pro průběžnou podporu této stránky.</translation>
 <translation id="245015745140252435">Výše příspěvku</translation>
-<translation id="7873874596836611687">zůstatek v peněžence:</translation>
+<translation id="7873874596836611687">Zůstatek odměn:</translation>
 <translation id="2573313946367623146">odeslat můj příspěvek</translation>
 <translation id="3250511771491660127">Změnit na měsíční</translation>
 <translation id="7658239707568436148">Zrušit</translation>
@@ -137,7 +139,7 @@
 <translation id="8220228041552340594">ŘÍJEN</translation>
 <translation id="8280223431922155812">LISTOPAD</translation>
 <translation id="4254029385847607686">PROSINEC</translation>
-<translation id="4258022280942725182">Vaše peněženka</translation>
+<translation id="4258022280942725182">Tvé odměny Brave</translation>
 <translation id="3960619311638643872">VPN síť Brave</translation>
 <translation id="1772301834467143364">Zprávy Brave</translation>
 <translation id="7760215798627399379"><ph name="VALUE"/> USD</translation>
@@ -171,8 +173,8 @@
 <translation id="8689997599821157251">Získali jste</translation>
 <translation id="7550470870580166294">Nedostatečné finance</translation>
 <translation id="2775064702681588061">Váš účet Brave Rewards čeká na převod prostředků.</translation>
-<translation id="2630264552940126640">Záložní peněženka</translation>
-<translation id="238922425564381955">Zálohujte, prosím, svoji Brave peněženku.</translation>
+<translation id="2630264552940126640">Zálohovat odměny Brave</translation>
+<translation id="238922425564381955">Zálohujte si prosím své odměny Brave.</translation>
 <translation id="2323069945529668668">Jejda!</translation>
 <translation id="7510166204621526816">Server Brave Rewards neodpovídá. Opravíme to co nejdříve.</translation>
 <translation id="683765328936486920">na YouTube</translation>
@@ -546,7 +548,7 @@ Jste si jisti, že chcete tuto akci provést?</translation>
 <translation id="5493402808936397665">Povolte biometrické údaje pro rychlé odemknutí peněženky bez zadávání hesla.</translation>
 <translation id="8030647312184163932">Odemčení otiskem prstu</translation>
 <translation id="4090490645603511157">Použijte biometrické údaje pro rychlé odemknutí peněženky bez zadávání hesla.</translation>
-<translation id="1544192797660353713">Peněženka (beta)</translation>
+<translation id="1544192797660353713">Peněženka</translation>
 <translation id="6901810042765869341">Zadejte frázi pro obnovení a obnovte svůj kryptografický účet Brave Wallet.</translation>
 <translation id="9120654436199628567">Obnovit kryptoúčet</translation>
 <translation id="4811736040444856406">Zobrazit frázi pro obnovení</translation>
@@ -610,7 +612,7 @@ Jste si jisti, že chcete tuto akci provést?</translation>
 <translation id="8239147115686034860">Automatické zamykání peněženky Brave Wallet</translation>
 <translation id="414639769490080648">Počet minut, po kterých se peněženka Brave automaticky uzamkne.</translation>
 <translation id="4993345308607970390">Resetovat peněženku Brave</translation>
-<translation id="4322846864135539519">Určitě chcete resetovat peněženku? Pokud vaše peněženka není zálohovaná, resetování způsobí ztrátu všech údajů o účtu (včetně všech souvisejících prostředků). Pro potvrzení zadejte "<ph name="CONFIRMATION_PHRASE"/>".</translation>
+<translation id="4322846864135539519">Určitě chcete resetovat odměny Brave? Pokud vaše peněženka není zálohovaná, resetování způsobí ztrátu všech údajů o účtu (včetně všech souvisejících prostředků). Pro potvrzení zadejte "<ph name="CONFIRMATION_PHRASE"/>".</translation>
 <translation id="4862812525895306758">Vymazat údaje o transakcích a nonce</translation>
 <translation id="5693968582510626466">Vymazání transakcí může být užitečné pro vývojáře nebo když mažete stav na místním serveru</translation>
 <translation id="5421107279168565467">Určitě chcete vymazat všechny údaje o transakcích a nonce v peněžence? Tuto možnost většinou používají vývojáři provozující místní testovací server. Pro potvrzení napište „<ph name="CONFIRMATION_PHRASE"/>“.</translation>
@@ -630,8 +632,8 @@ Jste si jisti, že chcete tuto akci provést?</translation>
 <translation id="1190117345570417902">Používá zabezpečený šifrovaný tunel VPN Wireguard</translation>
 <translation id="1571230671455380494">Vaše informace nikdy nesdílíme ani neprodáváme</translation>
 <translation id="276866628038850725">Všechny tarify zahrnují 7denní zkušební verzi zdarma!</translation>
-<translation id="7280825497485894053">Měsíční předplatné</translation>
-<translation id="3001303523417455986">Roční předplatné</translation>
+<translation id="1532536259167115948">Měsíční předplatné <ph name="TRIAL_TEXT"/></translation>
+<translation id="6344668702581136255">Roční předplatné <ph name="TRIAL_TEXT"/></translation>
 <translation id="6748319398471481216">Obnovuje se každý měsíc</translation>
 <translation id="7734634586133069282"><ph name="MONTHLY_AMOUNT"/> / měs.</translation>
 <translation id="1163809943099641131">Jeden rok</translation>
@@ -652,8 +654,7 @@ Jste si jisti, že chcete tuto akci provést?</translation>
 Pokud tuto žádost nepřijmete, síť VPN se znovu nepřipojí a vaše připojení k internetu nebude zabezpečeno.</translation>
 <translation id="2429299231491852747">Přijmout požadavek na připojení</translation>
 <translation id="3428909627460825679">Vytvoření profilu VPN se nezdařilo. Zkuste to znovu.</translation>
-<translation id="1264320790738638119">Ověření nákupu se nezdařilo. Zkuste to znovu.</translation>
-<translation id="8905950042180169719">Síť VPN je spuštěna na pozadí</translation>
+<translation id="1264320790738638119">Vaše předplatné vypršelo. Můžete si ho kdykoli obnovit.</translation>
 <translation id="8681480718817027245">Předplatné</translation>
 <translation id="7805768142964895445">Stav</translation>
 <translation id="5747552184818312860">Konec platnosti</translation>
@@ -681,15 +682,15 @@ Pokud tuto žádost nepřijmete, síť VPN se znovu nepřipojí a vaše připoje
 <translation id="1219475260382643267">Webové stránky nefungují</translation>
 <translation id="7138678301420049075">Ostatní</translation>
 <translation id="4827315939627587219">Obnovení konfigurace sítě VPN</translation>
-<translation id="6883280223123252086">Jste si jisti, že chcete obnovit konfiguraci sítě VPN?</translation>
+<translation id="1705662265912724430">Opravdu chcete resetovat konfiguraci sítě VPN?</translation>
 <translation id="604124094241169006">Automaticky</translation>
 <translation id="7475580600756356589">Připojení k serveru. Zabere to jen chvilku...</translation>
 <translation id="1342728075788541348">Probíhá odpojení od serveru. Zabere to jen chvilku...</translation>
 <translation id="669072536454692117">Předplatné bylo úspěšně vyčerpáno</translation>
 <translation id="1187506504156101449">Nákup se nepodařilo potvrdit:</translation>
 <translation id="8420522105268941892">Jste již přihlášeni k odběru. Zkuste předplatné obnovit.</translation>
-<translation id="404414664190867625">CHYBA!!\nPříčinou je zrušení nákupního toku uživatelem.</translation>
-<translation id="3515141458161417228">CHYBA!!\nNákup se nezdařil.</translation>
+<translation id="404414664190867625">Ukončili jste nákup předplatného.</translation>
+<translation id="3515141458161417228">Nákup se nezdařil. Kontaktujte podporu Google Play.</translation>
 <translation id="6452181791372256707">Odmítnout</translation>
 <translation id="8030852056903932865">Schválit</translation>
 <translation id="1597199892790541240">Poplatek za palivo</translation>
@@ -822,7 +823,6 @@ Pokud tuto žádost nepřijmete, síť VPN se znovu nepřipojí a vaše připoje
 <translation id="3586752056660754651">Podepsat</translation>
 <translation id="6592721981110586529">Propojit s peněženkou Brave Wallet</translation>
 <translation id="329813193938846695">Vybrat účty</translation>
-<translation id="3890989020011724401">Nový účet</translation>
 <translation id="291375746846291973">Spojujte se pouze s weby, kterým důvěřujete.</translation>
 <translation id="385051799172605136">Back</translation>
 <translation id="1060221736464994328">Chcete této stránce povolit přepínání sítě?</translation>
@@ -839,19 +839,23 @@ Pokud tuto žádost nepřijmete, síť VPN se znovu nepřipojí a vaše připoje
 <translation id="85136472535634474">Otevřít nastavení sítě VPN</translation>
 <translation id="8352805003811526272">Obnovení konfigurace…</translation>
 <translation id="6809312301323611382">Tento server jste již vybrali.</translation>
-<translation id="5665084657857645952">Povolení bylo zrušeno</translation>
+<translation id="5665084657857645952">Zastavili jste instalaci profilu VPN.</translation>
 <translation id="9106265941552476098">Odmítnout transakce: <ph name="TRANSACTION_LENGTH"/></translation>
 <translation id="523862956770478816">Oprávnění stránek</translation>
 <translation id="2141313140218636977">Počet připojených účtů: <ph name="VALUE"/></translation>
+<translation id="3890989020011724401">Nový účet</translation>
 <translation id="4305817255990598646">Přepnout</translation>
 <translation id="4804818685124855865">Odpojit</translation>
 <translation id="8009571545960303544">Je vyžadován váš podpis</translation>
+<translation id="3484981968509595506">Váš veřejný šifrovací klíč je vyžadován ze strany DApp</translation>
+<translation id="3340247553212049934">Poskytnout</translation>
 <translation id="1982257600591932657">Název sítě</translation>
 <translation id="5052727830821470769">Síťová adresa URL</translation>
 <translation id="4822132585477111396">Chain ID</translation>
 <translation id="7131971375297699539">Symbol měny</translation>
 <translation id="7982789257301363584">Síť</translation>
-<translation id="2521480044079508357">Díky tomu budete moci tuto síť používat v rámci peněženky Brave Wallet.</translation>
+<translation id="7540715999708954128">Umožní používat tuto síť v peněžence Brave. Další informace.</translation>
+<translation id="8759753423332885148">Dozvědět se více.</translation>
 <translation id="4717431746210146708">Chcete tomuto webu povolit přidání sítě?</translation>
 <translation id="3378339846292573874">Přidat navrhovaný token</translation>
 <translation id="2322227405137827074">Přejete si importovat tyto tokeny?</translation>
@@ -903,4 +907,5 @@ Pokud tuto žádost nepřijmete, síť VPN se znovu nepřipojí a vaše připoje
 <translation id="9218430445555521422">Nastavit jako výchozí</translation>
 <translation id="6369495274982305511">Určitě chcete resetovat peněženku? Pokud vaše peněženka není zálohovaná, resetování způsobí ztrátu všech údajů o účtu (včetně všech souvisejících prostředků). Pro potvrzení zadejte "<ph name="CONFIRMATION_PHRASE"/>".</translation>
 <translation id="64394831139134288">Moje peněženka</translation>
+<translation id="8905950042180169719">Síť VPN je spuštěna na pozadí</translation>
 </translationbundle>

@@ -84,7 +84,9 @@
 <translation id="6587448235155023666">Các thay đổi bạn thực hiện sẽ có hiệu lực vào lần tới khi bạn khởi chạy lại Brave</translation>
 <translation id="8701563696941209024">KHỞI CHẠY LẠI NGAY</translation>
 <translation id="834487290629916192">ĐỂ SAU</translation>
+<translation id="7207456302801184289">Welcome to Brave</translation>
 <translation id="8281886186245836920">Bỏ qua</translation>
+<translation id="6165508094623778733">Tìm hiểu thêm</translation>
 <translation id="986879628471635371">Bắt đầu sử dụng công cụ khắc phục sự cố</translation>
 <translation id="5808759341041733958">Chọn công cụ tìm kiếm mặc định</translation>
 <translation id="1331593888918588693">Bạn có thể thay đổi tùy chọn của mình trong phần cài đặt của ứng dụng bất cứ lúc nào.</translation>
@@ -112,12 +114,12 @@
 <translation id="1166682575529520472">Hàng tháng</translation>
 <translation id="1628742278973105368">Tiền tip hàng tháng đầu tiên của bạn sẽ được gửi vào:</translation>
 <translation id="298349922412901215">LƯU Ý: Người tạo chưa đăng ký nhận đóng góp từ người dùng Brave. Chúng tôi sẽ không ngừng nỗ lực để đóng góp cho đến khi họ xác minh hoặc sau khi hết thời hạn 90 ngày.</translation>
-<translation id="635752162765375187">LƯU Ý: Người tạo này hiện không được định cấu hình để nhận mẹo từ ví của bạn. Mọi mẹo bạn thực hiện sẽ vẫn chờ xử lý trong ví của bạn và tự động thử lại trong 90 ngày.</translation>
+<translation id="635752162765375187">LƯU Ý: Người tạo nội dung này hiện không được cấu hình để nhận tiền thưởng từ dịch vụ ví lưu ký Phần thưởng của bạn. Mọi tiền thưởng bạn thực hiện sẽ vẫn đang chờ xử lý và tự động thử lại trong 90 ngày.</translation>
 <translation id="1910721550319506122">Chào mừng!</translation>
 <translation id="3165726837666415756">Bạn có thể hỗ trợ trang web này bằng cách gửi tip. Đó là cách cảm ơn họ đã tạo nội dung tuyệt vời. Các nhà sáng tạo nội dung đã xác minh sẽ được trả tiền tip vào tuần đầu tiên của mỗi tháng dương lịch.</translation>
 <translation id="1704859330137112950">Nếu bạn thích, bạn có thể lên lịch gửi tiền tip hàng tháng để hỗ trợ liên tục cho trang này.</translation>
 <translation id="245015745140252435">Số tiền tip</translation>
-<translation id="7873874596836611687">số dư ví:</translation>
+<translation id="7873874596836611687">Số dư Phần thưởng:</translation>
 <translation id="2573313946367623146">gửi tip của tôi</translation>
 <translation id="3250511771491660127">Làm hàng tháng</translation>
 <translation id="7658239707568436148">Hủy</translation>
@@ -137,7 +139,7 @@
 <translation id="8220228041552340594">THÁNG 10</translation>
 <translation id="8280223431922155812">THÁNG 11</translation>
 <translation id="4254029385847607686">THÁNG 12</translation>
-<translation id="4258022280942725182">Ví của bạn</translation>
+<translation id="4258022280942725182">Phần thưởng Brave của bạn</translation>
 <translation id="3960619311638643872">Brave VPN</translation>
 <translation id="1772301834467143364">Tin tức Brave</translation>
 <translation id="7760215798627399379"><ph name="VALUE"/> USD</translation>
@@ -172,8 +174,8 @@ tháng này...</translation>
 <translation id="8689997599821157251">Bạn đã kiếm được</translation>
 <translation id="7550470870580166294">Không đủ Tiền</translation>
 <translation id="2775064702681588061">Tài khoản Tiền thưởng Brave của bạn đang chờ khoản tiền gửi.</translation>
-<translation id="2630264552940126640">Sao lưu Ví</translation>
-<translation id="238922425564381955">Vui lòng sao lưu ví Brave của bạn.</translation>
+<translation id="2630264552940126640">Sao lưu Phần thưởng Brave</translation>
+<translation id="238922425564381955">Vui lòng sao lưu Phần thưởng Brave của bạn.</translation>
 <translation id="2323069945529668668">Ối trời!</translation>
 <translation id="7510166204621526816">Máy chủ Phần Thưởng Brave không phản hồi. Chúng tôi sẽ khắc phục vấn đề này càng sớm càng tốt.</translation>
 <translation id="683765328936486920">trên YouTube</translation>
@@ -547,7 +549,7 @@ Bạn có chắc chắn muốn thực hiện điều này không?</translation>
 <translation id="5493402808936397665">Bật sinh trắc học để nhanh chóng mở khóa ví của bạn mà không cần nhập mật khẩu.</translation>
 <translation id="8030647312184163932">Mở khóa bằng vân tay</translation>
 <translation id="4090490645603511157">Sử dụng sinh trắc học để nhanh chóng mở khóa ví của bạn mà không cần nhập mật khẩu.</translation>
-<translation id="1544192797660353713">Ví (beta)</translation>
+<translation id="1544192797660353713">Ví</translation>
 <translation id="6901810042765869341">Nhập cụm từ khôi phục của bạn để khôi phục tài khoản tiền điện tử Brave Wallet của bạn.</translation>
 <translation id="9120654436199628567">Khôi phục tài khoản tiền mã hóa</translation>
 <translation id="4811736040444856406">Hiển thị cụm từ khôi phục</translation>
@@ -611,7 +613,7 @@ Bạn có chắc chắn muốn thực hiện điều này không?</translation>
 <translation id="8239147115686034860">Tự động khóa Ví Brave</translation>
 <translation id="414639769490080648">Số phút phải chờ cho đến khi Ví Brave được tự động khóa lại</translation>
 <translation id="4993345308607970390">Đặt lại Ví Brave</translation>
-<translation id="4322846864135539519">Bạn có chắc chắn muốn đặt lại ví của mình không? Nếu ví của bạn không được sao lưu, đặt lại sẽ khiến bạn mất hết tất cả dữ liệu tài khoản (bao gồm mọi khoản tiền liên quan). Nhập "<ph name="CONFIRMATION_PHRASE"/>" để xác nhận.</translation>
+<translation id="4322846864135539519">Bạn có chắc chắn muốn đặt lại Phần thưởng Brave của mình không? Nếu ví của bạn không được sao lưu, việc đặt lại sẽ khiến bạn mất hết tất cả dữ liệu tài khoản (bao gồm mọi khoản tiền liên quan). Nhập "<ph name="CONFIRMATION_PHRASE"/>" để xác nhận.</translation>
 <translation id="4862812525895306758">Xóa giao dịch &amp; thông tin số giao dịch</translation>
 <translation id="5693968582510626466">Việc xóa các giao dịch có thể hữu ích cho các nhà phát triển hoặc khi xóa trạng thái trên máy chủ cục bộ</translation>
 <translation id="5421107279168565467">Bạn có chắc chắn muốn đặt lại thông tin giao dịch và số giao dịch không? Tùy chọn này chủ yếu được sử dụng bởi các nhà phát triển đang chạy máy chủ thử nghiệm nội bộ. Nhập "<ph name="CONFIRMATION_PHRASE"/>" để xác nhận.</translation>
@@ -631,8 +633,8 @@ Bạn có chắc chắn muốn thực hiện điều này không?</translation>
 <translation id="1190117345570417902">Sử dụng đường hầm VPN được mã hóa an toàn Wireguard</translation>
 <translation id="1571230671455380494">Chúng tôi sẽ không bao giờ chia sẻ hoặc bán thông tin của bạn</translation>
 <translation id="276866628038850725">Tất cả các gói đều bao gồm dùng thử 7 ngày miễn phí!</translation>
-<translation id="7280825497485894053">Đăng ký hàng tháng</translation>
-<translation id="3001303523417455986">Đăng ký hàng năm</translation>
+<translation id="1532536259167115948">Đăng ký hàng tháng <ph name="TRIAL_TEXT"/></translation>
+<translation id="6344668702581136255">Đăng ký hàng năm <ph name="TRIAL_TEXT"/></translation>
 <translation id="6748319398471481216">Gia hạn mỗi tháng</translation>
 <translation id="7734634586133069282"><ph name="MONTHLY_AMOUNT"/> / tháng</translation>
 <translation id="1163809943099641131">Một năm</translation>
@@ -653,8 +655,7 @@ Bạn có chắc chắn muốn thực hiện điều này không?</translation>
 Nếu bạn không chấp nhận yêu cầu này, VPN sẽ không kết nối lại và kết nối internet của bạn sẽ không được bảo vệ an toàn.</translation>
 <translation id="2429299231491852747">Chấp nhận yêu cầu kết nối</translation>
 <translation id="3428909627460825679">Không tạo được cấu hình VPN. Vui lòng thử lại.</translation>
-<translation id="1264320790738638119">Xác minh giao dịch mua không thành công. Vui lòng thử lại.</translation>
-<translation id="8905950042180169719">VPN đang chạy dưới nền</translation>
+<translation id="1264320790738638119">Đăng ký của bạn đã hết hạn. Bạn có thể đăng ký lại bất cứ lúc nào.</translation>
 <translation id="8681480718817027245">Đăng ký</translation>
 <translation id="7805768142964895445">Trạng thái</translation>
 <translation id="5747552184818312860">Hết hạn</translation>
@@ -682,15 +683,15 @@ Nếu bạn không chấp nhận yêu cầu này, VPN sẽ không kết nối l�
 <translation id="1219475260382643267">Trang web không hoạt động</translation>
 <translation id="7138678301420049075">Khác</translation>
 <translation id="4827315939627587219">Đặt lại cấu hình VPN</translation>
-<translation id="6883280223123252086">Bạn có chắc chắn muốn đặt lại cấu hình VPN không?</translation>
+<translation id="1705662265912724430">Bạn có chắc chắn muốn đặt lại cấu hình VPN không?</translation>
 <translation id="604124094241169006">Tự động</translation>
 <translation id="7475580600756356589">Đang kết nối với máy chủ của bạn. Sẽ mất một lúc...</translation>
 <translation id="1342728075788541348">Đang ngắt kết nối khỏi máy chủ của bạn. Sẽ mất một lúc...</translation>
 <translation id="669072536454692117">Đã mua gói đăng ký thành công</translation>
 <translation id="1187506504156101449">Không xác nhận được giao dịch mua:</translation>
 <translation id="8420522105268941892">Bạn đã đăng ký một gói đăng ký. Hãy thử khôi phục gói đăng ký</translation>
-<translation id="404414664190867625">LỖI!!\nGây ra do người dùng hủy luồng mua.</translation>
-<translation id="3515141458161417228">LỖI!!\nMua không thành công..</translation>
+<translation id="404414664190867625">Bạn đã bỏ mua đăng ký.</translation>
+<translation id="3515141458161417228">Mua thất bại. Vui lòng liên hệ với bộ phận hỗ trợ của Google Play.</translation>
 <translation id="6452181791372256707">Từ chối</translation>
 <translation id="8030852056903932865">Phê duyệt</translation>
 <translation id="1597199892790541240">Tiền ga</translation>
@@ -823,7 +824,6 @@ Nếu bạn không chấp nhận yêu cầu này, VPN sẽ không kết nối l�
 <translation id="3586752056660754651">Ký nhận</translation>
 <translation id="6592721981110586529">Kết nối với Ví Brave</translation>
 <translation id="329813193938846695">Chọn (các) tài khoản</translation>
-<translation id="3890989020011724401">Tài khoản mới</translation>
 <translation id="291375746846291973">Chỉ kết nối với các website mà bạn tin tưởng.</translation>
 <translation id="385051799172605136">Quay lại</translation>
 <translation id="1060221736464994328">Cho phép trang này chuyển đổi mạng?</translation>
@@ -840,19 +840,23 @@ Nếu bạn không chấp nhận yêu cầu này, VPN sẽ không kết nối l�
 <translation id="85136472535634474">Mở Cài đặt VPN</translation>
 <translation id="8352805003811526272">Đang đặt lại cấu hình...</translation>
 <translation id="6809312301323611382">Bạn đã chọn cùng một máy chủ.</translation>
-<translation id="5665084657857645952">Quyền đã bị hủy bỏ</translation>
+<translation id="5665084657857645952">Bạn đã ngừng cài đặt cấu hình VPN.</translation>
 <translation id="9106265941552476098">Từ chối <ph name="TRANSACTION_LENGTH"/> giao dịch</translation>
 <translation id="523862956770478816">Quyền trang</translation>
 <translation id="2141313140218636977"><ph name="VALUE"/> tài khoản được kết nối</translation>
+<translation id="3890989020011724401">Tài khoản mới</translation>
 <translation id="4305817255990598646">Chuyển đổi</translation>
 <translation id="4804818685124855865">Ngắt kết nối</translation>
 <translation id="8009571545960303544">Chữ ký của bạn đang được yêu cầu</translation>
+<translation id="3484981968509595506">DApp đang yêu cầu khóa mã hóa công khai của bạn</translation>
+<translation id="3340247553212049934">Cung cấp</translation>
 <translation id="1982257600591932657">Tên mạng</translation>
 <translation id="5052727830821470769">URL mạng</translation>
 <translation id="4822132585477111396">Chain ID</translation>
 <translation id="7131971375297699539">Ký hiệu tiền tệ</translation>
 <translation id="7982789257301363584">Mạng</translation>
-<translation id="2521480044079508357">Điều này sẽ cho phép sử dụng mạng này bên trong Ví Brave.</translation>
+<translation id="7540715999708954128">Điều này sẽ cho phép sử dụng mạng này bên trong Ví Brave. Tìm hiểu thêm.</translation>
+<translation id="8759753423332885148">Learn more.</translation>
 <translation id="4717431746210146708">Cho phép trang web này thêm mạng?</translation>
 <translation id="3378339846292573874">Thêm token được đề xuất</translation>
 <translation id="2322227405137827074">Bạn có muốn nhập token này không?</translation>
@@ -904,4 +908,5 @@ Nếu bạn không chấp nhận yêu cầu này, VPN sẽ không kết nối l�
 <translation id="9218430445555521422">Đặt làm mặc định</translation>
 <translation id="6369495274982305511">Bạn có chắc chắn muốn đặt lại ví của mình không? Nếu ví của bạn không được sao lưu, đặt lại sẽ khiến bạn mất hết tất cả dữ liệu tài khoản (bao gồm mọi khoản tiền liên quan). Nhập "<ph name="CONFIRMATION_PHRASE"/>" để xác nhận.</translation>
 <translation id="64394831139134288">Ví của tôi</translation>
+<translation id="8905950042180169719">VPN đang chạy dưới nền</translation>
 </translationbundle>

@@ -2,7 +2,6 @@
 <!DOCTYPE translationbundle>
 <translationbundle lang="lv">
 <translation id="3333887201479867589">Brave balvas</translation>
-<translation id="7942180974165298215">Brave reklāmu bloķētājs</translation>
 <translation id="4615489450165434530">Ziņot par bojātu vietni</translation>
 <translation id="1209739344687072997">Ziņot par bojātu vietni</translation>
 <translation id="6406506848690869874">Sinhronizācija</translation>
@@ -42,6 +41,7 @@
 <translation id="3094628781200061820">Publicēt un izgūt datnes no IPFS</translation>
 <translation id="7398397225367092613">.onion</translation>
 <translation id="406832631167785034">Atvērt, izmantojot .onion adresi</translation>
+<translation id="4759098689276706664">Piespiedu ielīmēšana</translation>
 <translation id="4901618511712685702">Importēt IPFS</translation>
 <translation id="6794469945030154569">Šī lapa</translation>
 <translation id="5037852323412456577">Atlasītais attēls</translation>
@@ -69,7 +69,7 @@
 <translation id="3425600262621021599">Atvērt saiti Brave inkognito logā, izmantojot Tor</translation>
 <translation id="3229091547987707389">Importēt un kopīgot direktoriju</translation>
 <translation id="5029193871181468990">Paslēpt Brave Rewards ikonu</translation>
-<translation id="7595540212376041331">Paslēpt Brave maka ikonu rīkjoslā</translation>
+<translation id="7595540212376041331">Paslēpt Brave maka ikonu</translation>
 <translation id="4928988318462976765">Paplašinājumu interneta veikals</translation>
 <translation id="9181207987584064303">Skatīt paplašinājumu interneta veikalā</translation>
 <translation id="3161744659507801211">Brīdinājums: Brave nevar novērst to, ka paplašinājumi ieraksta jūsu pārlūkošanas vēsturi.</translation>
@@ -107,6 +107,7 @@
 <translation id="2571596981920752023"><ph name="NUMBER_OF_TABS"/> cilnes</translation>
 <translation id="2515126961943087659">BAT reklāmu pakalpojums</translation>
 <translation id="7924918279836988121">BAT norēķinu pakalpojums</translation>
+<translation id="6665472986740899785">Brave Ad paziņojums</translation>
 <translation id="4174337572777167894">Tīmekļa atklāšanas projekts</translation>
 <translation id="8659271182272561965">Sniedziet anonīmus meklēšanas un pārlūkošanas datus, lai Brave meklēšana kļūtu labāka.</translation>
 <translation id="1516554614404600536">Brave Tooltip</translation>
@@ -182,7 +183,6 @@
 <translation id="6817415381278637662">Iestatiet Brave kā savu noklusējuma pārlūku, lai saņemtu Brave privātuma aizsardzību ikvienā tīmekļa lapā, kuru atverat.</translation>
 <translation id="8722651357687610395">Iestatīt Brave kā noklusējuma pārlūku</translation>
 <translation id="2370739752330685659">Varbūt vēlāk</translation>
-<translation id="3400357268283240774">Papildu iestatījumi</translation>
 <translation id="9156965752763025780">Izmaiņas stāsies spēkā, kad restartēsiet Brave.</translation>
 <translation id="7179921470347911571">Restartēt tūlīt</translation>
 <translation id="4472575034687746823">Sākt darbu</translation>
@@ -237,6 +237,29 @@
 <translation id="7390783310074170337">Noklusējuma skats</translation>
 <translation id="130615081792797568">Vienkāršs skats</translation>
 <translation id="2360360976480535628">Uzlabots skats</translation>
+<translation id="6486983549008741930">Satura filtrēšana</translation>
+<translation id="8694564340481124390">Iespējot pielāgotus filtrus, kas bloķē reģionālus un valodai specifiskus izsekotājus un Annoyances.</translation>
+<translation id="6522618763902154348">Iespējojiet pielāgotus filtrus, kas bloķē reģionālus un valodai specifiskus izsekotājus un 
+<ph name="BEGIN_LINK"/>Annoyances<ph name="END_LINK"/>.</translation>
+<translation id="3482656215021340727">Pievienot pielāgotu filtru sarakstus</translation>
+<translation id="1020877116991797978">Pievienojiet papildu sarakstus, ko izveidojusi un uztur kopiena, kurai uzticaties.</translation>
+<translation id="7617831480435794399">Abonējiet tikai tādu vienību sarakstus, kurām uzticaties. Jūsu pārlūks periodiski pārbaudīs, vai no jūsu ievadītā URL nav atjauninātu sarakstu, atklājot jūsu IP adresi to serverim.</translation>
+<translation id="2831397936251948638">Izveidot pielāgotos filtrus</translation>
+<translation id="4618274268052410139">Pievienot savus pielāgotos filtrus, pievienojot vienu katrā līnijā tālāk norādītajā laukā. Izmantojiet <ph name="BEGIN_LINK"/>Adblock filtra sintaksi<ph name="END_LINK"/>.</translation>
+<translation id="7791543448312431591">Pievienot</translation>
+<translation id="571950783952070673">Norādīt URL</translation>
+<translation id="9204006549413740506">Pēdējoreiz atjaunināts</translation>
+<translation id="6745592621698551453">Atjaunināt tūlīt</translation>
+<translation id="5334844597069022743">Skatīt avotu</translation>
+<translation id="4720556299488643018">Anulēt abonementu</translation>
+<translation id="6532106788206463496">Saglabāt izmaiņas</translation>
+<translation id="4516904298421534459">Filtru saraksti</translation>
+<translation id="4435215931544457255">Citi populāri kopienu saraksti. Ievērojiet, ka pārāk daudzu filtru iespējošana samazinās pārlūkošanas ātrumu.</translation>
+<translation id="802154636333426148">Lejupielāde neizdevās</translation>
+<translation id="7889605993994647168">Atjauninājums neizdevās</translation>
+<translation id="5438573563213942361">Pielāgotie saraksti</translation>
+<translation id="4182731739150761577">Rādīt pilnu sarakstu</translation>
+<translation id="1340263054776016283">Ievadīt filtru sarakstu URL</translation>
 <translation id="6821903322090655051">Brave Rewards ir atspējots</translation>
 <translation id="413570371620795359">Atveriet balvu paneli, lai to iespējotu, un sāciet lietot</translation>
 <translation id="3849957491997306859">Automātiski uztverts</translation>
@@ -323,6 +346,10 @@
 <translation id="5093410893656857925">Izvēlieties ierīces veidu</translation>
 <translation id="4581190919849683048">Kāda veida ierīci jūs vēlaties sinhronizēt?</translation>
 <translation id="4112587618563511470">Nederīgs sinhronizācijas kods, lūdzu, pārbaudiet un mēģiniet vēlreiz.</translation>
+<translation id="3995714999835224798">Šis kods nav derīgs</translation>
+<translation id="859506441384380749">Šo kodu ģenerējusi novecojusi Brave versija. Vispirms jauniniet citu ierīci</translation>
+<translation id="3132642509209154999">Šis kods vairs nav derīgs. Izveidojiet jaunu citā ierīcē un mēģiniet vēlreiz.</translation>
+<translation id="2859229680945501779">Šis kods ir nederīgs. Lūdzu, pārbaudiet, vai laiks un laika zona jūsu ierīcē ir iestatīti pareizi.</translation>
 <translation id="2339730291919608488">Pamest sinhronizācijas ķēdi</translation>
 <translation id="115699408012835975">Ja atiestatīsiet sihronizāciju, jums būs atkārtoti jāievada sinhronizācijas kods no citas ierīces, lai veiktu ar to sinhronizāciju. Vai tiešām vēlaties turpināt?</translation>
 <translation id="6092564993102418148">Vai tiešām vēlaties dzēst atlasīto ierīci no sinhronizācijas ķēdes?</translation>
@@ -393,6 +420,7 @@ Vai tiešām vēlaties to darīt?</translation>
 <translation id="1062463687579789365">Maciņa tīklu pielāgošana</translation>
 <translation id="2234108191702901162">Nav iespējams pievienot tīklu</translation>
 <translation id="8996633027318264334">Vai tiešām vēlaties dzēst <ph name="KEY_NAME"/>?</translation>
+<translation id="7893578599666249602">Vai tiešām vēlaties atiestatīt <ph name="KEY_NAME"/>?</translation>
 <translation id="2618193846561624884">Vai vēlaties atjaunināt esošo tīklu?</translation>
 <translation id="9170907049676078643">IPFS resursu risināšanas metode</translation>
 <translation id="1327977588028644528">Vārteja</translation>
@@ -480,4 +508,5 @@ Vai tiešām vēlaties to darīt?</translation>
 <translation id="6040143037577758943">Aizvērt</translation>
 <translation id="5600566490506283344">Brave Ad paziņojums</translation>
 <translation id="4395160081588457461">Izskats un noskaņojums</translation>
+<translation id="7942180974165298215">Brave reklāmu bloķētājs</translation>
 </translationbundle>

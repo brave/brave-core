@@ -135,6 +135,21 @@
     "message": "«پاداش‌های Brave» با مشکل روبرو است. لطفاً بعداً دوباره امتحان کنید.",
     "description": ""
   },
+  "rewardsLogInToSeeBalance": {
+    "message": "برای مشاهده موجودی‌تان،$begin_bold$در $provider$ وارد سیستم شوید$end_bold$",
+    "description": "",
+    "placeholders": {
+      "begin_bold": {
+        "content": "$1"
+      },
+      "provider": {
+        "content": "$2"
+      },
+      "end_bold": {
+        "content": "$3"
+      }
+    }
+  },
   "rewardsPaymentCheckStatus": {
     "message": "بررسی وضعیت",
     "description": ""

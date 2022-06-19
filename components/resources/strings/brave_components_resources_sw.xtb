@@ -236,6 +236,7 @@
 <translation id="1911900517212490188">Ufunguo wa kurejesha ulioweka hautumiki tena. Tafadhali tembelea <ph name="BEGIN_LINK"/>here<ph name="END_LINK"/> ili upate kufunguo mpya.</translation>
 <translation id="7583327070390027131">Tarehe inayofuata ya bahashishi za kila mwezi</translation>
 <translation id="6231182869178328516">Nimemzawadia <ph name="NAME"/> kwa kutumia Kisakuzi cha Brave. Angalia kwenye https://brave.com/tips.</translation>
+<translation id="5916536234616514390">Napenda kuwa <ph name="HASHTAG"/>Brave huniruhusu kufadhili waundaji! Nimetoa bahashishi kwa<ph name="NAME"/> kwa BAT <ph name="HASHTAG2"/>. Ikiwa atathibitisha kwa https://creators.brave.com kabla ya <ph name="DATE"/>, BAT hiyo ni yake!</translation>
 <translation id="8404935570206006581">TipWithBrave</translation>
 <translation id="3082557070674409251">Umebofya</translation>
 <translation id="7119308337584989771">Umepuuza</translation>
@@ -256,6 +257,7 @@
 <translation id="8218538368080510976">Hitilafu: Eneo halitumiki</translation>
 <translation id="5382684862562314222">BAT bado haitumiki katika eneo lako kwenye pochi za Uphold.</translation>
 <translation id="9074594632540931067">Hitilafu: BAT haipatikani</translation>
+<translation id="5376524136040178759">Kulingana na Uphold, kwa sasa kuna vikwazo fulani kwenye akaunti yako ya Uphold. Tafadhali ingia kwenye akaunti yako ya Uphold na uangalie ikiwa kuna arifa zozote au masharti ya akaunti yaliyosalia ya kukamilisha, kisha ujaribu tena. Kwa mfano, huenda ukahitaji kuwasilisha maelezo zaidi kwa Uphold.</translation>
 <translation id="3274650021044762770">Kulikuwa na hitilafu wakati wa kuhalalisha ombi la kivinjari chako la kuunganisha Zawadi za Brave kwenye akaunti yako ya <ph name="PROVIDER"/>. Unaweza <ph name="BEGIN_LINK"/>kuwasiliana na wasaidizi wa <ph name="END_LINK"/> kwa usaidizi zaidi.</translation>
 <translation id="1316066811927496401">Hitilafu: Ombi halikuweza kuthibitishwa</translation>
 <translation id="1737873393693460829">Kwa kuwasha [[title]], unakubali <ph name="BEGIN_LINK1"/>Sheria na Masharti<ph name="END_LINK1"/> na <ph name="BEGIN_LINK2"/>Sera ya Faragha<ph name="END_LINK2"/>.</translation>
@@ -273,6 +275,8 @@
 <translation id="5112354605357157725">Nenda uingie</translation>
 <translation id="1280764044837262633"><ph name="PROVIDER"/> inahitaji salio la chini la <ph name="AMOUNT"/> BAT ili kufungua akaunti. Ikiwa uliunganisha akaunti awali,</translation>
 <translation id="1892970806832316900">Inasubiri hadi <ph name="DATE"/></translation>
+<translation id="7849926087559412554">Lo! Kivinjari chako hakiwezi kupokea Matangazo ya Faragha  ya Brave.</translation>
+<translation id="5177429570315095022">Kivinjari chako kinahitaji kusasishwa ili kuendelea kuona matangazo.</translation>
 <translation id="752216563428219524">Matangazo hayajaanzishwa, tafadhali uonyeshe upya ukurasa.</translation>
 <translation id="7422678632904904341">Kiasi:</translation>
 <translation id="6969783933307596818">Onyesha upya kiotomatiki kila baada ya sekunde 5</translation>
@@ -753,6 +757,7 @@
 <translation id="7306880305145342514">Hongera! Zawadi zako za <ph name="MONTH"/> zimefika!</translation>
 <translation id="3007207731685398329">Zawadi zako za <ph name="AMOUNT"/> <ph name="MONTH"/> zitafika baada ya <ph name="DAYS"/></translation>
 <translation id="5878420576943709750">Zawadi zako za <ph name="AMOUNT"/> <ph name="MONTH"/> zipo njiani. Endelea kufuatilia kwa makini!</translation>
+<translation id="3825131544027418568"><ph name="BEGIN_BOLD"/>Ingia kwenye<ph name="PROVIDER"/><ph name="END_BOLD"/> ili uone salio lako</translation>
 <translation id="2659764755126740206">Nenda kwenye akaunti yangu ya <ph name="PROVIDER"/></translation>
 <translation id="1165667598801520610">Ongeza Fedha</translation>
 <translation id="2394961582378297792">Umeondoka</translation>
@@ -792,6 +797,7 @@
 <translation id="167698752210114155">Hitilafu ya ndani imetokea</translation>
 <translation id="2326876601333401685">Mbinu ya RPC haitumiki.</translation>
 <translation id="1128992132632883337">Hitilafu ya uchanganuzi wa jibu imetokea</translation>
+<translation id="5382339341735118861">Hitilafu ya uchakataji wa ombi la kawaida imetokea</translation>
 <translation id="1680597601664421644">Kikumbusho kinachohamishwa hakitumiki kwenye Pochi ya Brave</translation>
 <translation id="4641919696349069826">Ombi tayari linaendelea</translation>
 <translation id="872806943696014633">Data ya muamala inakosekana</translation>
@@ -811,11 +817,13 @@
 <translation id="4232775951515678071">Imeshindwa kupata aina ya muamala</translation>
 <translation id="2080935885647755539">Imeshindwa kupata ada za gesi kwa muamala wa EIP-1559</translation>
 <translation id="4843814354611030845">Mtumiaji amekataa muamala</translation>
+<translation id="1462494615260983714">Hitilafu imetokea wakati wa kuchakata muamala</translation>
 <translation id="4886059598718763020">'<ph name="VALUE"/>' hajaidhinishwa kutia sahihi ujumbe</translation>
 <translation id="8719220598078667817">Imeshindwa kusaini muamala</translation>
 <translation id="875506212625074179">Jibu batili la kitambulisho cha mtungo kutoka kwa huduma ya RPC</translation>
 <translation id="5486744676117070166">Imeshindwa kupata thamani ya nonsi inayofuata</translation>
 <translation id="6180576227145734714">Data ya muamala 'kwa' lazima iwe anwani sahihi inapobainishwa</translation>
+<translation id="6688162556547723415">Mbinu iliyoombwa na/au akaunti haijaidhinishwa na mtumiaji.</translation>
 <translation id="4958950550253325418">Programu za Defi</translation>
 <translation id="735961408871282410">Masoko ya NFT</translation>
 <translation id="7740287852186792672">Matokeo ya utafutaji</translation>
@@ -858,7 +866,8 @@
 <translation id="1191686659164947414">Muamala unaweza kuwekwa kwenye foleni</translation>
 <translation id="632241521608275119">Ustahimili wa Slippage</translation>
 <translation id="4500473291496079954">Itaisha baada ya</translation>
-<translation id="2236833281018938257">Anwani au url ya 0x</translation>
+<translation id="2236833281018938257">Anwani ya pochi au URL</translation>
+<translation id="928500657730628112">Anwani ya pochi</translation>
 <translation id="2860280209982026951">Brave hutumia <ph name="LINK_BEFORE"/>0x<ph name="LINK_AFTER"/> kama kijumlishaji cha DEX.</translation>
 <translation id="151946611346774041">0x itachakata anwani ya Ethereum na anwani ya IP ili kutimiza muamala (ikiwa ni pamoja na kupata makadirio ya gharama). 0x itatumia data hii kwa madhumuni ya kuchakata miamala TU.</translation>
 <translation id="4626407663177532837">Ukadiriaji wa gharama unajumuisha ada ya Brave ya 0.875%.</translation>
@@ -866,7 +875,7 @@
 <translation id="6575120282593094155">Huna akaunti ya <ph name="ACCOUNT_TYPE"/> bado. Ungependa kufungua moja sasa?</translation>
 <translation id="2704606927547763573">Imenakiliwa</translation>
 <translation id="1420318137760245955">Karibu kwenye Brave Wallet mpya</translation>
-<translation id="8303434745767477417">Zuia rasilimali za crypto. Fuatilia utendaji wa potifolio na utumie web 3 DApps. Fanya biashara, wekeza, omba na ukopeshe na DeFi. Zote kutoka kivinjari cha faragha cha Brave. Hakuna viendelezi, hakuna kipakuliwa kinachohitajika.</translation>
+<translation id="3671745544278414606">Zuilia rasilimali za crypto. Fuatilia utendaji wa potifolio na utumie Web3 DApps. Fanya biashara, wekeza, omba na ukopeshe kwa DeFi. Haya yote katika kivinjari cha faragha cha Brave. Hakuna viendelezi, hakuna kupakua kunakohitajika.</translation>
 <translation id="6972754398087986839">Anza</translation>
 <translation id="375882617301124395">Cheleza pochi yako ya crypto</translation>
 <translation id="180032279811483155">Katika hatua inayofuata utaona fungu la maneno la urejeshaji lenye maneno <ph name="RECOVERY_PHRASE_LENGTH"/>, ambalo unaweza kutumia kurejesha akaunti zako za msingi za crypto. Lihifadhi katika eneo salama. Fungu lako la maneno la urejeshaji ndio njia ya kipekee ya kupata uwezo wa kufikia akaunti endapo umesahau nenosiri, umepoteza au kifaa kimeibwa, au unataka kubadilisha pochi.</translation>
@@ -895,7 +904,7 @@
 <translation id="163697698769819510">Hifadhi nakala ya pochi yako sasa ili kulinda rasilimali zako  na kuhakikisha kwamba hutapoteza ufikiaji wako kamwe.</translation>
 <translation id="1018806299114415224">Hifadhi nakala sasa</translation>
 <translation id="5234764350956374838">Ondoa</translation>
-<translation id="4075073132992924258">Brave Wallet haijawekwa kuwa pochi yako chaguomsingi na haitajibu web3 DApps. Tembelea mipangilio ili ubadilishe pochi yako chaguomsingi.</translation>
+<translation id="1400709719911593089">Pochi ya Brave haijawekwa kuwa pochi yako chaguo-msingi na haitajibu Web3 DApps. Tembelea mipangilio ili ubadilishe pochi yako chaguo-msingi.</translation>
 <translation id="4362717653795263052">Rejesha akaunti za crypto za msingi</translation>
 <translation id="3038077262567136741">Weka kauli yako ya urejeshaji ili urejeshe akaunti yako ya Brave wallet crypto.</translation>
 <translation id="955918646509748368">Kauli ya urejeshaji iliyowekwa si sahihi.</translation>
@@ -906,8 +915,8 @@
 <translation id="8624315169751085215">Nakili kwenye Ubao wa Kunakili</translation>
 <translation id="1121335910737476837">Akaunti za msingi za crypto</translation>
 <translation id="6969147029062037757">Akaunti zilizohamishwa</translation>
-<translation id="5668765612885835803">Unaweza kuunda akaunti za msingi kwenye Pochi ya Brave ambazo zinaweza kunakiliwa au kurejeshwa kwenye awamu yako ya kurejesha. Ili kujifunza zaidi kuhusu aina za akaunti tembelea msaada wa akaunti</translation>
-<translation id="2471916999505901943">Akaunti hizi zinaweza kutumiwa na programu za tovuti za 3 D na zinaweza kuonyeshwa katika potifolio yako. Hata hivyo, fahamu kwamba akaunti mbadala haziwezi kurejeshwa kupitia kwa fungu la maneno la urejeshaji kutoka kwenye nakala yako ya akaunti ya msingi.</translation>
+<translation id="4057718162494343222">Unaweza kuunda akaunti za msingi kwenye Pochi ya Brave ambazo zinaweza kunakiliwa au kurejeshwa kutoka kwa awamu yako ya kurejesha. Ili kujifunza zaidi kuhusu aina za akaunti tembelea msaada wa akaunti.</translation>
+<translation id="1011614786846182272">Akaunti hizi zinaweza kutumiwa na Web3 DApps na zinaweza kuonyeshwa katika potifolio yako. Hata hivyo, fahamu kwamba akaunti mbadala haziwezi kurejeshwa kupitia awamu ya kurejesha kutoka kwenye nakala yako ya akaunti ya msingi.</translation>
 <translation id="1940465339426637378">Rasilimali</translation>
 <translation id="2236507293802791911">Rasilimali zinazoweza kuonekana</translation>
 <translation id="7525067979554623046">Unda</translation>
@@ -989,6 +998,7 @@
 <translation id="8569380433211549748">Bei kwa</translation>
 <translation id="2490428413101944234">Jaribu mfereji</translation>
 <translation id="3352959425838279177">Pata Ether kutoka kwenye bilula ya <ph name="SELECTED_NETWORK"/></translation>
+<translation id="6449626816252815844">Teua mbinu ya ununuzi</translation>
 <translation id="8009571545960303544">Saini yako inaombwa</translation>
 <translation id="5294062982587710720">Fahamu kuwa Brave haiwezi kuthibitisha kitakachotendeka ukitia sahihi. Sahihi inaweza kuidhinisha karibu shughuli yoyote katika akaunti yako au kwa niaba yako, ikiwemo (lakini si tu) kutoa udhibiti wa jumla wa rasilimali zako za akaunti na crypto kwa tovuti inayotuma ombi. Tia tu sahihi ikiwa una uhakika unataka kuchukua hatua hii na unaamini tovuti inayoomba.</translation>
 <translation id="3474375934783434676">Tia sahihi kwa tahadhari yako pekee</translation>
@@ -1037,7 +1047,7 @@
 <translation id="3890989020011724401">Akaunti mpya</translation>
 <translation id="7257603403519636638">Tazama rasilimali za akaunti</translation>
 <translation id="2092132085082887098">Rasilimali za akaunti</translation>
-<translation id="5723696625900399845">Tumia paneli hii kufikia web3 kwa usalama na rasilimali zako zote za crypto.</translation>
+<translation id="4612979983851181941">Tumia paneli hii kufikia Web3 na rasilimali zako zote za crypto kwa usalama.</translation>
 <translation id="4460220693591349571">AINA YA KIPENGELE</translation>
 <translation id="838933475572692615">DATA YA HEX</translation>
 <translation id="2240831799756994975">BAITI</translation>
@@ -1049,13 +1059,13 @@
 <translation id="7739762330714405363">Tumi nenosiri sawa</translation>
 <translation id="1085027414516521238">MetaMask</translation>
 <translation id="7102907656918333773">Leta kutoka <ph name="WALLET_EXTENSION"/></translation>
-<translation id="8897114903450789862">Leta akauti zako za <ph name="WALLET_EXTENSION"/> kwenye Brave Wallet. Furahia njia ya haraka na salama zaidi ili kudhibiti rasilimali za crypto na kutumia web 3 DApps.</translation>
+<translation id="1737856990004825123">Hamisha akauti zako za <ph name="WALLET_EXTENSION"/>hadi kwa Pochi ya Brave. Furahia njia ya haraka na salama zaidi ya kudhibiti rasilimali za crypto na kutumia Web3 DApps.</translation>
 <translation id="4237840336687249184">Nenosiri la MetaMask</translation>
 <translation id="2381605201035323535">pochi za crypto</translation>
 <translation id="2770851145415891830">Pochi za crypto zilizopo zimegunduliwa</translation>
 <translation id="4938145712652668388">Unapobofya "Anza" utaleta Crypto Wallet yako ya awali kwenye hali mpya ya Brave Wallet na ufurahie manufaa yaliyobainishwa hapo juu. Ijaribu na utufahamishe maoni yako!</translation>
 <translation id="2237759620789871865">Ikiwa ungependa kuruka uletaji na kukaa na hali ya Crypto Wallets ya zamani, nenda tu kwenye Mipangilio ya <ph name="LINK_BEFORE"/>Brave Browser<ph name="LINK_AFTER"/>na ubadilishe chaguomsingi hadi Crypto Wallets. Pia unaweza kuleta, kujaribu Brave Wallet mpya na kubadilisha wakati wowote.</translation>
-<translation id="3301259443293676544">Weka nenosiri lako la crypto wallets lililopo ili ulete hadi Brave Wallet. Furahia njia ya haraka na salama zaidi kudhibiti rasilimali za crypto na utumie web 3 DApps.</translation>
+<translation id="5590175005414413980">Weka nenosiri lako la pochi za crypto lililopo ili uhamishe hadi kwa Pochi ya Brave. Furahia njia ya haraka na salama zaidi ya kudhibiti rasilimali za crypto na utumie Web3 DApps.</translation>
 <translation id="9099900965604225657">Nenosiri la Crypto wallets</translation>
 <translation id="4020495774166914146">Nimepoteza nenosiri langu na kauli ya urejeshaji, unda wallet mpya.</translation>
 <translation id="6344138931392227467"><ph name="DEVICE_NAME"/> imeunganishwa</translation>
@@ -1111,6 +1121,7 @@
 <translation id="1599636444563952897">Ruhusa ya kikomo cha matumizi huruhusu <ph name="SITE_ORIGIN"/> kutoa na kutumia hadi kiasi kifuatacho:</translation>
 <translation id="4512871563176965522">Marupurupu maalum</translation>
 <translation id="749944179568745958">Anwani ya ETH si sahihi</translation>
+<translation id="2832270987629018596">Sio anwani halali ya SOL</translation>
 <translation id="882486206986535424">Anwani si sahihi</translation>
 <translation id="6825399159373612149">Kikoa <ph name="DOMAIN_NAME"/> hakijasajiliwa</translation>
 <translation id="8971278306757462297">Anwani ya kupokea ni anwani yako mwenyewe</translation>
@@ -1142,7 +1153,6 @@
 <translation id="3327639091470204775">Imeshindwa kuunganisha Trezor bridge</translation>
 <translation id="6672377693827764095">Hitilafu ya ndani, Imeshindwa kupata akaunti</translation>
 <translation id="6889920539620318793">Weka iwe amilifu</translation>
-<translation id="1462494615260983714">Hitilafu imetokea wakati wa kuchakata muamala</translation>
 <translation id="8933250418452564886">Imeshindwa kupata muamala wa maunzi, tafadhali jaribu tena</translation>
 <translation id="5999974802900788338">Hitilafu imepokewa kutoka kwa kifaa cha maunzi, huenda unahitaji kuthibitisha muamala kwenye kifaa chako</translation>
 <translation id="8523768065044261559">Hitilafu imetokea wakati wa kuchakata muamala, tafadhali jaribu tena</translation>
@@ -1164,11 +1174,19 @@
 <translation id="6423985584914773314">Sio anwani halali ya FIL</translation>
 <translation id="3898731124813934210">Nunua kwa Wyre</translation>
 <translation id="5522073372365069684">Nunua kwa Ramp</translation>
+<translation id="8725252491405767337">Ramp.Network</translation>
+<translation id="7623800836425615432">Wyre</translation>
+<translation id="7667423728712601865">Nunua crypto kwa Visa au Mastercard.</translation>
 <translation id="8528916244724490964">Mitandao Yote</translation>
 <translation id="2781668117338732220">Mitandao Mbadala</translation>
 <translation id="2816106784624007524">Kiwango cha gesi lazima kiwe namba kamili inayozidi 0</translation>
 <translation id="3354376789153561654">Data ya muamala ya 'kwa' lazima ibainishwe</translation>
 <translation id="8728991256628663004">Data ya muamala ya 'kutoka' lazima iwe anwani halali ya Filecoin</translation>
+<translation id="7003028930816622496">Kifaa cha Ledger kimefungwa</translation>
+<translation id="3939390290522058485">Bofya hapa ili uangalie maelezo ya muamala ya <ph name="VALUE"/></translation>
+<translation id="2317956709076373213">Muamala umethibitishwa</translation>
+<translation id="310693998838023022">Hitilafu ya muamala</translation>
+<translation id="6395870673621520684">Muamala umekomeshwa</translation>
 <translation id="3155170474926428993">Kifungua Tor</translation>
 <translation id="3745016858329272300">Maelezo ya Jumla</translation>
 <translation id="4045404575593562245">Matukio ya Udhibiti wa Tor</translation>
@@ -1183,6 +1201,7 @@
 <translation id="7709075156958117386">Ikiwa tovuti hii inaonekana kutofanya kazi vyema, jaribu kuzima Ngao. 
     <ph name="LINK_BEFORE"/>Kumbuka: hili linaweza kupunguza ulinzi wa faragha wa Brave.<ph name="LINK_AFTER"/></translation>
 <translation id="8377155647357436161">Vifuatiliaji, matangazo na zaidi vimezimwa<ph name="LINK_BEFORE"/>Jifunze zaidi<ph name="LINK_AFTER"/></translation>
+<translation id="7604553853176833536">Haijalindwa kwa Brave Shields<ph name="LINK_BEFORE"/>Jifunze zaidi<ph name="LINK_AFTER"/></translation>
 <translation id="650318023204990401">Vidhibiti vya hali ya juu</translation>
 <translation id="5799940914270080805">Kubadilisha mipangilio hii kunaweza kuharibu utendakazi wa tovuti.</translation>
 <translation id="9204041448536398473">Mipangilio ya Ulinzi</translation>
@@ -1208,6 +1227,8 @@
 <translation id="3795015906457257780">Unatazama tovuti hii bila ulinzi wa faragha wa Brave.</translation>
 <translation id="7194012750329511146">Brave Shields
 <ph name="NUMBER"/> Vifuatiliaji, matangazo na zaidi yamezuiwa</translation>
+<translation id="4292121526390005808">Maandishi yaliyozuiwa</translation>
+<translation id="3541307549916475335">UI ya Paneli ya VPN ya Brave</translation>
 <translation id="1742469581923031760">Inaunganisha…</translation>
 <translation id="1287487756047817908">Inatenganisha…</translation>
 <translation id="2325196879156848326">Muunganisho Haujafaulu</translation>
@@ -1225,9 +1246,11 @@
 <translation id="3181339219453722970">Chagua eneo lako la VPN</translation>
 <translation id="1751947227857853925">Haraka na bila kikomo hadi Mbps 100</translation>
 <translation id="1400240082805528049">Usaidizi wa sa 24 kila siku</translation>
+<translation id="1693568075761612600">Imeshindwa kuunda tiketi ya usaidizi, angalia muunganisho wako.</translation>
 <translation id="8463313539532697053">Subiri kidogo huku ikipakia na#8230;</translation>
+<translation id="4317307602527599178">Imeshindwa kuangalia hali ya ununuzi wako. Hii inaweza kusababishwa na tatizo la mtandao.</translation>
 <translation id="4613076894734402086">Hariri njia ya kulipa</translation>
-<translation id="1898254156730880135">Inaonekana kwamba malipo yako ya hivi karibuni zaidi hayakufaulu. Ufikiaji kwa usajili huu utasitishwa hadi tatizo la malipo litakapotatuliwa. Jaribu kuhariri njia ya kulipa au uwasiliane na wasaidizi wa Brave.</translation>
+<translation id="8373427068383038263">Inaonekana kwamba malipo yako ya hivi karibuni zaidi ya <ph name="VALUE"/> hayakufaulu. Ufikiaji wa usajili huu utasitishwa hadi tatizo la malipo likitatuliwa. Jaribu kuhariri njia yako ya malipo au uwasiliane na wasaidizi wa Brave.</translation>
 <translation id="1839021455997460752">Anwani yako ya barua pepe</translation>
 <translation id="5154702632169343078">Mada</translation>
 <translation id="6625978880678465492">Tafadhali chagua sababu</translation>
@@ -1244,6 +1267,9 @@
 <translation id="6676791921618140305">Toleo la OS:</translation>
 <translation id="1156325797949437777">Usaidizi unatolewa kwa ushirikiano na Guardian.</translation>
 <translation id="3307461350293459700">Muunganisho wa VPN haujafaulu. Tafadhali jaribu kuunganisha tena na uhakikishe umebofya Ruhusu ili kuwezesha usanidi wa VPN wa Brave.</translation>
+<translation id="7261518280726313829">Kuzima DNS salama au kutumia seva chaguo-msingi kwenye Windows kunaweza kufichua majina ya tovuti unazotembelea kwa mtoa huduma wako wa Intaneti. Brave haipendekezi kufanya hivi. Je, ungependa kufanya hivyo hata hivyo?</translation>
+<translation id="888284761945060750">DNS salama imelemezwa na sera za shirika lako. Kutumia VPN ya Brave bila DNS Salama kunaweza kufichua majina ya tovuti unazotembelea kwa mtoa huduma wako wa Intaneti au shirika lako.</translation>
+<translation id="1657858090675311947">Usinionye kuhusu hii tena.</translation>
 <translation id="7586151660465233733">Masoko zaidi kwenye <ph name="SITE_NAME"/></translation>
 <translation id="952067063131306699">Tazama masoko na uuze crypto kwenye FTX</translation>
 <translation id="5963745988819586370">Masoko</translation>
@@ -1262,4 +1288,12 @@
 <translation id="4548946945059463969">Tambua masalio yako kwenye skrini</translation>
 <translation id="242959166945779492">Huna salio lolote katika akaunti yako. Tembelea FTX ili ununue kadhaa.</translation>
 <translation id="6996157559236886133">Hitilafu: Utendakazi uliozuiliwa wa akaunti ya Uphold</translation>
+<translation id="8303434745767477417">Zuia rasilimali za crypto. Fuatilia utendaji wa potifolio na utumie web 3 DApps. Fanya biashara, wekeza, omba na ukopeshe na DeFi. Zote kutoka kivinjari cha faragha cha Brave. Hakuna viendelezi, hakuna kipakuliwa kinachohitajika.</translation>
+<translation id="4075073132992924258">Brave Wallet haijawekwa kuwa pochi yako chaguomsingi na haitajibu web3 DApps. Tembelea mipangilio ili ubadilishe pochi yako chaguomsingi.</translation>
+<translation id="5668765612885835803">Unaweza kuunda akaunti za msingi kwenye Pochi ya Brave ambazo zinaweza kunakiliwa au kurejeshwa kwenye awamu yako ya kurejesha. Ili kujifunza zaidi kuhusu aina za akaunti tembelea msaada wa akaunti</translation>
+<translation id="2471916999505901943">Akaunti hizi zinaweza kutumiwa na programu za tovuti za 3 D na zinaweza kuonyeshwa katika potifolio yako. Hata hivyo, fahamu kwamba akaunti mbadala haziwezi kurejeshwa kupitia kwa fungu la maneno la urejeshaji kutoka kwenye nakala yako ya akaunti ya msingi.</translation>
+<translation id="5723696625900399845">Tumia paneli hii kufikia web3 kwa usalama na rasilimali zako zote za crypto.</translation>
+<translation id="8897114903450789862">Leta akauti zako za <ph name="WALLET_EXTENSION"/> kwenye Brave Wallet. Furahia njia ya haraka na salama zaidi ili kudhibiti rasilimali za crypto na kutumia web 3 DApps.</translation>
+<translation id="3301259443293676544">Weka nenosiri lako la crypto wallets lililopo ili ulete hadi Brave Wallet. Furahia njia ya haraka na salama zaidi kudhibiti rasilimali za crypto na utumie web 3 DApps.</translation>
+<translation id="1898254156730880135">Inaonekana kwamba malipo yako ya hivi karibuni zaidi hayakufaulu. Ufikiaji kwa usajili huu utasitishwa hadi tatizo la malipo litakapotatuliwa. Jaribu kuhariri njia ya kulipa au uwasiliane na wasaidizi wa Brave.</translation>
 </translationbundle>

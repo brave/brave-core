@@ -84,7 +84,20 @@
 <translation id="6587448235155023666">変更は、次にBraveを再起動した際に有効になります</translation>
 <translation id="8701563696941209024">今すぐ再起動</translation>
 <translation id="834487290629916192">後で</translation>
+<translation id="7207456302801184289">Braveへようこそ</translation>
+<translation id="4117451092682672487">シンプルに、プライバシーを保護。</translation>
+<translation id="7909375417585209817">Braveをデフォルトで使用すると、タップしたすべてのリンクがプライバシー保護モードで開かれます。</translation>
+<translation id="5148943178722443958">Braveの品質向上にご協力ください。</translation>
+<translation id="6188781052835527980">クラッシュまたはフリーズが発生した場合に匿名の診断レポートが送信されます。</translation>
+<translation id="1929905278861178845">Braveユーザーにより使用されている機能に関する製品インサイトが、完全にプライバシーが保護され匿名で共有されます。</translation>
+<translation id="2877653791257935258">ウェブサイト名またはURLを入力</translation>
+<translation id="5329830149661250028">Braveの違いを実感してください: 広告なし。トラッカーなし。スピーディーなページの読み込み。</translation>
+<translation id="3545804467215833536">タップしてBraveシールドを表示</translation>
+<translation id="1724327820822194498">シールドを使うと、Braveでブロックされたすべてのアイテムを確認できます。</translation>
+<translation id="5386259141409498372"><ph name="BIG_TECH"/> およびその他 <ph name="TRACKER"/> 件の広告 &amp; トラッカーをブロックしました</translation>
+<translation id="3092683655478890840"><ph name="TRACKER_COUNT"/> 個の広告 &amp; トラッカーをブロックしました</translation>
 <translation id="8281886186245836920">スキップ</translation>
+<translation id="6165508094623778733">詳しく知る</translation>
 <translation id="986879628471635371">トラブルシューティングのチュートリアル</translation>
 <translation id="5808759341041733958">既定の検索エンジンを選択してください</translation>
 <translation id="1331593888918588693">アプリの設定で、後からいつでも設定を変更することができます。</translation>
@@ -112,12 +125,12 @@
 <translation id="1166682575529520472">毎月</translation>
 <translation id="1628742278973105368">チップの毎月定期支払いは、初回は以下の日程で送られます:</translation>
 <translation id="298349922412901215">注意: このクリエイターは、まだBraveユーザーからの支援を受け取るための設定が完了していません。今後90日間、設定が完了するまで支援の実行を試みます。</translation>
-<translation id="635752162765375187">注意: このクリエイターは現在、あなたのウォレットからチップを受け取る設定が完了していません。あなたが作成したチップは、あなたのウォレットに保留されたまま90日間自動的に再試行されます。</translation>
+<translation id="635752162765375187">注: このクリエイターは現在、あなたのリワード管理ウォレットサービスからチップを受け取る設定が完了していません。あなたが作成したチップは保留され、90日間自動的に再試行されます。</translation>
 <translation id="1910721550319506122">ようこそ！</translation>
 <translation id="3165726837666415756">チップを送って、このサイトを応援できます。素晴らしいコンテンツを提供してくれたクリエイターに感謝の気持ちを伝えましょう。設定が完了しているコンテンツクリエイターには、毎月一週目に送られたチップが支払われます。</translation>
 <translation id="1704859330137112950">このサイトに毎月チップを送って応援することもできます。</translation>
 <translation id="245015745140252435">チップ金額</translation>
-<translation id="7873874596836611687">ウォレット残高</translation>
+<translation id="7873874596836611687">リワード残高:</translation>
 <translation id="2573313946367623146">チップを送る</translation>
 <translation id="3250511771491660127">毎月自動的にチップを送る</translation>
 <translation id="7658239707568436148">キャンセル</translation>
@@ -137,7 +150,7 @@
 <translation id="8220228041552340594">10月</translation>
 <translation id="8280223431922155812">11月</translation>
 <translation id="4254029385847607686">12月</translation>
-<translation id="4258022280942725182">ウォレット</translation>
+<translation id="4258022280942725182">現在のBraveリワード</translation>
 <translation id="3960619311638643872">Brave VPN</translation>
 <translation id="1772301834467143364">Brave News</translation>
 <translation id="7760215798627399379"><ph name="VALUE"/>米ドル</translation>
@@ -172,8 +185,8 @@
 <translation id="8689997599821157251">報酬を獲得</translation>
 <translation id="7550470870580166294">資金が不足しています</translation>
 <translation id="2775064702681588061">Brave Rewardsアカウントは入金を待っています。</translation>
-<translation id="2630264552940126640">ウォレットをバックアップする</translation>
-<translation id="238922425564381955">ウォレットをバックアップしてください。</translation>
+<translation id="2630264552940126640">Braveリワードのバックアップ</translation>
+<translation id="238922425564381955">Braveリワードをバックアップしてください。</translation>
 <translation id="2323069945529668668">おっと！</translation>
 <translation id="7510166204621526816">Brave Rewardsサーバーが応答しません。可能な限り早く回復いたします。</translation>
 <translation id="683765328936486920">YouTubeで</translation>
@@ -547,7 +560,7 @@
 <translation id="5493402808936397665">生体認証を有効にすると、パスワードを入力しなくてもウォレットのロックをすばやく解除できます。</translation>
 <translation id="8030647312184163932">指紋によるロック解除</translation>
 <translation id="4090490645603511157">生体認証を使用すると、パスワードを入力しなくてもウォレットのロックをすばやく解除できます。</translation>
-<translation id="1544192797660353713">ウォレット (ベータ版)</translation>
+<translation id="1544192797660353713">ウォレット</translation>
 <translation id="6901810042765869341">リカバリーフレーズを入力してBraveウォレットの暗号資産アカウントを復元します。</translation>
 <translation id="9120654436199628567">暗号資産アカウントを復元</translation>
 <translation id="4811736040444856406">リカバリーフレーズを表示</translation>
@@ -611,7 +624,7 @@
 <translation id="8239147115686034860">Braveウォレット を自動的にロック</translation>
 <translation id="414639769490080648">Brave Wallet が自動的にロックされるまで待機する分数</translation>
 <translation id="4993345308607970390">Braveウォレットをリセット</translation>
-<translation id="4322846864135539519">ウォレットをリセットしてよろしいですか？ウォレットがバックアップされていない場合、リセットすると、（紐づく資金を含む）すべてのアカウントデータ が失われます。確認のために「<ph name="CONFIRMATION_PHRASE"/>」を入力してください。</translation>
+<translation id="4322846864135539519">Braveリワードをリセットしますか？ウォレットがバックアップされていない場合、リセットすると（紐づく資金を含む）すべてのアカウントデータが失われます。確認のため「<ph name="CONFIRMATION_PHRASE"/>」を入力してください。</translation>
 <translation id="4862812525895306758">トランザクション &amp; ノンス情報をクリア</translation>
 <translation id="5693968582510626466">トランザクションのクリアは、開発者にとって、またはローカルサーバーの状態をクリアするときに便利です</translation>
 <translation id="5421107279168565467">トランザクションとノンス情報をすべてリセットしてもよろしいですか？このオプションは、ローカルでテストサーバーを実行している開発者が主に使用します。確認して実行するには「<ph name="CONFIRMATION_PHRASE"/>」を入力してください。</translation>
@@ -631,8 +644,8 @@
 <translation id="1190117345570417902">Wireguardの安全な暗号化されたVPNトンネルを使用します</translation>
 <translation id="1571230671455380494">私たちはお客様の情報を共有したり販売したりすることは決してありません</translation>
 <translation id="276866628038850725">すべてのプランには 7 日間の無料トライアルが含まれています！</translation>
-<translation id="7280825497485894053">月間サブスクリプション</translation>
-<translation id="3001303523417455986">年間サブスクリプション</translation>
+<translation id="1532536259167115948">月間サブスクリプション <ph name="TRIAL_TEXT"/></translation>
+<translation id="6344668702581136255">年間サブスクリプション <ph name="TRIAL_TEXT"/></translation>
 <translation id="6748319398471481216">毎月更新</translation>
 <translation id="7734634586133069282"><ph name="MONTHLY_AMOUNT"/> / 月</translation>
 <translation id="1163809943099641131">1 年</translation>
@@ -653,8 +666,7 @@
 このリクエストを受け入れない場合、VPN は再接続せず、インターネット接続は保護されません。</translation>
 <translation id="2429299231491852747">接続要求を受け入れる</translation>
 <translation id="3428909627460825679">VPN プロファイルの作成に失敗しました。もう一度お試しください。</translation>
-<translation id="1264320790738638119">購入の検証に失敗しました。もう一度お試しください。</translation>
-<translation id="8905950042180169719">VPN はバックグラウンドで実行されています</translation>
+<translation id="1264320790738638119">サブスクリプションの期限が終了しました。いつでも再登録できます。</translation>
 <translation id="8681480718817027245">サブスクリプション</translation>
 <translation id="7805768142964895445">ステータス</translation>
 <translation id="5747552184818312860">有効期限</translation>
@@ -682,15 +694,15 @@
 <translation id="1219475260382643267">ウェブサイトが機能しない</translation>
 <translation id="7138678301420049075">その他</translation>
 <translation id="4827315939627587219">VPN 構成をリセット</translation>
-<translation id="6883280223123252086">VPN 構成をリセットしてもよろしいですか？</translation>
+<translation id="1705662265912724430">VPN構成をリセットしますか？</translation>
 <translation id="604124094241169006">自動設定</translation>
 <translation id="7475580600756356589">サーバーに接続しています。少々お待ちください...</translation>
 <translation id="1342728075788541348">サーバーから切断しています。少々お待ちください...</translation>
 <translation id="669072536454692117">サブスクリプションが正常に購入されました</translation>
 <translation id="1187506504156101449">購入の確認に失敗しました:</translation>
 <translation id="8420522105268941892">すでにサブスクリプションに登録しています。サブスクリプションの復元を試してみてください。</translation>
-<translation id="404414664190867625">エラー!!\nユーザーが購入フローをキャンセルしたことが原因です。</translation>
-<translation id="3515141458161417228">エラー!!\n購入に失敗しました。</translation>
+<translation id="404414664190867625">サブスクリプションの購入を中止しました。</translation>
+<translation id="3515141458161417228">購入できませんでした。Google Playサポートにお問い合わせください。</translation>
 <translation id="6452181791372256707">拒否</translation>
 <translation id="8030852056903932865">承認する</translation>
 <translation id="1597199892790541240">ガス料金</translation>
@@ -725,6 +737,7 @@
 <translation id="2199215899212542417">機能タイプ: <ph name="FTYPE"/></translation>
 <translation id="4803003663447398145">データがありません</translation>
 <translation id="9061799688859969073"><ph name="ACCOUNT_NAME"/> より送信: <ph name="CRYPTO_VALUE"/> <ph name="ASSET"/> ($<ph name="FIAT_VALUE"/>) - <ph name="DATE"/></translation>
+<translation id="1148985422232712046"><ph name="ACCOUNT_NAME"/> が <ph name="ASSET"/> #<ph name="ASSET_ID"/> を送信しました - <ph name="DATE"/></translation>
 <translation id="2911329628253651823"><ph name="ACCOUNT_NAME"/>承認済み<ph name="ASSET"/> - <ph name="DATE"/></translation>
 <translation id="7400134344541309180">承認済み (無制限) <ph name="ASSET"/> - <ph name="PROXY"/></translation>
 <translation id="2428770727194227378"><ph name="ACCOUNT_NAME"/> スワップ - <ph name="DATE"/></translation>
@@ -789,6 +802,7 @@
 <translation id="7732576862074737148">≈ <ph name="VALUE"/> 米ドル</translation>
 <translation id="3079421456571897484"><ph name="VALUE"/> BAT</translation>
 <translation id="5802665280774361839">アドレス入力時にオートコンプリートを表示</translation>
+<translation id="8982438328166986164">ブックマークおよび閲覧履歴に基づきおすすめのウェブサイトを表示します。</translation>
 <translation id="1241283133946520352">ネットワーク</translation>
 <translation id="1062463687579789365">ウォレットネットワークのカスタマイズ</translation>
 <translation id="2512821599885971349">ネットワークを追加</translation>
@@ -823,7 +837,6 @@
 <translation id="3586752056660754651">Sign</translation>
 <translation id="6592721981110586529">Braveウォレットに接続</translation>
 <translation id="329813193938846695">アカウントを選択</translation>
-<translation id="3890989020011724401">新規アカウント</translation>
 <translation id="291375746846291973">信頼できるサイトにのみ接続してください。</translation>
 <translation id="385051799172605136">Back</translation>
 <translation id="1060221736464994328">このサイトのネットワーク切り替えを許可しますか？</translation>
@@ -840,24 +853,34 @@
 <translation id="85136472535634474">VPN設定を開く</translation>
 <translation id="8352805003811526272">構成をリセットしています...</translation>
 <translation id="6809312301323611382">同じサーバーを既に選択済みです。</translation>
-<translation id="5665084657857645952">権限がキャンセルされました</translation>
+<translation id="5665084657857645952">VPNプロファイルのインストールを停止しました。</translation>
 <translation id="9106265941552476098"><ph name="TRANSACTION_LENGTH"/>件のトランザクションを拒否</translation>
 <translation id="523862956770478816">サイトのアクセス許可</translation>
 <translation id="2141313140218636977"><ph name="VALUE"/>件のアカウントを接続しました</translation>
+<translation id="3890989020011724401">新規アカウント</translation>
 <translation id="4305817255990598646">切り替える</translation>
 <translation id="4804818685124855865">切断</translation>
 <translation id="8009571545960303544">あなたの署名がリクエストされています。</translation>
+<translation id="3484981968509595506">DAppが公開暗号化キーを要求しています</translation>
+<translation id="2291002548681057345">がウォレットの公開暗号化キーを要求しています。このキーを提供することに同意すると、サイトはあなたへの暗号化されたメッセージを作成することができます。</translation>
+<translation id="3340247553212049934">提供</translation>
 <translation id="1982257600591932657">ネットワーク名</translation>
 <translation id="5052727830821470769">ネットワーク URL</translation>
 <translation id="4822132585477111396">Chain ID</translation>
 <translation id="7131971375297699539">通貨記号</translation>
 <translation id="7982789257301363584">ネットワーク</translation>
-<translation id="2521480044079508357">これにより、このネットワークを Brave Wallet 内で使用できるようになります。</translation>
+<translation id="7540715999708954128">これにより、このネットワークをBraveウォレット内で使用できるようになります。詳細。</translation>
+<translation id="8759753423332885148">詳しく見る</translation>
 <translation id="4717431746210146708">このサイトにネットワークの追加を許可しますか？</translation>
 <translation id="3378339846292573874">推奨トークンを追加</translation>
 <translation id="2322227405137827074">このトークンをインポートしますか?</translation>
 <translation id="1324417023773393937">Braveブラウザ</translation>
 <translation id="6044189892950611565">Braveブラウザへの通知チャンネル</translation>
+<translation id="1173919438868967364">アカウントを選択</translation>
+<translation id="8922793255489232731">以下に一致するタイムゾーンを取得できません : <ph name="VALUE"/></translation>
+<translation id="8231907121684689093">上位サイトを表示</translation>
+<translation id="6471216025161697462"><ph name="VALUE"/>に接続済み</translation>
+<translation id="1968852757206592413">トライアル</translation>
 <translation id="6602036279006002239">注意: このクリエイターは現在、あなたのウォレットからチップを受け取る設定が完了していません。あなたが作成したチップは、あなたのウォレットに保留されたまま90日間自動的に再試行されます。</translation>
 <translation id="3370968821559864204">ウォレット残高</translation>
 <translation id="3780605330121608425">ウォレット</translation>
@@ -904,4 +927,5 @@
 <translation id="9218430445555521422">デフォルトとして設定</translation>
 <translation id="6369495274982305511">ウォレットをリセットしてよろしいですか？ウォレットがバックアップされていない場合、リセットすると、（紐づく資金を含む）すべてのアカウントデータ が失われます。確認のために「<ph name="CONFIRMATION_PHRASE"/>」を入力してください。</translation>
 <translation id="64394831139134288">マイウォレット</translation>
+<translation id="8905950042180169719">VPN はバックグラウンドで実行されています</translation>
 </translationbundle>

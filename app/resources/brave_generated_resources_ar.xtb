@@ -2,7 +2,6 @@
 <!DOCTYPE translationbundle>
 <translationbundle lang="ar">
 <translation id="3333887201479867589">مكافآت Brave</translation>
-<translation id="7942180974165298215">Brave لحظر الإعلانات</translation>
 <translation id="4615489450165434530">الإبلاغ عن موقع إلكتروني معطل</translation>
 <translation id="1209739344687072997">الإبلاغ عن موقع إلكتروني معطل</translation>
 <translation id="6406506848690869874">مزامنة</translation>
@@ -43,6 +42,7 @@
 <translation id="3094628781200061820">النشر واسترداد الملفات من IPFS</translation>
 <translation id="7398397225367092613">.onion</translation>
 <translation id="406832631167785034">افتح باستخدام عنوان .onion</translation>
+<translation id="4759098689276706664">فرض اللصق</translation>
 <translation id="4901618511712685702">استيراد إلى IPFS</translation>
 <translation id="6794469945030154569">هذه الصفحة</translation>
 <translation id="5037852323412456577">الصورة المحددة</translation>
@@ -70,7 +70,7 @@
 <translation id="3425600262621021599">افتح الرابط في نافذة Brave خاصة، باستخدام Tor</translation>
 <translation id="3229091547987707389">استيراد دليل ومشاركته</translation>
 <translation id="5029193871181468990">إخفاء أيقونة Brave Rewards</translation>
-<translation id="7595540212376041331">إخفاء أيقونة Brave Wallet من شريط الأدوات</translation>
+<translation id="7595540212376041331">إخفاء أيقونة Brave Wallet</translation>
 <translation id="4928988318462976765">متجر إضافات الويب</translation>
 <translation id="9181207987584064303">عرض في متجر إضافات الويب</translation>
 <translation id="3161744659507801211">تحذير: لا يستطيع Brave منع الامتدادات من تسجيل محفوظات الاستعراض الخاصة بك.</translation>
@@ -108,6 +108,7 @@
 <translation id="2571596981920752023"><ph name="NUMBER_OF_TABS"/> علامة تبويب</translation>
 <translation id="2515126961943087659">خدمة إعلانات Bat</translation>
 <translation id="7924918279836988121">خدمة دفتر الأستاذ من Bat</translation>
+<translation id="6665472986740899785">إعلان إشعارات Brave</translation>
 <translation id="4174337572777167894">مشروع اكتشاف الويب</translation>
 <translation id="8659271182272561965">المساهمة بإجراء بحث مجهول &amp; تصفح البيانات لتحسين مستوى Brave Search.</translation>
 <translation id="1516554614404600536">تعريف الأدوات الخاصة بشركة Brave</translation>
@@ -183,7 +184,6 @@
 <translation id="6817415381278637662">قم بتعيين Brave كمتصفحك الافتراضي للحصول على حماية خصوصية Brave على كل صفحة ويب تفتحها.</translation>
 <translation id="8722651357687610395">تعيين Brave كمتصفح افتراضي</translation>
 <translation id="2370739752330685659">ربما لاحقًا</translation>
-<translation id="3400357268283240774">إعدادات إضافية</translation>
 <translation id="9156965752763025780">‏ستسري التغييرات في المرة التالية التي تعيد فيها تشغيل Brave.</translation>
 <translation id="7179921470347911571">أعد التشغيل الآن</translation>
 <translation id="4472575034687746823">الخطوات الأولى</translation>
@@ -238,6 +238,30 @@
 <translation id="7390783310074170337">العرض الافتراضي</translation>
 <translation id="130615081792797568">عرض بسيط</translation>
 <translation id="2360360976480535628">عرض متقدم</translation>
+<translation id="6486983549008741930">تصفية المحتوى</translation>
+<translation id="8694564340481124390">قم بتمكين عوامل التصفية المخصصة التي تمنع أدوات التعقب والمضايقات الإقليمية واللغوية.</translation>
+<translation id="6522618763902154348">قم بتمكين عوامل التصفية المخصصة التي تمنع أدوات التعقب
+  <ph name="BEGIN_LINK"/>والمضايقات<ph name="END_LINK"/>الإقليمية واللغوية .
+</translation>
+<translation id="3482656215021340727">إضافة قوائم عوامل التصفية المخصصة</translation>
+<translation id="1020877116991797978">أضف قوائم إضافية أنشأها مجتمعك الموثوق واحتفظ بها.</translation>
+<translation id="7617831480435794399">لا تشترك إلا في قوائم من كيانات تثق بها. سيتحقق متصفحك دوريًّا من تحديثات القائمة من رابط URL تُدخله أنت، كاشفًا عن عنوان IP الخاص بك لهذا الخادم.</translation>
+<translation id="2831397936251948638">إنشاء عوامل تصفية مخصصة</translation>
+<translation id="4618274268052410139">أضف عوامل تصفية مخصصة قمت بإنشائها، واحدة لكل سطر ، في الحقل أدناه. تأكد من استخدام بنية عامل تصفية<ph name="BEGIN_LINK"/>Adblock<ph name="END_LINK"/>.</translation>
+<translation id="7791543448312431591">إضافة</translation>
+<translation id="571950783952070673">قائمة URL</translation>
+<translation id="9204006549413740506">آخر تحديث</translation>
+<translation id="6745592621698551453">التحديث الآن</translation>
+<translation id="5334844597069022743">عرض المصدر</translation>
+<translation id="4720556299488643018">إلغاء الاشتراك</translation>
+<translation id="6532106788206463496">حفظ التغييرات</translation>
+<translation id="4516904298421534459">ترشيح القوائم</translation>
+<translation id="4435215931544457255">قوائم المجتمع الشهيرة الإضافية. لاحظ أن تمكين عدد كبير للغاية من عوامل التصفية سيؤدي إلى تقليل سرعات التصفح.</translation>
+<translation id="802154636333426148">تعذّر التنزيل</translation>
+<translation id="7889605993994647168">فشل التحديث</translation>
+<translation id="5438573563213942361">قوائم مخصصة</translation>
+<translation id="4182731739150761577">عرض القائمة بالكامل</translation>
+<translation id="1340263054776016283">أدخل عنوان URL لقائمة عامل التصفية</translation>
 <translation id="6821903322090655051">تم تعطيل Brave Rewards</translation>
 <translation id="413570371620795359">فتح لوحة المكافآت للتمكين والبدء</translation>
 <translation id="3849957491997306859">يجري الكشف عنه بشكل تلقائي</translation>
@@ -324,6 +348,10 @@
 <translation id="5093410893656857925">اختر نوع الجهاز</translation>
 <translation id="4581190919849683048">ما نوع الجهاز الذي ترغب في عمل المزامنة معه؟</translation>
 <translation id="4112587618563511470">رمز مزامنة غير صالح، يُرجى التحقق والمحاولة مرة أخرى.</translation>
+<translation id="3995714999835224798">الكود غير صالح</translation>
+<translation id="859506441384380749">تم إنشاء هذا الرمز بواسطة إصدار لا يتلقى تحديثات من Brave، يرجى ترقية جهازك الآخر أولاً</translation>
+<translation id="3132642509209154999">لقد انتهت صلاحية هذا الرمز. يرجى  إنشاء رمز جديد على جهازك الآخر والمحاولة مرة أخرى.</translation>
+<translation id="2859229680945501779">هذا الرمز غير صالح. يُرجى التحقق من ضبط الوقت والمنطقة الزمنية بشكل صحيح على جهازك.</translation>
 <translation id="2339730291919608488">مغادرة سلسلة المزامنة</translation>
 <translation id="115699408012835975">إذا قمت بإعادة تعيين المزامنة، فسيتعين عليك إعادة إدخال رمز المزامنة من جهاز آخر من أجل المزامنة معه. هل أنت متأكد أنك تريد المتابعة؟</translation>
 <translation id="6092564993102418148">هل أنت متأكد أنك تريد حذف الجهاز المحدد من سلسلة المزامنة؟</translation>
@@ -394,6 +422,7 @@
 <translation id="1062463687579789365">تخصيص شبكات المحفظة</translation>
 <translation id="2234108191702901162">تعذر إضافة الشبكة</translation>
 <translation id="8996633027318264334">هل تريد حقًا حذف <ph name="KEY_NAME"/>؟</translation>
+<translation id="7893578599666249602">هل تريد بالفعل إعادة تعيين<ph name="KEY_NAME"/>؟</translation>
 <translation id="2618193846561624884">هل تريد تحديث الشبكة الموجودة؟</translation>
 <translation id="9170907049676078643">طريقة حل موارد IPFS</translation>
 <translation id="1327977588028644528">المدخل</translation>
@@ -482,4 +511,5 @@
 <translation id="6040143037577758943">إغلاق</translation>
 <translation id="5600566490506283344">إشعار Brave Ad</translation>
 <translation id="4395160081588457461">النظر &amp; والإحساس</translation>
+<translation id="7942180974165298215">Brave لحظر الإعلانات</translation>
 </translationbundle>

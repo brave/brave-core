@@ -236,6 +236,7 @@
 <translation id="1911900517212490188">Wprowadzony klucz przywracania nie jest już obsługiwany. Przejdź <ph name="BEGIN_LINK"/>tutaj<ph name="END_LINK"/>, aby uzyskać nowy klucz.</translation>
 <translation id="7583327070390027131">Data następnych miesięcznych napiwków</translation>
 <translation id="6231182869178328516">Przekaż napiwek <ph name="NAME"/>, korzystając z przeglądarki Brave. Sprawdź pod adresem https://brave.com/tips.</translation>
+<translation id="5916536234616514390">Bardzo podoba mi się, to że <ph name="HASHTAG"/>Brave pozwala mi na wspieranie twórców! Twórca <ph name="NAME"/> otrzymał mój napiwek w postaci <ph name="HASHTAG2"/>BAT. Jeśli zweryfikuje się na stronie https://creators.brave.com przed <ph name="DATE"/>, BAT-y będą jego!</translation>
 <translation id="8404935570206006581">TipWithBrave</translation>
 <translation id="3082557070674409251">Kliknięte</translation>
 <translation id="7119308337584989771">Odrzucone</translation>
@@ -256,6 +257,7 @@
 <translation id="8218538368080510976">Błąd: Nieobsługiwany region</translation>
 <translation id="5382684862562314222">BAT nie jest jeszcze obsługiwany portfelu Uphold w Twoim regionie.</translation>
 <translation id="9074594632540931067">Błąd: BAT niedostępny</translation>
+<translation id="5376524136040178759">Według serwisu Uphold na Twoim koncie Uphold obowiązują obecnie pewne ograniczenia. Zaloguj się na swoje konto i sprawdź, czy nie ma jakichś powiadomień lub pozostałych wymagań związanych z kontem, które należy spełnić, a następnie spróbuj ponownie. Na przykład może być wymagane przesłanie dalszych informacji do serwisu Uphold.</translation>
 <translation id="3274650021044762770">Wystąpił problem podczas potwierdzania żądania przeglądarki w celu połączenia nagród Brave z kontem <ph name="PROVIDER"/> Możesz <ph name="BEGIN_LINK"/>skontaktować się z pomocą techniczną <ph name="END_LINK"/>, aby uzyskać pomoc.</translation>
 <translation id="1316066811927496401">Błąd: nie można potwierdzić żądania</translation>
 <translation id="1737873393693460829">Włączając [[title]], zgadzasz się na <ph name="BEGIN_LINK1"/>Warunki użytkowania<ph name="END_LINK1"/> i <ph name="BEGIN_LINK2"/>Politykę prywatności<ph name="END_LINK2"/>.</translation>
@@ -273,6 +275,8 @@
 <translation id="5112354605357157725">Przejdź do logowania</translation>
 <translation id="1280764044837262633"><ph name="PROVIDER"/> wymaga minimalnego salda w wysokości <ph name="AMOUNT"/> BAT, aby utworzyć konto. Jeśli konto było już wcześniej podłączone,</translation>
 <translation id="1892970806832316900">Oczekujący do <ph name="DATE"/></translation>
+<translation id="7849926087559412554">Twoja przeglądarka nie może otrzymywać Prywatnych reklam Brave.</translation>
+<translation id="5177429570315095022">Należy zaktualizować przeglądarkę, żeby dalej wyświetlać reklamy.</translation>
 <translation id="752216563428219524">Reklamy nie zostały uruchomione, prosimy odświeżyć stronę.</translation>
 <translation id="7422678632904904341">Kwota:</translation>
 <translation id="6969783933307596818">Odświeżaj automatycznie co 5 sekund</translation>
@@ -753,6 +757,7 @@
 <translation id="7306880305145342514">Gratulacje! Otrzymałeś(-aś) nagrody za <ph name="MONTH"/>!</translation>
 <translation id="3007207731685398329">Za <ph name="DAYS"/> otrzymasz <ph name="AMOUNT"/> nagrody za <ph name="MONTH"/></translation>
 <translation id="5878420576943709750">Już wkrótce otrzymasz <ph name="AMOUNT"/> nagród/nagrody za <ph name="MONTH"/>. Trzymaj rękę na pulsie!</translation>
+<translation id="3825131544027418568"><ph name="BEGIN_BOLD"/>Zaloguj się do <ph name="PROVIDER"/><ph name="END_BOLD"/>, aby wyświetlić saldo</translation>
 <translation id="2659764755126740206">Przejdź do mojego konta <ph name="PROVIDER"/></translation>
 <translation id="1165667598801520610">Dodaj środki</translation>
 <translation id="2394961582378297792">Wylogowano</translation>
@@ -792,6 +797,7 @@
 <translation id="167698752210114155">Wystąpił błąd wewnętrzny</translation>
 <translation id="2326876601333401685">Ta metoda RPC nie jest obsługiwana.</translation>
 <translation id="1128992132632883337">Wystąpił błąd parsowania odpowiedzi</translation>
+<translation id="5382339341735118861">Wystąpił ogólny błąd przetwarzania żądania</translation>
 <translation id="1680597601664421644">Importowane hasło mnemoniczne nie jest prawidłowe dla portfela Brave Wallet.</translation>
 <translation id="4641919696349069826">Obecnie trwa przetwarzanie żądania</translation>
 <translation id="872806943696014633">Brakuje danych transakcji</translation>
@@ -811,11 +817,13 @@
 <translation id="4232775951515678071">Nie udało się pozyskać typu do tej transakcji</translation>
 <translation id="2080935885647755539">Nie udało się pozyskać opłat za gaz do transakcji EIP-1559</translation>
 <translation id="4843814354611030845">Użytkownik odrzucił transakcję</translation>
+<translation id="1462494615260983714">Błąd przetwarzania transakcji</translation>
 <translation id="4886059598718763020">„<ph name="VALUE"/>” nie ma uprawnień do podpisania wiadomości</translation>
 <translation id="8719220598078667817">Nie udało się podpisać transakcji</translation>
 <translation id="875506212625074179">NIeprawidłowa odpowiedź ID łańcucha z usługi RPC</translation>
 <translation id="5486744676117070166">Nie udało się pobrać wartości identyfikatora jednorazowego</translation>
 <translation id="6180576227145734714">Po określeniu dana transakcji „to” musi zawierać prawidłowy adres</translation>
+<translation id="6688162556547723415">Żądana metoda i/lub konto nie zostały autoryzowane przez użytkownika.</translation>
 <translation id="4958950550253325418">Aplikacje DeFi</translation>
 <translation id="735961408871282410">Rynki NFT</translation>
 <translation id="7740287852186792672">Wyniki wyszukiwania</translation>
@@ -858,7 +866,8 @@
 <translation id="1191686659164947414">Transakcja może być ustawiona</translation>
 <translation id="632241521608275119">Tolerancja opóźnienia</translation>
 <translation id="4500473291496079954">Traci ważność</translation>
-<translation id="2236833281018938257">Adres 0x lub URL</translation>
+<translation id="2236833281018938257">Adres portfela lub adres URL</translation>
+<translation id="928500657730628112">Adres portfela</translation>
 <translation id="2860280209982026951">Brave korzysta z <ph name="LINK_BEFORE"/>0x<ph name="LINK_AFTER"/> jako agregatora DEX.</translation>
 <translation id="151946611346774041">0x przetworzy adres Ethereum i adres IP, aby zrealizować transakcję (z uwzględnieniem odbioru ofert). 0x będzie korzystać z tych danych WYŁĄCZNIE do celów przetwarzania transakcji.</translation>
 <translation id="4626407663177532837">Oferta zawiera opłatę Brave w wysokości 0,875%</translation>
@@ -866,7 +875,7 @@
 <translation id="6575120282593094155">Nie masz jeszcze konta <ph name="ACCOUNT_TYPE"/>. Chcesz utworzyć je teraz?</translation>
 <translation id="2704606927547763573">Skopiowane</translation>
 <translation id="1420318137760245955">Witamy w nowym portfelu Brave</translation>
-<translation id="8303434745767477417">Przechowuj kryptoaktywa. Śledź wyniki portfela i wchodź w interakcje z aplikacjami web 3 DApps. Handluj, inwestuj i pożyczaj, korzystając z DeFi. A wszystko to z poziomu prywatnej przeglądarki Brave, bez konieczności instalowania wtyczek i dodatkowych pobrań.</translation>
+<translation id="3671745544278414606">Przechowuj kryptoaktywa w portfelu powierniczym. Śledź wyniki portfela i działaj z aplikacjami Web3 DApps. Handluj, inwestuj oraz pożyczaj, korzystając z DeFi. Wszystko to z poziomu prywatnej przeglądarki Brave, bez konieczności instalowania wtyczek i pobierania plików.</translation>
 <translation id="6972754398087986839">Rozpocznij</translation>
 <translation id="375882617301124395">Utwórz kopię zapasową portfela kryptowalutowego</translation>
 <translation id="180032279811483155">W kolejnym kroku zostanie wyświetlone <ph name="RECOVERY_PHRASE_LENGTH"/>-wyrazowe wyrażenie odzyskiwania, które możesz wykorzystać do odzyskania głównych kont kryptowalutowych. Zapisz je w bezpiecznym miejscu. Tylko wyrażenie odzyskiwania umożliwi Ci odzyskanie dostępu do konta, jeżeli zapomnisz hasła, Twoje urządzenie zostanie zgubione lub skradzione albo zechcesz zmienić portfele.</translation>
@@ -895,7 +904,7 @@
 <translation id="163697698769819510">Utwórz kopię zapasową portfela, aby chronić swoje aktywa i nigdy nie utracić do nich dostępu.</translation>
 <translation id="1018806299114415224">Utwórz kopię zapasową teraz</translation>
 <translation id="5234764350956374838">Zamknij</translation>
-<translation id="4075073132992924258">Portfel Brave nie jest ustawiony jako portfel domyślny i nie będzie odpowiadał aplikacjom web3 DApps. Przejdź do ustawień, aby zmienić domyślny portfel.</translation>
+<translation id="1400709719911593089">Portfel Brave nie jest ustawiony jako portfel domyślny i nie będzie odpowiadał aplikacjom Web3 DApps. Przejdź do ustawień, aby zmienić domyślny portfel.</translation>
 <translation id="4362717653795263052">Przywróć główne konta kryptowalutowe</translation>
 <translation id="3038077262567136741">Wprowadź wyrażenie odzyskiwania, aby przywrócić swoje konto kryptowalutowe w portfelu Brave.</translation>
 <translation id="955918646509748368">Wprowadzone wyrażenie odzyskiwania jest nieprawidłowe.</translation>
@@ -906,8 +915,8 @@
 <translation id="8624315169751085215">Kopiuj do schowka</translation>
 <translation id="1121335910737476837">Główne konta kryptowalutowe</translation>
 <translation id="6969147029062037757">Zaimportowane konta</translation>
-<translation id="5668765612885835803">Możesz utworzyć główne konta w portfelu Brace, których kopie zapasowe możesz utworzyć lub odzyskać za pomocą wyrażenia odzyskiwania. Aby dowiedzieć się więcej o typach kont, odwiedź dział pomocy związany z kontem</translation>
-<translation id="2471916999505901943">Z kont tych można korzystać w połączeniu z aplikacjami web 3 DApps i można je wyświetlać w Twoim portfelu. Pamiętaj jednak, że kont dodatkowych nie można przywrócić za pomocą wyrażenia odzyskiwania przypisanego do kopii zapasowej konta głównego.</translation>
+<translation id="4057718162494343222">Możesz utworzyć główne konta w Portfelu Brave, których kopie zapasowe możesz wykonać lub odzyskać za pomocą wyrażenia odzyskiwania. Aby dowiedzieć się więcej o typach kont, odwiedź dział pomocy związany z kontem.</translation>
+<translation id="1011614786846182272">Z tych kont można korzystać w połączeniu z aplikacjami Web3 DApps i można je wyświetlać w Twoim portfelu. Pamiętaj jednak, że kont dodatkowych nie można przywrócić za pomocą wyrażenia odzyskiwania przypisanego do kopii zapasowej konta głównego.</translation>
 <translation id="1940465339426637378">Aktywa</translation>
 <translation id="2236507293802791911">Widoczne aktywa</translation>
 <translation id="7525067979554623046">Utwórz</translation>
@@ -989,6 +998,7 @@
 <translation id="8569380433211549748">Cena w</translation>
 <translation id="2490428413101944234">Kranik testowy</translation>
 <translation id="3352959425838279177">Uzyskaj Ether z kranika <ph name="SELECTED_NETWORK"/></translation>
+<translation id="6449626816252815844">Wybierz metodę zakupu</translation>
 <translation id="8009571545960303544">Twój podpis jest wymagany</translation>
 <translation id="5294062982587710720">Pamiętaj, że Brave nie może zweryfikować, co się stanie, gdy złożysz podpis. Podpis może autoryzować niemal dowolną operację na Twoim koncie lub w Twoim imieniu, taką jak np. przekazanie całkowitej kontroli nad Twoim kontem i kryptoaktywami stronie, z której pochodzi żądanie. Składaj podpisy tylko wtedy, gdy masz pewność i ufasz stronie przesyłającej żądanie.</translation>
 <translation id="3474375934783434676">Podpisy składasz na własne ryzyko</translation>
@@ -1037,7 +1047,7 @@
 <translation id="3890989020011724401">Nowe konto</translation>
 <translation id="7257603403519636638">Wyświetl zasoby konta</translation>
 <translation id="2092132085082887098">Zasoby konta</translation>
-<translation id="5723696625900399845">Użyj tego panelu, aby uzyskać bezpieczny dostęp do web3 i wszystkich kryptoaktywów.</translation>
+<translation id="4612979983851181941">Użyj tego panelu, aby uzyskać bezpieczny dostęp do Web3 i wszystkich kryptoaktywów.</translation>
 <translation id="4460220693591349571">TYP FUNKCJI</translation>
 <translation id="838933475572692615">DANE HEKSADECYMALNE</translation>
 <translation id="2240831799756994975">BAJTY</translation>
@@ -1049,13 +1059,13 @@
 <translation id="7739762330714405363">Użyj tego samego hasła</translation>
 <translation id="1085027414516521238">MetaMask</translation>
 <translation id="7102907656918333773">Importowanie z <ph name="WALLET_EXTENSION"/></translation>
-<translation id="8897114903450789862">Zaimportuj konta <ph name="WALLET_EXTENSION"/> do portfela Brave. Korzystaj z szybszej i bezpieczniejszej metody zarządzania kryptoaktywami i interakcji ze zdecentralizowanymi aplikacjami (DApps) Web 3.</translation>
+<translation id="1737856990004825123">Zaimportuj konta do <ph name="WALLET_EXTENSION"/> do portfela Brave. Korzystaj z szybszej i bezpieczniejszej metody zarządzania kryptoaktywami i interakcji z aplikacjami Web3 DApps.</translation>
 <translation id="4237840336687249184">Hasło MetaMask</translation>
 <translation id="2381605201035323535">portfele kryptowalutowe</translation>
 <translation id="2770851145415891830">Wykryto istniejące portfele kryptowalutowe</translation>
 <translation id="4938145712652668388">Kliknięcie opcji „Rozpocznij” spowoduje importowanie Twojego poprzedniego portfela krypowalutowego do nowego portfela Brave, dzięki czemu uzyskasz dostęp do wszystkich korzyści opisanych powyżej. Wypróbuj go i daj nam znać, co o nim sądzisz!</translation>
 <translation id="2237759620789871865">Jeśli wolisz pominąć import i zachować stary interfejs portfeli kryptowalut, po prostu przejdź do <ph name="LINK_BEFORE"/>ustawień<ph name="LINK_AFTER"/> przeglądarki Brave i zmień domyślne ustawienia z powrotem na Portfele kryptowalut. Możesz również przeprowadzić import, wypróbować nowy portfel Brave i wrócić do starej wersji w dowolnym momencie.</translation>
-<translation id="3301259443293676544">Wprowadź hasło do istniejących portfeli kryptowalutowych, aby importować je do portfela Brave. Korzystaj z szybszej i bezpieczniejszej metody zarządzania kryptoaktywami i wchodzenia w interakcje z aplikacjami web 3 DApps.</translation>
+<translation id="5590175005414413980">Wprowadź hasła do istniejących portfeli kryptowalutowych, aby zaimportować je do portfela Brave. Korzystaj z szybszej oraz bezpieczniejszej metody zarządzania kryptoaktywami i wchodzenia w interakcje z aplikacjami Web3 DApps.</translation>
 <translation id="9099900965604225657">Hasła do portfeli kryptowalutowych</translation>
 <translation id="4020495774166914146">Hasło i wyrażenie odzyskiwania zostały utracone. Utwórz nowy portfel.</translation>
 <translation id="6344138931392227467">Podłączono portfel <ph name="DEVICE_NAME"/></translation>
@@ -1111,6 +1121,7 @@
 <translation id="1599636444563952897">Uprawnienie limitu wydatków pozwala <ph name="SITE_ORIGIN"/> na wypłacenie i wydanie maksymalnie następującej kwoty:</translation>
 <translation id="4512871563176965522">Niestandardowe odliczenie</translation>
 <translation id="749944179568745958">Nieprawidłowy adres ETH</translation>
+<translation id="2832270987629018596">Nieprawidłowy adres SOL</translation>
 <translation id="882486206986535424">Nieprawidłowy adres</translation>
 <translation id="6825399159373612149">Domena <ph name="DOMAIN_NAME"/> nie jest zarejestrowana</translation>
 <translation id="8971278306757462297">Adres docelowy to Twój własny adres.</translation>
@@ -1142,7 +1153,6 @@
 <translation id="3327639091470204775">Nie można połączy z mostkiem Trezor</translation>
 <translation id="6672377693827764095">Błąd wewnętrzny. Nie można pobrać kont.</translation>
 <translation id="6889920539620318793">Ustaw jako aktywną</translation>
-<translation id="1462494615260983714">Błąd przetwarzania transakcji</translation>
 <translation id="8933250418452564886">Nie można znaleźć transakcji sprzętowej. Ponów próbę.</translation>
 <translation id="5999974802900788338">Odebrano błąd z urządzenia sprzętowego. Prawdopodobnie musisz potwierdzić transakcję na urządzeniu.</translation>
 <translation id="8523768065044261559">Błąd podczas przetwarzania transakcji. Ponów próbę.</translation>
@@ -1164,11 +1174,19 @@
 <translation id="6423985584914773314">Nieprawidłowy adres FIL</translation>
 <translation id="3898731124813934210">Kup poprzez Wyre</translation>
 <translation id="5522073372365069684">Kup poprzez Ramp</translation>
+<translation id="8725252491405767337">Ramp.Network</translation>
+<translation id="7623800836425615432">Wyre</translation>
+<translation id="7667423728712601865">Kupuj kryptowaluty za pomocą kart Visa lub Mastercard.</translation>
 <translation id="8528916244724490964">Wszystkie sieci</translation>
 <translation id="2781668117338732220">Sieci pomocnicze</translation>
 <translation id="2816106784624007524">Limit paliwa musi być liczbą całkowitą większą od 0</translation>
 <translation id="3354376789153561654">Należy określić wartość pola „do” w danych transakcji</translation>
 <translation id="8728991256628663004">W polu „od” w danych transakcji musi znajdować się prawidłowy adres Filecoin</translation>
+<translation id="7003028930816622496">Urządzenie Ledger zablokowane</translation>
+<translation id="3939390290522058485">Kliknij, aby sprawdzić szczegóły transakcji <ph name="VALUE"/></translation>
+<translation id="2317956709076373213">Transakcja potwierdzona</translation>
+<translation id="310693998838023022">Błąd transakcji</translation>
+<translation id="6395870673621520684">Transakcja odrzucona</translation>
 <translation id="3155170474926428993">Oprogramowanie Tor</translation>
 <translation id="3745016858329272300">Ogólne informacje</translation>
 <translation id="4045404575593562245">Wydarzenia kontrolne sieci Tor</translation>
@@ -1183,6 +1201,7 @@
 <translation id="7709075156958117386">Jeśli ta strona nie działa, wyłącz Tarczę. 
     <ph name="LINK_BEFORE"/>Uwaga: to może zmniejszyć ochronę prywatności zapewnianą przez Brave. <ph name="LINK_AFTER"/></translation>
 <translation id="8377155647357436161">Zablokowane skrypty śledzące, reklamy i inne <ph name="LINK_BEFORE"/>Dowiedz się więcej<ph name="LINK_AFTER"/></translation>
+<translation id="7604553853176833536">Nie jest chronione przez Tarcze Brave <ph name="LINK_BEFORE"/>Dowiedz się więcej<ph name="LINK_AFTER"/></translation>
 <translation id="650318023204990401">Zaawansowane sterowanie</translation>
 <translation id="5799940914270080805">Zmiana tych ustawień może spowodować niepoprawne działanie stron.</translation>
 <translation id="9204041448536398473">Globalne ustawienia Tarczy</translation>
@@ -1208,6 +1227,8 @@
 <translation id="3795015906457257780">Przeglądasz stronę bez zabezpieczeń prywatności Brave.</translation>
 <translation id="7194012750329511146">Tarcze Brave
 <ph name="NUMBER"/> Zablokowane skrypty śledzące, reklamy i inne</translation>
+<translation id="4292121526390005808">Zablokowane skrypty</translation>
+<translation id="3541307549916475335">Interfejs użytkownika panelu VPN Brave</translation>
 <translation id="1742469581923031760">Łączenie…</translation>
 <translation id="1287487756047817908">Odłączanie…</translation>
 <translation id="2325196879156848326">Połączenie nie powiodło się</translation>
@@ -1225,9 +1246,11 @@
 <translation id="3181339219453722970">Wybierz lokalizację VPN</translation>
 <translation id="1751947227857853925">Szybka łączność bez limitów, do 100 Mbps</translation>
 <translation id="1400240082805528049">Całodobowa pomoc techniczna</translation>
+<translation id="1693568075761612600">Nie udało się utworzyć zgłoszenia do działu wsparcia. Sprawdź swoje połączenie.</translation>
 <translation id="8463313539532697053">Poczekaj chwilę na załadowanie.…</translation>
+<translation id="4317307602527599178">Nie można sprawdzić statusu zakupu. Może to być spowodowane problemem z siecią.</translation>
 <translation id="4613076894734402086">Edytuj metodę płatności</translation>
-<translation id="1898254156730880135">Wygląda na to, że Twoja ostatnia płatność się nie powiodła. Dostęp do tej subskrypcji zostanie wstrzymany do chwili rozwiązania problemu dotyczącego płatności. Spróbuj edytować metodę płatności lub skontaktuj się ze wsparciem Brave.</translation>
+<translation id="8373427068383038263">Wygląda na to, że Twoja ostatnia płatność za <ph name="VALUE"/> zakończyła się niepowodzeniem. Dostęp do tej subskrypcji zostanie wstrzymany do chwili rozwiązania problemu dotyczącego płatności. Spróbuj edytować metodę płatności lub skontaktuj się z działem wsparcia Brave.</translation>
 <translation id="1839021455997460752">Twój adres e-mail</translation>
 <translation id="5154702632169343078">Temat</translation>
 <translation id="6625978880678465492">Wybierz powód</translation>
@@ -1244,6 +1267,9 @@
 <translation id="6676791921618140305">Wersja systemu operacyjnego:</translation>
 <translation id="1156325797949437777">Wsparcie udzielane we współpracy z firmą Guardian.</translation>
 <translation id="3307461350293459700">Nie udało się nawiązać połączenia VPN. Spróbuj połączyć się ponownie i pamiętaj, aby kliknąć „Zezwalaj” w celu włączenia konfiguracji VPN Brave.</translation>
+<translation id="7261518280726313829">Wyłączenie Secure DNS lub korzystanie z serwerów domyślnych w systemie Windows może doprowadzić do ujawnienia nazw odwiedzanych stron dostawcy usług internetowych. Brave nie zaleca takiego działania. Czy mimo to chcesz to zrobić?</translation>
+<translation id="888284761945060750">Secure DNS jest wyłączone w związku z zasadami obowiązującymi w Twojej organizacji. Korzystanie z Brave VPN bez Secure DNS może spowodować ujawnienie nazw odwiedzanych stron dostawcy usług internetowych lub organizacji.</translation>
+<translation id="1657858090675311947">Nie ostrzegaj mnie o tym ponownie.</translation>
 <translation id="7586151660465233733">Więcej rynków na <ph name="SITE_NAME"/>.</translation>
 <translation id="952067063131306699">Zobacz rynki i handluj kryptowalutami na FTX</translation>
 <translation id="5963745988819586370">Rynki</translation>
@@ -1262,4 +1288,12 @@
 <translation id="4548946945059463969">Pokaż swoje salda na ekranie</translation>
 <translation id="242959166945779492">Nie masz żadnych środków na swoim koncie. Odwiedź FTX, aby je nabyć.</translation>
 <translation id="6996157559236886133">Błąd: ograniczona funkcjonalność konta Uphold</translation>
+<translation id="8303434745767477417">Przechowuj kryptoaktywa. Śledź wyniki portfela i wchodź w interakcje z aplikacjami web 3 DApps. Handluj, inwestuj i pożyczaj, korzystając z DeFi. A wszystko to z poziomu prywatnej przeglądarki Brave, bez konieczności instalowania wtyczek i dodatkowych pobrań.</translation>
+<translation id="4075073132992924258">Portfel Brave nie jest ustawiony jako portfel domyślny i nie będzie odpowiadał aplikacjom web3 DApps. Przejdź do ustawień, aby zmienić domyślny portfel.</translation>
+<translation id="5668765612885835803">Możesz utworzyć główne konta w portfelu Brace, których kopie zapasowe możesz utworzyć lub odzyskać za pomocą wyrażenia odzyskiwania. Aby dowiedzieć się więcej o typach kont, odwiedź dział pomocy związany z kontem</translation>
+<translation id="2471916999505901943">Z kont tych można korzystać w połączeniu z aplikacjami web 3 DApps i można je wyświetlać w Twoim portfelu. Pamiętaj jednak, że kont dodatkowych nie można przywrócić za pomocą wyrażenia odzyskiwania przypisanego do kopii zapasowej konta głównego.</translation>
+<translation id="5723696625900399845">Użyj tego panelu, aby uzyskać bezpieczny dostęp do web3 i wszystkich kryptoaktywów.</translation>
+<translation id="8897114903450789862">Zaimportuj konta <ph name="WALLET_EXTENSION"/> do portfela Brave. Korzystaj z szybszej i bezpieczniejszej metody zarządzania kryptoaktywami i interakcji ze zdecentralizowanymi aplikacjami (DApps) Web 3.</translation>
+<translation id="3301259443293676544">Wprowadź hasło do istniejących portfeli kryptowalutowych, aby importować je do portfela Brave. Korzystaj z szybszej i bezpieczniejszej metody zarządzania kryptoaktywami i wchodzenia w interakcje z aplikacjami web 3 DApps.</translation>
+<translation id="1898254156730880135">Wygląda na to, że Twoja ostatnia płatność się nie powiodła. Dostęp do tej subskrypcji zostanie wstrzymany do chwili rozwiązania problemu dotyczącego płatności. Spróbuj edytować metodę płatności lub skontaktuj się ze wsparciem Brave.</translation>
 </translationbundle>

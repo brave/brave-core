@@ -2,7 +2,6 @@
 <!DOCTYPE translationbundle>
 <translationbundle lang="ru">
 <translation id="3333887201479867589">Вознаграждение Brave</translation>
-<translation id="7942180974165298215">Блокировка рекламы Brave</translation>
 <translation id="4615489450165434530">Сообщить о неисправности сайта</translation>
 <translation id="1209739344687072997">Сообщить о неработающем сайте</translation>
 <translation id="6406506848690869874">Синхронизация</translation>
@@ -43,6 +42,7 @@
 <translation id="3094628781200061820">Публиковать и скачивать файлы из IPFS</translation>
 <translation id="7398397225367092613">.onion</translation>
 <translation id="406832631167785034">Открыть в домене .onion</translation>
+<translation id="4759098689276706664">Вставить принудительно</translation>
 <translation id="4901618511712685702">Импортировать в IPFS</translation>
 <translation id="6794469945030154569">Страницу</translation>
 <translation id="5037852323412456577">Выбранное изображение</translation>
@@ -70,7 +70,7 @@
 <translation id="3425600262621021599">Открыть ссылку в Приватном окне Brave с Tor</translation>
 <translation id="3229091547987707389">Импортировать папку и открыть общий доступ</translation>
 <translation id="5029193871181468990">Скрыть значок Brave Наград</translation>
-<translation id="7595540212376041331">Скрывает значок кошелька Brave на панели инструментов.</translation>
+<translation id="7595540212376041331">Скрыть значок Brave Кошелька</translation>
 <translation id="4928988318462976765">Магазин расширений</translation>
 <translation id="9181207987584064303">Открыть в магазине расширений</translation>
 <translation id="3161744659507801211">Внимание: Brave не может запретить расширениям сохранять историю просмотров.</translation>
@@ -108,6 +108,7 @@
 <translation id="2571596981920752023">Вкладок: <ph name="NUMBER_OF_TABS"/></translation>
 <translation id="2515126961943087659">Рекламный сервис BAT</translation>
 <translation id="7924918279836988121">Служба учета BAT-транзакций</translation>
+<translation id="6665472986740899785">Всплывающая реклама Brave</translation>
 <translation id="4174337572777167894">Web Discovery Project</translation>
 <translation id="8659271182272561965">Анонимно предоставлять Brave Search данные поиска и сведения о действиях в браузере для улучшения работы сервиса</translation>
 <translation id="1516554614404600536">Подсказки Brave</translation>
@@ -183,7 +184,6 @@
 <translation id="6817415381278637662">Сделайте Brave браузером по умолчанию, чтобы на каждой открытой странице ваша конфиденциальность была под защитой.</translation>
 <translation id="8722651357687610395">Установить Brave по умолчанию</translation>
 <translation id="2370739752330685659">Не сейчас</translation>
-<translation id="3400357268283240774">Дополнительные настройки</translation>
 <translation id="9156965752763025780">Изменения вступят в силу при следующем входе в Brave.</translation>
 <translation id="7179921470347911571">Перезапустить</translation>
 <translation id="4472575034687746823">Начало работы</translation>
@@ -238,6 +238,28 @@
 <translation id="7390783310074170337">Стандартный вид</translation>
 <translation id="130615081792797568">Простой вид</translation>
 <translation id="2360360976480535628">Расширенный вид</translation>
+<translation id="6486983549008741930">Фильтры контента</translation>
+<translation id="8694564340481124390">Настройте фильтры, чтобы блокировать навязчивую рекламу, а также трекеры, отслеживающие пользователей по региону и языку.</translation>
+<translation id="6522618763902154348">Настройте фильтры, чтобы блокировать <ph name="BEGIN_LINK"/>навязчивую рекламу<ph name="END_LINK"/>, а также трекеры, отслеживающие пользователей по региону и языку.</translation>
+<translation id="3482656215021340727">Списки фильтров</translation>
+<translation id="1020877116991797978">Добавьте дополнительные списки, создаваемые и управляемые сообществом, которому вы доверяете.</translation>
+<translation id="7617831480435794399">Подписывайтесь на списки только проверенных сайтов. Периодически ваш браузер будет проверять список на обновления по указанному вами адресу. При этом серверу этого сайта будет раскрыт ваш IP-адрес.</translation>
+<translation id="2831397936251948638">Собственные фильтры</translation>
+<translation id="4618274268052410139">Добавьте собственные фильтры в поле внизу, по одному в каждой строке. Используйте <ph name="BEGIN_LINK"/>синтаксис фильтров AdBlock<ph name="END_LINK"/>.</translation>
+<translation id="7791543448312431591">Добавить</translation>
+<translation id="571950783952070673">URL списка</translation>
+<translation id="9204006549413740506">Последнее обновление</translation>
+<translation id="6745592621698551453">Обновить сейчас</translation>
+<translation id="5334844597069022743">Открыть источник</translation>
+<translation id="4720556299488643018">Отказаться от подписки</translation>
+<translation id="6532106788206463496">Сохранить изменения</translation>
+<translation id="4516904298421534459">Списки фильтров</translation>
+<translation id="4435215931544457255">Дополнительные популярные списки сообщества. Если включить слишком много фильтров, браузер будет работать медленнее.</translation>
+<translation id="802154636333426148">Ошибка скачивания</translation>
+<translation id="7889605993994647168">Не удалось скачать обновление</translation>
+<translation id="5438573563213942361">Пользовательские списки</translation>
+<translation id="4182731739150761577">Показать весь список</translation>
+<translation id="1340263054776016283">Введите URL списка фильтров</translation>
 <translation id="6821903322090655051">Функция Brave Rewards отключена.</translation>
 <translation id="413570371620795359">Чтобы начать, откройте раздел «Награды»</translation>
 <translation id="3849957491997306859">Автообнаружение</translation>
@@ -324,6 +346,10 @@
 <translation id="5093410893656857925">Выберите тип устройства</translation>
 <translation id="4581190919849683048">С устройством какого типа вы хотели бы выполнять синхронизацию?</translation>
 <translation id="4112587618563511470">Неверный код синхронизации. Проверьте и попробуйте еще раз.</translation>
+<translation id="3995714999835224798">Недействительный код.</translation>
+<translation id="859506441384380749">Код был сгенерирован в устаревшей версии Brave. Обновите браузер на другом устройстве.</translation>
+<translation id="3132642509209154999">Этот код устарел. Сгенерируйте его на втором устройстве еще раз и введите снова.</translation>
+<translation id="2859229680945501779">Невозможно применить код. Проверьте, правильно ли указаны время и часовой пояс на вашем устройстве.</translation>
 <translation id="2339730291919608488">Выйти из цепочки</translation>
 <translation id="115699408012835975">Если вы сбросите синхронизацию, вам придется повторно ввести код синхронизации на другом устройстве, чтобы выполнять синхронизацию с ним. Уверены, что хотите продолжить?</translation>
 <translation id="6092564993102418148">Вы уверены, что хотите удалить выбранное устройство из цепочки синхронизации?</translation>
@@ -394,6 +420,7 @@
 <translation id="1062463687579789365">Настройка сетей кошелька</translation>
 <translation id="2234108191702901162">Невозможно добавить сеть.</translation>
 <translation id="8996633027318264334">Вы уверены, что хотите удалить <ph name="KEY_NAME"/>?</translation>
+<translation id="7893578599666249602">Сбросить сеть <ph name="KEY_NAME"/>?</translation>
 <translation id="2618193846561624884">Вы хотите обновить существующую сеть?</translation>
 <translation id="9170907049676078643">Метод преобразования IPFS-ресурсов</translation>
 <translation id="1327977588028644528">Шлюз</translation>
@@ -481,4 +508,5 @@
 <translation id="6040143037577758943">Закрыть</translation>
 <translation id="5600566490506283344">Уведомление о рекламе Brave</translation>
 <translation id="4395160081588457461">Смотрите и ощущайте</translation>
+<translation id="7942180974165298215">Блокировка рекламы Brave</translation>
 </translationbundle>

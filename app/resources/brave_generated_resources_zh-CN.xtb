@@ -2,7 +2,6 @@
 <!DOCTYPE translationbundle>
 <translationbundle lang="zh-CN">
 <translation id="3333887201479867589">Brave 奖励</translation>
-<translation id="7942180974165298215">Brave 广告拦截</translation>
 <translation id="4615489450165434530">报告损坏的网站</translation>
 <translation id="1209739344687072997">报告损坏的网站</translation>
 <translation id="6406506848690869874">同步</translation>
@@ -42,6 +41,7 @@
 <translation id="3094628781200061820">发布并从 IPFS 检索文件</translation>
 <translation id="7398397225367092613">.onion</translation>
 <translation id="406832631167785034">使用 .onion 地址打开</translation>
+<translation id="4759098689276706664">强制粘贴</translation>
 <translation id="4901618511712685702">导入到 IPFS</translation>
 <translation id="6794469945030154569">此页面</translation>
 <translation id="5037852323412456577">已选图片</translation>
@@ -69,7 +69,7 @@
 <translation id="3425600262621021599">用 Tor 在 Brave 隐私窗口中打开链接</translation>
 <translation id="3229091547987707389">导入并分享目录</translation>
 <translation id="5029193871181468990">隐藏 Brave 奖励图标</translation>
-<translation id="7595540212376041331">在工具栏上隐藏 Brave 钱包按钮</translation>
+<translation id="7595540212376041331">隐藏 Brave 的钱包图标</translation>
 <translation id="4928988318462976765">网络扩展程序商店</translation>
 <translation id="9181207987584064303">在网络扩展程序商店中查看</translation>
 <translation id="3161744659507801211">警告：Brave 无法阻止扩展程序记录您的浏览活动。</translation>
@@ -107,6 +107,7 @@
 <translation id="2571596981920752023"><ph name="NUMBER_OF_TABS"/> 个标签页</translation>
 <translation id="2515126961943087659">Bat Ads 服务</translation>
 <translation id="7924918279836988121">Bat Ledger 服务</translation>
+<translation id="6665472986740899785">Brave 的通知广告</translation>
 <translation id="4174337572777167894">Web 发现项目</translation>
 <translation id="8659271182272561965">提供一些匿名搜索和浏览数据来完善 Brave 搜索。</translation>
 <translation id="1516554614404600536">Brave 工具提示</translation>
@@ -182,7 +183,6 @@
 <translation id="6817415381278637662">将 Brave 设置为你的默认浏览器，以便你打开的每个网页都获得 Brave 的隐私保护。</translation>
 <translation id="8722651357687610395">将 Brave 设置为默认</translation>
 <translation id="2370739752330685659">回头再说</translation>
-<translation id="3400357268283240774">其他设置</translation>
 <translation id="9156965752763025780">您所做的更改会在下次重新启动 Brave 时生效。</translation>
 <translation id="7179921470347911571">立即重新启动</translation>
 <translation id="4472575034687746823">开始使用</translation>
@@ -237,6 +237,29 @@
 <translation id="7390783310074170337">默认视图</translation>
 <translation id="130615081792797568">简单视图</translation>
 <translation id="2360360976480535628">高级视图</translation>
+<translation id="6486983549008741930">内容过滤</translation>
+<translation id="8694564340481124390">启用自定义过滤器来阻止特定区域和语言的跟踪器和烦人的内容。</translation>
+<translation id="6522618763902154348">启用自定义过滤器以阻止特定区域和语言的跟踪器和 
+    <ph name="BEGIN_LINK"/>烦人的内容<ph name="END_LINK"/>。</translation>
+<translation id="3482656215021340727">添加自定义过滤器列表</translation>
+<translation id="1020877116991797978">添加由您信任的社区创建和维护的其他列表。</translation>
+<translation id="7617831480435794399">仅订阅您信任的实体的列表。您的浏览器会在定期检查您输入的 URL 中的列表更新情况，与此同时会将您的 IP 地址显示给其服务器。</translation>
+<translation id="2831397936251948638">创建自定义过滤器</translation>
+<translation id="4618274268052410139">在下面的字段中添加您创建的自定义过滤器，每行一个。请务必使用<ph name="BEGIN_LINK"/> Adblock 过滤器语法<ph name="END_LINK"/>。</translation>
+<translation id="7791543448312431591">添加</translation>
+<translation id="571950783952070673">列单 URL</translation>
+<translation id="9204006549413740506">上次更新时间</translation>
+<translation id="6745592621698551453">立即更新</translation>
+<translation id="5334844597069022743">查看源</translation>
+<translation id="4720556299488643018">退订</translation>
+<translation id="6532106788206463496">保存更改</translation>
+<translation id="4516904298421534459">过滤列表</translation>
+<translation id="4435215931544457255">其他热门社群清单。请注意，启用太多过滤器可能会导致浏览速度变慢。</translation>
+<translation id="802154636333426148">下载失败</translation>
+<translation id="7889605993994647168">更新失败</translation>
+<translation id="5438573563213942361">自定义列单</translation>
+<translation id="4182731739150761577">显示完整列表</translation>
+<translation id="1340263054776016283">输入过滤器列表 URL</translation>
 <translation id="6821903322090655051">Brave 奖励已禁用</translation>
 <translation id="413570371620795359">打开奖励面板，启用并开始体验服务</translation>
 <translation id="3849957491997306859">自动检测</translation>
@@ -323,6 +346,10 @@
 <translation id="5093410893656857925">选择设备类型</translation>
 <translation id="4581190919849683048">您想与那种类型的设备进行同步？</translation>
 <translation id="4112587618563511470">同步代码无效，请检查并重试。</translation>
+<translation id="3995714999835224798">此代码无效</translation>
+<translation id="859506441384380749">此代码由已弃用的 Brave 版本生成，请先升级您的其他设备</translation>
+<translation id="3132642509209154999">此代码已过期。请在其他设备上生成新的代码，然后重试。</translation>
+<translation id="2859229680945501779">此代码无效。请检查您设备上的时间和时区设置是否正确。</translation>
 <translation id="2339730291919608488">离开同步链</translation>
 <translation id="115699408012835975">如果您重置同步，则您需要重新输入另一台设备的同步代码，以便与其进行同步。您确定想要继续吗？</translation>
 <translation id="6092564993102418148">你确定要从同步链中删除所选设备吗?</translation>
@@ -393,6 +420,7 @@
 <translation id="1062463687579789365">定制钱包网络</translation>
 <translation id="2234108191702901162">无法添加网络</translation>
 <translation id="8996633027318264334">确定要删除 <ph name="KEY_NAME"/> 吗？</translation>
+<translation id="7893578599666249602">您是否真的要重置<ph name="KEY_NAME"/>？</translation>
 <translation id="2618193846561624884">要更新现有网络吗？</translation>
 <translation id="9170907049676078643">解决 IPFS 资源问题的方法</translation>
 <translation id="1327977588028644528">网关</translation>
@@ -480,4 +508,5 @@
 <translation id="6040143037577758943">关闭</translation>
 <translation id="5600566490506283344">Brave 广告通知</translation>
 <translation id="4395160081588457461">外观感觉</translation>
+<translation id="7942180974165298215">Brave 广告拦截</translation>
 </translationbundle>

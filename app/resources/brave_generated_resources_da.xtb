@@ -2,7 +2,6 @@
 <!DOCTYPE translationbundle>
 <translationbundle lang="da">
 <translation id="3333887201479867589">Brave Belønninger</translation>
-<translation id="7942180974165298215">Brave Annonceblokering</translation>
 <translation id="4615489450165434530">Rapporter en side der ikke virker ordentligt</translation>
 <translation id="1209739344687072997">Rapporter en side der ikke virker</translation>
 <translation id="6406506848690869874">Synkroniser</translation>
@@ -43,6 +42,7 @@ Eller skift senere på<ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="3094628781200061820">Udgiv og find filer fra IPFS</translation>
 <translation id="7398397225367092613">.onion</translation>
 <translation id="406832631167785034">Åbn via .onion-adresse</translation>
+<translation id="4759098689276706664">Tving indsæt</translation>
 <translation id="4901618511712685702">Importér til IPFS</translation>
 <translation id="6794469945030154569">Denne webside</translation>
 <translation id="5037852323412456577">Valgt billede</translation>
@@ -71,7 +71,7 @@ vindue med Tor</translation>
 <translation id="3425600262621021599">Åbn link i Brave privat vindue med Tor</translation>
 <translation id="3229091547987707389">Importér og del en mappe</translation>
 <translation id="5029193871181468990">Skjul Braves Belønningsikon</translation>
-<translation id="7595540212376041331">Skjul Brave Wallet-ikonet på værktøjslinjen</translation>
+<translation id="7595540212376041331">Skjul Brave Wallet-ikonet</translation>
 <translation id="4928988318462976765">Internetadresse-Butik</translation>
 <translation id="9181207987584064303">Se i Internetadresse-Butik</translation>
 <translation id="3161744659507801211">Advarsel: Brave kan ikke forhindre udvidelser i at gemme din browserhistorik.</translation>
@@ -109,6 +109,7 @@ vindue med Tor</translation>
 <translation id="2571596981920752023"><ph name="NUMBER_OF_TABS"/> faner</translation>
 <translation id="2515126961943087659">Bat-annonceservice</translation>
 <translation id="7924918279836988121">Bat Regnskabsservice</translation>
+<translation id="6665472986740899785">Brave-notifikationsannonce</translation>
 <translation id="4174337572777167894">Web Discovery-projekt</translation>
 <translation id="8659271182272561965">Bidrag med anonym søge- &amp; browsingdata for at forbedre Brave Search.</translation>
 <translation id="1516554614404600536">Brave Tooltip</translation>
@@ -184,7 +185,6 @@ DU kan læse <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>instruktioner om hvordan 
 <translation id="6817415381278637662">Vælg Brave som din standardbrowser for at få Braves privatlivsbeskyttelse på alle websider, du åbner.</translation>
 <translation id="8722651357687610395">Indstil Brave som standard</translation>
 <translation id="2370739752330685659">Måske senere</translation>
-<translation id="3400357268283240774">Yderligere indstillinger</translation>
 <translation id="9156965752763025780">Dine ændringer træder i kraft, næste gang du genstarter Brave.</translation>
 <translation id="7179921470347911571">Genstart nu</translation>
 <translation id="4472575034687746823">Kom godt i gang</translation>
@@ -239,6 +239,29 @@ DU kan læse <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>instruktioner om hvordan 
 <translation id="7390783310074170337">Standardvisning</translation>
 <translation id="130615081792797568">Simpel visning</translation>
 <translation id="2360360976480535628">Avanceret visning</translation>
+<translation id="6486983549008741930">Indholdssortering</translation>
+<translation id="8694564340481124390">Aktivér brugerdefinerede filtre for at blokere regionale og sprogspecifikke sporingsenheder og irritationer.</translation>
+<translation id="6522618763902154348">Aktivér tilpassede filtrer, der blokerer regional- og sprogspecifikke sporingsenheder og
+<ph name="BEGIN_LINK"/> irritationer<ph name="END_LINK"/>.</translation>
+<translation id="3482656215021340727">Tilføj tilpassede filterlister</translation>
+<translation id="1020877116991797978">Tilføj flere lister, der er oprettet og vedligeholdt af dit trofaste fællesskab.</translation>
+<translation id="7617831480435794399">Du skal kun abonnere på lister fra enheder, du stoler på. Din browser søger regelmæssigt efter listeopdateringer fra den URL, du indtaster, hvilket gør din IP-adresse synlig for deres server.</translation>
+<translation id="2831397936251948638">Opret tilpassede filtre</translation>
+<translation id="4618274268052410139">Tilføj tilpassede filtre, du har oprettet, én pr. linje, i feltet nedenfor. Benyt venligst <ph name="BEGIN_LINK"/> Adblock filter syntaks <ph name="END_LINK"/>.</translation>
+<translation id="7791543448312431591">Tilføj</translation>
+<translation id="571950783952070673">Liste-URL</translation>
+<translation id="9204006549413740506">Senest opdateret</translation>
+<translation id="6745592621698551453">Opdater nu</translation>
+<translation id="5334844597069022743">Se kilde</translation>
+<translation id="4720556299488643018">Opsig abonnement</translation>
+<translation id="6532106788206463496">Gem ændringer</translation>
+<translation id="4516904298421534459">Filtrer lister</translation>
+<translation id="4435215931544457255">Flere populære fælleskabslister. Vær opmærksom på, at aktiveringen af for mange filtre nedsætter browser-hastigheden.</translation>
+<translation id="802154636333426148">Download mislykkedes</translation>
+<translation id="7889605993994647168">Opdatering mislykkedes</translation>
+<translation id="5438573563213942361">Tilpassede lister</translation>
+<translation id="4182731739150761577">Vis hele listen</translation>
+<translation id="1340263054776016283">Indtast filterliste-URL</translation>
 <translation id="6821903322090655051">Brave Rewards er deaktiveret</translation>
 <translation id="413570371620795359">Åbn Belønninger-panelet for at aktivere og komme i gang</translation>
 <translation id="3849957491997306859">Autoslettet</translation>
@@ -325,6 +348,10 @@ DU kan læse <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>instruktioner om hvordan 
 <translation id="5093410893656857925">Vælg Enhedstype</translation>
 <translation id="4581190919849683048">Hvilken type enhed ønsker du at synkronisere til?</translation>
 <translation id="4112587618563511470">Ugyldig synkroniseringskode, kontrollér venligst og prøv igen.</translation>
+<translation id="3995714999835224798">Koden er ikke gyldig</translation>
+<translation id="859506441384380749">Denne kode er genereret af en forældet version af Brave. Opgradér venligst din anden enhed først</translation>
+<translation id="3132642509209154999">Denne kode er udløbet. Generér venligst en ny på din anden enhed, og prøv igen.</translation>
+<translation id="2859229680945501779">Hoden er ugyldig. Kontrollér at tidspunkt og tidszone er korrekt indstillet på din enhed.</translation>
 <translation id="2339730291919608488">Forlad synkroniseringskæde</translation>
 <translation id="115699408012835975">Hvis du nulstiller synkronisering, skal du skrive en synkroniseringskode fra en anden enhed igen for at synkronisere med den. Er du sikker på, at du vil fortsætte?</translation>
 <translation id="6092564993102418148">Er du sikker på, at du vil fjerne den valgte enhed fra synkroniseringskæden?</translation>
@@ -395,6 +422,7 @@ DU kan læse <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>instruktioner om hvordan 
 <translation id="1062463687579789365">Tilpasning af Wallet-netværk</translation>
 <translation id="2234108191702901162">Der kunne ikke tilføje netværk</translation>
 <translation id="8996633027318264334">Er du sikker på, du vil slette <ph name="KEY_NAME"/>?</translation>
+<translation id="7893578599666249602">Ønsker du at nulstille<ph name="KEY_NAME"/>?</translation>
 <translation id="2618193846561624884">Vil du opdatere det eksisterende netværk?</translation>
 <translation id="9170907049676078643">Metode til løsning af IPF-ressourcer</translation>
 <translation id="1327977588028644528">Gateway</translation>
@@ -482,4 +510,5 @@ DU kan læse <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>instruktioner om hvordan 
 <translation id="6040143037577758943">Luk</translation>
 <translation id="5600566490506283344">Brave annoncenotifikation</translation>
 <translation id="4395160081588457461">Se og mærk</translation>
+<translation id="7942180974165298215">Brave Annonceblokering</translation>
 </translationbundle>

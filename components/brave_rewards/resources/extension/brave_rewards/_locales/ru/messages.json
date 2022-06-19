@@ -135,6 +135,21 @@
     "message": "В настоящий момент вознаграждения Brave не работают. Пожалуйста, попробуйте позже.",
     "description": ""
   },
+  "rewardsLogInToSeeBalance": {
+    "message": "Чтобы проверить баланс, $begin_bold$войдите в аккаунт $provider$ $end_bold$",
+    "description": "",
+    "placeholders": {
+      "begin_bold": {
+        "content": "$1"
+      },
+      "provider": {
+        "content": "$2"
+      },
+      "end_bold": {
+        "content": "$3"
+      }
+    }
+  },
   "rewardsPaymentCheckStatus": {
     "message": "Проверка статуса",
     "description": ""

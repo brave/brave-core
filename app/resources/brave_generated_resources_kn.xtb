@@ -2,7 +2,6 @@
 <!DOCTYPE translationbundle>
 <translationbundle lang="kn">
 <translation id="3333887201479867589">Brave Rewards</translation>
-<translation id="7942180974165298215">Brave ಜಾಹೀರಾತು ನಿರ್ಬಂಧ</translation>
 <translation id="4615489450165434530">ಬ್ರೋಕನ್ ಸೈಟ್ ಅನ್ನು ವರದಿ ಮಾಡಿ</translation>
 <translation id="1209739344687072997">ಬ್ರೋಕನ್ ಸೈಟ್ ಅನ್ನು ವರದಿ ಮಾಡಿ</translation>
 <translation id="6406506848690869874">ಸಿಂಕ್</translation>
@@ -43,6 +42,7 @@
 <translation id="3094628781200061820">IPFS ನಿಂದ ಫೈಲ್‌ಗಳನ್ನು ಪ್ರಕಟಿಸಿ ಅಥವಾ ಪಡೆಯಿರಿ</translation>
 <translation id="7398397225367092613">.onion</translation>
 <translation id="406832631167785034">.onion ವಿಳಾಸ ಬಳಸಿಕೊಂಡು ತೆರೆಯಿರಿ</translation>
+<translation id="4759098689276706664">ಬಲವಂತವಾಗಿ ಪೇಸ್ಟ್ ಮಾಡಿ</translation>
 <translation id="4901618511712685702">IPFS ಗೆ ಆಮದು ಮಾಡಿ</translation>
 <translation id="6794469945030154569">ಈ ಪುಟ</translation>
 <translation id="5037852323412456577">ಆಯ್ಕೆಮಾಡಲಾದ ಚಿತ್ರ</translation>
@@ -70,7 +70,7 @@
 <translation id="3425600262621021599">Tor ಮೂಲಕ Brave ಖಾಸಗಿ ವಿಂಡೋದಲ್ಲಿ ಲಿಂಕ್ ತೆರೆಯಿರಿ</translation>
 <translation id="3229091547987707389">ಡೈರೆಕ್ಟರಿ ಆಮದು ಮಾಡಿ ಮತ್ತು ಹಂಚಿಕೊಳ್ಳಿ</translation>
 <translation id="5029193871181468990">Brave ರಿವಾರ್ಡ್ಸ್ ಐಕಾನ್ ಅನ್ನು ಮರೆಮಾಡಿ</translation>
-<translation id="7595540212376041331">ಟೂಲ್‌ಬಾರ್‌ನಲ್ಲಿ Brave ವಾಲೆಟ್ ಐಕಾನ್‌ ಮರೆ ಮಾಡಿ</translation>
+<translation id="7595540212376041331">Brave ವ್ಯಾಲೆಟ್ ಐಕಾನ್ ಮರೆ ಮಾಡಿ</translation>
 <translation id="4928988318462976765">ವೆಬ್ ವಿಸ್ತರಣೆಗಳು ಸ್ಟೋರ್</translation>
 <translation id="9181207987584064303">ವೆಬ್ ವಿಸ್ತರಣೆಗಳು ಸ್ಟೋರ್‌ನಲ್ಲಿ ವೀಕ್ಷಿಸಿ</translation>
 <translation id="3161744659507801211">ಎಚ್ಚರಿಕೆ: ನಿಮ್ಮ ಬ್ರೌಸಿಂಗ್‌ ಇತಿಹಾಸದಲ್ಲಿ ರೆಕಾರ್ಡಿಂಗ್‌ನಿಂದ ವಿಸ್ತರಣೆಗಳನ್ನು ಪಡೆಯುವುದನ್ನು ತಡೆಯಲು Brave ಗೆ ಸಾಧ್ಯವಿಲ್ಲ.</translation>
@@ -108,6 +108,7 @@
 <translation id="2571596981920752023"><ph name="NUMBER_OF_TABS"/> ಟ್ಯಾಬ್‌ಗಳು</translation>
 <translation id="2515126961943087659">Bat ಜಾಹೀರಾತುಗಳ ಸೇವೆ</translation>
 <translation id="7924918279836988121">Bat Ledger ಸೇವೆ</translation>
+<translation id="6665472986740899785">Brave ಅಧಿಸೂಚನೆ ಜಾಹೀರಾತು</translation>
 <translation id="4174337572777167894">ವೆಬ್ ಅನ್ವೇಷಣೆ ಪ್ರಾಜೆಕ್ಟ್</translation>
 <translation id="8659271182272561965">Brave ಹುಡುಕಾಟ ಸುಧಾರಿಸುವುದಕ್ಕಾಗಿ ಕೆಲವು ಅನಾಮಧೇಯ ಹುಡುಕಾಟ &amp; ಬ್ರೌಸಿಂಗ್ ಡೇಟಾದ ಕೊಡುಗೆ ನೀಡಿ.</translation>
 <translation id="1516554614404600536">Brave ಟೂಲ್‌ಟಿಪ್</translation>
@@ -183,7 +184,6 @@
 <translation id="6817415381278637662">ನೀವು ತೆರೆಯುವ ಪ್ರತಿ ವೆಬ್‌ ಪೇಜ್‌ನಲ್ಲಿ Brave ನ ಗೌಪ್ಯತೆ ರಕ್ಷಣೆಗಳನ್ನು ಪಡೆಯಲು ನಿಮ್ಮ ಡೀಫಾಲ್ಟ್‌ ಬ್ರೌಸರ್‌ ಆಗಿ Brave ಅನ್ನು ನಿಗದಿಸಿ.</translation>
 <translation id="8722651357687610395">Brave ಅನ್ನು ಡಿಫಾಲ್ಟ್ ಆಗಿ ಹೊಂದಿಸಿ</translation>
 <translation id="2370739752330685659">ಬಹುಶಃ ನಂತರ</translation>
-<translation id="3400357268283240774">ಹೆಚ್ಚುವರಿ ಸೆಟ್ಟಿಂಗ್‌ಗಳು</translation>
 <translation id="9156965752763025780">ನೀವು ಮುಂದಿನ ಬಾರಿ Brave ಅನ್ನು ಮರುಪ್ರಾರಂಭಿಸಿದಾಗ ನಿಮ್ಮ ಬದಲಾವಣೆಗಳು ಕಾರ್ಯಗತಗೊಳ್ಳುತ್ತವೆ.</translation>
 <translation id="7179921470347911571">ಇದೀಗ ಮರುಆರಂಭಿಸಿ</translation>
 <translation id="4472575034687746823">ಪ್ರಾರಂಭ</translation>
@@ -238,6 +238,29 @@
 <translation id="7390783310074170337">ಡೀಫಾಲ್ಟ್ ವೀಕ್ಷಣೆ</translation>
 <translation id="130615081792797568">ಸರಳ ವೀಕ್ಷಣೆ</translation>
 <translation id="2360360976480535628">ಸುಧಾರಿತ ವೀಕ್ಷಣೆ</translation>
+<translation id="6486983549008741930">ವಿಷಯ ಫಿಲ್ಟರಿಂಗ್</translation>
+<translation id="8694564340481124390">ಪ್ರಾದೇಶಿಕ ಮತ್ತು ಭಾಷೆ-ನಿರ್ದಿಷ್ಟ ಟ್ರ್ಯಾಕರ್‌ಗಳು ಮತ್ತು ಅಹಿತಕರ ಸಂಗತಿಗಳು ಅನ್ನು ನಿರ್ಬಂಧಿಸುವ ಕಸ್ಟಮ್ ಫಿಲ್ಟರ್‌ಗಳನ್ನು ಸಕ್ರಿಯಗೊಳಿಸಿ.</translation>
+<translation id="6522618763902154348">ಪ್ರಾದೇಶಿಕ ಮತ್ತು ಭಾಷೆ-ನಿರ್ದಿಷ್ಟ ಟ್ರ್ಯಾಕರ್‌ಗಳು ಮತ್ತು 
+   <ph name="BEGIN_LINK"/>ಅಹಿತಕರ ಸಂಗತಿಗಳು<ph name="END_LINK"/> ಅನ್ನು ನಿರ್ಬಂಧಿಸುವ ಕಸ್ಟಮ್ ಫಿಲ್ಟರ್‌ಗಳನ್ನು ಸಕ್ರಿಯಗೊಳಿಸಿ.</translation>
+<translation id="3482656215021340727">ಕಸ್ಟಮ್ ಫಿಲ್ಟರ್ ಪಟ್ಟಿಗಳನ್ನು ಸೇರಿಸಿ</translation>
+<translation id="1020877116991797978">ನಿಮ್ಮ ವಿಶ್ವಾಸಾರ್ಹ ಸಮುದಾಯವು ರಚಿಸಿದ ಮತ್ತು ನಿರ್ವಹಣೆ ಮಾಡಿದ ಹೆಚ್ಚುವರಿ ಪಟ್ಟಿಗಳನ್ನು ಸೇರಿಸಿ.</translation>
+<translation id="7617831480435794399">ನೀವು ನಂಬುವ ಸಂಸ್ಥೆಗಳ ಪಟ್ಟಿಗಳಿಗೆ ಮಾತ್ರ ಚಂದಾದಾರರಾಗಿ. ನೀವು ನಮೂದಿಸುವ URL ನಿಂದ ಪಟ್ಟಿ ಅಪ್‌ಡೇಟ್‌ಗಳಿಗೆ ನಿಮ್ಮ ಬ್ರೌಸರ್ ನಿಯತಕಾಲಿಕವಾಗಿ ಪರಿಶೀಲಿಸುತ್ತದೆ ಮತ್ತು ಈ ಮೂಲಕ ಅದರ ಸರ್ವರ್‌ಗೆ ನಿಮ್ಮ IP ವಿಳಾಸವನ್ನು ಬಹಿರಂಗಪಡಿಸುತ್ತದೆ.</translation>
+<translation id="2831397936251948638">ಕಸ್ಟಮ್ ಫಿಲ್ಟರ್‌ಗಳನ್ನು ರಚಿಸಿ</translation>
+<translation id="4618274268052410139">ಕೆಳಗಿನ ಕ್ಷೇತ್ರದಲ್ಲಿ, ಪ್ರತಿ ಸಾಲಿಗೆ ಒಂದರಂತೆ, ನೀವು ರಚಿಸಿದ ಕಸ್ಟಮ್ ಫಿಲ್ಟರ್‌ಗಳನ್ನು ಸೇರಿಸಿ. <ph name="BEGIN_LINK"/>ಜಾಹೀರಾತು ನಿರ್ಬಂಧ ಫಿಲ್ಟರ್ ಸಿಂಟಾಕ್ಸ್<ph name="END_LINK"/> ಬಳಸುವುದನ್ನು ಖಚಿತಪಡಿಸಿಕೊಳ್ಳಿ.</translation>
+<translation id="7791543448312431591">ಸೇರಿಸು</translation>
+<translation id="571950783952070673">URL ಪಟ್ಟಿಮಾಡಿ</translation>
+<translation id="9204006549413740506">ಕೊನೆಯದಾಗಿ ಅಪ್‌ಡೇಟ್ ಮಾಡಿರುವುದು</translation>
+<translation id="6745592621698551453">ಈಗ ಅಪ್‌ಡೇಟ್‌ ಮಾಡು</translation>
+<translation id="5334844597069022743">ಮೂಲ ವೀಕ್ಷಿಸಿ</translation>
+<translation id="4720556299488643018">ಅನ್‌ಸಬ್‌ಸ್ಕ್ರೈಬ್ ಮಾಡಿ</translation>
+<translation id="6532106788206463496">ಬದಲಾವಣೆಗಳನ್ನು ಉಳಿಸಿ</translation>
+<translation id="4516904298421534459">ಪಟ್ಟಿಗಳನ್ನು ಫಿಲ್ಟರ್ ಮಾಡಿ</translation>
+<translation id="4435215931544457255">ಹೆಚ್ಚುವರಿ ಜನಪ್ರಿಯ ಸಮುದಾಯ ಪಟ್ಟಿಗಳು. ತೀರಾ ಹೆಚ್ಚು ಫಿಲ್ಟರ್‌ಗಳ ಸಕ್ರಿಯಗೊಳಿಸುವಿಕೆಯು ಬ್ರೌಸಿಂಗ್ ವೇಗವನ್ನು ತಗ್ಗಿಸಬಹುದು ಎಂಬುದನ್ನು ಗಮನಿಸಿ.</translation>
+<translation id="802154636333426148">ಡೌನ್‌ಲೋಡ್‌ ವಿಫಲಗೊಂಡಿದೆ</translation>
+<translation id="7889605993994647168">ಅಪ್‌ಡೇಟ್ ವಿಫಲವಾಗಿದೆ</translation>
+<translation id="5438573563213942361">ಕಸ್ಟಮ್ ಪಟ್ಟಿಗಳು</translation>
+<translation id="4182731739150761577">ಪೂರ್ಣ ಪಟ್ಟಿ ತೋರಿಸಿ</translation>
+<translation id="1340263054776016283">ಫಿಲ್ಟರ್ ಪಟ್ಟಿ URL ನಮೂದಿಸಿ</translation>
 <translation id="6821903322090655051">Brave ರಿವಾರ್ಡ್ಸ್ ಅನ್ನು ನಿಷ್ಕ್ರಿಯಗೊಳಿಸಲಾಗಿದೆ</translation>
 <translation id="413570371620795359">ಸಕ್ರಿಯಗೊಳಿಸಲು ಮತ್ತು ಪ್ರಾರಂಭಿಸಲು ಬಹುಮಾನಗಳ ಫಲಕವನ್ನು ತೆರೆಯಿರಿ</translation>
 <translation id="3849957491997306859">ಸ್ವಯಂ-ಪತ್ತೆಹಚ್ಚಲಾಗಿದೆ</translation>
@@ -324,6 +347,10 @@
 <translation id="5093410893656857925">ಸಾಧನ ಪ್ರಕಾರ ಆರಿಸಿ</translation>
 <translation id="4581190919849683048">ನೀವು ಯಾವ ರೀತಿಯ ಸಾಧನಕ್ಕೆ ಸಿಂಕ್ ಮಾಡಲು ಬಯಸುತ್ತೀರಿ?</translation>
 <translation id="4112587618563511470">ಅಮಾನ್ಯ ಸಿಂಕ್ ಕೋಡ್, ದಯವಿಟ್ಟು ಪರಿಶೀಲಿಸಿ ಹಾಗೂ ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ.</translation>
+<translation id="3995714999835224798">ಈ ಕೋಡ್ ಅಮಾನ್ಯವಾಗಿದೆ</translation>
+<translation id="859506441384380749">ಈ ಕೋಡ್ ಅನ್ನು Brave ನ ಡೆಪ್ರಿಕೇಟ್ ಮಾಡಲಾದ ಆವೃತ್ತಿಯ ಮೂಲಕ ಜೆನರೇಟ್ ಮಾಡಲಾಗಿದೆ, ದಯವಿಟ್ಟು ಮೊದಲು ನಿಮ್ಮ ಮತ್ತೊಂದು ಸಾಧನವನ್ನು ಅಪ್‌ಗ್ರೇಡ್ ಮಾಡಿ</translation>
+<translation id="3132642509209154999">ಈ ಕೋಡ್ ಅವಧಿ ಮೀರಿದೆ. ದಯವಿಟ್ಟು ಹೊಸತೊಂದನ್ನು ನಿಮ್ಮ ಮತ್ತೊಂದು ಸಾಧನದಲ್ಲಿ ಜೆನರೇಟ್ ಮಾಡಿ ಹಾಗೂ ಮತ್ತೊಮ್ಮೆ ಪ್ರಯತ್ನಿಸಿ.</translation>
+<translation id="2859229680945501779">ಈ ಕೋಡ್ ಅಮಾನ್ಯವಾಗಿದೆ. ಸಮಯ ಮತ್ತು ಸಮಯವಲಯವನ್ನು ನಿಮ್ಮ ಸಾಧನದಲ್ಲಿ ಸರಿಯಾಗಿ ಹೊಂದಿಸಲಾಗಿದೆ ಎಂಬುದನ್ನು ದಯವಿಟ್ಟು ಪರಿಶೀಲಿಸಿ.</translation>
 <translation id="2339730291919608488">ಸಿಂಕ್ ಚೈನ್ ತೊರೆಯಿರಿ</translation>
 <translation id="115699408012835975">ನೀವು ಸಿಂಕ್ ಅನ್ನು ಮರುಹೊಂದಿಸಿದರೆ, ಅದರೊಂದಿಗೆ ಸಿಂಕ್ ಮಾಡಲು ನೀವು ಇನ್ನೊಂದು ಸಾಧನದಿಂದ ಸಿಂಕ್ ಕೋಡ್ ಅನ್ನು ಮರು ನಮೂದಿಸಬೇಕಾಗುತ್ತದೆ. ನೀವು ಮುಂದುವರಿಯಲು ಖಚಿತವಾಗಿ ಬಯಸುವಿರಾ?</translation>
 <translation id="6092564993102418148">ಆಯ್ಕೆಮಾಡಿದ ಸಾಧನವನ್ನು ಸಿಂಕ್ ಚೈನ್‌ನಿಂದ ತೆಗೆದುಹಾಕಲು ನೀವು ಖಚಿತವಾಗಿ ಬಯಸುವಿರಾ?</translation>
@@ -394,6 +421,7 @@
 <translation id="1062463687579789365">ವ್ಯಾಲೆಟ್ ನೆಟ್‌ವರ್ಕ್‌ಗಳ ಕಸ್ಟಮೈಸೇಶನ್</translation>
 <translation id="2234108191702901162">ನೆಟ್‌ವರ್ಕ್‌ ಸೇರಿಸಲು ಸಾಧ್ಯವಾಗುತ್ತಿಲ್ಲ</translation>
 <translation id="8996633027318264334">ನೀವು ನಿಜವಾಗಿಯೂ <ph name="KEY_NAME"/> ಅಳಿಸಲು ಬಯಸುವಿರಾ?</translation>
+<translation id="7893578599666249602">ನೀವು ನಿಜವಾಗಿಯೂ <ph name="KEY_NAME"/> ಮರುಹೊಂದಿಸಲು ಅಳಿಸಲು ಬಯಸುವಿರಾ?</translation>
 <translation id="2618193846561624884">ಅಸ್ತಿತ್ವದಲ್ಲಿರುವ ನೆಟ್‌ವರ್ಕ್ ಅಪ್‌ಡೇಟ್ ಮಾಡಲು ಬಯಸುವಿರಾ?</translation>
 <translation id="9170907049676078643">IPFS ಸಂಪನ್ಮೂಲಗಳನ್ನು ಪರಿಹರಿಸುವ ವಿಧಾನ</translation>
 <translation id="1327977588028644528">ಗೇಟ್‌ವೇ</translation>
@@ -481,4 +509,5 @@
 <translation id="6040143037577758943">ಮುಚ್ಚಿರಿ</translation>
 <translation id="5600566490506283344">Brave ಜಾಹೀರಾತು ಅಧಿಸೂಚನೆ</translation>
 <translation id="4395160081588457461">ನೋಡು &amp; ಭಾವಿಸು</translation>
+<translation id="7942180974165298215">Brave ಜಾಹೀರಾತು ನಿರ್ಬಂಧ</translation>
 </translationbundle>

@@ -2,7 +2,6 @@
 <!DOCTYPE translationbundle>
 <translationbundle lang="th">
 <translation id="3333887201479867589">Brave Rewards</translation>
-<translation id="7942180974165298215">Brave Ad Block</translation>
 <translation id="4615489450165434530">รายงานเว็บไซต์เสียหาย</translation>
 <translation id="1209739344687072997">รายงานเว็บไซต์เสียหาย</translation>
 <translation id="6406506848690869874">ซิงค์</translation>
@@ -43,6 +42,7 @@
 <translation id="3094628781200061820">เผยแพร่และเรียกดูไฟล์จาก IPFS</translation>
 <translation id="7398397225367092613">.onion</translation>
 <translation id="406832631167785034">เปิดโดยใช้ที่อยู่ .onion</translation>
+<translation id="4759098689276706664">บังคับวาง</translation>
 <translation id="4901618511712685702">นำเข้าไปยัง IPFS</translation>
 <translation id="6794469945030154569">หน้านี้</translation>
 <translation id="5037852323412456577">ภาพที่เลือก</translation>
@@ -70,7 +70,7 @@
 <translation id="3425600262621021599">เปิดลิงก์ในหน้าต่างส่วนตัวของ Brave ด้วย Tor</translation>
 <translation id="3229091547987707389">นำเข้าและแชร์ไดเรกทอรี</translation>
 <translation id="5029193871181468990">ซ่อนไอคอน Brave Rewards</translation>
-<translation id="7595540212376041331">ซ่อนไอคอน Brave Wallet บนแถบเครื่องมือ</translation>
+<translation id="7595540212376041331">ซ่อนไอคอน Brave วอลเล็ต</translation>
 <translation id="4928988318462976765">Web Extensions Store</translation>
 <translation id="9181207987584064303">ดูใน Web Extensions Store</translation>
 <translation id="3161744659507801211">คำเตือน: Brave ไม่สามารถป้องกันไม่ให้ส่วนขยายต่างๆ บันทึกประวัติการท่องเว็บของคุณ</translation>
@@ -108,6 +108,7 @@
 <translation id="2571596981920752023"><ph name="NUMBER_OF_TABS"/> แท็บ</translation>
 <translation id="2515126961943087659">บริการโฆษณา BAT</translation>
 <translation id="7924918279836988121">บริการรายการเดินบัญชี Bat</translation>
+<translation id="6665472986740899785">การแจ้งเตือนโฆษณาของ Brave</translation>
 <translation id="4174337572777167894">Web Discovery Project</translation>
 <translation id="8659271182272561965">ร่วมให้ข้อมูลการค้นหาและการเลือกดูแบบไม่ระบุตัวตน เพื่อช่วยให้ Brave Search ทำงานได้ดีขึ้น</translation>
 <translation id="1516554614404600536">Brave Tooltip</translation>
@@ -183,7 +184,6 @@
 <translation id="6817415381278637662">ตั้งค่าให้ Brave เป็นเบราว์เซอร์เริ่มต้นของคุณเพื่อรับการป้องกันความเป็นส่วนตัวของ Brave ในทุกหน้าเว็บที่คุณเปิด</translation>
 <translation id="8722651357687610395">ตั้งค่า Brave เป็นค่าเริ่มต้น</translation>
 <translation id="2370739752330685659">ภายหลัง</translation>
-<translation id="3400357268283240774">การตั้งค่าเพิ่มเติม</translation>
 <translation id="9156965752763025780">การเปลี่ยนแปลงของคุณจะมีผลในครั้งถัดไปที่คุณเปิด Brave ขึ้นอีก</translation>
 <translation id="7179921470347911571">เปิดใหม่อีกครั้ง</translation>
 <translation id="4472575034687746823">เริ่มต้น</translation>
@@ -238,6 +238,29 @@
 <translation id="7390783310074170337">มุมมองเริ่มต้น</translation>
 <translation id="130615081792797568">มุมมองอย่างง่าย</translation>
 <translation id="2360360976480535628">มุมมองขั้นสูง</translation>
+<translation id="6486983549008741930">การกรองเนื้อหา</translation>
+<translation id="8694564340481124390">เปิดใช้งานตัวกรองแบบกำหนดเองเพื่อบล็อกตัวติดตามและสิ่งรบกวนที่เจาะจงภูมิภาคและภาษา</translation>
+<translation id="6522618763902154348">เปิดใช้งานตัวกรองแบบกำหนดเองเพื่อบล็อกตัวติดตามและสิ่งรบกวน 
+    <ph name="BEGIN_LINK"/>ที่เจาะจงภูมิภาคและภาษา<ph name="END_LINK"/></translation>
+<translation id="3482656215021340727">เพิ่มรายการตัวกรองแบบกำหนดเอง</translation>
+<translation id="1020877116991797978">เพิ่มรายการเพิ่มเติมที่สร้างและดูแลโดยชุมชนที่เชื่อถือได้ของคุณ</translation>
+<translation id="7617831480435794399">สมัครเฉพาะรายการจากหน่วยงานที่คุณไว้วางใจเท่านั้น เบราว์เซอร์ของคุณจะตรวจสอบรายการอัปเดตจาก URL ที่คุณป้อนเป็นระยะ โดยจะเปิดเผยที่อยู่ IP ของคุณไปยังเซิร์ฟเวอร์</translation>
+<translation id="2831397936251948638">สร้างตัวกรองแบบกำหนดเอง</translation>
+<translation id="4618274268052410139">เพิ่มตัวกรองแบบกำหนดเองที่คุณสร้าง บรรทัดละหนึ่งรายการ ในช่องด้านล่าง และตรวจสอบให้มั่นใจว่าได้ใช้ <ph name="BEGIN_LINK"/>รูปแบบ syntax สำหรับตัวกรอง Adblock<ph name="END_LINK"/></translation>
+<translation id="7791543448312431591">เพิ่ม</translation>
+<translation id="571950783952070673">ลงรายการ URL</translation>
+<translation id="9204006549413740506">อัปเดตล่าสุด</translation>
+<translation id="6745592621698551453">อัปเดตเลย</translation>
+<translation id="5334844597069022743">ดูแหล่งที่มา</translation>
+<translation id="4720556299488643018">ยกเลิกการสมัคร</translation>
+<translation id="6532106788206463496">บันทึกการเปลี่ยนแปลง</translation>
+<translation id="4516904298421534459">รายการตัวกรอง</translation>
+<translation id="4435215931544457255">รายการชุมชนยอดนิยมเพิ่มเติม โปรดทราบว่าการเปิดใช้งานตัวกรองหลายตัวจนเกินไปจะทำให้การท่องเว็บช้าลง</translation>
+<translation id="802154636333426148">การดาวน์โหลดล้มเหลว</translation>
+<translation id="7889605993994647168">อัปเดตล้มเหลว</translation>
+<translation id="5438573563213942361">รายการแบบกำหนดเอง</translation>
+<translation id="4182731739150761577">แสดงรายการทั้งหมด</translation>
+<translation id="1340263054776016283">ระบุ URL ของรายการตัวกรอง</translation>
 <translation id="6821903322090655051">ปิดใช้งาน Brave Rewards แล้ว</translation>
 <translation id="413570371620795359">เปิดรายการ Rewards เพื่อเปิดใช้งานและเริ่มต้น</translation>
 <translation id="3849957491997306859">ตรวจพบอัตโนมัติ</translation>
@@ -324,6 +347,10 @@
 <translation id="5093410893656857925">เลือกประเภทอุปกรณ์</translation>
 <translation id="4581190919849683048">อุปกรณ์ที่คุณต้องการซิงค์เป็นอุปกรณ์ชนิดใด?</translation>
 <translation id="4112587618563511470">รหัสซิงค์ไม่ถูกต้อง โปรดตรวจสอบแล้วลองอีกครั้ง</translation>
+<translation id="3995714999835224798">โค้ดไม่ถูกต้อง</translation>
+<translation id="859506441384380749">รหัสนี้สร้างโดย Brave เวอร์ชันที่เลิกใช้แล้ว กรุณาอัปเกรดอุปกรณ์อื่นของคุณก่อน</translation>
+<translation id="3132642509209154999">รหัสนี้หมดอายุแล้ว กรุณาสร้างรหัสใหม่บนอุปกรณ์อื่นของคุณแล้วลองอีกครั้ง</translation>
+<translation id="2859229680945501779">รหัสนี้ไม่ถูกต้อง กรุณาตรวจสอบให้มั่นใจว่าคุณได้ตั้งค่าเวลาและเขตเวลาบนอุปกรณ์ของคุณถูกต้อง</translation>
 <translation id="2339730291919608488">ออกจากกลุ่มการซิงค์</translation>
 <translation id="115699408012835975">หากคุณรีเซ็ตซิงค์ คุณจะต้องกรอกรหัสซิงค์ใหม่จากอุปกรณ์อื่นเพื่อที่จะซิงค์กับอุปกรณ์นั้น ๆ แน่ใจว่าต้องการดำเนินการต่อ?</translation>
 <translation id="6092564993102418148">คุณแน่ใจหรือไม่ว่าต้องการลบอุปกรณ์ที่เลือกจากซิงค์เชน</translation>
@@ -394,6 +421,7 @@
 <translation id="1062463687579789365">การปรับแต่งเครือข่ายกระเป๋าเงิน</translation>
 <translation id="2234108191702901162">ไม่สามารถเพิ่มเครือข่ายได้</translation>
 <translation id="8996633027318264334">คุณต้องการลบ <ph name="KEY_NAME"/> ใช่หรือไม่</translation>
+<translation id="7893578599666249602">คุณแน่ใจหรือไม่ว่าต้องการรีเซ็ต <ph name="KEY_NAME"/></translation>
 <translation id="2618193846561624884">คุณต้องการอัปเดตเครือข่ายที่มีอยู่หรือไม่</translation>
 <translation id="9170907049676078643">วิธีแก้ปัญหาเกี่ยวกับทรัพยากร IPFS</translation>
 <translation id="1327977588028644528">เกตเวย์</translation>
@@ -481,4 +509,5 @@
 <translation id="6040143037577758943">ปิด</translation>
 <translation id="5600566490506283344">การแจ้งเตือน Brave Ad</translation>
 <translation id="4395160081588457461">ภาพ &amp; ความรู้สึก</translation>
+<translation id="7942180974165298215">Brave Ad Block</translation>
 </translationbundle>
