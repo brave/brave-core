@@ -28,7 +28,7 @@ import TrashIcon from '../../components/default/gridSites/assets/trash'
 interface Props {
   actions: typeof newTabActions & typeof gridSitesActions
   siteData: NewTab.Site
-  disabled: boolean
+  isSortable: boolean
   onShowEditTopSite: (targetTopSiteForEditing?: NewTab.Site) => void
 }
 
@@ -61,10 +61,10 @@ export function SiteTile (props: { site: NewTab.Site, isMenuShowing?: boolean, c
 }
 
 function TopSite (props: Props) {
-  const { siteData, disabled } = props
+  const { siteData, isSortable } = props
 
   const tileMenuRef = useRef<any>()
-  const sortable = useSortable({ id: siteData.id, disabled })
+  const sortable = useSortable({ id: siteData.id, disabled: isSortable })
   const [showMenu, setShowMenu] = useState(false)
 
   const handleClickOutside = useCallback((e: Event) => {
