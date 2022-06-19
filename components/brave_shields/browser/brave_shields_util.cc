@@ -9,13 +9,13 @@
 
 #include "base/feature_list.h"
 #include "base/notreached.h"
-#include "base/strings/strcat.h"
 #include "base/strings/string_number_conversions.h"
 #include "brave/components/brave_shields/browser/brave_shields_p3a.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
 #include "brave/components/brave_shields/common/brave_shield_utils.h"
 #include "brave/components/brave_shields/common/features.h"
 #include "brave/components/brave_shields/common/pref_names.h"
+#include "brave/components/content_settings/core/common/content_settings_util.h"
 #include "brave/components/debounce/common/features.h"
 #include "components/content_settings/core/browser/cookie_settings.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
@@ -406,24 +406,6 @@ DomainBlockingType GetDomainBlockingType(HostContentSettingsMap* map,
   return DomainBlockingType::kNone;
 }
 
-// Since Shields work at the domain level, we create a pattern for
-// subdomains. In the case of an IP address, we take it as is.
-ContentSettingsPattern CreatePrimaryPattern(
-    const ContentSettingsPattern& host_pattern) {
-  DCHECK(!host_pattern.GetHost().empty());
-
-  auto host = net::registry_controlled_domains::GetDomainAndRegistry(
-      host_pattern.GetHost(),
-      net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES);
-  if (host.empty()) {
-    // IP Address.
-    return host_pattern;
-  }
-
-  return ContentSettingsPattern::FromString(
-      base::StrCat({"*://[*.]", host, "/*"}));
-}
-
 void SetCookieControlType(HostContentSettingsMap* map,
                           PrefService* profile_state,
                           ControlType type,
@@ -468,7 +450,8 @@ void SetCookieControlType(HostContentSettingsMap* map,
                                     ContentSettingsPattern::Wildcard(),
                                     ContentSettingsType::BRAVE_REFERRERS,
                                     GetDefaultBlockFromControlType(type));
-  const auto primary_pattern = CreatePrimaryPattern(host_pattern);
+  const auto primary_pattern =
+      content_settings::CreatePrimaryPattern(host_pattern);
 
   switch (type) {
     case ControlType::BLOCK_THIRD_PARTY:

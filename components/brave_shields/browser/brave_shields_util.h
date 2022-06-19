@@ -88,9 +88,6 @@ bool ShouldDoReduceLanguage(HostContentSettingsMap* map,
 DomainBlockingType GetDomainBlockingType(HostContentSettingsMap* map,
                                          const GURL& url);
 
-ContentSettingsPattern CreatePrimaryPattern(
-    const ContentSettingsPattern& host_pattern);
-
 void SetCookieControlType(HostContentSettingsMap* map,
                           PrefService* profile_state,
                           ControlType type,
