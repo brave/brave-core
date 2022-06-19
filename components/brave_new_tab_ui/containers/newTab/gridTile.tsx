@@ -102,14 +102,14 @@ function TopSite (props: Props) {
     props.onShowEditTopSite(site)
   }, [props.onShowEditTopSite])
 
-  const editMenuRef = useRef<HTMLElement>()
-  const [scrollableParent] = getScrollableParents(editMenuRef.current)
+  const [editMenuRef, setEditMenuRef] = useState<HTMLElement | null>(null)
+  const [scrollableParent] = getScrollableParents(editMenuRef)
 
   // Work out the style for the edit menu. Because it's rendered as a child of
   // the scrollable container we need to subtract the scrollable containers
   // position to get the menu to align nicely with the child.
   const editMenuStyle = (() => {
-    const bounds = editMenuRef.current?.getBoundingClientRect()
+    const bounds = editMenuRef?.getBoundingClientRect()
     const scrollableBounds = scrollableParent?.getBoundingClientRect()
     if (!bounds || !scrollableBounds) return
     return {
@@ -125,7 +125,7 @@ function TopSite (props: Props) {
   return <SiteTile site={props.siteData} draggable={sortable} isMenuShowing={showMenu}>
     {!siteData.defaultSRTopSite
       ? <TileActionsContainer>
-        <TileAction ref={editMenuRef as any} onClick={handleShowTileMenu}>
+        <TileAction ref={setEditMenuRef} onClick={handleShowTileMenu}>
           <EditIcon />
         </TileAction>
       </TileActionsContainer>

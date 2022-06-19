@@ -22,14 +22,14 @@ export const getScrollableParents = (element: Element | null | undefined, option
 
 export const getScrollableParent = (element: Element | null | undefined) => getScrollableParents(element, { limit: 1 })[0]
 
-export const useParentScrolled = (ref: React.MutableRefObject<HTMLElement | undefined>, handler: (e: Event) => void) => {
+export const useParentScrolled = (element: HTMLElement | null, handler: (e: Event) => void) => {
     React.useEffect(() => {
-        const scrollable = getScrollableParent(ref.current)
+        const scrollable = getScrollableParent(element)
         if (!scrollable) return
 
         scrollable.addEventListener('scroll', handler)
         return () => {
             scrollable.removeEventListener('scroll', handler)
         }
-    }, [handler])
+    }, [handler, element])
 }
