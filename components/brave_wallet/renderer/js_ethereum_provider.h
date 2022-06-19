@@ -70,6 +70,7 @@ class JSEthereumProvider : public mojom::EventsListener {
   v8::Local<v8::Promise> IsUnlocked();
   v8::Local<v8::Promise> Send(gin::Arguments* args);
   void SendAsync(gin::Arguments* args);
+  bool ProxyDeletePropertyHandler(gin::Arguments* args);
 
   void OnRequestOrSendAsync(v8::Global<v8::Context> global_context,
                             std::unique_ptr<v8::Global<v8::Function>> callback,
