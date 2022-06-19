@@ -142,8 +142,12 @@ export const TileActionsContainer = styled('nav') <{}>`
 
 export const TileMenu = styled('div') <{}>`
   position: absolute;
+
+  // Here we apply a negative 12px offset so the menu has a 12px overlap with
+  // the button.
   margin-left: -12px;
   margin-top: -12px;
+
   min-width: 185px;
   height: 72px;
   padding: 8px 0;
