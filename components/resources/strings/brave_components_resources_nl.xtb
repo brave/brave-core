@@ -256,6 +256,7 @@
 <translation id="8218538368080510976">Fout: regio niet ondersteund</translation>
 <translation id="5382684862562314222">BAT wordt in Uphold nog niet ondersteund in jouw regio.</translation>
 <translation id="9074594632540931067">Fout: BAT niet beschikbaar</translation>
+<translation id="6996157559236886133">Fout: beperkte Uphold-accountfunctionaliteit</translation>
 <translation id="3274650021044762770">Er is een probleem opgetreden bij het valideren van het verzoek van uw browser om Brave Beloningen te koppelen aan uw <ph name="PROVIDER"/>-account. U kunt <ph name="BEGIN_LINK"/>contact opnemen met de ondersteuning <ph name="END_LINK"/> als u meer hulp nodig hebt.</translation>
 <translation id="1316066811927496401">Fout: verzoek kan niet worden gevalideerd</translation>
 <translation id="1737873393693460829">Door [[title]] in the schakelen, ga je akkoord met de <ph name="BEGIN_LINK1"/>Servicevoorwaarden<ph name="END_LINK1"/> en het <ph name="BEGIN_LINK2"/>Privacybeleid<ph name="END_LINK2"/>.</translation>
@@ -811,6 +812,7 @@
 <translation id="4232775951515678071">Fout bij het ophalen van het type voor de transactie</translation>
 <translation id="2080935885647755539">Fout bij ophalen van gasvergoeding voor EIP-1559-transactie</translation>
 <translation id="4843814354611030845">Transactie geweigerd door gebruiker</translation>
+<translation id="1462494615260983714">Fout bij verwerken van transactie</translation>
 <translation id="4886059598718763020">'<ph name="VALUE"/>' heeft geen toestemming om bericht te ondertekenen</translation>
 <translation id="8719220598078667817">Fout bij ondertekenen van transactie</translation>
 <translation id="875506212625074179">Ongeldige respons van keten-ID vanuit RPC-service</translation>
@@ -858,7 +860,6 @@
 <translation id="1191686659164947414">Frontrunning van transactie is mogelijk</translation>
 <translation id="632241521608275119">Risicotolerantie</translation>
 <translation id="4500473291496079954">Vervalt over</translation>
-<translation id="2236833281018938257">0x-adres of URL</translation>
 <translation id="2860280209982026951">Brave gebruikt <ph name="LINK_BEFORE"/>0x<ph name="LINK_AFTER"/> als DEX-aggregator.</translation>
 <translation id="151946611346774041">0x verwerkt het Ethereum-adres en het IP-adres om een transactie uit te voeren (inclusief het ophalen van prijsindicaties). 0x gebruikt deze gegevens ALLEEN met het doel om transacties te verwerken.</translation>
 <translation id="4626407663177532837">Offerte is inclusief 0,875% Brave-kosten.</translation>
@@ -866,7 +867,6 @@
 <translation id="6575120282593094155">U hebt nog geen <ph name="ACCOUNT_TYPE"/>-account. Wilt u er nu een aanmaken?</translation>
 <translation id="2704606927547763573">Gekopieerd</translation>
 <translation id="1420318137760245955">Welkom bij de nieuwe Brave-wallet</translation>
-<translation id="8303434745767477417">Houd cryptoassets in je eigen bezit. Volg portfolioprestaties en communiceer met web 3 DApps. Verhandel, investeer, leen en leen uit met DeFi. Dit allemaal rechtstreeks vanuit de Brave-privébrowser. Er zijn geen extensies of downloads vereist.</translation>
 <translation id="6972754398087986839">Aan de slag</translation>
 <translation id="375882617301124395">Back-up maken van je cryptowallet</translation>
 <translation id="180032279811483155">Bij de volgende stap ziet u een herstelzin van <ph name="RECOVERY_PHRASE_LENGTH"/> woorden die u kunt gebruiken om uw primaire cryptoaccounts te herstellen. Bewaar hem op een veilige plek. Alleen met uw herstelzin kunt u weer toegang krijgen tot uw account wanneer u uw wachtwoord bent vergeten, uw apparaat kwijt is of is gestolen en wanneer u van wallet wilt wisselen.</translation>
@@ -895,7 +895,6 @@
 <translation id="163697698769819510">Maak nu een back-up van uw wallet om uw assets te beschermen en ervoor te zorgen dat u de toegang ertoe nooit verliest.</translation>
 <translation id="1018806299114415224">Nu een back-up maken</translation>
 <translation id="5234764350956374838">Dismiss</translation>
-<translation id="4075073132992924258">Brave-wallet is niet ingesteld als je standaardwallet en reageert niet op web3 Dapps. Ga naar Instellingen om je standaardwallet bij te werken.</translation>
 <translation id="4362717653795263052">Primaire cryptoaccounts herstellen</translation>
 <translation id="3038077262567136741">Voer je herstelzin in om je Brave-wallet-cryptoaccount te herstellen.</translation>
 <translation id="955918646509748368">De ingevoerde herstelzin is ongeldig.</translation>
@@ -906,8 +905,6 @@
 <translation id="8624315169751085215">Kopieer naar klembord</translation>
 <translation id="1121335910737476837">Primaire cryptoaccounts</translation>
 <translation id="6969147029062037757">Geïmporteerde accounts</translation>
-<translation id="5668765612885835803">U kunt primaire accounts in de Brave-wallet maken waarvan mogelijk een back-up bestaat of die kunnen worden hersteld vanuit uw herstelwoorden. Voor meer informatie over accounttypen gaat u naar de Help voor accounts</translation>
-<translation id="2471916999505901943">Deze accounts kunnen gebruikt worden met web 3 DApps en kunnen worden weergegeven in uw portfolio. Houd er echter rekening mee dat secondaire accounts niet kunnen worden hersteld met de herstelzin vanuit de back-up van uw primaire account.</translation>
 <translation id="1940465339426637378">Activa</translation>
 <translation id="2236507293802791911">Zichtbare assets</translation>
 <translation id="7525067979554623046">creëren</translation>
@@ -1037,7 +1034,6 @@
 <translation id="3890989020011724401">Nieuw account</translation>
 <translation id="7257603403519636638">Accountassets bekijken</translation>
 <translation id="2092132085082887098">Accountassets</translation>
-<translation id="5723696625900399845">Gebruik dit scherm om veilig toegang te krijgen tot web3 en al uw cryptoassets.</translation>
 <translation id="4460220693591349571">FUNCTIETYPE</translation>
 <translation id="838933475572692615">HEX-GEGEVENS</translation>
 <translation id="2240831799756994975">BYTES</translation>
@@ -1049,13 +1045,11 @@
 <translation id="7739762330714405363">Hetzelfde wachtwoord gebruiken</translation>
 <translation id="1085027414516521238">MetaMask</translation>
 <translation id="7102907656918333773">Geïmporteerd via <ph name="WALLET_EXTENSION"/></translation>
-<translation id="8897114903450789862">Importeer je <ph name="WALLET_EXTENSION"/>-accounts in Brave-wallet. Profiteer van een snellere en veiligere manier om cryptoassets te beheren en met web 3 DApps te communiceren.</translation>
 <translation id="4237840336687249184">MetaMask-wachtwoord</translation>
 <translation id="2381605201035323535">cryptowallets</translation>
 <translation id="2770851145415891830">Bestaande cryptowallets gedetecteerd</translation>
 <translation id="4938145712652668388">Wanneer je klikt op 'Aan de slag' importeer je je vorige cryptowallet naar de nieuwe Brave-walletervaring en profiteer je van alle voordelen die hierboven zijn beschreven. Probeer het eens uit en laat ons weten wat je ervan vindt!</translation>
 <translation id="2237759620789871865">Als je het importeren liever wilt overslaan en de oude cryptowalletervaring wilt houden, navigeer je naar de <ph name="LINK_BEFORE"/>instellingen<ph name="LINK_AFTER"/> van de Brave-browser en stel je cryptowallets weer als standaard in. Je kunt ook importeren, de nieuwe Brave-wallet uitproberen en teruggaan wanneer je wilt.</translation>
-<translation id="3301259443293676544">Voer je bestaande cryptowalletwachtwoord in om naar je Brave-wallet te importeren. Profiteer van een snellere en veiligere manier om cryptoassets te beheren en om met web 3 DApps te communiceren</translation>
 <translation id="9099900965604225657">Cryptowalletwachtwoord</translation>
 <translation id="4020495774166914146">Ik ben mijn wachtwoord en herstelzin vergeten en ik wil een nieuwe wallet aanmaken.</translation>
 <translation id="6344138931392227467"><ph name="DEVICE_NAME"/> verbonden</translation>
@@ -1142,7 +1136,6 @@
 <translation id="3327639091470204775">Kan geen verbinding maken met de Trezor-brug</translation>
 <translation id="6672377693827764095">Interne fout, accounts kunnen niet worden opgehaald</translation>
 <translation id="6889920539620318793">Instellen als actief</translation>
-<translation id="1462494615260983714">Fout bij verwerken van transactie</translation>
 <translation id="8933250418452564886">Kan hardwaretransactie niet vinden, probeer het opnieuw</translation>
 <translation id="5999974802900788338">Foutmelding ontvangen van hardware; mogelijk moet je de transactie op je apparaat bevestigen</translation>
 <translation id="8523768065044261559">Fout bij verwerken van transactie, probeer het opnieuw</translation>
@@ -1208,6 +1201,7 @@
 <translation id="3795015906457257780">U bekijkt deze website zonder enige privacybescherming van Brave.</translation>
 <translation id="7194012750329511146">Brave Shields
 <ph name="NUMBER"/> Trackers, advertenties en meer geblokkeerd</translation>
+<translation id="4292121526390005808">Geblokkeerde scripts</translation>
 <translation id="1742469581923031760">Verbinden…</translation>
 <translation id="1287487756047817908">Verbinding verbreken…</translation>
 <translation id="2325196879156848326">Verbinden mislukt</translation>
@@ -1227,7 +1221,6 @@
 <translation id="1400240082805528049">24/7 ondersteuning</translation>
 <translation id="8463313539532697053">Een ogenblik geduld tijdens het laden…</translation>
 <translation id="4613076894734402086">Betaalmethode bewerken</translation>
-<translation id="1898254156730880135">Het lijkt erop dat uw meest recente betaling is mislukt. De toegang tot dit abonnement wordt gepauzeerd totdat het betalingsprobleem is opgelost. Probeer uw betaalmethode te bewerken of neem contact op met de Brave-ondersteuning.</translation>
 <translation id="1839021455997460752">Uw e-mailadres</translation>
 <translation id="5154702632169343078">Onderwerp</translation>
 <translation id="6625978880678465492">Kies een reden</translation>
@@ -1261,4 +1254,5 @@
 <translation id="6973157709854838218">Uw saldo verbergen</translation>
 <translation id="4548946945059463969">Uw saldo tonen</translation>
 <translation id="242959166945779492">Je hebt geen saldo in je account. Ga naar FTX om saldo toe te voegen.</translation>
+<translation id="2236833281018938257">0x-adres of URL</translation>
 </translationbundle>

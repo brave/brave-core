@@ -84,7 +84,9 @@
 <translation id="6587448235155023666">Dina ändringar träder i kraft nästa gång du startar om Brave</translation>
 <translation id="8701563696941209024">STARTA OM NU</translation>
 <translation id="834487290629916192">SENARE</translation>
+<translation id="7207456302801184289">Välkommen till Brave</translation>
 <translation id="8281886186245836920">Hoppa över</translation>
+<translation id="6165508094623778733">Lär dig mer</translation>
 <translation id="986879628471635371">Felsökning onboarding</translation>
 <translation id="5808759341041733958">Välj ordinarie sökmotor</translation>
 <translation id="1331593888918588693">Du kan alltid ändra dina inställningar senare i appen.</translation>
@@ -112,12 +114,10 @@
 <translation id="1166682575529520472">Månatligen</translation>
 <translation id="1628742278973105368">Du skickar din första månadsdricks den:</translation>
 <translation id="298349922412901215">OBS: Den här innehållsskaparen har inte registrerat sig för att ta emot bidrag från Brave-användare ännu. Vi fortsätter att försöka bidra tills de verifierar sig, eller tills 90 dagar har gått.</translation>
-<translation id="635752162765375187">OBS: Den här innehållsskaparen har inte ställts in för att kunna ta emot dricks från din plånbok. Om du dricksar reserveras beloppet som väntande och nya försök görs i 90 dagar.</translation>
 <translation id="1910721550319506122">Välkommen!</translation>
 <translation id="3165726837666415756">Du kan stödja den här webbplatsen genom att skicka dricks. Det är ett sätt att tacka dem för bra innehåll. Verifierade innehållsskapare får betalt för sin dricks under den första veckan i varje kalendermånad.</translation>
 <translation id="1704859330137112950">Om du vill kan du schemalägga månatliga dricks för att stödja den här webbplatsen på kontinuerlig basis.</translation>
 <translation id="245015745140252435">Dricksbelopp</translation>
-<translation id="7873874596836611687">plånbokssaldo:</translation>
 <translation id="2573313946367623146">skicka min dricks</translation>
 <translation id="3250511771491660127">Gör det här varje månad</translation>
 <translation id="7658239707568436148">Avbryt</translation>
@@ -137,7 +137,7 @@
 <translation id="8220228041552340594">OKTOBER</translation>
 <translation id="8280223431922155812">NOVEMBER</translation>
 <translation id="4254029385847607686">DECEMBER</translation>
-<translation id="4258022280942725182">Din plånbok</translation>
+<translation id="4258022280942725182">Din Brave Rewards</translation>
 <translation id="3960619311638643872">Brave VPN</translation>
 <translation id="1772301834467143364">Brave News</translation>
 <translation id="7760215798627399379"><ph name="VALUE"/> USD</translation>
@@ -172,8 +172,8 @@ denna månad...</translation>
 <translation id="8689997599821157251">Du har tjänat</translation>
 <translation id="7550470870580166294">Otillräckliga medel</translation>
 <translation id="2775064702681588061">Det återstår att sätta in pengar på ditt Brave Rewards-konto.</translation>
-<translation id="2630264552940126640">Säkerhetskopiera plånbok</translation>
-<translation id="238922425564381955">Säkerhetskopiera din Brave-plånbok.</translation>
+<translation id="2630264552940126640">Säkerhetskopiera Brave Rewards</translation>
+<translation id="238922425564381955">Säkerhetskopiera Brave Rewards</translation>
 <translation id="2323069945529668668">Hoppsan!</translation>
 <translation id="7510166204621526816">Servern för Brave Rewards svarar inte. Vi åtgärdar detta så snart som möjligt.</translation>
 <translation id="683765328936486920">på YouTube</translation>
@@ -549,7 +549,7 @@ Dubbelkolla att dessa kodord genererades av en enhet som du äger.
 <translation id="5493402808936397665">Aktivera biometri för att snabbt låsa upp din plånbok utan att behöva ange ditt lösenord.</translation>
 <translation id="8030647312184163932">Lås upp med fingeravtryck</translation>
 <translation id="4090490645603511157">Använd biometri för att snabbt låsa upp plånboken utan att behöva ange lösenordet.</translation>
-<translation id="1544192797660353713">Wallet (beta)</translation>
+<translation id="1544192797660353713">Plånbok</translation>
 <translation id="6901810042765869341">Ange din återställningsfras för att återställa ditt Brave Wallet-kryptokonto.</translation>
 <translation id="9120654436199628567">Återställ kryptokonto</translation>
 <translation id="4811736040444856406">Visa återställningsfras</translation>
@@ -613,7 +613,6 @@ Dubbelkolla att dessa kodord genererades av en enhet som du äger.
 <translation id="8239147115686034860">Lås automatiskt Brave Wallet</translation>
 <translation id="414639769490080648">Antalet minuter att vänta tills Brave Wallet automatiskt låses</translation>
 <translation id="4993345308607970390">Återställ Brave Wallet</translation>
-<translation id="4322846864135539519">Vill du återställa plånboken? Om din plånbok inte säkerhetskopieras kommer du att förlora alla kontouppgifter (inklusive eventuella associerade medel) om du återställer. Skriv in "<ph name="CONFIRMATION_PHRASE"/>" för att bekräfta.</translation>
 <translation id="4862812525895306758">Rensa transaktions- och nonce-information</translation>
 <translation id="5693968582510626466">Att rensa transaktioner kan vara användbart för utvecklare eller vid rensning av status på en lokal server</translation>
 <translation id="5421107279168565467">Är du säker på att du vill återställa transaktions- och nonce-informationen? Det här alternativet används oftast av utvecklare som kör en lokal testserver. Skriv <ph name="CONFIRMATION_PHRASE"/> för att bekräfta.</translation>
@@ -633,8 +632,6 @@ Dubbelkolla att dessa kodord genererades av en enhet som du äger.
 <translation id="1190117345570417902">Använder Wireguard säker krypterad VPN-tunnel</translation>
 <translation id="1571230671455380494">Vi delar eller säljer aldrig din information</translation>
 <translation id="276866628038850725">Alla planer inkluderar en gratis 7-dagars testperiod!</translation>
-<translation id="7280825497485894053">Månadsprenuneration</translation>
-<translation id="3001303523417455986">Årlig prenumeration</translation>
 <translation id="6748319398471481216">Förnyas varje månad</translation>
 <translation id="7734634586133069282"><ph name="MONTHLY_AMOUNT"/> / mo.</translation>
 <translation id="1163809943099641131">Ett år</translation>
@@ -655,8 +652,6 @@ Dubbelkolla att dessa kodord genererades av en enhet som du äger.
 Om du inte accepterar denna begäran kommer VPN inte att ansluta igen och din internetanslutning kommer inte att vara säker.</translation>
 <translation id="2429299231491852747">Acceptera anslutningsbegäran</translation>
 <translation id="3428909627460825679">Det gick inte att skapa en VPN-profil. Vänligen försök igen.</translation>
-<translation id="1264320790738638119">Verifiering av köpet misslyckades. Försök igen.</translation>
-<translation id="8905950042180169719">VPN körs i bakgrunden</translation>
 <translation id="8681480718817027245">Prenumeration</translation>
 <translation id="7805768142964895445">Status</translation>
 <translation id="5747552184818312860">Upphör att gälla</translation>
@@ -684,15 +679,12 @@ Om du inte accepterar denna begäran kommer VPN inte att ansluta igen och din in
 <translation id="1219475260382643267">Webbplatsen fungerar inte</translation>
 <translation id="7138678301420049075">Övrigt</translation>
 <translation id="4827315939627587219">Återställ VPN-konfiguration</translation>
-<translation id="6883280223123252086">Är du säker på att du vill återställa vpn-konfigurationen?</translation>
 <translation id="604124094241169006">Automatisk</translation>
 <translation id="7475580600756356589">Ansluter till din server. Ska bara ta en stund...</translation>
 <translation id="1342728075788541348">Kopplar från din server. Detta ska bara ta en kort stund...</translation>
 <translation id="669072536454692117">Prenumerationen har slutförts</translation>
 <translation id="1187506504156101449">Det gick inte att bekräfta köpet:</translation>
 <translation id="8420522105268941892">Du har redan prenumererat på prenumerationen. Testa att återställa prenumerationen.</translation>
-<translation id="404414664190867625">FEL!!\nOrsakas av att en användare avbryter köpflödet.</translation>
-<translation id="3515141458161417228">ERROR!!\nKöpet misslyckades..</translation>
 <translation id="6452181791372256707">Avvisa</translation>
 <translation id="8030852056903932865">Godkänn</translation>
 <translation id="1597199892790541240">Gasavgift</translation>
@@ -825,7 +817,6 @@ Om du inte accepterar denna begäran kommer VPN inte att ansluta igen och din in
 <translation id="3586752056660754651">Signera</translation>
 <translation id="6592721981110586529">Anslut till Brave Wallet</translation>
 <translation id="329813193938846695">Välj konto(n)</translation>
-<translation id="3890989020011724401">Nytt konto</translation>
 <translation id="291375746846291973">Anslut endast till webbplatser som du litar på.</translation>
 <translation id="385051799172605136">Bakåt</translation>
 <translation id="1060221736464994328">Tillåt denna webbplats att byta nätverket?</translation>
@@ -842,22 +833,31 @@ Om du inte accepterar denna begäran kommer VPN inte att ansluta igen och din in
 <translation id="85136472535634474">Öppna VPN-inställningar</translation>
 <translation id="8352805003811526272">Återställa konfigurationen ...</translation>
 <translation id="6809312301323611382">Du har redan valt samma server</translation>
-<translation id="5665084657857645952">Behörighet annullerades</translation>
 <translation id="9106265941552476098">Avvisa <ph name="TRANSACTION_LENGTH"/> transaktioner</translation>
 <translation id="523862956770478816">Webbplatsbehörigheter</translation>
 <translation id="2141313140218636977"><ph name="VALUE"/> konton anslutna</translation>
+<translation id="3890989020011724401">Nytt konto</translation>
 <translation id="4305817255990598646">Växla</translation>
 <translation id="4804818685124855865">Koppla från</translation>
 <translation id="8009571545960303544">En begäran om din signatur har skickats</translation>
+<translation id="3484981968509595506">En DApp begär att få din offentliga krypteringsnyckel</translation>
+<translation id="3340247553212049934">Förse</translation>
 <translation id="1982257600591932657">Nätverksnamn</translation>
 <translation id="5052727830821470769">Nätverk URL</translation>
 <translation id="4822132585477111396">Chain ID</translation>
 <translation id="7131971375297699539">Valutasymbol</translation>
 <translation id="7982789257301363584">Nätverk</translation>
-<translation id="2521480044079508357">Detta gör att detta nätverk kan användas inom Brave Wallet.</translation>
+<translation id="8759753423332885148">Lär dig mer.</translation>
 <translation id="4717431746210146708">Tillåta denna webbplats att lägga till ett nätverk?</translation>
 <translation id="3378339846292573874">Lägg till föreslagna token</translation>
 <translation id="2322227405137827074">Vill du importera denna token?</translation>
 <translation id="1324417023773393937">Brave-webbläsaren</translation>
 <translation id="6044189892950611565">Aviseringskanal för Brave webbläsare</translation>
+<translation id="635752162765375187">OBS: Den här innehållsskaparen har inte ställts in för att kunna ta emot dricks från din plånbok. Om du dricksar reserveras beloppet som väntande och nya försök görs i 90 dagar.</translation>
+<translation id="7873874596836611687">plånbokssaldo:</translation>
+<translation id="4322846864135539519">Vill du återställa plånboken? Om din plånbok inte säkerhetskopieras kommer du att förlora alla kontouppgifter (inklusive eventuella associerade medel) om du återställer. Skriv in "<ph name="CONFIRMATION_PHRASE"/>" för att bekräfta.</translation>
+<translation id="1264320790738638119">Verifiering av köpet misslyckades. Försök igen.</translation>
+<translation id="404414664190867625">FEL!!\nOrsakas av att en användare avbryter köpflödet.</translation>
+<translation id="3515141458161417228">ERROR!!\nKöpet misslyckades..</translation>
+<translation id="5665084657857645952">Behörighet annullerades</translation>
 </translationbundle>

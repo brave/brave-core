@@ -299,6 +299,7 @@ Ndryshe kjo do të bllokohet nga cilësimet e tua të privatësisë. Kjo do ta l
 <translation id="1717218214683051432">Sensorët e lëvizjes</translation>
 <translation id="1717494416764505390">Kutia postare 3</translation>
 <translation id="1718029547804390981">Dokumenti është shumë i madh për t'u shënuar</translation>
+<translation id="1720941539803966190">Mbyll udhëzuesin</translation>
 <translation id="1721424275792716183">* Fusha është e detyrueshme</translation>
 <translation id="1727613060316725209">Certifikata është e vlefshme</translation>
 <translation id="1727741090716970331">Shto numër të vlefshëm karte</translation>
@@ -461,7 +462,6 @@ Ndryshe kjo do të bllokohet nga cilësimet e tua të privatësisë. Kjo do ta l
 <translation id="2185836064961771414">Futbolli amerikan</translation>
 <translation id="2187317261103489799">Zbulo (parazgjedhja)</translation>
 <translation id="2188375229972301266">Shumë shpime poshtë</translation>
-<translation id="2257044501874719257">Fjalëkalimi që sapo përdore u gjet në një nxjerrje të paautorizuar të të dhënave. Për të mbrojtur llogaritë e tua, "Menaxheri i fjalëkalimeve" i Brave rekomandon ta ndryshosh tani dhe më pas të kontrollosh fjalëkalimet e ruajtura.</translation>
 <translation id="219906046732893612">Përmirësimi i shtëpisë</translation>
 <translation id="2202020181578195191">Fut një vit të vlefshëm skadimi</translation>
 <translation id="22081806969704220">Tabakaja 3</translation>
@@ -472,6 +472,7 @@ Ndryshe kjo do të bllokohet nga cilësimet e tua të privatësisë. Kjo do ta l
 <translation id="2215727959747642672">Modifikimi i skedarëve</translation>
 <translation id="2215963164070968490">Qentë</translation>
 <translation id="2218879909401188352">Sulmuesit aktualisht në <ph name="BEGIN_BOLD"/><ph name="SITE"/><ph name="END_BOLD"/> mund të instalojnë aplikacione të rrezikshme që e dëmtojnë pajisjen tënde, shtojnë tarifa të fshehura në faturën tënde të celularit ose vjedhin informacionet e tua personale. <ph name="BEGIN_LEARN_MORE_LINK"/>Mëso më shumë<ph name="END_LEARN_MORE_LINK"/></translation>
+<translation id="2219658597883514593">Rinis udhëzuesin</translation>
 <translation id="2224337661447660594">Nuk ka internet</translation>
 <translation id="2230458221926704099">Rregullo lidhjen duke përdorur <ph name="BEGIN_LINK"/>aplikacionin e diagnostikimit<ph name="END_LINK"/></translation>
 <translation id="2239100178324503013">Dërgo tani</translation>
@@ -607,7 +608,6 @@ Ndryshe kjo do të bllokohet nga cilësimet e tua të privatësisë. Kjo do ta l
 <translation id="259821504105826686">Artet fotografike dhe dixhitale</translation>
 <translation id="2601150049980261779">Filmat romantikë</translation>
 <translation id="2604589665489080024">Muzika pop</translation>
-<translation id="2609632851001447353">Variantet</translation>
 <translation id="2610561535971892504">Kliko për të kopjuar</translation>
 <translation id="2618023639789766142">C10 (Zarf)</translation>
 <translation id="2623663032199728144">Mund të kërkojë të përdorë informacione rreth ekraneve të tua</translation>
@@ -634,6 +634,7 @@ Ndryshe kjo do të bllokohet nga cilësimet e tua të privatësisë. Kjo do ta l
 <translation id="2676271551327853224">Roc-8K</translation>
 <translation id="2677696497921480781">Ditëlindjet dhe ditët e emrave</translation>
 <translation id="2677748264148917807">Largohu</translation>
+<translation id="5597413561928518510">Ruaj informacionet e kartës dhe të faturimit në "Llogarinë tënde të Brave" <ph name="USER_EMAIL"/> për të përfunduar blerjet në mënyrë të sigurt dhe më shpejt</translation>
 <translation id="2684561033061424857">11x12</translation>
 <translation id="2687555958734450033">Përshtatja më e mirë</translation>
 <translation id="2688969097326701645">Po, vazhdo!</translation>
@@ -879,6 +880,7 @@ Ndryshe kjo do të bllokohet nga cilësimet e tua të privatësisë. Kjo do ta l
 <translation id="3399952811970034796">Adresa e dorëzimit</translation>
 <translation id="3402261774528610252">Lidhja e përdorur për të ngarkuar këtë sajt ka përdorur versionin TLS 1.0 ose TLS 1.1, të cilët janë të vjetëruar dhe do të çaktivizohen në të ardhmen. Pasi të çaktivizohen, përdoruesit nuk do të lejohen ta ngarkojnë këtë sajt. Serveri duhet të aktivizojë versionin TLS 1.2 ose një version të mëvonshëm.</translation>
 <translation id="3405664148539009465">Personalizo shkrimin</translation>
+<translation id="3407789382767355356">identifikimi i palëve të treta</translation>
 <translation id="3409896703495473338">Menaxho cilësimet e sigurisë</translation>
 <translation id="3414952576877147120">Madhësia:</translation>
 <translation id="3417660076059365994">Skedarët që ngarkon ose bashkëngjit i dërgohen Google Cloud ose palëve të treta për analizim. Për shembull, mund të skanohen për të dhëna delikate ose softuerë keqdashës.</translation>
@@ -1029,6 +1031,7 @@ Ndryshe kjo do të bllokohet nga cilësimet e tua të privatësisë. Kjo do ta l
 <translation id="3810973564298564668">Menaxho</translation>
 <translation id="3816482573645936981">Vlera (e zëvendësuar)</translation>
 <translation id="382518646247711829">Nëse përdor një server përfaqësues...</translation>
+<translation id="3826050100957962900">Identifikimi i palëve të treta</translation>
 <translation id="3827112369919217609">Absolut</translation>
 <translation id="3827666161959873541">Filmat për familjen</translation>
 <translation id="3828924085048779000">Lënia bosh e frazës së kalimit nuk lejohet.</translation>
@@ -1041,6 +1044,7 @@ Ndryshe kjo do të bllokohet nga cilësimet e tua të privatësisë. Kjo do ta l
 <translation id="3858027520442213535">Përditëso datën dhe kohën</translation>
 <translation id="3858860766373142691">Emri</translation>
 <translation id="3872834068356954457">Shkenca</translation>
+<translation id="3875783148670536197">Më trego mënyrën</translation>
 <translation id="3881478300875776315">Shfaq më pak rreshta</translation>
 <translation id="3884278016824448484">Identifikuesi i pajisjes bie në konflikt</translation>
 <translation id="3885155851504623709">Famullia</translation>
@@ -1073,6 +1077,7 @@ Ndryshe kjo do të bllokohet nga cilësimet e tua të privatësisë. Kjo do ta l
 <translation id="3973234410852337861"><ph name="HOST_NAME"/> është bllokuar</translation>
 <translation id="3978338123949022456">Modaliteti i kërkimit; shkruaj një kërkesë dhe shtyp "Enter" për të kërkuar me <ph name="KEYWORD_SUFFIX"/></translation>
 <translation id="398470910934384994">Shpendët</translation>
+<translation id="3985750352229496475">Menaxho adresat...</translation>
 <translation id="3986705137476756801">Çaktivizo "Titrat në çast" për momentin</translation>
 <translation id="3987940399970879459">Më pak se 1 MB</translation>
 <translation id="3990250421422698716">Zhvendosja e bordurës</translation>
@@ -1181,6 +1186,7 @@ Ndryshe kjo do të bllokohet nga cilësimet e tua të privatësisë. Kjo do ta l
 <translation id="4305666528087210886">Qasja te skedari ishte e pamundur</translation>
 <translation id="4306529830550717874">Të ruhet adresa?</translation>
 <translation id="4306812610847412719">kujtesa e fragmenteve</translation>
+<translation id="4310070645992025887">Kërko për udhëtime</translation>
 <translation id="4312613361423056926">B2</translation>
 <translation id="4312866146174492540">Blloko (parazgjedhja)</translation>
 <translation id="4314815835985389558">Menaxho sinkronizimin</translation>
@@ -1284,6 +1290,7 @@ Ndryshe kjo do të bllokohet nga cilësimet e tua të privatësisë. Kjo do ta l
 <translation id="7265018635737406618">Butoni "Shiko këshilla për Brave", shtyp Enter për të mësuar për veçoritë e Brave</translation>
 <translation id="8338928872956435647">Shiko këshillat për Brave</translation>
 <translation id="4617273035598175554">Softuerët për grafika dhe animim</translation>
+<translation id="4627165777145349100">Më shumë rreth kësaj faqeje</translation>
 <translation id="6398431831028858802">Kjo politikë nuk mund të caktohet në nivelin e profilit të Brave dhe do të shpërfillet.</translation>
 <translation id="4628948037717959914">Fotografia</translation>
 <translation id="4631649115723685955">Oferta e kthimit të parave është e lidhur</translation>
@@ -1423,6 +1430,7 @@ Ndryshe kjo do të bllokohet nga cilësimet e tua të privatësisë. Kjo do ta l
 <translation id="5011561501798487822">Gjuha e zbuluar</translation>
 <translation id="5015510746216210676">Emri i pajisjes:</translation>
 <translation id="5017554619425969104">Teksti që kopjove</translation>
+<translation id="5017828934289857214">Më kujto më vonë</translation>
 <translation id="5018422839182700155">Kjo faqe nuk mund të hapet</translation>
 <translation id="5019198164206649151">Mbështetja e ruajtjes është në gjendje të keqe</translation>
 <translation id="5020776957610079374">Muzika botërore</translation>
@@ -1654,6 +1662,7 @@ Ndryshe kjo do të bllokohet nga cilësimet e tua të privatësisë. Kjo do ta l
 <translation id="5624120631404540903">Menaxho fjalëkalimet</translation>
 <translation id="5629630648637658800">Dështoi në ngarkimin e cilësimeve të politikës</translation>
 <translation id="5631439013527180824">Shenjë e pavlefshme e menaxhimit të pajisjes</translation>
+<translation id="5632485077360054581">Më trego mënyrën</translation>
 <translation id="5633066919399395251">Sulmuesit aktualisht në <ph name="BEGIN_BOLD"/><ph name="SITE"/><ph name="END_BOLD"/> mund të tentojnë të instalojnë programe të rrezikshme që vjedhin ose fshijnë informacionin tënd (për shembull, fotografi, fjalëkalime, mesazhe dhe karta krediti). <ph name="BEGIN_LEARN_MORE_LINK"/>Mëso më shumë<ph name="END_LEARN_MORE_LINK"/></translation>
 <translation id="563324245173044180">U bllokua një përmbajtje mashtruese.</translation>
 <translation id="5633259641094592098">Filmat e kulteve dhe indie</translation>
@@ -1771,6 +1780,7 @@ Ndryshe kjo do të bllokohet nga cilësimet e tua të privatësisë. Kjo do ta l
 <translation id="5989320800837274978">Nuk janë specifikuar serverë përfaqësues fiksë dhe as ndonjë URL e skriptit .pac.</translation>
 <translation id="5992691462791905444">Palosje inxhinierike Z</translation>
 <translation id="7409510288691071929">Menaxho informacionin, privatësinë dhe sigurinë tënde në "Llogarinë tënde të Brave"</translation>
+<translation id="3494641719937626561">Fjalëkalimi që sapo përdore u gjet në një nxjerrje të paautorizuar të të dhënave. Për të mbrojtur llogaritë e tua, "Menaxheri i fjalëkalimeve" i Brave rekomandon ta ndryshosh atë tani dhe të kontrollosh fjalëkalimet e ruajtura.</translation>
 <translation id="6000758707621254961"><ph name="RESULT_COUNT"/> rezultate për "<ph name="SEARCH_TEXT"/>"</translation>
 <translation id="6006484371116297560">Klasike</translation>
 <translation id="6008122969617370890">Renditja N deri në 1</translation>
@@ -1809,6 +1819,7 @@ Ndryshe kjo do të bllokohet nga cilësimet e tua të privatësisë. Kjo do ta l
 <translation id="6061154937977953833">Mundja</translation>
 <translation id="6064217302520318294">Kyçja e ekranit</translation>
 <translation id="6064602040258638498">Kuponët dhe ofertat e zbritjeve</translation>
+<translation id="6078813287646374487">Shfaq më shumë informacione për këtë faqe</translation>
 <translation id="6080696365213338172">Je qasur në përmbajtje duke përdorur një certifikatë të dhënë nga administratori. Të dhënat që jep për <ph name="DOMAIN"/> mund të zbulohen nga administratori yt.</translation>
 <translation id="6087312102907839798">Kërkime të ngjashme</translation>
 <translation id="6094273045989040137">Shëno</translation>
@@ -1886,6 +1897,7 @@ Ndryshe kjo do të bllokohet nga cilësimet e tua të privatësisë. Kjo do ta l
 <translation id="6337133576188860026">Liron më pak se <ph name="SIZE"/>. Disa sajte mund të ngarkohen më ngadalë gjatë vizitës tënde të radhës.</translation>
 <translation id="6337534724793800597">Filtro politikat sipas emrit</translation>
 <translation id="6340739886198108203">Politika e administratorit nuk rekomandon nxjerrjen e pamjeve të ekranit apo regjistrimeve kur përmbajtja konfidenciale është e dukshme:</translation>
+<translation id="6348220984832452017">Variantet aktive</translation>
 <translation id="6349101878882523185">Instalo <ph name="APP_NAME"/></translation>
 <translation id="6353505687280762741">{COUNT,plural, =0{Asnjë}=1{1 fjalëkalim (për <ph name="DOMAIN_LIST"/>, sinkronizuar)}=2{2 fjalëkalime (për <ph name="DOMAIN_LIST"/>, sinkronizuar)}other{# fjalëkalime (për <ph name="DOMAIN_LIST"/>, sinkronizuar)}}</translation>
 <translation id="6358450015545214790">Çfarë kuptimi kanë këto?</translation>
@@ -1915,7 +1927,6 @@ Ndryshe kjo do të bllokohet nga cilësimet e tua të privatësisë. Kjo do ta l
 <translation id="7772223497488184427">Ndrysho fjalëkalimin e Brave</translation>
 <translation id="6433490469411711332">Redakto informacionin e kontaktit</translation>
 <translation id="6433595998831338502"><ph name="HOST_NAME"/> e refuzoi lidhjen.</translation>
-<translation id="6438025220577812695">E ndryshoj vetë</translation>
 <translation id="6440503408713884761">Shpërfillur</translation>
 <translation id="6443406338865242315">Cilat shtesa dhe përbërës shtesë ke instaluar</translation>
 <translation id="6446163441502663861">Kahu (Zarf)</translation>
@@ -2047,6 +2058,7 @@ Ndryshe kjo do të bllokohet nga cilësimet e tua të privatësisë. Kjo do ta l
 <translation id="6839929833149231406">Zona</translation>
 <translation id="6846340164947227603">Përdor një numër karte virtuale...</translation>
 <translation id="6852204201400771460">Dëshiron ta ringarkosh aplikacionin?</translation>
+<translation id="6857776781123259569">Menaxho fjalëkalimet...</translation>
 <translation id="686485648936420384">Burimet e konsumatorit</translation>
 <translation id="6865412394715372076">Kjo kartë nuk mund të verifikohet për momentin</translation>
 <translation id="6869334554832814367">Kreditë personale</translation>
@@ -2370,6 +2382,7 @@ Detaje shtesë:
 <translation id="7669271284792375604">Sulmuesit në këtë sajt mund të përpiqen të të mashtrojnë të instalosh programe që dëmtojnë përvojën tënde të shfletimit (për shembull, duke ndryshuar faqen kryesore ose duke shfaqur reklama shtesë në sajtet që viziton).</translation>
 <translation id="7669907849388166732">{COUNT,plural, =1{Veprimet e kryera me të dhënat e raportuara si konfidenciale (1 veprim që nga identifikimi). <ph name="BEGIN_LINK"/>Mëso më shumë<ph name="END_LINK"/>}other{Veprimet e kryera me të dhënat e raportuara si konfidenciale (# veprime që nga identifikimi). <ph name="BEGIN_LINK"/>Mëso më shumë<ph name="END_LINK"/>}}</translation>
 <translation id="7673278391011283842">Kutia postare 6</translation>
+<translation id="7675325315208090829">Menaxho mënyrat e pagesës...</translation>
 <translation id="7676643023259824263">Kërko për tekstin e kujtesës së fragmenteve, <ph name="TEXT"/></translation>
 <translation id="4628681623692678085">Shiko dhe menaxho historikun e shfletimit te cilësimet e Brave</translation>
 <translation id="7679947978757153706">Bejsbolli</translation>
@@ -2628,6 +2641,7 @@ Detaje shtesë:
 <ph name="DEBUG_INFO"/></translation>
 <translation id="8424582179843326029"><ph name="FIRST_LABEL"/> <ph name="SECOND_LABEL"/> <ph name="THIRD_LABEL"/></translation>
 <translation id="8428213095426709021">Cilësimet</translation>
+<translation id="8428634594422941299">E kuptova</translation>
 <translation id="5808418475906247813"><ph name="MANAGE_COOKIES_FOCUSED_FRIENDLY_MATCH_TEXT"/>. Shtyp "Tab" dhe më pas "Enter" për të menaxhuar preferencat e tua për kukit te cilësimet e Brave</translation>
 <translation id="8433057134996913067">Kjo do të bëjë të dalësh nga shumica e sajteve të uebit.</translation>
 <translation id="8434840396568290395">Kafshët shtëpiake</translation>
@@ -2730,6 +2744,7 @@ Detaje shtesë:
 <translation id="8763927697961133303">Pajisja USB</translation>
 <translation id="7736544743887840328">Mbylli të gjitha dritaret "e fshehta" që janë aktualisht të hapura</translation>
 <translation id="8766943070169463815">Fleta e vërtetimit të sigurt të kredencialeve të pagesës është e hapur</translation>
+<translation id="8767765348545497220">Mbyll flluskën e ndihmës</translation>
 <translation id="877985182522063539">A4</translation>
 <translation id="8785658048882205566">Motoçikletat</translation>
 <translation id="8790007591277257123">&amp;Bëje përsëri fshirjen</translation>
@@ -2742,6 +2757,7 @@ Detaje shtesë:
 <translation id="8806285662264631610">Produktet për larjen dhe trupin</translation>
 <translation id="8807160976559152894">Prerje pas çdo faqeje</translation>
 <translation id="7527893726197732596">Cilësimet e Brave</translation>
+<translation id="8813277370772331957">Më kujto më vonë</translation>
 <translation id="7674607358106534914"><ph name="UPDATE_CHROME_FOCUSED_FRIENDLY_MATCH_TEXT"/>, shtyp "Tab", më pas "Enter" për të përditësuar Brave nga cilësimet e tua të Brave</translation>
 <translation id="882338992931677877">Foleja manuale</translation>
 <translation id="1723247378009489676">Butoni "Mbyll dritaret e fshehta". Shtyp "Enter" për të mbyllur të gjitha dritaret "e fshehta" që janë aktualisht të hapura</translation>

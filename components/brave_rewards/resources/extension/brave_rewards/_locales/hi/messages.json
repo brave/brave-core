@@ -135,6 +135,21 @@
     "message": "Brave पुरस्कारों में कुछ समस्या आ रही है। कृपया बाद में पुनः प्रयास करें।",
     "description": ""
   },
+  "rewardsLogInToSeeBalance": {
+    "message": "$begin_bold$अपना बैलेंस देखने के लिए $provider$$end_bold$ पर लॉग इन करें",
+    "description": "",
+    "placeholders": {
+      "begin_bold": {
+        "content": "$1"
+      },
+      "provider": {
+        "content": "$2"
+      },
+      "end_bold": {
+        "content": "$3"
+      }
+    }
+  },
   "rewardsPaymentCheckStatus": {
     "message": "स्टेटस देखें",
     "description": ""

@@ -256,6 +256,7 @@
 <translation id="8218538368080510976">Errore: area geografica non disponibile</translation>
 <translation id="5382684862562314222">BAT non è ancora supportato nella tua area geografica su Uphold.</translation>
 <translation id="9074594632540931067">Errore: BAT non disponibile</translation>
+<translation id="6996157559236886133">Errore: funzionalità limitata del conto Uphold</translation>
 <translation id="3274650021044762770">Si è verificato un problema e non è stata approvata la richiesta effettuata dal browser di collegare le Ricompense Brave al tuo account <ph name="PROVIDER"/>. Se hai bisogno di aiuto <ph name="BEGIN_LINK"/>contatta l’assistenza<ph name="END_LINK"/>.</translation>
 <translation id="1316066811927496401">Errore: la richiesta non è convalidabile</translation>
 <translation id="1737873393693460829">Attivando [[title]], accetti i <ph name="BEGIN_LINK1"/>Termini di servizio<ph name="END_LINK1"/> e l’<ph name="BEGIN_LINK2"/>Informativa sulla privacy<ph name="END_LINK2"/>.</translation>
@@ -811,6 +812,7 @@
 <translation id="4232775951515678071">Impossibile ottenere il tipo di transazione</translation>
 <translation id="2080935885647755539">Impossibile ottenere il prezzo di gas per la transazione EIP-1559</translation>
 <translation id="4843814354611030845">L'utente ha rifiutato la transazione</translation>
+<translation id="1462494615260983714">Errore nell'elaborazione della transazione</translation>
 <translation id="4886059598718763020">“<ph name="VALUE"/>” non è autorizzato a firmare il messaggio</translation>
 <translation id="8719220598078667817">Impossibile firmare la transazione</translation>
 <translation id="875506212625074179">Risposta dell'ID catena non valida dal servizio RPC</translation>
@@ -858,7 +860,6 @@
 <translation id="1191686659164947414">La transazione potrebbe essere anticipata</translation>
 <translation id="632241521608275119">Tolleranza di slippage</translation>
 <translation id="4500473291496079954">Scade tra</translation>
-<translation id="2236833281018938257">Indirizzo 0x o URL</translation>
 <translation id="2860280209982026951">Brave usa <ph name="LINK_BEFORE"/>0x<ph name="LINK_AFTER"/> come aggregatore DEX.</translation>
 <translation id="151946611346774041">0x utilizzerà l’indirizzo Ethereum e l’indirizzo IP per completare le transazioni (richieste di quotazioni incluse). 0x userà questi dati SOLO per gestire le transazioni.</translation>
 <translation id="4626407663177532837">La quotazione include una commissione dello 0,875% per Brave.</translation>
@@ -866,7 +867,6 @@
 <translation id="6575120282593094155">Non hai un account <ph name="ACCOUNT_TYPE"/>. Vuoi crearne uno adesso?</translation>
 <translation id="2704606927547763573">Copiata</translation>
 <translation id="1420318137760245955">Benvenuto nel nuovo portafoglio Brave</translation>
-<translation id="8303434745767477417">Tieni le criptovalute sotto la tua custodia. Traccia le prestazioni del portfolio e interagisci con le dApp web 3. Scambia, investi, prendi in prestito e presta con DeFi. Tutto direttamente dal browser della privacy Brave. Non sono richiesti né estensioni né download.</translation>
 <translation id="6972754398087986839">Inizia</translation>
 <translation id="375882617301124395">Esegui il backup al tuo portafoglio di criptovalute</translation>
 <translation id="180032279811483155">Nel prossimo passaggio vedrai una frase di recupero di <ph name="RECOVERY_PHRASE_LENGTH"/> parole, che potrai usare per recuperare i tuoi conti principali di criptovaluta. Salvala in un posto sicuro. La frase di recupero è l’unico modo per recuperare l’accesso al conto in caso di password dimenticata, dispositivo perso o rubato, o se si desidera cambiare portafoglio.</translation>
@@ -895,7 +895,6 @@
 <translation id="163697698769819510">Esegui subito il backup del portafoglio per proteggere le tue risorse e assicurarti di non perdere mai l’accesso.</translation>
 <translation id="1018806299114415224">Esegui subito il backup</translation>
 <translation id="5234764350956374838">Ignora</translation>
-<translation id="4075073132992924258">Il portafoglio Brave non è impostato come portafoglio predefinito e non risponderà alle dApp web3. Vai nelle impostazioni per modificare il tuo portafoglio predefinito.</translation>
 <translation id="4362717653795263052">Ripristina account di criptovalute principali</translation>
 <translation id="3038077262567136741">Inserisci la frase di recupero per ripristinare l'account di criptovalute del tuo portafoglio Brave.</translation>
 <translation id="955918646509748368">La frase di recupero inserita non è valida.</translation>
@@ -906,8 +905,6 @@
 <translation id="8624315169751085215">Copia negli appunti</translation>
 <translation id="1121335910737476837">Account di criptovalute principali</translation>
 <translation id="6969147029062037757">Conti importati</translation>
-<translation id="5668765612885835803">Nel portafoglio di Brave puoi creare dei conti principali per cui è disponibile il backup o il ripristino con frase di recupero. Per maggiori informazioni sui vari tipi di conto, consulta la guida relativa ai conti</translation>
-<translation id="2471916999505901943">Questi conti si possono usare con le dApp web 3 e sono visibili nel portfolio. Tieni però presente che i conti secondari non si possono ripristinare con il backup effettuato sul conto principale tramite frase di ripristino.</translation>
 <translation id="1940465339426637378">Beni</translation>
 <translation id="2236507293802791911">Asset visibili</translation>
 <translation id="7525067979554623046">Crea</translation>
@@ -1037,7 +1034,6 @@
 <translation id="3890989020011724401">Nuovo account</translation>
 <translation id="7257603403519636638">Visualizza gli asset del conto</translation>
 <translation id="2092132085082887098">Asset del conto</translation>
-<translation id="5723696625900399845">Utilizza questo pannello per accedere in modo sicuro a web3 e a tutte le risorse cripto.</translation>
 <translation id="4460220693591349571">TIPO DI FUNZIONE</translation>
 <translation id="838933475572692615">Dati esadecimali</translation>
 <translation id="2240831799756994975">BYTE</translation>
@@ -1049,13 +1045,11 @@
 <translation id="7739762330714405363">Usa la stessa password</translation>
 <translation id="1085027414516521238">MetaMask</translation>
 <translation id="7102907656918333773">Importa da <ph name="WALLET_EXTENSION"/></translation>
-<translation id="8897114903450789862">Importa i tuoi account <ph name="WALLET_EXTENSION"/> nel portafoglio Brave, per un modo più veloce e sicuro di gestire le criptovalute e interagire con le dApp web 3.</translation>
 <translation id="4237840336687249184">Password di MetaMask</translation>
 <translation id="2381605201035323535">portafogli di criptovalute</translation>
 <translation id="2770851145415891830">Rilevati portafogli di criptovalute esistenti</translation>
 <translation id="4938145712652668388">Quando clicchi su "Inizia" importerai il tuo portafoglio di criptovalute precedente nel nuovo portafoglio Brave e godrai di tutti i vantaggi descritti sopra. Provalo e facci sapere cosa ne pensi!</translation>
 <translation id="2237759620789871865">Se preferisci saltare l'importazione e mantenere i vecchi portafogli di criptovalute, vai alle <ph name="LINK_BEFORE"/>Impostazioni<ph name="LINK_AFTER"/> del browser Brave e ripristina l'impostazione predefinita a Portafogli di criptovalute. Puoi anche importare, provare il nuovo portafoglio Brave e tornare alle impostazioni precedenti in qualsiasi momento.</translation>
-<translation id="3301259443293676544">Inserisci la password dei tuoi portafogli di criptovalute esistenti per importare il portafoglio Brave. Goditi un modo più veloce e sicuro per gestire le criptovalute e interagire con le dApp web 3.</translation>
 <translation id="9099900965604225657">Password dei portafogli di criptovalute</translation>
 <translation id="4020495774166914146">Ho perso la mia password e la frase di recupero, crea un nuovo portafoglio.</translation>
 <translation id="6344138931392227467"><ph name="DEVICE_NAME"/> collegato</translation>
@@ -1142,7 +1136,6 @@
 <translation id="3327639091470204775">Impossibile collegarsi al bridge di Trezor</translation>
 <translation id="6672377693827764095">Errore interno, impossibile recuperare gli account</translation>
 <translation id="6889920539620318793">Imposta come attiva</translation>
-<translation id="1462494615260983714">Errore nell'elaborazione della transazione</translation>
 <translation id="8933250418452564886">Impossibile trovare la transazione dell’hardware, riprova</translation>
 <translation id="5999974802900788338">Errore ricevuto dall’hardware, probabilmente devi confermare la transazione sul tuo dispositivo</translation>
 <translation id="8523768065044261559">Errore nella gestione della transazione, riprova</translation>
@@ -1208,6 +1201,7 @@
 <translation id="3795015906457257780">Stai visualizzando il sito senza gli strumenti di Brave a tutela della privacy.</translation>
 <translation id="7194012750329511146">Protezioni di Brave
 Abbiamo bloccato <ph name="NUMBER"/> contenuti tra sistemi di tracciamento, annunci pubblicitari e altro ancora</translation>
+<translation id="4292121526390005808">Script bloccati</translation>
 <translation id="1742469581923031760">Connessione in corso…</translation>
 <translation id="1287487756047817908">Disconnessione in corso…</translation>
 <translation id="2325196879156848326">Connessione non riuscita</translation>
@@ -1227,7 +1221,6 @@ Abbiamo bloccato <ph name="NUMBER"/> contenuti tra sistemi di tracciamento, annu
 <translation id="1400240082805528049">Assistenza 24 ore su 24, 7 giorni su 7</translation>
 <translation id="8463313539532697053">Attendi il caricamento…</translation>
 <translation id="4613076894734402086">Modifica il metodo di pagamento</translation>
-<translation id="1898254156730880135">Il tuo ultimo pagamento non sembra essere andato a buon fine. L’accesso a questo abbonamento sarà sospeso finché non si risolverà il problema con il pagamento. Prova a modificare il metodo di pagamento o contatta l’assistenza di Brave.</translation>
 <translation id="1839021455997460752">Il tuo indirizzo email</translation>
 <translation id="5154702632169343078">Oggetto</translation>
 <translation id="6625978880678465492">Scegli un motivo</translation>
@@ -1261,4 +1254,5 @@ Abbiamo bloccato <ph name="NUMBER"/> contenuti tra sistemi di tracciamento, annu
 <translation id="6973157709854838218">Non mostrare il tuo saldo</translation>
 <translation id="4548946945059463969">Mostra il tuo saldo sullo schermo</translation>
 <translation id="242959166945779492">Non hai alcun saldo sul tuo conto. Visita FTX per acquistarne un po'.</translation>
+<translation id="2236833281018938257">Indirizzo 0x o URL</translation>
 </translationbundle>

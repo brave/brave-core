@@ -84,7 +84,20 @@
 <translation id="6587448235155023666">Zmiany zostaną zastosowane po ponownym uruchomieniu Brave</translation>
 <translation id="8701563696941209024">URUCHOM PONOWNIE</translation>
 <translation id="834487290629916192">PÓŹNIEJ</translation>
+<translation id="7207456302801184289">Witamy w przeglądarce Brave</translation>
+<translation id="4117451092682672487">Prosta ochrona prywatności.</translation>
+<translation id="7909375417585209817">Gdy Brave jest domyślną przeglądarką, każdy otwarty link otwiera się z ochroną prywatności Brave.</translation>
+<translation id="5148943178722443958">Pomóż ulepszyć Brave.</translation>
+<translation id="6188781052835527980">Wysyłaj anonimowe raporty diagnostyczne, jeśli wystąpi awaria lub przeglądarka się zablokuje.</translation>
+<translation id="1929905278861178845">Dziel się w sposób całkowicie prywatny i anonimowy uwagami na temat produktów, które są używane przez użytkowników Brave.</translation>
+<translation id="2877653791257935258">Podaj nazwę witryny internetowej lub adres URL</translation>
+<translation id="5329830149661250028">Zalety korzystania z Brave: Brak reklam. Brak oprogramowania śledzącego. Szybsze ładowanie stron.</translation>
+<translation id="3545804467215833536">Stuknij, aby wyświetlić Tarcze Brave</translation>
+<translation id="1724327820822194498">Dzięki Tarczom będzie można zobaczyć wszystkie zablokowane przez Brave niepożądane elementy.</translation>
+<translation id="5386259141409498372">Zablokowano skrypty śledzące <ph name="BIG_TECH"/> i inne reklamy (<ph name="TRACKER"/>)</translation>
+<translation id="3092683655478890840">Zablokowanych reklam i skryptów śledzących: <ph name="TRACKER_COUNT"/></translation>
 <translation id="8281886186245836920">Pomiń</translation>
+<translation id="6165508094623778733">Dowiedz się więcej</translation>
 <translation id="986879628471635371">Rozwiązywanie problemów z wdrożeniem</translation>
 <translation id="5808759341041733958">Wybierz domyślną wyszukiwarkę</translation>
 <translation id="1331593888918588693">Później możesz zawsze zmienić preferencje w ustawieniach aplikacji.</translation>
@@ -112,12 +125,12 @@
 <translation id="1166682575529520472">Miesięcznie</translation>
 <translation id="1628742278973105368">Twój pierwszy miesięczny napiwek zostanie wysłany do:</translation>
 <translation id="298349922412901215">UWAGA: ten twórca jeszcze nie zarejestrował się, aby otrzymywać wsparcie od użytkowników Brave. Będziemy próbowali przekazać wsparcie do czasu, aż zostanie zweryfikowany lub upłynie 90 dni.</translation>
-<translation id="635752162765375187">UWAGA: ten twórca aktualnie nie został skonfigurowany tak, aby otrzymywać napiwki z Twojego portfela. Zostawione napiwki będą oczekiwać w Twoim portfelu; w ciągu 90 dni będą podejmowane automatyczne próby ich przekazania.</translation>
+<translation id="635752162765375187">UWAGA: Obecna konfiguracja tego twórcy nie pozwala na otrzymywanie napiwków z Twojego portfela usług powierniczych Nagród. Wszelkie napiwki, które przekażesz, pozostaną w portfelu jako oczekujące i będą automatycznie ponawiane przez 90 dni.</translation>
 <translation id="1910721550319506122">Witaj!</translation>
 <translation id="3165726837666415756">Możesz wesprzeć tę witrynę, przekazując napiwek. To forma podziękowania za tworzenie świetnych treści. Zweryfikowani twórcy treści otrzymują pieniądze za napiwki w pierwszym tygodniu każdego miesiąca kalendarzowego.</translation>
 <translation id="1704859330137112950">Jeśli chcesz, możesz zaplanować miesięczne napiwki, aby regularnie wspierać tę stronę.</translation>
 <translation id="245015745140252435">Wartość napiwka</translation>
-<translation id="7873874596836611687">saldo portfela:</translation>
+<translation id="7873874596836611687">Saldo nagród:</translation>
 <translation id="2573313946367623146">przekaż mój napiwek</translation>
 <translation id="3250511771491660127">Zmień na comiesięczne</translation>
 <translation id="7658239707568436148">Anuluj</translation>
@@ -137,7 +150,7 @@
 <translation id="8220228041552340594">PAŹDZIERNIK</translation>
 <translation id="8280223431922155812">LISTOPAD</translation>
 <translation id="4254029385847607686">GRUDZIEŃ</translation>
-<translation id="4258022280942725182">Twój portfel</translation>
+<translation id="4258022280942725182">Twoje nagrody Brave</translation>
 <translation id="3960619311638643872">Brave VPN</translation>
 <translation id="1772301834467143364">Aktualności Brave</translation>
 <translation id="7760215798627399379"><ph name="VALUE"/> USD</translation>
@@ -172,8 +185,8 @@ miesiącu...</translation>
 <translation id="8689997599821157251">Zarobiłeś</translation>
 <translation id="7550470870580166294">Niewystarczające środki</translation>
 <translation id="2775064702681588061">Twoje konto nagród Brave czeka na depozyt.</translation>
-<translation id="2630264552940126640">Utwórz kopię zapasową portfela</translation>
-<translation id="238922425564381955">Utwórz kopię zapasową portfela.</translation>
+<translation id="2630264552940126640">Zrób kopię zapasową nagród Brave</translation>
+<translation id="238922425564381955">Zrób kopię zapasową nagród Brave.</translation>
 <translation id="2323069945529668668">O nie!</translation>
 <translation id="7510166204621526816">Serwer Nagród Brave nie odpowiada. Naprawimy to tak szybko, jak to możliwe.</translation>
 <translation id="683765328936486920">na YouTube</translation>
@@ -548,7 +561,7 @@ Czy na pewno chcesz to zrobić?</translation>
 <translation id="5493402808936397665">Włącz biometrię, aby szybko odblokować portfel bez wpisywania hasła.</translation>
 <translation id="8030647312184163932">Odblokowanie funkcji odcisku palca</translation>
 <translation id="4090490645603511157">Użyj funkcji biometrycznej, aby szybko odblokować portfel bez wpisywania hasła.</translation>
-<translation id="1544192797660353713">Portfel (beta)</translation>
+<translation id="1544192797660353713">Portfel</translation>
 <translation id="6901810042765869341">Wprowadź wyrażenie odzyskiwania, aby przywrócić swoje konto kryptowalutowe Brave Wallet.</translation>
 <translation id="9120654436199628567">Przywróć konto kryptowalutowe</translation>
 <translation id="4811736040444856406">Pokaż wyrażenie odzyskiwania</translation>
@@ -612,7 +625,7 @@ Czy na pewno chcesz to zrobić?</translation>
 <translation id="8239147115686034860">Automatycznie zablokuj portfel Brave</translation>
 <translation id="414639769490080648">Czas, w minutach, po upływie którego portfel Brave zostanie automatycznie zablokowany</translation>
 <translation id="4993345308607970390">Resetuj portfel Brave Wallet</translation>
-<translation id="4322846864135539519">Czy na pewno chcesz zresetować portfel? Jeśli nie utworzono kopii zapasowej portfela, zresetowanie spowoduje utratę wszystkich danych konta (w tym wszelkich skojarzonych środków). Wpisz „<ph name="CONFIRMATION_PHRASE"/>”, aby potwierdzić.</translation>
+<translation id="4322846864135539519">Czy na pewno chcesz zresetować Nagrody Brave? Jeśli nie utworzono kopii zapasowej portfela, zresetowanie spowoduje utratę wszystkich danych konta (w tym wszelkich powiązanych środków). Wpisz „<ph name="CONFIRMATION_PHRASE"/>”, aby potwierdzić.</translation>
 <translation id="4862812525895306758">Wyczyść informacje dotyczące transakcji jednorazowej</translation>
 <translation id="5693968582510626466">Transakcje czyszczenia mogą być przydatne dla programistów lub w takcie czyszczenia lokalnego serwera</translation>
 <translation id="5421107279168565467">Czy na pewno chcesz zresetować wszystkie transakcje i informacje jednorazowe? Tę opcję wykorzystują zazwyczaj programiści przeprowadzający lokalny test serwera. Wpisz „<ph name="CONFIRMATION_PHRASE"/>”, aby potwierdzić.</translation>
@@ -632,8 +645,8 @@ Czy na pewno chcesz to zrobić?</translation>
 <translation id="1190117345570417902">Wykorzystuje bezpieczny, szyfrowany tunel VPN Wireguard</translation>
 <translation id="1571230671455380494">Nigdy nie udostępniamy i nie sprzedajemy Twoich danych</translation>
 <translation id="276866628038850725">Wszystkie plany obejmują siedmiodniowy okres próbny.</translation>
-<translation id="7280825497485894053">Miesięczna subskrypcja</translation>
-<translation id="3001303523417455986">Roczna subskrypcja</translation>
+<translation id="1532536259167115948">Subskrypcja miesięczna <ph name="TRIAL_TEXT"/></translation>
+<translation id="6344668702581136255">Subskrypcja roczna <ph name="TRIAL_TEXT"/></translation>
 <translation id="6748319398471481216">Subskrypcja odnawialna miesięcznie</translation>
 <translation id="7734634586133069282"><ph name="MONTHLY_AMOUNT"/> / mies.</translation>
 <translation id="1163809943099641131">Jeden rok</translation>
@@ -654,8 +667,7 @@ Czy na pewno chcesz to zrobić?</translation>
 Jeżeli nie zaakceptujesz tego żądania, połączenie z VPN nie zostanie ponownie nawiązane i połączenie internetowe nie zostanie zabezpieczone.</translation>
 <translation id="2429299231491852747">Zaakceptuj żądanie połączenia</translation>
 <translation id="3428909627460825679">Nie udało się utworzyć profilu VPN. Spróbuj ponownie.</translation>
-<translation id="1264320790738638119">Nie udało się zweryfikować zakupu. Spróbuj ponownie.</translation>
-<translation id="8905950042180169719">VPN pracuje w tle</translation>
+<translation id="1264320790738638119">Twoja subskrypcja wygasła. Możesz ją odnowić w każdej chwili.</translation>
 <translation id="8681480718817027245">Subskrypcja</translation>
 <translation id="7805768142964895445">Status</translation>
 <translation id="5747552184818312860">Wygasa</translation>
@@ -683,15 +695,15 @@ Jeżeli nie zaakceptujesz tego żądania, połączenie z VPN nie zostanie ponown
 <translation id="1219475260382643267">Witryna internetowa nie działa</translation>
 <translation id="7138678301420049075">Inne</translation>
 <translation id="4827315939627587219">Resetuj konfigurację VPN</translation>
-<translation id="6883280223123252086">Czy na pewno chcesz zresetować konfigurację VPN?</translation>
+<translation id="1705662265912724430">Czy na pewno chcesz zresetować konfigurację VPN?</translation>
 <translation id="604124094241169006">Automatyczne</translation>
 <translation id="7475580600756356589">Nawiązywanie połączenia z serwerem. To powinno zająć tylko chwilę…</translation>
 <translation id="1342728075788541348">Odłączanie od serwera. To powinno zająć tylko chwilę…</translation>
 <translation id="669072536454692117">Subskrypcja wykorzystana pomyślnie</translation>
 <translation id="1187506504156101449">Nie udało się potwierdzić zakupu:</translation>
 <translation id="8420522105268941892">Jesteś już subskrybentem tej subskrypcji. Spróbuj przywrócić subskrypcję.</translation>
-<translation id="404414664190867625">BŁĄD!!!\nSpowodowany anulowaniem procesu zakupowego przez użytkownika.</translation>
-<translation id="3515141458161417228">BŁĄD!!!\nZakup nie powiódł się.</translation>
+<translation id="404414664190867625">Zrezygnowano z zakupu subskrypcji.</translation>
+<translation id="3515141458161417228">Zakup nieudany. Skontaktuj się z działem wsparcia sklepu Google Play.</translation>
 <translation id="6452181791372256707">Odrzuć</translation>
 <translation id="8030852056903932865">Zatwierdź</translation>
 <translation id="1597199892790541240">Opłata za gaz</translation>
@@ -726,6 +738,7 @@ Jeżeli nie zaakceptujesz tego żądania, połączenie z VPN nie zostanie ponown
 <translation id="2199215899212542417">TYP FUNKCJI: <ph name="FTYPE"/></translation>
 <translation id="4803003663447398145">Brak danych</translation>
 <translation id="9061799688859969073"><ph name="ACCOUNT_NAME"/> wysłało <ph name="CRYPTO_VALUE"/> <ph name="ASSET"/> (<ph name="FIAT_VALUE"/> USD) – <ph name="DATE"/></translation>
+<translation id="1148985422232712046">Konto <ph name="ACCOUNT_NAME"/> wysłało <ph name="ASSET"/> nr <ph name="ASSET_ID"/> – <ph name="DATE"/></translation>
 <translation id="2911329628253651823"><ph name="ACCOUNT_NAME"/> zatwierdzone <ph name="ASSET"/> - <ph name="DATE"/></translation>
 <translation id="7400134344541309180">Zatwierdzone, nielimitowane <ph name="ASSET"/> – <ph name="PROXY"/></translation>
 <translation id="2428770727194227378"><ph name="ACCOUNT_NAME"/> dokonało wymiany – <ph name="DATE"/></translation>
@@ -790,6 +803,7 @@ Jeżeli nie zaakceptujesz tego żądania, połączenie z VPN nie zostanie ponown
 <translation id="7732576862074737148">≈ <ph name="VALUE"/> USD</translation>
 <translation id="3079421456571897484"><ph name="VALUE"/> BAT</translation>
 <translation id="5802665280774361839">Wyświetl elementy automatycznie wypełnione w pasku adresu</translation>
+<translation id="8982438328166986164">Wyświetlaj sugerowane witryny internetowe w oparciu o zakładki i historię przeglądania.</translation>
 <translation id="1241283133946520352">Sieci</translation>
 <translation id="1062463687579789365">Dostosowywanie sieci portfela</translation>
 <translation id="2512821599885971349">Dodaj sieć</translation>
@@ -824,7 +838,6 @@ Jeżeli nie zaakceptujesz tego żądania, połączenie z VPN nie zostanie ponown
 <translation id="3586752056660754651">Podpisz</translation>
 <translation id="6592721981110586529">Połącz z portfelem Brave</translation>
 <translation id="329813193938846695">Wybierz konto(-a)</translation>
-<translation id="3890989020011724401">Nowe konto</translation>
 <translation id="291375746846291973">Łącz się tylko ze stronami, którym ufasz.</translation>
 <translation id="385051799172605136">Wstecz</translation>
 <translation id="1060221736464994328">Czy zezwolić tej witrynie na zmianę sieci?</translation>
@@ -841,22 +854,32 @@ Jeżeli nie zaakceptujesz tego żądania, połączenie z VPN nie zostanie ponown
 <translation id="85136472535634474">Otwórz ustawienia VPN</translation>
 <translation id="8352805003811526272">Resetowanie konfiguracji…</translation>
 <translation id="6809312301323611382">Wybrano już ten sam serwer.</translation>
-<translation id="5665084657857645952">Odwołano uprawnienia</translation>
+<translation id="5665084657857645952">Zatrzymano instalację profilu VPN.</translation>
 <translation id="9106265941552476098">Odrzuć transakcje: <ph name="TRANSACTION_LENGTH"/></translation>
 <translation id="523862956770478816">Uprawnienia witryny</translation>
 <translation id="2141313140218636977">Powiązane konta: <ph name="VALUE"/></translation>
+<translation id="3890989020011724401">Nowe konto</translation>
 <translation id="4305817255990598646">Przełącz</translation>
 <translation id="4804818685124855865">Rozłącz</translation>
 <translation id="8009571545960303544">Twój podpis jest wymagany</translation>
+<translation id="3484981968509595506">DApp żąda Twojego publicznego klucza szyfrowania</translation>
+<translation id="2291002548681057345">prosi o publiczny klucz szyfrowania portfela. Podanie klucza oznacza, że strona będzie mogła wysyłać do Ciebie szyfrowane wiadomości.</translation>
+<translation id="3340247553212049934">Dostarcz</translation>
 <translation id="1982257600591932657">Nazwa sieci</translation>
 <translation id="5052727830821470769">Adres URL sieci</translation>
 <translation id="4822132585477111396">Identyfikator łańcucha</translation>
 <translation id="7131971375297699539">Symbol waluty</translation>
 <translation id="7982789257301363584">Sieć</translation>
-<translation id="2521480044079508357">Umożliwi to wykorzystywanie tej sieci w połączeniu z portfelem Brave.</translation>
+<translation id="7540715999708954128">Umożliwi to korzystanie tej sieci w połączeniu z Portfelem Brave. Dowiedz się więcej.</translation>
+<translation id="8759753423332885148">Dowiedz się więcej.</translation>
 <translation id="4717431746210146708">Zezwolić tej stronie na dodanie sieci?</translation>
 <translation id="3378339846292573874">Dodaj sugerowany token</translation>
 <translation id="2322227405137827074">Czy chcesz zaimportować ten token?</translation>
 <translation id="1324417023773393937">Przeglądarka Brave</translation>
 <translation id="6044189892950611565">Kanał powiadomień przeglądarki Brave</translation>
+<translation id="1173919438868967364">Wybierz konto</translation>
+<translation id="8922793255489232731">Nie udało się ustawić pasującej strefy czasowej w wypadku: <ph name="VALUE"/></translation>
+<translation id="8231907121684689093">Wyświetl najpopularniejsze strony</translation>
+<translation id="6471216025161697462">Połączono do <ph name="VALUE"/></translation>
+<translation id="1968852757206592413">Wersja próbna</translation>
 </translationbundle>

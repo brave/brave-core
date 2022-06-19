@@ -88,6 +88,9 @@
 <translation id="1082214733466244292">Administrator je blokirao neke funkcije za ovaj uređaj</translation>
 <translation id="8073477228424628709"><ph name="THIRD_PARTY_TOOL_NAME"/> želi vratiti vaše postavke Bravea na izvorne zadane vrijednosti. Time će se vaša početna stranica, stranica nove kartice i tražilica vratiti na zadano, proširenja će se onemogućiti, a sve kartice otkvačiti. Izbrisat će se i ostali privremeni podaci i podaci u predmemoriji, na primjer, kolačići te podaci o sadržaju i web-lokacijama.</translation>
 <translation id="1084096383128641877">Uklanjanjem zaporke neće se izbrisati vaš račun na <ph name="DOMAIN"/>. Izmijenite zaporku ili izbrišite račun na <ph name="DOMAIN_LINK"/> da biste ga zaštitili od drugih.</translation>
+<translation id="1084288067399862432">Uspješno ste promijenili ugroženu zaporku.
+
+Zaporke uvijek možete provjeriti u odjeljku <ph name="GOOGLE_PASSWORD_MANAGER"/>.</translation>
 <translation id="1084824384139382525">Kopiraj adresu &amp;veze</translation>
 <translation id="1085064499066015002">Uvijek na svim web-lokacijama</translation>
 <translation id="1085697365578766383">Došlo je do pogreške prilikom pokretanja virtualnog računala. Pokušajte ponovo.</translation>
@@ -130,7 +133,9 @@
 <translation id="1124772482545689468">Korisnik</translation>
 <translation id="1125550662859510761">Izgleda kao <ph name="WIDTH"/> x <ph name="HEIGHT"/> (izvorno)</translation>
 <translation id="1295971429974142731">Ne štiti vas od opasnih web-lokacija, preuzimanja i proširenja. Na drugim Braveovim uslugama, kao što su Gmail i Pretraživanje, i dalje ste zaštićeni Sigurnim pregledavanjem, ako je dostupno.</translation>
+<translation id="1128090040635299943">Linux se trenutačno konfigurira. Konfiguracija će potrajati nekoliko minuta.</translation>
 <translation id="1128591060186966949">Uređivanje tražilice</translation>
+<translation id="1129420403709586868">Pregled fotografija i medija s vašeg telefona</translation>
 <translation id="1129850422003387628">Upravljanje aplikacijama</translation>
 <translation id="113050636487300043">Odaberite naziv i temu u boji da biste međusobno razlikovali profile</translation>
 <translation id="1130589222747246278"><ph name="WINDOW_TITLE"/> – dio grupe <ph name="GROUP_NAME"/></translation>
@@ -141,7 +146,6 @@
 <translation id="1137589305610962734">privremeni podaci</translation>
 <translation id="1137673463384776352">Otvori vezu u aplikaciji <ph name="APP"/></translation>
 <translation id="1138686548582345331">{MUTED_NOTIFICATIONS_COUNT,plural, =1{Nova obavijest}one{# nova obavijest}few{# nove obavijesti}other{# novih obavijesti}}</translation>
-<translation id="1139343347646843679">Došlo je do pogreške prilikom konfiguriranja Linuxa. Obratite se administratoru.</translation>
 <translation id="1139923033416533844">Upotreba memorije</translation>
 <translation id="1140351953533677694">pristupiti vašim Bluetooth i serijski spojenim uređajima</translation>
 <translation id="114036956334641753">Zvuk i titlovi</translation>
@@ -167,6 +171,7 @@
 <translation id="1155816283571436363">Povezivanje s vašim telefonom</translation>
 <translation id="1158080958325422608">Promijeni u velika slova</translation>
 <translation id="1158238185437008462">Gledajte uspomene</translation>
+<translation id="1160842321113409343">Da bismo zaštitili vašu privatnost, automatski brišemo web-lokacije koje su na popisu više od četiri tjedna. Web-lokacija koju posjetite ponovo može se ponovo pojaviti na popisu. Web-lokaciju možete i ukloniti ako ne želite da definira vaše interese.</translation>
 <translation id="1161575384898972166">Prijavite se u uređaj <ph name="TOKEN_NAME"/> kako biste izvezli potvrdu klijenta.</translation>
 <translation id="116173250649946226">Vaš je administrator postavio zadanu temu koja se ne može promijeniti.</translation>
 <translation id="1162213688509394031">Sakrijte traku naslova</translation>
@@ -209,6 +214,7 @@
 <translation id="1195558154361252544">Obavijesti su automatski blokirane za sve web-lokacije osim za one koje dopustite</translation>
 <translation id="1197088940767939838">Narančasta</translation>
 <translation id="1197199342062592414">Počnimo</translation>
+<translation id="11978075283960463">Podaci koji se pohranjuju u aplikaciji: <ph name="APP_SIZE"/></translation>
 <translation id="1197935538609051549">Deaktiviraj</translation>
 <translation id="119944043368869598">Očisti sve</translation>
 <translation id="1199814941632954229">Izdaju se certifikati za ove profile certifikata</translation>
@@ -249,6 +255,7 @@
 <translation id="1235924639474699896">{COUNT,plural, =1{SMS}one{# SMS}few{# SMS-a}other{# SMS-ova}}</translation>
 <translation id="1236009322878349843">Uređivanje telefona</translation>
 <translation id="1239594683407221485">Istražite sadržaj ovog uređaja u aplikaciji Datoteke.</translation>
+<translation id="1240903469550363138">Da biste nastavili, <ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE"/> podijelit će vaše ime, e-adresu i profilnu sliku s ovom web-lokacijom. Pogledajte <ph name="BEGIN_LINK1"/>pravila o privatnosti<ph name="END_LINK1"/> i <ph name="BEGIN_LINK2"/>uvjete pružanja usluge<ph name="END_LINK2"/> ove web-lokacije.</translation>
 <translation id="1241066500170667906">Odaberite stanje za eksperiment <ph name="EXPERIMENT_NAME"/></translation>
 <translation id="124116460088058876">Više jezika</translation>
 <translation id="1241753985463165747">čitati i mijenjati sve vaše podatke na trenutačnoj web-lokaciji pri pozivanju</translation>
@@ -330,6 +337,7 @@
 <translation id="1327794256477341646">Značajke kojima je potrebna vaša lokacija neće raditi</translation>
 <translation id="1329191040029425999">Provjerite je li vaš uređaj ažuriran i pokušajte ponovo</translation>
 <translation id="1330145147221172764">Omogući tipkovnicu na zaslonu</translation>
+<translation id="1331625853030156663">Da biste otvorili aplikaciju <ph name="APP_NAME"/>, omogućite opciju "Prikaži zaključan zaslon prilikom vraćanja iz mirovanja"</translation>
 <translation id="1331977651797684645">To sam bio ja.</translation>
 <translation id="1333489022424033687">Neke značajke na web-lokaciji <ph name="ORIGIN"/> možda neće raditi dok ne izbrišete podatke koje su druge web-lokacije pohranile na vašem uređaju</translation>
 <translation id="1333965224356556482">Ne dopuštaj web-lokacijama prikazivanje vaše lokacije</translation>
@@ -366,7 +374,6 @@
 <translation id="1363585519747660921">Potrebno je konfigurirati USB pisač</translation>
 <translation id="1367951781824006909">Odaberite datoteku</translation>
 <translation id="1369149969991017342">Prekidač za pristup (upravljajte računalom uz pomoć jednog ili dvaju prekidača)</translation>
-<translation id="1371863479305430391">Pregledajte obavijesti telefona, odgovorite na njih ili ih odbacite. Pokrenite stream aplikacija za slanje poruka telefona.</translation>
 <translation id="1372841398847029212">Sinkroniziraj sa svojim računom</translation>
 <translation id="1373176046406139583">Pomoću vidljivosti uređaja određuje se tko s vama može dijeliti kad vam je zaslon otključan. <ph name="LINK_BEGIN"/>Saznajte više<ph name="LINK_END"/></translation>
 <translation id="1374844444528092021">Certifikat koji zahtijeva mreža "<ph name="NETWORK_NAME"/>" nije instaliran ili više ne vrijedi. Preuzmite novi certifikat i pokušajte se povezati ponovo.</translation>
@@ -402,7 +409,6 @@
 <translation id="1403222014593521787">Povezivanje s proxyjem nije moguće</translation>
 <translation id="1405779994569073824">Srušilo se.</translation>
 <translation id="1406500794671479665">Potvrda u tijeku...</translation>
-<translation id="1407069428457324124">Tamna tema</translation>
 <translation id="1407135791313364759">Otvori sve</translation>
 <translation id="140723521119632973">Mobilna aktivacija</translation>
 <translation id="1407489512183974736">Centriraj obrezano</translation>
@@ -418,8 +424,9 @@
 <translation id="1414648216875402825">Ažurirate na nestabilnu verziju usluge <ph name="PRODUCT_NAME"/> koja sadrži značajke na kojima se još radi. Dolazit će do rušenja i neočekivanih programskih pogrešaka. Budite oprezni.</translation>
 <translation id="1415708812149920388">Odbijen pristup za čitanje međuspreminka</translation>
 <translation id="1415990189994829608"><ph name="EXTENSION_NAME"/> (ID proširenja "<ph name="EXTENSION_ID"/>") nije dopušten u ovoj vrsti sesije.</translation>
+<translation id="1418552618736477642">Obavijesti i aplikacije</translation>
+<translation id="1418882096915998312">U tijeku je prijava poduzeća</translation>
 <translation id="1418954524306642206">Pregledajte da biste naveli PPD pisača</translation>
-<translation id="1420732223884894666">Pregledajte nedavne fotografije i medije telefona na uređaju <ph name="DEVICE_TYPE"/>.</translation>
 <translation id="1420834118113404499">Licence medijskog sadržaja</translation>
 <translation id="1420920093772172268"><ph name="TURN_ON_BLUETOOTH_LINK"/> da biste omogućili uparivanje</translation>
 <translation id="1421934779300263861">Pomozite poboljšati značajke i izvedbu Bravea i OS-a Brave automatskim slanjem izvješća o rušenju programa kao i podataka o upotrebi i dijagnostici Braveu. Neki skupni podaci pomoći će i Android aplikacijama i Brave partnerima. Ako je za vaš Brave račun uključena postavka Aktivnost na webu i u aplikacijama, vaši podaci s Androida mogu se spremati na vaš Brave račun.</translation>
@@ -548,6 +555,7 @@ Dopuštenja koja ste već dali aplikacijama mogu se primijeniti na ovaj račun. 
 <translation id="1536754031901697553">Prekidanje veze...</translation>
 <translation id="1537254971476575106">Povećalo za cijeli zaslon</translation>
 <translation id="15373452373711364">Veliki pokazivač miša</translation>
+<translation id="1539630663098418038"><ph name="EXTENSIONS_REQUESTING_ACCESS"/> zahtijeva čitanje i promjenu web-lokacije <ph name="ORIGIN"/></translation>
 <translation id="1540605929960647700">Omogućite demo-način</translation>
 <translation id="1541346352678737112">Nije pronađena nijedna mreža</translation>
 <translation id="1542137295869176367">Podatke za prijavu nije moguće ažurirati</translation>
@@ -577,6 +585,7 @@ Dopuštenja koja ste već dali aplikacijama mogu se primijeniti na ovaj račun. 
 <translation id="156793199942386351">Tipka <ph name="CURRENTKEY"/> već je dodijeljena radnji <ph name="ACTION"/>. Pritisnite bilo koju tipku za <ph name="RESPONSE"/>.</translation>
 <translation id="1567993339577891801">Konzola JavaScripta</translation>
 <translation id="1568323446248056064">Otvorite postavke zaslona na uređaju</translation>
+<translation id="1569044524074707727">Otključajte telefon</translation>
 <translation id="1570604804919108255">Uključi zvuk obavijesti</translation>
 <translation id="1571304935088121812">Kopiraj korisničko ime</translation>
 <translation id="1571738973904005196">Prikaži karticu: <ph name="TAB_ORIGIN"/></translation>
@@ -697,7 +706,6 @@ Dopuštenja koja ste već dali aplikacijama mogu se primijeniti na ovaj račun. 
 <translation id="1660763353352708040">Poteškoća s pretvaračem napona</translation>
 <translation id="1661156625580498328">Provođenje AES šifriranja (preporučeno).</translation>
 <translation id="16620462294541761">Žao nam je, nije bilo moguće potvrditi zaporku. Pokušajte ponovo.</translation>
-<translation id="1662777896967868795">Uključena/isključuje se automatski kad sunce izađe</translation>
 <translation id="166278006618318542">Algoritam predmeta javnog ključa</translation>
 <translation id="1662801900924515589">Aplikacija <ph name="APP"/> instalirana</translation>
 <translation id="1666232093776384142">Onemogućivanje zaštite pristupa podacima za periferne uređaje</translation>
@@ -714,8 +722,6 @@ Dopuštenja koja ste već dali aplikacijama mogu se primijeniti na ovaj račun. 
 <translation id="1680849702532889074">Došlo je do pogreške tijekom instalacije Linux aplikacije.</translation>
 <translation id="16815041330799488">Ne dopuštaj web-lokacijama uvid u tekst i slike kopirane u međuspremnik</translation>
 <translation id="1682867089915960590">Uključiti pregledavanje kursorom?</translation>
-<translation id="1684279041537802716">Boja isticanja</translation>
-<translation id="168511795252678620">Nedavne fotografije i aplikacije za slanje poruka</translation>
 <translation id="1686550358074589746">Omogući pisanje klizanjem</translation>
 <translation id="168715261339224929">Da bi se vaše oznake prikazale na svim vašim uređajima, uključite sinkronizaciju.</translation>
 <translation id="1688867105868176567">Želite li izbrisati podatke web-lokacije?</translation>
@@ -750,7 +756,6 @@ Dopuštenja koja ste već dali aplikacijama mogu se primijeniti na ovaj račun. 
 <translation id="1718835860248848330">Zadnji sat</translation>
 <translation id="1719312230114180055">Napomena: otisak prsta može biti manje siguran od snažne zaporke ili PIN-a.</translation>
 <translation id="1720318856472900922">Provjera autentičnosti TLS WWW poslužitelja</translation>
-<translation id="1720941539803966190">Zatvori vodič</translation>
 <translation id="172123215662733643">Pretraži slike pomoću usluge <ph name="VISUAL_SEARCH_PROVIDER"/></translation>
 <translation id="1721312023322545264"><ph name="NAME"/> mora dopustiti da posjetiš tu web-lokaciju</translation>
 <translation id="1722460139690167654">Vašim uređajem <ph name="BEGIN_LINK"/><ph name="DEVICE_TYPE"/> upravlja<ph name="END_LINK"/> <ph name="ENROLLMENT_DOMAIN"/></translation>
@@ -778,7 +783,6 @@ Dopuštenja koja ste već dali aplikacijama mogu se primijeniti na ovaj račun. 
 <translation id="1745732479023874451">Upravljajte kontaktima</translation>
 <translation id="1748283190377208783">{0,plural, =1{unused plural form}one{Otvoriti i urediti # datoteku u ovoj web-aplikaciji?}few{Otvoriti i urediti # datoteke u ovoj web-aplikaciji?}other{Otvoriti i urediti # datoteka u ovoj web-aplikaciji?}}</translation>
 <translation id="1901235742643584247">Ovu zaporku možete spremiti na svoj Brave račun ili samo na ovaj uređaj</translation>
-<translation id="1750048572964661931">Postavite PIN ili zaporku na Chromebooku da biste zaštitili pristup aplikacijama na telefonu.</translation>
 <translation id="1750172676754093297">Sigurnosni ključ ne može pohraniti otiske prstiju</translation>
 <translation id="1751249301761991853">Osobno</translation>
 <translation id="1751262127955453661"><ph name="ORIGIN"/> moći će pregledavati datoteke u mapi <ph name="FOLDERNAME"/> dok ne zatvorite sve kartice za ovu web-lokaciju</translation>
@@ -834,7 +838,6 @@ Dopuštenja koja ste već dali aplikacijama mogu se primijeniti na ovaj račun. 
 <translation id="1795214765651529549">Koristi klasičnu</translation>
 <translation id="1796588414813960292">Značajke kojima je potreban zvuk neće funkcionirati</translation>
 <translation id="1800502858278951817">Nijedno proširenje nije zatražilo da čita i miijenja <ph name="SITE_NAME"/></translation>
-<translation id="1801418420130173017">Onemogućivanje tamne teme</translation>
 <translation id="1802624026913571222">U mirovanje kada se zatvori poklopac.</translation>
 <translation id="1802687198411089702">Stranica ne reagira. Možete je pričekati ili napustiti.</translation>
 <translation id="1803531841600994172">Jezik na koji se prevodi</translation>
@@ -855,6 +858,7 @@ Dopuštenja koja ste već dali aplikacijama mogu se primijeniti na ovaj račun. 
 <translation id="1813278315230285598">Usluge</translation>
 <translation id="18139523105317219">Naziv EDI strane</translation>
 <translation id="1815083418640426271">Zalijepi kao običan tekst</translation>
+<translation id="1815097521077272760">Pozvani ste da isprobate komandu tipkovnice za ovu igru.</translation>
 <translation id="1815181278146012280">Kada web-lokacija želi pristupiti HID uređajima, prikaži upit</translation>
 <translation id="181577467034453336">Još <ph name="NUMBER_OF_VIEWS"/>...</translation>
 <translation id="1816036116994822943">Brzina traženja tipkovnice</translation>
@@ -867,6 +871,8 @@ Dopuštenja koja ste već dali aplikacijama mogu se primijeniti na ovaj račun. 
 <translation id="1823098433522728610">Taj dokument ima osjetljiv sadržaj.</translation>
 <translation id="18245044880483936">Podaci sigurnosne kopije neće se ubrajati u kvotu pohrane na Disku za vaše dijete.</translation>
 <translation id="1825565032302550710">Priključak mora biti između 1024 i 65535</translation>
+<translation id="182577151972096764">nedavno pregledani recepti</translation>
+<translation id="18260074040409954">Spremljene zaporke možete koristiti na bilo kojem uređaju. Spremaju se u <ph name="GOOGLE_PASSWORD_MANAGER"/> za <ph name="EMAIL"/>.</translation>
 <translation id="1826192255355608658">Sinkronizirajte svoje oznake, zaporke, povijest i ostalo u pregledniku Brave</translation>
 <translation id="1826516787628120939">Provjera</translation>
 <translation id="1827738518074806965">Umjetnička galerija</translation>
@@ -900,7 +906,6 @@ Dopuštenja koja ste već dali aplikacijama mogu se primijeniti na ovaj račun. 
     <ph name="BEGIN_PARAGRAPH2"/>Možete i posve isključiti TPM uređaj. Vaši će se podaci i dalje sigurno pohranjivati uz softversko šifriranje, no određene sigurnosne značajke kao što su hardverski certifikati bit će onemogućene.<ph name="END_PARAGRAPH2"/>
     <ph name="BEGIN_PARAGRAPH3"/>Postavke TPM-a možete promijeniti tako da ponovo pokrenete uređaj i uđete u postavke sustava za BIOS/UEFI. Postupak ovisi o modelu uređaja. Za više informacija otvorite dokumentaciju za <ph name="DEVICE_OS"/> na nekom drugom uređaju prije ponovnog pokretanja: g.co/flex/TPMHelp.<ph name="END_PARAGRAPH3"/></translation>
 <translation id="1852141627593563189">Pronađi štetni softver</translation>
-<translation id="1852322248807969514">Zaporke se spremaju u <ph name="GOOGLE_PASSWORD_MANAGER"/></translation>
 <translation id="1852799913675865625">Došlo je do pogreške pri pokušaju čitanja datoteke: <ph name="ERROR_TEXT"/>.</translation>
 <translation id="1854049213067042715">Nastavite tamo gdje ste stali. U postavkama možete postaviti aplikacije tako da se uvijek vrate prilikom pokretanja ili isključiti vraćanje.</translation>
 <translation id="1854180393107901205">Zaustavi emitiranje</translation>
@@ -923,7 +928,6 @@ Dopuštenja koja ste već dali aplikacijama mogu se primijeniti na ovaj račun. 
 <translation id="187145082678092583">Manje aplikacija</translation>
 <translation id="1871463148436682760">Odlično obavljeno!</translation>
 <translation id="1871534214638631766">Prikaz povezanih informacija kad sadržaj kliknete desnom tipkom ili dugo pritisnete</translation>
-<translation id="1871569928317311284">Isključivanje tamne teme</translation>
 <translation id="1871615898038944731"><ph name="DEVICE_TYPE"/> je ažuriran</translation>
 <translation id="1874248162548993294">Dopušteno je prikazivanje oglasa</translation>
 <translation id="1874972853365565008">{NUM_TABS,plural, =1{Premjesti karticu u neki drugi prozor}one{Premjesti kartice u neki drugi prozor}few{Premjesti kartice u neki drugi prozor}other{Premjesti kartice u neki drugi prozor}}</translation>
@@ -936,7 +940,6 @@ Dopuštenja koja ste već dali aplikacijama mogu se primijeniti na ovaj račun. 
 <translation id="1879000426787380528">Prijavite se kao</translation>
 <translation id="18802377548000045">Kartice se smanjuju na najveću širinu</translation>
 <translation id="1880905663253319515">Izbrisati certifikat "<ph name="CERTIFICATE_NAME"/>"?</translation>
-<translation id="188114911237521550">Isključivanje tamnog načina</translation>
 <translation id="1881445033931614352">Raspored tipkovnice</translation>
 <translation id="1881577802939775675">{COUNT,plural, =1{Stavka}one{# stavka}few{# stavke}other{# stavki}}</translation>
 <translation id="1884340228047885921">Trenutačna postavka vidljivosti obuhvaća neke kontakte</translation>
@@ -953,6 +956,7 @@ Dopuštenja koja ste već dali aplikacijama mogu se primijeniti na ovaj račun. 
 <translation id="1892341345406963517">Pozdrav, <ph name="PARENT_NAME"/></translation>
 <translation id="189358972401248634">Drugi jezici</translation>
 <translation id="1895658205118569222">Isključivanje</translation>
+<translation id="1897120393475391208">Koristite snažnu zaporku</translation>
 <translation id="1900305421498694955">Aplikacije s Google Playa mogu zatražiti potpuni pristup sustavu datoteka radi čitanja i zapisivanja datoteka na vanjskim uređajima za pohranu. Datoteke i mape izrađene na uređaju vidljive su svima koji upotrebljavaju vanjski disk. <ph name="LINK_BEGIN"/>Saznajte više<ph name="LINK_END"/></translation>
 <translation id="1901303067676059328">Odaberi &amp;sve</translation>
 <translation id="8252369960192910896">Brave nije mogao spremiti ove zaporke na vaš Brave račun. I dalje ih možete spremiti na ovaj uređaj.</translation>
@@ -987,6 +991,7 @@ Dopuštenja koja ste već dali aplikacijama mogu se primijeniti na ovaj račun. 
 <translation id="1935303383381416800">Dopušten je pregled vaše lokacije</translation>
 <translation id="1936931585862840749">Kako biste odredili broj primjeraka za ispis, navedite broj (od 1 do <ph name="MAX_COPIES"/>).</translation>
 <translation id="1937774647013465102">Nije moguće uvesti vrstu arhitekture spremnika <ph name="ARCHITECTURE_CONTAINER"/> na ovom uređaju jer je njegova arhitektura <ph name="ARCHITECTURE_DEVICE"/>. Pokušajte vratiti spremnik na nekom drugom uređaju ili pristupite datotekama u spremniku pomoću aplikacije Datoteke.</translation>
+<translation id="1938320257168860255">Nešto nije u redu. Provjerite je li telefon u blizini, je li otključan i jesu li Bluetooth i Wi-Fi uključeni.</translation>
 <translation id="1938351510777341717">Vanjska naredba</translation>
 <translation id="1940546824932169984">Povezani uređaji</translation>
 <translation id="1941410638996203291">Vrijeme početka <ph name="TIME"/></translation>
@@ -995,7 +1000,7 @@ Dopuštenja koja ste već dali aplikacijama mogu se primijeniti na ovaj račun. 
 <translation id="1942600407708803723">Isključivanje kada se zatvori poklopac</translation>
 <translation id="1944528062465413897">Bluetoothov kôd za uparivanje:</translation>
 <translation id="1944921356641260203">Pronađeno je ažuriranje</translation>
-<translation id="1946577776959096882">Prikaži račune</translation>
+<translation id="1947136734041527201">Omogućuje vam da se prijavite na web-lokacije pomoću računa koji imate na usluzi za identitet</translation>
 <translation id="1949584741547056205">Brzi odgovori</translation>
 <translation id="1951012854035635156">Asistent</translation>
 <translation id="1954597385941141174">Web-lokacije mogu tražiti dopuštenje za povezivanje s USB uređajima</translation>
@@ -1069,6 +1074,7 @@ Dopuštenja koja ste već dali aplikacijama mogu se primijeniti na ovaj račun. 
 <translation id="2030455719695904263">Dodirna površina</translation>
 <translation id="7739432046683806345">Zaporka je spremljena na vaš Brave račun</translation>
 <translation id="2031914984822377766">Dodajte željene <ph name="LINK_BEGIN"/>jezike web-lokacije<ph name="LINK_END"/>. Za prijevode će se upotrebljavati prvi jezik na popisu.</translation>
+<translation id="2033758234986231162">Održavanje veze s vašim telefonom nije uspjelo. Provjerite je li telefon u blizini, je li otključan i jesu li Bluetooth i Wi-Fi uključeni.</translation>
 <translation id="2034346955588403444">Dodavanje druge Wi-Fi mreže</translation>
 <translation id="203574396658008164">Omogući izradu bilježaka na zaključanom zaslonu</translation>
 <translation id="2037445849770872822">Postavljen je nadzor za ovaj Brave račun. Da biste postavili više opcija roditeljskog nadzora, odaberite Nastavi.
@@ -1223,7 +1229,6 @@ Postavkama računa možete upravljati tako da instalirate aplikaciju Family Link
 <translation id="2162155940152307086">Sinkronizacija će se pokrenuti kad napustite postavke sinkronizacije</translation>
 <translation id="2162926944953615670">Nije dostupan nijedan eSIM profil</translation>
 <translation id="2163470535490402084">Povežite se s internetom da biste se prijavili na uređaj <ph name="DEVICE_TYPE"/>.</translation>
-<translation id="2163937499206714165">Uključivanje tamnog načina</translation>
 <translation id="2164131635608782358"><ph name="FIRST_SWITCH"/>, <ph name="SECOND_SWITCH"/>, <ph name="THIRD_SWITCH"/> i još jedan prekidač</translation>
 <translation id="2165102982098084499">Ove uređaje povezali ste skeniranjem QR koda.</translation>
 <translation id="2165177462441582039">Odaberite trajanje isticanja pojedine stavke</translation>
@@ -1272,7 +1277,6 @@ Postavkama računa možete upravljati tako da instalirate aplikaciju Family Link
 <translation id="2218019600945559112">Miš i dodirna podloga</translation>
 <translation id="2749608811030566578">Došlo je do pogreške dok je Brave uklanjao štetni softver</translation>
 <translation id="2218515861914035131">Zalijepi kao običan tekst</translation>
-<translation id="2219658597883514593">Ponovo pokreni vodič</translation>
 <translation id="2950533317914339731">Dodajte oznake svojim omiljenim Braveovim aplikacijama</translation>
 <translation id="2220529011494928058">Prijavite poteškoću</translation>
 <translation id="2220572644011485463">PIN ili zaporka</translation>
@@ -1302,6 +1306,7 @@ Postavkama računa možete upravljati tako da instalirate aplikaciju Family Link
 <translation id="2241053333139545397">čitati i mijenjati vaše podatke na više web-lokacija</translation>
 <translation id="2241634353105152135">Samo jednom</translation>
 <translation id="2242687258748107519">Informacije o datoteci</translation>
+<translation id="2246129643805925002">Uređaj <ph name="DEVICE_TYPE"/> automatski se ažurira u pozadini i pruža najnovije značajke i poboljšanja sigurnosti. Postavke ažuriranja možete pregledati u postavkama.</translation>
 <translation id="4428301600092811022">Želite li dohvatiti opise slika s Bravea?</translation>
 <translation id="2247738527273549923">Ovim uređajem upravlja vaša organizacija</translation>
 <translation id="2249111429176737533">Otvori kao prozor s karticama</translation>
@@ -1327,7 +1332,6 @@ Postavkama računa možete upravljati tako da instalirate aplikaciju Family Link
     <ph name="BEGIN_PARAGRAPH2"/>Nakon što započne, instalacija se ne može otkazati.<ph name="END_PARAGRAPH2"/></translation>
 <translation id="2270627217422354837">razmjenjivati podatke s bilo kojim uređajem na domenama: <ph name="DOMAINS"/></translation>
 <translation id="2270666014403455717">Dodjela prekidača radnji Odaberi</translation>
-<translation id="2271469253353559191">Raspored tamnog načina</translation>
 <translation id="2272430695183451567">Dodijeljeno je 0 prekidača</translation>
 <translation id="2272570998639520080">Čaša za martini</translation>
 <translation id="2273119997271134996">Problem s priključivanjem videopriključka</translation>
@@ -1405,13 +1409,11 @@ Postavkama računa možete upravljati tako da instalirate aplikaciju Family Link
 <translation id="2318143611928805047">Veličina papira</translation>
 <translation id="2318817390901984578">Da biste upotrebljavali Android aplikacije, napunite i ažurirajte svoj <ph name="DEVICE_TYPE"/>.</translation>
 <translation id="2319993584768066746">Fotografije na zaslonu za prijavu</translation>
-<translation id="2320295602967756579">Omogućivanje svijetle teme</translation>
 <translation id="2322193970951063277">Zaglavlja i podnožja</translation>
 <translation id="2322318151094136999">Prikaži upit kad web-lokacija želi pristupiti serijskim priključcima (preporučeno)</translation>
 <translation id="2322622365472107569">Vrijeme završetka <ph name="TIME"/></translation>
 <translation id="2323018538045954000">Spremljene Wi-Fi mreže</translation>
 <translation id="2325444234681128157">Zapamti zaporku</translation>
-<translation id="2325760149602186433">Uklonite virtualnu karticu</translation>
 <translation id="2326188115274135041">Potvrdite PIN da biste uključili automatsko otključavanje</translation>
 <translation id="2326931316514688470">&amp;Ponovo učitaj aplikaciju</translation>
 <translation id="2327492829706409234">Omogući aplikaciju</translation>
@@ -1569,7 +1571,6 @@ Postavkama računa možete upravljati tako da instalirate aplikaciju Family Link
 <translation id="2470702053775288986">Onemogućena su nepodržana proširenja</translation>
 <translation id="2471469610750100598">Crno (zadano)</translation>
 <translation id="2471506181342525583">Dopušten je pristup lokaciji</translation>
-<translation id="247208220409682803">Popis web-lokacija koje definiraju vaše interese briše se i osvježava svaki mjesec. Web-lokacija koju ponovo posjetite može se ponovo pojaviti na popisu. Web-lokaciju možete i ukloniti ako ne želite da definira vaše interese.</translation>
 <translation id="2473195200299095979">Prevedi ovu stranicu</translation>
 <translation id="2475982808118771221">Došlo je do pogreške</translation>
 <translation id="2476578072172137802">Postavke web-lokacije</translation>
@@ -1594,6 +1595,7 @@ Postavkama računa možete upravljati tako da instalirate aplikaciju Family Link
 <translation id="249113932447298600">Žao nam je, uređaj <ph name="DEVICE_LABEL"/> trenutačno nije podržan.</translation>
 <translation id="2492461744635776704">Priprema zahtjeva za potpisivanje certifikata</translation>
 <translation id="2493126929778606526">Vaše najbolje automatski odabrane fotografije</translation>
+<translation id="2495524171012645395">Nedavno pregledani recepti</translation>
 <translation id="2496180316473517155">Povijest pregledavanja</translation>
 <translation id="2497229222757901769">Brzina miša</translation>
 <translation id="2497852260688568942">Administrator je onemogućio sinkronizaciju</translation>
@@ -1670,6 +1672,7 @@ Postavkama računa možete upravljati tako da instalirate aplikaciju Family Link
 <translation id="2554553592469060349">Odabrana je datoteka prevelika (maksimalna veličina iznosi 3 MB).</translation>
 <translation id="2558569818338050235">Vaša povijest pregledavanja utječe na oglase koji vam se prikazuju</translation>
 <translation id="2558896001721082624">Uvijek prikaži opcije pristupačnosti u izborniku sustava</translation>
+<translation id="2559889124253841528">Spremi na uređaj</translation>
 <translation id="2564520396658920462">Izvršavanje JavaScripta putem AppleScripta isključeno je. Da biste ga uključili, na traci izbornika otvorite Prikaz &gt; Razvojni programer &gt; Dopusti JavaScript iz Appleovih događaja. Više informacija dostupno je na stranici https://support.google.com/chrome/?p=applescript</translation>
 <translation id="2564653188463346023">Poboljšana provjera pravopisa</translation>
 <translation id="2568774940984945469">Spremnik infotrake</translation>
@@ -1680,6 +1683,7 @@ Postavkama računa možete upravljati tako da instalirate aplikaciju Family Link
 <translation id="2575247648642144396">Ova će ikona biti vidljiva kada proširenje bude moglo djelovati na trenutačnoj stranici. Aktivirajte to proširenje tako što ćete kliknuti ikonu ili pritisnuti <ph name="EXTENSION_SHORTCUT"/>.</translation>
 <translation id="2575407791320728464">URL nije važeći. Provjerite je li pravilno formatiran.</translation>
 <translation id="2575441894380764255">Nije dopušteno prikazivanje ometajućih ili obmanjujućih oglasa</translation>
+<translation id="2575713839157415345">{YEARS,plural, =1{Uređaj će biti spremljen jednu godinu te se sljedeći put možete povezati bez koda. To postavlja vaš administrator.}one{Uređaj će biti spremljen {YEARS} godinu te se sljedeći put možete povezati bez koda. To postavlja vaš administrator.}few{Uređaj će biti spremljen {YEARS} godine te se sljedeći put možete povezati bez koda. To postavlja vaš administrator.}other{Uređaj će biti spremljen {YEARS} godina te se sljedeći put možete povezati bez koda. To postavlja vaš administrator.}}</translation>
 <translation id="257779572837908839">Postavi kao Bravebox za videokonferencije</translation>
 <translation id="2580889980133367162">Uvijek dozvoli hostu <ph name="HOST"/> preuzimanje više datoteka</translation>
 <translation id="258095186877893873">Dugo</translation>
@@ -1904,6 +1908,7 @@ i Ctrl + Alt + Smanjivanje svjetline da biste smanjili prikaz.</translation>
 <translation id="2795716239552913152">Web-lokacije upotrebljavaju vašu lokaciju za relevantne značajke ili informacije poput lokalnih vijesti ili trgovina u blizini</translation>
 <translation id="2796424461616874739">Autentifikacija je privremeno prekinuta prilikom povezivanja s uređajem "<ph name="DEVICE_NAME"/>".</translation>
 <translation id="2796740370559399562">Nastavi dopuštati kolačiće</translation>
+<translation id="2798347533012571708">Zadrži ažuriranja</translation>
 <translation id="2799223571221894425">Pokreni ponovo</translation>
 <translation id="2800760947029405028">Prenesite sliku</translation>
 <translation id="2801954693771979815">Veličina zaslona</translation>
@@ -1946,6 +1951,7 @@ i Ctrl + Alt + Smanjivanje svjetline da biste smanjili prikaz.</translation>
 <translation id="2832124733806557606">Vaše se dijete može prijaviti na uređaj ili ga otključati PIN-om.</translation>
 <translation id="2835177225987815960">Vaše će se trenutačne postavke skeniranja poništiti, uključujući sve dodijeljene prekidače i preferencije za brzinu automatskog skeniranja.</translation>
 <translation id="2835547721736623118">Usluga prepoznavanja govora</translation>
+<translation id="2836232638504556905">Da biste nastavili, <ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE"/> podijelit će vaše ime, e-adresu i profilnu sliku s ovom web-lokacijom. Pogledajte <ph name="BEGIN_LINK"/>pravila o privatnosti<ph name="END_LINK"/> ove web-lokacije.</translation>
 <translation id="2836269494620652131">Pad sustava</translation>
 <translation id="2836635946302913370">Prijavu ovim korisničkim imenom onemogućio je vaš administrator.</translation>
 <translation id="283669119850230892">Da biste upotrebljavali mrežu <ph name="NETWORK_ID"/>, prvo se povežite s internetom prema uputama u nastavku.</translation>
@@ -1997,6 +2003,7 @@ i Ctrl + Alt + Smanjivanje svjetline da biste smanjili prikaz.</translation>
 <translation id="288042212351694283">Pristupite svojim Universal 2nd Factor uređajima</translation>
 <translation id="2881076733170862447">Kada kliknete proširenje</translation>
 <translation id="2882943222317434580"><ph name="IDS_SHORT_PRODUCT_NAME"/> će se odmah ponovo pokrenuti i vratiti na zadano</translation>
+<translation id="2883470649061584386">Feed</translation>
 <translation id="2885378588091291677">Upravitelj zadataka</translation>
 <translation id="2885729872133513017">Pojavio se problem prilikom dekodiranja odgovora poslužitelja.</translation>
 <translation id="2886119409731773154">To može potrajati 30 minuta</translation>
@@ -2013,6 +2020,7 @@ i Ctrl + Alt + Smanjivanje svjetline da biste smanjili prikaz.</translation>
 <translation id="2897878306272793870">Jeste li sigurni da želite otvoriti <ph name="TAB_COUNT"/> kartica?</translation>
 <translation id="2900477968385519153">Pretraži zaslon pomoću usluge <ph name="VISUAL_SEARCH_PROVIDER"/></translation>
 <translation id="290105521672621980">Datoteka upotrebljava nepodržane značajke</translation>
+<translation id="2901348420151309559">Nedavne fotografije i aplikacije</translation>
 <translation id="2902127500170292085">Proširenje <ph name="EXTENSION_NAME"/> nije uspostavilo komunikaciju s tim pisačem. Provjerite je li pisač priključen i pokušajte ponovo.</translation>
 <translation id="2902265136119311513">Pregledavanje u načinu rada za goste</translation>
 <translation id="2902312830803030883">Druge radnje</translation>
@@ -2222,8 +2230,9 @@ i Ctrl + Alt + Smanjivanje svjetline da biste smanjili prikaz.</translation>
 <translation id="4566550081126272435">Želite li se vratiti na Brave?</translation>
 <translation id="310671807099593501">Web-lokacija upotrebljava Bluetooth</translation>
 <translation id="3108931485517391283">Primanje nije moguće</translation>
+<translation id="3109206895301430738">Spremljeno u grupe kartica</translation>
 <translation id="3109724472072898302">Sažeto</translation>
-<translation id="311214366526552035">Svejedno preuzmi</translation>
+<translation id="3112292765614504292">Veličina aplikacije: <ph name="APP_SIZE"/></translation>
 <translation id="311394601889664316">Ne dopuštaj web-lokacijama uređivanje datoteka ili mapa na uređaju</translation>
 <translation id="3115147772012638511">Čekanje predmemorije...</translation>
 <translation id="3115580024857770654">Sažmi sve</translation>
@@ -2264,7 +2273,6 @@ i Ctrl + Alt + Smanjivanje svjetline da biste smanjili prikaz.</translation>
 <translation id="315116470104423982">Mobilni podaci</translation>
 <translation id="3151539355209957474">Vrijeme početka</translation>
 <translation id="3151562827395986343">Brisanje povijesti, kolačića, predmemorije i ostalog</translation>
-<translation id="3151616662954589507">Fotoaparat za selfie</translation>
 <translation id="3151786313568798007">Usmjerenje</translation>
 <translation id="3152356229013609796">Pregledajte obavijesti telefona, odgovorite na njih ili ih odbacite</translation>
 <translation id="3157387275655328056">Dodaj na popis za čitanje</translation>
@@ -2298,6 +2306,7 @@ i Ctrl + Alt + Smanjivanje svjetline da biste smanjili prikaz.</translation>
 <translation id="3189187154924005138">Veliki pokazivač</translation>
 <translation id="3190558889382726167">Zaporka spremljena</translation>
 <translation id="3192947282887913208">Audio datoteke</translation>
+<translation id="3193695589337931419">Uslužni programi za signale sustava</translation>
 <translation id="3194786596445804250">Prikaži pojedinosti o blokiranju kolačića trećih strana</translation>
 <translation id="3197453258332670132">Klikom desnom tipkom ili dugim pritiskom prikazuju se povezane informacije za tekst koji ste odabrali</translation>
 <translation id="3199127022143353223">Poslužitelji</translation>
@@ -2326,6 +2335,7 @@ i Ctrl + Alt + Smanjivanje svjetline da biste smanjili prikaz.</translation>
 <translation id="3227137524299004712">Mikrofon</translation>
 <translation id="3232754137068452469">Web-aplikacija</translation>
 <translation id="3233271424239923319">Sigurnosno kopiranje Linux aplikacija i datoteka</translation>
+<translation id="3234978181857588512">Spremi na uređaj</translation>
 <translation id="3238192140106069382">Povezivanje i potvrđivanje</translation>
 <translation id="3239373508713281971">Uklonjeno je vremensko ograničenje za aplikaciju <ph name="APP_NAME"/></translation>
 <translation id="3241680850019875542">Odaberite korijenski direktorij proširenja za pakiranje. Da biste ažurirali proširenje, odaberite i datoteku osobnog ključa za ponovnu upotrebu.</translation>
@@ -2382,6 +2392,7 @@ i Ctrl + Alt + Smanjivanje svjetline da biste smanjili prikaz.</translation>
 <translation id="32939749466444286">Linuxov spremnik nije se pokrenuo. Pokušajte ponovo.</translation>
 <translation id="3294437725009624529">Gost</translation>
 <translation id="3294686910656423119">Statistika upotrebe i izvješća o padu programa</translation>
+<translation id="3297105622164376095">Dopušteno je prikazivanje upita za prijavu treće strane</translation>
 <translation id="4288017268387803622">Privremeno povezuje te podatke s vašim Brave računom kad ste prijavljeni kako biste bili zaštićeni u Braveovim aplikacijama</translation>
 <translation id="329838636886466101">Popravak</translation>
 <translation id="3298789223962368867">Unesen je nevažeći URL.</translation>
@@ -2511,7 +2522,6 @@ i Ctrl + Alt + Smanjivanje svjetline da biste smanjili prikaz.</translation>
 <translation id="3429160811076349561">Probne značajke su isključene</translation>
 <translation id="3429271624041785769">Jezici web-sadržaja</translation>
 <translation id="3429275422858276529">Označite ovu stranicu da biste je kasnije lakše pronašli</translation>
-<translation id="343115368966109153">Želite li preuzeti <ph name="FILE_NAME"/>? Datoteku mogu vidjeti svi korisnici uređaja.</translation>
 <translation id="3432227430032737297">Ukloni sve prikazano</translation>
 <translation id="3432762828853624962">Shared Workers</translation>
 <translation id="3433507769937235446">Zaključavanje prilikom odlaska</translation>
@@ -2569,6 +2579,7 @@ i Ctrl + Alt + Smanjivanje svjetline da biste smanjili prikaz.</translation>
 <translation id="3473241910002674503">U načinu rada tableta gumbima idite na početnu stranicu, natrag i prelazite s jedne aplikacije na drugu.</translation>
 <translation id="3473479545200714844">Povećalo</translation>
 <translation id="3474218480460386727">Za nove riječi koristite najviše 99 slova</translation>
+<translation id="3474624961160222204">Nastavi kao <ph name="NAME"/></translation>
 <translation id="3475843873335999118">Žao nam je, uređaj i dalje ne prepoznaje vaš otisak prsta. Unesite zaporku.</translation>
 <translation id="3476303763173086583">Slanje podataka o upotrebi i dijagnostici. Pomognite poboljšati djetetov doživljaj Androida automatskim slanjem dijagnostičkih podataka i podataka o upotrebi uređaja i aplikacija Braveu. Ti se podaci neće upotrebljavati za identifikaciju vašeg djeteta, a pomoći će poboljšati sustav, stabilnost aplikacija i drugo. Neki skupni podaci pomoći će i Braveovim aplikacijama i partnerima, na primjer razvojnim programerima za Android. Ovu <ph name="BEGIN_LINK1"/>postavku<ph name="END_LINK1"/> zadao je vlasnik. Vlasnik može Braveu slati dijagnostiku i podatke o upotrebi za ovaj uređaj. Ako je za vaše dijete uključena dodatna postavka Aktivnost na webu i u aplikacijama, ti se podaci mogu spremati na djetetov Brave račun. <ph name="BEGIN_LINK2"/>Saznajte više<ph name="END_LINK2"/></translation>
 <translation id="347670947055184738">Ups! Sustav nije uspio dohvatiti pravila za vaš uređaj.</translation>
@@ -2625,7 +2636,6 @@ i Ctrl + Alt + Smanjivanje svjetline da biste smanjili prikaz.</translation>
 <translation id="3526034519184079374">Podaci web-lokacije ne mogu se čitati niti promijeniti</translation>
 <translation id="3527085408025491307">Mapa</translation>
 <translation id="3528498924003805721">Ciljevi prečaca</translation>
-<translation id="3531383404180922673">Pregledajte nedavne fotografije, medije i obavijesti telefona. Pokrenite stream aplikacija za slanje poruka telefona.</translation>
 <translation id="3532273508346491126">Upravljanje sinkronizacijom</translation>
 <translation id="3532521178906420528">Uspostavljanje mrežne veze...</translation>
 <translation id="353316712352074340"><ph name="WINDOW_TITLE"/> – zvuk je isključen</translation>
@@ -2838,7 +2848,6 @@ i Ctrl + Alt + Smanjivanje svjetline da biste smanjili prikaz.</translation>
 <translation id="3748706263662799310">Prijava programske pogreške</translation>
 <translation id="1722111786667858719">Brave je spremio vašu zaporku na ovaj uređaj, no možete je spremiti na svoj Brave račun. Tada će i sve zaporke na vašem Brave računu biti dostupne dok ste prijavljeni.</translation>
 <translation id="3752253558646317685">Neka dijete nastavi podizati prst kako bi se spremio otisak prsta</translation>
-<translation id="3752582316358263300">U redu...</translation>
 <translation id="3753033997400164841">Pohranite jedanput. Upotrebljavajte svugdje</translation>
 <translation id="3755411799582650620">Vaš <ph name="PHONE_NAME"/> sada može otključati i taj <ph name="DEVICE_TYPE"/>.</translation>
 <translation id="375636864092143889">Web-lokacija upotrebljava vaš mikrofon</translation>
@@ -2871,7 +2880,6 @@ i Ctrl + Alt + Smanjivanje svjetline da biste smanjili prikaz.</translation>
 <translation id="3777806571986431400">Proširenje omogućeno</translation>
 <translation id="3778152852029592020">Preuzimanje je otkazano.</translation>
 <translation id="3778208826288864398">Sigurnosni je ključ zaključan jer je previše puta unesen pogrešan PIN. Morat ćete vratiti sigurnosni ključ na zadano.</translation>
-<translation id="3778369586810509692">Datoteka će se pohraniti na uređaju i svi će je moći vidjeti.</translation>
 <translation id="3778740492972734840">&amp;Alati za razvojne programere</translation>
 <translation id="3778868487658107119">Postavljajte mu pitanja. Dajte mu naredbe. To je vaš osobni Brave, uvijek spreman pomoći.</translation>
 <translation id="3781742599892759500">Linuxov pristup mikrofonu</translation>
@@ -2961,6 +2969,7 @@ i Ctrl + Alt + Smanjivanje svjetline da biste smanjili prikaz.</translation>
 <translation id="3856800405688283469">Odaberite vremensku zonu</translation>
 <translation id="3857807444929313943">Podignite i ponovo dodirnite</translation>
 <translation id="3858860766373142691">Naziv</translation>
+<translation id="385939467708172187">Upotrijebite snažnu zaporku</translation>
 <translation id="3861638017150647085">Korisničko ime "<ph name="USERNAME"/>" nije dostupno</translation>
 <translation id="3861977424605124250">Prikaži prilikom pokretanja</translation>
 <translation id="386239283124269513">&amp;Vrati grupu</translation>
@@ -2977,7 +2986,6 @@ i Ctrl + Alt + Smanjivanje svjetline da biste smanjili prikaz.</translation>
 <translation id="3873423927483480833">Prikaz PIN-ova</translation>
 <translation id="3873915545594852654">Pojavio se problem koji se odnosi na ARC++.</translation>
 <translation id="3412613348266550587">Uključivanje Brave asistenta</translation>
-<translation id="3875783148670536197">Pokaži mi kako</translation>
 <translation id="3875815154304214043">Aplikacija <ph name="APP_NAME"/> postavljena je za otvaranje u novoj kartici preglednika. Veze za podršku također će se otvoriti u pregledniku. <ph name="BEGIN_LINK_LEARN_MORE"/>Saznajte više<ph name="END_LINK_LEARN_MORE"/></translation>
 <translation id="3877075909000773256">Postavke dijeljenja u blizini za uređaj na kojem <ph name="USER_NAME"/> dijeli putem računa <ph name="USER_EMAIL"/>.</translation>
 <translation id="3879748587602334249">Upravitelj preuzimanja</translation>
@@ -3145,6 +3153,7 @@ i Ctrl + Alt + Smanjivanje svjetline da biste smanjili prikaz.</translation>
 <translation id="4031179711345676612">Mikrofon je dopušten</translation>
 <translation id="3973183426568080640">Time će se trajno izbrisati podaci o pregledavanju s ovog uređaja. Druge aplikacije na Chromebooku možda koriste Brave račune s ovog profila. Te račune možete ukloniti na sljedeći način: <ph name="BEGIN_LINK"/><ph name="SETTING_SECTION"/> &gt; <ph name="ACCOUNTS_SECTION"/><ph name="END_LINK"/>.</translation>
 <translation id="4031527940632463547">Senzori su blokirani</translation>
+<translation id="4033415645631238123">Prijava pomoću Smart Locka više nije dostupna. I dalje možete otključavati pomoću Smart Locka.</translation>
 <translation id="4033471457476425443">Dodajte novu mapu</translation>
 <translation id="4033963223187371752">Sigurne web-lokacije mogu ugraditi sadržaj poput slika ili web-okvira koji nisu sigurni</translation>
 <translation id="4034824040120875894">Pisač</translation>
@@ -3158,6 +3167,7 @@ i Ctrl + Alt + Smanjivanje svjetline da biste smanjili prikaz.</translation>
 <translation id="4044612648082411741">Unesite zaporku za certifikat</translation>
 <translation id="4044708573046946214">Zaporka za zaključavanje zaslona</translation>
 <translation id="404493185430269859">Zadana tražilica</translation>
+<translation id="4045180775310929593">Dodajte napomenu...</translation>
 <translation id="4046013316139505482">Proširenja ne mogu vidjeti ni mijenjati podatke na ovoj web-lokaciji.</translation>
 <translation id="4046123991198612571">Sljedeća pjesma</translation>
 <translation id="4047345532928475040">Nije dostupno</translation>
@@ -3176,7 +3186,6 @@ i Ctrl + Alt + Smanjivanje svjetline da biste smanjili prikaz.</translation>
 <translation id="4061374428807229313">Da biste dijelili mapu, kliknite je desnom tipkom u aplikaciji Datoteke, a zatim odaberite "Dijeli s Parallels Desktopom".</translation>
 <translation id="406213378265872299">Prilagođena ponašanja</translation>
 <translation id="4062561150282203854">Sinkronizirajte aplikacije, postavke i druge podatke s uređaja <ph name="DEVICE_TYPE"/></translation>
-<translation id="4064575710864784237">1x</translation>
 <translation id="4065876735068446555">Mreža koju upotrebljavate (<ph name="NETWORK_ID"/>) može zahtijevati posjet stranici za prijavu.</translation>
 <translation id="4066207411788646768">Provjerite svoju vezu da biste vidjeli dostupne pisače u mreži</translation>
 <translation id="4068776064906523561">Spremljeni otisci prstiju</translation>
@@ -3201,6 +3210,7 @@ i Ctrl + Alt + Smanjivanje svjetline da biste smanjili prikaz.</translation>
 <translation id="4089235344645910861">Postavke spremljene. Sinkronizacija pokrenuta.</translation>
 <translation id="4090103403438682346">Omogući potvrđeni pristup</translation>
 <translation id="4090947011087001172">Želite li poništiti dopuštenja web-lokacije za <ph name="SITE"/>?</translation>
+<translation id="4092636882861724179">Spremljene zaporke možete pregledavati i upravljati njima u aplikaciji <ph name="GOOGLE_PASSWORD_MANAGER"/>.</translation>
 <translation id="4093865285251893588">Profilna slika</translation>
 <translation id="4093955363990068916">Lokalna datoteka:</translation>
 <translation id="4094647278880271855">Koristite nepodržanu varijablu okruženja: <ph name="BAD_VAR"/>. Ugrožena je stabilnost i sigurnost.</translation>
@@ -3305,6 +3315,7 @@ i Ctrl + Alt + Smanjivanje svjetline da biste smanjili prikaz.</translation>
 <translation id="420283545744377356">Isključivanje čuvara zaslona</translation>
 <translation id="4203065553461038553">Naziv datoteke ili lokacije je predug</translation>
 <translation id="4204851595694839599">Kakav vam je bio doživljaj igranja igara?</translation>
+<translation id="4205157409548006256">Došlo je do pogreške prilikom konfiguriranja Linuxa.</translation>
 <translation id="4206144641569145248">Vanzemaljac</translation>
 <translation id="4206323443866416204">Izvješće s povratnim informacijama</translation>
 <translation id="4207522141889799150">Uredite dopuštenja za web-lokaciju <ph name="SITE"/></translation>
@@ -3374,6 +3385,7 @@ i Ctrl + Alt + Smanjivanje svjetline da biste smanjili prikaz.</translation>
 <translation id="4275830172053184480">Ponovo pokrenite svoj uređaj</translation>
 <translation id="4277434192562187284">Izvor XML konfiguracije</translation>
 <translation id="4278390842282768270">Dopušteno</translation>
+<translation id="4278498748067682896">Upotrebljavat ćete nadogradnju kioska i znakovlja koja uređaju omogućuje pokretanje samo načina rada kioska ili znakovlja. Ako želite da se korisnici prijave na uređaj, vratite se i registrirajte pomoću Nadogradnje za Brave za poduzeća.</translation>
 <translation id="4279129444466079448">Na ovom uređaju možete instalirati najviše <ph name="PROFILE_LIMIT"/> eSIM profila. Da biste dodali još jedan profil, trebate ukloniti jedan od postojećih.</translation>
 <translation id="4280325816108262082">Veza s uređajem prekinut će se automatski kad se uređaj isključi ili ne upotrebljava</translation>
 <translation id="4281844954008187215">Uvjeti upotrebe usluge</translation>
@@ -3390,6 +3402,7 @@ i Ctrl + Alt + Smanjivanje svjetline da biste smanjili prikaz.</translation>
 <translation id="4289732974614035569">Odaberite PIN</translation>
 <translation id="4290791284969893584">Nakon zatvaranja stranice zadaci koje ste započeli možda se neće dovršiti</translation>
 <translation id="4291265871880246274">Dijalog za prijavu</translation>
+<translation id="429234155571566255">ovi nedavno pregledani recepti</translation>
 <translation id="4295072614469448764">Aplikacija je dostupna na vašem terminalu. Možda se i u Pokretaču prikazuje ikona.</translation>
 <translation id="4295979599050707005">Ponovo se prijavite da biste potvrdili da se vaš račun <ph name="USER_EMAIL"/> može koristiti s web-lokacijama, aplikacijama i proširenjima u Braveu i Google Playu. Taj račun možete i ukloniti. <ph name="LINK_BEGIN"/>Saznajte više<ph name="LINK_END"/></translation>
 <translation id="4297219207642690536">Ponovo pokreni i vrati na prethodno</translation>
@@ -3449,6 +3462,7 @@ i Ctrl + Alt + Smanjivanje svjetline da biste smanjili prikaz.</translation>
 <translation id="435527878592612277">Odaberite fotografiju</translation>
 <translation id="1762859572661747715">Kako bi lakše dijagnosticirali poteškoće s Bluetoothom, Braveovi zaposlenici mogu uključiti dodatne Bluetooth zapisnike u svoja izvješća s povratnim informacijama. Kada se ta opcija potvrdi, u vaše će izvješće biti uključeni btsnoop i HCI zapisnici iz vaše trenutačne sesije, a iz njih će u najvećoj mogućoj mjeri biti uklonjeni podaci koji otkrivaju identitet. Pristup tim zapisnicima bit će ograničen na upravitelje grupe proizvoda Chrome OS-a u Listnru. Zapisnici će se nepovratno ukloniti nakon 90 dana.</translation>
 <translation id="4358313196493694334">Stabiliziraj lokaciju klika</translation>
+<translation id="4358643842961018282">Uređaj je ažuriran</translation>
 <translation id="4359408040881008151">Instalirano zbog ovisnih proširenja.</translation>
 <translation id="4359717112757026264">Gradski krajolik</translation>
 <translation id="4361142739114356624">Privatni ključ za ovaj certifikat klijenta nedostaje ili nije važeći</translation>
@@ -3485,6 +3499,7 @@ i Ctrl + Alt + Smanjivanje svjetline da biste smanjili prikaz.</translation>
 <translation id="4392896746540753732">Uredite konfiguracijsku datoteku</translation>
 <translation id="4394049700291259645">Onemogući</translation>
 <translation id="4396956294839002702">{COUNT,plural, =0{&amp;Otvori sve}=1{&amp;Otvori oznaku}one{&amp;Otvori sve ({COUNT})}few{&amp;Otvori sve ({COUNT})}other{&amp;Otvori sve ({COUNT})}}</translation>
+<translation id="4397372003838952832">Nećete morati pamtiti tu zaporku. Spremit će se u <ph name="GOOGLE_PASSWORD_MANAGER"/> za <ph name="EMAIL"/>.</translation>
 <translation id="439817266247065935">Vaš se uređaj nije ispravno zatvorio. Ponovo pokrenite Linux da biste koristili Linux aplikacije.</translation>
 <translation id="4400367121200150367">Ovdje će se pojaviti web-lokacije koje nikad ne spremaju zaporke</translation>
 <translation id="4400632832271803360">Držite tipku Pokretač da biste izmjenjivali ponašanje tipki u najvišem retku</translation>
@@ -3498,6 +3513,7 @@ i Ctrl + Alt + Smanjivanje svjetline da biste smanjili prikaz.</translation>
 <translation id="4405117686468554883">*.jpeg, *.jpg, *.png</translation>
 <translation id="440653823335387109">STRANICE KOJE STE PROČITALI</translation>
 <translation id="4406883609789734330">Automatski titlovi</translation>
+<translation id="4407039574263172582">Da biste nastavili, <ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE"/> podijelit će vaše ime, e-adresu i profilnu sliku s ovom web-lokacijom. Pogledajte <ph name="BEGIN_LINK"/>uvjete pružanja usluge<ph name="END_LINK"/> ove web-lokacije.</translation>
 <translation id="4408599188496843485">P&amp;omoć</translation>
 <translation id="4409271659088619928">Vaša je tražilica <ph name="DSE"/>. Potražite njezine upute da biste saznali kako izbrisati svoju povijest pretraživanja, ako je primjenjivo.</translation>
 <translation id="4409697491990005945">Margine</translation>
@@ -3523,6 +3539,7 @@ i Ctrl + Alt + Smanjivanje svjetline da biste smanjili prikaz.</translation>
 <translation id="4429239357082509581">Steam nema dopuštenje za pokretanje</translation>
 <translation id="4430019312045809116">Glasnoća</translation>
 <translation id="4430369329743628066">Oznaka je dodana</translation>
+<translation id="4430422687972614133">Uključi virtualnu karticu</translation>
 <translation id="4432621511648257259">Zaporka nije točna</translation>
 <translation id="443454694385851356">Naslijeđeno (nije sigurno)</translation>
 <translation id="443475966875174318">Ažuriranje ili uklanjanje nekompatibilnih aplikacija</translation>
@@ -3617,6 +3634,7 @@ i Ctrl + Alt + Smanjivanje svjetline da biste smanjili prikaz.</translation>
 <translation id="452750746583162491">Pregledajte svoje sinkronizirane podatke</translation>
 <translation id="4527929807707405172">Omogući obrnuto pomicanje. <ph name="LINK_BEGIN"/>Saznajte više<ph name="LINK_END"/></translation>
 <translation id="4528494169189661126">Prijedlog prijevoda</translation>
+<translation id="2856152593455781015">Braveovi automatski titlovi možda neće funkcionirati</translation>
 <translation id="4530494379350999373">Podrijetlo</translation>
 <translation id="4531924570968473143">Koga želite dodati na ovaj uređaj <ph name="DEVICE_TYPE"/>?</translation>
 <translation id="4532625150642446981">Uređaj "<ph name="USB_DEVICE_NAME"/>" se upotrebljava. Ponovna dodjela uređaja koji je upotrebi može uzrokovati pogreške. Jeste li sigurni da želite nastaviti?</translation>
@@ -3627,7 +3645,6 @@ i Ctrl + Alt + Smanjivanje svjetline da biste smanjili prikaz.</translation>
 <translation id="4535127706710932914">Zadani profil</translation>
 <translation id="4535767533210902251">Senzor otiska prsta nalazi se u najvišoj tipki s desne strane tipkovnice. Dodirnite ga lagano bilo kojim prstom.</translation>
 <translation id="4536140153723794651">Web-lokacije koje uvijek mogu upotrebljavati kolačiće</translation>
-<translation id="4538163005498287211">Na temelju vaše pozadine</translation>
 <translation id="4538417792467843292">Izbriši riječ</translation>
 <translation id="4538792345715658285">Instalirano pravilima tvrtke.</translation>
 <translation id="4541123282641193691">Nismo mogli potvrditi vaš račun. Pokušajte ponovo ili ponovo pokrenite Chromebook.</translation>
@@ -3679,6 +3696,7 @@ i Ctrl + Alt + Smanjivanje svjetline da biste smanjili prikaz.</translation>
 <translation id="4579453506923101210">Zaboravljanje povezanog telefona</translation>
 <translation id="4579581181964204535">Ne može se emitirati <ph name="HOST_NAME"/>.</translation>
 <translation id="7343272409020602342">Za obavijesti preglednika otvorite <ph name="LINK_BEGIN"/>postavke preglednika Brave<ph name="LINK_END"/></translation>
+<translation id="4580596421317071374">Zaporke se spremaju u <ph name="GOOGLE_PASSWORD_MANAGER"/> na ovom uređaju.</translation>
 <translation id="4581774856936278355">Došlo je do pogreške prilikom vraćanja Linuxa</translation>
 <translation id="4582297591746054421">Web-lokacije obično čitaju vaš međuspremnik radi značajki poput zadržavanja formatiranja kopiranog teksta</translation>
 <translation id="4582563038311694664">Vraćanje svih postavki na zadano</translation>
@@ -3708,12 +3726,13 @@ i Ctrl + Alt + Smanjivanje svjetline da biste smanjili prikaz.</translation>
 <translation id="461661862154729886">Izvor energije</translation>
 <translation id="4617001782309103936">Prekratko</translation>
 <translation id="4617270414136722281">Opcije proširenja</translation>
+<translation id="4617880081511131945">Uspostavljanje veze nije uspjelo</translation>
 <translation id="4619564267100705184">Potvrđivanje identiteta</translation>
 <translation id="4619615317237390068">Kartice s drugih uređaja</translation>
 <translation id="4620809267248568679">Ovom postavkom upravlja proširenje.</translation>
+<translation id="4622051949285931942">Želite li isključiti automatska ažuriranja?</translation>
 <translation id="4623167406982293031">Potvrdite račun</translation>
 <translation id="4623189117674524348">Sustav nije uspio autorizirati pristup API-ja za ovaj uređaj.</translation>
-<translation id="4624054169152573743">Tema u boji</translation>
 <translation id="4625078469366263107">Omogući aplikaciju</translation>
 <translation id="4627427111733173920">Kolačići su blokirani</translation>
 <translation id="4627442949885028695">Nastavite na drugom uređaju</translation>
@@ -3723,7 +3742,6 @@ i Ctrl + Alt + Smanjivanje svjetline da biste smanjili prikaz.</translation>
 <translation id="4633003931260532286">Minimalna je verzija za "<ph name="IMPORT_NAME"/>" koju proširenje zahtijeva "<ph name="IMPORT_VERSION"/>", ali je instalirana samo verzija "<ph name="INSTALLED_VERSION"/>"</translation>
 <translation id="4633757335284074492">Sigurnosno kopiranje na Brave disku. Lako vratite podatke ili promijenite uređaj u bilo kojem trenutku. Sigurnosna kopija uključuje podatke aplikacija. Sigurnosna kopija prenosi se na Brave i kriptira pomoću zaporke Brave računa vašeg djeteta.</translation>
 <translation id="4634575639321169635">Postavite ovaj uređaj za poslovnu ili osobnu upotrebu</translation>
-<translation id="4634771451598206121">Prijavite se ponovo...</translation>
 <translation id="4635072447747973225">Deinstaliranje Crostinija</translation>
 <translation id="4635398712689569051">Stranica <ph name="PAGE_NAME"/> nije dostupna gostujućim korisnicima.</translation>
 <translation id="4636682061478263818">Datoteke s Diska</translation>
@@ -3743,6 +3761,7 @@ i Ctrl + Alt + Smanjivanje svjetline da biste smanjili prikaz.</translation>
 <translation id="4648491805942548247">Nedovoljne dozvole</translation>
 <translation id="4650591383426000695">Prekinite vezu između svog telefona i uređaja <ph name="DEVICE_TYPE"/></translation>
 <translation id="4651484272688821107">Nije uspjelo učitavanje online komponente s resursima demo načina.</translation>
+<translation id="4651921906638302153">Ne možete se prijaviti tim računom</translation>
 <translation id="4652935475563630866">Za promjenu postavke fotoaparata potrebno je ponovno pokrenuti Parallels Desktop. Ponovo pokrenite Parallels Desktop da biste nastavili.</translation>
 <translation id="4653405415038586100">Pogreška prilikom konfiguriranja Linuxa</translation>
 <translation id="7287449509207005261">Prikazuju vam se košarice pomoću kojih se možete lako vratiti na artikle koje ste ostavili u košaricama na webu.
@@ -3805,7 +3824,6 @@ i Ctrl + Alt + Smanjivanje svjetline da biste smanjili prikaz.</translation>
 <translation id="4699357559218762027">(pokrenuto automatski)</translation>
 <translation id="4701025263201366865">Prijava roditelja</translation>
 <translation id="4701335814944566468">Pogledano jučer</translation>
-<translation id="4701540735981103145">Prijavu je blokirao vaš administrator</translation>
 <translation id="4707337002099455863">Uvijek na svim web-lokacijama</translation>
 <translation id="4708794300267213770">Prikaži zaključan zaslon prilikom vraćanja iz mirovanja</translation>
 <translation id="4708849949179781599">Izađi iz programa <ph name="PRODUCT_NAME"/></translation>
@@ -3815,6 +3833,7 @@ i Ctrl + Alt + Smanjivanje svjetline da biste smanjili prikaz.</translation>
 <translation id="471880041731876836">Nemaš dopuštenje za posjet toj web-lokaciji</translation>
 <translation id="4722735765955348426">Zaporka za <ph name="USERNAME"/></translation>
 <translation id="4722920479021006856"><ph name="APP_NAME"/> dijeli vaš zaslon.</translation>
+<translation id="4722989931633062466">Nije dopušteno prikazivanje upita za prijavu treće strane</translation>
 <translation id="4723140812774948886">Zamijeni sljedećim</translation>
 <translation id="4724450788351008910">Promijenjena afilijacija</translation>
 <translation id="4725511304875193254">Corgi</translation>
@@ -3849,6 +3868,7 @@ i Ctrl + Alt + Smanjivanje svjetline da biste smanjili prikaz.</translation>
 <translation id="4761104368405085019">upotrijebiti vaš mikrofon</translation>
 <translation id="4762718786438001384">Količina prostora na disku uređaja kritično je mala</translation>
 <translation id="4763408175235639573">Prilikom pregledavanja ove stranice postavljeni su sljedeći kolačići</translation>
+<translation id="4765524037138975789">{MONTHS,plural, =1{Uređaj će biti spremljen jedan mjesec te se sljedeći put možete povezati bez koda. To postavlja vaš administrator.}one{Uređaj će biti spremljen {MONTHS} mjesec te se sljedeći put možete povezati bez koda. To postavlja vaš administrator.}few{Uređaj će biti spremljen {MONTHS} mjeseca te se sljedeći put možete povezati bez koda. To postavlja vaš administrator.}other{Uređaj će biti spremljen {MONTHS} mjeseci te se sljedeći put možete povezati bez koda. To postavlja vaš administrator.}}</translation>
 <translation id="4765582662863429759">Omogućuje Android porukama prijenos tekstnih poruka s vašeg telefona na Chromebook</translation>
 <translation id="4768332406694066911">Imate certifikate ovih organizacija koji vas identificiraju</translation>
 <translation id="4770119228883592393">Zatraženo je dopuštenje. Da biste odgovorili, pritisnite ⌘ + Option + strelica prema dolje</translation>
@@ -3889,7 +3909,6 @@ i Ctrl + Alt + Smanjivanje svjetline da biste smanjili prikaz.</translation>
 <translation id="4808667324955055115">Skočni su prozori blokirani:</translation>
 <translation id="4809079943450490359">Upute administratora uređaja:</translation>
 <translation id="480990236307250886">Otvori početnu stranicu</translation>
-<translation id="4809927044794281115">Svijetla tema</translation>
 <translation id="4811212958317149293">Automatsko traženje tipkovnice za prekidač za pristup</translation>
 <translation id="4811503964269049987">Dodaj odabranu karticu u grupu</translation>
 <translation id="4813136279048157860">Moje slike</translation>
@@ -3918,6 +3937,7 @@ i Ctrl + Alt + Smanjivanje svjetline da biste smanjili prikaz.</translation>
 <translation id="7528143959514158804">Želite li se vratiti na Brave pretraživanje?</translation>
 <translation id="4837926214103741331">Niste ovlašteni za upotrebu ovog uređaja. Zamolite vlasnika da vam dopusti prijavu.</translation>
 <translation id="4837952862063191349">Da biste otključali i pohranili lokalne podatke, unesite staru zaporku za uređaj <ph name="DEVICE_TYPE"/>.</translation>
+<translation id="4838170306476614339">Pregled fotografija, medija i obavijesti s vašeg telefona</translation>
 <translation id="4838836835474292213">Dopušten pristup za čitanje međuspremnika</translation>
 <translation id="4838907349371614303">Zaporka je ažurirana</translation>
 <translation id="4839303808932127586">Sp&amp;remi videozapis kao...</translation>
@@ -3998,6 +4018,7 @@ i Ctrl + Alt + Smanjivanje svjetline da biste smanjili prikaz.</translation>
 <translation id="4907306957610201395">Kategorija dopuštenja</translation>
 <translation id="4908811072292128752">Otvorite novu karticu za istodobni pregled dvije stranice</translation>
 <translation id="5186604830258964546">Budući da ovim računom upravlja <ph name="DOMAIN"/>, vaše oznake, povijest, zaporke i druge postavke izbrisat će se s ovog uređaja. No vaši podaci ostat će pohranjeni na vašem Brave računu i možete upravljati njima na <ph name="BEGIN_LINK"/>Brave nadzornoj ploči<ph name="END_LINK"/>.</translation>
+<translation id="4912265719039610598">Administrator vašeg telefona nije omogućio stream aplikacije.</translation>
 <translation id="4912643508233590958">Buđenja iz stanja mirovanja</translation>
 <translation id="4915961947098019832">Dopušteno je prikazivanje slika</translation>
 <translation id="4916542008280060967">Dopustiti web-lokaciji da uredi <ph name="FILE_NAME"/>?</translation>
@@ -4029,6 +4050,7 @@ i Ctrl + Alt + Smanjivanje svjetline da biste smanjili prikaz.</translation>
 <translation id="4941074198479265146">Web-lokacije se obično povezuju s MIDI uređajima radi značajki za izradu i uređivanje glazbe</translation>
 <translation id="4941246025622441835">Upotrijebite taj zahtjev uređaja kada prijavljujete uređaj za poslovno upravljanje:</translation>
 <translation id="4941627891654116707">Veličina fonta</translation>
+<translation id="4941963255146903244">Pregled fotografija, medija i aplikacija s vašeg telefona</translation>
 <translation id="494286511941020793">Pomoć za proxy konfiguraciju</translation>
 <translation id="4943368462779413526">Američki nogomet</translation>
 <translation id="4943691134276646401">"<ph name="CHROME_EXTENSION_NAME"/>" želi se povezati sa serijskim priključkom</translation>
@@ -4041,7 +4063,6 @@ i Ctrl + Alt + Smanjivanje svjetline da biste smanjili prikaz.</translation>
 <translation id="4953808748584563296">Zadani narančasti avatar</translation>
 <translation id="4955710816792587366">Odaberite PIN</translation>
 <translation id="2664072612040204002">Zaporke se spremaju na vaš Brave račun kako biste ih mogli upotrebljavati na bilo kojem uređaju</translation>
-<translation id="496027654926814138">Datoteka <ph name="FILE_NAME"/> mogla bi omogućiti napadačima da ukradu vaše osobne podatke.</translation>
 <translation id="4960294539892203357"><ph name="WINDOW_TITLE"/> – <ph name="PROFILE_NAME"/></translation>
 <translation id="4961318399572185831">Emitiranje zaslona</translation>
 <translation id="4961361269522589229">ideje za recepte</translation>
@@ -4063,7 +4084,6 @@ i Ctrl + Alt + Smanjivanje svjetline da biste smanjili prikaz.</translation>
 <translation id="4980805016576257426">Proširenje sadrži zlonamjerni softver.</translation>
 <translation id="6298472828264321822">Da biste izbrisali podatke o pregledavanju sa svih svojih sinkroniziranih uređaja i svojeg Brave računa, <ph name="BEGIN_LINK"/>prijavite se<ph name="END_LINK"/>.</translation>
 <translation id="4982236238228587209">Softver uređaja</translation>
-<translation id="4985248278475639481">O postavci Prilagodba oglasa</translation>
 <translation id="4986728572522335985">Time će se izbrisati svi podaci na sigurnosnom ključu, uključujući PIN</translation>
 <translation id="4988526792673242964">Stranice</translation>
 <translation id="49896407730300355">Zakreni u smjeru suprotnom od &amp;kretanja kazaljke na satu</translation>
@@ -4091,7 +4111,6 @@ i Ctrl + Alt + Smanjivanje svjetline da biste smanjili prikaz.</translation>
 <translation id="5015344424288992913">Traženje proxyja...</translation>
 <translation id="5016491575926936899">Možete slati SMS-ove s računala, dijeliti internetsku vezu, odgovarati na obavijesti o razgovorima i otključavati uređaj <ph name="DEVICE_TYPE"/> pomoću svojeg telefona.<ph name="FOOTNOTE_POINTER"/> <ph name="LINK_BEGIN"/>Saznajte više<ph name="LINK_END"/></translation>
 <translation id="5017643436812738274">Stranicama se možete kretati pomoću pokazivača za tekst. Pritisnite Ctrl + Search + 7 da biste isključili tu postavku.</translation>
-<translation id="5017828934289857214">Podsjeti me kasnije</translation>
 <translation id="5018207570537526145">Otvori web-lokaciju proširenja</translation>
 <translation id="5018526990965779848">Slanje podataka o upotrebi i dijagnostici. Pomognite poboljšati Android automatskim slanjem dijagnostičkih podataka te podataka o upotrebi uređaja i aplikacija Braveu. Ti podaci pomoći će poboljšati stabilnost sustava, aplikacija i drugo. Neki skupni podaci pomoći će i Braveovim aplikacijama i partnerima, na primjer razvojnim programerima za Android. Ako je uključena dodatna aktivnost na webu i u aplikacijama, ti se podaci mogu spremati na vaš Brave račun.</translation>
 <translation id="5021750053540820849">Još nije ažurirano</translation>
@@ -4284,14 +4303,12 @@ i Ctrl + Alt + Smanjivanje svjetline da biste smanjili prikaz.</translation>
 <translation id="5213891612754844763">Prikaži postavke proxyja</translation>
 <translation id="5215502535566372932">Odaberite zemlju</translation>
 <translation id="521582610500777512">Fotografija je odbačena</translation>
-<translation id="522155068793322853">Aplikaciju <ph name="APP_NAME"/> nije moguće otvoriti</translation>
 <translation id="5222403284441421673">Nesigurno preuzimanje blokirano</translation>
 <translation id="5222676887888702881">Odjava</translation>
 <translation id="5225324770654022472">Prikaži prečac za aplikacije</translation>
 <translation id="52254442782792731">Trenutačna postavka vidljivosti još nije postavljena</translation>
 <translation id="5225463052809312700">Uključi fotoaparat</translation>
 <translation id="5227679487546032910">Zadani tirkiznoplavi avatar</translation>
-<translation id="5227902338748591677">Raspored tamne teme</translation>
 <translation id="5228579091201413441">Omogući sinkronizaciju</translation>
 <translation id="5230516054153933099">Prozor</translation>
 <translation id="5233019165164992427">Priključak za otklanjanje pogrešaka lokalnog klijenta</translation>
@@ -4334,6 +4351,7 @@ i Ctrl + Alt + Smanjivanje svjetline da biste smanjili prikaz.</translation>
 <translation id="5268373933383932086">Vaša stranica, vaš izbor</translation>
 <translation id="5269977353971873915">Ispis nije uspio</translation>
 <translation id="5273806377963980154">Uredite URL web-lokacije</translation>
+<translation id="5275338516105640560">Gumb spremljene grupe kartica</translation>
 <translation id="5275352920323889391">Pas</translation>
 <translation id="527605719918376753">Isključi zvuk kartice</translation>
 <translation id="527605982717517565">Uvijek dopusti JavaScript na web-lokaciji <ph name="HOST"/></translation>
@@ -4345,7 +4363,7 @@ i Ctrl + Alt + Smanjivanje svjetline da biste smanjili prikaz.</translation>
 <translation id="5280426389926346830">Želite li izraditi prečac?</translation>
 <translation id="5281013262333731149">Otvara se u pregledniku <ph name="OPEN_BROWSER"/></translation>
 <translation id="528208740344463258">Da biste preuzeli i upotrebljavali Android aplikacije, najprije morate instalirati ovo obavezno ažuriranje. Dok se uređaj <ph name="DEVICE_TYPE"/> ažurira, ne možete ga upotrebljavati. Uređaj <ph name="DEVICE_TYPE"/> ponovo će se pokrenuti kada instaliranje završi.</translation>
-<translation id="4039256732955431945">Ako omogućite "Nemoj pratiti", taj će se zahtjev slati uz vaš promet pregledavanja. Učinak ovisi o tome hoće li web-lokacija reagirati na taj zahtjev i kako će se on tumačiti. Na primjer, neke web-lokacije mogu reagirati na taj zahtjev prikazivanjem oglasa koji se ne temelje na ostalim web-lokacijama koje ste posjetili. Mnoge web-lokacije i dalje će prikupljati i upotrebljavati vaše podatke o pregledavanju kako bi, primjerice, poboljšale sigurnost, pružale sadržaje, usluge, oglase i preporuke na svojim web-lokacijama te generirale statističke podatke za izvješća. <ph name="BEGIN_LINK"/>Saznajte više<ph name="END_LINK"/></translation>
+<translation id="5282733140964383898">Ako omogućite "Nemoj pratiti", taj će se zahtjev slati uz vaš promet pregledavanja. Učinak ovisi o tome hoće li web-lokacija reagirati na taj zahtjev i kako će se on tumačiti. Na primjer, neke web-lokacije mogu reagirati na taj zahtjev prikazivanjem oglasa koji se ne temelje na ostalim web-lokacijama koje ste posjetili. Mnoge web-lokacije i dalje će prikupljati i upotrebljavati vaše podatke o pregledavanju kako bi, primjerice, poboljšale sigurnost, pružale sadržaje, usluge, oglase i preporuke na svojim web-lokacijama te generirale statističke podatke za izvješća. <ph name="BEGIN_LINK"/>Saznajte više<ph name="END_LINK"/></translation>
 <translation id="5283677936944177147">Ups! Sustav nije uspio utvrditi model uređaja ili serijski broj.</translation>
 <translation id="5284445933715251131">Nastavi preuzimanje</translation>
 <translation id="5285635972691565180">Zaslon <ph name="DISPLAY_ID"/></translation>
@@ -4362,7 +4380,7 @@ i Ctrl + Alt + Smanjivanje svjetline da biste smanjili prikaz.</translation>
 <translation id="5297082477358294722">Zaporka je spremljena. Spremljene zaporke možete pregledati i upravljati njima ovdje: <ph name="SAVED_PASSWORDS_STORE"/></translation>
 <translation id="5297946558563358707">Kad netko drugi pogleda vaš zaslon, u donjem desnom kutu zaslona prikazuje se ikona oka za zaštitu privatnosti</translation>
 <translation id="5298219193514155779">Temu je stvorio autor</translation>
-<translation id="1839179167864984545">Nemoj pratiti</translation>
+<translation id="5299109548848736476">Nemoj pratiti</translation>
 <translation id="5299558715747014286">Pregled grupa kartica i upravljanje njima</translation>
 <translation id="5300287940468717207">Želite li poništiti dopuštenja za web-lokacije?</translation>
 <translation id="5300426565656326054">Prilagodba oglasa na temelju preglednika</translation>
@@ -4437,7 +4455,6 @@ i Ctrl + Alt + Smanjivanje svjetline da biste smanjili prikaz.</translation>
 <translation id="5372632722660566343">Nastaviti bez računa</translation>
 <translation id="3568445333244015435">Da biste s tim kontaktima koristili dijeljenje u blizini, u kontakte dodajte e-adrese povezane s njihovim Brave računima.</translation>
 <translation id="5376169624176189338">Kliknite da biste se vratili natrag, zadržite da biste vidjeli povijest</translation>
-<translation id="5376354385557966694">Automatski svijetli način</translation>
 <translation id="5376931455988532197">Datoteka je prevelika</translation>
 <translation id="5379140238605961210">Nastavi blokirati pristup mikrofonu</translation>
 <translation id="5382591305415226340">Upravljanje podržanim vezama</translation>
@@ -4456,6 +4473,7 @@ i Ctrl + Alt + Smanjivanje svjetline da biste smanjili prikaz.</translation>
 <translation id="5398497406011404839">Skrivene oznake</translation>
 <translation id="5398572795982417028">Referenca na stranicu izvan je granica, a granica je <ph name="MAXIMUM_PAGE"/></translation>
 <translation id="5401426944298678474">Prestani pratiti web-lokaciju</translation>
+<translation id="5401851137404501592">Da biste nastavili, <ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE"/> podijelit će vaše ime, e-adresu i profilnu sliku s ovom web-lokacijom.</translation>
 <translation id="5402815541704507626">Preuzimanje ažuriranja putem mobilne mreže</translation>
 <translation id="540296380408672091">Uvijek blokiraj kolačiće na <ph name="HOST"/></translation>
 <translation id="5404740137318486384">Pritisnite prekidač ili tipku tipkovnice da biste ih dodijelili radnji <ph name="ACTION"/>.
@@ -4468,6 +4486,7 @@ Toj radnji možete dodijeliti više prekidača.</translation>
 <translation id="5413640305322530561">Saznajte više o podacima o upotrebi i dijagnostici</translation>
 <translation id="5414198321558177633">Osvježava se popis profila. To može potrajati nekoliko minuta.</translation>
 <translation id="5414566801737831689">čitati ikone posjećenih web-lokacija</translation>
+<translation id="5414836363063783498">Potvrđivanje…</translation>
 <translation id="5417312524372586921">Teme preglednika</translation>
 <translation id="5419405654816502573">Voice Match</translation>
 <translation id="5420274697768050645">Zatražite zaporku da biste otključali uređaj radi dodatne zaštite</translation>
@@ -4493,6 +4512,7 @@ Toj radnji možete dodijeliti više prekidača.</translation>
 <translation id="5436575196282187764">Uspomene s Brave fotografija</translation>
 <translation id="5439680044267106777">Preskočite i postavite novi profil</translation>
 <translation id="544083962418256601">Stvaranje prečaca...</translation>
+<translation id="5417227405829889012">Web-aplikacija instalirana iz preglednika Brave</translation>
 <translation id="5442228125690314719">Došlo je do pogreške prilikom izrade slike diska. Pokušajte ponovo.</translation>
 <translation id="5442550868130618860">Uključi automatsko ažuriranje</translation>
 <translation id="5445400788035474247">10x</translation>
@@ -4657,9 +4677,7 @@ Toj radnji možete dodijeliti više prekidača.</translation>
 <translation id="5585912436068747822">Formatiranje nije uspjelo</translation>
 <translation id="5588033542900357244">(<ph name="RATING_COUNT"/>)</translation>
 <translation id="558918721941304263">Učitavanje aplikacija...</translation>
-<translation id="5591644692203457362">Produžena upotreba ključa</translation>
 <translation id="5592595402373377407">Još nije dostupno dovoljno podataka.</translation>
-<translation id="4620609007674235583">Preglednik Brave</translation>
 <translation id="5595485650161345191">Uređivanje adrese</translation>
 <translation id="5596627076506792578">Više opcija</translation>
 <translation id="5600348067066185292">Za instalaciju je potrebno nekoliko jednostavnih koraka. Imat ćete još jednu priliku potvrditi prije nego što se promjene izvrše na računalu.</translation>
@@ -4697,7 +4715,6 @@ Toj radnji možete dodijeliti više prekidača.</translation>
 <translation id="562935524653278697">Administrator je onemogućio sinkronizaciju vaših oznaka, povijesti, zaporki i ostalih postavki.</translation>
 <translation id="5631017369956619646">Iskorištenost procesora</translation>
 <translation id="5632059346822207074">Zatraženo je dopuštenje. Da biste odgovorili, pritisnite Ctrl + naprijed</translation>
-<translation id="5632485077360054581">Pokaži mi kako</translation>
 <translation id="5632566673632479864">Vaš račun <ph name="EMAIL"/> više nije dopušten kao primarni račun. Budući da tim računom upravlja <ph name="DOMAIN"/>, vaše oznake, povijest, zaporke i druge postavke izbrisat će se s ovog uređaja.</translation>
 <translation id="5632592977009207922">Preuzimanje, preostalo je <ph name="PERCENT_REMAINING"/>%</translation>
 <translation id="563371367637259496">Mobilna mreža</translation>
@@ -4770,6 +4787,7 @@ Toj radnji možete dodijeliti više prekidača.</translation>
 <translation id="5711010025974903573">Zapisnici usluge</translation>
 <translation id="5711983031544731014">Otključavanje nije moguće. Unesite svoju zaporku.</translation>
 <translation id="5712153969432126546">Web-lokacije ponekad objavljuju PDF-ove, primjerice dokumente, ugovore i obrasce</translation>
+<translation id="571222594670061844">Web-lokacije mogu prikazivati upite za prijavu usluga za identitet</translation>
 <translation id="5713158217420111469">Povezano s uređajem <ph name="DEVICE"/></translation>
 <translation id="5715711091495208045">Broker dodatka: <ph name="PLUGIN_NAME"/></translation>
 <translation id="5719603411793408026">Zadane tražilice</translation>
@@ -4924,6 +4942,7 @@ Toj radnji možete dodijeliti više prekidača.</translation>
 <translation id="5876851302954717356">Nova kartica s desne strane</translation>
 <translation id="5877064549588274448">Kanal je promijenjen. Ponovo pokrenite uređaj za primjenu promjena.</translation>
 <translation id="5877584842898320529">Odabrani pisač nije dostupan ili nije ispravno instaliran. <ph name="BR"/> Provjerite pisač ili pokušajte odabrati neki drugi.</translation>
+<translation id="5878945009165002849">Blokiraj upite za prijavu usluga za identitet</translation>
 <translation id="5882919346125742463">Poznate mreže</translation>
 <translation id="5883356647197510494">Automatski je blokirano sljedeće: <ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/></translation>
 <translation id="5884474295213649357">Kartica je povezana s USB uređajem.</translation>
@@ -4935,6 +4954,7 @@ Toj radnji možete dodijeliti više prekidača.</translation>
 <translation id="5895138241574237353">Ponovno pokreni</translation>
 <translation id="5895335062901455404">Vaše spremljene preferencije i aktivnosti bit će spremne na svim uređajima s ChromeOS Flexom kad se prijavite Brave računom. U postavkama možete odabrati što će se sinkronizirati.</translation>
 <translation id="5896436821193322561">Nemoj dopustiti</translation>
+<translation id="5900186025777217044">Smart Lock je promijenjen</translation>
 <translation id="8907706281008466056">Fotografija Brave profila</translation>
 <translation id="590036993063074298">Pojedinosti o kvaliteti zrcaljenja</translation>
 <translation id="5901069264981746702">Podaci o otisku prsta sigurno se pohranjuju i nikamo se ne šalju s uređaja <ph name="DEVICE_TYPE"/>. <ph name="LINK_BEGIN"/>Saznajte više<ph name="LINK_END"/></translation>
@@ -4978,7 +4998,6 @@ Toj radnji možete dodijeliti više prekidača.</translation>
 <translation id="5935158534896975820">Priprema zahtjeva za potpisivanje certifikata (čeka se poslužitelj)</translation>
 <translation id="5935656526031444304">Upravljajte Sigurnim pregledavanjem</translation>
 <translation id="5938002010494270685">Dostupna je sigurnosna nadogradnja</translation>
-<translation id="5938153366081463283">Dodajte virtualnu karticu</translation>
 <translation id="5939518447894949180">Ponovno postavi</translation>
 <translation id="5939719276406088041">Nije moguće izraditi prečac</translation>
 <translation id="594048410531370124">Tipka nije prepoznata. Pritisnite bilo koju tipku za <ph name="RESPONSE"/>.</translation>
@@ -5226,13 +5245,11 @@ Toj radnji možete dodijeliti više prekidača.</translation>
 <translation id="6185132558746749656">Lokacija uređaja</translation>
 <translation id="6269192621359785662">Uključena je sinkronizacija preglednika Brave</translation>
 <translation id="6190953336330058278">Aplikacije Phone huba</translation>
-<translation id="619279033188484792">Pregledajte nedavne fotografije, medije i obavijesti telefona na uređaju <ph name="DEVICE_TYPE"/>.</translation>
 <translation id="6195005504600220730">čitati podatke o vašem pregledniku, OS-u i uređaju</translation>
 <translation id="6195693561221576702">Uređaj nije moguće postaviti u izvanmrežnom demo načinu.</translation>
 <translation id="6196640612572343990">Blokiraj kolačiće trećih strana</translation>
 <translation id="6196854373336333322">Proširenje "<ph name="EXTENSION_NAME"/>" preuzelo je kontrolu nad vašim postavkama proxyja, a to znači da može promijeniti, prekinuti ili prisluškivati sve što radite na mreži. Ako niste sigurni kako je došlo do te promjene, vjerojatno je ne želite.</translation>
 <translation id="6197128521826316819">Izradi QR kôd za ovu stranicu</translation>
-<translation id="6198102561359457428">Odjavite se, a zatim ponovo prijavite...</translation>
 <translation id="6198252989419008588">Promijeni PIN</translation>
 <translation id="6200047250927636406">Odbaci datoteku</translation>
 <translation id="6200151268994853226">Upravljajte proširenjem</translation>
@@ -5265,6 +5282,7 @@ Toj radnji možete dodijeliti više prekidača.</translation>
 <translation id="6227002569366039565">Pritisnite |<ph name="ACCELERATOR"/>| da biste fokusirali ovaj oblačić, a zatim to ponovite da biste fokusirali element na koji se taj oblačić odnosi.</translation>
 <translation id="6227280783235722609">proširenje</translation>
 <translation id="6229849828796482487">Prekidanje veze s Wi-Fi mrežom</translation>
+<translation id="6230165830166519105">Pokušajte na neki drugi način</translation>
 <translation id="6231782223312638214">Predloženo</translation>
 <translation id="6231881193380278751">Dodajte parametar upita u URL da biste automatski osvježili stranicu: chrome://device-log/?refresh=&lt;sec&gt;</translation>
 <translation id="6232017090690406397">Baterija</translation>
@@ -5299,6 +5317,7 @@ Toj radnji možete dodijeliti više prekidača.</translation>
 <translation id="6250186368828697007">Pojedinosti su skrivene dok dijelite zaslon</translation>
 <translation id="6251870443722440887">Rukuje GDI</translation>
 <translation id="625369703868467034">Stanje mreže</translation>
+<translation id="6253801023880399036">Zaporke se spremaju u <ph name="GOOGLE_PASSWORD_MANAGER"/>.</translation>
 <translation id="6254503684448816922">Kompromis ključa</translation>
 <translation id="6254892857036829079">Savršena</translation>
 <translation id="6257602895346497974">Uključite sinkronizaciju...</translation>
@@ -5331,7 +5350,6 @@ Toj radnji možete dodijeliti više prekidača.</translation>
 <translation id="6283438600881103103">Bit ćete automatski odjavljeni.
 <ph name="DOMAIN"/> zahtijeva da vaša pametna kartica ostane umetnuta.</translation>
 <translation id="628352644014831790">Četiri sekunde</translation>
-<translation id="6284632978374966585">Uključivanje tamne teme</translation>
 <translation id="6285120108426285413">Datoteka <ph name="FILE_NAME"/> obično se ne preuzima i mogla bi biti opasna.</translation>
 <translation id="6285770818046456882">Dijeljenje uređaja s vama otkazalo je prijenos</translation>
 <translation id="6290613030083731160">U blizini nema uređaja dostupnih za dijeljenje. <ph name="LINK_BEGIN"/>Saznajte više<ph name="LINK_END"/></translation>
@@ -5340,6 +5358,7 @@ Toj radnji možete dodijeliti više prekidača.</translation>
 <translation id="6291949900244949761">Kada web-lokacija želi pristupiti USB uređajima, prikaži upit (preporučeno)</translation>
 <translation id="6291953229176937411">&amp;Prikaži u programu Finder</translation>
 <translation id="6292699686837272722">Kartice se smanjuju na srednju širinu</translation>
+<translation id="7918815962568992845">Možete slati kartice među uređajima prijavljenima istim Brave računom</translation>
 <translation id="6294759976468837022">Brzina automatskog traženja</translation>
 <translation id="6295158916970320988">Sve web-lokacije</translation>
 <translation id="6295855836753816081">Spremanje...</translation>
@@ -5378,9 +5397,9 @@ Toj radnji možete dodijeliti više prekidača.</translation>
 <translation id="5267531627648004734">Ukloni iz programa Brave</translation>
 <translation id="6326855256003666642">Broj aktivnosti održavanja</translation>
 <translation id="6327785803543103246">Automatsko otkrivanje putem web-proxyja</translation>
-<translation id="6331191339300272798">Automatska tamna tema</translation>
 <translation id="6331818708794917058">Web-lokacije mogu tražiti dopuštenje za povezivanje s MIDI uređajima</translation>
 <translation id="8329196515830093443">Datoteka će se poslati Braveu radi uklanjanja pogrešaka</translation>
+<translation id="6333170995003625229">Vaša e-adresa ili zaporka nije se mogla potvrditi. Ponovo se pokušajte prijaviti.</translation>
 <translation id="6335920438823100346">Da biste pokrenuli Linux, <ph name="MANAGER"/> zahtijeva da sigurnosno kopirate svoje podatke i vratite ovaj Chromebook na tvorničke postavke.</translation>
 <translation id="6336038146639916978">Domena <ph name="MANAGER"/> onemogućila je ADB otklanjanje pogrešaka. Zbog toga će se uređaj <ph name="DEVICE_TYPE"/> vratiti na zadano za 24 sata. Sigurnosno kopirajte sve datoteke koje želite zadržati.</translation>
 <translation id="6338981933082930623">Sve vam web-lokacije mogu prikazivati bilo kakve oglase</translation>
@@ -5403,8 +5422,6 @@ Toj radnji možete dodijeliti više prekidača.</translation>
 <translation id="4817583816512767754">Samo osoba koja ima vašu šifru može čitati vaše kriptirane podatke. Šifra se ne šalje Braveu i ne pohranjuje na njemu. Ako zaboravite šifru ili želite promijeniti tu postavku, morat ćete <ph name="BEGIN_LINK"/>poništiti sinkronizaciju<ph name="END_LINK"/>.</translation>
 <translation id="6357305427698525450">Neke podržane veze i dalje će se otvarati u aplikacijama <ph name="APP_NAME"/> ili <ph name="APP_NAME_2"/>.</translation>
 <translation id="6358884629796491903">Zmaj</translation>
-<translation id="6359706544163531585">Onemogućivanje svijetle teme</translation>
-<translation id="6361470537267923629">Spremljene zaporke možete koristiti na bilo kojem uređaju. Spremaju se u <ph name="GOOGLE_PASSWORD_MANAGER"/> za <ph name="EMAIL"/></translation>
 <translation id="6361850914223837199">Detalji pogreške:</translation>
 <translation id="6362853299801475928">&amp;Prijavljivanje problema...</translation>
 <translation id="6363786367719063276">Prikaz zapisnika</translation>
@@ -5559,6 +5576,7 @@ Toj radnji možete dodijeliti više prekidača.</translation>
 <translation id="6513247462497316522">Brave upotrijebit će mobilne podatke ako niste povezani na drugu mrežu.</translation>
 <translation id="6514010653036109809">Dostupan uređaj:</translation>
 <translation id="6514565641373682518">Ova stranica onemogućila je pokazivač miša.</translation>
+<translation id="6517709704288360414">Vaš uređaj možda više neće pravilno funkcionirati i možda ćete imati problema sa sigurnošću i izvedbom. Isključivanje ažuriranja može utjecati i na vaše pravo na podnošenje pravnih zahtjeva ako budete imali poteškoća.</translation>
 <translation id="6518014396551869914">Kop&amp;iraj sliku</translation>
 <translation id="6518133107902771759">Potvrdi</translation>
 <translation id="651942933739530207">Želite li da <ph name="APP_NAME"/> dijeli vaš zaslon i audioizlaz?</translation>
@@ -5570,6 +5588,7 @@ Toj radnji možete dodijeliti više prekidača.</translation>
 <translation id="6520876759015997832">Rezultat pretraživanja <ph name="LIST_POSITION"/> od <ph name="LIST_SIZE"/>: <ph name="SEARCH_RESULT_TEXT"/>. Pritisnite Enter da biste došli do odjeljka.</translation>
 <translation id="6521214596282732365">Web-lokacije obično koriste vaše fontove kako biste mogli izraditi vjernu reprodukciju sadržaja uz pomoć online alata za dizajniranje i grafiku</translation>
 <translation id="6523303810310758032">Kad izbrišete svoju povijest pregledavanja, bilo svu ili za određenu web-lokaciju, brišete i povezane podatke o mjerenju. Pogledajte <ph name="BEGIN_LINK"/>svoju povijest pregledavanja<ph name="END_LINK"/>.</translation>
+<translation id="4840871051102187982">Brave upravitelj zaporki nije mogao spremiti ove zaporke na vaš Brave račun. Možete ih spremiti na ovaj uređaj.</translation>
 <translation id="6524735478670290456">Kako upotrebljavamo te podatke:</translation>
 <translation id="652492607360843641">Vaša je trenutačna mreža <ph name="NETWORK_TYPE"/>.</translation>
 <translation id="6527303717912515753">Podijeli</translation>
@@ -5620,7 +5639,6 @@ Toj radnji možete dodijeliti više prekidača.</translation>
 <translation id="656293578423618167">Putanja ili naziv datoteke predugački su. Spremite datoteku pod kraćim nazivom ili na neku drugu lokaciju.</translation>
 <translation id="6563469144985748109">Voditelj je još nije odobrio</translation>
 <translation id="6568283005472142698">Pretraživanje kartica</translation>
-<translation id="3740959138468719492">Zaporke se spremaju na vaš Brave račun (<ph name="ACCOUNT"/>) kako biste ih mogli upotrebljavati na bilo kojem uređaju</translation>
 <translation id="65711204837946324">Za preuzimanje je potrebno dopuštenje</translation>
 <translation id="6571772921213691236">Uređivanje podataka za prijavu</translation>
 <translation id="6573497332121198392">Nije moguće ukloniti prečac</translation>
@@ -5647,6 +5665,15 @@ Toj radnji možete dodijeliti više prekidača.</translation>
 <translation id="6593881952206664229">Mediji sa zaštićenim autorskim pravima možda se neće reproducirati</translation>
 <translation id="6594011207075825276">Traženje serijskih uređaja...</translation>
 <translation id="6595187330192059106">Uvijek blokiraj hostu <ph name="HOST"/> potpunu kontrolu nad MIDI uređajima.</translation>
+<translation id="5089633794744090226">{COUNT,plural, =1{Uspješno ste promijenili ugroženu zaporku.
+
+Imate još # ugroženu zaporku. Brave upravitelj zaporki preporučuje da odmah provjerite tu zaporku.}one{Uspješno ste promijenili ugroženu zaporku.
+
+Imate još # ugroženu zaporku. Brave upravitelj zaporki preporučuje da odmah provjerite te zaporke.}few{Uspješno ste promijenili ugroženu zaporku.
+
+Imate još # ugrožene zaporke. Brave upravitelj zaporki preporučuje da odmah provjerite te zaporke.}other{Uspješno ste promijenili ugroženu zaporku.
+
+Imate još # ugroženih zaporki. Brave upravitelj zaporki preporučuje da odmah provjerite te zaporke.}}</translation>
 <translation id="6595792813574514527">Povuci za pretraživanje slika pomoću usluge <ph name="VISUAL_SEARCH_PROVIDER"/></translation>
 <translation id="6596325263575161958">Opcije šifriranja</translation>
 <translation id="6596816719288285829">IP adresa</translation>
@@ -5735,6 +5762,7 @@ Toj radnji možete dodijeliti više prekidača.</translation>
 <translation id="6686665106869989887">Kartica je premještena udesno</translation>
 <translation id="6686817083349815241">Spremite zaporku</translation>
 <translation id="6687079240787935001">Sakrij <ph name="MODULE_TITLE"/></translation>
+<translation id="6688391094668641513">Zahtijevanje čitanja i promjene web-lokacije <ph name="ORIGIN"/>:</translation>
 <translation id="6689714331348768690">Neka <ph name="SUPERVISED_USER_NAME"/> dođe do računala. Dijete će pročitati nekoliko izraza na ovom zaslonu da bi se izradio njegov glasovni model.
     <ph name="BR"/>
     Ako <ph name="SUPERVISED_USER_NAME"/> treba pomoć s čitanjem, neka ponavlja za vama. Šapćite dalje od mikrofona kako bi Asistent naučio prepoznavati djetetov, a ne vaš glas.</translation>
@@ -5746,7 +5774,6 @@ Toj radnji možete dodijeliti više prekidača.</translation>
 <translation id="6697492270171225480">Prikaži prijedloge za slične stranice kada se stranica ne može pronaći</translation>
 <translation id="6697690052557311665">Da biste dijelili mapu, kliknite je desnom tipkom u aplikaciji Datoteke, a zatim odaberite "Dijeli s Linuxom".</translation>
 <translation id="6698810901424468597">čitati i mijenjati vaše podatke na web-lokacijama <ph name="WEBSITE_1"/> i <ph name="WEBSITE_2"/></translation>
-<translation id="6699883973579689168">Sad možete upravljati svim svojim Brave računima na jednom mjestu. Pristup i dopuštenja koja ste odobrili aplikacijama, web-lokacijama i proširenjima u Braveu i Google Playu sad se mogu primjenjivati na sve račune na koje ste prijavljeni. <ph name="LINK_BEGIN"/>Saznajte više<ph name="LINK_END"/></translation>
 <translation id="6700093763382332031">Zaključavanje SIM-a mobilne mreže</translation>
 <translation id="6700480081846086223">Emitiraj <ph name="HOST_NAME"/></translation>
 <translation id="6701535245008341853">Nije bilo moguće dobiti profil.</translation>
@@ -5783,6 +5810,7 @@ Toj radnji možete dodijeliti više prekidača.</translation>
 <translation id="6735304988756581115">Prikaži kolačiće i ostale podatke o web-lokaciji...</translation>
 <translation id="6736243959894955139">Adresa</translation>
 <translation id="6737663862851963468">Uklanjanje Kerberosovog tiketa</translation>
+<translation id="6738430949033571771">Potvrđivanje računa...</translation>
 <translation id="6739923123728562974">Prikaži prečac na radnoj površini</translation>
 <translation id="6740234557573873150">Dokument <ph name="FILE_NAME"/> pauziran</translation>
 <translation id="6741063444351041466"><ph name="BEGIN_LINK"/>Vaš administrator<ph name="END_LINK"/> isključio je Sigurno pregledavanje</translation>
@@ -5838,7 +5866,6 @@ Toj radnji možete dodijeliti više prekidača.</translation>
 <translation id="6798578729981748444">Da biste dovršili uvoz, zatvorite sve Firefoxove prozore.</translation>
 <translation id="6798780071646309401">Caps Lock uključen</translation>
 <translation id="6798954102094737107">Dodatak: <ph name="PLUGIN_NAME"/></translation>
-<translation id="6800746963123086495">Datoteka bi mogla omogućiti napadačima da ukradu vaše osobne podatke</translation>
 <translation id="6801129617625983991">Opće postavke</translation>
 <translation id="6801435275744557998">Kalibrirajte dodirni zaslon</translation>
 <translation id="6802031077390104172"><ph name="USAGE"/> (<ph name="OID"/>)</translation>
@@ -5865,7 +5892,9 @@ Toj radnji možete dodijeliti više prekidača.</translation>
 <translation id="6813907279658683733">Cijeli zaslon</translation>
 <translation id="6817174620439930047">Pitaj kada web-lokacija želi upotrijebiti posebne sistemske poruke za pristup MIDI uređajima (preporučeno)</translation>
 <translation id="6818198425579322765">Jezik stranice za prijevod</translation>
+<translation id="6818547713623251698">Pregled fotografija, medija, obavijesti i aplikacija s vašeg telefona</translation>
 <translation id="6818802132960437751">Ugrađena zaštita od virusa</translation>
+<translation id="6818920801736417483">Spremiti zaporke?</translation>
 <translation id="6823174134746916417">Dodir za klik na dodirnoj podlozi</translation>
 <translation id="6824564591481349393">Kopiraj &amp;adresu e-pošte</translation>
 <translation id="6824584962142919697">&amp;Provjeri elemente</translation>
@@ -5882,7 +5911,6 @@ Toj radnji možete dodijeliti više prekidača.</translation>
 <translation id="6833479554815567477">Kartica je uklonjena iz grupe <ph name="GROUP_NAME"/> – <ph name="GROUP_CONTENTS"/></translation>
 <translation id="683373380308365518">Prijeđite na pametan i siguran preglednik</translation>
 <translation id="6833996806551876956">Proba za Privacy Sandbox</translation>
-<translation id="6834652994408928492">Tamni način rada uključit će se automatski kad zađe sunce</translation>
 <translation id="6835762382653651563">Povežite se s internetom da biste ažurirali svoj uređaj <ph name="DEVICE_TYPE"/>.</translation>
 <translation id="6839225236531462745">Pogreška brisanja certifikata</translation>
 <translation id="6839916869147598086">Prijava je promijenjena</translation>
@@ -5940,7 +5968,6 @@ Toj radnji možete dodijeliti više prekidača.</translation>
 <translation id="689007770043972343">Pokušajte povući druge otvorene kartice u svoju grupu</translation>
 <translation id="6892812721183419409">Otvori vezu kao <ph name="USER"/></translation>
 <translation id="8282772389915299166">Prijavljujte pojedinosti Braveu o štetnom softveru, postavkama sustava i procesima pronađenim na računalu tijekom čišćenja</translation>
-<translation id="6895902329218596456">E-adresom <ph name="USER_EMAIL"/> upravlja <ph name="MANAGER"/> i vaš je administrator blokirao prijavu u svojstvu sekundarnog računa</translation>
 <translation id="6896758677409633944">Kopiraj</translation>
 <translation id="6897363604023044284">Odaberite web-lokacije za brisanje</translation>
 <translation id="6898440773573063262">Aplikacije kioska sada je moguće konfigurirati za automatsko pokretanje na ovom uređaju.</translation>
@@ -6025,7 +6052,6 @@ Toj radnji možete dodijeliti više prekidača.</translation>
 <translation id="697312151395002334">Dopušteno je slanje skočnih prozora i upotreba preusmjeravanja</translation>
 <translation id="6973611239564315524">Dostupna je nadogradnja na Debian 10 (Buster)</translation>
 <translation id="5351075736722780148">Ako vam je Brave i zadana tražilica, prikazivat će vam se bolji, kontekstualno relevantni prijedlozi</translation>
-<translation id="6974609594866392343">Izvanmrežni demo način</translation>
 <translation id="697508444536771064">Isključi Linux</translation>
 <translation id="6978121630131642226">Tražilice</translation>
 <translation id="6979044105893951891">Pokreni i zatvori upravljane gostujuće sesije</translation>
@@ -6167,9 +6193,7 @@ Toj radnji možete dodijeliti više prekidača.</translation>
 <translation id="7114648273807173152">Da biste upotrebljavali Smart Lock za prijavu na Brave račun, idite na Postavke &gt; Povezani uređaji &gt; Vaš telefon &gt; Smart Lock.</translation>
 <translation id="7115361495406486998">Nema dostupnih kontakata</translation>
 <translation id="7117228822971127758">Pokušajte ponovo kasnije</translation>
-<translation id="7117247127439884114">Prijavite se ponovo...</translation>
 <translation id="711840821796638741">Prikaži upravljane oznake</translation>
-<translation id="711902386174337313">pročitati popis uređaja na koje ste prijavljeni</translation>
 <translation id="8651796563067586593">Na ovoj stranici možete upravljati Brave računima na koje ste prijavljeni. <ph name="LINK_BEGIN"/>Saznajte više<ph name="LINK_END"/></translation>
 <translation id="5450502361144700252">Promet putem preglednika Brave i Androida blokirat će se ako VPN nije povezan</translation>
 <translation id="7120865473764644444">Povezivanje s poslužiteljem za sinkronizaciju nije uspjelo. Ponovni pokušaj...</translation>
@@ -6190,7 +6214,6 @@ Toj radnji možete dodijeliti više prekidača.</translation>
 <translation id="7136694880210472378">Postavi kao zadano</translation>
 <translation id="7136993520339022828">Došlo je do pogreške. Pokušajte ponovo kasnije odabirom drugih slika.</translation>
 <translation id="7137472406312798422">Web-lokacije mogu tražiti dopuštenje za upotrebu podataka o vašim zaslonima radi otvaranja i postavljanja prozora</translation>
-<translation id="7138515695467025690">Isključena/uključuje se automatski kad zađe sunce</translation>
 <translation id="7138678301420049075">Ostalo</translation>
 <translation id="7139627972753429585">Aplikacija <ph name="APP_NAME"/> upotrebljava vaš mikrofon</translation>
 <translation id="7141105143012495934">Prijava nije uspjela jer nisu dohvaćeni podaci o vašem računu. Obratite se administratoru ili pokušajte ponovo.</translation>
@@ -6200,7 +6223,6 @@ Toj radnji možete dodijeliti više prekidača.</translation>
 <translation id="7152478047064750137">To proširenje ne zahtijeva nikakva posebna dopuštenja</translation>
 <translation id="7154130902455071009">promijeniti vašu početnu stranicu u: <ph name="START_PAGE"/></translation>
 <translation id="7155171745945906037">Postojeća fotografija s fotoaparata ili iz datoteke</translation>
-<translation id="7155352398126583949">Obavijesti i aplikacije za slanje poruka</translation>
 <translation id="7163202347044721291">Potvrđivanje aktivacijskog koda...</translation>
 <translation id="716640248772308851">"<ph name="EXTENSION"/>" može čitati slikovne, video i audiodatoteke na označenim lokacijama.</translation>
 <translation id="7167486101654761064">&amp;Uvijek otvori ovu vrstu datoteka</translation>
@@ -6242,6 +6264,7 @@ Toj radnji možete dodijeliti više prekidača.</translation>
 <translation id="720715819012336933">{NUM_PAGES,plural, =1{Zatvori stranicu}one{Zatvori stranicu}few{Zatvori stranice}other{Zatvori stranica}}</translation>
 <translation id="7207457272187520234">Slanje podataka o upotrebi i dijagnostici. Ovaj uređaj trenutačno Braveu automatski šalje dijagnostičke podatke te podatke o upotrebi uređaja i aplikacija. Ti podaci pomoći će poboljšati stabilnost sustava, aplikacija i drugo. Neki skupni podaci pomoći će i Braveovim aplikacijama i partnerima, na primjer razvojnim programerima za Android. Tu postavku zadao je vlasnik. Ako je uključena dodatna aktivnost na webu i u aplikacijama, ti se podaci mogu spremati na vaš Brave račun.</translation>
 <translation id="7207631048330366454">Pretraži aplikacije</translation>
+<translation id="720808544705441386">Aplikacija se ne može otvoriti</translation>
 <translation id="7210499381659830293">Pisači povezani putem proširenja</translation>
 <translation id="7211783048245131419">Još nije dodijeljen nijedan prekidač</translation>
 <translation id="7212097698621322584">Unesite svoj trenutačni PIN da biste ga promijenili. Ako ne znate PIN, vratite sigurnosni ključ na zadano, a zatim izradite novi PIN.</translation>
@@ -6305,7 +6328,6 @@ Toj radnji možete dodijeliti više prekidača.</translation>
 <translation id="7269736181983384521">Potrošnja podatkovnog prometa dijeljenja u blizini</translation>
 <translation id="7272674038937250585">Nije naveden opis</translation>
 <translation id="7273110280511444812">zadnji put povezano <ph name="DATE"/></translation>
-<translation id="7273970016743909808">Upotrebljavat ćete nadogradnju kioska i znakovlja koja uređaju omogućuje pokretanje samo načina rada kioska ili znakovlja. Ako želite da se korisnici prijave na uređaj, vratite se i registrirajte pomoću Nadogradnje za Brave za poduzeća.</translation>
 <translation id="727441411541283857"><ph name="PERCENTAGE"/>% – <ph name="TIME"/> do kraja</translation>
 <translation id="727952162645687754">Pogreška preuzimanja</translation>
 <translation id="1484912962860902625">Došlo je do pogreške dok je Brave tražio štetni softver</translation>
@@ -6314,6 +6336,7 @@ Toj radnji možete dodijeliti više prekidača.</translation>
 <translation id="7282547042039404307">Glatko</translation>
 <translation id="7282992757463864530">Infotraka</translation>
 <translation id="7283555985781738399">Način rada za goste</translation>
+<translation id="7284307451964417957">{DAYS,plural, =1{Uređaj će biti spremljen jedan dan te se sljedeći put možete povezati bez koda. To postavlja vaš administrator.}one{Uređaj će biti spremljen {DAYS} dan te se sljedeći put možete povezati bez koda. To postavlja vaš administrator.}few{Uređaj će biti spremljen {DAYS} dana te se sljedeći put možete povezati bez koda. To postavlja vaš administrator.}other{Uređaj će biti spremljen {DAYS} dana te se sljedeći put možete povezati bez koda. To postavlja vaš administrator.}}</translation>
 <translation id="7284411326658527427">Svaka osoba može prilagoditi svoj račun i zadržati privatnost svojih podataka.</translation>
 <translation id="7287143125007575591">Pristup je odbijen.</translation>
 <translation id="7287411021188441799">Vratite zadanu pozadinu</translation>
@@ -6349,7 +6372,6 @@ Toj radnji možete dodijeliti više prekidača.</translation>
 <translation id="7328867076235380839">Nevažeća kombinacija</translation>
 <translation id="7329154610228416156">Prijava nije uspjela jer je konfigurirana za upotrebu nesigurnog URL-a (<ph name="BLOCKED_URL"/>). Obratite se administratoru.</translation>
 <translation id="7332053360324989309">Dodijeljeni radnik: <ph name="SCRIPT_URL"/></translation>
-<translation id="7334014994694414993">Odaberite temu u boji za Pokretač, traku, Brze postavke i drugo</translation>
 <translation id="7334274148831027933">Omogući usidreno povećalo</translation>
 <translation id="7335974957018254119">Upotreba provjere pravopisa za</translation>
 <translation id="7336799713063880535">Obav. su blokirane.</translation>
@@ -6417,7 +6439,6 @@ Toj radnji možete dodijeliti više prekidača.</translation>
 <translation id="7395774987022469191">Cijeli zaslon</translation>
 <translation id="7396017167185131589">Ovdje će se pojaviti dijeljene mape</translation>
 <translation id="7396845648024431313"><ph name="APP_NAME"/> pokrenut će se pri pokretanju sustava i nastavi raditi u pozadini čak i nakon što zatvorite sve ostale prozore proizvoda <ph name="PRODUCT_NAME"/>.</translation>
-<translation id="7397270852490618635">Isključivanje svijetle teme</translation>
 <translation id="7399045143794278225">Prilagodi sinkronizaciju</translation>
 <translation id="7400418766976504921">URL</translation>
 <translation id="7400447915166857470">Želite li se vratiti na <ph name="OLD_SEARCH_PROVIDER"/>?</translation>
@@ -6473,10 +6494,12 @@ Toj radnji možete dodijeliti više prekidača.</translation>
 <translation id="7444970023873202833">Istražite još uspomena u Brave fotografijama</translation>
 <translation id="7444983668544353857">Onemogući <ph name="NETWORKDEVICE"/></translation>
 <translation id="7448430327655618736">Automatsko instaliranje aplikacija</translation>
+<translation id="7449381494541372002">pokretanje…</translation>
 <translation id="7449752890690775568">Želite li ukloniti zaporku?</translation>
 <translation id="7450761244949417357">Otvara se u pregledniku <ph name="ALTERNATIVE_BROWSER_NAME"/> sad</translation>
 <translation id="7452166281927983300">Odbačena upozorenja (<ph name="MUTED_PASSWORDS"/>)</translation>
 <translation id="7453008956351770337">Odabirom tog pisača sljedećem proširenju dajete dopuštenje za pristup svojem pisaču:</translation>
+<translation id="3699067418237091329">Odjavit ćete se s većine web-lokacija, ali se nećete odjaviti s Brave računa.</translation>
 <translation id="7454548535253569100">Portal: <ph name="SUBFRAME_SITE"/></translation>
 <translation id="7455730275746867420">Upravljajte dodatnim spremnicima</translation>
 <translation id="7456142309650173560">razvojni</translation>
@@ -6515,6 +6538,7 @@ Toj radnji možete dodijeliti više prekidača.</translation>
 <translation id="7487969577036436319">Nema instaliranih komponenti</translation>
 <translation id="7488682689406685343">Ova vas web-lokacija možda pokušava prevariti kako biste dopustili ometajuće obavijesti.</translation>
 <translation id="7489761397368794366">Nazovi sa svojeg uređaja</translation>
+<translation id="7490683549040131791">Provjeri preostale zaporke</translation>
 <translation id="7491962110804786152">kart</translation>
 <translation id="7491963308094506985">{NUM_COOKIES,plural, =1{Jedan kolačić}one{{NUM_COOKIES} kolačić}few{{NUM_COOKIES} kolačića}other{{NUM_COOKIES} kolačića}}</translation>
 <translation id="7493386493263658176">Proširenje <ph name="EXTENSION_NAME"/> možda prikuplja cjelokupni tekst koji unesete, uključujući osobne podatke kao što su zaporke i brojevi kreditnih kartica. Želite li koristiti to proširenje?</translation>
@@ -6557,7 +6581,6 @@ Toj radnji možete dodijeliti više prekidača.</translation>
 <translation id="7531771599742723865">Uređaj je u upotrebi</translation>
 <translation id="7531779363494549572">Otvorite Postavke &gt; Aplikacije i obavijesti &gt; Obavijesti.</translation>
 <translation id="7532009420053991888"><ph name="LINUX_APP_NAME"/> ne reagira. Odaberite "Prisilno zatvori" da biste zatvorili tu aplikaciju.</translation>
-<translation id="7535791657097741517">Uključivanje svijetle teme</translation>
 <translation id="7537451260744431038">Web-lokacije ne mogu upotrebljavati kolačiće za poboljšanje vašeg doživljaja pregledavanja, primjerice da biste ostali prijavljeni ili da bi stavke u vašoj košarici ostale zapamćene</translation>
 <translation id="7538932151125743389">Čitaj serijske brojeve Chrome OS uređaja i komponenti.</translation>
 <translation id="7540972813190816353">Došlo je do pogreške prilikom traženja ažuriranja: <ph name="ERROR"/></translation>
@@ -6638,7 +6661,6 @@ Toj radnji možete dodijeliti više prekidača.</translation>
 <translation id="7617263010641145920">Uključivanje Trgovine Play</translation>
 <translation id="7617366389578322136">Povezivanje s uređajem "<ph name="DEVICE_NAME"/>"</translation>
 <translation id="7617648809369507487">Koristi tiše slanje poruka</translation>
-<translation id="7618774594543487847">Neutralno</translation>
 <translation id="7621382409404463535">Sustav nije uspio spremiti konfiguraciju uređaja.</translation>
 <translation id="7622114377921274169">Punjenje.</translation>
 <translation id="7622768823216805500">Web-lokacije obično instaliraju rukovatelje plaćanjem radi značajki kupnje poput jednostavnije naplate</translation>
@@ -6705,7 +6727,6 @@ Toj radnji možete dodijeliti više prekidača.</translation>
 <translation id="7670434942695515800">Za najbolju izvedbu nadogradite na najnoviju verziju. Preporučuje se sigurnosno kopiranje datoteka u slučaju nemogućnosti dovršetka nadogradnje. Nakon što nadogradnja počne, Linux će se isključiti. Prije nego što nastavite, spremite otvorene datoteke. <ph name="LINK_START"/>Saznajte više<ph name="LINK_END"/></translation>
 <translation id="7671130400130574146">Koristi naslovnu traku sustava i obrube</translation>
 <translation id="767127784612208024">Dodirnite za potvrdu vraćanja na zadano</translation>
-<translation id="5182299858076185844">Automatski šalje podatke o upotrebi i dijagnostici Braveu</translation>
 <translation id="7672520070349703697"><ph name="HUNG_IFRAME_URL"/>, na stranici <ph name="PAGE_TITLE"/>.</translation>
 <translation id="7674416868315480713">Deaktiviraj sve priključke koji se prosljeđuju u Linuxu</translation>
 <translation id="7674537509496907005"><ph name="APP_COUNT"/> aplikacije</translation>
@@ -6763,6 +6784,7 @@ Toj radnji možete dodijeliti više prekidača.</translation>
 <translation id="7721258531237831532">Vaša organizacija zahtijeva profil</translation>
 <translation id="7722040605881499779">Potrebno za ažuriranje: <ph name="NECESSARY_SPACE"/></translation>
 <translation id="7724603315864178912">Izreži</translation>
+<translation id="7726391492136714301">Pregled obavijesti i aplikacija s vašeg telefona</translation>
 <translation id="7728465250249629478">Promjena jezika uređaja</translation>
 <translation id="7728570244950051353">Zaključani zaslon u načinu mirovanja</translation>
 <translation id="7728668285692163452">Promjena kanala primijenit će se kasnije</translation>
@@ -6798,6 +6820,7 @@ Pritisnite dodijeljeni prekidač ili tipku da biste uklonili dodjelu.</translati
 <translation id="7758143121000533418">Family Link</translation>
 <translation id="7758450972308449809">Prilagodite granice zaslona</translation>
 <translation id="7760004034676677601">Je li to početna stranica koju ste očekivali?</translation>
+<translation id="7762024824096060040">Upotreba računa nije moguća</translation>
 <translation id="7762463735017901568">Administrator vašeg telefona onemogućuje sinkronizaciju obavijesti</translation>
 <translation id="7764225426217299476">Dodaj adresu</translation>
 <translation id="7764256770584298012"><ph name="DOWNLOAD_RECEIVED"/> s <ph name="DOWNLOAD_DOMAIN"/></translation>
@@ -6845,7 +6868,6 @@ Pritisnite dodijeljeni prekidač ili tipku da biste uklonili dodjelu.</translati
 <translation id="7792388396321542707">Zaustavi dijeljenje</translation>
 <translation id="779308894558717334">Svijetlozelena</translation>
 <translation id="7793098747275782155">Tamnoplava</translation>
-<translation id="7797246427375693110">Uključena/isključit će se automatski u <ph name="TIME"/></translation>
 <translation id="7797571222998226653">Isključeno</translation>
 <translation id="7798844538707273832">Automatski je blokirano dopuštenje <ph name="PERMISSION"/></translation>
 <translation id="7799299114731150374">Pozadina je uspješno postavljena</translation>
@@ -6886,7 +6908,6 @@ Pritisnite dodijeljeni prekidač ili tipku da biste uklonili dodjelu.</translati
 <translation id="7838971600045234625">{COUNT,plural, =1{Poslano: <ph name="ATTACHMENTS"/>, na uređaj <ph name="DEVICE_NAME"/>}one{Poslano: <ph name="ATTACHMENTS"/>, na uređaj <ph name="DEVICE_NAME"/>}few{Poslano: <ph name="ATTACHMENTS"/>, na uređaj <ph name="DEVICE_NAME"/>}other{Poslano: <ph name="ATTACHMENTS"/>, na uređaj <ph name="DEVICE_NAME"/>}}</translation>
 <translation id="7839051173341654115">Prikaži medij/izradi sigurnosnu kopiju</translation>
 <translation id="7839192898639727867">ID ključa tijela predmeta certifikata</translation>
-<translation id="7841134249932030522">Omogućivanje tamnog načina</translation>
 <translation id="7842692330619197998">Posjetite g.co/BraveEnterpriseAccount ako trebate izraditi novi račun.</translation>
 <translation id="784273751836026224">Deinstaliranje Linuxa</translation>
 <translation id="7843786652787044762">Prijavite se na <ph name="WEB_DRIVE"/></translation>
@@ -6914,8 +6935,8 @@ Pritisnite dodijeljeni prekidač ili tipku da biste uklonili dodjelu.</translati
 <translation id="2614143654677404775">Jezik Brave računa</translation>
 <translation id="7864539943188674973">Onemogući Bluetooth</translation>
 <translation id="7865127013871431856">Opcije Prevoditelja</translation>
-<translation id="7869143217755017858">Onemogućivanje tamnog načina</translation>
 <translation id="786957569166715433"><ph name="DEVICE_NAME"/> – uparen</translation>
+<translation id="7869655448736341731">Sve</translation>
 <translation id="7870730066603611552">Pregledajte opcije sinkronizacije nakon postavljanja</translation>
 <translation id="7870790288828963061">Nisu pronađene aplikacije kioska s novijom verzijom. Nema ažuriranja. Uklonite USB privjesak.</translation>
 <translation id="7871109039747854576">Koristite tipke <ph name="COMMA"/> i <ph name="PERIOD"/> za numeriranje popisa kandidata</translation>
@@ -6967,6 +6988,7 @@ Pritisnite dodijeljeni prekidač ili tipku da biste uklonili dodjelu.</translati
 <translation id="7919210519031517829"><ph name="DURATION"/> s</translation>
 <translation id="7920363873148656176"><ph name="ORIGIN"/> može pregledavati datoteku <ph name="FILENAME"/></translation>
 <translation id="7920482456679570420">Dodajte riječi koje želite preskočiti u provjeri pravopisa</translation>
+<translation id="7921347341284348270">Na ovom upravljanom računu ne možete pregledati obavijesti telefona Pokušajte ponovo s drugim računom. <ph name="LINK_BEGIN"/>Saznajte više<ph name="LINK_END"/></translation>
 <translation id="7923564237306226146">Dovršena je nadogradnja Linuxa</translation>
 <translation id="7924358170328001543">Pogreška prilikom prosljeđivanja priključka</translation>
 <translation id="7925108652071887026">Podaci automatskog popunjavanja</translation>
@@ -6977,7 +6999,6 @@ Pritisnite dodijeljeni prekidač ili tipku da biste uklonili dodjelu.</translati
 <translation id="7928175190925744466">Već ste promijenili ovu zaporku?</translation>
 <translation id="7930294771522048157">Ovdje će se prikazivati spremljeni načini plaćanja</translation>
 <translation id="79312157130859720"><ph name="APP_NAME"/> dijeli zaslon i zvuk.</translation>
-<translation id="7932741659804096942">Zaporke se spremaju u <ph name="GOOGLE_PASSWORD_MANAGER"/> na ovom uređaju</translation>
 <translation id="793293630927785390">Dijaloški okvir za novu Wi-Fi mrežu</translation>
 <translation id="7932969338829957666">Dijeljene mape dostupne su na Linuxu na <ph name="BASE_DIR"/>.</translation>
 <translation id="7933314993013528982">{NUM_TABS,plural, =1{Uključi zvuk na web-lokaciji}one{Uključi zvuk na web-lokacijama}few{Uključi zvuk na web-lokacijama}other{Uključi zvuk na web-lokacijama}}</translation>
@@ -6998,6 +7019,7 @@ Pritisnite dodijeljeni prekidač ili tipku da biste uklonili dodjelu.</translati
 <translation id="7947964080535614577">Web-lokacije obično prikazuju oglase kako bi mogle pružati sadržaj ili usluge bez dodatnih troškova. Međutim, za neke je web-lokacije poznato da prikazuju ometajuće ili obmanjujuće oglase.</translation>
 <translation id="7948407723851303488">Sve stranice domene <ph name="DOMAIN_NAME"/></translation>
 <translation id="6504904675770402423">Da biste dodali načine plaćanja u Google Payu, posjetite <ph name="BEGIN_LINK"/>Brave račun<ph name="END_LINK"/></translation>
+<translation id="795130320946928025">Isključi virtualnu karticu</translation>
 <translation id="7952708427581814389">Web-lokacije mogu tražiti dopuštenje da vide tekst i slike u vašem međuspremniku</translation>
 <translation id="795282463722894016">Vraćanje dovršeno</translation>
 <translation id="7952904276017482715">Očekivan je ID "<ph name="EXPECTED_ID"/>", no ID je bio "<ph name="NEW_ID"/>".</translation>
@@ -7033,6 +7055,7 @@ Pritisnite dodijeljeni prekidač ili tipku da biste uklonili dodjelu.</translati
 <translation id="7981313251711023384">Prethodno učitaj stranice za brže pregledavanje i pretraživanje</translation>
 <translation id="798145602633458219">Dodaj prijedlog <ph name="SUGGESTION_NAME"/> u okvir za pretraživanje</translation>
 <translation id="7981662863948574132">Skočni prozor za prikazivanje EID-a ili QR koda</translation>
+<translation id="7981670705071137488">Ažuriranja softvera će se nakon toga odvijati u pozadini. Postavke ažuriranja možete pregledati u postavkama.</translation>
 <translation id="7982083145464587921">Ponovo pokrenite uređaj za ispravak ove pogreške.</translation>
 <translation id="7982789257301363584">Mreža</translation>
 <translation id="7984068253310542383">Zrcali <ph name="DISPLAY_NAME"/></translation>
@@ -7087,6 +7110,7 @@ Ključnu datoteku čuvajte na sigurnom mjestu. Trebat će vam za stvaranje novih
 <translation id="8037357227543935929">Pitaj (zadano)</translation>
 <translation id="803771048473350947">Datoteka</translation>
 <translation id="8041089156583427627">Slanje povratnih informacija</translation>
+<translation id="8041267120753677077">Streaming aplikacija vašeg telefona</translation>
 <translation id="8042142357103597104">Prozirnost teksta</translation>
 <translation id="3111556746481227182">Vaše se zaporke šifriraju na uređaju prije spremanja na Brave upravitelj zaporki</translation>
 <translation id="8044262338717486897"><ph name="LINUX_APP_NAME"/> ne reagira.</translation>
@@ -7174,7 +7198,6 @@ Ključnu datoteku čuvajte na sigurnom mjestu. Trebat će vam za stvaranje novih
 <translation id="2972318514147518075">U načinu rada tableta gumbima idite na početnu stranicu, natrag i prelazite s jedne aplikacije na drugu. Uključeno kad je omogućen BraveVox ili automatski klikovi.</translation>
 <translation id="8115139559594092084">S vašeg Brave diska</translation>
 <translation id="8116972784401310538">&amp;Upravitelj oznaka</translation>
-<translation id="8117752106453549166">Vaš administrator konfigurira Linux. Konfiguracija će potrajati nekoliko minuta.</translation>
 <translation id="177808131755847449">Onemogućio Brave. To proširenje možda nije sigurno.</translation>
 <translation id="8118488170956489476">Vašim <ph name="BEGIN_LINK"/>preglednikom upravlja<ph name="END_LINK"/> vaša organizacija</translation>
 <translation id="8118515372935001629">Učestalost osvježavanja zaslona</translation>
@@ -7201,7 +7224,6 @@ Ključnu datoteku čuvajte na sigurnom mjestu. Trebat će vam za stvaranje novih
 <translation id="8141725884565838206">Upravljanje zaporkama</translation>
 <translation id="814204052173971714">{COUNT,plural, =1{videozapis}one{# videozapis}few{# videozapisa}other{# videozapisa}}</translation>
 <translation id="8143442547342702591">Nevažeća aplikacija</translation>
-<translation id="8143475123634606318">Pokrenite stream aplikacija za slanje poruka telefona.</translation>
 <translation id="8143609395536282994">Kako možete upravljati svojim podacima:</translation>
 <translation id="8143951647992294073">Odaberite <ph name="TOPIC_SOURCE"/> <ph name="TOPIC_SOURCE_DESC"/></translation>
 <translation id="8146177459103116374">Ako ste već registrirani na ovom uređaju, možete <ph name="LINK2_START"/>se prijaviti kao postojeći korisnik<ph name="LINK2_END"/>.</translation>
@@ -7277,6 +7299,7 @@ Mislim da ta web-lokacija ne bi trebala biti blokirana!</translation>
 <translation id="8214489666383623925">Otvori datoteku...</translation>
 <translation id="8215129063232901118">Pristupite mogućnostima telefona s uređaja <ph name="DEVICE_TYPE"/></translation>
 <translation id="8217399928341212914">Nastavi blokirati automatska preuzimanja više datoteka</translation>
+<translation id="822050276545350872">Odsad nadalje nema čekanja</translation>
 <translation id="8221491193165283816">Uglavnom blokirate obavijesti. Da biste dopustili web-lokaciji prikazivanje obavijesti, kliknite ovdje.</translation>
 <translation id="822347941086490485">Traženje HID uređaja...</translation>
 <translation id="8225046344534779393">Provjerite internetsku vezu</translation>
@@ -7317,6 +7340,7 @@ Mislim da ta web-lokacija ne bi trebala biti blokirana!</translation>
 <translation id="825238165904109940">Uvijek prikaži cijele URL-ove</translation>
 <translation id="8252569384384439529">Prijenos...</translation>
 <translation id="8253198102038551905">Kliknite "+" za proširenje svojstava mreže</translation>
+<translation id="8255212965098517578">Nedavne fotografije, obavijesti i aplikacije</translation>
 <translation id="8256319818471787266">Bobi</translation>
 <translation id="8257950718085972371">Nastavi blokirati pristup kameri</translation>
 <translation id="8260864402787962391">Miš</translation>
@@ -7363,6 +7387,7 @@ Mislim da ta web-lokacija ne bi trebala biti blokirana!</translation>
 <translation id="8300374739238450534">Ponoćna plava</translation>
 <translation id="8303616404642252802">{COUNT,plural, =1{Adresa}one{# adresa}few{# adrese}other{# adresa}}</translation>
 <translation id="8304383784961451596">Niste ovlašteni za upotrebu ovog uređaja. Zatražite da vam administrator dopusti prijavu ili se prijavite Brave računom nadziranim putem Family Linka.</translation>
+<translation id="8306885873692337975">Preuzmite najnovije značajke i sigurnosna poboljšanja.</translation>
 <translation id="8307094075368387939">U središtu za prilagodbu možete prilagoditi raspored te postaviti pozadinu i čuvara zaslona i prilagoditi boje sustava.</translation>
 <translation id="8308016398665340540">Dijelite tu mrežu s drugim korisnicima ovog uređaja</translation>
 <translation id="8308179586020895837">Pitaj ako <ph name="HOST"/> želi pristupiti kameri</translation>
@@ -7383,6 +7408,7 @@ Mislim da ta web-lokacija ne bi trebala biti blokirana!</translation>
 <translation id="8324784016256120271">Web-lokacije mogu upotrebljavati kolačiće za uvid u vašu aktivnost pregledavanja na različitim web-lokacijama, primjerice radi prilagođavanja oglasa</translation>
 <translation id="8325413836429495820">Nije dopušten pregled međuspremnika</translation>
 <translation id="8326478304147373412">PKCS br. 7, lanac certifikata</translation>
+<translation id="8327386430364625757">Matematički font</translation>
 <translation id="8327676037044516220">Postavke dopuštenja i sadržaja</translation>
 <translation id="8330617762701840933">Popis web-lokacija koje se preusmjeravaju na drugi preglednik.</translation>
 <translation id="8330689128072902965">Kontakti u blizini mogu dijeliti s vama. Kliknite za promjenu.</translation>
@@ -7392,6 +7418,7 @@ Mislim da ta web-lokacija ne bi trebala biti blokirana!</translation>
 <translation id="8335587457941836791">Otkvači s police</translation>
 <translation id="8336407002559723354">Ažuriranja završavaju <ph name="MONTH_AND_YEAR"/></translation>
 <translation id="8336739000755212683">Promijenite sliku računa uređaja</translation>
+<translation id="8337020675372081178">{HOURS,plural, =1{Uređaj će biti spremljen jedan sat te se sljedeći put možete povezati bez koda. To postavlja vaš administrator.}one{Uređaj će biti spremljen {HOURS} sat te se sljedeći put možete povezati bez koda. To postavlja vaš administrator.}few{Uređaj će biti spremljen {HOURS} sata te se sljedeći put možete povezati bez koda. To postavlja vaš administrator.}other{Uređaj će biti spremljen {HOURS} sati te se sljedeći put možete povezati bez koda. To postavlja vaš administrator.}}</translation>
 <translation id="8337047789441383384">Već ste registrirali taj sigurnosni ključ. Ne morate ga ponovo registrirati.</translation>
 <translation id="8338952601723052325">Web-lokacija razvojnog programera</translation>
 <translation id="8339059274628563283">Lokalno pohranjeni podaci web-lokacije <ph name="SITE"/></translation>
@@ -7461,6 +7488,7 @@ Mislim da ta web-lokacija ne bi trebala biti blokirana!</translation>
 <translation id="8413385045638830869">Prvo pitaj (preporučeno)</translation>
 <translation id="8413956290606243087">Želite li aktivirati BraveVox, ugrađeni čitač zaslona za Chrome OS?</translation>
 <translation id="8414249071344507766">Uspomene su skrivene na dva dana</translation>
+<translation id="8414396119627470038">Prijavite se na web-lokaciju <ph name="SITE_ETLD_PLUS_ONE"/> s <ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE"/></translation>
 <translation id="8414685983518053656">Napomene</translation>
 <translation id="8416730306157376817"><ph name="BATTERY_PERCENTAGE"/>% (kutijica za punjenje)</translation>
 <translation id="8417548266957501132">Roditeljska zaporka</translation>
@@ -7480,7 +7508,6 @@ Mislim da ta web-lokacija ne bi trebala biti blokirana!</translation>
 <translation id="8428213095426709021">Postavke</translation>
 <translation id="8428271547607112339">Dodavanje školskog računa</translation>
 <translation id="8428628598981198790">Vaš sigurnosni ključ ne može se upotrebljavati s tom web-lokacijom</translation>
-<translation id="8428634594422941299">Shvaćam</translation>
 <translation id="84297032718407999">Odjavit ćete se za <ph name="LOGOUT_TIME_LEFT"/></translation>
 <translation id="8431190899827883166">Prikaži dodire</translation>
 <translation id="8434480141477525001">Priključak za otklanjanje pogrešaka lokalnog klijenta</translation>
@@ -7491,7 +7518,6 @@ Mislim da ta web-lokacija ne bi trebala biti blokirana!</translation>
 <translation id="8439506636278576865">Ponudi prevođenje stranica na tom jeziku</translation>
 <translation id="8440630305826533614">Linux aplikacije</translation>
 <translation id="8443795068008423036">Provjerite je li vaš uređaj ažuriran i pokušajte ponovo</translation>
-<translation id="8445046761938045900">Nedavne fotografije, obavijesti i aplikacije za slanje poruka</translation>
 <translation id="8446884382197647889">Saznajte više</translation>
 <translation id="8447409163267621480">Mora sadržavati Ctrl ili Alt</translation>
 <translation id="844850004779619592">Nije pronađena nijedna naredba.</translation>
@@ -7499,7 +7525,6 @@ Mislim da ta web-lokacija ne bi trebala biti blokirana!</translation>
 <translation id="8449008133205184768">Zalijepi i podesi stil</translation>
 <translation id="8449036207308062757">Upravljanje pohranom</translation>
 <translation id="8456512334795994339">Pronađite aplikacije za rad i zabavu</translation>
-<translation id="8456761643544401578">Automatski tamni način</translation>
 <translation id="845702320058262034">Povezivanje nije uspjelo. Provjerite je li Bluetooth na telefonu uključen.</translation>
 <translation id="8457451314607652708">Uvezi oznake</translation>
 <translation id="8458341576712814616">Prečac</translation>
@@ -7582,6 +7607,8 @@ Mislim da ta web-lokacija ne bi trebala biti blokirana!</translation>
 <translation id="8546306075665861288">Predmemorija slike</translation>
 <translation id="8546930481464505581">Prilagodba dodirne trake</translation>
 <translation id="8547013269961688403">Omogući povećalo za cijeli zaslon</translation>
+<translation id="8547821378890700958"><ph name="BEGIN_PARAGRAPH1"/>Računom <ph name="USER_EMAIL"/> upravlja <ph name="MANAGER"/>. Tu e-adresu ne možete dodati kao dodatni račun.<ph name="END_PARAGRAPH1"/>
+    <ph name="BEGIN_PARAGRAPH2"/>Da biste koristili <ph name="USER_EMAIL"/>, najprije se odjavite s uređaja <ph name="DEVICE_TYPE"/>. Zatim pri dnu zaslona za prijavu odaberite Dodaj osobu.<ph name="END_PARAGRAPH2"/></translation>
 <translation id="85486688517848470">Držite tipku Pretraživanje da biste izmjenjivali ponašanje tipki u najvišem retku</translation>
 <translation id="8549316893834449916">Na Chromebook se prijavljujete svojim Brave računom – istim računom koji upotrebljavate za Gmail, Disk, YouTube itd.</translation>
 <translation id="8551388862522347954">Licence</translation>
@@ -7697,7 +7724,6 @@ Mislim da ta web-lokacija ne bi trebala biti blokirana!</translation>
 <translation id="8666759526542103597">O prilagodbi oglasa na temelju preglednika</translation>
 <translation id="8667328578593601900">Stranica <ph name="FULLSCREEN_ORIGIN"/> sada je na cijelom zaslonu i onemogućila je pokazivač miša.</translation>
 <translation id="8667760277771450375">Istražujemo načine ograničavanja praćenja na različitim web-lokacijama uz omogućivanje web-lokacijama da spriječe neželjene oglase i prijevare.</translation>
-<translation id="8668052347555487755">Način boje</translation>
 <translation id="8669284339312441707">Toplije</translation>
 <translation id="8670537393737592796">Da biste se brzo vratili ovdje, instalirajte aplikaciju <ph name="APP_NAME"/> klikom na gumb za instaliranje</translation>
 <translation id="867085395664725367">Došlo je do privremene pogreške poslužitelja.</translation>
@@ -7802,7 +7828,6 @@ Mislim da ta web-lokacija ne bi trebala biti blokirana!</translation>
 <translation id="8763927697961133303">USB uređaj</translation>
 <translation id="87646919272181953">Album Brave fotografija</translation>
 <translation id="4570609078116869893">Automatski ažuriraj Brave za sve korisnike</translation>
-<translation id="8767765348545497220">Zatvori oblačić za pomoć</translation>
 <translation id="8769901904650373714">Pojavio se problem s postavljanjem Steama</translation>
 <translation id="8770406935328356739">Korijenski direktorij proširirenja</translation>
 <translation id="8771300903067484968">Pozadina početne stranice vraćena je na zadanu pozadinu.</translation>
@@ -7821,13 +7846,12 @@ Mislim da ta web-lokacija ne bi trebala biti blokirana!</translation>
 <translation id="8780443667474968681">Glasovno je pretraživanje isključeno.</translation>
 <translation id="8781834595282316166">Nova kartica u grupi</translation>
 <translation id="8782565991310229362">Pokretanje aplikacije kioska otkazano je.</translation>
-<translation id="8783526165720272136">Aplikacije za slanje poruka</translation>
 <translation id="8783834180813871000">Unesite kôd za uparivanje pa pritisnite Return ili Enter.</translation>
 <translation id="8784626084144195648">Kvantizacijski prosjek</translation>
 <translation id="8785622406424941542">Pisaljka</translation>
 <translation id="8786824282808281903">Kada vaše dijete vidi tu ikonu, otiskom prsta moći će potvrditi svoj identitet ili odobriti kupnje.</translation>
 <translation id="8787575090331305835">{NUM_TABS,plural, =1{Neimenovana grupa – 1 kartica}one{Neimenovana grupa – # kartica}few{Neimenovana grupa – # kartice}other{Neimenovana grupa – # kartica}}</translation>
-<translation id="163839281363975279">Pošalji zahtjev "Nemoj pratiti" uz promet pregledavanja</translation>
+<translation id="8791534160414513928">Pošalji zahtjev "Nemoj pratiti" uz promet pregledavanja</translation>
 <translation id="879413103056696865">Dok je žarišna točka uključena, vaš će <ph name="PHONE_NAME"/>:</translation>
 <translation id="8795916974678578410">Novi prozor</translation>
 <translation id="8797459392481275117">Nikad nemoj prevoditi ovu web-lokaciju</translation>
@@ -7844,7 +7868,6 @@ Mislim da ta web-lokacija ne bi trebala biti blokirana!</translation>
 <translation id="8809147117840417135">Svijetlotirkiznoplava</translation>
 <translation id="8811862054141704416">Crostinijev pristup mikrofonu</translation>
 <translation id="8812593354822910461">Izbrišite i podatke o pregledavanju (<ph name="URL"/>), čime ćete se odjaviti s web-lokacije <ph name="DOMAIN"/>. <ph name="LEARN_MORE"/></translation>
-<translation id="8813277370772331957">Podsjeti me kasnije</translation>
 <translation id="8813698869395535039">Prijava na <ph name="USERNAME"/> nije uspjela</translation>
 <translation id="8813872945700551674">Potraži roditelja koji će odobriti proširenje „<ph name="EXTENSION_NAME"/>”</translation>
 <translation id="8814190375133053267">Wi-Fi</translation>
@@ -7899,7 +7922,6 @@ Mislim da ta web-lokacija ne bi trebala biti blokirana!</translation>
 <translation id="8859402192569844210">Učitavanje Uvjeta pružanja usluge nije uspjelo</translation>
 <translation id="8859662783913000679">Račun roditelja</translation>
 <translation id="8862003515646449717">Prijeđite na brz preglednik</translation>
-<translation id="8863170912498892583">Omogućivanje tamne teme</translation>
 <translation id="8863753581171631212">Otvori vezu u novom prozoru aplikacije <ph name="APP"/></translation>
 <translation id="8864055848767439877">Kartica <ph name="TAB_NAME"/> dijeli se s aplikacijom <ph name="APP_NAME"/></translation>
 <translation id="8864458770072227512">Račun <ph name="EMAIL"/> uklonjen je s ovog uređaja</translation>
@@ -8188,7 +8210,6 @@ Mislim da ta web-lokacija ne bi trebala biti blokirana!</translation>
 <translation id="9148058034647219655">Izlaz</translation>
 <translation id="9148126808321036104">Prijavite se ponovno</translation>
 <translation id="9148963623915467028">Ova web-lokacija može pristupiti vašoj lokaciji.</translation>
-<translation id="9149529198050266366">Tamni način rada isključit će se automatski kad sunce izađe</translation>
 <translation id="9149866541089851383">Uredi...</translation>
 <translation id="9150045010208374699">upotrijebiti vašu kameru</translation>
 <translation id="9150079578948279438">Uklanjanje profila nije uspjelo. Pokušajte ponovo ili se obratite mobilnom operateru za tehničku podršku.</translation>
@@ -8229,7 +8250,6 @@ Mislim da ta web-lokacija ne bi trebala biti blokirana!</translation>
 <translation id="9186963452600581158">Prijavite se djetetovim Brave računom</translation>
 <translation id="9187967020623675250">Tipke se ne podudaraju. Pritisnite bilo koju tipku za <ph name="RESPONSE"/>.</translation>
 <translation id="9188732951356337132">Slanje podataka o upotrebi i dijagnostici. Ovaj uređaj trenutačno Braveu automatski šalje dijagnostičke podatke te podatke o upotrebi uređaja i aplikacija. Ti se podaci neće upotrebljavati za identifikaciju vašeg djeteta, a pomoći će poboljšati sustav, stabilnost aplikacija i drugo. Neki skupni podaci pomoći će i Braveovim aplikacijama i partnerima, na primjer razvojnim programerima za Android. Ako je za vaše dijete uključena dodatna postavka Aktivnost na webu i u aplikacijama, ti se podaci mogu spremati na djetetov Brave račun. <ph name="BEGIN_LINK2"/>Saznajte više<ph name="END_LINK2"/></translation>
-<translation id="919679265671373777">Pregledajte nedavne fotografije i medije telefona. Pokrenite stream aplikacija za slanje poruka telefona.</translation>
 <translation id="919686179725692564">Saznajte više o sigurnosnom kopiranju aplikacija</translation>
 <translation id="9198090666959937775">Upotreba Android telefona kao sigurnosnog ključa</translation>
 <translation id="9199503643457729322">Kliknite da biste izašli iz vodiča za privatnost.</translation>
@@ -8318,7 +8338,6 @@ Mislim da ta web-lokacija ne bi trebala biti blokirana!</translation>
 <translation id="98515147261107953">Pejzaž</translation>
 <translation id="987068745968718743">Parallels Desktop: <ph name="PLUGIN_VM_NAME"/></translation>
 <translation id="987264212798334818">Općenito</translation>
-<translation id="987363316774788151">Isključena/uključuje se automatski u <ph name="TIME"/></translation>
 <translation id="987897973846887088">Nema dostupnih slika</translation>
 <translation id="988320949174893488">Povremeno preskakanje</translation>
 <translation id="988978206646512040">Prazne šifre nisu dopuštene</translation>
