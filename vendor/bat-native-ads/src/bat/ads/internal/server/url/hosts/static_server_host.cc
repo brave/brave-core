@@ -5,6 +5,9 @@
 
 #include "bat/ads/internal/server/url/hosts/static_server_host.h"
 
+#include <ostream>
+
+#include "base/notreached.h"
 #include "bat/ads/ads.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
 
@@ -31,6 +34,10 @@ std::string StaticServerHost::Get() const {
       return kStagingHost;
     }
   }
+
+  NOTREACHED() << "Unexpected value for mojom::Environment: "
+               << static_cast<int>(g_environment);
+  return kStagingHost;
 }
 
 }  // namespace ads

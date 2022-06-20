@@ -49,6 +49,8 @@ void Database::RunTransaction(mojom::DBTransactionPtr transaction,
   }
 
   for (const auto& command : transaction->commands) {
+    DCHECK(mojom::IsKnownEnumValue(command->type));
+
     mojom::DBCommandResponse::Status status;
 
     switch (command->type) {

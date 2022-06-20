@@ -51,6 +51,8 @@ void NotificationAd::FireEvent(
 void NotificationAd::NotifyNotificationAdEvent(
     const NotificationAdInfo& ad,
     const mojom::NotificationAdEventType event_type) const {
+  DCHECK(mojom::IsKnownEnumValue(event_type));
+
   switch (event_type) {
     case mojom::NotificationAdEventType::kServed: {
       NotifyNotificationAdServed(ad);

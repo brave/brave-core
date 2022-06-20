@@ -5,10 +5,12 @@
 
 #include "bat/ads/internal/account/issuers/issuers_value_util.h"
 
+#include <ostream>
 #include <string>
 #include <utility>
 
 #include "base/check_op.h"
+#include "base/notreached.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/values.h"
 #include "bat/ads/internal/account/issuers/issuer_types.h"
@@ -41,6 +43,9 @@ absl::optional<std::string> GetNameForIssuerType(const IssuerType type) {
       return kPaymentsName;
     }
   }
+
+  NOTREACHED() << "Unexpected value for IssuerType: " << static_cast<int>(type);
+  return absl::nullopt;
 }
 
 absl::optional<IssuerType> ParseIssuerType(const base::Value& value) {

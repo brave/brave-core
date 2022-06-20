@@ -6,6 +6,7 @@
 #include "bat/ads/internal/base/unittest/unittest_mock_util.h"
 
 #include <cstdint>
+#include <ostream>
 #include <utility>
 #include <vector>
 
@@ -15,6 +16,7 @@
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
 #include "base/no_destructor.h"
+#include "base/notreached.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/stringprintf.h"
 #include "base/time/time.h"
@@ -58,21 +60,24 @@ void MockBuildChannel(const BuildChannelType type) {
     case BuildChannelType::kNightly: {
       BuildChannel().is_release = false;
       BuildChannel().name = "nightly";
-      break;
+      return;
     }
 
     case BuildChannelType::kBeta: {
       BuildChannel().is_release = false;
       BuildChannel().name = "beta";
-      break;
+      return;
     }
 
     case BuildChannelType::kRelease: {
       BuildChannel().is_release = true;
       BuildChannel().name = "release";
-      break;
+      return;
     }
   }
+
+  NOTREACHED() << "Unexpected value for BuildChannelType: "
+               << static_cast<int>(type);
 }
 
 void MockEnvironment(const mojom::Environment environment) {
@@ -90,7 +95,7 @@ void MockPlatformHelper(const std::unique_ptr<PlatformHelperMock>& mock,
                         const PlatformType type) {
   PlatformHelper::GetInstance()->SetForTesting(mock.get());
 
-  bool is_mobile;
+  bool is_mobile = false;
   std::string name;
 
   switch (type) {

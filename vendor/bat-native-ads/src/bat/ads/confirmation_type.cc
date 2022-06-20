@@ -13,17 +13,17 @@ namespace {
 
 // Do not change the following string values as they are used for persisting and
 // restoring state
-constexpr char kUndefinedConfirmationType[] = "";
-constexpr char kClickedConfirmationType[] = "click";
-constexpr char kDismissedConfirmationType[] = "dismiss";
-constexpr char kViewedConfirmationType[] = "view";
-constexpr char kServedConfirmationType[] = "served";
-constexpr char kTransferredConfirmationType[] = "landed";
-constexpr char kSavedConfirmationType[] = "bookmark";
-constexpr char kFlaggedConfirmationType[] = "flag";
-constexpr char kUpvotedConfirmationType[] = "upvote";
-constexpr char kDownvotedConfirmationType[] = "downvote";
-constexpr char kConversionConfirmationType[] = "conversion";
+constexpr char kUndefinedType[] = "";
+constexpr char kClickedType[] = "click";
+constexpr char kDismissedType[] = "dismiss";
+constexpr char kViewedType[] = "view";
+constexpr char kServedType[] = "served";
+constexpr char kTransferredType[] = "landed";
+constexpr char kSavedType[] = "bookmark";
+constexpr char kFlaggedType[] = "flag";
+constexpr char kUpvotedType[] = "upvote";
+constexpr char kDownvotedType[] = "downvote";
+constexpr char kConversionType[] = "conversion";
 
 }  // namespace
 
@@ -35,27 +35,27 @@ ConfirmationType& ConfirmationType::operator=(const ConfirmationType&) =
     default;
 
 ConfirmationType::ConfirmationType(const std::string& value) {
-  if (value == kUndefinedConfirmationType) {
+  if (value == kUndefinedType) {
     value_ = kUndefined;
-  } else if (value == kClickedConfirmationType) {
+  } else if (value == kClickedType) {
     value_ = kClicked;
-  } else if (value == kDismissedConfirmationType) {
+  } else if (value == kDismissedType) {
     value_ = kDismissed;
-  } else if (value == kViewedConfirmationType) {
+  } else if (value == kViewedType) {
     value_ = kViewed;
-  } else if (value == kServedConfirmationType) {
+  } else if (value == kServedType) {
     value_ = kServed;
-  } else if (value == kTransferredConfirmationType) {
+  } else if (value == kTransferredType) {
     value_ = kTransferred;
-  } else if (value == kSavedConfirmationType) {
+  } else if (value == kSavedType) {
     value_ = kSaved;
-  } else if (value == kFlaggedConfirmationType) {
+  } else if (value == kFlaggedType) {
     value_ = kFlagged;
-  } else if (value == kUpvotedConfirmationType) {
+  } else if (value == kUpvotedType) {
     value_ = kUpvoted;
-  } else if (value == kDownvotedConfirmationType) {
+  } else if (value == kDownvotedType) {
     value_ = kDownvoted;
-  } else if (value == kConversionConfirmationType) {
+  } else if (value == kConversionType) {
     value_ = kConversion;
   } else {
     NOTREACHED();
@@ -69,49 +69,52 @@ ConfirmationType::Value ConfirmationType::value() const {
 std::string ConfirmationType::ToString() const {
   switch (value_) {
     case kUndefined: {
-      return kUndefinedConfirmationType;
+      return kUndefinedType;
     }
 
     case kClicked: {
-      return kClickedConfirmationType;
+      return kClickedType;
     }
 
     case kDismissed: {
-      return kDismissedConfirmationType;
+      return kDismissedType;
     }
 
     case kViewed: {
-      return kViewedConfirmationType;
+      return kViewedType;
     }
 
     case kServed: {
-      return kServedConfirmationType;
+      return kServedType;
     }
 
     case kTransferred: {
-      return kTransferredConfirmationType;
+      return kTransferredType;
     }
 
     case kSaved: {
-      return kSavedConfirmationType;
+      return kSavedType;
     }
 
     case kFlagged: {
-      return kFlaggedConfirmationType;
+      return kFlaggedType;
     }
 
     case kUpvoted: {
-      return kUpvotedConfirmationType;
+      return kUpvotedType;
     }
 
     case kDownvoted: {
-      return kDownvotedConfirmationType;
+      return kDownvotedType;
     }
 
     case kConversion: {
-      return kConversionConfirmationType;
+      return kConversionType;
     }
   }
+
+  NOTREACHED() << "Unexpected value for Value: " << value_;
+  return kUndefinedType;
 }
 
 bool ConfirmationType::operator==(const ConfirmationType& rhs) const {

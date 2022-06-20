@@ -89,7 +89,9 @@ void EpsilonGreedyBandit::Process(const BanditFeedbackInfo& feedback) {
   const std::string segment = GetParentSegment(feedback.segment);
   DCHECK(!segment.empty());
 
-  switch (feedback.ad_event_type) {
+  const mojom::NotificationAdEventType ad_event_type = feedback.ad_event_type;
+  DCHECK(mojom::IsKnownEnumValue(ad_event_type));
+  switch (ad_event_type) {
     case mojom::NotificationAdEventType::kTimedOut:
     case mojom::NotificationAdEventType::kDismissed: {
       UpdateArm(/* reward */ 0, segment);

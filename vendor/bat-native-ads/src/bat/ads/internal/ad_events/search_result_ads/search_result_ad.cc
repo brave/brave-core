@@ -61,6 +61,8 @@ void SearchResultAd::FireEvent(
     const mojom::SearchResultAdPtr& ad_mojom,
     const mojom::SearchResultAdEventType event_type,
     TriggerSearchResultAdEventCallback callback) const {
+  DCHECK(mojom::IsKnownEnumValue(event_type));
+
   const SearchResultAdInfo& ad = BuildSearchResultAd(ad_mojom);
 
   if (!ad.IsValid()) {
@@ -207,6 +209,8 @@ void SearchResultAd::NotifySearchResultAdEvent(
     const SearchResultAdInfo& ad,
     const mojom::SearchResultAdEventType event_type,
     TriggerSearchResultAdEventCallback callback) const {
+  DCHECK(mojom::IsKnownEnumValue(event_type));
+
   switch (event_type) {
     case mojom::SearchResultAdEventType::kServed: {
       NotifySearchResultAdServed(ad);

@@ -5,6 +5,7 @@
 
 #include "bat/ads/internal/ad_events/notification_ads/notification_ad_event_factory.h"
 
+#include "base/check.h"
 #include "bat/ads/internal/ad_events/notification_ads/notification_ad_event_clicked.h"
 #include "bat/ads/internal/ad_events/notification_ads/notification_ad_event_dismissed.h"
 #include "bat/ads/internal/ad_events/notification_ads/notification_ad_event_served.h"
@@ -17,6 +18,8 @@ namespace notification_ads {
 
 std::unique_ptr<AdEventInterface<NotificationAdInfo>> AdEventFactory::Build(
     const mojom::NotificationAdEventType event_type) {
+  DCHECK(mojom::IsKnownEnumValue(event_type));
+
   switch (event_type) {
     case mojom::NotificationAdEventType::kServed: {
       return std::make_unique<AdEventServed>();
