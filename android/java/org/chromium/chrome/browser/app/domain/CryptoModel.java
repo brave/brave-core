@@ -263,9 +263,8 @@ public class CryptoModel {
     }
 
     public void updateCoinType() {
-        mBraveWalletService.getSelectedCoin(coinType -> {
-            _mCoinTypeMutableLiveData.postValue(coinType);
-        });
+        mBraveWalletService.getSelectedCoin(
+                coinType -> { _mCoinTypeMutableLiveData.postValue(coinType); });
     }
 
     /*

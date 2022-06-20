@@ -136,9 +136,8 @@ public class KeyringModel implements KeyringServiceObserver {
     }
 
     public void setSelectedAccount(String accountAddress, int coin) {
-        mKeyringService.setSelectedAccount(accountAddress, coin, isAccountSelected -> {
-            mCryptoModelActions.updateCoinType();
-        });
+        mKeyringService.setSelectedAccount(accountAddress, coin,
+                isAccountSelected -> { mCryptoModelActions.updateCoinType(); });
     }
 
     public KeyringInfo getKeyringInfo() {
