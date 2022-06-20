@@ -159,37 +159,6 @@ extension HTTPDownload: URLSessionTaskDelegate, URLSessionDownloadDelegate {
   }
 }
 
-class BlobDownload: Download {
-  fileprivate let data: Data
-
-  init(filename: String, mimeType: String, size: Int64, data: Data) {
-    self.data = data
-
-    super.init()
-
-    self.filename = filename
-    self.mimeType = mimeType
-
-    self.totalBytesExpected = size
-  }
-
-  override func resume() {
-    // Wait momentarily before continuing here and firing off the delegate
-    // callbacks. Otherwise, these may end up getting called before the
-    // delegate is set up and the UI may never be notified of completion.
-    DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(500)) {
-      do {
-        let destination = try self.uniqueDownloadPathForFilename(self.filename)
-        try self.data.write(to: destination)
-        self.isComplete = true
-        self.delegate?.download(self, didFinishDownloadingTo: destination)
-      } catch {
-        self.delegate?.download(self, didCompleteWithError: error)
-      }
-    }
-  }
-}
-
 protocol DownloadQueueDelegate {
   func downloadQueue(_ downloadQueue: DownloadQueue, didStartDownload download: Download)
   func downloadQueue(_ downloadQueue: DownloadQueue, didDownloadCombinedBytes combinedBytesDownloaded: Int64, combinedTotalBytesExpected: Int64?)
