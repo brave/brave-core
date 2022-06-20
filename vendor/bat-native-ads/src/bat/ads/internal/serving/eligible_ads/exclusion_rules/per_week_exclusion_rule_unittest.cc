@@ -91,7 +91,7 @@ TEST_F(BatAdsPerWeekExclusionRuleTest, AllowAdIfDoesNotExceedCapAfter1Week) {
   ad_events.push_back(ad_event);
   ad_events.push_back(ad_event);
 
-  FastForwardClockBy(base::Days(7));
+  AdvanceClockBy(base::Days(7));
 
   // Act
   PerWeekExclusionRule exclusion_rule(ad_events);
@@ -115,7 +115,7 @@ TEST_F(BatAdsPerWeekExclusionRuleTest, DoNotAllowAdIfExceedsCapWithin1Week) {
   ad_events.push_back(ad_event);
   ad_events.push_back(ad_event);
 
-  FastForwardClockBy(base::Days(6));
+  AdvanceClockBy(base::Days(7) - base::Seconds(1));
 
   // Act
   PerWeekExclusionRule exclusion_rule(ad_events);

@@ -1189,7 +1189,7 @@ TEST_F(BatAdsConversionsTest, ConvertAdWhenTheConversionIsOnTheCuspOfExpiring) {
       BuildAdEvent(conversion.creative_set_id, ConfirmationType::kViewed);
   FireAdEvent(ad_event);
 
-  FastForwardClockBy(base::Days(3) - base::Minutes(1));
+  AdvanceClockBy(base::Days(3) - base::Seconds(1));
 
   // Act
   conversions_->MaybeConvert({GURL("https://foo.bar.com/qux")}, "", {});
@@ -1229,7 +1229,7 @@ TEST_F(BatAdsConversionsTest, DoNotConvertAdWhenTheConversionHasExpired) {
       BuildAdEvent(conversion.creative_set_id, ConfirmationType::kViewed);
   FireAdEvent(ad_event);
 
-  FastForwardClockBy(base::Days(3));
+  AdvanceClockBy(base::Days(3));
 
   // Act
   conversions_->MaybeConvert({GURL("https://www.foo.com/bar/qux")}, "", {});

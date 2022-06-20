@@ -150,7 +150,7 @@ void ClientStateManager::AppendHistory(const HistoryItemInfo& history_item) {
 
   const auto iter =
       std::remove_if(client_->history.begin(), client_->history.end(),
-                     [&distant_past](const HistoryItemInfo& history_item) {
+                     [distant_past](const HistoryItemInfo& history_item) {
                        return history_item.created_at < distant_past;
                      });
 

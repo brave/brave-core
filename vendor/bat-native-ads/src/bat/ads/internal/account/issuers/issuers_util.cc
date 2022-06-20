@@ -95,7 +95,7 @@ bool IssuerExistsForType(const IssuerType issuer_type) {
 absl::optional<IssuerInfo> GetIssuerForType(const IssuersInfo& issuers,
                                             const IssuerType issuer_type) {
   const auto iter = std::find_if(issuers.issuers.begin(), issuers.issuers.end(),
-                                 [&issuer_type](const IssuerInfo& issuer) {
+                                 [issuer_type](const IssuerInfo& issuer) {
                                    return issuer.type == issuer_type;
                                  });
   if (iter == issuers.issuers.end()) {

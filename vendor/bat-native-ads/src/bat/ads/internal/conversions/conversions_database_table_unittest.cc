@@ -150,7 +150,7 @@ TEST_F(BatAdsConversionsDatabaseTableTest, PurgeExpiredConversions) {
   Save(conversions);
 
   // Act
-  FastForwardClockBy(base::Days(4));
+  AdvanceClockBy(base::Days(4));
 
   PurgeExpired();
 

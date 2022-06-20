@@ -66,21 +66,22 @@ bool DismissedExclusionRule::DoesRespectCap(const AdEventList& ad_events) {
 AdEventList DismissedExclusionRule::FilterAdEvents(
     const AdEventList& ad_events,
     const CreativeAdInfo& creative_ad) const {
-  const base::Time now = base::Time::Now();
-
   const base::TimeDelta time_constraint =
       exclusion_rules::features::ExcludeAdIfDismissedWithinTimeWindow();
+  if (time_constraint.is_zero()) {
+    return {};
+  }
 
   AdEventList filtered_ad_events;
   std::copy_if(
       ad_events.cbegin(), ad_events.cend(),
       std::back_inserter(filtered_ad_events),
-      [&now, &time_constraint, &creative_ad](const AdEventInfo& ad_event) {
+      [time_constraint, &creative_ad](const AdEventInfo& ad_event) {
         return (ad_event.confirmation_type == ConfirmationType::kClicked ||
                 ad_event.confirmation_type == ConfirmationType::kDismissed) &&
                ad_event.type == AdType::kNotificationAd &&
                ad_event.campaign_id == creative_ad.campaign_id &&
-               now - ad_event.created_at < time_constraint;
+               base::Time::Now() - ad_event.created_at < time_constraint;
       });
 
   return filtered_ad_events;

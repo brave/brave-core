@@ -38,7 +38,8 @@ TEST_F(BatAdsTimeConstraintUtilTest, DoesRespect) {
   // Arrange
   std::vector<base::Time> history;
   history.push_back(Now());
-  FastForwardClockBy(base::Days(1));
+
+  AdvanceClockBy(base::Days(1));
 
   // Act
   const bool does_respect =

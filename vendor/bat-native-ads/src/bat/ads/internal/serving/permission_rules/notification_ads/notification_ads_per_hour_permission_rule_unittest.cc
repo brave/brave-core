@@ -100,7 +100,7 @@ TEST_F(BatAdsAdsPerHourPermissionRuleTest,
   RecordAdEvents(AdType::kNotificationAd, ConfirmationType::kServed,
                  ads_per_hour);
 
-  FastForwardClockBy(base::Hours(1));
+  AdvanceClockBy(base::Hours(1));
 
   // Act
   AdsPerHourPermissionRule permission_rule;
@@ -120,7 +120,7 @@ TEST_F(BatAdsAdsPerHourPermissionRuleTest,
   RecordAdEvents(AdType::kNotificationAd, ConfirmationType::kServed,
                  ads_per_hour);
 
-  FastForwardClockBy(base::Minutes(59));
+  AdvanceClockBy(base::Hours(1) - base::Seconds(1));
 
   // Act
   AdsPerHourPermissionRule permission_rule;

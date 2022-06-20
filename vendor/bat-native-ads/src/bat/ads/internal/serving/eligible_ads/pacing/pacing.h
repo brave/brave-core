@@ -23,7 +23,7 @@ T PaceAds(const T& ads) {
   T paced_ads;
 
   std::copy_if(ads.cbegin(), ads.cend(), std::back_inserter(paced_ads),
-               [&](const CreativeAdInfo& creative_ad) {
+               [](const CreativeAdInfo& creative_ad) {
                  return !ShouldPaceAd(creative_ad);
                });
 

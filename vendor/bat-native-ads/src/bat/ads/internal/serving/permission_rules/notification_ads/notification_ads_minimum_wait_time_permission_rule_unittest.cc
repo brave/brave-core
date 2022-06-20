@@ -42,7 +42,7 @@ TEST_F(BatAdsNotificationAdsMinimumWaitTimePermissionRuleTest,
 
   RecordAdEvent(AdType::kNotificationAd, ConfirmationType::kServed);
 
-  FastForwardClockBy(base::Minutes(12));
+  AdvanceClockBy(base::Minutes(12));
 
   // Act
   MinimumWaitTimePermissionRule permission_rule;
@@ -59,7 +59,7 @@ TEST_F(BatAdsNotificationAdsMinimumWaitTimePermissionRuleTest,
 
   RecordAdEvent(AdType::kNotificationAd, ConfirmationType::kServed);
 
-  FastForwardClockBy(base::Minutes(11));
+  AdvanceClockBy(base::Minutes(12) - base::Seconds(1));
 
   // Act
   MinimumWaitTimePermissionRule permission_rule;

@@ -106,7 +106,7 @@ UserActivityEventList UserActivityManager::GetHistoryForTimeWindow(
 
   const auto iter =
       std::remove_if(filtered_history.begin(), filtered_history.end(),
-                     [&time](const UserActivityEventInfo& event) {
+                     [time](const UserActivityEventInfo& event) {
                        return event.created_at < time;
                      });
 

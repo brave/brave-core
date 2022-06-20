@@ -66,7 +66,7 @@ TEST_F(BatAdsAdsPerDayPermissionRuleTest, AllowAdIfDoesNotExceedCapAfter1Day) {
   const size_t count = features::GetMaximumNotificationAdsPerDay();
   RecordAdEvents(AdType::kNotificationAd, ConfirmationType::kServed, count);
 
-  FastForwardClockBy(base::Days(1));
+  AdvanceClockBy(base::Days(1));
 
   // Act
   AdsPerDayPermissionRule permission_rule;
@@ -81,7 +81,7 @@ TEST_F(BatAdsAdsPerDayPermissionRuleTest, DoNotAllowAdIfExceedsCapWithin1Day) {
   const size_t count = features::GetMaximumNotificationAdsPerDay();
   RecordAdEvents(AdType::kNotificationAd, ConfirmationType::kServed, count);
 
-  FastForwardClockBy(base::Hours(23));
+  AdvanceClockBy(base::Days(1) - base::Seconds(1));
 
   // Act
   AdsPerDayPermissionRule permission_rule;
