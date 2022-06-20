@@ -43,9 +43,7 @@ Matcher<const NotificationAdInfo&> DoesMatchCreativeInstanceId(
 
 class BatAdsNotificationAdServingIntegrationTest : public UnitTestBase {
  protected:
-  BatAdsNotificationAdServingIntegrationTest()
-      : database_table_(
-            std::make_unique<database::table::CreativeNotificationAds>()) {}
+  BatAdsNotificationAdServingIntegrationTest() = default;
 
   ~BatAdsNotificationAdServingIntegrationTest() override = default;
 
@@ -107,11 +105,10 @@ class BatAdsNotificationAdServingIntegrationTest : public UnitTestBase {
   }
 
   void Save(const CreativeNotificationAdList& creative_ads) {
-    database_table_->Save(creative_ads,
-                          [](const bool success) { ASSERT_TRUE(success); });
+    database::table::CreativeNotificationAds database_table;
+    database_table.Save(creative_ads,
+                        [](const bool success) { ASSERT_TRUE(success); });
   }
-
-  std::unique_ptr<database::table::CreativeNotificationAds> database_table_;
 };
 
 TEST_F(BatAdsNotificationAdServingIntegrationTest, ServeAd) {

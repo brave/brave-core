@@ -42,10 +42,7 @@ constexpr char kInvalidCreativeInstanceId[] = "";
 class BatAdsNewTabPageAdIfAdsDisabledTest : public NewTabPageAdObserver,
                                             public UnitTestBase {
  protected:
-  BatAdsNewTabPageAdIfAdsDisabledTest()
-      : new_tab_page_ad_(std::make_unique<NewTabPageAd>()) {
-    new_tab_page_ad_->AddObserver(this);
-  }
+  BatAdsNewTabPageAdIfAdsDisabledTest() = default;
 
   ~BatAdsNewTabPageAdIfAdsDisabledTest() override = default;
 
@@ -53,6 +50,9 @@ class BatAdsNewTabPageAdIfAdsDisabledTest : public NewTabPageAdObserver,
     UnitTestBase::SetUp();
 
     AdsClientHelper::Get()->SetBooleanPref(prefs::kEnabled, false);
+
+    new_tab_page_ad_ = std::make_unique<NewTabPageAd>();
+    new_tab_page_ad_->AddObserver(this);
   }
 
   void OnNewTabPageAdServed(const NewTabPageAdInfo& ad) override {
@@ -244,6 +244,9 @@ TEST_F(BatAdsNewTabPageAdIfAdsDisabledTest,
   // Arrange
   ForcePermissionRules();
 
+  const std::string placement_id =
+      base::GUID::GenerateRandomV4().AsLowercaseString();
+
   const CreativeNewTabPageAdInfo& creative_ad = BuildAndSaveCreativeAd();
   const AdEventInfo& ad_event = BuildAdEvent(creative_ad, AdType::kNewTabPageAd,
                                              ConfirmationType::kViewed, Now());
@@ -252,9 +255,6 @@ TEST_F(BatAdsNewTabPageAdIfAdsDisabledTest,
 
   FireAdEvents(ad_event, ads_per_hour - 1);
   ExpectAdEventCountEquals(ConfirmationType::kViewed, ads_per_hour - 1);
-
-  const std::string placement_id =
-      base::GUID::GenerateRandomV4().AsLowercaseString();
 
   AdvanceClockBy(features::GetNewTabPageAdsMinimumWaitTime());
 

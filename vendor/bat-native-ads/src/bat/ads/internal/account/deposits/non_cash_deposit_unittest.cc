@@ -28,7 +28,7 @@ TEST_F(BatAdsNonCashDepositTest, GetValue) {
 
   // Act
   deposit.GetValue(kCreativeInstanceId,
-                   [=](const bool success, const double value) {
+                   [](const bool success, const double value) {
                      EXPECT_TRUE(success);
                      EXPECT_EQ(0.0, value);
                    });

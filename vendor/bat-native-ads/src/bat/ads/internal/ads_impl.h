@@ -85,6 +85,7 @@ class InlineContentAd;
 class NewTabPageAd;
 class NotificationAd;
 class NotificationAdManager;
+class PrefManager;
 class PromotedContentAd;
 class SearchResultAd;
 class TabManager;
@@ -334,6 +335,7 @@ class AdsImpl final : public Ads,
   std::unique_ptr<DatabaseManager> database_manager_;
   std::unique_ptr<DiagnosticManager> diagnostic_manager_;
   std::unique_ptr<NotificationAdManager> notification_ad_manager_;
+  std::unique_ptr<PrefManager> pref_manager_;
   std::unique_ptr<TabManager> tab_manager_;
   std::unique_ptr<UserActivityManager> user_activity_manager_;
 

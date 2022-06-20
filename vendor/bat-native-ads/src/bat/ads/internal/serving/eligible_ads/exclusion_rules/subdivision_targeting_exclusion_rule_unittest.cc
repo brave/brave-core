@@ -22,13 +22,18 @@ constexpr char kCreativeSetId[] = "654f10df-fbc4-4a92-8d43-2edf73734a60";
 
 class BatAdsSubdivisionTargetingExclusionRuleTest : public UnitTestBase {
  protected:
-  BatAdsSubdivisionTargetingExclusionRuleTest()
-      : subdivision_targeting_(
-            std::make_unique<geographic::SubdivisionTargeting>()),
-        exclusion_rule_(std::make_unique<SubdivisionTargetingExclusionRule>(
-            subdivision_targeting_.get())) {}
+  BatAdsSubdivisionTargetingExclusionRuleTest() = default;
 
   ~BatAdsSubdivisionTargetingExclusionRuleTest() override = default;
+
+  void SetUp() override {
+    UnitTestBase::SetUp();
+
+    subdivision_targeting_ =
+        std::make_unique<geographic::SubdivisionTargeting>();
+    exclusion_rule_ = std::make_unique<SubdivisionTargetingExclusionRule>(
+        subdivision_targeting_.get());
+  }
 
   std::unique_ptr<geographic::SubdivisionTargeting> subdivision_targeting_;
   std::unique_ptr<SubdivisionTargetingExclusionRule> exclusion_rule_;

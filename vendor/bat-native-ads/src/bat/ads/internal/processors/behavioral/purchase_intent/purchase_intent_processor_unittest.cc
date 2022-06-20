@@ -147,7 +147,7 @@ TEST_F(BatAdsPurchaseIntentProcessorTest, ProcessMultipleUniqueUrls) {
   const GURL url_1 = GURL("https://www.brave.com/test?foo=bar");
   processor.Process(url_1);
 
-  FastForwardClockBy(base::Minutes(5));
+  AdvanceClockBy(base::Minutes(5));
 
   const base::Time now_2 = Now();
   const GURL url_2 = GURL("https://www.basicattentiontoken.org/test?foo=bar");
@@ -184,7 +184,7 @@ TEST_F(BatAdsPurchaseIntentProcessorTest, ProcessMultipleMatchingKeywords) {
       GURL("https://duckduckgo.com/?q=segment+keyword+1&foo=bar");
   processor.Process(url_1);
 
-  FastForwardClockBy(base::Minutes(5));
+  AdvanceClockBy(base::Minutes(5));
 
   const base::Time now_2 = Now();
   const GURL url_2 =
@@ -221,7 +221,7 @@ TEST_F(BatAdsPurchaseIntentProcessorTest, ProcessMultipleUniqueKeywords) {
       GURL("https://duckduckgo.com/?q=segment+keyword+1&foo=bar");
   processor.Process(url_1);
 
-  FastForwardClockBy(base::Minutes(5));
+  AdvanceClockBy(base::Minutes(5));
 
   const base::Time now_2 = Now();
   const GURL url_2 =

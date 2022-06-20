@@ -15,8 +15,6 @@
 #include "bat/ads/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_unittest_util.h"
 #include "bat/ads/internal/creatives/new_tab_page_ads/creative_new_tab_page_ads_database_table.h"
 #include "bat/ads/internal/creatives/new_tab_page_ads/new_tab_page_ad_builder.h"
-#include "bat/ads/internal/geographic/subdivision/subdivision_targeting.h"
-#include "bat/ads/internal/resources/behavioral/anti_targeting/anti_targeting_resource.h"
 #include "bat/ads/internal/serving/permission_rules/permission_rules_unittest_util.h"
 #include "bat/ads/internal/serving/permission_rules/user_activity_permission_rule_unittest_util.h"
 #include "bat/ads/internal/serving/serving_features.h"
@@ -26,19 +24,11 @@
 
 namespace ads {
 
-class BatAdsNewTabPageServingIntegrationTest : public UnitTestBase {
+class BatAdsNewTabPageAdServingIntegrationTest : public UnitTestBase {
  protected:
-  BatAdsNewTabPageServingIntegrationTest()
-      : subdivision_targeting_(
-            std::make_unique<geographic::SubdivisionTargeting>()),
-        anti_targeting_resource_(std::make_unique<resource::AntiTargeting>()),
-        serving_(std::make_unique<new_tab_page_ads::Serving>(
-            subdivision_targeting_.get(),
-            anti_targeting_resource_.get())),
-        database_table_(
-            std::make_unique<database::table::CreativeNewTabPageAds>()) {}
+  BatAdsNewTabPageAdServingIntegrationTest() = default;
 
-  ~BatAdsNewTabPageServingIntegrationTest() override = default;
+  ~BatAdsNewTabPageAdServingIntegrationTest() override = default;
 
   void SetUp() override {
     UnitTestBase::SetUpForTesting(/* is_integration_test */ true);
@@ -89,18 +79,13 @@ class BatAdsNewTabPageServingIntegrationTest : public UnitTestBase {
   }
 
   void Save(const CreativeNewTabPageAdList& creative_ads) {
-    database_table_->Save(creative_ads,
-                          [](const bool success) { ASSERT_TRUE(success); });
+    database::table::CreativeNewTabPageAds database_table;
+    database_table.Save(creative_ads,
+                        [](const bool success) { ASSERT_TRUE(success); });
   }
-
-  std::unique_ptr<geographic::SubdivisionTargeting> subdivision_targeting_;
-  std::unique_ptr<resource::AntiTargeting> anti_targeting_resource_;
-  std::unique_ptr<new_tab_page_ads::Serving> serving_;
-
-  std::unique_ptr<database::table::CreativeNewTabPageAds> database_table_;
 };
 
-TEST_F(BatAdsNewTabPageServingIntegrationTest, ServeAd) {
+TEST_F(BatAdsNewTabPageAdServingIntegrationTest, ServeAd) {
   // Arrange
   ForcePermissionRules();
 
@@ -110,7 +95,7 @@ TEST_F(BatAdsNewTabPageServingIntegrationTest, ServeAd) {
   Save(creative_ads);
 
   // Act
-  serving_->MaybeServeAd(
+  GetAds()->GetNewTabPageAd(
       [&creative_ad](const bool success, const NewTabPageAdInfo& ad) {
         ASSERT_TRUE(success);
 
@@ -123,7 +108,7 @@ TEST_F(BatAdsNewTabPageServingIntegrationTest, ServeAd) {
   // Assert
 }
 
-TEST_F(BatAdsNewTabPageServingIntegrationTest,
+TEST_F(BatAdsNewTabPageAdServingIntegrationTest,
        ServeAdIfNotExceededPerDayExclusionRuleFrequencyCap) {
   // Arrange
   ForcePermissionRules();
@@ -145,7 +130,7 @@ TEST_F(BatAdsNewTabPageServingIntegrationTest,
   AdvanceClockBy(base::Hours(1));
 
   // Act
-  serving_->MaybeServeAd(
+  GetAds()->GetNewTabPageAd(
       [&creative_ad](const bool success, const NewTabPageAdInfo& ad) {
         ASSERT_TRUE(success);
 
@@ -158,7 +143,7 @@ TEST_F(BatAdsNewTabPageServingIntegrationTest,
   // Assert
 }
 
-TEST_F(BatAdsNewTabPageServingIntegrationTest,
+TEST_F(BatAdsNewTabPageAdServingIntegrationTest,
        DoNotServeAdIfExceededPerDayExclusionRuleFrequencyCap) {
   // Arrange
   ForcePermissionRules();
@@ -178,14 +163,14 @@ TEST_F(BatAdsNewTabPageServingIntegrationTest,
   }
 
   // Act
-  serving_->MaybeServeAd([](const bool success, const NewTabPageAdInfo& ad) {
+  GetAds()->GetNewTabPageAd([](const bool success, const NewTabPageAdInfo& ad) {
     EXPECT_FALSE(success);
   });
 
   // Assert
 }
 
-TEST_F(BatAdsNewTabPageServingIntegrationTest,
+TEST_F(BatAdsNewTabPageAdServingIntegrationTest,
        DoNotServeAdIfNotAllowedDueToPermissionRules) {
   // Arrange
   CreativeNewTabPageAdList creative_ads;
@@ -194,14 +179,14 @@ TEST_F(BatAdsNewTabPageServingIntegrationTest,
   Save(creative_ads);
 
   // Act
-  serving_->MaybeServeAd([](const bool success, const NewTabPageAdInfo& ad) {
+  GetAds()->GetNewTabPageAd([](const bool success, const NewTabPageAdInfo& ad) {
     EXPECT_FALSE(success);
   });
 
   // Assert
 }
 
-TEST_F(BatAdsNewTabPageServingIntegrationTest,
+TEST_F(BatAdsNewTabPageAdServingIntegrationTest,
        ServeAdIfNotExceededAdsPerHourPermissionRuleFrequencyCap) {
   // Arrange
   ForcePermissionRules();
@@ -224,7 +209,7 @@ TEST_F(BatAdsNewTabPageServingIntegrationTest,
   AdvanceClockBy(features::GetNewTabPageAdsMinimumWaitTime());
 
   // Act
-  serving_->MaybeServeAd(
+  GetAds()->GetNewTabPageAd(
       [&creative_ad2](const bool success, const NewTabPageAdInfo& ad) {
         ASSERT_TRUE(success);
 
@@ -237,7 +222,7 @@ TEST_F(BatAdsNewTabPageServingIntegrationTest,
   // Assert
 }
 
-TEST_F(BatAdsNewTabPageServingIntegrationTest,
+TEST_F(BatAdsNewTabPageAdServingIntegrationTest,
        DoNotServeAdIfExceededAdsPerHourPermissionRuleFrequencyCap) {
   // Arrange
   ForcePermissionRules();
@@ -258,14 +243,14 @@ TEST_F(BatAdsNewTabPageServingIntegrationTest,
   }
 
   // Act
-  serving_->MaybeServeAd([](const bool success, const NewTabPageAdInfo& ad) {
+  GetAds()->GetNewTabPageAd([](const bool success, const NewTabPageAdInfo& ad) {
     EXPECT_FALSE(success);
   });
 
   // Assert
 }
 
-TEST_F(BatAdsNewTabPageServingIntegrationTest,
+TEST_F(BatAdsNewTabPageAdServingIntegrationTest,
        ServeAdIfNotExceededAdsPerDayPermissionRuleFrequencyCap) {
   // Arrange
   ForcePermissionRules();
@@ -288,7 +273,7 @@ TEST_F(BatAdsNewTabPageServingIntegrationTest,
   AdvanceClockBy(base::Hours(1));
 
   // Act
-  serving_->MaybeServeAd(
+  GetAds()->GetNewTabPageAd(
       [&creative_ad2](const bool success, const NewTabPageAdInfo& ad) {
         ASSERT_TRUE(success);
 
@@ -301,7 +286,7 @@ TEST_F(BatAdsNewTabPageServingIntegrationTest,
   // Assert
 }
 
-TEST_F(BatAdsNewTabPageServingIntegrationTest,
+TEST_F(BatAdsNewTabPageAdServingIntegrationTest,
        DoNotServeAdIfExceededAdsPerDayPermissionRuleFrequencyCap) {
   // Arrange
   ForcePermissionRules();
@@ -324,7 +309,7 @@ TEST_F(BatAdsNewTabPageServingIntegrationTest,
   AdvanceClockBy(base::Hours(1));
 
   // Act
-  serving_->MaybeServeAd([](const bool success, const NewTabPageAdInfo& ad) {
+  GetAds()->GetNewTabPageAd([](const bool success, const NewTabPageAdInfo& ad) {
     EXPECT_FALSE(success);
   });
 

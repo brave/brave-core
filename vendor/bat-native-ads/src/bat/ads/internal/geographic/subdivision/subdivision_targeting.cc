@@ -21,6 +21,7 @@
 #include "bat/ads/internal/base/url/url_response_string_util.h"
 #include "bat/ads/internal/geographic/subdivision/get_subdivision_url_request_builder.h"
 #include "bat/ads/internal/geographic/subdivision/supported_subdivision_codes.h"
+#include "bat/ads/internal/prefs/pref_manager.h"
 #include "bat/ads/pref_names.h"
 #include "brave/components/l10n/browser/locale_helper.h"
 #include "brave/components/l10n/common/locale_util.h"
@@ -37,16 +38,12 @@ constexpr base::TimeDelta kDebugFetchSubdivisionTargetingPing =
 
 }  // namespace
 
-SubdivisionTargeting::SubdivisionTargeting() = default;
+SubdivisionTargeting::SubdivisionTargeting() {
+  PrefManager::Get()->AddObserver(this);
+}
 
-SubdivisionTargeting::~SubdivisionTargeting() = default;
-
-void SubdivisionTargeting::OnPrefChanged(const std::string& path) {
-  if (path == prefs::kAutoDetectedAdsSubdivisionTargetingCode) {
-    OnAutoDetectedAdsSubdivisionTargetingCodePrefChanged();
-  } else if (path == prefs::kAdsSubdivisionTargetingCode) {
-    OnAdsSubdivisionTargetingCodePrefChanged();
-  }
+SubdivisionTargeting::~SubdivisionTargeting() {
+  PrefManager::Get()->RemoveObserver(this);
 }
 
 bool SubdivisionTargeting::ShouldAllowForLocale(
@@ -123,6 +120,14 @@ std::string SubdivisionTargeting::GetSubdivisionCode() const {
 }
 
 ///////////////////////////////////////////////////////////////////////////////
+
+void SubdivisionTargeting::OnPrefChanged(const std::string& path) {
+  if (path == prefs::kAutoDetectedAdsSubdivisionTargetingCode) {
+    OnAutoDetectedAdsSubdivisionTargetingCodePrefChanged();
+  } else if (path == prefs::kAdsSubdivisionTargetingCode) {
+    OnAdsSubdivisionTargetingCodePrefChanged();
+  }
+}
 
 void SubdivisionTargeting::
     OnAutoDetectedAdsSubdivisionTargetingCodePrefChanged() {

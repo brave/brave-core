@@ -24,6 +24,7 @@
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/base/logging_util.h"
 #include "bat/ads/internal/deprecated/confirmations/confirmation_state_manager.h"
+#include "bat/ads/internal/prefs/pref_manager.h"
 #include "bat/ads/internal/privacy/tokens/token_generator_interface.h"
 #include "bat/ads/internal/privacy/tokens/unblinded_tokens/unblinded_tokens.h"
 #include "bat/ads/pref_names.h"
@@ -40,13 +41,17 @@ Account::Account(privacy::TokenGeneratorInterface* token_generator)
       refill_unblinded_tokens_(
           std::make_unique<RefillUnblindedTokens>(token_generator)),
       wallet_(std::make_unique<Wallet>()) {
+  PrefManager::Get()->AddObserver(this);
+
   confirmations_->set_delegate(this);
   issuers_->set_delegate(this);
   redeem_unblinded_payment_tokens_->set_delegate(this);
   refill_unblinded_tokens_->set_delegate(this);
 }
 
-Account::~Account() = default;
+Account::~Account() {
+  PrefManager::Get()->RemoveObserver(this);
+}
 
 void Account::AddObserver(AccountObserver* observer) {
   DCHECK(observer);
@@ -56,12 +61,6 @@ void Account::AddObserver(AccountObserver* observer) {
 void Account::RemoveObserver(AccountObserver* observer) {
   DCHECK(observer);
   observers_.RemoveObserver(observer);
-}
-
-void Account::OnPrefChanged(const std::string& path) {
-  if (path == prefs::kEnabled) {
-    OnEnabledPrefChanged();
-  }
 }
 
 void Account::SetWallet(const std::string& id, const std::string& seed) {
@@ -135,10 +134,6 @@ void Account::ProcessClearingCycle() const {
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-
-void Account::OnEnabledPrefChanged() const {
-  MaybeGetIssuers();
-}
 
 void Account::ProcessDeposit(const std::string& creative_instance_id,
                              const AdType& ad_type,
@@ -230,6 +225,12 @@ void Account::NotifyFailedToProcessDeposit(
 void Account::NotifyStatementOfAccountsDidChange() const {
   for (AccountObserver& observer : observers_) {
     observer.OnStatementOfAccountsDidChange();
+  }
+}
+
+void Account::OnPrefChanged(const std::string& path) {
+  if (path == prefs::kEnabled) {
+    MaybeGetIssuers();
   }
 }
 

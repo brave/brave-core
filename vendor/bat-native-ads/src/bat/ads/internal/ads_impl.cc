@@ -50,6 +50,7 @@
 #include "bat/ads/internal/history/history.h"
 #include "bat/ads/internal/legacy_migration/conversions/legacy_conversions_migration.h"
 #include "bat/ads/internal/legacy_migration/rewards/legacy_rewards_migration.h"
+#include "bat/ads/internal/prefs/pref_manager.h"
 #include "bat/ads/internal/privacy/tokens/token_generator.h"
 #include "bat/ads/internal/processors/behavioral/bandits/epsilon_greedy_bandit_processor.h"
 #include "bat/ads/internal/processors/behavioral/purchase_intent/purchase_intent_processor.h"
@@ -93,6 +94,7 @@ AdsImpl::AdsImpl(AdsClient* ads_client)
   database_manager_->AddObserver(this);
   diagnostic_manager_ = std::make_unique<DiagnosticManager>();
   notification_ad_manager_ = std::make_unique<NotificationAdManager>();
+  pref_manager_ = std::make_unique<PrefManager>();
   tab_manager_ = std::make_unique<TabManager>();
   user_activity_manager_ = std::make_unique<UserActivityManager>();
 
@@ -222,9 +224,7 @@ void AdsImpl::OnPrefChanged(const std::string& path) {
     MaybeServeNotificationAdsAtRegularIntervals();
   }
 
-  account_->OnPrefChanged(path);
-  notification_ad_serving_->OnPrefChanged(path);
-  subdivision_targeting_->OnPrefChanged(path);
+  PrefManager::Get()->OnPrefChanged(path);
 }
 
 void AdsImpl::OnHtmlLoaded(const int32_t tab_id,

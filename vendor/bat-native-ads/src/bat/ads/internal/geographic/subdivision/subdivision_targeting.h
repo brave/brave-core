@@ -10,20 +10,19 @@
 
 #include "bat/ads/internal/base/timer/backoff_timer.h"
 #include "bat/ads/internal/base/timer/timer.h"
+#include "bat/ads/internal/prefs/pref_manager_observer.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ads {
 namespace geographic {
 
-class SubdivisionTargeting final {
+class SubdivisionTargeting final : public PrefManagerObserver {
  public:
   SubdivisionTargeting();
-  ~SubdivisionTargeting();
+  ~SubdivisionTargeting() override;
   SubdivisionTargeting(const SubdivisionTargeting&) = delete;
   SubdivisionTargeting& operator=(const SubdivisionTargeting&) = delete;
-
-  void OnPrefChanged(const std::string& path);
 
   bool ShouldAllowForLocale(const std::string& locale) const;
 
@@ -51,6 +50,9 @@ class SubdivisionTargeting final {
   bool ParseJson(const std::string& json);
   void Retry();
   void FetchAfterDelay();
+
+  // PrefManagerObserver:
+  void OnPrefChanged(const std::string& path) override;
 
   Timer timer_;
   BackoffTimer retry_timer_;

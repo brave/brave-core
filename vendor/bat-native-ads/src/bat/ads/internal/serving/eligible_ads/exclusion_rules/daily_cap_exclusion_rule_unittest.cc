@@ -105,7 +105,7 @@ TEST_F(BatAdsDailyCapExclusionRuleTest, AllowAdIfDoesNotExceedCapWithin1Day) {
 
   ad_events.push_back(ad_event);
 
-  FastForwardClockBy(base::Hours(23));
+  AdvanceClockBy(base::Days(1) - base::Seconds(1));
 
   // Act
   DailyCapExclusionRule exclusion_rule(ad_events);
@@ -128,7 +128,7 @@ TEST_F(BatAdsDailyCapExclusionRuleTest, AllowAdIfDoesNotExceedCapAfter1Day) {
 
   ad_events.push_back(ad_event);
 
-  FastForwardClockBy(base::Days(1));
+  AdvanceClockBy(base::Days(1));
 
   // Act
   DailyCapExclusionRule exclusion_rule(ad_events);

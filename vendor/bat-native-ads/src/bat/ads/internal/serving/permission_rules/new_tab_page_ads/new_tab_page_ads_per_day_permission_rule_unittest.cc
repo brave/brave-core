@@ -68,7 +68,7 @@ TEST_F(BatAdsNewTabPageAdsPerDayPermissionRuleTest,
   const int count = features::GetMaximumNewTabPageAdsPerDay();
   RecordAdEvents(AdType::kNewTabPageAd, ConfirmationType::kServed, count);
 
-  FastForwardClockBy(base::Days(1));
+  AdvanceClockBy(base::Days(1));
 
   // Act
   AdsPerDayPermissionRule permission_rule;
@@ -84,7 +84,7 @@ TEST_F(BatAdsNewTabPageAdsPerDayPermissionRuleTest,
   const int count = features::GetMaximumNewTabPageAdsPerDay();
   RecordAdEvents(AdType::kNewTabPageAd, ConfirmationType::kServed, count);
 
-  FastForwardClockBy(base::Hours(23));
+  AdvanceClockBy(base::Days(1) - base::Seconds(1));
 
   // Act
   AdsPerDayPermissionRule permission_rule;

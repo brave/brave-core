@@ -28,7 +28,7 @@ void PurgeHistoryOlderThan(std::vector<base::Time>* history,
 
   const auto iter =
       std::remove_if(history->begin(), history->end(),
-                     [&past](const base::Time time) { return time < past; });
+                     [past](const base::Time time) { return time < past; });
 
   history->erase(iter, history->end());
 }

@@ -70,7 +70,7 @@ TEST_F(BatAdsTransferTest, DoNotTransferAdIfUrlIsMissingHTTPOrHTTPSScheme) {
 
   // Act
   transfer_->MaybeTransferAd(1, {GURL("brave.com")});
-  FastForwardClockBy(base::Seconds(10));
+  AdvanceClockBy(base::Seconds(10));
 
   // Assert
   EXPECT_EQ(0, GetTransferCount());
@@ -88,7 +88,7 @@ TEST_F(BatAdsTransferTest,
 
   // Act
   transfer_->MaybeTransferAd(1, {GURL("brave.com")});
-  FastForwardClockBy(base::Seconds(10));
+  AdvanceClockBy(base::Seconds(10));
 
   // Assert
   EXPECT_EQ(0, GetTransferCount());
@@ -107,6 +107,7 @@ TEST_F(BatAdsTransferTest, DoNotTransferAdIfTheSameAdIsAlreadyTransferring) {
 
   // Act
   transfer_->MaybeTransferAd(1, {GURL("https://brave.com")});
+
   FastForwardClockBy(base::Seconds(10));
 
   // Assert
@@ -134,6 +135,7 @@ TEST_F(BatAdsTransferTest, TransferAdIfAnotherAdIsAlreadyTransferring) {
 
   // Act
   transfer_->MaybeTransferAd(2, {GURL("https://brave.com")});
+
   FastForwardClockBy(base::Seconds(10));
 
   // Assert
@@ -152,6 +154,7 @@ TEST_F(BatAdsTransferTest,
 
   // Act
   transfer_->MaybeTransferAd(1, {GURL("https://brave.com")});
+
   FastForwardClockBy(base::Seconds(10));
 
   // Assert
@@ -169,6 +172,7 @@ TEST_F(BatAdsTransferTest, FailToTransferAdIfNotVisible) {
 
   // Act
   transfer_->MaybeTransferAd(1, {GURL("https://brave.com")});
+
   FastForwardClockBy(base::Seconds(10));
 
   // Assert

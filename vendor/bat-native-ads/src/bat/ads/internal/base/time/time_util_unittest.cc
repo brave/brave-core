@@ -62,10 +62,12 @@ class BatAdsTimeUtilTest : public UnitTestBase,
                            public testing::WithParamInterface<bool> {
  protected:
   BatAdsTimeUtilTest() = default;
+
   ~BatAdsTimeUtilTest() override = default;
 
   void SetUp() override {
     UnitTestBase::SetUp();
+
     SetFromLocalExplodedFailedForTesting(GetParam());
   }
 

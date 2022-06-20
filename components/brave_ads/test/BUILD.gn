@@ -198,6 +198,7 @@ source_set("brave_ads_unit_tests") {
     "//brave/vendor/bat-native-ads/src/bat/ads/internal/ml/transformation/hashed_ngrams_transformation_unittest.cc",
     "//brave/vendor/bat-native-ads/src/bat/ads/internal/ml/transformation/lowercase_transformation_unittest.cc",
     "//brave/vendor/bat-native-ads/src/bat/ads/internal/ml/transformation/normalization_transformation_unittest.cc",
+    "//brave/vendor/bat-native-ads/src/bat/ads/internal/prefs/pref_manager_unittest.cc",
     "//brave/vendor/bat-native-ads/src/bat/ads/internal/privacy/challenge_bypass_ristretto/batch_dleq_proof_unittest.cc",
     "//brave/vendor/bat-native-ads/src/bat/ads/internal/privacy/challenge_bypass_ristretto/blinded_token_unittest.cc",
     "//brave/vendor/bat-native-ads/src/bat/ads/internal/privacy/challenge_bypass_ristretto/blinded_token_unittest_util.cc",

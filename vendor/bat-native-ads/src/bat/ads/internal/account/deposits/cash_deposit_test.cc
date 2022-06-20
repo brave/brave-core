@@ -46,7 +46,7 @@ TEST_F(BatAdsCashDepositIntegrationTest, GetValue) {
 
   // Assert
   deposit.GetValue(kCreativeInstanceId,
-                   [=](const bool success, const double value) {
+                   [](const bool success, const double value) {
                      EXPECT_TRUE(success);
                      EXPECT_EQ(1.0, value);
                    });
@@ -61,7 +61,7 @@ TEST_F(BatAdsCashDepositIntegrationTest,
 
   // Assert
   deposit.GetValue(kMissingCreativeInstanceId,
-                   [=](const bool success, const double value) {
+                   [](const bool success, const double value) {
                      EXPECT_FALSE(success);
                      EXPECT_EQ(0.0, value);
                    });

@@ -8,6 +8,7 @@
 #include "bat/ads/internal/ad_events/ad_event_unittest_util.h"
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/base/unittest/unittest_base.h"
+#include "bat/ads/internal/serving/serving_features.h"
 #include "bat/ads/pref_names.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
@@ -40,7 +41,7 @@ TEST_F(BatAdsNewTabPageAdsMinimumWaitTimePermissionRuleTest,
   // Arrange
   RecordAdEvent(AdType::kNewTabPageAd, ConfirmationType::kServed);
 
-  FastForwardClockBy(base::Minutes(5));
+  AdvanceClockBy(features::GetNewTabPageAdsMinimumWaitTime());
 
   // Act
   MinimumWaitTimePermissionRule permission_rule;
@@ -55,7 +56,8 @@ TEST_F(BatAdsNewTabPageAdsMinimumWaitTimePermissionRuleTest,
   // Arrange
   RecordAdEvent(AdType::kNewTabPageAd, ConfirmationType::kServed);
 
-  FastForwardClockBy(base::Minutes(5) - base::Seconds(1));
+  AdvanceClockBy(features::GetNewTabPageAdsMinimumWaitTime() -
+                 base::Seconds(1));
 
   // Act
   MinimumWaitTimePermissionRule permission_rule;

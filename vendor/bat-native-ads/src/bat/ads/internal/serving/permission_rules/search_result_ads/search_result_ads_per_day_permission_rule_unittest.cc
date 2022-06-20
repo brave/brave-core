@@ -69,7 +69,7 @@ TEST_F(BatAdsSearchResultAdsPerDayPermissionRuleTest,
   const int count = features::GetMaximumSearchResultAdsPerDay();
   RecordAdEvents(AdType::kSearchResultAd, ConfirmationType::kServed, count);
 
-  FastForwardClockBy(base::Days(1));
+  AdvanceClockBy(base::Days(1));
 
   // Act
   AdsPerDayPermissionRule permission_rule;
@@ -85,7 +85,7 @@ TEST_F(BatAdsSearchResultAdsPerDayPermissionRuleTest,
   const int count = features::GetMaximumSearchResultAdsPerDay();
   RecordAdEvents(AdType::kSearchResultAd, ConfirmationType::kServed, count);
 
-  FastForwardClockBy(base::Hours(23));
+  AdvanceClockBy(base::Days(1) - base::Seconds(1));
 
   // Act
   AdsPerDayPermissionRule permission_rule;

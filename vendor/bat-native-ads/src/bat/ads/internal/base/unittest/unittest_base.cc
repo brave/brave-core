@@ -180,6 +180,8 @@ void UnitTestBase::Initialize() {
   notification_ad_manager_->Initialize(
       [](const bool success) { ASSERT_TRUE(success); });
 
+  pref_manager_ = std::make_unique<PrefManager>();
+
   tab_manager_ = std::make_unique<TabManager>();
 
   user_activity_manager_ = std::make_unique<UserActivityManager>();

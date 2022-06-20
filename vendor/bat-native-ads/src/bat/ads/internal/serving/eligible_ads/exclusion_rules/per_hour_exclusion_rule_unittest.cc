@@ -51,7 +51,7 @@ TEST_F(BatAdsPerHourExclusionRuleTest, AdAllowedAfter1Hour) {
 
   ad_events.push_back(ad_event);
 
-  FastForwardClockBy(base::Hours(1));
+  AdvanceClockBy(base::Hours(1));
 
   // Act
   PerHourExclusionRule exclusion_rule(ad_events);
@@ -85,7 +85,7 @@ TEST_F(BatAdsPerHourExclusionRuleTest, AdAllowedAfter1HourForMultipleTypes) {
       creative_ad, AdType::kSearchResultAd, ConfirmationType::kServed, Now());
   ad_events.push_back(ad_event_4);
 
-  FastForwardClockBy(base::Hours(1));
+  AdvanceClockBy(base::Hours(1));
 
   // Act
   PerHourExclusionRule exclusion_rule(ad_events);
@@ -107,7 +107,7 @@ TEST_F(BatAdsPerHourExclusionRuleTest, DoNotAllowTheSameAdWithin1Hour) {
 
   ad_events.push_back(ad_event);
 
-  FastForwardClockBy(base::Minutes(59));
+  AdvanceClockBy(base::Hours(1) - base::Seconds(1));
 
   // Act
   PerHourExclusionRule exclusion_rule(ad_events);

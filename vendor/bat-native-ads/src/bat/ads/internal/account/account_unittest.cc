@@ -48,14 +48,18 @@ constexpr char kInvalidWalletSeed[] =
 
 class BatAdsAccountTest : public AccountObserver, public UnitTestBase {
  protected:
-  BatAdsAccountTest()
-      : token_generator_mock_(
-            std::make_unique<NiceMock<privacy::TokenGeneratorMock>>()),
-        account_(std::make_unique<Account>(token_generator_mock_.get())) {
-    account_->AddObserver(this);
-  }
+  BatAdsAccountTest() = default;
 
   ~BatAdsAccountTest() override = default;
+
+  void SetUp() override {
+    UnitTestBase::SetUp();
+
+    token_generator_mock_ =
+        std::make_unique<NiceMock<privacy::TokenGeneratorMock>>();
+    account_ = std::make_unique<Account>(token_generator_mock_.get());
+    account_->AddObserver(this);
+  }
 
   void Save(const CreativeNotificationAdList& creative_ads) {
     database::table::CreativeNotificationAds database_table;
