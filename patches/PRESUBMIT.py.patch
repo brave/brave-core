@@ -1,0 +1,9 @@
+diff --git a/PRESUBMIT.py b/PRESUBMIT.py
+index 81b1b62c3ef84dedaba01ef067bafc66d9ebfbb4..7e4fb471f68b60b23b03603902f33fb0e90ca204 100644
+--- a/PRESUBMIT.py
++++ b/PRESUBMIT.py
+@@ -5845,3 +5845,4 @@ def CheckPythonShebang(input_api, output_api):
+                 "Please use '#!/usr/bin/env python/2/3' as the shebang of %s" %
+                 file))
+     return result
++if not globals().get('__name__'): from lib.import_inline import inline_module; inline_module('chromium_presubmit_overrides', globals(), locals())
