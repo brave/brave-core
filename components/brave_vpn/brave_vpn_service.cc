@@ -312,7 +312,6 @@ void BraveVpnService::CreateVPNConnection() {
     return;
   }
 
-  VLOG(2) << __func__;
   GetBraveVPNConnectionAPI()->CreateVPNConnection(GetConnectionInfo());
 }
 
@@ -324,10 +323,6 @@ void BraveVpnService::RemoveVPNConnnection() {
 
 void BraveVpnService::Connect() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  if (!IsNetworkAvailable()) {
-    UpdateAndNotifyConnectionStateChange(ConnectionState::CONNECT_FAILED);
-    return;
-  }
 
   if (connection_state_ == ConnectionState::DISCONNECTING ||
       connection_state_ == ConnectionState::CONNECTING) {
@@ -348,6 +343,12 @@ void BraveVpnService::Connect() {
 
   VLOG(2) << __func__ << " : start connecting!";
   UpdateAndNotifyConnectionStateChange(ConnectionState::CONNECTING);
+
+  if (!IsNetworkAvailable()) {
+    VLOG(2) << __func__ << ": Network is not available, failed to connect";
+    UpdateAndNotifyConnectionStateChange(ConnectionState::CONNECT_FAILED);
+    return;
+  }
 
   if (is_simulation_ || connection_info_.IsValid()) {
     VLOG(2) << __func__
@@ -1013,6 +1014,12 @@ void BraveVpnService::OnPrepareCredentialsPresentation(
     SetPurchasedState(PurchasedState::PURCHASED);
   } else {
     FetchRegionData(false);
+  }
+
+  if (!IsNetworkAvailable()) {
+    VLOG(2) << __func__ << ": Network is not available, failed to connect";
+    UpdateAndNotifyConnectionStateChange(ConnectionState::CONNECT_FAILED);
+    return;
   }
 
   ScheduleBackgroundRegionDataFetch();
