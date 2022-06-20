@@ -9,6 +9,7 @@
 #include "brave/browser/themes/brave_dark_mode_utils.h"
 #include "brave/browser/themes/brave_theme_helper_utils.h"
 #include "brave/browser/themes/theme_properties.h"
+#include "brave/browser/ui/color/color_palette.h"
 #include "brave/components/brave_vpn/buildflags/buildflags.h"
 #include "brave/components/sidebar/buildflags/buildflags.h"
 #include "build/build_config.h"
@@ -22,11 +23,6 @@
 #endif
 
 namespace {
-
-// TODO(simonhong): Get colors from brave's palette.
-// Omnibox text colors
-const SkColor kDarkOmniboxText = SkColorSetRGB(0xff, 0xff, 0xff);
-const SkColor kLightOmniboxText = SkColorSetRGB(0x42, 0x42, 0x42);
 
 #if BUILDFLAG(IS_LINUX)
 bool IsUsingSystemTheme(const CustomThemeSupplier* theme_supplier) {
