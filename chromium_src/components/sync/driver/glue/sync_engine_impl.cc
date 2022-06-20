@@ -7,7 +7,8 @@
 
 namespace syncer {
 
-void SyncEngineImpl::PermanentlyDeleteAccount(base::OnceClosure callback) {
+void SyncEngineImpl::PermanentlyDeleteAccount(
+    base::OnceCallback<void(const SyncProtocolError&)> callback) {
   DCHECK(backend_);
   sync_task_runner_->PostTask(
       FROM_HERE,

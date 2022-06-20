@@ -10,6 +10,7 @@
 
 #include "base/callback_forward.h"
 #include "components/sync/engine/sync_manager_impl.h"
+#include "components/sync/protocol/sync_protocol_error.h"
 
 namespace syncer {
 
@@ -24,7 +25,8 @@ class BraveSyncManagerImpl : public SyncManagerImpl {
 
   void StartSyncingNormally(base::Time last_poll_time) override;
 
-  void PermanentlyDeleteAccount(base::OnceClosure callback) override;
+  void PermanentlyDeleteAccount(
+      base::OnceCallback<void(const SyncProtocolError&)> callback) override;
 };
 
 }  // namespace syncer

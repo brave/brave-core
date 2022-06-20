@@ -6,8 +6,11 @@
 #ifndef BRAVE_CHROMIUM_SRC_COMPONENTS_SYNC_ENGINE_SYNC_SCHEDULER_H_
 #define BRAVE_CHROMIUM_SRC_COMPONENTS_SYNC_ENGINE_SYNC_SCHEDULER_H_
 
-#define OnCredentialsUpdated                                      \
-  SchedulePermanentlyDeleteAccount(base::OnceClosure callback) {} \
+#include "components/sync/protocol/sync_protocol_error.h"
+
+#define OnCredentialsUpdated                                          \
+  SchedulePermanentlyDeleteAccount(                                   \
+      base::OnceCallback<void(const SyncProtocolError&)> callback) {} \
   virtual void OnCredentialsUpdated
 
 #include "src/components/sync/engine/sync_scheduler.h"

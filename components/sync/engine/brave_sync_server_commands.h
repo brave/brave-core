@@ -3,22 +3,25 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_SYNC_ENGINE_BRAVE_CLEAR_SERVER_DATA_H_
-#define BRAVE_COMPONENTS_SYNC_ENGINE_BRAVE_CLEAR_SERVER_DATA_H_
+#ifndef BRAVE_COMPONENTS_SYNC_ENGINE_BRAVE_SYNC_SERVER_COMMANDS_H_
+#define BRAVE_COMPONENTS_SYNC_ENGINE_BRAVE_SYNC_SERVER_COMMANDS_H_
 
 #include "base/callback_forward.h"
+#include "components/sync/protocol/sync_protocol_error.h"
 
 namespace syncer {
 
 class SyncCycle;
+struct SyncProtocolError;
 
 class BraveSyncServerCommands {
  public:
   BraveSyncServerCommands(const BraveSyncServerCommands&) = delete;
   BraveSyncServerCommands& operator=(const BraveSyncServerCommands&) = delete;
 
-  static void PermanentlyDeleteAccount(SyncCycle* cycle,
-                                       base::OnceClosure callback);
+  static void PermanentlyDeleteAccount(
+      SyncCycle* cycle,
+      base::OnceCallback<void(const SyncProtocolError&)> callback);
 
  private:
   BraveSyncServerCommands() = default;
@@ -26,4 +29,4 @@ class BraveSyncServerCommands {
 
 }  // namespace syncer
 
-#endif  // BRAVE_COMPONENTS_SYNC_ENGINE_BRAVE_CLEAR_SERVER_DATA_H_
+#endif  // BRAVE_COMPONENTS_SYNC_ENGINE_BRAVE_SYNC_SERVER_COMMANDS_H_

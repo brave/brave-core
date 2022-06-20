@@ -4,7 +4,11 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/sync/engine/brave_sync_manager_impl.h"
+
+#include <utility>
+
 #include "components/sync/engine/sync_scheduler.h"
+#include "components/sync/protocol/sync_protocol_error.h"
 
 namespace syncer {
 
@@ -22,7 +26,7 @@ void BraveSyncManagerImpl::StartSyncingNormally(base::Time last_poll_time) {
 }
 
 void BraveSyncManagerImpl::PermanentlyDeleteAccount(
-    base::OnceClosure callback) {
+    base::OnceCallback<void(const SyncProtocolError&)> callback) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   scheduler_->SchedulePermanentlyDeleteAccount(std::move(callback));
 }

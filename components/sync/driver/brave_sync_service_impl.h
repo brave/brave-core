@@ -13,6 +13,7 @@
 #include "brave/components/brave_sync/brave_sync_prefs.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "components/sync/driver/sync_service_impl.h"
+#include "components/sync/protocol/sync_protocol_error.h"
 
 class Profile;
 
@@ -21,6 +22,7 @@ namespace syncer {
 class BraveSyncAuthManager;
 class SyncServiceImplDelegate;
 class SyncServiceCrypto;
+struct SyncProtocolError;
 
 class BraveSyncServiceImpl : public SyncServiceImpl {
  public:
@@ -54,7 +56,8 @@ class BraveSyncServiceImpl : public SyncServiceImpl {
 
   const brave_sync::Prefs& prefs() { return brave_sync_prefs_; }
 
-  void PermanentlyDeleteAccount();
+  void PermanentlyDeleteAccount(
+      base::OnceCallback<void(const SyncProtocolError&)> callback);
 
  private:
   friend class BraveSyncServiceImplTest;
@@ -65,7 +68,14 @@ class BraveSyncServiceImpl : public SyncServiceImpl {
 
   void OnBraveSyncPrefsChanged(const std::string& path);
 
-  void OnAccountDeleted();
+  void PermanentlyDeleteAccountImpl(
+      const int current_attempt,
+      base::OnceCallback<void(const SyncProtocolError&)> callback);
+
+  void OnAccountDeleted(
+      const int current_attempt,
+      base::OnceCallback<void(const SyncProtocolError&)> callback,
+      const SyncProtocolError&);
 
   brave_sync::Prefs brave_sync_prefs_;
 

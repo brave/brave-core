@@ -11,8 +11,13 @@
 // 'DisableProtocolEventForwarding' macro redefined
 #include "components/sync/engine/sync_engine.h"
 
-#define DisableProtocolEventForwarding                  \
-  PermanentlyDeleteAccount(base::OnceClosure callback); \
+namespace syncer {
+struct SyncProtocolError;
+}  // namespace syncer
+
+#define DisableProtocolEventForwarding                              \
+  PermanentlyDeleteAccount(                                         \
+      base::OnceCallback<void(const SyncProtocolError&)> callback); \
   void DisableProtocolEventForwarding
 
 #include "src/components/sync/driver/glue/sync_engine_backend.h"
