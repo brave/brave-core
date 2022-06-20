@@ -3,54 +3,54 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 @font-face {
-    font-family: sans-serif;
+    font-family: FiraSans;
     src: url('/reader-mode/fonts/FiraSans-Regular.ttf');
 }
 
 @font-face {
-    font-family: sans-serif;
+    font-family: FiraSans;
     src: url('/reader-mode/fonts/FiraSans-Book.ttf');
     font-weight: medium;
     }
 
 @font-face {
-    font-family: sans-serif;
+    font-family: FiraSans;
     src: url('/reader-mode/fonts/FiraSans-Bold.ttf');
     font-weight: bold;
 }
 
 @font-face {
-    font-family: sans-serif;
+    font-family: FiraSans;
     src: url('/reader-mode/fonts/FiraSans-Italic.ttf');
     font-style: italic;
 }
 
 @font-face {
-    font-family: sans-serif;
+    font-family: FiraSans;
     src: url('/reader-mode/fonts/FiraSans-BoldItalic.ttf');
     font-weight: bold;
     font-style: italic;
 }
 
 @font-face {
-    font-family: serif;
+    font-family: NewYorkMedium;
     src: url('/reader-mode/fonts/NewYorkMedium-Regular.otf');
 }
 
 @font-face {
-    font-family: serif;
+    font-family: NewYorkMedium;
     src: url('/reader-mode/fonts/NewYorkMedium-Bold.otf');
     font-weight: bold;
 }
 
 @font-face {
-    font-family: serif;
+    font-family: NewYorkMedium;
     src: url('/reader-mode/fonts/NewYorkMedium-RegularItalic.otf');
     font-style: italic;
 }
 
 @font-face {
-    font-family: serif;
+    font-family: NewYorkMedium;
     src: url('/reader-mode/fonts/NewYorkMedium-BoldItalic.otf');
     font-weight: bold;
     font-style: italic;
@@ -90,11 +90,11 @@ body {
 }
 
 .sans-serif {
-  font-family: sans-serif;
+  font-family: FiraSans;
 }
 
 .serif {
-  font-family: serif;
+  font-family: NewYorkMedium;
 }
 
 .message {

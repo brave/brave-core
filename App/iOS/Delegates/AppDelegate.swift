@@ -140,6 +140,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     // Start the keyboard helper to monitor and cache keyboard state.
     KeyboardHelper.defaultHelper.startObserving()
     DynamicFontHelper.defaultHelper.startObserving()
+    ReaderModeFonts.registerCustomFonts()
 
     MenuHelper.defaultHelper.setItems()
 

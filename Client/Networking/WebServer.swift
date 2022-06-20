@@ -72,12 +72,9 @@ public class WebServer {
 
   /// Convenience method to register all resources in the main bundle of a specific type. Will be mounted at $base/$module/$resource
   func registerMainBundleResourcesOfType(_ type: String, module: String) {
-    for path: String in Bundle.paths(forResourcesOfType: type, inDirectory: Bundle.current.bundlePath) {
-      if let resource = NSURL(string: path)?.lastPathComponent {
-        server.addGETHandler(forPath: "/\(module)/\(resource)", filePath: path as String, isAttachment: false, cacheAge: UInt.max, allowRangeRequests: true)
-      } else {
-        log.warning("Unable to locate resource at path: '\(path)'")
-      }
+    for url in Bundle.current.urls(forResourcesWithExtension: type, subdirectory: nil) ?? [] {
+      let resource = url.lastPathComponent
+      server.addGETHandler(forPath: "/\(module)/\(resource)", filePath: url.path, isAttachment: false, cacheAge: UInt.max, allowRangeRequests: true)
     }
   }
 
