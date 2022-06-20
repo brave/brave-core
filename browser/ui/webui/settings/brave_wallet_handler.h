@@ -41,6 +41,7 @@ class BraveWalletHandler : public settings::SettingsPageUIHandler {
   void SetActiveNetwork(const base::Value::List& args);
   void AddHiddenNetwork(const base::Value::List& args);
   void RemoveHiddenNetwork(const base::Value::List& args);
+  void SearchNetworks(const base::Value::List& args);
 
   PrefService* GetPrefs();
 

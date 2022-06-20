@@ -12,12 +12,15 @@ export class BraveWalletBrowserProxy {
    */
    setBraveWalletEnabled (value) {}
    getWeb3ProviderList () {}
-   isNativeWalletEnabled() {}
-   getAutoLockMinutes() {}
-   getNetworksList () {}
+   isNativeWalletEnabled () {}
+   getAutoLockMinutes () {}
+   getNetworksLis () {}
    removeEthereumChain (chainId) {}
    resetEthereumChain (chainId) {}
    addEthereumChain (value) {}
+   addHiddenNetwork (payload) {}
+   removeHiddenNetwork (payload) {}
+   searchNetworks (chain_id_filter, chain_name_filter) {}
    setActiveNetwork (chainId) {}
    resetTransactionInfo () {}
 }
@@ -31,7 +34,7 @@ export class BraveWalletBrowserProxyImpl {
     chrome.send('resetWallet', [])
   }
   /** @override */
-  resetTransactionInfo() {
+  resetTransactionInfo () {
     chrome.send('resetTransactionInfo', [])
   }
   /** @override */
@@ -39,32 +42,44 @@ export class BraveWalletBrowserProxyImpl {
     chrome.send('setBraveWalletEnabled', [value])
   }
 
-  getNetworksList () {
+  /** @override */
+  getNetworksList() {
     return sendWithPromise('getNetworksList')
   }
 
+  /** @override */
   setActiveNetwork (chainId) {
     return sendWithPromise('setActiveNetwork', chainId)
   }
 
+  /** @override */
   removeEthereumChain (chainId) {
     return sendWithPromise('removeEthereumChain', chainId)
   }
 
+  /** @override */
   resetEthereumChain (chainId) {
     return sendWithPromise('resetEthereumChain', chainId)
   }
 
+  /** @override */
   addEthereumChain (payload) {
     return sendWithPromise('addEthereumChain', payload)
   }
 
+  /** @override */
   addHiddenNetwork (payload) {
     return sendWithPromise('addHiddenNetwork', payload)
   }
 
+  /** @override */
   removeHiddenNetwork (payload) {
     return sendWithPromise('removeHiddenNetwork', payload)
+  }
+
+  /** @override */
+  searchNetworks (chain_id_filter, chain_name_filter) {
+    return sendWithPromise('searchNetworks', chain_id_filter, chain_name_filter)
   }
 
   /** @override */
@@ -78,7 +93,7 @@ export class BraveWalletBrowserProxyImpl {
   }
 
   /** @override */
-  getAutoLockMinutes() {
+  getAutoLockMinutes () {
     return sendWithPromise('getAutoLockMinutes')
   }
 }

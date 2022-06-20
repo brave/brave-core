@@ -11,7 +11,10 @@
 #include "base/test/task_environment.h"
 #include "brave/components/brave_wallet/browser/blockchain_list_parser.h"
 #include "brave/components/brave_wallet/browser/blockchain_registry.h"
+#include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
+
+using testing::ElementsAreArray;
 
 namespace brave_wallet {
 
@@ -117,6 +120,71 @@ mojom::BlockchainTokenPtr tsla = mojom::BlockchainToken::New(
     "",
     "0x65",
     mojom::CoinType::SOL);
+
+const char chain_list_json[] = R"(
+  [
+    {
+      "name": "Ethereum Mainnet",
+      "chain": "ETH",
+      "icon": "ethereum",
+      "rpc": [
+        "https://mainnet.infura.io/v3/${INFURA_API_KEY}",
+        "wss://mainnet.infura.io/ws/v3/${INFURA_API_KEY}",
+        "https://api.mycryptoapi.com/eth",
+        "https://cloudflare-eth.com"
+      ],
+      "faucets": [],
+      "nativeCurrency": { "name": "Ether", "symbol": "ETH", "decimals": 18 },
+      "infoURL": "https://ethereum.org",
+      "shortName": "eth",
+      "chainId": 1,
+      "networkId": 1,
+      "slip44": 60,
+      "ens": { "registry": "0x00000000000C2E074eC69A0dFb2997BA6C7d2e1e" },
+      "explorers": [
+        {
+          "name": "etherscan",
+          "url": "https://etherscan.io",
+          "standard": "EIP3091"
+        }
+      ]
+    },
+    {
+      "name": "Polygon Mainnet",
+      "chain": "Polygon",
+      "rpc": [
+        "https://polygon-rpc.com/",
+        "https://rpc-mainnet.matic.network",
+        "https://matic-mainnet.chainstacklabs.com",
+        "https://rpc-mainnet.maticvigil.com",
+        "https://rpc-mainnet.matic.quiknode.pro",
+        "https://matic-mainnet-full-rpc.bwarelabs.com"
+      ],
+      "faucets": [],
+      "nativeCurrency": { "name": "MATIC", "symbol": "MATIC", "decimals": 18 },
+      "infoURL": "https://polygon.technology/",
+      "shortName": "MATIC",
+      "chainId": 137,
+      "networkId": 137,
+      "slip44": 966,
+      "explorers": [
+        {
+          "name": "polygonscan",
+          "url": "https://polygonscan.com",
+          "standard": "EIP3091"
+        }
+      ]
+    }
+  ])";
+
+std::vector<std::string> GetChainIds(
+    const std::vector<mojom::NetworkInfoPtr>& networks) {
+  std::vector<std::string> result;
+  for (auto& network : networks) {
+    result.push_back(network->chain_id);
+  }
+  return result;
+}
 
 }  // namespace
 
@@ -427,6 +495,47 @@ TEST(BlockchainRegistryUnitTest, GetBuyUrlRamp) {
         run_loop.Quit();
       }));
   run_loop.Run();
+}
+
+TEST(BlockchainRegistryUnitTest, SearchNetworksFilter) {
+  base::test::TaskEnvironment task_environment;
+  auto* registry = BlockchainRegistry::GetInstance();
+
+  ChainList chain_list;
+  ASSERT_TRUE(ParseChainList(chain_list_json, &chain_list));
+  registry->UpdateChainList(std::move(chain_list));
+
+  EXPECT_THAT(GetChainIds(registry->SearchNetworks("", "")),
+              ElementsAreArray({"0x1", "0x89"}));
+  EXPECT_THAT(GetChainIds(registry->SearchNetworks("0x", "")),
+              ElementsAreArray({"0x1", "0x89"}));
+  EXPECT_THAT(GetChainIds(registry->SearchNetworks("0x1", "")),
+              ElementsAreArray({"0x1"}));
+  EXPECT_THAT(GetChainIds(registry->SearchNetworks("0x89", "")),
+              ElementsAreArray({"0x89"}));
+  EXPECT_THAT(GetChainIds(registry->SearchNetworks("", "Ethereum")),
+              ElementsAreArray({"0x1"}));
+  EXPECT_THAT(GetChainIds(registry->SearchNetworks("", "Polygon")),
+              ElementsAreArray({"0x89"}));
+
+  EXPECT_THAT(GetChainIds(registry->SearchNetworks("", "qwe")),
+              ElementsAreArray(std::vector<std::string>{}));
+  EXPECT_THAT(GetChainIds(registry->SearchNetworks("123", "")),
+              ElementsAreArray(std::vector<std::string>{}));
+}
+
+TEST(BlockchainRegistryUnitTest, SearchNetworksKnownOnesArePreferred) {
+  base::test::TaskEnvironment task_environment;
+  auto* registry = BlockchainRegistry::GetInstance();
+
+  ChainList chain_list;
+  ASSERT_TRUE(ParseChainList(chain_list_json, &chain_list));
+  chain_list[0]->chain_name = "Custom Name";
+  registry->UpdateChainList(std::move(chain_list));
+
+  auto found_networks = registry->SearchNetworks("0x1", "");
+  EXPECT_EQ(1u, found_networks.size());
+  EXPECT_EQ(found_networks[0]->chain_name, "Ethereum Mainnet");
 }
 
 }  // namespace brave_wallet

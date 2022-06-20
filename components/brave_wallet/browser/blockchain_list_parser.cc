@@ -10,6 +10,7 @@
 #include "base/json/json_reader.h"
 #include "base/logging.h"
 #include "base/strings/strcat.h"
+#include "base/strings/stringprintf.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 
 namespace {
@@ -22,6 +23,12 @@ bool ParseResultFromDict(const base::DictionaryValue* response_dict,
     return false;
   *output_val = *val;
   return true;
+}
+
+std::string EmptyIfNull(const std::string* str) {
+  if (str)
+    return *str;
+  return "";
 }
 
 }  // namespace
@@ -75,7 +82,7 @@ bool ParseTokenList(const std::string& json,
   }
 
   for (const auto blockchain_token_value_pair : response_dict->DictItems()) {
-    auto blockchain_token = brave_wallet::mojom::BlockchainToken::New();
+    auto blockchain_token = mojom::BlockchainToken::New();
     blockchain_token->contract_address = blockchain_token_value_pair.first;
     const base::DictionaryValue* blockchain_token_value;
     if (!blockchain_token_value_pair.second.GetAsDictionary(
@@ -136,6 +143,117 @@ bool ParseTokenList(const std::string& json,
 
 std::string GetTokenListKey(mojom::CoinType coin, const std::string& chain_id) {
   return base::StrCat({GetPrefKeyForCoinType(coin), ".", chain_id});
+}
+
+bool ParseChainList(const std::string& json, ChainList* result) {
+  DCHECK(result);
+
+  // [
+  //   {
+  //     "name": "Ethereum Mainnet",
+  //     "chain": "ETH",
+  //     "icon": "ethereum",
+  //     "rpc": [
+  //       "https://mainnet.infura.io/v3/${INFURA_API_KEY}",
+  //       "wss://mainnet.infura.io/ws/v3/${INFURA_API_KEY}",
+  //       "https://api.mycryptoapi.com/eth",
+  //       "https://cloudflare-eth.com"
+  //     ],
+  //     "faucets": [],
+  //     "nativeCurrency": { "name": "Ether", "symbol": "ETH", "decimals": 18 },
+  //     "infoURL": "https://ethereum.org",
+  //     "shortName": "eth",
+  //     "chainId": 1,
+  //     "networkId": 1,
+  //     "slip44": 60,
+  //     "ens": { "registry": "0x00000000000C2E074eC69A0dFb2997BA6C7d2e1e" },
+  //     "explorers": [
+  //       {
+  //         "name": "etherscan",
+  //         "url": "https://etherscan.io",
+  //         "standard": "EIP3091"
+  //       }
+  //     ]
+  //   },
+  // ]
+
+  base::JSONReader::ValueWithError value_with_error =
+      base::JSONReader::ReadAndReturnValueWithError(
+          json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
+                    base::JSONParserOptions::JSON_PARSE_RFC);
+  auto& records_v = value_with_error.value;
+  if (!records_v) {
+    LOG(ERROR) << "Invalid response, could not parse JSON. "
+               << value_with_error.error_message
+               << ", line: " << value_with_error.error_line
+               << ", col: " << value_with_error.error_column;
+    return false;
+  }
+
+  const base::Value::List* chain_list = records_v->GetIfList();
+  if (!chain_list) {
+    return false;
+  }
+
+  for (const auto& list_item : *chain_list) {
+    auto network = mojom::NetworkInfo::New();
+    auto* chain_item = list_item.GetIfDict();
+    if (!chain_item)
+      continue;
+
+    int chain_id = chain_item->FindInt("chainId").value_or(0);
+    if (!chain_id)
+      continue;
+    network->chain_id = base::StringPrintf("0x%x", chain_id);
+
+    network->chain_name = EmptyIfNull(chain_item->FindString("name"));
+    if (network->chain_name.empty())
+      continue;
+
+    if (auto* block_explorer_list = chain_item->FindList("explorers")) {
+      for (auto& item : *block_explorer_list) {
+        if (auto* explorer = item.GetIfDict()) {
+          if (auto* url = explorer->FindString("url")) {
+            if (GURL(*url).is_valid()) {
+              network->block_explorer_urls.push_back(*url);
+            }
+          }
+        }
+      }
+    }
+    if (network->block_explorer_urls.empty())
+      continue;
+
+    if (auto* rpc_list = chain_item->FindList("rpc")) {
+      for (auto& item : *rpc_list) {
+        if (auto* url = item.GetIfString()) {
+          if (GURL(*url).is_valid()) {
+            network->rpc_urls.push_back(*url);
+          }
+        }
+      }
+    }
+    if (network->rpc_urls.empty())
+      continue;
+
+    network->symbol = EmptyIfNull(
+        chain_item->FindStringByDottedPath("nativeCurrency.symbol"));
+    if (network->symbol.empty())
+      continue;
+    network->symbol_name =
+        EmptyIfNull(chain_item->FindStringByDottedPath("nativeCurrency.name"));
+    if (network->symbol_name.empty())
+      continue;
+    network->decimals =
+        chain_item->FindIntByDottedPath("nativeCurrency.decimals").value_or(0);
+    if (network->decimals == 0)
+      continue;
+    network->coin = mojom::CoinType::ETH;
+
+    result->push_back(std::move(network));
+  }
+
+  return true;
 }
 
 }  // namespace brave_wallet
