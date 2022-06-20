@@ -354,7 +354,9 @@ void SpeedreaderTabHelper::DOMContentLoaded(
   constexpr const char16_t kAddShowOriginalPageLink[] =
       uR"js(
     (function() {
-      const link = document.getElementById('show-original-page');
+      // element id is hardcoded in extractor.rs
+      const link = document.
+        getElementById('c93e2206-2f31-4ddc-9828-2bb8e8ed940e');
       if (!link)
         return;
       link.text = '$1';
@@ -364,11 +366,13 @@ void SpeedreaderTabHelper::DOMContentLoaded(
     })();
   )js";
 
-  const auto script = base::ReplaceStringPlaceholders(
-      kAddShowOriginalPageLink,
-      brave_l10n::GetLocalizedResourceUTF16String(
-          IDR_SPEEDREADER_SHOW_ORIGINAL_PAGE_LINK),
-      nullptr);
+  const auto link_text = brave_l10n::GetLocalizedResourceUTF16String(
+      IDR_SPEEDREADER_SHOW_ORIGINAL_PAGE_LINK);
+  // Make sure that the link text doesn't contain js injection
+  CHECK_EQ(std::u16string::npos, link_text.find(u'\''));
+
+  const auto script = base::ReplaceStringPlaceholders(kAddShowOriginalPageLink,
+                                                      link_text, nullptr);
 
   render_frame_host->ExecuteJavaScriptInIsolatedWorld(script, base::DoNothing(),
                                                       kIsolatedWorldId);

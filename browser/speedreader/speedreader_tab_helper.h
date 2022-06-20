@@ -39,6 +39,8 @@ class SpeedreaderTabHelper
   SpeedreaderTabHelper(const SpeedreaderTabHelper&) = delete;
   SpeedreaderTabHelper& operator=(SpeedreaderTabHelper&) = delete;
 
+  // Provides endpoint for renderer to call browser's fucntion. (f.e
+  // OnShowOriginalPage)
   static void BindSpeedreaderHost(
       mojo::PendingAssociatedReceiver<mojom::SpeedreaderHost> receiver,
       content::RenderFrameHost* rfh);
@@ -139,8 +141,10 @@ class SpeedreaderTabHelper
 
   bool single_shot_next_request_ =
       false;  // run speedreader once on next page load
-  bool show_original_page_ = false;
-  bool original_page_shown_ = false;
+
+  bool show_original_page_ = false;   // next request should not be distilled
+  bool original_page_shown_ = false;  // true if reload was performed using the
+                                      // 'show original page' link
 
   DistillState distill_state_ = DistillState::kNone;
   raw_ptr<SpeedreaderBubbleView> speedreader_bubble_ = nullptr;

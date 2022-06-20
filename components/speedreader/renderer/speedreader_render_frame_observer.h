@@ -10,15 +10,13 @@
 
 #include "content/public/renderer/render_frame.h"
 #include "content/public/renderer/render_frame_observer.h"
-#include "third_party/blink/public/web/web_navigation_type.h"
-#include "v8/include/v8.h"
 
 namespace speedreader {
 
 class SpeedreaderRenderFrameObserver : public content::RenderFrameObserver {
  public:
-  explicit SpeedreaderRenderFrameObserver(content::RenderFrame* render_frame,
-                                          int32_t world_id);
+  SpeedreaderRenderFrameObserver(content::RenderFrame* render_frame,
+                                 int32_t world_id);
   SpeedreaderRenderFrameObserver(const SpeedreaderRenderFrameObserver&) =
       delete;
   SpeedreaderRenderFrameObserver& operator=(

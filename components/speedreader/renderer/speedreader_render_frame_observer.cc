@@ -5,9 +5,6 @@
 
 #include "brave/components/speedreader/renderer/speedreader_render_frame_observer.h"
 
-#include <string>
-
-#include "base/no_destructor.h"
 #include "brave/components/speedreader/renderer/speedreader_js_handler.h"
 #include "content/public/renderer/render_frame.h"
 

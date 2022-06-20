@@ -331,7 +331,7 @@ pub fn post_process(dom: &mut Sink, root: Handle, meta: &Meta) {
         {
             let show_original_link =
                 dom::create_element_simple(dom, "a", "subhead metadata", None);
-            dom::set_attr("id", "show-original-page", show_original_link.clone(), true);
+            dom::set_attr("id", "c93e2206-2f31-4ddc-9828-2bb8e8ed940e", show_original_link.clone(), true);
             dom::set_attr("href", "", show_original_link.clone(), true);
             dom.append_before_sibling(&first_child, NodeOrText::AppendNode(show_original_link));
         }

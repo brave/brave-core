@@ -6,5 +6,6 @@
 module speedreader.mojom;
 
 interface SpeedreaderHost {
+  // The browser handler for clicking on the "Show original page" link.
   OnShowOriginalPage();
 };

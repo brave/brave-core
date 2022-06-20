@@ -330,7 +330,9 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, ShowOriginalPage) {
   constexpr const char kClickLink[] =
       R"js(
     (function() {
-      const link = document.getElementById('show-original-page');
+      // element id is hardcoded in extractor.rs
+      const link =
+        document.getElementById('c93e2206-2f31-4ddc-9828-2bb8e8ed940e');
       link.click();
     })();
   )js";
