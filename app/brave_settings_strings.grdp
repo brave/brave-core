@@ -66,13 +66,19 @@
     Use wide address bar
   </message>
   <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_SHOW_AUTOCOMPLETE_IN_ADDRESS_BAR" desc="The label for settings switch controlling the showing of autocomplete in address bar">
-    Show autocomplete in address bar
+    Show autocomplete suggestions in address bar
   </message>
-  <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_USE_AUTOCOMPLETE_TOP_SITES" desc="The label for settings switch controlling whether or not top sites show up in autocomplete">
-    Show top sites in autocomplete suggestions
+  <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_USE_AUTOCOMPLETE_TOP_SITES" desc="The label for settings checkbox controlling whether or not top sites show up in autocomplete">
+    Top sites
   </message>
-  <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_USE_AUTOCOMPLETE_BRAVE_SUGGESTED_SITES" desc="The label for settings switch controlling whether or not Brave suggested sites show up in autocomplete">
-    Show suggested sites in autocomplete suggestions
+  <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_USE_AUTOCOMPLETE_BRAVE_SUGGESTED_SITES" desc="The label for settings checkbox controlling whether or not Brave suggested sites show up in autocomplete">
+    Suggested sites
+  </message>
+  <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_USE_AUTOCOMPLETE_HISTORY" desc="The label for settings checkbox controlling whether or not browsing history shows up in autocomplete">
+    Browsing History
+  </message>
+  <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_USE_AUTOCOMPLETE_BOOKMARKS" desc="The label for settings checkbox controlling whether or not bookmarks show up in autocomplete">
+    Bookmarks
   </message>
   <message name="IDS_SETTINGS_SHOW_BRAVE_REWARDS_BUTTON_LABEL" desc="The label for settings switch controlling the visibility of Brave Rewards button">
     Show Brave Rewards icon in address bar

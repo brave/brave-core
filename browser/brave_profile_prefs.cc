@@ -40,6 +40,7 @@
 #include "brave/components/gemini/browser/buildflags/buildflags.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/ntp_background_images/buildflags/buildflags.h"
+#include "brave/components/omnibox/browser/brave_omnibox_prefs.h"
 #include "brave/components/search_engines/brave_prepopulated_engines.h"
 #include "brave/components/sidebar/buildflags/buildflags.h"
 #include "brave/components/speedreader/buildflags.h"
@@ -59,6 +60,7 @@
 #include "components/password_manager/core/common/password_manager_pref_names.h"
 #include "components/policy/core/common/policy_pref_names.h"
 #include "components/pref_registry/pref_registry_syncable.h"
+#include "components/prefs/pref_registry_simple.h"
 #include "components/privacy_sandbox/privacy_sandbox_prefs.h"
 #include "components/safe_browsing/core/common/safe_browsing_prefs.h"
 #include "components/search_engines/search_engines_pref_names.h"
@@ -388,10 +390,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterStringPref(kGeminiRefreshToken, "");
 #endif
 
-  // Autocomplete in address bar
-  registry->RegisterBooleanPref(kAutocompleteEnabled, true);
-  registry->RegisterBooleanPref(kTopSiteSuggestionsEnabled, true);
-  registry->RegisterBooleanPref(kBraveSuggestedSiteSuggestionsEnabled, false);
+  omnibox::RegisterBraveProfilePrefs(registry);
 
   // Password leak detection should be disabled
   registry->SetDefaultPrefValue(

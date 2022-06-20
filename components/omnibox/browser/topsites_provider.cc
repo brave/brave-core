@@ -12,7 +12,7 @@
 
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
-#include "brave/components/constants/pref_names.h"
+#include "brave/components/omnibox/browser/brave_omnibox_prefs.h"
 #include "components/omnibox/browser/autocomplete_input.h"
 #include "components/omnibox/browser/history_provider.h"
 #include "components/prefs/pref_service.h"
@@ -30,7 +30,7 @@ void TopSitesProvider::Start(const AutocompleteInput& input,
                             bool minimal_changes) {
   matches_.clear();
   auto* prefs = client_->GetPrefs();
-  if (!prefs || !prefs->GetBoolean(kTopSiteSuggestionsEnabled)) {
+  if (!prefs || !prefs->GetBoolean(omnibox::kTopSiteSuggestionsEnabled)) {
     return;
   }
 

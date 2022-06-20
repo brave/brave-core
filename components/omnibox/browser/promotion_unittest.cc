@@ -12,6 +12,7 @@
 #include "brave/components/brave_search_conversion/utils.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/l10n/browser/locale_helper.h"
+#include "brave/components/omnibox/browser/brave_omnibox_prefs.h"
 #include "brave/components/omnibox/browser/promotion_provider.h"
 #include "brave/components/omnibox/browser/promotion_utils.h"
 #include "brave/components/search_engines/brave_prepopulated_engines.h"
@@ -50,10 +51,10 @@ class OmniboxPromotionTest : public testing::Test {
 
   void SetUp() override {
     RegisterPrefs(pref_service_.registry());
-    pref_service_.registry()->RegisterBooleanPref(kTopSiteSuggestionsEnabled,
-                                                  false);
-    pref_service_.registry()->RegisterBooleanPref(
-        kBraveSuggestedSiteSuggestionsEnabled, false);
+    omnibox::RegisterBraveProfilePrefs(pref_service_.registry());
+    pref_service_.SetBoolean(omnibox::kTopSiteSuggestionsEnabled, false);
+    pref_service_.SetBoolean(omnibox::kBraveSuggestedSiteSuggestionsEnabled,
+                             false);
 
     SetMockLocale("en-US");
   }
