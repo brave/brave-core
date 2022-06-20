@@ -88,14 +88,11 @@ public class BraveWalletDAppsActivity extends BraveWalletBaseActivity
                         if (activityType == null) return;
                         switch (activityType) {
                             case GET_ENCRYPTION_PUBLIC_KEY_REQUEST:
+                            case DECRYPT_REQUEST:
                                 processPendingDappsRequest();
                                 break;
                             case FINISH:
                                 finish();
-                                // need to clear the state for a fresh state next time
-                                // TODO (pavi): update the flow with dapps model
-                                // (under-development) and get rid of explicit clear state call
-                                activity.getWalletModel().getCryptoModel().clearDappsState();
                                 break;
                             default:
                                 break;
@@ -215,9 +212,8 @@ public class BraveWalletDAppsActivity extends BraveWalletBaseActivity
             mFragment = new AddSwitchChainNetworkFragment(mActivityType, this);
         } else if (mActivityType == ActivityType.CONNECT_ACCOUNT) {
             mFragment = new ConnectAccountFragment();
-        } else if (mActivityType == ActivityType.DECRYPT_REQUEST) {
-            // TODO(sergz): Implement decrypt request screen
-        } else if (mActivityType == GET_ENCRYPTION_PUBLIC_KEY_REQUEST) {
+        } else if (mActivityType == GET_ENCRYPTION_PUBLIC_KEY_REQUEST
+                || mActivityType == ActivityType.DECRYPT_REQUEST) {
             mFragment = EncryptionKeyFragment.newInstance(mActivityType);
         }
         showCurrentFragment();
@@ -228,6 +224,18 @@ public class BraveWalletDAppsActivity extends BraveWalletBaseActivity
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             ft.replace(R.id.frame_layout, mFragment);
             ft.commit();
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        // need to clear the state for a fresh state next time
+        // TODO (pavi): update the flow with dapps model
+        // (under-development) and get rid of explicit clear state call
+        BraveActivity activity = BraveActivity.getBraveActivity();
+        if (activity != null) {
+            activity.getWalletModel().getCryptoModel().clearDappsState();
         }
     }
 }
