@@ -28,18 +28,14 @@ bool ChromePermissionsClient::BraveCanBypassEmbeddingOriginCheck(
     ContentSettingsType type) {
   // Since requesting_origin has been overwritten by us to add address info,
   // it will fail Chromium's origin check because requesting_origin is now
-  // different from the embedding_origin. To address this, we get the original
-  // requesting origin back and use it to check with embedding_origin instead,
-  // and let it bypass the origin check from Chromium when the original
-  // requesting_origin & embedding_origin are the same.
+  // different from the embedding_origin.
   url::Origin original_requesting_origin;
   if ((type == ContentSettingsType::BRAVE_ETHEREUM ||
        type == ContentSettingsType::BRAVE_SOLANA) &&
       brave_wallet::ParseRequestingOriginFromSubRequest(
           permissions::ContentSettingsTypeToRequestType(type),
           url::Origin::Create(requesting_origin), &original_requesting_origin,
-          nullptr) &&
-      original_requesting_origin == url::Origin::Create(embedding_origin)) {
+          nullptr)) {
     return true;
   }
 

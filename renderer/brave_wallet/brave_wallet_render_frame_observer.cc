@@ -45,11 +45,8 @@ bool BraveWalletRenderFrameObserver::CanCreateProvider() {
     return false;
   }
 
-  // Wallet provider objects won't be generated for third party iframe
-  v8::Isolate* isolate = blink::MainThreadIsolate();
-  if ((!render_frame()->IsMainFrame() &&
-       render_frame()->GetWebFrame()->IsCrossOriginToOutermostMainFrame()) ||
-      !render_frame()->GetWebFrame()->GetDocument().IsSecureContext()) {
+  // Wallet provider objects should only be created in secure contexts
+  if (!render_frame()->GetWebFrame()->GetDocument().IsSecureContext()) {
     return false;
   }
 
@@ -64,6 +61,7 @@ void BraveWalletRenderFrameObserver::DidCreateScriptContext(
 
   bool is_main_world = world_id == content::ISOLATED_WORLD_ID_GLOBAL;
   auto dynamic_params = get_dynamic_params_callback_.Run();
+  v8::Isolate* isolate = blink::MainThreadIsolate();
   if (render_frame()->GetWebFrame()->GetDocument().IsDOMFeaturePolicyEnabled(
           isolate->GetCurrentContext(), "ethereum")) {
     if (!js_ethereum_provider_) {
@@ -87,6 +85,7 @@ void BraveWalletRenderFrameObserver::DidClearWindowObject() {
   if (!CanCreateProvider())
     return;
 
+  v8::Isolate* isolate = blink::MainThreadIsolate();
   if (base::FeatureList::IsEnabled(
           brave_wallet::features::kBraveWalletSolanaFeature) &&
       base::FeatureList::IsEnabled(
