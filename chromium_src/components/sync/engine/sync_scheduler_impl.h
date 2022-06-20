@@ -12,11 +12,15 @@ extern const char kNigoriFolderNotReadyError[];
 
 }  // namespace syncer
 
-#define DoPollSyncCycleJob                                                    \
-  HandleBraveConfigurationFailure(                                            \
-      const ModelNeutralState& model_neutral_state);                          \
-  void SchedulePermanentlyDeleteAccount(base::OnceClosure callback) override; \
-  void PermanentlyDeleteAccountImpl(base::OnceClosure callback);              \
+#include "components/sync/protocol/sync_protocol_error.h"
+
+#define DoPollSyncCycleJob                                                   \
+  HandleBraveConfigurationFailure(                                           \
+      const ModelNeutralState& model_neutral_state);                         \
+  void SchedulePermanentlyDeleteAccount(                                     \
+      base::OnceCallback<void(const SyncProtocolError&)> callback) override; \
+  void PermanentlyDeleteAccountImpl(                                         \
+      base::OnceCallback<void(const SyncProtocolError&)> callback);          \
   void DoPollSyncCycleJob
 
 #include "src/components/sync/engine/sync_scheduler_impl.h"

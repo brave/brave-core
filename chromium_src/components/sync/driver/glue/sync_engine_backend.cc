@@ -5,9 +5,12 @@
 
 #include "src/components/sync/driver/glue/sync_engine_backend.cc"
 
+#include "src/components/sync/protocol/sync_protocol_error.h"
+
 namespace syncer {
 
-void SyncEngineBackend::PermanentlyDeleteAccount(base::OnceClosure callback) {
+void SyncEngineBackend::PermanentlyDeleteAccount(
+    base::OnceCallback<void(const SyncProtocolError&)> callback) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   sync_manager_->PermanentlyDeleteAccount(std::move(callback));
 }

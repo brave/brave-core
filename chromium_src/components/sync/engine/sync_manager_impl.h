@@ -12,7 +12,7 @@
 #include "components/sync/engine/sync_manager.h"
 
 #define ShutdownOnSyncThread         \
-  Unused(){};                        \
+  Unused() {}                        \
   friend class BraveSyncManagerImpl; \
   void ShutdownOnSyncThread
 

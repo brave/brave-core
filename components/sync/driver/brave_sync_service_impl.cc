@@ -15,6 +15,7 @@
 #include "brave/components/sync/driver/brave_sync_auth_manager.h"
 #include "brave/components/sync/driver/sync_service_impl_delegate.h"
 #include "components/prefs/pref_service.h"
+#include "components/sync/protocol/sync_protocol_error.h"
 
 namespace syncer {
 
@@ -175,14 +176,52 @@ SyncServiceCrypto* BraveSyncServiceImpl::GetCryptoForTests() {
   return &crypto_;
 }
 
-void BraveSyncServiceImpl::OnAccountDeleted() {
-  DLOG(ERROR) << "[BraveSync] " << __func__;
+namespace {
+const int kMaxPermanentlyDeleteSyncAccountAttempts = 5;
+const int kDelayBetweenDeleteSyncAccountAttemptsMsec = 500;
+}  // namespace
+
+void BraveSyncServiceImpl::OnAccountDeleted(
+    const int current_attempt,
+    base::OnceCallback<void(const SyncProtocolError&)> callback,
+    const SyncProtocolError& sync_protocol_error) {
+  if (sync_protocol_error.error_type == SYNC_SUCCESS) {
+    std::move(callback).Run(sync_protocol_error);
+  } else if (current_attempt < kMaxPermanentlyDeleteSyncAccountAttempts) {
+    base::SequencedTaskRunnerHandle::Get()->PostDelayedTask(
+        FROM_HERE,
+        base::BindOnce(&BraveSyncServiceImpl::PermanentlyDeleteAccountImpl,
+                       weak_ptr_factory_.GetWeakPtr(), current_attempt + 1,
+                       std::move(callback)),
+        base::Milliseconds(kDelayBetweenDeleteSyncAccountAttemptsMsec));
+  } else {
+    std::move(callback).Run(sync_protocol_error);
+  }
 }
 
-void BraveSyncServiceImpl::PermanentlyDeleteAccount() {
-  DCHECK(engine_.get());
+void BraveSyncServiceImpl::PermanentlyDeleteAccountImpl(
+    const int current_attempt,
+    base::OnceCallback<void(const SyncProtocolError&)> callback) {
+  if (!engine_) {
+    // We can reach here if two devices almost at the same time will initiate
+    // the deletion procedure
+    SyncProtocolError sync_protocol_error;
+    sync_protocol_error.error_type = SYNC_SUCCESS;
+    std::move(callback).Run(sync_protocol_error);
+    return;
+  }
+
+  DCHECK_GE(current_attempt, 1);
+  DCHECK_NE(current_attempt, 10);
+
   engine_->PermanentlyDeleteAccount(base::BindOnce(
-      &BraveSyncServiceImpl::OnAccountDeleted, weak_ptr_factory_.GetWeakPtr()));
+      &BraveSyncServiceImpl::OnAccountDeleted, weak_ptr_factory_.GetWeakPtr(),
+      current_attempt, std::move(callback)));
+}
+
+void BraveSyncServiceImpl::PermanentlyDeleteAccount(
+    base::OnceCallback<void(const SyncProtocolError&)> callback) {
+  PermanentlyDeleteAccountImpl(1, std::move(callback));
 }
 
 }  // namespace syncer

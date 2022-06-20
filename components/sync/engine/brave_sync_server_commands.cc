@@ -5,11 +5,14 @@
 
 #include "brave/components/sync/engine/brave_sync_server_commands.h"
 
+#include <utility>
+
 #include "base/callback.h"
 #include "base/logging.h"
 #include "base/sequence_checker.h"
 #include "components/sync/engine/syncer_proto_util.h"
 #include "components/sync/protocol/sync.pb.h"
+#include "components/sync/protocol/sync_protocol_error.h"
 
 namespace syncer {
 
@@ -29,7 +32,7 @@ void InitClearServerDataContext(SyncCycle* cycle,
 
 void BraveSyncServerCommands::PermanentlyDeleteAccount(
     SyncCycle* cycle,
-    base::OnceClosure callback) {
+    base::OnceCallback<void(const SyncProtocolError&)> callback) {
   sync_pb::ClientToServerMessage message;
   InitClearServerDataContext(cycle, &message);
   SyncerProtoUtil::AddRequiredFieldsToClientToServerMessage(cycle, &message);
@@ -54,7 +57,11 @@ void BraveSyncServerCommands::PermanentlyDeleteAccount(
             << " response.error_message()=" << response.error_message();
   }
 
-  std::move(callback).Run();
+  SyncProtocolError sync_protocol_error =
+      SyncerProtoUtil::GetProtocolErrorFromResponse(response, cycle->context());
+  sync_protocol_error.error_description = response.error_message();
+
+  std::move(callback).Run(sync_protocol_error);
 }
 
 }  // namespace syncer

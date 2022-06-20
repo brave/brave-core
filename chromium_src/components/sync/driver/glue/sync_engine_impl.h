@@ -7,14 +7,15 @@
 #define BRAVE_CHROMIUM_SRC_COMPONENTS_SYNC_DRIVER_GLUE_SYNC_ENGINE_IMPL_H_
 
 #include "base/callback_forward.h"
-
 // chromium_src/components/sync/engine/sync_engine.h also redefines
 // DisableProtocolEventForwarding include explicitly it to avoid compilation
 // error 'DisableProtocolEventForwarding' macro redefined
 #include "components/sync/engine/sync_engine.h"
+#include "components/sync/protocol/sync_protocol_error.h"
 
-#define DisableProtocolEventForwarding                           \
-  PermanentlyDeleteAccount(base::OnceClosure callback) override; \
+#define DisableProtocolEventForwarding                                       \
+  PermanentlyDeleteAccount(                                                  \
+      base::OnceCallback<void(const SyncProtocolError&)> callback) override; \
   void DisableProtocolEventForwarding
 
 #include "src/components/sync/driver/glue/sync_engine_impl.h"

@@ -126,7 +126,12 @@ export class SettingsBraveSyncConfigureElement extends SettingsBraveSyncConfigur
   }
 
   async onPermanentlyDeleteSyncAccount_(e: Event) {
-    await this.browserProxy_.permanentlyDeleteSyncAccount();
+    let error_text = 'SUCCESS'
+    try {
+      error_text = await this.browserProxy_.permanentlyDeleteSyncAccount()
+    } catch (e) {
+      error_text = e
+    }
   }
 
   async onDeleteDevice_(e: Event) {

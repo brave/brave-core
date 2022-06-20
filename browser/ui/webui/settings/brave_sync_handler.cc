@@ -23,6 +23,7 @@
 #include "chrome/browser/sync/device_info_sync_service_factory.h"
 #include "chrome/browser/sync/sync_service_factory.h"
 #include "components/sync/driver/sync_user_settings.h"
+#include "components/sync/protocol/sync_protocol_error.h"
 #include "components/sync_device_info/device_info_sync_service.h"
 #include "components/sync_device_info/device_info_tracker.h"
 #include "components/sync_device_info/local_device_info_provider.h"
@@ -260,6 +261,17 @@ void BraveSyncHandler::HandleReset(const base::Value::List& args) {
                                        std::move(callback_id_arg)));
 }
 
+void BraveSyncHandler::OnAccountPermanentlyDeleted(
+    base::Value callback_id,
+    const syncer::SyncProtocolError& sync_protocol_error) {
+  if (sync_protocol_error.error_description.empty()) {
+    ResolveJavascriptCallback(callback_id, base::Value(true));
+  } else {
+    RejectJavascriptCallback(
+        callback_id, base::Value(sync_protocol_error.error_description));
+  }
+}
+
 void BraveSyncHandler::HandlePermanentlyDeleteAccount(
     const base::Value::List& args) {
   AllowJavascript();
@@ -271,10 +283,10 @@ void BraveSyncHandler::HandlePermanentlyDeleteAccount(
     return;
   }
 
-  sync_service->PermanentlyDeleteAccount();
-
-  ResolveJavascriptCallback(args[0].Clone(), base::Value(true));
-  return;
+  base::Value callback_id_arg(args[0].Clone());
+  sync_service->PermanentlyDeleteAccount(base::BindOnce(
+      &BraveSyncHandler::OnAccountPermanentlyDeleted,
+      weak_ptr_factory_.GetWeakPtr(), std::move(callback_id_arg)));
 }
 
 void BraveSyncHandler::HandleDeleteDevice(const base::Value::List& args) {
