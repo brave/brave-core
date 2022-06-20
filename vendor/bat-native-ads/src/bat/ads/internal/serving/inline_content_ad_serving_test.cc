@@ -12,27 +12,17 @@
 #include "bat/ads/internal/creatives/inline_content_ads/creative_inline_content_ad_unittest_util.h"
 #include "bat/ads/internal/creatives/inline_content_ads/creative_inline_content_ads_database_table.h"
 #include "bat/ads/internal/creatives/inline_content_ads/inline_content_ad_builder.h"
-#include "bat/ads/internal/geographic/subdivision/subdivision_targeting.h"
-#include "bat/ads/internal/resources/behavioral/anti_targeting/anti_targeting_resource.h"
 #include "bat/ads/internal/serving/permission_rules/user_activity_permission_rule_unittest_util.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
 namespace ads {
 
-class BatAdsInlineContentServingIntegrationTest : public UnitTestBase {
+class BatAdsInlineContentAdServingIntegrationTest : public UnitTestBase {
  protected:
-  BatAdsInlineContentServingIntegrationTest()
-      : subdivision_targeting_(
-            std::make_unique<geographic::SubdivisionTargeting>()),
-        anti_targeting_resource_(std::make_unique<resource::AntiTargeting>()),
-        serving_(std::make_unique<inline_content_ads::Serving>(
-            subdivision_targeting_.get(),
-            anti_targeting_resource_.get())),
-        database_table_(
-            std::make_unique<database::table::CreativeInlineContentAds>()) {}
+  BatAdsInlineContentAdServingIntegrationTest() = default;
 
-  ~BatAdsInlineContentServingIntegrationTest() override = default;
+  ~BatAdsInlineContentAdServingIntegrationTest() override = default;
 
   void SetUp() override {
     UnitTestBase::SetUpForTesting(/* is_integration_test */ true);
@@ -83,18 +73,13 @@ class BatAdsInlineContentServingIntegrationTest : public UnitTestBase {
   }
 
   void Save(const CreativeInlineContentAdList& creative_ads) {
-    database_table_->Save(creative_ads,
-                          [](const bool success) { ASSERT_TRUE(success); });
+    database::table::CreativeInlineContentAds database_table;
+    database_table.Save(creative_ads,
+                        [](const bool success) { ASSERT_TRUE(success); });
   }
-
-  std::unique_ptr<geographic::SubdivisionTargeting> subdivision_targeting_;
-  std::unique_ptr<resource::AntiTargeting> anti_targeting_resource_;
-  std::unique_ptr<inline_content_ads::Serving> serving_;
-
-  std::unique_ptr<database::table::CreativeInlineContentAds> database_table_;
 };
 
-TEST_F(BatAdsInlineContentServingIntegrationTest, ServeAd) {
+TEST_F(BatAdsInlineContentAdServingIntegrationTest, ServeAd) {
   // Arrange
   ForceUserActivityPermissionRule();
 
@@ -104,7 +89,7 @@ TEST_F(BatAdsInlineContentServingIntegrationTest, ServeAd) {
   Save(creative_ads);
 
   // Act
-  serving_->MaybeServeAd(
+  GetAds()->GetInlineContentAd(
       "200x100",
       [&creative_ad](const bool success, const std::string& dimensions,
                      const InlineContentAdInfo& ad) {
@@ -119,7 +104,7 @@ TEST_F(BatAdsInlineContentServingIntegrationTest, ServeAd) {
   // Assert
 }
 
-TEST_F(BatAdsInlineContentServingIntegrationTest,
+TEST_F(BatAdsInlineContentAdServingIntegrationTest,
        DoNotServeAdForUnavailableDimensions) {
   // Arrange
   ForceUserActivityPermissionRule();
@@ -130,14 +115,14 @@ TEST_F(BatAdsInlineContentServingIntegrationTest,
   Save(creative_ads);
 
   // Act
-  serving_->MaybeServeAd(
+  GetAds()->GetInlineContentAd(
       "?x?", [](const bool success, const std::string& dimensions,
                 const InlineContentAdInfo& ad) { EXPECT_FALSE(success); });
 
   // Assert
 }
 
-TEST_F(BatAdsInlineContentServingIntegrationTest,
+TEST_F(BatAdsInlineContentAdServingIntegrationTest,
        DoNotServeAdIfNotAllowedDueToPermissionRules) {
   // Arrange
   CreativeInlineContentAdList creative_ads;
@@ -146,7 +131,7 @@ TEST_F(BatAdsInlineContentServingIntegrationTest,
   Save(creative_ads);
 
   // Act
-  serving_->MaybeServeAd(
+  GetAds()->GetInlineContentAd(
       "200x100", [](const bool success, const std::string& dimensions,
                     const InlineContentAdInfo& ad) { EXPECT_FALSE(success); });
 

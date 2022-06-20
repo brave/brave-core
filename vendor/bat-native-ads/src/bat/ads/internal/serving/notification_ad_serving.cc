@@ -19,6 +19,7 @@
 #include "bat/ads/internal/creatives/notification_ads/notification_ad_builder.h"
 #include "bat/ads/internal/deprecated/client/client_state_manager.h"
 #include "bat/ads/internal/geographic/subdivision/subdivision_targeting.h"
+#include "bat/ads/internal/prefs/pref_manager.h"
 #include "bat/ads/internal/privacy/p2a/opportunities/p2a_opportunity.h"
 #include "bat/ads/internal/resources/behavioral/anti_targeting/anti_targeting_resource.h"
 #include "bat/ads/internal/segments/segments_aliases.h"
@@ -55,9 +56,13 @@ Serving::Serving(geographic::SubdivisionTargeting* subdivision_targeting,
   const int version = features::GetServingVersion();
   eligible_ads_ = EligibleAdsFactory::Build(version, subdivision_targeting,
                                             anti_targeting_resource);
+
+  PrefManager::Get()->AddObserver(this);
 }
 
-Serving::~Serving() = default;
+Serving::~Serving() {
+  PrefManager::Get()->RemoveObserver(this);
+}
 
 void Serving::AddObserver(NotificationAdServingObserver* observer) {
   DCHECK(observer);
@@ -67,12 +72,6 @@ void Serving::AddObserver(NotificationAdServingObserver* observer) {
 void Serving::RemoveObserver(NotificationAdServingObserver* observer) {
   DCHECK(observer);
   observers_.RemoveObserver(observer);
-}
-
-void Serving::OnPrefChanged(const std::string& path) {
-  if (path == prefs::kAdsPerHour) {
-    OnAdsPerHourPrefChanged();
-  }
 }
 
 void Serving::StartServingAdsAtRegularIntervals() {
@@ -161,22 +160,6 @@ void Serving::MaybeServeAd() {
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-
-void Serving::OnAdsPerHourPrefChanged() {
-  const int64_t ads_per_hour = settings::GetAdsPerHour();
-  BLOG(1, "Maximum ads per hour changed to " << ads_per_hour);
-
-  if (!ShouldServeAdsAtRegularIntervals()) {
-    return;
-  }
-
-  if (ads_per_hour == 0) {
-    StopServingAdsAtRegularIntervals();
-    return;
-  }
-
-  MaybeServeAdAtNextRegularInterval();
-}
 
 bool Serving::IsSupported() const {
   if (!eligible_ads_) {
@@ -306,6 +289,28 @@ void Serving::NotifyFailedToServeNotificationAd() const {
   for (NotificationAdServingObserver& observer : observers_) {
     observer.OnFailedToServeNotificationAd();
   }
+}
+
+void Serving::OnPrefChanged(const std::string& path) {
+  if (path == prefs::kAdsPerHour) {
+    OnAdsPerHourPrefChanged();
+  }
+}
+
+void Serving::OnAdsPerHourPrefChanged() {
+  const int64_t ads_per_hour = settings::GetAdsPerHour();
+  BLOG(1, "Maximum ads per hour changed to " << ads_per_hour);
+
+  if (!ShouldServeAdsAtRegularIntervals()) {
+    return;
+  }
+
+  if (ads_per_hour == 0) {
+    StopServingAdsAtRegularIntervals();
+    return;
+  }
+
+  MaybeServeAdAtNextRegularInterval();
 }
 
 }  // namespace notification_ads

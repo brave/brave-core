@@ -225,6 +225,9 @@ TEST_F(BatAdsNewTabPageAdTest, FireEventIfNotExceededAdsPerHourCap) {
   // Arrange
   ForcePermissionRules();
 
+  const std::string placement_id =
+      base::GUID::GenerateRandomV4().AsLowercaseString();
+
   const CreativeNewTabPageAdInfo& creative_ad = BuildAndSaveCreativeAd();
   const AdEventInfo& ad_event = BuildAdEvent(creative_ad, AdType::kNewTabPageAd,
                                              ConfirmationType::kViewed, Now());
@@ -233,10 +236,7 @@ TEST_F(BatAdsNewTabPageAdTest, FireEventIfNotExceededAdsPerHourCap) {
 
   FireAdEvents(ad_event, ads_per_hour - 1);
 
-  AdvanceClockBy(base::Minutes(5));  // Advance past minimum wait time
-
-  const std::string placement_id =
-      base::GUID::GenerateRandomV4().AsLowercaseString();
+  AdvanceClockBy(features::GetNewTabPageAdsMinimumWaitTime());
 
   // Act
   new_tab_page_ad_->FireEvent(placement_id, creative_ad.creative_instance_id,
