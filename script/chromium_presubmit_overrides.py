@@ -85,9 +85,7 @@ def _modify_canned_checks(canned_checks):
     #    the directory. Upstream does it to catch breakages in unmodified files,
     #    but it's very resource intensive, moreover for our setup it covers all
     #    files from vendor and other directories which we should ignore.
-    # 2. Limit -j to 32 on Windows because of Python multiprocessing bug.
-    #    https://crbug.com/1190269 for details.
-    # 3. Set is_committing=True to force PresubmitErrors instead of Warnings.
+    # 2. Set is_committing=True to force PresubmitErrors instead of Warnings.
     @chromium_presubmit_utils.override_check(canned_checks)
     def GetPylint(original_check, input_api, *args, **kwargs):
         def _FetchAllFiles(_, input_api, files_to_check, files_to_skip):
@@ -98,17 +96,11 @@ def _modify_canned_checks(canned_checks):
                 for f in input_api.AffectedSourceFiles(src_filter)
             ]
 
-        cpu_count = input_api.cpu_count
-        if input_api.is_windows:
-            cpu_count = min(cpu_count, 32)
-
         with chromium_presubmit_utils.override_scope_function(
                 input_api.canned_checks, _FetchAllFiles):
             with chromium_presubmit_utils.override_scope_variable(
-                    input_api, 'cpu_count', cpu_count):
-                with chromium_presubmit_utils.override_scope_variable(
-                        input_api, 'is_committing', True):
-                    return original_check(input_api, *args, **kwargs)
+                    input_api, 'is_committing', True):
+                return original_check(input_api, *args, **kwargs)
 
 
 # Override the first ever check defined in PRESUBMIT.py to make changes to
