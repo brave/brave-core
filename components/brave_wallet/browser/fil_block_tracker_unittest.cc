@@ -9,11 +9,9 @@
 #include <string>
 
 #include "base/test/bind.h"
-#include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
-#include "brave/components/brave_wallet/common/features.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "services/data_decoder/public/cpp/test_support/in_process_data_decoder.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
@@ -55,9 +53,6 @@ class FilBlockTrackerUnitTest : public testing::Test {
   ~FilBlockTrackerUnitTest() override = default;
 
   void SetUp() override {
-    feature_list_.InitAndEnableFeatureWithParameters(
-        brave_wallet::features::kBraveWalletFilecoinFeature,
-        {{brave_wallet::features::kFilecoinTestnetEnabled.name, "true"}});
     brave_wallet::RegisterProfilePrefs(prefs_.registry());
     json_rpc_service_.reset(
         new JsonRpcService(shared_url_loader_factory_, &prefs_));
@@ -86,7 +81,6 @@ class FilBlockTrackerUnitTest : public testing::Test {
   }
 
  protected:
-  base::test::ScopedFeatureList feature_list_;
   uint64_t response_height_ = 0;
   base::test::TaskEnvironment task_environment_;
   sync_preferences::TestingPrefServiceSyncable prefs_;

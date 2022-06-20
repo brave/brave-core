@@ -26,7 +26,6 @@ namespace brave_wallet {
 
 bool IsNativeWalletEnabled();
 bool IsFilecoinEnabled();
-bool IsFilecoinTestnetEnabled();
 bool IsSolanaEnabled();
 bool IsDappsSupportEnabled();
 

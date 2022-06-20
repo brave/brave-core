@@ -9,7 +9,6 @@
 
 #include "base/strings/string_number_conversions.h"
 #include "base/test/bind.h"
-#include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
@@ -17,7 +16,6 @@
 #include "brave/components/brave_wallet/browser/fil_tx_state_manager.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
-#include "brave/components/brave_wallet/common/features.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "services/data_decoder/public/cpp/test_support/in_process_data_decoder.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
@@ -36,9 +34,6 @@ class FilNonceTrackerUnitTest : public testing::Test {
   }
 
   void SetUp() override {
-    feature_list_.InitAndEnableFeatureWithParameters(
-        brave_wallet::features::kBraveWalletFilecoinFeature,
-        {{brave_wallet::features::kFilecoinTestnetEnabled.name, "true"}});
     brave_wallet::RegisterProfilePrefs(prefs_.registry());
   }
 
@@ -74,7 +69,6 @@ class FilNonceTrackerUnitTest : public testing::Test {
   }
 
  private:
-  base::test::ScopedFeatureList feature_list_;
   std::string GetResultString() const {
     return "{\"id\":1,\"jsonrpc\":\"2.0\",\"result\":" +
            base::NumberToString(transaction_count_) + "}";

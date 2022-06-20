@@ -185,13 +185,10 @@ std::string FilecoinKeyring::GetAddressInternal(HDKeyBase* hd_key_base) const {
   if (!hd_key_base)
     return std::string();
   HDKey* hd_key = static_cast<HDKey*>(hd_key_base);
-  // TODO(cypt4): Get network from settings.
+  // TODO(spylogsster): Get network from settings.
   return FilAddress::FromUncompressedPublicKey(
              hd_key->GetUncompressedPublicKey(),
-             mojom::FilecoinAddressProtocol::SECP256K1,
-             // See description of IsFilecoinTestnetEnabled
-             IsFilecoinTestnetEnabled() ? mojom::kFilecoinTestnet
-                                        : mojom::kFilecoinMainnet)
+             mojom::FilecoinAddressProtocol::SECP256K1, mojom::kFilecoinTestnet)
       .EncodeAsString();
 }
 
