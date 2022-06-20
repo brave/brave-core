@@ -17,10 +17,8 @@ import org.chromium.brave_wallet.mojom.JsonRpcService;
 import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.brave_wallet.mojom.TransactionInfo;
 import org.chromium.brave_wallet.mojom.TransactionStatus;
-
 import org.chromium.chrome.browser.crypto_wallet.util.PendingTxHelper;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
-
 
 public class DappsModel {
     private JsonRpcService mJsonRpcService;
@@ -32,8 +30,8 @@ public class DappsModel {
     public final LiveData<Boolean> mWalletIconNotificationVisible = _mWalletIconNotificationVisible;
     private final Object mLock = new Object();
 
-    public DappsModel(JsonRpcService jsonRpcService,
-            BraveWalletService braveWalletService, PendingTxHelper pendingTxHelper) {
+    public DappsModel(JsonRpcService jsonRpcService, BraveWalletService braveWalletService,
+            PendingTxHelper pendingTxHelper) {
         mBraveWalletService = braveWalletService;
         mJsonRpcService = jsonRpcService;
         mPendingTxHelper = pendingTxHelper;
