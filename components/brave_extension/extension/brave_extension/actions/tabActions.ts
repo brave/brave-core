@@ -28,3 +28,10 @@ export const tabDataChanged: actions.TabDataChanged = (tabId, changeInfo, tab) =
     tab
   }
 }
+
+export function tabRemoved (tabId: number): actions.TabRemovedReturn {
+  return {
+    type: types.TAB_REMOVED,
+    tabId
+  }
+}

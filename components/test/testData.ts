@@ -202,7 +202,8 @@ export const getMockChrome = () => {
       },
       onActivated: new ChromeEvent(),
       onCreated: new ChromeEvent(),
-      onUpdated: new ChromeEvent()
+      onUpdated: new ChromeEvent(),
+      onRemoved: new ChromeEvent()
     },
     windows: {
       onFocusChanged: new ChromeEvent(),
