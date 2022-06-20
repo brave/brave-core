@@ -8,6 +8,7 @@
 
 #include "base/memory/raw_ptr.h"
 #include "base/memory/scoped_refptr.h"
+#include "build/build_config.h"
 #include "chrome/browser/ui/views/frame/browser_frame.h"
 
 class CustomThemeSupplier;
@@ -20,7 +21,9 @@ class BraveBrowserFrame : public BrowserFrame {
   ~BraveBrowserFrame() override;
 
   // BrowserFrame overrides:
+#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC)
   const ui::NativeTheme* GetNativeTheme() const override;
+#endif
   ui::ColorProviderManager::ThemeInitializerSupplier* GetCustomTheme()
       const override;
 

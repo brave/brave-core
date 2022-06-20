@@ -25,6 +25,7 @@ BraveBrowserFrame::BraveBrowserFrame(BrowserView* browser_view)
 
 BraveBrowserFrame::~BraveBrowserFrame() = default;
 
+#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC)
 // Tor/Guest profile should use DarkAura. If not, their native ui is affected by
 // normal windows theme change.
 const ui::NativeTheme* BraveBrowserFrame::GetNativeTheme() const {
@@ -37,6 +38,7 @@ const ui::NativeTheme* BraveBrowserFrame::GetNativeTheme() const {
   }
   return views::Widget::GetNativeTheme();
 }
+#endif
 
 ui::ColorProviderManager::ThemeInitializerSupplier*
 BraveBrowserFrame::GetCustomTheme() const {
