@@ -6,6 +6,7 @@
 #include "brave/browser/ui/views/frame/brave_browser_frame.h"
 
 #include "brave/browser/profiles/profile_util.h"
+#include "brave/browser/themes/brave_private_window_theme_supplier.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/themes/theme_service.h"
 #include "chrome/browser/themes/theme_service_factory.h"
@@ -13,9 +14,18 @@
 #include "chrome/browser/ui/views/frame/browser_view.h"
 
 BraveBrowserFrame::BraveBrowserFrame(BrowserView* browser_view)
-    : BrowserFrame(browser_view),
-      view_(browser_view) {}
+    : BrowserFrame(browser_view), view_(browser_view) {
+  if (view_->browser()->profile()->IsIncognitoProfile() ||
+      view_->browser()->profile()->IsTor() ||
+      view_->browser()->profile()->IsGuestSession()) {
+    theme_supplier_ = base::MakeRefCounted<BravePrivateWindowThemeSupplier>(
+        !view_->browser()->profile()->IsTor());
+  }
+}
 
+BraveBrowserFrame::~BraveBrowserFrame() = default;
+
+#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC)
 // Tor/Guest profile should use DarkAura. If not, their native ui is affected by
 // normal windows theme change.
 const ui::NativeTheme* BraveBrowserFrame::GetNativeTheme() const {
@@ -27,4 +37,17 @@ const ui::NativeTheme* BraveBrowserFrame::GetNativeTheme() const {
     return ui::NativeTheme::GetInstanceForDarkUI();
   }
   return views::Widget::GetNativeTheme();
+}
+#endif
+
+ui::ColorProviderManager::ThemeInitializerSupplier*
+BraveBrowserFrame::GetCustomTheme() const {
+  // To provider private(tor) windows's theme color via color provider,
+  // we use |theme_supplier_| for both as upstream doesn't use separated
+  // mix for private window.
+  if (theme_supplier_) {
+    return theme_supplier_.get();
+  }
+
+  return BrowserFrame::GetCustomTheme();
 }

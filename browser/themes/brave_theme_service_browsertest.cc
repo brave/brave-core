@@ -6,6 +6,7 @@
 #include "brave/browser/themes/brave_dark_mode_utils.h"
 #include "brave/browser/themes/brave_theme_helper_utils.h"
 #include "brave/browser/themes/theme_properties.h"
+#include "brave/browser/ui/color/color_palette.h"
 #include "brave/components/constants/pref_names.h"
 #include "build/build_config.h"
 #include "chrome/browser/profiles/profile.h"
@@ -20,6 +21,7 @@
 #include "content/public/test/browser_test.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest-spi.h"
+#include "ui/color/color_provider.h"
 #include "ui/native_theme/native_theme.h"
 #include "ui/native_theme/native_theme_observer.h"
 
@@ -186,6 +188,21 @@ IN_PROC_BROWSER_TEST_F(BraveThemeServiceTest, OmniboxColorTest) {
       GetOmniboxResultBackground(ThemeProperties::COLOR_OMNIBOX_RESULTS_BG,
                                  dark, false /* incognito */),
       tp->GetColor(ThemeProperties::COLOR_OMNIBOX_RESULTS_BG));
+}
+
+// Check some colors from color provider pipeline.
+IN_PROC_BROWSER_TEST_F(BraveThemeServiceTest, ColorProviderTest) {
+  auto* browser_view = BrowserView::GetBrowserViewForBrowser(browser());
+  auto* cp = browser_view->GetColorProvider();
+  SkColor frame_active_color = cp->GetColor(ui::kColorFrameActive);
+  EXPECT_TRUE(frame_active_color == kLightFrame ||
+              frame_active_color == kDarkFrame);
+
+  auto* private_browser = CreateIncognitoBrowser();
+  browser_view = BrowserView::GetBrowserViewForBrowser(private_browser);
+  cp = browser_view->GetColorProvider();
+  frame_active_color = cp->GetColor(ui::kColorFrameActive);
+  EXPECT_EQ(kPrivateFrame, frame_active_color);
 }
 
 // Some tests are failing for Windows x86 CI,

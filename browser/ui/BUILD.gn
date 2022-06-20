@@ -172,6 +172,8 @@ source_set("ui") {
       "views/crash_report_permission_ask_dialog_view.h",
       "views/download/brave_download_item_view.cc",
       "views/download/brave_download_item_view.h",
+      "views/frame/brave_browser_frame.cc",
+      "views/frame/brave_browser_frame.h",
       "views/frame/brave_browser_view.cc",
       "views/frame/brave_browser_view.h",
       "views/frame/brave_opaque_browser_frame_view.cc",
@@ -244,13 +246,6 @@ source_set("ui") {
       "views/profiles/brave_incognito_menu_view.h",
       "views/profiles/brave_profile_menu_view.cc",
       "views/profiles/brave_profile_menu_view.h",
-    ]
-  }
-
-  if (is_win || is_mac) {
-    sources += [
-      "views/frame/brave_browser_frame.cc",
-      "views/frame/brave_browser_frame.h",
     ]
   }
 
