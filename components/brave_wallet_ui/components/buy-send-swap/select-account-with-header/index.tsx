@@ -15,7 +15,7 @@ export interface Props {
   onSelectAccount: (account: UserAccountType) => () => void
   onAddAccount?: () => void
   hasAddButton?: boolean
-  onBack: () => void
+  onBack?: () => void
 }
 
 function SelectAccountWithHeader (props: Props) {
