@@ -70,6 +70,7 @@ source_set("unit_tests") {
       "//brave/components/tor",
       "//brave/components/tor:test_support",
       "//brave/components/translate/core/common:buildflags",
+      "//chrome/browser/devtools",
       "//chrome/common",
       "//chrome/test:test_support",
       "//components/keyed_service/content",
