@@ -14,6 +14,7 @@
 #include "brave/components/brave_vpn/brave_vpn_utils.h"
 #include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
+#include "chrome/browser/ui/singleton_tabs.h"
 
 namespace {
 
@@ -66,5 +67,9 @@ void VPNPanelHandler::CloseUI() {
 
 void VPNPanelHandler::OpenVpnUI(const std::string& type) {
   auto* browser = chrome::FindLastActiveWithProfile(profile_);
-  chrome::AddTabAt(browser, GetURLForUIType(type), -1, true);
+  if (type == "manage") {
+    ShowSingletonTab(browser, GetURLForUIType(type));
+  } else {
+    chrome::AddTabAt(browser, GetURLForUIType(type), -1, true);
+  }
 }
