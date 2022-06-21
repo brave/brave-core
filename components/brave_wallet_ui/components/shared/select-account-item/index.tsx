@@ -1,9 +1,17 @@
 import * as React from 'react'
+import { create } from 'ethereum-blockies'
+
+// types
 import { UserAccountType } from '../../../constants/types'
+
+// utils
 import { reduceAddress } from '../../../utils/reduce-address'
 import { reduceAccountDisplayName } from '../../../utils/reduce-account-name'
-import { create } from 'ethereum-blockies'
-// Styled Components
+
+// components
+import Tooltip from '../tooltip'
+
+// style
 import {
   StyledWrapper,
   AccountAddress,
@@ -16,27 +24,44 @@ import {
 
 export interface Props {
   account: UserAccountType
-  selectedAccount: UserAccountType
-  onSelectAccount: () => void
+  selectedAccount?: UserAccountType
+  onSelectAccount?: () => void
+  showTooltips?: boolean
 }
 
-function SelectAccountItem (props: Props) {
-  const { account, selectedAccount, onSelectAccount } = props
+export function SelectAccountItem (props: Props) {
+  const {
+    account,
+    selectedAccount,
+    onSelectAccount,
+    showTooltips
+  } = props
 
   const orb = React.useMemo(() => {
     return create({ seed: account.address.toLowerCase(), size: 8, scale: 16 }).toDataURL()
   }, [account])
+
+  const PossibleToolTip = React.useMemo(() => {
+    return showTooltips ? Tooltip : ({ children, text, isAddress }: React.PropsWithChildren<{
+      text: string
+      isAddress?: boolean
+    }>) => (children || <></>) as JSX.Element
+  }, [showTooltips])
 
   return (
     <StyledWrapper onClick={onSelectAccount}>
       <LeftSide>
         <AccountCircle orb={orb} />
         <AccountAndAddress>
-          <AccountName>{reduceAccountDisplayName(account.name, 22)}</AccountName>
-          <AccountAddress>{reduceAddress(account.address)}</AccountAddress>
+          <PossibleToolTip text={account.name} isAddress>
+            <AccountName>{reduceAccountDisplayName(account.name, 22)}</AccountName>
+          </PossibleToolTip>
+          <PossibleToolTip text={account.address} isAddress>
+            <AccountAddress>{reduceAddress(account.address)}</AccountAddress>
+          </PossibleToolTip>
         </AccountAndAddress>
       </LeftSide>
-      {account.address.toLowerCase() === selectedAccount.address.toLowerCase() &&
+      {account.address.toLowerCase() === selectedAccount?.address.toLowerCase() &&
         <BigCheckMark />
       }
     </StyledWrapper>
