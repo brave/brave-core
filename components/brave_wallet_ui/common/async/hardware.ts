@@ -71,7 +71,7 @@ export async function signTrezorTransaction (
   txInfo.txDataUnion.ethTxData1559.baseData.nonce = nonce.nonce
   const signed = await deviceKeyring.signTransaction(path, txInfo, chainId.chainId)
   if (!signed || !signed.success || !signed.payload) {
-    const error = signed.error ? signed.error : getLocale('braveWalletSignOnDeviceError')
+    const error = (signed.error ? signed.error : getLocale('braveWalletSignOnDeviceError')) as string
     if (signed.code === TrezorErrorsCodes.CommandInProgress) {
       return { success: false, error: error, deviceError: 'deviceBusy' }
     }
@@ -167,9 +167,6 @@ export async function signLedgerSolanaTransaction (
     if (!signed || !signed.success || !signed.payload) {
       const error = signed?.error ?? getLocale('braveWalletSignOnDeviceError')
       const code = signed?.code ?? ''
-      if (code === 'DisconnectedDeviceDuringOperation') {
-        await deviceKeyring.makeApp()
-      }
       return { success: false, error: error, code: code }
     }
 
@@ -211,8 +208,8 @@ export async function signMessageWithHardwareKeyring (vendor: HardwareVendor, pa
   return { success: false, error: getLocale('braveWalletUnknownKeyringError') }
 }
 
-export async function signRawTransactionWithHardwareKeyring (vendor: HardwareVendor, path: string, message: BraveWallet.ByteArrayStringUnion, coin: BraveWallet.CoinType): Promise<SignHardwareOperationResult> {
-  const deviceKeyring = getHardwareKeyring(vendor, coin)
+export async function signRawTransactionWithHardwareKeyring (vendor: HardwareVendor, path: string, message: BraveWallet.ByteArrayStringUnion, coin: BraveWallet.CoinType, onAuthorized?: () => void): Promise<SignHardwareOperationResult> {
+  const deviceKeyring = getHardwareKeyring(vendor, coin, onAuthorized)
 
   if (deviceKeyring instanceof SolanaLedgerBridgeKeyring && message.bytes) {
     return deviceKeyring.signTransaction(path, Buffer.from(message.bytes))
