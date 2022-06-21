@@ -4,7 +4,7 @@
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
 import { FC } from 'react'
-import styled from 'styled-components'
+import styled, { CSSProperties } from 'styled-components'
 import { Link } from 'react-router-dom'
 
 // types
@@ -49,7 +49,31 @@ export const ErrorText = styled.span`
   margin-bottom: 10px;
 `
 
+interface FlexProps {
+  alignItems?: CSSProperties['alignItems']
+  justifyContent?: CSSProperties['justifyContent']
+}
+
 // Containers
+export const Row = styled.div<FlexProps>`
+  display: flex;
+  flex-direction: row;
+  align-items: ${(p) => p.alignItems ?? 'center'};
+  justify-content: ${(p) => p.justifyContent ?? 'center'};
+  width: 100%;
+`
+
+export const Column = styled.div<FlexProps>`
+  display: flex;
+  flex-direction: column;
+  align-items: ${(p) => p.alignItems ?? 'center'};
+  justify-content: ${(p) => p.justifyContent ?? 'center'};
+`
+
+export const Flex = styled.div`
+  flex: 1;
+`
+
 export const StatusBubble = styled.div<{ status: BraveWallet.TransactionStatus }>`
   display: flex;
   align-items: center;
