@@ -190,7 +190,11 @@ const PortfolioTransactionItem = (props: Props) => {
         return (
           <DetailRow>
             <DetailTextDark>
-              {toProperCase(text)} {transactionDetails.value}{' '}
+              {toProperCase(text)} {
+                transactionDetails.isApprovalUnlimited
+                  ? getLocale('braveWalletTransactionApproveUnlimited')
+                  : transactionDetails.value
+              }{' '}
               <AddressOrAsset onClick={onAssetClick(transactionDetails.symbol)}>
                 {transactionDetails.symbol}
               </AddressOrAsset> -{' '}
