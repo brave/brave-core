@@ -69,7 +69,7 @@ export function useMultiChainBuyAssets () {
   const getAllBuyOptionsAllChains = React.useCallback(() => {
     getAllBuyAssets()
       .then(result => {
-        if (isMounted) {
+        if (isMounted && result) {
           setOptions(result)
         }
       })
