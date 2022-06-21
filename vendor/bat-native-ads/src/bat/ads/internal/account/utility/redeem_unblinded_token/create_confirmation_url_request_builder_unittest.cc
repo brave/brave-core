@@ -62,7 +62,7 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
   expected_url_request->content_type = "application/json";
   expected_url_request->method = mojom::UrlRequestMethod::kPost;
 
-  EXPECT_TRUE(url_request.Equals(expected_url_request));
+  EXPECT_EQ(url_request, expected_url_request);
 }
 
 TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
@@ -97,7 +97,7 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
   expected_url_request->content_type = "application/json";
   expected_url_request->method = mojom::UrlRequestMethod::kPost;
 
-  EXPECT_TRUE(url_request.Equals(expected_url_request));
+  EXPECT_EQ(url_request, expected_url_request);
 }
 
 TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
@@ -132,7 +132,7 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
   expected_url_request->content_type = "application/json";
   expected_url_request->method = mojom::UrlRequestMethod::kPost;
 
-  EXPECT_TRUE(url_request.Equals(expected_url_request));
+  EXPECT_EQ(url_request, expected_url_request);
 }
 
 TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
@@ -167,7 +167,7 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
   expected_url_request->content_type = "application/json";
   expected_url_request->method = mojom::UrlRequestMethod::kPost;
 
-  EXPECT_TRUE(url_request.Equals(expected_url_request));
+  EXPECT_EQ(url_request, expected_url_request);
 }
 
 TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
@@ -202,7 +202,7 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
   expected_url_request->content_type = "application/json";
   expected_url_request->method = mojom::UrlRequestMethod::kPost;
 
-  EXPECT_TRUE(url_request.Equals(expected_url_request));
+  EXPECT_EQ(url_request, expected_url_request);
 }
 
 TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
@@ -237,7 +237,7 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
   expected_url_request->content_type = "application/json";
   expected_url_request->method = mojom::UrlRequestMethod::kPost;
 
-  EXPECT_TRUE(url_request.Equals(expected_url_request));
+  EXPECT_EQ(url_request, expected_url_request);
 }
 
 TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
@@ -272,7 +272,7 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
   expected_url_request->content_type = "application/json";
   expected_url_request->method = mojom::UrlRequestMethod::kPost;
 
-  EXPECT_TRUE(url_request.Equals(expected_url_request));
+  EXPECT_EQ(url_request, expected_url_request);
 }
 
 TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
@@ -307,7 +307,7 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
   expected_url_request->content_type = "application/json";
   expected_url_request->method = mojom::UrlRequestMethod::kPost;
 
-  EXPECT_TRUE(url_request.Equals(expected_url_request));
+  EXPECT_EQ(url_request, expected_url_request);
 }
 
 TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
@@ -342,7 +342,7 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
   expected_url_request->content_type = "application/json";
   expected_url_request->method = mojom::UrlRequestMethod::kPost;
 
-  EXPECT_TRUE(url_request.Equals(expected_url_request));
+  EXPECT_EQ(url_request, expected_url_request);
 }
 
 TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
@@ -377,7 +377,7 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
   expected_url_request->content_type = "application/json";
   expected_url_request->method = mojom::UrlRequestMethod::kPost;
 
-  EXPECT_TRUE(url_request.Equals(expected_url_request));
+  EXPECT_EQ(url_request, expected_url_request);
 }
 
 TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
@@ -412,7 +412,7 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
   expected_url_request->content_type = "application/json";
   expected_url_request->method = mojom::UrlRequestMethod::kPost;
 
-  EXPECT_TRUE(url_request.Equals(expected_url_request));
+  EXPECT_EQ(url_request, expected_url_request);
 }
 
 TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
@@ -447,7 +447,7 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
   expected_url_request->content_type = "application/json";
   expected_url_request->method = mojom::UrlRequestMethod::kPost;
 
-  EXPECT_TRUE(url_request.Equals(expected_url_request));
+  EXPECT_EQ(url_request, expected_url_request);
 }
 
 }  // namespace ads
