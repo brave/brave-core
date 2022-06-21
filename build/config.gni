@@ -11,6 +11,7 @@ declare_args() {
   is_release_channel = false
   base_sparkle_update_url = ""
   enable_sparkle = !is_component_build && is_mac
+  use_prebuilt_sparkle = true
 
   sparkle_dsa_private_key_file = ""
   sparkle_eddsa_private_key = ""
