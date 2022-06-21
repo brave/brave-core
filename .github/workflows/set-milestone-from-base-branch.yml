@@ -55,6 +55,6 @@ jobs:
               issue_milestone=$(gh issue view "${issue}" --json milestone --jq '.milestone.title')
               if [[ -z "${issue_milestone}" || "$pr_milestone" < "${issue_milestone}" ]]; then
                   echo "Setting ${issue} milestone to ${pr_milestone}"
-                  gh issue edit ${issue} -m ${pr_milestone}
+                  gh issue edit "${issue}" -m "${pr_milestone}"
               fi
           done
