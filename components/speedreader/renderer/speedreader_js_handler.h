@@ -6,8 +6,6 @@
 #ifndef BRAVE_COMPONENTS_SPEEDREADER_RENDERER_SPEEDREADER_JS_HANDLER_H_
 #define BRAVE_COMPONENTS_SPEEDREADER_RENDERER_SPEEDREADER_JS_HANDLER_H_
 
-#include <string>
-
 #include "base/memory/raw_ptr.h"
 #include "content/public/renderer/render_frame.h"
 #include "gin/wrappable.h"
