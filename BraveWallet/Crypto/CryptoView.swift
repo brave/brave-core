@@ -219,7 +219,7 @@ public struct CryptoView: View {
     .frame(maxWidth: .infinity, maxHeight: .infinity)
     .environment(
       \.openWalletURLAction,
-      .init(action: { url in
+      .init(action: { [openWalletURLAction] url in
         openWalletURLAction?(url)
       }))
     .environment(
@@ -292,15 +292,15 @@ private struct CryptoContainerView<DismissContent: ToolbarContent>: View {
     .environment(
       \.buySendSwapDestination,
       Binding(
-        get: { cryptoStore.buySendSwapDestination },
-        set: { destination in
-          if cryptoStore.isPresentingAssetSearch {
-            cryptoStore.isPresentingAssetSearch = false
+        get: { [weak cryptoStore] in cryptoStore?.buySendSwapDestination },
+        set: { [weak cryptoStore] destination in
+          if cryptoStore?.isPresentingAssetSearch == true {
+            cryptoStore?.isPresentingAssetSearch = false
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
-              self.cryptoStore.buySendSwapDestination = destination
+              cryptoStore?.buySendSwapDestination = destination
             }
           } else {
-            cryptoStore.buySendSwapDestination = destination
+            cryptoStore?.buySendSwapDestination = destination
           }
         }))
   }
