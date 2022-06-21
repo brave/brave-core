@@ -115,7 +115,7 @@ TEST_F(BatAdsRedeemUnblindedPaymentTokensRequestTest, BuildUrlForRPill) {
     expected_url_request->content_type = "application/json";
     expected_url_request->method = mojom::UrlRequestMethod::kPut;
 
-    EXPECT_TRUE(url_request.Equals(expected_url_request));
+    EXPECT_EQ(url_request, expected_url_request);
   });
 
   // Assert
@@ -158,7 +158,7 @@ TEST_F(BatAdsRedeemUnblindedPaymentTokensRequestTest, BuildUrlForBPill) {
     expected_url_request->content_type = "application/json";
     expected_url_request->method = mojom::UrlRequestMethod::kPut;
 
-    EXPECT_TRUE(url_request.Equals(expected_url_request));
+    EXPECT_EQ(url_request, expected_url_request);
   });
 
   // Assert
