@@ -3055,6 +3055,15 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_BRAVE_WALLET_ALLOW_ADD_NETWORK_HEADING" desc="Add network panel title">
       Allow this site to add a network?
     </message>
+    <message name="IDS_BRAVE_WALLET_READ_ENCRYPTED_MESSAGE_TITLE" desc="Read encrypted message panel title">
+      This DApp would like to read this message to complete your request.      
+    </message>
+    <message name="IDS_BRAVE_WALLET_READ_ENCRYPTED_MESSAGE_DECRYPT_BUTTON" desc="Read encrypted message panel decrypt button">
+      Decrypt message
+    </message>
+    <message name="IDS_BRAVE_WALLET_READ_ENCRYPTED_MESSAGE_BUTTON" desc="Read encrypted message panel allow button">
+      Allow
+    </message>
     <message name="IDS_FRAGMENT_ADD_TOKEN_TITLE" desc="Add token dialog title.">
       Add suggested token
     </message>
