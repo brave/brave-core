@@ -105,7 +105,11 @@ dmg_icon = rebase_path("//brave/build/mac/$dmg_icon_file_name.icns")
 action("generate_dsa_sig_for_dmg") {
   script = "generate_sig.py"
 
-  sign_update_path = "//build/mac_files/sparkle_binaries/sign_update_dsa"
+  if (use_prebuilt_sparkle) {
+    sign_update_path = "//build/mac_files/sparkle_binaries/sign_update_dsa"
+  } else {
+    sign_update_path = "$root_out_dir/old_dsa_scripts/sign_update"
+  }
   target_dmg_path = "$root_out_dir/$brave_dmg"
   output_dmg_dsa_path = "$root_out_dir/$brave_dmg.dsa"
 
@@ -130,12 +134,21 @@ action("generate_dsa_sig_for_dmg") {
   outputs = [ "$output_dmg_dsa_path" ]
 
   deps = [ ":copy_dmg_pkg" ]
+
+  if (!use_prebuilt_sparkle) {
+    deps += [ "//brave/vendor/sparkle:copy_old_sign_update" ]
+  }
 }
 
 action("generate_eddsa_sig_for_dmg") {
   script = "generate_sig.py"
 
-  sign_update_path = "//build/mac_files/sparkle_binaries/sign_update"
+  if (use_prebuilt_sparkle) {
+    sign_update_path = "//build/mac_files/sparkle_binaries/sign_update"
+  } else {
+    sign_update_path = "$root_out_dir/sign_update"
+  }
+
   target_dmg_path = "$root_out_dir/$brave_dmg"
   output_dmg_eddsa_path = "$root_out_dir/$brave_dmg.eddsa"
 
@@ -160,12 +173,21 @@ action("generate_eddsa_sig_for_dmg") {
   outputs = [ "$output_dmg_eddsa_path" ]
 
   deps = [ ":copy_dmg_pkg" ]
+
+  if (!use_prebuilt_sparkle) {
+    deps += [ "//brave/vendor/sparkle:copy_old_sign_update" ]
+  }
 }
 
 action("build_delta_installer") {
   script = "build_delta_installer.py"
 
-  binary_delta_path = "//build/mac_files/sparkle_binaries/BinaryDelta"
+  if (use_prebuilt_sparkle) {
+    binary_delta_path = "//build/mac_files/sparkle_binaries/BinaryDelta"
+  } else {
+    binary_delta_path = "$root_out_dir/BinaryDelta"
+  }
+
   target_dmg_path = "$root_out_dir/$brave_dmg"
   output_delta_path = "$root_out_dir/$brave_delta"
 
@@ -191,6 +213,10 @@ action("build_delta_installer") {
   outputs = [ "$output_delta_path" ]
 
   deps = [ ":copy_dmg_pkg" ]
+
+  if (!use_prebuilt_sparkle) {
+    deps += [ "//brave/vendor/sparkle:build_sparkle_framework" ]
+  }
 }
 
 action("generate_eddsa_sig_for_delta") {
