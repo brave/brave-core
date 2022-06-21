@@ -3,15 +3,31 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 import { WalletButton } from '../shared/style'
 import { LoaderIcon } from 'brave-ui/components/icons'
 
-export const StyledWrapper = styled.div`
+interface LayoutProps {
+  layoutType?: 'loose' | 'tight'
+}
+
+export const StyledWrapper = styled.div<LayoutProps>`
   display: flex;
   flex-direction: row;
   padding: 16px 0;
   align-items: flex-start;
+  
+  ${(p) => p?.layoutType === 'loose'
+    ? css`
+      width: 100%;
+      margin-top: 16px;
+      margin-bottom: 4px;
+      border: 1px solid ${(p) => p.theme.color.divider01};
+      border-radius: 4px;
+      padding: 16px;
+    `
+    : ''
+  }
 `
 
 export const Logo = styled.img`
