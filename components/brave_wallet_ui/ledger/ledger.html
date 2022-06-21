@@ -1,0 +1,44 @@
+<!-- Copyright (c) 2021 The Brave Authors. All rights reserved. -->
+<!-- This Source Code Form is subject to the terms of the Mozilla Public -->
+<!-- License, v. 2.0. If a copy of the MPL was not distributed with this file, -->
+<!-- You can obtain one at http://mozilla.org/MPL/2.0/. -->
+<!doctype html>
+<head>
+   <script src="/load_time_data.js"></script>
+   <script src="/strings.js"></script>
+   <meta charset="UTF-8" />
+   <title>Ledger iframe</title>
+   <style>
+     .container {
+       display: flex;
+       justify-content: center;
+     }
+     body {
+       margin: 0;
+     }
+     button {
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      border-radius: 40px;
+      padding: 10px 22px;
+      outline: none;
+      margin-top: 0px;
+      background-color: #4C54D2;
+      border: none;
+      margin-right: 0px;
+      pointer-events: auto;
+      color: white;
+      font-weight: bold;
+     }
+   </style>
+</head>
+<body>
+   <script src="ledger.bundle.js"></script>
+   <div class="container">
+     <button id="authorize">
+       Authorize
+     </button>
+   </div>
+</body>
+

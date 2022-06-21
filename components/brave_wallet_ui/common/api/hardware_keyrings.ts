@@ -46,7 +46,8 @@ export function getBraveKeyring (): BraveWallet.KeyringServiceRemote {
 
 export function getHardwareKeyring (
   type: HardwareVendor,
-  coin: BraveWallet.CoinType = BraveWallet.CoinType.ETH
+  coin: BraveWallet.CoinType = BraveWallet.CoinType.ETH,
+  onAuthorized?: () => void
 ): LedgerBridgeKeyring | HWInterfaces.TrezorKeyring | FilecoinLedgerKeyring | SolanaLedgerBridgeKeyring {
   if (type === BraveWallet.LEDGER_HARDWARE_VENDOR) {
     if (coin === BraveWallet.CoinType.ETH) {
@@ -54,7 +55,7 @@ export function getHardwareKeyring (
     } else if (coin === BraveWallet.CoinType.FIL) {
       return getLedgerFilecoinHardwareKeyring()
     } else if (coin === BraveWallet.CoinType.SOL) {
-      return getLedgerSolanaHardwareKeyring()
+      return getLedgerSolanaHardwareKeyring(onAuthorized)
     }
   }
 
@@ -77,9 +78,9 @@ export function getLedgerFilecoinHardwareKeyring (): FilecoinLedgerKeyring {
   return filecoinHardwareKeyring
 }
 
-export function getLedgerSolanaHardwareKeyring (): SolanaLedgerBridgeKeyring {
+export function getLedgerSolanaHardwareKeyring (onAuthorized?: () => void): SolanaLedgerBridgeKeyring {
   if (!solanaHardwareKeyring) {
-    solanaHardwareKeyring = new SolanaLedgerBridgeKeyring()
+    solanaHardwareKeyring = new SolanaLedgerBridgeKeyring(onAuthorized)
   }
   return solanaHardwareKeyring
 }

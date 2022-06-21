@@ -35,6 +35,8 @@ extern const char kWalletSettingsURL[];
 extern const char kBraveSyncPath[];
 extern const char kBraveSyncSetupPath[];
 extern const char kTorInternalsHost[];
+extern const char kUntrustedLedgerHost[];
+extern const char kUntrustedLedgerURL[];
 extern const char kUntrustedTrezorHost[];
 extern const char kUntrustedTrezorURL[];
 extern const char kShieldsPanelURL[];
