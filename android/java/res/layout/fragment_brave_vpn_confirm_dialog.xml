@@ -10,7 +10,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="32dp"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:gravity="center">
 
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/bg_image"
