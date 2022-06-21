@@ -23,9 +23,10 @@ interface Props {
   option: BuyOption
   selectedOption: BraveWallet.OnRampProvider | undefined
   onSelect: (option: BraveWallet.OnRampProvider) => void
+  layoutType?: 'tight' | 'loose'
 }
 export const BuyOptionItem = (props: Props) => {
-  const { option, selectedOption, onSelect } = props
+  const { option, selectedOption, onSelect, layoutType } = props
   const { id, icon, name, description, actionText } = option
 
   const onClick = React.useCallback(() => {
@@ -33,7 +34,7 @@ export const BuyOptionItem = (props: Props) => {
   }, [onSelect, id])
 
   return (
-    <StyledWrapper>
+    <StyledWrapper layoutType={layoutType}>
       <Logo src={icon} />
       <Content>
         <Name>{name}</Name>
