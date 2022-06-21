@@ -132,6 +132,8 @@ void InlineContentAd::FireEvent(
 void InlineContentAd::NotifyInlineContentAdEvent(
     const InlineContentAdInfo& ad,
     const mojom::InlineContentAdEventType event_type) const {
+  DCHECK(mojom::IsKnownEnumValue(event_type));
+
   switch (event_type) {
     case mojom::InlineContentAdEventType::kServed: {
       NotifyInlineContentAdServed(ad);

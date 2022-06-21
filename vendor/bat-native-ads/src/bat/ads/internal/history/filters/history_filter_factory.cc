@@ -5,6 +5,9 @@
 
 #include "bat/ads/internal/history/filters/history_filter_factory.h"
 
+#include <ostream>
+
+#include "base/notreached.h"
 #include "bat/ads/internal/history/filters/confirmation_history_filter.h"
 
 namespace ads {
@@ -20,6 +23,10 @@ std::unique_ptr<HistoryFilterInterface> HistoryFilterFactory::Build(
       return std::make_unique<ConfirmationHistoryFilter>();
     }
   }
+
+  NOTREACHED() << "Unexpected value for HistoryFilterType: "
+               << static_cast<int>(type);
+  return nullptr;
 }
 
 }  // namespace ads

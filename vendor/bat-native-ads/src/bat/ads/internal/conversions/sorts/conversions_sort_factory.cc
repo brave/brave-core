@@ -5,6 +5,9 @@
 
 #include "bat/ads/internal/conversions/sorts/conversions_sort_factory.h"
 
+#include <ostream>
+
+#include "base/notreached.h"
 #include "bat/ads/internal/conversions/sorts/conversions_ascending_sort.h"
 #include "bat/ads/internal/conversions/sorts/conversions_descending_sort.h"
 
@@ -25,6 +28,10 @@ std::unique_ptr<ConversionsSortInterface> ConversionsSortFactory::Build(
       return std::make_unique<ConversionsDescendingSort>();
     }
   }
+
+  NOTREACHED() << "Unexpected value for ConversionSortType: "
+               << static_cast<int>(type);
+  return nullptr;
 }
 
 }  // namespace ads

@@ -5,6 +5,9 @@
 
 #include "bat/ads/internal/history/sorts/history_sort_factory.h"
 
+#include <ostream>
+
+#include "base/notreached.h"
 #include "bat/ads/internal/history/sorts/ascending_history_sort.h"
 #include "bat/ads/internal/history/sorts/descending_history_sort.h"
 
@@ -25,6 +28,10 @@ std::unique_ptr<HistorySortInterface> HistorySortFactory::Build(
       return std::make_unique<DescendingHistorySort>();
     }
   }
+
+  NOTREACHED() << "Unexpected value for HistorySortType: "
+               << static_cast<int>(type);
+  return nullptr;
 }
 
 }  // namespace ads

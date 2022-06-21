@@ -5,6 +5,9 @@
 
 #include "bat/ads/internal/server/url/hosts/server_hosts_factory.h"
 
+#include <ostream>
+
+#include "base/notreached.h"
 #include "bat/ads/internal/server/url/hosts/anonymous_server_host.h"
 #include "bat/ads/internal/server/url/hosts/geo_server_host.h"
 #include "bat/ads/internal/server/url/hosts/non_anonymous_server_host.h"
@@ -31,6 +34,10 @@ std::unique_ptr<ServerHostInterface> ServerHostsFactory::Build(
       return std::make_unique<AnonymousServerHost>();
     }
   }
+
+  NOTREACHED() << "Unexpected value for ServerHostType: "
+               << static_cast<int>(type);
+  return nullptr;
 }
 
 }  // namespace ads

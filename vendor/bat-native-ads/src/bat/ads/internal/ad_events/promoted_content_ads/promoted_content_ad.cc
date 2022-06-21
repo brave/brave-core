@@ -149,6 +149,8 @@ void PromotedContentAd::FireEvent(
 void PromotedContentAd::NotifyPromotedContentAdEvent(
     const PromotedContentAdInfo& ad,
     const mojom::PromotedContentAdEventType event_type) const {
+  DCHECK(mojom::IsKnownEnumValue(event_type));
+
   switch (event_type) {
     case mojom::PromotedContentAdEventType::kServed: {
       NotifyPromotedContentAdServed(ad);

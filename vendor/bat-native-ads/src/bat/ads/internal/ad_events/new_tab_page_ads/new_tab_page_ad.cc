@@ -150,6 +150,8 @@ void NewTabPageAd::FireEvent(const NewTabPageAdInfo& ad,
 void NewTabPageAd::NotifyNewTabPageAdEvent(
     const NewTabPageAdInfo& ad,
     const mojom::NewTabPageAdEventType event_type) const {
+  DCHECK(mojom::IsKnownEnumValue(event_type));
+
   switch (event_type) {
     case mojom::NewTabPageAdEventType::kServed: {
       NotifyNewTabPageAdServed(ad);
