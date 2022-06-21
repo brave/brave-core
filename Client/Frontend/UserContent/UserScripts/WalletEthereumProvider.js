@@ -24,7 +24,6 @@ if (window.isSecureContext) {
   }
   
   Object.defineProperty(window, 'ethereum', {
-    configurable: true,
     value: {
       chainId: undefined,
       networkVersion: undefined,
