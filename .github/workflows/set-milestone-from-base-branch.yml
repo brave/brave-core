@@ -4,7 +4,6 @@ on:
   pull_request:
     types: [closed]
     branches: [master, 1.*]
-  workflow_dispatch:
 
 jobs:
   set-pr-milestone:
