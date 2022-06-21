@@ -35,6 +35,11 @@ def _modify_canned_checks(canned_checks):
     def CheckOwners(*_, **__):
         return []
 
+    # We don't use AUTHORS file.
+    @chromium_presubmit_utils.override_check(canned_checks)
+    def CheckAuthorizedAuthor(*_, **__):
+        return []
+
     # We don't upload change to Chromium git.
     @chromium_presubmit_utils.override_check(canned_checks)
     def CheckChangeWasUploaded(*_, **__):
