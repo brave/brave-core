@@ -17,7 +17,7 @@ import {
 } from './style'
 
 export interface Props {
-  onClick: () => void
+  onClick?: () => void
   selectedNetwork: BraveWallet.NetworkInfo
   isPanel?: boolean
 }
@@ -32,7 +32,7 @@ const SelectNetworkButton = (props: Props) => {
     <OvalButton isPanel={isPanel} onClick={onClick} data-test-id='select-network-button'>
       <CreateNetworkIcon network={selectedNetwork} marginRight={4} />
       <OvalButtonText isPanel={isPanel}>{reduceNetworkDisplayName(selectedNetwork.chainName)}</OvalButtonText>
-      <CaratDownIcon isPanel={isPanel} />
+      {onClick && <CaratDownIcon isPanel={isPanel} />}
     </OvalButton>
   )
 }

@@ -13,11 +13,11 @@ export const CaratDownIcon = styled(CaratCircleODownIcon) <StyleProps>`
   color: ${(p) => p.isPanel ? p.theme.palette.white : p.theme.color.interactive07};
 `
 
-export const OvalButton = styled(WalletButton) <StyleProps>`
+export const OvalButton = styled(WalletButton)<StyleProps>`
   display: flex;
   align-items: center;
   justify-content: center;
-  cursor: pointer;
+  cursor: ${(p) => p.onClick ? 'pointer' : 'text'};
   outline: none;
   background: none;
   border-radius: 48px;
