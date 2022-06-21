@@ -29,7 +29,7 @@ jobs:
     needs: set-pr-milestone
     steps:
       - env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
           REPO_NAME: ${{ github.event.repository.full_name }}
           PR_NUMBER: ${{ github.event.number }}
         run: |
@@ -47,6 +47,7 @@ jobs:
           fi
           echo "Relevant issues detected:"
           echo "${issues}"
+          set -x
 
           pr_milestone=$(gh pr view "$PR_NUMBER" -R "$REPO_NAME" --json milestone --jq '.milestone.title')
 
