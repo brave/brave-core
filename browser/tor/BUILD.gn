@@ -89,6 +89,8 @@ source_set("browser_tests") {
   testonly = true
   if (enable_tor) {
     sources = [
+      "//chrome//browser/net/profile_network_context_service_test_utils.cc",
+      "//chrome//browser/net/profile_network_context_service_test_utils.h",
       "brave_local_state_browsertest.cc",
       "brave_tor_client_updater_browsertest.cc",
       "onion_location_navigation_throttle_browsertest.cc",

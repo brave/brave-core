@@ -10,8 +10,10 @@
 #define BRAVE_ALLOWS_BROWSER_WINDOWS *this == TorID() ||
 
 #define IsIncognitoProfile IsIncognitoProfile_ChromiumImpl
+#define IsPrimaryOTRProfile IsPrimaryOTRProfile_ChromiumImpl
 #include "src/chrome/browser/profiles/profile.cc"
 #undef IsIncognitoProfile
+#undef IsPrimaryOTRProfile
 
 // static
 const Profile::OTRProfileID Profile::OTRProfileID::TorID() {
@@ -26,4 +28,11 @@ bool Profile::IsIncognitoProfile() const {
   if (IsTor())
     return true;
   return IsIncognitoProfile_ChromiumImpl();
+}
+
+// Tor profile should behave like primary OTR profile used in private window
+bool Profile::IsPrimaryOTRProfile() const {
+  if (IsTor())
+    return true;
+  return IsPrimaryOTRProfile_ChromiumImpl();
 }
