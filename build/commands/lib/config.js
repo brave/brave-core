@@ -163,6 +163,13 @@ const Config = function () {
   this.isCI = process.env.BUILD_ID !== undefined
   this.braveStatsApiKey = getNPMConfig(['brave_stats_api_key']) || ''
   this.braveStatsUpdaterUrl = getNPMConfig(['brave_stats_updater_url']) || ''
+  this.p3aJsonUploadUrl = getNPMConfig(['p3a_json_upload_url']) || ''
+  this.p2aJsonUploadUrl = getNPMConfig(['p2a_json_upload_url']) || ''
+  this.p3aStarUploadUrl = getNPMConfig(['p3a_star_upload_url']) || ''
+  this.p2aStarUploadUrl = getNPMConfig(['p2a_star_upload_url']) || ''
+  this.starRandomnessUploadUrl = getNPMConfig(['star_randomness_upload_url']) || ''
+  this.starRandomnessInfoUrl = getNPMConfig(['star_randomness_info_url']) || ''
+  this.starRandom = getNPMConfig(['p2a_star_upload_url']) || ''
   this.ignore_compile_failure = false
   this.enable_hangout_services_extension = true
   this.enable_pseudolocales = false
@@ -307,6 +314,12 @@ Config.prototype.buildArgs = function () {
     rewards_grant_prod_endpoint: this.rewardsGrantProdEndpoint,
     brave_stats_api_key: this.braveStatsApiKey,
     brave_stats_updater_url: this.braveStatsUpdaterUrl,
+    p3a_json_upload_url: this.p3aJsonUploadUrl,
+    p2a_json_upload_url: this.p2aJsonUploadUrl,
+    p3a_star_upload_url: this.p3aStarUploadUrl,
+    p2a_star_upload_url: this.p2aStarUploadUrl,
+    star_randomness_upload_url: this.starRandomnessUploadUrl,
+    star_randomness_info_url: this.starRandomnessInfoUrl,
     enable_hangout_services_extension: this.enable_hangout_services_extension,
     enable_cdm_host_verification: this.enableCDMHostVerification(),
     enable_pseudolocales: this.enable_pseudolocales,

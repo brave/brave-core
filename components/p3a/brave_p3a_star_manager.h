@@ -59,12 +59,6 @@ class BraveP3AStarManager {
   bool StartMessagePreparation(const char* histogram_name,
                                std::string serialized_log);
 
-  bool ConstructFinalMessage(
-      ::rust::Box<nested_star::RandomnessRequestStateWrapper>&
-          randomness_request_state,
-      const std::string& rand_resp_data,
-      std::string* output);
-
  private:
   void RequestRandomnessServerInfo();
 
@@ -73,7 +67,7 @@ class BraveP3AStarManager {
       uint8_t epoch,
       ::rust::Box<nested_star::RandomnessRequestStateWrapper>
           randomness_request_state,
-      std::string rand_req_data);
+      const rust::Vec<nested_star::VecU8>& rand_req_points);
 
   void HandleRandomnessResponse(
       const char* histogram_name,
@@ -82,8 +76,23 @@ class BraveP3AStarManager {
           randomness_request_state,
       std::unique_ptr<std::string> response_body);
 
+  void HandleRandomnessData(
+      const char* histogram_name,
+      uint8_t epoch,
+      ::rust::Box<nested_star::RandomnessRequestStateWrapper>
+          randomness_request_state,
+      const rust::Vec<nested_star::VecU8>& resp_points,
+      const rust::Vec<nested_star::VecU8>& resp_proofs);
+
   void HandleRandomnessServerInfoResponse(
       std::unique_ptr<std::string> response_body);
+
+  bool ConstructFinalMessage(
+      ::rust::Box<nested_star::RandomnessRequestStateWrapper>&
+          randomness_request_state,
+      const rust::Vec<nested_star::VecU8>& resp_points,
+      const rust::Vec<nested_star::VecU8>& resp_proofs,
+      std::string* output);
 
   ::rust::Box<nested_star::PPOPRFPublicKeyWrapper> current_public_key_;
 

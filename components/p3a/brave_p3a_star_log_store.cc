@@ -47,8 +47,11 @@ void BraveP3AStarLogStore::UpdateMessage(const std::string& histogram_name,
                                          uint8_t epoch,
                                          const std::string& msg) {
   DictionaryPrefUpdate update(local_state_, kPrefName);
-  update->GetDict().SetByDottedPath(
-      base::NumberToString(epoch) + "." + histogram_name, msg);
+  std::string epoch_key = base::NumberToString(epoch);
+  if (update->FindDictKey(epoch_key) == nullptr) {
+    update->SetKey(epoch_key, base::Value(base::Value::Type::DICT));
+  }
+  update->FindDictKey(epoch_key)->SetStringKey(histogram_name, msg);
 
   if (current_epoch_ != epoch) {
     LogKey key(epoch, histogram_name);
@@ -62,8 +65,11 @@ void BraveP3AStarLogStore::RemoveMessageIfExists(const LogKey& key) {
 
   // Update the persistent value.
   DictionaryPrefUpdate update(local_state_, kPrefName);
-  update->GetDict().RemoveByDottedPath(base::NumberToString(key.epoch) + "." +
-                                       key.histogram_name);
+  std::string epoch_key = base::NumberToString(key.epoch);
+  base::Value* epoch_dict = update->FindDictKey(epoch_key);
+  if (epoch_dict != nullptr) {
+    epoch_dict->RemoveKey(key.histogram_name);
+  }
 
   if (has_staged_log() && staged_entry_key_->epoch == key.epoch &&
       staged_entry_key_->histogram_name == key.histogram_name) {

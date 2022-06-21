@@ -55,6 +55,7 @@ void BraveP3AMessageManager::RegisterPrefs(PrefRegistrySimple* registry) {
   BraveP3ALogStore::RegisterPrefs(registry);
   BraveP3AStarLogStore::RegisterPrefs(registry);
   BraveP3AStarManager::RegisterPrefs(registry);
+  BraveP3ARotationScheduler::RegisterPrefs(registry);
 }
 
 void BraveP3AMessageManager::Init(
@@ -115,6 +116,8 @@ void BraveP3AMessageManager::Init(
       config_.star_randomness_url, config_.star_randomness_info_url,
       config_.use_local_randomness));
 
+  star_manager_->UpdateRandomnessServerInfo();
+
   VLOG(2) << "BraveP3AMessageManager parameters are:"
           << ", average_upload_interval_ = " << config_.average_upload_interval
           << ", randomize_upload_interval_ = "
@@ -123,6 +126,9 @@ void BraveP3AMessageManager::Init(
           << ", p2a_json_upload_url_ = " << config_.p2a_json_upload_url.spec()
           << ", p3a_star_upload_url_ = " << config_.p3a_star_upload_url.spec()
           << ", p2a_star_upload_url_ = " << config_.p2a_star_upload_url.spec()
+          << ", star_randomness_info_url_ = "
+          << config_.star_randomness_info_url.spec()
+          << ", star_randomness_url_ = " << config_.star_randomness_url.spec()
           << ", rotation_interval_ = " << config_.rotation_interval;
 }
 
@@ -160,10 +166,16 @@ void BraveP3AMessageManager::OnLogUploadComplete(bool is_ok,
   if (config_.ignore_server_errors) {
     is_ok = true;
   }
+  metrics::LogStore* log_store =
+      is_star ? (metrics::LogStore*)star_send_log_store_.get()
+              : (metrics::LogStore*)json_log_store_.get();
+  BraveP3AScheduler* scheduler =
+      is_star ? star_upload_scheduler_.get() : json_upload_scheduler_.get();
   if (is_ok) {
-    json_log_store_->DiscardStagedLog();
+    log_store->MarkStagedLogAsSent();
+    log_store->DiscardStagedLog();
   }
-  json_upload_scheduler_->UploadFinished(is_ok);
+  scheduler->UploadFinished(is_ok);
 }
 
 void BraveP3AMessageManager::OnNewStarMessage(
@@ -171,10 +183,10 @@ void BraveP3AMessageManager::OnNewStarMessage(
     uint8_t epoch,
     std::unique_ptr<std::string> serialized_message) {
   if (!serialized_message) {
-    star_upload_scheduler_->UploadFinished(false);
+    star_prep_scheduler_->UploadFinished(false);
     return;
   }
-  star_upload_scheduler_->UploadFinished(true);
+  star_prep_scheduler_->UploadFinished(true);
   star_send_log_store_->UpdateMessage(histogram_name, epoch,
                                       *serialized_message);
 }

@@ -57,7 +57,8 @@ MessageManagerConfig::MessageManagerConfig()
       p2a_json_upload_url(BUILDFLAG(P2A_JSON_UPLOAD_URL)),
       p3a_star_upload_url(BUILDFLAG(P3A_STAR_UPLOAD_URL)),
       p2a_star_upload_url(BUILDFLAG(P2A_STAR_UPLOAD_URL)),
-      star_randomness_url(BUILDFLAG(STAR_RANDOMNESS_UPLOAD_URL)) {}
+      star_randomness_url(BUILDFLAG(STAR_RANDOMNESS_UPLOAD_URL)),
+      star_randomness_info_url(BUILDFLAG(STAR_RANDOMNESS_INFO_URL)) {}
 
 MessageManagerConfig::~MessageManagerConfig() {}
 

@@ -67,8 +67,7 @@ void BraveP3ANewUploader::OnUploadComplete(
   if (headers) {
     response_code = headers->response_code();
   }
-  bool is_ok = url_loader_->NetError() != net::OK || response_code < 200 ||
-               response_code > 299;
+  bool is_ok = url_loader_->NetError() == net::OK;
   url_loader_.reset();
   upload_callback_.Run(is_ok, response_code, is_star);
 }

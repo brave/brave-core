@@ -9,8 +9,8 @@ buildflag_header("buildflags") {
     "P2A_JSON_UPLOAD_URL=\"$p2a_json_upload_url\"",
     "P3A_STAR_UPLOAD_URL=\"$p3a_star_upload_url\"",
     "P2A_STAR_UPLOAD_URL=\"$p2a_star_upload_url\"",
-    "STAR_RANDOMNESS_UPLOAD_URL=\"star_randomness_upload_url\"",
-    "STAR_RANDOMNESS_INFO_URL=\"star_randomness_info_url\"",
+    "STAR_RANDOMNESS_UPLOAD_URL=\"$star_randomness_upload_url\"",
+    "STAR_RANDOMNESS_INFO_URL=\"$star_randomness_info_url\"",
   ]
 }
 

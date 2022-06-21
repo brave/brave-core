@@ -74,7 +74,7 @@ void BraveP3ARotationScheduler::InitJsonTimer() {
 
 void BraveP3ARotationScheduler::InitStarTimer(base::Time next_epoch_time) {
   star_rotation_timer_.Start(
-      FROM_HERE, next_epoch_time, this,
+      FROM_HERE, next_epoch_time + base::Seconds(5), this,
       &BraveP3ARotationScheduler::HandleStarTimerTrigger);
 }
 
