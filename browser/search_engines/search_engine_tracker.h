@@ -37,7 +37,9 @@ enum class SearchEngineP3A {
   kYandex,
   kEcosia,
   kBrave,
-  kMaxValue = kBrave,
+  kDaum,
+  kNaver,
+  kMaxValue = kNaver,
 };
 
 // Note: append-only enumeration! Never remove any existing values, as this enum
