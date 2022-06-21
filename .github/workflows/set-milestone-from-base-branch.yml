@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  set-milestone:
+  set-pr-milestone:
     runs-on: ubuntu-latest
     steps:
       - env:
@@ -26,6 +26,7 @@ jobs:
           gh pr edit "$PR_NUMBER" -R "$REPO_NAME" -m "$milestone"
   set-brave-browser-issues-milestone:
     runs-on: ubuntu-latest
+    needs: set-pr-milestone
     steps:
       - env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -38,11 +39,11 @@ jobs:
 
           uplift_pr_body=$(gh pr view "$PR_NUMBER" -R "$REPO_NAME" --json body --jq '.body')
 
-          issues=$(echo "${uplift_pr_body}" | ggrep -ioP "${RESOLVE_ISSUE_REGEX}" || :)
+          issues=$(echo "${uplift_pr_body}" | grep -ioP "${RESOLVE_ISSUE_REGEX}" || :)
           if [[ -z ${issues} ]]; then
               echo "Resolved issues not directly found. Following PRs to determine them..."
-              prs=$(echo "${uplift_pr_body}" | ggrep -ioP "${UPLIFT_PR_REGEX}")
-              issues=$(xargs -n 1 -I{} gh pr view {} -R brave/brave-core --json body --jq '.body' < <(echo "${prs}") | ggrep -ioP "${RESOLVE_ISSUE_REGEX}")
+              prs=$(echo "${uplift_pr_body}" | grep -ioP "${UPLIFT_PR_REGEX}")
+              issues=$(xargs -n 1 -I{} gh pr view {} -R brave/brave-core --json body --jq '.body' < <(echo "${prs}") | grep -ioP "${RESOLVE_ISSUE_REGEX}")
           fi
           echo "Relevant issues detected:"
           echo "${issues}"
