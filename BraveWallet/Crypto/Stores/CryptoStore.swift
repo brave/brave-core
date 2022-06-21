@@ -6,7 +6,7 @@
 import BraveCore
 
 enum PendingRequest: Equatable {
-  case transactions
+  case transactions([BraveWallet.TransactionInfo])
   case addChain(BraveWallet.AddChainRequest)
   case switchChain(BraveWallet.SwitchChainRequest)
   case addSuggestedToken(BraveWallet.AddSuggestTokenRequest)
@@ -238,7 +238,7 @@ public class CryptoStore: ObservableObject {
           // Dismiss any buy send swap open to show the unapproved transactions
           self.buySendSwapDestination = nil
         }
-        self.pendingRequest = .transactions
+        self.pendingRequest = .transactions(pendingTransactions)
       } else { // no pending transactions, check for webpage requests
         let pendingWebpageRequest = await fetchPendingWebpageRequest()
         self.pendingRequest = pendingWebpageRequest
