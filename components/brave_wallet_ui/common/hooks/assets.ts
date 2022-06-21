@@ -9,7 +9,8 @@ import { useSelector } from 'react-redux'
 // Constants
 import {
   BraveWallet,
-  WalletState
+  WalletState,
+  BuySupportedChains
 } from '../../constants/types'
 
 // Hooks
@@ -52,6 +53,12 @@ export function useAssets () {
   const [wyreAssetOptions, setWyreAssetOptions] = React.useState<BraveWallet.BlockchainToken[]>([])
   const [rampAssetOptions, setRampAssetOptions] = React.useState<BraveWallet.BlockchainToken[]>([])
   React.useEffect(() => {
+    // Prevent calling getBuyAssets if the selectedNetwork is
+    // not supported.
+    if (!BuySupportedChains.includes(selectedNetwork.chainId)) {
+      return
+    }
+
     const fetchTokens = async () => {
       const wyreRegistryTokens = await getBuyAssets(BraveWallet.OnRampProvider.kWyre, selectedNetwork.chainId)
       const rampRegistryTokens = await getBuyAssets(BraveWallet.OnRampProvider.kRamp, selectedNetwork.chainId)
