@@ -21,7 +21,10 @@
     <FrameLayout
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:padding="16dp">
+      android:paddingTop="8dp"
+      android:paddingBottom="10dp"
+      android:paddingStart="12dp"
+      android:paddingEnd="12dp">
 
       <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -60,6 +63,7 @@
                     android:id="@+id/btn_start_quick_tour"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:minHeight="0dp"
                     android:layout_gravity="center_horizontal"
                     android:background="@android:color/transparent"
                     android:clickable="true"
@@ -75,10 +79,12 @@
                     android:id="@+id/btn_skip"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:minHeight="0dp"
                     android:layout_gravity="center_horizontal"
                     android:background="@android:color/transparent"
                     android:clickable="true"
                     android:focusable="true"
+                    android:layout_marginTop="6dp"
                     android:text="@string/skip"
                     android:fontFamily="@font/poppins_regular"
                     android:textColor="@color/rewards_panel_secondary_text_color" />
