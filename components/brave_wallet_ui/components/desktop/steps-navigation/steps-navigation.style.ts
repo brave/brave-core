@@ -43,6 +43,10 @@ export const BackButton = styled(WalletButton)<{
   letter-spacing: 0.01em;
   border: none;
   text-decoration: ${(p) => p.to ? 'none' : 'unset'};
+
+  & > span {
+    margin-left: 8px;
+  }
 `
 
 export const DotsWrapper = styled.div`

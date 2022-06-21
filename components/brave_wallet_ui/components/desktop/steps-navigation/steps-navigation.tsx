@@ -24,6 +24,7 @@ export interface StepsNavigationProps<T extends string> {
   onSkip?: () => void
   preventSkipAhead?: boolean
   readonly steps: T[]
+  skipButtonText?: string
 }
 
 export const StepsNavigation: <T extends string>(
@@ -34,7 +35,8 @@ export const StepsNavigation: <T extends string>(
   goBackUrl,
   onSkip,
   preventSkipAhead,
-  steps
+  steps,
+  skipButtonText
 }) => {
   // routing
   const history = useHistory()
@@ -57,7 +59,7 @@ export const StepsNavigation: <T extends string>(
         onClick={buttonProps.onClick}
       >
         <BackIcon />
-        {getLocale('braveWalletBack')}
+        <span>{getLocale('braveWalletBack')}</span>
       </BackButton>
 
       <DotsWrapper>
@@ -78,10 +80,10 @@ export const StepsNavigation: <T extends string>(
       </DotsWrapper>
 
       {onSkip
-          ? <LinkText onClick={onSkip}>
-              {getLocale('braveWalletBackupButtonSkip')}
-            </LinkText>
-          : <FlexBox />
+        ? <LinkText onClick={onSkip}>
+            {skipButtonText || getLocale('braveWalletBackupButtonSkip')}
+          </LinkText>
+        : <FlexBox />
       }
 
     </Wrapper>
