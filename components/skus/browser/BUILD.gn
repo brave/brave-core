@@ -39,7 +39,7 @@ static_library("browser") {
 source_set("unit_tests") {
   testonly = true
 
-  sources = []
+  sources = [ "skus_utils_unittest.cc" ]
 
   # Remove when linux fixed https://github.com/brave/brave-browser/issues/15817.
   if (is_win || is_mac) {
