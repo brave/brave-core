@@ -4,8 +4,6 @@
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { connect } from 'react-redux'
-import { bindActionCreators, Dispatch } from 'redux'
 import {
   ConnectWithSite,
   ConnectedPanel,
@@ -45,7 +43,7 @@ import {
   PanelWrapper,
   WelcomePanelWrapper
 } from './style'
-import store from './store'
+
 import * as WalletPanelActions from './actions/wallet_panel_actions'
 import * as WalletActions from '../common/actions/wallet_actions'
 import {
@@ -55,7 +53,6 @@ import {
   WalletState,
   PanelState,
   PanelTypes,
-  WalletPanelState,
   WalletAccountType,
   BuySendSwapViewTypes,
   ToOrFromType,
@@ -67,29 +64,18 @@ import { getNetworkInfo } from '../utils/network-utils'
 import { isHardwareAccount } from '../utils/address-utils'
 import { useAssets, useSwap, useSend, useHasAccount, usePrevNetwork } from '../common/hooks'
 import { getUniqueAssets } from '../utils/asset-utils'
+import { ConfirmSolanaTransactionPanel } from '../components/extension/confirm-transaction-panel/confirm-solana-transaction-panel'
+import { SignTransactionPanel } from '../components/extension/sign-panel/sign-transaction-panel'
+import { useDispatch, useSelector } from 'react-redux'
 
-type Props = {
-  panel: PanelState
-  wallet: WalletState
-  walletPanelActions: typeof WalletPanelActions
-  walletActions: typeof WalletActions
+// Allow BigInts to be stringified
+(BigInt.prototype as any).toJSON = function () {
+  return this.toString()
 }
 
-function mapStateToProps (state: WalletPanelState): Partial<Props> {
-  return {
-    panel: state.panel,
-    wallet: state.wallet
-  }
-}
-
-function mapDispatchToProps (dispatch: Dispatch): Partial<Props> {
-  return {
-    walletPanelActions: bindActionCreators(WalletPanelActions, store.dispatch.bind(store)),
-    walletActions: bindActionCreators(WalletActions, store.dispatch.bind(store))
-  }
-}
-
-function Container (props: Props) {
+function Container () {
+  // redux
+  const dispatch = useDispatch()
   const {
     accounts,
     selectedAccount,
@@ -109,8 +95,7 @@ function Container (props: Props) {
     userVisibleTokensInfo,
     defaultAccounts,
     defaultNetworks
-  } = props.wallet
-
+  } = useSelector(({ wallet }: { wallet: WalletState }) => wallet)
   const {
     connectToSiteOrigin,
     panelTitle,
@@ -122,8 +107,9 @@ function Container (props: Props) {
     getEncryptionPublicKeyRequest,
     decryptRequest,
     connectingAccounts,
-    selectedTransaction
-  } = props.panel
+    selectedTransaction,
+    hardwareWalletCode
+  } = useSelector(({ panel }: { panel: PanelState }) => panel)
 
   // TODO(petemill): If initial data or UI takes a noticeable amount of time to arrive
   // consider rendering a "loading" indicator when `hasInitialized === false`, and
@@ -223,7 +209,7 @@ function Container (props: Props) {
   }
   const [inputValue, setInputValue] = React.useState<string>('')
   const onSubmit = () => {
-    props.walletPanelActions.connectToSite({ selectedAccounts })
+    dispatch(WalletPanelActions.connectToSite({ selectedAccounts }))
   }
   const primaryAction = () => {
     if (!readyToConnect) {
@@ -238,49 +224,49 @@ function Container (props: Props) {
     if (readyToConnect) {
       setReadyToConnect(false)
     } else {
-      props.walletPanelActions.cancelConnectToSite({ selectedAccounts })
+      dispatch(WalletPanelActions.cancelConnectToSite({ selectedAccounts }))
       setSelectedAccounts([])
       setReadyToConnect(false)
     }
   }
   const unlockWallet = () => {
-    props.walletActions.unlockWallet({ password: inputValue })
+    dispatch(WalletActions.unlockWallet({ password: inputValue }))
     setInputValue('')
   }
 
   const handlePasswordChanged = (value: string) => {
     setInputValue(value)
     if (hasIncorrectPassword) {
-      props.walletActions.hasIncorrectPassword(false)
+      dispatch(WalletActions.hasIncorrectPassword(false))
     }
   }
 
   const onRestore = () => {
-    props.walletPanelActions.expandRestoreWallet()
+    dispatch(WalletPanelActions.expandRestoreWallet())
   }
 
   const onSetup = () => {
-    props.walletPanelActions.setupWallet()
+    dispatch(WalletPanelActions.setupWallet())
   }
 
   const addToFavorites = (app: BraveWallet.AppItem) => {
-    props.walletActions.addFavoriteApp(app)
+    dispatch(WalletActions.addFavoriteApp(app))
   }
 
   const navigateTo = (path: PanelTypes) => {
     if (path === 'expanded') {
-      props.walletPanelActions.expandWallet()
+      dispatch(WalletPanelActions.expandWallet())
     } else {
-      props.walletPanelActions.navigateTo(path)
+      dispatch(WalletPanelActions.navigateTo(path))
     }
   }
 
   const browseMore = () => {
-    props.walletPanelActions.openWalletApps()
+    dispatch(WalletPanelActions.openWalletApps())
   }
 
   const removeFromFavorites = (app: BraveWallet.AppItem) => {
-    props.walletActions.removeFavoriteApp(app)
+    dispatch(WalletActions.removeFavoriteApp(app))
   }
 
   const filterList = (event: any) => {
@@ -288,55 +274,55 @@ function Container (props: Props) {
   }
 
   const onSelectAccount = (account: WalletAccountType) => () => {
-    props.walletActions.selectAccount(account)
-    props.walletPanelActions.navigateTo('main')
+    dispatch(WalletActions.selectAccount(account))
+    dispatch(WalletPanelActions.navigateTo('main'))
   }
 
   const onReturnToMain = () => {
-    props.walletPanelActions.navigateTo('main')
+    dispatch(WalletPanelActions.navigateTo('main'))
   }
 
   const onCancelSigning = () => {
     if (isHardwareAccount(accounts, signMessageData[0].address)) {
-      props.walletPanelActions.signMessageHardwareProcessed({
+      dispatch(WalletPanelActions.signMessageHardwareProcessed({
         success: false,
         id: signMessageData[0].id,
         signature: '',
         error: ''
-      })
+      }))
     } else {
-      props.walletPanelActions.signMessageProcessed({
+      dispatch(WalletPanelActions.signMessageProcessed({
         approved: false,
         id: signMessageData[0].id
-      })
+      }))
     }
   }
 
   const onSignData = () => {
     if (isHardwareAccount(accounts, signMessageData[0].address)) {
-      props.walletPanelActions.signMessageHardware(signMessageData[0])
+      dispatch(WalletPanelActions.signMessageHardware(signMessageData[0]))
     } else {
-      props.walletPanelActions.signMessageProcessed({
+      dispatch(WalletPanelActions.signMessageProcessed({
         approved: true,
         id: signMessageData[0].id
-      })
+      }))
     }
   }
 
   const onApproveAddNetwork = () => {
-    props.walletPanelActions.addEthereumChainRequestCompleted({ chainId: addChainRequest.networkInfo.chainId, approved: true })
+    dispatch(WalletPanelActions.addEthereumChainRequestCompleted({ chainId: addChainRequest.networkInfo.chainId, approved: true }))
   }
 
   const onCancelAddNetwork = () => {
-    props.walletPanelActions.addEthereumChainRequestCompleted({ chainId: addChainRequest.networkInfo.chainId, approved: false })
+    dispatch(WalletPanelActions.addEthereumChainRequestCompleted({ chainId: addChainRequest.networkInfo.chainId, approved: false }))
   }
 
   const onApproveChangeNetwork = () => {
-    props.walletPanelActions.switchEthereumChainProcessed({ approved: true, origin: switchChainRequest.originInfo.origin })
+    dispatch(WalletPanelActions.switchEthereumChainProcessed({ approved: true, origin: switchChainRequest.originInfo.origin }))
   }
 
   const onCancelChangeNetwork = () => {
-    props.walletPanelActions.switchEthereumChainProcessed({ approved: false, origin: switchChainRequest.originInfo.origin })
+    dispatch(WalletPanelActions.switchEthereumChainProcessed({ approved: false, origin: switchChainRequest.originInfo.origin }))
   }
 
   const onNetworkLearnMore = () => {
@@ -347,13 +333,13 @@ function Container (props: Props) {
 
   const onRejectTransaction = () => {
     if (selectedPendingTransaction) {
-      props.walletActions.rejectTransaction(selectedPendingTransaction)
+      dispatch(WalletActions.rejectTransaction(selectedPendingTransaction))
     }
   }
 
   const onSelectTransaction = (transaction: BraveWallet.TransactionInfo) => {
-    props.walletPanelActions.setSelectedTransaction(transaction)
-    props.walletPanelActions.navigateTo('transactionDetails')
+    dispatch(WalletPanelActions.setSelectedTransaction(transaction))
+    dispatch(WalletPanelActions.navigateTo('transactionDetails'))
   }
 
   const onConfirmTransaction = () => {
@@ -361,9 +347,9 @@ function Container (props: Props) {
       return
     }
     if (isHardwareAccount(accounts, selectedPendingTransaction.fromAddress)) {
-      props.walletPanelActions.approveHardwareTransaction(selectedPendingTransaction)
+      dispatch(WalletPanelActions.approveHardwareTransaction(selectedPendingTransaction))
     } else {
-      props.walletActions.approveTransaction(selectedPendingTransaction)
+      dispatch(WalletActions.approveTransaction(selectedPendingTransaction))
       onSelectTransaction(selectedPendingTransaction)
     }
   }
@@ -379,56 +365,56 @@ function Container (props: Props) {
   }
 
   const onOpenSettings = () => {
-    props.walletPanelActions.openWalletSettings()
+    dispatch(WalletPanelActions.openWalletSettings())
   }
 
   const onCancelConnectHardwareWallet = () => {
     if (!selectedPendingTransaction) {
       return
     }
-    props.walletPanelActions.cancelConnectHardwareWallet(selectedPendingTransaction)
+    dispatch(WalletPanelActions.cancelConnectHardwareWallet(selectedPendingTransaction))
   }
 
   const removeSitePermission = (origin: Origin, account: WalletAccountType, connectedAccounts: WalletAccountType[]) => {
-    props.walletActions.removeSitePermission({ coin: account.coin, origin: origin, account: account.address })
+    dispatch(WalletActions.removeSitePermission({ coin: account.coin, origin: origin, account: account.address }))
     if (connectedAccounts.length !== 0) {
-      props.walletActions.selectAccount(connectedAccounts[0])
+      dispatch(WalletActions.selectAccount(connectedAccounts[0]))
     }
   }
 
   const addSitePermission = (origin: Origin, account: WalletAccountType) => {
-    props.walletActions.addSitePermission({ coin: account.coin, origin: origin, account: account.address })
-    props.walletActions.selectAccount(account)
+    dispatch(WalletActions.addSitePermission({ coin: account.coin, origin: origin, account: account.address }))
+    dispatch(WalletActions.selectAccount(account))
   }
 
   const onSwitchAccount = (account: WalletAccountType) => {
-    props.walletActions.selectAccount(account)
+    dispatch(WalletActions.selectAccount(account))
   }
 
   const onAddAccount = () => {
-    props.walletPanelActions.expandWalletAccounts()
+    dispatch(WalletPanelActions.expandWalletAccounts())
   }
 
   const onAddAsset = () => {
-    props.walletPanelActions.expandWalletAddAsset()
+    dispatch(WalletPanelActions.expandWalletAddAsset())
   }
 
   const onAddSuggestedToken = () => {
     if (!suggestedTokenRequest) {
       return
     }
-    props.walletPanelActions.addSuggestTokenProcessed({ approved: true, contractAddress: suggestedTokenRequest.token.contractAddress })
+    dispatch(WalletPanelActions.addSuggestTokenProcessed({ approved: true, contractAddress: suggestedTokenRequest.token.contractAddress }))
   }
 
   const onCancelAddSuggestedToken = () => {
     if (!suggestedTokenRequest) {
       return
     }
-    props.walletPanelActions.addSuggestTokenProcessed({ approved: false, contractAddress: suggestedTokenRequest.token.contractAddress })
+    dispatch(WalletPanelActions.addSuggestTokenProcessed({ approved: false, contractAddress: suggestedTokenRequest.token.contractAddress }))
   }
 
   const onAddNetwork = () => {
-    props.walletActions.expandWalletNetworks()
+    dispatch(WalletActions.expandWalletNetworks())
   }
 
   const onClickInstructions = () => {
@@ -442,40 +428,40 @@ function Container (props: Props) {
   }
 
   const onRetryTransaction = (transaction: BraveWallet.TransactionInfo) => {
-    props.walletActions.retryTransaction(transaction)
+    dispatch(WalletActions.retryTransaction(transaction))
   }
 
   const onSpeedupTransaction = (transaction: BraveWallet.TransactionInfo) => {
-    props.walletActions.speedupTransaction(transaction)
+    dispatch(WalletActions.speedupTransaction(transaction))
   }
 
   const onCancelTransaction = (transaction: BraveWallet.TransactionInfo) => {
-    props.walletActions.cancelTransaction(transaction)
+    dispatch(WalletActions.cancelTransaction(transaction))
   }
 
   const onGoBackToTransactions = () => {
-    props.walletPanelActions.navigateTo('transactions')
+    dispatch(WalletPanelActions.navigateTo('transactions'))
   }
 
   const onProvideEncryptionKey = () => {
-    props.walletPanelActions.getEncryptionPublicKeyProcessed({ approved: true, origin: getEncryptionPublicKeyRequest.originInfo.origin })
+    dispatch(WalletPanelActions.getEncryptionPublicKeyProcessed({ approved: true, origin: getEncryptionPublicKeyRequest.originInfo.origin }))
   }
 
   const onCancelProvideEncryptionKey = () => {
-    props.walletPanelActions.getEncryptionPublicKeyProcessed({ approved: false, origin: getEncryptionPublicKeyRequest.originInfo.origin })
+    dispatch(WalletPanelActions.getEncryptionPublicKeyProcessed({ approved: false, origin: getEncryptionPublicKeyRequest.originInfo.origin }))
   }
 
   const onAllowReadingEncryptedMessage = () => {
-    props.walletPanelActions.decryptProcessed({ approved: true, origin: decryptRequest.originInfo.origin })
+    dispatch(WalletPanelActions.decryptProcessed({ approved: true, origin: decryptRequest.originInfo.origin }))
   }
 
   const onCancelAllowReadingEncryptedMessage = () => {
-    props.walletPanelActions.decryptProcessed({ approved: false, origin: decryptRequest.originInfo.origin })
+    dispatch(WalletPanelActions.decryptProcessed({ approved: false, origin: decryptRequest.originInfo.origin }))
   }
 
   React.useEffect(() => {
     if (needsAccount) {
-      props.walletPanelActions.navigateTo('createAccount')
+      dispatch(WalletPanelActions.navigateTo('createAccount'))
     }
   }, [needsAccount])
 
@@ -536,7 +522,7 @@ function Container (props: Props) {
           <ConnectHardwareWalletPanel
             onCancel={onCancelConnectHardwareWallet}
             walletName={selectedAccount.name}
-            hardwareWalletCode={props.panel.hardwareWalletCode}
+            hardwareWalletCode={hardwareWalletCode}
             retryCallable={retryHardwareOperation}
             onClickInstructions={onClickInstructions}
           />
@@ -549,10 +535,21 @@ function Container (props: Props) {
     return (
       <PanelWrapper isLonger={true}>
         <LongWrapper>
-          <ConfirmTransactionPanel
-            onConfirm={onConfirmTransaction}
-            onReject={onRejectTransaction}
-          />
+          {[
+            BraveWallet.TransactionType.SolanaDappSignAndSendTransaction,
+            BraveWallet.TransactionType.SolanaSPLTokenTransfer,
+            BraveWallet.TransactionType.SolanaSPLTokenTransferWithAssociatedTokenAccountCreation,
+            BraveWallet.TransactionType.SolanaSystemTransfer
+          ].includes(selectedPendingTransaction.txType)
+            ? <ConfirmSolanaTransactionPanel
+              onConfirm={onConfirmTransaction}
+              onReject={onRejectTransaction}
+            />
+            : <ConfirmTransactionPanel
+              onConfirm={onConfirmTransaction}
+              onReject={onRejectTransaction}
+            />
+          }
         </LongWrapper>
       </PanelWrapper>
     )
@@ -625,6 +622,18 @@ function Container (props: Props) {
             defaultNetworks={defaultNetworks}
             // Pass a boolean here if the signing method is risky
             showWarning={false}
+          />
+        </LongWrapper>
+      </PanelWrapper>
+    )
+  }
+
+  if (selectedPanel === 'signTransaction' || selectedPanel === 'signAllTransactions') {
+    return (
+      <PanelWrapper isLonger={true}>
+        <LongWrapper>
+          <SignTransactionPanel
+            signMode={selectedPanel === 'signAllTransactions' ? 'signAllTxs' : 'signTx'}
           />
         </LongWrapper>
       </PanelWrapper>
@@ -744,8 +753,8 @@ function Container (props: Props) {
   }
 
   if (selectedPanel === 'connectWithSite') {
-    const accountsToConnect = props.wallet.accounts.filter(
-      (account) => props.panel.connectingAccounts.includes(account.address.toLowerCase())
+    const accountsToConnect = accounts.filter(
+      (account) => connectingAccounts.includes(account.address.toLowerCase())
     )
     return (
       <PanelWrapper isLonger={true}>
@@ -955,4 +964,4 @@ function Container (props: Props) {
   )
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Container)
+export default Container

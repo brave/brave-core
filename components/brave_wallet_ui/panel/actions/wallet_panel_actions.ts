@@ -52,3 +52,7 @@ export const getEncryptionPublicKeyProcessed = createAction<GetEncryptionPublicK
 export const decrypt = createAction<BraveWallet.DecryptRequest>('decrypt')
 export const decryptProcessed = createAction<DecryptProcessedPayload>('decryptProcessed')
 export const setSelectedTransaction = createAction<BraveWallet.TransactionInfo | undefined>('setSelectedTransaction')
+export const signTransaction = createAction<BraveWallet.SignTransactionRequest[]>('signTransaction')
+export const signTransactionProcessed = createAction<SignMessageProcessedPayload>('signTransactionProcessed')
+export const signAllTransactions = createAction<BraveWallet.SignAllTransactionsRequest[]>('signAllTransactions')
+export const signAllTransactionsProcessed = createAction<SignMessageProcessedPayload>('signAllTransactionsProcessed')

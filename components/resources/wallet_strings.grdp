@@ -470,6 +470,24 @@
   <message name="IDS_WALLET_TRANSACTION_STATUS_UPDATE_MESSAGE_TEXT" desc="Notification message text when transaction status updated">Click here to check transaction details for <ph name="VALUE">$1<ex>0xABC</ex></ph></message>
   <message name="IDS_WALLET_TRANSACTION_STATUS_UPDATE_MESSAGE_TITLE_CONFIRMED" desc="Notification message title when transaction confirmed">Transaction confirmed</message>
   <message name="IDS_WALLET_TRANSACTION_STATUS_UPDATE_MESSAGE_TITLE_ERROR" desc="Notification message title when transaction error">Transaction error</message>
- <message name="IDS_WALLET_TRANSACTION_STATUS_UPDATE_MESSAGE_TITLE_DROPPED" desc="Notification message title when transaction dropped">Transaction dropped</message>  
- <message name="IDS_WALLET_TAB_IS_NOT_ACTIVE_ERROR" desc="Error message if it comes from an inactive tab">The tab is not active</message>
+  <message name="IDS_WALLET_TRANSACTION_STATUS_UPDATE_MESSAGE_TITLE_DROPPED" desc="Notification message title when transaction dropped">Transaction dropped</message>  
+  <message name="IDS_WALLET_TAB_IS_NOT_ACTIVE_ERROR" desc="Error message if it comes from an inactive tab">The tab is not active</message> 
+  <message name="IDS_BRAVE_WALLET_APPROVE_TRANSACTION" desc="Title message when dApp transaction approval is requested">Approve transaction</message>  
+  <message name="IDS_BRAVE_WALLET_SOLANA_SYSTEM_PROGRAM" desc="Name of Solana System Program">System Program</message>  
+  <message name="IDS_BRAVE_WALLET_SOLANA_CONFIG_PROGRAM" desc="Name of Solana Config Program">Config Program</message>  
+  <message name="IDS_BRAVE_WALLET_SOLANA_STAKE_PROGRAM" desc="Name of Solana Stake Program">Stake Program</message>  
+  <message name="IDS_BRAVE_WALLET_SOLANA_VOTE_PROGRAM" desc="Name of Solana Vote Program">Vote Program</message>  
+  <message name="IDS_BRAVE_WALLET_SOLANA_BP_FLOADER" desc="Name of Solana BPF Loader">BPF Loader</message>  
+  <message name="IDS_BRAVE_WALLET_SOLANA_ED25519_PROGRAM" desc="Name of Solana Ed25519 Program">Ed25519 Program</message>  
+  <message name="IDS_BRAVE_WALLET_SOLANA_SECP256K1_PROGRAM" desc="Name of Solana Secp256k1 Program">Secp256k1 Program</message>
+  <message name="IDS_BRAVE_WALLET_SOLANA_PARAM_KEY_FROMPUBKEY" desc="Name of Solana instruction 'fromPubkey' param">From Address: </message>  
+  <message name="IDS_BRAVE_WALLET_SOLANA_PARAM_KEY_TOPUBKEY" desc="Name of Solana instruction 'toPubkey' param">To Address: </message>  
+  <message name="IDS_BRAVE_WALLET_SOLANA_PARAM_KEY_LAMPORTS" desc="Name of Solana instruction 'lamports' param">Amount: </message>  
+  <message name="IDS_BRAVE_WALLET_SOLANA_PARAM_KEY_NEWACCOUNTPUBKEY" desc="Name of Solana instruction 'newAccountPubkey' param">New Account: </message>  
+  <message name="IDS_BRAVE_WALLET_SOLANA_ACCOUNTS" desc="Name of Solana instruction 'accounts' param">Accounts:</message>  
+  <message name="IDS_BRAVE_WALLET_SOLANA_DATA" desc="Name of Solana instruction 'data' param">Data:</message>  
+  <message name="IDS_BRAVE_WALLET_SOLANA_PROGRAM_ID" desc="Name of Solana instruction 'programID' param">Program ID:</message>  
+  <message name="IDS_BRAVE_WALLET_SOLANA_MAX_RETRIES" desc="Name of Solana instruction 'programID' param">Max Retries:</message>  
+  <message name="IDS_BRAVE_WALLET_SOLANA_PREFLIGHT_COMMITMENT" desc="Name of Solana instruction 'programID' param">Preflight Commitment:</message>  
+  <message name="IDS_BRAVE_WALLET_SOLANA_SKIP_PREFLIGHT" desc="Name of Solana instruction 'programID' param">Skip Preflight:</message>  
 </grit-part>

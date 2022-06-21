@@ -296,6 +296,7 @@ provideStrings({
   braveWalletSignWarningTitle: 'Sign at your own risk',
   braveWalletSignTransactionMessageTitle: 'Message',
   braveWalletSignTransactionButton: 'Sign',
+  braveWalletApproveTransaction: 'Approve transaction',
 
   // Encryption Key Panel
   braveWalletProvideEncryptionKeyTitle: 'A DApp is requesting your public encryption key',
@@ -532,5 +533,26 @@ provideStrings({
   braveWalletTransactionConfirmingTitle: 'Transaction is processing',
   // [FIXME]: change the wording after ETH2.
   braveWalletTransactionConfirmingDescription: 'Transaction was successfully included in a block. To avoid the risk of double spending, we recommend waiting for block confirmations.',
-  braveWalletTransactionConfirmingText: 'Confirming'
+  braveWalletTransactionConfirmingText: 'Confirming',
+
+  // Solana ProgramID Names
+  braveWalletSolanaSystemProgram: 'System Program',
+  braveWalletSolanaConfigProgram: 'Config Program',
+  braveWalletSolanaStakeProgram: 'Stake Program',
+  braveWalletSolanaVoteProgram: 'Vote Program',
+  braveWalletSolanaBPFLoader: 'BPF Loader',
+  braveWalletSolanaEd25519Program: 'Ed25519 Program',
+  braveWalletSolanaSecp256k1Program: 'Secp256k1 Program',
+
+  // Solana Instruction Paramater Names
+  braveWalletSolanaParamKeyFromPubkey: 'From Address: ',
+  braveWalletSolanaParamKeyToPubkey: 'To Address: ',
+  braveWalletSolanaParamKeyLamports: 'Amount: ',
+  braveWalletSolanaParamKeyNewAccountPubkey: 'New Account: ',
+  braveWalletSolanaAccounts: 'Accounts:',
+  braveWalletSolanaData: 'Data:',
+  braveWalletSolanaProgramID: 'Program ID:',
+  braveWalletSolanaMaxRetries: 'Max Retries:',
+  braveWalletSolanaPreflightCommitment: 'Preflight Commitment:',
+  braveWalletSolanaSkipPreflight: 'Skip Preflight:'
 })

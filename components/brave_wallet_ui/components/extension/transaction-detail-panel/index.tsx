@@ -1,3 +1,8 @@
+// Copyright (c) 2022 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// you can obtain one at http://mozilla.org/MPL/2.0/.
+
 import * as React from 'react'
 import { useSelector } from 'react-redux'
 import * as EthereumBlockies from 'ethereum-blockies'
@@ -166,7 +171,9 @@ const TransactionDetailPanel = (props: Props) => {
   const isSolanaTransaction =
     liveTransaction.txType === BraveWallet.TransactionType.SolanaSystemTransfer ||
     liveTransaction.txType === BraveWallet.TransactionType.SolanaSPLTokenTransfer ||
-    liveTransaction.txType === BraveWallet.TransactionType.SolanaSPLTokenTransferWithAssociatedTokenAccountCreation
+    liveTransaction.txType === BraveWallet.TransactionType.SolanaSPLTokenTransferWithAssociatedTokenAccountCreation ||
+    liveTransaction.txType === BraveWallet.TransactionType.SolanaDappSignAndSendTransaction ||
+    liveTransaction.txType === BraveWallet.TransactionType.SolanaDappSignTransaction
 
   const isFilecoinTransaction = getCoinFromTxDataUnion(liveTransaction.txDataUnion) === BraveWallet.CoinType.FIL
 

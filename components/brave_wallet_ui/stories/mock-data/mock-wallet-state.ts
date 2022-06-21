@@ -1,6 +1,16 @@
-import { mockNetwork } from '../../common/constants/mocks'
+// Copyright (c) 2022 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// you can obtain one at http://mozilla.org/MPL/2.0/.
+
+import { LAMPORTS_PER_SOL } from '@solana/web3.js'
+
+// types
 import { BraveWallet, WalletAccountType, WalletState } from '../../constants/types'
 import { AllNetworksOption } from '../../options/network-filter-options'
+
+// mocks
+import { mockNetwork } from '../../common/constants/mocks'
 
 const mockAccount: WalletAccountType = {
   accountType: 'Primary',
@@ -200,6 +210,9 @@ export const mockWalletState: WalletState = {
   isFilecoinEnabled: false,
   isMetaMaskInstalled: false,
   isSolanaEnabled: false,
+  solFeeEstimates: {
+    fee: 0.000005 * LAMPORTS_PER_SOL as unknown as bigint
+  },
   isWalletBackedUp: true,
   isWalletCreated: false,
   isWalletLocked: false,
