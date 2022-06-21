@@ -1,10 +1,11 @@
 import * as React from 'react'
 import Radio from 'brave-ui/components/formControls/radio'
 
-import { getLocale } from '../../../../common/locale'
-import { NavButton, Panel } from '../'
+// Utils
+import { getLocale } from '$web-common/locale'
 
 // Styled Components
+import { NavButton, Panel } from '../'
 import {
   StyledWrapper,
   FormColumn,
@@ -15,13 +16,6 @@ import {
   AllowanceContent,
   AllowanceOption
 } from './style'
-import Amount from '../../../utils/amount'
-import { MAX_UINT256 } from '../../../common/constants/magics'
-
-export enum MaxPriorityPanels {
-  setSuggested = 0,
-  setCustom = 1
-}
 
 type AllowanceTypes =
   | 'proposed'
@@ -32,8 +26,8 @@ export interface Props {
   onSave: (allowance: string) => void
   proposedAllowance: string
   symbol: string
-  decimals: number
   approvalTarget: string
+  isApprovalUnlimited: boolean
 }
 
 const EditAllowance = (props: Props) => {
@@ -46,7 +40,7 @@ const EditAllowance = (props: Props) => {
     proposedAllowance,
     approvalTarget,
     symbol,
-    decimals
+    isApprovalUnlimited
   } = props
 
   const toggleAllowanceRadio = (key: AllowanceTypes) => {
@@ -67,11 +61,10 @@ const EditAllowance = (props: Props) => {
   }, [allowanceType, customAllowance])
 
   const formattedProposedAllowance = React.useMemo(() => {
-    const wrappedAmount = new Amount(proposedAllowance)
-    return wrappedAmount.multiplyByDecimals(decimals).eq(MAX_UINT256)
+    return isApprovalUnlimited
       ? getLocale('braveWalletTransactionApproveUnlimited')
       : proposedAllowance
-  }, [proposedAllowance])
+  }, [proposedAllowance, isApprovalUnlimited])
 
   return (
     <Panel
