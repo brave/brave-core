@@ -10,19 +10,27 @@
 -ActivityLogTestWithoutSwitch.*
 -All/ActionTrackerTest.*
 -All/ChromeLabs*Test.*
+-All/DiceWebSigninInterceptorManagedAccountTest.*
+-All/EnterpriseProfileWelcomeHandleProceedTest.HandleProceed/*
 -All/ExtensionActionAPIUnitTest.*
+-All/IntentPickerBubbleViewLayoutTest.*
+-All/InvalidSearchProviderTest.DoesNotSendSuggestRequests/*
 -All/MultipleRulesetsTest_Unpacked.*
 -All/MultipleRulesetsTest.*
 -All/ParameterizedDeclarativeContentActionTest.*
+-All/PreinstalledWebAppManagerTest.ReplacementExtensionBlockedByPolicy/*
 -All/ProcessDiceHeaderDelegateImplTestEnableSync.*
 -All/ProcessDiceHeaderDelegateImplTestHandleTokenExchangeFailure.*
 -All/RulesetManagerTest.*
+-All/SearchProviderCommandLineOverrideTest.CommandLineOverrides/*
+-All/SearchProviderTest.*
 -All/SingleRulesetTest.*
 -All/TabSharingInfoBarDelegateTest.*
 -All/TabStripTest.*
 -All/WebstorePrivateBeginInstallWithManifest3FrictionDialogTest.*
 -AppInfoDialogViewsTest.*
 -AppLauncherHandlerTest.*
+-AssistantSidePanelCoordinatorImplTest.*
 -AvatarToolbarButtonTest.*
 -BackFwdMenuModelIncognitoTest.*
 -BackFwdMenuModelTest.*
@@ -33,6 +41,7 @@
 -BookmarkBarViewInWidgetTest.*
 -BookmarkBarViewTest.*
 -BookmarkBubbleViewTest.*
+-BookmarkManagerPrivateApiUnitTest.*
 -BookmarkMenuDelegateTest.*
 -BookmarkTest.*
 -BreadcrumbManagerBrowserAgentTest.*
@@ -59,6 +68,9 @@
 -ChromeBrowsingDataRemoverDelegateBlockPromptsTest.*
 -ChromeBrowsingDataRemoverDelegateLiteVideoTest.*
 -ChromeBrowsingDataRemoverDelegateTest.*
+-ChromeBrowsingDataRemoverDelegateEnabledUkmDatabaseTest.*
+-ChromeBrowsingDataRemoverDelegateWithNELServiceTest.*
+-ChromeBrowsingDataRemoverDelegateWithReportingServiceTest.*
 -ChromeClientSideDetectionHostDelegateTest.*
 -ChromeComponentUpdaterConfiguratorTest.*
 -ChromeContentBrowserClientWindowTest.*
@@ -82,6 +94,7 @@
 -ClearBrowsingDataHandlerUnitTest.*
 -ClickToCallUtilsTest.*
 -ClientSideDetectionHostTest.*
+-CloudBinaryUploadServiceTest.*
 -CloudPrintProxyPolicyTest.*
 -CommanderEntityMatchTest.*
 -ComponentLoaderTest.*
@@ -113,6 +126,7 @@
 -DownloadTargetDeterminerTest.*
 -DurableStoragePermissionContextTest.*
 -EnhancedProtectionDownloadTest.*
+-ExistingBaseSubMenuModelTest.*
 -ExistingTabGroupSubMenuModelTest.*
 -ExistingWindowSubMenuModelTest.*
 -ExtensionActionIconFactoryTest.*
@@ -173,8 +187,10 @@
 -GCMProfileServiceTest.*
 -GeolocationPermissionContextDelegateTests.*
 -GetUserPopulationForProfileTest.*
+-HatsHelperFencedFrameTest.*
 -HatsHelperTest.*
 -HelpBubbleViewTest.*
+-HelpBubbleViewTimeoutTest.*
 -HomepageURLManifestTest.*
 -HostContentSettingsMapTest.*
 -IncognitoThemeServiceTestWithIncognitoBrandConsistencyFlag/IncognitoThemeServiceTest.*
@@ -202,10 +218,13 @@
 -MediaRouterUIServiceFactoryUnitTest.*
 -MediaRouterViewsUITest.*
 -MediaStreamFocusDelegateTest.*
+-MediaToolbarButtonContextualMenuTest.*
 -MetricsWebContentsObserverTest.*
 -MoveToAccountStoreBubbleControllerTest.*
 -MultiProfileCredentialsFilterTest.*
 -NewTabPageHandlerTest.*
+-NoStatePrefetchGWSPrefetchHoldbackOffTest.*
+-NoStatePrefetchTest.*
 -NotificationPermissionContextTest.*
 -OfferNotificationBubbleControllerImplPrerenderTest.*
 -OfferNotificationBubbleControllerImplTest.*
@@ -246,6 +265,7 @@
 -PrefetchProxyTabHelperTest.*
 -PrefetchProxyTabHelperUnlimitedPrefetchesTest.*
 -PrefetchProxyTabHelperWithDecoyTest.*
+-PrefetchProxyTabHelperWithHTMLOnly.*
 -PreinstalledWebAppManagerTest.*
 -PrerendererNavigationPredictorPrefetchHoldbackDisabledTest.*
 -PrerenderGWSPrefetchHoldbackOffTest.*
@@ -259,6 +279,7 @@
 -ProfileManagerTest.*
 -ProfileResetterTest.*
 -ProfileSigninConfirmationHelperTest.*
+-ReadAnythingCoordinatorTest.*
 -RelaunchNotificationControllerPlatformImplTest.*
 -RenameHandlerOpenDownloadTest.*
 -RenderViewContextMenuExtensionsTest.*
@@ -279,7 +300,6 @@
 -SearchIPCRouterPolicyTest.*
 -SearchIPCRouterTest.*
 -SearchProviderCommandLineOverrideTest.*
--SearchProviderTest.*
 -SearchTest.*
 -SendTabToSelfDesktopUtilTest.*
 -SendTabToSelfSubMenuModelTest.*
@@ -296,6 +316,7 @@
 -SidePanelToolbarButtonTest.*
 -SigninErrorHandlerTest.*
 -SigninManagerTest.*
+-SigninUiUtilTest.*
 -SitePermissionsHelperUnitTest.*
 -SiteSettingsCounterTest.*
 -SiteSettingsHandlerInfobarTest.*
@@ -333,6 +354,7 @@
 -TemplateURLServiceSyncTest.*
 -TemplateURLServiceTest.*
 -TestChromeColorsService.*
+-TestReadingListPageHandlerTest.*
 -TestReadLaterPageHandlerTest.*
 -ThemeProviderRedirectedEquivalenceTest.*
 -ThemeServiceTest.*
@@ -343,6 +365,7 @@
 -UkmPageLoadMetricsObserverTest.*
 -UpdateInstallGateTest.*
 -UpdateServiceCanUpdateFeatureEnabledNonDefaultUpdateUrl.*
+-UserNoteUICoordinatorTest.*
 -UserScriptListenerTest.*
 -VideoOverlayWindowViewsTest.*
 -WebDialogWebContentsDelegateTest.*

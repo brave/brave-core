@@ -8,6 +8,7 @@
 -ExtensionServiceTest.*
 -LayoutProviderTest.*
 -MediaRouterUIServiceFactoryUnitTest.*
+-NativeDesktopMediaListTest.CollectsCurrentProcessWindows
 -NotificationHelperLaunchesChrome.*
 -PathServiceTest.*
 -PdfPrinterHandlerWinTest.*
