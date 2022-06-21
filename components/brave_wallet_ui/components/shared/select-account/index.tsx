@@ -6,10 +6,16 @@ export interface Props {
   accounts: WalletAccountType[]
   selectedAccount: UserAccountType
   onSelectAccount: (account: UserAccountType) => () => void
+  showTooltips?: boolean
 }
 
 function SelectAccount (props: Props) {
-  const { accounts, selectedAccount, onSelectAccount } = props
+  const {
+    accounts,
+    selectedAccount,
+    onSelectAccount,
+    showTooltips
+  } = props
 
   return (
     <>
@@ -19,6 +25,7 @@ function SelectAccount (props: Props) {
           account={account}
           onSelectAccount={onSelectAccount(account)}
           selectedAccount={selectedAccount}
+          showTooltips={showTooltips}
         />
       )}
     </>
