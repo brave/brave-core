@@ -57,8 +57,16 @@ export const getBuyAssets = () => new Promise<BraveWallet.BlockchainToken[]>((re
   resolve(mockBuyAssetList)
 })
 
-export const getAllBuyAssets = () => new Promise<BraveWallet.BlockchainToken[]>((resolve) => {
-  resolve(mockBuyAssetList)
+export const getAllBuyAssets = () => new Promise<{
+  wyreAssetOptions: BraveWallet.BlockchainToken[]
+  rampAssetOptions: BraveWallet.BlockchainToken[]
+  allAssetOptions: BraveWallet.BlockchainToken[]
+}>((resolve) => {
+  resolve({
+    wyreAssetOptions: mockBuyAssetList,
+    rampAssetOptions: mockBuyAssetList,
+    allAssetOptions: mockBuyAssetList
+  })
 })
 
 export const setMockedBuyAssets = (newList: BraveWallet.BlockchainToken[]) => {
@@ -114,4 +122,8 @@ export const getBalance = (): Promise<string> => {
   return new Promise(async (resolve) => {
     resolve('0')
   })
+}
+
+export const getBuyAssetUrl = () => {
+  return 'brave.com'
 }
