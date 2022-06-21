@@ -84,7 +84,7 @@
                     android:background="@android:color/transparent"
                     android:clickable="true"
                     android:focusable="true"
-                    android:layout_marginTop="6dp"
+                    android:layout_marginTop="8dp"
                     android:text="@string/skip"
                     android:fontFamily="@font/poppins_regular"
                     android:textColor="@color/rewards_panel_secondary_text_color" />
