@@ -80,6 +80,12 @@ class EthereumProviderHelper: TabContentScript {
       return
     }
     
+    if message.webView?.url?.isLocal == false,
+        message.webView?.hasOnlySecureContent == false { // prevent communication in mixed-content scenarios
+      log.error("Failed ethereum provider communication security test")
+      return
+    }
+    
     // The web page has communicated with `window.ethereum`, so we should show the wallet icon
     tab.isWalletIconVisible = true
     
