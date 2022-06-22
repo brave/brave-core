@@ -6,13 +6,14 @@ on:
     branches: [master, 1.*]
 
 jobs:
-  set-milestone:
+  set-pr-milestone:
     runs-on: ubuntu-latest
     steps:
       - env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           REPO_NAME: ${{ github.event.repository.full_name }}
           PR_NUMBER: ${{ github.event.number }}
+        name: "Set milestone on PR based on base branch"
         run: |
           readarray -t milestones < <(gh api /repos/brave/brave-core/milestones -q '.[] | .title')
           if [ "$GITHUB_BASE_REF" = "master" ]; then
@@ -23,3 +24,38 @@ jobs:
 
           milestone=$(printf "%s\n" "${milestones[@]}" | grep -E "$milestone_selector")
           gh pr edit "$PR_NUMBER" -R "$REPO_NAME" -m "$milestone"
+
+  set-brave-browser-issues-milestone:
+    runs-on: ubuntu-latest
+    needs: set-pr-milestone
+    steps:
+      - env:
+          GITHUB_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+          REPO_NAME: ${{ github.event.repository.full_name }}
+          PR_NUMBER: ${{ github.event.number }}
+        name: "Set milestone on related issues in brave-browser"
+        run: |
+          URL_REGEX='(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)'
+          UPLIFT_PR_REGEX='uplift\s+(?:of)?:?\s+\K(#\d+)'
+          RESOLVE_ISSUE_REGEX="(?:resolv|fix|clos)(?:e|es|ed)?:?\s+\K(${URL_REGEX})"
+
+          uplift_pr_body=$(gh pr view "$PR_NUMBER" -R "$REPO_NAME" --json body --jq '.body')
+
+          issues=$(echo "${uplift_pr_body}" | grep -ioP "${RESOLVE_ISSUE_REGEX}" || :)
+          if [[ -z ${issues} ]]; then
+              echo "Resolved issues not directly found. Following PRs to determine them..."
+              prs=$(echo "${uplift_pr_body}" | grep -ioP "${UPLIFT_PR_REGEX}")
+              issues=$(xargs -n 1 -I{} gh pr view {} -R brave/brave-core --json body --jq '.body' < <(echo "${prs}") | grep -ioP "${RESOLVE_ISSUE_REGEX}")
+          fi
+          echo "Relevant issues detected:"
+          echo "${issues}"
+
+          pr_milestone=$(gh pr view "$PR_NUMBER" -R "$REPO_NAME" --json milestone --jq '.milestone.title')
+
+          for issue in ${issues}; do
+              issue_milestone=$(gh issue view "${issue}" --json milestone --jq '.milestone.title')
+              if [[ -z "${issue_milestone}" || "$pr_milestone" < "${issue_milestone}" ]]; then
+                  echo "Setting ${issue} milestone to ${pr_milestone}"
+                  gh issue edit "${issue}" -m "${pr_milestone}"
+              fi
+          done
