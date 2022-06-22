@@ -175,7 +175,7 @@ action("generate_eddsa_sig_for_dmg") {
   deps = [ ":copy_dmg_pkg" ]
 
   if (!use_prebuilt_sparkle) {
-    deps += [ "//brave/vendor/sparkle:copy_old_sign_update" ]
+    deps += [ "//brave/vendor/sparkle:build_sparkle_framework" ]
   }
 }
 
