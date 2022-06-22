@@ -101,6 +101,7 @@ provideStrings({
   braveWalletButtonCopied: 'Copied',
   braveWalletButtonVerify: 'Verify',
   braveWalletButtonClose: 'Close',
+  braveWalletButtonMore: 'More',
 
   // Wallet Onboarding Welcome
   braveWalletWelcomeTitle: 'Welcome to the new Brave Wallet',
@@ -369,6 +370,7 @@ provideStrings({
   braveWalletBuyWyreButton: 'Continue to Wyre',
   braveWalletBuyFaucetButton: 'Get Ether',
   braveWalletBuyContinueButton: 'Select purchase method',
+  braveWalletBuySelectAsset: 'Select an asset',
   braveWalletBuyRampNetworkName: 'Ramp.Network',
   braveWalletBuyWyreName: 'Wyre',
   braveWalletBuySardineName: 'Sardine',
@@ -378,6 +380,10 @@ provideStrings({
   braveWalletBuyWithWyre: 'Buy with Wyre',
   braveWalletBuyWithRamp: 'Buy with Ramp',
   braveWalletBuyWithSardine: 'Buy with Sardine',
+
+  // Fund Wallet Screen
+  braveWalletFundWalletTitle: 'Complete your $1 purchase through one of our partners',
+  braveWalletFundWalletDescription: 'On completion, your funds will be transfered to your Brave Wallet',
 
   // Sign Transaction Panel
   braveWalletSignTransactionTitle: 'Your signature is being requested',

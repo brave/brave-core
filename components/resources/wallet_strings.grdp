@@ -108,6 +108,7 @@
   <message name="IDS_BRAVE_WALLET_BUTTON_COPIED" desc="Confirmation that text has been copied to clipboard">Copied</message>
   <message name="IDS_BRAVE_WALLET_BUTTON_VERIFY" desc="General Verify button">Verify</message>
   <message name="IDS_BRAVE_WALLET_BUTTON_CLOSE" desc="General Close button">Close</message>
+  <message name="IDS_BRAVE_WALLET_BUTTON_MORE" desc="General More button">More</message>
   <message name="IDS_BRAVE_WALLET_WELCOME_TITLE" desc="Onboarding welcome screen title">Welcome to the new Brave Wallet</message>  
   <message name="IDS_BRAVE_WALLET_WELCOME_DESCRIPTION" desc="Onboarding welcome screen description">Your gateway to a multi-chain Web3 experience for Defi, NFTs, and more. Supports Solana, Ethereum, Binance Smart Chain, Polygon, Avalance, or expand to any EVM chain.</message>
   <message name="IDS_BRAVE_WALLET_WELCOME_RESTORE_BUTTON" desc="Restore screen button">Restore</message>
@@ -575,4 +576,7 @@
   <message name="IDS_BRAVE_WALLET_DEPOSIT_CRYPTO_BUTTON" desc="Deposit Crypto button text">Deposit</message>
   <message name="IDS_BRAVE_WALLET_CHECKING_INSTALLED_EXTENSIONS" desc="Loading text while checking for installed crypto wallet extensions">Checking for wallet extensions...</message>
   <message name="IDS_BRAVE_WALLET_IMPORT_FROM_LEGACY" desc="Import from legacy crypto wallet extension button text">Import from legacy Brave crypto wallets</message>
+  <message name="IDS_BRAVE_WALLET_BUY_SELECT_ASSET" desc="Continue button text for buy crypto flow when an asset is not yet selected">Select an asset</message>
+  <message name="IDS_BRAVE_WALLET_FUND_WALLET_TITLE" desc="Fund wallet screen title text">Complete your <ph name="ASSET_TICKER">$1<ex>1</ex></ph> purchase through one of our partners</message>
+  <message name="IDS_BRAVE_WALLET_FUND_WALLET_DESCRIPTION" desc="Fund wallet screen description text">On completion, your funds will be transfered to your Brave Wallet</message>
 </grit-part>

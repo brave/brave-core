@@ -117,6 +117,7 @@ constexpr webui::LocalizedString kLocalizedStrings[] = {
     {"braveWalletButtonCopied", IDS_BRAVE_WALLET_BUTTON_COPIED},
     {"braveWalletButtonVerify", IDS_BRAVE_WALLET_BUTTON_VERIFY},
     {"braveWalletButtonClose", IDS_BRAVE_WALLET_BUTTON_CLOSE},
+    {"braveWalletButtonMore", IDS_BRAVE_WALLET_BUTTON_MORE},
     {"braveWalletWelcomeTitle", IDS_BRAVE_WALLET_WELCOME_TITLE},
     {"braveWalletWelcomeDescription", IDS_BRAVE_WALLET_WELCOME_DESCRIPTION},
     {"braveWalletWelcomeButton", IDS_BRAVE_WALLET_WELCOME_BUTTON},
@@ -787,6 +788,9 @@ constexpr webui::LocalizedString kLocalizedStrings[] = {
     {"braveWalletCheckingInstalledExtensions",
      IDS_BRAVE_WALLET_CHECKING_INSTALLED_EXTENSIONS},
     {"braveWalletImportFromLegacy", IDS_BRAVE_WALLET_IMPORT_FROM_LEGACY},
+    {"braveWalletBuySelectAsset", IDS_BRAVE_WALLET_BUY_SELECT_ASSET},
+    {"braveWalletFundWalletTitle", IDS_BRAVE_WALLET_FUND_WALLET_TITLE},
+    {"braveWalletFundWalletDescription", IDS_BRAVE_WALLET_FUND_WALLET_DESCRIPTION},
     {"braveWalletWhatIsACryptoWallet",
      IDS_BRAVE_WALLET_WHAT_IS_A_CRYPTO_WALLET}};
 
