@@ -46,7 +46,7 @@ const base::Feature kBraveDomainBlock{"BraveDomainBlock",
 // filters. 1PES will be enabled only if neither cookies nor localStorage data
 // is stored for the website.
 const base::Feature kBraveDomainBlock1PES{"BraveDomainBlock1PES",
-                                          base::FEATURE_DISABLED_BY_DEFAULT};
+                                          base::FEATURE_ENABLED_BY_DEFAULT};
 // When enabled, network requests initiated by extensions will be checked and
 // potentially blocked by Brave Shields.
 const base::Feature kBraveExtensionNetworkBlocking{

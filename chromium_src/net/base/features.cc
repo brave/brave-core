@@ -35,7 +35,7 @@ const base::FeatureParam<int> kBraveEphemeralStorageKeepAliveTimeInSeconds = {
     "BraveEphemeralStorageKeepAliveTimeInSeconds", 30};
 
 const base::Feature kBraveFirstPartyEphemeralStorage{
-    "BraveFirstPartyEphemeralStorage", base::FEATURE_DISABLED_BY_DEFAULT};
+    "BraveFirstPartyEphemeralStorage", base::FEATURE_ENABLED_BY_DEFAULT};
 
 // Partition Blob storage in ephemeral context.
 const base::Feature kBravePartitionBlobStorage{
