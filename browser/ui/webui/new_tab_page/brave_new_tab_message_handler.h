@@ -12,8 +12,6 @@
 #include "base/memory/weak_ptr.h"
 #include "base/scoped_observation.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
-#include "brave/components/tor/buildflags/buildflags.h"
-#include "brave/components/tor/tor_launcher_observer.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "content/public/browser/web_ui_message_handler.h"
 
@@ -28,17 +26,12 @@ namespace content {
 class WebUIDataSource;
 }
 
-#if BUILDFLAG(ENABLE_TOR)
-class TorLauncherFactory;
-#endif
-
 class PrefRegistrySimple;
 class PrefService;
 
 // TODO(simonhong): Migrate to brave_new_tab_page.mojom.
 // Handles messages to and from the New Tab Page javascript
 class BraveNewTabMessageHandler : public content::WebUIMessageHandler,
-                                  public TorLauncherObserver,
                                   public brave_ads::AdsServiceObserver {
  public:
   explicit BraveNewTabMessageHandler(Profile* profile);
@@ -64,7 +57,6 @@ class BraveNewTabMessageHandler : public content::WebUIMessageHandler,
   void HandleGetPreferences(const base::Value::List& args);
   void HandleGetStats(const base::Value::List& args);
   void HandleGetPrivateProperties(const base::Value::List& args);
-  void HandleGetTorProperties(const base::Value::List& args);
   void HandleGetNewTabAdsData(const base::Value::List& args);
   void HandleSaveNewTabPagePref(const base::Value::List& args);
   void HandleToggleAlternativeSearchEngineProvider(
@@ -80,10 +72,6 @@ class BraveNewTabMessageHandler : public content::WebUIMessageHandler,
 
   base::Value GetAdsDataDictionary() const;
 
-  // TorLauncherObserver:
-  void OnTorCircuitEstablished(bool result) override;
-  void OnTorInitializing(const std::string& percentage) override;
-
   // brave_ads::AdsServiceObserver:
   void OnNeedsBrowserUpdateToSeeAds() override;
 
@@ -91,9 +79,6 @@ class BraveNewTabMessageHandler : public content::WebUIMessageHandler,
   // Weak pointer.
   raw_ptr<Profile> profile_ = nullptr;
   raw_ptr<brave_ads::AdsService> ads_service_ = nullptr;
-#if BUILDFLAG(ENABLE_TOR)
-  TorLauncherFactory* tor_launcher_factory_ = nullptr;
-#endif
 
   base::ScopedObservation<brave_ads::AdsService, brave_ads::AdsServiceObserver>
       ads_service_observation_{this};
