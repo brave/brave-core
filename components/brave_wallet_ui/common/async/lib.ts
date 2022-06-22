@@ -191,6 +191,15 @@ export async function getBuyAssetUrl (args: {
     console.log(`Failed to get buy URL: ${error}`)
   }
 
+  if (args.onRampProvider === BraveWallet.OnRampProvider.kWyre) {
+    if (args.chainId === BraveWallet.AVALANCHE_MAINNET_CHAIN_ID) {
+      return url.replace('dest=ethereum:', 'dest=avalanche:')
+    }
+    if (args.chainId === BraveWallet.POLYGON_MAINNET_CHAIN_ID) {
+      return url.replace('dest=ethereum:', 'dest=matic:')
+    }
+  }
+
   return url
 }
 
