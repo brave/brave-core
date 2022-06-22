@@ -8,7 +8,11 @@ import { useSelector } from 'react-redux'
 
 // utils
 import { getNetworkInfo } from '../../utils/network-utils'
-import { getRampAssetSymbol, isSelectedAssetInAssetOptions } from '../../utils/asset-utils'
+import {
+  getRampAssetSymbol,
+  getWyreAssetSymbol,
+  isSelectedAssetInAssetOptions
+} from '../../utils/asset-utils'
 
 // types
 import { BraveWallet, SupportedOnRampNetworks, WalletState } from '../../constants/types'
@@ -83,9 +87,13 @@ export function useMultiChainBuyAssets () {
       return
     }
 
-    const asset = buyOption === BraveWallet.OnRampProvider.kRamp
-      ? { ...selectedAsset, symbol: getRampAssetSymbol(selectedAsset) }
-      : selectedAsset
+    const asset = {
+      ...selectedAsset,
+      symbol:
+        buyOption === BraveWallet.OnRampProvider.kRamp ? getRampAssetSymbol(selectedAsset)
+        : buyOption === BraveWallet.OnRampProvider.kWyre ? getWyreAssetSymbol(selectedAsset)
+        : selectedAsset.symbol
+    }
 
     getBuyAssetUrl({
       asset,
