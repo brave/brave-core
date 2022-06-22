@@ -88,11 +88,9 @@ TEST_F(UpholdUtilTest, GetAuthorizeUrl) {
       result,
       base::StrCat(
           {"https://uphold.com/authorize/", BUILDFLAG(UPHOLD_CLIENT_ID),
-           "?scope=accounts:read "
-           "accounts:write cards:read cards:write user:read "
-           "transactions:deposit transactions:read "
-           "transactions:transfer:application transactions:transfer:others"
-           "&intention=kyc&state=rdfdsfsdfsdf"}));
+           "?scope=cards:read cards:write user:read "
+           "transactions:transfer:application "
+           "transactions:transfer:others&intention=kyc&state=rdfdsfsdfsdf"}));
 
   // staging
   ledger::_environment = type::Environment::STAGING;
@@ -102,11 +100,9 @@ TEST_F(UpholdUtilTest, GetAuthorizeUrl) {
       base::StrCat(
           {"https://wallet-sandbox.uphold.com/authorize/",
            BUILDFLAG(UPHOLD_STAGING_CLIENT_ID),
-           "?scope=accounts:read "
-           "accounts:write cards:read cards:write user:read "
-           "transactions:deposit transactions:read "
-           "transactions:transfer:application transactions:transfer:others"
-           "&intention=kyc&state=rdfdsfsdfsdf"}));
+           "?scope=cards:read cards:write user:read "
+           "transactions:transfer:application "
+           "transactions:transfer:others&intention=kyc&state=rdfdsfsdfsdf"}));
 
   // production
   ledger::_environment = type::Environment::PRODUCTION;
@@ -115,11 +111,9 @@ TEST_F(UpholdUtilTest, GetAuthorizeUrl) {
       result,
       base::StrCat(
           {"https://uphold.com/authorize/", BUILDFLAG(UPHOLD_CLIENT_ID),
-           "?scope=accounts:read "
-           "accounts:write cards:read cards:write user:read "
-           "transactions:deposit transactions:read "
-           "transactions:transfer:application transactions:transfer:others"
-           "&intention=login&state=rdfdsfsdfsdf"}));
+           "?scope=cards:read cards:write user:read "
+           "transactions:transfer:application "
+           "transactions:transfer:others&intention=login&state=rdfdsfsdfsdf"}));
 
   // staging
   ledger::_environment = type::Environment::STAGING;
@@ -129,11 +123,9 @@ TEST_F(UpholdUtilTest, GetAuthorizeUrl) {
       base::StrCat(
           {"https://wallet-sandbox.uphold.com/authorize/",
            BUILDFLAG(UPHOLD_STAGING_CLIENT_ID),
-           "?scope=accounts:read "
-           "accounts:write cards:read cards:write user:read "
-           "transactions:deposit transactions:read "
-           "transactions:transfer:application transactions:transfer:others"
-           "&intention=login&state=rdfdsfsdfsdf"}));
+           "?scope=cards:read cards:write user:read "
+           "transactions:transfer:application "
+           "transactions:transfer:others&intention=login&state=rdfdsfsdfsdf"}));
 }
 
 TEST_F(UpholdUtilTest, GetAddUrl) {
@@ -270,14 +262,11 @@ TEST_F(UpholdUtilTest, GenerateLinks) {
   ASSERT_EQ(result->withdraw_url, "");
   ASSERT_EQ(
       result->verify_url,
-      base::StrCat(
-          {"https://wallet-sandbox.uphold.com/authorize/",
-           BUILDFLAG(UPHOLD_STAGING_CLIENT_ID),
-           "?scope=accounts:read "
-           "accounts:write cards:read cards:write user:read "
-           "transactions:deposit transactions:read "
-           "transactions:transfer:application transactions:transfer:others"
-           "&intention=kyc&state="}));
+      base::StrCat({"https://wallet-sandbox.uphold.com/authorize/",
+                    BUILDFLAG(UPHOLD_STAGING_CLIENT_ID),
+                    "?scope=cards:read cards:write user:read "
+                    "transactions:transfer:application "
+                    "transactions:transfer:others&intention=kyc&state="}));
   ASSERT_EQ(result->account_url, "https://wallet-sandbox.uphold.com/dashboard");
 
   // Verified
@@ -303,14 +292,11 @@ TEST_F(UpholdUtilTest, GenerateLinks) {
   ASSERT_EQ(result->withdraw_url, "");
   ASSERT_EQ(
       result->verify_url,
-      base::StrCat(
-          {"https://wallet-sandbox.uphold.com/authorize/",
-           BUILDFLAG(UPHOLD_STAGING_CLIENT_ID),
-           "?scope=accounts:read "
-           "accounts:write cards:read cards:write user:read "
-           "transactions:deposit transactions:read "
-           "transactions:transfer:application transactions:transfer:others"
-           "&intention=kyc&state="}));
+      base::StrCat({"https://wallet-sandbox.uphold.com/authorize/",
+                    BUILDFLAG(UPHOLD_STAGING_CLIENT_ID),
+                    "?scope=cards:read cards:write user:read "
+                    "transactions:transfer:application "
+                    "transactions:transfer:others&intention=kyc&state="}));
   ASSERT_EQ(result->account_url, "https://wallet-sandbox.uphold.com/dashboard");
 
   // Pending
@@ -347,16 +333,13 @@ TEST_F(UpholdUtilTest, GenerateVerifyLink) {
   wallet->token = "";    // must be empty
   wallet->address = "";  // must be empty
   auto result = uphold::GenerateVerifyLink(wallet->Clone());
-  ASSERT_EQ(
-      result,
-      base::StrCat(
-          {"https://wallet-sandbox.uphold.com/authorize/",
-           BUILDFLAG(UPHOLD_STAGING_CLIENT_ID),
-           "?scope=accounts:read "
-           "accounts:write cards:read cards:write user:read "
-           "transactions:deposit transactions:read "
-           "transactions:transfer:application transactions:transfer:others"
-           "&intention=kyc&state=123123123124234234234"}));
+  ASSERT_EQ(result,
+            base::StrCat({"https://wallet-sandbox.uphold.com/authorize/",
+                          BUILDFLAG(UPHOLD_STAGING_CLIENT_ID),
+                          "?scope=cards:read cards:write user:read "
+                          "transactions:transfer:application "
+                          "transactions:transfer:others&intention=kyc&state="
+                          "123123123124234234234"}));
 
   // Verified
   wallet->status = type::WalletStatus::VERIFIED;
@@ -370,16 +353,13 @@ TEST_F(UpholdUtilTest, GenerateVerifyLink) {
   wallet->token = "";    // must be empty
   wallet->address = "";  // must be empty
   result = uphold::GenerateVerifyLink(wallet->Clone());
-  ASSERT_EQ(
-      result,
-      base::StrCat(
-          {"https://wallet-sandbox.uphold.com/authorize/",
-           BUILDFLAG(UPHOLD_STAGING_CLIENT_ID),
-           "?scope=accounts:read "
-           "accounts:write cards:read cards:write user:read "
-           "transactions:deposit transactions:read "
-           "transactions:transfer:application transactions:transfer:others"
-           "&intention=kyc&state=123123123124234234234"}));
+  ASSERT_EQ(result,
+            base::StrCat({"https://wallet-sandbox.uphold.com/authorize/",
+                          BUILDFLAG(UPHOLD_STAGING_CLIENT_ID),
+                          "?scope=cards:read cards:write user:read "
+                          "transactions:transfer:application "
+                          "transactions:transfer:others&intention=kyc&state="
+                          "123123123124234234234"}));
 
   // Pending
   wallet->status = type::WalletStatus::PENDING;

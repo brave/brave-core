@@ -57,13 +57,9 @@ std::string GetAuthorizeUrl(const std::string& state, const bool kyc_flow) {
   return base::StringPrintf(
       "%s/authorize/%s"
       "?scope="
-      "accounts:read "
-      "accounts:write "
       "cards:read "
       "cards:write "
       "user:read "
-      "transactions:deposit "
-      "transactions:read "
       "transactions:transfer:application "
       "transactions:transfer:others"
       "&intention=%s&"
