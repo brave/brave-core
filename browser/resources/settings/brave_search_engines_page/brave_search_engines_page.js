@@ -24,12 +24,6 @@ class BraveSearchEnginesPage extends BraveSearchEnginesPageBase {
 
   static get properties() {
     return {
-      shouldShowPrivateSearchProvider_: {
-        readOnly: true,
-        type: Boolean,
-        value: !loadTimeData.getBoolean('isGuest')
-      },
-
       privateSearchEngines_: {
         readOnly: false,
         type: Array
@@ -48,6 +42,17 @@ class BraveSearchEnginesPage extends BraveSearchEnginesPageBase {
 
     this.browserProxy_.getPrivateSearchEnginesList().then(updatePrivateSearchEngines)
     this.addWebUIListener('private-search-engines-changed', updatePrivateSearchEngines)
+  }
+
+  shouldShowPrivateSearchProvider_(prefs) {
+    // When default search engine is enforced, configured provider is not used.
+    // If we install search provider extension, that extension will be used on normal and
+    // private(tor) window. So, just hide this option.
+    return !loadTimeData.getBoolean('isGuest') && !this.isDefaultSearchEngineEnforced_(prefs)
+  }
+
+  isDefaultSearchEngineEnforced_(prefs) {
+    return prefs.enforcement === chrome.settingsPrivate.Enforcement.ENFORCED;
   }
 }
 

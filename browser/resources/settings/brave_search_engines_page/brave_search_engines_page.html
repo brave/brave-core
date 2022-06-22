@@ -1,5 +1,6 @@
 <style include="settings-shared iron-flex"></style>
-<template is="dom-if" if="[[shouldShowPrivateSearchProvider_]]">
+<template is="dom-if" if="[[shouldShowPrivateSearchProvider_(
+    prefs.default_search_provider_data.template_url_data)]]">
   <div class="settings-box">
     <div class="label flex">$i18n{privateSearchExplanation}</div>
     <settings-dropdown-menu
