@@ -14,9 +14,13 @@
 #define IsIncognitoProfile                 \
   IsIncognitoProfile_ChromiumImpl() const; \
   bool IsIncognitoProfile
+#define IsPrimaryOTRProfile                 \
+  IsPrimaryOTRProfile_ChromiumImpl() const; \
+  bool IsPrimaryOTRProfile
 
 #include "src/chrome/browser/profiles/profile.h"
 
+#undef IsPrimaryOTRProfile
 #undef IsIncognitoProfile
 #undef HasPrimaryOTRProfile
 #undef PrimaryID
