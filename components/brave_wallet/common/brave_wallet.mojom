@@ -328,6 +328,8 @@ const string kLedgerHardwareVendor = "Ledger";
 const string kTrezorHardwareVendor = "Trezor";
 
 const string kFilecoinKeyringId = "filecoin";
+const string kFilecoinTestnetKeyringId = "filecoin_testnet";
+
 const string kSolanaKeyringId = "solana";
 const string kDefaultKeyringId = "default";
 
@@ -343,6 +345,7 @@ struct HardwareWalletAccount {
   string hardware_vendor;
   string device_id;
   CoinType coin;
+  string? network;
 };
 
 struct HardwareInfo {
@@ -489,7 +492,10 @@ interface KeyringService {
   IsLocked() => (bool isLocked);
 
   // Adds an account to the keyring.
-  AddAccount(string accountName, CoinType coin ) => (bool success);
+  AddAccount(string accountName, CoinType coin) => (bool success);
+
+  // Adds an account to the filecoin(keyring is choosed by network).
+  AddFilecoinAccount(string accountName, string fileCoinNetwork) => (bool success);
 
   // Obtains the private key for the keyring.
   GetPrivateKeyForKeyringAccount(string address, CoinType coin)
@@ -545,6 +551,9 @@ interface KeyringService {
 
   // Obtains the selected account
   GetSelectedAccount(CoinType coin) => (string? address);
+
+  // Obtains the selected filecoin account
+  GetFilecoinSelectedAccount(string network) => (string? address);
 
   // Sets the selected account
   SetSelectedAccount(string address, CoinType coin) => (bool success);

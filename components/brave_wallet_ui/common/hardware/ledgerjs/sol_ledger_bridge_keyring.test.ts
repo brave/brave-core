@@ -40,7 +40,8 @@ test('Extracting accounts from device', () => {
           'hardwareVendor': 'Ledger',
           'name': 'Ledger',
           'deviceId': 'device1',
-          'coin': BraveWallet.CoinType.SOL
+          'coin': BraveWallet.CoinType.SOL,
+          'network': undefined
         },
         {
           'address': '',
@@ -49,7 +50,8 @@ test('Extracting accounts from device', () => {
           'hardwareVendor': 'Ledger',
           'name': 'Ledger',
           'deviceId': 'device1',
-          'coin': BraveWallet.CoinType.SOL
+          'coin': BraveWallet.CoinType.SOL,
+          'network': undefined
         }],
       success: true
     }

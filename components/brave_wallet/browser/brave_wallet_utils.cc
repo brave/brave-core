@@ -1282,4 +1282,40 @@ std::string GetWeb3ClientVersion() {
       "BraveWallet/v%s", version_info::GetBraveChromiumVersionNumber().c_str());
 }
 
+bool IsFilecoinKeyringId(const std::string& keyring_id) {
+  return keyring_id == mojom::kFilecoinKeyringId ||
+         keyring_id == mojom::kFilecoinTestnetKeyringId;
+}
+
+std::string GetFilecoinKeyringId(const std::string& network) {
+  if (network == mojom::kFilecoinMainnet) {
+    return mojom::kFilecoinKeyringId;
+  } else if (network == mojom::kFilecoinTestnet ||
+             network == mojom::kLocalhostChainId) {
+    return mojom::kFilecoinTestnetKeyringId;
+  }
+  NOTREACHED() << "Unsupported chain id for filecoin " << network;
+  return mojom::kFilecoinMainnet;
+}
+
+std::string GetFilecoinChainId(const std::string& keyring_id) {
+  if (keyring_id == mojom::kFilecoinKeyringId) {
+    return mojom::kFilecoinMainnet;
+  } else if (keyring_id == mojom::kFilecoinTestnetKeyringId) {
+    return mojom::kFilecoinTestnet;
+  }
+  NOTREACHED() << "Unsupported keyring id for filecoin";
+  return "";
+}
+
+mojom::CoinType GetCoinForKeyring(const std::string& keyring_id) {
+  if (IsFilecoinKeyringId(keyring_id)) {
+    return mojom::CoinType::FIL;
+  } else if (keyring_id == mojom::kSolanaKeyringId) {
+    return mojom::CoinType::SOL;
+  }
+
+  DCHECK_EQ(keyring_id, mojom::kDefaultKeyringId);
+  return mojom::CoinType::ETH;
+}
 }  // namespace brave_wallet

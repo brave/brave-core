@@ -50,7 +50,8 @@ export default class SolanaLedgerKeyring implements LedgerSolanaKeyring {
         name: this.type(),
         hardwareVendor: this.type(),
         deviceId: this.deviceId,
-        coin: this.coin()
+        coin: this.coin(),
+        network: undefined
       })
     }
     return { success: true, payload: [...accounts] }

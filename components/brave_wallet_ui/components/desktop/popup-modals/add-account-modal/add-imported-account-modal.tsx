@@ -176,7 +176,8 @@ export const ImportAccountModal = () => {
     accountName,
     privateKey,
     file,
-    password
+    password,
+    filecoinNetwork
   ])
 
   const handleKeyDown = React.useCallback((event: React.KeyboardEvent<HTMLInputElement>) => {
@@ -218,17 +219,16 @@ export const ImportAccountModal = () => {
           </ImportDisclaimer>
 
           {selectedAccountType?.coin === BraveWallet.CoinType.FIL &&
-
-            <WarningWrapper>
-               <WarningText>
-                 {filPrivateKeyFormatDescriptionTextParts.beforeTag}
-                  <a target='_blank' href={FILECOIN_FORMAT_DESCRIPTION_URL}>
-                    {filPrivateKeyFormatDescriptionTextParts.duringTag}
-                  </a>
-                {filPrivateKeyFormatDescriptionTextParts.afterTag}</WarningText>
-            </WarningWrapper>
-
             <>
+              <WarningWrapper>
+                <WarningText>
+                  {filPrivateKeyFormatDescriptionTextParts.beforeTag}
+                    <a target='_blank' href={FILECOIN_FORMAT_DESCRIPTION_URL}>
+                      {filPrivateKeyFormatDescriptionTextParts.duringTag}
+                    </a>
+                  {filPrivateKeyFormatDescriptionTextParts.afterTag}</WarningText>
+              </WarningWrapper>
+
               <SelectWrapper>
                 <Select value={filecoinNetwork} onChange={onChangeFilecoinNetwork}>
                   {FilecoinNetworkTypes.map((network, index) => {

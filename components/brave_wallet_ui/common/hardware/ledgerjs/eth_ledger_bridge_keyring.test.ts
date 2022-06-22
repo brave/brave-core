@@ -51,7 +51,8 @@ test('Extracting accounts from device', () => {
           'hardwareVendor': 'Ledger',
           'name': 'Ledger',
           'deviceId': 'device1',
-          'coin': BraveWallet.CoinType.ETH
+          'coin': BraveWallet.CoinType.ETH,
+          'network': undefined
         },
         {
           'address': 'address for m/44\'/60\'/1\'/0/0',
@@ -59,7 +60,8 @@ test('Extracting accounts from device', () => {
           'hardwareVendor': 'Ledger',
           'name': 'Ledger',
           'deviceId': 'device1',
-          'coin': BraveWallet.CoinType.ETH
+          'coin': BraveWallet.CoinType.ETH,
+          'network': undefined
         }],
       success: true
     }
@@ -76,7 +78,8 @@ test('Extracting accounts from legacy device', () => {
           'hardwareVendor': 'Ledger',
           'name': 'Ledger',
           'deviceId': 'device1',
-          'coin': BraveWallet.CoinType.ETH
+          'coin': BraveWallet.CoinType.ETH,
+          'network': undefined
         },
         {
           'address': 'address for m/44\'/60\'/0\'/1',
@@ -84,7 +87,8 @@ test('Extracting accounts from legacy device', () => {
           'hardwareVendor': 'Ledger',
           'name': 'Ledger',
           'deviceId': 'device1',
-          'coin': BraveWallet.CoinType.ETH
+          'coin': BraveWallet.CoinType.ETH,
+          'network': undefined
         }],
       success: true
     }
@@ -101,7 +105,8 @@ test('Extracting accounts with deprecated derivation paths', () => {
           'hardwareVendor': 'Ledger',
           'name': 'Ledger',
           'deviceId': 'device1',
-          'coin': BraveWallet.CoinType.ETH
+          'coin': BraveWallet.CoinType.ETH,
+          'network': undefined
         },
         {
           'address': 'address for m/44\'/60\'/1\'/0',
@@ -109,7 +114,8 @@ test('Extracting accounts with deprecated derivation paths', () => {
           'hardwareVendor': 'Ledger',
           'name': 'Ledger',
           'deviceId': 'device1',
-          'coin': BraveWallet.CoinType.ETH
+          'coin': BraveWallet.CoinType.ETH,
+          'network': undefined
         }],
       success: true
     }

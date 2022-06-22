@@ -54,7 +54,8 @@ test('Extracting accounts from device MAIN', () => {
         derivationPath: 'm/44\'/461\'/0\'/0/0',
         deviceId: 'device1',
         hardwareVendor: 'Ledger',
-        name: 'Filecoin Ledger'
+        name: 'Filecoin Ledger',
+        network: 'f'
       }],
       success: true
     })
@@ -69,7 +70,8 @@ test('Extracting accounts from device TEST', () => {
         derivationPath: 'm/44\'/1\'/0\'/0/0',
         deviceId: 'device1',
         hardwareVendor: 'Ledger',
-        name: 'Filecoin Ledger'
+        name: 'Filecoin Ledger',
+        network: 't'
       }],
       success: true
     })

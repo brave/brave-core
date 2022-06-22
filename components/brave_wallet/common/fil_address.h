@@ -34,6 +34,7 @@ class FilAddress {
   bool IsEmpty() const { return bytes_.empty(); }
   mojom::FilecoinAddressProtocol protocol() const { return protocol_; }
   std::string EncodeAsString() const;
+  std::string network() const { return network_; }
 
  private:
   bool IsEqual(const FilAddress& other) const;
