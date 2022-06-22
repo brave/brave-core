@@ -13,7 +13,9 @@ import {
   TabButton,
   TabButtonText,
   RightDivider,
-  LeftDivider
+  LeftDivider,
+  HelpCenterText,
+  HelpCenterLink
 } from './style'
 
 export interface Props {
@@ -85,6 +87,12 @@ function BuySendSwapLayout (props: Props) {
           {children}
         </MainContainer>
       </MainContainerWrapper>
+      <HelpCenterText>
+        {getLocale('braveWalletHelpCenterText')}&nbsp;
+        <HelpCenterLink target="_blank" href="https://support.brave.com/hc/en-us/articles/4415497656461-Brave-Wallet-FAQ">
+          {getLocale('braveWalletHelpCenter')}
+        </HelpCenterLink>
+      </HelpCenterText>
     </StyledWrapper>
   )
 }
