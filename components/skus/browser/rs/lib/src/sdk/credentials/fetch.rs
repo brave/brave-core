@@ -81,17 +81,12 @@ where
                                 let blinded_creds: Vec<BlindedToken> =
                                     creds.iter().map(|t| t.blind()).collect();
 
-                                self.client
-                                    .init_single_use_item_creds(&item.id, creds)
-                                    .await?;
+                                self.client.init_single_use_item_creds(&item.id, creds).await?;
                                 blinded_creds
                             }
                         };
 
-                    let claim_req = ItemCredentialsRequest {
-                        item_id: item.id,
-                        blinded_creds,
-                    };
+                    let claim_req = ItemCredentialsRequest { item_id: item.id, blinded_creds };
 
                     let request_with_retries = FutureRetry::new(
                         || async {
@@ -150,10 +145,7 @@ where
             || async move {
                 let mut builder = http::Request::builder();
                 builder.method("GET");
-                builder.uri(format!(
-                    "{}/v1/orders/{}/credentials",
-                    self.base_url, order_id
-                ));
+                builder.uri(format!("{}/v1/orders/{}/credentials", self.base_url, order_id));
 
                 let req = builder.body(vec![]).unwrap();
 
@@ -241,9 +233,7 @@ where
         }
 
         for (item_id, item_creds) in time_limited_creds.into_iter() {
-            self.client
-                .store_time_limited_creds(&item_id, item_creds)
-                .await?;
+            self.client.store_time_limited_creds(&item_id, item_creds).await?;
         }
 
         Ok(())

@@ -43,21 +43,22 @@ where
                 CredentialType::SingleUse => {
                     let wrapped_creds = self.client.get_single_use_item_creds(&item.id).await?;
                     if let Some(creds) = wrapped_creds {
-                      let unblinded_creds = creds.unblinded_creds.ok_or(InternalError::NotFound)?;
-                      let remaining_credential_count =
-                          unblinded_creds.into_iter().filter(|cred| !cred.spent).count();
+                        let unblinded_creds =
+                            creds.unblinded_creds.ok_or(InternalError::NotFound)?;
+                        let remaining_credential_count =
+                            unblinded_creds.into_iter().filter(|cred| !cred.spent).count();
 
-                      let expires_at = None;
-                      let active = remaining_credential_count > 0;
+                        let expires_at = None;
+                        let active = remaining_credential_count > 0;
 
-                      return Ok(Some(CredentialSummary {
-                          order,
-                          remaining_credential_count,
-                          expires_at,
-                          active,
-                      }));
+                        return Ok(Some(CredentialSummary {
+                            order,
+                            remaining_credential_count,
+                            expires_at,
+                            active,
+                        }));
                     } else {
-                      continue;
+                        continue;
                     }
                 }
                 CredentialType::TimeLimited => {
