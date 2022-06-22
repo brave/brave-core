@@ -307,12 +307,12 @@ bool BraveSessionCache::AllowFontFamily(
       break;
     case BraveFarblingLevel::BALANCED:
     case BraveFarblingLevel::MAXIMUM: {
-      if (GetAllowedFontFamilies().contains(family_name.Utf8()))
+      if (GetAllowedFontFamilies().contains(family_name.LowerASCII().Ascii()))
         return true;
 #if BUILDFLAG(IS_WIN)
       WTF::String locale = blink::DefaultLanguage().GetString().Left(2);
       if (GetAdditionalAllowedFontFamiliesByLocale(locale).contains(
-              family_name.Utf8()))
+              family_name.LowerASCII().Ascii()))
         return true;
 #endif
       FarblingPRNG prng = MakePseudoRandomGenerator();

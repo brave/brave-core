@@ -137,6 +137,40 @@ TEST(BraveFontWhitelistTest, KnownFonts) {
   }
 }
 
+TEST(BraveFontWhitelistTest, CaseInsensitivity) {
+  const std::array<std::tuple<base::StringPiece, bool>, 7> test_cases = {
+#if BUILDFLAG(IS_MAC)
+    std::make_tuple<>("Arial unicode MS", true),
+    std::make_tuple<>("Calibri", false),
+    std::make_tuple<>("gill gans", true),
+    std::make_tuple<>("helvetica", true),
+    std::make_tuple<>("Helvetica Neue", true),
+    std::make_tuple<>("MeNlO", true),
+    std::make_tuple<>("Franklin Gothic Medium", false),
+#elif BUILDFLAG(IS_WIN)
+    std::make_tuple<>("Arial Unicode MS", false),
+    std::make_tuple<>("calibri", true),
+    std::make_tuple<>("Gill Sans", false),
+    std::make_tuple<>("Helvetica", true),
+    std::make_tuple<>("Helvetica neue", false),
+    std::make_tuple<>("Menlo", false),
+    std::make_tuple<>("Franklin gothic medium", true),
+#else
+    std::make_tuple<>("Arial Unicode MS", false),
+    std::make_tuple<>("Calibri", false),
+    std::make_tuple<>("Gill Sans", false),
+    std::make_tuple<>("Helvetica", false),
+    std::make_tuple<>("Helvetica Neue", false),
+    std::make_tuple<>("Menlo", false),
+    std::make_tuple<>("Franklin Gothic Medium", false),
+#endif
+  };
+  for (const auto& c : test_cases) {
+    EXPECT_EQ(brave::GetAllowedFontFamilies().contains(std::get<0>(c)),
+              std::get<1>(c));
+  }
+}
+
 TEST(BraveFontWhitelistTest, API) {
   brave::set_allowed_font_families_for_testing(true /* can_restrict_fonts */,
                                                kTestAllowedFontFamilies);
