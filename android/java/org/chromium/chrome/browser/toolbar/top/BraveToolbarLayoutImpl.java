@@ -723,6 +723,13 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
         }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 
+    public boolean isWalletIconVisible() {
+        if (mWalletLayout == null) {
+            return false;
+        }
+        return mWalletLayout.getVisibility() == View.VISIBLE;
+    }
+
     public void showWalletIcon(boolean show) {
         assert mWalletLayout != null;
         if (mWalletLayout == null) {

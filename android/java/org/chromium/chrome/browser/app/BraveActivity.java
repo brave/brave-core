@@ -236,6 +236,7 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
     public CopyOnWriteArrayList<FeedItemsCard> mNewsItemsFeedCards;
     private boolean isProcessingPendingDappsTxRequest;
     private int mLastTabId;
+    private boolean mNativeInitialized;
 
     @SuppressLint("VisibleForTests")
     public BraveActivity() {
@@ -250,6 +251,16 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
         if (BraveVpnUtils.isBraveVpnFeatureEnable()) {
             InAppPurchaseWrapper.getInstance().startBillingServiceConnection(BraveActivity.this);
             BraveVpnNativeWorker.getInstance().addObserver(this);
+        }
+        // The check on mNativeInitialized is mostly to ensure that mojo
+        // services for wallet are initialized.
+        // TODO(sergz): verify do we need it in that phase or not.
+        if (mNativeInitialized) {
+            BraveToolbarLayoutImpl layout = getBraveToolbarLayout();
+            if (layout == null || !layout.isWalletIconVisible()) {
+                return;
+            }
+            updateWalletBadgeVisibility();
         }
     }
 
@@ -682,7 +693,6 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
         // If active tab is private, set private DSE as an active DSE.
         BraveSearchEngineUtils.updateActiveDSE(tab.isIncognito());
         BraveStatsUtil.removeShareStatsFile();
-        updateWalletBadgeVisibility();
     }
 
     @Override
@@ -898,6 +908,7 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
         if (OnboardingPrefManager.getInstance().isOnboardingSearchBoxTooltip()) {
             showSearchBoxTooltip();
         }
+        mNativeInitialized = true;
     }
 
     private void showSearchBoxTooltip() {
