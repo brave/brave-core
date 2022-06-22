@@ -15,6 +15,10 @@ class FavIconImageRenderer {
   }
 
   func loadIcon(siteURL: URL, kind: FaviconFetcher.Kind = .favicon, persistent: Bool, completion: ((UIImage?) -> Void)?) {
+    let taskCompletion: (UIImage?) -> Void = { [weak self] image in
+      self?.task = nil
+      completion?(image)
+    }
     task?.cancel()
     task = DispatchWorkItem {
       let domain = Domain.getOrCreate(forUrl: siteURL, persistent: persistent)
@@ -26,7 +30,7 @@ class FavIconImageRenderer {
           let cancellable = self.task,
           !cancellable.isCancelled
         else {
-          completion?(nil)
+          taskCompletion(nil)
           return
         }
 
@@ -50,9 +54,9 @@ class FavIconImageRenderer {
               context.draw(cgImage, in: rect.insetBy(dx: padding, dy: padding))
               context.restoreGState()
             }
-            completion?(finalImage)
+            taskCompletion(finalImage)
           } else {
-            completion?(image)
+            taskCompletion(image)
           }
         } else {
           // Monogram favicon attributes
@@ -108,7 +112,7 @@ class FavIconImageRenderer {
               ])
           }
 
-          completion?(finalImage)
+          taskCompletion(finalImage)
         }
       }
     }
