@@ -1515,13 +1515,28 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
         return 0;
     }
 
-    public int getToolbarBottom() {
+    public float getToolbarBottom() {
         View toolbarShadow = findViewById(R.id.toolbar_hairline);
         assert toolbarShadow != null;
         if (toolbarShadow != null) {
-            return toolbarShadow.getBottom();
+            return toolbarShadow.getY();
         }
         return 0;
+    }
+
+    public boolean isViewBelowToolbar(View view) {
+        View toolbarShadow = findViewById(R.id.toolbar_hairline);
+        assert toolbarShadow != null;
+        assert view != null;
+        if (toolbarShadow != null && view != null) {
+            int[] coordinatesToolbar = new int[2];
+            toolbarShadow.getLocationInWindow(coordinatesToolbar);
+            int[] coordinatesView = new int[2];
+            view.getLocationInWindow(coordinatesView);
+            return coordinatesView[1] >= coordinatesToolbar[1];
+        }
+
+        return false;
     }
 
     @NativeMethods
