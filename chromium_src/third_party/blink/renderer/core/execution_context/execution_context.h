@@ -10,8 +10,6 @@
 #include "brave/third_party/blink/renderer/brave_farbling_constants.h"
 #include "src/third_party/blink/renderer/core/execution_context/execution_context.h"
 #include "third_party/abseil-cpp/absl/random/random.h"
-#include "third_party/blink/renderer/core/core_export.h"
-#include "third_party/blink/renderer/platform/wtf/text/atomic_string.h"
 
 namespace blink {
 class WebContentSettingsClient;
@@ -33,8 +31,6 @@ CORE_EXPORT BraveFarblingLevel
 GetBraveFarblingLevelFor(ExecutionContext* context,
                          BraveFarblingLevel default_value);
 CORE_EXPORT bool AllowFingerprinting(ExecutionContext* context);
-CORE_EXPORT bool AllowFontFamily(ExecutionContext* context,
-                                 const AtomicString& family_name);
 
 class CORE_EXPORT BraveSessionCache final
     : public GarbageCollected<BraveSessionCache>,
@@ -46,7 +42,6 @@ class CORE_EXPORT BraveSessionCache final
   virtual ~BraveSessionCache() = default;
 
   static BraveSessionCache& From(ExecutionContext&);
-  static void Init();
 
   AudioFarblingCallback GetAudioFarblingCallback(
       blink::WebContentSettingsClient* settings);
@@ -55,8 +50,6 @@ class CORE_EXPORT BraveSessionCache final
                      size_t size);
   WTF::String GenerateRandomString(std::string seed, wtf_size_t length);
   WTF::String FarbledUserAgent(WTF::String real_user_agent);
-  bool AllowFontFamily(blink::WebContentSettingsClient* settings,
-                       const AtomicString& family_name);
   FarblingPRNG MakePseudoRandomGenerator();
 
  private:

@@ -14,7 +14,6 @@
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
 #include "brave/components/brave_shields/common/brave_shield_utils.h"
 #include "brave/components/brave_shields/common/features.h"
-#include "brave/components/brave_shields/common/pref_names.h"
 #include "brave/components/content_settings/core/common/content_settings_util.h"
 #include "brave/components/debounce/common/features.h"
 #include "components/content_settings/core/browser/cookie_settings.h"
@@ -336,37 +335,6 @@ bool ShouldDoDebouncing(HostContentSettingsMap* map, const GURL& url) {
 
   // Don't debounce if ad blocking is off
   if (brave_shields::GetAdControlType(map, url) != ControlType::BLOCK)
-    return false;
-
-  return true;
-}
-
-bool IsReduceLanguageEnabledForProfile(PrefService* pref_service) {
-  // Don't reduce language if feature is disabled
-  if (!base::FeatureList::IsEnabled(features::kBraveReduceLanguage))
-    return false;
-
-  // Don't reduce language if user preference is unchecked
-  if (!pref_service->GetBoolean(brave_shields::prefs::kReduceLanguageEnabled))
-    return false;
-
-  return true;
-}
-
-bool ShouldDoReduceLanguage(HostContentSettingsMap* map,
-                            const GURL& url,
-                            PrefService* pref_service) {
-  if (!IsReduceLanguageEnabledForProfile(pref_service))
-    return false;
-
-  // Don't reduce language if Brave Shields is down (this also handles cases
-  // where the URL is not HTTP(S))
-  if (!brave_shields::GetBraveShieldsEnabled(map, url))
-    return false;
-
-  // Don't reduce language if fingerprinting is off
-  if (brave_shields::GetFingerprintingControlType(map, url) ==
-      ControlType::ALLOW)
     return false;
 
   return true;

@@ -50,12 +50,6 @@
     label="$i18n{deAmpSettingLabel}"
     sub-label="$i18n{deAmpSettingSubLabel}">
   </settings-toggle-button>
-  <settings-toggle-button
-      class="cr-row"
-      pref="{{prefs.brave.reduce_language}}"
-      label="$i18n{reduceLanguageControlLabel}"
-      sub-label="$i18n{reduceLanguageDesc}">
-  </settings-toggle-button>
   <div class="settings-box">
     <div class="start">$i18n{adControlLabel}</div>
     <select id="adControlType" class="md-select"
@@ -107,7 +101,7 @@
 </div>
 <settings-animated-pages id="filters" section="shields">
   <div route-path="default">
-    <cr-link-row 
+    <cr-link-row
       id="contentFiltersRow"
       class="hr"
       label="$i18n{adblockContentFilteringLabel}"

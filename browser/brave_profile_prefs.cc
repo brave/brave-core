@@ -23,7 +23,6 @@
 #include "brave/components/brave_search/browser/brave_search_default_host.h"
 #include "brave/components/brave_search/common/brave_search_utils.h"
 #include "brave/components/brave_search_conversion/utils.h"
-#include "brave/components/brave_shields/browser/brave_farbling_service.h"
 #include "brave/components/brave_shields/browser/brave_shields_p3a.h"
 #include "brave/components/brave_shields/common/pref_names.h"
 #include "brave/components/brave_sync/brave_sync_prefs.h"
@@ -455,8 +454,6 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->SetDefaultPrefValue(
       policy::policy_prefs::kIsolatedAppsDeveloperModeAllowed,
       base::Value(false));
-
-  BraveFarblingService::RegisterProfilePrefs(registry);
 
   RegisterProfilePrefsForMigration(registry);
 

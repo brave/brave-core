@@ -108,10 +108,6 @@ bool BraveContentSettingsAgentImpl::IsScriptTemporilyAllowed(
   return allow;
 }
 
-bool BraveContentSettingsAgentImpl::IsReduceLanguageEnabled() {
-  return reduce_language_enabled_;
-}
-
 void BraveContentSettingsAgentImpl::BraveSpecificDidBlockJavaScript(
     const std::u16string& details) {
   mojo::AssociatedRemote<brave_shields::mojom::BraveShieldsHost> remote;
@@ -353,10 +349,6 @@ bool BraveContentSettingsAgentImpl::AllowAutoplay(bool play_requested) {
 void BraveContentSettingsAgentImpl::SetAllowScriptsFromOriginsOnce(
     const std::vector<std::string>& origins) {
   temporarily_allowed_scripts_ = origins;
-}
-
-void BraveContentSettingsAgentImpl::SetReduceLanguageEnabled(bool enabled) {
-  reduce_language_enabled_ = enabled;
 }
 
 void BraveContentSettingsAgentImpl::BindBraveShieldsReceiver(

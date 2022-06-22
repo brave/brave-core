@@ -53,7 +53,6 @@ using brave_shields::features::kBraveDarkModeBlock;
 using brave_shields::features::kBraveDomainBlock;
 using brave_shields::features::kBraveDomainBlock1PES;
 using brave_shields::features::kBraveExtensionNetworkBlocking;
-using brave_shields::features::kBraveReduceLanguage;
 using brave_shields::features::kCosmeticFilteringSyncLoad;
 
 using de_amp::features::kBraveDeAMP;
@@ -139,10 +138,6 @@ constexpr char kBraveExtensionNetworkBlockingName[] =
     "Enable extension network blocking";
 constexpr char kBraveExtensionNetworkBlockingDescription[] =
     "Enable blocking for network requests initiated by extensions";
-
-constexpr char kBraveReduceLanguageName[] = "Reduce language identifiability";
-constexpr char kBraveReduceLanguageDescription[] =
-    "Reduce the identifiability of my language preferences";
 
 constexpr char kCosmeticFilteringSyncLoadName[] =
     "Enable sync loading of cosmetic filter rules";
@@ -517,10 +512,6 @@ const flags_ui::FeatureEntry::Choice kBraveSkusEnvChoices[] = {
      flag_descriptions::kBraveExtensionNetworkBlockingName,                 \
      flag_descriptions::kBraveExtensionNetworkBlockingDescription, kOsAll,  \
      FEATURE_VALUE_TYPE(kBraveExtensionNetworkBlocking)},                   \
-    {"brave-reduce-language",                                               \
-        flag_descriptions::kBraveReduceLanguageName,                        \
-        flag_descriptions::kBraveReduceLanguageDescription, kOsAll,         \
-        FEATURE_VALUE_TYPE(kBraveReduceLanguage)},                          \
     {"brave-cosmetic-filtering-sync-load",                                  \
      flag_descriptions::kCosmeticFilteringSyncLoadName,                     \
      flag_descriptions::kCosmeticFilteringSyncLoadDescription, kOsAll,      \

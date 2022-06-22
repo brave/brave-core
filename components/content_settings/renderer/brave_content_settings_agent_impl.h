@@ -64,8 +64,6 @@ class BraveContentSettingsAgentImpl
 
   BraveFarblingLevel GetBraveFarblingLevel() override;
 
-  bool IsReduceLanguageEnabled() override;
-
  private:
   FRIEND_TEST_ALL_PREFIXES(BraveContentSettingsAgentImplAutoplayBrowserTest,
                            AutoplayBlockedByDefault);
@@ -80,7 +78,6 @@ class BraveContentSettingsAgentImpl
   // brave_shields::mojom::BraveShields.
   void SetAllowScriptsFromOriginsOnce(
       const std::vector<std::string>& origins) override;
-  void SetReduceLanguageEnabled(bool enabled) override;
 
   void BindBraveShieldsReceiver(
       mojo::PendingAssociatedReceiver<brave_shields::mojom::BraveShields>
@@ -97,9 +94,6 @@ class BraveContentSettingsAgentImpl
 
   // cache blocked script url which will later be used in `DidNotAllowScript()`
   GURL blocked_script_url_;
-
-  // Status of "reduce language identifiability" feature.
-  bool reduce_language_enabled_;
 
   base::flat_map<url::Origin, blink::WebSecurityOrigin>
       cached_ephemeral_storage_origins_;
