@@ -164,7 +164,6 @@ TEST(DeAmpUtilUnitTest, SingleQuotes) {
   CheckFindCanonicalLinkResult("https://abc.com", body, true);
 }
 
-
 TEST(DeAmpUtilUnitTest, NoQuotes) {
   const std::string body =
       "<DOCTYPE! html>"
