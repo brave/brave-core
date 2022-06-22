@@ -1,0 +1,78 @@
+// Copyright (c) 2022 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// you can obtain one at http://mozilla.org/MPL/2.0/.
+
+import styled from 'styled-components'
+import { WalletButton } from '../shared/style'
+
+export const BuyAssetOptionWrapper = styled(WalletButton)<{ isSelected?: boolean}>`
+  width: 100%;
+  height: 76px;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-direction: row;
+  cursor: pointer;
+  border-style: solid;
+  border-radius: 4px;
+  background-color: ${(p) => p.theme.color.background02};
+  border-color: ${(p) => p.isSelected ? p.theme.color.focusBorder : p.theme.color.divider01};
+  border-width: ${(p) => p.isSelected ? '3px' : '1px'};
+  margin-top: 6px;
+  margin-bottom: 18px;
+  padding: ${(p) => p.isSelected ? '11px' : '13px'};
+`
+
+export const NameAndIcon = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+`
+
+export const AssetName = styled.span`
+  font-family: Poppins;
+  font-size: 13px;
+  line-height: 20px;
+  letter-spacing: 0.01em;
+  color: ${(p) => p.theme.color.text01};
+`
+
+export const IconsWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+  position: relative;
+  margin-right: 14px;
+`
+
+export const NetworkIconWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+  position: absolute;
+  bottom: 0px;
+  right: 4px;
+  background-color: ${(p) => p.theme.color.background02};
+  border-radius: 100%;
+  padding: 2px;
+`
+
+export const NameColumn = styled.div`
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  flex-direction: column;
+`
+
+export const NetworkDescriptionText = styled.span`
+  font-family: Poppins;
+  font-size: 13px;
+  line-height: 20px;
+  letter-spacing: 0.01em;
+  color: ${(p) => p.theme.color.text03};
+`
