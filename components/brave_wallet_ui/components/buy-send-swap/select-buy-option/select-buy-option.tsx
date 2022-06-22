@@ -8,7 +8,7 @@ import * as React from 'react'
 import { BraveWallet, BuyOption } from '../../../constants/types'
 
 // Components
-import { BuyOptionItem } from '../../buy-option/buy-option-item'
+import { BuyOptionItem } from '../../shared/buy-option/buy-option-item'
 import { BackButton } from '../../shared'
 
 // Styled Components

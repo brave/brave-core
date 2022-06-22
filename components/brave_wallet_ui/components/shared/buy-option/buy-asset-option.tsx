@@ -6,15 +6,15 @@
 import * as React from 'react'
 
 // types
-import { BraveWallet } from '../../constants/types'
+import { BraveWallet } from '../../../constants/types'
 
 // utils
-import Amount from '../../utils/amount'
-import { getLocale } from '../../../common/locale'
+import Amount from '../../../utils/amount'
+import { getLocale } from '../../../../common/locale'
 
 // components
-import { IconsWrapper, MediumAssetIcon, NetworkIconWrapper } from '../shared/style'
-import { withPlaceholderIcon, CreateNetworkIcon } from '../shared'
+import { IconsWrapper, MediumAssetIcon, NetworkIconWrapper } from '../style'
+import { withPlaceholderIcon, CreateNetworkIcon } from '..'
 
 // styles
 import {

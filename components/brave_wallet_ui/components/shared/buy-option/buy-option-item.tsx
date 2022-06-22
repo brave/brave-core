@@ -5,7 +5,7 @@
 import * as React from 'react'
 
 // Utils
-import { BraveWallet, BuyOption } from '../../constants/types'
+import { BraveWallet, BuyOption } from '../../../constants/types'
 
 // Styled Components
 import {
