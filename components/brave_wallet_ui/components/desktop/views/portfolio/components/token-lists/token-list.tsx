@@ -31,6 +31,7 @@ import { NFTGridView } from '../nft-grid-view/nft-grid-view'
 import usePricing from '../../../../../../common/hooks/pricing'
 
 // Styled Components
+import { ScrollableColumn } from '../../../../../shared/style'
 import {
   ButtonRow,
   DividerText,
@@ -46,17 +47,17 @@ interface Props {
   networks: BraveWallet.NetworkInfo[]
   renderToken: (item: UserAssetInfoType, viewMode: ViewMode) => JSX.Element
   hideAddButton?: boolean
-  // enableScroll?: boolean
-  // maxListHeight?: string
+  enableScroll?: boolean
+  maxListHeight?: string
 }
 
 export const TokenLists = ({
   userAssetList,
   networks,
   renderToken,
-  hideAddButton
-  // enableScroll,
-  // maxListHeight
+  hideAddButton,
+  enableScroll,
+  maxListHeight
 }: Props) => {
   // routing
   const history = useHistory()
@@ -70,6 +71,17 @@ export const TokenLists = ({
 
   // state
   const [searchValue, setSearchValue] = React.useState<string>('')
+
+   // methods
+
+  // This filters a list of assets when the user types in search bar
+  const onSearchValueChange = React.useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchValue(event.target.value)
+  }, [])
+
+  const showAddAssetsModal = React.useCallback(() => {
+    history.push(WalletRoutes.AddAssetModal)
+  }, [])
 
   // memos
   const filteredAssetList = React.useMemo(() => {
@@ -120,37 +132,28 @@ export const TokenLists = ({
     return fungibleTokens
   }, [fungibleTokens, selectedAssetFilter, computeFiatAmount])
 
-  // const listUi = React.useMemo(() => {
-  //   return <>
-  //     {fungibleTokens.map(renderToken)}
-
-  //     {nonFungibleTokens.length !== 0 &&
-  //       <>
-  //         <Spacer />
-  //         <DividerText>{getLocale('braveWalletTopNavNFTS')}</DividerText>
-  //         <SubDivider />
-  //         {nonFungibleTokens.map(renderToken)}
-  //       </>
-  //     }
-  //   </>
-  // }, [fungibleTokens, nonFungibleTokens, renderToken])
-
-  // methods
-
-  // This filters a list of assets when the user types in search bar
-  const onSearchValueChange = React.useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchValue(event.target.value)
-  }, [])
-
-  const showAddAssetsModal = React.useCallback(() => {
-    history.push(WalletRoutes.AddAssetModal)
-  }, [])
-
-  const renderTokenInViewMode = React.useCallback((mode: ViewMode) => {
-    return (token: UserAssetInfoType) => {
-      return renderToken(token, mode)
-    }
-  }, [renderToken])
+  const listUi = React.useMemo(() => {
+    return <>
+      {selectedAssetFilter.id !== 'nfts' ? (
+          <>
+            {sortedFungibleTokensList.map((token) => renderToken(token, 'list'))}
+            {nonFungibleTokens.length !== 0 &&
+              <>
+                <Spacer />
+                <DividerText>{getLocale('braveWalletTopNavNFTS')}</DividerText>
+                <SubDivider />
+                {nonFungibleTokens.map((token) => renderToken(token, 'list'))}
+              </>
+            }
+          </>
+        ) : (
+          <NFTGridView
+            nonFungibleTokens={nonFungibleTokens}
+            renderToken={(token) => renderToken(token, 'grid')}
+          />
+        )}
+    </>
+  }, [selectedAssetFilter, sortedFungibleTokensList, nonFungibleTokens, renderToken])
 
   // render
   return (
@@ -165,31 +168,12 @@ export const TokenLists = ({
         <AssetFilterSelector />
       </FilterTokenRow>
 
-      {/* {enableScroll
+      {enableScroll
         ? <ScrollableColumn maxHeight={maxListHeight}>
             {listUi}
           </ScrollableColumn>
         : listUi
-      } */}
-
-      {selectedAssetFilter.id !== 'nfts' ? (
-        <>
-          {sortedFungibleTokensList.map(renderTokenInViewMode('list'))}
-          {nonFungibleTokens.length !== 0 &&
-            <>
-              <Spacer />
-              <DividerText>{getLocale('braveWalletTopNavNFTS')}</DividerText>
-              <SubDivider />
-              {nonFungibleTokens.map(renderTokenInViewMode('list'))}
-            </>
-          }
-        </>
-      ) : (
-        <NFTGridView
-          nonFungibleTokens={nonFungibleTokens}
-          renderToken={renderTokenInViewMode('grid')}
-        />
-      )}
+      }
 
       {!hideAddButton &&
         <ButtonRow>
