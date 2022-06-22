@@ -4,7 +4,7 @@
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
 import styled from 'styled-components'
-import { WalletButton } from '../shared/style'
+import { WalletButton } from '../style'
 
 export const BuyAssetOptionWrapper = styled(WalletButton)<{ isSelected?: boolean}>`
   width: 100%;
