@@ -24,6 +24,7 @@ jobs:
 
           milestone=$(printf "%s\n" "${milestones[@]}" | grep -E "$milestone_selector")
           gh pr edit "$PR_NUMBER" -R "$REPO_NAME" -m "$milestone"
+
   set-brave-browser-issues-milestone:
     runs-on: ubuntu-latest
     needs: set-pr-milestone
