@@ -32,9 +32,6 @@ where
         domain: &str,
     ) -> Result<Option<CredentialSummary>, SkusError> {
         let wrapped_order = self.client.get_order(order_id).await?;
-        if wrapped_order.is_none() {
-            return Err(InternalError::NotFound.into());
-        }
         let order = wrapped_order.ok_or(InternalError::NotFound)?;
         if !order.location_matches(&self.environment, domain) {
             return Err(InternalError::OrderLocationMismatch.into());
