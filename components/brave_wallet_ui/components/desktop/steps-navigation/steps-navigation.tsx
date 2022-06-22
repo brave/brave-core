@@ -49,7 +49,7 @@ export const StepsNavigation: <T extends string>(
     return goBackUrl
       ? { as: Link, to: goBackUrl } as const
       : { onClick: goBack || history.goBack, as: 'button' } as const
-  }, [goBackUrl])
+  }, [goBackUrl, goBack, history])
 
   return (
     <Wrapper>
