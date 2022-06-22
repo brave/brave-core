@@ -669,6 +669,11 @@ const util = {
     util.run(cmd, args, cmd_options)
   },
 
+  massRename: (options = {}) => {
+    let cmd_options = config.defaultOptions
+    cmd_options.cwd = config.braveCoreDir
+    util.run('python3', [path.join(config.srcDir, 'tools', 'git', 'mass-rename.py')], cmd_options)
+  },
 
   shouldUpdateChromium: (chromiumRef = config.getProjectRef('chrome')) => {
     const headSHA = util.runGit(config.srcDir, ['rev-parse', 'HEAD'], true)
