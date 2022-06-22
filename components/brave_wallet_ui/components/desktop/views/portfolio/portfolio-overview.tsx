@@ -33,6 +33,7 @@ import { LoadingSkeleton } from '../../../shared'
 import {
   ChartControlBar,
   LineChart,
+  PortfolioAssetItem,
   WithHideBalancePlaceholder
 } from '../../'
 
@@ -54,6 +55,7 @@ import {
 // actions
 import { WalletActions } from '../../../../common/actions'
 import { WalletPageActions } from '../../../../page/actions'
+import { NFTGridViewItem } from './components/nft-grid-view/nft-grid-view-item'
 
 export const PortfolioOverview = () => {
   // routing
@@ -61,19 +63,17 @@ export const PortfolioOverview = () => {
 
   // redux
   const dispatch = useDispatch()
-  const {
-    defaultCurrencies,
-    userVisibleTokensInfo,
-    portfolioPriceHistory,
-    selectedPortfolioTimeline,
-    accounts,
-    networkList,
-    isFetchingPortfolioPriceHistory,
-    transactionSpotPrices,
-    selectedNetworkFilter
-  } = useSelector(({ wallet }: { wallet: WalletState }) => wallet)
-
-  const { selectedTimeline, nftMetadata } = useSelector(({ page }: { page: PageState }) => page)
+  const defaultCurrencies = useSelector(({ wallet }: { wallet: WalletState }) => wallet.defaultCurrencies)
+  const userVisibleTokensInfo = useSelector(({ wallet }: { wallet: WalletState }) => wallet.userVisibleTokensInfo)
+  const portfolioPriceHistory = useSelector(({ wallet }: { wallet: WalletState }) => wallet.portfolioPriceHistory)
+  const selectedPortfolioTimeline = useSelector(({ wallet }: { wallet: WalletState }) => wallet.selectedPortfolioTimeline)
+  const accounts = useSelector(({ wallet }: { wallet: WalletState }) => wallet.accounts)
+  const networkList = useSelector(({ wallet }: { wallet: WalletState }) => wallet.networkList)
+  const isFetchingPortfolioPriceHistory = useSelector(({ wallet }: { wallet: WalletState }) => wallet.isFetchingPortfolioPriceHistory)
+  const transactionSpotPrices = useSelector(({ wallet }: { wallet: WalletState }) => wallet.transactionSpotPrices)
+  const selectedNetworkFilter = useSelector(({ wallet }: { wallet: WalletState }) => wallet.selectedNetworkFilter)
+  const selectedTimeline = useSelector(({ page }: { page: PageState }) => page.selectedTimeline)
+  const nftMetadata = useSelector(({ page }: { page: PageState }) => page.nftMetadata)
 
   // custom hooks
   const getAccountAssetBalance = useBalance(networkList)
@@ -238,12 +238,30 @@ export const PortfolioOverview = () => {
       />
 
       <TokenLists
-        defaultCurrencies={defaultCurrencies}
         userAssetList={userAssetList}
-        tokenPrices={transactionSpotPrices}
         networks={networkList}
-        onSelectAsset={onSelectAsset}
-        hideBalances={hideBalances}
+        renderToken={(item, mode) =>
+          mode === 'list'
+          ? <PortfolioAssetItem
+              spotPrices={transactionSpotPrices}
+              defaultCurrencies={defaultCurrencies}
+              action={() => onSelectAsset(item.asset)}
+              key={
+                item.asset.isErc721
+                  ? `${item.asset.contractAddress}-${item.asset.symbol}-${item.asset.chainId}`
+                  : `${item.asset.contractAddress}-${item.asset.tokenId}-${item.asset.chainId}`
+              }
+              assetBalance={item.assetBalance}
+              token={item.asset}
+              hideBalances={hideBalances}
+              networks={networkList}
+            />
+          : <NFTGridViewItem
+              key={`${item.asset.tokenId}-${item.asset.contractAddress}`}
+              token={item}
+              onSelectAsset={() => onSelectAsset(item.asset)}
+            />
+        }
       />
     </StyledWrapper>
   )

@@ -12,11 +12,11 @@ import {
 
 // utils
 import { getLocale } from '../../../../common/locale'
+import { getTokensNetwork } from '../../../utils/network-utils'
 
 // types
 import {
   BraveWallet,
-  UserAssetInfoType,
   WalletAccountType,
   WalletRoutes,
   WalletState
@@ -34,22 +34,27 @@ import { useHasAccount } from '../../../common/hooks'
 import { useMultiChainBuyAssets } from '../../../common/hooks/use-multi-chain-buy-assets'
 
 // style
-import { ScrollContainer, SearchWrapper } from './fund-wallet.style'
-import { Column, Flex, LinkText, Row } from '../../../components/shared/style'
+import { Flex, LinkText, Row } from '../../../components/shared/style'
 import { Description, MainWrapper, NextButtonRow, StyledWrapper, Title } from '../onboarding/onboarding.style'
+import {
+  ScrollContainer,
+  SearchWrapper,
+  SelectAssetWrapper
+} from './fund-wallet.style'
 
 // components
-import SelectNetworkButton from '../../../components/shared/select-network-button'
+// import SelectNetworkButton from '../../../components/shared/select-network-button'
 import SearchBar from '../../../components/shared/search-bar'
 import SelectAccountItem from '../../../components/shared/select-account-item'
 import SelectAccount from '../../../components/shared/select-account'
 import WalletPageLayout from '../../../components/desktop/wallet-page-layout/index'
 import { NavButton } from '../../../components/extension/buttons/nav-button/index'
-import TokenLists from '../../../components/desktop/views/portfolio/components/token-lists'
+import { TokenLists } from '../../../components/desktop/views/portfolio/components/token-lists/token-list'
 import CreateAccountTab from '../../../components/buy-send-swap/create-account'
 import SwapInputComponent from '../../../components/buy-send-swap/swap-input-component'
 import SelectHeader from '../../../components/buy-send-swap/select-header'
 import { StepsNavigation } from '../../../components/desktop/steps-navigation/steps-navigation'
+import { BuyAssetOptionItem } from '../../../components/buy-option/buy-asset-option'
 
 export const FundWalletScreen = () => {
   // routing
@@ -60,13 +65,11 @@ export const FundWalletScreen = () => {
   const {
     accounts,
     defaultCurrencies,
-    transactionSpotPrices,
     selectedNetworkFilter,
     selectedAccount
   } = useSelector(({ wallet }: { wallet: WalletState }) => wallet)
 
   // state
-  const [filteredList, setFilteredList] = React.useState<UserAssetInfoType[]>([])
   const [isShowingAllOptions, setIsShowingAllOptions] = React.useState(false)
   const [showBuyOptions, setShowBuyOptions] = React.useState<boolean>(false)
   const [showAccountSearch, setShowAccountSearch] = React.useState<boolean>(false)
@@ -120,15 +123,18 @@ export const FundWalletScreen = () => {
     return [AllNetworksOption, ...buyAssetNetworks]
   }, [buyAssetNetworks])
 
+  // default to showing the first 5 assets
+  const filteredAssetsListForFilteredNetwork = React.useMemo(() => isShowingAllOptions
+      ? assetsForFilteredNetwork
+      : assetsForFilteredNetwork.slice(0, 5),
+    [isShowingAllOptions, assetsForFilteredNetwork]
+  )
+
   // methods
   const openAccountSearch = React.useCallback(() => setShowAccountSearch(true), [])
   const closeAccountSearch = React.useCallback(() => setShowAccountSearch(false), [])
   const showAllBuyOptions = React.useCallback(() => setIsShowingAllOptions(true), [])
   const onSearchTextChanged = React.useCallback((e: React.ChangeEvent<HTMLInputElement>) => setAccountSearchText(e.target.value), [])
-
-  const onSelectAssetFromTokenList = React.useCallback((asset: BraveWallet.BlockchainToken | undefined) => {
-    return () => setSelectedAsset(asset)
-  }, [])
 
   const goToPortfolio = React.useCallback(() => {
     history.push(WalletRoutes.Portfolio)
@@ -153,7 +159,7 @@ export const FundWalletScreen = () => {
   }, [isNextStepEnabled])
 
   const onSubmitBuy = React.useCallback((buyOption: BraveWallet.OnRampProvider) => {
-    if (!selectedAsset || !selectedAssetNetwork) {
+    if (!selectedAsset || !selectedAssetNetwork || !selectedAccount) {
       return
     }
     openBuyAssetLink({
@@ -170,16 +176,6 @@ export const FundWalletScreen = () => {
   }, [assetsForFilteredNetwork.length])
 
   React.useEffect(() => {
-    // default to showing the first 5 assets
-    if (!isShowingAllOptions) {
-      setFilteredList(assetsForFilteredNetwork.slice(0, 5))
-    }
-    if (isShowingAllOptions) {
-      setFilteredList(assetsForFilteredNetwork)
-    }
-  }, [isShowingAllOptions, assetsForFilteredNetwork])
-
-  React.useEffect(() => {
     // filter to show only top results on chain switch
     // also unselect asset on chain switch
     if (selectedNetworkFilter) {
@@ -187,6 +183,18 @@ export const FundWalletScreen = () => {
       setSelectedAsset(undefined)
     }
   }, [selectedNetworkFilter])
+
+  // sync default selected account with selected asset
+  React.useEffect(() => {
+    if (
+      selectedAsset &&
+      selectedAssetNetwork &&
+      accountsForSelectedAssetNetwork.length && // asset is selected & account is available
+      selectedAccount.coin !== selectedAsset.coin // needs to change accounts to one with correct network
+    ) {
+      dispatch(WalletActions.selectAccount(accountsForSelectedAssetNetwork[0]))
+    }
+  }, [selectedAsset, selectedAssetNetwork, accountsForSelectedAssetNetwork, selectedAccount])
 
   // render
   return (
@@ -210,7 +218,7 @@ export const FundWalletScreen = () => {
           {/* Asset Selection */}
           {!needsAccount && !showBuyOptions &&
             <>
-              <div>
+              <SelectAssetWrapper>
                 <SwapInputComponent
                   defaultCurrencies={defaultCurrencies}
                   componentType='buyAmount'
@@ -223,14 +231,20 @@ export const FundWalletScreen = () => {
                 />
 
                 <TokenLists
-                  defaultCurrencies={defaultCurrencies}
-                  userAssetList={assetsForFilteredNetwork}
-                  filteredAssetList={filteredList}
-                  tokenPrices={transactionSpotPrices}
+                  userAssetList={filteredAssetsListForFilteredNetwork}
                   networks={networksFilterOptions}
-                  onSetFilteredAssetList={setFilteredList}
-                  onSelectAsset={onSelectAssetFromTokenList}
-                  hideBalances={true}
+                  hideAddButton
+                  renderToken={({ asset }) => {
+                    return <BuyAssetOptionItem
+                      isSelected={asset === selectedAsset}
+                      key={asset.isErc721
+                        ? `${asset.contractAddress}-${asset.symbol}-${asset.chainId}`
+                        : `${asset.contractAddress}-${asset.tokenId}-${asset.chainId}`}
+                      token={asset}
+                      tokenNetwork={getTokensNetwork(networksFilterOptions, asset)}
+                      onClick={setSelectedAsset}
+                    />
+                  }}
                 />
 
                 {assetsForFilteredNetwork.length > 5 && !isShowingAllOptions &&
@@ -239,7 +253,7 @@ export const FundWalletScreen = () => {
                   </LinkText>
                 }
 
-              </div>
+              </SelectAssetWrapper>
 
               <NextButtonRow>
                 <NavButton
@@ -273,21 +287,19 @@ export const FundWalletScreen = () => {
                     {getLocale('braveWalletFundWalletDescription')}
                   </Description>
 
-                  <Row justifyContent={'space-around'}>
+                  <Row
+                    justifyContent='space-around'
+                    alignItems='center'
+                  >
                     <Flex>
                       <SelectAccountItem
+                        selectedNetwork={selectedAssetNetwork}
                         account={selectedAccount}
                         onSelectAccount={openAccountSearch}
                         showTooltips
                         fullAddress
                       />
                     </Flex>
-
-                    {selectedAssetNetwork &&
-                      <Column>
-                        <SelectNetworkButton selectedNetwork={selectedAssetNetwork} />
-                      </Column>
-                    }
                   </Row>
 
                   <SelectBuyOption
