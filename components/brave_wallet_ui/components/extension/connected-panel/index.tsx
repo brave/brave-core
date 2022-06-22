@@ -30,7 +30,7 @@ import {
   ConnectedBottomNav,
   ConnectedHeader
 } from '../'
-import { Tooltip, SelectNetworkButton } from '../../shared'
+import { Tooltip, SelectNetworkButton, LoadingSkeleton } from '../../shared'
 
 // Styled Components
 import {
@@ -49,6 +49,8 @@ import {
   SwitchIcon,
   MoreAssetsButton
 } from './style'
+
+import { VerticalSpacer } from '../../shared/style'
 
 export interface Props {
   spotPrices: BraveWallet.AssetPrice[]
@@ -172,10 +174,22 @@ export const ConnectedPanel = (props: Props) => {
           </Tooltip>
         </BalanceColumn>
         <BalanceColumn>
-          <AssetBalanceText>{formattedAssetBalance}</AssetBalanceText>
-          <FiatBalanceText>
-            {selectedAccountFiatBalance.formatAsFiat(defaultCurrencies.fiat)}
-          </FiatBalanceText>
+          {formattedAssetBalance ? (
+            <AssetBalanceText>{formattedAssetBalance}</AssetBalanceText>
+          ) : (
+            <>
+              <VerticalSpacer space={6} />
+              <LoadingSkeleton useLightTheme={true} width={120} height={24} />
+              <VerticalSpacer space={6} />
+            </>
+          )}
+          {!selectedAccountFiatBalance.isUndefined() ? (
+            <FiatBalanceText>
+              {selectedAccountFiatBalance.formatAsFiat(defaultCurrencies.fiat)}
+            </FiatBalanceText>
+          ) : (
+            <LoadingSkeleton useLightTheme={true} width={80} height={20} />
+          )}
         </BalanceColumn>
         <MoreAssetsButton onClick={navigate('assets')}>{getLocale('braveWalletPanelViewAccountAssets')}</MoreAssetsButton>
       </CenterColumn>

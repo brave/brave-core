@@ -9,6 +9,7 @@ export interface LoadingSkeletonStyleProps {
   direction?: 'ltr' | 'rtl'
   enableAnimation?: boolean
   circle?: boolean
+  useLightTheme?: boolean // This is used to override darktheme in the main panel.
 }
 
 const loadingAnimation = keyframes`
@@ -33,9 +34,10 @@ export const Skeleton = styled.span<Partial<LoadingSkeletonStyleProps>>`
   position: relative;
   overflow: hidden;
   z-index: 1;
+  opacity: ${p => p.useLightTheme ? 0.6 : 1};
 
   @media (prefers-color-scheme: dark) {
-    background-color: ${p => p.theme.color.divider01};
+    background-color: ${p => p.useLightTheme ? p.theme.color.panelBackgroundSecondary : p.theme.color.divider01};
   }
   
   &:after {
@@ -56,7 +58,9 @@ export const Skeleton = styled.span<Partial<LoadingSkeletonStyleProps>>`
     animation-iteration-count: infinite;
     
     @media (prefers-color-scheme: dark) {
-      background-image: linear-gradient(90deg, transparent, #30303d, transparent);
+      background-image: ${p => p.useLightTheme
+    ? 'linear-gradient(90deg, transparent, #ededed, transparent)'
+    : 'linear-gradient(90deg, transparent, #30303d, transparent)'};
     }
   }
 `

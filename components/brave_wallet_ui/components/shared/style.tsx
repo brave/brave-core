@@ -9,6 +9,7 @@ export interface AssetIconProps {
 
 interface StyleProps {
   status: BraveWallet.TransactionStatus
+  space: number
 }
 
 export const StatusBubble = styled.div<Partial<StyleProps>>`
@@ -64,3 +65,8 @@ export const WalletButton = styled.button<{
     outline-width: 2px;
   }
  `
+
+export const VerticalSpacer = styled.div<Partial<StyleProps>>`
+  display: flex;
+  height: ${p => p.space}px;
+`
