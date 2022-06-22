@@ -34,8 +34,8 @@ import { useHasAccount } from '../../../common/hooks'
 import { useMultiChainBuyAssets } from '../../../common/hooks/use-multi-chain-buy-assets'
 
 // style
-import { Flex, LinkText, Row } from '../../../components/shared/style'
-import { Description, MainWrapper, NextButtonRow, StyledWrapper, Title } from '../onboarding/onboarding.style'
+import { Column, Flex, LoadingIcon, Row } from '../../../components/shared/style'
+import { Description, MainWrapper, NextButtonRow, StyledWrapper, Title, VerticalSpace } from '../onboarding/onboarding.style'
 import {
   ScrollContainer,
   SearchWrapper,
@@ -68,12 +68,6 @@ export const FundWalletScreen = () => {
     selectedAccount
   } = useSelector(({ wallet }: { wallet: WalletState }) => wallet)
 
-  // state
-  const [isShowingAllOptions, setIsShowingAllOptions] = React.useState(false)
-  const [showBuyOptions, setShowBuyOptions] = React.useState<boolean>(false)
-  const [showAccountSearch, setShowAccountSearch] = React.useState<boolean>(false)
-  const [accountSearchText, setAccountSearchText] = React.useState<string>('')
-
   // custom hooks
   const { needsAccount } = useHasAccount()
   const {
@@ -88,6 +82,11 @@ export const FundWalletScreen = () => {
     setBuyAmount,
     openBuyAssetLink
   } = useMultiChainBuyAssets()
+
+  // state
+  const [showBuyOptions, setShowBuyOptions] = React.useState<boolean>(false)
+  const [showAccountSearch, setShowAccountSearch] = React.useState<boolean>(false)
+  const [accountSearchText, setAccountSearchText] = React.useState<string>('')
 
   // memos
   const isNextStepEnabled = React.useMemo(() => {
@@ -122,17 +121,9 @@ export const FundWalletScreen = () => {
     return [AllNetworksOption, ...buyAssetNetworks]
   }, [buyAssetNetworks])
 
-  // default to showing the first 5 assets
-  const filteredAssetsListForFilteredNetwork = React.useMemo(() => isShowingAllOptions
-      ? assetsForFilteredNetwork
-      : assetsForFilteredNetwork.slice(0, 5),
-    [isShowingAllOptions, assetsForFilteredNetwork]
-  )
-
   // methods
   const openAccountSearch = React.useCallback(() => setShowAccountSearch(true), [])
   const closeAccountSearch = React.useCallback(() => setShowAccountSearch(false), [])
-  const showAllBuyOptions = React.useCallback(() => setIsShowingAllOptions(true), [])
   const onSearchTextChanged = React.useCallback((e: React.ChangeEvent<HTMLInputElement>) => setAccountSearchText(e.target.value), [])
 
   const goToPortfolio = React.useCallback(() => {
@@ -145,9 +136,16 @@ export const FundWalletScreen = () => {
   }, [closeAccountSearch])
 
   const onBack = React.useCallback(() => {
-    setShowBuyOptions(false)
-    closeAccountSearch()
-  }, [closeAccountSearch])
+    if (!showBuyOptions && history.length) {
+      return history.goBack()
+    }
+
+    if (showBuyOptions) {
+      // go back to asset selection
+      setShowBuyOptions(false)
+      return closeAccountSearch()
+    }
+  }, [showBuyOptions, closeAccountSearch, history])
 
   const nextStep = React.useCallback(() => {
     if (!isNextStepEnabled || !selectedAssetNetwork) {
@@ -155,7 +153,7 @@ export const FundWalletScreen = () => {
     }
     dispatch(WalletActions.selectNetwork(selectedAssetNetwork))
     setShowBuyOptions(true)
-  }, [isNextStepEnabled])
+  }, [isNextStepEnabled, selectedAssetNetwork])
 
   const onSubmitBuy = React.useCallback((buyOption: BraveWallet.OnRampProvider) => {
     if (!selectedAsset || !selectedAssetNetwork || !selectedAccount) {
@@ -175,10 +173,8 @@ export const FundWalletScreen = () => {
   }, [assetsForFilteredNetwork.length])
 
   React.useEffect(() => {
-    // filter to show only top results on chain switch
-    // also unselect asset on chain switch
+    // unselect asset on chain filter changed
     if (selectedNetworkFilter) {
-      setIsShowingAllOptions(false)
       setSelectedAsset(undefined)
     }
   }, [selectedNetworkFilter])
@@ -229,28 +225,31 @@ export const FundWalletScreen = () => {
                   autoFocus={true}
                 />
 
-                <TokenLists
-                  userAssetList={filteredAssetsListForFilteredNetwork}
-                  networks={networksFilterOptions}
-                  hideAddButton
-                  renderToken={({ asset }) => {
-                    return <BuyAssetOptionItem
-                      isSelected={asset === selectedAsset}
-                      key={asset.isErc721
-                        ? `${asset.contractAddress}-${asset.symbol}-${asset.chainId}`
-                        : `${asset.contractAddress}-${asset.tokenId}-${asset.chainId}`}
-                      token={asset}
-                      tokenNetwork={getTokensNetwork(networksFilterOptions, asset)}
-                      onClick={setSelectedAsset}
+                {assetsForFilteredNetwork.length
+                  ? <TokenLists
+                      enableScroll
+                      maxListHeight='38vh'
+                      userAssetList={assetsForFilteredNetwork}
+                      networks={networksFilterOptions}
+                      hideAddButton
+                      renderToken={({ asset }) => {
+                        return <BuyAssetOptionItem
+                          isSelected={asset === selectedAsset}
+                          key={asset.isErc721
+                            ? `${asset.contractAddress}-${asset.symbol}-${asset.chainId}`
+                            : `${asset.contractAddress}-${asset.tokenId}-${asset.chainId}`}
+                          token={asset}
+                          tokenNetwork={getTokensNetwork(networksFilterOptions, asset)}
+                          onClick={setSelectedAsset}
+                        />
+                      }}
                     />
-                  }}
-                />
-
-                {assetsForFilteredNetwork.length > 5 && !isShowingAllOptions &&
-                  <LinkText onClick={showAllBuyOptions}>
-                    {getLocale('braveWalletButtonMore')}
-                  </LinkText>
+                  : <Column>
+                      <LoadingIcon opacity={1} size='100px' color='interactive05' />
+                    </Column>
                 }
+
+                <VerticalSpace space='12px' />
 
               </SelectAssetWrapper>
 

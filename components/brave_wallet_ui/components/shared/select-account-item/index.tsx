@@ -48,7 +48,7 @@ export function SelectAccountItem (props: Props) {
   }, [account])
 
   const PossibleToolTip = React.useMemo(() => {
-    return showTooltips ? Tooltip : ({ children, text, isAddress }: React.PropsWithChildren<{
+    return showTooltips ? Tooltip : ({ children }: React.PropsWithChildren<{
       text: string
       isAddress?: boolean
     }>) => (children || <></>) as JSX.Element
