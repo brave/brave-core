@@ -6,10 +6,7 @@
 import * as React from 'react'
 
 // Types
-import { UserAssetInfoType, BraveWallet } from 'components/brave_wallet_ui/constants/types'
-
-// Components
-import { NFTGridViewItem } from './nft-grid-view-item'
+import { UserAssetInfoType } from '../../../../../../constants/types'
 
 // Styled Components
 import {
@@ -18,21 +15,16 @@ import {
 
 interface Props {
   nonFungibleTokens: UserAssetInfoType[]
-  onSelectAsset: (asset: BraveWallet.BlockchainToken | undefined) => void
+  renderToken: (item: UserAssetInfoType) => JSX.Element
 }
 
-export const NFTGridView = (props: Props) => {
-  const { nonFungibleTokens, onSelectAsset } = props
-
+export const NFTGridView = ({
+  nonFungibleTokens,
+  renderToken
+}: Props) => {
   return (
     <StyledWrapper>
-      {nonFungibleTokens.map((token: UserAssetInfoType) =>
-        <NFTGridViewItem
-          key={`${token.asset.tokenId}-${token.asset.contractAddress}`}
-          token={token}
-          onSelectAsset={() => onSelectAsset(token.asset)}
-        />
-      )}
+      {nonFungibleTokens.map(renderToken)}
     </StyledWrapper>
   )
 }

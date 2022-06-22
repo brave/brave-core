@@ -12,6 +12,14 @@ export const ScrollContainer = styled.div`
   overflow-y: scroll;
 `
 
+export const SelectAssetWrapper = styled.div`
+  display: flex;
+  width: 100%;
+  align-items: stretch;
+  justify-content: center;
+  flex-direction: column;
+`
+
 export const SearchWrapper = styled.div`
   display: flex;
   align-items: center;

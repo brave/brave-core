@@ -2,7 +2,7 @@ import * as React from 'react'
 import { create } from 'ethereum-blockies'
 
 // types
-import { UserAccountType } from '../../../constants/types'
+import { BraveWallet, UserAccountType } from '../../../constants/types'
 
 // utils
 import { reduceAddress } from '../../../utils/reduce-address'
@@ -12,6 +12,7 @@ import { reduceAccountDisplayName } from '../../../utils/reduce-account-name'
 import Tooltip from '../tooltip'
 
 // style
+import { IconsWrapper, NetworkIconWrapper } from '../style'
 import {
   StyledWrapper,
   AccountAddress,
@@ -21,10 +22,12 @@ import {
   LeftSide,
   BigCheckMark
 } from './style'
+import CreateNetworkIcon from '../create-network-icon'
 
 export interface Props {
   account: UserAccountType
   selectedAccount?: UserAccountType
+  selectedNetwork?: BraveWallet.NetworkInfo
   onSelectAccount?: () => void
   showTooltips?: boolean
   fullAddress?: boolean
@@ -36,7 +39,8 @@ export function SelectAccountItem (props: Props) {
     selectedAccount,
     onSelectAccount,
     showTooltips,
-    fullAddress
+    fullAddress,
+    selectedNetwork
   } = props
 
   const orb = React.useMemo(() => {
@@ -53,14 +57,28 @@ export function SelectAccountItem (props: Props) {
   return (
     <StyledWrapper onClick={onSelectAccount}>
       <LeftSide>
-        <AccountCircle orb={orb} />
+        {!selectedNetwork && <AccountCircle orb={orb} />}
+        {selectedNetwork &&
+          <IconsWrapper>
+            <AccountCircle orb={orb} style={{ width: '36px', height: '36px' }} />
+            <NetworkIconWrapper>
+              <CreateNetworkIcon size='small' network={selectedNetwork} />
+            </NetworkIconWrapper>
+          </IconsWrapper>
+        }
         <AccountAndAddress>
+
           <PossibleToolTip text={account.name} isAddress>
             <AccountName>{reduceAccountDisplayName(account.name, 22)}</AccountName>
           </PossibleToolTip>
+
           <PossibleToolTip text={account.address} isAddress>
-            <AccountAddress>{fullAddress ? account.address : reduceAddress(account.address)}</AccountAddress>
+            <AccountAddress>{fullAddress
+              ? account.address
+              : reduceAddress(account.address)
+            }</AccountAddress>
           </PossibleToolTip>
+
         </AccountAndAddress>
       </LeftSide>
       {account.address.toLowerCase() === selectedAccount?.address.toLowerCase() &&

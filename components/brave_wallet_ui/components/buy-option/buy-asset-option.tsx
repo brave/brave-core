@@ -13,18 +13,16 @@ import Amount from '../../utils/amount'
 import { getLocale } from '../../../common/locale'
 
 // components
-import { MediumAssetIcon } from '../shared/style'
+import { IconsWrapper, MediumAssetIcon, NetworkIconWrapper } from '../shared/style'
 import { withPlaceholderIcon, CreateNetworkIcon } from '../shared'
 
 // styles
 import {
   BuyAssetOptionWrapper,
   AssetName,
-  IconsWrapper,
   NameAndIcon,
   NameColumn,
-  NetworkDescriptionText,
-  NetworkIconWrapper
+  NetworkDescriptionText
 } from './buy-asset-option.styles'
 
 interface Props {
@@ -67,7 +65,7 @@ export const BuyAssetOptionItem = ({
       {token.visible &&
         <BuyAssetOptionWrapper isSelected={isSelected} onClick={handleOnClick}>
           <NameAndIcon>
-            <IconsWrapper>
+            <IconsWrapper marginRight='14px'>
               <AssetIconWithPlaceholder asset={token} network={tokenNetwork} />
               {tokenNetwork && token.contractAddress !== '' && !isPanel &&
                 <NetworkIconWrapper>

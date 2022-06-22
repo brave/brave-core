@@ -13,7 +13,6 @@ import {
 import {
   BraveWallet,
   UserAssetInfoType,
-  DefaultCurrencies,
   WalletRoutes,
   WalletState
 } from '../../../../../../constants/types'
@@ -22,13 +21,10 @@ import {
 import { getLocale } from '../../../../../../../common/locale'
 
 // Components
-import { SearchBar } from '../../../../../shared'
-import {
-  PortfolioAssetItem,
-  AddButton,
-  NetworkFilterSelector,
-  AssetFilterSelector
-} from '../../../..'
+import SearchBar from '../../../../../shared/search-bar/index'
+import AddButton from '../../../../add-button/index'
+import NetworkFilterSelector from '../../../../network-filter-selector/index'
+import { AssetFilterSelector } from '../../../../asset-filter-selector/asset-filter-selector'
 import { NFTGridView } from '../nft-grid-view/nft-grid-view'
 
 // Hooks
@@ -43,17 +39,13 @@ import {
   FilterTokenRow
 } from '../../style'
 
+type ViewMode = 'list' | 'grid'
+
 interface Props {
   userAssetList: UserAssetInfoType[]
   networks: BraveWallet.NetworkInfo[]
-
-  tokenPrices: BraveWallet.AssetPrice[]
-  defaultCurrencies: DefaultCurrencies
-  hideBalances: boolean
-  onSelectAsset: (asset: BraveWallet.BlockchainToken | undefined) => void
-
-  // renderToken: (item: UserAssetInfoType) => JSX.Element
-  // hideAddButton?: boolean
+  renderToken: (item: UserAssetInfoType, viewMode: ViewMode) => JSX.Element
+  hideAddButton?: boolean
   // enableScroll?: boolean
   // maxListHeight?: string
 }
@@ -61,25 +53,20 @@ interface Props {
 export const TokenLists = ({
   userAssetList,
   networks,
-
-  tokenPrices,
-  defaultCurrencies,
-  hideBalances,
-  onSelectAsset
-
-  // renderToken,
+  renderToken,
+  hideAddButton
   // enableScroll,
-  // hideAddButton,
   // maxListHeight
 }: Props) => {
   // routing
   const history = useHistory()
 
   // redux
+  const tokenSpotPrices = useSelector(({ wallet }: { wallet: WalletState }) => wallet.transactionSpotPrices)
   const selectedAssetFilter = useSelector(({ wallet }: { wallet: WalletState }) => wallet.selectedAssetFilter)
 
   // hooks
-  const { computeFiatAmount } = usePricing(tokenPrices)
+  const { computeFiatAmount } = usePricing(tokenSpotPrices)
 
   // state
   const [searchValue, setSearchValue] = React.useState<string>('')
@@ -115,7 +102,7 @@ export const TokenLists = ({
     [filteredAssetList]
   )
 
-  const sortedAssetList: UserAssetInfoType[] = React.useMemo(() => {
+  const sortedFungibleTokensList: UserAssetInfoType[] = React.useMemo(() => {
     if (
       selectedAssetFilter.id === 'highToLow' ||
       selectedAssetFilter.id === 'lowToHigh'
@@ -159,6 +146,12 @@ export const TokenLists = ({
     history.push(WalletRoutes.AddAssetModal)
   }, [])
 
+  const renderTokenInViewMode = React.useCallback((mode: ViewMode) => {
+    return (token: UserAssetInfoType) => {
+      return renderToken(token, mode)
+    }
+  }, [renderToken])
+
   // render
   return (
     <>
@@ -181,51 +174,32 @@ export const TokenLists = ({
 
       {selectedAssetFilter.id !== 'nfts' ? (
         <>
-          {sortedAssetList.map((item) =>
-            <PortfolioAssetItem
-              spotPrices={tokenPrices}
-              defaultCurrencies={defaultCurrencies}
-              action={() => onSelectAsset(item.asset)}
-              key={`${item.asset.contractAddress}-${item.asset.symbol}-${item.asset.chainId}`}
-              assetBalance={item.assetBalance}
-              token={item.asset}
-              hideBalances={hideBalances}
-              networks={networks}
-            />
-          )}
+          {sortedFungibleTokensList.map(renderTokenInViewMode('list'))}
           {nonFungibleTokens.length !== 0 &&
             <>
               <Spacer />
               <DividerText>{getLocale('braveWalletTopNavNFTS')}</DividerText>
               <SubDivider />
-              {nonFungibleTokens.map((item) =>
-                <PortfolioAssetItem
-                  spotPrices={tokenPrices}
-                  defaultCurrencies={defaultCurrencies}
-                  action={() => onSelectAsset(item.asset)}
-                  key={`${item.asset.contractAddress}-${item.asset.tokenId}-${item.asset.chainId}`}
-                  assetBalance={item.assetBalance}
-                  token={item.asset}
-                  hideBalances={hideBalances}
-                  networks={networks}
-                />
-              )}
+              {nonFungibleTokens.map(renderTokenInViewMode('list'))}
             </>
           }
         </>
       ) : (
         <NFTGridView
           nonFungibleTokens={nonFungibleTokens}
-          onSelectAsset={onSelectAsset}
+          renderToken={renderTokenInViewMode('grid')}
         />
       )}
-      <ButtonRow>
-        <AddButton
-          buttonType='secondary'
-          onSubmit={showAddAssetsModal}
-          text={getLocale('braveWalletAccountsEditVisibleAssets')}
-        />
-      </ButtonRow>
+
+      {!hideAddButton &&
+        <ButtonRow>
+          <AddButton
+            buttonType='secondary'
+            onSubmit={showAddAssetsModal}
+            text={getLocale('braveWalletAccountsEditVisibleAssets')}
+          />
+        </ButtonRow>
+      }
     </>
   )
 }

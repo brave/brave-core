@@ -24,6 +24,12 @@ import EyeOffIcon from '../../assets/svg-icons/eye-off-icon.svg'
 import CheckmarkSvg from '../../assets/svg-icons/big-checkmark.svg'
 import CloseSvg from '../../assets/svg-icons/close.svg'
 
+// Spacers
+export const VerticalSpacer = styled.div<{ space: number | string }>`
+  display: flex;
+  height: ${p => typeof p.space === 'number' ? `${p.space}px` : p.space};
+`
+
 // Text
 export const LinkText = styled.a`
   font-family: 'Poppins';
@@ -95,61 +101,6 @@ export const StatusBubble = styled.div<{ status: BraveWallet.TransactionStatus }
   margin-right: 6px;
 `
 
-// Icons
-export interface AssetIconProps {
-  icon?: string
-}
-
-export const AssetIconFactory = styled.img.attrs<AssetIconProps>(props => ({
-  src: stripERC20TokenImageURL(props.icon)
-    ? props.icon
-
-    // Display theme background (using a transparent image) if no icon to
-    // render.
-    : transparent40x40Image,
-
-  // Defer loading the image until it reaches a calculated distance from the
-  // viewport, as defined by the browser.
-  //
-  // Ref: https://web.dev/browser-level-image-lazy-loading
-  loading: 'lazy'
-}))
-
-export const GreenCheckmark = styled.div`
-  display: inline-block;
-  width: 10px;
-  height: 10px;
-  margin-right: 4px;
-  background-color: ${(p) => p.theme.color.successBorder};
-  mask: url(${CheckmarkSvg}) no-repeat 50% 50%;
-  mask-size: contain;
-  vertical-align: middle;
-`
-
-export const ErrorXIcon = styled.div`
-  width: 12px;
-  height: 12px;
-  background-color: ${(p) => p.theme.color.errorIcon};
-  -webkit-mask-image: url(${CloseSvg});
-  mask-image: url(${CloseSvg});
-  mask-size: 12px;
-  mask-position: center center;
-  margin-right: 10px;
-  margin-bottom: 10px;
-  display: inline-block;
-`
-
-export const LoadingIcon = styled(LoaderIcon as FC<{}>)<{
-  size: string
-  color: keyof IThemeProps['color']
-  opacity: number
-}>`
-  color: ${p => p.theme.color[p.color]};
-  height: ${(p) => p.size};
-  width: ${(p) => p.size};
-  opacity: ${(p) => p.opacity};
-`
-
 // Buttons
 export const WalletButton = styled.button<{
   isDraggedOver?: boolean
@@ -215,8 +166,99 @@ export const ToggleVisibilityButton = styled(WalletButton)<{
   mask-repeat: no-repeat;
 `
 
-// Spacers
-export const VerticalSpacer = styled.div<{ space: number | string }>`
+// Icons
+export interface AssetIconProps {
+  icon?: string
+}
+
+export const AssetIconFactory = styled.img.attrs<AssetIconProps>(props => ({
+  src: stripERC20TokenImageURL(props.icon)
+    ? props.icon
+
+    // Display theme background (using a transparent image) if no icon to
+    // render.
+    : transparent40x40Image,
+
+  // Defer loading the image until it reaches a calculated distance from the
+  // viewport, as defined by the browser.
+  //
+  // Ref: https://web.dev/browser-level-image-lazy-loading
+  loading: 'lazy'
+}))
+
+// Construct styled-component using JS object instead of string, for editor
+// support with custom AssetIconFactory.
+//
+// Ref: https://styled-components.com/docs/advanced#style-objects
+export const SmallAssetIcon = AssetIconFactory<AssetIconProps>({
+  width: '24px',
+  height: 'auto'
+})
+export const MediumAssetIcon = AssetIconFactory<AssetIconProps>({
+  width: '40px',
+  height: 'auto'
+})
+export const LargeAssetIcon = AssetIconFactory<AssetIconProps>({
+  width: '60px',
+  height: 'auto'
+})
+
+export const GreenCheckmark = styled.div`
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  margin-right: 4px;
+  background-color: ${(p) => p.theme.color.successBorder};
+  mask: url(${CheckmarkSvg}) no-repeat 50% 50%;
+  mask-size: contain;
+  vertical-align: middle;
+`
+
+export const ErrorXIcon = styled.div`
+  width: 12px;
+  height: 12px;
+  background-color: ${(p) => p.theme.color.errorIcon};
+  -webkit-mask-image: url(${CloseSvg});
+  mask-image: url(${CloseSvg});
+  mask-size: 12px;
+  mask-position: center center;
+  margin-right: 10px;
+  margin-bottom: 10px;
+  display: inline-block;
+`
+
+export const LoadingIcon = styled(LoaderIcon as FC<{}>)<{
+  size: string
+  color: keyof IThemeProps['color']
+  opacity: number
+}>`
+  color: ${p => p.theme.color[p.color]};
+  height: ${(p) => p.size};
+  width: ${(p) => p.size};
+  opacity: ${(p) => p.opacity};
+`
+
+// Asset Icon containers
+export const IconsWrapper = styled.div<{
+  marginRight?: string
+}>`
   display: flex;
-  height: ${p => typeof p.space === 'number' ? `${p.space}px` : p.space};
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+  position: relative;
+  margin-right: ${(p) => p.marginRight || '6px'};
+`
+
+export const NetworkIconWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+  position: absolute;
+  bottom: 0px;
+  right: 4px;
+  background-color: ${(p) => p.theme.color.background02};
+  border-radius: 100%;
+  padding: 2px;
 `
