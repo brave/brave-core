@@ -20,6 +20,7 @@
 #include "chrome/browser/bookmarks/bookmark_model_factory.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
+#include "chrome/browser/net/profile_network_context_service_test_utils.h"
 #include "chrome/browser/profiles/profile_manager.h"
 #include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/ui/browser_list.h"
@@ -197,6 +198,9 @@ IN_PROC_BROWSER_TEST_F(TorProfileManagerTest,
 #if BUILDFLAG(ENABLE_IPFS)
   EXPECT_EQ(ipfs::IpfsServiceFactory::GetForContext(tor_profile), nullptr);
 #endif
+  // Ambient Auth should be disabled
+  EXPECT_FALSE(AmbientAuthenticationTestHelper::IsAmbientAuthAllowedForProfile(
+      tor_profile));
 }
 
 IN_PROC_BROWSER_TEST_F(TorProfileManagerTest, SwitchToTorProfileInheritPrefs) {
