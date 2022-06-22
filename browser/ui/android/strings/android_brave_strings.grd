@@ -2962,8 +2962,8 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_BRAVE_WALLET_PROVIDE_ENCRYPTION_KEY_TITLE" desc="Provide encryption key title message dialog description.">
       A DApp is requesting your public encryption key
     </message>
-    <message name="IDS_BRAVE_WALLET_PROVIDE_ENCRYPTION_KEY_DESCRIPTION" desc="Provide encryption key panel details">
-      is requesting your wallets public encryption key. If you consent to providing this key, the site will be able to compose encrypted messages to you.
+    <message name="IDS_BRAVE_WALLET_PROVIDE_ENCRYPTION_KEY_DESCRIPTION" desc="Provide Encryption Key Panel Details">
+      <ph name="URL">%1$s</ph> is requesting your wallet's public encryption key. If you consent to providing this key, the site will be able to compose encrypted messages to you.
     </message>
     <message name="IDS_BRAVE_WALLET_PROVIDE_ENCRYPTION_KEY_BUTTON" desc="Provide encryption key panel provide button">
       Provide
