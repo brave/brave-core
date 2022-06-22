@@ -13,6 +13,7 @@
 #include "base/json/json_reader.h"
 #include "base/no_destructor.h"
 #include "base/strings/utf_string_conversions.h"
+#include "brave/components/brave_vpn/buildflags/buildflags.h"
 #include "brave/components/brave_vpn/mojom/brave_vpn.mojom.h"
 #include "content/public/renderer/render_frame.h"
 #include "content/public/renderer/v8_value_converter.h"
@@ -42,11 +43,16 @@ bool SkusJSHandler::EnsureConnected() {
     render_frame_->GetBrowserInterfaceBroker()->GetInterface(
         skus_service_.BindNewPipeAndPassReceiver());
   }
+  bool result = skus_service_.is_bound();
+#if BUILDFLAG(ENABLE_BRAVE_VPN) && !BUILDFLAG(IS_ANDROID)
   if (!vpn_service_.is_bound()) {
     render_frame_->GetBrowserInterfaceBroker()->GetInterface(
         vpn_service_.BindNewPipeAndPassReceiver());
   }
-  return skus_service_.is_bound() && vpn_service_.is_bound();
+  result = result && vpn_service_.is_bound();
+#endif
+
+  return result;
 }
 
 void SkusJSHandler::AddJavaScriptObjectToFrame(v8::Local<v8::Context> context) {
@@ -311,9 +317,9 @@ void SkusJSHandler::OnCredentialSummary(
     std::ignore = resolver->Reject(context, result);
     return;
   }
-
+#if BUILDFLAG(ENABLE_BRAVE_VPN) && !BUILDFLAG(IS_ANDROID)
   vpn_service_->LoadPurchasedState(domain);
-
+#endif
   v8::Local<v8::Value> local_result =
       content::V8ValueConverter::Create()->ToV8Value(result_dict, context);
   std::ignore = resolver->Resolve(context, local_result);
