@@ -15,6 +15,7 @@ import org.chromium.brave_wallet.mojom.BlockchainRegistry;
 import org.chromium.brave_wallet.mojom.BraveWalletConstants;
 import org.chromium.brave_wallet.mojom.BraveWalletService;
 import org.chromium.brave_wallet.mojom.CoinType;
+import org.chromium.brave_wallet.mojom.DecryptRequest;
 import org.chromium.brave_wallet.mojom.EthTxManagerProxy;
 import org.chromium.brave_wallet.mojom.GetEncryptionPublicKeyRequest;
 import org.chromium.brave_wallet.mojom.JsonRpcService;
@@ -86,6 +87,7 @@ public class CryptoModel {
         this.mBraveWalletService = mBraveWalletService;
         this.mAssetRatioService = mAssetRatioService;
         mPendingTxHelper.setTxService(mTxService);
+        mNetworkModel.resetServices(mJsonRpcService);
         init();
     }
 
@@ -118,6 +120,16 @@ public class CryptoModel {
         });
     }
 
+    public void getDecryptMessageRequest(Callback1<DecryptRequest> onResult) {
+        mBraveWalletService.getPendingDecryptRequests(requests -> {
+            DecryptRequest request = null;
+            if (requests != null && requests.length > 0) {
+                request = requests[0];
+            }
+            onResult.call(request);
+        });
+    }
+
     public void refreshTransactions() {
         mKeyringService.getKeyringInfo(BraveWalletConstants.DEFAULT_KEYRING_ID,
                 keyringInfo -> { mPendingTxHelper.setAccountInfos(keyringInfo.accountInfos); });
@@ -138,7 +150,6 @@ public class CryptoModel {
     public void processPublicEncryptionKey(boolean isApproved, Origin origin) {
         mBraveWalletService.notifyGetPublicKeyRequestProcessed(isApproved, origin);
         mBraveWalletService.getPendingGetEncryptionPublicKeyRequests(requests -> {
-            // either process the next request (if available) or finish the flow
             if (requests != null && requests.length > 0) {
                 _mProcessNextDAppsRequest.postValue(
                         BraveWalletDAppsActivity.ActivityType.GET_ENCRYPTION_PUBLIC_KEY_REQUEST);
@@ -150,6 +161,18 @@ public class CryptoModel {
 
     public void clearDappsState() {
         _mProcessNextDAppsRequest.postValue(null);
+    }
+
+    public void processDecryptRequest(boolean isApproved, Origin origin) {
+        mBraveWalletService.notifyDecryptRequestProcessed(isApproved, origin);
+        mBraveWalletService.getPendingDecryptRequests(requests -> {
+            if (requests != null && requests.length > 0) {
+                _mProcessNextDAppsRequest.postValue(
+                        BraveWalletDAppsActivity.ActivityType.DECRYPT_REQUEST);
+            } else {
+                _mProcessNextDAppsRequest.postValue(BraveWalletDAppsActivity.ActivityType.FINISH);
+            }
+        });
     }
 
     public PendingTxHelper getPendingTxHelper() {
