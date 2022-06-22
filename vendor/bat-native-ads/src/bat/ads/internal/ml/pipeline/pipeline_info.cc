@@ -48,10 +48,10 @@ PipelineEmbeddingInfo::PipelineEmbeddingInfo(const PipelineEmbeddingInfo& info) 
 
 PipelineEmbeddingInfo::~PipelineEmbeddingInfo() = default;
 
-PipelineEmbeddingInfo::PipelineEmbeddingInfo(const int& version,
+PipelineEmbeddingInfo::PipelineEmbeddingInfo(const int version,
                            const std::string& timestamp,
                            const std::string& locale,
-                           const int& embeddings_dim,
+                           const int embeddings_dim,
                            const std::map<std::string, VectorData>& embeddings)
     : version(version),
       timestamp(timestamp),

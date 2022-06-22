@@ -28,7 +28,6 @@
 #include "bat/ads/internal/base/platform/platform_helper.h"
 #include "bat/ads/internal/base/search_engine/search_engine_results_page_util.h"
 #include "bat/ads/internal/base/search_engine/search_engine_util.h"
-#include "bat/ads/internal/base/strings/string_html_parse_util.h"
 #include "bat/ads/internal/base/strings/string_strip_util.h"
 #include "bat/ads/internal/base/time/time_formatting_util.h"
 #include "bat/ads/internal/base/url/url_util.h"
@@ -250,12 +249,7 @@ void AdsImpl::OnHtmlLoaded(const int32_t tab_id,
   }
   last_html_loaded_hash_ = hash;
 
-  const std::string og = ParseTagAttribute(html, "og:description", "content");
-  std::string og_stripped = StripNonAlphaCharacters(og);
-  std::transform(og_stripped.begin(), og_stripped.end(), og_stripped.begin(), ::tolower);
-  if (og_stripped.length() > 0) {
-    text_embedding_processor_->Process(og_stripped);
-  }
+  text_embedding_processor_->Process(html);
 
   transfer_->MaybeTransferAd(tab_id, redirect_chain);
 

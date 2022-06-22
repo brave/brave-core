@@ -16,6 +16,8 @@
 #include "bat/ads/internal/ml/pipeline/pipeline_info.h"
 #include "bat/ads/internal/ml/pipeline/pipeline_util.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
+#include "bat/ads/internal/base/strings/string_strip_util.h"
+#include "bat/ads/internal/base/strings/string_html_parse_util.h"
 
 namespace ads {
 namespace ml {
@@ -66,8 +68,17 @@ bool EmbeddingProcessing::FromValue(base::Value resource_value) {
   return is_initialized_;
 }
 
-VectorData EmbeddingProcessing::EmbedText(
-    const std::string& text) const {
+std::string EmbeddingProcessing::CleanText(const std::string& text, bool is_html) {
+  std::string cleaned_text = text;
+  if (is_html) {
+    cleaned_text = ParseTagAttribute(cleaned_text, "og:description", "content");
+  }
+  cleaned_text = StripNonAlphaCharacters(cleaned_text);
+  std::transform(cleaned_text.begin(), cleaned_text.end(), cleaned_text.begin(), ::tolower);
+  return cleaned_text;
+}
+
+VectorData EmbeddingProcessing::EmbedText(const std::string& text) const {
 
   std::vector<float> embedding_initialize(embeddings_dim_, 0.0);
   VectorData embedding_vector = VectorData(embedding_initialize);
@@ -93,6 +104,10 @@ VectorData EmbeddingProcessing::EmbedText(
       n_tokens += 1.0;
     }
     token = strtok(NULL, " ");
+  }
+
+  if (n_tokens == 0.0) {
+    return embedding_vector;
   }
 
   embedding_vector.VectorDivideByScalar(n_tokens);

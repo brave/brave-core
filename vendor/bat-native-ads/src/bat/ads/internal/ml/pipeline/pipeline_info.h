@@ -6,6 +6,7 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ML_PIPELINE_PIPELINE_INFO_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ML_PIPELINE_PIPELINE_INFO_H_
 
+#include <map>
 #include <string>
 
 #include "bat/ads/internal/ml/ml_aliases.h"
@@ -39,10 +40,10 @@ struct PipelineEmbeddingInfo final {
   PipelineEmbeddingInfo(const PipelineEmbeddingInfo& info);
   ~PipelineEmbeddingInfo();
 
-  PipelineEmbeddingInfo(const int& version,
+  PipelineEmbeddingInfo(const int version,
                const std::string& timestamp,
                const std::string& locale,
-               const int& embeddings_dim,
+               const int embeddings_dim,
                const std::map<std::string, VectorData>& embeddings);
 
   int version;

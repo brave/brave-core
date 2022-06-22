@@ -35,8 +35,14 @@ void TextEmbedding::Process(const std::string& text) {
   }
 
   ml::pipeline::EmbeddingProcessing* embedding_proc_pipeline = resource_->get();
-  ml::VectorData text_embedding = embedding_proc_pipeline->EmbedText(text);
 
+  const std::string cleaned_text = embedding_proc_pipeline->CleanText(text, true);
+  if (cleaned_text.length() == 0) {
+    BLOG(1, "No text available for embedding");
+    return;
+  }
+
+  ml::VectorData text_embedding = embedding_proc_pipeline->EmbedText(cleaned_text);
   if (text_embedding.VectorSumElements() == 0.0) {
     BLOG(1, "Text not embedded");
     return;

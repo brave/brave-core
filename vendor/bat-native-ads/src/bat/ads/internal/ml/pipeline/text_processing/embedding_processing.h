@@ -39,6 +39,8 @@ class EmbeddingProcessing final {
 
   bool FromValue(base::Value resource_value);
 
+  std::string CleanText(const std::string& text, bool is_html);
+
   VectorData EmbedText(const std::string& text) const;
 
  private:
