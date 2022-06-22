@@ -41,7 +41,6 @@ class SubdivisionTargeting final : public PrefManagerObserver {
   std::string GetLazySubdivisionCode() const;
 
   bool IsSupportedLocale(const std::string& locale) const;
-  void MaybeAllowForLocale(const std::string& locale);
 
   bool ShouldAutoDetect() const;
 
