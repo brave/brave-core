@@ -41,6 +41,7 @@ source_set("unit_tests") {
   testonly = true
 
   sources = []
+
   # Remove when linux fixed https://github.com/brave/brave-browser/issues/15817.
   if (is_win || is_mac) {
     sources += [ "skus_service_unittest.cc" ]
