@@ -76,6 +76,17 @@ export const Column = styled.div<FlexProps>`
   justify-content: ${(p) => p.justifyContent ?? 'center'};
 `
 
+export const ScrollableColumn = styled(Column)<{
+  scrollDisabled?: boolean
+  maxHeight?: string
+  marginBottom?: string
+}>`
+  justify-content: flex-start;
+  max-height: ${(p) => p.maxHeight || '100%'};
+  overflow-y: ${(p) => p.scrollDisabled ? 'unset' : 'auto'};
+  margin-bottom: ${(p) => p.marginBottom || 'unset'};
+`
+
 export const Flex = styled.div`
   flex: 1;
 `
