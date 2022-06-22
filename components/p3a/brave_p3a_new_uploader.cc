@@ -7,6 +7,7 @@
 
 #include <utility>
 
+#include "brave/components/p3a/brave_p3a_config.h"
 #include "brave/components/p3a/network_annotations.h"
 #include "net/base/load_flags.h"
 #include "services/network/public/cpp/resource_request.h"
@@ -19,15 +20,9 @@ namespace brave {
 BraveP3ANewUploader::BraveP3ANewUploader(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
     UploadCompleteCallback upload_callback,
-    const GURL& p3a_json_endpoint,
-    const GURL& p2a_json_endpoint,
-    const GURL& p3a_star_endpoint,
-    const GURL& p2a_star_endpoint)
+    BraveP3AConfig* config)
     : url_loader_factory_(url_loader_factory),
-      p3a_json_endpoint_(p3a_json_endpoint),
-      p2a_json_endpoint_(p2a_json_endpoint),
-      p3a_star_endpoint_(p3a_star_endpoint),
-      p2a_star_endpoint_(p2a_star_endpoint),
+      config_(config),
       upload_callback_(upload_callback) {}
 
 BraveP3ANewUploader::~BraveP3ANewUploader() = default;
@@ -37,10 +32,12 @@ void BraveP3ANewUploader::UploadLog(const std::string& compressed_log_data,
                                     bool is_star) {
   auto resource_request = std::make_unique<network::ResourceRequest>();
   if (log_type == "p2a") {
-    resource_request->url = is_star ? p2a_star_endpoint_ : p2a_json_endpoint_;
+    resource_request->url =
+        is_star ? config_->p2a_star_upload_url : config_->p2a_json_upload_url;
     resource_request->headers.SetHeader("X-Brave-P2A", "?1");
   } else if (log_type == "p3a") {
-    resource_request->url = is_star ? p3a_star_endpoint_ : p3a_json_endpoint_;
+    resource_request->url =
+        is_star ? config_->p3a_star_upload_url : config_->p3a_json_upload_url;
     resource_request->headers.SetHeader("X-Brave-P3A", "?1");
   } else {
     NOTREACHED();

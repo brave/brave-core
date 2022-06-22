@@ -3,11 +3,12 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/p3a/brave_p3a_message_manager_config.h"
+#include "brave/components/p3a/brave_p3a_config.h"
 
 #include <string>
 
 #include "base/command_line.h"
+#include "base/logging.h"
 #include "brave/components/p3a/brave_p3a_switches.h"
 #include "brave/components/p3a/buildflags.h"
 
@@ -50,7 +51,7 @@ void LoadBool(base::CommandLine* cmdline,
 
 }  // namespace
 
-MessageManagerConfig::MessageManagerConfig()
+BraveP3AConfig::BraveP3AConfig()
     : average_upload_interval(base::Seconds(kDefaultUploadIntervalSeconds)),
       randomize_upload_interval(true),
       p3a_json_upload_url(BUILDFLAG(P3A_JSON_UPLOAD_URL)),
@@ -60,9 +61,9 @@ MessageManagerConfig::MessageManagerConfig()
       star_randomness_url(BUILDFLAG(STAR_RANDOMNESS_UPLOAD_URL)),
       star_randomness_info_url(BUILDFLAG(STAR_RANDOMNESS_INFO_URL)) {}
 
-MessageManagerConfig::~MessageManagerConfig() {}
+BraveP3AConfig::~BraveP3AConfig() {}
 
-void MessageManagerConfig::LoadFromCommandLine() {
+void BraveP3AConfig::LoadFromCommandLine() {
   base::CommandLine* cmdline = base::CommandLine::ForCurrentProcess();
 
   LoadTimeDelta(cmdline, switches::kP3AUploadIntervalSeconds,
@@ -85,6 +86,17 @@ void MessageManagerConfig::LoadFromCommandLine() {
 
   LoadBool(cmdline, switches::kP3AIgnoreServerErrors, &ignore_server_errors);
   LoadBool(cmdline, switches::kP3AUseLocalRandomness, &use_local_randomness);
+
+  VLOG(2) << "BraveP3AConfig parameters are:"
+          << ", average_upload_interval_ = " << average_upload_interval
+          << ", randomize_upload_interval_ = " << randomize_upload_interval
+          << ", p3a_json_upload_url_ = " << p3a_json_upload_url.spec()
+          << ", p2a_json_upload_url_ = " << p2a_json_upload_url.spec()
+          << ", p3a_star_upload_url_ = " << p3a_star_upload_url.spec()
+          << ", p2a_star_upload_url_ = " << p2a_star_upload_url.spec()
+          << ", star_randomness_info_url_ = " << star_randomness_info_url.spec()
+          << ", star_randomness_url_ = " << star_randomness_url.spec()
+          << ", rotation_interval_ = " << rotation_interval;
 }
 
 }  // namespace brave

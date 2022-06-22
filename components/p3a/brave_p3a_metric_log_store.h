@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_P3A_BRAVE_P3A_LOG_STORE_H_
-#define BRAVE_COMPONENTS_P3A_BRAVE_P3A_LOG_STORE_H_
+#ifndef BRAVE_COMPONENTS_P3A_BRAVE_P3A_METRIC_LOG_STORE_H_
+#define BRAVE_COMPONENTS_P3A_BRAVE_P3A_METRIC_LOG_STORE_H_
 
 #include <string>
 
@@ -24,7 +24,7 @@ namespace brave {
 // All logs (not only unsent are persistent), and all logs could be loaded
 // using |LoadPersistedUnsentLogs()|. We should fix this at some point since
 // for now persisted entries never expire.
-class BraveP3ALogStore : public metrics::LogStore {
+class BraveP3AMetricLogStore : public metrics::LogStore {
  public:
   class Delegate {
    public:
@@ -35,9 +35,11 @@ class BraveP3ALogStore : public metrics::LogStore {
     virtual ~Delegate() {}
   };
 
-  BraveP3ALogStore(Delegate* delegate, PrefService* local_state, bool is_star);
+  BraveP3AMetricLogStore(Delegate* delegate,
+                         PrefService* local_state,
+                         bool is_star);
 
-  ~BraveP3ALogStore() override;
+  ~BraveP3AMetricLogStore() override;
 
   static void RegisterPrefs(PrefRegistrySimple* registry);
 
@@ -106,4 +108,4 @@ class BraveP3ALogStore : public metrics::LogStore {
 
 }  // namespace brave
 
-#endif  // BRAVE_COMPONENTS_P3A_BRAVE_P3A_LOG_STORE_H_
+#endif  // BRAVE_COMPONENTS_P3A_BRAVE_P3A_METRIC_LOG_STORE_H_

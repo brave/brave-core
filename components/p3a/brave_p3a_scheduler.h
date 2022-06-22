@@ -13,10 +13,9 @@ namespace brave {
 
 class BraveP3AScheduler : public metrics::MetricsScheduler {
  public:
-  explicit BraveP3AScheduler(
-      const base::RepeatingClosure& upload_callback,
-      const base::RepeatingCallback<base::TimeDelta(void)>&
-          get_interval_callback);
+  explicit BraveP3AScheduler(const base::RepeatingClosure& upload_callback,
+                             bool randomize_upload_interval,
+                             base::TimeDelta average_upload_interval);
   BraveP3AScheduler(const BraveP3AScheduler&) = delete;
   BraveP3AScheduler& operator=(const BraveP3AScheduler&) = delete;
   ~BraveP3AScheduler() override;
@@ -32,6 +31,10 @@ class BraveP3AScheduler : public metrics::MetricsScheduler {
 
   // Time to wait for the next upload attempt if the next one fails.
   base::TimeDelta backoff_interval_;
+
+  bool randomize_upload_interval_;
+
+  base::TimeDelta average_upload_interval_;
 };
 
 }  // namespace brave

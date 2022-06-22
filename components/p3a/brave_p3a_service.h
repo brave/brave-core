@@ -25,6 +25,8 @@ class SharedURLLoaderFactory;
 
 namespace brave {
 
+struct BraveP3AConfig;
+
 class BraveP3AMessageManager;
 
 // Core class for Brave Privacy-Preserving Product Analytics machinery.
@@ -69,6 +71,8 @@ class BraveP3AService : public base::RefCountedThreadSafe<BraveP3AService> {
 
   // General prefs:
   bool initialized_ = false;
+
+  std::unique_ptr<BraveP3AConfig> config_;
 
   std::unique_ptr<BraveP3AMessageManager> message_manager_;
 

@@ -5,7 +5,6 @@
 
 #include "brave/components/p3a/brave_p3a_service.h"
 
-#include <memory>
 #include <string>
 #include <utility>
 
@@ -47,8 +46,11 @@ bool IsSuspendedMetric(base::StringPiece metric_name,
 BraveP3AService::BraveP3AService(PrefService* local_state,
                                  std::string channel,
                                  std::string week_of_install)
-    : message_manager_(
-          new BraveP3AMessageManager(local_state, channel, week_of_install)) {}
+    : config_(new BraveP3AConfig()) {
+  config_->LoadFromCommandLine();
+  message_manager_.reset(new BraveP3AMessageManager(local_state, config_.get(),
+                                                    channel, week_of_install));
+}
 
 BraveP3AService::~BraveP3AService() = default;
 

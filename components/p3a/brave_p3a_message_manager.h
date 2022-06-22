@@ -11,8 +11,8 @@
 
 #include "base/memory/ref_counted.h"
 #include "base/strings/string_piece_forward.h"
-#include "brave/components/p3a/brave_p3a_log_store.h"
-#include "brave/components/p3a/brave_p3a_message_manager_config.h"
+#include "brave/components/p3a/brave_p3a_config.h"
+#include "brave/components/p3a/brave_p3a_metric_log_store.h"
 #include "brave/components/p3a/p3a_message.h"
 
 class PrefService;
@@ -23,18 +23,21 @@ class SharedURLLoaderFactory;
 
 namespace brave {
 
-class BraveP3AScheduler;
-class BraveP3ARotationScheduler;
-class BraveP3AUploader;
+struct BraveP3AConfig;
+
 class BraveP3ANewUploader;
 class BraveP3AStarLogStore;
-class BraveP3AStarManager;
+class BraveP3ARotationScheduler;
+class BraveP3AScheduler;
+class BraveP3AStar;
+class BraveP3AUploader;
 
 struct RandomnessServerInfo;
 
-class BraveP3AMessageManager : public BraveP3ALogStore::Delegate {
+class BraveP3AMessageManager : public BraveP3AMetricLogStore::Delegate {
  public:
   BraveP3AMessageManager(PrefService* local_state,
+                         BraveP3AConfig* config,
                          std::string channel,
                          std::string week_of_install);
   ~BraveP3AMessageManager() override;
@@ -48,11 +51,6 @@ class BraveP3AMessageManager : public BraveP3ALogStore::Delegate {
   void RemoveMetricValue(base::StringPiece histogram_name);
 
  private:
-  void InitMessageMeta(std::string channel, std::string week_of_install);
-
-  // Updates things that change over time: week of survey, etc.
-  void UpdateMessageMeta();
-
   void StartScheduledUpload(bool is_star);
   void StartScheduledStarPrep();
 
@@ -77,11 +75,11 @@ class BraveP3AMessageManager : public BraveP3ALogStore::Delegate {
 
   MessageMetainfo message_meta_;
 
-  MessageManagerConfig config_;
+  BraveP3AConfig* config_;
 
   // Components:
-  std::unique_ptr<BraveP3ALogStore> json_log_store_;
-  std::unique_ptr<BraveP3ALogStore> star_prep_log_store_;
+  std::unique_ptr<BraveP3AMetricLogStore> json_log_store_;
+  std::unique_ptr<BraveP3AMetricLogStore> star_prep_log_store_;
   std::unique_ptr<BraveP3AStarLogStore> star_send_log_store_;
 
   // See `brave_p3a_new_uploader.h`
@@ -90,7 +88,7 @@ class BraveP3AMessageManager : public BraveP3ALogStore::Delegate {
   std::unique_ptr<BraveP3AScheduler> star_prep_scheduler_;
   std::unique_ptr<BraveP3AScheduler> star_upload_scheduler_;
 
-  std::unique_ptr<BraveP3AStarManager> star_manager_;
+  std::unique_ptr<BraveP3AStar> star_manager_;
 
   std::unique_ptr<BraveP3ARotationScheduler> rotation_scheduler_;
 };

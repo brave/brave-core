@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_P3A_BRAVE_P3A_STAR_MANAGER_H_
-#define BRAVE_COMPONENTS_P3A_BRAVE_P3A_STAR_MANAGER_H_
+#ifndef BRAVE_COMPONENTS_P3A_BRAVE_P3A_STAR_H_
+#define BRAVE_COMPONENTS_P3A_BRAVE_P3A_STAR_H_
 
 #include <memory>
 #include <string>
@@ -26,14 +26,15 @@ class SimpleURLLoader;
 
 namespace brave {
 
-struct MessageMetainfo;
+class MessageMetainfo;
 
 struct RandomnessServerInfo {
   uint8_t current_epoch;
   base::Time next_epoch_time;
 };
+struct BraveP3AConfig;
 
-class BraveP3AStarManager {
+class BraveP3AStar {
  public:
   using StarMessageCallback = base::RepeatingCallback<void(
       const char* histogram_name,
@@ -42,15 +43,13 @@ class BraveP3AStarManager {
   using RandomnessServerInfoCallback =
       base::RepeatingCallback<void(RandomnessServerInfo* server_info)>;
 
-  BraveP3AStarManager(
+  BraveP3AStar(
       PrefService* local_state,
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
       StarMessageCallback message_callback,
       RandomnessServerInfoCallback info_callback,
-      const GURL& randomness_server_url,
-      const GURL& randomness_server_info_url,
-      bool use_local_randomness);
-  ~BraveP3AStarManager();
+      BraveP3AConfig* config);
+  ~BraveP3AStar();
 
   static void RegisterPrefs(PrefRegistrySimple* registry);
 
@@ -107,11 +106,9 @@ class BraveP3AStarManager {
 
   std::unique_ptr<RandomnessServerInfo> rnd_server_info_;
 
-  GURL randomness_server_url_;
-  GURL randomness_server_info_url_;
-  bool use_local_randomness_;
+  BraveP3AConfig* config_;
 };
 
 }  // namespace brave
 
-#endif  // BRAVE_COMPONENTS_P3A_BRAVE_P3A_STAR_MANAGER_H_
+#endif  // BRAVE_COMPONENTS_P3A_BRAVE_P3A_STAR_H_

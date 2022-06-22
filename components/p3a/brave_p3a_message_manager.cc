@@ -6,21 +6,15 @@
 #include "brave/components/p3a/brave_p3a_message_manager.h"
 
 #include "base/bind.h"
-#include "base/i18n/timezone.h"
 #include "base/json/json_writer.h"
 #include "base/logging.h"
 #include "base/strings/string_number_conversions.h"
-#include "brave/components/brave_referrals/common/pref_names.h"
-#include "brave/components/brave_stats/browser/brave_stats_updater_util.h"
-#include "brave/components/p3a/brave_p3a_log_store.h"
 #include "brave/components/p3a/brave_p3a_new_uploader.h"
 #include "brave/components/p3a/brave_p3a_rotation_scheduler.h"
 #include "brave/components/p3a/brave_p3a_scheduler.h"
+#include "brave/components/p3a/brave_p3a_star.h"
 #include "brave/components/p3a/brave_p3a_star_log_store.h"
-#include "brave/components/p3a/brave_p3a_star_manager.h"
 #include "brave/components/p3a/pref_names.h"
-#include "brave/components/version_info/version_info.h"
-#include "brave/vendor/brave_base/random.h"
 #include "components/metrics/log_store.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
@@ -32,104 +26,75 @@ namespace {
 
 const size_t kMaxEpochsToRetain = 4;
 
-base::TimeDelta GetRandomizedUploadInterval(
-    base::TimeDelta average_upload_interval) {
-  const auto delta = base::Seconds(
-      brave_base::random::Geometric(average_upload_interval.InSecondsF()));
-  return delta;
-}
-
 }  // namespace
 
 BraveP3AMessageManager::BraveP3AMessageManager(PrefService* local_state,
+                                               BraveP3AConfig* config,
                                                std::string channel,
                                                std::string week_of_install)
-    : local_state_(local_state) {
-  config_.LoadFromCommandLine();
-  InitMessageMeta(channel, week_of_install);
+    : local_state_(local_state), config_(config) {
+  message_meta_.Init(local_state, channel, week_of_install);
+
+  // Init log stores.
+  json_log_store_.reset(new BraveP3AMetricLogStore(this, local_state_, false));
+  json_log_store_->LoadPersistedUnsentLogs();
+  star_prep_log_store_.reset(
+      new BraveP3AMetricLogStore(this, local_state_, true));
+  star_prep_log_store_->LoadPersistedUnsentLogs();
+  star_send_log_store_.reset(
+      new BraveP3AStarLogStore(local_state_, kMaxEpochsToRetain));
 }
 
 BraveP3AMessageManager::~BraveP3AMessageManager() {}
 
 void BraveP3AMessageManager::RegisterPrefs(PrefRegistrySimple* registry) {
-  BraveP3ALogStore::RegisterPrefs(registry);
+  BraveP3AMetricLogStore::RegisterPrefs(registry);
   BraveP3AStarLogStore::RegisterPrefs(registry);
-  BraveP3AStarManager::RegisterPrefs(registry);
+  BraveP3AStar::RegisterPrefs(registry);
   BraveP3ARotationScheduler::RegisterPrefs(registry);
 }
 
 void BraveP3AMessageManager::Init(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory) {
-  // Init log stores.
-  json_log_store_.reset(new BraveP3ALogStore(this, local_state_, false));
-  json_log_store_->LoadPersistedUnsentLogs();
-  star_prep_log_store_.reset(new BraveP3ALogStore(this, local_state_, true));
-  star_prep_log_store_->LoadPersistedUnsentLogs();
-  star_send_log_store_.reset(
-      new BraveP3AStarLogStore(local_state_, kMaxEpochsToRetain));
-  star_send_log_store_->LoadPersistedUnsentLogs();
-
   // Init other components.
   new_uploader_.reset(new BraveP3ANewUploader(
       url_loader_factory,
       base::BindRepeating(&BraveP3AMessageManager::OnLogUploadComplete,
                           base::Unretained(this)),
-      GURL(config_.p3a_json_upload_url), GURL(config_.p2a_json_upload_url),
-      GURL(config_.p3a_star_upload_url), GURL(config_.p2a_star_upload_url)));
-
-  base::RepeatingCallback<base::TimeDelta(void)> schedule_interval_callback =
-      config_.randomize_upload_interval
-          ? base::BindRepeating(GetRandomizedUploadInterval,
-                                config_.average_upload_interval)
-          : base::BindRepeating([](base::TimeDelta x) { return x; },
-                                config_.average_upload_interval);
+      config_));
 
   json_upload_scheduler_.reset(new BraveP3AScheduler(
       base::BindRepeating(&BraveP3AMessageManager::StartScheduledUpload,
                           base::Unretained(this), false),
-      schedule_interval_callback));
+      config_->randomize_upload_interval, config_->average_upload_interval));
   star_prep_scheduler_.reset(new BraveP3AScheduler(
       base::BindRepeating(&BraveP3AMessageManager::StartScheduledStarPrep,
                           base::Unretained(this)),
-      schedule_interval_callback));
+      config_->randomize_upload_interval, config_->average_upload_interval));
   star_upload_scheduler_.reset(new BraveP3AScheduler(
       base::BindRepeating(&BraveP3AMessageManager::StartScheduledUpload,
                           base::Unretained(this), true),
-      schedule_interval_callback));
+      config_->randomize_upload_interval, config_->average_upload_interval));
 
   json_upload_scheduler_->Start();
   star_upload_scheduler_->Start();
 
   rotation_scheduler_.reset(new BraveP3ARotationScheduler(
-      local_state_, config_.rotation_interval,
+      local_state_, config_->rotation_interval,
       base::BindRepeating(&BraveP3AMessageManager::DoJsonRotation,
                           base::Unretained(this)),
       base::BindRepeating(&BraveP3AMessageManager::DoStarRotation,
                           base::Unretained(this))));
 
-  star_manager_.reset(new BraveP3AStarManager(
+  star_manager_.reset(new BraveP3AStar(
       local_state_, url_loader_factory,
       base::BindRepeating(&BraveP3AMessageManager::OnNewStarMessage,
                           base::Unretained(this)),
       base::BindRepeating(&BraveP3AMessageManager::OnRandomnessServerInfoReady,
                           base::Unretained(this)),
-      config_.star_randomness_url, config_.star_randomness_info_url,
-      config_.use_local_randomness));
+      config_));
 
   star_manager_->UpdateRandomnessServerInfo();
-
-  VLOG(2) << "BraveP3AMessageManager parameters are:"
-          << ", average_upload_interval_ = " << config_.average_upload_interval
-          << ", randomize_upload_interval_ = "
-          << config_.randomize_upload_interval
-          << ", p3a_json_upload_url_ = " << config_.p3a_json_upload_url.spec()
-          << ", p2a_json_upload_url_ = " << config_.p2a_json_upload_url.spec()
-          << ", p3a_star_upload_url_ = " << config_.p3a_star_upload_url.spec()
-          << ", p2a_star_upload_url_ = " << config_.p2a_star_upload_url.spec()
-          << ", star_randomness_info_url_ = "
-          << config_.star_randomness_info_url.spec()
-          << ", star_randomness_url_ = " << config_.star_randomness_url.spec()
-          << ", rotation_interval_ = " << config_.rotation_interval;
 }
 
 void BraveP3AMessageManager::UpdateMetricValue(base::StringPiece histogram_name,
@@ -163,7 +128,7 @@ void BraveP3AMessageManager::OnLogUploadComplete(bool is_ok,
                                                  bool is_star) {
   VLOG(2) << "BraveP3AMessageManager::UploadFinished ok = " << is_ok
           << " HTTP response = " << response_code;
-  if (config_.ignore_server_errors) {
+  if (config_->ignore_server_errors) {
     is_ok = true;
   }
   metrics::LogStore* log_store =
@@ -267,45 +232,11 @@ void BraveP3AMessageManager::StartScheduledStarPrep() {
   }
 }
 
-void BraveP3AMessageManager::InitMessageMeta(std::string channel,
-                                             std::string week_of_install) {
-  message_meta_.platform = brave_stats::GetPlatformIdentifier();
-  message_meta_.channel = channel;
-  message_meta_.version =
-      version_info::GetBraveVersionWithoutChromiumMajorVersion();
-
-  if (!week_of_install.empty()) {
-    message_meta_.date_of_install = brave_stats::GetYMDAsDate(week_of_install);
-  } else {
-    message_meta_.date_of_install = base::Time::Now();
-  }
-  message_meta_.woi =
-      brave_stats::GetIsoWeekNumber(message_meta_.date_of_install);
-
-  message_meta_.country_code =
-      base::ToUpperASCII(base::CountryCodeForCurrentTimezone());
-  message_meta_.refcode = local_state_->GetString(kReferralPromoCode);
-  MaybeStripRefcodeAndCountry(&message_meta_);
-
-  UpdateMessageMeta();
-
-  VLOG(2) << "Message meta: " << message_meta_.platform << " "
-          << message_meta_.channel << " " << message_meta_.version << " "
-          << message_meta_.woi << " " << message_meta_.wos << " "
-          << message_meta_.country_code << " " << message_meta_.refcode;
-}
-
-void BraveP3AMessageManager::UpdateMessageMeta() {
-  message_meta_.date_of_survey = base::Time::Now();
-  message_meta_.wos =
-      brave_stats::GetIsoWeekNumber(message_meta_.date_of_survey);
-}
-
 std::string BraveP3AMessageManager::SerializeLog(
     base::StringPiece histogram_name,
     const uint64_t value,
     bool is_star) {
-  UpdateMessageMeta();
+  message_meta_.Update();
 
   if (is_star) {
     return GenerateP3AStarMessage(histogram_name, value, message_meta_);

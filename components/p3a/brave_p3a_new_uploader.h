@@ -11,7 +11,6 @@
 
 #include "base/callback.h"
 #include "base/memory/ref_counted.h"
-#include "url/gurl.h"
 
 namespace network {
 class SharedURLLoaderFactory;
@@ -23,6 +22,8 @@ class HttpResponseHeaders;
 }  // namespace net
 
 namespace brave {
+
+struct BraveP3AConfig;
 
 // This will replace the "normal" uploader when the server-side is ready.
 // The difference is only in endpoint, mime and lack of base64 encoding.
@@ -36,10 +37,7 @@ class BraveP3ANewUploader {
   BraveP3ANewUploader(
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
       UploadCompleteCallback upload_callback,
-      const GURL& p3a_json_endpoint,
-      const GURL& p2a_json_endpoint,
-      const GURL& p3a_star_endpoint,
-      const GURL& p2a_star_endpoint);
+      BraveP3AConfig* config);
 
   BraveP3ANewUploader(const BraveP3ANewUploader&) = delete;
   BraveP3ANewUploader& operator=(const BraveP3ANewUploader&) = delete;
@@ -57,10 +55,7 @@ class BraveP3ANewUploader {
  private:
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
 
-  const GURL p3a_json_endpoint_;
-  const GURL p2a_json_endpoint_;
-  const GURL p3a_star_endpoint_;
-  const GURL p2a_star_endpoint_;
+  BraveP3AConfig* config_;
 
   UploadCompleteCallback upload_callback_;
 

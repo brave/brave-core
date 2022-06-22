@@ -3,15 +3,15 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_P3A_BRAVE_P3A_MESSAGE_MANAGER_CONFIG_H_
-#define BRAVE_COMPONENTS_P3A_BRAVE_P3A_MESSAGE_MANAGER_CONFIG_H_
+#ifndef BRAVE_COMPONENTS_P3A_BRAVE_P3A_CONFIG_H_
+#define BRAVE_COMPONENTS_P3A_BRAVE_P3A_CONFIG_H_
 
 #include "base/time/time.h"
 #include "url/gurl.h"
 
 namespace brave {
 
-struct MessageManagerConfig {
+struct BraveP3AConfig {
   // The average interval between uploading different values.
   base::TimeDelta average_upload_interval;
   bool randomize_upload_interval = true;
@@ -29,12 +29,12 @@ struct MessageManagerConfig {
 
   bool use_local_randomness = false;
 
-  MessageManagerConfig();
-  ~MessageManagerConfig();
+  BraveP3AConfig();
+  ~BraveP3AConfig();
 
   void LoadFromCommandLine();
 };
 
 }  // namespace brave
 
-#endif  // BRAVE_COMPONENTS_P3A_BRAVE_P3A_MESSAGE_MANAGER_CONFIG_H_
+#endif  // BRAVE_COMPONENTS_P3A_BRAVE_P3A_CONFIG_H_
