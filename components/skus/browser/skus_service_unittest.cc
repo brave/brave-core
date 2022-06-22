@@ -253,8 +253,8 @@ class SkusServiceTestUnitTest : public testing::Test {
     url_loader_factory_.SetInterceptor(base::BindRepeating(
         &SkusServiceTestUnitTest::Interceptor, base::Unretained(this)));
 
-    skus_service_.reset(new skus::SkusServiceImpl(
-        prefs(), url_loader_factory_.GetSafeWeakWrapper()));
+    skus_service_ = std::make_unique<skus::SkusServiceImpl>(
+        prefs(), url_loader_factory_.GetSafeWeakWrapper());
   }
 
   std::string GetCredentialsSummary(const std::string& domain) {
