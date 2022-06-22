@@ -12,15 +12,16 @@
 #include "base/containers/flat_set.h"
 #include "base/strings/string_piece.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "third_party/blink/renderer/platform/wtf/text/atomic_string.h"
 
 namespace {
 
 base::flat_set<base::StringPiece> kTestAllowedFontFamilies =
     base::MakeFlatSet<base::StringPiece>(std::vector<base::StringPiece>{
-        "Roboto",
-        "Caro",
-        "Tenso",
-        "Elfo",
+        "roboto",
+        "caro",
+        "tenso",
+        "elfo",
     });
 base::flat_set<base::StringPiece> kEmptyFontSet =
     base::MakeFlatSet<base::StringPiece>(std::vector<base::StringPiece>{});
@@ -104,7 +105,7 @@ TEST(BraveFontWhitelistTest, Locales) {
 }
 
 TEST(BraveFontWhitelistTest, KnownFonts) {
-  const std::array<std::tuple<base::StringPiece, bool>, 7> test_cases = {
+  const std::array<std::tuple<AtomicString, bool>, 7> test_cases = {
 #if BUILDFLAG(IS_MAC)
     std::make_tuple<>("Arial Unicode MS", true),
     std::make_tuple<>("Calibri", false),
@@ -132,17 +133,18 @@ TEST(BraveFontWhitelistTest, KnownFonts) {
 #endif
   };
   for (const auto& c : test_cases) {
-    EXPECT_EQ(brave::GetAllowedFontFamilies().contains(std::get<0>(c)),
+    EXPECT_EQ(brave::GetAllowedFontFamilies().contains(
+                  std::get<0>(c).LowerASCII().Ascii()),
               std::get<1>(c));
   }
 }
 
 TEST(BraveFontWhitelistTest, CaseInsensitivity) {
-  const std::array<std::tuple<base::StringPiece, bool>, 7> test_cases = {
+  const std::array<std::tuple<AtomicString, bool>, 7> test_cases = {
 #if BUILDFLAG(IS_MAC)
     std::make_tuple<>("Arial unicode MS", true),
     std::make_tuple<>("Calibri", false),
-    std::make_tuple<>("gill gans", true),
+    std::make_tuple<>("gill sans", true),
     std::make_tuple<>("helvetica", true),
     std::make_tuple<>("Helvetica Neue", true),
     std::make_tuple<>("MeNlO", true),
@@ -166,7 +168,8 @@ TEST(BraveFontWhitelistTest, CaseInsensitivity) {
 #endif
   };
   for (const auto& c : test_cases) {
-    EXPECT_EQ(brave::GetAllowedFontFamilies().contains(std::get<0>(c)),
+    EXPECT_EQ(brave::GetAllowedFontFamilies().contains(
+                  std::get<0>(c).LowerASCII().Ascii()),
               std::get<1>(c));
   }
 }
@@ -177,7 +180,7 @@ TEST(BraveFontWhitelistTest, API) {
   EXPECT_EQ(brave::CanRestrictFontFamiliesOnThisPlatform(), true);
   base::flat_set<base::StringPiece> allowed(brave::GetAllowedFontFamilies());
   EXPECT_EQ(allowed.size(), 4UL);
-  EXPECT_EQ(allowed.contains("Elfo"), true);
+  EXPECT_EQ(allowed.contains("elfo"), true);
   brave::set_allowed_font_families_for_testing(false /* can_restrict_fonts */,
                                                kEmptyFontSet);
   EXPECT_EQ(brave::CanRestrictFontFamiliesOnThisPlatform(), false);

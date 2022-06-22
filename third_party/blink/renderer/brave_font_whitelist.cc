@@ -633,86 +633,86 @@ base::flat_set<base::StringPiece> kAllowedFontFamilies =
 #if BUILDFLAG(IS_WIN)
 base::flat_set<base::StringPiece> kAdditionalAllowedFontFamiliesAR =
     base::MakeFlatSet<base::StringPiece>(std::vector<base::StringPiece>{
-        "Aldhabi", "Andalus", "Arabic Typesetting", "Microsoft Uighur",
-        "Microsoft Uighur Bold", "Sakkal Majalla", "Sakkal Majalla Bold",
-        "Simplified Arabic", "Simplified Arabic Bold",
-        "Simplified Arabic Fixed", "Traditional Arabic",
-        "Traditional Arabic Bold", "Urdu Typesetting",
-        "Urdu Typesetting Bold"});
+        "aldhabi", "andalus", "arabic typesetting", "microsoft uighur",
+        "microsoft uighur bold", "sakkal majalla", "sakkal majalla bold",
+        "simplified arabic", "simplified arabic bold",
+        "simplified arabic fixed", "traditional arabic",
+        "traditional arabic bold", "urdu typesetting",
+        "urdu typesetting bold"});
 base::flat_set<base::StringPiece> kAdditionalAllowedFontFamiliesAS =
     base::MakeFlatSet<base::StringPiece>(std::vector<base::StringPiece>{
-        "Shonar Bangla", "Shonar Bangla Bold", "Vrinda", "Vrinda Bold"});
+        "shonar bangla", "shonar bangla bold", "vrinda", "vrinda bold"});
 base::flat_set<base::StringPiece> kAdditionalAllowedFontFamiliesIU =
     base::MakeFlatSet<base::StringPiece>(
-        std::vector<base::StringPiece>{"Euphemia"});
+        std::vector<base::StringPiece>{"euphemia"});
 base::flat_set<base::StringPiece> kAdditionalAllowedFontFamiliesHI =
     base::MakeFlatSet<base::StringPiece>(std::vector<base::StringPiece>{
-        "Aparajita", "Aparajita Italic", "Aparajita Bold",
-        "Aparajita Bold Italic", "Kokila", "Kokila Italic", "Kokila Bold",
-        "Kokila Bold Italic", "Mangal", "Mangal Bold", "Sanskrit Text",
-        "Utsaah", "Utsaah Italic", "Utsaah Bold", "Utsaah Bold Italic"});
+        "aparajita", "aparajita italic", "aparajita bold",
+        "aparajita bold italic", "kokila", "kokila italic", "kokila bold",
+        "kokila bold italic", "mangal", "mangal bold", "sanskrit text",
+        "utsaah", "utsaah italic", "utsaah bold", "utsaah bold italic"});
 base::flat_set<base::StringPiece> kAdditionalAllowedFontFamiliesAM =
     base::MakeFlatSet<base::StringPiece>(
-        std::vector<base::StringPiece>{"Nyala"});
+        std::vector<base::StringPiece>{"nyala"});
 base::flat_set<base::StringPiece> kAdditionalAllowedFontFamiliesGU =
     base::MakeFlatSet<base::StringPiece>(
-        std::vector<base::StringPiece>{"Shruti", "Shruti Bold"});
+        std::vector<base::StringPiece>{"shruti", "shruti bold"});
 base::flat_set<base::StringPiece> kAdditionalAllowedFontFamiliesPA =
     base::MakeFlatSet<base::StringPiece>(
-        std::vector<base::StringPiece>{"Raavi", "Raavi Bold"});
+        std::vector<base::StringPiece>{"raavi", "raavi bold"});
 base::flat_set<base::StringPiece> kAdditionalAllowedFontFamiliesZH =
     base::MakeFlatSet<base::StringPiece>(std::vector<base::StringPiece>{
-        "DengXian Light", "DengXian", "DengXian Bold", "FangSong", "KaiTi",
-        "SimHei", "DFKai-SB", "MingLiU", "MingLiU_HKSCS", "PMingLiU"});
+        "dengxian light", "dengxian", "dengxian bold", "fangsong", "kaiti",
+        "simhei", "dfkai-sb", "mingliu", "mingliu_hkscs", "pmingliu"});
 base::flat_set<base::StringPiece> kAdditionalAllowedFontFamiliesHE =
     base::MakeFlatSet<base::StringPiece>(std::vector<base::StringPiece>{
-        "Aharoni Bold", "David", "David Bold", "FrankRuehl", "Gisha",
-        "Gisha Bold", "Levenim MT", "Levenim MT Bold", "Miriam", "Miriam Fixed",
-        "Narkisim", "Rod"});
+        "aharoni bold", "david", "david bold", "frankruehl", "gisha",
+        "gisha bold", "levenim mt", "levenim mt bold", "miriam", "miriam fixed",
+        "narkisim", "rod"});
 base::flat_set<base::StringPiece> kAdditionalAllowedFontFamiliesJA =
     base::MakeFlatSet<base::StringPiece>(
-        std::vector<base::StringPiece>{"BIZ UDGothic",
-                                       "BIZ UDGothic Bold",
-                                       "BIZ UDPGothic",
-                                       "BIZ UDPGothic Bold",
-                                       "BIZ UDMincho Medium",
-                                       "BIZ UDPMincho Medium",
-                                       "Meiryo",
-                                       "Meiryo Italic",
-                                       "Meiryo Bold",
-                                       "Meiryo Bold Italic",
-                                       "Meiryo UI",
-                                       "Meiryo UI Italic",
-                                       "Meiryo UI Bold",
-                                       "Meiryo UI Bold Italic",
-                                       "MS Mincho",
-                                       "MS PMincho",
-                                       "UD Digi Kyokasho",
-                                       "UD Digi Kyokasho N-B",
-                                       "UD Digi Kyokasho NK-B",
-                                       "UD Digi Kyokasho NK-R",
-                                       "UD Digi Kyokasho NP-B",
-                                       "UD Digi Kyokasho NP-R",
-                                       "UD Digi Kyokasho N-R",
-                                       "Yu Mincho Light",
-                                       "Yu Mincho Regular",
-                                       "Yu Mincho Demibold"});
+        std::vector<base::StringPiece>{"biz udgothic",
+                                       "biz udgothic bold",
+                                       "biz udpgothic",
+                                       "biz udpgothic bold",
+                                       "biz udmincho medium",
+                                       "biz udpmincho medium",
+                                       "meiryo",
+                                       "meiryo italic",
+                                       "meiryo bold",
+                                       "meiryo bold italic",
+                                       "meiryo ui",
+                                       "meiryo ui italic",
+                                       "meiryo ui bold",
+                                       "meiryo ui bold italic",
+                                       "ms mincho",
+                                       "ms pmincho",
+                                       "ud digi kyokasho",
+                                       "ud digi kyokasho n-b",
+                                       "ud digi kyokasho nk-b",
+                                       "ud digi kyokasho nk-r",
+                                       "ud digi kyokasho np-b",
+                                       "ud digi kyokasho np-r",
+                                       "ud digi kyokasho n-r",
+                                       "yu mincho light",
+                                       "yu mincho regular",
+                                       "yu mincho demibold"});
 base::flat_set<base::StringPiece> kAdditionalAllowedFontFamiliesKN =
     base::MakeFlatSet<base::StringPiece>(
-        std::vector<base::StringPiece>{"Tunga", "Tunga Bold"});
+        std::vector<base::StringPiece>{"tunga", "tunga bold"});
 base::flat_set<base::StringPiece> kAdditionalAllowedFontFamiliesKM =
     base::MakeFlatSet<base::StringPiece>(std::vector<base::StringPiece>{
-        "DaunPenh", "Khmer UI", "Khmer UI Bold", "MoolBoran"});
+        "daunpenh", "khmer ui", "khmer ui bold", "moolboran"});
 base::flat_set<base::StringPiece> kAdditionalAllowedFontFamiliesKO =
     base::MakeFlatSet<base::StringPiece>(std::vector<base::StringPiece>{
-        "Batang", "BatangChe", "Dotum", "DotumChe", "Gulim", "GulimChe",
-        "Gungsuh", "GungsuhChe"});
+        "batang", "batangche", "dotum", "dotumche", "gulim", "gulimche",
+        "gungsuh", "gungsuhche"});
 base::flat_set<base::StringPiece> kAdditionalAllowedFontFamiliesLO =
     base::MakeFlatSet<base::StringPiece>(
-        std::vector<base::StringPiece>{"DokChampa", "Lao UI", "Lao UI Bold"});
+        std::vector<base::StringPiece>{"dokchampa", "lao ui", "lao ui bold"});
 base::flat_set<base::StringPiece> kAdditionalAllowedFontFamiliesML =
     base::MakeFlatSet<base::StringPiece>(
-        std::vector<base::StringPiece>{"Kartika", "Kartika Bold"});
+        std::vector<base::StringPiece>{"kartika", "kartika bold"});
 #else
 base::flat_set<base::StringPiece> kAdditionalAllowedFontFamiliesAR =
     base::MakeFlatSet<base::StringPiece>(std::vector<base::StringPiece>{});
