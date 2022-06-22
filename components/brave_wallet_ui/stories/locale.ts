@@ -554,5 +554,9 @@ provideStrings({
   braveWalletSolanaProgramID: 'Program ID:',
   braveWalletSolanaMaxRetries: 'Max Retries:',
   braveWalletSolanaPreflightCommitment: 'Preflight Commitment:',
-  braveWalletSolanaSkipPreflight: 'Skip Preflight:'
+  braveWalletSolanaSkipPreflight: 'Skip Preflight:',
+
+  // Help Center
+  braveWalletHelpCenter: 'Help Center',
+  braveWalletHelpCenterText: 'Need help? See'
 })

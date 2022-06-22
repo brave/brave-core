@@ -112,3 +112,18 @@ export const ButtonWrapper = styled.div`
   width: 100%;
   height: 100%;
 `
+
+export const HelpCenterText = styled.div`
+  font-family: Poppins;
+  font-size: 13px;
+  line-height: 12px;
+  font-weight: 400;
+  letter-spacing: 0.01em;
+  color: ${p => p.theme.color.text01};
+  margin-top: 20px;
+`
+
+export const HelpCenterLink = styled.a`
+  color: ${p => p.theme.palette.blurple500};
+  text-decoration: none;
+`

@@ -11,6 +11,8 @@ import LockIconD from './lock-icon-d.svg'
 import GeminiIcon from './gemini-icon.svg'
 import SafeIcon from './safe-icon.svg'
 import InternetIcon from './internet.svg'
+import InfoIcon from './info.svg'
+import SettingsAdvancedIcon from './settings.svg'
 
 export {
   WalletIconL,
@@ -25,5 +27,7 @@ export {
   LockIconD,
   GeminiIcon,
   SafeIcon,
-  InternetIcon
+  InternetIcon,
+  InfoIcon,
+  SettingsAdvancedIcon
 }

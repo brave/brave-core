@@ -21,7 +21,8 @@ import {
   LockIcon,
   ExplorerIcon,
   BackupIcon,
-  ConnectedSitesIcon
+  ConnectedSitesIcon,
+  HelpCenterIcon
 } from './style'
 
 export interface Props {
@@ -47,6 +48,14 @@ const WalletMorePopup = (props: Props) => {
 
   const onClickConnectedSites = React.useCallback(() => {
     chrome.tabs.create({ url: 'brave://settings/content/ethereum' }, () => {
+      if (chrome.runtime.lastError) {
+        console.error('tabs.create failed: ' + chrome.runtime.lastError.message)
+      }
+    })
+  }, [])
+
+  const onClickHelpCenter = React.useCallback(() => {
+    chrome.tabs.create({ url: 'https://support.brave.com/hc/en-us/articles/4415497656461-Brave-Wallet-FAQ' }, () => {
       if (chrome.runtime.lastError) {
         console.error('tabs.create failed: ' + chrome.runtime.lastError.message)
       }
@@ -86,6 +95,11 @@ const WalletMorePopup = (props: Props) => {
           <PopupButtonText>{getLocale('braveWalletTransactionExplorer')}</PopupButtonText>
         </PopupButton>
       }
+
+      <PopupButton onClick={onClickHelpCenter}>
+        <HelpCenterIcon />
+        <PopupButtonText>{getLocale('braveWalletHelpCenter')}</PopupButtonText>
+      </PopupButton>
     </StyledWrapper>
   )
 }
