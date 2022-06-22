@@ -27,6 +27,7 @@ export interface Props {
   selectedAccount?: UserAccountType
   onSelectAccount?: () => void
   showTooltips?: boolean
+  fullAddress?: boolean
 }
 
 export function SelectAccountItem (props: Props) {
@@ -34,7 +35,8 @@ export function SelectAccountItem (props: Props) {
     account,
     selectedAccount,
     onSelectAccount,
-    showTooltips
+    showTooltips,
+    fullAddress
   } = props
 
   const orb = React.useMemo(() => {
@@ -57,7 +59,7 @@ export function SelectAccountItem (props: Props) {
             <AccountName>{reduceAccountDisplayName(account.name, 22)}</AccountName>
           </PossibleToolTip>
           <PossibleToolTip text={account.address} isAddress>
-            <AccountAddress>{reduceAddress(account.address)}</AccountAddress>
+            <AccountAddress>{fullAddress ? account.address : reduceAddress(account.address)}</AccountAddress>
           </PossibleToolTip>
         </AccountAndAddress>
       </LeftSide>
