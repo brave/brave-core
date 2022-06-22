@@ -85,7 +85,7 @@ class BraveSearchPromotionCell: UITableViewCell {
   }
   
   private let dismissButton = UIButton().then {
-    $0.titleLabel?.font = UIFont.systemFont(ofSize: 14, weight: .semibold)
+    $0.titleLabel?.font = .preferredFont(forTextStyle: .headline)
     $0.titleLabel?.minimumScaleFactor = 0.75
     $0.setTitleColor(.braveOrange, for: .normal)
     $0.setTitle(
