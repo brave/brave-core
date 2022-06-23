@@ -57,8 +57,13 @@ export const useCopyToClipboard = () => {
     setIsCopied(true)
   }, [])
 
+  const resetCopyState = React.useCallback(() => {
+    setIsCopied(false)
+  }, [])
+
   return {
     copyToClipboard: _copyToClipboard,
+    resetCopyState,
     isCopied
   }
 }

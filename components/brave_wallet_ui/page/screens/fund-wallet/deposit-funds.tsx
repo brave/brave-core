@@ -37,9 +37,11 @@ import { useIsMounted } from '../../../common/hooks/useIsMounted'
 import { useCopyToClipboard } from '../../../common/hooks/use-copy-to-clipboard'
 
 // style
-import { Column, CopyButton, LoadingIcon, Row } from '../../../components/shared/style'
-import { Description, MainWrapper, NextButtonRow, StyledWrapper, Title, VerticalSpace } from '../onboarding/onboarding.style'
+import { Column, CopyButton, HorizontalSpace, LoadingIcon, Row, VerticalSpace } from '../../../components/shared/style'
+import { Description, MainWrapper, NextButtonRow, StyledWrapper, Title } from '../onboarding/onboarding.style'
 import {
+  AddressText,
+  AddressTextLabel,
   QRCodeImage,
   ScrollContainer,
   SearchWrapper,
@@ -76,7 +78,7 @@ export const DepositFundsScreen = () => {
   // custom hooks
   const isMounted = useIsMounted()
   const { needsAccount } = useHasAccount()
-  const { copyToClipboard, isCopied } = useCopyToClipboard()
+  const { copyToClipboard, isCopied, resetCopyState } = useCopyToClipboard()
 
   // state
   const [showDepositAddress, setShowDepositAddress] = React.useState<boolean>(false)
@@ -192,9 +194,12 @@ export const DepositFundsScreen = () => {
   const onSelectAccountFromSearch = React.useCallback((account: WalletAccountType) => () => {
     closeAccountSearch()
     dispatch(WalletActions.selectAccount(account))
-  }, [closeAccountSearch])
+    resetCopyState()
+  }, [closeAccountSearch, resetCopyState])
 
   const onBack = React.useCallback(() => {
+    resetCopyState()
+
     if (!showDepositAddress && history.length) {
       return history.goBack()
     }
@@ -204,7 +209,7 @@ export const DepositFundsScreen = () => {
       setShowDepositAddress(false)
       return closeAccountSearch()
     }
-  }, [showDepositAddress, closeAccountSearch, history])
+  }, [showDepositAddress, closeAccountSearch, history, resetCopyState])
 
   const nextStep = React.useCallback(() => {
     if (!isNextStepEnabled || !selectedAssetNetwork) {
@@ -265,7 +270,10 @@ export const DepositFundsScreen = () => {
             <StepsNavigation
               goBack={onBack}
               onSkip={goToPortfolio}
-              skipButtonText={getLocale('braveWalletButtonClose')}
+              skipButtonText={showDepositAddress
+                ? getLocale('braveWalletTransactionCompleteNextCTA')
+                : getLocale('braveWalletButtonClose')
+              }
               steps={[]}
               currentStep=''
             />
@@ -334,9 +342,9 @@ export const DepositFundsScreen = () => {
           {!needsAccount && showDepositAddress &&
             <>
               {!showAccountSearch &&
-                <Column>
+                <Column gap={'16px'}>
 
-                <Column alignItems='flex-start'>
+                  <Column alignItems='flex-start'>
                     <Title>{depositTitleText}</Title>
 
                     {selectedAssetNetwork &&
@@ -350,25 +358,34 @@ export const DepositFundsScreen = () => {
                   </Column>
 
                   <Row>
+                    <HorizontalSpace space='63%' />
                     <SelectAccountItem
                       selectedNetwork={selectedAssetNetwork}
                       account={selectedAccount}
                       onSelectAccount={openAccountSearch}
                       showTooltips
-                      fullAddress
+                      hideAddress
                     />
+                    <HorizontalSpace space='45%' />
                   </Row>
 
                   <Row>
                     <QRCodeImage src={qrCode} />
                   </Row>
 
-                  <Column>
-                    <p>{selectedAccount.address}</p>
+                  <Column gap={'4px'}>
 
-                    <CopyButton onClick={() => {
-                      copyToClipboard(selectedAccount.address)
-                    }} />
+                    <AddressTextLabel>Address:</AddressTextLabel>
+
+                    <Row gap={'12px'}>
+                      <AddressText>{selectedAccount.address}</AddressText>
+                      <CopyButton
+                        iconColor='interactive05'
+                        onClick={() => {
+                          copyToClipboard(selectedAccount.address)
+                        }}
+                      />
+                    </Row>
 
                     {isCopied &&
                       <CopiedToClipboardConfirmation />

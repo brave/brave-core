@@ -6,10 +6,10 @@
 import { FC } from 'react'
 import styled, { CSSProperties } from 'styled-components'
 import { Link } from 'react-router-dom'
+import IThemeProps from 'brave-ui/src/theme/theme-interface'
 
 // types
 import { BraveWallet } from '../../constants/types'
-import IThemeProps from 'brave-ui/src/theme/theme-interface'
 
 // utils
 import { stripERC20TokenImageURL } from '../../utils/string-utils'
@@ -185,7 +185,9 @@ export const ToggleVisibilityButton = styled(WalletButton)<{
   mask-repeat: no-repeat;
 `
 
-export const CopyButton = styled(WalletButton)`
+export const CopyButton = styled(WalletButton)<{
+  iconColor?: keyof IThemeProps['color']
+}>`
   cursor: pointer;
   outline: none;
   border: none;
@@ -193,7 +195,7 @@ export const CopyButton = styled(WalletButton)`
   mask-position: center;
   mask-repeat: no-repeat;
   mask-size: 14px;
-  background-color: ${(p) => p.theme.color.text01};
+  background-color: ${(p) => p.theme.color[p?.iconColor ?? 'text01']};
   height: 14px;
   width: 14px;
 `
