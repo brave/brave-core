@@ -301,3 +301,15 @@ export const NetworkIconWrapper = styled.div`
   border-radius: 100%;
   padding: 2px;
 `
+
+// spacers
+export const VerticalSpace = styled.div<{ space: string }>`
+  display: block;
+  height: ${(p) => p.space};
+  width: 100%;
+`
+
+export const HorizontalSpace = styled.div<{ space: string }>`
+  min-height: 1px;
+  width: ${(p) => p.space};
+`
