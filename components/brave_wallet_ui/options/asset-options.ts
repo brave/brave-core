@@ -80,7 +80,8 @@ export function makeNetworkAsset (network: BraveWallet.NetworkInfo) {
     visible: true,
     tokenId: '',
     coingeckoId: '',
-    chainId: network.chainId
+    chainId: network.chainId,
+    coin: network.coin
   } as BraveWallet.BlockchainToken
 }
 
