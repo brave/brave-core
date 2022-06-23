@@ -33,7 +33,7 @@ extension AppDelegate {
 
 class AppDelegate: UIResponder, UIApplicationDelegate {
   var window: UIWindow?
-  var braveCore: BraveCoreMain = {
+  lazy var braveCore: BraveCoreMain = {
     var switches: [BraveCoreSwitch: String] = [:]
     if !AppConstants.buildChannel.isPublic {
       // Check prefs for additional switches
@@ -47,6 +47,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     return BraveCoreMain(userAgent: UserAgent.mobile, additionalSwitches: switches)
   }()
+  
   var migration: Migration?
 
   private weak var application: UIApplication?
@@ -62,26 +63,27 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
   private var cancellables: Set<AnyCancellable> = []
   private var sceneInfo: SceneInfoModel?
+  
+  override init() {
+    #if MOZ_CHANNEL_RELEASE
+    AppConstants.buildChannel = .release
+    #elseif MOZ_CHANNEL_BETA
+    AppConstants.buildChannel = .beta
+    #elseif MOZ_CHANNEL_DEV
+    AppConstants.buildChannel = .dev
+    #elseif MOZ_CHANNEL_ENTERPRISE
+    AppConstants.buildChannel = .enterprise
+    #elseif MOZ_CHANNEL_DEBUG
+    AppConstants.buildChannel = .debug
+    #endif
+    super.init()
+  }
 
   @discardableResult
   func application(_ application: UIApplication, willFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
     // Hold references to willFinishLaunching parameters for delayed app launch
     self.application = application
     self.launchOptions = launchOptions
-    
-    let channel: AppBuildChannel
-#if MOZ_CHANNEL_RELEASE
-    channel = AppBuildChannel.release
-#elseif MOZ_CHANNEL_BETA
-    channel = AppBuildChannel.beta
-#elseif MOZ_CHANNEL_DEV
-    channel = AppBuildChannel.dev
-#elseif MOZ_CHANNEL_ENTERPRISE
-    channel = AppBuildChannel.enterprise
-#elseif MOZ_CHANNEL_DEBUG
-    channel = AppBuildChannel.debug
-#endif
-    AppConstants.buildChannel = channel
 
     // Brave Core Initialization
     BraveCoreMain.setLogHandler { severity, file, line, messageStartIndex, message in
