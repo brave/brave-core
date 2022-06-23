@@ -27,7 +27,7 @@ recursedeps = [
 ]
 
 vars = {
-  'download_prebuilt_sparkle': False
+  'download_prebuilt_sparkle': True
 }
 
 hooks = [
