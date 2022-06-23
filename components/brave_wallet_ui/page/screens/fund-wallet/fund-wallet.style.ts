@@ -36,3 +36,20 @@ export const QRCodeImage = styled.img`
   border: 4px solid ${(p) => p.theme.color.text01};
   margin-bottom: 16px;
 `
+
+export const AddressText = styled.div`
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 20px;
+  text-align: center;
+  color: ${(p) => p.theme.color.text02};
+  letter-spacing: 0.01em;
+`
+export const AddressTextLabel = styled(AddressText)`
+  font-weight: 600;
+  font-size: 15px;
+  line-height: 20px;
+  letter-spacing: 0.04em;
+`
