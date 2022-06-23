@@ -18,7 +18,12 @@ import { WalletPageActions } from '../../../actions'
 import { PageState, WalletRoutes } from '../../../../constants/types'
 
 // styles
-import { LoadingIcon, ToggleVisibilityButton, WalletLink } from '../../../../components/shared/style'
+import {
+  LoadingIcon,
+  ToggleVisibilityButton,
+  WalletLink,
+  VerticalSpace
+} from '../../../../components/shared/style'
 import {
   Description,
   MainWrapper,
@@ -29,8 +34,7 @@ import {
   PhraseCard,
   PhraseCardBody,
   PhraseCardBottomRow,
-  PhraseCardTopRow,
-  VerticalSpace
+  PhraseCardTopRow
 } from '../onboarding.style'
 import { RecoveryTextArea, RecoveryTextInput } from './restore-from-recovery-phrase.style'
 

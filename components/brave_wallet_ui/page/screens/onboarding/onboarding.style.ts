@@ -91,12 +91,6 @@ export const Description = styled.p<{ textAlign?: 'right' | 'center' }>`
   }
 `
 
-export const VerticalSpace = styled.div<{ space: string }>`
-  display: block;
-  height: ${(p) => p.space};
-  width: 100%;
-`
-
 // Phrase card
 export const PhraseCard = styled.div`
   display: flex;

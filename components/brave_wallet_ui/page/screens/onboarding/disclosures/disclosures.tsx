@@ -6,20 +6,6 @@
 import * as React from 'react'
 import { useHistory } from 'react-router'
 
-// styles
-import {
-  StyledWrapper,
-  Title,
-  Description,
-  NextButtonRow,
-  MainWrapper,
-  VerticalSpace
-} from '../onboarding.style'
-
-import {
-  CheckboxText
-} from './disclosures.style'
-
 // utils
 import { getLocale, getLocaleWithTag } from '../../../../../common/locale'
 
@@ -28,10 +14,22 @@ import { WalletRoutes } from '../../../../constants/types'
 
 // components
 import { Checkbox } from 'brave-ui'
-import { LinkText } from '../../../../components/shared/style'
 import WalletPageLayout from '../../../../components/desktop/wallet-page-layout/index'
 import { NavButton } from '../../../../components/extension/buttons/nav-button/index'
 import { OnboardingNewWalletStepsNavigation } from '../components/onboarding-steps-navigation/onboarding-steps-navigation'
+
+// styles
+import { LinkText, VerticalSpace } from '../../../../components/shared/style'
+import {
+  StyledWrapper,
+  Title,
+  Description,
+  NextButtonRow,
+  MainWrapper
+} from '../onboarding.style'
+import {
+  CheckboxText
+} from './disclosures.style'
 
 export const OnboardingDisclosures = () => {
   // routing
