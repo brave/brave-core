@@ -53,7 +53,7 @@ jobs:
 
           pr_milestone=$(gh pr view "${PR_NUMBER}" -R "${REPO_NAME}" --json milestone --jq .milestone.title)
 
-          echo "${issues}" | while read -r issue; do
+          for issue in "${issues[@]}"; do
               issue_milestone=$(gh issue view "${issue}" --json milestone --jq .milestone.title)
               if [[ -z "${issue_milestone}" ]] || verlte "${pr_milestone}" "${issue_milestone}"; then
                   echo "Setting ${issue} milestone to ${pr_milestone}"
