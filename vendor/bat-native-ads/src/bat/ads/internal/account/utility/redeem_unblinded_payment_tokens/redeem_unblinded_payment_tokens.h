@@ -30,7 +30,7 @@ class RedeemUnblindedPaymentTokens final {
   RedeemUnblindedPaymentTokens& operator=(const RedeemUnblindedPaymentTokens&) =
       delete;
 
-  void set_delegate(RedeemUnblindedPaymentTokensDelegate* delegate) {
+  void SetDelegate(RedeemUnblindedPaymentTokensDelegate* delegate) {
     DCHECK_EQ(delegate_, nullptr);
     delegate_ = delegate;
   }

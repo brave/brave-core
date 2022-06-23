@@ -30,7 +30,7 @@ class BatAdsRedeemUnblindedTokenTest : public UnitTestBase {
       : redeem_unblinded_token_(std::make_unique<RedeemUnblindedToken>()),
         redeem_unblinded_token_delegate_mock_(
             std::make_unique<NiceMock<RedeemUnblindedTokenDelegateMock>>()) {
-    redeem_unblinded_token_->set_delegate(
+    redeem_unblinded_token_->SetDelegate(
         redeem_unblinded_token_delegate_mock_.get());
   }
 

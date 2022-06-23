@@ -68,7 +68,7 @@ class CreativeInlineContentAds final : public TableInterface {
 
   void GetAll(GetCreativeInlineContentAdsCallback callback);
 
-  void set_batch_size(const int batch_size) {
+  void SetBatchSize(const int batch_size) {
     DCHECK_GT(batch_size, 0);
 
     batch_size_ = batch_size;

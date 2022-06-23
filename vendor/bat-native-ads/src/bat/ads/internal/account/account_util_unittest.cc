@@ -66,7 +66,7 @@ TEST_F(BatAdsAccountUtilTest, ResetRewards) {
 
   const privacy::UnblindedPaymentTokenList& unblinded_payment_tokens =
       privacy::GetRandomUnblindedPaymentTokens(1);
-  privacy::get_unblinded_payment_tokens()->AddTokens(unblinded_payment_tokens);
+  privacy::GetUnblindedPaymentTokens()->AddTokens(unblinded_payment_tokens);
 
   // Act
   ResetRewards([](const bool success) {
@@ -84,7 +84,7 @@ TEST_F(BatAdsAccountUtilTest, ResetRewards) {
     EXPECT_TRUE(confirmations.empty());
 
     const privacy::UnblindedPaymentTokenList& unblinded_payment_tokens =
-        privacy::get_unblinded_payment_tokens()->GetAllTokens();
+        privacy::GetUnblindedPaymentTokens()->GetAllTokens();
     EXPECT_TRUE(unblinded_payment_tokens.empty());
   });
 
@@ -110,7 +110,7 @@ TEST_F(BatAdsAccountUtilTest, ResetRewardsWithNoState) {
     EXPECT_TRUE(confirmations.empty());
 
     const privacy::UnblindedPaymentTokenList& unblinded_payment_tokens =
-        privacy::get_unblinded_payment_tokens()->GetAllTokens();
+        privacy::GetUnblindedPaymentTokens()->GetAllTokens();
     EXPECT_TRUE(unblinded_payment_tokens.empty());
   });
 

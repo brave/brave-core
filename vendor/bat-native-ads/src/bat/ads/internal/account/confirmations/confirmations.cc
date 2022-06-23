@@ -45,7 +45,7 @@ Confirmations::Confirmations(privacy::TokenGeneratorInterface* token_generator)
       redeem_unblinded_token_(std::make_unique<RedeemUnblindedToken>()) {
   DCHECK(token_generator_);
 
-  redeem_unblinded_token_->set_delegate(this);
+  redeem_unblinded_token_->SetDelegate(this);
 }
 
 Confirmations::~Confirmations() {
@@ -138,11 +138,11 @@ ConfirmationInfo Confirmations::CreateConfirmation(
   confirmation.created_at = time;
 
   if (ShouldRewardUser() && !ConfirmationStateManager::GetInstance()
-                                 ->get_unblinded_tokens()
+                                 ->GetUnblindedTokens()
                                  ->IsEmpty()) {
     const privacy::UnblindedTokenInfo& unblinded_token =
         ConfirmationStateManager::GetInstance()
-            ->get_unblinded_tokens()
+            ->GetUnblindedTokens()
             ->GetToken();
 
     confirmation.unblinded_token = unblinded_token;
@@ -164,9 +164,8 @@ ConfirmationInfo Confirmations::CreateConfirmation(
     const std::string& payload = CreateConfirmationRequestDTO(confirmation);
     confirmation.credential = CreateCredential(unblinded_token, payload);
 
-    ConfirmationStateManager::GetInstance()
-        ->get_unblinded_tokens()
-        ->RemoveToken(unblinded_token);
+    ConfirmationStateManager::GetInstance()->GetUnblindedTokens()->RemoveToken(
+        unblinded_token);
     ConfirmationStateManager::GetInstance()->Save();
   }
 
@@ -178,7 +177,7 @@ void Confirmations::CreateNewConfirmationAndAppendToRetryQueue(
   DCHECK(confirmation.IsValid());
 
   if (ConfirmationStateManager::GetInstance()
-          ->get_unblinded_tokens()
+          ->GetUnblindedTokens()
           ->IsEmpty()) {
     AppendToRetryQueue(confirmation);
     return;
@@ -281,7 +280,7 @@ void Confirmations::OnDidRedeemUnblindedToken(
     const ConfirmationInfo& confirmation,
     const privacy::UnblindedPaymentTokenInfo& unblinded_payment_token) {
   if (ConfirmationStateManager::GetInstance()
-          ->get_unblinded_payment_tokens()
+          ->GetUnblindedPaymentTokens()
           ->TokenExists(unblinded_payment_token)) {
     BLOG(1, "Unblinded payment token is a duplicate");
     OnFailedToRedeemUnblindedToken(confirmation, /* should_retry */ false,
@@ -290,13 +289,13 @@ void Confirmations::OnDidRedeemUnblindedToken(
   }
 
   ConfirmationStateManager::GetInstance()
-      ->get_unblinded_payment_tokens()
+      ->GetUnblindedPaymentTokens()
       ->AddTokens({unblinded_payment_token});
   ConfirmationStateManager::GetInstance()->Save();
 
   const int unblinded_payment_tokens_count =
       ConfirmationStateManager::GetInstance()
-          ->get_unblinded_payment_tokens()
+          ->GetUnblindedPaymentTokens()
           ->Count();
 
   const base::Time next_token_redemption_at =

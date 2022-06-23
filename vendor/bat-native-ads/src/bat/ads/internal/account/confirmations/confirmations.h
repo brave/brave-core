@@ -39,7 +39,7 @@ class Confirmations final : public RedeemUnblindedTokenDelegate {
   Confirmations(const Confirmations&) = delete;
   Confirmations& operator=(const Confirmations&) = delete;
 
-  void set_delegate(ConfirmationsDelegate* delegate) {
+  void SetDelegate(ConfirmationsDelegate* delegate) {
     DCHECK_EQ(delegate_, nullptr);
     delegate_ = delegate;
   }

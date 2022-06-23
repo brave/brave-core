@@ -34,7 +34,7 @@ class BatAdsRedeemUnblindedPaymentTokensTest : public UnitTestBase {
         redeem_unblinded_payment_tokens_delegate_mock_(
             std::make_unique<
                 NiceMock<RedeemUnblindedPaymentTokensDelegateMock>>()) {
-    redeem_unblinded_payment_tokens_->set_delegate(
+    redeem_unblinded_payment_tokens_->SetDelegate(
         redeem_unblinded_payment_tokens_delegate_mock_.get());
   }
 
@@ -71,7 +71,7 @@ TEST_F(BatAdsRedeemUnblindedPaymentTokensTest, RedeemUnblindedPaymentTokens) {
 
   const privacy::UnblindedPaymentTokenList& unblinded_payment_tokens =
       privacy::GetUnblindedPaymentTokens(1);
-  privacy::get_unblinded_payment_tokens()->SetTokens(unblinded_payment_tokens);
+  privacy::GetUnblindedPaymentTokens()->SetTokens(unblinded_payment_tokens);
 
   // Act
   EXPECT_CALL(*redeem_unblinded_payment_tokens_delegate_mock_,
@@ -100,7 +100,7 @@ TEST_F(BatAdsRedeemUnblindedPaymentTokensTest, RedeemUnblindedPaymentTokens) {
   FastForwardClockToNextPendingTask();
 
   // Assert
-  EXPECT_TRUE(privacy::get_unblinded_payment_tokens()->IsEmpty());
+  EXPECT_TRUE(privacy::GetUnblindedPaymentTokens()->IsEmpty());
 }
 
 TEST_F(BatAdsRedeemUnblindedPaymentTokensTest,
@@ -143,7 +143,7 @@ TEST_F(BatAdsRedeemUnblindedPaymentTokensTest,
 
   const privacy::UnblindedPaymentTokenList& unblinded_payment_tokens =
       privacy::GetUnblindedPaymentTokens(1);
-  privacy::get_unblinded_payment_tokens()->SetTokens(unblinded_payment_tokens);
+  privacy::GetUnblindedPaymentTokens()->SetTokens(unblinded_payment_tokens);
 
   // Act
   EXPECT_CALL(*redeem_unblinded_payment_tokens_delegate_mock_,
@@ -199,7 +199,7 @@ TEST_F(BatAdsRedeemUnblindedPaymentTokensTest, ScheduleNextTokenRedemption) {
 
   const privacy::UnblindedPaymentTokenList& unblinded_payment_tokens =
       privacy::GetUnblindedPaymentTokens(1);
-  privacy::get_unblinded_payment_tokens()->SetTokens(unblinded_payment_tokens);
+  privacy::GetUnblindedPaymentTokens()->SetTokens(unblinded_payment_tokens);
 
   // Act
   EXPECT_CALL(*redeem_unblinded_payment_tokens_delegate_mock_,
@@ -228,7 +228,7 @@ TEST_F(BatAdsRedeemUnblindedPaymentTokensTest, ScheduleNextTokenRedemption) {
   FastForwardClockToNextPendingTask();
 
   // Assert
-  EXPECT_TRUE(privacy::get_unblinded_payment_tokens()->IsEmpty());
+  EXPECT_TRUE(privacy::GetUnblindedPaymentTokens()->IsEmpty());
 }
 
 TEST_F(BatAdsRedeemUnblindedPaymentTokensTest, InvalidWallet) {
@@ -256,7 +256,7 @@ TEST_F(BatAdsRedeemUnblindedPaymentTokensTest, InvalidWallet) {
 
   const privacy::UnblindedPaymentTokenList& unblinded_payment_tokens =
       privacy::GetUnblindedPaymentTokens(1);
-  privacy::get_unblinded_payment_tokens()->SetTokens(unblinded_payment_tokens);
+  privacy::GetUnblindedPaymentTokens()->SetTokens(unblinded_payment_tokens);
 
   // Act
   InSequence seq;
@@ -285,7 +285,7 @@ TEST_F(BatAdsRedeemUnblindedPaymentTokensTest, InvalidWallet) {
   redeem_unblinded_payment_tokens_->MaybeRedeemAfterDelay(invalid_wallet);
 
   // Assert
-  EXPECT_EQ(1, privacy::get_unblinded_payment_tokens()->Count());
+  EXPECT_EQ(1, privacy::GetUnblindedPaymentTokens()->Count());
 }
 
 TEST_F(BatAdsRedeemUnblindedPaymentTokensTest, NoUnblindedPaymentTokens) {
@@ -338,7 +338,7 @@ TEST_F(BatAdsRedeemUnblindedPaymentTokensTest, NoUnblindedPaymentTokens) {
   FastForwardClockToNextPendingTask();
 
   // Assert
-  EXPECT_TRUE(privacy::get_unblinded_payment_tokens()->IsEmpty());
+  EXPECT_TRUE(privacy::GetUnblindedPaymentTokens()->IsEmpty());
 }
 
 TEST_F(BatAdsRedeemUnblindedPaymentTokensTest, Retry) {
@@ -366,7 +366,7 @@ TEST_F(BatAdsRedeemUnblindedPaymentTokensTest, Retry) {
 
   const privacy::UnblindedPaymentTokenList& unblinded_payment_tokens =
       privacy::GetUnblindedPaymentTokens(1);
-  privacy::get_unblinded_payment_tokens()->SetTokens(unblinded_payment_tokens);
+  privacy::GetUnblindedPaymentTokens()->SetTokens(unblinded_payment_tokens);
 
   // Act
   InSequence seq;
@@ -398,7 +398,7 @@ TEST_F(BatAdsRedeemUnblindedPaymentTokensTest, Retry) {
   FastForwardClockToNextPendingTask();
 
   // Assert
-  EXPECT_TRUE(privacy::get_unblinded_payment_tokens()->IsEmpty());
+  EXPECT_TRUE(privacy::GetUnblindedPaymentTokens()->IsEmpty());
 }
 
 }  // namespace ads

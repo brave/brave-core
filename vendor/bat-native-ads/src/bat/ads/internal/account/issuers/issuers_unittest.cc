@@ -29,7 +29,7 @@ class BatAdsIssuersTest : public UnitTestBase {
       : issuers_(std::make_unique<Issuers>()),
         issuers_delegate_mock_(
             std::make_unique<NiceMock<IssuersDelegateMock>>()) {
-    issuers_->set_delegate(issuers_delegate_mock_.get());
+    issuers_->SetDelegate(issuers_delegate_mock_.get());
   }
 
   ~BatAdsIssuersTest() override = default;
