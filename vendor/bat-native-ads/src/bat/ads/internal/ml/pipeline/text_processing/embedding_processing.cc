@@ -1,4 +1,4 @@
-/* Copyright (c) 2020 The Brave Authors. All rights reserved.
+/* Copyright (c) 2022 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
@@ -13,7 +13,7 @@
 #include "base/values.h"
 #include "bat/ads/internal/ml/data/text_data.h"
 #include "bat/ads/internal/ml/data/vector_data.h"
-#include "bat/ads/internal/ml/pipeline/pipeline_info.h"
+#include "bat/ads/internal/ml/pipeline/pipeline_embedding_info.h"
 #include "bat/ads/internal/ml/pipeline/pipeline_util.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 #include "bat/ads/internal/base/strings/string_strip_util.h"

@@ -10,7 +10,6 @@
 #include <string>
 
 #include "bat/ads/internal/ml/ml_aliases.h"
-#include "bat/ads/internal/ml/data/vector_data.h"
 #include "bat/ads/internal/ml/model/linear/linear.h"
 
 namespace ads {
@@ -33,24 +32,6 @@ struct PipelineInfo final {
   std::string locale;
   TransformationVector transformations;
   model::Linear linear_model;
-};
-
-struct PipelineEmbeddingInfo final {
-  PipelineEmbeddingInfo();
-  PipelineEmbeddingInfo(const PipelineEmbeddingInfo& info);
-  ~PipelineEmbeddingInfo();
-
-  PipelineEmbeddingInfo(const int version,
-               const std::string& timestamp,
-               const std::string& locale,
-               const int embeddings_dim,
-               const std::map<std::string, VectorData>& embeddings);
-
-  int version;
-  std::string timestamp;
-  std::string locale;
-  int embeddings_dim;
-  std::map<std::string, VectorData> embeddings;
 };
 
 }  // namespace pipeline

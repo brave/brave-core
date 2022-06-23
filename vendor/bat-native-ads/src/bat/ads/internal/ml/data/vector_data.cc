@@ -8,9 +8,9 @@
 #include <limits>
 #include <numeric>
 #include <utility>
-#include <iostream>
 
 #include "base/check_op.h"
+#include "base/strings/string_number_conversions.h"
 
 namespace ads {
 namespace ml {
@@ -222,17 +222,17 @@ const std::string VectorData::GetVectorAsString() const {
     return "";
   }
 
-  std::string vector_str = "";
+  std::string vctr;
   int v_index = 0;
   int storage_size = storage_->GetSize();
   while (v_index < storage_size) {
-    vector_str += std::to_string(storage_->values()[v_index]);
+    vctr += base::NumberToString(storage_->values()[v_index]);
     if (v_index < storage_size - 1) {
-      vector_str += " ";
+      vctr += " ";
     }
     ++v_index;
   }
-  return vector_str;
+  return vctr;
 };
 
 }  // namespace ml

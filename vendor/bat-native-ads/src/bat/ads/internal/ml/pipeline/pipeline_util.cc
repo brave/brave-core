@@ -4,6 +4,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "bat/ads/internal/ml/pipeline/pipeline_util.h"
+#include "bat/ads/internal/ml/pipeline/pipeline_embedding_info.h"
 
 #include <map>
 #include <memory>

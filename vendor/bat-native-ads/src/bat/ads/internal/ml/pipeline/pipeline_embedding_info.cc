@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "bat/ads/internal/ml/pipeline/pipeline_info.h"
+#include "bat/ads/internal/ml/pipeline/pipeline_embedding_info.h"
 
 #include "bat/ads/internal/ml/ml_transformation_util.h"
 #include "bat/ads/internal/ml/transformation/transformation.h"
@@ -12,28 +12,29 @@ namespace ads {
 namespace ml {
 namespace pipeline {
 
-PipelineInfo::PipelineInfo() = default;
+PipelineEmbeddingInfo::PipelineEmbeddingInfo() = default;
 
-PipelineInfo::PipelineInfo(const PipelineInfo& info) {
+PipelineEmbeddingInfo::PipelineEmbeddingInfo(const PipelineEmbeddingInfo& info) {
   version = info.version;
   timestamp = info.timestamp;
   locale = info.locale;
-  linear_model = info.linear_model;
-  transformations = GetTransformationVectorDeepCopy(info.transformations);
+  embeddings_dim = info.embeddings_dim;
+  embeddings = info.embeddings;
 }
 
-PipelineInfo::~PipelineInfo() = default;
+PipelineEmbeddingInfo::~PipelineEmbeddingInfo() = default;
 
-PipelineInfo::PipelineInfo(const int& version,
+PipelineEmbeddingInfo::PipelineEmbeddingInfo(const int version,
                            const std::string& timestamp,
                            const std::string& locale,
-                           const TransformationVector& new_transformations,
-                           const model::Linear& linear_model)
+                           const int embeddings_dim,
+                           const std::map<std::string, VectorData>& embeddings)
     : version(version),
       timestamp(timestamp),
       locale(locale),
-      linear_model(linear_model) {
-  transformations = GetTransformationVectorDeepCopy(new_transformations);
+      embeddings_dim(embeddings_dim),
+      embeddings(embeddings) {
+  return;
 }
 
 }  // namespace pipeline
