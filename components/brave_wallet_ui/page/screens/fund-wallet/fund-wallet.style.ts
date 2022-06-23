@@ -28,3 +28,11 @@ export const SearchWrapper = styled.div`
   width: 100%;
   position: relative;
 `
+
+export const QRCodeImage = styled.img`
+  width: 260px;
+  height: 260px;
+  border-radius: 4px;
+  border: 4px solid ${(p) => p.theme.color.text01};
+  margin-bottom: 16px;
+`

@@ -579,4 +579,10 @@
   <message name="IDS_BRAVE_WALLET_BUY_SELECT_ASSET" desc="Continue button text for buy crypto flow when an asset is not yet selected">Select an asset</message>
   <message name="IDS_BRAVE_WALLET_FUND_WALLET_TITLE" desc="Fund wallet screen title text">Complete your <ph name="ASSET_TICKER">$1<ex>1</ex></ph> purchase through one of our partners</message>
   <message name="IDS_BRAVE_WALLET_FUND_WALLET_DESCRIPTION" desc="Fund wallet screen description text">On completion, your funds will be transfered to your Brave Wallet</message>
+  
+  <message name="IDS_BRAVE_WALLET_DEPOSIT_FUNDS_TITLE" desc="Deposit funds screen title">Deposit crypto</message>
+  <message name="IDS_BRAVE_WALLET_DEPOSIT_X" desc="Generic prompt to deposit an asset">Deposit <ph name="VALUE">$1</ph></message>
+  <message name="IDS_BRAVE_WALLET_DEPOSIT_SOL_SPL_TOKENS" desc="Description of depositable Solana wallet assets">Deposit Solana or SPL tokens</message>
+  <message name="IDS_BRAVE_WALLET_DEPOSIT_ERC" desc="Description of depositable ERC assets">Deposit ERC-based tokens</message>
+  <message name="IDS_BRAVE_WALLET_DEPOSIT_ONLY_SEND_ON_X_NETWORK" desc="Warning to only send tokens to a address via a specific network">Only send tokens to this address on <ph name="VALUE">$1</ph></message>
 </grit-part>
