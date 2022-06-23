@@ -6,6 +6,7 @@
 #ifndef BRAVE_BROWSER_SEARCH_ENGINES_NORMAL_WINDOW_SEARCH_ENGINE_PROVIDER_SERVICE_H_
 #define BRAVE_BROWSER_SEARCH_ENGINES_NORMAL_WINDOW_SEARCH_ENGINE_PROVIDER_SERVICE_H_
 
+#include "base/callback_list.h"
 #include "components/keyed_service/core/keyed_service.h"
 
 class Profile;
@@ -21,6 +22,11 @@ class NormalWindowSearchEngineProviderService : public KeyedService {
       const NormalWindowSearchEngineProviderService&) = delete;
   NormalWindowSearchEngineProviderService& operator=(
       const NormalWindowSearchEngineProviderService&) = delete;
+
+ private:
+  void OnTemplateURLServiceLoaded(Profile* profile);
+
+  base::CallbackListSubscription template_url_service_subscription_;
 };
 
 #endif  // BRAVE_BROWSER_SEARCH_ENGINES_NORMAL_WINDOW_SEARCH_ENGINE_PROVIDER_SERVICE_H_

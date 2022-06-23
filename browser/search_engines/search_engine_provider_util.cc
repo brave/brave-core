@@ -6,6 +6,7 @@
 #include "brave/browser/search_engines/search_engine_provider_util.h"
 
 #include <memory>
+#include <string>
 #include <vector>
 
 #include "brave/browser/search_engines/pref_names.h"
@@ -86,11 +87,19 @@ void SetDefaultPrivateSearchProvider(Profile* profile) {
   auto* preference = profile->GetPrefs()->FindPreference(
       prefs::kSyncedDefaultPrivateSearchProviderGUID);
 
-  if (!preference || !preference->IsDefaultValue())
+  if (!preference)
     return;
 
-  // Set default provider.
   auto* service = TemplateURLServiceFactory::GetForProfile(profile);
+  DCHECK(service->loaded());
+
+  // If current provider's guid is not valid, set default provider.
+  const std::string private_provider_guid = profile->GetPrefs()->GetString(
+      prefs::kSyncedDefaultPrivateSearchProviderGUID);
+
+  if (service->GetTemplateURLForGUID(private_provider_guid))
+    return;
+
   profile->GetPrefs()->SetString(
       prefs::kSyncedDefaultPrivateSearchProviderGUID,
       service->GetDefaultSearchProvider()->sync_guid());
