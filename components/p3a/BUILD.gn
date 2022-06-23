@@ -36,6 +36,8 @@ static_library("p3a") {
     "brave_p3a_star.h",
     "brave_p3a_star_log_store.cc",
     "brave_p3a_star_log_store.h",
+    "brave_p3a_star_randomness.cc",
+    "brave_p3a_star_randomness.h",
     "brave_p3a_switches.h",
     "brave_p3a_utils.h",
     "histograms_braveizer.cc",

@@ -11,13 +11,10 @@
 
 #include "base/base64.h"
 #include "base/bind.h"
-#include "base/json/json_reader.h"
-#include "base/json/json_writer.h"
 #include "base/logging.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_split.h"
 #include "brave/components/p3a/brave_p3a_config.h"
-#include "brave/components/p3a/network_annotations.h"
 #include "brave/components/p3a/p3a_message.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
@@ -30,33 +27,6 @@ namespace brave {
 namespace {
 
 constexpr std::size_t kP3AStarCurrentThreshold = 50;
-constexpr std::size_t kMaxRandomnessResponseSize = 131072;
-constexpr char kCurrentEpochPrefName[] = "brave.p3a.current_epoch";
-constexpr char kNextEpochTimePrefName[] = "brave.p3a.next_epoch_time";
-
-std::unique_ptr<rust::Vec<nested_star::VecU8>> DecodeBase64List(
-    const base::Value* list) {
-  std::unique_ptr<rust::Vec<nested_star::VecU8>> result(
-      new rust::Vec<nested_star::VecU8>());
-  for (const base::Value& list_entry : list->GetList()) {
-    const std::string* entry_str = list_entry.GetIfString();
-    if (entry_str == nullptr) {
-      LOG(ERROR) << "BraveP3AStar: list value is not string";
-      return nullptr;
-    }
-    nested_star::VecU8 entry_dec_vec;
-    absl::optional<std::vector<uint8_t>> entry_dec =
-        base::Base64Decode(*entry_str);
-    if (!entry_dec.has_value()) {
-      LOG(ERROR) << "BraveP3AStar: failed to decode base64 value";
-      return nullptr;
-    }
-    std::copy(entry_dec->cbegin(), entry_dec->cend(),
-              std::back_inserter(entry_dec_vec.data));
-    result->push_back(entry_dec_vec);
-  }
-  return result;
-}
 
 }  // namespace
 
@@ -64,45 +34,33 @@ BraveP3AStar::BraveP3AStar(
     PrefService* local_state,
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
     StarMessageCallback message_callback,
-    RandomnessServerInfoCallback info_callback,
+    BraveP3AStarRandomness::RandomnessServerInfoCallback info_callback,
     BraveP3AConfig* config)
-    : current_public_key_(nested_star::get_ppoprf_null_public_key()),
-      url_loader_factory_(url_loader_factory),
-      local_state_(local_state),
-      message_callback_(message_callback),
-      info_callback_(info_callback),
-      config_(config) {}
+    : randomness_manager_(
+          local_state,
+          url_loader_factory,
+          info_callback,
+          base::BindRepeating(&BraveP3AStar::HandleRandomnessData,
+                              base::Unretained(this)),
+          config),
+      message_callback_(message_callback) {
+  UpdateRandomnessServerInfo();
+}
 
 BraveP3AStar::~BraveP3AStar() {}
 
 void BraveP3AStar::RegisterPrefs(PrefRegistrySimple* registry) {
-  registry->RegisterIntegerPref(kCurrentEpochPrefName, -1);
-  registry->RegisterTimePref(kNextEpochTimePrefName, base::Time());
+  BraveP3AStarRandomness::RegisterPrefs(registry);
 }
 
 void BraveP3AStar::UpdateRandomnessServerInfo() {
-  if (rnd_server_info_ == nullptr) {
-    // if rnd_server_info is null, we can assume the call is from
-    // initialization, and not an update call. Using cached server info, if
-    // available.
-    base::Time saved_next_epoch_time =
-        local_state_->GetTime(kNextEpochTimePrefName);
-    if (saved_next_epoch_time > base::Time::Now()) {
-      int saved_epoch = local_state_->GetInteger(kCurrentEpochPrefName);
-      rnd_server_info_.reset(new RandomnessServerInfo{
-          .current_epoch = static_cast<uint8_t>(saved_epoch),
-          .next_epoch_time = saved_next_epoch_time});
-      info_callback_.Run(rnd_server_info_.get());
-      return;
-    }
-  }
-  rnd_server_info_.reset(nullptr);
-  RequestRandomnessServerInfo();
+  randomness_manager_.RequestRandomnessServerInfo();
 }
 
 bool BraveP3AStar::StartMessagePreparation(const char* histogram_name,
                                            std::string serialized_log) {
-  if (rnd_server_info_ == nullptr) {
+  auto* rnd_server_info = randomness_manager_.GetCachedRandomnessServerInfo();
+  if (rnd_server_info == nullptr) {
     LOG(ERROR) << "BraveP3AStar: measurement preparation failed due to "
                   "unavailable server info";
     return false;
@@ -112,7 +70,7 @@ bool BraveP3AStar::StartMessagePreparation(const char* histogram_name,
                         base::WhitespaceHandling::TRIM_WHITESPACE,
                         base::SplitResult::SPLIT_WANT_NONEMPTY);
 
-  uint8_t epoch = rnd_server_info_->current_epoch;
+  uint8_t epoch = rnd_server_info->current_epoch;
 
   auto prepare_res = nested_star::prepare_measurement(layers, epoch);
   if (!prepare_res.error.empty()) {
@@ -123,135 +81,11 @@ bool BraveP3AStar::StartMessagePreparation(const char* histogram_name,
 
   auto req = nested_star::construct_randomness_request(*prepare_res.state);
 
-  if (config_->use_local_randomness) {
-    // For dev/test purposes only
-    auto local_rand_res = nested_star::generate_local_randomness(req, epoch);
-    if (!local_rand_res.error.empty()) {
-      LOG(ERROR) << "BraveP3AStar: generating local randomness failed: "
-                 << local_rand_res.error.c_str();
-      return false;
-    }
-
-    std::string msg_output;
-    if (!ConstructFinalMessage(prepare_res.state, local_rand_res.points,
-                               local_rand_res.proofs, &msg_output)) {
-      return false;
-    }
-
-    message_callback_.Run(
-        histogram_name, rnd_server_info_->current_epoch,
-        std::unique_ptr<std::string>(new std::string(msg_output)));
-  } else {
-    SendRandomnessRequest(histogram_name, rnd_server_info_->current_epoch,
-                          std::move(prepare_res.state), req);
-  }
+  randomness_manager_.SendRandomnessRequest(histogram_name,
+                                            rnd_server_info->current_epoch,
+                                            std::move(prepare_res.state), req);
 
   return true;
-}
-
-void BraveP3AStar::RequestRandomnessServerInfo() {
-  auto resource_request = std::make_unique<network::ResourceRequest>();
-  resource_request->url = config_->star_randomness_info_url;
-
-  rnd_info_url_loader_ = network::SimpleURLLoader::Create(
-      std::move(resource_request), GetRandomnessRequestAnnotation());
-
-  rnd_info_url_loader_->DownloadToString(
-      url_loader_factory_.get(),
-      base::BindOnce(&BraveP3AStar::HandleRandomnessServerInfoResponse,
-                     base::Unretained(this)),
-      kMaxRandomnessResponseSize);
-}
-
-void BraveP3AStar::SendRandomnessRequest(
-    const char* histogram_name,
-    uint8_t epoch,
-    rust::Box<nested_star::RandomnessRequestStateWrapper>
-        randomness_request_state,
-    const rust::Vec<nested_star::VecU8>& rand_req_points) {
-  auto resource_request = std::make_unique<network::ResourceRequest>();
-  resource_request->url = config_->star_randomness_url;
-  resource_request->method = "POST";
-
-  rnd_url_loader_ = network::SimpleURLLoader::Create(
-      std::move(resource_request), GetRandomnessServerInfoAnnotation());
-
-  base::Value payload_dict(base::Value::Type::DICT);
-  base::Value points_list(base::Value::Type::LIST);
-  for (const auto& point_data : rand_req_points) {
-    points_list.Append(base::Base64Encode(point_data.data));
-  }
-  payload_dict.SetKey("points", std::move(points_list));
-  payload_dict.SetIntKey("epoch", epoch);
-
-  std::string payload_str;
-  if (!base::JSONWriter::Write(payload_dict, &payload_str)) {
-    LOG(ERROR) << "BraveP3AStar: failed to serialize randomness req payload";
-    message_callback_.Run(histogram_name, epoch, nullptr);
-    return;
-  }
-
-  rnd_url_loader_->AttachStringForUpload(payload_str, "application/json");
-
-  rnd_url_loader_->DownloadToString(
-      url_loader_factory_.get(),
-      base::BindOnce(&BraveP3AStar::HandleRandomnessResponse,
-                     base::Unretained(this), histogram_name, epoch,
-                     std::move(randomness_request_state)),
-      kMaxRandomnessResponseSize);
-}
-
-void BraveP3AStar::HandleRandomnessResponse(
-    const char* histogram_name,
-    uint8_t epoch,
-    rust::Box<nested_star::RandomnessRequestStateWrapper>
-        randomness_request_state,
-    std::unique_ptr<std::string> response_body) {
-  if (!response_body || response_body->empty()) {
-    std::string error_str =
-        net::ErrorToShortString(rnd_url_loader_->NetError());
-    rnd_url_loader_.reset();
-    LOG(ERROR) << "BraveP3AStar: no response body for randomness request, "
-               << "net error: " << error_str;
-    message_callback_.Run(histogram_name, epoch, nullptr);
-    return;
-  }
-  rnd_url_loader_.reset();
-  base::JSONReader::ValueWithError parsed_body =
-      base::JSONReader::ReadAndReturnValueWithError(*response_body);
-  if (!parsed_body.value.has_value() || !parsed_body.value->is_dict()) {
-    LOG(ERROR) << "BraveP3AStar: failed to parse randomness response json: "
-               << parsed_body.error_message;
-    message_callback_.Run(histogram_name, epoch, nullptr);
-    return;
-  }
-  const base::Value* points_value = parsed_body.value->FindListKey("points");
-  const base::Value* proofs_value = parsed_body.value->FindListKey("proofs");
-  if (points_value == nullptr) {
-    LOG(ERROR) << "BraveP3AStar: failed to find points list in "
-                  "randomness response";
-    message_callback_.Run(histogram_name, epoch, nullptr);
-    return;
-  }
-  std::unique_ptr<rust::Vec<nested_star::VecU8>> points_vec =
-      DecodeBase64List(points_value);
-  if (points_vec == nullptr) {
-    message_callback_.Run(histogram_name, epoch, nullptr);
-    return;
-  }
-  std::unique_ptr<rust::Vec<nested_star::VecU8>> proofs_vec;
-  if (proofs_value != nullptr) {
-    proofs_vec = DecodeBase64List(proofs_value);
-    if (!proofs_vec) {
-      message_callback_.Run(histogram_name, epoch, nullptr);
-      return;
-    }
-  } else {
-    proofs_vec.reset(new rust::Vec<nested_star::VecU8>());
-  }
-  HandleRandomnessData(histogram_name, epoch,
-                       std::move(randomness_request_state), *points_vec,
-                       *proofs_vec);
 }
 
 void BraveP3AStar::HandleRandomnessData(
@@ -259,16 +93,20 @@ void BraveP3AStar::HandleRandomnessData(
     uint8_t epoch,
     ::rust::Box<nested_star::RandomnessRequestStateWrapper>
         randomness_request_state,
-    const rust::Vec<nested_star::VecU8>& resp_points,
-    const rust::Vec<nested_star::VecU8>& resp_proofs) {
-  if (resp_points.empty()) {
+    std::unique_ptr<rust::Vec<nested_star::VecU8>> resp_points,
+    std::unique_ptr<rust::Vec<nested_star::VecU8>> resp_proofs) {
+  if (resp_points == nullptr || resp_proofs == nullptr) {
+    message_callback_.Run(histogram_name, epoch, nullptr);
+    return;
+  }
+  if (resp_points->empty()) {
     LOG(ERROR) << "BraveP3AStar: no points for randomness request";
     message_callback_.Run(histogram_name, epoch, nullptr);
     return;
   }
   std::string final_msg;
-  if (!ConstructFinalMessage(randomness_request_state, resp_points, resp_proofs,
-                             &final_msg)) {
+  if (!ConstructFinalMessage(randomness_request_state, *resp_points,
+                             *resp_proofs, &final_msg)) {
     message_callback_.Run(histogram_name, epoch, nullptr);
     return;
   }
@@ -278,60 +116,17 @@ void BraveP3AStar::HandleRandomnessData(
       std::unique_ptr<std::string>(new std::string(final_msg)));
 }
 
-void BraveP3AStar::HandleRandomnessServerInfoResponse(
-    std::unique_ptr<std::string> response_body) {
-  if (!response_body || response_body->empty()) {
-    std::string error_str =
-        net::ErrorToShortString(rnd_info_url_loader_->NetError());
-    LOG(ERROR) << "BraveP3AStar: no response body for randomness server "
-               << "info request, net error: " << error_str;
-    rnd_info_url_loader_.reset();
-    info_callback_.Run(nullptr);
-    return;
-  }
-  rnd_info_url_loader_.reset();
-  base::JSONReader::ValueWithError parsed_value =
-      base::JSONReader::ReadAndReturnValueWithError(
-          *response_body, base::JSONParserOptions::JSON_PARSE_RFC);
-  if (!parsed_value.value || !parsed_value.value->is_dict()) {
-    LOG(ERROR) << "BraveP3AStar: failed to parse server info json: "
-               << parsed_value.error_message;
-    info_callback_.Run(nullptr);
-    return;
-  }
-  absl::optional<int> epoch = parsed_value.value->FindIntKey("currentEpoch");
-  std::string* next_epoch_time_str =
-      parsed_value.value->FindStringKey("nextEpochTime");
-  if (!epoch || !next_epoch_time_str) {
-    LOG(ERROR) << "BraveP3AStar: failed to parse server info json: "
-                  "missing fields";
-    info_callback_.Run(nullptr);
-    return;
-  }
-  base::Time next_epoch_time;
-  if (!base::Time::FromString(next_epoch_time_str->c_str(), &next_epoch_time) ||
-      next_epoch_time <= base::Time::Now()) {
-    LOG(ERROR) << "BraveP3AStar: failed to parse server info next epoch time";
-    info_callback_.Run(nullptr);
-    return;
-  }
-  local_state_->SetInteger(kCurrentEpochPrefName, *epoch);
-  local_state_->SetTime(kNextEpochTimePrefName, next_epoch_time);
-  rnd_server_info_.reset(
-      new RandomnessServerInfo{.current_epoch = static_cast<uint8_t>(*epoch),
-                               .next_epoch_time = next_epoch_time});
-  info_callback_.Run(rnd_server_info_.get());
-}
-
 bool BraveP3AStar::ConstructFinalMessage(
     rust::Box<nested_star::RandomnessRequestStateWrapper>&
         randomness_request_state,
     const rust::Vec<nested_star::VecU8>& resp_points,
     const rust::Vec<nested_star::VecU8>& resp_proofs,
     std::string* output) {
+  auto* rnd_server_info = randomness_manager_.GetCachedRandomnessServerInfo();
+  DCHECK(rnd_server_info);
   auto msg_res = nested_star::construct_message(
-      resp_points, resp_proofs, *randomness_request_state, *current_public_key_,
-      {}, kP3AStarCurrentThreshold);
+      resp_points, resp_proofs, *randomness_request_state,
+      *rnd_server_info->public_key, {}, kP3AStarCurrentThreshold);
   if (!msg_res.error.empty()) {
     LOG(ERROR) << "BraveP3AStar: message construction failed: "
                << msg_res.error.c_str();

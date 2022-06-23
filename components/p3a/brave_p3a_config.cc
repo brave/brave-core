@@ -85,7 +85,6 @@ void BraveP3AConfig::LoadFromCommandLine() {
           &star_randomness_info_url);
 
   LoadBool(cmdline, switches::kP3AIgnoreServerErrors, &ignore_server_errors);
-  LoadBool(cmdline, switches::kP3AUseLocalRandomness, &use_local_randomness);
 
   VLOG(2) << "BraveP3AConfig parameters are:"
           << ", average_upload_interval_ = " << average_upload_interval

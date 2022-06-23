@@ -93,8 +93,6 @@ void BraveP3AMessageManager::Init(
       base::BindRepeating(&BraveP3AMessageManager::OnRandomnessServerInfoReady,
                           base::Unretained(this)),
       config_));
-
-  star_manager_->UpdateRandomnessServerInfo();
 }
 
 void BraveP3AMessageManager::UpdateMetricValue(base::StringPiece histogram_name,

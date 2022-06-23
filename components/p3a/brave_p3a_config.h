@@ -27,8 +27,6 @@ struct BraveP3AConfig {
 
   bool ignore_server_errors = false;
 
-  bool use_local_randomness = false;
-
   BraveP3AConfig();
   ~BraveP3AConfig();
 
