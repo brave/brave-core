@@ -70,9 +70,9 @@ class BraveWalletService : public KeyedService,
   static void MigrateMultichainUserAssets(PrefService* prefs);
   static void MigrateUserAssetsAddPreloadingNetworks(PrefService* prefs);
 
-  static base::Value GetDefaultEthereumAssets();
-  static base::Value GetDefaultSolanaAssets();
-  static base::Value GetDefaultFilecoinAssets();
+  static base::Value::Dict GetDefaultEthereumAssets();
+  static base::Value::Dict GetDefaultSolanaAssets();
+  static base::Value::Dict GetDefaultFilecoinAssets();
 
   // mojom::BraveWalletService:
   void AddObserver(::mojo::PendingRemote<mojom::BraveWalletServiceObserver>
