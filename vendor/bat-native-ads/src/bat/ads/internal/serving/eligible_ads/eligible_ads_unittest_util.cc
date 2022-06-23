@@ -13,9 +13,9 @@
 namespace ads {
 
 void ResetEligibleAds(const AdType& type) {
-  ClientStateManager::Get()->ResetAllSeenAdsForType(type);
+  ClientStateManager::GetInstance()->ResetAllSeenAdsForType(type);
 
-  ClientStateManager::Get()->ResetAllSeenAdvertisersForType(type);
+  ClientStateManager::GetInstance()->ResetAllSeenAdvertisersForType(type);
 
   database::table::ad_events::Reset(
       [](const bool success) { ASSERT_TRUE(success); });

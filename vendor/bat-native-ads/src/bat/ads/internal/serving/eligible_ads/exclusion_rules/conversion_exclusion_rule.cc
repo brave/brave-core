@@ -20,8 +20,9 @@ constexpr int kConversionCap = 1;
 
 ConversionExclusionRule::ConversionExclusionRule(const AdEventList& ad_events)
     : ad_events_(ad_events) {
-  should_allow_conversion_tracking_ = AdsClientHelper::Get()->GetBooleanPref(
-      prefs::kShouldAllowConversionTracking);
+  should_allow_conversion_tracking_ =
+      AdsClientHelper::GetInstance()->GetBooleanPref(
+          prefs::kShouldAllowConversionTracking);
 }
 
 ConversionExclusionRule::~ConversionExclusionRule() = default;

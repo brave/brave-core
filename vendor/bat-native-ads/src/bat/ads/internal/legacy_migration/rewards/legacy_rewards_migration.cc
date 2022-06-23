@@ -28,14 +28,16 @@ void OnFailedToMigrate(InitializeCallback callback) {
 
 void OnDidMigrate(InitializeCallback callback) {
   BLOG(3, "Successfully migrated rewards state");
-  AdsClientHelper::Get()->SetBooleanPref(prefs::kHasMigratedRewardsState, true);
+  AdsClientHelper::GetInstance()->SetBooleanPref(
+      prefs::kHasMigratedRewardsState, true);
   callback(/* success */ true);
 }
 
 }  // namespace
 
 void Migrate(InitializeCallback callback) {
-  if (AdsClientHelper::Get()->GetBooleanPref(prefs::kHasMigratedRewardsState)) {
+  if (AdsClientHelper::GetInstance()->GetBooleanPref(
+          prefs::kHasMigratedRewardsState)) {
     callback(/* success */ true);
     return;
   }
@@ -44,7 +46,7 @@ void Migrate(InitializeCallback callback) {
 
   BLOG(3, "Loading confirmations state");
 
-  AdsClientHelper::Get()->Load(
+  AdsClientHelper::GetInstance()->Load(
       kConfirmationsFilename, [=](const bool success, const std::string& json) {
         if (!success) {
           // Confirmations state does not exist

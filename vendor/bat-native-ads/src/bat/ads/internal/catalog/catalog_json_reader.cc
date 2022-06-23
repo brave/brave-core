@@ -26,8 +26,9 @@ absl::optional<CatalogInfo> ReadCatalog(const std::string& json) {
   rapidjson::Document document;
   document.Parse(json.c_str());
 
-  const std::string json_schema = AdsClientHelper::Get()->LoadDataResource(
-      g_catalog_json_schema_data_resource_name);
+  const std::string json_schema =
+      AdsClientHelper::GetInstance()->LoadDataResource(
+          g_catalog_json_schema_data_resource_name);
 
   if (!helper::JSON::Validate(&document, json_schema)) {
     BLOG(1, helper::JSON::GetLastError(&document));

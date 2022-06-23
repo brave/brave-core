@@ -20,7 +20,7 @@ class DatabaseManager final {
   DatabaseManager(const DatabaseManager&) = delete;
   DatabaseManager& operator=(const DatabaseManager&) = delete;
 
-  static DatabaseManager* Get();
+  static DatabaseManager* GetInstance();
 
   static bool HasInstance();
 

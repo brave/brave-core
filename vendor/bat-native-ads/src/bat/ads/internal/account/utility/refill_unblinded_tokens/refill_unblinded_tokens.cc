@@ -59,8 +59,8 @@ RefillUnblindedTokens::~RefillUnblindedTokens() {
 }
 
 void RefillUnblindedTokens::MaybeRefill(const WalletInfo& wallet) {
-  if (!ConfirmationStateManager::Get()->IsInitialized() || is_processing_ ||
-      retry_timer_.IsRunning()) {
+  if (!ConfirmationStateManager::GetInstance()->IsInitialized() ||
+      is_processing_ || retry_timer_.IsRunning()) {
     return;
   }
 
@@ -85,11 +85,12 @@ void RefillUnblindedTokens::MaybeRefill(const WalletInfo& wallet) {
   }
 
   if (!ShouldRefillUnblindedTokens()) {
-    BLOG(1,
-         "No need to refill unblinded tokens as we already have "
-             << ConfirmationStateManager::Get()->get_unblinded_tokens()->Count()
-             << " unblinded tokens which is above the minimum threshold of "
-             << kMinimumUnblindedTokens);
+    BLOG(1, "No need to refill unblinded tokens as we already have "
+                << ConfirmationStateManager::GetInstance()
+                       ->get_unblinded_tokens()
+                       ->Count()
+                << " unblinded tokens which is above the minimum threshold of "
+                << kMinimumUnblindedTokens);
     return;
   }
 
@@ -129,7 +130,7 @@ void RefillUnblindedTokens::RequestSignedTokens() {
 
   const auto callback = std::bind(&RefillUnblindedTokens::OnRequestSignedTokens,
                                   this, std::placeholders::_1);
-  AdsClientHelper::Get()->UrlRequest(std::move(url_request), callback);
+  AdsClientHelper::GetInstance()->UrlRequest(std::move(url_request), callback);
 }
 
 void RefillUnblindedTokens::OnRequestSignedTokens(
@@ -181,7 +182,7 @@ void RefillUnblindedTokens::GetSignedTokens() {
 
   const auto callback = std::bind(&RefillUnblindedTokens::OnGetSignedTokens,
                                   this, std::placeholders::_1);
-  AdsClientHelper::Get()->UrlRequest(std::move(url_request), callback);
+  AdsClientHelper::GetInstance()->UrlRequest(std::move(url_request), callback);
 }
 
 void RefillUnblindedTokens::OnGetSignedTokens(
@@ -324,17 +325,17 @@ void RefillUnblindedTokens::OnGetSignedTokens(
     unblinded_tokens.push_back(unblinded_token);
   }
 
-  ConfirmationStateManager::Get()->get_unblinded_tokens()->AddTokens(
+  ConfirmationStateManager::GetInstance()->get_unblinded_tokens()->AddTokens(
       unblinded_tokens);
-  ConfirmationStateManager::Get()->Save();
+  ConfirmationStateManager::GetInstance()->Save();
 
-  BLOG(1,
-       "Added "
-           << unblinded_tokens.size()
-           << " unblinded tokens, you now "
-              "have "
-           << ConfirmationStateManager::Get()->get_unblinded_tokens()->Count()
-           << " unblinded tokens");
+  BLOG(1, "Added " << unblinded_tokens.size()
+                   << " unblinded tokens, you now "
+                      "have "
+                   << ConfirmationStateManager::GetInstance()
+                          ->get_unblinded_tokens()
+                          ->Count()
+                   << " unblinded tokens");
 
   OnDidRefillUnblindedTokens();
 }
@@ -391,8 +392,9 @@ void RefillUnblindedTokens::OnRetry() {
 }
 
 bool RefillUnblindedTokens::ShouldRefillUnblindedTokens() const {
-  if (ConfirmationStateManager::Get()->get_unblinded_tokens()->Count() >=
-      kMinimumUnblindedTokens) {
+  if (ConfirmationStateManager::GetInstance()
+          ->get_unblinded_tokens()
+          ->Count() >= kMinimumUnblindedTokens) {
     return false;
   }
 
@@ -400,8 +402,9 @@ bool RefillUnblindedTokens::ShouldRefillUnblindedTokens() const {
 }
 
 int RefillUnblindedTokens::CalculateAmountOfTokensToRefill() const {
-  return kMaximumUnblindedTokens -
-         ConfirmationStateManager::Get()->get_unblinded_tokens()->Count();
+  return kMaximumUnblindedTokens - ConfirmationStateManager::GetInstance()
+                                       ->get_unblinded_tokens()
+                                       ->Count();
 }
 
 }  // namespace ads

@@ -19,40 +19,39 @@ class BrowserManager final {
   BrowserManager(const BrowserManager&) = delete;
   BrowserManager& operator=(const BrowserManager&) = delete;
 
-  static BrowserManager* Get();
+  static BrowserManager* GetInstance();
 
   static bool HasInstance();
 
   void AddObserver(BrowserManagerObserver* observer);
   void RemoveObserver(BrowserManagerObserver* observer);
 
-  void OnDidBecomeActive();
-  void OnDidResignActive();
+  void OnBrowserDidBecomeActive();
+  void OnBrowserDidResignActive();
+  void SetBrowserIsActive(const bool is_active) { is_active_ = is_active; }
+  bool IsBrowserActive() const { return is_active_ && is_in_foreground_; }
 
-  void OnDidEnterForeground();
-  void OnDidEnterBackground();
-
-  void SetActive(const bool is_active) { is_active_ = is_active; }
-
-  bool IsActive() const { return is_active_ && is_foreground_; }
-
-  void SetForeground(const bool is_foreground) {
-    is_foreground_ = is_foreground;
+  void OnBrowserDidEnterForeground();
+  void OnBrowserDidEnterBackground();
+  void SetBrowserIsInForeground(const bool is_in_foreground) {
+    is_in_foreground_ = is_in_foreground;
   }
-
-  bool IsForeground() const { return is_foreground_; }
+  bool IsBrowserInForeground() const { return is_in_foreground_; }
 
  private:
   void NotifyBrowserDidBecomeActive() const;
   void NotifyBrowserDidResignActive() const;
+  void LogBrowserActiveState() const;
+
   void NotifyBrowserDidEnterForeground() const;
   void NotifyBrowserDidEnterBackground() const;
+  void LogBrowserForegroundState() const;
 
   base::ObserverList<BrowserManagerObserver> observers_;
 
   bool is_active_ = false;
 
-  bool is_foreground_ = false;
+  bool is_in_foreground_ = false;
 };
 
 }  // namespace ads

@@ -47,7 +47,7 @@ class ClientStateManager final {
   ClientStateManager(const ClientStateManager&) = delete;
   ClientStateManager& operator=(const ClientStateManager&) = delete;
 
-  static ClientStateManager* Get();
+  static ClientStateManager* GetInstance();
 
   static bool HasInstance();
 

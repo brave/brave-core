@@ -33,7 +33,8 @@ void NotificationAd::FireEvent(
   DCHECK(!placement_id.empty());
 
   NotificationAdInfo ad;
-  if (!NotificationAdManager::Get()->GetForPlacementId(placement_id, &ad)) {
+  if (!NotificationAdManager::GetInstance()->GetForPlacementId(placement_id,
+                                                               &ad)) {
     BLOG(1, "Failed to fire notification ad event due to missing placement id "
                 << placement_id);
     NotifyNotificationAdEventFailed(placement_id, event_type);

@@ -20,7 +20,7 @@ void AdEventTimedOut::FireEvent(const NotificationAdInfo& ad) {
               << ad.placement_id << " and creative instance id "
               << ad.creative_instance_id);
 
-  NotificationAdManager::Get()->Remove(ad.placement_id);
+  NotificationAdManager::GetInstance()->Remove(ad.placement_id);
 }
 
 }  // namespace notification_ads

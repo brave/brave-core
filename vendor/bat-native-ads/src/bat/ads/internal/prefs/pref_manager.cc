@@ -25,7 +25,7 @@ PrefManager::~PrefManager() {
 }
 
 // static
-PrefManager* PrefManager::Get() {
+PrefManager* PrefManager::GetInstance() {
   DCHECK(g_pref_manager_instance);
   return g_pref_manager_instance;
 }

@@ -47,8 +47,10 @@ class BatAdsUserActivityPermissionRuleTest : public UnitTestBase {
 TEST_F(BatAdsUserActivityPermissionRuleTest,
        AllowAdIfUserActivityScoreIsEqualToTheThreshold) {
   // Arrange
-  UserActivityManager::Get()->RecordEvent(UserActivityEventType::kOpenedNewTab);
-  UserActivityManager::Get()->RecordEvent(UserActivityEventType::kClosedTab);
+  UserActivityManager::GetInstance()->RecordEvent(
+      UserActivityEventType::kOpenedNewTab);
+  UserActivityManager::GetInstance()->RecordEvent(
+      UserActivityEventType::kClosedTab);
 
   // Act
   UserActivityPermissionRule permission_rule;
@@ -61,10 +63,12 @@ TEST_F(BatAdsUserActivityPermissionRuleTest,
 TEST_F(BatAdsUserActivityPermissionRuleTest,
        AllowAdIfUserActivityScoreIsGreaterThanTheThreshold) {
   // Arrange
-  UserActivityManager::Get()->RecordEvent(UserActivityEventType::kOpenedNewTab);
-  UserActivityManager::Get()->RecordEvent(
+  UserActivityManager::GetInstance()->RecordEvent(
+      UserActivityEventType::kOpenedNewTab);
+  UserActivityManager::GetInstance()->RecordEvent(
       UserActivityEventType::kTabStartedPlayingMedia);
-  UserActivityManager::Get()->RecordEvent(UserActivityEventType::kClosedTab);
+  UserActivityManager::GetInstance()->RecordEvent(
+      UserActivityEventType::kClosedTab);
 
   // Act
   UserActivityPermissionRule permission_rule;
@@ -77,7 +81,8 @@ TEST_F(BatAdsUserActivityPermissionRuleTest,
 TEST_F(BatAdsUserActivityPermissionRuleTest,
        DoNotAllowAdIfUserActivityScoreIsLessThanTheThreshold) {
   // Arrange
-  UserActivityManager::Get()->RecordEvent(UserActivityEventType::kOpenedNewTab);
+  UserActivityManager::GetInstance()->RecordEvent(
+      UserActivityEventType::kOpenedNewTab);
 
   // Act
   UserActivityPermissionRule permission_rule;

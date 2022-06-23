@@ -6,7 +6,6 @@
 #include "bat/ads/internal/processors/behavioral/purchase_intent/purchase_intent_processor.h"
 
 #include <algorithm>
-#include <vector>
 
 #include "base/check.h"
 #include "base/strings/string_split.h"
@@ -16,12 +15,18 @@
 #include "bat/ads/internal/base/strings/string_strip_util.h"
 #include "bat/ads/internal/base/url/url_util.h"
 #include "bat/ads/internal/deprecated/client/client_state_manager.h"
+#include "bat/ads/internal/locale/locale_manager.h"
 #include "bat/ads/internal/processors/behavioral/purchase_intent/purchase_intent_signal_info.h"
 #include "bat/ads/internal/resources/behavioral/purchase_intent/purchase_intent_info.h"
 #include "bat/ads/internal/resources/behavioral/purchase_intent/purchase_intent_resource.h"
 #include "bat/ads/internal/resources/behavioral/purchase_intent/purchase_intent_signal_history_info.h"
 #include "bat/ads/internal/resources/behavioral/purchase_intent/purchase_intent_site_info.h"
+#include "bat/ads/internal/resources/country_components.h"
+#include "bat/ads/internal/resources/resource_manager.h"
+#include "bat/ads/internal/tabs/tab_info.h"
+#include "bat/ads/internal/tabs/tab_manager.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
+#include "url/gurl.h"
 
 namespace ads {
 namespace processor {
@@ -39,8 +44,8 @@ void AppendIntentSignalToHistory(
     history.created_at = purchase_intent_signal.created_at;
     history.weight = purchase_intent_signal.weight;
 
-    ClientStateManager::Get()->AppendToPurchaseIntentSignalHistoryForSegment(
-        segment, history);
+    ClientStateManager::GetInstance()
+        ->AppendToPurchaseIntentSignalHistoryForSegment(segment, history);
   }
 }
 
@@ -74,9 +79,17 @@ bool IsSubset(const KeywordList& keywords_lhs,
 PurchaseIntent::PurchaseIntent(resource::PurchaseIntent* resource)
     : resource_(resource) {
   DCHECK(resource_);
+
+  LocaleManager::GetInstance()->AddObserver(this);
+  ResourceManager::GetInstance()->AddObserver(this);
+  TabManager::GetInstance()->AddObserver(this);
 }
 
-PurchaseIntent::~PurchaseIntent() = default;
+PurchaseIntent::~PurchaseIntent() {
+  LocaleManager::GetInstance()->RemoveObserver(this);
+  ResourceManager::GetInstance()->RemoveObserver(this);
+  TabManager::GetInstance()->RemoveObserver(this);
+}
 
 void PurchaseIntent::Process(const GURL& url) {
   if (!resource_->IsInitialized()) {
@@ -204,6 +217,38 @@ uint16_t PurchaseIntent::GetFunnelWeightForSearchQuery(
   }
 
   return max_weight;
+}
+
+void PurchaseIntent::OnLocaleDidChange(const std::string& locale) {
+  resource_->Load();
+}
+
+void PurchaseIntent::OnResourceDidUpdate(const std::string& id) {
+  if (kCountryComponentIds.find(id) != kCountryComponentIds.end()) {
+    resource_->Load();
+  }
+}
+
+void PurchaseIntent::OnTextContentDidChange(
+    const int32_t id,
+    const std::vector<GURL>& redirect_chain,
+    const std::string& content) {
+  const GURL& url = redirect_chain.back();
+
+  if (!url.SchemeIsHTTPOrHTTPS()) {
+    BLOG(1, url.scheme()
+                << " scheme is not supported for processing purchase intent");
+    return;
+  }
+
+  const absl::optional<TabInfo> last_visible_tab =
+      TabManager::GetInstance()->GetLastVisibleTab();
+  if (SameDomainOrHost(url,
+                       last_visible_tab ? last_visible_tab->url : GURL())) {
+    return;
+  }
+
+  Process(url);
 }
 
 }  // namespace processor

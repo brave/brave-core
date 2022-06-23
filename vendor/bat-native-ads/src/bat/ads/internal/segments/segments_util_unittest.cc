@@ -118,7 +118,7 @@ TEST_F(BatAdsTargetingSegmentUtilTest, GetParentSegmentsForEmptyList) {
 
 TEST_F(BatAdsTargetingSegmentUtilTest, ShouldFilterMatchingParentChildSegment) {
   // Arrange
-  ClientStateManager::Get()->ToggleAdOptOut(
+  ClientStateManager::GetInstance()->ToggleAdOptOut(
       "parent-child", CategoryContentOptActionType::kNone);
 
   // Act
@@ -131,7 +131,7 @@ TEST_F(BatAdsTargetingSegmentUtilTest, ShouldFilterMatchingParentChildSegment) {
 TEST_F(BatAdsTargetingSegmentUtilTest,
        ShouldNotFilterNonMatchingParentChildSegment) {
   // Arrange
-  ClientStateManager::Get()->ToggleAdOptOut(
+  ClientStateManager::GetInstance()->ToggleAdOptOut(
       "parent-child", CategoryContentOptActionType::kNone);
 
   // Act
@@ -143,7 +143,7 @@ TEST_F(BatAdsTargetingSegmentUtilTest,
 
 TEST_F(BatAdsTargetingSegmentUtilTest, ShouldFilterMatchingParentSegment) {
   // Arrange
-  ClientStateManager::Get()->ToggleAdOptOut(
+  ClientStateManager::GetInstance()->ToggleAdOptOut(
       "parent", CategoryContentOptActionType::kNone);
 
   // Act
@@ -156,7 +156,7 @@ TEST_F(BatAdsTargetingSegmentUtilTest, ShouldFilterMatchingParentSegment) {
 TEST_F(BatAdsTargetingSegmentUtilTest,
        ShouldNotFilterNonMatchingParentSegment) {
   // Arrange
-  ClientStateManager::Get()->ToggleAdOptOut(
+  ClientStateManager::GetInstance()->ToggleAdOptOut(
       "parent", CategoryContentOptActionType::kNone);
 
   // Act
@@ -169,7 +169,7 @@ TEST_F(BatAdsTargetingSegmentUtilTest,
 TEST_F(BatAdsTargetingSegmentUtilTest,
        ShouldFilterAgainstParentForMatchingParentSegmentWithChild) {
   // Arrange
-  ClientStateManager::Get()->ToggleAdOptOut(
+  ClientStateManager::GetInstance()->ToggleAdOptOut(
       "parent", CategoryContentOptActionType::kNone);
 
   // Act
@@ -182,7 +182,7 @@ TEST_F(BatAdsTargetingSegmentUtilTest,
 TEST_F(BatAdsTargetingSegmentUtilTest,
        ShouldNotFilterAgainstParentForNonMatchingParentSegmentWithChild) {
   // Arrange
-  ClientStateManager::Get()->ToggleAdOptOut(
+  ClientStateManager::GetInstance()->ToggleAdOptOut(
       "parent", CategoryContentOptActionType::kNone);
 
   // Act

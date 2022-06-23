@@ -70,7 +70,7 @@ ArmBucketMap BucketSortArms(const ArmList& arms) {
 }
 
 SegmentList GetEligibleSegments() {
-  const std::string json = AdsClientHelper::Get()->GetStringPref(
+  const std::string json = AdsClientHelper::GetInstance()->GetStringPref(
       prefs::kEpsilonGreedyBanditEligibleSegments);
 
   return JSONReader::ReadSegments(json);
@@ -192,8 +192,8 @@ EpsilonGreedyBandit::EpsilonGreedyBandit() = default;
 EpsilonGreedyBandit::~EpsilonGreedyBandit() = default;
 
 SegmentList EpsilonGreedyBandit::GetSegments() const {
-  const std::string json =
-      AdsClientHelper::Get()->GetStringPref(prefs::kEpsilonGreedyBanditArms);
+  const std::string json = AdsClientHelper::GetInstance()->GetStringPref(
+      prefs::kEpsilonGreedyBanditArms);
 
   const EpsilonGreedyBanditArmMap arms =
       EpsilonGreedyBanditArms::FromJson(json);

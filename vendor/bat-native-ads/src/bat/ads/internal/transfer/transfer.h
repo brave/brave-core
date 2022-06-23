@@ -7,6 +7,7 @@
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_TRANSFER_TRANSFER_H_
 
 #include <cstdint>
+#include <string>
 #include <vector>
 
 #include "base/observer_list.h"
@@ -52,6 +53,9 @@ class Transfer final : public TabManagerObserver {
   void NotifyFailedToTransferAd(const AdInfo& ad) const;
 
   // TabManagerObserver:
+  void OnHtmlContentDidChange(const int32_t id,
+                              const std::vector<GURL>& redirect_chain,
+                              const std::string& content) override;
   void OnDidCloseTab(const int32_t id) override;
 
   base::ObserverList<TransferObserver> observers_;

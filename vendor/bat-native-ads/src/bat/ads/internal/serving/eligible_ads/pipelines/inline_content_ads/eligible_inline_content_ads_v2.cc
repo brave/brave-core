@@ -49,7 +49,7 @@ void EligibleAdsV2::GetForUserModel(
 
         const int max_count = features::GetBrowsingHistoryMaxCount();
         const int days_ago = features::GetBrowsingHistoryDaysAgo();
-        AdsClientHelper::Get()->GetBrowsingHistory(
+        AdsClientHelper::GetInstance()->GetBrowsingHistory(
             max_count, days_ago,
             [=](const BrowsingHistoryList& browsing_history) {
               GetEligibleAds(user_model, ad_events, browsing_history,

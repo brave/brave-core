@@ -50,8 +50,8 @@ TEST_F(BatAdsConversionExclusionRuleTest, AllowAdIfThereIsNoConversionHistory) {
 TEST_F(BatAdsConversionExclusionRuleTest,
        DoNotAllowAdIfShouldNotAllowConversionTracking) {
   // Arrange
-  AdsClientHelper::Get()->SetBooleanPref(prefs::kShouldAllowConversionTracking,
-                                         false);
+  AdsClientHelper::GetInstance()->SetBooleanPref(
+      prefs::kShouldAllowConversionTracking, false);
 
   CreativeAdInfo creative_ad;
   creative_ad.creative_set_id = kCreativeSetIds.at(0);

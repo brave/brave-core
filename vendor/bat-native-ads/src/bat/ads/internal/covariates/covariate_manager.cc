@@ -147,7 +147,7 @@ CovariateManager::~CovariateManager() {
 }
 
 // static
-CovariateManager* CovariateManager::Get() {
+CovariateManager* CovariateManager::GetInstance() {
   DCHECK(g_covariate_logs_instance);
   return g_covariate_logs_instance;
 }
@@ -199,7 +199,8 @@ void CovariateManager::SetNotificationAdEvent(
 void CovariateManager::LogTrainingInstance() {
   brave_federated::mojom::TrainingInstancePtr training_instance =
       GetTrainingInstance();
-  AdsClientHelper::Get()->LogTrainingInstance(std::move(training_instance));
+  AdsClientHelper::GetInstance()->LogTrainingInstance(
+      std::move(training_instance));
 }
 
 }  // namespace ads

@@ -77,7 +77,7 @@ void RedeemUnblindedPaymentTokens::Redeem() {
 
   BLOG(1, "RedeemUnblindedPaymentTokens");
 
-  if (ConfirmationStateManager::Get()
+  if (ConfirmationStateManager::GetInstance()
           ->get_unblinded_payment_tokens()
           ->IsEmpty()) {
     BLOG(1, "No unblinded payment tokens to redeem");
@@ -91,7 +91,7 @@ void RedeemUnblindedPaymentTokens::Redeem() {
   is_processing_ = true;
 
   const privacy::UnblindedPaymentTokenList& unblinded_payment_tokens =
-      ConfirmationStateManager::Get()
+      ConfirmationStateManager::GetInstance()
           ->get_unblinded_payment_tokens()
           ->GetAllTokens();
 
@@ -107,7 +107,8 @@ void RedeemUnblindedPaymentTokens::Redeem() {
     const auto callback =
         std::bind(&RedeemUnblindedPaymentTokens::OnRedeem, this,
                   std::placeholders::_1, unblinded_payment_tokens);
-    AdsClientHelper::Get()->UrlRequest(std::move(url_request), callback);
+    AdsClientHelper::GetInstance()->UrlRequest(std::move(url_request),
+                                               callback);
   });
 }
 
@@ -140,9 +141,10 @@ void RedeemUnblindedPaymentTokens::OnDidRedeemUnblindedPaymentTokens(
 
   retry_timer_.Stop();
 
-  ConfirmationStateManager::Get()->get_unblinded_payment_tokens()->RemoveTokens(
-      unblinded_payment_tokens);
-  ConfirmationStateManager::Get()->Save();
+  ConfirmationStateManager::GetInstance()
+      ->get_unblinded_payment_tokens()
+      ->RemoveTokens(unblinded_payment_tokens);
+  ConfirmationStateManager::GetInstance()->Save();
 
   if (delegate_) {
     delegate_->OnDidRedeemUnblindedPaymentTokens(unblinded_payment_tokens);
@@ -162,7 +164,8 @@ void RedeemUnblindedPaymentTokens::OnFailedToRedeemUnblindedPaymentTokens() {
 void RedeemUnblindedPaymentTokens::ScheduleNextTokenRedemption() {
   const base::Time redeem_at = CalculateNextTokenRedemptionDate();
 
-  AdsClientHelper::Get()->SetTimePref(prefs::kNextTokenRedemptionAt, redeem_at);
+  AdsClientHelper::GetInstance()->SetTimePref(prefs::kNextTokenRedemptionAt,
+                                              redeem_at);
 
   if (delegate_) {
     delegate_->OnDidScheduleNextUnblindedPaymentTokensRedemption(redeem_at);
@@ -197,7 +200,8 @@ void RedeemUnblindedPaymentTokens::OnRetry() {
 
 base::TimeDelta RedeemUnblindedPaymentTokens::CalculateTokenRedemptionDelay() {
   const base::Time next_token_redemption_at =
-      AdsClientHelper::Get()->GetTimePref(prefs::kNextTokenRedemptionAt);
+      AdsClientHelper::GetInstance()->GetTimePref(
+          prefs::kNextTokenRedemptionAt);
 
   const base::Time now = base::Time::Now();
 

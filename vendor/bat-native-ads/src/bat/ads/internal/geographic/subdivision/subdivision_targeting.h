@@ -10,6 +10,7 @@
 
 #include "bat/ads/internal/base/timer/backoff_timer.h"
 #include "bat/ads/internal/base/timer/timer.h"
+#include "bat/ads/internal/locale/locale_manager_observer.h"
 #include "bat/ads/internal/prefs/pref_manager_observer.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
@@ -17,7 +18,8 @@
 namespace ads {
 namespace geographic {
 
-class SubdivisionTargeting final : public PrefManagerObserver {
+class SubdivisionTargeting final : public LocaleManagerObserver,
+                                   public PrefManagerObserver {
  public:
   SubdivisionTargeting();
   ~SubdivisionTargeting() override;
@@ -28,8 +30,7 @@ class SubdivisionTargeting final : public PrefManagerObserver {
 
   bool IsDisabled() const;
 
-  void MaybeFetchForLocale(const std::string& locale);
-  void MaybeFetchForCurrentLocale();
+  void MaybeFetch();
 
   std::string GetSubdivisionCode() const;
 
@@ -44,11 +45,15 @@ class SubdivisionTargeting final : public PrefManagerObserver {
 
   bool ShouldAutoDetect() const;
 
+  void MaybeFetchForLocale(const std::string& locale);
   void Fetch();
   void OnFetch(const mojom::UrlResponse& url_response);
   bool ParseJson(const std::string& json);
   void Retry();
   void FetchAfterDelay();
+
+  // LocaleManagerObserver:
+  void OnLocaleDidChange(const std::string& locale) override;
 
   // PrefManagerObserver:
   void OnPrefChanged(const std::string& path) override;

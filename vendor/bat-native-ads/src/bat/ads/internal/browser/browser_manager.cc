@@ -6,6 +6,7 @@
 #include "bat/ads/internal/browser/browser_manager.h"
 
 #include "base/check_op.h"
+#include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/base/logging_util.h"
 
 namespace ads {
@@ -17,6 +18,15 @@ BrowserManager* g_browser_manager_instance = nullptr;
 BrowserManager::BrowserManager() {
   DCHECK(!g_browser_manager_instance);
   g_browser_manager_instance = this;
+
+  const bool is_browser_active =
+      AdsClientHelper::GetInstance()->IsBrowserActive();
+
+  is_active_ = is_browser_active;
+  LogBrowserActiveState();
+
+  is_in_foreground_ = is_browser_active;
+  LogBrowserForegroundState();
 }
 
 BrowserManager::~BrowserManager() {
@@ -25,7 +35,7 @@ BrowserManager::~BrowserManager() {
 }
 
 // static
-BrowserManager* BrowserManager::Get() {
+BrowserManager* BrowserManager::GetInstance() {
   DCHECK(g_browser_manager_instance);
   return g_browser_manager_instance;
 }
@@ -45,50 +55,46 @@ void BrowserManager::RemoveObserver(BrowserManagerObserver* observer) {
   observers_.RemoveObserver(observer);
 }
 
-void BrowserManager::OnDidBecomeActive() {
+void BrowserManager::OnBrowserDidBecomeActive() {
   if (is_active_) {
     return;
   }
 
-  BLOG(1, "Browser did become active");
-
   is_active_ = true;
+  LogBrowserActiveState();
 
   NotifyBrowserDidBecomeActive();
 }
 
-void BrowserManager::OnDidResignActive() {
+void BrowserManager::OnBrowserDidResignActive() {
   if (!is_active_) {
     return;
   }
 
-  BLOG(1, "Browser did resign active");
-
   is_active_ = false;
+  LogBrowserActiveState();
 
   NotifyBrowserDidResignActive();
 }
 
-void BrowserManager::OnDidEnterForeground() {
-  if (is_foreground_) {
+void BrowserManager::OnBrowserDidEnterForeground() {
+  if (is_in_foreground_) {
     return;
   }
 
-  BLOG(1, "Browser did enter foreground");
-
-  is_foreground_ = true;
+  is_in_foreground_ = true;
+  LogBrowserForegroundState();
 
   NotifyBrowserDidEnterForeground();
 }
 
-void BrowserManager::OnDidEnterBackground() {
-  if (!is_foreground_) {
+void BrowserManager::OnBrowserDidEnterBackground() {
+  if (!is_in_foreground_) {
     return;
   }
 
-  BLOG(1, "Browser did enter background");
-
-  is_foreground_ = false;
+  is_in_foreground_ = false;
+  LogBrowserForegroundState();
 
   NotifyBrowserDidEnterBackground();
 }
@@ -107,6 +113,14 @@ void BrowserManager::NotifyBrowserDidResignActive() const {
   }
 }
 
+void BrowserManager::LogBrowserActiveState() const {
+  if (is_active_) {
+    BLOG(1, "Browser did become active");
+  } else {
+    BLOG(1, "Browser did resign active");
+  }
+}
+
 void BrowserManager::NotifyBrowserDidEnterForeground() const {
   for (BrowserManagerObserver& observer : observers_) {
     observer.OnBrowserDidEnterForeground();
@@ -116,6 +130,14 @@ void BrowserManager::NotifyBrowserDidEnterForeground() const {
 void BrowserManager::NotifyBrowserDidEnterBackground() const {
   for (BrowserManagerObserver& observer : observers_) {
     observer.OnBrowserDidEnterBackground();
+  }
+}
+
+void BrowserManager::LogBrowserForegroundState() const {
+  if (is_in_foreground_) {
+    BLOG(1, "Browser did enter foreground");
+  } else {
+    BLOG(1, "Browser did enter background");
   }
 }
 

@@ -6,9 +6,16 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_PROCESSORS_CONTEXTUAL_TEXT_CLASSIFICATION_TEXT_CLASSIFICATION_PROCESSOR_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_PROCESSORS_CONTEXTUAL_TEXT_CLASSIFICATION_TEXT_CLASSIFICATION_PROCESSOR_H_
 
+#include <cstdint>
 #include <string>
+#include <vector>
 
 #include "base/memory/raw_ptr.h"
+#include "bat/ads/internal/locale/locale_manager_observer.h"
+#include "bat/ads/internal/resources/resource_manager_observer.h"
+#include "bat/ads/internal/tabs/tab_manager_observer.h"
+
+class GURL;
 
 namespace ads {
 
@@ -18,17 +25,30 @@ class TextClassification;
 
 namespace processor {
 
-class TextClassification final {
+class TextClassification final : public LocaleManagerObserver,
+                                 public ResourceManagerObserver,
+                                 public TabManagerObserver {
  public:
   explicit TextClassification(resource::TextClassification* resource);
-  ~TextClassification();
+  ~TextClassification() override;
   TextClassification(const TextClassification&) = delete;
   TextClassification& operator=(const TextClassification&) = delete;
 
   void Process(const std::string& text);
 
  private:
-  raw_ptr<resource::TextClassification> resource_ = nullptr;
+  // LocaleManagerObserver:
+  void OnLocaleDidChange(const std::string& locale) override;
+
+  // ResourceManagerObserver:
+  void OnResourceDidUpdate(const std::string& id) override;
+
+  // TabManagerObserver:
+  void OnTextContentDidChange(const int32_t id,
+                              const std::vector<GURL>& redirect_chain,
+                              const std::string& content) override;
+
+  raw_ptr<resource::TextClassification> resource_ = nullptr;  // NOT OWNED
 };
 
 }  // namespace processor

@@ -31,7 +31,7 @@ DatabaseManager::~DatabaseManager() {
 }
 
 // static
-DatabaseManager* DatabaseManager::Get() {
+DatabaseManager* DatabaseManager::GetInstance() {
   DCHECK(g_database_manager_instance);
   return g_database_manager_instance;
 }
@@ -63,7 +63,7 @@ void DatabaseManager::CreateOrOpen(ResultCallback callback) {
 
   transaction->commands.push_back(std::move(command));
 
-  AdsClientHelper::Get()->RunDBTransaction(
+  AdsClientHelper::GetInstance()->RunDBTransaction(
       std::move(transaction), [=](mojom::DBCommandResponsePtr response) {
         DCHECK(response);
 

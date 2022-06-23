@@ -28,7 +28,7 @@ class BatAdsAccountUtilTest : public UnitTestBase {
 
 TEST_F(BatAdsAccountUtilTest, ShouldRewardUser) {
   // Arrange
-  AdsClientHelper::Get()->SetBooleanPref(prefs::kEnabled, true);
+  AdsClientHelper::GetInstance()->SetBooleanPref(prefs::kEnabled, true);
 
   // Act
   const bool should_reward_user = ShouldRewardUser();
@@ -39,7 +39,7 @@ TEST_F(BatAdsAccountUtilTest, ShouldRewardUser) {
 
 TEST_F(BatAdsAccountUtilTest, ShouldNotRewardUser) {
   // Arrange
-  AdsClientHelper::Get()->SetBooleanPref(prefs::kEnabled, false);
+  AdsClientHelper::GetInstance()->SetBooleanPref(prefs::kEnabled, false);
 
   // Act
   const bool should_reward_user = ShouldRewardUser();
@@ -61,7 +61,8 @@ TEST_F(BatAdsAccountUtilTest, ResetRewards) {
                         "8b742869-6e4a-490c-ac31-31b49130098a",
                         "546fe7b0-5047-4f28-a11c-81f14edcf0f6",
                         ConfirmationType::kViewed, AdType::kNotificationAd);
-  ConfirmationStateManager::Get()->AppendFailedConfirmation(confirmation);
+  ConfirmationStateManager::GetInstance()->AppendFailedConfirmation(
+      confirmation);
 
   const privacy::UnblindedPaymentTokenList& unblinded_payment_tokens =
       privacy::GetRandomUnblindedPaymentTokens(1);
@@ -79,7 +80,7 @@ TEST_F(BatAdsAccountUtilTest, ResetRewards) {
         });
 
     const ConfirmationList& confirmations =
-        ConfirmationStateManager::Get()->GetFailedConfirmations();
+        ConfirmationStateManager::GetInstance()->GetFailedConfirmations();
     EXPECT_TRUE(confirmations.empty());
 
     const privacy::UnblindedPaymentTokenList& unblinded_payment_tokens =
@@ -105,7 +106,7 @@ TEST_F(BatAdsAccountUtilTest, ResetRewardsWithNoState) {
         });
 
     const ConfirmationList& confirmations =
-        ConfirmationStateManager::Get()->GetFailedConfirmations();
+        ConfirmationStateManager::GetInstance()->GetFailedConfirmations();
     EXPECT_TRUE(confirmations.empty());
 
     const privacy::UnblindedPaymentTokenList& unblinded_payment_tokens =

@@ -42,7 +42,7 @@ TEST_F(BatAdsEpsilonGreedyBanditProcessorTest, InitializeAllArmsFromResource) {
   prefs_arm_info.segment = "bar";
   prefs_arms["bar"] = prefs_arm_info;
 
-  AdsClientHelper::Get()->SetStringPref(
+  AdsClientHelper::GetInstance()->SetStringPref(
       prefs::kEpsilonGreedyBanditArms,
       targeting::EpsilonGreedyBanditArms::ToJson(prefs_arms));
 
@@ -50,8 +50,8 @@ TEST_F(BatAdsEpsilonGreedyBanditProcessorTest, InitializeAllArmsFromResource) {
   processor::EpsilonGreedyBandit processor;
 
   // Assert
-  std::string json =
-      AdsClientHelper::Get()->GetStringPref(prefs::kEpsilonGreedyBanditArms);
+  std::string json = AdsClientHelper::GetInstance()->GetStringPref(
+      prefs::kEpsilonGreedyBanditArms);
   targeting::EpsilonGreedyBanditArmMap arms =
       targeting::EpsilonGreedyBanditArms::FromJson(json);
 
@@ -70,8 +70,8 @@ TEST_F(BatAdsEpsilonGreedyBanditProcessorTest, NeverProcessed) {
   std::string segment = "travel";
 
   // Assert
-  std::string json =
-      AdsClientHelper::Get()->GetStringPref(prefs::kEpsilonGreedyBanditArms);
+  std::string json = AdsClientHelper::GetInstance()->GetStringPref(
+      prefs::kEpsilonGreedyBanditArms);
   targeting::EpsilonGreedyBanditArmMap arms =
       targeting::EpsilonGreedyBanditArms::FromJson(json);
 
@@ -99,8 +99,8 @@ TEST_F(BatAdsEpsilonGreedyBanditProcessorTest,
   processor.Process({segment, mojom::NotificationAdEventType::kDismissed});
 
   // Assert
-  std::string json =
-      AdsClientHelper::Get()->GetStringPref(prefs::kEpsilonGreedyBanditArms);
+  std::string json = AdsClientHelper::GetInstance()->GetStringPref(
+      prefs::kEpsilonGreedyBanditArms);
   targeting::EpsilonGreedyBanditArmMap arms =
       targeting::EpsilonGreedyBanditArms::FromJson(json);
 
@@ -128,8 +128,8 @@ TEST_F(BatAdsEpsilonGreedyBanditProcessorTest,
   processor.Process({segment, mojom::NotificationAdEventType::kTimedOut});
 
   // Assert
-  std::string json =
-      AdsClientHelper::Get()->GetStringPref(prefs::kEpsilonGreedyBanditArms);
+  std::string json = AdsClientHelper::GetInstance()->GetStringPref(
+      prefs::kEpsilonGreedyBanditArms);
   targeting::EpsilonGreedyBanditArmMap arms =
       targeting::EpsilonGreedyBanditArms::FromJson(json);
 
@@ -157,8 +157,8 @@ TEST_F(BatAdsEpsilonGreedyBanditProcessorTest,
   processor.Process({segment, mojom::NotificationAdEventType::kClicked});
 
   // Assert
-  std::string json =
-      AdsClientHelper::Get()->GetStringPref(prefs::kEpsilonGreedyBanditArms);
+  std::string json = AdsClientHelper::GetInstance()->GetStringPref(
+      prefs::kEpsilonGreedyBanditArms);
   targeting::EpsilonGreedyBanditArmMap arms =
       targeting::EpsilonGreedyBanditArms::FromJson(json);
 
@@ -181,8 +181,8 @@ TEST_F(BatAdsEpsilonGreedyBanditProcessorTest, ProcessSegmentNotInResource) {
   processor.Process({segment, mojom::NotificationAdEventType::kTimedOut});
 
   // Assert
-  std::string json =
-      AdsClientHelper::Get()->GetStringPref(prefs::kEpsilonGreedyBanditArms);
+  std::string json = AdsClientHelper::GetInstance()->GetStringPref(
+      prefs::kEpsilonGreedyBanditArms);
   targeting::EpsilonGreedyBanditArmMap arms =
       targeting::EpsilonGreedyBanditArms::FromJson(json);
 
@@ -200,8 +200,8 @@ TEST_F(BatAdsEpsilonGreedyBanditProcessorTest, ProcessChildSegment) {
   processor.Process({segment, mojom::NotificationAdEventType::kTimedOut});
 
   // Assert
-  std::string json =
-      AdsClientHelper::Get()->GetStringPref(prefs::kEpsilonGreedyBanditArms);
+  std::string json = AdsClientHelper::GetInstance()->GetStringPref(
+      prefs::kEpsilonGreedyBanditArms);
   targeting::EpsilonGreedyBanditArmMap arms =
       targeting::EpsilonGreedyBanditArms::FromJson(json);
 

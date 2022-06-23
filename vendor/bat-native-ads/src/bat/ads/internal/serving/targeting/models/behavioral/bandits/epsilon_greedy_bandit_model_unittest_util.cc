@@ -19,7 +19,7 @@ namespace model {
 void SaveSegments(const SegmentList& segments) {
   const std::string json = JSONWriter::WriteSegments(segments);
 
-  AdsClientHelper::Get()->SetStringPref(
+  AdsClientHelper::GetInstance()->SetStringPref(
       prefs::kEpsilonGreedyBanditEligibleSegments, json);
 }
 

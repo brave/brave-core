@@ -9,6 +9,7 @@
 #include "base/observer_list.h"
 #include "bat/ads/internal/base/timer/backoff_timer.h"
 #include "bat/ads/internal/base/timer/timer.h"
+#include "bat/ads/internal/browser/browser_manager_observer.h"
 #include "bat/ads/internal/catalog/catalog_observer.h"
 #include "bat/ads/internal/database/database_manager_observer.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
@@ -17,7 +18,8 @@ namespace ads {
 
 struct CatalogInfo;
 
-class Catalog final : public DatabaseManagerObserver {
+class Catalog final : public BrowserManagerObserver,
+                      public DatabaseManagerObserver {
  public:
   Catalog();
   ~Catalog() override;
@@ -39,6 +41,9 @@ class Catalog final : public DatabaseManagerObserver {
 
   void NotifyDidUpdateCatalog(const CatalogInfo& catalog) const;
   void NotifyFailedToUpdateCatalog() const;
+
+  // BrowserManagerObserver:
+  void OnBrowserDidEnterForeground() override;
 
   // DatabaseManagerObserver:
   void OnDidMigrateDatabase(const int from_version,

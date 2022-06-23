@@ -23,11 +23,11 @@ constexpr base::TimeDelta kTransferAdAfter = base::Seconds(10);
 }  // namespace
 
 Transfer::Transfer() {
-  TabManager::Get()->AddObserver(this);
+  TabManager::GetInstance()->AddObserver(this);
 }
 
 Transfer::~Transfer() {
-  TabManager::Get()->RemoveObserver(this);
+  TabManager::GetInstance()->RemoveObserver(this);
 }
 
 void Transfer::AddObserver(TransferObserver* observer) {
@@ -82,12 +82,13 @@ void Transfer::OnTransferAd(const int32_t tab_id,
 
   transferring_ad_tab_id_ = 0;
 
-  if (!TabManager::Get()->IsVisible(tab_id)) {
+  if (!TabManager::GetInstance()->IsTabVisible(tab_id)) {
     NotifyFailedToTransferAd(ad);
     return;
   }
 
-  const absl::optional<TabInfo> tab = TabManager::Get()->GetForId(tab_id);
+  const absl::optional<TabInfo> tab =
+      TabManager::GetInstance()->GetTabForId(tab_id);
   if (!tab) {
     NotifyFailedToTransferAd(ad);
     return;
@@ -147,6 +148,12 @@ void Transfer::NotifyFailedToTransferAd(const AdInfo& ad) const {
   for (TransferObserver& observer : observers_) {
     observer.OnFailedToTransferAd(ad);
   }
+}
+
+void Transfer::OnHtmlContentDidChange(const int32_t id,
+                                      const std::vector<GURL>& redirect_chain,
+                                      const std::string& content) {
+  MaybeTransferAd(id, redirect_chain);
 }
 
 void Transfer::OnDidCloseTab(const int32_t id) {

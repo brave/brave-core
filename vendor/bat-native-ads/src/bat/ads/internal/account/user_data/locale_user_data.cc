@@ -9,8 +9,8 @@
 
 #include "base/values.h"
 #include "bat/ads/ads.h"
+#include "bat/ads/internal/locale/locale_manager.h"
 #include "bat/ads/internal/privacy/locale/country_code_util.h"
-#include "brave/components/l10n/browser/locale_helper.h"
 #include "brave/components/l10n/common/locale_util.h"
 
 namespace ads {
@@ -30,8 +30,7 @@ base::DictionaryValue GetLocale() {
     return user_data;
   }
 
-  const std::string locale =
-      brave_l10n::LocaleHelper::GetInstance()->GetLocale();
+  const std::string locale = LocaleManager::GetInstance()->GetLocale();
 
   if (privacy::locale::IsMemberOfAnonymitySet(locale)) {
     const std::string country_code = brave_l10n::GetCountryCode(locale);

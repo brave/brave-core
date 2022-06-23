@@ -21,7 +21,7 @@ namespace resource {
 namespace {
 
 SegmentList GetSegments() {
-  const std::string json = AdsClientHelper::Get()->GetStringPref(
+  const std::string json = AdsClientHelper::GetInstance()->GetStringPref(
       prefs::kEpsilonGreedyBanditEligibleSegments);
 
   return JSONReader::ReadSegments(json);
@@ -42,7 +42,7 @@ void EpsilonGreedyBandit::LoadFromCatalog(const CatalogInfo& catalog) {
   const SegmentList parent_segments = GetParentSegments(segments);
   const std::string json = JSONWriter::WriteSegments(parent_segments);
 
-  AdsClientHelper::Get()->SetStringPref(
+  AdsClientHelper::GetInstance()->SetStringPref(
       prefs::kEpsilonGreedyBanditEligibleSegments, json);
 
   BLOG(2, "Successfully loaded epsilon greedy bandit segments:");

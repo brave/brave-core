@@ -85,7 +85,7 @@ void Confirmations::ProcessRetryQueue() {
 
 void Confirmations::Retry() {
   const ConfirmationList& failed_confirmations =
-      ConfirmationStateManager::Get()->GetFailedConfirmations();
+      ConfirmationStateManager::GetInstance()->GetFailedConfirmations();
   if (failed_confirmations.empty()) {
     BLOG(1, "No failed confirmations to retry");
     return;
@@ -102,7 +102,7 @@ void Confirmations::Retry() {
 
 void Confirmations::OnRetry() {
   const ConfirmationList& failed_confirmations =
-      ConfirmationStateManager::Get()->GetFailedConfirmations();
+      ConfirmationStateManager::GetInstance()->GetFailedConfirmations();
   DCHECK(!failed_confirmations.empty());
 
   const ConfirmationInfo& confirmation = failed_confirmations.front();
@@ -137,10 +137,13 @@ ConfirmationInfo Confirmations::CreateConfirmation(
   confirmation.ad_type = ad_type;
   confirmation.created_at = time;
 
-  if (ShouldRewardUser() &&
-      !ConfirmationStateManager::Get()->get_unblinded_tokens()->IsEmpty()) {
+  if (ShouldRewardUser() && !ConfirmationStateManager::GetInstance()
+                                 ->get_unblinded_tokens()
+                                 ->IsEmpty()) {
     const privacy::UnblindedTokenInfo& unblinded_token =
-        ConfirmationStateManager::Get()->get_unblinded_tokens()->GetToken();
+        ConfirmationStateManager::GetInstance()
+            ->get_unblinded_tokens()
+            ->GetToken();
 
     confirmation.unblinded_token = unblinded_token;
 
@@ -161,9 +164,10 @@ ConfirmationInfo Confirmations::CreateConfirmation(
     const std::string& payload = CreateConfirmationRequestDTO(confirmation);
     confirmation.credential = CreateCredential(unblinded_token, payload);
 
-    ConfirmationStateManager::Get()->get_unblinded_tokens()->RemoveToken(
-        unblinded_token);
-    ConfirmationStateManager::Get()->Save();
+    ConfirmationStateManager::GetInstance()
+        ->get_unblinded_tokens()
+        ->RemoveToken(unblinded_token);
+    ConfirmationStateManager::GetInstance()->Save();
   }
 
   return confirmation;
@@ -173,7 +177,9 @@ void Confirmations::CreateNewConfirmationAndAppendToRetryQueue(
     const ConfirmationInfo& confirmation) {
   DCHECK(confirmation.IsValid());
 
-  if (ConfirmationStateManager::Get()->get_unblinded_tokens()->IsEmpty()) {
+  if (ConfirmationStateManager::GetInstance()
+          ->get_unblinded_tokens()
+          ->IsEmpty()) {
     AppendToRetryQueue(confirmation);
     return;
   }
@@ -194,8 +200,9 @@ void Confirmations::CreateNewConfirmationAndAppendToRetryQueue(
 void Confirmations::AppendToRetryQueue(const ConfirmationInfo& confirmation) {
   DCHECK(confirmation.IsValid());
 
-  ConfirmationStateManager::Get()->AppendFailedConfirmation(confirmation);
-  ConfirmationStateManager::Get()->Save();
+  ConfirmationStateManager::GetInstance()->AppendFailedConfirmation(
+      confirmation);
+  ConfirmationStateManager::GetInstance()->Save();
 
   BLOG(1, "Added " << confirmation.type << " confirmation for "
                    << confirmation.ad_type << " with id " << confirmation.id
@@ -208,7 +215,7 @@ void Confirmations::AppendToRetryQueue(const ConfirmationInfo& confirmation) {
 void Confirmations::RemoveFromRetryQueue(const ConfirmationInfo& confirmation) {
   DCHECK(confirmation.IsValid());
 
-  if (!ConfirmationStateManager::Get()->RemoveFailedConfirmation(
+  if (!ConfirmationStateManager::GetInstance()->RemoveFailedConfirmation(
           confirmation)) {
     BLOG(0, "Failed to remove " << confirmation.type << " confirmation for "
                                 << confirmation.ad_type << " with id "
@@ -228,7 +235,7 @@ void Confirmations::RemoveFromRetryQueue(const ConfirmationInfo& confirmation) {
                      << confirmation.creative_instance_id
                      << " from the confirmations queue");
 
-  ConfirmationStateManager::Get()->Save();
+  ConfirmationStateManager::GetInstance()->Save();
 }
 
 void Confirmations::OnDidSendConfirmation(
@@ -273,7 +280,7 @@ void Confirmations::OnFailedToSendConfirmation(
 void Confirmations::OnDidRedeemUnblindedToken(
     const ConfirmationInfo& confirmation,
     const privacy::UnblindedPaymentTokenInfo& unblinded_payment_token) {
-  if (ConfirmationStateManager::Get()
+  if (ConfirmationStateManager::GetInstance()
           ->get_unblinded_payment_tokens()
           ->TokenExists(unblinded_payment_token)) {
     BLOG(1, "Unblinded payment token is a duplicate");
@@ -282,15 +289,19 @@ void Confirmations::OnDidRedeemUnblindedToken(
     return;
   }
 
-  ConfirmationStateManager::Get()->get_unblinded_payment_tokens()->AddTokens(
-      {unblinded_payment_token});
-  ConfirmationStateManager::Get()->Save();
+  ConfirmationStateManager::GetInstance()
+      ->get_unblinded_payment_tokens()
+      ->AddTokens({unblinded_payment_token});
+  ConfirmationStateManager::GetInstance()->Save();
 
   const int unblinded_payment_tokens_count =
-      ConfirmationStateManager::Get()->get_unblinded_payment_tokens()->Count();
+      ConfirmationStateManager::GetInstance()
+          ->get_unblinded_payment_tokens()
+          ->Count();
 
   const base::Time next_token_redemption_at =
-      AdsClientHelper::Get()->GetTimePref(prefs::kNextTokenRedemptionAt);
+      AdsClientHelper::GetInstance()->GetTimePref(
+          prefs::kNextTokenRedemptionAt);
 
   BLOG(1, "Successfully redeemed unblinded token for "
               << confirmation.ad_type << " with confirmation id "

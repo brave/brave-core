@@ -34,7 +34,7 @@ class ConfirmationStateManager final {
   ConfirmationStateManager(const ConfirmationStateManager&) = delete;
   ConfirmationStateManager& operator=(const ConfirmationStateManager&) = delete;
 
-  static ConfirmationStateManager* Get();
+  static ConfirmationStateManager* GetInstance();
 
   static bool HasInstance();
 

@@ -43,7 +43,7 @@ class BatAdsRedeemUnblindedTokenTest : public UnitTestBase {
 
 TEST_F(BatAdsRedeemUnblindedTokenTest, RedeemUnblindedTokenIfAdsAreEnabled) {
   // Arrange
-  AdsClientHelper::Get()->SetBooleanPref(prefs::kEnabled, true);
+  AdsClientHelper::GetInstance()->SetBooleanPref(prefs::kEnabled, true);
 
   const URLEndpoints& endpoints = {
       {// Create confirmation request
@@ -115,7 +115,7 @@ TEST_F(BatAdsRedeemUnblindedTokenTest, RedeemUnblindedTokenIfAdsAreEnabled) {
 TEST_F(BatAdsRedeemUnblindedTokenTest,
        RetryRedeemingUnblindedTokenIfIssuersAreMissingAndAdsAreEnabled) {
   // Arrange
-  AdsClientHelper::Get()->SetBooleanPref(prefs::kEnabled, true);
+  AdsClientHelper::GetInstance()->SetBooleanPref(prefs::kEnabled, true);
 
   privacy::SetUnblindedTokens(1);
 
@@ -153,7 +153,7 @@ TEST_F(BatAdsRedeemUnblindedTokenTest,
 TEST_F(BatAdsRedeemUnblindedTokenTest,
        RedeemUnblindedTokenIfConfirmationWasCreatedAndAdsAreEnabled) {
   // Arrange
-  AdsClientHelper::Get()->SetBooleanPref(prefs::kEnabled, true);
+  AdsClientHelper::GetInstance()->SetBooleanPref(prefs::kEnabled, true);
 
   const URLEndpoints& endpoints = {
       {// Fetch payment token request
@@ -214,7 +214,7 @@ TEST_F(
     BatAdsRedeemUnblindedTokenTest,
     FailAndRetryToRedeemUnblindedTokenDueToFetchPaymentTokenRespondingWith404NotFoundIfAdsAreEnabled) {  // NOLINT
   // Arrange
-  AdsClientHelper::Get()->SetBooleanPref(prefs::kEnabled, true);
+  AdsClientHelper::GetInstance()->SetBooleanPref(prefs::kEnabled, true);
 
   const URLEndpoints& endpoints = {
       {// Create confirmation request
@@ -265,7 +265,7 @@ TEST_F(
     BatAdsRedeemUnblindedTokenTest,
     FailAndRetryToRedeemUnblindedTokenDueToFetchPaymentTokenRespondingWithAcceptedIfAdsAreEnabled) {  // NOLINT
   // Arrange
-  AdsClientHelper::Get()->SetBooleanPref(prefs::kEnabled, true);
+  AdsClientHelper::GetInstance()->SetBooleanPref(prefs::kEnabled, true);
 
   const URLEndpoints& endpoints = {
       {// Create confirmation request
@@ -316,7 +316,7 @@ TEST_F(
     BatAdsRedeemUnblindedTokenTest,
     FailAndRetryToRedeemUnblindedTokenDueToFetchPaymentTokenRespondingWith500InternalServerErrorIfAdsAreEnabled) {  // NOLINT
   // Arrange
-  AdsClientHelper::Get()->SetBooleanPref(prefs::kEnabled, true);
+  AdsClientHelper::GetInstance()->SetBooleanPref(prefs::kEnabled, true);
 
   const URLEndpoints& endpoints = {
       {// Create confirmation request
@@ -365,7 +365,7 @@ TEST_F(
 
 TEST_F(BatAdsRedeemUnblindedTokenTest, SendConfirmationIfAdsIsDisabled) {
   // Arrange
-  AdsClientHelper::Get()->SetBooleanPref(prefs::kEnabled, false);
+  AdsClientHelper::GetInstance()->SetBooleanPref(prefs::kEnabled, false);
 
   const URLEndpoints& endpoints = {
       {// Create confirmation request
@@ -415,7 +415,7 @@ TEST_F(BatAdsRedeemUnblindedTokenTest, SendConfirmationIfAdsIsDisabled) {
 TEST_F(BatAdsRedeemUnblindedTokenTest,
        DoNotRetrySendingConfirmationForHttpBadRequestResponseIfAdsIsDisabled) {
   // Arrange
-  AdsClientHelper::Get()->SetBooleanPref(prefs::kEnabled, false);
+  AdsClientHelper::GetInstance()->SetBooleanPref(prefs::kEnabled, false);
 
   const URLEndpoints& endpoints = {
       {// Create confirmation request
@@ -455,7 +455,7 @@ TEST_F(BatAdsRedeemUnblindedTokenTest,
 TEST_F(BatAdsRedeemUnblindedTokenTest,
        DoNotRetrySendingConfirmationForHttpConflictResponseIfAdsIsDisabled) {
   // Arrange
-  AdsClientHelper::Get()->SetBooleanPref(prefs::kEnabled, false);
+  AdsClientHelper::GetInstance()->SetBooleanPref(prefs::kEnabled, false);
 
   const URLEndpoints& endpoints = {
       {// Create confirmation request
@@ -495,7 +495,7 @@ TEST_F(BatAdsRedeemUnblindedTokenTest,
 TEST_F(BatAdsRedeemUnblindedTokenTest,
        RetrySendingConfirmationForNonHttpBadRequestResponseIfAdsIsDisabled) {
   // Arrange
-  AdsClientHelper::Get()->SetBooleanPref(prefs::kEnabled, false);
+  AdsClientHelper::GetInstance()->SetBooleanPref(prefs::kEnabled, false);
 
   const URLEndpoints& endpoints = {
       {// Create confirmation request

@@ -57,11 +57,11 @@ Serving::Serving(geographic::SubdivisionTargeting* subdivision_targeting,
   eligible_ads_ = EligibleAdsFactory::Build(version, subdivision_targeting,
                                             anti_targeting_resource);
 
-  PrefManager::Get()->AddObserver(this);
+  PrefManager::GetInstance()->AddObserver(this);
 }
 
 Serving::~Serving() {
-  PrefManager::Get()->RemoveObserver(this);
+  PrefManager::GetInstance()->RemoveObserver(this);
 }
 
 void Serving::AddObserver(NotificationAdServingObserver* observer) {
@@ -85,7 +85,7 @@ void Serving::StartServingAdsAtRegularIntervals() {
 
   if (!HasPreviouslyServedAnAd()) {
     const base::Time serve_ad_at = base::Time::Now() + delay;
-    ClientStateManager::Get()->SetServeAdAt(serve_ad_at);
+    ClientStateManager::GetInstance()->SetServeAdAt(serve_ad_at);
   }
 
   const base::Time serve_ad_at = MaybeServeAdAfter(delay);
@@ -174,11 +174,12 @@ bool Serving::ShouldServeAdsAtRegularIntervals() const {
 }
 
 bool Serving::HasPreviouslyServedAnAd() const {
-  return !ClientStateManager::Get()->GetServeAdAt().is_null();
+  return !ClientStateManager::GetInstance()->GetServeAdAt().is_null();
 }
 
 bool Serving::ShouldServeAd() const {
-  const base::Time serve_ad_at = ClientStateManager::Get()->GetServeAdAt();
+  const base::Time serve_ad_at =
+      ClientStateManager::GetInstance()->GetServeAdAt();
   if (base::Time::Now() < serve_ad_at) {
     return false;
   }
@@ -196,7 +197,7 @@ base::TimeDelta Serving::CalculateDelayBeforeServingAnAd() const {
   }
 
   base::TimeDelta delay =
-      ClientStateManager::Get()->GetServeAdAt() - base::Time::Now();
+      ClientStateManager::GetInstance()->GetServeAdAt() - base::Time::Now();
   if (delay.is_negative()) {
     delay = base::TimeDelta();
   }
@@ -231,7 +232,7 @@ void Serving::RetryServingAdAtNextInterval() {
 
 base::Time Serving::MaybeServeAdAfter(const base::TimeDelta delay) {
   const base::Time serve_ad_at = base::Time::Now() + delay;
-  ClientStateManager::Get()->SetServeAdAt(serve_ad_at);
+  ClientStateManager::GetInstance()->SetServeAdAt(serve_ad_at);
 
   return timer_.Start(
       FROM_HERE, delay,

@@ -6,7 +6,6 @@
 #include "bat/ads/internal/conversions/conversions.h"
 
 #include <algorithm>
-#include <cstdint>
 #include <iterator>
 #include <set>
 
@@ -27,6 +26,12 @@
 #include "bat/ads/internal/conversions/conversions_features.h"
 #include "bat/ads/internal/conversions/sorts/conversions_sort_factory.h"
 #include "bat/ads/internal/conversions/verifiable_conversion_info.h"
+#include "bat/ads/internal/locale/locale_manager.h"
+#include "bat/ads/internal/resources/behavioral/conversions/conversions_info.h"
+#include "bat/ads/internal/resources/behavioral/conversions/conversions_resource.h"
+#include "bat/ads/internal/resources/country_components.h"
+#include "bat/ads/internal/resources/resource_manager.h"
+#include "bat/ads/internal/tabs/tab_manager.h"
 #include "bat/ads/pref_names.h"
 #include "brave_base/random.h"
 #include "third_party/re2/src/re2/re2.h"
@@ -195,9 +200,19 @@ AdEventList FilterAdEventsForConversion(const AdEventList& ad_events,
 
 }  // namespace
 
-Conversions::Conversions() = default;
+Conversions::Conversions() {
+  resource_ = std::make_unique<resource::Conversions>();
 
-Conversions::~Conversions() = default;
+  LocaleManager::GetInstance()->AddObserver(this);
+  ResourceManager::GetInstance()->AddObserver(this);
+  TabManager::GetInstance()->AddObserver(this);
+}
+
+Conversions::~Conversions() {
+  LocaleManager::GetInstance()->RemoveObserver(this);
+  ResourceManager::GetInstance()->RemoveObserver(this);
+  TabManager::GetInstance()->RemoveObserver(this);
+}
 
 void Conversions::AddObserver(ConversionsObserver* observer) {
   DCHECK(observer);
@@ -252,7 +267,7 @@ void Conversions::StartTimerIfReady() {
 ///////////////////////////////////////////////////////////////////////////////
 
 bool Conversions::ShouldAllow() const {
-  return AdsClientHelper::Get()->GetBooleanPref(
+  return AdsClientHelper::GetInstance()->GetBooleanPref(
       prefs::kShouldAllowConversionTracking);
 }
 
@@ -570,6 +585,23 @@ void Conversions::NotifyConversionFailed(
   for (ConversionsObserver& observer : observers_) {
     observer.OnConversionFailed(conversion_queue_item);
   }
+}
+
+void Conversions::OnLocaleDidChange(const std::string& locale) {
+  resource_->Load();
+}
+
+void Conversions::OnResourceDidUpdate(const std::string& id) {
+  if (kCountryComponentIds.find(id) != kCountryComponentIds.end()) {
+    resource_->Load();
+  }
+}
+
+void Conversions::OnHtmlContentDidChange(
+    const int32_t id,
+    const std::vector<GURL>& redirect_chain,
+    const std::string& content) {
+  MaybeConvert(redirect_chain, content, resource_->get()->id_patterns);
 }
 
 }  // namespace ads

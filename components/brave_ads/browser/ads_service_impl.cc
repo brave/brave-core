@@ -2249,24 +2249,25 @@ void AdsServiceImpl::Load(const std::string& name, ads::LoadCallback callback) {
 void AdsServiceImpl::LoadFileResource(const std::string& id,
                                       const int version,
                                       ads::LoadFileCallback callback) {
-  const absl::optional<base::FilePath> path =
+  const absl::optional<base::FilePath> file_path_optional =
       g_brave_browser_process->resource_component()->GetPath(id, version);
-
-  if (!path) {
+  if (!file_path_optional) {
     std::move(callback).Run(base::File());
     return;
   }
+  const base::FilePath& file_path = file_path_optional.value();
 
-  VLOG(1) << "Getting descriptor to ads resource from " << path.value();
+  VLOG(1) << "Loading file resource from " << file_path << " for component id "
+          << id;
 
   base::PostTaskAndReplyWithResult(
       file_task_runner_.get(), FROM_HERE,
       base::BindOnce(
-          [](const base::FilePath& path) {
-            return base::File(path, base::File::Flags::FLAG_OPEN |
-                                        base::File::Flags::FLAG_READ);
+          [](const base::FilePath& file_path) {
+            return base::File(file_path, base::File::Flags::FLAG_OPEN |
+                                             base::File::Flags::FLAG_READ);
           },
-          path.value()),
+          file_path),
       base::BindOnce(&AdsServiceImpl::OnFileLoaded, AsWeakPtr(),
                      std::move(callback)));
 }

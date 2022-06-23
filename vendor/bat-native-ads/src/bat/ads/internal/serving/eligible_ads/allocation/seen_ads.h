@@ -19,7 +19,7 @@ namespace ads {
 template <typename T>
 T FilterSeenAdsAndRoundRobinIfNeeded(const T& ads, const AdType& type) {
   const std::map<std::string, bool> seen_ads =
-      ClientStateManager::Get()->GetSeenAdsForType(type);
+      ClientStateManager::GetInstance()->GetSeenAdsForType(type);
 
   const T filtered_ads = FilterSeenAds(ads, seen_ads);
   if (!filtered_ads.empty()) {
@@ -34,7 +34,8 @@ T FilterSeenAdsAndRoundRobinIfNeeded(const T& ads, const AdType& type) {
     cast_creative_ads.push_back(cast_creative_ad);
   }
 
-  ClientStateManager::Get()->ResetSeenAdsForType(cast_creative_ads, type);
+  ClientStateManager::GetInstance()->ResetSeenAdsForType(cast_creative_ads,
+                                                         type);
 
   return ads;
 }

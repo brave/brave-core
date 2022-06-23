@@ -37,7 +37,7 @@ bool BrowserIsActivePermissionRule::DoesRespectCap() {
     return true;
   }
 
-  return BrowserManager::Get()->IsActive();
+  return BrowserManager::GetInstance()->IsBrowserActive();
 }
 
 }  // namespace ads

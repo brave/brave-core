@@ -43,7 +43,8 @@ TEST_F(BatAdsTextClassificationProcessorTest,
 
   // Assert
   const targeting::TextClassificationProbabilitiesList list =
-      ClientStateManager::Get()->GetTextClassificationProbabilitiesHistory();
+      ClientStateManager::GetInstance()
+          ->GetTextClassificationProbabilitiesHistory();
 
   EXPECT_TRUE(list.empty());
 }
@@ -56,7 +57,8 @@ TEST_F(BatAdsTextClassificationProcessorTest, DoNotProcessForEmptyText) {
 
   // Assert
   const targeting::TextClassificationProbabilitiesList list =
-      ClientStateManager::Get()->GetTextClassificationProbabilitiesHistory();
+      ClientStateManager::GetInstance()
+          ->GetTextClassificationProbabilitiesHistory();
 
   EXPECT_TRUE(list.empty());
 }
@@ -68,7 +70,8 @@ TEST_F(BatAdsTextClassificationProcessorTest, NeverProcessed) {
 
   // Assert
   const targeting::TextClassificationProbabilitiesList list =
-      ClientStateManager::Get()->GetTextClassificationProbabilitiesHistory();
+      ClientStateManager::GetInstance()
+          ->GetTextClassificationProbabilitiesHistory();
 
   EXPECT_TRUE(list.empty());
 }
@@ -81,7 +84,8 @@ TEST_F(BatAdsTextClassificationProcessorTest, ProcessText) {
 
   // Assert
   const targeting::TextClassificationProbabilitiesList list =
-      ClientStateManager::Get()->GetTextClassificationProbabilitiesHistory();
+      ClientStateManager::GetInstance()
+          ->GetTextClassificationProbabilitiesHistory();
 
   EXPECT_EQ(1UL, list.size());
 }
@@ -101,7 +105,8 @@ TEST_F(BatAdsTextClassificationProcessorTest, ProcessMultipleText) {
 
   // Assert
   const targeting::TextClassificationProbabilitiesList list =
-      ClientStateManager::Get()->GetTextClassificationProbabilitiesHistory();
+      ClientStateManager::GetInstance()
+          ->GetTextClassificationProbabilitiesHistory();
 
   EXPECT_EQ(3UL, list.size());
 }

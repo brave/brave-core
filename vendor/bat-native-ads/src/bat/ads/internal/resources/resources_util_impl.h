@@ -67,7 +67,7 @@ template <typename T>
 void LoadAndParseResource(const std::string& id,
                           const int version,
                           LoadAndParseResourceCallback<T> callback) {
-  AdsClientHelper::Get()->LoadFileResource(
+  AdsClientHelper::GetInstance()->LoadFileResource(
       id, version,
       base::BindOnce(&ReadFileAndParseResource<T>, std::move(callback)));
 }

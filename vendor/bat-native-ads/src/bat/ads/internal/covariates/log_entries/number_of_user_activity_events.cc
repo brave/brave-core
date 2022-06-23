@@ -30,7 +30,8 @@ brave_federated::mojom::CovariateType NumberOfUserActivityEvents::GetType()
 
 std::string NumberOfUserActivityEvents::GetValue() const {
   const UserActivityEventList events =
-      UserActivityManager::Get()->GetHistoryForTimeWindow(base::Minutes(30));
+      UserActivityManager::GetInstance()->GetHistoryForTimeWindow(
+          base::Minutes(30));
 
   return base::NumberToString(
       GetNumberOfUserActivityEvents(events, event_type_));

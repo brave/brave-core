@@ -60,11 +60,13 @@ TEST_F(BatAdsFederatedLogEntriesTimeSinceLastUserActivityEventTest, GetValue) {
       UserActivityEventType::kOpenedNewTab,
       brave_federated::mojom::CovariateType::kTimeSinceLastOpenedNewTabEvent);
 
-  UserActivityManager::Get()->RecordEvent(UserActivityEventType::kOpenedNewTab);
+  UserActivityManager::GetInstance()->RecordEvent(
+      UserActivityEventType::kOpenedNewTab);
 
   AdvanceClockBy(base::Minutes(2));
 
-  UserActivityManager::Get()->RecordEvent(UserActivityEventType::kClosedTab);
+  UserActivityManager::GetInstance()->RecordEvent(
+      UserActivityEventType::kClosedTab);
 
   // Act
   const std::string value = entry->GetValue();

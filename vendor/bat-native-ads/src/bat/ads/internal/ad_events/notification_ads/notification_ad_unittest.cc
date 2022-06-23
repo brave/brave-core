@@ -75,7 +75,7 @@ class BatAdsNotificationAdTest : public NotificationAdObserver,
         BuildCreativeNotificationAd();
 
     const NotificationAdInfo& ad = BuildNotificationAd(creative_ad);
-    NotificationAdManager::Get()->PushBack(ad);
+    NotificationAdManager::GetInstance()->PushBack(ad);
     return ad;
   }
 
@@ -119,7 +119,7 @@ TEST_F(BatAdsNotificationAdTest, FireServedEvent) {
   EXPECT_FALSE(did_time_out_ad_);
   EXPECT_FALSE(did_fail_to_fire_event_);
   EXPECT_EQ(ad, ad_);
-  EXPECT_TRUE(NotificationAdManager::Get()->Exists(ad.placement_id));
+  EXPECT_TRUE(NotificationAdManager::GetInstance()->Exists(ad.placement_id));
 
   ExpectAdEventCountEquals(ConfirmationType::kServed, 1);
 }
@@ -140,7 +140,7 @@ TEST_F(BatAdsNotificationAdTest, FireViewedEvent) {
   EXPECT_FALSE(did_time_out_ad_);
   EXPECT_FALSE(did_fail_to_fire_event_);
   EXPECT_EQ(ad, ad_);
-  EXPECT_TRUE(NotificationAdManager::Get()->Exists(ad.placement_id));
+  EXPECT_TRUE(NotificationAdManager::GetInstance()->Exists(ad.placement_id));
 
   ExpectAdEventCountEquals(ConfirmationType::kViewed, 1);
 }
@@ -161,7 +161,7 @@ TEST_F(BatAdsNotificationAdTest, FireClickedEvent) {
   EXPECT_FALSE(did_time_out_ad_);
   EXPECT_FALSE(did_fail_to_fire_event_);
   EXPECT_EQ(ad, ad_);
-  EXPECT_FALSE(NotificationAdManager::Get()->Exists(ad.placement_id));
+  EXPECT_FALSE(NotificationAdManager::GetInstance()->Exists(ad.placement_id));
 
   ExpectAdEventCountEquals(ConfirmationType::kClicked, 1);
 }
@@ -182,7 +182,7 @@ TEST_F(BatAdsNotificationAdTest, FireDismissedEvent) {
   EXPECT_FALSE(did_time_out_ad_);
   EXPECT_FALSE(did_fail_to_fire_event_);
   EXPECT_EQ(ad, ad_);
-  EXPECT_FALSE(NotificationAdManager::Get()->Exists(ad.placement_id));
+  EXPECT_FALSE(NotificationAdManager::GetInstance()->Exists(ad.placement_id));
 
   ExpectAdEventCountEquals(ConfirmationType::kDismissed, 1);
 }
@@ -203,7 +203,7 @@ TEST_F(BatAdsNotificationAdTest, FireTimedOutEvent) {
   EXPECT_TRUE(did_time_out_ad_);
   EXPECT_FALSE(did_fail_to_fire_event_);
   EXPECT_EQ(ad, ad_);
-  EXPECT_FALSE(NotificationAdManager::Get()->Exists(ad.placement_id));
+  EXPECT_FALSE(NotificationAdManager::GetInstance()->Exists(ad.placement_id));
 }
 
 TEST_F(BatAdsNotificationAdTest, DoNotFireEventIfUuidWasNotFound) {

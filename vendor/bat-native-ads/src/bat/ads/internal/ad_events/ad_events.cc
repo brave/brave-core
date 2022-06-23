@@ -76,7 +76,7 @@ void RebuildAdEventsFromDatabase() {
 
     const std::string& id = GetInstanceId();
 
-    AdsClientHelper::Get()->ResetAdEventsForId(id);
+    AdsClientHelper::GetInstance()->ResetAdEventsForId(id);
 
     for (const auto& ad_event : ad_events) {
       RecordAdEvent(ad_event);
@@ -85,15 +85,15 @@ void RebuildAdEventsFromDatabase() {
 }
 
 void RecordAdEvent(const AdEventInfo& ad_event) {
-  AdsClientHelper::Get()->RecordAdEventForId(
+  AdsClientHelper::GetInstance()->RecordAdEventForId(
       GetInstanceId(), ad_event.type.ToString(),
       ad_event.confirmation_type.ToString(), ad_event.created_at);
 }
 
 std::vector<base::Time> GetAdEvents(const AdType& ad_type,
                                     const ConfirmationType& confirmation_type) {
-  return AdsClientHelper::Get()->GetAdEvents(ad_type.ToString(),
-                                             confirmation_type.ToString());
+  return AdsClientHelper::GetInstance()->GetAdEvents(
+      ad_type.ToString(), confirmation_type.ToString());
 }
 
 }  // namespace ads

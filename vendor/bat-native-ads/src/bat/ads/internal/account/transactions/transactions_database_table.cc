@@ -83,7 +83,7 @@ void Transactions::Save(const TransactionList& transactions,
   mojom::DBTransactionPtr transaction = mojom::DBTransaction::New();
   InsertOrUpdate(transaction.get(), transactions);
 
-  AdsClientHelper::Get()->RunDBTransaction(
+  AdsClientHelper::GetInstance()->RunDBTransaction(
       std::move(transaction),
       std::bind(&OnResultCallback, std::placeholders::_1, callback));
 }
@@ -118,7 +118,7 @@ void Transactions::GetAll(GetTransactionsCallback callback) {
   mojom::DBTransactionPtr transaction = mojom::DBTransaction::New();
   transaction->commands.push_back(std::move(command));
 
-  AdsClientHelper::Get()->RunDBTransaction(
+  AdsClientHelper::GetInstance()->RunDBTransaction(
       std::move(transaction), std::bind(&Transactions::OnGetTransactions, this,
                                         std::placeholders::_1, callback));
 }
@@ -156,7 +156,7 @@ void Transactions::GetForDateRange(const base::Time from_time,
   mojom::DBTransactionPtr transaction = mojom::DBTransaction::New();
   transaction->commands.push_back(std::move(command));
 
-  AdsClientHelper::Get()->RunDBTransaction(
+  AdsClientHelper::GetInstance()->RunDBTransaction(
       std::move(transaction), std::bind(&Transactions::OnGetTransactions, this,
                                         std::placeholders::_1, callback));
 }
@@ -196,7 +196,7 @@ void Transactions::Update(
   mojom::DBTransactionPtr transaction = mojom::DBTransaction::New();
   transaction->commands.push_back(std::move(command));
 
-  AdsClientHelper::Get()->RunDBTransaction(
+  AdsClientHelper::GetInstance()->RunDBTransaction(
       std::move(transaction),
       std::bind(&OnResultCallback, std::placeholders::_1, callback));
 }
@@ -206,7 +206,7 @@ void Transactions::Delete(ResultCallback callback) {
 
   DeleteTable(transaction.get(), GetTableName());
 
-  AdsClientHelper::Get()->RunDBTransaction(
+  AdsClientHelper::GetInstance()->RunDBTransaction(
       std::move(transaction),
       std::bind(&OnResultCallback, std::placeholders::_1, callback));
 }

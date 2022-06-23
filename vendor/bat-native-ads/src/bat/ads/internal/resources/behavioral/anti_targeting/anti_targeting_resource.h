@@ -7,18 +7,22 @@
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_RESOURCES_BEHAVIORAL_ANTI_TARGETING_ANTI_TARGETING_RESOURCE_H_
 
 #include <memory>
+#include <string>
 
 #include "base/memory/weak_ptr.h"
+#include "bat/ads/internal/locale/locale_manager_observer.h"
 #include "bat/ads/internal/resources/behavioral/anti_targeting/anti_targeting_info.h"
 #include "bat/ads/internal/resources/parsing_result.h"
+#include "bat/ads/internal/resources/resource_manager_observer.h"
 
 namespace ads {
 namespace resource {
 
-class AntiTargeting final {
+class AntiTargeting final : public LocaleManagerObserver,
+                            public ResourceManagerObserver {
  public:
   AntiTargeting();
-  ~AntiTargeting();
+  ~AntiTargeting() override;
 
   AntiTargeting(const AntiTargeting&) = delete;
   AntiTargeting& operator=(const AntiTargeting&) = delete;
@@ -27,10 +31,16 @@ class AntiTargeting final {
 
   void Load();
 
-  AntiTargetingInfo get() const;
+  AntiTargetingInfo get() const { return *anti_targeting_; }
 
  private:
   void OnLoadAndParseResource(ParsingResultPtr<AntiTargetingInfo> result);
+
+  // LocaleManagerObserver:
+  void OnLocaleDidChange(const std::string& locale) override;
+
+  // ResourceManagerObserver:
+  void OnResourceDidUpdate(const std::string& id) override;
 
   bool is_initialized_ = false;
 

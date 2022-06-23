@@ -116,8 +116,8 @@ void EpsilonGreedyBandit::Process(const BanditFeedbackInfo& feedback) {
 ///////////////////////////////////////////////////////////////////////////////
 
 void EpsilonGreedyBandit::InitializeArms() const {
-  std::string json =
-      AdsClientHelper::Get()->GetStringPref(prefs::kEpsilonGreedyBanditArms);
+  std::string json = AdsClientHelper::GetInstance()->GetStringPref(
+      prefs::kEpsilonGreedyBanditArms);
 
   targeting::EpsilonGreedyBanditArmMap arms =
       targeting::EpsilonGreedyBanditArms::FromJson(json);
@@ -127,15 +127,16 @@ void EpsilonGreedyBandit::InitializeArms() const {
   arms = MaybeDeleteArms(arms);
 
   json = targeting::EpsilonGreedyBanditArms::ToJson(arms);
-  AdsClientHelper::Get()->SetStringPref(prefs::kEpsilonGreedyBanditArms, json);
+  AdsClientHelper::GetInstance()->SetStringPref(prefs::kEpsilonGreedyBanditArms,
+                                                json);
 
   BLOG(1, "Successfully initialized epsilon greedy bandit arms");
 }
 
 void EpsilonGreedyBandit::UpdateArm(const uint64_t reward,
                                     const std::string& segment) const {
-  std::string json =
-      AdsClientHelper::Get()->GetStringPref(prefs::kEpsilonGreedyBanditArms);
+  std::string json = AdsClientHelper::GetInstance()->GetStringPref(
+      prefs::kEpsilonGreedyBanditArms);
 
   targeting::EpsilonGreedyBanditArmMap arms =
       targeting::EpsilonGreedyBanditArms::FromJson(json);
@@ -159,7 +160,8 @@ void EpsilonGreedyBandit::UpdateArm(const uint64_t reward,
 
   json = targeting::EpsilonGreedyBanditArms::ToJson(arms);
 
-  AdsClientHelper::Get()->SetStringPref(prefs::kEpsilonGreedyBanditArms, json);
+  AdsClientHelper::GetInstance()->SetStringPref(prefs::kEpsilonGreedyBanditArms,
+                                                json);
 
   BLOG(1,
        "Epsilon greedy bandit arm was updated for " << segment << " segment");

@@ -23,7 +23,7 @@ class BatAdsEnabledDiagnosticEntryTest : public UnitTestBase {
 
 TEST_F(BatAdsEnabledDiagnosticEntryTest, Enabled) {
   // Arrange
-  AdsClientHelper::Get()->SetBooleanPref(prefs::kEnabled, true);
+  AdsClientHelper::GetInstance()->SetBooleanPref(prefs::kEnabled, true);
 
   // Act
   EnabledDiagnosticEntry diagnostic_entry;
@@ -36,7 +36,7 @@ TEST_F(BatAdsEnabledDiagnosticEntryTest, Enabled) {
 
 TEST_F(BatAdsEnabledDiagnosticEntryTest, Disabled) {
   // Arrange
-  AdsClientHelper::Get()->SetBooleanPref(prefs::kEnabled, false);
+  AdsClientHelper::GetInstance()->SetBooleanPref(prefs::kEnabled, false);
 
   // Act
   EnabledDiagnosticEntry diagnostic_entry;

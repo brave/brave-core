@@ -33,7 +33,7 @@ class CovariateManager final {
   CovariateManager& operator=(const CovariateManager&) = delete;
   ~CovariateManager();
 
-  static CovariateManager* Get();
+  static CovariateManager* GetInstance();
 
   static bool HasInstance();
 

@@ -15,9 +15,9 @@ namespace notification_ads {
 namespace {
 
 void DeliverAd(const NotificationAdInfo& ad) {
-  NotificationAdManager::Get()->PushBack(ad);
+  NotificationAdManager::GetInstance()->PushBack(ad);
 
-  AdsClientHelper::Get()->ShowNotification(ad);
+  AdsClientHelper::GetInstance()->ShowNotification(ad);
 }
 
 }  // namespace

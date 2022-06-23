@@ -20,7 +20,7 @@ class DiagnosticManager final {
   DiagnosticManager& operator=(const DiagnosticManager&) = delete;
   ~DiagnosticManager();
 
-  static DiagnosticManager* Get();
+  static DiagnosticManager* GetInstance();
 
   static bool HasInstance();
 

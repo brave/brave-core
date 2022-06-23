@@ -47,8 +47,10 @@ class BatAdsUserActivityScoringUtilTest : public UnitTestBase {
 
 TEST_F(BatAdsUserActivityScoringUtilTest, WasUserActive) {
   // Arrange
-  UserActivityManager::Get()->RecordEvent(UserActivityEventType::kOpenedNewTab);
-  UserActivityManager::Get()->RecordEvent(UserActivityEventType::kClosedTab);
+  UserActivityManager::GetInstance()->RecordEvent(
+      UserActivityEventType::kOpenedNewTab);
+  UserActivityManager::GetInstance()->RecordEvent(
+      UserActivityEventType::kClosedTab);
 
   // Act
   const bool was_user_active = WasUserActive();
@@ -69,7 +71,8 @@ TEST_F(BatAdsUserActivityScoringUtilTest, WasUserInactive) {
 
 TEST_F(BatAdsUserActivityScoringUtilTest, WasUserInactiveIfBelowThreshold) {
   // Arrange
-  UserActivityManager::Get()->RecordEvent(UserActivityEventType::kOpenedNewTab);
+  UserActivityManager::GetInstance()->RecordEvent(
+      UserActivityEventType::kOpenedNewTab);
 
   // Act
   const bool was_user_active = WasUserActive();
@@ -81,8 +84,10 @@ TEST_F(BatAdsUserActivityScoringUtilTest, WasUserInactiveIfBelowThreshold) {
 TEST_F(BatAdsUserActivityScoringUtilTest,
        WasUserInactiveAfterTimeWindowHasElapsed) {
   // Arrange
-  UserActivityManager::Get()->RecordEvent(UserActivityEventType::kOpenedNewTab);
-  UserActivityManager::Get()->RecordEvent(UserActivityEventType::kClosedTab);
+  UserActivityManager::GetInstance()->RecordEvent(
+      UserActivityEventType::kOpenedNewTab);
+  UserActivityManager::GetInstance()->RecordEvent(
+      UserActivityEventType::kClosedTab);
 
   const base::TimeDelta elapsed_time_window =
       user_activity::features::GetTimeWindow() + base::Seconds(1);

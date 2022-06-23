@@ -49,7 +49,7 @@ class BatAdsNewTabPageAdIfAdsDisabledTest : public NewTabPageAdObserver,
   void SetUp() override {
     UnitTestBase::SetUp();
 
-    AdsClientHelper::Get()->SetBooleanPref(prefs::kEnabled, false);
+    AdsClientHelper::GetInstance()->SetBooleanPref(prefs::kEnabled, false);
 
     new_tab_page_ad_ = std::make_unique<NewTabPageAd>();
     new_tab_page_ad_->AddObserver(this);

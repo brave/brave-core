@@ -38,7 +38,7 @@ TEST_F(BatAdsSettingsTest, AdsPerHourWhenUserHasChangedDefaultSetting) {
   scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
                                                     disabled_features);
 
-  AdsClientHelper::Get()->SetInt64Pref(prefs::kAdsPerHour, 3);
+  AdsClientHelper::GetInstance()->SetInt64Pref(prefs::kAdsPerHour, 3);
 
   // Act
   const uint64_t ads_per_hour = settings::GetAdsPerHour();
