@@ -192,6 +192,7 @@ export const PortfolioOverview = () => {
     setHideBalances(!hideBalances)
   }, [hideBalances])
 
+  // effects
   React.useEffect(() => {
     dispatch(WalletPageActions.selectAsset({ asset: undefined, timeFrame: selectedTimeline }))
   }, [selectedTimeline])

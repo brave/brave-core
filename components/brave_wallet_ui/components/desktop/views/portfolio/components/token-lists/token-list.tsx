@@ -155,6 +155,14 @@ export const TokenLists = ({
     </>
   }, [selectedAssetFilter, sortedFungibleTokensList, nonFungibleTokens, renderToken])
 
+  // effects
+  React.useEffect(() => {
+    // reset search field on list update
+    if (userAssetList) {
+      setSearchValue('')
+    }
+  }, [userAssetList])
+
   // render
   return (
     <>
