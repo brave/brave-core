@@ -77,7 +77,8 @@ class SearchEngineTracker : public KeyedService,
                             public TemplateURLServiceObserver {
  public:
   SearchEngineTracker(TemplateURLService* template_url_service,
-                      PrefService* user_prefs);
+                      PrefService* profile_prefs,
+                      PrefService* local_state);
   ~SearchEngineTracker() override;
 
   SearchEngineTracker(const SearchEngineTracker&) = delete;
@@ -96,6 +97,8 @@ class SearchEngineTracker : public KeyedService,
   GURL default_search_url_;
   GURL previous_search_url_;
   WeeklyEventStorage switch_record_;
+
+  raw_ptr<PrefService> local_state_;
 
   raw_ptr<TemplateURLService> template_url_service_ = nullptr;
 };
