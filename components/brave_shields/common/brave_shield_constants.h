@@ -21,7 +21,7 @@ const char kJavaScript[] = "javascript";
 const char kFingerprintingV2[] = "fingerprintingV2";
 const char kBraveShields[] = "braveShields";
 const char kReferrers[] = "referrers";
-const char kCookies[] = "shieldsCookies";
+const char kCookies[] = "shieldsCookiesV3";
 const char kFacebookEmbeds[] = "fb-embeds";
 const char kTwitterEmbeds[] = "twitter-embeds";
 const char kLinkedInEmbeds[] = "linked-in-embeds";
@@ -30,6 +30,7 @@ const char kLinkedInEmbeds[] = "linked-in-embeds";
 // for migration purposes only.
 const char kObsoleteAds[] = "ads";
 const char kObsoleteCookies[] = "cookies";
+const char kObsoleteShieldsCookies[] = "shieldsCookies";
 
 // Some users were not properly migrated from fingerprinting V1.
 const char kObsoleteFingerprinting[] = "fingerprinting";

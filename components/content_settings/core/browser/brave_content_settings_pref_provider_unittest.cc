@@ -173,6 +173,14 @@ class ShieldsCookieSetting : public ShieldsSetting {
              {GURL(), ContentSettingsType::BRAVE_REFERRERS}}),
         prefs_(prefs) {}
 
+  void RollbackShieldsCookiesVersion() {
+    auto* shieldsCookies = prefs_->GetDictionary(
+        "profile.content_settings.exceptions.shieldsCookiesV3");
+    prefs_->Set("profile.content_settings.exceptions.shieldsCookies",
+                *shieldsCookies);
+    prefs_->ClearPref("profile.content_settings.exceptions.shieldsCookiesV3");
+  }
+
  private:
   void CheckSettings(const GURL& url, ContentSetting setting) const override {
     if (prefs_->GetInteger(kBraveShieldsSettingsVersion) < 3) {
@@ -194,6 +202,12 @@ class ShieldsCookieSetting : public ShieldsSetting {
   }
 
   PrefService* prefs_ = nullptr;
+};
+
+class CookieSettings : public ShieldsSetting {
+ public:
+  explicit CookieSettings(BravePrefProvider* provider)
+      : ShieldsSetting(provider, {}) {}
 };
 
 class ShieldsFingerprintingSetting : public ShieldsSetting {
@@ -345,6 +359,7 @@ TEST_F(BravePrefProviderTest, TestShieldsSettingsMigration) {
 
   // Migrate settings.
   // ------------------------------------------------------
+  cookie_settings.RollbackShieldsCookiesVersion();
   provider.MigrateShieldsSettings(/*incognito*/ false);
 
   // Check post-migration settings.
@@ -546,6 +561,52 @@ TEST_F(BravePrefProviderTest, TestShieldsSettingsMigrationFromUnknownSettings) {
     EXPECT_NE(brave_shields_dict, nullptr);
     EXPECT_TRUE(brave_shields_dict->DictEmpty());
   }
+
+  provider.ShutdownOnUIThread();
+}
+
+TEST_F(BravePrefProviderTest, TestShieldsSettingsMigrationV2toV3) {
+  BravePrefProvider provider(
+      testing_profile()->GetPrefs(), false /* incognito */,
+      true /* store_last_modified */, false /* restore_session */);
+
+  ShieldsCookieSetting shields_cookie_settings(&provider,
+                                               testing_profile()->GetPrefs());
+  CookieSettings cookie_settings(&provider);
+  ShieldsEnabledSetting shields_enabled_settings(&provider);
+
+  GURL blocked("http://brave.com:8080/");
+  GURL allowed("http://allowed.brave.com:3030");
+
+  ContentSettingsPattern allowed_pattern =
+      ContentSettingsPattern::FromURL(blocked);
+  ContentSettingsPattern blocked_pattern =
+      ContentSettingsPattern::FromURL(allowed);
+  // ShieldsCookies.
+  shields_cookie_settings.SetPreMigrationSettings(allowed_pattern,
+                                                  CONTENT_SETTING_BLOCK);
+  shields_cookie_settings.SetPreMigrationSettings(blocked_pattern,
+                                                  CONTENT_SETTING_ALLOW);
+
+  // Disable shields -> cookies should be allowed.
+  shields_enabled_settings.SetPreMigrationSettings(blocked_pattern,
+                                                   CONTENT_SETTING_BLOCK);
+
+  shields_cookie_settings.RollbackShieldsCookiesVersion();
+  testing_profile()->GetPrefs()->SetInteger(kBraveShieldsSettingsVersion, 2);
+  provider.MigrateShieldsSettings(/*incognito*/ false);
+
+  shields_cookie_settings.CheckSettingsWouldAllow(allowed);
+
+  // BRAVE_COOKIES blocked but COOKIES allowed.
+  shields_cookie_settings.CheckSettingsWouldBlock(blocked);
+  cookie_settings.CheckSettingsWouldAllow(blocked);
+
+  // Enable shields -> cookies should be blocked according to settings.
+  shields_enabled_settings.SetPreMigrationSettings(blocked_pattern,
+                                                   CONTENT_SETTING_ALLOW);
+  shields_cookie_settings.CheckSettingsWouldBlock(blocked);
+  cookie_settings.CheckSettingsWouldBlock(blocked);
 
   provider.ShutdownOnUIThread();
 }

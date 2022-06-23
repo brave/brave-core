@@ -53,10 +53,10 @@ TEST_F(BraveContentSettingsRegistryTest, Properties) {
   // Check the WebsiteSettingsInfo is populated correctly.
   const WebsiteSettingsInfo* website_settings_info =
       info->website_settings_info();
-  EXPECT_EQ("shieldsCookies", website_settings_info->name());
-  EXPECT_EQ("profile.content_settings.exceptions.shieldsCookies",
+  EXPECT_EQ("shieldsCookiesV3", website_settings_info->name());
+  EXPECT_EQ("profile.content_settings.exceptions.shieldsCookiesV3",
             website_settings_info->pref_name());
-  EXPECT_EQ("profile.default_content_setting_values.shieldsCookies",
+  EXPECT_EQ("profile.default_content_setting_values.shieldsCookiesV3",
             website_settings_info->default_value_pref_name());
   ASSERT_TRUE(website_settings_info->initial_default_value().is_int());
   EXPECT_EQ(CONTENT_SETTING_DEFAULT,

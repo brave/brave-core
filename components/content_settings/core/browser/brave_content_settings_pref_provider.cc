@@ -12,7 +12,6 @@
 #include "base/containers/contains.h"
 #include "base/no_destructor.h"
 #include "base/ranges/algorithm.h"
-#include "base/strings/strcat.h"
 #include "base/strings/string_number_conversions.h"
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
@@ -139,6 +138,9 @@ void BravePrefProvider::RegisterProfilePrefs(
         "profile.content_settings.exceptions.plugins");
   }
 #endif
+
+  registry->RegisterDictionaryPref(
+      "profile.content_settings.exceptions.shieldsCookies");
 }
 
 void BravePrefProvider::MigrateShieldsSettings(bool incognito) {
@@ -147,6 +149,13 @@ void BravePrefProvider::MigrateShieldsSettings(bool incognito) {
   // session, so also nothing to do.
   if (incognito)
     return;
+
+  auto* shieldsCookies = prefs_->GetDictionary(
+      "profile.content_settings.exceptions.shieldsCookies");
+  if (shieldsCookies) {
+    prefs_->Set("profile.content_settings.exceptions.shieldsCookiesV3",
+                *shieldsCookies);
+  }
 
   // Prior to Chromium 88, we used the "plugins" ContentSettingsType along with
   // ResourceIdentifiers to store our settings, which we need to migrate now
@@ -195,7 +204,7 @@ void BravePrefProvider::MigrateShieldsSettingsFromResourceIds() {
         if (resource_identifier == brave_shields::kObsoleteAds)
           shields_preference_name = brave_shields::kAds;
         else if (resource_identifier == brave_shields::kObsoleteCookies)
-          shields_preference_name = brave_shields::kCookies;
+          shields_preference_name = brave_shields::kObsoleteShieldsCookies;
         else
           shields_preference_name = resource_identifier;
 
@@ -435,7 +444,10 @@ bool BravePrefProvider::SetWebsiteSettingInternal(
   if (content_settings::IsShieldsContentSettingsType(content_type) &&
       primary_pattern == ContentSettingsPattern::Wildcard() &&
       secondary_pattern == ContentSettingsPattern::Wildcard()) {
-    DCHECK_NE(ContentSettingsType::BRAVE_COOKIES, content_type);
+    if (content_type == ContentSettingsType::BRAVE_COOKIES) {
+      // Default value for BRAVE_COOKIES handled in another place.
+      return false;
+    }
     base::Time modified_time =
         store_last_modified_ ? base::Time::Now() : base::Time();
 
