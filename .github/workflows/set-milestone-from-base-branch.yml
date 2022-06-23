@@ -15,14 +15,14 @@ jobs:
           PR_NUMBER: ${{ github.event.number }}
         name: "Set milestone on PR based on base branch"
         run: |
-          readarray -t milestones < <(gh api /repos/brave/brave-core/milestones -q '.[] | .title')
+          readarray -t milestones < <(gh api /repos/brave/brave-core/milestones -q ".[] | .title")
           if [ "$GITHUB_BASE_REF" = "master" ]; then
               milestone_selector="Nightly"
           else
               milestone_selector="$GITHUB_BASE_REF"
           fi
 
-          milestone=$(printf "%s\n" "${milestones[@]}" | grep -E "$milestone_selector")
+          milestone=$(printf "%s\n" "${milestones[@]}" | grep -F "$milestone_selector")
           gh pr edit "$PR_NUMBER" -R "$REPO_NAME" -m "$milestone"
 
   set-brave-browser-issues-milestone:
@@ -38,23 +38,24 @@ jobs:
           URL_REGEX='(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)'
           UPLIFT_PR_REGEX='uplift\s+(?:of)?:?\s+\K(#\d+)'
           RESOLVE_ISSUE_REGEX="(?:resolv|fix|clos)(?:e|es|ed)?:?\s+\K(${URL_REGEX})"
+          verlte() { printf '%s\n%s' "$1" "$2" | sort -C -V; }
 
-          uplift_pr_body=$(gh pr view "$PR_NUMBER" -R "$REPO_NAME" --json body --jq '.body')
+          uplift_pr_body=$(gh pr view "${PR_NUMBER}" -R "${REPO_NAME}" --json body --jq ".body")
 
           issues=$(echo "${uplift_pr_body}" | grep -ioP "${RESOLVE_ISSUE_REGEX}" || :)
           if [[ -z ${issues} ]]; then
               echo "Resolved issues not directly found. Following PRs to determine them..."
               prs=$(echo "${uplift_pr_body}" | grep -ioP "${UPLIFT_PR_REGEX}")
-              issues=$(xargs -n 1 -I{} gh pr view {} -R brave/brave-core --json body --jq '.body' < <(echo "${prs}") | grep -ioP "${RESOLVE_ISSUE_REGEX}")
+              issues=$(xargs -n 1 -I{} gh pr view {} -R brave/brave-core --json body --jq ".body" < <(echo "${prs}") | grep -ioP "${RESOLVE_ISSUE_REGEX}")
           fi
           echo "Relevant issues detected:"
           echo "${issues}"
 
-          pr_milestone=$(gh pr view "$PR_NUMBER" -R "$REPO_NAME" --json milestone --jq '.milestone.title')
+          pr_milestone=$(gh pr view "${PR_NUMBER}" -R "${REPO_NAME}" --json milestone --jq ".milestone.title")
 
-          for issue in ${issues}; do
-              issue_milestone=$(gh issue view "${issue}" --json milestone --jq '.milestone.title')
-              if [[ -z "${issue_milestone}" || "$pr_milestone" < "${issue_milestone}" ]]; then
+          echo "${issues}" | while read -r issue; do
+              issue_milestone=$(gh issue view "${issue}" --json milestone --jq ".milestone.title")
+              if [ -z "${issue_milestone}" ] || verlte "${pr_milestone}" "${issue_milestone}"; then
                   echo "Setting ${issue} milestone to ${pr_milestone}"
                   gh issue edit "${issue}" -m "${pr_milestone}"
               fi
