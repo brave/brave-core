@@ -199,8 +199,8 @@ function ConfirmTransactionPanel ({
         onSave={onEditAllowanceSave}
         proposedAllowance={transactionDetails.valueExact}
         symbol={transactionDetails.symbol}
-        decimals={transactionDetails.decimals}
         approvalTarget={transactionDetails.approvalTargetLabel || ''}
+        isApprovalUnlimited={transactionDetails.isApprovalUnlimited || false}
       />
     )
   }
