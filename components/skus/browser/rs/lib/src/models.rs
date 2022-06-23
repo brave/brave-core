@@ -124,7 +124,7 @@ pub struct OrderItem {
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct CredentialSummary {
     pub order: Order,
-    pub remaining_credential_count: u32,
+    pub remaining_credential_count: usize,
     pub expires_at: Option<NaiveDateTime>,
     pub active: bool,
 }
