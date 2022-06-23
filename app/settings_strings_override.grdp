@@ -54,7 +54,7 @@
     </if>
 
   <if expr="use_nss_certs">
-    <if expr="chromeos_ash">
+    <if expr="chromeos_ash or chromeos_lacros">
       </if>
   </if>
 

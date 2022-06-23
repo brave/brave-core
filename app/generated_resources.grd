@@ -2313,11 +2313,11 @@ are declared in tools/grit/grit_rule.gni.
       <message name="IDS_DOWNLOAD_BUBBLE_FOOTER_LINK" desc="Footer link in the Download Bubble">
         Show all downloads
       </message>
-      <message name="IDS_DOWNLOAD_BUBBLE_DOWNLOAD_SEPERATOR" desc="A separator to place between download size and download time. A symbol, in this case a bullet •, with a white space before it and a white space after it, is used to separate them. If the bullet • resembles another symbol in the language, please translate the bullet • as a symbol (A) that is not easily mistaken for a number or letter in the language and (B) that is typically used to separate elements.">
-        ''' • '''
+      <message name="IDS_DOWNLOAD_BUBBLE_DOWNLOAD_STATUS_MESSAGE_WITH_SEPARATOR" desc="The download status and message are separated by a symbol, in this case bullet •, with a white space before it and a white space after it. If the bullet • resembles another symbol in the language, please translate the bullet • as a symbol (A) that is not easily mistaken for a number or letter in the language and (B) that is typically used to separate elements.">
+        <ph name="STATUS">$1<ex>100/120 MB</ex></ph> • <ph name="MESSAGE">$2<ex>Opening in 10 seconds...</ex></ph>
       </message>
-      <message name="IDS_DOWNLOAD_BUBBLE_DOWNLOAD_SYMBOL" desc="A symbol for active downloads, in this case downward arrow ↓. If the downward arrow ↓ resembles another symbol in the language, please translate the downward arrow ↓ as a symbol that indicates a downward arrow">
-        '''↓ '''
+      <message name="IDS_DOWNLOAD_BUBBLE_DOWNLOAD_STATUS_WITH_SYMBOL" desc="Active downloads have a symbol associated with them, in this case a downward arrow ↓. If the downward arrow ↓ resembles another symbol in the language, please translate the downward arrow ↓ as a symbol that indicates a downward arrow">
+        ↓ <ph name="STATUS">$1<ex>100/120 MB</ex></ph>
       </message>
       <message name="IDS_DOWNLOAD_BUBBLE_STATUS_RESUMING" desc="When resuming a download, let the user know we're resuming the download.">
         Resuming...
@@ -2355,6 +2355,9 @@ are declared in tools/grit/grit_rule.gni.
       <message name="IDS_DOWNLOAD_BUBBLE_OPEN_NOW" desc="Label for the button prompting to open a download while deep scanning is in progress">
         Open Now
       </message>
+      <message name="IDS_DOWNLOAD_BUBBLE_REVIEW" desc="Label for the button prompting the dialog containing the enterprise administrator's message explaining the violation.">
+        Review
+      </message>
       <message name="IDS_DOWNLOAD_BUBBLE_INTERRUPTED_STATUS_DISK_FULL" desc="Status text for a download item that was interrupted because there is not enough room on the disk to download this file.">
         Out of storage space
       </message>
@@ -2384,9 +2387,6 @@ are declared in tools/grit/grit_rule.gni.
       </message>
       <message name="IDS_DOWNLOAD_BUBBLE_INTERRUPTED_SUBPAGE_SUMMARY_BLOCKED_ORGANIZATION" desc="Subpage summary text for a download item that was blocked by the organization.">
         Your organization blocked this file because it didn't meet a security policy
-      </message>
-      <message name="IDS_DOWNLOAD_BUBBLE_WARNING_SUBPAGE_SUMMARY_BLOCKED_ORGANIZATION" desc="Subpage summary text of warning for download item that was blocked by the organization.">
-        Your organization blocked this file because it has sensitive content
       </message>
       <message name="IDS_DOWNLOAD_BUBBLE_INTERRUPTED_STATUS_WRONG" desc="Status text for a download item that had something go wrong.">
         Something went wrong
@@ -2439,8 +2439,17 @@ are declared in tools/grit/grit_rule.gni.
       <message name="IDS_DOWNLOAD_BUBBLE_STATUS_SENSITIVE_CONTENT" desc="Dangerous warning for a file with sensitive content">
         Sensitive content
       </message>
-      <message name="IDS_DOWNLOAD_BUBBLE_SUBPAGE_SUMMARY_SENSITIVE_CONTENT" desc="Subpage summary of dangerous warning for a file with sensitive content">
+      <message name="IDS_DOWNLOAD_BUBBLE_SUBPAGE_SUMMARY_SENSITIVE_CONTENT_WARNING" desc="Subpage summary text of warning for download item that contains sensitive content">
         Your organization recommends deleting this file because it has sensitive content
+      </message>
+      <message name="IDS_DOWNLOAD_BUBBLE_SUBPAGE_SUMMARY_SENSITIVE_CONTENT_BLOCK" desc="Subpage summary text of warning for download item that was blocked by the organization.">
+        Your organization blocked this file because it has sensitive or dangerous content. Ask its owner to fix.
+      </message>
+      <message name="IDS_DOWNLOAD_BUBBLE_SUBPAGE_SUMMARY_ENCRYPTED" desc="Subpage summary of dangerous warning for an encrypted file.">
+        Your organization blocked this file because it is encrypted. Ask its owner to decrypt.
+      </message>
+      <message name="IDS_DOWNLOAD_BUBBLE_SUBPAGE_SUMMARY_TOO_BIG" desc="Subpage summary of warning for a file blocked for being too large.">
+        Your organization blocked this file because it is too big for a security check. You can open files up to 50 MB.
       </message>
       <message name="IDS_DOWNLOAD_BUBBLE_TRY_AGAIN" desc="Retry button when a download is failed">
         Try again
@@ -3497,6 +3506,9 @@ are declared in tools/grit/grit_rule.gni.
         <message name="IDS_CERT_EXTENSION_NON_CRITICAL" desc="The text displayed in the certificate details dialog for a given extension which is not critical">
           Not Critical
         </message>
+        <message name="IDS_CERT_DUMP_ERROR" desc="The text displayed in the certificate viewer dialog for a given field which could not be decoded">
+          Error: Unable to decode certificate
+        </message>
         <message name="IDS_CERT_EXTENSION_DUMP_ERROR" desc="The text displayed in the certificate details dialog for a given extension which could not be decoded">
           Error: Unable to decode extension
         </message>
@@ -3952,13 +3964,10 @@ are declared in tools/grit/grit_rule.gni.
           Reload
         </message>
         <message name="IDS_EXTENSION_BLOCKED_ACTION_BUBBLE_SINGLE_EXTENSION_TITLE" desc="Title of the bubble to tell users that in order to run an extension, they'll need to refresh the page.">
-          Refresh the page to use "<ph name="EXTENSION_NAME">$1<ex>Gmail Checker</ex></ph>"
+          Reload the page to use "<ph name="EXTENSION_NAME">$1<ex>Gmail Checker</ex></ph>"
         </message>
-        <message name="IDS_EXTENSION_BLOCKED_ACTION_BUBBLE_OK_BUTTON_LABEL" desc="The label of the button to proceed with the page refresh for running an extension.">
-          Refresh
-        </message>
-        <message name="IDS_EXTENSION_BLOCKED_ACTION_BUBBLE_BODY_TEXT" desc="The body text of the bubble to tell users to check the checkbox to always allow the extensions to run on the current site.">
-          Always allow the extension to run on this site if you don't want to see this message again.
+        <message name="IDS_EXTENSION_BLOCKED_ACTION_BUBBLE_UPDATE_PERMISSIONS_TITLE" desc="Title of the bubble to tell users that in order to change site permissions, they'll need to refresh the page.">
+          Reload the page to apply your changes
         </message>
         <message name="IDS_EXTENSION_BLOCKED_ACTION_BUBBLE_CHECKBOX_LABEL" desc="The label of the checkbox to always allow the extensions to run on the current site.">
           Always allow on this site
@@ -4456,6 +4465,9 @@ are declared in tools/grit/grit_rule.gni.
         </message>
         <message name="IDS_EXTENSION_PROMPT_WARNING_ENTERPRISE_REPORTING_PRIVATE" desc="Permission string for enterprise private reporting permission.">
           Read information about your browser, OS, and device
+        </message>
+        <message name="IDS_EXTENSION_PROMPT_WARNING_ENTERPRISE_REMOTE_APPS" desc="Permission string for access to the Remote Apps Enterprise API.">
+          Add remote apps to the ChromeOS launcher
         </message>
         <if expr="reven">
           <message name="IDS_EXTENSION_PROMPT_WARNING_CHROMEOS_DIAGNOSTICS" desc="Permission string for chrome.os.diagnostcs API.">
@@ -7290,9 +7302,6 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
         <message name="IDS_PASSWORD_MANAGER_TOOLTIP_MOVE" desc="Text for the 'Manage Passwords' icon's 'move password to account' state">
           Move your password
         </message>
-        <message name="IDS_PASSWORD_MANAGER_IMPORT_BUTTON" desc="The label of the button for importing passwords. The button appears next to the list of saved passwords in Brave's settings.">
-          Import
-        </message>
         <message name="IDS_PASSWORD_MANAGER_IMPORT_DIALOG_TITLE" desc="The title of the file selection dialog for importing passwords">
           Import Passwords To Brave
         </message>
@@ -9848,6 +9857,9 @@ Please help our engineers fix this problem. Tell us what happened right before y
           <message name="IDS_TRANSLATE_BUBBLE_ADVANCED_SOURCE" desc="Text to show as the title in the advanced source language view for TAB UI">
             Page language to translate
           </message>
+          <message name="IDS_PARTIAL_TRANSLATE_BUBBLE_TRANSLATE_FULL_PAGE" desc="Text to show for the partial translate bubble button to start a full page translation">
+            Translate full page
+          </message>
         </if>
         <if expr="use_titlecase">
           <message name="IDS_TRANSLATE_BUBBLE_ADVANCED_BUTTON" desc="In Title Case: Text to show for the translate bubble button to jump to the advanced panel.">
@@ -9903,6 +9915,9 @@ Please help our engineers fix this problem. Tell us what happened right before y
           </message>
           <message name="IDS_TRANSLATE_BUBBLE_ADVANCED_SOURCE" desc="In Title Case: Text to show as the title in the advanced source language view for TAB UI">
             Page Language to Translate
+          </message>
+          <message name="IDS_PARTIAL_TRANSLATE_BUBBLE_TRANSLATE_FULL_PAGE" desc="Text to show for the partial translate bubble button to start a full page translation">
+            Translate Full Page
           </message>
         </if>
         <message name="IDS_TRANSLATE_BUBBLE_RESET" desc="Text to show for the language combobox to revert to its original state in the advanced view under TAB UI">
@@ -12780,6 +12795,18 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <message name="IDS_INPUT_OVERLAY_CLOSE_MENU" desc="Accessibility name tied to the close button.">
         Close menu
       </message>
+      <message name="IDS_INPUT_OVERLAY_EDIT_INSTRUCTIONS" desc="Text presented via a toltip so the user knows how to interact and edit key-bindigs.">
+        Click on any key with your mouse, then press a keyboard key to customize
+      </message>
+      <message name="IDS_INPUT_OVERLAY_EDIT_MISSING_BINDING" desc="Text presented via a toltip so the user is aware of an incomplete key-binding.">
+        Key is missing. Press a keyboard key to customize
+      </message>
+      <message name="IDS_INPUT_OVERLAY_EDIT_RESERVED_KEYS" desc="Text informing the user about keys not available for binding.">
+        The following keys aren’t supported: Tab, Shift, Control, Escape, Caps lock, Volume
+      </message>
+      <message name="IDS_INPUT_OVERLAY_EDIT_FOCUSED_KEY" desc="Text informing the user on how to proceed while having a focused key.">
+        Press a keyboard key to customize
+      </message>
     </if>
 
     <!-- Privacy Sandbox Dialog strings -->
@@ -12857,6 +12884,9 @@ Please help our engineers fix this problem. Tell us what happened right before y
       </message>
       <message name="IDS_AUTOFILL_ASSISTANT_PASSWORD_CHANGE_ONBOARDING_BUTTON_ACCEPT_TEXT" translateable="false" desc="The text on the button that declines the onboarding for Automated Password Change on Desktop.">
         I agree
+      </message>
+      <message name="IDS_AUTOFILL_ASSISTANT_PASSWORD_CHANGE_STARTING_SCREEN_TITLE" translateable="false" desc="The title shown on the side panel after an Automated Password Change flow has been started. This message is shown until the first response from a script is received that resets the initial state.">
+        Opening <ph name="URL">$1<ex>www.example.com</ex></ph>...
       </message>
     </if>
   </messages>
