@@ -71,7 +71,7 @@ struct AccountPicker: View {
     Group {
       if #available(iOS 15.0, *) {
         Menu {
-          Text(keyringStore.selectedAccount.address.zwspAddress)
+          Text(keyringStore.selectedAccount.address.zwspOutput)
           Button(action: copyAddress) {
             Label(Strings.Wallet.copyAddressButtonTitle, braveSystemImage: "brave.clipboard")
           }

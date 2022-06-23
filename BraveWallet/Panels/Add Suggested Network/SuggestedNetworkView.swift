@@ -118,7 +118,7 @@ struct SuggestedNetworkView: View {
   private var headerView: some View {
     VStack {
       Menu {
-        Text(keyringStore.selectedAccount.address.zwspAddress)
+        Text(keyringStore.selectedAccount.address.zwspOutput)
         Button(action: {
           UIPasteboard.general.string = keyringStore.selectedAccount.address
         }) {
