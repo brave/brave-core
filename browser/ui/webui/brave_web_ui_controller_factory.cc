@@ -21,6 +21,7 @@
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
+#include "brave/components/playlist/buildflags/buildflags.h"
 #include "brave/components/sidebar/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "build/build_config.h"
@@ -55,6 +56,10 @@
 #include "brave/components/ipfs/ipfs_utils.h"
 #endif
 
+#if BUILDFLAG(ENABLE_PLAYLIST)
+#include "brave/browser/ui/webui/playlist_ui.h"
+#endif
+
 #if BUILDFLAG(ENABLE_TOR)
 #include "brave/browser/ui/webui/tor_internals_ui.h"
 #endif
@@ -86,7 +91,7 @@ WebUIController* NewWebUI(WebUI* web_ui, const GURL& url) {
   } else if (host == kIPFSWebUIHost &&
              ipfs::IpfsServiceFactory::IsIpfsEnabled(profile)) {
     return new IPFSUI(web_ui, url.host());
-#endif  // BUILDFLAG(ENABLE_IPFS)
+#endif
 #if !BUILDFLAG(IS_ANDROID)
   } else if (host == kWalletPageHost) {
     if (brave_wallet::IsNativeWalletEnabled()) {
@@ -101,6 +106,10 @@ WebUIController* NewWebUI(WebUI* web_ui, const GURL& url) {
   } else if (host == kWalletPanelHost) {
     return new WalletPanelUI(web_ui);
 #endif  // BUILDFLAG(OS_ANDROID)
+#if BUILDFLAG(ENABLE_PLAYLIST)
+  } else if (host == kPlaylistHost) {
+    return new playlist::PlaylistUI(web_ui, url.host());
+#endif  // BUILDFLAG(PLAYLIST_ENABLED)
   } else if (host == kRewardsPageHost) {
     return new BraveRewardsPageUI(web_ui, url.host());
   } else if (host == kRewardsInternalsHost) {
@@ -170,6 +179,9 @@ WebUIFactoryFunction GetWebUIFactoryFunction(WebUI* web_ui, const GURL& url) {
 #if BUILDFLAG(ENABLE_TOR)
       url.host_piece() == kTorInternalsHost ||
 #endif
+#if BUILDFLAG(ENABLE_PLAYLIST)
+      url.host_piece() == kPlaylistHost ||
+#endif
       url.host_piece() == kWelcomeHost ||
       url.host_piece() == chrome::kChromeUIWelcomeURL ||
 #if !BUILDFLAG(IS_ANDROID)
@@ -213,6 +225,10 @@ WebUI::TypeID BraveWebUIControllerFactory::GetWebUIType(
     return WebUI::kNoWebUI;
   }
 #endif  // BUILDFLAG(IS_ANDROID)
+#if BUILDFLAG(ENABLE_PLAYLIST)
+  if (playlist::PlaylistUI::ShouldBlockPlaylistWebUI(browser_context, url))
+    return WebUI::kNoWebUI;
+#endif
   WebUIFactoryFunction function = GetWebUIFactoryFunction(NULL, url);
   if (function) {
     return reinterpret_cast<WebUI::TypeID>(function);

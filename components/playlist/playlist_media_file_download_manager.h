@@ -40,6 +40,9 @@ class PlaylistMediaFileDownloadManager
     virtual ~Delegate() {}
   };
 
+  static constexpr base::FilePath::CharType kMediaFileName[] =
+      FILE_PATH_LITERAL("media_file.mp4");
+
   PlaylistMediaFileDownloadManager(content::BrowserContext* context,
                                    Delegate* delegate,
                                    const base::FilePath& base_dir);

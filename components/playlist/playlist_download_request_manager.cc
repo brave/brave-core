@@ -17,6 +17,7 @@
 #include "content/public/common/isolated_world_ids.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "third_party/re2/src/re2/re2.h"
+#include "ui/base/page_transition_types.h"
 
 namespace playlist {
 
@@ -68,6 +69,7 @@ void PlaylistDownloadRequestManager::CreateWebContents() {
   // |web_contents_| is created on demand.
   content::WebContents::CreateParams create_params(context_, nullptr);
   web_contents_ = content::WebContents::Create(create_params);
+
   Observe(web_contents_.get());
 }
 

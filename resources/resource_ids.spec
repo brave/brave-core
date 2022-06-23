@@ -192,4 +192,8 @@
     "META": {"sizes": {"includes": [20]}},
     "includes": [59000]
   },
+  "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-playlist/playlist.grd": {
+    "META": {"sizes": {"includes": [250]}},
+    "includes": [59020]
+  },
 }

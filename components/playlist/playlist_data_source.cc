@@ -27,8 +27,10 @@ namespace {
 scoped_refptr<base::RefCountedMemory> ReadFileToString(
     const base::FilePath& path) {
   std::string contents;
-  if (!base::ReadFileToString(path, &contents))
+  if (!base::ReadFileToString(path, &contents)) {
+    VLOG(2) << __FUNCTION__ << " Failed to read " << path;
     return nullptr;
+  }
 
   return base::MakeRefCounted<base::RefCountedBytes>(
       reinterpret_cast<const unsigned char*>(contents.c_str()),
@@ -43,7 +45,7 @@ PlaylistDataSource::PlaylistDataSource(PlaylistService* service)
 PlaylistDataSource::~PlaylistDataSource() {}
 
 std::string PlaylistDataSource::GetSource() {
-  return "playlist-image";
+  return "playlist-data";
 }
 
 void PlaylistDataSource::StartDataRequest(
@@ -54,33 +56,78 @@ void PlaylistDataSource::StartDataRequest(
     std::move(got_data_callback).Run(nullptr);
     return;
   }
-  base::FilePath thumbnail_path;
-  if (!service_->GetThumbnailPath(URLDataSource::URLToRequestPath(url),
-                                  &thumbnail_path)) {
+  std::string path = URLDataSource::URLToRequestPath(url);
+  std::string id;
+  std::string type_string;
+  if (auto pos = path.find("/"); pos != std::string::npos) {
+    id = std::string(path.begin(), path.begin() + pos);
+    type_string = std::string(path.begin() + pos, path.end());
+    type_string.erase(std::remove(type_string.begin(), type_string.end(), '/'),
+                      type_string.end());
+  } else {
+    NOTREACHED() << "path is not in expected form: /id/{thumbnail,media}/ vs "
+                 << path;
     std::move(got_data_callback).Run(nullptr);
     return;
   }
-  GetThumbnailImageFile(thumbnail_path, std::move(got_data_callback));
+
+  base::FilePath data_path;
+  if (type_string == "thumbnail") {
+    if (!service_->GetThumbnailPath(id, &data_path)) {
+      std::move(got_data_callback).Run(nullptr);
+      return;
+    }
+  } else if (type_string == "media") {
+    if (!service_->GetMediaPath(id, &data_path)) {
+      std::move(got_data_callback).Run(nullptr);
+      return;
+    }
+  } else {
+    NOTREACHED() << "type is neither of {thumbnail,media}/ : " << type_string;
+    std::move(got_data_callback).Run(nullptr);
+    return;
+  }
+
+  GetDataFile(data_path, std::move(got_data_callback));
 }
 
-void PlaylistDataSource::GetThumbnailImageFile(
-    const base::FilePath& image_file_path,
-    GotDataCallback got_data_callback) {
+void PlaylistDataSource::GetDataFile(const base::FilePath& data_path,
+                                     GotDataCallback got_data_callback) {
   base::ThreadPool::PostTaskAndReplyWithResult(
-      FROM_HERE, base::MayBlock(),
-      base::BindOnce(&ReadFileToString, image_file_path),
-      base::BindOnce(&PlaylistDataSource::OnGotThumbnailImageFile,
+      FROM_HERE, base::MayBlock(), base::BindOnce(&ReadFileToString, data_path),
+      base::BindOnce(&PlaylistDataSource::OnGotDataFile,
                      weak_factory_.GetWeakPtr(), std::move(got_data_callback)));
 }
 
-void PlaylistDataSource::OnGotThumbnailImageFile(
+void PlaylistDataSource::OnGotDataFile(
     GotDataCallback got_data_callback,
     scoped_refptr<base::RefCountedMemory> input) {
   std::move(got_data_callback).Run(input);
 }
 
-std::string PlaylistDataSource::GetMimeType(const std::string&) {
-  return "image/jpg";
+std::string PlaylistDataSource::GetMimeType(const std::string& path) {
+  std::string id;
+  std::string type_string;
+  if (auto pos = path.find("/"); pos != std::string::npos) {
+    id = std::string(path.begin(), path.begin() + pos);
+    type_string = std::string(path.begin() + pos, path.end());
+    type_string.erase(std::remove(type_string.begin(), type_string.end(), '/'),
+                      type_string.end());
+  } else {
+    NOTREACHED() << "path is not in expected form: /id/{thumbnail,media}/ vs "
+                 << path;
+    return std::string();
+  }
+
+  if (type_string == "thumbnail")
+    return "image/jpeg";
+
+  // TODO(sko) Decide mime type based on the file extension.
+  if (type_string == "media")
+    return "video/mp4";
+
+  NOTREACHED() << "type is neither of {thumbnail,media}/ : " << type_string;
+  return std::string();
 }
 
 bool PlaylistDataSource::AllowCaching() {
