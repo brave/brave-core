@@ -34,8 +34,8 @@ import { useHasAccount } from '../../../common/hooks'
 import { useMultiChainBuyAssets } from '../../../common/hooks/use-multi-chain-buy-assets'
 
 // style
-import { Column, Flex, LoadingIcon, Row } from '../../../components/shared/style'
-import { Description, MainWrapper, NextButtonRow, StyledWrapper, Title, VerticalSpace } from '../onboarding/onboarding.style'
+import { Column, Flex, LoadingIcon, Row, VerticalSpace } from '../../../components/shared/style'
+import { Description, MainWrapper, NextButtonRow, StyledWrapper, Title } from '../onboarding/onboarding.style'
 import {
   ScrollContainer,
   SearchWrapper,
