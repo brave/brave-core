@@ -60,15 +60,20 @@ export const ErrorText = styled.span`
 interface FlexProps {
   alignItems?: CSSProperties['alignItems']
   justifyContent?: CSSProperties['justifyContent']
+  gap?: CSSProperties['gap']
 }
 
 // Containers
-export const Row = styled.div<FlexProps>`
+export const Row = styled.div<FlexProps & {
+  maxWidth?: CSSProperties['maxWidth']
+}>`
   display: flex;
   flex-direction: row;
   align-items: ${(p) => p.alignItems ?? 'center'};
   justify-content: ${(p) => p.justifyContent ?? 'center'};
+  gap: ${(p) => p.gap ?? 'unset'};
   width: 100%;
+  max-width: ${(p) => p.maxWidth ?? 'unset'};
 `
 
 export const Column = styled.div<FlexProps>`
@@ -76,6 +81,7 @@ export const Column = styled.div<FlexProps>`
   flex-direction: column;
   align-items: ${(p) => p.alignItems ?? 'center'};
   justify-content: ${(p) => p.justifyContent ?? 'center'};
+  gap: ${(p) => p.gap ?? 'unset'};
 `
 
 export const ScrollableColumn = styled(Column)<{
