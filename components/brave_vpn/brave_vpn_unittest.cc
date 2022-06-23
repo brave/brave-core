@@ -657,29 +657,6 @@ TEST_F(BraveVPNServiceTest, ConnectWithoutNetwork) {
   }
 }
 
-TEST_F(BraveVPNServiceTest, CredentialsWithoutNetwork) {
-  SetPurchasedState(PurchasedState::PURCHASED);
-  auto network_change_notifier = net::NetworkChangeNotifier::CreateIfNeeded();
-  net::test::ScopedMockNetworkChangeNotifier mock_notifier;
-  mock_notifier.mock_network_change_notifier()->SetConnectionType(
-      net::NetworkChangeNotifier::CONNECTION_NONE);
-  EXPECT_EQ(net::NetworkChangeNotifier::CONNECTION_NONE,
-            net::NetworkChangeNotifier::GetConnectionType());
-
-  EXPECT_EQ(net::NetworkChangeNotifier::CONNECTION_NONE,
-            net::NetworkChangeNotifier::GetConnectionType());
-  TestBraveVPNServiceObserver observer;
-  AddObserver(observer.GetReceiver());
-  {
-    // State changed to connection failed.
-    base::RunLoop loop;
-    observer.WaitConnectionStateChange(loop.QuitClosure());
-    OnPrepareCredentialsPresentation("credential=abcdefghijk");
-    loop.Run();
-    EXPECT_EQ(observer.GetConnectionState(), ConnectionState::CONNECT_FAILED);
-  }
-}
-
 TEST_F(BraveVPNServiceTest, LoadRegionDataFromPrefsTest) {
   // Initially, prefs doesn't have region data.
   EXPECT_EQ(mojom::Region(), device_region());
@@ -777,6 +754,19 @@ TEST_F(BraveVPNServiceTest, LoadPurchasedState) {
   EXPECT_FALSE(observer.GetPurchasedState().has_value());
   // Observer called when state will be changed.
   ExpectPurchasedStateChange(&observer, PurchasedState::PURCHASED);
+
+  // Load purchased state without connection.
+  EXPECT_EQ(PurchasedState::PURCHASED, GetPurchasedStateSync());
+  auto network_change_notifier = net::NetworkChangeNotifier::CreateIfNeeded();
+  net::test::ScopedMockNetworkChangeNotifier mock_notifier;
+  mock_notifier.mock_network_change_notifier()->SetConnectionType(
+      net::NetworkChangeNotifier::CONNECTION_NONE);
+  EXPECT_EQ(net::NetworkChangeNotifier::CONNECTION_NONE,
+            net::NetworkChangeNotifier::GetConnectionType());
+  LoadPurchasedState();
+  base::RunLoop().RunUntilIdle();
+  EXPECT_EQ(PurchasedState::PURCHASED, GetPurchasedStateSync());
+  EXPECT_EQ(ConnectionState::CONNECT_FAILED, connection_state());
 }
 
 }  // namespace brave_vpn

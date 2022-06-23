@@ -901,7 +901,13 @@ void BraveVpnService::LoadPurchasedState() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   if (GetPurchasedStateSync() == PurchasedState::LOADING)
     return;
-
+#if !BUILDFLAG(IS_ANDROID)
+  if (!IsNetworkAvailable()) {
+    VLOG(2) << __func__ << ": Network is not available, failed to connect";
+    UpdateAndNotifyConnectionStateChange(ConnectionState::CONNECT_FAILED);
+    return;
+  }
+#endif
   if (!purchased_state_.has_value())
     SetPurchasedState(PurchasedState::LOADING);
 
@@ -1014,12 +1020,6 @@ void BraveVpnService::OnPrepareCredentialsPresentation(
     SetPurchasedState(PurchasedState::PURCHASED);
   } else {
     FetchRegionData(false);
-  }
-
-  if (!IsNetworkAvailable()) {
-    VLOG(2) << __func__ << ": Network is not available, failed to connect";
-    UpdateAndNotifyConnectionStateChange(ConnectionState::CONNECT_FAILED);
-    return;
   }
 
   ScheduleBackgroundRegionDataFetch();
