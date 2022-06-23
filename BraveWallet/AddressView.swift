@@ -20,7 +20,7 @@ struct AddressView<Content: View>: View {
   var body: some View {
     content()
       .contextMenu {
-        Text(address.zwspAddress)
+        Text(address.zwspOutput)
         Button(action: {
           UIPasteboard.general.string = address
         }) {

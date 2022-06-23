@@ -47,6 +47,10 @@ class WalletConnectionView: UIControl {
     }
     stackView.addArrangedSubview(iconImageView)
     stackView.addArrangedSubview(titleLabel)
+    
+    iconImageView.snp.makeConstraints {
+      $0.width.height.equalTo(20)
+    }
 
     layer.backgroundColor = UIColor.braveBlurpleTint.cgColor
     layer.cornerRadius = 10

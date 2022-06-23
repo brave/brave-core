@@ -43,8 +43,8 @@ extension String {
     return hex.count == 40 && hex.allSatisfy(\.isHexDigit)
   }
   
-  /// Insert zero-width space every character inside account address string
-  var zwspAddress: String {
+  /// Insert zero-width space every character inside this string
+  var zwspOutput: String {
     return map {
       String($0) + "\u{200b}"
     }.joined()
