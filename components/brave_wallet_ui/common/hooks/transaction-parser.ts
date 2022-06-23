@@ -19,7 +19,7 @@ import {
 } from '../constants/magics'
 
 // Utils
-import { getLocale } from '$web-common/locale'
+import { getLocale } from '../../../common/locale'
 import Amount from '../../utils/amount'
 import { getTypedSolanaTxInstructions, TypedSolanaInstructionWithParams } from '../../utils/solana-instruction-utils'
 
