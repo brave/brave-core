@@ -13,7 +13,6 @@ export const CopiedToClipboardContainer = styled.div`
   align-items: center;
   justify-content: center;
   width: 100%;
-  padding-right: 55px;
   font-size: 12px;
   font-weight: 500;
 
