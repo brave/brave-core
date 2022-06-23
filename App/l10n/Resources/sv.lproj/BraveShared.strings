@@ -175,6 +175,21 @@
 /* Brave Rewards settings title */
 "BraveRewardsTitle" = "Brave-belöningar";
 
+/* Brave Search Banner Promotion description content in Search Suggestions */
+"braveSearchPromotion.bannerDescription" = "Brave-sökning spårar inte dig, dina sökningar eller dina klick.";
+
+/* Brave Search Banner Promotion title for maybe later button to activate promotion later in Search Suggestions */
+"braveSearchPromotion.bannerMaybeLaterButtonTitle" = "Kanske senare";
+
+/* Brave Search Banner Promotion title in Search Suggestions */
+"braveSearchPromotion.bannerTitle" = "Stöd oberoende sökning med bättre sekretess";
+
+/* Brave Search Banner Promotion title for try button in Search Suggestions */
+"braveSearchPromotion.bannerTryButtonTitle" = "Prova Brave-sökning";
+
+/* Brave Search Banner Promotion title for dismiss button to remove promotion in Search Suggestions */
+"braveSearchPromotion.braveSearchPromotionBannerDismissButtonTitle" = "Ta bort permanent";
+
 /* No comment provided by engineer. */
 "BraveShieldsAdvancedControls" = "Avancerade kontroller";
 
@@ -3155,7 +3170,7 @@
 "vpn.contactFormCarrier" = "Mobilleverantör";
 
 /* Text to tell user to not modify support info below email's body. */
-"vpn.contactFormDoNotEditText" = "Redigera inte någon information nedan";
+"vpn.contactFormDoNotEditText" = "Brave spårar inte dig och vet inte hur du använder vår app, så vi vet inte hur du har konfigurerat VPN. Dela gärna med dig av information om problemet du upplever så ska vi göra vårt bästa för att lösa det så fort vi kan.";
 
 /* Button name to send contact form. */
 "vpn.contactFormEmailNotConfiguredBody" = "Det går inte att skicka e-post. Kontrollera din e-postkonfiguration.";
@@ -3202,7 +3217,8 @@
 /* Subscription Type field for customer support contact form. */
 "vpn.contactFormSubscriptionType" = "Prenumerationstyp";
 
-/* iOS Timezone field for customer support contact form. */
+/* A contact form field that displays platform type: 'iOS' 'Android' or 'Desktop'
+   iOS Timezone field for customer support contact form. */
 "vpn.contactFormTimezone" = "iOS tidszon";
 
 /* Title for contact form email. */

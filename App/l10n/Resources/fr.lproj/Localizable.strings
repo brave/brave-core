@@ -103,9 +103,6 @@
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "NewTabTitle" = "Nouvel onglet";
 
-/* No comment provided by engineer. */
-"No server found" = "Aucun serveur trouvé";
-
 /* OK button */
 "OKString" = "OK";
 

@@ -14,10 +14,10 @@
 "7JYzOv" = "Typ";
 
 /* (No Comment) */
-"8vyYRy" = "nr 3";
+"8vyYRy" = "#3";
 
 /* (No Comment) */
-"9E2oRR" = "nr 1";
+"9E2oRR" = "#1";
 
 /* (No Comment) */
 "AGMpus" = "Konfiguracja skrótów";
@@ -56,7 +56,7 @@
 "gpCwrM" = "Konfiguracja statystyk";
 
 /* (No Comment) */
-"joEZJM" = "nr 2";
+"joEZJM" = "#2";
 
 /* (No Comment) */
 "L1fziM-0W40Cl" = "Do „Nowa karta” pasuje następująca liczba opcji: ${count}";
@@ -77,7 +77,7 @@
 "L1fziM-vs094F" = "Do „Nowa karta w trybie prywatnym” pasuje następująca liczba opcji: ${count}";
 
 /* (No Comment) */
-"nthxSL" = "Pobrania";
+"nthxSL" = "Pobrane";
 
 /* (No Comment) */
 "r2EI05-0W40Cl" = "Czy na pewno masz na myśli „Nowa karta”?";
@@ -146,16 +146,16 @@
 "TxuMja-vs094F" = "Do „Nowa karta w trybie prywatnym” pasuje następująca liczba opcji: ${count}";
 
 /* (No Comment) */
-"tYwiRd" = "Szacowany zaoszczędzony czas";
+"tYwiRd" = "Zaoszczędzony czas";
 
 /* (No Comment) */
 "VBH4G6" = "Historia";
 
 /* (No Comment) */
-"vjA5pZ" = "Szacowane zaoszczędzone dane";
+"vjA5pZ" = "Zaoszczędzone dane";
 
 /* (No Comment) */
-"vs094F" = "Nowa karta w trybie prywatnym";
+"vs094F" = "Nowa karta prywatna";
 
 /* (No Comment) */
 "xcI3h9" = "Zablokowane reklamy";

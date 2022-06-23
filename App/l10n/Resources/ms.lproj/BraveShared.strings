@@ -175,6 +175,21 @@
 /* Brave Rewards settings title */
 "BraveRewardsTitle" = "Brave Rewards";
 
+/* Brave Search Banner Promotion description content in Search Suggestions */
+"braveSearchPromotion.bannerDescription" = "Carian Brave tidak menjejaki anda, pertanyaan anda atau klikan anda.";
+
+/* Brave Search Banner Promotion title for maybe later button to activate promotion later in Search Suggestions */
+"braveSearchPromotion.bannerMaybeLaterButtonTitle" = "Mungkin kemudian";
+
+/* Brave Search Banner Promotion title in Search Suggestions */
+"braveSearchPromotion.bannerTitle" = "Sokong carian bebas dengan privasi lebih terjamin";
+
+/* Brave Search Banner Promotion title for try button in Search Suggestions */
+"braveSearchPromotion.bannerTryButtonTitle" = "Cuba gunakan Carian Brave";
+
+/* Brave Search Banner Promotion title for dismiss button to remove promotion in Search Suggestions */
+"braveSearchPromotion.braveSearchPromotionBannerDismissButtonTitle" = "Singkirkan";
+
 /* No comment provided by engineer. */
 "BraveShieldsAdvancedControls" = "Kawalan lanjutan";
 
@@ -993,6 +1008,9 @@
 
 /* Sync Alert */
 "NotEnoughWordsTitle" = "Perkataan Tidak Cukup";
+
+/* Bookmark title for Brave Support */
+"ntp.braveSupportFavoriteTitle" = "Sokongan Brave";
 
 /* No comment provided by engineer. */
 "ntp.claimRewards" = "Tuntut Token";
@@ -3152,7 +3170,7 @@
 "vpn.contactFormCarrier" = "Pembawa Selular";
 
 /* Text to tell user to not modify support info below email's body. */
-"vpn.contactFormDoNotEditText" = "Jangan edit maklumat di bawah";
+"vpn.contactFormDoNotEditText" = "Brave tidak menjejaki anda atau mengetahui cara anda menggunakan apl, oleh itu kami tidak tahu cara anda menyediakan VPN. Sila kongsikan maklumat tentang isu yang anda alami dan kami akan mencuba sedaya upaya kami untuk menyelesaikan isu secepat mungkin.";
 
 /* Button name to send contact form. */
 "vpn.contactFormEmailNotConfiguredBody" = "Tidak dapat menghantar e-mel. Sila semak konfigurasi e-mel anda.";
@@ -3199,7 +3217,8 @@
 /* Subscription Type field for customer support contact form. */
 "vpn.contactFormSubscriptionType" = "Jenis Langganan";
 
-/* iOS Timezone field for customer support contact form. */
+/* A contact form field that displays platform type: 'iOS' 'Android' or 'Desktop'
+   iOS Timezone field for customer support contact form. */
 "vpn.contactFormTimezone" = "Zon Masa iOS";
 
 /* Title for contact form email. */

@@ -175,6 +175,21 @@
 /* Brave Rewards settings title */
 "BraveRewardsTitle" = "Brave 奖励";
 
+/* Brave Search Banner Promotion description content in Search Suggestions */
+"braveSearchPromotion.bannerDescription" = "Brave 搜索不会跟踪您、您查询和点击的内容。";
+
+/* Brave Search Banner Promotion title for maybe later button to activate promotion later in Search Suggestions */
+"braveSearchPromotion.bannerMaybeLaterButtonTitle" = "稍後再說";
+
+/* Brave Search Banner Promotion title in Search Suggestions */
+"braveSearchPromotion.bannerTitle" = "支持独立的搜索，具有更好的隐私性";
+
+/* Brave Search Banner Promotion title for try button in Search Suggestions */
+"braveSearchPromotion.bannerTryButtonTitle" = "尝试使用 Brave 搜索";
+
+/* Brave Search Banner Promotion title for dismiss button to remove promotion in Search Suggestions */
+"braveSearchPromotion.braveSearchPromotionBannerDismissButtonTitle" = "關閉";
+
 /* No comment provided by engineer. */
 "BraveShieldsAdvancedControls" = "进阶控件";
 
@@ -3155,7 +3170,7 @@
 "vpn.contactFormCarrier" = "蜂窝网络提供商";
 
 /* Text to tell user to not modify support info below email's body. */
-"vpn.contactFormDoNotEditText" = "请勿修改以下信息";
+"vpn.contactFormDoNotEditText" = "Brave 不会跟踪您，也不知道您如何使用我们的应用程序，所以我们无法得知您如何设置 VPN。请告知您所遇到的问题，我们将尽最大努力尽快解决这些问题。";
 
 /* Button name to send contact form. */
 "vpn.contactFormEmailNotConfiguredBody" = "无法发送电子邮件。请检查您的电子邮箱配置。";
@@ -3202,7 +3217,8 @@
 /* Subscription Type field for customer support contact form. */
 "vpn.contactFormSubscriptionType" = "订阅类型";
 
-/* iOS Timezone field for customer support contact form. */
+/* A contact form field that displays platform type: 'iOS' 'Android' or 'Desktop'
+   iOS Timezone field for customer support contact form. */
 "vpn.contactFormTimezone" = "iOS 时区";
 
 /* Title for contact form email. */

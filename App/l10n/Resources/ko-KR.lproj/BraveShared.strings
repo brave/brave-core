@@ -175,6 +175,21 @@
 /* Brave Rewards settings title */
 "BraveRewardsTitle" = "Brave Rewards";
 
+/* Brave Search Banner Promotion description content in Search Suggestions */
+"braveSearchPromotion.bannerDescription" = "Brave 검색은 사용자의 신원이나 검색어, 클릭 활동을 추적하지 않습니다.";
+
+/* Brave Search Banner Promotion title for maybe later button to activate promotion later in Search Suggestions */
+"braveSearchPromotion.bannerMaybeLaterButtonTitle" = "나중에";
+
+/* Brave Search Banner Promotion title in Search Suggestions */
+"braveSearchPromotion.bannerTitle" = "프라이버시가 한층 강화된 독립적인 검색 엔진";
+
+/* Brave Search Banner Promotion title for try button in Search Suggestions */
+"braveSearchPromotion.bannerTryButtonTitle" = "Brave 검색 사용해보기";
+
+/* Brave Search Banner Promotion title for dismiss button to remove promotion in Search Suggestions */
+"braveSearchPromotion.braveSearchPromotionBannerDismissButtonTitle" = "숨기기";
+
 /* No comment provided by engineer. */
 "BraveShieldsAdvancedControls" = "고급 컨트롤";
 
@@ -3155,7 +3170,7 @@
 "vpn.contactFormCarrier" = "이동통신사";
 
 /* Text to tell user to not modify support info below email's body. */
-"vpn.contactFormDoNotEditText" = "아래 정보는 어떤 것도 편집하지 마세요.";
+"vpn.contactFormDoNotEditText" = "Brave는 사용자의 신원을 추적하지 않고, 앱 사용 패턴을 파악하지 않으며, VPN을 어떻게 설정했는지 전혀 알 수 없습니다. 겪으신 문제에 대한 정보를 공유해주시면 최대한 빨리 문제를 해결해드리겠습니다.";
 
 /* Button name to send contact form. */
 "vpn.contactFormEmailNotConfiguredBody" = "이메일을 보낼 수 없습니다. 이메일 구성을 확인하세요.";
@@ -3202,7 +3217,8 @@
 /* Subscription Type field for customer support contact form. */
 "vpn.contactFormSubscriptionType" = "구독 유형";
 
-/* iOS Timezone field for customer support contact form. */
+/* A contact form field that displays platform type: 'iOS' 'Android' or 'Desktop'
+   iOS Timezone field for customer support contact form. */
 "vpn.contactFormTimezone" = "iOS 시간대";
 
 /* Title for contact form email. */

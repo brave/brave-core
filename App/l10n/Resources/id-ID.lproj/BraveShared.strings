@@ -175,6 +175,21 @@
 /* Brave Rewards settings title */
 "BraveRewardsTitle" = "Brave Rewards";
 
+/* Brave Search Banner Promotion description content in Search Suggestions */
+"braveSearchPromotion.bannerDescription" = "Pencarian Brave tidak melacak Anda, pertanyaan Anda, atau klik Anda.";
+
+/* Brave Search Banner Promotion title for maybe later button to activate promotion later in Search Suggestions */
+"braveSearchPromotion.bannerMaybeLaterButtonTitle" = "Mungkin nanti";
+
+/* Brave Search Banner Promotion title in Search Suggestions */
+"braveSearchPromotion.bannerTitle" = "Mendukung pencarian independen dengan privasi yang lebih baik";
+
+/* Brave Search Banner Promotion title for try button in Search Suggestions */
+"braveSearchPromotion.bannerTryButtonTitle" = "Coba Pencarian Brave";
+
+/* Brave Search Banner Promotion title for dismiss button to remove promotion in Search Suggestions */
+"braveSearchPromotion.braveSearchPromotionBannerDismissButtonTitle" = "Tutup";
+
 /* No comment provided by engineer. */
 "BraveShieldsAdvancedControls" = "Kontrol Tingkat Lanjut";
 
@@ -2602,6 +2617,9 @@
 /* Button to show the bookmarks list */
 "ShowBookmarks" = "Tampilkan Markah";
 
+/* Show code words instead */
+"ShowCodeWords" = "Sebaliknya, tampilkan kata-kata kode";
+
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "showDownloadsTitle" = "Tampilkan Unduhan";
 
@@ -3152,7 +3170,7 @@
 "vpn.contactFormCarrier" = "Operator Telepon Seluler";
 
 /* Text to tell user to not modify support info below email's body. */
-"vpn.contactFormDoNotEditText" = "Mohon jangan mengedit informasi apa pun di bawah ini";
+"vpn.contactFormDoNotEditText" = "Brave tidak melacak Anda atau mengetahui cara Anda menggunakan aplikasi kami, sehingga kami tidak tahu cara Anda memasang VPN. Silakan bagikan info tentang masalah yang Anda alami dan kami akan melakukan yang terbaik untuk memecahkannya secepat mungkin.";
 
 /* Button name to send contact form. */
 "vpn.contactFormEmailNotConfiguredBody" = "Tidak dapat mengirim surel. Silakan periksa kembali konfigurasi surel Anda.";
@@ -3199,7 +3217,8 @@
 /* Subscription Type field for customer support contact form. */
 "vpn.contactFormSubscriptionType" = "Jenis Langganan";
 
-/* iOS Timezone field for customer support contact form. */
+/* A contact form field that displays platform type: 'iOS' 'Android' or 'Desktop'
+   iOS Timezone field for customer support contact form. */
 "vpn.contactFormTimezone" = "Timezone iOS";
 
 /* Title for contact form email. */

@@ -103,9 +103,6 @@
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "NewTabTitle" = "Nowa karta";
 
-/* No comment provided by engineer. */
-"No server found" = "Nie znaleziono serwera";
-
 /* OK button */
 "OKString" = "OK";
 

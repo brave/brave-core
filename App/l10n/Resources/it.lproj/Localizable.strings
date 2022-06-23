@@ -103,9 +103,6 @@
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "NewTabTitle" = "Nuova scheda";
 
-/* No comment provided by engineer. */
-"No server found" = "Non è stato trovato nessun server";
-
 /* OK button */
 "OKString" = "OK";
 
@@ -192,6 +189,9 @@
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "ShowPreviousTabTitle" = "Mostra la scheda precedente";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts which is for Showing Brave Shields */
+"showShieldsTitle" = "Apri Brave Shields";
 
 /* Hardware shortcut to open the tab tray from a tab. Shown in the Discoverability overlay when the hardware Command Key is held down. */
 "ShowTabTrayFromTabKeyCodeTitle" = "Mostra tutte le schede";

@@ -67,6 +67,9 @@
 /* The title of the view shown over a dapps website that requests the user add / approve a new token. */
 "wallet.addSuggestedTokenTitle" = "Додати запропонований токен";
 
+/* The title of the button that is displayed under the total gas fee in the confirmation transaction screen. Users can click it to go to advanced settings screen. */
+"wallet.advancedSettingsTransaction" = "Розширені налаштування";
+
 /* A title displayed above two numbers (the amount and gas) showing the user the breakdown of the amount transferred and gas fee. The \"+\" is a literal plus as the label below will show such as \"0.004 ETH + 0.00064 ETH\" */
 "wallet.amountAndGas" = "Сума + газ";
 
@@ -328,6 +331,21 @@
 /* A title that will be displayed on top of the text field for users to input the custom token's decimals of precision */
 "wallet.decimalsPrecision" = "Точність у знаках після коми";
 
+/* The message displayed when the user takes a screenshot of their dapp decrypt request. */
+"wallet.decryptMessageScreenshotDetectedMessage" = "Попередження: знімок екрана з вашим повідомленням може бути збережено у файловому сховищі, його зможе прочитати будь-який додаток із доступом до фотографій. Brave рекомендує не зберігати цей знімок екрана та якомога швидше його видалити.";
+
+/* The title of the button to approve a decrypt request from a dapps website. */
+"wallet.decryptRequestApprove" = "Дозволити";
+
+/* The title of the button to show the message of a decrypt request from a dapps website. */
+"wallet.decryptRequestReveal" = "Показати";
+
+/* A subtitle of the view shown over a dapps website that requests the user decrypt a message. */
+"wallet.decryptRequestSubtitle" = "Децентралізований додаток запитує доступ на читання цього повідомлення, щоб завершити ваш запит";
+
+/* A title of the view shown over a dapps website that requests the user decrypt a message. */
+"wallet.decryptRequestTitle" = "Запит на розшифровку";
+
 /* The default account name when adding a primary account and not entering a custom name. '%lld' refers to a number (for example \"Account 3\") */
 "wallet.defaultAccountName" = "Рахунок %lld";
 
@@ -348,6 +366,15 @@
 
 /* A title of the edit gas screen for standard transactions */
 "wallet.editGasTitle" = "Редагувати газ";
+
+/* The footer title for edit nonce section in advanced settings screen. */
+"wallet.editNonceFooter" = "Транзакцію неможливо поширювати в мережі, якщо спеціальне значення нонс не є послідовним або містить інші помилки";
+
+/* The header title for edit nonce section in advanced settings screen. */
+"wallet.editNonceHeader" = "Нонс";
+
+/* The placeholder for custom nonce textfield. */
+"wallet.editNoncePlaceholder" = "Уведіть спеціальне значення нонс";
 
 /* The header text shown above the rows to selected the allowance for an ERC 20 Approve transaction. The '%@' becomes the name of the account approving the transaction. For example: \"Spend limit permission allows Account 1 to withdraw and spend up to the following amount:\" */
 "wallet.editPermissionsAllowanceHeader" = "Дозвіл на витрати дає можливість стягувати %@ й витрачати таку суму:";
@@ -371,6 +398,9 @@
 "wallet.editSiteConnectionAccountActionConnect" = "Підключити";
 
 /* The title of the button for users to click so that they disconnect wallet account to the dapp site(also permission removed). It will be displayed at the right hand side of each account option in edit site connection screen. */
+"wallet.editSiteConnectionAccountActionDisconnect" = "Від’єднатися";
+
+/* The title of the button for users to click so that they disconnect wallet account to the dapp site(also permission removed). It will be displayed at the right hand side of each account option in edit site connection screen. */
 "wallet.editSiteConnectionAccountActionSwitch" = "Перейти";
 
 /* The plural word that will beused in `editSiteConnectionConnectedAccount`. */
@@ -378,6 +408,18 @@
 
 /* The singular word that will be used in `editSiteConnectionConnectedAccount`. */
 "wallet.editSiteConnectionAccountSingular" = "рахунок";
+
+/* The amount of current permitted wallet accounts to the dapp site. It is displayed below the origin url of the dapp site in edit site connection screen. '%lld' refers to a number, %@ is `account` for singular and `accounts` for plural (for example \"1 account connected\" or \"2 accounts connected\") */
+"wallet.editSiteConnectionConnectedAccount" = "Підключено %1$lld %2$@";
+
+/* The navigation title of the screen for users to edit dapps site connection with users' Brave Wallet accounts. */
+"wallet.editSiteConnectionScreenTitle" = "Підключення";
+
+/* The error alert body when something is wrong when users try to edit transaction gas fee, priority fee, nonce value or allowance value. */
+"wallet.editTransactionError" = "Перевірте введені дані та повторіть спробу.";
+
+/* The transaction edit error alert button which will dismiss the alert. */
+"wallet.editTransactionErrorCTA" = "Назад";
 
 /* The button title for showing the screen to change what assets are visible */
 "wallet.editVisibleAssetsButtonTitle" = "Редагувати видимі активи";
@@ -435,6 +477,18 @@
 
 /* An option for the user to pick when selecting some predefined gas fee limits. The options are Low, Optimal, High and Custom */
 "wallet.gasFeePredefinedLimitOptimal" = "Оптимальна";
+
+/* The title of the button to approve a encryption public key request from a dapps website. */
+"wallet.getEncryptionPublicKeyRequestApprove" = "Надати";
+
+/* The text shown beside the URL origin of a get public encryption key request from a dapp site. Ex 'https://brave.com is requesting your wallets public encryption key. If you consent to providing this key, the site will be able to compose encrypted messages to you.' */
+"wallet.getEncryptionPublicKeyRequestMessage" = "хоче отримати відкритий ключ шифрування вашого гаманця. За згодою надати цей ключ вебсайт зможе складати вам зашифровані повідомлення.";
+
+/* A subtitle of the view shown over a dapps website that requests the users public encryption key. */
+"wallet.getEncryptionPublicKeyRequestSubtitle" = "DApp запитує ваш відкритий ключ шифрування";
+
+/* A title of the view shown over a dapps website that requests the users public encryption key. */
+"wallet.getEncryptionPublicKeyRequestTitle" = "Запит на відкритий ключ шифрування";
 
 /* A button title that will redact a private key on the screen */
 "wallet.hidePrivateKeyButtonTitle" = "Приховати закритий ключ";
@@ -733,6 +787,15 @@
 /* The title of a button that will reset transaction and nonce information. As in to erase the users transaction history and reset nonce value starting from 0x0 */
 "wallet.settingsResetTransactionAlertButtonTitle" = "Скинути";
 
+/* The message the confirmation dialog when resetting transaction and nonce information. As in to erase the users transaction history and reset nonce value starting from 0x0 */
+"wallet.settingsResetTransactionAlertMessage" = "Це налаштування зазвичай використовується розробниками під час запуску локального тесту сервера";
+
+/* The title the confirmation dialog when resetting transaction and nonce information. As in to erase the users transaction history and reset nonce value starting from 0x0 */
+"wallet.settingsResetTransactionAlertTitle" = "Ви дійсно хочете скинути транзакцію та інформацію про нонс?";
+
+/* The footer message below the button to reset transaction */
+"wallet.settingsResetTransactionFooter" = "Очищення транзакцій може бути корисним для розробників або під час очищення стану на локальному сервері";
+
 /* The title of a button that will reset transaction and nonce information. As in to erase the users transaction history and reset nonce value starting from 0x0 */
 "wallet.settingsResetTransactionTitle" = "Видалити інформацію про транзакції та нонс";
 
@@ -801,6 +864,9 @@
 
 /* The title below account picker when user has selected a test network to swap cryptos */
 "wallet.swapCryptoUnsupportNetworkTitle" = "Непідтримуваний блокчейн.";
+
+/* The description of a swap button on the buy/send/swap modal */
+"wallet.swapDescription" = "Обмін токенів і активів.";
 
 /* A longer disclaimer about the DEX aggrigator used by Brave for swap transactions. '0x' is a company name. 'DEX aggregator' is a type of blockchain-based service (decentralized exchange). 'ONLY' is emphasized to show importance of 0x's data usage. */
 "wallet.swapDexAggrigatorDisclaimer" = "0x опрацьовує адресу Ethereum і IP-адресу для транзакції (зокрема, отримання цін). 0x використовуватиме ці дані ЛИШЕ для проведення транзакцій.";
@@ -898,6 +964,9 @@
 /* A status that explains that the transaction has been completed/confirmed */
 "wallet.transactionStatusConfirmed" = "Підтверджено";
 
+/* A status that explains that the transaction has been dropped due to some error */
+"wallet.transactionStatusDropped" = "Скинуто";
+
 /* A status that explains that the transaction failed due to some error */
 "wallet.transactionStatusError" = "Помилка";
 
@@ -961,8 +1030,20 @@
 /* The title shown on the menu to access Brave Wallet */
 "wallet.wallet" = "Гаманець";
 
+/* The label read out when a user is using VoiceOver and highlights the two-arrow button on the wallet panel top left corner. */
+"wallet.walletFullScreenAccessibilityTitle" = "Відкрити гаманець на весь екран";
+
 /* The title of the button for users to click to go to edit site connection screen. This title indicates the user is currently not connected any his/her wallet account to the dapp. */
 "wallet.walletPanelConnect" = "Підключити";
+
+/* The title of the button for users to click to go to edit site connection screen. This title indicates the user is currently connected his/her wallet account to the dapp. The title will be displayed to the right of a checkmark. */
+"wallet.walletPanelConnected" = "Підключено…";
+
+/* The description for wallet panel when users haven't set up a wallet yet. */
+"wallet.walletPanelSetupWalletDescription" = "Використовуйте цю панель для безпечного доступу до web3 і всіх ваших криптовалютних активів.";
+
+/* The title of the button in wallet panel when wallet is locked. Users can click it to open full screen unlock wallet screen. */
+"wallet.walletPanelUnlockWallet" = "Розблокувати гаманець";
 
 /* The value shown when selecting the default wallet as none / no wallet in wallet settings. */
 "wallet.walletTypeNone" = "Немає";

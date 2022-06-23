@@ -331,6 +331,21 @@
 /* A title that will be displayed on top of the text field for users to input the custom token's decimals of precision */
 "wallet.decimalsPrecision" = "Количество знаков после запятой";
 
+/* The message displayed when the user takes a screenshot of their dapp decrypt request. */
+"wallet.decryptMessageScreenshotDetectedMessage" = "Внимание! Копия скриншота может сохраниться в облачном сервисе. В таком случае у любого приложения для просмотра фото будет к ней доступ. Мы рекомендуем удалить скриншот как можно скорее.";
+
+/* The title of the button to approve a decrypt request from a dapps website. */
+"wallet.decryptRequestApprove" = "Разрешить";
+
+/* The title of the button to show the message of a decrypt request from a dapps website. */
+"wallet.decryptRequestReveal" = "Показать";
+
+/* A subtitle of the view shown over a dapps website that requests the user decrypt a message. */
+"wallet.decryptRequestSubtitle" = "Для выполнения запроса приложению DApp нужен доступ к этому сообщению";
+
+/* A title of the view shown over a dapps website that requests the user decrypt a message. */
+"wallet.decryptRequestTitle" = "Запрос на расшифровку";
+
 /* The default account name when adding a primary account and not entering a custom name. '%lld' refers to a number (for example \"Account 3\") */
 "wallet.defaultAccountName" = "Счет %lld";
 
@@ -355,6 +370,12 @@
 /* The footer title for edit nonce section in advanced settings screen. */
 "wallet.editNonceFooter" = "Если одноразовый код не последователен или содержит ошибки, транзакция не будет передана в сеть";
 
+/* The header title for edit nonce section in advanced settings screen. */
+"wallet.editNonceHeader" = "Одноразовый код";
+
+/* The placeholder for custom nonce textfield. */
+"wallet.editNoncePlaceholder" = "Введите одноразовый код";
+
 /* The header text shown above the rows to selected the allowance for an ERC 20 Approve transaction. The '%@' becomes the name of the account approving the transaction. For example: \"Spend limit permission allows Account 1 to withdraw and spend up to the following amount:\" */
 "wallet.editPermissionsAllowanceHeader" = "Установленный лимит расходов позволяет аккаунту «%@» использовать следующую сумму:";
 
@@ -377,6 +398,9 @@
 "wallet.editSiteConnectionAccountActionConnect" = "Подключиться";
 
 /* The title of the button for users to click so that they disconnect wallet account to the dapp site(also permission removed). It will be displayed at the right hand side of each account option in edit site connection screen. */
+"wallet.editSiteConnectionAccountActionDisconnect" = "Отключить";
+
+/* The title of the button for users to click so that they disconnect wallet account to the dapp site(also permission removed). It will be displayed at the right hand side of each account option in edit site connection screen. */
 "wallet.editSiteConnectionAccountActionSwitch" = "Переключиться";
 
 /* The plural word that will beused in `editSiteConnectionConnectedAccount`. */
@@ -384,6 +408,12 @@
 
 /* The singular word that will be used in `editSiteConnectionConnectedAccount`. */
 "wallet.editSiteConnectionAccountSingular" = "Счет";
+
+/* The amount of current permitted wallet accounts to the dapp site. It is displayed below the origin url of the dapp site in edit site connection screen. '%lld' refers to a number, %@ is `account` for singular and `accounts` for plural (for example \"1 account connected\" or \"2 accounts connected\") */
+"wallet.editSiteConnectionConnectedAccount" = "Подключено: %1$lld %2$@";
+
+/* The navigation title of the screen for users to edit dapps site connection with users' Brave Wallet accounts. */
+"wallet.editSiteConnectionScreenTitle" = "Подключения";
 
 /* The error alert body when something is wrong when users try to edit transaction gas fee, priority fee, nonce value or allowance value. */
 "wallet.editTransactionError" = "Проверьте, правильно ли вы ввели данные, и повторите попытку.";
@@ -447,6 +477,18 @@
 
 /* An option for the user to pick when selecting some predefined gas fee limits. The options are Low, Optimal, High and Custom */
 "wallet.gasFeePredefinedLimitOptimal" = "Оптимальный";
+
+/* The title of the button to approve a encryption public key request from a dapps website. */
+"wallet.getEncryptionPublicKeyRequestApprove" = "Предоставить";
+
+/* The text shown beside the URL origin of a get public encryption key request from a dapp site. Ex 'https://brave.com is requesting your wallets public encryption key. If you consent to providing this key, the site will be able to compose encrypted messages to you.' */
+"wallet.getEncryptionPublicKeyRequestMessage" = "запрашивает открытый ключ шифрования вашего кошелька. Если вы дадите согласие, этот сайт сможет отправлять вам зашифрованные сообщения.";
+
+/* A subtitle of the view shown over a dapps website that requests the users public encryption key. */
+"wallet.getEncryptionPublicKeyRequestSubtitle" = "DApp запрашивает открытый ключ шифрования";
+
+/* A title of the view shown over a dapps website that requests the users public encryption key. */
+"wallet.getEncryptionPublicKeyRequestTitle" = "Запрос на открытый ключ шифрования";
 
 /* A button title that will redact a private key on the screen */
 "wallet.hidePrivateKeyButtonTitle" = "Скрыть закрытый ключ";
@@ -748,6 +790,9 @@
 /* The message the confirmation dialog when resetting transaction and nonce information. As in to erase the users transaction history and reset nonce value starting from 0x0 */
 "wallet.settingsResetTransactionAlertMessage" = "Эту функцию обычно используют разработчики, запускающие локальный сервер тестирования";
 
+/* The title the confirmation dialog when resetting transaction and nonce information. As in to erase the users transaction history and reset nonce value starting from 0x0 */
+"wallet.settingsResetTransactionAlertTitle" = "Сбросить данные о транзакциях и одноразовый код?";
+
 /* The footer message below the button to reset transaction */
 "wallet.settingsResetTransactionFooter" = "Сброс данных транзакций может понадобится разработчикам или при очистке состояния на локальном сервере";
 
@@ -919,6 +964,9 @@
 /* A status that explains that the transaction has been completed/confirmed */
 "wallet.transactionStatusConfirmed" = "Подтверждено";
 
+/* A status that explains that the transaction has been dropped due to some error */
+"wallet.transactionStatusDropped" = "Отменено";
+
 /* A status that explains that the transaction failed due to some error */
 "wallet.transactionStatusError" = "Ошибка";
 
@@ -982,8 +1030,20 @@
 /* The title shown on the menu to access Brave Wallet */
 "wallet.wallet" = "Brave Кошелек";
 
+/* The label read out when a user is using VoiceOver and highlights the two-arrow button on the wallet panel top left corner. */
+"wallet.walletFullScreenAccessibilityTitle" = "Развернуть кошелек на весь экран";
+
 /* The title of the button for users to click to go to edit site connection screen. This title indicates the user is currently not connected any his/her wallet account to the dapp. */
 "wallet.walletPanelConnect" = "Подключиться";
+
+/* The title of the button for users to click to go to edit site connection screen. This title indicates the user is currently connected his/her wallet account to the dapp. The title will be displayed to the right of a checkmark. */
+"wallet.walletPanelConnected" = "Подключено";
+
+/* The description for wallet panel when users haven't set up a wallet yet. */
+"wallet.walletPanelSetupWalletDescription" = "Здесь вы можете безопасно использовать Web3 и управлять криптоактивами.";
+
+/* The title of the button in wallet panel when wallet is locked. Users can click it to open full screen unlock wallet screen. */
+"wallet.walletPanelUnlockWallet" = "Разблокировать кошелек";
 
 /* The value shown when selecting the default wallet as none / no wallet in wallet settings. */
 "wallet.walletTypeNone" = "Нет";

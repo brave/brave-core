@@ -103,9 +103,6 @@
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "NewTabTitle" = "新标签页";
 
-/* No comment provided by engineer. */
-"No server found" = "找不到服务器";
-
 /* OK button */
 "OKString" = "好";
 

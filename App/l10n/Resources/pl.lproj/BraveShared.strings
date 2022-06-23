@@ -89,7 +89,7 @@
 "AutoRedirectAMPPagesDescription" = "Zawsze odwiedzaj oryginalne adresy URL stron (nie AMP) zamiast wersji Accelerated Mobile Page Google";
 
 /* cookie settings option */
-"Block3rdPartyCookies" = "Blokuj pliki cookie stron trzecich";
+"Block3rdPartyCookies" = "Blokuj 3rd party cookies";
 
 /* No comment provided by engineer. */
 "BlockAdsAndTracking" = "Zablokuj trackery działające pomiędzy witrynami";
@@ -175,6 +175,21 @@
 /* Brave Rewards settings title */
 "BraveRewardsTitle" = "Brave Rewards";
 
+/* Brave Search Banner Promotion description content in Search Suggestions */
+"braveSearchPromotion.bannerDescription" = "Wyszukiwanie Brave nie śledzi Ciebie, Twwoich wyszukiwań i kliknięć.";
+
+/* Brave Search Banner Promotion title for maybe later button to activate promotion later in Search Suggestions */
+"braveSearchPromotion.bannerMaybeLaterButtonTitle" = "Może później";
+
+/* Brave Search Banner Promotion title in Search Suggestions */
+"braveSearchPromotion.bannerTitle" = "Wspieraj niezależne wyszukiwanie z lepszą ochroną prywatności";
+
+/* Brave Search Banner Promotion title for try button in Search Suggestions */
+"braveSearchPromotion.bannerTryButtonTitle" = "Wypróbuj wyszukiwanie Brave";
+
+/* Brave Search Banner Promotion title for dismiss button to remove promotion in Search Suggestions */
+"braveSearchPromotion.braveSearchPromotionBannerDismissButtonTitle" = "Zamknij";
+
 /* No comment provided by engineer. */
 "BraveShieldsAdvancedControls" = "Opcje zaawansowane";
 
@@ -200,10 +215,10 @@
 "BraveShieldsStatusTitle" = "Brave Shields";
 
 /* Context: The 'Down' in 'Brave Shields Down' */
-"BraveShieldsStatusValueDown" = "Wyłącz";
+"BraveShieldsStatusValueDown" = "Wyłączone";
 
 /* Context: The 'Up' in 'Brave Shields Up' */
-"BraveShieldsStatusValueUp" = "Włącz";
+"BraveShieldsStatusValueUp" = "Włączone";
 
 /* The accessibility hint spoken when focused on the main shields toggle */
 "BraveShieldsToggleHint" = "Dotknij dwukrotnie, aby włączyć lub wyłączyć Brave Shields";
@@ -224,7 +239,7 @@
 "BrowserLock" = "Blokowanie przeglądarki";
 
 /* No comment provided by engineer. */
-"BrowserLockDescription" = "Odblokuj Brave za pomocą Touch ID, Face ID lub systemowego kodu dostępu.";
+"BrowserLockDescription" = "Odblokuj Brave za pomocą Touch ID, Face ID lub kodu PIN.";
 
 /* A button title for the action to move to the next step of the browser lock migration process. */
 "browserLockMigrationContinueButtonTitle" = "Kontynuuj";
@@ -443,7 +458,7 @@
 "CloseAllTabsTitle" = "Zamknij wszystkie karty (%i)";
 
 /* Code words input help */
-"CodeWordInputHelp" = "Wpisz podane słowa kodowe łańcucha synchronizacji w poniższym formularzu.";
+"CodeWordInputHelp" = "Wpisz podane słowa łańcucha synchronizacji w poniższym formularzu.";
 
 /* Code words section title */
 "CodeWords" = "Słowa kodowe";
@@ -486,6 +501,9 @@
 
 /* Create PDF share action. */
 "CreatePDF" = "Utwórz plik PDF";
+
+/* Currently usedd search engines section name. */
+"CurrentlyUsedSearchEngines" = "Obecnie używane silniki wyszukiwania";
 
 /* Button title for Adding Engine in navigation Bar */
 "customSearchEngine.addButtonTitle" = "Dodaj";
@@ -539,7 +557,7 @@
 "custonmSearchEngine.thirdPartySearchEngineAddedToastTitle" = "Dodano wyszukiwarkę!";
 
 /* Data Saved Shield Stat */
-"DataSavedStat" = "Szacunkowe dane\nzapisane";
+"DataSavedStat" = "Szacunkowe dane\nzaoszczędzone";
 
 /* Button text to close the default browser popup. */
 "defaultBrowserCallout.introCancelButtonText" = "Nie teraz";
@@ -599,7 +617,7 @@
 "DeviceTemplate" = "Urządzenie %1$@ (%2$@)";
 
 /* Section name for display preferences. */
-"DisplaySettingsSection" = "Wyświetl";
+"DisplaySettingsSection" = "Interfejs Użytkownika";
 
 /* No comment provided by engineer. */
 "Done" = "Gotowe";
@@ -614,7 +632,7 @@
 "DownloadedFiles" = "Pobierane pliki";
 
 /* Title for downloads menu item */
-"DownloadsMenuItem" = "Pobrania";
+"DownloadsMenuItem" = "Pobrane";
 
 /* Title for when a user has nothing downloaded onto their device, and the list is empty. */
 "DownloadsPanelEmptyStateTitle" = "W tym miejscu pojawią się pobrane pliki.";
@@ -662,7 +680,7 @@
 "errorPageCantBeReachedTry" = "Spróbuj ponownie wpisać adres URL lub wyszukaj nowy adres URL w wyszukiwarce.";
 
 /* Shown in error pages for files that can't be shown and need to be downloaded. */
-"ErrorPageOpenInSafariButtonTitle" = "Otwórz w przeglądarce Safari";
+"ErrorPageOpenInSafariButtonTitle" = "Otwórz w Safari";
 
 /* Shown in error pages on a button that will try to load the page again */
 "ErrorPageReloadButtonTitle" = "Wczytaj ponownie";
@@ -707,7 +725,7 @@
 "ErrorPagesProceedAnywayButton" = "Przejdź do %@ (niebezpieczne)";
 
 /* Shields Time Saved Stat */
-"EstTimerSaved" = "Szacowany czas\nzapisany";
+"EstTimerSaved" = "Szacowany czas\nzaoszczędzony";
 
 /* %@ will launch an external application */
 "ExternalAppURLAlertMessage" = "%@ uruchomi zewnętrzną aplikację";
@@ -758,10 +776,10 @@
 "findPreviousTitle" = "Znajdź poprzednie";
 
 /* individual blocking statistic title */
-"FingerprintingMethods" = "Metody pobierania odcisków palców";
+"FingerprintingMethods" = "Metody fingerprinting";
 
 /* No comment provided by engineer. */
-"FingerprintingProtection" = "Zablokuj odciski palca";
+"FingerprintingProtection" = "Zablokuj fingerprinting";
 
 /* No comment provided by engineer. */
 "FingerprintingProtectionDescription" = "Utrudnia stronom rozpoznawanie charakterystycznych cech Twojego urządzenia.";
@@ -1061,7 +1079,7 @@
 "OBErrorDetails" = "Coś poszło nie tak podczas tworzenia portfela. Spróbuj ponownie";
 
 /* No comment provided by engineer. */
-"OBErrorOkay" = "Okej\n";
+"OBErrorOkay" = "Ok";
 
 /* A generic error title for onboarding */
 "OBErrorTitle" = "Przepraszamy";
@@ -1331,7 +1349,7 @@
 "playList.noticeAlertTitle" = "Uwaga";
 
 /* Okay Alert button title */
-"playList.okayButtonTitle" = "Okej\n";
+"playList.okayButtonTitle" = "Ok";
 
 /* The title for the alert that shows up when an item is expired */
 "playList.pictureInPictureErrorTitle" = "Przepraszamy, wystąpił błąd podczas próby wyświetlenia obrazu w obrazie.";
@@ -1439,16 +1457,16 @@
 "playList.removeActionButtonTitle" = "Usuń";
 
 /* Message for the alert shown when the user tries to remove offline data of an item from playlist */
-"playlist.removePlaylistOfflineDataAlertMessage" = "Spowoduje to usunięcie nośnika z pamięci masowej trybu offline. Czy na pewno chcesz kontynuować?";
+"playlist.removePlaylistOfflineDataAlertMessage" = "Spowoduje to usunięcie pliku z dysku. Kontynuować?";
 
 /* Title for the alert shown when the user tries to remove offline data of an item from playlist */
 "playlist.removePlaylistOfflineDataAlertTitle" = "Usuń dane trybu offline";
 
 /* Message for the alert shown when the user tries to remove a video from playlist */
-"playlist.removePlaylistVideoAlertMessage" = "Spowoduje to usunięcie pozycji multimedialnej z listy. Czy na pewno chcesz kontynuować?";
+"playlist.removePlaylistVideoAlertMessage" = "Spowoduje to pliku z listy. Czy na pewno chcesz kontynuować?";
 
 /* Title for the alert shown when the user tries to remove an item from playlist */
-"playlist.removePlaylistVideoAlertTitle" = "Usunąć pozycję multimedialną z listy odtwarzania?";
+"playlist.removePlaylistVideoAlertTitle" = "Usunąć plik z listy odtwarzania?";
 
 /* Reopen Alert button title */
 "playList.reopenButtonTitle" = "Otwórz ponownie";
@@ -1610,16 +1628,16 @@
 "privacyHub.allTimeSitesCount" = "Witryny: %lld";
 
 /* Displays a number of trackers we blocked on a particular website, example usage: '23 trackers & ads' */
-"privacyHub.allTimeTrackersCount" = "Pliki śledzące i reklamy: %lld";
+"privacyHub.allTimeTrackersCount" = "Trackery i reklamy: %lld";
 
 /* Title under which we display most name of the most blocked tracker or ad. */
-"privacyHub.allTimeTrackerTitle" = "Plik śledzący i reklama";
+"privacyHub.allTimeTrackerTitle" = "Tracker i reklama";
 
 /* Title under which we display a website on which there's the highest number of trackers or ads. */
 "privacyHub.allTimeWebsiteTitle" = "Strona";
 
 /* Text for a button to display a list of all alerts caught by the Brave VPN. VPN alert is a notificaion of what item has been blocked by the vpn, similar to a regular adblocker */
-"privacyHub.allVPNAlertsButtonText" = "Wszystkie alarmy";
+"privacyHub.allVPNAlertsButtonText" = "Wszystkie alerty";
 
 /* Text which explain by what type of ad blocker a given resource was blocked. Context is like: 'Blocked by Brave Shields', 'Blocked by BraveVPN */
 "privacyHub.blockedBy" = "Zablokowane przez";
@@ -1640,7 +1658,7 @@
 "privacyHub.mostFrequentTrackerAndAdBody" = "**%1$@** zostało zablokowane przez Brave Shields na **%2$lld** witrynach";
 
 /* Title under which we display a tracker which was most frequently detected by our ad blocking mechanism. */
-"privacyHub.mostFrequentTrackerAndAdTitle" = "Najczęstszy plik śledzący i reklama";
+"privacyHub.mostFrequentTrackerAndAdTitle" = "Najczęstszy tracker i reklama";
 
 /* Text of a callout that tell user they need to browser some websites first in order to see privacy stats data */
 "privacyHub.noDataCalloutBody" = "Odwiedź jakieś strony, aby zobaczyć tu dane.";
@@ -1649,7 +1667,7 @@
 "privacyHub.noDataToShow" = "Brak danych do wyświetlenia.";
 
 /* Text of a callout to encourage user to enable Apple notification system. */
-"privacyHub.notificationCalloutBody" = "Uzyskaj cotygodniowe aktualizacje dotyczące prywatności na temat blokowania plików śledzących i reklam.";
+"privacyHub.notificationCalloutBody" = "Uzyskaj cotygodniowe aktualizacje dotyczące prywatności na temat blokowania trackerów i reklam.";
 
 /* Text of a button to encourage user to enable Apple notification system. */
 "privacyHub.notificationCalloutButtonText" = "Włącz powiadomienia";
@@ -1670,7 +1688,7 @@
 "privacyHub.privacyReportsTitle" = "Centrum prywatności";
 
 /* Do NOT localize asterisk('*') characters, they are used to make the text bold in the app. It says which website had the most tracker per visit, example usage: 'example.com had an average of 10 trackers & ads blocked per visit ' */
-"privacyHub.riskiestWebsiteBody" = "**%1$@** miało średnio **%2$lld** plików śledzących i reklam zablokowanych na wizytę";
+"privacyHub.riskiestWebsiteBody" = "**%1$@** miało średnio **%2$lld** trackerów i reklam zablokowanych na wizytę";
 
 /* Title of a website that contained the most trackers per visit. */
 "privacyHub.riskiestWebsiteTitle" = "Strona z największą liczbą elementów śledzących";
@@ -1685,7 +1703,7 @@
 "privacyHub.settingsEnableVPNAlertsFooter" = "Ustawienie ma zastosowanie tylko, jeśli zakupiono subskrypcję VPN.";
 
 /* Title of a setting that lets Brave monitor blocked network requests captured by Brave VPN */
-"privacyHub.settingsEnableVPNAlertsTitle" = "Pokaż alarmy VPN";
+"privacyHub.settingsEnableVPNAlertsTitle" = "Pokaż alerty VPN";
 
 /* This text explains what the button to clear datain the Privacy Hub is for. */
 "privacyHub.settingsSlearDataFooter" = "Resetuje licznik wszystkich elementów zablokowanych przez Shields.";
@@ -1697,25 +1715,25 @@
 "privacyHub.shieldsLabel" = "Zabezpieczenia";
 
 /* Type of tracker blocked by the VPN, it's a tracker contained in an email. */
-"privacyHub.vpnAlertEmailTrackerTypePlural" = "Pliki śledzące w wiadomości e-mail";
+"privacyHub.vpnAlertEmailTrackerTypePlural" = "Trackery w e-mailach";
 
 /* Type of tracker blocked by the VPN, it's a tracker contained in an email. */
-"privacyHub.vpnAlertEmailTrackerTypeSingular" = "Plik śledzący w wiadomości e-mail";
+"privacyHub.vpnAlertEmailTrackerTypeSingular" = "Tracker e-mail";
 
 /* Type of tracker blocked by the VPN, it's a tracker that asks you for your location. */
-"privacyHub.vpnAlertLocationTrackerTypePlural" = "Pingi lokalizacyjne";
+"privacyHub.vpnAlertLocationTrackerTypePlural" = "Prośby o lokalizację";
 
 /* Type of tracker blocked by the VPN, it's a tracker that asks you for your location. */
-"privacyHub.vpnAlertLocationTrackerTypeSingular" = "Ping lokalizacyjny";
+"privacyHub.vpnAlertLocationTrackerTypeSingular" = "Prośba o lokalizację";
 
 /* Type of tracker blocked by the VPN, it's a regular tracker or an ad. */
-"privacyHub.vpnAlertRegularTrackerTypePlural" = "Pliki śledzące i reklamy";
+"privacyHub.vpnAlertRegularTrackerTypePlural" = "Trackery i reklamy";
 
 /* Type of tracker blocked by the VPN, it's a regular tracker or an ad. */
-"privacyHub.vpnAlertRegularTrackerTypeSingular" = "Plik śledzący lub reklama";
+"privacyHub.vpnAlertRegularTrackerTypeSingular" = "Tracker lub reklama";
 
 /* Section title, this section displays vpn alerts: items which the vpn managed to block on users behalf. */
-"privacyHub.vpnAlertsHeader" = "Firewall Brave + alerty VPN";
+"privacyHub.vpnAlertsHeader" = "Brave Firewall  + alerty VPN";
 
 /* This label says about Brave VPN, as a source of by what the resource was blocked by. Think of it in context of 'Blocked by VPN' */
 "privacyHub.vpnLabel" = "Firewall + VPN";
@@ -1793,7 +1811,7 @@
 "ReaderModeLoadOriginalLinkText" = "Wczytaj oryginalną stronę";
 
 /* Message displayed when the reader mode page could not be loaded. This message will appear only when sharing to Brave reader mode from another app. */
-"ReaderModePageCantShowDisplayText" = "Nie udało się wyświetlić strony w widoku odczytu.";
+"ReaderModePageCantShowDisplayText" = "Nie udało się wyświetlić strony w trybie czytania.";
 
 /* Title of a bar that show up when you enter reader mode. */
 "readerModeSettingsButton" = "Tryb Czytania";
@@ -1832,7 +1850,7 @@
 "RecentSearchPasteAndGo" = "Wklej i otwórz";
 
 /* Recent Search 'on' text when a user searches 'on' a website */
-"RecentSearchQuickSearchOnWebsite" = "na";
+"RecentSearchQuickSearchOnWebsite" = "w";
 
 /* Recent Search Scanned text when a user scans a qr code */
 "RecentSearchScanned" = "Przeskanowano";
@@ -1889,7 +1907,7 @@
 "RestoredFavoritesFolderName" = "Przywrócone ulubione";
 
 /* Restore Tabs Affirmative Action */
-"RestoreTabAffirmativeButtonTitle" = "Okej\n";
+"RestoreTabAffirmativeButtonTitle" = "Ok";
 
 /* Restore Tabs Negative Action */
 "RestoreTabNegativeButtonTitle" = "Nie";
@@ -2429,7 +2447,7 @@
 "shieldEducation.benchmarkSpecialTierTitle" = "Gratulacje. Jesteś naprawdę wyjątkową osobą.";
 
 /* Subtitle for  The parameter substituted for \"%@\" is the amount of data saved in MB. E.g.: Average Data Saved: 17.43 MB */
-"shieldEducation.domainSpecificDataSavedSubtitle" = "Średnia ilość zapisanych danych\n% w MB";
+"shieldEducation.domainSpecificDataSavedSubtitle" = "Średnia ilość oszczędzonych danych\n% w MB";
 
 /* Action title for button at domain specific data saved pop-up */
 "shieldEducation.dontShowThisTitle" = "Nie pokazuj tego ponownie";
@@ -2444,7 +2462,7 @@
 "shieldEducation.trackerCountShareSubtitle" = "Gratulacje. Jesteś naprawdę wyjątkową osobą.";
 
 /* Title for Shield Education Tracker Count Share. The parameter substituted for \"%ld\" is the count of the trackers and ads blocked in total until present. E.g.: 5000 trackers & ads blocked */
-"shieldEducation.trackerCountShareTitle" = " Zablokowane programy śledzące i reklamy: %ld";
+"shieldEducation.trackerCountShareTitle" = "Zablokowane trackery i reklamy: %ld";
 
 /* Subtitle for Shield Education Tracker Video Ad Block */
 "shieldEducation.videoAdBlockSubtitle" = "Filmy bez reklam zużywają mniej danych.";
@@ -2948,13 +2966,13 @@
 "Today" = "Dzisiaj";
 
 /* The button title for adding a user RSS feed */
-"today.addSource" = "Dodaj źródło";
+"today.addSource" = "Dodaj kanał";
 
 /* To add a list of 1 or more rss feeds */
 "today.addSourceAddButtonTitle" = "Dodaj";
 
 /* The title in the alert when a source fails to add */
-"today.addSourceFailureTitle" = "Nie udało się dodać źródła";
+"today.addSourceFailureTitle" = "Nie udało się dodać kanał";
 
 /* No comment provided by engineer. */
 "today.addSourceInvalidDataMessage" = "Przykro nam, nie udało się rozpoznać adresu tego kanału.";
@@ -2966,10 +2984,10 @@
 "today.addSourceNoFeedsFoundMessage" = "Przykro nam, adres tego kanału nie ma zawartości.";
 
 /* The action title displayed in the iOS share menu */
-"today.addSourceShareTitle" = "Dodaj źródło do Brave News";
+"today.addSourceShareTitle" = "Dodaj kanał do Brave News";
 
 /* No comment provided by engineer. */
-"today.allSources" = "Wszystkie źródła";
+"today.allSources" = "Wszystkie kanały";
 
 /* The name of the feature */
 "today.braveToday" = "Brave News";
@@ -2996,7 +3014,7 @@
 "today.disablePublisherContent" = "Wyłącz treści z %@";
 
 /* No comment provided by engineer. */
-"today.emptyFeedBody" = "Spróbuj włączyć kilka źródeł informacji";
+"today.emptyFeedBody" = "Spróbuj włączyć kilka kanałów informacji";
 
 /* No comment provided by engineer. */
 "today.emptyFeedTitle" = "Brak artykułów do wyświetlenia";
@@ -3017,7 +3035,7 @@
 "today.importOPML" = "Importuj OPML";
 
 /* The header above the list of insecure sources */
-"today.insecureSourcesHeader" = "Niepewne źródła – dodajesz na własną odpowiedzialność";
+"today.insecureSourcesHeader" = "Niezabezpieczony kanał – dodajesz na własną odpowiedzialność";
 
 /* No comment provided by engineer. */
 "today.introCardBody" = "Brave News wspierają w pełni prywatne i anonimizowane reklamy dopasowane na Twoim urządzeniu.";
@@ -3038,7 +3056,7 @@
 "today.learnMoreTitle" = "Dowiedz się więcej o swoich danych";
 
 /* 'Brave Offers' is a product name */
-"today.moreBraveOffers" = "Więcej Brave Offers";
+"today.moreBraveOffers" = "Więcej ofert Brave";
 
 /* No comment provided by engineer. */
 "today.noInternet" = "Brak Internetu";
@@ -3053,7 +3071,7 @@
 "today.refresh" = "Odśwież";
 
 /* No comment provided by engineer. */
-"today.resetSourceSettingsButtonTitle" = "Przywróć domyślne ustawienia źródła";
+"today.resetSourceSettingsButtonTitle" = "Przywróć domyślne ustawienia kanałów";
 
 /* An action title where the user is executing a search based on inputted text */
 "today.searchButtonTitle" = "Szukaj";
@@ -3062,10 +3080,10 @@
 "today.searchTextFieldPlaceholder" = "URL kanału lub strony";
 
 /* No comment provided by engineer. */
-"today.settingsSourceHeaderTitle" = "Domyślne źródła";
+"today.settingsSourceHeaderTitle" = "Domyślne kanały";
 
 /* No comment provided by engineer. */
-"today.sourcesAndSettings" = "Źródła i ustawienia";
+"today.sourcesAndSettings" = "Kanały i ustawienia";
 
 /* No comment provided by engineer. */
 "today.sourceSearchPlaceholder" = "Szukaj";
@@ -3080,7 +3098,7 @@
 "TrackersrBlocked" = "Śledzenie\nzablokowane";
 
 /* Prompt shown before enabling provider search queries */
-"Turn on search suggestions?" = "Czy włączyć sugestie wyszukiwania?";
+"Turn on search suggestions?" = "Włączyć sugestie wyszukiwania?";
 
 /* Sync Alert */
 "UnableToConnectDescription" = "Nie można dołączyć do grupy synchronizacji. Sprawdź wprowadzone słowa i spróbuj ponownie.";
@@ -3149,10 +3167,10 @@
 "vpn.contactFormAppVersion" = "Wersja aplikacji";
 
 /* Cellular Carrier field for customer support contact form. */
-"vpn.contactFormCarrier" = "Operator infrastrukturalny (komórkowy)";
+"vpn.contactFormCarrier" = "Operator komórkowy";
 
 /* Text to tell user to not modify support info below email's body. */
-"vpn.contactFormDoNotEditText" = "Proszę nie edytować poniższych informacji";
+"vpn.contactFormDoNotEditText" = "Brave Cię nie śledzi ani nie wie, jak korzystasz z naszej aplikacji, więc nie wiemy, jak mamy skonfigurowałeś VPN. Podziel się z nami informacjami na temat problemu, z którym się borykasz, a my dołożymy wszelkich starań, aby rozwiązać go jak najszybciej.";
 
 /* Button name to send contact form. */
 "vpn.contactFormEmailNotConfiguredBody" = "Nie można wysłać wiadomości e-mail. Proszę sprawdzić konfigurację poczty.";
@@ -3199,7 +3217,8 @@
 /* Subscription Type field for customer support contact form. */
 "vpn.contactFormSubscriptionType" = "Typ subskrypcji";
 
-/* iOS Timezone field for customer support contact form. */
+/* A contact form field that displays platform type: 'iOS' 'Android' or 'Desktop'
+   iOS Timezone field for customer support contact form. */
 "vpn.contactFormTimezone" = "Strefa czasowa iOS";
 
 /* Title for contact form email. */

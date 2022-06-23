@@ -331,6 +331,21 @@
 /* A title that will be displayed on top of the text field for users to input the custom token's decimals of precision */
 "wallet.decimalsPrecision" = "Decimali di precisione";
 
+/* The message displayed when the user takes a screenshot of their dapp decrypt request. */
+"wallet.decryptMessageScreenshotDetectedMessage" = "Attenzione: è possibile acquisire una schermata del tuo messaggio, eseguirne il back up su un servizio di file cloud e visualizzarla da qualsiasi applicazione con accesso alle foto. Brave consiglia di non salvare questa schermata e di eliminarla il prima possibile.";
+
+/* The title of the button to approve a decrypt request from a dapps website. */
+"wallet.decryptRequestApprove" = "Autorizzo";
+
+/* The title of the button to show the message of a decrypt request from a dapps website. */
+"wallet.decryptRequestReveal" = "Mostra";
+
+/* A subtitle of the view shown over a dapps website that requests the user decrypt a message. */
+"wallet.decryptRequestSubtitle" = "Questa DApp vorrebbe leggere il messaggio per completare la tua richiesta";
+
+/* A title of the view shown over a dapps website that requests the user decrypt a message. */
+"wallet.decryptRequestTitle" = "Richiesta di decrittografia";
+
 /* The default account name when adding a primary account and not entering a custom name. '%lld' refers to a number (for example \"Account 3\") */
 "wallet.defaultAccountName" = "Account %lld";
 
@@ -383,6 +398,9 @@
 "wallet.editSiteConnectionAccountActionConnect" = "Connetti";
 
 /* The title of the button for users to click so that they disconnect wallet account to the dapp site(also permission removed). It will be displayed at the right hand side of each account option in edit site connection screen. */
+"wallet.editSiteConnectionAccountActionDisconnect" = "Disconnetti";
+
+/* The title of the button for users to click so that they disconnect wallet account to the dapp site(also permission removed). It will be displayed at the right hand side of each account option in edit site connection screen. */
 "wallet.editSiteConnectionAccountActionSwitch" = "Cambia";
 
 /* The plural word that will beused in `editSiteConnectionConnectedAccount`. */
@@ -390,6 +408,12 @@
 
 /* The singular word that will be used in `editSiteConnectionConnectedAccount`. */
 "wallet.editSiteConnectionAccountSingular" = "account";
+
+/* The amount of current permitted wallet accounts to the dapp site. It is displayed below the origin url of the dapp site in edit site connection screen. '%lld' refers to a number, %@ is `account` for singular and `accounts` for plural (for example \"1 account connected\" or \"2 accounts connected\") */
+"wallet.editSiteConnectionConnectedAccount" = "%1$lld %2$@ connesso/i";
+
+/* The navigation title of the screen for users to edit dapps site connection with users' Brave Wallet accounts. */
+"wallet.editSiteConnectionScreenTitle" = "Connessioni";
 
 /* The error alert body when something is wrong when users try to edit transaction gas fee, priority fee, nonce value or allowance value. */
 "wallet.editTransactionError" = "Controlla i dati inseriti e riprova.";
@@ -453,6 +477,18 @@
 
 /* An option for the user to pick when selecting some predefined gas fee limits. The options are Low, Optimal, High and Custom */
 "wallet.gasFeePredefinedLimitOptimal" = "Ottimale";
+
+/* The title of the button to approve a encryption public key request from a dapps website. */
+"wallet.getEncryptionPublicKeyRequestApprove" = "Fornisci";
+
+/* The text shown beside the URL origin of a get public encryption key request from a dapp site. Ex 'https://brave.com is requesting your wallets public encryption key. If you consent to providing this key, the site will be able to compose encrypted messages to you.' */
+"wallet.getEncryptionPublicKeyRequestMessage" = "richiede la chiave di crittografia pubblica del tuo portafoglio. Se acconsenti a fornire questa chiave, il sito sarà in grado di comporre messaggi crittografati per te.";
+
+/* A subtitle of the view shown over a dapps website that requests the users public encryption key. */
+"wallet.getEncryptionPublicKeyRequestSubtitle" = "Una DApp richiede la tua chiave di crittografia pubblica";
+
+/* A title of the view shown over a dapps website that requests the users public encryption key. */
+"wallet.getEncryptionPublicKeyRequestTitle" = "Richiesta della chiave di crittografia pubblica";
 
 /* A button title that will redact a private key on the screen */
 "wallet.hidePrivateKeyButtonTitle" = "Nascondi chiave privata";
@@ -829,6 +865,9 @@
 /* The title below account picker when user has selected a test network to swap cryptos */
 "wallet.swapCryptoUnsupportNetworkTitle" = "Catena non supportata";
 
+/* The description of a swap button on the buy/send/swap modal */
+"wallet.swapDescription" = "Scambia token e asset.";
+
 /* A longer disclaimer about the DEX aggrigator used by Brave for swap transactions. '0x' is a company name. 'DEX aggregator' is a type of blockchain-based service (decentralized exchange). 'ONLY' is emphasized to show importance of 0x's data usage. */
 "wallet.swapDexAggrigatorDisclaimer" = "0x elaborerà l’indirizzo Ethereum e l’indirizzo IP per eseguire una transazione (incluso l’ottenimento di quotazioni). 0x utilizzerà questi dati SOLO ai fini dell’elaborazione delle transazioni.";
 
@@ -925,6 +964,9 @@
 /* A status that explains that the transaction has been completed/confirmed */
 "wallet.transactionStatusConfirmed" = "Confermata";
 
+/* A status that explains that the transaction has been dropped due to some error */
+"wallet.transactionStatusDropped" = "Interrotta";
+
 /* A status that explains that the transaction failed due to some error */
 "wallet.transactionStatusError" = "Errore";
 
@@ -988,8 +1030,20 @@
 /* The title shown on the menu to access Brave Wallet */
 "wallet.wallet" = "Portafoglio";
 
+/* The label read out when a user is using VoiceOver and highlights the two-arrow button on the wallet panel top left corner. */
+"wallet.walletFullScreenAccessibilityTitle" = "Apri il portafoglio a schermo intero";
+
 /* The title of the button for users to click to go to edit site connection screen. This title indicates the user is currently not connected any his/her wallet account to the dapp. */
 "wallet.walletPanelConnect" = "Connetti";
+
+/* The title of the button for users to click to go to edit site connection screen. This title indicates the user is currently connected his/her wallet account to the dapp. The title will be displayed to the right of a checkmark. */
+"wallet.walletPanelConnected" = "Connesso…";
+
+/* The description for wallet panel when users haven't set up a wallet yet. */
+"wallet.walletPanelSetupWalletDescription" = "Usa questo pannello per accedere a web3 e ai tuoi asset di criptovalute in tutta sicurezza.";
+
+/* The title of the button in wallet panel when wallet is locked. Users can click it to open full screen unlock wallet screen. */
+"wallet.walletPanelUnlockWallet" = "Sblocca portafoglio";
 
 /* The value shown when selecting the default wallet as none / no wallet in wallet settings. */
 "wallet.walletTypeNone" = "Niente";

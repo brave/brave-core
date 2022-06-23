@@ -175,6 +175,21 @@
 /* Brave Rewards settings title */
 "BraveRewardsTitle" = "Brave-Belohnungen";
 
+/* Brave Search Banner Promotion description content in Search Suggestions */
+"braveSearchPromotion.bannerDescription" = "Die Brave-Suche verfolgt Ihre Aktivitäten, Anfragen oder Klicks nicht nach.";
+
+/* Brave Search Banner Promotion title for maybe later button to activate promotion later in Search Suggestions */
+"braveSearchPromotion.bannerMaybeLaterButtonTitle" = "Vielleicht später";
+
+/* Brave Search Banner Promotion title in Search Suggestions */
+"braveSearchPromotion.bannerTitle" = "Unterstützen Sie eine unabhängige Suche mit besserem Datenschutz";
+
+/* Brave Search Banner Promotion title for try button in Search Suggestions */
+"braveSearchPromotion.bannerTryButtonTitle" = "Brave-Suche testen";
+
+/* Brave Search Banner Promotion title for dismiss button to remove promotion in Search Suggestions */
+"braveSearchPromotion.braveSearchPromotionBannerDismissButtonTitle" = "Schließen";
+
 /* No comment provided by engineer. */
 "BraveShieldsAdvancedControls" = "Erweiterte Steuerelemente";
 
@@ -2177,6 +2192,9 @@
 "RewardsInternalsPromotionsTitle" = "Werbeaktionen";
 
 /* No comment provided by engineer. */
+"RewardsInternalsPublisher" = "Veröffentlicher";
+
+/* No comment provided by engineer. */
 "RewardsInternalsPublishers" = "Veröffentlicher";
 
 /* No comment provided by engineer. */
@@ -2301,6 +2319,9 @@
 
 /* Accessibility hint describing the action performed when a search suggestion is clicked */
 "SearchesForSuggestionButtonAccessibilityText" = "Sucht nach diesem Vorschlag";
+
+/* Section header for history and bookmarks and open tabs option */
+"SearchHistorySectionHeader" = "Geöffnete Tabs, Lesezeichen und Verlauf";
 
 /* Accessibility message e.g. spoken by VoiceOver after the user taps the close button in the search field to clear the search and exit search mode */
 "SearchInputViewClearButtonTitle" = "Suche löschen";
@@ -3149,7 +3170,7 @@
 "vpn.contactFormCarrier" = "Mobilfunkanbieter";
 
 /* Text to tell user to not modify support info below email's body. */
-"vpn.contactFormDoNotEditText" = "Bitte nehmen Sie keine Änderungen an den Daten unten vor";
+"vpn.contactFormDoNotEditText" = "Brave verfolgt Ihre Aktivitäten nicht nach und weiß nicht, wie Sie unsere App nutzen, daher können wir nicht nachvollziehen, wie Sie Ihr VPN eingerichtet haben. Bitte geben Sie uns Einzelheiten zu Ihrem Problem und wir werden unser Bestes tun, es so schnell wie möglich zu lösen.";
 
 /* Button name to send contact form. */
 "vpn.contactFormEmailNotConfiguredBody" = "Es konnte keine E-Mail geschickt werden. Bitte überprüfen Sie Ihre E-Mail-Konfiguration.";
@@ -3196,7 +3217,8 @@
 /* Subscription Type field for customer support contact form. */
 "vpn.contactFormSubscriptionType" = "Art des Abonnements";
 
-/* iOS Timezone field for customer support contact form. */
+/* A contact form field that displays platform type: 'iOS' 'Android' or 'Desktop'
+   iOS Timezone field for customer support contact form. */
 "vpn.contactFormTimezone" = "iOS-Zeitzone";
 
 /* Title for contact form email. */

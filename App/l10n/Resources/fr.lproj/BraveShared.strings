@@ -175,6 +175,21 @@
 /* Brave Rewards settings title */
 "BraveRewardsTitle" = "Brave Rewards";
 
+/* Brave Search Banner Promotion description content in Search Suggestions */
+"braveSearchPromotion.bannerDescription" = "Le moteur de recherche Brave Search ne vous suit pas à la trace, et ne surveille pas vos requêtes ni vos clics.";
+
+/* Brave Search Banner Promotion title for maybe later button to activate promotion later in Search Suggestions */
+"braveSearchPromotion.bannerMaybeLaterButtonTitle" = "Peut-être plus tard";
+
+/* Brave Search Banner Promotion title in Search Suggestions */
+"braveSearchPromotion.bannerTitle" = "Prenez en charge la recherche indépendante avec une confidentialité accrue";
+
+/* Brave Search Banner Promotion title for try button in Search Suggestions */
+"braveSearchPromotion.bannerTryButtonTitle" = "Essayer Brave Search";
+
+/* Brave Search Banner Promotion title for dismiss button to remove promotion in Search Suggestions */
+"braveSearchPromotion.braveSearchPromotionBannerDismissButtonTitle" = "Ignorer";
+
 /* No comment provided by engineer. */
 "BraveShieldsAdvancedControls" = "Contrôles avancés";
 
@@ -637,6 +652,9 @@
 /* Header title for bookmark save location */
 "EditBookmarkTableLocationHeader" = "Région";
 
+/* Title for editing a bookmark */
+"EditBookmarkTitle" = "Modifier le favori";
+
 /* Button to edit a favorite */
 "EditFavorite" = "Modifier les favoris";
 
@@ -756,6 +774,9 @@
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "findPreviousTitle" = "Rechercher le précédent";
+
+/* individual blocking statistic title */
+"FingerprintingMethods" = "Méthodes de relevé des empreintes digitales";
 
 /* No comment provided by engineer. */
 "FingerprintingProtection" = "Bloquer les empreintes numériques";
@@ -942,6 +963,12 @@
 
 /* Setting preference to always hide the browser tabs bar. */
 "NeverShow" = "Ne jamais afficher";
+
+/* Default name for creating a new bookmark. */
+"NewBookmarkDefaultName" = "Nouveau favori";
+
+/* Title for adding new bookmark */
+"NewBookmarkTitle" = "Nouveau favori";
 
 /* Title for new folder popup */
 "NewFolder" = "Nouveau dossier";
@@ -3143,7 +3170,7 @@
 "vpn.contactFormCarrier" = "Opérateur mobile";
 
 /* Text to tell user to not modify support info below email's body. */
-"vpn.contactFormDoNotEditText" = "Merci de ne pas modifier les informations ci-dessous";
+"vpn.contactFormDoNotEditText" = "Brave ne vous suit pas à la trace et ne sait pas comment vous utilisez l'application. Nous ne savons donc pas comment vous avez configuré votre VPN. Donnez-nous des informations au sujet du problème que vous rencontrez et nous ferons de notre mieux pour le résoudre dans les meilleurs délais.";
 
 /* Button name to send contact form. */
 "vpn.contactFormEmailNotConfiguredBody" = "Échec d’envoi de l’e-mail. Vérifiez la configuration de votre messagerie.";
@@ -3190,7 +3217,8 @@
 /* Subscription Type field for customer support contact form. */
 "vpn.contactFormSubscriptionType" = "Type d'abonnement";
 
-/* iOS Timezone field for customer support contact form. */
+/* A contact form field that displays platform type: 'iOS' 'Android' or 'Desktop'
+   iOS Timezone field for customer support contact form. */
 "vpn.contactFormTimezone" = "Fuseau horaire iOS";
 
 /* Title for contact form email. */
