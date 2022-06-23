@@ -31,18 +31,18 @@ export interface Props {
   onSelectAccount?: () => void
   showTooltips?: boolean
   fullAddress?: boolean
+  hideAddress?: boolean
 }
 
-export function SelectAccountItem (props: Props) {
-  const {
-    account,
-    selectedAccount,
-    onSelectAccount,
-    showTooltips,
-    fullAddress,
-    selectedNetwork
-  } = props
-
+export function SelectAccountItem ({
+  account,
+  selectedAccount,
+  onSelectAccount,
+  showTooltips,
+  fullAddress,
+  selectedNetwork,
+  hideAddress
+}: Props) {
   const orb = React.useMemo(() => {
     return create({ seed: account.address.toLowerCase(), size: 8, scale: 16 }).toDataURL()
   }, [account])
@@ -72,12 +72,12 @@ export function SelectAccountItem (props: Props) {
             <AccountName>{reduceAccountDisplayName(account.name, 22)}</AccountName>
           </PossibleToolTip>
 
-          <PossibleToolTip text={account.address} isAddress>
+          {!hideAddress && <PossibleToolTip text={account.address} isAddress>
             <AccountAddress>{fullAddress
               ? account.address
               : reduceAddress(account.address)
             }</AccountAddress>
-          </PossibleToolTip>
+          </PossibleToolTip>}
 
         </AccountAndAddress>
       </LeftSide>
