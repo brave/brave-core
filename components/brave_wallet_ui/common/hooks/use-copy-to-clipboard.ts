@@ -10,7 +10,9 @@ import { copyToClipboard } from '../../utils/copy-to-clipboard'
 
 const temporaryCopyTimeout = 5000 // 5s
 
-export const useTemporaryCopyToClipboard = () => {
+export const useTemporaryCopyToClipboard = (
+  timeoutMs: number = temporaryCopyTimeout
+) => {
   // state
   const [isCopied, setIsCopied] = React.useState(false)
 
@@ -31,7 +33,7 @@ export const useTemporaryCopyToClipboard = () => {
     const timer = setTimeout(async () => {
       await copyToClipboard('')
       setIsCopied(false)
-    }, temporaryCopyTimeout)
+    }, timeoutMs)
 
     // clean-up on unmount if timer was set
     return () => {
@@ -41,6 +43,22 @@ export const useTemporaryCopyToClipboard = () => {
 
   return {
     temporaryCopyToClipboard,
+    isCopied
+  }
+}
+
+export const useCopyToClipboard = () => {
+  // state
+  const [isCopied, setIsCopied] = React.useState(false)
+
+  // methods
+  const _copyToClipboard = React.useCallback(async (value: string) => {
+    await copyToClipboard(value)
+    setIsCopied(true)
+  }, [])
+
+  return {
+    copyToClipboard: _copyToClipboard,
     isCopied
   }
 }

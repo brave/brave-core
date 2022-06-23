@@ -13,13 +13,14 @@ import { getLocale } from '../../../../../common/locale'
 import { PageState, WalletRoutes } from '../../../../constants/types'
 
 // hooks
-import { useTemporaryCopyToClipboard } from '../../../../common/hooks/use-temporary-copy-to-clipboard'
+import { useTemporaryCopyToClipboard } from '../../../../common/hooks/use-copy-to-clipboard'
 
 // styles
 import {
   ToggleVisibilityButton,
-  GreenCheckmark,
-  LinkText
+  LinkText,
+  DownloadButton,
+  CopyButton
 } from '../../../../components/shared/style'
 import {
   Description,
@@ -33,15 +34,11 @@ import {
   PhraseCardBottomRow,
   PhraseCardTopRow
 } from '../onboarding.style'
-import {
-  CopiedToClipboardContainer,
-  CopyButton,
-  DownloadButton
-} from './onboarding-backup-recovery-phrase.style'
 
 // components
 import { WalletPageLayout } from '../../../../components/desktop'
 import { NavButton } from '../../../../components/extension'
+import { CopiedToClipboardConfirmation } from '../../../../components/desktop/copied-to-clipboard-confirmation/copied-to-clipboard-confirmation'
 import { RecoveryPhrase } from '../components/recovery-phrase/recovery-phrase'
 import { OnboardingNewWalletStepsNavigation } from '../components/onboarding-steps-navigation/onboarding-steps-navigation'
 
@@ -135,9 +132,7 @@ export const OnboardingBackupRecoveryPhrase = () => {
 
             <PhraseCardBottomRow>
 
-              <CopyButton
-                onClick={onCopyPhrase}
-              />
+              <CopyButton onClick={onCopyPhrase} />
 
               <a
                 href={phraseDownloadUri}
@@ -147,12 +142,7 @@ export const OnboardingBackupRecoveryPhrase = () => {
                 <DownloadButton />
               </a>
 
-              {isCopied &&
-                <CopiedToClipboardContainer>
-                  <GreenCheckmark />
-                  <p>{getLocale('braveWalletCopiedToClipboard')}</p>
-                </CopiedToClipboardContainer>
-              }
+              {isCopied && <CopiedToClipboardConfirmation />}
 
             </PhraseCardBottomRow>
           </PhraseCard>
