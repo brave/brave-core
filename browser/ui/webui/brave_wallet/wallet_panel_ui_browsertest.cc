@@ -125,6 +125,7 @@ class WalletPanelUIBrowserTest : public InProcessBrowserTest {
   void SetUpOnMainThread() override {
     InProcessBrowserTest::SetUpOnMainThread();
 
+    // Diabling CSP on webui pages so EvalJS could be run in main world.
     BraveSettingsUI::DisableCSPForTesting() = true;
     BraveSettingsUI::ExposeElementsForTesting() = true;
     WalletPanelUI::DisableCSPForTesting() = true;
