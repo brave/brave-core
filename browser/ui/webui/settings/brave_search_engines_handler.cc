@@ -11,6 +11,7 @@
 #include "base/bind.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/values.h"
+#include "brave/browser/search_engines/search_engine_provider_util.h"
 #include "chrome/browser/ui/search_engines/template_url_table_model.h"
 #include "components/search_engines/template_url.h"
 
@@ -38,6 +39,8 @@ void BraveSearchEnginesHandler::RegisterMessages() {
 
 void BraveSearchEnginesHandler::OnModelChanged() {
   SearchEnginesHandler::OnModelChanged();
+
+  brave::SetDefaultPrivateSearchProvider(profile_);
 
   // Sync normal profile's search provider list with private profile's.
   FireWebUIListener("private-search-engines-changed",

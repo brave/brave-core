@@ -47,6 +47,16 @@ using SearchEngineProviderServiceTest = InProcessBrowserTest;
 
 namespace {
 
+testing::AssertionResult VerifyTemplateURLServiceLoad(
+    TemplateURLService* service) {
+  if (service->loaded())
+    return testing::AssertionSuccess();
+  search_test_utils::WaitForTemplateURLServiceToLoad(service);
+  if (service->loaded())
+    return testing::AssertionSuccess();
+  return testing::AssertionFailure() << "TemplateURLService isn't loaded";
+}
+
 // An observer that returns back to test code after a new profile is
 // initialized.
 void OnProfileCreation(base::RunLoop* run_loop, Profile* profile) {
@@ -88,6 +98,24 @@ IN_PROC_BROWSER_TEST_F(SearchEngineProviderServiceTest,
                    .empty());
 }
 
+IN_PROC_BROWSER_TEST_F(SearchEngineProviderServiceTest,
+                       PRE_InvalidPrivateSearchProviderRestoreTest) {
+  auto* profile = browser()->profile();
+  profile->GetPrefs()->SetString(prefs::kSyncedDefaultPrivateSearchProviderGUID,
+                                 "invalid_id");
+}
+
+IN_PROC_BROWSER_TEST_F(SearchEngineProviderServiceTest,
+                       InvalidPrivateSearchProviderRestoreTest) {
+  auto* profile = browser()->profile();
+  auto* service = TemplateURLServiceFactory::GetForProfile(profile);
+  EXPECT_TRUE(VerifyTemplateURLServiceLoad(service));
+
+  EXPECT_EQ(service->GetDefaultSearchProvider()->sync_guid(),
+            profile->GetPrefs()->GetString(
+                prefs::kSyncedDefaultPrivateSearchProviderGUID));
+}
+
 // Check crash isn't happened with multiple private window is used.
 // https://github.com/brave/brave-browser/issues/1452
 IN_PROC_BROWSER_TEST_F(SearchEngineProviderServiceTest,
@@ -107,6 +135,7 @@ IN_PROC_BROWSER_TEST_F(SearchEngineProviderServiceTest,
       profile->GetPrimaryOTRProfile(/*create_if_needed=*/true);
 
   auto* service = TemplateURLServiceFactory::GetForProfile(profile);
+  EXPECT_TRUE(VerifyTemplateURLServiceLoad(service));
   auto* incognito_service =
       TemplateURLServiceFactory::GetForProfile(incognito_profile);
   const int initial_normal_provider_id =
@@ -141,6 +170,17 @@ IN_PROC_BROWSER_TEST_F(SearchEngineProviderServiceTest,
                                 base::Unretained(&mock_object)));
   mock_object.RunLoop();
   EXPECT_EQ(initial_private_provider_id,
+            incognito_service->GetDefaultSearchProvider()->prepopulate_id());
+
+  // Set invalid private search provider id and check default provider is set
+  // properly.
+  profile->GetPrefs()->SetString(prefs::kSyncedDefaultPrivateSearchProviderGUID,
+                                 "invalid_id");
+  brave::SetDefaultPrivateSearchProvider(profile);
+  EXPECT_EQ(service->GetDefaultSearchProvider()->sync_guid(),
+            profile->GetPrefs()->GetString(
+                prefs::kSyncedDefaultPrivateSearchProviderGUID));
+  EXPECT_EQ(initial_normal_provider_id,
             incognito_service->GetDefaultSearchProvider()->prepopulate_id());
 
 #if BUILDFLAG(ENABLE_TOR)
@@ -193,16 +233,6 @@ std::unique_ptr<TemplateURLData> TestExtensionSearchEngine(PrefService* prefs) {
   result->contextual_search_url = prepopulated->contextual_search_url;
   result->new_tab_url = prepopulated->new_tab_url;
   return result;
-}
-
-testing::AssertionResult VerifyTemplateURLServiceLoad(
-    TemplateURLService* service) {
-  if (service->loaded())
-    return testing::AssertionSuccess();
-  search_test_utils::WaitForTemplateURLServiceToLoad(service);
-  if (service->loaded())
-    return testing::AssertionSuccess();
-  return testing::AssertionFailure() << "TemplateURLService isn't loaded";
 }
 
 IN_PROC_BROWSER_TEST_F(ExtensionBrowserTest,
