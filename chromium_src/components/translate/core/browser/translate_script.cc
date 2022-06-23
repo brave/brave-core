@@ -10,9 +10,9 @@
 #include "base/strings/stringprintf.h"
 #include "base/threading/sequenced_task_runner_handle.h"
 #include "brave/components/constants/brave_services_key.h"
-#include "components/grit/brave_components_resources.h"
 #include "brave/components/translate/core/common/brave_translate_constants.h"
 #include "brave/components/translate/core/common/brave_translate_features.h"
+#include "components/grit/brave_components_resources.h"
 #include "ui/base/resource/resource_bundle.h"
 
 namespace translate {
