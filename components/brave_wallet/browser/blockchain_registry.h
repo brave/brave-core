@@ -30,10 +30,14 @@ class BlockchainRegistry : public mojom::BlockchainRegistry {
   void Bind(mojo::PendingReceiver<mojom::BlockchainRegistry> receiver);
 
   void UpdateTokenList(TokenListMap tokens);
+  void UpdateChainList(ChainList chains);
 
   mojom::BlockchainTokenPtr GetTokenByAddress(const std::string& chain_id,
                                               mojom::CoinType coin,
                                               const std::string& address);
+  std::vector<mojom::NetworkInfoPtr> SearchNetworks(
+      const absl::optional<std::string>& chain_id_filter,
+      const absl::optional<std::string>& chain_name_filter);
 
   // BlockchainRegistry interface methods
   void GetTokenByAddress(const std::string& chain_id,
@@ -56,12 +60,16 @@ class BlockchainRegistry : public mojom::BlockchainRegistry {
                  const std::string& symbol,
                  const std::string& amount,
                  GetBuyUrlCallback callback) override;
+  void SearchNetworks(const absl::optional<std::string>& chain_id_filter,
+                      const absl::optional<std::string>& chain_name_filter,
+                      SearchNetworksCallback callback) override;
 
  protected:
   std::vector<mojom::BlockchainTokenPtr>* GetTokenListFromChainId(
       const std::string& chain_id);
 
   TokenListMap token_list_map_;
+  ChainList chain_list_;
   friend struct base::DefaultSingletonTraits<BlockchainRegistry>;
 
   BlockchainRegistry();

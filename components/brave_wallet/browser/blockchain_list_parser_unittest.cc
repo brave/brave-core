@@ -8,7 +8,10 @@
 #include <vector>
 
 #include "brave/components/brave_wallet/browser/blockchain_list_parser.h"
+#include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
+
+using testing::ElementsAreArray;
 
 namespace brave_wallet {
 
@@ -154,6 +157,109 @@ TEST(ParseTokenListUnitTest, GetTokenListKey) {
             "filecoin.f");
   EXPECT_EQ(GetTokenListKey(mojom::CoinType::SOL, mojom::kSolanaMainnet),
             "solana.0x65");
+}
+
+TEST(ParseChainListUnitTest, ParseChainList) {
+  const std::string chain_list = R"(
+  [
+    {
+      "name": "Ethereum Mainnet",
+      "chain": "ETH",
+      "icon": "ethereum",
+      "rpc": [
+        "https://mainnet.infura.io/v3/${INFURA_API_KEY}",
+        "wss://mainnet.infura.io/ws/v3/${INFURA_API_KEY}",
+        "https://api.mycryptoapi.com/eth",
+        "https://cloudflare-eth.com"
+      ],
+      "faucets": [],
+      "nativeCurrency": { "name": "Ether", "symbol": "ETH", "decimals": 18 },
+      "infoURL": "https://ethereum.org",
+      "shortName": "eth",
+      "chainId": 1,
+      "networkId": 1,
+      "slip44": 60,
+      "ens": { "registry": "0x00000000000C2E074eC69A0dFb2997BA6C7d2e1e" },
+      "explorers": [
+        {
+          "name": "etherscan",
+          "url": "https://etherscan.io",
+          "standard": "EIP3091"
+        }
+      ]
+    },
+    {
+      "name": "Polygon Mainnet",
+      "chain": "Polygon",
+      "rpc": [
+        "https://polygon-rpc.com/",
+        "https://rpc-mainnet.matic.network",
+        "https://matic-mainnet.chainstacklabs.com",
+        "https://rpc-mainnet.maticvigil.com",
+        "https://rpc-mainnet.matic.quiknode.pro",
+        "https://matic-mainnet-full-rpc.bwarelabs.com"
+      ],
+      "faucets": [],
+      "nativeCurrency": { "name": "MATIC", "symbol": "MATIC", "decimals": 18 },
+      "infoURL": "https://polygon.technology/",
+      "shortName": "MATIC",
+      "chainId": 137,
+      "networkId": 137,
+      "slip44": 966,
+      "explorers": [
+        {
+          "name": "polygonscan",
+          "url": "https://polygonscan.com",
+          "standard": "EIP3091"
+        }
+      ]
+    }
+  ])";
+
+  ChainList result;
+  EXPECT_TRUE(ParseChainList(chain_list, &result));
+
+  ASSERT_EQ(2u, result.size());
+
+  auto& chain1 = result[0];
+  ASSERT_TRUE(chain1);
+  EXPECT_EQ("0x1", chain1->chain_id);
+  EXPECT_EQ("Ethereum Mainnet", chain1->chain_name);
+  EXPECT_THAT(
+      chain1->rpc_urls,
+      ElementsAreArray({"https://mainnet.infura.io/v3/${INFURA_API_KEY}",
+                        "wss://mainnet.infura.io/ws/v3/${INFURA_API_KEY}",
+                        "https://api.mycryptoapi.com/eth",
+                        "https://cloudflare-eth.com"}));
+  EXPECT_THAT(chain1->block_explorer_urls,
+              ElementsAreArray({"https://etherscan.io"}));
+  EXPECT_EQ("Ether", chain1->symbol_name);
+  EXPECT_EQ("ETH", chain1->symbol);
+  EXPECT_EQ(18, chain1->decimals);
+  EXPECT_EQ(0u, chain1->icon_urls.size());
+  ASSERT_EQ(chain1->coin, mojom::CoinType::ETH);
+  ASSERT_FALSE(chain1->data);
+
+  auto& chain2 = result[1];
+  ASSERT_TRUE(chain2);
+  EXPECT_EQ("0x89", chain2->chain_id);
+  EXPECT_EQ("Polygon Mainnet", chain2->chain_name);
+  EXPECT_THAT(
+      chain2->rpc_urls,
+      ElementsAreArray({"https://polygon-rpc.com/",
+                        "https://rpc-mainnet.matic.network",
+                        "https://matic-mainnet.chainstacklabs.com",
+                        "https://rpc-mainnet.maticvigil.com",
+                        "https://rpc-mainnet.matic.quiknode.pro",
+                        "https://matic-mainnet-full-rpc.bwarelabs.com"}));
+  EXPECT_THAT(chain2->block_explorer_urls,
+              ElementsAreArray({"https://polygonscan.com"}));
+  EXPECT_EQ("MATIC", chain2->symbol_name);
+  EXPECT_EQ("MATIC", chain2->symbol);
+  EXPECT_EQ(18, chain2->decimals);
+  EXPECT_EQ(0u, chain2->icon_urls.size());
+  ASSERT_EQ(chain2->coin, mojom::CoinType::ETH);
+  ASSERT_FALSE(chain2->data);
 }
 
 }  // namespace brave_wallet

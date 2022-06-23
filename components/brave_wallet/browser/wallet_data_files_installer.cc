@@ -59,6 +59,7 @@ void HandleParseTokenList(base::FilePath absolute_install_dir,
   std::string token_list_json;
   if (!base::ReadFileToString(token_list_json_path, &token_list_json)) {
     LOG(ERROR) << "Can't read token list file: " << filename;
+    return;
   }
 
   if (!ParseTokenList(token_list_json, token_list_map, coin_type)) {
@@ -66,8 +67,7 @@ void HandleParseTokenList(base::FilePath absolute_install_dir,
   }
 }
 
-TokenListMap TokenListReady(const base::FilePath& install_dir,
-                            base::Value manifest) {
+TokenListMap TokenListReady(const base::FilePath& install_dir) {
   TokenListMap lists;
   // On some platforms (e.g. Mac) we use symlinks for paths. Convert paths to
   // absolute paths to avoid unexpected failure. base::MakeAbsoluteFilePath()
@@ -94,6 +94,44 @@ TokenListMap TokenListReady(const base::FilePath& install_dir,
 
 void UpdateTokenRegistry(TokenListMap lists) {
   BlockchainRegistry::GetInstance()->UpdateTokenList(std::move(lists));
+}
+
+void HandleParseChainList(base::FilePath absolute_install_dir,
+                          const std::string& filename,
+                          ChainList* chain_list) {
+  const base::FilePath chain_list_json_path =
+      absolute_install_dir.AppendASCII(filename);
+  std::string chain_list_json;
+  if (!base::ReadFileToString(chain_list_json_path, &chain_list_json)) {
+    LOG(ERROR) << "Can't read chain list file: " << filename;
+    return;
+  }
+
+  if (!ParseChainList(chain_list_json, chain_list)) {
+    LOG(ERROR) << "Can't parse chain list: " << filename;
+  }
+}
+
+ChainList ChainListReady(const base::FilePath& install_dir) {
+  ChainList chains;
+  // On some platforms (e.g. Mac) we use symlinks for paths. Convert paths to
+  // absolute paths to avoid unexpected failure. base::MakeAbsoluteFilePath()
+  // requires IO so it can only be done in this function.
+  const base::FilePath absolute_install_dir =
+      base::MakeAbsoluteFilePath(install_dir);
+
+  if (absolute_install_dir.empty()) {
+    LOG(ERROR) << "Failed to get absolute install path.";
+    return chains;
+  }
+
+  HandleParseChainList(absolute_install_dir, "chainlist.json", &chains);
+
+  return chains;
+}
+
+void UpdateChainListRegistry(ChainList chains) {
+  BlockchainRegistry::GetInstance()->UpdateChainList(std::move(chains));
 }
 
 }  // namespace
@@ -155,8 +193,13 @@ void WalletDataFilesInstallerPolicy::ComponentReady(
   last_installed_wallet_version = version;
   base::ThreadPool::PostTaskAndReplyWithResult(
       FROM_HERE, {base::MayBlock(), base::TaskPriority::BEST_EFFORT},
-      base::BindOnce(TokenListReady, path, std::move(manifest)),
+      base::BindOnce(TokenListReady, path),
       base::BindOnce(UpdateTokenRegistry));
+
+  base::ThreadPool::PostTaskAndReplyWithResult(
+      FROM_HERE, {base::MayBlock(), base::TaskPriority::BEST_EFFORT},
+      base::BindOnce(ChainListReady, path),
+      base::BindOnce(UpdateChainListRegistry));
 }
 
 bool WalletDataFilesInstallerPolicy::VerifyInstallation(

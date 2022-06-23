@@ -10,12 +10,16 @@
 
 #include "base/strings/stringprintf.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 
 namespace brave_wallet {
 
-BlockchainRegistry::BlockchainRegistry() = default;
+namespace {
+constexpr int kSearchNetworksLimit = 10;
+}
 
-BlockchainRegistry::~BlockchainRegistry() {}
+BlockchainRegistry::BlockchainRegistry() = default;
+BlockchainRegistry::~BlockchainRegistry() = default;
 
 BlockchainRegistry* BlockchainRegistry::GetInstance() {
   return base::Singleton<BlockchainRegistry>::get();
@@ -35,6 +39,10 @@ void BlockchainRegistry::Bind(
 
 void BlockchainRegistry::UpdateTokenList(TokenListMap token_list_map) {
   token_list_map_ = std::move(token_list_map);
+}
+
+void BlockchainRegistry::UpdateChainList(ChainList chains) {
+  chain_list_ = std::move(chains);
 }
 
 void BlockchainRegistry::GetTokenByAddress(const std::string& chain_id,
@@ -150,6 +158,39 @@ void BlockchainRegistry::GetBuyUrl(mojom::OnRampProvider provider,
   } else {
     std::move(callback).Run(url, "UNSUPPORTED_ONRAMP_PROVIDER");
   }
+}
+
+std::vector<mojom::NetworkInfoPtr> BlockchainRegistry::SearchNetworks(
+    const absl::optional<std::string>& chain_id_filter,
+    const absl::optional<std::string>& chain_name_filter) {
+  std::vector<mojom::NetworkInfoPtr> result;
+  for (auto& chain : chain_list_) {
+    if (chain_id_filter && !chain_id_filter->empty()) {
+      if (!base::Contains(chain->chain_id, *chain_id_filter))
+        continue;
+    }
+    if (chain_name_filter && !chain_name_filter->empty()) {
+      if (!base::Contains(chain->chain_name, *chain_name_filter))
+        continue;
+    }
+
+    if (auto known_chain = GetKnownEthChain(nullptr, chain->chain_id)) {
+      result.push_back(known_chain.Clone());
+    } else {
+      result.push_back(chain.Clone());
+    }
+    if (result.size() >= kSearchNetworksLimit)
+      break;
+  }
+
+  return result;
+}
+
+void BlockchainRegistry::SearchNetworks(
+    const absl::optional<std::string>& chain_id_filter,
+    const absl::optional<std::string>& chain_name_filter,
+    SearchNetworksCallback callback) {
+  std::move(callback).Run(SearchNetworks(chain_id_filter, chain_name_filter));
 }
 
 }  // namespace brave_wallet
