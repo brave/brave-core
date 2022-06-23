@@ -40,22 +40,22 @@ jobs:
           RESOLVE_ISSUE_REGEX="(?:resolv|fix|clos)(?:e|es|ed)?:?\s+\K(${URL_REGEX})"
           verlte() { printf '%s\n%s' "$1" "$2" | sort -C -V; }
 
-          uplift_pr_body=$(gh pr view "${PR_NUMBER}" -R "${REPO_NAME}" --json body --jq ".body")
+          uplift_pr_body=$(gh pr view "${PR_NUMBER}" -R "${REPO_NAME}" --json body --jq .body)
 
           issues=$(echo "${uplift_pr_body}" | grep -ioP "${RESOLVE_ISSUE_REGEX}" || :)
-          if [[ -z ${issues} ]]; then
+          if [[ -z "${issues[@]}" ]]; then
               echo "Resolved issues not directly found. Following PRs to determine them..."
               prs=$(echo "${uplift_pr_body}" | grep -ioP "${UPLIFT_PR_REGEX}")
-              issues=$(xargs -n 1 -I{} gh pr view {} -R brave/brave-core --json body --jq ".body" < <(echo "${prs}") | grep -ioP "${RESOLVE_ISSUE_REGEX}")
+              issues=$(xargs -n 1 -I{} gh pr view {} -R brave/brave-core --json body --jq .body < <(echo "${prs}") | grep -ioP "${RESOLVE_ISSUE_REGEX}")
           fi
           echo "Relevant issues detected:"
           echo "${issues}"
 
-          pr_milestone=$(gh pr view "${PR_NUMBER}" -R "${REPO_NAME}" --json milestone --jq ".milestone.title")
+          pr_milestone=$(gh pr view "${PR_NUMBER}" -R "${REPO_NAME}" --json milestone --jq .milestone.title)
 
           echo "${issues}" | while read -r issue; do
-              issue_milestone=$(gh issue view "${issue}" --json milestone --jq ".milestone.title")
-              if [ -z "${issue_milestone}" ] || verlte "${pr_milestone}" "${issue_milestone}"; then
+              issue_milestone=$(gh issue view "${issue}" --json milestone --jq .milestone.title)
+              if [[ -z "${issue_milestone}" ]] || verlte "${pr_milestone}" "${issue_milestone}"; then
                   echo "Setting ${issue} milestone to ${pr_milestone}"
                   gh issue edit "${issue}" -m "${pr_milestone}"
               fi
