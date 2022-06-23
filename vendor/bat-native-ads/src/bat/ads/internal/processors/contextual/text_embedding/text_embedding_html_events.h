@@ -26,18 +26,9 @@ void LogTextEmbeddingHTMLEvent(const TextEmbeddingInfo& text_embedding_info, Tex
 
 void LogTextEmbeddingHTMLEvent(const TextEmbeddingEventInfo& text_embedding_html_event, TextEmbeddingHTMLEventCallback callback);
 
-// void PurgeExpiredAdEvents(TextEmbeddingHTMLEventCallback callback);
-// void PurgeOrphanedAdEvents(const mojom::AdType ad_type,
-//                            TextEmbeddingHTMLEventCallback callback);
-
-// void RebuildAdEventsFromDatabase();
+void PurgeStaleTextEmbeddingHTMLEvents(TextEmbeddingHTMLEventCallback callback);
 
 void GetTextEmbeddingEventsFromDatabase();
-
-// void RecordAdEvent(const TextEmbeddingEventInfo& text_embedding_html_event);
-
-// std::vector<base::Time> GetAdEvents(const AdType& ad_type,
-//                                     const ConfirmationType& confirmation_type);
 
 }  // namespace ads
 

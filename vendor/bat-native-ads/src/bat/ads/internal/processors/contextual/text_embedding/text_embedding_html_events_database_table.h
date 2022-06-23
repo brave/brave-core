@@ -29,14 +29,9 @@ class TextEmbeddingHTMLEvents final : public TableInterface {
 
   void LogEvent(const TextEmbeddingEventInfo& text_embedding_html_event, ResultCallback callback);
 
-  // void GetIf(const std::string& condition, GetTextEmbeddingHTMLEventsCallback callback);
-
   void GetAll(GetTextEmbeddingHTMLEventsCallback callback);
 
-  // void GetForType(const mojom::AdType ad_type, GetTextEmbeddingHTMLEventsCallback callback);
-
-  // void PurgeExpired(ResultCallback callback);
-  // void PurgeOrphaned(const mojom::AdType ad_type, ResultCallback callback);
+  void PurgeStale(ResultCallback callback);
 
   std::string GetTableName() const override;
 

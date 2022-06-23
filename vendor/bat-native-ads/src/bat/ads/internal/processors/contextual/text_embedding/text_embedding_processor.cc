@@ -79,11 +79,21 @@ void TextEmbedding::Process(const std::string& text) {
       return;
     }
     BLOG(1, "Successfully logged text embedding html event");
-
     std::cout << "\n\n";
     std::cout << "Successfully logged text embedding html event";
-    std::cout << "\n\n";
+    std::cout << "\n";
 
+    PurgeStaleTextEmbeddingHTMLEvents([](const bool success) {
+      if (!success) {
+        BLOG(1, "Failed to purge stale text embedding html events");
+        return;
+      }
+      BLOG(1, "Successfully purged stale text embedding html events");
+      std::cout << "Successfully purged stale text embedding html events";
+      std::cout << "\n";
+    });
+
+    std::cout << "\n";
     GetTextEmbeddingEventsFromDatabase();
     std::cout << "\n";
 

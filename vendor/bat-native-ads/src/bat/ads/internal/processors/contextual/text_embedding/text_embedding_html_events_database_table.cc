@@ -11,6 +11,7 @@
 #include "base/check.h"
 #include "base/strings/stringprintf.h"
 #include "bat/ads/internal/ads_client_helper.h"
+#include "bat/ads/internal/features/text_embedding_features.h"
 #include "bat/ads/internal/base/database/database_bind_util.h"
 #include "bat/ads/internal/base/database/database_column_util.h"
 #include "bat/ads/internal/base/database/database_table_util.h"
@@ -72,26 +73,6 @@ void TextEmbeddingHTMLEvents::LogEvent(const TextEmbeddingEventInfo& text_embedd
       std::bind(&OnResultCallback, std::placeholders::_1, callback));
 }
 
-// void AdEvents::GetIf(const std::string& condition,
-//                      GetAdEventsCallback callback) {
-//   const std::string& query = base::StringPrintf(
-//       "SELECT "
-//       "ae.uuid, "
-//       "ae.type, "
-//       "ae.confirmation_type, "
-//       "ae.campaign_id, "
-//       "ae.creative_set_id, "
-//       "ae.creative_instance_id, "
-//       "ae.advertiser_id, "
-//       "ae.timestamp "
-//       "FROM %s AS ae "
-//       "WHERE %s "
-//       "ORDER BY timestamp DESC ",
-//       GetTableName().c_str(), condition.c_str());
-
-//   RunTransaction(query, callback);
-// }
-
 void TextEmbeddingHTMLEvents::GetAll(GetTextEmbeddingHTMLEventsCallback callback) {
   const std::string& query = base::StringPrintf(
       "SELECT "
@@ -106,74 +87,25 @@ void TextEmbeddingHTMLEvents::GetAll(GetTextEmbeddingHTMLEventsCallback callback
   RunTransaction(query, callback);
 }
 
-// void AdEvents::GetForType(const mojom::AdType ad_type,
-//                           GetAdEventsCallback callback) {
-//   const std::string& ad_type_as_string = AdType(ad_type).ToString();
+void TextEmbeddingHTMLEvents::PurgeStale(ResultCallback callback) {
+  std::string limit = std::to_string(targeting::features::GetTextEmbeddingsHistorySize());
+  const std::string& query = base::StringPrintf(
+      "DELETE FROM %s "
+      "WHERE id NOT IN "
+      "(SELECT id from %s ORDER BY timestamp DESC LIMIT %s) ",
+      GetTableName().c_str(), GetTableName().c_str(), limit.c_str());
 
-//   const std::string& query = base::StringPrintf(
-//       "SELECT "
-//       "ae.uuid, "
-//       "ae.type, "
-//       "ae.confirmation_type, "
-//       "ae.campaign_id, "
-//       "ae.creative_set_id, "
-//       "ae.creative_instance_id, "
-//       "ae.advertiser_id, "
-//       "ae.timestamp "
-//       "FROM %s AS ae "
-//       "WHERE type = '%s' "
-//       "ORDER BY timestamp DESC",
-//       GetTableName().c_str(), ad_type_as_string.c_str());
+  mojom::DBCommandPtr command = mojom::DBCommand::New();
+  command->type = mojom::DBCommand::Type::EXECUTE;
+  command->command = query;
 
-//   RunTransaction(query, callback);
-// }
+  mojom::DBTransactionPtr transaction = mojom::DBTransaction::New();
+  transaction->commands.push_back(std::move(command));
 
-// void AdEvents::PurgeExpired(ResultCallback callback) {
-//   const std::string& query = base::StringPrintf(
-//       "DELETE FROM %s "
-//       "WHERE creative_set_id NOT IN "
-//       "(SELECT creative_set_id from creative_ads) "
-//       "AND creative_set_id NOT IN "
-//       "(SELECT creative_set_id from creative_ad_conversions) "
-//       "AND DATETIME('now') >= DATETIME(timestamp, 'unixepoch', '+3 month')",
-//       GetTableName().c_str());
-
-//   mojom::DBCommandPtr command = mojom::DBCommand::New();
-//   command->type = mojom::DBCommand::Type::EXECUTE;
-//   command->command = query;
-
-//   mojom::DBTransactionPtr transaction = mojom::DBTransaction::New();
-//   transaction->commands.push_back(std::move(command));
-
-//   AdsClientHelper::Get()->RunDBTransaction(
-//       std::move(transaction),
-//       std::bind(&OnResultCallback, std::placeholders::_1, callback));
-// }
-
-// void AdEvents::PurgeOrphaned(const mojom::AdType ad_type,
-//                              ResultCallback callback) {
-//   const std::string& ad_type_as_string = AdType(ad_type).ToString();
-
-//   const std::string& query = base::StringPrintf(
-//       "DELETE FROM %s "
-//       "WHERE uuid IN (SELECT uuid from %s GROUP BY uuid having count(*) = 1) "
-//       "AND confirmation_type IN (SELECT confirmation_type from %s "
-//       "WHERE confirmation_type = 'served') "
-//       "AND type = '%s'",
-//       GetTableName().c_str(), GetTableName().c_str(), GetTableName().c_str(),
-//       ad_type_as_string.c_str());
-
-//   mojom::DBCommandPtr command = mojom::DBCommand::New();
-//   command->type = mojom::DBCommand::Type::EXECUTE;
-//   command->command = query;
-
-//   mojom::DBTransactionPtr transaction = mojom::DBTransaction::New();
-//   transaction->commands.push_back(std::move(command));
-
-//   AdsClientHelper::Get()->RunDBTransaction(
-//       std::move(transaction),
-//       std::bind(&OnResultCallback, std::placeholders::_1, callback));
-// }
+  AdsClientHelper::Get()->RunDBTransaction(
+      std::move(transaction),
+      std::bind(&OnResultCallback, std::placeholders::_1, callback));
+}
 
 std::string TextEmbeddingHTMLEvents::GetTableName() const {
   return kTableName;
@@ -285,56 +217,6 @@ void TextEmbeddingHTMLEvents::MigrateToV25(mojom::DBTransaction* transaction) {
 
   transaction->commands.push_back(std::move(command));
 }
-
-// void AdEvents::MigrateToV13(mojom::DBTransaction* transaction) {
-//   DCHECK(transaction);
-
-//   RenameTable(transaction, "ad_events", "ad_events_temp");
-
-//   const std::string& query = base::StringPrintf(
-//       "CREATE TABLE ad_events "
-//       "(id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "
-//       "uuid TEXT NOT NULL, "
-//       "type TEXT, "
-//       "confirmation_type TEXT, "
-//       "campaign_id TEXT NOT NULL, "
-//       "creative_set_id TEXT NOT NULL, "
-//       "creative_instance_id TEXT NOT NULL, "
-//       "advertiser_id TEXT, "
-//       "timestamp TIMESTAMP NOT NULL); "
-//       "INSERT INTO ad_events "
-//       "(id, "
-//       "uuid, "
-//       "type, "
-//       "confirmation_type, "
-//       "campaign_id, "
-//       "creative_set_id, "
-//       "creative_instance_id, "
-//       "timestamp) "
-//       "SELECT id, "
-//       "uuid, "
-//       "type, "
-//       "confirmation_type, "
-//       "campaign_id, "
-//       "creative_set_id, "
-//       "creative_instance_id, "
-//       "timestamp "
-//       "FROM ad_events_temp");
-
-//   mojom::DBCommandPtr command = mojom::DBCommand::New();
-//   command->type = mojom::DBCommand::Type::EXECUTE;
-//   command->command = query;
-
-//   transaction->commands.push_back(std::move(command));
-
-//   DropTable(transaction, "ad_events_temp");
-// }
-
-// void AdEvents::MigrateToV17(mojom::DBTransaction* transaction) {
-//   DCHECK(transaction);
-
-//   CreateTableIndex(transaction, "ad_events", "timestamp");
-// }
 
 }  // namespace table
 }  // namespace database

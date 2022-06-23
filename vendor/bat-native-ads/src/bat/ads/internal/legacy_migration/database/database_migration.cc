@@ -55,8 +55,8 @@ void Migration::FromVersion(const int from_version, ResultCallback callback) {
   mojom::DBCommandPtr command = mojom::DBCommand::New();
   command->type = mojom::DBCommand::Type::MIGRATE;
 
-  transaction->version = to_version; //from_version
-  transaction->compatible_version = database::kCompatibleVersion; //from_version
+  transaction->version = to_version;
+  transaction->compatible_version = database::kCompatibleVersion;
   transaction->commands.push_back(std::move(command));
 
   AdsClientHelper::Get()->RunDBTransaction(
