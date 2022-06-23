@@ -61,6 +61,8 @@ import org.chromium.base.annotations.JNINamespace;
 import org.chromium.base.annotations.NativeMethods;
 import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.supplier.UnownedUserDataSupplier;
+import org.chromium.base.task.PostTask;
+import org.chromium.base.task.TaskTraits;
 import org.chromium.brave_wallet.mojom.AssetRatioService;
 import org.chromium.brave_wallet.mojom.BlockchainRegistry;
 import org.chromium.brave_wallet.mojom.BraveWalletService;
@@ -252,6 +254,13 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
             InAppPurchaseWrapper.getInstance().startBillingServiceConnection(BraveActivity.this);
             BraveVpnNativeWorker.getInstance().addObserver(this);
         }
+        Tab tab = getActivityTab();
+        if (tab != null) {
+            // Set proper active DSE whenever brave returns to foreground.
+            // If active tab is private, set private DSE as an active DSE.
+            BraveSearchEngineUtils.updateActiveDSE(tab.isIncognito());
+        }
+
         // The check on mNativeInitialized is mostly to ensure that mojo
         // services for wallet are initialized.
         // TODO(sergz): verify do we need it in that phase or not.
@@ -268,6 +277,12 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
     public void onPauseWithNative() {
         if (BraveVpnUtils.isBraveVpnFeatureEnable()) {
             BraveVpnNativeWorker.getInstance().removeObserver(this);
+        }
+        Tab tab = getActivityTab();
+        if (tab != null && tab.isIncognito()) {
+            // Set normal DSE as an active DSE when brave goes in background
+            // because currently set DSE is used by outside of brave(ex, brave search widget).
+            BraveSearchEngineUtils.updateActiveDSE(false);
         }
         super.onPauseWithNative();
     }
@@ -685,28 +700,9 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
                 BraveSetDefaultBrowserUtils.setBraveDefaultSuccess();
             }
         }
-        Tab tab = getActivityTab();
-        if (tab == null)
-            return;
 
-        // Set proper active DSE whenever brave returns to foreground.
-        // If active tab is private, set private DSE as an active DSE.
-        BraveSearchEngineUtils.updateActiveDSE(tab.isIncognito());
-        BraveStatsUtil.removeShareStatsFile();
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        Tab tab = getActivityTab();
-        if (tab == null)
-            return;
-
-        // Set normal DSE as an active DSE when brave goes in background
-        // because currently set DSE is used by outside of brave(ex, brave search widget).
-        if (tab.isIncognito()) {
-            BraveSearchEngineUtils.updateActiveDSE(false);
-        }
+        PostTask.postTask(
+                TaskTraits.BEST_EFFORT_MAY_BLOCK, () -> { BraveStatsUtil.removeShareStatsFile(); });
     }
 
     @Override
