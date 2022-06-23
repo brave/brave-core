@@ -1618,13 +1618,6 @@ extension Strings {
       value: "Address did not pass verification (invalid checksum). Please try again, replacing lowercase letters with uppercase.",
       comment: "A warning that appears below the send crypto address text field, when the input `To` address has invalid checksum."
     )
-    public static let betaLabel = NSLocalizedString(
-      "wallet.betaLabel",
-      tableName: "BraveWallet",
-      bundle: .strings,
-      value: "Beta",
-      comment: "Appended to 'Wallet' so that it appears as 'Wallet (Beta)' in the app menu. Describing 'beta' software"
-    )
     public static let customNetworkChainIdTitle = NSLocalizedString(
       "wallet.customNetworkChainIdTitle",
       tableName: "BraveWallet",
