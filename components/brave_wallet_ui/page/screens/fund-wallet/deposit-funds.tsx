@@ -34,9 +34,10 @@ import { AllNetworksOption } from '../../../options/network-filter-options'
 // hooks
 import { useHasAccount } from '../../../common/hooks'
 import { useIsMounted } from '../../../common/hooks/useIsMounted'
+import { useCopyToClipboard } from '../../../common/hooks/use-copy-to-clipboard'
 
 // style
-import { Column, Flex, LoadingIcon, Row } from '../../../components/shared/style'
+import { Column, CopyButton, LoadingIcon, Row } from '../../../components/shared/style'
 import { Description, MainWrapper, NextButtonRow, StyledWrapper, Title, VerticalSpace } from '../onboarding/onboarding.style'
 import {
   QRCodeImage,
@@ -56,6 +57,7 @@ import { BuyAssetOptionItem } from '../../../components/shared/buy-option/buy-as
 import { NavButton } from '../../../components/extension/buttons/nav-button/index'
 import CreateAccountTab from '../../../components/buy-send-swap/create-account'
 import SelectHeader from '../../../components/buy-send-swap/select-header'
+import { CopiedToClipboardConfirmation } from '../../../components/desktop/copied-to-clipboard-confirmation/copied-to-clipboard-confirmation'
 
 export const DepositFundsScreen = () => {
   // routing
@@ -74,6 +76,7 @@ export const DepositFundsScreen = () => {
   // custom hooks
   const isMounted = useIsMounted()
   const { needsAccount } = useHasAccount()
+  const { copyToClipboard, isCopied } = useCopyToClipboard()
 
   // state
   const [showDepositAddress, setShowDepositAddress] = React.useState<boolean>(false)
@@ -331,36 +334,48 @@ export const DepositFundsScreen = () => {
           {!needsAccount && showDepositAddress &&
             <>
               {!showAccountSearch &&
-                <>
+                <Column>
 
-                  <Title>{depositTitleText}</Title>
+                <Column alignItems='flex-start'>
+                    <Title>{depositTitleText}</Title>
 
-                  {selectedAssetNetwork &&
-                    <Description>
-                      {
-                        getLocale('braveWalletDepositOnlySendOnXNetwork')
-                          .replace('$1', selectedAssetNetwork.chainName)
-                      }
-                    </Description>
-                  }
+                    {selectedAssetNetwork &&
+                      <Description>
+                        {
+                          getLocale('braveWalletDepositOnlySendOnXNetwork')
+                            .replace('$1', selectedAssetNetwork.chainName)
+                        }
+                      </Description>
+                    }
+                  </Column>
 
-                  <Row
-                    justifyContent='space-around'
-                    alignItems='center'
-                  >
-                    <Flex>
-                      <SelectAccountItem
-                        selectedNetwork={selectedAssetNetwork}
-                        account={selectedAccount}
-                        onSelectAccount={openAccountSearch}
-                        showTooltips
-                        fullAddress
-                      />
-                    </Flex>
+                  <Row>
+                    <SelectAccountItem
+                      selectedNetwork={selectedAssetNetwork}
+                      account={selectedAccount}
+                      onSelectAccount={openAccountSearch}
+                      showTooltips
+                      fullAddress
+                    />
                   </Row>
 
-                  <QRCodeImage src={qrCode} />
-                </>
+                  <Row>
+                    <QRCodeImage src={qrCode} />
+                  </Row>
+
+                  <Column>
+                    <p>{selectedAccount.address}</p>
+
+                    <CopyButton onClick={() => {
+                      copyToClipboard(selectedAccount.address)
+                    }} />
+
+                    {isCopied &&
+                      <CopiedToClipboardConfirmation />
+                    }
+                  </Column>
+
+                </Column>
               }
 
               {showAccountSearch &&

@@ -20,7 +20,8 @@ import {
   ToggleVisibilityButton,
   LinkText,
   DownloadButton,
-  CopyButton
+  CopyButton,
+  HorizontalSpace
 } from '../../../../components/shared/style'
 import {
   Description,
@@ -142,7 +143,12 @@ export const OnboardingBackupRecoveryPhrase = () => {
                 <DownloadButton />
               </a>
 
-              {isCopied && <CopiedToClipboardConfirmation />}
+              {isCopied &&
+                <>
+                  <CopiedToClipboardConfirmation />
+                  <HorizontalSpace space='52px' />
+                </>
+              }
 
             </PhraseCardBottomRow>
           </PhraseCard>
