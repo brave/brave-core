@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/prefs/browser_prefs.cc b/chrome/browser/prefs/browser_prefs.cc
-index a748644cef16ff05c5a58355f3584cc1edcbb55d..be0c1d36fc0c321e314b7d976c4f870717d876b1 100644
+index 8bfc3599bbb1db389edaa169919d48e09a8219fa..f66a57f4e0112d0f6a43e5321fe55f9294ef9773 100644
 --- a/chrome/browser/prefs/browser_prefs.cc
 +++ b/chrome/browser/prefs/browser_prefs.cc
-@@ -1234,6 +1234,7 @@ void RegisterLocalState(PrefRegistrySimple* registry) {
+@@ -1201,6 +1201,7 @@ void RegisterLocalState(PrefRegistrySimple* registry) {
  
    registry->RegisterBooleanPref(
        policy::policy_prefs::kSetTimeoutWithout1MsClampEnabled, false);
@@ -10,7 +10,7 @@ index a748644cef16ff05c5a58355f3584cc1edcbb55d..be0c1d36fc0c321e314b7d976c4f8707
  
  #if BUILDFLAG(ENABLE_SCREEN_AI_SERVICE)
    screen_ai::RegisterLocalStatePrefs(registry);
-@@ -1579,6 +1580,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry,
+@@ -1545,6 +1546,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry,
  #endif
  
    RegisterProfilePrefsForMigration(registry);

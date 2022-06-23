@@ -1,8 +1,8 @@
 diff --git a/components/metrics/BUILD.gn b/components/metrics/BUILD.gn
-index 9c08e218f90bf44d5e53b40d5607534b1a0ac4f7..1e5d46bae375c2f640c14533b6d884587a68a218 100644
+index d78a53c731822d02a75b9df3fb6383b2889470f6..04a7f633285959dfc0a0a757658dcec5f6c24d05 100644
 --- a/components/metrics/BUILD.gn
 +++ b/components/metrics/BUILD.gn
-@@ -192,6 +192,7 @@ static_library("metrics") {
+@@ -193,6 +193,7 @@ static_library("metrics") {
    if (is_fuchsia) {
      sources += [ "drive_metrics_provider_fuchsia.cc" ]
    }
