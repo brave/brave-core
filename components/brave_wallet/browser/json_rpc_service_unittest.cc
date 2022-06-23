@@ -1106,6 +1106,51 @@ TEST_F(JsonRpcServiceUnitTest, GetAllNetworks) {
   ASSERT_TRUE(callback_is_called);
 }
 
+TEST_F(JsonRpcServiceUnitTest, GetCustomNetworks) {
+  base::MockCallback<mojom::JsonRpcService::GetCustomNetworksCallback> callback;
+  std::vector<base::Value> values;
+  mojom::NetworkInfo chain1(mojom::kMainnetChainId, "chain_name",
+                            {"https://url1.com"}, {"https://url1.com"},
+                            {"https://url1.com"}, "symbol_name", "symbol", 11,
+                            mojom::CoinType::ETH,
+                            mojom::NetworkInfoData::NewEthData(
+                                mojom::NetworkInfoDataETH::New(false)));
+  values.push_back(EthNetworkInfoToValue(chain1));
+
+  mojom::NetworkInfo chain2(
+      "0x123456", "chain_name2", {"https://url2.com"}, {"https://url2.com"},
+      {"https://url2.com"}, "symbol_name2", "symbol2", 22, mojom::CoinType::ETH,
+      mojom::NetworkInfoData::NewEthData(mojom::NetworkInfoDataETH::New(true)));
+  values.push_back(EthNetworkInfoToValue(chain2));
+  EXPECT_CALL(callback, Run(ElementsAreArray(std::vector<std::string>{})));
+  json_rpc_service_->GetCustomNetworks(mojom::CoinType::ETH, callback.Get());
+  testing::Mock::VerifyAndClearExpectations(&callback);
+  UpdateCustomNetworks(prefs(), &values);
+
+  EXPECT_CALL(callback, Run(ElementsAreArray({"0x1", "0x123456"})));
+  json_rpc_service_->GetCustomNetworks(mojom::CoinType::ETH, callback.Get());
+  testing::Mock::VerifyAndClearExpectations(&callback);
+}
+
+TEST_F(JsonRpcServiceUnitTest, GetKnownNetworks) {
+  base::MockCallback<mojom::JsonRpcService::GetKnownNetworksCallback> callback;
+  std::vector<base::Value> values;
+  mojom::NetworkInfo chain1(mojom::kMainnetChainId, "chain_name",
+                            {"https://url1.com"}, {"https://url1.com"},
+                            {"https://url1.com"}, "symbol_name", "symbol", 11,
+                            mojom::CoinType::ETH,
+                            mojom::NetworkInfoData::NewEthData(
+                                mojom::NetworkInfoDataETH::New(false)));
+  values.push_back(EthNetworkInfoToValue(chain1));
+  UpdateCustomNetworks(prefs(), &values);
+
+  EXPECT_CALL(callback, Run(ElementsAreArray({"0x1", "0x89", "0x38", "0xa4ec",
+                                              "0xa86a", "0xfa", "0xa", "0x4",
+                                              "0x3", "0x5", "0x2a", "0x539"})));
+  json_rpc_service_->GetKnownNetworks(mojom::CoinType::ETH, callback.Get());
+  testing::Mock::VerifyAndClearExpectations(&callback);
+}
+
 TEST_F(JsonRpcServiceUnitTest, GetHiddenNetworks) {
   base::MockCallback<mojom::JsonRpcService::GetHiddenNetworksCallback> callback;
 
