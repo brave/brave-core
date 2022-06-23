@@ -6,14 +6,11 @@
 #include "brave/browser/themes/theme_properties.h"
 
 #include "base/notreached.h"
+#include "brave/browser/ui/color/color_palette.h"
 #include "chrome/browser/themes/theme_properties.h"
 #include "ui/gfx/color_palette.h"
 
 namespace {
-
-const SkColor kLightToolbar = SkColorSetRGB(0xf3, 0xf3, 0xf3);
-const SkColor kLightFrame = SkColorSetRGB(0xd5, 0xd9, 0xdc);
-const SkColor kLightToolbarIcon = SkColorSetRGB(0x42, 0x42, 0x42);
 
 absl::optional<SkColor> MaybeGetDefaultColorForBraveLightUi(int id) {
   switch (id) {
@@ -27,7 +24,7 @@ absl::optional<SkColor> MaybeGetDefaultColorForBraveLightUi(int id) {
     // except active tab
     case ThemeProperties::COLOR_FRAME_INACTIVE:
     case ThemeProperties::COLOR_TAB_BACKGROUND_INACTIVE_FRAME_INACTIVE:
-      return color_utils::HSLShift(kLightFrame, { -1, -1, 0.6 });
+      return color_utils::HSLShift(kLightFrame, {-1, -1, 0.6});
     // Active tab and also the URL toolbar
     // Parts of this color show up as you hover over innactive tabs too
     case ThemeProperties::COLOR_TOOLBAR:
@@ -105,10 +102,6 @@ absl::optional<SkColor> MaybeGetDefaultColorForBraveLightUi(int id) {
   }
 }
 
-const SkColor kDarkToolbar = SkColorSetRGB(0x30, 0x34, 0x43);
-const SkColor kDarkFrame = SkColorSetRGB(0x0C, 0x0C, 0x17);
-const SkColor kDarkToolbarIcon = SkColorSetRGB(0xed, 0xed, 0xed);
-
 absl::optional<SkColor> MaybeGetDefaultColorForBraveDarkUi(int id) {
   switch (id) {
     // Applies when the window is active, tabs and also tab bar everywhere
@@ -120,7 +113,7 @@ absl::optional<SkColor> MaybeGetDefaultColorForBraveDarkUi(int id) {
     // except active tab
     case ThemeProperties::COLOR_FRAME_INACTIVE:
     case ThemeProperties::COLOR_TAB_BACKGROUND_INACTIVE_FRAME_INACTIVE:
-      return color_utils::HSLShift(kDarkFrame, { -1, -1, 0.6 });
+      return color_utils::HSLShift(kDarkFrame, {-1, -1, 0.6});
     // Active tab and also the URL toolbar
     // Parts of this color show up as you hover over innactive tabs too
     case ThemeProperties::COLOR_TOOLBAR:
@@ -201,9 +194,6 @@ absl::optional<SkColor> MaybeGetDefaultColorForBraveDarkUi(int id) {
   }
 }
 
-const SkColor kPrivateFrame = SkColorSetRGB(0x19, 0x16, 0x2F);
-const SkColor kPrivateToolbar = SkColorSetRGB(0x32, 0x25, 0x60);
-
 absl::optional<SkColor> MaybeGetDefaultColorForPrivateUi(int id) {
   switch (id) {
     // Applies when the window is active, tabs and also tab bar everywhere
@@ -215,7 +205,7 @@ absl::optional<SkColor> MaybeGetDefaultColorForPrivateUi(int id) {
     // except active tab
     case ThemeProperties::COLOR_FRAME_INACTIVE:
     case ThemeProperties::COLOR_TAB_BACKGROUND_INACTIVE_FRAME_INACTIVE:
-      return color_utils::HSLShift(kPrivateFrame, { -1, -1, 0.55 });
+      return color_utils::HSLShift(kPrivateFrame, {-1, -1, 0.55});
     // Active tab and also the URL toolbar
     // Parts of this color show up as you hover over innactive tabs too
     case ThemeProperties::COLOR_TOOLBAR:
@@ -241,8 +231,6 @@ absl::optional<SkColor> MaybeGetDefaultColorForPrivateUi(int id) {
   }
 }
 
-const SkColor kPrivateTorFrame = SkColorSetRGB(0x19, 0x0E, 0x2A);
-const SkColor kPrivateTorToolbar = SkColorSetRGB(0x49, 0x2D, 0x58);
 absl::optional<SkColor> MaybeGetDefaultColorForPrivateTorUi(int id) {
   switch (id) {
     // Applies when the window is active, tabs and also tab bar everywhere
@@ -254,7 +242,7 @@ absl::optional<SkColor> MaybeGetDefaultColorForPrivateTorUi(int id) {
     // except active tab
     case ThemeProperties::COLOR_FRAME_INACTIVE:
     case ThemeProperties::COLOR_TAB_BACKGROUND_INACTIVE_FRAME_INACTIVE:
-      return color_utils::HSLShift(kPrivateTorFrame, { -1, -1, 0.55 });
+      return color_utils::HSLShift(kPrivateTorFrame, {-1, -1, 0.55});
     // Active tab and also the URL toolbar
     // Parts of this color show up as you hover over innactive tabs too
     case ThemeProperties::COLOR_TOOLBAR:
