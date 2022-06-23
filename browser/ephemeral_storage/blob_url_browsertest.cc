@@ -316,27 +316,13 @@ IN_PROC_BROWSER_TEST_F(BlobUrlPartitionEnabledBrowserTest,
   TestBlobsAreNotPartitioned();
 }
 
-class BlobUrlPartitionEnabledWith1PESBrowserTest
-    : public BlobUrlBrowserTestBase {
- public:
-  BlobUrlPartitionEnabledWith1PESBrowserTest() {
-    scoped_feature_list_.InitWithFeatures(
-        {net::features::kBraveFirstPartyEphemeralStorage,
-         net::features::kBravePartitionBlobStorage},
-        {});
-  }
-
- private:
-  base::test::ScopedFeatureList scoped_feature_list_;
-};
-
-IN_PROC_BROWSER_TEST_F(BlobUrlPartitionEnabledWith1PESBrowserTest,
+IN_PROC_BROWSER_TEST_F(BlobUrlPartitionEnabledBrowserTest,
                        BlobsArePartitionedIn1PESMode) {
   SetCookieSetting(a_site_ephemeral_storage_url_, CONTENT_SETTING_SESSION_ONLY);
   TestBlobsArePartitioned();
 }
 
-IN_PROC_BROWSER_TEST_F(BlobUrlPartitionEnabledWith1PESBrowserTest,
+IN_PROC_BROWSER_TEST_F(BlobUrlPartitionEnabledBrowserTest,
                        BlobsArePartitionedIn1PESModeForBothSites) {
   SetCookieSetting(a_site_ephemeral_storage_url_, CONTENT_SETTING_SESSION_ONLY);
   SetCookieSetting(b_site_ephemeral_storage_url_, CONTENT_SETTING_SESSION_ONLY);
