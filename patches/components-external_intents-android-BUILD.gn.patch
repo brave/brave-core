@@ -1,5 +1,5 @@
 diff --git a/components/external_intents/android/BUILD.gn b/components/external_intents/android/BUILD.gn
-index 054e7ab45846eb43d506b285b1286b40ac89abac..c81c2b6a104f3a6725e51edc51866b2fc1a48968 100644
+index 9b3d6925de514a737b6433209d040feb2248ac52..6054a984f2edc24ff9d678138b3904107fa4b072 100644
 --- a/components/external_intents/android/BUILD.gn
 +++ b/components/external_intents/android/BUILD.gn
 @@ -58,6 +58,7 @@ static_library("android") {
@@ -9,4 +9,4 @@ index 054e7ab45846eb43d506b285b1286b40ac89abac..c81c2b6a104f3a6725e51edc51866b2f
 +  deps += [ "//brave/components/external_intents/android" ]
  }
  
- android_library("javatests") {
+ android_library("unit_device_javatests") {

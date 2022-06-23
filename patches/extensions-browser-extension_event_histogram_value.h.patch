@@ -1,11 +1,11 @@
 diff --git a/extensions/browser/extension_event_histogram_value.h b/extensions/browser/extension_event_histogram_value.h
-index 07fb305b0ebc02177e84b0b00a1b82e65e55ef6e..9e6a7b8a218bf7459a9e689581453f7596ceac9b 100644
+index 3e6b0db38539c4df6e02420e119b3db8738406ad..44e824fe805df2eff204f26b9223d8976a8e6f23 100644
 --- a/extensions/browser/extension_event_histogram_value.h
 +++ b/extensions/browser/extension_event_histogram_value.h
-@@ -514,6 +514,20 @@ enum HistogramValue {
-   LOGIN_ON_REQUEST_EXTERNAL_LOGOUT = 492,
+@@ -515,6 +515,20 @@ enum HistogramValue {
    LOGIN_ON_EXTERNAL_LOGOUT_DONE = 493,
    ACCESSIBILITY_PRIVATE_ON_PUMPKIN_INSTALLED = 494,
+   ENTERPRISE_REMOTE_APPS_ON_REMOTE_APP_LAUNCHED = 495,
 +
 +  BRAVE_START = 600,
 +  BRAVE_AD_BLOCKED,
