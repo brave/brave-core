@@ -18,8 +18,8 @@ import {
 } from '../constants/magics'
 
 // Utils
+import { getLocale } from '$web-common/locale'
 import Amount from '../../utils/amount'
-import { getLocale } from '../../../common/locale'
 
 // Hooks
 import usePricing from './pricing'
