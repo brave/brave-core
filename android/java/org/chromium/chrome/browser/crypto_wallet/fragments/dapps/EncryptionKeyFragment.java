@@ -119,7 +119,8 @@ public class EncryptionKeyFragment extends Fragment implements View.OnClickListe
                     getViewLifecycleOwner(), accountInfo -> {
                         Utils.setBlockiesBitmapResource(
                                 mExecutor, mHandler, mAccountImage, accountInfo.address, true);
-                        mAccountName.setText(accountInfo.name);
+                        String accountText = accountInfo.name + "\n" + accountInfo.address;
+                        mAccountName.setText(accountText);
                     });
 
             if (mActivityType
