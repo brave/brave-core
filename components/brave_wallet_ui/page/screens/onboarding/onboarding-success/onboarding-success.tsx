@@ -24,7 +24,7 @@ import WalletPageLayout from '../../../../components/desktop/wallet-page-layout/
 import { NavButton } from '../../../../components/extension/buttons/nav-button/index'
 
 // styles
-import { LinkText } from '../../../../components/shared/style'
+import { LinkText, WalletLink } from '../../../../components/shared/style'
 import {
   Description,
   Title,
@@ -100,10 +100,12 @@ export const OnboardingSuccess = () => {
           onSubmit={onClickBuyCrypto}
         />
 
-        <LinkText>
-          <DepositIcon />
-          {getLocale('braveWalletDepositCryptoButton')}
-        </LinkText>
+        <WalletLink to={WalletRoutes.DepositFundsPage}>
+          <LinkText as='span'>
+            <DepositIcon />
+            {getLocale('braveWalletDepositCryptoButton')}
+          </LinkText>
+        </WalletLink>
 
       </ButtonContainer>
 
