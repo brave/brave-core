@@ -384,6 +384,13 @@ provideStrings({
   braveWalletFundWalletTitle: 'Complete your $1 purchase through one of our partners',
   braveWalletFundWalletDescription: 'On completion, your funds will be transfered to your Brave Wallet',
 
+  // Deposit Funds Screen
+  braveWalletDepositFundsTitle: 'Deposit crypto',
+  braveWalletDepositX: 'Deposit $1',
+  braveWalletDepositSolSplTokens: 'Deposit Solana or SPL tokens',
+  braveWalletDepositErc: 'Deposit ERC-based tokens',
+  braveWalletDepositOnlySendOnXNetwork: 'Only send tokens to this address on $1',
+
   // Sign Transaction Panel
   braveWalletSignTransactionTitle: 'Your signature is being requested',
   braveWalletSignWarning: 'Note that Brave can’t verify what will happen if you sign. A signature could authorize nearly any operation in your account or on your behalf, including (but not limited to) giving total control of your account and crypto assets to the site making the request. Only sign if you’re sure you want to take this action, and trust the requesting site.',

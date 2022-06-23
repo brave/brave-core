@@ -37,18 +37,19 @@ import { SweepstakesBanner } from '../components/desktop/sweepstakes-banner'
 import { Skeleton } from '../components/shared/loading-skeleton/styles'
 import { FundWalletScreen } from './screens/fund-wallet/fund-wallet'
 import { OnboardingSuccess } from './screens/onboarding/onboarding-success/onboarding-success'
+import DepositFundsScreen from './screens/fund-wallet/deposit-funds'
 
 const POST_ONBOARDING_ROUTES = [
   <Route path={WalletRoutes.OnboardingComplete} exact>
     <OnboardingSuccess />
   </Route>,
 
-  <Route path={WalletRoutes.FundWalletPage} exact={true}>
+  <Route path={WalletRoutes.FundWalletPage} exact>
     <FundWalletScreen />
   </Route>,
 
-  <Route path={WalletRoutes.FundWalletPage} exact={true}>
-    <FundWalletScreen />
+  <Route path={WalletRoutes.DepositFundsPage} exact>
+    <DepositFundsScreen />
   </Route>
 ]
 
