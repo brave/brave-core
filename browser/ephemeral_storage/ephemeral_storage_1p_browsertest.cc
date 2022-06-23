@@ -98,7 +98,7 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorage1pBrowserTest,
   // We set a value in the page where all the frames are first-party.
   SetValuesInFrames(first_party_tab, "b.com - first party", "from=b.com");
 
-  // The page this tab is loaded via a.com and has two b.com third-party
+  // The page in this tab is loaded via a.com and has two b.com third-party
   // iframes. The third-party iframes should have ephemeral storage. That means
   // that their values should be shared by third-party b.com iframes loaded from
   // a.com.
@@ -298,7 +298,7 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorage1pBrowserTest,
   ASSERT_EQ("name=bcom_ephemeral", GetCookiesInFrame(iframe_a));
   ASSERT_EQ("name=bcom_ephemeral", GetCookiesInFrame(iframe_b));
 
-  // The cookie set in the ephemeral area should not visible in the main
+  // The cookie set in the ephemeral area should not be visible in the main
   // cookie storage.
   EXPECT_TRUE(content::GetCookies(browser()->profile(), GURL("https://b.com/"))
                   .empty());
@@ -532,11 +532,12 @@ IN_PROC_BROWSER_TEST_F(
 }
 
 // By default SESSION_ONLY setting means that data for a website should be
-// deleted after a restart, but this also implicitly change how a website
+// deleted after a restart, but this also implicitly changes how a website
 // behaves in 3p context: when the setting is explicit, Chromium removes 3p
-// restrictions which effectively allows the website store any data persistently
-// in 3p context. We change Chromium behaviour for this option to keep blocking
-// a website in 3p context when a global "block_third_party" option is enabled.
+// restrictions which effectively allows the website to store any data
+// persistently in 3p context. We change Chromium's behavior for this option to
+// keep blocking a website in 3p context when a global "block_third_party"
+// option is enabled.
 IN_PROC_BROWSER_TEST_F(EphemeralStorage1pDisabledBrowserTest,
                        SessionOnlyModeUsesEphemeralStorage) {
   SetCookieSetting(b_site_ephemeral_storage_url_, CONTENT_SETTING_SESSION_ONLY);
