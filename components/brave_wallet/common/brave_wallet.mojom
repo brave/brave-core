@@ -431,10 +431,10 @@ enum OnRampProvider {
 
 // List of tokens and coins that are supported.
 interface BlockchainRegistry {
-  // Obtains token information by an address lookup
+  // Obtains token information by an address lookup.
   GetTokenByAddress(string chain_id, CoinType coin, string address) => (BlockchainToken? token);
 
-  // Obtains token information by a symbol lookup
+  // Obtains token information by a symbol lookup.
   GetTokenBySymbol(string chain_id, CoinType coin, string symbol) => (BlockchainToken? token);
 
   // Obtains all tokens Send/Swap UI
@@ -444,9 +444,10 @@ interface BlockchainRegistry {
   // Obtains all tokens for the Buy UI
   GetBuyTokens(OnRampProvider provider, string chain_id) => (array<BlockchainToken> tokens);
 
-  // Obtains the URL used for buying assets
+  // Obtains the URL used for buying assets.
   GetBuyUrl(OnRampProvider provider, string chain_id, string address, string symbol, string amount) => (string url, string? error);
 
+  // Returns networks filtered by chain_id and/or chain_name.
   SearchNetworks(string? chain_id_filter, string? chain_name_filter) => (array<NetworkInfo> networks);
 };
 
