@@ -239,7 +239,7 @@ v8::Local<v8::Promise> JSSolanaProvider::Connect(gin::Arguments* arguments) {
         l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
     return v8::Local<v8::Promise>();
   }
-  if (!v8_arg.IsEmpty()) {
+  if (!v8_arg.IsEmpty() && !v8_arg->IsNullOrUndefined()) {
     std::unique_ptr<base::Value> arg_value =
         v8_value_converter_->FromV8Value(v8_arg, isolate->GetCurrentContext());
     if (!arg_value || !arg_value->is_dict()) {
@@ -314,7 +314,7 @@ v8::Local<v8::Promise> JSSolanaProvider::SignAndSendTransaction(
         l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
     return v8::Local<v8::Promise>();
   }
-  if (!v8_send_options.IsEmpty()) {
+  if (!v8_send_options.IsEmpty() && !v8_send_options->IsNullOrUndefined()) {
     std::unique_ptr<base::Value> send_options_value =
         v8_value_converter_->FromV8Value(v8_send_options,
                                          isolate->GetCurrentContext());
