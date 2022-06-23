@@ -33,7 +33,19 @@ public struct WalletPanelContainerView: View {
     case unlock
   }
 
-  @State private var visibleScreen: VisibleScreen = .loading
+  private var visibleScreen: VisibleScreen {
+    let keyring = keyringStore.keyring
+    if keyringStore.keyring.id.isEmpty {
+      return .loading
+    }
+    if !keyring.isKeyringCreated || keyringStore.isOnboardingVisible {
+      return .onboarding
+    }
+    if keyring.isLocked || keyringStore.isRestoreFromUnlockBiometricsPromptVisible {
+      return .unlock
+    }
+    return .panel
+  }
   
   private var lockedView: some View {
     VStack(spacing: 36) {
@@ -122,18 +134,6 @@ public struct WalletPanelContainerView: View {
     }
     .frame(idealWidth: 320, maxWidth: .infinity)
     .onChange(of: keyringStore.keyring) { newValue in
-      if !newValue.isKeyringCreated {
-        visibleScreen = .onboarding
-      } else if newValue.isLocked {
-        // only animate when transitioning from .panel to .unlock
-        let shouldAnimate: Bool = visibleScreen == .panel
-        withAnimation(shouldAnimate ? .default : nil) {
-          visibleScreen = .unlock
-        }
-      } else {
-        visibleScreen = .panel
-      }
-      
       if visibleScreen != .panel, !keyringStore.lockedManually {
         presentWalletWithContext?(.panelUnlockOrSetup)
       }
