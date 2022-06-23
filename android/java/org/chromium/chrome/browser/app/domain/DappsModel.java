@@ -78,6 +78,12 @@ public class DappsModel {
                 return;
             }
         });
+        mBraveWalletService.getPendingDecryptRequests(requests -> {
+            if (requests != null && requests.length > 0) {
+                setWalletBadgeVisible();
+                return;
+            }
+        });
         for (TransactionInfo info : mPendingTxHelper.mTransactionInfoLd.getValue()) {
             if (info.txStatus == TransactionStatus.UNAPPROVED) {
                 setWalletBadgeVisible();
