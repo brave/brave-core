@@ -23,6 +23,8 @@ import EyeOnIcon from '../../assets/svg-icons/eye-on-icon.svg'
 import EyeOffIcon from '../../assets/svg-icons/eye-off-icon.svg'
 import CheckmarkSvg from '../../assets/svg-icons/big-checkmark.svg'
 import CloseSvg from '../../assets/svg-icons/close.svg'
+import ClipboardSvg from '../../assets/svg-icons/clipboard-icon.svg'
+import DownloadSvg from '../../assets/svg-icons/download-icon.svg'
 
 // Spacers
 export const VerticalSpacer = styled.div<{ space: number | string }>`
@@ -175,6 +177,32 @@ export const ToggleVisibilityButton = styled(WalletButton)<{
   mask-size: contain;
   mask-position: center;
   mask-repeat: no-repeat;
+`
+
+export const CopyButton = styled(WalletButton)`
+  cursor: pointer;
+  outline: none;
+  border: none;
+  mask-image: url(${ClipboardSvg});
+  mask-position: center;
+  mask-repeat: no-repeat;
+  mask-size: 14px;
+  background-color: ${(p) => p.theme.color.text01};
+  height: 14px;
+  width: 14px;
+`
+
+export const DownloadButton = styled(WalletButton)`
+  cursor: pointer;
+  outline: none;
+  border: none;
+  mask-image: url(${DownloadSvg});
+  mask-position: center;
+  mask-repeat: no-repeat;
+  mask-size: 14px;
+  background-color: ${(p) => p.theme.color.text01};
+  height: 14px;
+  width: 14px;
 `
 
 // Icons
