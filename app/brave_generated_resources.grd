@@ -594,7 +594,7 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
           Try Brave Search
         </message>
         <message name="IDS_BRAVE_SEARCH_CONVERSION_DISMISS_BUTTON_TOOLTIP" desc="The tooltip text for the dismiss button in a promotion match">
-          Dismiss brave search conversion
+          Don't show this again
         </message>
         <message name="IDS_BRAVE_SEARCH_CONVERSION_DISMISS_BUTTON_LABEL" desc="The text for the dismiss button in a promotion match">
           Dismiss
