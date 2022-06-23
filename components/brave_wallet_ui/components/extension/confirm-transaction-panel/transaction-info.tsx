@@ -1,3 +1,8 @@
+// Copyright (c) 2022 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// you can obtain one at http://mozilla.org/MPL/2.0/.
+
 import * as React from 'react'
 import { useSelector } from 'react-redux'
 import { WalletState } from '../../../constants/types'
@@ -15,7 +20,7 @@ import {
 import { WarningBoxTitleRow } from '../shared-panel-styles'
 
 interface TransactionInfoProps {
-  onToggleEditGas: () => void
+  onToggleEditGas?: () => void
 }
 export const TransactionInfo = ({
   onToggleEditGas
@@ -26,7 +31,8 @@ export const TransactionInfo = ({
     isERC721TransferFrom,
     isSolanaTransaction,
     isFilecoinTransaction,
-    transactionsNetwork
+    transactionsNetwork,
+    sendOptions
   } = usePendingTransactions()
 
   // redux
@@ -74,7 +80,7 @@ export const TransactionInfo = ({
           }
         </TransactionTitle>
 
-        {!isSolanaTransaction &&
+        {!isSolanaTransaction && onToggleEditGas &&
           <EditButton onClick={onToggleEditGas}>
             {getLocale('braveWalletAllowSpendEditButton')}
           </EditButton>
@@ -171,9 +177,31 @@ export const TransactionInfo = ({
 
     {transactionDetails.insufficientFundsForGasError === false &&
       transactionDetails.insufficientFundsError &&
-        <TransactionText hasError={true}>
-          {getLocale('braveWalletSwapInsufficientBalance')}
-        </TransactionText>
+      <TransactionText hasError={true}>
+        {getLocale('braveWalletSwapInsufficientBalance')}
+      </TransactionText>
+    }
+
+    {sendOptions &&
+      <Divider />
+    }
+    {sendOptions?.maxRetries &&
+      <>
+        <TransactionTitle>{getLocale('braveWalletSolanaMaxRetries')}</TransactionTitle>
+        <TransactionTypeText>{Number(sendOptions.maxRetries.maxRetries)}</TransactionTypeText>
+      </>
+    }
+    {sendOptions?.preflightCommitment &&
+      <>
+        <TransactionTitle>{getLocale('braveWalletSolanaPreflightCommitment')}</TransactionTitle>
+        <TransactionTypeText>{sendOptions.preflightCommitment}</TransactionTypeText>
+      </>
+    }
+    {sendOptions?.skipPreflight &&
+      <>
+        <TransactionTitle>{getLocale('braveWalletSolanaSkipPreflight')}</TransactionTitle>
+        <TransactionTypeText>{sendOptions.skipPreflight.skipPreflight.toString()}</TransactionTypeText>
+      </>
     }
   </>
 }

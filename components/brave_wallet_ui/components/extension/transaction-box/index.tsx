@@ -1,9 +1,14 @@
+// Copyright (c) 2022 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// you can obtain one at http://mozilla.org/MPL/2.0/.
+
 import * as React from 'react'
 
 import { getLocale } from '../../../../common/locale'
 import { numberArrayToHexStr } from '../../../utils/hex-utils'
 import { BraveWallet } from '../../../constants/types'
-import { CodeSnippet, CodeSnippetText, DetailRow, DetailText, TransactionText } from './style'
+import { CodeSnippet, CodeSnippetText, DetailColumn, DetailText, TransactionText } from './style'
 
 export interface Props {
   transactionInfo: BraveWallet.TransactionInfo
@@ -29,10 +34,10 @@ const TransactionDetailBox = (props: Props) => {
         </CodeSnippet>
       ) : (
         <>
-          <DetailRow>
+          <DetailColumn>
             <TransactionText>{getLocale('braveWalletTransactionDetailBoxFunction')}:</TransactionText>
             <DetailText>{txKeys[txType]}</DetailText>
-          </DetailRow>
+          </DetailColumn>
           {txType !== BraveWallet.TransactionType.Other && txParams.map((param, i) =>
             <CodeSnippet key={i}>
               <code>
