@@ -103,9 +103,6 @@
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "NewTabTitle" = "Tab Baharu";
 
-/* No comment provided by engineer. */
-"No server found" = "Tiada pelayan ditemui";
-
 /* OK button */
 "OKString" = "OK";
 

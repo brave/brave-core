@@ -25,6 +25,9 @@
 /* Cell title for add folder action */
 "AddFolderActionCellTitle" = "Новая папка";
 
+/* Add to favorites share action. */
+"AddToFavorites" = "Добавить в избранное";
+
 /* Title for the button to add a new website bookmark. */
 "AddToMenuItem" = "Добавить закладку";
 
@@ -84,6 +87,9 @@
 
 /* This is a description for a setting toggle that enables/disables auto-redirect of Google's AMP (Accelerated Mobile Page) pages to the original (non-AMP) pages. The text 'AMP' and 'Accelerated Mobile Page' is not to be translated. */
 "AutoRedirectAMPPagesDescription" = "Всегда использовать URL исходной страницы, а не AMP-страницы Google";
+
+/* cookie settings option */
+"Block3rdPartyCookies" = "Блокировать сторонние файлы cookie";
 
 /* No comment provided by engineer. */
 "BlockAdsAndTracking" = "Блокировка межсайтовых трекеров";
@@ -168,6 +174,21 @@
 
 /* Brave Rewards settings title */
 "BraveRewardsTitle" = "Brave Награды";
+
+/* Brave Search Banner Promotion description content in Search Suggestions */
+"braveSearchPromotion.bannerDescription" = "В Brave Поиске ваши запросы, действия и переходы на сайты не отслеживаются.";
+
+/* Brave Search Banner Promotion title for maybe later button to activate promotion later in Search Suggestions */
+"braveSearchPromotion.bannerMaybeLaterButtonTitle" = "Не сейчас";
+
+/* Brave Search Banner Promotion title in Search Suggestions */
+"braveSearchPromotion.bannerTitle" = "Поддержите независимую поисковую систему, которая заботится о вашей конфиденциальности";
+
+/* Brave Search Banner Promotion title for try button in Search Suggestions */
+"braveSearchPromotion.bannerTryButtonTitle" = "Попробуйте Brave Поиск";
+
+/* Brave Search Banner Promotion title for dismiss button to remove promotion in Search Suggestions */
+"braveSearchPromotion.braveSearchPromotionBannerDismissButtonTitle" = "Dismiss";
 
 /* No comment provided by engineer. */
 "BraveShieldsAdvancedControls" = "Дополнительные настройки";
@@ -372,6 +393,9 @@
 
 /* Title of the section for the address of where the certificate came from. */
 "certificateViewer.streetAddressTitle" = "Улица и номер дома";
+
+/* Section Title for Subject Name in the SSL Certificate */
+"certificateViewer.subjectNameTitle" = "Имя сертификата";
 
 /* Title of the section for the User's ID (Identifier). */
 "certificateViewer.userIDTitle" = "ID пользователя";
@@ -961,6 +985,9 @@
 /* New Tab title */
 "NewTab" = "Новая вкладка";
 
+/* It refers to a night mode, to a type of mode a user can change referring to website appearance. */
+"nightMode.modeTitle" = "Тема";
+
 /* A table cell subtitle for Night Mode - explanatory element for the toggle preference */
 "nightMode.sectionDescription" = "Ночной режим будет применен к сайту и системе в целом.";
 
@@ -1008,6 +1035,9 @@
 
 /* A setting to enable or disable background images on the main screen. */
 "ntp.settingsBackgroundImages" = "Показывать фоновые изображения";
+
+/* A button that leads to a 'more' menu, letting users configure additional settings. */
+"ntp.settingsBackgroundImageSubMenu" = "Фоновые изображения";
 
 /* A selection to let the users only see a set of predefined, default images on the background of the app. */
 "ntp.settingsDefaultImagesOnly" = "Только изображения по умолчанию";
@@ -2081,6 +2111,18 @@
 "RewardsInternalsContributionsStepFailed" = "Произошла ошибка";
 
 /* No comment provided by engineer. */
+"RewardsInternalsContributionsStepNotEnoughFunds" = "Недостаточно средств";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionsStepPrepare" = "Подготовка";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionsStepReserve" = "Резерв";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionsStepRewardsOff" = "Brave Награды отключены";
+
+/* No comment provided by engineer. */
 "RewardsInternalsContributionsStepStart" = "Начать";
 
 /* No comment provided by engineer. */
@@ -2680,6 +2722,9 @@
 /* Sync add device description */
 "SyncAddDeviceScanDescription" = "Запустите Brave на втором мобильном устройстве и откройте настройки. Перейдите в раздел «Синхронизация» и нажмите «Сканировать код синхронизации». Отсканируйте QR-код ниже с помощью камеры.\n\nОтноситесь к этому коду как к паролю. Не показывайте его никому, иначе другие пользователи смогут просматривать и изменять ваши синхронизированные данные.";
 
+/* Add device to sync with code words */
+"SyncAddDeviceWords" = "Введите код для синхронизации";
+
 /* Sync add device description */
 "SyncAddDeviceWordsDescription" = "Запустите Brave на устройстве и откройте настройки. Перейдите в раздел «Синхронизация» и нажмите кнопку «%@». Введите указанные ниже кодовые слова.\n\nОтноситесь к кодовым словам как к паролю. Не сообщайте их никому, иначе другие пользователи смогут просматривать и изменять ваши синхронизированные данные.";
 
@@ -3125,7 +3170,7 @@
 "vpn.contactFormCarrier" = "Оператор сотовой связи";
 
 /* Text to tell user to not modify support info below email's body. */
-"vpn.contactFormDoNotEditText" = "Не вносите никаких изменений в приведенную ниже информацию";
+"vpn.contactFormDoNotEditText" = "Brave не отслеживает, как вы используете приложение, поэтому у нас нет информации об установленном VPN. Расскажите о вашей проблеме и мы постараемся решить ее как можно быстрее.";
 
 /* Button name to send contact form. */
 "vpn.contactFormEmailNotConfiguredBody" = "Нам не удалось отправить письмо. Проверьте настройки электронной почты.";
@@ -3172,7 +3217,8 @@
 /* Subscription Type field for customer support contact form. */
 "vpn.contactFormSubscriptionType" = "Тип подписки";
 
-/* iOS Timezone field for customer support contact form. */
+/* A contact form field that displays platform type: 'iOS' 'Android' or 'Desktop'
+   iOS Timezone field for customer support contact form. */
 "vpn.contactFormTimezone" = "Часовой пояс iOS";
 
 /* Title for contact form email. */

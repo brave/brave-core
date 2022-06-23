@@ -46,6 +46,9 @@
 /* Used as a button label for crash dialog prompt */
 "AlwaysSendButtonTitle" = "Enviar sempre";
 
+/* Setting preference to always show the browser tabs bar. */
+"AlwaysShow" = "Mostrar sempre";
+
 /* Label for the Face ID/Passcode item in Settings */
 "AuthenticationFaceIDPasscodeSetting" = "Face ID e código de acesso";
 
@@ -171,6 +174,21 @@
 
 /* Brave Rewards settings title */
 "BraveRewardsTitle" = "Recompensas Brave";
+
+/* Brave Search Banner Promotion description content in Search Suggestions */
+"braveSearchPromotion.bannerDescription" = "A Pesquisa Brave não rastreia você, suas consultas nem seus cliques.";
+
+/* Brave Search Banner Promotion title for maybe later button to activate promotion later in Search Suggestions */
+"braveSearchPromotion.bannerMaybeLaterButtonTitle" = "Talvez mais tarde";
+
+/* Brave Search Banner Promotion title in Search Suggestions */
+"braveSearchPromotion.bannerTitle" = "Apoie uma pesquisa independente com mais privacidade";
+
+/* Brave Search Banner Promotion title for try button in Search Suggestions */
+"braveSearchPromotion.bannerTryButtonTitle" = "Testar a Pesquisa Brave";
+
+/* Brave Search Banner Promotion title for dismiss button to remove promotion in Search Suggestions */
+"braveSearchPromotion.braveSearchPromotionBannerDismissButtonTitle" = "Dispensar";
 
 /* No comment provided by engineer. */
 "BraveShieldsAdvancedControls" = "Controles avançados";
@@ -3152,7 +3170,7 @@
 "vpn.contactFormCarrier" = "Operadora de celular";
 
 /* Text to tell user to not modify support info below email's body. */
-"vpn.contactFormDoNotEditText" = "Não edite as informações abaixo";
+"vpn.contactFormDoNotEditText" = "Como o Brave não rastreia suas ações nem sabe de que forma você usa nosso app, não sabemos como você configurou a VPN. Compartilhe informações sobre o problema que você está enfrentando. Faremos o que estiver ao nosso alcance para resolvê-lo o mais rápido possível.";
 
 /* Button name to send contact form. */
 "vpn.contactFormEmailNotConfiguredBody" = "Não é possível enviar e-mails. Verifique sua configuração de e-mail.";
@@ -3199,7 +3217,8 @@
 /* Subscription Type field for customer support contact form. */
 "vpn.contactFormSubscriptionType" = "Tipo de assinatura";
 
-/* iOS Timezone field for customer support contact form. */
+/* A contact form field that displays platform type: 'iOS' 'Android' or 'Desktop'
+   iOS Timezone field for customer support contact form. */
 "vpn.contactFormTimezone" = "Fuso horário do iOS";
 
 /* Title for contact form email. */

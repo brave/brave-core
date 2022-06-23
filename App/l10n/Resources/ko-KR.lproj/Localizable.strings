@@ -103,9 +103,6 @@
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "NewTabTitle" = "새 탭";
 
-/* No comment provided by engineer. */
-"No server found" = "서버를 찾을 수 없음";
-
 /* OK button */
 "OKString" = "확인";
 

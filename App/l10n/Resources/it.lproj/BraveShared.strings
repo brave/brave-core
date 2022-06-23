@@ -37,6 +37,9 @@
 /* Shields Ads Stat */
 "AdsAndTrackersrBlocked" = "Tracker e annunci bloccati";
 
+/* Shields Ads Stat */
+"AdsrBlocked" = "Annunci \nbloccati";
+
 /* Setting to always request the desktop version of a website. */
 "AlwaysRequestDesktopSite" = "Richiedi sempre sito desktop";
 
@@ -171,6 +174,21 @@
 
 /* Brave Rewards settings title */
 "BraveRewardsTitle" = "Brave Rewards";
+
+/* Brave Search Banner Promotion description content in Search Suggestions */
+"braveSearchPromotion.bannerDescription" = "Brave Search non tiene traccia delle tue query né dei tuoi clic.";
+
+/* Brave Search Banner Promotion title for maybe later button to activate promotion later in Search Suggestions */
+"braveSearchPromotion.bannerMaybeLaterButtonTitle" = "Forse più tardi";
+
+/* Brave Search Banner Promotion title in Search Suggestions */
+"braveSearchPromotion.bannerTitle" = "Supporta la ricerca indipendente con maggiore privacy";
+
+/* Brave Search Banner Promotion title for try button in Search Suggestions */
+"braveSearchPromotion.bannerTryButtonTitle" = "Prova Brave Search";
+
+/* Brave Search Banner Promotion title for dismiss button to remove promotion in Search Suggestions */
+"braveSearchPromotion.braveSearchPromotionBannerDismissButtonTitle" = "Ignora";
 
 /* No comment provided by engineer. */
 "BraveShieldsAdvancedControls" = "Comandi avanzati";
@@ -579,6 +597,12 @@
 
 /* Prompt option for cancelling out of deletion */
 "DeleteLoginAlertCancelActionTitle" = "Annulla";
+
+/* Prompt message warning the user that deleting non-synced logins will permanently remove them */
+"DeleteLoginAlertLocalMessage" = "Gli accessi verranno rimossi in modo definitivo.";
+
+/* Prompt message warning the user that deleted logins will remove logins from all connected devices */
+"DeleteLoginAlertSyncedDevicesMessage" = "Gli accessi verranno rimossi da tutti i dispositivi connessi.";
 
 /* Prompt title when deleting logins */
 "DeleteLoginAlertTitle" = "Confermi?";
@@ -1585,6 +1609,9 @@
 /* Button text that takes user to a list of all trackers and ads we blocked. 'All time lists' refer to list of blocked trackers or websites which have the most trackers */
 "privacyHub.allTimeListsButtonText" = "Liste complete";
 
+/* Header text, under it we show items blocked by our ad blocker. 'All  time' sentence context is like 'All time items blocked by our ad blocker. */
+"privacyHub.allTimeListsHeader" = "Sempre";
+
 /* Title of a section to show total count of trackers blocked by Brave */
 "privacyHub.allTimeListsTrackersView" = "Tracker e annunci";
 
@@ -2265,6 +2292,9 @@
 
 /* Context menu item for saving an image */
 "SaveImageActionTitle" = "Salva immagine";
+
+/* Setting to enable the built-in password manager */
+"SaveLogins" = "Salva gli accessi";
 
 /* Scan sync code title */
 "Scan" = "Scansiona";
@@ -3140,7 +3170,7 @@
 "vpn.contactFormCarrier" = "Operatore cellulare";
 
 /* Text to tell user to not modify support info below email's body. */
-"vpn.contactFormDoNotEditText" = "Non modificare le informazioni sottostanti";
+"vpn.contactFormDoNotEditText" = "Brave non tiene traccia e non è al corrente di come usi la nostra app, pertanto non sappiamo come hai configurato la VPN. Condividi le informazioni sul problema che stai riscontrando e faremo del nostro meglio per risolverlo il prima possibile.";
 
 /* Button name to send contact form. */
 "vpn.contactFormEmailNotConfiguredBody" = "Impossibile inviare l’email. Controlla la configurazione della tua email.";
@@ -3187,7 +3217,8 @@
 /* Subscription Type field for customer support contact form. */
 "vpn.contactFormSubscriptionType" = "Tipo di abbonamento";
 
-/* iOS Timezone field for customer support contact form. */
+/* A contact form field that displays platform type: 'iOS' 'Android' or 'Desktop'
+   iOS Timezone field for customer support contact form. */
 "vpn.contactFormTimezone" = "Fuso orario iOS";
 
 /* Title for contact form email. */

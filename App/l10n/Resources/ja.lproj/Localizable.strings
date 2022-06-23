@@ -103,9 +103,6 @@
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "NewTabTitle" = "新しいタブ";
 
-/* No comment provided by engineer. */
-"No server found" = "サーバーが見つかりません";
-
 /* OK button */
 "OKString" = "OK";
 

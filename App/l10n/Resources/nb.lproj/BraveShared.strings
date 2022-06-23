@@ -175,6 +175,21 @@
 /* Brave Rewards settings title */
 "BraveRewardsTitle" = "Brave Belønninger";
 
+/* Brave Search Banner Promotion description content in Search Suggestions */
+"braveSearchPromotion.bannerDescription" = "Brave Søk sporer ikke deg, søkene eller klikkene dine.";
+
+/* Brave Search Banner Promotion title for maybe later button to activate promotion later in Search Suggestions */
+"braveSearchPromotion.bannerMaybeLaterButtonTitle" = "Kanskje senere";
+
+/* Brave Search Banner Promotion title in Search Suggestions */
+"braveSearchPromotion.bannerTitle" = "Støtt uavhengige søk med bedre personvern";
+
+/* Brave Search Banner Promotion title for try button in Search Suggestions */
+"braveSearchPromotion.bannerTryButtonTitle" = "Prøv Brave Søk";
+
+/* Brave Search Banner Promotion title for dismiss button to remove promotion in Search Suggestions */
+"braveSearchPromotion.braveSearchPromotionBannerDismissButtonTitle" = "Avvis";
+
 /* No comment provided by engineer. */
 "BraveShieldsAdvancedControls" = "Avanserte kontroller";
 
@@ -207,6 +222,9 @@
 
 /* The accessibility hint spoken when focused on the main shields toggle */
 "BraveShieldsToggleHint" = "Dobbeltklikk for å skru av og på Brave Shields";
+
+/* Sync page title */
+"BraveSync" = "Synkroniser";
 
 /* Sync-Internals screen title (Sync Internals or Sync Debugging is fine). */
 "BraveSyncInternalsTitle" = "Sync internt";
@@ -1786,6 +1804,9 @@
 /* Accessibility hint for the font type buttons in reader mode display settings */
 "ReaderModeFontTypeButtonAccessibilityHint" = "Endrer fonttypen.";
 
+/* Message displayed when the reader mode page is loading. This message will appear only when sharing to Brave reader mode from another app. */
+"ReaderModeLoadingContentDisplayText" = "Laster inn innhold …";
+
 /* Link for going to the non-reader page when the reader view could not be loaded. This message will appear only when sharing to Brave reader mode from another app. */
 "ReaderModeLoadOriginalLinkText" = "Last inn original side";
 
@@ -2647,6 +2668,9 @@
 /* Title of alert that seeks permission from user to suppress future JS alerts */
 "SuppressAlertsActionTitle" = "Hold tilbake varsler";
 
+/* Sync settings section title */
+"Sync" = "Synkroniser";
+
 /* Title of the bookmark import popup. */
 "sync.bookmarksImportPopupErrorTitle" = "Bokmerker";
 
@@ -2802,6 +2826,9 @@
 
 /* Header title for Sync settings */
 "SyncSettingsHeader" = "På oversikten under ser du alle enhetene i synkkjeden din. Alle enhetene kan administreres fra enhver av de andre enhetene.";
+
+/* Switch back to camera button */
+"SyncSwitchBackToCameraButton" = "Jeg vil bruke kameraet";
 
 /* Tablet or phone button title */
 "SyncTabletOrMobileDevice" = "Nettbrett eller telefon";
@@ -3143,7 +3170,7 @@
 "vpn.contactFormCarrier" = "teleselskap";
 
 /* Text to tell user to not modify support info below email's body. */
-"vpn.contactFormDoNotEditText" = "Ikke rediger informasjonen nedenfor";
+"vpn.contactFormDoNotEditText" = "Brave sporer deg ikke og følger ikke med på hvordan du bruker appen, så vi vet ikke hvordan du har satt opp VPN-en. Fortell oss mer om problemet du opplever, så skal vi gjøre vårt beste for å løse det snarest.";
 
 /* Button name to send contact form. */
 "vpn.contactFormEmailNotConfiguredBody" = "Kan ikke sende e-post. Kontroller e-postkonfigurasjonen.";
@@ -3190,7 +3217,8 @@
 /* Subscription Type field for customer support contact form. */
 "vpn.contactFormSubscriptionType" = "Abonnementstype";
 
-/* iOS Timezone field for customer support contact form. */
+/* A contact form field that displays platform type: 'iOS' 'Android' or 'Desktop'
+   iOS Timezone field for customer support contact form. */
 "vpn.contactFormTimezone" = "iOS-tidssone";
 
 /* Title for contact form email. */

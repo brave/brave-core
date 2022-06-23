@@ -2520,7 +2520,7 @@ extension Strings {
         comment: "iOS Timezone field for customer support contact form.")
       
     public static let contactFormPlatform =
-    NSLocalizedString("vpn.contactFormTimezone", tableName: "BraveShared", bundle: .strings,
+    NSLocalizedString("vpn.contactFormPlatform", tableName: "BraveShared", bundle: .strings,
         value: "Platform",
         comment: "A contact form field that displays platform type: 'iOS' 'Android' or 'Desktop'")
 

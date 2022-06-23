@@ -175,6 +175,21 @@
 /* Brave Rewards settings title */
 "BraveRewardsTitle" = "Нагороди Brave";
 
+/* Brave Search Banner Promotion description content in Search Suggestions */
+"braveSearchPromotion.bannerDescription" = "Пошук Brave не відстежує вас, ваші запити або натискання.";
+
+/* Brave Search Banner Promotion title for maybe later button to activate promotion later in Search Suggestions */
+"braveSearchPromotion.bannerMaybeLaterButtonTitle" = "Можливо, пізніше";
+
+/* Brave Search Banner Promotion title in Search Suggestions */
+"braveSearchPromotion.bannerTitle" = "Підтримка незалежного пошуку з кращою конфіденційністю";
+
+/* Brave Search Banner Promotion title for try button in Search Suggestions */
+"braveSearchPromotion.bannerTryButtonTitle" = "Спробувати пошук Brave";
+
+/* Brave Search Banner Promotion title for dismiss button to remove promotion in Search Suggestions */
+"braveSearchPromotion.braveSearchPromotionBannerDismissButtonTitle" = "Відхилити";
+
 /* No comment provided by engineer. */
 "BraveShieldsAdvancedControls" = "Додаткові налаштування";
 
@@ -574,6 +589,9 @@
 /* No comment provided by engineer. */
 "Delete" = "Видалити";
 
+/* Message for the alert shown when the user tries to delete a bookmarks folder */
+"DeleteBookmarksFolderAlertMessage" = "Буде видалено всі папки й закладки всередині. Ви впевнені, що хочете продовжити?";
+
 /* Title for the alert shown when the user tries to delete a bookmarks folder */
 "DeleteBookmarksFolderAlertTitle" = "Видалити папку?";
 
@@ -966,6 +984,18 @@
 
 /* New Tab title */
 "NewTab" = "Нова вкладка";
+
+/* It refers to a night mode, to a type of mode a user can change referring to website appearance. */
+"nightMode.modeTitle" = "Режим";
+
+/* A table cell subtitle for Night Mode - explanatory element for the toggle preference */
+"nightMode.sectionDescription" = "Нічний режим вплине на зовнішній вигляд вебсайту, а також на загальний вигляд системи.";
+
+/* A table cell subtitle for Night Mode - explanatory element for the toggle preference */
+"nightMode.settingsDescription" = "Увімкнути/вимкнути нічний режим";
+
+/* A table cell title for Night Mode - defining element for the toggle */
+"nightMode.settingsTitle" = "Нічний режим";
 
 /* For search suggestions prompt. This string should be short so it fits nicely on the prompt row. */
 "No" = "Ні";
@@ -1540,6 +1570,9 @@
 /* The title of the section indicating that the user should select a folder to move `%zu` items to. %lld should not be translated. It will be replaced by a number so the sentence becomes: 'Select a folder to move 10 items to.' */
 "playlistFolders.selectAFolderTitle" = "Виберіть папку, щоб перемістити ці об’єкти (%lld)";
 
+/* The title of the section indicating that the user should select a folder to move 1 item to. */
+"playlistFolders.selectASingleFolderTitle" = "Виберіть папку, в яку перемістити 1 елемент";
+
 /* The sub-title of the folder. Example: This folder contains 10 Items. This folder contains 3 Items. */
 "playlistFolders.subtitleItemCount" = "Об’єкти: %lld";
 
@@ -1779,6 +1812,9 @@
 
 /* Message displayed when the reader mode page could not be loaded. This message will appear only when sharing to Brave reader mode from another app. */
 "ReaderModePageCantShowDisplayText" = "Неможливо відобразити сторінку в режимі читання.";
+
+/* Title of a bar that show up when you enter reader mode. */
+"readerModeSettingsButton" = "Режим читання";
 
 /* Accessibility label for button decreasing font size in display settings of reader mode */
 "ReaderModeSmallerFontButtonAccessibilityLabel" = "Зменшити розмір шрифту";
@@ -2329,6 +2365,9 @@
 /* Section header for search suggestions option */
 "SearchSuggestionsSectionHeader" = "Пошукові підказки";
 
+/* Title of an action that allows user to perform a one-click web search for selected text */
+"SearchWithBrave" = "Пошук у Brave";
+
 /* Settings security section title */
 "Security" = "Безпека";
 
@@ -2446,11 +2485,17 @@
 /* shields overview footer message */
 "ShieldsOverviewFooter" = "Примітка. Деякі сайти потребують скриптів для нормальної роботи. Цей екран вимкнено за замовчуванням.";
 
+/* Time Saved Days */
+"ShieldsTimeStatsDays" = "дн.";
+
 /* Time Saved Hours */
 "ShieldsTimeStatsHour" = "год.";
 
 /* Time Saved Minutes */
 "ShieldsTimeStatsMinutes" = "хв.";
+
+/* Time Saved Seconds */
+"ShieldsTimeStatsSeconds" = "с";
 
 /* Quick Action for 3D-Touch on the Application Icon */
 "ShortcutItemTitleNewPrivateTab" = "Нова приватна вкладка";
@@ -3125,7 +3170,7 @@
 "vpn.contactFormCarrier" = "Оператор стільникового зв’язку";
 
 /* Text to tell user to not modify support info below email's body. */
-"vpn.contactFormDoNotEditText" = "Не редагуйте наведену нижче інформацію";
+"vpn.contactFormDoNotEditText" = "Brave не відстежує вас і не знає, як ви користуєтеся додатком, тож ми не знаємо ваших налаштувань VPN. Розкажіть, із якою проблемою ви зіткнулися, і ми постараємося якнайшвидше зробити все можливе, щоб її вирішити.";
 
 /* Button name to send contact form. */
 "vpn.contactFormEmailNotConfiguredBody" = "Неможливо надіслати лист на електронну пошту. Будь ласка, перевірте налаштування електронної пошти.";
@@ -3172,7 +3217,8 @@
 /* Subscription Type field for customer support contact form. */
 "vpn.contactFormSubscriptionType" = "Тип підписки";
 
-/* iOS Timezone field for customer support contact form. */
+/* A contact form field that displays platform type: 'iOS' 'Android' or 'Desktop'
+   iOS Timezone field for customer support contact form. */
 "vpn.contactFormTimezone" = "Часовий пояс iOS";
 
 /* Title for contact form email. */

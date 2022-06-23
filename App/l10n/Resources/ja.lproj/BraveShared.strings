@@ -8,6 +8,9 @@
 "AboutBraveShieldsBody" = "多くのサイトには、お客様とお客様のデバイスを識別するためのクッキーやスクリプトが含まれています。これによってインターネット上のいたる所であなたを特定・追跡し、行動データを収集しようとしています。\n\nBraveはそういったものをブロックするので、あなたが追跡されることなくブラウジングすることが可能になります。";
 
 /* See http://mzl.la/1G7uHo7 */
+"AccessPhotoDeniedAlertMessage" = "カメラロールに画像を保存します。";
+
+/* See http://mzl.la/1G7uHo7 */
 "AccessPhotoDeniedAlertTitle" = "Brave が写真にアクセスしようとしています";
 
 /* Button to add a bookmark */
@@ -171,6 +174,21 @@
 
 /* Brave Rewards settings title */
 "BraveRewardsTitle" = "Brave Rewards";
+
+/* Brave Search Banner Promotion description content in Search Suggestions */
+"braveSearchPromotion.bannerDescription" = "Brave検索はあなたの個人情報、クエリ、クリックした内容を追跡しません。";
+
+/* Brave Search Banner Promotion title for maybe later button to activate promotion later in Search Suggestions */
+"braveSearchPromotion.bannerMaybeLaterButtonTitle" = "あとで";
+
+/* Brave Search Banner Promotion title in Search Suggestions */
+"braveSearchPromotion.bannerTitle" = "独立型検索でより良いプライバシーを確保";
+
+/* Brave Search Banner Promotion title for try button in Search Suggestions */
+"braveSearchPromotion.bannerTryButtonTitle" = "Brave検索を試す";
+
+/* Brave Search Banner Promotion title for dismiss button to remove promotion in Search Suggestions */
+"braveSearchPromotion.braveSearchPromotionBannerDismissButtonTitle" = "表示しない";
 
 /* No comment provided by engineer. */
 "BraveShieldsAdvancedControls" = "詳細設定";
@@ -961,6 +979,9 @@
 /* Title for adding new folder */
 "NewFolderTitle" = "新しいフォルダ";
 
+/* New sync code button title */
+"NewSyncCode" = "新たな同期チェーンを開始する";
+
 /* New Tab title */
 "NewTab" = "新しいタブ";
 
@@ -1747,8 +1768,14 @@
 /* Default engine for private search. */
 "PrivateTabSearch" = "プライベートタブ";
 
+/* QR Code section title */
+"QRCode" = "QRコード";
+
 /* Title for quick-search engines settings section. */
 "QuickSearchEngines" = "クイック検索エンジン";
+
+/* Open the App Store to rate Brave. */
+"RateBrave" = "Braveを評価する";
 
 /* Accessibility label for button increasing font size in display settings of reader mode */
 "ReaderModeBiggerFontButtonAccessibilityLabel" = "テキストサイズを大きくする";
@@ -2629,6 +2656,9 @@
 /* Text used for social sharing together with Brave Shield values */
 "socialSharing.shareDescriptionTitle" = "Braveでwebを閲覧してデータ通信量を節約しています";
 
+/* Open search section of settings */
+"StandardTabSearch" = "通常タブ";
+
 /* Support section title */
 "Support" = "サポート";
 
@@ -3140,7 +3170,7 @@
 "vpn.contactFormCarrier" = "通信キャリア";
 
 /* Text to tell user to not modify support info below email's body. */
-"vpn.contactFormDoNotEditText" = "この下の情報は編集・変更しないでください";
+"vpn.contactFormDoNotEditText" = "Braveはお客様の個人情報を追跡したり、お客様がどのようにアプリを使用したかを把握していないため、VPNの設定内容についてお答えすることができません。できるだけ早く解決できるよう最善を尽くしますので、発生している問題の情報を共有してください。";
 
 /* Button name to send contact form. */
 "vpn.contactFormEmailNotConfiguredBody" = "メールを送信できませんでした。Eメールの設定をご確認ください。";
@@ -3187,7 +3217,8 @@
 /* Subscription Type field for customer support contact form. */
 "vpn.contactFormSubscriptionType" = "購読タイプ";
 
-/* iOS Timezone field for customer support contact form. */
+/* A contact form field that displays platform type: 'iOS' 'Android' or 'Desktop'
+   iOS Timezone field for customer support contact form. */
 "vpn.contactFormTimezone" = "タイムゾーン";
 
 /* Title for contact form email. */
