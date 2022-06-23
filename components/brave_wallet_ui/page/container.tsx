@@ -38,6 +38,20 @@ import { Skeleton } from '../components/shared/loading-skeleton/styles'
 import { FundWalletScreen } from './screens/fund-wallet/fund-wallet'
 import { OnboardingSuccess } from './screens/onboarding/onboarding-success/onboarding-success'
 
+const POST_ONBOARDING_ROUTES = [
+  <Route path={WalletRoutes.OnboardingComplete} exact>
+    <OnboardingSuccess />
+  </Route>,
+
+  <Route path={WalletRoutes.FundWalletPage} exact={true}>
+    <FundWalletScreen />
+  </Route>,
+
+  <Route path={WalletRoutes.FundWalletPage} exact={true}>
+    <FundWalletScreen />
+  </Route>
+]
+
 export const Container = () => {
   // routing
   let history = useHistory()
@@ -130,7 +144,7 @@ export const Container = () => {
   const walletNotYetCreated = (!isWalletCreated || setupStillInProgress)
 
   const showBuySendSwapSidebar =
-    isWalletCreated &&
+    isWalletCreated && !isWalletLocked &&
     (
       walletLocation.includes(WalletRoutes.Portfolio) ||
       walletLocation.includes(WalletRoutes.Accounts)
@@ -163,11 +177,6 @@ export const Container = () => {
 
   return (
     <WalletPageLayout>
-      {/* <SideNav
-        navList={NavOptions}
-        selectedButton={view}
-        onSubmit={navigateTo}
-      /> */}
       <WalletSubViewLayout>
 
         <Switch>
@@ -181,13 +190,7 @@ export const Container = () => {
               {isWalletLocked &&
                 <Switch>
 
-                  <Route path={WalletRoutes.OnboardingComplete} exact>
-                    <OnboardingSuccess />
-                  </Route>
-
-                  <Route path={WalletRoutes.FundWalletPage} exact={true}>
-                    <FundWalletScreen />
-                  </Route>
+                  {...[POST_ONBOARDING_ROUTES]}
 
                   <Route path={WalletRoutes.Unlock} exact={true}>
                     <OnboardingWrapper>
@@ -214,13 +217,8 @@ export const Container = () => {
 
               {!isWalletLocked &&
                 <Switch>
-                  <Route path={WalletRoutes.OnboardingComplete} exact>
-                    <OnboardingSuccess />
-                  </Route>
 
-                  <Route path={WalletRoutes.FundWalletPage} exact={true}>
-                    <FundWalletScreen />
-                  </Route>
+                  {...[POST_ONBOARDING_ROUTES]}
 
                   <Route path={WalletRoutes.Backup} exact={true}>
                     <OnboardingWrapper>
