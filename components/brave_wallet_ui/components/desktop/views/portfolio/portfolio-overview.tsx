@@ -17,7 +17,6 @@ import {
   WalletRoutes
 } from '../../../../constants/types'
 import { getLocale } from '../../../../../common/locale'
-import { CurrencySymbols } from '../../../../utils/currency-symbols'
 
 // Utils
 import { getTokensCoinType } from '../../../../utils/network-utils'
@@ -143,7 +142,7 @@ export const PortfolioOverview = () => {
     const grandTotal = visibleAssetFiatBalances.reduce(function (a, b) {
       return a.plus(b)
     })
-    return grandTotal.formatAsFiat()
+    return grandTotal.formatAsFiat(defaultCurrencies.fiat)
   }, [userAssetList, computeFiatAmount])
 
   const priceHistory = React.useMemo(() => {
@@ -174,8 +173,8 @@ export const PortfolioOverview = () => {
   }, [selectedTimeline])
 
   const onUpdateBalance = React.useCallback((value: number | undefined) => {
-    setHoverBalance(value ? new Amount(value).formatAsFiat() : undefined)
-  }, [])
+    setHoverBalance(value ? new Amount(value).formatAsFiat(defaultCurrencies.fiat) : undefined)
+  }, [defaultCurrencies])
 
   const onToggleHideBalances = React.useCallback(() => {
     setHideBalances(!hideBalances)
@@ -216,7 +215,7 @@ export const PortfolioOverview = () => {
       >
         <BalanceText>
           {fullPortfolioFiatBalance !== ''
-            ? `${CurrencySymbols[defaultCurrencies.fiat]}${hoverBalance || fullPortfolioFiatBalance}`
+            ? `${hoverBalance || fullPortfolioFiatBalance}`
             : <LoadingSkeleton width={150} height={32} />
           }
         </BalanceText>
