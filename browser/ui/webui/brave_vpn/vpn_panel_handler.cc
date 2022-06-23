@@ -35,6 +35,10 @@ GURL GetURLForUIType(const std::string& type) {
   return GURL(brave_vpn::GetManageUrl());
 }
 
+bool ShouldOpenSingletonTab(const std::string& type) {
+  return type == "manage" || type == "privacy" || type == "about";
+}
+
 }  // namespace
 
 VPNPanelHandler::VPNPanelHandler(
@@ -67,9 +71,10 @@ void VPNPanelHandler::CloseUI() {
 
 void VPNPanelHandler::OpenVpnUI(const std::string& type) {
   auto* browser = chrome::FindLastActiveWithProfile(profile_);
-  if (type == "manage") {
-    ShowSingletonTab(browser, GetURLForUIType(type));
+  auto url = GetURLForUIType(type);
+  if (ShouldOpenSingletonTab(type)) {
+    ShowSingletonTab(browser, url);
   } else {
-    chrome::AddTabAt(browser, GetURLForUIType(type), -1, true);
+    chrome::AddTabAt(browser, url, -1, true);
   }
 }
