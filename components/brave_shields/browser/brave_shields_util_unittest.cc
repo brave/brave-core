@@ -915,7 +915,7 @@ TEST_F(BraveShieldsUtilTest, GetDomainBlockingType_ControlTypes) {
       {ControlType::ALLOW, ControlType::BLOCK, DomainBlockingType::kNone},
       {ControlType::BLOCK, ControlType::ALLOW, DomainBlockingType::kNone},
       {ControlType::BLOCK, ControlType::BLOCK_THIRD_PARTY,
-       DomainBlockingType::kNone},
+       DomainBlockingType::k1PES},
       {ControlType::BLOCK, ControlType::BLOCK, DomainBlockingType::kAggressive},
   };
 
