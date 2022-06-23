@@ -97,7 +97,7 @@ extension BrowserViewController {
 
       MenuItemButton(
         icon: UIImage(named: "menu-crypto", in: .current, compatibleWith: nil)!.template,
-        title: "\(Strings.Wallet.wallet) (\(Strings.Wallet.betaLabel))",
+        title: Strings.Wallet.wallet,
         subtitle: Strings.OptionsMenu.braveWalletItemDescription
       ) { [unowned self] in
         self.presentWallet()
@@ -137,7 +137,7 @@ extension BrowserViewController {
       if isShownOnWebPage {
         MenuItemButton(
           icon: UIImage(named: "menu-crypto", in: .current, compatibleWith: nil)!.template,
-          title: "\(Strings.Wallet.wallet) (\(Strings.Wallet.betaLabel))"
+          title: Strings.Wallet.wallet
         ) { [weak self] in
           self?.presentWallet()
         }

@@ -472,21 +472,19 @@ class UserScriptManager {
         }
       }
 
-      if !AppConstants.buildChannel.isPublic {
-        if let script = walletProviderScript,
-           tab?.isPrivate == false,
-           Preferences.Wallet.WalletType(rawValue: Preferences.Wallet.defaultWallet.value) == .brave {
-          $0.addUserScript(script)
-          if var providerJS = walletProviderJS {
-            providerJS = """
+      if let script = walletProviderScript,
+         tab?.isPrivate == false,
+         Preferences.Wallet.WalletType(rawValue: Preferences.Wallet.defaultWallet.value) == .brave {
+        $0.addUserScript(script)
+        if var providerJS = walletProviderJS {
+          providerJS = """
             (function() {
               if (window.isSecureContext) {
                 \(providerJS)
               }
             })();
             """
-            $0.addUserScript(.init(source: providerJS, injectionTime: .atDocumentStart, forMainFrameOnly: true, in: .page))
-          }
+          $0.addUserScript(.init(source: providerJS, injectionTime: .atDocumentStart, forMainFrameOnly: true, in: .page))
         }
       }
     }

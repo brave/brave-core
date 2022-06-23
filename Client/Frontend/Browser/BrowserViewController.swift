@@ -398,14 +398,12 @@ public class BrowserViewController: UIViewController, BrowserViewControllerDeleg
     screenshotHelper = ScreenshotHelper(tabManager: tabManager)
     tabManager.addDelegate(self)
     tabManager.addNavigationDelegate(self)
-    if !AppConstants.buildChannel.isPublic {
-      tabManager.makeWalletProvider = { [weak self] tab in
-        guard let self = self,
-              let provider = self.braveCore.ethereumProvider(with: tab, isPrivateBrowsing: tab.isPrivate) else {
-          return nil
-        }
-        return (provider, js: self.braveCore.providerScript(for: .eth))
+    tabManager.makeWalletProvider = { [weak self] tab in
+      guard let self = self,
+            let provider = self.braveCore.ethereumProvider(with: tab, isPrivateBrowsing: tab.isPrivate) else {
+        return nil
       }
+      return (provider, js: self.braveCore.providerScript(for: .eth))
     }
     downloadQueue.delegate = self
 
@@ -2165,9 +2163,7 @@ extension BrowserViewController: TabDelegate {
     if !tab.isPrivate {
       let logins = LoginsHelper(tab: tab, profile: profile, passwordAPI: braveCore.passwordAPI)
       tab.addContentScript(logins, name: LoginsHelper.name(), contentWorld: .defaultClient)
-      if !AppConstants.buildChannel.isPublic {
-        tab.addContentScript(EthereumProviderHelper(tab: tab), name: EthereumProviderHelper.name(), contentWorld: .page)
-      }
+      tab.addContentScript(EthereumProviderHelper(tab: tab), name: EthereumProviderHelper.name(), contentWorld: .page)
     }
 
     let errorHelper = ErrorPageHelper(certStore: profile.certStore)
