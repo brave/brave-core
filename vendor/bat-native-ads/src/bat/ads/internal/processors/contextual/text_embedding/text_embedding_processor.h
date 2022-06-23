@@ -26,6 +26,8 @@ class TextEmbedding final : public ProcessorInterface<std::string> {
   TextEmbedding(const TextEmbedding&) = delete;
   TextEmbedding& operator=(const TextEmbedding&) = delete;
 
+  bool IsEmbeddingEnabled();
+  
   void Process(const std::string& text) override;
 
  private:

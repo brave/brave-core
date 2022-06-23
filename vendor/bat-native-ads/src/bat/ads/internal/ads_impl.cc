@@ -249,7 +249,9 @@ void AdsImpl::OnHtmlLoaded(const int32_t tab_id,
   }
   last_html_loaded_hash_ = hash;
 
-  text_embedding_processor_->Process(html);
+  if (text_embedding_processor_->IsEmbeddingEnabled()) {
+    text_embedding_processor_->Process(html);
+  }
 
   transfer_->MaybeTransferAd(tab_id, redirect_chain);
 
