@@ -37,7 +37,7 @@ const char kEmbeddedTestServerDirectory[] = "brave-wallet";
 base::OnceClosure ShowChooserBubble(
     content::WebContents* contents,
     std::unique_ptr<permissions::ChooserController> controller) {
-  return chrome::ShowDeviceChooserDialog(contents->GetMainFrame(),
+  return chrome::ShowDeviceChooserDialog(contents->GetPrimaryMainFrame(),
                                          std::move(controller));
 }
 

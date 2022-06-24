@@ -180,14 +180,18 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorage1pBrowserTest,
   WebContents* site_b = LoadURLInNewTab(b_site_ephemeral_storage_url_);
 
   // Main frame and 1p frame.
-  EXPECT_FALSE(SetIDBValue(site_a->GetMainFrame()));
-  EXPECT_FALSE(SetIDBValue(content::ChildFrameAt(site_a->GetMainFrame(), 2)));
+  EXPECT_FALSE(SetIDBValue(site_a->GetPrimaryMainFrame()));
+  EXPECT_FALSE(
+      SetIDBValue(content::ChildFrameAt(site_a->GetPrimaryMainFrame(), 2)));
   // 3p frames.
-  EXPECT_FALSE(SetIDBValue(content::ChildFrameAt(site_a->GetMainFrame(), 0)));
-  EXPECT_FALSE(SetIDBValue(content::ChildFrameAt(site_a->GetMainFrame(), 1)));
+  EXPECT_FALSE(
+      SetIDBValue(content::ChildFrameAt(site_a->GetPrimaryMainFrame(), 0)));
+  EXPECT_FALSE(
+      SetIDBValue(content::ChildFrameAt(site_a->GetPrimaryMainFrame(), 1)));
 
   // 3p frame.
-  EXPECT_FALSE(SetIDBValue(content::ChildFrameAt(site_b->GetMainFrame(), 2)));
+  EXPECT_FALSE(
+      SetIDBValue(content::ChildFrameAt(site_b->GetPrimaryMainFrame(), 2)));
 }
 
 IN_PROC_BROWSER_TEST_F(EphemeralStorage1pBrowserTest,
@@ -277,13 +281,15 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorage1pBrowserTest,
                   .empty());
 
   // JS cookie request should return valid results.
-  EXPECT_EQ("name=acom", GetCookiesInFrame(site_a_set_cookies->GetMainFrame()));
-  EXPECT_EQ("name=bcom", GetCookiesInFrame(site_b_set_cookies->GetMainFrame()));
-  EXPECT_EQ("name=acom", GetCookiesInFrame(site_a->GetMainFrame()));
+  EXPECT_EQ("name=acom",
+            GetCookiesInFrame(site_a_set_cookies->GetPrimaryMainFrame()));
+  EXPECT_EQ("name=bcom",
+            GetCookiesInFrame(site_b_set_cookies->GetPrimaryMainFrame()));
+  EXPECT_EQ("name=acom", GetCookiesInFrame(site_a->GetPrimaryMainFrame()));
 
   // The third-party iframe should not have the b.com cookie that was set on the
   // main frame.
-  RenderFrameHost* main_frame = site_a->GetMainFrame();
+  RenderFrameHost* main_frame = site_a->GetPrimaryMainFrame();
   RenderFrameHost* iframe_a = content::ChildFrameAt(main_frame, 0);
   RenderFrameHost* iframe_b = content::ChildFrameAt(main_frame, 1);
   EXPECT_EQ("", GetCookiesInFrame(iframe_a));
@@ -302,7 +308,7 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorage1pBrowserTest,
   // cookie storage.
   EXPECT_TRUE(content::GetCookies(browser()->profile(), GURL("https://b.com/"))
                   .empty());
-  EXPECT_EQ("name=bcom", GetCookiesInFrame(site_b->GetMainFrame()));
+  EXPECT_EQ("name=bcom", GetCookiesInFrame(site_b->GetPrimaryMainFrame()));
 
   // Navigating to a new TLD should clear all ephemeral cookies after keep-alive
   // timeout.
@@ -339,7 +345,7 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorage1pBrowserTest,
   ASSERT_TRUE(
       ui_test_utils::NavigateToURL(browser(), a_site_ephemeral_storage_url_));
 
-  RenderFrameHost* site_a_main_frame = web_contents->GetMainFrame();
+  RenderFrameHost* site_a_main_frame = web_contents->GetPrimaryMainFrame();
   RenderFrameHost* nested_frames_tab =
       content::ChildFrameAt(site_a_main_frame, 3);
   ASSERT_NE(nested_frames_tab, nullptr);
@@ -348,7 +354,7 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorage1pBrowserTest,
   ASSERT_NE(first_party_nested_acom, nullptr);
 
   WebContents* site_b_tab = LoadURLInNewTab(b_site_ephemeral_storage_url_);
-  RenderFrameHost* site_b_main_frame = site_b_tab->GetMainFrame();
+  RenderFrameHost* site_b_main_frame = site_b_tab->GetPrimaryMainFrame();
   RenderFrameHost* third_party_nested_acom =
       content::ChildFrameAt(site_b_main_frame, 2);
   ASSERT_NE(first_party_nested_acom, nullptr);

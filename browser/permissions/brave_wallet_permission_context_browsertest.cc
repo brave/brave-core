@@ -122,8 +122,8 @@ IN_PROC_BROWSER_TEST_F(BraveWalletPermissionContextBrowserTest,
 
   // No allowed accounts before setting permissions.
   BraveWalletPermissionContext::GetAllowedAccounts(
-      blink::PermissionType::BRAVE_ETHEREUM, web_contents()->GetMainFrame(),
-      addresses,
+      blink::PermissionType::BRAVE_ETHEREUM,
+      web_contents()->GetPrimaryMainFrame(), addresses,
       base::BindOnce(&OnGetAllowedAccountsResult, &was_called, true,
                      std::vector<std::string>()));
 
@@ -145,8 +145,8 @@ IN_PROC_BROWSER_TEST_F(BraveWalletPermissionContextBrowserTest,
         ContentSetting::CONTENT_SETTING_ALLOW);
   }
   BraveWalletPermissionContext::GetAllowedAccounts(
-      blink::PermissionType::BRAVE_ETHEREUM, web_contents()->GetMainFrame(),
-      addresses,
+      blink::PermissionType::BRAVE_ETHEREUM,
+      web_contents()->GetPrimaryMainFrame(), addresses,
       base::BindOnce(&OnGetAllowedAccountsResult, &was_called, true,
                      expected_allowed_accounts));
   content::RunAllTasksUntilIdle();

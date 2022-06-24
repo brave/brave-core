@@ -213,7 +213,7 @@ class EthereumProviderImplUnitTest : public testing::Test {
         host_content_settings_map(), json_rpc_service(), tx_service(),
         keyring_service(), brave_wallet_service_,
         std::make_unique<brave_wallet::BraveWalletProviderDelegateImpl>(
-            web_contents(), web_contents()->GetMainFrame()),
+            web_contents(), web_contents()->GetPrimaryMainFrame()),
         prefs());
 
     observer_.reset(new TestEventsListener());
@@ -369,7 +369,7 @@ class EthereumProviderImplUnitTest : public testing::Test {
   void Navigate(const GURL& url) { web_contents()->NavigateAndCommit(url); }
 
   url::Origin GetOrigin() {
-    return web_contents()->GetMainFrame()->GetLastCommittedOrigin();
+    return web_contents()->GetPrimaryMainFrame()->GetLastCommittedOrigin();
   }
 
   void CreateBraveWalletTabHelper() {

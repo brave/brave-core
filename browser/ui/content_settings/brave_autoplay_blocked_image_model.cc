@@ -31,7 +31,7 @@ bool BraveAutoplayBlockedImageModel::UpdateAndGetVisibility(
 
   content_settings::PageSpecificContentSettings* content_settings =
       content_settings::PageSpecificContentSettings::GetForFrame(
-          web_contents->GetMainFrame());
+          web_contents->GetPrimaryMainFrame());
   if (!content_settings)
     return false;
   if (!content_settings->IsContentBlocked(content_type()))

@@ -160,15 +160,15 @@ void IPFSOnboardingPage::Proceed() {
 
 void IPFSOnboardingPage::RespondToPage(IPFSOnboardingResponse code,
                                        const std::u16string& value) {
-  auto* main_frame = web_contents()->GetMainFrame();
-  DCHECK(main_frame);
+  auto* primary_main_frame = web_contents()->GetPrimaryMainFrame();
+  DCHECK(primary_main_frame);
 
   std::u16string script(kResponseScript);
   base::ReplaceSubstringsAfterOffset(&script, 0, u"{code}",
                                      base::NumberToString16(code));
   base::ReplaceSubstringsAfterOffset(&script, 0, u"{value}", value);
-  main_frame->ExecuteJavaScriptInIsolatedWorld(script, {},
-                                               kOnboardingIsolatedWorldId);
+  primary_main_frame->ExecuteJavaScriptInIsolatedWorld(
+      script, {}, kOnboardingIsolatedWorldId);
 }
 
 void IPFSOnboardingPage::CommandReceived(const std::string& command) {

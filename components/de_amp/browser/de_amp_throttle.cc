@@ -129,7 +129,7 @@ bool DeAmpThrottle::OpenCanonicalURL(const GURL& new_url,
   content::OpenURLParams params(
       new_url,
       content::Referrer::SanitizeForRequest(new_url, entry->GetReferrer()),
-      contents->GetMainFrame()->GetFrameTreeNodeId(),
+      contents->GetPrimaryMainFrame()->GetFrameTreeNodeId(),
       WindowOpenDisposition::CURRENT_TAB, ui::PAGE_TRANSITION_CLIENT_REDIRECT,
       false);
 
