@@ -2683,7 +2683,9 @@ extension BrowserViewController: TabManagerDelegate {
       let duplicateActiveTab = UIAction(
         title: Strings.duplicateActiveTab,
         image: UIImage(systemName: "plus.square.on.square"),
-        handler: UIAction.deferredActionHandler { _ in
+        handler: UIAction.deferredActionHandler { [weak selectedTab] _ in
+          guard let selectedTab = selectedTab else { return }
+          
           tabManager.addTabAndSelect(
                URLRequest(url: url),
                afterTab: selectedTab,
