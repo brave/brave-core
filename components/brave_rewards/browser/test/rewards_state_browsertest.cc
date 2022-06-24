@@ -433,7 +433,6 @@ INSTANTIATE_TEST_SUITE_P(
                 R"("status":0,)"
                 R"("token":"",)"
                 R"("user_name":"",)"
-                R"("verify_url":"",)"
                 R"("withdraw_url":""})"},
             std::string{
                 R"({"account_url":")" _UPHOLD_URL_ R"(/dashboard",)"
@@ -448,7 +447,6 @@ INSTANTIATE_TEST_SUITE_P(
                 R"("status":0,)"
                 R"("token":"",)"
                 R"("user_name":"",)"
-                R"("verify_url":")" _UPHOLD_URL_ R"(/authorize/)" _UPHOLD_CLIENT_ID_ R"(?scope=cards:read cards:write user:read transactions:transfer:application transactions:transfer:others&intention=kyc&state=49E52DEFFC7C3309C8BF807FB8E838911362837961464845DCF1E58B50886D3C",)"
                 R"("withdraw_url":""})"}),
         // NOLINTNEXTLINE
         std::make_pair(  // NOT_CONNECTED_token_non_empty_address_empty__NOT_CONNECTED_token_empty_address_empty
@@ -464,7 +462,6 @@ INSTANTIATE_TEST_SUITE_P(
                 R"("status":0,)"
                 R"("token":"0047c2fd8f023e067354dbdb5639ee67acf77150",)"
                 R"("user_name":"",)"
-                R"("verify_url":"",)"
                 R"("withdraw_url":""})"},
             std::string{
                 R"({"account_url":")" _UPHOLD_URL_ R"(/dashboard",)"
@@ -479,7 +476,6 @@ INSTANTIATE_TEST_SUITE_P(
                 R"("status":0,)"
                 R"("token":"",)"
                 R"("user_name":"",)"
-                R"("verify_url":")" _UPHOLD_URL_ R"(/authorize/)" _UPHOLD_CLIENT_ID_ R"(?scope=cards:read cards:write user:read transactions:transfer:application transactions:transfer:others&intention=kyc&state=49E52DEFFC7C3309C8BF807FB8E838911362837961464845DCF1E58B50886D3C",)"
                 R"("withdraw_url":""})"}),
         // NOLINTNEXTLINE
         std::make_pair(  // NOT_CONNECTED_token_empty_address_non_empty__NOT_CONNECTED_token_empty_address_empty
@@ -495,7 +491,6 @@ INSTANTIATE_TEST_SUITE_P(
                 R"("status":0,)"
                 R"("token":"",)"
                 R"("user_name":"",)"
-                R"("verify_url":"",)"
                 R"("withdraw_url":""})"},
             std::string{
                 R"({"account_url":")" _UPHOLD_URL_ R"(/dashboard",)"
@@ -510,7 +505,6 @@ INSTANTIATE_TEST_SUITE_P(
                 R"("status":0,)"
                 R"("token":"",)"
                 R"("user_name":"",)"
-                R"("verify_url":")" _UPHOLD_URL_ R"(/authorize/)" _UPHOLD_CLIENT_ID_ R"(?scope=cards:read cards:write user:read transactions:transfer:application transactions:transfer:others&intention=kyc&state=49E52DEFFC7C3309C8BF807FB8E838911362837961464845DCF1E58B50886D3C",)"
                 R"("withdraw_url":""})"}),
         // NOLINTNEXTLINE
         std::make_pair(  // NOT_CONNECTED_token_non_empty_address_non_empty__NOT_CONNECTED_token_empty_address_empty
@@ -526,7 +520,6 @@ INSTANTIATE_TEST_SUITE_P(
                 R"("status":0,)"
                 R"("token":"0047c2fd8f023e067354dbdb5639ee67acf77150",)"
                 R"("user_name":"",)"
-                R"("verify_url":"",)"
                 R"("withdraw_url":""})"},
             std::string{
                 R"({"account_url":")" _UPHOLD_URL_ R"(/dashboard",)"
@@ -541,7 +534,6 @@ INSTANTIATE_TEST_SUITE_P(
                 R"("status":0,)"
                 R"("token":"",)"
                 R"("user_name":"",)"
-                R"("verify_url":")" _UPHOLD_URL_ R"(/authorize/)" _UPHOLD_CLIENT_ID_ R"(?scope=cards:read cards:write user:read transactions:transfer:application transactions:transfer:others&intention=kyc&state=49E52DEFFC7C3309C8BF807FB8E838911362837961464845DCF1E58B50886D3C",)"
                 R"("withdraw_url":""})"}),
         // NOLINTNEXTLINE
         std::make_pair(  // CONNECTED_token_empty_address_empty__NOT_CONNECTED_token_empty_address_empty
@@ -557,7 +549,6 @@ INSTANTIATE_TEST_SUITE_P(
                 R"("status":1,)"
                 R"("token":"",)"
                 R"("user_name":"",)"
-                R"("verify_url":"",)"
                 R"("withdraw_url":""})"},
             std::string{
                 R"({"account_url":")" _UPHOLD_URL_ R"(/dashboard",)"
@@ -572,10 +563,9 @@ INSTANTIATE_TEST_SUITE_P(
                 R"("status":0,)"
                 R"("token":"",)"
                 R"("user_name":"",)"
-                R"("verify_url":")" _UPHOLD_URL_ R"(/authorize/)" _UPHOLD_CLIENT_ID_ R"(?scope=cards:read cards:write user:read transactions:transfer:application transactions:transfer:others&intention=kyc&state=49E52DEFFC7C3309C8BF807FB8E838911362837961464845DCF1E58B50886D3C",)"
                 R"("withdraw_url":""})"}),
         // NOLINTNEXTLINE
-        std::make_pair(  // CONNECTED_token_non_empty_address_empty__NOT_CONNECTED_token_empty_address_empty
+        std::make_pair(  // CONNECTED_token_non_empty_address_empty__PENDING_token_empty_address_empty
             std::string{
                 R"({"account_url":"",)"
                 R"("add_url":"",)"
@@ -588,12 +578,11 @@ INSTANTIATE_TEST_SUITE_P(
                 R"("status":1,)"
                 R"("token":"0047c2fd8f023e067354dbdb5639ee67acf77150",)"
                 R"("user_name":"",)"
-                R"("verify_url":"",)"
                 R"("withdraw_url":""})"},
             std::string{
                 R"({"account_url":")" _UPHOLD_URL_ R"(/dashboard",)"
                 R"("activity_url":"",)"
-                R"("add_url":")" _UPHOLD_URL_ R"(/signup/step2?application_id=)" _UPHOLD_CLIENT_ID_ R"(&intention=kyc",)"
+                R"("add_url":"",)"
                 R"("address":"",)"
                 R"("code_verifier":"",)"
                 R"("fees":{},)"
@@ -603,8 +592,7 @@ INSTANTIATE_TEST_SUITE_P(
                 R"("status":5,)"
                 R"("token":"0047c2fd8f023e067354dbdb5639ee67acf77150",)"
                 R"("user_name":"",)"
-                R"("verify_url":")" _UPHOLD_URL_ R"(/signup/step2?application_id=)" _UPHOLD_CLIENT_ID_ R"(&intention=kyc",)"
-                R"("withdraw_url":")" _UPHOLD_URL_ R"(/signup/step2?application_id=)" _UPHOLD_CLIENT_ID_ R"(&intention=kyc"})"}),
+                R"("withdraw_url":""})"}),
         // NOLINTNEXTLINE
         std::make_pair(  // CONNECTED_token_empty_address_non_empty__NOT_CONNECTED_token_empty_address_empty
             std::string{
@@ -619,7 +607,6 @@ INSTANTIATE_TEST_SUITE_P(
                 R"("status":1,)"
                 R"("token":"",)"
                 R"("user_name":"",)"
-                R"("verify_url":"",)"
                 R"("withdraw_url":""})"},
             std::string{
                 R"({"account_url":")" _UPHOLD_URL_ R"(/dashboard",)"
@@ -634,10 +621,9 @@ INSTANTIATE_TEST_SUITE_P(
                 R"("status":0,)"
                 R"("token":"",)"
                 R"("user_name":"",)"
-                R"("verify_url":")" _UPHOLD_URL_ R"(/authorize/)" _UPHOLD_CLIENT_ID_ R"(?scope=cards:read cards:write user:read transactions:transfer:application transactions:transfer:others&intention=kyc&state=49E52DEFFC7C3309C8BF807FB8E838911362837961464845DCF1E58B50886D3C",)"
                 R"("withdraw_url":""})"}),
         // NOLINTNEXTLINE
-        std::make_pair(  // CONNECTED_token_non_empty_address_non_empty__NOT_CONNECTED_token_empty_address_empty
+        std::make_pair(  // CONNECTED_token_non_empty_address_non_empty__PENDING_token_empty_address_empty
             std::string{
                 R"({"account_url":"",)"
                 R"("add_url":"",)"
@@ -650,12 +636,11 @@ INSTANTIATE_TEST_SUITE_P(
                 R"("status":1,)"
                 R"("token":"0047c2fd8f023e067354dbdb5639ee67acf77150",)"
                 R"("user_name":"",)"
-                R"("verify_url":"",)"
                 R"("withdraw_url":""})"},
             std::string{
                 R"({"account_url":")" _UPHOLD_URL_ R"(/dashboard",)"
                 R"("activity_url":"",)"
-                R"("add_url":")" _UPHOLD_URL_ R"(/signup/step2?application_id=)" _UPHOLD_CLIENT_ID_ R"(&intention=kyc",)"
+                R"("add_url":"",)"
                 R"("address":"",)"
                 R"("code_verifier":"",)"
                 R"("fees":{},)"
@@ -665,8 +650,7 @@ INSTANTIATE_TEST_SUITE_P(
                 R"("status":5,)"
                 R"("token":"0047c2fd8f023e067354dbdb5639ee67acf77150",)"
                 R"("user_name":"",)"
-                R"("verify_url":")" _UPHOLD_URL_ R"(/signup/step2?application_id=)" _UPHOLD_CLIENT_ID_ R"(&intention=kyc",)"
-                R"("withdraw_url":")" _UPHOLD_URL_ R"(/signup/step2?application_id=)" _UPHOLD_CLIENT_ID_ R"(&intention=kyc"})"}),
+                R"("withdraw_url":""})"}),
         // NOLINTNEXTLINE
         std::make_pair(  // VERIFIED_token_empty_address_empty__DISCONNECTED_VERIFIED_token_empty_address_empty
             std::string{
@@ -681,7 +665,6 @@ INSTANTIATE_TEST_SUITE_P(
                 R"("status":2,)"
                 R"("token":"",)"
                 R"("user_name":"",)"
-                R"("verify_url":"",)"
                 R"("withdraw_url":""})"},
             std::string{
                 R"({"account_url":")" _UPHOLD_URL_ R"(/dashboard",)"
@@ -696,10 +679,9 @@ INSTANTIATE_TEST_SUITE_P(
                 R"("status":4,)"
                 R"("token":"",)"
                 R"("user_name":"",)"
-                R"("verify_url":")" _UPHOLD_URL_ R"(/authorize/)" _UPHOLD_CLIENT_ID_ R"(?scope=cards:read cards:write user:read transactions:transfer:application transactions:transfer:others&intention=kyc&state=49E52DEFFC7C3309C8BF807FB8E838911362837961464845DCF1E58B50886D3C",)"
                 R"("withdraw_url":""})"}),
         // NOLINTNEXTLINE
-        std::make_pair(  // VERIFIED_token_non_empty_address_empty__NOT_CONNECTED_token_empty_address_empty
+        std::make_pair(  // VERIFIED_token_non_empty_address_empty__PENDING_token_non_empty_address_empty
             std::string{
                 R"({"account_url":"",)"
                 R"("add_url":"",)"
@@ -712,12 +694,11 @@ INSTANTIATE_TEST_SUITE_P(
                 R"("status":2,)"
                 R"("token":"0047c2fd8f023e067354dbdb5639ee67acf77150",)"
                 R"("user_name":"",)"
-                R"("verify_url":"",)"
                 R"("withdraw_url":""})"},
             std::string{
                 R"({"account_url":")" _UPHOLD_URL_ R"(/dashboard",)"
                 R"("activity_url":"",)"
-                R"("add_url":")" _UPHOLD_URL_ R"(/signup/step2?application_id=)" _UPHOLD_CLIENT_ID_ R"(&intention=kyc",)"
+                R"("add_url":"",)"
                 R"("address":"",)"
                 R"("code_verifier":"",)"
                 R"("fees":{},)"
@@ -727,8 +708,7 @@ INSTANTIATE_TEST_SUITE_P(
                 R"("status":5,)"
                 R"("token":"0047c2fd8f023e067354dbdb5639ee67acf77150",)"
                 R"("user_name":"",)"
-                R"("verify_url":")" _UPHOLD_URL_ R"(/signup/step2?application_id=)" _UPHOLD_CLIENT_ID_ R"(&intention=kyc",)"
-                R"("withdraw_url":")" _UPHOLD_URL_ R"(/signup/step2?application_id=)" _UPHOLD_CLIENT_ID_ R"(&intention=kyc"})"}),
+                R"("withdraw_url":""})"}),
         // NOLINTNEXTLINE
         std::make_pair(  // VERIFIED_token_empty_address_non_empty__DISCONNECTED_VERIFIED_token_empty_address_empty
             std::string{
@@ -743,7 +723,6 @@ INSTANTIATE_TEST_SUITE_P(
                 R"("status":2,)"
                 R"("token":"",)"
                 R"("user_name":"",)"
-                R"("verify_url":"",)"
                 R"("withdraw_url":""})"},
             std::string{
                 R"({"account_url":")" _UPHOLD_URL_ R"(/dashboard",)"
@@ -758,10 +737,9 @@ INSTANTIATE_TEST_SUITE_P(
                 R"("status":4,)"
                 R"("token":"",)"
                 R"("user_name":"",)"
-                R"("verify_url":")" _UPHOLD_URL_ R"(/authorize/)" _UPHOLD_CLIENT_ID_ R"(?scope=cards:read cards:write user:read transactions:transfer:application transactions:transfer:others&intention=kyc&state=49E52DEFFC7C3309C8BF807FB8E838911362837961464845DCF1E58B50886D3C",)"
                 R"("withdraw_url":""})"}),
         // NOLINTNEXTLINE
-        std::make_pair(  // VERIFIED_token_non_empty_address_non_empty__PENDING_token_empty_address_empty
+        std::make_pair(  // VERIFIED_token_non_empty_address_non_empty__PENDING_token_non_empty_address_empty
             std::string{
                 R"({"account_url":"",)"
                 R"("add_url":"",)"
@@ -774,12 +752,11 @@ INSTANTIATE_TEST_SUITE_P(
                 R"("status":2,)"
                 R"("token":"0047c2fd8f023e067354dbdb5639ee67acf77150",)"
                 R"("user_name":"",)"
-                R"("verify_url":"",)"
                 R"("withdraw_url":""})"},
             std::string{
                 R"({"account_url":")" _UPHOLD_URL_ R"(/dashboard",)"
                 R"("activity_url":"",)"
-                R"("add_url":")" _UPHOLD_URL_ R"(/signup/step2?application_id=)" _UPHOLD_CLIENT_ID_ R"(&intention=kyc",)"
+                R"("add_url":"",)"
                 R"("address":"",)"
                 R"("code_verifier":"",)"
                 R"("fees":{},)"
@@ -789,8 +766,7 @@ INSTANTIATE_TEST_SUITE_P(
                 R"("status":5,)"
                 R"("token":"0047c2fd8f023e067354dbdb5639ee67acf77150",)"
                 R"("user_name":"",)"
-                R"("verify_url":")" _UPHOLD_URL_ R"(/signup/step2?application_id=)" _UPHOLD_CLIENT_ID_ R"(&intention=kyc",)"
-                R"("withdraw_url":")" _UPHOLD_URL_ R"(/signup/step2?application_id=)" _UPHOLD_CLIENT_ID_ R"(&intention=kyc"})"}),
+                R"("withdraw_url":""})"}),
         // NOLINTNEXTLINE
         std::make_pair(  // DISCONNECTED_NOT_VERIFIED_token_empty_address_empty__DISCONNECTED_VERIFIED_token_empty_address_empty
             std::string{
@@ -805,7 +781,6 @@ INSTANTIATE_TEST_SUITE_P(
                 R"("status":3,)"
                 R"("token":"",)"
                 R"("user_name":"",)"
-                R"("verify_url":"",)"
                 R"("withdraw_url":""})"},
             std::string{
                 R"({"account_url":")" _UPHOLD_URL_ R"(/dashboard",)"
@@ -820,7 +795,6 @@ INSTANTIATE_TEST_SUITE_P(
                 R"("status":4,)"
                 R"("token":"",)"
                 R"("user_name":"",)"
-                R"("verify_url":")" _UPHOLD_URL_ R"(/authorize/)" _UPHOLD_CLIENT_ID_ R"(?scope=cards:read cards:write user:read transactions:transfer:application transactions:transfer:others&intention=kyc&state=49E52DEFFC7C3309C8BF807FB8E838911362837961464845DCF1E58B50886D3C",)"
                 R"("withdraw_url":""})"}),
         // NOLINTNEXTLINE
         std::make_pair(  // DISCONNECTED_NOT_VERIFIED_token_non_empty_address_empty__DISCONNECTED_VERIFIED_token_empty_address_empty
@@ -836,7 +810,6 @@ INSTANTIATE_TEST_SUITE_P(
                 R"("status":3,)"
                 R"("token":"0047c2fd8f023e067354dbdb5639ee67acf77150",)"
                 R"("user_name":"",)"
-                R"("verify_url":"",)"
                 R"("withdraw_url":""})"},
             std::string{
                 R"({"account_url":")" _UPHOLD_URL_ R"(/dashboard",)"
@@ -851,7 +824,6 @@ INSTANTIATE_TEST_SUITE_P(
                 R"("status":4,)"
                 R"("token":"",)"
                 R"("user_name":"",)"
-                R"("verify_url":")" _UPHOLD_URL_ R"(/authorize/)" _UPHOLD_CLIENT_ID_ R"(?scope=cards:read cards:write user:read transactions:transfer:application transactions:transfer:others&intention=kyc&state=49E52DEFFC7C3309C8BF807FB8E838911362837961464845DCF1E58B50886D3C",)"
                 R"("withdraw_url":""})"}),
         // NOLINTNEXTLINE
         std::make_pair(  // DISCONNECTED_NOT_VERIFIED_token_empty_address_non_empty__DISCONNECTED_VERIFIED_token_empty_address_empty
@@ -867,7 +839,6 @@ INSTANTIATE_TEST_SUITE_P(
                 R"("status":3,)"
                 R"("token":"",)"
                 R"("user_name":"",)"
-                R"("verify_url":"",)"
                 R"("withdraw_url":""})"},
             std::string{
                 R"({"account_url":")" _UPHOLD_URL_ R"(/dashboard",)"
@@ -882,7 +853,6 @@ INSTANTIATE_TEST_SUITE_P(
                 R"("status":4,)"
                 R"("token":"",)"
                 R"("user_name":"",)"
-                R"("verify_url":")" _UPHOLD_URL_ R"(/authorize/)" _UPHOLD_CLIENT_ID_ R"(?scope=cards:read cards:write user:read transactions:transfer:application transactions:transfer:others&intention=kyc&state=49E52DEFFC7C3309C8BF807FB8E838911362837961464845DCF1E58B50886D3C",)"
                 R"("withdraw_url":""})"}),
         // NOLINTNEXTLINE
         std::make_pair(  // DISCONNECTED_NOT_VERIFIED_token_non_empty_address_non_empty__DISCONNECTED_VERIFIED_token_empty_address_empty
@@ -898,7 +868,6 @@ INSTANTIATE_TEST_SUITE_P(
                 R"("status":3,)"
                 R"("token":"0047c2fd8f023e067354dbdb5639ee67acf77150",)"
                 R"("user_name":"",)"
-                R"("verify_url":"",)"
                 R"("withdraw_url":""})"},
             std::string{
                 R"({"account_url":")" _UPHOLD_URL_ R"(/dashboard",)"
@@ -913,7 +882,6 @@ INSTANTIATE_TEST_SUITE_P(
                 R"("status":4,)"
                 R"("token":"",)"
                 R"("user_name":"",)"
-                R"("verify_url":")" _UPHOLD_URL_ R"(/authorize/)" _UPHOLD_CLIENT_ID_ R"(?scope=cards:read cards:write user:read transactions:transfer:application transactions:transfer:others&intention=kyc&state=49E52DEFFC7C3309C8BF807FB8E838911362837961464845DCF1E58B50886D3C",)"
                 R"("withdraw_url":""})"}),
         // NOLINTNEXTLINE
         std::make_pair(  // DISCONNECTED_VERIFIED_token_empty_address_empty__DISCONNECTED_VERIFIED_token_empty_address_empty
@@ -929,7 +897,6 @@ INSTANTIATE_TEST_SUITE_P(
                 R"("status":4,)"
                 R"("token":"",)"
                 R"("user_name":"",)"
-                R"("verify_url":"",)"
                 R"("withdraw_url":""})"},
             std::string{
                 R"({"account_url":")" _UPHOLD_URL_ R"(/dashboard",)"
@@ -944,7 +911,6 @@ INSTANTIATE_TEST_SUITE_P(
                 R"("status":4,)"
                 R"("token":"",)"
                 R"("user_name":"",)"
-                R"("verify_url":")" _UPHOLD_URL_ R"(/authorize/)" _UPHOLD_CLIENT_ID_ R"(?scope=cards:read cards:write user:read transactions:transfer:application transactions:transfer:others&intention=kyc&state=49E52DEFFC7C3309C8BF807FB8E838911362837961464845DCF1E58B50886D3C",)"
                 R"("withdraw_url":""})"}),
         // NOLINTNEXTLINE
         std::make_pair(  // DISCONNECTED_VERIFIED_token_non_empty_address_empty__DISCONNECTED_VERIFIED_token_empty_address_empty
@@ -960,7 +926,6 @@ INSTANTIATE_TEST_SUITE_P(
                 R"("status":4,)"
                 R"("token":"0047c2fd8f023e067354dbdb5639ee67acf77150",)"
                 R"("user_name":"",)"
-                R"("verify_url":"",)"
                 R"("withdraw_url":""})"},
             std::string{
                 R"({"account_url":")" _UPHOLD_URL_ R"(/dashboard",)"
@@ -975,7 +940,6 @@ INSTANTIATE_TEST_SUITE_P(
                 R"("status":4,)"
                 R"("token":"",)"
                 R"("user_name":"",)"
-                R"("verify_url":")" _UPHOLD_URL_ R"(/authorize/)" _UPHOLD_CLIENT_ID_ R"(?scope=cards:read cards:write user:read transactions:transfer:application transactions:transfer:others&intention=kyc&state=49E52DEFFC7C3309C8BF807FB8E838911362837961464845DCF1E58B50886D3C",)"
                 R"("withdraw_url":""})"}),
         // NOLINTNEXTLINE
         std::make_pair(  // DISCONNECTED_VERIFIED_token_empty_address_non_empty__DISCONNECTED_VERIFIED_token_empty_address_empty
@@ -991,7 +955,6 @@ INSTANTIATE_TEST_SUITE_P(
                 R"("status":4,)"
                 R"("token":"",)"
                 R"("user_name":"",)"
-                R"("verify_url":"",)"
                 R"("withdraw_url":""})"},
             std::string{
                 R"({"account_url":")" _UPHOLD_URL_ R"(/dashboard",)"
@@ -1006,7 +969,6 @@ INSTANTIATE_TEST_SUITE_P(
                 R"("status":4,)"
                 R"("token":"",)"
                 R"("user_name":"",)"
-                R"("verify_url":")" _UPHOLD_URL_ R"(/authorize/)" _UPHOLD_CLIENT_ID_ R"(?scope=cards:read cards:write user:read transactions:transfer:application transactions:transfer:others&intention=kyc&state=49E52DEFFC7C3309C8BF807FB8E838911362837961464845DCF1E58B50886D3C",)"
                 R"("withdraw_url":""})"}),
         // NOLINTNEXTLINE
         std::make_pair(  // DISCONNECTED_VERIFIED_token_non_empty_address_non_empty__DISCONNECTED_VERIFIED_token_empty_address_empty
@@ -1022,7 +984,6 @@ INSTANTIATE_TEST_SUITE_P(
                 R"("status":4,)"
                 R"("token":"0047c2fd8f023e067354dbdb5639ee67acf77150",)"
                 R"("user_name":"",)"
-                R"("verify_url":"",)"
                 R"("withdraw_url":""})"},
             std::string{
                 R"({"account_url":")" _UPHOLD_URL_ R"(/dashboard",)"
@@ -1037,7 +998,6 @@ INSTANTIATE_TEST_SUITE_P(
                 R"("status":4,)"
                 R"("token":"",)"
                 R"("user_name":"",)"
-                R"("verify_url":")" _UPHOLD_URL_ R"(/authorize/)" _UPHOLD_CLIENT_ID_ R"(?scope=cards:read cards:write user:read transactions:transfer:application transactions:transfer:others&intention=kyc&state=49E52DEFFC7C3309C8BF807FB8E838911362837961464845DCF1E58B50886D3C",)"
                 R"("withdraw_url":""})"}),
         // NOLINTNEXTLINE
         std::make_pair(  // PENDING_token_empty_address_empty__NOT_CONNECTED_token_empty_address_empty
@@ -1053,7 +1013,6 @@ INSTANTIATE_TEST_SUITE_P(
                 R"("status":5,)"
                 R"("token":"",)"
                 R"("user_name":"",)"
-                R"("verify_url":"",)"
                 R"("withdraw_url":""})"},
             std::string{
                 R"({"account_url":")" _UPHOLD_URL_ R"(/dashboard",)"
@@ -1068,10 +1027,9 @@ INSTANTIATE_TEST_SUITE_P(
                 R"("status":0,)"
                 R"("token":"",)"
                 R"("user_name":"",)"
-                R"("verify_url":")" _UPHOLD_URL_ R"(/authorize/)" _UPHOLD_CLIENT_ID_ R"(?scope=cards:read cards:write user:read transactions:transfer:application transactions:transfer:others&intention=kyc&state=49E52DEFFC7C3309C8BF807FB8E838911362837961464845DCF1E58B50886D3C",)"
                 R"("withdraw_url":""})"}),
         // NOLINTNEXTLINE
-        std::make_pair(  // PENDING_token_non_empty_address_empty__NOT_CONNECTED_token_empty_address_empty
+        std::make_pair(  // PENDING_token_non_empty_address_empty__PENDING_token_non_empty_address_empty
             std::string{
                 R"({"account_url":"",)"
                 R"("add_url":"",)"
@@ -1084,12 +1042,11 @@ INSTANTIATE_TEST_SUITE_P(
                 R"("status":5,)"
                 R"("token":"0047c2fd8f023e067354dbdb5639ee67acf77150",)"
                 R"("user_name":"",)"
-                R"("verify_url":"",)"
                 R"("withdraw_url":""})"},
             std::string{
                 R"({"account_url":")" _UPHOLD_URL_ R"(/dashboard",)"
                 R"("activity_url":"",)"
-                R"("add_url":")" _UPHOLD_URL_ R"(/signup/step2?application_id=)" _UPHOLD_CLIENT_ID_ R"(&intention=kyc",)"
+                R"("add_url":"",)"
                 R"("address":"",)"
                 R"("code_verifier":"",)"
                 R"("fees":{},)"
@@ -1099,8 +1056,7 @@ INSTANTIATE_TEST_SUITE_P(
                 R"("status":5,)"
                 R"("token":"0047c2fd8f023e067354dbdb5639ee67acf77150",)"
                 R"("user_name":"",)"
-                R"("verify_url":")" _UPHOLD_URL_ R"(/signup/step2?application_id=)" _UPHOLD_CLIENT_ID_ R"(&intention=kyc",)"
-                R"("withdraw_url":")" _UPHOLD_URL_ R"(/signup/step2?application_id=)" _UPHOLD_CLIENT_ID_ R"(&intention=kyc"})"}),
+                R"("withdraw_url":""})"}),
         // NOLINTNEXTLINE
         std::make_pair(  // PENDING_token_empty_address_non_empty__NOT_CONNECTED_token_empty_address_empty
             std::string{
@@ -1115,7 +1071,6 @@ INSTANTIATE_TEST_SUITE_P(
                 R"("status":5,)"
                 R"("token":"",)"
                 R"("user_name":"",)"
-                R"("verify_url":"",)"
                 R"("withdraw_url":""})"},
             std::string{
                 R"({"account_url":")" _UPHOLD_URL_ R"(/dashboard",)"
@@ -1130,10 +1085,9 @@ INSTANTIATE_TEST_SUITE_P(
                 R"("status":0,)"
                 R"("token":"",)"
                 R"("user_name":"",)"
-                R"("verify_url":")" _UPHOLD_URL_ R"(/authorize/)" _UPHOLD_CLIENT_ID_ R"(?scope=cards:read cards:write user:read transactions:transfer:application transactions:transfer:others&intention=kyc&state=49E52DEFFC7C3309C8BF807FB8E838911362837961464845DCF1E58B50886D3C",)"
                 R"("withdraw_url":""})"}),
         // NOLINTNEXTLINE
-        std::make_pair(  // PENDING_token_non_empty_address_non_empty__NOT_CONNECTED_token_empty_address_empty
+        std::make_pair(  // PENDING_token_non_empty_address_non_empty__PENDING_token_non_empty_address_empty
             std::string{
                 R"({"account_url":"",)"
                 R"("add_url":"",)"
@@ -1146,12 +1100,11 @@ INSTANTIATE_TEST_SUITE_P(
                 R"("status":5,)"
                 R"("token":"0047c2fd8f023e067354dbdb5639ee67acf77150",)"
                 R"("user_name":"",)"
-                R"("verify_url":"",)"
                 R"("withdraw_url":""})"},
             std::string{
                 R"({"account_url":")" _UPHOLD_URL_ R"(/dashboard",)"
                 R"("activity_url":"",)"
-                R"("add_url":")" _UPHOLD_URL_ R"(/signup/step2?application_id=)" _UPHOLD_CLIENT_ID_ R"(&intention=kyc",)"
+                R"("add_url":"",)"
                 R"("address":"",)"
                 R"("code_verifier":"",)"
                 R"("fees":{},)"
@@ -1161,8 +1114,7 @@ INSTANTIATE_TEST_SUITE_P(
                 R"("status":5,)"
                 R"("token":"0047c2fd8f023e067354dbdb5639ee67acf77150",)"
                 R"("user_name":"",)"
-                R"("verify_url":")" _UPHOLD_URL_ R"(/signup/step2?application_id=)" _UPHOLD_CLIENT_ID_ R"(&intention=kyc",)"
-                R"("withdraw_url":")" _UPHOLD_URL_ R"(/signup/step2?application_id=)" _UPHOLD_CLIENT_ID_ R"(&intention=kyc"})"})),
+                R"("withdraw_url":""})"})),
     UpholdStateMachine::NameSuffixGenerator);
 // clang-format on
 

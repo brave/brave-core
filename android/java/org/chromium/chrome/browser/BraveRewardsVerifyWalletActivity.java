@@ -70,10 +70,10 @@ public class BraveRewardsVerifyWalletActivity extends Activity {
 
     void SetVerifyWalletBtnClickHandler() {
         Button btnVerifyWallet = (Button)findViewById(R.id.verify_wallet_btn);
-        btnVerifyWallet.setOnClickListener( (View v) -> {
-            String verify_url = getIntent().getStringExtra(BraveRewardsExternalWallet.VERIFY_URL);
+        btnVerifyWallet.setOnClickListener((View v) -> {
+            String login_url = getIntent().getStringExtra(BraveRewardsExternalWallet.LOGIN_URL);
             Intent intent = new Intent();
-            intent.putExtra(BraveActivity.OPEN_URL, verify_url);
+            intent.putExtra(BraveActivity.OPEN_URL, login_url);
             setResult(RESULT_OK, intent);
             finish();
         });

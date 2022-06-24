@@ -46,7 +46,7 @@ std::string GetFeeAddress() {
              : kFeeAddressStaging;
 }
 
-std::string GetAuthorizeUrl(const std::string& state) {
+std::string GetLoginUrl(const std::string& state) {
   const std::string id = GetClientId();
   const std::string url = GetUrl();
 
@@ -106,11 +106,8 @@ type::ExternalWalletPtr GenerateLinks(type::ExternalWalletPtr wallet) {
     }
   }
 
-  const std::string auth_url = GetAuthorizeUrl(wallet->one_time_string);
-
-  wallet->verify_url = auth_url;
   wallet->account_url = GetAccountUrl();
-  wallet->login_url = auth_url;
+  wallet->login_url = GetLoginUrl(wallet->one_time_string);
   wallet->activity_url = GetActivityUrl();
 
   return wallet;

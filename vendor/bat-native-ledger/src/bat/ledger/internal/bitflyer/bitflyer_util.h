@@ -31,8 +31,8 @@ std::string GetUrl();
 
 std::string GetFeeAddress();
 
-std::string GetAuthorizeUrl(const std::string& state,
-                            const std::string& code_verifier);
+std::string GetLoginUrl(const std::string& state,
+                        const std::string& code_verifier);
 
 std::string GetAddUrl();
 

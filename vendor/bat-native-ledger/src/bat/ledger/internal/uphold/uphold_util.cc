@@ -49,9 +49,8 @@ std::string GetFeeAddress() {
              : kFeeAddressStaging;
 }
 
-std::string GetAuthorizeUrl(const std::string& state, const bool kyc_flow) {
+std::string GetLoginUrl(const std::string& state) {
   const std::string id = GetClientId();
-  const std::string intention = kyc_flow ? "kyc" : "login";
   const std::string url = GetUrl();
 
   return base::StringPrintf(
@@ -62,9 +61,9 @@ std::string GetAuthorizeUrl(const std::string& state, const bool kyc_flow) {
       "user:read "
       "transactions:transfer:application "
       "transactions:transfer:others"
-      "&intention=%s&"
+      "&intention=login&"
       "state=%s",
-      url.c_str(), id.c_str(), intention.c_str(), state.c_str());
+      url.c_str(), id.c_str(), state.c_str());
 }
 
 std::string GetAddUrl(const std::string& address) {
@@ -87,14 +86,6 @@ std::string GetWithdrawUrl(const std::string& address) {
 
   return base::StringPrintf("%s/dashboard/cards/%s/use", url.c_str(),
                             address.c_str());
-}
-
-std::string GetSecondStepVerify() {
-  const std::string url = GetUrl();
-  const std::string id = GetClientId();
-
-  return base::StringPrintf("%s/signup/step2?application_id=%s&intention=kyc",
-                            url.c_str(), id.c_str());
 }
 
 std::string GetAccountUrl() {
@@ -127,11 +118,7 @@ type::ExternalWalletPtr GenerateLinks(type::ExternalWalletPtr wallet) {
       wallet->withdraw_url = GetWithdrawUrl(wallet->address);
       break;
     }
-    case type::WalletStatus::PENDING: {
-      wallet->add_url = GetSecondStepVerify();
-      wallet->withdraw_url = GetSecondStepVerify();
-      break;
-    }
+    case type::WalletStatus::PENDING:
     case type::WalletStatus::NOT_CONNECTED:
     case type::WalletStatus::DISCONNECTED_VERIFIED: {
       wallet->add_url = "";
@@ -142,39 +129,11 @@ type::ExternalWalletPtr GenerateLinks(type::ExternalWalletPtr wallet) {
       NOTREACHED();
   }
 
-  wallet->verify_url = GenerateVerifyLink(wallet->Clone());
   wallet->account_url = GetAccountUrl();
-  wallet->login_url = GetAuthorizeUrl(wallet->one_time_string, false);
+  wallet->login_url = GetLoginUrl(wallet->one_time_string);
   wallet->activity_url = GetActivityUrl(wallet->address);
 
   return wallet;
-}
-
-std::string GenerateVerifyLink(type::ExternalWalletPtr wallet) {
-  std::string url = "";
-  if (!wallet) {
-    return url;
-  }
-
-  CheckWalletState(wallet.get());
-
-  switch (wallet->status) {
-    case type::WalletStatus::VERIFIED:
-      break;
-    case type::WalletStatus::PENDING: {
-      url = GetSecondStepVerify();
-      break;
-    }
-    case type::WalletStatus::NOT_CONNECTED:
-    case type::WalletStatus::DISCONNECTED_VERIFIED: {
-      url = GetAuthorizeUrl(wallet->one_time_string, true);
-      break;
-    }
-    default:
-      NOTREACHED();
-  }
-
-  return url;
 }
 
 template <typename T, typename... Ts>

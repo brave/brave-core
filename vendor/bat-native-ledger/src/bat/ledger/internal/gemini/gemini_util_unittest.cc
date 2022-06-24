@@ -78,10 +78,10 @@ TEST_F(GeminiUtilTest, GetFeeAddress) {
   ASSERT_EQ(result, kFeeAddressStaging);
 }
 
-TEST_F(GeminiUtilTest, GetAuthorizeUrl) {
+TEST_F(GeminiUtilTest, GetLoginUrl) {
   // production
   ledger::_environment = type::Environment::PRODUCTION;
-  std::string result = gemini::GetAuthorizeUrl("my-state");
+  std::string result = gemini::GetLoginUrl("my-state");
   ASSERT_EQ(result, base::StrCat({BUILDFLAG(GEMINI_OAUTH_URL),
                                   "/auth"
                                   "?client_id=",
@@ -99,7 +99,7 @@ TEST_F(GeminiUtilTest, GetAuthorizeUrl) {
 
   // staging
   ledger::_environment = type::Environment::STAGING;
-  result = gemini::GetAuthorizeUrl("my-state");
+  result = gemini::GetLoginUrl("my-state");
   ASSERT_EQ(result, base::StrCat({BUILDFLAG(GEMINI_OAUTH_STAGING_URL),
                                   "/auth"
                                   "?client_id=",
@@ -174,7 +174,6 @@ TEST_F(GeminiUtilTest, GetWallet) {
     "status": 2,
     "token": "4c80232r219c30cdf112208890a32c7e00",
     "user_name": "test",
-    "verify_url": "https://exchange.sandbox.gemini.com/auth/token",
     "withdraw_url": ""
   })");
 
@@ -215,7 +214,7 @@ TEST_F(GeminiUtilTest, GenerateLinks) {
   auto result = gemini::GenerateLinks(wallet->Clone());
   ASSERT_EQ(result->add_url, "");
   ASSERT_EQ(result->withdraw_url, "");
-  ASSERT_EQ(result->verify_url,
+  ASSERT_EQ(result->login_url,
             base::StrCat(
                 {BUILDFLAG(GEMINI_OAUTH_STAGING_URL),
                  "/auth?client_id=", BUILDFLAG(GEMINI_WALLET_STAGING_CLIENT_ID),
@@ -236,7 +235,7 @@ TEST_F(GeminiUtilTest, GenerateLinks) {
   result = gemini::GenerateLinks(wallet->Clone());
   ASSERT_EQ(result->add_url, "");
   ASSERT_EQ(result->withdraw_url, "");
-  ASSERT_EQ(result->verify_url,
+  ASSERT_EQ(result->login_url,
             base::StrCat(
                 {BUILDFLAG(GEMINI_OAUTH_STAGING_URL),
                  "/auth?client_id=", BUILDFLAG(GEMINI_WALLET_STAGING_CLIENT_ID),
@@ -260,7 +259,7 @@ TEST_F(GeminiUtilTest, GenerateLinks) {
   ASSERT_EQ(result->withdraw_url,
             base::StrCat(
                 {BUILDFLAG(GEMINI_OAUTH_STAGING_URL), "/transfer/withdraw"}));
-  ASSERT_EQ(result->verify_url,
+  ASSERT_EQ(result->login_url,
             base::StrCat(
                 {BUILDFLAG(GEMINI_OAUTH_STAGING_URL),
                  "/auth?client_id=", BUILDFLAG(GEMINI_WALLET_STAGING_CLIENT_ID),
@@ -281,7 +280,7 @@ TEST_F(GeminiUtilTest, GenerateLinks) {
   result = gemini::GenerateLinks(wallet->Clone());
   ASSERT_EQ(result->add_url, "");
   ASSERT_EQ(result->withdraw_url, "");
-  ASSERT_EQ(result->verify_url,
+  ASSERT_EQ(result->login_url,
             base::StrCat(
                 {BUILDFLAG(GEMINI_OAUTH_STAGING_URL),
                  "/auth?client_id=", BUILDFLAG(GEMINI_WALLET_STAGING_CLIENT_ID),
@@ -302,7 +301,7 @@ TEST_F(GeminiUtilTest, GenerateLinks) {
   result = gemini::GenerateLinks(wallet->Clone());
   ASSERT_EQ(result->add_url, "");
   ASSERT_EQ(result->withdraw_url, "");
-  ASSERT_EQ(result->verify_url,
+  ASSERT_EQ(result->login_url,
             base::StrCat(
                 {BUILDFLAG(GEMINI_OAUTH_STAGING_URL),
                  "/auth?client_id=", BUILDFLAG(GEMINI_WALLET_STAGING_CLIENT_ID),
@@ -323,7 +322,7 @@ TEST_F(GeminiUtilTest, GenerateLinks) {
   result = gemini::GenerateLinks(wallet->Clone());
   ASSERT_EQ(result->add_url, "");
   ASSERT_EQ(result->withdraw_url, "");
-  ASSERT_EQ(result->verify_url,
+  ASSERT_EQ(result->login_url,
             base::StrCat(
                 {BUILDFLAG(GEMINI_OAUTH_STAGING_URL),
                  "/auth?client_id=", BUILDFLAG(GEMINI_WALLET_STAGING_CLIENT_ID),

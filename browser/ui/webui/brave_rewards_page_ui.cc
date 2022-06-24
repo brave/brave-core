@@ -1757,7 +1757,6 @@ void RewardsDOMHandler::OnGetExternalWallet(
       wallet_dict.SetStringKey("type", wallet->type);
       wallet_dict.SetStringKey("address", wallet->address);
       wallet_dict.SetIntKey("status", static_cast<int>(wallet->status));
-      wallet_dict.SetStringKey("verifyUrl", wallet->verify_url);
       wallet_dict.SetStringKey("addUrl", wallet->add_url);
       wallet_dict.SetStringKey("withdrawUrl", wallet->withdraw_url);
       wallet_dict.SetStringKey("userName", wallet->user_name);

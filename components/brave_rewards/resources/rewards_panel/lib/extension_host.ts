@@ -144,8 +144,6 @@ export function createHost (): Host {
     switch (action) {
       case 'add-funds':
         return links.addFunds || links.account || ''
-      case 'complete-verification':
-        return links.completeVerification || links.account || ''
       case 'reconnect':
         return links.reconnect || ''
       case 'verify':
