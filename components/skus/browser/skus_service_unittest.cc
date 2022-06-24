@@ -286,10 +286,12 @@ class SkusServiceTestUnitTest : public testing::Test {
 
 TEST_F(SkusServiceTestUnitTest, CredentialSummarySuccess) {
   base::Value state(base::Value::Type::DICT);
-  auto testing_payload = GenerateTestingCreds("vpn.brave.software");
-  state.SetStringKey("skus:development", testing_payload);
+  auto env = skus::GetEnvironment();
+  auto domain = skus::GetDomain("vpn");
+  auto testing_payload = GenerateTestingCreds(domain);
+  state.SetStringKey("skus:" + env, testing_payload);
   prefs()->Set(skus::prefs::kSkusState, std::move(state));
-  auto credentials = GetCredentialsSummary("vpn.brave.software");
+  auto credentials = GetCredentialsSummary(domain);
   EXPECT_FALSE(credentials.empty());
   auto credentials_json = base::JSONReader::Read(credentials);
   auto* order = credentials_json->FindPath("order");
@@ -300,7 +302,9 @@ TEST_F(SkusServiceTestUnitTest, CredentialSummarySuccess) {
 
 TEST_F(SkusServiceTestUnitTest, CredentialSummaryFailed) {
   base::Value state(base::Value::Type::DICT);
-  auto testing_payload = GenerateTestingCreds("vpn.brave.software");
+  auto env = skus::GetEnvironment();
+  auto domain = skus::GetDomain("vpn");
+  auto testing_payload = GenerateTestingCreds(domain);
   auto payload_value = base::JSONReader::Read(testing_payload);
   auto* orders = payload_value->FindPath("orders");
   EXPECT_TRUE(orders);
@@ -310,10 +314,10 @@ TEST_F(SkusServiceTestUnitTest, CredentialSummaryFailed) {
   base::JSONWriter::WriteWithOptions(
       payload_value.value(), base::JSONWriter::OPTIONS_PRETTY_PRINT, &json);
   // Save prefs with expired prefs only
-  state.SetStringKey("skus:development", json);
+  state.SetStringKey("skus:" + env, json);
 
   prefs()->Set(skus::prefs::kSkusState, std::move(state));
-  auto credentials = GetCredentialsSummary("vpn.brave.software");
+  auto credentials = GetCredentialsSummary(domain);
   EXPECT_TRUE(credentials.empty());
 }
 
