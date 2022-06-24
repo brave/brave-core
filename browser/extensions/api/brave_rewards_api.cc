@@ -1073,7 +1073,6 @@ void BraveRewardsGetExternalWalletFunction::OnGetExternalWallet(
   data.SetStringKey("type", wallet->type);
   data.SetStringKey("address", wallet->address);
   data.SetIntKey("status", static_cast<int>(wallet->status));
-  data.SetStringKey("verifyUrl", wallet->verify_url);
   data.SetStringKey("addUrl", wallet->add_url);
   data.SetStringKey("withdrawUrl", wallet->withdraw_url);
   data.SetStringKey("userName", wallet->user_name);

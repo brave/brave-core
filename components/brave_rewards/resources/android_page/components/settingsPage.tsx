@@ -190,8 +190,8 @@ class SettingsPage extends React.Component<Props, State> {
 
     const { externalWallet } = this.props.rewardsData
 
-    if (externalWallet && externalWallet.verifyUrl) {
-      window.open(externalWallet.verifyUrl, '_self')
+    if (externalWallet && externalWallet.loginUrl) {
+      window.open(externalWallet.loginUrl, '_self')
     }
   }
 

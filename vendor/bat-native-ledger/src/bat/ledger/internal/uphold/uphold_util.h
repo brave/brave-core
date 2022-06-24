@@ -29,21 +29,17 @@ std::string GetUrl();
 
 std::string GetFeeAddress();
 
-std::string GetAuthorizeUrl(const std::string& state, const bool kyc_flow);
+std::string GetLoginUrl(const std::string& state);
 
 std::string GetAddUrl(const std::string& address);
 
 std::string GetWithdrawUrl(const std::string& address);
-
-std::string GetSecondStepVerify();
 
 std::string GetAccountUrl();
 
 std::string GetActivityUrl(const std::string& address);
 
 type::ExternalWalletPtr GenerateLinks(type::ExternalWalletPtr wallet);
-
-std::string GenerateVerifyLink(type::ExternalWalletPtr wallet);
 
 void OnWalletStatusChange(LedgerImpl* ledger,
                           absl::optional<type::WalletStatus> from,
