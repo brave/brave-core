@@ -47,21 +47,36 @@ class TestBraveVPNServiceObserver : public mojom::ServiceObserver {
   }
   void OnConnectionCreated() override {}
   void OnConnectionRemoved() override {}
-  void OnConnectionStateChanged(ConnectionState state) override {}
+  void OnConnectionStateChanged(ConnectionState state) override {
+    connection_state_ = state;
+    if (connection_state_callback_)
+      std::move(connection_state_callback_).Run();
+  }
   void WaitPurchasedStateChange(base::OnceClosure callback) {
     purchased_callback_ = std::move(callback);
+  }
+  void WaitConnectionStateChange(base::OnceClosure callback) {
+    connection_state_callback_ = std::move(callback);
   }
   mojo::PendingRemote<mojom::ServiceObserver> GetReceiver() {
     return observer_receiver_.BindNewPipeAndPassRemote();
   }
-  void ResetPurchasedState() { purchased_state_.reset(); }
+  void ResetStates() {
+    purchased_state_.reset();
+    connection_state_.reset();
+  }
   absl::optional<PurchasedState> GetPurchasedState() const {
     return purchased_state_;
+  }
+  absl::optional<ConnectionState> GetConnectionState() const {
+    return connection_state_;
   }
 
  private:
   absl::optional<PurchasedState> purchased_state_;
+  absl::optional<ConnectionState> connection_state_;
   base::OnceClosure purchased_callback_;
+  base::OnceClosure connection_state_callback_;
   mojo::Receiver<mojom::ServiceObserver> observer_receiver_{this};
 };
 
@@ -358,7 +373,7 @@ class BraveVPNServiceTest : public testing::Test {
 
   void ExpectPurchasedStateChange(TestBraveVPNServiceObserver* observer,
                                   PurchasedState state) {
-    observer->ResetPurchasedState();
+    observer->ResetStates();
     SetPurchasedState(state);
     base::RunLoop().RunUntilIdle();
     EXPECT_TRUE(observer->GetPurchasedState().has_value());
@@ -606,14 +621,40 @@ TEST_F(BraveVPNServiceTest, NeedsConnectTest) {
   OnDisconnected();
   EXPECT_FALSE(needs_connect());
   EXPECT_EQ(ConnectionState::CONNECT_FAILED, connection_state());
+}
+
+TEST_F(BraveVPNServiceTest, ConnectWithoutNetwork) {
+  SetPurchasedState(PurchasedState::PURCHASED);
+  auto network_change_notifier = net::NetworkChangeNotifier::CreateIfNeeded();
+  net::test::ScopedMockNetworkChangeNotifier mock_notifier;
+  mock_notifier.mock_network_change_notifier()->SetConnectionType(
+      net::NetworkChangeNotifier::CONNECTION_NONE);
+  EXPECT_EQ(net::NetworkChangeNotifier::CONNECTION_NONE,
+            net::NetworkChangeNotifier::GetConnectionType());
 
   // Handle connect without network.
   connection_state() = ConnectionState::DISCONNECTED;
   EXPECT_EQ(net::NetworkChangeNotifier::CONNECTION_NONE,
             net::NetworkChangeNotifier::GetConnectionType());
-  Connect();
-  EXPECT_FALSE(needs_connect());
-  EXPECT_EQ(ConnectionState::CONNECT_FAILED, connection_state());
+  TestBraveVPNServiceObserver observer;
+  AddObserver(observer.GetReceiver());
+  {
+    // State changed to Connecting.
+    base::RunLoop loop;
+    observer.WaitConnectionStateChange(loop.QuitClosure());
+    Connect();
+    loop.Run();
+    EXPECT_EQ(observer.GetConnectionState(), ConnectionState::CONNECTING);
+  }
+  {
+    // State changed to connection failed.
+    base::RunLoop loop;
+    observer.WaitConnectionStateChange(loop.QuitClosure());
+    loop.Run();
+    EXPECT_EQ(observer.GetConnectionState(), ConnectionState::CONNECT_FAILED);
+    EXPECT_FALSE(needs_connect());
+    EXPECT_EQ(ConnectionState::CONNECT_FAILED, connection_state());
+  }
 }
 
 TEST_F(BraveVPNServiceTest, LoadRegionDataFromPrefsTest) {
@@ -672,7 +713,7 @@ TEST_F(BraveVPNServiceTest, SetPurchasedState) {
 
   SetPurchasedState(PurchasedState::PURCHASED);
   base::RunLoop().RunUntilIdle();
-  observer.ResetPurchasedState();
+  observer.ResetStates();
   // Do not notify if status is not changed.
   EXPECT_FALSE(observer.GetPurchasedState().has_value());
   SetPurchasedState(PurchasedState::PURCHASED);
@@ -704,7 +745,7 @@ TEST_F(BraveVPNServiceTest, LoadPurchasedState) {
     EXPECT_EQ(PurchasedState::NOT_PURCHASED,
               observer.GetPurchasedState().value());
   }
-  observer.ResetPurchasedState();
+  observer.ResetStates();
   EXPECT_FALSE(observer.GetPurchasedState().has_value());
   EXPECT_EQ(PurchasedState::NOT_PURCHASED, GetPurchasedStateSync());
   LoadPurchasedState();
@@ -713,6 +754,19 @@ TEST_F(BraveVPNServiceTest, LoadPurchasedState) {
   EXPECT_FALSE(observer.GetPurchasedState().has_value());
   // Observer called when state will be changed.
   ExpectPurchasedStateChange(&observer, PurchasedState::PURCHASED);
+
+  // Load purchased state without connection.
+  EXPECT_EQ(PurchasedState::PURCHASED, GetPurchasedStateSync());
+  auto network_change_notifier = net::NetworkChangeNotifier::CreateIfNeeded();
+  net::test::ScopedMockNetworkChangeNotifier mock_notifier;
+  mock_notifier.mock_network_change_notifier()->SetConnectionType(
+      net::NetworkChangeNotifier::CONNECTION_NONE);
+  EXPECT_EQ(net::NetworkChangeNotifier::CONNECTION_NONE,
+            net::NetworkChangeNotifier::GetConnectionType());
+  LoadPurchasedState();
+  base::RunLoop().RunUntilIdle();
+  EXPECT_EQ(PurchasedState::PURCHASED, GetPurchasedStateSync());
+  EXPECT_EQ(ConnectionState::CONNECT_FAILED, connection_state());
 }
 
 }  // namespace brave_vpn
