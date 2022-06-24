@@ -1416,7 +1416,6 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
             mFromValueBlock.setVisibility(View.GONE);
         } else {
             mFromValueBlock.setVisibility(View.VISIBLE);
-            mFromValueText.setText("");
         }
         if (buySend && mActivityType == ActivityType.SWAP || !buySend) {
             enableDisableSwapButton();
