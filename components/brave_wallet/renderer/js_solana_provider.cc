@@ -53,9 +53,7 @@ JSSolanaProvider::JSSolanaProvider(content::RenderFrame* render_frame)
   v8_value_converter_->SetStrategy(&strategy_);
 }
 
-JSSolanaProvider::~JSSolanaProvider() {
-  weak_ptr_factory_.InvalidateWeakPtrs();
-}
+JSSolanaProvider::~JSSolanaProvider() = default;
 
 gin::WrapperInfo JSSolanaProvider::kWrapperInfo = {gin::kEmbedderNativeGin};
 
