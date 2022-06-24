@@ -18,7 +18,7 @@ namespace privacy {
 class UnblindedTokens;
 struct UnblindedTokenInfo;
 
-UnblindedTokens* get_unblinded_tokens();
+UnblindedTokens* GetUnblindedTokens();
 
 UnblindedTokenList SetUnblindedTokens(const int count);
 

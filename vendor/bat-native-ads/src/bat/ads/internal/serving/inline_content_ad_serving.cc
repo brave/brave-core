@@ -143,7 +143,7 @@ void Serving::FailedToServeAd(const std::string& dimensions,
 
 void Serving::ServedAd(const InlineContentAdInfo& ad) {
   DCHECK(eligible_ads_);
-  eligible_ads_->set_last_served_ad(ad);
+  eligible_ads_->SetLastServedAd(ad);
 }
 
 void Serving::NotifyDidServeInlineContentAd(

@@ -114,7 +114,7 @@ TEST_F(BatAdsCreativeNotificationAdsDatabaseTableTest,
 TEST_F(BatAdsCreativeNotificationAdsDatabaseTableTest,
        SaveCreativeNotificationAdsInBatches) {
   // Arrange
-  database_table_->set_batch_size(2);
+  database_table_->SetBatchSize(2);
 
   CreativeNotificationAdList creative_ads;
 

@@ -111,7 +111,7 @@ TEST_F(BatAdsCreativeInlineContentAdsDatabaseTableTest,
 TEST_F(BatAdsCreativeInlineContentAdsDatabaseTableTest,
        SaveCreativeInlineContentAdsInBatches) {
   // Arrange
-  database_table_->set_batch_size(2);
+  database_table_->SetBatchSize(2);
 
   CreativeInlineContentAdList creative_ads;
 

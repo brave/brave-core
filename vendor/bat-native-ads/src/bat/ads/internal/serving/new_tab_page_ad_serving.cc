@@ -146,7 +146,7 @@ void Serving::FailedToServeAd(GetNewTabPageAdCallback callback) {
 
 void Serving::ServedAd(const NewTabPageAdInfo& ad) {
   DCHECK(eligible_ads_);
-  eligible_ads_->set_last_served_ad(ad);
+  eligible_ads_->SetLastServedAd(ad);
 }
 
 void Serving::NotifyDidServeNewTabPageAd(const NewTabPageAdInfo& ad) const {

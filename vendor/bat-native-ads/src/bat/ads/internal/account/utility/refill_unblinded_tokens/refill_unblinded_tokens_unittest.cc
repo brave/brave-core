@@ -40,7 +40,7 @@ class BatAdsRefillUnblindedTokensTest : public UnitTestBase {
             token_generator_mock_.get())),
         refill_unblinded_tokens_delegate_mock_(
             std::make_unique<NiceMock<RefillUnblindedTokensDelegateMock>>()) {
-    refill_unblinded_tokens_->set_delegate(
+    refill_unblinded_tokens_->SetDelegate(
         refill_unblinded_tokens_delegate_mock_.get());
   }
 
@@ -171,7 +171,7 @@ TEST_F(BatAdsRefillUnblindedTokensTest, RefillUnblindedTokens) {
   refill_unblinded_tokens_->MaybeRefill(wallet);
 
   // Assert
-  EXPECT_EQ(50, privacy::get_unblinded_tokens()->Count());
+  EXPECT_EQ(50, privacy::GetUnblindedTokens()->Count());
 }
 
 #if BUILDFLAG(BRAVE_ADAPTIVE_CAPTCHA_ENABLED)
@@ -224,7 +224,7 @@ TEST_F(BatAdsRefillUnblindedTokensTest, RefillUnblindedTokensCaptchaRequired) {
   refill_unblinded_tokens_->MaybeRefill(wallet);
 
   // Assert
-  EXPECT_TRUE(privacy::get_unblinded_tokens()->IsEmpty());
+  EXPECT_TRUE(privacy::GetUnblindedTokens()->IsEmpty());
 }
 #endif
 
@@ -266,7 +266,7 @@ TEST_F(BatAdsRefillUnblindedTokensTest, IssuersPublicKeyMismatch) {
   refill_unblinded_tokens_->MaybeRefill(wallet);
 
   // Assert
-  EXPECT_TRUE(privacy::get_unblinded_tokens()->IsEmpty());
+  EXPECT_TRUE(privacy::GetUnblindedTokens()->IsEmpty());
 }
 
 TEST_F(BatAdsRefillUnblindedTokensTest, InvalidIssuersFormat) {
@@ -293,7 +293,7 @@ TEST_F(BatAdsRefillUnblindedTokensTest, InvalidIssuersFormat) {
   refill_unblinded_tokens_->MaybeRefill(wallet);
 
   // Assert
-  EXPECT_TRUE(privacy::get_unblinded_tokens()->IsEmpty());
+  EXPECT_TRUE(privacy::GetUnblindedTokens()->IsEmpty());
 }
 
 TEST_F(BatAdsRefillUnblindedTokensTest, InvalidWallet) {
@@ -320,7 +320,7 @@ TEST_F(BatAdsRefillUnblindedTokensTest, InvalidWallet) {
   refill_unblinded_tokens_->MaybeRefill(invalid_wallet);
 
   // Assert
-  EXPECT_TRUE(privacy::get_unblinded_tokens()->IsEmpty());
+  EXPECT_TRUE(privacy::GetUnblindedTokens()->IsEmpty());
 }
 
 TEST_F(BatAdsRefillUnblindedTokensTest,
@@ -426,7 +426,7 @@ TEST_F(BatAdsRefillUnblindedTokensTest,
   FastForwardClockToNextPendingTask();
 
   // Assert
-  EXPECT_EQ(50, privacy::get_unblinded_tokens()->Count());
+  EXPECT_EQ(50, privacy::GetUnblindedTokens()->Count());
 }
 
 TEST_F(BatAdsRefillUnblindedTokensTest, RequestSignedTokensMissingNonce) {
@@ -462,7 +462,7 @@ TEST_F(BatAdsRefillUnblindedTokensTest, RequestSignedTokensMissingNonce) {
   refill_unblinded_tokens_->MaybeRefill(wallet);
 
   // Assert
-  EXPECT_TRUE(privacy::get_unblinded_tokens()->IsEmpty());
+  EXPECT_TRUE(privacy::GetUnblindedTokens()->IsEmpty());
 }
 
 TEST_F(BatAdsRefillUnblindedTokensTest,
@@ -573,7 +573,7 @@ TEST_F(BatAdsRefillUnblindedTokensTest,
   FastForwardClockToNextPendingTask();
 
   // Assert
-  EXPECT_EQ(50, privacy::get_unblinded_tokens()->Count());
+  EXPECT_EQ(50, privacy::GetUnblindedTokens()->Count());
 }
 
 TEST_F(BatAdsRefillUnblindedTokensTest, GetSignedTokensInvalidResponse) {
@@ -617,7 +617,7 @@ TEST_F(BatAdsRefillUnblindedTokensTest, GetSignedTokensInvalidResponse) {
   refill_unblinded_tokens_->MaybeRefill(wallet);
 
   // Assert
-  EXPECT_TRUE(privacy::get_unblinded_tokens()->IsEmpty());
+  EXPECT_TRUE(privacy::GetUnblindedTokens()->IsEmpty());
 }
 
 TEST_F(BatAdsRefillUnblindedTokensTest, GetSignedTokensMissingPublicKey) {
@@ -717,7 +717,7 @@ TEST_F(BatAdsRefillUnblindedTokensTest, GetSignedTokensMissingPublicKey) {
   refill_unblinded_tokens_->MaybeRefill(wallet);
 
   // Assert
-  EXPECT_TRUE(privacy::get_unblinded_tokens()->IsEmpty());
+  EXPECT_TRUE(privacy::GetUnblindedTokens()->IsEmpty());
 }
 
 TEST_F(BatAdsRefillUnblindedTokensTest, GetSignedTokensMissingBatchProofDleq) {
@@ -817,7 +817,7 @@ TEST_F(BatAdsRefillUnblindedTokensTest, GetSignedTokensMissingBatchProofDleq) {
   refill_unblinded_tokens_->MaybeRefill(wallet);
 
   // Assert
-  EXPECT_TRUE(privacy::get_unblinded_tokens()->IsEmpty());
+  EXPECT_TRUE(privacy::GetUnblindedTokens()->IsEmpty());
 }
 
 TEST_F(BatAdsRefillUnblindedTokensTest, GetSignedTokensMissingSignedTokens) {
@@ -866,7 +866,7 @@ TEST_F(BatAdsRefillUnblindedTokensTest, GetSignedTokensMissingSignedTokens) {
   refill_unblinded_tokens_->MaybeRefill(wallet);
 
   // Assert
-  EXPECT_TRUE(privacy::get_unblinded_tokens()->IsEmpty());
+  EXPECT_TRUE(privacy::GetUnblindedTokens()->IsEmpty());
 }
 
 TEST_F(BatAdsRefillUnblindedTokensTest, GetInvalidSignedTokens) {
@@ -967,7 +967,7 @@ TEST_F(BatAdsRefillUnblindedTokensTest, GetInvalidSignedTokens) {
   refill_unblinded_tokens_->MaybeRefill(wallet);
 
   // Assert
-  EXPECT_TRUE(privacy::get_unblinded_tokens()->IsEmpty());
+  EXPECT_TRUE(privacy::GetUnblindedTokens()->IsEmpty());
 }
 
 TEST_F(BatAdsRefillUnblindedTokensTest, DoNotRefillIfAboveTheMinimumThreshold) {
@@ -997,7 +997,7 @@ TEST_F(BatAdsRefillUnblindedTokensTest, DoNotRefillIfAboveTheMinimumThreshold) {
   refill_unblinded_tokens_->MaybeRefill(wallet);
 
   // Assert
-  EXPECT_EQ(50, privacy::get_unblinded_tokens()->Count());
+  EXPECT_EQ(50, privacy::GetUnblindedTokens()->Count());
 }
 
 TEST_F(BatAdsRefillUnblindedTokensTest, RefillIfBelowTheMinimumThreshold) {
@@ -1121,7 +1121,7 @@ TEST_F(BatAdsRefillUnblindedTokensTest, RefillIfBelowTheMinimumThreshold) {
   refill_unblinded_tokens_->MaybeRefill(wallet);
 
   // Assert
-  EXPECT_EQ(50, privacy::get_unblinded_tokens()->Count());
+  EXPECT_EQ(50, privacy::GetUnblindedTokens()->Count());
 }
 
 }  // namespace ads

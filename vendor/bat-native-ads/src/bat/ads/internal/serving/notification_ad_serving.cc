@@ -273,7 +273,7 @@ void Serving::FailedToServeAd() {
 
 void Serving::ServedAd(const NotificationAdInfo& ad) {
   DCHECK(eligible_ads_);
-  eligible_ads_->set_last_served_ad(ad);
+  eligible_ads_->SetLastServedAd(ad);
 
   is_serving_ = false;
 

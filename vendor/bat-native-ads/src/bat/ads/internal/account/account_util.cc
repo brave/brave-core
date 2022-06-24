@@ -29,7 +29,7 @@ void ResetRewards(ResetRewardsCallback callback) {
     ConfirmationStateManager::GetInstance()->reset_failed_confirmations();
 
     privacy::UnblindedPaymentTokens* unblinded_payment_tokens =
-        ConfirmationStateManager::GetInstance()->get_unblinded_payment_tokens();
+        ConfirmationStateManager::GetInstance()->GetUnblindedPaymentTokens();
     unblinded_payment_tokens->RemoveAllTokens();
 
     ConfirmationStateManager::GetInstance()->Save();

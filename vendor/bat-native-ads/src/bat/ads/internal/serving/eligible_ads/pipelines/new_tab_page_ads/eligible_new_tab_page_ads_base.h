@@ -35,7 +35,7 @@ class EligibleAdsBase {
       const targeting::UserModelInfo& user_model,
       GetEligibleAdsCallback<CreativeNewTabPageAdList> callback) = 0;
 
-  void set_last_served_ad(const AdInfo& ad) { last_served_ad_ = ad; }
+  void SetLastServedAd(const AdInfo& ad) { last_served_ad_ = ad; }
 
  protected:
   EligibleAdsBase(geographic::SubdivisionTargeting* subdivision_targeting,

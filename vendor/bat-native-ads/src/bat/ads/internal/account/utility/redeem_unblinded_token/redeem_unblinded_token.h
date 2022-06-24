@@ -26,7 +26,7 @@ class RedeemUnblindedToken final {
   RedeemUnblindedToken(const RedeemUnblindedToken&) = delete;
   RedeemUnblindedToken& operator=(const RedeemUnblindedToken&) = delete;
 
-  void set_delegate(RedeemUnblindedTokenDelegate* delegate) {
+  void SetDelegate(RedeemUnblindedTokenDelegate* delegate) {
     DCHECK_EQ(delegate_, nullptr);
     delegate_ = delegate;
   }

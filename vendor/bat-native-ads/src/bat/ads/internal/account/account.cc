@@ -43,10 +43,10 @@ Account::Account(privacy::TokenGeneratorInterface* token_generator)
       wallet_(std::make_unique<Wallet>()) {
   PrefManager::GetInstance()->AddObserver(this);
 
-  confirmations_->set_delegate(this);
-  issuers_->set_delegate(this);
-  redeem_unblinded_payment_tokens_->set_delegate(this);
-  refill_unblinded_tokens_->set_delegate(this);
+  confirmations_->SetDelegate(this);
+  issuers_->SetDelegate(this);
+  redeem_unblinded_payment_tokens_->SetDelegate(this);
+  refill_unblinded_tokens_->SetDelegate(this);
 }
 
 Account::~Account() {

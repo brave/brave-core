@@ -33,7 +33,7 @@ class RefillUnblindedTokens final {
   RefillUnblindedTokens(const RefillUnblindedTokens&) = delete;
   RefillUnblindedTokens& operator=(const RefillUnblindedTokens&) = delete;
 
-  void set_delegate(RefillUnblindedTokensDelegate* delegate) {
+  void SetDelegate(RefillUnblindedTokensDelegate* delegate) {
     DCHECK_EQ(delegate_, nullptr);
     delegate_ = delegate;
   }

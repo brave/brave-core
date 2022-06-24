@@ -87,7 +87,7 @@ void RefillUnblindedTokens::MaybeRefill(const WalletInfo& wallet) {
   if (!ShouldRefillUnblindedTokens()) {
     BLOG(1, "No need to refill unblinded tokens as we already have "
                 << ConfirmationStateManager::GetInstance()
-                       ->get_unblinded_tokens()
+                       ->GetUnblindedTokens()
                        ->Count()
                 << " unblinded tokens which is above the minimum threshold of "
                 << kMinimumUnblindedTokens);
@@ -325,7 +325,7 @@ void RefillUnblindedTokens::OnGetSignedTokens(
     unblinded_tokens.push_back(unblinded_token);
   }
 
-  ConfirmationStateManager::GetInstance()->get_unblinded_tokens()->AddTokens(
+  ConfirmationStateManager::GetInstance()->GetUnblindedTokens()->AddTokens(
       unblinded_tokens);
   ConfirmationStateManager::GetInstance()->Save();
 
@@ -333,7 +333,7 @@ void RefillUnblindedTokens::OnGetSignedTokens(
                    << " unblinded tokens, you now "
                       "have "
                    << ConfirmationStateManager::GetInstance()
-                          ->get_unblinded_tokens()
+                          ->GetUnblindedTokens()
                           ->Count()
                    << " unblinded tokens");
 
@@ -392,9 +392,8 @@ void RefillUnblindedTokens::OnRetry() {
 }
 
 bool RefillUnblindedTokens::ShouldRefillUnblindedTokens() const {
-  if (ConfirmationStateManager::GetInstance()
-          ->get_unblinded_tokens()
-          ->Count() >= kMinimumUnblindedTokens) {
+  if (ConfirmationStateManager::GetInstance()->GetUnblindedTokens()->Count() >=
+      kMinimumUnblindedTokens) {
     return false;
   }
 
@@ -402,9 +401,8 @@ bool RefillUnblindedTokens::ShouldRefillUnblindedTokens() const {
 }
 
 int RefillUnblindedTokens::CalculateAmountOfTokensToRefill() const {
-  return kMaximumUnblindedTokens - ConfirmationStateManager::GetInstance()
-                                       ->get_unblinded_tokens()
-                                       ->Count();
+  return kMaximumUnblindedTokens -
+         ConfirmationStateManager::GetInstance()->GetUnblindedTokens()->Count();
 }
 
 }  // namespace ads

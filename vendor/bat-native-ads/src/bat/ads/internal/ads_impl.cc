@@ -761,7 +761,7 @@ void AdsImpl::OnNotificationAdViewed(const NotificationAdInfo& ad) {
 }
 
 void AdsImpl::OnNotificationAdClicked(const NotificationAdInfo& ad) {
-  transfer_->set_last_clicked_ad(ad);
+  transfer_->SetLastClickedAd(ad);
 
   account_->Deposit(ad.creative_instance_id, ad.type,
                     ConfirmationType::kClicked);
@@ -819,7 +819,7 @@ void AdsImpl::OnNewTabPageAdViewed(const NewTabPageAdInfo& ad) {
 }
 
 void AdsImpl::OnNewTabPageAdClicked(const NewTabPageAdInfo& ad) {
-  transfer_->set_last_clicked_ad(ad);
+  transfer_->SetLastClickedAd(ad);
 
   if (!ShouldRewardUser()) {
     return;
@@ -844,7 +844,7 @@ void AdsImpl::OnPromotedContentAdViewed(const PromotedContentAdInfo& ad) {
 }
 
 void AdsImpl::OnPromotedContentAdClicked(const PromotedContentAdInfo& ad) {
-  transfer_->set_last_clicked_ad(ad);
+  transfer_->SetLastClickedAd(ad);
 
   account_->Deposit(ad.creative_instance_id, ad.type,
                     ConfirmationType::kClicked);
@@ -870,7 +870,7 @@ void AdsImpl::OnInlineContentAdViewed(const InlineContentAdInfo& ad) {
 }
 
 void AdsImpl::OnInlineContentAdClicked(const InlineContentAdInfo& ad) {
-  transfer_->set_last_clicked_ad(ad);
+  transfer_->SetLastClickedAd(ad);
 
   account_->Deposit(ad.creative_instance_id, ad.type,
                     ConfirmationType::kClicked);
@@ -891,7 +891,7 @@ void AdsImpl::OnSearchResultAdViewed(const SearchResultAdInfo& ad) {
 }
 
 void AdsImpl::OnSearchResultAdClicked(const SearchResultAdInfo& ad) {
-  transfer_->set_last_clicked_ad(ad);
+  transfer_->SetLastClickedAd(ad);
 
   account_->Deposit(ad.creative_instance_id, ad.type,
                     ConfirmationType::kClicked);

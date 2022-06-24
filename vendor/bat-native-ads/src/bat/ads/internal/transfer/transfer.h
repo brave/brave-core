@@ -34,7 +34,7 @@ class Transfer final : public TabManagerObserver {
   void AddObserver(TransferObserver* observer);
   void RemoveObserver(TransferObserver* observer);
 
-  void set_last_clicked_ad(const AdInfo& ad) { last_clicked_ad_ = ad; }
+  void SetLastClickedAd(const AdInfo& ad) { last_clicked_ad_ = ad; }
 
   void MaybeTransferAd(const int32_t tab_id,
                        const std::vector<GURL>& redirect_chain);

@@ -78,7 +78,7 @@ void RedeemUnblindedPaymentTokens::Redeem() {
   BLOG(1, "RedeemUnblindedPaymentTokens");
 
   if (ConfirmationStateManager::GetInstance()
-          ->get_unblinded_payment_tokens()
+          ->GetUnblindedPaymentTokens()
           ->IsEmpty()) {
     BLOG(1, "No unblinded payment tokens to redeem");
 
@@ -92,7 +92,7 @@ void RedeemUnblindedPaymentTokens::Redeem() {
 
   const privacy::UnblindedPaymentTokenList& unblinded_payment_tokens =
       ConfirmationStateManager::GetInstance()
-          ->get_unblinded_payment_tokens()
+          ->GetUnblindedPaymentTokens()
           ->GetAllTokens();
 
   RedeemUnblindedPaymentTokensUserDataBuilder user_data_builder(
@@ -142,7 +142,7 @@ void RedeemUnblindedPaymentTokens::OnDidRedeemUnblindedPaymentTokens(
   retry_timer_.Stop();
 
   ConfirmationStateManager::GetInstance()
-      ->get_unblinded_payment_tokens()
+      ->GetUnblindedPaymentTokens()
       ->RemoveTokens(unblinded_payment_tokens);
   ConfirmationStateManager::GetInstance()->Save();
 
