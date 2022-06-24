@@ -15,8 +15,7 @@ namespace speedreader {
 
 class SpeedreaderRenderFrameObserver : public content::RenderFrameObserver {
  public:
-  SpeedreaderRenderFrameObserver(content::RenderFrame* render_frame,
-                                 int32_t world_id);
+  explicit SpeedreaderRenderFrameObserver(content::RenderFrame* render_frame);
   SpeedreaderRenderFrameObserver(const SpeedreaderRenderFrameObserver&) =
       delete;
   SpeedreaderRenderFrameObserver& operator=(
@@ -33,7 +32,6 @@ class SpeedreaderRenderFrameObserver : public content::RenderFrameObserver {
 
   // Handle to "handler" JavaScript object functionality.
   std::unique_ptr<class SpeedreaderJSHandler> native_javascript_handle_;
-  int32_t world_id_;
 };
 
 }  // namespace speedreader

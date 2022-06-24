@@ -12,6 +12,7 @@ buildflag_header("buildflags") {
 
 static_library("common") {
   sources = [
+    "constants.h",
     "features.cc",
     "features.h",
   ]
@@ -19,6 +20,7 @@ static_library("common") {
   public_deps = [
     ":buildflags",
     "//base",
+    "//content/public/common",
   ]
 }
 

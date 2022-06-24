@@ -5,22 +5,22 @@
 
 #include "brave/components/speedreader/renderer/speedreader_render_frame_observer.h"
 
+#include "brave/components/speedreader/common/constants.h"
 #include "brave/components/speedreader/renderer/speedreader_js_handler.h"
 #include "content/public/renderer/render_frame.h"
 
 namespace speedreader {
 
 SpeedreaderRenderFrameObserver::SpeedreaderRenderFrameObserver(
-    content::RenderFrame* render_frame,
-    int32_t world_id)
-    : RenderFrameObserver(render_frame), world_id_(world_id) {}
+    content::RenderFrame* render_frame)
+    : RenderFrameObserver(render_frame) {}
 
 SpeedreaderRenderFrameObserver::~SpeedreaderRenderFrameObserver() = default;
 
 void SpeedreaderRenderFrameObserver::DidCreateScriptContext(
     v8::Local<v8::Context> context,
     int32_t world_id) {
-  if (!render_frame()->IsMainFrame() || world_id_ != world_id)
+  if (!render_frame()->IsMainFrame() || world_id != kIsolatedWorldId)
     return;
 
   if (!native_javascript_handle_) {

@@ -4,6 +4,7 @@ include_rules = [
   "+components/body_sniffer",
   "+components/sessions/content",
   "+content/public/browser",
+  "+content/public/common",
   "+crypto",
   "+services/network/public",
   "+services/network/public/cpp",

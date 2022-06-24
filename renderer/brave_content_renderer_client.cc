@@ -103,8 +103,7 @@ void BraveContentRendererClient::RenderFrameCreated(
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
   if (base::FeatureList::IsEnabled(speedreader::kSpeedreaderFeature)) {
-    new speedreader::SpeedreaderRenderFrameObserver(
-        render_frame, content::ISOLATED_WORLD_ID_CONTENT_END + 1);
+    new speedreader::SpeedreaderRenderFrameObserver(render_frame);
   }
 #endif
 }

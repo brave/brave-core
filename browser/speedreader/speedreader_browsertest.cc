@@ -10,6 +10,7 @@
 #include "brave/browser/speedreader/speedreader_service_factory.h"
 #include "brave/browser/speedreader/speedreader_tab_helper.h"
 #include "brave/components/constants/brave_paths.h"
+#include "brave/components/speedreader/common/constants.h"
 #include "brave/components/speedreader/common/features.h"
 #include "brave/components/speedreader/speedreader_service.h"
 #include "brave/components/speedreader/speedreader_util.h"
@@ -325,8 +326,6 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, ShowOriginalPage) {
   NavigateToPageSynchronously(kTestPageReadable);
   auto* web_contents = ActiveWebContents();
 
-  constexpr int kIsolatedWorldId = content::ISOLATED_WORLD_ID_CONTENT_END + 1;
-
   constexpr const char kClickLink[] =
       R"js(
     (function() {
@@ -339,7 +338,7 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, ShowOriginalPage) {
 
   ASSERT_TRUE(content::ExecJs(web_contents, kClickLink,
                               content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
-                              kIsolatedWorldId));
+                              speedreader::kIsolatedWorldId));
   content::WaitForLoadStop(web_contents);
   auto* tab_helper =
       speedreader::SpeedreaderTabHelper::FromWebContents(web_contents);

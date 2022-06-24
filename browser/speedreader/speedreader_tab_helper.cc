@@ -15,6 +15,7 @@
 #include "brave/browser/ui/brave_browser_window.h"
 #include "brave/browser/ui/speedreader/speedreader_bubble_view.h"
 #include "brave/components/l10n/common/locale_util.h"
+#include "brave/components/speedreader/common/constants.h"
 #include "brave/components/speedreader/common/features.h"
 #include "brave/components/speedreader/speedreader_extended_info_handler.h"
 #include "brave/components/speedreader/speedreader_pref_names.h"
@@ -349,8 +350,6 @@ void SpeedreaderTabHelper::DOMContentLoaded(
   if (!PageWantsDistill(distill_state_))
     return;
 
-  constexpr int kIsolatedWorldId = content::ISOLATED_WORLD_ID_CONTENT_END + 1;
-
   constexpr const char16_t kAddShowOriginalPageLink[] =
       uR"js(
     (function() {
@@ -370,6 +369,7 @@ void SpeedreaderTabHelper::DOMContentLoaded(
       IDR_SPEEDREADER_SHOW_ORIGINAL_PAGE_LINK);
   // Make sure that the link text doesn't contain js injection
   CHECK_EQ(std::u16string::npos, link_text.find(u'\''));
+  CHECK_EQ(std::u16string::npos, link_text.find(u'\\'));
 
   const auto script = base::ReplaceStringPlaceholders(kAddShowOriginalPageLink,
                                                       link_text, nullptr);
