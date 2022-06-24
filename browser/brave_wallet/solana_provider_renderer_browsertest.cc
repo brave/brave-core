@@ -673,21 +673,26 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, IsPhantomAndIsBraveWallet) {
 }
 
 IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, Connect) {
-  auto result = EvalJs(web_contents(browser()), ConnectScript(""),
-                       content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
-  EXPECT_EQ(base::Value(kTestPublicKey), result.value);
-
-  // allow extra parameters
-  auto result2 = EvalJs(web_contents(browser()), ConnectScript("{}, 123"),
-                        content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
-  EXPECT_EQ(base::Value(kTestPublicKey), result2.value);
+  for (const std::string& valid_case : {
+           "",
+           "{}, 123",    // allow extra parameters
+           "undefined",  // allow optional params to be undefined
+           "null",       // allow optional params to be null
+           "undefined, 123",
+           "null, 123",
+       }) {
+    SCOPED_TRACE(valid_case);
+    auto result = EvalJs(web_contents(browser()), ConnectScript(valid_case),
+                         content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
+    EXPECT_EQ(base::Value(kTestPublicKey), result.value);
+  }
 
   // non object args
-  auto result3 = EvalJs(web_contents(browser()), ConnectScript("123"),
+  auto result2 = EvalJs(web_contents(browser()), ConnectScript("123"),
                         content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
   EXPECT_EQ(
       base::Value(l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS)),
-      result3.value);
+      result2.value);
 
   TestSolanaProvider* provider = test_content_browser_client_.GetProvider(
       web_contents(browser())->GetMainFrame());
@@ -695,13 +700,13 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, Connect) {
 
   provider->SetError(SolanaProviderError::kUserRejectedRequest, kErrorMessage);
 
-  auto result4 = EvalJs(web_contents(browser()), ConnectScript(""),
+  auto result3 = EvalJs(web_contents(browser()), ConnectScript(""),
                         content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
   // check error message + error code
   EXPECT_EQ(base::Value(kErrorMessage +
                         base::NumberToString(static_cast<int>(
                             SolanaProviderError::kUserRejectedRequest))),
-            result4.value);
+            result3.value);
 }
 
 IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, OnConnect) {
@@ -904,10 +909,15 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, SignAndSendTransaction) {
       base::StrCat({"(window._brave_solana.createTransaction(new Uint8Array([",
                     serialized_tx_str, "])))"});
 
-  auto result =
-      EvalJs(web_contents(browser()), SignAndSendTransactionScript(tx),
-             content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
-  EXPECT_EQ(base::Value(true), result.value);
+  for (const std::string& valid_case :
+       {tx, base::StrCat({"(", tx, ", undefined, {})"}),
+        base::StrCat({"(", tx, ", null, {})"})}) {
+    SCOPED_TRACE(valid_case);
+    auto result = EvalJs(web_contents(browser()),
+                         SignAndSendTransactionScript(valid_case),
+                         content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
+    EXPECT_EQ(base::Value(true), result.value);
+  }
 
   // allow extra parameters
   provider->SetSendOptions(base::Value(base::Value::Type::DICTIONARY));
@@ -949,23 +959,23 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, SignAndSendTransaction) {
 IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, SignMessage) {
   const std::string msg_str = VectorToArrayString(kMessageToSign);
   const std::string msg = base::StrCat({"(new Uint8Array([", msg_str, "]))"});
-  auto result = EvalJs(web_contents(browser()), SignMessageScript(msg),
-                       content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
-  EXPECT_EQ(base::Value(true), result.value);
-
-  // with display
-  const std::string msg2 =
-      base::StrCat({"(new Uint8Array([", msg_str, "], \"utf8\"))"});
-  auto result2 = EvalJs(web_contents(browser()), SignMessageScript(msg2),
-                        content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
-  EXPECT_EQ(base::Value(true), result2.value);
-
-  // allow extra parameters
-  const std::string msg3 =
-      base::StrCat({"(new Uint8Array([", msg_str, "], \"utf8\", 123))"});
-  auto result3 = EvalJs(web_contents(browser()), SignMessageScript(msg2),
-                        content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
-  EXPECT_EQ(base::Value(true), result3.value);
+  for (const std::string& valid_case :
+       {msg,
+        base::StrCat(
+            {"(new Uint8Array([", msg_str, "], \"utf8\"))"}),  // with_display
+        base::StrCat({"(new Uint8Array([", msg_str,
+                      "], \"utf8\", 123))"}),  // allow extra parameters
+        base::StrCat({"(new Uint8Array([", msg_str,
+                      "], undefined))"}),  // with_display is undefined
+        base::StrCat({"(new Uint8Array([", msg_str,
+                      "], null))"}),  // with_display is null
+        base::StrCat({"(new Uint8Array([", msg_str, "], undefined, 123))"}),
+        base::StrCat({"(new Uint8Array([", msg_str, "], null, 123))"})}) {
+    SCOPED_TRACE(valid_case);
+    auto result = EvalJs(web_contents(browser()), SignMessageScript(valid_case),
+                         content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
+    EXPECT_EQ(base::Value(true), result.value);
+  }
 
   // not Uint8Array
   const std::string msg4 = base::StrCat({"([", msg_str, "])"});
