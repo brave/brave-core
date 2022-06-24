@@ -58,6 +58,9 @@ void TranslateScript::OnScriptFetchComplete(bool success,
       {base::StringPrintf(
            "const useGoogleTranslateEndpoint = %s;",
            translate::UseGoogleTranslateEndpoint() ? "true" : "false"),
+       base::StringPrintf(
+           "const braveTranslateStaticPath = %s;",
+           kBraveTranslateStaticPath),
        ui::ResourceBundle::GetSharedInstance().LoadDataResourceString(
            IDR_BRAVE_TRANSLATE_JS),
        data});
