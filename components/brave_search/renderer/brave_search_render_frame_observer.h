@@ -29,6 +29,9 @@ class BraveSearchRenderFrameObserver : public content::RenderFrameObserver {
   // RenderFrameObserver implementation.
   void DidCreateScriptContext(v8::Local<v8::Context> context,
                               int32_t world_id) override;
+  void DidStartNavigation(
+      const GURL& url,
+      absl::optional<blink::WebNavigationType> navigation_type) override;
 
  private:
   // RenderFrameObserver implementation.
@@ -37,6 +40,7 @@ class BraveSearchRenderFrameObserver : public content::RenderFrameObserver {
   // Handle to "handler" JavaScript object functionality.
   std::unique_ptr<BraveSearchDefaultJSHandler> native_javascript_handle_;
   int32_t world_id_;
+  GURL url_;
 };
 
 }  // namespace brave_search
