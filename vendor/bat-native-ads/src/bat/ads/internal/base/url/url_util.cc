@@ -5,9 +5,9 @@
 
 #include "bat/ads/internal/base/url/url_util.h"
 
+#include "base/strings/pattern.h"
 #include "base/strings/strcat.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
-#include "third_party/re2/src/re2/re2.h"
 #include "url/gurl.h"
 #include "url/url_constants.h"
 
@@ -23,10 +23,7 @@ bool DoesUrlMatchPattern(const GURL& url, const std::string& pattern) {
     return false;
   }
 
-  std::string quoted_pattern = RE2::QuoteMeta(pattern);
-  RE2::GlobalReplace(&quoted_pattern, "\\\\\\*", ".*");
-
-  return RE2::FullMatch(url.spec(), quoted_pattern);
+  return base::MatchPattern(url.spec(), pattern);
 }
 
 bool SameDomainOrHost(const GURL& lhs, const GURL& rhs) {
