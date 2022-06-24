@@ -11,6 +11,7 @@
 #include "brave/components/brave_webtorrent/browser/buildflags/buildflags.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/translate/core/common/buildflags.h"
+#include "chrome/browser/devtools/devtools_window.h"
 #include "chrome/common/pref_names.h"
 #include "chrome/test/base/testing_browser_process.h"
 #include "chrome/test/base/testing_profile.h"
@@ -18,6 +19,7 @@
 #include "components/prefs/pref_service.h"
 #include "components/safe_browsing/core/common/safe_browsing_prefs.h"
 #include "content/public/test/browser_task_environment.h"
+#include "content/public/test/web_contents_tester.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "third_party/blink/public/common/peerconnection/webrtc_ip_handling_policy.h"
 
@@ -48,6 +50,10 @@ class TorProfileManagerUnitTest : public testing::Test {
 
   Profile* profile() { return profile_; }
 
+  Profile* GetProfileForDevToolsWindow(content::WebContents* web_contents) {
+    return DevToolsWindow::GetProfileForDevToolsWindow(web_contents);
+  }
+
  private:
   content::BrowserTaskEnvironment task_environment_;
   raw_ptr<Profile> profile_ = nullptr;
@@ -65,9 +71,8 @@ TEST_F(TorProfileManagerUnitTest, InitTorProfileUserPrefs) {
   ASSERT_TRUE(tor_profile->IsTor());
 
   // Check WebRTC IP handling policy.
-  EXPECT_EQ(
-      tor_profile->GetPrefs()->GetString(prefs::kWebRTCIPHandlingPolicy),
-      blink::kWebRTCIPHandlingDisableNonProxiedUdp);
+  EXPECT_EQ(tor_profile->GetPrefs()->GetString(prefs::kWebRTCIPHandlingPolicy),
+            blink::kWebRTCIPHandlingDisableNonProxiedUdp);
 
   // Check SafeBrowsing status
   EXPECT_FALSE(
@@ -83,4 +88,12 @@ TEST_F(TorProfileManagerUnitTest, InitTorProfileUserPrefs) {
   EXPECT_FALSE(tor_profile->GetPrefs()->GetBoolean(
       translate::prefs::kOfferTranslateEnabled));
 #endif
+}
+
+TEST_F(TorProfileManagerUnitTest, ProfileForDevToolsWindow) {
+  Profile* tor_profile =
+      TorProfileManager::GetInstance().GetTorProfile(profile());
+  std::unique_ptr<content::WebContents> tor_web_contents =
+      content::WebContentsTester::CreateTestWebContents(tor_profile, nullptr);
+  EXPECT_EQ(tor_profile, GetProfileForDevToolsWindow(tor_web_contents.get()));
 }
