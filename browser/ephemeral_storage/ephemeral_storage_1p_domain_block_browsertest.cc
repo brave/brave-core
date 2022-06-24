@@ -30,12 +30,7 @@ using content::WebContents;
 class EphemeralStorage1pDomainBlockBrowserTest
     : public EphemeralStorageBrowserTest {
  public:
-  EphemeralStorage1pDomainBlockBrowserTest() {
-    scoped_feature_list_.InitWithFeatures(
-        {net::features::kBraveFirstPartyEphemeralStorage,
-         brave_shields::features::kBraveDomainBlock1PES},
-        {});
-  }
+  EphemeralStorage1pDomainBlockBrowserTest() = default;
   ~EphemeralStorage1pDomainBlockBrowserTest() override = default;
 
   void SetUpOnMainThread() override {
@@ -163,7 +158,6 @@ class EphemeralStorage1pDomainBlockBrowserTest
 
  protected:
   std::unique_ptr<brave_shields::TestFiltersProvider> source_provider_;
-  base::test::ScopedFeatureList scoped_feature_list_;
   GURL a_site_simple_url_;
   GURL b_site_simple_url_;
 };

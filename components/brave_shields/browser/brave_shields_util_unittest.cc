@@ -931,71 +931,8 @@ TEST_F(BraveShieldsUtilTest, GetDomainBlockingType_ControlTypes) {
   }
 }
 
-class BraveShieldsUtilDomainBlock1PESFeatureTest : public BraveShieldsUtilTest {
- public:
-  BraveShieldsUtilDomainBlock1PESFeatureTest() {
-    feature_list_.InitWithFeatures(
-        {brave_shields::features::kBraveDomainBlock1PES,
-         net::features::kBraveFirstPartyEphemeralStorage},
-        {});
-  }
-
- private:
-  base::test::ScopedFeatureList feature_list_;
-};
-
 // Should do 1PES domain blocking if domain blocking feature is enabled.
-TEST_F(BraveShieldsUtilDomainBlock1PESFeatureTest, GetDomainBlockingType) {
+TEST_F(BraveShieldsUtilTest, GetDomainBlockingType) {
   ExpectDomainBlockingType(GURL("https://brave.com"),
                            DomainBlockingType::k1PES);
-}
-
-// Should not do domain blocking if Brave Shields is down
-TEST_F(BraveShieldsUtilDomainBlock1PESFeatureTest,
-       GetDomainBlockingType_ShieldsDown) {
-  auto* map = HostContentSettingsMapFactory::GetForProfile(profile());
-  GURL url = GURL("https://brave.com");
-  brave_shields::SetBraveShieldsEnabled(map, false, url);
-  ExpectDomainBlockingType(url, DomainBlockingType::kNone);
-}
-
-// Should not do domain blocking on non-HTTP(S) URLs
-TEST_F(BraveShieldsUtilDomainBlock1PESFeatureTest,
-       GetDomainBlockingType_IsNotHttpHttps) {
-  ExpectDomainBlockingType(GURL("chrome://preferences"),
-                           DomainBlockingType::kNone);
-  ExpectDomainBlockingType(GURL("about:blank"), DomainBlockingType::kNone);
-}
-
-// Should do 1PES domain blocking in "standard" mode.
-TEST_F(BraveShieldsUtilDomainBlock1PESFeatureTest,
-       GetDomainBlockingType_ControlTypes) {
-  auto* map = HostContentSettingsMapFactory::GetForProfile(profile());
-  GURL url = GURL("https://brave.com");
-
-  const struct TestCase {
-    ControlType ad_control_type;
-    ControlType cosmetic_filtering_control_type;
-    DomainBlockingType expected_blocking_type;
-  } kTestCases[] = {
-      {ControlType::ALLOW, ControlType::ALLOW, DomainBlockingType::kNone},
-      {ControlType::ALLOW, ControlType::BLOCK_THIRD_PARTY,
-       DomainBlockingType::kNone},
-      {ControlType::ALLOW, ControlType::BLOCK, DomainBlockingType::kNone},
-      {ControlType::BLOCK, ControlType::ALLOW, DomainBlockingType::kNone},
-      {ControlType::BLOCK, ControlType::BLOCK_THIRD_PARTY,
-       DomainBlockingType::k1PES},
-      {ControlType::BLOCK, ControlType::BLOCK, DomainBlockingType::kAggressive},
-  };
-
-  for (const auto& test_case : kTestCases) {
-    SCOPED_TRACE(testing::Message()
-                 << static_cast<int>(test_case.ad_control_type)
-                 << static_cast<int>(test_case.cosmetic_filtering_control_type)
-                 << static_cast<int>(test_case.expected_blocking_type));
-    brave_shields::SetAdControlType(map, test_case.ad_control_type, url);
-    brave_shields::SetCosmeticFilteringControlType(
-        map, test_case.cosmetic_filtering_control_type, url);
-    ExpectDomainBlockingType(url, test_case.expected_blocking_type);
-  }
 }
