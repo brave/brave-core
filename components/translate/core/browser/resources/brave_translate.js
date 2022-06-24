@@ -3,12 +3,14 @@ const securityOriginHost = new URL(securityOrigin).host;
 
 // A method to rewrite URL in the scripts:
 // 1. change the domain to translate.brave.com;
-// 2. adjust static pathes to use braveTranslateStaticPath.
+// 2. adjust static paths to use braveTranslateStaticPath.
 const rewriteUrl = (url) => {
   try {
     let new_url = new URL(url);
     if (new_url.pathname === '/translate_a/t') {
       // useGoogleTranslateEndpoint is predefined by translate_script.cc.
+      // It's used only for local testing to disable the redirection of
+      // translation requests.
       if (useGoogleTranslateEndpoint) {
         // Remove API key
         new_url.searchParams.set('key', '');
@@ -31,16 +33,24 @@ const rewriteUrl = (url) => {
 const emptySvgDataUrl = 'data:image/svg+xml;base64,' +
   btoa('<svg xmlns="http://www.w3.org/2000/svg"/>');
 
+// Make replacements in loading .js files.
 function processJavascript(text) {
+  // Replace gen204 telemetry requests with loading an empty svg.
   text = text.replaceAll('"//"+po+"/gen204?"+Bo(b)',
     '"' + emptySvgDataUrl + '"');
+
+  // Used in the injected elements, that are currently not visible. Replace it
+  // to hide the loading error in devtools (because of CSP).
   text = text.replaceAll(
     'https://www.gstatic.com/images/branding/product/1x/translate_24dp.png',
     emptySvgDataUrl);
   return text;
 }
 
+// Make replacements in loading .css files.
 function processCSS(text) {
+  // Used in the injected elements, that are currently not visible. Replace it
+  // to hide the loading error in devtools (because of CSP).
   text = text.replaceAll('//www.gstatic.com/images/branding/product/2x/translate_24dp.png',
     emptySvgDataUrl);
   return text;
