@@ -18,7 +18,7 @@ const rewriteUrl = (url) => {
       }
     } else {
       // braveTranslateStaticPath is predefined by translate_script.cc.
-      new_url.pathname = new_url.pathname.replace("/translate_static/",
+      new_url.pathname = new_url.pathname.replace('/translate_static/',
         braveTranslateStaticPath);
     }
     new_url.host = securityOriginHost;
@@ -35,7 +35,7 @@ function processJavascript(text) {
   text = text.replaceAll('"//"+po+"/gen204?"+Bo(b)',
     '"' + emptySvgDataUrl + '"');
   text = text.replaceAll(
-    "https://www.gstatic.com/images/branding/product/1x/translate_24dp.png",
+    'https://www.gstatic.com/images/branding/product/1x/translate_24dp.png',
     emptySvgDataUrl);
   return text;
 }
@@ -51,7 +51,7 @@ function processCSS(text) {
 if (typeof XMLHttpRequest.prototype.realOpen === 'undefined') {
   XMLHttpRequest.prototype.realOpen = XMLHttpRequest.prototype.open;
   XMLHttpRequest.prototype.open = function (method, url, async = true,
-    user = "", password = "") {
+    user = '', password = '') {
     this.realOpen(method, rewriteUrl(url), async, user,
       password);
   }
