@@ -43,10 +43,10 @@ jobs:
 
           pr_body=$(gh pr view "${PR_NUMBER}" -R "${REPO_NAME}" --json body --jq .body | sed "s@\sbrave\/brave-browser\#\([0-9]\+\)@ ${BB_ISSUE_SUFFIX}\1@g")
 
-          mapfile -t issues_pr < <(echo "${uplift_pr_body}" | grep -ioP "${RESOLVE_ISSUE_REGEX}" || :)
+          mapfile -t issues_pr < <(echo "${pr_body}" | grep -ioP "${RESOLVE_ISSUE_REGEX}" || :)
           echo "Looking for any uplifted PRs"
-          mapfile -t prs < <(echo "${uplift_pr_body}" | grep -ioP "${UPLIFT_PR_REGEX}" || :)
-          mapfile -t issues_uplift_pr < <(echo "${prs[@]}" | xargs -n 1 -I{} gh pr view {} -R brave/brave-core --json body --jq ".body" | grep -ioP "${RESOLVE_ISSUE_REGEX}")
+          mapfile -t prs < <(echo "${pr_body}" | grep -ioP "${UPLIFT_PR_REGEX}" || :)
+          mapfile -t issues_uplift_pr < <(echo "${prs[@]}" | xargs -n 1 -I{} gh pr view {} -R brave/brave-core --json body --jq ".body" | sed "s@\sbrave\/brave-browser\#\([0-9]\+\)@ ${BB_ISSUE_SUFFIX}\1@g" | grep -ioP "${RESOLVE_ISSUE_REGEX}")
           declare -A issues
           for i in "${issues_pr[@]}" "${issues_uplift_pr[@]}"; do issues["$i"]=1; done
           echo "Relevant issues detected:"
