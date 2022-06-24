@@ -57,6 +57,21 @@
     </com.google.android.material.card.MaterialCardView>
 
     <TextView
+        android:id="@+id/fragment_encryption_msg_tv_eTldPlusOne"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="12dp"
+        android:gravity="center"
+        android:textColor="@color/brave_wallet_dapp_text_color"
+        android:textSize="15sp"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/fragment_encryption_msg_cv_account_image_container"
+        tools:text="brave.com" />
+
+    <TextView
         android:id="@+id/fragment_encryption_msg_tv_account_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -68,25 +83,8 @@
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/fragment_encryption_msg_cv_account_image_container"
+        app:layout_constraintTop_toBottomOf="@id/fragment_encryption_msg_tv_eTldPlusOne"
         tools:text="Ledger Nano" />
-
-    <TextView
-        android:id="@+id/fragment_encryption_msg_tv_eTldPlusOne"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="6dp"
-        android:layout_marginBottom="12dp"
-        android:gravity="center"
-        android:textColor="@color/brave_wallet_dapp_text_color"
-        android:textSize="14sp"
-        android:textStyle="bold"
-        android:visibility="gone"
-        app:layout_constraintBottom_toTopOf="@+id/fragment_encryption_msg_tv_message"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/fragment_encryption_msg_tv_account_name"
-        tools:text="brave.com" />
 
     <TextView
         android:id="@+id/fragment_encryption_msg_tv_message"
@@ -101,7 +99,7 @@
         app:layout_constraintBottom_toTopOf="@+id/fragment_encryption_msg_title"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/fragment_encryption_msg_tv_eTldPlusOne" />
+        app:layout_constraintTop_toBottomOf="@+id/fragment_encryption_msg_tv_account_name" />
 
     <TextView
         android:id="@+id/fragment_encryption_msg_title"
