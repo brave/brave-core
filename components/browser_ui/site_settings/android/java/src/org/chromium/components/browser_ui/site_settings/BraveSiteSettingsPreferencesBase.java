@@ -14,7 +14,6 @@ import org.chromium.components.browser_ui.settings.SettingsUtils;
 import java.util.HashMap;
 
 public class BraveSiteSettingsPreferencesBase extends SiteSettingsPreferenceFragment {
-    private static final String DESKTOP_MODE_CATEGORY_KEY = "desktop_mode_category";
     private static final String PLAY_YT_VIDEO_IN_BROWSER_CATEGORY_KEY = "play_yt_video_in_browser_category";
     private static final String ADS_KEY = "ads";
     private static final String BACKGROUND_SYNC_KEY = "background_sync";
@@ -77,13 +76,6 @@ public class BraveSiteSettingsPreferencesBase extends SiteSettingsPreferenceFrag
             boolean enabled = ContextUtils.getAppSharedPreferences().getBoolean(
                 PLAY_YT_VIDEO_IN_BROWSER_KEY, true);
             p.setSummary(enabled ? R.string.text_enabled : R.string.text_disabled);
-        }
-        {
-            Preference p = findPreference(DESKTOP_MODE_CATEGORY_KEY);
-            boolean enabled = ContextUtils.getAppSharedPreferences().getBoolean(
-                DESKTOP_MODE_KEY, false);
-            p.setSummary(enabled ? R.string.settings_desktop_mode_enabled_summary
-                                 : R.string.settings_desktop_mode_disabled_summary);
         }
     }
 }
