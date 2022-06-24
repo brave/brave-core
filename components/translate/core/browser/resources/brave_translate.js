@@ -74,6 +74,7 @@ cr.googleTranslate.onLoadJavascript = function (url) {
       return;
     }
 
+    // nosemgrep
     new Function(processJavascript(this.responseText)).call(window);
   };
   xhr.send();
