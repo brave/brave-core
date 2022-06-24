@@ -93,7 +93,7 @@ class SettingsWalletNetworksSubpage extends SettingsWalletNetworksSubpageBase {
   /** @override */
   connectedCallback() {
     super.connectedCallback();
-    if (loadTimeData.getBoolean('exposeElementsForTesting')) {
+    if (loadTimeData.getBoolean('shouldExposeElementsForTesting')) {
       window.testing = window.testing || {}
       window.testing['walletNetworks'] = this.shadowRoot
     }
@@ -102,7 +102,7 @@ class SettingsWalletNetworksSubpage extends SettingsWalletNetworksSubpageBase {
   /** @override */
   disconnectedCallback() {
     super.disconnectedCallback();
-    if (loadTimeData.getBoolean('exposeElementsForTesting')) {
+    if (loadTimeData.getBoolean('shouldExposeElementsForTesting')) {
       delete window.testing['walletNetworks']
     }
   }

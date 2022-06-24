@@ -26,8 +26,10 @@ class BraveSettingsUI : public settings::SettingsUI {
 
   static void AddResources(content::WebUIDataSource* html_source,
                            Profile* profile);
-  static bool& DisableCSPForTesting();
-  static bool& ExposeElementsForTesting();
+  // Allows disabling CSP on settings page so EvalJS could be run in main world.
+  static bool& ShouldDisableCSPForTesting();
+
+  static bool& ShouldExposeElementsForTesting();
 };
 
 #endif  // BRAVE_BROWSER_UI_WEBUI_BRAVE_SETTINGS_UI_H_

@@ -47,8 +47,9 @@ std::string SelectInAddNetworkDialog(const std::string& selector) {
       selector.c_str());
 }
 
-std::string DoubleClick() {
-  return ".dispatchEvent((function (){const e = "
+std::string DoubleClickOn(const std::string& element) {
+  return element +
+         ".dispatchEvent((function (){const e = "
          "document.createEvent('MouseEvents');e.initEvent('dblclick',true,true)"
          ";return e;})())";
 }
@@ -77,7 +78,7 @@ std::string NetworksButton() {
   return R"([data-test-id='select-network-button'])";
 }
 
-std::string Select(const std::string& selector) {
+std::string QuerySelectorJS(const std::string& selector) {
   return base::StringPrintf(R"(document.querySelector(`%s`))",
                             selector.c_str());
 }
@@ -125,10 +126,10 @@ class WalletPanelUIBrowserTest : public InProcessBrowserTest {
   void SetUpOnMainThread() override {
     InProcessBrowserTest::SetUpOnMainThread();
 
-    // Diabling CSP on webui pages so EvalJS could be run in main world.
-    BraveSettingsUI::DisableCSPForTesting() = true;
-    BraveSettingsUI::ExposeElementsForTesting() = true;
-    WalletPanelUI::DisableCSPForTesting() = true;
+    // Disabling CSP on webui pages so EvalJS could be run in main world.
+    BraveSettingsUI::ShouldDisableCSPForTesting() = true;
+    BraveSettingsUI::ShouldExposeElementsForTesting() = true;
+    WalletPanelUI::ShouldDisableCSPForTesting() = true;
 
     shared_url_loader_factory_ =
         base::MakeRefCounted<network::WeakWrapperSharedURLLoaderFactory>(
@@ -218,12 +219,13 @@ IN_PROC_BROWSER_TEST_F(WalletPanelUIBrowserTest, InitialUIRendered) {
 IN_PROC_BROWSER_TEST_F(WalletPanelUIBrowserTest, HideNetworkInSettings) {
   ActivateWalletTab();
   // Wait and click on select network button.
-  ASSERT_TRUE(WaitAndClickElement(wallet(), Select(NetworksButton())));
+  ASSERT_TRUE(WaitAndClickElement(wallet(), QuerySelectorJS(NetworksButton())));
 
   // Both Polygon and Celo are listed.
-  ASSERT_TRUE(WaitFor(wallet(), Select(PolygonNetwork())));
-  ASSERT_TRUE(EvalJs(wallet(), Select(PolygonNetwork())).value.is_dict());
-  ASSERT_TRUE(EvalJs(wallet(), Select(CeloNetwork())).value.is_dict());
+  ASSERT_TRUE(WaitFor(wallet(), QuerySelectorJS(PolygonNetwork())));
+  ASSERT_TRUE(
+      EvalJs(wallet(), QuerySelectorJS(PolygonNetwork())).value.is_dict());
+  ASSERT_TRUE(EvalJs(wallet(), QuerySelectorJS(CeloNetwork())).value.is_dict());
 
   // Wait and click on hide button for Celo network in settings.
   CreateSettingsTab();
@@ -234,12 +236,13 @@ IN_PROC_BROWSER_TEST_F(WalletPanelUIBrowserTest, HideNetworkInSettings) {
   ActivateWalletTab();
   wallet()->GetController().Reload(content::ReloadType::NORMAL, true);
   // Wait and click on select network button.
-  ASSERT_TRUE(WaitAndClickElement(wallet(), Select(NetworksButton())));
+  ASSERT_TRUE(WaitAndClickElement(wallet(), QuerySelectorJS(NetworksButton())));
 
   // Polygon is listed but Celo is not.
-  ASSERT_TRUE(WaitFor(wallet(), Select(PolygonNetwork())));
-  ASSERT_TRUE(EvalJs(wallet(), Select(PolygonNetwork())).value.is_dict());
-  ASSERT_TRUE(EvalJs(wallet(), Select(CeloNetwork())).value.is_none());
+  ASSERT_TRUE(WaitFor(wallet(), QuerySelectorJS(PolygonNetwork())));
+  ASSERT_TRUE(
+      EvalJs(wallet(), QuerySelectorJS(PolygonNetwork())).value.is_dict());
+  ASSERT_TRUE(EvalJs(wallet(), QuerySelectorJS(CeloNetwork())).value.is_none());
 }
 
 IN_PROC_BROWSER_TEST_F(WalletPanelUIBrowserTest, CustomNetworkInSettings) {
@@ -247,7 +250,7 @@ IN_PROC_BROWSER_TEST_F(WalletPanelUIBrowserTest, CustomNetworkInSettings) {
 
   ActivateWalletTab();
   // Wait and click on select network button.
-  ASSERT_TRUE(WaitAndClickElement(wallet(), Select(NetworksButton())));
+  ASSERT_TRUE(WaitAndClickElement(wallet(), QuerySelectorJS(NetworksButton())));
 
   // Celo Mainnet is listed in wallet.
   ASSERT_TRUE(WaitFor(wallet(), Select(CeloNetwork(), NetworkNameSpan()) +
@@ -260,7 +263,7 @@ IN_PROC_BROWSER_TEST_F(WalletPanelUIBrowserTest, CustomNetworkInSettings) {
 
   // Double click on Celo network.
   ASSERT_TRUE(
-      EvalJs(settings(), SelectInNetworkList(CeloNetwork()) + DoubleClick())
+      EvalJs(settings(), DoubleClickOn(SelectInNetworkList(CeloNetwork())))
           .ExtractBool());
 
   // Wait for edit network dialog with Celo Mainnet as chain name.

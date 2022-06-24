@@ -141,14 +141,14 @@ Polymer({
   },
 
   connectedCallback: function () {
-    if (loadTimeData.getBoolean('exposeElementsForTesting')) {
+    if (loadTimeData.getBoolean('shouldExposeElementsForTesting')) {
       window.testing = window.testing || {}
       window.testing['addWalletNetworkDialog'] = this.shadowRoot
     }
   },
 
   disconnectedCallback: function () {
-    if (loadTimeData.getBoolean('exposeElementsForTesting')) {
+    if (loadTimeData.getBoolean('shouldExposeElementsForTesting')) {
       delete window.testing['addWalletNetworkDialog']
     }
   },

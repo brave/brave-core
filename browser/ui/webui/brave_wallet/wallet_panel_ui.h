@@ -39,7 +39,8 @@ class WalletPanelUI : public ui::MojoBubbleWebUIController,
   void SetDeactivationCallback(
       base::RepeatingCallback<void(bool)> deactivation_callback);
 
-  static bool& DisableCSPForTesting();
+  // Allows disabling CSP on wallet panel so EvalJS could be run in main world.
+  static bool& ShouldDisableCSPForTesting();
 
  private:
   // brave_wallet::mojom::PanelHandlerFactory:

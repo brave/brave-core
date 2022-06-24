@@ -62,7 +62,7 @@ WalletPanelUI::WalletPanelUI(content::WebUI* web_ui)
       network::mojom::CSPDirectiveName::FrameSrc,
       std::string("frame-src ") + kUntrustedTrezorURL + ";");
   source->AddString("braveWalletTrezorBridgeUrl", kUntrustedTrezorURL);
-  if (DisableCSPForTesting()) {
+  if (ShouldDisableCSPForTesting()) {
     source->DisableContentSecurityPolicy();
   }
   auto* profile = Profile::FromWebUI(web_ui);
@@ -147,7 +147,7 @@ void WalletPanelUI::CreatePanelHandler(
 }
 
 // static
-bool& WalletPanelUI::DisableCSPForTesting() {
+bool& WalletPanelUI::ShouldDisableCSPForTesting() {
   static bool disable_csp = false;
   return disable_csp;
 }
