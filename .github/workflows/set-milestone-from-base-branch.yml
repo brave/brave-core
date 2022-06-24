@@ -35,12 +35,13 @@ jobs:
           PR_NUMBER: ${{ github.event.number }}
         name: "Set milestone on related issues in brave-browser"
         run: |
+          BB_ISSUE_SUFFIX="https://github.com/brave/brave-browser/issues/"
           BB_ISSUE_URL_REGEX='(http(s)?:\/\/)?github.com/brave/brave-browser/issues/\d+'
           UPLIFT_PR_REGEX='uplift\s+(?:of)?:?\s+\K(#\d+)'
           RESOLVE_ISSUE_REGEX="(?:resolv|fix|clos)(?:e|es|ed)?:?\s+\K(${BB_ISSUE_URL_REGEX})"
           verlte() { printf '%s\n%s' "$1" "$2" | sort -C -V; }
 
-          pr_body=$(gh pr view "${PR_NUMBER}" -R "${REPO_NAME}" --json body --jq .body)
+          pr_body=$(gh pr view "${PR_NUMBER}" -R "${REPO_NAME}" --json body --jq .body | sed "s@\sbrave\/brave-browser\#\([0-9]\+\)@ ${BB_ISSUE_SUFFIX}\1@g")
 
           mapfile -t issues_pr < <(echo "${uplift_pr_body}" | ggrep -ioP "${RESOLVE_ISSUE_REGEX}" || :)
           echo "Looking for any uplifted PRs"
