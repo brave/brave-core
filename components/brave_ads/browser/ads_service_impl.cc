@@ -1465,7 +1465,6 @@ void AdsServiceImpl::OnPurgeOrphanedAdEventsForNewTabPageAds(
     return;
   }
 
-  VLOG(0) << "Successfully purged orphaned ad events for new tab page ads";
   PrefetchNewTabPageAd();
 }
 

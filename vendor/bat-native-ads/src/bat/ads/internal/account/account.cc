@@ -87,12 +87,12 @@ const WalletInfo& Account::GetWallet() const {
   return wallet_->Get();
 }
 
-void Account::MaybeGetIssuers() const {
-  if (!ShouldRewardUser()) {
-    return;
-  }
+void Account::Process() const {
+  NotifyStatementOfAccountsDidChange();
 
-  issuers_->MaybeFetch();
+  MaybeGetIssuers();
+
+  ProcessClearingCycle();
 }
 
 void Account::Deposit(const std::string& creative_instance_id,
@@ -125,15 +125,15 @@ void Account::GetStatement(StatementCallback callback) const {
       });
 }
 
-void Account::ProcessClearingCycle() const {
-  confirmations_->ProcessRetryQueue();
-
-  if (ShouldRewardUser()) {
-    ProcessUnclearedTransactions();
-  }
-}
-
 ///////////////////////////////////////////////////////////////////////////////
+
+void Account::MaybeGetIssuers() const {
+  if (!ShouldRewardUser()) {
+    return;
+  }
+
+  issuers_->MaybeFetch();
+}
 
 void Account::ProcessDeposit(const std::string& creative_instance_id,
                              const AdType& ad_type,
@@ -154,6 +154,14 @@ void Account::ProcessDeposit(const std::string& creative_instance_id,
 
         confirmations_->Confirm(transaction);
       });
+}
+
+void Account::ProcessClearingCycle() const {
+  confirmations_->ProcessRetryQueue();
+
+  if (ShouldRewardUser()) {
+    ProcessUnclearedTransactions();
+  }
 }
 
 void Account::ProcessUnclearedTransactions() const {

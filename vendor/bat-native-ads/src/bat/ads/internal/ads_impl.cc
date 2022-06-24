@@ -16,6 +16,7 @@
 #include "bat/ads/internal/account/account.h"
 #include "bat/ads/internal/account/account_util.h"
 #include "bat/ads/internal/account/wallet/wallet_info.h"
+#include "bat/ads/internal/ad_events/ad_event_util.h"
 #include "bat/ads/internal/ad_events/ad_events.h"
 #include "bat/ads/internal/ad_events/inline_content_ads/inline_content_ad.h"
 #include "bat/ads/internal/ad_events/new_tab_page_ads/new_tab_page_ad.h"
@@ -423,12 +424,13 @@ void AdsImpl::PurgeOrphanedAdEventsForType(
   PurgeOrphanedAdEvents(ad_type, [ad_type, callback](const bool success) {
     if (!success) {
       BLOG(0, "Failed to purge orphaned ad events for " << ad_type);
+      callback(/* success */ false);
       return;
     }
 
     BLOG(1, "Successfully purged orphaned ad events for " << ad_type);
 
-    callback(success);
+    callback(/* success */ true);
   });
 }
 
@@ -631,31 +633,17 @@ void AdsImpl::Start() {
   NotificationAdManager::GetInstance()->RemoveAllAfterUpdate();
 #endif
 
-  CleanupAdEvents();
+  PurgeExpiredAdEvents();
 
-  OnStatementOfAccountsDidChange();
-
-  account_->MaybeGetIssuers();
-  account_->ProcessClearingCycle();
+  account_->Process();
 
   subdivision_targeting_->MaybeFetch();
 
-  conversions_->StartTimerIfReady();
+  conversions_->Process();
 
   catalog_->MaybeFetch();
 
   MaybeServeNotificationAdsAtRegularIntervals();
-}
-
-void AdsImpl::CleanupAdEvents() {
-  PurgeExpiredAdEvents([](const bool success) {
-    if (!success) {
-      BLOG(1, "Failed to purge expired ad events");
-      return;
-    }
-
-    BLOG(6, "Successfully purged expired ad events");
-  });
 }
 
 void AdsImpl::MaybeServeNotificationAd() {
