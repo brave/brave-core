@@ -16,7 +16,7 @@ jobs:
         name: "Set milestone on PR based on base branch"
         run: |
           readarray -t milestones < <(gh api /repos/brave/brave-core/milestones -q ".[] | .title")
-          if [ "$GITHUB_BASE_REF" = "master" ]; then
+          if [[ "$GITHUB_BASE_REF" = "master" ]]; then
               milestone_selector="Nightly"
           else
               milestone_selector="$GITHUB_BASE_REF"
@@ -42,18 +42,18 @@ jobs:
 
           pr_body=$(gh pr view "${PR_NUMBER}" -R "${REPO_NAME}" --json body --jq .body)
 
-          mapfile -t issues < <(echo "${pr_body}" | grep -ioP "${RESOLVE_ISSUE_REGEX}" || :)
-          if [[ -z "${issues[*]}" ]]; then
-              echo "Resolved issues not directly found. Following PRs to determine them..."
-              mapfile -t prs < <(echo "${pr_body}" | grep -ioP "${UPLIFT_PR_REGEX}")
-              mapfile -t issues < <(echo "${prs[@]}" | xargs -n 1 -I{} gh pr view {} -R brave/brave-core --json body --jq ".body" | grep -ioP "${RESOLVE_ISSUE_REGEX}")
-          fi
+          mapfile -t issues_pr < <(echo "${uplift_pr_body}" | ggrep -ioP "${RESOLVE_ISSUE_REGEX}" || :)
+          echo "Looking for any uplifted PRs"
+          mapfile -t prs < <(echo "${uplift_pr_body}" | ggrep -ioP "${UPLIFT_PR_REGEX}" || :)
+          mapfile -t issues_uplift_pr < <(echo "${prs[@]}" | xargs -n 1 -I{} gh pr view {} -R brave/brave-core --json body --jq ".body" | ggrep -ioP "${RESOLVE_ISSUE_REGEX}")
+          declare -A issues
+          for i in "${issues_pr[@]}" "${issues_uplift_pr[@]}"; do issues["$i"]=1; done
           echo "Relevant issues detected:"
           echo "${issues[*]}"
 
           pr_milestone=$(gh pr view "${PR_NUMBER}" -R "${REPO_NAME}" --json milestone --jq .milestone.title)
 
-          for issue in "${issues[@]}"; do
+          for issue in "${!issues[@]}"; do
               issue_milestone=$(gh issue view "${issue}" --json milestone --jq .milestone.title)
               if [[ -z "${issue_milestone}" ]] || verlte "${pr_milestone}" "${issue_milestone}"; then
                   echo "Setting ${issue} milestone to ${pr_milestone}"
