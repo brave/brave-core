@@ -43,7 +43,8 @@ std::string MarkedAsInappropriateExclusionRule::GetLastMessage() const {
 
 bool MarkedAsInappropriateExclusionRule::DoesRespectCap(
     const CreativeAdInfo& creative_ad) {
-  const FlaggedAdList flagged_ads = ClientStateManager::Get()->GetFlaggedAds();
+  const FlaggedAdList flagged_ads =
+      ClientStateManager::GetInstance()->GetFlaggedAds();
   if (flagged_ads.empty()) {
     return true;
   }

@@ -58,17 +58,21 @@ TEST_F(BatAdsFederatedLogEntriesNumberOfUserActivityEventsTest, GetValue) {
           UserActivityEventType::kOpenedNewTab,
           brave_federated::mojom::CovariateType::kNumberOfOpenedNewTabEvents);
 
-  UserActivityManager::Get()->RecordEvent(UserActivityEventType::kOpenedNewTab);
-  UserActivityManager::Get()->RecordEvent(
+  UserActivityManager::GetInstance()->RecordEvent(
+      UserActivityEventType::kOpenedNewTab);
+  UserActivityManager::GetInstance()->RecordEvent(
       UserActivityEventType::kBrowserDidResignActive);
 
   AdvanceClockBy(base::Minutes(31));
 
-  UserActivityManager::Get()->RecordEvent(
+  UserActivityManager::GetInstance()->RecordEvent(
       UserActivityEventType::kBrowserDidBecomeActive);
-  UserActivityManager::Get()->RecordEvent(UserActivityEventType::kOpenedNewTab);
-  UserActivityManager::Get()->RecordEvent(UserActivityEventType::kClosedTab);
-  UserActivityManager::Get()->RecordEvent(UserActivityEventType::kOpenedNewTab);
+  UserActivityManager::GetInstance()->RecordEvent(
+      UserActivityEventType::kOpenedNewTab);
+  UserActivityManager::GetInstance()->RecordEvent(
+      UserActivityEventType::kClosedTab);
+  UserActivityManager::GetInstance()->RecordEvent(
+      UserActivityEventType::kOpenedNewTab);
 
   // Act
   const std::string value = entry->GetValue();

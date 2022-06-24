@@ -31,7 +31,7 @@ HistoryInfo Get(const HistoryFilterType filter_type,
                 const base::Time from_time,
                 const base::Time to_time) {
   base::circular_deque<HistoryItemInfo> history =
-      ClientStateManager::Get()->GetHistory();
+      ClientStateManager::GetInstance()->GetHistory();
 
   const auto date_range_filter =
       std::make_unique<DateRangeHistoryFilter>(from_time, to_time);
@@ -62,7 +62,7 @@ void AddNotificationAd(const NotificationAdInfo& ad,
   const HistoryItemInfo& history_item =
       BuildHistoryItem(ad, confirmation_type, ad.title, ad.body);
 
-  ClientStateManager::Get()->AppendHistory(history_item);
+  ClientStateManager::GetInstance()->AppendHistory(history_item);
 }
 
 void AddNewTabPageAd(const NewTabPageAdInfo& ad,
@@ -70,7 +70,7 @@ void AddNewTabPageAd(const NewTabPageAdInfo& ad,
   const HistoryItemInfo history_item =
       BuildHistoryItem(ad, confirmation_type, ad.company_name, ad.alt);
 
-  ClientStateManager::Get()->AppendHistory(history_item);
+  ClientStateManager::GetInstance()->AppendHistory(history_item);
 }
 
 void AddPromotedContentAd(const PromotedContentAdInfo& ad,
@@ -78,7 +78,7 @@ void AddPromotedContentAd(const PromotedContentAdInfo& ad,
   const HistoryItemInfo history_item =
       BuildHistoryItem(ad, confirmation_type, ad.title, ad.description);
 
-  ClientStateManager::Get()->AppendHistory(history_item);
+  ClientStateManager::GetInstance()->AppendHistory(history_item);
 }
 
 void AddInlineContentAd(const InlineContentAdInfo& ad,
@@ -86,7 +86,7 @@ void AddInlineContentAd(const InlineContentAdInfo& ad,
   const HistoryItemInfo history_item =
       BuildHistoryItem(ad, confirmation_type, ad.title, ad.description);
 
-  ClientStateManager::Get()->AppendHistory(history_item);
+  ClientStateManager::GetInstance()->AppendHistory(history_item);
 }
 
 void AddSearchResultAd(const SearchResultAdInfo& ad,
@@ -94,7 +94,7 @@ void AddSearchResultAd(const SearchResultAdInfo& ad,
   const HistoryItemInfo history_item =
       BuildHistoryItem(ad, confirmation_type, ad.headline_text, ad.description);
 
-  ClientStateManager::Get()->AppendHistory(history_item);
+  ClientStateManager::GetInstance()->AppendHistory(history_item);
 }
 
 }  // namespace history

@@ -17,7 +17,8 @@ namespace ads {
 
 base::Time GetNextPaymentDate(const TransactionList& transactions) {
   const base::Time next_token_redemption_at =
-      AdsClientHelper::Get()->GetTimePref(prefs::kNextTokenRedemptionAt);
+      AdsClientHelper::GetInstance()->GetTimePref(
+          prefs::kNextTokenRedemptionAt);
 
   const base::Time next_payment_date =
       CalculateNextPaymentDate(next_token_redemption_at, transactions);

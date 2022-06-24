@@ -31,7 +31,7 @@ TEST_F(BatAdsDiagnosticManagerTest, DiagnosticManager) {
   AdvanceClockTo(
       TimeFromString("Wed, 18 Nov 1970 12:34:56", /* is_local */ false));
 
-  AdsClientHelper::Get()->SetBooleanPref(prefs::kEnabled, true);
+  AdsClientHelper::GetInstance()->SetBooleanPref(prefs::kEnabled, true);
 
   MockLocaleHelper(locale_helper_mock_, "en-KY");
 
@@ -41,8 +41,8 @@ TEST_F(BatAdsDiagnosticManagerTest, DiagnosticManager) {
   SetLastUnIdleTimeDiagnosticEntry();
 
   // Act
-  DiagnosticManager::Get()->GetDiagnostics([](const bool success,
-                                              const std::string& json) {
+  DiagnosticManager::GetInstance()->GetDiagnostics([](const bool success,
+                                                      const std::string& json) {
     ASSERT_TRUE(success);
 
     const std::string expected_json =

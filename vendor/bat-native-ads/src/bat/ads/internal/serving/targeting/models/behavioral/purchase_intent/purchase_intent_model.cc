@@ -52,7 +52,7 @@ SegmentList PurchaseIntent::GetSegments() const {
   SegmentList segments;
 
   const PurchaseIntentSignalHistoryMap history =
-      ClientStateManager::Get()->GetPurchaseIntentSignalHistory();
+      ClientStateManager::GetInstance()->GetPurchaseIntentSignalHistory();
 
   if (history.empty()) {
     return segments;

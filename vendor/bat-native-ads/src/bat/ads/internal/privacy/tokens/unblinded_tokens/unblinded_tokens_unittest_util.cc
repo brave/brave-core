@@ -21,7 +21,7 @@ namespace ads {
 namespace privacy {
 
 UnblindedTokens* get_unblinded_tokens() {
-  return ConfirmationStateManager::Get()->get_unblinded_tokens();
+  return ConfirmationStateManager::GetInstance()->get_unblinded_tokens();
 }
 
 UnblindedTokenList SetUnblindedTokens(const int count) {

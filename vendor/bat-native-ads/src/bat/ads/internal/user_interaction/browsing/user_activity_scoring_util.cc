@@ -20,7 +20,7 @@ bool WasUserActive() {
 
   const base::TimeDelta time_window = user_activity::features::GetTimeWindow();
   const UserActivityEventList events =
-      UserActivityManager::Get()->GetHistoryForTimeWindow(time_window);
+      UserActivityManager::GetInstance()->GetHistoryForTimeWindow(time_window);
 
   const double score = GetUserActivityScore(triggers, events);
 

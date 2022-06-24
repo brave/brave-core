@@ -108,7 +108,7 @@ void RecordAdEvents(const AdType& type,
   const base::Time time = Now();
 
   for (int i = 0; i < count; i++) {
-    AdsClientHelper::Get()->RecordAdEventForId(
+    AdsClientHelper::GetInstance()->RecordAdEventForId(
         id, ad_type_as_string, confirmation_type_as_string, time);
   }
 }

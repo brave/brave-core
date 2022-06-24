@@ -24,11 +24,11 @@ class BatAdsPrefManagerTest : public PrefManagerObserver, public UnitTestBase {
   void SetUp() override {
     UnitTestBase::SetUp();
 
-    PrefManager::Get()->AddObserver(this);
+    PrefManager::GetInstance()->AddObserver(this);
   }
 
   void TearDown() override {
-    PrefManager::Get()->RemoveObserver(this);
+    PrefManager::GetInstance()->RemoveObserver(this);
 
     UnitTestBase::TearDown();
   }
@@ -42,9 +42,9 @@ TEST_F(BatAdsPrefManagerTest, HasInstance) {
   // Arrange
 
   // Act
+  const bool has_instance = PrefManager::HasInstance();
 
   // Assert
-  const bool has_instance = PrefManager::HasInstance();
   EXPECT_TRUE(has_instance);
 }
 
@@ -52,7 +52,7 @@ TEST_F(BatAdsPrefManagerTest, PrefChanged) {
   // Arrange
 
   // Act
-  PrefManager::Get()->OnPrefChanged(kPrefName);
+  PrefManager::GetInstance()->OnPrefChanged(kPrefName);
 
   // Assert
   EXPECT_TRUE(pref_changed_);

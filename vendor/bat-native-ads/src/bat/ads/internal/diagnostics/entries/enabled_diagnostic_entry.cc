@@ -29,7 +29,7 @@ std::string EnabledDiagnosticEntry::GetName() const {
 
 std::string EnabledDiagnosticEntry::GetValue() const {
   const bool is_enabled =
-      AdsClientHelper::Get()->GetBooleanPref(prefs::kEnabled);
+      AdsClientHelper::GetInstance()->GetBooleanPref(prefs::kEnabled);
   return BoolToString(is_enabled);
 }
 

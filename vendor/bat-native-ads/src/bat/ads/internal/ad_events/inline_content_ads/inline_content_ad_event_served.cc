@@ -32,7 +32,7 @@ void AdEventServed::FireEvent(const InlineContentAdInfo& ad) {
     BLOG(1, "Successfully logged inline content ad served event");
   });
 
-  ClientStateManager::Get()->UpdateSeenAd(ad);
+  ClientStateManager::GetInstance()->UpdateSeenAd(ad);
 }
 
 }  // namespace inline_content_ads

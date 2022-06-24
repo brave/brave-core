@@ -10,7 +10,7 @@
 #include <string>
 #include <utility>
 
-#include "base/check.h"
+#include "base/check_op.h"
 #include "base/time/time.h"
 #include "bat/ads/ads.h"
 #include "bat/ads/internal/ads_client_helper.h"
@@ -19,6 +19,7 @@
 #include "bat/ads/internal/base/time/time_formatting_util.h"
 #include "bat/ads/internal/base/url/url_request_string_util.h"
 #include "bat/ads/internal/base/url/url_response_string_util.h"
+#include "bat/ads/internal/browser/browser_manager.h"
 #include "bat/ads/internal/catalog/catalog_constants.h"
 #include "bat/ads/internal/catalog/catalog_info.h"
 #include "bat/ads/internal/catalog/catalog_json_reader.h"
@@ -37,11 +38,13 @@ constexpr base::TimeDelta kDebugCatalogPing = base::Minutes(15);
 }  // namespace
 
 Catalog::Catalog() {
-  DatabaseManager::Get()->AddObserver(this);
+  BrowserManager::GetInstance()->AddObserver(this);
+  DatabaseManager::GetInstance()->AddObserver(this);
 }
 
 Catalog::~Catalog() {
-  DatabaseManager::Get()->RemoveObserver(this);
+  BrowserManager::GetInstance()->RemoveObserver(this);
+  DatabaseManager::GetInstance()->RemoveObserver(this);
 }
 
 void Catalog::AddObserver(CatalogObserver* observer) {
@@ -79,7 +82,7 @@ void Catalog::Fetch() {
 
   const auto callback =
       std::bind(&Catalog::OnFetch, this, std::placeholders::_1);
-  AdsClientHelper::Get()->UrlRequest(std::move(url_request), callback);
+  AdsClientHelper::GetInstance()->UrlRequest(std::move(url_request), callback);
 }
 
 void Catalog::OnFetch(const mojom::UrlResponse& url_response) {
@@ -176,8 +179,16 @@ void Catalog::NotifyFailedToUpdateCatalog() const {
   }
 }
 
+void Catalog::OnBrowserDidEnterForeground() {
+  if (HasCatalogExpired()) {
+    MaybeFetch();
+  }
+}
+
 void Catalog::OnDidMigrateDatabase(const int from_version,
                                    const int to_version) {
+  DCHECK_NE(from_version, to_version);
+
   ResetCatalog();
 }
 

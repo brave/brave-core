@@ -51,7 +51,7 @@ TEST_F(BatAdsMarkedAsInappropriateExclusionRuleTest, DoNotAllowAd) {
   ad_content.creative_set_id = kCreativeSetId;
   ad_content.is_flagged = false;
 
-  ClientStateManager::Get()->ToggleFlaggedAd(ad_content);
+  ClientStateManager::GetInstance()->ToggleFlaggedAd(ad_content);
 
   // Act
   MarkedAsInappropriateExclusionRule exclusion_rule;

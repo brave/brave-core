@@ -69,46 +69,48 @@ void SaveCatalog(const CatalogInfo& catalog) {
 }
 
 void ResetCatalog() {
-  AdsClientHelper::Get()->ClearPref(prefs::kCatalogId);
-  AdsClientHelper::Get()->ClearPref(prefs::kCatalogVersion);
-  AdsClientHelper::Get()->ClearPref(prefs::kCatalogPing);
-  AdsClientHelper::Get()->ClearPref(prefs::kCatalogLastUpdated);
+  AdsClientHelper::GetInstance()->ClearPref(prefs::kCatalogId);
+  AdsClientHelper::GetInstance()->ClearPref(prefs::kCatalogVersion);
+  AdsClientHelper::GetInstance()->ClearPref(prefs::kCatalogPing);
+  AdsClientHelper::GetInstance()->ClearPref(prefs::kCatalogLastUpdated);
 }
 
 std::string GetCatalogId() {
-  return AdsClientHelper::Get()->GetStringPref(prefs::kCatalogId);
+  return AdsClientHelper::GetInstance()->GetStringPref(prefs::kCatalogId);
 }
 
 void SetCatalogId(const std::string& id) {
-  AdsClientHelper::Get()->SetStringPref(prefs::kCatalogId, id);
+  AdsClientHelper::GetInstance()->SetStringPref(prefs::kCatalogId, id);
 }
 
 int GetCatalogVersion() {
-  return AdsClientHelper::Get()->GetIntegerPref(prefs::kCatalogVersion);
+  return AdsClientHelper::GetInstance()->GetIntegerPref(prefs::kCatalogVersion);
 }
 
 void SetCatalogVersion(const int version) {
-  AdsClientHelper::Get()->SetIntegerPref(prefs::kCatalogVersion, version);
+  AdsClientHelper::GetInstance()->SetIntegerPref(prefs::kCatalogVersion,
+                                                 version);
 }
 
 base::TimeDelta GetCatalogPing() {
   const int64_t ping =
-      AdsClientHelper::Get()->GetInt64Pref(prefs::kCatalogPing);
+      AdsClientHelper::GetInstance()->GetInt64Pref(prefs::kCatalogPing);
   return base::Milliseconds(ping);
 }
 
 void SetCatalogPing(const base::TimeDelta ping) {
-  AdsClientHelper::Get()->SetInt64Pref(prefs::kCatalogPing,
-                                       ping.InMilliseconds());
+  AdsClientHelper::GetInstance()->SetInt64Pref(prefs::kCatalogPing,
+                                               ping.InMilliseconds());
 }
 
 base::Time GetCatalogLastUpdated() {
-  return AdsClientHelper::Get()->GetTimePref(prefs::kCatalogLastUpdated);
+  return AdsClientHelper::GetInstance()->GetTimePref(
+      prefs::kCatalogLastUpdated);
 }
 
 void SetCatalogLastUpdated(const base::Time last_updated_at) {
-  AdsClientHelper::Get()->SetTimePref(prefs::kCatalogLastUpdated,
-                                      last_updated_at);
+  AdsClientHelper::GetInstance()->SetTimePref(prefs::kCatalogLastUpdated,
+                                              last_updated_at);
 }
 
 bool DoesCatalogExist() {

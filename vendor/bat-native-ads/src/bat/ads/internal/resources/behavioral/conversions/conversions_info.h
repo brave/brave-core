@@ -31,7 +31,7 @@ struct ConversionsInfo final {
       std::string* error_message);
 
   int version = 0;
-  ConversionIdPatternMap conversion_id_patterns;
+  ConversionIdPatternMap id_patterns;
 };
 
 }  // namespace resource

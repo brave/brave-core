@@ -28,7 +28,7 @@ class NotificationAdManager final {
   NotificationAdManager(const NotificationAdManager&) = delete;
   NotificationAdManager& operator=(const NotificationAdManager&) = delete;
 
-  static NotificationAdManager* Get();
+  static NotificationAdManager* GetInstance();
 
   static bool HasInstance();
 

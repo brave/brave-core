@@ -40,7 +40,7 @@ DiagnosticManager::~DiagnosticManager() {
 }
 
 // static
-DiagnosticManager* DiagnosticManager::Get() {
+DiagnosticManager* DiagnosticManager::GetInstance() {
   DCHECK(g_diagnostic_manager_instance);
   return g_diagnostic_manager_instance;
 }

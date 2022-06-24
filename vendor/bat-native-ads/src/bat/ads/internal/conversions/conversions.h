@@ -6,6 +6,8 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_CONVERSIONS_CONVERSIONS_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_CONVERSIONS_CONVERSIONS_H_
 
+#include <cstdint>
+#include <memory>
 #include <string>
 #include <vector>
 
@@ -14,20 +16,29 @@
 #include "bat/ads/internal/base/timer/timer.h"
 #include "bat/ads/internal/conversions/conversion_info_aliases.h"
 #include "bat/ads/internal/conversions/conversions_observer.h"
+#include "bat/ads/internal/locale/locale_manager_observer.h"
 #include "bat/ads/internal/resources/behavioral/conversions/conversion_id_pattern_info_aliases.h"
+#include "bat/ads/internal/resources/resource_manager_observer.h"
+#include "bat/ads/internal/tabs/tab_manager_observer.h"
 
 class GURL;
 
 namespace ads {
 
+namespace resource {
+class Conversions;
+}  // namespace resource
+
 struct AdEventInfo;
 struct ConversionQueueItemInfo;
 struct VerifiableConversionInfo;
 
-class Conversions final {
+class Conversions final : public LocaleManagerObserver,
+                          public ResourceManagerObserver,
+                          public TabManagerObserver {
  public:
   Conversions();
-  ~Conversions();
+  ~Conversions() override;
   Conversions(const Conversions&) = delete;
   Conversions& operator=(const Conversions&) = delete;
 
@@ -77,7 +88,20 @@ class Conversions final {
   void NotifyConversionFailed(
       const ConversionQueueItemInfo& conversion_queue_item) const;
 
+  // LocaleManagerObserver:
+  void OnLocaleDidChange(const std::string& locale) override;
+
+  // ResourceManagerObserver:
+  void OnResourceDidUpdate(const std::string& id) override;
+
+  // TabManagerObserver:
+  void OnHtmlContentDidChange(const int32_t id,
+                              const std::vector<GURL>& redirect_chain,
+                              const std::string& content) override;
+
   base::ObserverList<ConversionsObserver> observers_;
+
+  std::unique_ptr<resource::Conversions> resource_;
 
   Timer timer_;
 };

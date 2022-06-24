@@ -33,7 +33,7 @@ std::string NetworkConnectionPermissionRule::GetLastMessage() const {
 }
 
 bool NetworkConnectionPermissionRule::DoesRespectCap() {
-  return AdsClientHelper::Get()->IsNetworkConnectionAvailable();
+  return AdsClientHelper::GetInstance()->IsNetworkConnectionAvailable();
 }
 
 }  // namespace ads

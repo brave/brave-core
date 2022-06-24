@@ -80,7 +80,7 @@ void Conversions::Save(const ConversionList& conversions,
 
   InsertOrUpdate(transaction.get(), conversions);
 
-  AdsClientHelper::Get()->RunDBTransaction(
+  AdsClientHelper::GetInstance()->RunDBTransaction(
       std::move(transaction),
       std::bind(&OnResultCallback, std::placeholders::_1, callback));
 }
@@ -115,7 +115,7 @@ void Conversions::GetAll(GetConversionsCallback callback) {
   mojom::DBTransactionPtr transaction = mojom::DBTransaction::New();
   transaction->commands.push_back(std::move(command));
 
-  AdsClientHelper::Get()->RunDBTransaction(
+  AdsClientHelper::GetInstance()->RunDBTransaction(
       std::move(transaction), std::bind(&Conversions::OnGetConversions, this,
                                         std::placeholders::_1, callback));
 }
@@ -134,7 +134,7 @@ void Conversions::PurgeExpired(ResultCallback callback) {
 
   transaction->commands.push_back(std::move(command));
 
-  AdsClientHelper::Get()->RunDBTransaction(
+  AdsClientHelper::GetInstance()->RunDBTransaction(
       std::move(transaction),
       std::bind(&OnResultCallback, std::placeholders::_1, callback));
 }

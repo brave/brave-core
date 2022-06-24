@@ -29,7 +29,7 @@ class Conversions final {
 
   void Load();
 
-  const ConversionsInfo* get() const;
+  const ConversionsInfo* get() const { return conversions_info_.get(); }
 
  private:
   void OnLoadAndParseResource(ParsingResultPtr<ConversionsInfo> result);

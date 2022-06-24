@@ -41,7 +41,7 @@ TEST_F(BatAdsMarkedToNoLongerReceiveExclusionRuleTest, DoNotAllowAd) {
   CreativeAdInfo creative_ad;
   creative_ad.segment = kSegment;
 
-  ClientStateManager::Get()->ToggleAdOptOut(
+  ClientStateManager::GetInstance()->ToggleAdOptOut(
       creative_ad.segment, CategoryContentOptActionType::kNone);
 
   // Act

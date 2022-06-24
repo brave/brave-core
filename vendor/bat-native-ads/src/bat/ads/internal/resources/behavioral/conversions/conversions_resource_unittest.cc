@@ -40,8 +40,7 @@ TEST_F(BatAdsConversionsResourceTest, Get) {
   task_environment_.RunUntilIdle();
 
   // Act
-  ConversionIdPatternMap conversion_id_patterns =
-      resource.get()->conversion_id_patterns;
+  ConversionIdPatternMap conversion_id_patterns = resource.get()->id_patterns;
 
   // Assert
   EXPECT_EQ(2u, conversion_id_patterns.size());

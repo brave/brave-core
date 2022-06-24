@@ -163,7 +163,7 @@ TEST_F(BatAdsAccountTest, GetWallet) {
 
 TEST_F(BatAdsAccountTest, GetIssuersIfAdsAreEnabled) {
   // Arrange
-  AdsClientHelper::Get()->SetBooleanPref(prefs::kEnabled, true);
+  AdsClientHelper::GetInstance()->SetBooleanPref(prefs::kEnabled, true);
 
   const URLEndpoints& endpoints = {{// Get issuers request
                                     R"(/v1/issuers/)",
@@ -230,7 +230,7 @@ TEST_F(BatAdsAccountTest, GetIssuersIfAdsAreEnabled) {
 
 TEST_F(BatAdsAccountTest, DoNotGetIssuersIfAdsAreDisabled) {
   // Arrange
-  AdsClientHelper::Get()->SetBooleanPref(prefs::kEnabled, false);
+  AdsClientHelper::GetInstance()->SetBooleanPref(prefs::kEnabled, false);
 
   const URLEndpoints& endpoints = {{// Get issuers request
                                     R"(/v1/issuers/)",
@@ -290,7 +290,7 @@ TEST_F(BatAdsAccountTest, DoNotGetIssuersIfAdsAreDisabled) {
 
 TEST_F(BatAdsAccountTest, DoNotGetInvalidIssuers) {
   // Arrange
-  AdsClientHelper::Get()->SetBooleanPref(prefs::kEnabled, true);
+  AdsClientHelper::GetInstance()->SetBooleanPref(prefs::kEnabled, true);
 
   BuildAndSetIssuers();
 
@@ -361,7 +361,7 @@ TEST_F(BatAdsAccountTest, DoNotGetInvalidIssuers) {
 
 TEST_F(BatAdsAccountTest, DoNotGetMissingPaymentIssuers) {
   // Arrange
-  AdsClientHelper::Get()->SetBooleanPref(prefs::kEnabled, true);
+  AdsClientHelper::GetInstance()->SetBooleanPref(prefs::kEnabled, true);
 
   BuildAndSetIssuers();
 
@@ -407,7 +407,7 @@ TEST_F(BatAdsAccountTest, DoNotGetMissingPaymentIssuers) {
 
 TEST_F(BatAdsAccountTest, DepositForCash) {
   // Arrange
-  AdsClientHelper::Get()->SetBooleanPref(prefs::kEnabled, true);
+  AdsClientHelper::GetInstance()->SetBooleanPref(prefs::kEnabled, true);
 
   const URLEndpoints& endpoints = {
       {// Create confirmation request

@@ -40,7 +40,7 @@ std::string DislikeExclusionRule::GetLastMessage() const {
 
 bool DislikeExclusionRule::DoesRespectCap(const CreativeAdInfo& creative_ad) {
   const FilteredAdvertiserList& filtered_advertisers =
-      ClientStateManager::Get()->GetFilteredAdvertisers();
+      ClientStateManager::GetInstance()->GetFilteredAdvertisers();
   if (filtered_advertisers.empty()) {
     return true;
   }

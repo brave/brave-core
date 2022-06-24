@@ -32,12 +32,12 @@ HistoryItemInfo BuildHistoryItem(const AdInfo& ad,
   history_item.ad_content.brand_display_url = ad.target_url.host();
   history_item.ad_content.brand_url = ad.target_url;
   history_item.ad_content.like_action_type =
-      ClientStateManager::Get()->GetAdContentLikeActionTypeForAdvertiser(
-          ad.advertiser_id);
+      ClientStateManager::GetInstance()
+          ->GetAdContentLikeActionTypeForAdvertiser(ad.advertiser_id);
   history_item.ad_content.confirmation_type = confirmation_type;
   history_item.category_content.opt_action_type =
-      ClientStateManager::Get()->GetCategoryContentOptActionTypeForSegment(
-          ad.segment);
+      ClientStateManager::GetInstance()
+          ->GetCategoryContentOptActionTypeForSegment(ad.segment);
   history_item.category_content.category = ad.segment;
 
   return history_item;

@@ -176,11 +176,15 @@ void UnitTestBase::Initialize() {
 
   diagnostic_manager_ = std::make_unique<DiagnosticManager>();
 
+  locale_manager_ = std::make_unique<LocaleManager>();
+
   notification_ad_manager_ = std::make_unique<NotificationAdManager>();
   notification_ad_manager_->Initialize(
       [](const bool success) { ASSERT_TRUE(success); });
 
   pref_manager_ = std::make_unique<PrefManager>();
+
+  resource_manager_ = std::make_unique<ResourceManager>();
 
   tab_manager_ = std::make_unique<TabManager>();
 
@@ -196,7 +200,7 @@ void UnitTestBase::InitializeMocks() {
 
   MockEnvironment(mojom::Environment::kStaging);
 
-  MockLocaleHelper(locale_helper_mock_, "en-US");
+  MockLocaleHelper(locale_helper_mock_, kDefaultLocale);
 
   MockPlatformHelper(platform_helper_mock_, PlatformType::kWindows);
 

@@ -10,8 +10,8 @@
 #include "base/check.h"
 #include "bat/ads/internal/base/logging_util.h"
 #include "bat/ads/internal/deprecated/client/client_state_manager.h"
+#include "bat/ads/internal/locale/locale_manager.h"
 #include "bat/ads/internal/serving/targeting/models/contextual/text_classification/text_classification_aliases.h"
-#include "brave/components/l10n/browser/locale_helper.h"
 
 namespace ads {
 namespace targeting {
@@ -81,13 +81,12 @@ TextClassification::~TextClassification() = default;
 
 SegmentList TextClassification::GetSegments() const {
   const TextClassificationProbabilitiesList probabilities =
-      ClientStateManager::Get()->GetTextClassificationProbabilitiesHistory();
+      ClientStateManager::GetInstance()
+          ->GetTextClassificationProbabilitiesHistory();
 
   if (probabilities.empty()) {
-    const std::string locale =
-        brave_l10n::LocaleHelper::GetInstance()->GetLocale();
-    BLOG(1, "No text classification probabilities found for " << locale
-                                                              << " locale");
+    BLOG(1, "No text classification probabilities found for "
+                << LocaleManager::GetInstance()->GetLocale() << " locale");
 
     return {};
   }

@@ -66,7 +66,7 @@ NotificationAdManager::~NotificationAdManager() {
 }
 
 // static
-NotificationAdManager* NotificationAdManager::Get() {
+NotificationAdManager* NotificationAdManager::GetInstance() {
   DCHECK(g_notification_ads_instance);
   return g_notification_ads_instance;
 }
@@ -120,7 +120,7 @@ void NotificationAdManager::PushBack(const NotificationAdInfo& info) {
 void NotificationAdManager::PopFront(const bool should_dismiss) {
   if (!notification_ads_.empty()) {
     if (should_dismiss) {
-      AdsClientHelper::Get()->CloseNotification(
+      AdsClientHelper::GetInstance()->CloseNotification(
           notification_ads_.front().placement_id);
     }
     notification_ads_.pop_front();
@@ -158,7 +158,8 @@ void NotificationAdManager::CloseAndRemoveAll() {
   DCHECK(is_initialized_);
 
   for (const auto& notification_ad : notification_ads_) {
-    AdsClientHelper::Get()->CloseNotification(notification_ad.placement_id);
+    AdsClientHelper::GetInstance()->CloseNotification(
+        notification_ad.placement_id);
   }
 
   RemoveAll();
@@ -213,13 +214,13 @@ void NotificationAdManager::RemoveAllAfterUpdate() {
       base::android::BuildInfo::GetInstance()->package_version_code();
 
   const std::string last_version_code =
-      ClientStateManager::Get()->GetVersionCode();
+      ClientStateManager::GetInstance()->GetVersionCode();
 
   if (last_version_code == current_version_code) {
     return;
   }
 
-  ClientStateManager::Get()->SetVersionCode(current_version_code);
+  ClientStateManager::GetInstance()->SetVersionCode(current_version_code);
 
   RemoveAll();
 }
@@ -395,7 +396,7 @@ void NotificationAdManager::Save() {
   std::string json = ToJson();
   auto callback =
       std::bind(&NotificationAdManager::OnSaved, this, std::placeholders::_1);
-  AdsClientHelper::Get()->Save(kNotificationsFilename, json, callback);
+  AdsClientHelper::GetInstance()->Save(kNotificationsFilename, json, callback);
 }
 
 void NotificationAdManager::OnSaved(const bool success) {
@@ -412,7 +413,7 @@ void NotificationAdManager::Load() {
 
   auto callback = std::bind(&NotificationAdManager::OnLoaded, this,
                             std::placeholders::_1, std::placeholders::_2);
-  AdsClientHelper::Get()->Load(kNotificationsFilename, callback);
+  AdsClientHelper::GetInstance()->Load(kNotificationsFilename, callback);
 }
 
 void NotificationAdManager::OnLoaded(const bool success,

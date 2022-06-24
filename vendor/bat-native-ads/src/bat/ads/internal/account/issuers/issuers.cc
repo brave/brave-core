@@ -73,7 +73,7 @@ void Issuers::Fetch() {
 
   const auto callback =
       std::bind(&Issuers::OnFetch, this, std::placeholders::_1);
-  AdsClientHelper::Get()->UrlRequest(std::move(url_request), callback);
+  AdsClientHelper::GetInstance()->UrlRequest(std::move(url_request), callback);
 }
 
 void Issuers::OnFetch(const mojom::UrlResponse& url_response) {
@@ -139,7 +139,8 @@ void Issuers::FetchAfterDelay() {
 }
 
 base::TimeDelta Issuers::GetFetchDelay() const {
-  const int ping = AdsClientHelper::Get()->GetIntegerPref(prefs::kIssuerPing);
+  const int ping =
+      AdsClientHelper::GetInstance()->GetIntegerPref(prefs::kIssuerPing);
   return base::Milliseconds(ping);
 }
 

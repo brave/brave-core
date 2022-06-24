@@ -40,13 +40,13 @@ uint64_t GenerateHash(const std::string& value) {
 }
 
 void SetHash(const std::string& value) {
-  AdsClientHelper::Get()->SetUint64Pref(prefs::kConfirmationsHash,
-                                        GenerateHash(value));
+  AdsClientHelper::GetInstance()->SetUint64Pref(prefs::kConfirmationsHash,
+                                                GenerateHash(value));
 }
 
 bool IsMutated(const std::string& value) {
-  return AdsClientHelper::Get()->GetUint64Pref(prefs::kConfirmationsHash) !=
-         GenerateHash(value);
+  return AdsClientHelper::GetInstance()->GetUint64Pref(
+             prefs::kConfirmationsHash) != GenerateHash(value);
 }
 
 }  // namespace
@@ -65,7 +65,7 @@ ConfirmationStateManager::~ConfirmationStateManager() {
 }
 
 // static
-ConfirmationStateManager* ConfirmationStateManager::Get() {
+ConfirmationStateManager* ConfirmationStateManager::GetInstance() {
   DCHECK(g_confirmation_state_manager_instance);
   return g_confirmation_state_manager_instance;
 }
@@ -88,7 +88,7 @@ bool ConfirmationStateManager::IsInitialized() const {
 void ConfirmationStateManager::Load() {
   BLOG(3, "Loading confirmations state");
 
-  AdsClientHelper::Get()->Load(
+  AdsClientHelper::GetInstance()->Load(
       kConfirmationsFilename, [=](const bool success, const std::string& json) {
         if (!success) {
           BLOG(3, "Confirmations state does not exist, creating default state");
@@ -128,7 +128,7 @@ void ConfirmationStateManager::Save() {
 
   SetHash(json);
 
-  AdsClientHelper::Get()->Save(
+  AdsClientHelper::GetInstance()->Save(
       kConfirmationsFilename, json, [](const bool success) {
         if (!success) {
           BLOG(0, "Failed to save confirmations state");

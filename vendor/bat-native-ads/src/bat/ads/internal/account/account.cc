@@ -41,7 +41,7 @@ Account::Account(privacy::TokenGeneratorInterface* token_generator)
       refill_unblinded_tokens_(
           std::make_unique<RefillUnblindedTokens>(token_generator)),
       wallet_(std::make_unique<Wallet>()) {
-  PrefManager::Get()->AddObserver(this);
+  PrefManager::GetInstance()->AddObserver(this);
 
   confirmations_->set_delegate(this);
   issuers_->set_delegate(this);
@@ -50,7 +50,7 @@ Account::Account(privacy::TokenGeneratorInterface* token_generator)
 }
 
 Account::~Account() {
-  PrefManager::Get()->RemoveObserver(this);
+  PrefManager::GetInstance()->RemoveObserver(this);
 }
 
 void Account::AddObserver(AccountObserver* observer) {
@@ -300,7 +300,7 @@ void Account::OnDidRetryRedeemingUnblindedPaymentTokens() {
 void Account::OnDidRefillUnblindedTokens() {
   BLOG(1, "Successfully refilled unblinded tokens");
 
-  AdsClientHelper::Get()->ClearScheduledCaptcha();
+  AdsClientHelper::GetInstance()->ClearScheduledCaptcha();
 }
 
 void Account::OnCaptchaRequiredToRefillUnblindedTokens(
@@ -308,8 +308,8 @@ void Account::OnCaptchaRequiredToRefillUnblindedTokens(
   BLOG(1, "Captcha required to refill unblinded tokens");
 
   const WalletInfo& wallet = GetWallet();
-  AdsClientHelper::Get()->ShowScheduledCaptchaNotification(wallet.id,
-                                                           captcha_id);
+  AdsClientHelper::GetInstance()->ShowScheduledCaptchaNotification(wallet.id,
+                                                                   captcha_id);
 }
 
 }  // namespace ads

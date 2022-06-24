@@ -27,7 +27,7 @@ std::string AllowNotificationsPermissionRule::GetLastMessage() const {
 }
 
 bool AllowNotificationsPermissionRule::DoesRespectCap() {
-  return AdsClientHelper::Get()->ShouldShowNotifications();
+  return AdsClientHelper::GetInstance()->ShouldShowNotifications();
 }
 
 }  // namespace ads

@@ -32,7 +32,7 @@ void AdEventServed::FireEvent(const NotificationAdInfo& ad) {
     BLOG(1, "Successfully logged notification ad served event");
   });
 
-  ClientStateManager::Get()->UpdateSeenAd(ad);
+  ClientStateManager::GetInstance()->UpdateSeenAd(ad);
 }
 
 }  // namespace notification_ads

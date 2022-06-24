@@ -43,7 +43,7 @@ TEST_F(BatAdsHistoryTest, AddNotificationAd) {
 
   // Assert
   const base::circular_deque<HistoryItemInfo> history =
-      ClientStateManager::Get()->GetHistory();
+      ClientStateManager::GetInstance()->GetHistory();
   ASSERT_EQ(1UL, history.size());
 }
 
@@ -57,7 +57,7 @@ TEST_F(BatAdsHistoryTest, AddNotificationAdsToHistory) {
 
   // Assert
   const base::circular_deque<HistoryItemInfo> history =
-      ClientStateManager::Get()->GetHistory();
+      ClientStateManager::GetInstance()->GetHistory();
   ASSERT_EQ(2UL, history.size());
 }
 
@@ -70,7 +70,7 @@ TEST_F(BatAdsHistoryTest, AddNewTabPageAd) {
 
   // Assert
   const base::circular_deque<HistoryItemInfo> history =
-      ClientStateManager::Get()->GetHistory();
+      ClientStateManager::GetInstance()->GetHistory();
   ASSERT_EQ(1UL, history.size());
 }
 
@@ -84,7 +84,7 @@ TEST_F(BatAdsHistoryTest, AddNewTabPageAdWithMultipleEvents) {
 
   // Assert
   const base::circular_deque<HistoryItemInfo> history =
-      ClientStateManager::Get()->GetHistory();
+      ClientStateManager::GetInstance()->GetHistory();
   ASSERT_EQ(2UL, history.size());
 }
 
@@ -97,7 +97,7 @@ TEST_F(BatAdsHistoryTest, AddPromotedContentAd) {
 
   // Assert
   const base::circular_deque<HistoryItemInfo> history =
-      ClientStateManager::Get()->GetHistory();
+      ClientStateManager::GetInstance()->GetHistory();
   ASSERT_EQ(1UL, history.size());
 }
 
@@ -111,7 +111,7 @@ TEST_F(BatAdsHistoryTest, AddPromotedContentWithMultipleEvents) {
 
   // Assert
   const base::circular_deque<HistoryItemInfo> history =
-      ClientStateManager::Get()->GetHistory();
+      ClientStateManager::GetInstance()->GetHistory();
   ASSERT_EQ(2UL, history.size());
 }
 
@@ -124,7 +124,7 @@ TEST_F(BatAdsHistoryTest, AddInlineContentAd) {
 
   // Assert
   const base::circular_deque<HistoryItemInfo> history =
-      ClientStateManager::Get()->GetHistory();
+      ClientStateManager::GetInstance()->GetHistory();
   ASSERT_EQ(1UL, history.size());
 }
 
@@ -138,7 +138,7 @@ TEST_F(BatAdsHistoryTest, AddInlineContentWithMultipleEvents) {
 
   // Assert
   const base::circular_deque<HistoryItemInfo> history =
-      ClientStateManager::Get()->GetHistory();
+      ClientStateManager::GetInstance()->GetHistory();
   ASSERT_EQ(2UL, history.size());
 }
 
@@ -151,7 +151,7 @@ TEST_F(BatAdsHistoryTest, AddSearchResultAd) {
 
   // Assert
   const base::circular_deque<HistoryItemInfo> history =
-      ClientStateManager::Get()->GetHistory();
+      ClientStateManager::GetInstance()->GetHistory();
   ASSERT_EQ(1UL, history.size());
 }
 
@@ -165,7 +165,7 @@ TEST_F(BatAdsHistoryTest, AddSearchResultWithMultipleEvents) {
 
   // Assert
   const base::circular_deque<HistoryItemInfo> history =
-      ClientStateManager::Get()->GetHistory();
+      ClientStateManager::GetInstance()->GetHistory();
   ASSERT_EQ(2UL, history.size());
 }
 
@@ -190,7 +190,7 @@ TEST_F(BatAdsHistoryTest, AddMultipleAdTypesToHistory) {
 
   // Assert
   const base::circular_deque<HistoryItemInfo> history =
-      ClientStateManager::Get()->GetHistory();
+      ClientStateManager::GetInstance()->GetHistory();
   ASSERT_EQ(5UL, history.size());
 }
 
@@ -207,7 +207,7 @@ TEST_F(BatAdsHistoryTest, PurgeHistoryItemsOlderThan30Days) {
 
   // Assert
   const base::circular_deque<HistoryItemInfo> history =
-      ClientStateManager::Get()->GetHistory();
+      ClientStateManager::GetInstance()->GetHistory();
   ASSERT_EQ(1UL, history.size());
 }
 
@@ -224,7 +224,7 @@ TEST_F(BatAdsHistoryTest, DoNotPurgeHistoryItemsOnOrBefore30Days) {
 
   // Assert
   const base::circular_deque<HistoryItemInfo> history =
-      ClientStateManager::Get()->GetHistory();
+      ClientStateManager::GetInstance()->GetHistory();
   ASSERT_EQ(2UL, history.size());
 }
 

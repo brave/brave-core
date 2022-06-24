@@ -21,7 +21,7 @@ class PrefManager final {
   PrefManager(const PrefManager&) = delete;
   PrefManager& operator=(const PrefManager&) = delete;
 
-  static PrefManager* Get();
+  static PrefManager* GetInstance();
 
   static bool HasInstance();
 

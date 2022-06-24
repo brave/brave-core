@@ -51,7 +51,7 @@ void Migration::FromVersion(const int from_version, ResultCallback callback) {
   transaction->compatible_version = database::kCompatibleVersion;
   transaction->commands.push_back(std::move(command));
 
-  AdsClientHelper::Get()->RunDBTransaction(
+  AdsClientHelper::GetInstance()->RunDBTransaction(
       std::move(transaction),
       std::bind(&OnResultCallback, std::placeholders::_1, callback));
 }

@@ -25,7 +25,7 @@ AdsClientHelper::~AdsClientHelper() {
 }
 
 // static
-AdsClient* AdsClientHelper::Get() {
+AdsClient* AdsClientHelper::GetInstance() {
   DCHECK(g_ads_client_instance);
   return g_ads_client_instance;
 }

@@ -78,7 +78,7 @@ void RedeemUnblindedToken::CreateConfirmation(
 
   const auto callback = std::bind(&RedeemUnblindedToken::OnCreateConfirmation,
                                   this, std::placeholders::_1, confirmation);
-  AdsClientHelper::Get()->UrlRequest(std::move(url_request), callback);
+  AdsClientHelper::GetInstance()->UrlRequest(std::move(url_request), callback);
 }
 
 void RedeemUnblindedToken::OnCreateConfirmation(
@@ -128,7 +128,7 @@ void RedeemUnblindedToken::FetchPaymentToken(
 
   const auto callback = std::bind(&RedeemUnblindedToken::OnFetchPaymentToken,
                                   this, std::placeholders::_1, confirmation);
-  AdsClientHelper::Get()->UrlRequest(std::move(url_request), callback);
+  AdsClientHelper::GetInstance()->UrlRequest(std::move(url_request), callback);
 }
 
 void RedeemUnblindedToken::OnFetchPaymentToken(

@@ -7,10 +7,16 @@
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_TABS_TAB_MANAGER_OBSERVER_H_
 
 #include <cstdint>
+#include <string>
+#include <vector>
 
 #include "base/observer_list_types.h"
 
+class GURL;
+
 namespace ads {
+
+struct TabInfo;
 
 class TabManagerObserver : public base::CheckedObserver {
  public:
@@ -18,10 +24,20 @@ class TabManagerObserver : public base::CheckedObserver {
   virtual void OnTabDidChangeFocus(const int32_t id) {}
 
   // Invoked when the tab specified by |id| is updated.
-  virtual void OnTabDidChange(const int32_t id) {}
+  virtual void OnTabDidChange(const TabInfo& tab) {}
 
   // Invoked when a new tab is opened for the specified |id|.
-  virtual void OnDidOpenNewTab(const int32_t id) {}
+  virtual void OnDidOpenNewTab(const TabInfo& tab) {}
+
+  // Invoked when the text content for the tab specified by |id| did change.
+  virtual void OnTextContentDidChange(const int32_t id,
+                                      const std::vector<GURL>& redirect_chain,
+                                      const std::string& content) {}
+
+  // Invoked when the HTML content for the tab specified by |id| did change.
+  virtual void OnHtmlContentDidChange(const int32_t id,
+                                      const std::vector<GURL>& redirect_chain,
+                                      const std::string& content) {}
 
   // Invoked when a tab is closed.
   virtual void OnDidCloseTab(const int32_t id) {}

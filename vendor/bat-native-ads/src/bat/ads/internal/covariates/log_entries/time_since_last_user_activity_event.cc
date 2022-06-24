@@ -35,7 +35,7 @@ brave_federated::mojom::CovariateType TimeSinceLastUserActivityEvent::GetType()
 
 std::string TimeSinceLastUserActivityEvent::GetValue() const {
   const UserActivityEventList events =
-      UserActivityManager::Get()->GetHistoryForTimeWindow(kTimeWindow);
+      UserActivityManager::GetInstance()->GetHistoryForTimeWindow(kTimeWindow);
 
   return base::NumberToString(
       GetTimeSinceLastUserActivityEvent(events, event_type_));

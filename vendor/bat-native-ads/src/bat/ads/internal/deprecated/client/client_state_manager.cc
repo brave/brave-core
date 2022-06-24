@@ -83,12 +83,12 @@ uint64_t GenerateHash(const std::string& value) {
 }
 
 void SetHash(const std::string& value) {
-  AdsClientHelper::Get()->SetUint64Pref(prefs::kClientHash,
-                                        GenerateHash(value));
+  AdsClientHelper::GetInstance()->SetUint64Pref(prefs::kClientHash,
+                                                GenerateHash(value));
 }
 
 bool IsMutated(const std::string& value) {
-  return AdsClientHelper::Get()->GetUint64Pref(prefs::kClientHash) !=
+  return AdsClientHelper::GetInstance()->GetUint64Pref(prefs::kClientHash) !=
          GenerateHash(value);
 }
 
@@ -105,7 +105,7 @@ ClientStateManager::~ClientStateManager() {
 }
 
 // static
-ClientStateManager* ClientStateManager::Get() {
+ClientStateManager* ClientStateManager::GetInstance() {
   DCHECK(g_client_instance);
   return g_client_instance;
 }
@@ -558,7 +558,7 @@ void ClientStateManager::Save() {
 
   auto callback =
       std::bind(&ClientStateManager::OnSaved, this, std::placeholders::_1);
-  AdsClientHelper::Get()->Save(kClientFilename, json, callback);
+  AdsClientHelper::GetInstance()->Save(kClientFilename, json, callback);
 }
 
 void ClientStateManager::OnSaved(const bool success) {
@@ -576,7 +576,7 @@ void ClientStateManager::Load() {
 
   auto callback = std::bind(&ClientStateManager::OnLoaded, this,
                             std::placeholders::_1, std::placeholders::_2);
-  AdsClientHelper::Get()->Load(kClientFilename, callback);
+  AdsClientHelper::GetInstance()->Load(kClientFilename, callback);
 }
 
 void ClientStateManager::OnLoaded(const bool success, const std::string& json) {

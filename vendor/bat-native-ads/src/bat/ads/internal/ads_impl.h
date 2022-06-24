@@ -65,7 +65,6 @@ class TextClassification;
 
 namespace resource {
 class AntiTargeting;
-class Conversions;
 class EpsilonGreedyBandit;
 class PurchaseIntent;
 class TextClassification;
@@ -85,8 +84,10 @@ class InlineContentAd;
 class NewTabPageAd;
 class NotificationAd;
 class NotificationAdManager;
+class LocaleManager;
 class PrefManager;
 class PromotedContentAd;
+class ResourceManager;
 class SearchResultAd;
 class TabManager;
 class Transfer;
@@ -223,7 +224,6 @@ class AdsImpl final : public Ads,
   bool ToggleFlaggedAd(const std::string& json) override;
 
  private:
-  void InitializeBrowserManager();
   void InitializeDatabase(InitializeCallback callback);
   void MigrateConversions(InitializeCallback callback);
   void MigrateRewards(InitializeCallback callback);
@@ -235,8 +235,6 @@ class AdsImpl final : public Ads,
   void Start();
 
   void CleanupAdEvents();
-
-  void MaybeFetchCatalog();
 
   void MaybeServeNotificationAd();
 
@@ -334,13 +332,14 @@ class AdsImpl final : public Ads,
   std::unique_ptr<CovariateManager> covariate_manager_;
   std::unique_ptr<DatabaseManager> database_manager_;
   std::unique_ptr<DiagnosticManager> diagnostic_manager_;
+  std::unique_ptr<LocaleManager> locale_manager_;
   std::unique_ptr<NotificationAdManager> notification_ad_manager_;
   std::unique_ptr<PrefManager> pref_manager_;
+  std::unique_ptr<ResourceManager> resource_manager_;
   std::unique_ptr<TabManager> tab_manager_;
   std::unique_ptr<UserActivityManager> user_activity_manager_;
 
   std::unique_ptr<resource::AntiTargeting> anti_targeting_resource_;
-  std::unique_ptr<resource::Conversions> conversions_resource_;
   std::unique_ptr<resource::EpsilonGreedyBandit>
       epsilon_greedy_bandit_resource_;
   std::unique_ptr<resource::PurchaseIntent> purchase_intent_resource_;
@@ -374,9 +373,6 @@ class AdsImpl final : public Ads,
   std::unique_ptr<Conversions> conversions_;
 
   std::unique_ptr<Transfer> transfer_;
-
-  uint32_t last_html_loaded_hash_ = 0;
-  uint32_t last_text_loaded_hash_ = 0;
 };
 
 }  // namespace ads

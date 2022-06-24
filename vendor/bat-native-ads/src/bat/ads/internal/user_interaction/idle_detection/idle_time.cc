@@ -31,7 +31,7 @@ bool HasExceededMaximumIdleTime(const int idle_time) {
 
 bool MaybeUpdateIdleTimeThreshold() {
   const int last_idle_time_threshold =
-      AdsClientHelper::Get()->GetIntegerPref(prefs::kIdleTimeThreshold);
+      AdsClientHelper::GetInstance()->GetIntegerPref(prefs::kIdleTimeThreshold);
 
   const base::TimeDelta idle_time_threshold =
       user_activity::features::GetIdleTimeThreshold();
@@ -42,8 +42,8 @@ bool MaybeUpdateIdleTimeThreshold() {
     return false;
   }
 
-  AdsClientHelper::Get()->SetIntegerPref(prefs::kIdleTimeThreshold,
-                                         idle_time_threshold_as_int);
+  AdsClientHelper::GetInstance()->SetIntegerPref(prefs::kIdleTimeThreshold,
+                                                 idle_time_threshold_as_int);
 
   return true;
 }
