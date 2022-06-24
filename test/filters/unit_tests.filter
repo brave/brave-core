@@ -102,6 +102,7 @@
 -ContentSettingImageModelTest.*
 -CookieControlsTest.*
 -CookieSettingsFactoryTest.*
+-CookiesTreeModelTest.ContentSettings
 -CountingPolicyTest.*
 -CryptoTokenPermissionTest.*
 -CryptoTokenPrivateApiTest.*
