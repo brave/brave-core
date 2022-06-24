@@ -192,17 +192,16 @@ class BraveTranslateBrowserTest : public InProcessBrowserTest {
 
   // Set up expectations for the secondary test scripts and for the test css.
   void SetupTestScriptExpectations() {
-    EXPECT_CALL(backend_request_, Call("/static/element.js"))
+    EXPECT_CALL(backend_request_, Call("/static/v1/element.js"))
         .WillOnce(Return(std::make_tuple(net::HttpStatusCode::HTTP_OK,
                                          "text/javascript", kTestScript)));
 
-    EXPECT_CALL(backend_request_,
-                Call("/translate_static/css/translateelement.css"))
+    EXPECT_CALL(backend_request_, Call("/static/v1/css/translateelement.css"))
         .WillRepeatedly(
             Return(std::make_tuple(net::HttpStatusCode::HTTP_OK, "text/css",
                                    "body{background-color:#AAA}")));
 
-    EXPECT_CALL(backend_request_, Call("/translate_static/js/element/main.js"))
+    EXPECT_CALL(backend_request_, Call("/static/v1/js/element/main.js"))
         .WillOnce(Return(
             std::make_tuple(net::HttpStatusCode::HTTP_OK, "text/javascript",
                             "cr.googleTranslate.onTranslateElementLoad()")));
