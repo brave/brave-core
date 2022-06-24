@@ -48,7 +48,7 @@ class SidebarItemsArrowView : public views::ImageButton {
     SetImageHorizontalAlignment(views::ImageButton::ALIGN_CENTER);
     SetImageVerticalAlignment(views::ImageButton::ALIGN_MIDDLE);
     DCHECK(GetInstallFocusRingOnFocus());
-    views::FocusRing::Get(this)->SetColor(gfx::kBraveBlurple300);
+    views::FocusRing::Get(this)->SetColorId(gfx::kBraveBlurple300);
     SetAccessibleName(accessible_name);
   }
 

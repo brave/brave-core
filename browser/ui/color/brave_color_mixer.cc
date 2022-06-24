@@ -383,6 +383,7 @@ void AddBravePrivateThemeColorMixer(ui::ColorProvider* provider,
 
   mixer[kColorBookmarkBarForeground] = {SkColorSetRGB(0xFF, 0xFF, 0xFF)};
   mixer[kColorForTest] = {SkColorSetRGB(0xFF, 0x00, 0x00)};
+  mixer[kColorLocationBarFocusRing] = {SkColorSetRGB(0xC6, 0xB3, 0xFF)};
   mixer[kColorNewTabButtonBackgroundFrameActive] = {ui::kColorFrameActive};
   mixer[kColorNewTabButtonBackgroundFrameInactive] = {ui::kColorFrameInactive};
   mixer[kColorNewTabPageBackground] = {kPrivateFrame};
@@ -412,6 +413,7 @@ void AddBraveTorThemeColorMixer(ui::ColorProvider* provider,
 
   ui::ColorMixer& mixer = provider->AddMixer();
 
+  mixer[kColorLocationBarFocusRing] = {SkColorSetRGB(0xCF, 0xAB, 0xE2)};
   mixer[kColorNewTabButtonBackgroundFrameActive] = {ui::kColorFrameActive};
   mixer[kColorNewTabButtonBackgroundFrameInactive] = {ui::kColorFrameInactive};
   mixer[kColorNewTabPageBackground] = {kPrivateTorFrame};
