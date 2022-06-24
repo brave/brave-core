@@ -79,19 +79,16 @@ base::Value BraveSearchEnginesHandler::GetPrivateSearchEnginesList() {
   return base::Value(std::move(defaults));
 }
 
-std::unique_ptr<base::DictionaryValue>
-BraveSearchEnginesHandler::GetSearchEnginesList() {
+base::Value::Dict BraveSearchEnginesHandler::GetSearchEnginesList() {
   auto search_engines_info = SearchEnginesHandler::GetSearchEnginesList();
   // Don't show two brave search entries from settings to prevent confusion.
   // Hide brave search for tor entry from settings UI. User doesn't need to
   // select brave search tor entry for normal profile.
-  constexpr char kDefaultsKey[] = "defaults";
-  auto* defaults = search_engines_info->FindListKey(kDefaultsKey);
+  auto* defaults = search_engines_info.FindList("defaults");
   DCHECK(defaults);
-  defaults->EraseListValueIf([](const auto& val) {
-    DCHECK(val.is_dict());
-    constexpr char kKeywordKey[] = "keyword";
-    const std::string* keyword = val.FindStringKey(kKeywordKey);
+  defaults->EraseIf([](const auto& val) {
+    const auto& dict = val.GetDict();
+    const std::string* keyword = dict.FindString("keyword");
     DCHECK(keyword);
     return *keyword == kBraveSearchForTorKeyword;
   });

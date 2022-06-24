@@ -8,10 +8,10 @@
 
 #include <memory>
 
-#define GetSearchEnginesList                         \
-  GetSearchEnginesList_NotUsed() { return nullptr; } \
-  friend class BraveSearchEnginesHandler;            \
-  virtual std::unique_ptr<base::DictionaryValue> GetSearchEnginesList
+#define GetSearchEnginesList                    \
+  GetSearchEnginesList_NotUsed() { return {}; } \
+  friend class BraveSearchEnginesHandler;       \
+  virtual base::Value::Dict GetSearchEnginesList
 
 #include "src/chrome/browser/ui/webui/settings/search_engines_handler.h"
 
