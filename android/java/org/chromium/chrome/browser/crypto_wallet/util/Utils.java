@@ -1599,6 +1599,12 @@ public class Utils {
         }
     }
 
+    public static String geteTLDHTMLFormatted(String etldPlusOne) {
+        GURL url = getCurentTabUrl();
+
+        return Utils.geteTLDHTMLFormatted(url, etldPlusOne);
+    }
+
     public static Spanned geteTLD(String etldPlusOne) {
         GURL url = getCurentTabUrl();
 
@@ -1606,6 +1612,11 @@ public class Utils {
     }
 
     public static Spanned geteTLD(GURL url, String etldPlusOne) {
+        String formattedeTLD = geteTLDHTMLFormatted(url, etldPlusOne);
+        return AndroidUtils.formateHTML(formattedeTLD);
+    }
+
+    private static String geteTLDHTMLFormatted(GURL url, String etldPlusOne) {
         StringBuilder builder = new StringBuilder();
         builder.append(url.getScheme()).append("://").append(url.getHost());
         int index = builder.indexOf(etldPlusOne);
@@ -1613,11 +1624,7 @@ public class Utils {
             builder.insert(index, "<b>");
             builder.insert(builder.length(), "</b>");
         }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            return Html.fromHtml(builder.toString(), Html.FROM_HTML_MODE_LEGACY);
-        } else {
-            return Html.fromHtml(builder.toString());
-        }
+        return builder.toString();
     }
 
     public static GURL getCurentTabUrl() {
