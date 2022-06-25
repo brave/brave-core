@@ -11,7 +11,6 @@
 #include <vector>
 
 #include "base/memory/raw_ptr.h"
-#include "base/memory/weak_ptr.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "content/public/renderer/render_frame.h"
 #include "content/public/renderer/v8_value_converter.h"
@@ -24,7 +23,6 @@ namespace brave_wallet {
 class JSSolanaProvider final : public gin::Wrappable<JSSolanaProvider>,
                                public mojom::SolanaEventsListener {
  public:
-  explicit JSSolanaProvider(content::RenderFrame* render_frame);
   ~JSSolanaProvider() override;
   JSSolanaProvider(const JSSolanaProvider&) = delete;
   JSSolanaProvider& operator=(const JSSolanaProvider&) = delete;
@@ -41,9 +39,10 @@ class JSSolanaProvider final : public gin::Wrappable<JSSolanaProvider>,
                            v8::Isolate* isolate) override;
   };
 
-  void AddJavaScriptObjectToFrame(v8::Local<v8::Context> context,
-                                  bool allow_overwrite_window_solana,
-                                  bool is_main_world);
+  static void Install(bool allow_overwrite_window_solana,
+                      bool is_main_world,
+                      content::RenderFrame* render_frame,
+                      v8::Local<v8::Context> context);
 
   // gin::WrappableBase
   gin::ObjectTemplateBuilder GetObjectTemplateBuilder(
@@ -54,6 +53,8 @@ class JSSolanaProvider final : public gin::Wrappable<JSSolanaProvider>,
   void AccountChangedEvent(const absl::optional<std::string>& account) override;
 
  private:
+  explicit JSSolanaProvider(content::RenderFrame* render_frame);
+
   bool EnsureConnected();
   void OnRemoteDisconnect();
 
@@ -168,7 +169,6 @@ class JSSolanaProvider final : public gin::Wrappable<JSSolanaProvider>,
   V8ConverterStrategy strategy_;
   mojo::Remote<mojom::SolanaProvider> solana_provider_;
   mojo::Receiver<mojom::SolanaEventsListener> receiver_{this};
-  base::WeakPtrFactory<JSSolanaProvider> weak_ptr_factory_{this};
 };
 
 }  // namespace brave_wallet
