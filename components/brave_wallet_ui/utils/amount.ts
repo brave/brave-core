@@ -42,6 +42,20 @@ export default class Amount {
     return new Amount(this.value.plus(value))
   }
 
+  minus (value: AmountLike): Amount {
+    if (value instanceof Amount) {
+      return this.minus(value.value || '')
+    }
+
+    if (value === '') {
+      return this
+    } else if (this.value === undefined) {
+      return new Amount(value)
+    }
+
+    return new Amount(this.value.minus(value))
+  }
+
   times (value: AmountLike): Amount {
     if (value instanceof Amount) {
       return this.times(value.value || '')

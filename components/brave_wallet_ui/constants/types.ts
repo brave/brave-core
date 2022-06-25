@@ -86,31 +86,33 @@ export interface PanelTitleObjectType {
 }
 
 export type PanelTypes =
-  | 'main'
-  | 'buy'
-  | 'send'
-  | 'swap'
-  | 'apps'
   | 'accounts'
-  | 'networks'
-  | 'settings'
-  | 'expanded'
-  | 'assets'
-  | 'signData'
-  | 'connectWithSite'
-  | 'connectHardwareWallet'
   | 'addEthereumChain'
-  | 'switchEthereumChain'
-  | 'approveTransaction'
-  | 'showUnlock'
-  | 'sitePermissions'
   | 'addSuggestedToken'
-  | 'transactions'
-  | 'transactionDetails'
-  | 'assets'
-  | 'provideEncryptionKey' // For grep: 'getEncryptionPublicKey'
   | 'allowReadingEncryptedMessage' // For grep: 'decryptRequest'
+  | 'approveTransaction'
+  | 'apps'
+  | 'assets'
+  | 'assets'
+  | 'buy'
+  | 'connectHardwareWallet'
+  | 'connectWithSite'
   | 'createAccount'
+  | 'expanded'
+  | 'main'
+  | 'networks'
+  | 'provideEncryptionKey' // For grep: 'getEncryptionPublicKey'
+  | 'send'
+  | 'settings'
+  | 'showUnlock'
+  | 'signData'
+  | 'signTransaction'
+  | 'signAllTransactions'
+  | 'sitePermissions'
+  | 'swap'
+  | 'switchEthereumChain'
+  | 'transactionDetails'
+  | 'transactions'
 
 export type NavTypes =
   | 'crypto'
@@ -242,6 +244,8 @@ export interface PanelState {
   connectingAccounts: string[]
   addChainRequest: BraveWallet.AddChainRequest
   signMessageData: BraveWallet.SignMessageRequest[]
+  signTransactionRequests: BraveWallet.SignTransactionRequest[]
+  signAllTransactionsRequests: BraveWallet.SignAllTransactionsRequest[]
   getEncryptionPublicKeyRequest: BraveWallet.GetEncryptionPublicKeyRequest
   decryptRequest: BraveWallet.DecryptRequest
   switchChainRequest: BraveWallet.SwitchChainRequest
