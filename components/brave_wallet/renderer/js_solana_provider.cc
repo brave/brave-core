@@ -177,8 +177,9 @@ bool JSSolanaProvider::EnsureConnected() {
     render_frame_->GetBrowserInterfaceBroker()->GetInterface(
         solana_provider_.BindNewPipeAndPassReceiver());
     solana_provider_->Init(receiver_.BindNewPipeAndPassRemote());
+    // We don't need weak ptr for mojo bindings when owning mojo::Remote
     solana_provider_.set_disconnect_handler(base::BindOnce(
-        &JSSolanaProvider::OnRemoteDisconnect, weak_ptr_factory_.GetWeakPtr()));
+        &JSSolanaProvider::OnRemoteDisconnect, base::Unretained(this)));
   }
 
   return solana_provider_.is_bound();
@@ -256,9 +257,9 @@ v8::Local<v8::Promise> JSSolanaProvider::Connect(gin::Arguments* arguments) {
       v8::Global<v8::Promise::Resolver>(isolate, resolver.ToLocalChecked()));
   solana_provider_->Connect(
       std::move(arg),
-      base::BindOnce(&JSSolanaProvider::OnConnect,
-                     weak_ptr_factory_.GetWeakPtr(), std::move(global_context),
-                     std::move(promise_resolver), isolate));
+      base::BindOnce(&JSSolanaProvider::OnConnect, base::Unretained(this),
+                     std::move(global_context), std::move(promise_resolver),
+                     isolate));
 
   return resolver.ToLocalChecked()->GetPromise();
 }
@@ -333,7 +334,7 @@ v8::Local<v8::Promise> JSSolanaProvider::SignAndSendTransaction(
   solana_provider_->SignAndSendTransaction(
       *serialized_message, std::move(send_options),
       base::BindOnce(&JSSolanaProvider::OnSignAndSendTransaction,
-                     weak_ptr_factory_.GetWeakPtr(), std::move(global_context),
+                     base::Unretained(this), std::move(global_context),
                      std::move(promise_resolver), isolate));
 
   return resolver.ToLocalChecked()->GetPromise();
@@ -379,9 +380,9 @@ v8::Local<v8::Promise> JSSolanaProvider::SignMessage(
       v8::Global<v8::Promise::Resolver>(isolate, resolver.ToLocalChecked()));
   solana_provider_->SignMessage(
       blob_msg->GetBlob(), display_str,
-      base::BindOnce(&JSSolanaProvider::OnSignMessage,
-                     weak_ptr_factory_.GetWeakPtr(), std::move(global_context),
-                     std::move(promise_resolver), isolate));
+      base::BindOnce(&JSSolanaProvider::OnSignMessage, base::Unretained(this),
+                     std::move(global_context), std::move(promise_resolver),
+                     isolate));
 
   return resolver.ToLocalChecked()->GetPromise();
 }
@@ -425,9 +426,9 @@ v8::Local<v8::Promise> JSSolanaProvider::Request(gin::Arguments* arguments) {
       v8::Global<v8::Promise::Resolver>(isolate, resolver.ToLocalChecked()));
   solana_provider_->Request(
       std::move(*arg_value),
-      base::BindOnce(&JSSolanaProvider::OnRequest,
-                     weak_ptr_factory_.GetWeakPtr(), std::move(global_context),
-                     std::move(promise_resolver), isolate, *method));
+      base::BindOnce(&JSSolanaProvider::OnRequest, base::Unretained(this),
+                     std::move(global_context), std::move(promise_resolver),
+                     isolate, *method));
 
   return resolver.ToLocalChecked()->GetPromise();
 }
@@ -465,7 +466,7 @@ v8::Local<v8::Promise> JSSolanaProvider::SignTransaction(
   solana_provider_->SignTransaction(
       *serialized_message,
       base::BindOnce(&JSSolanaProvider::OnSignTransaction,
-                     weak_ptr_factory_.GetWeakPtr(), std::move(global_context),
+                     base::Unretained(this), std::move(global_context),
                      std::move(promise_resolver), isolate));
 
   return resolver.ToLocalChecked()->GetPromise();
@@ -512,7 +513,7 @@ v8::Local<v8::Promise> JSSolanaProvider::SignAllTransactions(
   solana_provider_->SignAllTransactions(
       serialized_messages,
       base::BindOnce(&JSSolanaProvider::OnSignAllTransactions,
-                     weak_ptr_factory_.GetWeakPtr(), std::move(global_context),
+                     base::Unretained(this), std::move(global_context),
                      std::move(promise_resolver), isolate));
 
   return resolver.ToLocalChecked()->GetPromise();
