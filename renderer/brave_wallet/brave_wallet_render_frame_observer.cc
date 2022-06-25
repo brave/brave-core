@@ -43,7 +43,6 @@ void BraveWalletRenderFrameObserver::DidCreateScriptContext(
   auto dynamic_params = get_dynamic_params_callback_.Run();
   if (!dynamic_params.brave_use_native_wallet) {
     js_ethereum_provider_.reset();
-    js_solana_provider_.reset();
     return;
   }
 
@@ -68,11 +67,9 @@ void BraveWalletRenderFrameObserver::DidCreateScriptContext(
           brave_wallet::features::kBraveWalletSolanaFeature) &&
       base::FeatureList::IsEnabled(
           brave_wallet::features::kBraveWalletSolanaProviderFeature)) {
-    if (!js_solana_provider_)
-      js_solana_provider_.reset(new JSSolanaProvider(render_frame()));
-    js_solana_provider_->AddJavaScriptObjectToFrame(
-        context, dynamic_params.allow_overwrite_window_web3_provider,
-        is_main_world);
+    JSSolanaProvider::Install(
+        dynamic_params.allow_overwrite_window_web3_provider, is_main_world,
+        render_frame(), context);
   }
 }
 
