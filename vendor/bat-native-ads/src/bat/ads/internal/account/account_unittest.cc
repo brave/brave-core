@@ -210,7 +210,7 @@ TEST_F(BatAdsAccountTest, GetIssuersIfAdsAreEnabled) {
         )"}}}};
   MockUrlRequest(ads_client_mock_, endpoints);
 
-  account_->MaybeGetIssuers();
+  account_->Process();
 
   // Act
   const IssuersInfo& issuers = GetIssuers();
@@ -277,7 +277,7 @@ TEST_F(BatAdsAccountTest, DoNotGetIssuersIfAdsAreDisabled) {
         )"}}}};
   MockUrlRequest(ads_client_mock_, endpoints);
 
-  account_->MaybeGetIssuers();
+  account_->Process();
 
   // Act
   const IssuersInfo& issuers = GetIssuers();
@@ -343,7 +343,7 @@ TEST_F(BatAdsAccountTest, DoNotGetInvalidIssuers) {
         )"}}}};
   MockUrlRequest(ads_client_mock_, endpoints);
 
-  account_->MaybeGetIssuers();
+  account_->Process();
 
   // Act
   const IssuersInfo& issuers = GetIssuers();
@@ -389,7 +389,7 @@ TEST_F(BatAdsAccountTest, DoNotGetMissingPaymentIssuers) {
         )"}}}};
   MockUrlRequest(ads_client_mock_, endpoints);
 
-  account_->MaybeGetIssuers();
+  account_->Process();
 
   // Act
   const IssuersInfo& issuers = GetIssuers();

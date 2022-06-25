@@ -242,7 +242,7 @@ void Conversions::MaybeConvert(
   CheckRedirectChain(redirect_chain, html, conversion_id_patterns);
 }
 
-void Conversions::StartTimerIfReady() {
+void Conversions::Process() {
   database::table::ConversionQueue database_table;
   database_table.GetUnprocessed(
       [=](const bool success,
@@ -429,7 +429,7 @@ void Conversions::AddItemToQueue(
 
     BLOG(3, "Successfully appended conversion to queue");
 
-    StartTimerIfReady();
+    Process();
   });
 }
 
@@ -473,7 +473,7 @@ void Conversions::FailedToConvertQueueItem(
 
   NotifyConversionFailed(conversion_queue_item);
 
-  StartTimerIfReady();
+  Process();
 }
 
 void Conversions::ConvertedQueueItem(
@@ -489,7 +489,7 @@ void Conversions::ConvertedQueueItem(
 
   NotifyConversion(conversion_queue_item);
 
-  StartTimerIfReady();
+  Process();
 }
 
 void Conversions::ProcessQueue() {

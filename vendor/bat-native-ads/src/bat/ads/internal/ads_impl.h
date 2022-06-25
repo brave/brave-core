@@ -234,8 +234,6 @@ class AdsImpl final : public Ads,
 
   void Start();
 
-  void CleanupAdEvents();
-
   void MaybeServeNotificationAd();
 
   bool ShouldServeNotificationAdsAtRegularIntervals() const;

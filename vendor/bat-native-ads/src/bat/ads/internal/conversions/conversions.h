@@ -51,7 +51,7 @@ class Conversions final : public LocaleManagerObserver,
                     const std::string& html,
                     const ConversionIdPatternMap& conversion_id_patterns);
 
-  void StartTimerIfReady();
+  void Process();
 
  private:
   void CheckRedirectChain(const std::vector<GURL>& redirect_chain,

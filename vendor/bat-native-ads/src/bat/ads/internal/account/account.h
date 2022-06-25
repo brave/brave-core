@@ -52,22 +52,23 @@ class Account final : public PrefManagerObserver,
   void SetWallet(const std::string& id, const std::string& seed);
   const WalletInfo& GetWallet() const;
 
-  void MaybeGetIssuers() const;
-
   void Deposit(const std::string& creative_instance_id,
                const AdType& ad_type,
                const ConfirmationType& confirmation_type) const;
 
   void GetStatement(StatementCallback callback) const;
 
-  void ProcessClearingCycle() const;
+  void Process() const;
 
  private:
+  void MaybeGetIssuers() const;
+
   void ProcessDeposit(const std::string& creative_instance_id,
                       const AdType& ad_type,
                       const ConfirmationType& confirmation_type,
                       const double value) const;
 
+  void ProcessClearingCycle() const;
   void ProcessUnclearedTransactions() const;
 
   void WalletDidChange(const WalletInfo& wallet) const;

@@ -11,6 +11,8 @@
 #include "bat/ads/ad_info.h"
 #include "bat/ads/confirmation_type.h"
 #include "bat/ads/internal/ad_events/ad_event_info.h"
+#include "bat/ads/internal/ad_events/ad_events.h"
+#include "bat/ads/internal/base/logging_util.h"
 #include "bat/ads/internal/creatives/creative_ad_info.h"
 
 namespace ads {
@@ -65,6 +67,17 @@ absl::optional<base::Time> GetLastSeenAdvertiserTime(
   }
 
   return iter->created_at;
+}
+
+void PurgeExpiredAdEvents() {
+  PurgeExpiredAdEvents([](const bool success) {
+    if (!success) {
+      BLOG(1, "Failed to purge expired ad events");
+      return;
+    }
+
+    BLOG(6, "Successfully purged expired ad events");
+  });
 }
 
 }  // namespace ads
