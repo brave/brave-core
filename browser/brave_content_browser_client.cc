@@ -171,6 +171,7 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN) && !BUILDFLAG(IS_ANDROID)
+#include "brave/browser/brave_vpn/brave_vpn_service_factory.h"
 #include "brave/browser/ui/webui/brave_vpn/vpn_panel_ui.h"
 #include "brave/components/brave_vpn/brave_vpn_utils.h"
 #include "brave/components/brave_vpn/mojom/brave_vpn.mojom.h"
@@ -369,6 +370,15 @@ void BindBraveSearchDefaultHost(
   }
 }
 
+#if BUILDFLAG(ENABLE_BRAVE_VPN) && !BUILDFLAG(IS_ANDROID)
+void MaybeBindBraveVpnImpl(
+    content::RenderFrameHost* const frame_host,
+    mojo::PendingReceiver<brave_vpn::mojom::ServiceHandler> receiver) {
+  auto* context = frame_host->GetBrowserContext();
+  brave_vpn::BraveVpnServiceFactory::BindForContext(context,
+                                                    std::move(receiver));
+}
+#endif
 void MaybeBindSkusSdkImpl(
     content::RenderFrameHost* const frame_host,
     mojo::PendingReceiver<skus::mojom::SkusService> receiver) {
@@ -527,7 +537,10 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
 
   map->Add<skus::mojom::SkusService>(
       base::BindRepeating(&MaybeBindSkusSdkImpl));
-
+#if BUILDFLAG(ENABLE_BRAVE_VPN) && !BUILDFLAG(IS_ANDROID)
+  map->Add<brave_vpn::mojom::ServiceHandler>(
+      base::BindRepeating(&MaybeBindBraveVpnImpl));
+#endif
 #if !BUILDFLAG(IS_ANDROID)
   chrome::internal::RegisterWebUIControllerInterfaceBinder<
       brave_wallet::mojom::PanelHandlerFactory, WalletPanelUI>(map);

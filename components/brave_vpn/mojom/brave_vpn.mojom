@@ -42,6 +42,7 @@ interface ServiceObserver {
 interface ServiceHandler {
   AddObserver(pending_remote<ServiceObserver> observer);
   GetPurchasedState() => (PurchasedState state);
+  LoadPurchasedState(string domain);
 
   [EnableIfNot=is_android]
   GetConnectionState() => (ConnectionState state);

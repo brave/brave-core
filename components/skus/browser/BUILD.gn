@@ -15,7 +15,6 @@ static_library("browser") {
     "skus_url_loader_impl.h",
     "skus_utils.cc",
     "skus_utils.h",
-    "switches.h",
   ]
 
   public_deps = [
@@ -40,7 +39,7 @@ static_library("browser") {
 source_set("unit_tests") {
   testonly = true
 
-  sources = []
+  sources = [ "skus_utils_unittest.cc" ]
 
   # Remove when linux fixed https://github.com/brave/brave-browser/issues/15817.
   if (is_win || is_mac) {

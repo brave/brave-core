@@ -8,9 +8,13 @@
 #include <tuple>
 #include <utility>
 
+#include "base/bind.h"
+#include "base/callback_helpers.h"
 #include "base/json/json_reader.h"
 #include "base/no_destructor.h"
 #include "base/strings/utf_string_conversions.h"
+#include "brave/components/brave_vpn/buildflags/buildflags.h"
+#include "brave/components/brave_vpn/mojom/brave_vpn.mojom.h"
 #include "content/public/renderer/render_frame.h"
 #include "content/public/renderer/v8_value_converter.h"
 #include "gin/arguments.h"
@@ -39,14 +43,16 @@ bool SkusJSHandler::EnsureConnected() {
     render_frame_->GetBrowserInterfaceBroker()->GetInterface(
         skus_service_.BindNewPipeAndPassReceiver());
   }
+  bool result = skus_service_.is_bound();
+#if BUILDFLAG(ENABLE_BRAVE_VPN) && !BUILDFLAG(IS_ANDROID)
+  if (!vpn_service_.is_bound()) {
+    render_frame_->GetBrowserInterfaceBroker()->GetInterface(
+        vpn_service_.BindNewPipeAndPassReceiver());
+  }
+  result = result && vpn_service_.is_bound();
+#endif
 
-  return skus_service_.is_bound();
-}
-
-void SkusJSHandler::ResetRemote(content::RenderFrame* render_frame) {
-  render_frame_ = render_frame;
-  skus_service_.reset();
-  EnsureConnected();
+  return result;
 }
 
 void SkusJSHandler::AddJavaScriptObjectToFrame(v8::Local<v8::Context> context) {
@@ -84,10 +90,19 @@ void SkusJSHandler::AddJavaScriptObjectToFrame(v8::Local<v8::Context> context) {
       .Check();
 }
 
+void SkusJSHandler::ResetRemote(content::RenderFrame* render_frame) {
+  render_frame_ = render_frame;
+  skus_service_.reset();
+  vpn_service_.reset();
+  DCHECK(EnsureConnected());
+}
+
 // window.chrome.braveSkus.refresh_order
 v8::Local<v8::Promise> SkusJSHandler::RefreshOrder(v8::Isolate* isolate,
                                                    std::string order_id) {
-  if (!EnsureConnected())
+  auto host = render_frame_->GetWebFrame()->GetSecurityOrigin().Host().Utf8();
+  auto connected = EnsureConnected();
+  if (!connected)
     return v8::Local<v8::Promise>();
 
   v8::MaybeLocal<v8::Promise::Resolver> resolver =
@@ -95,18 +110,16 @@ v8::Local<v8::Promise> SkusJSHandler::RefreshOrder(v8::Isolate* isolate,
   if (resolver.IsEmpty()) {
     return v8::Local<v8::Promise>();
   }
-
   auto promise_resolver(
       v8::Global<v8::Promise::Resolver>(isolate, resolver.ToLocalChecked()));
+
   auto context_old(
       v8::Global<v8::Context>(isolate, isolate->GetCurrentContext()));
-
   skus_service_->RefreshOrder(
-      order_id,
+      host, order_id,
       base::BindOnce(&SkusJSHandler::OnRefreshOrder, base::Unretained(this),
                      std::move(promise_resolver), isolate,
                      std::move(context_old)));
-
   return resolver.ToLocalChecked()->GetPromise();
 }
 
@@ -168,9 +181,9 @@ v8::Local<v8::Promise> SkusJSHandler::FetchOrderCredentials(
       v8::Global<v8::Promise::Resolver>(isolate, resolver.ToLocalChecked()));
   auto context_old(
       v8::Global<v8::Context>(isolate, isolate->GetCurrentContext()));
-
+  auto host = render_frame_->GetWebFrame()->GetSecurityOrigin().Host().Utf8();
   skus_service_->FetchOrderCredentials(
-      order_id,
+      host, order_id,
       base::BindOnce(&SkusJSHandler::OnFetchOrderCredentials,
                      base::Unretained(this), std::move(promise_resolver),
                      isolate, std::move(context_old)));
@@ -260,15 +273,16 @@ v8::Local<v8::Promise> SkusJSHandler::CredentialSummary(v8::Isolate* isolate,
       v8::Global<v8::Context>(isolate, isolate->GetCurrentContext()));
 
   skus_service_->CredentialSummary(
-      domain,
-      base::BindOnce(&SkusJSHandler::OnCredentialSummary,
-                     base::Unretained(this), std::move(promise_resolver),
-                     isolate, std::move(context_old)));
+      domain, base::BindOnce(&SkusJSHandler::OnCredentialSummary,
+                             base::Unretained(this), domain,
+                             std::move(promise_resolver), isolate,
+                             std::move(context_old)));
 
   return resolver.ToLocalChecked()->GetPromise();
 }
 
 void SkusJSHandler::OnCredentialSummary(
+    const std::string& domain,
     v8::Global<v8::Promise::Resolver> promise_resolver,
     v8::Isolate* isolate,
     v8::Global<v8::Context> context_old,
@@ -303,7 +317,9 @@ void SkusJSHandler::OnCredentialSummary(
     std::ignore = resolver->Reject(context, result);
     return;
   }
-
+#if BUILDFLAG(ENABLE_BRAVE_VPN) && !BUILDFLAG(IS_ANDROID)
+  vpn_service_->LoadPurchasedState(domain);
+#endif
   v8::Local<v8::Value> local_result =
       content::V8ValueConverter::Create()->ToV8Value(result_dict, context);
   std::ignore = resolver->Resolve(context, local_result);

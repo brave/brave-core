@@ -41,6 +41,19 @@ BraveVpnService* BraveVpnServiceFactory::GetForProfile(Profile* profile) {
       GetInstance()->GetServiceForBrowserContext(profile, true));
 }
 
+// static
+#if !BUILDFLAG(IS_ANDROID)
+void BraveVpnServiceFactory::BindForContext(
+    content::BrowserContext* context,
+    mojo::PendingReceiver<brave_vpn::mojom::ServiceHandler> receiver) {
+  auto* service = static_cast<BraveVpnService*>(
+      GetInstance()->GetServiceForBrowserContext(context, true));
+  if (service) {
+    service->BindInterface(std::move(receiver));
+  }
+}
+#endif
+
 BraveVpnServiceFactory::BraveVpnServiceFactory()
     : BrowserContextKeyedServiceFactory(
           "BraveVpnService",

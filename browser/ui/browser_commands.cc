@@ -45,7 +45,9 @@
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
+#include "brave/browser/brave_vpn/brave_vpn_service_factory.h"
 #include "brave/components/brave_vpn/brave_vpn_constants.h"
+#include "brave/components/brave_vpn/brave_vpn_service.h"
 #include "brave/components/brave_vpn/brave_vpn_utils.h"
 #include "brave/components/brave_vpn/pref_names.h"
 #endif
@@ -138,6 +140,8 @@ void OpenIpfsFilesWebUI(Browser* browser) {
 
 void OpenBraveVPNUrls(Browser* browser, int command_id) {
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
+  brave_vpn::BraveVpnService* vpn_service =
+      brave_vpn::BraveVpnServiceFactory::GetForProfile(browser->profile());
   std::string target_url;
   switch (command_id) {
     case IDC_SEND_BRAVE_VPN_FEEDBACK:
@@ -147,7 +151,8 @@ void OpenBraveVPNUrls(Browser* browser, int command_id) {
       target_url = brave_vpn::kAboutUrl;
       break;
     case IDC_MANAGE_BRAVE_VPN_PLAN:
-      target_url = brave_vpn::GetManageUrl();
+      target_url =
+          brave_vpn::GetManageUrl(vpn_service->GetCurrentEnvironment());
       break;
     default:
       NOTREACHED();

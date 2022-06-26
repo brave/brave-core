@@ -286,8 +286,8 @@ class SkusServiceTestUnitTest : public testing::Test {
 
 TEST_F(SkusServiceTestUnitTest, CredentialSummarySuccess) {
   base::Value state(base::Value::Type::DICT);
-  auto env = skus::GetEnvironment();
-  auto domain = skus::GetDomain("vpn");
+  auto env = skus::GetDefaultEnvironment();
+  auto domain = skus::GetDomain("vpn", env);
   auto testing_payload = GenerateTestingCreds(domain);
   state.SetStringKey("skus:" + env, testing_payload);
   prefs()->Set(skus::prefs::kSkusState, std::move(state));
@@ -302,8 +302,8 @@ TEST_F(SkusServiceTestUnitTest, CredentialSummarySuccess) {
 
 TEST_F(SkusServiceTestUnitTest, CredentialSummaryFailed) {
   base::Value state(base::Value::Type::DICT);
-  auto env = skus::GetEnvironment();
-  auto domain = skus::GetDomain("vpn");
+  auto env = skus::GetDefaultEnvironment();
+  auto domain = skus::GetDomain("vpn", env);
   auto testing_payload = GenerateTestingCreds(domain);
   auto payload_value = base::JSONReader::Read(testing_payload);
   auto* orders = payload_value->FindPath("orders");
