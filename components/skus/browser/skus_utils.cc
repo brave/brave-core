@@ -47,7 +47,7 @@ std::string GetDomain(const std::string& prefix,
 }
 
 std::string GetEnvironmentForDomain(const std::string& domain) {
-  auto base_domain = GetDomainAndRegistry(
+  auto base_domain = net::registry_controlled_domains::GetDomainAndRegistry(
       domain, net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES);
   if (base_domain == "brave.com")
     return kEnvProduction;
