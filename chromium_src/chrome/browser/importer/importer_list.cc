@@ -10,6 +10,7 @@
 #include "base/values.h"
 #include "brave/common/importer/chrome_importer_utils.h"
 #include "brave/grit/brave_generated_resources.h"
+#include "chrome/common/importer/importer_type.h"
 #include "chrome/grit/generated_resources.h"
 #include "ui/base/l10n/l10n_util.h"
 
@@ -63,6 +64,10 @@ void DetectChromeProfiles(std::vector<importer::SourceProfile>* profiles) {
   AddChromeToProfiles(
       profiles, GetChromeSourceProfiles(GetEdgeUserDataFolder()),
       GetEdgeUserDataFolder(), "Microsoft Edge ", importer::TYPE_EDGE_CHROMIUM);
+
+  AddChromeToProfiles(
+      profiles, GetChromeSourceProfiles(GetVivaldiUserDataFolder()),
+      GetVivaldiUserDataFolder(), "Vivaldi ", importer::TYPE_VIVALDI);
 }
 
 }  // namespace

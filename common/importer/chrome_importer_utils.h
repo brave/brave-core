@@ -25,6 +25,8 @@ base::FilePath GetChromiumUserDataFolder();
 
 base::FilePath GetEdgeUserDataFolder();
 
+base::FilePath GetVivaldiUserDataFolder();
+
 base::Value::List GetChromeSourceProfiles(
     const base::FilePath& user_data_folder);
 
