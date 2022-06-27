@@ -7,7 +7,6 @@
 
 #include "base/numerics/safe_conversions.h"
 #include "brave/browser/themes/brave_dark_mode_utils.h"
-#include "brave/browser/themes/brave_theme_helper_utils.h"
 #include "brave/browser/themes/theme_properties.h"
 #include "brave/browser/ui/color/color_palette.h"
 #include "brave/components/brave_vpn/buildflags/buildflags.h"
@@ -118,17 +117,6 @@ SkColor BraveThemeHelper::GetDefaultColor(
     return braveColor.value();
   }
 
-  // Handles omnibox colors before upstream handles.
-  // We shares most of dark mode colors with upstream's incognito color.
-  // We set |incognito| to true below for dark mode before fetching upstream's
-  // default color because we share upstream's incognito colors for our dark
-  // mode. So, we should handle here for using our omnibox colors before setting
-  // |incognito|.
-  const absl::optional<SkColor> omnibox_color =
-      GetOmniboxColor(id, incognito, theme_supplier);
-  if (omnibox_color.has_value())
-    return omnibox_color.value();
-
   // Make sure we fallback to Chrome's dark theme (incognito) for our dark theme
   if (type == dark_mode::BraveDarkModeType::BRAVE_DARK_MODE_TYPE_DARK) {
     incognito = true;
@@ -136,45 +124,4 @@ SkColor BraveThemeHelper::GetDefaultColor(
 
   DCHECK(!is_brave_theme_properties);
   return ThemeHelper::GetDefaultColor(id, incognito, theme_supplier);
-}
-
-absl::optional<SkColor> BraveThemeHelper::GetOmniboxColor(
-    int id,
-    bool incognito,
-    const CustomThemeSupplier* theme_supplier) const {
-#if BUILDFLAG(IS_LINUX)
-  // If gtk theme is selected, respect it.
-  if (IsUsingSystemTheme(theme_supplier)) {
-    return ThemeHelper::GetOmniboxColor(id, incognito, theme_supplier);
-  }
-#endif
-
-  if (theme_supplier)
-    return ThemeHelper::GetOmniboxColor(id, incognito, theme_supplier);
-
-  const bool dark = dark_mode::GetActiveBraveDarkModeType() ==
-                    dark_mode::BraveDarkModeType::BRAVE_DARK_MODE_TYPE_DARK;
-  incognito = incognito || is_tor_ || is_guest_;
-  // TODO(petemill): Get colors from color-pallete and theme constants
-  switch (id) {
-    case ThemeProperties::COLOR_OMNIBOX_BACKGROUND: {
-      return GetLocationBarBackground(dark, incognito, /*hover*/ false);
-    }
-    case ThemeProperties::COLOR_OMNIBOX_BACKGROUND_HOVERED: {
-      return GetLocationBarBackground(dark, incognito, /*hover*/ true);
-    }
-    case ThemeProperties::COLOR_OMNIBOX_TEXT: {
-      return (dark || incognito) ? kDarkOmniboxText : kLightOmniboxText;
-    }
-    case ThemeProperties::COLOR_OMNIBOX_RESULTS_BG:
-    case ThemeProperties::COLOR_OMNIBOX_RESULTS_BG_HOVERED:
-    case ThemeProperties::COLOR_OMNIBOX_RESULTS_BG_SELECTED: {
-      return GetOmniboxResultBackground(id, dark, incognito);
-    }
-    default:
-      break;
-  }
-
-  // All other values, call original function
-  return ThemeHelper::GetOmniboxColor(id, incognito, theme_supplier);
 }

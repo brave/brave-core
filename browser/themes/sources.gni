@@ -14,8 +14,6 @@ if (!is_android) {
     "//brave/browser/themes/brave_private_window_theme_supplier.h",
     "//brave/browser/themes/brave_theme_helper.cc",
     "//brave/browser/themes/brave_theme_helper.h",
-    "//brave/browser/themes/brave_theme_helper_utils.cc",
-    "//brave/browser/themes/brave_theme_helper_utils.h",
     "//brave/browser/themes/brave_theme_service.cc",
     "//brave/browser/themes/brave_theme_service.h",
   ]

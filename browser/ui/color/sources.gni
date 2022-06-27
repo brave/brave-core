@@ -13,4 +13,5 @@ brave_browser_ui_color_mixers_deps = [
   "//skia",
   "//ui/color",
   "//ui/gfx",
+  "//ui/native_theme",
 ]

@@ -57,15 +57,15 @@ void SpeedreaderIconView::UpdateImpl() {
                                               nullptr);
   }
 
-  if (const ui::ThemeProvider* theme_provider = GetThemeProvider()) {
+  if (const ui::ColorProvider* color_provider = GetColorProvider()) {
     if (speedreader::PageStateIsDistilled(state)) {
-      const SkColor icon_color_active = theme_provider->GetColor(
+      const SkColor icon_color_active = color_provider->GetColor(
           BraveThemeProperties::COLOR_SPEEDREADER_ICON);
       SetIconColor(icon_color_active);
     } else if (speedreader::PageSupportsDistillation(state)) {
       // Reset the icon color
       const SkColor icon_color_default =
-          GetOmniboxColor(theme_provider, OmniboxPart::RESULTS_ICON);
+          GetOmniboxColor(color_provider, OmniboxPart::RESULTS_ICON);
       SetIconColor(icon_color_default);
     }
   }
