@@ -35,6 +35,10 @@ class InlineContentAd final : public InlineContentAdObserver {
                  const std::string& placement_id,
                  const std::string& creative_instance_id,
                  const mojom::InlineContentAdEventType event_type);
+  void FailedToFireEvent(
+      const std::string& placement_id,
+      const std::string& creative_instance_id,
+      const mojom::InlineContentAdEventType event_type) const;
 
   void NotifyInlineContentAdEvent(
       const InlineContentAdInfo& ad,
@@ -42,7 +46,6 @@ class InlineContentAd final : public InlineContentAdObserver {
   void NotifyInlineContentAdServed(const InlineContentAdInfo& ad) const;
   void NotifyInlineContentAdViewed(const InlineContentAdInfo& ad) const;
   void NotifyInlineContentAdClicked(const InlineContentAdInfo& ad) const;
-
   void NotifyInlineContentAdEventFailed(
       const std::string& placement_id,
       const std::string& creative_instance_id,

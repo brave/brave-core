@@ -35,6 +35,9 @@ class NewTabPageAd final : public NewTabPageAdObserver {
                  const std::string& placement_id,
                  const std::string& creative_instance_id,
                  const mojom::NewTabPageAdEventType event_type);
+  void FailedToFireEvent(const std::string& placement_id,
+                         const std::string& creative_instance_id,
+                         const mojom::NewTabPageAdEventType event_type) const;
 
   void NotifyNewTabPageAdEvent(
       const NewTabPageAdInfo& ad,
@@ -42,7 +45,6 @@ class NewTabPageAd final : public NewTabPageAdObserver {
   void NotifyNewTabPageAdServed(const NewTabPageAdInfo& ad) const;
   void NotifyNewTabPageAdViewed(const NewTabPageAdInfo& ad) const;
   void NotifyNewTabPageAdClicked(const NewTabPageAdInfo& ad) const;
-
   void NotifyNewTabPageAdEventFailed(
       const std::string& placement_id,
       const std::string& creative_instance_id,

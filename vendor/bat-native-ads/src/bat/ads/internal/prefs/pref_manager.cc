@@ -46,6 +46,8 @@ void PrefManager::RemoveObserver(PrefManagerObserver* observer) {
 }
 
 void PrefManager::OnPrefChanged(const std::string& path) const {
+  BLOG(1, "Pref changed at " << path);
+
   NotifyPrefChanged(path);
 }
 

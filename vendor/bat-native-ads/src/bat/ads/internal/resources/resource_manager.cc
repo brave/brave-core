@@ -45,7 +45,7 @@ void ResourceManager::RemoveObserver(ResourceManagerObserver* observer) {
   observers_.RemoveObserver(observer);
 }
 
-void ResourceManager::OnResourceDidUpdate(const std::string& id) {
+void ResourceManager::UpdateResource(const std::string& id) {
   BLOG(1, "Resource id " << id << " updated");
 
   NotifyResourceDidUpdate(id);

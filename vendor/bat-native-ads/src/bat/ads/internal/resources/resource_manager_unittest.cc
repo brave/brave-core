@@ -55,7 +55,7 @@ TEST_F(BatAdsResourceManagerTest, UpdateResource) {
   // Arrange
 
   // Act
-  ResourceManager::GetInstance()->OnResourceDidUpdate(kResourceId);
+  ResourceManager::GetInstance()->UpdateResource(kResourceId);
 
   // Assert
   EXPECT_TRUE(resource_did_update_);

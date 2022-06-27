@@ -67,12 +67,14 @@ void Account::SetWallet(const std::string& id, const std::string& seed) {
   const WalletInfo last_wallet_copy = GetWallet();
 
   if (!wallet_->Set(id, seed)) {
+    BLOG(0, "Failed to set wallet");
     NotifyInvalidWallet();
     return;
   }
 
-  const WalletInfo& wallet = GetWallet();
+  BLOG(1, "Successfully set wallet");
 
+  const WalletInfo& wallet = GetWallet();
   NotifyWalletDidUpdate(wallet);
 
   if (wallet.HasChanged(last_wallet_copy)) {
@@ -103,14 +105,16 @@ void Account::Deposit(const std::string& creative_instance_id,
   DCHECK_NE(ConfirmationType::kUndefined, confirmation_type.value());
 
   std::unique_ptr<DepositInterface> deposit =
-      DepositsFactory::Build(confirmation_type);
-  DCHECK(deposit);
+      DepositsFactory::Build(ad_type, confirmation_type);
+  if (!deposit) {
+    return;
+  }
 
   deposit->GetValue(
       creative_instance_id, [=](const bool success, const double value) {
         if (!success) {
-          NotifyFailedToProcessDeposit(creative_instance_id, ad_type,
-                                       confirmation_type);
+          FailedToProcessDeposit(creative_instance_id, ad_type,
+                                 confirmation_type);
           return;
         }
 
@@ -119,6 +123,11 @@ void Account::Deposit(const std::string& creative_instance_id,
 }
 
 void Account::GetStatement(StatementCallback callback) const {
+  if (!ShouldRewardUser()) {
+    callback(/* success */ false, {});
+    return;
+  }
+
   return BuildStatement(
       [callback](const bool success, const StatementInfo& statement) {
         callback(success, statement);
@@ -143,10 +152,16 @@ void Account::ProcessDeposit(const std::string& creative_instance_id,
       creative_instance_id, value, ad_type, confirmation_type,
       [=](const bool success, const TransactionInfo& transaction) {
         if (!success) {
-          NotifyFailedToProcessDeposit(creative_instance_id, ad_type,
-                                       confirmation_type);
+          FailedToProcessDeposit(creative_instance_id, ad_type,
+                                 confirmation_type);
           return;
         }
+
+        BLOG(3, "Successfully processed deposit for "
+                    << transaction.ad_type << " with creative instance id "
+                    << transaction.creative_instance_id << " and "
+                    << transaction.confirmation_type << " valued at "
+                    << transaction.value);
 
         NotifyDidProcessDeposit(transaction);
 
@@ -154,6 +169,18 @@ void Account::ProcessDeposit(const std::string& creative_instance_id,
 
         confirmations_->Confirm(transaction);
       });
+}
+
+void Account::FailedToProcessDeposit(
+    const std::string& creative_instance_id,
+    const AdType& ad_type,
+    const ConfirmationType& confirmation_type) const {
+  BLOG(0, "Failed to process deposit for "
+              << ad_type << " with creative instance id "
+              << creative_instance_id << " and " << confirmation_type);
+
+  NotifyFailedToProcessDeposit(creative_instance_id, ad_type,
+                               confirmation_type);
 }
 
 void Account::ProcessClearingCycle() const {
@@ -170,6 +197,8 @@ void Account::ProcessUnclearedTransactions() const {
 }
 
 void Account::WalletDidChange(const WalletInfo& wallet) const {
+  BLOG(1, "Wallet changed");
+
   NotifyWalletDidChange(wallet);
 
   ResetRewards([=](const bool success) {
@@ -278,14 +307,8 @@ void Account::OnDidFetchIssuers(const IssuersInfo& issuers) {
   TopUpUnblindedTokens();
 }
 
-void Account::OnFailedToFetchIssuers() {
-  BLOG(0, "Failed to fetch issuers");
-}
-
 void Account::OnDidRedeemUnblindedPaymentTokens(
     const privacy::UnblindedPaymentTokenList& unblinded_payment_tokens) {
-  BLOG(1, "Successfully redeemed unblinded payment tokens");
-
   database::table::Transactions database_table;
   database_table.Update(unblinded_payment_tokens, [](const bool success) {
     if (!success) {
@@ -297,24 +320,12 @@ void Account::OnDidRedeemUnblindedPaymentTokens(
   });
 }
 
-void Account::OnFailedToRedeemUnblindedPaymentTokens() {
-  BLOG(1, "Failed to redeem unblinded payment tokens");
-}
-
-void Account::OnDidRetryRedeemingUnblindedPaymentTokens() {
-  BLOG(1, "Retry redeeming unblinded payment tokens");
-}
-
 void Account::OnDidRefillUnblindedTokens() {
-  BLOG(1, "Successfully refilled unblinded tokens");
-
   AdsClientHelper::GetInstance()->ClearScheduledCaptcha();
 }
 
 void Account::OnCaptchaRequiredToRefillUnblindedTokens(
     const std::string& captcha_id) {
-  BLOG(1, "Captcha required to refill unblinded tokens");
-
   const WalletInfo& wallet = GetWallet();
   AdsClientHelper::GetInstance()->ShowScheduledCaptchaNotification(wallet.id,
                                                                    captcha_id);

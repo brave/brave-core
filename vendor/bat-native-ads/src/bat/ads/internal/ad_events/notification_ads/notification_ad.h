@@ -30,6 +30,9 @@ class NotificationAd final : public NotificationAdObserver {
                  const mojom::NotificationAdEventType event_type);
 
  private:
+  void FailedToFireEvent(const std::string& placement_id,
+                         const mojom::NotificationAdEventType event_type) const;
+
   void NotifyNotificationAdEvent(
       const NotificationAdInfo& ad,
       const mojom::NotificationAdEventType event_type) const;
@@ -38,7 +41,6 @@ class NotificationAd final : public NotificationAdObserver {
   void NotifyNotificationAdClicked(const NotificationAdInfo& ad) const;
   void NotifyNotificationAdDismissed(const NotificationAdInfo& ad) const;
   void NotifyNotificationAdTimedOut(const NotificationAdInfo& ad) const;
-
   void NotifyNotificationAdEventFailed(
       const std::string& placement_id,
       const mojom::NotificationAdEventType event_type) const;

@@ -107,7 +107,6 @@ class AdsImpl final : public Ads,
                       public AccountObserver,
                       public CatalogObserver,
                       public ConversionsObserver,
-                      public DatabaseManagerObserver,
                       public InlineContentAdObserver,
                       public InlineContentServingObserver,
                       public NewTabPageAdObserver,
@@ -128,7 +127,6 @@ class AdsImpl final : public Ads,
 
   // Ads:
   void Initialize(InitializeCallback callback) override;
-
   void Shutdown(ShutdownCallback callback) override;
 
   void ChangeLocale(const std::string& locale) override;
@@ -138,7 +136,6 @@ class AdsImpl final : public Ads,
   void OnHtmlLoaded(const int32_t tab_id,
                     const std::vector<GURL>& redirect_chain,
                     const std::string& html) override;
-
   void OnTextLoaded(const int32_t tab_id,
                     const std::vector<GURL>& redirect_chain,
                     const std::string& text) override;
@@ -198,12 +195,11 @@ class AdsImpl final : public Ads,
       const mojom::AdType ad_type,
       PurgeOrphanedAdEventsForTypeCallback callback) override;
 
-  void RemoveAllHistory(RemoveAllHistoryCallback callback) override;
-
   HistoryInfo GetHistory(const HistoryFilterType filter_type,
                          const HistorySortType sort_type,
                          const base::Time from_time,
                          const base::Time to_time) override;
+  void RemoveAllHistory(RemoveAllHistoryCallback callback) override;
 
   void GetStatementOfAccounts(GetStatementOfAccountsCallback callback) override;
 
@@ -235,27 +231,11 @@ class AdsImpl final : public Ads,
   void Start();
 
   void MaybeServeNotificationAd();
-
   bool ShouldServeNotificationAdsAtRegularIntervals() const;
   void MaybeServeNotificationAdsAtRegularIntervals();
 
-  // DatabaseManagerObserver:
-  void OnWillMigrateDatabase(const int from_version,
-                             const int to_version) override;
-  void OnDidMigrateDatabase(const int from_version,
-                            const int to_version) override;
-  void OnFailedToMigrateDatabase(const int from_version,
-                                 const int to_version) override;
-
   // AccountObserver:
   void OnWalletDidUpdate(const WalletInfo& wallet) override;
-  void OnWalletDidChange(const WalletInfo& wallet) override;
-  void OnInvalidWallet() override;
-  void OnDidProcessDeposit(const TransactionInfo& transaction) override;
-  void OnFailedToProcessDeposit(
-      const std::string& creative_instnce_id,
-      const AdType& ad_type,
-      const ConfirmationType& confirmation_type) override;
   void OnStatementOfAccountsDidChange() override;
 
   // CatalogObserver:
@@ -269,9 +249,6 @@ class AdsImpl final : public Ads,
   void OnNotificationAdClicked(const NotificationAdInfo& ad) override;
   void OnNotificationAdDismissed(const NotificationAdInfo& ad) override;
   void OnNotificationAdTimedOut(const NotificationAdInfo& ad) override;
-  void OnNotificationAdEventFailed(
-      const std::string& placement_id,
-      const mojom::NotificationAdEventType event_type) override;
 
   // NewTabPageServingObserver:
   void OnDidServeNewTabPageAd(const NewTabPageAdInfo& ad) override;
@@ -279,18 +256,10 @@ class AdsImpl final : public Ads,
   // NewTabPageAdObserver:
   void OnNewTabPageAdViewed(const NewTabPageAdInfo& ad) override;
   void OnNewTabPageAdClicked(const NewTabPageAdInfo& ad) override;
-  void OnNewTabPageAdEventFailed(
-      const std::string& placement_id,
-      const std::string& creative_instance_id,
-      const mojom::NewTabPageAdEventType event_type) override;
 
   // PromotedContentAdObserver:
   void OnPromotedContentAdViewed(const PromotedContentAdInfo& ad) override;
   void OnPromotedContentAdClicked(const PromotedContentAdInfo& ad) override;
-  void OnPromotedContentAdEventFailed(
-      const std::string& placement_id,
-      const std::string& creative_instance_id,
-      const mojom::PromotedContentAdEventType event_type) override;
 
   // InlineContentServingObserver:
   void OnDidServeInlineContentAd(const InlineContentAdInfo& ad) override;
@@ -298,23 +267,13 @@ class AdsImpl final : public Ads,
   // InlineContentAdObserver:
   void OnInlineContentAdViewed(const InlineContentAdInfo& ad) override;
   void OnInlineContentAdClicked(const InlineContentAdInfo& ad) override;
-  void OnInlineContentAdEventFailed(
-      const std::string& placement_id,
-      const std::string& creative_instance_id,
-      const mojom::InlineContentAdEventType event_type) override;
 
   // SearchResultAdObserver:
   void OnSearchResultAdViewed(const SearchResultAdInfo& ad) override;
   void OnSearchResultAdClicked(const SearchResultAdInfo& ad) override;
-  void OnSearchResultAdEventFailed(
-      const SearchResultAdInfo& ad,
-      const mojom::SearchResultAdEventType event_type) override;
 
   // TransferObserver:
-  void OnWillTransferAd(const AdInfo& ad, const base::Time time) override;
   void OnDidTransferAd(const AdInfo& ad) override;
-  void OnCancelledTransfer(const AdInfo& ad, const int32_t tab_id) override;
-  void OnFailedToTransferAd(const AdInfo& ad) override;
 
   // ConversionsObserver:
   void OnConversion(

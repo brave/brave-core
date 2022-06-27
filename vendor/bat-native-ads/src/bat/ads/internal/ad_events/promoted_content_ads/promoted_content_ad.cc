@@ -60,8 +60,7 @@ void PromotedContentAd::FireEvent(
     BLOG(1,
          "Failed to fire promoted content ad event due to an invalid placement "
          "id");
-    NotifyPromotedContentAdEventFailed(placement_id, creative_instance_id,
-                                       event_type);
+    FailedToFireEvent(placement_id, creative_instance_id, event_type);
     return;
   }
 
@@ -69,16 +68,14 @@ void PromotedContentAd::FireEvent(
     BLOG(1,
          "Failed to fire promoted content ad event due to an invalid creative "
          "instance id");
-    NotifyPromotedContentAdEventFailed(placement_id, creative_instance_id,
-                                       event_type);
+    FailedToFireEvent(placement_id, creative_instance_id, event_type);
     return;
   }
 
   promoted_content_ads::PermissionRules permission_rules;
   if (!permission_rules.HasPermission()) {
     BLOG(1, "Promoted content ad: Not allowed due to permission rules");
-    NotifyPromotedContentAdEventFailed(placement_id, creative_instance_id,
-                                       event_type);
+    FailedToFireEvent(placement_id, creative_instance_id, event_type);
     return;
   }
 
@@ -92,8 +89,7 @@ void PromotedContentAd::FireEvent(
                "Failed to fire promoted content ad event due to missing "
                "creative instance id "
                    << creative_instance_id);
-          NotifyPromotedContentAdEventFailed(placement_id, creative_instance_id,
-                                             event_type);
+          FailedToFireEvent(placement_id, creative_instance_id, event_type);
           return;
         }
 
@@ -117,8 +113,7 @@ void PromotedContentAd::FireEvent(
       [=](const bool success, const AdEventList& ad_events) {
         if (!success) {
           BLOG(1, "Promoted content ad: Failed to get ad events");
-          NotifyPromotedContentAdEventFailed(placement_id, creative_instance_id,
-                                             event_type);
+          FailedToFireEvent(placement_id, creative_instance_id, event_type);
           return;
         }
 
@@ -126,8 +121,7 @@ void PromotedContentAd::FireEvent(
           BLOG(1, "Promoted content ad: Not allowed as already fired "
                       << event_type << " event for this placement id "
                       << placement_id);
-          NotifyPromotedContentAdEventFailed(placement_id, creative_instance_id,
-                                             event_type);
+          FailedToFireEvent(placement_id, creative_instance_id, event_type);
           return;
         }
 
@@ -144,6 +138,18 @@ void PromotedContentAd::FireEvent(
 
         NotifyPromotedContentAdEvent(ad, event_type);
       });
+}
+
+void PromotedContentAd::FailedToFireEvent(
+    const std::string& placement_id,
+    const std::string& creative_instance_id,
+    const mojom::PromotedContentAdEventType event_type) const {
+  BLOG(1, "Failed to fire promoted content ad "
+              << event_type << " event for placement id " << placement_id
+              << " and creative instance id " << creative_instance_id);
+
+  NotifyPromotedContentAdEventFailed(placement_id, creative_instance_id,
+                                     event_type);
 }
 
 void PromotedContentAd::NotifyPromotedContentAdEvent(
