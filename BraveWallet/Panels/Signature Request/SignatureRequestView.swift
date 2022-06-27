@@ -62,9 +62,16 @@ struct SignatureRequestView: View {
           VStack(spacing: 8) {
             Blockie(address: account.address)
               .frame(width: min(blockieSize, maxBlockieSize), height: min(blockieSize, maxBlockieSize))
-            Text(account.name)
-              .font(.subheadline.weight(.semibold))
-              .foregroundColor(Color(.secondaryBraveLabel))
+            AddressView(address: account.address) {
+              VStack(spacing: 4) {
+                Text(account.name)
+                  .font(.subheadline.weight(.semibold))
+                  .foregroundColor(Color(.braveLabel))
+                Text(account.address.truncatedAddress)
+                  .font(.subheadline.weight(.semibold))
+                  .foregroundColor(Color(.secondaryBraveLabel))
+              }
+            }
             Text(urlOrigin: currentRequest.originInfo.origin)
               .font(.caption)
               .foregroundColor(Color(.braveLabel))
