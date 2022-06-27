@@ -15,7 +15,6 @@ import { StepsNavigation, StepsNavigationProps } from '../../../../../components
 // New wallet Steps
 //
 type OnboardingNewWalletSteps =
-  | WalletRoutes.OnboardingDisclosures
   | WalletRoutes.OnboardingBackupRecoveryPhrase
   | WalletRoutes.OnboardingBackupWallet
   | WalletRoutes.OnboardingComplete
@@ -25,7 +24,7 @@ type OnboardingNewWalletSteps =
   | WalletRoutes.OnboardingWelcome
 
 const NEW_WALLET_STEPS: OnboardingNewWalletSteps[] = [
-  WalletRoutes.OnboardingDisclosures,
+  WalletRoutes.OnboardingWelcome,
   WalletRoutes.OnboardingCreatePassword,
   WalletRoutes.OnboardingExplainRecoveryPhrase,
   WalletRoutes.OnboardingBackupRecoveryPhrase,
@@ -35,18 +34,12 @@ const NEW_WALLET_STEPS: OnboardingNewWalletSteps[] = [
 
 interface OnboardingNewWalletStepsNavigationProps extends Omit<StepsNavigationProps<OnboardingNewWalletSteps>, 'steps'> {}
 
-export const OnboardingNewWalletStepsNavigation = ({
-  currentStep,
-  preventSkipAhead,
-  goBackUrl,
-  onSkip
-}: OnboardingNewWalletStepsNavigationProps) => {
+export const OnboardingNewWalletStepsNavigation = (
+  props: OnboardingNewWalletStepsNavigationProps
+) => {
   return <StepsNavigation
+    {...props}
     steps={NEW_WALLET_STEPS}
-    goBackUrl={goBackUrl}
-    currentStep={currentStep}
-    preventSkipAhead={preventSkipAhead}
-    onSkip={onSkip}
   />
 }
 

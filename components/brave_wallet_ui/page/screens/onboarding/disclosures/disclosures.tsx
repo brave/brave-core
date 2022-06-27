@@ -5,12 +5,16 @@
 
 import * as React from 'react'
 import { useHistory } from 'react-router'
+import { useDispatch, useSelector } from 'react-redux'
 
 // utils
 import { getLocale, getLocaleWithTag } from '../../../../../common/locale'
 
 // routes
-import { WalletRoutes } from '../../../../constants/types'
+import { PageState, WalletRoutes } from '../../../../constants/types'
+
+// actions
+import { WalletPageActions } from '../../../actions'
 
 // components
 import { Checkbox } from 'brave-ui'
@@ -31,13 +35,30 @@ import {
   CheckboxText
 } from './disclosures.style'
 
-export const OnboardingDisclosures = () => {
+export type OnboardingDisclosuresNextSteps =
+  | WalletRoutes.OnboardingCreatePassword
+  | WalletRoutes.OnboardingImportOrRestore
+
+interface Props {
+  nextStep: OnboardingDisclosuresNextSteps
+  onBack?: () => void
+}
+
+export const OnboardingDisclosures = ({ nextStep, onBack }: Props) => {
   // routing
   const history = useHistory()
 
+  // redux
+  const dispatch = useDispatch()
+  const walletTermsAcknowledged = useSelector(({ page }: { page: PageState }) => page.walletTermsAcknowledged)
+
   // state
-  const [isResponsibilityCheckboxChecked, setIsResponsibilityCheckboxChecked] = React.useState(false)
-  const [isTermsCheckboxChecked, setIsTermsCheckboxChecked] = React.useState(false)
+  const [isResponsibilityCheckboxChecked, setIsResponsibilityCheckboxChecked] = React.useState(
+    walletTermsAcknowledged
+  )
+  const [isTermsCheckboxChecked, setIsTermsCheckboxChecked] = React.useState(
+    walletTermsAcknowledged
+  )
 
   // memos
   const isNextStepEnabled = React.useMemo(() => {
@@ -60,11 +81,12 @@ export const OnboardingDisclosures = () => {
   }, [])
 
   // methods
-  const nextStep = React.useCallback(() => {
+  const onNext = React.useCallback(() => {
     if (isNextStepEnabled) {
-      history.push(WalletRoutes.OnboardingCreatePassword)
+      dispatch(WalletPageActions.agreeToWalletTerms())
+      history.push(nextStep)
     }
-  }, [isNextStepEnabled])
+  }, [isNextStepEnabled, nextStep])
 
   // render
   return (
@@ -73,8 +95,8 @@ export const OnboardingDisclosures = () => {
         <StyledWrapper>
 
           <OnboardingNewWalletStepsNavigation
-            goBackUrl={WalletRoutes.OnboardingWelcome}
-            currentStep={WalletRoutes.OnboardingDisclosures}
+            goBack={onBack}
+            currentStep={WalletRoutes.OnboardingWelcome}
             preventSkipAhead
           />
 
@@ -125,7 +147,7 @@ export const OnboardingDisclosures = () => {
             <NavButton
               buttonType='primary'
               text={getLocale('braveWalletButtonContinue')}
-              onSubmit={nextStep}
+              onSubmit={onNext}
               disabled={!isNextStepEnabled}
             />
           </NextButtonRow>

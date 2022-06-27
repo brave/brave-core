@@ -28,15 +28,39 @@ import {
   ButtonContainer,
   LearnMoreLink
 } from './onboarding-welcome.style'
+import {
+  OnboardingDisclosures,
+  OnboardingDisclosuresNextSteps
+} from '../disclosures/disclosures'
 
 export const OnboardingWelcome = () => {
   // redux
   const dispatch = useDispatch()
 
+  // state
+  const [nextStep, setNextStep] = React.useState<OnboardingDisclosuresNextSteps | undefined>(undefined)
+
+  // methods
+  const hideDisclosures = React.useCallback(() => setNextStep(undefined), [])
+  const showNewWalletDisclosures = React.useCallback(
+    () => setNextStep(WalletRoutes.OnboardingCreatePassword),
+    []
+  )
+
+  const showRestoredWalletDisclosures = React.useCallback(
+    () => setNextStep(WalletRoutes.OnboardingCreatePassword),
+    []
+  )
+
   // effects
   React.useEffect(() => {
     dispatch(WalletPageActions.walletSetupComplete(false))
   }, [])
+
+  // render
+  if (nextStep !== undefined) {
+    return <OnboardingDisclosures nextStep={nextStep} onBack={hideDisclosures} />
+  }
 
   return <WalletPageLayout>
     <OnboardingWrapper>
@@ -50,16 +74,18 @@ export const OnboardingWelcome = () => {
         <NavButton
           buttonType='primary'
           text={getLocale('braveWalletWelcomeButton')}
-          url={WalletRoutes.OnboardingDisclosures}
+          onSubmit={showNewWalletDisclosures}
         />
 
         <NavButton
           buttonType='secondary'
           text={getLocale('braveWalletWelcomeIAlreadyHaveAWallet')}
-          url={WalletRoutes.OnboardingImportOrRestore}
+          onSubmit={showRestoredWalletDisclosures}
         />
 
-        <LearnMoreLink href='https://brave.com/learn/what-is-crypto-wallet/' target='_blank'>{getLocale('braveWalletWhatIsACryptoWallet')}</LearnMoreLink>
+        <LearnMoreLink href='https://brave.com/learn/what-is-crypto-wallet/' target='_blank'>
+          {getLocale('braveWalletWhatIsACryptoWallet')}
+        </LearnMoreLink>
       </ButtonContainer>
 
     </OnboardingWrapper>

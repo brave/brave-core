@@ -4,6 +4,7 @@
 // You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
+import { useSelector } from 'react-redux'
 import {
   Redirect,
   Route,
@@ -18,19 +19,34 @@ import { OnboardingVerifyRecoveryPhrase } from './verify-recovery-phrase/verify-
 import { OnboardingWelcome } from './welcome/onboarding-welcome'
 import { OnboardingImportOrRestoreWallet } from './import-or-restore-wallet/import-or-restore-wallet'
 import { OnboardingRestoreFromRecoveryPhrase } from './restore-from-recovery-phrase/restore-from-recovery-phrase'
-import { OnboardingDisclosures } from './disclosures/disclosures'
 
 // types
-import { WalletRoutes } from '../../../constants/types'
+import { PageState, WalletRoutes } from '../../../constants/types'
 
 export const OnboardingRoutes = () => {
+ // redux
+ const walletTermsAcknowledged = useSelector(({ page }: { page: PageState }) => page.walletTermsAcknowledged)
+
   // render
+
+  if (!walletTermsAcknowledged) {
+    return (
+      <Switch>
+        <Route path={WalletRoutes.OnboardingWelcome} exact>
+          <OnboardingWelcome />
+        </Route>
+
+        <Route path={WalletRoutes.Onboarding} exact>
+          <Redirect to={WalletRoutes.OnboardingWelcome} />
+        </Route>
+
+        <Redirect to={WalletRoutes.Onboarding} />
+      </Switch>
+    )
+  }
+
   return (
     <Switch>
-
-      <Route path={WalletRoutes.OnboardingDisclosures} exact>
-        <OnboardingDisclosures />
-      </Route>
 
       <Route path={WalletRoutes.OnboardingCreatePassword} exact>
         <OnboardingCreatePassword />
