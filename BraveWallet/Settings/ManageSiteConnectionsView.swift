@@ -202,6 +202,7 @@ private struct SiteConnectionDetailView: View {
       }
       .listRowBackground(Color(.secondaryBraveGroupedBackground))
     }
+    .listStyle(.insetGrouped)
     .navigationTitle(siteConnection.url)
     .navigationBarTitleDisplayMode(.inline)
     .toolbar {

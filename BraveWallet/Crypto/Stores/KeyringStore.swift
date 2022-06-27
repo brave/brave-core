@@ -11,6 +11,7 @@ import Security
 import Strings
 import LocalAuthentication
 import Combine
+import Data
 
 struct AutoLockInterval: Identifiable, Hashable {
   var value: Int32
@@ -210,6 +211,7 @@ public class KeyringStore: ObservableObject {
         self.updateKeyringInfo()
         self.resetKeychainStoredPassword()
       }
+      Domain.clearAllEthereumPermissions()
       completion?(isMnemonicValid)
     }
   }
