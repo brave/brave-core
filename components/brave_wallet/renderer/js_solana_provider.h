@@ -54,7 +54,6 @@ class JSSolanaProvider final : public gin::Wrappable<JSSolanaProvider>,
 
  private:
   bool EnsureConnected();
-  void OnRemoteDisconnect();
 
   bool GetIsPhantom(gin::Arguments* arguments);
   bool GetIsBraveWallet(gin::Arguments* arguments);

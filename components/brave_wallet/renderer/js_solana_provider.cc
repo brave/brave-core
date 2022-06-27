@@ -180,18 +180,9 @@ bool JSSolanaProvider::EnsureConnected() {
     render_frame_->GetBrowserInterfaceBroker()->GetInterface(
         solana_provider_.BindNewPipeAndPassReceiver());
     solana_provider_->Init(receiver_.BindNewPipeAndPassRemote());
-    // We don't need weak ptr for mojo bindings when owning mojo::Remote
-    solana_provider_.set_disconnect_handler(base::BindOnce(
-        &JSSolanaProvider::OnRemoteDisconnect, base::Unretained(this)));
   }
 
   return solana_provider_.is_bound();
-}
-
-void JSSolanaProvider::OnRemoteDisconnect() {
-  solana_provider_.reset();
-  receiver_.reset();
-  EnsureConnected();
 }
 
 bool JSSolanaProvider::GetIsPhantom(gin::Arguments* arguments) {
@@ -260,6 +251,7 @@ v8::Local<v8::Promise> JSSolanaProvider::Connect(gin::Arguments* arguments) {
       v8::Global<v8::Promise::Resolver>(isolate, resolver.ToLocalChecked()));
   solana_provider_->Connect(
       std::move(arg),
+      // We don't need weak ptr for mojo bindings when owning mojo::Remote
       base::BindOnce(&JSSolanaProvider::OnConnect, base::Unretained(this),
                      std::move(global_context), std::move(promise_resolver),
                      isolate));
