@@ -108,8 +108,15 @@ class BraveSearchPromotionCell: UITableViewCell {
     promotionContentView.snp.makeConstraints {
       $0.leading.equalTo(safeArea.leading).inset(8)
       $0.trailing.equalTo(safeArea.trailing).inset(8)
-      $0.top.equalTo(safeArea.top)
-      $0.bottom.equalTo(safeArea.bottom)
+      
+      if #available(iOS 15, *) {
+        $0.top.equalTo(safeArea.top)
+        $0.bottom.equalTo(safeArea.bottom)
+      } else {
+        // iOS 14 table headers look different, solid color, adding small inset to make it look better.
+        $0.top.equalTo(safeArea.top).inset(8)
+        $0.bottom.equalTo(safeArea.bottom).inset(8)
+      }
     }
     
     [tryButton, dismissButton].forEach(buttonsStackView.addArrangedSubview(_:))
