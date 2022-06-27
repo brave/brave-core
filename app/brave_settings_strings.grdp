@@ -685,9 +685,6 @@
   <message name="IDS_BRAVE_SYNC_RESET_CONFIRMATION" desc="Confirmation message prompt to make sure the user is ok with leaving sync">
     If you reset Sync, you will have to re-enter a sync code from another device in order to sync with it. Are you sure you want to proceed?
   </message>
-  <message name="IDS_BRAVE_SYNC_PERMANENTLY_DELETE_ACCOUNT_BUTTON" desc="The Sync button that leads to permanently delete Sync account">
-    Permanently delete account
-  </message>
   <message name="IDS_BRAVE_SYNC_DELETE_DEVICE_CONFIRMATION" desc="Confirmation message prompt to make sure the user is ok to delete other device from the chain">
     Are you sure you want to remove the selected device from the sync chain?
   </message>
@@ -706,6 +703,25 @@
   </message>
   <message name="IDS_BRAVE_SYNC_LEAVE_AND_REJOIN_THE_CHAIN_BUTTON" desc="Button which does reset the sync and offers to re-join the sync chain">
     Reset and re-join sync chain
+  </message>
+  <message name="IDS_BRAVE_DELETE_SYNC_ACCOUNT_BUTTON_AND_DIALOG_TITLE" desc="The button that opens Permanently delete account confirmation dialog. Also this string is the dialog title">
+    Delete Sync account
+  </message>
+  <message name="IDS_BRAVE_SYNC_PERMANENTLY_DELETE_ACCOUNT_BUTTON" desc="The Sync button that leads to permanently delete Sync account">
+    Permanently delete account
+  </message>
+  <message name="IDS_BRAVE_SYNC_DELETE_ACCOUNT_DESCRIPTION_PARTIAL_1" desc="">
+    Deleting your account will remove your encrypted data from Brave servers and disable Sync on all of your connected devices.
+  </message>
+  <message name="IDS_BRAVE_SYNC_DELETE_ACCOUNT_DESCRIPTION_PARTIAL_2" desc="">
+    It will not however delete the data that is stored locally on those devices.
+  </message>
+  <message name="IDS_BRAVE_SYNC_DELETE_ACCOUNT_DESCRIPTION_PARTIAL_3" desc="">
+    This deletion is permanent and there is no way to recover the data. Should you decide to
+    start using Sync again, you will need to create a new account and re-add each device one by one.
+  </message>
+  <message name="IDS_BRAVE_SYNC_PERMANENTLY_DELETE_ACCOUNT_IN_PROGRESS" desc="The string which indicates that Sync account deletion happens now">
+    Account deletion is in progress...
   </message>
 
   <!-- Settings / Search engine -->
