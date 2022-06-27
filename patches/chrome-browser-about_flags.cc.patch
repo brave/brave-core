@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/about_flags.cc b/chrome/browser/about_flags.cc
-index 17112a69cf5bdf89dd2588adb9db75691d1443fb..68047098bf1183fd1392609c3ad96d45749dda4f 100644
+index fa0820880c28a78960d10fc918d121be18d7823f..40c1ad3e4990527f77b71a762d5f59a372f0d966 100644
 --- a/chrome/browser/about_flags.cc
 +++ b/chrome/browser/about_flags.cc
-@@ -3195,6 +3195,7 @@ const FeatureEntry::FeatureVariation kDmTokenDeletionVariation[] = {
+@@ -3157,6 +3157,7 @@ const FeatureEntry::FeatureVariation kDmTokenDeletionVariation[] = {
  //
  // When adding a new choice, add it to the end of the list.
  const FeatureEntry kFeatureEntries[] = {
