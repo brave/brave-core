@@ -61,6 +61,12 @@ class BatAdsAccountTest : public AccountObserver, public UnitTestBase {
     account_->AddObserver(this);
   }
 
+  void TearDown() override {
+    account_->RemoveObserver(this);
+
+    UnitTestBase::TearDown();
+  }
+
   void Save(const CreativeNotificationAdList& creative_ads) {
     database::table::CreativeNotificationAds database_table;
     database_table.Save(creative_ads,

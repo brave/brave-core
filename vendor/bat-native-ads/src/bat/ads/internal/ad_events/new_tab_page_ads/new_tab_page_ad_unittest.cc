@@ -40,12 +40,22 @@ constexpr char kInvalidCreativeInstanceId[] = "";
 class BatAdsNewTabPageAdTest : public NewTabPageAdObserver,
                                public UnitTestBase {
  protected:
-  BatAdsNewTabPageAdTest()
-      : new_tab_page_ad_(std::make_unique<NewTabPageAd>()) {
+  BatAdsNewTabPageAdTest() = default;
+
+  ~BatAdsNewTabPageAdTest() override = default;
+
+  void SetUp() override {
+    UnitTestBase::SetUp();
+
+    new_tab_page_ad_ = std::make_unique<NewTabPageAd>();
     new_tab_page_ad_->AddObserver(this);
   }
 
-  ~BatAdsNewTabPageAdTest() override = default;
+  void TearDown() override {
+    new_tab_page_ad_->RemoveObserver(this);
+
+    UnitTestBase::TearDown();
+  }
 
   void OnNewTabPageAdServed(const NewTabPageAdInfo& ad) override {
     ad_ = ad;
