@@ -124,18 +124,17 @@ public class EncryptionKeyFragment extends Fragment implements View.OnClickListe
 
             if (mActivityType
                     == BraveWalletDAppsActivity.ActivityType.GET_ENCRYPTION_PUBLIC_KEY_REQUEST) {
-                mWalletModel.getCryptoModel().getPublicEncryptionRequest(
-                        encryptionPublicKeyRequest -> {
-                            if (encryptionPublicKeyRequest != null) {
-                                mEncryptionPublicKeyRequest = encryptionPublicKeyRequest;
-                                String formattedeTLD = String.format(
-                                        getString(
-                                                R.string.brave_wallet_provide_encryption_key_description),
-                                        Utils.geteTLDHTMLFormatted(
-                                                encryptionPublicKeyRequest.originInfo.eTldPlusOne));
-                                mTvMessageDesc.setText(AndroidUtils.formateHTML(formattedeTLD));
-                            }
-                        });
+                mWalletModel.getCryptoModel().getPublicEncryptionRequest(encryptionPublicKeyRequest
+                        -> {
+                    if (encryptionPublicKeyRequest != null) {
+                        mEncryptionPublicKeyRequest = encryptionPublicKeyRequest;
+                        String formattedeTLD = String.format(
+                                getString(R.string.brave_wallet_provide_encryption_key_description),
+                                Utils.geteTLDHTMLFormatted(
+                                        encryptionPublicKeyRequest.originInfo.eTldPlusOne));
+                        mTvMessageDesc.setText(AndroidUtils.formateHTML(formattedeTLD));
+                    }
+                });
             } else if (mActivityType == BraveWalletDAppsActivity.ActivityType.DECRYPT_REQUEST) {
                 mWalletModel.getCryptoModel().getDecryptMessageRequest(decryptRequest -> {
                     mDecryptRequest = decryptRequest;
