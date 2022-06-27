@@ -10,7 +10,7 @@ import WarningCircleOutlineIcon from '../../../../assets/svg-icons/warning-circl
 export const BannerCard = styled.div`
   margin-top: 24px;
   margin-bottom: 40px;
-  background: rgba(255, 255, 255, 0.75);
+  background-color: ${(p) => p.theme.color.background02};
   box-shadow: 0px 0px 8px rgba(151, 151, 151, 0.16);
   border-radius: 4px;
   display: flex;
