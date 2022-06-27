@@ -40,19 +40,20 @@ jobs:
           UPLIFT_PR_REGEX='uplift\s+(?:of)?:?\s+\K(#\d+)'
           RESOLVE_ISSUE_REGEX="(?:resolv|fix|clos)(?:e|es|ed)?:?\s+\K(${BB_ISSUE_URL_REGEX})"
           verlte() { printf '%s\n%s' "$1" "$2" | sort -C -V; }
+          normalize_issue_links() { sed "s@\sbrave\/brave-browser\#\([0-9]\+\)@ ${BB_ISSUE_SUFFIX}\1@g"; }
 
-          pr_body=$(gh pr view "${PR_NUMBER}" -R "${REPO_NAME}" --json body --jq .body | sed "s@\sbrave\/brave-browser\#\([0-9]\+\)@ ${BB_ISSUE_SUFFIX}\1@g")
+          pr_body=$(gh pr view "${PR_NUMBER}" -R "${REPO_NAME}" --json body --jq .body | normalize_issue_links)
 
           mapfile -t issues_pr < <(echo "${pr_body}" | grep -ioP "${RESOLVE_ISSUE_REGEX}" || :)
           echo "Looking for any uplifted PRs"
           mapfile -t prs < <(echo "${pr_body}" | grep -ioP "${UPLIFT_PR_REGEX}" || :)
-          mapfile -t issues_uplift_pr < <(echo "${prs[@]}" | xargs -n 1 -I{} gh pr view {} -R brave/brave-core --json body --jq ".body" | sed "s@\sbrave\/brave-browser\#\([0-9]\+\)@ ${BB_ISSUE_SUFFIX}\1@g" | grep -ioP "${RESOLVE_ISSUE_REGEX}")
+          mapfile -t issues_uplift_pr < <(echo "${prs[@]}" | xargs -n 1 -I{} gh pr view {} -R brave/brave-core --json body --jq ".body" | normalize_issue_links | grep -ioP "${RESOLVE_ISSUE_REGEX}")
           echo "Relevant issues detected:"
           echo "${issues_pr[*]}" "${issues_uplift_pr[*]}"
 
           pr_milestone=$(gh pr view "${PR_NUMBER}" -R "${REPO_NAME}" --json milestone --jq .milestone.title)
 
-          for issue in "${!issues_pr[@]}" "${issues_uplift_pr[@]}"; do
+          for issue in "${issues_pr[@]}" "${issues_uplift_pr[@]}"; do
               issue_milestone=$(gh issue view "${issue}" --json milestone --jq .milestone.title)
               if [[ -z "${issue_milestone}" ]] || verlte "${pr_milestone}" "${issue_milestone}"; then
                   echo "Setting ${issue} milestone to ${pr_milestone}"
