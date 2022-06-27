@@ -543,13 +543,12 @@ public class SearchViewController: SiteTableViewController, LoaderListener {
       } else {
         cell = tableView.dequeueReusableCell(withIdentifier: SuggestionCell.identifier, for: indexPath)
 
-        if let suggestionCell = cell as? SuggestionCell {
-          suggestionCell.setTitle(dataSource.suggestions[indexPath.row])
+        if let suggestionCell = cell as? SuggestionCell, let suggestion = dataSource.suggestions[safe: indexPath.row] {
+          suggestionCell.setTitle(suggestion)
           suggestionCell.separatorInset = UIEdgeInsets(top: 0.0, left: view.bounds.width, bottom: 0.0, right: -view.bounds.width)
           suggestionCell.openButtonActionHandler = { [weak self] in
             guard let self = self else { return }
 
-            let suggestion = self.dataSource.suggestions[indexPath.row]
             self.searchDelegate?.searchViewController(self, didLongPressSuggestion: suggestion)
           }
         }
