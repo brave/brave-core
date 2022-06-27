@@ -537,8 +537,8 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, GetPublicKey) {
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
 
   constexpr char get_public_key_script[] =
-      "window.domAutomationController.send(window.solana."
-      "publicKey ? window.solana.publicKey.toString() : '')";
+      "window.domAutomationController.send(window.braveSolana."
+      "publicKey ? window.braveSolana.publicKey.toString() : '')";
 
   // Will get null in disconnected state
   EXPECT_EQ(EvalJs(web_contents(), get_public_key_script,
