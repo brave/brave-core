@@ -52,7 +52,7 @@ export const TransactionComplete = (props: Props) => {
         />
         <NavButton
           buttonType='primary'
-          text={getLocale('braveWalletTransactionCompleteNextCTA')}
+          text={getLocale('braveWalletButtonDone')}
           onSubmit={onClickPrimaryCTA}
           disabled={isPrimaryCTADisabled}
         />
