@@ -232,7 +232,9 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
         mBraveRewardsButton = (ImageButton) findViewById(R.id.brave_rewards_button);
         mHomeButton = (HomeButton) findViewById(R.id.home_button);
         mBraveWalletBadge = findViewById(R.id.wallet_notfication_badge);
-        mWalletIcon = mWalletLayout.findViewById(R.id.brave_wallet_button);
+        if (mWalletLayout != null) {
+            mWalletIcon = mWalletLayout.findViewById(R.id.brave_wallet_button);
+        }
 
         mDarkModeTint = ThemeUtils.getThemedToolbarIconTint(getContext(), false);
         mLightModeTint =
@@ -447,7 +449,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                             tab.getId(), tab.getUrl().getSpec());
                     if (getToolbarDataProvider().getTab() == tab) {
                         showWalletIcon(mTabsWithWalletIcon.contains(tab.getId()));
-                    } else {
+                    } else if (mWalletLayout != null) {
                         mWalletLayout.setVisibility(mTabsWithWalletIcon.contains(tab.getId())
                                         ? View.VISIBLE
                                         : View.GONE);
@@ -742,7 +744,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
     }
 
     public void showWalletIcon(boolean show) {
-        assert mWalletLayout != null;
+        // The layout could be null in Custom Tabs layout
         if (mWalletLayout == null) {
             return;
         }
@@ -1189,9 +1191,11 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
 
     @Override
     public void onThemeColorChanged(int color, boolean shouldAnimate) {
-        ApiCompatibilityUtils.setImageTintList(mWalletIcon,
-                !ColorUtils.shouldUseLightForegroundOnBackground(color) ? mDarkModeTint
-                                                                        : mLightModeTint);
+        if (mWalletIcon != null) {
+            ApiCompatibilityUtils.setImageTintList(mWalletIcon,
+                    !ColorUtils.shouldUseLightForegroundOnBackground(color) ? mDarkModeTint
+                                                                            : mLightModeTint);
+        }
 
         final int textBoxColor = ThemeUtils.getTextBoxColorForToolbarBackgroundInNonNativePage(
                 getContext(), color, isIncognito());
@@ -1256,7 +1260,10 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                     ChromeColors.getDefaultThemeColor(getContext(), isIncognito()));
             mShieldsLayoutIsColorBackground = true;
         }
-        mWalletLayout.setBackgroundColor(ChromeColors.getDefaultThemeColor(getContext(), false));
+        if (mWalletLayout != null) {
+            mWalletLayout.setBackgroundColor(
+                    ChromeColors.getDefaultThemeColor(getContext(), false));
+        }
         updateModernLocationBarColorImpl(mCurrentToolbarColor);
     }
 
