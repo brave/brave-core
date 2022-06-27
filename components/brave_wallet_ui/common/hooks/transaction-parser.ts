@@ -328,7 +328,7 @@ export function useTransactionParser (
             }
             case 'Unknown': {
               if (!to) {
-                to = solTxData?.instructions[0].accountMetas[0].pubkey.toString() ?? ''
+                to = solTxData?.instructions[0]?.accountMetas[0]?.pubkey.toString() ?? ''
               }
             }
             default: return acc.plus(lamportsAmount)
