@@ -56,7 +56,7 @@ function processCSS(text) {
   return text;
 }
 
-// Used to rewrite urls for XHRs in translate isolated world
+// Used to rewrite urls for XHRs in the translate isolated world
 // (primarily for /translate_a/t).
 if (typeof XMLHttpRequest.prototype.realOpen === 'undefined') {
   XMLHttpRequest.prototype.realOpen = XMLHttpRequest.prototype.open;
@@ -68,7 +68,7 @@ if (typeof XMLHttpRequest.prototype.realOpen === 'undefined') {
 };
 
 // An overridden version of onLoadJavascript from translate.js, that fetches
-// and eval secondary scripts (i.e. main.js).
+// and evaluates secondary scripts (i.e. main.js).
 // The differences:
 // 1. change url via rewriteUrl();
 // 2. process the loaded code via processJavascript().
@@ -90,9 +90,9 @@ cr.googleTranslate.onLoadJavascript = function (url) {
   xhr.send();
 };
 
-// Styles to hide rootelements that are injected by the scripts in the DOM.
-// Currently they are always invisible. The styles is added in case of changes
-// in the future versions.
+// The styles to hide root elements that are injected by the scripts in the DOM.
+// Currently they are always invisible. The styles are added in case of changes
+// in future versions.
 const braveExtraStyles = `.goog-te-spinner-pos, #goog-gt-tt {display: none;}`
 
 // An overridden version of onLoadCSS from translate.js.
