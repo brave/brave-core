@@ -115,7 +115,9 @@ export function useMultiChainBuyAssets () {
   }, [getBuyAssetUrl, selectedAssetNetwork, buyAmount, selectedAsset])
 
   return {
-    ...options,
+    allAssetOptions: options.allAssetOptions,
+    rampAssetOptions: options.rampAssetOptions,
+    wyreAssetOptions: options.wyreAssetOptions,
     selectedAsset,
     setSelectedAsset,
     selectedAssetNetwork,
