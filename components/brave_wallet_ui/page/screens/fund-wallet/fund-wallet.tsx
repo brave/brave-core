@@ -30,7 +30,7 @@ import { AllNetworksOption } from '../../../options/network-filter-options'
 import { SelectBuyOption } from '../../../components/buy-send-swap/select-buy-option/select-buy-option'
 
 // hooks
-import { useHasAccount } from '../../../common/hooks'
+import { usePrevNetwork } from '../../../common/hooks/previous-network'
 import { useMultiChainBuyAssets } from '../../../common/hooks/use-multi-chain-buy-assets'
 
 // style
@@ -69,18 +69,18 @@ export const FundWalletScreen = () => {
   } = useSelector(({ wallet }: { wallet: WalletState }) => wallet)
 
   // custom hooks
-  const { needsAccount } = useHasAccount()
+  const { prevNetwork } = usePrevNetwork()
   const {
     allAssetOptions: allBuyAssetOptions,
-    getAllBuyOptionsAllChains,
-    selectedAsset,
-    selectedAssetNetwork,
-    setSelectedAsset,
-    selectedAssetBuyOptions,
-    buyAssetNetworks,
     buyAmount,
+    buyAssetNetworks,
+    getAllBuyOptionsAllChains,
+    openBuyAssetLink,
+    selectedAsset,
+    selectedAssetBuyOptions,
+    selectedAssetNetwork,
     setBuyAmount,
-    openBuyAssetLink
+    setSelectedAsset
   } = useMultiChainBuyAssets()
 
   // state
@@ -89,9 +89,7 @@ export const FundWalletScreen = () => {
   const [accountSearchText, setAccountSearchText] = React.useState<string>('')
 
   // memos
-  const isNextStepEnabled = React.useMemo(() => {
-    return !!selectedAsset
-  }, [selectedAsset, buyAmount])
+  const isNextStepEnabled = React.useMemo(() => !!selectedAsset, [selectedAsset])
 
   const assetsForFilteredNetwork = React.useMemo(() => {
     const assets = selectedNetworkFilter.chainId === AllNetworksOption.chainId
@@ -106,6 +104,10 @@ export const FundWalletScreen = () => {
       ? accounts.filter(a => a.coin === selectedAssetNetwork.coin)
       : []
   }, [selectedAssetNetwork, accounts])
+
+  const needsAccount = React.useMemo(() => {
+    return selectedAsset && accountsForSelectedAssetNetwork.length < 1
+  }, [selectedAsset, accountsForSelectedAssetNetwork.length])
 
   const accountListSearchResults = React.useMemo(() => {
     if (accountSearchText === '') {
@@ -165,6 +167,11 @@ export const FundWalletScreen = () => {
     })
   }, [selectedAsset, selectedAssetNetwork, buyAmount, selectedAccount])
 
+  const goBackToSelectAssets = React.useCallback(() => {
+    setShowBuyOptions(false)
+    setSelectedAsset(undefined)
+  }, [])
+
   // effects
   React.useEffect(() => {
     if (assetsForFilteredNetwork.length === 0) {
@@ -189,7 +196,12 @@ export const FundWalletScreen = () => {
     ) {
       dispatch(WalletActions.selectAccount(accountsForSelectedAssetNetwork[0]))
     }
-  }, [selectedAsset, selectedAssetNetwork, accountsForSelectedAssetNetwork, selectedAccount])
+  }, [
+    selectedAsset,
+    selectedAssetNetwork,
+    accountsForSelectedAssetNetwork,
+    selectedAccount
+  ])
 
   // render
   return (
@@ -197,7 +209,10 @@ export const FundWalletScreen = () => {
       <MainWrapper>
         <StyledWrapper>
 
-          {!showAccountSearch &&
+          {/* Hide nav when creating or searching accounts */}
+          {!showAccountSearch && !(
+            needsAccount && showBuyOptions
+          ) &&
             <StepsNavigation
               goBack={onBack}
               onSkip={goToPortfolio}
@@ -207,11 +222,8 @@ export const FundWalletScreen = () => {
             />
           }
 
-          {/* Creates wallet Account if needed */}
-          {needsAccount && <CreateAccountTab /> }
-
           {/* Asset Selection */}
-          {!needsAccount && !showBuyOptions &&
+          {!showBuyOptions &&
             <>
               <SelectAssetWrapper>
                 <SwapInputComponent
@@ -239,14 +251,18 @@ export const FundWalletScreen = () => {
                             ? `${asset.contractAddress}-${asset.symbol}-${asset.chainId}`
                             : `${asset.contractAddress}-${asset.tokenId}-${asset.chainId}`}
                           token={asset}
-                          tokenNetwork={getTokensNetwork(networksFilterOptions, asset)}
+                          tokenNetwork={getTokensNetwork(buyAssetNetworks, asset)}
                           onClick={setSelectedAsset}
                         />
                       }}
                     />
                   : <Column>
-                      <LoadingIcon opacity={1} size='100px' color='interactive05' />
-                    </Column>
+                      <LoadingIcon
+                        opacity={1}
+                        size='100px'
+                        color='interactive05'
+                      />
+                  </Column>
                 }
 
                 <VerticalSpace space='12px' />
@@ -266,6 +282,15 @@ export const FundWalletScreen = () => {
                 />
               </NextButtonRow>
             </>
+          }
+
+          {/* Creates wallet Account if needed */}
+          {needsAccount && showBuyOptions &&
+            <CreateAccountTab
+              network={selectedAssetNetwork}
+              prevNetwork={prevNetwork}
+              onCancel={goBackToSelectAssets}
+            />
           }
 
           {/* Buy Option selection & Account selection/search */}

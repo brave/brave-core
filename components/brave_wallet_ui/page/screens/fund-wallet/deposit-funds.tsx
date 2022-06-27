@@ -32,9 +32,9 @@ import { WalletActions } from '../../../common/actions'
 import { AllNetworksOption } from '../../../options/network-filter-options'
 
 // hooks
-import { useHasAccount } from '../../../common/hooks'
 import { useIsMounted } from '../../../common/hooks/useIsMounted'
 import { useCopyToClipboard } from '../../../common/hooks/use-copy-to-clipboard'
+import { usePrevNetwork } from '../../../common/hooks'
 
 // style
 import { Column, CopyButton, HorizontalSpace, LoadingIcon, Row, VerticalSpace } from '../../../components/shared/style'
@@ -53,7 +53,7 @@ import SearchBar from '../../../components/shared/search-bar'
 import SelectAccountItem from '../../../components/shared/select-account-item'
 import SelectAccount from '../../../components/shared/select-account'
 import WalletPageLayout from '../../../components/desktop/wallet-page-layout/index'
-import TokenLists from '../../../components/desktop/views/portfolio/components/token-lists'
+import { TokenLists } from '../../../components/desktop/views/portfolio/components/token-lists/token-list'
 import { StepsNavigation } from '../../../components/desktop/steps-navigation/steps-navigation'
 import { BuyAssetOptionItem } from '../../../components/shared/buy-option/buy-asset-option'
 import { NavButton } from '../../../components/extension/buttons/nav-button/index'
@@ -77,7 +77,7 @@ export const DepositFundsScreen = () => {
 
   // custom hooks
   const isMounted = useIsMounted()
-  const { needsAccount } = useHasAccount()
+  const { prevNetwork } = usePrevNetwork()
   const { copyToClipboard, isCopied, resetCopyState } = useCopyToClipboard()
 
   // state
@@ -143,6 +143,10 @@ export const DepositFundsScreen = () => {
       : []
   }, [selectedAssetNetwork, accounts])
 
+  const needsAccount = React.useMemo(() => {
+    return selectedAsset && accountsForSelectedAssetNetwork.length < 1
+  }, [selectedAsset, accountsForSelectedAssetNetwork.length])
+
   const accountListSearchResults = React.useMemo(() => {
     if (accountSearchText === '') {
       return accountsForSelectedAssetNetwork
@@ -153,7 +157,6 @@ export const DepositFundsScreen = () => {
     })
   }, [accountSearchText, accountsForSelectedAssetNetwork])
 
-  // memos
   const depositTitleText = React.useMemo(() => {
     const isNativeAsset = (
       selectedAsset?.coin === BraveWallet.CoinType.ETH &&
@@ -219,6 +222,11 @@ export const DepositFundsScreen = () => {
     setShowDepositAddress(true)
   }, [isNextStepEnabled, selectedAssetNetwork])
 
+  const goBackToSelectAssets = React.useCallback(() => {
+    setShowDepositAddress(false)
+    setSelectedAsset(undefined)
+  }, [])
+
   // effects
   React.useEffect(() => {
     // fetch selected Account QR Code
@@ -266,12 +274,15 @@ export const DepositFundsScreen = () => {
       <MainWrapper>
         <StyledWrapper>
 
-          {!showAccountSearch &&
+          {/* Hide nav when creating or searching accounts */}
+          {!showAccountSearch && !(
+            needsAccount && showDepositAddress
+          ) &&
             <StepsNavigation
               goBack={onBack}
               onSkip={goToPortfolio}
               skipButtonText={showDepositAddress
-                ? getLocale('braveWalletTransactionCompleteNextCTA')
+                ? getLocale('braveWalletButtonDone')
                 : getLocale('braveWalletButtonClose')
               }
               steps={[]}
@@ -279,11 +290,8 @@ export const DepositFundsScreen = () => {
             />
           }
 
-          {/* Creates wallet Account if needed */}
-          {needsAccount && <CreateAccountTab /> }
-
           {/* Asset Selection */}
-          {!needsAccount && !showDepositAddress &&
+          {!showDepositAddress &&
             <>
               <SelectAssetWrapper>
 
@@ -336,6 +344,15 @@ export const DepositFundsScreen = () => {
                 />
               </NextButtonRow>
             </>
+          }
+
+          {/* Creates wallet Account if needed for deposit */}
+          {needsAccount && showDepositAddress &&
+            <CreateAccountTab
+              network={selectedAssetNetwork}
+              prevNetwork={prevNetwork}
+              onCancel={goBackToSelectAssets}
+            />
           }
 
           {/* Address display & Account selection/search */}
