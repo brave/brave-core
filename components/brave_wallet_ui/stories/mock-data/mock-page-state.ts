@@ -31,5 +31,6 @@ export const mockPageState: PageState = {
   showRecoveryPhrase: false,
   mnemonic: mockedMnemonic,
   isImportWalletsCheckComplete: false,
-  importWalletAttempts: 0
+  importWalletAttempts: 0,
+  walletTermsAcknowledged: false
 }

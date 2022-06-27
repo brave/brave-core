@@ -40,7 +40,8 @@ const defaultState: PageState = {
   isCryptoWalletsInitialized: false,
   isMetaMaskInitialized: false,
   isImportWalletsCheckComplete: false,
-  importWalletAttempts: 0
+  importWalletAttempts: 0,
+  walletTermsAcknowledged: false
 }
 
 export const createPageReducer = (initialState: PageState) => {
@@ -199,6 +200,13 @@ export const createPageReducer = (initialState: PageState) => {
     return {
       ...state,
       isImportWalletsCheckComplete: payload
+    }
+  })
+
+  reducer.on(Actions.agreeToWalletTerms, (state: PageState): PageState => {
+    return {
+      ...state,
+      walletTermsAcknowledged: true
     }
   })
 

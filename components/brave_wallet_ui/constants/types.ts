@@ -285,6 +285,7 @@ export interface PageState {
   isMetaMaskInitialized: boolean
   isImportWalletsCheckComplete: boolean
   importWalletAttempts: number
+  walletTermsAcknowledged: boolean
 }
 
 export interface WalletPageState {
@@ -587,7 +588,6 @@ export enum WalletRoutes {
   // onboarding
   Onboarding = '/crypto/onboarding',
   OnboardingWelcome = '/crypto/onboarding/welcome',
-  OnboardingDisclosures = '/crypto/onboarding/disclosures',
 
   // onboarding (new wallet)
   OnboardingCreatePassword = '/crypto/onboarding/create-password',

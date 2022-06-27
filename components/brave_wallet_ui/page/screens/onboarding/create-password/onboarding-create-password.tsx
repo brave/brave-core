@@ -62,7 +62,7 @@ export const OnboardingCreatePassword = () => {
         <StyledWrapper>
 
           <OnboardingNewWalletStepsNavigation
-            goBackUrl={WalletRoutes.OnboardingDisclosures}
+            goBackUrl={WalletRoutes.OnboardingWelcome}
             currentStep={WalletRoutes.OnboardingCreatePassword}
             preventSkipAhead
           />
