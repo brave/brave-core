@@ -17,7 +17,6 @@ import { OnboardingRecoveryPhraseExplainer } from './explain-recovery-phrase/exp
 import { OnboardingVerifyRecoveryPhrase } from './verify-recovery-phrase/verify-recovery-phrase'
 import { OnboardingWelcome } from './welcome/onboarding-welcome'
 import { OnboardingImportOrRestoreWallet } from './import-or-restore-wallet/import-or-restore-wallet'
-import { OnboardingSuccess } from './onboarding-success/onboarding-success'
 import { OnboardingRestoreFromRecoveryPhrase } from './restore-from-recovery-phrase/restore-from-recovery-phrase'
 import { OnboardingDisclosures } from './disclosures/disclosures'
 
@@ -67,10 +66,6 @@ export const OnboardingRoutes = () => {
         <OnboardingRestoreFromRecoveryPhrase
           restoreFrom='legacy'
         />
-      </Route>
-
-      <Route path={WalletRoutes.OnboardingComplete} exact>
-        <OnboardingSuccess />
       </Route>
 
       <Route path={WalletRoutes.OnboardingWelcome} exact>
