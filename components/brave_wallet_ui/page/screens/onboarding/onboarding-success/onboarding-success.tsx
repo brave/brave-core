@@ -24,7 +24,7 @@ import WalletPageLayout from '../../../../components/desktop/wallet-page-layout/
 import { NavButton } from '../../../../components/extension/buttons/nav-button/index'
 
 // styles
-import { LinkText, WalletLink } from '../../../../components/shared/style'
+import { LinkText } from '../../../../components/shared/style'
 import {
   Description,
   Title,
@@ -56,6 +56,11 @@ export const OnboardingSuccess = () => {
   const onClickBuyCrypto = React.useCallback(() => {
     dispatch(WalletPageActions.walletSetupComplete(true))
     history.push(WalletRoutes.FundWalletPage)
+  }, [])
+
+  const onClickDepositCrypto = React.useCallback(() => {
+    dispatch(WalletPageActions.walletSetupComplete(true))
+    history.push(WalletRoutes.DepositFundsPage)
   }, [])
 
   // render
@@ -100,12 +105,10 @@ export const OnboardingSuccess = () => {
           onSubmit={onClickBuyCrypto}
         />
 
-        <WalletLink to={WalletRoutes.DepositFundsPage}>
-          <LinkText as='span'>
-            <DepositIcon />
-            {getLocale('braveWalletDepositCryptoButton')}
-          </LinkText>
-        </WalletLink>
+        <LinkText onClick={onClickDepositCrypto}>
+          <DepositIcon />
+          {getLocale('braveWalletDepositCryptoButton')}
+        </LinkText>
 
       </ButtonContainer>
 
