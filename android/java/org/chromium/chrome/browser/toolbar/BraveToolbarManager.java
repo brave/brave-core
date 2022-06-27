@@ -161,7 +161,8 @@ public class BraveToolbarManager extends ToolbarManager {
             OneshotSupplier<TabReparentingController> tabReparentingControllerSupplier,
             @NonNull OmniboxPedalDelegate omniboxPedalDelegate,
             Supplier<EphemeralTabCoordinator> ephemeralTabCoordinatorSupplier,
-            boolean initializeWithIncognitoColors, @Nullable BackPressManager backPressManager) {
+            boolean initializeWithIncognitoColors, @Nullable BackPressManager backPressManager,
+            @Nullable Runnable unblockDrawForOverviewPageRunnable) {
         super(activity, controlsSizer, fullscreenManager, controlContainer, compositorViewHolder,
                 urlFocusChangedCallback, topUiThemeColorProvider, tabObscuringHandler,
                 shareDelegateSupplier, identityDiscController, buttonDataProviders, tabProvider,
@@ -175,7 +176,8 @@ public class BraveToolbarManager extends ToolbarManager {
                 bottomSheetController, isWarmOnResumeSupplier, tabContentManager, tabCreatorManager,
                 snackbarManager, jankTracker, merchantTrustSignalsCoordinatorSupplier,
                 tabReparentingControllerSupplier, omniboxPedalDelegate,
-                ephemeralTabCoordinatorSupplier, initializeWithIncognitoColors, backPressManager);
+                ephemeralTabCoordinatorSupplier, initializeWithIncognitoColors, backPressManager,
+                unblockDrawForOverviewPageRunnable);
 
         mOmniboxFocusStateSupplier = omniboxFocusStateSupplier;
         mLayoutStateProviderSupplier = layoutStateProviderSupplier;
