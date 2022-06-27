@@ -950,19 +950,19 @@ TEST_F(BraveVPNServiceTest, LoadPurchasedStateForAnotherEnvFailed) {
   observer.ResetStates();
   SetInterceptorResponse("");
   std::string staging = skus::GetDomain("vpn", skus::kEnvStaging);
-  EXPECT_EQ(GetCurrentEnvironment(), skus::kEnvDevelopment);
+  EXPECT_EQ(GetCurrentEnvironment(), skus::GetDefaultEnvironment());
   EXPECT_FALSE(observer.GetPurchasedState().has_value());
   // no order found for staging.
   LoadPurchasedState(staging);
   base::RunLoop().RunUntilIdle();
   // The purchased state was not changed from dev env.
   EXPECT_FALSE(observer.GetPurchasedState().has_value());
-  EXPECT_EQ(GetCurrentEnvironment(), skus::kEnvDevelopment);
+  EXPECT_EQ(GetCurrentEnvironment(), skus::GetDefaultEnvironment());
   EXPECT_EQ(GetPurchasedStateSync(), PurchasedState::PURCHASED);
 
   observer.ResetStates();
   staging = SetupTestingStoreForEnv(skus::kEnvStaging, false);
-  EXPECT_EQ(GetCurrentEnvironment(), skus::kEnvDevelopment);
+  EXPECT_EQ(GetCurrentEnvironment(), skus::GetDefaultEnvironment());
   EXPECT_FALSE(observer.GetPurchasedState().has_value());
   // No region data for staging.
   SetInterceptorResponse("");
@@ -970,29 +970,29 @@ TEST_F(BraveVPNServiceTest, LoadPurchasedStateForAnotherEnvFailed) {
   base::RunLoop().RunUntilIdle();
   // The purchased state was not changed from dev env.
   EXPECT_FALSE(observer.GetPurchasedState().has_value());
-  EXPECT_EQ(GetCurrentEnvironment(), skus::kEnvDevelopment);
+  EXPECT_EQ(GetCurrentEnvironment(), skus::GetDefaultEnvironment());
   EXPECT_EQ(GetPurchasedStateSync(), PurchasedState::PURCHASED);
 
   observer.ResetStates();
   staging = SetupTestingStoreForEnv(skus::kEnvStaging, false);
-  EXPECT_EQ(GetCurrentEnvironment(), skus::kEnvDevelopment);
+  EXPECT_EQ(GetCurrentEnvironment(), skus::GetDefaultEnvironment());
   EXPECT_FALSE(observer.GetPurchasedState().has_value());
   // Inactive staging subscription.
   OnCredentialSummary(staging, R"({ "active": false } )");
   // The purchased state was not changed from dev env.
   EXPECT_FALSE(observer.GetPurchasedState().has_value());
-  EXPECT_EQ(GetCurrentEnvironment(), skus::kEnvDevelopment);
+  EXPECT_EQ(GetCurrentEnvironment(), skus::GetDefaultEnvironment());
   EXPECT_EQ(GetPurchasedStateSync(), PurchasedState::PURCHASED);
 
   observer.ResetStates();
   staging = SetupTestingStoreForEnv(skus::kEnvStaging, false);
-  EXPECT_EQ(GetCurrentEnvironment(), skus::kEnvDevelopment);
+  EXPECT_EQ(GetCurrentEnvironment(), skus::GetDefaultEnvironment());
   EXPECT_FALSE(observer.GetPurchasedState().has_value());
   // Invalid staging subscription.
   OnCredentialSummary(staging, R"([])");
   // The purchased state was not changed from dev env.
   EXPECT_FALSE(observer.GetPurchasedState().has_value());
-  EXPECT_EQ(GetCurrentEnvironment(), skus::kEnvDevelopment);
+  EXPECT_EQ(GetCurrentEnvironment(), skus::GetDefaultEnvironment());
   EXPECT_EQ(GetPurchasedStateSync(), PurchasedState::PURCHASED);
 }
 
