@@ -116,6 +116,7 @@ export const GridPagesContainer = styled('div') <{ customLinksEnabled: boolean }
   overflow-x: ${p => p.customLinksEnabled ? 'auto' : 'hidden'};
 
   scroll-snap-type: x mandatory;
+  scroll-snap-stop: always;
 
   @media screen and (max-width: 870px) {
     margin-left: var(--grid-column-width);
