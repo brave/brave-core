@@ -24,5 +24,7 @@ constexpr SkColor kPrivateFrame = SkColorSetRGB(0x19, 0x16, 0x2F);
 constexpr SkColor kPrivateToolbar = SkColorSetRGB(0x32, 0x25, 0x60);
 constexpr SkColor kPrivateTorFrame = SkColorSetRGB(0x19, 0x0E, 0x2A);
 constexpr SkColor kPrivateTorToolbar = SkColorSetRGB(0x49, 0x2D, 0x58);
+constexpr SkColor kBraveNewTabBackgroundDark = SkColorSetRGB(0x33, 0x36, 0x39);
+constexpr SkColor kBraveNewTabBackgroundLight = SkColorSetRGB(0x6B, 0x70, 0x84);
 
 #endif  // BRAVE_BROWSER_UI_COLOR_COLOR_PALETTE_H_
