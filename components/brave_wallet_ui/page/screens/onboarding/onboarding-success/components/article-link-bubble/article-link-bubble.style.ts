@@ -59,7 +59,6 @@ export const BubbleIcon = styled.div<{
   display: inline-block;
   width: 30px;
   height: 30px;
-
   background-color: ${(p) => p.theme.palette.white};
   mask-image: url(${p => getIcon(p.icon)});
   mask-size: 14px;
@@ -68,6 +67,7 @@ export const BubbleIcon = styled.div<{
 `
 
 export const Bubble = styled.a`
+  text-decoration: none;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -75,9 +75,7 @@ export const Bubble = styled.a`
   padding: 5px 12px;
   gap: 4px;
   height: 40px;
-
   margin-bottom: 12px;
-
   background-color: ${(p) => p.theme.color.background02};
   box-shadow: 0px 2px 8px rgba(104, 105, 120, 0.16);
   border-radius: 8px;
@@ -85,7 +83,6 @@ export const Bubble = styled.a`
 
 export const BubbleText = styled.span`
   height: 20px;
-
   font-family: 'Poppins';
   font-style: normal;
   font-weight: 600;
@@ -94,8 +91,6 @@ export const BubbleText = styled.span`
   display: flex;
   align-items: center;
   text-align: center;
-
   margin-left: 8px;
-
   color: ${(p) => p.theme.color.text01};
 `
