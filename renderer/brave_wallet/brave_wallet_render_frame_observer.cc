@@ -76,6 +76,13 @@ void BraveWalletRenderFrameObserver::DidCreateScriptContext(
   }
 }
 
+void BraveWalletRenderFrameObserver::WillReleaseScriptContext(
+    v8::Local<v8::Context>,
+    int32_t world_id) {
+  js_ethereum_provider_.reset();
+  js_solana_provider_.reset();
+}
+
 void BraveWalletRenderFrameObserver::OnDestruct() {
   delete this;
 }
