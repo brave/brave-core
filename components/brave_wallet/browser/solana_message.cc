@@ -170,7 +170,7 @@ absl::optional<std::vector<uint8_t>> SolanaMessage::Serialize(
 }
 
 // static
-absl::optional<std::pair<SolanaMessage, uint8_t>> SolanaMessage::Deserialize(
+absl::optional<SolanaMessage> SolanaMessage::Deserialize(
     const std::vector<uint8_t>& bytes) {
   size_t bytes_index = 0;
   if (bytes.size() < 3)  // Message header length.
@@ -233,9 +233,8 @@ absl::optional<std::pair<SolanaMessage, uint8_t>> SolanaMessage::Deserialize(
   if (bytes_index != bytes.size())
     return absl::nullopt;
 
-  return std::make_pair(SolanaMessage(recent_blockhash, 0, accounts[0].pubkey,
-                                      std::move(instructions)),
-                        num_required_signatures);
+  return SolanaMessage(recent_blockhash, 0, accounts[0].pubkey,
+                       std::move(instructions));
 }
 
 mojom::SolanaTxDataPtr SolanaMessage::ToSolanaTxData() const {

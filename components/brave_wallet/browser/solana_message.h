@@ -34,8 +34,7 @@ class SolanaMessage {
   absl::optional<std::vector<uint8_t>> Serialize(
       std::vector<std::string>* signers) const;
 
-  // Returns a pair of SolanaMessage and number of signers.
-  static absl::optional<std::pair<SolanaMessage, uint8_t>> Deserialize(
+  static absl::optional<SolanaMessage> Deserialize(
       const std::vector<uint8_t>& bytes);
 
   void set_recent_blockhash(const std::string& recent_blockhash) {

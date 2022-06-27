@@ -361,7 +361,7 @@ absl::optional<SolanaTransaction> SolanaTransaction::FromSignedTransactionBytes(
   if (!message)
     return absl::nullopt;
 
-  return SolanaTransaction(std::move(message->first), signatures);
+  return SolanaTransaction(std::move(*message), signatures);
 }
 
 }  // namespace brave_wallet
