@@ -8,7 +8,6 @@ import { Dispatch } from 'redux'
 import { connect } from 'react-redux'
 
 // Components
-import NewPrivateTabPage from './privateTab'
 import NewTabPage from './newTab'
 
 // Utils
@@ -45,9 +44,7 @@ function DefaultPage (props: Props) {
     return <div />
   }
 
-  return props.newTabData.isIncognito
-    ? <NewPrivateTabPage newTabData={newTabData} actions={actions} />
-    : (
+  return (
       <NewTabPage
         newTabData={newTabData}
         todayData={braveTodayData}

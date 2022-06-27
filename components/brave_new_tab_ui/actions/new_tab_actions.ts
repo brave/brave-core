@@ -10,7 +10,6 @@ import { action } from 'typesafe-actions'
 import { types } from '../constants/new_tab_types'
 import { Stats } from '../api/stats'
 import { PrivateTabData } from '../api/privateTabData'
-import { TorTabData } from '../api/torTabData'
 import { NewTabAdsData } from '../api/newTabAdsData'
 import { InitialData } from '../api/initialData'
 import { CustomBackground } from '../api/background'
@@ -29,9 +28,6 @@ export const dismissBraveTalkPrompt = createAction<DismissBraveTalkPromptPayload
 
 export const privateTabDataUpdated = (data: PrivateTabData) =>
   action(types.NEW_TAB_PRIVATE_TAB_DATA_UPDATED, data)
-
-export const torTabDataUpdated = (data: TorTabData) =>
-  action(types.NEW_TAB_TOR_TAB_DATA_UPDATED, data)
 
 export const newTabAdsDataUpdated = (data: NewTabAdsData) =>
   action(types.NEW_TAB_ADS_DATA_UPDATED, data)

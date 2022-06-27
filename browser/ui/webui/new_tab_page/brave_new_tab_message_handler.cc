@@ -54,10 +54,6 @@ using ntp_background_images::prefs::
 #include "brave/components/ftx/common/pref_names.h"
 #endif
 
-#if BUILDFLAG(ENABLE_TOR)
-#include "brave/components/tor/tor_launcher_factory.h"
-#endif
-
 namespace {
 
 bool IsPrivateNewTab(Profile* profile) {
@@ -126,14 +122,6 @@ base::DictionaryValue GetPrivatePropertiesDictionary(PrefService* prefs) {
       "showAlternativePrivateSearchEngineToggle",
       prefs->GetBoolean(kShowAlternativePrivateSearchEngineProviderToggle));
   return private_data;
-}
-
-base::DictionaryValue GetTorPropertiesDictionary(bool connected,
-                                                 const std::string& progress) {
-  base::DictionaryValue tor_data;
-  tor_data.SetBoolean("torCircuitEstablished", connected);
-  tor_data.SetString("torInitProgress", progress);
-  return tor_data;
 }
 
 // TODO(petemill): Move p3a to own NTP component so it can
@@ -212,17 +200,9 @@ BraveNewTabMessageHandler* BraveNewTabMessageHandler::Create(
 BraveNewTabMessageHandler::BraveNewTabMessageHandler(Profile* profile)
     : profile_(profile), weak_ptr_factory_(this) {
   ads_service_ = brave_ads::AdsServiceFactory::GetForProfile(profile_);
-#if BUILDFLAG(ENABLE_TOR)
-  tor_launcher_factory_ = TorLauncherFactory::GetInstance();
-#endif
 }
 
-BraveNewTabMessageHandler::~BraveNewTabMessageHandler() {
-#if BUILDFLAG(ENABLE_TOR)
-  if (tor_launcher_factory_)
-    tor_launcher_factory_->RemoveObserver(this);
-#endif
-}
+BraveNewTabMessageHandler::~BraveNewTabMessageHandler() = default;
 
 void BraveNewTabMessageHandler::RegisterMessages() {
   // TODO(petemill): This MessageHandler can be split up to
@@ -244,10 +224,6 @@ void BraveNewTabMessageHandler::RegisterMessages() {
       base::BindRepeating(
           &BraveNewTabMessageHandler::HandleGetPrivateProperties,
           base::Unretained(this)));
-  web_ui()->RegisterMessageCallback(
-      "getNewTabPageTorProperties",
-      base::BindRepeating(&BraveNewTabMessageHandler::HandleGetTorProperties,
-                          base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
       "getNewTabAdsData",
       base::BindRepeating(&BraveNewTabMessageHandler::HandleGetNewTabAdsData,
@@ -382,11 +358,6 @@ void BraveNewTabMessageHandler::OnJavascriptAllowed() {
                           base::Unretained(this)));
 #endif
 
-#if BUILDFLAG(ENABLE_TOR)
-  if (tor_launcher_factory_)
-    tor_launcher_factory_->AddObserver(this);
-#endif
-
   if (ads_service_) {
     ads_service_observation_.Reset();
     ads_service_observation_.Observe(ads_service_);
@@ -395,10 +366,6 @@ void BraveNewTabMessageHandler::OnJavascriptAllowed() {
 
 void BraveNewTabMessageHandler::OnJavascriptDisallowed() {
   pref_change_registrar_.RemoveAll();
-#if BUILDFLAG(ENABLE_TOR)
-  if (tor_launcher_factory_)
-    tor_launcher_factory_->RemoveObserver(this);
-#endif
   ads_service_observation_.Reset();
   weak_ptr_factory_.InvalidateWeakPtrs();
 }
@@ -423,19 +390,6 @@ void BraveNewTabMessageHandler::HandleGetPrivateProperties(
   AllowJavascript();
   PrefService* prefs = profile_->GetPrefs();
   auto data = GetPrivatePropertiesDictionary(prefs);
-  ResolveJavascriptCallback(args[0], data);
-}
-
-void BraveNewTabMessageHandler::HandleGetTorProperties(
-    const base::Value::List& args) {
-  AllowJavascript();
-#if BUILDFLAG(ENABLE_TOR)
-  auto data = GetTorPropertiesDictionary(
-      tor_launcher_factory_ ? tor_launcher_factory_->IsTorConnected() : false,
-      "");
-#else
-  auto data = GetTorPropertiesDictionary(false, "");
-#endif
   ResolveJavascriptCallback(args[0], data);
 }
 
@@ -655,17 +609,6 @@ base::Value BraveNewTabMessageHandler::GetAdsDataDictionary() const {
   ads_data.Set(kNeedsBrowserUpdateToSeeAds, needs_browser_update_to_see_ads);
 
   return base::Value(std::move(ads_data));
-}
-
-void BraveNewTabMessageHandler::OnTorCircuitEstablished(bool result) {
-  auto data = GetTorPropertiesDictionary(result, "");
-  FireWebUIListener("tor-tab-data-updated", data);
-}
-
-void BraveNewTabMessageHandler::OnTorInitializing(
-    const std::string& percentage) {
-  auto data = GetTorPropertiesDictionary(false, percentage);
-  FireWebUIListener("tor-tab-data-updated", data);
 }
 
 void BraveNewTabMessageHandler::OnNeedsBrowserUpdateToSeeAds() {

@@ -9,7 +9,6 @@ import { Reducer } from 'redux'
 import { types, DismissBrandedWallpaperNotificationPayload } from '../constants/new_tab_types'
 import { Stats } from '../api/stats'
 import { PrivateTabData } from '../api/privateTabData'
-import { TorTabData } from '../api/torTabData'
 import * as Actions from '../actions/new_tab_actions'
 
 // API
@@ -44,7 +43,6 @@ export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.S
         ...initialDataPayload.preferences,
         stats: initialDataPayload.stats,
         ...initialDataPayload.privateTabData,
-        ...initialDataPayload.torTabData,
         braveTalkSupported: initialDataPayload.braveTalkSupported,
         geminiSupported: initialDataPayload.geminiSupported,
         cryptoDotComSupported: initialDataPayload.cryptoDotComSupported,
@@ -126,15 +124,6 @@ export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.S
         ...state,
         useAlternativePrivateSearchEngine: privateTabData.useAlternativePrivateSearchEngine,
         showAlternativePrivateSearchEngineToggle: privateTabData.showAlternativePrivateSearchEngineToggle
-      }
-      break
-
-    case types.NEW_TAB_TOR_TAB_DATA_UPDATED:
-      const torTabData = payload as TorTabData
-      state = {
-        ...state,
-        torCircuitEstablished: torTabData.torCircuitEstablished,
-        torInitProgress: torTabData.torInitProgress
       }
       break
 

@@ -68,6 +68,7 @@
         <part file="decentralized_dns_resources.grdp" />
       </if>
       <part file="brave_shields_resources.grdp" />
+      <part file="brave_private_new_tab_resources.grdp" />
     </includes>
   </release>
 </grit>
