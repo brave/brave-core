@@ -15,6 +15,7 @@ import { BraveWallet, WalletState } from '../../../constants/types'
 
 // Components
 import { NavButton } from '../../extension'
+import { LockPanel } from '../../extension/lock-panel'
 
 // Utils
 import { getLocale } from '../../../../common/locale'
@@ -29,46 +30,108 @@ import {
 
 export interface Props {
   isPanel?: boolean
+  network?: BraveWallet.NetworkInfo
   prevNetwork?: BraveWallet.NetworkInfo | undefined
+  onCancel?: () => void
 }
 
-function CreateAccountTab (props: Props) {
-  const { isPanel, prevNetwork } = props
-
+export const CreateAccountTab = ({
+  isPanel,
+  prevNetwork,
+  network,
+  onCancel
+}: Props) => {
   // redux
   const {
     networkList,
     selectedNetwork,
-    accounts
+    accounts,
+    isWalletLocked
   } = useSelector((state: { wallet: WalletState }) => state.wallet)
 
   const dispatch = useDispatch()
 
-  const suggestedAccountName = React.useMemo((): string => {
-    return suggestNewAccountName(accounts, selectedNetwork)
-  }, [accounts, selectedNetwork])
+  // state
+  const [showUnlock, setShowUnlock] = React.useState(false)
 
+  // memos
+  const accountNetwork = React.useMemo(() => {
+    return network || selectedNetwork
+  }, [network, selectedNetwork])
+
+  const suggestedAccountName = React.useMemo((): string => {
+    return suggestNewAccountName(accounts, accountNetwork)
+  }, [accounts, accountNetwork])
+
+  // methods
   const onCancelCreateAccount = React.useCallback(() => {
+    if (onCancel) {
+      return onCancel()
+    }
     dispatch(WalletActions.selectNetwork(prevNetwork ?? networkList[0]))
     if (isPanel) {
       dispatch(PanelActions.navigateTo('main'))
     }
-  }, [prevNetwork, networkList, isPanel])
+  }, [onCancel, prevNetwork, networkList, isPanel])
 
   const onCreateAccount = React.useCallback(() => {
-    if (selectedNetwork.coin === BraveWallet.CoinType.FIL) {
-      dispatch(WalletActions.addFilecoinAccount({ accountName: suggestedAccountName, network: selectedNetwork.chainId }))
-    } else {
-      dispatch(WalletActions.addAccount({ accountName: suggestedAccountName, coin: selectedNetwork.coin }))
+    // unlock needed to create accounts
+    if (isWalletLocked && !showUnlock) {
+      return setShowUnlock(true)
     }
+
+    if (selectedNetwork.coin === BraveWallet.CoinType.FIL) {
+      dispatch(WalletActions.addFilecoinAccount({
+        accountName: suggestedAccountName,
+        network: accountNetwork.chainId
+      }))
+    } else {
+      dispatch(WalletActions.addAccount({
+        accountName: suggestedAccountName,
+        coin: accountNetwork.coin
+      }))
+    }
+
     if (isPanel) {
       dispatch(PanelActions.navigateTo('main'))
     }
-  }, [selectedNetwork, suggestedAccountName, isPanel])
+  }, [accountNetwork, suggestedAccountName, isPanel, isWalletLocked, showUnlock])
+
+  const handleUnlockAttempt = React.useCallback((password: string): void => {
+    dispatch(WalletActions.unlockWallet({ password }))
+    dispatch(WalletActions.addAccount({
+      accountName: suggestedAccountName,
+      coin: accountNetwork.coin
+    }))
+  }, [suggestedAccountName, accountNetwork])
+
+  // effects
+  React.useEffect(() => {
+    // hide unlock screen on unlock success
+    if (!isWalletLocked && showUnlock) {
+      setShowUnlock(false)
+    }
+  }, [isWalletLocked, showUnlock])
+
+  // render
+  if (isWalletLocked && showUnlock) {
+    return <StyledWrapper>
+      <Description style={{ fontSize: 16 }}>
+        {
+          'Unlock needed to create an account'
+          // getLocale('braveWalletCreateAccountDescription')
+        }
+      </Description>
+      <LockPanel
+        hideBackground
+        onSubmit={handleUnlockAttempt}
+      />
+    </StyledWrapper>
+  }
 
   return (
     <StyledWrapper>
-      <Description>{getLocale('braveWalletCreateAccountDescription').replace('$1', selectedNetwork.symbolName)}</Description>
+      <Description>{getLocale('braveWalletCreateAccountDescription').replace('$1', accountNetwork.symbolName)}</Description>
       <ButtonRow>
         <NavButton
           buttonType='secondary'
