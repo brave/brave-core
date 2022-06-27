@@ -187,6 +187,9 @@ void BraveSyncServiceImpl::OnAccountDeleted(
     const SyncProtocolError& sync_protocol_error) {
   if (sync_protocol_error.error_type == SYNC_SUCCESS) {
     std::move(callback).Run(sync_protocol_error);
+    // If request succeded, trigger GetUpdates refresh to get
+    // ClientToServerMessage_CLEAR_SERVER_DATA, clear data and leave the chain
+    TriggerRefresh(syncer::ModelTypeSet::All());
   } else if (current_attempt < kMaxPermanentlyDeleteSyncAccountAttempts) {
     base::SequencedTaskRunnerHandle::Get()->PostDelayedTask(
         FROM_HERE,

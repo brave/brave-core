@@ -664,9 +664,6 @@
   <message name="IDS_BRAVE_SYNC_RESET_CONFIRMATION" desc="Confirmation message prompt to make sure the user is ok with leaving sync">
     If you reset Sync, you will have to re-enter a sync code from another device in order to sync with it. Are you sure you want to proceed?
   </message>
-  <message name="IDS_BRAVE_SYNC_PERMANENTLY_DELETE_ACCOUNT_BUTTON" desc="The Sync button that leads to permanently delete Sync account">
-    Permanently delete account
-  </message>
   <message name="IDS_BRAVE_SYNC_DELETE_DEVICE_CONFIRMATION" desc="Confirmation message prompt to make sure the user is ok to delete other device from the chain">
     Are you sure you want to remove the selected device from the sync chain?
   </message>
@@ -679,6 +676,25 @@
   </message>
   <message name="IDS_BRAVE_SYNC_PASSPHRASE_DECRYPTION_ERROR_MESSAGE" desc="Warning message that informs user about Brave Sync is not running and browser needs to have access to secure OS passwords store">
     Brave could not access your operating system's safe storage. This is what's used to secure data such as passwords and cookies; it's also required for Brave Sync to connect your browser profile between devices. This means Brave Sync is not running. To resolve this issue, please see the <ph name="BEGIN_LINK_SYNC_GUIDE">&lt;a target="_blank" href="$1"&gt;</ph>Brave Sync troubleshooting guide<ph name="END_LINK_SYNC_GUIDE">&lt;/a&gt;</ph>.
+  </message>
+  <message name="IDS_BRAVE_DELETE_SYNC_ACCOUNT_BUTTON_AND_DIALOG_TITLE" desc="The button that opens Permanently delete account confirmation dialog. Also this string is the dialog title">
+    Delete Sync account
+  </message>
+  <message name="IDS_BRAVE_SYNC_PERMANENTLY_DELETE_ACCOUNT_BUTTON" desc="The Sync button that leads to permanently delete Sync account">
+    Permanently delete account
+  </message>
+  <message name="IDS_BRAVE_SYNC_DELETE_ACCOUNT_DESCRIPTION_PARTIAL_1" desc="">
+    Deleting your account will remove your encrypted data from Brave servers and disable Sync on all of your connected devices.
+  </message>
+  <message name="IDS_BRAVE_SYNC_DELETE_ACCOUNT_DESCRIPTION_PARTIAL_2" desc="">
+    It will not however delete the data that is stored locally on those devices.
+  </message>
+  <message name="IDS_BRAVE_SYNC_DELETE_ACCOUNT_DESCRIPTION_PARTIAL_3" desc="">
+    This deletion is permanent and there is no way to recover the data. Should you decide to
+    start using Sync again, you will need to create a new account and re-add each device one by one.
+  </message>
+  <message name="IDS_BRAVE_SYNC_PERMANENTLY_DELETE_ACCOUNT_IN_PROGRESS" desc="The string which indicates that Sync account deletion happens now">
+    Account deletion is in progress...
   </message>
 
   <!-- Settings / Search engine -->
