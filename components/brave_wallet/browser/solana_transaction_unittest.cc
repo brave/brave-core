@@ -167,8 +167,8 @@ TEST_F(SolanaTransactionUnitTest, GetSignedTransaction) {
        SolanaAccountMeta(to_account, true, true)},
       // Data
       {2, 0, 0, 0, 128, 150, 152, 0, 0, 0, 0, 0});
-  transaction = SolanaTransaction(recent_blockhash, last_valid_block_height,
-                                  from_account, {instruction});
+  SolanaTransaction transaction2 = SolanaTransaction(
+      recent_blockhash, last_valid_block_height, from_account, {instruction});
 
   expected_bytes = std::vector<uint8_t>({
       // Signature compact array
@@ -214,10 +214,10 @@ TEST_F(SolanaTransactionUnitTest, GetSignedTransaction) {
       2, 0, 0, 0, 128, 150, 152, 0, 0, 0, 0, 0  // data
   });
   expected_tx = base::Base64Encode(expected_bytes);
-  EXPECT_EQ(transaction.GetSignedTransaction(keyring_service()), expected_tx);
+  EXPECT_EQ(transaction2.GetSignedTransaction(keyring_service()), expected_tx);
 
   // Test key_service is nullptr.
-  EXPECT_TRUE(transaction.GetSignedTransaction(nullptr).empty());
+  EXPECT_TRUE(transaction2.GetSignedTransaction(nullptr).empty());
 
   std::vector<uint8_t> oversized_data(1232, 1);
   instruction = SolanaInstruction(
@@ -227,9 +227,9 @@ TEST_F(SolanaTransactionUnitTest, GetSignedTransaction) {
       {SolanaAccountMeta(from_account, true, true),
        SolanaAccountMeta(to_account, false, true)},
       oversized_data);
-  transaction = SolanaTransaction(recent_blockhash, last_valid_block_height,
-                                  from_account, {instruction});
-  EXPECT_TRUE(transaction.GetSignedTransaction(keyring_service()).empty());
+  SolanaTransaction transaction3 = SolanaTransaction(
+      recent_blockhash, last_valid_block_height, from_account, {instruction});
+  EXPECT_TRUE(transaction3.GetSignedTransaction(keyring_service()).empty());
 }
 
 TEST_F(SolanaTransactionUnitTest, FromSignedTransactionBytes) {
@@ -426,7 +426,7 @@ TEST_F(SolanaTransactionUnitTest, FromToValue) {
   ASSERT_TRUE(expect_tx_value);
   EXPECT_EQ(value, *expect_tx_value);
   auto tx_from_value = SolanaTransaction::FromValue(value);
-  EXPECT_EQ(tx_from_value, transaction);
+  EXPECT_EQ(*tx_from_value, transaction);
 
   std::vector<std::string> invalid_value_strings = {"{}", "[]"};
 

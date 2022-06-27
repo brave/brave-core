@@ -162,7 +162,6 @@ SolanaTransaction::SolanaTransaction(SolanaMessage&& message,
                                      const std::vector<uint8_t>& signatures)
     : message_(std::move(message)), signatures_(signatures) {}
 
-SolanaTransaction::SolanaTransaction(const SolanaTransaction&) = default;
 SolanaTransaction::~SolanaTransaction() = default;
 
 bool SolanaTransaction::operator==(const SolanaTransaction& tx) const {
@@ -269,51 +268,51 @@ void SolanaTransaction::set_tx_type(mojom::TransactionType tx_type) {
 }
 
 // static
-absl::optional<SolanaTransaction> SolanaTransaction::FromValue(
+std::unique_ptr<SolanaTransaction> SolanaTransaction::FromValue(
     const base::Value& value) {
   if (!value.is_dict())
-    return absl::nullopt;
+    return nullptr;
   const base::Value* message_dict = value.FindKey("message");
   if (!message_dict || !message_dict->is_dict())
-    return absl::nullopt;
+    return nullptr;
 
   absl::optional<SolanaMessage> message =
       SolanaMessage::FromValue(*message_dict);
   if (!message)
-    return absl::nullopt;
+    return nullptr;
 
-  auto tx = SolanaTransaction(std::move(*message));
+  auto tx = std::make_unique<SolanaTransaction>(std::move(*message));
 
   const auto* to_wallet_address = value.FindStringKey("to_wallet_address");
   if (!to_wallet_address)
-    return absl::nullopt;
-  tx.set_to_wallet_address(*to_wallet_address);
+    return nullptr;
+  tx->set_to_wallet_address(*to_wallet_address);
 
   const auto* spl_token_mint_address =
       value.FindStringKey("spl_token_mint_address");
   if (!spl_token_mint_address)
-    return absl::nullopt;
-  tx.set_spl_token_mint_address(*spl_token_mint_address);
+    return nullptr;
+  tx->set_spl_token_mint_address(*spl_token_mint_address);
 
   auto tx_type = value.FindIntKey("tx_type");
   if (!tx_type)
-    return absl::nullopt;
-  tx.set_tx_type(static_cast<mojom::TransactionType>(*tx_type));
+    return nullptr;
+  tx->set_tx_type(static_cast<mojom::TransactionType>(*tx_type));
 
   const auto* lamports_string = value.FindStringKey("lamports");
   uint64_t lamports = 0;
   if (!lamports_string || !base::StringToUint64(*lamports_string, &lamports))
-    return absl::nullopt;
-  tx.set_lamports(lamports);
+    return nullptr;
+  tx->set_lamports(lamports);
 
   const auto* amount_string = value.FindStringKey("amount");
   uint64_t amount = 0;
   if (!amount_string || !base::StringToUint64(*amount_string, &amount))
-    return absl::nullopt;
-  tx.set_amount(amount);
+    return nullptr;
+  tx->set_amount(amount);
   const base::Value* send_options_value = value.FindDictKey(kSendOptions);
   if (send_options_value)
-    tx.set_send_options(SendOptions::FromValue(*send_options_value));
+    tx->set_send_options(SendOptions::FromValue(*send_options_value));
 
   return tx;
 }
@@ -339,19 +338,20 @@ std::unique_ptr<SolanaTransaction> SolanaTransaction::FromSolanaTxData(
 }
 
 // static
-absl::optional<SolanaTransaction> SolanaTransaction::FromSignedTransactionBytes(
+std::unique_ptr<SolanaTransaction>
+SolanaTransaction::FromSignedTransactionBytes(
     const std::vector<uint8_t>& bytes) {
   if (bytes.empty() || bytes.size() > kSolanaMaxTxSize)
-    return absl::nullopt;
+    return nullptr;
 
   size_t index = 0;
   auto ret = CompactU16Decode(bytes, index);
   if (!ret)
-    return absl::nullopt;
+    return nullptr;
   const uint16_t num_of_signatures = std::get<0>(*ret);
   index += std::get<1>(*ret);
   if (index + num_of_signatures * kSolanaSignatureSize > bytes.size())
-    return absl::nullopt;
+    return nullptr;
   const std::vector<uint8_t> signatures(
       bytes.begin() + index,
       bytes.begin() + index + num_of_signatures * kSolanaSignatureSize);
@@ -359,9 +359,9 @@ absl::optional<SolanaTransaction> SolanaTransaction::FromSignedTransactionBytes(
   auto message = SolanaMessage::Deserialize(
       std::vector<uint8_t>(bytes.begin() + index, bytes.end()));
   if (!message)
-    return absl::nullopt;
+    return nullptr;
 
-  return SolanaTransaction(std::move(*message), signatures);
+  return std::make_unique<SolanaTransaction>(std::move(*message), signatures);
 }
 
 }  // namespace brave_wallet

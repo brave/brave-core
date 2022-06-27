@@ -400,14 +400,12 @@ TEST_F(SolanaTxManagerUnitTest, AddAndApproveTransaction) {
   // Wait for tx to be updated.
   base::RunLoop().RunUntilIdle();
 
-  auto approved_tx = std::make_unique<SolanaTransaction>(*tx);
-  approved_tx->message()->set_recent_blockhash(latest_blockhash1_);
-  approved_tx->message()->set_last_valid_block_height(
-      last_valid_block_height1_);
+  tx->message()->set_recent_blockhash(latest_blockhash1_);
+  tx->message()->set_last_valid_block_height(last_valid_block_height1_);
 
   tx_meta1 = solana_tx_manager()->GetTxForTesting(meta_id1);
   ASSERT_TRUE(tx_meta1);
-  EXPECT_EQ(*tx_meta1->tx(), *approved_tx);
+  EXPECT_EQ(*tx_meta1->tx(), *tx);
   EXPECT_EQ(tx_meta1->signature_status(), SolanaSignatureStatus());
   EXPECT_EQ(tx_meta1->from(), from_account);
   EXPECT_EQ(tx_meta1->status(), mojom::TransactionStatus::Submitted);
@@ -421,7 +419,7 @@ TEST_F(SolanaTxManagerUnitTest, AddAndApproveTransaction) {
 
   tx_meta2 = solana_tx_manager()->GetTxForTesting(meta_id2);
   ASSERT_TRUE(tx_meta2);
-  EXPECT_EQ(*tx_meta2->tx(), *approved_tx);
+  EXPECT_EQ(*tx_meta2->tx(), *tx);
   EXPECT_EQ(tx_meta2->signature_status(), SolanaSignatureStatus());
   EXPECT_EQ(tx_meta2->from(), from_account);
   EXPECT_EQ(tx_meta2->status(), mojom::TransactionStatus::Submitted);

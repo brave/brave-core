@@ -57,7 +57,8 @@ class SolanaTransaction {
                     std::vector<SolanaInstruction>&& instructions);
   SolanaTransaction(SolanaMessage&& message,
                     const std::vector<uint8_t>& signatures);
-  SolanaTransaction(const SolanaTransaction&);
+  SolanaTransaction(const SolanaTransaction&) = delete;
+  SolanaTransaction& operator=(const SolanaTransaction&) = delete;
   ~SolanaTransaction();
   bool operator==(const SolanaTransaction&) const;
   bool operator!=(const SolanaTransaction&) const;
@@ -74,8 +75,8 @@ class SolanaTransaction {
 
   static std::unique_ptr<SolanaTransaction> FromSolanaTxData(
       mojom::SolanaTxDataPtr solana_tx_data);
-  static absl::optional<SolanaTransaction> FromValue(const base::Value& value);
-  static absl::optional<SolanaTransaction> FromSignedTransactionBytes(
+  static std::unique_ptr<SolanaTransaction> FromValue(const base::Value& value);
+  static std::unique_ptr<SolanaTransaction> FromSignedTransactionBytes(
       const std::vector<uint8_t>& bytes);
 
   std::string to_wallet_address() const { return to_wallet_address_; }

@@ -81,11 +81,11 @@ class SolanaProviderImpl final : public mojom::SolanaProvider,
                                      bool approved,
                                      const std::string& signature,
                                      const std::string& error);
-  void OnSignTransactionRequestProcessed(const SolanaTransaction& tx,
+  void OnSignTransactionRequestProcessed(std::unique_ptr<SolanaTransaction> tx,
                                          SignTransactionCallback callback,
                                          bool approved);
   void OnSignAllTransactionsRequestProcessed(
-      const std::vector<SolanaTransaction>& txs,
+      const std::vector<std::unique_ptr<SolanaTransaction>>& txs,
       SignAllTransactionsCallback callback,
       bool approved);
   void OnAddUnapprovedTransaction(SignAndSendTransactionCallback callback,
