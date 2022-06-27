@@ -99,6 +99,8 @@ void JSSolanaProvider::AddJavaScriptObjectToFrame(
         !solana_value->IsObject()) {
       gin::Handle<JSSolanaProvider> provider = gin::CreateHandle(isolate, this);
       CHECK(!provider.IsEmpty());
+      // window.solana will be removed in the future, we use window.braveSolana
+      // mainly from now on and keep window.solana for compatibility
       if (!allow_overwrite_window_solana) {
         SetProviderNonWritable(context, global, provider.ToV8(),
                                gin::StringToV8(isolate, "solana"), true);
@@ -108,6 +110,9 @@ void JSSolanaProvider::AddJavaScriptObjectToFrame(
                   provider.ToV8())
             .Check();
       }
+
+      SetProviderNonWritable(context, global, provider.ToV8(),
+                             gin::StringToV8(isolate, "braveSolana"), true);
 
       // This is to prevent window._brave_solana from being defined and set
       // non-configurable before we call our internal functions.
