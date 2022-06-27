@@ -15,14 +15,14 @@ jobs:
           PR_NUMBER: ${{ github.event.number }}
         name: "Set milestone on PR based on base branch"
         run: |
-          readarray -t milestones < <(gh api /repos/brave/brave-core/milestones -q '.[] | .title')
-          if [ "$GITHUB_BASE_REF" = "master" ]; then
+          readarray -t milestones < <(gh api /repos/brave/brave-core/milestones -q ".[] | .title")
+          if [[ "$GITHUB_BASE_REF" = "master" ]]; then
               milestone_selector="Nightly"
           else
               milestone_selector="$GITHUB_BASE_REF"
           fi
 
-          milestone=$(printf "%s\n" "${milestones[@]}" | grep -E "$milestone_selector")
+          milestone=$(printf "%s\n" "${milestones[@]}" | grep -F "$milestone_selector")
           gh pr edit "$PR_NUMBER" -R "$REPO_NAME" -m "$milestone"
 
   set-brave-browser-issues-milestone:
@@ -35,26 +35,28 @@ jobs:
           PR_NUMBER: ${{ github.event.number }}
         name: "Set milestone on related issues in brave-browser"
         run: |
-          URL_REGEX='(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)'
+          BB_ISSUE_PREFIX="https://github.com/brave/brave-browser/issues/"
+          BB_ISSUE_URL_REGEX='(http(s)?:\/\/)?github.com/brave/brave-browser/issues/\d+'
           UPLIFT_PR_REGEX='uplift\s+(?:of)?:?\s+\K(#\d+)'
-          RESOLVE_ISSUE_REGEX="(?:resolv|fix|clos)(?:e|es|ed)?:?\s+\K(${URL_REGEX})"
+          RESOLVE_ISSUE_REGEX="(?:resolv|fix|clos)(?:e|es|ed)?:?\s+\K(${BB_ISSUE_URL_REGEX})"
+          verlte() { printf '%s\n%s' "$1" "$2" | sort -C -V; }
+          normalize_issue_links() { sed "s@\sbrave\/brave-browser\#\([0-9]\+\)@ ${BB_ISSUE_PREFIX}\1@g"; }
 
-          uplift_pr_body=$(gh pr view "$PR_NUMBER" -R "$REPO_NAME" --json body --jq '.body')
+          pr_body=$(gh pr view "${PR_NUMBER}" -R "${REPO_NAME}" --json body --jq .body | normalize_issue_links)
 
-          issues=$(echo "${uplift_pr_body}" | grep -ioP "${RESOLVE_ISSUE_REGEX}" || :)
-          if [[ -z ${issues} ]]; then
-              echo "Resolved issues not directly found. Following PRs to determine them..."
-              prs=$(echo "${uplift_pr_body}" | grep -ioP "${UPLIFT_PR_REGEX}")
-              issues=$(xargs -n 1 -I{} gh pr view {} -R brave/brave-core --json body --jq '.body' < <(echo "${prs}") | grep -ioP "${RESOLVE_ISSUE_REGEX}")
-          fi
+          readarray -t issues_pr < <(echo "${pr_body}" | grep -ioP "${RESOLVE_ISSUE_REGEX}" || :)
+          echo "Looking for any uplifted PRs"
+          readarray -t prs < <(echo "${pr_body}" | grep -ioP "${UPLIFT_PR_REGEX}" || :)
+          readarray -t issues_uplift_pr < <(echo "${prs[@]}" | xargs -n 1 -I{} gh pr view {} -R brave/brave-core --json body --jq ".body" | normalize_issue_links | grep -ioP "${RESOLVE_ISSUE_REGEX}")
+          readarray -t issues < <(printf "%s\n" "${issues_pr[@]}" "${issues_uplift_pr[@]}"| sort -u)
           echo "Relevant issues detected:"
-          echo "${issues}"
+          printf "%s\n" "${issues[@]}"
 
-          pr_milestone=$(gh pr view "$PR_NUMBER" -R "$REPO_NAME" --json milestone --jq '.milestone.title')
+          pr_milestone=$(gh pr view "${PR_NUMBER}" -R "${REPO_NAME}" --json milestone --jq .milestone.title)
 
-          for issue in ${issues}; do
-              issue_milestone=$(gh issue view "${issue}" --json milestone --jq '.milestone.title')
-              if [[ -z "${issue_milestone}" || "$pr_milestone" < "${issue_milestone}" ]]; then
+          for issue in "${issues[@]}"; do
+              issue_milestone=$(gh issue view "${issue}" --json milestone --jq .milestone.title)
+              if [[ -z "${issue_milestone}" ]] || verlte "${pr_milestone}" "${issue_milestone}"; then
                   echo "Setting ${issue} milestone to ${pr_milestone}"
                   gh issue edit "${issue}" -m "${pr_milestone}"
               fi
