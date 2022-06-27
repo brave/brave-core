@@ -194,13 +194,19 @@ extension SyncSettingsTableViewController {
 
   override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     defer { tableView.deselectRow(at: indexPath, animated: true) }
+    
+    guard let section = Sections(rawValue: indexPath.section) else {
+      return
+    }
 
-    if indexPath.section == Sections.deviceActions.rawValue {
+    if section == .deviceActions {
       addAnotherDevice()
       return
     }
 
-    guard !devices.isEmpty, let device = devices[safe: indexPath.row] else {
+    guard section == .deviceList,
+          !devices.isEmpty,
+          let device = devices[safe: indexPath.row] else {
       return
     }
 
