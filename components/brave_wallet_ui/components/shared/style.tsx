@@ -47,6 +47,7 @@ export const LinkText = styled.a`
   flex-direction: row;
   gap: 8px;
   justify-content: center;
+  text-decoration: none;
 `
 
 export const ErrorText = styled.span`
