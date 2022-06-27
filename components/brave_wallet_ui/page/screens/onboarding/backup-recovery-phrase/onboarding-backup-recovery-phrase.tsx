@@ -107,8 +107,10 @@ export const OnboardingBackupRecoveryPhrase = () => {
             <Description>
               {getLocale('braveWalletRecoveryPhraseBackupWarning')}
               <LinkText
-                href='https://brave.com/learn/wallet-recovery-phrase/'
+                href='https://brave.com/learn/wallet-recovery-phrase/#how-should-i-store-my-recovery-phrase'
                 target='_blank'
+                rel='noreferrer'
+                referrerPolicy='no-referrer'
               >
                 {getLocale('braveWalletWelcomePanelButton')}
               </LinkText>
