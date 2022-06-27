@@ -12,7 +12,6 @@ namespace ledger {
 namespace option {
 
 const char kPublisherListRefreshInterval[] = "publisher_list_refresh_interval";
-const char kClaimUGP[] = "claim_ugp";
 const char kIsBitflyerRegion[] = "is_bitflyer_region";
 
 }  // namespace option

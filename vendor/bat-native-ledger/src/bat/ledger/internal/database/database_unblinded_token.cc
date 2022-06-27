@@ -107,30 +107,27 @@ void DatabaseUnblindedToken::OnGetRecords(
   callback(std::move(list));
 }
 
-void DatabaseUnblindedToken::GetSpendableRecordsByTriggerIds(
-    const std::vector<std::string>& trigger_ids,
+void DatabaseUnblindedToken::GetSpendableRecords(
     GetUnblindedTokenListCallback callback) {
-  if (trigger_ids.empty()) {
-    BLOG(1, "Trigger id is empty");
-    callback({});
-    return;
-  }
-
-  auto transaction = type::DBTransaction::New();
-
-  const std::string query = base::StringPrintf(
-      "SELECT ut.token_id, ut.token_value, ut.public_key, ut.value, "
-      "ut.creds_id, ut.expires_at FROM %s as ut "
-      "LEFT JOIN creds_batch as cb ON cb.creds_id = ut.creds_id "
-      "WHERE ut.redeemed_at = 0 AND "
-      "(cb.trigger_id IN (%s) OR ut.creds_id IS NULL)",
-      kTableName,
-      GenerateStringInCase(trigger_ids).c_str());
-
   auto command = type::DBCommand::New();
   command->type = type::DBCommand::Type::READ;
-  command->command = query;
-
+  command->command = base::StringPrintf(
+      R"(
+    SELECT
+      ut.token_id,
+      ut.token_value,
+      ut.public_key,
+      ut.value,
+      ut.creds_id,
+      ut.expires_at
+    FROM
+      %s as ut
+    INNER JOIN
+      creds_batch as cb ON cb.creds_id = ut.creds_id
+    WHERE
+      ut.redeemed_at = 0 AND cb.trigger_type = 1
+      )",
+      kTableName);
   command->record_bindings = {
       type::DBCommand::RecordBindingType::INT64_TYPE,
       type::DBCommand::RecordBindingType::STRING_TYPE,
@@ -140,16 +137,12 @@ void DatabaseUnblindedToken::GetSpendableRecordsByTriggerIds(
       type::DBCommand::RecordBindingType::INT64_TYPE
   };
 
+  auto transaction = type::DBTransaction::New();
   transaction->commands.push_back(std::move(command));
 
-  auto transaction_callback = std::bind(&DatabaseUnblindedToken::OnGetRecords,
-      this,
-      _1,
-      callback);
-
   ledger_->ledger_client()->RunDBTransaction(
-      std::move(transaction),
-      transaction_callback);
+      std::move(transaction), std::bind(&DatabaseUnblindedToken::OnGetRecords,
+                                        this, _1, std::move(callback)));
 }
 
 void DatabaseUnblindedToken::MarkRecordListAsSpent(
