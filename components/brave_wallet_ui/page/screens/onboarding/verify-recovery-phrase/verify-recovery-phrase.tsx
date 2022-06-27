@@ -60,10 +60,12 @@ export const OnboardingVerifyRecoveryPhrase = () => {
   }, [])
 
   const onSkip = React.useCallback(() => {
+    dispatch(WalletPageActions.walletSetupComplete(true))
     history.push(WalletRoutes.OnboardingComplete)
   }, [])
 
   const onNextStep = React.useCallback(() => {
+    dispatch(WalletPageActions.walletSetupComplete(true))
     dispatch(WalletPageActions.walletBackupComplete())
     history.push(WalletRoutes.OnboardingComplete)
   }, [])
