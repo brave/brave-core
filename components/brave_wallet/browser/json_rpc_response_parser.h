@@ -40,19 +40,15 @@ void ParseErrorResult(const std::string& json,
       base::JSONReader::ReadAndReturnValueWithError(
           json, base::JSONParserOptions::JSON_PARSE_RFC);
   absl::optional<base::Value>& records_v = value_with_error.value;
-  if (!records_v) {
+  if (!records_v || !records_v->is_dict()) {
     LOG(ERROR) << "Invalid response, could not parse JSON, JSON is: " << json;
     return;
   }
 
-  const base::DictionaryValue* response_dict;
-  if (!records_v->GetAsDictionary(&response_dict)) {
-    return;
-  }
-
-  absl::optional<int> code_int = response_dict->FindIntPath("error.code");
+  const auto& dict = records_v->GetDict();
+  absl::optional<int> code_int = dict.FindIntByDottedPath("error.code");
   const std::string* message_string =
-      response_dict->FindStringPath("error.message");
+      dict.FindStringByDottedPath("error.message");
   if (!code_int)
     return;
 
@@ -64,7 +60,8 @@ void ParseErrorResult(const std::string& json,
   }
 }
 
-bool ParseResult(const std::string& json, base::Value* result);
+absl::optional<base::Value> ParseResultValue(const std::string& json);
+absl::optional<base::Value::Dict> ParseResultDict(const std::string& json);
 bool ParseBoolResult(const std::string& json, bool* value);
 
 absl::optional<std::string> ConvertInt64ToString(const std::string& path,

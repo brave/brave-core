@@ -78,18 +78,14 @@ bool ParseEthGetFeeHistory(const std::string& json,
   oldest_block->clear();
   reward->clear();
 
-  base::Value result;
-  if (!ParseResult(json, &result))
+  auto result = ParseResultDict(json);
+  if (!result)
     return false;
-  const base::DictionaryValue* result_dict = nullptr;
-  if (!result.GetAsDictionary(&result_dict))
-    return false;
-  DCHECK(result_dict);
 
-  const base::ListValue* base_fee_list = nullptr;
-  if (!result_dict->GetList("baseFeePerGas", &base_fee_list))
+  const auto* base_fee_list = result->FindList("baseFeePerGas");
+  if (!base_fee_list)
     return false;
-  for (const base::Value& entry : base_fee_list->GetList()) {
+  for (const base::Value& entry : *base_fee_list) {
     const std::string* v = entry.GetIfString();
     // If we have unexpected output, so just return false
     if (!v)
@@ -97,10 +93,11 @@ bool ParseEthGetFeeHistory(const std::string& json,
     base_fee_per_gas->push_back(*v);
   }
 
-  if (!result_dict->GetList("gasUsedRatio", &base_fee_list))
+  base_fee_list = result->FindList("gasUsedRatio");
+  if (!base_fee_list)
     return false;
 
-  for (const base::Value& entry : base_fee_list->GetList()) {
+  for (const base::Value& entry : *base_fee_list) {
     absl::optional<double> v = entry.GetIfDouble();
     // If we have unexpected output, so just return false
     if (!v)
@@ -108,19 +105,22 @@ bool ParseEthGetFeeHistory(const std::string& json,
     gas_used_ratio->push_back(*v);
   }
 
-  if (!result_dict->GetString("oldestBlock", oldest_block))
+  const auto* oldest_block_str = result->FindString("oldestBlock");
+  if (!oldest_block_str)
     return false;
+  *oldest_block = *oldest_block_str;
 
-  const base::ListValue* reward_list_list = nullptr;
-  if (result_dict->GetList("reward", &reward_list_list)) {
-    for (const base::Value& reward_list : reward_list_list->GetList()) {
+  const base::Value::List* reward_list_list = result->FindList("reward");
+  if (reward_list_list) {
+    for (const base::Value& item : *reward_list_list) {
       // If we have unexpected output, so just return false
-      if (!reward_list.is_list())
+      const auto* reward_list = item.GetIfList();
+      if (!reward_list)
         return false;
 
       reward->push_back(std::vector<std::string>());
       std::vector<std::string>& current_reward_vector = reward->back();
-      for (const auto& entry : reward_list.GetList()) {
+      for (const auto& entry : *reward_list) {
         const std::string* v = entry.GetIfString();
         // If we have unexpected output, so just return false
         if (!v)
@@ -152,65 +152,77 @@ bool ParseEthGetTransactionReceipt(const std::string& json,
                                    TransactionReceipt* receipt) {
   DCHECK(receipt);
 
-  base::Value result;
-  if (!ParseResult(json, &result))
-    return false;
-  const base::DictionaryValue* result_dict = nullptr;
-  if (!result.GetAsDictionary(&result_dict))
-    return false;
-  DCHECK(result_dict);
-
-  if (!result_dict->GetString("transactionHash", &receipt->transaction_hash))
-    return false;
-  std::string transaction_index;
-  if (!result_dict->GetString("transactionIndex", &transaction_index))
-    return false;
-  if (!HexValueToUint256(transaction_index, &receipt->transaction_index))
+  auto result = ParseResultDict(json);
+  if (!result)
     return false;
 
-  std::string block_number;
-  if (!result_dict->GetString("blockNumber", &block_number))
-    return false;
-  if (!HexValueToUint256(block_number, &receipt->block_number))
+  if (const auto* transaction_hash = result->FindString("transactionHash"))
+    receipt->transaction_hash = *transaction_hash;
+  else
     return false;
 
-  if (!result_dict->GetString("blockHash", &receipt->block_hash))
+  if (const auto* transaction_index = result->FindString("transactionIndex")) {
+    if (!HexValueToUint256(*transaction_index, &receipt->transaction_index))
+      return false;
+  } else {
+    return false;
+  }
+
+  if (const auto* block_number = result->FindString("blockNumber")) {
+    if (!HexValueToUint256(*block_number, &receipt->block_number))
+      return false;
+  } else {
+    return false;
+  }
+
+  if (const auto* block_hash = result->FindString("blockHash"))
+    receipt->block_hash = *block_hash;
+  else
     return false;
 
   std::string cumulative_gas_used;
-  if (!result_dict->GetString("cumulativeGasUsed", &cumulative_gas_used))
+  if (const auto* cumulative_gas_used =
+          result->FindString("cumulativeGasUsed")) {
+    if (!HexValueToUint256(*cumulative_gas_used, &receipt->cumulative_gas_used))
+      return false;
+  } else {
     return false;
-  if (!HexValueToUint256(cumulative_gas_used, &receipt->cumulative_gas_used))
-    return false;
+  }
 
-  std::string gas_used;
-  if (!result_dict->GetString("gasUsed", &gas_used))
+  if (const auto* gas_used = result->FindString("gasUsed")) {
+    if (!HexValueToUint256(*gas_used, &receipt->gas_used))
+      return false;
+  } else {
     return false;
-  if (!HexValueToUint256(gas_used, &receipt->gas_used))
-    return false;
+  }
 
   // contractAddress can be null
-  result_dict->GetString("contractAddress", &receipt->contract_address);
+  if (const auto* contract_address = result->FindString("contractAddress")) {
+    receipt->contract_address = *contract_address;
+  }
 
   // TODO(darkdh): logs
 #if 0
-  const base::ListValue* logs = nullptr;
-  if (!result_dict->GetList("logs", &logs))
+  const base::Value::List* logs = result->FindList("logs");
+  if (!logs)
     return false;
-  for (const std::string& entry : logs->GetList())
+  for (const std::string& entry : *logs)
     receipt->logs.push_back(entry);
 #endif
 
-  if (!result_dict->GetString("logsBloom", &receipt->logs_bloom))
+  if (const auto* logs_bloom = result->FindString("logsBloom"))
+    receipt->logs_bloom = *logs_bloom;
+  else
     return false;
 
-  std::string status;
-  if (!result_dict->GetString("status", &status))
+  if (const auto* status = result->FindString("status")) {
+    uint32_t status_int = 0;
+    if (!base::HexStringToUInt(*status, &status_int))
+      return false;
+    receipt->status = status_int == 1;
+  } else {
     return false;
-  uint32_t status_int = 0;
-  if (!base::HexStringToUInt(status, &status_int))
-    return false;
-  receipt->status = status_int == 1;
+  }
 
   return true;
 }
