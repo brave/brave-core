@@ -3,14 +3,14 @@ import SecureIcon from '../../../assets/svg-icons/onboarding/secure-your-crypto.
 import SecureIconDark from '../../../assets/svg-icons/onboarding/secure-your-crypto-dark.svg'
 import { WalletButton } from '../../shared/style'
 
-export const StyledWrapper = styled.div`
+export const StyledWrapper = styled.div<{ hideBackground?: boolean }>`
   display: flex;
   height: 100%;
   width: 320px;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background-color: ${(p) => p.theme.color.background01};
+  background-color: ${(p) => p.hideBackground ? 'transparent' : p.theme.color.background01};
 `
 
 export const Title = styled.span`

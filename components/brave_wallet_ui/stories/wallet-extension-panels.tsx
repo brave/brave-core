@@ -599,7 +599,6 @@ _ConnectWithSite.story = {
 
 export const _ConnectedPanel = (args: { locked: boolean }) => {
   const { locked } = args
-  const [inputValue, setInputValue] = React.useState<string>('')
   const [walletLocked, setWalletLocked] = React.useState<boolean>(locked)
   const [selectedPanel, setSelectedPanel] = React.useState<PanelTypes>('main')
   const [panelTitle, setPanelTitle] = React.useState<string>('main')
@@ -610,7 +609,6 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
     AppsList()[0].appList[0]
   ])
   const [filteredAppsList, setFilteredAppsList] = React.useState<AppsListType[]>(AppsList())
-  const [hasPasswordError, setHasPasswordError] = React.useState<boolean>(false)
   const [selectedNetwork] = React.useState<BraveWallet.NetworkInfo>(mockNetworks[0])
   const [selectedWyreAsset, setSelectedWyreAsset] = React.useState<BraveWallet.BlockchainToken>(mockEthToken)
   const [, setSelectedAsset] = React.useState<BraveWallet.BlockchainToken>(mockBasicAttentionToken)
@@ -682,17 +680,8 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
     filterAppList(event, AppsList(), setFilteredAppsList)
   }
 
-  const unlockWallet = () => {
-    if (inputValue !== 'password') {
-      setHasPasswordError(true)
-    } else {
-      setWalletLocked(false)
-    }
-  }
-
-  const handlePasswordChanged = (value: string) => {
-    setHasPasswordError(false)
-    setInputValue(value)
+  const unlockWallet = (_password: string) => {
+    setWalletLocked(false)
   }
 
   const onRestore = () => {
@@ -737,10 +726,7 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
       <StyledExtensionWrapper>
         {walletLocked ? (
           <LockPanel
-            hasPasswordError={hasPasswordError}
             onSubmit={unlockWallet}
-            disabled={inputValue === ''}
-            onPasswordChanged={handlePasswordChanged}
             onClickRestore={onRestore}
           />
         ) : (
