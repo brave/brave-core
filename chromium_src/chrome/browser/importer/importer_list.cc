@@ -12,6 +12,10 @@
 #include "chrome/grit/generated_resources.h"
 #include "ui/base/l10n/l10n_util.h"
 
+#if BUILDFLAG(IS_WIN)
+#include "chrome/common/importer/edge_importer_utils_win.h"
+#endif
+
 namespace {
 void AddChromeToProfiles(std::vector<importer::SourceProfile>* profiles,
                          base::ListValue* chrome_profiles,
@@ -73,4 +77,16 @@ void DetectChromeProfiles(std::vector<importer::SourceProfile>* profiles) {
 
 }  // namespace
 
+#if BUILDFLAG(IS_WIN)
+#define GetEdgeDataFilePath                                     \
+  GetEdgeDataFilePath();                                        \
+  if (!ChromeImporterCanImport(importer::GetEdgeDataFilePath(), \
+                               &edge.services_supported)) {     \
+    return;                                                     \
+  }                                                             \
+  importer::GetEdgeDataFilePath
+#endif
 #include "src/chrome/browser/importer/importer_list.cc"
+#if BUILDFLAG(IS_WIN)
+#undef GetEdgeDataFilePath
+#endif

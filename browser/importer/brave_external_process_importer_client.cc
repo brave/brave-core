@@ -14,7 +14,11 @@
 
 namespace {
 bool ShouldUseBraveImporter(importer::ImporterType type) {
-  if (type == importer::TYPE_CHROME)
+  if (type == importer::TYPE_CHROME
+#if BUILDFLAG(IS_WIN)
+      || type == importer::TYPE_EDGE
+#endif
+  )
     return true;
 
   return false;
