@@ -18,6 +18,7 @@ bool ShouldUseBraveImporter(importer::ImporterType type) {
     case importer::TYPE_CHROME:
     case importer::TYPE_EDGE_CHROMIUM:
     case importer::TYPE_VIVALDI:
+    case importer::TYPE_OPERA:
       return true;
     default:
       return false;

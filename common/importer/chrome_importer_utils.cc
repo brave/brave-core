@@ -107,7 +107,7 @@ base::Value::List GetChromeSourceProfiles(
   }
   if (profiles.empty()) {
     base::Value::Dict entry;
-    entry.Set("id", "Default");
+    entry.Set("id", "");
     entry.Set("name", "Default");
     profiles.Append(std::move(entry));
   }

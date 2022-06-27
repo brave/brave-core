@@ -34,3 +34,8 @@ base::FilePath GetEdgeUserDataFolder() {
   base::FilePath result = base::mac::GetUserLibraryPath();
   return result.Append("Application Support/Microsoft Edge");
 }
+
+base::FilePath GetOperaUserDataFolder() {
+  base::FilePath result = base::mac::GetUserLibraryPath();
+  return result.Append("Application Support/Opera");
+}

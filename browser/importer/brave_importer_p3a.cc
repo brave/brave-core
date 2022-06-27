@@ -61,6 +61,9 @@ void RecordImporterP3A(importer::ImporterType type) {
     case importer::TYPE_VIVALDI:
       metric = ImporterSource::kOther;
       break;
+    case importer::TYPE_OPERA:
+      metric = ImporterSource::kOpera;
+      break;
   }
 
   UMA_HISTOGRAM_ENUMERATION("Brave.Importer.ImporterSource.2", metric,

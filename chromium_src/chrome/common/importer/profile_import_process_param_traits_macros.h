@@ -10,9 +10,9 @@
 #include "chrome/common/importer/importer_type.h"
 
 #if !BUILDFLAG(IS_WIN)
-#define TYPE_BOOKMARKS_FILE TYPE_VIVALDI
+#define TYPE_BOOKMARKS_FILE TYPE_OPERA
 #else
-#define TYPE_EDGE TYPE_VIVALDI
+#define TYPE_EDGE TYPE_OPERA
 #endif
 #include "src/chrome/common/importer/profile_import_process_param_traits_macros.h"
 #if !BUILDFLAG(IS_WIN)
