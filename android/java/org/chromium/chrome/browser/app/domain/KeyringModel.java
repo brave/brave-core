@@ -30,6 +30,7 @@ public class KeyringModel implements KeyringServiceObserver {
     public LiveData<AccountInfo> mSelectedAccount;
     private CryptoSharedData mSharedData;
     private AccountsPermissionsHelper mAccountsPermissionsHelper;
+    private final Object mLock = new Object();
 
     public KeyringModel(KeyringService keyringService, CryptoSharedData sharedData,
             BraveWalletService braveWalletService) {
@@ -43,28 +44,38 @@ public class KeyringModel implements KeyringServiceObserver {
     }
 
     public void init() {
-        mKeyringService.addObserver(this);
+        synchronized (mLock) {
+            if (mKeyringService == null) {
+                return;
+            }
+            mKeyringService.addObserver(this);
+        }
     }
 
     private void update() {
-        mKeyringService.getKeyringInfo(BraveWalletConstants.DEFAULT_KEYRING_ID, keyringInfo -> {
-            _mKeyringInfoLiveData.postValue(keyringInfo);
+        synchronized (mLock) {
+            if (mKeyringService == null) {
+                return;
+            }
+            mKeyringService.getKeyringInfo(BraveWalletConstants.DEFAULT_KEYRING_ID, keyringInfo -> {
+                _mKeyringInfoLiveData.postValue(keyringInfo);
 
-            mKeyringService.getSelectedAccount(mSharedData.getCoinType(), accountAddress -> {
-                if (accountAddress != null && !accountAddress.isEmpty()) {
-                    AccountInfo selectedAccountInfo = null;
-                    for (AccountInfo accountInfo : keyringInfo.accountInfos) {
-                        if (accountInfo.address.equals(accountAddress)) {
-                            selectedAccountInfo = accountInfo;
-                            break;
+                mKeyringService.getSelectedAccount(mSharedData.getCoinType(), accountAddress -> {
+                    if (accountAddress != null && !accountAddress.isEmpty()) {
+                        AccountInfo selectedAccountInfo = null;
+                        for (AccountInfo accountInfo : keyringInfo.accountInfos) {
+                            if (accountInfo.address.equals(accountAddress)) {
+                                selectedAccountInfo = accountInfo;
+                                break;
+                            }
                         }
+                        _mSelectedAccount.postValue(selectedAccountInfo);
+                    } else if (keyringInfo.accountInfos.length > 0) {
+                        _mSelectedAccount.postValue(keyringInfo.accountInfos[0]);
                     }
-                    _mSelectedAccount.postValue(selectedAccountInfo);
-                } else if (keyringInfo.accountInfos.length > 0) {
-                    _mSelectedAccount.postValue(keyringInfo.accountInfos[0]);
-                }
+                });
             });
-        });
+        }
     }
 
     private void updateSelectedAccountPerOriginOrFirst(KeyringInfo keyringInfo) {
@@ -93,20 +104,30 @@ public class KeyringModel implements KeyringServiceObserver {
      */
     @UiThread
     public LiveData<AccountInfo> getSelectedAccountOrAccountPerOrigin() {
-        _mSelectedAccount.setValue(null);
-        mKeyringService.getSelectedAccount(mSharedData.getCoinType(), accountAddress -> {
-            if (accountAddress == null) {
-                mKeyringService.getKeyringInfo(BraveWalletConstants.DEFAULT_KEYRING_ID,
-                        keyringInfo -> { updateSelectedAccountPerOriginOrFirst(keyringInfo); });
-            } else {
-                update();
+        synchronized (mLock) {
+            if (mKeyringService == null) {
+                return mSelectedAccount;
             }
-        });
+            _mSelectedAccount.setValue(null);
+            mKeyringService.getSelectedAccount(mSharedData.getCoinType(), accountAddress -> {
+                if (accountAddress == null) {
+                    mKeyringService.getKeyringInfo(BraveWalletConstants.DEFAULT_KEYRING_ID,
+                            keyringInfo -> { updateSelectedAccountPerOriginOrFirst(keyringInfo); });
+                } else {
+                    update();
+                }
+            });
+        }
         return mSelectedAccount;
     }
 
     public void setSelectedAccount(String accountAddress, int coin) {
-        mKeyringService.setSelectedAccount(accountAddress, coin, isAccountSelected -> {});
+        synchronized (mLock) {
+            if (mKeyringService == null) {
+                return;
+            }
+            mKeyringService.setSelectedAccount(accountAddress, coin, isAccountSelected -> {});
+        }
     }
 
     public KeyringInfo getKeyringInfo() {
@@ -114,13 +135,17 @@ public class KeyringModel implements KeyringServiceObserver {
     }
 
     public void resetService(KeyringService keyringService, BraveWalletService braveWalletService) {
-        if (mKeyringService != keyringService) {
-            mKeyringService = keyringService;
+        synchronized (mLock) {
+            if (mKeyringService != keyringService) {
+                mKeyringService = keyringService;
+            }
+            if (mBraveWalletService != braveWalletService) {
+                mBraveWalletService = braveWalletService;
+            }
         }
-        if (mBraveWalletService != braveWalletService) {
-            mBraveWalletService = braveWalletService;
+        if (mKeyringService != null && mBraveWalletService != null) {
+            init();
         }
-        init();
     }
 
     @Override

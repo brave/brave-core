@@ -30,6 +30,7 @@ public class DappsModel {
     private final MutableLiveData<Boolean> _mWalletIconNotificationVisible =
             new MutableLiveData<>(false);
     public final LiveData<Boolean> mWalletIconNotificationVisible = _mWalletIconNotificationVisible;
+    private final Object mLock = new Object();
 
     public DappsModel(JsonRpcService jsonRpcService,
             BraveWalletService braveWalletService, PendingTxHelper pendingTxHelper) {
@@ -40,12 +41,32 @@ public class DappsModel {
 
     public void resetServices(JsonRpcService jsonRpcService,
             BraveWalletService braveWalletService, PendingTxHelper pendingTxHelper) {
-        mBraveWalletService = braveWalletService;
-        mJsonRpcService = jsonRpcService;
-        mPendingTxHelper = pendingTxHelper;
+        synchronized (mLock) {
+            mBraveWalletService = braveWalletService;
+            mJsonRpcService = jsonRpcService;
+            mPendingTxHelper = pendingTxHelper;
+        }
     }
 
     public void updateWalletBadgeVisibility() {
+        synchronized (mLock) {
+            updateWalletBadgeVisibilityInternal();
+        }
+    }
+
+    public void setWalletBadgeVisible() {
+        _mWalletIconNotificationVisible.setValue(true);
+    }
+
+    public void setWalletBadgeInvisible() {
+        _mWalletIconNotificationVisible.setValue(false);
+    }
+
+    private void updateWalletBadgeVisibilityInternal() {
+        if (mBraveWalletService == null || mJsonRpcService == null || mPendingTxHelper == null) {
+            return;
+        }
+
         _mWalletIconNotificationVisible.setValue(false);
 
         mBraveWalletService.getPendingSignMessageRequests(requests -> {
@@ -90,13 +111,5 @@ public class DappsModel {
                 break;
             }
         }
-    }
-
-    public void setWalletBadgeVisible() {
-        _mWalletIconNotificationVisible.setValue(true);
-    }
-
-    public void setWalletBadgeInvisible() {
-        _mWalletIconNotificationVisible.setValue(false);
     }
 }
