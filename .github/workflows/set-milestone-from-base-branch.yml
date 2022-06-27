@@ -48,12 +48,13 @@ jobs:
           echo "Looking for any uplifted PRs"
           readarray -t prs < <(echo "${pr_body}" | grep -ioP "${UPLIFT_PR_REGEX}" || :)
           readarray -t issues_uplift_pr < <(echo "${prs[@]}" | xargs -n 1 -I{} gh pr view {} -R brave/brave-core --json body --jq ".body" | normalize_issue_links | grep -ioP "${RESOLVE_ISSUE_REGEX}")
+          readarray -t issues < <(printf "%s\n" "${issues_pr[@]}" "${issues_uplift_pr[@]}"| sort -u)
           echo "Relevant issues detected:"
-          echo "${issues_pr[*]}" "${issues_uplift_pr[*]}"
+          printf "%s\n" "${issues[@]}"
 
           pr_milestone=$(gh pr view "${PR_NUMBER}" -R "${REPO_NAME}" --json milestone --jq .milestone.title)
 
-          for issue in "${issues_pr[@]}" "${issues_uplift_pr[@]}"; do
+          for issue in "${issues[@]}"; do
               issue_milestone=$(gh issue view "${issue}" --json milestone --jq .milestone.title)
               if [[ -z "${issue_milestone}" ]] || verlte "${pr_milestone}" "${issue_milestone}"; then
                   echo "Setting ${issue} milestone to ${pr_milestone}"
