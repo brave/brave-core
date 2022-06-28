@@ -1,0 +1,12 @@
+diff --git a/gpu/config/gpu_finch_features.cc b/gpu/config/gpu_finch_features.cc
+index f05a624b2ba22c8a968bd3dd72a9ea870e431d82..c460b21791a1f6ce90966e5916afca5a0e1d36b9 100644
+--- a/gpu/config/gpu_finch_features.cc
++++ b/gpu/config/gpu_finch_features.cc
+@@ -323,6 +323,7 @@ bool IsUsingVulkan() {
+   if (IsDeviceBlocked(build_info->android_build_fp(),
+                       kVulkanBlockListByAndroidBuildFP.Get()))
+     return false;
++  BRAVE_VULKAN_BLOCK_LIST_DEVICE_CHECK
+ 
+   return true;
+ 

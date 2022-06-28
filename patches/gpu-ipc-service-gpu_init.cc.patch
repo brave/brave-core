@@ -1,0 +1,12 @@
+diff --git a/gpu/ipc/service/gpu_init.cc b/gpu/ipc/service/gpu_init.cc
+index 9d08a950e24ebada0706969d22769f2eac4d690c..a2a9612dea4341a1e91ef9700cd8c12c74ea7b73 100644
+--- a/gpu/ipc/service/gpu_init.cc
++++ b/gpu/ipc/service/gpu_init.cc
+@@ -980,6 +980,7 @@ bool GpuInit::InitializeVulkan() {
+     vulkan_implementation_.reset();
+     return false;
+   }
++  BRAVE_VULKAN_GL_RENDERER_AND_DEVICE_NAME_CHECK
+ 
+   gpu_info_.vulkan_info =
+       vulkan_implementation_->GetVulkanInstance()->vulkan_info();
