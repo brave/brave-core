@@ -59,7 +59,6 @@ class JSEthereumProvider : public mojom::EventsListener {
                             v8::Local<v8::Context> context,
                             bool allow_overwrite_window_ethereum);
   bool EnsureConnected();
-  void OnRemoteDisconnect();
   void InjectInitScript(bool is_main_world);
 
   // Functions to be called from JS
