@@ -18,6 +18,7 @@
 #include "bat/ads/internal/serving/eligible_ads/pipelines/new_tab_page_ads/eligible_new_tab_page_ads_factory.h"
 #include "bat/ads/internal/serving/permission_rules/new_tab_page_ads/new_tab_page_ad_permission_rules.h"
 #include "bat/ads/internal/serving/serving_features.h"
+#include "bat/ads/internal/serving/targeting/top_segments.h"
 #include "bat/ads/internal/serving/targeting/user_model_builder.h"
 #include "bat/ads/internal/serving/targeting/user_model_info.h"
 #include "bat/ads/new_tab_page_ad_info.h"
@@ -73,6 +74,12 @@ void Serving::MaybeServeAd(GetNewTabPageAdCallback callback) {
   eligible_ads_->GetForUserModel(
       user_model, [=](const bool had_opportunity,
                       const CreativeNewTabPageAdList& creative_ads) {
+        if (had_opportunity) {
+          const SegmentList segments =
+              targeting::GetTopChildSegments(user_model);
+          NotifyOpportunityAroseToServeNewTabPageAd(segments);
+        }
+
         if (creative_ads.empty()) {
           BLOG(1, "New tab page ad not served: No eligible ads found");
           FailedToServeAd(callback);
@@ -147,6 +154,13 @@ void Serving::FailedToServeAd(GetNewTabPageAdCallback callback) {
 void Serving::ServedAd(const NewTabPageAdInfo& ad) {
   DCHECK(eligible_ads_);
   eligible_ads_->SetLastServedAd(ad);
+}
+
+void Serving::NotifyOpportunityAroseToServeNewTabPageAd(
+    const SegmentList& segments) const {
+  for (ServingObserver& observer : observers_) {
+    observer.OnOpportunityAroseToServeNewTabPageAd(segments);
+  }
 }
 
 void Serving::NotifyDidServeNewTabPageAd(const NewTabPageAdInfo& ad) const {

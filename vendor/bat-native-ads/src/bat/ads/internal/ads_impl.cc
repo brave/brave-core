@@ -43,6 +43,7 @@
 #include "bat/ads/internal/legacy_migration/rewards/legacy_rewards_migration.h"
 #include "bat/ads/internal/locale/locale_manager.h"
 #include "bat/ads/internal/prefs/pref_manager.h"
+#include "bat/ads/internal/privacy/p2a/opportunities/p2a_opportunity.h"
 #include "bat/ads/internal/privacy/tokens/token_generator.h"
 #include "bat/ads/internal/processors/behavioral/bandits/epsilon_greedy_bandit_processor.h"
 #include "bat/ads/internal/processors/behavioral/purchase_intent/purchase_intent_processor.h"
@@ -656,6 +657,12 @@ void AdsImpl::OnWalletDidUpdate(const WalletInfo& wallet) {
 
 void AdsImpl::OnStatementOfAccountsDidChange() {
   AdsClientHelper::GetInstance()->OnAdRewardsChanged();
+}
+
+void AdsImpl::OnOpportunityAroseToServeNotificationAd(
+    const SegmentList& segments) {
+  privacy::p2a::RecordAdOpportunityForSegments(AdType::kNotificationAd,
+                                               segments);
 }
 
 void AdsImpl::OnDidServeNotificationAd(const NotificationAdInfo& ad) {

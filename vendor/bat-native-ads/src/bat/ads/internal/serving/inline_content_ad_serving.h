@@ -11,6 +11,7 @@
 
 #include "base/observer_list.h"
 #include "bat/ads/ads_aliases.h"
+#include "bat/ads/internal/segments/segments_aliases.h"
 #include "bat/ads/internal/serving/inline_content_ad_serving_observer.h"
 
 namespace ads {
@@ -52,6 +53,8 @@ class Serving final {
                        GetInlineContentAdCallback callback);
   void ServedAd(const InlineContentAdInfo& ad);
 
+  void NotifyOpportunityAroseToServeInlineContentAd(
+      const SegmentList& segments) const;
   void NotifyDidServeInlineContentAd(const InlineContentAdInfo& ad) const;
   void NotifyFailedToServeInlineContentAd() const;
 
