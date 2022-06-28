@@ -150,11 +150,11 @@ void BravePrefProvider::MigrateShieldsSettings(bool incognito) {
   if (incognito)
     return;
 
-  auto* shieldsCookies = prefs_->GetDictionary(
+  auto* shields_cookies = prefs_->GetDictionary(
       "profile.content_settings.exceptions.shieldsCookies");
-  if (shieldsCookies) {
+  if (shields_cookies) {
     prefs_->Set("profile.content_settings.exceptions.shieldsCookiesV3",
-                *shieldsCookies);
+                *shields_cookies);
   }
 
   // Prior to Chromium 88, we used the "plugins" ContentSettingsType along with
@@ -445,7 +445,10 @@ bool BravePrefProvider::SetWebsiteSettingInternal(
       primary_pattern == ContentSettingsPattern::Wildcard() &&
       secondary_pattern == ContentSettingsPattern::Wildcard()) {
     if (content_type == ContentSettingsType::BRAVE_COOKIES) {
-      // Default value for BRAVE_COOKIES handled in another place.
+      // Default value for BRAVE_COOKIES handled in chromium code. This value
+      // based on default COOKIES value (which provided by DefaultPrefProvider)
+      // and kCookieControlsMode pref (default value in
+      // brave::SetDefaultThirdPartyCookieBlockValue).
       return false;
     }
     base::Time modified_time =
