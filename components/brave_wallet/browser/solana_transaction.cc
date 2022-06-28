@@ -20,6 +20,11 @@ namespace brave_wallet {
 namespace {
 
 constexpr char kSendOptions[] = "send_options";
+constexpr char kPublicKey[] = "public_key";
+constexpr char kSignature[] = "signature";
+constexpr char kSignatures[] = "signatures";
+constexpr char kSignTxParam[] = "sign_tx_param";
+constexpr char kEncodedSerializedMsg[] = "encoded_serialized_msg";
 
 // Below are using camel cases so we can handle the parameters from dApp
 // requests directly with the same key.
@@ -286,22 +291,45 @@ mojom::SolanaTxDataPtr SolanaTransaction::ToSolanaTxData() const {
     solana_tx_data->send_options = send_options_->ToMojomSendOptions();
   }
 
+  if (sign_tx_param_)
+    solana_tx_data->sign_transaction_param = sign_tx_param_.Clone();
+
   return solana_tx_data;
 }
 
 base::Value SolanaTransaction::ToValue() const {
-  base::Value dict(base::Value::Type::DICTIONARY);
-  dict.SetKey("message", message_.ToValue());
+  base::Value::Dict dict;
+  dict.Set("message", message_.ToValue());
 
-  dict.SetStringKey("to_wallet_address", to_wallet_address_);
-  dict.SetStringKey("spl_token_mint_address", spl_token_mint_address_);
-  dict.SetIntKey("tx_type", static_cast<int>(tx_type_));
-  dict.SetStringKey("lamports", base::NumberToString(lamports_));
-  dict.SetStringKey("amount", base::NumberToString(amount_));
+  dict.Set("to_wallet_address", to_wallet_address_);
+  dict.Set("spl_token_mint_address", spl_token_mint_address_);
+  dict.Set("tx_type", static_cast<int>(tx_type_));
+  dict.Set("lamports", base::NumberToString(lamports_));
+  dict.Set("amount", base::NumberToString(amount_));
   if (send_options_)
-    dict.SetKey(kSendOptions, send_options_->ToValue());
+    dict.Set(kSendOptions, send_options_->ToValue());
 
-  return dict;
+  if (sign_tx_param_) {
+    base::Value::Dict sign_tx_param_dict;
+    sign_tx_param_dict.Set(kEncodedSerializedMsg,
+                           sign_tx_param_->encoded_serialized_msg);
+
+    base::Value::List signatures_list;
+    for (const auto& signature : sign_tx_param_->signatures) {
+      base::Value::Dict signature_dict;
+      signature_dict.Set(kPublicKey, signature->public_key);
+      if (signature->signature)
+        signature_dict.Set(kSignature,
+                           base::Base64Encode(*signature->signature));
+
+      signatures_list.Append(std::move(signature_dict));
+    }
+    sign_tx_param_dict.Set(kSignatures, std::move(signatures_list));
+
+    dict.Set(kSignTxParam, std::move(sign_tx_param_dict));
+  }
+
+  return base::Value(std::move(dict));
 }
 
 void SolanaTransaction::set_tx_type(mojom::TransactionType tx_type) {
@@ -361,6 +389,42 @@ std::unique_ptr<SolanaTransaction> SolanaTransaction::FromValue(
   if (send_options_value)
     tx->set_send_options(SendOptions::FromValue(*send_options_value));
 
+  const base::Value* sign_tx_param_value = value.FindDictKey(kSignTxParam);
+  if (sign_tx_param_value) {
+    auto sign_tx_param = mojom::SolanaSignTransactionParam::New();
+    const auto* encoded_serialized_msg =
+        sign_tx_param_value->GetDict().FindString(kEncodedSerializedMsg);
+    if (!encoded_serialized_msg || encoded_serialized_msg->empty())
+      return nullptr;
+
+    sign_tx_param->encoded_serialized_msg = *encoded_serialized_msg;
+    const auto* signatures_value =
+        sign_tx_param_value->GetDict().FindList(kSignatures);
+    if (!signatures_value)
+      return nullptr;
+
+    std::vector<mojom::SignaturePubkeyPairPtr> signatures;
+    for (const auto& signature_value : *signatures_value) {
+      const auto* signature_dict = signature_value.GetIfDict();
+      if (!signature_dict)
+        return nullptr;
+
+      auto signature = mojom::SignaturePubkeyPair::New();
+      const auto* public_key = signature_dict->FindString(kPublicKey);
+      if (!public_key)
+        return nullptr;
+      signature->public_key = *public_key;
+
+      const auto* signature_string = signature_dict->FindString(kSignature);
+      if (signature_string)
+        signature->signature = base::Base64Decode(*signature_string);
+
+      signatures.push_back(std::move(signature));
+    }
+    sign_tx_param->signatures = std::move(signatures);
+    tx->set_sign_tx_param(std::move(sign_tx_param));
+  }
+
   return tx;
 }
 
@@ -380,6 +444,7 @@ std::unique_ptr<SolanaTransaction> SolanaTransaction::FromSolanaTxData(
   tx->set_amount(solana_tx_data->amount);
   tx->set_send_options(SendOptions::FromMojomSendOptions(
       std::move(solana_tx_data->send_options)));
+  tx->set_sign_tx_param(std::move(solana_tx_data->sign_transaction_param));
 
   return tx;
 }

@@ -321,6 +321,15 @@ TEST_F(SolanaTransactionUnitTest, FromToSolanaTxData) {
   auto mojom_send_options = mojom::SolanaSendTransactionOptions::New(
       mojom::OptionalMaxRetries::New(1), "confirmed",
       mojom::OptionalSkipPreflight::New(true));
+
+  auto sign_tx_param = mojom::SolanaSignTransactionParam::New();
+  sign_tx_param->encoded_serialized_msg = "encoded_serialized_message";
+  sign_tx_param->signatures.push_back(
+      mojom::SignaturePubkeyPair::New(absl::nullopt, "public_key1"));
+  sign_tx_param->signatures.push_back(mojom::SignaturePubkeyPair::New(
+      std::vector<uint8_t>(kSolanaSignatureSize, 1), "public_key2"));
+  transaction.set_sign_tx_param(sign_tx_param->Clone());
+
   auto solana_tx_data = transaction.ToSolanaTxData();
   ASSERT_TRUE(solana_tx_data);
   EXPECT_EQ(solana_tx_data->recent_blockhash, recent_blockhash);
@@ -333,6 +342,7 @@ TEST_F(SolanaTransactionUnitTest, FromToSolanaTxData) {
   EXPECT_EQ(solana_tx_data->tx_type,
             mojom::TransactionType::SolanaSystemTransfer);
   EXPECT_EQ(solana_tx_data->send_options, mojom_send_options);
+  EXPECT_EQ(solana_tx_data->sign_transaction_param, sign_tx_param);
 
   ASSERT_EQ(solana_tx_data->instructions.size(), 1u);
   EXPECT_EQ(solana_tx_data->instructions[0]->program_id,
@@ -377,6 +387,14 @@ TEST_F(SolanaTransactionUnitTest, FromToValue) {
   transaction.set_send_options(
       SolanaTransaction::SendOptions(1, "confirmed", true));
 
+  auto sign_tx_param = mojom::SolanaSignTransactionParam::New();
+  sign_tx_param->encoded_serialized_msg = "encoded_serialized_message";
+  sign_tx_param->signatures.push_back(
+      mojom::SignaturePubkeyPair::New(absl::nullopt, "public_key1"));
+  sign_tx_param->signatures.push_back(mojom::SignaturePubkeyPair::New(
+      std::vector<uint8_t>(2, 1), "public_key2"));
+  transaction.set_sign_tx_param(sign_tx_param->Clone());
+
   base::Value value = transaction.ToValue();
   auto expect_tx_value = base::JSONReader::Read(R"(
       {
@@ -412,6 +430,13 @@ TEST_F(SolanaTransactionUnitTest, FromToValue) {
           "maxRetries": "1",
           "preflightCommitment": "confirmed",
           "skipPreflight": true
+        },
+        "sign_tx_param": {
+          "encoded_serialized_msg": "encoded_serialized_message",
+          "signatures": [
+            {"public_key": "public_key1"},
+            {"signature": "AQE=", "public_key": "public_key2"}
+          ]
         }
       }
   )");
