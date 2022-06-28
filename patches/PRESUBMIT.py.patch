@@ -1,8 +1,8 @@
 diff --git a/PRESUBMIT.py b/PRESUBMIT.py
-index 81b1b62c3ef84dedaba01ef067bafc66d9ebfbb4..7e4fb471f68b60b23b03603902f33fb0e90ca204 100644
+index 9a47b406a55927261d2eef3e1f5d3f0d4e36502f..8d803493b82c7abacf7d4dd9608741142a98b83d 100644
 --- a/PRESUBMIT.py
 +++ b/PRESUBMIT.py
-@@ -5845,3 +5845,4 @@ def CheckPythonShebang(input_api, output_api):
+@@ -5942,3 +5942,4 @@ def CheckPythonShebang(input_api, output_api):
                  "Please use '#!/usr/bin/env python/2/3' as the shebang of %s" %
                  file))
      return result
