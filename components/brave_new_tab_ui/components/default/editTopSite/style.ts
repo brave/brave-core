@@ -16,7 +16,7 @@ export const StyledDialogWrapper = styled('div')<StyledDialogWrapperProps>`
   left: 0;
   width: 100%;
   height: 100%;
-  z-index: 5;
+  z-index: 10;
   display: flex;
   justify-content: center;
   align-items: center;
