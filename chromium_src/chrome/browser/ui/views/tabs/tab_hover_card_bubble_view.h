@@ -8,13 +8,19 @@
 
 // Inject a protected method that will have access to the private members of the
 // base class. Then, we can call this method from the subclass' override.
-#define BRAVE_TAB_HOVER_CARD_BUBBLE_VIEW_H_ \
- protected:                                 \
+#include "ui/gfx/image/image_skia.h"
+
+#define BRAVE_TAB_HOVER_CARD_BUBBLE_VIEW_H_             \
+  bool has_thumbnail_view() { return thumbnail_view_; } \
+                                                        \
+ protected:                                             \
   void BraveUpdateCardContent(const Tab* tab);
 
 #define TabHoverCardBubbleView TabHoverCardBubbleView_ChromiumImpl
 #define UpdateCardContent virtual UpdateCardContent
+#define SetTargetTabImage virtual SetTargetTabImage
 #include "src/chrome/browser/ui/views/tabs/tab_hover_card_bubble_view.h"
+#undef SetTargetTabImage
 #undef UpdateCardContent
 #undef TabHoverCardBubbleView
 #undef BRAVE_TAB_HOVER_CARD_BUBBLE_VIEW_H_
@@ -28,6 +34,7 @@ class TabHoverCardBubbleView : public TabHoverCardBubbleView_ChromiumImpl {
   TabHoverCardBubbleView& operator=(const TabHoverCardBubbleView&) = delete;
 
   void UpdateCardContent(const Tab* tab) override;
+  void SetTargetTabImage(gfx::ImageSkia preview_image) override;
 };
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_TABS_TAB_HOVER_CARD_BUBBLE_VIEW_H_

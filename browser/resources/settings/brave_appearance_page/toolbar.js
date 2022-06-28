@@ -3,10 +3,14 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
-import {Polymer, html} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js';
-import {loadTimeData} from "../i18n_setup.js"
-import '../settings_shared_css.js';
-import '../settings_vars_css.js';
+import {
+  Polymer,
+  html
+} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
+import { loadTimeData } from '../i18n_setup.js'
+import '../settings_shared_css.js'
+import '../settings_vars_css.js'
+import { I18nBehavior } from 'chrome://resources/js/i18n_behavior.m.js'
 
 /**
  * 'settings-brave-appearance-toolbar' is the settings page area containing
@@ -17,8 +21,26 @@ Polymer({
 
   _template: html`{__html_template__}`,
 
-  showBraveVPNOption_: function() {
-    return loadTimeData.getBoolean('isBraveVPNEnabled');
-  },
-});
+  behaviors: [I18nBehavior],
 
+  properties: {
+    tabTooltipModes_: {
+      readOnly: true,
+      type: Array,
+      value() {
+        return [
+          { value: 1, name: this.i18n('appearanceSettingsTabHoverModeCard') },
+          {
+            value: 2,
+            name: this.i18n('appearanceSettingsTabHoverModeCardWithPreview')
+          },
+          { value: 0, name: this.i18n('appearanceSettingsTabHoverModeTooltip') }
+        ]
+      }
+    }
+  },
+
+  showBraveVPNOption_: function () {
+    return loadTimeData.getBoolean('isBraveVPNEnabled')
+  }
+})

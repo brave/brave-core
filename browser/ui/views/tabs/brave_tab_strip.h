@@ -8,12 +8,16 @@
 
 #include "chrome/browser/ui/views/tabs/tab_strip.h"
 
+class Tab;
+
 class BraveTabStrip : public TabStrip {
  public:
   using TabStrip::TabStrip;
   ~BraveTabStrip() override;
   BraveTabStrip(const BraveTabStrip&) = delete;
   BraveTabStrip& operator=(const BraveTabStrip&) = delete;
+
+  void UpdateHoverCard(Tab* tab, HoverCardUpdateType update_type) override;
 
  private:
   FRIEND_TEST_ALL_PREFIXES(ColorPaletteTest, LightThemeMinimumContrast);

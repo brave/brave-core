@@ -131,6 +131,7 @@
 #include "brave/browser/search_engines/search_engine_provider_util.h"
 #include "brave/browser/ui/startup/default_brave_browser_prompt.h"
 #include "brave/components/brave_private_new_tab_ui/common/pref_names.h"
+#include "brave/components/brave_tabs/brave_tab_prefs.h"
 #endif
 
 #if BUILDFLAG(ENABLE_SIDEBAR)
@@ -447,6 +448,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
                                 base::Value(true));
   registry->RegisterBooleanPref(kEnableWindowClosingConfirm, true);
   RegisterDefaultBraveBrowserPromptPrefs(registry);
+  brave_tabs::RegisterBraveProfilePrefs(registry);
 #endif
 
   brave_search_conversion::RegisterPrefs(registry);

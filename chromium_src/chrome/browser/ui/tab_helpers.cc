@@ -5,8 +5,7 @@
 
 #include "brave/browser/brave_tab_helpers.h"
 
-#define BRAVE_TAB_HELPERS \
-  brave::AttachTabHelpers(web_contents);
+#define BRAVE_TAB_HELPERS brave::AttachTabHelpers(web_contents);
 
 // Dummy class for avoiding some TabHelpers from being added to the WebContents.
 class NoTabHelper {
