@@ -11,7 +11,7 @@
 #include "bat/ads/history_info.h"
 #include "bat/ads/history_item_info.h"
 #include "bat/ads/internal/covariates/covariate_constants.h"
-#include "bat/ads/internal/history/history.h"
+#include "bat/ads/internal/history/history_manager.h"
 
 namespace ads {
 
@@ -33,7 +33,7 @@ std::string AverageClickthroughRate::GetValue() const {
   const base::Time from_time = now - time_window_;
   const base::Time to_time = now;
 
-  const HistoryInfo history = history::Get(
+  const HistoryInfo history = HistoryManager::GetInstance()->Get(
       HistoryFilterType::kNone, HistorySortType::kNone, from_time, to_time);
   if (history.items.empty()) {
     return base::NumberToString(kCovariateMissingValue);

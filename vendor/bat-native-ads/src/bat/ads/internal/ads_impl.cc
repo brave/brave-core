@@ -38,7 +38,7 @@
 #include "bat/ads/internal/diagnostics/entries/last_unidle_time_diagnostic_util.h"
 #include "bat/ads/internal/features/features_util.h"
 #include "bat/ads/internal/geographic/subdivision/subdivision_targeting.h"
-#include "bat/ads/internal/history/history.h"
+#include "bat/ads/internal/history/history_manager.h"
 #include "bat/ads/internal/legacy_migration/conversions/legacy_conversions_migration.h"
 #include "bat/ads/internal/legacy_migration/rewards/legacy_rewards_migration.h"
 #include "bat/ads/internal/locale/locale_manager.h"
@@ -79,6 +79,7 @@ AdsImpl::AdsImpl(AdsClient* ads_client)
   covariate_manager_ = std::make_unique<CovariateManager>();
   database_manager_ = std::make_unique<DatabaseManager>();
   diagnostic_manager_ = std::make_unique<DiagnosticManager>();
+  history_manager_ = std::make_unique<HistoryManager>();
   locale_manager_ = std::make_unique<LocaleManager>();
   notification_ad_manager_ = std::make_unique<NotificationAdManager>();
   pref_manager_ = std::make_unique<PrefManager>();
@@ -88,7 +89,6 @@ AdsImpl::AdsImpl(AdsClient* ads_client)
 
   token_generator_ = std::make_unique<privacy::TokenGenerator>();
   account_ = std::make_unique<Account>(token_generator_.get());
-  account_->AddObserver(this);
 
   catalog_ = std::make_unique<Catalog>();
 
@@ -111,58 +111,55 @@ AdsImpl::AdsImpl(AdsClient* ads_client)
 
   inline_content_ad_event_handler_ =
       std::make_unique<inline_content_ads::EventHandler>();
-  inline_content_ad_event_handler_->AddObserver(this);
   inline_content_ad_serving_ = std::make_unique<inline_content_ads::Serving>(
       subdivision_targeting_.get(), anti_targeting_resource_.get());
-  inline_content_ad_serving_->AddObserver(this);
 
   new_tab_page_ad_event_handler_ =
       std::make_unique<new_tab_page_ads::EventHandler>();
-  new_tab_page_ad_event_handler_->AddObserver(this);
   new_tab_page_ad_serving_ = std::make_unique<new_tab_page_ads::Serving>(
       subdivision_targeting_.get(), anti_targeting_resource_.get());
-  new_tab_page_ad_serving_->AddObserver(this);
 
   notification_ad_event_handler_ =
       std::make_unique<notification_ads::EventHandler>();
-  notification_ad_event_handler_->AddObserver(this);
   notification_ad_serving_ = std::make_unique<notification_ads::Serving>(
       subdivision_targeting_.get(), anti_targeting_resource_.get());
-  notification_ad_serving_->AddObserver(this);
 
   promoted_content_ad_event_handler_ =
       std::make_unique<promoted_content_ads::EventHandler>();
-  promoted_content_ad_event_handler_->AddObserver(this);
 
   search_result_ad_event_handler_ =
       std::make_unique<search_result_ads::EventHandler>();
-  search_result_ad_event_handler_->AddObserver(this);
 
   conversions_ = std::make_unique<Conversions>();
-  conversions_->AddObserver(this);
 
   transfer_ = std::make_unique<Transfer>();
+
+  account_->AddObserver(this);
+  conversions_->AddObserver(this);
+  history_manager_->AddObserver(this);
+  inline_content_ad_event_handler_->AddObserver(this);
+  inline_content_ad_serving_->AddObserver(this);
+  new_tab_page_ad_event_handler_->AddObserver(this);
+  new_tab_page_ad_serving_->AddObserver(this);
+  notification_ad_event_handler_->AddObserver(this);
+  notification_ad_serving_->AddObserver(this);
+  promoted_content_ad_event_handler_->AddObserver(this);
+  search_result_ad_event_handler_->AddObserver(this);
   transfer_->AddObserver(this);
 }
 
 AdsImpl::~AdsImpl() {
   account_->RemoveObserver(this);
-
+  conversions_->RemoveObserver(this);
+  history_manager_->RemoveObserver(this);
   inline_content_ad_event_handler_->RemoveObserver(this);
   inline_content_ad_serving_->RemoveObserver(this);
-
   new_tab_page_ad_event_handler_->RemoveObserver(this);
   new_tab_page_ad_serving_->RemoveObserver(this);
-
   notification_ad_event_handler_->RemoveObserver(this);
   notification_ad_serving_->RemoveObserver(this);
-
   promoted_content_ad_event_handler_->RemoveObserver(this);
-
   search_result_ad_event_handler_->RemoveObserver(this);
-
-  conversions_->RemoveObserver(this);
-
   transfer_->RemoveObserver(this);
 }
 
@@ -437,7 +434,8 @@ HistoryInfo AdsImpl::GetHistory(const HistoryFilterType filter_type,
     return {};
   }
 
-  return history::Get(filter_type, sort_type, from_time, to_time);
+  return HistoryManager::GetInstance()->Get(filter_type, sort_type, from_time,
+                                            to_time);
 }
 
 void AdsImpl::GetStatementOfAccounts(GetStatementOfAccountsCallback callback) {
@@ -459,69 +457,39 @@ void AdsImpl::GetDiagnostics(GetDiagnosticsCallback callback) {
 AdContentLikeActionType AdsImpl::ToggleAdThumbUp(const std::string& json) {
   AdContentInfo ad_content;
   ad_content.FromJson(json);
-
-  const AdContentLikeActionType like_action_type =
-      ClientStateManager::GetInstance()->ToggleAdThumbUp(ad_content);
-  if (like_action_type == AdContentLikeActionType::kThumbsUp) {
-    account_->Deposit(ad_content.creative_instance_id, ad_content.type,
-                      ConfirmationType::kUpvoted);
-  }
-
-  return like_action_type;
+  return HistoryManager::GetInstance()->LikeAd(ad_content);
 }
 
 AdContentLikeActionType AdsImpl::ToggleAdThumbDown(const std::string& json) {
   AdContentInfo ad_content;
   ad_content.FromJson(json);
-
-  const AdContentLikeActionType like_action_type =
-      ClientStateManager::GetInstance()->ToggleAdThumbDown(ad_content);
-  if (like_action_type == AdContentLikeActionType::kThumbsDown) {
-    account_->Deposit(ad_content.creative_instance_id, ad_content.type,
-                      ConfirmationType::kDownvoted);
-  }
-
-  return like_action_type;
+  return HistoryManager::GetInstance()->DislikeAd(ad_content);
 }
 
 CategoryContentOptActionType AdsImpl::ToggleAdOptIn(
     const std::string& category,
-    const CategoryContentOptActionType& action) {
-  return ClientStateManager::GetInstance()->ToggleAdOptIn(category, action);
+    const CategoryContentOptActionType& action_type) {
+  return HistoryManager::GetInstance()->MarkToReceiveAdsForCategory(
+      category, action_type);
 }
 
 CategoryContentOptActionType AdsImpl::ToggleAdOptOut(
     const std::string& category,
-    const CategoryContentOptActionType& action) {
-  return ClientStateManager::GetInstance()->ToggleAdOptOut(category, action);
-}
-
-bool AdsImpl::ToggleSavedAd(const std::string& json) {
-  AdContentInfo ad_content;
-  ad_content.FromJson(json);
-
-  const bool is_saved =
-      ClientStateManager::GetInstance()->ToggleSavedAd(ad_content);
-  if (is_saved) {
-    account_->Deposit(ad_content.creative_instance_id, ad_content.type,
-                      ConfirmationType::kSaved);
-  }
-
-  return is_saved;
+    const CategoryContentOptActionType& action_type) {
+  return HistoryManager::GetInstance()->MarkToNoLongerReceiveAdsForCategory(
+      category, action_type);
 }
 
 bool AdsImpl::ToggleFlaggedAd(const std::string& json) {
   AdContentInfo ad_content;
   ad_content.FromJson(json);
+  return HistoryManager::GetInstance()->ToggleMarkAdAsInappropriate(ad_content);
+}
 
-  const bool is_flagged =
-      ClientStateManager::GetInstance()->ToggleFlaggedAd(ad_content);
-  if (is_flagged) {
-    account_->Deposit(ad_content.creative_instance_id, ad_content.type,
-                      ConfirmationType::kFlagged);
-  }
-
-  return is_flagged;
+bool AdsImpl::ToggleSavedAd(const std::string& json) {
+  AdContentInfo ad_content;
+  ad_content.FromJson(json);
+  return HistoryManager::GetInstance()->ToggleSavedAd(ad_content);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -660,6 +628,26 @@ void AdsImpl::MaybeServeNotificationAdsAtRegularIntervals() {
   } else {
     notification_ad_serving_->StopServingAdsAtRegularIntervals();
   }
+}
+
+void AdsImpl::OnDidLikeAd(const AdContentInfo& ad_content) {
+  account_->Deposit(ad_content.creative_instance_id, ad_content.type,
+                    ConfirmationType::kUpvoted);
+}
+
+void AdsImpl::OnDidDislikeAd(const AdContentInfo& ad_content) {
+  account_->Deposit(ad_content.creative_instance_id, ad_content.type,
+                    ConfirmationType::kDownvoted);
+}
+
+void AdsImpl::OnDidMarkAdAsInappropriate(const AdContentInfo& ad_content) {
+  account_->Deposit(ad_content.creative_instance_id, ad_content.type,
+                    ConfirmationType::kFlagged);
+}
+
+void AdsImpl::OnDidSaveAd(const AdContentInfo& ad_content) {
+  account_->Deposit(ad_content.creative_instance_id, ad_content.type,
+                    ConfirmationType::kSaved);
 }
 
 void AdsImpl::OnWalletDidUpdate(const WalletInfo& wallet) {

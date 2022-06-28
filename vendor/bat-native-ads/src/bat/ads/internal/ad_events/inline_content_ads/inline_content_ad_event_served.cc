@@ -9,7 +9,6 @@
 #include "bat/ads/internal/ad_events/ad_events.h"
 #include "bat/ads/internal/base/logging_util.h"
 #include "bat/ads/internal/deprecated/client/client_state_manager.h"
-#include "bat/ads/internal/history/history.h"
 
 namespace ads {
 namespace inline_content_ads {

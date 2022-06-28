@@ -21,7 +21,7 @@
 #include "bat/ads/internal/ad_events/promoted_content_ads/promoted_content_ad_event_handler_observer.h"
 #include "bat/ads/internal/ad_events/search_result_ads/search_result_ad_event_handler_observer.h"
 #include "bat/ads/internal/conversions/conversions_observer.h"
-#include "bat/ads/internal/database/database_manager_observer.h"
+#include "bat/ads/internal/history/history_manager_observer.h"
 #include "bat/ads/internal/serving/inline_content_ad_serving_observer.h"
 #include "bat/ads/internal/serving/new_tab_page_ad_serving_observer.h"
 #include "bat/ads/internal/serving/notification_ad_serving_observer.h"
@@ -90,6 +90,7 @@ class Conversions;
 class CovariateManager;
 class DatabaseManager;
 class DiagnosticManager;
+class HistoryManager;
 class NotificationAdManager;
 class LocaleManager;
 class PrefManager;
@@ -110,6 +111,7 @@ struct WalletInfo;
 class AdsImpl final : public Ads,
                       public AccountObserver,
                       public ConversionsObserver,
+                      public HistoryManagerObserver,
                       public inline_content_ads::EventHandlerObserver,
                       public inline_content_ads::ServingObserver,
                       public new_tab_page_ads::EventHandlerObserver,
@@ -213,10 +215,10 @@ class AdsImpl final : public Ads,
 
   CategoryContentOptActionType ToggleAdOptIn(
       const std::string& category,
-      const CategoryContentOptActionType& action) override;
+      const CategoryContentOptActionType& action_type) override;
   CategoryContentOptActionType ToggleAdOptOut(
       const std::string& category,
-      const CategoryContentOptActionType& action) override;
+      const CategoryContentOptActionType& action_type) override;
 
   bool ToggleSavedAd(const std::string& json) override;
 
@@ -236,6 +238,12 @@ class AdsImpl final : public Ads,
   void MaybeServeNotificationAd();
   bool ShouldServeNotificationAdsAtRegularIntervals() const;
   void MaybeServeNotificationAdsAtRegularIntervals();
+
+  // HistoryManagerObserver:
+  void OnDidLikeAd(const AdContentInfo& ad_content) override;
+  void OnDidDislikeAd(const AdContentInfo& ad_content) override;
+  void OnDidMarkAdAsInappropriate(const AdContentInfo& ad_content) override;
+  void OnDidSaveAd(const AdContentInfo& ad_content) override;
 
   // AccountObserver:
   void OnWalletDidUpdate(const WalletInfo& wallet) override;
@@ -289,6 +297,7 @@ class AdsImpl final : public Ads,
   std::unique_ptr<CovariateManager> covariate_manager_;
   std::unique_ptr<DatabaseManager> database_manager_;
   std::unique_ptr<DiagnosticManager> diagnostic_manager_;
+  std::unique_ptr<HistoryManager> history_manager_;
   std::unique_ptr<LocaleManager> locale_manager_;
   std::unique_ptr<NotificationAdManager> notification_ad_manager_;
   std::unique_ptr<PrefManager> pref_manager_;
