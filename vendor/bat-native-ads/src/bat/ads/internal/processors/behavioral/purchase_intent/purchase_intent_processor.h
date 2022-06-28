@@ -62,7 +62,7 @@ class PurchaseIntent final : public LocaleManagerObserver,
                               const std::vector<GURL>& redirect_chain,
                               const std::string& content) override;
 
-  raw_ptr<resource::PurchaseIntent> resource_ = nullptr;  // NOT OWNED
+  const raw_ptr<resource::PurchaseIntent> resource_ = nullptr;  // NOT OWNED
 };
 
 }  // namespace processor

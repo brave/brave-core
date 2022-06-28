@@ -78,7 +78,7 @@ class Confirmations final : public RedeemUnblindedTokenDelegate {
 
   raw_ptr<ConfirmationsDelegate> delegate_ = nullptr;
 
-  raw_ptr<privacy::TokenGeneratorInterface> token_generator_ =
+  const raw_ptr<privacy::TokenGeneratorInterface> token_generator_ =
       nullptr;  // NOT OWNED
 
   std::unique_ptr<RedeemUnblindedToken> redeem_unblinded_token_;

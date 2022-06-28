@@ -48,7 +48,7 @@ class TextClassification final : public LocaleManagerObserver,
                               const std::vector<GURL>& redirect_chain,
                               const std::string& content) override;
 
-  raw_ptr<resource::TextClassification> resource_ = nullptr;  // NOT OWNED
+  const raw_ptr<resource::TextClassification> resource_ = nullptr;  // NOT OWNED
 };
 
 }  // namespace processor
