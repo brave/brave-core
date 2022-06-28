@@ -347,8 +347,8 @@ export function createHost (): Host {
         stateManager.update({ balance })
       }),
       apiAdapter.getRewardsParameters().then((params) => {
-        const { options, exchangeInfo } = params
-        stateManager.update({ options, exchangeInfo })
+        const { options, exchangeInfo, payoutStatus } = params
+        stateManager.update({ options, exchangeInfo, payoutStatus })
       }),
       apiAdapter.getSettings().then((settings) => {
         stateManager.update({ settings })

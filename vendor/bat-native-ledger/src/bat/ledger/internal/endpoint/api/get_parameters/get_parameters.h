@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVELEDGER_ENDPOINT_API_GET_PARAMETERS_GET_PARAMETERS_H_
-#define BRAVELEDGER_ENDPOINT_API_GET_PARAMETERS_GET_PARAMETERS_H_
+#ifndef BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_ENDPOINT_API_GET_PARAMETERS_GET_PARAMETERS_H_
+#define BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_ENDPOINT_API_GET_PARAMETERS_GET_PARAMETERS_H_
 
 #include <string>
 
@@ -46,6 +46,12 @@
 //       10,
 //       100
 //     ]
+//   },
+//   "payoutStatus": {
+//     "unverified": "off",
+//     "uphold": "off",
+//     "gemini": "off",
+//     "bitflyer": "complete"
 //   }
 // }
 
@@ -86,4 +92,4 @@ class GetParameters {
 }  // namespace endpoint
 }  // namespace ledger
 
-#endif  // BRAVELEDGER_ENDPOINT_API_GET_PARAMETERS_GET_PARAMETERS_H_
+#endif  // BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_ENDPOINT_API_GET_PARAMETERS_GET_PARAMETERS_H_

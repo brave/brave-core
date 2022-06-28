@@ -667,14 +667,21 @@ void RewardsDOMHandler::OnGetRewardsParameters(
 
   base::DictionaryValue data;
   if (parameters) {
-    auto choices = std::make_unique<base::ListValue>();
-    for (double const& choice : parameters->auto_contribute_choices) {
-      choices->Append(choice);
+    base::ListValue auto_contribute_choices;
+    for (double const& item : parameters->auto_contribute_choices) {
+      auto_contribute_choices.Append(item);
     }
 
-    data.SetDouble("rate", parameters->rate);
-    data.SetDouble("autoContributeChoice", parameters->auto_contribute_choice);
-    data.SetList("autoContributeChoices", std::move(choices));
+    base::DictionaryValue payout_status;
+    for (const auto& [key, value] : parameters->payout_status) {
+      payout_status.SetStringKey(key, value);
+    }
+
+    data.SetDoubleKey("rate", parameters->rate);
+    data.SetDoubleKey("autoContributeChoice",
+                      parameters->auto_contribute_choice);
+    data.SetKey("autoContributeChoices", std::move(auto_contribute_choices));
+    data.SetKey("payoutStatus", std::move(payout_status));
   }
   CallJavascriptFunction("brave_rewards.rewardsParameters", data);
 }

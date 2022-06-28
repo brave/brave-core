@@ -95,10 +95,13 @@ declare namespace Rewards {
     }
   }
 
+  export type ProviderPayoutStatus = 'off' | 'processing' | 'complete'
+
   export interface RewardsParameters {
     rate: number
     autoContributeChoice: number
     autoContributeChoices: number[]
+    payoutStatus: Record<string, ProviderPayoutStatus>
   }
 
   export interface ComponentProps {

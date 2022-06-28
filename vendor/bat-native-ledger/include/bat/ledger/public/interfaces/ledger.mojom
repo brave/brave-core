@@ -119,6 +119,7 @@ struct RewardsParameters {
   array<double> auto_contribute_choices;
   array<double> tip_choices;
   array<double> monthly_tip_choices;
+  map<string, string> payout_status;
 };
 
 struct Balance {

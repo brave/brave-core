@@ -459,10 +459,16 @@ void TipMessageHandler::GetRewardsParametersCallback(
       ac_choices.Append(item);
     }
 
+    base::Value payout_status(base::Value::Type::DICTIONARY);
+    for (const auto& item : parameters->payout_status) {
+      payout_status.SetStringKey(item.first, item.second);
+    }
+
     data.SetDoubleKey("rate", parameters->rate);
     data.SetKey("tipChoices", std::move(tip_choices));
     data.SetKey("monthlyTipChoices", std::move(monthly_choices));
     data.SetKey("autoContributeChoices", std::move(ac_choices));
+    data.SetKey("payoutStatus", std::move(payout_status));
   }
 
   FireWebUIListener("rewardsParametersUpdated", data);

@@ -80,6 +80,7 @@ void RewardsService::RegisterProfilePrefs(PrefRegistrySimple* registry) {
       "");
   registry->RegisterStringPref(prefs::kParametersTipChoices, "");
   registry->RegisterStringPref(prefs::kParametersMonthlyTipChoices, "");
+  registry->RegisterStringPref(prefs::kParametersPayoutStatus, "");
   registry->RegisterBooleanPref(prefs::kFetchOldBalance, true);
   registry->RegisterBooleanPref(prefs::kEmptyBalanceChecked, false);
   registry->RegisterStringPref(prefs::kWalletBrave, "");

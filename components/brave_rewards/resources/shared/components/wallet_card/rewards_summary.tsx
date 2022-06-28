@@ -5,6 +5,7 @@
 import * as React from 'react'
 
 import { LocaleContext } from '../../lib/locale_context'
+import { ProviderPayoutStatus } from '../../lib/provider_payout_status'
 import { PendingRewardsView } from './pending_rewards_view'
 import { TokenAmount } from '../token_amount'
 import { ExchangeAmount } from '../exchange_amount'
@@ -26,6 +27,7 @@ export interface RewardsSummaryData {
 
 interface Props {
   data: RewardsSummaryData
+  providerPayoutStatus: ProviderPayoutStatus
   autoContributeEnabled: boolean
   hideAdEarnings: boolean
   earningsLastMonth: number
@@ -121,6 +123,7 @@ export function RewardsSummary (props: Props) {
           earningsLastMonth={props.earningsLastMonth}
           earningsReceived={props.data.adEarnings > 0}
           nextPaymentDate={props.nextPaymentDate}
+          providerPayoutStatus={props.providerPayoutStatus}
         />
       </style.body>
     </style.root>

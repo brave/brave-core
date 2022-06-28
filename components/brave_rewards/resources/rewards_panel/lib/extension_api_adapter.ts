@@ -4,6 +4,7 @@
 
 import { Notification } from '../../shared/components/notifications'
 import { GrantInfo } from '../../shared/lib/grant_info'
+import { ProviderPayoutStatus } from '../../shared/lib/provider_payout_status'
 import { RewardsSummaryData } from '../../shared/components/wallet_card'
 import { mapNotification } from './notification_adapter'
 
@@ -63,6 +64,7 @@ export function getEarningsInfo () {
 export function getRewardsParameters () {
   interface Result {
     exchangeInfo: ExchangeInfo
+    payoutStatus: Record<string, ProviderPayoutStatus>
     options: Options
   }
 
@@ -75,7 +77,8 @@ export function getRewardsParameters () {
         exchangeInfo: {
           currency: 'USD',
           rate: parameters.rate
-        }
+        },
+        payoutStatus: parameters.payoutStatus
       })
     })
   })

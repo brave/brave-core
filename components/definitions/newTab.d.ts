@@ -279,9 +279,12 @@ declare namespace NewTab {
     earningsLastMonth: number
   }
 
+  export type ProviderPayoutStatus = 'off' | 'processing' | 'complete'
+
   export interface RewardsParameters {
     rate: number
     monthlyTipChoices: number[]
+    payoutStatus?: Record<string, ProviderPayoutStatus>
   }
 
   export interface DefaultSuperReferralTopSite {

@@ -19,6 +19,7 @@
 
 using ::testing::_;
 using ::testing::Invoke;
+using ::testing::NiceMock;
 
 namespace ledger {
 namespace endpoint {
@@ -34,9 +35,10 @@ class GetParametersTest : public testing::Test {
   std::unique_ptr<GetParameters> parameters_;
 
   GetParametersTest() {
-    mock_ledger_client_ = std::make_unique<ledger::MockLedgerClient>();
-    mock_ledger_impl_ =
-        std::make_unique<ledger::MockLedgerImpl>(mock_ledger_client_.get());
+    mock_ledger_client_ =
+        std::make_unique<NiceMock<ledger::MockLedgerClient>>();
+    mock_ledger_impl_ = std::make_unique<NiceMock<ledger::MockLedgerImpl>>(
+        mock_ledger_client_.get());
     parameters_ = std::make_unique<GetParameters>(mock_ledger_impl_.get());
   }
 };
@@ -71,6 +73,12 @@ TEST_F(GetParametersTest, ServerOK) {
                   10,
                   15
                 ]
+              },
+              "payoutStatus": {
+                "unverified": "off",
+                "uphold": "off",
+                "gemini": "off",
+                "bitflyer": "complete"
               }
             })";
             callback(response);
@@ -85,6 +93,10 @@ TEST_F(GetParametersTest, ServerOK) {
     expected_parameters.auto_contribute_choices = {5, 10, 15};
     expected_parameters.tip_choices = {1, 10, 100};
     expected_parameters.monthly_tip_choices = {5, 10, 15};
+    expected_parameters.payout_status = {{"unverified", "off"},
+                                         {"uphold", "off"},
+                                         {"gemini", "off"},
+                                         {"bitflyer", "complete"}};
     EXPECT_EQ(result, type::Result::LEDGER_OK);
     EXPECT_TRUE(expected_parameters.Equals(parameters));
   });
@@ -184,6 +196,12 @@ TEST_F(GetParametersTest, WrongListValues) {
                   "10",
                   "100"
                 ]
+              },
+              "payoutStatus": {
+                "unverified": "off",
+                "uphold": "off",
+                "gemini": "off",
+                "bitflyer": "complete"
               }
             })";
             callback(response);
@@ -196,6 +214,10 @@ TEST_F(GetParametersTest, WrongListValues) {
     EXPECT_EQ(result, type::Result::LEDGER_OK);
     expected_parameters.rate = 0.2476573499489187;
     expected_parameters.auto_contribute_choice = 20;
+    expected_parameters.payout_status = {{"unverified", "off"},
+                                         {"uphold", "off"},
+                                         {"gemini", "off"},
+                                         {"bitflyer", "complete"}};
     EXPECT_TRUE(expected_parameters.Equals(parameters));
   });
 }
@@ -230,6 +252,12 @@ TEST_F(GetParametersTest, DoubleListValues) {
                   10.5,
                   15.0
                 ]
+              },
+              "payoutStatus": {
+                "unverified": "off",
+                "uphold": "off",
+                "gemini": "off",
+                "bitflyer": "complete"
               }
             })";
             callback(response);
@@ -244,6 +272,10 @@ TEST_F(GetParametersTest, DoubleListValues) {
     expected_parameters.auto_contribute_choices = {5, 10.5, 15};
     expected_parameters.tip_choices = {1, 10.5, 100};
     expected_parameters.monthly_tip_choices = {5, 10.5, 15};
+    expected_parameters.payout_status = {{"unverified", "off"},
+                                         {"uphold", "off"},
+                                         {"gemini", "off"},
+                                         {"bitflyer", "complete"}};
     EXPECT_EQ(result, type::Result::LEDGER_OK);
     EXPECT_TRUE(expected_parameters.Equals(parameters));
   });
