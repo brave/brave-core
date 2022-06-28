@@ -37,14 +37,16 @@ class BraveWalletRenderFrameObserver : public content::RenderFrameObserver {
                               int32_t world_id) override;
   void WillReleaseScriptContext(v8::Local<v8::Context>,
                                 int32_t world_id) override;
+  void DidClearWindowObject() override;
 
  private:
   // RenderFrameObserver implementation.
   void OnDestruct() override;
 
+  bool CanCreateProvider();
+
   // Handle to "handler" JavaScript object functionality.
   std::unique_ptr<JSEthereumProvider> js_ethereum_provider_;
-  std::unique_ptr<JSSolanaProvider> js_solana_provider_;
 
   GURL url_;
   GetDynamicParamsCallback get_dynamic_params_callback_;
