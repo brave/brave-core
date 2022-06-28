@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "bat/ads/internal/ad_events/search_result_ads/search_result_ad.h"
+#include "bat/ads/internal/ad_events/search_result_ads/search_result_ad_event_handler.h"
 
 #include "base/check.h"
 #include "bat/ads/ad_info.h"
@@ -24,6 +24,7 @@
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ads {
+namespace search_result_ads {
 
 namespace {
 
@@ -43,21 +44,21 @@ bool ShouldDebounceAdEvent(const AdInfo& ad,
 
 }  // namespace
 
-SearchResultAd::SearchResultAd() = default;
+EventHandler::EventHandler() = default;
 
-SearchResultAd::~SearchResultAd() = default;
+EventHandler::~EventHandler() = default;
 
-void SearchResultAd::AddObserver(SearchResultAdObserver* observer) {
+void EventHandler::AddObserver(EventHandlerObserver* observer) {
   DCHECK(observer);
   observers_.AddObserver(observer);
 }
 
-void SearchResultAd::RemoveObserver(SearchResultAdObserver* observer) {
+void EventHandler::RemoveObserver(EventHandlerObserver* observer) {
   DCHECK(observer);
   observers_.RemoveObserver(observer);
 }
 
-void SearchResultAd::FireEvent(
+void EventHandler::FireEvent(
     const mojom::SearchResultAdPtr& ad_mojom,
     const mojom::SearchResultAdEventType event_type,
     TriggerSearchResultAdEventCallback callback) const {
@@ -71,7 +72,7 @@ void SearchResultAd::FireEvent(
     return;
   }
 
-  search_result_ads::PermissionRules permission_rules;
+  PermissionRules permission_rules;
   if (!permission_rules.HasPermission()) {
     BLOG(1, "Search result ad: Not allowed due to permission rules");
     FailedToFireEvent(ad, event_type, callback);
@@ -98,17 +99,17 @@ void SearchResultAd::FireEvent(
 
 ///////////////////////////////////////////////////////////////////////////////
 
-void SearchResultAd::FireEvent(
+void EventHandler::FireEvent(
     const SearchResultAdInfo& ad,
     const mojom::SearchResultAdEventType event_type,
     TriggerSearchResultAdEventCallback callback) const {
-  const auto ad_event = search_result_ads::AdEventFactory::Build(event_type);
+  const auto ad_event = AdEventFactory::Build(event_type);
   ad_event->FireEvent(ad);
 
   NotifySearchResultAdEvent(ad, event_type, callback);
 }
 
-void SearchResultAd::FireViewedEvent(
+void EventHandler::FireViewedEvent(
     const mojom::SearchResultAdPtr& ad_mojom,
     TriggerSearchResultAdEventCallback callback) const {
   const DepositInfo& deposit = BuildDeposit(ad_mojom);
@@ -176,7 +177,7 @@ void SearchResultAd::FireViewedEvent(
   });
 }
 
-void SearchResultAd::FireClickedEvent(
+void EventHandler::FireClickedEvent(
     const SearchResultAdInfo& ad,
     TriggerSearchResultAdEventCallback callback) const {
   database::table::AdEvents database_table;
@@ -204,7 +205,7 @@ void SearchResultAd::FireClickedEvent(
       });
 }
 
-void SearchResultAd::FailedToFireEvent(
+void EventHandler::FailedToFireEvent(
     const SearchResultAdInfo& ad,
     const mojom::SearchResultAdEventType event_type,
     TriggerSearchResultAdEventCallback callback) const {
@@ -215,7 +216,7 @@ void SearchResultAd::FailedToFireEvent(
   NotifySearchResultAdEventFailed(ad, event_type, callback);
 }
 
-void SearchResultAd::NotifySearchResultAdEvent(
+void EventHandler::NotifySearchResultAdEvent(
     const SearchResultAdInfo& ad,
     const mojom::SearchResultAdEventType event_type,
     TriggerSearchResultAdEventCallback callback) const {
@@ -241,36 +242,37 @@ void SearchResultAd::NotifySearchResultAdEvent(
   callback(/* success */ true, ad.placement_id, event_type);
 }
 
-void SearchResultAd::NotifySearchResultAdServed(
+void EventHandler::NotifySearchResultAdServed(
     const SearchResultAdInfo& ad) const {
-  for (SearchResultAdObserver& observer : observers_) {
+  for (EventHandlerObserver& observer : observers_) {
     observer.OnSearchResultAdServed(ad);
   }
 }
 
-void SearchResultAd::NotifySearchResultAdViewed(
+void EventHandler::NotifySearchResultAdViewed(
     const SearchResultAdInfo& ad) const {
-  for (SearchResultAdObserver& observer : observers_) {
+  for (EventHandlerObserver& observer : observers_) {
     observer.OnSearchResultAdViewed(ad);
   }
 }
 
-void SearchResultAd::NotifySearchResultAdClicked(
+void EventHandler::NotifySearchResultAdClicked(
     const SearchResultAdInfo& ad) const {
-  for (SearchResultAdObserver& observer : observers_) {
+  for (EventHandlerObserver& observer : observers_) {
     observer.OnSearchResultAdClicked(ad);
   }
 }
 
-void SearchResultAd::NotifySearchResultAdEventFailed(
+void EventHandler::NotifySearchResultAdEventFailed(
     const SearchResultAdInfo& ad,
     const mojom::SearchResultAdEventType event_type,
     TriggerSearchResultAdEventCallback callback) const {
-  for (SearchResultAdObserver& observer : observers_) {
+  for (EventHandlerObserver& observer : observers_) {
     observer.OnSearchResultAdEventFailed(ad, event_type);
   }
 
   callback(/* success */ false, ad.placement_id, event_type);
 }
 
+}  // namespace search_result_ads
 }  // namespace ads

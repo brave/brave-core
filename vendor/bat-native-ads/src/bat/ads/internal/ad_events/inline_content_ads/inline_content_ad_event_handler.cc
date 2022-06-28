@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "bat/ads/internal/ad_events/inline_content_ads/inline_content_ad.h"
+#include "bat/ads/internal/ad_events/inline_content_ads/inline_content_ad_event_handler.h"
 
 #include "base/check.h"
 #include "bat/ads/inline_content_ad_info.h"
@@ -17,6 +17,7 @@
 #include "bat/ads/internal/creatives/inline_content_ads/inline_content_ad_builder.h"
 
 namespace ads {
+namespace inline_content_ads {
 
 namespace {
 
@@ -36,24 +37,23 @@ bool ShouldDebounceAdEvent(const AdInfo& ad,
 
 }  // namespace
 
-InlineContentAd::InlineContentAd() = default;
+EventHandler::EventHandler() = default;
 
-InlineContentAd::~InlineContentAd() = default;
+EventHandler::~EventHandler() = default;
 
-void InlineContentAd::AddObserver(InlineContentAdObserver* observer) {
+void EventHandler::AddObserver(EventHandlerObserver* observer) {
   DCHECK(observer);
   observers_.AddObserver(observer);
 }
 
-void InlineContentAd::RemoveObserver(InlineContentAdObserver* observer) {
+void EventHandler::RemoveObserver(EventHandlerObserver* observer) {
   DCHECK(observer);
   observers_.RemoveObserver(observer);
 }
 
-void InlineContentAd::FireEvent(
-    const std::string& placement_id,
-    const std::string& creative_instance_id,
-    const mojom::InlineContentAdEventType event_type) {
+void EventHandler::FireEvent(const std::string& placement_id,
+                             const std::string& creative_instance_id,
+                             const mojom::InlineContentAdEventType event_type) {
   if (placement_id.empty()) {
     BLOG(1,
          "Failed to fire inline content ad event due to an invalid placement "
@@ -93,11 +93,10 @@ void InlineContentAd::FireEvent(
 
 ///////////////////////////////////////////////////////////////////////////////
 
-void InlineContentAd::FireEvent(
-    const InlineContentAdInfo& ad,
-    const std::string& placement_id,
-    const std::string& creative_instance_id,
-    const mojom::InlineContentAdEventType event_type) {
+void EventHandler::FireEvent(const InlineContentAdInfo& ad,
+                             const std::string& placement_id,
+                             const std::string& creative_instance_id,
+                             const mojom::InlineContentAdEventType event_type) {
   database::table::AdEvents database_table;
   database_table.GetForType(
       mojom::AdType::kInlineContentAd,
@@ -116,15 +115,14 @@ void InlineContentAd::FireEvent(
           return;
         }
 
-        const auto ad_event =
-            inline_content_ads::AdEventFactory::Build(event_type);
+        const auto ad_event = AdEventFactory::Build(event_type);
         ad_event->FireEvent(ad);
 
         NotifyInlineContentAdEvent(ad, event_type);
       });
 }
 
-void InlineContentAd::FailedToFireEvent(
+void EventHandler::FailedToFireEvent(
     const std::string& placement_id,
     const std::string& creative_instance_id,
     const mojom::InlineContentAdEventType event_type) const {
@@ -136,7 +134,7 @@ void InlineContentAd::FailedToFireEvent(
                                    event_type);
 }
 
-void InlineContentAd::NotifyInlineContentAdEvent(
+void EventHandler::NotifyInlineContentAdEvent(
     const InlineContentAdInfo& ad,
     const mojom::InlineContentAdEventType event_type) const {
   DCHECK(mojom::IsKnownEnumValue(event_type));
@@ -159,35 +157,36 @@ void InlineContentAd::NotifyInlineContentAdEvent(
   }
 }
 
-void InlineContentAd::NotifyInlineContentAdServed(
+void EventHandler::NotifyInlineContentAdServed(
     const InlineContentAdInfo& ad) const {
-  for (InlineContentAdObserver& observer : observers_) {
+  for (EventHandlerObserver& observer : observers_) {
     observer.OnInlineContentAdServed(ad);
   }
 }
 
-void InlineContentAd::NotifyInlineContentAdViewed(
+void EventHandler::NotifyInlineContentAdViewed(
     const InlineContentAdInfo& ad) const {
-  for (InlineContentAdObserver& observer : observers_) {
+  for (EventHandlerObserver& observer : observers_) {
     observer.OnInlineContentAdViewed(ad);
   }
 }
 
-void InlineContentAd::NotifyInlineContentAdClicked(
+void EventHandler::NotifyInlineContentAdClicked(
     const InlineContentAdInfo& ad) const {
-  for (InlineContentAdObserver& observer : observers_) {
+  for (EventHandlerObserver& observer : observers_) {
     observer.OnInlineContentAdClicked(ad);
   }
 }
 
-void InlineContentAd::NotifyInlineContentAdEventFailed(
+void EventHandler::NotifyInlineContentAdEventFailed(
     const std::string& placement_id,
     const std::string& creative_instance_id,
     const mojom::InlineContentAdEventType event_type) const {
-  for (InlineContentAdObserver& observer : observers_) {
+  for (EventHandlerObserver& observer : observers_) {
     observer.OnInlineContentAdEventFailed(placement_id, creative_instance_id,
                                           event_type);
   }
 }
 
+}  // namespace inline_content_ads
 }  // namespace ads

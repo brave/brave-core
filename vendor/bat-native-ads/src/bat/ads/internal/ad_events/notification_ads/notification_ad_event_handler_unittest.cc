@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "bat/ads/internal/ad_events/notification_ads/notification_ad.h"
+#include "bat/ads/internal/ad_events/notification_ads/notification_ad_event_handler.h"
 
 #include <memory>
 
@@ -11,7 +11,7 @@
 #include "bat/ads/confirmation_type.h"
 #include "bat/ads/internal/ad_events/ad_event_unittest_util.h"
 #include "bat/ads/internal/ad_events/ad_events_database_table.h"
-#include "bat/ads/internal/ad_events/notification_ads/notification_ad_observer.h"
+#include "bat/ads/internal/ad_events/notification_ads/notification_ad_event_handler_observer.h"
 #include "bat/ads/internal/base/unittest/unittest_base.h"
 #include "bat/ads/internal/creatives/notification_ads/creative_notification_ad_info.h"
 #include "bat/ads/internal/creatives/notification_ads/creative_notification_ad_unittest_util.h"
@@ -24,27 +24,28 @@
 // npm run test -- brave_unit_tests --filter=BatAds*
 
 namespace ads {
+namespace notification_ads {
 
 namespace {
 constexpr char kPlacementId[] = "d2ef9bb0-a0dc-472c-bc49-62105bb6da68";
 }  // namespace
 
-class BatAdsNotificationAdTest : public NotificationAdObserver,
-                                 public UnitTestBase {
+class BatAdsNotificationAdEventHandlerTest : public EventHandlerObserver,
+                                             public UnitTestBase {
  protected:
-  BatAdsNotificationAdTest() = default;
+  BatAdsNotificationAdEventHandlerTest() = default;
 
-  ~BatAdsNotificationAdTest() override = default;
+  ~BatAdsNotificationAdEventHandlerTest() override = default;
 
   void SetUp() override {
     UnitTestBase::SetUp();
 
-    notification_ad_ = std::make_unique<NotificationAd>();
-    notification_ad_->AddObserver(this);
+    event_handler_ = std::make_unique<EventHandler>();
+    event_handler_->AddObserver(this);
   }
 
   void TearDown() override {
-    notification_ad_->RemoveObserver(this);
+    event_handler_->RemoveObserver(this);
 
     UnitTestBase::TearDown();
   }
@@ -102,7 +103,7 @@ class BatAdsNotificationAdTest : public NotificationAdObserver,
         });
   }
 
-  std::unique_ptr<NotificationAd> notification_ad_;
+  std::unique_ptr<EventHandler> event_handler_;
 
   NotificationAdInfo ad_;
   bool did_serve_ad_ = false;
@@ -113,13 +114,13 @@ class BatAdsNotificationAdTest : public NotificationAdObserver,
   bool did_fail_to_fire_event_ = false;
 };
 
-TEST_F(BatAdsNotificationAdTest, FireServedEvent) {
+TEST_F(BatAdsNotificationAdEventHandlerTest, FireServedEvent) {
   // Arrange
   const NotificationAdInfo& ad = BuildAndSaveNotificationAd();
 
   // Act
-  notification_ad_->FireEvent(ad.placement_id,
-                              mojom::NotificationAdEventType::kServed);
+  event_handler_->FireEvent(ad.placement_id,
+                            mojom::NotificationAdEventType::kServed);
 
   // Assert
   EXPECT_TRUE(did_serve_ad_);
@@ -134,13 +135,13 @@ TEST_F(BatAdsNotificationAdTest, FireServedEvent) {
   ExpectAdEventCountEquals(ConfirmationType::kServed, 1);
 }
 
-TEST_F(BatAdsNotificationAdTest, FireViewedEvent) {
+TEST_F(BatAdsNotificationAdEventHandlerTest, FireViewedEvent) {
   // Arrange
   const NotificationAdInfo& ad = BuildAndSaveNotificationAd();
 
   // Act
-  notification_ad_->FireEvent(ad.placement_id,
-                              mojom::NotificationAdEventType::kViewed);
+  event_handler_->FireEvent(ad.placement_id,
+                            mojom::NotificationAdEventType::kViewed);
 
   // Assert
   EXPECT_FALSE(did_serve_ad_);
@@ -155,13 +156,13 @@ TEST_F(BatAdsNotificationAdTest, FireViewedEvent) {
   ExpectAdEventCountEquals(ConfirmationType::kViewed, 1);
 }
 
-TEST_F(BatAdsNotificationAdTest, FireClickedEvent) {
+TEST_F(BatAdsNotificationAdEventHandlerTest, FireClickedEvent) {
   // Arrange
   const NotificationAdInfo& ad = BuildAndSaveNotificationAd();
 
   // Act
-  notification_ad_->FireEvent(ad.placement_id,
-                              mojom::NotificationAdEventType::kClicked);
+  event_handler_->FireEvent(ad.placement_id,
+                            mojom::NotificationAdEventType::kClicked);
 
   // Asser
   EXPECT_FALSE(did_serve_ad_);
@@ -176,13 +177,13 @@ TEST_F(BatAdsNotificationAdTest, FireClickedEvent) {
   ExpectAdEventCountEquals(ConfirmationType::kClicked, 1);
 }
 
-TEST_F(BatAdsNotificationAdTest, FireDismissedEvent) {
+TEST_F(BatAdsNotificationAdEventHandlerTest, FireDismissedEvent) {
   // Arrange
   const NotificationAdInfo& ad = BuildAndSaveNotificationAd();
 
   // Act
-  notification_ad_->FireEvent(ad.placement_id,
-                              mojom::NotificationAdEventType::kDismissed);
+  event_handler_->FireEvent(ad.placement_id,
+                            mojom::NotificationAdEventType::kDismissed);
 
   // Assert
   EXPECT_FALSE(did_serve_ad_);
@@ -197,13 +198,13 @@ TEST_F(BatAdsNotificationAdTest, FireDismissedEvent) {
   ExpectAdEventCountEquals(ConfirmationType::kDismissed, 1);
 }
 
-TEST_F(BatAdsNotificationAdTest, FireTimedOutEvent) {
+TEST_F(BatAdsNotificationAdEventHandlerTest, FireTimedOutEvent) {
   // Arrange
   const NotificationAdInfo& ad = BuildAndSaveNotificationAd();
 
   // Act
-  notification_ad_->FireEvent(ad.placement_id,
-                              mojom::NotificationAdEventType::kTimedOut);
+  event_handler_->FireEvent(ad.placement_id,
+                            mojom::NotificationAdEventType::kTimedOut);
 
   // Assert
   EXPECT_FALSE(did_serve_ad_);
@@ -216,12 +217,12 @@ TEST_F(BatAdsNotificationAdTest, FireTimedOutEvent) {
   EXPECT_FALSE(NotificationAdManager::GetInstance()->Exists(ad.placement_id));
 }
 
-TEST_F(BatAdsNotificationAdTest, DoNotFireEventIfUuidWasNotFound) {
+TEST_F(BatAdsNotificationAdEventHandlerTest, DoNotFireEventIfUuidWasNotFound) {
   // Arrange
 
   // Act
-  notification_ad_->FireEvent(kPlacementId,
-                              mojom::NotificationAdEventType::kViewed);
+  event_handler_->FireEvent(kPlacementId,
+                            mojom::NotificationAdEventType::kViewed);
 
   // Assert
   EXPECT_FALSE(did_serve_ad_);
@@ -234,4 +235,5 @@ TEST_F(BatAdsNotificationAdTest, DoNotFireEventIfUuidWasNotFound) {
   ExpectAdEventCountEquals(ConfirmationType::kViewed, 0);
 }
 
+}  // namespace notification_ads
 }  // namespace ads

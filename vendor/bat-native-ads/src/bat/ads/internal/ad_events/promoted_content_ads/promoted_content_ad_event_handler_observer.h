@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_AD_EVENTS_PROMOTED_CONTENT_ADS_PROMOTED_CONTENT_AD_OBSERVER_H_
-#define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_AD_EVENTS_PROMOTED_CONTENT_ADS_PROMOTED_CONTENT_AD_OBSERVER_H_
+#ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_AD_EVENTS_PROMOTED_CONTENT_ADS_PROMOTED_CONTENT_AD_EVENT_HANDLER_OBSERVER_H_
+#define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_AD_EVENTS_PROMOTED_CONTENT_ADS_PROMOTED_CONTENT_AD_EVENT_HANDLER_OBSERVER_H_
 
 #include <string>
 
@@ -15,7 +15,9 @@ namespace ads {
 
 struct PromotedContentAdInfo;
 
-class PromotedContentAdObserver : public base::CheckedObserver {
+namespace promoted_content_ads {
+
+class EventHandlerObserver : public base::CheckedObserver {
  public:
   // Invoked when a promoted content ad is served
   virtual void OnPromotedContentAdServed(const PromotedContentAdInfo& ad) {}
@@ -33,9 +35,10 @@ class PromotedContentAdObserver : public base::CheckedObserver {
       const mojom::PromotedContentAdEventType event_type) {}
 
  protected:
-  ~PromotedContentAdObserver() override = default;
+  ~EventHandlerObserver() override = default;
 };
 
+}  // namespace promoted_content_ads
 }  // namespace ads
 
-#endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_AD_EVENTS_PROMOTED_CONTENT_ADS_PROMOTED_CONTENT_AD_OBSERVER_H_
+#endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_AD_EVENTS_PROMOTED_CONTENT_ADS_PROMOTED_CONTENT_AD_EVENT_HANDLER_OBSERVER_H_

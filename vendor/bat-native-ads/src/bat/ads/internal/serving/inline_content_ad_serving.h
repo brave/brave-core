@@ -37,8 +37,8 @@ class Serving final {
   Serving(const Serving&) = delete;
   Serving& operator=(const Serving&) = delete;
 
-  void AddObserver(InlineContentServingObserver* observer);
-  void RemoveObserver(InlineContentServingObserver* observer);
+  void AddObserver(ServingObserver* observer);
+  void RemoveObserver(ServingObserver* observer);
 
   void MaybeServeAd(const std::string& dimensions,
                     GetInlineContentAdCallback callback);
@@ -55,7 +55,7 @@ class Serving final {
   void NotifyDidServeInlineContentAd(const InlineContentAdInfo& ad) const;
   void NotifyFailedToServeInlineContentAd() const;
 
-  base::ObserverList<InlineContentServingObserver> observers_;
+  base::ObserverList<ServingObserver> observers_;
 
   std::unique_ptr<EligibleAdsBase> eligible_ads_;
 };

@@ -12,7 +12,9 @@ namespace ads {
 
 struct InlineContentAdInfo;
 
-class InlineContentServingObserver : public base::CheckedObserver {
+namespace inline_content_ads {
+
+class ServingObserver : public base::CheckedObserver {
  public:
   // Invoked when an inline content ad is served
   virtual void OnDidServeInlineContentAd(const InlineContentAdInfo& ad) {}
@@ -21,9 +23,10 @@ class InlineContentServingObserver : public base::CheckedObserver {
   virtual void OnFailedToServeInlineContentAd() {}
 
  protected:
-  ~InlineContentServingObserver() override = default;
+  ~ServingObserver() override = default;
 };
 
+}  // namespace inline_content_ads
 }  // namespace ads
 
 #endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_SERVING_INLINE_CONTENT_AD_SERVING_OBSERVER_H_

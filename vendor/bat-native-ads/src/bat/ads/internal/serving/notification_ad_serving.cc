@@ -64,12 +64,12 @@ Serving::~Serving() {
   PrefManager::GetInstance()->RemoveObserver(this);
 }
 
-void Serving::AddObserver(NotificationAdServingObserver* observer) {
+void Serving::AddObserver(ServingObserver* observer) {
   DCHECK(observer);
   observers_.AddObserver(observer);
 }
 
-void Serving::RemoveObserver(NotificationAdServingObserver* observer) {
+void Serving::RemoveObserver(ServingObserver* observer) {
   DCHECK(observer);
   observers_.RemoveObserver(observer);
 }
@@ -281,13 +281,13 @@ void Serving::ServedAd(const NotificationAdInfo& ad) {
 }
 
 void Serving::NotifyDidServeNotificationAd(const NotificationAdInfo& ad) const {
-  for (NotificationAdServingObserver& observer : observers_) {
+  for (ServingObserver& observer : observers_) {
     observer.OnDidServeNotificationAd(ad);
   }
 }
 
 void Serving::NotifyFailedToServeNotificationAd() const {
-  for (NotificationAdServingObserver& observer : observers_) {
+  for (ServingObserver& observer : observers_) {
     observer.OnFailedToServeNotificationAd();
   }
 }

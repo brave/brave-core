@@ -36,8 +36,8 @@ class Serving final {
   Serving(const Serving&) = delete;
   Serving& operator=(const Serving&) = delete;
 
-  void AddObserver(NewTabPageServingObserver* observer);
-  void RemoveObserver(NewTabPageServingObserver* observer);
+  void AddObserver(ServingObserver* observer);
+  void RemoveObserver(ServingObserver* observer);
 
   void MaybeServeAd(GetNewTabPageAdCallback callback);
 
@@ -52,7 +52,7 @@ class Serving final {
   void NotifyDidServeNewTabPageAd(const NewTabPageAdInfo& ad) const;
   void NotifyFailedToServeNewTabPageAd() const;
 
-  base::ObserverList<NewTabPageServingObserver> observers_;
+  base::ObserverList<ServingObserver> observers_;
 
   std::unique_ptr<EligibleAdsBase> eligible_ads_;
 };

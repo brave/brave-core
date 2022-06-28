@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "bat/ads/internal/ad_events/notification_ads/notification_ad.h"
+#include "bat/ads/internal/ad_events/notification_ads/notification_ad_event_handler.h"
 
 #include "base/check.h"
 #include "bat/ads/internal/ad_events/notification_ads/notification_ad_event_factory.h"
@@ -12,24 +12,24 @@
 #include "bat/ads/notification_ad_info.h"
 
 namespace ads {
+namespace notification_ads {
 
-NotificationAd::NotificationAd() = default;
+EventHandler::EventHandler() = default;
 
-NotificationAd::~NotificationAd() = default;
+EventHandler::~EventHandler() = default;
 
-void NotificationAd::AddObserver(NotificationAdObserver* observer) {
+void EventHandler::AddObserver(EventHandlerObserver* observer) {
   DCHECK(observer);
   observers_.AddObserver(observer);
 }
 
-void NotificationAd::RemoveObserver(NotificationAdObserver* observer) {
+void EventHandler::RemoveObserver(EventHandlerObserver* observer) {
   DCHECK(observer);
   observers_.RemoveObserver(observer);
 }
 
-void NotificationAd::FireEvent(
-    const std::string& placement_id,
-    const mojom::NotificationAdEventType event_type) {
+void EventHandler::FireEvent(const std::string& placement_id,
+                             const mojom::NotificationAdEventType event_type) {
   DCHECK(!placement_id.empty());
 
   NotificationAdInfo ad;
@@ -41,7 +41,7 @@ void NotificationAd::FireEvent(
     return;
   }
 
-  const auto ad_event = notification_ads::AdEventFactory::Build(event_type);
+  const auto ad_event = AdEventFactory::Build(event_type);
   ad_event->FireEvent(ad);
 
   NotifyNotificationAdEvent(ad, event_type);
@@ -49,7 +49,7 @@ void NotificationAd::FireEvent(
 
 ///////////////////////////////////////////////////////////////////////////////
 
-void NotificationAd::FailedToFireEvent(
+void EventHandler::FailedToFireEvent(
     const std::string& placement_id,
     const mojom::NotificationAdEventType event_type) const {
   BLOG(1, "Failed to fire notification ad "
@@ -58,7 +58,7 @@ void NotificationAd::FailedToFireEvent(
   NotifyNotificationAdEventFailed(placement_id, event_type);
 }
 
-void NotificationAd::NotifyNotificationAdEvent(
+void EventHandler::NotifyNotificationAdEvent(
     const NotificationAdInfo& ad,
     const mojom::NotificationAdEventType event_type) const {
   DCHECK(mojom::IsKnownEnumValue(event_type));
@@ -91,47 +91,48 @@ void NotificationAd::NotifyNotificationAdEvent(
   }
 }
 
-void NotificationAd::NotifyNotificationAdServed(
+void EventHandler::NotifyNotificationAdServed(
     const NotificationAdInfo& ad) const {
-  for (NotificationAdObserver& observer : observers_) {
+  for (EventHandlerObserver& observer : observers_) {
     observer.OnNotificationAdServed(ad);
   }
 }
 
-void NotificationAd::NotifyNotificationAdViewed(
+void EventHandler::NotifyNotificationAdViewed(
     const NotificationAdInfo& ad) const {
-  for (NotificationAdObserver& observer : observers_) {
+  for (EventHandlerObserver& observer : observers_) {
     observer.OnNotificationAdViewed(ad);
   }
 }
 
-void NotificationAd::NotifyNotificationAdClicked(
+void EventHandler::NotifyNotificationAdClicked(
     const NotificationAdInfo& ad) const {
-  for (NotificationAdObserver& observer : observers_) {
+  for (EventHandlerObserver& observer : observers_) {
     observer.OnNotificationAdClicked(ad);
   }
 }
 
-void NotificationAd::NotifyNotificationAdDismissed(
+void EventHandler::NotifyNotificationAdDismissed(
     const NotificationAdInfo& ad) const {
-  for (NotificationAdObserver& observer : observers_) {
+  for (EventHandlerObserver& observer : observers_) {
     observer.OnNotificationAdDismissed(ad);
   }
 }
 
-void NotificationAd::NotifyNotificationAdTimedOut(
+void EventHandler::NotifyNotificationAdTimedOut(
     const NotificationAdInfo& ad) const {
-  for (NotificationAdObserver& observer : observers_) {
+  for (EventHandlerObserver& observer : observers_) {
     observer.OnNotificationAdTimedOut(ad);
   }
 }
 
-void NotificationAd::NotifyNotificationAdEventFailed(
+void EventHandler::NotifyNotificationAdEventFailed(
     const std::string& placement_id,
     const mojom::NotificationAdEventType event_type) const {
-  for (NotificationAdObserver& observer : observers_) {
+  for (EventHandlerObserver& observer : observers_) {
     observer.OnNotificationAdEventFailed(placement_id, event_type);
   }
 }
 
+}  // namespace notification_ads
 }  // namespace ads

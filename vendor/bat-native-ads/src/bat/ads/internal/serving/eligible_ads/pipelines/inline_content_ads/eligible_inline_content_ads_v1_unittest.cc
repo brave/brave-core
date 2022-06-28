@@ -19,6 +19,7 @@
 // npm run test -- brave_unit_tests --filter=BatAds*
 
 namespace ads {
+namespace inline_content_ads {
 
 class BatAdsEligibleInlineContentAdsV1Test : public UnitTestBase {
  protected:
@@ -53,8 +54,7 @@ TEST_F(BatAdsEligibleInlineContentAdsV1Test, GetAdsForChildSegment) {
   // Act
   geographic::SubdivisionTargeting subdivision_targeting;
   resource::AntiTargeting anti_targeting_resource;
-  inline_content_ads::EligibleAdsV1 eligible_ads(&subdivision_targeting,
-                                                 &anti_targeting_resource);
+  EligibleAdsV1 eligible_ads(&subdivision_targeting, &anti_targeting_resource);
 
   const CreativeInlineContentAdList expected_creative_ads = {creative_ad_2};
 
@@ -82,8 +82,7 @@ TEST_F(BatAdsEligibleInlineContentAdsV1Test, GetAdsForParentSegment) {
   // Act
   geographic::SubdivisionTargeting subdivision_targeting;
   resource::AntiTargeting anti_targeting_resource;
-  inline_content_ads::EligibleAdsV1 eligible_ads(&subdivision_targeting,
-                                                 &anti_targeting_resource);
+  EligibleAdsV1 eligible_ads(&subdivision_targeting, &anti_targeting_resource);
 
   const CreativeInlineContentAdList expected_creative_ads = {creative_ad};
 
@@ -111,8 +110,7 @@ TEST_F(BatAdsEligibleInlineContentAdsV1Test, GetAdsForUntargetedSegment) {
   // Act
   geographic::SubdivisionTargeting subdivision_targeting;
   resource::AntiTargeting anti_targeting_resource;
-  inline_content_ads::EligibleAdsV1 eligible_ads(&subdivision_targeting,
-                                                 &anti_targeting_resource);
+  EligibleAdsV1 eligible_ads(&subdivision_targeting, &anti_targeting_resource);
 
   const CreativeInlineContentAdList expected_creative_ads = {creative_ad};
 
@@ -147,8 +145,7 @@ TEST_F(BatAdsEligibleInlineContentAdsV1Test, GetAdsForMultipleSegments) {
   // Act
   geographic::SubdivisionTargeting subdivision_targeting;
   resource::AntiTargeting anti_targeting_resource;
-  inline_content_ads::EligibleAdsV1 eligible_ads(&subdivision_targeting,
-                                                 &anti_targeting_resource);
+  EligibleAdsV1 eligible_ads(&subdivision_targeting, &anti_targeting_resource);
 
   const CreativeInlineContentAdList expected_creative_ads = {creative_ad_1,
                                                              creative_ad_3};
@@ -178,8 +175,7 @@ TEST_F(BatAdsEligibleInlineContentAdsV1Test, GetAdsForNoSegments) {
   // Act
   geographic::SubdivisionTargeting subdivision_targeting;
   resource::AntiTargeting anti_targeting_resource;
-  inline_content_ads::EligibleAdsV1 eligible_ads(&subdivision_targeting,
-                                                 &anti_targeting_resource);
+  EligibleAdsV1 eligible_ads(&subdivision_targeting, &anti_targeting_resource);
 
   const CreativeInlineContentAdList expected_creative_ads = {creative_ad};
 
@@ -206,8 +202,7 @@ TEST_F(BatAdsEligibleInlineContentAdsV1Test, GetAdsForUnmatchedSegments) {
   // Act
   geographic::SubdivisionTargeting subdivision_targeting;
   resource::AntiTargeting anti_targeting_resource;
-  inline_content_ads::EligibleAdsV1 eligible_ads(&subdivision_targeting,
-                                                 &anti_targeting_resource);
+  EligibleAdsV1 eligible_ads(&subdivision_targeting, &anti_targeting_resource);
 
   const CreativeInlineContentAdList expected_creative_ads = {};
 
@@ -234,8 +229,7 @@ TEST_F(BatAdsEligibleInlineContentAdsV1Test, GetAdsForUnmatchedDimensions) {
   // Act
   geographic::SubdivisionTargeting subdivision_targeting;
   resource::AntiTargeting anti_targeting_resource;
-  inline_content_ads::EligibleAdsV1 eligible_ads(&subdivision_targeting,
-                                                 &anti_targeting_resource);
+  EligibleAdsV1 eligible_ads(&subdivision_targeting, &anti_targeting_resource);
 
   const CreativeInlineContentAdList expected_creative_ads = {};
 
@@ -249,4 +243,5 @@ TEST_F(BatAdsEligibleInlineContentAdsV1Test, GetAdsForUnmatchedDimensions) {
   // Assert
 }
 
+}  // namespace inline_content_ads
 }  // namespace ads

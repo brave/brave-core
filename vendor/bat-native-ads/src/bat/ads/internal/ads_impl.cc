@@ -15,17 +15,16 @@
 #include "bat/ads/internal/account/wallet/wallet_info.h"
 #include "bat/ads/internal/ad_events/ad_event_util.h"
 #include "bat/ads/internal/ad_events/ad_events.h"
-#include "bat/ads/internal/ad_events/inline_content_ads/inline_content_ad.h"
-#include "bat/ads/internal/ad_events/new_tab_page_ads/new_tab_page_ad.h"
-#include "bat/ads/internal/ad_events/notification_ads/notification_ad.h"
-#include "bat/ads/internal/ad_events/promoted_content_ads/promoted_content_ad.h"
-#include "bat/ads/internal/ad_events/search_result_ads/search_result_ad.h"
+#include "bat/ads/internal/ad_events/inline_content_ads/inline_content_ad_event_handler.h"
+#include "bat/ads/internal/ad_events/new_tab_page_ads/new_tab_page_ad_event_handler.h"
+#include "bat/ads/internal/ad_events/notification_ads/notification_ad_event_handler.h"
+#include "bat/ads/internal/ad_events/promoted_content_ads/promoted_content_ad_event_handler.h"
+#include "bat/ads/internal/ad_events/search_result_ads/search_result_ad_event_handler.h"
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/base/logging_util.h"
 #include "bat/ads/internal/base/platform/platform_helper.h"
 #include "bat/ads/internal/browser/browser_manager.h"
 #include "bat/ads/internal/catalog/catalog.h"
-#include "bat/ads/internal/catalog/catalog_info.h"
 #include "bat/ads/internal/catalog/catalog_util.h"
 #include "bat/ads/internal/conversions/conversion_queue_item_info.h"
 #include "bat/ads/internal/conversions/conversions.h"
@@ -87,9 +86,15 @@ AdsImpl::AdsImpl(AdsClient* ads_client)
   tab_manager_ = std::make_unique<TabManager>();
   user_activity_manager_ = std::make_unique<UserActivityManager>();
 
+  token_generator_ = std::make_unique<privacy::TokenGenerator>();
+  account_ = std::make_unique<Account>(token_generator_.get());
+  account_->AddObserver(this);
+
+  catalog_ = std::make_unique<Catalog>();
+
   anti_targeting_resource_ = std::make_unique<resource::AntiTargeting>();
   epsilon_greedy_bandit_resource_ =
-      std::make_unique<resource::EpsilonGreedyBandit>();
+      std::make_unique<resource::EpsilonGreedyBandit>(catalog_.get());
   purchase_intent_resource_ = std::make_unique<resource::PurchaseIntent>();
   text_classification_resource_ =
       std::make_unique<resource::TextClassification>();
@@ -102,38 +107,36 @@ AdsImpl::AdsImpl(AdsClient* ads_client)
       std::make_unique<processor::TextClassification>(
           text_classification_resource_.get());
 
-  token_generator_ = std::make_unique<privacy::TokenGenerator>();
-  account_ = std::make_unique<Account>(token_generator_.get());
-  account_->AddObserver(this);
-
-  catalog_ = std::make_unique<Catalog>();
-  catalog_->AddObserver(this);
-
   subdivision_targeting_ = std::make_unique<geographic::SubdivisionTargeting>();
 
-  inline_content_ad_ = std::make_unique<InlineContentAd>();
-  inline_content_ad_->AddObserver(this);
+  inline_content_ad_event_handler_ =
+      std::make_unique<inline_content_ads::EventHandler>();
+  inline_content_ad_event_handler_->AddObserver(this);
   inline_content_ad_serving_ = std::make_unique<inline_content_ads::Serving>(
       subdivision_targeting_.get(), anti_targeting_resource_.get());
   inline_content_ad_serving_->AddObserver(this);
 
-  new_tab_page_ad_ = std::make_unique<NewTabPageAd>();
-  new_tab_page_ad_->AddObserver(this);
+  new_tab_page_ad_event_handler_ =
+      std::make_unique<new_tab_page_ads::EventHandler>();
+  new_tab_page_ad_event_handler_->AddObserver(this);
   new_tab_page_ad_serving_ = std::make_unique<new_tab_page_ads::Serving>(
       subdivision_targeting_.get(), anti_targeting_resource_.get());
   new_tab_page_ad_serving_->AddObserver(this);
 
-  notification_ad_ = std::make_unique<NotificationAd>();
-  notification_ad_->AddObserver(this);
+  notification_ad_event_handler_ =
+      std::make_unique<notification_ads::EventHandler>();
+  notification_ad_event_handler_->AddObserver(this);
   notification_ad_serving_ = std::make_unique<notification_ads::Serving>(
       subdivision_targeting_.get(), anti_targeting_resource_.get());
   notification_ad_serving_->AddObserver(this);
 
-  promoted_content_ad_ = std::make_unique<PromotedContentAd>();
-  promoted_content_ad_->AddObserver(this);
+  promoted_content_ad_event_handler_ =
+      std::make_unique<promoted_content_ads::EventHandler>();
+  promoted_content_ad_event_handler_->AddObserver(this);
 
-  search_result_ad_ = std::make_unique<SearchResultAd>();
-  search_result_ad_->AddObserver(this);
+  search_result_ad_event_handler_ =
+      std::make_unique<search_result_ads::EventHandler>();
+  search_result_ad_event_handler_->AddObserver(this);
 
   conversions_ = std::make_unique<Conversions>();
   conversions_->AddObserver(this);
@@ -145,20 +148,18 @@ AdsImpl::AdsImpl(AdsClient* ads_client)
 AdsImpl::~AdsImpl() {
   account_->RemoveObserver(this);
 
-  catalog_->RemoveObserver(this);
-
+  inline_content_ad_event_handler_->RemoveObserver(this);
   inline_content_ad_serving_->RemoveObserver(this);
-  inline_content_ad_->RemoveObserver(this);
 
+  new_tab_page_ad_event_handler_->RemoveObserver(this);
   new_tab_page_ad_serving_->RemoveObserver(this);
-  new_tab_page_ad_->RemoveObserver(this);
 
+  notification_ad_event_handler_->RemoveObserver(this);
   notification_ad_serving_->RemoveObserver(this);
-  notification_ad_->RemoveObserver(this);
 
-  promoted_content_ad_->RemoveObserver(this);
+  promoted_content_ad_event_handler_->RemoveObserver(this);
 
-  search_result_ad_->RemoveObserver(this);
+  search_result_ad_event_handler_->RemoveObserver(this);
 
   conversions_->RemoveObserver(this);
 
@@ -337,7 +338,7 @@ bool AdsImpl::GetNotificationAd(const std::string& placement_id,
 void AdsImpl::TriggerNotificationAdEvent(
     const std::string& placement_id,
     const mojom::NotificationAdEventType event_type) {
-  notification_ad_->FireEvent(placement_id, event_type);
+  notification_ad_event_handler_->FireEvent(placement_id, event_type);
 }
 
 void AdsImpl::GetNewTabPageAd(GetNewTabPageAdCallback callback) {
@@ -356,15 +357,16 @@ void AdsImpl::TriggerNewTabPageAdEvent(
     const std::string& placement_id,
     const std::string& creative_instance_id,
     const mojom::NewTabPageAdEventType event_type) {
-  new_tab_page_ad_->FireEvent(placement_id, creative_instance_id, event_type);
+  new_tab_page_ad_event_handler_->FireEvent(placement_id, creative_instance_id,
+                                            event_type);
 }
 
 void AdsImpl::TriggerPromotedContentAdEvent(
     const std::string& placement_id,
     const std::string& creative_instance_id,
     const mojom::PromotedContentAdEventType event_type) {
-  promoted_content_ad_->FireEvent(placement_id, creative_instance_id,
-                                  event_type);
+  promoted_content_ad_event_handler_->FireEvent(
+      placement_id, creative_instance_id, event_type);
 }
 
 void AdsImpl::GetInlineContentAd(const std::string& dimensions,
@@ -385,7 +387,8 @@ void AdsImpl::TriggerInlineContentAdEvent(
     const std::string& placement_id,
     const std::string& creative_instance_id,
     const mojom::InlineContentAdEventType event_type) {
-  inline_content_ad_->FireEvent(placement_id, creative_instance_id, event_type);
+  inline_content_ad_event_handler_->FireEvent(placement_id,
+                                              creative_instance_id, event_type);
 }
 
 void AdsImpl::TriggerSearchResultAdEvent(
@@ -397,7 +400,7 @@ void AdsImpl::TriggerSearchResultAdEvent(
     return;
   }
 
-  search_result_ad_->FireEvent(
+  search_result_ad_event_handler_->FireEvent(
       ad_mojom, event_type,
       [=](const bool success, const std::string& placement_id,
           const mojom::SearchResultAdEventType event_type) {
@@ -667,13 +670,9 @@ void AdsImpl::OnStatementOfAccountsDidChange() {
   AdsClientHelper::GetInstance()->OnAdRewardsChanged();
 }
 
-void AdsImpl::OnDidUpdateCatalog(const CatalogInfo& catalog) {
-  epsilon_greedy_bandit_resource_->LoadFromCatalog(catalog);
-}
-
 void AdsImpl::OnDidServeNotificationAd(const NotificationAdInfo& ad) {
-  notification_ad_->FireEvent(ad.placement_id,
-                              mojom::NotificationAdEventType::kServed);
+  notification_ad_event_handler_->FireEvent(
+      ad.placement_id, mojom::NotificationAdEventType::kServed);
 }
 
 void AdsImpl::OnNotificationAdViewed(const NotificationAdInfo& ad) {
@@ -719,8 +718,9 @@ void AdsImpl::OnNotificationAdTimedOut(const NotificationAdInfo& ad) {
 }
 
 void AdsImpl::OnDidServeNewTabPageAd(const NewTabPageAdInfo& ad) {
-  new_tab_page_ad_->FireEvent(ad.placement_id, ad.creative_instance_id,
-                              mojom::NewTabPageAdEventType::kServed);
+  new_tab_page_ad_event_handler_->FireEvent(
+      ad.placement_id, ad.creative_instance_id,
+      mojom::NewTabPageAdEventType::kServed);
 }
 
 void AdsImpl::OnNewTabPageAdViewed(const NewTabPageAdInfo& ad) {
@@ -748,8 +748,9 @@ void AdsImpl::OnPromotedContentAdClicked(const PromotedContentAdInfo& ad) {
 }
 
 void AdsImpl::OnDidServeInlineContentAd(const InlineContentAdInfo& ad) {
-  inline_content_ad_->FireEvent(ad.placement_id, ad.creative_instance_id,
-                                mojom::InlineContentAdEventType::kServed);
+  inline_content_ad_event_handler_->FireEvent(
+      ad.placement_id, ad.creative_instance_id,
+      mojom::InlineContentAdEventType::kServed);
 }
 
 void AdsImpl::OnInlineContentAdViewed(const InlineContentAdInfo& ad) {

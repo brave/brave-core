@@ -63,7 +63,7 @@ void TextClassification::Process(const std::string& text) {
     return;
   }
 
-  ml::pipeline::TextProcessing* text_proc_pipeline = resource_->get();
+  ml::pipeline::TextProcessing* text_proc_pipeline = resource_->Get();
 
   const targeting::TextClassificationProbabilitiesMap probabilities =
       text_proc_pipeline->ClassifyPage(text);

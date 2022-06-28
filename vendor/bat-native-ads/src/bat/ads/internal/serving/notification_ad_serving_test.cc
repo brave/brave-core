@@ -29,6 +29,7 @@ using ::testing::Field;
 using ::testing::Matcher;
 
 namespace ads {
+namespace notification_ads {
 
 namespace {
 
@@ -98,8 +99,7 @@ class BatAdsNotificationAdServingIntegrationTest : public UnitTestBase {
   void ServeAd() {
     geographic::SubdivisionTargeting subdivision_targeting;
     resource::AntiTargeting anti_targeting_resource;
-    notification_ads::Serving serving(&subdivision_targeting,
-                                      &anti_targeting_resource);
+    Serving serving(&subdivision_targeting, &anti_targeting_resource);
 
     serving.MaybeServeAd();
   }
@@ -182,8 +182,7 @@ TEST_F(BatAdsNotificationAdServingIntegrationTest, ServeAdWithServingVersion2) {
 
   geographic::SubdivisionTargeting subdivision_targeting;
   resource::AntiTargeting anti_targeting_resource;
-  notification_ads::Serving serving(&subdivision_targeting,
-                                    &anti_targeting_resource);
+  Serving serving(&subdivision_targeting, &anti_targeting_resource);
 
   std::map<std::string, std::string> serving_parameters;
   serving_parameters["ad_serving_version"] = "2";
@@ -205,4 +204,5 @@ TEST_F(BatAdsNotificationAdServingIntegrationTest, ServeAdWithServingVersion2) {
   // Assert
 }
 
+}  // namespace notification_ads
 }  // namespace ads

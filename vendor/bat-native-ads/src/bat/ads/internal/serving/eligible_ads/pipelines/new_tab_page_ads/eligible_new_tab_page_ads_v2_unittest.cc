@@ -18,6 +18,7 @@
 // npm run test -- brave_unit_tests --filter=BatAds*
 
 namespace ads {
+namespace new_tab_page_ads {
 
 class BatAdsEligibleNewTabPageAdsV2Test : public UnitTestBase {
  protected:
@@ -56,8 +57,7 @@ TEST_F(BatAdsEligibleNewTabPageAdsV2Test, GetAds) {
   // Act
   geographic::SubdivisionTargeting subdivision_targeting;
   resource::AntiTargeting anti_targeting_resource;
-  new_tab_page_ads::EligibleAdsV2 eligible_ads(&subdivision_targeting,
-                                               &anti_targeting_resource);
+  EligibleAdsV2 eligible_ads(&subdivision_targeting, &anti_targeting_resource);
 
   eligible_ads.GetForUserModel(
       targeting::BuildUserModel(interest_segments, latent_interest_segments,
@@ -91,8 +91,7 @@ TEST_F(BatAdsEligibleNewTabPageAdsV2Test, GetAdsForNoSegments) {
   // Act
   geographic::SubdivisionTargeting subdivision_targeting;
   resource::AntiTargeting anti_targeting_resource;
-  new_tab_page_ads::EligibleAdsV2 eligible_ads(&subdivision_targeting,
-                                               &anti_targeting_resource);
+  EligibleAdsV2 eligible_ads(&subdivision_targeting, &anti_targeting_resource);
 
   eligible_ads.GetForUserModel(
       targeting::BuildUserModel(interest_segments, latent_interest_segments,
@@ -114,8 +113,7 @@ TEST_F(BatAdsEligibleNewTabPageAdsV2Test, GetIfNoEligibleAds) {
   // Act
   geographic::SubdivisionTargeting subdivision_targeting;
   resource::AntiTargeting anti_targeting_resource;
-  new_tab_page_ads::EligibleAdsV2 eligible_ads(&subdivision_targeting,
-                                               &anti_targeting_resource);
+  EligibleAdsV2 eligible_ads(&subdivision_targeting, &anti_targeting_resource);
 
   const CreativeNewTabPageAdList expected_creative_ads;
 
@@ -130,4 +128,5 @@ TEST_F(BatAdsEligibleNewTabPageAdsV2Test, GetIfNoEligibleAds) {
   // Assert
 }
 
+}  // namespace new_tab_page_ads
 }  // namespace ads

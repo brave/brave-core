@@ -63,7 +63,7 @@ void TextClassification::OnLoadAndParseResource(
                                       << " text classification resource");
 }
 
-ml::pipeline::TextProcessing* TextClassification::get() const {
+ml::pipeline::TextProcessing* TextClassification::Get() const {
   return text_processing_pipeline_.get();
 }
 

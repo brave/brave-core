@@ -6,29 +6,36 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_RESOURCES_BEHAVIORAL_BANDITS_EPSILON_GREEDY_BANDIT_RESOURCE_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_RESOURCES_BEHAVIORAL_BANDITS_EPSILON_GREEDY_BANDIT_RESOURCE_H_
 
+#include "bat/ads/internal/catalog/catalog_observer.h"
 #include "bat/ads/internal/segments/segments_aliases.h"
 
 namespace ads {
 
+class Catalog;
 struct CatalogInfo;
 
 namespace resource {
 
-class EpsilonGreedyBandit final {
+class EpsilonGreedyBandit final : public CatalogObserver {
  public:
-  EpsilonGreedyBandit();
-  ~EpsilonGreedyBandit();
+  explicit EpsilonGreedyBandit(Catalog* catalog);
   EpsilonGreedyBandit(const EpsilonGreedyBandit&) = delete;
   EpsilonGreedyBandit& operator=(const EpsilonGreedyBandit&) = delete;
+  ~EpsilonGreedyBandit() override;
 
   bool IsInitialized() const;
 
   void LoadFromCatalog(const CatalogInfo& catalog);
 
-  SegmentList get() const;
+  SegmentList Get() const;
 
  private:
+  // CatalogObserver:
+  void OnDidUpdateCatalog(const CatalogInfo& catalog) override;
+
   bool is_initialized_ = false;
+
+  raw_ptr<Catalog> catalog_ = nullptr;  // NOT OWNED
 };
 
 }  // namespace resource

@@ -3,28 +3,30 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_AD_EVENTS_NEW_TAB_PAGE_ADS_NEW_TAB_PAGE_AD_H_
-#define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_AD_EVENTS_NEW_TAB_PAGE_ADS_NEW_TAB_PAGE_AD_H_
+#ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_AD_EVENTS_NEW_TAB_PAGE_ADS_NEW_TAB_PAGE_AD_EVENT_HANDLER_H_
+#define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_AD_EVENTS_NEW_TAB_PAGE_ADS_NEW_TAB_PAGE_AD_EVENT_HANDLER_H_
 
 #include <string>
 
 #include "base/observer_list.h"
-#include "bat/ads/internal/ad_events/new_tab_page_ads/new_tab_page_ad_observer.h"
+#include "bat/ads/internal/ad_events/new_tab_page_ads/new_tab_page_ad_event_handler_observer.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
 
 namespace ads {
 
 struct NewTabPageAdInfo;
 
-class NewTabPageAd final : public NewTabPageAdObserver {
- public:
-  NewTabPageAd();
-  ~NewTabPageAd() override;
-  NewTabPageAd(const NewTabPageAd&) = delete;
-  NewTabPageAd& operator=(const NewTabPageAd&) = delete;
+namespace new_tab_page_ads {
 
-  void AddObserver(NewTabPageAdObserver* observer);
-  void RemoveObserver(NewTabPageAdObserver* observer);
+class EventHandler final : public EventHandlerObserver {
+ public:
+  EventHandler();
+  ~EventHandler() override;
+  EventHandler(const EventHandler&) = delete;
+  EventHandler& operator=(const EventHandler&) = delete;
+
+  void AddObserver(EventHandlerObserver* observer);
+  void RemoveObserver(EventHandlerObserver* observer);
 
   void FireEvent(const std::string& placement_id,
                  const std::string& creative_instance_id,
@@ -50,9 +52,10 @@ class NewTabPageAd final : public NewTabPageAdObserver {
       const std::string& creative_instance_id,
       const mojom::NewTabPageAdEventType event_type) const;
 
-  base::ObserverList<NewTabPageAdObserver> observers_;
+  base::ObserverList<EventHandlerObserver> observers_;
 };
 
+}  // namespace new_tab_page_ads
 }  // namespace ads
 
-#endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_AD_EVENTS_NEW_TAB_PAGE_ADS_NEW_TAB_PAGE_AD_H_
+#endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_AD_EVENTS_NEW_TAB_PAGE_ADS_NEW_TAB_PAGE_AD_EVENT_HANDLER_H_

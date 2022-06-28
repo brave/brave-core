@@ -160,7 +160,7 @@ targeting::PurchaseIntentSiteInfo PurchaseIntent::GetSite(
     const GURL& url) const {
   targeting::PurchaseIntentSiteInfo info;
 
-  const targeting::PurchaseIntentInfo* purchase_intent = resource_->get();
+  const targeting::PurchaseIntentInfo* purchase_intent = resource_->Get();
   DCHECK(purchase_intent);
 
   for (const auto& site : purchase_intent->sites) {
@@ -179,7 +179,7 @@ SegmentList PurchaseIntent::GetSegmentsForSearchQuery(
 
   const KeywordList search_query_keywords = ToKeywords(search_query);
 
-  const targeting::PurchaseIntentInfo* purchase_intent = resource_->get();
+  const targeting::PurchaseIntentInfo* purchase_intent = resource_->Get();
   DCHECK(purchase_intent);
 
   for (const auto& keyword : purchase_intent->segment_keywords) {
@@ -204,7 +204,7 @@ uint16_t PurchaseIntent::GetFunnelWeightForSearchQuery(
 
   uint16_t max_weight = kPurchaseIntentDefaultSignalWeight;
 
-  const targeting::PurchaseIntentInfo* purchase_intent = resource_->get();
+  const targeting::PurchaseIntentInfo* purchase_intent = resource_->Get();
   DCHECK(purchase_intent);
 
   for (const auto& keyword : purchase_intent->funnel_keywords) {

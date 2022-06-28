@@ -19,6 +19,7 @@
 // npm run test -- brave_unit_tests --filter=BatAds*
 
 namespace ads {
+namespace new_tab_page_ads {
 
 class BatAdsEligibleNewTabPageAdsV1Test : public UnitTestBase {
  protected:
@@ -53,8 +54,7 @@ TEST_F(BatAdsEligibleNewTabPageAdsV1Test, GetAdsForChildSegment) {
   // Act
   geographic::SubdivisionTargeting subdivision_targeting;
   resource::AntiTargeting anti_targeting_resource;
-  new_tab_page_ads::EligibleAdsV1 eligible_ads(&subdivision_targeting,
-                                               &anti_targeting_resource);
+  EligibleAdsV1 eligible_ads(&subdivision_targeting, &anti_targeting_resource);
 
   const CreativeNewTabPageAdList& expected_creative_ads = {creative_ad_2};
 
@@ -81,8 +81,7 @@ TEST_F(BatAdsEligibleNewTabPageAdsV1Test, GetAdsForParentSegment) {
   // Act
   geographic::SubdivisionTargeting subdivision_targeting;
   resource::AntiTargeting anti_targeting_resource;
-  new_tab_page_ads::EligibleAdsV1 eligible_ads(&subdivision_targeting,
-                                               &anti_targeting_resource);
+  EligibleAdsV1 eligible_ads(&subdivision_targeting, &anti_targeting_resource);
 
   const CreativeNewTabPageAdList& expected_creative_ads = {creative_ad};
 
@@ -109,8 +108,7 @@ TEST_F(BatAdsEligibleNewTabPageAdsV1Test, GetAdsForUntargetedSegment) {
   // Act
   geographic::SubdivisionTargeting subdivision_targeting;
   resource::AntiTargeting anti_targeting_resource;
-  new_tab_page_ads::EligibleAdsV1 eligible_ads(&subdivision_targeting,
-                                               &anti_targeting_resource);
+  EligibleAdsV1 eligible_ads(&subdivision_targeting, &anti_targeting_resource);
 
   const CreativeNewTabPageAdList& expected_creative_ads = {creative_ad};
 
@@ -145,8 +143,7 @@ TEST_F(BatAdsEligibleNewTabPageAdsV1Test, GetAdsForMultipleSegments) {
   // Act
   geographic::SubdivisionTargeting subdivision_targeting;
   resource::AntiTargeting anti_targeting_resource;
-  new_tab_page_ads::EligibleAdsV1 eligible_ads(&subdivision_targeting,
-                                               &anti_targeting_resource);
+  EligibleAdsV1 eligible_ads(&subdivision_targeting, &anti_targeting_resource);
 
   const CreativeNewTabPageAdList& expected_creative_ads = {creative_ad_1,
                                                            creative_ad_3};
@@ -175,8 +172,7 @@ TEST_F(BatAdsEligibleNewTabPageAdsV1Test, GetAdsForNoSegments) {
   // Act
   geographic::SubdivisionTargeting subdivision_targeting;
   resource::AntiTargeting anti_targeting_resource;
-  new_tab_page_ads::EligibleAdsV1 eligible_ads(&subdivision_targeting,
-                                               &anti_targeting_resource);
+  EligibleAdsV1 eligible_ads(&subdivision_targeting, &anti_targeting_resource);
 
   const CreativeNewTabPageAdList& expected_creative_ads = {creative_ad};
 
@@ -203,8 +199,7 @@ TEST_F(BatAdsEligibleNewTabPageAdsV1Test, GetAdsForUnmatchedSegments) {
   // Act
   geographic::SubdivisionTargeting subdivision_targeting;
   resource::AntiTargeting anti_targeting_resource;
-  new_tab_page_ads::EligibleAdsV1 eligible_ads(&subdivision_targeting,
-                                               &anti_targeting_resource);
+  EligibleAdsV1 eligible_ads(&subdivision_targeting, &anti_targeting_resource);
 
   const CreativeNewTabPageAdList expected_creative_ads;
 
@@ -218,4 +213,5 @@ TEST_F(BatAdsEligibleNewTabPageAdsV1Test, GetAdsForUnmatchedSegments) {
   // Assert
 }
 
+}  // namespace new_tab_page_ads
 }  // namespace ads

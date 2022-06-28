@@ -15,6 +15,7 @@
 // npm run test -- brave_unit_tests --filter=BatAds*
 
 namespace ads {
+namespace notification_ads {
 
 class BatAdsEligibleNotificationAdsV1Issue17199Test : public UnitTestBase {
  protected:
@@ -37,8 +38,7 @@ TEST_F(BatAdsEligibleNotificationAdsV1Issue17199Test, GetEligibleAds) {
   // Act
   geographic::SubdivisionTargeting subdivision_targeting;
   resource::AntiTargeting anti_targeting_resource;
-  notification_ads::EligibleAdsV1 eligible_ads(&subdivision_targeting,
-                                               &anti_targeting_resource);
+  EligibleAdsV1 eligible_ads(&subdivision_targeting, &anti_targeting_resource);
 
   eligible_ads.GetForUserModel(
       targeting::BuildUserModel({"technology & computing-computing"}, {}, {}),
@@ -50,4 +50,5 @@ TEST_F(BatAdsEligibleNotificationAdsV1Issue17199Test, GetEligibleAds) {
   // Assert
 }
 
+}  // namespace notification_ads
 }  // namespace ads
