@@ -861,10 +861,16 @@ void AdsServiceImpl::OnDetectUncertainFuture(const uint32_t number_of_start,
   // command-line switches rather than using hard coded strings below.
 
   const auto* command_line = base::CommandLine::ForCurrentProcess();
-  if (command_line->HasSwitch("variations-server-url") ||
-      command_line->HasSwitch("variations-insecure-server-url") ||
-      command_line->HasSwitch("fake-variations-channel") ||
-      command_line->HasSwitch("variations-override-country")) {
+  if ((command_line->HasSwitch("variations-server-url") &&
+       !command_line->GetSwitchValueASCII("variations-server-url").empty()) ||
+      (command_line->HasSwitch("variations-insecure-server-url") &&
+       !command_line->GetSwitchValueASCII("variations-insecure-server-url")
+            .empty()) ||
+      (command_line->HasSwitch("fake-variations-channel") &&
+       !command_line->GetSwitchValueASCII("fake-variations-channel").empty()) ||
+      (command_line->HasSwitch("variations-override-country") &&
+       !command_line->GetSwitchValueASCII("variations-override-country")
+            .empty())) {
     sys_info->did_override_command_line_args_flag = true;
   } else {
     const base::flat_set<std::string> kCommandLineSwitches = {
