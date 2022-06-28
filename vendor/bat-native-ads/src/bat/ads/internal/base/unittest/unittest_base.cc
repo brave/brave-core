@@ -176,6 +176,8 @@ void UnitTestBase::Initialize() {
 
   diagnostic_manager_ = std::make_unique<DiagnosticManager>();
 
+  history_manager_ = std::make_unique<HistoryManager>();
+
   locale_manager_ = std::make_unique<LocaleManager>();
 
   notification_ad_manager_ = std::make_unique<NotificationAdManager>();

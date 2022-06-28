@@ -6,9 +6,10 @@
 #include "bat/ads/internal/ad_events/notification_ads/notification_ad_event_viewed.h"
 
 #include "bat/ads/confirmation_type.h"
+#include "bat/ads/history_item_info.h"
 #include "bat/ads/internal/ad_events/ad_events.h"
 #include "bat/ads/internal/base/logging_util.h"
-#include "bat/ads/internal/history/history.h"
+#include "bat/ads/internal/history/history_manager.h"
 #include "bat/ads/internal/privacy/p2a/impressions/p2a_impression.h"
 
 namespace ads {
@@ -32,7 +33,7 @@ void AdEventViewed::FireEvent(const NotificationAdInfo& ad) {
     BLOG(6, "Successfully logged notification ad viewed event");
   });
 
-  history::AddNotificationAd(ad, ConfirmationType::kViewed);
+  HistoryManager::GetInstance()->Add(ad, ConfirmationType::kViewed);
 
   privacy::p2a::RecordAdImpression(ad);
 }

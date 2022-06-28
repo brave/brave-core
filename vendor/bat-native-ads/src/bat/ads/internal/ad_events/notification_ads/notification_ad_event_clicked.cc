@@ -6,11 +6,12 @@
 #include "bat/ads/internal/ad_events/notification_ads/notification_ad_event_clicked.h"
 
 #include "bat/ads/confirmation_type.h"
+#include "bat/ads/history_item_info.h"
 #include "bat/ads/internal/ad_events/ad_events.h"
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/base/logging_util.h"
 #include "bat/ads/internal/creatives/notification_ads/notification_ad_manager.h"
-#include "bat/ads/internal/history/history.h"
+#include "bat/ads/internal/history/history_manager.h"
 
 namespace ads {
 namespace notification_ads {
@@ -37,7 +38,7 @@ void AdEventClicked::FireEvent(const NotificationAdInfo& ad) {
     BLOG(1, "Successfully logged notification ad clicked event");
   });
 
-  history::AddNotificationAd(ad, ConfirmationType::kClicked);
+  HistoryManager::GetInstance()->Add(ad, ConfirmationType::kClicked);
 }
 
 }  // namespace notification_ads

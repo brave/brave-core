@@ -20,7 +20,6 @@
 #include "bat/ads/internal/deprecated/client/client_info.h"
 #include "bat/ads/internal/deprecated/json/json_helper.h"
 #include "bat/ads/internal/features/text_classification_features.h"
-#include "bat/ads/internal/history/history.h"
 #include "bat/ads/internal/history/history_constants.h"
 #include "bat/ads/internal/resources/behavioral/purchase_intent/purchase_intent_signal_history_info.h"
 #include "bat/ads/internal/serving/serving_features.h"
@@ -145,8 +144,7 @@ void ClientStateManager::AppendHistory(const HistoryItemInfo& history_item) {
 
   client_->history.push_front(history_item);
 
-  const base::Time distant_past =
-      base::Time::Now() - base::Days(history::kDays);
+  const base::Time distant_past = base::Time::Now() - kHistoryTimeWindow;
 
   const auto iter =
       std::remove_if(client_->history.begin(), client_->history.end(),
