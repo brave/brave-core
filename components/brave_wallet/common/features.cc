@@ -30,12 +30,7 @@ const base::Feature kBraveWalletSolanaFeature{
 };
 
 const base::Feature kBraveWalletSolanaProviderFeature{
-#if BUILDFLAG(IS_ANDROID)
-  "BraveWalletSolanaProvider", base::FEATURE_DISABLED_BY_DEFAULT
-#else
-  "BraveWalletSolanaProvider", base::FEATURE_ENABLED_BY_DEFAULT
-#endif
-};
+    "BraveWalletSolanaProvider", base::FEATURE_DISABLED_BY_DEFAULT};
 
 const base::Feature kBraveWalletDappsSupportFeature{
     "BraveWalletDappsSupport", base::FEATURE_ENABLED_BY_DEFAULT};
