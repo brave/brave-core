@@ -35,6 +35,10 @@ class PromotedContentAd final : public PromotedContentAdObserver {
                  const std::string& placement_id,
                  const std::string& creative_instance_id,
                  const mojom::PromotedContentAdEventType event_type);
+  void FailedToFireEvent(
+      const std::string& placement_id,
+      const std::string& creative_instance_id,
+      const mojom::PromotedContentAdEventType event_type) const;
 
   void NotifyPromotedContentAdEvent(
       const PromotedContentAdInfo& ad,
@@ -42,7 +46,6 @@ class PromotedContentAd final : public PromotedContentAdObserver {
   void NotifyPromotedContentAdServed(const PromotedContentAdInfo& ad) const;
   void NotifyPromotedContentAdViewed(const PromotedContentAdInfo& ad) const;
   void NotifyPromotedContentAdClicked(const PromotedContentAdInfo& ad) const;
-
   void NotifyPromotedContentAdEventFailed(
       const std::string& placement_id,
       const std::string& creative_instance_id,

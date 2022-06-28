@@ -43,10 +43,9 @@ class RedeemUnblindedPaymentTokens final {
       const mojom::UrlResponse& url_response,
       const privacy::UnblindedPaymentTokenList& unblinded_payment_tokens);
 
-  void OnDidRedeemUnblindedPaymentTokens(
+  void SuccessfullyRedeemedUnblindedPaymentTokens(
       const privacy::UnblindedPaymentTokenList& unblinded_payment_tokens);
-
-  void OnFailedToRedeemUnblindedPaymentTokens();
+  void FailedToRedeemUnblindedPaymentTokens(const bool should_retry);
 
   void ScheduleNextTokenRedemption();
 

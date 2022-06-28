@@ -67,6 +67,9 @@ class Account final : public PrefManagerObserver,
                       const AdType& ad_type,
                       const ConfirmationType& confirmation_type,
                       const double value) const;
+  void FailedToProcessDeposit(const std::string& creative_instance_id,
+                              const AdType& ad_type,
+                              const ConfirmationType& confirmation_type) const;
 
   void ProcessClearingCycle() const;
   void ProcessUnclearedTransactions() const;
@@ -96,14 +99,11 @@ class Account final : public PrefManagerObserver,
 
   // IssuersDelegate:
   void OnDidFetchIssuers(const IssuersInfo& issuers) override;
-  void OnFailedToFetchIssuers() override;
 
   // RedeemUnblindedPaymentTokensDelegate:
   void OnDidRedeemUnblindedPaymentTokens(
       const privacy::UnblindedPaymentTokenList& unblinded_payment_tokens)
       override;
-  void OnFailedToRedeemUnblindedPaymentTokens() override;
-  void OnDidRetryRedeemingUnblindedPaymentTokens() override;
 
   // RedeemUnblindedTokensDelegate:
   void OnDidRefillUnblindedTokens() override;

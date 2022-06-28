@@ -222,6 +222,9 @@ void RefillUnblindedTokens::OnGetSignedTokens(
       OnFailedToRefillUnblindedTokens(/* should_retry */ false);
       return;
     }
+
+    BLOG(1, "Captcha is required to refill unblinded tokens");
+
     if (delegate_) {
       delegate_->OnCaptchaRequiredToRefillUnblindedTokens(*captcha_id);
     }
@@ -341,6 +344,8 @@ void RefillUnblindedTokens::OnGetSignedTokens(
 }
 
 void RefillUnblindedTokens::OnDidRefillUnblindedTokens() {
+  BLOG(1, "Successfully refilled unblinded tokens");
+
   retry_timer_.Stop();
 
   blinded_tokens_.clear();
@@ -355,6 +360,8 @@ void RefillUnblindedTokens::OnDidRefillUnblindedTokens() {
 
 void RefillUnblindedTokens::OnFailedToRefillUnblindedTokens(
     const bool should_retry) {
+  BLOG(1, "Failed to refill unblinded tokens");
+
   if (delegate_) {
     delegate_->OnFailedToRefillUnblindedTokens();
   }
@@ -372,14 +379,16 @@ void RefillUnblindedTokens::Retry() {
       FROM_HERE, kRetryAfter,
       base::BindOnce(&RefillUnblindedTokens::OnRetry, base::Unretained(this)));
 
+  BLOG(1, "Retry refilling unblinded tokens " << FriendlyDateAndTime(retry_at));
+
   if (delegate_) {
     delegate_->OnWillRetryRefillingUnblindedTokens(retry_at);
   }
-
-  BLOG(1, "Retry refilling unblinded tokens " << FriendlyDateAndTime(retry_at));
 }
 
 void RefillUnblindedTokens::OnRetry() {
+  BLOG(1, "Retry refilling unblinded tokens");
+
   if (delegate_) {
     delegate_->OnDidRetryRefillingUnblindedTokens();
   }

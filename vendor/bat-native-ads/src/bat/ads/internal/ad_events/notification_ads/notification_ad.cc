@@ -37,7 +37,7 @@ void NotificationAd::FireEvent(
                                                                &ad)) {
     BLOG(1, "Failed to fire notification ad event due to missing placement id "
                 << placement_id);
-    NotifyNotificationAdEventFailed(placement_id, event_type);
+    FailedToFireEvent(placement_id, event_type);
     return;
   }
 
@@ -48,6 +48,15 @@ void NotificationAd::FireEvent(
 }
 
 ///////////////////////////////////////////////////////////////////////////////
+
+void NotificationAd::FailedToFireEvent(
+    const std::string& placement_id,
+    const mojom::NotificationAdEventType event_type) const {
+  BLOG(1, "Failed to fire notification ad "
+              << event_type << " event for placement id " << placement_id);
+
+  NotifyNotificationAdEventFailed(placement_id, event_type);
+}
 
 void NotificationAd::NotifyNotificationAdEvent(
     const NotificationAdInfo& ad,

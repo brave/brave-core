@@ -28,7 +28,7 @@ class ResourceManager final {
   void AddObserver(ResourceManagerObserver* observer);
   void RemoveObserver(ResourceManagerObserver* observer);
 
-  void OnResourceDidUpdate(const std::string& id);
+  void UpdateResource(const std::string& id);
 
  private:
   void NotifyResourceDidUpdate(const std::string& id) const;

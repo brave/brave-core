@@ -10,6 +10,7 @@
 #include "bat/ads/confirmation_type.h"
 #include "bat/ads/internal/ad_events/ad_events.h"
 #include "bat/ads/internal/base/logging_util.h"
+#include "bat/ads/internal/base/time/time_formatting_util.h"
 #include "bat/ads/internal/base/url/url_util.h"
 #include "bat/ads/internal/tabs/tab_info.h"
 #include "bat/ads/internal/tabs/tab_manager.h"
@@ -72,6 +73,9 @@ void Transfer::TransferAd(const int32_t tab_id,
       base::BindOnce(&Transfer::OnTransferAd, base::Unretained(this), tab_id,
                      redirect_chain));
 
+  BLOG(1, "Transfer ad for " << last_clicked_ad_.target_url << " "
+                             << FriendlyDateAndTime(transfer_ad_at));
+
   NotifyWillTransferAd(last_clicked_ad_, transfer_ad_at);
 }
 
@@ -83,30 +87,32 @@ void Transfer::OnTransferAd(const int32_t tab_id,
   transferring_ad_tab_id_ = 0;
 
   if (!TabManager::GetInstance()->IsTabVisible(tab_id)) {
-    NotifyFailedToTransferAd(ad);
+    FailedToTransferAd(ad);
     return;
   }
 
   const absl::optional<TabInfo> tab =
       TabManager::GetInstance()->GetTabForId(tab_id);
   if (!tab) {
-    NotifyFailedToTransferAd(ad);
+    FailedToTransferAd(ad);
     return;
   }
 
   if (!DomainOrHostExists(redirect_chain, tab->url)) {
-    NotifyFailedToTransferAd(ad);
+    FailedToTransferAd(ad);
     return;
   }
 
   LogAdEvent(ad, ConfirmationType::kTransferred, [=](const bool success) {
     if (!success) {
       BLOG(1, "Failed to log transferred ad event");
-      NotifyFailedToTransferAd(ad);
+      FailedToTransferAd(ad);
       return;
     }
 
     BLOG(6, "Successfully logged transferred ad event");
+
+    BLOG(1, "Transferred ad for " << ad.target_url);
 
     NotifyDidTransferAd(ad);
   });
@@ -121,7 +127,17 @@ void Transfer::Cancel(const int32_t tab_id) {
     return;
   }
 
+  BLOG(1, "Cancelled ad transfer for creative instance id "
+              << last_clicked_ad_.creative_instance_id << " with tab id "
+              << tab_id);
+
   NotifyCancelledTransfer(last_clicked_ad_, tab_id);
+}
+
+void Transfer::FailedToTransferAd(const AdInfo& ad) const {
+  BLOG(1, "Failed to transfer ad for " << ad.target_url);
+
+  NotifyFailedToTransferAd(ad);
 }
 
 void Transfer::NotifyWillTransferAd(const AdInfo& ad,

@@ -37,6 +37,9 @@ class SearchResultAd final : public SearchResultAdObserver {
                        TriggerSearchResultAdEventCallback callback) const;
   void FireClickedEvent(const SearchResultAdInfo& ad,
                         TriggerSearchResultAdEventCallback callback) const;
+  void FailedToFireEvent(const SearchResultAdInfo& ad,
+                         const mojom::SearchResultAdEventType event_type,
+                         TriggerSearchResultAdEventCallback callback) const;
 
   void NotifySearchResultAdEvent(
       const SearchResultAdInfo& ad,
@@ -45,7 +48,6 @@ class SearchResultAd final : public SearchResultAdObserver {
   void NotifySearchResultAdServed(const SearchResultAdInfo& ad) const;
   void NotifySearchResultAdViewed(const SearchResultAdInfo& ad) const;
   void NotifySearchResultAdClicked(const SearchResultAdInfo& ad) const;
-
   void NotifySearchResultAdEventFailed(
       const SearchResultAdInfo& ad,
       const mojom::SearchResultAdEventType event_type,

@@ -59,8 +59,7 @@ TextClassification::~TextClassification() {
 void TextClassification::Process(const std::string& text) {
   if (!resource_->IsInitialized()) {
     BLOG(1,
-         "Failed to process text classification as resource "
-         "not initialized");
+         "Failed to process text classification as resource not initialized");
     return;
   }
 

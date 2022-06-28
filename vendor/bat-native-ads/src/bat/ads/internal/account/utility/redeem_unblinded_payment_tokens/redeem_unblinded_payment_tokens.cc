@@ -52,11 +52,7 @@ void RedeemUnblindedPaymentTokens::MaybeRedeemAfterDelay(
 
   if (!wallet.IsValid()) {
     BLOG(0, "Failed to redeem unblinded payment tokens due to invalid wallet");
-
-    if (delegate_) {
-      delegate_->OnFailedToRedeemUnblindedPaymentTokens();
-    }
-
+    FailedToRedeemUnblindedPaymentTokens(/* should_retry */ false);
     return;
   }
 
@@ -124,19 +120,21 @@ void RedeemUnblindedPaymentTokens::OnRedeem(
     BLOG(1,
          "Failed to redeem unblinded payment token as a browser upgrade is "
          "required");
-    OnFailedToRedeemUnblindedPaymentTokens();
+    FailedToRedeemUnblindedPaymentTokens(/* should_retry */ false);
     return;
   } else if (url_response.status_code != net::HTTP_OK) {
     BLOG(1, "Failed to redeem unblinded payment tokens");
-    OnFailedToRedeemUnblindedPaymentTokens();
+    FailedToRedeemUnblindedPaymentTokens(/* should_retry */ true);
     return;
   }
 
-  OnDidRedeemUnblindedPaymentTokens(unblinded_payment_tokens);
+  SuccessfullyRedeemedUnblindedPaymentTokens(unblinded_payment_tokens);
 }
 
-void RedeemUnblindedPaymentTokens::OnDidRedeemUnblindedPaymentTokens(
+void RedeemUnblindedPaymentTokens::SuccessfullyRedeemedUnblindedPaymentTokens(
     const privacy::UnblindedPaymentTokenList& unblinded_payment_tokens) {
+  BLOG(1, "Successfully redeemed unblinded payment tokens");
+
   is_processing_ = false;
 
   retry_timer_.Stop();
@@ -153,12 +151,17 @@ void RedeemUnblindedPaymentTokens::OnDidRedeemUnblindedPaymentTokens(
   ScheduleNextTokenRedemption();
 }
 
-void RedeemUnblindedPaymentTokens::OnFailedToRedeemUnblindedPaymentTokens() {
+void RedeemUnblindedPaymentTokens::FailedToRedeemUnblindedPaymentTokens(
+    const bool should_retry) {
+  BLOG(1, "Failed to redeem unblinded payment tokens");
+
   if (delegate_) {
     delegate_->OnFailedToRedeemUnblindedPaymentTokens();
   }
 
-  Retry();
+  if (should_retry) {
+    Retry();
+  }
 }
 
 void RedeemUnblindedPaymentTokens::ScheduleNextTokenRedemption() {
@@ -180,15 +183,17 @@ void RedeemUnblindedPaymentTokens::Retry() {
       base::BindOnce(&RedeemUnblindedPaymentTokens::OnRetry,
                      base::Unretained(this)));
 
+  BLOG(1, "Retry redeeming unblinded payment tokens "
+              << FriendlyDateAndTime(retry_at));
+
   if (delegate_) {
     delegate_->OnWillRetryRedeemingUnblindedPaymentTokens(retry_at);
   }
-
-  BLOG(1, "Retry redeeming unblinded payment tokens "
-              << FriendlyDateAndTime(retry_at));
 }
 
 void RedeemUnblindedPaymentTokens::OnRetry() {
+  BLOG(1, "Retry redeeming unblinded payment tokens");
+
   if (delegate_) {
     delegate_->OnDidRetryRedeemingUnblindedPaymentTokens();
   }

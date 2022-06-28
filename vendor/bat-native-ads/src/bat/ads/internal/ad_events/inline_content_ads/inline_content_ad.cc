@@ -58,8 +58,7 @@ void InlineContentAd::FireEvent(
     BLOG(1,
          "Failed to fire inline content ad event due to an invalid placement "
          "id");
-    NotifyInlineContentAdEventFailed(placement_id, creative_instance_id,
-                                     event_type);
+    FailedToFireEvent(placement_id, creative_instance_id, event_type);
     return;
   }
 
@@ -67,8 +66,7 @@ void InlineContentAd::FireEvent(
     BLOG(1,
          "Failed to fire inline content ad event due to an invalid creative "
          "instance id");
-    NotifyInlineContentAdEventFailed(placement_id, creative_instance_id,
-                                     event_type);
+    FailedToFireEvent(placement_id, creative_instance_id, event_type);
     return;
   }
 
@@ -82,8 +80,7 @@ void InlineContentAd::FireEvent(
                "Failed to fire inline content ad event due to missing creative "
                "instance id "
                    << creative_instance_id);
-          NotifyInlineContentAdEventFailed(placement_id, creative_instance_id,
-                                           event_type);
+          FailedToFireEvent(placement_id, creative_instance_id, event_type);
           return;
         }
 
@@ -107,8 +104,7 @@ void InlineContentAd::FireEvent(
       [=](const bool success, const AdEventList& ad_events) {
         if (!success) {
           BLOG(1, "Inline content ad: Failed to get ad events");
-          NotifyInlineContentAdEventFailed(placement_id, creative_instance_id,
-                                           event_type);
+          FailedToFireEvent(placement_id, creative_instance_id, event_type);
           return;
         }
 
@@ -116,8 +112,7 @@ void InlineContentAd::FireEvent(
           BLOG(1, "Inline content ad: Not allowed as already fired "
                       << event_type << " event for this placement id "
                       << placement_id);
-          NotifyInlineContentAdEventFailed(placement_id, creative_instance_id,
-                                           event_type);
+          FailedToFireEvent(placement_id, creative_instance_id, event_type);
           return;
         }
 
@@ -127,6 +122,18 @@ void InlineContentAd::FireEvent(
 
         NotifyInlineContentAdEvent(ad, event_type);
       });
+}
+
+void InlineContentAd::FailedToFireEvent(
+    const std::string& placement_id,
+    const std::string& creative_instance_id,
+    const mojom::InlineContentAdEventType event_type) const {
+  BLOG(1, "Failed to fire inline content ad "
+              << event_type << " event for placement id " << placement_id
+              << " and creative instance id " << creative_instance_id);
+
+  NotifyInlineContentAdEventFailed(placement_id, creative_instance_id,
+                                   event_type);
 }
 
 void InlineContentAd::NotifyInlineContentAdEvent(

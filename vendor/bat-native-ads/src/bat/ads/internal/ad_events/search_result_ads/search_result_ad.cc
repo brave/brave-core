@@ -67,14 +67,14 @@ void SearchResultAd::FireEvent(
 
   if (!ad.IsValid()) {
     BLOG(1, "Failed to fire event due to an invalid search result ad");
-    NotifySearchResultAdEventFailed(ad, event_type, callback);
+    FailedToFireEvent(ad, event_type, callback);
     return;
   }
 
   search_result_ads::PermissionRules permission_rules;
   if (!permission_rules.HasPermission()) {
     BLOG(1, "Search result ad: Not allowed due to permission rules");
-    NotifySearchResultAdEventFailed(ad, event_type, callback);
+    FailedToFireEvent(ad, event_type, callback);
     return;
   }
 
@@ -122,8 +122,7 @@ void SearchResultAd::FireViewedEvent(
   deposits_database_table.Save(deposit, [=](const bool success) {
     if (!success) {
       BLOG(0, "Failed to save deposits state");
-      NotifySearchResultAdEventFailed(
-          ad, mojom::SearchResultAdEventType::kViewed, callback);
+      FailedToFireEvent(ad, mojom::SearchResultAdEventType::kViewed, callback);
       return;
     }
 
@@ -139,8 +138,8 @@ void SearchResultAd::FireViewedEvent(
     conversion_database_table.Save(conversions, [=](const bool success) {
       if (!success) {
         BLOG(0, "Failed to save conversions state");
-        NotifySearchResultAdEventFailed(
-            ad, mojom::SearchResultAdEventType::kViewed, callback);
+        FailedToFireEvent(ad, mojom::SearchResultAdEventType::kViewed,
+                          callback);
         return;
       }
 
@@ -155,7 +154,7 @@ void SearchResultAd::FireViewedEvent(
 
             if (!success) {
               BLOG(1, "Search result ad: Failed to get ad events");
-              NotifySearchResultAdEventFailed(ad, event_type, callback);
+              FailedToFireEvent(ad, event_type, callback);
               return;
             }
 
@@ -163,7 +162,7 @@ void SearchResultAd::FireViewedEvent(
               BLOG(1, "Search result ad: Not allowed as already fired "
                           << event_type << " event for this placement id "
                           << ad.placement_id);
-              NotifySearchResultAdEventFailed(ad, event_type, callback);
+              FailedToFireEvent(ad, event_type, callback);
               return;
             }
 
@@ -189,7 +188,7 @@ void SearchResultAd::FireClickedEvent(
 
         if (!success) {
           BLOG(1, "Search result ad: Failed to get ad events");
-          NotifySearchResultAdEventFailed(ad, event_type, callback);
+          FailedToFireEvent(ad, event_type, callback);
           return;
         }
 
@@ -197,12 +196,23 @@ void SearchResultAd::FireClickedEvent(
           BLOG(1, "Search result ad: Not allowed as already fired "
                       << event_type << " event for this placement id "
                       << ad.placement_id);
-          NotifySearchResultAdEventFailed(ad, event_type, callback);
+          FailedToFireEvent(ad, event_type, callback);
           return;
         }
 
         FireEvent(ad, event_type, callback);
       });
+}
+
+void SearchResultAd::FailedToFireEvent(
+    const SearchResultAdInfo& ad,
+    const mojom::SearchResultAdEventType event_type,
+    TriggerSearchResultAdEventCallback callback) const {
+  BLOG(1, "Failed to fire search result ad "
+              << event_type << " event for placement_id " << ad.placement_id
+              << " and creative instance id " << ad.creative_instance_id);
+
+  NotifySearchResultAdEventFailed(ad, event_type, callback);
 }
 
 void SearchResultAd::NotifySearchResultAdEvent(

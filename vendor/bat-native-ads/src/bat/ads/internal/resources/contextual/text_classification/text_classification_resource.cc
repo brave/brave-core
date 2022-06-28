@@ -46,6 +46,7 @@ void TextClassification::OnLoadAndParseResource(
          "Failed to load " << kResourceId << " text classification resource");
     return;
   }
+
   BLOG(1, "Successfully loaded " << kResourceId
                                  << " text classification resource");
 

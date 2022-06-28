@@ -105,6 +105,8 @@ void Confirmations::OnRetry() {
       ConfirmationStateManager::GetInstance()->GetFailedConfirmations();
   DCHECK(!failed_confirmations.empty());
 
+  BLOG(1, "Retry sending failed confirmations");
+
   const ConfirmationInfo& confirmation = failed_confirmations.front();
 
   RemoveFromRetryQueue(confirmation);
@@ -239,13 +241,6 @@ void Confirmations::RemoveFromRetryQueue(const ConfirmationInfo& confirmation) {
 
 void Confirmations::OnDidSendConfirmation(
     const ConfirmationInfo& confirmation) {
-  BLOG(1, "Successfully sent " << confirmation.type << " confirmation for "
-                               << confirmation.ad_type << " with id "
-                               << confirmation.id << ", transaction id "
-                               << confirmation.transaction_id
-                               << " and creative instance id "
-                               << confirmation.creative_instance_id);
-
   if (delegate_) {
     delegate_->OnDidConfirm(confirmation);
   }
@@ -258,13 +253,6 @@ void Confirmations::OnDidSendConfirmation(
 void Confirmations::OnFailedToSendConfirmation(
     const ConfirmationInfo& confirmation,
     const bool should_retry) {
-  BLOG(1, "Failed to send " << confirmation.type << " confirmation for "
-                            << confirmation.ad_type << " with id "
-                            << confirmation.id << ", transaction id "
-                            << confirmation.transaction_id
-                            << " and creative instance id "
-                            << confirmation.creative_instance_id);
-
   if (should_retry) {
     AppendToRetryQueue(confirmation);
   }
@@ -302,15 +290,9 @@ void Confirmations::OnDidRedeemUnblindedToken(
       AdsClientHelper::GetInstance()->GetTimePref(
           prefs::kNextTokenRedemptionAt);
 
-  BLOG(1, "Successfully redeemed unblinded token for "
-              << confirmation.ad_type << " with confirmation id "
-              << confirmation.id << ", transaction id "
-              << confirmation.transaction_id << ", creative instance id "
-              << confirmation.creative_instance_id << " and "
-              << confirmation.type << ". You now have "
-              << unblinded_payment_tokens_count
-              << " unblinded payment tokens which will be redeemed "
-              << FriendlyDateAndTime(next_token_redemption_at));
+  BLOG(1, "You have " << unblinded_payment_tokens_count
+                      << " unblinded payment tokens which will be redeemed "
+                      << FriendlyDateAndTime(next_token_redemption_at));
 
   if (delegate_) {
     delegate_->OnDidConfirm(confirmation);
@@ -325,13 +307,6 @@ void Confirmations::OnFailedToRedeemUnblindedToken(
     const ConfirmationInfo& confirmation,
     const bool should_retry,
     const bool should_backoff) {
-  BLOG(1, "Failed to redeem unblinded token for "
-              << confirmation.ad_type << " with confirmation id "
-              << confirmation.id << ", transaction id "
-              << confirmation.transaction_id << ", creative instance id "
-              << confirmation.creative_instance_id << " and "
-              << confirmation.type);
-
   if (should_retry) {
     if (!confirmation.was_created) {
       CreateNewConfirmationAndAppendToRetryQueue(confirmation);
