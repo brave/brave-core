@@ -199,10 +199,6 @@
       }
     }
   },
-  "walletAddFunds": {
-    "message": "Add Funds",
-    "description": ""
-  },
   "walletAutoContribute": {
     "message": "Auto-Contribute",
     "description": ""

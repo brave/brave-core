@@ -20,9 +20,6 @@
   <message name="IDS_REWARDS_WALLET_ACCOUNT_LINK" desc="">
     Go to my <ph name="PROVIDER">$1<ex>Uphold</ex></ph> account
   </message>
-  <message name="IDS_REWARDS_WALLET_ADD_FUNDS" desc="">
-    Add Funds
-  </message>
   <message name="IDS_REWARDS_WALLET_AUTO_CONTRIBUTE" desc="">
     Auto-Contribute
   </message>
