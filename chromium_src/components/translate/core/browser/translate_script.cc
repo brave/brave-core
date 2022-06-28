@@ -12,6 +12,8 @@
 #include "brave/components/constants/brave_services_key.h"
 #include "brave/components/translate/core/common/brave_translate_constants.h"
 #include "brave/components/translate/core/common/brave_translate_features.h"
+#include "components/grit/brave_components_resources.h"
+#include "ui/base/resource/resource_bundle.h"
 
 namespace translate {
 namespace google_apis {
@@ -25,40 +27,6 @@ std::string GetAPIKey() {
 #include "src/components/translate/core/browser/translate_script.cc"
 #undef TranslateScript
 
-namespace {
-
-const char* kRedirectAllRequestsToSecurityOrigin = R"(
-  const useGoogleTranslateEndpoint = %s;
-  const securityOriginHost = new URL(securityOrigin).host;
-  const redirectToSecurityOrigin = (url) => {
-    let new_url = new URL(url);
-    if (useGoogleTranslateEndpoint && new_url.pathname === '/translate') {
-      new_url.host = 'translate.googleapis.com';
-      new_url.pathname = '/translate_a/t';
-      return new_url.toString();
-    }
-    new_url.host = securityOriginHost;
-    return new_url.toString();
-  };
-  if (typeof XMLHttpRequest.prototype.realOpen === 'undefined') {
-    XMLHttpRequest.prototype.realOpen = XMLHttpRequest.prototype.open;
-    XMLHttpRequest.prototype.open = function (method, url, async = true,
-                                     user = "", password = "") {
-      this.realOpen(method, redirectToSecurityOrigin(url), async, user,
-                    password);
-    }
-  };
-  originalOnLoadCSS = cr.googleTranslate.onLoadCSS;
-  cr.googleTranslate.onLoadCSS = function (url) {
-    originalOnLoadCSS(redirectToSecurityOrigin(url))
-  };
-  originalOnLoadJavascript = cr.googleTranslate.onLoadJavascript;
-  cr.googleTranslate.onLoadJavascript = function (url) {
-    originalOnLoadJavascript(redirectToSecurityOrigin(url))
-  };
-)";
-
-}  // namespace
 namespace translate {
 
 // Redirect the translate script request to the Brave endpoints.
@@ -88,8 +56,12 @@ void TranslateScript::OnScriptFetchComplete(bool success,
                                             const std::string& data) {
   const std::string new_data = base::StrCat(
       {base::StringPrintf(
-           kRedirectAllRequestsToSecurityOrigin,
+           "const useGoogleTranslateEndpoint = %s;",
            translate::UseGoogleTranslateEndpoint() ? "true" : "false"),
+       base::StringPrintf("const braveTranslateStaticPath = '%s';",
+                          kBraveTranslateStaticPath),
+       ui::ResourceBundle::GetSharedInstance().LoadDataResourceString(
+           IDR_BRAVE_TRANSLATE_JS),
        data});
   ChromiumTranslateScript::OnScriptFetchComplete(success, new_data);
 }

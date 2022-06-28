@@ -15,7 +15,11 @@ void AdjustedSetIsolatedWorldInfo(int32_t world_id,
   // Limit all network requests to the security origin.
   if (!translate::UseGoogleTranslateEndpoint()) {
     new_info.content_security_policy =
-        "default-src 'self' 'unsafe-eval' 'unsafe-inline'";
+        "default-src 'none'; frame-ancestors 'none'; base-uri 'none';"
+        "style-src 'self' 'unsafe-inline';"
+        "connect-src 'self';"
+        "script-src 'self' 'unsafe-eval' 'unsafe-inline';"
+        "img-src 'self' data:";
   }
   blink::SetIsolatedWorldInfo(world_id, new_info);
 }
