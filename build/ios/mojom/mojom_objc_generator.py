@@ -9,7 +9,7 @@ import mojom.generate.generator as generator
 from mojom.generate.generator import WriteFile
 from mojom.generate.template_expander import UseJinja
 
-class MojoTypemap(object):
+class MojoTypemap():
     @staticmethod
     def IsMojoType(_):
         return False
@@ -159,7 +159,7 @@ class NumberMojoTypemap(MojoTypemap):
 
 class ArrayMojoTypemap(MojoTypemap):
     def __init__(self, kind, is_inside_container):
-        super(ArrayMojoTypemap, self).__init__(
+        super().__init__(
             kind, is_inside_container=is_inside_container)
         self.wrappedTypemap = MojoTypemapForKind(kind.kind, True)
     @staticmethod
@@ -230,8 +230,7 @@ class EnumMojoTypemap(MojoTypemap):
 
 class DictionaryMojoTypemap(MojoTypemap):
     def __init__(self, kind, is_inside_container):
-        super(DictionaryMojoTypemap,
-              self).__init__(kind, is_inside_container=is_inside_container)
+        super().__init__(kind, is_inside_container=is_inside_container)
         self.keyTypemap = MojoTypemapForKind(self.kind.key_kind, True)
         self.valueTypemap = MojoTypemapForKind(self.kind.value_kind, True)
     @staticmethod
@@ -410,9 +409,6 @@ def UnderToLowerCamel(value):
     return UnderToCamel(value, lower_initial=True)
 
 class Generator(generator.Generator):
-    def __init__(self, *args, **kwargs):
-        super(Generator, self).__init__(*args, **kwargs)
-
     @staticmethod
     def GetTemplatePrefix():
         return "objc_templates"
@@ -471,8 +467,8 @@ class Generator(generator.Generator):
         typemap = MojoTypemapForKind(kind, False)
         typestring = typemap.ExpectedCppType()
         if (mojom.IsNullableKind(kind)
-                and not (isinstance(typemap, StructMojoTypemap)
-                         or isinstance(typemap, UnionMojoTypemap))):
+                and not (isinstance(
+                    typemap, (StructMojoTypemap, UnionMojoTypemap)))):
             typestring = "absl::optional<%s>" % typestring
         if should_pass_param_by_value:
             return typestring
@@ -511,10 +507,9 @@ class Generator(generator.Generator):
         typemap = MojoTypemapForKind(kind)
         if mojom.IsEnumKind(kind):
             return 'static_cast<%s>(0)' % typemap.ObjCWrappedType()
-        elif mojom.IsObjectKind(kind) or mojom.IsAnyInterfaceKind(kind):
+        if mojom.IsObjectKind(kind) or mojom.IsAnyInterfaceKind(kind):
             return 'nil'
-        else:
-            return '0'
+        return '0'
 
     def _GetObjCWrapperType(self, kind, objectType=False):
         typemap = MojoTypemapForKind(kind, objectType)
@@ -569,8 +564,7 @@ class Generator(generator.Generator):
             raise Exception("No typemap found for the given kind: %s" % kind)
         cpp_assign = typemap.ObjCToCpp(accessor)
         if mojom.IsNullableKind(kind):
-            if (isinstance(typemap, StructMojoTypemap)
-                    or isinstance(typemap, UnionMojoTypemap)):
+            if (isinstance(typemap, (StructMojoTypemap, UnionMojoTypemap))):
                 cpp_assign = "%s ? %s : nullptr" % (accessor, cpp_assign)
             else:
                 cpp_assign = "%s ? absl::make_optional(%s) : absl::nullopt" % (
