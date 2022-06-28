@@ -1,0 +1,14 @@
+diff --git a/chrome/browser/ui/views/tabs/tab_hover_card_bubble_view.cc b/chrome/browser/ui/views/tabs/tab_hover_card_bubble_view.cc
+index 4c9bcb9373983..0276340fae5c2 100644
+--- a/chrome/browser/ui/views/tabs/tab_hover_card_bubble_view.cc
++++ b/chrome/browser/ui/views/tabs/tab_hover_card_bubble_view.cc
+@@ -775,7 +775,8 @@ TabHoverCardBubbleView::TabHoverCardBubbleView(Tab* tab)
+   domain_label_ = AddChildView(
+       std::make_unique<FadeLabel>(views::style::CONTEXT_DIALOG_BODY_TEXT, 1));
+ 
+-  if (TabHoverCardController::AreHoverCardImagesEnabled()) {
++  if (TabHoverCardController::AreHoverCardImagesEnabled()
++      BRAVE_TAB_HOVER_CARD_PREVIEWS) {
+     if (UseAlternateHoverCardFormat()) {
+       thumbnail_view_ =
+           AddChildViewAt(std::make_unique<ThumbnailView>(this), 0);

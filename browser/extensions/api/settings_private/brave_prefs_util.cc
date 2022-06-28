@@ -9,6 +9,7 @@
 #include "brave/browser/ethereum_remote_client/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/brave_shields/common/pref_names.h"
+#include "brave/components/brave_tabs/brave_tab_prefs.h"
 #include "brave/components/brave_vpn/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wayback_machine/buildflags.h"
@@ -173,6 +174,8 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
       settings_api::PrefType::PREF_TYPE_NUMBER;
   (*s_brave_allowlist)[kTabsSearchShow] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
+  (*s_brave_allowlist)[brave_tabs::kTabHoverMode] =
+      settings_api::PREF_TYPE_NUMBER;
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   (*s_brave_allowlist)[brave_vpn::prefs::kBraveVPNShowButton] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;

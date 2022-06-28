@@ -1,4 +1,4 @@
-<style include="settings-shared">
+<style include="settings-shared iron-flex">
 </style>
 <settings-toggle-button
   class="cr-row"
@@ -70,3 +70,12 @@
   class="cr-row"
   label="$i18n{showSearchTabsBtn}">
 </settings-toggle-button>
+<div class="settings-box">
+  <div class="flex">
+    <div class="label">$i18n{appearanceSettingsTabHoverMode}</div>
+  </div>
+  <settings-dropdown-menu
+    pref="{{prefs.brave.tabs.hover_mode}}"
+    menu-options="[[tabTooltipModes_]]">
+  </settings-dropdown-menu>
+</div>

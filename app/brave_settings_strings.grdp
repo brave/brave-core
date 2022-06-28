@@ -59,6 +59,18 @@
   <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_BRAVE_DEFAULT_IMAGES_OPTION_LABEL" desc="The label for choosing default images over super referral">
     Brave default images
   </message>
+  <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_BRAVE_TAB_HOVER_MODE" desc="The label for the settings select controlling what happens when a user hovers over a tab.">
+    Tab hover mode
+  </message>
+  <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_BRAVE_TAB_HOVER_MODE_CARD" desc="The label name of the tab hover mode where a card with the title and origin of the site is shown.">
+    Card
+  </message>
+  <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_BRAVE_TAB_HOVER_MODE_CARD_WITH_PREVIEW" desc="The label name of the tab hover mode where a card with the title, origin, and a preview of the site is shown.">
+    Card with preview
+  </message>
+  <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_BRAVE_TAB_HOVER_MODE_TOOLTIP" desc="The label name of the tab hover mode where a tooltip with the site title is shown.">
+    Tooltip
+  </message>
   <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_SHOW_BOOKMARKS_BUTTON" desc="The label for whether the bookmarks button should be shown or not">
     Show bookmarks button
   </message>
