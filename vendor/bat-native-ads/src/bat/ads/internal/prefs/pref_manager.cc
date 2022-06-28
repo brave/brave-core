@@ -6,7 +6,6 @@
 #include "bat/ads/internal/prefs/pref_manager.h"
 
 #include "base/check_op.h"
-#include "bat/ads/internal/base/logging_util.h"
 
 namespace ads {
 
@@ -46,8 +45,6 @@ void PrefManager::RemoveObserver(PrefManagerObserver* observer) {
 }
 
 void PrefManager::OnPrefChanged(const std::string& path) const {
-  BLOG(1, "Pref changed at " << path);
-
   NotifyPrefChanged(path);
 }
 
