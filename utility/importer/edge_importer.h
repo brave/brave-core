@@ -10,14 +10,12 @@
 
 class EdgeImporter : public ChromeImporter {
  public:
-  EdgeImporter();
+  EdgeImporter() = default;
   EdgeImporter(const EdgeImporter&) = delete;
   EdgeImporter& operator=(const EdgeImporter&) = delete;
 
  protected:
-  ~EdgeImporter() override;
-
- private:
+  ~EdgeImporter() override {}
 };
 
 #endif  // BRAVE_UTILITY_IMPORTER_EDGE_IMPORTER_H_
