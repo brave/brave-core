@@ -1,5 +1,21 @@
+// Copyright (c) 2022 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// you can obtain one at http://mozilla.org/MPL/2.0/.
+
 import * as React from 'react'
-import { BraveWallet, Origin, WalletAccountType } from '../../../constants/types'
+import {
+  useDispatch,
+  useSelector
+} from 'react-redux'
+
+// Actions
+import { PanelActions } from '../../../panel/actions'
+
+// Types
+import { WalletState } from '../../../constants/types'
+
+// Utils
 import { getLocale } from '../../../../common/locale'
 
 // Components
@@ -22,59 +38,34 @@ import {
   NewAccountButton
 } from './style'
 
-export interface Props {
-  onDisconnect: (origin: Origin, account: WalletAccountType, connectedAccounts: WalletAccountType[]) => void
-  onConnect: (origin: Origin, account: WalletAccountType) => void
-  onSwitchAccount: (account: WalletAccountType) => void
-  onAddAccount: () => void
-  selectedAccount: WalletAccountType
-  originInfo: BraveWallet.OriginInfo
-  connectedAccounts: WalletAccountType[]
-  accounts: WalletAccountType[]
-}
-
-const SitePermissions = (props: Props) => {
+const SitePermissions = () => {
+  const dispatch = useDispatch()
   const {
-    originInfo,
-    connectedAccounts,
-    selectedAccount,
     accounts,
-    onDisconnect,
-    onConnect,
-    onSwitchAccount,
-    onAddAccount
-  } = props
+    connectedAccounts,
+    activeOrigin,
+    selectedCoin
+  } = useSelector(({ wallet }: { wallet: WalletState }) => wallet)
 
-  const onDisconnectFromOrigin = (account: WalletAccountType) => {
-    const newConnectedAccounts = connectedAccounts.filter((accounts) => accounts.address.toLowerCase() !== account.address.toLowerCase())
-    onDisconnect(originInfo.origin, account, newConnectedAccounts)
+  // methods
+  const onAddAccount = () => {
+    dispatch(PanelActions.expandWalletAccounts())
   }
 
-  const onConnectToOrigin = (account: WalletAccountType) => {
-    onConnect(originInfo.origin, account)
-  }
-
-  const onClickSwitchAccount = (account: WalletAccountType) => {
-    onSwitchAccount(account)
-  }
-
-  const checkForPermission = React.useCallback((address: string): boolean => {
-    return connectedAccounts.some(account => account.address.toLowerCase() === address.toLowerCase())
-  }, [connectedAccounts])
-
-  const checkIsActive = React.useCallback((address: string): boolean => {
-    return address.toLowerCase() === selectedAccount.address.toLowerCase()
-  }, [selectedAccount])
+  // memos
+  const accountByCoinType = React.useMemo(() => {
+    return accounts.filter((account) => account.coin === selectedCoin)
+  }, [accounts, selectedCoin])
 
   return (
     <StyledWrapper>
       <HeaderRow>
-        <FavIcon src={`chrome://favicon/size/64@1x/${originInfo.originSpec}`} />
+        <FavIcon src={`chrome://favicon/size/64@1x/${activeOrigin.originSpec}`} />
         <HeaderColumn>
           <SiteOriginTitle>
             <CreateSiteOrigin
-              originSpec={originInfo.originSpec}
-              eTldPlusOne={originInfo.eTldPlusOne}
+              originSpec={activeOrigin.originSpec}
+              eTldPlusOne={activeOrigin.eTldPlusOne}
             />
           </SiteOriginTitle>
           <AccountsTitle>{getLocale('braveWalletSitePermissionsAccounts').replace('$1', connectedAccounts.length.toString())}</AccountsTitle>
@@ -84,15 +75,10 @@ const SitePermissions = (props: Props) => {
         <NewAccountButton onClick={onAddAccount}>{getLocale('braveWalletSitePermissionsNewAccount')}</NewAccountButton>
         <DividerLine />
         <AddressScrollContainer>
-          {accounts.map((account) => (
+          {accountByCoinType.map((account) => (
             <ConnectedAccountItem
-              isActive={checkIsActive(account.address)}
               key={account.id}
               account={account}
-              onDisconnect={onDisconnectFromOrigin}
-              onConnect={onConnectToOrigin}
-              onSwitchAccount={onClickSwitchAccount}
-              hasPermission={checkForPermission(account.address)}
             />
           ))}
         </AddressScrollContainer>

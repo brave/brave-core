@@ -298,6 +298,9 @@
   <message name="IDS_BRAVE_WALLET_SITE_PERMISSIONS_ACCOUNTS" desc="Site Permissions panel accounts connected"><ph name="NUMBER_OF_ACCOUNTS"><ex>5</ex>$1</ph> accounts connected</message>
   <message name="IDS_BRAVE_WALLET_SITE_PERMISSIONS_DISCONNECT" desc="Site Permissions panel disconnect from site">Disconnect</message>
   <message name="IDS_BRAVE_WALLET_SITE_PERMISSIONS_SWITCH" desc="Site Permissions panel switch account for connected site">Switch</message>
+  <message name="IDS_BRAVE_WALLET_SITE_PERMISSIONS_TRUST" desc="Site Permissions panel trust account for connected site">Trust</message>
+  <message name="IDS_BRAVE_WALLET_SITE_PERMISSIONS_REVOKE" desc="Site Permissions panel revoke account for connected site">Revoke</message>
+  <message name="IDS_BRAVE_WALLET_PANEL_DISCONNECTED" desc="Brave Wallet panel disconnected status">Disconnected</message>
   <message name="IDS_BRAVE_WALLET_SITE_PERMISSIONS_NEW_ACCOUNT" desc="Site Permissions panel add a new account">New account</message>
   <message name="IDS_BRAVE_WALLET_PANEL_NOT_CONNECTED" desc="Brave Wallet panel disconnected status">Connect</message>
   <message name="IDS_BRAVE_WALLET_PANEL_VIEW_ACCOUNT_ASSETS" desc="Brave Wallet panel view account assets button">View account assets</message>

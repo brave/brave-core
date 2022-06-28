@@ -49,14 +49,12 @@ import * as WalletActions from '../common/actions/wallet_actions'
 import {
   AppsListType,
   BraveWallet,
-  Origin,
   WalletState,
   PanelState,
   PanelTypes,
   WalletAccountType,
   BuySendSwapViewTypes,
-  ToOrFromType,
-  WalletOrigin
+  ToOrFromType
 } from '../constants/types'
 import { AppsList } from '../options/apps-list-options'
 import LockPanel from '../components/extension/lock-panel'
@@ -88,7 +86,6 @@ function Container () {
     isWalletCreated,
     networkList,
     transactionSpotPrices,
-    connectedAccounts,
     activeOrigin,
     defaultCurrencies,
     transactions,
@@ -358,31 +355,11 @@ function Container () {
     }
   }
 
-  const onOpenSettings = () => {
-    dispatch(WalletPanelActions.openWalletSettings())
-  }
-
   const onCancelConnectHardwareWallet = () => {
     if (!selectedPendingTransaction) {
       return
     }
     dispatch(WalletPanelActions.cancelConnectHardwareWallet(selectedPendingTransaction))
-  }
-
-  const removeSitePermission = (origin: Origin, account: WalletAccountType, connectedAccounts: WalletAccountType[]) => {
-    dispatch(WalletActions.removeSitePermission({ coin: account.coin, origin: origin, account: account.address }))
-    if (connectedAccounts.length !== 0) {
-      dispatch(WalletActions.selectAccount(connectedAccounts[0]))
-    }
-  }
-
-  const addSitePermission = (origin: Origin, account: WalletAccountType) => {
-    dispatch(WalletActions.addSitePermission({ coin: account.coin, origin: origin, account: account.address }))
-    dispatch(WalletActions.selectAccount(account))
-  }
-
-  const onSwitchAccount = (account: WalletAccountType) => {
-    dispatch(WalletActions.selectAccount(account))
   }
 
   const onAddAccount = () => {
@@ -468,14 +445,6 @@ function Container () {
   const filteredAssetOptions = React.useMemo(() => {
     return getUniqueAssets(buyAssetOptions)
   }, [buyAssetOptions])
-
-  const isConnectedToSite = React.useMemo((): boolean => {
-    if (activeOrigin.originSpec === WalletOrigin) {
-      return true
-    } else {
-      return connectedAccounts.some(account => account.address === selectedAccount.address)
-    }
-  }, [connectedAccounts, selectedAccount, activeOrigin])
 
   if (!hasInitialized || !accounts) {
     return null
@@ -911,16 +880,7 @@ function Container () {
             title={panelTitle}
             useSearch={false}
           >
-            <SitePermissions
-              accounts={accounts}
-              connectedAccounts={connectedAccounts}
-              onConnect={addSitePermission}
-              onDisconnect={removeSitePermission}
-              onSwitchAccount={onSwitchAccount}
-              selectedAccount={selectedAccount}
-              originInfo={activeOrigin}
-              onAddAccount={onAddAccount}
-            />
+            <SitePermissions />
           </Panel>
         </LongWrapper>
       </PanelWrapper>
@@ -943,14 +903,7 @@ function Container () {
   return (
     <PanelWrapper isLonger={false}>
       <ConnectedPanel
-        defaultCurrencies={defaultCurrencies}
-        spotPrices={transactionSpotPrices}
-        selectedAccount={selectedAccount}
-        selectedNetwork={getNetworkInfo(selectedNetwork.chainId, selectedNetwork.coin, networkList)}
-        isConnected={isConnectedToSite}
         navAction={navigateTo}
-        onOpenSettings={onOpenSettings}
-        originInfo={activeOrigin}
         isSwapSupported={isSwapSupported}
       />
     </PanelWrapper>

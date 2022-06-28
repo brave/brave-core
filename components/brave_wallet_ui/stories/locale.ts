@@ -353,6 +353,7 @@ provideStrings({
   braveWalletPanelNotConnected: 'Connect',
   braveWalletPanelViewAccountAssets: 'View account assets',
   braveWalletAssetsPanelTitle: 'Account assets',
+  braveWalletPanelDisconnected: 'Disconnected',
 
   // Wallet Welcome Panel
   braveWalletWelcomePanelDescription: 'Use this panel to securely access Web3 and all your crypto assets.',
@@ -364,6 +365,8 @@ provideStrings({
   braveWalletSitePermissionsDisconnect: 'Disconnect',
   braveWalletSitePermissionsSwitch: 'Switch',
   braveWalletSitePermissionsNewAccount: 'New account',
+  braveWalletSitePermissionsTrust: 'Trust',
+  braveWalletSitePermissionsRevoke: 'Revoke',
 
   // Transaction Detail Box
   braveWalletTransactionDetailBoxFunction: 'FUNCTION TYPE',

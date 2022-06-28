@@ -1,8 +1,25 @@
+// Copyright (c) 2022 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// you can obtain one at http://mozilla.org/MPL/2.0/.
+
 import * as React from 'react'
-import { WalletAccountType } from '../../../constants/types'
+import {
+  useDispatch,
+  useSelector
+} from 'react-redux'
+
+// Actions
+import { WalletActions } from '../../../common/actions'
+
+// Types
+import { BraveWallet, WalletAccountType, WalletState } from '../../../constants/types'
+
+// Utils
 import { reduceAccountDisplayName } from '../../../utils/reduce-account-name'
 import { create } from 'ethereum-blockies'
 import { getLocale } from '../../../../common/locale'
+
 // Styled Components
 import {
   StyledWrapper,
@@ -19,39 +36,79 @@ import {
 import { reduceAddress } from '../../../utils/reduce-address'
 
 export interface Props {
-  isActive: boolean
-  hasPermission: boolean
   account: WalletAccountType
-  onDisconnect: (account: WalletAccountType) => void
-  onConnect: (account: WalletAccountType) => void
-  onSwitchAccount: (account: WalletAccountType) => void
 }
 
 const SitePermissionAccountItem = (props: Props) => {
   const {
-    account,
-    isActive,
-    hasPermission,
-    onDisconnect,
-    onConnect,
-    onSwitchAccount
+    account
   } = props
 
+  const dispatch = useDispatch()
+  const {
+    selectedAccount,
+    connectedAccounts,
+    activeOrigin,
+    selectedCoin
+  } = useSelector(({ wallet }: { wallet: WalletState }) => wallet)
+
+  // memos
   const orb = React.useMemo(() => {
     return create({ seed: account.address.toLowerCase(), size: 8, scale: 16 }).toDataURL()
   }, [account.address])
 
-  const onClickDisconnect = () => {
-    onDisconnect(account)
-  }
+  const isActive = React.useMemo((): boolean => {
+    return account.address.toLowerCase() === selectedAccount.address.toLowerCase()
+  }, [selectedAccount, account])
 
-  const onClickConnect = () => {
-    onConnect(account)
-  }
+  const hasPermission = React.useMemo((): boolean => {
+    return connectedAccounts.some(a => a.address.toLowerCase() === account.address.toLowerCase())
+  }, [connectedAccounts, account])
 
-  const onClickSwitchAccount = () => {
-    onSwitchAccount(account)
-  }
+  const buttonText = React.useMemo((): string => {
+    if (selectedCoin === BraveWallet.CoinType.SOL) {
+      return hasPermission
+        ? getLocale('braveWalletSitePermissionsRevoke')
+        : getLocale('braveWalletSitePermissionsTrust')
+    }
+    return hasPermission
+      ? isActive
+        ? getLocale('braveWalletSitePermissionsDisconnect')
+        : getLocale('braveWalletSitePermissionsSwitch')
+      : getLocale('braveWalletAddAccountConnect')
+  }, [selectedCoin, hasPermission, isActive])
+
+  // methods
+  const onClickConnect = React.useCallback(() => {
+    dispatch(WalletActions.addSitePermission({ coin: account.coin, origin: activeOrigin.origin, account: account.address }))
+    if (selectedCoin !== BraveWallet.CoinType.SOL) {
+      dispatch(WalletActions.selectAccount(account))
+    }
+  }, [activeOrigin, account, selectedCoin])
+
+  const onClickDisconnect = React.useCallback(() => {
+    dispatch(WalletActions.removeSitePermission({ coin: account.coin, origin: activeOrigin.origin, account: account.address }))
+    if (connectedAccounts.length !== 0 && selectedCoin !== BraveWallet.CoinType.SOL) {
+      dispatch(WalletActions.selectAccount(connectedAccounts[0]))
+    }
+  }, [connectedAccounts, activeOrigin, account, selectedCoin])
+
+  const onClickSwitchAccount = React.useCallback(() => {
+    dispatch(WalletActions.selectAccount(account))
+  }, [account])
+
+  const onClickConnectDisconnectOrSwitch = React.useCallback(() => {
+    if (selectedCoin === BraveWallet.CoinType.SOL) {
+      return hasPermission
+        ? onClickDisconnect()
+        : onClickConnect()
+    }
+    return hasPermission
+      ? isActive
+        ? onClickDisconnect()
+        : onClickSwitchAccount()
+      : onClickConnect()
+  }, [selectedCoin, hasPermission, isActive, onClickDisconnect, onClickConnect, onClickSwitchAccount])
 
   return (
     <StyledWrapper>
@@ -66,21 +123,9 @@ const SitePermissionAccountItem = (props: Props) => {
       </LeftSide>
       <RightSide>
         <PrimaryButton
-          onClick={
-            hasPermission
-              ? isActive
-                ? onClickDisconnect
-                : onClickSwitchAccount
-              : onClickConnect
-          }
+          onClick={onClickConnectDisconnectOrSwitch}
         >
-          {
-            hasPermission
-              ? isActive
-                ? getLocale('braveWalletSitePermissionsDisconnect')
-                : getLocale('braveWalletSitePermissionsSwitch')
-              : getLocale('braveWalletAddAccountConnect')
-          }
+          {buttonText}
         </PrimaryButton>
       </RightSide>
     </StyledWrapper>

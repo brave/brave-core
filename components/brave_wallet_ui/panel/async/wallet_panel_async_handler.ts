@@ -174,6 +174,12 @@ async function navigateToConnectHardwareWallet (store: Store) {
   await store.dispatch(PanelActions.setHardwareWalletInteractionError(undefined))
 }
 
+export function isSolanaAccountConnected (): boolean {
+  // Add logic for window.solana.isConnected here.
+  // const status = window.solana.isConnected
+  return true
+}
+
 handler.on(WalletActions.initialize.getType(), async (store) => {
   const state = getPanelState(store)
   // Sanity check we only initialize once
