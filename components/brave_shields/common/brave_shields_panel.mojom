@@ -24,6 +24,8 @@ interface PanelHandler {
   CloseUI();
 
   GetPosition() => (gfx.mojom.Vector2d vec);
+  SetAdvancedViewEnabled(bool is_enabled);
+  GetAdvancedViewEnabled() => (bool is_enabled);
 };
 
 // WebUI-side handler for requests from the browser.
