@@ -511,7 +511,7 @@ class TabManager: NSObject {
         guard let self = self, let tab = tab else { return }
         tab.webStateDebounceTimer?.invalidate()
         
-        if state == .complete || state == .loaded || state == .pushstate || state == .popstate {
+        if state == .complete || state == .loaded || state == .pushstate || state == .popstate || state == .replacestate {
           // Saving Tab Private Mode - not supported yet.
           if !tab.isPrivate {
             self.preserveScreenshots()
