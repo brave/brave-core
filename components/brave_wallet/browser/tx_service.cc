@@ -311,6 +311,14 @@ void TxService::GetEstimatedTxFee(const std::string& tx_meta_id,
   GetSolanaTxManager()->GetEstimatedTxFee(tx_meta_id, std::move(callback));
 }
 
+void TxService::ProcessSolanaHardwareSignature(
+    const std::string& tx_meta_id,
+    const std::vector<uint8_t>& signature,
+    ProcessSolanaHardwareSignatureCallback callback) {
+  GetSolanaTxManager()->ProcessSolanaHardwareSignature(tx_meta_id, signature,
+                                                       std::move(callback));
+}
+
 void TxService::ProcessFilHardwareSignature(
     const std::string& tx_meta_id,
     const std::string& signed_message,

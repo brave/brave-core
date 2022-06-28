@@ -916,13 +916,18 @@ interface TxService {
   // Used to retry a transaction
   RetryTransaction(CoinType coin_type, string tx_meta_id) => (bool success, string tx_meta_id, string error_message);
 
-  GetTransactionMessageToSign(CoinType coin_type, string tx_meta_id) => (string? message);
+  GetTransactionMessageToSign(CoinType coin_type, string tx_meta_id) => (MessageToSignUnion? message);
 
   // Adds an observer for TxService
   AddObserver(pending_remote<TxServiceObserver> observer);
 
   // Resets the keyring and the related preferences
   Reset();
+};
+
+union MessageToSignUnion {
+  string message_str;
+  array<uint8> message_bytes;
 };
 
 // Transaction related APIs specific to EVM.
@@ -950,6 +955,8 @@ interface SolanaTxManagerProxy {
   // Get transaction data for transfering SOL.
   MakeSystemProgramTransferTxData(string from, string to, uint64 lamports)
       => (SolanaTxData? tx_data, SolanaProviderError error, string error_message);
+
+  ProcessSolanaHardwareSignature(string tx_meta_id, array<uint8> signature_bytes) => (bool status, ProviderErrorUnion error_union, string error_message);
 
   // Get transaction data for transfering SPL tokens from one associated token
   // account to another.
@@ -1151,6 +1158,8 @@ interface BraveWalletService {
   GetPendingDecryptRequests() => (array<DecryptRequest> requests);
 
   IsBase58EncodedSolanaPubkey(string key) => (bool result);
+
+  Base58Encode(array<array<uint8>> addresses) => (array<string> addresses);
 
   // Resets the keyring and the related preferences
   Reset();

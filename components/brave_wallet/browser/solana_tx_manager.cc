@@ -8,6 +8,7 @@
 #include <memory>
 #include <utility>
 
+#include "base/base64.h"
 #include "base/notreached.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/solana_block_tracker.h"
@@ -17,6 +18,7 @@
 #include "brave/components/brave_wallet/browser/solana_tx_state_manager.h"
 #include "brave/components/brave_wallet/common/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
+#include "brave/components/brave_wallet/common/solana_utils.h"
 #include "components/grit/brave_components_strings.h"
 #include "ui/base/l10n/l10n_util.h"
 
@@ -125,6 +127,31 @@ void SolanaTxManager::OnGetLatestBlockhash(std::unique_ptr<SolanaTxMeta> meta,
       base::BindOnce(&SolanaTxManager::OnSendSolanaTransaction,
                      weak_ptr_factory_.GetWeakPtr(), meta->id(),
                      std::move(callback)));
+}
+
+void SolanaTxManager::OnGetLatestBlockhashHardware(
+    std::unique_ptr<SolanaTxMeta> meta,
+    GetTransactionMessageToSignCallback callback,
+    const std::string& latest_blockhash,
+    uint64_t last_valid_block_height,
+    mojom::SolanaProviderError error,
+    const std::string& error_message) {
+  if (error != mojom::SolanaProviderError::kSuccess) {
+    std::move(callback).Run(nullptr);
+    return;
+  }
+
+  meta->tx()->message()->set_recent_blockhash(latest_blockhash);
+  meta->tx()->message()->set_last_valid_block_height(last_valid_block_height);
+  tx_state_manager_->AddOrUpdateTx(*meta);
+
+  auto message_signers_pair = meta->tx()->GetSerializedMessage();
+  if (!message_signers_pair)
+    std::move(callback).Run(nullptr);
+
+  auto& message_bytes = message_signers_pair->first;
+  std::move(callback).Run(
+      mojom::MessageToSignUnion::NewMessageBytes(std::move(message_bytes)));
 }
 
 void SolanaTxManager::OnSendSolanaTransaction(
@@ -255,7 +282,26 @@ void SolanaTxManager::RetryTransaction(const std::string& tx_meta_id,
 void SolanaTxManager::GetTransactionMessageToSign(
     const std::string& tx_meta_id,
     GetTransactionMessageToSignCallback callback) {
-  NOTIMPLEMENTED();
+  std::unique_ptr<SolanaTxMeta> meta =
+      GetSolanaTxStateManager()->GetSolanaTx(tx_meta_id);
+  if (!meta || !meta->tx()) {
+    VLOG(1) << __FUNCTION__ << "No transaction found with id:" << tx_meta_id;
+    std::move(callback).Run(nullptr);
+    return;
+  }
+
+  const std::string blockhash = meta->tx()->message()->recent_blockhash();
+  if (blockhash.empty()) {
+    GetSolanaBlockTracker()->GetLatestBlockhash(
+        base::BindOnce(&SolanaTxManager::OnGetLatestBlockhashHardware,
+                       weak_ptr_factory_.GetWeakPtr(), std::move(meta),
+                       std::move(callback)),
+        true);
+  } else {
+    OnGetLatestBlockhashHardware(std::move(meta), std::move(callback),
+                                 blockhash, 0,
+                                 mojom::SolanaProviderError::kSuccess, "");
+  }
 }
 
 void SolanaTxManager::MakeSystemProgramTransferTxData(
@@ -446,6 +492,41 @@ SolanaBlockTracker* SolanaTxManager::GetSolanaBlockTracker() {
 std::unique_ptr<SolanaTxMeta> SolanaTxManager::GetTxForTesting(
     const std::string& tx_meta_id) {
   return GetSolanaTxStateManager()->GetSolanaTx(tx_meta_id);
+}
+
+void SolanaTxManager::ProcessSolanaHardwareSignature(
+    const std::string& tx_meta_id,
+    const std::vector<uint8_t>& signature_bytes,
+    ProcessSolanaHardwareSignatureCallback callback) {
+  std::unique_ptr<SolanaTxMeta> meta =
+      GetSolanaTxStateManager()->GetSolanaTx(tx_meta_id);
+  if (!meta) {
+    std::move(callback).Run(
+        false,
+        mojom::ProviderErrorUnion::NewSolanaProviderError(
+            mojom::SolanaProviderError::kInternalError),
+        l10n_util::GetStringUTF8(IDS_BRAVE_WALLET_TRANSACTION_NOT_FOUND));
+    return;
+  }
+  absl::optional<std::vector<std::uint8_t>> transaction_bytes =
+      meta->tx()->GetSignedTransactionBytes(keyring_service_, &signature_bytes);
+  if (!transaction_bytes) {
+    std::move(callback).Run(
+        false,
+        mojom::ProviderErrorUnion::NewSolanaProviderError(
+            mojom::SolanaProviderError::kInternalError),
+        l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+    return;
+  }
+
+  meta->set_status(mojom::TransactionStatus::Approved);
+  tx_state_manager_->AddOrUpdateTx(*meta);
+
+  json_rpc_service_->SendSolanaTransaction(
+      base::Base64Encode(*transaction_bytes), meta->tx()->send_options(),
+      base::BindOnce(&SolanaTxManager::OnSendSolanaTransaction,
+                     weak_ptr_factory_.GetWeakPtr(), meta->id(),
+                     std::move(callback)));
 }
 
 }  // namespace brave_wallet
