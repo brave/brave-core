@@ -13,10 +13,10 @@
 
 namespace ads {
 
-HistoryItemInfo AppendHistory(const AdInfo& ad,
-                              const ConfirmationType& confirmation_type,
-                              const std::string& title,
-                              const std::string& description) {
+HistoryItemInfo AddHistory(const AdInfo& ad,
+                           const ConfirmationType& confirmation_type,
+                           const std::string& title,
+                           const std::string& description) {
   const HistoryItemInfo history_item =
       BuildHistoryItem(ad, confirmation_type, title, description);
   ClientStateManager::GetInstance()->AppendHistory(history_item);
