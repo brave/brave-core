@@ -9,7 +9,6 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -28,6 +27,7 @@ import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.app.domain.WalletModel;
 import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletDAppsActivity;
+import org.chromium.chrome.browser.crypto_wallet.util.AndroidUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 
 import java.util.concurrent.ExecutorService;
@@ -125,20 +125,17 @@ public class EncryptionKeyFragment extends Fragment implements View.OnClickListe
 
             if (mActivityType
                     == BraveWalletDAppsActivity.ActivityType.GET_ENCRYPTION_PUBLIC_KEY_REQUEST) {
-                mWalletModel.getCryptoModel().getPublicEncryptionRequest(
-                        encryptionPublicKeyRequest -> {
-                            if (encryptionPublicKeyRequest != null) {
-                                mEncryptionPublicKeyRequest = encryptionPublicKeyRequest;
-                                SpannableStringBuilder requestDescription =
-                                        new SpannableStringBuilder();
-                                requestDescription.append(Utils.geteTLD(
+                mWalletModel.getCryptoModel().getPublicEncryptionRequest(encryptionPublicKeyRequest
+                        -> {
+                    if (encryptionPublicKeyRequest != null) {
+                        mEncryptionPublicKeyRequest = encryptionPublicKeyRequest;
+                        String formattedeTLD = String.format(
+                                getString(R.string.brave_wallet_provide_encryption_key_description),
+                                Utils.geteTLDHTMLFormatted(
                                         encryptionPublicKeyRequest.originInfo.eTldPlusOne));
-                                requestDescription.append(" ");
-                                requestDescription.append(getString(
-                                        R.string.brave_wallet_provide_encryption_key_description));
-                                mTvMessageDesc.setText(requestDescription);
-                            }
-                        });
+                        mTvMessageDesc.setText(AndroidUtils.formateHTML(formattedeTLD));
+                    }
+                });
             } else if (mActivityType == BraveWalletDAppsActivity.ActivityType.DECRYPT_REQUEST) {
                 mWalletModel.getCryptoModel().getDecryptMessageRequest(decryptRequest -> {
                     mDecryptRequest = decryptRequest;
