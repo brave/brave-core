@@ -22,7 +22,7 @@ struct AccountListView: View {
           header: WalletListHeaderView(title: Text(Strings.Wallet.accountsPageTitle))
         ) {
           ForEach(keyringStore.keyring.accountInfos) { account in
-            AddressView(address: keyringStore.selectedAccount.address) {
+            AddressView(address: account.address) {
               Button(action: {
                 keyringStore.selectedAccount = account
                 onDismiss()
