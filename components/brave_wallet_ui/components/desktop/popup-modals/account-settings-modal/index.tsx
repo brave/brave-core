@@ -17,9 +17,8 @@ import {
 } from '../../../../options/account-settings-nav-options'
 import { FILECOIN_FORMAT_DESCRIPTION_URL } from '../../../../common/constants/urls'
 import { reduceAddress } from '../../../../utils/reduce-address'
-import { copyToClipboard } from '../../../../utils/copy-to-clipboard'
 import { NavButton } from '../../../extension'
-import { Tooltip } from '../../../shared'
+import { CopyTooltip } from '../../../shared/copy-tooltip/copy-tooltip'
 import { getLocale, getLocaleWithTag } from '../../../../../common/locale'
 
 // Styled Components
@@ -41,7 +40,6 @@ import {
 export interface Props {
   onClose: () => void
   onUpdateAccountName: (payload: UpdateAccountNamePayloadType) => { success: boolean }
-  onCopyToClipboard: () => void
   onChangeTab: (id: AccountSettingsNavTypes) => void
   onRemoveAccount: (address: string, hardware: boolean, coin: BraveWallet.CoinType) => void
   onViewPrivateKey: (address: string, isDefault: boolean, coin: BraveWallet.CoinType) => void
@@ -64,7 +62,6 @@ const AddAccountModal = (props: Props) => {
     onClose,
     onToggleNav,
     onUpdateAccountName,
-    onCopyToClipboard,
     onChangeTab,
     onRemoveAccount,
     onViewPrivateKey,
@@ -74,6 +71,8 @@ const AddAccountModal = (props: Props) => {
   const [showPrivateKey, setShowPrivateKey] = React.useState<boolean>(false)
   const [updateError, setUpdateError] = React.useState<boolean>(false)
   const [qrCode, setQRCode] = React.useState<string>('')
+
+  // custom hooks
 
   const handleAccountNameChanged = (event: React.ChangeEvent<HTMLInputElement>) => {
     setAccountName(event.target.value)
@@ -133,12 +132,6 @@ const AddAccountModal = (props: Props) => {
     onClose()
   }
 
-  const onCopyPrivateKey = async () => {
-    if (privateKey) {
-      await copyToClipboard(privateKey)
-    }
-  }
-
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter' && accountName) {
       onSubmitUpdateName()
@@ -177,9 +170,9 @@ const AddAccountModal = (props: Props) => {
               <ErrorText>{getLocale('braveWalletAccountSettingsUpdateError')}</ErrorText>
             }
             <QRCodeWrapper src={qrCode} />
-            <Tooltip text={getLocale('braveWalletToolTipCopyToClipboard')}>
-              <AddressButton onClick={onCopyToClipboard}>{reduceAddress(account.address)}<CopyIcon /></AddressButton>
-            </Tooltip>
+            <CopyTooltip text={account.address}>
+              <AddressButton>{reduceAddress(account.address)}<CopyIcon /></AddressButton>
+            </CopyTooltip>
             <ButtonRow>
               <NavButton
                 onSubmit={onSubmitUpdateName}
@@ -214,9 +207,9 @@ const AddAccountModal = (props: Props) => {
             </WarningWrapper>
             }
             {showPrivateKey &&
-              <Tooltip text={getLocale('braveWalletToolTipCopyToClipboard')}>
-                <PrivateKeyBubble onClick={onCopyPrivateKey}>{privateKey}</PrivateKeyBubble>
-              </Tooltip>
+              <CopyTooltip text={privateKey}>
+                <PrivateKeyBubble>{privateKey}</PrivateKeyBubble>
+              </CopyTooltip>
             }
             <ButtonWrapper>
               <NavButton
