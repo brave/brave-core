@@ -1324,13 +1324,19 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
         }
     }
 
-    private void setupWalletModel(boolean nullifyServices) {
+    private void clearWalletModelServices() {
+        if (walletModel == null) {
+            return;
+        }
+
+        walletModel.resetServices(null, null, null, null, null, null, null, null);
+    }
+
+    private void setupWalletModel() {
         if (walletModel == null) {
             walletModel = new WalletModel(mKeyringService, mBlockchainRegistry, mJsonRpcService,
                     mTxService, mEthTxManagerProxy, mSolanaTxManagerProxy, mAssetRatioService,
                     mBraveWalletService);
-        } else if (nullifyServices) {
-            walletModel.resetServices(null, null, null, null, null, null, null, null);
         } else {
             walletModel.resetServices(mKeyringService, mBlockchainRegistry, mJsonRpcService,
                     mTxService, mEthTxManagerProxy, mSolanaTxManagerProxy, mAssetRatioService,
@@ -1640,11 +1646,11 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
         InitBraveWalletService();
         InitKeyringService();
         InitJsonRpcService();
-        setupWalletModel(false);
+        setupWalletModel();
     }
 
     private void cleanUpNativeServices() {
-        setupWalletModel(true);
+        clearWalletModelServices();
         if (mKeyringService != null) mKeyringService.close();
         if (mAssetRatioService != null) mAssetRatioService.close();
         if (mBlockchainRegistry != null) mBlockchainRegistry.close();
