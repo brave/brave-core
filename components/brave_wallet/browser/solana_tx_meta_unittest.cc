@@ -96,7 +96,7 @@ TEST(SolanaTxMetaUnitTest, ToTransactionInfo) {
       mojom::SolanaTxData::New(recent_blockhash, last_valid_block_height,
                                from_account, to_account, "", 10000000, 0,
                                mojom::TransactionType::SolanaSystemTransfer,
-                               std::move(instructions), nullptr));
+                               std::move(instructions), nullptr, nullptr));
 }
 
 TEST(SolanaTxMetaUnitTest, ToValue) {

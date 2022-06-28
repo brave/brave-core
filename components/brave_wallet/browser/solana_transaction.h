@@ -8,6 +8,7 @@
 
 #include <memory>
 #include <string>
+#include <utility>
 #include <vector>
 
 #include "base/gtest_prod_util.h"
@@ -108,6 +109,9 @@ class SolanaTransaction {
   void set_amount(uint64_t amount) { amount_ = amount; }
   void set_send_options(absl::optional<SendOptions> options) {
     send_options_ = options;
+  }
+  void set_sign_tx_param(mojom::SolanaSignTransactionParamPtr sign_tx_param) {
+    sign_tx_param_ = std::move(sign_tx_param);
   }
 
  private:

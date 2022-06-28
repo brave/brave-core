@@ -22,6 +22,7 @@
 #include "brave/components/brave_wallet/common/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
 #include "brave/components/brave_wallet/common/features.h"
+#include "brave/components/brave_wallet/common/solana_utils.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
 #include "services/network/test/test_url_loader_factory.h"
@@ -31,9 +32,13 @@ namespace brave_wallet {
 
 namespace {
 
-const char kMnemonic[] =
+constexpr char kMnemonic[] =
     "divide cruise upon flag harsh carbon filter merit once advice bright "
     "drive";
+constexpr char kFromAccount[] = "BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8";
+constexpr char kToAccount[] = "JDqrvDz8d8tFCADashbUKQDKfJZFobNy13ugN65t1wvV";
+constexpr char kRecentBlockhash[] =
+    "9sHcv6xwn9YkB8nxTUGKDwPwNnmqVp5oAXxU8Fdkm4J6";
 
 }  // namespace
 
@@ -42,7 +47,11 @@ class SolanaTransactionUnitTest : public testing::Test {
   SolanaTransactionUnitTest()
       : shared_url_loader_factory_(
             base::MakeRefCounted<network::WeakWrapperSharedURLLoaderFactory>(
-                &url_loader_factory_)) {
+                &url_loader_factory_)),
+        system_transfer_ins_(kSolanaSystemProgramId,
+                             {SolanaAccountMeta(kFromAccount, true, true),
+                              SolanaAccountMeta(kToAccount, false, true)},
+                             {2, 0, 0, 0, 128, 150, 152, 0, 0, 0, 0, 0}) {
     brave_wallet::RegisterProfilePrefs(prefs_.registry());
     json_rpc_service_.reset(
         new JsonRpcService(shared_url_loader_factory_, &prefs_));
@@ -83,6 +92,8 @@ class SolanaTransactionUnitTest : public testing::Test {
     return success;
   }
 
+  SolanaInstruction system_transfer_ins() { return system_transfer_ins_; }
+
  private:
   base::test::TaskEnvironment task_environment_;
   sync_preferences::TestingPrefServiceSyncable prefs_;
@@ -90,6 +101,7 @@ class SolanaTransactionUnitTest : public testing::Test {
   scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
   std::unique_ptr<JsonRpcService> json_rpc_service_;
   std::unique_ptr<KeyringService> keyring_service_;
+  SolanaInstruction system_transfer_ins_;
 };
 
 TEST_F(SolanaTransactionUnitTest, GetSignedTransaction) {
@@ -158,7 +170,8 @@ TEST_F(SolanaTransactionUnitTest, GetSignedTransaction) {
   std::string expected_tx = base::Base64Encode(expected_bytes);
   EXPECT_EQ(transaction.GetSignedTransaction(keyring_service()), expected_tx);
 
-  // Test two signers.
+  // Test two signers where one is fee payer and one's signature is from
+  // sign_transaction_param.
   instruction = SolanaInstruction(
       // Program ID
       kSolanaSystemProgramId,
@@ -170,49 +183,29 @@ TEST_F(SolanaTransactionUnitTest, GetSignedTransaction) {
   SolanaTransaction transaction2 = SolanaTransaction(
       recent_blockhash, last_valid_block_height, from_account, {instruction});
 
-  expected_bytes = std::vector<uint8_t>({
-      // Signature compact array
-      2,  // num of signatures
-      // first account's signature
-      204, 127, 175, 133, 20, 97, 41, 39, 106, 79, 38, 41, 221, 89, 38, 223,
-      218, 63, 117, 68, 237, 45, 169, 94, 53, 56, 233, 159, 107, 110, 171, 152,
-      241, 104, 11, 121, 164, 73, 210, 252, 42, 235, 214, 82, 107, 225, 218, 70,
-      128, 175, 10, 17, 45, 190, 13, 100, 169, 164, 104, 207, 112, 145, 133, 2,
-      // second account's signature
-      54, 115, 88, 109, 108, 123, 97, 39, 185, 100, 244, 248, 224, 182, 51, 40,
-      54, 151, 223, 15, 86, 126, 161, 53, 72, 107, 159, 23, 72, 82, 18, 31, 99,
-      52, 175, 135, 38, 202, 71, 215, 64, 171, 122, 99, 178, 217, 144, 109, 88,
-      75, 198, 137, 92, 222, 109, 229, 52, 138, 101, 182, 42, 134, 216, 4,
-      // Message header
-      2,  // num_required_signatures
-      0,  // num_readonly_signed_accounts
-      1,  // num_readonly_unsigned_accounts
+  auto sign_tx_param = mojom::SolanaSignTransactionParam::New();
+  sign_tx_param->encoded_serialized_msg = "encoded";
+  std::vector<uint8_t> test_sig(64, 1);
+  sign_tx_param->signatures.push_back(
+      mojom::SignaturePubkeyPair::New(absl::nullopt, from_account));
+  sign_tx_param->signatures.push_back(
+      mojom::SignaturePubkeyPair::New(test_sig, to_account));
+  transaction2.set_sign_tx_param(sign_tx_param.Clone());
 
-      // Account addresses compact array
-      3,  // account addresses array length
-      // account_addresses[0]: base58-decoded from account
-      161, 51, 89, 91, 115, 210, 217, 212, 76, 159, 171, 200, 40, 150, 157, 70,
-      197, 71, 24, 44, 209, 108, 143, 4, 58, 251, 215, 62, 201, 172, 159, 197,
-      // account_addresses[1]: base58-decoded to account
-      255, 224, 228, 245, 94, 238, 23, 132, 206, 40, 82, 249, 219, 203, 103,
-      158, 110, 219, 93, 249, 143, 134, 207, 172, 179, 76, 67, 6, 169, 164, 149,
-      38,
-      // account_addresses[2]: base58-decoded program ID in the instruction
-      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-      0, 0, 0, 0, 0, 0, 0,
-
-      // Recent blockhash, base58-decoded
-      131, 191, 83, 201, 108, 193, 222, 255, 176, 67, 136, 209, 219, 42, 6, 169,
-      240, 137, 142, 185, 169, 6, 17, 87, 123, 6, 42, 55, 162, 64, 120, 91,
-
-      // Instructions compact array
-      1,                                        // instructions array length
-      2,                                        // program id index
-      2,                                        // length of accounts
-      0, 1,                                     // account indices
-      12,                                       // data length
-      2, 0, 0, 0, 128, 150, 152, 0, 0, 0, 0, 0  // data
-  });
+  // Should have 2 signatures, 1 from signing the passed in serialized msg
+  // using our keyring, and 1 from the signature passed in. Then the message
+  // byte array from the passed in serialized msg.
+  expected_bytes = std::vector<uint8_t>({2});  // # of signature
+  std::vector<uint8_t> message_bytes;
+  ASSERT_TRUE(Base58Decode(sign_tx_param->encoded_serialized_msg,
+                           &message_bytes, kSolanaMaxTxSize, false));
+  std::vector<uint8_t> signature = keyring_service()->SignMessage(
+      mojom::kSolanaKeyringId, from_account, message_bytes);
+  expected_bytes.insert(expected_bytes.end(), signature.begin(),
+                        signature.end());
+  expected_bytes.insert(expected_bytes.end(), test_sig.begin(), test_sig.end());
+  expected_bytes.insert(expected_bytes.end(), message_bytes.begin(),
+                        message_bytes.end());
   expected_tx = base::Base64Encode(expected_bytes);
   EXPECT_EQ(transaction2.GetSignedTransaction(keyring_service()), expected_tx);
 
@@ -300,7 +293,7 @@ TEST_F(SolanaTransactionUnitTest, FromSignedTransactionBytes) {
   // original transaction doesn't have signature
   EXPECT_NE(*result, transaction);
   EXPECT_EQ(*result->message(), *transaction.message());
-  EXPECT_EQ(result->signatures(), signatures);
+  EXPECT_EQ(result->raw_signatures(), signatures);
 }
 
 TEST_F(SolanaTransactionUnitTest, FromToSolanaTxData) {
@@ -513,6 +506,37 @@ TEST_F(SolanaTransactionUnitTest, GetBase64EncodedMessage) {
   serialized_msg = transaction2.message_.Serialize(nullptr);
   ASSERT_TRUE(serialized_msg);
   EXPECT_EQ(result, base::Base64Encode(*serialized_msg));
+}
+
+TEST_F(SolanaTransactionUnitTest, GetSerializedMessage) {
+  auto tx = SolanaTransaction(kRecentBlockhash, 0, kFromAccount,
+                              {system_transfer_ins()});
+  auto expected_message_bytes = tx.message()->Serialize(nullptr);
+  ASSERT_TRUE(expected_message_bytes);
+  EXPECT_EQ(
+      tx.GetSerializedMessage(),
+      std::make_pair(*expected_message_bytes,
+                     std::vector<std::string>(
+                         {"BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8"})));
+
+  // Create test message bytes by modifying instruction data part.
+  std::vector<uint8_t> test_message_bytes;
+  // Copy original message bytes without data.
+  test_message_bytes.insert(test_message_bytes.end(),
+                            expected_message_bytes->begin(),
+                            expected_message_bytes->end() - 13);
+  test_message_bytes.push_back(1);  // data length
+  test_message_bytes.push_back(0);  // data
+
+  // Should use sign_tx_param_.encoded_serialized_message if exists.
+  tx.set_sign_tx_param(mojom::SolanaSignTransactionParam::New(
+      Base58Encode(test_message_bytes),
+      std::vector<mojom::SignaturePubkeyPairPtr>()));
+  EXPECT_EQ(
+      tx.GetSerializedMessage(),
+      std::make_pair(test_message_bytes,
+                     std::vector<std::string>(
+                         {"BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8"})));
 }
 
 }  // namespace brave_wallet

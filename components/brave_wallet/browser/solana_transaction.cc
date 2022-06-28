@@ -5,8 +5,6 @@
 
 #include "brave/components/brave_wallet/browser/solana_transaction.h"
 
-#include <utility>
-
 #include "base/base64.h"
 #include "base/check.h"
 #include "base/strings/string_number_conversions.h"

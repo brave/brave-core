@@ -372,7 +372,7 @@ TEST_F(SolanaTxManagerUnitTest, AddAndApproveTransaction) {
       "" /* recent_blockhash */, 0, from_account, to_account,
       "" /* spl_token_mint_address */, 10000000u /* lamport */, 0 /* amount */,
       mojom::TransactionType::SolanaSystemTransfer, std::move(instructions),
-      nullptr);
+      nullptr, nullptr);
 
   auto tx = SolanaTransaction::FromSolanaTxData(solana_tx_data.Clone());
   ASSERT_TRUE(tx);
@@ -504,7 +504,7 @@ TEST_F(SolanaTxManagerUnitTest, MakeSystemProgramTransferTxData) {
   auto tx_data =
       mojom::SolanaTxData::New("", 0, from_account, to_account, "", 10000000, 0,
                                mojom::TransactionType::SolanaSystemTransfer,
-                               std::move(instructions), nullptr);
+                               std::move(instructions), nullptr, nullptr);
 
   TestMakeSystemProgramTransferTxData(from_account, to_account, 10000000,
                                       std::move(tx_data),
@@ -556,7 +556,7 @@ TEST_F(SolanaTxManagerUnitTest, MakeTokenProgramTransferTxData) {
   auto tx_data = mojom::SolanaTxData::New(
       "", 0, from_wallet_address, to_wallet_address, spl_token_mint_address, 0,
       10000000, mojom::TransactionType::SolanaSPLTokenTransfer,
-      std::move(instructions), nullptr);
+      std::move(instructions), nullptr, nullptr);
 
   // Owner is the token program account.
   std::string json = R"(
@@ -612,7 +612,7 @@ TEST_F(SolanaTxManagerUnitTest, MakeTokenProgramTransferTxData) {
       10000000,
       mojom::TransactionType::
           SolanaSPLTokenTransferWithAssociatedTokenAccountCreation,
-      std::move(instructions), nullptr);
+      std::move(instructions), nullptr, nullptr);
 
   // Test owner is not token program account.
   json = R"(
