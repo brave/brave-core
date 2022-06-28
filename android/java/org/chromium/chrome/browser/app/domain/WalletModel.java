@@ -83,10 +83,10 @@ public class WalletModel {
     }
 
     public boolean hasAllServices() {
-        return getKeyringService() != null || getBlockchainRegistry() != null
-                || getJsonRpcService() != null || getTxService() != null
-                || getEthTxManagerProxy() != null || getSolanaTxManagerProxy() != null
-                || getAssetRatioService() != null || getBraveWalletService() != null;
+        return getKeyringService() != null && getBlockchainRegistry() != null
+                && getJsonRpcService() != null && getTxService() != null
+                && getEthTxManagerProxy() != null && getSolanaTxManagerProxy() != null
+                && getAssetRatioService() != null && getBraveWalletService() != null;
     }
 
     public CryptoModel getCryptoModel() {

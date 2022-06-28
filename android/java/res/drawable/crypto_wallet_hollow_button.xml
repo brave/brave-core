@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <selector>
+            <item android:state_enabled="false">
+                <shape
+                    android:padding="12dp"
+                    android:shape="rectangle">
+                    <solid android:color="@color/modern_grey_700" />
+                    <corners android:radius="48dp" />
+                </shape>
+            </item>
+            <item
+                android:state_enabled="true"
+                android:state_pressed="true">
+                <shape
+                    android:padding="1dp"
+                    android:shape="rectangle">
+                    <solid android:color="@color/brave_wallet_day_night_negative_ripple_color" />
+                    <stroke
+                        android:width="1dp"
+                        android:color="#5E6175" />
+                    <corners android:radius="48dp" />
+                </shape>
+            </item>
+            <item
+                android:state_enabled="true"
+                android:state_pressed="false">
+                <shape
+                    android:padding="12dp"
+                    android:shape="rectangle">
+                    <stroke
+                        android:width="1dp"
+                        android:color="#5E6175" />
+                    <corners android:radius="48dp" />
+                </shape>
+            </item>
+        </selector>
+    </item>
+</layer-list>
