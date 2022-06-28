@@ -121,7 +121,7 @@ BraveStatsUpdater::BraveStatsUpdater(PrefService* pref_service)
 BraveStatsUpdater::~BraveStatsUpdater() = default;
 
 void BraveStatsUpdater::OnProfileAdded(Profile* profile) {
-  if (profile == ProfileManager::GetLastUsedProfile()) {
+  if (profile == ProfileManager::GetLastUsedProfileIfLoaded()) {
     g_browser_process->profile_manager()->RemoveObserver(this);
     Start();
   }
@@ -191,8 +191,10 @@ PrefService* BraveStatsUpdater::GetProfilePrefs() {
   if (testing_profile_prefs_ != nullptr) {
     return testing_profile_prefs_;
   }
-
-  return ProfileManager::GetLastUsedProfile()->GetPrefs();
+  auto* profile = ProfileManager::GetLastUsedProfileIfLoaded();
+  if (!profile)
+    return nullptr;
+  return profile->GetPrefs();
 }
 
 // static
@@ -322,7 +324,8 @@ bool BraveStatsUpdater::IsReferralInitialized() {
 }
 
 bool BraveStatsUpdater::IsAdsEnabled() {
-  return GetProfilePrefs()->GetBoolean(ads::prefs::kEnabled);
+  return GetProfilePrefs() &&
+         GetProfilePrefs()->GetBoolean(ads::prefs::kEnabled);
 }
 
 bool BraveStatsUpdater::HasDoneThresholdPing() {
@@ -400,6 +403,8 @@ void BraveStatsUpdater::SendServerPing() {
   auto resource_request = std::make_unique<network::ResourceRequest>();
 
   auto* profile_pref_service = GetProfilePrefs();
+  if (!profile_pref_service)
+    return;
   auto stats_updater_params =
       std::make_unique<brave_stats::BraveStatsUpdaterParams>(
           pref_service_, profile_pref_service, arch_);
