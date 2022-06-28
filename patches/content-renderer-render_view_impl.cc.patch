@@ -1,8 +1,19 @@
 diff --git a/content/renderer/render_view_impl.cc b/content/renderer/render_view_impl.cc
-index be0a2a33bc8e7d9ca731c3e4868695b5fb56f509..356de8f7cad9ba2aebef8cbd557081081259f9e5 100644
+index be0a2a33bc8e7d9ca731c3e4868695b5fb56f509..eb97ba05db237453fa71c0b9d3636508a5785e88 100644
 --- a/content/renderer/render_view_impl.cc
 +++ b/content/renderer/render_view_impl.cc
-@@ -119,6 +119,10 @@ void RenderViewImpl::Initialize(
+@@ -4,6 +4,10 @@
+ 
+ #include "content/renderer/render_view_impl.h"
+ 
++#include <iostream>
++#include <fstream>
++#include <cstdlib>
++
+ #include "base/bind.h"
+ #include "base/command_line.h"
+ #include "base/feature_list.h"
+@@ -119,6 +123,10 @@ void RenderViewImpl::Initialize(
      scoped_refptr<base::SingleThreadTaskRunner> task_runner) {
    DCHECK(RenderThread::IsMainThread());
  
@@ -13,7 +24,7 @@ index be0a2a33bc8e7d9ca731c3e4868695b5fb56f509..356de8f7cad9ba2aebef8cbd55708108
    WebFrame* opener_frame = nullptr;
    if (params->opener_frame_token)
      opener_frame = WebFrame::FromFrameToken(params->opener_frame_token.value());
-@@ -475,4 +479,15 @@ blink::WebView* RenderViewImpl::GetWebView() {
+@@ -475,4 +483,31 @@ blink::WebView* RenderViewImpl::GetWebView() {
    return webview_;
  }
  
@@ -24,6 +35,22 @@ index be0a2a33bc8e7d9ca731c3e4868695b5fb56f509..356de8f7cad9ba2aebef8cbd55708108
 +  RenderFrameImpl* render_frame = GetMainRenderFrame();
 +  if (render_frame) {
 +    render_frame->GetFrameHost()->FinalPageGraph(devtools_main_frame_token_, frame_id, data);
++  } else {
++    // To workaround remote frames not having an accessible `FinalPageGraph` implementation, we write them directly to disk.
++    // The output location can be controlled using the PAGEGRAPH_OUT_DIR environment variable.
++    const char* out_dir = std::getenv("PAGEGRAPH_OUT_DIR");
++    std::string out_dir_string;
++    if (out_dir) {
++        out_dir_string = out_dir;
++    } else {
++        out_dir_string = "/tmp";
++    }
++    int random_number = rand();
++    std::ofstream output_graph;
++    std::string filename(out_dir_string + "/page_graph_" + frame_id + "." + std::to_string(random_number) + ".graphml");
++    output_graph.open(filename, std::ios::out);
++    output_graph << data;
++    output_graph.close();
 +  }
 +}
 +// #endif
