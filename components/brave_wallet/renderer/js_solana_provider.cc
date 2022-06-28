@@ -22,6 +22,7 @@
 #include "gin/handle.h"
 #include "gin/object_template_builder.h"
 #include "third_party/blink/public/common/browser_interface_broker_proxy.h"
+#include "third_party/blink/public/web/blink.h"
 #include "third_party/blink/public/web/web_console_message.h"
 #include "third_party/blink/public/web/web_local_frame.h"
 #include "ui/base/l10n/l10n_util.h"
@@ -82,54 +83,66 @@ bool JSSolanaProvider::V8ConverterStrategy::FromV8ArrayBuffer(
   return true;
 }
 
-void JSSolanaProvider::AddJavaScriptObjectToFrame(
-    v8::Local<v8::Context> context,
-    bool allow_overwrite_window_solana,
-    bool is_main_world) {
-  v8::Isolate* isolate = context->GetIsolate();
+// static
+void JSSolanaProvider::Install(bool allow_overwrite_window_solana,
+                               content::RenderFrame* render_frame) {
+  v8::Isolate* isolate = blink::MainThreadIsolate();
+  v8::MicrotasksScope microtasks(isolate,
+                                 v8::MicrotasksScope::kDoNotRunMicrotasks);
   v8::HandleScope handle_scope(isolate);
-  v8::MicrotasksScope microtasks_scope(
-      isolate, v8::MicrotasksScope::kDoNotRunMicrotasks);
+  v8::Local<v8::Context> context =
+      render_frame->GetWebFrame()->MainWorldScriptContext();
+  if (context.IsEmpty())
+    return;
   v8::Context::Scope context_scope(context);
-  if (is_main_world) {
-    v8::Local<v8::Object> global = context->Global();
-    v8::Local<v8::Value> solana_value;
-    if (!global->Get(context, gin::StringToV8(isolate, "solana"))
-             .ToLocal(&solana_value) ||
-        !solana_value->IsObject()) {
-      gin::Handle<JSSolanaProvider> provider = gin::CreateHandle(isolate, this);
-      CHECK(!provider.IsEmpty());
-      // window.solana will be removed in the future, we use window.braveSolana
-      // mainly from now on and keep window.solana for compatibility
-      if (!allow_overwrite_window_solana) {
-        SetProviderNonWritable(context, global, provider.ToV8(),
-                               gin::StringToV8(isolate, "solana"), true);
-      } else {
-        global
-            ->Set(context, gin::StringToSymbol(isolate, "solana"),
-                  provider.ToV8())
-            .Check();
-      }
 
+  // check window.braveSolana existence
+  v8::Local<v8::Object> global = context->Global();
+  v8::Local<v8::Value> brave_solana_value =
+      global->Get(context, gin::StringToV8(isolate, "braveSolana"))
+          .ToLocalChecked();
+  if (!brave_solana_value->IsUndefined())
+    return;
+
+  // v8 will manage the lifetime of JSSolanaProvider
+  gin::Handle<JSSolanaProvider> provider =
+      gin::CreateHandle(isolate, new JSSolanaProvider(render_frame));
+  if (provider.IsEmpty())
+    return;
+
+  SetProviderNonWritable(context, global, provider.ToV8(),
+                         gin::StringToV8(isolate, "braveSolana"), true);
+
+  // This is to prevent window._brave_solana from being defined and set
+  // non-configurable before we call our internal functions.
+  v8::Local<v8::Object> internal_solana_obj = v8::Object::New(isolate);
+  SetProviderNonWritable(context, global, internal_solana_obj,
+                         gin::StringToV8(isolate, "_brave_solana"), false);
+
+  // window.solana will be removed in the future, we use window.braveSolana
+  // mainly from now on and keep window.solana for compatibility
+  v8::Local<v8::Value> solana_value;
+  if (!global->Get(context, gin::StringToV8(isolate, "solana"))
+           .ToLocal(&solana_value) ||
+      !solana_value->IsObject()) {
+    if (!allow_overwrite_window_solana) {
       SetProviderNonWritable(context, global, provider.ToV8(),
-                             gin::StringToV8(isolate, "braveSolana"), true);
-
-      // This is to prevent window._brave_solana from being defined and set
-      // non-configurable before we call our internal functions.
-      v8::Local<v8::Object> internal_solana_obj = v8::Object::New(isolate);
-      SetProviderNonWritable(context, global, internal_solana_obj,
-                             gin::StringToV8(isolate, "_brave_solana"), false);
+                             gin::StringToV8(isolate, "solana"), true);
     } else {
-      render_frame_->GetWebFrame()->AddMessageToConsole(
-          blink::WebConsoleMessage(blink::mojom::ConsoleMessageLevel::kWarning,
-                                   "Brave Wallet will not insert window.solana "
-                                   "because it already exists!"));
+      global
+          ->Set(context, gin::StringToSymbol(isolate, "solana"),
+                provider.ToV8())
+          .Check();
     }
+  } else {
+    render_frame->GetWebFrame()->AddMessageToConsole(
+        blink::WebConsoleMessage(blink::mojom::ConsoleMessageLevel::kWarning,
+                                 "Brave Wallet will not insert window.solana "
+                                 "because it already exists!"));
   }
-  blink::WebLocalFrame* web_frame = render_frame_->GetWebFrame();
-  if (is_main_world) {
-    ExecuteScript(web_frame, *g_provider_script);
-  }
+
+  blink::WebLocalFrame* web_frame = render_frame->GetWebFrame();
+  ExecuteScript(web_frame, *g_provider_script);
 }
 
 gin::ObjectTemplateBuilder JSSolanaProvider::GetObjectTemplateBuilder(
@@ -180,18 +193,9 @@ bool JSSolanaProvider::EnsureConnected() {
     render_frame_->GetBrowserInterfaceBroker()->GetInterface(
         solana_provider_.BindNewPipeAndPassReceiver());
     solana_provider_->Init(receiver_.BindNewPipeAndPassRemote());
-    // We don't need weak ptr for mojo bindings when owning mojo::Remote
-    solana_provider_.set_disconnect_handler(base::BindOnce(
-        &JSSolanaProvider::OnRemoteDisconnect, base::Unretained(this)));
   }
 
   return solana_provider_.is_bound();
-}
-
-void JSSolanaProvider::OnRemoteDisconnect() {
-  solana_provider_.reset();
-  receiver_.reset();
-  EnsureConnected();
 }
 
 bool JSSolanaProvider::GetIsPhantom(gin::Arguments* arguments) {
@@ -260,6 +264,7 @@ v8::Local<v8::Promise> JSSolanaProvider::Connect(gin::Arguments* arguments) {
       v8::Global<v8::Promise::Resolver>(isolate, resolver.ToLocalChecked()));
   solana_provider_->Connect(
       std::move(arg),
+      // We don't need weak ptr for mojo bindings when owning mojo::Remote
       base::BindOnce(&JSSolanaProvider::OnConnect, base::Unretained(this),
                      std::move(global_context), std::move(promise_resolver),
                      isolate));
@@ -531,7 +536,7 @@ void JSSolanaProvider::FireEvent(
   const base::Value event_value(event);
   args.push_back(v8_value_converter_->ToV8Value(&event_value, context));
   args.insert(args.end(), event_args.begin(), event_args.end());
-  CallMethodOfObject(render_frame_->GetWebFrame(), u"solana", u"emit",
+  CallMethodOfObject(render_frame_->GetWebFrame(), u"braveSolana", u"emit",
                      std::move(args));
 }
 

@@ -117,18 +117,9 @@ bool JSEthereumProvider::EnsureConnected() {
     render_frame_->GetBrowserInterfaceBroker()->GetInterface(
         ethereum_provider_.BindNewPipeAndPassReceiver());
     ethereum_provider_->Init(receiver_.BindNewPipeAndPassRemote());
-    ethereum_provider_.set_disconnect_handler(
-        base::BindOnce(&JSEthereumProvider::OnRemoteDisconnect,
-                       weak_ptr_factory_.GetWeakPtr()));
   }
 
   return ethereum_provider_.is_bound();
-}
-
-void JSEthereumProvider::OnRemoteDisconnect() {
-  ethereum_provider_.reset();
-  receiver_.reset();
-  EnsureConnected();
 }
 
 void JSEthereumProvider::AddJavaScriptObjectToFrame(
