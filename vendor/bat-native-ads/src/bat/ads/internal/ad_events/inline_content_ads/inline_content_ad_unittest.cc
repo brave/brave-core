@@ -37,12 +37,22 @@ constexpr char kInvalidCreativeInstanceId[] = "";
 class BatAdsInlineContentAdTest : public InlineContentAdObserver,
                                   public UnitTestBase {
  protected:
-  BatAdsInlineContentAdTest()
-      : inline_content_ad_(std::make_unique<InlineContentAd>()) {
+  BatAdsInlineContentAdTest() = default;
+
+  ~BatAdsInlineContentAdTest() override = default;
+
+  void SetUp() override {
+    UnitTestBase::SetUp();
+
+    inline_content_ad_ = std::make_unique<InlineContentAd>();
     inline_content_ad_->AddObserver(this);
   }
 
-  ~BatAdsInlineContentAdTest() override = default;
+  void TearDown() override {
+    inline_content_ad_->RemoveObserver(this);
+
+    UnitTestBase::TearDown();
+  }
 
   void OnInlineContentAdServed(const InlineContentAdInfo& ad) override {
     ad_ = ad;

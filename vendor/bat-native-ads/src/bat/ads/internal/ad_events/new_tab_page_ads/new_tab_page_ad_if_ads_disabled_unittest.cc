@@ -55,6 +55,12 @@ class BatAdsNewTabPageAdIfAdsDisabledTest : public NewTabPageAdObserver,
     new_tab_page_ad_->AddObserver(this);
   }
 
+  void TearDown() override {
+    new_tab_page_ad_->RemoveObserver(this);
+
+    UnitTestBase::TearDown();
+  }
+
   void OnNewTabPageAdServed(const NewTabPageAdInfo& ad) override {
     ad_ = ad;
     did_serve_ad_ = true;

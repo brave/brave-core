@@ -32,12 +32,22 @@ constexpr char kPlacementId[] = "d2ef9bb0-a0dc-472c-bc49-62105bb6da68";
 class BatAdsNotificationAdTest : public NotificationAdObserver,
                                  public UnitTestBase {
  protected:
-  BatAdsNotificationAdTest()
-      : notification_ad_(std::make_unique<NotificationAd>()) {
+  BatAdsNotificationAdTest() = default;
+
+  ~BatAdsNotificationAdTest() override = default;
+
+  void SetUp() override {
+    UnitTestBase::SetUp();
+
+    notification_ad_ = std::make_unique<NotificationAd>();
     notification_ad_->AddObserver(this);
   }
 
-  ~BatAdsNotificationAdTest() override = default;
+  void TearDown() override {
+    notification_ad_->RemoveObserver(this);
+
+    UnitTestBase::TearDown();
+  }
 
   void OnNotificationAdServed(const NotificationAdInfo& ad) override {
     ad_ = ad;
