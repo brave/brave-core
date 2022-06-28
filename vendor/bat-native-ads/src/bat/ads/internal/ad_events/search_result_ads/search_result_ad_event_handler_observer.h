@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_AD_EVENTS_SEARCH_RESULT_ADS_SEARCH_RESULT_AD_OBSERVER_H_
-#define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_AD_EVENTS_SEARCH_RESULT_ADS_SEARCH_RESULT_AD_OBSERVER_H_
+#ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_AD_EVENTS_SEARCH_RESULT_ADS_SEARCH_RESULT_AD_EVENT_HANDLER_OBSERVER_H_
+#define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_AD_EVENTS_SEARCH_RESULT_ADS_SEARCH_RESULT_AD_EVENT_HANDLER_OBSERVER_H_
 
 #include "base/observer_list_types.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
@@ -13,7 +13,9 @@ namespace ads {
 
 struct SearchResultAdInfo;
 
-class SearchResultAdObserver : public base::CheckedObserver {
+namespace search_result_ads {
+
+class EventHandlerObserver : public base::CheckedObserver {
  public:
   // Invoked when a search result ad is served
   virtual void OnSearchResultAdServed(const SearchResultAdInfo& ad) {}
@@ -30,9 +32,10 @@ class SearchResultAdObserver : public base::CheckedObserver {
       const mojom::SearchResultAdEventType event_type) {}
 
  protected:
-  ~SearchResultAdObserver() override = default;
+  ~EventHandlerObserver() override = default;
 };
 
+}  // namespace search_result_ads
 }  // namespace ads
 
-#endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_AD_EVENTS_SEARCH_RESULT_ADS_SEARCH_RESULT_AD_OBSERVER_H_
+#endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_AD_EVENTS_SEARCH_RESULT_ADS_SEARCH_RESULT_AD_EVENT_HANDLER_OBSERVER_H_

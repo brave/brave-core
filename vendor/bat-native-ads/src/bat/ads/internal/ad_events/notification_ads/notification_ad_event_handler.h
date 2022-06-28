@@ -3,28 +3,30 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_AD_EVENTS_NOTIFICATION_ADS_NOTIFICATION_AD_H_
-#define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_AD_EVENTS_NOTIFICATION_ADS_NOTIFICATION_AD_H_
+#ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_AD_EVENTS_NOTIFICATION_ADS_NOTIFICATION_AD_EVENT_HANDLER_H_
+#define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_AD_EVENTS_NOTIFICATION_ADS_NOTIFICATION_AD_EVENT_HANDLER_H_
 
 #include <string>
 
 #include "base/observer_list.h"
-#include "bat/ads/internal/ad_events/notification_ads/notification_ad_observer.h"
+#include "bat/ads/internal/ad_events/notification_ads/notification_ad_event_handler_observer.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
 
 namespace ads {
 
 struct NotificationAdInfo;
 
-class NotificationAd final : public NotificationAdObserver {
- public:
-  NotificationAd();
-  ~NotificationAd() override;
-  NotificationAd(const NotificationAd& info) = delete;
-  NotificationAd& operator=(const NotificationAd& info) = delete;
+namespace notification_ads {
 
-  void AddObserver(NotificationAdObserver* observer);
-  void RemoveObserver(NotificationAdObserver* observer);
+class EventHandler final : public EventHandlerObserver {
+ public:
+  EventHandler();
+  ~EventHandler() override;
+  EventHandler(const EventHandler& info) = delete;
+  EventHandler& operator=(const EventHandler& info) = delete;
+
+  void AddObserver(EventHandlerObserver* observer);
+  void RemoveObserver(EventHandlerObserver* observer);
 
   void FireEvent(const std::string& placement_id,
                  const mojom::NotificationAdEventType event_type);
@@ -45,9 +47,10 @@ class NotificationAd final : public NotificationAdObserver {
       const std::string& placement_id,
       const mojom::NotificationAdEventType event_type) const;
 
-  base::ObserverList<NotificationAdObserver> observers_;
+  base::ObserverList<EventHandlerObserver> observers_;
 };
 
+}  // namespace notification_ads
 }  // namespace ads
 
-#endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_AD_EVENTS_NOTIFICATION_ADS_NOTIFICATION_AD_H_
+#endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_AD_EVENTS_NOTIFICATION_ADS_NOTIFICATION_AD_EVENT_HANDLER_H_

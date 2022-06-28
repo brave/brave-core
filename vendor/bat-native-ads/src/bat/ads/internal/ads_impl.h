@@ -15,12 +15,11 @@
 #include "bat/ads/history_filter_types.h"
 #include "bat/ads/history_sort_types.h"
 #include "bat/ads/internal/account/account_observer.h"
-#include "bat/ads/internal/ad_events/inline_content_ads/inline_content_ad_observer.h"
-#include "bat/ads/internal/ad_events/new_tab_page_ads/new_tab_page_ad_observer.h"
-#include "bat/ads/internal/ad_events/notification_ads/notification_ad_observer.h"
-#include "bat/ads/internal/ad_events/promoted_content_ads/promoted_content_ad_observer.h"
-#include "bat/ads/internal/ad_events/search_result_ads/search_result_ad_observer.h"
-#include "bat/ads/internal/catalog/catalog_observer.h"
+#include "bat/ads/internal/ad_events/inline_content_ads/inline_content_ad_event_handler_observer.h"
+#include "bat/ads/internal/ad_events/new_tab_page_ads/new_tab_page_ad_event_handler_observer.h"
+#include "bat/ads/internal/ad_events/notification_ads/notification_ad_event_handler_observer.h"
+#include "bat/ads/internal/ad_events/promoted_content_ads/promoted_content_ad_event_handler_observer.h"
+#include "bat/ads/internal/ad_events/search_result_ads/search_result_ad_event_handler_observer.h"
 #include "bat/ads/internal/conversions/conversions_observer.h"
 #include "bat/ads/internal/database/database_manager_observer.h"
 #include "bat/ads/internal/serving/inline_content_ad_serving_observer.h"
@@ -29,11 +28,11 @@
 #include "bat/ads/internal/transfer/transfer_observer.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
 
+class GURL;
+
 namespace base {
 class Time;
 }  // namespace base
-
-class GURL;
 
 namespace ads {
 
@@ -42,14 +41,17 @@ class SubdivisionTargeting;
 }  // namespace geographic
 
 namespace inline_content_ads {
+class EventHandler;
 class Serving;
 }  // namespace inline_content_ads
 
 namespace new_tab_page_ads {
+class EventHandler;
 class Serving;
 }  // namespace new_tab_page_ads
 
 namespace notification_ads {
+class EventHandler;
 class Serving;
 }  // namespace notification_ads
 
@@ -63,12 +65,20 @@ class PurchaseIntent;
 class TextClassification;
 }  // namespace processor
 
+namespace promoted_content_ads {
+class EventHandler;
+}  // namespace promoted_content_ads
+
 namespace resource {
 class AntiTargeting;
 class EpsilonGreedyBandit;
 class PurchaseIntent;
 class TextClassification;
 }  // namespace resource
+
+namespace search_result_ads {
+class EventHandler;
+}  // namespace search_result_ads
 
 class Account;
 class AdsClientHelper;
@@ -80,20 +90,14 @@ class Conversions;
 class CovariateManager;
 class DatabaseManager;
 class DiagnosticManager;
-class InlineContentAd;
-class NewTabPageAd;
-class NotificationAd;
 class NotificationAdManager;
 class LocaleManager;
 class PrefManager;
-class PromotedContentAd;
 class ResourceManager;
-class SearchResultAd;
 class TabManager;
 class Transfer;
 class UserActivityManager;
 struct AdInfo;
-struct CatalogInfo;
 struct ConversionQueueItemInfo;
 struct HistoryInfo;
 struct InlineContentAdInfo;
@@ -105,16 +109,15 @@ struct WalletInfo;
 
 class AdsImpl final : public Ads,
                       public AccountObserver,
-                      public CatalogObserver,
                       public ConversionsObserver,
-                      public InlineContentAdObserver,
-                      public InlineContentServingObserver,
-                      public NewTabPageAdObserver,
-                      public NewTabPageServingObserver,
-                      public NotificationAdObserver,
-                      public NotificationAdServingObserver,
-                      public PromotedContentAdObserver,
-                      public SearchResultAdObserver,
+                      public inline_content_ads::EventHandlerObserver,
+                      public inline_content_ads::ServingObserver,
+                      public new_tab_page_ads::EventHandlerObserver,
+                      public new_tab_page_ads::ServingObserver,
+                      public notification_ads::EventHandlerObserver,
+                      public notification_ads::ServingObserver,
+                      public promoted_content_ads::EventHandlerObserver,
+                      public search_result_ads::EventHandlerObserver,
                       public TransferObserver {
  public:
   explicit AdsImpl(AdsClient* ads_client);
@@ -238,37 +241,34 @@ class AdsImpl final : public Ads,
   void OnWalletDidUpdate(const WalletInfo& wallet) override;
   void OnStatementOfAccountsDidChange() override;
 
-  // CatalogObserver:
-  void OnDidUpdateCatalog(const CatalogInfo& catalog) override;
-
-  // NotificationAdServingObserver:
+  // notification_ads::ServingObserver:
   void OnDidServeNotificationAd(const NotificationAdInfo& ad) override;
 
-  // NotificationAdObserver:
+  // notification_ads::EventHandlerObserver:
   void OnNotificationAdViewed(const NotificationAdInfo& ad) override;
   void OnNotificationAdClicked(const NotificationAdInfo& ad) override;
   void OnNotificationAdDismissed(const NotificationAdInfo& ad) override;
   void OnNotificationAdTimedOut(const NotificationAdInfo& ad) override;
 
-  // NewTabPageServingObserver:
+  // new_tab_page_ads::ServingObserver:
   void OnDidServeNewTabPageAd(const NewTabPageAdInfo& ad) override;
 
-  // NewTabPageAdObserver:
+  // new_tab_page_ads::EventHandlerObserver:
   void OnNewTabPageAdViewed(const NewTabPageAdInfo& ad) override;
   void OnNewTabPageAdClicked(const NewTabPageAdInfo& ad) override;
 
-  // PromotedContentAdObserver:
+  // promoted_content_ads::EventHandlerObserver:
   void OnPromotedContentAdViewed(const PromotedContentAdInfo& ad) override;
   void OnPromotedContentAdClicked(const PromotedContentAdInfo& ad) override;
 
-  // InlineContentServingObserver:
+  // inline_content_ads::ServingObserver:
   void OnDidServeInlineContentAd(const InlineContentAdInfo& ad) override;
 
-  // InlineContentAdObserver:
+  // inline_content_ads::EventHandlerObserver:
   void OnInlineContentAdViewed(const InlineContentAdInfo& ad) override;
   void OnInlineContentAdClicked(const InlineContentAdInfo& ad) override;
 
-  // SearchResultAdObserver:
+  // search_result_ads::EventHandlerObserver:
   void OnSearchResultAdViewed(const SearchResultAdInfo& ad) override;
   void OnSearchResultAdClicked(const SearchResultAdInfo& ad) override;
 
@@ -296,6 +296,11 @@ class AdsImpl final : public Ads,
   std::unique_ptr<TabManager> tab_manager_;
   std::unique_ptr<UserActivityManager> user_activity_manager_;
 
+  std::unique_ptr<privacy::TokenGenerator> token_generator_;
+  std::unique_ptr<Account> account_;
+
+  std::unique_ptr<Catalog> catalog_;
+
   std::unique_ptr<resource::AntiTargeting> anti_targeting_resource_;
   std::unique_ptr<resource::EpsilonGreedyBandit>
       epsilon_greedy_bandit_resource_;
@@ -307,25 +312,25 @@ class AdsImpl final : public Ads,
   std::unique_ptr<processor::PurchaseIntent> purchase_intent_processor_;
   std::unique_ptr<processor::TextClassification> text_classification_processor_;
 
-  std::unique_ptr<privacy::TokenGenerator> token_generator_;
-  std::unique_ptr<Account> account_;
-
-  std::unique_ptr<Catalog> catalog_;
-
   std::unique_ptr<geographic::SubdivisionTargeting> subdivision_targeting_;
 
-  std::unique_ptr<InlineContentAd> inline_content_ad_;
+  std::unique_ptr<inline_content_ads::EventHandler>
+      inline_content_ad_event_handler_;
   std::unique_ptr<inline_content_ads::Serving> inline_content_ad_serving_;
 
-  std::unique_ptr<NewTabPageAd> new_tab_page_ad_;
+  std::unique_ptr<new_tab_page_ads::EventHandler>
+      new_tab_page_ad_event_handler_;
   std::unique_ptr<new_tab_page_ads::Serving> new_tab_page_ad_serving_;
 
-  std::unique_ptr<NotificationAd> notification_ad_;
+  std::unique_ptr<notification_ads::EventHandler>
+      notification_ad_event_handler_;
   std::unique_ptr<notification_ads::Serving> notification_ad_serving_;
 
-  std::unique_ptr<PromotedContentAd> promoted_content_ad_;
+  std::unique_ptr<promoted_content_ads::EventHandler>
+      promoted_content_ad_event_handler_;
 
-  std::unique_ptr<SearchResultAd> search_result_ad_;
+  std::unique_ptr<search_result_ads::EventHandler>
+      search_result_ad_event_handler_;
 
   std::unique_ptr<Conversions> conversions_;
 

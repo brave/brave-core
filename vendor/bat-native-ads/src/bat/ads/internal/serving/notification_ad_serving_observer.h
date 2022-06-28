@@ -12,7 +12,9 @@ namespace ads {
 
 struct NotificationAdInfo;
 
-class NotificationAdServingObserver : public base::CheckedObserver {
+namespace notification_ads {
+
+class ServingObserver : public base::CheckedObserver {
  public:
   // Invoked when a notification ad is served
   virtual void OnDidServeNotificationAd(const NotificationAdInfo& ad) {}
@@ -21,9 +23,10 @@ class NotificationAdServingObserver : public base::CheckedObserver {
   virtual void OnFailedToServeNotificationAd() {}
 
  protected:
-  ~NotificationAdServingObserver() override = default;
+  ~ServingObserver() override = default;
 };
 
+}  // namespace notification_ads
 }  // namespace ads
 
 #endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_SERVING_NOTIFICATION_AD_SERVING_OBSERVER_H_

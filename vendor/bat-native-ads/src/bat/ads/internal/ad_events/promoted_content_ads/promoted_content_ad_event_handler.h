@@ -3,28 +3,30 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_AD_EVENTS_PROMOTED_CONTENT_ADS_PROMOTED_CONTENT_AD_H_
-#define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_AD_EVENTS_PROMOTED_CONTENT_ADS_PROMOTED_CONTENT_AD_H_
+#ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_AD_EVENTS_PROMOTED_CONTENT_ADS_PROMOTED_CONTENT_AD_EVENT_HANDLER_H_
+#define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_AD_EVENTS_PROMOTED_CONTENT_ADS_PROMOTED_CONTENT_AD_EVENT_HANDLER_H_
 
 #include <string>
 
 #include "base/observer_list.h"
-#include "bat/ads/internal/ad_events/promoted_content_ads/promoted_content_ad_observer.h"
+#include "bat/ads/internal/ad_events/promoted_content_ads/promoted_content_ad_event_handler_observer.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
 
 namespace ads {
 
 struct PromotedContentAdInfo;
 
-class PromotedContentAd final : public PromotedContentAdObserver {
- public:
-  PromotedContentAd();
-  ~PromotedContentAd() override;
-  PromotedContentAd(const PromotedContentAd&) = delete;
-  PromotedContentAd& operator=(const PromotedContentAd&) = delete;
+namespace promoted_content_ads {
 
-  void AddObserver(PromotedContentAdObserver* observer);
-  void RemoveObserver(PromotedContentAdObserver* observer);
+class EventHandler final : public EventHandlerObserver {
+ public:
+  EventHandler();
+  ~EventHandler() override;
+  EventHandler(const EventHandler&) = delete;
+  EventHandler& operator=(const EventHandler&) = delete;
+
+  void AddObserver(EventHandlerObserver* observer);
+  void RemoveObserver(EventHandlerObserver* observer);
 
   void FireEvent(const std::string& placement_id,
                  const std::string& creative_instance_id,
@@ -51,9 +53,10 @@ class PromotedContentAd final : public PromotedContentAdObserver {
       const std::string& creative_instance_id,
       const mojom::PromotedContentAdEventType event_type) const;
 
-  base::ObserverList<PromotedContentAdObserver> observers_;
+  base::ObserverList<EventHandlerObserver> observers_;
 };
 
+}  // namespace promoted_content_ads
 }  // namespace ads
 
-#endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_AD_EVENTS_PROMOTED_CONTENT_ADS_PROMOTED_CONTENT_AD_H_
+#endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_AD_EVENTS_PROMOTED_CONTENT_ADS_PROMOTED_CONTENT_AD_EVENT_HANDLER_H_

@@ -23,6 +23,7 @@
 // npm run test -- brave_unit_tests --filter=BatAds*
 
 namespace ads {
+namespace new_tab_page_ads {
 
 class BatAdsNewTabPageAdServingIntegrationTest : public UnitTestBase {
  protected:
@@ -316,4 +317,5 @@ TEST_F(BatAdsNewTabPageAdServingIntegrationTest,
   // Assert
 }
 
+}  // namespace new_tab_page_ads
 }  // namespace ads

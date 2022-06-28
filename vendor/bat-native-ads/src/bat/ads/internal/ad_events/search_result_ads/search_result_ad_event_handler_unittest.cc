@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "bat/ads/internal/ad_events/search_result_ads/search_result_ad.h"
+#include "bat/ads/internal/ad_events/search_result_ads/search_result_ad_event_handler.h"
 
 #include <memory>
 #include <string>
@@ -23,6 +23,7 @@
 // npm run test -- brave_unit_tests --filter=BatAds*
 
 namespace ads {
+namespace search_result_ads {
 
 namespace {
 
@@ -103,29 +104,29 @@ void ExpectConversionCountEquals(const size_t expected_count) {
 
 }  // namespace
 
-class BatAdsSearchResultAdTest : public SearchResultAdObserver,
-                                 public UnitTestBase {
+class BatAdsSearchResultAdEventHandlerTest : public EventHandlerObserver,
+                                             public UnitTestBase {
  protected:
-  BatAdsSearchResultAdTest() = default;
+  BatAdsSearchResultAdEventHandlerTest() = default;
 
-  ~BatAdsSearchResultAdTest() override = default;
+  ~BatAdsSearchResultAdEventHandlerTest() override = default;
 
   void SetUp() override {
     UnitTestBase::SetUp();
 
-    search_result_ad_ = std::make_unique<SearchResultAd>();
-    search_result_ad_->AddObserver(this);
+    event_handler_ = std::make_unique<EventHandler>();
+    event_handler_->AddObserver(this);
   }
 
   void TearDown() override {
-    search_result_ad_->RemoveObserver(this);
+    event_handler_->RemoveObserver(this);
 
     UnitTestBase::TearDown();
   }
 
   void FireEvent(const mojom::SearchResultAdPtr& ad_mojom,
                  const mojom::SearchResultAdEventType event_type) {
-    search_result_ad_->FireEvent(
+    event_handler_->FireEvent(
         ad_mojom, event_type,
         [](const bool success, const std::string& placement_id,
            const mojom::SearchResultAdEventType event_type) {});
@@ -152,7 +153,7 @@ class BatAdsSearchResultAdTest : public SearchResultAdObserver,
     did_fail_to_fire_event_ = true;
   }
 
-  std::unique_ptr<SearchResultAd> search_result_ad_;
+  std::unique_ptr<EventHandler> event_handler_;
 
   SearchResultAdInfo ad_;
   bool did_serve_ad_ = false;
@@ -161,7 +162,7 @@ class BatAdsSearchResultAdTest : public SearchResultAdObserver,
   bool did_fail_to_fire_event_ = false;
 };
 
-TEST_F(BatAdsSearchResultAdTest, FireViewedEvent) {
+TEST_F(BatAdsSearchResultAdEventHandlerTest, FireViewedEvent) {
   // Arrange
   ForcePermissionRules();
 
@@ -184,7 +185,7 @@ TEST_F(BatAdsSearchResultAdTest, FireViewedEvent) {
   ExpectConversionCountEquals(0);
 }
 
-TEST_F(BatAdsSearchResultAdTest, FireViewedEventWithConversion) {
+TEST_F(BatAdsSearchResultAdEventHandlerTest, FireViewedEventWithConversion) {
   // Arrange
   ForcePermissionRules();
 
@@ -207,7 +208,8 @@ TEST_F(BatAdsSearchResultAdTest, FireViewedEventWithConversion) {
   ExpectConversionCountEquals(1);
 }
 
-TEST_F(BatAdsSearchResultAdTest, DoNotFireViewedEventIfAlreadyFired) {
+TEST_F(BatAdsSearchResultAdEventHandlerTest,
+       DoNotFireViewedEventIfAlreadyFired) {
   // Arrange
   ForcePermissionRules();
 
@@ -225,7 +227,7 @@ TEST_F(BatAdsSearchResultAdTest, DoNotFireViewedEventIfAlreadyFired) {
   ExpectConversionCountEquals(0);
 }
 
-TEST_F(BatAdsSearchResultAdTest, FireClickedEvent) {
+TEST_F(BatAdsSearchResultAdEventHandlerTest, FireClickedEvent) {
   // Arrange
   ForcePermissionRules();
 
@@ -246,7 +248,8 @@ TEST_F(BatAdsSearchResultAdTest, FireClickedEvent) {
   ExpectAdEventCountEquals(ConfirmationType::kClicked, 1);
 }
 
-TEST_F(BatAdsSearchResultAdTest, DoNotFireClickedEventIfAlreadyFired) {
+TEST_F(BatAdsSearchResultAdEventHandlerTest,
+       DoNotFireClickedEventIfAlreadyFired) {
   // Arrange
   ForcePermissionRules();
 
@@ -262,7 +265,8 @@ TEST_F(BatAdsSearchResultAdTest, DoNotFireClickedEventIfAlreadyFired) {
   ExpectAdEventCountEquals(ConfirmationType::kClicked, 1);
 }
 
-TEST_F(BatAdsSearchResultAdTest, DoNotFireEventWithInvalidPlacementId) {
+TEST_F(BatAdsSearchResultAdEventHandlerTest,
+       DoNotFireEventWithInvalidPlacementId) {
   // Arrange
   const mojom::SearchResultAdPtr ad_mojom =
       BuildAd(kInvalidPlacementId, kCreativeInstanceId);
@@ -279,7 +283,8 @@ TEST_F(BatAdsSearchResultAdTest, DoNotFireEventWithInvalidPlacementId) {
   ExpectAdEventCountEquals(ConfirmationType::kViewed, 0);
 }
 
-TEST_F(BatAdsSearchResultAdTest, DoNotFireEventWithInvalidCreativeInstanceId) {
+TEST_F(BatAdsSearchResultAdEventHandlerTest,
+       DoNotFireEventWithInvalidCreativeInstanceId) {
   // Arrange
   const mojom::SearchResultAdPtr ad_mojom =
       BuildAd(kPlacementId, kInvalidCreativeInstanceId);
@@ -296,7 +301,7 @@ TEST_F(BatAdsSearchResultAdTest, DoNotFireEventWithInvalidCreativeInstanceId) {
   ExpectAdEventCountEquals(ConfirmationType::kViewed, 0);
 }
 
-TEST_F(BatAdsSearchResultAdTest, DoNotFireEventWhenNotPermitted) {
+TEST_F(BatAdsSearchResultAdEventHandlerTest, DoNotFireEventWhenNotPermitted) {
   // Arrange
   const mojom::SearchResultAdPtr ad_mojom =
       BuildAd(kPlacementId, kCreativeInstanceId);
@@ -313,7 +318,8 @@ TEST_F(BatAdsSearchResultAdTest, DoNotFireEventWhenNotPermitted) {
   ExpectAdEventCountEquals(ConfirmationType::kViewed, 0);
 }
 
-TEST_F(BatAdsSearchResultAdTest, FireEventIfNotExceededAdsPerHourCap) {
+TEST_F(BatAdsSearchResultAdEventHandlerTest,
+       FireEventIfNotExceededAdsPerHourCap) {
   // Arrange
   ForcePermissionRules();
 
@@ -336,7 +342,8 @@ TEST_F(BatAdsSearchResultAdTest, FireEventIfNotExceededAdsPerHourCap) {
   ExpectConversionCountEquals(0);
 }
 
-TEST_F(BatAdsSearchResultAdTest, DoNotFireEventIfExceededAdsPerHourCap) {
+TEST_F(BatAdsSearchResultAdEventHandlerTest,
+       DoNotFireEventIfExceededAdsPerHourCap) {
   // Arrange
   ForcePermissionRules();
 
@@ -357,7 +364,8 @@ TEST_F(BatAdsSearchResultAdTest, DoNotFireEventIfExceededAdsPerHourCap) {
   ExpectAdEventCountEquals(ConfirmationType::kViewed, ads_per_hour);
 }
 
-TEST_F(BatAdsSearchResultAdTest, FireEventIfNotExceededAdsPerDayCap) {
+TEST_F(BatAdsSearchResultAdEventHandlerTest,
+       FireEventIfNotExceededAdsPerDayCap) {
   // Arrange
   ForcePermissionRules();
 
@@ -383,7 +391,8 @@ TEST_F(BatAdsSearchResultAdTest, FireEventIfNotExceededAdsPerDayCap) {
   ExpectConversionCountEquals(0);
 }
 
-TEST_F(BatAdsSearchResultAdTest, DoNotFireEventIfExceededAdsPerDayCap) {
+TEST_F(BatAdsSearchResultAdEventHandlerTest,
+       DoNotFireEventIfExceededAdsPerDayCap) {
   // Arrange
   ForcePermissionRules();
 
@@ -407,4 +416,5 @@ TEST_F(BatAdsSearchResultAdTest, DoNotFireEventIfExceededAdsPerDayCap) {
   ExpectAdEventCountEquals(ConfirmationType::kViewed, ads_per_day);
 }
 
+}  // namespace search_result_ads
 }  // namespace ads

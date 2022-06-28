@@ -18,6 +18,7 @@
 // npm run test -- brave_unit_tests --filter=BatAds*
 
 namespace ads {
+namespace inline_content_ads {
 
 class BatAdsEligibleInlineContentAdsV2Test : public UnitTestBase {
  protected:
@@ -56,8 +57,7 @@ TEST_F(BatAdsEligibleInlineContentAdsV2Test, GetAds) {
   // Act
   geographic::SubdivisionTargeting subdivision_targeting;
   resource::AntiTargeting anti_targeting_resource;
-  inline_content_ads::EligibleAdsV2 eligible_ads(&subdivision_targeting,
-                                                 &anti_targeting_resource);
+  EligibleAdsV2 eligible_ads(&subdivision_targeting, &anti_targeting_resource);
 
   eligible_ads.GetForUserModel(
       targeting::BuildUserModel(interest_segments, latent_interest_segments,
@@ -92,8 +92,7 @@ TEST_F(BatAdsEligibleInlineContentAdsV2Test, GetAdsForNoSegments) {
   // Act
   geographic::SubdivisionTargeting subdivision_targeting;
   resource::AntiTargeting anti_targeting_resource;
-  inline_content_ads::EligibleAdsV2 eligible_ads(&subdivision_targeting,
-                                                 &anti_targeting_resource);
+  EligibleAdsV2 eligible_ads(&subdivision_targeting, &anti_targeting_resource);
 
   eligible_ads.GetForUserModel(
       targeting::BuildUserModel(interest_segments, latent_interest_segments,
@@ -116,8 +115,7 @@ TEST_F(BatAdsEligibleInlineContentAdsV2Test, GetIfNoEligibleAds) {
   // Act
   geographic::SubdivisionTargeting subdivision_targeting;
   resource::AntiTargeting anti_targeting_resource;
-  inline_content_ads::EligibleAdsV2 eligible_ads(&subdivision_targeting,
-                                                 &anti_targeting_resource);
+  EligibleAdsV2 eligible_ads(&subdivision_targeting, &anti_targeting_resource);
 
   const CreativeInlineContentAdList expected_creative_ads = {};
 
@@ -134,4 +132,5 @@ TEST_F(BatAdsEligibleInlineContentAdsV2Test, GetIfNoEligibleAds) {
   // Assert
 }
 
+}  // namespace inline_content_ads
 }  // namespace ads

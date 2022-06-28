@@ -19,6 +19,7 @@
 // npm run test -- brave_unit_tests --filter=BatAds*
 
 namespace ads {
+namespace notification_ads {
 
 class BatAdsEligibleNotificationAdsV1Test : public UnitTestBase {
  protected:
@@ -53,8 +54,7 @@ TEST_F(BatAdsEligibleNotificationAdsV1Test, GetAdsForChildSegment) {
   // Act
   geographic::SubdivisionTargeting subdivision_targeting;
   resource::AntiTargeting anti_targeting_resource;
-  notification_ads::EligibleAdsV1 eligible_ads(&subdivision_targeting,
-                                               &anti_targeting_resource);
+  EligibleAdsV1 eligible_ads(&subdivision_targeting, &anti_targeting_resource);
 
   const CreativeNotificationAdList expected_creative_ads = {creative_ad_2};
 
@@ -81,8 +81,7 @@ TEST_F(BatAdsEligibleNotificationAdsV1Test, GetAdsForParentSegment) {
   // Act
   geographic::SubdivisionTargeting subdivision_targeting;
   resource::AntiTargeting anti_targeting_resource;
-  notification_ads::EligibleAdsV1 eligible_ads(&subdivision_targeting,
-                                               &anti_targeting_resource);
+  EligibleAdsV1 eligible_ads(&subdivision_targeting, &anti_targeting_resource);
 
   const CreativeNotificationAdList expected_creative_ads = {creative_ad};
 
@@ -109,8 +108,7 @@ TEST_F(BatAdsEligibleNotificationAdsV1Test, GetAdsForUntargetedSegment) {
   // Act
   geographic::SubdivisionTargeting subdivision_targeting;
   resource::AntiTargeting anti_targeting_resource;
-  notification_ads::EligibleAdsV1 eligible_ads(&subdivision_targeting,
-                                               &anti_targeting_resource);
+  EligibleAdsV1 eligible_ads(&subdivision_targeting, &anti_targeting_resource);
 
   const CreativeNotificationAdList expected_creative_ads = {creative_ad};
 
@@ -145,8 +143,7 @@ TEST_F(BatAdsEligibleNotificationAdsV1Test, GetAdsForMultipleSegments) {
   // Act
   geographic::SubdivisionTargeting subdivision_targeting;
   resource::AntiTargeting anti_targeting_resource;
-  notification_ads::EligibleAdsV1 eligible_ads(&subdivision_targeting,
-                                               &anti_targeting_resource);
+  EligibleAdsV1 eligible_ads(&subdivision_targeting, &anti_targeting_resource);
 
   const CreativeNotificationAdList expected_creative_ads = {creative_ad_1,
                                                             creative_ad_3};
@@ -175,8 +172,7 @@ TEST_F(BatAdsEligibleNotificationAdsV1Test, GetAdsForNoSegments) {
   // Act
   geographic::SubdivisionTargeting subdivision_targeting;
   resource::AntiTargeting anti_targeting_resource;
-  notification_ads::EligibleAdsV1 eligible_ads(&subdivision_targeting,
-                                               &anti_targeting_resource);
+  EligibleAdsV1 eligible_ads(&subdivision_targeting, &anti_targeting_resource);
 
   const CreativeNotificationAdList expected_creative_ads = {creative_ad};
 
@@ -203,8 +199,7 @@ TEST_F(BatAdsEligibleNotificationAdsV1Test, GetAdsForUnmatchedSegments) {
   // Act
   geographic::SubdivisionTargeting subdivision_targeting;
   resource::AntiTargeting anti_targeting_resource;
-  notification_ads::EligibleAdsV1 eligible_ads(&subdivision_targeting,
-                                               &anti_targeting_resource);
+  EligibleAdsV1 eligible_ads(&subdivision_targeting, &anti_targeting_resource);
 
   const CreativeNotificationAdList expected_creative_ads = {};
 
@@ -218,4 +213,5 @@ TEST_F(BatAdsEligibleNotificationAdsV1Test, GetAdsForUnmatchedSegments) {
   // Assert
 }
 
+}  // namespace notification_ads
 }  // namespace ads

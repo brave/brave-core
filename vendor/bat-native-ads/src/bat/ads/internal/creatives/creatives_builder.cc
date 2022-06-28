@@ -340,7 +340,7 @@ CreativesInfo BuildCreatives(const CatalogInfo& catalog) {
       }
 
       if (entries == 0) {
-        BLOG(1, "creative set id " << creative_set.creative_set_id
+        BLOG(1, "Creative set id " << creative_set.creative_set_id
                                    << " has no entries");
 
         continue;

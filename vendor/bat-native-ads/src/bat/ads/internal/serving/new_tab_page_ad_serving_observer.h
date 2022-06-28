@@ -12,7 +12,9 @@ namespace ads {
 
 struct NewTabPageAdInfo;
 
-class NewTabPageServingObserver : public base::CheckedObserver {
+namespace new_tab_page_ads {
+
+class ServingObserver : public base::CheckedObserver {
  public:
   // Invoked when a new tab page ad is served
   virtual void OnDidServeNewTabPageAd(const NewTabPageAdInfo& ad) {}
@@ -21,9 +23,10 @@ class NewTabPageServingObserver : public base::CheckedObserver {
   virtual void OnFailedToServeNewTabPageAd() {}
 
  protected:
-  ~NewTabPageServingObserver() override = default;
+  ~ServingObserver() override = default;
 };
 
+}  // namespace new_tab_page_ads
 }  // namespace ads
 
 #endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_SERVING_NEW_TAB_PAGE_AD_SERVING_OBSERVER_H_

@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "bat/ads/internal/ad_events/promoted_content_ads/promoted_content_ad.h"
+#include "bat/ads/internal/ad_events/promoted_content_ads/promoted_content_ad_event_handler.h"
 
 #include "base/check.h"
 #include "bat/ads/internal/ad_events/ad_event_info.h"
@@ -18,6 +18,7 @@
 #include "bat/ads/promoted_content_ad_info.h"
 
 namespace ads {
+namespace promoted_content_ads {
 
 namespace {
 
@@ -38,21 +39,21 @@ bool ShouldDebounceAdEvent(
 
 }  // namespace
 
-PromotedContentAd::PromotedContentAd() = default;
+EventHandler::EventHandler() = default;
 
-PromotedContentAd::~PromotedContentAd() = default;
+EventHandler::~EventHandler() = default;
 
-void PromotedContentAd::AddObserver(PromotedContentAdObserver* observer) {
+void EventHandler::AddObserver(EventHandlerObserver* observer) {
   DCHECK(observer);
   observers_.AddObserver(observer);
 }
 
-void PromotedContentAd::RemoveObserver(PromotedContentAdObserver* observer) {
+void EventHandler::RemoveObserver(EventHandlerObserver* observer) {
   DCHECK(observer);
   observers_.RemoveObserver(observer);
 }
 
-void PromotedContentAd::FireEvent(
+void EventHandler::FireEvent(
     const std::string& placement_id,
     const std::string& creative_instance_id,
     const mojom::PromotedContentAdEventType event_type) {
@@ -72,7 +73,7 @@ void PromotedContentAd::FireEvent(
     return;
   }
 
-  promoted_content_ads::PermissionRules permission_rules;
+  PermissionRules permission_rules;
   if (!permission_rules.HasPermission()) {
     BLOG(1, "Promoted content ad: Not allowed due to permission rules");
     FailedToFireEvent(placement_id, creative_instance_id, event_type);
@@ -102,7 +103,7 @@ void PromotedContentAd::FireEvent(
 
 ///////////////////////////////////////////////////////////////////////////////
 
-void PromotedContentAd::FireEvent(
+void EventHandler::FireEvent(
     const PromotedContentAdInfo& ad,
     const std::string& placement_id,
     const std::string& creative_instance_id,
@@ -132,15 +133,14 @@ void PromotedContentAd::FireEvent(
                     mojom::PromotedContentAdEventType::kServed);
         }
 
-        const auto ad_event =
-            promoted_content_ads::AdEventFactory::Build(event_type);
+        const auto ad_event = AdEventFactory::Build(event_type);
         ad_event->FireEvent(ad);
 
         NotifyPromotedContentAdEvent(ad, event_type);
       });
 }
 
-void PromotedContentAd::FailedToFireEvent(
+void EventHandler::FailedToFireEvent(
     const std::string& placement_id,
     const std::string& creative_instance_id,
     const mojom::PromotedContentAdEventType event_type) const {
@@ -152,7 +152,7 @@ void PromotedContentAd::FailedToFireEvent(
                                      event_type);
 }
 
-void PromotedContentAd::NotifyPromotedContentAdEvent(
+void EventHandler::NotifyPromotedContentAdEvent(
     const PromotedContentAdInfo& ad,
     const mojom::PromotedContentAdEventType event_type) const {
   DCHECK(mojom::IsKnownEnumValue(event_type));
@@ -175,35 +175,36 @@ void PromotedContentAd::NotifyPromotedContentAdEvent(
   }
 }
 
-void PromotedContentAd::NotifyPromotedContentAdServed(
+void EventHandler::NotifyPromotedContentAdServed(
     const PromotedContentAdInfo& ad) const {
-  for (PromotedContentAdObserver& observer : observers_) {
+  for (EventHandlerObserver& observer : observers_) {
     observer.OnPromotedContentAdServed(ad);
   }
 }
 
-void PromotedContentAd::NotifyPromotedContentAdViewed(
+void EventHandler::NotifyPromotedContentAdViewed(
     const PromotedContentAdInfo& ad) const {
-  for (PromotedContentAdObserver& observer : observers_) {
+  for (EventHandlerObserver& observer : observers_) {
     observer.OnPromotedContentAdViewed(ad);
   }
 }
 
-void PromotedContentAd::NotifyPromotedContentAdClicked(
+void EventHandler::NotifyPromotedContentAdClicked(
     const PromotedContentAdInfo& ad) const {
-  for (PromotedContentAdObserver& observer : observers_) {
+  for (EventHandlerObserver& observer : observers_) {
     observer.OnPromotedContentAdClicked(ad);
   }
 }
 
-void PromotedContentAd::NotifyPromotedContentAdEventFailed(
+void EventHandler::NotifyPromotedContentAdEventFailed(
     const std::string& placement_id,
     const std::string& creative_instance_id,
     const mojom::PromotedContentAdEventType event_type) const {
-  for (PromotedContentAdObserver& observer : observers_) {
+  for (EventHandlerObserver& observer : observers_) {
     observer.OnPromotedContentAdEventFailed(placement_id, creative_instance_id,
                                             event_type);
   }
 }
 
+}  // namespace promoted_content_ads
 }  // namespace ads

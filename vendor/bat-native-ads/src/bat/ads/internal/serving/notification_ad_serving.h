@@ -43,8 +43,8 @@ class Serving final : public PrefManagerObserver {
   Serving(const Serving&) = delete;
   Serving& operator=(const Serving&) = delete;
 
-  void AddObserver(NotificationAdServingObserver* observer);
-  void RemoveObserver(NotificationAdServingObserver* observer);
+  void AddObserver(ServingObserver* observer);
+  void RemoveObserver(ServingObserver* observer);
 
   void StartServingAdsAtRegularIntervals();
   void StopServingAdsAtRegularIntervals();
@@ -74,7 +74,7 @@ class Serving final : public PrefManagerObserver {
   // PrefManagerObserver:
   void OnPrefChanged(const std::string& path) override;
 
-  base::ObserverList<NotificationAdServingObserver> observers_;
+  base::ObserverList<ServingObserver> observers_;
 
   bool is_serving_ = false;
 

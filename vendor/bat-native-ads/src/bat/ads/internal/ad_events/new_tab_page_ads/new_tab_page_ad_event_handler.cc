@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "bat/ads/internal/ad_events/new_tab_page_ads/new_tab_page_ad.h"
+#include "bat/ads/internal/ad_events/new_tab_page_ads/new_tab_page_ad_event_handler.h"
 
 #include "base/check.h"
 #include "bat/ads/internal/account/account_util.h"
@@ -19,6 +19,7 @@
 #include "bat/ads/new_tab_page_ad_info.h"
 
 namespace ads {
+namespace new_tab_page_ads {
 
 namespace {
 
@@ -38,21 +39,21 @@ bool ShouldDebounceAdEvent(const AdInfo& ad,
 
 }  // namespace
 
-NewTabPageAd::NewTabPageAd() = default;
+EventHandler::EventHandler() = default;
 
-NewTabPageAd::~NewTabPageAd() = default;
+EventHandler::~EventHandler() = default;
 
-void NewTabPageAd::AddObserver(NewTabPageAdObserver* observer) {
+void EventHandler::AddObserver(EventHandlerObserver* observer) {
   DCHECK(observer);
   observers_.AddObserver(observer);
 }
 
-void NewTabPageAd::RemoveObserver(NewTabPageAdObserver* observer) {
+void EventHandler::RemoveObserver(EventHandlerObserver* observer) {
   DCHECK(observer);
   observers_.RemoveObserver(observer);
 }
 
-void NewTabPageAd::FireEvent(const std::string& placement_id,
+void EventHandler::FireEvent(const std::string& placement_id,
                              const std::string& creative_instance_id,
                              const mojom::NewTabPageAdEventType event_type) {
   if (placement_id.empty()) {
@@ -70,9 +71,9 @@ void NewTabPageAd::FireEvent(const std::string& placement_id,
     return;
   }
 
-  // Apply permission rules frequency capping for new tab page ad view events
-  // if Brave Ads are disabled.
-  new_tab_page_ads::PermissionRules permission_rules;
+  // Apply permission rules for new tab page ad view events if Brave Ads are
+  // disabled.
+  PermissionRules permission_rules;
   if (event_type == mojom::NewTabPageAdEventType::kViewed &&
       !ShouldRewardUser() && !permission_rules.HasPermission()) {
     BLOG(1, "New tab page ad: Not allowed due to permission rules");
@@ -103,7 +104,7 @@ void NewTabPageAd::FireEvent(const std::string& placement_id,
 
 ///////////////////////////////////////////////////////////////////////////////
 
-void NewTabPageAd::FireEvent(const NewTabPageAdInfo& ad,
+void EventHandler::FireEvent(const NewTabPageAdInfo& ad,
                              const std::string& placement_id,
                              const std::string& creative_instance_id,
                              const mojom::NewTabPageAdEventType event_type) {
@@ -133,15 +134,14 @@ void NewTabPageAd::FireEvent(const NewTabPageAdInfo& ad,
                     mojom::NewTabPageAdEventType::kServed);
         }
 
-        const auto ad_event =
-            new_tab_page_ads::AdEventFactory::Build(event_type);
+        const auto ad_event = AdEventFactory::Build(event_type);
         ad_event->FireEvent(ad);
 
         NotifyNewTabPageAdEvent(ad, event_type);
       });
 }
 
-void NewTabPageAd::FailedToFireEvent(
+void EventHandler::FailedToFireEvent(
     const std::string& placement_id,
     const std::string& creative_instance_id,
     const mojom::NewTabPageAdEventType event_type) const {
@@ -152,7 +152,7 @@ void NewTabPageAd::FailedToFireEvent(
   NotifyNewTabPageAdEventFailed(placement_id, creative_instance_id, event_type);
 }
 
-void NewTabPageAd::NotifyNewTabPageAdEvent(
+void EventHandler::NotifyNewTabPageAdEvent(
     const NewTabPageAdInfo& ad,
     const mojom::NewTabPageAdEventType event_type) const {
   DCHECK(mojom::IsKnownEnumValue(event_type));
@@ -175,32 +175,33 @@ void NewTabPageAd::NotifyNewTabPageAdEvent(
   }
 }
 
-void NewTabPageAd::NotifyNewTabPageAdServed(const NewTabPageAdInfo& ad) const {
-  for (NewTabPageAdObserver& observer : observers_) {
+void EventHandler::NotifyNewTabPageAdServed(const NewTabPageAdInfo& ad) const {
+  for (EventHandlerObserver& observer : observers_) {
     observer.OnNewTabPageAdServed(ad);
   }
 }
 
-void NewTabPageAd::NotifyNewTabPageAdViewed(const NewTabPageAdInfo& ad) const {
-  for (NewTabPageAdObserver& observer : observers_) {
+void EventHandler::NotifyNewTabPageAdViewed(const NewTabPageAdInfo& ad) const {
+  for (EventHandlerObserver& observer : observers_) {
     observer.OnNewTabPageAdViewed(ad);
   }
 }
 
-void NewTabPageAd::NotifyNewTabPageAdClicked(const NewTabPageAdInfo& ad) const {
-  for (NewTabPageAdObserver& observer : observers_) {
+void EventHandler::NotifyNewTabPageAdClicked(const NewTabPageAdInfo& ad) const {
+  for (EventHandlerObserver& observer : observers_) {
     observer.OnNewTabPageAdClicked(ad);
   }
 }
 
-void NewTabPageAd::NotifyNewTabPageAdEventFailed(
+void EventHandler::NotifyNewTabPageAdEventFailed(
     const std::string& placement_id,
     const std::string& creative_instance_id,
     const mojom::NewTabPageAdEventType event_type) const {
-  for (NewTabPageAdObserver& observer : observers_) {
+  for (EventHandlerObserver& observer : observers_) {
     observer.OnNewTabPageAdEventFailed(placement_id, creative_instance_id,
                                        event_type);
   }
 }
 
+}  // namespace new_tab_page_ads
 }  // namespace ads

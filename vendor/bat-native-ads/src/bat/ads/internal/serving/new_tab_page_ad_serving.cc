@@ -37,12 +37,12 @@ Serving::Serving(geographic::SubdivisionTargeting* subdivision_targeting,
 
 Serving::~Serving() = default;
 
-void Serving::AddObserver(NewTabPageServingObserver* observer) {
+void Serving::AddObserver(ServingObserver* observer) {
   DCHECK(observer);
   observers_.AddObserver(observer);
 }
 
-void Serving::RemoveObserver(NewTabPageServingObserver* observer) {
+void Serving::RemoveObserver(ServingObserver* observer) {
   DCHECK(observer);
   observers_.RemoveObserver(observer);
 }
@@ -150,13 +150,13 @@ void Serving::ServedAd(const NewTabPageAdInfo& ad) {
 }
 
 void Serving::NotifyDidServeNewTabPageAd(const NewTabPageAdInfo& ad) const {
-  for (NewTabPageServingObserver& observer : observers_) {
+  for (ServingObserver& observer : observers_) {
     observer.OnDidServeNewTabPageAd(ad);
   }
 }
 
 void Serving::NotifyFailedToServeNewTabPageAd() const {
-  for (NewTabPageServingObserver& observer : observers_) {
+  for (ServingObserver& observer : observers_) {
     observer.OnFailedToServeNewTabPageAd();
   }
 }

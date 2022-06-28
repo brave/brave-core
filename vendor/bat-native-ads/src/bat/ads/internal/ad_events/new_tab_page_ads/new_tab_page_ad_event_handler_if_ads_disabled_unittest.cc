@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "bat/ads/internal/ad_events/new_tab_page_ads/new_tab_page_ad.h"
+#include "bat/ads/internal/ad_events/new_tab_page_ads/new_tab_page_ad_event_handler.h"
 
 #include <memory>
 
@@ -12,7 +12,7 @@
 #include "bat/ads/confirmation_type.h"
 #include "bat/ads/internal/ad_events/ad_event_unittest_util.h"
 #include "bat/ads/internal/ad_events/ad_events_database_table.h"
-#include "bat/ads/internal/ad_events/new_tab_page_ads/new_tab_page_ad_observer.h"
+#include "bat/ads/internal/ad_events/new_tab_page_ads/new_tab_page_ad_event_handler_observer.h"
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/base/unittest/unittest_base.h"
 #include "bat/ads/internal/base/unittest/unittest_time_util.h"
@@ -28,6 +28,7 @@
 // npm run test -- brave_unit_tests --filter=BatAds*
 
 namespace ads {
+namespace new_tab_page_ads {
 
 namespace {
 
@@ -39,24 +40,25 @@ constexpr char kInvalidCreativeInstanceId[] = "";
 
 }  // namespace
 
-class BatAdsNewTabPageAdIfAdsDisabledTest : public NewTabPageAdObserver,
-                                            public UnitTestBase {
+class BatAdsNewTabPageAdEventHandlerIfAdsDisabledTest
+    : public EventHandlerObserver,
+      public UnitTestBase {
  protected:
-  BatAdsNewTabPageAdIfAdsDisabledTest() = default;
+  BatAdsNewTabPageAdEventHandlerIfAdsDisabledTest() = default;
 
-  ~BatAdsNewTabPageAdIfAdsDisabledTest() override = default;
+  ~BatAdsNewTabPageAdEventHandlerIfAdsDisabledTest() override = default;
 
   void SetUp() override {
     UnitTestBase::SetUp();
 
     AdsClientHelper::GetInstance()->SetBooleanPref(prefs::kEnabled, false);
 
-    new_tab_page_ad_ = std::make_unique<NewTabPageAd>();
-    new_tab_page_ad_->AddObserver(this);
+    event_handler_ = std::make_unique<EventHandler>();
+    event_handler_->AddObserver(this);
   }
 
   void TearDown() override {
-    new_tab_page_ad_->RemoveObserver(this);
+    event_handler_->RemoveObserver(this);
 
     UnitTestBase::TearDown();
   }
@@ -106,7 +108,7 @@ class BatAdsNewTabPageAdIfAdsDisabledTest : public NewTabPageAdObserver,
     });
   }
 
-  std::unique_ptr<NewTabPageAd> new_tab_page_ad_;
+  std::unique_ptr<EventHandler> event_handler_;
 
   NewTabPageAdInfo ad_;
   bool did_serve_ad_ = false;
@@ -115,15 +117,15 @@ class BatAdsNewTabPageAdIfAdsDisabledTest : public NewTabPageAdObserver,
   bool did_fail_to_fire_event_ = false;
 };
 
-TEST_F(BatAdsNewTabPageAdIfAdsDisabledTest, FireViewedEvent) {
+TEST_F(BatAdsNewTabPageAdEventHandlerIfAdsDisabledTest, FireViewedEvent) {
   // Arrange
   ForcePermissionRules();
 
   const CreativeNewTabPageAdInfo& creative_ad = BuildAndSaveCreativeAd();
 
   // Act
-  new_tab_page_ad_->FireEvent(kPlacementId, creative_ad.creative_instance_id,
-                              mojom::NewTabPageAdEventType::kViewed);
+  event_handler_->FireEvent(kPlacementId, creative_ad.creative_instance_id,
+                            mojom::NewTabPageAdEventType::kViewed);
 
   // Assert
   EXPECT_TRUE(did_serve_ad_);
@@ -137,15 +139,15 @@ TEST_F(BatAdsNewTabPageAdIfAdsDisabledTest, FireViewedEvent) {
   ExpectAdEventCountEquals(ConfirmationType::kViewed, 1);
 }
 
-TEST_F(BatAdsNewTabPageAdIfAdsDisabledTest, FireClickedEvent) {
+TEST_F(BatAdsNewTabPageAdEventHandlerIfAdsDisabledTest, FireClickedEvent) {
   // Arrange
   ForcePermissionRules();
 
   const CreativeNewTabPageAdInfo& creative_ad = BuildAndSaveCreativeAd();
 
   // Act
-  new_tab_page_ad_->FireEvent(kPlacementId, creative_ad.creative_instance_id,
-                              mojom::NewTabPageAdEventType::kClicked);
+  event_handler_->FireEvent(kPlacementId, creative_ad.creative_instance_id,
+                            mojom::NewTabPageAdEventType::kClicked);
 
   // Assert
   EXPECT_FALSE(did_serve_ad_);
@@ -159,30 +161,31 @@ TEST_F(BatAdsNewTabPageAdIfAdsDisabledTest, FireClickedEvent) {
   ExpectAdEventCountEquals(ConfirmationType::kClicked, 1);
 }
 
-TEST_F(BatAdsNewTabPageAdIfAdsDisabledTest,
+TEST_F(BatAdsNewTabPageAdEventHandlerIfAdsDisabledTest,
        DoNotFireViewedEventIfAlreadyFired) {
   // Arrange
   ForcePermissionRules();
 
   const CreativeNewTabPageAdInfo& creative_ad = BuildAndSaveCreativeAd();
 
-  new_tab_page_ad_->FireEvent(kPlacementId, creative_ad.creative_instance_id,
-                              mojom::NewTabPageAdEventType::kViewed);
+  event_handler_->FireEvent(kPlacementId, creative_ad.creative_instance_id,
+                            mojom::NewTabPageAdEventType::kViewed);
 
   // Act
-  new_tab_page_ad_->FireEvent(kPlacementId, creative_ad.creative_instance_id,
-                              mojom::NewTabPageAdEventType::kViewed);
+  event_handler_->FireEvent(kPlacementId, creative_ad.creative_instance_id,
+                            mojom::NewTabPageAdEventType::kViewed);
 
   // Assert
   ExpectAdEventCountEquals(ConfirmationType::kViewed, 1);
 }
 
-TEST_F(BatAdsNewTabPageAdIfAdsDisabledTest, DoNotFireEventWithInvalidUuid) {
+TEST_F(BatAdsNewTabPageAdEventHandlerIfAdsDisabledTest,
+       DoNotFireEventWithInvalidUuid) {
   // Arrange
 
   // Act
-  new_tab_page_ad_->FireEvent(kInvalidPlacementId, kCreativeInstanceId,
-                              mojom::NewTabPageAdEventType::kViewed);
+  event_handler_->FireEvent(kInvalidPlacementId, kCreativeInstanceId,
+                            mojom::NewTabPageAdEventType::kViewed);
 
   // Assert
   EXPECT_FALSE(did_serve_ad_);
@@ -193,13 +196,13 @@ TEST_F(BatAdsNewTabPageAdIfAdsDisabledTest, DoNotFireEventWithInvalidUuid) {
   ExpectAdEventCountEquals(ConfirmationType::kViewed, 0);
 }
 
-TEST_F(BatAdsNewTabPageAdIfAdsDisabledTest,
+TEST_F(BatAdsNewTabPageAdEventHandlerIfAdsDisabledTest,
        DoNotFireEventWithInvalidCreativeInstanceId) {
   // Arrange
 
   // Act
-  new_tab_page_ad_->FireEvent(kPlacementId, kInvalidCreativeInstanceId,
-                              mojom::NewTabPageAdEventType::kViewed);
+  event_handler_->FireEvent(kPlacementId, kInvalidCreativeInstanceId,
+                            mojom::NewTabPageAdEventType::kViewed);
 
   // Assert
   EXPECT_FALSE(did_serve_ad_);
@@ -210,13 +213,14 @@ TEST_F(BatAdsNewTabPageAdIfAdsDisabledTest,
   ExpectAdEventCountEquals(ConfirmationType::kViewed, 0);
 }
 
-TEST_F(BatAdsNewTabPageAdIfAdsDisabledTest, DoNotFireEventWhenNotPermitted) {
+TEST_F(BatAdsNewTabPageAdEventHandlerIfAdsDisabledTest,
+       DoNotFireEventWhenNotPermitted) {
   // Arrange
   const CreativeNewTabPageAdInfo& creative_ad = BuildAndSaveCreativeAd();
 
   // Act
-  new_tab_page_ad_->FireEvent(kPlacementId, creative_ad.creative_instance_id,
-                              mojom::NewTabPageAdEventType::kViewed);
+  event_handler_->FireEvent(kPlacementId, creative_ad.creative_instance_id,
+                            mojom::NewTabPageAdEventType::kViewed);
 
   // Assert
   EXPECT_FALSE(did_serve_ad_);
@@ -227,14 +231,14 @@ TEST_F(BatAdsNewTabPageAdIfAdsDisabledTest, DoNotFireEventWhenNotPermitted) {
   ExpectAdEventCountEquals(ConfirmationType::kViewed, 0);
 }
 
-TEST_F(BatAdsNewTabPageAdIfAdsDisabledTest,
+TEST_F(BatAdsNewTabPageAdEventHandlerIfAdsDisabledTest,
        DoNotFireEventIfCreativeInstanceIdWasNotFound) {
   // Arrange
   ForcePermissionRules();
 
   // Act
-  new_tab_page_ad_->FireEvent(kPlacementId, kCreativeInstanceId,
-                              mojom::NewTabPageAdEventType::kViewed);
+  event_handler_->FireEvent(kPlacementId, kCreativeInstanceId,
+                            mojom::NewTabPageAdEventType::kViewed);
 
   // Assert
   EXPECT_FALSE(did_serve_ad_);
@@ -245,7 +249,7 @@ TEST_F(BatAdsNewTabPageAdIfAdsDisabledTest,
   ExpectAdEventCountEquals(ConfirmationType::kViewed, 0);
 }
 
-TEST_F(BatAdsNewTabPageAdIfAdsDisabledTest,
+TEST_F(BatAdsNewTabPageAdEventHandlerIfAdsDisabledTest,
        FireEventIfNotExceededAdsPerHourCap) {
   // Arrange
   ForcePermissionRules();
@@ -265,14 +269,14 @@ TEST_F(BatAdsNewTabPageAdIfAdsDisabledTest,
   AdvanceClockBy(features::GetNewTabPageAdsMinimumWaitTime());
 
   // Act
-  new_tab_page_ad_->FireEvent(placement_id, creative_ad.creative_instance_id,
-                              mojom::NewTabPageAdEventType::kViewed);
+  event_handler_->FireEvent(placement_id, creative_ad.creative_instance_id,
+                            mojom::NewTabPageAdEventType::kViewed);
 
   // Assert
   ExpectAdEventCountEquals(ConfirmationType::kViewed, ads_per_hour);
 }
 
-TEST_F(BatAdsNewTabPageAdIfAdsDisabledTest,
+TEST_F(BatAdsNewTabPageAdEventHandlerIfAdsDisabledTest,
        DoNotFireEventIfExceededAdsPerHourCap) {
   // Arrange
   ForcePermissionRules();
@@ -289,14 +293,14 @@ TEST_F(BatAdsNewTabPageAdIfAdsDisabledTest,
       base::GUID::GenerateRandomV4().AsLowercaseString();
 
   // Act
-  new_tab_page_ad_->FireEvent(placement_id, creative_ad.creative_instance_id,
-                              mojom::NewTabPageAdEventType::kViewed);
+  event_handler_->FireEvent(placement_id, creative_ad.creative_instance_id,
+                            mojom::NewTabPageAdEventType::kViewed);
 
   // Assert
   ExpectAdEventCountEquals(ConfirmationType::kViewed, ads_per_hour);
 }
 
-TEST_F(BatAdsNewTabPageAdIfAdsDisabledTest,
+TEST_F(BatAdsNewTabPageAdEventHandlerIfAdsDisabledTest,
        FireEventIfNotExceededAdsPerDayCap) {
   // Arrange
   ForcePermissionRules();
@@ -315,14 +319,14 @@ TEST_F(BatAdsNewTabPageAdIfAdsDisabledTest,
       base::GUID::GenerateRandomV4().AsLowercaseString();
 
   // Act
-  new_tab_page_ad_->FireEvent(placement_id, creative_ad.creative_instance_id,
-                              mojom::NewTabPageAdEventType::kViewed);
+  event_handler_->FireEvent(placement_id, creative_ad.creative_instance_id,
+                            mojom::NewTabPageAdEventType::kViewed);
 
   // Assert
   ExpectAdEventCountEquals(ConfirmationType::kViewed, ads_per_day);
 }
 
-TEST_F(BatAdsNewTabPageAdIfAdsDisabledTest,
+TEST_F(BatAdsNewTabPageAdEventHandlerIfAdsDisabledTest,
        DoNotFireEventIfExceededAdsPerDayCap) {
   // Arrange
   ForcePermissionRules();
@@ -341,11 +345,12 @@ TEST_F(BatAdsNewTabPageAdIfAdsDisabledTest,
       base::GUID::GenerateRandomV4().AsLowercaseString();
 
   // Act
-  new_tab_page_ad_->FireEvent(placement_id, creative_ad.creative_instance_id,
-                              mojom::NewTabPageAdEventType::kViewed);
+  event_handler_->FireEvent(placement_id, creative_ad.creative_instance_id,
+                            mojom::NewTabPageAdEventType::kViewed);
 
   // Assert
   ExpectAdEventCountEquals(ConfirmationType::kViewed, ads_per_day);
 }
 
+}  // namespace new_tab_page_ads
 }  // namespace ads

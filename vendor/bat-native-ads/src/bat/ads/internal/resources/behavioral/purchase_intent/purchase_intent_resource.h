@@ -22,16 +22,15 @@ namespace resource {
 class PurchaseIntent final {
  public:
   PurchaseIntent();
-  ~PurchaseIntent();
-
   PurchaseIntent(const PurchaseIntent&) = delete;
   PurchaseIntent& operator=(const PurchaseIntent&) = delete;
+  ~PurchaseIntent();
 
   bool IsInitialized() const;
 
   void Load();
 
-  const targeting::PurchaseIntentInfo* get() const;
+  const targeting::PurchaseIntentInfo* Get() const;
 
  private:
   void OnLoadAndParseResource(

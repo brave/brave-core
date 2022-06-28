@@ -22,9 +22,9 @@ class Catalog final : public BrowserManagerObserver,
                       public DatabaseManagerObserver {
  public:
   Catalog();
-  ~Catalog() override;
   Catalog(const Catalog&) = delete;
   Catalog& operator=(const Catalog&) = delete;
+  ~Catalog() override;
 
   void AddObserver(CatalogObserver* observer);
   void RemoveObserver(CatalogObserver* observer);

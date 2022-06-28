@@ -37,12 +37,12 @@ Serving::Serving(geographic::SubdivisionTargeting* subdivision_targeting,
 
 Serving::~Serving() = default;
 
-void Serving::AddObserver(InlineContentServingObserver* observer) {
+void Serving::AddObserver(ServingObserver* observer) {
   DCHECK(observer);
   observers_.AddObserver(observer);
 }
 
-void Serving::RemoveObserver(InlineContentServingObserver* observer) {
+void Serving::RemoveObserver(ServingObserver* observer) {
   DCHECK(observer);
   observers_.RemoveObserver(observer);
 }
@@ -148,13 +148,13 @@ void Serving::ServedAd(const InlineContentAdInfo& ad) {
 
 void Serving::NotifyDidServeInlineContentAd(
     const InlineContentAdInfo& ad) const {
-  for (InlineContentServingObserver& observer : observers_) {
+  for (ServingObserver& observer : observers_) {
     observer.OnDidServeInlineContentAd(ad);
   }
 }
 
 void Serving::NotifyFailedToServeInlineContentAd() const {
-  for (InlineContentServingObserver& observer : observers_) {
+  for (ServingObserver& observer : observers_) {
     observer.OnFailedToServeInlineContentAd();
   }
 }

@@ -3,27 +3,29 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_AD_EVENTS_SEARCH_RESULT_ADS_SEARCH_RESULT_AD_H_
-#define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_AD_EVENTS_SEARCH_RESULT_ADS_SEARCH_RESULT_AD_H_
+#ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_AD_EVENTS_SEARCH_RESULT_ADS_SEARCH_RESULT_AD_EVENT_HANDLER_H_
+#define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_AD_EVENTS_SEARCH_RESULT_ADS_SEARCH_RESULT_AD_EVENT_HANDLER_H_
 
 #include "base/observer_list.h"
 #include "bat/ads/ads_aliases.h"
-#include "bat/ads/internal/ad_events/search_result_ads/search_result_ad_observer.h"
+#include "bat/ads/internal/ad_events/search_result_ads/search_result_ad_event_handler_observer.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
 
 namespace ads {
 
 struct SearchResultAdInfo;
 
-class SearchResultAd final : public SearchResultAdObserver {
- public:
-  SearchResultAd();
-  ~SearchResultAd() override;
-  SearchResultAd(const SearchResultAd&) = delete;
-  SearchResultAd& operator=(const SearchResultAd&) = delete;
+namespace search_result_ads {
 
-  void AddObserver(SearchResultAdObserver* observer);
-  void RemoveObserver(SearchResultAdObserver* observer);
+class EventHandler final : public EventHandlerObserver {
+ public:
+  EventHandler();
+  ~EventHandler() override;
+  EventHandler(const EventHandler&) = delete;
+  EventHandler& operator=(const EventHandler&) = delete;
+
+  void AddObserver(EventHandlerObserver* observer);
+  void RemoveObserver(EventHandlerObserver* observer);
 
   void FireEvent(const mojom::SearchResultAdPtr& ad_mojom,
                  const mojom::SearchResultAdEventType event_type,
@@ -53,9 +55,10 @@ class SearchResultAd final : public SearchResultAdObserver {
       const mojom::SearchResultAdEventType event_type,
       TriggerSearchResultAdEventCallback callback) const;
 
-  base::ObserverList<SearchResultAdObserver> observers_;
+  base::ObserverList<EventHandlerObserver> observers_;
 };
 
+}  // namespace search_result_ads
 }  // namespace ads
 
-#endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_AD_EVENTS_SEARCH_RESULT_ADS_SEARCH_RESULT_AD_H_
+#endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_AD_EVENTS_SEARCH_RESULT_ADS_SEARCH_RESULT_AD_EVENT_HANDLER_H_
