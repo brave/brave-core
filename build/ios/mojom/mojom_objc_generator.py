@@ -2,6 +2,8 @@
 
 import os
 
+import secrets
+import string
 import mojom.generate.module as mojom
 import mojom.generate.generator as generator
 from mojom.generate.generator import WriteFile
@@ -170,12 +172,13 @@ class ArrayMojoTypemap(MojoTypemap):
     def DefaultObjCValue(self, default):
         return "@[]"
     def ObjCToCpp(self, accessor):
+        local_var_name = _RandomLocalVarName()
         args = (self.wrappedTypemap.ExpectedCppType(),
-                self.wrappedTypemap.ObjCWrappedType(),
-                accessor, self.wrappedTypemap.ObjCToCpp("obj"))
+                self.wrappedTypemap.ObjCWrappedType(), local_var_name,
+                accessor, self.wrappedTypemap.ObjCToCpp(local_var_name))
         return """^{
             std::vector<%s> array;
-            for (%s obj in %s) {
+            for (%s %s in %s) {
                 array.push_back(%s);
             }
             return array;
@@ -243,14 +246,16 @@ class DictionaryMojoTypemap(MojoTypemap):
     def DefaultObjCValue(self, default):
         return "@{}"
     def ObjCToCpp(self, accessor):
+        local_var_name = _RandomLocalVarName()
         args = (self.keyTypemap.ExpectedCppType(),
                 self.valueTypemap.ExpectedCppType(),
-                self.keyTypemap.ObjCWrappedType(), accessor,
-                self.keyTypemap.ObjCToCpp("key"),
-                self.valueTypemap.ObjCToCpp("%s[key]" % accessor))
+                self.keyTypemap.ObjCWrappedType(), local_var_name, accessor,
+                self.keyTypemap.ObjCToCpp(local_var_name),
+                self.valueTypemap.ObjCToCpp("%s[%s]" % (accessor,
+                                                        local_var_name)))
         return """^{
             base::flat_map<%s, %s> map;
-            for (%s key in %s) {
+            for (%s %s in %s) {
                 map[%s] = %s;
             }
             return map;
@@ -375,6 +380,9 @@ _mojo_typemaps = [
     PendingRemoteMojoTypemap,
     UnionMojoTypemap,
 ]
+
+def _RandomLocalVarName():
+    return ''.join(secrets.choice(string.ascii_letters) for i in range(16))
 
 def MojoTypemapForKind(kind, is_inside_container=False):
     typemap = next((x for x in _mojo_typemaps if x.IsMojoType(kind)), None)
