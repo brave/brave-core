@@ -195,6 +195,7 @@ public class WalletCoinAdapter extends RecyclerView.Adapter<WalletCoinAdapter.Vi
             }
         } else if (mType == AdapterType.ACCOUNTS_LIST
                 || mType == AdapterType.SELECT_ACCOUNTS_LIST) {
+            holder.iconImg.setImageResource(android.R.color.transparent);
             Utils.setBlockiesBitmapResource(
                     mExecutor, mHandler, holder.iconImg, walletListItemModel.getSubTitle(), true);
             holder.itemView.setOnLongClickListener(v -> {
@@ -205,7 +206,7 @@ public class WalletCoinAdapter extends RecyclerView.Adapter<WalletCoinAdapter.Vi
             });
             if (mType == AdapterType.SELECT_ACCOUNTS_LIST) {
                 holder.ivSelected.setVisibility(
-                        walletListItemModel.getIsUserSelected() ? View.VISIBLE : View.GONE);
+                        walletListItemModel.getIsUserSelected() ? View.VISIBLE : View.INVISIBLE);
             }
         }
     }
