@@ -505,12 +505,13 @@ class TabManager: NSObject {
     // This fixes pages that have dynamic URL via changing history
     // as well as regular pages that load DOM normally.
     tab.onPageReadyStateChanged = { [weak tab] state in
-      tab?.webStateDebounceTimer?.invalidate()
-      tab?.webStateDebounceTimer? = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: false) { [weak self, weak tab] _ in
-        tab?.webStateDebounceTimer?.invalidate()
+      guard let tab = tab else { return }
+      tab.webStateDebounceTimer?.invalidate()
+      tab.webStateDebounceTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: false) { [weak self, weak tab] _ in
+        guard let self = self, let tab = tab else { return }
+        tab.webStateDebounceTimer?.invalidate()
         
-        if let self = self, let tab = tab,
-            state == .complete || state == .loaded || state == .pushstate || state == .popstate {
+        if state == .complete || state == .loaded || state == .pushstate || state == .popstate {
           // Saving Tab Private Mode - not supported yet.
           if !tab.isPrivate {
             self.preserveScreenshots()
