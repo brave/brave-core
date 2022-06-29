@@ -56,17 +56,14 @@ bool FilecoinKeyring::DecodeImportPayload(
           key_payload, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
                            base::JSONParserOptions::JSON_PARSE_RFC);
   absl::optional<base::Value>& records_v = value_with_error.value;
-  if (!records_v) {
+  if (!records_v || !records_v->is_dict()) {
     VLOG(1) << "Invalid payload, could not parse JSON, JSON is: "
             << key_payload;
     return false;
   }
 
-  const base::DictionaryValue* dict = nullptr;
-  if (!records_v->GetAsDictionary(&dict)) {
-    return false;
-  }
-  const std::string* type = dict->FindStringKey("Type");
+  const auto& dict = records_v->GetDict();
+  const std::string* type = dict.FindString("Type");
   if (!type || (*type != "secp256k1" && *type != "bls")) {
     return false;
   }
@@ -75,7 +72,7 @@ bool FilecoinKeyring::DecodeImportPayload(
                       ? mojom::FilecoinAddressProtocol::SECP256K1
                       : mojom::FilecoinAddressProtocol::BLS;
 
-  const std::string* private_key_encoded = dict->FindStringKey("PrivateKey");
+  const std::string* private_key_encoded = dict.FindString("PrivateKey");
   if (!private_key_encoded || private_key_encoded->empty()) {
     return false;
   }
