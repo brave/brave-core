@@ -44,10 +44,10 @@ class EligibleAdsBase {
   EligibleAdsBase(geographic::SubdivisionTargeting* subdivision_targeting,
                   resource::AntiTargeting* anti_targeting_resource);
 
-  raw_ptr<geographic::SubdivisionTargeting> subdivision_targeting_ =
+  const raw_ptr<geographic::SubdivisionTargeting> subdivision_targeting_ =
       nullptr;  // NOT OWNED
 
-  raw_ptr<resource::AntiTargeting> anti_targeting_resource_ =
+  const raw_ptr<resource::AntiTargeting> anti_targeting_resource_ =
       nullptr;  // NOT OWNED
 
   AdInfo last_served_ad_;

@@ -35,7 +35,7 @@ class EpsilonGreedyBandit final : public CatalogObserver {
 
   bool is_initialized_ = false;
 
-  raw_ptr<Catalog> catalog_ = nullptr;  // NOT OWNED
+  const raw_ptr<Catalog> catalog_ = nullptr;  // NOT OWNED
 };
 
 }  // namespace resource

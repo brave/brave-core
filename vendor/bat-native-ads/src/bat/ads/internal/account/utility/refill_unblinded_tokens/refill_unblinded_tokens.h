@@ -60,7 +60,7 @@ class RefillUnblindedTokens final {
 
   int CalculateAmountOfTokensToRefill() const;
 
-  raw_ptr<privacy::TokenGeneratorInterface> token_generator_ =
+  const raw_ptr<privacy::TokenGeneratorInterface> token_generator_ =
       nullptr;  // NOT OWNED
 
   raw_ptr<RefillUnblindedTokensDelegate> delegate_ = nullptr;
