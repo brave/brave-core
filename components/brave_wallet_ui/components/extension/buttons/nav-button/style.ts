@@ -1,8 +1,19 @@
+// Copyright (c) 2022 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// you can obtain one at http://mozilla.org/MPL/2.0/.
+
 import styled, { css } from 'styled-components'
+
+// types
+import { PanelButtonTypes } from './index'
+
+// images
 import CloseIcon from '../../../../assets/svg-icons/close.svg'
 import KeyIcon from '../../../../assets/svg-icons/key-icon.svg'
 import CheckIcon from '../../assets/filled-checkmark.svg'
-import { PanelButtonTypes } from './index'
+
+// styles
 import { WalletButton, WalletButtonLink } from '../../../shared/style'
 
 interface StyledButtonProps {
@@ -10,6 +21,8 @@ interface StyledButtonProps {
   disabled?: boolean
   addTopMargin?: boolean
   to?: string // for links & routes
+  maxHeight?: string
+  minWidth?: string
 }
 
 // lowercase prop names to prevent warnings
@@ -18,6 +31,8 @@ interface StyledLinkProps {
   disabled?: boolean
   to?: string // for links & routes
   addtopmargin?: boolean
+  maxHeight?: string
+  minWidth?: string
 }
 
 const StyledButtonCssMixin = (p: Partial<StyledButtonProps & StyledLinkProps>) => {
@@ -25,6 +40,8 @@ const StyledButtonCssMixin = (p: Partial<StyledButtonProps & StyledLinkProps>) =
   const buttonType = p?.buttonType || p?.kind
 
   return css<StyledButtonProps | StyledLinkProps>`
+    min-width: ${(p) => p?.minWidth || 'unset'};
+    max-height: ${(p) => p?.maxHeight || 'unset'};
     display: flex;
     align-items: center;
     justify-content: center;

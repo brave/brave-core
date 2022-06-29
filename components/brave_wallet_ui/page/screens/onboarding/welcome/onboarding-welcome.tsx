@@ -20,13 +20,16 @@ import { NavButton } from '../../../../components/extension'
 import { WalletRoutes } from '../../../../constants/types'
 
 // styles
+import { VerticalSpace } from '../../../../components/shared/style'
 import { OnboardingWrapper } from '../onboarding.style'
 import {
-  PageIcon,
-  Description,
   Title,
+  PageIcon,
   ButtonContainer,
-  LearnMoreLink
+  LearnMoreLink,
+  BlockQuote,
+  BlockQuoteTextContainer,
+  VerticalRule
 } from './onboarding-welcome.style'
 import {
   OnboardingDisclosures,
@@ -48,7 +51,7 @@ export const OnboardingWelcome = () => {
   )
 
   const showRestoredWalletDisclosures = React.useCallback(
-    () => setNextStep(WalletRoutes.OnboardingCreatePassword),
+    () => setNextStep(WalletRoutes.OnboardingImportOrRestore),
     []
   )
 
@@ -66,28 +69,56 @@ export const OnboardingWelcome = () => {
     <OnboardingWrapper>
       <PageIcon />
 
-      <Title>{getLocale('braveWalletWelcomeTitle')}</Title>
+      <Title maxWidth='467px'>
+        {getLocale('braveWalletWelcomeTitle')}
+      </Title>
 
-      <Description>{getLocale('braveWalletWelcomeDescription')}</Description>
+      <BlockQuote>
+        <VerticalRule />
+        <BlockQuoteTextContainer>
+          <span>
+            {getLocale('braveWalletPerksTokens')}
+          </span>
+          <span>
+            {getLocale('braveWalletPerksNftStorage')}
+          </span>
+          <span>
+            {getLocale('braveWalletMultiChain')}
+          </span>
+        </BlockQuoteTextContainer>
+      </BlockQuote>
+
+      <VerticalSpace space='34px' />
 
       <ButtonContainer>
         <NavButton
           buttonType='primary'
           text={getLocale('braveWalletWelcomeButton')}
           onSubmit={showNewWalletDisclosures}
+          maxHeight={'48px'}
+          minWidth={'267px'}
         />
 
         <NavButton
           buttonType='secondary'
           text={getLocale('braveWalletWelcomeIAlreadyHaveAWallet')}
           onSubmit={showRestoredWalletDisclosures}
+          maxHeight={'48px'}
+          minWidth={'267px'}
         />
 
-        <LearnMoreLink href='https://brave.com/learn/what-is-crypto-wallet/' target='_blank'>
-          {getLocale('braveWalletWhatIsACryptoWallet')}
-        </LearnMoreLink>
       </ButtonContainer>
 
+      <VerticalSpace space='20px' />
+
+      <LearnMoreLink href='https://brave.com/learn/what-is-crypto-wallet/' target='_blank'>
+        {
+          'Learn more about crypto wallet'
+          // getLocale('braveWalletWhatIsACryptoWallet')
+        }
+      </LearnMoreLink>
+
     </OnboardingWrapper>
+
   </WalletPageLayout>
 }

@@ -28,6 +28,8 @@ interface BaseProps {
   text: string | undefined
   disabled?: boolean
   needsTopMargin?: boolean
+  maxHeight?: string
+  minWidth?: string
 }
 
 type ClickProps = (
@@ -43,9 +45,16 @@ type ClickProps = (
 
 export type Props = BaseProps & ClickProps
 
-export const NavButton: React.FC<Props> = (props) => {
-  const { text, buttonType, disabled, needsTopMargin, onSubmit, url } = props
-
+export const NavButton: React.FC<Props> = ({
+  buttonType,
+  disabled,
+  maxHeight,
+  minWidth,
+  needsTopMargin,
+  onSubmit,
+  text,
+  url
+}) => {
   // memos
   const buttonContent = React.useMemo(() => {
     return <>
@@ -69,6 +78,8 @@ export const NavButton: React.FC<Props> = (props) => {
       kind={buttonType}
       onClick={onSubmit}
       to={url || ''}
+      maxHeight={maxHeight}
+      minWidth={minWidth}
     >
       {buttonContent}
     </StyledLink>
@@ -78,6 +89,8 @@ export const NavButton: React.FC<Props> = (props) => {
       buttonType={buttonType}
       onClick={onSubmit}
       addTopMargin={needsTopMargin && text ? text.length > 20 : false}
+      maxHeight={maxHeight}
+      minWidth={minWidth}
     >
       {buttonContent}
     </StyledButton>
