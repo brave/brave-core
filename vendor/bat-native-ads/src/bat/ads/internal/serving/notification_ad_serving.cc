@@ -20,9 +20,7 @@
 #include "bat/ads/internal/deprecated/client/client_state_manager.h"
 #include "bat/ads/internal/geographic/subdivision/subdivision_targeting.h"
 #include "bat/ads/internal/prefs/pref_manager.h"
-#include "bat/ads/internal/privacy/p2a/opportunities/p2a_opportunity.h"
 #include "bat/ads/internal/resources/behavioral/anti_targeting/anti_targeting_resource.h"
-#include "bat/ads/internal/segments/segments_aliases.h"
 #include "bat/ads/internal/serving/delivery/notification_ads/notification_ad_delivery.h"
 #include "bat/ads/internal/serving/eligible_ads/pipelines/notification_ads/eligible_notification_ads_base.h"
 #include "bat/ads/internal/serving/eligible_ads/pipelines/notification_ads/eligible_notification_ads_factory.h"
@@ -130,10 +128,9 @@ void Serving::MaybeServeAd() {
       user_model, [=](const bool had_opportunity,
                       const CreativeNotificationAdList& creative_ads) {
         if (had_opportunity) {
-          const SegmentList& segments =
+          const SegmentList segments =
               targeting::GetTopChildSegments(user_model);
-          privacy::p2a::RecordAdOpportunityForSegments(AdType::kNotificationAd,
-                                                       segments);
+          NotifyOpportunityAroseToServeNotificationAd(segments);
         }
 
         if (creative_ads.empty()) {
@@ -278,6 +275,13 @@ void Serving::ServedAd(const NotificationAdInfo& ad) {
   is_serving_ = false;
 
   MaybeServeAdAtNextRegularInterval();
+}
+
+void Serving::NotifyOpportunityAroseToServeNotificationAd(
+    const SegmentList& segments) const {
+  for (ServingObserver& observer : observers_) {
+    observer.OnOpportunityAroseToServeNotificationAd(segments);
+  }
 }
 
 void Serving::NotifyDidServeNotificationAd(const NotificationAdInfo& ad) const {

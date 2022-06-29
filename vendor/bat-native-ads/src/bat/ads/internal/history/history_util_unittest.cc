@@ -27,14 +27,14 @@ class BatAdsHistoryUtilTest : public UnitTestBase {
   ~BatAdsHistoryUtilTest() override = default;
 };
 
-TEST_F(BatAdsHistoryUtilTest, AppendHistory) {
+TEST_F(BatAdsHistoryUtilTest, AddHistory) {
   // Arrange
   const CreativeNotificationAdInfo creative_ad = BuildCreativeNotificationAd();
   const NotificationAdInfo ad = BuildNotificationAd(creative_ad);
 
   // Act
   const HistoryItemInfo history_item =
-      AppendHistory(ad, ConfirmationType::kViewed, ad.title, ad.body);
+      AddHistory(ad, ConfirmationType::kViewed, ad.title, ad.body);
 
   // Assert
   const base::circular_deque<HistoryItemInfo> expected_history = {history_item};

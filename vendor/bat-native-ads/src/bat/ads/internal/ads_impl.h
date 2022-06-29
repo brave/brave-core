@@ -22,6 +22,7 @@
 #include "bat/ads/internal/ad_events/search_result_ads/search_result_ad_event_handler_observer.h"
 #include "bat/ads/internal/conversions/conversions_observer.h"
 #include "bat/ads/internal/history/history_manager_observer.h"
+#include "bat/ads/internal/segments/segments_aliases.h"
 #include "bat/ads/internal/serving/inline_content_ad_serving_observer.h"
 #include "bat/ads/internal/serving/new_tab_page_ad_serving_observer.h"
 #include "bat/ads/internal/serving/notification_ad_serving_observer.h"
@@ -250,6 +251,8 @@ class AdsImpl final : public Ads,
   void OnStatementOfAccountsDidChange() override;
 
   // notification_ads::ServingObserver:
+  void OnOpportunityAroseToServeNotificationAd(
+      const SegmentList& segments) override;
   void OnDidServeNotificationAd(const NotificationAdInfo& ad) override;
 
   // notification_ads::EventHandlerObserver:

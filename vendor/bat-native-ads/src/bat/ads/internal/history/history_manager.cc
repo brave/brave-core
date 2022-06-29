@@ -97,7 +97,7 @@ HistoryItemInfo HistoryManager::Add(
     const InlineContentAdInfo& ad,
     const ConfirmationType& confirmation_type) const {
   const HistoryItemInfo history_item =
-      AppendHistory(ad, confirmation_type, ad.title, ad.description);
+      AddHistory(ad, confirmation_type, ad.title, ad.description);
   NotifyHistoryDidChange();
   return history_item;
 }
@@ -106,7 +106,7 @@ HistoryItemInfo HistoryManager::Add(
     const NewTabPageAdInfo& ad,
     const ConfirmationType& confirmation_type) const {
   const HistoryItemInfo history_item =
-      AppendHistory(ad, confirmation_type, ad.company_name, ad.alt);
+      AddHistory(ad, confirmation_type, ad.company_name, ad.alt);
   NotifyHistoryDidChange();
   return history_item;
 }
@@ -115,7 +115,7 @@ HistoryItemInfo HistoryManager::Add(
     const NotificationAdInfo& ad,
     const ConfirmationType& confirmation_type) const {
   const HistoryItemInfo history_item =
-      AppendHistory(ad, confirmation_type, ad.title, ad.body);
+      AddHistory(ad, confirmation_type, ad.title, ad.body);
   NotifyHistoryDidChange();
   return history_item;
 }
@@ -124,7 +124,7 @@ HistoryItemInfo HistoryManager::Add(
     const PromotedContentAdInfo& ad,
     const ConfirmationType& confirmation_type) const {
   const HistoryItemInfo history_item =
-      AppendHistory(ad, confirmation_type, ad.title, ad.description);
+      AddHistory(ad, confirmation_type, ad.title, ad.description);
   NotifyHistoryDidChange();
   return history_item;
 }
@@ -133,7 +133,7 @@ HistoryItemInfo HistoryManager::Add(
     const SearchResultAdInfo& ad,
     const ConfirmationType& confirmation_type) const {
   const HistoryItemInfo history_item =
-      AppendHistory(ad, confirmation_type, ad.headline_text, ad.description);
+      AddHistory(ad, confirmation_type, ad.headline_text, ad.description);
   NotifyHistoryDidChange();
   return history_item;
 }

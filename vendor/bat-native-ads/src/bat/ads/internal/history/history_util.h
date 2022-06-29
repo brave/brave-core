@@ -14,10 +14,10 @@ class ConfirmationType;
 struct AdInfo;
 struct HistoryItemInfo;
 
-HistoryItemInfo AppendHistory(const AdInfo& ad,
-                              const ConfirmationType& confirmation_type,
-                              const std::string& title,
-                              const std::string& description);
+HistoryItemInfo AddHistory(const AdInfo& ad,
+                           const ConfirmationType& confirmation_type,
+                           const std::string& title,
+                           const std::string& description);
 
 }  // namespace ads
 

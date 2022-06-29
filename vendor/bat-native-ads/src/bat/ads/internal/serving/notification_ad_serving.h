@@ -12,6 +12,7 @@
 #include "base/observer_list.h"
 #include "bat/ads/internal/base/timer/timer.h"
 #include "bat/ads/internal/prefs/pref_manager_observer.h"
+#include "bat/ads/internal/segments/segments_aliases.h"
 #include "bat/ads/internal/serving/notification_ad_serving_observer.h"
 
 namespace base {
@@ -68,6 +69,8 @@ class Serving final : public PrefManagerObserver {
   void FailedToServeAd();
   void ServedAd(const NotificationAdInfo& ad);
 
+  void NotifyOpportunityAroseToServeNotificationAd(
+      const SegmentList& segments) const;
   void NotifyDidServeNotificationAd(const NotificationAdInfo& ad) const;
   void NotifyFailedToServeNotificationAd() const;
 

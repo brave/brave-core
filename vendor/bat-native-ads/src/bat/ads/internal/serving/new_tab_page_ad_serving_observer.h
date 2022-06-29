@@ -7,6 +7,7 @@
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_SERVING_NEW_TAB_PAGE_AD_SERVING_OBSERVER_H_
 
 #include "base/observer_list_types.h"
+#include "bat/ads/internal/segments/segments_aliases.h"
 
 namespace ads {
 
@@ -16,6 +17,10 @@ namespace new_tab_page_ads {
 
 class ServingObserver : public base::CheckedObserver {
  public:
+  // Invoked when an opportunity arises to serve a new tab page ad
+  virtual void OnOpportunityAroseToServeNewTabPageAd(
+      const SegmentList& segments) {}
+
   // Invoked when a new tab page ad is served
   virtual void OnDidServeNewTabPageAd(const NewTabPageAdInfo& ad) {}
 
