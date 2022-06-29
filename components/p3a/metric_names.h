@@ -74,6 +74,7 @@ constexpr inline auto kCollectedHistograms =
     "Brave.Uptime.BrowserOpenMinutes",
     "Brave.Wallet.DefaultWalletSetting",
     "Brave.Wallet.KeyringCreated",
+    "Brave.Wallet.NewUserReturning",
     "Brave.Wallet.UsageDaysInWeek",
     "Brave.Wallet.UsageMonthly.2",
     "Brave.Welcome.InteractionStatus",

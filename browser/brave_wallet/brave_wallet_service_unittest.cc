@@ -2071,4 +2071,42 @@ TEST_F(BraveWalletServiceUnitTest, GetUserAssetAddress) {
             absl::nullopt);
 }
 
+TEST_F(BraveWalletServiceUnitTest, NewUserReturningMetric) {
+  histogram_tester_->ExpectBucketCount(
+      kBraveWalletNewUserReturningHistogramName, 0, 1);
+  GetPrefs()->SetTime(kBraveWalletLastUnlockTime, base::Time::Now());
+
+  task_environment_.FastForwardBy(base::Days(1));
+  histogram_tester_->ExpectBucketCount(
+      kBraveWalletNewUserReturningHistogramName, 2, 2);
+
+  GetPrefs()->SetTime(kBraveWalletLastUnlockTime, base::Time::Now());
+  task_environment_.RunUntilIdle();
+
+  histogram_tester_->ExpectBucketCount(
+      kBraveWalletNewUserReturningHistogramName, 3, 1);
+
+  task_environment_.FastForwardBy(base::Days(6));
+  histogram_tester_->ExpectBucketCount(
+      kBraveWalletNewUserReturningHistogramName, 1, 1);
+}
+
+TEST_F(BraveWalletServiceUnitTest, NewUserReturningMetricMigration) {
+  GetPrefs()->SetTime(kBraveWalletLastUnlockTime, base::Time::Now());
+
+  task_environment_.RunUntilIdle();
+  GetPrefs()->SetTime(kBraveWalletP3AFirstUnlockTime, base::Time());
+  GetPrefs()->SetTime(kBraveWalletP3ALastUnlockTime, base::Time());
+
+  task_environment_.FastForwardBy(base::Hours(30));
+  // Existing unlock timestamp should not trigger "new" value for new user
+  // metric
+  histogram_tester_->ExpectBucketCount(
+      kBraveWalletNewUserReturningHistogramName, 1, 1);
+
+  task_environment_.FastForwardBy(base::Hours(30));
+  histogram_tester_->ExpectBucketCount(
+      kBraveWalletNewUserReturningHistogramName, 1, 2);
+}
+
 }  // namespace brave_wallet

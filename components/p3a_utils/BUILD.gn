@@ -1,0 +1,13 @@
+static_library("p3a_utils") {
+  sources = [
+    "bucket.h",
+    "feature_usage.cc",
+    "feature_usage.h",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/components/time_period_storage",
+    "//components/prefs",
+  ]
+}

@@ -33,6 +33,10 @@ extern const char kSupportEip1559OnLocalhostChain[];
 // type.
 extern const char kBraveWalletEthereumTransactionsCoinTypeMigrated[];
 
+extern const char kBraveWalletP3AFirstUnlockTime[];
+extern const char kBraveWalletP3ALastUnlockTime[];
+extern const char kBraveWalletP3AUsedSecondDay[];
+
 // DEPRECATED
 extern const char kBraveWalletSelectedAccount[];
 extern const char kBraveWalletWeb3ProviderDeprecated[];

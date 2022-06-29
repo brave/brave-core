@@ -35,6 +35,8 @@ constexpr char kBraveWalletWeeklyHistogramName[] =
     "Brave.Wallet.UsageDaysInWeek";
 constexpr char kBraveWalletMonthlyHistogramName[] =
     "Brave.Wallet.UsageMonthly.2";
+constexpr char kBraveWalletNewUserReturningHistogramName[] =
+    "Brave.Wallet.NewUserReturning";
 
 class KeyringService;
 class JsonRpcService;
@@ -215,7 +217,7 @@ class BraveWalletService : public KeyedService,
   void OnWalletUnlockPreferenceChanged(const std::string& pref_name);
   void OnP3ATimerFired();
 
-  void RecordWalletUsage();
+  void RecordWalletUsage(bool unlocked);
 
   void WriteStatsToHistogram(base::Time wallet_last_used,
                              base::Time first_p3a_report,

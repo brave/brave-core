@@ -38,6 +38,12 @@ const char kSupportEip1559OnLocalhostChain[] =
     "brave.wallet.support_eip1559_on_localhost_chain";
 const char kBraveWalletEthereumTransactionsCoinTypeMigrated[] =
     "brave.wallet.ethereum_transactions.coin_type_migrated";
+extern const char kBraveWalletP3AFirstUnlockTime[] =
+    "brave.wallet.p3a_first_unlock_time";
+extern const char kBraveWalletP3ALastUnlockTime[] =
+    "brave.wallet.p3a_last_unlock_time";
+extern const char kBraveWalletP3AUsedSecondDay[] =
+    "brave.wallet.p3a_used_second_day";
 
 // DEPRECATED
 const char kBraveWalletSelectedAccount[] = "brave.wallet.selected_account";
