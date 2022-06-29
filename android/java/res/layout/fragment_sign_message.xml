@@ -105,6 +105,7 @@
         app:tabGravity="fill"
         app:tabMaxWidth="0dp"
         app:tabMode="fixed"
+        app:tabIndicatorHeight="0dp"
         app:tabIndicatorColor="@android:color/transparent"
         app:tabSelectedTextColor="@color/tab_color"
         app:tabTextAppearance="@style/BraveWalletTabsTextAppearance"
@@ -114,7 +115,7 @@
     <View
         android:id="@+id/view_tab_line"
         android:layout_width="match_parent"
-        android:background="@color/tab_color"
+        android:background="@drawable/tab_gradient_separator"
         android:layout_marginBottom="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -143,7 +144,7 @@
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/fragment_sign_msg_btn_cancel"
-            style="@style/BraveWalletButton"
+            style="@style/BraveWalletButtonHollow"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="start"

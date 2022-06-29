@@ -6,6 +6,9 @@
 -->
 
 <resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Brave wallet -->
+    <dimen name="brave_wallet_tab_indicator_height">2dp</dimen>
+
     <!-- Onboarding dimens -->
     <dimen name="onboarding_text_size">16sp</dimen>
     <dimen name="onboarding_bottom_sheet_height">250dp</dimen>
