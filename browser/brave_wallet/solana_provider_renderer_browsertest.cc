@@ -302,9 +302,9 @@ class TestSolanaProvider final : public brave_wallet::mojom::SolanaProvider {
   void GetPublicKey(GetPublicKeyCallback callback) override {
     std::move(callback).Run(kTestPublicKey);
   }
-  void SignTransaction(const std::string& encoded_serialized_msg,
+  void SignTransaction(brave_wallet::mojom::SolanaSignTransactionParamPtr param,
                        SignTransactionCallback callback) override {
-    EXPECT_EQ(encoded_serialized_msg,
+    EXPECT_EQ(param->encoded_serialized_msg,
               brave_wallet::Base58Encode(kSerializedMessage));
     if (error_ == SolanaProviderError::kSuccess) {
       std::move(callback).Run(SolanaProviderError::kSuccess, "", kSignedTx);
@@ -314,10 +314,10 @@ class TestSolanaProvider final : public brave_wallet::mojom::SolanaProvider {
     }
   }
   void SignAllTransactions(
-      const std::vector<std::string>& encoded_serialized_msgs,
+      std::vector<brave_wallet::mojom::SolanaSignTransactionParamPtr> params,
       SignAllTransactionsCallback callback) override {
-    for (const auto& encoded_serialized_msg : encoded_serialized_msgs)
-      EXPECT_EQ(encoded_serialized_msg,
+    for (const auto& param : params)
+      EXPECT_EQ(param->encoded_serialized_msg,
                 brave_wallet::Base58Encode(kSerializedMessage));
     if (error_ == SolanaProviderError::kSuccess) {
       std::move(callback).Run(SolanaProviderError::kSuccess, "",
@@ -329,10 +329,10 @@ class TestSolanaProvider final : public brave_wallet::mojom::SolanaProvider {
     }
   }
   void SignAndSendTransaction(
-      const std::string& encoded_serialized_msg,
+      brave_wallet::mojom::SolanaSignTransactionParamPtr param,
       absl::optional<base::Value> send_options,
       SignAndSendTransactionCallback callback) override {
-    EXPECT_EQ(encoded_serialized_msg,
+    EXPECT_EQ(param->encoded_serialized_msg,
               brave_wallet::Base58Encode(kSerializedMessage));
 
     auto expect_send_options = base::JSONReader::Read(
