@@ -11,6 +11,9 @@ LOCAL_PATH = "#{CONFIG_PATH}/Local"
 
 platform :ios do
   before_all do |lane, options|
+    unless lane == :test || options[:skip_bootstrap]
+      sh("pushd .. && ./bootstrap.sh --ci && popd")
+    end
     # Verify clean repo by default
     unless options[:ignore_git_status]
       UI.message "Running git status check"
