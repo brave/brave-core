@@ -25,6 +25,7 @@ import CheckmarkSvg from '../../assets/svg-icons/big-checkmark.svg'
 import CloseSvg from '../../assets/svg-icons/close.svg'
 import ClipboardSvg from '../../assets/svg-icons/clipboard-icon.svg'
 import DownloadSvg from '../../assets/svg-icons/download-icon.svg'
+import CheckIconSvg from '../../assets/svg-icons/checkbox-check.svg'
 
 // Spacers
 export const VerticalSpacer = styled.div<{ space: number | string }>`
@@ -284,6 +285,20 @@ export const LoadingIcon = styled(LoaderIcon as FC<{}>)<{
   height: ${(p) => p.size};
   width: ${(p) => p.size};
   opacity: ${(p) => p.opacity};
+`
+
+export const CheckIcon = styled.div<{
+  color?: IThemeProps['color']
+}>`
+  width: 100%;
+  height: 100%;
+  background-color: ${(p) => p?.color || p.theme.color.text};
+  -webkit-mask-image: url(${CheckIconSvg});
+  mask-image: url(${CheckIconSvg});
+  mask-repeat: no-repeat;
+  mask-size: 12px;
+  mask-position: center center;
+  display: inline-block;
 `
 
 // Asset Icon containers
