@@ -169,6 +169,7 @@
 -ClientHintsWebHoldbackBrowserTest.*
 -ClientSideDetectionHostBrowserTest.*
 -ClientSideDetectionHostPrerenderBrowserTest.*
+-ClientSideDetectionServiceBrowserTest.*
 -CollectedCookiesViewsTest.*
 -CommerceHintAgentTest.*
 -ComponentCloudPolicyTest.*
@@ -360,6 +361,7 @@
 -LoadingPredictorPrefetchCounterfactualBrowserTest.*
 -LocalCardMigrationBrowserTest.*
 -LocalCardMigrationBrowserTestForStatusChip.*
+-LocalCardMigrationBrowserUiTest.InvokeUi_default
 -LoginDetectionPrerenderBrowserTest.*
 -LogWebUIUrlTest.*
 -ManagedUiTest.*
@@ -546,6 +548,7 @@
 -PwaInstallViewBrowserTest.*
 -ReaderModeIconViewBrowserTest.*
 -ReaderModeIconViewPrerenderBrowserTest.*
+-RealboxSearchPreloadBrowserTest.SearchPreloadSuccess
 -RecordLanguagesMetricsBrowserTest.*
 -RedirectUaReducedOriginTrialBrowserTest.*
 -ReferrerPolicyTest.*
