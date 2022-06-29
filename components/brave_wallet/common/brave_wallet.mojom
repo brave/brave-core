@@ -142,6 +142,7 @@ interface EthereumProvider {
   IsLocked() => (bool isLocked);
 };
 
+// https://github.com/solana-labs/solana-web3.js/blob/6482d0d/src/transaction.ts#L126
 struct SignaturePubkeyPair {
   array<uint8>? signature;
   string public_key;

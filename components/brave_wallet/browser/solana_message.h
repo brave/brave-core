@@ -36,6 +36,9 @@ class SolanaMessage {
 
   static absl::optional<SolanaMessage> Deserialize(
       const std::vector<uint8_t>& bytes);
+  static absl::optional<std::vector<std::string>>
+  GetSignerAccountsFromSerializedMessage(
+      const std::vector<uint8_t>& serialized_message);
 
   void set_recent_blockhash(const std::string& recent_blockhash) {
     recent_blockhash_ = recent_blockhash;

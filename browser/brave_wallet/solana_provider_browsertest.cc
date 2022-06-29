@@ -312,17 +312,6 @@ class SolanaProviderTest : public InProcessBrowserTest {
     run_loop.Run();
   }
 
-  void AddAccount2() {
-    base::RunLoop run_loop;
-    keyring_service_->AddAccount(
-        "Account 2", mojom::CoinType::SOL,
-        base::BindLambdaForTesting([&run_loop](bool success) {
-          ASSERT_TRUE(success);
-          run_loop.Quit();
-        }));
-    run_loop.Run();
-  }
-
   void SetSelectedAccount(const std::string& address) {
     base::RunLoop run_loop;
     keyring_service_->SetSelectedAccount(

@@ -190,20 +190,28 @@ bool SolanaTransaction::operator!=(const SolanaTransaction& tx) const {
 // sign_tx_param_->encoded_serialized_msg if exists.
 absl::optional<std::pair<std::vector<uint8_t>, std::vector<std::string>>>
 SolanaTransaction::GetSerializedMessage() const {
-  std::vector<std::string> signers;
-  auto message_bytes = message_.Serialize(&signers);
-  if (!message_bytes || signers.empty())
-    return absl::nullopt;
+  if (!sign_tx_param_) {
+    std::vector<std::string> signers;
+    auto message_bytes = message_.Serialize(&signers);
+    if (!message_bytes || signers.empty())
+      return absl::nullopt;
+
+    return std::make_pair(std::move(*message_bytes), std::move(signers));
+  }
 
   // If sign_tx_param_ exists, decode encoded_serialized_msg from dApp to be
   // the serialized message byte array.
-  if (sign_tx_param_ &&
-      !Base58Decode(sign_tx_param_->encoded_serialized_msg,
-                    &message_bytes.value(), kSolanaMaxTxSize, false)) {
+  std::vector<uint8_t> message_bytes;
+  if (!Base58Decode(sign_tx_param_->encoded_serialized_msg, &message_bytes,
+                    kSolanaMaxTxSize, false)) {
     return absl::nullopt;
   }
+  auto signers =
+      SolanaMessage::GetSignerAccountsFromSerializedMessage(message_bytes);
+  if (!signers || signers->empty())
+    return absl::nullopt;
 
-  return std::make_pair(std::move(*message_bytes), std::move(signers));
+  return std::make_pair(std::move(message_bytes), std::move(*signers));
 }
 
 // Get serialized and signed transaction.

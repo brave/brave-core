@@ -21,6 +21,7 @@ namespace {
 
 constexpr char kFromAccount[] = "3Lu176FQzbQJCc8iL9PnmALbpMPhZeknoturApnXRDJw";
 constexpr char kToAccount[] = "3QpJ3j1vq1PfqJdvCcHKWuePykqoUYSvxyRb3Cnh79BD";
+constexpr char kTestAccount[] = "BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8";
 constexpr char kRecentBlockhash[] =
     "9sHcv6xwn9YkB8nxTUGKDwPwNnmqVp5oAXxU8Fdkm4J6";
 constexpr uint64_t kLastValidBlockHeight = 3090;
@@ -97,6 +98,27 @@ TEST(SolanaMessageUnitTest, SerializeDeserialize) {
     EXPECT_FALSE(SolanaMessage::Deserialize(std::vector<uint8_t>(
         message_bytes->begin(), message_bytes->begin() + i)));
   }
+}
+
+TEST(SolanaMessageUnitTest, GetSignerAccountsFromSerializedMessage) {
+  SolanaInstruction ins(kSolanaSystemProgramId,
+                        {SolanaAccountMeta(kFromAccount, true, true),
+                         SolanaAccountMeta(kToAccount, true, true),
+                         SolanaAccountMeta(kTestAccount, false, true)},
+                        {});
+  SolanaMessage msg(kRecentBlockhash, 0, kFromAccount, {ins});
+  std::vector<std::string> signers_from_serialize;
+  auto serialized_message = msg.Serialize(&signers_from_serialize);
+  ASSERT_TRUE(serialized_message);
+  auto signers = SolanaMessage::GetSignerAccountsFromSerializedMessage(
+      *serialized_message);
+  EXPECT_EQ(*signers, std::vector<std::string>({kFromAccount, kToAccount}));
+  EXPECT_EQ(*signers, signers_from_serialize);
+
+  EXPECT_FALSE(SolanaMessage::GetSignerAccountsFromSerializedMessage({}));
+  // Has account length 1 but no accounts to read.
+  EXPECT_FALSE(
+      SolanaMessage::GetSignerAccountsFromSerializedMessage({1, 1, 1, 1}));
 }
 
 TEST(SolanaMessageUnitTest, SerializeNumOfAccountMaxSize) {

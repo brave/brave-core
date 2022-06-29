@@ -170,6 +170,39 @@ absl::optional<std::vector<uint8_t>> SolanaMessage::Serialize(
 }
 
 // static
+absl::optional<std::vector<std::string>>
+SolanaMessage::GetSignerAccountsFromSerializedMessage(
+    const std::vector<uint8_t>& serialized_message) {
+  size_t index = 0;
+  if (serialized_message.size() < 3)  // Message header length.
+    return absl::nullopt;
+
+  // Message header
+  uint8_t num_required_signatures = serialized_message[index++];
+  index += 2;  // Skip num of readonly signers/unsigned accounts.
+
+  // Consume length of account array.
+  auto ret = CompactU16Decode(serialized_message, index);
+  if (!ret)
+    return absl::nullopt;
+  index += std::get<1>(*ret);
+
+  std::vector<std::string> signers;
+  for (size_t i = 0; i < num_required_signatures; ++i) {
+    if (index + kSolanaPubkeySize > serialized_message.size())
+      return absl::nullopt;
+
+    const std::vector<uint8_t> address_bytes(
+        serialized_message.begin() + index,
+        serialized_message.begin() + index + kSolanaPubkeySize);
+    signers.push_back(Base58Encode(address_bytes));
+    index += kSolanaPubkeySize;
+  }
+
+  return signers;
+}
+
+// static
 absl::optional<SolanaMessage> SolanaMessage::Deserialize(
     const std::vector<uint8_t>& bytes) {
   size_t bytes_index = 0;
