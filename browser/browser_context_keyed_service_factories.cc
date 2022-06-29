@@ -22,6 +22,7 @@
 #include "brave/browser/ntp_background/view_counter_service_factory.h"
 #include "brave/browser/permissions/permission_lifetime_manager_factory.h"
 #include "brave/browser/search_engines/search_engine_tracker.h"
+#include "brave/browser/sync/brave_sync_alerts_service_factory.h"
 #include "brave/browser/url_sanitizer/url_sanitizer_service_factory.h"
 #include "brave/components/brave_adaptive_captcha/buildflags/buildflags.h"
 #include "brave/components/brave_today/common/features.h"
@@ -89,6 +90,7 @@ void EnsureBrowserContextKeyedServiceFactoriesBuilt() {
 #if !BUILDFLAG(IS_ANDROID)
   BookmarkPrefsServiceFactory::GetInstance();
   SearchEngineProviderServiceFactory::GetInstance();
+  BraveSyncAlertsServiceFactory::GetInstance();
 #else
   ntp_background_images::NTPBackgroundImagesBridgeFactory::GetInstance();
 #endif

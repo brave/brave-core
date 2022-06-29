@@ -98,6 +98,8 @@ bool BraveSyncServiceImpl::SetSyncCode(const std::string& sync_code) {
     return false;
   if (!brave_sync_prefs_.SetSeed(sync_code_trimmed))
     return false;
+
+  initiated_delete_account_ = false;
   return true;
 }
 
@@ -215,6 +217,7 @@ void BraveSyncServiceImpl::OnAccountDeleted(
                        std::move(callback)),
         base::Milliseconds(kDelayBetweenDeleteSyncAccountAttemptsMsec));
   } else {
+    initiated_delete_account_ = false;
     std::move(callback).Run(sync_protocol_error);
   }
 }
@@ -241,7 +244,18 @@ void BraveSyncServiceImpl::PermanentlyDeleteAccountImpl(
 
 void BraveSyncServiceImpl::PermanentlyDeleteAccount(
     base::OnceCallback<void(const SyncProtocolError&)> callback) {
+  initiated_delete_account_ = true;
   PermanentlyDeleteAccountImpl(1, std::move(callback));
+}
+
+void BraveSyncServiceImpl::ResetEngine(ShutdownReason shutdown_reason,
+                                       ResetEngineReason reset_reason) {
+  SyncServiceImpl::ResetEngine(shutdown_reason, reset_reason);
+  if (shutdown_reason == ShutdownReason::DISABLE_SYNC_AND_CLEAR_DATA &&
+      reset_reason == ResetEngineReason::kDisabledAccount &&
+      sync_disabled_by_admin_ && !initiated_delete_account_) {
+    brave_sync_prefs_.SetSyncAccountDeletedNoticePending(true);
+  }
 }
 
 }  // namespace syncer

@@ -15,7 +15,10 @@ import java.lang.annotation.RetentionPolicy;
 @IntDef({BraveInfoBarIdentifier.INVALID, BraveInfoBarIdentifier.BRAVE_CONFIRM_P3A_INFOBAR_DELEGATE,
         BraveInfoBarIdentifier.WAYBACK_MACHINE_INFOBAR_DELEGATE,
         BraveInfoBarIdentifier.SYNC_V2_MIGRATE_INFOBAR_DELEGATE,
-        BraveInfoBarIdentifier.ANDROID_SYSTEM_SYNC_DISABLED_INFOBAR})
+        BraveInfoBarIdentifier.ANDROID_SYSTEM_SYNC_DISABLED_INFOBAR,
+        BraveInfoBarIdentifier.SYNC_CANNOT_RUN_INFOBAR,
+        BraveInfoBarIdentifier.WEB_DISCOVERY_INFOBAR_DELEGATE,
+        BraveInfoBarIdentifier.BRAVE_SYNC_ACCOUNT_DELETED_INFOBAR})
 
 @Retention(RetentionPolicy.SOURCE)
 public @interface BraveInfoBarIdentifier {
@@ -24,4 +27,7 @@ public @interface BraveInfoBarIdentifier {
     int WAYBACK_MACHINE_INFOBAR_DELEGATE = 502;
     int SYNC_V2_MIGRATE_INFOBAR_DELEGATE = 503;
     int ANDROID_SYSTEM_SYNC_DISABLED_INFOBAR = 504;
+    int SYNC_CANNOT_RUN_INFOBAR = 505;
+    int WEB_DISCOVERY_INFOBAR_DELEGATE = 506;
+    int BRAVE_SYNC_ACCOUNT_DELETED_INFOBAR = 507;
 }

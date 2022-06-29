@@ -46,6 +46,7 @@
 
 #if !BUILDFLAG(IS_ANDROID)
 #include "brave/browser/infobars/brave_confirm_p3a_infobar_delegate.h"
+#include "brave/browser/infobars/brave_sync_account_deleted_infobar_delegate.h"
 #include "brave/browser/infobars/sync_cannot_run_infobar_delegate.h"
 #include "brave/browser/infobars/sync_v2_migrate_infobar_delegate.h"
 #include "chrome/browser/sync/sync_service_factory.h"
@@ -148,6 +149,9 @@ void BraveBrowserMainParts::PostBrowserStart() {
                                              profile, browser);
 
         SyncCannotRunInfoBarDelegate::Create(infobar_manager, profile, browser);
+
+        BraveSyncAccountDeletedInfoBarDelegate::Create(infobar_manager, profile,
+                                                       browser);
       }
     }
   }
