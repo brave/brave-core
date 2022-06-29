@@ -700,3 +700,8 @@ export type OriginInfo = {
   origin: string
   eTldPlusOne: string
 }
+
+export type AccountModalTypes =
+  | 'deposit'
+  | 'export'
+  | 'edit'
