@@ -21,7 +21,7 @@ import WalletMorePopup from './wallet-more-popup'
 import WalletBanner from './wallet-banner'
 import PopupModal from './popup-modals'
 import { AddAccountModal } from './popup-modals/add-account-modal'
-import AccountSettingsModal from './popup-modals/account-settings-modal'
+import AccountsModal from './popup-modals/accounts-modal'
 import EditVisibleAssetsModal from './popup-modals/edit-visible-assets-modal'
 import AssetWatchlistItem from './asset-watchlist-item'
 import SelectNetworkDropdown from './select-network-dropdown'
@@ -68,7 +68,7 @@ export {
   AccountListItem,
   PopupModal,
   AddAccountModal,
-  AccountSettingsModal,
+  AccountsModal,
   AssetWatchlistItem,
   SelectNetworkDropdown,
   EditVisibleAssetsModal,

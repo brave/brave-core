@@ -45,7 +45,7 @@ import { TransactionPlaceholderText, Spacer } from '../portfolio/style'
 import { BackButton, Tooltip } from '../../../shared'
 import {
   PortfolioAssetItem,
-  AccountSettingsModal,
+  AccountsModal,
   PortfolioTransactionItem
 } from '../..'
 
@@ -264,7 +264,7 @@ export const Account = (props: Props) => {
       )}
 
       {showEditModal && selectedAccount &&
-        <AccountSettingsModal
+        <AccountsModal
           title={getLocale('braveWalletAccount')}
           account={selectedAccount}
           onClose={onCloseEditModal}

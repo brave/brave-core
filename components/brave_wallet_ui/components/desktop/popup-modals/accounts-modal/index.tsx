@@ -54,7 +54,7 @@ export interface Props {
   account: WalletAccountType
 }
 
-const AddAccountModal = (props: Props) => {
+const AccountsModal = (props: Props) => {
   const {
     title,
     account,
@@ -153,7 +153,7 @@ const AddAccountModal = (props: Props) => {
   }, [account])
 
   const filPrivateKeyFormatDescriptionTextParts =
-      getLocaleWithTag('braveWalletFilExportPrivateKeyFormatDescription')
+    getLocaleWithTag('braveWalletFilExportPrivateKeyFormatDescription')
 
   return (
     <PopupModal title={title} onClose={onClickClose}>
@@ -203,15 +203,15 @@ const AddAccountModal = (props: Props) => {
               <WarningText>{getLocale('braveWalletAccountSettingsDisclaimer')}</WarningText>
             </WarningWrapper>
             {showPrivateKey && account.coin === BraveWallet.CoinType.FIL &&
-            <WarningWrapper>
-               <WarningText>
-                 {filPrivateKeyFormatDescriptionTextParts.beforeTag}
+              <WarningWrapper>
+                <WarningText>
+                  {filPrivateKeyFormatDescriptionTextParts.beforeTag}
                   <a target='_blank' href={FILECOIN_FORMAT_DESCRIPTION_URL}>
                     {filPrivateKeyFormatDescriptionTextParts.duringTag}
                   </a>
                   {filPrivateKeyFormatDescriptionTextParts.afterTag}
                 </WarningText>
-            </WarningWrapper>
+              </WarningWrapper>
             }
             {showPrivateKey &&
               <Tooltip text={getLocale('braveWalletToolTipCopyToClipboard')}>
@@ -232,4 +232,4 @@ const AddAccountModal = (props: Props) => {
   )
 }
 
-export default AddAccountModal
+export default AccountsModal

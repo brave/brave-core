@@ -42,7 +42,7 @@ import {
 import {
   WarningText,
   WarningWrapper
-} from '../account-settings-modal/style'
+} from '../accounts-modal/style'
 
 interface Params {
   accountTypeName: string
