@@ -1,0 +1,13 @@
+diff --git a/ios/chrome/browser/favicon/favicon_client_impl.mm b/ios/chrome/browser/favicon/favicon_client_impl.mm
+index 7dc60c97dce456b53fa114f77cc5dc8a12b59b55..d52633db52cbdafbbdfa5de220658f7fbe897688 100644
+--- a/ios/chrome/browser/favicon/favicon_client_impl.mm
++++ b/ios/chrome/browser/favicon/favicon_client_impl.mm
+@@ -82,7 +82,7 @@ void GetFaviconBitmapForNativeURL(
+ FaviconClientImpl::~FaviconClientImpl() {}
+ 
+ bool FaviconClientImpl::IsNativeApplicationURL(const GURL& url) {
+-  return url.SchemeIs(kChromeUIScheme);
++  return false;
+ }
+ 
+ bool FaviconClientImpl::IsReaderModeURL(const GURL& url) {
