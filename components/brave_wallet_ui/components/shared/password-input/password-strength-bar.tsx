@@ -49,7 +49,6 @@ export const PasswordStrengthBar: React.FC<Props> = ({
             criteria={criteria}
           >
             <PasswordStrengthTooltip
-              criteria={criteria}
               passwordStrength={passwordStrength}
               isVisible={isVisible}
             />

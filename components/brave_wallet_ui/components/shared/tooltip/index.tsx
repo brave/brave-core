@@ -12,7 +12,7 @@ export interface Props {
   children?: React.ReactNode
   position?: 'left' | 'right'
   actionText?: string
-  isVisible: boolean
+  isVisible?: boolean
   isAddress?: boolean
   isActionVisible?: boolean
   disableHoverEvents?: boolean
@@ -22,19 +22,19 @@ export interface Props {
   pointerPosition?: 'left' | 'right' | 'center'
 }
 
-export const Tooltip = ({
+export const Tooltip: React.FC<Props> = ({
   actionText,
   children,
   disableHoverEvents,
   horizontalMargin,
   isActionVisible,
   isAddress,
-  isVisible,
+  isVisible = true,
   pointerPosition,
   position,
   text,
   verticalPosition = 'below'
-}: Props) => {
+}) => {
   const [active, setActive] = React.useState(!!disableHoverEvents)
 
   const showTip = () => {

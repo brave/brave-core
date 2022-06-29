@@ -9,7 +9,7 @@ import * as React from 'react'
 import { getLocale } from '$web-common/locale'
 
 // components
-import Tooltip from '.'
+import { Tooltip } from './index'
 
 // style
 import {
@@ -26,7 +26,6 @@ import { GreenCheckmark } from '../style'
 interface Props {
   isVisible: boolean
   passwordStrength: PasswordStrengthResults
-  criteria: boolean[]
 }
 
 const PasswordStrengthDetails = ({
@@ -72,8 +71,7 @@ const PasswordStrengthDetails = ({
 export const PasswordStrengthTooltip: React.FC<React.PropsWithChildren<Props>> = ({
   children,
   isVisible,
-  passwordStrength,
-  criteria
+  passwordStrength
 }) => {
   return (
     <Tooltip
