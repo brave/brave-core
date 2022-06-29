@@ -5,7 +5,7 @@
 
 import styled, { css } from 'styled-components'
 
-export const TileTitle = styled('p') <{}>`
+export const TileTitle = styled('p')<{}>`
   margin: 0;
   font-family: Poppins;
   font-weight: 400;
@@ -107,7 +107,7 @@ export const PagesContainer = styled('div')`
   }
 `
 
-export const GridPagesContainer = styled('div') <{ customLinksEnabled: boolean }>`
+export const GridPagesContainer = styled('div')<{ customLinksEnabled: boolean }>`
   display: flex;
   flex-direction: row;
 
@@ -127,7 +127,7 @@ export const GridPagesContainer = styled('div') <{ customLinksEnabled: boolean }
   }
 `
 
-export const TileActionsContainer = styled('nav') <{}>`
+export const TileActionsContainer = styled('nav')<{}>`
   box-sizing: border-box;
   opacity: 0;
   visibility: hidden;
@@ -141,7 +141,7 @@ export const TileActionsContainer = styled('nav') <{}>`
   display: flex;
 `
 
-export const TileMenu = styled('div') <{}>`
+export const TileMenu = styled('div')<{}>`
   position: absolute;
 
   // Here we apply a negative 12px offset so the menu has a 12px overlap with
@@ -164,7 +164,7 @@ export const TileMenu = styled('div') <{}>`
   }
 `
 
-export const TileMenuItem = styled('button') <{}>`
+export const TileMenuItem = styled('button')<{}>`
   width: 100%;
   height: 30px;
   font-family: Poppins;
@@ -219,7 +219,7 @@ export const TileAction = styled('button')<{}>`
   }
 `
 
-export const TileFavicon = styled('img') <{}>`
+export const TileFavicon = styled('img')<{}>`
   display: block;
   padding: 16px;
   width: 70px;
@@ -239,7 +239,7 @@ interface TileProps {
   isMenuShowing: boolean
 }
 
-export const Tile = styled('a') <TileProps>`
+export const Tile = styled('a')<TileProps>`
   position: relative;
   text-decoration: none;
   display: flex;

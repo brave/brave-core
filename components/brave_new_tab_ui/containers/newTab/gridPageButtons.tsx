@@ -6,7 +6,7 @@ const PageIndicator = <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/s
     <circle cx="50" cy="50" r="50" />
 </svg>
 
-const ListPageButtonContainer = styled('div') <{}>`
+const ListPageButtonContainer = styled('div')<{}>`
   display: flex;
   flex-direction: row;
 
@@ -45,7 +45,7 @@ function GridPageButton (props: GridPageButtonProps) {
     </StyledButton>
 }
 
-const GridPageIndicatorContainer = styled('div') <{}>`
+const GridPageIndicatorContainer = styled('div')<{}>`
   position: absolute;
   color: var(--brave-palette-white);
 
