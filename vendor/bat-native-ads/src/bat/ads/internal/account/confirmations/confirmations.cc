@@ -207,7 +207,7 @@ void Confirmations::AppendToRetryQueue(const ConfirmationInfo& confirmation) {
 
   BLOG(1, "Added " << confirmation.type << " confirmation for "
                    << confirmation.ad_type << " with id " << confirmation.id
-                   << ", transaction id" << confirmation.transaction_id
+                   << ", transaction id " << confirmation.transaction_id
                    << " and creative instance id "
                    << confirmation.creative_instance_id
                    << " to the confirmations queue");
