@@ -156,6 +156,7 @@
   <message name="IDS_BRAVE_WALLET_ACCOUNTS_EXPORT" desc="Account list item Export button">Export</message>
   <message name="IDS_BRAVE_WALLET_ACCOUNTS_DEPOSIT" desc="Account list item Deposit button">Deposit</message>
   <message name="IDS_BRAVE_WALLET_ACCOUNTS_REMOVE" desc="Account list item Remove button">Remove</message>
+  <message name="IDS_BRAVE_WALLET_ACCOUNTS_REMOVE_MESSAGE" desc="Account list item Remove message">Are you sure to remove <ph name="Account"><ex>Account 1</ex>$1</ph>?</message>
   <message name="IDS_BRAVE_WALLET_ADD_ACCOUNT_CREATE" desc="Add account modal create button">Create</message>
   <message name="IDS_BRAVE_WALLET_CREATE_ACCOUNT_BUTTON" desc="Add account modal create account button">Create account</message>
   <message name="IDS_BRAVE_WALLET_CREATE_ACCOUNT" desc="Add account modal create account header title">Create <ph name="BLOCKCHAIN_NETWORK"><ex>Ethereum</ex>$1</ph> account</message>

@@ -173,6 +173,7 @@ provideStrings({
   braveWalletAccountsExport: 'Export',
   braveWalletAccountsDeposit: 'Deposit',
   braveWalletAccountsRemove: 'Remove',
+  braveWalletAccountsRemoveMessage: 'Are you sure to remove $1?',
 
   // Add Account Options
   braveWalletCreateAccount: 'Create $1 account',

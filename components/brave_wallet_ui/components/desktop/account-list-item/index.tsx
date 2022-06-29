@@ -64,12 +64,12 @@ function AccountListItem (props: Props) {
     onClick(account)
   }
 
-  const removeAccount = () => {
-    let confirmAction = confirm(`Are you sure to remove ${account.name}?`)
+  const removeAccount = React.useCallback(() => {
+    let confirmAction = confirm(`${getLocale('braveWalletAccountsRemoveMessage').replace('$1', account.name)}`)
     if (confirmAction) {
       onRemoveAccount(account.address, isHardwareWallet, account.coin)
     }
-  }
+  }, [account, onRemoveAccount])
 
   // memos
   const orb = React.useMemo(() => {
