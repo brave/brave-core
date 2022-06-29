@@ -11,7 +11,6 @@
 
 #include <vector>
 
-#include "brave/components/brave_wallet/browser/permission_utils.h"
 #include "build/build_config.h"
 #include "components/permissions/permission_request.h"
 #include "components/permissions/request_type.h"
@@ -26,16 +25,20 @@ bool ChromePermissionsClient::BraveCanBypassEmbeddingOriginCheck(
     const GURL& requesting_origin,
     const GURL& embedding_origin,
     ContentSettingsType type) {
-  // Since requesting_origin has been overwritten by us to add address info,
-  // it will fail Chromium's origin check because requesting_origin is now
-  // different from the embedding_origin.
-  url::Origin original_requesting_origin;
-  if ((type == ContentSettingsType::BRAVE_ETHEREUM ||
-       type == ContentSettingsType::BRAVE_SOLANA) &&
-      brave_wallet::ParseRequestingOriginFromSubRequest(
-          permissions::ContentSettingsTypeToRequestType(type),
-          url::Origin::Create(requesting_origin), &original_requesting_origin,
-          nullptr)) {
+  // Note that requesting_origin has an address in it at this point.
+  // But even if we get the original origin without the address, we can't
+  // check it against the embedding origin for BRAVE_ETHEREUM and BRAVE_SOLANA
+  // here because it can be allowed across origins via the iframe `allow`
+  // attribute with the `ethereum` and `solana` feature policy.
+  // Without this check we'd fail Chromium's origin check.
+  // We instead handle this in brave_wallet_render_frame_observer.cc by not
+  // exposing the API which can request permission when the origin is 3p and
+  // the feature policy is not allowed explicitly. We ensure that the correct
+  // handling is covered via the browser tests:
+  // SolanaProviderRendererTest.Block3PIframe and
+  // JSEthereumProviderBrowserTest.Block3PIframe
+  if (type == ContentSettingsType::BRAVE_ETHEREUM ||
+      type == ContentSettingsType::BRAVE_SOLANA) {
     return true;
   }
 
