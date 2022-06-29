@@ -1,12 +1,12 @@
 diff --git a/third_party/blink/public/mojom/permissions_policy/permissions_policy_feature.mojom b/third_party/blink/public/mojom/permissions_policy/permissions_policy_feature.mojom
-index 3c41660e3dbe300323d74a8b587f56ba62c81e3f..534a52e29046778deed5999418b0e3dfe62705ae 100644
+index b67a6788c18f448c2d6282a089f14ecfd4933c7f..155396830cd1dbfd9895ecb295915193edf4ab52 100644
 --- a/third_party/blink/public/mojom/permissions_policy/permissions_policy_feature.mojom
 +++ b/third_party/blink/public/mojom/permissions_policy/permissions_policy_feature.mojom
-@@ -208,6 +208,7 @@ enum PermissionsPolicyFeature {
-   // https://wicg.github.io/local-font-access/#permissions-policy
-   kLocalFonts = 100,
+@@ -211,6 +211,7 @@ enum PermissionsPolicyFeature {
+   // Controls access to Bluetooth API.
+   kBluetooth = 101,
  
 +  kEthereum = 4096, kSolana = 4097,
+ 
    // Don't change assigned numbers of any item, and don't reuse removed slots.
    // Add new features at the end of the enum.
-   // Also, run update_permissions_policy_enum.py in
