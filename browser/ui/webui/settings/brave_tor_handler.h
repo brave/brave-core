@@ -30,7 +30,8 @@ class BraveTorHandler : public settings::SettingsPageUIHandler {
   void RequestBridgesCaptcha(const base::Value::List& args);
   void ResolveBridgesCaptcha(const base::Value::List& args);
 
-  void SendResultToJavascript(const base::Value& callback_id,
+  void SendResultToJavascript(bool reset_request,
+                              const base::Value& callback_id,
                               const base::Value& response);
 
   std::unique_ptr<class BridgeRequest> request_;

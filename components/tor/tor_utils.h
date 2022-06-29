@@ -16,17 +16,21 @@ class PrefService;
 namespace tor {
 
 struct BridgesConfig {
+  // This enum is used in prefs & UI. Be careful when editing.
+  // UI reference: brave_tor_subpage.js
   enum class Usage {
-    kNotUsed,
-    kBuiltIn,
-    kRequest,
-    kProvide,
+    kNotUsed = 0,
+    kBuiltIn = 1,
+    kRequest = 2,
+    kProvide = 3,
   };
 
+  // This enum is used in prefs & UI. Be careful when editing.
+  // UI reference: brave_tor_subpage.js
   enum class BuiltinType {
-    kSnowflake,
-    kObfs4,
-    kMeekAzure,
+    kSnowflake = 0,
+    kObfs4 = 1,
+    kMeekAzure = 2,
   };
 
   BridgesConfig();

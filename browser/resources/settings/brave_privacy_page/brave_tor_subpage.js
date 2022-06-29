@@ -35,11 +35,18 @@ class SettingsBraveTorPageElement extends SettingBraveTorPageElementBase {
   static get properties() {
     return {
       loadedConfig_: Object,
-      
+
       useBridges_: Number,
+
+      useBridgesValue_: {
+        type: String,
+        computed: 'computeUseBridgesValue_(useBridges_)',
+        notify: true,
+      },
 
       builtInBridgesTypes_: {
         type: Array,
+        readOnly: true,
         value: [
           { name: "snowflake", value: 0 },
           { name: "obfs4", value: 1 },
@@ -47,17 +54,38 @@ class SettingsBraveTorPageElement extends SettingBraveTorPageElementBase {
         ]
       },
 
-      builtinBridges_: Number,
-      requestedBridges_: Array,
-      providedBridges_: Array,
+      builtinBridges_: {
+        type: Number,
+        notify: true,
+      },
+
+      requestedBridges_: {
+        type: String,
+        value: '',
+        notify: true,
+      },
+
+      providedBridges_: {
+        type: String,
+        value: '',
+        notify: true
+      },
 
       isUsingBridges_: {
         type: Boolean,
+        value: false,
+        observer: 'isUsingBridgesChanged_',
         notify: true,
-        value: false
       },
 
       showRequestBridgesDialog_: Boolean,
+
+      isConfigChanged_: {
+        type: Boolean,
+        computed: 'computeIsConfigChanged_(useBridges_, builtinBridges_, requestedBridges_, providedBridges_, loadedConfig_)',
+        value: false,
+        notify: true
+      }
     }
   }
 
@@ -67,101 +95,93 @@ class SettingsBraveTorPageElement extends SettingBraveTorPageElementBase {
     super.ready()
     this.browserProxy_.getBridgesConfig().then((config) => {
       this.loadedConfig_ = config
-      this.UpdateUseBridges_(config.use_bridges)
+      this.useBridges_ = config.use_bridges
       this.builtinBridges_ = config.use_builtin_bridges
-      this.requestedBridges_ = config.requested_bridges
-      this.providedBridges_ = config.provided_bridges
+      this.requestedBridges_ = config.requested_bridges.join('\n')
+      this.providedBridges_ = config.provided_bridges.join('\n')
 
-      this.$.builtInBridgesType.value = this.builtinBridges_
-
-      switch (this.useBridges_) {
-        case Usage.NOT_USED:
-        case Usage.USE_BUILT_IN:
-          this.$.brigdesGroup.selected = 'useBuiltIn'
-          break
-        case Usage.USE_REQUESTED:
-          this.$.brigdesGroup.selected = 'useRequestedBridges'
-          break
-        case Usage.USE_PROVIDED:
-          this.$.brigdesGroup.selected = 'useProvidedBridges'
-          break
-      }
-
-      this.$.requestedBridges.value = this.requestedBridges_.join('\n')
-      this.$.providedBridges.value = this.providedBridges_.join('\n')
+      this.isUsingBridges_ = this.useBridges_ != Usage.NOT_USED
     })
-
-    this.$.useBuiltIn.expanded = true
-    this.$.useRequestedBridges.expanded = true
-    this.$.useProvidedBridges.expanded = true
-
-    this.$.providedBridges.oninput = (event) => {
-      this.providedBridges_ = this.onProvidedBridgesChange_(event)
-      this.handleChanged_()
-    }
   }
 
   getCurrentConfig_() {
     const bridgesConfig = {
       use_bridges: this.useBridges_,
       use_builtin_bridges: Number.parseInt(this.builtinBridges_, 10),
-      requested_bridges: this.requestedBridges_,
-      provided_bridges: this.providedBridges_,
+      requested_bridges: this.requestedBridges_.split(/\r\n|\r|\n/),
+      provided_bridges: this.providedBridges_.split(/\r\n|\r|\n/),
     }
     return bridgesConfig
   }
 
-  UpdateUseBridges_(value) {
-    this.useBridges_ = value
-    this.isUsingBridges_ = value != Usage.NOT_USED
-  }
-
-  onUseBridgesChange_() {
-    if (!this.$.useBridges.checked) {
-      this.UpdateUseBridges_(Usage.NOT_USED)
-    } else {
-      this.onUsageSelect_()
+  computeUseBridgesValue_() {
+    switch (this.useBridges_) {
+      case Usage.NOT_USED:
+        return '';
+      case Usage.USE_BUILT_IN:
+        return 'useBuiltIn'
+      case Usage.USE_REQUESTED:
+        return 'useRequested'
+      case Usage.USE_PROVIDED:
+        return 'useProvided'
     }
-    this.handleChanged_()
   }
 
-  onUsageSelect_() {
-    switch (this.$.brigdesGroup.selected) {
+  onUseBridgesValueChanged_(event) {
+    switch (event.target.selected) {
       case 'useBuiltIn':
-        this.UpdateUseBridges_(Usage.USE_BUILT_IN)
-        this.OnBuiltInBridgesSelect_()
+        this.useBridges_ = Usage.USE_BUILT_IN
         break
-      case 'useRequestedBridges':
-        this.UpdateUseBridges_(Usage.USE_REQUESTED)
+      case 'useRequested':
+        this.useBridges_ = Usage.USE_REQUESTED
         break
-      case 'useProvidedBridges':
-        this.UpdateUseBridges_(Usage.USE_PROVIDED)
+      case 'useProvided':
+        this.useBridges_ = Usage.USE_PROVIDED
         break
     }
-    this.handleChanged_()
   }
 
-  OnBuiltInBridgesSelect_() {
-    this.builtinBridges_ = this.$.builtInBridgesType.value
-    this.handleChanged_()
+  isUsingBridgesChanged_(value) {
+    this.useBridges_ = value ? Usage.USE_BUILT_IN : Usage.NOT_USED
   }
 
-  onProvidedBridgesChange_(event) {
-    return event.target.value.split(/\r\n|\r|\n/);
+  onBuiltInBridgesSelect_(event) {
+    this.builtinBridges_ = Number(event.target.value)
   }
 
-  handleChanged_() {
-    const matches = (obj, source) =>
-      Object.keys(source).every(key => obj.hasOwnProperty(key) && obj[key] === source[key])
+  computeIsConfigChanged_() {
+    const isObject = (object) => { return object != null && typeof object === 'object' }
 
-    const equals = matches(this.getCurrentConfig_(), this.loadedConfig_)
-    this.$.apply.hidden = equals
+    const matches = (object1, object2) => {
+      const keys1 = Object.keys(object1)
+      const keys2 = Object.keys(object2)
+      if (keys1.length !== keys2.length) {
+        return false
+      }
+
+      for (const key of keys1) {
+        const val1 = object1[key]
+        const val2 = object2[key]
+        const areObjects = isObject(val1) && isObject(val2)
+        if ((areObjects && !matches(val1, val2)) || (!areObjects && val1 !== val2)) {
+          return false
+        }
+      }
+      return true
+    }
+
+    if (!this.loadedConfig_)
+      return false;
+
+    return !matches(this.getCurrentConfig_(), this.loadedConfig_)
+  }
+
+  builtInTypeEqual_(item, selection) {
+    return item === selection
   }
 
   setBridgesConfig_() {
     this.loadedConfig_ = this.getCurrentConfig_()
-    this.$.apply.hidden = true
-
     this.browserProxy_.setBridgesConfig(this.loadedConfig_)
   }
 
@@ -171,9 +191,7 @@ class SettingsBraveTorPageElement extends SettingBraveTorPageElementBase {
 
   showRequestBridgesDialogClosed_(event) {
     this.showRequestBridgesDialog_ = false
-    this.requestedBridges_ = event.currentTarget.bridges_
-    this.$.requestedBridges.value = this.requestedBridges_.join('\n')
-    this.handleChanged_()
+    this.requestedBridges_ = event.currentTarget.bridges_.join('\n')
   }
 }
 

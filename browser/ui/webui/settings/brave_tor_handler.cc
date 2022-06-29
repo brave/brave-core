@@ -46,7 +46,7 @@ constexpr const char16_t kGetCaptchaScript[] =
   (function() {
     const captchaBox = document.getElementById('captcha-box')
     if (!captchaBox) return null
-  
+
     const captchaImages = captchaBox.getElementsByTagName('img')
     if (!captchaImages || captchaImages.length < 1)
       return null
@@ -77,7 +77,7 @@ constexpr const char16_t kParseBridgesScript[] =
   (function() {
     const bridgeLines = document.getElementById('bridgelines')
     if (!bridgeLines) return null
-  
+
     const bridges = bridgeLines.textContent.split('\n').filter(
        (bridge) => { return bridge.trim().length != 0 })
     return {bridges : bridges}
@@ -106,7 +106,14 @@ class BridgeRequest : public content::WebContentsObserver {
 
   BridgeRequest(const BridgeRequest&) = delete;
   BridgeRequest& operator=(const BridgeRequest&) = delete;
-  ~BridgeRequest() override = default;
+  ~BridgeRequest() override {
+    if (captcha_callback_) {
+      std::move(captcha_callback_).Run(base::Value());
+    }
+    if (result_callback_) {
+      std::move(result_callback_).Run(base::Value());
+    }
+  }
 
   void ProvideCaptcha(const std::string& captcha,
                       BridgesCallback result_callback) {
@@ -253,29 +260,42 @@ void BraveTorHandler::SetBridgesConfig(const base::Value::List& args) {
 }
 
 void BraveTorHandler::RequestBridgesCaptcha(const base::Value::List& args) {
-  auto captcha_callback =
-      base::BindOnce(&BraveTorHandler::SendResultToJavascript,
-                     base::Unretained(this), args[0].Clone());
+  CHECK_EQ(1u, args.size());
+
+  auto captcha_callback = base::BindOnce(
+      &BraveTorHandler::SendResultToJavascript, base::Unretained(this),
+      /*reset_request*/ false, args[0].Clone());
   request_ = std::make_unique<BridgeRequest>(
       web_ui()->GetWebContents()->GetBrowserContext(),
       std::move(captcha_callback));
 }
 
 void BraveTorHandler::ResolveBridgesCaptcha(const base::Value::List& args) {
+  CHECK_EQ(2u, args.size());
+
   AllowJavascript();
 
-  auto bridges_callback =
-      base::BindOnce(&BraveTorHandler::SendResultToJavascript,
-                     base::Unretained(this), args[0].Clone());
+  if (!request_) {
+    RejectJavascriptCallback(args[0].Clone(), base::Value());
+    return;
+  }
+
+  auto bridges_callback = base::BindOnce(
+      &BraveTorHandler::SendResultToJavascript, base::Unretained(this),
+      /*reset_request*/ true, args[0].Clone());
   request_->ProvideCaptcha(args[1].GetString(), std::move(bridges_callback));
 }
 
-void BraveTorHandler::SendResultToJavascript(const base::Value& callback_id,
+void BraveTorHandler::SendResultToJavascript(bool reset_request,
+                                             const base::Value& callback_id,
                                              const base::Value& response) {
   AllowJavascript();
   if (response.is_none()) {
     RejectJavascriptCallback(callback_id, response);
   } else {
     ResolveJavascriptCallback(callback_id, response);
+  }
+  if (reset_request) {
+    request_.reset();
   }
 }

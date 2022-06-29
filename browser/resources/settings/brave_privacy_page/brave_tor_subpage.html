@@ -1,8 +1,4 @@
 <style include="settings-shared md-select">
-  img {
-    width: 100%;
-  }
-
   #torBridgesControls {
     padding: 0 var(--cr-section-padding);
   }
@@ -24,39 +20,39 @@
 <div id="torBridgesControls">
   <settings-toggle-button id="useBridges" class="hr" label="$i18n{torUseBridgesTitle}"
     sub-label="$i18n{torUseBridgesDesc}" learn-more-url="https://tb-manual.torproject.org/en-US/bridges/"
-    checked="[[isUsingBridges_]]" on-change="onUseBridgesChange_">
+    checked="{{isUsingBridges_}}">
   </settings-toggle-button>
-  <settings-radio-group id="brigdesGroup" no-set-pref selectable-elements="settings-collapse-radio-button"
-    on-change="onUsageSelect_" hidden="[[!isUsingBridges_]]">
+  <settings-radio-group id="bridgesGroup" selectable-elements="settings-collapse-radio-button"
+    selected="{{useBridgesValue_}}" on-change="onUseBridgesValueChanged_" hidden="[[!isUsingBridges_]]">
     <settings-collapse-radio-button id="useBuiltIn" name="useBuiltIn" label="$i18n{torSelectBuiltInRadio}" no-collapse
-      no-automatic-collapse>
+      no-automatic-collapse expanded>
       <div slot="collapse">
-        <select id="builtInBridgesType" class="md-select" on-change="OnBuiltInBridgesSelect_">
+        <select id="builtInBridgesType" class="md-select" on-change="onBuiltInBridgesSelect_">
           <template is="dom-repeat" items="[[builtInBridgesTypes_]]">
-            <option value="[[item.value]]">
+            <option value="[[item.value]]" selected="[[builtInTypeEqual_(item.value, builtinBridges_)]]">
               [[item.name]]
             </option>
           </template>
         </select>
       </div>
     </settings-collapse-radio-button>
-    <settings-collapse-radio-button id="useRequestedBridges" name="useRequestedBridges"
-      label="$i18n{torRequestBridgesRadio}" no-collapse no-automatic-collapse>
+    <settings-collapse-radio-button id="useRequested" name="useRequested"
+      label="$i18n{torRequestBridgesRadio}" no-collapse no-automatic-collapse expanded>
       <div slot="collapse">
-        <textarea id="requestedBridges" multiline="true" rows="3" readonly="true"></textarea>
+        <textarea id="requestedBridges" multiline="true" rows="3" readonly="true" value="[[requestedBridges_]]"></textarea>
         <cr-button on-click="requestBridges_">$i18n{torRequestNewBridgeButton}</cr-button>
       </div>
     </settings-collapse-radio-button>
-    <settings-collapse-radio-button id="useProvidedBridges" name="useProvidedBridges"
-      label="$i18n{torProvideBridgesRadio}" no-collapse no-automatic-collapse>
+    <settings-collapse-radio-button id="useProvided" name="useProvided"
+      label="$i18n{torProvideBridgesRadio}" no-collapse no-automatic-collapse expanded>
       <div slot="collapse">
         <div>$i18n{torEnterBridgeInfoLabel}</div>
-        <textarea id="providedBridges" multiline="true" rows="3"></textarea>
+        <textarea id="providedBridges" multiline="true" rows="3" value="{{providedBridges_::input}}"></textarea>
       </div>
     </settings-collapse-radio-button>
   </settings-radio-group>
   <br>
-  <cr-button id="apply" class="action-button" on-click="setBridgesConfig_" hidden="true">$i18n{torApplyChangesButton}
+  <cr-button id="apply" class="action-button" on-click="setBridgesConfig_" hidden="[[!isConfigChanged_]]">$i18n{torApplyChangesButton}
   </cr-button>
 </div>
 <template is="dom-if" if="[[showRequestBridgesDialog_]]" restamp>
