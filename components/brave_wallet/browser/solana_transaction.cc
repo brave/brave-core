@@ -224,36 +224,42 @@ SolanaTransaction::GetSignedTransactionBytes(
   auto& message_bytes = message_signers_pair->first;
   auto& signers = message_signers_pair->second;
 
+  // Preparing signatures.
   std::vector<uint8_t> transaction_bytes;
-  // Compact array of signatures.
-  CompactU16Encode(signers.size(), &transaction_bytes);
-
+  std::vector<uint8_t> signature_bytes;
+  uint8_t num_of_sig = 0;
   for (const auto& signer : signers) {
     if (message_.fee_payer() == signer) {
       if (fee_payer_signature) {
-        transaction_bytes.insert(transaction_bytes.end(),
-                                 fee_payer_signature->begin(),
-                                 fee_payer_signature->end());
+        signature_bytes.insert(signature_bytes.end(),
+                               fee_payer_signature->begin(),
+                               fee_payer_signature->end());
       } else {
         std::vector<uint8_t> signature = keyring_service->SignMessage(
             mojom::kSolanaKeyringId, signer, message_bytes);
-        transaction_bytes.insert(transaction_bytes.end(), signature.begin(),
-                                 signature.end());
+        signature_bytes.insert(signature_bytes.end(), signature.begin(),
+                               signature.end());
       }
+      ++num_of_sig;
     } else if (sign_tx_param_) {
       for (const auto& sig_pubkey_pair : sign_tx_param_->signatures) {
         if (sig_pubkey_pair->public_key == signer &&
             sig_pubkey_pair->signature &&
             sig_pubkey_pair->signature->size() == kSolanaSignatureSize) {
-          transaction_bytes.insert(transaction_bytes.end(),
-                                   sig_pubkey_pair->signature->begin(),
-                                   sig_pubkey_pair->signature->end());
+          signature_bytes.insert(signature_bytes.end(),
+                                 sig_pubkey_pair->signature->begin(),
+                                 sig_pubkey_pair->signature->end());
+          ++num_of_sig;
           break;
         }
       }
     }
   }
 
+  // Compact array of signatures.
+  CompactU16Encode(num_of_sig, &transaction_bytes);
+  transaction_bytes.insert(transaction_bytes.end(), signature_bytes.begin(),
+                           signature_bytes.end());
   // Message.
   transaction_bytes.insert(transaction_bytes.end(), message_bytes.begin(),
                            message_bytes.end());

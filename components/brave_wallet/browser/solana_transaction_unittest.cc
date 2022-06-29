@@ -209,6 +209,18 @@ TEST_F(SolanaTransactionUnitTest, GetSignedTransaction) {
   expected_tx = base::Base64Encode(expected_bytes);
   EXPECT_EQ(transaction2.GetSignedTransaction(keyring_service()), expected_tx);
 
+  // Test when num of signatures available is less than signers.size in message,
+  // should use the actual number of signatures available.
+  sign_tx_param->signatures.pop_back();
+  transaction2.set_sign_tx_param(sign_tx_param.Clone());
+  expected_bytes = std::vector<uint8_t>({1});  // # of signature
+  expected_bytes.insert(expected_bytes.end(), signature.begin(),
+                        signature.end());
+  expected_bytes.insert(expected_bytes.end(), message_bytes.begin(),
+                        message_bytes.end());
+  EXPECT_EQ(transaction2.GetSignedTransaction(keyring_service()),
+            base::Base64Encode(expected_bytes));
+
   // Test key_service is nullptr.
   EXPECT_TRUE(transaction2.GetSignedTransaction(nullptr).empty());
 
