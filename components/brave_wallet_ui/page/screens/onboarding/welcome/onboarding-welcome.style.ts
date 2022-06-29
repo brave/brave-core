@@ -5,63 +5,72 @@
 
 import styled from 'styled-components'
 
-import WelcomeIcon from '../../../../assets/svg-icons/onboarding/brave-wallet.svg'
-import WelcomeIconDark from '../../../../assets/svg-icons/onboarding/brave-wallet-dark.svg'
+// assets
+import BraveWalletWithCoins from '../../../../assets/svg-icons/onboarding/brave-wallet-with-coins.svg'
+
+// styles
+import { Column, Row } from '../../../../components/shared/style'
+
+export const Title = styled.p<{ maxWidth?: string }>`
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 600;
+  font-size: 28px;
+  line-height: 42px;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  color: ${(p) => p.theme.color.text01};
+  max-width: ${(p) => p?.maxWidth || 'unset'};
+`
 
 export const PageIcon = styled.div`
-  width: 240px;
-  height: 183px;
-  background: url(${WelcomeIcon});
-  margin-bottom: 28px;
+  width: 350px;
+  height: 264px;
+  background: url(${BraveWalletWithCoins});
   background-repeat: no-repeat;
-  @media (prefers-color-scheme: dark) {
-    background: url(${WelcomeIconDark});
-  }
-`
-
-export const Title = styled.span`
-  font-family: Poppins;
-  font-size: 20px;
-  font-weight: 600;
-  line-height: 30px;
-  color: ${(p) => p.theme.color.text01};
-  letter-spacing: 0.02em;
-  margin-bottom: 6px;
-`
-
-export const Description = styled.span`
-  font-family: Poppins;
-  font-size: 14px;
-  line-height: 20px;
-  font-weight: 300;
-  color: ${(p) => p.theme.color.text02};
-  max-width: 400px;
-  text-align: center;
-  margin-bottom: 40px;
-  letter-spacing: 0.01em;
 `
 
 export const LearnMoreLink = styled.a`
-    font-family: Poppins;
-    font-style: normal;
-    font-weight: 600;
-    font-size: 12px;
-    line-height: 20px;
-    text-decoration: none;
-    text-align: center;
-    color: ${(p) => p.theme.color.interactive05};
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    height: 40px;
+  font-family: Poppins;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 13px;
+  line-height: 20px;
+  text-align: center;
+  color: ${(p) => p.theme.color.text03};
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 40px;
+  text-decoration: none;
 `
 
-export const ButtonContainer = styled.div`
-  display: flex;
+export const ButtonContainer = styled(Row)`
   flex: 1;
-  flex-direction: column;
+  flex-wrap: wrap;
   gap: 20px;
-  & > * {
-    width: 100%;
-  }
+`
+
+export const BlockQuote = styled.blockquote`
+  display: flex;
+  flex-direction: row;
+`
+
+export const VerticalRule = styled.div`
+  width: 1px;
+  min-height: 90%;
+  background-color: ${(p) => p.theme.color.divider01};
+  border-color: ${(p) => p.theme.color.divider01};
+  border-width: 3px;
+  border-style: solid;
+  margin-right: 24px;
+  border-radius: 25px;
+`
+
+export const BlockQuoteTextContainer = styled(Column)`
+  color: ${(p) => p.theme.color.text02};
+  text-align: left;
+  align-items: flex-start;
+  gap: 12px;
 `

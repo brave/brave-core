@@ -4,24 +4,17 @@
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
 import styled from 'styled-components'
-
-// images
-import WelcomeBackgroundSVG from './images/onboarding-welcome-background.svg'
+import { Column } from '../../../components/shared/style'
 
 // Layout
-export const OnboardingWrapper = styled.div`
+export const OnboardingWrapper = styled(Column)`
   width: 100%;
   height: 100%;
-  padding: 80px;
+  padding-top: 40px;
+  padding-left: 80px;
+  padding-right: 80px;
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
   overflow-x: hidden;
-  background-repeat: no-repeat;
-  background-image: url(${WelcomeBackgroundSVG});
-  background-position: 50% 90%;
-  background-size: 88%;
 `
 
 export const NextButtonRow = styled.div`
@@ -60,14 +53,18 @@ export const TitleAndDescriptionContainer = styled.div`
 `
 
 // Text
-export const Title = styled.p`
+export const Title = styled.p<{
+  maxWidth?: string
+  textAlign?: 'right' | 'center'
+}>`
   font-family: Poppins;
   font-size: 20px;
   font-weight: 600;
   color: ${(p) => p.theme.color.text01};
   letter-spacing: 0.02em;
   margin-bottom: 16px;
-  text-align: left;
+  max-width: ${(p) => p?.maxWidth || 'unset'};
+  text-align: ${(p) => p?.textAlign || 'left'};
 `
 
 export const Description = styled.p<{ textAlign?: 'right' | 'center' }>`

@@ -39,6 +39,9 @@ constexpr char kSardineClientTokensURL[] =
 
 constexpr webui::LocalizedString kLocalizedStrings[] = {
     {"braveWalletEnterYourPassword", IDS_BRAVE_WALLET_ENTER_YOUR_PASSWORD},
+    {"braveWalletMultiChain", BRAVE_WALLET_MULTI_CHAIN},
+    {"braveWalletPerksNftStorage", BRAVE_WALLET_PERKS_NFT_STORAGE},
+    {"braveWalletPerksTokens", BRAVE_WALLET_PERKS_TOKENS},
     {"braveWallet", IDS_BRAVE_WALLET},
     {"braveWalletDefiCategory", IDS_BRAVE_WALLET_DEFI_CATEGORY},
     {"braveWalletNftCategory", IDS_BRAVE_WALLET_NFT_CATEGORY},
