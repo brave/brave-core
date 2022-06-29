@@ -29,7 +29,6 @@ TEST_F(WalletUtilTest, ExternalWalletPtrFromJSON) {
       "  \"one_time_string\": \"eda4c873eac72e1ecc30e77b25bb623b8b5bf99f\",\n"
       "  \"status\": 2,\n"
       "  \"user_name\": \"random_user\",\n"
-      "  \"verify_url\": \"https://random.domain/verify\","
       "  \"add_url\": \"https://random.domain/add\","
       "  \"withdraw_url\": \"https://random.domain/withdraw\","
       "  \"account_url\": \"https://random.domain/account\","
@@ -44,7 +43,6 @@ TEST_F(WalletUtilTest, ExternalWalletPtrFromJSON) {
             "eda4c873eac72e1ecc30e77b25bb623b8b5bf99f");
   EXPECT_EQ(wallet->status, ledger::type::WalletStatus::VERIFIED);
   EXPECT_EQ(wallet->user_name, "random_user");
-  EXPECT_EQ(wallet->verify_url, "https://random.domain/verify");
   EXPECT_EQ(wallet->add_url, "https://random.domain/add");
   EXPECT_EQ(wallet->withdraw_url, "https://random.domain/withdraw");
   EXPECT_EQ(wallet->account_url, "https://random.domain/account");

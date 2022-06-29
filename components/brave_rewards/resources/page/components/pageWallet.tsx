@@ -293,11 +293,6 @@ class PageWallet extends React.Component<Props, State> {
       return
     }
 
-    if (externalWallet.status === 1) {
-      window.open(externalWallet.verifyUrl, '_self')
-      return
-    }
-
     if (externalWallet.loginUrl) {
       window.open(externalWallet.loginUrl, '_self')
     }
@@ -720,9 +715,6 @@ class PageWallet extends React.Component<Props, State> {
     switch (action) {
       case 'add-funds':
         this.onFundsAction('add')
-        break
-      case 'complete-verification':
-        this.handleExternalWalletLink()
         break
       case 'disconnect':
         this.onDisconnectClick()

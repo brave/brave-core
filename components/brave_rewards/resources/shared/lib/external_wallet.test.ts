@@ -21,7 +21,6 @@ describe('external_wallet', () => {
         links: {
           account: '',
           addFunds: '',
-          completeVerification: '',
           reconnect: ''
         }
       })
@@ -88,12 +87,6 @@ describe('external_wallet', () => {
       expect(convert({ ...basicObject, addUrl: 'url' })).toMatchObject({
         links: {
           addFunds: 'url'
-        }
-      })
-
-      expect(convert({ ...basicObject, verifyUrl: 'url' })).toMatchObject({
-        links: {
-          completeVerification: 'url'
         }
       })
 

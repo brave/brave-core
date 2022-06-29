@@ -302,7 +302,6 @@ declare namespace Rewards {
     address: string
     status: WalletStatus
     type: WalletType
-    verifyUrl: string
     addUrl: string
     withdrawUrl: string
     userName?: string
