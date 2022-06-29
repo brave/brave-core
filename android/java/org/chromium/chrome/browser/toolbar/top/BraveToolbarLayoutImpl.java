@@ -383,6 +383,10 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
             public void onShown(Tab tab, @TabSelectionType int type) {
                 // Update shields button state when visible tab is changed.
                 updateBraveShieldsButtonState(tab);
+                // case when window.open is triggered from dapps site and new tab is in focus
+                if (type != TabSelectionType.FROM_USER) {
+                    dismissWalletPanelOrDialog();
+                }
             }
 
             @Override
