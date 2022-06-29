@@ -572,7 +572,7 @@
   <message name="IDS_BRAVE_WALLET_LEARN_ABOUT_MY_WALLET" desc="Link to an article explaining crypto wallets">Learn more about my new wallet</message>
   <message name="IDS_BRAVE_WALLET_DISCLOSURES_TITLE" desc="Title text for Wallet Disclosures page">Before we begin</message>
   <message name="IDS_BRAVE_WALLET_DISCLOSURES_DESCRIPTION" desc="Description text for Wallet Disclosures page">We require that you acknowledge the items below</message>
-  <message name="IDS_BRAVE_WALLET_SELF_CUSTODY_DISCLOSURE_CHECKBOX_TEXT" desc="Self-custody wallet responsibility acknowledgement text">I understand this is a self-custody wallet and I’m responsible for my funds and assets. Brave can NOT access my wallet or reverse transactions on my behalf.</message>
+  <message name="IDS_BRAVE_WALLET_SELF_CUSTODY_DISCLOSURE_CHECKBOX_TEXT" desc="Self-custody wallet responsibility acknowledgement text">I understand this is a self-custody wallet, and that I alone am responsible for any associated funds, assets, or accounts, and for taking appropriate action to secure, protect and backup my wallet. I understand that Brave can NOT access my wallet or reverse transactions on my behalf, and that my recovery phrase is the ONLY way to regain access in the event of a lost password, stolen device, or similar circumstance.</message>
   <message name="IDS_BRAVE_WALLET_TERMS_OF_SERVICE_CHECKBOX_TEXT" desc="Wallet Terms of Service acknowledgement text">I have read and agree to the <ph name="LINK_BEFORE">$1</ph>Terms of Service<ph name="LINK_AFTER">$2</ph></message>
   <message name="IDS_BRAVE_WALLET_BUY_CRYPTO_BUTTON" desc="Buy Crypto button text">Buy Crypto</message>
   <message name="IDS_BRAVE_WALLET_DEPOSIT_CRYPTO_BUTTON" desc="Deposit Crypto button text">Deposit</message>
@@ -581,7 +581,6 @@
   <message name="IDS_BRAVE_WALLET_BUY_SELECT_ASSET" desc="Continue button text for buy crypto flow when an asset is not yet selected">Select an asset</message>
   <message name="IDS_BRAVE_WALLET_FUND_WALLET_TITLE" desc="Fund wallet screen title text">Complete your <ph name="ASSET_TICKER">$1<ex>1</ex></ph> purchase through one of our partners</message>
   <message name="IDS_BRAVE_WALLET_FUND_WALLET_DESCRIPTION" desc="Fund wallet screen description text">On completion, your funds will be transfered to your Brave Wallet</message>
-  
   <message name="IDS_BRAVE_WALLET_DEPOSIT_FUNDS_TITLE" desc="Deposit funds screen title">Deposit crypto</message>
   <message name="IDS_BRAVE_WALLET_DEPOSIT_X" desc="Generic prompt to deposit an asset">Deposit <ph name="VALUE">$1</ph></message>
   <message name="IDS_BRAVE_WALLET_DEPOSIT_SOL_SPL_TOKENS" desc="Description of depositable Solana wallet assets">Deposit Solana or SPL tokens</message>

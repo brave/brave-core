@@ -17,7 +17,7 @@ import { PageState, WalletRoutes } from '../../../../constants/types'
 import { WalletPageActions } from '../../../actions'
 
 // components
-import { Checkbox } from 'brave-ui'
+import { Checkbox } from '../../../../components/shared/checkbox/checkbox'
 import WalletPageLayout from '../../../../components/desktop/wallet-page-layout/index'
 import { NavButton } from '../../../../components/extension/buttons/nav-button/index'
 import { OnboardingNewWalletStepsNavigation } from '../components/onboarding-steps-navigation/onboarding-steps-navigation'
@@ -109,38 +109,32 @@ export const OnboardingDisclosures = ({ nextStep, onBack }: Props) => {
             </Description>
           </div>
 
+          <VerticalSpace space='40px' />
+
           <div>
             <Checkbox
-              value={{ isResponsibilityCheckboxChecked }}
-              onChange={(key, isSelected) => {
-                setIsResponsibilityCheckboxChecked(isSelected)
-              }}
+              isChecked={isResponsibilityCheckboxChecked}
+              onChange={setIsResponsibilityCheckboxChecked}
+              alignItems='flex-start'
             >
-              <div data-key='isResponsibilityCheckboxChecked'>
-                <CheckboxText>
-                <VerticalSpace space='48px' />
+              <CheckboxText>
                 <p>
                   {getLocale('braveWalletSelfCustodyDisclosureCheckboxText')}
                 </p>
-                </CheckboxText>
-              </div>
+              </CheckboxText>
             </Checkbox>
 
             <Checkbox
-              value={{ isTermsCheckboxChecked }}
-              onChange={(key, isSelected) => {
-                setIsTermsCheckboxChecked(isSelected)
-              }}
+              isChecked={isTermsCheckboxChecked }
+              onChange={setIsTermsCheckboxChecked}
+              alignItems='flex-start'
             >
-              <div data-key='isTermsCheckboxChecked'>
-                <CheckboxText>
-                    {termsOfServiceText}
-                  <VerticalSpace space='4px' />
-                </CheckboxText>
-              </div>
+              <CheckboxText>
+                {termsOfServiceText}
+              </CheckboxText>
             </Checkbox>
 
-            <VerticalSpace space='150px' />
+            <VerticalSpace space='120px' />
           </div>
 
           <NextButtonRow>
