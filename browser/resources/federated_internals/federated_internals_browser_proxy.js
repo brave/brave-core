@@ -13,8 +13,8 @@ export class FederatedInternalsBrowserProxy {
         this.handler.$.bindNewPipeAndPassReceiver());
   }
 
-  getDataStoreInfo() {
-    return this.handler.getDataStoreInfo();
+  updateDataStoresInfo() {
+    return this.handler.updateDataStoresInfo();
   }
 
   static getInstance() {

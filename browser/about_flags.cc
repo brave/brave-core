@@ -11,6 +11,7 @@
 #include "brave/browser/ethereum_remote_client/features.h"
 #include "brave/components/brave_ads/common/features.h"
 #include "brave/components/brave_component_updater/browser/features.h"
+#include "brave/components/brave_federated/features.h"
 #include "brave/components/brave_rewards/common/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/common/features.h"
 #include "brave/components/brave_shields/common/features.h"
@@ -283,6 +284,14 @@ constexpr char kBraveTranslateGoDescription[] =
     "and brave translation backed. Also disables suggestions to install google "
     "translate extension.";
 
+constexpr char kBraveFederatedName[] =
+    "Enables local data collection for ad notification timing "
+    "(brave-federated)";
+constexpr char kBraveFederatedDescription[] =
+    "Starts local collection for ad notification timing data. This data "
+    "is stored locally and automatically erased after one month. No data "
+    "leaves the client.";
+
 // Blink features.
 constexpr char kFileSystemAccessAPIName[] = "File System Access API";
 constexpr char kFileSystemAccessAPIDescription[] =
@@ -398,6 +407,13 @@ constexpr char kRestrictWebSocketsPoolDescription[] =
      flag_descriptions::kBraveNewsCardPeekFeatureDescription,              \
      kOsDesktop,                                                           \
      FEATURE_VALUE_TYPE(brave_today::features::kBraveNewsCardPeekFeature)},
+
+#define BRAVE_FEDERATED_FEATURE_ENTRIES                                 \
+    {"brave-federated",                                                 \
+     flag_descriptions::kBraveFederatedName,                            \
+     flag_descriptions::kBraveFederatedDescription,                     \
+     kOsDesktop,                                                        \
+     FEATURE_VALUE_TYPE(brave_federated::features::kFederatedLearning)},
 
 #if BUILDFLAG(ETHEREUM_REMOTE_CLIENT_ENABLED)
 #define CRYPTO_WALLETS_FEATURE_ENTRIES                                       \
@@ -544,5 +560,6 @@ constexpr char kRestrictWebSocketsPoolDescription[] =
     BRAVE_REWARDS_GEMINI_FEATURE_ENTRIES                                    \
     BRAVE_VPN_FEATURE_ENTRIES                                               \
     BRAVE_SKU_SDK_FEATURE_ENTRIES                                           \
-    SPEEDREADER_FEATURE_ENTRIES                                             \
-    BRAVE_TRANSLATE_GO_FEATURE_ENTRIES
+    SPEEDREADER_FEATURE_ENTRIES                                             \                                     \
+    BRAVE_TRANSLATE_GO_FEATURE_ENTRIES                                      \
+    BRAVE_FEDERATED_FEATURE_ENTRIES

@@ -18,14 +18,16 @@
 
 // npm run test -- brave_unit_tests --filter=DataStoreTest*
 
+namespace brave_federated {
+
 namespace {
 
-struct TrainingDataTestInfo {
+struct TrainingDataInfo {
   int training_instance_id;
   int feature_name;
   int feature_type;
   std::string feature_value;
-} kTestTrainingData[] = {
+} kTrainingData[] = {
     {0, 1, 0, "cat"},
     {0, 2, 1, "24"},
     {1, 1, 0, "dog"},
@@ -34,8 +36,6 @@ struct TrainingDataTestInfo {
 
 }  // namespace
 
-namespace brave_federated {
-
 class DataStoreTest : public testing::Test {
  public:
   DataStoreTest()
@@ -43,8 +43,8 @@ class DataStoreTest : public testing::Test {
   void SetUp() override;
 
   void ClearDatabase();
-  size_t RecordCount() const;
-  size_t TrainingInstanceCount() const;
+  int RecordCount() const;
+  int TrainingInstanceCount() const;
 
   DataStore::TrainingData TrainingDataFromTestInfo();
 
@@ -62,36 +62,35 @@ void DataStoreTest::SetUp() {
       temp_dir_.GetPath().Append(FILE_PATH_LITERAL("test_data_store")));
   data_store_ = new DataStore(db_path);
   ASSERT_TRUE(data_store_->Init(0, "test_federated_task", 50, 30));
-  ClearDatabase();
 }
 
 void DataStoreTest::ClearDatabase() {
   EXPECT_TRUE(data_store_->DeleteTrainingData());
 }
 
-size_t DataStoreTest::RecordCount() const {
+int DataStoreTest::RecordCount() const {
   sql::Statement statement(data_store_->db_.GetUniqueStatement(
       "SELECT count(*) FROM test_federated_task"));
   EXPECT_TRUE(statement.Step());
-  return static_cast<size_t>(statement.ColumnInt(0));
+  return statement.ColumnInt(0);
 }
 
-size_t DataStoreTest::TrainingInstanceCount() const {
+int DataStoreTest::TrainingInstanceCount() const {
   sql::Statement statement(data_store_->db_.GetUniqueStatement(
       "SELECT count(DISTINCT training_instance_id) FROM test_federated_task"));
   EXPECT_TRUE(statement.Step());
-  return static_cast<size_t>(statement.ColumnInt(0));
+  return statement.ColumnInt(0);
 }
 
 DataStore::TrainingData DataStoreTest::TrainingDataFromTestInfo() {
   DataStore::TrainingData training_data;
 
-  for (const auto& test_entry : kTestTrainingData) {
-    int training_instance_id = test_entry.training_instance_id;
+  for (const auto& item : kTrainingData) {
+    int training_instance_id = item.training_instance_id;
     mojom::CovariatePtr covariate = mojom::Covariate::New();
-    covariate->type = (mojom::CovariateType)test_entry.feature_name;
-    covariate->data_type = (mojom::DataType)test_entry.feature_type;
-    covariate->value = test_entry.feature_value;
+    covariate->type = (mojom::CovariateType)item.feature_name;
+    covariate->data_type = (mojom::DataType)item.feature_type;
+    covariate->value = item.feature_value;
 
     training_data[training_instance_id].push_back(std::move(covariate));
   }
@@ -100,19 +99,18 @@ DataStore::TrainingData DataStoreTest::TrainingDataFromTestInfo() {
 }
 
 void DataStoreTest::InitializeDataStore() {
-  ClearDatabase();
   DataStore::TrainingData training_data = TrainingDataFromTestInfo();
   for (auto& training_instance_pair : training_data) {
     auto& training_instance = training_instance_pair.second;
     AddTrainingInstance(std::move(training_instance));
   }
-  EXPECT_EQ(std::size(kTestTrainingData), RecordCount());
-  EXPECT_EQ(std::size(training_data), TrainingInstanceCount());
+  EXPECT_EQ(kTestTrainingData.size(), RecordCount());
+  EXPECT_EQ(training_data.size(), TrainingInstanceCount());
 }
 
 bool DataStoreTest::AddTrainingInstance(
     std::vector<mojom::CovariatePtr> covariates) {
-  mojom::TrainingInstancePtr training_instance = mojom::TrainingInstance::New();
+  std::vector<brave_federated::mojom::CovariatePtr> training_instance;
   for (auto& covariate : covariates) {
     training_instance->covariates.push_back(std::move(covariate));
   }
@@ -124,7 +122,6 @@ bool DataStoreTest::AddTrainingInstance(
 // -------------------------------------------------------------------------------------
 
 TEST_F(DataStoreTest, AddTrainingInstance) {
-  ClearDatabase();
   EXPECT_EQ(0U, RecordCount());
   DataStore::TrainingData training_data = TrainingDataFromTestInfo();
   EXPECT_TRUE(AddTrainingInstance(std::move(training_data[0])));
@@ -148,24 +145,24 @@ TEST_F(DataStoreTest, LoadTrainingData) {
 
 TEST_F(DataStoreTest, DeleteLogs) {
   InitializeDataStore();
-  EXPECT_EQ(4U, RecordCount());
+  EXPECT_EQ(4, RecordCount());
   DataStore::TrainingData training_data = data_store_->LoadTrainingData();
   EXPECT_EQ(training_data.size(), TrainingInstanceCount());
   EXPECT_TRUE(data_store_->DeleteTrainingData());
-  EXPECT_EQ(0U, RecordCount());
+  EXPECT_EQ(0, RecordCount());
   training_data = data_store_->LoadTrainingData();
-  EXPECT_EQ(0U, RecordCount());
+  EXPECT_EQ(0, RecordCount());
 }
 
 TEST_F(DataStoreTest, PurgeTrainingDataAfterExpirationDate) {
   InitializeDataStore();
-  EXPECT_EQ(4U, RecordCount());
+  EXPECT_EQ(4, RecordCount());
   task_environment_.AdvanceClock(base::Days(31));
 
   data_store_->PurgeTrainingDataAfterExpirationDate();
 
   DataStore::TrainingData training_data = data_store_->LoadTrainingData();
-  EXPECT_EQ(0U, RecordCount());
+  EXPECT_EQ(0, RecordCount());
 }
 
 }  // namespace brave_federated

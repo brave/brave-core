@@ -33,11 +33,10 @@ class FederatedInternalsPageHandler
   FederatedInternalsPageHandler& operator=(
       const FederatedInternalsPageHandler&) = delete;
 
-  void GetDataStoreInfo() override;
+  void UpdateDataStoresInfo() override;
 
  private:
-  void OnDataStoreInfoAvailable(
-      brave_federated::DataStore::TrainingData training_data);
+  void OnUpdateDataStoresInfo(brave_federated::TrainingData training_data);
 
   mojo::Receiver<federated_internals::mojom::PageHandler> receiver_;
   mojo::Remote<federated_internals::mojom::Page> page_;

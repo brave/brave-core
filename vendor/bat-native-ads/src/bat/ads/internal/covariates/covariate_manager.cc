@@ -164,10 +164,9 @@ void CovariateManager::SetLogEntry(
   covariate_log_entries_[key] = std::move(entry);
 }
 
-brave_federated::mojom::TrainingInstancePtr
+std::vector<brave_federated::mojom::CovariatePtr>
 CovariateManager::GetTrainingInstance() const {
-  brave_federated::mojom::TrainingInstancePtr training_instance =
-      brave_federated::mojom::TrainingInstance::New();
+  std::vector<brave_federated::mojom::CovariatePtr> training_instance;
   for (const auto& covariate_log_entry : covariate_log_entries_) {
     const CovariateLogEntryInterface* entry = covariate_log_entry.second.get();
     DCHECK(entry);
@@ -177,7 +176,7 @@ CovariateManager::GetTrainingInstance() const {
     covariate->data_type = entry->GetDataType();
     covariate->type = entry->GetType();
     covariate->value = entry->GetValue();
-    training_instance->covariates.push_back(std::move(covariate));
+    training_instance.push_back(std::move(covariate));
   }
 
   return training_instance;
@@ -197,7 +196,7 @@ void CovariateManager::SetNotificationAdEvent(
 }
 
 void CovariateManager::LogTrainingInstance() {
-  brave_federated::mojom::TrainingInstancePtr training_instance =
+  std::vector<brave_federated::mojom::CovariatePtr> training_instance =
       GetTrainingInstance();
   AdsClientHelper::GetInstance()->LogTrainingInstance(
       std::move(training_instance));

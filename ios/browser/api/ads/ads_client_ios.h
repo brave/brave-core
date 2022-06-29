@@ -81,8 +81,9 @@ class AdsClientIOS : public ads::AdsClient {
   void RecordP2AEvent(const std::string& name,
                       const ads::mojom::P2AEventType type,
                       const std::string& value) override;
-  void LogTrainingInstance(const brave_federated::mojom::TrainingInstancePtr
-                               training_instance) override;
+  void LogTrainingInstance(
+      const std::vector<brave_federated::mojom::CovariatePtr> training_instance)
+      override;
 };
 
 #endif  // BRAVE_IOS_BROWSER_API_ADS_ADS_CLIENT_IOS_H_

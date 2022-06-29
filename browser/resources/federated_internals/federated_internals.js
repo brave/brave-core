@@ -9,9 +9,9 @@ function getProxy() {
 }
 
 function initialize() {
-  getProxy().getDataStoreInfo();
+  getProxy().updateDataStoresInfo();
   
-  getProxy().getCallbackRouter().onDataStoreInfoAvailable.addListener(
+  getProxy().getCallbackRouter().onUpdateDataStoresInfo.addListener(
     (logs) => {
       dataStoresLogs['ad-timing'] = logs;
       onDataStoreChanged();

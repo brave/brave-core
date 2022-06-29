@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_BRAVE_FEDERATED_DATA_STORES_ASYNC_DATA_STORE_H_
 
 #include <string>
+#include <vector>
 
 #include "base/callback.h"
 #include "base/files/file_path.h"
@@ -17,26 +18,24 @@
 namespace brave_federated {
 
 class DataStore;
+struct DataStoreTask;
 
 // Wrapper around DataStore class to handle SequenceBound async logic
 class AsyncDataStore {
  public:
-  explicit AsyncDataStore(base::FilePath db_path);
+  explicit AsyncDataStore(DataStoreTask data_store_task,
+                          base::FilePath db_path);
   ~AsyncDataStore();
 
   AsyncDataStore(const AsyncDataStore&) = delete;
   AsyncDataStore& operator=(const AsyncDataStore&) = delete;
 
-  void Init(int task_id,
-            const std::string& task_name,
-            int max_number_of_records,
-            int max_retention_days,
-            base::OnceCallback<void(bool)> callback);
+  void Init(base::OnceCallback<void(bool)> callback);
 
-  void AddTrainingInstance(mojom::TrainingInstancePtr training_instance,
-                           base::OnceCallback<void(bool)> callback);
-  void LoadTrainingData(
-      base::OnceCallback<void(DataStore::TrainingData)> callback);
+  void AddTrainingInstance(
+      std::vector<brave_federated::mojom::CovariatePtr> training_instance,
+      base::OnceCallback<void(bool)> callback);
+  void LoadTrainingData(base::OnceCallback<void(TrainingData)> callback);
   void PurgeTrainingDataAfterExpirationDate();
 
  private:

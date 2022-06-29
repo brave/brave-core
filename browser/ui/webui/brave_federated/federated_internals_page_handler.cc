@@ -14,8 +14,8 @@
 #include "brave/components/brave_federated/brave_federated_service.h"
 #include "brave/components/brave_federated/data_store_service.h"
 #include "brave/components/brave_federated/data_stores/async_data_store.h"
+#include "brave/components/brave_federated/notification_ad_task_constants.h"
 #include "brave/components/brave_federated/public/interfaces/brave_federated.mojom.h"
-#include "brave/components/brave_federated/tasks_constants.h"
 #include "chrome/browser/profiles/profile.h"
 
 FederatedInternalsPageHandler::FederatedInternalsPageHandler(
@@ -31,36 +31,37 @@ FederatedInternalsPageHandler::FederatedInternalsPageHandler(
 
 FederatedInternalsPageHandler::~FederatedInternalsPageHandler() = default;
 
-void FederatedInternalsPageHandler::GetDataStoreInfo() {
-  if (!data_store_service_)
+void FederatedInternalsPageHandler::UpdateDataStoresInfo() {
+  if (!data_store_service_) {
     return;
-  auto* ad_notification_data_store = data_store_service_->GetDataStore(
-      brave_federated::kNotificationAdTaskName);
+  }
+  brave_federated::AsyncDataStore* ad_notification_data_store =
+      data_store_service_->GetDataStore(
+          brave_federated::kNotificationAdTaskName);
 
   if (!ad_notification_data_store) {
     return;
   }
 
   ad_notification_data_store->LoadTrainingData(
-      base::BindOnce(&FederatedInternalsPageHandler::OnDataStoreInfoAvailable,
+      base::BindOnce(&FederatedInternalsPageHandler::OnUpdateDataStoresInfo,
                      weak_ptr_factory_.GetWeakPtr()));
 }
 
-void FederatedInternalsPageHandler::OnDataStoreInfoAvailable(
-    brave_federated::DataStore::TrainingData training_data) {
-  std::vector<federated_internals::mojom::InternalsTrainingInstancePtr>
-      internals_training_instances;
-  for (auto& training_instance : training_data) {
-    auto internals_training_instance =
-        federated_internals::mojom::InternalsTrainingInstance::New();
-    internals_training_instance->id = training_instance.first;
-    auto& covariates = training_instance.second;
+void FederatedInternalsPageHandler::OnUpdateDataStoresInfo(
+    brave_federated::TrainingData training_data) {
+  std::vector<federated_internals::mojom::TrainingInstancePtr>
+      training_instances;
+  for (auto& item : training_data) {
+    auto training_instance =
+        federated_internals::mojom::TrainingInstance::New();
+    training_instance->id = item.first;
+    std::vector<brave_federated::mojom::CovariatePtr>& covariates = item.second;
     for (auto& covariate : covariates) {
-      internals_training_instance->covariates.push_back(std::move(covariate));
+      training_instance->covariates.push_back(std::move(covariate));
     }
 
-    internals_training_instances.push_back(
-        std::move(internals_training_instance));
+    training_instances.push_back(std::move(training_instance));
   }
-  page_->OnDataStoreInfoAvailable(std::move(internals_training_instances));
+  page_->OnUpdateDataStoresInfo(std::move(training_instances));
 }

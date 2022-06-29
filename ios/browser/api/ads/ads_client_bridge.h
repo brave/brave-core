@@ -74,7 +74,7 @@
                   type:(const ads::mojom::P2AEventType)type
                  value:(const std::string&)value;
 - (void)logTrainingInstance:
-    (const brave_federated::mojom::TrainingInstancePtr)training_instance;
+    (const std::vector<brave_federated::mojom::CovariatePtr>)training_instance;
 
 @end
 

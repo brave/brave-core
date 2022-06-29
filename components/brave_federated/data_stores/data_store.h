@@ -17,22 +17,34 @@
 
 namespace brave_federated {
 
+using TrainingData = base::flat_map<int, std::vector<mojom::CovariatePtr>>;
+
+struct DataStoreTask {
+  int task_id = 0;
+  const std::string task_name;
+  int max_number_of_records = 0;
+  base::TimeDelta max_retention_days;
+};
+
 class DataStore {
  public:
-  explicit DataStore(const base::FilePath& database_path);
+  explicit DataStore(const DataStoreTask data_store_task,
+                     const base::FilePath& database_path);
   ~DataStore();
 
   DataStore(const DataStore&) = delete;
   DataStore& operator=(const DataStore&) = delete;
 
-  bool Init(int task_id,
-            const std::string& task_name,
-            int max_number_of_records,
-            int max_retention_days);
+  bool Init();
 
-  typedef base::flat_map<int, std::vector<mojom::CovariatePtr>> TrainingData;
+  int GetNextTrainingInstanceId();
+  void SaveCovariate(const brave_federated::mojom::Covariate& covariate,
+                     int training_instance_id,
+                     const base::Time created_at);
+  bool AddTrainingInstance(
+      const std::vector<brave_federated::mojom::CovariatePtr>
+          training_instance);
 
-  bool AddTrainingInstance(const mojom::TrainingInstancePtr training_instance);
   bool DeleteTrainingData();
   TrainingData LoadTrainingData();
   void PurgeTrainingDataAfterExpirationDate();
@@ -40,13 +52,9 @@ class DataStore {
  protected:
   friend class DataStoreTest;
 
-  sql::Database db_;
-  base::FilePath database_path_;
-
-  std::string task_id_;
-  std::string task_name_;
-  int max_number_of_records_;
-  int max_retention_days_;
+  sql::Database database_;
+  base::FilePath database_file_path_;
+  DataStoreTask data_store_task_;
 
  private:
   bool MaybeCreateTable();

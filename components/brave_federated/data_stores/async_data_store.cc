@@ -15,26 +15,22 @@
 
 namespace brave_federated {
 
-AsyncDataStore::AsyncDataStore(base::FilePath db_path)
+AsyncDataStore::AsyncDataStore(DataStoreTask data_store_task,
+                               base::FilePath db_path)
     : data_store_(base::ThreadPool::CreateSequencedTaskRunner(
                       {base::MayBlock(), base::TaskPriority::BEST_EFFORT,
                        base::TaskShutdownBehavior::CONTINUE_ON_SHUTDOWN}),
+                  data_store_task,
                   db_path) {}
 
 AsyncDataStore::~AsyncDataStore() = default;
 
-void AsyncDataStore::Init(int task_id,
-                          const std::string& task_name,
-                          int max_number_of_records,
-                          int max_retention_days,
-                          base::OnceCallback<void(bool)> callback) {
-  data_store_.AsyncCall(&DataStore::Init)
-      .WithArgs(task_id, task_name, max_number_of_records, max_retention_days)
-      .Then(std::move(callback));
+void AsyncDataStore::Init(base::OnceCallback<void(bool)> callback) {
+  data_store_.AsyncCall(&DataStore::Init).Then(std::move(callback));
 }
 
 void AsyncDataStore::AddTrainingInstance(
-    mojom::TrainingInstancePtr training_instance,
+    std::vector<brave_federated::mojom::CovariatePtr> training_instance,
     base::OnceCallback<void(bool)> callback) {
   data_store_.AsyncCall(&DataStore::AddTrainingInstance)
       .WithArgs(std::move(training_instance))
@@ -42,7 +38,7 @@ void AsyncDataStore::AddTrainingInstance(
 }
 
 void AsyncDataStore::LoadTrainingData(
-    base::OnceCallback<void(DataStore::TrainingData)> callback) {
+    base::OnceCallback<void(TrainingData)> callback) {
   data_store_.AsyncCall(&DataStore::LoadTrainingData).Then(std::move(callback));
 }
 

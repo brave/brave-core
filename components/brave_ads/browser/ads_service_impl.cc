@@ -2336,7 +2336,7 @@ void AdsServiceImpl::RecordP2AEvent(const std::string& name,
 }
 
 void AdsServiceImpl::LogTrainingInstance(
-    brave_federated::mojom::TrainingInstancePtr training_instance) {
+    std::vector<brave_federated::mojom::CovariatePtr> training_instance) {
   if (!ad_notification_timing_data_store_) {
     return;
   }
