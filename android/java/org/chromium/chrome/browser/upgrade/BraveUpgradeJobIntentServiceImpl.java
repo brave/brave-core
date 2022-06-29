@@ -16,8 +16,12 @@ import org.chromium.base.task.PostTask;
 import org.chromium.chrome.browser.BraveFeatureList;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
+import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.util.SafetyNetCheck;
 import org.chromium.chrome.browser.util.TabUtils;
+import org.chromium.components.browser_ui.site_settings.WebsitePreferenceBridge;
+import org.chromium.components.content_settings.ContentSettingValues;
+import org.chromium.components.content_settings.ContentSettingsType;
 import org.chromium.content_public.browser.BrowserStartupController;
 import org.chromium.content_public.browser.UiThreadTaskTraits;
 
@@ -28,6 +32,17 @@ public class BraveUpgradeJobIntentServiceImpl extends BraveUpgradeJobIntentServi
 
     public static void maybePerformUpgradeTasks(Context context) {
         BraveUpgradeJobIntentServiceImpl.enqueueWork(context, new Intent());
+    }
+
+    private static void maybeMigrateSettings() {
+        // False is the default value, so we want to migrate it only when it's true.
+        if (BravePrefServiceBridge.getInstance().getDesktopModeEnabled()) {
+            Profile profile = Profile.getLastUsedRegularProfile();
+            WebsitePreferenceBridge.setDefaultContentSetting(
+                    profile, ContentSettingsType.REQUEST_DESKTOP_SITE, ContentSettingValues.ALLOW);
+            // Reset old flag to default value, so we don't migrate it anymore.
+            BravePrefServiceBridge.getInstance().setDesktopModeEnabled(false);
+        }
     }
 
     private static void enqueueWork(Context context, Intent work) {
@@ -42,6 +57,8 @@ public class BraveUpgradeJobIntentServiceImpl extends BraveUpgradeJobIntentServi
                     new BrowserStartupController.StartupCallback() {
                         @Override
                         public void onSuccess() {
+                            maybeMigrateSettings();
+
                             if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_REWARDS)
                                     && BravePrefServiceBridge.getInstance()
                                                .getSafetynetCheckFailed()) {
