@@ -7,6 +7,8 @@
 #define BRAVE_BROWSER_UI_VIEWS_TABS_BRAVE_TAB_SEARCH_BUTTON_H_
 
 #include "chrome/browser/ui/views/tabs/tab_search_button.h"
+#include "third_party/skia/include/core/SkPath.h"
+#include "ui/gfx/geometry/size.h"
 
 class BraveTabSearchButton : public TabSearchButton {
  public:
@@ -16,6 +18,10 @@ class BraveTabSearchButton : public TabSearchButton {
   BraveTabSearchButton& operator=(const BraveTabSearchButton&) = delete;
 
   // TabSearchButton overrides:
+  SkPath GetBorderPath(const gfx::Point& origin,
+                       float scale,
+                       bool extend_to_top) const override;
+  gfx::Size CalculatePreferredSize() const override;
   int GetCornerRadius() const override;
 };
 
