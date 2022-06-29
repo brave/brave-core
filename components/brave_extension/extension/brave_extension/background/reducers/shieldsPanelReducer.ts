@@ -103,6 +103,10 @@ export default function shieldsPanelReducer (
       }
       break
     }
+    case tabTypes.TAB_REMOVED: {
+      delete state.tabs[action.tabId]
+      break
+    }
     case shieldsPanelTypes.SHIELDS_PANEL_DATA_UPDATED: {
       // @ts-expect-error (petemill) - shields Tab / ShieldDetails types are a mess of
       // and used interchangably and all this code will be removed soon.

@@ -15,3 +15,7 @@ chrome.tabs.onCreated.addListener(function (tab: chrome.tabs.Tab) {
 chrome.tabs.onUpdated.addListener(function (tabId: number, changeInfo: chrome.tabs.TabChangeInfo, tab: chrome.tabs.Tab) {
   tabActions.tabDataChanged(tabId, changeInfo, tab)
 })
+
+chrome.tabs.onRemoved.addListener(function (tabId: number) {
+  tabActions.tabRemoved(tabId)
+})
