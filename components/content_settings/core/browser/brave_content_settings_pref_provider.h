@@ -51,6 +51,8 @@ class BravePrefProvider : public PrefProvider,
   friend class BravePrefProviderTest;
   FRIEND_TEST_ALL_PREFIXES(BravePrefProviderTest, TestShieldsSettingsMigration);
   FRIEND_TEST_ALL_PREFIXES(BravePrefProviderTest,
+                           TestShieldsSettingsMigrationV2toV3);
+  FRIEND_TEST_ALL_PREFIXES(BravePrefProviderTest,
                            TestShieldsSettingsMigrationVersion);
   FRIEND_TEST_ALL_PREFIXES(BravePrefProviderTest,
                            TestShieldsSettingsMigrationFromResourceIDs);
