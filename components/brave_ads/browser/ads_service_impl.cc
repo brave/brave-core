@@ -224,7 +224,7 @@ AdsServiceImpl::AdsServiceImpl(
 #endif
     history::HistoryService* history_service,
     brave_rewards::RewardsService* rewards_service,
-    brave_federated::AsyncDataStore* ad_notification_timing_data_store)
+    brave_federated::AsyncDataStore* notification_ad_timing_data_store)
     : profile_(profile),
       history_service_(history_service),
 #if BUILDFLAG(BRAVE_ADAPTIVE_CAPTCHA_ENABLED)
@@ -239,7 +239,7 @@ AdsServiceImpl::AdsServiceImpl(
       last_idle_time_(0),
       display_service_(NotificationDisplayService::GetForProfile(profile_)),
       rewards_service_(rewards_service),
-      ad_notification_timing_data_store_(ad_notification_timing_data_store),
+      notification_ad_timing_data_store_(notification_ad_timing_data_store),
       bat_ads_client_receiver_(new bat_ads::AdsClientMojoBridge(this)) {
   DCHECK(profile_);
 #if BUILDFLAG(BRAVE_ADAPTIVE_CAPTCHA_ENABLED)
@@ -2337,13 +2337,13 @@ void AdsServiceImpl::RecordP2AEvent(const std::string& name,
 
 void AdsServiceImpl::LogTrainingInstance(
     std::vector<brave_federated::mojom::CovariatePtr> training_instance) {
-  if (!ad_notification_timing_data_store_) {
+  if (!notification_ad_timing_data_store_) {
     return;
   }
 
   auto callback =
       base::BindOnce(&AdsServiceImpl::OnLogTrainingInstance, AsWeakPtr());
-  ad_notification_timing_data_store_->AddTrainingInstance(
+  notification_ad_timing_data_store_->AddTrainingInstance(
       std::move(training_instance), std::move(callback));
 }
 

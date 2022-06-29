@@ -20,8 +20,8 @@ namespace brave_federated {
 using TrainingData = base::flat_map<int, std::vector<mojom::CovariatePtr>>;
 
 struct DataStoreTask {
-  int task_id = 0;
-  const std::string task_name;
+  int id = 0;
+  const std::string name;
   int max_number_of_records = 0;
   base::TimeDelta max_retention_days;
 };
@@ -29,13 +29,13 @@ struct DataStoreTask {
 class DataStore {
  public:
   explicit DataStore(const DataStoreTask data_store_task,
-                     const base::FilePath& database_path);
+                     const base::FilePath& db_file_path);
   ~DataStore();
 
   DataStore(const DataStore&) = delete;
   DataStore& operator=(const DataStore&) = delete;
 
-  bool Init();
+  bool InitializeDatabase();
 
   int GetNextTrainingInstanceId();
   void SaveCovariate(const brave_federated::mojom::Covariate& covariate,
@@ -53,7 +53,7 @@ class DataStore {
   friend class DataStoreTest;
 
   sql::Database database_;
-  base::FilePath database_file_path_;
+  base::FilePath db_file_path_;
   DataStoreTask data_store_task_;
 
  private:

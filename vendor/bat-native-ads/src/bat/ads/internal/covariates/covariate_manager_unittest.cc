@@ -28,7 +28,7 @@ TEST_F(BatAdsCovariateManagerTest, GetTrainingInstance) {
       CovariateManager::GetInstance()->GetTrainingInstance();
 
   // Assert
-  EXPECT_EQ(30U, training_covariates->covariates.size());
+  EXPECT_EQ(30U, training_covariates.size());
 }
 
 TEST_F(BatAdsCovariateManagerTest, GetTrainingInstanceWithSetters) {
@@ -42,7 +42,7 @@ TEST_F(BatAdsCovariateManagerTest, GetTrainingInstanceWithSetters) {
       CovariateManager::GetInstance()->GetTrainingInstance();
 
   // Assert
-  EXPECT_EQ(32U, training_covariates->covariates.size());
+  EXPECT_EQ(32U, training_covariates.size());
 }
 
 }  // namespace ads

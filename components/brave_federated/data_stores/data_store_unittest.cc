@@ -42,11 +42,10 @@ class DataStoreTest : public testing::Test {
       : task_environment_(base::test::TaskEnvironment::TimeSource::MOCK_TIME) {}
   void SetUp() override;
 
-  void ClearDatabase();
   int RecordCount() const;
   int TrainingInstanceCount() const;
 
-  DataStore::TrainingData TrainingDataFromTestInfo();
+  TrainingData TrainingDataFromTestInfo();
 
   bool AddTrainingInstance(std::vector<mojom::CovariatePtr> covariates);
   void InitializeDataStore();
@@ -60,30 +59,29 @@ void DataStoreTest::SetUp() {
   ASSERT_TRUE(temp_dir_.CreateUniqueTempDir());
   base::FilePath db_path(
       temp_dir_.GetPath().Append(FILE_PATH_LITERAL("test_data_store")));
-  data_store_ = new DataStore(db_path);
-  ASSERT_TRUE(data_store_->Init(0, "test_federated_task", 50, 30));
-}
-
-void DataStoreTest::ClearDatabase() {
-  EXPECT_TRUE(data_store_->DeleteTrainingData());
+  DataStoreTask data_store_task({0, "test_federated_task",
+                                 /* max_number_of_records */ 50,
+                                 base::Days(30)});
+  data_store_ = new DataStore(std::move(data_store_task), db_path);
+  ASSERT_TRUE(data_store_->InitializeDatabase());
 }
 
 int DataStoreTest::RecordCount() const {
-  sql::Statement statement(data_store_->db_.GetUniqueStatement(
+  sql::Statement statement(data_store_->database_.GetUniqueStatement(
       "SELECT count(*) FROM test_federated_task"));
   EXPECT_TRUE(statement.Step());
   return statement.ColumnInt(0);
 }
 
 int DataStoreTest::TrainingInstanceCount() const {
-  sql::Statement statement(data_store_->db_.GetUniqueStatement(
+  sql::Statement statement(data_store_->database_.GetUniqueStatement(
       "SELECT count(DISTINCT training_instance_id) FROM test_federated_task"));
   EXPECT_TRUE(statement.Step());
   return statement.ColumnInt(0);
 }
 
-DataStore::TrainingData DataStoreTest::TrainingDataFromTestInfo() {
-  DataStore::TrainingData training_data;
+TrainingData DataStoreTest::TrainingDataFromTestInfo() {
+  TrainingData training_data;
 
   for (const auto& item : kTrainingData) {
     int training_instance_id = item.training_instance_id;
@@ -99,20 +97,21 @@ DataStore::TrainingData DataStoreTest::TrainingDataFromTestInfo() {
 }
 
 void DataStoreTest::InitializeDataStore() {
-  DataStore::TrainingData training_data = TrainingDataFromTestInfo();
+  TrainingData training_data = TrainingDataFromTestInfo();
   for (auto& training_instance_pair : training_data) {
     auto& training_instance = training_instance_pair.second;
     AddTrainingInstance(std::move(training_instance));
   }
-  EXPECT_EQ(kTestTrainingData.size(), RecordCount());
-  EXPECT_EQ(training_data.size(), TrainingInstanceCount());
+  EXPECT_EQ(std::size(kTrainingData), static_cast<size_t>(RecordCount()));
+  EXPECT_EQ(std::size(training_data),
+            static_cast<size_t>(TrainingInstanceCount()));
 }
 
 bool DataStoreTest::AddTrainingInstance(
     std::vector<mojom::CovariatePtr> covariates) {
   std::vector<brave_federated::mojom::CovariatePtr> training_instance;
   for (auto& covariate : covariates) {
-    training_instance->covariates.push_back(std::move(covariate));
+    training_instance.push_back(std::move(covariate));
   }
 
   return data_store_->AddTrainingInstance(std::move(training_instance));
@@ -121,22 +120,46 @@ bool DataStoreTest::AddTrainingInstance(
 // Actual tests
 // -------------------------------------------------------------------------------------
 
-TEST_F(DataStoreTest, AddTrainingInstance) {
-  EXPECT_EQ(0U, RecordCount());
-  DataStore::TrainingData training_data = TrainingDataFromTestInfo();
+TEST_F(DataStoreTest, GetNextTrainingInstanceIdWhenDatabaseEmpty) {
+  EXPECT_EQ(0, RecordCount());
+  EXPECT_EQ(1, data_store_->GetNextTrainingInstanceId());
+}
+
+TEST_F(DataStoreTest, GetNextTrainingInstanceId) {
+  EXPECT_EQ(0, RecordCount());
+  TrainingData training_data = TrainingDataFromTestInfo();
   EXPECT_TRUE(AddTrainingInstance(std::move(training_data[0])));
-  EXPECT_EQ(1U, TrainingInstanceCount());
+  EXPECT_EQ(1, TrainingInstanceCount());
+  EXPECT_EQ(2, data_store_->GetNextTrainingInstanceId());
+}
+
+TEST_F(DataStoreTest, SaveCovariate) {
+  EXPECT_EQ(0, RecordCount());
+  TrainingData training_data = TrainingDataFromTestInfo();
+  data_store_->SaveCovariate(*training_data[0][0], 0, base::Time::Now());
+  EXPECT_EQ(1, TrainingInstanceCount());
+  data_store_->SaveCovariate(*training_data[0][0], 0, base::Time::Now());
+  EXPECT_EQ(1, TrainingInstanceCount());
+  data_store_->SaveCovariate(*training_data[0][0], 1, base::Time::Now());
+  EXPECT_EQ(2, TrainingInstanceCount());
+}
+
+TEST_F(DataStoreTest, AddTrainingInstance) {
+  EXPECT_EQ(0, RecordCount());
+  TrainingData training_data = TrainingDataFromTestInfo();
+  EXPECT_TRUE(AddTrainingInstance(std::move(training_data[0])));
+  EXPECT_EQ(1, TrainingInstanceCount());
   EXPECT_TRUE(AddTrainingInstance(std::move(training_data[1])));
-  EXPECT_EQ(2U, TrainingInstanceCount());
+  EXPECT_EQ(2, TrainingInstanceCount());
 }
 
 TEST_F(DataStoreTest, LoadTrainingData) {
   InitializeDataStore();
-  EXPECT_EQ(4U, RecordCount());
-  EXPECT_EQ(2U, TrainingInstanceCount());
+  EXPECT_EQ(4, RecordCount());
+  EXPECT_EQ(2, TrainingInstanceCount());
   auto training_data = data_store_->LoadTrainingData();
 
-  for (size_t i = 0; i < std::size(kTestTrainingData) / 2; ++i) {
+  for (size_t i = 0; i < std::size(kTrainingData) / 2; ++i) {
     auto it = training_data.find(i + 1);
     EXPECT_EQ(2U, std::size(it->second));
     EXPECT_TRUE(it != training_data.end());
@@ -146,8 +169,9 @@ TEST_F(DataStoreTest, LoadTrainingData) {
 TEST_F(DataStoreTest, DeleteLogs) {
   InitializeDataStore();
   EXPECT_EQ(4, RecordCount());
-  DataStore::TrainingData training_data = data_store_->LoadTrainingData();
-  EXPECT_EQ(training_data.size(), TrainingInstanceCount());
+  TrainingData training_data = data_store_->LoadTrainingData();
+  EXPECT_EQ(std::size(training_data),
+            static_cast<size_t>(TrainingInstanceCount()));
   EXPECT_TRUE(data_store_->DeleteTrainingData());
   EXPECT_EQ(0, RecordCount());
   training_data = data_store_->LoadTrainingData();
@@ -161,7 +185,7 @@ TEST_F(DataStoreTest, PurgeTrainingDataAfterExpirationDate) {
 
   data_store_->PurgeTrainingDataAfterExpirationDate();
 
-  DataStore::TrainingData training_data = data_store_->LoadTrainingData();
+  TrainingData training_data = data_store_->LoadTrainingData();
   EXPECT_EQ(0, RecordCount());
 }
 

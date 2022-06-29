@@ -89,7 +89,7 @@ class AdsServiceImpl : public AdsService,
 #endif
       history::HistoryService* history_service,
       brave_rewards::RewardsService* rewards_service,
-      brave_federated::AsyncDataStore* ad_notification_timing_data_store);
+      brave_federated::AsyncDataStore* notification_ad_timing_data_store);
   ~AdsServiceImpl() override;
 
   AdsServiceImpl(const AdsServiceImpl&) = delete;
@@ -528,7 +528,7 @@ class AdsServiceImpl : public AdsService,
   raw_ptr<brave_rewards::RewardsService> rewards_service_{
       nullptr};  // NOT OWNED
 
-  raw_ptr<brave_federated::AsyncDataStore> ad_notification_timing_data_store_ =
+  raw_ptr<brave_federated::AsyncDataStore> notification_ad_timing_data_store_ =
       nullptr;  // NOT OWNED
 
   mojo::AssociatedReceiver<bat_ads::mojom::BatAdsClient>

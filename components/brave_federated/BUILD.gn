@@ -16,7 +16,7 @@ static_library("brave_federated") {
     "eligibility_service_observer.h",
     "features.cc",
     "features.h",
-    "notification_ad_task_contants.h",
+    "notification_ad_task_constants.h",
     "operational_patterns.cc",
     "operational_patterns.h",
     "operational_patterns_util.cc",

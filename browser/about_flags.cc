@@ -285,10 +285,10 @@ constexpr char kBraveTranslateGoDescription[] =
     "translate extension.";
 
 constexpr char kBraveFederatedName[] =
-    "Enables local data collection for ad notification timing "
+    "Enables local data collection for notification ad timing "
     "(brave-federated)";
 constexpr char kBraveFederatedDescription[] =
-    "Starts local collection for ad notification timing data. This data "
+    "Starts local collection for notification ad timing data. This data "
     "is stored locally and automatically erased after one month. No data "
     "leaves the client.";
 
@@ -560,6 +560,6 @@ constexpr char kRestrictWebSocketsPoolDescription[] =
     BRAVE_REWARDS_GEMINI_FEATURE_ENTRIES                                    \
     BRAVE_VPN_FEATURE_ENTRIES                                               \
     BRAVE_SKU_SDK_FEATURE_ENTRIES                                           \
-    SPEEDREADER_FEATURE_ENTRIES                                             \                                     \
+    SPEEDREADER_FEATURE_ENTRIES                                             \
     BRAVE_TRANSLATE_GO_FEATURE_ENTRIES                                      \
     BRAVE_FEDERATED_FEATURE_ENTRIES

@@ -10,7 +10,6 @@
 #include "base/callback.h"
 #include "base/task/sequenced_task_runner.h"
 #include "base/task/thread_pool.h"
-#include "base/threading/sequence_bound.h"
 #include "base/threading/sequenced_task_runner_handle.h"
 
 namespace brave_federated {
@@ -25,8 +24,10 @@ AsyncDataStore::AsyncDataStore(DataStoreTask data_store_task,
 
 AsyncDataStore::~AsyncDataStore() = default;
 
-void AsyncDataStore::Init(base::OnceCallback<void(bool)> callback) {
-  data_store_.AsyncCall(&DataStore::Init).Then(std::move(callback));
+void AsyncDataStore::InitializeDatabase(
+    base::OnceCallback<void(bool)> callback) {
+  data_store_.AsyncCall(&DataStore::InitializeDatabase)
+      .Then(std::move(callback));
 }
 
 void AsyncDataStore::AddTrainingInstance(

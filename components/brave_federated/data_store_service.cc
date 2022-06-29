@@ -21,25 +21,20 @@ DataStoreService::DataStoreService(const base::FilePath& db_path)
 
 DataStoreService::~DataStoreService() = default;
 
-void DataStoreService::OnInitComplete(bool success) {
-  if (success) {
-    PurgeDataStoresAfterExpirationDate();
-  }
-}
-
 void DataStoreService::Init() {
-  auto callback = base::BindOnce(&DataStoreService::OnInitComplete,
-                                 weak_factory_.GetWeakPtr());
-  DataStoreTask ad_timing_data_store_task(
+  auto callback =
+      base::BindOnce(&DataStoreService::OnInitializeDatabaseComplete,
+                     weak_factory_.GetWeakPtr());
+  DataStoreTask notification_ad_timing_data_store_task(
       {kNotificationAdTaskId, kNotificationAdTaskName, kMaxNumberOfRecords,
        kMaxRetentionDays});
-  std::unique_ptr<AsyncDataStore> ad_timing_data_store =
-      std::make_unique<AsyncDataStore>(std::move(ad_timing_data_store_task),
-                                       db_path_);
-  ad_timing_data_store->Init(std::move(callback));
+  std::unique_ptr<AsyncDataStore> notification_ad_timing_data_store =
+      std::make_unique<AsyncDataStore>(
+          std::move(notification_ad_timing_data_store_task), db_path_);
+  notification_ad_timing_data_store->InitializeDatabase(std::move(callback));
 
   data_stores_.emplace(kNotificationAdTaskName,
-                       std::move(ad_timing_data_store));
+                       std::move(notification_ad_timing_data_store));
 }
 
 AsyncDataStore* DataStoreService::GetDataStore(const std::string& name) {
@@ -50,9 +45,16 @@ AsyncDataStore* DataStoreService::GetDataStore(const std::string& name) {
   return it->second.get();
 }
 
+void DataStoreService::OnInitializeDatabaseComplete(bool success) {
+  if (success) {
+    PurgeDataStoresAfterExpirationDate();
+  }
+}
+
 void DataStoreService::PurgeDataStoresAfterExpirationDate() {
-  for (const auto& data_store : data_stores_) {
-    data_store.second->PurgeTrainingDataAfterExpirationDate();
+  for (const auto& entry : data_stores_) {
+    AsyncDataStore* data_store = entry.second.get();
+    data_store->PurgeTrainingDataAfterExpirationDate();
   }
 }
 

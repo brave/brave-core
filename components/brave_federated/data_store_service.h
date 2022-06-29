@@ -33,8 +33,8 @@ class DataStoreService {
   AsyncDataStore* GetDataStore(const std::string& name);
 
  private:
+  void OnInitializeDatabaseComplete(bool success);
   void PurgeDataStoresAfterExpirationDate();
-  void OnInitComplete(bool success);
 
   base::FilePath db_path_;
   base::flat_map<std::string, std::unique_ptr<AsyncDataStore>> data_stores_;

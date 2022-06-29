@@ -8,6 +8,7 @@
 #include <utility>
 
 #include "base/bind.h"
+#include "base/check.h"
 #include "base/containers/flat_map.h"
 #include "base/numerics/safe_conversions.h"
 #include "base/strings/stringprintf.h"
@@ -19,7 +20,7 @@
 namespace {
 
 void DatabaseErrorCallback(sql::Database* db,
-                           const base::FilePath& database_file_path,
+                           const base::FilePath& db_file_path,
                            int extended_error,
                            sql::Statement* stmt) {
   if (sql::Recovery::ShouldRecover(extended_error)) {
@@ -28,7 +29,7 @@ void DatabaseErrorCallback(sql::Database* db,
 
     // After this call, the |db| handle is poisoned so that future calls will
     // return errors until the handle is re-opened.
-    sql::Recovery::RecoverDatabase(db, database_file_path);
+    sql::Recovery::RecoverDatabase(db, db_file_path);
 
     // The DLOG(FATAL) below is intended to draw immediate attention to errors
     // in newly-written code.  Database corruption is generally a result of OS
@@ -48,12 +49,14 @@ void BindCovariateToStatement(
     const brave_federated::mojom::Covariate& covariate,
     int training_instance_id,
     base::Time created_at,
-    sql::Statement* s) {
-  s->BindInt64(0, training_instance_id);
-  s->BindInt64(1, static_cast<int>(covariate.type));
-  s->BindInt64(2, static_cast<int>(covariate.data_type));
-  s->BindString(3, covariate.value);
-  s->BindInt64(4, created_at.ToInternalValue());
+    sql::Statement* stmt) {
+  DCHECK(stmt);
+
+  stmt->BindInt(0, training_instance_id);
+  stmt->BindInt(1, static_cast<int>(covariate.type));
+  stmt->BindInt(2, static_cast<int>(covariate.data_type));
+  stmt->BindString(3, covariate.value);
+  stmt->BindDouble(4, created_at.ToDoubleT());
 }
 
 }  // namespace
@@ -61,33 +64,36 @@ void BindCovariateToStatement(
 namespace brave_federated {
 
 DataStore::DataStore(const DataStoreTask data_store_task,
-                     const base::FilePath& database_file_path)
+                     const base::FilePath& db_file_path)
     : database_(
           {.exclusive_locking = true, .page_size = 4096, .cache_size = 500}),
-      database_file_path_(database_file_path),
+      db_file_path_(db_file_path),
       data_store_task_(data_store_task) {}
 
 DataStore::~DataStore() = default;
 
-bool DataStore::Init() {
+bool DataStore::InitializeDatabase() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  database_.set_histogram_tag(data_store_task_.task_name);
+  database_.set_histogram_tag(data_store_task_.name);
 
   // To recover from corruption.
-  database_.set_error_callback(base::BindRepeating(
-      &DatabaseErrorCallback, &database_, database_file_path_));
+  database_.set_error_callback(
+      base::BindRepeating(&DatabaseErrorCallback, &database_, db_file_path_));
 
   // Attach the database to our index file.
-  return database_.Open(database_file_path_) && MaybeCreateTable();
+  return database_.Open(db_file_path_) && MaybeCreateTable();
 }
 
 int DataStore::GetNextTrainingInstanceId() {
   sql::Statement statement(database_.GetUniqueStatement(
       base::StringPrintf("SELECT MAX(training_instance_id) FROM %s",
-                         data_store_task_.task_name.c_str())
+                         data_store_task_.name.c_str())
           .c_str()));
-  statement.Step();
-  return statement.ColumnInt(0) + 1;
+
+  if (statement.Step()) {
+    return statement.ColumnInt(0) + 1;
+  }
+  return 0;
 }
 
 void DataStore::SaveCovariate(
@@ -99,7 +105,7 @@ void DataStore::SaveCovariate(
                          "feature_name, feature_type, "
                          "feature_value, created_at) "
                          "VALUES (?,?,?,?,?)",
-                         data_store_task_.task_name.c_str())
+                         data_store_task_.name.c_str())
           .c_str()));
 
   BindCovariateToStatement(covariate, training_instance_id, created_at,
@@ -125,20 +131,19 @@ TrainingData DataStore::LoadTrainingData() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
   TrainingData training_instances;
-  sql::Statement load_statement(database_.GetUniqueStatement(
+  sql::Statement statement(database_.GetUniqueStatement(
       base::StringPrintf("SELECT id, training_instance_id, feature_name, "
-                         "feature_type, feature_value, "
-                         "created_at FROM %s",
-                         data_store_task_.task_name.c_str())
+                         "feature_type, feature_value FROM %s",
+                         data_store_task_.name.c_str())
           .c_str()));
 
   training_instances.clear();
-  while (load_statement.Step()) {
-    const int training_instance_id = load_statement.ColumnInt(1);
+  while (statement.Step()) {
+    const int training_instance_id = statement.ColumnInt(1);
     mojom::CovariatePtr covariate = mojom::Covariate::New();
-    covariate->type = (mojom::CovariateType)load_statement.ColumnInt(2);
-    covariate->data_type = (mojom::DataType)load_statement.ColumnInt(3);
-    covariate->value = load_statement.ColumnString(4);
+    covariate->type = (mojom::CovariateType)statement.ColumnInt(2);
+    covariate->data_type = (mojom::DataType)statement.ColumnInt(3);
+    covariate->value = statement.ColumnString(4);
 
     training_instances[training_instance_id].push_back(std::move(covariate));
   }
@@ -149,9 +154,9 @@ TrainingData DataStore::LoadTrainingData() {
 bool DataStore::DeleteTrainingData() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
-  if (!database_.Execute(base::StringPrintf("DELETE FROM %s",
-                                            data_store_task_.task_name.c_str())
-                             .c_str()))
+  if (!database_.Execute(
+          base::StringPrintf("DELETE FROM %s", data_store_task_.name.c_str())
+              .c_str()))
     return false;
 
   std::ignore = database_.Execute("VACUUM");
@@ -164,18 +169,18 @@ void DataStore::PurgeTrainingDataAfterExpirationDate() {
   sql::Statement delete_statement(database_.GetUniqueStatement(
       base::StringPrintf(" DELETE FROM %s WHERE created_at < ? OR id NOT IN "
                          "(SELECT id FROM %s ORDER BY id DESC LIMIT ?)",
-                         data_store_task_.task_name.c_str(),
-                         data_store_task_.task_name.c_str())
+                         data_store_task_.name.c_str(),
+                         data_store_task_.name.c_str())
           .c_str()));
   base::Time expiration_threshold =
       base::Time::Now() - data_store_task_.max_retention_days;
-  delete_statement.BindInt64(0, expiration_threshold.ToInternalValue());
+  delete_statement.BindDouble(0, expiration_threshold.ToDoubleT());
   delete_statement.BindInt(1, data_store_task_.max_number_of_records);
   delete_statement.Run();
 }
 
 bool DataStore::MaybeCreateTable() {
-  if (database_.DoesTableExist(data_store_task_.task_name)) {
+  if (database_.DoesTableExist(data_store_task_.name)) {
     return true;
   }
 
@@ -184,10 +189,10 @@ bool DataStore::MaybeCreateTable() {
          database_.Execute(
              base::StringPrintf(
                  "CREATE TABLE %s (id INTEGER PRIMARY KEY AUTOINCREMENT, "
-                 "training_instance_id INTEGER, feature_name INTEGER, "
-                 "feature_type INTEGER, "
-                 "feature_value TEXT, created_at INTEGER)",
-                 data_store_task_.task_name.c_str())
+                 "training_instance_id INTEGER NOT NULL, feature_name INTEGER "
+                 "NOT NULL, feature_type INTEGER NOT NULL, "
+                 "feature_value TEXT NOT NULL, created_at DOUBLE NOT NULL)",
+                 data_store_task_.name.c_str())
                  .c_str()) &&
          transaction.Commit();
 }

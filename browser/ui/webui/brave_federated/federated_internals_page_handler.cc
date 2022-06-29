@@ -35,15 +35,14 @@ void FederatedInternalsPageHandler::UpdateDataStoresInfo() {
   if (!data_store_service_) {
     return;
   }
-  brave_federated::AsyncDataStore* ad_notification_data_store =
+  brave_federated::AsyncDataStore* notification_ad_data_store =
       data_store_service_->GetDataStore(
           brave_federated::kNotificationAdTaskName);
-
-  if (!ad_notification_data_store) {
+  if (!notification_ad_data_store) {
     return;
   }
 
-  ad_notification_data_store->LoadTrainingData(
+  notification_ad_data_store->LoadTrainingData(
       base::BindOnce(&FederatedInternalsPageHandler::OnUpdateDataStoresInfo,
                      weak_ptr_factory_.GetWeakPtr()));
 }

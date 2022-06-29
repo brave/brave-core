@@ -6,19 +6,14 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_FEDERATED_DATA_STORES_ASYNC_DATA_STORE_H_
 #define BRAVE_COMPONENTS_BRAVE_FEDERATED_DATA_STORES_ASYNC_DATA_STORE_H_
 
-#include <string>
 #include <vector>
 
-#include "base/callback.h"
 #include "base/files/file_path.h"
 #include "base/threading/sequence_bound.h"
 #include "brave/components/brave_federated/data_stores/data_store.h"
 #include "brave/components/brave_federated/public/interfaces/brave_federated.mojom.h"
 
 namespace brave_federated {
-
-class DataStore;
-struct DataStoreTask;
 
 // Wrapper around DataStore class to handle SequenceBound async logic
 class AsyncDataStore {
@@ -30,7 +25,7 @@ class AsyncDataStore {
   AsyncDataStore(const AsyncDataStore&) = delete;
   AsyncDataStore& operator=(const AsyncDataStore&) = delete;
 
-  void Init(base::OnceCallback<void(bool)> callback);
+  void InitializeDatabase(base::OnceCallback<void(bool)> callback);
 
   void AddTrainingInstance(
       std::vector<brave_federated::mojom::CovariatePtr> training_instance,

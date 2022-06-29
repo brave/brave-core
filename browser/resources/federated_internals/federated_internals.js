@@ -2,7 +2,7 @@ import {$} from 'chrome://resources/js/util.m.js';
 import { FederatedInternalsBrowserProxy } from './federated_internals_browser_proxy.js';
 
 const dataStoresLogs = {};
-let selectedDataStore = 'ad-timing';
+let selectedDataStore = 'notification-ad-timing';
 
 function getProxy() {
   return FederatedInternalsBrowserProxy.getInstance();
@@ -13,7 +13,7 @@ function initialize() {
   
   getProxy().getCallbackRouter().onUpdateDataStoresInfo.addListener(
     (logs) => {
-      dataStoresLogs['ad-timing'] = logs;
+      dataStoresLogs['notification-ad-timing'] = logs;
       onDataStoreChanged();
   });
 
@@ -33,7 +33,7 @@ function onDataStoreChanged() {
       return;
     }
 
-    if (selectedDataStore == 'ad-timing') {
+    if (selectedDataStore == 'notification-ad-timing') {
       $('service-message').textContent = ''
       const thead = $('data-store-headers');
       while (thead.firstChild) {
