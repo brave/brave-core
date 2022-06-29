@@ -1,0 +1,58 @@
+# Copyright (c) 2022 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/.
+
+import("//third_party/skia/modules/svg/svg.gni")
+
+source_set("svg") {
+  configs += [ "//build/config/compiler:enable_arc" ]
+
+  sources = [
+    "svg_image.h",
+    "svg_image.mm",
+  ]
+
+  sources += [
+    "//third_party/skia/src/codec/SkBmpBaseCodec.cpp",
+    "//third_party/skia/src/codec/SkBmpCodec.cpp",
+    "//third_party/skia/src/codec/SkBmpMaskCodec.cpp",
+    "//third_party/skia/src/codec/SkBmpRLECodec.cpp",
+    "//third_party/skia/src/codec/SkBmpStandardCodec.cpp",
+    "//third_party/skia/src/codec/SkCodec.cpp",
+    "//third_party/skia/src/codec/SkCodecImageGenerator.cpp",
+    "//third_party/skia/src/codec/SkColorTable.cpp",
+    "//third_party/skia/src/codec/SkEncodedInfo.cpp",
+    "//third_party/skia/src/codec/SkIcoCodec.cpp",
+    "//third_party/skia/src/codec/SkMaskSwizzler.cpp",
+    "//third_party/skia/src/codec/SkMasks.cpp",
+    "//third_party/skia/src/codec/SkParseEncodedOrigin.cpp",
+    "//third_party/skia/src/codec/SkPngCodec.cpp",
+    "//third_party/skia/src/codec/SkSampler.cpp",
+    "//third_party/skia/src/codec/SkStreamBuffer.cpp",
+    "//third_party/skia/src/codec/SkSwizzler.cpp",
+    "//third_party/skia/src/codec/SkWbmpCodec.cpp",
+    "//third_party/skia/src/codec/SkWebpCodec.cpp",
+    "//third_party/skia/src/ports/SkImageGenerator_skia.cpp",
+    "//third_party/skia/src/utils/SkParsePath.cpp",
+    "//third_party/skia/src/xml/skDOM.cpp",
+    "//third_party/skia/src/xml/skDOM.h",
+    "//third_party/skia/src/xml/skXMLParser.cpp",
+    "//third_party/skia/src/xml/skXMLParser.h",
+    "//third_party/skia/src/xml/skXMLWriter.cpp",
+    "//third_party/skia/src/xml/skXMLWriter.h",
+  ]
+
+  sources += skia_svg_public
+  sources += skia_svg_sources
+
+  deps = [
+    "//base",
+    "//skia",
+    "//third_party/expat",
+    "//third_party/libpng",
+    "//third_party/libwebp",
+    "//third_party/libwebp:libwebp_webp",
+    "//ui/gfx",
+  ]
+}
