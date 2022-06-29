@@ -50,6 +50,13 @@
   return self;
 }
 
+- (void)setMaximumFaviconImageSize:(NSUInteger)maxImageSize {
+  brave_favicon::BraveIOSWebFaviconDriver* driver =
+      brave_favicon::BraveIOSWebFaviconDriver::FromBrowserState(browser_state_);
+  DCHECK(driver);
+  driver->SetMaximumFaviconImageSize(maxImageSize);
+}
+
 - (void)webView:(WKWebView*)webView
     onFaviconURLsUpdated:(WKScriptMessage*)scriptMessage {
   NSURL* ns_url = scriptMessage.frameInfo.request.URL;

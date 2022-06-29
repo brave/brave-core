@@ -42,6 +42,8 @@ class BraveIOSWebFaviconDriver : public favicon::FaviconDriverImpl,
   static BraveIOSWebFaviconDriver* FromBrowserState(
       ChromeBrowserState* browser_state);
 
+  void SetMaximumFaviconImageSize(std::size_t max_image_size);
+
   // FaviconDriver implementation.
   gfx::Image GetFavicon() const override;
   bool FaviconIsValid() const override;
@@ -83,6 +85,7 @@ class BraveIOSWebFaviconDriver : public favicon::FaviconDriverImpl,
   image_fetcher::IOSImageDataFetcherWrapper image_fetcher_;
   ChromeBrowserState* browser_state_ = nullptr;
   std::unique_ptr<web::NavigationItemImpl> current_item_;
+  std::size_t max_image_size_;
 };
 
 }  // namespace brave_favicon
