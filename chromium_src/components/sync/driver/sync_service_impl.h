@@ -18,9 +18,11 @@
 //   third_party/protobuf/src/google/protobuf/map_entry_lite.h
 #include "components/sync/engine/sync_engine.h"
 #define Initialize virtual Initialize
+#define ResetEngine virtual ResetEngine
 
 #include "src/components/sync/driver/sync_service_impl.h"
 
+#undef ResetEngine
 #undef Initialize
 
 #undef BRAVE_SYNC_SERVICE_IMPL_H_
