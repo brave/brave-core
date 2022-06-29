@@ -527,6 +527,7 @@
   <message name="IDS_BRAVE_WALLET_AURORA_MODAL_LEARN_MORE" desc="Bridge to Aurora modal learn more link text">Learn more</message>
   <message name="IDS_BRAVE_WALLET_AURORA_MODAL_OPEN_BUTTON_TEXT" desc="Bridge to Aurora modal action button text">Open rainbowbridge.app</message>
   <message name="IDS_BRAVE_WALLET_WHAT_IS_A_CRYPTO_WALLET" desc="Link to article explaining crypto wallets">What’s a crypto wallet?</message>
+  <message name="IDS_BRAVE_WALLET_WHAT_IS_A_CRYPTO_WALLET" desc="Link to article explaining crypto wallets">Learn more about crypto wallets</message>
   <message name="IDS_BRAVE_WALLET_PASSWORD_STRENGTH_TOOLTIP_HEADING" desc="Heading of password strength tooltip">At least:</message>
   <message name="IDS_BRAVE_WALLET_PASSWORD_STRENGTH_TOOLTIP_IS_LONG_ENOUGH" desc="Password strength length requirements">7 characters</message>
   <message name="IDS_BRAVE_WALLET_PASSWORD_STRENGTH_TOOLTIP_CONTAINS_NUMBER" desc="Password strength number requirements">1 number</message>
