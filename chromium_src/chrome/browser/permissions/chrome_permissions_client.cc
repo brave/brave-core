@@ -35,8 +35,8 @@ bool ChromePermissionsClient::BraveCanBypassEmbeddingOriginCheck(
   // exposing the API which can request permission when the origin is 3p and
   // the feature policy is not allowed explicitly. We ensure that the correct
   // handling is covered via the browser tests:
-  // SolanaProviderRendererTest.Block3PIframe and
-  // JSEthereumProviderBrowserTest.Block3PIframe
+  // SolanaProviderRendererTest.Iframe3P and
+  // JSEthereumProviderBrowserTest.Iframe3P
   if (type == ContentSettingsType::BRAVE_ETHEREUM ||
       type == ContentSettingsType::BRAVE_SOLANA) {
     return true;

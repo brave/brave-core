@@ -61,9 +61,9 @@ void BraveWalletRenderFrameObserver::DidCreateScriptContext(
 
   bool is_main_world = world_id == content::ISOLATED_WORLD_ID_GLOBAL;
   auto dynamic_params = get_dynamic_params_callback_.Run();
-  v8::Isolate* isolate = blink::MainThreadIsolate();
   if (render_frame()->GetWebFrame()->GetDocument().IsDOMFeaturePolicyEnabled(
-          isolate->GetCurrentContext(), "ethereum")) {
+          render_frame()->GetWebFrame()->MainWorldScriptContext(),
+          "ethereum")) {
     if (!js_ethereum_provider_) {
       js_ethereum_provider_.reset(new JSEthereumProvider(
           render_frame(), dynamic_params.brave_use_native_wallet));
@@ -86,12 +86,19 @@ void BraveWalletRenderFrameObserver::DidClearWindowObject() {
     return;
 
   v8::Isolate* isolate = blink::MainThreadIsolate();
+  v8::MicrotasksScope microtasks(isolate,
+                                 v8::MicrotasksScope::kDoNotRunMicrotasks);
+  v8::HandleScope handle_scope(isolate);
+  auto* web_frame = render_frame()->GetWebFrame();
+  v8::Local<v8::Context> context = web_frame->MainWorldScriptContext();
+  if (context.IsEmpty())
+    return;
+
   if (base::FeatureList::IsEnabled(
           brave_wallet::features::kBraveWalletSolanaFeature) &&
       base::FeatureList::IsEnabled(
           brave_wallet::features::kBraveWalletSolanaProviderFeature) &&
-      render_frame()->GetWebFrame()->GetDocument().IsDOMFeaturePolicyEnabled(
-          isolate->GetCurrentContext(), "solana")) {
+      web_frame->GetDocument().IsDOMFeaturePolicyEnabled(context, "solana")) {
     auto dynamic_params = get_dynamic_params_callback_.Run();
     JSSolanaProvider::Install(
         dynamic_params.allow_overwrite_window_web3_provider, render_frame());
