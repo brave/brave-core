@@ -108,7 +108,7 @@ provideStrings({
   braveWalletWelcomeTitle: 'Keeping your crypto secure doesn’t have to be hard',
   braveWalletWelcomeDescription: 'Your gateway to a multi-chain Web3 experience for Defi, NFTs, and more. Supports Solana, Ethereum, Binance Smart Chain, Polygon, Avalance, or expand to any EVM chain.',
   braveWalletWelcomeButton: 'Create a new wallet',
-  braveWalletWhatIsACryptoWallet: 'What’s a crypto wallet?',
+  braveWalletWhatIsACryptoWallet: 'Learn more about crypto wallets',
   braveWalletWelcomeIAlreadyHaveAWallet: 'I already have a wallet',
   braveWalletWelcomeRestoreButton: 'Restore',
 
