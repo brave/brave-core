@@ -1020,7 +1020,6 @@ brave_java_resources = [
   "java/res/xml/brave_wallet_networks_preference.xml",
   "java/res/xml/brave_wallet_preferences.xml",
   "java/res/xml/brave_webrtc_policy_preferences.xml",
-  "java/res/xml/desktop_mode_preferences.xml",
   "java/res/xml/developer_preferences.xml",
   "java/res/xml/ens_preferences.xml",
   "java/res/xml/legal_information_preferences.xml",
