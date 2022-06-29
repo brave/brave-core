@@ -85,7 +85,7 @@
       Learn more
     </message>
     <message name="IDS_IPFS_ONBOARDING_LOCAL_NODE_TEXT" desc="Text describing the option to use a local IPFS node.">
-      Your computer contributes to the public network, but your IP address and any content you’re requesting or providing could be exposed. Content you request over IPFS is verified before being served to you.
+      Your computer contributes to the public network, but your IP address and any content you’re requesting or providing could be exposed. Content you request over IPFS is verified before being served to you. Network requests may not use browser proxy and DNS settings.
     </message>
     <message name="IDS_IPFS_ONBOARDING_PUBLIC_GATEWAY_TEXT" desc="Text describing the option to use a public IPFS gateway.">
       Protects your IP address and content you’re requesting from potential third-party observers, but not from the public gateway operator.  The gateway operator is responsible for ensuring that the content served to you over a gateway is the content you requested. Also, your computer does not contribute to the public IPFS network.

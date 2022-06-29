@@ -26,6 +26,7 @@
         <div class="secondary" id="defaultIPFSGateway">
           $i18nRaw{ipfsMethodDesc}
         </div>
+        <div class="secondary" hidden="[[!isLocalNodeEnabled_]]">$i18n{ipfsLocalNodeWarning}</div>
       </div>
       <settings-dropdown-menu id="ipfsResolveMethodType"
                               pref="{{prefs.brave.ipfs.resolve_method}}"
