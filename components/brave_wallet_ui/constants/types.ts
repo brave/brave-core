@@ -160,6 +160,19 @@ export interface TopTabNavObjectType {
   id: TopTabNavTypes | AddAccountNavTypes | AccountSettingsNavTypes | HardwareAccountSettingsNavTypes
 }
 
+export type AccountButtonOptionsType =
+  | 'export'
+  | 'deposit'
+  | 'edit'
+  | 'details'
+  | 'remove'
+
+export interface AccountButtonOptionsObjectType {
+  name: string
+  id: AccountButtonOptionsType
+  icon: string
+}
+
 export interface NavObjectType {
   name: string
   primaryIcon: string

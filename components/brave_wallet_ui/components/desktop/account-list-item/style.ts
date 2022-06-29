@@ -1,10 +1,16 @@
+
+// Copyright (c) 2022 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// you can obtain one at http://mozilla.org/MPL/2.0/.
+
 import styled from 'styled-components'
-import TrashIcon from '../../../assets/svg-icons/trash-icon.svg'
 import FlashdriveIcon from '../../../assets/svg-icons/flashdrive-icon.svg'
 import { WalletButton } from '../../shared/style'
 
 interface StyleProps {
   orb: string
+  icon: string
 }
 
 export const StyledWrapper = styled.div`
@@ -14,6 +20,10 @@ export const StyledWrapper = styled.div`
   flex-direction: row;
   width: 100%;
   margin-bottom: 15px;
+  --show-buttons: none;
+  &:hover {
+    --show-buttons: flex;
+  }
 `
 
 export const NameAndIcon = styled.div`
@@ -63,13 +73,13 @@ export const AccountAddress = styled(WalletButton)`
 `
 
 export const RightSide = styled.div`
-  display: flex;
+  display: var(--show-buttons);
   align-items: flex-end;
   justify-content: center;
   flex-direction: row;
 `
 
-export const AccountCircle = styled.div<StyleProps>`
+export const AccountCircle = styled.div<Partial<StyleProps>>`
   width: 40px;
   height: 40px;
   border-radius: 100%;
@@ -78,28 +88,43 @@ export const AccountCircle = styled.div<StyleProps>`
   margin-right: 12px;
 `
 
-export const DeleteButton = styled(WalletButton)`
-  display: flex;;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  outline: none;
-  background: none;
-  border: none;
-`
-
-export const DeleteIcon = styled.div`
-  width: 18px;
-  height: 18px;
-  background-color: ${(p) => p.theme.color.text02};
-  -webkit-mask-image: url(${TrashIcon});
-  mask-image: url(${TrashIcon});
-`
-
 export const HardwareIcon = styled.div`
   width: 13px;
   height: 13px;
   background-color: ${(p) => p.theme.color.text02};
   -webkit-mask-image: url(${FlashdriveIcon});
   mask-image: url(${FlashdriveIcon});
+`
+
+export const Icon = styled.div<Partial<StyleProps>>`
+  width: 14px;
+  height: 14px;
+  margin-left: 4px;
+  margin-right: 8px;
+  background-color: ${(p) => p.theme.color.interactive07};
+  -webkit-mask-image: url(${(p) => p.icon});
+  mask-image: url(${(p) => p.icon});
+  mask-size: 100%;
+`
+
+export const OvalButton = styled(WalletButton)`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  outline: none;
+  background: none;
+  border-radius: 48px;
+  padding: 3px 10px;
+  border: 1px solid ${(p) => p.theme.color.interactive08};
+  margin-right: 6px;
+`
+
+export const OvalButtonText = styled.span`
+  font-family: Poppins;
+  font-size: 12px;
+  line-height: 18px;
+  letter-spacing: 0.01em;
+  color: ${(p) => p.theme.color.text02};
+  font-weight: 600;
 `

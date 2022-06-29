@@ -170,6 +170,9 @@ provideStrings({
   braveWalletAccountsSecondaryDisclaimer: 'These accounts can be used with Web3 DApps, and can be shown in your portfolio. However, note that secondary accounts cannot be restored via recovery phrase from your primary account backup.',
   braveWalletAccountsAssets: 'Assets',
   braveWalletAccountsEditVisibleAssets: 'Visible assets',
+  braveWalletAccountsExport: 'Export',
+  braveWalletAccountsDeposit: 'Deposit',
+  braveWalletAccountsRemove: 'Remove',
 
   // Add Account Options
   braveWalletCreateAccount: 'Create $1 account',
