@@ -30,6 +30,7 @@ import { AccountButtonOptions } from '../../../../options/account-buttons'
 import { PopupModal } from '../..'
 import { NavButton } from '../../../extension'
 import { Tooltip } from '../../../shared'
+import { create } from 'ethereum-blockies'
 
 // Utils
 import { FILECOIN_FORMAT_DESCRIPTION_URL } from '../../../../common/constants/urls'
@@ -54,7 +55,10 @@ import {
   PrivateKeyBubble,
   ButtonWrapper,
   ErrorText,
-  Line
+  Line,
+  NameAndIcon,
+  AccountCircle,
+  AccountName
 } from './style'
 
 const AccountsModal = () => {
@@ -170,12 +174,22 @@ const AccountsModal = () => {
     return ''
   }, [accountModalType])
 
+  const orb = React.useMemo(() => {
+    if (selectedAccount) {
+      return create({ seed: selectedAccount.address.toLowerCase(), size: 8, scale: 16 }).toDataURL()
+    }
+  }, [selectedAccount])
+
   return (
     <PopupModal title={getLocale(modalTitle)} onClose={onClickClose}>
       <Line />
       <StyledWrapper>
         {accountModalType === 'deposit' &&
           <>
+            <NameAndIcon>
+              <AccountCircle orb={orb} />
+              <AccountName>{selectedAccount?.name ?? ''}</AccountName>
+            </NameAndIcon>
             <QRCodeWrapper src={qrCode} />
             <Tooltip text={getLocale('braveWalletToolTipCopyToClipboard')}>
               <AddressButton onClick={onCopyToClipboard}>{reduceAddress(selectedAccount?.address ?? '')}<CopyIcon /></AddressButton>

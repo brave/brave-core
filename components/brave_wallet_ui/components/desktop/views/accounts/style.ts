@@ -27,7 +27,7 @@ export const PrimaryListContainer = styled.div`
   border-radius: 16px;
   margin-top: 14px;
   margin-bottom: 14px;
-  padding: 15px 15px 0px 15px;
+  padding: 8px;
 `
 
 export const SecondaryListContainer = styled.div<Partial<StyleProps>>`
@@ -38,7 +38,7 @@ export const SecondaryListContainer = styled.div<Partial<StyleProps>>`
   width: 100%;
   background-color: ${(p) => p.isHardwareWallet ? p.theme.color.divider01 : 'transparent'};
   border-radius: 16px;
-  padding: 15px 15px 0px 15px;
+  padding: 8px;
   margin-bottom: ${(p) => p.isHardwareWallet ? '15px' : '0px'};
 `
 

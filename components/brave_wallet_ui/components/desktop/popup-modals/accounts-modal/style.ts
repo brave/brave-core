@@ -7,6 +7,10 @@ import styled from 'styled-components'
 import ClipboardIcon from '../../../../assets/svg-icons/clipboard-icon.svg'
 import { WalletButton } from '../../../shared/style'
 
+interface StyleProps {
+  orb: string
+}
+
 export const StyledWrapper = styled.div`
   display: flex;
   flex-direction: column;
@@ -15,6 +19,8 @@ export const StyledWrapper = styled.div`
   width: 100%;
   padding: 0px 15px 15px 15px;
   min-height: 320px;
+  padding-top: 20px;
+  padding-bottom: 20px;
 `
 
 export const Input = styled.input`
@@ -177,4 +183,29 @@ export const Line = styled.div`
   width: 100%;
   height: 2px;
   background: ${(p) => p.theme.color.divider01};
+`
+
+export const AccountCircle = styled.div<Partial<StyleProps>>`
+  width: 40px;
+  height: 40px;
+  border-radius: 100%;
+  background-image: url(${(p) => p.orb});
+  background-size: cover;
+  margin-right: 12px;
+`
+
+export const NameAndIcon = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+`
+
+export const AccountName = styled.span`
+  font-family: Poppins;
+  font-size: 13px;
+  line-height: 20px;
+  letter-spacing: 0.01em;
+  font-weight: 600;
+  color: ${(p) => p.theme.color.text01};
 `

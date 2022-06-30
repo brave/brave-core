@@ -19,10 +19,13 @@ export const StyledWrapper = styled.div`
   justify-content: space-between;
   flex-direction: row;
   width: 100%;
-  margin-bottom: 15px;
+  padding: 7px;
+  background-color: none;
+  border-radius: 10px;
   --show-buttons: none;
   &:hover {
     --show-buttons: flex;
+    background-color: ${(p) => p.theme.color.interactive08}15;
   }
 `
 
