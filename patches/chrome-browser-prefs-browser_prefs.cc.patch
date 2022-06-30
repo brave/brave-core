@@ -1,16 +1,17 @@
 diff --git a/chrome/browser/prefs/browser_prefs.cc b/chrome/browser/prefs/browser_prefs.cc
-index 8bfc3599bbb1db389edaa169919d48e09a8219fa..f66a57f4e0112d0f6a43e5321fe55f9294ef9773 100644
+index 1b759a638ac6874c9e074cd7dbfd1250a8549f02..51b7ddc343c464cf2ca1d3cd434059344e57c727 100644
 --- a/chrome/browser/prefs/browser_prefs.cc
 +++ b/chrome/browser/prefs/browser_prefs.cc
-@@ -1201,6 +1201,7 @@ void RegisterLocalState(PrefRegistrySimple* registry) {
+@@ -1230,6 +1230,8 @@ void RegisterLocalState(PrefRegistrySimple* registry) {
+   DeviceOAuth2TokenStoreDesktop::RegisterPrefs(registry);
+ #endif
  
-   registry->RegisterBooleanPref(
-       policy::policy_prefs::kSetTimeoutWithout1MsClampEnabled, false);
 +  brave::RegisterLocalStatePrefs(registry);
- 
++
  #if BUILDFLAG(ENABLE_SCREEN_AI_SERVICE)
    screen_ai::RegisterLocalStatePrefs(registry);
-@@ -1545,6 +1546,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry,
+ #endif  // BUILDFLAG(ENABLE_SCREEN_AI_SERVICE)
+@@ -1573,6 +1575,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry,
  #endif
  
    RegisterProfilePrefsForMigration(registry);
