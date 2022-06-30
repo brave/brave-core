@@ -153,6 +153,12 @@ class JSSolanaProvider final : public gin::Wrappable<JSSolanaProvider>,
   absl::optional<std::string> GetSerializedMessage(
       v8::Local<v8::Value> transaction);
 
+  absl::optional<std::vector<mojom::SignaturePubkeyPairPtr>> GetSignatures(
+      v8::Local<v8::Value> transaction);
+
+  mojom::SolanaSignTransactionParamPtr GetSignTransactionParam(
+      v8::Local<v8::Value> transaction);
+
   // use @solana/web3.js and create publicKey from base58 string
   v8::Local<v8::Value> CreatePublicKey(v8::Local<v8::Context> context,
                                        const std::string& base58_str);

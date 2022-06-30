@@ -44,8 +44,12 @@
       })
   }
 
-  function solanaSignAndSendTransaction(serializedTx, sendOptions) {
-    const tx = window._brave_solana.createTransaction(serializedTx)
+  function solanaSignAndSendTransaction(serializedTx, sendOptions, pubkeyString, signature) {
+    let tx = window._brave_solana.createTransaction(serializedTx)
+    if (pubkeyString) {
+      const pubkey = window._brave_solana.createPublickey(pubkeyString).publicKey
+      tx.addSignature(pubkey, signature)
+    }
     window.braveSolana.signAndSendTransaction(tx, sendOptions)
       .then(result => {
         signAndSendTransactionResult = result.signature
@@ -56,8 +60,12 @@
       })
   }
 
-  function solanaSignTransaction(serializedTx) {
-    const tx = window._brave_solana.createTransaction(serializedTx)
+  function solanaSignTransaction(serializedTx, pubkeyString, signature) {
+    let tx = window._brave_solana.createTransaction(serializedTx)
+    if (pubkeyString) {
+      const pubkey = window._brave_solana.createPublickey(pubkeyString).publicKey
+      tx.addSignature(pubkey, signature)
+    }
     window.braveSolana.signTransaction(tx)
       .then(result => {
         signTransactionResult = result.serialize().join()
@@ -66,10 +74,14 @@
         signTransactionResult = error.message
         window.domAutomationController.send('result ready')
       })
-  }
+    }
 
-  function solanaSignAllTransactions(serializedTx, expectedSignTx) {
-    const tx = window._brave_solana.createTransaction(serializedTx)
+  function solanaSignAllTransactions(serializedTx, expectedSignTx, pubkeyString, signature) {
+    tx = window._brave_solana.createTransaction(serializedTx)
+    if (pubkeyString) {
+      const pubkey = window._brave_solana.createPublickey(pubkeyString).publicKey
+      tx.addSignature(pubkey, signature)
+    }
     const expectedTx = expectedSignTx.join()
     window.braveSolana.signAllTransactions([tx, tx])
       .then(result => {

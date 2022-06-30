@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_wallet/browser/solana_tx_state_manager.h"
 
+#include <utility>
+
 #include "base/strings/strcat.h"
 #include "base/values.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
@@ -36,11 +38,10 @@ std::unique_ptr<TxMeta> SolanaTxStateManager::ValueToTxMeta(
   const base::Value* tx_value = value.FindKey("tx");
   if (!tx_value)
     return nullptr;
-  absl::optional<SolanaTransaction> tx =
-      SolanaTransaction::FromValue(*tx_value);
+  auto tx = SolanaTransaction::FromValue(*tx_value);
   if (!tx)
     return nullptr;
-  meta->set_tx(std::make_unique<SolanaTransaction>(*tx));
+  meta->set_tx(std::move(tx));
 
   const base::Value* signature_status_value = value.FindKey("signature_status");
   if (!signature_status_value)

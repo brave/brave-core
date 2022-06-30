@@ -50,6 +50,8 @@ namespace {
 static base::NoDestructor<std::string> g_provider_internal_script("");
 
 constexpr char kFirstAccount[] = "8J7fu34oNJSKXcauNQMXRdKAHY7zQ7rEaQng8xtQNpSu";
+constexpr char kSecondAccount[] =
+    "D37CnANGLynWiWmkdAETRNe3nLS7f59SbmK9kK8xSjcu";
 
 // First byte = 0 is the length of signatures.
 // Rest bytes are from the serialized message below.
@@ -86,6 +88,60 @@ constexpr char kSignedTxArrayStr[] =
 constexpr char kEncodedSignature[] =
     "ns1aBL6AowxpiPzQL3ZeBK1RpCSLq1VfhqNw9KFSsytayARYdYrqrmbmhaizUTTkT4SXEnjnbV"
     "mPBrie3o9yuyB";
+
+// First byte = 0 is the length of signatures.
+// Rest bytes are from the serialized message below.
+// SolanaInstruction instruction(
+//     kSolanaSystemProgramId,
+//     {SolanaAccountMeta(kFirstAccount, true, true),
+//      SolanaAccountMeta(kSecondAccount, true, true)},
+//     {2, 0, 0, 0, 128, 150, 152, 0, 0, 0, 0, 0});
+// SolanaMessage("9sHcv6xwn9YkB8nxTUGKDwPwNnmqVp5oAXxU8Fdkm4J6", 0,
+//               kFirstAccount, {instruction});
+constexpr char kUnsignedTxArrayStr2[] =
+    "0,2,0,1,3,108,100,57,137,161,117,30,158,157,136,81,70,62,51,111,138,48,"
+    "102,91,148,103,82,143,30,248,0,4,91,18,170,94,82,178,214,107,40,5,90,152,"
+    "248,228,193,154,254,176,38,253,12,47,103,85,191,24,48,173,84,45,134,214,"
+    "75,36,218,67,194,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"
+    "0,0,0,0,131,191,83,201,108,193,222,255,176,67,136,209,219,42,6,169,240,"
+    "137,142,185,169,6,17,87,123,6,42,55,162,64,120,91,1,2,2,0,1,12,2,0,0,0,"
+    "128,150,152,0,0,0,0,0";
+
+// Result of the above transaction signed by kFirstAccount, with a second
+// signature provided via tx.addSignature before calling APIs.
+constexpr char kSignedTxArrayStr2[] =
+    "2,221,78,151,240,171,39,49,7,200,99,111,63,70,103,35,101,246,89,202,209,"
+    "188,206,90,156,43,178,250,220,181,255,34,188,67,52,209,40,243,166,212,225,"
+    "120,226,216,254,3,83,80,173,38,191,91,160,51,211,23,3,49,77,220,62,58,179,"
+    "207,8,31,184,95,37,231,236,178,185,129,150,198,140,61,252,203,157,22,107,"
+    "9,191,165,232,35,10,178,246,230,39,243,235,134,74,27,43,195,122,143,80,"
+    "180,51,217,107,224,154,137,48,99,56,163,98,175,238,202,28,149,75,73,167,"
+    "209,91,209,125,53,15,2,0,1,3,108,100,57,137,161,117,30,158,157,136,81,70,"
+    "62,51,111,138,48,102,91,148,103,82,143,30,248,0,4,91,18,170,94,82,178,214,"
+    "107,40,5,90,152,248,228,193,154,254,176,38,253,12,47,103,85,191,24,48,173,"
+    "84,45,134,214,75,36,218,67,194,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"
+    "0,0,0,0,0,0,0,0,0,0,0,131,191,83,201,108,193,222,255,176,67,136,209,219,"
+    "42,6,169,240,137,142,185,169,6,17,87,123,6,42,55,162,64,120,91,1,2,2,0,1,"
+    "12,2,0,0,0,128,150,152,0,0,0,0,0";
+
+// Encoded serialized message passed by web3.Transaction
+constexpr char kEncodedSerializedMessage[] =
+    "FDmjJVJ5XUQPik2xqs7NqP7VdMkDXNWLimqTR8C2KstRHZAdRUoCMQr7LXUjQ6dSer9jfWWfbN"
+    "XzMToAWzoQLWvgduNCLxSVWVuiVZzqGPwC8mWT4SAu5NDCC5VTWcSNWj4Q9HSvgQitodttQiQR"
+    "3yQvRZJurNzub3SBK3umEqULkVJPYZJRCmPbXQm9ebPEXGYQRKrjiAt7";
+
+constexpr char kSecondAccountSignatureArray[] =
+    "31,184,95,37,231,236,178,185,129,150,198,140,61,252,203,157,22,107,9,191,"
+    "165,232,35,10,178,246,230,39,243,235,134,74,27,43,195,122,143,80,180,51,"
+    "217,107,224,154,137,48,99,56,163,98,175,238,202,28,149,75,73,167,209,91,"
+    "209,125,53,15";
+
+constexpr uint8_t kSecondAccountSignature[] = {
+    31,  184, 95,  37,  231, 236, 178, 185, 129, 150, 198, 140, 61,
+    252, 203, 157, 22,  107, 9,   191, 165, 232, 35,  10,  178, 246,
+    230, 39,  243, 235, 134, 74,  27,  43,  195, 122, 143, 80,  180,
+    51,  217, 107, 224, 154, 137, 48,  99,  56,  163, 98,  175, 238,
+    202, 28,  149, 75,  73,  167, 209, 91,  209, 125, 53,  15};
 
 std::unique_ptr<net::test_server::HttpResponse> HandleRequest(
     const net::test_server::HttpRequest& request) {
@@ -359,10 +415,18 @@ class SolanaProviderTest : public InProcessBrowserTest {
 
   void CallSolanaSignAndSendTransaction(
       const std::string& unsigned_tx_array_string,
-      const std::string& send_options_string = "{}") {
-    const std::string script = base::StringPrintf(
-        R"(solanaSignAndSendTransaction(new Uint8Array([%s]), %s))",
-        unsigned_tx_array_string.c_str(), send_options_string.c_str());
+      const std::string& send_options_string = "{}",
+      const std::string& pubkey = "",
+      const std::string& signature_array_string = "") {
+    const std::string script =
+        pubkey.empty()
+            ? base::StringPrintf(
+                  R"(solanaSignAndSendTransaction(new Uint8Array([%s]), %s))",
+                  unsigned_tx_array_string.c_str(), send_options_string.c_str())
+            : base::StringPrintf(
+                  R"(solanaSignAndSendTransaction(new Uint8Array([%s]), %s, "%s", new Uint8Array([%s])))",
+                  unsigned_tx_array_string.c_str(), send_options_string.c_str(),
+                  pubkey.c_str(), signature_array_string.c_str());
     ASSERT_TRUE(ExecJs(web_contents(), script));
   }
 
@@ -372,18 +436,36 @@ class SolanaProviderTest : public InProcessBrowserTest {
         .ExtractString();
   }
 
-  void CallSolanaSignTransaction(const std::string& unsigned_tx_array_string) {
+  void CallSolanaSignTransaction(
+      const std::string& unsigned_tx_array_string,
+      const std::string& pubkey = "",
+      const std::string& signature_array_string = "") {
     const std::string script =
-        base::StringPrintf(R"(solanaSignTransaction(new Uint8Array([%s])))",
-                           unsigned_tx_array_string.c_str());
+        pubkey.empty()
+            ? base::StringPrintf(
+                  R"(solanaSignTransaction(new Uint8Array([%s])))",
+                  unsigned_tx_array_string.c_str())
+            : base::StringPrintf(
+                  R"(solanaSignTransaction(new Uint8Array([%s]), "%s", new Uint8Array([%s])))",
+                  unsigned_tx_array_string.c_str(), pubkey.c_str(),
+                  signature_array_string.c_str());
     ASSERT_TRUE(ExecJs(web_contents(), script));
   }
 
-  void CallSolanaSignAllTransactions(const std::string& unsigned_tx_array_str,
-                                     const std::string& signed_tx_array_str) {
-    const std::string script = base::StringPrintf(
-        R"(solanaSignAllTransactions(new Uint8Array([%s]), new Uint8Array([%s])))",
-        unsigned_tx_array_str.c_str(), signed_tx_array_str.c_str());
+  void CallSolanaSignAllTransactions(
+      const std::string& unsigned_tx_array_str,
+      const std::string& signed_tx_array_str,
+      const std::string& pubkey = "",
+      const std::string& signature_array_string = "") {
+    const std::string script =
+        pubkey.empty()
+            ? base::StringPrintf(
+                  R"(solanaSignAllTransactions(new Uint8Array([%s]), new Uint8Array([%s])))",
+                  unsigned_tx_array_str.c_str(), signed_tx_array_str.c_str())
+            : base::StringPrintf(
+                  R"(solanaSignAllTransactions(new Uint8Array([%s]), new Uint8Array([%s]), "%s", new Uint8Array([%s])))",
+                  unsigned_tx_array_str.c_str(), signed_tx_array_str.c_str(),
+                  pubkey.c_str(), signature_array_string.c_str());
     ASSERT_TRUE(ExecJs(web_contents(), script));
   }
 
@@ -621,6 +703,7 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, SignAndSendTransaction) {
       break;
     }
   }
+  const std::string tx2_id = infos[tx2_index]->id;
   EXPECT_EQ(kFirstAccount, infos[tx2_index]->from_address);
   EXPECT_EQ(mojom::TransactionStatus::Unapproved, infos[tx2_index]->tx_status);
   EXPECT_EQ(mojom::TransactionType::SolanaDappSignAndSendTransaction,
@@ -644,6 +727,63 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, SignAndSendTransaction) {
                 mojom::OptionalSkipPreflight::New(true)));
 
   WaitForResultReady();
+  EXPECT_EQ(GetSignAndSendTransactionResult(), kEncodedSignature);
+
+  CallSolanaSignAndSendTransaction(kUnsignedTxArrayStr2, send_options,
+                                   kSecondAccount,
+                                   kSecondAccountSignatureArray);
+  observer()->WaitForNewUnapprovedTx();
+  EXPECT_TRUE(
+      brave_wallet::BraveWalletTabHelper::FromWebContents(web_contents())
+          ->IsShowingBubble());
+
+  // Test transaction.signatures.
+  infos = GetAllTransactionInfo();
+  EXPECT_EQ(3UL, infos.size());
+  size_t tx3_index = 0;
+  for (size_t i = 0; i < infos.size(); i++) {
+    if (infos[i]->id != tx1_id && infos[i]->id != tx2_id) {
+      tx3_index = i;
+      break;
+    }
+  }
+  const std::string tx3_id = infos[tx3_index]->id;
+  EXPECT_EQ(kFirstAccount, infos[tx3_index]->from_address);
+  EXPECT_EQ(mojom::TransactionStatus::Unapproved, infos[tx3_index]->tx_status);
+  EXPECT_EQ(mojom::TransactionType::SolanaDappSignAndSendTransaction,
+            infos[tx3_index]->tx_type);
+  EXPECT_EQ(MakeOriginInfo(https_server_for_files()->GetOrigin("a.test")),
+            infos[tx3_index]->origin_info);
+
+  ApproveTransaction(tx3_id);
+
+  infos = GetAllTransactionInfo();
+  EXPECT_EQ(3UL, infos.size());
+  EXPECT_EQ(tx3_id, infos[tx3_index]->id);
+  EXPECT_EQ(kFirstAccount, infos[tx3_index]->from_address);
+  EXPECT_EQ(mojom::TransactionStatus::Submitted, infos[tx3_index]->tx_status);
+  EXPECT_EQ(mojom::TransactionType::SolanaDappSignAndSendTransaction,
+            infos[tx3_index]->tx_type);
+  // This comes from mock RPC response so it's still kEncodedSignature.
+  EXPECT_EQ(infos[tx3_index]->tx_hash, kEncodedSignature);
+  ASSERT_TRUE(infos[tx3_index]->tx_data_union->is_solana_tx_data());
+
+  std::vector<mojom::SignaturePubkeyPairPtr> signatures;
+  signatures.push_back(
+      mojom::SignaturePubkeyPair::New(absl::nullopt, kFirstAccount));
+  signatures.push_back(mojom::SignaturePubkeyPair::New(
+      std::vector<uint8_t>(std::begin(kSecondAccountSignature),
+                           std::end(kSecondAccountSignature)),
+      kSecondAccount));
+
+  EXPECT_EQ(infos[tx3_index]
+                ->tx_data_union->get_solana_tx_data()
+                ->sign_transaction_param,
+            mojom::SolanaSignTransactionParam::New(kEncodedSerializedMessage,
+                                                   std::move(signatures)));
+
+  WaitForResultReady();
+  // This comes from mock RPC response so it's still kEncodedSignature.
   EXPECT_EQ(GetSignAndSendTransactionResult(), kEncodedSignature);
 }
 
@@ -681,6 +821,17 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, SignTransaction) {
                                                                request_index++);
   WaitForResultReady();
   EXPECT_EQ(GetSignTransactionResult(), kSignedTxArrayStr);
+
+  CallSolanaSignTransaction(kUnsignedTxArrayStr2, kSecondAccount,
+                            kSecondAccountSignatureArray);
+  EXPECT_TRUE(
+      brave_wallet::BraveWalletTabHelper::FromWebContents(web_contents())
+          ->IsShowingBubble());
+  // user approved request
+  brave_wallet_service_->NotifySignTransactionRequestProcessed(true,
+                                                               request_index++);
+  WaitForResultReady();
+  EXPECT_EQ(GetSignTransactionResult(), kSignedTxArrayStr2);
 }
 
 IN_PROC_BROWSER_TEST_F(SolanaProviderTest, SignAllTransactions) {
@@ -709,6 +860,17 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, SignAllTransactions) {
             l10n_util::GetStringUTF8(IDS_WALLET_USER_REJECTED_REQUEST));
 
   CallSolanaSignAllTransactions(kUnsignedTxArrayStr, kSignedTxArrayStr);
+  EXPECT_TRUE(
+      brave_wallet::BraveWalletTabHelper::FromWebContents(web_contents())
+          ->IsShowingBubble());
+  // user approved request
+  brave_wallet_service_->NotifySignAllTransactionsRequestProcessed(
+      true, request_index++);
+  WaitForResultReady();
+  EXPECT_EQ(GetSignAllTransactionsResult(), "success");
+
+  CallSolanaSignAllTransactions(kUnsignedTxArrayStr2, kSignedTxArrayStr2,
+                                kSecondAccount, kSecondAccountSignatureArray);
   EXPECT_TRUE(
       brave_wallet::BraveWalletTabHelper::FromWebContents(web_contents())
           ->IsShowingBubble());
