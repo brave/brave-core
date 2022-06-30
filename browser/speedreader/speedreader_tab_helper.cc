@@ -9,16 +9,20 @@
 
 #include "base/bind.h"
 #include "base/feature_list.h"
+#include "base/strings/string_util.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/speedreader/speedreader_service_factory.h"
 #include "brave/browser/ui/brave_browser_window.h"
 #include "brave/browser/ui/speedreader/speedreader_bubble_view.h"
-#include "brave/components/speedreader/features.h"
+#include "brave/components/l10n/common/locale_util.h"
+#include "brave/components/speedreader/common/constants.h"
+#include "brave/components/speedreader/common/features.h"
 #include "brave/components/speedreader/speedreader_extended_info_handler.h"
 #include "brave/components/speedreader/speedreader_pref_names.h"
 #include "brave/components/speedreader/speedreader_rewriter_service.h"
 #include "brave/components/speedreader/speedreader_service.h"
 #include "brave/components/speedreader/speedreader_util.h"
+#include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
@@ -60,6 +64,25 @@ void SpeedreaderTabHelper::MaybeCreateForWebContents(
   }
 }
 
+// static
+void SpeedreaderTabHelper::BindSpeedreaderHost(
+    mojo::PendingAssociatedReceiver<mojom::SpeedreaderHost> receiver,
+    content::RenderFrameHost* rfh) {
+  auto* sender = content::WebContents::FromRenderFrameHost(rfh);
+  if (!sender)
+    return;
+  auto* tab_helper = SpeedreaderTabHelper::FromWebContents(sender);
+  if (!tab_helper)
+    return;
+  tab_helper->BindReceiver(std::move(receiver));
+}
+
+void SpeedreaderTabHelper::BindReceiver(
+    mojo::PendingAssociatedReceiver<mojom::SpeedreaderHost> receiver) {
+  receiver_.reset();
+  receiver_.Bind(std::move(receiver));
+}
+
 base::WeakPtr<SpeedreaderTabHelper> SpeedreaderTabHelper::GetWeakPtr() {
   return weak_factory_.GetWeakPtr();
 }
@@ -81,8 +104,15 @@ bool SpeedreaderTabHelper::IsEnabledForSite(const GURL& url) {
 void SpeedreaderTabHelper::ProcessIconClick() {
   switch (distill_state_) {
     case DistillState::kSpeedreaderMode:
-    case DistillState::kSpeedreaderOnDisabledPage:
       ShowSpeedreaderBubble();
+      break;
+    case DistillState::kSpeedreaderOnDisabledPage:
+      if (original_page_shown_ &&
+          IsEnabledForSite(web_contents()->GetLastCommittedURL())) {
+        ReloadContents();
+      } else {
+        ShowSpeedreaderBubble();
+      }
       break;
     case DistillState::kReaderMode:
       SetNextRequestState(DistillState::kPageProbablyReadable);
@@ -157,6 +187,11 @@ void SpeedreaderTabHelper::UpdateActiveState(const GURL& url) {
     return;
   }
 
+  if (show_original_page_) {
+    SetNextRequestState(DistillState::kSpeedreaderOnDisabledPage);
+    return;
+  }
+
   // Work only with casual main frame navigations.
   if (url.SchemeIsHTTPOrHTTPS()) {
     auto* rewriter_service =
@@ -179,6 +214,7 @@ void SpeedreaderTabHelper::UpdateActiveState(const GURL& url) {
 void SpeedreaderTabHelper::SetNextRequestState(DistillState state) {
   distill_state_ = state;
   single_shot_next_request_ = false;
+  show_original_page_ = false;
 }
 
 void SpeedreaderTabHelper::OnBubbleClosed() {
@@ -217,6 +253,11 @@ void SpeedreaderTabHelper::HideBubble() {
   }
 }
 
+void SpeedreaderTabHelper::OnShowOriginalPage() {
+  show_original_page_ = distill_state_ == DistillState::kSpeedreaderMode;
+  ReloadContents();
+}
+
 void SpeedreaderTabHelper::ClearPersistedData() {
   if (auto* entry = web_contents()->GetController().GetLastCommittedEntry()) {
     SpeedreaderExtendedInfoHandler::ClearPersistedData(entry);
@@ -234,6 +275,8 @@ void SpeedreaderTabHelper::ProcessNavigation(
       MaybeUpdateCachedState(navigation_handle)) {
     return;
   }
+
+  original_page_shown_ = show_original_page_;
 
   UpdateActiveState(navigation_handle->GetURL());
   UpdateButtonIfNeeded();
@@ -300,6 +343,39 @@ void SpeedreaderTabHelper::DidStopLoading() {
   if (entry) {
     SpeedreaderExtendedInfoHandler::PersistMode(entry, distill_state_);
   }
+}
+
+void SpeedreaderTabHelper::DOMContentLoaded(
+    content::RenderFrameHost* render_frame_host) {
+  if (!PageWantsDistill(distill_state_))
+    return;
+
+  constexpr const char16_t kAddShowOriginalPageLink[] =
+      uR"js(
+    (function() {
+      // element id is hardcoded in extractor.rs
+      const link = document.
+        getElementById('c93e2206-2f31-4ddc-9828-2bb8e8ed940e');
+      if (!link)
+        return;
+      link.text = '$1';
+      link.addEventListener('click', (e) => {
+        window.speedreader.showOriginalPage();
+      })
+    })();
+  )js";
+
+  const auto link_text = brave_l10n::GetLocalizedResourceUTF16String(
+      IDR_SPEEDREADER_SHOW_ORIGINAL_PAGE_LINK);
+  // Make sure that the link text doesn't contain js injection
+  CHECK_EQ(std::u16string::npos, link_text.find(u'\''));
+  CHECK_EQ(std::u16string::npos, link_text.find(u'\\'));
+
+  const auto script = base::ReplaceStringPlaceholders(kAddShowOriginalPageLink,
+                                                      link_text, nullptr);
+
+  render_frame_host->ExecuteJavaScriptInIsolatedWorld(script, base::DoNothing(),
+                                                      kIsolatedWorldId);
 }
 
 void SpeedreaderTabHelper::OnVisibilityChanged(content::Visibility visibility) {

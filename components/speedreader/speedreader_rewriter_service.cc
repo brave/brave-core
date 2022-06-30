@@ -15,7 +15,7 @@
 #include "base/logging.h"
 #include "base/strings/string_util.h"
 #include "base/task/thread_pool.h"
-#include "brave/components/speedreader/features.h"
+#include "brave/components/speedreader/common/features.h"
 #include "brave/components/speedreader/rust/ffi/speedreader.h"
 #include "brave/components/speedreader/speedreader_component.h"
 #include "brave/components/speedreader/speedreader_util.h"

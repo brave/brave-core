@@ -160,7 +160,7 @@ brave_chrome_browser_deps = [
   "//brave/components/sidebar/buildflags",
   "//brave/components/skus/browser",
   "//brave/components/skus/common",
-  "//brave/components/speedreader:buildflags",
+  "//brave/components/speedreader/common:buildflags",
   "//brave/components/tor/buildflags",
   "//brave/components/translate/core/common:buildflags",
   "//brave/components/version_info",

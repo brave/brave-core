@@ -10,7 +10,8 @@
 #include "brave/browser/speedreader/speedreader_service_factory.h"
 #include "brave/browser/speedreader/speedreader_tab_helper.h"
 #include "brave/components/constants/brave_paths.h"
-#include "brave/components/speedreader/features.h"
+#include "brave/components/speedreader/common/constants.h"
+#include "brave/components/speedreader/common/features.h"
 #include "brave/components/speedreader/speedreader_service.h"
 #include "brave/components/speedreader/speedreader_util.h"
 #include "chrome/browser/profiles/keep_alive/profile_keep_alive_types.h"
@@ -318,4 +319,36 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, ReloadContent) {
             tab_helper_1->PageDistillState());
   EXPECT_EQ(speedreader::DistillState::kSpeedreaderOnDisabledPage,
             tab_helper_2->PageDistillState());
+}
+
+IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, ShowOriginalPage) {
+  ToggleSpeedreader();
+  NavigateToPageSynchronously(kTestPageReadable);
+  auto* web_contents = ActiveWebContents();
+
+  constexpr const char kClickLink[] =
+      R"js(
+    (function() {
+      // element id is hardcoded in extractor.rs
+      const link =
+        document.getElementById('c93e2206-2f31-4ddc-9828-2bb8e8ed940e');
+      link.click();
+    })();
+  )js";
+
+  ASSERT_TRUE(content::ExecJs(web_contents, kClickLink,
+                              content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
+                              speedreader::kIsolatedWorldId));
+  content::WaitForLoadStop(web_contents);
+  auto* tab_helper =
+      speedreader::SpeedreaderTabHelper::FromWebContents(web_contents);
+  EXPECT_EQ(speedreader::DistillState::kSpeedreaderOnDisabledPage,
+            tab_helper->PageDistillState());
+  EXPECT_TRUE(tab_helper->IsEnabledForSite());
+
+  // Click on speedreader button
+  ClickReaderButton();
+  content::WaitForLoadStop(web_contents);
+  EXPECT_EQ(speedreader::DistillState::kSpeedreaderMode,
+            tab_helper->PageDistillState());
 }

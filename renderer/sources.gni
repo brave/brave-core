@@ -19,6 +19,7 @@ brave_chrome_renderer_public_deps = [
   "//brave/components/brave_wallet/renderer",
   "//brave/components/cosmetic_filters/renderer",
   "//brave/components/skus/renderer",
+  "//brave/components/speedreader/renderer",
   "//brave/renderer/brave_wallet",
   "//mojo/public/cpp/bindings",
   "//third_party/blink/public:blink",

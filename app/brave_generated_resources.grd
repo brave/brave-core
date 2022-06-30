@@ -706,6 +706,9 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
         <message name="IDS_SPEEDREADER_ICON_SPEEDREADER_SETTINGS" desc="Accessible text shown when a page is in Speedreader Mode">
           Speedreader settings
         </message>
+        <message name="IDR_SPEEDREADER_SHOW_ORIGINAL_PAGE_LINK">
+          Show original page
+        </message>
       </if>
 
       <!-- Stats -->

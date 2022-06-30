@@ -9,10 +9,12 @@
 #include <memory>
 
 #include "base/memory/weak_ptr.h"
+#include "brave/components/speedreader/common/speedreader.mojom.h"
 #include "brave/components/speedreader/speedreader_result_delegate.h"
 #include "brave/components/speedreader/speedreader_util.h"
 #include "content/public/browser/web_contents_observer.h"
 #include "content/public/browser/web_contents_user_data.h"
+#include "mojo/public/cpp/bindings/associated_receiver.h"
 
 class PrefChangeRegistrar;
 namespace content {
@@ -29,12 +31,19 @@ class SpeedreaderBubbleView;
 class SpeedreaderTabHelper
     : public content::WebContentsObserver,
       public content::WebContentsUserData<SpeedreaderTabHelper>,
-      public SpeedreaderResultDelegate {
+      public SpeedreaderResultDelegate,
+      public mojom::SpeedreaderHost {
  public:
   ~SpeedreaderTabHelper() override;
 
   SpeedreaderTabHelper(const SpeedreaderTabHelper&) = delete;
   SpeedreaderTabHelper& operator=(SpeedreaderTabHelper&) = delete;
+
+  // Provides endpoint for renderer to call browser's fucntion. (f.e
+  // OnShowOriginalPage)
+  static void BindSpeedreaderHost(
+      mojo::PendingAssociatedReceiver<mojom::SpeedreaderHost> receiver,
+      content::RenderFrameHost* rfh);
 
   static void MaybeCreateForWebContents(content::WebContents* contents);
 
@@ -75,9 +84,15 @@ class SpeedreaderTabHelper
   // Handler for when the bubble is dismissed.
   void OnBubbleClosed();
 
+  // mojom::SpeedreaderHost:
+  void OnShowOriginalPage() override;
+
  private:
   friend class content::WebContentsUserData<SpeedreaderTabHelper>;
   explicit SpeedreaderTabHelper(content::WebContents* web_contents);
+
+  void BindReceiver(
+      mojo::PendingAssociatedReceiver<mojom::SpeedreaderHost> receiver);
 
   Profile* GetProfile() const;
 
@@ -113,6 +128,7 @@ class SpeedreaderTabHelper
   void DidRedirectNavigation(
       content::NavigationHandle* navigation_handle) override;
   void DidStopLoading() override;
+  void DOMContentLoaded(content::RenderFrameHost* render_frame_host) override;
   void OnVisibilityChanged(content::Visibility visibility) override;
   void WebContentsDestroyed() override;
 
@@ -125,9 +141,16 @@ class SpeedreaderTabHelper
 
   bool single_shot_next_request_ =
       false;  // run speedreader once on next page load
+
+  bool show_original_page_ = false;   // next request should not be distilled
+  bool original_page_shown_ = false;  // true if reload was performed using the
+                                      // 'show original page' link
+
   DistillState distill_state_ = DistillState::kNone;
   raw_ptr<SpeedreaderBubbleView> speedreader_bubble_ = nullptr;
   raw_ptr<HostContentSettingsMap> content_rules_ = nullptr;
+
+  mojo::AssociatedReceiver<mojom::SpeedreaderHost> receiver_{this};
 
   base::WeakPtrFactory<SpeedreaderTabHelper> weak_factory_{this};
 
