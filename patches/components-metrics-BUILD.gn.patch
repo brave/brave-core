@@ -1,5 +1,5 @@
 diff --git a/components/metrics/BUILD.gn b/components/metrics/BUILD.gn
-index d78a53c731822d02a75b9df3fb6383b2889470f6..04a7f633285959dfc0a0a757658dcec5f6c24d05 100644
+index 9bca00da5619fa88828046a84f1e0f1c4b11dd64..65477d2ff56a6cc2dde7b1fd2b3b837df596f2a6 100644
 --- a/components/metrics/BUILD.gn
 +++ b/components/metrics/BUILD.gn
 @@ -193,6 +193,7 @@ static_library("metrics") {

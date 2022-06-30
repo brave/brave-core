@@ -1,5 +1,5 @@
 diff --git a/PRESUBMIT.py b/PRESUBMIT.py
-index 9b1ade025da4ecb2464888986492b22be28ba6b8..b1087ab2d3f982f4b84eb14c71a6e255126d9edd 100644
+index 044fc06508b55efa15e0376529a0c4d43457fb37..cbbbe5e652e9ad54c0f8d7226cdabdbb51e4287f 100644
 --- a/PRESUBMIT.py
 +++ b/PRESUBMIT.py
 @@ -6015,7 +6015,6 @@ def CheckPythonShebang(input_api, output_api):

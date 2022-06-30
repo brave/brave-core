@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/location_bar/icon_label_bubble_view.cc b/chrome/browser/ui/views/location_bar/icon_label_bubble_view.cc
-index 4a18ee887810650bb93e9bff6f2755df65eea06f..991dfb2428320c4b296f778a1e733f6034be8f76 100644
+index 7a284360ee54ba46f3842fd4866f640fa31ba5ed..8a2958b271ca1fb602b9902f6bf3a1913ea8c44c 100644
 --- a/chrome/browser/ui/views/location_bar/icon_label_bubble_view.cc
 +++ b/chrome/browser/ui/views/location_bar/icon_label_bubble_view.cc
-@@ -592,6 +592,7 @@ SkPath IconLabelBubbleView::GetHighlightPath() const {
+@@ -590,6 +590,7 @@ SkPath IconLabelBubbleView::GetHighlightPath() const {
    const float corner_radius = highlight_bounds.height() / 2.f;
    const SkRect rect = RectToSkRect(highlight_bounds);
  

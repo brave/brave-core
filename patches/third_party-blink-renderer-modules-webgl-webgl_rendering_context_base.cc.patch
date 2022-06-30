@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/modules/webgl/webgl_rendering_context_base.cc b/third_party/blink/renderer/modules/webgl/webgl_rendering_context_base.cc
-index 9524dc5b0be64a4bb5cdb93303c7a8eebe262a62..eb17557e4c1b8c5477f3c82c175d2f8d96edcdb4 100644
+index 05c61cb2501bed930adfb434307d0ba9727d4bcd..7b083e2eb9335b0269beed65b98f1fd7fd54f962 100644
 --- a/third_party/blink/renderer/modules/webgl/webgl_rendering_context_base.cc
 +++ b/third_party/blink/renderer/modules/webgl/webgl_rendering_context_base.cc
-@@ -3006,6 +3006,7 @@ WebGLActiveInfo* WebGLRenderingContextBase::getActiveAttrib(
+@@ -3014,6 +3014,7 @@ WebGLActiveInfo* WebGLRenderingContextBase::getActiveAttrib(
      GLuint index) {
    if (!ValidateWebGLProgramOrShader("getActiveAttrib", program))
      return nullptr;
@@ -10,7 +10,7 @@ index 9524dc5b0be64a4bb5cdb93303c7a8eebe262a62..eb17557e4c1b8c5477f3c82c175d2f8d
    GLuint program_id = ObjectNonZero(program);
    GLint max_name_length = -1;
    ContextGL()->GetProgramiv(program_id, GL_ACTIVE_ATTRIBUTE_MAX_LENGTH,
-@@ -3037,6 +3038,7 @@ WebGLActiveInfo* WebGLRenderingContextBase::getActiveUniform(
+@@ -3045,6 +3046,7 @@ WebGLActiveInfo* WebGLRenderingContextBase::getActiveUniform(
      GLuint index) {
    if (!ValidateWebGLProgramOrShader("getActiveUniform", program))
      return nullptr;
@@ -18,7 +18,7 @@ index 9524dc5b0be64a4bb5cdb93303c7a8eebe262a62..eb17557e4c1b8c5477f3c82c175d2f8d
    GLuint program_id = ObjectNonZero(program);
    GLint max_name_length = -1;
    ContextGL()->GetProgramiv(program_id, GL_ACTIVE_UNIFORM_MAX_LENGTH,
-@@ -3067,6 +3069,7 @@ absl::optional<HeapVector<Member<WebGLShader>>>
+@@ -3075,6 +3077,7 @@ absl::optional<HeapVector<Member<WebGLShader>>>
  WebGLRenderingContextBase::getAttachedShaders(WebGLProgram* program) {
    if (!ValidateWebGLProgramOrShader("getAttachedShaders", program))
      return absl::nullopt;
@@ -26,7 +26,7 @@ index 9524dc5b0be64a4bb5cdb93303c7a8eebe262a62..eb17557e4c1b8c5477f3c82c175d2f8d
  
    HeapVector<Member<WebGLShader>> shader_objects;
    for (GLenum shaderType : {GL_VERTEX_SHADER, GL_FRAGMENT_SHADER}) {
-@@ -3081,6 +3084,7 @@ GLint WebGLRenderingContextBase::getAttribLocation(WebGLProgram* program,
+@@ -3089,6 +3092,7 @@ GLint WebGLRenderingContextBase::getAttribLocation(WebGLProgram* program,
                                                     const String& name) {
    if (!ValidateWebGLProgramOrShader("getAttribLocation", program))
      return -1;
@@ -34,7 +34,7 @@ index 9524dc5b0be64a4bb5cdb93303c7a8eebe262a62..eb17557e4c1b8c5477f3c82c175d2f8d
    if (!ValidateLocationLength("getAttribLocation", name))
      return -1;
    if (!ValidateString("getAttribLocation", name))
-@@ -3114,6 +3118,7 @@ ScriptValue WebGLRenderingContextBase::getBufferParameter(
+@@ -3122,6 +3126,7 @@ ScriptValue WebGLRenderingContextBase::getBufferParameter(
      GLenum pname) {
    if (isContextLost() || !ValidateBufferTarget("getBufferParameter", target))
      return ScriptValue::CreateNull(script_state->GetIsolate());
@@ -42,7 +42,7 @@ index 9524dc5b0be64a4bb5cdb93303c7a8eebe262a62..eb17557e4c1b8c5477f3c82c175d2f8d
  
    switch (pname) {
      case GL_BUFFER_USAGE: {
-@@ -3247,6 +3252,7 @@ ScriptValue WebGLRenderingContextBase::getFramebufferAttachmentParameter(
+@@ -3255,6 +3260,7 @@ ScriptValue WebGLRenderingContextBase::getFramebufferAttachmentParameter(
                                           target, attachment))
      return ScriptValue::CreateNull(script_state->GetIsolate());
  
@@ -50,7 +50,7 @@ index 9524dc5b0be64a4bb5cdb93303c7a8eebe262a62..eb17557e4c1b8c5477f3c82c175d2f8d
    if (!framebuffer_binding_ || !framebuffer_binding_->Object()) {
      SynthesizeGLError(GL_INVALID_OPERATION, "getFramebufferAttachmentParameter",
                        "no framebuffer bound");
-@@ -3647,6 +3653,7 @@ ScriptValue WebGLRenderingContextBase::getParameter(ScriptState* script_state,
+@@ -3655,6 +3661,7 @@ ScriptValue WebGLRenderingContextBase::getParameter(ScriptState* script_state,
            "invalid parameter name, OES_standard_derivatives not enabled");
        return ScriptValue::CreateNull(script_state->GetIsolate());
      case WebGLDebugRendererInfo::kUnmaskedRendererWebgl:
@@ -58,7 +58,7 @@ index 9524dc5b0be64a4bb5cdb93303c7a8eebe262a62..eb17557e4c1b8c5477f3c82c175d2f8d
        if (ExtensionEnabled(kWebGLDebugRendererInfoName)) {
          if (IdentifiabilityStudySettings::Get()->ShouldSampleType(
                  blink::IdentifiableSurface::Type::kWebGLParameter)) {
-@@ -3662,6 +3669,7 @@ ScriptValue WebGLRenderingContextBase::getParameter(ScriptState* script_state,
+@@ -3670,6 +3677,7 @@ ScriptValue WebGLRenderingContextBase::getParameter(ScriptState* script_state,
            "invalid parameter name, WEBGL_debug_renderer_info not enabled");
        return ScriptValue::CreateNull(script_state->GetIsolate());
      case WebGLDebugRendererInfo::kUnmaskedVendorWebgl:
@@ -66,7 +66,7 @@ index 9524dc5b0be64a4bb5cdb93303c7a8eebe262a62..eb17557e4c1b8c5477f3c82c175d2f8d
        if (ExtensionEnabled(kWebGLDebugRendererInfoName)) {
          if (IdentifiabilityStudySettings::Get()->ShouldSampleType(
                  blink::IdentifiableSurface::Type::kWebGLParameter)) {
-@@ -3754,6 +3762,7 @@ ScriptValue WebGLRenderingContextBase::getProgramParameter(
+@@ -3762,6 +3770,7 @@ ScriptValue WebGLRenderingContextBase::getProgramParameter(
    // intended to prevent applications from entering an infinite polling loop.
    if (isContextLost() && pname == GL_COMPLETION_STATUS_KHR)
      return WebGLAny(script_state, true);
@@ -74,7 +74,7 @@ index 9524dc5b0be64a4bb5cdb93303c7a8eebe262a62..eb17557e4c1b8c5477f3c82c175d2f8d
    if (!ValidateWebGLProgramOrShader("getProgramParamter", program)) {
      return ScriptValue::CreateNull(script_state->GetIsolate());
    }
-@@ -3809,6 +3818,7 @@ ScriptValue WebGLRenderingContextBase::getProgramParameter(
+@@ -3817,6 +3826,7 @@ ScriptValue WebGLRenderingContextBase::getProgramParameter(
  String WebGLRenderingContextBase::getProgramInfoLog(WebGLProgram* program) {
    if (!ValidateWebGLProgramOrShader("getProgramInfoLog", program))
      return String();
@@ -82,7 +82,7 @@ index 9524dc5b0be64a4bb5cdb93303c7a8eebe262a62..eb17557e4c1b8c5477f3c82c175d2f8d
    GLStringQuery query(ContextGL());
    return query.Run<GLStringQuery::ProgramInfoLog>(ObjectNonZero(program));
  }
-@@ -3819,6 +3829,7 @@ ScriptValue WebGLRenderingContextBase::getRenderbufferParameter(
+@@ -3827,6 +3837,7 @@ ScriptValue WebGLRenderingContextBase::getRenderbufferParameter(
      GLenum pname) {
    if (isContextLost())
      return ScriptValue::CreateNull(script_state->GetIsolate());
@@ -90,7 +90,7 @@ index 9524dc5b0be64a4bb5cdb93303c7a8eebe262a62..eb17557e4c1b8c5477f3c82c175d2f8d
    if (target != GL_RENDERBUFFER) {
      SynthesizeGLError(GL_INVALID_ENUM, "getRenderbufferParameter",
                        "invalid target");
-@@ -3870,6 +3881,7 @@ ScriptValue WebGLRenderingContextBase::getShaderParameter(
+@@ -3878,6 +3889,7 @@ ScriptValue WebGLRenderingContextBase::getShaderParameter(
    // intended to prevent applications from entering an infinite polling loop.
    if (isContextLost() && pname == GL_COMPLETION_STATUS_KHR)
      return WebGLAny(script_state, true);
@@ -98,7 +98,7 @@ index 9524dc5b0be64a4bb5cdb93303c7a8eebe262a62..eb17557e4c1b8c5477f3c82c175d2f8d
    if (!ValidateWebGLProgramOrShader("getShaderParameter", shader)) {
      return ScriptValue::CreateNull(script_state->GetIsolate());
    }
-@@ -3901,6 +3913,7 @@ ScriptValue WebGLRenderingContextBase::getShaderParameter(
+@@ -3909,6 +3921,7 @@ ScriptValue WebGLRenderingContextBase::getShaderParameter(
  String WebGLRenderingContextBase::getShaderInfoLog(WebGLShader* shader) {
    if (!ValidateWebGLProgramOrShader("getShaderInfoLog", shader))
      return String();
@@ -106,7 +106,7 @@ index 9524dc5b0be64a4bb5cdb93303c7a8eebe262a62..eb17557e4c1b8c5477f3c82c175d2f8d
    GLStringQuery query(ContextGL());
    return query.Run<GLStringQuery::ShaderInfoLog>(ObjectNonZero(shader));
  }
-@@ -3931,6 +3944,7 @@ WebGLShaderPrecisionFormat* WebGLRenderingContextBase::getShaderPrecisionFormat(
+@@ -3939,6 +3952,7 @@ WebGLShaderPrecisionFormat* WebGLRenderingContextBase::getShaderPrecisionFormat(
    GLint precision = 0;
    ContextGL()->GetShaderPrecisionFormat(shader_type, precision_type, range,
                                          &precision);
@@ -114,7 +114,7 @@ index 9524dc5b0be64a4bb5cdb93303c7a8eebe262a62..eb17557e4c1b8c5477f3c82c175d2f8d
    auto* result = MakeGarbageCollected<WebGLShaderPrecisionFormat>(
        range[0], range[1], precision);
    if (IdentifiabilityStudySettings::Get()->ShouldSampleType(
-@@ -3943,6 +3957,7 @@ WebGLShaderPrecisionFormat* WebGLRenderingContextBase::getShaderPrecisionFormat(
+@@ -3951,6 +3965,7 @@ WebGLShaderPrecisionFormat* WebGLRenderingContextBase::getShaderPrecisionFormat(
  String WebGLRenderingContextBase::getShaderSource(WebGLShader* shader) {
    if (!ValidateWebGLProgramOrShader("getShaderSource", shader))
      return String();
@@ -122,7 +122,7 @@ index 9524dc5b0be64a4bb5cdb93303c7a8eebe262a62..eb17557e4c1b8c5477f3c82c175d2f8d
    return EnsureNotNull(shader->Source());
  }
  
-@@ -3968,6 +3983,7 @@ ScriptValue WebGLRenderingContextBase::getTexParameter(
+@@ -3976,6 +3991,7 @@ ScriptValue WebGLRenderingContextBase::getTexParameter(
      GLenum pname) {
    if (isContextLost())
      return ScriptValue::CreateNull(script_state->GetIsolate());
@@ -130,7 +130,7 @@ index 9524dc5b0be64a4bb5cdb93303c7a8eebe262a62..eb17557e4c1b8c5477f3c82c175d2f8d
    if (!ValidateTextureBinding("getTexParameter", target))
      return ScriptValue::CreateNull(script_state->GetIsolate());
    switch (pname) {
-@@ -4002,6 +4018,7 @@ ScriptValue WebGLRenderingContextBase::getUniform(
+@@ -4010,6 +4026,7 @@ ScriptValue WebGLRenderingContextBase::getUniform(
      const WebGLUniformLocation* uniform_location) {
    if (!ValidateWebGLProgramOrShader("getUniform", program))
      return ScriptValue::CreateNull(script_state->GetIsolate());
@@ -138,7 +138,7 @@ index 9524dc5b0be64a4bb5cdb93303c7a8eebe262a62..eb17557e4c1b8c5477f3c82c175d2f8d
    DCHECK(uniform_location);
    if (uniform_location->Program() != program) {
      SynthesizeGLError(GL_INVALID_OPERATION, "getUniform",
-@@ -4261,6 +4278,7 @@ WebGLUniformLocation* WebGLRenderingContextBase::getUniformLocation(
+@@ -4269,6 +4286,7 @@ WebGLUniformLocation* WebGLRenderingContextBase::getUniformLocation(
      const String& name) {
    if (!ValidateWebGLProgramOrShader("getUniformLocation", program))
      return nullptr;
@@ -146,7 +146,7 @@ index 9524dc5b0be64a4bb5cdb93303c7a8eebe262a62..eb17557e4c1b8c5477f3c82c175d2f8d
    if (!ValidateLocationLength("getUniformLocation", name))
      return nullptr;
    if (!ValidateString("getUniformLocation", name))
-@@ -4285,6 +4303,7 @@ ScriptValue WebGLRenderingContextBase::getVertexAttrib(
+@@ -4293,6 +4311,7 @@ ScriptValue WebGLRenderingContextBase::getVertexAttrib(
      GLenum pname) {
    if (isContextLost())
      return ScriptValue::CreateNull(script_state->GetIsolate());
@@ -154,7 +154,7 @@ index 9524dc5b0be64a4bb5cdb93303c7a8eebe262a62..eb17557e4c1b8c5477f3c82c175d2f8d
    if (index >= max_vertex_attribs_) {
      SynthesizeGLError(GL_INVALID_VALUE, "getVertexAttrib",
                        "index out of range");
-@@ -4362,6 +4381,7 @@ int64_t WebGLRenderingContextBase::getVertexAttribOffset(GLuint index,
+@@ -4370,6 +4389,7 @@ int64_t WebGLRenderingContextBase::getVertexAttribOffset(GLuint index,
                                                           GLenum pname) {
    if (isContextLost())
      return 0;
@@ -162,7 +162,7 @@ index 9524dc5b0be64a4bb5cdb93303c7a8eebe262a62..eb17557e4c1b8c5477f3c82c175d2f8d
    GLvoid* result = nullptr;
    // NOTE: If pname is ever a value that returns more than 1 element
    // this will corrupt memory.
-@@ -4709,6 +4729,7 @@ void WebGLRenderingContextBase::ReadPixelsHelper(GLint x,
+@@ -4717,6 +4737,7 @@ void WebGLRenderingContextBase::ReadPixelsHelper(GLint x,
                                                   int64_t offset) {
    if (isContextLost())
      return;
