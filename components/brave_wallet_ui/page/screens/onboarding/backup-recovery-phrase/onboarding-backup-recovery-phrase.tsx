@@ -73,7 +73,7 @@ export const OnboardingBackupRecoveryPhrase = () => {
 
   const onCopyPhrase = React.useCallback(async () => {
     await temporaryCopyToClipboard(mnemonic || '')
-  }, [mnemonic])
+  }, [temporaryCopyToClipboard, mnemonic])
 
   const onDownloadPhraseFile = React.useCallback(() => {
     setFileGUID(randomUUID())

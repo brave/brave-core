@@ -1,3 +1,8 @@
+// Copyright (c) 2022 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// you can obtain one at http://mozilla.org/MPL/2.0/.
+
 import * as React from 'react'
 
 // Types
@@ -7,7 +12,7 @@ import { BraveWallet } from '../../../constants/types'
 import { reduceNetworkDisplayName } from '../../../utils/network-utils'
 
 // Components
-import { CreateNetworkIcon } from '../'
+import { CreateNetworkIcon } from '../create-network-icon/index'
 
 // Styled Components
 import {
@@ -22,12 +27,11 @@ export interface Props {
   isPanel?: boolean
 }
 
-const SelectNetworkButton = (props: Props) => {
-  const {
-    onClick,
-    selectedNetwork,
-    isPanel
-  } = props
+export const SelectNetworkButton = ({
+  onClick,
+  selectedNetwork,
+  isPanel
+}: Props) => {
   return (
     <OvalButton isPanel={isPanel} onClick={onClick} data-test-id='select-network-button'>
       <CreateNetworkIcon network={selectedNetwork} marginRight={4} />
@@ -36,4 +40,5 @@ const SelectNetworkButton = (props: Props) => {
     </OvalButton>
   )
 }
+
 export default SelectNetworkButton

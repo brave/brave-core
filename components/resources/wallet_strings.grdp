@@ -109,8 +109,7 @@
   <message name="IDS_BRAVE_WALLET_BUTTON_CLOSE" desc="General Close button">Close</message>
   <message name="IDS_BRAVE_WALLET_BUTTON_MORE" desc="General More button">More</message>
   <message name="IDS_BRAVE_WALLET_BUTTON_DONE" desc="General Done button">Done</message>
-  <message name="IDS_BRAVE_WALLET_WELCOME_TITLE" desc="Onboarding welcome screen title">Keeping your crypto secure doesn’t have to be hard</message>  
-  <message name="IDS_BRAVE_WALLET_WELCOME_DESCRIPTION" desc="Onboarding welcome screen description">Your gateway to a multi-chain Web3 experience for Defi, NFTs, and more. Supports Solana, Ethereum, Binance Smart Chain, Polygon, Avalance, or expand to any EVM chain.</message>
+  <message name="IDS_BRAVE_WALLET_WELCOME_TITLE" desc="Onboarding welcome screen title">Keeping your crypto secure doesn’t have to be hard</message>
   <message name="IDS_BRAVE_WALLET_WELCOME_RESTORE_BUTTON" desc="Restore screen button">Restore</message>
   <message name="IDS_BRAVE_WALLET_WELCOME_BUTTON" desc="Onboarding get started button">Create a new wallet</message>
   <message name="IDS_BRAVE_WALLET_WELCOME_I_ALREADY_HAVE_A_WALLET" desc="Wallet onboarding welcome Restore wallet button">I already have a wallet</message>
@@ -330,20 +329,10 @@
   <message name="IDS_BRAVE_WALLET_CONNECT_WITH_SITE_DESCRIPTION" desc="Connect with site panel description">View the addresses of your permitted accounts (required)</message>
   <message name="IDS_BRAVE_WALLET_CONNECT_WITH_SITE_NEXT" desc="Connect with site panel next button">Next</message>
   <message name="IDS_BRAVE_WALLET_CONNECT_WITH_SITE_HEADER_TITLE" desc="Connect with site panel header title">Connect with Brave Wallet</message>
-  <message name="IDS_BRAVE_WALLET_IMPORT_FROM_EXTERNAL_NEW_PASSWORD" desc="Import external wallet screen new password title">A more secure password is required for Brave Wallet</message>
-  <message name="IDS_BRAVE_WALLET_IMPORT_FROM_EXTERNAL_CREATE_PASSWORD" desc="Import external wallet screen password title">Set a Brave wallet password</message>
-  <message name="IDS_BRAVE_WALLET_IMPORT_FROM_EXTERNAL_PASSWORD_CHECK" desc="Import external wallet screen same password button">Use the same password</message>
-  <message name="IDS_BRAVE_WALLET_IMPORT_META_MASK_TITLE" desc="Import MetaMask screen title">MetaMask</message>
-  <message name="IDS_BRAVE_WALLET_IMPORT_TITLE" desc="Import screen title">Import from <ph name="WALLET_EXTENSION"><ex>MetaMask</ex>$1</ph></message>
-  <message name="IDS_BRAVE_WALLET_IMPORT_DESCRIPTION" desc="Import MetaMask screen description">Import your <ph name="WALLET_EXTENSION"><ex>MetaMask</ex>$1</ph> accounts into Brave Wallet. Enjoy a faster and more secure way to manage crypto assets and interact with Web3 DApps.</message>
-  <message name="IDS_BRAVE_WALLET_IMPORT_META_MASK_INPUT" desc="Import MetaMask screen password input placeholder">MetaMask password</message>
-  <message name="IDS_BRAVE_WALLET_IMPORT_BRAVE_LEGACY_TITLE" desc="Import CryptoWallets screen title">crypto wallets</message>
   <message name="IDS_BRAVE_WALLET_CRYPTO_WALLETS_DETECTED" desc="Wallet Welcome screen detected crypto wallets title">Existing crypto wallets detected</message>
-  <message name="IDS_BRAVE_WALLET_CRYPTO_WALLETS_DESCRIPTION_ONE" desc="Wallet welcome screen detected crypto wallets first description">When you click &quot;Get started&quot; you&apos;ll import your previous Crypto Wallet to the new Brave Wallet experience, and enjoy all the benefits outlined above. Give it a try, and let us know what you think!</message>
   <message name="IDS_BRAVE_WALLET_CRYPTO_WALLETS_DESCRIPTION_TWO" desc="Wallet welcome screen detected crypto wallets second description">If you&apos;d rather skip the import and keep the old Crypto Wallets experience, just navigate to the Brave Browser <ph name="LINK_BEFORE">$1</ph>Settings<ph name="LINK_AFTER">$2</ph> and change the default back to Crypto Wallets. You can also import, try the new Brave Wallet, and change back at any time.</message>
   <message name="IDS_BRAVE_WALLET_IMPORT_BRAVE_LEGACY_DESCRIPTION" desc="Import CryptoWallets screen description">Enter your existing crypto wallets password to import to Brave Wallet. Enjoy a faster and more secure way to manage crypto assets and interact with Web3 DApps.</message>
   <message name="IDS_BRAVE_WALLET_IMPORT_BRAVE_LEGACY_INPUT" desc="Import CryptoWallets screen password input placeholder">Type Crypto wallets password</message>
-  <message name="IDS_BRAVE_WALLET_IMPORT_BRAVE_LEGACY_ALT_BUTTON" desc="Import CryptoWallets screen lost password button">I’ve lost my password and recovery phrase, create a new wallet.</message>
   <message name="IDS_BRAVE_WALLET_CONNECT_HARDWARE_PANEL_CONNECTED" desc="Connect Hardware panel connected status"><ph name="DEVICE_NAME"><ex>Ledger</ex>$1</ph> connected</message>
   <message name="IDS_BRAVE_WALLET_CONNECT_HARDWARE_PANEL_DISCONNECTED" desc="Connect Hardware panel disconnected status"><ph name="DEVICE_NAME"><ex>Ledger</ex>$1</ph> disconnected</message>
   <message name="IDS_BRAVE_WALLET_CONNECT_HARDWARE_PANEL_INSTRUCTIONS" desc="Connect Hardware panel instructions button">Instructions</message>

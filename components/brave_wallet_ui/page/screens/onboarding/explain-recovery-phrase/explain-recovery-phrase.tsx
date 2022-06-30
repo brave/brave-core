@@ -5,22 +5,6 @@
 
 import * as React from 'react'
 
-import {
-  StyledWrapper,
-  Title,
-  Description,
-  NextButtonRow,
-  MainWrapper
-} from '../onboarding.style'
-
-import {
-  BannerCard,
-  WarningCircle,
-  ImportantText,
-  BannerText,
-  CenteredRow
-} from './explain-recovery-phrase.style'
-
 // utils
 import { getLocale, splitStringForTag } from '../../../../../common/locale'
 
@@ -35,6 +19,22 @@ import { WalletPageLayout } from '../../../../components/desktop'
 import { NavButton } from '../../../../components/extension'
 import { OnboardingNewWalletStepsNavigation } from '../components/onboarding-steps-navigation/onboarding-steps-navigation'
 import { ArticleLinkBubble } from '../onboarding-success/components/article-link-bubble/article-link-bubble'
+
+// style
+import {
+  StyledWrapper,
+  Title,
+  Description,
+  NextButtonRow,
+  MainWrapper
+} from '../onboarding.style'
+import {
+  BannerCard,
+  WarningCircle,
+  ImportantText,
+  BannerText,
+  CenteredRow
+} from './explain-recovery-phrase.style'
 
 const importantTextParts = splitStringForTag(getLocale('braveWalletRecoveryPhraseBackupWarningImportant'))
 

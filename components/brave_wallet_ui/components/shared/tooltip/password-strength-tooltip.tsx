@@ -12,6 +12,7 @@ import { getLocale } from '$web-common/locale'
 import { Tooltip } from './index'
 
 // style
+import { GreenCheckmark } from '../style'
 import {
   CriteriaCheckContainer,
   PasswordStrengthHeading,
@@ -21,7 +22,6 @@ import {
 
 // types
 import { PasswordStrengthResults } from '../../../common/hooks/use-password-strength'
-import { GreenCheckmark } from '../style'
 
 interface Props {
   isVisible: boolean
@@ -34,9 +34,7 @@ const PasswordStrengthDetails = ({
     containsSpecialChar,
     isLongEnough
   }
-}: {
-  passwordStrength: PasswordStrengthResults
-}) => {
+}: Pick<Props, 'passwordStrength'>) => {
   return (
     <PasswordStrengthTextWrapper>
       <PasswordStrengthHeading>

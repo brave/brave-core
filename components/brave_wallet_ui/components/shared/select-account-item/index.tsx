@@ -9,7 +9,8 @@ import { reduceAddress } from '../../../utils/reduce-address'
 import { reduceAccountDisplayName } from '../../../utils/reduce-account-name'
 
 // components
-import Tooltip from '../tooltip'
+import { Tooltip } from '../tooltip/index'
+import { CreateNetworkIcon } from '../create-network-icon/index'
 
 // style
 import {
@@ -28,7 +29,6 @@ import {
   LeftSide,
   BigCheckMark
 } from './style'
-import CreateNetworkIcon from '../create-network-icon'
 
 export interface Props {
   account: UserAccountType

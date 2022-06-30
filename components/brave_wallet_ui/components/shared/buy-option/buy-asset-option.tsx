@@ -60,33 +60,33 @@ export const BuyAssetOptionItem = ({
   }, [onClick, token])
 
   // render
+  if (!token.visible) {
+    return null
+  }
+
   return (
-    <>
-      {token.visible &&
-        <BuyAssetOptionWrapper isSelected={isSelected} onClick={handleOnClick}>
-          <NameAndIcon>
-            <IconsWrapper marginRight='14px'>
-              <AssetIconWithPlaceholder asset={token} network={tokenNetwork} />
-              {tokenNetwork && token.contractAddress !== '' && !isPanel &&
-                <NetworkIconWrapper>
-                  <CreateNetworkIcon network={tokenNetwork} marginRight={0} />
-                </NetworkIconWrapper>
-              }
-            </IconsWrapper>
-            <NameColumn>
-              <AssetName>
-                {token.name} {
-                  token.isErc721 && token.tokenId
-                    ? '#' + new Amount(token.tokenId).toNumber()
-                    : ''
-                }
-              </AssetName>
-              <NetworkDescriptionText>{networkDescription}</NetworkDescriptionText>
-            </NameColumn>
-          </NameAndIcon>
-        </BuyAssetOptionWrapper>
-      }
-    </>
+    <BuyAssetOptionWrapper isSelected={isSelected} onClick={handleOnClick}>
+      <NameAndIcon>
+        <IconsWrapper marginRight='14px'>
+          <AssetIconWithPlaceholder asset={token} network={tokenNetwork} />
+          {tokenNetwork && token.contractAddress !== '' && !isPanel &&
+            <NetworkIconWrapper>
+              <CreateNetworkIcon network={tokenNetwork} marginRight={0} />
+            </NetworkIconWrapper>
+          }
+        </IconsWrapper>
+        <NameColumn>
+          <AssetName>
+            {token.name} {
+              token.isErc721 && token.tokenId
+                ? '#' + new Amount(token.tokenId).toNumber()
+                : ''
+            }
+          </AssetName>
+          <NetworkDescriptionText>{networkDescription}</NetworkDescriptionText>
+        </NameColumn>
+      </NameAndIcon>
+    </BuyAssetOptionWrapper>
   )
 }
 

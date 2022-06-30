@@ -5,6 +5,7 @@
 
 import styled from 'styled-components'
 
+// styles
 import { ToggleVisibilityButton } from '../../shared/style'
 
 // svgs

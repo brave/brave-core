@@ -18,7 +18,7 @@ import {
 } from '../assets/network-icons'
 import { AllNetworksOption } from './network-filter-options'
 
-export function makeNetworkAsset (network: BraveWallet.NetworkInfo) {
+export const makeNetworkAsset = (network: BraveWallet.NetworkInfo): BraveWallet.BlockchainToken => {
   let logo
   switch (true) {
     case network.chainId === BraveWallet.AURORA_MAINNET_CHAIN_ID:
@@ -82,7 +82,7 @@ export function makeNetworkAsset (network: BraveWallet.NetworkInfo) {
     coingeckoId: '',
     chainId: network.chainId,
     coin: network.coin
-  } as BraveWallet.BlockchainToken
+  }
 }
 
 export const ETH = {

@@ -1,10 +1,13 @@
+// Copyright (c) 2022 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// you can obtain one at http://mozilla.org/MPL/2.0/.
+
 import styled, { css } from 'styled-components'
 
-interface StyleProps {
+interface PositionProps {
   position: 'left' | 'right' | 'center'
   verticalPosition: 'above' | 'below'
-  isAddress?: boolean
-  horizontalMargin?: string
 }
 
 export const TipAndChildrenWrapper = styled.div`
@@ -16,7 +19,7 @@ export const TipAndChildrenWrapper = styled.div`
   text-align: center;
 `
 
-export const TipWrapper = styled.div<StyleProps>`  
+export const TipWrapper = styled.div<PositionProps>`
   position: absolute;
 
   left: ${(p) => p.position === 'left' ? 0 : 'unset'};
@@ -55,7 +58,7 @@ export const Tip = styled.div<{ isAddress?: boolean }>`
   word-break: ${(p) => p.isAddress ? 'break-all' : 'unset'};
 `
 
-export const Pointer = styled.div<StyleProps>`
+export const Pointer = styled.div<PositionProps>`
   width: 0;
   height: 0;
   border-style: solid;

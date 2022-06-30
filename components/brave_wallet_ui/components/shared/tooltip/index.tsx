@@ -1,5 +1,11 @@
+// Copyright (c) 2022 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// you can obtain one at http://mozilla.org/MPL/2.0/.
+
 import * as React from 'react'
 
+// style
 import {
   TipWrapper,
   Tip,
@@ -18,7 +24,6 @@ export interface Props {
   disableHoverEvents?: boolean
   text: React.ReactNode
   verticalPosition?: 'above' | 'below'
-  horizontalMargin?: string
   pointerPosition?: 'left' | 'right' | 'center'
 }
 
@@ -26,7 +31,6 @@ export const Tooltip: React.FC<Props> = ({
   actionText,
   children,
   disableHoverEvents,
-  horizontalMargin,
   isActionVisible,
   isAddress,
   isVisible = true,
@@ -35,16 +39,19 @@ export const Tooltip: React.FC<Props> = ({
   text,
   verticalPosition = 'below'
 }) => {
+  // state
   const [active, setActive] = React.useState(!!disableHoverEvents)
 
-  const showTip = () => {
+  // methods
+  const showTip = React.useCallback(() => {
     !disableHoverEvents && setActive(true)
-  }
+  }, [disableHoverEvents])
 
-  const hideTip = () => {
+  const hideTip = React.useCallback(() => {
     !disableHoverEvents && setActive(false)
-  }
+  }, [disableHoverEvents])
 
+  // memos
   const toolTipPointer = React.useMemo(() => (
     <Pointer
       position={pointerPosition ?? 'center'}
@@ -56,7 +63,6 @@ export const Tooltip: React.FC<Props> = ({
     <TipWrapper
       position={position ?? 'center'}
       verticalPosition={verticalPosition ?? 'below'}
-      horizontalMargin={horizontalMargin}
     >
 
       {!isActionVisible && verticalPosition === 'below' && toolTipPointer}
@@ -79,10 +85,10 @@ export const Tooltip: React.FC<Props> = ({
     verticalPosition,
     isAddress,
     text,
-    isActionVisible,
-    horizontalMargin
+    isActionVisible
   ])
 
+  // render
   return (
     <TipAndChildrenWrapper
       onMouseEnter={showTip}
