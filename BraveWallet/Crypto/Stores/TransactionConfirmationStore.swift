@@ -268,20 +268,22 @@ public class TransactionConfirmationStore: ObservableObject {
   }
 
   private func fetchTransactions(completion: @escaping (() -> Void)) {
-    keyringService.defaultKeyringInfo { [weak self] keyring in
+    walletService.selectedCoin { [weak self] coin in
       guard let self = self else { return }
-      var pendingTransactions: [BraveWallet.TransactionInfo] = []
-      let group = DispatchGroup()
-      for info in keyring.accountInfos {
-        group.enter()
-        self.txService.allTransactionInfo(.eth, from: info.address) { tx in
-          defer { group.leave() }
-          pendingTransactions.append(contentsOf: tx.filter { $0.txStatus == .unapproved })
+      self.keyringService.keyringInfo(coin.keyringId) { keyring in
+        var pendingTransactions: [BraveWallet.TransactionInfo] = []
+        let group = DispatchGroup()
+        for info in keyring.accountInfos {
+          group.enter()
+          self.txService.allTransactionInfo(info.coin, from: info.address) { tx in
+            defer { group.leave() }
+            pendingTransactions.append(contentsOf: tx.filter { $0.txStatus == .unapproved })
+          }
         }
-      }
-      group.notify(queue: .main) {
-        self.transactions = pendingTransactions
-        completion()
+        group.notify(queue: .main) {
+          self.transactions = pendingTransactions
+          completion()
+        }
       }
     }
   }

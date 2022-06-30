@@ -169,7 +169,7 @@ public class PortfolioStore: ObservableObject {
           var balances: [String: Double] = [:]
           var priceHistories: [String: [BraveWallet.AssetTimePrice]] = [:]
           dispatchGroup.enter()
-          keyringService.defaultKeyringInfo { [self] keyring in
+          keyringService.keyringInfo(network.coin.keyringId) { [self] keyring in
             fetchBalances(for: visibleTokens, accounts: keyring.accountInfos) { [self] fetchedBalances in
               balances = fetchedBalances
               let nonZeroBalanceTokens = balances.filter { $1 > 0 }.map { $0.key }

@@ -30,7 +30,7 @@ public class WalletStore {
     txService: BraveWalletTxService,
     ethTxManagerProxy: BraveWalletEthTxManagerProxy
   ) {
-    self.keyringStore = .init(keyringService: keyringService)
+    self.keyringStore = .init(keyringService: keyringService, walletService: walletService)
     self.setUp(
       keyringService: keyringService,
       rpcService: rpcService,

@@ -56,10 +56,11 @@ class AccountActivityStore: ObservableObject {
 
   func update() {
     Task { @MainActor in
-      let network = await rpcService.network(.eth)
-      let keyring = await keyringService.defaultKeyringInfo()
-      let allTokens: [BraveWallet.BlockchainToken] = await blockchainRegistry.allTokens(network.chainId, coin: .eth)
-      let userVisibleTokens: [BraveWallet.BlockchainToken] = await walletService.userAssets(network.chainId, coin: .eth)
+      let coin = await walletService.selectedCoin()
+      let network = await rpcService.network(coin)
+      let keyring = await keyringService.keyringInfo(coin.keyringId)
+      let allTokens: [BraveWallet.BlockchainToken] = await blockchainRegistry.allTokens(network.chainId, coin: network.coin)
+      let userVisibleTokens: [BraveWallet.BlockchainToken] = await walletService.userAssets(network.chainId, coin: network.coin)
       self.assets = await fetchAssets(network: network, userVisibleTokens: userVisibleTokens)
       let assetRatios = self.assets.reduce(into: [String: Double](), {
         $0[$1.token.symbol.lowercased()] = Double($1.price)
@@ -171,7 +172,7 @@ extension AccountActivityStore: BraveWalletKeyringServiceObserver {
   }
   
   func selectedAccountChanged(_ coin: BraveWallet.CoinType) {
-    keyringService.defaultKeyringInfo { [self] keyringInfo in
+    keyringService.keyringInfo(coin.keyringId) { [self] keyringInfo in
       keyringService.selectedAccount(coin) { [self] accountAddress in
         account = keyringInfo.accountInfos.first(where: { $0.address == accountAddress }) ?? keyringInfo.accountInfos.first!
         update()

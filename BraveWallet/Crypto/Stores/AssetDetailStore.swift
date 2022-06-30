@@ -94,10 +94,12 @@ class AssetDetailStore: ObservableObject {
     Task { @MainActor in
       self.isLoadingPrice = true
       self.isLoadingChart = true
-      let buyTokens = await blockchainRegistry.buyTokens(.wyre, chainId: BraveWallet.MainnetChainId)
+      let coin = await walletService.selectedCoin()
+      let network = await rpcService.network(coin)
+      let buyTokens = await blockchainRegistry.buyTokens(.wyre, chainId: network.chainId)
       self.isBuySupported = buyTokens.first(where: { $0.symbol.lowercased() == token.symbol.lowercased() }) != nil
       // fetch accounts
-      let keyring = await keyringService.defaultKeyringInfo()
+      let keyring = await keyringService.keyringInfo(coin.keyringId)
       var updatedAccounts = keyring.accountInfos.map {
         AccountAssetViewModel(account: $0, decimalBalance: 0.0, balance: "", fiatBalance: "")
       }
