@@ -42,7 +42,8 @@ extension CryptoStore {
 extension NetworkStore {
   static var previewStore: NetworkStore {
     .init(
-      rpcService: MockJsonRpcService()
+      rpcService: MockJsonRpcService(),
+      walletService: MockBraveWalletService()
     )
   }
   

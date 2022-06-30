@@ -87,7 +87,7 @@ public class CryptoStore: ObservableObject {
     self.txService = txService
     self.ethTxManagerProxy = ethTxManagerProxy
     
-    self.networkStore = .init(rpcService: rpcService)
+    self.networkStore = .init(rpcService: rpcService, walletService: walletService)
     self.portfolioStore = .init(
       keyringService: keyringService,
       rpcService: rpcService,

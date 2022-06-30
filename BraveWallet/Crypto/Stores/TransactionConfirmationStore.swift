@@ -146,69 +146,71 @@ public class TransactionConfirmationStore: ObservableObject {
     state = .init()  // Reset state
     isLoading = true
 
-    rpcService.network { [weak self] selectedChain in
+    walletService.selectedCoin { [weak self] coin in
       guard let self = self else { return }
-      let chainId = selectedChain.chainId
+      self.rpcService.network(coin) { selectedChain in
+        let chainId = selectedChain.chainId
         self.selectedChain = selectedChain
-
+        
         self.state.gasSymbol = selectedChain.symbol
         self.updateGasValue(for: transaction)
-
+        
         let formatter = WeiFormatter(decimalFormatStyle: .balance)
         let txValue = transaction.ethTxValue.removingHexPrefix
         
-      self.blockchainRegistry.allTokens(chainId, coin: selectedChain.coin) { tokens in
-        self.walletService.userAssets(chainId, coin: selectedChain.coin) { userAssets in
-          let allTokens = tokens + userAssets.filter { asset in
-            // Only get custom tokens
-            !tokens.contains(where: { $0.contractAddress(in: selectedChain).caseInsensitiveCompare(asset.contractAddress) == .orderedSame })
-          }
-          
-          switch transaction.txType {
-          case .erc20Approve:
-            // Find token in args
-            let contractAddress = transaction.txDataUnion.ethTxData1559?.baseData.to ?? ""
-            if let token = allTokens.first(where: {
-              $0.contractAddress(in: selectedChain).caseInsensitiveCompare(contractAddress) == .orderedSame
-            }) {
-              self.state.symbol = token.symbol
-              if let approvalValue = transaction.txArgs[safe: 1] {
-                if approvalValue.caseInsensitiveCompare(WalletConstants.MAX_UINT256) == .orderedSame {
-                  self.state.value = Strings.Wallet.editPermissionsApproveUnlimited
-                } else {
-                  self.state.value = formatter.decimalString(for: approvalValue.removingHexPrefix, radix: .hex, decimals: Int(token.decimals)) ?? ""
+        self.blockchainRegistry.allTokens(chainId, coin: selectedChain.coin) { tokens in
+          self.walletService.userAssets(chainId, coin: selectedChain.coin) { userAssets in
+            let allTokens = tokens + userAssets.filter { asset in
+              // Only get custom tokens
+              !tokens.contains(where: { $0.contractAddress(in: selectedChain).caseInsensitiveCompare(asset.contractAddress) == .orderedSame })
+            }
+            
+            switch transaction.txType {
+            case .erc20Approve:
+              // Find token in args
+              let contractAddress = transaction.txDataUnion.ethTxData1559?.baseData.to ?? ""
+              if let token = allTokens.first(where: {
+                $0.contractAddress(in: selectedChain).caseInsensitiveCompare(contractAddress) == .orderedSame
+              }) {
+                self.state.symbol = token.symbol
+                if let approvalValue = transaction.txArgs[safe: 1] {
+                  if approvalValue.caseInsensitiveCompare(WalletConstants.MAX_UINT256) == .orderedSame {
+                    self.state.value = Strings.Wallet.editPermissionsApproveUnlimited
+                  } else {
+                    self.state.value = formatter.decimalString(for: approvalValue.removingHexPrefix, radix: .hex, decimals: Int(token.decimals)) ?? ""
+                  }
                 }
+                self.rpcService.erc20TokenAllowance(
+                  token.contractAddress(in: selectedChain),
+                  ownerAddress: transaction.fromAddress,
+                  spenderAddress: transaction.txArgs[safe: 0] ?? "") { allowance, status, _ in
+                    self.state.currentAllowance = formatter.decimalString(for: allowance.removingHexPrefix, radix: .hex, decimals: Int(token.decimals)) ?? ""
+                  }
               }
-              self.rpcService.erc20TokenAllowance(
-                token.contractAddress(in: selectedChain),
-                ownerAddress: transaction.fromAddress,
-                spenderAddress: transaction.txArgs[safe: 0] ?? "") { allowance, status, _ in
-                  self.state.currentAllowance = formatter.decimalString(for: allowance.removingHexPrefix, radix: .hex, decimals: Int(token.decimals)) ?? ""
-                }
+              if let proposedAllowance = transaction.txArgs[safe: 1] {
+                self.state.isUnlimitedApprovalRequested = proposedAllowance.caseInsensitiveCompare(WalletConstants.MAX_UINT256) == .orderedSame
+              }
+            case .erc20Transfer:
+              if let token = allTokens.first(where: {
+                $0.contractAddress(in: selectedChain).caseInsensitiveCompare(transaction.ethTxToAddress) == .orderedSame
+              }) {
+                self.state.symbol = token.symbol
+                let value = transaction.txArgs[1].removingHexPrefix
+                self.state.value = formatter.decimalString(for: value, radix: .hex, decimals: Int(token.decimals)) ?? ""
+              }
+            case .ethSend, .other, .erc721TransferFrom, .erc721SafeTransferFrom:
+              self.state.symbol = selectedChain.symbol
+              self.state.value = formatter.decimalString(for: txValue, radix: .hex, decimals: Int(selectedChain.decimals)) ?? ""
+            case .solanaSystemTransfer,
+                .solanaSplTokenTransfer,
+                .solanaSplTokenTransferWithAssociatedTokenAccountCreation:
+              break
+            @unknown default:
+              break
             }
-            if let proposedAllowance = transaction.txArgs[safe: 1] {
-              self.state.isUnlimitedApprovalRequested = proposedAllowance.caseInsensitiveCompare(WalletConstants.MAX_UINT256) == .orderedSame
-            }
-          case .erc20Transfer:
-            if let token = allTokens.first(where: {
-              $0.contractAddress(in: selectedChain).caseInsensitiveCompare(transaction.ethTxToAddress) == .orderedSame
-            }) {
-              self.state.symbol = token.symbol
-              let value = transaction.txArgs[1].removingHexPrefix
-              self.state.value = formatter.decimalString(for: value, radix: .hex, decimals: Int(token.decimals)) ?? ""
-            }
-          case .ethSend, .other, .erc721TransferFrom, .erc721SafeTransferFrom:
-            self.state.symbol = selectedChain.symbol
-            self.state.value = formatter.decimalString(for: txValue, radix: .hex, decimals: Int(selectedChain.decimals)) ?? ""
-          case .solanaSystemTransfer,
-              .solanaSplTokenTransfer,
-              .solanaSplTokenTransferWithAssociatedTokenAccountCreation:
-            break
-          @unknown default:
-            break
+            self.state.originInfo = transaction.originInfo
+            self.fetchAssetRatios(for: self.state.symbol, gasSymbol: self.state.gasSymbol)
           }
-          self.state.originInfo = transaction.originInfo
-          self.fetchAssetRatios(for: self.state.symbol, gasSymbol: self.state.gasSymbol)
         }
       }
     }
@@ -389,10 +391,13 @@ public class TransactionConfirmationStore: ObservableObject {
   }
   
   func fetchTokens(completion: (([BraveWallet.BlockchainToken]) -> Void)? = nil) {
-    rpcService.network { [weak self] network in
-      self?.blockchainRegistry.allTokens(network.chainId, coin: network.coin) { tokens in
-        self?.allTokens = tokens
-        completion?(tokens)
+    walletService.selectedCoin { [weak self] coin in
+      guard let self = self else { return }
+      self.rpcService.network(coin) { network in
+        self.blockchainRegistry.allTokens(network.chainId, coin: network.coin) { tokens in
+          self.allTokens = tokens
+          completion?(tokens)
+        }
       }
     }
   }

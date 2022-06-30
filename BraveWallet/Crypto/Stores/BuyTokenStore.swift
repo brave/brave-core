@@ -45,7 +45,7 @@ public class BuyTokenStore: ObservableObject {
   }
 
   func fetchTestFaucetUrl(completion: @escaping (_ url: String?) -> Void) {
-    rpcService.chainId { [self] chainId in
+    rpcService.chainId(.eth) { [self] chainId in
       completion(self.buyAssetUrls[chainId])
     }
   }

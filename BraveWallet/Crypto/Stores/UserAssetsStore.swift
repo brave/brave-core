@@ -101,46 +101,52 @@ public class UserAssetsStore: ObservableObject {
     decimals: Int,
     completion: @escaping (_ success: Bool) -> Void
   ) {
-    rpcService.network { [weak self] network in
+    walletService.selectedCoin { [weak self] coinType in
       guard let self = self else { return }
-      let token = BraveWallet.BlockchainToken(
-        contractAddress: address,
-        name: name,
-        logo: "",
-        isErc20: true,
-        isErc721: false,
-        symbol: symbol,
-        decimals: Int32(decimals),
-        visible: true,
-        tokenId: "",
-        coingeckoId: "",
-        chainId: "",
-        coin: network.coin
-      )
-      self.walletService.addUserAsset(token) { success in
-        if success {
-          self.updateSelectedAssets(network)
+      self.rpcService.network(coinType) { network in
+        let token = BraveWallet.BlockchainToken(
+          contractAddress: address,
+          name: name,
+          logo: "",
+          isErc20: true,
+          isErc721: false,
+          symbol: symbol,
+          decimals: Int32(decimals),
+          visible: true,
+          tokenId: "",
+          coingeckoId: "",
+          chainId: "",
+          coin: network.coin
+        )
+        self.walletService.addUserAsset(token) { success in
+          if success {
+            self.updateSelectedAssets(network)
+          }
+          completion(success)
         }
-        completion(success)
       }
     }
   }
 
   func removeUserAsset(token: BraveWallet.BlockchainToken, completion: @escaping (_ success: Bool) -> Void) {
-    rpcService.network { [weak self] network in
+    walletService.selectedCoin { [weak self] coin in
       guard let self = self else { return }
-      self.walletService.removeUserAsset(token) { success in
-        if success {
-          self.updateSelectedAssets(network)
+      self.rpcService.network(coin) { network in
+        self.walletService.removeUserAsset(token) { success in
+          if success {
+            self.updateSelectedAssets(network)
+          }
+          completion(success)
         }
-        completion(success)
       }
     }
   }
 
   func fetchVisibleAssets() {
-    rpcService.network { [weak self] network in
-      self?.updateSelectedAssets(network)
+    walletService.selectedCoin { [weak self] coin in
+      self?.rpcService.network(coin) { network in
+        self?.updateSelectedAssets(network)
+      }
     }
   }
 
@@ -155,7 +161,7 @@ public class UserAssetsStore: ObservableObject {
         withTimeInterval: 0.25, repeats: false,
         block: { [weak self] _ in
           guard let self = self else { return }
-          self.rpcService.network { network in
+          self.rpcService.network(.eth) { network in
             if network.id == BraveWallet.MainnetChainId {
               self.isSearchingToken = true
               self.assetRatioService.tokenInfo(contractAddress) { token in
@@ -173,7 +179,7 @@ public class UserAssetsStore: ObservableObject {
 
 extension UserAssetsStore: BraveWalletJsonRpcServiceObserver {
   public func chainChangedEvent(_ chainId: String, coin: BraveWallet.CoinType) {
-    rpcService.network { [weak self] network in
+    rpcService.network(coin) { [weak self] network in
       self?.updateSelectedAssets(network)
     }
   }

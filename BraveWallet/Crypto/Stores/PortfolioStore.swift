@@ -159,69 +159,71 @@ public class PortfolioStore: ObservableObject {
 
   func update() {
     isLoadingBalances = true
-    rpcService.network { [self] network in
-      // Get user assets for the selected chain
-      walletService.userAssets(network.chainId, coin: network.coin) { [self] tokens in
-        let visibleTokens = tokens.filter(\.visible)
-        let dispatchGroup = DispatchGroup()
-        // fetch user balances, then fetch price history for tokens with non-zero balance
-        var balances: [String: Double] = [:]
-        var priceHistories: [String: [BraveWallet.AssetTimePrice]] = [:]
-        dispatchGroup.enter()
-        keyringService.defaultKeyringInfo { [self] keyring in
-          fetchBalances(for: visibleTokens, accounts: keyring.accountInfos) { [self] fetchedBalances in
-            balances = fetchedBalances
-            let nonZeroBalanceTokens = balances.filter { $1 > 0 }.map { $0.key }
-            fetchPriceHistory(for: nonZeroBalanceTokens) { fetchedPriceHistories in
-              defer { dispatchGroup.leave() }
-              priceHistories = fetchedPriceHistories
-            }
-          }
-        }
-        // fetch prices
-        let visibleTokenSymbols = visibleTokens.map { $0.symbol.lowercased() }
-        var prices: [String: String] = [:]
-        dispatchGroup.enter()
-        fetchPrices(for: visibleTokenSymbols) { fetchedPrices in
-          defer { dispatchGroup.leave() }
-          prices = fetchedPrices
-        }
-        dispatchGroup.notify(queue: .main) { [self] in
-          // build our userVisibleAssets
-          userVisibleAssets = visibleTokens.map { token in
-            let symbol = token.symbol.lowercased()
-            return AssetViewModel(
-              token: token,
-              decimalBalance: balances[symbol] ?? 0.0,
-              price: prices[symbol] ?? "",
-              history: priceHistories[symbol] ?? []
-            )
-          }
-          // Compute balance based on current prices
-          let currentBalance =
-            userVisibleAssets
-            .compactMap {
-              if let price = Double($0.price) {
-                return $0.decimalBalance * price
+    walletService.selectedCoin { [self] coin in
+      rpcService.network(coin) { [self] network in
+        // Get user assets for the selected chain
+        self.walletService.userAssets(network.chainId, coin: network.coin) { [self] tokens in
+          let visibleTokens = tokens.filter(\.visible)
+          let dispatchGroup = DispatchGroup()
+          // fetch user balances, then fetch price history for tokens with non-zero balance
+          var balances: [String: Double] = [:]
+          var priceHistories: [String: [BraveWallet.AssetTimePrice]] = [:]
+          dispatchGroup.enter()
+          keyringService.defaultKeyringInfo { [self] keyring in
+            fetchBalances(for: visibleTokens, accounts: keyring.accountInfos) { [self] fetchedBalances in
+              balances = fetchedBalances
+              let nonZeroBalanceTokens = balances.filter { $1 > 0 }.map { $0.key }
+              fetchPriceHistory(for: nonZeroBalanceTokens) { fetchedPriceHistories in
+                defer { dispatchGroup.leave() }
+                priceHistories = fetchedPriceHistories
               }
-              return nil
             }
-            .reduce(0.0, +)
-          balance = currencyFormatter.string(from: NSNumber(value: currentBalance)) ?? "–"
-          // Compute historical balances based on historical prices and current balances
-          let assets = userVisibleAssets.filter { !$0.history.isEmpty }  // [[AssetTimePrice]]
-          let minCount = assets.map(\.history.count).min() ?? 0  // Shortest array count
-          historicalBalances = (0..<minCount).map { index in
-            let value = assets.reduce(0.0, {
-              $0 + ((Double($1.history[index].price) ?? 0.0) * $1.decimalBalance)
-            })
-            return .init(
-              date: assets.map { $0.history[index].date }.max() ?? .init(),
-              price: value,
-              formattedPrice: currencyFormatter.string(from: NSNumber(value: value)) ?? "0.00"
-            )
           }
-          isLoadingBalances = false
+          // fetch prices
+          let visibleTokenSymbols = visibleTokens.map { $0.symbol.lowercased() }
+          var prices: [String: String] = [:]
+          dispatchGroup.enter()
+          fetchPrices(for: visibleTokenSymbols) { fetchedPrices in
+            defer { dispatchGroup.leave() }
+            prices = fetchedPrices
+          }
+          dispatchGroup.notify(queue: .main) { [self] in
+            // build our userVisibleAssets
+            userVisibleAssets = visibleTokens.map { token in
+              let symbol = token.symbol.lowercased()
+              return AssetViewModel(
+                token: token,
+                decimalBalance: balances[symbol] ?? 0.0,
+                price: prices[symbol] ?? "",
+                history: priceHistories[symbol] ?? []
+              )
+            }
+            // Compute balance based on current prices
+            let currentBalance =
+            userVisibleAssets
+              .compactMap {
+                if let price = Double($0.price) {
+                  return $0.decimalBalance * price
+                }
+                return nil
+              }
+              .reduce(0.0, +)
+            balance = currencyFormatter.string(from: NSNumber(value: currentBalance)) ?? "–"
+            // Compute historical balances based on historical prices and current balances
+            let assets = userVisibleAssets.filter { !$0.history.isEmpty }  // [[AssetTimePrice]]
+            let minCount = assets.map(\.history.count).min() ?? 0  // Shortest array count
+            historicalBalances = (0..<minCount).map { index in
+              let value = assets.reduce(0.0, {
+                $0 + ((Double($1.history[index].price) ?? 0.0) * $1.decimalBalance)
+              })
+              return .init(
+                date: assets.map { $0.history[index].date }.max() ?? .init(),
+                price: value,
+                formattedPrice: currencyFormatter.string(from: NSNumber(value: value)) ?? "0.00"
+              )
+            }
+            isLoadingBalances = false
+          }
         }
       }
     }
@@ -263,6 +265,9 @@ extension PortfolioStore: BraveWalletKeyringServiceObserver {
   public func autoLockMinutesChanged() {
   }
   public func selectedAccountChanged(_ coinType: BraveWallet.CoinType) {
+    DispatchQueue.main.async { [self] in
+      update()
+    }
   }
 }
 
