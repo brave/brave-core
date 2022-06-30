@@ -29,11 +29,12 @@ import {
   ClickAwayArea
 } from './style'
 
-function NetworkFilterSelector ({
-  networkListSubset
-}: {
+interface Props {
   networkListSubset?: BraveWallet.NetworkInfo[]
-}) {
+}
+
+export const NetworkFilterSelector = ({ networkListSubset }: Props) => {
+  // state
   const [showNetworkFilter, setShowNetworkFilter] = React.useState<boolean>(false)
 
   // redux
@@ -45,6 +46,7 @@ function NetworkFilterSelector ({
 
   const dispatch = useDispatch()
 
+  // memos
   const networkList = React.useMemo(() => {
     return networkListSubset || reduxNetworkList
   }, [networkListSubset, reduxNetworkList])
@@ -65,19 +67,21 @@ function NetworkFilterSelector ({
     return sortedNetworks.filter((network) => !primaryList.includes(network.chainId))
   }, [sortedNetworks])
 
-  const toggleShowNetworkFilter = () => {
-    setShowNetworkFilter(!showNetworkFilter)
-  }
+  // methods
+  const toggleShowNetworkFilter = React.useCallback(() => {
+    setShowNetworkFilter(prev => !prev)
+  }, [])
 
-  const onSelectAndClose = (network: BraveWallet.NetworkInfo) => {
+  const onSelectAndClose = React.useCallback((network: BraveWallet.NetworkInfo) => {
     dispatch(WalletActions.setSelectedNetworkFilter(network))
     toggleShowNetworkFilter()
-  }
+  }, [toggleShowNetworkFilter])
 
-  const hideNetworkFilter = () => {
+  const hideNetworkFilter = React.useCallback(() => {
     setShowNetworkFilter(false)
-  }
+  }, [])
 
+  // render
   return (
     <StyledWrapper>
       <DropDownButton
