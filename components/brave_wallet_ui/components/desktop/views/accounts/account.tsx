@@ -20,7 +20,8 @@ import {
   CoinTypesMap,
   WalletState,
   WalletRoutes,
-  AccountModalTypes
+  AccountModalTypes,
+  AccountButtonOptionsObjectType
 } from '../../../../constants/types'
 
 // Components
@@ -30,27 +31,27 @@ import {
   PortfolioAssetItem,
   PortfolioTransactionItem
 } from '../..'
+import AccountListItemButton from '../../account-list-item/account-list-item-button'
 
 // Utils
 import { reduceAddress } from '../../../../utils/reduce-address'
 import { getLocale } from '../../../../../common/locale'
 import { sortTransactionByDate } from '../../../../utils/tx-utils'
+import { AccountButtonOptions } from '../../../../options/account-buttons'
 
 // Styled Components
 import {
   StyledWrapper,
   SubDivider,
-  Button,
   TopRow,
   WalletInfoRow,
   WalletAddress,
   WalletName,
   AccountCircle,
   WalletInfoLeftSide,
-  QRCodeIcon,
-  EditIcon,
   SubviewSectionTitle,
-  TransactionPlaceholderContainer
+  TransactionPlaceholderContainer,
+  AccountButtonsRow
 } from './style'
 import { TransactionPlaceholderText, Spacer } from '../portfolio/style'
 
@@ -133,6 +134,10 @@ export const Account = (props: Props) => {
     [accountsTokensList]
   )
 
+  const accountButtonOptions = React.useMemo((): AccountButtonOptionsObjectType[] => {
+    return AccountButtonOptions.filter((option) => option.id !== 'details' && option.id !== 'remove')
+  }, [])
+
   // methods
   const onCopyToClipboard = React.useCallback(async () => {
     if (selectedAccount) {
@@ -169,13 +174,16 @@ export const Account = (props: Props) => {
           >
             <WalletAddress onClick={onCopyToClipboard}>{reduceAddress(selectedAccount.address)}</WalletAddress>
           </Tooltip>
-          <Button onClick={onShowAccountsModal('deposit')}>
-            <QRCodeIcon />
-          </Button>
         </WalletInfoLeftSide>
-        <Button onClick={onShowAccountsModal('edit')}>
-          <EditIcon />
-        </Button>
+        <AccountButtonsRow>
+          {accountButtonOptions.map((option) =>
+            <AccountListItemButton
+              key={option.id}
+              option={option}
+              onClick={onShowAccountsModal(option.id as AccountModalTypes)}
+            />
+          )}
+        </AccountButtonsRow>
       </WalletInfoRow>
 
       <SubviewSectionTitle>{getLocale('braveWalletAccountsAssets')}</SubviewSectionTitle>

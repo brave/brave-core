@@ -1,7 +1,6 @@
 import styled from 'styled-components'
-import { EditOIcon, WalletAddIcon } from 'brave-ui/components/icons'
+import { WalletAddIcon } from 'brave-ui/components/icons'
 import FlashdriveIcon from '../../../../assets/svg-icons/flashdrive-icon.svg'
-import QRICON from '../../../../assets/svg-icons/qr-code-icon.svg'
 import { WalletButton } from '../../../shared/style'
 
 interface StyleProps {
@@ -75,18 +74,6 @@ export const SubDivider = styled.div`
   background-color: ${(p) => p.theme.color.divider01};
 `
 
-export const Button = styled(WalletButton)`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: row;
-  cursor: pointer;
-  outline: none;
-  background: none;
-  border: none;
-  padding: 0px;
-`
-
 export const TopRow = styled.div`
   display: flex;
   flex-direction: row;
@@ -142,20 +129,6 @@ export const WalletAddress = styled(WalletButton)`
   outline: none;
   background: none;
   border: none;
-`
-
-export const QRCodeIcon = styled.div`
-  width: 18px;
-  height: 18px;
-  background-color: ${(p) => p.theme.color.interactive07};
-  -webkit-mask-image: url(${QRICON});
-  mask-image: url(${QRICON});
-`
-
-export const EditIcon = styled(EditOIcon)`
-  width: 18px;
-  height: 18px;
-  color: ${(p) => p.theme.color.interactive07};
 `
 
 export const SubviewSectionTitle = styled.span`
@@ -221,4 +194,11 @@ export const HardwareIcon = styled.div`
   mask-image: url(${FlashdriveIcon});
   mask-size: cover;
   margin-right: 8px;
+`
+
+export const AccountButtonsRow = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
 `
