@@ -382,6 +382,7 @@ export const DepositFundsScreen = () => {
                       onSelectAccount={openAccountSearch}
                       showTooltips
                       hideAddress
+                      showSwitchAccountsIcon
                     />
                     <HorizontalSpace space='45%' />
                   </Row>
