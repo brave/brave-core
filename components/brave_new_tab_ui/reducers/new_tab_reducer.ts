@@ -102,6 +102,13 @@ export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.S
       }
       break
 
+    case types.SEARCH_PROMOTION_DISABLED:
+      state = {
+        ...state,
+        searchPromotionEnabled: false
+      }
+      break;
+
     case types.CUSTOM_BACKGROUND_UPDATED:
       // While customizing background, background has
       // custom or brave default background. Branded wallpaper will

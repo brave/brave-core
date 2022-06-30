@@ -43,6 +43,10 @@ async function onCustomBackgroundUpdated (customBackground: CustomBackground) {
   getActions().customBackgroundUpdated(customBackground)
 }
 
+async function onSearchPromotionDisabled () {
+  getActions().searchPromotionDisabled()
+}
+
 // Not marked as async so we don't return a promise
 // and confuse callers
 export function wireApiEventsToStore () {
@@ -62,6 +66,7 @@ export function wireApiEventsToStore () {
     privateTabDataAPI.addChangeListener(updatePrivateTabData)
     newTabAdsDataAPI.addChangeListener(updateNewTabAdsData)
     getNTPBrowserAPI().addCustomBackgroundUpdatedListener(onCustomBackgroundUpdated)
+    getNTPBrowserAPI().addSearchPromotionDisabledListener(onSearchPromotionDisabled)
   })
   .catch(e => {
     console.error('New Tab Page fatal error:', e)

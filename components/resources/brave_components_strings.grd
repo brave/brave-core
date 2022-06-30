@@ -220,6 +220,19 @@
       <message name="IDS_BRAVE_NEW_TAB_SHOW_FRECENCY_MENU_LABEL" desc="Label for showing frecency menu item of topsites tiles">Show frequently visited</message>
       <message name="IDS_BRAVE_NEW_TAB_SHOW_FAVORITES_MENU_LABEL" desc="Label for showing favorites menu item of topsites tiles">Show favorites</message>
 
+      <message name="IDS_BRAVE_NEW_TAB_SEARCH_PROMOTION_POPUP_TITLE_1" desc="The text for brave search promotion from NTP">
+        Want even better privacy?
+      </message>
+      <message name="IDS_BRAVE_NEW_TAB_SEARCH_PROMOTION_POPUP_TITLE_2" desc="The text for brave search promotion from NTP">
+        It's time to ditch Google.
+      </message>
+      <message name="IDS_BRAVE_NEW_TAB_SEARCH_PROMOTION_POPUP_DESC" desc="The text for brave search promotion from NTP">
+        Brave Search doesn't bias or censor results, and it doesn't track you, your queries, or your clicks.
+      </message>
+      <message name="IDS_BRAVE_NEW_TAB_SEARCH_PROMOTION_POPUP_BOTTOM" desc="The text for brave search promotion from NTP">
+        Try Brave Search now
+      </message>
+
       <message name="IDS_BRAVE_NEW_TAB_SHOW_REWARDS" desc="Text for settings show rewards option">Show Brave Rewards</message>
       <message name="IDS_BRAVE_NEW_TAB_SHOW_BINANCE" desc="Text for show binance option">Show Binance</message>
       <message name="IDS_BRAVE_NEW_TAB_SHOW_CARDS" desc="Text for cards option">Cards</message>

@@ -178,6 +178,12 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "backgroundImageTitle", IDS_BRAVE_NEW_TAB_BACKGROUND_IMAGE },
         { "settingsNavigateBack", IDS_BRAVE_NEW_TAB_SETTINGS_BACK },
 
+        // search promotion
+        { "searchPromotionNTPPopupTitle1", IDS_BRAVE_NEW_TAB_SEARCH_PROMOTION_POPUP_TITLE_1},  // NOLINT
+        { "searchPromotionNTPPopupTitle2", IDS_BRAVE_NEW_TAB_SEARCH_PROMOTION_POPUP_TITLE_2},  // NOLINT
+        { "searchPromotionNTPPopupDesc", IDS_BRAVE_NEW_TAB_SEARCH_PROMOTION_POPUP_DESC},       // NOLINT
+        { "searchPromotionNTPPopupBottom", IDS_BRAVE_NEW_TAB_SEARCH_PROMOTION_POPUP_BOTTOM},   // NOLINT
+
         { "braveTodayTitle", IDS_BRAVE_TODAY_TITLE },
         { "braveTodayIntroTitle", IDS_BRAVE_TODAY_INTRO_TITLE },
         { "braveTodayIntroDescription", IDS_BRAVE_TODAY_INTRO_DESCRIPTION },

@@ -15,6 +15,7 @@ import { GeminiWidget } from './gemini'
 import { CryptoDotComWidget } from './cryptoDotCom'
 import EditCards from './editCards'
 import EditTopSite from './editTopSite'
+import SearchPromotion from './searchPromotion'
 import createWidget from './widget'
 
 export * from './page'
@@ -42,5 +43,6 @@ export {
   GeminiWidget,
   CryptoDotComWidget,
   createWidget,
-  EditTopSite
+  EditTopSite,
+  SearchPromotion
 }

@@ -18,6 +18,7 @@ import {
   GeminiWidget as Gemini,
   CryptoDotComWidget as CryptoDotCom,
   EditTopSite,
+  SearchPromotion,
   EditCards
 } from '../../components/default'
 import { FTXWidget as FTX } from '../../widgets/ftx/components'
@@ -80,6 +81,7 @@ interface State {
   backgroundHasLoaded: boolean
   activeSettingsTab: SettingsTabType | null
   isPromptingBraveToday: boolean
+  showSearchPromotion: boolean
 }
 
 function GetBackgroundImageSrc (props: Props) {
@@ -99,6 +101,13 @@ function GetBackgroundImageSrc (props: Props) {
   return undefined
 }
 
+function GetShouldShowSearchPromotion (props: Props, state: State) {
+  if (GetIsShowingBrandedWallpaper(props))
+    return false
+
+  return props.newTabData.searchPromotionEnabled && state.showSearchPromotion
+}
+
 function GetIsShowingBrandedWallpaper (props: Props) {
   const { newTabData } = props
   return !!((newTabData.brandedWallpaper &&
@@ -116,7 +125,8 @@ class NewTabPage extends React.Component<Props, State> {
     showEditTopSite: false,
     backgroundHasLoaded: false,
     activeSettingsTab: null,
-    isPromptingBraveToday: false
+    isPromptingBraveToday: false,
+    showSearchPromotion: false
   }
 
   braveNewsPromptTimerId: number
@@ -152,6 +162,7 @@ class NewTabPage extends React.Component<Props, State> {
         this.setState({ isPromptingBraveToday: true })
       }, 1700)
     }
+    this.setState({showSearchPromotion: this.props.newTabData.searchPromotionEnabled})
   }
 
   componentWillUnmount () {
@@ -468,6 +479,12 @@ class NewTabPage extends React.Component<Props, State> {
   closeEditTopSite = () => {
     this.setState({
       showEditTopSite: false
+    })
+  }
+
+  closeSearchPromotion = () => {
+    this.setState({
+      showSearchPromotion: false
     })
   }
 
@@ -863,6 +880,20 @@ class NewTabPage extends React.Component<Props, State> {
     )
   }
 
+  renderSearchPromotion () {
+    if (!GetShouldShowSearchPromotion(this.props, this.state)) {
+      return null
+    }
+
+    const onClose = () => { this.closeSearchPromotion() }
+    const onDismiss = () => { getNTPBrowserAPI().pageHandler.dismissBraveSearchPromotion() }
+    const onTryBraveSearch = (input: string, openNewTab: boolean) => { getNTPBrowserAPI().pageHandler.tryBraveSearchPromotion(input, openNewTab) }
+
+    return (
+      <SearchPromotion textDirection={this.props.newTabData.textDirection} onTryBraveSearch={onTryBraveSearch} onClose={onClose} onDismiss={onDismiss} />
+    )
+  }
+
   renderBrandedWallpaperNotification () {
     if (!GetShouldShowBrandedWallpaperNotification(this.props)) {
       return null
@@ -1131,6 +1162,7 @@ class NewTabPage extends React.Component<Props, State> {
             showTopSites={showTopSites}
             showBrandedWallpaper={isShowingBrandedWallpaper}
         >
+          {this.renderSearchPromotion()}
           {newTabData.showStats &&
           <Page.GridItemStats>
             <Stats
