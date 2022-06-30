@@ -10,9 +10,9 @@
 #include <string>
 #include <vector>
 
-#include "base/memory/raw_ptr.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "content/public/renderer/render_frame.h"
+#include "content/public/renderer/render_frame_observer.h"
 #include "content/public/renderer/v8_value_converter.h"
 #include "gin/arguments.h"
 #include "gin/wrappable.h"
@@ -22,6 +22,7 @@
 namespace brave_wallet {
 
 class JSSolanaProvider final : public gin::Wrappable<JSSolanaProvider>,
+                               public content::RenderFrameObserver,
                                public mojom::SolanaEventsListener {
  public:
   ~JSSolanaProvider() override;
@@ -53,6 +54,11 @@ class JSSolanaProvider final : public gin::Wrappable<JSSolanaProvider>,
 
  private:
   explicit JSSolanaProvider(content::RenderFrame* render_frame);
+
+  // RenderFrameObserver implementation.
+  void OnDestruct() override {}
+  void WillReleaseScriptContext(v8::Local<v8::Context>,
+                                int32_t world_id) override;
 
   bool EnsureConnected();
 
@@ -168,7 +174,6 @@ class JSSolanaProvider final : public gin::Wrappable<JSSolanaProvider>,
       v8::Local<v8::Context> context,
       const std::vector<uint8_t> serialized_tx);
 
-  raw_ptr<content::RenderFrame> render_frame_ = nullptr;
   std::unique_ptr<content::V8ValueConverter> v8_value_converter_;
   V8ConverterStrategy strategy_;
   mojo::Remote<mojom::SolanaProvider> solana_provider_;
