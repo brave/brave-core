@@ -7336,7 +7336,7 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
             Microsoft Internet Explorer
           </message>
           <message name="IDS_IMPORT_FROM_EDGE" desc="browser combo box: Microsoft Edge">
-            Microsoft Edge
+            Microsoft Edge Legacy
           </message>
         </if>
         <message name="IDS_IMPORT_FROM_FIREFOX" desc="browser combo box: Mozilla Firefox">
