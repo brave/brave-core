@@ -6,10 +6,14 @@
 #include "brave/components/brave_vpn/pref_names.h"
 
 #include "brave/components/skus/browser/skus_utils.h"
+#include "build/build_config.h"
 #include "components/prefs/pref_registry_simple.h"
 
 namespace brave_vpn {
 namespace prefs {
+
+const char kBraveVPNPurchaseTokenAndroid[] =
+    "brave.brave_vpn.purchase_token_android";
 
 void RegisterProfilePrefs(PrefRegistrySimple* registry) {
 #if !BUILDFLAG(IS_ANDROID)
