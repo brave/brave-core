@@ -142,6 +142,17 @@ interface EthereumProvider {
   IsLocked() => (bool isLocked);
 };
 
+// https://github.com/solana-labs/solana-web3.js/blob/6482d0d/src/transaction.ts#L126
+struct SignaturePubkeyPair {
+  array<uint8>? signature;
+  string public_key;
+};
+
+struct SolanaSignTransactionParam {
+  string encoded_serialized_msg;
+  array<SignaturePubkeyPair> signatures;
+};
+
 interface SolanaProvider {
   // Initializes an SolanaEventsListener
   Init(pending_remote<SolanaEventsListener> events_listener);
@@ -159,10 +170,10 @@ interface SolanaProvider {
   GetPublicKey() => (string public_key);
   // It takes a base58 encoded serialized Message and return a serialized
   // Transaction with signature in wire format.
-  SignTransaction(string encoded_serialized_msg)
+  SignTransaction(SolanaSignTransactionParam param)
     => (SolanaProviderError error, string error_message,
         array<uint8> serialized_tx);
-  SignAllTransactions(array<string> encoded_serialized_msg)
+  SignAllTransactions(array<SolanaSignTransactionParam> params)
     => (SolanaProviderError error, string error_message,
         array<array<uint8>> serialized_txs);
   // It takes a base58 encoded serialized Message and return an object
@@ -176,7 +187,7 @@ interface SolanaProvider {
   //     skipPreflight?: <boolean>
   //   }
   SignAndSendTransaction(
-      string encoded_serialized_msg,
+      SolanaSignTransactionParam param,
       mojo_base.mojom.DeprecatedDictionaryValue? send_options)
     => (SolanaProviderError error, string error_message,
         mojo_base.mojom.DeprecatedDictionaryValue result);
@@ -1185,6 +1196,10 @@ struct SolanaTxData {
   // Currently it might be specified by solana.signAndSendTransaction provider
   // API as the options to be passed to sendTransaction RPC call.
   SolanaSendTransactionOptions? send_options;
+  // Passed by dApp when calling signAndSendTransaction, signTransaction,
+  // signAllTransactions provider APIs, which includes serialized message and
+  // signatures from partial_sign.
+  SolanaSignTransactionParam? sign_transaction_param;
 };
 
 // This is used by BraveWalletProviderDelegate::RequestPermissions for us to

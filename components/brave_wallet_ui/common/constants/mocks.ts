@@ -267,7 +267,8 @@ export const mockSolDappSignTransactionRequest: BraveWallet.SignTransactionReque
           'data': [2, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0]
         }
       ],
-      'sendOptions': undefined
+      'sendOptions': undefined,
+      'signTransactionParam': undefined
     }
   }
 }
@@ -372,7 +373,8 @@ export const mockSolDappSignAllTransactionsRequest: BraveWallet.SignAllTransacti
           ],
           'data': [2, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0]
         }],
-        'sendOptions': undefined
+        'sendOptions': undefined,
+        'signTransactionParam': undefined
       }
     },
     {
@@ -406,7 +408,8 @@ export const mockSolDappSignAllTransactionsRequest: BraveWallet.SignAllTransacti
             'data': [2, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0]
           }
         ],
-        'sendOptions': undefined
+        'sendOptions': undefined,
+        'signTransactionParam': undefined
       }
     }
   ]

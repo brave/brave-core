@@ -308,9 +308,8 @@ v8::Local<v8::Promise> JSSolanaProvider::SignAndSendTransaction(
     return v8::Local<v8::Promise>();
   }
 
-  absl::optional<std::string> serialized_message =
-      GetSerializedMessage(transaction);
-  if (!serialized_message) {
+  auto param = GetSignTransactionParam(transaction);
+  if (!param) {
     arguments->ThrowTypeError(
         l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
     return v8::Local<v8::Promise>();
@@ -340,7 +339,7 @@ v8::Local<v8::Promise> JSSolanaProvider::SignAndSendTransaction(
   auto promise_resolver(
       v8::Global<v8::Promise::Resolver>(isolate, resolver.ToLocalChecked()));
   solana_provider_->SignAndSendTransaction(
-      *serialized_message, std::move(send_options),
+      std::move(param), std::move(send_options),
       base::BindOnce(&JSSolanaProvider::OnSignAndSendTransaction,
                      base::Unretained(this), std::move(global_context),
                      std::move(promise_resolver), isolate));
@@ -459,9 +458,8 @@ v8::Local<v8::Promise> JSSolanaProvider::SignTransaction(
     return v8::Local<v8::Promise>();
   }
 
-  absl::optional<std::string> serialized_message =
-      GetSerializedMessage(transaction);
-  if (!serialized_message) {
+  auto param = GetSignTransactionParam(transaction);
+  if (!param) {
     arguments->ThrowTypeError(
         l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
     return v8::Local<v8::Promise>();
@@ -472,7 +470,7 @@ v8::Local<v8::Promise> JSSolanaProvider::SignTransaction(
   auto promise_resolver(
       v8::Global<v8::Promise::Resolver>(isolate, resolver.ToLocalChecked()));
   solana_provider_->SignTransaction(
-      *serialized_message,
+      std::move(param),
       base::BindOnce(&JSSolanaProvider::OnSignTransaction,
                      base::Unretained(this), std::move(global_context),
                      std::move(promise_resolver), isolate));
@@ -499,27 +497,27 @@ v8::Local<v8::Promise> JSSolanaProvider::SignAllTransactions(
         l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
     return v8::Local<v8::Promise>();
   }
-  std::vector<std::string> serialized_messages;
   v8::Local<v8::Array> transactions_array = transactions.As<v8::Array>();
   uint32_t transactions_count = transactions_array->Length();
-  serialized_messages.reserve(transactions_count);
+  std::vector<mojom::SolanaSignTransactionParamPtr> params;
+  params.reserve(transactions_count);
+
   for (uint32_t i = 0; i < transactions_count; ++i) {
-    absl::optional<std::string> serialized_message = GetSerializedMessage(
+    auto param = GetSignTransactionParam(
         transactions_array->Get(context, i).ToLocalChecked());
-    if (!serialized_message) {
+    if (!param) {
       arguments->ThrowTypeError(
           l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
       return v8::Local<v8::Promise>();
     }
-
-    serialized_messages.push_back(*serialized_message);
+    params.push_back(std::move(param));
   }
 
   auto global_context(v8::Global<v8::Context>(isolate, context));
   auto promise_resolver(
       v8::Global<v8::Promise::Resolver>(isolate, resolver.ToLocalChecked()));
   solana_provider_->SignAllTransactions(
-      serialized_messages,
+      std::move(params),
       base::BindOnce(&JSSolanaProvider::OnSignAllTransactions,
                      base::Unretained(this), std::move(global_context),
                      std::move(promise_resolver), isolate));
@@ -775,6 +773,70 @@ absl::optional<std::string> JSSolanaProvider::GetSerializedMessage(
     return absl::nullopt;
 
   return Base58Encode(blob_value->GetBlob());
+}
+
+absl::optional<std::vector<mojom::SignaturePubkeyPairPtr>>
+JSSolanaProvider::GetSignatures(v8::Local<v8::Value> transaction) {
+  v8::Isolate* isolate = v8::Isolate::GetCurrent();
+  v8::Local<v8::Context> context = isolate->GetCurrentContext();
+
+  v8::Local<v8::Value> signatures;
+  CHECK(GetProperty(context, transaction, u"signatures").ToLocal(&signatures));
+  v8::Local<v8::Array> signatures_array = signatures.As<v8::Array>();
+  uint32_t signatures_count = signatures_array->Length();
+  std::vector<mojom::SignaturePubkeyPairPtr> sig_pubkey_pairs;
+  sig_pubkey_pairs.reserve(signatures_count);
+
+  for (uint32_t i = 0; i < signatures_count; ++i) {
+    // Get signature.
+    v8::Local<v8::Value> v8_signature;
+    v8::Local<v8::Value> v8_sig_pubkey_pair =
+        signatures_array->Get(context, i).ToLocalChecked();
+    CHECK(GetProperty(context, v8_sig_pubkey_pair, u"signature")
+              .ToLocal(&v8_signature));
+
+    absl::optional<std::vector<uint8_t>> signature = absl::nullopt;
+    if (!v8_signature->IsNullOrUndefined()) {
+      std::unique_ptr<base::Value> blob_value =
+          v8_value_converter_->FromV8Value(v8_signature, context);
+      if (!blob_value || !blob_value->is_blob())
+        return absl::nullopt;
+      signature = blob_value->GetBlob();
+    }
+
+    v8::Local<v8::Value> v8_pubkey_object;
+    CHECK(GetProperty(context, v8_sig_pubkey_pair, u"publicKey")
+              .ToLocal(&v8_pubkey_object));
+    v8::MaybeLocal<v8::Value> v8_pubkey =
+        CallMethodOfObject(render_frame_->GetWebFrame(), v8_pubkey_object,
+                           u"toString", std::vector<v8::Local<v8::Value>>());
+    if (v8_pubkey.IsEmpty())
+      return absl::nullopt;
+
+    std::unique_ptr<base::Value> pubkey_value =
+        v8_value_converter_->FromV8Value(v8_pubkey.ToLocalChecked(), context);
+    if (!pubkey_value || !pubkey_value->is_string())
+      return absl::nullopt;
+
+    sig_pubkey_pairs.push_back(
+        mojom::SignaturePubkeyPair::New(signature, pubkey_value->GetString()));
+  }
+
+  return sig_pubkey_pairs;
+}
+
+mojom::SolanaSignTransactionParamPtr JSSolanaProvider::GetSignTransactionParam(
+    v8::Local<v8::Value> transaction) {
+  absl::optional<std::string> serialized_message =
+      GetSerializedMessage(transaction);
+  if (!serialized_message)
+    return nullptr;
+  absl::optional<std::vector<mojom::SignaturePubkeyPairPtr>> signatures =
+      GetSignatures(transaction);
+  if (!signatures)
+    return nullptr;
+  return mojom::SolanaSignTransactionParam::New(*serialized_message,
+                                                std::move(*signatures));
 }
 
 v8::Local<v8::Value> JSSolanaProvider::CreatePublicKey(
