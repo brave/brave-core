@@ -7,14 +7,30 @@
 
 #include <algorithm>
 
+#include "brave/browser/ui/views/tabs/brave_new_tab_button.h"
+#include "chrome/browser/ui/views/chrome_layout_provider.h"
+#include "chrome/browser/ui/views/tabs/new_tab_button.h"
+#include "ui/gfx/geometry/point_f.h"
+#include "ui/gfx/geometry/rect.h"
 #include "ui/gfx/geometry/size.h"
+#include "ui/gfx/geometry/skia_conversions.h"
+#include "ui/views/layout/layout_provider.h"
 
 BraveTabSearchButton::~BraveTabSearchButton() = default;
 
+gfx::Size BraveTabSearchButton::CalculatePreferredSize() const {
+  return BraveNewTabButton::kButtonSize;
+}
+
+SkPath BraveTabSearchButton::GetBorderPath(const gfx::Point& origin,
+                                           float scale,
+                                           bool extend_to_top) const {
+  return BraveNewTabButton::GetBorderPath(origin, scale, extend_to_top,
+                                          GetCornerRadius(),
+                                          GetContentsBounds().size());
+}
+
 int BraveTabSearchButton::GetCornerRadius() const {
-  // Copied from LayoutProvider::GetCornerRadiusMetric() for kMaximum.
-  // We override GetCornerRadiusMetric() by BraveLayoutProvider. However,
-  // TabSearchButton needs original radius value.
-  auto size = GetContentsBounds().size();
-  return std::min(size.width(), size.height()) / 2;
+  return ChromeLayoutProvider::Get()->GetCornerRadiusMetric(
+      views::Emphasis::kMaximum, GetContentsBounds().size());
 }

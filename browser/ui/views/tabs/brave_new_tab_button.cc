@@ -10,12 +10,33 @@
 #include "chrome/browser/ui/layout_constants.h"
 #include "chrome/browser/ui/views/tabs/new_tab_button.h"
 #include "chrome/browser/ui/views/tabs/tab_strip.h"
-#include "ui/gfx/geometry/size.h"
 #include "ui/gfx/geometry/skia_conversions.h"
 #include "ui/gfx/scoped_canvas.h"
 
 // static
 const gfx::Size BraveNewTabButton::kButtonSize{24, 24};
+
+// static
+SkPath BraveNewTabButton::GetBorderPath(const gfx::Point& origin,
+                                        float scale,
+                                        bool extend_to_top,
+                                        int corner_radius,
+                                        const gfx::Size& contents_bounds) {
+  // Overriden to use Brave's non-circular shape
+  gfx::PointF scaled_origin(origin);
+  scaled_origin.Scale(scale);
+  const float radius = corner_radius * scale;
+
+  SkPath path;
+  const gfx::Rect path_rect(
+      scaled_origin.x(), extend_to_top ? 0 : scaled_origin.y(),
+      contents_bounds.width() * scale,
+      (extend_to_top ? scaled_origin.y() : 0) +
+          std::min(contents_bounds.width(), contents_bounds.height()) * scale);
+  path.addRoundRect(RectToSkRect(path_rect), radius, radius);
+  path.close();
+  return path;
+}
 
 gfx::Size BraveNewTabButton::CalculatePreferredSize() const {
   // Overriden so that we use Brave's custom button size
@@ -28,21 +49,8 @@ gfx::Size BraveNewTabButton::CalculatePreferredSize() const {
 SkPath BraveNewTabButton::GetBorderPath(const gfx::Point& origin,
                                         float scale,
                                         bool extend_to_top) const {
-  // Overriden to use Brave's non-circular shape
-  gfx::PointF scaled_origin(origin);
-  scaled_origin.Scale(scale);
-  const float radius = GetCornerRadius() * scale;
-
-  SkPath path;
-  const gfx::Rect contents_bounds = GetContentsBounds();
-  const gfx::Rect path_rect(
-      scaled_origin.x(), extend_to_top ? 0 : scaled_origin.y(),
-      contents_bounds.width() * scale,
-      (extend_to_top ? scaled_origin.y() : 0) +
-          std::min(contents_bounds.width(), contents_bounds.height()) * scale);
-  path.addRoundRect(RectToSkRect(path_rect), radius, radius);
-  path.close();
-  return path;
+  return GetBorderPath(origin, scale, extend_to_top, GetCornerRadius(),
+                       GetContentsBounds().size());
 }
 
 void BraveNewTabButton::PaintIcon(gfx::Canvas* canvas) {

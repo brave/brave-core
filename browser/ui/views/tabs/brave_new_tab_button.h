@@ -8,6 +8,8 @@
 
 #include "chrome/browser/ui/views/tabs/new_tab_button.h"
 #include "third_party/skia/include/core/SkPath.h"
+#include "ui/gfx/geometry/point.h"
+#include "ui/gfx/geometry/size.h"
 
 class TabStrip;
 namespace views {
@@ -17,6 +19,12 @@ class ButtonListener;
 class BraveNewTabButton : public NewTabButton {
  public:
   static const gfx::Size kButtonSize;
+  static SkPath GetBorderPath(const gfx::Point& origin,
+                              float scale,
+                              bool extend_to_top,
+                              int border_radius,
+                              const gfx::Size& contents_bounds);
+
   using NewTabButton::NewTabButton;
 
   BraveNewTabButton(const BraveNewTabButton&) = delete;
