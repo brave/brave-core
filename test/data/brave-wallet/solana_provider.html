@@ -7,6 +7,18 @@
   var signTransactionResult = ''
   var signAllTransactionsResult = ''
   var requestResult = ''
+  var accountChangedResult = ''
+
+  function registerAccountChanged() {
+    window.braveSolana.on('accountChanged', result => {
+        if (result instanceof Object) {
+          accountChangedResult = result.toString()
+        } else {
+          accountChangedResult = ''
+        }
+        window.domAutomationController.send('result ready')
+    })
+  }
 
   function solanaConnect() {
     window.braveSolana.connect().then(result => {
@@ -145,6 +157,11 @@
   function getRequestResult() {
     window.domAutomationController.send(requestResult)
     requestResult = ''
+  }
+
+  function getAccountChangedResult() {
+    window.domAutomationController.send(accountChangedResult)
+    accountChangedResult = ''
   }
 
 </script>
