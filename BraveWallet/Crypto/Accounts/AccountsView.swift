@@ -13,7 +13,6 @@ import Strings
 struct AccountsView: View {
   var cryptoStore: CryptoStore
   @ObservedObject var keyringStore: KeyringStore
-  @State private var navigationController: UINavigationController?
   @State private var selectedAccount: BraveWallet.AccountInfo?
 
   private var primaryAccounts: [BraveWallet.AccountInfo] {
@@ -101,16 +100,6 @@ struct AccountsView: View {
         })
     )
     .listStyle(InsetGroupedListStyle())
-    .osAvailabilityModifiers { content in
-      if #available(iOS 15.0, *) {
-        content
-      } else {
-        content
-          .introspectNavigationController { nc in
-            navigationController = nc
-          }
-      }
-    }
   }
 }
 
