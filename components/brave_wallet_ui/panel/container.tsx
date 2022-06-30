@@ -325,12 +325,6 @@ function Container () {
     dispatch(WalletPanelActions.switchEthereumChainProcessed({ approved: false, origin: switchChainRequest.originInfo.origin }))
   }
 
-  const onNetworkLearnMore = () => {
-    chrome.tabs.create({
-      url: 'https://support.brave.com/'
-    }).catch((e) => { console.error(e) })
-  }
-
   const onRejectTransaction = () => {
     if (selectedPendingTransaction) {
       dispatch(WalletActions.rejectTransaction(selectedPendingTransaction))
@@ -580,7 +574,6 @@ function Container () {
             onApproveAddNetwork={onApproveAddNetwork}
             onApproveChangeNetwork={onApproveChangeNetwork}
             onCancel={onCancelAddNetwork}
-            onLearnMore={onNetworkLearnMore}
             networkPayload={addChainRequest.networkInfo}
             panelType='add'
           />
@@ -598,7 +591,6 @@ function Container () {
             onApproveAddNetwork={onApproveAddNetwork}
             onApproveChangeNetwork={onApproveChangeNetwork}
             onCancel={onCancelChangeNetwork}
-            onLearnMore={onNetworkLearnMore}
             // Passed BraveWallet.CoinType.ETH here since AllowAddChangeNetworkPanel
             // is only used for EVM networks and switchChainRequest doesn't return cointType.
             networkPayload={getNetworkInfo(switchChainRequest.chainId, BraveWallet.CoinType.ETH, networkList)}
