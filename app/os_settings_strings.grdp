@@ -1524,6 +1524,12 @@ Press an assigned switch or key to remove assignment.
   <message name="IDS_SETTINGS_ACCESSIBILITY_MANAGE_ACCESSIBILITY_FEATURES" desc="In the settings tab, the title of a link that opens a screen allowing the user to change accessibility features.">
     Manage accessibility features
   </message>
+  <message name="IDS_SETTINGS_ACCESSIBILITY_TEXT_TO_SPEECH_LINK_TITLE" desc="In the settings tab, the title of a link that opens a screen allowing the user to change text-to-speech accessibility features.">
+    Text-to-Speech
+  </message>
+  <message name="IDS_SETTINGS_ACCESSIBILITY_TEXT_TO_SPEECH_LINK_DESCRIPTION" desc="In the settings tab, the description of a link that opens a screen allowing the user to change text-to-speech accessibility features.">
+    BraveVox screen reader and select-to-speak
+  </message>
 
   <!-- Account Manager (OS settings) -->
   <message name="IDS_SETTINGS_ACCOUNT_MANAGER_CHILD_DESCRIPTION_V2" desc="Description of the Account Manager Settings page for child users. Shown just below the title of the page.">
@@ -1844,7 +1850,7 @@ Press an assigned switch or key to remove assignment.
     Add playbook
   </message>
   <message name="IDS_SETTINGS_CROSTINI_PRECONFIGURED_CONTAINERS_ATTACH_PLAYBOOK_BUTTON_LABEL" desc="Label for button to attach an Ansible Playbook to preconfigure a Linux container.">
-    Apply playbook
+    Select playbook
   </message>
   <message name="IDS_SETTINGS_CROSTINI_ANSIBLE_PLAYBOOK_SELECT_DIALOG_TITLE" desc="The text used as the title for Ansible Playbook selection">
     Select an Ansible Playbook to add
@@ -2172,6 +2178,9 @@ Press an assigned switch or key to remove assignment.
   </message>
   <message name="IDS_SETTINGS_BLUETOOTH_DEVICE_DETAILS" desc="Name of the settings page which displays Bluetooth device details.">
     Bluetooth device details
+  </message>
+  <message name="IDS_SETTINGS_BLUETOOTH_SAVED_DEVICES" desc="Name of the settings page which displays Bluetooth saved devices.">
+   Devices saved to your account
   </message>
   <message name="IDS_SETTINGS_BLUETOOTH_PAIR_DEVICE_TITLE" desc="Title of the settings dialog for adding or pairing Bluetooth a device.">
     Connect to Bluetooth device
