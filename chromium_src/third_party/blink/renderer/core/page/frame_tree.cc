@@ -5,18 +5,17 @@
 
 #include "third_party/blink/renderer/core/page/frame_tree.h"
 
-#define CrossSiteCrossBrowsingContextGroupSetNulledName \
-  CrossSiteCrossBrowsingContextGroupSetNulledName_ChromiumImpl
+#define ExperimentalSetNulledName ExperimentalSetNulledName_ChromiumImpl
 
 #include "src/third_party/blink/renderer/core/page/frame_tree.cc"
 
-#undef CrossSiteCrossBrowsingContextGroupSetNulledName
+#undef ExperimentalSetNulledName
 
 namespace blink {
 
-void FrameTree::CrossSiteCrossBrowsingContextGroupSetNulledName() {
+void FrameTree::ExperimentalSetNulledName() {
   SetName(g_null_atom, kReplicate);
-  CrossSiteCrossBrowsingContextGroupSetNulledName_ChromiumImpl();
+  ExperimentalSetNulledName_ChromiumImpl();
 }
 
 }  // namespace blink

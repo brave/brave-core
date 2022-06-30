@@ -6,12 +6,12 @@
 #ifndef BRAVE_CHROMIUM_SRC_THIRD_PARTY_BLINK_RENDERER_CORE_PAGE_FRAME_TREE_H_
 #define BRAVE_CHROMIUM_SRC_THIRD_PARTY_BLINK_RENDERER_CORE_PAGE_FRAME_TREE_H_
 
-#define CrossSiteCrossBrowsingContextGroupSetNulledName           \
-  CrossSiteCrossBrowsingContextGroupSetNulledName_ChromiumImpl(); \
-  void CrossSiteCrossBrowsingContextGroupSetNulledName
+#define ExperimentalSetNulledName           \
+  ExperimentalSetNulledName_ChromiumImpl(); \
+  void ExperimentalSetNulledName
 
 #include "src/third_party/blink/renderer/core/page/frame_tree.h"
 
-#undef CrossSiteCrossBrowsingContextGroupSetNulledName
+#undef ExperimentalSetNulledName
 
 #endif  // BRAVE_CHROMIUM_SRC_THIRD_PARTY_BLINK_RENDERER_CORE_PAGE_FRAME_TREE_H_

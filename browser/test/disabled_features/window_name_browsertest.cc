@@ -14,6 +14,7 @@
 #include "chrome/test/base/ui_test_utils.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
+#include "content/public/test/test_navigation_observer.h"
 #include "net/dns/mock_host_resolver.h"
 #include "url/gurl.h"
 
@@ -21,6 +22,7 @@ namespace {
 
 const char kEmbeddedTestServerDirectory[] = "window_name";
 const char kWindowNameScript[] = "window.name";
+const char kLinkID[] = "clickme";
 
 }  // namespace
 
@@ -64,20 +66,35 @@ class BraveWindowNameBrowserTest : public InProcessBrowserTest {
     return browser()->tab_strip_model()->GetActiveWebContents();
   }
 
+  void SetHref(const std::string& id, const std::string& href) {
+    content::RenderFrameHost* frame = web_contents()->GetMainFrame();
+    frame->ExecuteJavaScriptForTests(
+        base::ASCIIToUTF16("document.getElementById('" + id + "').href='" +
+                           href + "';\n"),
+        base::NullCallback());
+  }
+
+  void Click(const std::string& id) {
+    content::TestNavigationObserver observer(web_contents());
+    content::RenderFrameHost* frame = web_contents()->GetMainFrame();
+    frame->ExecuteJavaScriptForTests(
+        base::ASCIIToUTF16("document.getElementById('" + id + "').click();\n"),
+        base::NullCallback());
+    observer.WaitForNavigationFinished();
+  }
+
  private:
   std::unique_ptr<ChromeContentClient> content_client_;
   std::unique_ptr<BraveContentBrowserClient> browser_content_client_;
 };
 
 IN_PROC_BROWSER_TEST_F(BraveWindowNameBrowserTest, SameOrigin) {
-  GURL url1 = https_server_.GetURL("a.test", "/set_window_name.html");
-  GURL url2 = https_server_.GetURL("a.test", "/get_window_name.html");
-
+  GURL url1 =
+      https_server_.GetURL("a.test", "/set_window_name_same_origin.html");
   EXPECT_TRUE(ui_test_utils::NavigateToURL(browser(), url1));
-  EXPECT_EQ("foo", EvalJs(web_contents(), kWindowNameScript));
-  EXPECT_TRUE(ui_test_utils::NavigateToURL(browser(), url2));
-  // Since these URLs are in the same origin, window.name should persist across
-  // navigation.
+  // Navigating to url1 automatically redirects to "get_window_name.html". Since
+  // the original and final URLs are in the same origin, window.name should
+  // persist across navigation.
   EXPECT_EQ("foo", EvalJs(web_contents(), kWindowNameScript));
 }
 
@@ -87,7 +104,8 @@ IN_PROC_BROWSER_TEST_F(BraveWindowNameBrowserTest, CrossOrigin) {
 
   EXPECT_TRUE(ui_test_utils::NavigateToURL(browser(), url1));
   EXPECT_EQ("foo", EvalJs(web_contents(), kWindowNameScript));
-  EXPECT_TRUE(ui_test_utils::NavigateToURL(browser(), url2));
+  SetHref(kLinkID, url2.spec());
+  Click(kLinkID);
   // Since these URLs are in different origins, window.name should be cleared
   // during navigation.
   EXPECT_EQ("", EvalJs(web_contents(), kWindowNameScript));
@@ -99,7 +117,8 @@ IN_PROC_BROWSER_TEST_F(BraveWindowNameBrowserTest, CrossOriginAndBack) {
 
   EXPECT_TRUE(ui_test_utils::NavigateToURL(browser(), url1));
   EXPECT_EQ("foo", EvalJs(web_contents(), kWindowNameScript));
-  EXPECT_TRUE(ui_test_utils::NavigateToURL(browser(), url2));
+  SetHref(kLinkID, url2.spec());
+  Click(kLinkID);
   // Since these URLs are in different origins, window.name should be cleared
   // during navigation.
   EXPECT_EQ("", EvalJs(web_contents(), kWindowNameScript));
