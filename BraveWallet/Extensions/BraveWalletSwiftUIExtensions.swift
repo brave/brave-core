@@ -183,3 +183,18 @@ extension BraveWallet.OriginInfo {
     origin == WalletConstants.braveWalletOrigin
   }
 }
+
+extension BraveWallet.CoinType {
+  var keyringId: String {
+    switch self {
+    case .eth:
+      return BraveWallet.DefaultKeyringId
+    case .sol:
+      return BraveWallet.SolanaKeyringId
+    case .fil:
+      return BraveWallet.FilecoinKeyringId
+    @unknown default:
+      return BraveWallet.DefaultKeyringId
+    }
+  }
+}

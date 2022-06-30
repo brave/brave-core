@@ -89,19 +89,22 @@ public class KeyringStore: ObservableObject {
   }
 
   private let keyringService: BraveWalletKeyringService
+  private let walletService: BraveWalletBraveWalletService
   private var cancellable: AnyCancellable?
   private let keychain: KeychainType
 
   public init(
     keyringService: BraveWalletKeyringService,
+    walletService: BraveWalletBraveWalletService,
     keychain: KeychainType = Keychain()
   ) {
     self.keyringService = keyringService
+    self.walletService = walletService
     self.keychain = keychain
     
     self.keyringService.add(self)
     updateKeyringInfo()
-    self.keyringService.defaultKeyringInfo { [self] keyringInfo in
+    self.keyringService.keyringInfo(BraveWallet.DefaultKeyringId) { [self] keyringInfo in
       isOnboardingVisible = !keyringInfo.isKeyringCreated
       if isKeychainPasswordStored && isOnboardingVisible {
         // If a user deletes the app and they had a stored user password in the past that keychain item
@@ -119,18 +122,20 @@ public class KeyringStore: ObservableObject {
   }
 
   private func updateKeyringInfo() {
-    keyringService.defaultKeyringInfo { [self] keyringInfo in
-      if UIApplication.shared.applicationState != .active {
-        // Changes made in the backgroud due to timers going off at launch don't
-        // re-render things properly.
-        //
-        // This function is called again on `didBecomeActiveNotification` anyways.
-        return
-      }
-      keyring = keyringInfo
-      if !keyring.accountInfos.isEmpty {
-        keyringService.selectedAccount(.eth) { [self] accountAddress in
-          selectedAccount = keyringInfo.accountInfos.first(where: { $0.address == accountAddress }) ?? keyringInfo.accountInfos.first!
+    walletService.selectedCoin { [self] coin in
+      keyringService.keyringInfo(coin.keyringId) { [self] keyringInfo in
+        if UIApplication.shared.applicationState != .active {
+          // Changes made in the backgroud due to timers going off at launch don't
+          // re-render things properly.
+          //
+          // This function is called again on `didBecomeActiveNotification` anyways.
+          return
+        }
+        keyring = keyringInfo
+        if !keyring.accountInfos.isEmpty {
+          keyringService.selectedAccount(coin) { [self] accountAddress in
+            selectedAccount = keyringInfo.accountInfos.first(where: { $0.address == accountAddress }) ?? keyringInfo.accountInfos.first!
+          }
         }
       }
     }

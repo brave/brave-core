@@ -75,7 +75,7 @@ public class SettingsStore: ObservableObject {
   }
 
   public func isDefaultKeyringCreated(_ completion: @escaping (Bool) -> Void) {
-    keyringService.defaultKeyringInfo { keyring in
+    keyringService.keyringInfo(BraveWallet.DefaultKeyringId) { keyring in
       completion(keyring.isKeyringCreated)
     }
   }
