@@ -17,10 +17,12 @@ import {
 // types
 import { BraveWallet, SupportedOnRampNetworks, WalletState } from '../../constants/types'
 
-// Hooks
+// options
+import { BuyOptions } from '../../options/buy-with-options'
+
+// hooks
 import { useIsMounted } from './useIsMounted'
 import { useLib } from './useLib'
-import { BuyOptions } from '../../options/buy-with-options'
 
 export function useMultiChainBuyAssets () {
   // redux

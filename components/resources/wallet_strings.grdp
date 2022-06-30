@@ -588,4 +588,5 @@
   <message name="BRAVE_WALLET_PERKS_TOKENS" desc="Description of how the wallet allows access to many crypto tokens">Buy, send, swap with 200+ tokens</message>
   <message name="BRAVE_WALLET_PERKS_NFT_STORAGE" desc="Description of how the wallet allows storage of NFT assets">Store your NFTs</message>
   <message name="BRAVE_WALLET_MULTI_CHAIN" desc="Description of how the wallet allows access to multiple blockchains">Trade across multi-chains in seconds</message>
+  <message name="BRAVE_WALLET_UNLOCK_NEEDED_TO_CREATE_ACCOUNT" desc="Message to inform the user that their wallet must be unlocked before a new account can be created">Unlock needed to create an account</message>
 </grit-part>

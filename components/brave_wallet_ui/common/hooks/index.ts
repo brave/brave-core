@@ -18,7 +18,6 @@ import useHasAccount from './has-account'
 import usePrevNetwork from './previous-network'
 import useIsMounted from './useIsMounted'
 import { useLib } from './useLib'
-import { usePasswordStrength } from './use-password-strength'
 
 export {
   useAddressLabels,
@@ -29,7 +28,6 @@ export {
   useHasAccount,
   useIsMounted,
   useLib,
-  usePasswordStrength,
   usePreset,
   usePrevNetwork,
   usePricing,
