@@ -34,10 +34,10 @@ void RecordImporterP3A(importer::ImporterType type) {
   case importer::TYPE_IE:
     metric = ImporterSource::kIE;
     break;
+#endif
   case importer::TYPE_EDGE:
     metric = ImporterSource::kEdge;
     break;
-#endif
   case importer::TYPE_FIREFOX:
     metric = ImporterSource::kFirefox;
     break;

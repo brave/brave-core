@@ -59,11 +59,10 @@ void DetectChromeProfiles(std::vector<importer::SourceProfile>* profiles) {
   AddChromeToProfiles(
       profiles, GetChromeSourceProfiles(GetChromiumUserDataFolder()),
       GetChromiumUserDataFolder(), "Chromium ", importer::TYPE_CHROME);
-#if BUILDFLAG(IS_WIN)
+
   AddChromeToProfiles(
       profiles, GetChromeSourceProfiles(GetEdgeUserDataFolder()),
       GetEdgeUserDataFolder(), "Microsoft Edge ", importer::TYPE_EDGE);
-#endif
 }
 
 }  // namespace

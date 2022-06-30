@@ -1,7 +1,31 @@
 diff --git a/chrome/browser/importer/importer_uma.cc b/chrome/browser/importer/importer_uma.cc
-index d858676745103908f16a41392c0da42c3683c555..73730551989fdd3e41ebb2a0a6f173cfa9245468 100644
+index d858676745103908f16a41392c0da42c3683c555..cb3bae6cca1f1739291169cf76d2a80d5817e00a 100644
 --- a/chrome/browser/importer/importer_uma.cc
 +++ b/chrome/browser/importer/importer_uma.cc
+@@ -22,9 +22,8 @@ enum ImporterTypeMetrics {
+ #endif
+   IMPORTER_METRICS_GOOGLE_TOOLBAR5 = 5,  // obsolete
+   IMPORTER_METRICS_BOOKMARKS_FILE = 6,
+-#if BUILDFLAG(IS_WIN)
++
+   IMPORTER_METRICS_EDGE = 7,
+-#endif
+ 
+   // Insert new values here. Never remove any existing values, as this enum is
+   // used to bucket a UMA histogram, and removing values breaks that.
+@@ -44,10 +43,11 @@ void LogImporterUseToMetrics(const std::string& metric_postfix,
+     case TYPE_IE:
+       metrics_type = IMPORTER_METRICS_IE;
+       break;
++#endif
+     case TYPE_EDGE:
+       metrics_type = IMPORTER_METRICS_EDGE;
+       break;
+-#endif
++
+     case TYPE_FIREFOX:
+       metrics_type = IMPORTER_METRICS_FIREFOX3;
+       break;
 @@ -59,6 +59,9 @@ void LogImporterUseToMetrics(const std::string& metric_postfix,
      case TYPE_BOOKMARKS_FILE:
        metrics_type = IMPORTER_METRICS_BOOKMARKS_FILE;

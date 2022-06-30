@@ -32,10 +32,8 @@ scoped_refptr<Importer> CreateImporterByType(importer::ImporterType type) {
   switch (type) {
     case importer::TYPE_CHROME:
       return new ChromeImporter();
-#if BUILDFLAG(IS_WIN)
     case importer::TYPE_EDGE:
       return new EdgeImporter();
-#endif
     default:
       NOTREACHED();
       return nullptr;
