@@ -171,7 +171,7 @@ const char* JSSolanaProvider::GetTypeName() {
 
 void JSSolanaProvider::AccountChangedEvent(
     const absl::optional<std::string>& account) {
-  v8::Isolate* isolate = v8::Isolate::GetCurrent();
+  v8::Isolate* isolate = blink::MainThreadIsolate();
   v8::HandleScope handle_scope(isolate);
   v8::Local<v8::Context> context =
       render_frame()->GetWebFrame()->MainWorldScriptContext();
@@ -224,7 +224,7 @@ bool JSSolanaProvider::GetIsConnected(gin::Arguments* arguments) {
 }
 
 v8::Local<v8::Value> JSSolanaProvider::GetPublicKey(gin::Arguments* arguments) {
-  v8::Isolate* isolate = v8::Isolate::GetCurrent();
+  v8::Isolate* isolate = arguments->isolate();
   v8::Local<v8::Context> context = isolate->GetCurrentContext();
   std::string public_key;
   if (!solana_provider_->GetPublicKey(&public_key) || public_key.empty())
@@ -241,7 +241,7 @@ v8::Local<v8::Promise> JSSolanaProvider::Connect(gin::Arguments* arguments) {
   if (!EnsureConnected())
     return v8::Local<v8::Promise>();
 
-  v8::Isolate* isolate = v8::Isolate::GetCurrent();
+  v8::Isolate* isolate = arguments->isolate();
   v8::MaybeLocal<v8::Promise::Resolver> resolver =
       v8::Promise::Resolver::New(isolate->GetCurrentContext());
   if (resolver.IsEmpty()) {
@@ -284,7 +284,7 @@ v8::Local<v8::Promise> JSSolanaProvider::Connect(gin::Arguments* arguments) {
 v8::Local<v8::Promise> JSSolanaProvider::Disconnect(gin::Arguments* arguments) {
   if (!EnsureConnected())
     return v8::Local<v8::Promise>();
-  v8::Isolate* isolate = v8::Isolate::GetCurrent();
+  v8::Isolate* isolate = arguments->isolate();
   v8::MaybeLocal<v8::Promise::Resolver> resolver =
       v8::Promise::Resolver::New(isolate->GetCurrentContext());
   if (resolver.IsEmpty()) {
@@ -304,7 +304,7 @@ v8::Local<v8::Promise> JSSolanaProvider::SignAndSendTransaction(
     gin::Arguments* arguments) {
   if (!EnsureConnected())
     return v8::Local<v8::Promise>();
-  v8::Isolate* isolate = v8::Isolate::GetCurrent();
+  v8::Isolate* isolate = arguments->isolate();
   v8::MaybeLocal<v8::Promise::Resolver> resolver =
       v8::Promise::Resolver::New(isolate->GetCurrentContext());
   if (resolver.IsEmpty()) {
@@ -360,7 +360,7 @@ v8::Local<v8::Promise> JSSolanaProvider::SignMessage(
     gin::Arguments* arguments) {
   if (!EnsureConnected())
     return v8::Local<v8::Promise>();
-  v8::Isolate* isolate = v8::Isolate::GetCurrent();
+  v8::Isolate* isolate = arguments->isolate();
   v8::MaybeLocal<v8::Promise::Resolver> resolver =
       v8::Promise::Resolver::New(isolate->GetCurrentContext());
   if (resolver.IsEmpty()) {
@@ -406,7 +406,7 @@ v8::Local<v8::Promise> JSSolanaProvider::SignMessage(
 v8::Local<v8::Promise> JSSolanaProvider::Request(gin::Arguments* arguments) {
   if (!EnsureConnected())
     return v8::Local<v8::Promise>();
-  v8::Isolate* isolate = v8::Isolate::GetCurrent();
+  v8::Isolate* isolate = arguments->isolate();
   v8::MaybeLocal<v8::Promise::Resolver> resolver =
       v8::Promise::Resolver::New(isolate->GetCurrentContext());
   if (resolver.IsEmpty()) {
@@ -454,7 +454,7 @@ v8::Local<v8::Promise> JSSolanaProvider::SignTransaction(
     gin::Arguments* arguments) {
   if (!EnsureConnected())
     return v8::Local<v8::Promise>();
-  v8::Isolate* isolate = v8::Isolate::GetCurrent();
+  v8::Isolate* isolate = arguments->isolate();
   v8::MaybeLocal<v8::Promise::Resolver> resolver =
       v8::Promise::Resolver::New(isolate->GetCurrentContext());
   if (resolver.IsEmpty()) {
@@ -492,7 +492,7 @@ v8::Local<v8::Promise> JSSolanaProvider::SignAllTransactions(
     gin::Arguments* arguments) {
   if (!EnsureConnected())
     return v8::Local<v8::Promise>();
-  v8::Isolate* isolate = v8::Isolate::GetCurrent();
+  v8::Isolate* isolate = arguments->isolate();
   v8::Local<v8::Context> context = isolate->GetCurrentContext();
   v8::MaybeLocal<v8::Promise::Resolver> resolver =
       v8::Promise::Resolver::New(isolate->GetCurrentContext());
@@ -769,7 +769,7 @@ void JSSolanaProvider::SendResponse(
 
 absl::optional<std::string> JSSolanaProvider::GetSerializedMessage(
     v8::Local<v8::Value> transaction) {
-  v8::Isolate* isolate = v8::Isolate::GetCurrent();
+  v8::Isolate* isolate = blink::MainThreadIsolate();
 
   v8::MaybeLocal<v8::Value> serialized_msg = CallMethodOfObject(
       render_frame()->GetWebFrame(), transaction, u"serializeMessage",
@@ -786,7 +786,7 @@ absl::optional<std::string> JSSolanaProvider::GetSerializedMessage(
 
 absl::optional<std::vector<mojom::SignaturePubkeyPairPtr>>
 JSSolanaProvider::GetSignatures(v8::Local<v8::Value> transaction) {
-  v8::Isolate* isolate = v8::Isolate::GetCurrent();
+  v8::Isolate* isolate = blink::MainThreadIsolate();
   v8::Local<v8::Context> context = isolate->GetCurrentContext();
 
   v8::Local<v8::Value> signatures;
