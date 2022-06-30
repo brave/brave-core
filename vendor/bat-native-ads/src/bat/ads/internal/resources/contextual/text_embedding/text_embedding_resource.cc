@@ -18,7 +18,7 @@ namespace ads {
 namespace resource {
 
 namespace {
-constexpr char kResourceId[] = "embedtestid";
+constexpr char kResourceId[] = "wtpwsrqtjxmfdwaymauprezkunxprysm";
 }  // namespace
 
 TextEmbedding::TextEmbedding()
