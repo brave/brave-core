@@ -8,11 +8,13 @@ import { combineReducers } from 'redux'
 import pageReducer from './page_reducer'
 import walletReducer from '../../common/reducers/wallet_reducer'
 import sendCryptoReducer from '../../common/reducers/send_crypto_reducer'
+import accountsTabReducer from './accounts-tab-reducer'
 
 export const walletPageReducer = combineReducers({
   page: pageReducer,
   wallet: walletReducer,
-  sendCrypto: sendCryptoReducer
+  sendCrypto: sendCryptoReducer,
+  accountsTab: accountsTabReducer
 })
 
 export default walletPageReducer

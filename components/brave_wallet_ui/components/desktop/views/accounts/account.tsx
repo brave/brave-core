@@ -4,21 +4,34 @@
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { Redirect, useParams } from 'react-router'
-import { useDispatch, useSelector } from 'react-redux'
-import { create } from 'ethereum-blockies'
 
+// Routing
+import { Redirect, useParams } from 'react-router'
+
+// Redux
+import { useDispatch, useSelector } from 'react-redux'
+
+// Actions
+import { AccountsTabActions } from '../../../../page/reducers/accounts-tab-reducer'
+
+// Types
 import {
-  AccountSettingsNavTypes,
-  UpdateAccountNamePayloadType,
   BraveWallet,
   CoinTypesMap,
   WalletState,
-  PageState,
-  WalletRoutes
+  WalletRoutes,
+  AccountModalTypes
 } from '../../../../constants/types'
 
-// utils
+// Components
+import { create } from 'ethereum-blockies'
+import { BackButton, Tooltip } from '../../../shared'
+import {
+  PortfolioAssetItem,
+  PortfolioTransactionItem
+} from '../..'
+
+// Utils
 import { reduceAddress } from '../../../../utils/reduce-address'
 import { getLocale } from '../../../../../common/locale'
 import { sortTransactionByDate } from '../../../../utils/tx-utils'
@@ -41,36 +54,15 @@ import {
 } from './style'
 import { TransactionPlaceholderText, Spacer } from '../portfolio/style'
 
-// Components
-import { BackButton, Tooltip } from '../../../shared'
-import {
-  PortfolioAssetItem,
-  AccountsModal,
-  PortfolioTransactionItem
-} from '../..'
-
 // Hooks
 import { useBalance, useCopy } from '../../../../common/hooks'
 
-// Actions
-import { WalletPageActions } from '../../../../page/actions'
-
 export interface Props {
-  onViewPrivateKey: (address: string, isDefault: boolean, coin: BraveWallet.CoinType) => void
-  onDoneViewingPrivateKey: () => void
-  toggleNav: () => void
-  onUpdateAccountName: (payload: UpdateAccountNamePayloadType) => { success: boolean }
   goBack: () => void
 }
 
 export const Account = (props: Props) => {
-  const {
-    goBack,
-    onViewPrivateKey,
-    onDoneViewingPrivateKey,
-    toggleNav,
-    onUpdateAccountName
-  } = props
+  const { goBack } = props
 
   // routing
   const { id: accountId } = useParams<{ id: string }>()
@@ -85,12 +77,6 @@ export const Account = (props: Props) => {
     defaultCurrencies,
     networkList
   } = useSelector(({ wallet }: { wallet: WalletState }) => wallet)
-
-  const privateKey = useSelector(({ page }: { page: PageState }) => page.privateKey)
-
-  // state
-  const [showEditModal, setShowEditModal] = React.useState<boolean>(false)
-  const [editTab, setEditTab] = React.useState<AccountSettingsNavTypes>('details')
 
   // custom hooks
   const getBalance = useBalance(networkList)
@@ -154,22 +140,11 @@ export const Account = (props: Props) => {
     }
   }, [selectedAccount])
 
-  const onShowEditModal = React.useCallback(() => {
-    setShowEditModal(true)
-  }, [])
-
-  const onCloseEditModal = React.useCallback(() => {
-    setShowEditModal(false)
-    setEditTab('details')
-  }, [])
-
-  const onRemoveAccount = React.useCallback((address: string, hardware: boolean, coin: BraveWallet.CoinType) => {
-    if (hardware) {
-      dispatch(WalletPageActions.removeHardwareAccount({ address, coin }))
-      return
-    }
-    dispatch(WalletPageActions.removeImportedAccount({ address, coin }))
-  }, [])
+  const onShowAccountsModal = React.useCallback((modalType: AccountModalTypes) => () => {
+    dispatch(AccountsTabActions.setShowAccountModal(true))
+    dispatch(AccountsTabActions.setAccountModalType(modalType))
+    dispatch(AccountsTabActions.setSelectedAccount(selectedAccount))
+  }, [selectedAccount])
 
   // redirect (asset not found)
   if (!selectedAccount) {
@@ -194,11 +169,11 @@ export const Account = (props: Props) => {
           >
             <WalletAddress onClick={onCopyToClipboard}>{reduceAddress(selectedAccount.address)}</WalletAddress>
           </Tooltip>
-          <Button onClick={onShowEditModal}>
+          <Button onClick={onShowAccountsModal('deposit')}>
             <QRCodeIcon />
           </Button>
         </WalletInfoLeftSide>
-        <Button onClick={onShowEditModal}>
+        <Button onClick={onShowAccountsModal('edit')}>
           <EditIcon />
         </Button>
       </WalletInfoRow>
@@ -262,24 +237,6 @@ export const Account = (props: Props) => {
           <TransactionPlaceholderText>{getLocale('braveWalletTransactionPlaceholder')}</TransactionPlaceholderText>
         </TransactionPlaceholderContainer>
       )}
-
-      {showEditModal && selectedAccount &&
-        <AccountsModal
-          title={getLocale('braveWalletAccount')}
-          account={selectedAccount}
-          onClose={onCloseEditModal}
-          onUpdateAccountName={onUpdateAccountName}
-          onCopyToClipboard={onCopyToClipboard}
-          onChangeTab={setEditTab}
-          onToggleNav={toggleNav}
-          onRemoveAccount={onRemoveAccount}
-          onViewPrivateKey={onViewPrivateKey}
-          onDoneViewingPrivateKey={onDoneViewingPrivateKey}
-          privateKey={privateKey || ''}
-          tab={editTab}
-          hideNav={false}
-        />
-      }
     </StyledWrapper>
   )
 }

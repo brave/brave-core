@@ -13,10 +13,8 @@ import * as WalletActions from '../common/actions/wallet_actions'
 
 // types
 import {
-  BraveWallet,
   BuySendSwapTypes,
   PageState,
-  UpdateAccountNamePayloadType,
   WalletAccountType,
   WalletRoutes,
   WalletState
@@ -108,19 +106,6 @@ export const Container = () => {
       dispatch(WalletActions.hasIncorrectPassword(false))
     }
   }, [hasIncorrectPassword])
-
-  const onUpdateAccountName = React.useCallback((payload: UpdateAccountNamePayloadType): { success: boolean } => {
-    const result = dispatch(WalletPageActions.updateAccountName(payload))
-    return result ? { success: true } : { success: false }
-  }, [])
-
-  const onViewPrivateKey = React.useCallback((address: string, isDefault: boolean, coin: BraveWallet.CoinType) => {
-    dispatch(WalletPageActions.viewPrivateKey({ address, isDefault, coin }))
-  }, [])
-
-  const onDoneViewingPrivateKey = React.useCallback(() => {
-    dispatch(WalletPageActions.doneViewingPrivateKey())
-  }, [])
 
   const onOpenWalletSettings = React.useCallback(() => {
     dispatch(WalletPageActions.openWalletSettings())
@@ -232,9 +217,6 @@ export const Container = () => {
           >
             <CryptoView
               needsBackup={!isWalletBackedUp}
-              onUpdateAccountName={onUpdateAccountName}
-              onDoneViewingPrivateKey={onDoneViewingPrivateKey}
-              onViewPrivateKey={onViewPrivateKey}
               defaultWallet={defaultWallet}
               onOpenWalletSettings={onOpenWalletSettings}
               isMetaMaskInstalled={isMetaMaskInstalled}

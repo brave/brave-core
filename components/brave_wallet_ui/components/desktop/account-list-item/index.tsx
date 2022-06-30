@@ -4,13 +4,19 @@
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { reduceAddress } from '../../../utils/reduce-address'
+
+// Redux
+import { useDispatch } from 'react-redux'
+
+// Actions
+import { AccountsTabActions } from '../../../page/reducers/accounts-tab-reducer'
 
 // Types
 import {
   BraveWallet,
   WalletAccountType,
-  AccountButtonOptionsObjectType
+  AccountButtonOptionsObjectType,
+  AccountModalTypes
 } from '../../../constants/types'
 
 // Components
@@ -20,6 +26,7 @@ import AccountListItemButton from './account-list-item-button'
 import { AccountButtonOptions } from '../../../options/account-buttons'
 
 // Utils
+import { reduceAddress } from '../../../utils/reduce-address'
 import { getLocale } from '../../../../common/locale'
 import { useCopy } from '../../../common/hooks'
 
@@ -37,7 +44,6 @@ import {
 } from './style'
 
 export interface Props {
-  onDelete?: () => void
   onClick: (account: WalletAccountType) => void
   account: WalletAccountType
   isHardwareWallet: boolean
@@ -52,8 +58,24 @@ function AccountListItem (props: Props) {
     onRemoveAccount
   } = props
 
+  // redux
+  const dispatch = useDispatch()
+
   // custom hooks
   const { copied, copyText } = useCopy()
+
+  // memos
+  const orb = React.useMemo(() => {
+    return create({ seed: account.address.toLowerCase(), size: 8, scale: 16 }).toDataURL()
+  }, [account.address])
+
+  const buttonOptions = React.useMemo((): AccountButtonOptionsObjectType[] => {
+    // We are not able to remove a Primary account so we filter out this option.
+    if (account.accountType === 'Primary') {
+      return AccountButtonOptions.filter((option) => option.id !== 'remove')
+    }
+    return AccountButtonOptions
+  }, [account])
 
   // methods
   const onCopyToClipboard = async () => {
@@ -71,34 +93,23 @@ function AccountListItem (props: Props) {
     }
   }, [account, onRemoveAccount])
 
-  // memos
-  const orb = React.useMemo(() => {
-    return create({ seed: account.address.toLowerCase(), size: 8, scale: 16 }).toDataURL()
-  }, [account.address])
-
-  const onClickButtonOption = React.useCallback((option: AccountButtonOptionsObjectType) => {
-    switch (option.id) {
-      case 'export':
-        return
-      case 'deposit':
-        return
-      case 'edit':
-        return
-      case 'details':
-        onSelectAccount()
-        return
-      case 'remove':
-        removeAccount()
-    }
-  }, [])
-
-  const buttonOptions = React.useMemo((): AccountButtonOptionsObjectType[] => {
-    // We are not able to remove a Primary account so we filter out this option.
-    if (account.accountType === 'Primary') {
-      return AccountButtonOptions.filter((option) => option.id !== 'remove')
-    }
-    return AccountButtonOptions
+  const onShowAccountsModal = React.useCallback((modalType: AccountModalTypes) => {
+    dispatch(AccountsTabActions.setShowAccountModal(true))
+    dispatch(AccountsTabActions.setAccountModalType(modalType))
+    dispatch(AccountsTabActions.setSelectedAccount(account))
   }, [account])
+
+  const onClickButtonOption = React.useCallback((option: AccountButtonOptionsObjectType) => () => {
+    if (option.id === 'details') {
+      onSelectAccount()
+      return
+    }
+    if (option.id === 'remove') {
+      removeAccount()
+      return
+    }
+    onShowAccountsModal(option.id)
+  }, [])
 
   return (
     <StyledWrapper>
@@ -123,7 +134,7 @@ function AccountListItem (props: Props) {
           <AccountListItemButton
             key={option.id}
             option={option}
-            onClick={() => onClickButtonOption(option)}
+            onClick={onClickButtonOption(option)}
           />
         )}
       </RightSide>
