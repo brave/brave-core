@@ -8,11 +8,6 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router'
 
 // components
-import {
-  OnboardingBackup,
-  OnboardingRecovery,
-  OnboardingVerify
-} from '../../components/desktop'
 import { BackButton } from '../../components/shared'
 
 // utils
@@ -23,6 +18,9 @@ import { WalletPageActions } from '../../page/actions'
 
 // types
 import { PageState, WalletRoutes } from '../../constants/types'
+import OnboardingRecovery from '../../components/desktop/wallet-onboarding/recovery'
+import OnboardingBackup from '../../components/desktop/wallet-onboarding/backup'
+import OnboardingVerify from '../../components/desktop/wallet-onboarding/verify'
 
 export interface Props {
   onCancel: () => void

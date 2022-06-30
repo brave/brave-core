@@ -29,7 +29,8 @@ import '../../../ui/webui/resources/fonts/muli.css'
 import { OnboardingWrapper, WalletWidgetStandIn } from '../stories/style'
 
 // components
-import { CryptoView, LockScreen, OnboardingRestore, WalletPageLayout, WalletSubViewLayout } from '../components/desktop'
+import { CryptoView, LockScreen, WalletPageLayout, WalletSubViewLayout } from '../components/desktop'
+import { OnboardingRestore } from '../components/desktop/wallet-onboarding/restore'
 import BuySendSwap from '../stories/screens/buy-send-swap'
 import { OnboardingRoutes } from './screens/onboarding/onboarding.routes'
 import BackupWallet from '../stories/screens/backup-wallet'

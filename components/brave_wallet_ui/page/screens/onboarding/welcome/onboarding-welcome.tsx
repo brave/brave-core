@@ -58,6 +58,7 @@ export const OnboardingWelcome = () => {
   // effects
   React.useEffect(() => {
     dispatch(WalletPageActions.walletSetupComplete(false))
+    dispatch(WalletPageActions.onOnboardingShown())
   }, [])
 
   // render
