@@ -550,11 +550,8 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
       brave_wallet::mojom::PageHandlerFactory, WalletPageUI>(map);
   chrome::internal::RegisterWebUIControllerInterfaceBinder<
       brave_private_new_tab::mojom::PageHandler, BravePrivateNewTabUI>(map);
-  if (base::FeatureList::IsEnabled(
-          brave_shields::features::kBraveShieldsPanelV2)) {
-    chrome::internal::RegisterWebUIControllerInterfaceBinder<
-        brave_shields::mojom::PanelHandlerFactory, ShieldsPanelUI>(map);
-  }
+  chrome::internal::RegisterWebUIControllerInterfaceBinder<
+      brave_shields::mojom::PanelHandlerFactory, ShieldsPanelUI>(map);
   if (base::FeatureList::IsEnabled(
           brave_federated::features::kFederatedLearning)) {
     chrome::internal::RegisterWebUIControllerInterfaceBinder<

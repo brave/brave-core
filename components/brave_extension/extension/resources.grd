@@ -17,15 +17,7 @@
       <include name="IDR_BRAVE_EXTENSION_ICON_64" file="brave_extension/assets/img/icon-64.png" type="BINDATA" />
       <include name="IDR_BRAVE_EXTENSION_ICON_128" file="brave_extension/assets/img/icon-128.png" type="BINDATA" />
       <include name="IDR_BRAVE_EXTENSION_ICON_256" file="brave_extension/assets/img/icon-256.png" type="BINDATA" />
-      <include name="IDR_BRAVE_EXTENSION_ICON_ON_1x" file="brave_extension/assets/img/shields-on.png" type="BINDATA" />
-      <include name="IDR_BRAVE_EXTENSION_ICON_ON_2x" file="brave_extension/assets/img/shields-on@2x.png" type="BINDATA" />
-      <include name="IDR_BRAVE_EXTENSION_ICON_ON_3x" file="brave_extension/assets/img/shields-on@3x.png" type="BINDATA" />
-      <include name="IDR_BRAVE_EXTENSION_ICON_OFF_1x" file="brave_extension/assets/img/shields-off.png" type="BINDATA" />
-      <include name="IDR_BRAVE_EXTENSION_ICON_OFF_2x" file="brave_extension/assets/img/shields-off@2x.png" type="BINDATA" />
-      <include name="IDR_BRAVE_EXTENSION_ICON_OFF_3x" file="brave_extension/assets/img/shields-off@3x.png" type="BINDATA" />
       <include name="IDR_BRAVE_EXTENSION_EN_US_MESSAGES_JSON" file="brave_extension/_locales/en_US/messages.json" type="BINDATA" />
-      <include name="IDR_BRAVE_EXTENSION_BRAVE_SHIELDS_HTML" file="brave_extension/braveShieldsPanel.html" type="BINDATA" />
-      <include name="IDR_BRAVE_EXTENSION_BRAVELIZER_JS" file="brave_extension/assets/bravelizer.css" type="BINDATA" />
       <include name="IDR_BRAVE_EXTENSION_PICKER_HTML" file="brave_extension/elementPicker.html" type="BINDATA" />
       <include name="IDR_BRAVE_EXTENSION_PICKER_JS" file="brave_extension/elementPicker.js" type="BINDATA" />
       <include name="IDR_BRAVE_EXTENSION_WEB_DISCOVERY_CONTENT_SCRIPT_BUNDLE"

@@ -6,10 +6,6 @@ transpile_web_ui("brave_extension") {
   # what is the output bundle called and what is the entry point file
   entry_points = [
     [
-      "brave_extension",
-      rebase_path("braveShieldsPanel.tsx"),
-    ],
-    [
       "brave_extension_background",
       rebase_path("background.ts"),
     ],
