@@ -112,7 +112,11 @@ export const OnboardingWelcome = () => {
 
       <VerticalSpace space='20px' />
 
-      <LearnMoreLink href='https://brave.com/learn/what-is-crypto-wallet/' target='_blank'>
+      <LearnMoreLink
+        href='https://brave.com/learn/what-is-crypto-wallet/'
+        target='_blank'
+        rel='noreferrer'
+      >
         {getLocale('braveWalletWhatIsACryptoWallet')}
       </LearnMoreLink>
 
