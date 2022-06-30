@@ -56,7 +56,7 @@ class SendTokenStoreTests: XCTestCase {
         XCTFail("Token was nil")
         return
       }
-      rpcService.network { network in
+      rpcService.network(.eth) { network in
         XCTAssertEqual(token.symbol, network.symbol)
       }
     }.store(in: &cancellables)
@@ -101,7 +101,7 @@ class SendTokenStoreTests: XCTestCase {
     store.setUpTest()
 
     let ex = expectation(description: "send-eth-transaction")
-    rpcService.setNetwork(BraveWallet.RopstenChainId) { success in
+    rpcService.setNetwork(BraveWallet.RopstenChainId, coin: .eth) { success in
       XCTAssertTrue(success)
       store.sendToken(amount: "0.01") { success in
         defer { ex.fulfill() }
@@ -151,7 +151,7 @@ class SendTokenStoreTests: XCTestCase {
     store.setUpTest()
 
     let ex = expectation(description: "send-bat-transaction")
-    rpcService.setNetwork(BraveWallet.RopstenChainId) { success in
+    rpcService.setNetwork(BraveWallet.RopstenChainId, coin: .eth) { success in
       XCTAssertTrue(success)
       store.sendToken(amount: "0.01") { success in
         defer { ex.fulfill() }
@@ -178,6 +178,7 @@ class SendTokenStoreTests: XCTestCase {
     
     let walletService = BraveWallet.TestBraveWalletService()
     walletService._userAssets = { $2([.previewToken]) }
+    walletService._selectedCoin = { $0(BraveWallet.CoinType.eth) }
     
     let keyringService = BraveWallet.TestKeyringService()
     keyringService._selectedAccount = { $1("account-address") }

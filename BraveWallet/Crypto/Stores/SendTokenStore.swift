@@ -91,31 +91,35 @@ public class SendTokenStore: ObservableObject {
     self.keyringService.add(self)
     self.rpcService.add(self)
 
-    self.keyringService.selectedAccount(.eth) { address in
-      self.currentAccountAddress = address
+    self.walletService.selectedCoin { coin in
+      self.keyringService.selectedAccount(coin) { address in
+        self.currentAccountAddress = address
+      }
     }
   }
 
   func fetchAssets() {
-    rpcService.network { [weak self] network in
+    walletService.selectedCoin { [weak self] coin in
       guard let self = self else { return }
-      self.walletService.userAssets(network.chainId, coin: network.coin) { tokens in
-        self.userAssets = tokens
-
-        if let selectedToken = self.selectedSendToken {
-          if tokens.isEmpty {
-            self.selectedSendToken = nil
-          } else if let token = tokens.first(where: { $0.id == selectedToken.id }) {
-            self.selectedSendToken = token
+      self.rpcService.network(coin) { network in
+        self.walletService.userAssets(network.chainId, coin: network.coin) { tokens in
+          self.userAssets = tokens
+          
+          if let selectedToken = self.selectedSendToken {
+            if tokens.isEmpty {
+              self.selectedSendToken = nil
+            } else if let token = tokens.first(where: { $0.id == selectedToken.id }) {
+              self.selectedSendToken = token
+            }
+          } else {
+            self.selectedSendToken = tokens.first
           }
-        } else {
-          self.selectedSendToken = tokens.first
         }
-      }
-
-      // store tokens in `allTokens` for address validation
-      self.blockchainRegistry.allTokens(network.chainId, coin: network.coin) { tokens in
-        self.allTokens = tokens + [network.nativeToken]
+        
+        // store tokens in `allTokens` for address validation
+        self.blockchainRegistry.allTokens(network.chainId, coin: network.coin) { tokens in
+          self.allTokens = tokens + [network.nativeToken]
+        }
       }
     }
   }
@@ -136,30 +140,37 @@ public class SendTokenStore: ObservableObject {
       return
     }
 
-    rpcService.network { [self] network in
-      walletService.userAssets(network.chainId, coin: network.coin) { tokens in
-        guard let index = tokens.firstIndex(where: { $0.id == token.id }) else {
-          self.selectedSendTokenBalance = nil
-          return
+    walletService.selectedCoin { [weak self] coin in
+      guard let self = self else { return }
+      self.rpcService.network(coin) { network in
+        self.walletService.userAssets(network.chainId, coin: network.coin) { tokens in
+          guard let index = tokens.firstIndex(where: { $0.id == token.id }) else {
+            self.selectedSendTokenBalance = nil
+            return
+          }
+          self.fetchBalance(for: tokens[index])
         }
-        self.fetchBalance(for: tokens[index])
       }
     }
   }
 
   private func fetchBalance(for token: BraveWallet.BlockchainToken) {
-    keyringService.selectedAccount(.eth) { [self] accountAddress in
-      guard let accountAddress = accountAddress else {
-        self.selectedSendTokenBalance = nil
-        return
-      }
-      
-      rpcService.balance(
-        for: token,
-        in: accountAddress,
-        decimalFormatStyle: .decimals(precision: Int(token.decimals))
-      ) { [weak self] balance in
-        self?.selectedSendTokenBalance = balance
+    walletService.selectedCoin { [weak self] coin in
+      guard let self = self else { return }
+      self.keyringService.selectedAccount(coin) { accountAddress in
+        guard let accountAddress = accountAddress else {
+          self.selectedSendTokenBalance = nil
+          return
+        }
+        
+        self.rpcService.balance(
+          for: token,
+          in: accountAddress,
+          with: coin,
+          decimalFormatStyle: .decimals(precision: Int(token.decimals))
+        ) { balance in
+          self.selectedSendTokenBalance = balance
+        }
       }
     }
   }
@@ -222,30 +233,11 @@ public class SendTokenStore: ObservableObject {
     else { return }
 
     isMakingTx = true
-    rpcService.network { [weak self] network in
+    walletService.selectedCoin { [weak self] coin in
       guard let self = self else { return }
-
-      if token.contractAddress.isEmpty {
-        let baseData = BraveWallet.TxData(nonce: "", gasPrice: "", gasLimit: "", to: self.sendAddress, value: "0x\(weiHexString)", data: .init())
-        if network.isEip1559 {
-          self.makeEIP1559Tx(chainId: network.chainId, baseData: baseData, from: fromAddress) { success in
-            self.isMakingTx = false
-            completion(success)
-          }
-        } else {
-          let txDataUnion = BraveWallet.TxDataUnion(ethTxData: baseData)
-          self.txService.addUnapprovedTransaction(txDataUnion, from: fromAddress, origin: nil) { success, txMetaId, errorMessage in
-            self.isMakingTx = false
-            completion(success)
-          }
-        }
-      } else {
-        self.ethTxManagerProxy.makeErc20TransferData(self.sendAddress, amount: "0x\(weiHexString)") { success, data in
-          guard success else {
-            completion(false)
-            return
-          }
-          let baseData = BraveWallet.TxData(nonce: "", gasPrice: "", gasLimit: "", to: token.contractAddress, value: "0x0", data: data)
+      self.rpcService.network(coin) { network in
+        if token.contractAddress.isEmpty {
+          let baseData = BraveWallet.TxData(nonce: "", gasPrice: "", gasLimit: "", to: self.sendAddress, value: "0x\(weiHexString)", data: .init())
           if network.isEip1559 {
             self.makeEIP1559Tx(chainId: network.chainId, baseData: baseData, from: fromAddress) { success in
               self.isMakingTx = false
@@ -256,6 +248,26 @@ public class SendTokenStore: ObservableObject {
             self.txService.addUnapprovedTransaction(txDataUnion, from: fromAddress, origin: nil) { success, txMetaId, errorMessage in
               self.isMakingTx = false
               completion(success)
+            }
+          }
+        } else {
+          self.ethTxManagerProxy.makeErc20TransferData(self.sendAddress, amount: "0x\(weiHexString)") { success, data in
+            guard success else {
+              completion(false)
+              return
+            }
+            let baseData = BraveWallet.TxData(nonce: "", gasPrice: "", gasLimit: "", to: token.contractAddress, value: "0x0", data: data)
+            if network.isEip1559 {
+              self.makeEIP1559Tx(chainId: network.chainId, baseData: baseData, from: fromAddress) { success in
+                self.isMakingTx = false
+                completion(success)
+              }
+            } else {
+              let txDataUnion = BraveWallet.TxDataUnion(ethTxData: baseData)
+              self.txService.addUnapprovedTransaction(txDataUnion, from: fromAddress, origin: nil) { success, txMetaId, errorMessage in
+                self.isMakingTx = false
+                completion(success)
+              }
             }
           }
         }

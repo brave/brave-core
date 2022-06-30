@@ -83,7 +83,7 @@ class SwapStoreTests: XCTestCase {
     XCTAssertNil(store.selectedFromToken)
     XCTAssertNil(store.selectedToToken)
 
-    rpcService.setNetwork(BraveWallet.RopstenChainId) { success in
+    rpcService.setNetwork(BraveWallet.RopstenChainId, coin: .eth) { success in
       XCTAssertTrue(success)
       let testAccountInfo: BraveWallet.AccountInfo = .init()
       store.prepare(with: testAccountInfo) {
@@ -115,7 +115,7 @@ class SwapStoreTests: XCTestCase {
     XCTAssertNotNil(store.selectedFromToken)
     XCTAssertNil(store.selectedToToken)
 
-    rpcService.setNetwork(BraveWallet.RopstenChainId) { success in
+    rpcService.setNetwork(BraveWallet.RopstenChainId, coin: .eth) { success in
       XCTAssertTrue(success)
       let testAccountInfo: BraveWallet.AccountInfo = .init()
       store.prepare(with: testAccountInfo) {
@@ -197,7 +197,7 @@ class SwapStoreTests: XCTestCase {
     store.setUpTest()
     store.state = .lowAllowance("test-spender-address")
 
-    rpcService.setNetwork(BraveWallet.RopstenChainId) { success in
+    rpcService.setNetwork(BraveWallet.RopstenChainId, coin: .eth) { success in
       XCTAssertTrue(success)
       store.prepareSwap { _ in }
       DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
@@ -254,7 +254,7 @@ class SwapStoreTests: XCTestCase {
     store.setUpTest()
     store.state = .swap
 
-    rpcService.setNetwork(BraveWallet.RopstenChainId) { success in
+    rpcService.setNetwork(BraveWallet.RopstenChainId, coin: .eth) { success in
       XCTAssertTrue(success)
       store.prepareSwap { _ in }
       DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {

@@ -53,6 +53,7 @@ class TransactionConfirmationStoreTests: XCTestCase {
     }
     walletService._defaultBaseCurrency = { $0(CurrencyCode.usd.code) }
     walletService._addObserver = { _ in }
+    walletService._selectedCoin = { $0(BraveWallet.CoinType.eth) }
     let ethTxManagerProxy = BraveWallet.TestEthTxManagerProxy()
     ethTxManagerProxy._gasEstimation1559 = { completion in
       completion(gasEstimation)

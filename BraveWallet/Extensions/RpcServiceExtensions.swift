@@ -33,9 +33,9 @@ extension BraveWalletJsonRpcService {
         completion(nil)
       }
     }
-    network { [self] network in
+    network(account.coin) { [self] network in
       if token.symbol == network.symbol {
-        balance(account.address, coin: .eth, chainId: network.chainId, completion: convert)
+        balance(account.address, coin: account.coin, chainId: network.chainId, completion: convert)
       } else if token.isErc20 {
         erc20TokenBalance(
           token.contractAddress(in: network),
@@ -79,6 +79,7 @@ extension BraveWalletJsonRpcService {
   func balance(
     for token: BraveWallet.BlockchainToken,
     in accountAddress: String,
+    with coin: BraveWallet.CoinType,
     decimalFormatStyle: WeiFormatter.DecimalFormatStyle,
     completion: @escaping (BDouble?) -> Void
   ) {
@@ -98,9 +99,9 @@ extension BraveWalletJsonRpcService {
         completion(nil)
       }
     }
-    network { [self] network in
+    network(coin) { [self] network in
       if token.symbol == network.symbol {
-        balance(accountAddress, coin: .eth, chainId: network.chainId, completion: convert)
+        balance(accountAddress, coin: coin, chainId: network.chainId, completion: convert)
       } else if token.isErc20 {
         erc20TokenBalance(
           token.contractAddress(in: network),
