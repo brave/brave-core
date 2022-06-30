@@ -105,10 +105,10 @@ dmg_icon = rebase_path("//brave/build/mac/$dmg_icon_file_name.icns")
 action("generate_dsa_sig_for_dmg") {
   script = "generate_sig.py"
 
-  if (use_prebuilt_sparkle) {
-    sign_update_path = "//build/mac_files/sparkle_binaries/sign_update_dsa"
-  } else {
+  if (build_sparkle) {
     sign_update_path = "$root_out_dir/old_dsa_scripts/sign_update"
+  } else {
+    sign_update_path = "//build/mac_files/sparkle_binaries/sign_update_dsa"
   }
   target_dmg_path = "$root_out_dir/$brave_dmg"
   output_dmg_dsa_path = "$root_out_dir/$brave_dmg.dsa"
@@ -135,7 +135,7 @@ action("generate_dsa_sig_for_dmg") {
 
   deps = [ ":copy_dmg_pkg" ]
 
-  if (!use_prebuilt_sparkle) {
+  if (build_sparkle) {
     deps += [ "//brave/vendor/sparkle:copy_old_sign_update" ]
   }
 }
@@ -143,10 +143,10 @@ action("generate_dsa_sig_for_dmg") {
 action("generate_eddsa_sig_for_dmg") {
   script = "generate_sig.py"
 
-  if (use_prebuilt_sparkle) {
-    sign_update_path = "//build/mac_files/sparkle_binaries/sign_update"
-  } else {
+  if (build_sparkle) {
     sign_update_path = "$root_out_dir/sign_update"
+  } else {
+    sign_update_path = "//build/mac_files/sparkle_binaries/sign_update"
   }
 
   target_dmg_path = "$root_out_dir/$brave_dmg"
@@ -174,7 +174,7 @@ action("generate_eddsa_sig_for_dmg") {
 
   deps = [ ":copy_dmg_pkg" ]
 
-  if (!use_prebuilt_sparkle) {
+  if (build_sparkle) {
     deps += [ "//brave/vendor/sparkle:build_sparkle_framework" ]
   }
 }
@@ -182,10 +182,10 @@ action("generate_eddsa_sig_for_dmg") {
 action("build_delta_installer") {
   script = "build_delta_installer.py"
 
-  if (use_prebuilt_sparkle) {
-    binary_delta_path = "//build/mac_files/sparkle_binaries/BinaryDelta"
-  } else {
+  if (build_sparkle) {
     binary_delta_path = "$root_out_dir/BinaryDelta"
+  } else {
+    binary_delta_path = "//build/mac_files/sparkle_binaries/BinaryDelta"
   }
 
   target_dmg_path = "$root_out_dir/$brave_dmg"
@@ -214,7 +214,7 @@ action("build_delta_installer") {
 
   deps = [ ":copy_dmg_pkg" ]
 
-  if (!use_prebuilt_sparkle) {
+  if (build_sparkle) {
     deps += [ "//brave/vendor/sparkle:build_sparkle_framework" ]
   }
 }

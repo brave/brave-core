@@ -8,7 +8,7 @@ buildflag_header("sparkle_buildflags") {
   flags = [ "ENABLE_SPARKLE=$enable_sparkle" ]
 }
 
-if (enable_sparkle && use_prebuilt_sparkle) {
+if (enable_sparkle && !build_sparkle) {
   bundle_data("prebuilt_sparkle_framework_bundle_data") {
     sources = [ "//build/mac_files/sparkle_binaries/Sparkle.framework" ]
     outputs = [ "{{bundle_contents_dir}}/Frameworks/{{source_file_part}}" ]
@@ -50,10 +50,10 @@ group("browser") {
   ]
 
   if (enable_sparkle) {
-    if (use_prebuilt_sparkle) {
-      deps = [ ":prebuilt_sparkle_framework_bundle_data" ]
-    } else {
+    if (build_sparkle) {
       deps = [ "//brave/vendor/sparkle:sparkle_framework_bundle_data" ]
+    } else {
+      deps = [ ":prebuilt_sparkle_framework_bundle_data" ]
     }
   }
 
