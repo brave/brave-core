@@ -64,15 +64,13 @@ export interface Props {
   goBack: () => void
 }
 
-export const Account = (props: Props) => {
-  const {
-    goBack,
-    onViewPrivateKey,
-    onDoneViewingPrivateKey,
-    toggleNav,
-    onUpdateAccountName
-  } = props
-
+export const Account = ({
+  goBack,
+  onViewPrivateKey,
+  onDoneViewingPrivateKey,
+  toggleNav,
+  onUpdateAccountName
+}: Props) => {
   // routing
   const { id: accountId } = useParams<{ id: string }>()
 
