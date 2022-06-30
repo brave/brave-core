@@ -171,7 +171,7 @@ const AccountsModal = () => {
   }, [accountModalType])
 
   return (
-    <PopupModal title={modalTitle} onClose={onClickClose}>
+    <PopupModal title={getLocale(modalTitle)} onClose={onClickClose}>
       <Line />
       <StyledWrapper>
         {accountModalType === 'deposit' &&

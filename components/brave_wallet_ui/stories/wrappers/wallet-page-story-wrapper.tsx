@@ -7,6 +7,7 @@ import { MemoryRouter } from 'react-router-dom'
 import { createSendCryptoReducer } from '../../common/reducers/send_crypto_reducer'
 import { createWalletReducer } from '../../common/reducers/wallet_reducer'
 import { createPageReducer } from '../../page/reducers/page_reducer'
+import { createAccountsTabReducer } from '../../page/reducers/accounts-tab-reducer'
 
 // actions
 import { WalletActions } from '../../common/actions'
@@ -22,6 +23,7 @@ import * as Lib from '../../common/async/__mocks__/lib'
 import { mockPageState } from '../mock-data/mock-page-state'
 import { mockWalletState } from '../mock-data/mock-wallet-state'
 import { mockSendCryptoState } from '../mock-data/send-crypto-state'
+import { mockAccountsTabState } from '../mock-data/mock-accounts-tab-state'
 
 export interface WalletPageStoryProps {
   walletStateOverride?: Partial<WalletState>
@@ -44,7 +46,8 @@ export const WalletPageStory: React.FC<React.PropsWithChildren<WalletPageStoryPr
         ...mockPageState,
         ...(pageStateOverride || {})
       }),
-      sendCrypto: createSendCryptoReducer(mockSendCryptoState)
+      sendCrypto: createSendCryptoReducer(mockSendCryptoState),
+      accountsTab: createAccountsTabReducer(mockAccountsTabState)
     }))
   }, [walletStateOverride, pageStateOverride])
 

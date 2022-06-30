@@ -15,6 +15,9 @@ import {
   Icon
 } from './style'
 
+// Utils
+import { getLocale } from '../../../../common/locale'
+
 export interface Props {
   option: AccountButtonOptionsObjectType
   onClick: () => void
@@ -28,7 +31,7 @@ const AccountListItemButton = (props: Props) => {
   return (
     <OvalButton onClick={onClick}>
       <Icon icon={option.icon} />
-      <OvalButtonText>{option.name}</OvalButtonText>
+      <OvalButtonText>{getLocale(option.name)}</OvalButtonText>
     </OvalButton>
   )
 }

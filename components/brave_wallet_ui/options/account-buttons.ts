@@ -13,33 +13,30 @@ import PencilIcon from '../assets/svg-icons/pencil-icon.svg'
 import DetailsIcon from '../assets/svg-icons/details-icon.svg'
 import TrashIcon from '../assets/svg-icons/trash-icon.svg'
 
-// Utils
-import { getLocale } from '../../common/locale'
-
 export const AccountButtonOptions: AccountButtonOptionsObjectType[] = [
   {
     id: 'export',
-    name: getLocale('braveWalletAccountsExport'),
+    name: 'braveWalletAccountsExport',
     icon: KeyIcon
   },
   {
     id: 'deposit',
-    name: getLocale('braveWalletAccountsDeposit'),
+    name: 'braveWalletAccountsDeposit',
     icon: QRIcon
   },
   {
     id: 'edit',
-    name: getLocale('braveWalletAllowSpendEditButton'),
+    name: 'braveWalletAllowSpendEditButton',
     icon: PencilIcon
   },
   {
     id: 'details',
-    name: getLocale('braveWalletAllowSpendDetailsButton'),
+    name: 'braveWalletAllowSpendDetailsButton',
     icon: DetailsIcon
   },
   {
     id: 'remove',
-    name: getLocale('braveWalletAccountsRemove'),
+    name: 'braveWalletAccountsRemove',
     icon: TrashIcon
   }
 ]
