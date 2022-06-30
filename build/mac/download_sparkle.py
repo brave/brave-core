@@ -16,7 +16,8 @@ SPARKLE_BINARIES_DIR = os.path.join(MAC_TOOLCHAIN_ROOT, 'sparkle_binaries')
 def main():
     args = parse_args()
     if args.revision != get_current_revision():
-        url = DEPS_PACKAGES_URL + '/sparkle/' + args.revision + '.tar.gz'
+        url = DEPS_PACKAGES_URL + '/sparkle/sparkle-' + args.revision + \
+              '.tar.gz'
         deps.DownloadAndUnpack(url, SPARKLE_BINARIES_DIR)
         set_current_revision(args.revision)
 
