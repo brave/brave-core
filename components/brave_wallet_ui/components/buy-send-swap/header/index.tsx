@@ -1,9 +1,20 @@
+// Copyright (c) 2022 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// you can obtain one at http://mozilla.org/MPL/2.0/.
+
 import * as React from 'react'
 import { useSelector } from 'react-redux'
+import { create } from 'ethereum-blockies'
+
+// types
 import { BuySendSwapViewTypes, WalletState } from '../../../constants/types'
+
+// utils
 import { reduceAddress } from '../../../utils/reduce-address'
 import { reduceAccountDisplayName } from '../../../utils/reduce-account-name'
-import { create } from 'ethereum-blockies'
+
+// components
 import { Tooltip, SelectNetworkButton } from '../../shared'
 
 // Styled Components
@@ -22,29 +33,26 @@ export interface Props {
   onChangeSwapView: (view: BuySendSwapViewTypes) => void
 }
 
-function SwapHeader (props: Props) {
+export const SwapHeader = ({ onChangeSwapView }: Props) => {
   // redux
-  const {
-    selectedAccount,
-    selectedNetwork
-  } = useSelector((state: {wallet: WalletState}) => {
-    return state.wallet
-  })
+  const selectedAccount = useSelector(({ wallet }: {wallet: WalletState}) => wallet.selectedAccount)
+  const selectedNetwork = useSelector(({ wallet }: {wallet: WalletState}) => wallet.selectedNetwork)
 
-  const { onChangeSwapView } = props
-
-  const onShowAccounts = () => {
+  // methods
+  const onShowAccounts = React.useCallback(() => {
     onChangeSwapView('acounts')
-  }
+  }, [onChangeSwapView])
 
-  const onShowNetworks = () => {
+  const onShowNetworks = React.useCallback(() => {
     onChangeSwapView('networks')
-  }
+  }, [onChangeSwapView])
 
+  // memos
   const orb = React.useMemo(() => {
     return create({ seed: selectedAccount.address.toLowerCase(), size: 8, scale: 16 }).toDataURL()
   }, [selectedAccount])
 
+  // render
   return (
     <StyledWrapper>
       <NameAndIcon>

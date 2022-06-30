@@ -18,7 +18,6 @@ import useHasAccount from './has-account'
 import usePrevNetwork from './previous-network'
 import useIsMounted from './useIsMounted'
 import { useLib } from './useLib'
-import { useCopy } from './use-copy'
 import { usePasswordStrength } from './use-password-strength'
 
 export {
@@ -26,7 +25,6 @@ export {
   useAssetManagement,
   useAssets,
   useBalance,
-  useCopy,
   useExplorer,
   useHasAccount,
   useIsMounted,

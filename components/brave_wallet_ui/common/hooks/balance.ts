@@ -5,11 +5,14 @@
 
 import * as React from 'react'
 
+// types
 import { BraveWallet, WalletAccountType } from '../../constants/types'
+
+// utils
 import { getTokensCoinType } from '../../utils/network-utils'
 import { createTokenBalanceRegistryKey } from '../../utils/account-utils'
 
-export default function useBalance (networks: BraveWallet.NetworkInfo[]) {
+export const useBalance = (networks: BraveWallet.NetworkInfo[]) => {
   const getBalance = React.useCallback((account?: WalletAccountType, token?: BraveWallet.BlockchainToken) => {
     if (!account || !token) {
       return ''
@@ -38,3 +41,5 @@ export default function useBalance (networks: BraveWallet.NetworkInfo[]) {
 
   return getBalance
 }
+
+export default useBalance
