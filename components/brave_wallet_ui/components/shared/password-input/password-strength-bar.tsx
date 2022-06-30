@@ -18,9 +18,11 @@ import {
   BarProgressTooltipContainer
 } from './password-strength-bar.styles'
 
+// types
+import { PasswordStrengthResults } from '../../../common/hooks/use-password-strength'
+
 // components
 import { PasswordStrengthTooltip } from '../tooltip/password-strength-tooltip'
-import { PasswordStrengthResults } from '../../../common/hooks/use-password-strength'
 
 interface Props {
   criteria: boolean[]

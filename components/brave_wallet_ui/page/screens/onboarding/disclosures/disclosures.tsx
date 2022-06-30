@@ -44,6 +44,21 @@ interface Props {
   onBack?: () => void
 }
 
+const TermsOfUseText: React.FC<{}> = () => {
+  const text = getLocaleWithTag('braveWalletTermsOfServiceCheckboxText')
+  return <p key={text.duringTag}>
+    {text.beforeTag}
+    <LinkText
+      href='https://brave.com/terms-of-use/'
+      target='_blank'
+      rel='noopener noreferrer'
+    >
+      {text.duringTag}
+    </LinkText>
+    {text.afterTag}
+  </p>
+}
+
 export const OnboardingDisclosures = ({ nextStep, onBack }: Props) => {
   // routing
   const history = useHistory()
@@ -64,21 +79,6 @@ export const OnboardingDisclosures = ({ nextStep, onBack }: Props) => {
   const isNextStepEnabled = React.useMemo(() => {
     return isResponsibilityCheckboxChecked && isTermsCheckboxChecked
   }, [isResponsibilityCheckboxChecked, isTermsCheckboxChecked])
-
-  const termsOfUseText = React.useMemo(() => {
-    const text = getLocaleWithTag('braveWalletTermsOfServiceCheckboxText')
-    return <p key={text.duringTag}>
-      {text.beforeTag}
-      <LinkText
-        href='https://brave.com/terms-of-use/'
-        target='_blank'
-        rel='noopener noreferrer'
-      >
-        {text.duringTag}
-      </LinkText>
-      {text.afterTag}
-    </p>
-  }, [])
 
   // methods
   const onNext = React.useCallback(() => {
@@ -130,7 +130,7 @@ export const OnboardingDisclosures = ({ nextStep, onBack }: Props) => {
               alignItems='flex-start'
             >
               <CheckboxText>
-                {termsOfUseText}
+                <TermsOfUseText />
               </CheckboxText>
             </Checkbox>
 

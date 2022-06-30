@@ -107,7 +107,6 @@ provideStrings({
 
   // Wallet Onboarding Welcome
   braveWalletWelcomeTitle: 'Keeping your crypto secure doesn’t have to be hard',
-  braveWalletWelcomeDescription: 'Your gateway to a multi-chain Web3 experience for Defi, NFTs, and more. Supports Solana, Ethereum, Binance Smart Chain, Polygon, Avalance, or expand to any EVM chain.',
   braveWalletWelcomeButton: 'Create a new wallet',
   braveWalletWhatIsACryptoWallet: 'Learn more about crypto wallets',
   braveWalletWelcomeIAlreadyHaveAWallet: 'I already have a wallet',
@@ -486,25 +485,11 @@ provideStrings({
   braveWalletConnectWithSiteNext: 'Next',
   braveWalletConnectWithSiteHeaderTitle: 'Connect with Brave Wallet',
 
-  // Import from Hardware
-  braveWalletImportFromExternalNewPassword: 'A more secure password is required for Brave Wallet',
-  braveWalletImportFromExternalCreatePassword: 'Set a Brave wallet password',
-  braveWalletImportFromExternalPasswordCheck: 'Use the same password',
-
-  // Import from MetaMask
-  braveWalletImportTitle: 'Import from $1',
-  braveWalletImportMetaMaskTitle: 'MetaMask',
-  braveWalletImportDescription: 'Import your $1 accounts into Brave Wallet. Enjoy a faster and more secure way to manage crypto assets and interact with Web3 DApps.',
-  braveWalletImportMetaMaskInput: 'MetaMask password',
-
   // Import from Legacy Wallet
-  braveWalletImportBraveLegacyTitle: 'crypto wallets',
   braveWalletCryptoWalletsDetected: 'Existing crypto wallets detected',
-  braveWalletCryptoWalletsDescriptionOne: 'When you click Get started youll import your previous Crypto Wallet to the new Brave Wallet experience, and enjoy all the benefits outlined above. Give it a try, and let us know what you think!',
   braveWalletCryptoWalletsDescriptionTwo: 'If youd rather skip the import and keep the old Crypto Wallets experience, just navigate to the Brave Browser $1Settings$2 and change the default back to Crypto Wallets. You can also import, try the new Brave Wallet, and change back at any time.',
   braveWalletImportBraveLegacyDescription: 'Enter your existing crypto wallets password to import to Brave Wallet. Enjoy a faster and more secure way to manage crypto assets and interact with Web3 DApps.',
   braveWalletImportBraveLegacyInput: 'Type Crypto wallets password',
-  braveWalletImportBraveLegacyAltButton: 'I’ve lost my password and recovery phrase, create a new wallet.',
 
   // Connect Hardware Wallet Panel
   braveWalletConnectHardwarePanelConnected: '$1 connected',

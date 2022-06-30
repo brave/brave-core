@@ -9,7 +9,7 @@ import * as React from 'react'
 import { getLocale } from '../../../../common/locale'
 
 // hooks
-import { usePasswordStrength } from '../../../common/hooks'
+import { usePasswordStrength } from '../../../common/hooks/use-password-strength'
 
 // components
 import { PasswordStrengthBar } from './password-strength-bar'
@@ -62,9 +62,9 @@ export const NewPasswordInput = ({
   } = usePasswordStrength()
 
   // methods
-  const onTogglePasswordVisibility = () => {
+  const onTogglePasswordVisibility = React.useCallback(() => {
     setShowPassword(prevShowPassword => !prevShowPassword)
-  }
+  }, [])
 
   const handlePasswordChanged = React.useCallback(async (event: React.ChangeEvent<HTMLInputElement>) => {
     const newPassword = event.target.value

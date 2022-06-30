@@ -15,6 +15,10 @@ import { getLocale } from '../../../../../common/locale'
 // components
 import { WalletPageLayout } from '../../../../components/desktop'
 import { NavButton } from '../../../../components/extension'
+import {
+  OnboardingDisclosures,
+  OnboardingDisclosuresNextSteps
+} from '../disclosures/disclosures'
 
 // routes
 import { WalletRoutes } from '../../../../constants/types'
@@ -31,10 +35,6 @@ import {
   BlockQuoteTextContainer,
   VerticalRule
 } from './onboarding-welcome.style'
-import {
-  OnboardingDisclosures,
-  OnboardingDisclosuresNextSteps
-} from '../disclosures/disclosures'
 
 export const OnboardingWelcome = () => {
   // redux

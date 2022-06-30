@@ -31,9 +31,14 @@ export interface Props {
   recoveryPhraseLength: number
 }
 
-export const BackupWalletIntroStep = (props: Props) => {
-  const { onSubmit, isBackupTermsAccepted, isOnboarding, onSubmitTerms, onCancel, recoveryPhraseLength } = props
-
+export const BackupWalletIntroStep = ({
+  onSubmit,
+  isBackupTermsAccepted,
+  isOnboarding,
+  onSubmitTerms,
+  onCancel,
+  recoveryPhraseLength
+}: Props) => {
   return (
     <StyledWrapper>
       <PageIcon />
