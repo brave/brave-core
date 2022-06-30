@@ -1,6 +1,21 @@
+// Copyright (c) 2022 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// you can obtain one at http://mozilla.org/MPL/2.0/.
+
 import * as React from 'react'
 import { useSelector } from 'react-redux'
 
+// types
+import { PageState, RecoveryObject } from '../../../../constants/types'
+import { getLocale } from '../../../../../common/locale'
+import { unbiasedRandom } from '../../../../utils/random-utils'
+
+// components
+import { NavButton } from '../../../../components/extension'
+import { DropBoundary } from '../../../../components/shared/drop-boundary'
+
+// style
 import {
   StyledWrapper,
   Title,
@@ -14,18 +29,13 @@ import {
   ErrorText,
   ErrorContainer,
   PlaceholderBubble
-} from './style'
-import { NavButton } from '../../../extension'
-import { PageState, RecoveryObject } from '../../../../constants/types'
-import { getLocale } from '../../../../../common/locale'
-import { DropBoundary } from '../../../shared/drop-boundary'
-import { unbiasedRandom } from '../../../../utils/random-utils'
+} from './backup-wallet-verify.style'
 
 export interface Props {
   onNextStep: () => void
 }
 
-export function OnboardingVerify ({
+export function BackupWalletVerifyStep ({
   onNextStep
 }: Props) {
   // redux
@@ -202,4 +212,4 @@ export function OnboardingVerify ({
   )
 }
 
-export default OnboardingVerify
+export default BackupWalletVerifyStep

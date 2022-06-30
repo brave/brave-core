@@ -26,19 +26,19 @@ import {
 import 'emptykit.css'
 import '../../../ui/webui/resources/fonts/poppins.css'
 import '../../../ui/webui/resources/fonts/muli.css'
-import { OnboardingWrapper, WalletWidgetStandIn } from '../stories/style'
+import { SimplePageWrapper, WalletWidgetStandIn } from './screens/page-screen.styles'
 
 // components
 import { CryptoView, LockScreen, WalletPageLayout, WalletSubViewLayout } from '../components/desktop'
-import { OnboardingRestore } from '../components/desktop/wallet-onboarding/restore'
+import { Skeleton } from '../components/shared/loading-skeleton/styles'
 import BuySendSwap from '../stories/screens/buy-send-swap'
 import { OnboardingRoutes } from './screens/onboarding/onboarding.routes'
-import BackupWallet from '../stories/screens/backup-wallet'
+import { BackupWallet } from './screens/backup-wallet/backup-wallet'
 import { SweepstakesBanner } from '../components/desktop/sweepstakes-banner'
-import { Skeleton } from '../components/shared/loading-skeleton/styles'
 import { FundWalletScreen } from './screens/fund-wallet/fund-wallet'
 import { OnboardingSuccess } from './screens/onboarding/onboarding-success/onboarding-success'
-import DepositFundsScreen from './screens/fund-wallet/deposit-funds'
+import { DepositFundsScreen } from './screens/fund-wallet/deposit-funds'
+import { RestoreWallet } from './screens/restore-wallet/restore-wallet'
 
 export const Container = () => {
   // routing
@@ -186,14 +186,14 @@ export const Container = () => {
                 </Route>
 
                 <Route path={WalletRoutes.Restore} exact={true}>
-                  <OnboardingWrapper>
-                    <OnboardingRestore />
-                  </OnboardingWrapper>
+                  <SimplePageWrapper>
+                    <RestoreWallet />
+                  </SimplePageWrapper>
                 </Route>
 
                 {isWalletLocked &&
                   <Route path={WalletRoutes.Unlock} exact={true}>
-                    <OnboardingWrapper>
+                    <SimplePageWrapper>
                       <LockScreen
                         value={inputValue}
                         onSubmit={unlockWallet}
@@ -202,18 +202,18 @@ export const Container = () => {
                         hasPasswordError={hasIncorrectPassword}
                         onShowRestore={onToggleShowRestore}
                       />
-                    </OnboardingWrapper>
+                    </SimplePageWrapper>
                   </Route>
                 }
 
                 {!isWalletLocked &&
                   <Route path={WalletRoutes.Backup} exact={true}>
-                    <OnboardingWrapper>
+                    <SimplePageWrapper>
                       <BackupWallet
                         isOnboarding={false}
                         onCancel={onHideBackup}
                       />
-                    </OnboardingWrapper>
+                    </SimplePageWrapper>
                   </Route>
                 }
 

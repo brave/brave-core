@@ -7,20 +7,20 @@ import * as React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router'
 
-// components
-import { BackButton } from '../../components/shared'
-
 // utils
-import { copyToClipboard } from '../../utils/copy-to-clipboard'
+import { copyToClipboard } from '../../../utils/copy-to-clipboard'
 
 // actions
-import { WalletPageActions } from '../../page/actions'
+import { WalletPageActions } from '../../actions'
 
 // types
-import { PageState, WalletRoutes } from '../../constants/types'
-import OnboardingRecovery from '../../components/desktop/wallet-onboarding/recovery'
-import OnboardingBackup from '../../components/desktop/wallet-onboarding/backup'
-import OnboardingVerify from '../../components/desktop/wallet-onboarding/verify'
+import { PageState, WalletRoutes } from '../../../constants/types'
+
+// components
+import { BackButton } from '../../../components/shared'
+import { BackupWalletIntroStep } from './intro/backup-wallet-intro'
+import { BackupWalletRecoveryStep } from './recovery/backup-wallet-recovery'
+import { BackupWalletVerifyStep } from './verify/backup-wallet-verify'
 
 export interface Props {
   onCancel: () => void
@@ -110,7 +110,7 @@ export const BackupWallet = (props: Props) => {
         <BackButton onSubmit={onGoBack} />
       }
       {backupStep === 0 &&
-        <OnboardingBackup
+        <BackupWalletIntroStep
           onSubmit={nextStep}
           onSubmitTerms={checkedBox}
           onCancel={onCancel}
@@ -120,7 +120,7 @@ export const BackupWallet = (props: Props) => {
         />
       }
       {backupStep === 1 &&
-        <OnboardingRecovery
+        <BackupWalletRecoveryStep
           onSubmit={nextStep}
           isRecoveryTermsAccepted={backedUp}
           onSubmitTerms={checkedBox}
@@ -130,7 +130,7 @@ export const BackupWallet = (props: Props) => {
         />
       }
       {backupStep === 2 &&
-        <OnboardingVerify onNextStep={nextStep} />
+        <BackupWalletVerifyStep onNextStep={nextStep} />
       }
     </>
   )
