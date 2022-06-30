@@ -196,6 +196,11 @@ private struct SiteConnectionDetailView: View {
           withAnimation(.default) {
             if let url = URL(string: siteConnection.url) {
               siteConnectionStore.removePermissions(from: addressesToRemove, url: url)
+              if #available(iOS 15, *) {
+                // iOS 15 will dismiss itself (and will use `.swipeActions` instead of `.onDelete`)
+              } else if siteConnection.connectedAddresses.count == addressesToRemove.count {
+                presentationMode.dismiss()
+              }
             }
           }
         }
@@ -224,6 +229,10 @@ private struct SiteConnectionDetailView: View {
           Text(Strings.Wallet.manageSiteConnectionsConfirmAlertRemove),
           action: {
             siteConnectionStore.removeAllPermissions(from: [siteConnection])
+            if #available(iOS 15, *) { // iOS 15 will dismiss itself
+            } else {
+              presentationMode.dismiss()
+            }
           }
         ),
         secondaryButton: Alert.Button.cancel(Text(Strings.CancelString))
