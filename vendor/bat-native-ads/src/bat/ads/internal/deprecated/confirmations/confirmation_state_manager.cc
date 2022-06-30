@@ -112,6 +112,9 @@ void ConfirmationStateManager::Load() {
         }
 
         is_mutated_ = IsMutated(ToJson());
+        if (is_mutated_) {
+          BLOG(9, "Confirmation state is mutated");
+        }
 
         callback_(/* success */ true);
       });
@@ -126,7 +129,9 @@ void ConfirmationStateManager::Save() {
 
   const std::string json = ToJson();
 
-  SetHash(json);
+  if (!is_mutated_) {
+    SetHash(json);
+  }
 
   AdsClientHelper::GetInstance()->Save(
       kConfirmationsFilename, json, [](const bool success) {

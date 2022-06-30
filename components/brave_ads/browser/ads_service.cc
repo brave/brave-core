@@ -74,6 +74,7 @@ void AdsService::RegisterProfilePrefs(
   registry->RegisterTimePref(ads::prefs::kNextTokenRedemptionAt,
                              base::Time::Now());
 
+  registry->RegisterBooleanPref(ads::prefs::kHasMigratedClientState, false);
   registry->RegisterBooleanPref(ads::prefs::kHasMigratedConversionState, false);
   registry->RegisterBooleanPref(ads::prefs::kHasMigratedRewardsState, false);
 

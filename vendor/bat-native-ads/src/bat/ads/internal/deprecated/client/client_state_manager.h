@@ -28,8 +28,6 @@ class Time;
 
 namespace ads {
 
-constexpr char kClientFilename[] = "client.json";
-
 namespace targeting {
 struct PurchaseIntentSignalHistoryInfo;
 }  // namespace targeting

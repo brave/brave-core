@@ -39,6 +39,7 @@
 #include "bat/ads/internal/features/features_util.h"
 #include "bat/ads/internal/geographic/subdivision/subdivision_targeting.h"
 #include "bat/ads/internal/history/history_manager.h"
+#include "bat/ads/internal/legacy_migration/client/legacy_client_migration.h"
 #include "bat/ads/internal/legacy_migration/conversions/legacy_conversions_migration.h"
 #include "bat/ads/internal/legacy_migration/rewards/legacy_rewards_migration.h"
 #include "bat/ads/internal/locale/locale_manager.h"
@@ -522,6 +523,17 @@ void AdsImpl::MigrateConversions(InitializeCallback callback) {
 
 void AdsImpl::MigrateRewards(InitializeCallback callback) {
   rewards::Migrate([=](const bool success) {
+    if (!success) {
+      callback(/* success */ false);
+      return;
+    }
+
+    MigrateClientState(callback);
+  });
+}
+
+void AdsImpl::MigrateClientState(InitializeCallback callback) {
+  client::Migrate([=](const bool success) {
     if (!success) {
       callback(/* success */ false);
       return;
