@@ -1,12 +1,11 @@
 import * as React from 'react'
 
 import { DesktopComponentWrapper, DesktopComponentWrapperRow } from './style'
-import { SideNav, TopTabNav, ChartControlBar, WalletPageLayout, WalletSubViewLayout, OnboardingVerify } from '../components/desktop'
+import { SideNav, TopTabNav, ChartControlBar } from '../components/desktop'
 import { NavTypes, TopTabNavTypes, BraveWallet } from '../constants/types'
 import { NavOptions } from '../options/side-nav-options'
 import { TopNavOptions } from '../options/top-nav-options'
 import { ChartTimelineOptions } from '../options/chart-timeline-options'
-import Onboarding from './screens/onboarding'
 import './locale'
 import BackupWallet from './screens/backup-wallet'
 import { SweepstakesBanner } from '../components/desktop/sweepstakes-banner'
@@ -86,22 +85,6 @@ _LineChartControls.story = {
   name: 'Chart Controls'
 }
 
-export const _Onboarding = () => {
-  return (
-    <WalletPageStory pageStateOverride={{ mnemonic: mockedMnemonic }}>
-      <WalletPageLayout>
-        <WalletSubViewLayout>
-          <Onboarding />
-        </WalletSubViewLayout>
-      </WalletPageLayout>
-    </WalletPageStory>
-  )
-}
-
-_Onboarding.story = {
-  name: 'Onboarding'
-}
-
 export const _BackupWallet = () => {
   const complete = () => {
     alert('Wallet Setup Complete!!!')
@@ -119,20 +102,6 @@ export const _BackupWallet = () => {
 
 _BackupWallet.story = {
   name: 'BackupWallet'
-}
-
-export const _OnboardingVerify = () => {
-  return (
-    <WalletPageStory pageStateOverride={{ mnemonic: mockedMnemonic }}>
-      <OnboardingVerify
-        onNextStep={() => console.log('done')}
-      />
-    </WalletPageStory>
-  )
-}
-
-_OnboardingVerify.story = {
-  name: 'Onboarding Verify'
 }
 
 export const _SweepstakesBanner = () => {
