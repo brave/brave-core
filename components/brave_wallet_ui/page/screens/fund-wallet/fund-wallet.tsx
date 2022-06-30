@@ -321,6 +321,7 @@ export const FundWalletScreen = () => {
                         onSelectAccount={openAccountSearch}
                         showTooltips
                         fullAddress
+                        showSwitchAccountsIcon
                       />
                     </Flex>
                   </Row>

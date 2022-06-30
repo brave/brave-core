@@ -12,7 +12,13 @@ import { reduceAccountDisplayName } from '../../../utils/reduce-account-name'
 import Tooltip from '../tooltip'
 
 // style
-import { IconsWrapper, NetworkIconWrapper } from '../style'
+import {
+  IconsWrapper,
+  NetworkIconWrapper,
+  SwitchAccountIcon,
+  Row,
+  HorizontalSpace
+} from '../style'
 import {
   StyledWrapper,
   AccountAddress,
@@ -32,6 +38,7 @@ export interface Props {
   showTooltips?: boolean
   fullAddress?: boolean
   hideAddress?: boolean
+  showSwitchAccountsIcon?: boolean
 }
 
 export function SelectAccountItem ({
@@ -41,7 +48,8 @@ export function SelectAccountItem ({
   showTooltips,
   fullAddress,
   selectedNetwork,
-  hideAddress
+  hideAddress,
+  showSwitchAccountsIcon: showSwitchAccountsLink
 }: Props) {
   const orb = React.useMemo(() => {
     return create({ seed: account.address.toLowerCase(), size: 8, scale: 16 }).toDataURL()
@@ -51,15 +59,15 @@ export function SelectAccountItem ({
     return showTooltips ? Tooltip : ({ children }: React.PropsWithChildren<{
       text: string
       isAddress?: boolean
-    }>) => (children || <></>) as JSX.Element
+    }>) => <>{children}</>
   }, [showTooltips])
 
   return (
-    <StyledWrapper onClick={onSelectAccount}>
+    <StyledWrapper>
       <LeftSide>
-        {!selectedNetwork && <AccountCircle orb={orb} />}
+        {!selectedNetwork && <AccountCircle orb={orb} onClick={onSelectAccount} />}
         {selectedNetwork &&
-          <IconsWrapper>
+          <IconsWrapper onClick={onSelectAccount}>
             <AccountCircle orb={orb} style={{ width: '36px', height: '36px' }} />
             <NetworkIconWrapper>
               <CreateNetworkIcon size='small' network={selectedNetwork} />
@@ -69,15 +77,25 @@ export function SelectAccountItem ({
         <AccountAndAddress>
 
           <PossibleToolTip text={account.name} isAddress>
-            <AccountName>{reduceAccountDisplayName(account.name, 22)}</AccountName>
+            <Row justifyContent={'flex-start'}>
+              <AccountName>{reduceAccountDisplayName(account.name, 22)}</AccountName>
+              {showSwitchAccountsLink &&
+                <>
+                  <HorizontalSpace space='5px' />
+                  <SwitchAccountIcon onClick={onSelectAccount} />
+                </>
+              }
+            </Row>
           </PossibleToolTip>
 
-          {!hideAddress && <PossibleToolTip text={account.address} isAddress>
-            <AccountAddress>{fullAddress
-              ? account.address
-              : reduceAddress(account.address)
-            }</AccountAddress>
-          </PossibleToolTip>}
+          {!hideAddress &&
+            <PossibleToolTip text={account.address} isAddress>
+              <AccountAddress>{fullAddress
+                ? account.address
+                : reduceAddress(account.address)
+              }</AccountAddress>
+            </PossibleToolTip>
+          }
 
         </AccountAndAddress>
       </LeftSide>

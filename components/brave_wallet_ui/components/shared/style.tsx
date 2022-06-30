@@ -26,6 +26,7 @@ import CloseSvg from '../../assets/svg-icons/close.svg'
 import ClipboardSvg from '../../assets/svg-icons/clipboard-icon.svg'
 import DownloadSvg from '../../assets/svg-icons/download-icon.svg'
 import CheckIconSvg from '../../assets/svg-icons/checkbox-check.svg'
+import SwitchDown from '../../assets/svg-icons/switch-icon.svg'
 
 // Spacers
 export const VerticalSpacer = styled.div<{ space: number | string }>`
@@ -299,6 +300,13 @@ export const CheckIcon = styled.div<{
   mask-size: 12px;
   mask-position: center center;
   display: inline-block;
+`
+
+export const SwitchAccountIcon = styled.div`
+  display: block;
+  width: 14px;
+  height: 14px;
+  background: url(${SwitchDown});
 `
 
 // Asset Icon containers
