@@ -1,12 +1,12 @@
-import styled from 'styled-components'
-import { WalletButton } from '../../../shared/style'
+// Copyright (c) 2022 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// you can obtain one at http://mozilla.org/MPL/2.0/.
 
-interface StyleProps {
-  isSelected: boolean
-  error: boolean
-  numberOfRows: number
-  isInCorrectPosition: boolean
-}
+import styled from 'styled-components'
+
+// styles
+import { WalletButton } from '../../../../components/shared/style'
 
 const selectedBubbleHeight = 34
 
@@ -43,7 +43,10 @@ export const Description = styled.span`
   margin-bottom: 4px;
 `
 
-export const SelectedPhraseContainer = styled.div<Partial<StyleProps>>`
+export const SelectedPhraseContainer = styled.div<{
+  numberOfRows?: number
+  error?: boolean
+}>`
   display: flex;
   align-items: flex-start;
   align-content: flex-start;
@@ -69,7 +72,9 @@ export const RecoveryPhraseContainer = styled.div`
   margin-bottom: 40px;
 `
 
-export const RecoveryBubble = styled(WalletButton) <Partial<StyleProps>>`
+export const RecoveryBubble = styled(WalletButton)<{
+  isSelected?: boolean
+}>`
   cursor: ${(p) => p.isSelected ? 'default' : 'pointer'};
   outline: none;
   background: none;
@@ -87,7 +92,9 @@ export const RecoveryBubble = styled(WalletButton) <Partial<StyleProps>>`
   height: 32px;
 `
 
-export const RecoveryBubbleText = styled.span<Partial<StyleProps>>`
+export const RecoveryBubbleText = styled.span<{
+  isSelected?: boolean
+}>`
   font-family: Poppins;
   font-size: 14px;
   line-height: 22px;
@@ -115,7 +122,9 @@ export const SelectedBubble = styled(WalletButton)`
   border-radius: 4px;
 `
 
-export const SelectedBubbleText = styled.span<Partial<StyleProps>>`
+export const SelectedBubbleText = styled.span<{
+  isInCorrectPosition?: boolean
+}>`
   font-family: Poppins;
   font-size: 14px;
   line-height: 22px;

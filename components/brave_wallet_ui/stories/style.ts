@@ -119,27 +119,6 @@ export const DesktopComponentWrapperRow = styled.div`
   padding: 20px;
 `
 
-export const WalletWidgetStandIn = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  width: 285px;
-  min-width: 285px;
-  @media screen and (max-width: 800px) {
-    margin-bottom: 40px;
-  }
-`
-
-export const OnboardingWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: flex-start;
-  width: 100%;
-  margin-bottom: 20px;
-`
-
 export const StyledCreateAccountPanel = styled.div`
   display: flex;
   flex-direction: column;

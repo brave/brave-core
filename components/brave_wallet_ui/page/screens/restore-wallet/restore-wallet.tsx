@@ -8,12 +8,13 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useHistory, useLocation } from 'react-router'
 
 // Utils
-import { getLocale } from '../../../../../common/locale'
-import { copyToClipboard } from '../../../../utils/copy-to-clipboard'
+import { getLocale } from '../../../../common/locale'
+import { copyToClipboard } from '../../../utils/copy-to-clipboard'
 
 // Components
-import { PasswordInput, BackButton } from '../../../shared'
-import { NavButton } from '../../../extension'
+import { BackButton } from '../../../components/shared/back-button'
+import { PasswordInput } from '../../../components/shared/password-input'
+import { NavButton } from '../../../components/extension/buttons/nav-button/index'
 import { Checkbox } from 'brave-ui'
 
 // Styles
@@ -28,15 +29,15 @@ import {
   FormWrapper,
   InputColumn,
   FormText
-} from './style'
+} from './restore-wallet.style'
 
 // hooks
-import { usePasswordStrength } from '../../../../common/hooks/use-password-strength'
+import { usePasswordStrength } from '../../../common/hooks/use-password-strength'
 
-import * as WalletPageActions from '../../../../page/actions/wallet_page_actions'
-import { PageState, WalletRoutes, WalletState } from '../../../../constants/types'
+import * as WalletPageActions from '../../../page/actions/wallet_page_actions'
+import { PageState, WalletRoutes, WalletState } from '../../../constants/types'
 
-export const OnboardingRestore = () => {
+export const RestoreWallet = () => {
   // routing
   let history = useHistory()
   const { pathname: walletLocation } = useLocation()
@@ -235,4 +236,4 @@ export const OnboardingRestore = () => {
   )
 }
 
-export default OnboardingRestore
+export default RestoreWallet
