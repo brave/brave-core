@@ -42,7 +42,6 @@ export const usePendingTransactions = () => {
     gasEstimates,
     fullTokenList,
     pendingTransactions,
-    solFeeEstimates,
     defaultNetworks
   } = useSelector((state: { wallet: WalletState }) => state.wallet)
   const transactionGasEstimates = transactionInfo?.txDataUnion.ethTxData1559?.gasEstimation
@@ -56,14 +55,7 @@ export const usePendingTransactions = () => {
 
   // custom hooks
   const { getBlockchainTokenInfo, getERC20Allowance } = useLib()
-  const parseTransaction = useTransactionParser(
-    transactionsNetwork,
-    accounts,
-    transactionSpotPrices,
-    visibleTokens,
-    fullTokenList,
-    solFeeEstimates
-  )
+  const parseTransaction = useTransactionParser(selectedNetwork)
   const { findAssetPrice } = usePricing(transactionSpotPrices)
   const {
     onFindTokenInfoByContractAddress,
