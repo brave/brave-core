@@ -22,6 +22,8 @@ import { GridPageButtons } from './gridPageButtons'
 import GridSiteTile from './gridTile'
 import { TopSiteDragOverlay } from './gridTileOverlay'
 
+// Note: to increase the number of pages, you will also need to increase
+// kMaxNumCustomLinks in ntp_tiles/constants.cc 
 const MAX_PAGES = 4
 const activationConstraint: PointerActivationConstraint = { distance: 2 }
 const autoScrollOptions: AutoScrollOptions = { interval: 500 }
@@ -73,20 +75,22 @@ function TopSitesList (props: Props) {
   const keyboardSensor = useSensor(KeyboardSensor, {})
   const sensors = useSensors(mouseSensor, touchSensor, keyboardSensor)
 
+  const handleDragEnd = (e: DragEndEvent) => {
+    e.activatorEvent.preventDefault()
+
+    const draggingIndex = gridSites.findIndex(s => s.id === e.active.id)
+    const droppedIndex = gridSites.findIndex(s => s.id === e.over?.id)
+
+    if (draggingIndex === undefined || droppedIndex === undefined) { return }
+
+    if (gridSites[droppedIndex].defaultSRTopSite || !props.customLinksEnabled) { return }
+
+    props.actions.tilesReordered(gridSites, draggingIndex, droppedIndex)
+  }
+
   return <PagesContainer>
     <GridPagesContainer customLinksEnabled={customLinksEnabled} ref={gridPagesContainerRef as any}>
-      <DndContext onDragEnd={(e: DragEndEvent) => {
-        e.activatorEvent.preventDefault()
-
-        const draggingIndex = gridSites.findIndex(s => s.id === e.active.id)
-        const droppedIndex = gridSites.findIndex(s => s.id === e.over?.id)
-
-        if (draggingIndex === undefined || droppedIndex === undefined) { return }
-
-        if (gridSites[droppedIndex].defaultSRTopSite || !props.customLinksEnabled) { return }
-
-        props.actions.tilesReordered(gridSites, draggingIndex, droppedIndex)
-      }} autoScroll={autoScrollOptions} sensors={sensors}>
+      <DndContext onDragEnd={handleDragEnd} autoScroll={autoScrollOptions} sensors={sensors}>
         <SortableContext items={gridSites}>
           {pages.map(page => <TopSitesPage key={page} page={page} maxGridSize={maxGridSize} {...props} />)}
           <TopSiteDragOverlay sites={gridSites} />
