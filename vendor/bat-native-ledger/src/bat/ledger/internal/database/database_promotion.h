@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVELEDGER_DATABASE_DATABASE_PROMOTION_H_
-#define BRAVELEDGER_DATABASE_DATABASE_PROMOTION_H_
+#ifndef BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_DATABASE_DATABASE_PROMOTION_H_
+#define BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_DATABASE_DATABASE_PROMOTION_H_
 
 #include <memory>
 #include <string>
@@ -56,10 +56,6 @@ class DatabasePromotion: public DatabaseTable {
       const std::string& promotion_id,
       ledger::ResultCallback callback);
 
-  void GetRecordsByType(
-      const std::vector<type::PromotionType>& types,
-      client::GetPromotionListCallback callback);
-
   void UpdateRecordsBlankPublicKey(
       const std::vector<std::string>& ids,
       ledger::ResultCallback callback);
@@ -81,4 +77,4 @@ class DatabasePromotion: public DatabaseTable {
 }  // namespace database
 }  // namespace ledger
 
-#endif  // BRAVELEDGER_DATABASE_DATABASE_PROMOTION_H_
+#endif  // BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_DATABASE_DATABASE_PROMOTION_H_

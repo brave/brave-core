@@ -103,8 +103,6 @@ using GetPublisherInfoCallback =
 
 using GetBraveWalletCallback = std::function<void(type::BraveWalletPtr)>;
 
-using GetTransferableAmountCallback = std::function<void(double)>;
-
 using PostSuggestionsClaimCallback =
     std::function<void(type::Result result, std::string drain_id)>;
 
@@ -372,9 +370,6 @@ class LEDGER_EXPORT Ledger {
 
   virtual void GetDrainStatus(const std::string& drain_id,
                               GetDrainCallback callback) = 0;
-
-  virtual void GetTransferableAmount(
-      GetTransferableAmountCallback callback) = 0;
 };
 
 }  // namespace ledger

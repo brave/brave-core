@@ -48,8 +48,6 @@ class Promotion {
 
   virtual void TransferTokens(ledger::PostSuggestionsClaimCallback callback);
 
-  void GetTransferableAmount(ledger::GetTransferableAmountCallback callback);
-
   void GetDrainStatus(const std::string& drain_id,
                       ledger::GetDrainCallback callback);
 

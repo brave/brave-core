@@ -23,8 +23,7 @@ const std::vector<std::string> kBitflyerCountries = {
 };
 
 #if BUILDFLAG(IS_ANDROID)
-const std::map<std::string, bool> kBoolOptions = {
-    {ledger::option::kClaimUGP, false}};
+const std::map<std::string, bool> kBoolOptions = {};
 
 const std::map<std::string, int> kIntegerOptions = {};
 
@@ -38,21 +37,19 @@ const std::map<std::string, uint64_t> kUInt64Options = {
     {ledger::option::kPublisherListRefreshInterval,
      7 * base::Time::kHoursPerDay* base::Time::kSecondsPerHour}};
 #else
-  const std::map<std::string, bool> kBoolOptions = {
-      {ledger::option::kClaimUGP, false}
-  };
+const std::map<std::string, bool> kBoolOptions = {};
 
-  const std::map<std::string, int> kIntegerOptions = {};
+const std::map<std::string, int> kIntegerOptions = {};
 
-  const std::map<std::string, double> kDoubleOptions = {};
+const std::map<std::string, double> kDoubleOptions = {};
 
-  const std::map<std::string, std::string> kStringOptions = {};
+const std::map<std::string, std::string> kStringOptions = {};
 
-  const std::map<std::string, int64_t> kInt64Options = {};
+const std::map<std::string, int64_t> kInt64Options = {};
 
-  const std::map<std::string, uint64_t> kUInt64Options = {
-      {ledger::option::kPublisherListRefreshInterval,
-       3 * base::Time::kHoursPerDay * base::Time::kSecondsPerHour}};
+const std::map<std::string, uint64_t> kUInt64Options = {
+    {ledger::option::kPublisherListRefreshInterval,
+     3 * base::Time::kHoursPerDay* base::Time::kSecondsPerHour}};
 #endif
 
 }  // namespace brave_rewards

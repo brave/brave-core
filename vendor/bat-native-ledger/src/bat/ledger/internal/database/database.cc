@@ -431,12 +431,6 @@ void Database::GetPromotionList(
   promotion_->GetRecords(ids, callback);
 }
 
-void Database::GetPromotionListByType(
-    const std::vector<type::PromotionType>& types,
-    client::GetPromotionListCallback callback) {
-  promotion_->GetRecordsByType(types, callback);
-}
-
 void Database::UpdatePromotionsBlankPublicKey(
     const std::vector<std::string>& ids,
     ledger::ResultCallback callback) {
@@ -630,10 +624,9 @@ void Database::MarkUnblindedTokensAsSpendable(
       callback);
 }
 
-void Database::GetSpendableUnblindedTokensByTriggerIds(
-    const std::vector<std::string>& trigger_ids,
+void Database::GetSpendableUnblindedTokens(
     GetUnblindedTokenListCallback callback) {
-  unblinded_token_->GetSpendableRecordsByTriggerIds(trigger_ids, callback);
+  unblinded_token_->GetSpendableRecords(std::move(callback));
 }
 
 void Database::GetReservedUnblindedTokens(
