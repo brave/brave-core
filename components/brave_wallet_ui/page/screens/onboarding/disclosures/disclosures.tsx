@@ -65,12 +65,12 @@ export const OnboardingDisclosures = ({ nextStep, onBack }: Props) => {
     return isResponsibilityCheckboxChecked && isTermsCheckboxChecked
   }, [isResponsibilityCheckboxChecked, isTermsCheckboxChecked])
 
-  const termsOfServiceText = React.useMemo(() => {
+  const termsOfUseText = React.useMemo(() => {
     const text = getLocaleWithTag('braveWalletTermsOfServiceCheckboxText')
     return <p key={text.duringTag}>
       {text.beforeTag}
       <LinkText
-        href='https://brave.com' // TODO
+        href='https://brave.com/terms-of-use/'
         target='_blank'
         rel='noopener noreferrer'
       >
@@ -125,12 +125,12 @@ export const OnboardingDisclosures = ({ nextStep, onBack }: Props) => {
             </Checkbox>
 
             <Checkbox
-              isChecked={isTermsCheckboxChecked }
+              isChecked={isTermsCheckboxChecked}
               onChange={setIsTermsCheckboxChecked}
               alignItems='flex-start'
             >
               <CheckboxText>
-                {termsOfServiceText}
+                {termsOfUseText}
               </CheckboxText>
             </Checkbox>
 
