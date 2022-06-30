@@ -269,7 +269,7 @@ absl::optional<PipelineEmbeddingInfo> ParsePipelineEmbedding(base::Value resourc
     std::vector<float> embedding;
     embedding.reserve(vector.size());
     for (const base::Value& v_raw : vector) {
-      double v = std::stod(v_raw.GetString());
+      double v = v_raw.GetDouble();
       embedding.push_back(v);
     }
     embeddings[token] = VectorData(std::move(embedding));
