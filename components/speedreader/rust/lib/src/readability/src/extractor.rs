@@ -1,5 +1,5 @@
 use crate::{dom, nlp, scorer, util};
-use html5ever::parse_document;
+use html5ever::{parse_document, ParseOpts};
 use html5ever::tendril::TendrilSink;
 use html5ever::tree_builder::{ElementFlags, NodeOrText, TreeSink};
 use html5ever::QualName;
@@ -216,6 +216,37 @@ pub fn extract_metadata(dom: &Sink) -> Meta {
     meta
 }
 
+pub fn patch_section(section: &Handle) {
+    let mut paragraphs: Vec<Handle> = vec![];
+    dom::find_node(&section, "p", &mut paragraphs);
+
+    let start_tag = "<b>";
+    let start_tag_offset = start_tag.chars().count();
+    let end_tag = "</b>";
+
+    for p in paragraphs.iter() {
+        // if let Some(data) = p.as_element() {}
+
+        let par = Handle::new_element(
+            QualName::new(None, ns!(html), local_name!("p")), None);
+
+        let p_contents: Vec<String> = p.text_contents().split_whitespace()
+            .map(|x| {
+                let mut temp = String::from(x);
+                if temp.chars().count() >= 3 && temp.is_ascii() {
+                    temp.insert_str(0, start_tag);
+                    temp.insert_str(start_tag_offset+2, end_tag);
+                }
+                temp})
+            .collect();
+
+        let dom = parse_document(Sink::default(), ParseOpts::default()).one(p_contents.join(" ").as_str());
+        par.append(dom.document_node);
+        p.insert_after(par);
+        p.detach();
+    }
+}
+
 pub fn extract_dom<S: ::std::hash::BuildHasher>(
     mut dom: &mut Sink,
     url: &Url,
@@ -263,6 +294,10 @@ pub fn extract_dom<S: ::std::hash::BuildHasher>(
             let name = QualName::new(None, ns!(), local_name!("body"));
             let body = dom.create_element(name, vec![], ElementFlags::default());
             dom.reparent_children(&top_candidate, &body);
+
+            let mut section: Vec<Handle> = vec![];
+            dom::find_node(&body, "section", &mut section);
+            patch_section(&section[0]);
 
             // Our CSS formats based on id="article".
             dom::set_attr("id", "article", body.clone(), true);
