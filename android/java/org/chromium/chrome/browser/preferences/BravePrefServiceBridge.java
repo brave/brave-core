@@ -287,6 +287,10 @@ public class BravePrefServiceBridge {
         return BravePrefServiceBridgeJni.get().getShowNews();
     }
 
+    public void setPurchaseTokenAndroid(String purchaseToken) {
+        BravePrefServiceBridgeJni.get().setPurchaseTokenAndroid(purchaseToken);
+    }
+
     @NativeMethods
     interface Natives {
         void setCosmeticFilteringControlType(int type);
@@ -368,5 +372,7 @@ public class BravePrefServiceBridge {
 
         void setShowNews(boolean value);
         boolean getShowNews();
+
+        void setPurchaseTokenAndroid(String purchaseToken);
     }
 }
