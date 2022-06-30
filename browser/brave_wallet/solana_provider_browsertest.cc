@@ -30,6 +30,7 @@
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/browser_commands.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
@@ -280,6 +281,11 @@ class SolanaProviderTest : public InProcessBrowserTest {
     return HostContentSettingsMapFactory::GetForProfile(browser()->profile());
   }
 
+  void ReloadAndWaitForLoadStop(Browser* browser) {
+    chrome::Reload(browser, WindowOpenDisposition::CURRENT_TAB);
+    ASSERT_TRUE(content::WaitForLoadStop(web_contents()));
+  }
+
   void RestoreWallet() {
     const char mnemonic[] =
         "scare piece awesome elite long drift control cabbage glass dash coral "
@@ -301,10 +307,10 @@ class SolanaProviderTest : public InProcessBrowserTest {
     base::RunLoop().RunUntilIdle();
   }
 
-  void AddAccount() {
+  void AddAccount(const std::string& name) {
     base::RunLoop run_loop;
     keyring_service_->AddAccount(
-        "Account 1", mojom::CoinType::SOL,
+        name, mojom::CoinType::SOL,
         base::BindLambdaForTesting([&run_loop](bool success) {
           ASSERT_TRUE(success);
           run_loop.Quit();
@@ -376,6 +382,10 @@ class SolanaProviderTest : public InProcessBrowserTest {
           run_loop.Quit();
         }));
     run_loop.Run();
+  }
+
+  void RegisterSolAccountChanged() {
+    ASSERT_TRUE(ExecJs(web_contents(), "registerAccountChanged()"));
   }
 
   void CallSolanaConnect(bool is_expect_bubble = true) {
@@ -487,6 +497,12 @@ class SolanaProviderTest : public InProcessBrowserTest {
         .ExtractString();
   }
 
+  std::string GetAccountChangedResult() {
+    return EvalJs(web_contents(), "getAccountChangedResult()",
+                  content::EXECUTE_SCRIPT_USE_MANUAL_REPLY)
+        .ExtractString();
+  }
+
   bool IsSolanaConnected() {
     return EvalJs(web_contents(), "isSolanaConnected()",
                   content::EXECUTE_SCRIPT_USE_MANUAL_REPLY)
@@ -515,7 +531,7 @@ class SolanaProviderTest : public InProcessBrowserTest {
 
 IN_PROC_BROWSER_TEST_F(SolanaProviderTest, ConnectedStatusAndPermission) {
   RestoreWallet();
-  AddAccount();
+  AddAccount("Account 1");
   SetSelectedAccount(kFirstAccount);
   GURL url =
       https_server_for_files()->GetURL("a.test", "/solana_provider.html");
@@ -543,7 +559,7 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, ConnectedStatusAndPermission) {
 
 IN_PROC_BROWSER_TEST_F(SolanaProviderTest, ConnectedStatusInMultiFrames) {
   RestoreWallet();
-  AddAccount();
+  AddAccount("Account 1");
   SetSelectedAccount(kFirstAccount);
   GURL url =
       https_server_for_files()->GetURL("a.test", "/solana_provider.html");
@@ -575,7 +591,7 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, ConnectedStatusInMultiFrames) {
 
 IN_PROC_BROWSER_TEST_F(SolanaProviderTest, SignMessage) {
   RestoreWallet();
-  AddAccount();
+  AddAccount("Account 1");
   SetSelectedAccount(kFirstAccount);
   GURL url =
       https_server_for_files()->GetURL("a.test", "/solana_provider.html");
@@ -612,7 +628,7 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, SignMessage) {
 
 IN_PROC_BROWSER_TEST_F(SolanaProviderTest, GetPublicKey) {
   RestoreWallet();
-  AddAccount();
+  AddAccount("Account 1");
   SetSelectedAccount(kFirstAccount);
   GURL url =
       https_server_for_files()->GetURL("a.test", "/solana_provider.html");
@@ -647,7 +663,7 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, GetPublicKey) {
 
 IN_PROC_BROWSER_TEST_F(SolanaProviderTest, SignAndSendTransaction) {
   RestoreWallet();
-  AddAccount();
+  AddAccount("Account 1");
   SetSelectedAccount(kFirstAccount);
   GURL url =
       https_server_for_files()->GetURL("a.test", "/solana_provider.html");
@@ -787,9 +803,45 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, SignAndSendTransaction) {
   EXPECT_EQ(GetSignAndSendTransactionResult(), kEncodedSignature);
 }
 
+IN_PROC_BROWSER_TEST_F(SolanaProviderTest, AccountChangedEventAndReload) {
+  RestoreWallet();
+  AddAccount("Account 1");
+  AddAccount("Account 2");
+  SetSelectedAccount(kFirstAccount);
+  GURL url =
+      https_server_for_files()->GetURL("a.test", "/solana_provider.html");
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
+
+  // connect account 1
+  CallSolanaConnect();
+  UserGrantPermission(true);
+
+  RegisterSolAccountChanged();
+  // switch to disconnected account 2
+  SetSelectedAccount(kSecondAccount);
+  WaitForResultReady();
+  EXPECT_EQ(GetAccountChangedResult(), "");
+  // switch to connected account 1
+  SetSelectedAccount(kFirstAccount);
+  WaitForResultReady();
+  EXPECT_EQ(GetAccountChangedResult(), kFirstAccount);
+
+  ReloadAndWaitForLoadStop(browser());
+
+  RegisterSolAccountChanged();
+  // switch to disconnected account 2
+  SetSelectedAccount(kSecondAccount);
+  WaitForResultReady();
+  EXPECT_EQ(GetAccountChangedResult(), "");
+  // switch to disconnected account 1
+  SetSelectedAccount(kFirstAccount);
+  WaitForResultReady();
+  EXPECT_EQ(GetAccountChangedResult(), "");
+}
+
 IN_PROC_BROWSER_TEST_F(SolanaProviderTest, SignTransaction) {
   RestoreWallet();
-  AddAccount();
+  AddAccount("Account 1");
   SetSelectedAccount(kFirstAccount);
   GURL url =
       https_server_for_files()->GetURL("a.test", "/solana_provider.html");
@@ -836,7 +888,7 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, SignTransaction) {
 
 IN_PROC_BROWSER_TEST_F(SolanaProviderTest, SignAllTransactions) {
   RestoreWallet();
-  AddAccount();
+  AddAccount("Account 1");
   SetSelectedAccount(kFirstAccount);
   GURL url =
       https_server_for_files()->GetURL("a.test", "/solana_provider.html");
@@ -883,7 +935,7 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, SignAllTransactions) {
 
 IN_PROC_BROWSER_TEST_F(SolanaProviderTest, Request) {
   RestoreWallet();
-  AddAccount();
+  AddAccount("Account 1");
   SetSelectedAccount(kFirstAccount);
   GURL url =
       https_server_for_files()->GetURL("a.test", "/solana_provider.html");
