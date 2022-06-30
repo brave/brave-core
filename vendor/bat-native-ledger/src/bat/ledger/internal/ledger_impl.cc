@@ -100,9 +100,12 @@ uphold::Uphold* LedgerImpl::uphold() const {
   return uphold_.get();
 }
 
-void LedgerImpl::LoadURL(
-    type::UrlRequestPtr request,
-    client::LoadURLCallback callback) {
+template <typename>
+inline constexpr bool dependent_false_v = false;
+
+template <typename LoadURLCallback>
+void LedgerImpl::LoadURLImpl(type::UrlRequestPtr request,
+                             LoadURLCallback callback) {
   DCHECK(request);
   if (IsShuttingDown()) {
     BLOG(1, request->url + " will not be executed as we are shutting down");
@@ -114,7 +117,71 @@ void LedgerImpl::LoadURL(
                                request->content_type, request->method));
   }
 
-  ledger_client_->LoadURL(std::move(request), callback);
+  if constexpr (std::is_same_v<LoadURLCallback,
+                               ledger::client::LegacyLoadURLCallback>) {
+    ledger_client_->LoadURL(
+        std::move(request),
+        base::BindOnce(
+            [](ledger::client::LegacyLoadURLCallback callback,
+               const type::UrlResponse& response) { callback(response); },
+            std::move(callback)));
+  } else if constexpr (std::is_same_v<LoadURLCallback,  // NOLINT
+                                      ledger::client::LoadURLCallback>) {
+    ledger_client_->LoadURL(std::move(request), std::move(callback));
+  } else {
+    static_assert(dependent_false_v<LoadURLCallback>,
+                  "LoadURLCallback must be either "
+                  "ledger::client::LegacyLoadURLCallback, or "
+                  "ledger::client::LoadURLCallback!");
+  }
+}
+
+void LedgerImpl::LoadURL(type::UrlRequestPtr request,
+                         client::LegacyLoadURLCallback callback) {
+  LoadURLImpl(std::move(request), std::move(callback));
+}
+
+void LedgerImpl::LoadURL(type::UrlRequestPtr request,
+                         client::LoadURLCallback callback) {
+  LoadURLImpl(std::move(request), std::move(callback));
+}
+
+template <typename RunDBTransactionCallback>
+void LedgerImpl::RunDBTransactionImpl(type::DBTransactionPtr transaction,
+                                      RunDBTransactionCallback callback) {
+  if constexpr (std::is_same_v<  // NOLINT
+                    RunDBTransactionCallback,
+                    ledger::client::LegacyRunDBTransactionCallback>) {
+    ledger_client_->RunDBTransaction(
+        std::move(transaction),
+        base::BindOnce(
+            [](ledger::client::LegacyRunDBTransactionCallback callback,
+               type::DBCommandResponsePtr response) {
+              callback(std::move(response));
+            },
+            std::move(callback)));
+  } else if constexpr (std::is_same_v<  // NOLINT
+                           RunDBTransactionCallback,
+                           ledger::client::RunDBTransactionCallback>) {
+    ledger_client_->RunDBTransaction(std::move(transaction),
+                                     std::move(callback));
+  } else {
+    static_assert(dependent_false_v<RunDBTransactionCallback>,
+                  "RunDBTransactionCallback must be either "
+                  "ledger::client::LegacyRunDBTransactionCallback, or "
+                  "ledger::client::RunDBTransactionCallback!");
+  }
+}
+
+void LedgerImpl::RunDBTransaction(
+    type::DBTransactionPtr transaction,
+    client::LegacyRunDBTransactionCallback callback) {
+  RunDBTransactionImpl(std::move(transaction), std::move(callback));
+}
+
+void LedgerImpl::RunDBTransaction(type::DBTransactionPtr transaction,
+                                  client::RunDBTransactionCallback callback) {
+  RunDBTransactionImpl(std::move(transaction), std::move(callback));
 }
 
 void LedgerImpl::StartServices() {
@@ -733,7 +800,9 @@ void LedgerImpl::GetPendingContributionsTotal(
 }
 
 void LedgerImpl::FetchBalance(FetchBalanceCallback callback) {
-  WhenReady([this, callback]() { wallet()->FetchBalance(callback); });
+  WhenReady([this, callback = std::move(callback)]() mutable {
+    wallet()->FetchBalance(std::move(callback));
+  });
 }
 
 void LedgerImpl::GetExternalWallet(const std::string& wallet_type,

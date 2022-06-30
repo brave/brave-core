@@ -64,9 +64,7 @@ void DatabaseSKUTransaction::InsertOrUpdate(
       _1,
       callback);
 
-  ledger_->ledger_client()->RunDBTransaction(
-      std::move(db_transaction),
-      transaction_callback);
+  ledger_->RunDBTransaction(std::move(db_transaction), transaction_callback);
 }
 
 void DatabaseSKUTransaction::SaveExternalTransaction(
@@ -101,9 +99,7 @@ void DatabaseSKUTransaction::SaveExternalTransaction(
       _1,
       callback);
 
-  ledger_->ledger_client()->RunDBTransaction(
-      std::move(transaction),
-      transaction_callback);
+  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 void DatabaseSKUTransaction::GetRecordByOrderId(
@@ -141,9 +137,7 @@ void DatabaseSKUTransaction::GetRecordByOrderId(
       _1,
       callback);
 
-  ledger_->ledger_client()->RunDBTransaction(
-      std::move(transaction),
-      transaction_callback);
+  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 void DatabaseSKUTransaction::OnGetRecord(

@@ -7,6 +7,7 @@
 
 #include <memory>
 #include <string>
+#include <utility>
 #include <vector>
 
 #include "base/test/task_environment.h"
@@ -60,7 +61,7 @@ TEST_F(PostClaimBitflyerTest, ServerOK) {
             response.status_code = 200;
             response.url = request->url;
             response.body = "";
-            callback(response);
+            std::move(callback).Run(response);
           }));
 
   claim_->Request("83b3b77b-e7c3-455b-adda-e476fa0656d2",
@@ -82,7 +83,7 @@ TEST_F(PostClaimBitflyerTest, ServerError400FlaggedWallet) {
     "code": 400
 }
             )";
-            callback(response);
+            std::move(callback).Run(response);
           }));
 
   claim_->Request("83b3b77b-e7c3-455b-adda-e476fa0656d2",
@@ -104,7 +105,7 @@ TEST_F(PostClaimBitflyerTest, ServerError400RegionNotSupported) {
     "code": 400
 }
             )";
-            callback(response);
+            std::move(callback).Run(response);
           }));
 
   claim_->Request("83b3b77b-e7c3-455b-adda-e476fa0656d2",
@@ -126,7 +127,7 @@ TEST_F(PostClaimBitflyerTest, ServerError400UnknownMessage) {
     "code": 400
 }
             )";
-            callback(response);
+            std::move(callback).Run(response);
           }));
 
   claim_->Request("83b3b77b-e7c3-455b-adda-e476fa0656d2",
@@ -148,7 +149,7 @@ TEST_F(PostClaimBitflyerTest, ServerError403MismatchedProviderAccounts) {
     "code": 403
 }
             )";
-            callback(response);
+            std::move(callback).Run(response);
           }));
 
   claim_->Request(
@@ -171,7 +172,7 @@ TEST_F(PostClaimBitflyerTest,
     "code": 403
 }
             )";
-            callback(response);
+            std::move(callback).Run(response);
           }));
 
   claim_->Request(
@@ -193,7 +194,7 @@ TEST_F(PostClaimBitflyerTest, ServerError403UnknownMessage) {
     "code": 403
 }
             )";
-            callback(response);
+            std::move(callback).Run(response);
           }));
 
   claim_->Request("83b3b77b-e7c3-455b-adda-e476fa0656d2",
@@ -210,7 +211,7 @@ TEST_F(PostClaimBitflyerTest, ServerError404) {
             response.status_code = 404;
             response.url = request->url;
             response.body = "";
-            callback(response);
+            std::move(callback).Run(response);
           }));
 
   claim_->Request("83b3b77b-e7c3-455b-adda-e476fa0656d2",
@@ -227,7 +228,7 @@ TEST_F(PostClaimBitflyerTest, ServerError409) {
             response.status_code = 409;
             response.url = request->url;
             response.body = "";
-            callback(response);
+            std::move(callback).Run(response);
           }));
 
   claim_->Request("83b3b77b-e7c3-455b-adda-e476fa0656d2",
@@ -244,7 +245,7 @@ TEST_F(PostClaimBitflyerTest, ServerError500) {
             response.status_code = 500;
             response.url = request->url;
             response.body = "";
-            callback(response);
+            std::move(callback).Run(response);
           }));
 
   claim_->Request("83b3b77b-e7c3-455b-adda-e476fa0656d2",
@@ -261,7 +262,7 @@ TEST_F(PostClaimBitflyerTest, ServerErrorRandom) {
             response.status_code = 453;
             response.url = request->url;
             response.body = "";
-            callback(response);
+            std::move(callback).Run(response);
           }));
 
   claim_->Request("83b3b77b-e7c3-455b-adda-e476fa0656d2",

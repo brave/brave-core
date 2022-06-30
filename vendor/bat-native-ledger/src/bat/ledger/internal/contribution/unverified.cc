@@ -51,8 +51,8 @@ void Unverified::FetchInfoForUnverifiedPublishers(
 
 void Unverified::ProcessNext() {
   DCHECK(processing_start_time_);
-  ledger_->wallet()->FetchBalance(
-      std::bind(&Unverified::OnContributeUnverifiedBalance, this, _1, _2));
+  ledger_->wallet()->FetchBalance(base::BindOnce(
+      &Unverified::OnContributeUnverifiedBalance, base::Unretained(this)));
 }
 
 void Unverified::OnContributeUnverifiedBalance(

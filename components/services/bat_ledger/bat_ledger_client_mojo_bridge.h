@@ -37,9 +37,8 @@ class BatLedgerClientMojoBridge :
   void LoadLedgerState(ledger::client::OnLoadCallback callback) override;
   void LoadPublisherState(ledger::client::OnLoadCallback callback) override;
 
-  void LoadURL(
-      ledger::type::UrlRequestPtr request,
-      ledger::client::LoadURLCallback callback) override;
+  void LoadURL(ledger::type::UrlRequestPtr request,
+               ledger::client::LoadURLCallback callback) override;
 
   void OnPanelPublisherInfo(ledger::type::Result result,
                             ledger::type::PublisherInfoPtr info,

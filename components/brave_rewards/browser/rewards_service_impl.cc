@@ -966,13 +966,12 @@ void RewardsServiceImpl::OnPublisherStateLoaded(
       data);
 }
 
-void RewardsServiceImpl::LoadURL(
-    ledger::type::UrlRequestPtr request,
-    ledger::client::LoadURLCallback callback) {
+void RewardsServiceImpl::LoadURL(ledger::type::UrlRequestPtr request,
+                                 ledger::client::LoadURLCallback callback) {
   if (!request || request->url.empty()) {
     ledger::type::UrlResponse response;
     response.status_code = net::HTTP_BAD_REQUEST;
-    callback(response);
+    std::move(callback).Run(response);
     return;
   }
 
@@ -981,7 +980,7 @@ void RewardsServiceImpl::LoadURL(
     ledger::type::UrlResponse response;
     response.url = request->url;
     response.status_code = net::HTTP_BAD_REQUEST;
-    callback(response);
+    std::move(callback).Run(response);
     return;
   }
 
@@ -1001,7 +1000,7 @@ void RewardsServiceImpl::LoadURL(
     response.status_code = response_status_code;
     response.body = test_response;
     response.headers = test_headers;
-    callback(response);
+    std::move(callback).Run(response);
     return;
   }
 
@@ -1045,7 +1044,7 @@ void RewardsServiceImpl::LoadURL(
           ->GetURLLoaderFactoryForBrowserProcess()
           .get(),
       base::BindOnce(&RewardsServiceImpl::OnURLLoaderComplete,
-                     base::Unretained(this), loader_it, callback));
+                     base::Unretained(this), loader_it, std::move(callback)));
 }
 
 void RewardsServiceImpl::OnURLLoaderComplete(
@@ -1090,7 +1089,7 @@ void RewardsServiceImpl::OnURLLoaderComplete(
     }
   }
 
-  callback(response);
+  std::move(callback).Run(response);
 }
 
 void RewardsServiceImpl::OnGetRewardsParameters(
@@ -3106,7 +3105,7 @@ void RewardsServiceImpl::OnRunDBTransaction(
     ledger::client::RunDBTransactionCallback callback,
     ledger::type::DBCommandResponsePtr response) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  callback(std::move(response));
+  std::move(callback).Run(std::move(response));
 }
 
 void RewardsServiceImpl::GetCreateScript(

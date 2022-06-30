@@ -113,9 +113,8 @@ void Reddit::OnPageDataFetched(
       response.body);
 }
 
-void Reddit::FetchDataFromUrl(
-    const std::string& url,
-    ledger::client::LoadURLCallback callback) {
+void Reddit::FetchDataFromUrl(const std::string& url,
+                              ledger::client::LegacyLoadURLCallback callback) {
   /* if user is on old reddit, sub the url to get the icon
      since old reddit didn't have user icons */
   GURL reddit_url(url);

@@ -83,31 +83,28 @@ void GetCard::Request(
     const std::string& address,
     const std::string& token,
     GetCardCallback callback) {
-  auto url_callback = std::bind(&GetCard::OnRequest,
-      this,
-      _1,
-      callback);
+  auto url_callback = base::BindOnce(
+      &GetCard::OnRequest, base::Unretained(this), std::move(callback));
   auto request = type::UrlRequest::New();
   request->url = GetUrl(address);
   request->headers = RequestAuthorization(token);
-  ledger_->LoadURL(std::move(request), url_callback);
+  ledger_->LoadURL(std::move(request), std::move(url_callback));
 }
 
-void GetCard::OnRequest(
-    const type::UrlResponse& response,
-    GetCardCallback callback) {
+void GetCard::OnRequest(GetCardCallback callback,
+                        const type::UrlResponse& response) {
   ledger::LogUrlResponse(__func__, response);
 
   type::Result result = CheckStatusCode(response.status_code);
 
   if (result != type::Result::LEDGER_OK) {
-    callback(result, 0.0);
+    std::move(callback).Run(result, 0.0);
     return;
   }
 
   double available;
   result = ParseBody(response.body, &available);
-  callback(result, available);
+  std::move(callback).Run(result, available);
 }
 
 }  // namespace uphold

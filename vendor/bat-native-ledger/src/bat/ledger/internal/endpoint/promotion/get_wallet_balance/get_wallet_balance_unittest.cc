@@ -45,10 +45,8 @@ class GetWalletBalanceTest : public testing::Test {
 
 TEST_F(GetWalletBalanceTest, ServerOK) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
-      .WillByDefault(
-          Invoke([](
-              type::UrlRequestPtr request,
-              client::LoadURLCallback callback) {
+      .WillByDefault(Invoke(
+          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
             type::UrlResponse response;
             response.status_code = 200;
             response.url = request->url;
@@ -58,98 +56,90 @@ TEST_F(GetWalletBalanceTest, ServerOK) {
               "confirmed": 5.0,
               "unconfirmed": 0.0
             })";
-            callback(response);
+            std::move(callback).Run(response);
           }));
 
   balance_->Request(
-      [](const type::Result result, type::BalancePtr balance) {
+      base::BindOnce([](const type::Result result, type::BalancePtr balance) {
         type::Balance expected_balance;
         expected_balance.total = 5;
         expected_balance.user_funds = 5;
         expected_balance.wallets = {{constant::kWalletAnonymous, 5}};
         EXPECT_EQ(result, type::Result::LEDGER_OK);
         EXPECT_TRUE(expected_balance.Equals(*balance));
-      });
+      }));
 }
 
 TEST_F(GetWalletBalanceTest, ServerError400) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
-      .WillByDefault(
-          Invoke([](
-              type::UrlRequestPtr request,
-              client::LoadURLCallback callback) {
+      .WillByDefault(Invoke(
+          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
             type::UrlResponse response;
             response.status_code = 400;
             response.url = request->url;
             response.body = "";
-            callback(response);
+            std::move(callback).Run(response);
           }));
 
   balance_->Request(
-      [](const type::Result result, type::BalancePtr balance) {
+      base::BindOnce([](const type::Result result, type::BalancePtr balance) {
         EXPECT_EQ(result, type::Result::LEDGER_ERROR);
         EXPECT_TRUE(!balance);
-      });
+      }));
 }
 
 TEST_F(GetWalletBalanceTest, ServerError404) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
-      .WillByDefault(
-          Invoke([](
-              type::UrlRequestPtr request,
-              client::LoadURLCallback callback) {
+      .WillByDefault(Invoke(
+          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
             type::UrlResponse response;
             response.status_code = 404;
             response.url = request->url;
             response.body = "";
-            callback(response);
+            std::move(callback).Run(response);
           }));
 
   balance_->Request(
-      [](const type::Result result, type::BalancePtr balance) {
+      base::BindOnce([](const type::Result result, type::BalancePtr balance) {
         EXPECT_EQ(result, type::Result::LEDGER_ERROR);
         EXPECT_TRUE(!balance);
-      });
+      }));
 }
 
 TEST_F(GetWalletBalanceTest, ServerError500) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
-      .WillByDefault(
-          Invoke([](
-              type::UrlRequestPtr request,
-              client::LoadURLCallback callback) {
+      .WillByDefault(Invoke(
+          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
             type::UrlResponse response;
             response.status_code = 500;
             response.url = request->url;
             response.body = "";
-            callback(response);
+            std::move(callback).Run(response);
           }));
 
   balance_->Request(
-      [](const type::Result result, type::BalancePtr balance) {
+      base::BindOnce([](const type::Result result, type::BalancePtr balance) {
         EXPECT_EQ(result, type::Result::LEDGER_ERROR);
         EXPECT_TRUE(!balance);
-      });
+      }));
 }
 
 TEST_F(GetWalletBalanceTest, ServerErrorRandom) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
-      .WillByDefault(
-          Invoke([](
-              type::UrlRequestPtr request,
-              client::LoadURLCallback callback) {
+      .WillByDefault(Invoke(
+          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
             type::UrlResponse response;
             response.status_code = 453;
             response.url = request->url;
             response.body = "";
-            callback(response);
+            std::move(callback).Run(response);
           }));
 
   balance_->Request(
-      [](const type::Result result, type::BalancePtr balance) {
+      base::BindOnce([](const type::Result result, type::BalancePtr balance) {
         EXPECT_EQ(result, type::Result::LEDGER_ERROR);
         EXPECT_TRUE(!balance);
-      });
+      }));
 }
 
 }  // namespace promotion

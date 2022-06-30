@@ -107,9 +107,7 @@ void DatabaseServerPublisherLinks::GetRecord(
           _1,
           callback);
 
-  ledger_->ledger_client()->RunDBTransaction(
-      std::move(transaction),
-      transaction_callback);
+  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 void DatabaseServerPublisherLinks::OnGetRecord(

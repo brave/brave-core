@@ -5,6 +5,7 @@
 
 #include <memory>
 #include <string>
+#include <utility>
 #include <vector>
 
 #include "base/test/task_environment.h"
@@ -56,7 +57,7 @@ TEST_F(BitflyerPostTransactionTest, ServerOK) {
              "transfer_id": "d382d3ae-8462-4b2c-9b60-b669539f41b2",
              "transfer_status": "SUCCESS"
             })";
-            callback(response);
+            std::move(callback).Run(response);
           }));
 
   ::ledger::bitflyer::Transaction transaction;
@@ -79,7 +80,7 @@ TEST_F(BitflyerPostTransactionTest, ServerError401) {
             response.status_code = 401;
             response.url = request->url;
             response.body = "";
-            callback(response);
+            std::move(callback).Run(response);
           }));
 
   ::ledger::bitflyer::Transaction transaction;
@@ -109,7 +110,7 @@ TEST_F(BitflyerPostTransactionTest, ServerError409_SESSION_TIME_OUT) {
              "transfer_status": "SESSION_TIME_OUT",
              "transfer_id": "e94014e7-03cd-4709-852c-a1cf2c2375aa"
             })";
-            callback(response);
+            std::move(callback).Run(response);
           }));
 
   ::ledger::bitflyer::Transaction transaction;
@@ -139,7 +140,7 @@ TEST_F(BitflyerPostTransactionTest, ServerError409_RandomStatusEnum) {
              "transfer_status": "NOT_ALLOWED_TO_RECV",
              "transfer_id": "e94014e7-03cd-4709-852c-a1cf2c2375aa"
             })";
-            callback(response);
+            std::move(callback).Run(response);
           }));
 
   ::ledger::bitflyer::Transaction transaction;
@@ -162,7 +163,7 @@ TEST_F(BitflyerPostTransactionTest, ServerErrorRandom) {
             response.status_code = 453;
             response.url = request->url;
             response.body = "";
-            callback(response);
+            std::move(callback).Run(response);
           }));
 
   ::ledger::bitflyer::Transaction transaction;

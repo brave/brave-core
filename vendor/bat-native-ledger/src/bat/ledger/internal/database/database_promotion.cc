@@ -75,9 +75,7 @@ void DatabasePromotion::InsertOrUpdate(
       _1,
       callback);
 
-  ledger_->ledger_client()->RunDBTransaction(
-      std::move(transaction),
-      transaction_callback);
+  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 void DatabasePromotion::GetRecord(
@@ -125,9 +123,7 @@ void DatabasePromotion::GetRecord(
           _1,
           callback);
 
-  ledger_->ledger_client()->RunDBTransaction(
-      std::move(transaction),
-      transaction_callback);
+  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 void DatabasePromotion::OnGetRecord(
@@ -204,9 +200,7 @@ void DatabasePromotion::GetAllRecords(
           _1,
           callback);
 
-  ledger_->ledger_client()->RunDBTransaction(
-      std::move(transaction),
-      transaction_callback);
+  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 void DatabasePromotion::OnGetAllRecords(
@@ -274,9 +268,7 @@ void DatabasePromotion::SaveClaimId(
       _1,
       callback);
 
-  ledger_->ledger_client()->RunDBTransaction(
-      std::move(transaction),
-      transaction_callback);
+  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 void DatabasePromotion::UpdateStatus(
@@ -307,9 +299,7 @@ void DatabasePromotion::UpdateStatus(
       _1,
       callback);
 
-  ledger_->ledger_client()->RunDBTransaction(
-      std::move(transaction),
-      transaction_callback);
+  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 void DatabasePromotion::UpdateRecordsStatus(
@@ -340,9 +330,7 @@ void DatabasePromotion::UpdateRecordsStatus(
       _1,
       callback);
 
-  ledger_->ledger_client()->RunDBTransaction(
-      std::move(transaction),
-      transaction_callback);
+  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 void DatabasePromotion::CredentialCompleted(
@@ -376,9 +364,7 @@ void DatabasePromotion::CredentialCompleted(
       _1,
       callback);
 
-  ledger_->ledger_client()->RunDBTransaction(
-      std::move(transaction),
-      transaction_callback);
+  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 void DatabasePromotion::GetRecords(
@@ -426,9 +412,7 @@ void DatabasePromotion::GetRecords(
           _1,
           callback);
 
-  ledger_->ledger_client()->RunDBTransaction(
-      std::move(transaction),
-      transaction_callback);
+  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 void DatabasePromotion::OnGetRecords(
@@ -495,9 +479,7 @@ void DatabasePromotion::UpdateRecordsBlankPublicKey(
       _1,
       callback);
 
-  ledger_->ledger_client()->RunDBTransaction(
-      std::move(transaction),
-      transaction_callback);
+  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 }  // namespace database

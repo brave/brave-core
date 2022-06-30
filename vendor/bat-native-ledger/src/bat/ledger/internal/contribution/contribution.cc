@@ -200,26 +200,22 @@ void Contribution::StartAutoContribute(
   ac_->Process(reconcile_stamp);
 }
 
-void Contribution::OnBalance(
-    const type::Result result,
-    type::BalancePtr info,
-    std::shared_ptr<type::ContributionQueuePtr> shared_queue) {
-  if (result != type::Result::LEDGER_OK || !shared_queue) {
+void Contribution::OnBalance(type::ContributionQueuePtr queue,
+                             const type::Result result,
+                             type::BalancePtr info) {
+  if (result != type::Result::LEDGER_OK) {
     queue_in_progress_ = false;
     BLOG(0, "We couldn't get balance from the server.");
     return;
   }
 
-  Process(std::move(*shared_queue), std::move(info));
+  Process(std::move(queue), std::move(info));
 }
 
 void Contribution::Start(type::ContributionQueuePtr info) {
-  auto fetch_callback = std::bind(&Contribution::OnBalance,
-      this,
-      _1,
-      _2,
-      std::make_shared<type::ContributionQueuePtr>(std::move(info)));
-  ledger_->wallet()->FetchBalance(fetch_callback);
+  auto fetch_callback = base::BindOnce(&Contribution::OnBalance,
+                                       base::Unretained(this), std::move(info));
+  ledger_->wallet()->FetchBalance(std::move(fetch_callback));
 }
 
 void Contribution::SetReconcileTimer() {

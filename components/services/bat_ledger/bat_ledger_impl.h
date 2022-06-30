@@ -389,11 +389,6 @@ class BatLedgerImpl :
     CallbackHolder<HasSufficientBalanceToReconcileCallback>* holder,
     bool sufficient);
 
-  static void OnFetchBalance(
-      CallbackHolder<FetchBalanceCallback>* holder,
-      ledger::type::Result result,
-      ledger::type::BalancePtr balance);
-
   static void OnGetExternalWallet(
       CallbackHolder<GetExternalWalletCallback>* holder,
       ledger::type::Result result,

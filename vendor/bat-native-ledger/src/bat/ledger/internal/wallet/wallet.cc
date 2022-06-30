@@ -81,7 +81,7 @@ void Wallet::RecoverWallet(const std::string& pass_phrase,
 }
 
 void Wallet::FetchBalance(ledger::FetchBalanceCallback callback) {
-  balance_->Fetch(callback);
+  balance_->Fetch(std::move(callback));
 }
 
 void Wallet::ExternalWalletAuthorization(

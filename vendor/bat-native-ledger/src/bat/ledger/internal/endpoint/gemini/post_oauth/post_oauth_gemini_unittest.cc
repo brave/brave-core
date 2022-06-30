@@ -5,6 +5,7 @@
 
 #include <memory>
 #include <string>
+#include <utility>
 
 #include "base/test/task_environment.h"
 #include "bat/ledger/internal/endpoint/gemini/post_oauth/post_oauth_gemini.h"
@@ -54,7 +55,7 @@ TEST_F(GeminiPostOauthTest, ServerOK) {
              "refresh_token":"bbbbb",
              "token_type": "Bearer"
             })";
-            callback(response);
+            std::move(callback).Run(response);
           }));
 
   oauth_->Request(
@@ -73,7 +74,7 @@ TEST_F(GeminiPostOauthTest, ServerError401) {
             response.status_code = net::HTTP_UNAUTHORIZED;
             response.url = request->url;
             response.body = "";
-            callback(response);
+            std::move(callback).Run(response);
           }));
 
   oauth_->Request(
@@ -92,7 +93,7 @@ TEST_F(GeminiPostOauthTest, ServerError403) {
             response.status_code = net::HTTP_FORBIDDEN;
             response.url = request->url;
             response.body = "";
-            callback(response);
+            std::move(callback).Run(response);
           }));
 
   oauth_->Request(
@@ -111,7 +112,7 @@ TEST_F(GeminiPostOauthTest, ServerError404) {
             response.status_code = net::HTTP_NOT_FOUND;
             response.url = request->url;
             response.body = "";
-            callback(response);
+            std::move(callback).Run(response);
           }));
 
   oauth_->Request(
@@ -130,7 +131,7 @@ TEST_F(GeminiPostOauthTest, ServerErrorRandom) {
             response.status_code = 418;
             response.url = request->url;
             response.body = "";
-            callback(response);
+            std::move(callback).Run(response);
           }));
 
   oauth_->Request(

@@ -21,10 +21,10 @@
 
 // npm run test -- brave_unit_tests --filter=PromotionTest.*
 
-using ::testing::_;
-using ::testing::Invoke;
 using std::placeholders::_1;
 using std::placeholders::_2;
+using ::testing::_;
+using ::testing::Invoke;
 
 namespace ledger {
 namespace promotion {
@@ -87,16 +87,14 @@ class PromotionTest : public testing::Test {
       .WillByDefault(testing::Return(mock_database_.get()));
 
     ON_CALL(*mock_ledger_client_, LoadURL(_, _))
-      .WillByDefault(
-        Invoke([](
-            type::UrlRequestPtr request,
-            client::LoadURLCallback callback) {
-          type::UrlResponse response;
-          response.status_code = 200;
-          response.url = request->url;
-          response.body = GetResponse(request->url);
-          callback(response);
-        }));
+        .WillByDefault(Invoke(
+            [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
+              type::UrlResponse response;
+              response.status_code = 200;
+              response.url = request->url;
+              response.body = GetResponse(request->url);
+              std::move(callback).Run(response);
+            }));
     }
 };
 

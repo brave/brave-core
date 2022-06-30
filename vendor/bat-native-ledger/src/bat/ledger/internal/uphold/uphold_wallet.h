@@ -44,10 +44,10 @@ class UpholdWallet {
   void GetAnonFunds(
       endpoint::promotion::GetWalletBalanceCallback callback) const;
 
-  void OnGetAnonFunds(const type::Result result,
-                      type::BalancePtr balance,
-                      const std::string& id,
-                      ledger::ResultCallback callback) const;
+  void OnGetAnonFunds(const std::string& id,
+                      ledger::ResultCallback callback,
+                      const type::Result result,
+                      type::BalancePtr balance) const;
 
   void LinkWallet(const double user_funds,
                   const std::string& id,

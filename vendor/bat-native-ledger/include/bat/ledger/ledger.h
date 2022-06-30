@@ -12,10 +12,11 @@
 #include <string>
 #include <vector>
 
+#include "base/callback_forward.h"
 #include "base/containers/flat_map.h"
 #include "bat/ledger/export.h"
-#include "bat/ledger/mojom_structs.h"
 #include "bat/ledger/ledger_client.h"
+#include "bat/ledger/mojom_structs.h"
 
 namespace ledger {
 
@@ -36,7 +37,7 @@ using OnRefreshPublisherCallback = std::function<void(type::PublisherStatus)>;
 using HasSufficientBalanceToReconcileCallback = std::function<void(bool)>;
 
 using FetchBalanceCallback =
-    std::function<void(type::Result, type::BalancePtr)>;
+    base::OnceCallback<void(type::Result, type::BalancePtr)>;
 
 using ExternalWalletCallback =
     std::function<void(type::Result, type::ExternalWalletPtr)>;

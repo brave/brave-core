@@ -5,6 +5,7 @@
 
 #include <memory>
 #include <string>
+#include <utility>
 #include <vector>
 
 #include "base/test/task_environment.h"
@@ -43,10 +44,8 @@ class PostTransactionTest : public testing::Test {
 
 TEST_F(PostTransactionTest, ServerOK) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
-      .WillByDefault(
-          Invoke([](
-              type::UrlRequestPtr request,
-              client::LoadURLCallback callback) {
+      .WillByDefault(Invoke(
+          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
             type::UrlResponse response;
             response.status_code = 202;
             response.url = request->url;
@@ -123,7 +122,7 @@ TEST_F(PostTransactionTest, ServerOK) {
                "type": "card"
              }
             })";
-            callback(response);
+            std::move(callback).Run(response);
           }));
 
   ::ledger::uphold::Transaction transaction;
@@ -142,15 +141,13 @@ TEST_F(PostTransactionTest, ServerOK) {
 
 TEST_F(PostTransactionTest, ServerError401) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
-      .WillByDefault(
-          Invoke([](
-              type::UrlRequestPtr request,
-              client::LoadURLCallback callback) {
+      .WillByDefault(Invoke(
+          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
             type::UrlResponse response;
             response.status_code = 401;
             response.url = request->url;
             response.body = "";
-            callback(response);
+            std::move(callback).Run(response);
           }));
 
   ::ledger::uphold::Transaction transaction;
@@ -169,15 +166,13 @@ TEST_F(PostTransactionTest, ServerError401) {
 
 TEST_F(PostTransactionTest, ServerErrorRandom) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
-      .WillByDefault(
-          Invoke([](
-              type::UrlRequestPtr request,
-              client::LoadURLCallback callback) {
+      .WillByDefault(Invoke(
+          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
             type::UrlResponse response;
             response.status_code = 453;
             response.url = request->url;
             response.body = "";
-            callback(response);
+            std::move(callback).Run(response);
           }));
 
   ::ledger::uphold::Transaction transaction;

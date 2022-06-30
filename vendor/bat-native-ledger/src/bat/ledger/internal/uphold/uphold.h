@@ -12,6 +12,7 @@
 #include <memory>
 #include <string>
 
+#include "base/callback_forward.h"
 #include "base/containers/flat_map.h"
 #include "base/timer/timer.h"
 #include "bat/ledger/internal/endpoint/uphold/get_capabilities/get_capabilities.h"
@@ -38,7 +39,7 @@ class UpholdCard;
 class UpholdAuthorization;
 class UpholdWallet;
 
-using FetchBalanceCallback = std::function<void(type::Result, double)>;
+using FetchBalanceCallback = base::OnceCallback<void(type::Result, double)>;
 using CreateCardCallback =
     std::function<void(type::Result, const std::string&)>;
 using endpoint::uphold::GetCapabilitiesCallback;
@@ -88,9 +89,9 @@ class Uphold {
                              const std::string& publisher_key,
                              ledger::ResultCallback callback);
 
-  void OnFetchBalance(const type::Result result,
-                      const double available,
-                      FetchBalanceCallback callback);
+  void OnFetchBalance(FetchBalanceCallback callback,
+                      const type::Result result,
+                      const double available);
 
   void SaveTransferFee(const std::string& contribution_id, const double amount);
 

@@ -50,7 +50,7 @@ TEST_F(PostTransactionGeminiTest, ServerOK) {
             response.status_code = net::HTTP_CREATED;
             response.url = request->url;
             response.body = "";
-            callback(response);
+            std::move(callback).Run(response);
           }));
 
   type::SKUTransaction transaction;
@@ -70,7 +70,7 @@ TEST_F(PostTransactionGeminiTest, ServerError400) {
             response.status_code = net::HTTP_BAD_REQUEST;
             response.url = request->url;
             response.body = "";
-            callback(response);
+            std::move(callback).Run(response);
           }));
 
   type::SKUTransaction transaction;
@@ -90,7 +90,7 @@ TEST_F(PostTransactionGeminiTest, ServerError404) {
             response.status_code = net::HTTP_NOT_FOUND;
             response.url = request->url;
             response.body = "";
-            callback(response);
+            std::move(callback).Run(response);
           }));
 
   type::SKUTransaction transaction;
@@ -110,7 +110,7 @@ TEST_F(PostTransactionGeminiTest, ServerError409) {
             response.status_code = net::HTTP_CONFLICT;
             response.url = request->url;
             response.body = "";
-            callback(response);
+            std::move(callback).Run(response);
           }));
 
   type::SKUTransaction transaction;
@@ -130,7 +130,7 @@ TEST_F(PostTransactionGeminiTest, ServerError500) {
             response.status_code = net::HTTP_INTERNAL_SERVER_ERROR;
             response.url = request->url;
             response.body = "";
-            callback(response);
+            std::move(callback).Run(response);
           }));
 
   type::SKUTransaction transaction;
@@ -150,7 +150,7 @@ TEST_F(PostTransactionGeminiTest, ServerErrorRandom) {
             response.status_code = 418;
             response.url = request->url;
             response.body = "";
-            callback(response);
+            std::move(callback).Run(response);
           }));
 
   type::SKUTransaction transaction;
