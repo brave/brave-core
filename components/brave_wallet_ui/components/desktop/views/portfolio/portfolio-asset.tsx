@@ -17,7 +17,6 @@ import {
   SupportedTestNetworks,
   WalletRoutes
 } from '../../../../constants/types'
-import { CurrencySymbols } from '../../../../utils/currency-symbols'
 
 // Utils
 import Amount from '../../../../utils/amount'
@@ -281,8 +280,8 @@ export const PortfolioAsset = () => {
   ])
 
   const onUpdateBalance = React.useCallback((value: number | undefined) => {
-    setHoverPrice(value ? new Amount(value).formatAsFiat() : undefined)
-  }, [])
+    setHoverPrice(value ? new Amount(value).formatAsFiat(defaultCurrencies.fiat) : undefined)
+  }, [defaultCurrencies])
 
   const onToggleHideBalances = React.useCallback(() => {
     setHideBalances(prevHideBalances => !prevHideBalances)
@@ -344,7 +343,7 @@ export const PortfolioAsset = () => {
           </AssetRow>
 
           <PriceRow>
-            <PriceText>{CurrencySymbols[defaultCurrencies.fiat]}{hoverPrice || (selectedAssetFiatPrice ? new Amount(selectedAssetFiatPrice.price).formatAsFiat() : 0.00)}</PriceText>
+            <PriceText>{hoverPrice || (selectedAssetFiatPrice ? new Amount(selectedAssetFiatPrice.price).formatAsFiat(defaultCurrencies.fiat) : 0.00)}</PriceText>
             <PercentBubble isDown={selectedAssetFiatPrice ? Number(selectedAssetFiatPrice.assetTimeframeChange) < 0 : false}>
               <ArrowIcon isDown={selectedAssetFiatPrice ? Number(selectedAssetFiatPrice.assetTimeframeChange) < 0 : false} />
               <PercentText>{selectedAssetFiatPrice ? Number(selectedAssetFiatPrice.assetTimeframeChange).toFixed(2) : 0.00}%</PercentText>
