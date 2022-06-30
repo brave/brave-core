@@ -23,7 +23,7 @@ import GridSiteTile from './gridTile'
 import { TopSiteDragOverlay } from './gridTileOverlay'
 
 // Note: to increase the number of pages, you will also need to increase
-// kMaxNumCustomLinks in ntp_tiles/constants.cc 
+// kMaxNumCustomLinks in ntp_tiles/constants.cc
 const MAX_PAGES = 4
 const activationConstraint: PointerActivationConstraint = { distance: 2 }
 const autoScrollOptions: AutoScrollOptions = { interval: 500 }
