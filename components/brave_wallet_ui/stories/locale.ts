@@ -115,7 +115,7 @@ provideStrings({
   braveWalletDisclosuresTitle: 'Before we begin',
   braveWalletDisclosuresDescription: 'We require that you acknowledge the items below',
   braveWalletSelfCustodyDisclosureCheckboxText: 'I understand this is a self-custody wallet, and that I alone am responsible for any associated funds, assets, or accounts, and for taking appropriate action to secure, protect and backup my wallet. I understand that Brave can NOT access my wallet or reverse transactions on my behalf, and that my recovery phrase is the ONLY way to regain access in the event of a lost password, stolen device, or similar circumstance.',
-  braveWalletTermsOfServiceCheckboxText: 'I have read and agree to the $1Terms of Service$2',
+  braveWalletTermsOfServiceCheckboxText: 'I have read and agree to the $1Terms of use$2',
 
   // Backup Wallet Intro (v2)
   braveWalletOnboardingRecoveryPhraseBackupIntroTitle: 'Before you start backing up wallet',
