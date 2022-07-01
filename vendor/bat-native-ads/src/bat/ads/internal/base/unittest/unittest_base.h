@@ -76,11 +76,13 @@ class UnitTestBase : public testing::Test {
   // |CopyDirectoryFromTestPathToTempPath| to copy directories.
   bool CopyFileFromTestPathToTempPath(const std::string& from_path,
                                       const std::string& to_path) const;
+  bool CopyFileFromTestPathToTempPath(const std::string& path) const;
 
   // Copies the given path from "data/test", and all subdirectories and their
   // contents as well to the temp directory.
   bool CopyDirectoryFromTestPathToTempPath(const std::string& from_path,
                                            const std::string& to_path) const;
+  bool CopyDirectoryFromTestPathToTempPath(const std::string& path) const;
 
   // Fast-forwards virtual time by |time_delta|, causing all tasks on the main
   // thread and thread pool with a remaining delay less than or equal to

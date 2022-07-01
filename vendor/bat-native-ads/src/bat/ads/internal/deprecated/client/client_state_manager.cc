@@ -18,6 +18,7 @@
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/base/logging_util.h"
 #include "bat/ads/internal/deprecated/client/client_info.h"
+#include "bat/ads/internal/deprecated/client/client_state_manager_constants.h"
 #include "bat/ads/internal/deprecated/json/json_helper.h"
 #include "bat/ads/internal/features/text_classification_features.h"
 #include "bat/ads/internal/history/history_constants.h"
@@ -550,9 +551,11 @@ void ClientStateManager::Save() {
 
   BLOG(9, "Saving client state");
 
-  auto json = client_->ToJson();
+  const std::string json = client_->ToJson();
 
-  SetHash(json);
+  if (!is_mutated_) {
+    SetHash(json);
+  }
 
   auto callback =
       std::bind(&ClientStateManager::OnSaved, this, std::placeholders::_1);
@@ -601,6 +604,9 @@ void ClientStateManager::OnLoaded(const bool success, const std::string& json) {
   }
 
   is_mutated_ = IsMutated(client_->ToJson());
+  if (is_mutated_) {
+    BLOG(9, "Client state is mutated");
+  }
 
   callback_(/* success  */ true);
 }
