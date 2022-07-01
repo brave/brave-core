@@ -4,7 +4,7 @@
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 
 // actions
 import { WalletPageActions } from '../../../actions'
@@ -21,7 +21,7 @@ import {
 } from '../disclosures/disclosures'
 
 // routes
-import { WalletRoutes } from '../../../../constants/types'
+import { PageState, WalletRoutes } from '../../../../constants/types'
 
 // styles
 import { VerticalSpace, WalletWelcomeGraphic } from '../../../../components/shared/style'
@@ -38,6 +38,7 @@ import {
 export const OnboardingWelcome = () => {
   // redux
   const dispatch = useDispatch()
+  const setupStillInProgress = useSelector(({ page }: { page: PageState }) => page.setupStillInProgress)
 
   // state
   const [nextStep, setNextStep] = React.useState<OnboardingDisclosuresNextSteps | undefined>(undefined)
@@ -56,9 +57,12 @@ export const OnboardingWelcome = () => {
 
   // effects
   React.useEffect(() => {
-    dispatch(WalletPageActions.walletSetupComplete(false))
+    // start wallet setup
+    if (!setupStillInProgress) {
+      dispatch(WalletPageActions.walletSetupComplete(false))
+    }
     dispatch(WalletPageActions.onOnboardingShown())
-  }, [])
+  }, [setupStillInProgress])
 
   // render
   if (nextStep !== undefined) {

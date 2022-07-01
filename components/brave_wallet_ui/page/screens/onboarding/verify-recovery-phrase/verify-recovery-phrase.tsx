@@ -45,7 +45,7 @@ export const OnboardingVerifyRecoveryPhrase = () => {
 
   // redux
   const dispatch = useDispatch()
-  const { mnemonic } = useSelector(({ page }: { page: PageState }) => page)
+  const mnemonic = useSelector(({ page }: { page: PageState }) => page.mnemonic)
 
   // routing
   const history = useHistory()
