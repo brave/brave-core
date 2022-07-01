@@ -68,7 +68,11 @@ class SettingsBraveIpfsPageElement extends SettingBraveIpfsPageElementBase {
       this.isLocalNodeLaunched_ = launched
     })
     this.browserProxy_.notifyIpfsNodeStatus();
-    window.addEventListener('load', this.onLoad);
+
+    window.addEventListener('load', this.onLoad_.bind(this));
+    if (document.readyState == 'complete') {
+      this.onLoad_()
+    }
   }
 
   currentRouteChanged() {
@@ -82,6 +86,7 @@ class SettingsBraveIpfsPageElement extends SettingBraveIpfsPageElementBase {
     // Check if IPFS method is LOCAL_NODE
     this.isLocalNodeEnabled_ = (resolve_method == IPFS_RESOLVE_METHOD_TYPES.IPFS_LOCAL) &&
                                 this.ipfsEnabled_
+
     this.showIPFSLearnMoreLink_ =
       (resolve_method == IPFS_RESOLVE_METHOD_TYPES.IPFS_ASK)
     this.$.ipfsStorageMax.value =

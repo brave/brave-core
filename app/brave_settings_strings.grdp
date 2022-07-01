@@ -945,6 +945,9 @@
   <message name="IDS_SETTINGS_IPNS_KEYS_EXPORT_ERROR" desc="The error text if ipns keys export failed">
     '<ph name="KEY_NAME">$1<ex>MyCustomKey</ex></ph>' key export failed
   </message>
+  <message name="IDS_IPFS_LOCAL_NODE_WARNING" desc="The warning about possible dns\proxy leak when use ipfs">
+    Note: Network requests may not use browser proxy and DNS settings.
+  </message>
   <message name="IDS_SETTINGS_IPNS_KEYS_IMPORT_BUTTON_TITLE" desc="The title of the button to import ipns keys">
     Import
   </message>
