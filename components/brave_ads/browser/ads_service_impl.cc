@@ -11,6 +11,7 @@
 #include "base/base64.h"
 #include "base/base_switches.h"
 #include "base/bind.h"
+#include "base/callback_helpers.h"
 #include "base/containers/flat_map.h"
 #include "base/containers/flat_set.h"
 #include "base/cxx17_backports.h"
@@ -697,13 +698,10 @@ void AdsServiceImpl::SetupOnFirstInitialize() {
   file_task_runner_->PostTask(
       FROM_HERE, base::BindOnce(&RemoveDeprecatedAdsDataFiles, base_path_));
 
-  // Initiate prefetching of the new tab page ad. Also need to purge orphaned
-  // new tab page ad events which may have remained from the previous browser
-  // startup.
-  PurgeOrphanedAdEventsForType(
-      ads::mojom::AdType::kNewTabPageAd,
-      base::BindOnce(&AdsServiceImpl::OnPurgeOrphanedAdEventsForNewTabPageAds,
-                     AsWeakPtr()));
+  // Purge orphaned new tab page ad events which may have remained from the
+  // previous browser startup.
+  PurgeOrphanedAdEventsForType(ads::mojom::AdType::kNewTabPageAd,
+                               base::DoNothing());
 }
 
 void AdsServiceImpl::ShutdownBatAds() {
@@ -1358,16 +1356,15 @@ void AdsServiceImpl::PrefetchNewTabPageAd() {
 
 void AdsServiceImpl::OnPrefetchNewTabPageAd(bool success,
                                             const std::string& json) {
-  // The previous prefetched new tab page ad was not served.
+  if (!success) {
+    return;
+  }
+
+  // The previous successfully prefetched new tab page ad was not served.
   if (prefetched_new_tab_page_ad_info_ &&
       !purge_orphaned_new_tab_page_ad_events_time_) {
     purge_orphaned_new_tab_page_ad_events_time_ =
         base::Time::Now() + base::Hours(1);
-  }
-
-  if (!success) {
-    prefetched_new_tab_page_ad_info_.reset();
-    return;
   }
 
   ads::NewTabPageAdInfo ad_info;
