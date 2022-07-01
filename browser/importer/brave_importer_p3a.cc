@@ -20,6 +20,7 @@ enum class ImporterSource {
   kSafari,
   kIE,
   kEdge,
+  kEdgeChromium,
   kSize
 };
 }  // namespace
@@ -34,10 +35,10 @@ void RecordImporterP3A(importer::ImporterType type) {
   case importer::TYPE_IE:
     metric = ImporterSource::kIE;
     break;
-#endif
   case importer::TYPE_EDGE:
     metric = ImporterSource::kEdge;
     break;
+#endif
   case importer::TYPE_FIREFOX:
     metric = ImporterSource::kFirefox;
     break;
@@ -51,6 +52,9 @@ void RecordImporterP3A(importer::ImporterType type) {
     break;
   case importer::TYPE_CHROME:
     metric = ImporterSource::kChrome;
+    break;
+  case importer::TYPE_EDGE_CHROMIUM:
+    metric = ImporterSource::kEdgeChromium;
     break;
   }
 

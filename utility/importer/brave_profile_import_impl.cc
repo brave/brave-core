@@ -32,7 +32,7 @@ scoped_refptr<Importer> CreateImporterByType(importer::ImporterType type) {
   switch (type) {
     case importer::TYPE_CHROME:
       return new ChromeImporter();
-    case importer::TYPE_EDGE:
+    case importer::TYPE_EDGE_CHROMIUM:
       return new EdgeImporter();
     default:
       NOTREACHED();

@@ -16,6 +16,7 @@
 #include "base/strings/utf_string_conversions.h"
 #include "base/values.h"
 #include "brave/common/importer/scoped_copy_file.h"
+#include "brave/grit/brave_generated_resources.h"
 #include "brave/utility/importer/brave_external_process_importer_bridge.h"
 #include "build/build_config.h"
 #include "chrome/common/importer/imported_bookmark_entry.h"
@@ -33,13 +34,13 @@
 #include "sql/database.h"
 #include "sql/statement.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
+#include "ui/base/l10n/l10n_util.h"
 #include "ui/base/page_transition_types.h"
 #include "url/gurl.h"
 
 #if BUILDFLAG(IS_LINUX)
 #include "chrome/grit/chromium_strings.h"
 #include "components/os_crypt/key_storage_config_linux.h"
-#include "ui/base/l10n/l10n_util.h"
 #endif  // BUILDFLAG(IS_LINUX)
 
 #if BUILDFLAG(IS_WIN)
@@ -181,7 +182,7 @@ void ChromeImporter::StartImport(const importer::SourceProfile& source_profile,
                                  ImporterBridge* bridge) {
   bridge_ = bridge;
   source_path_ = source_profile.source_path;
-
+  importer_name_ = source_profile.importer_name;
   // The order here is important!
   bridge_->NotifyStarted();
 
@@ -303,7 +304,9 @@ void ChromeImporter::ImportBookmarks() {
   }
   // Write into profile.
   if (!bookmarks.empty() && !cancelled()) {
-    bridge_->AddBookmarks(bookmarks, u"Imported from Chrome");
+    bridge_->AddBookmarks(
+        bookmarks, l10n_util::GetStringFUTF16(IDS_IMPORTED_FROM_BOOKMARK_FOLDER,
+                                              importer_name_));
   }
 
   // Import favicons.
