@@ -39,15 +39,13 @@ export const _WalletOnboardingConcept = () => {
     <WalletPageStory
       walletStateOverride={{
         hasIncorrectPassword: false,
-        isWalletCreated: false,
         isSolanaEnabled: true,
         isFilecoinEnabled: true,
-        isWalletBackedUp: false
+        isWalletBackedUp: false,
+        isWalletCreated: true
       }}
       pageStateOverride={{
-        hasInitialized: true,
-        mnemonic: undefined,
-        isCryptoWalletsInitialized: false,
+        isCryptoWalletsInitialized: true,
         isMetaMaskInitialized: true,
         setupStillInProgress: true,
         isImportWalletsCheckComplete: true
