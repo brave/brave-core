@@ -1856,6 +1856,42 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CosmeticFilteringSimple) {
   EXPECT_EQ(base::Value(true), result_third.value);
 }
 
+// Test that cosmetic filtering is applied independently in a third-party child
+// frame
+IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CosmeticFilteringFrames) {
+  ASSERT_TRUE(InstallDefaultAdBlockExtension());
+  UpdateAdBlockInstanceWithRules("frame.com##.ad\n");
+
+  GURL tab_url =
+      embedded_test_server()->GetURL("b.com", "/cosmetic_filtering.html");
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), tab_url));
+
+  content::WebContents* contents =
+      browser()->tab_strip_model()->GetActiveWebContents();
+
+  GURL frame_url =
+      embedded_test_server()->GetURL("frame.com", "/cosmetic_frame.html");
+  content::NavigateIframeToURL(contents, "iframe", frame_url);
+
+  content::RenderFrameHost* inner_frame = content::FrameMatchingPredicate(
+      contents->GetPrimaryPage(),
+      base::BindRepeating(content::FrameHasSourceUrl, frame_url));
+
+  auto frame_result = EvalJs(inner_frame, R"(
+          const testdiv = document.getElementById('testdiv');
+          console.error(testdiv);
+          const style = window.getComputedStyle(testdiv);
+          style['display'] === 'none'
+        )");
+  ASSERT_TRUE(frame_result.error.empty());
+  EXPECT_EQ(base::Value(true), frame_result.value);
+
+  auto main_result =
+      EvalJs(contents, R"(checkSelector('.ad', 'display', 'block'))");
+  ASSERT_TRUE(main_result.error.empty());
+  EXPECT_EQ(base::Value(true), main_result.value);
+}
+
 // Test cosmetic filtering ignores content determined to be 1st party
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CosmeticFilteringProtect1p) {
   ASSERT_TRUE(InstallDefaultAdBlockExtension());

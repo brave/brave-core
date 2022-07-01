@@ -122,7 +122,7 @@ void CosmeticFiltersJsRenderFrameObserver::OnProcessURL() {
 void CosmeticFiltersJsRenderFrameObserver::DidCreateScriptContext(
     v8::Local<v8::Context> context,
     int32_t world_id) {
-  if (!render_frame()->IsMainFrame() || world_id != isolated_world_id_)
+  if (world_id != isolated_world_id_)
     return;
 
   native_javascript_handle_->AddJavaScriptObjectToFrame(context);
