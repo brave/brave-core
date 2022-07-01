@@ -26,6 +26,7 @@
 #include "brave/components/ntp_background_images/browser/view_counter_service.h"
 #include "brave/components/sidebar/buildflags/buildflags.h"
 #include "brave/components/speedreader/common/buildflags.h"
+#include "brave/components/tor/buildflags/buildflags.h"
 #include "brave/components/version_info/version_info.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/webui/settings/metrics_reporting_handler.h"

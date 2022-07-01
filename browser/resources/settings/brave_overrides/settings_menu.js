@@ -296,6 +296,13 @@ RegisterPolymerTemplateModifications({
     )
     walletEl.insertAdjacentElement('afterend', ipfsEl)
 
+    const torEl = createMenuElement(
+      loadTimeData.getString('braveTor'),
+      '/tor',
+      'brave_settings:tor',
+      'tor')
+    ipfsEl.insertAdjacentElement('afterend', torEl)
+
     // Move autofill to advanced
     const autofillEl = getMenuElement(templateContent, '/autofill')
     const languagesEl = getMenuElement(templateContent, '/languages')

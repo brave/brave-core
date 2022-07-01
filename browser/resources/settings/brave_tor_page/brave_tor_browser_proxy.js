@@ -13,6 +13,10 @@ export class BraveTorBrowserProxy {
   setBridgesConfig() { }
   requestBridgesCaptcha() { }
   resolveBridgesCaptcha() { }
+
+  setTorEnabled() { }
+  isTorEnabled() { }
+  isTorManaged() { }
 }
 
 /**
@@ -39,6 +43,18 @@ export class BraveTorBrowserProxyImpl {
 
   resolveBridgesCaptcha(captcha) {
     return sendWithPromise('brave_tor.resolveBridgesCaptcha', captcha)
+  }
+
+  setTorEnabled(value) {
+    chrome.send('brave_tor.setTorEnabled', [value])
+  }
+
+  isTorEnabled() {
+    return sendWithPromise('brave_tor.isTorEnabled')
+  }
+
+  isTorManaged() {
+    return sendWithPromise('brave_tor.isTorManaged')
   }
 }
 

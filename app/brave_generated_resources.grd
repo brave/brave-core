@@ -260,6 +260,9 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
       </message>
 
       <!-- Tor -->
+      <message name="IDS_BRAVE_TOR_SETTINGS_SECTION" desc="Open Tor settings section">
+        Tor windows
+      </message>
       <message name="IDS_NEW_TOR_IDENTITY" desc="The text label of a menu item for requesting new Tor identity">
         New Tor Identity
       </message>

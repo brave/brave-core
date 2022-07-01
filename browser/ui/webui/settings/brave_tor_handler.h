@@ -11,6 +11,7 @@
 #include "base/memory/weak_ptr.h"
 #include "base/values.h"
 #include "chrome/browser/ui/webui/settings/settings_page_ui_handler.h"
+#include "components/prefs/pref_change_registrar.h"
 
 class BraveTorHandler : public settings::SettingsPageUIHandler {
  public:
@@ -33,6 +34,13 @@ class BraveTorHandler : public settings::SettingsPageUIHandler {
   void SendResultToJavascript(bool reset_request,
                               const base::Value& callback_id,
                               const base::Value& response);
+
+  void SetTorEnabled(const base::Value::List& args);
+  void IsTorEnabled(const base::Value::List& args);
+  void IsTorManaged(const base::Value::List& args);
+  void OnTorEnabledChanged();
+
+  PrefChangeRegistrar local_state_change_registrar_;
 
   std::unique_ptr<class BridgeRequest> request_;
 };

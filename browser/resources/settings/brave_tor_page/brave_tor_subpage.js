@@ -3,10 +3,10 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
-import { html, PolymerElement } from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js';
-import { WebUIListenerMixin } from 'chrome://resources/js/web_ui_listener_mixin.js';
-import { RouteObserverMixin } from '../router.js';
-import { PrefsMixin } from '../prefs/prefs_mixin.js';
+import { html, PolymerElement } from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
+import { WebUIListenerMixin } from 'chrome://resources/js/web_ui_listener_mixin.js'
+import { RouteObserverMixin } from '../router.js'
+import { PrefsMixin } from '../prefs/prefs_mixin.js'
 import { BraveTorBrowserProxyImpl } from './brave_tor_browser_proxy.js'
 import './brave_tor_bridges_dialog.js'
 
@@ -78,6 +78,17 @@ class SettingsBraveTorPageElement extends SettingBraveTorPageElementBase {
         notify: true,
       },
 
+      disableTorOption_: Boolean,
+
+      torEnabledPref_: {
+        type: Object,
+        value() {
+          // TODO(dbeam): this is basically only to appease PrefControlMixin.
+          // Maybe add a no-validate attribute instead? This makes little sense.
+          return {}
+        },
+      },
+
       showRequestBridgesDialog_: Boolean,
 
       isConfigChanged_: {
@@ -92,7 +103,7 @@ class SettingsBraveTorPageElement extends SettingBraveTorPageElementBase {
   browserProxy_ = BraveTorBrowserProxyImpl.getInstance()
 
   ready() {
-    super.ready()
+    super.ready()    
     this.browserProxy_.getBridgesConfig().then((config) => {
       this.loadedConfig_ = config
       this.useBridges_ = config.use_bridges
@@ -101,6 +112,18 @@ class SettingsBraveTorPageElement extends SettingBraveTorPageElementBase {
       this.providedBridges_ = config.provided_bridges.join('\n')
 
       this.isUsingBridges_ = this.useBridges_ != Usage.NOT_USED
+    })
+
+    // PrefControlMixin checks for a pref being valid, so have to fake it,
+    // same as upstream.
+    this.addWebUIListener('tor-enabled-changed', enabled => {
+      this.setTorEnabledPref_(enabled)
+    })
+    this.browserProxy_.isTorEnabled().then(enabled => {
+      this.setTorEnabledPref_(enabled)
+    })
+    this.browserProxy_.isTorManaged().then(managed => {
+      this.disableTorOption_ = managed
     })
   }
 
@@ -117,7 +140,7 @@ class SettingsBraveTorPageElement extends SettingBraveTorPageElementBase {
   computeUseBridgesValue_() {
     switch (this.useBridges_) {
       case Usage.NOT_USED:
-        return '';
+        return ''
       case Usage.USE_BUILT_IN:
         return 'useBuiltIn'
       case Usage.USE_REQUESTED:
@@ -150,7 +173,9 @@ class SettingsBraveTorPageElement extends SettingBraveTorPageElementBase {
   }
 
   computeIsConfigChanged_() {
-    const isObject = (object) => { return object != null && typeof object === 'object' }
+    const isObject = (object) => {
+      return object != null && typeof object === 'object'
+    }
 
     const matches = (object1, object2) => {
       const keys1 = Object.keys(object1)
@@ -163,7 +188,8 @@ class SettingsBraveTorPageElement extends SettingBraveTorPageElementBase {
         const val1 = object1[key]
         const val2 = object2[key]
         const areObjects = isObject(val1) && isObject(val2)
-        if ((areObjects && !matches(val1, val2)) || (!areObjects && val1 !== val2)) {
+        if ((areObjects && !matches(val1, val2)) ||
+            (!areObjects && val1 !== val2)) {
           return false
         }
       }
@@ -171,7 +197,7 @@ class SettingsBraveTorPageElement extends SettingBraveTorPageElementBase {
     }
 
     if (!this.loadedConfig_)
-      return false;
+      return false
 
     return !matches(this.getCurrentConfig_(), this.loadedConfig_)
   }
@@ -180,7 +206,22 @@ class SettingsBraveTorPageElement extends SettingBraveTorPageElementBase {
     return item === selection
   }
 
-  setBridgesConfig_() {
+  setTorEnabledPref_(enabled) {
+    const pref = {
+      key: '',
+      type: chrome.settingsPrivate.PrefType.BOOLEAN,
+      value: enabled,
+    }
+    this.torEnabledPref_ = pref
+  }
+
+  onTorEnabledChange_(e) {
+    e.stopPropagation()
+    this.browserProxy_.setTorEnabled(e.target.checked)
+  }
+
+  setBridgesConfig_(e) {
+    e.stopPropagation()
     this.loadedConfig_ = this.getCurrentConfig_()
     this.browserProxy_.setBridgesConfig(this.loadedConfig_)
   }

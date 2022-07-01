@@ -22,10 +22,13 @@
 #include "base/task/thread_pool.h"
 #include "base/values.h"
 #include "brave/browser/tor//tor_profile_service_factory.h"
+#include "brave/components/tor/pref_names.h"
 #include "brave/components/tor/tor_profile_service.h"
 #include "brave/components/tor/tor_utils.h"
+#include "chrome/browser/browser_process.h"
 #include "chrome/browser/image_fetcher/image_decoder_impl.h"
 #include "components/image_fetcher/core/image_decoder.h"
+#include "components/prefs/pref_service.h"
 #include "content/public/browser/browser_thread.h"
 #include "content/public/browser/navigation_controller.h"
 #include "content/public/browser/render_frame_host.h"
@@ -239,6 +242,24 @@ void BraveTorHandler::RegisterMessages() {
       "brave_tor.resolveBridgesCaptcha",
       base::BindRepeating(&BraveTorHandler::ResolveBridgesCaptcha,
                           base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+      "brave_tor.setTorEnabled",
+      base::BindRepeating(&BraveTorHandler::SetTorEnabled,
+                          base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+      "brave_tor.isTorEnabled",
+      base::BindRepeating(&BraveTorHandler::IsTorEnabled,
+                          base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+      "brave_tor.isTorManaged",
+      base::BindRepeating(&BraveTorHandler::IsTorManaged,
+                          base::Unretained(this)));
+
+  local_state_change_registrar_.Init(g_browser_process->local_state());
+  local_state_change_registrar_.Add(
+      tor::prefs::kTorDisabled,
+      base::BindRepeating(&BraveTorHandler::OnTorEnabledChanged,
+                          base::Unretained(this)));
 }
 
 void BraveTorHandler::GetBridgesConfig(const base::Value::List& args) {
@@ -298,4 +319,35 @@ void BraveTorHandler::SendResultToJavascript(bool reset_request,
   if (reset_request) {
     request_.reset();
   }
+}
+
+void BraveTorHandler::SetTorEnabled(const base::Value::List& args) {
+  CHECK_EQ(args.size(), 1U);
+  const bool enabled = args[0].GetBool();
+  AllowJavascript();
+  TorProfileServiceFactory::SetTorDisabled(!enabled);
+}
+
+void BraveTorHandler::IsTorEnabled(const base::Value::List& args) {
+  CHECK_EQ(args.size(), 1U);
+  AllowJavascript();
+  ResolveJavascriptCallback(
+      args[0], base::Value(!TorProfileServiceFactory::IsTorDisabled()));
+}
+
+void BraveTorHandler::OnTorEnabledChanged() {
+  if (!IsJavascriptAllowed()) {
+    FireWebUIListener("tor-enabled-changed",
+                      base::Value(!TorProfileServiceFactory::IsTorDisabled()));
+  }
+}
+
+void BraveTorHandler::IsTorManaged(const base::Value::List& args) {
+  CHECK_EQ(args.size(), 1U);
+
+  const bool is_managed = g_browser_process->local_state()
+                              ->FindPreference(tor::prefs::kTorDisabled)
+                              ->IsManaged();
+  AllowJavascript();
+  ResolveJavascriptCallback(args[0], base::Value(is_managed));
 }

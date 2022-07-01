@@ -13,6 +13,7 @@ import '../brave_new_tab_page/brave_new_tab_page.m.js'
 import '../brave_rewards_page/brave_rewards_page.js'
 import '../brave_search_engines_page/brave_search_engines_page.js'
 import '../brave_sync_page/brave_sync_page.js'
+import '../brave_tor_page/brave_tor_subpage.js'
 import '../brave_wallet_page/brave_wallet_page.js'
 import '../default_brave_shields_page/default_brave_shields_page.js'
 import '../getting_started_page/getting_started.js'
@@ -128,6 +129,18 @@ RegisterPolymerTemplateModifications({
           prefs: '{{prefs}}'
         }
       ))
+      const sectionTor = document.createElement('template')
+      sectionTor.setAttribute('is', 'dom-if')
+      sectionTor.setAttribute('restamp', true)
+      sectionTor.setAttribute('if', '[[showPage_(pageVisibility.braveTor)]]')
+      sectionTor.content.appendChild(createSectionElement(
+        'tor',
+        'braveTor',
+        'settings-brave-tor-subpage',
+        {
+          prefs: '{{prefs}}'
+        }
+      ))
       const sectionWallet = document.createElement('template')
       sectionWallet.setAttribute('is', 'dom-if')
       sectionWallet.setAttribute('restamp', true)
@@ -237,6 +250,8 @@ RegisterPolymerTemplateModifications({
       sectionExtensions.insertAdjacentElement('afterend', sectionWallet)
       // Insert IPFS
       sectionWallet.insertAdjacentElement('afterend', sectionIPFS)
+      // Insert Tor
+      sectionWallet.insertAdjacentElement('afterend', sectionTor)
       // Advanced
       const advancedTemplate = templateContent.querySelector('template[if="[[showAdvancedSettings_(pageVisibility.advancedSettings)]]"]')
       if (!advancedTemplate) {

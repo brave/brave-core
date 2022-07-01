@@ -74,5 +74,5 @@ export default function addBraveRoutes(r) {
   } else if (!isGuest) {
     console.error('[Brave Settings Overrides] Could not move safety check route to advanced route', r)
   }
-  r.TOR = r.PRIVACY.createChild('tor')
+  r.TOR = r.BASIC.createSection('/tor', 'tor')
 }
