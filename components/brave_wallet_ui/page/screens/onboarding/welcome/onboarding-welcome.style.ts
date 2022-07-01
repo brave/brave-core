@@ -5,9 +5,6 @@
 
 import styled from 'styled-components'
 
-// assets
-import BraveWalletWithCoins from '../../../../assets/svg-icons/onboarding/brave-wallet-with-coins.svg'
-
 // styles
 import { Column, Row } from '../../../../components/shared/style'
 
@@ -22,13 +19,6 @@ export const Title = styled.p<{ maxWidth?: string }>`
   text-align: center;
   color: ${(p) => p.theme.color.text01};
   max-width: ${(p) => p?.maxWidth || 'unset'};
-`
-
-export const PageIcon = styled.div`
-  width: 350px;
-  height: 264px;
-  background: url(${BraveWalletWithCoins});
-  background-repeat: no-repeat;
 `
 
 export const LearnMoreLink = styled.a`

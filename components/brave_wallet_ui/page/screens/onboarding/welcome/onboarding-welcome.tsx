@@ -24,11 +24,10 @@ import {
 import { WalletRoutes } from '../../../../constants/types'
 
 // styles
-import { VerticalSpace } from '../../../../components/shared/style'
+import { VerticalSpace, WalletWelcomeGraphic } from '../../../../components/shared/style'
 import { OnboardingWrapper } from '../onboarding.style'
 import {
   Title,
-  PageIcon,
   ButtonContainer,
   LearnMoreLink,
   BlockQuote,
@@ -68,7 +67,7 @@ export const OnboardingWelcome = () => {
 
   return <WalletPageLayout>
     <OnboardingWrapper>
-      <PageIcon />
+      <WalletWelcomeGraphic />
 
       <Title maxWidth='467px'>
         {getLocale('braveWalletWelcomeTitle')}
