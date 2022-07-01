@@ -22,7 +22,6 @@ export const StyledWrapper = styled.div`
   justify-content: flex-start;
   flex-direction: column;
   width: 100%;
-  margin-bottom: 30px;
 `
 
 export const InputWrapper = styled.div`
@@ -47,14 +46,22 @@ export const Input = styled.input<StyleProps>`
   background-image: none;
   background-color: ${(p) => p.hasError ? p.theme.color.errorBackground : p.theme.color.background02};
   box-shadow: none;
-  border: ${(p) => p.hasError ? `4px solid ${p.theme.color.errorBorder}` : `1px solid ${p.theme.color.interactive08}`};
+  
+  border: ${(p) => p.hasError
+    ? `4px solid ${p.theme.color.errorBorder}`
+    : `1px solid ${p.theme.color.interactive08}`
+  };
+  padding: ${(p) => p.hasError
+    ? 7
+    : 10
+  }px;
+  
   border-radius: 4px;
   font-family: Poppins;
   font-style: normal;
   font-size: 13px;
   line-height: 20px;
   letter-spacing: 0.01em;
-  padding: 10px 10px 10px 10px;
   margin: 0px;
   color: ${(p) => p.theme.color.text01};
   ::placeholder {
@@ -66,15 +73,15 @@ export const Input = styled.input<StyleProps>`
     font-weight: normal;
   }
   :focus {
-      outline: none;
+    outline: none;
   }
   ::-webkit-inner-spin-button {
-      -webkit-appearance: none;
-      margin: 0;
+    -webkit-appearance: none;
+    margin: 0;
   }
   ::-webkit-outer-spin-button {
-      -webkit-appearance: none;
-      margin: 0;
+    -webkit-appearance: none;
+    margin: 0;
   }
 `
 

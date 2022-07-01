@@ -15,7 +15,10 @@ import { usePasswordStrength } from '../../../common/hooks/use-password-strength
 import { PasswordStrengthBar } from './password-strength-bar'
 
 // style
-import { ToggleVisibilityButton } from '../style'
+import {
+  Column,
+  ToggleVisibilityButton
+} from '../style'
 import {
   StyledWrapper,
   InputWrapper,
@@ -97,7 +100,7 @@ export const NewPasswordInput = ({
 
   // render
   return (
-    <>
+    <Column fullWidth gap={password ? '4px' : '48px'}>
       <StyledWrapper>
         <InputLabel>{getLocale('braveWalletCreatePasswordInput')}</InputLabel>
 
@@ -124,52 +127,52 @@ export const NewPasswordInput = ({
 
         {password &&
           <PasswordStrengthBar
-            isVisible={isPasswordFieldFocused}
-            passwordStrength={passwordStrength}
-            criteria={[
-              passwordStrength.containsNumber,
-              passwordStrength.containsSpecialChar,
-              passwordStrength.isLongEnough
-            ]}
+              isVisible={isPasswordFieldFocused}
+              passwordStrength={passwordStrength}
+              criteria={[
+                passwordStrength.containsNumber,
+                passwordStrength.containsSpecialChar,
+                passwordStrength.isLongEnough
+              ]}
+            />
+        }
+
+      </StyledWrapper>
+
+      <StyledWrapper>
+        <InputLabel>{getLocale('braveWalletConfirmPasswordInput')}</InputLabel>
+        <InputWrapper>
+          <Input
+            hasError={!!hasConfirmedPasswordError}
+            type={(showToggleButton && showPassword) ? 'text' : 'password'}
+            placeholder={getLocale('braveWalletConfirmPasswordInput')}
+            value={confirmedPassword}
+            onChange={handlePasswordConfirmationChanged}
+            onKeyDown={handleKeyDown}
+            autoFocus={false}
+            autoComplete='off'
           />
-        }
+          {showToggleButton &&
+            <ToggleVisibilityButton
+              isVisible={showPassword}
+              onClick={onTogglePasswordVisibility}
+            />
+          }
+        </InputWrapper>
 
-    </StyledWrapper>
+        <PasswordMatchRow>
+          {password === confirmedPassword && confirmedPassword &&
+          <>
+            <PasswordMatchCheckmark />
+            <PasswordMatchText>
+              {getLocale('braveWalletPasswordMatch')}
+            </PasswordMatchText>
+          </>
+          }
+        </PasswordMatchRow>
 
-    <StyledWrapper>
-      <InputLabel>{getLocale('braveWalletConfirmPasswordInput')}</InputLabel>
-      <InputWrapper>
-        <Input
-          hasError={!!hasConfirmedPasswordError}
-          type={(showToggleButton && showPassword) ? 'text' : 'password'}
-          placeholder={getLocale('braveWalletConfirmPasswordInput')}
-          value={confirmedPassword}
-          onChange={handlePasswordConfirmationChanged}
-          onKeyDown={handleKeyDown}
-          autoFocus={false}
-          autoComplete='off'
-        />
-        {showToggleButton &&
-          <ToggleVisibilityButton
-            isVisible={showPassword}
-            onClick={onTogglePasswordVisibility}
-          />
-        }
-      </InputWrapper>
-
-      <PasswordMatchRow>
-        {password === confirmedPassword && confirmedPassword &&
-        <>
-          <PasswordMatchCheckmark />
-          <PasswordMatchText>
-            {getLocale('braveWalletPasswordMatch')}
-          </PasswordMatchText>
-        </>
-        }
-      </PasswordMatchRow>
-
-    </StyledWrapper>
-    </>
+      </StyledWrapper>
+    </Column>
   )
 }
 
