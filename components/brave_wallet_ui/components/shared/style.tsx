@@ -303,6 +303,7 @@ export const CheckIcon = styled.div<{
 `
 
 export const SwitchAccountIcon = styled.div`
+  cursor: pointer;
   display: block;
   width: 14px;
   height: 14px;
