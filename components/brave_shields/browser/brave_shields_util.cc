@@ -181,12 +181,26 @@ void SetBraveShieldsEnabled(HostContentSettingsMap* map,
   if (url.is_valid() && !url.SchemeIsHTTPOrHTTPS())
     return;
 
-  DCHECK(!url.is_empty()) << "url for shields setting cannot be blank";
+  if (url.is_empty()) {
+    LOG(ERROR) << "url for shields setting cannot be blank";
+    return;
+  }
 
   auto primary_pattern = GetPatternFromURL(url);
-
-  if (!primary_pattern.IsValid())
+  DCHECK(!primary_pattern.MatchesAllHosts())
+      << "Url for shields setting cannot be blank or result in a wildcard "
+         "content setting.";
+  if (primary_pattern.MatchesAllHosts()) {
+    LOG(ERROR) << "Url for shields setting cannot be blank or result in a "
+                  "wildcard content setting.";
     return;
+  }
+
+  if (!primary_pattern.IsValid()) {
+    DLOG(ERROR) << "Invalid primary pattern for Url: "
+                << url.possibly_invalid_spec();
+    return;
+  }
 
   map->SetContentSettingCustomScope(
       primary_pattern, ContentSettingsPattern::Wildcard(),
