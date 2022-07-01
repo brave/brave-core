@@ -15,7 +15,7 @@ import {
 } from '../../utils/asset-utils'
 
 // types
-import { BraveWallet, SupportedOnRampNetworks, WalletState } from '../../constants/types'
+import { BraveWallet, BuyOption, SupportedOnRampNetworks, WalletState } from '../../constants/types'
 
 // options
 import { BuyOptions } from '../../options/buy-with-options'
@@ -49,17 +49,17 @@ export function useMultiChainBuyAssets () {
   })
 
   // memos
-  const buyAssetNetworks = React.useMemo(() => {
+  const buyAssetNetworks = React.useMemo((): BraveWallet.NetworkInfo[] => {
     return networkList.filter(n =>
       SupportedOnRampNetworks.includes(n.chainId)
     )
   }, [networkList])
 
-  const selectedAssetNetwork = React.useMemo(() => {
+  const selectedAssetNetwork = React.useMemo((): BraveWallet.NetworkInfo | undefined => {
     return selectedAsset ? getNetworkInfo(selectedAsset.chainId, selectedAsset.coin, buyAssetNetworks) : undefined
   }, [selectedAsset, buyAssetNetworks])
 
-  const selectedAssetBuyOptions = React.useMemo(() => {
+  const selectedAssetBuyOptions = React.useMemo((): BuyOption[] => {
     return selectedAsset
       ? BuyOptions.filter(buyOption => {
           return isSelectedAssetInAssetOptions(
