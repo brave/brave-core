@@ -6,10 +6,10 @@
 import { FC } from 'react'
 import styled, { CSSProperties } from 'styled-components'
 import { Link } from 'react-router-dom'
-import IThemeProps from 'brave-ui/src/theme/theme-interface'
 
 // types
 import { BraveWallet } from '../../constants/types'
+import IThemeProps from 'brave-ui/src/theme/theme-interface'
 
 // utils
 import { stripERC20TokenImageURL } from '../../utils/string-utils'
@@ -27,6 +27,9 @@ import ClipboardSvg from '../../assets/svg-icons/clipboard-icon.svg'
 import DownloadSvg from '../../assets/svg-icons/download-icon.svg'
 import CheckIconSvg from '../../assets/svg-icons/checkbox-check.svg'
 import SwitchDown from '../../assets/svg-icons/switch-icon.svg'
+
+// graphics
+import BraveWalletWithCoins from '../../assets/svg-icons/onboarding/brave-wallet-with-coins.svg'
 
 // Spacers
 export const VerticalSpacer = styled.div<{ space: number | string }>`
@@ -334,6 +337,15 @@ export const NetworkIconWrapper = styled.div`
   background-color: ${(p) => p.theme.color.background02};
   border-radius: 100%;
   padding: 2px;
+`
+
+// Graphics
+export const WalletWelcomeGraphic = styled.div<{scale?: CSSProperties['scale']}>`
+  width: 350px;
+  height: 264px;
+  background: url(${BraveWalletWithCoins});
+  background-repeat: no-repeat;
+  transform: scale(${(p) => p.scale ?? 1});
 `
 
 // spacers
