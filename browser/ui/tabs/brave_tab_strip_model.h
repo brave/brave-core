@@ -22,12 +22,13 @@ class BraveTabStripModel : public TabStripModel {
   BraveTabStripModel operator=(const BraveTabStripModel&) = delete;
 
   void SelectRelativeTab(TabRelativeDirection direction,
-                         UserGestureDetails detail) override;
+                         TabStripUserGestureDetails detail) override;
 
   // Set the next tab when doing a MRU cycling with Ctrl-tab
   void SelectMRUTab(
       TabRelativeDirection direction,
-      UserGestureDetails detail = UserGestureDetails(GestureType::kOther));
+      TabStripUserGestureDetails detail = TabStripUserGestureDetails(
+          TabStripUserGestureDetails::GestureType::kOther));
 
   // Stop MRU cycling, called when releasing the Ctrl key
   void StopMRUCycling();
