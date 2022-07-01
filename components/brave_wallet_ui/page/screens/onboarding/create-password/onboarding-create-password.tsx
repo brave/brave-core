@@ -7,15 +7,6 @@ import * as React from 'react'
 import { useHistory } from 'react-router'
 import { useDispatch } from 'react-redux'
 
-// styles
-import {
-  StyledWrapper,
-  Title,
-  Description,
-  NextButtonRow,
-  MainWrapper
-} from '../onboarding.style'
-
 // utils
 import { getLocale } from '../../../../../common/locale'
 
@@ -30,6 +21,15 @@ import { WalletPageLayout } from '../../../../components/desktop'
 import { NavButton } from '../../../../components/extension'
 import { NewPasswordInput, NewPasswordValues } from '../../../../components/shared/password-input/new-password-input'
 import { OnboardingNewWalletStepsNavigation } from '../components/onboarding-steps-navigation/onboarding-steps-navigation'
+
+// styles
+import {
+  StyledWrapper,
+  Title,
+  Description,
+  NextButtonRow,
+  MainWrapper
+} from '../onboarding.style'
 
 export const OnboardingCreatePassword = () => {
   // routing

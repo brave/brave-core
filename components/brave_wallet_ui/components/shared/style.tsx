@@ -79,7 +79,8 @@ export const Row = styled.div<FlexProps & {
   max-width: ${(p) => p.maxWidth ?? 'unset'};
 `
 
-export const Column = styled.div<FlexProps>`
+export const Column = styled.div<FlexProps & { fullWidth?: boolean }>`
+  width: ${(p) => p.fullWidth ? '100%' : 'unset'};
   display: flex;
   flex-direction: column;
   align-items: ${(p) => p.alignItems ?? 'center'};
