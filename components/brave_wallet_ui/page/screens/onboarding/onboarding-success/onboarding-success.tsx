@@ -70,7 +70,7 @@ export const OnboardingSuccess = () => {
       <StyledWrapper>
         <CloseButtonContainer>
           <LinkText onClick={onComplete}>
-            {getLocale('braveWalletButtonClose')}
+            {getLocale('braveWalletButtonDone')}
           </LinkText>
         </CloseButtonContainer>
       </StyledWrapper>
