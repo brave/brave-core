@@ -7,6 +7,7 @@
 
 #include "bat/ads/internal/account/wallet/wallet_info.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "url/gurl.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 

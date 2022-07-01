@@ -32,6 +32,7 @@
 #include "bat/ads/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_wallpapers_database_table.h"
 #include "bat/ads/internal/creatives/segments_database_table.h"
 #include "bat/ads/internal/segments/segments_util.h"
+#include "url/gurl.h"
 
 namespace ads {
 namespace database {

@@ -6,6 +6,7 @@
 #include "bat/ads/internal/serving/eligible_ads/exclusion_rules/marked_to_no_longer_receive_exclusion_rule.h"
 
 #include "base/strings/stringprintf.h"
+#include "bat/ads/internal/creatives/creative_ad_info.h"
 #include "bat/ads/internal/segments/segments_util.h"
 
 namespace ads {

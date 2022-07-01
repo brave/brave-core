@@ -9,10 +9,11 @@
 #include <string>
 
 #include "bat/ads/internal/ad_events/ad_event_info_aliases.h"
-#include "bat/ads/internal/creatives/creative_ad_info.h"
 #include "bat/ads/internal/serving/eligible_ads/exclusion_rules/exclusion_rule_interface.h"
 
 namespace ads {
+
+struct CreativeAdInfo;
 
 class DailyCapExclusionRule final
     : public ExclusionRuleInterface<CreativeAdInfo> {

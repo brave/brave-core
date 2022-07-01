@@ -9,6 +9,7 @@
 
 #include "base/strings/stringprintf.h"
 #include "bat/ads/internal/server/url/hosts/server_host_util.h"
+#include "url/gurl.h"
 
 namespace ads {
 

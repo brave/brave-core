@@ -16,10 +16,10 @@ TEST(BatAdsEligibleAdsFeaturesUtilTest,
   // Arrange
 
   // Act
-  const AdPredictorWeights weights = ToAdPredictorWeights("");
+  const AdPredictorWeightList weights = ToAdPredictorWeights("");
 
   // Assert
-  const AdPredictorWeights expected_weights = {};
+  const AdPredictorWeightList expected_weights = {};
   EXPECT_EQ(expected_weights, weights);
 }
 
@@ -28,10 +28,11 @@ TEST(BatAdsEligibleAdsFeaturesUtilTest,
   // Arrange
 
   // Act
-  const AdPredictorWeights weights = ToAdPredictorWeights("1.0, foobar, 2.2");
+  const AdPredictorWeightList weights =
+      ToAdPredictorWeights("1.0, foobar, 2.2");
 
   // Assert
-  const AdPredictorWeights expected_weights = {};
+  const AdPredictorWeightList expected_weights = {};
   EXPECT_EQ(expected_weights, weights);
 }
 
@@ -40,10 +41,10 @@ TEST(BatAdsEligibleAdsFeaturesUtilTest,
   // Arrange
 
   // Act
-  const AdPredictorWeights weights = ToAdPredictorWeights("0.0, 0.0, 0.0");
+  const AdPredictorWeightList weights = ToAdPredictorWeights("0.0, 0.0, 0.0");
 
   // Assert
-  const AdPredictorWeights expected_weights = {};
+  const AdPredictorWeightList expected_weights = {};
   EXPECT_EQ(expected_weights, weights);
 }
 
@@ -52,10 +53,10 @@ TEST(BatAdsEligibleAdsFeaturesUtilTest,
   // Arrange
 
   // Act
-  const AdPredictorWeights weights = ToAdPredictorWeights("0.0, 0.1, 0.0");
+  const AdPredictorWeightList weights = ToAdPredictorWeights("0.0, 0.1, 0.0");
 
   // Assert
-  const AdPredictorWeights expected_weights = {0.0, 0.1, 0.0};
+  const AdPredictorWeightList expected_weights = {0.0, 0.1, 0.0};
   EXPECT_EQ(expected_weights, weights);
 }
 
@@ -64,10 +65,10 @@ TEST(BatAdsEligibleAdsFeaturesUtilTest,
   // Arrange
 
   // Act
-  const AdPredictorWeights weights = ToAdPredictorWeights("1.0, 3.0, -2.0");
+  const AdPredictorWeightList weights = ToAdPredictorWeights("1.0, 3.0, -2.0");
 
   // Assert
-  const AdPredictorWeights expected_weights = {};
+  const AdPredictorWeightList expected_weights = {};
   EXPECT_EQ(expected_weights, weights);
 }
 
@@ -76,10 +77,10 @@ TEST(BatAdsEligibleAdsFeaturesUtilTest,
   // Arrange
 
   // Act
-  const AdPredictorWeights weights = ToAdPredictorWeights("1.0");
+  const AdPredictorWeightList weights = ToAdPredictorWeights("1.0");
 
   // Assert
-  const AdPredictorWeights expected_weights = {1.0};
+  const AdPredictorWeightList expected_weights = {1.0};
   EXPECT_EQ(expected_weights, weights);
 }
 
@@ -87,10 +88,10 @@ TEST(BatAdsEligibleAdsFeaturesUtilTest, ToAdPredictorWeightsForParamValue) {
   // Arrange
 
   // Act
-  const AdPredictorWeights weights = ToAdPredictorWeights("1.1, 3.3, 2.2");
+  const AdPredictorWeightList weights = ToAdPredictorWeights("1.1, 3.3, 2.2");
 
   // Assert
-  const AdPredictorWeights expected_weights = {1.1, 3.3, 2.2};
+  const AdPredictorWeightList expected_weights = {1.1, 3.3, 2.2};
   EXPECT_EQ(expected_weights, weights);
 }
 
@@ -99,10 +100,10 @@ TEST(BatAdsEligibleAdsFeaturesUtilTest,
   // Arrange
 
   // Act
-  const AdPredictorWeights weights = ToAdPredictorWeights("1, 3, 2.2");
+  const AdPredictorWeightList weights = ToAdPredictorWeights("1, 3, 2.2");
 
   // Assert
-  const AdPredictorWeights expected_weights = {1.0, 3.0, 2.2};
+  const AdPredictorWeightList expected_weights = {1.0, 3.0, 2.2};
   EXPECT_EQ(expected_weights, weights);
 }
 

@@ -32,6 +32,7 @@
 #include "bat/ads/internal/creatives/inline_content_ads/creative_inline_content_ad_info.h"
 #include "bat/ads/internal/creatives/segments_database_table.h"
 #include "bat/ads/internal/segments/segments_util.h"
+#include "url/gurl.h"
 
 namespace ads {
 namespace database {

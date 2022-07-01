@@ -11,6 +11,7 @@
 #include "bat/ads/internal/base/logging_util.h"
 #include "bat/ads/internal/history/history_manager.h"
 #include "bat/ads/internal/privacy/p2a/impressions/p2a_impression.h"
+#include "bat/ads/notification_ad_info.h"
 
 namespace ads {
 namespace notification_ads {

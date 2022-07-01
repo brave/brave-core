@@ -6,6 +6,7 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ACCOUNT_ACCOUNT_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ACCOUNT_ACCOUNT_H_
 
+#include <functional>
 #include <memory>
 #include <string>
 
@@ -13,7 +14,6 @@
 #include "bat/ads/internal/account/account_observer.h"
 #include "bat/ads/internal/account/confirmations/confirmations_delegate.h"
 #include "bat/ads/internal/account/issuers/issuers_delegate.h"
-#include "bat/ads/internal/account/statement/statement_aliases.h"
 #include "bat/ads/internal/account/utility/redeem_unblinded_payment_tokens/redeem_unblinded_payment_tokens_delegate.h"
 #include "bat/ads/internal/account/utility/refill_unblinded_tokens/refill_unblinded_tokens_delegate.h"
 #include "bat/ads/internal/prefs/pref_manager_observer.h"
@@ -31,9 +31,14 @@ class ConfirmationType;
 class Issuers;
 class RedeemUnblindedPaymentTokens;
 class RefillUnblindedTokens;
+struct TransactionInfo;
 class Wallet;
 struct IssuersInfo;
+struct StatementInfo;
 struct WalletInfo;
+
+using GetStatementCallback =
+    std::function<void(const bool, const StatementInfo&)>;
 
 class Account final : public PrefManagerObserver,
                       public ConfirmationsDelegate,
@@ -56,7 +61,7 @@ class Account final : public PrefManagerObserver,
                const AdType& ad_type,
                const ConfirmationType& confirmation_type) const;
 
-  void GetStatement(StatementCallback callback) const;
+  void GetStatement(GetStatementCallback callback) const;
 
   void Process() const;
 

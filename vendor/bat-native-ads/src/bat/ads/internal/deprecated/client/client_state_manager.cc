@@ -497,7 +497,7 @@ base::Time ClientStateManager::GetServeAdAt() {
 }
 
 void ClientStateManager::AppendTextClassificationProbabilitiesToHistory(
-    const targeting::TextClassificationProbabilitiesMap& probabilities) {
+    const targeting::TextClassificationProbabilityMap& probabilities) {
   DCHECK(is_initialized_);
 
   client_->text_classification_probabilities.push_front(probabilities);
@@ -511,7 +511,7 @@ void ClientStateManager::AppendTextClassificationProbabilitiesToHistory(
   Save();
 }
 
-const targeting::TextClassificationProbabilitiesList&
+const targeting::TextClassificationProbabilityList&
 ClientStateManager::GetTextClassificationProbabilitiesHistory() {
   DCHECK(is_initialized_);
 
@@ -582,7 +582,7 @@ void ClientStateManager::Load() {
 
 void ClientStateManager::OnLoaded(const bool success, const std::string& json) {
   if (!success) {
-    BLOG(3, "ClientStateManager state does not exist, creating default state");
+    BLOG(3, "Client state does not exist, creating default state");
 
     is_initialized_ = true;
 

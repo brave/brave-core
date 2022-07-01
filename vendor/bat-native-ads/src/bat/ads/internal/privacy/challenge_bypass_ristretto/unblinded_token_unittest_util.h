@@ -8,11 +8,11 @@
 
 #include <vector>
 
-#include "bat/ads/internal/privacy/challenge_bypass_ristretto/unblinded_token.h"
-
 namespace ads {
 namespace privacy {
 namespace cbr {
+
+class UnblindedToken;
 
 UnblindedToken GetUnblindedToken();
 std::vector<UnblindedToken> GetUnblindedTokens();

@@ -16,13 +16,13 @@
 namespace ads {
 namespace targeting {
 
-using TextClassificationProbabilitiesMap = std::map<std::string, double>;
-using TextClassificationProbabilitiesList =
-    base::circular_deque<TextClassificationProbabilitiesMap>;
+using TextClassificationProbabilityMap = std::map<std::string, double>;
+using TextClassificationProbabilityList =
+    base::circular_deque<TextClassificationProbabilityMap>;
 
 using SegmentProbabilityPair = std::pair<std::string, double>;
-using SegmentProbabilitiesList = std::vector<SegmentProbabilityPair>;
-using SegmentProbabilitiesMap = std::map<std::string, double>;
+using SegmentProbabilityList = std::vector<SegmentProbabilityPair>;
+using SegmentProbabilityMap = std::map<std::string, double>;
 
 }  // namespace targeting
 }  // namespace ads

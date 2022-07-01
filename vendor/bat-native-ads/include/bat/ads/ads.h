@@ -11,13 +11,14 @@
 #include <vector>
 
 #include "bat/ads/ad_content_action_types.h"
-#include "bat/ads/ads_aliases.h"
+#include "bat/ads/ads_callback.h"
 #include "bat/ads/category_content_action_types.h"
 #include "bat/ads/export.h"
 #include "bat/ads/history_filter_types.h"
 #include "bat/ads/history_sort_types.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
-#include "url/gurl.h"
+
+class GURL;
 
 namespace base {
 class Time;

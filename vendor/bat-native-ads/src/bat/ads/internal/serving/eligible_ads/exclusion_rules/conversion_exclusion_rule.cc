@@ -9,6 +9,7 @@
 
 #include "base/strings/stringprintf.h"
 #include "bat/ads/internal/ads_client_helper.h"
+#include "bat/ads/internal/creatives/creative_ad_info.h"
 #include "bat/ads/internal/serving/eligible_ads/exclusion_rules/exclusion_rule_features.h"
 #include "bat/ads/pref_names.h"
 

@@ -40,9 +40,9 @@ class BatAdsIssuersTest : public UnitTestBase {
 
 TEST_F(BatAdsIssuersTest, FetchIssuers) {
   // Arrange
-  const URLEndpoints& endpoints = {{// Issuers request
-                                    R"(/v1/issuers/)",
-                                    {{net::HTTP_OK, R"(
+  const URLEndpointMap& endpoints = {{// Issuers request
+                                      R"(/v1/issuers/)",
+                                      {{net::HTTP_OK, R"(
         {
           "ping": 7200000,
           "issuers": [
@@ -98,7 +98,7 @@ TEST_F(BatAdsIssuersTest, FetchIssuers) {
 
 TEST_F(BatAdsIssuersTest, FetchIssuersInvalidJsonResponse) {
   // Arrange
-  const URLEndpoints& endpoints = {
+  const URLEndpointMap& endpoints = {
       {// Issuers request
        R"(/v1/issuers/)",
        {{net::HTTP_OK, "FOOBAR"}, {net::HTTP_OK, "FOOBAR"}}}};
@@ -121,7 +121,7 @@ TEST_F(BatAdsIssuersTest, FetchIssuersInvalidJsonResponse) {
 
 TEST_F(BatAdsIssuersTest, FetchIssuersNonHttpOkResponse) {
   // Arrange
-  const URLEndpoints& endpoints = {
+  const URLEndpointMap& endpoints = {
       {// Issuers request
        R"(/v1/issuers/)",
        {{net::HTTP_NOT_FOUND, ""}, {net::HTTP_NOT_FOUND, ""}}}};
@@ -144,9 +144,9 @@ TEST_F(BatAdsIssuersTest, FetchIssuersNonHttpOkResponse) {
 
 TEST_F(BatAdsIssuersTest, FetchIssuersHttpUpgradeRequiredResponse) {
   // Arrange
-  const URLEndpoints& endpoints = {{// Issuers request
-                                    R"(/v1/issuers/)",
-                                    {{net::kHttpUpgradeRequired, ""}}}};
+  const URLEndpointMap& endpoints = {{// Issuers request
+                                      R"(/v1/issuers/)",
+                                      {{net::kHttpUpgradeRequired, ""}}}};
   MockUrlRequest(ads_client_mock_, endpoints);
 
   EXPECT_CALL(*issuers_delegate_mock_, OnDidFetchIssuers(_)).Times(0);

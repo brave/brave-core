@@ -10,7 +10,7 @@
 #include <string>
 #include <vector>
 
-#include "bat/ads/ads_client_aliases.h"
+#include "bat/ads/ads_client_callback.h"
 #include "bat/ads/export.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
 #include "brave/components/brave_federated/public/interfaces/brave_federated.mojom.h"

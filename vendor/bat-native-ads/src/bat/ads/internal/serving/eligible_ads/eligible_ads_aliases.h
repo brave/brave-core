@@ -6,17 +6,11 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_SERVING_ELIGIBLE_ADS_ELIGIBLE_ADS_ALIASES_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_SERVING_ELIGIBLE_ADS_ELIGIBLE_ADS_ALIASES_H_
 
-#include <functional>
 #include <vector>
-
-#include "bat/ads/internal/serving/choose/ad_predictor_info.h"
 
 namespace ads {
 
-template <typename T>
-using GetEligibleAdsCallback = std::function<void(const bool, const T&)>;
-
-using AdPredictorWeights = std::vector<double>;
+using AdPredictorWeightList = std::vector<double>;
 
 }  // namespace ads
 

@@ -9,7 +9,7 @@
 #include <memory>
 #include <string>
 
-#include "bat/ads/ads_aliases.h"
+#include "bat/ads/ads_callback.h"
 #include "bat/ads/internal/account/confirmations/confirmation_info_aliases.h"
 #include "bat/ads/internal/account/issuers/issuer_info_aliases.h"
 

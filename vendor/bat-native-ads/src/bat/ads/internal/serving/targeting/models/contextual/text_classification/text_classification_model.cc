@@ -19,10 +19,10 @@ namespace model {
 
 namespace {
 
-SegmentProbabilitiesMap GetSegmentProbabilities(
-    const TextClassificationProbabilitiesList&
+SegmentProbabilityMap GetSegmentProbabilities(
+    const TextClassificationProbabilityList&
         text_classification_probabilities) {
-  SegmentProbabilitiesMap segment_probabilities;
+  SegmentProbabilityMap segment_probabilities;
 
   for (const auto& probabilities : text_classification_probabilities) {
     for (const auto& probability : probabilities) {
@@ -44,10 +44,10 @@ SegmentProbabilitiesMap GetSegmentProbabilities(
   return segment_probabilities;
 }
 
-SegmentProbabilitiesList ToSortedSegmentProbabilitiesList(
-    const SegmentProbabilitiesMap& segment_probabilities) {
+SegmentProbabilityList ToSortedSegmentProbabilityList(
+    const SegmentProbabilityMap& segment_probabilities) {
   const int count = segment_probabilities.size();
-  SegmentProbabilitiesList list(count);
+  SegmentProbabilityList list(count);
 
   std::partial_sort_copy(
       segment_probabilities.cbegin(), segment_probabilities.cend(),
@@ -59,8 +59,7 @@ SegmentProbabilitiesList ToSortedSegmentProbabilitiesList(
   return list;
 }
 
-SegmentList ToSegmentList(
-    const SegmentProbabilitiesList& segment_probabilities) {
+SegmentList ToSegmentList(const SegmentProbabilityList& segment_probabilities) {
   SegmentList segments;
 
   for (const auto& segment_probability : segment_probabilities) {
@@ -80,7 +79,7 @@ TextClassification::TextClassification() = default;
 TextClassification::~TextClassification() = default;
 
 SegmentList TextClassification::GetSegments() const {
-  const TextClassificationProbabilitiesList probabilities =
+  const TextClassificationProbabilityList probabilities =
       ClientStateManager::GetInstance()
           ->GetTextClassificationProbabilitiesHistory();
 
@@ -91,11 +90,11 @@ SegmentList TextClassification::GetSegments() const {
     return {};
   }
 
-  const SegmentProbabilitiesMap segment_probabilities =
+  const SegmentProbabilityMap segment_probabilities =
       GetSegmentProbabilities(probabilities);
 
-  const SegmentProbabilitiesList sorted_segment_probabilities =
-      ToSortedSegmentProbabilitiesList(segment_probabilities);
+  const SegmentProbabilityList sorted_segment_probabilities =
+      ToSortedSegmentProbabilityList(segment_probabilities);
 
   return ToSegmentList(sorted_segment_probabilities);
 }

@@ -33,7 +33,7 @@ struct ClientInfo final {
   base::flat_map<std::string, std::map<std::string, bool>> seen_ads;
   base::flat_map<std::string, std::map<std::string, bool>> seen_advertisers;
   base::Time serve_ad_at;
-  targeting::TextClassificationProbabilitiesList
+  targeting::TextClassificationProbabilityList
       text_classification_probabilities;
   targeting::PurchaseIntentSignalHistoryMap purchase_intent_signal_history;
   std::string version_code;

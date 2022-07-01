@@ -8,6 +8,7 @@
 #include "bat/ads/confirmation_type.h"
 #include "bat/ads/internal/ad_events/ad_events.h"
 #include "bat/ads/internal/base/logging_util.h"
+#include "bat/ads/internal/creatives/search_result_ads/search_result_ad_info.h"
 
 namespace ads {
 namespace search_result_ads {

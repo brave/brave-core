@@ -15,6 +15,7 @@
 #include "bat/ads/internal/serving/notification_ad_serving.h"
 #include "bat/ads/internal/serving/permission_rules/user_activity_permission_rule_unittest_util.h"
 #include "bat/ads/notification_ad_info.h"
+#include "url/gurl.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
@@ -58,7 +59,7 @@ class BatAdsPacingIntegrationTest : public UnitTestBase {
     CopyFileFromTestPathToTempPath("confirmations_with_unblinded_tokens.json",
                                    kConfirmationsFilename);
 
-    const URLEndpoints endpoints = {
+    const URLEndpointMap endpoints = {
         {"/v9/catalog", {{net::HTTP_OK, "/empty_catalog.json"}}},
         {// Get issuers request
          R"(/v1/issuers/)",

@@ -8,6 +8,7 @@
 #include <algorithm>
 
 #include "base/strings/stringprintf.h"
+#include "bat/ads/internal/creatives/creative_ad_info.h"
 #include "bat/ads/internal/deprecated/client/client_state_manager.h"
 #include "bat/ads/internal/deprecated/client/preferences/flagged_ad_info.h"
 

@@ -20,6 +20,7 @@
 #include "bat/ads/internal/base/database/database_transaction_util.h"
 #include "bat/ads/internal/base/logging_util.h"
 #include "bat/ads/internal/creatives/creative_ad_info.h"
+#include "url/gurl.h"
 
 namespace ads {
 namespace database {

@@ -10,6 +10,8 @@
 #import "ads_client_ios.h"
 #include "base/base64.h"
 #include "base/containers/flat_map.h"
+#include "base/files/file.h"
+#include "base/files/file_path.h"
 #include "base/logging.h"
 #include "base/strings/sys_string_conversions.h"
 #include "base/task/sequenced_task_runner.h"
@@ -20,7 +22,7 @@
 #include "bat/ads/ad_content_info.h"
 #include "bat/ads/ad_event_history.h"
 #include "bat/ads/ads.h"
-#include "bat/ads/ads_aliases.h"
+#include "bat/ads/ads_callback.h"
 #include "bat/ads/database.h"
 #include "bat/ads/history_filter_types.h"
 #include "bat/ads/history_info.h"
@@ -36,6 +38,7 @@
 #import "inline_content_ad_ios.h"
 #include "net/base/mac/url_conversions.h"
 #import "notification_ad_ios.h"
+#include "url/gurl.h"
 
 #if !defined(__has_feature) || !__has_feature(objc_arc)
 #error "This file requires ARC support."

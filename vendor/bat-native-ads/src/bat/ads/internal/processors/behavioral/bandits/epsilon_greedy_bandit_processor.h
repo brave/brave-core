@@ -9,10 +9,10 @@
 #include <cstdint>
 #include <string>
 
-#include "bat/ads/internal/processors/behavioral/bandits/bandit_feedback_info.h"
-
 namespace ads {
 namespace processor {
+
+struct BanditFeedbackInfo;
 
 class EpsilonGreedyBandit final {
  public:

@@ -13,14 +13,17 @@
 #include <vector>
 
 #include "base/memory/weak_ptr.h"
-#include "bat/ads/ads.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
-#include "bat/ads/statement_info.h"
 #include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
+
+class GURL;
 
 namespace ads {
 class Ads;
-}
+struct NewTabPageAdInfo;
+struct InlineContentAdInfo;
+struct StatementInfo;
+}  // namespace ads
 
 namespace bat_ads {
 

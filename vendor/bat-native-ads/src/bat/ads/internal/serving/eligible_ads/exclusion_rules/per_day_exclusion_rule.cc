@@ -7,6 +7,7 @@
 
 #include "base/strings/stringprintf.h"
 #include "bat/ads/confirmation_type.h"
+#include "bat/ads/internal/creatives/creative_ad_info.h"
 #include "bat/ads/internal/serving/eligible_ads/exclusion_rules/exclusion_rule_util.h"
 
 namespace ads {

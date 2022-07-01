@@ -9,7 +9,10 @@
 #include <cstdint>
 
 #include "base/observer_list_types.h"
-#include "base/time/time.h"
+
+namespace base {
+class Time;
+}  // namespace base
 
 namespace ads {
 

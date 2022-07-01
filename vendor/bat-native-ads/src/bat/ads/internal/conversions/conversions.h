@@ -12,7 +12,7 @@
 #include <vector>
 
 #include "base/observer_list.h"
-#include "bat/ads/ads_client_aliases.h"
+#include "bat/ads/ads_client_callback.h"
 #include "bat/ads/internal/base/timer/timer.h"
 #include "bat/ads/internal/conversions/conversion_info_aliases.h"
 #include "bat/ads/internal/conversions/conversions_observer.h"

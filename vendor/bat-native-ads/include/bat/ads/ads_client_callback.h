@@ -3,17 +3,21 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_INCLUDE_BAT_ADS_ADS_CLIENT_ALIASES_H_
-#define BRAVE_VENDOR_BAT_NATIVE_ADS_INCLUDE_BAT_ADS_ADS_CLIENT_ALIASES_H_
+#ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_INCLUDE_BAT_ADS_ADS_CLIENT_CALLBACK_H_
+#define BRAVE_VENDOR_BAT_NATIVE_ADS_INCLUDE_BAT_ADS_ADS_CLIENT_CALLBACK_H_
 
 #include <functional>
 #include <string>
 #include <vector>
 
 #include "base/callback.h"
-#include "base/files/file.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
-#include "url/gurl.h"
+
+class GURL;
+
+namespace base {
+class File;
+}  // namespace base
 
 namespace ads {
 
@@ -36,4 +40,4 @@ using GetScheduledCaptchaCallback =
 
 }  // namespace ads
 
-#endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_INCLUDE_BAT_ADS_ADS_CLIENT_ALIASES_H_
+#endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_INCLUDE_BAT_ADS_ADS_CLIENT_CALLBACK_H_

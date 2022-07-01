@@ -14,11 +14,11 @@
 
 namespace ads {
 
-AdPredictorWeights ToAdPredictorWeights(const std::string& param_value) {
+AdPredictorWeightList ToAdPredictorWeights(const std::string& param_value) {
   const std::vector<std::string> components = base::SplitString(
       param_value, ",", base::TRIM_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
 
-  AdPredictorWeights weights;
+  AdPredictorWeightList weights;
   for (const auto& component : components) {
     double value_as_double;
     if (!base::StringToDouble(component, &value_as_double)) {
