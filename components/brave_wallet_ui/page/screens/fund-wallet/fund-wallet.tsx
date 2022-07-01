@@ -46,11 +46,11 @@ import {
 import SearchBar from '../../../components/shared/search-bar'
 import SelectAccountItem from '../../../components/shared/select-account-item'
 import SelectAccount from '../../../components/shared/select-account'
-import WalletPageLayout from '../../../components/desktop/wallet-page-layout/index'
-import { NavButton } from '../../../components/extension/buttons/nav-button/index'
-import { TokenLists } from '../../../components/desktop/views/portfolio/components/token-lists/token-list'
-import { StepsNavigation } from '../../../components/desktop/steps-navigation/steps-navigation'
 import { BuyAssetOptionItem } from '../../../components/shared/buy-option/buy-asset-option'
+import { CenteredPageLayout } from '../../../components/desktop/centered-page-layout/centered-page-layout'
+import { StepsNavigation } from '../../../components/desktop/steps-navigation/steps-navigation'
+import { TokenLists } from '../../../components/desktop/views/portfolio/components/token-lists/token-list'
+import { NavButton } from '../../../components/extension/buttons/nav-button/index'
 import CreateAccountTab from '../../../components/buy-send-swap/create-account'
 import SwapInputComponent from '../../../components/buy-send-swap/swap-input-component'
 import SelectHeader from '../../../components/buy-send-swap/select-header'
@@ -205,7 +205,7 @@ export const FundWalletScreen = () => {
 
   // render
   return (
-    <WalletPageLayout>
+    <CenteredPageLayout>
       <MainWrapper>
         <StyledWrapper>
 
@@ -359,7 +359,7 @@ export const FundWalletScreen = () => {
 
         </StyledWrapper>
       </MainWrapper>
-    </WalletPageLayout>
+    </CenteredPageLayout>
   )
 }
 

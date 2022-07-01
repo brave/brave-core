@@ -20,8 +20,8 @@ import { WalletRoutes } from '../../../../constants/types'
 import { WalletPageActions } from '../../../actions'
 
 // components
-import WalletPageLayout from '../../../../components/desktop/wallet-page-layout/index'
 import { NavButton } from '../../../../components/extension/buttons/nav-button/index'
+import { CenteredPageLayout } from '../../../../components/desktop/centered-page-layout/centered-page-layout'
 
 // styles
 import { LinkText } from '../../../../components/shared/style'
@@ -64,7 +64,7 @@ export const OnboardingSuccess = () => {
   }, [])
 
   // render
-  return <WalletPageLayout>
+  return <CenteredPageLayout>
 
     <MainWrapper>
       <StyledWrapper>
@@ -113,5 +113,5 @@ export const OnboardingSuccess = () => {
       </ButtonContainer>
 
     </MainWrapper>
-  </WalletPageLayout>
+  </CenteredPageLayout>
 }

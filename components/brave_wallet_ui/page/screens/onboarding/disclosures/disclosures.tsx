@@ -18,8 +18,8 @@ import { WalletPageActions } from '../../../actions'
 
 // components
 import { Checkbox } from '../../../../components/shared/checkbox/checkbox'
-import WalletPageLayout from '../../../../components/desktop/wallet-page-layout/index'
 import { NavButton } from '../../../../components/extension/buttons/nav-button/index'
+import { CenteredPageLayout } from '../../../../components/desktop/centered-page-layout/centered-page-layout'
 import { OnboardingNewWalletStepsNavigation } from '../components/onboarding-steps-navigation/onboarding-steps-navigation'
 
 // styles
@@ -90,7 +90,7 @@ export const OnboardingDisclosures = ({ nextStep, onBack }: Props) => {
 
   // render
   return (
-    <WalletPageLayout>
+    <CenteredPageLayout>
       <MainWrapper>
         <StyledWrapper>
 
@@ -148,7 +148,7 @@ export const OnboardingDisclosures = ({ nextStep, onBack }: Props) => {
 
         </StyledWrapper>
       </MainWrapper>
-    </WalletPageLayout>
+    </CenteredPageLayout>
   )
 }
 

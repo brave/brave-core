@@ -49,17 +49,17 @@ import {
 } from './fund-wallet.style'
 
 // components
-import SearchBar from '../../../components/shared/search-bar'
-import SelectAccountItem from '../../../components/shared/select-account-item'
-import SelectAccount from '../../../components/shared/select-account'
-import WalletPageLayout from '../../../components/desktop/wallet-page-layout/index'
 import { TokenLists } from '../../../components/desktop/views/portfolio/components/token-lists/token-list'
 import { StepsNavigation } from '../../../components/desktop/steps-navigation/steps-navigation'
+import SearchBar from '../../../components/shared/search-bar/index'
+import SelectAccountItem from '../../../components/shared/select-account-item/index'
+import SelectAccount from '../../../components/shared/select-account/index'
 import { BuyAssetOptionItem } from '../../../components/shared/buy-option/buy-asset-option'
-import { NavButton } from '../../../components/extension/buttons/nav-button/index'
-import CreateAccountTab from '../../../components/buy-send-swap/create-account'
-import SelectHeader from '../../../components/buy-send-swap/select-header'
 import { CopiedToClipboardConfirmation } from '../../../components/desktop/copied-to-clipboard-confirmation/copied-to-clipboard-confirmation'
+import { CenteredPageLayout } from '../../../components/desktop/centered-page-layout/centered-page-layout'
+import { NavButton } from '../../../components/extension/buttons/nav-button/index'
+import CreateAccountTab from '../../../components/buy-send-swap/create-account/index'
+import SelectHeader from '../../../components/buy-send-swap/select-header/index'
 
 export const DepositFundsScreen = () => {
   // routing
@@ -281,7 +281,7 @@ export const DepositFundsScreen = () => {
 
   // render
   return (
-    <WalletPageLayout>
+    <CenteredPageLayout>
       <MainWrapper>
         <StyledWrapper>
 
@@ -448,7 +448,7 @@ export const DepositFundsScreen = () => {
 
         </StyledWrapper>
       </MainWrapper>
-    </WalletPageLayout>
+    </CenteredPageLayout>
   )
 }
 

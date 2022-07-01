@@ -21,10 +21,12 @@ import { OnboardingImportOrRestoreWallet } from './import-or-restore-wallet/impo
 import { OnboardingRestoreFromRecoveryPhrase } from './restore-from-recovery-phrase/restore-from-recovery-phrase'
 
 // types
-import { PageState, WalletRoutes } from '../../../constants/types'
+import { PageState, WalletRoutes, WalletState } from '../../../constants/types'
+import { OnboardingSuccess } from './onboarding-success/onboarding-success'
 
 export const OnboardingRoutes = () => {
  // redux
+ const isWalletCreated = useSelector(({ wallet }: { wallet: WalletState }) => wallet.isWalletCreated)
  const walletTermsAcknowledged = useSelector(({ page }: { page: PageState }) => page.walletTermsAcknowledged)
 
   // render
@@ -47,6 +49,12 @@ export const OnboardingRoutes = () => {
 
   return (
     <Switch>
+
+      {isWalletCreated &&
+        <Route path={WalletRoutes.OnboardingComplete} exact>
+          <OnboardingSuccess />
+        </Route>
+      }
 
       <Route path={WalletRoutes.OnboardingCreatePassword} exact>
         <OnboardingCreatePassword />

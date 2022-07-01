@@ -15,7 +15,7 @@ import { clearClipboard } from '../../../../utils/copy-to-clipboard'
 import { WalletPageActions } from '../../../actions'
 
 // types
-import { PageState, WalletRoutes } from '../../../../constants/types'
+import { PageState, WalletRoutes, WalletState } from '../../../../constants/types'
 
 // styles
 import {
@@ -39,12 +39,16 @@ import {
 import { RecoveryTextArea, RecoveryTextInput } from './restore-from-recovery-phrase.style'
 
 // components
-import { NewPasswordInput, NewPasswordValues } from '../../../../components/shared/password-input/new-password-input'
-import { WalletPageLayout } from '../../../../components/desktop'
-import { StepsNavigation } from '../../../../components/desktop/steps-navigation/steps-navigation'
-import { NavButton } from '../../../../components/extension'
-import { LoadingSkeleton, PasswordInput } from '../../../../components/shared'
+import LoadingSkeleton from '../../../../components/shared/loading-skeleton/index'
+import { PasswordInput } from '../../../../components/shared/password-input/index'
 import { ErrorText } from '../../../../components/shared/password-input/style'
+import {
+  NewPasswordInput,
+  NewPasswordValues
+} from '../../../../components/shared/password-input/new-password-input'
+import { NavButton } from '../../../../components/extension'
+import { CenteredPageLayout } from '../../../../components/desktop/centered-page-layout/centered-page-layout'
+import { StepsNavigation } from '../../../../components/desktop/steps-navigation/steps-navigation'
 
 enum RestoreFromOtherWalletSteps {
   phrase = 'phrase',
@@ -83,6 +87,7 @@ export const OnboardingRestoreFromRecoveryPhrase = ({
   const isImportWalletsCheckComplete = useSelector(({ page }: { page: PageState }) => page.isImportWalletsCheckComplete)
   const importWalletError = useSelector(({ page }: { page: PageState }) => page.importWalletError)
   const importWalletAttempts = useSelector(({ page }: { page: PageState }) => page.importWalletAttempts)
+  const isWalletCreated = useSelector(({ wallet }: { wallet: WalletState }) => wallet.isWalletCreated)
 
   // computed
   const isImportingFromMetaMaskExtension = restoreFrom === 'metamask'
@@ -168,8 +173,6 @@ export const OnboardingRestoreFromRecoveryPhrase = ({
       isLegacy: false,
       completeWalletSetup: false // postpone until wallet onboarding success screen
     }))
-
-    history.push(WalletRoutes.OnboardingComplete)
   }, [isPasswordValid, phraseInput, password, invalidMnemonic, isImportingFromMetaMaskExtension, isImportingFromLegacyExtension])
 
   const onPhraseInputChanged = React.useCallback((event: React.ChangeEvent<
@@ -318,6 +321,13 @@ export const OnboardingRestoreFromRecoveryPhrase = ({
   }, [isCheckingExtensions])
 
   React.useEffect(() => {
+    // go to onboarding success screen when wallet restoration completes
+    if (isWalletCreated) {
+      history.push(WalletRoutes.OnboardingComplete)
+    }
+  }, [isWalletCreated])
+
+  React.useEffect(() => {
     if (
       restoreFrom === 'seed' || // only watching during metamask or legacy import
       !isImportWalletsCheckComplete // wait for redux store to be ready
@@ -373,7 +383,7 @@ export const OnboardingRestoreFromRecoveryPhrase = ({
 
   // render
   return (
-    <WalletPageLayout>
+    <CenteredPageLayout>
       <MainWrapper>
         <StyledWrapper>
 
@@ -497,6 +507,6 @@ export const OnboardingRestoreFromRecoveryPhrase = ({
 
         </StyledWrapper>
       </MainWrapper>
-    </WalletPageLayout>
+    </CenteredPageLayout>
   )
 }

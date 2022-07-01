@@ -29,11 +29,17 @@ export const NextButtonRow = styled.div`
 `
 
 export const MainWrapper = styled.div`
+  align-self: center;
+  width: 100%;
+  max-width: 456px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: 100%;
+  background-color: ${(p) => p.theme.color.background02};
+  padding: 30px;
+  border-radius: 8px;
+  margin-top: 10vh;
 `
 
 export const StyledWrapper = styled.div`

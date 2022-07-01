@@ -37,11 +37,11 @@ import {
 } from '../onboarding.style'
 
 // components
-import { WalletPageLayout } from '../../../../components/desktop'
-import { NavButton } from '../../../../components/extension'
-import { CopiedToClipboardConfirmation } from '../../../../components/desktop/copied-to-clipboard-confirmation/copied-to-clipboard-confirmation'
 import { RecoveryPhrase } from '../components/recovery-phrase/recovery-phrase'
+import { CenteredPageLayout } from '../../../../components/desktop/centered-page-layout/centered-page-layout'
+import { CopiedToClipboardConfirmation } from '../../../../components/desktop/copied-to-clipboard-confirmation/copied-to-clipboard-confirmation'
 import { OnboardingNewWalletStepsNavigation } from '../components/onboarding-steps-navigation/onboarding-steps-navigation'
+import { NavButton } from '../../../../components/extension'
 
 // storybook compiler thinks `randomUUID` doesnt exist
 const randomUUID = () => (
@@ -93,7 +93,7 @@ export const OnboardingBackupRecoveryPhrase = () => {
 
   // render
   return (
-    <WalletPageLayout>
+    <CenteredPageLayout>
       <MainWrapper>
         <StyledWrapper>
 
@@ -165,6 +165,6 @@ export const OnboardingBackupRecoveryPhrase = () => {
 
         </StyledWrapper>
       </MainWrapper>
-    </WalletPageLayout>
+    </CenteredPageLayout>
   )
 }
