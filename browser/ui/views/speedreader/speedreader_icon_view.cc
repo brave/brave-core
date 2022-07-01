@@ -65,7 +65,7 @@ void SpeedreaderIconView::UpdateImpl() {
     } else if (speedreader::PageSupportsDistillation(state)) {
       // Reset the icon color
       const SkColor icon_color_default =
-          GetOmniboxColor(color_provider, OmniboxPart::RESULTS_ICON);
+          color_provider->GetColor(kColorOmniboxResultsIcon);
       SetIconColor(icon_color_default);
     }
   }

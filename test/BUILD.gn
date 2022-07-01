@@ -835,6 +835,7 @@ if (!is_android) {
       "//brave/vendor/bat-native-ledger:publishers_proto",
       "//chrome/browser",
       "//chrome/browser/enterprise/connectors/analysis:features",
+      "//chrome/browser/ui/color:color_headers",
       "//chrome/browser/ui/color:mixers",
       "//components/commerce/core:feature_list",
       "//components/gcm_driver:gcm_buildflags",

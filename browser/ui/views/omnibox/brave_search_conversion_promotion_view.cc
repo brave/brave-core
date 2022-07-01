@@ -74,8 +74,8 @@ class HorizontalGradientBackground : public views::Background {
 
   void Paint(gfx::Canvas* canvas, views::View* view) const override {
     // Fill with base color first.
-    canvas->DrawColor(GetOmniboxColor(view->GetColorProvider(),
-                                      OmniboxPart::RESULTS_BACKGROUND));
+    canvas->DrawColor(
+        view->GetColorProvider()->GetColor(kColorOmniboxResultsBackground));
 
     SkColor from_color = gfx::kPlaceholderColor;
     SkColor to_color = gfx::kPlaceholderColor;
@@ -372,7 +372,7 @@ void BraveSearchConversionPromotionView::UpdateBannerTypeState() {
   banner_type_container_->SetProperty(views::kMarginsKey, container_margin);
 
   SetBackground(views::CreateSolidBackground(
-      GetOmniboxColor(GetColorProvider(), OmniboxPart::RESULTS_BACKGROUND)));
+      GetColorProvider()->GetColor(kColorOmniboxResultsBackground)));
   banner_type_container_->SetBackground(
       std::make_unique<HorizontalGradientBackground>());
 }
