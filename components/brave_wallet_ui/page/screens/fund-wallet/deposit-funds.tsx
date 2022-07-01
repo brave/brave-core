@@ -227,6 +227,17 @@ export const DepositFundsScreen = () => {
     setSelectedAsset(undefined)
   }, [])
 
+  const copyAddressToClipboard = React.useCallback(() => {
+    copyToClipboard(selectedAccount.address)
+  }, [copyToClipboard, selectedAccount.address])
+
+  const onCopyKeyPress = React.useCallback(({ key }: React.KeyboardEvent) => {
+    // Invoke for space or enter, just like a regular input or button
+    if ([' ', 'Enter'].includes(key)) {
+      copyAddressToClipboard()
+    }
+  }, [copyAddressToClipboard])
+
   // effects
   React.useEffect(() => {
     // fetch selected Account QR Code
@@ -399,9 +410,8 @@ export const DepositFundsScreen = () => {
                       <AddressText>{selectedAccount.address}</AddressText>
                       <CopyButton
                         iconColor='interactive05'
-                        onClick={() => {
-                          copyToClipboard(selectedAccount.address)
-                        }}
+                        onKeyPress={onCopyKeyPress}
+                        onClick={copyAddressToClipboard}
                       />
                     </Row>
 
