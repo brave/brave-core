@@ -39,6 +39,7 @@ constexpr char kSardineClientTokensURL[] =
 
 constexpr webui::LocalizedString kLocalizedStrings[] = {
     {"braveWalletEnterYourPassword", IDS_BRAVE_WALLET_ENTER_YOUR_PASSWORD},
+    {"braveWalletClickToSwitch", BRAVE_WALLET_CLICK_TO_SWITCH},
     {"braveWalletUnlockNeededToCreateAccount",
      BRAVE_WALLET_UNLOCK_NEEDED_TO_CREATE_ACCOUNT},
     {"braveWalletMultiChain", BRAVE_WALLET_MULTI_CHAIN},
@@ -184,8 +185,7 @@ constexpr webui::LocalizedString kLocalizedStrings[] = {
      IDS_BRAVE_WALLET_TOOL_TIP_COPY_TO_CLIPBOARD},
     {"braveWalletToolTipCopiedToClipboard",
      IDS_BRAVE_WALLET_TOOL_TIP_COPIED_TO_CLIPBOARD},
-    {"braveWalletPasteFromClipboard",
-     IDS_BRAVE_WALLET_TOOL_TIP_PASTE_FROM_CLIPBOARD},
+    {"braveWalletPasteFromClipboard", IDS_BRAVE_WALLET_PASTE_FROM_CLIPBOARD},
     {"braveWalletAccountsPrimary", IDS_BRAVE_WALLET_ACCOUNTS_PRIMARY},
     {"braveWalletAccountsPrimaryDisclaimer",
      IDS_BRAVE_WALLET_ACCOUNTS_PRIMARY_DISCLAIMER},

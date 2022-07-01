@@ -5,6 +5,7 @@ import { create } from 'ethereum-blockies'
 import { BraveWallet, UserAccountType } from '../../../constants/types'
 
 // utils
+import { getLocale } from '../../../../common/locale'
 import { reduceAddress } from '../../../utils/reduce-address'
 import { reduceAccountDisplayName } from '../../../utils/reduce-account-name'
 
@@ -86,13 +87,19 @@ export function SelectAccountItem ({
         }
         <AccountAndAddress>
 
-          <PossibleToolTip text={account.name} isAddress>
-            <Row justifyContent={'flex-start'}>
+          <PossibleToolTip
+            text={showSwitchAccountsLink
+              ? getLocale('braveWalletClickToSwitch')
+              : account.name
+            }
+            isAddress={!showSwitchAccountsLink}
+          >
+            <Row justifyContent={'flex-start'} onClick={onSelectAccount}>
               <AccountName>{reduceAccountDisplayName(account.name, 22)}</AccountName>
               {showSwitchAccountsLink &&
                 <>
                   <HorizontalSpace space='5px' />
-                  <SwitchAccountIcon onClick={onSelectAccount} />
+                  <SwitchAccountIcon />
                 </>
               }
             </Row>
