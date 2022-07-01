@@ -27,6 +27,7 @@
 #include "brave/components/brave_today/common/features.h"
 #include "brave/components/greaselion/browser/buildflags/buildflags.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
+#include "brave/components/playlist/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 
 #if BUILDFLAG(ENABLE_GREASELION)
@@ -54,6 +55,10 @@
 
 #if BUILDFLAG(BRAVE_ADAPTIVE_CAPTCHA_ENABLED)
 #include "brave/browser/brave_adaptive_captcha/brave_adaptive_captcha_service_factory.h"
+#endif
+
+#if BUILDFLAG(ENABLE_PLAYLIST)
+#include "brave/browser/playlist/playlist_service_factory.h"
 #endif
 
 namespace brave {
@@ -106,6 +111,10 @@ void EnsureBrowserContextKeyedServiceFactoriesBuilt() {
   PermissionLifetimeManagerFactory::GetInstance();
 
   skus::SkusServiceFactory::GetInstance();
+
+#if BUILDFLAG(ENABLE_PLAYLIST)
+  playlist::PlaylistServiceFactory::GetInstance();
+#endif
 }
 
 }  // namespace brave

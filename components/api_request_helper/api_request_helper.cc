@@ -48,7 +48,7 @@ APIRequestHelper::APIRequestHelper(
 
 APIRequestHelper::~APIRequestHelper() {}
 
-void APIRequestHelper::Request(
+APIRequestHelper::Ticket APIRequestHelper::Request(
     const std::string& method,
     const GURL& url,
     const std::string& payload,
@@ -58,12 +58,70 @@ void APIRequestHelper::Request(
     const base::flat_map<std::string, std::string>& headers,
     size_t max_body_size /* = -1u */,
     ResponseConversionCallback conversion_callback) {
+  auto iter = url_loaders_.insert(
+      url_loaders_.begin(),
+      CreateLoader(method, url, payload, payload_content_type,
+                   auto_retry_on_network_change,
+                   true /* allow_http_error_result*/, headers));
+  if (max_body_size == -1u) {
+    iter->get()->DownloadToStringOfUnboundedSizeUntilCrashAndDie(
+        url_loader_factory_.get(),
+        base::BindOnce(&APIRequestHelper::OnResponse,
+                       weak_ptr_factory_.GetWeakPtr(), iter,
+                       std::move(callback), std::move(conversion_callback)));
+  } else {
+    iter->get()->DownloadToString(
+        url_loader_factory_.get(),
+        base::BindOnce(&APIRequestHelper::OnResponse,
+                       weak_ptr_factory_.GetWeakPtr(), iter,
+                       std::move(callback), std::move(conversion_callback)),
+        max_body_size);
+  }
+
+  return iter;
+}
+
+APIRequestHelper::Ticket APIRequestHelper::Download(
+    const GURL& url,
+    const std::string& payload,
+    const std::string& payload_content_type,
+    bool auto_retry_on_network_change,
+    const base::FilePath& path,
+    DownloadCallback callback,
+    const base::flat_map<std::string, std::string>& headers) {
+  auto iter = url_loaders_.insert(
+      url_loaders_.begin(),
+      CreateLoader({}, url, payload, payload_content_type,
+                   auto_retry_on_network_change,
+                   false /*allow_http_error_result*/, headers));
+  iter->get()->DownloadToFile(
+      url_loader_factory_.get(),
+      base::BindOnce(&APIRequestHelper::OnDownload,
+                     weak_ptr_factory_.GetWeakPtr(), iter, std::move(callback)),
+      path);
+
+  return iter;
+}
+
+void APIRequestHelper::Cancel(const Ticket& ticket) {
+  url_loaders_.erase(ticket);
+}
+
+std::unique_ptr<network::SimpleURLLoader> APIRequestHelper::CreateLoader(
+    const std::string& method,
+    const GURL& url,
+    const std::string& payload,
+    const std::string& payload_content_type,
+    bool auto_retry_on_network_change,
+    bool allow_http_error_result,
+    const base::flat_map<std::string, std::string>& headers) {
   auto request = std::make_unique<network::ResourceRequest>();
   request->url = url;
   request->load_flags = net::LOAD_BYPASS_CACHE | net::LOAD_DISABLE_CACHE |
                         net::LOAD_DO_NOT_SAVE_COOKIES;
   request->credentials_mode = network::mojom::CredentialsMode::kOmit;
-  request->method = method;
+  if (!method.empty())
+    request->method = method;
 
   if (!headers.empty()) {
     for (auto entry : headers)
@@ -80,22 +138,8 @@ void APIRequestHelper::Request(
       auto_retry_on_network_change
           ? network::SimpleURLLoader::RetryMode::RETRY_ON_NETWORK_CHANGE
           : network::SimpleURLLoader::RetryMode::RETRY_NEVER);
-  url_loader->SetAllowHttpErrorResults(true);
-  auto iter = url_loaders_.insert(url_loaders_.begin(), std::move(url_loader));
-  if (max_body_size == -1u) {
-    iter->get()->DownloadToStringOfUnboundedSizeUntilCrashAndDie(
-        url_loader_factory_.get(),
-        base::BindOnce(&APIRequestHelper::OnResponse,
-                       weak_ptr_factory_.GetWeakPtr(), iter,
-                       std::move(callback), std::move(conversion_callback)));
-  } else {
-    iter->get()->DownloadToString(
-        url_loader_factory_.get(),
-        base::BindOnce(&APIRequestHelper::OnResponse,
-                       weak_ptr_factory_.GetWeakPtr(), iter,
-                       std::move(callback), std::move(conversion_callback)),
-        max_body_size);
-  }
+  url_loader->SetAllowHttpErrorResults(allow_http_error_result);
+  return url_loader;
 }
 
 void APIRequestHelper::OnResponse(
@@ -139,6 +183,13 @@ void APIRequestHelper::OnResponse(
       std::move(raw_body),
       base::BindOnce(&OnSanitize, response_code, std::move(headers),
                      std::move(callback)));
+}
+
+void APIRequestHelper::OnDownload(SimpleURLLoaderList::iterator iter,
+                                  DownloadCallback callback,
+                                  base::FilePath path) {
+  url_loaders_.erase(iter);
+  std::move(callback).Run(path);
 }
 
 }  // namespace api_request_helper
