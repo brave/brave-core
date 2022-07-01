@@ -21,7 +21,9 @@
 
 #define GetWidthOfLargestSelectableRegion \
   GetWidthOfLargestSelectableRegion_ChromiumImpl
+#define ActiveStateChanged ActiveStateChanged_ChromiumImpl
 #include "src/chrome/browser/ui/views/tabs/tab.cc"
+#undef ActiveStateChanged
 #undef GetWidthOfLargestSelectableRegion
 #undef BRAVE_UI_VIEWS_TABS_TAB_UPDATE_ICON_VISIBILITY
 #undef BRAVE_UI_VIEWS_TABS_TAB_ALERT_INDICATOR_POSITION
@@ -42,4 +44,12 @@ int Tab::GetWidthOfLargestSelectableRegion() const {
     selectable_width -= close_button_->width();
 
   return std::max(0, selectable_width);
+}
+
+void Tab::ActiveStateChanged() {
+  ActiveStateChanged_ChromiumImpl();
+  // This should be called whenever acitve state changes
+  // see comment on UpdateEnabledForMuteToggle();
+  // https://github.com/brave/brave-browser/issues/23476/
+  alert_indicator_button_->UpdateEnabledForMuteToggle();
 }
