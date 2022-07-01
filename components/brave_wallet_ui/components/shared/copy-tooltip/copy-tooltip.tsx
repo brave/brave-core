@@ -6,7 +6,7 @@
 import * as React from 'react'
 
 // hooks
-import { useCopy } from '../../../common/hooks'
+import { useCopyToClipboard } from '../../../common/hooks/use-copy-to-clipboard'
 
 // utils
 import { getLocale } from '../../../../common/locale'
@@ -25,7 +25,7 @@ interface Props {
 }
 
 export const CopyTooltip = ({ children, tooltipText, actionText, text }: Props) => {
-  const { copied, copyText: copyToClipboard } = useCopy()
+  const { isCopied, copyToClipboard } = useCopyToClipboard()
 
   const handleClick = React.useCallback(async () => {
     if (text) {
@@ -38,7 +38,7 @@ export const CopyTooltip = ({ children, tooltipText, actionText, text }: Props) 
       <Tooltip
         text={tooltipText || getLocale('braveWalletToolTipCopyToClipboard')}
         actionText={actionText || getLocale('braveWalletToolTipCopiedToClipboard')}
-        isActionVisible={copied}
+        isActionVisible={isCopied}
       >
         {children}
       </Tooltip>

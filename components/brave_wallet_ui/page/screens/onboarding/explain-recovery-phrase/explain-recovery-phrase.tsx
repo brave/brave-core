@@ -15,8 +15,8 @@ import { WalletRoutes } from '../../../../constants/types'
 import ExamplePhrase from './images/example-recovery-phrase.svg'
 
 // components
-import { WalletPageLayout } from '../../../../components/desktop'
 import { NavButton } from '../../../../components/extension'
+import { CenteredPageLayout } from '../../../../components/desktop/centered-page-layout/centered-page-layout'
 import { OnboardingNewWalletStepsNavigation } from '../components/onboarding-steps-navigation/onboarding-steps-navigation'
 import { ArticleLinkBubble } from '../onboarding-success/components/article-link-bubble/article-link-bubble'
 
@@ -49,7 +49,7 @@ const ImportantTextSegments = () => {
 export const OnboardingRecoveryPhraseExplainer = () => {
   // render
   return (
-    <WalletPageLayout>
+    <CenteredPageLayout>
       <MainWrapper>
         <StyledWrapper>
 
@@ -88,7 +88,7 @@ export const OnboardingRecoveryPhraseExplainer = () => {
 
         </StyledWrapper>
       </MainWrapper>
-    </WalletPageLayout>
+    </CenteredPageLayout>
   )
 }
 

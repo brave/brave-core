@@ -33,8 +33,8 @@ import {
 } from './verify-backup-recovery-phrase.style'
 
 // components
-import { WalletPageLayout } from '../../../../components/desktop'
-import { NavButton } from '../../../../components/extension'
+import { CenteredPageLayout } from '../../../../components/desktop/centered-page-layout/centered-page-layout'
+import { NavButton } from '../../../../components/extension/buttons/nav-button/index'
 import { RecoveryPhrase } from '../components/recovery-phrase/recovery-phrase'
 import { OnboardingNewWalletStepsNavigation } from '../components/onboarding-steps-navigation/onboarding-steps-navigation'
 
@@ -77,7 +77,7 @@ export const OnboardingVerifyRecoveryPhrase = () => {
 
   // render
   return (
-    <WalletPageLayout>
+    <CenteredPageLayout>
       <MainWrapper>
         <StyledWrapper>
 
@@ -136,7 +136,7 @@ export const OnboardingVerifyRecoveryPhrase = () => {
 
         </StyledWrapper>
       </MainWrapper>
-    </WalletPageLayout>
+    </CenteredPageLayout>
   )
 }
 

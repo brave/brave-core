@@ -17,10 +17,10 @@ import { WalletRoutes } from '../../../../constants/types'
 import { WalletPageActions } from '../../../actions'
 
 // components
-import { WalletPageLayout } from '../../../../components/desktop'
 import { NavButton } from '../../../../components/extension'
 import { NewPasswordInput, NewPasswordValues } from '../../../../components/shared/password-input/new-password-input'
 import { OnboardingNewWalletStepsNavigation } from '../components/onboarding-steps-navigation/onboarding-steps-navigation'
+import { CenteredPageLayout } from '../../../../components/desktop/centered-page-layout/centered-page-layout'
 
 // styles
 import {
@@ -28,7 +28,8 @@ import {
   Title,
   Description,
   NextButtonRow,
-  MainWrapper
+  MainWrapper,
+  TitleAndDescriptionContainer
 } from '../onboarding.style'
 
 export const OnboardingCreatePassword = () => {
@@ -57,7 +58,7 @@ export const OnboardingCreatePassword = () => {
 
   // render
   return (
-    <WalletPageLayout>
+    <CenteredPageLayout>
       <MainWrapper>
         <StyledWrapper>
 
@@ -67,10 +68,10 @@ export const OnboardingCreatePassword = () => {
             preventSkipAhead
           />
 
-          <div>
+          <TitleAndDescriptionContainer>
             <Title>{getLocale('braveWalletCreatePasswordTitle')}</Title>
             <Description>{getLocale('braveWalletCreatePasswordDescription')}</Description>
-          </div>
+          </TitleAndDescriptionContainer>
 
           <NewPasswordInput
             autoFocus={true}
@@ -89,7 +90,7 @@ export const OnboardingCreatePassword = () => {
 
         </StyledWrapper>
       </MainWrapper>
-    </WalletPageLayout>
+    </CenteredPageLayout>
   )
 }
 

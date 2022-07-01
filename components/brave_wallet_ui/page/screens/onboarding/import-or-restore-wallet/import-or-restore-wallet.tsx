@@ -16,7 +16,7 @@ import { PageState, WalletRoutes } from '../../../../constants/types'
 import { WalletPageActions } from '../../../actions'
 
 // components
-import { WalletPageLayout } from '../../../../components/desktop'
+import { CenteredPageLayout } from '../../../../components/desktop/centered-page-layout/centered-page-layout'
 import { StepsNavigation } from '../../../../components/desktop/steps-navigation/steps-navigation'
 
 // styles
@@ -64,7 +64,7 @@ export const OnboardingImportOrRestoreWallet = () => {
 
   // render
   return (
-    <WalletPageLayout>
+    <CenteredPageLayout>
       <MainWrapper>
         <StyledWrapper>
 
@@ -134,7 +134,7 @@ export const OnboardingImportOrRestoreWallet = () => {
 
         </StyledWrapper>
       </MainWrapper>
-    </WalletPageLayout>
+    </CenteredPageLayout>
   )
 }
 
