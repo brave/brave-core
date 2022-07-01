@@ -17,6 +17,7 @@
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/task/cancelable_task_tracker.h"
+#include "base/task/sequenced_task_runner.h"
 #include "base/timer/timer.h"
 #include "bat/ads/ads.h"
 #include "bat/ads/ads_client.h"
@@ -335,7 +336,9 @@ class AdsServiceImpl : public AdsService,
                          const std::string& json);
 
   void OnLoaded(const ads::LoadCallback& callback, const std::string& value);
-  void OnFileLoaded(ads::LoadFileCallback callback, base::File value);
+  void OnFileLoaded(
+      ads::LoadFileCallback callback,
+      std::unique_ptr<base::File, base::OnTaskRunnerDeleter> file);
   void OnSaved(const ads::ResultCallback& callback, const bool success);
 
   void OnRunDBTransaction(ads::RunDBTransactionCallback callback,
