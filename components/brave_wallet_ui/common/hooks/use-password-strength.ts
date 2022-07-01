@@ -29,12 +29,14 @@ export const usePasswordStrength = () => {
   const [confirmedPassword, setConfirmedPassword] = React.useState<string>('')
   const [isStrongPassword, setIsStrongPassword] = React.useState<boolean>(false)
 
+  // methods
   const onPasswordChanged = React.useCallback(async (value: string) => {
     setPassword(value)
     const isStrong = await checkIsStrongPassword(value)
     setIsStrongPassword(isStrong)
   }, [checkIsStrongPassword])
 
+  // memos
   const hasPasswordError = React.useMemo(() => {
     if (password === '') {
       return false
@@ -77,6 +79,8 @@ export const usePasswordStrength = () => {
     }
   }, [password, isStrongPassword])
 
+  // computed
+  const passwordsMatch = password === confirmedPassword && confirmedPassword
   const isValid = !(
     hasConfirmedPasswordError ||
     hasPasswordError ||
@@ -94,6 +98,7 @@ export const usePasswordStrength = () => {
     hasConfirmedPasswordError,
     hasPasswordError,
     checkIsStrongPassword,
-    passwordStrength
+    passwordStrength,
+    passwordsMatch
   }
 }
