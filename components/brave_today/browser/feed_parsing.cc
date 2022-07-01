@@ -118,10 +118,8 @@ bool ParseFeedItem(const base::Value& feed_item_raw,
 
 bool ParseFeedItems(const std::string& json,
                     std::vector<mojom::FeedItemPtr>* feed_items) {
-  base::JSONReader::ValueWithError value_with_error =
-      base::JSONReader::ReadAndReturnValueWithError(
-          json, base::JSONParserOptions::JSON_PARSE_RFC);
-  absl::optional<base::Value>& records_v = value_with_error.value;
+  absl::optional<base::Value> records_v =
+      base::JSONReader::Read(json, base::JSONParserOptions::JSON_PARSE_RFC);
   if (!records_v) {
     LOG(ERROR) << "Invalid response, could not parse JSON, JSON is: " << json;
     return false;

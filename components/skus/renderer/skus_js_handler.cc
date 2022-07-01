@@ -136,11 +136,9 @@ void SkusJSHandler::OnRefreshOrder(
 
   v8::Local<v8::Promise::Resolver> resolver = promise_resolver.Get(isolate);
 
-  base::JSONReader::ValueWithError value_with_error =
-      base::JSONReader::ReadAndReturnValueWithError(
-          response, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
-                        base::JSONParserOptions::JSON_PARSE_RFC);
-  absl::optional<base::Value>& records_v = value_with_error.value;
+  absl::optional<base::Value> records_v = base::JSONReader::Read(
+      response, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
+                    base::JSONParserOptions::JSON_PARSE_RFC);
   if (!records_v) {
     v8::Local<v8::String> result =
         v8::String::NewFromUtf8(isolate, "Error parsing JSON response")
@@ -295,11 +293,9 @@ void SkusJSHandler::OnCredentialSummary(
 
   v8::Local<v8::Promise::Resolver> resolver = promise_resolver.Get(isolate);
 
-  base::JSONReader::ValueWithError value_with_error =
-      base::JSONReader::ReadAndReturnValueWithError(
-          response, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
-                        base::JSONParserOptions::JSON_PARSE_RFC);
-  absl::optional<base::Value>& records_v = value_with_error.value;
+  absl::optional<base::Value> records_v = base::JSONReader::Read(
+      response, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
+                    base::JSONParserOptions::JSON_PARSE_RFC);
   if (!records_v) {
     v8::Local<v8::String> result =
         v8::String::NewFromUtf8(isolate, "Error parsing JSON response")
