@@ -57,6 +57,7 @@ class BraveShieldsDataController
   std::vector<GURL> GetFingerprintsList();
   bool GetBraveShieldsEnabled();
   void SetBraveShieldsEnabled(bool is_enabled);
+  GURL GetCurrentSiteURLForDisplay();
   GURL GetCurrentSiteURL();
   GURL GetFaviconURL(bool refresh);
 

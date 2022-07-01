@@ -156,6 +156,22 @@ void BraveShieldsDataController::SetBraveShieldsEnabled(bool is_enabled) {
 }
 
 GURL BraveShieldsDataController::GetCurrentSiteURL() {
+  // use web_contents()->GetController().GetLastCommittedEntry()->GetURL()
+  // for the actual content settings check and
+  // display
+  // web_contents()->GetController().GetLastCommittedEntry()->GetVirtualURL() to
+  // the user for all urls
+  auto* entry = web_contents()->GetController().GetLastCommittedEntry();
+  // We really don't want to be using the empty GURL to store any settings,
+  // but we should not be in this position.
+  // DCHECK(entry);
+  if (!entry) {
+    return GURL();
+  }
+  return entry->GetURL();
+}
+
+GURL BraveShieldsDataController::GetCurrentSiteURLForDisplay() {
   return web_contents()->GetLastCommittedURL();
 }
 
@@ -242,6 +258,11 @@ bool BraveShieldsDataController::GetNoScriptEnabled() {
 }
 
 void BraveShieldsDataController::SetAdBlockMode(AdBlockMode mode) {
+  // Do not set anything when we do not have a committed nav entry
+  if (GetCurrentSiteURL().is_empty()) {
+    return;
+  }
+
   auto* map = GetHostContentSettingsMap(web_contents());
 
   ControlType control_type_ad;
@@ -275,6 +296,11 @@ void BraveShieldsDataController::SetAdBlockMode(AdBlockMode mode) {
 }
 
 void BraveShieldsDataController::SetFingerprintMode(FingerprintMode mode) {
+  // Do not set anything when we do not have a committed nav entry
+  if (GetCurrentSiteURL().is_empty()) {
+    return;
+  }
+
   ControlType control_type;
 
   if (mode == FingerprintMode::ALLOW) {
@@ -296,6 +322,11 @@ void BraveShieldsDataController::SetFingerprintMode(FingerprintMode mode) {
 }
 
 void BraveShieldsDataController::SetCookieBlockMode(CookieBlockMode mode) {
+  // Do not set anything when we do not have a committed nav entry
+  if (GetCurrentSiteURL().is_empty()) {
+    return;
+  }
+
   auto* prefs = Profile::FromBrowserContext(web_contents()->GetBrowserContext())
                     ->GetPrefs();
   ControlType control_type;
@@ -316,6 +347,11 @@ void BraveShieldsDataController::SetCookieBlockMode(CookieBlockMode mode) {
 }
 
 void BraveShieldsDataController::SetIsNoScriptEnabled(bool is_enabled) {
+  // Do not set anything when we do not have a committed nav entry
+  if (GetCurrentSiteURL().is_empty()) {
+    return;
+  }
+
   ControlType control_type;
 
   if (!is_enabled) {
@@ -332,6 +368,11 @@ void BraveShieldsDataController::SetIsNoScriptEnabled(bool is_enabled) {
 }
 
 void BraveShieldsDataController::SetIsHTTPSEverywhereEnabled(bool is_enabled) {
+  // Do not set anything when we do not have a committed nav entry
+  if (GetCurrentSiteURL().is_empty()) {
+    return;
+  }
+
   brave_shields::SetHTTPSEverywhereEnabled(
       GetHostContentSettingsMap(web_contents()), is_enabled,
       GetCurrentSiteURL(), g_browser_process->local_state());

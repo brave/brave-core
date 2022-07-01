@@ -145,7 +145,7 @@ void ShieldsPanelDataHandler::UpdateSiteBlockInfo() {
     return;
 
   site_block_info_.host =
-      active_shields_data_controller_->GetCurrentSiteURL().host();
+      active_shields_data_controller_->GetCurrentSiteURLForDisplay().host();
   site_block_info_.total_blocked_resources =
       active_shields_data_controller_->GetTotalBlockedCount();
   site_block_info_.ads_list =
