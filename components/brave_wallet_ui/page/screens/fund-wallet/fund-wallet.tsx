@@ -216,7 +216,7 @@ export const FundWalletScreen = () => {
             <StepsNavigation
               goBack={onBack}
               onSkip={goToPortfolio}
-              skipButtonText={getLocale('braveWalletButtonClose')}
+              skipButtonText={getLocale('braveWalletButtonDone')}
               steps={[]}
               currentStep=''
             />

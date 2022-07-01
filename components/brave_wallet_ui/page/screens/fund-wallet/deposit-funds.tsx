@@ -292,10 +292,7 @@ export const DepositFundsScreen = () => {
             <StepsNavigation
               goBack={onBack}
               onSkip={goToPortfolio}
-              skipButtonText={showDepositAddress
-                ? getLocale('braveWalletButtonDone')
-                : getLocale('braveWalletButtonClose')
-              }
+              skipButtonText={getLocale('braveWalletButtonDone')}
               steps={[]}
               currentStep=''
             />
