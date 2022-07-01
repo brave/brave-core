@@ -18,6 +18,8 @@
 #include "brave/components/brave_federated/public/interfaces/brave_federated.mojom.h"
 #include "chrome/browser/profiles/profile.h"
 
+namespace brave_federated {
+
 FederatedInternalsPageHandler::FederatedInternalsPageHandler(
     mojo::PendingReceiver<federated_internals::mojom::PageHandler> receiver,
     mojo::PendingRemote<federated_internals::mojom::Page> page,
@@ -64,3 +66,5 @@ void FederatedInternalsPageHandler::OnUpdateDataStoresInfo(
   }
   page_->OnUpdateDataStoresInfo(std::move(training_instances));
 }
+
+}  // namespace brave_federated

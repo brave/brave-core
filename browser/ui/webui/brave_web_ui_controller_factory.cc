@@ -133,7 +133,7 @@ WebUIController* NewWebUI(WebUI* web_ui, const GURL& url) {
   } else if (host == kFederatedInternalsHost) {
     if (base::FeatureList::IsEnabled(
             brave_federated::features::kFederatedLearning)) {
-      return new FederatedInternalsUI(web_ui);
+      return new brave_federated::FederatedInternalsUI(web_ui);
     }
   }
   return nullptr;

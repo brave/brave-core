@@ -4,6 +4,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/brave_federated/eligibility_service.h"
+#include "brave/components/brave_federated/eligibility_service_observer.h"
 
 namespace brave_federated {
 

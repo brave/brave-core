@@ -566,8 +566,8 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
   if (base::FeatureList::IsEnabled(
           brave_federated::features::kFederatedLearning)) {
     chrome::internal::RegisterWebUIControllerInterfaceBinder<
-        federated_internals::mojom::PageHandlerFactory, FederatedInternalsUI>(
-        map);
+        federated_internals::mojom::PageHandlerFactory,
+        brave_federated::FederatedInternalsUI>(map);
   }
 #endif
 

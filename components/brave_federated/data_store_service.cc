@@ -7,7 +7,6 @@
 
 #include <utility>
 
-#include "base/memory/weak_ptr.h"
 #include "base/task/thread_pool.h"
 #include "base/threading/sequence_bound.h"
 #include "base/threading/sequenced_task_runner_handle.h"
@@ -54,6 +53,7 @@ void DataStoreService::OnInitializeDatabaseComplete(bool success) {
 void DataStoreService::PurgeDataStoresAfterExpirationDate() {
   for (const auto& entry : data_stores_) {
     AsyncDataStore* data_store = entry.second.get();
+    DCHECK(data_store);
     data_store->PurgeTrainingDataAfterExpirationDate();
   }
 }

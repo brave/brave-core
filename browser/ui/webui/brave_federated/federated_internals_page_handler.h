@@ -6,18 +6,17 @@
 #ifndef BRAVE_BROWSER_UI_WEBUI_BRAVE_FEDERATED_FEDERATED_INTERNALS_PAGE_HANDLER_H_
 #define BRAVE_BROWSER_UI_WEBUI_BRAVE_FEDERATED_FEDERATED_INTERNALS_PAGE_HANDLER_H_
 
-#include <string>
-#include <vector>
-
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/browser/ui/webui/brave_federated/federated_internals.mojom.h"
-#include "brave/components/brave_federated/data_store_service.h"
 #include "brave/components/brave_federated/data_stores/data_store.h"
 #include "mojo/public/cpp/bindings/receiver.h"
 #include "mojo/public/cpp/bindings/remote.h"
 
 class Profile;
+
+namespace brave_federated {
+class DataStoreService;
 
 class FederatedInternalsPageHandler
     : public federated_internals::mojom::PageHandler {
@@ -45,5 +44,7 @@ class FederatedInternalsPageHandler
   base::WeakPtrFactory<FederatedInternalsPageHandler> weak_ptr_factory_{
       this};
 };
+
+}  // namespace brave_federated
 
 #endif  // BRAVE_BROWSER_UI_WEBUI_BRAVE_FEDERATED_FEDERATED_INTERNALS_PAGE_HANDLER_H_
