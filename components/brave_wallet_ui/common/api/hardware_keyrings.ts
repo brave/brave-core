@@ -9,6 +9,7 @@ import LedgerBridgeKeyring from '../../common/hardware/ledgerjs/eth_ledger_bridg
 import TrezorBridgeKeyring from '../../common/hardware/trezor/trezor_bridge_keyring'
 import * as HWInterfaces from '../hardware/interfaces'
 import FilecoinLedgerKeyring from '../hardware/ledgerjs/filecoin_ledger_keyring'
+import SolanaLedgerBridgeKeyring from '../../common/hardware/ledgerjs/sol_ledger_bridge_keyring'
 
 export type HardwareKeyring = LedgerBridgeKeyring | TrezorBridgeKeyring
 
@@ -31,6 +32,7 @@ export type HardwareVendor = typeof VendorTypes[number]
 // Lazy instances for keyrings
 let ethereumHardwareKeyring: LedgerBridgeKeyring
 let filecoinHardwareKeyring: FilecoinLedgerKeyring
+let solanaHardwareKeyring: SolanaLedgerBridgeKeyring
 let trezorHardwareKeyring: TrezorBridgeKeyring
 let keyringService: BraveWallet.KeyringServiceRemote
 
@@ -42,12 +44,17 @@ export function getBraveKeyring (): BraveWallet.KeyringServiceRemote {
   return keyringService
 }
 
-export function getHardwareKeyring (type: HardwareVendor, coin: BraveWallet.CoinType = BraveWallet.CoinType.ETH): LedgerBridgeKeyring | HWInterfaces.TrezorKeyring | FilecoinLedgerKeyring {
+export function getHardwareKeyring (
+  type: HardwareVendor,
+  coin: BraveWallet.CoinType = BraveWallet.CoinType.ETH
+): LedgerBridgeKeyring | HWInterfaces.TrezorKeyring | FilecoinLedgerKeyring | SolanaLedgerBridgeKeyring {
   if (type === BraveWallet.LEDGER_HARDWARE_VENDOR) {
     if (coin === BraveWallet.CoinType.ETH) {
       return getLedgerEthereumHardwareKeyring()
     } else if (coin === BraveWallet.CoinType.FIL) {
       return getLedgerFilecoinHardwareKeyring()
+    } else if (coin === BraveWallet.CoinType.SOL) {
+      return getLedgerSolanaHardwareKeyring()
     }
   }
 
@@ -68,6 +75,13 @@ export function getLedgerFilecoinHardwareKeyring (): FilecoinLedgerKeyring {
     filecoinHardwareKeyring = new FilecoinLedgerKeyring()
   }
   return filecoinHardwareKeyring
+}
+
+export function getLedgerSolanaHardwareKeyring (): SolanaLedgerBridgeKeyring {
+  if (!solanaHardwareKeyring) {
+    solanaHardwareKeyring = new SolanaLedgerBridgeKeyring()
+  }
+  return solanaHardwareKeyring
 }
 
 export function getTrezorHardwareKeyring (): TrezorBridgeKeyring {
