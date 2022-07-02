@@ -27,8 +27,7 @@ FederatedInternalsPageHandler::FederatedInternalsPageHandler(
     : receiver_(this, std::move(receiver)),
       page_(std::move(page)),
       data_store_service_(
-          brave_federated::BraveFederatedServiceFactory::GetForBrowserContext(
-              profile)
+          BraveFederatedServiceFactory::GetForBrowserContext(profile)
               ->GetDataStoreService()) {}
 
 FederatedInternalsPageHandler::~FederatedInternalsPageHandler() = default;
@@ -37,9 +36,8 @@ void FederatedInternalsPageHandler::UpdateDataStoresInfo() {
   if (!data_store_service_) {
     return;
   }
-  brave_federated::AsyncDataStore* notification_ad_data_store =
-      data_store_service_->GetDataStore(
-          brave_federated::kNotificationAdTaskName);
+  AsyncDataStore* notification_ad_data_store =
+      data_store_service_->GetDataStore(kNotificationAdTaskName);
   if (!notification_ad_data_store) {
     return;
   }
@@ -50,14 +48,14 @@ void FederatedInternalsPageHandler::UpdateDataStoresInfo() {
 }
 
 void FederatedInternalsPageHandler::OnUpdateDataStoresInfo(
-    brave_federated::TrainingData training_data) {
+    TrainingData training_data) {
   std::vector<federated_internals::mojom::TrainingInstancePtr>
       training_instances;
   for (auto& item : training_data) {
     auto training_instance =
         federated_internals::mojom::TrainingInstance::New();
     training_instance->id = item.first;
-    std::vector<brave_federated::mojom::CovariatePtr>& covariates = item.second;
+    std::vector<mojom::CovariatePtr>& covariates = item.second;
     for (auto& covariate : covariates) {
       training_instance->covariates.push_back(std::move(covariate));
     }

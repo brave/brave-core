@@ -16,6 +16,7 @@
 class Profile;
 
 namespace brave_federated {
+
 class DataStoreService;
 
 class FederatedInternalsPageHandler

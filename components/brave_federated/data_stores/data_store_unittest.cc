@@ -7,6 +7,7 @@
 #include <string>
 #include <utility>
 
+#include "base/check.h"
 #include "base/files/scoped_temp_dir.h"
 #include "base/path_service.h"
 #include "base/time/time.h"
@@ -53,7 +54,7 @@ class DataStoreTest : public testing::Test {
 
   base::test::TaskEnvironment task_environment_;
   base::ScopedTempDir temp_dir_;
-  std::unique_ptr<DataStore> data_store_ = nullptr;
+  std::unique_ptr<DataStore> data_store_;
 };
 
 void DataStoreTest::SetUp() {
@@ -105,8 +106,9 @@ void DataStoreTest::InitializeDataStore() {
     AddTrainingInstance(std::move(training_instance));
   }
   EXPECT_EQ(sizeof(kTrainingData) / sizeof(kTrainingData[0]),
-            static_cast<size_t>(RecordCount()));
-  EXPECT_EQ(training_data.size(), static_cast<size_t>(TrainingInstanceCount()));
+            static_cast<unsigned int>(RecordCount()));
+  EXPECT_EQ(training_data.size(),
+            static_cast<unsigned int>(TrainingInstanceCount()));
 }
 
 bool DataStoreTest::AddTrainingInstance(
@@ -157,8 +159,8 @@ TEST_F(DataStoreTest, LoadTrainingData) {
   EXPECT_EQ(2, TrainingInstanceCount());
   auto training_data = data_store_->LoadTrainingData();
 
-  for (size_t i = 0; i < sizeof(kTrainingData) / sizeof(kTrainingData[0]) / 2;
-       ++i) {
+  for (unsigned int i = 0;
+       i < sizeof(kTrainingData) / sizeof(kTrainingData[0]) / 2; ++i) {
     auto it = training_data.find(i + 1);
     EXPECT_EQ(2U, it->second.size());
     EXPECT_TRUE(it != training_data.end());
@@ -169,7 +171,8 @@ TEST_F(DataStoreTest, DeleteLogs) {
   InitializeDataStore();
   EXPECT_EQ(4, RecordCount());
   TrainingData training_data = data_store_->LoadTrainingData();
-  EXPECT_EQ(training_data.size(), static_cast<size_t>(TrainingInstanceCount()));
+  EXPECT_EQ(training_data.size(),
+            static_cast<unsigned int>(TrainingInstanceCount()));
   EXPECT_TRUE(data_store_->DeleteTrainingData());
   EXPECT_EQ(0, RecordCount());
   training_data = data_store_->LoadTrainingData();
