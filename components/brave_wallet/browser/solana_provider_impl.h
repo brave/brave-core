@@ -48,12 +48,12 @@ class SolanaProviderImpl final : public mojom::SolanaProvider,
   void Disconnect() override;
   void IsConnected(IsConnectedCallback callback) override;
   void GetPublicKey(GetPublicKeyCallback callback) override;
-  void SignTransaction(const std::string& encoded_serialized_msg,
+  void SignTransaction(mojom::SolanaSignTransactionParamPtr param,
                        SignTransactionCallback callback) override;
   void SignAllTransactions(
-      const std::vector<std::string>& encoded_serialized_msgs,
+      std::vector<mojom::SolanaSignTransactionParamPtr> params,
       SignAllTransactionsCallback callback) override;
-  void SignAndSendTransaction(const std::string& encoded_serialized_msg,
+  void SignAndSendTransaction(mojom::SolanaSignTransactionParamPtr param,
                               absl::optional<base::Value> send_options,
                               SignAndSendTransactionCallback callback) override;
   void SignMessage(const std::vector<uint8_t>& blob_msg,
@@ -81,11 +81,11 @@ class SolanaProviderImpl final : public mojom::SolanaProvider,
                                      bool approved,
                                      const std::string& signature,
                                      const std::string& error);
-  void OnSignTransactionRequestProcessed(const SolanaTransaction& tx,
+  void OnSignTransactionRequestProcessed(std::unique_ptr<SolanaTransaction> tx,
                                          SignTransactionCallback callback,
                                          bool approved);
   void OnSignAllTransactionsRequestProcessed(
-      const std::vector<SolanaTransaction>& txs,
+      const std::vector<std::unique_ptr<SolanaTransaction>>& txs,
       SignAllTransactionsCallback callback,
       bool approved);
   void OnAddUnapprovedTransaction(SignAndSendTransactionCallback callback,

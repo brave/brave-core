@@ -35,10 +35,15 @@ class BraveWalletRenderFrameObserver : public content::RenderFrameObserver {
       absl::optional<blink::WebNavigationType> navigation_type) override;
   void DidCreateScriptContext(v8::Local<v8::Context> context,
                               int32_t world_id) override;
+  void WillReleaseScriptContext(v8::Local<v8::Context>,
+                                int32_t world_id) override;
+  void DidClearWindowObject() override;
 
  private:
   // RenderFrameObserver implementation.
   void OnDestruct() override;
+
+  bool CanCreateProvider();
 
   // Handle to "handler" JavaScript object functionality.
   std::unique_ptr<JSEthereumProvider> js_ethereum_provider_;
