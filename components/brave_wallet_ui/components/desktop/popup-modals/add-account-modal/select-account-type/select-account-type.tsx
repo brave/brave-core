@@ -35,12 +35,6 @@ export const SelectAccountType = ({ buttonText, onSelectAccountType }: Props) =>
   // redux
   const { isSolanaEnabled, isFilecoinEnabled } = useSelector(({ wallet }: { wallet: WalletState }) => wallet)
 
-  // Disabling Solana from Import from hardware wallets until it is supported.
-  // Issue here https://github.com/brave/brave-browser/issues/23061
-  const solanaEnabled = React.useMemo((): boolean => {
-    return buttonText === getLocale('braveWalletAddAccountConnect') ? false : isSolanaEnabled
-  }, [isSolanaEnabled, buttonText])
-
   // render
   return (
     <SelectAccountTypeWrapper>
@@ -49,7 +43,7 @@ export const SelectAccountType = ({ buttonText, onSelectAccountType }: Props) =>
 
       <DividerLine />
 
-      {CreateAccountOptions(isFilecoinEnabled, solanaEnabled).map((network) => (
+      {CreateAccountOptions(isFilecoinEnabled, isSolanaEnabled).map((network) => (
         <SelectAccountItemWrapper key={network.coin}>
 
           <AccountTypeItem

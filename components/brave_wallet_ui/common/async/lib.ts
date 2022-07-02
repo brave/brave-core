@@ -34,6 +34,7 @@ import LedgerBridgeKeyring from '../hardware/ledgerjs/eth_ledger_bridge_keyring'
 import TrezorBridgeKeyring from '../hardware/trezor/trezor_bridge_keyring'
 import { AllNetworksOption } from '../../options/network-filter-options'
 import FilecoinLedgerKeyring from '../hardware/ledgerjs/filecoin_ledger_keyring'
+import SolanaLedgerKeyring from '../hardware/ledgerjs/sol_ledger_bridge_keyring'
 
 export const getERC20Allowance = (
   contractAddress: string,
@@ -77,6 +78,22 @@ export const onConnectHardwareWallet = (opts: HardwareWalletConnectOpts): Promis
           reject(result.error)
         })
         .catch(reject)
+    } else if (keyring instanceof SolanaLedgerKeyring && opts.network) {
+      keyring.getAccounts(opts.startIndex, opts.stopIndex)
+        .then(async (result: GetAccountsHardwareOperationResult) => {
+          if (result.payload) {
+            const { braveWalletService } = getAPIProxy()
+            const addressesEncoded = await braveWalletService.base58Encode(
+              result.payload.map((hardwareAccount) => [...(hardwareAccount.addressBytes || [])])
+            )
+            for (let i = 0; i < result.payload.length; i++) {
+              result.payload[i].address = addressesEncoded.addresses[i]
+            }
+            return resolve(result.payload)
+          }
+          reject(result.error)
+        })
+        .catch(reject)
     }
   })
 }
@@ -85,6 +102,16 @@ export const getBalance = (address: string, coin: BraveWallet.CoinType): Promise
   return new Promise(async (resolve, reject) => {
     const { jsonRpcService } = getAPIProxy()
     const chainId = await jsonRpcService.getChainId(coin)
+
+    if (coin === BraveWallet.CoinType.SOL) {
+      const result = await jsonRpcService.getSolanaBalance(address, chainId.chainId)
+      if (result.error === BraveWallet.SolanaProviderError.kSuccess) {
+        resolve(Amount.normalize(result.balance.toString()))
+      } else {
+        reject()
+      }
+      return
+    }
     const result = await jsonRpcService.getBalance(address, coin, chainId.chainId)
     if (result.error === BraveWallet.ProviderError.kSuccess) {
       resolve(Amount.normalize(result.balance))

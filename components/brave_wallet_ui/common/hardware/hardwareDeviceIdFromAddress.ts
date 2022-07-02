@@ -4,6 +4,6 @@
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 const crypto = require('crypto')
 
-export async function hardwareDeviceIdFromAddress (address: string) {
+export async function hardwareDeviceIdFromAddress (address: string | Buffer) {
   return crypto.createHash('sha256').update(address).digest('hex')
 }

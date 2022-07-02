@@ -108,26 +108,30 @@ export default function (props: Props) {
 
   return (
     <>
-      <SelectRow>
-        <SelectWrapper>
-          {selectedAccountType.coin !== BraveWallet.CoinType.FIL && (
-            <Select value={selectedDerivationScheme} onChange={setSelectedDerivationScheme}>
-              {Object.keys(derivationPathsEnum).map((path, index) => {
-                const pathValue = derivationPathsEnum[path]
-                const pathLocale = HardwareWalletDerivationPathLocaleMapping[pathValue]
-                return (
-                  <div data-value={pathValue} key={index}>
-                    {pathLocale}
-                  </div>
-                )
-              })}
-            </Select>
-          )}
-        </SelectWrapper>
-      </SelectRow>
-      <DisclaimerWrapper>
-        <DisclaimerText>{getLocale('braveWalletSwitchHDPathTextHardwareWallet')}</DisclaimerText>
-      </DisclaimerWrapper>
+      {selectedAccountType.coin !== BraveWallet.CoinType.SOL && (
+        <SelectRow>
+          <SelectWrapper>
+            {selectedAccountType.coin !== BraveWallet.CoinType.FIL && (
+              <Select value={selectedDerivationScheme} onChange={setSelectedDerivationScheme}>
+                {Object.keys(derivationPathsEnum).map((path, index) => {
+                  const pathValue = derivationPathsEnum[path]
+                  const pathLocale = HardwareWalletDerivationPathLocaleMapping[pathValue]
+                  return (
+                    <div data-value={pathValue} key={index}>
+                      {pathLocale}
+                    </div>
+                  )
+                })}
+              </Select>
+            )}
+          </SelectWrapper>
+        </SelectRow>
+      )}
+      {selectedAccountType.coin !== BraveWallet.CoinType.SOL && (
+        <DisclaimerWrapper>
+          <DisclaimerText>{getLocale('braveWalletSwitchHDPathTextHardwareWallet')}</DisclaimerText>
+        </DisclaimerWrapper>
+      )}
       <SearchBar placeholder={getLocale('braveWalletSearchScannedAccounts')} action={filterAccountList} />
       <HardwareWalletAccountsList>
         {
@@ -207,10 +211,13 @@ function AccountListItem (props: AccountListItemProps) {
 
   React.useMemo(() => {
     getBalance(account.address, account.coin).then((result) => {
-      const formattedBalance = new Amount(result)
-        .divideByDecimals(selectedNetwork.decimals)
-        .format()
-      setBalance(formattedBalance)
+      let amount = new Amount(result)
+      if (account.coin === BraveWallet.CoinType.SOL) {
+        amount = amount.divideByDecimals(9)
+      } else {
+        amount = amount.divideByDecimals(selectedNetwork.decimals)
+      }
+      setBalance(amount.format())
     }).catch()
   }, [account])
 

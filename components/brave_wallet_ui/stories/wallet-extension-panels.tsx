@@ -935,6 +935,7 @@ export const _ConnectHardwareWallet = () => {
     <StyledExtensionWrapper>
       <ConnectHardwareWalletPanel
         walletName='Ledger 1'
+        coinType={BraveWallet.CoinType.ETH}
         onCancel={onCancel}
         retryCallable={onConfirmTransaction}
         onClickInstructions={onClickInstructions}

@@ -1348,6 +1348,16 @@ void BraveWalletService::IsBase58EncodedSolanaPubkey(
   std::move(callback).Run(::brave_wallet::IsBase58EncodedSolanaPubkey(key));
 }
 
+void BraveWalletService::Base58Encode(
+    const std::vector<std::vector<std::uint8_t>>& addresses,
+    Base58EncodeCallback callback) {
+  std::vector<std::string> encoded_addresses;
+  for (const auto& address : addresses) {
+    encoded_addresses.push_back(brave_wallet::Base58Encode(address));
+  }
+  std::move(callback).Run(std::move(encoded_addresses));
+}
+
 void BraveWalletService::CancelAllSuggestedTokenCallbacks() {
   add_suggest_token_requests_.clear();
   // Reject pending suggest token requests when network changed.

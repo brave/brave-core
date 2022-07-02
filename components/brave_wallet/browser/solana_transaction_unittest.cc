@@ -599,4 +599,39 @@ TEST_F(SolanaTransactionUnitTest, GetSerializedMessage) {
                                {kFromAccount, kTestAccount, kToAccount})));
 }
 
+TEST_F(SolanaTransactionUnitTest, GetSignedTransactionBytes) {
+  // Empty message is invalid
+  std::vector<uint8_t> signature_bytes;
+  std::string signature =
+      "fJaHU9cDUoLsWLXJSPTgW3bAkhuZL319v2479igQtSp1ZyBjPi923jWkALg48uS75z5fp1JK"
+      "1T4vdWi2D35fFEj";
+  EXPECT_TRUE(Base58Decode(signature, &signature_bytes, kSolanaSignatureSize));
+  SolanaTransaction transaction("", 0, "", {});
+  EXPECT_EQ(transaction.GetSignedTransactionBytes(keyring_service(),
+                                                  &signature_bytes),
+            absl::nullopt);
+
+  // Valid
+  SolanaInstruction instruction_one_signer(
+      kSolanaSystemProgramId,
+      {SolanaAccountMeta("3Lu176FQzbQJCc8iL9PnmALbpMPhZeknoturApnXRDJw", true,
+                         true),
+       SolanaAccountMeta("3QpJ3j1vq1PfqJdvCcHKWuePykqoUYSvxyRb3Cnh79BD", false,
+                         true)},
+      {2, 0, 0, 0, 128, 150, 152, 0, 0, 0, 0, 0});
+  SolanaMessage message("9sHcv6xwn9YkB8nxTUGKDwPwNnmqVp5oAXxU8Fdkm4J6", 0,
+                        "3Lu176FQzbQJCc8iL9PnmALbpMPhZeknoturApnXRDJw",
+                        {instruction_one_signer});
+  SolanaTransaction transaction2(std::move(message));
+  EXPECT_NE(transaction2.GetSignedTransactionBytes(keyring_service(),
+                                                   &signature_bytes),
+            absl::nullopt);
+
+  // Empty signature is invalid
+  std::vector<uint8_t> empty_signature_bytes;
+  EXPECT_EQ(transaction2.GetSignedTransactionBytes(keyring_service(),
+                                                   &empty_signature_bytes),
+            absl::nullopt);
+}
+
 }  // namespace brave_wallet

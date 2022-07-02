@@ -222,8 +222,12 @@ SolanaTransaction::GetSerializedMessage() const {
 absl::optional<std::vector<uint8_t>>
 SolanaTransaction::GetSignedTransactionBytes(
     KeyringService* keyring_service,
-    std::vector<uint8_t>* fee_payer_signature) const {
+    const std::vector<uint8_t>* fee_payer_signature) const {
   if (!keyring_service && !fee_payer_signature)
+    return absl::nullopt;
+
+  if (fee_payer_signature &&
+      fee_payer_signature->size() != kSolanaSignatureSize)
     return absl::nullopt;
 
   auto message_signers_pair = GetSerializedMessage();
