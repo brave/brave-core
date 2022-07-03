@@ -7,7 +7,9 @@
 
 #include <memory>
 
+#include "base/debug/dump_without_crashing.h"
 #include "base/feature_list.h"
+#include "base/logging.h"
 #include "base/notreached.h"
 #include "base/strings/string_number_conversions.h"
 #include "brave/components/brave_shields/browser/brave_shields_p3a.h"
@@ -187,12 +189,16 @@ void SetBraveShieldsEnabled(HostContentSettingsMap* map,
   }
 
   auto primary_pattern = GetPatternFromURL(url);
-  DCHECK(!primary_pattern.MatchesAllHosts())
-      << "Url for shields setting cannot be blank or result in a wildcard "
-         "content setting.";
+
   if (primary_pattern.MatchesAllHosts()) {
     LOG(ERROR) << "Url for shields setting cannot be blank or result in a "
                   "wildcard content setting.";
+
+#if DCHECK_IS_ON()
+    DCHECK(false);
+#else
+    base::debug::DumpWithoutCrashing();
+#endif
     return;
   }
 
