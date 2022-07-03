@@ -105,6 +105,10 @@ void BraveNewsController::ClearHistory() {
   // feed cache somewhere.
 }
 
+mojom::PublisherPtr BraveNewsController::GetPublisherForSite(const GURL &site_url) {
+  return publishers_controller_.GetPublisherForSite(site_url);
+}
+
 mojo::PendingRemote<mojom::BraveNewsController>
 BraveNewsController::MakeRemote() {
   mojo::PendingRemote<mojom::BraveNewsController> remote;

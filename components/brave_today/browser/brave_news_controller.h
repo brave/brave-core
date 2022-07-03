@@ -9,6 +9,7 @@
 #include <memory>
 #include <string>
 
+#include "absl/types/optional.h"
 #include "base/callback_forward.h"
 #include "base/containers/flat_map.h"
 #include "base/memory/raw_ptr.h"
@@ -63,6 +64,8 @@ class BraveNewsController : public KeyedService,
 
   // Remove any cache that would identify user browsing history
   void ClearHistory();
+
+  mojom::PublisherPtr GetPublisherForSite(const GURL& site_url);
 
   // mojom::BraveNewsController
   void GetFeed(GetFeedCallback callback) override;

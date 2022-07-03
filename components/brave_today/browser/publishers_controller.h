@@ -36,6 +36,8 @@ class PublishersController {
     virtual void OnPublishersUpdated(PublishersController* controller) = 0;
   };
 
+  mojom::PublisherPtr GetPublisherForSite(const GURL& site_url);
+  
   void AddObserver(Observer* observer);
   void RemoveObserver(Observer* observer);
   void GetOrFetchPublishers(GetPublishersCallback callback,

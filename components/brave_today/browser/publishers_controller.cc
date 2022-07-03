@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_today/browser/publishers_controller.h"
 
+#include <cstddef>
 #include <iterator>
 #include <memory>
 #include <string>
@@ -18,8 +19,10 @@
 #include "brave/components/brave_today/browser/direct_feed_controller.h"
 #include "brave/components/brave_today/browser/publishers_parsing.h"
 #include "brave/components/brave_today/browser/urls.h"
+#include "brave/components/brave_today/common/brave_news.mojom-forward.h"
 #include "brave/components/brave_today/common/brave_news.mojom.h"
 #include "brave/components/brave_today/common/pref_names.h"
+#include "url/origin.h"
 
 namespace brave_news {
 
@@ -31,6 +34,19 @@ PublishersController::PublishersController(
       on_current_update_complete_(new base::OneShotEvent()) {}
 
 PublishersController::~PublishersController() = default;
+
+mojom::PublisherPtr PublishersController::GetPublisherForSite(const GURL &site_url) {
+  if (publishers_.empty()) return nullptr;
+
+  const auto site_origin = url::Origin::Create(site_url);
+  for (const auto& kv : publishers_) {
+    const auto publisher_origin = url::Origin::Create(kv.second->site_url);
+    if (site_origin == site_origin)
+      return kv.second->Clone();
+  }
+
+  return nullptr;
+}
 
 void PublishersController::AddObserver(Observer* observer) {
   observers_.AddObserver(observer);
