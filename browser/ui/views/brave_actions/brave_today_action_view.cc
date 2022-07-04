@@ -4,6 +4,7 @@
 #include "base/bind.h"
 #include "brave/app/vector_icons/vector_icons.h"
 #include "brave/browser/ui/views/brave_actions/brave_action_view.h"
+#include "brave/components/brave_today/browser/brave_news_tab_helper.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/tabs/tab_strip_model_observer.h"
 #include "chrome/browser/ui/views/chrome_layout_provider.h"
@@ -50,7 +51,6 @@ BraveTodayActionView::BraveTodayActionView(Profile* profile,
   SetHasInkDropActionOnClick(true);
 
   tab_strip_->AddObserver(this);
-  Update();
 }
 
 BraveTodayActionView::~BraveTodayActionView() {
@@ -58,13 +58,19 @@ BraveTodayActionView::~BraveTodayActionView() {
 }
 
 void BraveTodayActionView::Init() {
-  auto image = gfx::CreateVectorIcon(
-      kBraveTodaySubscribeIcon, 16,
-      color_utils::DeriveDefaultIconColor(SK_ColorBLACK));
+  auto image =
+      gfx::CreateVectorIcon(kBraveTodaySubscribeIcon, 16,
+                            color_utils::DeriveDefaultIconColor(SK_ColorBLACK));
   SetImage(ButtonState::STATE_NORMAL, image);
 }
 
-void BraveTodayActionView::Update() {}
+void BraveTodayActionView::Update() {
+  auto* contents = tab_strip_->GetActiveWebContents();
+  if (!contents)
+    return;
+
+  SetVisible(BraveNewsTabHelper::FromWebContents(contents)->has_feed());
+}
 
 SkPath BraveTodayActionView::GetHighlightPath() const {
   auto highlight_insets = gfx::Insets();

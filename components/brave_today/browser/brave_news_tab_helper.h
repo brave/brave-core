@@ -20,6 +20,10 @@ class BraveNewsTabHelper
   bool is_subscribed();
 
  private:
+  explicit BraveNewsTabHelper(content::WebContents* contents);
+
+  friend WebContentsUserData;
+  WEB_CONTENTS_USER_DATA_KEY_DECL();
 };
 
 #endif  // BRAVE_COMPONENTS_BRAVE_TODAY_BROWSER_BRAVE_NEWS_TAB_HELPER_H_
