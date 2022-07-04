@@ -1180,6 +1180,32 @@ void AdsServiceImpl::OnOpenNewTabWithAd(const std::string& json) {
   OpenNewTabWithUrl(notification.target_url);
 }
 
+absl::optional<ads::NewTabPageAdInfo>
+AdsServiceImpl::GetPrefetchedNewTabPageAd() {
+  if (!connected()) {
+    return absl::nullopt;
+  }
+
+  absl::optional<ads::NewTabPageAdInfo> ad_info;
+  if (prefetched_new_tab_page_ad_info_) {
+    ad_info = prefetched_new_tab_page_ad_info_;
+    prefetched_new_tab_page_ad_info_.reset();
+  }
+
+  if (purge_orphaned_new_tab_page_ad_events_time_ &&
+      *purge_orphaned_new_tab_page_ad_events_time_ <= base::Time::Now()) {
+    purge_orphaned_new_tab_page_ad_events_time_.reset();
+    PurgeOrphanedAdEventsForType(
+        ads::mojom::AdType::kNewTabPageAd,
+        base::BindOnce(&AdsServiceImpl::OnPurgeOrphanedAdEventsForNewTabPageAds,
+                       AsWeakPtr()));
+  } else {
+    PrefetchNewTabPageAd();
+  }
+
+  return ad_info;
+}
+
 void AdsServiceImpl::TriggerNewTabPageAdEvent(
     const std::string& placement_id,
     const std::string& creative_instance_id,
@@ -1213,15 +1239,16 @@ void AdsServiceImpl::TriggerPromotedContentAdEvent(
                                           event_type);
 }
 
-void AdsServiceImpl::GetInlineContentAd(const std::string& dimensions,
-                                        OnGetInlineContentAdCallback callback) {
+void AdsServiceImpl::MaybeServeInlineContentAd(
+    const std::string& dimensions,
+    OnMaybeServeInlineContentAdCallback callback) {
   if (!connected()) {
     std::move(callback).Run(false, "", base::DictionaryValue());
     return;
   }
 
-  bat_ads_->GetInlineContentAd(
-      dimensions, base::BindOnce(&AdsServiceImpl::OnGetInlineContentAd,
+  bat_ads_->MaybeServeInlineContentAd(
+      dimensions, base::BindOnce(&AdsServiceImpl::OnMaybeServeInlineContentAd,
                                  AsWeakPtr(), std::move(callback)));
 }
 
@@ -1251,32 +1278,6 @@ void AdsServiceImpl::TriggerSearchResultAdEvent(
       std::move(ad_mojom), event_type,
       base::BindOnce(&AdsServiceImpl::OnTriggerSearchResultAdEvent, AsWeakPtr(),
                      std::move(callback)));
-}
-
-absl::optional<ads::NewTabPageAdInfo>
-AdsServiceImpl::GetPrefetchedNewTabPageAd() {
-  if (!connected()) {
-    return absl::nullopt;
-  }
-
-  absl::optional<ads::NewTabPageAdInfo> ad_info;
-  if (prefetched_new_tab_page_ad_info_) {
-    ad_info = prefetched_new_tab_page_ad_info_;
-    prefetched_new_tab_page_ad_info_.reset();
-  }
-
-  if (purge_orphaned_new_tab_page_ad_events_time_ &&
-      *purge_orphaned_new_tab_page_ad_events_time_ <= base::Time::Now()) {
-    purge_orphaned_new_tab_page_ad_events_time_.reset();
-    PurgeOrphanedAdEventsForType(
-        ads::mojom::AdType::kNewTabPageAd,
-        base::BindOnce(&AdsServiceImpl::OnPurgeOrphanedAdEventsForNewTabPageAds,
-                       AsWeakPtr()));
-  } else {
-    PrefetchNewTabPageAd();
-  }
-
-  return ad_info;
 }
 
 void AdsServiceImpl::PurgeOrphanedAdEventsForType(
@@ -1350,7 +1351,7 @@ void AdsServiceImpl::PrefetchNewTabPageAd() {
     return;
   }
 
-  bat_ads_->GetNewTabPageAd(
+  bat_ads_->MaybeServeNewTabPageAd(
       base::BindOnce(&AdsServiceImpl::OnPrefetchNewTabPageAd, AsWeakPtr()));
 }
 
@@ -1432,10 +1433,11 @@ void AdsServiceImpl::OnURLRequestComplete(
   callback(url_response);
 }
 
-void AdsServiceImpl::OnGetInlineContentAd(OnGetInlineContentAdCallback callback,
-                                          const bool success,
-                                          const std::string& dimensions,
-                                          const std::string& json) {
+void AdsServiceImpl::OnMaybeServeInlineContentAd(
+    OnMaybeServeInlineContentAdCallback callback,
+    const bool success,
+    const std::string& dimensions,
+    const std::string& json) {
   base::DictionaryValue dictionary;
 
   if (success) {

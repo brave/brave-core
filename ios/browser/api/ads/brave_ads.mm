@@ -620,9 +620,10 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
   if (![self isAdsServiceRunning]) {
     return;
   }
-  ads->GetInlineContentAd(base::SysNSStringToUTF8(dimensions), ^(
-                              const bool success, const std::string& dimensions,
-                              const ads::InlineContentAdInfo& ad) {
+  ads->MaybeServeInlineContentAd(base::SysNSStringToUTF8(dimensions), ^(
+                                     const bool success,
+                                     const std::string& dimensions,
+                                     const ads::InlineContentAdInfo& ad) {
     const auto inline_content_ad =
         [[InlineContentAdIOS alloc] initWithInlineContentAdInfo:ad];
     completion(success, base::SysUTF8ToNSString(dimensions), inline_content_ad);

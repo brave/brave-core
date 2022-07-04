@@ -8,8 +8,8 @@
 #include <memory>
 
 #include "base/strings/stringprintf.h"
-#include "bat/ads/internal/ad_events/ad_event_unittest_util.h"
-#include "bat/ads/internal/ad_events/ad_events_database_table.h"
+#include "bat/ads/internal/ads/ad_events/ad_event_unittest_util.h"
+#include "bat/ads/internal/ads/ad_events/ad_events_database_table.h"
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/base/unittest/unittest_base.h"
 #include "bat/ads/internal/base/unittest/unittest_mock_util.h"

@@ -5,11 +5,11 @@
 
 #include "bat/ads/internal/processors/contextual/text_classification/text_classification_processor.h"
 
+#include "bat/ads/internal/ads/serving/targeting/models/contextual/text_classification/text_classification_aliases.h"
+#include "bat/ads/internal/ads/serving/targeting/models/contextual/text_classification/text_classification_model.h"
 #include "bat/ads/internal/base/unittest/unittest_base.h"
 #include "bat/ads/internal/deprecated/client/client_state_manager.h"
 #include "bat/ads/internal/resources/contextual/text_classification/text_classification_resource.h"
-#include "bat/ads/internal/serving/targeting/models/contextual/text_classification/text_classification_aliases.h"
-#include "bat/ads/internal/serving/targeting/models/contextual/text_classification/text_classification_model.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 

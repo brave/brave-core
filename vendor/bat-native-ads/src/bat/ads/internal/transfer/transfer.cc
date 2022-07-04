@@ -8,7 +8,7 @@
 #include "base/check.h"
 #include "base/time/time.h"
 #include "bat/ads/confirmation_type.h"
-#include "bat/ads/internal/ad_events/ad_events.h"
+#include "bat/ads/internal/ads/ad_events/ad_events.h"
 #include "bat/ads/internal/base/logging_util.h"
 #include "bat/ads/internal/base/time/time_formatting_util.h"
 #include "bat/ads/internal/base/url/url_util.h"
