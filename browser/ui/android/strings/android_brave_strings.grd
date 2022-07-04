@@ -3014,7 +3014,7 @@ If you don't accept this request, VPN will not reconnect and your internet conne
       Ethereum
     </message>
     <message name="IDS_SHOW_TOP_SITES" desc="New tab page settings title">
-      Show Top sites
+      Show Top Sites
     </message>
     <message name="IDS_CONNECTED_TO_HOST" desc="Brave Vpn notification statistics text">
       Connected to <ph name="VALUE">%1$s</ph>
