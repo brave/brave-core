@@ -13,7 +13,7 @@ BraveNewsTabHelper::BraveNewsTabHelper(content::WebContents* contents)
 BraveNewsTabHelper::~BraveNewsTabHelper() = default;
 
 bool BraveNewsTabHelper::has_feed() {
-  return true;
+  return false;
 }
 
 bool BraveNewsTabHelper::is_subscribed() {
