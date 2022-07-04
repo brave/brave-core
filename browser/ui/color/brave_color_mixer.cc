@@ -43,6 +43,8 @@ void AddBraveLightThemeColorMixer(ui::ColorProvider* provider,
 
   mixer[kColorToolbarButtonIconInactive] = {
       color_utils::AlphaBlend(kLightToolbarIcon, kLightToolbar, 0.3f)};
+
+  mixer[kColorNewTabPageBackground] = {kBraveNewTabBackgroundLight};
 }
 
 void AddBraveDarkThemeColorMixer(ui::ColorProvider* provider,
@@ -78,6 +80,8 @@ void AddBraveDarkThemeColorMixer(ui::ColorProvider* provider,
 
   mixer[kColorToolbarButtonIconInactive] = {
       color_utils::AlphaBlend(kDarkToolbarIcon, kDarkToolbar, 0.3f)};
+
+  mixer[kColorNewTabPageBackground] = {kBraveNewTabBackgroundDark};
 }
 
 void AddBravePrivateThemeColorMixer(ui::ColorProvider* provider,
@@ -110,6 +114,8 @@ void AddBravePrivateThemeColorMixer(ui::ColorProvider* provider,
   mixer[kColorToolbarButtonIcon] = {kDarkToolbarIcon};
   mixer[kColorToolbarButtonIconInactive] = {
       color_utils::AlphaBlend(kDarkToolbarIcon, kPrivateToolbar, 0.3f)};
+
+  mixer[kColorNewTabPageBackground] = {kPrivateFrame};
 }
 
 void AddBraveTorThemeColorMixer(ui::ColorProvider* provider,
@@ -134,4 +140,6 @@ void AddBraveTorThemeColorMixer(ui::ColorProvider* provider,
 
   mixer[kColorToolbarButtonIconInactive] = {
       color_utils::AlphaBlend(kDarkToolbarIcon, kPrivateTorToolbar, 0.3f)};
+
+  mixer[kColorNewTabPageBackground] = {kPrivateTorFrame};
 }

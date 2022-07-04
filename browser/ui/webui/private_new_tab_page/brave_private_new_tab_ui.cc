@@ -34,6 +34,8 @@ BravePrivateNewTabUI::BravePrivateNewTabUI(content::WebUI* web_ui,
   }
 
   source->AddBoolean("isWindowTor", profile->IsTor());
+
+  AddBackgroundColorToSource(source, web_ui->GetWebContents());
 }
 
 BravePrivateNewTabUI::~BravePrivateNewTabUI() = default;

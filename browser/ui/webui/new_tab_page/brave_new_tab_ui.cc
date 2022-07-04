@@ -43,6 +43,7 @@ BraveNewTabUI::BraveNewTabUI(content::WebUI* web_ui, const std::string& name)
     content::WebUIDataSource* source =
         content::WebUIDataSource::Create(name);
     source->SetDefaultResource(IDR_BRAVE_BLANK_NEW_TAB_HTML);
+    AddBackgroundColorToSource(source, web_ui->GetWebContents());
     content::WebUIDataSource::Add(profile, source);
     return;
   }
@@ -51,6 +52,9 @@ BraveNewTabUI::BraveNewTabUI(content::WebUI* web_ui, const std::string& name)
   content::WebUIDataSource* source = CreateAndAddWebUIDataSource(
       web_ui, name, kBraveNewTabGenerated, kBraveNewTabGeneratedSize,
       IDR_BRAVE_NEW_TAB_HTML);
+
+  AddBackgroundColorToSource(source, web_ui->GetWebContents());
+
   source->AddBoolean("featureCustomBackgroundEnabled",
                      !profile->GetPrefs()->IsManagedPreference(
                          prefs::kNtpCustomBackgroundDict));
