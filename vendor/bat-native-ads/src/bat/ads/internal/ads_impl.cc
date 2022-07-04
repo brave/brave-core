@@ -35,7 +35,6 @@
 #include "bat/ads/internal/deprecated/client/client_state_manager.h"
 #include "bat/ads/internal/deprecated/confirmations/confirmation_state_manager.h"
 #include "bat/ads/internal/diagnostics/diagnostic_manager.h"
-#include "bat/ads/internal/diagnostics/entries/last_unidle_time_diagnostic_util.h"
 #include "bat/ads/internal/features/features_util.h"
 #include "bat/ads/internal/geographic/subdivision/subdivision_targeting.h"
 #include "bat/ads/internal/history/history_manager.h"
@@ -63,7 +62,8 @@
 #include "bat/ads/internal/tabs/tab_manager.h"
 #include "bat/ads/internal/transfer/transfer.h"
 #include "bat/ads/internal/user_interaction/browsing/user_activity_manager.h"
-#include "bat/ads/internal/user_interaction/idle_detection/idle_time.h"
+#include "bat/ads/internal/user_interaction/idle_detection/idle_detection_manager.h"
+#include "bat/ads/internal/user_interaction/idle_detection/idle_detection_util.h"
 #include "bat/ads/new_tab_page_ad_info.h"
 #include "bat/ads/notification_ad_info.h"
 #include "bat/ads/pref_names.h"
@@ -83,6 +83,7 @@ AdsImpl::AdsImpl(AdsClient* ads_client)
   database_manager_ = std::make_unique<DatabaseManager>();
   diagnostic_manager_ = std::make_unique<DiagnosticManager>();
   history_manager_ = std::make_unique<HistoryManager>();
+  idle_detection_manager_ = std::make_unique<IdleDetectionManager>();
   locale_manager_ = std::make_unique<LocaleManager>();
   notification_ad_manager_ = std::make_unique<NotificationAdManager>();
   pref_manager_ = std::make_unique<PrefManager>();
@@ -230,24 +231,23 @@ void AdsImpl::OnUserGesture(const int32_t page_transition_type) {
 }
 
 void AdsImpl::OnIdle() {
-  BLOG(1, "Browser state changed to idle");
+  if (IsInitialized()) {
+    IdleDetectionManager::GetInstance()->UserDidBecomeIdle();
+  }
 }
 
-void AdsImpl::OnUnIdle(const int idle_time, const bool was_locked) {
+void AdsImpl::OnUnIdle(const base::TimeDelta idle_time, const bool was_locked) {
   if (!IsInitialized()) {
     return;
   }
 
-  SetLastUnIdleTimeDiagnosticEntry();
+  IdleDetectionManager::GetInstance()->UserDidBecomeActive(idle_time,
+                                                           was_locked);
 
-  MaybeUpdateIdleTimeThreshold();
-
-  BLOG(1, "Browser state changed to unidle after " << base::Seconds(idle_time));
-
-  if (HasCatalogExpired()) {
-    catalog_->MaybeFetch();
-  }
-
+  // TODO(https://github.com/brave/brave-browser/issues/14727): Decouple to
+  // ads/notification_ad.cc
+  // TODO(https://github.com/brave/brave-browser/issues/23716): Decouple to
+  // ads/notification_ad.cc
   if (!ShouldRewardUser()) {
     return;
   }
@@ -584,8 +584,6 @@ void AdsImpl::Initialized(InitializeCallback callback) {
 
   UserActivityManager::GetInstance()->RecordEvent(
       UserActivityEventType::kInitializedAds);
-
-  MaybeUpdateIdleTimeThreshold();
 
   callback(/* success */ true);
 

@@ -10,7 +10,7 @@
 
 #include "base/check_op.h"
 #include "base/json/json_writer.h"
-#include "bat/ads/internal/diagnostics/diagnostics_util.h"
+#include "bat/ads/internal/diagnostics/diagnostic_util.h"
 #include "bat/ads/internal/diagnostics/entries/catalog_id_diagnostic_entry.h"
 #include "bat/ads/internal/diagnostics/entries/catalog_last_updated_diagnostic_entry.h"
 #include "bat/ads/internal/diagnostics/entries/enabled_diagnostic_entry.h"

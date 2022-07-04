@@ -26,6 +26,7 @@
 #include "bat/ads/internal/catalog/catalog_url_request_builder.h"
 #include "bat/ads/internal/catalog/catalog_util.h"
 #include "bat/ads/internal/database/database_manager.h"
+#include "bat/ads/internal/user_interaction/idle_detection/idle_detection_manager.h"
 
 namespace ads {
 
@@ -40,11 +41,13 @@ constexpr base::TimeDelta kDebugCatalogPing = base::Minutes(15);
 Catalog::Catalog() {
   BrowserManager::GetInstance()->AddObserver(this);
   DatabaseManager::GetInstance()->AddObserver(this);
+  IdleDetectionManager::GetInstance()->AddObserver(this);
 }
 
 Catalog::~Catalog() {
   BrowserManager::GetInstance()->RemoveObserver(this);
   DatabaseManager::GetInstance()->RemoveObserver(this);
+  IdleDetectionManager::GetInstance()->RemoveObserver(this);
 }
 
 void Catalog::AddObserver(CatalogObserver* observer) {
@@ -190,6 +193,13 @@ void Catalog::OnDidMigrateDatabase(const int from_version,
   DCHECK_NE(from_version, to_version);
 
   ResetCatalog();
+}
+
+void Catalog::OnUserDidBecomeActive(const base::TimeDelta idle_time,
+                                    const bool was_locked) {
+  if (HasCatalogExpired()) {
+    MaybeFetch();
+  }
 }
 
 }  // namespace ads

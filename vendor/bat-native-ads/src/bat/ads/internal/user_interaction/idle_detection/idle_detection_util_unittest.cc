@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "bat/ads/internal/user_interaction/idle_detection/idle_time.h"
+#include "bat/ads/internal/user_interaction/idle_detection/idle_detection_util.h"
 
 #include <limits>
 #include <vector>
@@ -124,7 +124,8 @@ TEST_F(BatAdsIdleTimeTest, HasNotExceededMaximumIdleTime) {
                                                     disabled_features);
 
   // Act
-  const bool has_exceeded_maximum_idle_time = HasExceededMaximumIdleTime(10);
+  const bool has_exceeded_maximum_idle_time =
+      HasExceededMaximumIdleTime(base::Seconds(10));
 
   // Assert
   EXPECT_FALSE(has_exceeded_maximum_idle_time);
@@ -146,7 +147,7 @@ TEST_F(BatAdsIdleTimeTest, HasNotExceededInfiniteMaximumIdleTime) {
 
   // Act
   const bool has_exceeded_maximum_idle_time =
-      HasExceededMaximumIdleTime(std::numeric_limits<int>::max());
+      HasExceededMaximumIdleTime(base::TimeDelta::Max());
 
   // Assert
   EXPECT_FALSE(has_exceeded_maximum_idle_time);
@@ -167,7 +168,8 @@ TEST_F(BatAdsIdleTimeTest, HasExceededMaximumIdleTime) {
                                                     disabled_features);
 
   // Act
-  const bool has_exceeded_maximum_idle_time = HasExceededMaximumIdleTime(11);
+  const bool has_exceeded_maximum_idle_time =
+      HasExceededMaximumIdleTime(base::Seconds(11));
 
   // Assert
   EXPECT_TRUE(has_exceeded_maximum_idle_time);

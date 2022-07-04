@@ -88,7 +88,7 @@ interface BatAds {
   OnHtmlLoaded(int32 tab_id, array<url.mojom.Url> redirect_chain, string html);
   OnTextLoaded(int32 tab_id, array<url.mojom.Url> redirect_chain, string text);
   OnUserGesture(int32 page_transition_type);
-  OnUnIdle(int32 idle_time, bool was_locked);
+  OnUnIdle(mojo_base.mojom.TimeDelta idle_time, bool was_locked);
   OnIdle();
   OnBrowserDidEnterForeground();
   OnBrowserDidEnterBackground();

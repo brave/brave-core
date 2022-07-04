@@ -92,6 +92,7 @@ class CovariateManager;
 class DatabaseManager;
 class DiagnosticManager;
 class HistoryManager;
+class IdleDetectionManager;
 class NotificationAdManager;
 class LocaleManager;
 class PrefManager;
@@ -149,7 +150,8 @@ class AdsImpl final : public Ads,
   void OnUserGesture(const int32_t page_transition_type) override;
 
   void OnIdle() override;
-  void OnUnIdle(const int idle_time, const bool was_locked) override;
+  void OnUnIdle(const base::TimeDelta idle_time,
+                const bool was_locked) override;
 
   void OnBrowserDidEnterForeground() override;
   void OnBrowserDidEnterBackground() override;
@@ -302,6 +304,7 @@ class AdsImpl final : public Ads,
   std::unique_ptr<DatabaseManager> database_manager_;
   std::unique_ptr<DiagnosticManager> diagnostic_manager_;
   std::unique_ptr<HistoryManager> history_manager_;
+  std::unique_ptr<IdleDetectionManager> idle_detection_manager_;
   std::unique_ptr<LocaleManager> locale_manager_;
   std::unique_ptr<NotificationAdManager> notification_ad_manager_;
   std::unique_ptr<PrefManager> pref_manager_;

@@ -27,6 +27,7 @@
 #include "bat/ads/internal/resources/resource_manager.h"
 #include "bat/ads/internal/tabs/tab_manager.h"
 #include "bat/ads/internal/user_interaction/browsing/user_activity_manager.h"
+#include "bat/ads/internal/user_interaction/idle_detection/idle_detection_manager.h"
 #include "brave/components/l10n/browser/locale_helper_mock.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -161,6 +162,7 @@ class UnitTestBase : public testing::Test {
   std::unique_ptr<DatabaseManager> database_manager_;
   std::unique_ptr<DiagnosticManager> diagnostic_manager_;
   std::unique_ptr<HistoryManager> history_manager_;
+  std::unique_ptr<IdleDetectionManager> idle_detection_manager_;
   std::unique_ptr<LocaleManager> locale_manager_;
   std::unique_ptr<NotificationAdManager> notification_ad_manager_;
   std::unique_ptr<PrefManager> pref_manager_;

@@ -88,7 +88,8 @@ void BatAdsImpl::OnUserGesture(const int32_t page_transition_type) {
   ads_->OnUserGesture(page_transition_type);
 }
 
-void BatAdsImpl::OnUnIdle(const int idle_time, const bool was_locked) {
+void BatAdsImpl::OnUnIdle(const base::TimeDelta idle_time,
+                          const bool was_locked) {
   ads_->OnUnIdle(idle_time, was_locked);
 }
 

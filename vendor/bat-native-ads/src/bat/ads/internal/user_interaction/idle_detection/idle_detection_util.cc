@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "bat/ads/internal/user_interaction/idle_detection/idle_time.h"
+#include "bat/ads/internal/user_interaction/idle_detection/idle_detection_util.h"
 
 #include "base/time/time.h"
 #include "bat/ads/internal/ads_client_helper.h"
@@ -16,17 +16,14 @@ bool WasLocked(const bool was_locked) {
   return user_activity::features::ShouldDetectWasLocked() && was_locked;
 }
 
-bool HasExceededMaximumIdleTime(const int idle_time) {
+bool HasExceededMaximumIdleTime(const base::TimeDelta idle_time) {
   const base::TimeDelta maximum_idle_time =
       user_activity::features::GetMaximumIdleTime();
-
-  const int seconds = static_cast<int>(maximum_idle_time.InSeconds());
-
-  if (seconds == 0) {  // Infinite
+  if (maximum_idle_time.is_zero()) {  // Infinite
     return false;
   }
 
-  return idle_time > seconds;
+  return idle_time > maximum_idle_time;
 }
 
 bool MaybeUpdateIdleTimeThreshold() {
