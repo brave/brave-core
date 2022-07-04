@@ -84,12 +84,12 @@ void RecordFeatureDaysInMonthUsed(PrefService* prefs,
 // feature?
 //
 // Answers:
-// 1. This week
-// 2. 1 week ago
-// 3. 2 weeks ago
-// 4. 3 weeks ago
-// 5. A month ago
-// 6. Over a month ago
+// 1. 0 - 6 days ago (less than a week)
+// 2. 7 - 13 days ago (one week ago or more)
+// 3. 14 - 20 days ago (two weeks ago or more)
+// 4. 21 - 27 days ago (three weeks ago or more)
+// 5. 28 - 59 days ago (four weeks ago or more)
+// 6. 60 days ago or more (two months ago or more)
 void RecordFeatureLastUsageTimeMetric(PrefService* prefs,
                                       const char* last_use_time_pref_name,
                                       const char* histogram_name);

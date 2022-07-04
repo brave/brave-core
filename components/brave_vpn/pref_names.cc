@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_vpn/pref_names.h"
 
+#include "brave/components/p3a_utils/feature_usage.h"
 #include "components/prefs/pref_registry_simple.h"
 
 namespace brave_vpn {
@@ -16,6 +17,12 @@ void RegisterProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterStringPref(kBraveVPNDeviceRegion, "");
   registry->RegisterStringPref(kBraveVPNSelectedRegion, "");
   registry->RegisterBooleanPref(kBraveVPNShowDNSPolicyWarningDialog, true);
+}
+
+void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
+  p3a_utils::RegisterFeatureUsagePrefs(
+      registry, kBraveVPNFirstUseTime, kBraveVPNLastUseTime,
+      kBraveVPNUsedSecondDay, kBraveVPNDaysInMonthUsed);
 }
 
 }  // namespace prefs

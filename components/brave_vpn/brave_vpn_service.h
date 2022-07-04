@@ -66,12 +66,14 @@ class BraveVpnService :
 #if BUILDFLAG(IS_ANDROID)
   BraveVpnService(
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
+      PrefService* local_prefs,
       base::RepeatingCallback<mojo::PendingRemote<skus::mojom::SkusService>()>
           skus_service_getter);
 #else
   BraveVpnService(
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
-      PrefService* prefs,
+      PrefService* local_prefs,
+      PrefService* profile_prefs,
       base::RepeatingCallback<mojo::PendingRemote<skus::mojom::SkusService>()>
           skus_service_getter);
 #endif
@@ -255,9 +257,12 @@ class BraveVpnService :
   void OnPrepareCredentialsPresentation(
       const std::string& domain,
       const std::string& credential_as_cookie);
+  void RecordP3A(bool new_usage);
+
+  raw_ptr<PrefService> local_prefs_ = nullptr;
 
 #if !BUILDFLAG(IS_ANDROID)
-  raw_ptr<PrefService> prefs_ = nullptr;
+  raw_ptr<PrefService> profile_prefs_ = nullptr;
   std::vector<mojom::Region> regions_;
   std::unique_ptr<Hostname> hostname_;
   BraveVPNConnectionInfo connection_info_;

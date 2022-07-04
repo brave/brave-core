@@ -12,6 +12,7 @@
 #include "brave/components/brave_vpn/brave_vpn_service.h"
 #include "brave/components/skus/common/features.h"
 #include "build/build_config.h"
+#include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/incognito_helpers.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
@@ -79,6 +80,7 @@ KeyedService* BraveVpnServiceFactory::BuildServiceInstanceFor(
   auto* default_storage_partition = context->GetDefaultStoragePartition();
   auto shared_url_loader_factory =
       default_storage_partition->GetURLLoaderFactoryForBrowserProcess();
+  auto* local_state = g_browser_process->local_state();
 
   auto callback = base::BindRepeating(
       [](content::BrowserContext* context) {
@@ -86,8 +88,9 @@ KeyedService* BraveVpnServiceFactory::BuildServiceInstanceFor(
       },
       context);
 #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC)
-  auto* vpn_service = new BraveVpnService(
-      shared_url_loader_factory, user_prefs::UserPrefs::Get(context), callback);
+  auto* vpn_service =
+      new BraveVpnService(shared_url_loader_factory, local_state,
+                          user_prefs::UserPrefs::Get(context), callback);
 #if BUILDFLAG(IS_WIN)
   auto* dns_observer_service =
       brave_vpn::BraveVpnDnsObserverFactory::GetInstance()
@@ -97,7 +100,7 @@ KeyedService* BraveVpnServiceFactory::BuildServiceInstanceFor(
 #endif
   return vpn_service;
 #elif BUILDFLAG(IS_ANDROID)
-  return new BraveVpnService(shared_url_loader_factory, callback);
+  return new BraveVpnService(shared_url_loader_factory, local_state, callback);
 #endif
 }
 
