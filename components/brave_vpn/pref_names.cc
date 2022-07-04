@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_vpn/pref_names.h"
 
+#include "brave/components/p3a_utils/feature_usage.h"
 #include "brave/components/skus/browser/skus_utils.h"
 #include "components/prefs/pref_registry_simple.h"
 
@@ -30,6 +31,12 @@ void RegisterProfilePrefs(PrefRegistrySimple* registry) {
 #endif
   registry->RegisterStringPref(kBraveVPNEEnvironment,
                                skus::GetDefaultEnvironment());
+}
+
+void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
+  p3a_utils::RegisterFeatureUsagePrefs(
+      registry, kBraveVPNFirstUseTime, kBraveVPNLastUseTime,
+      kBraveVPNUsedSecondDay, kBraveVPNDaysInMonthUsed);
 }
 
 }  // namespace prefs

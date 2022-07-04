@@ -255,6 +255,8 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
         if (BraveVpnUtils.isBraveVpnFeatureEnable()) {
             InAppPurchaseWrapper.getInstance().startBillingServiceConnection(BraveActivity.this);
             BraveVpnNativeWorker.getInstance().addObserver(this);
+
+            BraveVpnUtils.reportBackgroundUsageP3A();
         }
         Tab tab = getActivityTab();
         if (tab != null) {

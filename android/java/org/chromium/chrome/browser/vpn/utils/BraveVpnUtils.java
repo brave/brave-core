@@ -25,6 +25,7 @@ import org.chromium.base.ContextUtils;
 import org.chromium.base.Log;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.util.BraveConstants;
+import org.chromium.chrome.browser.vpn.BraveVpnNativeWorker;
 import org.chromium.chrome.browser.vpn.activities.BraveVpnPlansActivity;
 import org.chromium.chrome.browser.vpn.activities.BraveVpnProfileActivity;
 import org.chromium.chrome.browser.vpn.activities.BraveVpnSupportActivity;
@@ -240,5 +241,14 @@ public class BraveVpnUtils {
         braveVpnConfirmDialogFragment.show(
                 ((FragmentActivity) activity).getSupportFragmentManager(),
                 "BraveVpnConfirmDialogFragment");
+    }
+
+    public static void reportBackgroundUsageP3A() {
+        // Will report previous/current session timestamps...
+        BraveVpnNativeWorker.getInstance().reportBackgroundP3A(
+                BraveVpnPrefUtils.getSessionStartTimeMs(), BraveVpnPrefUtils.getSessionEndTimeMs());
+        // ...and then reset the timestamps so we don't report the same session again.
+        BraveVpnPrefUtils.setSessionStartTimeMs(-1);
+        BraveVpnPrefUtils.setSessionEndTimeMs(-1);
     }
 }

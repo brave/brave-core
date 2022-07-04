@@ -214,3 +214,29 @@ TEST_F(TimePeriodStorageTest, GetsHighestValueInWeekFromReplacement) {
   // Sanity check disparate days were not replaced
   EXPECT_EQ(state_->GetPeriodSum(), high_value + low_value);
 }
+
+TEST_F(TimePeriodStorageTest, ReplaceIfGreaterForDate) {
+  InitStorage(30);
+
+  state_->AddDelta(4);
+  clock_->Advance(base::Days(1));
+  state_->AddDelta(2);
+  clock_->Advance(base::Days(1));
+  state_->AddDelta(1);
+  clock_->Advance(base::Days(1));
+
+  // should replace
+  state_->ReplaceIfGreaterForDate(clock_->Now() - base::Days(2), 3);
+  // should not replace
+  state_->ReplaceIfGreaterForDate(clock_->Now() - base::Days(3), 3);
+
+  EXPECT_EQ(state_->GetPeriodSum(), 8U);
+
+  // should insert new daily value
+  state_->ReplaceIfGreaterForDate(clock_->Now() - base::Days(4), 3);
+  EXPECT_EQ(state_->GetPeriodSum(), 11U);
+
+  // should store, but should not be in sum because it's too old
+  state_->ReplaceIfGreaterForDate(clock_->Now() - base::Days(31), 10);
+  EXPECT_EQ(state_->GetPeriodSum(), 11U);
+}

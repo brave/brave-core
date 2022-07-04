@@ -52,6 +52,10 @@ class BraveBrowserCommandControllerTest;
 
 namespace brave_vpn {
 
+constexpr char kNewUserReturningHistogramName[] = "Brave.VPN.NewUserReturning";
+constexpr char kDaysInMonthUsedHistogramName[] = "Brave.VPN.DaysInMonthUsed";
+constexpr char kLastUsageTimeHistogramName[] = "Brave.VPN.LastUsageTime";
+
 // This class is used by desktop and android.
 // However, it includes desktop specific impls and it's hidden
 // by IS_ANDROID ifdef.
@@ -65,7 +69,8 @@ class BraveVpnService :
  public:
   BraveVpnService(
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
-      PrefService* prefs,
+      PrefService* local_prefs,
+      PrefService* profile_prefs,
       base::RepeatingCallback<mojo::PendingRemote<skus::mojom::SkusService>()>
           skus_service_getter);
   ~BraveVpnService() override;
@@ -158,8 +163,20 @@ class BraveVpnService :
                                   const std::string& payments_environment,
                                   const std::string& monthly_pass);
 
+  // new_usage should be set to true if a new VPN connection was just
+  // established.
+  void RecordP3A(bool new_usage);
+#if BUILDFLAG(IS_ANDROID)
+  void RecordAndroidBackgroundP3A(int64_t session_start_time_ms,
+                                  int64_t session_end_time_ms);
+#endif
+
  private:
   friend class BraveVPNServiceTest;
+
+  void InitP3A();
+  void OnP3AInterval();
+
 #if !BUILDFLAG(IS_ANDROID)
   friend class ::BraveAppMenuBrowserTest;
   friend class ::BraveBrowserCommandControllerTest;
@@ -253,7 +270,8 @@ class BraveVpnService :
       const std::string& domain,
       const std::string& credential_as_cookie);
 
-  raw_ptr<PrefService> prefs_ = nullptr;
+  raw_ptr<PrefService> local_prefs_ = nullptr;
+  raw_ptr<PrefService> profile_prefs_ = nullptr;
 #if !BUILDFLAG(IS_ANDROID)
   std::vector<mojom::Region> regions_;
   std::unique_ptr<Hostname> hostname_;
@@ -283,6 +301,7 @@ class BraveVpnService :
   mojo::RemoteSet<mojom::ServiceObserver> observers_;
   api_request_helper::APIRequestHelper api_request_helper_;
   std::string skus_credential_;
+  base::RepeatingTimer p3a_timer_;
   base::WeakPtrFactory<BraveVpnService> weak_ptr_factory_{this};
 };
 

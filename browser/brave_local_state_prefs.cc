@@ -14,6 +14,7 @@
 #include "brave/components/brave_search_conversion/p3a.h"
 #include "brave/components/brave_shields/browser/ad_block_service.h"
 #include "brave/components/brave_shields/browser/brave_shields_p3a.h"
+#include "brave/components/brave_vpn/buildflags/buildflags.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/decentralized_dns/utils.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
@@ -41,6 +42,10 @@
 #include "brave/browser/p3a/p3a_core_metrics.h"
 #include "chrome/browser/first_run/first_run.h"
 #endif  // !BUILDFLAG(IS_ANDROID)
+
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+#include "brave/components/brave_vpn/pref_names.h"
+#endif
 
 #if BUILDFLAG(ENABLE_WIDEVINE)
 #include "brave/browser/widevine/widevine_utils.h"
@@ -110,6 +115,10 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
   RegisterLocalStatePrefsForMigration(registry);
 
   brave_search_conversion::p3a::RegisterLocalStatePrefs(registry);
+
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+  brave_vpn::prefs::RegisterLocalStatePrefs(registry);
+#endif
 }
 
 }  // namespace brave
