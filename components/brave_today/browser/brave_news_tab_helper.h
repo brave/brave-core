@@ -6,23 +6,64 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_TODAY_BROWSER_BRAVE_NEWS_TAB_HELPER_H_
 #define BRAVE_COMPONENTS_BRAVE_TODAY_BROWSER_BRAVE_NEWS_TAB_HELPER_H_
 
+#include <vector>
+#include "base/memory/weak_ptr.h"
 #include "brave/components/brave_today/browser/brave_news_controller.h"
+#include "brave/components/brave_today/common/brave_news.mojom-forward.h"
+#include "content/public/browser/web_contents_observer.h"
 #include "content/public/browser/web_contents_user_data.h"
 
+class Page;
+
 class BraveNewsTabHelper
-    : public content::WebContentsUserData<BraveNewsTabHelper> {
+    : public content::WebContentsUserData<BraveNewsTabHelper>,
+      public content::WebContentsObserver {
  public:
+  struct FeedDetails {
+   public:
+    GURL feed_url;
+    std::string publisher_id;
+    std::string title;
+  };
+
+  class PageFeedsObserver {
+   public:
+    virtual void OnAvailableFeedsChanged(
+        const std::vector<FeedDetails>& feeds) = 0;
+  };
+
   BraveNewsTabHelper(const BraveNewsTabHelper&) = delete;
   BraveNewsTabHelper& operator=(const BraveNewsTabHelper&) = delete;
 
   ~BraveNewsTabHelper() override;
 
-  bool has_feed();
+  std::vector<FeedDetails> available_feeds() const { return available_feeds_; }
+  bool is_subscribed(const FeedDetails& feed_details);
   bool is_subscribed();
+
+  void ToggleSubscription(const FeedDetails& feed_details);
+
+  void OnReceivedRssUrls(const GURL& site_url, std::vector<GURL> feed_urls);
+  void OnFoundFeeds(const GURL& site_url,
+                    std::vector<brave_news::mojom::FeedSearchResultItemPtr>);
+
+  void AddObserver(PageFeedsObserver* observer);
+  void RemoveObserver(PageFeedsObserver* observer);
+
+  // content::WebContentsObserver:
+  void PrimaryPageChanged(content::Page& page) override;
 
  private:
   explicit BraveNewsTabHelper(content::WebContents* contents);
+
+  void AvailableFeedsChanged();
+
   raw_ptr<brave_news::BraveNewsController> controller_;
+
+  std::vector<FeedDetails> available_feeds_;
+  std::vector<PageFeedsObserver*> observers_;
+
+  base::WeakPtrFactory<BraveNewsTabHelper> weak_ptr_factory_{this};
 
   friend WebContentsUserData;
   WEB_CONTENTS_USER_DATA_KEY_DECL();
