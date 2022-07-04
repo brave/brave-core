@@ -10,6 +10,7 @@
 
 #include "base/bind.h"
 #include "base/callback.h"
+#include "base/memory/raw_ptr.h"
 #include "base/memory/singleton.h"
 #include "base/task/task_traits.h"
 #include "base/task/thread_pool.h"
@@ -90,7 +91,8 @@ class AdBlockSubscriptionDownloadManagerGetterImpl
   explicit AdBlockSubscriptionDownloadManagerGetterImpl(
       base::OnceCallback<void(AdBlockSubscriptionDownloadManager*)> callback)
       : callback_(std::move(callback)) {
-    g_browser_process->profile_manager()->AddObserver(this);
+    profile_manager_ = g_browser_process->profile_manager();
+    profile_manager_->AddObserver(this);
   }
 
  private:
@@ -102,10 +104,11 @@ class AdBlockSubscriptionDownloadManagerGetterImpl
   }
 
   void OnProfileManagerDestroying() override {
-    g_browser_process->profile_manager()->RemoveObserver(this);
+    profile_manager_->RemoveObserver(this);
     delete this;
   }
 
+  raw_ptr<ProfileManager> profile_manager_;
   base::OnceCallback<void(AdBlockSubscriptionDownloadManager*)> callback_;
 };
 
