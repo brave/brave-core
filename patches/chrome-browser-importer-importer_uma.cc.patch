@@ -1,12 +1,15 @@
 diff --git a/chrome/browser/importer/importer_uma.cc b/chrome/browser/importer/importer_uma.cc
-index d858676745103908f16a41392c0da42c3683c555..73730551989fdd3e41ebb2a0a6f173cfa9245468 100644
+index d858676745103908f16a41392c0da42c3683c555..ebdd7bdf2c893dacba09bea9c174ce4f5bb176eb 100644
 --- a/chrome/browser/importer/importer_uma.cc
 +++ b/chrome/browser/importer/importer_uma.cc
-@@ -59,6 +59,9 @@ void LogImporterUseToMetrics(const std::string& metric_postfix,
+@@ -59,6 +59,12 @@ void LogImporterUseToMetrics(const std::string& metric_postfix,
      case TYPE_BOOKMARKS_FILE:
        metrics_type = IMPORTER_METRICS_BOOKMARKS_FILE;
        break;
 +    case TYPE_CHROME:
++      // TODO: Wire this up if we want to record metrics on users who import from Chrome
++      break;
++    case TYPE_EDGE_CHROMIUM:
 +      // TODO: Wire this up if we want to record metrics on users who import from Chrome
 +      break;
    }

@@ -16,10 +16,12 @@ if (!is_android) {
     "//brave/utility/importer/brave_profile_import_impl.h",
     "//brave/utility/importer/chrome_importer.cc",
     "//brave/utility/importer/chrome_importer.h",
+    "//brave/utility/importer/edge_importer.h",
   ]
 
   brave_utility_importer_deps += [
     "//base",
+    "//brave/app:brave_generated_resources_grit",
     "//brave/common/importer:importer",
     "//brave/common/importer:interfaces",
     "//chrome/app:chromium_strings",

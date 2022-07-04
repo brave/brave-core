@@ -3,12 +3,13 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "chrome/browser/importer/importer_list.h"
 #include "base/files/file_path.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/threading/scoped_blocking_call.h"
 #include "base/values.h"
 #include "brave/common/importer/chrome_importer_utils.h"
-#include "chrome/browser/importer/importer_list.h"
+#include "brave/grit/brave_generated_resources.h"
 #include "chrome/grit/generated_resources.h"
 #include "ui/base/l10n/l10n_util.h"
 
@@ -16,7 +17,8 @@ namespace {
 void AddChromeToProfiles(std::vector<importer::SourceProfile>* profiles,
                          base::ListValue* chrome_profiles,
                          const base::FilePath& user_data_folder,
-                         const std::string& brand) {
+                         const std::string& brand,
+                         importer::ImporterType type) {
   for (const auto& value : chrome_profiles->GetList()) {
     const base::DictionaryValue* dict;
     if (!value.GetAsDictionary(&dict))
@@ -34,7 +36,7 @@ void AddChromeToProfiles(std::vector<importer::SourceProfile>* profiles,
     std::string importer_name(brand);
     importer_name.append(name);
     chrome.importer_name = base::UTF8ToUTF16(importer_name);
-    chrome.importer_type = importer::TYPE_CHROME;
+    chrome.importer_type = type;
     chrome.services_supported = items;
     chrome.source_path =
       user_data_folder.Append(
@@ -47,30 +49,28 @@ void AddChromeToProfiles(std::vector<importer::SourceProfile>* profiles,
 void DetectChromeProfiles(std::vector<importer::SourceProfile>* profiles) {
   base::ScopedBlockingCall scoped_blocking_call(FROM_HERE,
                                                 base::BlockingType::WILL_BLOCK);
-  const base::FilePath chrome_user_data_folder = GetChromeUserDataFolder();
-  base::ListValue* chrome_profiles =
-      GetChromeSourceProfiles(chrome_user_data_folder);
-  const std::string brand_chrome("Chrome ");
-  AddChromeToProfiles(profiles, chrome_profiles, chrome_user_data_folder,
-                      brand_chrome);
-
+  AddChromeToProfiles(
+      profiles, GetChromeSourceProfiles(GetChromeUserDataFolder()),
+      GetChromeUserDataFolder(), "Chrome ", importer::TYPE_CHROME);
 #if !BUILDFLAG(IS_LINUX)
-  const base::FilePath canary_user_data_folder = GetCanaryUserDataFolder();
-  base::ListValue* canary_profiles =
-      GetChromeSourceProfiles(canary_user_data_folder);
-  const std::string brandCanary("Chrome Canary ");
-  AddChromeToProfiles(profiles, canary_profiles, canary_user_data_folder,
-                      brandCanary);
+  AddChromeToProfiles(
+      profiles, GetChromeSourceProfiles(GetCanaryUserDataFolder()),
+      GetCanaryUserDataFolder(), "Chrome Canary ", importer::TYPE_CHROME);
 #endif
+  AddChromeToProfiles(
+      profiles, GetChromeSourceProfiles(GetChromiumUserDataFolder()),
+      GetChromiumUserDataFolder(), "Chromium ", importer::TYPE_CHROME);
 
-  const base::FilePath chromium_user_data_folder = GetChromiumUserDataFolder();
-  base::ListValue* chromium_profiles =
-      GetChromeSourceProfiles(chromium_user_data_folder);
-  const std::string brandChromium("Chromium ");
-  AddChromeToProfiles(profiles, chromium_profiles, chromium_user_data_folder,
-                      brandChromium);
+  AddChromeToProfiles(
+      profiles, GetChromeSourceProfiles(GetEdgeUserDataFolder()),
+      GetEdgeUserDataFolder(), "Microsoft Edge ", importer::TYPE_EDGE_CHROMIUM);
 }
 
 }  // namespace
 
+#define IDS_IMPORT_FROM_EDGE_OLD IDS_IMPORT_FROM_EDGE
+#undef IDS_IMPORT_FROM_EDGE
+#define IDS_IMPORT_FROM_EDGE IDS_BRAVE_IMPORT_FROM_EDGE
 #include "src/chrome/browser/importer/importer_list.cc"
+#undef IDS_IMPORT_FROM_EDGE
+#define IDS_IMPORT_FROM_EDGE IDS_IMPORT_FROM_EDGE_OLD

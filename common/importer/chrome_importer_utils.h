@@ -24,6 +24,8 @@ base::FilePath GetCanaryUserDataFolder();
 #endif
 base::FilePath GetChromiumUserDataFolder();
 
+base::FilePath GetEdgeUserDataFolder();
+
 base::ListValue* GetChromeSourceProfiles(
   const base::FilePath& user_data_folder);
 
