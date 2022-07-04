@@ -31,6 +31,12 @@ void RecordFeatureUsage(PrefService* prefs,
                         const char* first_use_time_pref_name,
                         const char* last_use_time_pref_name);
 
+// Updates the first/last use time preferences using an external timestamp;
+void RecordFeatureUsage(PrefService* prefs,
+                        const char* first_use_time_pref_name,
+                        const char* last_use_time_pref_name,
+                        const base::Time& last_new_use_time);
+
 // Assists in migrating existing external last use timestamps that existed
 // before this P3A utility was created.
 void MaybeRecordFeatureExistingUsageTimestamp(
@@ -78,18 +84,27 @@ void RecordFeatureDaysInMonthUsed(PrefService* prefs,
                                   const char* days_in_month_used_pref_name,
                                   const char* histogram_name);
 
+// Adds feature background usage between two timestamps to monthly storage,
+// and records the DaysInMonthUsed metric.
+void RecordFeatureDaysInMonthUsed(PrefService* prefs,
+                                  const base::Time& first_new_use_time,
+                                  const base::Time& last_new_use_time,
+                                  const char* last_use_time_pref_name,
+                                  const char* days_in_month_used_pref_name,
+                                  const char* histogram_name);
+
 // Records the LastUsageTime metric. Will not report if feature never used.
 //
 // Question: As an opted in feature user, when was the last time I used the
 // feature?
 //
 // Answers:
-// 1. This week
-// 2. 1 week ago
-// 3. 2 weeks ago
-// 4. 3 weeks ago
-// 5. A month ago
-// 6. Over a month ago
+// 1. 0 - 6 days ago (less than a week)
+// 2. 7 - 13 days ago (one week ago or more)
+// 3. 14 - 20 days ago (two weeks ago or more)
+// 4. 21 - 27 days ago (three weeks ago or more)
+// 5. 28 - 59 days ago (four weeks ago or more)
+// 6. 60 days ago or more (two months ago or more)
 void RecordFeatureLastUsageTimeMetric(PrefService* prefs,
                                       const char* last_use_time_pref_name,
                                       const char* histogram_name);

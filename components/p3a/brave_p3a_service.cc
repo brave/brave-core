@@ -366,7 +366,7 @@ void BraveP3AService::OnHistogramChanged(const char* histogram_name,
 void BraveP3AService::OnHistogramChangedOnUI(const char* histogram_name,
                                              base::HistogramBase::Sample sample,
                                              size_t bucket) {
-  VLOG(2) << "BraveP3AService::OnHistogramChanged: histogram_name = "
+  LOG(ERROR) << "BraveP3AService::OnHistogramChanged: histogram_name = "
           << histogram_name << " Sample = " << sample << " bucket = " << bucket;
   if (!initialized_) {
     // Will handle it later when ready.

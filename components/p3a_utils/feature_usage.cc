@@ -13,6 +13,12 @@
 
 namespace p3a_utils {
 
+namespace {
+
+constexpr int kDaysInMonthBuckets[] = {0, 1, 2, 5, 10, 15, 20, 100};
+
+}  // namespace
+
 void RegisterFeatureUsagePrefs(PrefRegistrySimple* registry,
                                const char* first_use_time_pref_name,
                                const char* last_use_time_pref_name,
@@ -36,14 +42,23 @@ void RegisterFeatureUsagePrefs(PrefRegistrySimple* registry,
 void RecordFeatureUsage(PrefService* prefs,
                         const char* first_use_time_pref_name,
                         const char* last_use_time_pref_name) {
+  RecordFeatureUsage(prefs, first_use_time_pref_name,
+    last_use_time_pref_name, base::Time::Now());
+}
+
+void RecordFeatureUsage(PrefService* prefs,
+                        const char* first_use_time_pref_name,
+                        const char* last_use_time_pref_name,
+                        const base::Time& last_new_use_time) {
   DCHECK(prefs);
   DCHECK(first_use_time_pref_name);
   DCHECK(last_use_time_pref_name);
+  DCHECK(!last_new_use_time.is_null());
 
-  base::Time now_midnight = base::Time::Now().LocalMidnight();
-  prefs->SetTime(last_use_time_pref_name, now_midnight);
+  base::Time new_time_midnight = last_new_use_time.LocalMidnight();
+  prefs->SetTime(last_use_time_pref_name, new_time_midnight);
   if (prefs->GetTime(first_use_time_pref_name).is_null()) {
-    prefs->SetTime(first_use_time_pref_name, now_midnight);
+    prefs->SetTime(first_use_time_pref_name, new_time_midnight);
   }
 }
 
@@ -113,6 +128,28 @@ void RecordFeatureNewUserReturning(PrefService* prefs,
 }
 
 void RecordFeatureDaysInMonthUsed(PrefService* prefs,
+                                  const base::Time& first_new_use_time,
+                                  const base::Time& last_new_use_time,
+                                  const char* last_use_time_pref_name,
+                                  const char* days_in_month_used_pref_name,
+                                  const char* histogram_name) {
+  DCHECK(prefs);
+  DCHECK(!first_new_use_time.is_null());
+  DCHECK(!last_new_use_time.is_null());
+  DCHECK(last_use_time_pref_name);
+  DCHECK(days_in_month_used_pref_name);
+  DCHECK(histogram_name);
+
+  if (prefs->GetTime(last_use_time_pref_name).is_null()) {
+    // Don't report if feature was never used
+    return;
+  }
+  MonthlyStorage storage(prefs, days_in_month_used_pref_name);
+  storage.ReplaceIfGreaterForDateRange(first_new_use_time, last_new_use_time, 1);
+  RecordToHistogramBucket(histogram_name, kDaysInMonthBuckets, storage.GetMonthlySum());
+}
+
+void RecordFeatureDaysInMonthUsed(PrefService* prefs,
                                   bool is_add,
                                   const char* last_use_time_pref_name,
                                   const char* days_in_month_used_pref_name,
@@ -126,13 +163,11 @@ void RecordFeatureDaysInMonthUsed(PrefService* prefs,
     // Don't report if feature was never used
     return;
   }
-  // How many days was the feature used in the last month?
-  constexpr int buckets[] = {0, 1, 2, 5, 10, 15, 20, 100};
   MonthlyStorage storage(prefs, days_in_month_used_pref_name);
   if (is_add) {
     storage.ReplaceTodaysValueIfGreater(1);
   }
-  RecordToHistogramBucket(histogram_name, buckets, storage.GetMonthlySum());
+  RecordToHistogramBucket(histogram_name, kDaysInMonthBuckets, storage.GetMonthlySum());
 }
 
 void RecordFeatureLastUsageTimeMetric(PrefService* prefs,

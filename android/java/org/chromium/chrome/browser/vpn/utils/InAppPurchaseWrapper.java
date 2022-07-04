@@ -98,8 +98,7 @@ public class InAppPurchaseWrapper {
         if (mBillingClient != null) {
             BillingResult result =
                     mBillingClient.isFeatureSupported(BillingClient.FeatureType.SUBSCRIPTIONS);
-            return (result.getResponseCode() == BillingClient.BillingResponseCode.OK
-                    && ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_REWARDS));
+            return (result.getResponseCode() == BillingClient.BillingResponseCode.OK);
         }
         return false;
     }

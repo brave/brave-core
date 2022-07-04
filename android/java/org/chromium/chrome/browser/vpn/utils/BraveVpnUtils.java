@@ -25,6 +25,7 @@ import org.chromium.base.ContextUtils;
 import org.chromium.base.Log;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.util.BraveConstants;
+import org.chromium.chrome.browser.vpn.BraveVpnNativeWorker;
 import org.chromium.chrome.browser.vpn.activities.BraveVpnPlansActivity;
 import org.chromium.chrome.browser.vpn.activities.BraveVpnProfileActivity;
 import org.chromium.chrome.browser.vpn.activities.BraveVpnSupportActivity;
@@ -234,5 +235,14 @@ public class BraveVpnUtils {
         braveVpnConfirmDialogFragment.show(
                 ((FragmentActivity) activity).getSupportFragmentManager(),
                 "BraveVpnConfirmDialogFragment");
+    }
+
+    public static void reportBackgroundUsageP3A() {
+        int daysUsed = BraveVpnPrefUtils.getDaysUsedSinceReport();
+        long lastReportDayTs = BraveVpnPrefUtils.getLastDayReportTime();
+        if (daysUsed > 0) {
+            BraveVpnPrefUtils.setDaysUsedSinceReport(0);
+        }
+        BraveVpnNativeWorker.getInstance().reportBackgroundP3A(daysUsed, lastReportDayTs);
     }
 }

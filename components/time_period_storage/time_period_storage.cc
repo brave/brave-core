@@ -71,6 +71,28 @@ void TimePeriodStorage::ReplaceTodaysValueIfGreater(uint64_t value) {
   Save();
 }
 
+void TimePeriodStorage::ReplaceIfGreaterForDateRange(
+    const base::Time& first_day, const base::Time& last_day, uint64_t value) {
+  FilterToPeriod();
+  for (base::Time curr_day = first_day.LocalMidnight();
+      curr_day != last_day.LocalMidnight();
+      curr_day += base::Days(1)) {
+    std::list<DailyValue>::iterator day_it = daily_values_.begin();
+    while (day_it != daily_values_.end() && day_it->day > curr_day) {
+      day_it++;
+    }
+    if (day_it->day == curr_day) {
+      if (value > day_it->value) {
+        day_it->value = value;
+      }
+    } else {
+      daily_values_.insert(day_it, {curr_day, value});
+    }
+  }
+  FilterToPeriod();
+  Save();
+}
+
 uint64_t TimePeriodStorage::GetPeriodSum() const {
   // We record only value for last N days.
   const base::Time n_days_ago = clock_->Now() - base::Days(period_days_);

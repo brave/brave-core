@@ -43,15 +43,20 @@ namespace network {
 class SharedURLLoaderFactory;
 }  // namespace network
 
+class PrefService;
+
 #if !BUILDFLAG(IS_ANDROID)
 
-class PrefService;
 class BraveAppMenuBrowserTest;
 class BraveBrowserCommandControllerTest;
 
 #endif  // !BUILDFLAG(IS_ANDROID)
 
 namespace brave_vpn {
+
+constexpr char kNewUserReturningHistogramName[] = "Brave.VPN.NewUserReturning";
+constexpr char kDaysInMonthUsedHistogramName[] = "Brave.VPN.DaysInMonthUsed";
+constexpr char kLastUsageTimeHistogramName[] = "Brave.VPN.LastUsageTime";
 
 // This class is used by desktop and android.
 // However, it includes desktop specific impls and it's hidden
@@ -66,12 +71,14 @@ class BraveVpnService :
 #if BUILDFLAG(IS_ANDROID)
   BraveVpnService(
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
+      PrefService* local_prefs,
       base::RepeatingCallback<mojo::PendingRemote<skus::mojom::SkusService>()>
           skus_service_getter);
 #else
   BraveVpnService(
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
-      PrefService* prefs,
+      PrefService* local_prefs,
+      PrefService* profile_prefs,
       base::RepeatingCallback<mojo::PendingRemote<skus::mojom::SkusService>()>
           skus_service_getter);
 #endif
@@ -158,7 +165,13 @@ class BraveVpnService :
                                   const std::string& payments_environment,
                                   const std::string& monthly_pass);
 
+  void RecordP3A(bool new_usage);
+  void RecordAndroidBackgroundP3A(int days_used, long last_report_day_ts);
+
  private:
+  void InitP3A();
+  void OnP3AInterval();
+
 #if !BUILDFLAG(IS_ANDROID)
   friend class ::BraveAppMenuBrowserTest;
   friend class ::BraveBrowserCommandControllerTest;
@@ -256,8 +269,10 @@ class BraveVpnService :
       const std::string& domain,
       const std::string& credential_as_cookie);
 
+  raw_ptr<PrefService> local_prefs_ = nullptr;
+
 #if !BUILDFLAG(IS_ANDROID)
-  raw_ptr<PrefService> prefs_ = nullptr;
+  raw_ptr<PrefService> profile_prefs_ = nullptr;
   std::vector<mojom::Region> regions_;
   std::unique_ptr<Hostname> hostname_;
   BraveVPNConnectionInfo connection_info_;
@@ -286,6 +301,7 @@ class BraveVpnService :
   mojo::RemoteSet<mojom::ServiceObserver> observers_;
   api_request_helper::APIRequestHelper api_request_helper_;
   std::string skus_credential_;
+  base::RepeatingTimer p3a_timer_;
   base::WeakPtrFactory<BraveVpnService> weak_ptr_factory_{this};
 };
 

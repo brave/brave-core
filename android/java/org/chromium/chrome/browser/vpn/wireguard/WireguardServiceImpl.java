@@ -27,6 +27,7 @@ import com.wireguard.config.Config;
 
 import org.chromium.base.ContextUtils;
 import org.chromium.base.IntentUtils;
+import org.chromium.base.Log;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.notifications.channels.BraveChannelDefinitions;
@@ -34,6 +35,7 @@ import org.chromium.chrome.browser.vpn.DisconnectVpnBroadcastReceiver;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnPrefUtils;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnUtils;
 
+import java.util.Calendar;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -43,6 +45,7 @@ public class WireguardServiceImpl
     private TunnelModel mTunnelModel;
     private final IBinder mBinder = new LocalBinder();
     private Timer mVpnStatisticsTimer;
+    private Timer mRecordDaysUsedTimer;
     private static final int BRAVE_VPN_NOTIFICATION_ID = 801;
     private Context mContext = ContextUtils.getApplicationContext();
 
@@ -85,10 +88,13 @@ public class WireguardServiceImpl
     }
 
     private void startVpn() throws Exception {
+        Log.e("WireguardService", "VPN starting");
         Config config = WireguardConfigUtils.loadConfig(mContext);
         mTunnelModel = TunnelModel.createTunnel(config, this);
         mBackend.setState(mTunnelModel, Tunnel.State.UP, config);
         updateVpnStatisticsTimer();
+        recordDaysUsed();
+        updateRecordDaysUsedTimer();
     }
 
     private Notification getBraveVpnNotification(String notificationText) {
@@ -124,6 +130,34 @@ public class WireguardServiceImpl
         mNotificationManager.notify(BRAVE_VPN_NOTIFICATION_ID, notification);
     }
 
+    private void recordDaysUsed() {
+        Log.e("WireguardService", "Recording days used");
+        long lastReportTs = BraveVpnPrefUtils.getLastDayReportTime();
+        Calendar lastReportDate = Calendar.getInstance();
+        lastReportDate.setTimeInMillis(lastReportTs);
+        Calendar currDate = Calendar.getInstance();
+
+        if (currDate.get(Calendar.YEAR) != lastReportDate.get(Calendar.YEAR) ||
+            currDate.get(Calendar.MONTH) != lastReportDate.get(Calendar.MONTH) ||
+            currDate.get(Calendar.DAY_OF_MONTH) != lastReportDate.get(Calendar.DAY_OF_MONTH)) {
+            BraveVpnPrefUtils.setDaysUsedSinceReport(
+                BraveVpnPrefUtils.getDaysUsedSinceReport() + 1
+            );
+            BraveVpnPrefUtils.setLastDayReportTime(System.currentTimeMillis());
+            Log.e("WireguardService", "New day. count = " + BraveVpnPrefUtils.getDaysUsedSinceReport());
+        }
+    }
+
+    private void updateRecordDaysUsedTimer() {
+        mVpnStatisticsTimer = new Timer();
+        mVpnStatisticsTimer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                recordDaysUsed();
+            }
+        }, 0, 15000);
+    }
+
     private void updateVpnStatisticsTimer() {
         mVpnStatisticsTimer = new Timer();
         mVpnStatisticsTimer.schedule(new TimerTask() {
@@ -156,6 +190,7 @@ public class WireguardServiceImpl
 
     @Override
     public void onDestroy() {
+        Log.e("WireguardService", "VPN destroying");
         try {
             mBackend.setState(mTunnelModel, Tunnel.State.DOWN, null);
         } catch (Exception e) {

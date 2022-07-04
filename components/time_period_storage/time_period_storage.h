@@ -39,6 +39,8 @@ class TimePeriodStorage {
   void AddDelta(uint64_t delta);
   void SubDelta(uint64_t delta);
   void ReplaceTodaysValueIfGreater(uint64_t value);
+  void ReplaceIfGreaterForDateRange(const base::Time& first_day,
+      const base::Time& last_day, uint64_t value);
   uint64_t GetPeriodSum() const;
   uint64_t GetHighestValueInPeriod() const;
   bool IsOnePeriodPassed() const;

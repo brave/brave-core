@@ -40,6 +40,8 @@ public class BraveVpnPrefUtils {
     public static final String PREF_BRAVE_VPN_SERVER_PUBLIC_KEY = "brave_vpn_server_public_key";
     public static final String PREF_BRAVE_VPN_IP_ADDRESS = "brave_vpn_ip_address";
     public static final String PREF_BRAVE_VPN_CLIENT_PRIVATE_KEY = "brave_vpn_client_private_key";
+    public static final String PREF_LAST_DAY_REPORT_TIME = "brave_vpn_last_day_report_time";
+    public static final String PREF_DAYS_USED_SINCE_REPORT = "brave_vpn_days_used_since_report";
 
     private static final SharedPreferences mSharedPreferences =
             ContextUtils.getAppSharedPreferences();
@@ -245,5 +247,25 @@ public class BraveVpnPrefUtils {
         setClientId(braveVpnPrefModel.getClientId());
         setApiAuthToken(braveVpnPrefModel.getApiAuthToken());
         setResetConfiguration(false);
+    }
+
+    public static void setLastDayReportTime(long timeMillis) {
+        SharedPreferences.Editor sharedPreferencesEditor = mSharedPreferences.edit();
+        sharedPreferencesEditor.putLong(PREF_LAST_DAY_REPORT_TIME, timeMillis);
+        sharedPreferencesEditor.apply();
+    }
+
+    public static long getLastDayReportTime() {
+        return mSharedPreferences.getLong(PREF_LAST_DAY_REPORT_TIME, 0);
+    }
+
+    public static void setDaysUsedSinceReport(int count) {
+        SharedPreferences.Editor sharedPreferencesEditor = mSharedPreferences.edit();
+        sharedPreferencesEditor.putInt(PREF_DAYS_USED_SINCE_REPORT, count);
+        sharedPreferencesEditor.apply();
+    }
+
+    public static int getDaysUsedSinceReport() {
+        return mSharedPreferences.getInt(PREF_DAYS_USED_SINCE_REPORT, 0);
     }
 }

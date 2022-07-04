@@ -11,6 +11,9 @@
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "base/strings/utf_string_conversions.h"
+#include "base/time/time.h"
+#include "brave/components/brave_vpn/pref_names.h"
+#include "brave/components/p3a_utils/feature_usage.h"
 #include "brave/components/skus/browser/skus_utils.h"
 #include "net/base/network_change_notifier.h"
 #include "net/cookies/cookie_inclusion_status.h"
@@ -28,7 +31,6 @@
 #include "brave/components/brave_vpn/brave_vpn_constants.h"
 #include "brave/components/brave_vpn/brave_vpn_service_helper.h"
 #include "brave/components/brave_vpn/brave_vpn_utils.h"
-#include "brave/components/brave_vpn/pref_names.h"
 #include "brave/components/brave_vpn/switches.h"
 #include "brave/components/version_info/version_info.h"
 #include "components/prefs/pref_service.h"
@@ -50,6 +52,8 @@ constexpr char kCredential[] = "api/v1.3/device/";
 constexpr char kVerifyPurchaseToken[] = "api/v1.1/verify-purchase-token";
 constexpr char kCreateSubscriberCredentialV12[] =
     "api/v1.2/subscriber-credential/create";
+
+constexpr int kP3AIntervalHours = 24;
 
 net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
   return net::DefineNetworkTrafficAnnotation("brave_vpn_service", R"(
@@ -113,18 +117,24 @@ using PurchasedState = mojom::PurchasedState;
 #if BUILDFLAG(IS_ANDROID)
 BraveVpnService::BraveVpnService(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
+    PrefService* local_prefs,
     base::RepeatingCallback<mojo::PendingRemote<skus::mojom::SkusService>()>
         skus_service_getter)
-    : skus_service_getter_(skus_service_getter),
+    : local_prefs_(local_prefs),
+      skus_service_getter_(skus_service_getter),
       api_request_helper_(GetNetworkTrafficAnnotationTag(), url_loader_factory),
-      weak_ptr_factory_(this) {}
+      weak_ptr_factory_(this) {
+  InitP3A();
+}
 #else
 BraveVpnService::BraveVpnService(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
-    PrefService* prefs,
+    PrefService* local_prefs,
+    PrefService* profile_prefs,
     base::RepeatingCallback<mojo::PendingRemote<skus::mojom::SkusService>()>
         skus_service_getter)
-    : prefs_(prefs),
+    : local_prefs_(local_prefs),
+      profile_prefs_(profile_prefs),
       skus_service_getter_(skus_service_getter),
       api_request_helper_(GetNetworkTrafficAnnotationTag(),
                           url_loader_factory) {
@@ -144,10 +154,12 @@ BraveVpnService::BraveVpnService(
   // To prevent this, we load purchased state at startup only
   // when profile has cached region list because region list is fetched
   // and cached only when user purchased at least once.
-  auto* preference = prefs_->FindPreference(prefs::kBraveVPNRegionList);
+  auto* preference = profile_prefs_->FindPreference(prefs::kBraveVPNRegionList);
   if (preference && !preference->IsDefaultValue()) {
     ReloadPurchasedState();
   }
+
+  InitP3A();
 }
 #endif
 
@@ -265,6 +277,8 @@ void BraveVpnService::OnConnected() {
   }
 
   UpdateAndNotifyConnectionStateChange(ConnectionState::CONNECTED);
+
+  RecordP3A(true);
 }
 
 void BraveVpnService::OnIsConnecting() {
@@ -451,7 +465,7 @@ void BraveVpnService::LoadCachedRegionData() {
   if (GetDeviceRegion().empty())
     return;
 
-  auto* preference = prefs_->FindPreference(prefs::kBraveVPNRegionList);
+  auto* preference = profile_prefs_->FindPreference(prefs::kBraveVPNRegionList);
   DCHECK(preference);
   // Early return when we don't have any cached region data.
   if (preference->IsDefaultValue())
@@ -478,7 +492,8 @@ void BraveVpnService::SetRegionListToPrefs() {
   for (const auto& region : regions_) {
     regions_list.Append(GetValueFromRegion(region));
   }
-  prefs_->Set(prefs::kBraveVPNRegionList, base::Value(std::move(regions_list)));
+  profile_prefs_->Set(prefs::kBraveVPNRegionList,
+                      base::Value(std::move(regions_list)));
 }
 
 void BraveVpnService::OnFetchRegionList(bool background_fetch,
@@ -588,22 +603,22 @@ void BraveVpnService::SetDeviceRegionWithTimezone(
 
 void BraveVpnService::SetDeviceRegion(const std::string& name) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  prefs_->SetString(prefs::kBraveVPNDeviceRegion, name);
+  profile_prefs_->SetString(prefs::kBraveVPNDeviceRegion, name);
 }
 
 void BraveVpnService::SetSelectedRegion(const std::string& name) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  prefs_->SetString(prefs::kBraveVPNSelectedRegion, name);
+  profile_prefs_->SetString(prefs::kBraveVPNSelectedRegion, name);
 }
 
 std::string BraveVpnService::GetDeviceRegion() const {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  return prefs_->GetString(prefs::kBraveVPNDeviceRegion);
+  return profile_prefs_->GetString(prefs::kBraveVPNDeviceRegion);
 }
 
 std::string BraveVpnService::GetSelectedRegion() const {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  return prefs_->GetString(prefs::kBraveVPNSelectedRegion);
+  return profile_prefs_->GetString(prefs::kBraveVPNSelectedRegion);
 }
 
 void BraveVpnService::SetFallbackDeviceRegion() {
@@ -1022,6 +1037,49 @@ void BraveVpnService::OnPrepareCredentialsPresentation(
   ScheduleBackgroundRegionDataFetch();
   GetBraveVPNConnectionAPI()->CheckConnection(kBraveVPNEntryName);
 #endif
+}
+
+void BraveVpnService::InitP3A() {
+  p3a_timer_.Start(FROM_HERE, base::Hours(kP3AIntervalHours), this,
+                   &BraveVpnService::OnP3AInterval);
+  RecordP3A(false);
+}
+
+void BraveVpnService::RecordP3A(bool new_usage) {
+  if (new_usage) {
+    p3a_utils::RecordFeatureUsage(local_prefs_, prefs::kBraveVPNFirstUseTime,
+                                  prefs::kBraveVPNLastUseTime);
+  }
+  p3a_utils::RecordFeatureNewUserReturning(
+      local_prefs_, prefs::kBraveVPNFirstUseTime, prefs::kBraveVPNLastUseTime,
+      prefs::kBraveVPNUsedSecondDay, kNewUserReturningHistogramName);
+  p3a_utils::RecordFeatureDaysInMonthUsed(
+      local_prefs_, new_usage, prefs::kBraveVPNLastUseTime,
+      prefs::kBraveVPNDaysInMonthUsed, kDaysInMonthUsedHistogramName);
+  p3a_utils::RecordFeatureLastUsageTimeMetric(
+      local_prefs_, prefs::kBraveVPNLastUseTime, kLastUsageTimeHistogramName);
+}
+
+void BraveVpnService::RecordAndroidBackgroundP3A(int days_used, long last_report_day_ts) {
+  if (days_used < 1) {
+    return;
+  }
+  base::Time last_new_use_time = base::Time::FromJsTime(static_cast<double>(last_report_day_ts));
+  base::Time first_new_use_time = last_new_use_time - base::Days(days_used - 1);
+  p3a_utils::RecordFeatureUsage(local_prefs_, prefs::kBraveVPNFirstUseTime,
+      prefs::kBraveVPNLastUseTime, last_new_use_time);
+  p3a_utils::RecordFeatureNewUserReturning(
+      local_prefs_, prefs::kBraveVPNFirstUseTime, prefs::kBraveVPNLastUseTime,
+      prefs::kBraveVPNUsedSecondDay, kNewUserReturningHistogramName);
+  p3a_utils::RecordFeatureDaysInMonthUsed(
+      local_prefs_, first_new_use_time, last_new_use_time, prefs::kBraveVPNLastUseTime,
+      prefs::kBraveVPNDaysInMonthUsed, kDaysInMonthUsedHistogramName);
+  p3a_utils::RecordFeatureLastUsageTimeMetric(
+      local_prefs_, prefs::kBraveVPNLastUseTime, kLastUsageTimeHistogramName);
+}
+
+void BraveVpnService::OnP3AInterval() {
+  RecordP3A(false);
 }
 
 void BraveVpnService::SetPurchasedState(const std::string& env,

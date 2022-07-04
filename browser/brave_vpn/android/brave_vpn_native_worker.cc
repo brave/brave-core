@@ -245,6 +245,21 @@ void BraveVpnNativeWorker::OnVerifyPurchaseToken(
       base::android::ConvertUTF8ToJavaString(env, json_response), success);
 }
 
+void BraveVpnNativeWorker::ReportForegroundP3A(JNIEnv* env) {
+  BraveVpnService* brave_vpn_service = GetBraveVpnService();
+  if (brave_vpn_service) {
+    brave_vpn_service->RecordP3A(true);
+  }
+}
+
+void BraveVpnNativeWorker::ReportBackgroundP3A(
+    JNIEnv* env, jint days_used, jlong last_report_day_ts) {
+  BraveVpnService* brave_vpn_service = GetBraveVpnService();
+  if (brave_vpn_service) {
+    brave_vpn_service->RecordAndroidBackgroundP3A(days_used, last_report_day_ts);
+  }
+}
+
 static void JNI_BraveVpnNativeWorker_Init(
     JNIEnv* env,
     const base::android::JavaParamRef<jobject>& jcaller) {
