@@ -14,11 +14,11 @@ namespace brave_wallet {
 bool ParseSingleStringResult(const std::string& json, std::string* result) {
   DCHECK(result);
 
-  base::Value result_v;
-  if (!ParseResult(json, &result_v))
+  auto result_v = ParseResultValue(json);
+  if (!result_v)
     return false;
 
-  const std::string* result_str = result_v.GetIfString();
+  const std::string* result_str = result_v->GetIfString();
   if (!result_str)
     return false;
 
@@ -35,30 +35,30 @@ absl::optional<std::string> ParseSingleStringResult(const std::string& json) {
   return result;
 }
 
-bool ParseResult(const std::string& json, base::Value* result) {
-  DCHECK(result);
+absl::optional<base::Value> ParseResultValue(const std::string& json) {
   base::JSONReader::ValueWithError value_with_error =
       base::JSONReader::ReadAndReturnValueWithError(
           json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
                     base::JSONParserOptions::JSON_PARSE_RFC);
   absl::optional<base::Value>& records_v = value_with_error.value;
-  if (!records_v) {
+  if (!records_v || !records_v->is_dict()) {
     LOG(ERROR) << "Invalid response, could not parse JSON, JSON is: " << json;
-    return false;
+    return absl::nullopt;
   }
 
-  const base::DictionaryValue* response_dict;
-  if (!records_v->GetAsDictionary(&response_dict)) {
-    return false;
-  }
-
-  const base::Value* result_v = response_dict->FindPath("result");
+  base::Value* result_v = records_v->GetDict().FindByDottedPath("result");
   if (!result_v)
-    return false;
+    return absl::nullopt;
 
-  *result = result_v->Clone();
+  return std::move(*result_v);
+}
 
-  return true;
+absl::optional<base::Value::Dict> ParseResultDict(const std::string& json) {
+  auto result = ParseResultValue(json);
+  if (!result || !result->is_dict())
+    return absl::nullopt;
+
+  return std::move(result->GetDict());
 }
 
 bool ParseBoolResult(const std::string& json, bool* value) {

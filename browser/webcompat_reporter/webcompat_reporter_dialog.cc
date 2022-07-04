@@ -31,8 +31,7 @@ constexpr int kDialogWidth = 375;
 // A ui::WebDialogDelegate that specifies the webcompat reporter's appearance.
 class WebcompatReporterDialogDelegate : public ui::WebDialogDelegate {
  public:
-  explicit WebcompatReporterDialogDelegate(
-      std::unique_ptr<base::DictionaryValue> params);
+  explicit WebcompatReporterDialogDelegate(base::Value::Dict params);
   WebcompatReporterDialogDelegate(const WebcompatReporterDialogDelegate&) =
       delete;
   WebcompatReporterDialogDelegate& operator=(
@@ -51,11 +50,11 @@ class WebcompatReporterDialogDelegate : public ui::WebDialogDelegate {
   bool ShouldShowDialogTitle() const override;
 
  private:
-  std::unique_ptr<base::DictionaryValue> params_;
+  base::Value::Dict params_;
 };
 
 WebcompatReporterDialogDelegate::WebcompatReporterDialogDelegate(
-    std::unique_ptr<base::DictionaryValue> params)
+    base::Value::Dict params)
     : params_(std::move(params)) {}
 
 WebcompatReporterDialogDelegate::~WebcompatReporterDialogDelegate() {}
@@ -87,7 +86,7 @@ void WebcompatReporterDialogDelegate::GetDialogSize(gfx::Size* size) const {
 
 std::string WebcompatReporterDialogDelegate::GetDialogArgs() const {
   std::string json;
-  base::JSONWriter::Write(*params_, &json);
+  base::JSONWriter::Write(params_, &json);
   return json;
 }
 
@@ -104,8 +103,8 @@ bool WebcompatReporterDialogDelegate::ShouldShowDialogTitle() const {
 }
 
 void OpenWebcompatReporterDialog(content::WebContents* initiator) {
-  auto params_dict = std::make_unique<base::DictionaryValue>();
-  params_dict->SetStringKey("siteUrl", initiator->GetLastCommittedURL().spec());
+  base::Value::Dict params_dict;
+  params_dict.Set("siteUrl", initiator->GetLastCommittedURL().spec());
 
   gfx::Size min_size(kDialogWidth, kDialogMinHeight);
   gfx::Size max_size(kDialogWidth, kDialogMaxHeight);

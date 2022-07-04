@@ -13,6 +13,7 @@
 #include "base/memory/raw_ptr.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/sequence_checker.h"
+#include "base/values.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
 #include "brave/components/brave_vpn/mojom/brave_vpn.mojom.h"
 #include "brave/components/skus/browser/skus_utils.h"
@@ -43,9 +44,6 @@ class SharedURLLoaderFactory;
 }  // namespace network
 
 #if !BUILDFLAG(IS_ANDROID)
-namespace base {
-class Value;
-}  // namespace base
 
 class PrefService;
 class BraveAppMenuBrowserTest;
@@ -185,16 +183,16 @@ class BraveVpnService :
   void OnFetchRegionList(bool background_fetch,
                          const std::string& region_list,
                          bool success);
-  bool ParseAndCacheRegionList(const base::Value& region_value,
+  bool ParseAndCacheRegionList(const base::Value::List& region_value,
                                bool save_to_prefs = false);
   void OnFetchTimezones(const std::string& timezones_list, bool success);
-  void SetDeviceRegionWithTimezone(const base::Value& timezons_value);
+  void SetDeviceRegionWithTimezone(const base::Value::List& timezons_value);
   void FetchHostnamesForRegion(const std::string& name);
   void OnFetchHostnames(const std::string& region,
                         const std::string& hostnames,
                         bool success);
   void ParseAndCacheHostnames(const std::string& region,
-                              const base::Value& hostnames_value);
+                              const base::Value::List& hostnames_value);
   void SetDeviceRegion(const std::string& name);
   void SetSelectedRegion(const std::string& name);
   std::string GetDeviceRegion() const;

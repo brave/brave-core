@@ -1512,8 +1512,8 @@ void JsonRpcService::OnGetIsEip1559(
     return;
   }
 
-  base::Value result;
-  if (!ParseResult(body, &result) || !result.is_dict()) {
+  auto result = ParseResultDict(body);
+  if (!result) {
     mojom::ProviderError error;
     std::string error_message;
     ParseErrorResult<mojom::ProviderError>(body, &error, &error_message);
@@ -1521,7 +1521,7 @@ void JsonRpcService::OnGetIsEip1559(
     return;
   }
 
-  const std::string* base_fee = result.FindStringKey("baseFeePerGas");
+  const std::string* base_fee = result->FindString("baseFeePerGas");
   std::move(callback).Run(base_fee && !base_fee->empty(),
                           mojom::ProviderError::kSuccess, "");
 }

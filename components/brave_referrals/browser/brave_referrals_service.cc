@@ -72,21 +72,21 @@ BraveReferralsService::ReferralInitializedCallback*
 
 base::FilePath g_promo_file_path;
 
-base::Value CreateReferralHeader(
+base::Value::Dict CreateReferralHeader(
     const char partner_name[],
     const std::vector<std::string>& partner_domains) {
-  base::Value headers_dict(base::Value::Type::DICTIONARY);
-  base::Value domains(base::Value::Type::LIST);
+  base::Value::Dict headers_dict;
+  base::Value::List domains;
   for (const auto& header : partner_domains)
     domains.Append(header);
-  headers_dict.SetKey("domains", std::move(domains));
+  headers_dict.Set("domains", std::move(domains));
 
   constexpr double expiration_ms = 31536000000.0;
-  headers_dict.SetDoubleKey("expiration", expiration_ms);
+  headers_dict.Set("expiration", expiration_ms);
 
-  base::Value headers_sub_dict(base::Value::Type::DICTIONARY);
-  headers_sub_dict.SetStringKey(kBravePartnerHeader, partner_name);
-  headers_dict.SetKey("headers", std::move(headers_sub_dict));
+  base::Value::Dict headers_sub_dict;
+  headers_sub_dict.Set(kBravePartnerHeader, partner_name);
+  headers_dict.Set("headers", std::move(headers_sub_dict));
 
   return headers_dict;
 }
@@ -152,7 +152,7 @@ BraveReferralsHeaders::BraveReferralsHeaders() {
 }
 
 bool BraveReferralsHeaders::GetMatchingReferralHeaders(
-    const base::DictionaryValue** request_headers_dict,
+    const base::Value::Dict** request_headers_dict,
     const GURL& url) {
   return GetMatchingReferralHeaders(referral_headers_, request_headers_dict,
                                     url);
@@ -161,24 +161,22 @@ bool BraveReferralsHeaders::GetMatchingReferralHeaders(
 template <typename Iter>
 bool BraveReferralsHeaders::GetMatchingReferralHeaders(
     const Iter& referral_headers_list,
-    const base::DictionaryValue** request_headers_dict,
+    const base::Value::Dict** request_headers_dict,
     const GURL& url) {
   // If the domain for this request matches one of our target domains,
   // set the associated custom headers.
-  for (const base::Value& headers_value : referral_headers_list) {
-    const base::Value* domains_list =
-        headers_value.FindKeyOfType("domains", base::Value::Type::LIST);
+  for (const auto& headers_value : referral_headers_list) {
+    const auto* domains_list = headers_value.FindList("domains");
     if (!domains_list) {
       LOG(WARNING) << "Failed to retrieve 'domains' key from referral headers";
       continue;
     }
-    const base::Value* headers_dict =
-        headers_value.FindKeyOfType("headers", base::Value::Type::DICTIONARY);
+    const auto* headers_dict = headers_value.FindDict("headers");
     if (!headers_dict) {
       LOG(WARNING) << "Failed to retrieve 'headers' key from referral headers";
       continue;
     }
-    for (const auto& domain_value : domains_list->GetList()) {
+    for (const auto& domain_value : *domains_list) {
       URLPattern url_pattern(URLPattern::SCHEME_HTTPS |
                              URLPattern::SCHEME_HTTP);
       url_pattern.SetScheme("*");
@@ -187,7 +185,8 @@ bool BraveReferralsHeaders::GetMatchingReferralHeaders(
       url_pattern.SetMatchSubdomains(true);
       if (!url_pattern.MatchesURL(url))
         continue;
-      return headers_dict->GetAsDictionary(request_headers_dict);
+      *request_headers_dict = headers_dict;
+      return true;
     }
   }
   return false;
@@ -305,34 +304,36 @@ void BraveReferralsService::OnReferralInitLoadComplete(
     return;
   }
 
-  base::JSONReader::ValueWithError root =
+  base::JSONReader::ValueWithError parsed_json =
       base::JSONReader::ReadAndReturnValueWithError(*response_body);
-  if (!root.value || !root.value->is_dict()) {
+  if (!parsed_json.value || !parsed_json.value->is_dict()) {
     LOG(ERROR) << "Failed to parse referral initialization response: "
-               << (!root.value ? root.error_message : "not a dictionary");
+               << (!parsed_json.value ? parsed_json.error_message
+                                      : "not a dictionary");
     return;
   }
-  if (!root.value->FindKey("download_id")) {
+
+  const auto& root = parsed_json.value->GetDict();
+  const auto* download_id = root.FindString("download_id");
+  if (!download_id) {
     LOG(ERROR)
         << "Failed to locate download_id in referral initialization response"
         << ", payload: " << *response_body;
     return;
   }
 
-  const base::Value* headers = root.value->FindKey("headers");
+  const base::Value* headers = root.Find("headers");
   if (headers) {
     pref_service_->Set(kReferralHeaders, *headers);
   }
-
-  const base::Value* download_id = root.value->FindKey("download_id");
-  pref_service_->SetString(kReferralDownloadID, download_id->GetString());
+  pref_service_->SetString(kReferralDownloadID, *download_id);
 
   // We have initialized with the promo server. We can kill the retry timer now.
   pref_service_->SetBoolean(kReferralInitialization, true);
   if (initialization_timer_)
     initialization_timer_.reset();
   if (g_testing_referral_initialized_callback) {
-    g_testing_referral_initialized_callback->Run(download_id->GetString());
+    g_testing_referral_initialized_callback->Run(*download_id);
   }
 
   task_runner_->PostTask(
@@ -358,15 +359,16 @@ void BraveReferralsService::OnReferralFinalizationCheckLoadComplete(
     return;
   }
 
-  base::JSONReader::ValueWithError root =
+  base::JSONReader::ValueWithError parsed_json =
       base::JSONReader::ReadAndReturnValueWithError(*response_body);
-  if (!root.value) {
+  if (!parsed_json.value || !parsed_json.value->is_dict()) {
     LOG(ERROR) << "Failed to parse referral finalization check response: "
-               << root.error_message;
+               << parsed_json.error_message;
     return;
   }
-  const base::Value* finalized = root.value->FindKey("finalized");
-  if (!finalized->GetBool()) {
+  const auto& root = parsed_json.value->GetDict();
+  auto finalized = root.FindBool("finalized");
+  if (!finalized.has_value() || !finalized.value()) {
     LOG(ERROR) << "Referral is not ready, please wait at least 30 days";
     return;
   }
@@ -512,10 +514,10 @@ void BraveReferralsService::MaybeDeletePromoCodePref() const {
 }
 
 std::string BraveReferralsService::BuildReferralInitPayload() const {
-  base::Value root(base::Value::Type::DICTIONARY);
-  root.SetKey("api_key", base::Value(api_key_));
-  root.SetKey("referral_code", base::Value(promo_code_));
-  root.SetKey("platform", base::Value(platform_));
+  base::Value::Dict root;
+  root.Set("api_key", api_key_);
+  root.Set("referral_code", promo_code_);
+  root.Set("platform", platform_);
 
   std::string result;
   base::JSONWriter::Write(root, &result);
@@ -525,13 +527,11 @@ std::string BraveReferralsService::BuildReferralInitPayload() const {
 
 std::string BraveReferralsService::BuildReferralFinalizationCheckPayload()
     const {
-  base::Value root(base::Value::Type::DICTIONARY);
-  root.SetKey("api_key", base::Value(api_key_));
-  root.SetKey("download_id",
-              base::Value(pref_service_->GetString(kReferralDownloadID)));
+  base::Value::Dict root;
+  root.Set("api_key", api_key_);
+  root.Set("download_id", pref_service_->GetString(kReferralDownloadID));
 #if BUILDFLAG(IS_ANDROID)
-  root.SetKey("safetynet_status",
-              base::Value(pref_service_->GetString(kSafetynetStatus)));
+  root.Set("safetynet_status", pref_service_->GetString(kSafetynetStatus));
 #endif
 
   std::string result;

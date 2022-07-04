@@ -1381,33 +1381,33 @@ TEST_F(BraveWalletServiceUnitTest, MigrateUserAssetEthContractAddress) {
 
   {
     DictionaryPrefUpdate update(GetPrefs(), kBraveWalletUserAssetsDeprecated);
-    base::Value* user_assets_pref = update.Get();
-    base::Value* user_assets_list = user_assets_pref->SetKey(
-        "rinkeby", base::Value(base::Value::Type::LIST));
+    auto* user_assets_pref = update.Get()->GetIfDict();
+    base::Value::List user_assets_list;
 
-    base::Value value(base::Value::Type::DICTIONARY);
-    value.SetKey("contract_address", base::Value("eth"));
-    value.SetKey("name", base::Value("Ethereum"));
-    value.SetKey("symbol", base::Value("ETH"));
-    value.SetKey("is_erc20", base::Value(false));
-    value.SetKey("is_erc721", base::Value(false));
-    value.SetKey("decimals", base::Value(18));
-    value.SetKey("visible", base::Value(true));
-    user_assets_list->Append(std::move(value));
+    base::Value::Dict value;
+    value.Set("contract_address", "eth");
+    value.Set("name", "Ethereum");
+    value.Set("symbol", "ETH");
+    value.Set("is_erc20", false);
+    value.Set("is_erc721", false);
+    value.Set("decimals", 18);
+    value.Set("visible", true);
+    user_assets_list.Append(std::move(value));
+    user_assets_pref->Set("rinkeby", std::move(user_assets_list));
   }
 
   const base::Value* pref =
       GetPrefs()->GetDictionary(kBraveWalletUserAssetsDeprecated);
   ASSERT_TRUE(pref);
-  const base::Value* user_assets_list = pref->FindListKey("rinkeby");
+  const auto* user_assets_list = pref->GetDict().FindList("rinkeby");
   ASSERT_TRUE(user_assets_list);
-  ASSERT_EQ(user_assets_list->GetList().size(), 1u);
-  EXPECT_EQ(*user_assets_list->GetList()[0].FindStringKey("contract_address"),
+  ASSERT_EQ(user_assets_list->size(), 1u);
+  EXPECT_EQ(*(*user_assets_list)[0].GetDict().FindString("contract_address"),
             "eth");
 
   BraveWalletService::MigrateUserAssetEthContractAddress(GetPrefs());
-  ASSERT_EQ(user_assets_list->GetList().size(), 1u);
-  EXPECT_EQ(*user_assets_list->GetList()[0].FindStringKey("contract_address"),
+  ASSERT_EQ(user_assets_list->size(), 1u);
+  EXPECT_EQ(*(*user_assets_list)[0].GetDict().FindString("contract_address"),
             "");
 
   EXPECT_TRUE(
@@ -1419,74 +1419,75 @@ TEST_F(BraveWalletServiceUnitTest, MigrateMultichainUserAssets) {
 
   {
     DictionaryPrefUpdate update(GetPrefs(), kBraveWalletUserAssetsDeprecated);
-    base::Value* old_user_assets_pref = update.Get();
-    base::Value* mainnet_user_assets_list = old_user_assets_pref->SetKey(
-        "mainnet", base::Value(base::Value::Type::LIST));
+    auto& old_user_assets_pref = update.Get()->GetDict();
 
-    base::Value value(base::Value::Type::DICTIONARY);
-    value.SetKey("contract_address", base::Value(""));
-    value.SetKey("name", base::Value("Ethereum"));
-    value.SetKey("symbol", base::Value("ETH"));
-    value.SetKey("is_erc20", base::Value(false));
-    value.SetKey("is_erc721", base::Value(false));
-    value.SetKey("decimals", base::Value(18));
-    value.SetKey("visible", base::Value(true));
-    mainnet_user_assets_list->Append(std::move(value));
+    base::Value::Dict value;
+    value.Set("contract_address", "");
+    value.Set("name", "Ethereum");
+    value.Set("symbol", "ETH");
+    value.Set("is_erc20", false);
+    value.Set("is_erc721", false);
+    value.Set("decimals", 18);
+    value.Set("visible", true);
+    base::Value::List mainnet_user_assets_list;
+    mainnet_user_assets_list.Append(std::move(value));
 
-    base::Value value2(base::Value::Type::DICTIONARY);
-    value2.SetKey("contract_address",
-                  base::Value("0x0D8775F648430679A709E98d2b0Cb6250d2887EF"));
-    value2.SetKey("name", base::Value("Basic Attention Token"));
-    value2.SetKey("symbol", base::Value("BAT"));
-    value2.SetKey("is_erc20", base::Value(true));
-    value2.SetKey("is_erc721", base::Value(false));
-    value2.SetKey("decimals", base::Value(18));
-    value2.SetKey("visible", base::Value(true));
-    mainnet_user_assets_list->Append(std::move(value2));
+    base::Value::Dict value2;
+    value2.Set("contract_address",
+               "0x0D8775F648430679A709E98d2b0Cb6250d2887EF");
+    value2.Set("name", "Basic Attention Token");
+    value2.Set("symbol", "BAT");
+    value2.Set("is_erc20", true);
+    value2.Set("is_erc721", false);
+    value2.Set("decimals", 18);
+    value2.Set("visible", true);
+    mainnet_user_assets_list.Append(std::move(value2));
 
-    base::Value* rinkbey_user_assets_list = old_user_assets_pref->SetKey(
-        "rinkbey", base::Value(base::Value::Type::LIST));
+    base::Value::Dict value3;
+    value3.Set("contract_address", "");
+    value3.Set("name", "Ethereum");
+    value3.Set("symbol", "ETH");
+    value3.Set("is_erc20", false);
+    value3.Set("is_erc721", false);
+    value3.Set("decimals", 18);
+    value3.Set("visible", true);
+    base::Value::List rinkbey_user_assets_list;
+    rinkbey_user_assets_list.Append(std::move(value3));
 
-    base::Value value3(base::Value::Type::DICTIONARY);
-    value3.SetKey("contract_address", base::Value(""));
-    value3.SetKey("name", base::Value("Ethereum"));
-    value3.SetKey("symbol", base::Value("ETH"));
-    value3.SetKey("is_erc20", base::Value(false));
-    value3.SetKey("is_erc721", base::Value(false));
-    value3.SetKey("decimals", base::Value(18));
-    value3.SetKey("visible", base::Value(true));
-    rinkbey_user_assets_list->Append(std::move(value3));
+    old_user_assets_pref.Set("mainnet", std::move(mainnet_user_assets_list));
+    old_user_assets_pref.Set("rinkbey", std::move(rinkbey_user_assets_list));
   }
 
   ASSERT_TRUE(GetPrefs()->HasPrefPath(kBraveWalletUserAssetsDeprecated));
   BraveWalletService::MigrateMultichainUserAssets(GetPrefs());
 
-  const base::Value* assets = GetPrefs()->GetDictionary(kBraveWalletUserAssets);
+  const auto* assets =
+      GetPrefs()->GetDictionary(kBraveWalletUserAssets)->GetIfDict();
   ASSERT_TRUE(assets);
-  const base::Value* ethereum_mainnet_list =
-      assets->FindListPath("ethereum.mainnet");
+  const auto* ethereum_mainnet_list =
+      assets->FindListByDottedPath("ethereum.mainnet");
   ASSERT_TRUE(ethereum_mainnet_list);
-  ASSERT_EQ(ethereum_mainnet_list->GetList().size(), 2u);
+  ASSERT_EQ(ethereum_mainnet_list->size(), 2u);
   EXPECT_FALSE(
-      ethereum_mainnet_list->GetList()[0].FindStringKey("contract_address"));
+      (*ethereum_mainnet_list)[0].GetDict().FindString("contract_address"));
   EXPECT_FALSE(
-      ethereum_mainnet_list->GetList()[1].FindStringKey("contract_address"));
-  EXPECT_EQ(*ethereum_mainnet_list->GetList()[0].FindStringKey("address"), "");
-  EXPECT_EQ(*ethereum_mainnet_list->GetList()[1].FindStringKey("address"),
+      (*ethereum_mainnet_list)[1].GetDict().FindString("contract_address"));
+  EXPECT_EQ(*(*ethereum_mainnet_list)[0].GetDict().FindString("address"), "");
+  EXPECT_EQ(*(*ethereum_mainnet_list)[1].GetDict().FindString("address"),
             "0x0D8775F648430679A709E98d2b0Cb6250d2887EF");
-  const base::Value* ethereum_rinkbey_list =
-      assets->FindListPath("ethereum.rinkbey");
+  const auto* ethereum_rinkbey_list =
+      assets->FindListByDottedPath("ethereum.rinkbey");
   ASSERT_TRUE(ethereum_rinkbey_list);
-  ASSERT_EQ(ethereum_rinkbey_list->GetList().size(), 1u);
+  ASSERT_EQ(ethereum_rinkbey_list->size(), 1u);
   EXPECT_FALSE(
-      ethereum_rinkbey_list->GetList()[0].FindStringKey("contract_address"));
-  EXPECT_EQ(*ethereum_rinkbey_list->GetList()[0].FindStringKey("address"), "");
+      (*ethereum_rinkbey_list)[0].GetDict().FindString("contract_address"));
+  EXPECT_EQ(*(*ethereum_rinkbey_list)[0].GetDict().FindString("address"), "");
 
-  const base::Value* solana_dict = assets->FindDictKey("solana");
+  const auto* solana_dict = assets->FindDict("solana");
   ASSERT_TRUE(solana_dict);
   EXPECT_EQ(*solana_dict, BraveWalletService::GetDefaultSolanaAssets());
 
-  const base::Value* filecoin_dict = assets->FindDictKey("filecoin");
+  const auto* filecoin_dict = assets->FindDict("filecoin");
   ASSERT_TRUE(filecoin_dict);
   EXPECT_EQ(*filecoin_dict, BraveWalletService::GetDefaultFilecoinAssets());
 

@@ -46,11 +46,11 @@ class BraveReferralsHeaders {
   template <typename Iter>
   bool GetMatchingReferralHeaders(
       const Iter& referral_headers_list,
-      const base::DictionaryValue** request_headers_dict,
+      const base::Value::Dict** request_headers_dict,
       const GURL& url);
 
   bool GetMatchingReferralHeaders(
-      const base::DictionaryValue** request_headers_dict,
+      const base::Value::Dict** request_headers_dict,
       const GURL& url);
 
   BraveReferralsHeaders(const BraveReferralsHeaders&) = delete;
@@ -61,7 +61,7 @@ class BraveReferralsHeaders {
   friend class base::NoDestructor<BraveReferralsHeaders>;
   BraveReferralsHeaders();
 
-  std::vector<base::Value> referral_headers_;
+  std::vector<base::Value::Dict> referral_headers_;
 };
 
 class BraveReferralsService : public ProfileManagerObserver {

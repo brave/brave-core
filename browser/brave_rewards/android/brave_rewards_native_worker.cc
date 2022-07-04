@@ -258,15 +258,15 @@ void BraveRewardsNativeWorker::OnBalance(
 base::android::ScopedJavaLocalRef<jstring>
 BraveRewardsNativeWorker::GetWalletBalance(JNIEnv* env) {
   std::string json_balance;
-  base::DictionaryValue json_root;
-  json_root.SetDoubleKey("total", balance_.total);
+  base::Value::Dict root;
+  root.Set("total", balance_.total);
 
-  base::Value json_wallets(base::Value::Type::DICTIONARY);
+  base::Value::Dict json_wallets;
   for (const auto & item : balance_.wallets) {
-    json_wallets.SetDoubleKey(item.first, item.second);
+    json_wallets.Set(item.first, item.second);
   }
-  json_root.SetPath("wallets", std::move(json_wallets));
-  base::JSONWriter::Write(json_root, &json_balance);
+  root.SetByDottedPath("wallets", std::move(json_wallets));
+  base::JSONWriter::Write(std::move(root), &json_balance);
 
   return base::android::ConvertUTF8ToJavaString(env, json_balance);
 }
@@ -700,18 +700,18 @@ void BraveRewardsNativeWorker::OnGetExternalWallet(
   if (!wallet) {
     json_wallet = "";
   } else {
-    base::Value dict(base::Value::Type::DICTIONARY);
-    dict.SetStringKey("token", wallet->token);
-    dict.SetStringKey("address", wallet->address);
+    base::Value::Dict dict;
+    dict.Set("token", wallet->token);
+    dict.Set("address", wallet->address);
 
     // enum class WalletStatus : int32_t
-    dict.SetIntKey("status", static_cast<int32_t>(wallet->status));
-    dict.SetStringKey("add_url", wallet->add_url);
-    dict.SetStringKey("type", wallet->type);
-    dict.SetStringKey("withdraw_url", wallet->withdraw_url);
-    dict.SetStringKey("user_name", wallet->user_name);
-    dict.SetStringKey("account_url", wallet->account_url);
-    dict.SetStringKey("login_url", wallet->login_url);
+    dict.Set("status", static_cast<int32_t>(wallet->status));
+    dict.Set("add_url", wallet->add_url);
+    dict.Set("type", wallet->type);
+    dict.Set("withdraw_url", wallet->withdraw_url);
+    dict.Set("user_name", wallet->user_name);
+    dict.Set("account_url", wallet->account_url);
+    dict.Set("login_url", wallet->login_url);
     base::JSONWriter::Write(dict, &json_wallet);
   }
   JNIEnv* env = base::android::AttachCurrentThread();
@@ -741,9 +741,9 @@ void BraveRewardsNativeWorker::OnDisconnectWallet(
 std::string BraveRewardsNativeWorker::StdStrStrMapToJsonString(
     const base::flat_map<std::string, std::string>& args) {
     std::string json_args;
-    base::Value dict(base::Value::Type::DICTIONARY);
+    base::Value::Dict dict;
     for (const auto & item : args) {
-      dict.SetStringKey(item.first, item.second);
+      dict.Set(item.first, item.second);
     }
     base::JSONWriter::Write(dict, &json_args);
     return json_args;

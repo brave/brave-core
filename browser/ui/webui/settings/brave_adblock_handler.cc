@@ -104,12 +104,12 @@ void BraveAdBlockHandler::GetRegionalLists(const base::Value::List& args) {
   AllowJavascript();
   auto callback_id = args[0].GetString();
 
-  std::unique_ptr<base::ListValue> regional_lists =
-      g_brave_browser_process->ad_block_service()
-          ->regional_service_manager()
-          ->GetRegionalLists();
+  auto regional_lists = g_brave_browser_process->ad_block_service()
+                            ->regional_service_manager()
+                            ->GetRegionalLists();
 
-  ResolveJavascriptCallback(base::Value(callback_id), regional_lists->Clone());
+  ResolveJavascriptCallback(base::Value(callback_id),
+                            base::Value(std::move(regional_lists)));
 }
 
 void BraveAdBlockHandler::EnableFilterList(const base::Value::List& args) {
@@ -131,7 +131,7 @@ void BraveAdBlockHandler::GetListSubscriptions(const base::Value::List& args) {
   auto callback_id = args[0].GetString();
 
   ResolveJavascriptCallback(base::Value(callback_id),
-                            GetSubscriptions()->Clone());
+                            base::Value(GetSubscriptions()));
 }
 
 void BraveAdBlockHandler::GetCustomFilters(const base::Value::List& args) {
@@ -253,19 +253,19 @@ void BraveAdBlockHandler::UpdateCustomFilters(const base::Value::List& args) {
 
 void BraveAdBlockHandler::RefreshSubscriptionsList() {
   FireWebUIListener("brave_adblock.onGetListSubscriptions",
-                    GetSubscriptions()->Clone());
+                    base::Value(GetSubscriptions()));
 }
 
-std::unique_ptr<base::ListValue> BraveAdBlockHandler::GetSubscriptions() {
+base::Value::List BraveAdBlockHandler::GetSubscriptions() {
   auto list_subscriptions = g_brave_browser_process->ad_block_service()
                                 ->subscription_service_manager()
                                 ->GetSubscriptions();
 
-  auto list_value = std::make_unique<base::ListValue>();
+  base::Value::List list_value;
   base::Time now = base::Time::Now();
 
   for (const auto& subscription : list_subscriptions) {
-    auto dict = std::make_unique<base::DictionaryValue>();
+    base::Value::Dict dict;
 
     base::TimeDelta relative_time_delta =
         now - subscription.last_successful_update_attempt;
@@ -274,16 +274,15 @@ std::unique_ptr<base::ListValue> BraveAdBlockHandler::GetSubscriptions() {
         ui::TimeFormat::Format::FORMAT_ELAPSED,
         ui::TimeFormat::Length::LENGTH_LONG, relative_time_delta);
 
-    dict->SetStringKey("subscription_url",
-                       subscription.subscription_url.spec());
-    dict->SetBoolKey("enabled", subscription.enabled);
-    dict->SetDouble("last_update_attempt",
-                    subscription.last_update_attempt.ToJsTime());
-    dict->SetDouble("last_successful_update_attempt",
-                    subscription.last_successful_update_attempt.ToJsTime());
-    dict->SetStringKey("last_updated_pretty_text", time_str);
+    dict.Set("subscription_url", subscription.subscription_url.spec());
+    dict.Set("enabled", subscription.enabled);
+    dict.Set("last_update_attempt",
+             subscription.last_update_attempt.ToJsTime());
+    dict.Set("last_successful_update_attempt",
+             subscription.last_successful_update_attempt.ToJsTime());
+    dict.Set("last_updated_pretty_text", time_str);
 
-    list_value->Append(std::move(dict));
+    list_value.Append(std::move(dict));
   }
 
   return list_value;

@@ -15,35 +15,34 @@
 
 namespace {
 void AddChromeToProfiles(std::vector<importer::SourceProfile>* profiles,
-                         base::ListValue* chrome_profiles,
+                         base::Value::List chrome_profiles,
                          const base::FilePath& user_data_folder,
                          const std::string& brand,
                          importer::ImporterType type) {
-  for (const auto& value : chrome_profiles->GetList()) {
-    const base::DictionaryValue* dict;
-    if (!value.GetAsDictionary(&dict))
+  for (const auto& value : chrome_profiles) {
+    const auto* dict = value.GetIfDict();
+    if (!dict)
       continue;
     uint16_t items = importer::NONE;
-    std::string profile;
-    std::string name;
-    dict->GetString("id", &profile);
-    dict->GetString("name", &name);
+    auto* profile = dict->FindString("id");
+    auto* name = dict->FindString("name");
+    DCHECK(profile);
+    DCHECK(name);
     base::FilePath path = user_data_folder;
-    if (!ChromeImporterCanImport(path.Append(
-      base::FilePath::StringType(profile.begin(), profile.end())), &items))
+    if (!ChromeImporterCanImport(path.Append(base::FilePath::StringType(
+                                     profile->begin(), profile->end())),
+                                 &items))
       continue;
     importer::SourceProfile chrome;
     std::string importer_name(brand);
-    importer_name.append(name);
+    importer_name.append(*name);
     chrome.importer_name = base::UTF8ToUTF16(importer_name);
     chrome.importer_type = type;
     chrome.services_supported = items;
-    chrome.source_path =
-      user_data_folder.Append(
-        base::FilePath::StringType(profile.begin(), profile.end()));
+    chrome.source_path = user_data_folder.Append(
+        base::FilePath::StringType(profile->begin(), profile->end()));
     profiles->push_back(chrome);
   }
-  delete chrome_profiles;
 }
 
 void DetectChromeProfiles(std::vector<importer::SourceProfile>* profiles) {

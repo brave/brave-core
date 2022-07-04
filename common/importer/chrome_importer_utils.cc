@@ -6,6 +6,7 @@
 #include "brave/common/importer/chrome_importer_utils.h"
 
 #include <memory>
+#include <utility>
 
 #include "base/values.h"
 #include "base/files/file_path.h"
@@ -70,41 +71,44 @@ bool HasPaymentMethods(const base::FilePath& payments_path) {
 
 }  // namespace
 
-base::ListValue* GetChromeSourceProfiles(
-  const base::FilePath& user_data_folder) {
-  base::ListValue* profiles = new base::ListValue();
+base::Value::List GetChromeSourceProfiles(
+    const base::FilePath& user_data_folder) {
+  base::Value::List profiles;
   base::FilePath local_state_path =
     user_data_folder.Append(
       base::FilePath::StringType(FILE_PATH_LITERAL("Local State")));
   if (!base::PathExists(local_state_path)) {
-      base::DictionaryValue* entry = new base::DictionaryValue();
-      entry->SetString("id", "Default");
-      entry->SetString("name", "Default");
-      profiles->Append(std::unique_ptr<base::DictionaryValue>(entry));
+    base::Value::Dict entry;
+    entry.Set("id", "Default");
+    entry.Set("name", "Default");
+    profiles.Append(std::move(entry));
   } else {
     std::string local_state_content;
     base::ReadFileToString(local_state_path, &local_state_content);
     absl::optional<base::Value> local_state =
         base::JSONReader::Read(local_state_content);
-    const base::DictionaryValue* local_state_dict;
-    const base::DictionaryValue* profile_dict;
-    const base::DictionaryValue* info_cache;
-    if (!local_state || !local_state->GetAsDictionary(&local_state_dict))
+    if (!local_state)
       return profiles;
 
-    if (local_state_dict->GetDictionary("profile", &profile_dict)) {
-      if (profile_dict->GetDictionary("info_cache", &info_cache)) {
-        for (base::DictionaryValue::Iterator it(*info_cache);
-             !it.IsAtEnd(); it.Advance()) {
-          const base::DictionaryValue* profile;
-          if (!it.value().GetAsDictionary(&profile))
+    const auto* local_state_dict = local_state->GetIfDict();
+    if (!local_state_dict)
+      return profiles;
+
+    const auto* profile_dict = local_state_dict->FindDict("profile");
+    if (profile_dict) {
+      const auto* info_cache = profile_dict->FindDict("info_cache");
+      if (info_cache) {
+        for (const auto value : *info_cache) {
+          const auto* profile = value.second.GetIfDict();
+          if (profile)
             continue;
-          std::string name;
-          profile->GetString("name", &name);
-          base::DictionaryValue* entry = new base::DictionaryValue();
-          entry->SetString("id", it.key());
-          entry->SetString("name", name);
-          profiles->Append(std::unique_ptr<base::DictionaryValue>(entry));
+
+          auto* name = profile->FindString("name");
+          DCHECK(name);
+          base::Value::Dict entry;
+          entry.Set("id", value.first);
+          entry.Set("name", *name);
+          profiles.Append(std::move(entry));
         }
       }
     }

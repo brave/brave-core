@@ -386,9 +386,9 @@ TEST(RLPEncodeTest, ComplexStructure) {
 }
 
 TEST(RLPEncodeTest, DictionaryValueNotSupported) {
-  base::DictionaryValue d;
-  d.SetBoolean("test", true);
-  ASSERT_TRUE(brave_wallet::RLPEncode(std::move(d)).empty());
+  base::Value::Dict d;
+  d.Set("test", true);
+  ASSERT_TRUE(brave_wallet::RLPEncode(base::Value(std::move(d))).empty());
 }
 
 }  // namespace brave_wallet

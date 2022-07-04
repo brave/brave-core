@@ -27,10 +27,6 @@
 #include "third_party/blink/public/mojom/loader/resource_load_info.mojom-shared.h"
 #include "url/gurl.h"
 
-namespace base {
-class ListValue;
-}  // namespace base
-
 class AdBlockServiceTest;
 
 using brave_component_updater::BraveComponent;
@@ -54,7 +50,7 @@ class AdBlockRegionalServiceManager
       const AdBlockRegionalServiceManager&) = delete;
   ~AdBlockRegionalServiceManager() override;
 
-  std::unique_ptr<base::ListValue> GetRegionalLists();
+  base::Value::List GetRegionalLists();
 
   void SetRegionalCatalog(std::vector<adblock::FilterList> catalog);
   const std::vector<adblock::FilterList>& GetRegionalCatalog();

@@ -161,11 +161,11 @@ void AdblockDOMHandler::HandleGetCustomFilters(const base::Value::List& args) {
 void AdblockDOMHandler::HandleGetRegionalLists(const base::Value::List& args) {
   DCHECK_EQ(args.size(), 0U);
   AllowJavascript();
-  std::unique_ptr<base::ListValue> regional_lists =
-      g_brave_browser_process->ad_block_service()
-          ->regional_service_manager()
-          ->GetRegionalLists();
-  CallJavascriptFunction("brave_adblock.onGetRegionalLists", *regional_lists);
+  auto regional_lists = g_brave_browser_process->ad_block_service()
+                            ->regional_service_manager()
+                            ->GetRegionalLists();
+  CallJavascriptFunction("brave_adblock.onGetRegionalLists",
+                         base::Value(std::move(regional_lists)));
 }
 
 void AdblockDOMHandler::HandleGetListSubscriptions(

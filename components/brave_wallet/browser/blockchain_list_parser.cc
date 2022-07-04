@@ -15,10 +15,10 @@
 
 namespace {
 
-bool ParseResultFromDict(const base::DictionaryValue* response_dict,
+bool ParseResultFromDict(const base::Value::Dict* response_dict,
                          const std::string& key,
                          std::string* output_val) {
-  auto* val = response_dict->FindStringKey(key);
+  auto* val = response_dict->FindString(key);
   if (!val)
     return false;
   *output_val = *val;
@@ -71,34 +71,30 @@ bool ParseTokenList(const std::string& json,
           json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
                     base::JSONParserOptions::JSON_PARSE_RFC);
   auto& records_v = value_with_error.value;
-  if (!records_v) {
+  if (!records_v || !records_v->is_dict()) {
     LOG(ERROR) << "Invalid response, could not parse JSON, JSON is: " << json;
     return false;
   }
 
-  const base::DictionaryValue* response_dict;
-  if (!records_v->GetAsDictionary(&response_dict)) {
-    return false;
-  }
-
-  for (const auto blockchain_token_value_pair : response_dict->DictItems()) {
+  const auto& response_dict = records_v->GetDict();
+  for (const auto blockchain_token_value_pair : response_dict) {
     auto blockchain_token = mojom::BlockchainToken::New();
     blockchain_token->contract_address = blockchain_token_value_pair.first;
-    const base::DictionaryValue* blockchain_token_value;
-    if (!blockchain_token_value_pair.second.GetAsDictionary(
-            &blockchain_token_value)) {
+    const auto* blockchain_token_value =
+        blockchain_token_value_pair.second.GetIfDict();
+    if (!blockchain_token_value) {
       return false;
     }
 
     absl::optional<bool> is_erc20_opt =
-        blockchain_token_value->FindBoolKey("erc20");
+        blockchain_token_value->FindBool("erc20");
     if (is_erc20_opt)
       blockchain_token->is_erc20 = *is_erc20_opt;
     else
       blockchain_token->is_erc20 = false;
 
     absl::optional<bool> is_erc721_opt =
-        blockchain_token_value->FindBoolKey("erc721");
+        blockchain_token_value->FindBool("erc721");
     if (is_erc721_opt)
       blockchain_token->is_erc721 = *is_erc721_opt;
     else
@@ -116,7 +112,7 @@ bool ParseTokenList(const std::string& json,
                         &blockchain_token->logo);
 
     absl::optional<int> decimals_opt =
-        blockchain_token_value->FindIntKey("decimals");
+        blockchain_token_value->FindInt("decimals");
     if (decimals_opt)
       blockchain_token->decimals = *decimals_opt;
     else

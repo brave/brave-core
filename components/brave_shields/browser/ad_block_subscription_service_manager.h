@@ -150,7 +150,7 @@ class AdBlockSubscriptionServiceManager {
 
   // static to enforce locking on `subscriptions_`
   static absl::optional<SubscriptionInfo> GetInfo(
-      const std::unique_ptr<base::DictionaryValue>& subscriptions,
+      const base::Value::Dict& subscriptions,
       const GURL& sub_url);
   void NotifyObserversOfServiceEvent();
 
@@ -164,8 +164,7 @@ class AdBlockSubscriptionServiceManager {
       delegate_;  // NOT OWNED
   base::WeakPtr<AdBlockSubscriptionDownloadManager> download_manager_;
   base::FilePath subscription_path_;
-  std::unique_ptr<base::DictionaryValue> subscriptions_
-      GUARDED_BY(subscription_services_lock_);
+  base::Value::Dict subscriptions_ GUARDED_BY(subscription_services_lock_);
 
   std::map<GURL, std::unique_ptr<AdBlockEngine, base::OnTaskRunnerDeleter>>
       subscription_services_ GUARDED_BY(subscription_services_lock_);

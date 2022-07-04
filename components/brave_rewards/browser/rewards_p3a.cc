@@ -233,43 +233,38 @@ void RecordAdsEnabledDuration(PrefService* prefs, bool ads_enabled) {
                             enabled_duration);
 }
 
-void ExtractAndLogStats(const base::DictionaryValue& dict) {
-  const base::Value* probi_value =
-      dict.FindPath({"walletProperties", "probi_"});
-  if (!probi_value || !probi_value->is_string()) {
+void ExtractAndLogStats(const base::Value::Dict& dict) {
+  const auto* probi_value =
+      dict.FindStringByDottedPath("walletProperties.probi_");
+  if (!probi_value) {
     LOG(WARNING) << "Bad ledger state";
     return;
   }
 
   // Get grants.
-  const base::Value* grants_value = dict.FindKey("grants");
+  const auto* grants = dict.FindList("grants");
   uint64_t total_grants = 0;
-  if (grants_value) {
-    if (!grants_value->is_list()) {
-      LOG(WARNING) << "Bad grant value in ledger_state.";
-    } else {
-      const auto& grants = grants_value->GetList();
-      // Sum all grants.
-      for (const auto& grant : grants) {
-        if (!grant.is_dict()) {
-          LOG(WARNING) << "Bad grant value in ledger_state.";
-          continue;
-        }
-        const base::Value* grant_amount = grant.FindKey("probi_");
-        const base::Value* grant_currency = grant.FindKey("altcurrency");
-        if (grant_amount->is_string() && grant_currency->is_string() &&
-            grant_currency->GetString() == "BAT") {
-          // Some kludge computations because we don't want to be very precise
-          // for P3A purposes. Assuming grants can't be negative and are
-          // greater than 1 BAT.
-          const std::string& grant_str = grant_amount->GetString();
-          total_grants += RoundProbiToUint64(grant_str);
-        }
+  if (!grants) {
+    LOG(WARNING) << "Bad grant value in ledger_state.";
+  } else {
+    // Sum all grants.
+    for (const auto& grant : *grants) {
+      if (!grant.is_dict()) {
+        LOG(WARNING) << "Bad grant value in ledger_state.";
+        continue;
+      }
+      const auto* grant_amount = grant.GetDict().FindString("probi_");
+      const auto* grant_currency = grant.GetDict().FindString("altcurrency");
+      if (grant_amount && grant_currency && *grant_currency == "BAT") {
+        // Some kludge computations because we don't want to be very precise
+        // for P3A purposes. Assuming grants can't be negative and are
+        // greater than 1 BAT.
+        const std::string& grant_str = *grant_amount;
+        total_grants += RoundProbiToUint64(grant_str);
       }
     }
   }
-  const uint64_t total =
-      RoundProbiToUint64(probi_value->GetString()) - total_grants;
+  const uint64_t total = RoundProbiToUint64(*probi_value) - total_grants;
   RecordWalletBalance(true, true, total);
 }
 

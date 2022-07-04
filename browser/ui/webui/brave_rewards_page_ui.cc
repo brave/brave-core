@@ -1705,26 +1705,26 @@ void RewardsDOMHandler::OnFetchBalance(const ledger::type::Result result,
     return;
   }
 
-  base::Value balance_value(base::Value::Type::DICTIONARY);
+  base::Value::Dict balance_value;
 
   if (balance) {
-    balance_value.SetDoubleKey("total", balance->total);
+    balance_value.Set("total", balance->total);
 
     if (result == ledger::type::Result::LEDGER_OK) {
-      base::Value wallets(base::Value::Type::DICTIONARY);
+      base::Value::Dict wallets;
       for (auto const& wallet : balance->wallets) {
-        wallets.SetDoubleKey(wallet.first, wallet.second);
+        wallets.Set(wallet.first, wallet.second);
       }
-      balance_value.SetKey("wallets", std::move(wallets));
+      balance_value.Set("wallets", std::move(wallets));
     }
   } else {
-    balance_value.SetDoubleKey("total", 0.0);
+    balance_value.Set("total", 0.0);
   }
 
-  base::DictionaryValue data;
-  data.SetIntKey("status", static_cast<int>(result));
-  data.SetKey("balance", std::move(balance_value));
-  CallJavascriptFunction("brave_rewards.balance", data);
+  base::Value::Dict data;
+  data.Set("status", static_cast<int>(result));
+  data.Set("balance", std::move(balance_value));
+  CallJavascriptFunction("brave_rewards.balance", base::Value(std::move(data)));
 }
 
 void RewardsDOMHandler::FetchBalance(const base::Value::List& args) {
@@ -1983,12 +1983,13 @@ void RewardsDOMHandler::GetMonthlyReport(const base::Value::List& args) {
 
 void RewardsDOMHandler::OnGetAllMonthlyReportIds(
     const std::vector<std::string>& ids) {
-  base::Value list(base::Value::Type::LIST);
+  base::Value::List list;
   for (const auto& item : ids) {
     list.Append(base::Value(item));
   }
 
-  CallJavascriptFunction("brave_rewards.monthlyReportIds", list);
+  CallJavascriptFunction("brave_rewards.monthlyReportIds",
+                         base::Value(std::move(list)));
 }
 
 void RewardsDOMHandler::GetAllMonthlyReportIds(const base::Value::List& args) {
@@ -2088,9 +2089,10 @@ void RewardsDOMHandler::GetOnboardingStatus(const base::Value::List& args) {
     return;
   }
   AllowJavascript();
-  base::Value data(base::Value::Type::DICTIONARY);
-  data.SetBoolKey("showOnboarding", rewards_service_->ShouldShowOnboarding());
-  CallJavascriptFunction("brave_rewards.onboardingStatus", data);
+  base::Value::Dict data;
+  data.Set("showOnboarding", rewards_service_->ShouldShowOnboarding());
+  CallJavascriptFunction("brave_rewards.onboardingStatus",
+                         base::Value(std::move(data)));
 }
 
 void RewardsDOMHandler::SaveOnboardingResult(const base::Value::List& args) {
@@ -2109,7 +2111,7 @@ void RewardsDOMHandler::GetExternalWalletProviders(
     return;
 
   AllowJavascript();
-  base::Value data(base::Value::Type::LIST);
+  base::Value::List data;
 
   std::vector<std::string> providers =
       rewards_service_->GetExternalWalletProviders();
@@ -2117,7 +2119,8 @@ void RewardsDOMHandler::GetExternalWalletProviders(
     data.Append(provider);
   }
 
-  CallJavascriptFunction("brave_rewards.externalWalletProviderList", data);
+  CallJavascriptFunction("brave_rewards.externalWalletProviderList",
+                         base::Value(std::move(data)));
 }
 
 }  // namespace

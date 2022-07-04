@@ -9,6 +9,7 @@
 #include <utility>
 
 #include "base/json/json_writer.h"
+#include "base/json/values_util.h"
 #include "base/memory/weak_ptr.h"
 #include "base/metrics/histogram_macros.h"
 #include "base/threading/thread_restrictions.h"
@@ -60,65 +61,58 @@ bool IsPrivateNewTab(Profile* profile) {
   return profile->IsIncognitoProfile() || profile->IsGuestSession();
 }
 
-base::DictionaryValue GetStatsDictionary(PrefService* prefs) {
-  base::DictionaryValue stats_data;
-  stats_data.SetInteger(
-      "adsBlockedStat",
-      prefs->GetUint64(kAdsBlocked) + prefs->GetUint64(kTrackersBlocked));
-  stats_data.SetInteger("javascriptBlockedStat",
-                        prefs->GetUint64(kJavascriptBlocked));
-  stats_data.SetInteger("fingerprintingBlockedStat",
-                        prefs->GetUint64(kFingerprintingBlocked));
-  stats_data.SetDouble(
-      "bandwidthSavedStat",
-      prefs->GetUint64(brave_perf_predictor::prefs::kBandwidthSavedBytes));
+base::Value::Dict GetStatsDictionary(PrefService* prefs) {
+  base::Value::Dict stats_data;
+  stats_data.Set("adsBlockedStat",
+                 base::Int64ToValue(prefs->GetUint64(kAdsBlocked) +
+                                    prefs->GetUint64(kTrackersBlocked)));
+  stats_data.Set("javascriptBlockedStat",
+                 base::Int64ToValue(prefs->GetUint64(kJavascriptBlocked)));
+  stats_data.Set("fingerprintingBlockedStat",
+                 base::Int64ToValue(prefs->GetUint64(kFingerprintingBlocked)));
+  stats_data.Set("bandwidthSavedStat",
+                 base::Int64ToValue(prefs->GetUint64(
+                     brave_perf_predictor::prefs::kBandwidthSavedBytes)));
   return stats_data;
 }
 
-base::DictionaryValue GetPreferencesDictionary(PrefService* prefs) {
-  base::DictionaryValue pref_data;
-  pref_data.SetBoolean("showBackgroundImage",
-                       prefs->GetBoolean(kNewTabPageShowBackgroundImage));
-  pref_data.SetBoolean(
+base::Value::Dict GetPreferencesDictionary(PrefService* prefs) {
+  base::Value::Dict pref_data;
+  pref_data.Set("showBackgroundImage",
+                prefs->GetBoolean(kNewTabPageShowBackgroundImage));
+  pref_data.Set(
       "brandedWallpaperOptIn",
       prefs->GetBoolean(kNewTabPageShowSponsoredImagesBackgroundImage));
-  pref_data.SetBoolean("showClock", prefs->GetBoolean(kNewTabPageShowClock));
-  pref_data.SetString("clockFormat", prefs->GetString(kNewTabPageClockFormat));
-  pref_data.SetBoolean("showStats", prefs->GetBoolean(kNewTabPageShowStats));
-  pref_data.SetBoolean(
-      "showToday", prefs->GetBoolean(brave_news::prefs::kNewTabPageShowToday));
-  pref_data.SetBoolean("showRewards",
-                       prefs->GetBoolean(kNewTabPageShowRewards));
-  pref_data.SetBoolean(
-      "isBrandedWallpaperNotificationDismissed",
-      prefs->GetBoolean(kBrandedWallpaperNotificationDismissed));
-  pref_data.SetBoolean(
-      "isBraveTodayOptedIn",
-      prefs->GetBoolean(brave_news::prefs::kBraveTodayOptedIn));
-  pref_data.SetBoolean("hideAllWidgets",
-                       prefs->GetBoolean(kNewTabPageHideAllWidgets));
-  pref_data.SetBoolean("showBinance",
-                       prefs->GetBoolean(kNewTabPageShowBinance));
-  pref_data.SetBoolean("showBraveTalk",
-                       prefs->GetBoolean(kNewTabPageShowBraveTalk));
-  pref_data.SetBoolean("showGemini", prefs->GetBoolean(kNewTabPageShowGemini));
+  pref_data.Set("showClock", prefs->GetBoolean(kNewTabPageShowClock));
+  pref_data.Set("clockFormat", prefs->GetString(kNewTabPageClockFormat));
+  pref_data.Set("showStats", prefs->GetBoolean(kNewTabPageShowStats));
+  pref_data.Set("showToday",
+                prefs->GetBoolean(brave_news::prefs::kNewTabPageShowToday));
+  pref_data.Set("showRewards", prefs->GetBoolean(kNewTabPageShowRewards));
+  pref_data.Set("isBrandedWallpaperNotificationDismissed",
+                prefs->GetBoolean(kBrandedWallpaperNotificationDismissed));
+  pref_data.Set("isBraveTodayOptedIn",
+                prefs->GetBoolean(brave_news::prefs::kBraveTodayOptedIn));
+  pref_data.Set("hideAllWidgets", prefs->GetBoolean(kNewTabPageHideAllWidgets));
+  pref_data.Set("showBinance", prefs->GetBoolean(kNewTabPageShowBinance));
+  pref_data.Set("showBraveTalk", prefs->GetBoolean(kNewTabPageShowBraveTalk));
+  pref_data.Set("showGemini", prefs->GetBoolean(kNewTabPageShowGemini));
 #if BUILDFLAG(CRYPTO_DOT_COM_ENABLED)
-  pref_data.SetBoolean(
-      "showCryptoDotCom",
-      prefs->GetBoolean(kCryptoDotComNewTabPageShowCryptoDotCom));
+  pref_data.Set("showCryptoDotCom",
+                prefs->GetBoolean(kCryptoDotComNewTabPageShowCryptoDotCom));
 #endif
 #if BUILDFLAG(ENABLE_FTX)
-  pref_data.SetBoolean("showFTX", prefs->GetBoolean(kFTXNewTabPageShowFTX));
+  pref_data.Set("showFTX", prefs->GetBoolean(kFTXNewTabPageShowFTX));
 #endif
   return pref_data;
 }
 
-base::DictionaryValue GetPrivatePropertiesDictionary(PrefService* prefs) {
-  base::DictionaryValue private_data;
-  private_data.SetBoolean(
+base::Value::Dict GetPrivatePropertiesDictionary(PrefService* prefs) {
+  base::Value::Dict private_data;
+  private_data.Set(
       "useAlternativePrivateSearchEngine",
       prefs->GetBoolean(kUseAlternativePrivateSearchEngineProvider));
-  private_data.SetBoolean(
+  private_data.Set(
       "showAlternativePrivateSearchEngineToggle",
       prefs->GetBoolean(kShowAlternativePrivateSearchEngineProviderToggle));
   return private_data;
@@ -375,14 +369,14 @@ void BraveNewTabMessageHandler::HandleGetPreferences(
   AllowJavascript();
   PrefService* prefs = profile_->GetPrefs();
   auto data = GetPreferencesDictionary(prefs);
-  ResolveJavascriptCallback(args[0], data);
+  ResolveJavascriptCallback(args[0], base::Value(std::move(data)));
 }
 
 void BraveNewTabMessageHandler::HandleGetStats(const base::Value::List& args) {
   AllowJavascript();
   PrefService* prefs = profile_->GetPrefs();
   auto data = GetStatsDictionary(prefs);
-  ResolveJavascriptCallback(args[0], data);
+  ResolveJavascriptCallback(args[0], base::Value(std::move(data)));
 }
 
 void BraveNewTabMessageHandler::HandleGetPrivateProperties(
@@ -390,7 +384,7 @@ void BraveNewTabMessageHandler::HandleGetPrivateProperties(
   AllowJavascript();
   PrefService* prefs = profile_->GetPrefs();
   auto data = GetPrivatePropertiesDictionary(prefs);
-  ResolveJavascriptCallback(args[0], data);
+  ResolveJavascriptCallback(args[0], base::Value(std::move(data)));
 }
 
 void BraveNewTabMessageHandler::HandleGetNewTabAdsData(
@@ -402,7 +396,7 @@ void BraveNewTabMessageHandler::HandleGetNewTabAdsData(
   AllowJavascript();
 
   base::Value data = GetAdsDataDictionary();
-  ResolveJavascriptCallback(args[0], data);
+  ResolveJavascriptCallback(args[0], std::move(data));
 }
 
 void BraveNewTabMessageHandler::HandleToggleAlternativeSearchEngineProvider(
@@ -583,19 +577,19 @@ void BraveNewTabMessageHandler::HandleCustomizeClicked(
 void BraveNewTabMessageHandler::OnPrivatePropertiesChanged() {
   PrefService* prefs = profile_->GetPrefs();
   auto data = GetPrivatePropertiesDictionary(prefs);
-  FireWebUIListener("private-tab-data-updated", data);
+  FireWebUIListener("private-tab-data-updated", base::Value(std::move(data)));
 }
 
 void BraveNewTabMessageHandler::OnStatsChanged() {
   PrefService* prefs = profile_->GetPrefs();
   auto data = GetStatsDictionary(prefs);
-  FireWebUIListener("stats-updated", data);
+  FireWebUIListener("stats-updated", base::Value(std::move(data)));
 }
 
 void BraveNewTabMessageHandler::OnPreferencesChanged() {
   PrefService* prefs = profile_->GetPrefs();
   auto data = GetPreferencesDictionary(prefs);
-  FireWebUIListener("preferences-changed", data);
+  FireWebUIListener("preferences-changed", base::Value(std::move(data)));
 }
 
 base::Value BraveNewTabMessageHandler::GetAdsDataDictionary() const {
@@ -613,5 +607,5 @@ base::Value BraveNewTabMessageHandler::GetAdsDataDictionary() const {
 
 void BraveNewTabMessageHandler::OnNeedsBrowserUpdateToSeeAds() {
   base::Value data = GetAdsDataDictionary();
-  FireWebUIListener("new-tab-ads-data-updated", data);
+  FireWebUIListener("new-tab-ads-data-updated", std::move(data));
 }

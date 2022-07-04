@@ -9,7 +9,6 @@
 
 #include "base/base64.h"
 #include "base/notreached.h"
-#include "base/values.h"
 #include "brave/components/brave_vpn/brave_vpn_constants.h"
 #include "brave/components/brave_vpn/brave_vpn_data_types.h"
 #include "brave/components/skus/browser/skus_utils.h"
@@ -19,26 +18,26 @@ namespace brave_vpn {
 
 namespace {
 
-bool IsValidRegionValue(const base::Value& value) {
-  if (!value.FindStringKey(kRegionContinentKey) ||
-      !value.FindStringKey(kRegionNameKey) ||
-      !value.FindStringKey(kRegionNamePrettyKey) ||
-      !value.FindStringKey(kRegionCountryIsoCodeKey)) {
+bool IsValidRegionValue(const base::Value::Dict& value) {
+  if (!value.FindString(kRegionContinentKey) ||
+      !value.FindString(kRegionNameKey) ||
+      !value.FindString(kRegionNamePrettyKey) ||
+      !value.FindString(kRegionCountryIsoCodeKey)) {
     return false;
   }
 
   return true;
 }
 
-mojom::Region GetRegionFromValue(const base::Value& value) {
+mojom::Region GetRegionFromValue(const base::Value::Dict& value) {
   mojom::Region region;
-  if (auto* continent = value.FindStringKey(kRegionContinentKey))
+  if (auto* continent = value.FindString(kRegionContinentKey))
     region.continent = *continent;
-  if (auto* name = value.FindStringKey(kRegionNameKey))
+  if (auto* name = value.FindString(kRegionNameKey))
     region.name = *name;
-  if (auto* name_pretty = value.FindStringKey(kRegionNamePrettyKey))
+  if (auto* name_pretty = value.FindString(kRegionNamePrettyKey))
     region.name_pretty = *name_pretty;
-  if (auto* country_iso_code = value.FindStringKey(kRegionCountryIsoCodeKey))
+  if (auto* country_iso_code = value.FindString(kRegionCountryIsoCodeKey))
     region.country_iso_code = *country_iso_code;
   return region;
 }
@@ -67,10 +66,10 @@ std::string GetBraveVPNPaymentsEnv(const std::string& env) {
 #endif
 }
 
-bool ValidateCachedRegionData(const base::Value& region_value) {
-  for (const auto& value : region_value.GetList()) {
+bool ValidateCachedRegionData(const base::Value::List& region_value) {
+  for (const auto& value : region_value) {
     // Make sure cached one has all latest properties.
-    if (!IsValidRegionValue(value))
+    if (!value.is_dict() || !IsValidRegionValue(value.GetDict()))
       return false;
   }
 
@@ -105,21 +104,22 @@ std::unique_ptr<Hostname> PickBestHostname(
   return std::make_unique<Hostname>(filtered_hostnames[0]);
 }
 
-std::vector<Hostname> ParseHostnames(const base::Value& hostnames_value) {
+std::vector<Hostname> ParseHostnames(const base::Value::List& hostnames_value) {
   std::vector<Hostname> hostnames;
-  for (const auto& value : hostnames_value.GetList()) {
+  for (const auto& value : hostnames_value) {
     DCHECK(value.is_dict());
     if (!value.is_dict())
       continue;
 
+    const auto& dict = value.GetDict();
     constexpr char kHostnameKey[] = "hostname";
     constexpr char kDisplayNameKey[] = "display-name";
     constexpr char kOfflineKey[] = "offline";
     constexpr char kCapacityScoreKey[] = "capacity-score";
-    const std::string* hostname_str = value.FindStringKey(kHostnameKey);
-    const std::string* display_name_str = value.FindStringKey(kDisplayNameKey);
-    absl::optional<bool> offline = value.FindBoolKey(kOfflineKey);
-    absl::optional<int> capacity_score = value.FindIntKey(kCapacityScoreKey);
+    const std::string* hostname_str = dict.FindString(kHostnameKey);
+    const std::string* display_name_str = dict.FindString(kDisplayNameKey);
+    absl::optional<bool> offline = dict.FindBool(kOfflineKey);
+    absl::optional<int> capacity_score = dict.FindInt(kCapacityScoreKey);
 
     if (!hostname_str || !display_name_str || !offline || !capacity_score)
       continue;
@@ -131,13 +131,14 @@ std::vector<Hostname> ParseHostnames(const base::Value& hostnames_value) {
   return hostnames;
 }
 
-std::vector<mojom::Region> ParseRegionList(const base::Value& region_list) {
+std::vector<mojom::Region> ParseRegionList(
+    const base::Value::List& region_list) {
   std::vector<mojom::Region> regions;
-  for (const auto& value : region_list.GetList()) {
+  for (const auto& value : region_list) {
     DCHECK(value.is_dict());
     if (!value.is_dict())
       continue;
-    regions.push_back(GetRegionFromValue(value));
+    regions.push_back(GetRegionFromValue(value.GetDict()));
   }
 
   // Sort region list alphabetically
@@ -148,10 +149,10 @@ std::vector<mojom::Region> ParseRegionList(const base::Value& region_list) {
   return regions;
 }
 
-base::Value GetValueWithTicketInfos(const std::string& email,
-                                    const std::string& subject,
-                                    const std::string& body) {
-  base::Value dict(base::Value::Type::DICTIONARY);
+base::Value::Dict GetValueWithTicketInfos(const std::string& email,
+                                          const std::string& subject,
+                                          const std::string& body) {
+  base::Value::Dict dict;
 
   std::string email_trimmed, subject_trimmed, body_trimmed, body_encoded;
   base::TrimWhitespaceASCII(email, base::TRIM_ALL, &email_trimmed);
@@ -160,15 +161,15 @@ base::Value GetValueWithTicketInfos(const std::string& email,
   base::Base64Encode(body_trimmed, &body_encoded);
 
   // required fields
-  dict.SetStringKey("email", email_trimmed);
-  dict.SetStringKey("subject", subject_trimmed);
-  dict.SetStringKey("support-ticket", body_encoded);
-  dict.SetStringKey("partner-client-id", "com.brave.browser");
+  dict.Set("email", email_trimmed);
+  dict.Set("subject", subject_trimmed);
+  dict.Set("support-ticket", body_encoded);
+  dict.Set("partner-client-id", "com.brave.browser");
 
   // optional (but encouraged) fields
-  dict.SetStringKey("subscriber-credential", "");
-  dict.SetStringKey("payment-validation-method", "brave-premium");
-  dict.SetStringKey("payment-validation-data", "");
+  dict.Set("subscriber-credential", "");
+  dict.Set("payment-validation-method", "brave-premium");
+  dict.Set("payment-validation-data", "");
 
   return dict;
 }
