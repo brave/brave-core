@@ -35,7 +35,6 @@ export interface Props {
   onCancel: () => void
   onApproveAddNetwork: () => void
   onApproveChangeNetwork: () => void
-  onLearnMore: () => void
 }
 
 function AllowAddChangeNetworkPanel (props: Props) {
@@ -45,8 +44,7 @@ function AllowAddChangeNetworkPanel (props: Props) {
     panelType,
     onCancel,
     onApproveAddNetwork,
-    onApproveChangeNetwork,
-    onLearnMore
+    onApproveChangeNetwork
   } = props
   const rpcUrl = networkPayload.rpcUrls.length ? (new URL(networkPayload.rpcUrls[0])).hostname : ''
   const blockUrl = networkPayload.blockExplorerUrls.length ? networkPayload.blockExplorerUrls[0] : ''
@@ -54,6 +52,12 @@ function AllowAddChangeNetworkPanel (props: Props) {
   const [selectedTab, setSelectedTab] = React.useState<tabs>('network')
   const onSelectTab = (tab: tabs) => () => {
     setSelectedTab(tab)
+  }
+
+  const onLearnMore = () => {
+    chrome.tabs.create({
+      url: 'https://support.brave.com/hc/en-us/articles/4415497656461-Brave-Wallet-FAQ'
+    }).catch((e) => { console.error(e) })
   }
 
   return (
