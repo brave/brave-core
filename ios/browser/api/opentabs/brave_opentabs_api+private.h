@@ -12,10 +12,12 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-class ChromeBrowserState;
+namespace sync_sessions {
+class SessionSyncService;
+}
 
 @interface BraveOpenTabsAPI (Private)
-- (instancetype)initWithBrowserState:(ChromeBrowserState*)mainBrowserState;
+- (instancetype)initWithSessionSyncService:(sync_sessions::SessionSyncService*)sessionSyncService;
 @end
 
 NS_ASSUME_NONNULL_END

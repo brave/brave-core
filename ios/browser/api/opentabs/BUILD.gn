@@ -13,14 +13,15 @@ source_set("opentabs") {
     "brave_opentabs_api+private.h",
     "brave_opentabs_api.h",
     "brave_opentabs_api.mm",
-    # "brave_opentabs_observer.h",
-    # "opentabs_session_service_listener_ios.h",
-    # "opentabs_session_service_listener_ios.mm",
+    "brave_opentabs_observer.h",
+    "opentabs_session_listener_ios.h",
+    "opentabs_session_listener_ios.mm",
   ]
 
   deps = [
     "//base",
     "//components/keyed_service/ios:ios",
+    "//components/sync/driver",
     "//components/sync_sessions",
     "//ios/chrome/browser",
     "//ios/chrome/browser/browser_state",

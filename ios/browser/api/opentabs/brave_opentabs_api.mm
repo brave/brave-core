@@ -9,15 +9,14 @@
 #include "base/strings/sys_string_conversions.h"
 
 #include "ios/chrome/browser/browser_state/chrome_browser_state.h"
-#include "ios/chrome/browser/sync/session_sync_service_factory.h"
 #include "ios/chrome/browser/ui/recent_tabs/synced_sessions.h"
 
 #include "ios/web/public/thread/web_thread.h"
 #include "net/base/mac/url_conversions.h"
 #include "url/gurl.h"
 
-// #include "brave/ios/browser/api/opentabs/brave_opentabs_observer.h"
-// #include "brave/ios/browser/api/opentabs/opentabs_session_service_listener.h"
+#include "brave/ios/browser/api/opentabs/brave_opentabs_observer.h"
+#include "brave/ios/browser/api/opentabs/opentabs_session_listener_ios.h"
 
 #if !defined(__has_feature) || !__has_feature(objc_arc)
 #error "This file requires ARC support."
@@ -156,32 +155,37 @@ SyncDeviceType SyncEnumsDeviceTypeFromSyncDeviceType(
 #pragma mark - BraveOpenTabsAPI
 
 @interface BraveOpenTabsAPI () {
-  ChromeBrowserState* _chromeBrowserState;
+  // Session Sync Service is needed in order to receive session details from different instances
+  sync_sessions::SessionSyncService* sync_service_;
 }
 @end
 
 @implementation BraveOpenTabsAPI
 
-- (instancetype)initWithBrowserState:(ChromeBrowserState*)mainBrowserState {
+- (instancetype)initWithSessionSyncService:(sync_sessions::SessionSyncService*)sessionSyncService {
   if ((self = [super init])) {
-    _chromeBrowserState = mainBrowserState;
+    sync_service_ = sessionSyncService;
   }
   return self;
 }
 
 - (void)dealloc {
-  _chromeBrowserState = nullptr;
+  sync_service_ = nullptr;
 }
 
+- (id<OpenTabsSessionServiceListener>)addObserver:(id<OpenTabsSessionServiceObserver>)observer {
+  return [[OpenTabsSessionListenerImpl alloc] init:observer
+                                       syncService:sync_service_];
+}
+
+- (void)removeObserver:(id<OpenTabsSessionServiceListener>)observer {
+  [observer destroy];
+}
 
 - (void)getSyncedSessions:(void (^)(NSArray<IOSOpenDistantSession*>*))completion {
-  // Getting SessionSyncService from BrowserState
-  sync_sessions::SessionSyncService* syncService =
-      SessionSyncServiceFactory::GetForBrowserState(_chromeBrowserState);
-
   // Getting SyncedSessions from SessionSyncService
   auto syncedSessions =
-      std::make_unique<synced_sessions::SyncedSessions>(syncService);
+      std::make_unique<synced_sessions::SyncedSessions>(sync_service_);
 
   NSMutableArray<IOSOpenDistantSession*>* distantSessionList = [[NSMutableArray alloc] init];
 
