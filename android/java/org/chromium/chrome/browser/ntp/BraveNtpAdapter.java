@@ -89,6 +89,9 @@ public class BraveNtpAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private static int TYPE_NEWS_LOADING = 6;
     private static int TYPE_NEWS = 7;
 
+    private static final int ONE_ITEM_SPACE = 1;
+    private static final int TWO_ITEMS_SPACE = 2;
+
     public BraveNtpAdapter(Activity activity, OnBraveNtpListener onBraveNtpListener,
             RequestManager glide, CopyOnWriteArrayList<FeedItemsCard> newsItems,
             BraveNewsController braveNewsController, View mvTilesContainerLayout, NTPImage ntpImage,
@@ -317,12 +320,12 @@ public class BraveNtpAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         int newsLoadingCount = shouldDisplayNewsLoading() ? 1 : 0;
 
         if (mIsDisplayNewsOptin) {
-            return statsCount + topSitesCount + 2 + newsLoadingCount;
+            return statsCount + topSitesCount + TWO_ITEMS_SPACE + newsLoadingCount;
         } else if (mIsDisplayNews) {
-            return statsCount + topSitesCount + 1 + getNewContentCount() + newsLoadingCount
-                    + mNewsItems.size();
+            return statsCount + topSitesCount + ONE_ITEM_SPACE + getNewContentCount()
+                    + newsLoadingCount + mNewsItems.size();
         } else {
-            return statsCount + topSitesCount + 1 + newsLoadingCount;
+            return statsCount + topSitesCount + ONE_ITEM_SPACE + newsLoadingCount;
         }
     }
 
@@ -377,13 +380,13 @@ public class BraveNtpAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         } else if (position == statsCount + topSitesCount && mIsNewContent) {
             return TYPE_NEW_CONTENT;
         } else if ((position == statsCount + topSitesCount && !mIsNewContent)
-                || (position == statsCount + topSitesCount + 1 && mIsNewContent)) {
+                || (position == statsCount + topSitesCount + ONE_ITEM_SPACE && mIsNewContent)) {
             return TYPE_IMAGE_CREDIT;
-        } else if (position == statsCount + topSitesCount + 1 && mIsDisplayNewsOptin
+        } else if (position == statsCount + topSitesCount + ONE_ITEM_SPACE && mIsDisplayNewsOptin
                 && !mIsNewContent) {
             return TYPE_NEWS_OPTIN;
-        } else if (position == statsCount + topSitesCount + 1 && shouldDisplayNewsLoading()
-                && !mIsNewContent) {
+        } else if (position == statsCount + topSitesCount + ONE_ITEM_SPACE
+                && shouldDisplayNewsLoading() && !mIsNewContent) {
             return TYPE_NEWS_LOADING;
         } else {
             return TYPE_NEWS;
@@ -394,6 +397,7 @@ public class BraveNtpAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         return isStatsEnabled() ? 1 : 0;
     }
 
+    // Will be used in privacy hub feature
     private boolean isStatsEnabled() {
         return true;
     }
@@ -411,7 +415,7 @@ public class BraveNtpAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 notifyItemRemoved(getStatsCount());
             }
             notifyItemRangeChanged(getStatsCount(),
-                    getStatsCount() + getTopSitesCount() + getNewContentCount() + 1);
+                    getStatsCount() + getTopSitesCount() + getNewContentCount() + ONE_ITEM_SPACE);
         }
     }
 
@@ -420,16 +424,17 @@ public class BraveNtpAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             mIsDisplayNews = isDisplayNews;
 
             if (mIsDisplayNews) {
-                notifyItemRangeChanged(getStatsCount() + getTopSitesCount(), 2);
+                notifyItemRangeChanged(getStatsCount() + getTopSitesCount(), TWO_ITEMS_SPACE);
             } else {
-                notifyItemRangeRemoved(getStatsCount() + getTopSitesCount() + 1, mNewsItems.size());
+                notifyItemRangeRemoved(
+                        getStatsCount() + getTopSitesCount() + ONE_ITEM_SPACE, mNewsItems.size());
             }
         }
     }
 
     public void removeNewsOptin() {
         mIsDisplayNewsOptin = false;
-        notifyItemRemoved(getStatsCount() + getTopSitesCount() + 1);
+        notifyItemRemoved(getStatsCount() + getTopSitesCount() + ONE_ITEM_SPACE);
     }
 
     public boolean shouldDisplayNewsLoading() {
@@ -442,7 +447,7 @@ public class BraveNtpAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     public void setNewsLoading(boolean isNewsLoading) {
         mIsNewsLoading = isNewsLoading;
-        notifyItemRangeChanged(getStatsCount() + getTopSitesCount(), 2);
+        notifyItemRangeChanged(getStatsCount() + getTopSitesCount(), TWO_ITEMS_SPACE);
     }
 
     public void setNewContent(boolean isNewContent) {
@@ -456,7 +461,7 @@ public class BraveNtpAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 notifyItemInserted(newContentPosition);
             }
 
-            notifyItemRangeChanged(newContentPosition, 2);
+            notifyItemRangeChanged(newContentPosition, TWO_ITEMS_SPACE);
         }
     }
 
@@ -486,7 +491,8 @@ public class BraveNtpAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     public void setBraveNewsController(BraveNewsController braveNewsController) {
         mBraveNewsController = braveNewsController;
-        notifyItemChanged(getStatsCount() + getTopSitesCount() + getNewContentCount() + 1);
+        notifyItemChanged(
+                getStatsCount() + getTopSitesCount() + getNewContentCount() + ONE_ITEM_SPACE);
     }
 
     public void setImageCreditAlpha(float alpha) {
@@ -498,7 +504,7 @@ public class BraveNtpAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     public void setRecyclerViewHeight(int recyclerViewHeight) {
         mRecyclerViewHeight = recyclerViewHeight;
-        int count = getStatsCount() + getTopSitesCount() + getNewContentCount() + 1;
+        int count = getStatsCount() + getTopSitesCount() + getNewContentCount() + ONE_ITEM_SPACE;
         if (getItemCount() > count) {
             count += 1;
         }

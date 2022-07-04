@@ -668,22 +668,21 @@ public class BraveNewTabPageLayout
     }
 
     private void keepPosition() {
-        if (BraveActivity.getBraveActivity() != null
-                && BraveActivity.getBraveActivity().getActivityTab() != null) {
-            Tab tab = BraveActivity.getBraveActivity().getActivityTab();
+        if (BraveActivity.getBraveActivity() == null) {
+            return;
+        }
 
-            int itemPosition = (tab != null) ? SharedPreferencesManager.getInstance().readInt(
-                                       BRAVE_RECYCLERVIEW_POSITION + tab.getId(), 0)
-                                             : 0;
+        Tab tab = BraveActivity.getBraveActivity().getActivityTab();
+        if (tab != null) {
+            int itemPosition = SharedPreferencesManager.getInstance().readInt(
+                    BRAVE_RECYCLERVIEW_POSITION + tab.getId(), 0);
 
             new Handler(Looper.getMainLooper()).postDelayed(() -> {
                 if (mNtpAdapter != null && mNtpAdapter.getItemCount() > itemPosition) {
                     RecyclerView.LayoutManager manager = mRecyclerView.getLayoutManager();
                     if (manager instanceof LinearLayoutManager) {
-                        int offsetPosition = (tab != null)
-                                ? SharedPreferencesManager.getInstance().readInt(
-                                        BRAVE_RECYCLERVIEW_OFFSET_POSITION + tab.getId(), 0)
-                                : 0;
+                        int offsetPosition = SharedPreferencesManager.getInstance().readInt(
+                                BRAVE_RECYCLERVIEW_OFFSET_POSITION + tab.getId(), 0);
 
                         if (itemPosition
                                 == mNtpAdapter.getStatsCount() + mNtpAdapter.getTopSitesCount()
@@ -694,7 +693,6 @@ public class BraveNewTabPageLayout
                         LinearLayoutManager linearLayoutManager = (LinearLayoutManager) manager;
                         linearLayoutManager.scrollToPositionWithOffset(
                                 itemPosition, offsetPosition);
-                        // mRecyclerView.invalidate();
                     }
                 }
             }, 10);
@@ -705,9 +703,8 @@ public class BraveNewTabPageLayout
         if (mNtpAdapter != null) {
             return mNtpAdapter.getStatsCount() + mNtpAdapter.getTopSitesCount()
                     + mNtpAdapter.getNewContentCount() + 1;
-        } else {
-            return 0;
         }
+        return 0;
     }
 
     private boolean shouldDisplayNews() {
