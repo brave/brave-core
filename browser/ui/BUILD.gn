@@ -520,6 +520,8 @@ source_set("ui") {
       "views/brave_actions/brave_rewards_action_view.h",
       "views/brave_actions/brave_shields_action_view.cc",
       "views/brave_actions/brave_shields_action_view.h",
+      "views/brave_actions/brave_today_action_view.cc",
+      "views/brave_actions/brave_today_action_view.h",
       "views/location_bar/brave_location_bar_view.cc",
       "views/location_bar/brave_location_bar_view.h",
       "views/location_bar/brave_star_view.cc",
