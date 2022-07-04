@@ -2,14 +2,21 @@
 #include <memory>
 #include <string>
 #include "base/bind.h"
+#include "base/callback_helpers.h"
 #include "brave/app/vector_icons/vector_icons.h"
+#include "brave/browser/brave_news/brave_news_controller_factory.h"
 #include "brave/browser/ui/views/brave_actions/brave_action_view.h"
+#include "brave/components/brave_today/browser/brave_news_controller.h"
 #include "brave/components/brave_today/browser/brave_news_tab_helper.h"
+#include "brave/components/brave_today/common/brave_news.mojom-shared.h"
+#include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/tabs/tab_strip_model_observer.h"
+#include "chrome/browser/ui/views/bookmarks/bookmark_bar_view.h"
 #include "chrome/browser/ui/views/chrome_layout_provider.h"
 #include "chrome/browser/ui/views/toolbar/toolbar_ink_drop_util.h"
 #include "components/grit/brave_components_resources.h"
+#include "content/public/browser/browser_context.h"
 #include "extensions/common/constants.h"
 #include "include/core/SkBitmap.h"
 #include "include/core/SkColor.h"
@@ -36,7 +43,10 @@ BraveTodayActionView::BraveTodayActionView(Profile* profile,
           base::BindRepeating(&BraveTodayActionView::ToggleSubscribed,
                               base::Unretained(this))),
       profile_(profile),
-      tab_strip_(tab_strip) {
+      tab_strip_(tab_strip),
+      news_controller_(
+          brave_news::BraveNewsControllerFactory::GetControllerForContext(
+              profile)) {
   DCHECK(profile_);
 
   SetAccessibleName(u"Brave Today Button");
@@ -51,10 +61,13 @@ BraveTodayActionView::BraveTodayActionView(Profile* profile,
   SetHasInkDropActionOnClick(true);
 
   tab_strip_->AddObserver(this);
+  news_controller_->publisher_controller()->AddObserver(this);
+  news_controller_->GetPublishers(base::DoNothing());
 }
 
 BraveTodayActionView::~BraveTodayActionView() {
   tab_strip_->RemoveObserver(this);
+  news_controller_->publisher_controller()->RemoveObserver(this);
 }
 
 void BraveTodayActionView::Init() {
@@ -69,7 +82,11 @@ void BraveTodayActionView::Update() {
   if (!contents)
     return;
 
-  SetVisible(BraveNewsTabHelper::FromWebContents(contents)->has_feed());
+  current_publisher_ =
+      news_controller_->publisher_controller()->GetPublisherForSite(
+          contents->GetLastCommittedURL());
+
+  SetVisible(!!current_publisher_);
 }
 
 SkPath BraveTodayActionView::GetHighlightPath() const {
@@ -84,7 +101,9 @@ SkPath BraveTodayActionView::GetHighlightPath() const {
 }
 
 std::u16string BraveTodayActionView::GetTooltipText(const gfx::Point& p) const {
-  return u"Subscribe";
+  bool enabled = brave_news::IsPublisherEnabled(current_publisher_);
+
+  return enabled ? u"Unsubscribe" : u"Subscribe";
 }
 
 std::unique_ptr<views::LabelButtonBorder>
@@ -102,4 +121,17 @@ void BraveTodayActionView::OnTabStripModelChanged(
   Update();
 }
 
-void BraveTodayActionView::ToggleSubscribed() {}
+void BraveTodayActionView::OnPublishersUpdated(
+    brave_news::PublishersController* controller) {
+  Update();
+}
+
+void BraveTodayActionView::ToggleSubscribed() {
+  if (!current_publisher_)
+    return;
+
+  bool enabled = brave_news::IsPublisherEnabled(current_publisher_);
+  auto status = enabled ? brave_news::mojom::UserEnabled::DISABLED
+                        : brave_news::mojom::UserEnabled::ENABLED;
+  news_controller_->SetPublisherPref(current_publisher_->publisher_id, status);
+}

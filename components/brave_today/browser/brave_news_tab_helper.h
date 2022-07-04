@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_TODAY_BROWSER_BRAVE_NEWS_TAB_HELPER_H_
 #define BRAVE_COMPONENTS_BRAVE_TODAY_BROWSER_BRAVE_NEWS_TAB_HELPER_H_
 
+#include "brave/components/brave_today/browser/brave_news_controller.h"
 #include "content/public/browser/web_contents_user_data.h"
 
 class BraveNewsTabHelper
@@ -21,6 +22,7 @@ class BraveNewsTabHelper
 
  private:
   explicit BraveNewsTabHelper(content::WebContents* contents);
+  raw_ptr<brave_news::BraveNewsController> controller_;
 
   friend WebContentsUserData;
   WEB_CONTENTS_USER_DATA_KEY_DECL();

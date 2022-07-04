@@ -41,6 +41,8 @@ class HistoryService;
 
 namespace brave_news {
 
+bool IsPublisherEnabled(const mojom::PublisherPtr& publisher);
+
 // Browser-side handler for Brave News mojom API, 1 per profile
 // Orchestrates FeedController and PublishersController for data, as well as
 // owning prefs data.
@@ -65,7 +67,9 @@ class BraveNewsController : public KeyedService,
   // Remove any cache that would identify user browsing history
   void ClearHistory();
 
-  mojom::PublisherPtr GetPublisherForSite(const GURL& site_url);
+  PublishersController* publisher_controller() {
+    return &publishers_controller_;
+  }
 
   // mojom::BraveNewsController
   void GetFeed(GetFeedCallback callback) override;

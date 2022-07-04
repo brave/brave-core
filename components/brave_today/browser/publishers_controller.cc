@@ -35,14 +35,17 @@ PublishersController::PublishersController(
 
 PublishersController::~PublishersController() = default;
 
-mojom::PublisherPtr PublishersController::GetPublisherForSite(const GURL &site_url) {
-  if (publishers_.empty()) return nullptr;
+mojom::PublisherPtr PublishersController::GetPublisherForSite(
+    const GURL& site_url) {
+  if (publishers_.empty())
+    return nullptr;
 
-  const auto site_origin = url::Origin::Create(site_url);
+  const auto& site_origin = url::Origin::Create(site_url);
   for (const auto& kv : publishers_) {
-    const auto publisher_origin = url::Origin::Create(kv.second->site_url);
-    if (site_origin == site_origin)
+    const auto& publisher_origin = url::Origin::Create(kv.second->site_url);
+    if (site_origin.IsSameOriginWith(publisher_origin)) {
       return kv.second->Clone();
+    }
   }
 
   return nullptr;

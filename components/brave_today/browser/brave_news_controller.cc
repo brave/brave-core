@@ -38,6 +38,14 @@
 
 namespace brave_news {
 
+bool IsPublisherEnabled(const mojom::PublisherPtr& publisher) {
+  if (!publisher)
+    return false;
+  return (publisher->is_enabled &&
+          publisher->user_enabled_status != mojom::UserEnabled::DISABLED) ||
+         publisher->user_enabled_status == mojom::UserEnabled::ENABLED;
+}
+
 // static
 void BraveNewsController::RegisterProfilePrefs(PrefRegistrySimple* registry) {
   // Only default brave today to be shown for
@@ -103,10 +111,6 @@ void BraveNewsController::Bind(
 void BraveNewsController::ClearHistory() {
   // TODO(petemill): Clear history once/if we actually store
   // feed cache somewhere.
-}
-
-mojom::PublisherPtr BraveNewsController::GetPublisherForSite(const GURL &site_url) {
-  return publishers_controller_.GetPublisherForSite(site_url);
 }
 
 mojo::PendingRemote<mojom::BraveNewsController>
