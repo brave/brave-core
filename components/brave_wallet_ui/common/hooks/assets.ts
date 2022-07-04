@@ -46,8 +46,12 @@ export function useAssets () {
     if (!userVisibleTokensInfo) {
       return []
     }
-
-    return userVisibleTokensInfo.filter((token) => token.chainId === selectedNetwork.chainId)
+    // We also filter by coinType here because localhost
+    // networks share the same chainId.
+    return userVisibleTokensInfo.filter((token) =>
+      token.chainId === selectedNetwork.chainId &&
+      token.coin === selectedNetwork.coin
+    )
   }, [userVisibleTokensInfo, selectedNetwork])
 
   const [wyreAssetOptions, setWyreAssetOptions] = React.useState<BraveWallet.BlockchainToken[]>([])

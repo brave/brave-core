@@ -338,7 +338,12 @@ export default function useSend () {
 
   // effects
   React.useEffect(() => {
-    if (selectedSendAsset?.chainId === selectedNetwork.chainId) {
+    // We also check that coinType matches here because localhost
+    // networks share the same chainId
+    if (
+      selectedSendAsset?.chainId === selectedNetwork.chainId &&
+      selectedSendAsset?.coin === selectedNetwork.coin
+    ) {
       return
     }
     selectSendAsset(sendAssetOptions[0])
