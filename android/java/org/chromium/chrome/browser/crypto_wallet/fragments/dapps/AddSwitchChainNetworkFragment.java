@@ -103,22 +103,16 @@ public class AddSwitchChainNetworkFragment extends BaseDAppsFragment {
         Button btnAddSwitchNetwork = view.findViewById(R.id.fragment_add_switch_eth_chain_btn_sign);
         if (mPanelType == ADD_ETHEREUM_CHAIN) {
             btnAddSwitchNetwork.setText(R.string.approve);
-            SpannableString addChainHeading = Utils.createSpannableString(
-                    getString(R.string.brave_wallet_allow_add_network_description),
-                    getString(R.string.brave_wallet_learn_more), new ClickableSpan() {
-                        @Override
-                        public void onClick(@NonNull View widget) {
-                            TabUtils.openUrlInNewTab(false, Utils.BRAVE_SUPPORT_URL);
-                            TabUtils.bringChromeTabbedActivityToTheTop(getActivity());
-                        }
-                    }, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-
             TextView tvAddChainTitle = view.findViewById(R.id.fragment_add_switch_chain_tv_title);
             tvAddChainTitle.setText(R.string.brave_wallet_allow_add_network_heading);
-
             TextView addChainDesc = view.findViewById(R.id.fragment_add_switch_chain_tv_text);
+            Spanned spannedDescriptionText = Utils.createSpanForSurroundedPhrase(
+                    getContext(), R.string.brave_wallet_allow_add_network_description, (v) -> {
+                        TabUtils.openUrlInNewTab(false, Utils.BRAVE_SUPPORT_URL);
+                        TabUtils.bringChromeTabbedActivityToTheTop(getActivity());
+                    });
             addChainDesc.setMovementMethod(LinkMovementMethod.getInstance());
-            addChainDesc.setText(addChainHeading);
+            addChainDesc.setText(spannedDescriptionText);
 
         } else if (mPanelType == SWITCH_ETHEREUM_CHAIN) {
             btnAddSwitchNetwork.setText(R.string.brave_wallet_allow_change_network_button);
