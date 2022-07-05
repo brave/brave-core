@@ -318,42 +318,6 @@ IN_PROC_BROWSER_TEST_F(PermissionManagerBrowserTest,
   }
 }
 
-IN_PROC_BROWSER_TEST_F(PermissionManagerBrowserTest,
-                       RequestPermissionsBlock3PIframe) {
-  struct {
-    std::vector<std::string> addresses;
-    ContentSettingsType type;
-    blink::PermissionType permission;
-  } cases[] = {{{"0xaf5Ad1E10926C0Ee4af4eDAC61DD60E853753f8A",
-                 "0xaf5Ad1E10926C0Ee4af4eDAC61DD60E853753f8B"},
-                ContentSettingsType::BRAVE_ETHEREUM,
-                blink::PermissionType::BRAVE_ETHEREUM},
-               {{"BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8",
-                 "JDqrvDz8d8tFCADashbUKQDKfJZFobNy13ugN65t1wvV"},
-                ContentSettingsType::BRAVE_SOLANA,
-                blink::PermissionType::BRAVE_SOLANA}};
-
-  GURL top_url(https_server()->GetURL("a.test", "/iframe.html"));
-  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), top_url));
-  GURL iframe_url(https_server()->GetURL("b.test", "/"));
-  EXPECT_TRUE(NavigateIframeToURL(web_contents(), "test", iframe_url));
-
-  auto* iframe_rfh = ChildFrameAt(web_contents()->GetMainFrame(), 0);
-
-  for (size_t i = 0; i < sizeof(cases) / sizeof(cases[0]); ++i) {
-    // Will return empty responses without prompt.
-    BraveWalletPermissionContext::RequestPermissions(
-        cases[i].permission, iframe_rfh, cases[i].addresses,
-        base::BindOnce(
-            [](const std::vector<blink::mojom::PermissionStatus>& responses) {
-              EXPECT_TRUE(responses.empty());
-            }));
-
-    content::RunAllTasksUntilIdle();
-    EXPECT_TRUE(IsPendingGroupedRequestsEmpty(cases[i].type)) << "case: " << i;
-  }
-}
-
 IN_PROC_BROWSER_TEST_F(PermissionManagerBrowserTest, GetCanonicalOrigin) {
   const GURL& url = https_server()->GetURL("a.test", "/empty.html");
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));

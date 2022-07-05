@@ -42,10 +42,6 @@ TEST_F(PermissionsClientUnitTest, BraveCanBypassEmbeddingOriginCheck) {
         << "case: " << i;
 
     EXPECT_FALSE(client->BraveCanBypassEmbeddingOriginCheck(
-        cases[i].requesting_origin, GURL("https://test1.com"), cases[i].type))
-        << "case: " << i;
-
-    EXPECT_FALSE(client->BraveCanBypassEmbeddingOriginCheck(
         cases[i].requesting_origin, embedding_origin,
         ContentSettingsType::GEOLOCATION))
         << "case: " << i;
