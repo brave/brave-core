@@ -13,6 +13,7 @@ import BraveCore
 ///
 /// - note: Do not use this directly, use ``NetworkStore.previewStore``
 class MockJsonRpcService: BraveWalletJsonRpcService {
+  
   private var chainId: String = BraveWallet.MainnetChainId
   private var networks: [BraveWallet.NetworkInfo] = [.mockMainnet, .mockRinkeby, .mockRopsten]
   private var networkURL: URL?
@@ -137,6 +138,10 @@ class MockJsonRpcService: BraveWalletJsonRpcService {
   
   func erc1155Metadata(_ contract: String, tokenId: String, chainId: String, completion: @escaping (String, BraveWallet.ProviderError, String) -> Void) {
     completion("", .internalError, "")
+  }
+  
+  func hiddenNetworks(_ coin: BraveWallet.CoinType, completion: @escaping ([String]) -> Void) {
+    completion([""])
   }
 }
 
