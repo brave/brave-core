@@ -43,6 +43,7 @@ export const OnboardingImportOrRestoreWallet = () => {
   const dispatch = useDispatch()
   const importWalletError = useSelector(({ page }: { page: PageState }) => page.importWalletError)
   const isImportWalletsCheckComplete = useSelector(({ page }: { page: PageState }) => page.isImportWalletsCheckComplete)
+  const isMetaMaskInitialized = useSelector(({ page }: { page: PageState }) => page.isMetaMaskInitialized)
   const isLegacyCryptoWalletsInitialized = useSelector(({ page }: { page: PageState }) => page.isCryptoWalletsInitialized)
 
   // effects
@@ -97,7 +98,7 @@ export const OnboardingImportOrRestoreWallet = () => {
             <BraveWalletIcon />
           </CardButton>
 
-          <CardButton
+          {isMetaMaskInitialized && <CardButton
             to={WalletRoutes.OnboardingImportMetaMask}
           >
             <CardButtonTextContainer>
@@ -109,7 +110,7 @@ export const OnboardingImportOrRestoreWallet = () => {
               </p>
             </CardButtonTextContainer>
             <MetaMaskIcon />
-          </CardButton>
+          </CardButton>}
 
           {isLegacyCryptoWalletsInitialized &&
             <CardButton
