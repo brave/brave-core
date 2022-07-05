@@ -8,9 +8,10 @@ import { getLocale, splitStringForTag } from '../../../../../common/locale'
 import DataContext from '../../state/context'
 import getPanelBrowserAPI from '../../api/panel_browser_api'
 import Button from '$web-components/button'
+import { useIsExpanded } from '../../state/hooks'
 
 function MainPanel () {
-  const [isExpanded, setIsExpanded] = React.useState(false)
+  const { isExpanded, toggleIsExpanded } = useIsExpanded()
   const { siteBlockInfo, getSiteSettings } = React.useContext(DataContext)
 
   const braveShieldsStatusText = splitStringForTag(siteBlockInfo?.isShieldsEnabled ? getLocale('braveShieldsUp') : getLocale('braveShieldsDown'))
@@ -46,12 +47,12 @@ function MainPanel () {
     </S.Footnote>
   )
 
-  let advancedControlButtonElement = (
+  let advancedControlButtonElement = (isExpanded != null) && (
     <S.AdvancedControlsButton
       type="button"
       aria-expanded={isExpanded}
       aria-controls='advanced-controls-content'
-      onClick={() => setIsExpanded(x => !x)}
+      onClick={toggleIsExpanded}
     >
       <i>
         <svg width="16" height="16" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" clipRule="evenodd" d="M15.334 8.969H6a.667.667 0 1 1 0-1.334h9.334a.667.667 0 0 1 0 1.334Zm.005-5.377H5.962c-.368 0-.629-.255-.629-.623s.299-.667.667-.667h9.334c.367 0 .666.299.666.667 0 .368-.292.623-.66.623ZM2 15.635c-1.102 0-2-.897-2-2s.898-2 2-2c1.103 0 2 .897 2 2s-.897 2-2 2Zm0-2.666a.667.667 0 1 0 .001 1.334.667.667 0 0 0 0-1.334Zm0-2.667c-1.102 0-2-.897-2-2s.898-2 2-2c1.103 0 2 .897 2 2s-.897 2-2 2Zm0-2.667a.667.667 0 1 0 .002 1.335A.667.667 0 0 0 2 7.635Zm.398-3.604a.669.669 0 0 1-.96.12L.244 3.17a.666.666 0 1 1 .846-1.03l.65.533L2.798 1.24a.668.668 0 0 1 1.073.791l-1.472 2ZM6 12.969h9.334a.667.667 0 0 1 0 1.333H6a.667.667 0 1 1 0-1.333Z"/></svg>

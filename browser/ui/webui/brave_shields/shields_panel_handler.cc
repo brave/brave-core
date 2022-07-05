@@ -8,6 +8,8 @@
 #include <utility>
 
 #include "brave/browser/ui/brave_browser_window.h"
+#include "brave/components/constants/pref_names.h"
+#include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
 #include "ui/gfx/geometry/vector2d.h"
@@ -16,10 +18,12 @@
 ShieldsPanelHandler::ShieldsPanelHandler(
     mojo::PendingReceiver<brave_shields::mojom::PanelHandler> receiver,
     ui::MojoBubbleWebUIController* webui_controller,
-    BraveBrowserWindow* brave_browser_window)
+    BraveBrowserWindow* brave_browser_window,
+    Profile* profile)
     : receiver_(this, std::move(receiver)),
       webui_controller_(webui_controller),
-      brave_browser_window_(brave_browser_window) {}
+      brave_browser_window_(brave_browser_window),
+      profile_(profile) {}
 
 ShieldsPanelHandler::~ShieldsPanelHandler() = default;
 
@@ -42,4 +46,19 @@ void ShieldsPanelHandler::GetPosition(GetPositionCallback callback) {
       gfx::Vector2d(brave_browser_window_->GetShieldsBubbleRect().x(),
                     brave_browser_window_->GetShieldsBubbleRect().y());
   std::move(callback).Run(vec);
+}
+
+void ShieldsPanelHandler::SetAdvancedViewEnabled(bool is_enabled) {
+  DCHECK(profile_);
+
+  profile_->GetPrefs()->SetBoolean(kShieldsAdvancedViewEnabled, is_enabled);
+}
+
+void ShieldsPanelHandler::GetAdvancedViewEnabled(
+    GetAdvancedViewEnabledCallback callback) {
+  DCHECK(profile_);
+
+  bool is_enabled =
+      profile_->GetPrefs()->GetBoolean(kShieldsAdvancedViewEnabled);
+  std::move(callback).Run(is_enabled);
 }
