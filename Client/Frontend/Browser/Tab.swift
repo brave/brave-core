@@ -31,7 +31,7 @@ protocol TabDelegate {
   func tab(_ tab: Tab, willDeleteWebView webView: WKWebView)
   func showRequestRewardsPanel(_ tab: Tab)
   func stopMediaPlayback(_ tab: Tab)
-  func showWalletNotification(_ tab: Tab)
+  func showWalletNotification(_ tab: Tab, origin: URLOrigin)
   func updateURLBarWalletButton()
   func isTabVisible(_ tab: Tab) -> Bool
 }

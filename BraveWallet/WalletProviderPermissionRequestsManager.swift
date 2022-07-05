@@ -79,4 +79,9 @@ public class WalletProviderPermissionRequestsManager {
   public func cancelRequest(_ request: WebpagePermissionRequest) {
     requests.removeAll(where: { $0 == request })
   }
+  
+  /// Cancels all an in-flight requests without executing any decision
+  public func cancelAllPendingRequests() {
+    requests.removeAll()
+  }
 }

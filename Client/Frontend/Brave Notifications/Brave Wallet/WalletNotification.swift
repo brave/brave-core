@@ -4,10 +4,11 @@
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import Foundation
+import BraveCore
 import UIKit
 
 class WalletNotification: BraveNotification {
-  private struct Constant {
+  struct Constant {
     static let id = "wallet-notification"
   }
   
@@ -33,17 +34,19 @@ class WalletNotification: BraveNotification {
   
   init(
     priority: BraveNotificationPriority,
+    origin: URLOrigin,
     handler: @escaping (Action) -> Void
   ) {
     self.priority = priority
-    self.view = WalletConnectionView()
+    self.view = WalletConnectionView(origin: origin)
     self.handler = handler
     self.setup()
   }
   
   private func setup() {
     guard let walletPanel = view as? WalletConnectionView else { return }
-    walletPanel.addTarget(self, action: #selector(tappedWalletConnectionView(_:)), for: .touchUpInside)
+    let tapGesture = UITapGestureRecognizer(target: self, action: #selector(tappedWalletConnectionView(_:)))
+    walletPanel.addGestureRecognizer(tapGesture)
   }
   
   @objc private func tappedWalletConnectionView(_ sender: WalletConnectionView) {

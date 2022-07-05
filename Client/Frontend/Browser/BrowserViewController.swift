@@ -2346,13 +2346,13 @@ extension BrowserViewController: TabDelegate {
     })
   }
   
-  func showWalletNotification(_ tab: Tab) {
+  func showWalletNotification(_ tab: Tab, origin: URLOrigin) {
     // only display notification when BVC is front and center
     guard presentedViewController == nil,
           Preferences.Wallet.displayWeb3Notifications.value else {
       return
     }
-    let walletNotificaton = WalletNotification(priority: .low) { [weak self] action in
+    let walletNotificaton = WalletNotification(priority: .low, origin: origin) { [weak self] action in
       if action == .connectWallet {
         self?.presentWalletPanel(tab: tab)
       }
@@ -2545,6 +2545,9 @@ extension BrowserViewController: TabManagerDelegate {
     }
 
     updateInContentHomePanel(selected?.url as URL?)
+
+    notificationsPresenter.removeNotification(with: WalletNotification.Constant.id)
+    WalletProviderPermissionRequestsManager.shared.cancelAllPendingRequests()
     updateURLBarWalletButton()
   }
 
@@ -3370,6 +3373,13 @@ extension BrowserViewController: PreferencesObserver {
     case Preferences.Wallet.defaultWallet.key:
       tabManager.reset()
       tabManager.reloadSelectedTab()
+      notificationsPresenter.removeNotification(with: WalletNotification.Constant.id)
+      WalletProviderPermissionRequestsManager.shared.cancelAllPendingRequests()
+      let privateMode = PrivateBrowsingManager.shared.isPrivateBrowsing
+      if let cryptoStore = CryptoStore.from(privateMode: privateMode) {
+        cryptoStore.rejectAllPendingWebpageRequests()
+      }
+      updateURLBarWalletButton()
     default:
       log.debug("Received a preference change for an unknown key: \(key) on \(type(of: self))")
       break

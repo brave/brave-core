@@ -60,7 +60,7 @@ class AdsNotificationHandler: BraveAdsNotificationHandler {
   }
 
   func clearNotification(withIdentifier identifier: String) {
-    notificationsPresenter?.removeRewardsNotification(with: identifier)
+    notificationsPresenter?.removeNotification(with: identifier)
   }
 
   func shouldShowNotifications() -> Bool {

@@ -143,7 +143,11 @@ extension BrowserViewController: BraveWalletDelegate {
 
 extension Tab: BraveWalletProviderDelegate {
   func showPanel() {
-    tabDelegate?.showWalletNotification(self)
+    guard let origin = url?.origin else {
+      log.error("Failing to show Wallet panel due to unavailable tab url origin")
+      return
+    }
+    tabDelegate?.showWalletNotification(self, origin: origin)
   }
 
   func getOrigin() -> URLOrigin {
@@ -199,7 +203,7 @@ extension Tab: BraveWalletProviderDelegate {
         self.tabDelegate?.updateURLBarWalletButton()
       })
 
-      self.tabDelegate?.showWalletNotification(self)
+      self.tabDelegate?.showWalletNotification(self, origin: origin)
     }
   }
 

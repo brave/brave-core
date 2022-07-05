@@ -2031,6 +2031,13 @@ extension Strings {
       value: "This page wants to interact with Brave Wallet",
       comment: "The title of the notification which will prompt at the top of the browser when users are visiting web3 site that is not yet connected with Brave Wallet."
     )
+    public static let dappsConnectionNotificationOriginTitle = NSLocalizedString(
+      "wallet.dappsConnectionNotificationOriginTitle",
+      tableName: "BraveWallet",
+      bundle: .strings,
+      value: "%@ wants to interact with Brave Wallet",
+      comment: "The title of the notification which will prompt at the top of the browser when users are visiting web3 site that is not yet connected with Brave Wallet. The '%@' will be the site attempting to connect. For example: \"app.uniswap.org wants to interact with Brave Wallet\""
+    )
     public static let editPermissionsTitle = NSLocalizedString(
       "wallet.editPermissionsTitle",
       tableName: "BraveWallet",
