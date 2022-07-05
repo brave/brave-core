@@ -167,11 +167,11 @@ void BraveP3AService::Init(
 
   // Init other components.
   uploader_ = std::make_unique<BraveP3AUploader>(
-      url_loader_factory, upload_server_url_, GURL(kP2AServerUrl),
-      base::BindRepeating(&BraveP3AService::OnLogUploadComplete, this));
+      url_loader_factory, upload_server_url_, GURL(kP2AServerUrl));
 
   new_uploader_ = std::make_unique<BraveP3ANewUploader>(
-      url_loader_factory, GURL(kP3AJsonServerUrl), GURL(kP2AJsonServerUrl));
+      url_loader_factory, GURL(kP3AJsonServerUrl), GURL(kP2AJsonServerUrl),
+      base::BindRepeating(&BraveP3AService::OnLogUploadComplete, this));
 
   upload_scheduler_ = std::make_unique<BraveP3AScheduler>(
       base::BindRepeating(&BraveP3AService::StartScheduledUpload, this),

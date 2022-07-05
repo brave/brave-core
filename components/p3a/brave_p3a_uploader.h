@@ -9,7 +9,6 @@
 #include <memory>
 #include <string>
 
-#include "base/callback.h"
 #include "base/memory/ref_counted.h"
 #include "url/gurl.h"
 
@@ -22,13 +21,10 @@ namespace brave {
 
 class BraveP3AUploader {
  public:
-  using UploadCallback = base::RepeatingCallback<void(int, int, bool)>;
-
   BraveP3AUploader(
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
       const GURL& p3a_endpoint,
-      const GURL& p2a_endpoint,
-      const UploadCallback& on_upload_complete);
+      const GURL& p2a_endpoint);
 
   BraveP3AUploader(const BraveP3AUploader&) = delete;
   BraveP3AUploader& operator=(const BraveP3AUploader&) = delete;
@@ -45,7 +41,6 @@ class BraveP3AUploader {
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
   const GURL p3a_endpoint_;
   const GURL p2a_endpoint_;
-  const UploadCallback on_upload_complete_;
   std::unique_ptr<network::SimpleURLLoader> url_loader_;
 };
 
