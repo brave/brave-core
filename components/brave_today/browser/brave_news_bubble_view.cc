@@ -45,7 +45,12 @@ void BraveNewsBubbleView::Show(views::View* anchor,
 
 class BraveNewsFeedRow : public views::View {
  public:
-  explicit BraveNewsFeedRow(BraveNewsTabHelper::FeedDetails details) {
+  explicit BraveNewsFeedRow(BraveNewsTabHelper::FeedDetails details,
+                            content::WebContents* contents)
+      : contents_(contents) {
+    DCHECK(contents_);
+    tab_helper_ = BraveNewsTabHelper::FromWebContents(contents);
+
     auto* const layout =
         SetLayoutManager(std::make_unique<views::FlexLayout>());
     layout->SetOrientation(views::LayoutOrientation::kHorizontal);
@@ -60,16 +65,21 @@ class BraveNewsFeedRow : public views::View {
         views::FlexSpecification(views::MinimumFlexSizeRule::kScaleToMinimum,
                                  views::MaximumFlexSizeRule::kUnbounded));
 
+    bool is_subscribed = tab_helper_->is_subscribed(details);
     auto* button = AddChildView(std::make_unique<views::MdTextButton>(
         base::BindRepeating(&BraveNewsFeedRow::OnPressed,
                             base::Unretained(this)),
-        u"Subscribe"));
-    button->SetProminent(true);
+        is_subscribed ? u"Unsubscribe" : u"Subscribe"));
+    button->SetProminent(!is_subscribed);
   }
 
   ~BraveNewsFeedRow() override = default;
 
   void OnPressed() { LOG(ERROR) << "Pressed the button"; }
+
+ private:
+  raw_ptr<content::WebContents> contents_;
+  raw_ptr<BraveNewsTabHelper> tab_helper_;
 };
 
 BraveNewsBubbleView::BraveNewsBubbleView(views::View* action_view,
