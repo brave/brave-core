@@ -234,6 +234,10 @@ public class BytecodeTest {
                 "org/chromium/chrome/browser/share/send_tab_to_self/DevicePickerBottomSheetContent"));
         Assert.assertTrue(classExists(
                 "org/chromium/chrome/browser/share/send_tab_to_self/BraveDevicePickerBottomSheetContent"));
+        Assert.assertTrue(
+                classExists("org/chromium/chrome/browser/dom_distiller/ReaderModeManager"));
+        Assert.assertTrue(
+                classExists("org/chromium/chrome/browser/dom_distiller/BraveReaderModeManager"));
     }
 
     @Test
@@ -551,6 +555,10 @@ public class BytecodeTest {
                 Resources.class, UiConfig.class, ViewGroup.class, ViewStub.class,
                 TileRenderer.class, PropertyModel.class, boolean.class, boolean.class,
                 boolean.class, Runnable.class, Runnable.class));
+        Assert.assertTrue(
+                constructorsMatch("org/chromium/chrome/browser/dom_distiller/ReaderModeManager",
+                        "org/chromium/chrome/browser/dom_distiller/BraveReaderModeManager",
+                        Tab.class, Supplier.class));
     }
 
     @Test
@@ -703,6 +711,8 @@ public class BytecodeTest {
                         "mNativeInitialized", true, boolean.class));
         Assert.assertTrue(fieldExists(
                 "org/chromium/chrome/browser/ntp/NewTabPageLayout", "mMvTilesContainerLayout"));
+        Assert.assertTrue(
+                fieldExists("org/chromium/chrome/browser/dom_distiller/ReaderModeManager", "mTab"));
     }
 
     @Test
