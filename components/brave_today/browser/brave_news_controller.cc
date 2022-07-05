@@ -57,6 +57,7 @@ void BraveNewsController::RegisterProfilePrefs(PrefRegistrySimple* registry) {
   const bool is_japanese_language = language_code == "ja";
   const bool brave_news_enabled_default =
       is_english_language || is_japanese_language;
+  registry->RegisterBooleanPref(prefs::kBraveTodayActionViewHidden, false);
   registry->RegisterBooleanPref(prefs::kNewTabPageShowToday,
                                 brave_news_enabled_default);
   registry->RegisterBooleanPref(prefs::kBraveTodayOptedIn, false);
@@ -136,7 +137,7 @@ void BraveNewsController::FindFeeds(const GURL& possible_feed_or_site_url,
 
 void BraveNewsController::SubscribeToNewDirectFeed(
     const GURL& feed_url,
-    SubscribeToNewDirectFeedCallback callback) {
+    SubscribeToNewDire ctFeedCallback callback) {
   // Verify the url points at a valid feed
   VLOG(1) << "SubscribeToNewDirectFeed: " << feed_url.spec();
   if (!feed_url.is_valid()) {

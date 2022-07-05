@@ -45,19 +45,8 @@ BraveNewsTabHelper::BraveNewsTabHelper(content::WebContents* contents)
       controller_(
           brave_news::BraveNewsControllerFactory::GetControllerForContext(
               contents->GetBrowserContext())) {
-  auto start = base::Time::Now();
   controller_->publisher_controller()->AddObserver(this);
-
-  // base::ThreadPool::PostTask(
-  //     FROM_HERE,
-  //     base::BindOnce(
-  //         [](content::BrowserContext* profile) {
-  //           brave_news::BraveNewsControllerFactory::GetForContext(profile)
-  //               ->GetPublishers(base::DoNothing());
-  //         },
-  //         contents->GetBrowserContext()));
   controller_->GetPublishers(base::DoNothing());
-  LOG(ERROR) << "Init took: " << (base::Time::Now() - start).InMilliseconds();
 }
 
 BraveNewsTabHelper::~BraveNewsTabHelper() {
@@ -148,8 +137,6 @@ void BraveNewsTabHelper::AvailableFeedsChanged() {
 }
 
 void BraveNewsTabHelper::PrimaryPageChanged(content::Page& page) {
-  auto start = base::Time::Now();
-
   // Invalidate all weak pointers - we're on a new page now.
   weak_ptr_factory_.InvalidateWeakPtrs();
 
@@ -168,33 +155,22 @@ void BraveNewsTabHelper::PrimaryPageChanged(content::Page& page) {
   }
 
 #if BUILDFLAG(ENABLE_FEED_V2)
-  // auto callback = base::BindOnce(&BraveNewsTabHelper::OnReceivedRssUrls,
-  //                                weak_ptr_factory_.GetWeakPtr(),
-  //                                contents->GetLastCommittedURL());
-  // base::SequencedTaskRunnerHandle::Get()->PostTask(FROM_HERE,
-  // base::BindOnce(&feed::FetchRssLinks,
-  //                                           contents->GetLastCommittedURL(),
-  //                                           contents,
-  //                                           std::move(callback)));
+  auto callback = base::BindOnce(&BraveNewsTabHelper::OnReceivedRssUrls,
+                                 weak_ptr_factory_.GetWeakPtr(),
+                                 contents->GetLastCommittedURL());
+  base::SequencedTaskRunnerHandle::Get()->PostTask(FROM_HERE,
+  base::BindOnce(&feed::FetchRssLinks,
+                                            contents->GetLastCommittedURL(),
+                                            contents,
+                                            std::move(callback)));
 #endif
 
   AvailableFeedsChanged();
-
-  auto duration = (base::Time::Now() - start).InMilliseconds();
-  if (duration != 0) {
-    LOG(ERROR) << "Primary Page Changed: " << duration;
-  }
 }
 
 void BraveNewsTabHelper::OnPublishersUpdated(
     brave_news::PublishersController*) {
-      auto start = base::Time::Now();
-      LOG(ERROR) << "OnPublishersUpdated";
   AvailableFeedsChanged();
-  auto duration = (base::Time::Now() - start).InMilliseconds();
-  if (duration != 0) {
-    LOG(ERROR) << "OnPublishersUpdated: " << duration;
-  }
 }
 
 WEB_CONTENTS_USER_DATA_KEY_IMPL(BraveNewsTabHelper);
