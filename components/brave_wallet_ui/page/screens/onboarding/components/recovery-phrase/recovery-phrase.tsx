@@ -33,8 +33,8 @@ interface Props {
   onSelectedWordListChange?: (words: SelectedPhraseWord[]) => void
 }
 
-const LAST_PHRASE_WORD_INDEX = 11
-const FAKE_PHRASE_WORDS = new Array(LAST_PHRASE_WORD_INDEX + 1).fill('Fake')
+const FAKE_PHRASE_WORDS = new Array(12).fill('Fake')
+
 const SELECTED_WORD_ORDINALS = {
   0: getLocale('braveWalletOrdinalFirst'),
   1: getLocale('braveWalletOrdinalThird'),
@@ -120,7 +120,7 @@ export const RecoveryPhrase: React.FC<Props> = ({
     // check order
     const firstWordMatch = selectedWords[0].value === recoveryPhrase[0] // first
     const thirdWordMatch = selectedWords[1].value === recoveryPhrase[2] // third
-    const lastWordMatch = selectedWords[2].value === recoveryPhrase[LAST_PHRASE_WORD_INDEX] // last (12th)
+    const lastWordMatch = selectedWords[2].value === recoveryPhrase[recoveryPhrase.length - 1] // last (12-24th)
 
     onVerifyUpdate(firstWordMatch && thirdWordMatch && lastWordMatch)
   }, [selectedWords, onVerifyUpdate])
