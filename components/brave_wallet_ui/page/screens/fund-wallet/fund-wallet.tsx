@@ -17,6 +17,7 @@ import { getTokensNetwork } from '../../../utils/network-utils'
 // types
 import {
   BraveWallet,
+  UserAssetInfoType,
   WalletAccountType,
   WalletRoutes,
   WalletState
@@ -61,12 +62,10 @@ export const FundWalletScreen = () => {
 
   // redux
   const dispatch = useDispatch()
-  const {
-    accounts,
-    defaultCurrencies,
-    selectedNetworkFilter,
-    selectedAccount
-  } = useSelector(({ wallet }: { wallet: WalletState }) => wallet)
+  const accounts = useSelector(({ wallet }: { wallet: WalletState }) => wallet.accounts)
+  const defaultCurrencies = useSelector(({ wallet }: { wallet: WalletState }) => wallet.defaultCurrencies)
+  const selectedNetworkFilter = useSelector(({ wallet }: { wallet: WalletState }) => wallet.selectedNetworkFilter)
+  const selectedAccount = useSelector(({ wallet }: { wallet: WalletState }) => wallet.selectedAccount)
 
   // custom hooks
   const { prevNetwork } = usePrevNetwork()
@@ -91,7 +90,7 @@ export const FundWalletScreen = () => {
   // memos
   const isNextStepEnabled = React.useMemo(() => !!selectedAsset, [selectedAsset])
 
-  const assetsForFilteredNetwork = React.useMemo(() => {
+  const assetsForFilteredNetwork: UserAssetInfoType[] = React.useMemo(() => {
     const assets = selectedNetworkFilter.chainId === AllNetworksOption.chainId
       ? allBuyAssetOptions
       : allBuyAssetOptions.filter(({ chainId }) => selectedNetworkFilter.chainId === chainId)
@@ -99,17 +98,17 @@ export const FundWalletScreen = () => {
     return assets.map(asset => ({ asset, assetBalance: '1' }))
   }, [selectedNetworkFilter.chainId, allBuyAssetOptions])
 
-  const accountsForSelectedAssetNetwork = React.useMemo(() => {
+  const accountsForSelectedAssetNetwork: WalletAccountType[] = React.useMemo(() => {
     return selectedAssetNetwork
       ? accounts.filter(a => a.coin === selectedAssetNetwork.coin)
       : []
   }, [selectedAssetNetwork, accounts])
 
-  const needsAccount = React.useMemo(() => {
-    return selectedAsset && accountsForSelectedAssetNetwork.length < 1
+  const needsAccount: boolean = React.useMemo(() => {
+    return !!selectedAsset && accountsForSelectedAssetNetwork.length < 1
   }, [selectedAsset, accountsForSelectedAssetNetwork.length])
 
-  const accountListSearchResults = React.useMemo(() => {
+  const accountListSearchResults: WalletAccountType[] = React.useMemo(() => {
     if (accountSearchText === '') {
       return accountsForSelectedAssetNetwork
     }
@@ -119,7 +118,7 @@ export const FundWalletScreen = () => {
     })
   }, [accountSearchText, accountsForSelectedAssetNetwork])
 
-  const networksFilterOptions = React.useMemo(() => {
+  const networksFilterOptions: BraveWallet.NetworkInfo[] = React.useMemo(() => {
     return [AllNetworksOption, ...buyAssetNetworks]
   }, [buyAssetNetworks])
 

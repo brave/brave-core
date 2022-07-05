@@ -20,6 +20,7 @@ import { makeNetworkAsset } from '../../../options/asset-options'
 import {
   BraveWallet,
   SupportedTestNetworks,
+  UserAssetInfoType,
   WalletAccountType,
   WalletRoutes,
   WalletState
@@ -67,13 +68,11 @@ export const DepositFundsScreen = () => {
 
   // redux
   const dispatch = useDispatch()
-  const {
-    accounts,
-    selectedNetworkFilter,
-    selectedAccount,
-    fullTokenList,
-    networkList
-  } = useSelector(({ wallet }: { wallet: WalletState }) => wallet)
+  const accounts = useSelector(({ wallet }: { wallet: WalletState }) => wallet.accounts)
+  const selectedNetworkFilter = useSelector(({ wallet }: { wallet: WalletState }) => wallet.selectedNetworkFilter)
+  const selectedAccount = useSelector(({ wallet }: { wallet: WalletState }) => wallet.selectedAccount)
+  const fullTokenList = useSelector(({ wallet }: { wallet: WalletState }) => wallet.fullTokenList)
+  const networkList = useSelector(({ wallet }: { wallet: WalletState }) => wallet.networkList)
 
   // custom hooks
   const isMounted = useIsMounted()
@@ -85,12 +84,14 @@ export const DepositFundsScreen = () => {
   const [showAccountSearch, setShowAccountSearch] = React.useState<boolean>(false)
   const [accountSearchText, setAccountSearchText] = React.useState<string>('')
   const [qrCode, setQRCode] = React.useState<string>('')
-  const [selectedAsset, setSelectedAsset] = React.useState<BraveWallet.BlockchainToken | undefined>(undefined)
+  const [selectedAsset, setSelectedAsset] = React.useState<
+    BraveWallet.BlockchainToken | undefined
+  >(undefined)
 
   // memos
   const isNextStepEnabled = React.useMemo(() => !!selectedAsset, [selectedAsset])
 
-  const mainnetsList = React.useMemo(() =>
+  const mainnetsList: BraveWallet.NetworkInfo[] = React.useMemo(() =>
     networkList.filter(net => {
       // skip testnet & localhost chains
       return !SupportedTestNetworks.includes(net.chainId)
@@ -98,12 +99,12 @@ export const DepositFundsScreen = () => {
     [networkList]
   )
 
-  const mainnetNetworkAssetsList = React.useMemo(() => {
+  const mainnetNetworkAssetsList: BraveWallet.BlockchainToken[] = React.useMemo(() => {
     return mainnetsList
     .map(net => makeNetworkAsset(net))
   }, [networkList])
 
-  const fullAssetsList = React.useMemo(() => {
+  const fullAssetsList: BraveWallet.BlockchainToken[] = React.useMemo(() => {
     // separate BAT from other tokens in the list so they can be placed higher in the list
     const { bat, nonBat } = fullTokenList.reduce((acc, t) => {
       if (
@@ -123,7 +124,7 @@ export const DepositFundsScreen = () => {
     return [...mainnetNetworkAssetsList, ...bat, ...nonBat]
   }, [mainnetNetworkAssetsList, fullTokenList])
 
-  const assetsForFilteredNetwork = React.useMemo(() => {
+  const assetsForFilteredNetwork: UserAssetInfoType[] = React.useMemo(() => {
     const assets = selectedNetworkFilter.chainId === AllNetworksOption.chainId
       ? fullAssetsList
       : fullAssetsList.filter(({ chainId }) => selectedNetworkFilter.chainId === chainId)
@@ -131,23 +132,23 @@ export const DepositFundsScreen = () => {
     return assets.map(asset => ({ asset, assetBalance: '1' }))
   }, [selectedNetworkFilter.chainId, fullAssetsList])
 
-  const selectedAssetNetwork = React.useMemo(() => {
+  const selectedAssetNetwork: BraveWallet.NetworkInfo | undefined = React.useMemo(() => {
     return selectedAsset
       ? getNetworkInfo(selectedAsset.chainId, selectedAsset.coin, mainnetsList)
       : undefined
   }, [selectedAsset, mainnetsList])
 
-  const accountsForSelectedAssetNetwork = React.useMemo(() => {
+  const accountsForSelectedAssetNetwork: WalletAccountType[] = React.useMemo(() => {
     return selectedAssetNetwork
       ? accounts.filter(a => a.coin === selectedAssetNetwork.coin)
       : []
   }, [selectedAssetNetwork, accounts])
 
-  const needsAccount = React.useMemo(() => {
-    return selectedAsset && accountsForSelectedAssetNetwork.length < 1
+  const needsAccount: boolean = React.useMemo(() => {
+    return !!selectedAsset && accountsForSelectedAssetNetwork.length < 1
   }, [selectedAsset, accountsForSelectedAssetNetwork.length])
 
-  const accountListSearchResults = React.useMemo(() => {
+  const accountListSearchResults: WalletAccountType[] = React.useMemo(() => {
     if (accountSearchText === '') {
       return accountsForSelectedAssetNetwork
     }
@@ -157,7 +158,7 @@ export const DepositFundsScreen = () => {
     })
   }, [accountSearchText, accountsForSelectedAssetNetwork])
 
-  const depositTitleText = React.useMemo(() => {
+  const depositTitleText: string = React.useMemo(() => {
     const isNativeAsset = (
       selectedAsset?.coin === BraveWallet.CoinType.ETH &&
       !selectedAsset?.isErc20 &&
