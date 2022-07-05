@@ -1254,11 +1254,11 @@ public class BrowserViewController: UIViewController, BrowserViewControllerDeleg
 
   func updateTabsBarVisibility() {
     defer {
-      topToolbar?.line.isHidden = !tabsBar.view.isHidden
+      topToolbar?.line.isHidden = tabsBar?.view.isHidden == false
     }
 
     if tabManager.selectedTab == nil {
-      tabsBar.view.isHidden = true
+      tabsBar?.view.isHidden = true
       return
     }
 
@@ -1279,7 +1279,7 @@ public class BrowserViewController: UIViewController, BrowserViewControllerDeleg
       }
     }
 
-    let isShowing = !tabsBar.view.isHidden
+    let isShowing = tabsBar?.view.isHidden == false
     let shouldShow = shouldShowTabBar()
 
     if isShowing != shouldShow && presentedViewController == nil {
@@ -2632,7 +2632,7 @@ extension BrowserViewController: TabManagerDelegate {
           self.openBlankNewTab(attemptLocationFieldFocus: true, isPrivate: true)
         })
 
-      if (UIDevice.current.userInterfaceIdiom == .pad && tabsBar.view.isHidden) || (UIDevice.current.userInterfaceIdiom == .phone && toolbar == nil) {
+      if (UIDevice.current.userInterfaceIdiom == .pad && tabsBar?.view.isHidden == true) || (UIDevice.current.userInterfaceIdiom == .phone && toolbar == nil) {
         newTabMenuChildren.append(openNewPrivateTab)
       }
 
@@ -2733,8 +2733,8 @@ extension BrowserViewController: TabManagerDelegate {
           alert.addAction(closeAllAction)
           alert.addAction(cancelAction)
 
-          if let popoverPresentation = alert.popoverPresentationController {
-            let tabsButton = toolbar?.tabsButton ?? topToolbar.tabsButton
+          if let popoverPresentation = alert.popoverPresentationController,
+              let tabsButton = toolbar?.tabsButton ?? topToolbar?.tabsButton {
             popoverPresentation.sourceView = tabsButton
             popoverPresentation.sourceRect =
               .init(x: tabsButton.frame.width / 2, y: tabsButton.frame.height, width: 1, height: 1)
@@ -2753,7 +2753,7 @@ extension BrowserViewController: TabManagerDelegate {
     let closeTabMenu = UIMenu(title: "", options: .displayInline, children: closeTabMenuChildren)
 
     toolbar?.tabsButton.menu = UIMenu(title: "", identifier: nil, children: [closeTabMenu, duplicateTabMenu, bookmarkMenu, newTabMenu])
-    topToolbar.tabsButton.menu = UIMenu(title: "", identifier: nil, children: [closeTabMenu, duplicateTabMenu, bookmarkMenu, newTabMenu])
+    topToolbar?.tabsButton.menu = UIMenu(title: "", identifier: nil, children: [closeTabMenu, duplicateTabMenu, bookmarkMenu, newTabMenu])
 
     // Update Actions for Add-Tab Button
     toolbar?.addTabButton.menu = UIMenu(title: "", identifier: nil, children: [addTabMenu])
