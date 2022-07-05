@@ -29,11 +29,12 @@ absl::optional<base::Value::List> GetParamsList(const std::string& json) {
   if (!json_value || !json_value->is_dict())
     return absl::nullopt;
 
-  base::Value* params = json_value->FindListPath(brave_wallet::kParams);
-  if (!params || !params->is_list())
+  auto& value = json_value->GetDict();
+  auto* params = value.FindListByDottedPath(brave_wallet::kParams);
+  if (!params)
     return absl::nullopt;
 
-  return std::move(*params).GetList().Clone();
+  return std::move(*params);
 }
 
 absl::optional<base::Value> GetObjectFromParamsList(const std::string& json) {
@@ -41,7 +42,7 @@ absl::optional<base::Value> GetObjectFromParamsList(const std::string& json) {
   if (!list || list->size() != 1 || !(*list)[0].is_dict())
     return absl::nullopt;
 
-  return (*list)[0].Clone();
+  return std::move((*list)[0]);
 }
 
 absl::optional<base::Value> GetParamsDict(const std::string& json) {
@@ -63,31 +64,31 @@ brave_wallet::mojom::TxDataPtr ValueToTxData(const base::Value& tx_value,
                                              std::string* from_out) {
   CHECK(from_out);
   auto tx_data = brave_wallet::mojom::TxData::New();
-  const base::DictionaryValue* params_dict = nullptr;
-  if (!tx_value.GetAsDictionary(&params_dict) || !params_dict)
+  const base::Value::Dict* params_dict = tx_value.GetIfDict();
+  if (!params_dict)
     return nullptr;
 
-  const std::string* from = params_dict->FindStringKey("from");
+  const std::string* from = params_dict->FindString("from");
   if (from)
     *from_out = *from;
 
-  const std::string* to = params_dict->FindStringKey("to");
+  const std::string* to = params_dict->FindString("to");
   if (to)
     tx_data->to = *to;
 
-  const std::string* gas = params_dict->FindStringKey("gas");
+  const std::string* gas = params_dict->FindString("gas");
   if (gas)
     tx_data->gas_limit = *gas;
 
-  const std::string* gas_price = params_dict->FindStringKey("gasPrice");
+  const std::string* gas_price = params_dict->FindString("gasPrice");
   if (gas_price)
     tx_data->gas_price = *gas_price;
 
-  const std::string* value = params_dict->FindStringKey("value");
+  const std::string* value = params_dict->FindString("value");
   if (value)
     tx_data->value = *value;
 
-  const std::string* data = params_dict->FindStringKey("data");
+  const std::string* data = params_dict->FindString("data");
   if (data) {
     // If data is specified it's best to make sure it's valid
     std::vector<uint8_t> bytes;
@@ -101,7 +102,7 @@ brave_wallet::mojom::TxDataPtr ValueToTxData(const base::Value& tx_value,
 }
 
 // null request ID when unspecified is expected
-const base::Value kDefaultRequestIdWhenUnspecified("1");
+const char kDefaultRequestIdWhenUnspecified[] = "1";
 const char kRequestJsonRPC[] = "2.0";
 
 }  // namespace
@@ -133,17 +134,16 @@ mojom::TxData1559Ptr ParseEthSendTransaction1559Params(const std::string& json,
     return nullptr;
 
   tx_data->base_data = std::move(base_data_ret);
-  const base::DictionaryValue* params_dict = nullptr;
-  if (!param_obj->GetAsDictionary(&params_dict) || !params_dict)
+  const base::Value::Dict* params_dict = param_obj->GetIfDict();
+  if (!params_dict)
     return nullptr;
 
   const std::string* max_priority_fee_per_gas =
-      params_dict->FindStringKey("maxPriorityFeePerGas");
+      params_dict->FindString("maxPriorityFeePerGas");
   if (max_priority_fee_per_gas)
     tx_data->max_priority_fee_per_gas = *max_priority_fee_per_gas;
 
-  const std::string* max_fee_per_gas =
-      params_dict->FindStringKey("maxFeePerGas");
+  const std::string* max_fee_per_gas = params_dict->FindString("maxFeePerGas");
   if (max_fee_per_gas)
     tx_data->max_fee_per_gas = *max_fee_per_gas;
 
@@ -198,13 +198,13 @@ bool GetEthJsonRequestInfo(const std::string& json,
     return false;
   }
 
-  const base::DictionaryValue* response_dict;
-  if (!records_v->GetAsDictionary(&response_dict)) {
+  const base::Value::Dict* response_dict = records_v->GetIfDict();
+  if (!response_dict) {
     return false;
   }
 
   if (id) {
-    const base::Value* found_id = response_dict->FindPath(kId);
+    const base::Value* found_id = response_dict->FindByDottedPath(kId);
     if (found_id)
       *id = found_id->Clone();
     else
@@ -212,14 +212,15 @@ bool GetEthJsonRequestInfo(const std::string& json,
   }
 
   if (method) {
-    const std::string* found_method = response_dict->FindStringPath(kMethod);
+    const std::string* found_method =
+        response_dict->FindStringByDottedPath(kMethod);
     if (!found_method)
       return false;
     *method = *found_method;
   }
 
   if (params) {
-    const base::Value* found_params = response_dict->FindListPath(kParams);
+    const auto* found_params = response_dict->FindListByDottedPath(kParams);
     if (!found_params)
       return false;
     base::JSONWriter::Write(*found_params, params);
@@ -239,17 +240,16 @@ bool NormalizeEthRequest(const std::string& input_json,
   if (!records_v)
     return false;
 
-  base::DictionaryValue* out_dict;
-  if (!records_v->GetAsDictionary(&out_dict))
+  base::Value::Dict* out_dict = records_v->GetIfDict();
+  if (!out_dict)
     return false;
 
-  const base::Value* found_id = out_dict->FindPath(kId);
+  const base::Value* found_id = out_dict->FindByDottedPath(kId);
   if (!found_id) {
-    std::ignore =
-        out_dict->SetPath("id", kDefaultRequestIdWhenUnspecified.Clone());
+    std::ignore = out_dict->Set("id", kDefaultRequestIdWhenUnspecified);
   }
 
-  std::ignore = out_dict->SetStringPath("jsonrpc", kRequestJsonRPC);
+  std::ignore = out_dict->Set("jsonrpc", kRequestJsonRPC);
   base::JSONWriter::Write(*out_dict, output_json);
 
   return true;
@@ -428,18 +428,21 @@ bool ParseEthSignTypedDataParams(const std::string& json,
   auto typed_data = base::JSONReader::Read(
       *typed_data_str,
       base::JSON_PARSE_CHROMIUM_EXTENSIONS | base::JSON_ALLOW_TRAILING_COMMAS);
-  if (!typed_data || !typed_data->is_dict())
+  if (!typed_data)
+    return false;
+  auto* dict = typed_data->GetIfDict();
+  if (!dict)
     return false;
 
-  const std::string* primary_type = typed_data->FindStringKey("primaryType");
+  const std::string* primary_type = dict->FindString("primaryType");
   if (!primary_type)
     return false;
 
-  const base::Value* domain = typed_data->FindKey("domain");
+  base::Value* domain = dict->Find("domain");
   if (!domain)
     return false;
 
-  const base::Value* message = typed_data->FindKey("message");
+  const base::Value* message = dict->Find("message");
   if (!message)
     return false;
 
@@ -447,7 +450,7 @@ bool ParseEthSignTypedDataParams(const std::string& json,
   if (!base::JSONWriter::Write(*message, message_out))
     return false;
 
-  const base::Value* types = typed_data->FindKey("types");
+  const base::Value* types = dict->Find("types");
   if (!types)
     return false;
   std::unique_ptr<EthSignTypedDataHelper> helper =
@@ -463,7 +466,7 @@ bool ParseEthSignTypedDataParams(const std::string& json,
   *domain_hash_out = *domain_hash;
   *primary_hash_out = *primary_hash;
 
-  *domain_out = domain->Clone();
+  *domain_out = std::move(*domain);
 
   return true;
 }
@@ -481,15 +484,18 @@ bool ParseEthDecryptData(const std::string& json,
   // }
   auto obj = base::JSONReader::Read(json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
                                               base::JSON_ALLOW_TRAILING_COMMAS);
-  if (!obj || !obj->is_dict())
+  if (!obj)
+    return false;
+  auto* dict = obj->GetIfDict();
+  if (!dict)
     return false;
 
-  const std::string* version_str = obj->FindStringKey("version");
+  const std::string* version_str = dict->FindString("version");
   if (!version_str)
     return false;
   *version = *version_str;
 
-  const std::string* nonce_str = obj->FindStringKey("nonce");
+  const std::string* nonce_str = dict->FindString("nonce");
   if (!nonce_str)
     return false;
   std::string decoded_nonce;
@@ -498,7 +504,7 @@ bool ParseEthDecryptData(const std::string& json,
   *nonce = std::vector<uint8_t>(decoded_nonce.begin(), decoded_nonce.end());
 
   const std::string* ephemeral_public_key_str =
-      obj->FindStringKey("ephemPublicKey");
+      dict->FindString("ephemPublicKey");
   if (!ephemeral_public_key_str)
     return false;
   std::string ephemeral_public_key_decoded;
@@ -508,7 +514,7 @@ bool ParseEthDecryptData(const std::string& json,
   *ephemeral_public_key = std::vector<uint8_t>(
       ephemeral_public_key_decoded.begin(), ephemeral_public_key_decoded.end());
 
-  const std::string* ciphertext_str = obj->FindStringKey("ciphertext");
+  const std::string* ciphertext_str = dict->FindString("ciphertext");
   if (!ciphertext_str)
     return false;
   std::string decoded_ciphertext;
@@ -528,7 +534,7 @@ bool ParseSwitchEthereumChainParams(const std::string& json,
   if (!param_obj || !param_obj->is_dict())
     return false;
 
-  const std::string* chain_id_str = param_obj->FindStringKey("chainId");
+  const std::string* chain_id_str = param_obj->GetDict().FindString("chainId");
   if (!chain_id_str)
     return false;
 
@@ -560,7 +566,8 @@ bool ParseWalletWatchAssetParams(const std::string& json,
     return false;
   }
 
-  const std::string* type = params.value().FindStringKey("type");
+  const auto& dict = params->GetDict();
+  const std::string* type = dict.FindString("type");
   if (!type) {
     *error_message = "type parameter is required";
     return false;
@@ -572,13 +579,13 @@ bool ParseWalletWatchAssetParams(const std::string& json,
     return false;
   }
 
-  const base::Value* options_dict = params.value().FindDictKey("options");
+  const auto* options_dict = dict.FindDict("options");
   if (!options_dict) {
     *error_message = "options parameter is required";
     return false;
   }
 
-  const std::string* address = options_dict->FindStringKey("address");
+  const std::string* address = options_dict->FindString("address");
   if (!address) {
     *error_message = "address parameter is required";
     return false;
@@ -591,7 +598,7 @@ bool ParseWalletWatchAssetParams(const std::string& json,
     return false;
   }
 
-  const std::string* symbol = options_dict->FindStringKey("symbol");
+  const std::string* symbol = options_dict->FindString("symbol");
   if (!symbol) {
     *error_message = "symbol parameter is required";
     return false;
@@ -610,7 +617,7 @@ bool ParseWalletWatchAssetParams(const std::string& json,
   // Allow decimals in both number and string for compability.
   // EIP747 specifies the type of decimals number, but websites like coingecko
   // uses string.
-  const base::Value* decimals_value = options_dict->FindKey("decimals");
+  const base::Value* decimals_value = options_dict->Find("decimals");
   if (!decimals_value ||
       (!decimals_value->is_int() && !decimals_value->is_string())) {
     *error_message = "decimals parameter is required.";
@@ -635,7 +642,7 @@ bool ParseWalletWatchAssetParams(const std::string& json,
   }
 
   std::string logo;
-  const std::string* image = options_dict->FindStringKey("image");
+  const std::string* image = options_dict->FindString("image");
   if (image) {
     GURL url = GURL(*image);
     if (url.is_valid() && (url.SchemeIsHTTPOrHTTPS() ||
