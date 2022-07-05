@@ -1292,7 +1292,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
     }
 
     public void updateWalletBadgeVisibility(boolean visible) {
-        assert mBraveWalletBadge!=null;
+        assert mBraveWalletBadge != null;
         mBraveWalletBadge.setVisibility(visible ? View.VISIBLE : View.GONE);
     }
 
