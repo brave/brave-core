@@ -697,6 +697,12 @@
   <message name="IDS_SETTINGS_TOR_APPLY_CHANGES_BUTTON" desc="">
     Apply changes
   </message>
+  <message name="IDS_SETTINGS_TOR_REQUESTED_BRIDGES_PLACEHOLDER" desc="">
+    Click on 'Request a New Bridge...' to get bridges
+  </message>
+  <message name="IDS_SETTINGS_TOR_PROVIDED_BRIDGES_PLACEHOLDER" desc="">
+    Type address:port (one per line)
+  </message>
   <message name="IDS_SETTINGS_TOR_REQUEST_BRIDGE_DIALOG_TITLE" desc="">
     Request Bridge
   </message>
@@ -704,7 +710,7 @@
     Contacting BridgeDB. Please wait.
   </message>
   <message name="IDS_SETTINGS_TOR_REQUEST_BRIDGE_DIALOG_SOLVE" desc="">
-    Solve the CAPTHCA to request a bridge.
+    Solve the CAPTCHA to request a bridge.
   </message>
   <message name="IDS_SETTINGS_TOR_REQUEST_BRIDGE_DIALOG_ERROR" desc="">
     Can't request a CAPTCHA. Try again later.

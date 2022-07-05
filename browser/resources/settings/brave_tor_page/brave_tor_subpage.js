@@ -5,12 +5,13 @@
 
 import { html, PolymerElement } from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
 import { WebUIListenerMixin } from 'chrome://resources/js/web_ui_listener_mixin.js'
+import { I18nMixin } from 'chrome://resources/js/i18n_mixin.js';
 import { RouteObserverMixin } from '../router.js'
 import { PrefsMixin } from '../prefs/prefs_mixin.js'
 import { BraveTorBrowserProxyImpl } from './brave_tor_browser_proxy.js'
 import './brave_tor_bridges_dialog.js'
 
-const SettingBraveTorPageElementBase = RouteObserverMixin(WebUIListenerMixin(PrefsMixin(PolymerElement)))
+const SettingBraveTorPageElementBase = I18nMixin(RouteObserverMixin(WebUIListenerMixin(PrefsMixin(PolymerElement))))
 
 const Usage = Object.freeze({
   NOT_USED: 0,
@@ -36,7 +37,10 @@ class SettingsBraveTorPageElement extends SettingBraveTorPageElementBase {
     return {
       loadedConfig_: Object,
 
-      useBridges_: Number,
+      useBridges_: {
+        type: Number,
+        notify: true
+      },
 
       useBridgesValue_: {
         type: String,
@@ -78,6 +82,24 @@ class SettingsBraveTorPageElement extends SettingBraveTorPageElementBase {
         notify: true,
       },
 
+      shouldShowBridgesGroup_: {
+        type: Boolean,
+        value: false,
+        computed: 'computeShouldShowBridgesGroup_(isUsingBridges_, torEnabledPref_.value)'
+      },
+
+      requestedBridgesPlaceholder_: {
+        type: String,
+        value: '',
+        computed: 'computeRequestedBridgesPlaceholder_(useBridges_, providedBridges_)'
+      },
+
+      providedBridgesPlaceholder_: {
+        type: String,
+        value: '',
+        computed: 'computeProvidedBridgesPlaceholder_(useBridges_, providedBridges_)'
+      },
+
       disableTorOption_: Boolean,
 
       torEnabledPref_: {
@@ -93,7 +115,7 @@ class SettingsBraveTorPageElement extends SettingBraveTorPageElementBase {
 
       isConfigChanged_: {
         type: Boolean,
-        computed: 'computeIsConfigChanged_(useBridges_, builtinBridges_, requestedBridges_, providedBridges_, loadedConfig_)',
+        computed: 'computeIsConfigChanged_(useBridges_, builtinBridges_, requestedBridges_, providedBridges_, loadedConfig_, shouldShowBridgesGroup_)',
         value: false,
         notify: true
       }
@@ -103,15 +125,14 @@ class SettingsBraveTorPageElement extends SettingBraveTorPageElementBase {
   browserProxy_ = BraveTorBrowserProxyImpl.getInstance()
 
   ready() {
-    super.ready()    
+    super.ready()
     this.browserProxy_.getBridgesConfig().then((config) => {
       this.loadedConfig_ = config
+      this.isUsingBridges_ = config.use_bridges != Usage.NOT_USED
       this.useBridges_ = config.use_bridges
       this.builtinBridges_ = config.use_builtin_bridges
       this.requestedBridges_ = config.requested_bridges.join('\n')
       this.providedBridges_ = config.provided_bridges.join('\n')
-
-      this.isUsingBridges_ = this.useBridges_ != Usage.NOT_USED
     })
 
     // PrefControlMixin checks for a pref being valid, so have to fake it,
@@ -131,8 +152,8 @@ class SettingsBraveTorPageElement extends SettingBraveTorPageElementBase {
     const bridgesConfig = {
       use_bridges: this.useBridges_,
       use_builtin_bridges: Number.parseInt(this.builtinBridges_, 10),
-      requested_bridges: this.requestedBridges_.split(/\r\n|\r|\n/),
-      provided_bridges: this.providedBridges_.split(/\r\n|\r|\n/),
+      requested_bridges: this.requestedBridges_.split(/\r\n|\r|\n/).filter(Boolean),
+      provided_bridges: this.providedBridges_.split(/\r\n|\r|\n/).filter(Boolean),
     }
     return bridgesConfig
   }
@@ -189,17 +210,47 @@ class SettingsBraveTorPageElement extends SettingBraveTorPageElementBase {
         const val2 = object2[key]
         const areObjects = isObject(val1) && isObject(val2)
         if ((areObjects && !matches(val1, val2)) ||
-            (!areObjects && val1 !== val2)) {
+          (!areObjects && val1 !== val2)) {
           return false
         }
       }
       return true
     }
 
-    if (!this.loadedConfig_)
+    if (!this.loadedConfig_ || !this.shouldShowBridgesGroup_)
       return false
 
+    const currentConfig = this.getCurrentConfig_()
+    if ((currentConfig.use_bridges == Usage.USE_PROVIDED &&
+      currentConfig.provided_bridges.length == 0) ||
+      (currentConfig.use_bridges == Usage.USE_REQUESTED &&
+        currentConfig.requested_bridges.length == 0)) {
+      return false
+    }
+
     return !matches(this.getCurrentConfig_(), this.loadedConfig_)
+  }
+
+  computeRequestedBridgesPlaceholder_() {
+    if (this.useBridges_ == Usage.USE_REQUESTED) {
+      return this.i18n('torRequestedBridgesPlaceholder')
+    }
+    return ''
+  }
+
+  computeProvidedBridgesPlaceholder_() {
+    if (this.useBridges_ == Usage.USE_PROVIDED) {
+      return this.i18n('torProvidedBridgesPlaceholder')
+    }
+    return ''
+  }
+
+  computeShouldShowBridgesGroup_() {
+    const val = this.isUsingBridges_ && this.torEnabledPref_.value
+    if (val) {
+
+    }
+    return val
   }
 
   builtInTypeEqual_(item, selection) {

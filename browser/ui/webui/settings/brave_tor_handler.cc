@@ -336,7 +336,7 @@ void BraveTorHandler::IsTorEnabled(const base::Value::List& args) {
 }
 
 void BraveTorHandler::OnTorEnabledChanged() {
-  if (!IsJavascriptAllowed()) {
+  if (IsJavascriptAllowed()) {
     FireWebUIListener("tor-enabled-changed",
                       base::Value(!TorProfileServiceFactory::IsTorDisabled()));
   }
