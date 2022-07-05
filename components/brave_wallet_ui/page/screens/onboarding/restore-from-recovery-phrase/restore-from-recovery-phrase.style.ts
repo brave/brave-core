@@ -8,7 +8,6 @@ import styled, { css } from 'styled-components'
 export const RecoveryBaseCss = css`
   box-sizing: border-box;
   width: 100%;
-  background: #FFFFFF;
   border: none;
   border-radius: 4px;
   text-align: left;
@@ -25,7 +24,9 @@ export const RecoveryBaseCss = css`
   font-weight: 400;
   font-size: 14px;
   letter-spacing: 0.01em;
+
   color: ${(p) => p.theme.color.text01};
+  background-color: ${(p) => p.theme.color.background02};
 `
 
 export const RecoveryTextArea = styled.textarea`
