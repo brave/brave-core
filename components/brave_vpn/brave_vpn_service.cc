@@ -11,6 +11,8 @@
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "base/strings/utf_string_conversions.h"
+#include "brave/components/brave_vpn/pref_names.h"
+#include "brave/components/p3a_utils/feature_usage.h"
 #include "brave/components/skus/browser/skus_utils.h"
 #include "net/base/network_change_notifier.h"
 #include "net/cookies/cookie_inclusion_status.h"
@@ -28,9 +30,7 @@
 #include "brave/components/brave_vpn/brave_vpn_constants.h"
 #include "brave/components/brave_vpn/brave_vpn_service_helper.h"
 #include "brave/components/brave_vpn/brave_vpn_utils.h"
-#include "brave/components/brave_vpn/pref_names.h"
 #include "brave/components/brave_vpn/switches.h"
-#include "brave/components/p3a_utils/feature_usage.h"
 #include "brave/components/version_info/version_info.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
@@ -1053,6 +1053,12 @@ void BraveVpnService::RecordP3A(bool new_usage) {
   p3a_utils::RecordFeatureLastUsageTimeMetric(
       local_prefs_, prefs::kBraveVPNLastUseTime, kLastUsageTimeHistogramName);
 }
+
+#if BUILDFLAG(IS_ANDROID)
+void BraveVpnService::RecordConnectionForP3A() {
+  RecordP3A(true);
+}
+#endif
 
 void BraveVpnService::SetPurchasedState(const std::string& env,
                                         PurchasedState state) {

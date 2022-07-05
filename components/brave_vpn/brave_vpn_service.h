@@ -43,9 +43,10 @@ namespace network {
 class SharedURLLoaderFactory;
 }  // namespace network
 
+class PrefService;
+
 #if !BUILDFLAG(IS_ANDROID)
 
-class PrefService;
 class BraveAppMenuBrowserTest;
 class BraveBrowserCommandControllerTest;
 
@@ -159,6 +160,9 @@ class BraveVpnService :
   void GetSubscriberCredentialV12(ResponseCallback callback,
                                   const std::string& payments_environment,
                                   const std::string& monthly_pass);
+#if BUILDFLAG(IS_ANDROID)
+  void RecordConnectionForP3A();
+#endif
 
  private:
 #if !BUILDFLAG(IS_ANDROID)
