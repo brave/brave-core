@@ -14,12 +14,14 @@ import {
   WalletState,
   PageState,
   SupportedTestNetworks,
-  WalletRoutes
+  WalletRoutes,
+  PriceDataObjectType
 } from '../../../../constants/types'
 import { getLocale } from '../../../../../common/locale'
 
 // Utils
 import { getTokensCoinType } from '../../../../utils/network-utils'
+import { formatAsDouble } from '../../../../utils/string-utils'
 import Amount from '../../../../utils/amount'
 
 // Options
@@ -123,7 +125,7 @@ export const PortfolioOverview = () => {
   }, [userVisibleTokensInfo, selectedNetworkFilter, fullAssetBalance, networkList])
 
   // This will scrape all of the user's accounts and combine the fiat value for every asset
-  const fullPortfolioFiatBalance = React.useMemo(() => {
+  const fullPortfolioFiatBalance = React.useMemo((): string => {
     const visibleAssetOptions = userAssetList
       .filter((token) =>
         token.asset.visible &&
@@ -143,14 +145,19 @@ export const PortfolioOverview = () => {
       return a.plus(b)
     })
     return grandTotal.formatAsFiat(defaultCurrencies.fiat)
-  }, [userAssetList, computeFiatAmount])
+  }, [userAssetList, defaultCurrencies, computeFiatAmount])
 
-  const priceHistory = React.useMemo(() => {
-    if (parseFloat(fullPortfolioFiatBalance) === 0) {
+  const isZeroBalance = React.useMemo((): boolean => {
+    // In some cases we need to check if the balance is zero
+    return parseFloat(formatAsDouble(fullPortfolioFiatBalance)) === 0
+  }, [fullPortfolioFiatBalance])
+
+  const priceHistory = React.useMemo((): PriceDataObjectType[] => {
+    if (isZeroBalance) {
       return []
     }
     return portfolioPriceHistory
-  }, [portfolioPriceHistory, fullPortfolioFiatBalance])
+  }, [portfolioPriceHistory, isZeroBalance])
 
   // state
   const [filteredAssetList, setfilteredAssetList] = React.useState<UserAssetInfoType[]>(userAssetList)
@@ -226,8 +233,8 @@ export const PortfolioOverview = () => {
         isAsset={false}
         priceData={priceHistory}
         onUpdateBalance={onUpdateBalance}
-        isLoading={parseFloat(fullPortfolioFiatBalance) === 0 ? false : isFetchingPortfolioPriceHistory}
-        isDisabled={parseFloat(fullPortfolioFiatBalance) === 0}
+        isLoading={isZeroBalance ? false : isFetchingPortfolioPriceHistory}
+        isDisabled={isZeroBalance}
       />
 
       <TokenLists
