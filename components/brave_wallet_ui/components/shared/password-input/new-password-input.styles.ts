@@ -11,11 +11,6 @@ import { ToggleVisibilityButton } from '../../shared/style'
 // svgs
 import CheckmarkSvg from '../../../assets/svg-icons/big-checkmark.svg'
 
-interface StyleProps {
-  hasError: boolean
-  showPassword?: boolean
-}
-
 export const StyledWrapper = styled.div`
   display: flex;
   align-items: flex-start;
@@ -39,7 +34,10 @@ export const InputWrapper = styled.div`
   }
 `
 
-export const Input = styled.input<StyleProps>`
+export const Input = styled.input<{
+  hasError: boolean
+  showPassword?: boolean
+}>`
   box-sizing: border-box;
   width: 100%;
   outline: none;
