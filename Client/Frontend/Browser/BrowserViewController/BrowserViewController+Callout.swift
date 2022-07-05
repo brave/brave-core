@@ -57,9 +57,9 @@ extension BrowserViewController {
       self?.presentCorrespondingVPNViewController()
     }
 
-    present(popup, animated: false)
     isOnboardingOrFullScreenCalloutPresented = true
     showedPopup.value = true
+    present(popup, animated: false)
   }
 
   func presentDefaultBrowserScreenCallout() {
