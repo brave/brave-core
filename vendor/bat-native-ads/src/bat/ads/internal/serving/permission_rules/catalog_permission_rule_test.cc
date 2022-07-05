@@ -25,7 +25,7 @@ class BatAdsCatalogPermissionRuleIntegrationTest : public UnitTestBase {
   }
 
   void SetUpMocks() override {
-    const URLEndpoints endpoints = {
+    const URLEndpointMap endpoints = {
         {"/v9/catalog", {{net::HTTP_OK, "/catalog.json"}}}};
     MockUrlRequest(ads_client_mock_, endpoints);
   }

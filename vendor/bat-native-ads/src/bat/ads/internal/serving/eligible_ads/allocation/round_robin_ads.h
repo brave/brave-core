@@ -11,9 +11,9 @@
 #include <map>
 #include <string>
 
-#include "bat/ads/internal/creatives/creative_ad_info.h"
-
 namespace ads {
+
+struct CreativeAdInfo;
 
 template <typename T>
 T FilterSeenAds(const T& ads, const std::map<std::string, bool>& seen_ads) {

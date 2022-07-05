@@ -13,6 +13,10 @@
 namespace ads {
 namespace privacy {
 
+namespace cbr {
+class Token;
+}  // namespace cbr
+
 class TokenGenerator : public TokenGeneratorInterface {
  public:
   TokenGenerator();

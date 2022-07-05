@@ -8,6 +8,7 @@
 #include <memory>
 #include <string>
 
+#include "bat/ads/internal/account/deposits/deposit_info.h"
 #include "bat/ads/internal/account/deposits/deposits_database_table.h"
 #include "bat/ads/internal/ad_events/ad_event_unittest_util.h"
 #include "bat/ads/internal/ad_events/ad_events_database_table.h"
@@ -19,6 +20,7 @@
 #include "bat/ads/internal/creatives/search_result_ads/search_result_ad_info.h"
 #include "bat/ads/internal/serving/permission_rules/permission_rules_unittest_util.h"
 #include "bat/ads/internal/serving/serving_features.h"
+#include "url/gurl.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 

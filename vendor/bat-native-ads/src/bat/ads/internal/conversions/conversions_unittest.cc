@@ -21,6 +21,7 @@
 #include "bat/ads/internal/resources/behavioral/conversions/conversions_info.h"
 #include "bat/ads/internal/resources/behavioral/conversions/conversions_resource.h"
 #include "bat/ads/pref_names.h"
+#include "url/gurl.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 

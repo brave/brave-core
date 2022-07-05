@@ -10,11 +10,12 @@
 #include <string>
 
 #include "bat/ads/internal/base/logging_util.h"
-#include "bat/ads/internal/creatives/creative_ad_info.h"
-#include "bat/ads/internal/deprecated/client/client_state_manager.h"
 #include "bat/ads/internal/serving/eligible_ads/allocation/round_robin_advertisers.h"
 
 namespace ads {
+
+class ClientStateManager;
+struct CreativeAdInfo;
 
 template <typename T>
 T FilterSeenAdvertisersAndRoundRobinIfNeeded(const T& ads, const AdType& type) {

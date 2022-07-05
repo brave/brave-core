@@ -59,7 +59,7 @@ void MockLoadDataResource(const std::unique_ptr<AdsClientMock>& mock);
 void MockSave(const std::unique_ptr<AdsClientMock>& mock);
 
 void MockUrlRequest(const std::unique_ptr<AdsClientMock>& mock,
-                    const URLEndpoints& endpoints);
+                    const URLEndpointMap& endpoints);
 
 void MockRunDBTransaction(const std::unique_ptr<AdsClientMock>& mock,
                           const std::unique_ptr<Database>& database);

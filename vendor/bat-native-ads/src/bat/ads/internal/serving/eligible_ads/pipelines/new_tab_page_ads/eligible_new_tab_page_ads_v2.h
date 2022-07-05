@@ -8,7 +8,7 @@
 
 #include "bat/ads/internal/ad_events/ad_event_info_aliases.h"
 #include "bat/ads/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_info_aliases.h"
-#include "bat/ads/internal/serving/eligible_ads/eligible_ads_aliases.h"
+#include "bat/ads/internal/serving/eligible_ads/eligible_ads_callback.h"
 #include "bat/ads/internal/serving/eligible_ads/exclusion_rules/exclusion_rule_aliases.h"
 #include "bat/ads/internal/serving/eligible_ads/pipelines/new_tab_page_ads/eligible_new_tab_page_ads_base.h"
 

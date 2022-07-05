@@ -19,9 +19,7 @@
 #include "base/task/cancelable_task_tracker.h"
 #include "base/task/sequenced_task_runner.h"
 #include "base/timer/timer.h"
-#include "bat/ads/ads.h"
 #include "bat/ads/ads_client.h"
-#include "bat/ads/database.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
 #include "bat/ledger/mojom_structs.h"
 #include "brave/browser/brave_ads/background_helper/background_helper.h"
@@ -42,8 +40,16 @@
 #include "brave/components/brave_adaptive_captcha/brave_adaptive_captcha_service.h"
 #endif
 
+class GURL;
+
 class NotificationDisplayService;
 class Profile;
+
+namespace ads {
+class Database;
+struct NewTabPageAdInfo;
+struct NotificationAdInfo;
+}  // namespace ads
 
 namespace base {
 class SequencedTaskRunner;

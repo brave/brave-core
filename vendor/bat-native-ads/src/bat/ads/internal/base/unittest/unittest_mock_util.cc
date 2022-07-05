@@ -316,7 +316,7 @@ void MockSave(const std::unique_ptr<AdsClientMock>& mock) {
 }
 
 void MockUrlRequest(const std::unique_ptr<AdsClientMock>& mock,
-                    const URLEndpoints& endpoints) {
+                    const URLEndpointMap& endpoints) {
   ON_CALL(*mock, UrlRequest(_, _))
       .WillByDefault(Invoke([endpoints](const mojom::UrlRequestPtr& url_request,
                                         UrlRequestCallback callback) {

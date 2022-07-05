@@ -5,6 +5,7 @@
 
 #include "bat/ads/internal/privacy/challenge_bypass_ristretto/blinded_token_unittest_util.h"
 
+#include "bat/ads/internal/privacy/challenge_bypass_ristretto/blinded_token.h"
 #include "bat/ads/internal/privacy/challenge_bypass_ristretto/challenge_bypass_ristretto_unittest_constants.h"
 
 namespace ads {

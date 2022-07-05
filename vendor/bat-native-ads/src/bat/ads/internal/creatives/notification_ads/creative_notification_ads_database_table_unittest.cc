@@ -10,6 +10,7 @@
 #include "bat/ads/internal/base/containers/container_util.h"
 #include "bat/ads/internal/base/unittest/unittest_base.h"
 #include "bat/ads/internal/base/unittest/unittest_time_util.h"
+#include "url/gurl.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 

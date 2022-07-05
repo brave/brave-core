@@ -11,7 +11,6 @@
 #include <vector>
 
 #include "bat/ads/ads_client.h"
-#include "bat/ads/notification_ad_info.h"
 #include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
 #include "mojo/public/cpp/bindings/associated_remote.h"
 #include "mojo/public/cpp/bindings/pending_associated_remote.h"
@@ -19,6 +18,10 @@
 namespace base {
 class Time;
 }  // namespace base
+
+namespace ads {
+struct NotificationAdInfo;
+}  // namespace ads
 
 namespace bat_ads {
 

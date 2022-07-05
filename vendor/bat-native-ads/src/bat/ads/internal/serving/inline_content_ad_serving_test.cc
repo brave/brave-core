@@ -33,7 +33,7 @@ class BatAdsInlineContentAdServingIntegrationTest : public UnitTestBase {
     CopyFileFromTestPathToTempPath("confirmations_with_unblinded_tokens.json",
                                    kConfirmationsFilename);
 
-    const URLEndpoints endpoints = {
+    const URLEndpointMap endpoints = {
         {"/v9/catalog", {{net::HTTP_OK, "/empty_catalog.json"}}},
         {// Get issuers request
          R"(/v1/issuers/)",

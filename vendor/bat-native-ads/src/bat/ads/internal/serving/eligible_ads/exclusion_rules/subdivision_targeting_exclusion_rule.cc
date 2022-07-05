@@ -12,6 +12,7 @@
 #include "base/strings/string_split.h"
 #include "base/strings/stringprintf.h"
 #include "bat/ads/internal/base/locale/subdivision_code_util.h"
+#include "bat/ads/internal/creatives/creative_ad_info.h"
 #include "bat/ads/internal/geographic/subdivision/subdivision_targeting.h"
 #include "bat/ads/internal/locale/locale_manager.h"
 

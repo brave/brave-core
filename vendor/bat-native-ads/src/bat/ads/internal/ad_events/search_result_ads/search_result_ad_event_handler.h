@@ -7,7 +7,7 @@
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_AD_EVENTS_SEARCH_RESULT_ADS_SEARCH_RESULT_AD_EVENT_HANDLER_H_
 
 #include "base/observer_list.h"
-#include "bat/ads/ads_aliases.h"
+#include "bat/ads/ads_callback.h"
 #include "bat/ads/internal/ad_events/search_result_ads/search_result_ad_event_handler_observer.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
 

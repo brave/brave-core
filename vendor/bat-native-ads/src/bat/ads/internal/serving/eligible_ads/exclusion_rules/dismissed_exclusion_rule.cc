@@ -10,6 +10,7 @@
 
 #include "base/strings/stringprintf.h"
 #include "base/time/time.h"
+#include "bat/ads/internal/creatives/creative_ad_info.h"
 #include "bat/ads/internal/serving/eligible_ads/exclusion_rules/exclusion_rule_features.h"
 
 namespace ads {

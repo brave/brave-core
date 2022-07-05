@@ -17,6 +17,7 @@
 #include "bat/ads/internal/features/epsilon_greedy_bandit_features.h"
 #include "bat/ads/internal/features/purchase_intent_features.h"
 #include "bat/ads/internal/features/text_classification_features.h"
+#include "bat/ads/internal/processors/behavioral/bandits/bandit_feedback_info.h"
 #include "bat/ads/internal/processors/behavioral/bandits/epsilon_greedy_bandit_processor.h"
 #include "bat/ads/internal/processors/behavioral/bandits/epsilon_greedy_bandit_segments.h"
 #include "bat/ads/internal/processors/behavioral/purchase_intent/purchase_intent_processor.h"
@@ -27,6 +28,7 @@
 #include "bat/ads/internal/serving/targeting/models/behavioral/bandits/epsilon_greedy_bandit_model_unittest_util.h"
 #include "bat/ads/internal/serving/targeting/user_model_builder.h"
 #include "bat/ads/internal/serving/targeting/user_model_info.h"
+#include "url/gurl.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 

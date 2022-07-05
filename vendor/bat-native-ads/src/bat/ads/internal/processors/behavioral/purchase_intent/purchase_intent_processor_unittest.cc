@@ -14,6 +14,7 @@
 #include "bat/ads/internal/resources/behavioral/purchase_intent/purchase_intent_resource.h"
 #include "bat/ads/internal/serving/targeting/models/behavioral/purchase_intent/purchase_intent_aliases.h"
 #include "bat/ads/internal/serving/targeting/models/behavioral/purchase_intent/purchase_intent_model.h"
+#include "url/gurl.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 

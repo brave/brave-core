@@ -46,6 +46,7 @@
 #include "bat/ads/internal/prefs/pref_manager.h"
 #include "bat/ads/internal/privacy/p2a/opportunities/p2a_opportunity.h"
 #include "bat/ads/internal/privacy/tokens/token_generator.h"
+#include "bat/ads/internal/processors/behavioral/bandits/bandit_feedback_info.h"
 #include "bat/ads/internal/processors/behavioral/bandits/epsilon_greedy_bandit_processor.h"
 #include "bat/ads/internal/processors/behavioral/purchase_intent/purchase_intent_processor.h"
 #include "bat/ads/internal/processors/contextual/text_classification/text_classification_processor.h"

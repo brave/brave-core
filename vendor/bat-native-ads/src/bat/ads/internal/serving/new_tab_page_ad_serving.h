@@ -9,7 +9,7 @@
 #include <memory>
 
 #include "base/observer_list.h"
-#include "bat/ads/ads_aliases.h"
+#include "bat/ads/ads_callback.h"
 #include "bat/ads/internal/segments/segments_aliases.h"
 #include "bat/ads/internal/serving/new_tab_page_ad_serving_observer.h"
 

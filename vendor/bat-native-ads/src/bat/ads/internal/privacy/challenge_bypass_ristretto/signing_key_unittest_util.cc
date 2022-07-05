@@ -6,6 +6,7 @@
 #include "bat/ads/internal/privacy/challenge_bypass_ristretto/signing_key_unittest_util.h"
 
 #include "bat/ads/internal/privacy/challenge_bypass_ristretto/challenge_bypass_ristretto_unittest_constants.h"
+#include "bat/ads/internal/privacy/challenge_bypass_ristretto/signing_key.h"
 
 namespace ads {
 namespace privacy {

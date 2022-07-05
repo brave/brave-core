@@ -134,7 +134,7 @@ bool ClientInfo::FromJson(const std::string& json) {
   if (document.HasMember("textClassificationProbabilitiesHistory")) {
     for (const auto& probabilities :
          document["textClassificationProbabilitiesHistory"].GetArray()) {
-      targeting::TextClassificationProbabilitiesMap new_probabilities;
+      targeting::TextClassificationProbabilityMap new_probabilities;
 
       for (const auto& probability :
            probabilities["textClassificationProbabilities"].GetArray()) {

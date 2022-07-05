@@ -7,9 +7,11 @@
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_AD_EVENTS_PROMOTED_CONTENT_ADS_PROMOTED_CONTENT_AD_EVENT_VIEWED_H_
 
 #include "bat/ads/internal/ad_events/ad_event_interface.h"
-#include "bat/ads/promoted_content_ad_info.h"
 
 namespace ads {
+
+struct PromotedContentAdInfo;
+
 namespace promoted_content_ads {
 
 class AdEventViewed final : public AdEventInterface<PromotedContentAdInfo> {

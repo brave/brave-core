@@ -12,7 +12,6 @@
 #include <vector>
 
 #include "bat/ads/internal/ad_events/ad_event_info_aliases.h"
-#include "bat/ads/internal/creatives/creative_ad_info.h"
 #include "bat/ads/internal/serving/eligible_ads/exclusion_rules/exclusion_rule_aliases.h"
 #include "bat/ads/internal/serving/eligible_ads/exclusion_rules/exclusion_rule_interface.h"
 
@@ -41,6 +40,7 @@ class SplitTestExclusionRule;
 class SubdivisionTargetingExclusionRule;
 class TotalMaxExclusionRule;
 class TransferredExclusionRule;
+struct CreativeAdInfo;
 
 class ExclusionRulesBase {
  public:

@@ -26,7 +26,7 @@ namespace processor {
 namespace {
 
 std::string GetTopSegmentFromPageProbabilities(
-    const targeting::TextClassificationProbabilitiesMap& probabilities) {
+    const targeting::TextClassificationProbabilityMap& probabilities) {
   DCHECK(!probabilities.empty());
 
   const auto iter = std::max_element(
@@ -65,7 +65,7 @@ void TextClassification::Process(const std::string& text) {
 
   ml::pipeline::TextProcessing* text_proc_pipeline = resource_->Get();
 
-  const targeting::TextClassificationProbabilitiesMap probabilities =
+  const targeting::TextClassificationProbabilityMap probabilities =
       text_proc_pipeline->ClassifyPage(text);
 
   if (probabilities.empty()) {

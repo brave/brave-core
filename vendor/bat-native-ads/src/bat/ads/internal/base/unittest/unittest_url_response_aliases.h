@@ -14,9 +14,9 @@
 
 namespace ads {
 
-using URLEndpointResponse = std::pair<int, std::string>;
-using URLEndpointResponses = std::vector<URLEndpointResponse>;
-using URLEndpoints = base::flat_map<std::string, URLEndpointResponses>;
+using URLEndpointResponsePair = std::pair<int, std::string>;
+using URLEndpointResponseList = std::vector<URLEndpointResponsePair>;
+using URLEndpointMap = base::flat_map<std::string, URLEndpointResponseList>;
 
 }  // namespace ads
 

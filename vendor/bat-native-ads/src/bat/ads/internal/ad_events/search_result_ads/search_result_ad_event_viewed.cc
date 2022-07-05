@@ -9,6 +9,7 @@
 #include "bat/ads/history_item_info.h"
 #include "bat/ads/internal/ad_events/ad_events.h"
 #include "bat/ads/internal/base/logging_util.h"
+#include "bat/ads/internal/creatives/search_result_ads/search_result_ad_info.h"
 #include "bat/ads/internal/history/history_manager.h"
 
 namespace ads {

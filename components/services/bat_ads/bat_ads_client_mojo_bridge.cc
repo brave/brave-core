@@ -9,6 +9,7 @@
 
 #include "base/logging.h"
 #include "base/time/time.h"
+#include "bat/ads/notification_ad_info.h"
 #include "mojo/public/cpp/bindings/sync_call_restrictions.h"
 
 namespace bat_ads {

@@ -6,11 +6,16 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ACCOUNT_STATEMENT_STATEMENT_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ACCOUNT_STATEMENT_STATEMENT_H_
 
-#include "bat/ads/internal/account/statement/statement_aliases.h"
+#include <functional>
 
 namespace ads {
 
-void BuildStatement(StatementCallback callback);
+struct StatementInfo;
+
+using BuildStatementCallback =
+    std::function<void(const bool, const StatementInfo&)>;
+
+void BuildStatement(BuildStatementCallback callback);
 
 }  // namespace ads
 

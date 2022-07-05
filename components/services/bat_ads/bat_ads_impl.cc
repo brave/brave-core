@@ -17,7 +17,10 @@
 #include "bat/ads/history_sort_types.h"
 #include "bat/ads/inline_content_ad_info.h"
 #include "bat/ads/new_tab_page_ad_info.h"
+#include "bat/ads/notification_ad_info.h"
+#include "bat/ads/statement_info.h"
 #include "brave/components/services/bat_ads/bat_ads_client_mojo_bridge.h"
+#include "url/gurl.h"
 
 using std::placeholders::_1;
 using std::placeholders::_2;

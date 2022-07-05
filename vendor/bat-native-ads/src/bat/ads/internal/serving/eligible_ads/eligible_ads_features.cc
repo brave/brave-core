@@ -18,7 +18,7 @@ namespace {
 constexpr char kFeatureName[] = "EligibleAds";
 constexpr char kFieldTrialParameterAdPredictorWeights[] =
     "ad_predictor_weights";
-const AdPredictorWeights kDefaultWeights = {
+const AdPredictorWeightList kDefaultWeights = {
     /* kDoesMatchIntentChildSegmentsIndex */ 1.0,
     /* kDoesMatchIntentParentSegmentsIndex */ 1.0,
     /* kDoesMatchInterestChildSegmentsIndex */ 1.0,
@@ -36,11 +36,11 @@ bool IsEligibleAdsEnabled() {
   return base::FeatureList::IsEnabled(kEligibleAds);
 }
 
-AdPredictorWeights GetAdPredictorWeights() {
+AdPredictorWeightList GetAdPredictorWeights() {
   const std::string param_value = GetFieldTrialParamValueByFeature(
       kEligibleAds, kFieldTrialParameterAdPredictorWeights);
 
-  AdPredictorWeights weights = ToAdPredictorWeights(param_value);
+  AdPredictorWeightList weights = ToAdPredictorWeights(param_value);
   if (weights.empty()) {
     weights = kDefaultWeights;
   }
