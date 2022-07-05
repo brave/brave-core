@@ -406,6 +406,13 @@ jboolean JNI_BravePrefServiceBridge_GetUseRewardsStagingServer(JNIEnv* env) {
       brave_rewards::prefs::kUseRewardsStagingServer);
 }
 
+base::android::ScopedJavaLocalRef<jstring>
+JNI_BravePrefServiceBridge_GetCaptchaId(JNIEnv* env) {
+  return base::android::ConvertUTF8ToJavaString(
+      env, GetOriginalProfile()->GetPrefs()->GetString(
+               "brave.rewards.scheduled_captcha.id"));
+}
+
 jboolean JNI_BravePrefServiceBridge_GetBooleanForContentSetting(JNIEnv* env,
                                                                 jint type) {
   HostContentSettingsMap* content_settings =

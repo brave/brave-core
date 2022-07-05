@@ -329,6 +329,8 @@ void Account::OnDidRefillUnblindedTokens() {
 void Account::OnCaptchaRequiredToRefillUnblindedTokens(
     const std::string& captcha_id) {
   const WalletInfo& wallet = GetWallet();
+  LOG(ERROR) << "BraveCaptcha"
+             << "Captcha Id : " << captcha_id;
   AdsClientHelper::GetInstance()->ShowScheduledCaptchaNotification(wallet.id,
                                                                    captcha_id);
 }

@@ -136,6 +136,9 @@ void BraveAdaptiveCaptchaService::ShowScheduledCaptcha(
   prefs_->SetString(kScheduledCaptchaPaymentId, payment_id);
   prefs_->SetString(kScheduledCaptchaId, captcha_id);
 
+  LOG(ERROR) << "BraveCaptcha"
+             << "Captcha Id : " << captcha_id << "payment Id : " << payment_id;
+
   if (delegate_) {
     delegate_->ShowScheduledCaptcha(payment_id, captcha_id);
     return;

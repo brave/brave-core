@@ -183,6 +183,10 @@ public class BravePrefServiceBridge {
         return BravePrefServiceBridgeJni.get().getUseRewardsStagingServer();
     }
 
+    public String getCaptchaId() {
+        return BravePrefServiceBridgeJni.get().getCaptchaId();
+    }
+
     public void setOldTrackersBlockedCount(Profile profile, long count) {
         BravePrefServiceBridgeJni.get().setOldTrackersBlockedCount(profile, count);
     }
@@ -368,5 +372,7 @@ public class BravePrefServiceBridge {
 
         void setShowNews(boolean value);
         boolean getShowNews();
+
+        String getCaptchaId();
     }
 }

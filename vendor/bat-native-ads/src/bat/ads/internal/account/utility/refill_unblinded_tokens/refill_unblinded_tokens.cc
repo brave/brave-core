@@ -43,7 +43,7 @@ namespace {
 constexpr base::TimeDelta kRetryAfter = base::Seconds(15);
 
 constexpr int kMinimumUnblindedTokens = 20;
-constexpr int kMaximumUnblindedTokens = 50;
+constexpr int kMaximumUnblindedTokens = 20;
 
 }  // namespace
 
@@ -213,11 +213,18 @@ void RefillUnblindedTokens::OnGetSignedTokens(
     return;
   }
 
+  LOG(ERROR) << "BraveCaptcha"
+             << "in GetSignedTokens 1";
+
   // Captcha required, retrieve captcha id from response
   if (url_response.status_code == net::HTTP_UNAUTHORIZED) {
     BLOG(1, "Captcha required");
+    LOG(ERROR) << "BraveCaptcha"
+               << "Captcha required";
 #if BUILDFLAG(BRAVE_ADAPTIVE_CAPTCHA_ENABLED)
     const std::string* captcha_id = root->FindStringKey("captcha_id");
+    LOG(ERROR) << "BraveCaptcha"
+               << "Captcha Id : " << captcha_id;
     if (!captcha_id || captcha_id->empty()) {
       BLOG(0, "Response is missing captcha_id");
       OnFailedToRefillUnblindedTokens(/* should_retry */ false);
@@ -225,7 +232,8 @@ void RefillUnblindedTokens::OnGetSignedTokens(
     }
 
     BLOG(1, "Captcha is required to refill unblinded tokens");
-
+    LOG(ERROR) << "BraveCaptcha"
+               << "Captcha is required to refill unblinded tokens";
     if (delegate_) {
       delegate_->OnCaptchaRequiredToRefillUnblindedTokens(*captcha_id);
     }
