@@ -31,23 +31,19 @@ class BraveSearchPromotionCell: UITableViewCell {
   
   private let mainStackView = UIStackView().then {
     $0.axis = .vertical
-    $0.alignment = .leading
+    $0.alignment = .fill
   }
   
   private let buttonsStackView = UIStackView().then {
     $0.axis = .horizontal
-    $0.alignment = .lastBaseline
-    $0.spacing = 16.0
-    $0.setContentHuggingPriority(.defaultHigh, for: .vertical)
+    $0.distribution = .fillProportionally
+    $0.alignment = .fill
+    $0.spacing = 8.0
   }
   
   private let promotionalImageView = UIImageView(image: UIImage(named: "brave-search-promotion", in: .current, compatibleWith: nil)).then {
     $0.contentMode = .scaleAspectFill
-    $0.snp.makeConstraints { make in
-      make.width.greaterThanOrEqualTo(88)
-    }
     $0.isUserInteractionEnabled = false
-    $0.clipsToBounds = false
   }
 
   private let titleLabel = UILabel().then {
@@ -70,23 +66,16 @@ class BraveSearchPromotionCell: UITableViewCell {
     $0.setContentCompressionResistancePriority(.defaultHigh, for: .vertical)
   }
 
-  private let tryButton = RoundInterfaceButton(type: .roundedRect).then {
-    $0.titleLabel?.font = .preferredFont(forTextStyle: .headline)
-    $0.titleLabel?.minimumScaleFactor = 0.75
-    $0.setTitleColor(.white, for: .normal)
-    $0.setTitle(Strings.BraveSearchPromotion.braveSearchPromotionBannerTryButtonTitle, for: .normal)
-    $0.backgroundColor = .braveOrange
-    $0.snp.makeConstraints { make in
-      make.width.greaterThanOrEqualTo(120)
-    }
-    $0.contentEdgeInsets = UIEdgeInsets(top: 8, left: 12, bottom: 8, right: 12)
-    $0.setContentHuggingPriority(.defaultHigh, for: .vertical)
-    $0.setContentCompressionResistancePriority(.required, for: .vertical)
+  let tryButton = TrySearchButton().then {
+    $0.titleLabel.text = Strings.BraveSearchPromotion.braveSearchPromotionBannerTryButtonTitle
   }
   
   private let dismissButton = UIButton().then {
     $0.titleLabel?.font = .preferredFont(forTextStyle: .headline)
     $0.titleLabel?.minimumScaleFactor = 0.75
+    $0.titleLabel?.lineBreakMode = .byWordWrapping
+    $0.titleLabel?.textAlignment = .center
+
     $0.setTitleColor(.braveOrange, for: .normal)
     $0.setTitle(
       Preferences.BraveSearch.braveSearchPromotionCompletionState.value != BraveSearchPromotionState.maybeLaterUpcomingSession.rawValue ?
@@ -94,8 +83,6 @@ class BraveSearchPromotionCell: UITableViewCell {
         Strings.BraveSearchPromotion.braveSearchPromotionBannerDismissButtonTitle,
       for: .normal)
     $0.backgroundColor = .clear
-    $0.setContentHuggingPriority(.defaultHigh, for: .vertical)
-    $0.setContentCompressionResistancePriority(.required, for: .vertical)
   }
 
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -129,17 +116,13 @@ class BraveSearchPromotionCell: UITableViewCell {
       .view(buttonsStackView)
     )
     
-    buttonsStackView.snp.makeConstraints {
-      $0.height.equalTo(tryButton.snp.height)
-    }
-    
-    promotionContentView.addSubview(mainStackView)
     promotionContentView.addSubview(promotionalImageView)
+    promotionContentView.addSubview(mainStackView)
 
     mainStackView.snp.makeConstraints {
       $0.leading.top.equalToSuperview().offset(16)
       $0.bottom.equalToSuperview().offset(-16)
-      $0.trailing.equalTo(promotionalImageView.snp.leading)
+      $0.trailing.equalTo(promotionalImageView.snp.leading).offset(-16)
     }
     
     promotionContentView.snp.makeConstraints {
@@ -147,6 +130,7 @@ class BraveSearchPromotionCell: UITableViewCell {
     }
     
     promotionalImageView.snp.makeConstraints {
+      $0.width.equalTo(promotionContentView.snp.width).multipliedBy(0.25)
       $0.top.bottom.equalToSuperview()
       $0.trailing.equalToSuperview()
     }
@@ -178,5 +162,83 @@ private extension UIColor {
     return UIColor { $0.userInterfaceStyle == .dark ?
       UIColor(rgb: 0x1f257a).withAlphaComponent(0.4) :
       UIColor(rgb: 0xefeffb).withAlphaComponent(0.4) }
+  }
+}
+
+class TrySearchButton: UIControl {
+  
+  let titleLabel = UILabel().then {
+    $0.textColor = .white
+    $0.font = .preferredFont(forTextStyle: .headline)
+    $0.numberOfLines = 0
+    $0.lineBreakMode = .byWordWrapping
+    $0.textAlignment = .center
+  }
+
+  private let backgroundView: UIVisualEffectView = {
+    let backgroundView = UIVisualEffectView(effect: UIBlurEffect(style: .systemThinMaterial))
+    backgroundView.isUserInteractionEnabled = false
+    backgroundView.contentView.backgroundColor = .braveOrange
+    backgroundView.layer.cornerRadius = 16
+    backgroundView.layer.cornerCurve = .continuous
+    backgroundView.layer.masksToBounds = true
+    return backgroundView
+  }()
+
+  override public init(frame: CGRect) {
+    super.init(frame: frame)
+
+    let stackView = UIStackView().then {
+      $0.axis = .vertical
+      $0.alignment = .center
+      $0.isUserInteractionEnabled = false
+    }
+
+    addSubview(backgroundView)
+    addSubview(stackView)
+    stackView.addArrangedSubview(titleLabel)
+
+    backgroundView.snp.makeConstraints {
+      $0.edges.equalTo(self)
+    }
+
+    stackView.snp.makeConstraints {
+      $0.edges.equalTo(self).inset(UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8))
+    }
+
+    backgroundColor = .clear
+
+    layer.borderColor = UIColor.black.withAlphaComponent(0.15).cgColor
+    layer.borderWidth = 1.0 / UIScreen.main.scale
+    layer.cornerRadius = bounds.height / 2.0
+    layer.shadowColor = UIColor.black.cgColor
+    layer.shadowOpacity = 0.25
+    layer.shadowOffset = CGSize(width: 0, height: 1)
+    layer.shadowRadius = 2
+  }
+
+  public override func layoutSubviews() {
+    super.layoutSubviews()
+
+    layer.shadowPath = UIBezierPath(roundedRect: bounds, cornerRadius: layer.cornerRadius).cgPath
+  }
+
+  @available(*, unavailable)
+  required init(coder: NSCoder) {
+    fatalError()
+  }
+
+  public override var isHighlighted: Bool {
+    didSet {
+      setNeedsLayout()
+      let scale: CGFloat = self.isHighlighted ? 1.025 : 1
+      UIViewPropertyAnimator(duration: 0.3, dampingRatio: 0.8) { [self] in
+        // Only adjust scale since tx/ty could be altered
+        transform.a = scale
+        transform.d = scale
+        layoutIfNeeded()
+      }
+      .startAnimation()
+    }
   }
 }
