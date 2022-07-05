@@ -159,7 +159,7 @@ class MockBraveWalletService: BraveWalletBraveWalletService {
   }
   
   func eTldPlusOne(fromOrigin origin: URLOrigin, completion: @escaping (BraveWallet.OriginInfo) -> Void) {
-    completion(.init(origin: origin, originSpec: origin.url?.absoluteString ?? "", eTldPlusOne: origin.url?.baseDomain ?? ""))
+    completion(.init())
   }
   
   func webSites(withPermission coin: BraveWallet.CoinType, completion: @escaping ([String]) -> Void) {
@@ -168,6 +168,20 @@ class MockBraveWalletService: BraveWalletBraveWalletService {
   
   func resetWebSitePermission(_ coin: BraveWallet.CoinType, formedWebsite: String, completion: @escaping (Bool) -> Void) {
     completion(false)
+  }
+  
+  func pendingSignTransactionRequests(_ completion: @escaping ([BraveWallet.SignTransactionRequest]) -> Void) {
+    completion([])
+  }
+  
+  func pendingSignAllTransactionsRequests(_ completion: @escaping ([BraveWallet.SignAllTransactionsRequest]) -> Void) {
+    completion([])
+  }
+  
+  func notifySignTransactionRequestProcessed(_ approved: Bool, id: Int32) {
+  }
+  
+  func notifySignAllTransactionsRequestProcessed(_ approved: Bool, id: Int32) {
   }
 }
 #endif

@@ -10,7 +10,7 @@ import BraveShared
 
 class AdsNotificationHandler: BraveAdsNotificationHandler {
   /// An ad was tapped and a URL should be opened
-  var actionOccured: ((AdNotification?, RewardsNotification.Action) -> Void)?
+  var actionOccured: ((NotificationAd?, RewardsNotification.Action) -> Void)?
   /// The ads object
   let ads: BraveAds
   /// Whether or not we should currently show ads currently based on exteranl
@@ -36,26 +36,26 @@ class AdsNotificationHandler: BraveAdsNotificationHandler {
     self.ads.notificationsHandler = self
   }
     
-  func showNotification(_ notification: AdNotification) {
+  func showNotification(_ notification: NotificationAd) {
     guard let presentingController = presentingController else { return }
   
     let rewardsNotification = RewardsNotification(ad: notification) { [weak self] action in
       guard let self = self else { return }
       switch action {
       case .opened:
-        self.ads.reportAdNotificationEvent(notification.placementID, eventType: .clicked)
+        self.ads.reportNotificationAdEvent(notification.placementID, eventType: .clicked)
       case .dismissed:
-        self.ads.reportAdNotificationEvent(notification.placementID, eventType: .dismissed)
+        self.ads.reportNotificationAdEvent(notification.placementID, eventType: .dismissed)
       case .timedOut:
-        self.ads.reportAdNotificationEvent(notification.placementID, eventType: .timedOut)
+        self.ads.reportNotificationAdEvent(notification.placementID, eventType: .timedOut)
       case .disliked:
-        self.ads.reportAdNotificationEvent(notification.placementID, eventType: .dismissed)
+        self.ads.reportNotificationAdEvent(notification.placementID, eventType: .dismissed)
         self.ads.toggleThumbsDown(forAd: notification.placementID, advertiserId: notification.advertiserID)
       }
       self.actionOccured?(notification, action)
     }
     
-    ads.reportAdNotificationEvent(notification.placementID, eventType: .viewed)
+    ads.reportNotificationAdEvent(notification.placementID, eventType: .viewed)
     notificationsPresenter?.display(notification: rewardsNotification, from: presentingController)
   }
 

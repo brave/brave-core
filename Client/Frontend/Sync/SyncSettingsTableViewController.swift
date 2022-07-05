@@ -36,7 +36,9 @@ class SyncSettingsTableViewController: UITableViewController {
 
     let codeWords = syncAPI.getSyncCode()
     syncAPI.joinSyncGroup(codeWords: codeWords, syncProfileService: syncProfileService)
-    syncAPI.syncEnabled = true
+    syncAPI.requestSync()
+    syncAPI.setSetupComplete()
+
 
     self.updateDeviceList()
 
