@@ -29,10 +29,6 @@ export const RecoveryBubble = styled.div<{
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  background-color: ${(p) => p.selected
-    ? '#F0F1FF'
-    : p.theme.color.background01
-  };
   padding: 5px 0px;
   border-radius: 4px;
   flex-basis: 100px;
@@ -44,6 +40,30 @@ export const RecoveryBubble = styled.div<{
     ? 'pointer'
     : 'unset'
   };
+
+  font-family: Poppins;
+  font-size: 14px;
+  line-height: 22px;
+  font-weight: 600;
+
+
+  color: ${(p) => p.theme.color.text01};
+  background-color: ${(p) => p.selected
+    ? p.theme.palette.blurple200
+    : p.theme.color.background01
+  };
+  
+  @media (prefers-color-scheme: dark) {
+    color: ${(p) => p.selected
+      ? p.theme.palette.black
+      : p.theme.color.text01
+    };
+    background-color: ${(p) => p.selected
+    ? p.theme.palette.blurple200
+    : p.theme.color.background01
+  };
+  }
+
 `
 
 export const RecoveryBubbleBadge = styled.p`
@@ -51,7 +71,7 @@ export const RecoveryBubbleBadge = styled.p`
   top: -15px;
   left: -8px;
   color: ${(p) => p.theme.palette.white};
-  background-color: ${(p) => p.theme.color.interactive05};
+  background-color: ${(p) => p.theme.color.brandBat};
   width: 40px;
   border-radius: 4px;
   font-family: 'Poppins';
@@ -63,14 +83,6 @@ export const RecoveryBubbleBadge = styled.p`
   align-items: center;
   justify-content: center;
   text-align: center;
-`
-
-export const RecoveryBubbleText = styled.span`
-  font-family: Poppins;
-  font-size: 14px;
-  line-height: 22px;
-  font-weight: 600;
-  color: ${(p) => p.theme.color.text01};
 `
 
 export const FrostedGlass = styled.div`

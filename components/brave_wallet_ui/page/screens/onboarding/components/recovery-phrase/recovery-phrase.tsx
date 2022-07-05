@@ -13,7 +13,6 @@ import { unbiasedRandom } from '../../../../../utils/random-utils'
 import {
   RecoveryPhraseContainer,
   RecoveryBubble,
-  RecoveryBubbleText,
   FrostedGlass,
   HiddenPhraseContainer,
   EyeOffIcon,
@@ -76,7 +75,7 @@ export const RecoveryPhrase: React.FC<Props> = ({
   }, [verificationModeEnabled])
 
   // memos
-  const shuffledPhrase = React.useMemo(() => {
+  const shuffledPhrase: string[] = React.useMemo(() => {
     const array = recoveryPhrase.slice().sort()
 
     for (let i = array.length - 1; i > 0; i--) {
@@ -88,13 +87,12 @@ export const RecoveryPhrase: React.FC<Props> = ({
     return array
   }, [recoveryPhrase])
 
-  // memos
-  const phraseWordsToDisplay = React.useMemo(() => {
+  const phraseWordsToDisplay: SelectedPhraseWord[] = React.useMemo(() => {
     return (
       verificationModeEnabled
         ? shuffledPhrase
         : recoveryPhrase
-      ).map((str, index) => ({ value: str, id: index }))
+      ).map((str, index) => ({ value: str, index }))
   }, [verificationModeEnabled, shuffledPhrase, recoveryPhrase])
 
   // effects
@@ -140,7 +138,7 @@ export const RecoveryPhrase: React.FC<Props> = ({
             key={index}
             verificationModeEnabled={verificationModeEnabled}
           >
-            <RecoveryBubbleText>{index + 1}. {word}</RecoveryBubbleText>
+            <span>{index + 1}. {word}</span>
           </RecoveryBubble>
         )}
       </RecoveryPhraseContainer>
@@ -151,15 +149,15 @@ export const RecoveryPhrase: React.FC<Props> = ({
     <RecoveryPhraseContainer>
       {phraseWordsToDisplay.map((word) => {
         const wordIndex = selectedWords?.findIndex((selectedWord) =>
-          selectedWord.index === word.id &&
+          selectedWord.index === word.index &&
           selectedWord.value === word.value
         )
         const isWordSelected = wordIndex > -1
         return (
           <RecoveryBubble
-            key={word.id}
+            key={`${word.index}-${word.value}`}
             verificationModeEnabled={verificationModeEnabled}
-            onClick={makeOnClickWord({ index: word.id, value: word.value })}
+            onClick={makeOnClickWord(word)}
             selected={isWordSelected}
           >
 
@@ -169,12 +167,12 @@ export const RecoveryPhrase: React.FC<Props> = ({
               </RecoveryBubbleBadge>
             }
 
-            <RecoveryBubbleText>
+            <span>
               {verificationModeEnabled
                 ? word.value
-                : `${word.id + 1}. ${word.value}`
+                : `${word.index + 1}. ${word.value}`
               }
-            </RecoveryBubbleText>
+            </span>
 
           </RecoveryBubble>
         )
