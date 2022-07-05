@@ -302,3 +302,5 @@ export const AccountSettingsModal = ({
     </PopupModal>
   )
 }
+
+export default AccountSettingsModal

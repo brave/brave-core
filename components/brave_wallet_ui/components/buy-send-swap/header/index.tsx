@@ -15,7 +15,9 @@ import { reduceAddress } from '../../../utils/reduce-address'
 import { reduceAccountDisplayName } from '../../../utils/reduce-account-name'
 
 // components
-import { Tooltip, SelectNetworkButton } from '../../shared'
+import Tooltip from '../../shared/tooltip/index'
+import SelectNetworkButton from '../../shared/select-network-button/index'
+import { CopyTooltip } from '../../shared/copy-tooltip/copy-tooltip'
 
 // Styled Components
 import {
@@ -27,7 +29,6 @@ import {
   NameAndIcon,
   SwitchIcon
 } from './style'
-import CopyTooltip from '../../shared/copy-tooltip/copy-tooltip'
 
 export interface Props {
   onChangeSwapView: (view: BuySendSwapViewTypes) => void
