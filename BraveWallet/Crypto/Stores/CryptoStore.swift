@@ -314,6 +314,35 @@ public class CryptoStore: ObservableObject {
     }
     pendingRequest = nil
   }
+  
+  public func rejectAllPendingWebpageRequests() {
+    Task { @MainActor in
+      let pendingAddChainRequests = await rpcService.pendingAddChainRequests()
+      pendingAddChainRequests.forEach {
+        handleWebpageRequestResponse(.addNetwork(approved: false, chainId: $0.networkInfo.chainId))
+      }
+      let pendingSignMessageRequests = await walletService.pendingSignMessageRequests()
+      pendingSignMessageRequests.forEach {
+        handleWebpageRequestResponse(.signMessage(approved: false, id: $0.id))
+      }
+      let pendingSwitchChainRequests = await rpcService.pendingSwitchChainRequests()
+      pendingSwitchChainRequests.forEach {
+        handleWebpageRequestResponse(.switchChain(approved: false, originInfo: $0.originInfo))
+      }
+      let pendingAddSuggestedTokenRequets = await walletService.pendingAddSuggestTokenRequests()
+      pendingAddSuggestedTokenRequets.forEach {
+        handleWebpageRequestResponse(.addSuggestedToken(approved: false, contractAddresses: [$0.token.contractAddress]))
+      }
+      let pendingGetEncryptionPublicKeyRequests = await walletService.pendingGetEncryptionPublicKeyRequests()
+      pendingGetEncryptionPublicKeyRequests.forEach {
+        handleWebpageRequestResponse(.getEncryptionPublicKey(approved: false, originInfo: $0.originInfo))
+      }
+      let pendingDecryptRequests = await walletService.pendingDecryptRequests()
+      pendingDecryptRequests.forEach {
+        handleWebpageRequestResponse(.decrypt(approved: false, originInfo: $0.originInfo))
+      }
+    }
+  }
 }
 
 extension CryptoStore: BraveWalletTxServiceObserver {

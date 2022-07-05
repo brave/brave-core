@@ -141,9 +141,12 @@ class BraveNotificationsPresenter: UIViewController {
     }
   }
   
-  func removeRewardsNotification(with id: String) {
+  func removeNotification(with id: String) {
     if let index = notificationsQueue.firstIndex(where: { $0.id == id }) {
       notificationsQueue.remove(at: index)
+    }
+    if let visibleNotification = visibleNotification, visibleNotification.id == id {
+      hide(visibleNotification)
     }
   }
   
