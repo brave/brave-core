@@ -114,7 +114,14 @@ export const Buy = ({
       console.error(e)
     }
     setSelectedOnRampProvider(undefined)
-  }, [getBuyAssetUrl, selectedNetwork, selectedAccount, buyAmount, selectedAsset])
+  }, [
+    getBuyAssetUrl,
+    selectedNetwork,
+    selectedAccount,
+    buyAmount,
+    selectedAsset,
+    selectedCurrency
+  ])
   const onShowAssets = React.useCallback(() => {
     onChangeBuyView('assets', 'from')
   }, [onChangeBuyView])
