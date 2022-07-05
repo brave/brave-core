@@ -125,7 +125,7 @@ provideStrings({
   // Onboarding import or restore wallet page
   braveWalletCheckingInstalledExtensions: 'Checking for wallet extensions...',
   braveWalletImportOrRestoreWalletTitle: 'Connect to your existing wallet',
-  braveWalletImportOrRestoreDescription: 'By connecting to your wallet, you may need to enter your 12-24 word recovery phrase to restore/import. We support Ethereum wallet at this time.',
+  braveWalletImportOrRestoreDescription: 'You will need your wallet seed handy to get started. This is a 12-24 word sequence that you were given when you setup a wallet.',
   braveWalletRestoreMyBraveWallet: 'Restore from seed phrase',
   braveWalletRestoreMyBraveWalletDescription: '12-24 words',
   braveWalletImportFromMetaMask: 'Import from MetaMask',
