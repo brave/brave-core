@@ -7,52 +7,56 @@
 
 #include <utility>
 
-#include "base/memory/weak_ptr.h"
+#include "base/check.h"
 #include "base/task/thread_pool.h"
 #include "base/threading/sequence_bound.h"
 #include "base/threading/sequenced_task_runner_handle.h"
-#include "brave/components/brave_federated/data_stores/ad_notification_timing_data_store.h"
-
-namespace {
-constexpr char kAdNotificationTaskName[] =
-    "ad_notification_timing_federated_task";
-constexpr int kAdNotificationTaskId = 0;
-constexpr int kMaxNumberOfRecords = 50;
-constexpr int kMaxRetentionDays = 30;
-}  // namespace
+#include "brave/components/brave_federated/data_stores/async_data_store.h"
+#include "brave/components/brave_federated/notification_ad_task_constants.h"
 
 namespace brave_federated {
 
-DataStoreService::DataStoreService(const base::FilePath& database_path)
-    : db_path_(database_path),
-      ad_notification_timing_data_store_(db_path_),
-      weak_factory_(this) {}
+DataStoreService::DataStoreService(const base::FilePath& db_path)
+    : db_path_(db_path), weak_factory_(this) {}
 
-DataStoreService::~DataStoreService() {
-  EnforceRetentionPolicies();
+DataStoreService::~DataStoreService() = default;
+
+void DataStoreService::Init() {
+  auto callback =
+      base::BindOnce(&DataStoreService::OnInitializeDatabaseComplete,
+                     weak_factory_.GetWeakPtr());
+  DataStoreTask notification_ad_timing_data_store_task(
+      {kNotificationAdTaskId, kNotificationAdTaskName, kMaxNumberOfRecords,
+       kMaxRetentionDays});
+  std::unique_ptr<AsyncDataStore> notification_ad_timing_data_store =
+      std::make_unique<AsyncDataStore>(
+          std::move(notification_ad_timing_data_store_task), db_path_);
+  notification_ad_timing_data_store->InitializeDatabase(std::move(callback));
+
+  data_stores_.emplace(kNotificationAdTaskName,
+                       std::move(notification_ad_timing_data_store));
 }
 
-void DataStoreService::OnInitComplete(bool success) {
+AsyncDataStore* DataStoreService::GetDataStore(const std::string& name) {
+  auto it = data_stores_.find(name);
+  if (it == data_stores_.end())
+    return nullptr;
+
+  return it->second.get();
+}
+
+void DataStoreService::OnInitializeDatabaseComplete(bool success) {
   if (success) {
-    EnforceRetentionPolicies();
+    PurgeDataStoresAfterExpirationDate();
   }
 }
 
-void DataStoreService::Init() {
-  auto callback = base::BindOnce(&DataStoreService::OnInitComplete,
-                                 weak_factory_.GetWeakPtr());
-  ad_notification_timing_data_store_.Init(
-      kAdNotificationTaskId, kAdNotificationTaskName, kMaxNumberOfRecords,
-      kMaxRetentionDays, std::move(callback));
-}
-
-AsyncDataStore<AdNotificationTimingDataStore, AdNotificationTimingTaskLog>*
-DataStoreService::GetAdNotificationTimingDataStore() {
-  return &ad_notification_timing_data_store_;
-}
-
-void DataStoreService::EnforceRetentionPolicies() {
-  ad_notification_timing_data_store_.EnforceRetentionPolicy();
+void DataStoreService::PurgeDataStoresAfterExpirationDate() {
+  for (const auto& entry : data_stores_) {
+    AsyncDataStore* data_store = entry.second.get();
+    DCHECK(data_store);
+    data_store->PurgeTrainingDataAfterExpirationDate();
+  }
 }
 
 }  // namespace brave_federated

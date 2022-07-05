@@ -84,8 +84,8 @@ class AdsClientMojoBridge
                       const ads::mojom::P2AEventType type,
                       const std::string& out_value) override;
 
-  void LogTrainingInstance(
-      brave_federated::mojom::TrainingInstancePtr training_instance) override;
+  void LogTrainingInstance(std::vector<brave_federated::mojom::CovariatePtr>
+                               training_instance) override;
 
   void Load(
       const std::string& name,

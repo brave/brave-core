@@ -13,8 +13,12 @@
 #include "brave/browser/brave_federated/brave_federated_service_factory.h"
 #include "brave/components/brave_federated/brave_federated_service.h"
 #include "brave/components/brave_federated/data_store_service.h"
-#include "brave/components/brave_federated/data_stores/ad_notification_timing_data_store.h"
+#include "brave/components/brave_federated/data_stores/async_data_store.h"
+#include "brave/components/brave_federated/notification_ad_task_constants.h"
+#include "brave/components/brave_federated/public/interfaces/brave_federated.mojom.h"
 #include "chrome/browser/profiles/profile.h"
+
+namespace brave_federated {
 
 FederatedInternalsPageHandler::FederatedInternalsPageHandler(
     mojo::PendingReceiver<federated_internals::mojom::PageHandler> receiver,
@@ -23,36 +27,42 @@ FederatedInternalsPageHandler::FederatedInternalsPageHandler(
     : receiver_(this, std::move(receiver)),
       page_(std::move(page)),
       data_store_service_(
-          brave_federated::BraveFederatedServiceFactory::GetForBrowserContext(
-              profile)
+          BraveFederatedServiceFactory::GetForBrowserContext(profile)
               ->GetDataStoreService()) {}
 
-FederatedInternalsPageHandler::~FederatedInternalsPageHandler() {}
+FederatedInternalsPageHandler::~FederatedInternalsPageHandler() = default;
 
-void FederatedInternalsPageHandler::GetAdStoreInfo() {
-  if (!data_store_service_)
+void FederatedInternalsPageHandler::UpdateDataStoresInfo() {
+  if (!data_store_service_) {
     return;
-  auto* const ad_notification_data_store =
-      data_store_service_->GetAdNotificationTimingDataStore();
+  }
+  AsyncDataStore* notification_ad_data_store =
+      data_store_service_->GetDataStore(kNotificationAdTaskName);
+  if (!notification_ad_data_store) {
+    return;
+  }
 
-  ad_notification_data_store->LoadLogs(
-      base::BindOnce(&FederatedInternalsPageHandler::OnAdStoreInfoAvailable,
+  notification_ad_data_store->LoadTrainingData(
+      base::BindOnce(&FederatedInternalsPageHandler::OnUpdateDataStoresInfo,
                      weak_ptr_factory_.GetWeakPtr()));
 }
 
-void FederatedInternalsPageHandler::OnAdStoreInfoAvailable(
-    brave_federated::AdNotificationTimingDataStore::
-        IdToAdNotificationTimingTaskLogMap ad_notification_timing_logs) {
-  std::vector<federated_internals::mojom::AdStoreLogPtr> ad_logs;
-  for (auto const& object : ad_notification_timing_logs) {
-    auto ad_store_log = federated_internals::mojom::AdStoreLog::New();
-    const auto& log = object.second;
-    ad_store_log->log_id = log.id;
-    ad_store_log->log_time = log.time.ToJsTime();
-    ad_store_log->log_locale = log.locale;
-    ad_store_log->log_number_of_tabs = log.number_of_tabs;
-    ad_store_log->log_label = log.label;
-    ad_logs.emplace_back(std::move(ad_store_log));
+void FederatedInternalsPageHandler::OnUpdateDataStoresInfo(
+    TrainingData training_data) {
+  std::vector<federated_internals::mojom::TrainingInstancePtr>
+      training_instances;
+  for (auto& item : training_data) {
+    auto training_instance =
+        federated_internals::mojom::TrainingInstance::New();
+    training_instance->id = item.first;
+    std::vector<mojom::CovariatePtr>& covariates = item.second;
+    for (auto& covariate : covariates) {
+      training_instance->covariates.push_back(std::move(covariate));
+    }
+
+    training_instances.push_back(std::move(training_instance));
   }
-  page_->OnAdStoreInfoAvailable(std::move(ad_logs));
+  page_->OnUpdateDataStoresInfo(std::move(training_instances));
 }
+
+}  // namespace brave_federated

@@ -7,6 +7,7 @@
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_COVARIATES_COVARIATE_MANAGER_H_
 
 #include <memory>
+#include <vector>
 
 #include "base/containers/flat_map.h"
 #include "bat/ads/internal/covariates/covariate_log_entry_interface.h"
@@ -38,7 +39,7 @@ class CovariateManager final {
   static bool HasInstance();
 
   void SetLogEntry(std::unique_ptr<CovariateLogEntryInterface> entry);
-  brave_federated::mojom::TrainingInstancePtr GetTrainingInstance() const;
+  std::vector<brave_federated::mojom::CovariatePtr> GetTrainingInstance() const;
 
   void SetNotificationAdServedAt(const base::Time time);
   void SetNotificationAdEvent(const mojom::NotificationAdEventType event_type);

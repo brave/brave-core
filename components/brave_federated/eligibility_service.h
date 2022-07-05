@@ -7,10 +7,11 @@
 #define BRAVE_COMPONENTS_BRAVE_FEDERATED_ELIGIBILITY_SERVICE_H_
 
 #include "base/power_monitor/power_monitor.h"
-#include "brave/components/brave_federated/eligibility_service_observer.h"
 #include "net/base/network_change_notifier.h"
 
 namespace brave_federated {
+
+class Observer;
 
 // Certain classes of federated tasks might be computationally and bandwidth
 // expensive to run on the client. For these classes we require the client's

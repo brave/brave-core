@@ -68,7 +68,7 @@ interface BatAdsClient {
   RunDBTransaction(ads.mojom.DBTransaction transaction) => (ads.mojom.DBCommandResponse response);
   OnAdRewardsChanged();
   RecordP2AEvent(string name, ads.mojom.P2AEventType type, string value);
-  LogTrainingInstance(brave_federated.mojom.TrainingInstance training_instance);
+  LogTrainingInstance(array<brave_federated.mojom.Covariate> training_instance);
   Log(string file, int32 line, int32 verbose_level, string message);
   SetBooleanPref(string path, bool value);
   SetIntegerPref(string path, int32 value);

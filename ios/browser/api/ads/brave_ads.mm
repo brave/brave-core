@@ -1869,7 +1869,7 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
 }
 
 - (void)logTrainingInstance:
-    (brave_federated::mojom::TrainingInstancePtr)training_instance {
+    (std::vector<brave_federated::mojom::CovariatePtr>)training_instance {
   // Not needed on iOS
 }
 
