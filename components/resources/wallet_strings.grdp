@@ -63,6 +63,7 @@
   <message name="IDS_BRAVE_WALLET_TOP_TAB_APPS" desc="Apps top nave button">Apps</message>
   <message name="IDS_BRAVE_WALLET_TOP_NAV_N_F_T_S" desc="NFTs top nave button">NFTs</message>
   <message name="IDS_BRAVE_WALLET_TOP_NAV_ACCOUNTS" desc="Accounts top nav button">Accounts</message>
+  <message name="IDS_BRAVE_WALLET_TOP_NAV_MARKET" desc="Accounts top nav button">Market</message>
   <message name="IDS_BRAVE_WALLET_CHART_LIVE" desc="Chart control bar 1H button">1H</message>
   <message name="IDS_BRAVE_WALLET_CHART_ONE_DAY" desc="Chart control bar 1D button">1D</message>
   <message name="IDS_BRAVE_WALLET_CHART_ONE_WEEK" desc="Chart control bar 1W button">1W</message>
@@ -461,6 +462,15 @@
   <message name="IDS_BRAVE_WALLET_SWEEPSTAKES_CALL_TO_ACTION" desc="A short description of the swap sweepstakes">
     Enter now!
   </message>
+  <message name="IDS_BRAVE_WALLET_MARKET_DATA_ALL_ASSETS_FILTER" desc="Label text for all assets in market data filter">All Assets</message>
+  <message name="IDS_BRAVE_WALLET_MARKET_DATA_TRADABLE_FILTER" desc="Label text for tradable in market data filter">Tradable</message>
+  <message name="IDS_BRAVE_WALLET_MARKET_DATA_ASSETS_COLUMN" desc="Market data table assets column name">Assets</message>
+  <message name="IDS_BRAVE_WALLET_MARKET_DATA_PRICE_COLUMN" desc="Market data table price column name">Price</message>
+  <message name="IDS_BRAVE_WALLET_MARKET_DATA_24Hr_COLUMN" desc="Market data table 24 hour percentage price change column name">24hr</message>
+  <message name="IDS_BRAVE_WALLET_MARKET_DATA_MARKETCAP_COLUMN" desc="Market data table market cap column name">Mkt. Cap</message>
+  <message name="IDS_BRAVE_WALLET_MARKET_DATA_VOLUME_COLUMN" desc="Market data table volume column name">Volume</message>
+  <message name="IDS_BRAVE_WALLET_MARKET_DATA_NO_ASSETS_FOUND" desc="Text displayed when market data table rows are empty">No assets matching search or filter found</message>
+  <message name="IDS_BRAVE_WALLET_MARKET_DATA_COIN_NOT_SUPPORTED" desc="Text displayed market coin item is not supported in brave wallet">This asset is not supported by brave wallet</message>
   <message name="IDS_BRAVE_WALLET_NOT_VALID_FIL_ADDRESS" desc="Send input not valid FIL address error">Not a valid FIL address</message>
   <message name="IDS_BRAVE_WALLET_BUY_WITH_WYRE" desc="Buy with Wyre option label">Buy with Wyre</message>
   <message name="IDS_BRAVE_WALLET_BUY_WITH_RAMP" desc="Buy with Ramp option label">Buy with Ramp</message>
@@ -577,4 +587,8 @@
   <message name="BRAVE_WALLET_MULTI_CHAIN" desc="Description of how the wallet allows access to multiple blockchains">Multi-chain &amp; NFT support</message>
   <message name="BRAVE_WALLET_UNLOCK_NEEDED_TO_CREATE_ACCOUNT" desc="Message to inform the user that their wallet must be unlocked before a new account can be created">Unlock needed to create an account</message>
   <message name="BRAVE_WALLET_CLICK_TO_SWITCH" desc="Action text for switching selection">Click to switch</message>
+  <message name="IDS_BRAVE_WALLET_INFORMATION" desc="Information label shown in coin market detail view">Information</message>
+  <message name="IDS_BRAVE_WALLET_RANK_STAT" desc="Label show in coin market detail view for coin market rank">Rank</message>
+  <message name="IDS_BRAVE_WALLET_VOLUME_STAT" desc="Label show in coin market detail view for coin market 24 hour volume">24h Volume</message>
+  <message name="IDS_BRAVE_WALLET_MARKET_CAP_STAT" desc="Label show in coin market detail view for coin market marketcap">Market Cap</message>
 </grit-part>

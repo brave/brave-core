@@ -301,4 +301,134 @@ mojom::BlockchainTokenPtr ParseTokenInfo(const std::string& json,
       *symbol, decimals, true, "", "", chain_id, coin);
 }
 
+bool ParseCoinMarkets(const std::string& json,
+                      std::vector<mojom::CoinMarketPtr>* values) {
+  DCHECK(values);
+  // {
+  //   "payload": [
+  //     {
+  //       "id": "bitcoin",
+  //       "symbol": "btc",
+  //       "name": "Bitcoin",
+  //       "image":
+  //       "https://assets.coingecko.com/coins/images/1/large/bitcoin.png?1547033579",
+  //       "market_cap": 727960800075,
+  //       "market_cap_rank": 1,
+  //       "current_price": 38357,
+  //       "price_change_24h": -1229.64683216549,
+  //       "price_change_percentage_24h": -3.10625,
+  //       "total_volume": 17160995925
+  //     },
+  //     {
+  //       "id": "ethereum",
+  //       "symbol": "eth",
+  //       "name": "Ethereum",
+  //       "image":
+  //       "https://assets.coingecko.com/coins/images/279/large/ethereum.png?1595348880",
+  //       "market_cap": 304535808667,
+  //       "market_cap_rank": 2,
+  //       "current_price": 2539.82,
+  //       "price_change_24h": -136.841895278459,
+  //       "price_change_percentage_24h": -5.11242,
+  //       "total_volume": 9583014937
+  //     }
+  //   ],
+  //   "lastUpdated": "2022-03-07T00:25:12.259823452Z"
+  // }
+  base::JSONReader::ValueWithError value_with_error =
+      base::JSONReader::ReadAndReturnValueWithError(
+          json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
+                    base::JSONParserOptions::JSON_PARSE_RFC);
+  absl::optional<base::Value>& records_v = value_with_error.value;
+  if (!records_v) {
+    LOG(ERROR) << "Invalid response, could not parse JSON, JSON is: " << json;
+    return false;
+  }
+
+  if (!records_v->is_dict()) {
+    return false;
+  }
+
+  auto* payload = records_v->FindListKey("payload");
+  if (!payload) {
+    return false;
+  }
+
+  for (const auto& coin_market_list_it : payload->GetList()) {
+    if (!coin_market_list_it.is_dict()) {
+      return false;
+    }
+    auto coin_market = mojom::CoinMarket::New();
+    auto* id = coin_market_list_it.FindStringKey("id");
+    if (!id) {
+      return false;
+    }
+    coin_market->id = *id;
+
+    auto* symbol = coin_market_list_it.FindStringKey("symbol");
+    if (!symbol) {
+      return false;
+    }
+    coin_market->symbol = *symbol;
+
+    auto* name = coin_market_list_it.FindStringKey("name");
+    if (!name) {
+      return false;
+    }
+    coin_market->name = *name;
+
+    auto* image = coin_market_list_it.FindStringKey("image");
+    if (!image) {
+      return false;
+    }
+    coin_market->image = *image;
+
+    absl::optional<double> market_cap =
+        coin_market_list_it.FindDoubleKey("market_cap");
+    if (!market_cap) {
+      return false;
+    }
+    coin_market->market_cap = *market_cap;
+
+    absl::optional<uint32_t> market_cap_rank =
+        coin_market_list_it.FindIntKey("market_cap_rank");
+    if (!market_cap_rank) {
+      return false;
+    }
+    coin_market->market_cap_rank = *market_cap_rank;
+
+    absl::optional<double> current_price =
+        coin_market_list_it.FindDoubleKey("current_price");
+    if (!current_price) {
+      return false;
+    }
+    coin_market->current_price = *current_price;
+
+    absl::optional<double> price_change_24h =
+        coin_market_list_it.FindDoubleKey("price_change_24h");
+    if (!price_change_24h) {
+      return false;
+    }
+    coin_market->price_change_24h = *price_change_24h;
+
+    absl::optional<double> price_change_percentage_24h =
+        coin_market_list_it.FindDoubleKey("price_change_percentage_24h");
+    if (!price_change_percentage_24h) {
+      return false;
+    }
+    coin_market->price_change_percentage_24h = *price_change_percentage_24h;
+
+    absl::optional<double> total_volume =
+        coin_market_list_it.FindDoubleKey("total_volume");
+    if (!total_volume) {
+      return false;
+    }
+    coin_market->total_volume = *total_volume;
+
+    values->push_back(std::move(coin_market));
+  }
+
+  return true;
+}
+
 }  // namespace brave_wallet

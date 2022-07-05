@@ -60,7 +60,7 @@ WalletPageUI::WalletPageUI(content::WebUI* web_ui)
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::FrameSrc,
       std::string("frame-src ") + kUntrustedTrezorURL + " " +
-          kUntrustedLedgerURL + " " + kUntrustedNftURL + ";");
+          kUntrustedLedgerURL + " " + kUntrustedNftURL + " " + kUntrustedMarketURL + ";");
   source->AddString("braveWalletTrezorBridgeUrl", kUntrustedTrezorURL);
   source->AddString("braveWalletNftBridgeUrl", kUntrustedNftURL);
   auto* profile = Profile::FromWebUI(web_ui);

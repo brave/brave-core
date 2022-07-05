@@ -39,6 +39,17 @@ void OnGetPriceHistory(
   *callback_run = true;
 }
 
+void OnGetCoinMarkets(
+    bool* callback_run,
+    bool expected_success,
+    std::vector<brave_wallet::mojom::CoinMarketPtr> expected_values,
+    bool success,
+    std::vector<brave_wallet::mojom::CoinMarketPtr> values) {
+  EXPECT_EQ(expected_success, success);
+  EXPECT_EQ(expected_values, values);
+  *callback_run = true;
+}
+
 }  // namespace
 
 namespace brave_wallet {
@@ -437,6 +448,66 @@ TEST_F(AssetRatioServiceUnitTest, GetTokenInfo) {
 
   SetErrorInterceptor("error");
   GetTokenInfo("0xdac17f958d2ee523a2206206994597c13d831ec7", nullptr);
+}
+
+TEST_F(AssetRatioServiceUnitTest, GetCoinMarkets) {
+  SetInterceptor(R"({
+      "payload": [
+        {
+          "id": "bitcoin",
+          "symbol": "btc",
+          "name": "Bitcoin",
+          "image": "https://assets.coingecko.com/coins/images/1/large/bitcoin.png?1547033579",
+          "market_cap": 727960800075,
+          "market_cap_rank": 1,
+          "current_price": 38357,
+          "price_change_24h": -1229.64683216549,
+          "price_change_percentage_24h": -3.10625,
+          "total_volume": 17160995925
+        }
+      ]
+    })");
+  std::vector<brave_wallet::mojom::CoinMarketPtr>
+      expected_coin_markets_response;
+
+  auto coin_market = brave_wallet::mojom::CoinMarket::New();
+  coin_market->id = "bitcoin";
+  coin_market->symbol = "btc";
+  coin_market->name = "Bitcoin";
+  coin_market->image =
+      "https://assets.coingecko.com/coins/images/1/large/"
+      "bitcoin.png?1547033579";
+  coin_market->market_cap = 727960800075;
+  coin_market->market_cap_rank = 1;
+  coin_market->current_price = 38357;
+  coin_market->price_change_24h = -1229.64683216549;
+  coin_market->price_change_percentage_24h = -3.10625;
+  coin_market->total_volume = 17160995925;
+  expected_coin_markets_response.push_back(std::move(coin_market));
+
+  bool callback_run = false;
+  asset_ratio_service_->GetCoinMarkets(
+      "usd", 100,
+      base::BindOnce(&OnGetCoinMarkets, &callback_run, true,
+                     std::move(expected_coin_markets_response)));
+
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(callback_run);
+}
+
+TEST_F(AssetRatioServiceUnitTest, GetCoinMarketsUnexpectedResponse) {
+  SetInterceptor("wingardium leviosa");
+  std::vector<brave_wallet::mojom::CoinMarketPtr>
+      expected_coin_markets_response;
+
+  bool callback_run = false;
+  asset_ratio_service_->GetCoinMarkets(
+      "bat", 99,
+      base::BindOnce(&OnGetCoinMarkets, &callback_run, false,
+                     std::move(expected_coin_markets_response)));
+
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(callback_run);
 }
 
 }  // namespace brave_wallet

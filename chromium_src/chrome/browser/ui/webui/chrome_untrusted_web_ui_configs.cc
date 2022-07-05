@@ -7,6 +7,7 @@
 
 #include "brave/browser/ui/webui/brave_wallet/ledger/ledger_ui.h"
 #include "brave/browser/ui/webui/brave_wallet/nft/nft_ui.h"
+#include "brave/browser/ui/webui/brave_wallet/market/market_ui.h"
 #include "brave/browser/ui/webui/brave_wallet/trezor/trezor_ui.h"
 #include "brave/components/brave_vpn/buildflags/buildflags.h"
 #include "build/build_config.h"
@@ -29,6 +30,8 @@ void RegisterChromeUntrustedWebUIConfigs() {
 #if !BUILDFLAG(IS_ANDROID)
   content::WebUIConfigMap::GetInstance().AddUntrustedWebUIConfig(
       std::make_unique<ledger::UntrustedLedgerUIConfig>());
+  content::WebUIConfigMap::GetInstance().AddUntrustedWebUIConfig(
+      std::make_unique<market::UntrustedMarketUIConfig>());
   content::WebUIConfigMap::GetInstance().AddUntrustedWebUIConfig(
       std::make_unique<trezor::UntrustedTrezorUIConfig>());
   content::WebUIConfigMap::GetInstance().AddUntrustedWebUIConfig(

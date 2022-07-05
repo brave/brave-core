@@ -108,6 +108,16 @@ export type AddSitePermissionPayloadType = {
   account: string
 }
 
+export type GetCoinMarketPayload = {
+  vsAsset: string
+  limit: number
+}
+
+export type GetCoinMarketsResponse = {
+  success: boolean
+  values: BraveWallet.CoinMarket[]
+}
+
 export type SetTransactionProviderErrorType = {
   transaction: BraveWallet.TransactionInfo
   providerError: TransactionProviderError
