@@ -100,7 +100,8 @@ class ADS_EXPORT Ads {
   // seconds that the user was idle. |was_locked| should be |true| if the screen
   // was locked, otherwise |false|. NOTE: This should not be called on mobile
   // devices.
-  virtual void OnUnIdle(const int idle_time, const bool was_locked) = 0;
+  virtual void OnUnIdle(const base::TimeDelta idle_time,
+                        const bool was_locked) = 0;
 
   // Called when a user has been idle for the threshold set in
   // |prefs::kIdleTimeThreshold|. NOTE: This should not be called on mobile

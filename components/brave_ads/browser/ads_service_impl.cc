@@ -1049,7 +1049,7 @@ void AdsServiceImpl::ProcessIdleState(const ui::IdleState idle_state,
     case ui::IdleState::IDLE_STATE_ACTIVE: {
       const bool was_locked =
           last_idle_state_ == ui::IdleState::IDLE_STATE_LOCKED;
-      bat_ads_->OnUnIdle(idle_time, was_locked);
+      bat_ads_->OnUnIdle(base::Seconds(idle_time), was_locked);
       break;
     }
 

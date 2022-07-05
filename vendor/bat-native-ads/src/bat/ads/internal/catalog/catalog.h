@@ -12,14 +12,20 @@
 #include "bat/ads/internal/browser/browser_manager_observer.h"
 #include "bat/ads/internal/catalog/catalog_observer.h"
 #include "bat/ads/internal/database/database_manager_observer.h"
+#include "bat/ads/internal/user_interaction/idle_detection/idle_detection_manager_observer.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
+
+namespace base {
+class TimeDelta;
+}  // namespace base
 
 namespace ads {
 
 struct CatalogInfo;
 
 class Catalog final : public BrowserManagerObserver,
-                      public DatabaseManagerObserver {
+                      public DatabaseManagerObserver,
+                      public IdleDetectionManagerObserver {
  public:
   Catalog();
   Catalog(const Catalog&) = delete;
@@ -48,6 +54,10 @@ class Catalog final : public BrowserManagerObserver,
   // DatabaseManagerObserver:
   void OnDidMigrateDatabase(const int from_version,
                             const int to_version) override;
+
+  // IdleDetectionManagerObserver:
+  void OnUserDidBecomeActive(const base::TimeDelta idle_time,
+                             const bool was_locked) override;
 
   base::ObserverList<CatalogObserver> observers_;
 

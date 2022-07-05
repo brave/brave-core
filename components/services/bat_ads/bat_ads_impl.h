@@ -61,7 +61,8 @@ class BatAdsImpl :
 
   void OnUserGesture(const int32_t page_transition_type) override;
 
-  void OnUnIdle(const int idle_time, const bool was_locked) override;
+  void OnUnIdle(const base::TimeDelta idle_time,
+                const bool was_locked) override;
   void OnIdle() override;
 
   void OnBrowserDidEnterForeground() override;
