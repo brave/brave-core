@@ -208,7 +208,7 @@ export const HardwareWalletConnect = ({ onSuccess, selectedAccountType }: Props)
 
   return (
     <>
-      {(selectedAccountType.coin !== BraveWallet.CoinType.FIL) &&
+      {(selectedAccountType.coin !== BraveWallet.CoinType.FIL && selectedAccountType.coin !== BraveWallet.CoinType.SOL) &&
         <>
           <HardwareTitle>{getLocale('braveWalletConnectHardwareTitle')}</HardwareTitle>
           <HardwareButtonRow>

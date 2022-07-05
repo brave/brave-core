@@ -400,7 +400,8 @@ provideStrings({
   braveWalletConnectHardwarePanelDisconnected: '$1 disconnected',
   braveWalletConnectHardwarePanelInstructions: 'Instructions',
   braveWalletConnectHardwarePanelConnect: 'Connect your $1',
-  braveWalletConnectHardwarePanelConfirmation: 'Hardware wallet requires transaction confirmation. $1',
+  braveWalletConnectHardwarePanelConfirmation: 'Hardware wallet requires transaction confirmation $1',
+  braveWalletConnectHardwarePanelOpenApp: 'Hardware wallet requires $1 App opened on $2',
 
   // Transaction List Item
   braveWalletTransactionSent: 'sent',

@@ -38,7 +38,8 @@ import {
   cancelHardwareOperation,
   dialogErrorFromLedgerErrorCode,
   dialogErrorFromTrezorErrorCode,
-  signLedgerFilecoinTransaction
+  signLedgerFilecoinTransaction,
+  signLedgerSolanaTransaction
 } from '../../common/async/hardware'
 
 import { Store } from '../../common/async/types'
@@ -293,9 +294,21 @@ handler.on(PanelActions.approveHardwareTransaction.getType(), async (store: Stor
   await navigateToConnectHardwareWallet(store)
   const apiProxy = getWalletPanelApiProxy()
   if (hardwareAccount.vendor === BraveWallet.LEDGER_HARDWARE_VENDOR) {
-    const { success, error, code } = (found.coin === BraveWallet.CoinType.ETH)
-       ? await signLedgerEthereumTransaction(apiProxy, hardwareAccount.path, txInfo, found.coin)
-       : await signLedgerFilecoinTransaction(apiProxy, txInfo, found.coin)
+    let success, error, code
+    switch (found.coin) {
+      case BraveWallet.CoinType.ETH:
+        ({ success, error, code } = await signLedgerEthereumTransaction(apiProxy, hardwareAccount.path, txInfo, found.coin))
+        break
+      case BraveWallet.CoinType.FIL:
+        ({ success, error, code } = await signLedgerFilecoinTransaction(apiProxy, txInfo, found.coin))
+        break
+      case BraveWallet.CoinType.SOL:
+        ({ success, error, code } = await signLedgerSolanaTransaction(apiProxy, hardwareAccount.path, txInfo, found.coin))
+        break
+      default:
+        await store.dispatch(PanelActions.navigateToMain())
+        return
+    }
     if (success) {
       refreshTransactionHistory(txInfo.fromAddress)
       await store.dispatch(PanelActions.setSelectedTransaction(txInfo))

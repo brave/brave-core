@@ -522,6 +522,7 @@ function Container () {
           <ConnectHardwareWalletPanel
             onCancel={onCancelConnectHardwareWallet}
             walletName={selectedAccount.name}
+            coinType={selectedAccount.coin}
             hardwareWalletCode={hardwareWalletCode}
             retryCallable={retryHardwareOperation}
             onClickInstructions={onClickInstructions}
