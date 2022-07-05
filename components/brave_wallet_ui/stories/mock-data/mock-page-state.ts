@@ -29,7 +29,7 @@ export const mockPageState: PageState = {
   showAddModal: false,
   showIsRestoring: false,
   showRecoveryPhrase: false,
-  mnemonic: mockedMnemonic,
+  mnemonic: mockedMnemonic.concat(` ${mockedMnemonic}`), // 24 word phrase
   isImportWalletsCheckComplete: false,
   importWalletAttempts: 0,
   walletTermsAcknowledged: false

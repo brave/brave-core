@@ -66,7 +66,7 @@ const AdvancedTransactionSettings = (props: Props) => {
           <NavButton
             buttonType='secondary'
             needsTopMargin={true}
-            text={getLocale('braveWalletBackupButtonCancel')}
+            text={getLocale('braveWalletButtonCancel')}
             onSubmit={onCancel}
           />
           <NavButton

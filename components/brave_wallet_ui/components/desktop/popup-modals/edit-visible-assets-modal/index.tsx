@@ -541,7 +541,7 @@ const EditVisibleAssetsModal = ({ onClose }: Props) => {
                 <ButtonRow>
                   <NavButton
                     onSubmit={onClickCancel}
-                    text={getLocale('braveWalletBackupButtonCancel')}
+                    text={getLocale('braveWalletButtonCancel')}
                     buttonType='secondary'
                   />
                   <NavButton

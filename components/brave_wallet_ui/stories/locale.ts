@@ -106,39 +106,63 @@ provideStrings({
   braveWalletButtonClose: 'Close',
   braveWalletButtonMore: 'More',
   braveWalletButtonDone: 'Done',
+  braveWalletButtonSkip: 'Skip',
+  braveWalletButtonCancel: 'Cancel',
 
-  // Wallet Onboarding Welcome
+  // Onboarding - Welcome
   braveWalletWelcomeTitle: 'Keeping your crypto secure doesn’t have to be hard',
   braveWalletWelcomeButton: 'Create a new wallet',
   braveWalletWhatIsACryptoWallet: 'Learn more about crypto wallets',
   braveWalletWelcomeIAlreadyHaveAWallet: 'I already have a wallet',
   braveWalletWelcomeRestoreButton: 'Restore',
 
-  // Wallet Onboarding Disclosures
+  // Onboarding - Disclosures
   braveWalletDisclosuresTitle: 'Before we begin',
   braveWalletDisclosuresDescription: 'We require that you acknowledge the items below',
   braveWalletSelfCustodyDisclosureCheckboxText: 'I understand this is a self-custody wallet, and that I alone am responsible for any associated funds, assets, or accounts, and for taking appropriate action to secure, protect and backup my wallet. I understand that Brave can NOT access my wallet or reverse transactions on my behalf, and that my recovery phrase is the ONLY way to regain access in the event of a lost password, stolen device, or similar circumstance.',
   braveWalletTermsOfServiceCheckboxText: 'I have read and agree to the $1Terms of use$2',
 
-  // Backup Wallet Intro (v2)
+  // Onboarding import or restore wallet page
+  braveWalletCheckingInstalledExtensions: 'Checking for wallet extensions...',
+  braveWalletImportOrRestoreWalletTitle: 'Connect to your existing wallet',
+  braveWalletImportOrRestoreDescription: 'By connecting to your wallet, you may need to enter your 12-24 word recovery phrase to restore/import. We support Ethereum wallet at this time.',
+  braveWalletRestoreMyBraveWallet: 'Restore from seed phrase',
+  braveWalletRestoreMyBraveWalletDescription: '12-24 words',
+  braveWalletImportFromMetaMask: 'Import from MetaMask',
+  braveWalletImportFromMetaMaskDescription: 'Use your MetaMask password to import your seed phrase',
+  braveWalletImportFromLegacy: 'Import from legacy Brave crypto wallets',
+  braveWalletCreateWalletInsteadLink: 'Never mind, I’ll create a new wallet',
+
+  // onboarding import wallet screen
+  braveWalletImportPasswordError: 'Password is not correct',
+  braveWalletMetaMaskPasswordInputPlaceholder: 'Type MetaMask password',
+  braveWalletImportFromMetaMaskSeedInstructions: 'Type your MetaMask 12-24 word recovery phrase.',
+  braveWalletMetaMaskExtensionDetected: 'We detected the MetaMask extension in your browser',
+  braveWalletMetaMaskExtensionImportDescription: 'By entering the password you can Import your MetaMask wallet to Brave Wallet easily.',
+  braveWalletRestoreMyBraveWalletInstructions: 'Type your Brave Wallet 12-24 word recovery phrase.',
+
+  // Onboarding - Backup Wallet - Intro
   braveWalletOnboardingRecoveryPhraseBackupIntroTitle: 'Before you start backing up wallet',
-  braveWalletOnboardingRecoveryPhraseBackupIntroDescription: 'The 12 word recovery phrase that will be provided next step is a private key that allows you to access your wallet if you lose your devices.',
+  braveWalletOnboardingRecoveryPhraseBackupIntroDescription: 'The 12-24 word recovery phrase that will be provided next step is a private key that allows you to access your wallet if you lose your devices.',
   braveWalletRecoveryPhraseBackupWarningImportant: '$1Important:$2 Never share your recovery phrase. Anyone with this phrase can take your assets forever.',
 
-  // Backup Wallet Intro (v1)
-  braveWalletBackupIntroTitle: 'Back up your crypto wallet',
-  braveWalletBackupIntroDescription: 'In the next step you’ll see a $1-word recovery phrase, which you can use to recover your primary crypto accounts. Save it someplace safe. Your recovery phrase is the only way to regain account access in case of forgotten password, lost or stolen device, or you want to switch wallets.',
-  braveWalletBackupIntroTerms: 'I understand that if I lose my recovery words, I will not be able to access my crypto wallet.',
-  braveWalletBackupButtonSkip: 'Skip',
-  braveWalletBackupButtonCancel: 'Cancel',
-
-  // Recovery Phrase Backup (v2)
+  // Onboarding - Backup Wallet - Recovery Phrase Backup
   braveWalletRecoveryPhraseBackupTitle: 'Next, let\'s back up your wallet.',
   braveWalletRecoveryPhraseBackupWarning: 'Brave cannot recover your secret recovery phrase. Keep it safe, never share this phrase with anyone.',
   braveWalletCopiedToClipboard: 'Copied to clipboard',
   braveWalletClickToSeeRecoveryPhrase: 'Click here to see phrase',
 
-  // Recovery Phrase Backup (v1)
+  // Onboarding - Backup Wallet - Verify Recovery Phrase
+  braveWalletVerifyRecoveryPhraseTitle: 'Verify your recovery phrase',
+  braveWalletVerifyRecoveryPhraseInstructions: 'Click the $1First(1st)$2, $3Third(3rd)$4, and $5Last($7th)$6 word of your recovery phrase.',
+  braveWalletVerifyPhraseError: 'Recovery phrase didn\'t match',
+
+  // Recovery Phrase Backup - Intro
+  braveWalletBackupIntroTitle: 'Back up your crypto wallet',
+  braveWalletBackupIntroDescription: 'In the next step you’ll see a $1-word recovery phrase, which you can use to recover your primary crypto accounts. Save it someplace safe. Your recovery phrase is the only way to regain account access in case of forgotten password, lost or stolen device, or you want to switch wallets.',
+  braveWalletBackupIntroTerms: 'I understand that if I lose my recovery words, I will not be able to access my crypto wallet.',
+
+  // Recovery Phrase Backup - Intro
   braveWalletRecoveryTitle: 'Your recovery phrase',
   braveWalletRecoveryDescription: 'Write down or copy these words in the exact order shown below, and save them somewhere safe. Your recovery phrase is the only way to regain account access in case of forgotten password, lost or stolen device, or you want to switch wallets.',
   braveWalletRecoveryWarning1: 'WARNING:',
@@ -146,15 +170,10 @@ provideStrings({
   braveWalletRecoveryWarning3: 'Anyone with this phrase can take your assets forever.',
   braveWalletRecoveryTerms: 'I have backed up my phrase somewhere safe.',
 
-  // Verify Recovery Phrase (v1)
+  // Recovery Phrase Backup - Verify Recovery Phrase
   braveWalletVerifyRecoveryTitle: 'Verify recovery phrase',
   braveWalletVerifyRecoveryDescription: 'Select the words in your recovery phrase in their correct order.',
   braveWalletVerifyError: 'Recovery phrase did not match, please try again.',
-
-  // Verify Recovery Phrase (v2)
-  braveWalletVerifyRecoveryPhraseTitle: 'Verify your recovery phrase',
-  braveWalletVerifyRecoveryPhraseInstructions: 'Click the $1First(1st)$2, $3Third(3rd)$4, and $5Last(12th)$6 word of your recovery phrase.',
-  braveWalletVerifyPhraseError: 'Recovery phrase didn\'t match',
 
   // Create Password
   braveWalletCreatePasswordTitle: 'Create a new password',
@@ -174,40 +193,15 @@ provideStrings({
   braveWalletPasswordStrengthTooltipContainsNumber: '1 number',
   braveWalletPasswordStrengthTooltipContainsSpecialChar: '1 special character',
 
-  // Wallet Onboarding Success
+  // Onboarding Success
   braveWalletOnboardingSuccessTitle: 'Congratulations on setting up your Brave Wallet!',
   braveWalletOnboardingSuccessDescription: 'Now you can easily access your wallet any time from the wallet icon in Brave Browser.',
   braveWalletBuyCryptoButton: 'Buy Crypto',
   braveWalletDepositCryptoButton: 'Deposit',
   braveWalletLearnAboutMyWallet: 'Learn more about my new wallet',
 
-  // Wallet Onboarding Success Article Links
-  braveWalletArticleLinkHowToUseAWallet: 'How to use a crypto wallet?',
-  braveWalletArticleLinkWhatsTheBestWallet: 'What’s the best crypto wallet?',
-  braveWalletArticleLinkWhatsACryptoBrowser: 'What’s a crypto browser?',
-  braveWalletArticleLinkWalletsBasics: 'Crypto wallets 101',
+  // Wallet Article Links
   braveWalletArticleLinkWhatsARecoveryPhrase: 'What’s a recovery phrase?',
-  braveWalletArticleLinkWhatAreDapps: 'What are DApps?',
-  braveWalletArticleLinkWhatIsWeb3: 'What’s web 3?',
-
-  // Onboarding import or restore wallet page
-  braveWalletCheckingInstalledExtensions: 'Checking for wallet extensions...',
-  braveWalletImportOrRestoreWalletTitle: 'Connect to your existing wallet',
-  braveWalletImportOrRestoreDescription: 'By connecting to your wallet, you may need to enter your 12 word recovery phrase to restore/import. We support Ethereum wallet at this time.',
-  braveWalletRestoreMyBraveWallet: 'Restore from seed phrase',
-  braveWalletRestoreMyBraveWalletDescription: '12-24 words',
-  braveWalletImportFromMetaMask: 'Import from MetaMask',
-  braveWalletImportFromMetaMaskDescription: 'Use your MetaMask password to import your seed phrase',
-  braveWalletImportFromLegacy: 'Import from legacy Brave crypto wallets',
-  braveWalletCreateWalletInsteadLink: 'Never mind, I’ll create a new wallet',
-
-  // onboarding import wallet screen
-  braveWalletImportPasswordError: 'Password is not correct',
-  braveWalletMetaMaskPasswordInputPlaceholder: 'Type MetaMask password',
-  braveWalletImportFromMetaMaskSeedInstructions: 'Type your MetaMask 12 words recovery phrase.',
-  braveWalletMetaMaskExtensionDetected: 'We detected the MetaMask extension in your browser',
-  braveWalletMetaMaskExtensionImportDescription: 'By entering the password you can Import your MetaMask wallet to Brave Wallet easily.',
-  braveWalletRestoreMyBraveWalletInstructions: 'Type your Brave Wallet 12 words recovery phrase.',
 
   // Lock Screen
   braveWalletEnterYourPassword: 'Enter your Brave Wallet password',

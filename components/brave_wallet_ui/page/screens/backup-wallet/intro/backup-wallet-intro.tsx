@@ -50,7 +50,7 @@ export const BackupWalletIntroStep = ({
         </Checkbox>
       </TermsRow>
       <NavButton disabled={!isBackupTermsAccepted} buttonType='primary' text={getLocale('braveWalletButtonContinue')} onSubmit={onSubmit} />
-      <SkipButton onClick={onCancel}>{isOnboarding ? getLocale('braveWalletBackupButtonSkip') : getLocale('braveWalletBackupButtonCancel')}</SkipButton>
+      <SkipButton onClick={onCancel}>{isOnboarding ? getLocale('braveWalletButtonSkip') : getLocale('braveWalletButtonCancel')}</SkipButton>
     </StyledWrapper>
   )
 }

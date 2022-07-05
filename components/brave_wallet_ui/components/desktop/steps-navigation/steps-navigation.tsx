@@ -81,7 +81,7 @@ export const StepsNavigation: <T extends string>(
 
       {onSkip
         ? <LinkText onClick={onSkip}>
-            {skipButtonText || getLocale('braveWalletBackupButtonSkip')}
+            {skipButtonText || getLocale('braveWalletButtonSkip')}
           </LinkText>
         : <FlexBox />
       }
