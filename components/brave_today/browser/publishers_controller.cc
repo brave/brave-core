@@ -51,6 +51,24 @@ mojom::PublisherPtr PublishersController::GetPublisherForSite(
   return nullptr;
 }
 
+mojom::PublisherPtr PublishersController::GetPublisherForFeed(
+    const GURL& feed_url) {
+  if (publishers_.empty())
+    return nullptr;
+
+  for (const auto& kv : publishers_) {
+    if (kv.second->feed_source == feed_url)
+      return kv.second->Clone();
+  }
+  return nullptr;
+}
+
+mojom::PublisherPtr PublishersController::GetPublisherById(
+    const std::string& publisher_id) {
+  return publishers_.contains(publisher_id) ? publishers_[publisher_id]->Clone()
+                                            : nullptr;
+}
+
 void PublishersController::AddObserver(Observer* observer) {
   observers_.AddObserver(observer);
 }

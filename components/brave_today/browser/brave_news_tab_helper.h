@@ -9,6 +9,7 @@
 #include <vector>
 #include "base/memory/weak_ptr.h"
 #include "brave/components/brave_today/browser/brave_news_controller.h"
+#include "brave/components/brave_today/browser/publishers_controller.h"
 #include "brave/components/brave_today/common/brave_news.mojom-forward.h"
 #include "content/public/browser/web_contents_observer.h"
 #include "content/public/browser/web_contents_user_data.h"
@@ -17,7 +18,8 @@ class Page;
 
 class BraveNewsTabHelper
     : public content::WebContentsUserData<BraveNewsTabHelper>,
-      public content::WebContentsObserver {
+      public content::WebContentsObserver,
+      public brave_news::PublishersController::Observer {
  public:
   struct FeedDetails {
    public:
@@ -52,6 +54,10 @@ class BraveNewsTabHelper
 
   // content::WebContentsObserver:
   void PrimaryPageChanged(content::Page& page) override;
+
+  // brave_news::PublisherController::Observer:
+  void OnPublishersUpdated(
+      brave_news::PublishersController* controller) override;
 
  private:
   explicit BraveNewsTabHelper(content::WebContents* contents);

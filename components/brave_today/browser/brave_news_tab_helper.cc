@@ -4,17 +4,36 @@
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
 #include "brave/components/brave_today/browser/brave_news_tab_helper.h"
+#include <dirent.h>
 #include <algorithm>
 #include <string>
+#include <utility>
 #include <vector>
 #include "absl/types/optional.h"
 #include "base/bind.h"
 #include "base/callback_forward.h"
 #include "base/callback_helpers.h"
+#include "base/containers/flat_map.h"
+#include "base/location.h"
+#include "base/memory/weak_ptr.h"
+#include "base/task/sequenced_task_runner.h"
+#include "base/task/task_runner.h"
+#include "base/task/task_traits.h"
+#include "base/task/task_traits_extension.h"
+#include "base/task/thread_pool.h"
+#include "base/threading/sequenced_task_runner_handle.h"
+#include "base/time/time.h"
 #include "brave/browser/brave_news/brave_news_controller_factory.h"
+#include "brave/components/brave_today/browser/brave_news_controller.h"
+#include "brave/components/brave_today/browser/publishers_controller.h"
+#include "brave/components/brave_today/common/brave_news.mojom-forward.h"
+#include "brave/components/brave_today/common/brave_news.mojom-params-data.h"
 #include "brave/components/brave_today/common/brave_news.mojom-shared.h"
 #include "chrome/browser/feed/rss_links_fetcher.h"
 #include "components/feed/buildflags.h"
+#include "content/public/browser/browser_context.h"
+#include "content/public/browser/browser_task_traits.h"
+#include "content/public/browser/browser_thread.h"
 #include "content/public/browser/page.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_contents_observer.h"
@@ -25,12 +44,35 @@ BraveNewsTabHelper::BraveNewsTabHelper(content::WebContents* contents)
       content::WebContentsObserver(contents),
       controller_(
           brave_news::BraveNewsControllerFactory::GetControllerForContext(
-              contents->GetBrowserContext())) {}
+              contents->GetBrowserContext())) {
+  auto start = base::Time::Now();
+  controller_->publisher_controller()->AddObserver(this);
 
-BraveNewsTabHelper::~BraveNewsTabHelper() = default;
+  // base::ThreadPool::PostTask(
+  //     FROM_HERE,
+  //     base::BindOnce(
+  //         [](content::BrowserContext* profile) {
+  //           brave_news::BraveNewsControllerFactory::GetForContext(profile)
+  //               ->GetPublishers(base::DoNothing());
+  //         },
+  //         contents->GetBrowserContext()));
+  controller_->GetPublishers(base::DoNothing());
+  LOG(ERROR) << "Init took: " << (base::Time::Now() - start).InMilliseconds();
+}
+
+BraveNewsTabHelper::~BraveNewsTabHelper() {
+  controller_->publisher_controller()->RemoveObserver(this);
+}
 
 bool BraveNewsTabHelper::is_subscribed(const FeedDetails& feed_details) {
-  return false;
+  // This must be a direct feed that we aren't subscribed to.
+  auto publisher = controller_->publisher_controller()->GetPublisherForFeed(
+      feed_details.feed_url);
+  if (!publisher) {
+    publisher = controller_->publisher_controller()->GetPublisherById(
+        feed_details.publisher_id);
+  }
+  return brave_news::IsPublisherEnabled(publisher);
 }
 
 bool BraveNewsTabHelper::is_subscribed() {
@@ -43,11 +85,14 @@ bool BraveNewsTabHelper::is_subscribed() {
 
 void BraveNewsTabHelper::ToggleSubscription(const FeedDetails& feed_details) {
   bool subscribed = is_subscribed(feed_details);
-  if (!feed_details.publisher_id.empty()) {
+  auto publisher = controller_->publisher_controller()->GetPublisherById(
+      feed_details.publisher_id);
+  if (publisher) {
     controller_->SetPublisherPref(
         feed_details.publisher_id,
         subscribed ? brave_news::mojom::UserEnabled::DISABLED
                    : brave_news::mojom::UserEnabled::ENABLED);
+    AvailableFeedsChanged();
   } else if (!subscribed) {
     controller_->SubscribeToNewDirectFeed(feed_details.feed_url,
                                           base::DoNothing());
@@ -73,10 +118,16 @@ void BraveNewsTabHelper::OnFoundFeeds(
     return;
 
   for (const auto& feed : feeds) {
-    available_feeds_.push_back({feed->feed_url, "", feed->feed_title});
+    auto publisher = controller_->publisher_controller()->GetPublisherForFeed(
+        feed->feed_url);
+    auto publisher_id = publisher ? publisher->publisher_id : "";
+    available_feeds_.push_back(
+        {feed->feed_url, publisher_id, feed->feed_title});
   }
 
-  AvailableFeedsChanged();
+  content::GetUIThreadTaskRunner({})->PostTask(
+      FROM_HERE, base::BindOnce(&BraveNewsTabHelper::AvailableFeedsChanged,
+                                weak_ptr_factory_.GetWeakPtr()));
 }
 
 void BraveNewsTabHelper::AddObserver(PageFeedsObserver* observer) {
@@ -97,6 +148,11 @@ void BraveNewsTabHelper::AvailableFeedsChanged() {
 }
 
 void BraveNewsTabHelper::PrimaryPageChanged(content::Page& page) {
+  auto start = base::Time::Now();
+
+  // Invalidate all weak pointers - we're on a new page now.
+  weak_ptr_factory_.InvalidateWeakPtrs();
+
   available_feeds_.clear();
 
   auto* contents =
@@ -112,13 +168,33 @@ void BraveNewsTabHelper::PrimaryPageChanged(content::Page& page) {
   }
 
 #if BUILDFLAG(ENABLE_FEED_V2)
-  feed::FetchRssLinks(contents->GetLastCommittedURL(), contents,
-                      base::BindOnce(&BraveNewsTabHelper::OnReceivedRssUrls,
-                                     weak_ptr_factory_.GetWeakPtr(),
-                                     contents->GetLastCommittedURL()));
+  // auto callback = base::BindOnce(&BraveNewsTabHelper::OnReceivedRssUrls,
+  //                                weak_ptr_factory_.GetWeakPtr(),
+  //                                contents->GetLastCommittedURL());
+  // base::SequencedTaskRunnerHandle::Get()->PostTask(FROM_HERE,
+  // base::BindOnce(&feed::FetchRssLinks,
+  //                                           contents->GetLastCommittedURL(),
+  //                                           contents,
+  //                                           std::move(callback)));
 #endif
 
   AvailableFeedsChanged();
+
+  auto duration = (base::Time::Now() - start).InMilliseconds();
+  if (duration != 0) {
+    LOG(ERROR) << "Primary Page Changed: " << duration;
+  }
+}
+
+void BraveNewsTabHelper::OnPublishersUpdated(
+    brave_news::PublishersController*) {
+      auto start = base::Time::Now();
+      LOG(ERROR) << "OnPublishersUpdated";
+  AvailableFeedsChanged();
+  auto duration = (base::Time::Now() - start).InMilliseconds();
+  if (duration != 0) {
+    LOG(ERROR) << "OnPublishersUpdated: " << duration;
+  }
 }
 
 WEB_CONTENTS_USER_DATA_KEY_IMPL(BraveNewsTabHelper);

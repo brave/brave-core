@@ -14,6 +14,7 @@
 #include "base/observer_list_types.h"
 #include "base/one_shot_event.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
+#include "brave/components/brave_today/common/brave_news.mojom-forward.h"
 #include "brave/components/brave_today/common/brave_news.mojom.h"
 #include "components/prefs/pref_service.h"
 
@@ -37,6 +38,8 @@ class PublishersController {
   };
 
   mojom::PublisherPtr GetPublisherForSite(const GURL& site_url);
+  mojom::PublisherPtr GetPublisherForFeed(const GURL& feed_url);
+  mojom::PublisherPtr GetPublisherById(const std::string& publisher_id);
   
   void AddObserver(Observer* observer);
   void RemoveObserver(Observer* observer);

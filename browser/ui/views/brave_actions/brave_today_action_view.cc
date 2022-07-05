@@ -4,7 +4,10 @@
 #include <vector>
 #include "absl/types/optional.h"
 #include "base/bind.h"
+#include "base/callback_forward.h"
 #include "base/callback_helpers.h"
+#include "base/task/task_runner.h"
+#include "base/threading/sequenced_task_runner_handle.h"
 #include "brave/app/vector_icons/vector_icons.h"
 #include "brave/browser/brave_news/brave_news_controller_factory.h"
 #include "brave/browser/ui/views/brave_actions/brave_action_view.h"
@@ -50,12 +53,8 @@ BraveTodayActionView::BraveTodayActionView(Profile* profile,
           base::BindRepeating(&BraveTodayActionView::ToggleSubscribed,
                               base::Unretained(this))),
       profile_(profile),
-      tab_strip_(tab_strip),
-      news_controller_(
-          brave_news::BraveNewsControllerFactory::GetControllerForContext(
-              profile)) {
+      tab_strip_(tab_strip) {
   DCHECK(profile_);
-
   SetAccessibleName(u"Brave Today Button");
   SetHorizontalAlignment(gfx::HorizontalAlignment::ALIGN_CENTER);
 
@@ -68,7 +67,6 @@ BraveTodayActionView::BraveTodayActionView(Profile* profile,
   SetHasInkDropActionOnClick(true);
 
   tab_strip_->AddObserver(this);
-  news_controller_->GetPublishers(base::DoNothing());
 }
 
 BraveTodayActionView::~BraveTodayActionView() {
