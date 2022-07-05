@@ -60,14 +60,12 @@ export interface Props {
   displayAccountName: boolean
 }
 
-const PortfolioTransactionItem = (props: Props) => {
-  const {
-    transaction,
-    account,
-    displayAccountName,
-    accounts
-  } = props
-
+export const PortfolioTransactionItem = ({
+  transaction,
+  account,
+  displayAccountName,
+  accounts
+}: Props) => {
   // routing
   const history = useHistory()
 

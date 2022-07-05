@@ -43,15 +43,13 @@ import { TransactionPlaceholderText, Spacer } from '../portfolio/style'
 
 // Components
 import { BackButton } from '../../../shared'
-import {
-  PortfolioAssetItem,
-  AccountSettingsModal,
-  PortfolioTransactionItem
-} from '../..'
+import { AccountSettingsModal } from '../../popup-modals/account-settings-modal/index'
+import { PortfolioTransactionItem } from '../../portfolio-transaction-item/index'
+import { PortfolioAssetItem } from '../../portfolio-asset-item/index'
 import { CopyTooltip } from '../../../shared/copy-tooltip/copy-tooltip'
 
 // Hooks
-import { useBalance } from '../../../../common/hooks'
+import { useBalance } from '../../../../common/hooks/balance'
 
 // Actions
 import { WalletPageActions } from '../../../../page/actions'
@@ -76,15 +74,12 @@ export const Account = ({
 
   // redux
   const dispatch = useDispatch()
-  const {
-    accounts,
-    transactions,
-    transactionSpotPrices,
-    userVisibleTokensInfo,
-    defaultCurrencies,
-    networkList
-  } = useSelector(({ wallet }: { wallet: WalletState }) => wallet)
-
+  const accounts = useSelector(({ wallet }: { wallet: WalletState }) => wallet.accounts)
+  const transactions = useSelector(({ wallet }: { wallet: WalletState }) => wallet.transactions)
+  const transactionSpotPrices = useSelector(({ wallet }: { wallet: WalletState }) => wallet.transactionSpotPrices)
+  const userVisibleTokensInfo = useSelector(({ wallet }: { wallet: WalletState }) => wallet.userVisibleTokensInfo)
+  const defaultCurrencies = useSelector(({ wallet }: { wallet: WalletState }) => wallet.defaultCurrencies)
+  const networkList = useSelector(({ wallet }: { wallet: WalletState }) => wallet.networkList)
   const privateKey = useSelector(({ page }: { page: PageState }) => page.privateKey)
 
   // state

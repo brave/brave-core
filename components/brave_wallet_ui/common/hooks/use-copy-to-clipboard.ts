@@ -9,6 +9,7 @@ import * as React from 'react'
 import { copyToClipboard } from '../../utils/copy-to-clipboard'
 
 const temporaryCopyTimeout = 5000 // 5s
+const copiedMessageTimeout = 1500 // 1.5s
 
 export const useTemporaryCopyToClipboard = (
   timeoutMs: number = temporaryCopyTimeout
@@ -47,7 +48,9 @@ export const useTemporaryCopyToClipboard = (
   }
 }
 
-export const useCopyToClipboard = () => {
+export const useCopyToClipboard = (
+  timeoutMs = copiedMessageTimeout
+) => {
   // state
   const [isCopied, setIsCopied] = React.useState(false)
 
@@ -60,6 +63,24 @@ export const useCopyToClipboard = () => {
   const resetCopyState = React.useCallback(() => {
     setIsCopied(false)
   }, [])
+
+  // effects
+  React.useEffect(() => {
+    if (!isCopied) {
+      // nothing to clear
+      return () => {}
+    }
+
+    // clear the message after a set time
+    const timer = window.setTimeout(async () => {
+      resetCopyState()
+    }, timeoutMs)
+
+    // clean-up on unmount if timer was set
+    return () => {
+      timer && clearTimeout(timer)
+    }
+  }, [isCopied, resetCopyState])
 
   return {
     copyToClipboard: _copyToClipboard,
