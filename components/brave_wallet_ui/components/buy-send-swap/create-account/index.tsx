@@ -52,10 +52,10 @@ export const CreateAccountTab = ({
   const dispatch = useDispatch()
 
   // state
-  const [showUnlock, setShowUnlock] = React.useState(false)
+  const [showUnlock, setShowUnlock] = React.useState<boolean>(false)
 
   // memos
-  const accountNetwork = React.useMemo(() => {
+  const accountNetwork = React.useMemo((): BraveWallet.NetworkInfo => {
     return network || selectedNetwork
   }, [network, selectedNetwork])
 
