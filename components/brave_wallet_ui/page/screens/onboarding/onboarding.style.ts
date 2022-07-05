@@ -84,7 +84,7 @@ export const Description = styled.p<{ textAlign?: 'right' | 'center' }>`
   color: ${(p) => p.theme.color.text02};
   text-align: ${(p) => p?.textAlign || 'left'};
 
-  & > * > b {
+  & > * > strong {
     font-family: 'Poppins';
     font-style: normal;
     font-weight: 600;

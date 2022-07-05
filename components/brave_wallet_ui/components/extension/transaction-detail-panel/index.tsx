@@ -275,7 +275,7 @@ const TransactionDetailPanel = (props: Props) => {
           <StatusRow>
             <DetailButton onClick={onClickSpeedupTransaction}>{getLocale('braveWalletTransactionDetailSpeedUp')}</DetailButton>
             <SpacerText>|</SpacerText>
-            <DetailButton onClick={onClickCancelTransaction}>{getLocale('braveWalletBackupButtonCancel')}</DetailButton>
+            <DetailButton onClick={onClickCancelTransaction}>{getLocale('braveWalletButtonCancel')}</DetailButton>
           </StatusRow>
         </DetailRow>
       }

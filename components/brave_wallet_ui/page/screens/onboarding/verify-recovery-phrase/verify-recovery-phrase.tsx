@@ -94,7 +94,13 @@ export const OnboardingVerifyRecoveryPhrase = () => {
                 {getLocaleWithTags('braveWalletVerifyRecoveryPhraseInstructions', 3).map((text, i) => {
                   return <span key={text.duringTag || i}>
                     {text.beforeTag}
-                    <b>{text.duringTag}</b>
+                    <strong>
+                      {
+                        text.duringTag?.replace(
+                        '$7',
+                        recoveryPhrase.length.toString())
+                      }
+                    </strong>
                     {text.afterTag}
                   </span>
                 })}
