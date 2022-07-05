@@ -131,7 +131,10 @@ private class ContentView: UIView {
   }
 
   let closeButton = UIButton().then {
-    $0.setImage(UIImage(named: "close_popup", in: .current, compatibleWith: nil)!.template, for: .normal)
+    if let image = UIImage(named: "close_popup", in: .current, compatibleWith: nil) {
+      $0.setImage(image.template, for: .normal)
+    }
+    
     $0.tintColor = .lightGray
   }
 
