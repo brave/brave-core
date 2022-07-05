@@ -245,6 +245,13 @@ void BraveVpnNativeWorker::OnVerifyPurchaseToken(
       base::android::ConvertUTF8ToJavaString(env, json_response), success);
 }
 
+void BraveVpnNativeWorker::RecordConnectionForP3A(JNIEnv* env) {
+  BraveVpnService* brave_vpn_service = GetBraveVpnService();
+  if (brave_vpn_service) {
+    brave_vpn_service->RecordP3A(true);
+  }
+}
+
 static void JNI_BraveVpnNativeWorker_Init(
     JNIEnv* env,
     const base::android::JavaParamRef<jobject>& jcaller) {

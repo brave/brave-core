@@ -11,6 +11,7 @@
 #include "base/json/json_writer.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/run_loop.h"
+#include "base/test/metrics/histogram_tester.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/components/brave_vpn/brave_vpn_service.h"
 #include "brave/components/brave_vpn/brave_vpn_service_helper.h"
@@ -168,12 +169,17 @@ class TestBraveVPNServiceObserver : public mojom::ServiceObserver {
 
 class BraveVPNServiceTest : public testing::Test {
  public:
-  BraveVPNServiceTest() {
+  BraveVPNServiceTest()
+      : task_environment_(base::test::TaskEnvironment::TimeSource::MOCK_TIME) {
     scoped_feature_list_.InitWithFeatures(
         {skus::features::kSkusFeature, features::kBraveVPN}, {});
   }
 
   void SetUp() override {
+    base::Time future_mock_time;
+    if (base::Time::FromString("2023-01-04", &future_mock_time)) {
+      task_environment_.AdvanceClock(future_mock_time - base::Time::Now());
+    }
     skus::RegisterProfilePrefs(profile_pref_service_.registry());
     prefs::RegisterProfilePrefs(profile_pref_service_.registry());
     prefs::RegisterLocalStatePrefs(local_pref_service_.registry());
@@ -281,6 +287,8 @@ class BraveVPNServiceTest : public testing::Test {
   void CreateVPNConnection() { service_->CreateVPNConnection(); }
 
   void LoadCachedRegionData() { service_->LoadCachedRegionData(); }
+
+  void RecordP3A(bool new_usage) { service_->RecordP3A(new_usage); }
 
   void OnCreated() { service_->OnCreated(); }
 
@@ -507,6 +515,7 @@ class BraveVPNServiceTest : public testing::Test {
   network::TestURLLoaderFactory url_loader_factory_;
   scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
   data_decoder::test::InProcessDataDecoder in_process_data_decoder_;
+  base::HistogramTester histogram_tester_;
 };
 
 TEST(BraveVPNFeatureTest, FeatureTest) {
@@ -997,6 +1006,54 @@ TEST_F(BraveVPNServiceTest, LoadPurchasedStateForAnotherEnvFailed) {
   EXPECT_FALSE(observer.GetPurchasedState().has_value());
   EXPECT_EQ(GetCurrentEnvironment(), skus::GetDefaultEnvironment());
   EXPECT_EQ(GetPurchasedStateSync(), PurchasedState::PURCHASED);
+}
+
+TEST_F(BraveVPNServiceTest, NewUserReturningMetric) {
+  RecordP3A(false);
+  histogram_tester_.ExpectBucketCount(kNewUserReturningHistogramName, 0, 2);
+
+  task_environment_.FastForwardBy(base::Days(1));
+  RecordP3A(true);
+  histogram_tester_.ExpectBucketCount(kNewUserReturningHistogramName, 2, 1);
+
+  task_environment_.FastForwardBy(base::Days(1));
+  RecordP3A(true);
+  histogram_tester_.ExpectBucketCount(kNewUserReturningHistogramName, 3, 1);
+
+  task_environment_.FastForwardBy(base::Days(6));
+  histogram_tester_.ExpectBucketCount(kNewUserReturningHistogramName, 1, 1);
+}
+
+TEST_F(BraveVPNServiceTest, DaysInMonthUsedMetric) {
+  RecordP3A(false);
+  histogram_tester_.ExpectTotalCount(kDaysInMonthUsedHistogramName, 0);
+
+  RecordP3A(true);
+  histogram_tester_.ExpectBucketCount(kDaysInMonthUsedHistogramName, 1, 1);
+
+  task_environment_.FastForwardBy(base::Days(1));
+  RecordP3A(true);
+  histogram_tester_.ExpectBucketCount(kDaysInMonthUsedHistogramName, 2, 1);
+  task_environment_.FastForwardBy(base::Days(1));
+  histogram_tester_.ExpectBucketCount(kDaysInMonthUsedHistogramName, 2, 2);
+
+  RecordP3A(true);
+  task_environment_.FastForwardBy(base::Days(30));
+  histogram_tester_.ExpectBucketCount(kDaysInMonthUsedHistogramName, 0, 1);
+}
+
+TEST_F(BraveVPNServiceTest, LastUsageTimeMetric) {
+  histogram_tester_.ExpectTotalCount(kLastUsageTimeHistogramName, 0);
+
+  RecordP3A(true);
+  histogram_tester_.ExpectBucketCount(kLastUsageTimeHistogramName, 1, 1);
+
+  task_environment_.AdvanceClock(base::Days(10));
+  RecordP3A(true);
+  histogram_tester_.ExpectBucketCount(kLastUsageTimeHistogramName, 1, 2);
+  task_environment_.AdvanceClock(base::Days(10));
+  RecordP3A(false);
+  histogram_tester_.ExpectBucketCount(kLastUsageTimeHistogramName, 2, 1);
 }
 
 }  // namespace brave_vpn

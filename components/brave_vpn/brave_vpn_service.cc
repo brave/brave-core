@@ -11,6 +11,9 @@
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "base/strings/utf_string_conversions.h"
+#include "base/time/time.h"
+#include "brave/components/brave_vpn/pref_names.h"
+#include "brave/components/p3a_utils/feature_usage.h"
 #include "brave/components/skus/browser/skus_utils.h"
 #include "net/base/network_change_notifier.h"
 #include "net/cookies/cookie_inclusion_status.h"
@@ -28,9 +31,7 @@
 #include "brave/components/brave_vpn/brave_vpn_constants.h"
 #include "brave/components/brave_vpn/brave_vpn_service_helper.h"
 #include "brave/components/brave_vpn/brave_vpn_utils.h"
-#include "brave/components/brave_vpn/pref_names.h"
 #include "brave/components/brave_vpn/switches.h"
-#include "brave/components/p3a_utils/feature_usage.h"
 #include "brave/components/version_info/version_info.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
@@ -51,9 +52,8 @@ constexpr char kCredential[] = "api/v1.3/device/";
 constexpr char kVerifyPurchaseToken[] = "api/v1.1/verify-purchase-token";
 constexpr char kCreateSubscriberCredentialV12[] =
     "api/v1.2/subscriber-credential/create";
-constexpr char kNewUserReturningHistogramName[] = "Brave.VPN.NewUserReturning";
-constexpr char kDaysInMonthUsedHistogramName[] = "Brave.VPN.DaysInMonthUsed";
-constexpr char kLastUsageTimeHistogramName[] = "Brave.VPN.LastUsageTime";
+
+constexpr int kP3AIntervalHours = 24;
 
 net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
   return net::DefineNetworkTrafficAnnotation("brave_vpn_service", R"(
@@ -124,7 +124,7 @@ BraveVpnService::BraveVpnService(
       skus_service_getter_(skus_service_getter),
       api_request_helper_(GetNetworkTrafficAnnotationTag(), url_loader_factory),
       weak_ptr_factory_(this) {
-  RecordP3A(false);
+  InitP3A();
 }
 #else
 BraveVpnService::BraveVpnService(
@@ -159,7 +159,7 @@ BraveVpnService::BraveVpnService(
     ReloadPurchasedState();
   }
 
-  RecordP3A(false);
+  InitP3A();
 }
 #endif
 
@@ -1039,6 +1039,12 @@ void BraveVpnService::OnPrepareCredentialsPresentation(
 #endif
 }
 
+void BraveVpnService::InitP3A() {
+  p3a_timer_.Start(FROM_HERE, base::Hours(kP3AIntervalHours), this,
+                   &BraveVpnService::OnP3AInterval);
+  RecordP3A(false);
+}
+
 void BraveVpnService::RecordP3A(bool new_usage) {
   if (new_usage) {
     p3a_utils::RecordFeatureUsage(local_prefs_, prefs::kBraveVPNFirstUseTime,
@@ -1052,6 +1058,10 @@ void BraveVpnService::RecordP3A(bool new_usage) {
       prefs::kBraveVPNDaysInMonthUsed, kDaysInMonthUsedHistogramName);
   p3a_utils::RecordFeatureLastUsageTimeMetric(
       local_prefs_, prefs::kBraveVPNLastUseTime, kLastUsageTimeHistogramName);
+}
+
+void BraveVpnService::OnP3AInterval() {
+  RecordP3A(false);
 }
 
 void BraveVpnService::SetPurchasedState(const std::string& env,

@@ -109,7 +109,7 @@ source_set("unit_tests") {
     sources = []
 
     # Currently, tests are for desktop only (fails on Android).
-    if (is_win || is_mac) {
+    if (is_win || is_mac || is_android) {
       sources += [ "brave_vpn_unittest.cc" ]
     }
 
