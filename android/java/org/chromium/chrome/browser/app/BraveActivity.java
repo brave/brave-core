@@ -232,7 +232,6 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
     private SolanaTxManagerProxy mSolanaTxManagerProxy;
     private AssetRatioService mAssetRatioService;
     public CompositorViewHolder compositorView;
-    public View inflatedSettingsBarLayout;
     public boolean mLoadedFeed;
     public boolean mComesFromNewTab;
     public CopyOnWriteArrayList<FeedItemsCard> mNewsItemsFeedCards;
@@ -851,24 +850,6 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
 
         checkFingerPrintingOnUpgrade();
         compositorView = null;
-        inflatedSettingsBarLayout = null;
-
-        if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_NEWS)) {
-            Tab tab = getActivityTab();
-
-            if (tab != null) {
-                // if it's new tab add the brave news settings bar to the layout
-                if (tab != null && tab.getUrl().getSpec() != null
-                        && UrlUtilities.isNTPUrl(tab.getUrl().getSpec())
-                        && BravePrefServiceBridge.getInstance().getNewsOptIn()) {
-                    // inflateNewsSettingsBar();
-                } else {
-                    removeSettingsBar();
-                }
-            } else {
-                removeSettingsBar();
-            }
-        }
 
         if (BraveVpnUtils.isBraveVpnFeatureEnable()
                 && InAppPurchaseWrapper.getInstance().isSubscriptionSupported()) {
@@ -961,79 +942,17 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
                 getSupportFragmentManager(), "BraveVpnCalloutDialogFragment");
     }
 
-    public void inflateNewsSettingsBar() {
-        // get the main compositor view that we'll use to manipulate the views
-        compositorView = findViewById(R.id.compositor_view_holder);
-        ViewGroup controlContainer = findViewById(R.id.control_container);
-        if (compositorView != null && controlContainer != null) {
-            LayoutInflater inflater = LayoutInflater.from(this);
-            // inflate the settings bar layout
-            View inflatedSettingsBarLayout =
-                    inflater.inflate(R.layout.brave_news_settings_bar_layout, null);
-            View newContentButtonLayout =
-                    inflater.inflate(R.layout.brave_news_load_new_content, null);
-            // add the bar to the layout stack
-            if (compositorView.findViewById(R.id.news_settings_bar) != null) {
-                inflatedSettingsBarLayout = compositorView.findViewById(R.id.news_settings_bar);
-            } else {
-                compositorView.addView(inflatedSettingsBarLayout, 2);
-            }
-            inflatedSettingsBarLayout.setAlpha(0f);
-            if (compositorView.findViewById(R.id.new_content_layout_id) != null) {
-                newContentButtonLayout = compositorView.findViewById(R.id.new_content_layout_id);
-            } else {
-                compositorView.addView(newContentButtonLayout, 3);
-            }
-            FrameLayout.LayoutParams inflatedLayoutParams = new FrameLayout.LayoutParams(
-                    FrameLayout.LayoutParams.MATCH_PARENT, dpToPx(this, 55));
-
-            FrameLayout.LayoutParams newContentButtonLayoutParams = new FrameLayout.LayoutParams(
-                    FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT);
-            int compensation = ConfigurationUtils.isTablet(this)
-                    ? (getToolbarShadowHeight() > 3) ? 28 : (dpToPx(this, 12))
-                    : getToolbarShadowHeight();
-            // position bellow the control_container element (nevigation bar) with
-            // compensation
-            inflatedLayoutParams.setMargins(0, controlContainer.getBottom() - compensation, 0, 0);
-            newContentButtonLayoutParams.setMargins(0, dpToPx(this, 200), 0, 0);
-            newContentButtonLayoutParams.gravity = Gravity.CENTER_HORIZONTAL;
-            inflatedSettingsBarLayout.setLayoutParams(inflatedLayoutParams);
-            newContentButtonLayout.setLayoutParams(newContentButtonLayoutParams);
-
-            // inflatedSettingsBarLayout.setVisibility(View.VISIBLE);
-
-            compositorView.invalidate();
-        }
-    }
-
-    public void removeSettingsBar() {
-        CompositorViewHolder compositorView = findViewById(R.id.compositor_view_holder);
-
-        if (compositorView != null) {
-            View settingsBar = compositorView.getChildAt(2);
-            if (settingsBar != null) {
-                if (settingsBar.getId() == R.id.news_settings_bar) {
-                    compositorView.removeView(settingsBar);
-                }
-            }
-        }
-    }
-
     // Sets NTP background
     public void setBackground(Bitmap bgWallpaper) {
         CompositorViewHolder compositorView = findViewById(R.id.compositor_view_holder);
-
         if (compositorView != null) {
             ViewGroup root = (ViewGroup) compositorView.getChildAt(1);
-
-            if (root.getChildAt(0) instanceof NestedScrollView) {
-                NestedScrollView scrollView = (NestedScrollView) root.getChildAt(0);
-
+            if (root.getChildAt(0) instanceof FrameLayout) {
+                FrameLayout frameLayout = (FrameLayout) root.getChildAt(0);
                 DisplayMetrics displayMetrics = new DisplayMetrics();
                 getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
                 int mDeviceHeight = displayMetrics.heightPixels;
                 int mDeviceWidth = displayMetrics.widthPixels;
-
                 Glide.with(this)
                         .asBitmap()
                         .load(bgWallpaper)
@@ -1046,7 +965,7 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
                             public void onResourceReady(@NonNull Bitmap resource,
                                     @Nullable Transition<? super Bitmap> transition) {
                                 Drawable drawable = new BitmapDrawable(getResources(), resource);
-                                scrollView.setBackground(drawable);
+                                frameLayout.setBackground(drawable);
                             }
                             @Override
                             public void onLoadCleared(@Nullable Drawable placeholder) {}

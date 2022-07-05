@@ -23,7 +23,7 @@ import org.chromium.chrome.browser.ntp_background_images.model.Wallpaper;
 public class FetchWallpaperWorkerTask extends AsyncTask<Pair<Bitmap, Bitmap>> {
     public interface WallpaperRetrievedCallback {
         void bgWallpaperRetrieved(Bitmap bgWallpaper);
-        void logoRetrieved(Wallpaper mWallpaper, Bitmap logoWallpaper);
+        void logoRetrieved(Wallpaper wallpaper, Bitmap logoWallpaper);
     }
 
     private Context mContext;

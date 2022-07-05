@@ -45,19 +45,64 @@
 
     </FrameLayout>
 
-    <LinearLayout
-        android:id="@+id/parent_layout"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_gravity="center_horizontal"
+        android:overScrollMode="never" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical">
 
         <LinearLayout
-            android:id="@+id/ntp_main_layout"
+            android:id="@+id/news_settings_bar"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:orientation="vertical">
+            android:layout_height="55dp"
+            android:background="@color/card_background_solid"
+            android:orientation="horizontal"
+            android:paddingHorizontal="20dp"
+            android:paddingVertical="10dp"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/news_settings_text"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="5"
+                android:textSize = "17sp"
+                android:gravity="center_vertical"
+                android:text="@string/brave_news_title"
+                android:textColor="@color/news_text_color" />
+
+            <ImageView
+                android:id="@+id/news_settings_button"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_gravity="center"
+                android:scaleType="fitCenter"
+                android:padding="8dp"
+                android:gravity="center"
+                tools:ignore="ContentDescription"
+                android:src="@drawable/ic_news_settings"/>
+
+        </LinearLayout>
+
+        <include
+            android:id="@+id/news_load_new_content"
+            layout="@layout/brave_news_load_new_content"
+            android:visibility="gone"/>
+        
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ntp_main_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_horizontal"
+        android:orientation="vertical"
+        android:visibility="gone">
 
             <!-- Search box -->
             <include layout="@layout/fake_search_box_layout"/>
@@ -98,15 +143,6 @@
                 android:layout_marginBottom="16dp"
                 android:layout="@layout/explore_sites_section" />
 
-            <!-- Site suggestion tile grid placeholder -->
-            <ViewStub
-                android:id="@+id/tile_grid_placeholder_stub"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:inflatedId="@+id/tile_grid_placeholder"
-                android:layout="@layout/new_tab_page_tile_grid_placeholder" />
-
             <!-- Spacer for when there is no search provider logo. -->
             <View
                 android:id="@+id/no_search_logo_spacer"
@@ -117,73 +153,7 @@
 
         </LinearLayout>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/newsRecycler"
-            android:layout_width="match_parent"
-            android:layout_height="750dp"
-            android:overScrollMode="never"
-            android:visibility="gone"
-         />
-
-        <include
-            android:id="@+id/optin_layout_id"
-            layout="@layout/optin_layout"
-            android:layout_marginBottom="300dp"
-            android:layout_marginHorizontal="30dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:visibility="gone" />
-
-        <FrameLayout
-            android:id="@+id/image_credit_layout"
-            android:layout_width="match_parent"
-            android:layout_marginBottom="30dp"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:id="@+id/credit_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="start|bottom"
-                android:background="@drawable/image_credit_rounded_shape"
-                android:padding="5dp"
-                android:layout_margin="10dp"
-                android:textSize="12sp"
-                android:visibility="gone"
-                android:textColor = "@android:color/white"/>
-
-            <ImageView
-                android:id="@+id/sponsored_logo"
-                android:layout_width="170dp"
-                android:layout_height="170dp"
-                android:contentDescription="@null"
-                android:visibility="gone"/>
-
-        </FrameLayout>
-
-    </LinearLayout>
-
-    <ProgressBar
-        android:id="@+id/feed_spinner"
-        style="?android:progressBarStyleLarge"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:visibility="gone"
-        android:layout_gravity="center" />
-
     <include layout="@layout/ntp_non_disruptive_banner"/>
     <include layout="@layout/bre_bottom_banner"/>
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/super_referral_logo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:srcCompat="@drawable/ic_qr_code"
-        android:tint="#000000"
-        android:layout_gravity="bottom|center"
-        android:layout_marginBottom="16dp"
-        android:contentDescription="@null"
-        android:visibility="gone"
-        app:backgroundTint="@color/qr_button_color"/>
 
 </org.chromium.chrome.browser.ntp.BraveNewTabPageLayout>

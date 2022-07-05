@@ -4,30 +4,25 @@
      License, v. 2.0. If a copy of the MPL was not distributed with this file,
      You can obtain one at http://mozilla.org/MPL/2.0/.
 -->
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/new_content_layout_id"
-    android:layout_width="wrap_content"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/new_content_layout"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:gravity="center_horizontal"
-    android:visibility="invisible"
-    android:layout_marginTop="400dp"
-    android:background="@drawable/rounded_filled"
+    android:gravity="center"
+    android:layout_marginTop="5dp"
     android:orientation="horizontal">
-
 
     <ProgressBar
         android:id="@+id/new_content_loading_spinner"
         style="?android:progressBarStyleLarge"
         android:layout_width="40dp"
         android:layout_height="40dp"
-        android:layout_gravity="center"
         android:visibility="gone" />
 
     <TextView
         android:id="@+id/new_content_button_text"
         android:layout_width="200dp"
         android:layout_height="50dp"
-        android:layout_gravity="center"
         android:gravity="center"
         android:paddingHorizontal="20dp"
         android:text="@string/brave_news_load_new_content"
@@ -35,5 +30,5 @@
         android:textAllCaps="false"
         android:textColor="@color/news_text_color"
         android:textSize="14sp"
-        android:textStyle="normal" />
-</RelativeLayout>
+        android:background="@drawable/rounded_filled" />
+</LinearLayout>
