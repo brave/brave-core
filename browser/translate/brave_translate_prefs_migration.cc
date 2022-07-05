@@ -29,6 +29,9 @@ void MigrateBraveProfilePrefs(PrefService* prefs) {
     return;  // Already migrated
 
   prefs->SetBoolean(prefs::kMigratedToInternalTranslation, true);
+
+  // TODO(matuchin): make kOfferTranslateEnabled syncable again when the
+  // migration is finished.
   prefs->ClearPref(prefs::kOfferTranslateEnabled);
 }
 
