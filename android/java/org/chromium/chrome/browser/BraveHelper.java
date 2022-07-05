@@ -9,14 +9,15 @@ import org.chromium.base.CommandLine;
 import org.chromium.base.ContextUtils;
 import org.chromium.chrome.browser.firstrun.FirstRunStatus;
 import org.chromium.chrome.browser.flags.ChromeSwitches;
+import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
+import org.chromium.chrome.browser.profiles.Profile;
+import org.chromium.components.browser_ui.site_settings.WebsitePreferenceBridge;
+import org.chromium.components.content_settings.ContentSettingValues;
+import org.chromium.components.content_settings.ContentSettingsType;
 
 public class BraveHelper {
     public static final String SHARED_PREF_DISPLAYED_INFOBAR_PROMO =
             "displayed_data_reduction_infobar_promo";
-    // Used to indicate were the settings migrated to the new
-    // brave-core based version
-    public static final String PREF_TABS_SETTINGS_MIGRATED =
-            "android_tabs_settings_to_core_migrated";
 
     public BraveHelper() {}
 
@@ -26,5 +27,16 @@ public class BraveHelper {
                 .edit()
                 .putBoolean(SHARED_PREF_DISPLAYED_INFOBAR_PROMO, true)
                 .apply();
+    }
+
+    public static void maybeMigrateSettings() {
+        // False is the default value, so we want to migrate it only when it's true.
+        if (BravePrefServiceBridge.getInstance().getDesktopModeEnabled()) {
+            Profile profile = Profile.getLastUsedRegularProfile();
+            WebsitePreferenceBridge.setDefaultContentSetting(
+                    profile, ContentSettingsType.REQUEST_DESKTOP_SITE, ContentSettingValues.ALLOW);
+            // Reset old flag to default value, so we don't migrate it anymore.
+            BravePrefServiceBridge.getInstance().setDesktopModeEnabled(false);
+        }
     }
 }
