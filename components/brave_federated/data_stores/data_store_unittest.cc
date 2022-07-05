@@ -72,14 +72,16 @@ void DataStoreTest::SetUp() {
 int DataStoreTest::RecordCount() const {
   sql::Statement statement(data_store_->database_.GetUniqueStatement(
       "SELECT count(*) FROM test_federated_task"));
-  DCHECK(statement.Step());
+  const bool success = statement.Step();
+  DCHECK(success);
   return statement.ColumnInt(0);
 }
 
 int DataStoreTest::TrainingInstanceCount() const {
   sql::Statement statement(data_store_->database_.GetUniqueStatement(
       "SELECT count(DISTINCT training_instance_id) FROM test_federated_task"));
-  DCHECK(statement.Step());
+  const bool success = statement.Step();
+  DCHECK(success);
   return statement.ColumnInt(0);
 }
 
