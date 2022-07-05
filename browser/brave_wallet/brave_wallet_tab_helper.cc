@@ -14,6 +14,7 @@
 #include "components/permissions/permission_request.h"
 #include "components/permissions/permission_request_manager.h"
 #include "components/permissions/request_type.h"
+#include "content/public/browser/global_routing_id.h"
 #include "content/public/browser/web_contents.h"
 
 #if !BUILDFLAG(IS_ANDROID)
@@ -30,6 +31,40 @@ BraveWalletTabHelper::~BraveWalletTabHelper() {
   if (IsShowingBubble())
     CloseBubble();
 #endif  // !BUILDFLAG(IS_ANDROID)
+}
+
+void BraveWalletTabHelper::AddSolanaConnectedAccount(
+    const content::GlobalRenderFrameHostId& id,
+    const std::string& account) {
+  base::flat_set<std::string> connection_set;
+  if (solana_connected_accounts_.contains(id))
+    connection_set = solana_connected_accounts_.at(id);
+  connection_set.insert(account);
+  solana_connected_accounts_[id] = std::move(connection_set);
+}
+
+void BraveWalletTabHelper::RemoveSolanaConnectedAccount(
+    const content::GlobalRenderFrameHostId& id,
+    const std::string& account) {
+  if (!solana_connected_accounts_.contains(id))
+    return;
+  auto connection_set = solana_connected_accounts_.at(id);
+  connection_set.erase(account);
+  solana_connected_accounts_[id] = std::move(connection_set);
+}
+
+bool BraveWalletTabHelper::IsSolanaAccountConnected(
+    const content::GlobalRenderFrameHostId& id,
+    const std::string& account) {
+  if (!solana_connected_accounts_.contains(id))
+    return false;
+  auto connection_set = solana_connected_accounts_.at(id);
+  return connection_set.contains(account);
+}
+
+void BraveWalletTabHelper::ClearSolanaConnectedAccounts(
+    const content::GlobalRenderFrameHostId& id) {
+  solana_connected_accounts_.erase(id);
 }
 
 #if !BUILDFLAG(IS_ANDROID)

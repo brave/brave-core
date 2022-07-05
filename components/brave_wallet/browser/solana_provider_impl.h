@@ -10,10 +10,10 @@
 #include <string>
 #include <vector>
 
-#include "base/containers/flat_set.h"
 #include "base/gtest_prod_util.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#include "content/public/browser/global_routing_id.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/remote.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
@@ -33,7 +33,8 @@ class SolanaProviderImpl final : public mojom::SolanaProvider,
  public:
   using RequestPermissionsError = mojom::RequestPermissionsError;
 
-  SolanaProviderImpl(KeyringService* keyring_service,
+  SolanaProviderImpl(const content::GlobalRenderFrameHostId& rfh_id,
+                     KeyringService* keyring_service,
                      BraveWalletService* brave_wallet_service,
                      TxService* tx_service,
                      std::unique_ptr<BraveWalletProviderDelegate> delegate);
@@ -127,15 +128,7 @@ class SolanaProviderImpl final : public mojom::SolanaProvider,
   void OnUnapprovedTxUpdated(mojom::TransactionInfoPtr tx_info) override {}
   void OnTransactionStatusChanged(mojom::TransactionInfoPtr tx_info) override;
 
-  // This set is used to maintain connected status for each frame, it is a
-  // separate non persistent status from site permission. It depends on if a
-  // site successfully call connect or not, calling disconnect will remove
-  // itself from this set. Note that site permission is required for a site to
-  // do connect, if an user reject the connect request, connect would fail. On
-  // the other hand, if the user approve the connect request, site permission
-  // will be saved and future connect from the same site will not ask user for
-  // permission again until the permission is removed.
-  base::flat_set<std::string> connected_set_;
+  content::GlobalRenderFrameHostId rfh_id_;
   base::flat_map<std::string, SignAndSendTransactionCallback>
       sign_and_send_tx_callbacks_;
   // Pending callback and arg are for waiting user unlock before connect

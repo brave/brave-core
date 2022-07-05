@@ -39,11 +39,13 @@ constexpr char kOptions[] = "options";
 }  // namespace
 
 SolanaProviderImpl::SolanaProviderImpl(
+    const content::GlobalRenderFrameHostId& rfh_id,
     KeyringService* keyring_service,
     BraveWalletService* brave_wallet_service,
     TxService* tx_service,
     std::unique_ptr<BraveWalletProviderDelegate> delegate)
-    : keyring_service_(keyring_service),
+    : rfh_id_(rfh_id),
+      keyring_service_(keyring_service),
       brave_wallet_service_(brave_wallet_service),
       tx_service_(tx_service),
       delegate_(std::move(delegate)),
@@ -117,7 +119,7 @@ void SolanaProviderImpl::Disconnect() {
   absl::optional<std::string> account =
       keyring_service_->GetSelectedAccount(mojom::CoinType::SOL);
   if (account)
-    connected_set_.erase(*account);
+    delegate_->RemoveSolanaConnectedAccount(rfh_id_, *account);
 }
 
 void SolanaProviderImpl::IsConnected(IsConnectedCallback callback) {
@@ -550,7 +552,7 @@ void SolanaProviderImpl::Request(base::Value arg, RequestCallback callback) {
 }
 
 bool SolanaProviderImpl::IsAccountConnected(const std::string& account) {
-  return connected_set_.contains(account);
+  return delegate_->IsSolanaAccountConnected(rfh_id_, account);
 }
 
 void SolanaProviderImpl::ContinueConnect(bool is_eagerly_connect,
@@ -560,7 +562,7 @@ void SolanaProviderImpl::ContinueConnect(bool is_eagerly_connect,
   if (is_selected_account_allowed) {
     std::move(callback).Run(mojom::SolanaProviderError::kSuccess, "",
                             selected_account);
-    connected_set_.insert(selected_account);
+    delegate_->AddSolanaConnectedAccount(rfh_id_, selected_account);
   } else if (!is_selected_account_allowed && is_eagerly_connect) {
     std::move(callback).Run(
         mojom::SolanaProviderError::kUserRejectedRequest,
@@ -592,7 +594,7 @@ void SolanaProviderImpl::OnConnect(
     if (allowed_accounts->size()) {
       std::move(callback).Run(mojom::SolanaProviderError::kSuccess, "",
                               allowed_accounts->at(0));
-      connected_set_.insert(allowed_accounts->at(0));
+      delegate_->AddSolanaConnectedAccount(rfh_id_, allowed_accounts->at(0));
     } else {
       std::move(callback).Run(
           mojom::SolanaProviderError::kUserRejectedRequest,

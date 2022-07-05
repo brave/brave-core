@@ -14,6 +14,7 @@
 #include "chrome/test/base/browser_with_test_window_test.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/permissions/chooser_title_util.h"
+#include "content/public/browser/global_routing_id.h"
 #include "content/public/test/web_contents_tester.h"
 #include "services/device/public/mojom/hid.mojom.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -85,6 +86,54 @@ TEST_F(BraveWalletTabHelperUnitTest, ChooserTitle) {
   EXPECT_EQ(GetHIDTitle(web_contents(), GURL(kBraveUIWalletPageURL)),
             wallet_label);
   EXPECT_NE(GetHIDTitle(web_contents(), GURL("a.com")), wallet_label);
+}
+
+TEST_F(BraveWalletTabHelperUnitTest, SolanaConnectedAccount) {
+  auto* helper = brave_wallet_tab_helper();
+  ASSERT_TRUE(helper);
+  ASSERT_TRUE(helper->solana_connected_accounts_.empty());
+
+  content::GlobalRenderFrameHostId rfh_id1(1, 1);
+  content::GlobalRenderFrameHostId rfh_id2(1, 2);
+  const char account1[] = "account1";
+  const char account2[] = "account2";
+  const char account3[] = "account3";
+
+  for (const auto& id : {rfh_id1, rfh_id2}) {
+    SCOPED_TRACE(id);
+    ASSERT_FALSE(helper->IsSolanaAccountConnected(id, account1));
+    ASSERT_FALSE(helper->IsSolanaAccountConnected(id, account2));
+    ASSERT_FALSE(helper->IsSolanaAccountConnected(id, account3));
+  }
+
+  helper->AddSolanaConnectedAccount(rfh_id1, account1);
+  helper->AddSolanaConnectedAccount(rfh_id2, account2);
+  EXPECT_TRUE(helper->IsSolanaAccountConnected(rfh_id1, account1));
+  EXPECT_FALSE(helper->IsSolanaAccountConnected(rfh_id2, account1));
+  EXPECT_FALSE(helper->IsSolanaAccountConnected(rfh_id1, account2));
+  EXPECT_TRUE(helper->IsSolanaAccountConnected(rfh_id2, account2));
+  ASSERT_EQ(helper->solana_connected_accounts_[rfh_id1].size(), 1u);
+  ASSERT_EQ(helper->solana_connected_accounts_[rfh_id2].size(), 1u);
+  ASSERT_EQ(helper->solana_connected_accounts_.size(), 2u);
+
+  // remove non-existing account3
+  helper->RemoveSolanaConnectedAccount(rfh_id1, account3);
+  ASSERT_EQ(helper->solana_connected_accounts_[rfh_id1].size(), 1u);
+  EXPECT_TRUE(helper->IsSolanaAccountConnected(rfh_id1, account1));
+  EXPECT_FALSE(helper->IsSolanaAccountConnected(rfh_id1, account2));
+
+  // add account2 and remove account2 for rfh_id1
+  helper->AddSolanaConnectedAccount(rfh_id1, account2);
+  EXPECT_TRUE(helper->IsSolanaAccountConnected(rfh_id1, account2));
+  helper->RemoveSolanaConnectedAccount(rfh_id1, account2);
+  EXPECT_FALSE(helper->IsSolanaAccountConnected(rfh_id1, account2));
+
+  // clear set from rfh_id1
+  helper->ClearSolanaConnectedAccounts(rfh_id1);
+  EXPECT_FALSE(helper->IsSolanaAccountConnected(rfh_id1, account1));
+  EXPECT_FALSE(helper->IsSolanaAccountConnected(rfh_id1, account2));
+  EXPECT_FALSE(helper->IsSolanaAccountConnected(rfh_id1, account3));
+  ASSERT_EQ(helper->solana_connected_accounts_.size(), 1u);
 }
 
 }  // namespace brave_wallet

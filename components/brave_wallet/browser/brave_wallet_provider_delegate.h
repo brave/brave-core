@@ -14,6 +14,10 @@
 #include "third_party/abseil-cpp/absl/types/optional.h"
 #include "url/origin.h"
 
+namespace content {
+struct GlobalRenderFrameHostId;
+}  // namespace content
+
 namespace brave_wallet {
 
 class BraveWalletProviderDelegate {
@@ -45,6 +49,15 @@ class BraveWalletProviderDelegate {
   virtual void GetAllowedAccounts(mojom::CoinType type,
                                   const std::vector<std::string>& accounts,
                                   GetAllowedAccountsCallback callback) = 0;
+  virtual void AddSolanaConnectedAccount(
+      const content::GlobalRenderFrameHostId& id,
+      const std::string& account) {}
+  virtual void RemoveSolanaConnectedAccount(
+      const content::GlobalRenderFrameHostId& id,
+      const std::string& account) {}
+  virtual bool IsSolanaAccountConnected(
+      const content::GlobalRenderFrameHostId& id,
+      const std::string& account);
 };
 
 }  // namespace brave_wallet

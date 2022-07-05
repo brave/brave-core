@@ -557,6 +557,33 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, ConnectedStatusAndPermission) {
   EXPECT_FALSE(IsSolanaConnected());
 }
 
+IN_PROC_BROWSER_TEST_F(SolanaProviderTest, ConnectedStatusWithDocumentChanged) {
+  RestoreWallet();
+  AddAccount("Account 1");
+  SetSelectedAccount(kFirstAccount);
+  GURL url =
+      https_server_for_files()->GetURL("a.test", "/solana_provider.html");
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
+
+  ASSERT_FALSE(IsSolanaConnected());
+  CallSolanaConnect();
+  UserGrantPermission(true);
+  EXPECT_TRUE(IsSolanaConnected());
+
+  // Reload will clear connected status.
+  ReloadAndWaitForLoadStop(browser());
+  EXPECT_FALSE(IsSolanaConnected());
+
+  // Connect again and try navigate later.
+  ASSERT_FALSE(IsSolanaConnected());
+  CallSolanaConnect(false);
+  EXPECT_TRUE(IsSolanaConnected());
+
+  // Navigate will clear connected status.
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
+  EXPECT_FALSE(IsSolanaConnected());
+}
+
 IN_PROC_BROWSER_TEST_F(SolanaProviderTest, ConnectedStatusInMultiFrames) {
   RestoreWallet();
   AddAccount("Account 1");
