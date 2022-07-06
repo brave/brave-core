@@ -43,6 +43,7 @@
 #include "ui/views/controls/button/label_button_border.h"
 #include "ui/views/layout/layout_provider.h"
 #include "ui/views/view.h"
+#include "ui/views/widget/widget.h"
 
 namespace {
 SkColor selectedColor = SkColorSetRGB(30, 33, 82);
@@ -165,7 +166,7 @@ void BraveTodayActionView::ToggleSubscribed() {
     return;
 
   if (bubble_widget_) {
-    bubble_widget_->Hide();
+    bubble_widget_->Close();
   }
 
   bubble_widget_ = BraveNewsBubbleView::Show(this, tab_strip_->GetActiveWebContents());

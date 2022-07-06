@@ -116,7 +116,6 @@ void BraveNewsController::ClearHistory() {
 
 mojo::PendingRemote<mojom::BraveNewsController>
 BraveNewsController::MakeRemote() {
-  LOG(ERROR) << "Made remote";
   mojo::PendingRemote<mojom::BraveNewsController> remote;
   receivers_.Add(this, remote.InitWithNewPipeAndPassReceiver());
   return remote;

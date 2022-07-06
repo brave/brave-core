@@ -5,13 +5,8 @@
 
 #include "brave/components/api_request_helper/api_request_helper.h"
 
-#include <string>
 #include <utility>
 
-#include "base/bind.h"
-#include "base/containers/flat_map.h"
-#include "base/time/time.h"
-#include "content/public/browser/browser_thread.h"
 #include "net/base/load_flags.h"
 #include "services/data_decoder/public/cpp/json_sanitizer.h"
 #include "services/network/public/cpp/resource_request.h"
@@ -39,7 +34,6 @@ void OnSanitize(const int http_code,
   }
 
   std::move(result_callback).Run(http_code, response_body, headers);
-  LOG(ERROR) << "OnSanitise";
 }
 
 const unsigned int kRetriesCountOnNetworkChange = 1;
@@ -64,16 +58,6 @@ APIRequestHelper::Ticket APIRequestHelper::Request(
     const base::flat_map<std::string, std::string>& headers,
     size_t max_body_size /* = -1u */,
     ResponseConversionCallback conversion_callback) {
-  LOG(ERROR) << "Requesting.... " << url;
-  ResultCallback timed_callback = base::BindOnce(
-      [](base::Time start_time, GURL url, ResultCallback callback, const int code,
-         const std::string& body,
-         const base::flat_map<std::string, std::string>& headers) {
-        std::move(callback).Run(code, body, headers);
-        LOG(ERROR) << "Done! " << url << " Took "
-                   << (base::Time::Now() - start_time).InSecondsF();
-      },
-      base::Time::Now(), url, std::move(callback));
   auto iter = url_loaders_.insert(
       url_loaders_.begin(),
       CreateLoader(method, url, payload, payload_content_type,
@@ -84,13 +68,13 @@ APIRequestHelper::Ticket APIRequestHelper::Request(
         url_loader_factory_.get(),
         base::BindOnce(&APIRequestHelper::OnResponse,
                        weak_ptr_factory_.GetWeakPtr(), iter,
-                       std::move(timed_callback), std::move(conversion_callback)));
+                       std::move(callback), std::move(conversion_callback)));
   } else {
     iter->get()->DownloadToString(
         url_loader_factory_.get(),
         base::BindOnce(&APIRequestHelper::OnResponse,
                        weak_ptr_factory_.GetWeakPtr(), iter,
-                       std::move(timed_callback), std::move(conversion_callback)),
+                       std::move(callback), std::move(conversion_callback)),
         max_body_size);
   }
 
@@ -199,8 +183,6 @@ void APIRequestHelper::OnResponse(
       std::move(raw_body),
       base::BindOnce(&OnSanitize, response_code, std::move(headers),
                      std::move(callback)));
-
-  LOG(ERROR) << "OnResponse: ";
 }
 
 void APIRequestHelper::OnDownload(SimpleURLLoaderList::iterator iter,
