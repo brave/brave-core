@@ -79,18 +79,14 @@ class BraveNewsFeedRow : public views::View,
   }
 
   ~BraveNewsFeedRow() override {
-    DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
-    LOG(ERROR) << "Destroyed feed row" << feed_details_.title;
     tab_helper_->RemoveObserver(this);
   }
 
   void Update() {
     DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
 
-    LOG(ERROR) << "Before Update " << feed_details_.title;
     auto* tab_helper = BraveNewsTabHelper::FromWebContents(contents_);
     if (!tab_helper) {
-      LOG(ERROR) << "Bailed..?";
       return;
     }
 
@@ -158,10 +154,7 @@ BraveNewsBubbleView::BraveNewsBubbleView(views::View* action_view,
                                views::MaximumFlexSizeRule::kPreferred));
 }
 
-BraveNewsBubbleView::~BraveNewsBubbleView() {
-  LOG(ERROR) << "Destroyed bubble";
-  RemoveAllChildViews();
-}
+BraveNewsBubbleView::~BraveNewsBubbleView() = default;
 
 void BraveNewsBubbleView::Update() {}
 

@@ -50,7 +50,6 @@ BraveNewsTabHelper::BraveNewsTabHelper(content::WebContents* contents)
 }
 
 BraveNewsTabHelper::~BraveNewsTabHelper() {
-  LOG(ERROR) << "Destroyed!";
   controller_->publisher_controller()->RemoveObserver(this);
 }
 
@@ -74,18 +73,29 @@ bool BraveNewsTabHelper::is_subscribed() {
 }
 
 void BraveNewsTabHelper::ToggleSubscription(const FeedDetails& feed_details) {
-  bool subscribed = is_subscribed(feed_details);
-  auto publisher = controller_->publisher_controller()->GetPublisherById(
-      feed_details.publisher_id);
-  if (publisher) {
-    controller_->SetPublisherPref(
-        feed_details.publisher_id,
-        subscribed ? brave_news::mojom::UserEnabled::DISABLED
-                   : brave_news::mojom::UserEnabled::ENABLED);
-  } else if (!subscribed) {
-    controller_->SubscribeToNewDirectFeed(feed_details.feed_url,
-                                          base::DoNothing());
-  }
+  base::SequencedTaskRunnerHandle::Get()->PostTask(
+      FROM_HERE,
+      base::BindOnce(
+          [](base::WeakPtr<BraveNewsTabHelper> self,
+             const FeedDetails& feed_details) {
+            if (!self)
+              return;
+            bool subscribed = self->is_subscribed(feed_details);
+            auto publisher =
+                self->controller_->publisher_controller()->GetPublisherById(
+                    feed_details.publisher_id);
+            if (publisher) {
+              self->controller_->SetPublisherPref(
+                  feed_details.publisher_id,
+                  subscribed ? brave_news::mojom::UserEnabled::DISABLED
+                             : brave_news::mojom::UserEnabled::ENABLED);
+              self->AvailableFeedsChanged();
+            } else if (!subscribed) {
+              self->controller_->SubscribeToNewDirectFeed(feed_details.feed_url,
+                                                          base::DoNothing());
+            }
+          },
+          weak_ptr_factory_.GetWeakPtr(), std::move(feed_details)));
 }
 
 void BraveNewsTabHelper::OnReceivedRssUrls(const GURL& site_url,
