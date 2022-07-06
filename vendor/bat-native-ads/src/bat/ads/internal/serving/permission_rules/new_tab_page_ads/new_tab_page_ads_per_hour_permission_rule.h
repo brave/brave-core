@@ -16,12 +16,12 @@ class Time;
 }  // namespace base
 
 namespace ads {
+namespace new_tab_page_ads {
 
-class NewTabPageAdsPerHourPermissionRule final
-    : public PermissionRuleInterface {
+class AdsPerHourPermissionRule final : public PermissionRuleInterface {
  public:
-  NewTabPageAdsPerHourPermissionRule();
-  ~NewTabPageAdsPerHourPermissionRule() override;
+  AdsPerHourPermissionRule();
+  ~AdsPerHourPermissionRule() override;
 
   bool ShouldAllow() override;
 
@@ -30,14 +30,13 @@ class NewTabPageAdsPerHourPermissionRule final
  private:
   bool DoesRespectCap(const std::vector<base::Time>& history);
 
-  NewTabPageAdsPerHourPermissionRule(
-      const NewTabPageAdsPerHourPermissionRule&) = delete;
-  NewTabPageAdsPerHourPermissionRule& operator=(
-      const NewTabPageAdsPerHourPermissionRule&) = delete;
+  AdsPerHourPermissionRule(const AdsPerHourPermissionRule&) = delete;
+  AdsPerHourPermissionRule& operator=(const AdsPerHourPermissionRule&) = delete;
 
   std::string last_message_;
 };
 
+}  // namespace new_tab_page_ads
 }  // namespace ads
 
 #endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_SERVING_PERMISSION_RULES_NEW_TAB_PAGE_ADS_NEW_TAB_PAGE_ADS_PER_HOUR_PERMISSION_RULE_H_

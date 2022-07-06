@@ -16,6 +16,7 @@
 #include "ui/views/view.h"
 
 class BraveOmniboxResultView;
+class PrefService;
 
 namespace views {
 class Background;
@@ -26,8 +27,8 @@ class BraveSearchConversionPromotionView : public views::View {
  public:
   METADATA_HEADER(BraveSearchConversionPromotionView);
 
-  explicit BraveSearchConversionPromotionView(
-      BraveOmniboxResultView* result_view);
+  BraveSearchConversionPromotionView(BraveOmniboxResultView* result_view,
+                                     PrefService* local_state);
   BraveSearchConversionPromotionView(
       const BraveSearchConversionPromotionView&) = delete;
   BraveSearchConversionPromotionView& operator=(
@@ -84,6 +85,8 @@ class BraveSearchConversionPromotionView : public views::View {
 
   // Keeps track of mouse-enter and mouse-exit events of child Views.
   OmniboxMouseEnterExitHandler mouse_enter_exit_handler_;
+
+  raw_ptr<PrefService> local_state_;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_OMNIBOX_BRAVE_SEARCH_CONVERSION_PROMOTION_VIEW_H_

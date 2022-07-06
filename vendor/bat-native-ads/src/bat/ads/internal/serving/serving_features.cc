@@ -6,6 +6,8 @@
 #include "bat/ads/internal/serving/serving_features.h"
 
 #include "base/metrics/field_trial_params.h"
+#include "base/time/time.h"
+#include "bat/ads/internal/base/metrics/field_trial_params_util.h"
 #include "bat/ads/pref_names.h"
 
 namespace ads {
@@ -37,6 +39,11 @@ constexpr char kFieldTrialParameterMaximumNewTabPageAdsPerDay[] =
     "maximum_new_tab_page_ads_per_day";
 constexpr int kDefaultMaximumNewTabPageAdsPerDay = 20;
 
+constexpr char kFieldTrialParameterNewTabPageAdsMinimumWaitTime[] =
+    "new_tab_page_ads_minimum_wait_time";
+constexpr base::TimeDelta kDefaultNewTabPageAdsMinimumWaitTime =
+    base::Minutes(5);
+
 constexpr char kFieldTrialParameterMaximumPromotedContentAdsPerHour[] =
     "maximum_promoted_content_ads_per_hour";
 constexpr int kDefaultMaximumPromotedContentAdsPerHour = 4;
@@ -53,7 +60,7 @@ constexpr int kDefaultMaximumSearchResultAdsPerDay = 40;
 
 constexpr char kFieldTrialParameterBrowsingHistoryMaxCount[] =
     "browsing_history_max_count";
-constexpr int kDefaultBrowsingHistoryMaxCount = 5000;
+constexpr int kDefaultBrowsingHistoryMaxCount = 5'000;
 constexpr char kFieldTrialParameterBrowsingHistoryDaysAgo[] =
     "browsing_history_days_ago";
 constexpr int kDefaultBrowsingHistoryDaysAgo = 180;
@@ -108,6 +115,12 @@ int GetMaximumNewTabPageAdsPerDay() {
   return GetFieldTrialParamByFeatureAsInt(
       kServing, kFieldTrialParameterMaximumNewTabPageAdsPerDay,
       kDefaultMaximumNewTabPageAdsPerDay);
+}
+
+base::TimeDelta GetNewTabPageAdsMinimumWaitTime() {
+  return GetFieldTrialParamByFeatureAsTimeDelta(
+      kServing, kFieldTrialParameterNewTabPageAdsMinimumWaitTime,
+      kDefaultNewTabPageAdsMinimumWaitTime);
 }
 
 int GetMaximumPromotedContentAdsPerHour() {

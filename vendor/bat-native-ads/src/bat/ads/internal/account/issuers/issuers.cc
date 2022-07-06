@@ -73,7 +73,7 @@ void Issuers::Fetch() {
 
   const auto callback =
       std::bind(&Issuers::OnFetch, this, std::placeholders::_1);
-  AdsClientHelper::Get()->UrlRequest(std::move(url_request), callback);
+  AdsClientHelper::GetInstance()->UrlRequest(std::move(url_request), callback);
 }
 
 void Issuers::OnFetch(const mojom::UrlResponse& url_response) {
@@ -84,10 +84,10 @@ void Issuers::OnFetch(const mojom::UrlResponse& url_response) {
 
   if (url_response.status_code == net::kHttpUpgradeRequired) {
     BLOG(1, "Failed to fetch issuers as a browser upgrade is required");
-    OnFailedToFetchIssuers(/* should_retry */ false);
+    FailedToFetchIssuers(/* should_retry */ false);
     return;
   } else if (url_response.status_code != net::HTTP_OK) {
-    OnFailedToFetchIssuers(/* should_retry */ true);
+    FailedToFetchIssuers(/* should_retry */ true);
     return;
   }
 
@@ -95,16 +95,16 @@ void Issuers::OnFetch(const mojom::UrlResponse& url_response) {
       ParseJson(url_response.body);
   if (!issuers_optional) {
     BLOG(3, "Failed to parse response: " << url_response.body);
-    OnFailedToFetchIssuers(/* should_retry */ true);
+    FailedToFetchIssuers(/* should_retry */ true);
     return;
   }
 
   const IssuersInfo& issuers = issuers_optional.value();
 
-  OnDidFetchIssuers(issuers);
+  SuccessfullyFetchedIssuers(issuers);
 }
 
-void Issuers::OnDidFetchIssuers(const IssuersInfo& issuers) {
+void Issuers::SuccessfullyFetchedIssuers(const IssuersInfo& issuers) {
   StopRetrying();
 
   is_fetching_ = false;
@@ -116,7 +116,9 @@ void Issuers::OnDidFetchIssuers(const IssuersInfo& issuers) {
   FetchAfterDelay();
 }
 
-void Issuers::OnFailedToFetchIssuers(const bool should_retry) {
+void Issuers::FailedToFetchIssuers(const bool should_retry) {
+  BLOG(0, "Failed to fetch issuers");
+
   is_fetching_ = false;
 
   if (delegate_) {
@@ -139,7 +141,8 @@ void Issuers::FetchAfterDelay() {
 }
 
 base::TimeDelta Issuers::GetFetchDelay() const {
-  const int ping = AdsClientHelper::Get()->GetIntegerPref(prefs::kIssuerPing);
+  const int ping =
+      AdsClientHelper::GetInstance()->GetIntegerPref(prefs::kIssuerPing);
   return base::Milliseconds(ping);
 }
 
@@ -150,11 +153,11 @@ void Issuers::RetryAfterDelay() {
       FROM_HERE, kRetryAfter,
       base::BindOnce(&Issuers::OnRetry, base::Unretained(this)));
 
+  BLOG(1, "Retry fetching issuers " << FriendlyDateAndTime(retry_at));
+
   if (delegate_) {
     delegate_->OnWillRetryFetchingIssuers(retry_at);
   }
-
-  BLOG(1, "Retry fetching issuers " << FriendlyDateAndTime(retry_at));
 }
 
 void Issuers::OnRetry() {

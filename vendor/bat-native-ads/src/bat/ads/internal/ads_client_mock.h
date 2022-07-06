@@ -95,7 +95,7 @@ class AdsClientMock : public AdsClient {
                     const std::string& value));
 
   MOCK_METHOD1(LogTrainingInstance,
-               void(const brave_federated::mojom::TrainingInstancePtr
+               void(const std::vector<brave_federated::mojom::CovariatePtr>
                         training_instance));
 
   MOCK_METHOD4(Log,

@@ -59,8 +59,8 @@ RefillUnblindedTokens::~RefillUnblindedTokens() {
 }
 
 void RefillUnblindedTokens::MaybeRefill(const WalletInfo& wallet) {
-  if (!ConfirmationStateManager::Get()->IsInitialized() || is_processing_ ||
-      retry_timer_.IsRunning()) {
+  if (!ConfirmationStateManager::GetInstance()->IsInitialized() ||
+      is_processing_ || retry_timer_.IsRunning()) {
     return;
   }
 
@@ -85,11 +85,12 @@ void RefillUnblindedTokens::MaybeRefill(const WalletInfo& wallet) {
   }
 
   if (!ShouldRefillUnblindedTokens()) {
-    BLOG(1,
-         "No need to refill unblinded tokens as we already have "
-             << ConfirmationStateManager::Get()->get_unblinded_tokens()->Count()
-             << " unblinded tokens which is above the minimum threshold of "
-             << kMinimumUnblindedTokens);
+    BLOG(1, "No need to refill unblinded tokens as we already have "
+                << ConfirmationStateManager::GetInstance()
+                       ->GetUnblindedTokens()
+                       ->Count()
+                << " unblinded tokens which is above the minimum threshold of "
+                << kMinimumUnblindedTokens);
     return;
   }
 
@@ -129,7 +130,7 @@ void RefillUnblindedTokens::RequestSignedTokens() {
 
   const auto callback = std::bind(&RefillUnblindedTokens::OnRequestSignedTokens,
                                   this, std::placeholders::_1);
-  AdsClientHelper::Get()->UrlRequest(std::move(url_request), callback);
+  AdsClientHelper::GetInstance()->UrlRequest(std::move(url_request), callback);
 }
 
 void RefillUnblindedTokens::OnRequestSignedTokens(
@@ -181,7 +182,7 @@ void RefillUnblindedTokens::GetSignedTokens() {
 
   const auto callback = std::bind(&RefillUnblindedTokens::OnGetSignedTokens,
                                   this, std::placeholders::_1);
-  AdsClientHelper::Get()->UrlRequest(std::move(url_request), callback);
+  AdsClientHelper::GetInstance()->UrlRequest(std::move(url_request), callback);
 }
 
 void RefillUnblindedTokens::OnGetSignedTokens(
@@ -221,6 +222,9 @@ void RefillUnblindedTokens::OnGetSignedTokens(
       OnFailedToRefillUnblindedTokens(/* should_retry */ false);
       return;
     }
+
+    BLOG(1, "Captcha is required to refill unblinded tokens");
+
     if (delegate_) {
       delegate_->OnCaptchaRequiredToRefillUnblindedTokens(*captcha_id);
     }
@@ -324,22 +328,24 @@ void RefillUnblindedTokens::OnGetSignedTokens(
     unblinded_tokens.push_back(unblinded_token);
   }
 
-  ConfirmationStateManager::Get()->get_unblinded_tokens()->AddTokens(
+  ConfirmationStateManager::GetInstance()->GetUnblindedTokens()->AddTokens(
       unblinded_tokens);
-  ConfirmationStateManager::Get()->Save();
+  ConfirmationStateManager::GetInstance()->Save();
 
-  BLOG(1,
-       "Added "
-           << unblinded_tokens.size()
-           << " unblinded tokens, you now "
-              "have "
-           << ConfirmationStateManager::Get()->get_unblinded_tokens()->Count()
-           << " unblinded tokens");
+  BLOG(1, "Added " << unblinded_tokens.size()
+                   << " unblinded tokens, you now "
+                      "have "
+                   << ConfirmationStateManager::GetInstance()
+                          ->GetUnblindedTokens()
+                          ->Count()
+                   << " unblinded tokens");
 
   OnDidRefillUnblindedTokens();
 }
 
 void RefillUnblindedTokens::OnDidRefillUnblindedTokens() {
+  BLOG(1, "Successfully refilled unblinded tokens");
+
   retry_timer_.Stop();
 
   blinded_tokens_.clear();
@@ -354,6 +360,8 @@ void RefillUnblindedTokens::OnDidRefillUnblindedTokens() {
 
 void RefillUnblindedTokens::OnFailedToRefillUnblindedTokens(
     const bool should_retry) {
+  BLOG(1, "Failed to refill unblinded tokens");
+
   if (delegate_) {
     delegate_->OnFailedToRefillUnblindedTokens();
   }
@@ -371,14 +379,16 @@ void RefillUnblindedTokens::Retry() {
       FROM_HERE, kRetryAfter,
       base::BindOnce(&RefillUnblindedTokens::OnRetry, base::Unretained(this)));
 
+  BLOG(1, "Retry refilling unblinded tokens " << FriendlyDateAndTime(retry_at));
+
   if (delegate_) {
     delegate_->OnWillRetryRefillingUnblindedTokens(retry_at);
   }
-
-  BLOG(1, "Retry refilling unblinded tokens " << FriendlyDateAndTime(retry_at));
 }
 
 void RefillUnblindedTokens::OnRetry() {
+  BLOG(1, "Retry refilling unblinded tokens");
+
   if (delegate_) {
     delegate_->OnDidRetryRefillingUnblindedTokens();
   }
@@ -391,7 +401,7 @@ void RefillUnblindedTokens::OnRetry() {
 }
 
 bool RefillUnblindedTokens::ShouldRefillUnblindedTokens() const {
-  if (ConfirmationStateManager::Get()->get_unblinded_tokens()->Count() >=
+  if (ConfirmationStateManager::GetInstance()->GetUnblindedTokens()->Count() >=
       kMinimumUnblindedTokens) {
     return false;
   }
@@ -401,7 +411,7 @@ bool RefillUnblindedTokens::ShouldRefillUnblindedTokens() const {
 
 int RefillUnblindedTokens::CalculateAmountOfTokensToRefill() const {
   return kMaximumUnblindedTokens -
-         ConfirmationStateManager::Get()->get_unblinded_tokens()->Count();
+         ConfirmationStateManager::GetInstance()->GetUnblindedTokens()->Count();
 }
 
 }  // namespace ads

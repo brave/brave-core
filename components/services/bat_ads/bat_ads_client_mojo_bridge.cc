@@ -9,6 +9,7 @@
 
 #include "base/logging.h"
 #include "base/time/time.h"
+#include "bat/ads/notification_ad_info.h"
 #include "mojo/public/cpp/bindings/sync_call_restrictions.h"
 
 namespace bat_ads {
@@ -208,7 +209,7 @@ void BatAdsClientMojoBridge::RecordP2AEvent(const std::string& name,
 }
 
 void BatAdsClientMojoBridge::LogTrainingInstance(
-    brave_federated::mojom::TrainingInstancePtr training_instance) {
+    std::vector<brave_federated::mojom::CovariatePtr> training_instance) {
   if (!connected()) {
     return;
   }

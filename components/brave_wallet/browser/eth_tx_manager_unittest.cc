@@ -1119,16 +1119,17 @@ TEST_F(EthTxManagerUnitTest, GetNonceForHardwareTransaction) {
   callback_called = false;
   eth_tx_manager()->GetTransactionMessageToSign(
       tx_meta_id,
-      base::BindLambdaForTesting(
-          [&](const absl::optional<std::string>& result) {
-            EXPECT_EQ(
-                result,
-                "0xf873018517fcf1832182960494be862ad9abfe6f22bcb087716c7d89a260"
-                "51f74c88016345785d8a0000b844095ea7b3000000000000000000000000bf"
-                "b30a082f650c2a15d0632f0e87be4f8e64460f000000000000000000000000"
-                "0000000000000000000000003fffffffffffffff8205398080");
-            callback_called = true;
-          }));
+      base::BindLambdaForTesting([&](mojom::MessageToSignUnionPtr message) {
+        ASSERT_TRUE(message->is_message_str());
+        absl::optional<std::string> message_str = message->get_message_str();
+        EXPECT_EQ(
+            message_str,
+            "0xf873018517fcf1832182960494be862ad9abfe6f22bcb087716c7d89a260"
+            "51f74c88016345785d8a0000b844095ea7b3000000000000000000000000bf"
+            "b30a082f650c2a15d0632f0e87be4f8e64460f000000000000000000000000"
+            "0000000000000000000000003fffffffffffffff8205398080");
+        callback_called = true;
+      }));
   base::RunLoop().RunUntilIdle();
   ASSERT_TRUE(callback_called);
   ASSERT_TRUE(observer.TxStatusChanged());
@@ -1172,10 +1173,11 @@ TEST_F(EthTxManagerUnitTest, GetNonceForHardwareTransaction1559) {
   callback_called = false;
   eth_tx_manager()->GetTransactionMessageToSign(
       tx_meta_id,
-      base::BindLambdaForTesting([&](const absl::optional<std::string>&
-                                         result) {
+      base::BindLambdaForTesting([&](mojom::MessageToSignUnionPtr message) {
+        ASSERT_TRUE(message->is_message_str());
+        absl::optional<std::string> message_str = message->get_message_str();
         EXPECT_EQ(
-            result,
+            message_str,
             "0x02dd04800101019401010101010101010101010101010101010101018080c0");
         callback_called = true;
       }));
@@ -1199,11 +1201,11 @@ TEST_F(EthTxManagerUnitTest, GetNonceForHardwareTransactionFail) {
 
   callback_called = false;
   eth_tx_manager()->GetTransactionMessageToSign(
-      std::string(), base::BindLambdaForTesting(
-                         [&](const absl::optional<std::string>& result) {
-                           ASSERT_FALSE(result);
-                           callback_called = true;
-                         }));
+      std::string(),
+      base::BindLambdaForTesting([&](mojom::MessageToSignUnionPtr message) {
+        ASSERT_FALSE(message);
+        callback_called = true;
+      }));
   base::RunLoop().RunUntilIdle();
   ASSERT_TRUE(callback_called);
   ASSERT_FALSE(observer.TxStatusChanged());

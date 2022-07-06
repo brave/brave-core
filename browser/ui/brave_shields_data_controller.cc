@@ -11,8 +11,10 @@
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
 #include "chrome/browser/browser_process.h"
+#include "chrome/browser/content_settings/cookie_settings_factory.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
+#include "components/content_settings/core/browser/cookie_settings.h"
 #include "components/content_settings/core/common/content_settings_pattern.h"
 #include "components/favicon/content/content_favicon_driver.h"
 #include "content/public/browser/navigation_handle.h"
@@ -207,8 +209,12 @@ FingerprintMode BraveShieldsDataController::GetFingerprintMode() {
 }
 
 CookieBlockMode BraveShieldsDataController::GetCookieBlockMode() {
-  ControlType control_type = brave_shields::GetCookieControlType(
-      GetHostContentSettingsMap(web_contents()), GetCurrentSiteURL());
+  auto cookie_settings = CookieSettingsFactory::GetForProfile(
+      Profile::FromBrowserContext(web_contents()->GetBrowserContext()));
+
+  const ControlType control_type = brave_shields::GetCookieControlType(
+      GetHostContentSettingsMap(web_contents()), cookie_settings.get(),
+      GetCurrentSiteURL());
 
   if (control_type == ControlType::ALLOW) {
     return CookieBlockMode::ALLOW;
@@ -290,6 +296,8 @@ void BraveShieldsDataController::SetFingerprintMode(FingerprintMode mode) {
 }
 
 void BraveShieldsDataController::SetCookieBlockMode(CookieBlockMode mode) {
+  auto* prefs = Profile::FromBrowserContext(web_contents()->GetBrowserContext())
+                    ->GetPrefs();
   ControlType control_type;
 
   if (mode == CookieBlockMode::ALLOW) {
@@ -301,7 +309,7 @@ void BraveShieldsDataController::SetCookieBlockMode(CookieBlockMode mode) {
   }
 
   brave_shields::SetCookieControlType(GetHostContentSettingsMap(web_contents()),
-                                      control_type, GetCurrentSiteURL(),
+                                      prefs, control_type, GetCurrentSiteURL(),
                                       g_browser_process->local_state());
 
   ReloadWebContents();

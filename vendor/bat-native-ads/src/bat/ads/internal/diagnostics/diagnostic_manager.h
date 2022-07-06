@@ -8,7 +8,7 @@
 
 #include <memory>
 
-#include "bat/ads/ads_aliases.h"
+#include "bat/ads/ads_callback.h"
 #include "bat/ads/internal/diagnostics/diagnostic_aliases.h"
 
 namespace ads {
@@ -20,7 +20,7 @@ class DiagnosticManager final {
   DiagnosticManager& operator=(const DiagnosticManager&) = delete;
   ~DiagnosticManager();
 
-  static DiagnosticManager* Get();
+  static DiagnosticManager* GetInstance();
 
   static bool HasInstance();
 

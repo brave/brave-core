@@ -257,7 +257,10 @@ class SolanaProviderImplUnitTest : public testing::Test {
     base::Value result_out(base::Value::Type::DICTIONARY);
     base::RunLoop run_loop;
     provider_->SignAndSendTransaction(
-        encoded_serialized_message, absl::nullopt,
+        mojom::SolanaSignTransactionParam::New(
+            encoded_serialized_message,
+            std::vector<mojom::SignaturePubkeyPairPtr>()),
+        absl::nullopt,
         base::BindLambdaForTesting([&](mojom::SolanaProviderError error,
                                        const std::string& error_message,
                                        base::Value result) {
@@ -277,7 +280,9 @@ class SolanaProviderImplUnitTest : public testing::Test {
     std::vector<uint8_t> result_out;
     base::RunLoop run_loop;
     provider_->SignTransaction(
-        encoded_serialized_message,
+        mojom::SolanaSignTransactionParam::New(
+            encoded_serialized_message,
+            std::vector<mojom::SignaturePubkeyPairPtr>()),
         base::BindLambdaForTesting([&](mojom::SolanaProviderError error,
                                        const std::string& error_message,
                                        const std::vector<uint8_t>& result) {
@@ -296,8 +301,14 @@ class SolanaProviderImplUnitTest : public testing::Test {
       const std::string& expected_error_message) {
     std::vector<std::vector<uint8_t>> result_out;
     base::RunLoop run_loop;
+    std::vector<mojom::SolanaSignTransactionParamPtr> params;
+    for (const auto& encoded_serialized_message : encoded_serialized_messages) {
+      params.push_back(mojom::SolanaSignTransactionParam::New(
+          encoded_serialized_message,
+          std::vector<mojom::SignaturePubkeyPairPtr>()));
+    }
     provider_->SignAllTransactions(
-        encoded_serialized_messages,
+        std::move(params),
         base::BindLambdaForTesting(
             [&](mojom::SolanaProviderError error,
                 const std::string& error_message,
@@ -633,22 +644,6 @@ TEST_F(SolanaProviderImplUnitTest, GetDeserializedMessage) {
   deserialized_msg = provider_->GetDeserializedMessage(
       Base58Encode(*serialized_msg),
       "3Lu176FQzbQJCc8iL9PnmALbpMPhZeknoturApnXRDJw");
-  EXPECT_FALSE(deserialized_msg);
-
-  // Mutiple signers should return absl::nullopt.
-  SolanaInstruction instruction2(
-      kSolanaSystemProgramId,
-      {SolanaAccountMeta(address, true, true),
-       SolanaAccountMeta("3Lu176FQzbQJCc8iL9PnmALbpMPhZeknoturApnXRDJw", true,
-                         true)},
-      {2, 0, 0, 0, 128, 150, 152, 0, 0, 0, 0, 0});
-  SolanaMessage msg2("9sHcv6xwn9YkB8nxTUGKDwPwNnmqVp5oAXxU8Fdkm4J6", 0, address,
-                     {instruction2});
-  serialized_msg = msg2.Serialize(nullptr);
-  ASSERT_TRUE(serialized_msg);
-
-  deserialized_msg =
-      provider_->GetDeserializedMessage(Base58Encode(*serialized_msg), address);
   EXPECT_FALSE(deserialized_msg);
 }
 

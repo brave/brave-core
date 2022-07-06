@@ -22,6 +22,7 @@ public class NetworkModel implements JsonRpcServiceObserver {
     public final LiveData<NetworkInfo[]> mCryptoNetworks;
     public final MediatorLiveData<Pair<String, NetworkInfo[]>> mPairChainAndNetwork =
             new MediatorLiveData<>();
+    private final Object mLock = new Object();
 
     public NetworkModel(JsonRpcService jsonRpcService, CryptoSharedData sharedData) {
         mJsonRpcService = jsonRpcService;
@@ -41,22 +42,29 @@ public class NetworkModel implements JsonRpcServiceObserver {
     }
 
     public void resetServices(JsonRpcService jsonRpcService) {
-        mJsonRpcService = jsonRpcService;
+        synchronized (mLock) {
+            mJsonRpcService = jsonRpcService;
+        }
         init();
     }
 
     public void init() {
-        mJsonRpcService.getChainId(mSharedData.getCoinType(), chainId -> {
-            String id = BraveWalletConstants.MAINNET_CHAIN_ID;
-            if (TextUtils.isEmpty(chainId)) {
-                mJsonRpcService.setNetwork(id, mSharedData.getCoinType(), hasSetNetwork -> {});
-            } else {
-                id = chainId;
+        synchronized (mLock) {
+            if (mJsonRpcService == null) {
+                return;
             }
-            _mChainId.postValue(id);
-        });
-        mJsonRpcService.getAllNetworks(mSharedData.getCoinType(),
-                networkInfos -> { _mCryptoNetworks.postValue(networkInfos); });
+            mJsonRpcService.getChainId(mSharedData.getCoinType(), chainId -> {
+                String id = BraveWalletConstants.MAINNET_CHAIN_ID;
+                if (TextUtils.isEmpty(chainId)) {
+                    mJsonRpcService.setNetwork(id, mSharedData.getCoinType(), hasSetNetwork -> {});
+                } else {
+                    id = chainId;
+                }
+                _mChainId.postValue(id);
+            });
+            mJsonRpcService.getAllNetworks(mSharedData.getCoinType(),
+                    networkInfos -> { _mCryptoNetworks.postValue(networkInfos); });
+        }
     }
 
     @Override

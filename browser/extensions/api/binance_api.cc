@@ -108,18 +108,18 @@ BinanceGetAccountBalancesFunction::Run() {
 void BinanceGetAccountBalancesFunction::OnGetAccountBalances(
     const BinanceAccountBalances& balances,
     bool success) {
-  base::DictionaryValue result;
+  base::Value::Dict result;
 
   for (const auto& balance : balances) {
-    base::Value info(base::Value::Type::DICTIONARY);
-    info.SetKey("balance", base::Value(balance.second[0]));
-    info.SetKey("btcValue", base::Value(balance.second[1]));
-    info.SetKey("fiatValue", base::Value(balance.second[2]));
+    base::Value::Dict info;
+    info.Set("balance", balance.second[0]);
+    info.Set("btcValue", balance.second[1]);
+    info.Set("fiatValue", balance.second[2]);
 
-    result.SetPath(balance.first, std::move(info));
+    result.SetByDottedPath(balance.first, std::move(info));
   }
 
-  Respond(TwoArguments(std::move(result), base::Value(success)));
+  Respond(TwoArguments(base::Value(std::move(result)), base::Value(success)));
 }
 
 ExtensionFunction::ResponseAction
@@ -149,12 +149,12 @@ BinanceGetConvertQuoteFunction::Run() {
 void BinanceGetConvertQuoteFunction::OnQuoteResult(
     const std::string& quote_id, const std::string& quote_price,
     const std::string& total_fee, const std::string& total_amount) {
-  base::Value quote(base::Value::Type::DICTIONARY);
-  quote.SetStringKey("id", quote_id);
-  quote.SetStringKey("price", quote_price);
-  quote.SetStringKey("fee", total_fee);
-  quote.SetStringKey("amount", total_amount);
-  Respond(OneArgument(std::move(quote)));
+  base::Value::Dict quote;
+  quote.Set("id", quote_id);
+  quote.Set("price", quote_price);
+  quote.Set("fee", total_fee);
+  quote.Set("amount", total_amount);
+  Respond(OneArgument(base::Value(std::move(quote))));
 }
 
 ExtensionFunction::ResponseAction
@@ -309,13 +309,13 @@ BinanceGetCoinNetworksFunction::Run() {
 
 void BinanceGetCoinNetworksFunction::OnGetCoinNetworks(
     const BinanceCoinNetworks& networks) {
-  base::Value coin_networks(base::Value::Type::DICTIONARY);
+  base::Value::Dict coin_networks;
 
   for (const auto& network : networks) {
-    coin_networks.SetStringKey(network.first, network.second);
+    coin_networks.Set(network.first, network.second);
   }
 
-  Respond(OneArgument(std::move(coin_networks)));
+  Respond(OneArgument(base::Value(std::move(coin_networks))));
 }
 
 ExtensionFunction::ResponseAction BinanceGetLocaleForURLFunction::Run() {

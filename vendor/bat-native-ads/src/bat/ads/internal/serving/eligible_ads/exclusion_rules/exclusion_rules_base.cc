@@ -6,6 +6,7 @@
 #include "bat/ads/internal/serving/eligible_ads/exclusion_rules/exclusion_rules_base.h"
 
 #include "bat/ads/internal/base/logging_util.h"
+#include "bat/ads/internal/creatives/creative_ad_info.h"
 #include "bat/ads/internal/geographic/subdivision/subdivision_targeting.h"
 #include "bat/ads/internal/resources/behavioral/anti_targeting/anti_targeting_resource.h"
 #include "bat/ads/internal/serving/eligible_ads/exclusion_rules/anti_targeting_exclusion_rule.h"

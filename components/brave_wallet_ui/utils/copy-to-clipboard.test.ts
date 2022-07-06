@@ -7,7 +7,7 @@ Object.assign(navigator, {
 })
 
 describe('copyToClipboard', () => {
-  it('should call nativator.clipboard.writeText', async (done) => {
+  it('should call navigator.clipboard.writeText', async (done) => {
     const mockData = 'someText'
     jest.spyOn(navigator.clipboard, 'writeText')
     await copyToClipboard(mockData)

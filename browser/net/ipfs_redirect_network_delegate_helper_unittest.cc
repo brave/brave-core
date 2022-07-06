@@ -85,6 +85,53 @@ TEST_F(IPFSRedirectNetworkDelegateHelperTest, TranslateIPFSURIIPFSSchemeLocal) {
             "QmfM2r8seH2GiRaC4esTjeraXEachRt8ZsSeGaWTPLyMoG");
 }
 
+TEST_F(IPFSRedirectNetworkDelegateHelperTest,
+       SubFrameRequestDisabledWhenIPFSDisabled) {
+  profile()->GetPrefs()->SetInteger(
+      kIPFSResolveMethod,
+      static_cast<int>(IPFSResolveMethodTypes::IPFS_DISABLED));
+
+  GURL url("ipfs://QmfM2r8seH2GiRaC4esTjeraXEachRt8ZsSeGaWTPLyMoG");
+  auto brave_request_info = std::make_shared<brave::BraveRequestInfo>(url);
+  brave_request_info->resource_type = blink::mojom::ResourceType::kSubFrame;
+  brave_request_info->browser_context = profile();
+  int rc = ipfs::OnBeforeURLRequest_IPFSRedirectWork(brave::ResponseCallback(),
+                                                     brave_request_info);
+  EXPECT_EQ(rc, net::OK);
+  EXPECT_EQ(brave_request_info->blocked_by, brave::kOtherBlocked);
+}
+
+TEST_F(IPFSRedirectNetworkDelegateHelperTest,
+       SubFrameRequestDisabledWhenIPFSDisabled_Incognito) {
+  profile()->GetPrefs()->SetInteger(
+      kIPFSResolveMethod, static_cast<int>(IPFSResolveMethodTypes::IPFS_LOCAL));
+
+  GURL url("ipfs://QmfM2r8seH2GiRaC4esTjeraXEachRt8ZsSeGaWTPLyMoG");
+  auto brave_request_info = std::make_shared<brave::BraveRequestInfo>(url);
+  brave_request_info->resource_type = blink::mojom::ResourceType::kSubFrame;
+  brave_request_info->browser_context = profile()->GetOffTheRecordProfile(
+      Profile::OTRProfileID::CreateUnique("incognito"), true);
+  int rc = ipfs::OnBeforeURLRequest_IPFSRedirectWork(brave::ResponseCallback(),
+                                                     brave_request_info);
+  EXPECT_EQ(rc, net::OK);
+  EXPECT_EQ(brave_request_info->blocked_by, brave::kOtherBlocked);
+}
+
+TEST_F(IPFSRedirectNetworkDelegateHelperTest,
+       SubFrameRequestDisabledWhen_NoContext) {
+  profile()->GetPrefs()->SetInteger(
+      kIPFSResolveMethod, static_cast<int>(IPFSResolveMethodTypes::IPFS_LOCAL));
+
+  GURL url("ipfs://QmfM2r8seH2GiRaC4esTjeraXEachRt8ZsSeGaWTPLyMoG");
+  auto brave_request_info = std::make_shared<brave::BraveRequestInfo>(url);
+  brave_request_info->resource_type = blink::mojom::ResourceType::kSubFrame;
+  brave_request_info->browser_context = nullptr;
+  int rc = ipfs::OnBeforeURLRequest_IPFSRedirectWork(brave::ResponseCallback(),
+                                                     brave_request_info);
+  EXPECT_EQ(rc, net::OK);
+  EXPECT_EQ(brave_request_info->blocked_by, brave::kOtherBlocked);
+}
+
 TEST_F(IPFSRedirectNetworkDelegateHelperTest, TranslateIPFSURIIPFSScheme) {
   GURL url("ipfs://QmfM2r8seH2GiRaC4esTjeraXEachRt8ZsSeGaWTPLyMoG");
   auto brave_request_info = std::make_shared<brave::BraveRequestInfo>(url);

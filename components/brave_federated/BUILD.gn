@@ -7,8 +7,8 @@ static_library("brave_federated") {
     "brave_federated_service.h",
     "data_store_service.cc",
     "data_store_service.h",
-    "data_stores/ad_notification_timing_data_store.cc",
-    "data_stores/ad_notification_timing_data_store.h",
+    "data_stores/async_data_store.cc",
+    "data_stores/async_data_store.h",
     "data_stores/data_store.cc",
     "data_stores/data_store.h",
     "eligibility_service.cc",
@@ -16,6 +16,7 @@ static_library("brave_federated") {
     "eligibility_service_observer.h",
     "features.cc",
     "features.h",
+    "notification_ad_task_constants.h",
     "operational_patterns.cc",
     "operational_patterns.h",
     "operational_patterns_util.cc",
@@ -41,10 +42,7 @@ source_set("brave_federated_tests") {
   testonly = true
 
   sources = [
-    "data_stores/ad_notification_timing_data_store_unittest.cc",
     "data_stores/data_store_unittest.cc",
-    "data_stores/test_data_store.cc",
-    "data_stores/test_data_store.h",
     "features_unittest.cc",
     "operational_patterns_util_unittest.cc",
   ]

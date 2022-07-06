@@ -6,7 +6,6 @@
 import * as preferencesAPI from './preferences'
 import * as statsAPI from './stats'
 import * as privateTabDataAPI from './privateTabData'
-import * as torTabDataAPI from './torTabData'
 import * as wallpaper from './wallpaper'
 import * as newTabAdsDataAPI from './newTabAdsData'
 
@@ -14,7 +13,6 @@ export type InitialData = {
   preferences: NewTab.Preferences
   stats: statsAPI.Stats
   privateTabData: privateTabDataAPI.PrivateTabData
-  torTabData: torTabDataAPI.TorTabData
   wallpaperData?: NewTab.Wallpaper
   braveTalkSupported: boolean
   geminiSupported: boolean
@@ -48,7 +46,6 @@ export async function getInitialData (): Promise<InitialData> {
       preferences,
       stats,
       privateTabData,
-      torTabData,
       wallpaperData,
       braveTalkSupported,
       geminiSupported,
@@ -59,7 +56,6 @@ export async function getInitialData (): Promise<InitialData> {
       preferencesAPI.getPreferences(),
       statsAPI.getStats(),
       privateTabDataAPI.getPrivateTabData(),
-      torTabDataAPI.getTorTabData(),
       !isIncognito ? wallpaper.getWallpaper() : Promise.resolve(undefined),
       new Promise((resolve) => {
         if (!('braveTalk' in chrome)) {
@@ -97,7 +93,6 @@ export async function getInitialData (): Promise<InitialData> {
       preferences,
       stats,
       privateTabData,
-      torTabData,
       wallpaperData,
       braveTalkSupported,
       geminiSupported,

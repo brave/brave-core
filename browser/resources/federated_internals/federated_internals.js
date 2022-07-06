@@ -2,18 +2,18 @@ import {$} from 'chrome://resources/js/util.m.js';
 import { FederatedInternalsBrowserProxy } from './federated_internals_browser_proxy.js';
 
 const dataStoresLogs = {};
-let selectedDataStore = 'ad-timing';
+let selectedDataStore = 'notification-ad-timing';
 
 function getProxy() {
   return FederatedInternalsBrowserProxy.getInstance();
 }
 
 function initialize() {
-  getProxy().getAdStoreInfo();
+  getProxy().updateDataStoresInfo();
   
-  getProxy().getCallbackRouter().onAdStoreInfoAvailable.addListener(
+  getProxy().getCallbackRouter().onUpdateDataStoresInfo.addListener(
     (logs) => {
-      dataStoresLogs['ad-timing'] = logs;
+      dataStoresLogs['notification-ad-timing'] = logs;
       onDataStoreChanged();
   });
 
@@ -33,33 +33,40 @@ function onDataStoreChanged() {
       return;
     }
 
-    if (selectedDataStore == 'ad-timing') {
+    if (selectedDataStore == 'notification-ad-timing') {
       $('service-message').textContent = ''
-      const thead = $('ad-timing-headers');
+      const thead = $('data-store-headers');
       while (thead.firstChild) {
         thead.removeChild(thead.firstChild);
       }
-      Object.keys(logs[0]).forEach(function(title) {
+
+      let title = "trainingInstanceId"
+      const th = document.createElement('th');
+      th.textContent = title;
+      th.className = 'data-store-feature-'+ title;
+      thead.appendChild(th);
+      Object.keys(logs[0].covariates[0]).forEach(function(title) {
           const th = document.createElement('th');
           th.textContent = title;
-          th.className = 'ad-timing-log-'+ title;
-      
-          const thead = $('ad-timing-headers');
+          th.className = 'data-store-feature-'+ title;
           thead.appendChild(th);
       });
-    
-      logs.forEach(function(log) {
-        const tr = document.createElement('tr');
-        appendTD(tr, log.logId, 'ad-timing-log-id');
-        appendTD(tr, formatDate(new Date(log.logTime)), 'ad-timing-log-time');
-        appendTD(tr, log.logLocale, 'ad-timing-log-locale');
-        appendTD(tr, log.logNumberOfTabs, 'ad-timing-log-number_of_tabs');
-        appendBooleanTD(tr, log.logLabel, 'ad-timing-log-label');
-    
-        const tabpanel = $('ad-timing-tab');
-        const tbody = tabpanel.getElementsByTagName('tbody')[0];
-        tbody.appendChild(tr);
-      });
+
+      console.log(logs);
+
+      for (const [training_instance_id, training_instance] of Object.entries(logs)) {
+        training_instance.covariates.forEach(function(covariate) {
+          const tr = document.createElement('tr');
+          appendTD(tr, training_instance_id, 'data-store-feature-trainingInstanceId');
+          appendTD(tr, covariate.type, 'data-store-feature-type');
+          appendTD(tr, covariate.dataType, 'data-store-feature-dataType');
+          appendTD(tr, covariate.value, 'data-store-feature-value');
+      
+          const tabpanel = $('data-store-tab');
+          const tbody = tabpanel.getElementsByTagName('tbody')[0];
+          tbody.appendChild(tr);
+        });
+      }
     }
 }
 

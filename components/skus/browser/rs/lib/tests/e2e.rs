@@ -87,15 +87,11 @@ impl KVStore for CLIStore {
 
 #[test]
 fn skus_e2e_works() {
-    let subscriber = FmtSubscriber::builder()
-        .with_max_level(Level::TRACE)
-        .finish();
+    let subscriber = FmtSubscriber::builder().with_max_level(Level::TRACE).finish();
     tracing::subscriber::set_global_default(subscriber).expect("setting default subscriber failed");
 
     task::block_on(async {
-        let client = CLIClient {
-            store: RefCell::new(CLIStore(HashMap::new())),
-        };
+        let client = CLIClient { store: RefCell::new(CLIStore(HashMap::new())) };
         let sdk = skus::sdk::SDK::new(client, Environment::Testing, None, None);
         sdk.initialize().await.unwrap();
 
@@ -107,8 +103,6 @@ fn skus_e2e_works() {
 
         sdk.fetch_order_credentials(&order.id).await.unwrap();
 
-        sdk.present_order_credentials(&order.id, &order.location, "/")
-            .await
-            .unwrap();
+        sdk.present_order_credentials(&order.id, &order.location, "/").await.unwrap();
     });
 }

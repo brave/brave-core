@@ -17,6 +17,7 @@ import useAssetManagement from './assets-management'
 import useHasAccount from './has-account'
 import usePrevNetwork from './previous-network'
 import { useLib } from './useLib'
+import { useCopy } from './use-copy'
 
 export {
   useAssets,
@@ -33,5 +34,6 @@ export {
   useAssetManagement,
   useLib,
   useHasAccount,
-  usePrevNetwork
+  usePrevNetwork,
+  useCopy
 }

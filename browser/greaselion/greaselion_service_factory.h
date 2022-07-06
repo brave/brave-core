@@ -24,6 +24,8 @@ class GreaselionServiceFactory : public BrowserContextKeyedServiceFactory {
       content::BrowserContext* context);
   static GreaselionServiceFactory* GetInstance();
 
+  static base::FilePath GetInstallDirectory();
+
  private:
   friend struct base::DefaultSingletonTraits<GreaselionServiceFactory>;
 

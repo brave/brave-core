@@ -75,8 +75,8 @@ base::flat_map<std::string, uint16_t>& GetUrlEndpointIndexes() {
   return *indexes;
 }
 
-URLEndpointResponses GetUrlEndpointResponsesForPath(
-    const URLEndpoints& endpoints,
+URLEndpointResponseList GetUrlEndpointResponsesForPath(
+    const URLEndpointMap& endpoints,
     const std::string& path) {
   const auto iter = endpoints.find(path);
   if (iter == endpoints.end()) {
@@ -86,15 +86,15 @@ URLEndpointResponses GetUrlEndpointResponsesForPath(
   return iter->second;
 }
 
-absl::optional<URLEndpointResponse> GetNextUrlEndpointResponse(
+absl::optional<URLEndpointResponsePair> GetNextUrlEndpointResponse(
     const GURL& url,
-    const URLEndpoints& endpoints) {
+    const URLEndpointMap& endpoints) {
   CHECK(url.is_valid()) << "Invalid URL: " << url;
   CHECK(!endpoints.empty()) << "Missing mock for " << url << " endpoint";
 
   const std::string path = url.PathForRequest();
 
-  const URLEndpointResponses url_endpoint_responses =
+  const URLEndpointResponseList url_endpoint_responses =
       GetUrlEndpointResponsesForPath(endpoints, path);
   if (url_endpoint_responses.empty()) {
     // URL endpoint responses not found for given path
@@ -143,13 +143,13 @@ base::FilePath GetFilePath(const std::string& body) {
 
 absl::optional<mojom::UrlResponse> GetNextUrlResponse(
     const mojom::UrlRequestPtr& url_request,
-    const URLEndpoints& endpoints) {
-  const absl::optional<URLEndpointResponse> url_endpoint_response_optional =
+    const URLEndpointMap& endpoints) {
+  const absl::optional<URLEndpointResponsePair> url_endpoint_response_optional =
       GetNextUrlEndpointResponse(url_request->url, endpoints);
   if (!url_endpoint_response_optional) {
     return absl::nullopt;
   }
-  const URLEndpointResponse& url_endpoint_response =
+  const URLEndpointResponsePair& url_endpoint_response =
       url_endpoint_response_optional.value();
 
   std::string body = url_endpoint_response.second;

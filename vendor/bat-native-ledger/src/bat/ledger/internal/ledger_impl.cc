@@ -889,11 +889,6 @@ void LedgerImpl::LinkBraveWallet(const std::string& destination_payment_id,
   });
 }
 
-void LedgerImpl::GetTransferableAmount(GetTransferableAmountCallback callback) {
-  WhenReady(
-      [this, callback]() { promotion()->GetTransferableAmount(callback); });
-}
-
 void LedgerImpl::GetDrainStatus(const std::string& drain_id,
                                 GetDrainCallback callback) {
   WhenReady([this, drain_id, callback]() {

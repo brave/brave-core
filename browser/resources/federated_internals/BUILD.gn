@@ -29,12 +29,17 @@ generate_grd("build_grd") {
 }
 
 preprocess_if_expr("preprocess_mojo") {
-  deps = [ "//brave/browser/ui/webui/brave_federated:mojo_bindings_webui_js" ]
-  in_folder =
-      "$root_gen_dir/mojom-webui/brave/browser/ui/webui/brave_federated/"
+  deps = [
+    "//brave/browser/ui/webui/brave_federated:mojo_bindings_webui_js",
+    "//brave/components/brave_federated/public/interfaces:interfaces_webui_js",
+  ]
+  in_folder = "$root_gen_dir/mojom-webui/"
   out_folder = "$target_gen_dir/$preprocess_folder"
   out_manifest = "$target_gen_dir/$preprocess_mojo_manifest"
-  in_files = [ "federated_internals.mojom-webui.js" ]
+  in_files = [
+    "brave/browser/ui/webui/brave_federated/federated_internals.mojom-webui.js",
+    "brave/components/brave_federated/public/interfaces/brave_federated.mojom-webui.js",
+  ]
 }
 
 brave_grit("resources") {
@@ -77,6 +82,7 @@ js_library("federated_internals") {
 js_library("federated_internals_browser_proxy") {
   deps = [
     "//brave/browser/ui/webui/brave_federated:mojo_bindings_webui_js",
+    "//brave/components/brave_federated/public/interfaces:interfaces_webui_js",
     "//ui/webui/resources/js:assert.m",
     "//ui/webui/resources/js:util.m",
   ]

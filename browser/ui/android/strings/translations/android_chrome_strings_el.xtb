@@ -55,6 +55,7 @@
 <translation id="124678866338384709">Κλείσιμο τρέχουσας καρτέλας</translation>
 <translation id="1246905108078336582">Θέλετε να καταργήσετε την πρόταση από το πρόχειρο;</translation>
 <translation id="1996480094660735607">Brave doodle: <ph name="DOODLE_DESCRIPTION"/></translation>
+<translation id="1263231323834454256">Λίστα ανάγνωσης</translation>
 <translation id="1266864766717917324">Δεν ήταν δυνατή η κοινοποίηση <ph name="CONTENT_TYPE"/></translation>
 <translation id="1283039547216852943">Πατήστε για ανάπτυξη</translation>
 <translation id="1285310382777185058">Αλλαγή γλώσσας</translation>
@@ -82,6 +83,7 @@
 <translation id="1383876407941801731">Αναζήτηση</translation>
 <translation id="1384704387250346179">Μετάφραση εικόνας με Google Lens <ph name="BEGIN_NEW"/>Νέο<ph name="END_NEW"/></translation>
 <translation id="1386674309198842382">Ενεργή <ph name="LAST_UPDATED"/> ημέρες πριν</translation>
+<translation id="13931502444227376">Για να συνεχίσετε, το <ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE"/> θα κοινοποιήσει το όνομα, τη διεύθυνση ηλεκτρονικού ταχυδρομείου και τη φωτογραφία προφίλ σας σε αυτόν τον ιστότοπο. Ανατρέξτε στους <ph name="BEGIN_LINK1"/>όρους παροχής υπηρεσιών<ph name="END_LINK1"/> αυτού του ιστοτόπου.</translation>
 <translation id="1397811292916898096">Αναζήτηση με <ph name="PRODUCT_NAME"/></translation>
 <translation id="5857638389580847844">Μπορείτε να αλλάξετε γνώμη ανά πάσα στιγμή στις ρυθμίσεις του Brave. Οι δοκιμές εκτελούνται παράλληλα με τον τρέχοντα τρόπο προβολής των διαφημίσεων, επομένως δεν θα παρατηρήσετε αλλαγές αμέσως.</translation>
 <translation id="1406000523432664303">"Να μην γίνεται εντοπισμός"</translation>
@@ -105,6 +107,7 @@
 <translation id="1493287004536771723">Ακολουθείτε τον ιστότοπο <ph name="SITE_NAME"/></translation>
 <translation id="1506061864768559482">Μηχανή αναζήτησης</translation>
 <translation id="1513352483775369820">Σελιδοδείκτες και ιστορικό ιστού</translation>
+<translation id="1513814250881909472">Χρησιμοποιήστε τον συγχρονισμό για να λάβετε τις καρτέλες από τις άλλες συσκευές σας</translation>
 <translation id="1513858653616922153">Διαγραφή κωδικού πρόσβασης</translation>
 <translation id="1518421282666914498">GIF συναισθημάτων <ph name="CURRENT_DATE_ISO"/></translation>
 <translation id="1521774566618522728">Ενεργή σήμερα</translation>
@@ -114,6 +117,7 @@
 <translation id="1705567146636171298">Ενημερώστε το Brave</translation>
 <translation id="1571304935088121812">Αντιγραφή ονόματος χρήστη</translation>
 <translation id="1592864538817356322">Βασική ασφάλεια:</translation>
+<translation id="1594635596540195766"><ph name="SUGGESTIONS_COUNT"/> προτεινόμενα στοιχεία στην παρακάτω λίστα.</translation>
 <translation id="1977195831772110829"><ph name="BEGIN_BOLD"/>Πώς μπορείτε να διαχειριστείτε τα δεδομένα σας:<ph name="END_BOLD"/> Για την προστασία του απορρήτου σας, διαγράφουμε αυτόματα τα ενδιαφέροντα που είναι παλαιότερα των 4 εβδομάδων. Καθώς συνεχίζετε την περιήγηση, ενδέχεται να εμφανιστεί ξανά ένα ενδιαφέρον στη λίστα. Εναλλακτικά, μπορείτε να καταργήσετε τα ενδιαφέροντα που δεν θέλετε να λαμβάνει υπόψη το Brave.</translation>
 <translation id="1628019612362412531">{NUM_SELECTED,plural, =1{Κατάργηση 1 επιλεγμένου στοιχείου}other{Κατάργηση # επιλεγμένων στοιχείων}}</translation>
 <translation id="3122582044404611732">Ανακαλύψτε νέο περιεχόμενο στην αρχική σελίδα του Brave</translation>
@@ -126,18 +130,18 @@
 <translation id="1672586136351118594">Να μην εμφανιστεί ξανά</translation>
 <translation id="1680919990519905526">Αγορά εικόνας με Google Lens <ph name="BEGIN_NEW"/>Νέο<ph name="END_NEW"/></translation>
 <translation id="1682195225331129001">Δοκιμάστε τώρα</translation>
-<translation id="1697284962337958118">Προσθήκη σε</translation>
 <translation id="1702543251015153180">Αλλαγή των ρυθμίσεων σκούρου θέματος;</translation>
 <translation id="1702907158640575240">Διαχειριζόμενο πρόγραμμα περιήγησης</translation>
+<translation id="1710099199314114079">Εναλλαγή ή κλείσιμο καρτελών</translation>
 <translation id="1718835860248848330">Τελευταία ώρα</translation>
 <translation id="1724977129262658800">Ξεκλειδώστε για να επεξεργαστείτε τον κωδικό πρόσβασής σας.</translation>
 <translation id="6493900814829428590">Έχετε τη δυνατότητα να περιηγείστε και να αναζητάτε ταχύτερα όταν το Brave προφορτώνει σελίδες που πιστεύει ότι μπορεί να επισκεφτείτε</translation>
 <translation id="173522743738009831">Σχετικά με το Πλαίσιο ιδιωτικότητας</translation>
 <translation id="1736419249208073774">Εξερεύνηση</translation>
 <translation id="1749561566933687563">Συγχρονίστε τους σελιδοδείκτες σας</translation>
+<translation id="1750259112639922169">Ομάδα καρτελών – <ph name="TAB_COUNT"/> καρτέλες</translation>
 <translation id="17513872634828108">Ανοικτές καρτέλες</translation>
 <translation id="1754404134430936718">Το κείμενο αντιγράφηκε.</translation>
-<translation id="1772137089884020309">Η λίστα φακέλων σελιδοδεικτών έκλεισε</translation>
 <translation id="1779766957982586368">Κλείσιμο παραθύρου</translation>
 <translation id="1791662854739702043">Εγκατεστημένο</translation>
 <translation id="1792959175193046959">Αλλάξτε την προεπιλεγμένη τοποθεσία λήψης ανά πάσα στιγμή</translation>
@@ -162,6 +166,7 @@
 <translation id="1928696683969751773">Ενημερώσεις</translation>
 <translation id="1875543012935658554">Ανοίξτε ξανά το Brave.</translation>
 <translation id="1933845786846280168">Επιλεγμένη καρτέλα</translation>
+<translation id="193571872656840963">Ευχαριστήστε αυτόν τον δημιουργό</translation>
 <translation id="1943432128510653496">Αποθήκευση κωδικών πρόσβασης</translation>
 <translation id="1952172573699511566">Οι ιστότοποι θα εμφανίζουν κείμενο στην προτιμώμενη γλώσσα σας όταν υπάρχει αυτή η δυνατότητα.</translation>
 <translation id="1959679933317802873">Αναμονή για περιεχόμενο</translation>
@@ -176,6 +181,7 @@
 <translation id="1995884366040846621">Για να συνεχίσετε, το <ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE"/> θα κοινοποιήσει το όνομα, τη διεύθυνση ηλεκτρονικού ταχυδρομείου και τη φωτογραφία προφίλ σας σε αυτόν τον ιστότοπο. Δείτε την <ph name="BEGIN_LINK1"/>πολιτική απορρήτου<ph name="END_LINK1"/> αυτού του ιστοτόπου.</translation>
 <translation id="2000419248597011803">Στέλνει ορισμένα cookie και αναζητήσεις από τη γραμμή διευθύνσεων και το πλαίσιο αναζήτησης στην προεπιλεγμένη μηχανή αναζήτησης</translation>
 <translation id="6968892567705775281">Συμπερίληψη περιβάλλοντος κειμένου στις αναζητήσεις Brave;</translation>
+<translation id="469737985790683149">Χρησιμοποιήστε τον συγχρονισμό για να λάβετε το πιο σχετικό περιεχόμενο από το Brave</translation>
 <translation id="2013642289801508067">{FILE_COUNT,plural, =1{# Αρχείο}other{# Αρχεία}}</translation>
 <translation id="2020309681647789787">Το ιστορικό σας θα εμφανίζεται σε όλες τις συγχρονισμένες συσκευές, ώστε να μπορείτε να συνεχίζετε ό,τι κάνετε</translation>
 <translation id="2021896219286479412">Στοιχ. ελέγ. σε πλήρη οθόνη</translation>
@@ -241,7 +247,6 @@
 <translation id="2353636109065292463">Έλεγχος της σύνδεσής σας στο διαδίκτυο</translation>
 <translation id="2767094839186957509">Πολιτική απορρήτου της Brave</translation>
 <translation id="2359808026110333948">Συνέχεια</translation>
-<translation id="2369533728426058518">ανοικτές καρτέλες</translation>
 <translation id="2386938421315164605">Απόκρυψη και κατάργηση απόκρυψης θεμάτων</translation>
 <translation id="2390510615457643724">Θέλετε να κατεβάσετε ξανά το αρχείο <ph name="FILE_NAME"/><ph name="FILE_SIZE"/>;</translation>
 <translation id="2394602618534698961">Εδώ εμφανίζονται τα αρχεία που κατεβάζετε</translation>
@@ -260,6 +265,7 @@
 <translation id="2461822463642141190">Τρέχουσα</translation>
 <translation id="2542068854151299295">Συνδεθείτε για να αξιοποιήσετε πλήρως το Brave</translation>
 <translation id="247737702124049222">Οι περιγραφές εικόνων είναι ενεργοποιημένες</translation>
+<translation id="2481251096908459228">Δείτε ιστορίες για εσάς</translation>
 <translation id="2482878487686419369">Ειδοποιήσεις</translation>
 <translation id="2485422356828889247">Απεγκατάσταση</translation>
 <translation id="6361779936989026201">Βοηθός Brave στο Brave</translation>
@@ -299,6 +305,7 @@
 <translation id="2651091186440431324">{FILE_COUNT,plural, =1{# Αρχείο ήχου}other{# Αρχεία ήχου}}</translation>
 <translation id="265156376773362237">Βασική προφόρτωση</translation>
 <translation id="2656405586795711023">Εφαρμογές ιστού</translation>
+<translation id="2700802943130197326">Χρησιμοποιήστε τον συγχρονισμό για να έχετε τους κωδικούς πρόσβασης, τους σελιδοδείκτες κ.ά. σε όλες τις συσκευές σας.</translation>
 <translation id="2702516483241149200">Νέο: Κοινοποιήστε έναν σύνδεσμο που κάνει κύλιση σε αυτό το κείμενο</translation>
 <translation id="2704606927547763573">Αντιγράφ.</translation>
 <translation id="2707726405694321444">Ανανέωση σελίδας</translation>
@@ -550,6 +557,7 @@
 <translation id="4162867837470729563">Η λίστα επιλογών κοινοποίησης είναι ανοικτή σε πλήρες ύψος.</translation>
 <translation id="4165986682804962316">Ρυθμίσεις ιστότοπου</translation>
 <translation id="4170011742729630528">Η υπηρεσία δεν είναι διαθέσιμη. Δοκιμάστε ξανά αργότερα.</translation>
+<translation id="4177222230309051052">Λάβετε όλους τους σελιδοδείκτες σας</translation>
 <translation id="4181841719683918333">Γλώσσες</translation>
 <translation id="4195643157523330669">Άνοιγμα σε νέα καρτέλα</translation>
 <translation id="4196597275619698563">Δημιουργία κάρτας</translation>
@@ -569,7 +577,6 @@
 <translation id="6299940168852877221">Χρησιμοποιώντας το Brave, συμφωνείτε με τους <ph name="BEGIN_TOS_LINK"/>Όρους Παροχής Υπηρεσιών της Brave<ph name="END_TOS_LINK"/> και τους <ph name="BEGIN_ATOS_LINK"/>Πρόσθετους Όρους Παροχής Υπηρεσιών του Brave και του Chrome OS<ph name="END_ATOS_LINK"/>. Επίσης, ισχύει η <ph name="BEGIN_PRIVACY_LINK"/>Πολιτική απορρήτου<ph name="END_PRIVACY_LINK"/>.</translation>
 <translation id="4298388696830689168">Συνδεδεμένοι ιστότοποι</translation>
 <translation id="4303044213806199882">chrome_screenshot_<ph name="CURRENT_TIMESTAMP_MS"/></translation>
-<translation id="4304713468139749426">Διαχειριστής κωδικών πρόσβασης</translation>
 <translation id="4307992518367153382">Βασικά στοιχεία</translation>
 <translation id="4320177379694898372">Χωρίς σύνδεση στο διαδίκτυο</translation>
 <translation id="4321739720395210191">Δεν είναι δυνατό το άνοιγμα της κάμερας. Επανεκκινήστε τη συσκευή και δοκιμάστε ξανά.</translation>
@@ -624,6 +631,7 @@
 <translation id="4594952190837476234">Αυτή η σελίδα εκτός σύνδεσης δημιουργήθηκε στις <ph name="CREATION_TIME"/> και μπορεί να διαφέρει από την έκδοση στο διαδίκτυο.</translation>
 <translation id="4616150815774728855">Ανοίξτε <ph name="WEBAPK_NAME"/></translation>
 <translation id="4619564267100705184">Επαλήθευση ταυτότητας</translation>
+<translation id="4627165777145349100">Περισσότερα για αυτήν τη σελίδα</translation>
 <translation id="4634124774493850572">Χρήση κωδικού πρόσβασης</translation>
 <translation id="4640331037679501949">{NUM_PASSWORDS,plural, =1{1 παραβιασμένος κωδικός πρόσβασης}other{# παραβιασμένοι κωδικοί πρόσβασης}}</translation>
 <translation id="4650364565596261010">Προεπιλογή συστήματος</translation>
@@ -650,6 +658,7 @@
 <translation id="4758061975920522644">Κοινοποίηση μόνο εικόνας</translation>
 <translation id="4759238208242260848">Λήψεις</translation>
 <translation id="4763480195061959176">βίντεο</translation>
+<translation id="4766313118839197559">Οι κωδικοί πρόσβασης αποθηκεύονται στον Διαχειριστή κωδικών πρόσβασης σε αυτήν τη συσκευή.</translation>
 <translation id="4766678251456904326">Προσθήκη λογαριασμού στη συσκευή</translation>
 <translation id="4791358705705538979">Σας βοηθάει να ολοκληρώνετε εργασίες στον ιστό, όπως είναι η ολοκλήρωση αγορών</translation>
 <translation id="4794291718671962615">(<ph name="MEGABYTES"/>) <ph name="URL"/></translation>
@@ -701,6 +710,7 @@
 <translation id="4987271110129728827">Δεν είναι δυνατή η εύρεση της σελίδας. Ελέγξτε την ορθογραφία ή δοκιμάστε μια αναζήτηση στον ιστό.</translation>
 <translation id="4988526792673242964">Σελίδες</translation>
 <translation id="5001388021414335527">Ακολουθήστε αυτόν τον ιστότοπο εδώ</translation>
+<translation id="500351648694011114">Περιηγηθείτε πιο εύκολα</translation>
 <translation id="6447211988989208781">Στοιχεία ελέγχου δραστηριότητας Brave</translation>
 <translation id="5005141133360250920">Η αντίδραση διαγράφηκε</translation>
 <translation id="5005498671520578047">Αντιγραφή κωδικού πρόσβασης</translation>
@@ -744,6 +754,7 @@
 <translation id="5246093389635966745">Επεξεργασία συντόμευσης γραμμής εργαλείων</translation>
 <translation id="526421993248218238">Δεν είναι δυνατή η φόρτωση αυτής της σελίδας</translation>
 <translation id="5271967389191913893">Η συσκευή δεν μπορεί να ανοίξει το περιεχόμενο προς λήψη.</translation>
+<translation id="5274286919938458946">Συνδέθηκε με <ph name="CARD_DETAIL"/></translation>
 <translation id="5292796745632149097">Αποστολή προς</translation>
 <translation id="5300426565656326054">Εξατομίκευση διαφημίσεων βάσει προγράμματος περιήγησης</translation>
 <translation id="5304593522240415983">Αυτό το πεδίο δεν μπορεί να είναι κενό</translation>
@@ -755,9 +766,9 @@
 <translation id="5329858041417644019">Το πρόγραμμα περιήγησής σας δεν είναι διαχειριζόμενο</translation>
 <translation id="5342314432463739672">Αιτήματα για άδειες</translation>
 <translation id="5355191726083956201">Η Βελτιωμένη προστασία είναι ενεργή</translation>
-<translation id="5368958499335451666">{OPEN_TABS,plural, =1{<ph name="OPEN_TABS_ONE"/> ανοιχτή καρτέλα, πατήστε για εναλλαγή καρτελών}other{<ph name="OPEN_TABS_MANY"/> ανοιχτές καρτέλες, πατήστε για εναλλαγή καρτελών}}</translation>
 <translation id="5375577065097716013">Αναζήτ. εικόνας με Google Lens <ph name="BEGIN_NEW"/>Νέο<ph name="END_NEW"/></translation>
 <translation id="5376898820269806588">Η αντίδραση άλλαξε</translation>
+<translation id="5401851137404501592">Για να συνεχίσετε, το <ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE"/> θα κοινοποιήσει το όνομα, τη διεύθυνση ηλεκτρονικού ταχυδρομείου και τη φωτογραφία προφίλ σας σε αυτόν τον ιστότοπο.</translation>
 <translation id="5403644198645076998">Να επιτρέπονται μόνο συγκεκριμένοι ιστότοποι</translation>
 <translation id="5409881200985013443">Υποβολή <ph name="ONE_TIME_CODE"/> σε <ph name="CLIENT_NAME"/>;</translation>
 <translation id="5414836363063783498">Γίνεται επαλήθευση…</translation>
@@ -849,6 +860,7 @@
 <translation id="5864419784173784555">Αναμονή για άλλη λήψη…</translation>
 <translation id="6538479075382111079">Αποστέλλει αυτόματα στατιστικά στοιχεία χρήσης και αναφορές σφαλμάτων στην Brave</translation>
 <translation id="5869522115854928033">Αποθηκευμένοι κωδικοί πρόσβασης</translation>
+<translation id="5869789175361934029">Συνέχεια από άλλη συσκευή</translation>
 <translation id="5604589745019948682">Για να ακολουθήσετε έναν ιστότοπο, μεταβείτε στον ιστότοπο, ανοίξτε το μενού Brave και πατήστε Παρακολούθηση.</translation>
 <translation id="5880748256563468367">Μετάβαση στη ροή</translation>
 <translation id="9037412730408024068">Για να σας βοηθήσει να ολοκληρώνετε τις εργασίες σας, η Brave θα λάβει τα URL και το περιεχόμενο των ιστοτόπων στους οποίους χρησιμοποιείτε τον Βοηθό, καθώς και τις πληροφορίες που υποβάλετε μέσω του Βοηθού.</translation>
@@ -903,6 +915,7 @@
 <translation id="7087658909840709934">Προφορτώνει σελίδες τις οποίες το Brave θεωρεί πιθανό ότι θα επισκεφτείτε.</translation>
 <translation id="6186394685773237175">Δεν βρέθηκαν παραβιασμένοι κωδικοί πρόσβασης.</translation>
 <translation id="6192907950379606605">Λήψη περιγραφών εικόνων</translation>
+<translation id="8367262879301982880">Οι κωδικοί πρόσβασης αποθηκεύονται στον Διαχειριστή κωδικών πρόσβασης Brave σε αυτήν τη συσκευή.</translation>
 <translation id="620197886010707372">Θέλετε να ανοίξετε την εφαρμογή <ph name="APPNAME"/> με το Google Play;</translation>
 <translation id="6203593061661911168">Η λήψη θα ξεκινήσει κατά τη σύνδεση σε Wi-Fi.</translation>
 <translation id="6210748933810148297">Δεν είστε ο χρήστης <ph name="EMAIL"/>;</translation>
@@ -926,6 +939,7 @@
 <translation id="6324997754869598316">(Σφάλμα <ph name="ERROR_CODE"/>)</translation>
 <translation id="6333140779060797560">Μοιραστείτε μέσω <ph name="APPLICATION"/></translation>
 <translation id="6337234675334993532">Κρυπτογράφηση</translation>
+<translation id="6340910702212418132">Διαχειριστής κωδ. πρόσβασης <ph name="BEGIN_NEW"/>Νέο<ph name="END_NEW"/></translation>
 <translation id="6341580099087024258">Να γίνεται ερώτηση σχετικά με την τοποθεσία αποθήκευσης των αρχείων</translation>
 <translation id="6342069812937806050">Μόλις τώρα</translation>
 <translation id="6343495912647200061">{SHIPPING_ADDRESS,plural, =1{<ph name="SHIPPING_ADDRESS_PREVIEW"/>\u2026 και <ph name="NUMBER_OF_ADDITIONAL_ADDRESSES"/> ακόμη}other{<ph name="SHIPPING_ADDRESS_PREVIEW"/>\u2026 και <ph name="NUMBER_OF_ADDITIONAL_ADDRESSES"/> ακόμη}}</translation>
@@ -958,7 +972,6 @@
 <translation id="6475951671322991020">Λήψη βίντεο</translation>
 <translation id="6477928892249167417">Αυτοί οι ιστότοποι φαίνονται σημαντικοί για εσάς:</translation>
 <translation id="6482749332252372425">Η λήψη του αρχείου <ph name="FILE_NAME"/> απέτυχε λόγω έλλειψης αποθηκευτικού χώρου.</translation>
-<translation id="6489610539826642779">Λίστα ανάγνωσης <ph name="BEGIN_NEW"/>Νέα<ph name="END_NEW"/></translation>
 <translation id="6496823230996795692">Για να χρησιμοποιήσετε την εφαρμογή <ph name="APP_NAME"/> για πρώτη φορά, συνδεθείτε στο διαδίκτυο.</translation>
 <translation id="650224091954855786">{FILE_COUNT,plural, =1{Η λήψη του αρχείου ολοκληρώθηκε.}other{# ολοκληρωμένες λήψεις}}</translation>
 <translation id="3960299545138990065">Επανεκκινήστε το Brave</translation>
@@ -1018,7 +1031,6 @@
 <translation id="6756507620369789050">Υποβολή σχολίων</translation>
 <translation id="6767294960381293877">Άνοιγμα σε μισό ύψος της λίστας συσκευών στις οποίες θα κοινοποιηθεί μια καρτέλα.</translation>
 <translation id="6770602306803890733">Βελτιώνει την ασφάλεια τη δική σας και όλων των ατόμων στον ιστό.</translation>
-<translation id="6783942555455976443">Αποθηκεύστε αυτήν τη σελίδα για αργότερα και λάβετε σχετική υπενθύμιση.</translation>
 <translation id="8174975477247159780">Πρόσθετοι Όροι Παροχής Υπηρεσιών Brave και Chrome OS</translation>
 <translation id="6795633245022906657">Ανοίξτε γρήγορα μια νέα καρτέλα. Για να επεξεργαστείτε αυτήν τη συντόμευση, μεταβείτε στις Ρυθμίσεις.</translation>
 <translation id="6802555630140434547">Το παράθυρο θα κλείσει</translation>
@@ -1086,8 +1098,8 @@
 <translation id="7177873915659574692">Δεν είναι δυνατή η δημιουργία κωδικού QR. Το URL περιέχει περισσότερους από <ph name="CHARACTER_LIMIT"/> χαρακτήρες.</translation>
 <translation id="7631741717293858595">Μπορείτε να μάθετε περισσότερα σχετικά με αυτές τις λειτουργίες στις ρυθμίσεις του Brave.</translation>
 <translation id="718226107353899806">Μπορείτε να προσθέσετε έως <ph name="MAX_NUM_REACTIONS"/> αντιδράσεις.</translation>
+<translation id="7183693674623539380">Ομάδα καρτελών – <ph name="TITLE_OF_GROUP"/></translation>
 <translation id="8355565210555500987">Διατηρεί την ασφάλειά σας στο Brave και μπορεί να χρησιμοποιηθεί για τη βελτίωση της ασφάλειάς σας σε άλλες εφαρμογές Brave όταν είστε συνδεδεμένοι.</translation>
-<translation id="718926126787620637">Η λίστα φακέλων σελιδοδεικτών άνοιξε σε πλήρες ύψος</translation>
 <translation id="7191430249889272776">Η καρτέλα άνοιξε στο παρασκήνιο.</translation>
 <translation id="7196215469483532480">Η επεξήγηση Οδηγού απορρήτου άνοιξε σε πλήρες ύψος.</translation>
 <translation id="7208109991155904980">Η αντίδραση μεταφέρθηκε</translation>
@@ -1107,7 +1119,6 @@
 <translation id="1382596880054356475">Εκτός σύνδεσης. Το Brave δεν μπορεί να ελέγξει τους κωδικούς πρόσβασής σας.</translation>
 <translation id="7313188324932846546">Πατήστε για ρύθμιση συγχρονισμού</translation>
 <translation id="7332075081379534664">Η σύνδεση ήταν επιτυχής</translation>
-<translation id="7333031090786104871">Η προσθήκη του προηγούμενου ιστοτόπου δεν έχει ολοκληρωθεί</translation>
 <translation id="7339898014177206373">Νέο παράθυρο</translation>
 <translation id="7340958967809483333">Επιλογές για Discover</translation>
 <translation id="7352339641508007922">Σύρετε για να τραβήξετε ένα μεγάλο στιγμιότυπο οθόνης</translation>
@@ -1118,7 +1129,6 @@
 <translation id="7375125077091615385">Τύπος:</translation>
 <translation id="7376560087009844242">Συμπεριλαμβάνοντας μεγαλύτερο μέρος από το κείμενο μιας σελίδας, ενδέχεται να βλέπετε καλύτερα αποτελέσματα όταν χρησιμοποιείτε τη λειτουργία Αγγίξτε για αναζήτηση. Μπορείτε να επισκεφτείτε ανά πάσα στιγμή τις <ph name="BEGIN_LINK"/>ρυθμίσεις<ph name="END_LINK"/> για να αλλάξετε αυτήν την επιλογή.</translation>
 <translation id="7379900596734708416">Διατίθεται σκούρο θέμα για ιστοτόπους</translation>
-<translation id="4541178433047068373">Η σύνδεση με τον ιστότοπο είναι ασφαλής εκτός αν το Brave σας ειδοποιήσει ότι δεν είναι.</translation>
 <translation id="7400418766976504921">URL</translation>
 <translation id="724102042129299115">Εμπειρία πρώτης εκτέλεσης Brave</translation>
 <translation id="741204030948306876">Ναι, συμφωνώ</translation>
@@ -1227,6 +1237,7 @@
 <translation id="7961015016161918242">Ποτέ</translation>
 <translation id="7961926449547174351">Έχετε απενεργοποιήσει την πρόσβαση αποθηκευτικού χώρου. Μεταβείτε στις Ρυθμίσεις για να την ενεργοποιήσετε.</translation>
 <translation id="7963646190083259054">Πάροχος υπηρεσιών:</translation>
+<translation id="2939504940637874963">Μπορείτε να χρησιμοποιείτε τους αποθηκευμένους κωδικούς πρόσβασης σε οποιαδήποτε συσκευή. Αποθηκεύονται στον Διαχειριστή κωδικών πρόσβασης Brave για τον λογαριασμό <ph name="ACCOUNT"/>.</translation>
 <translation id="7968014550143838305">Προστέθηκε στη λίστα ανάγνωσης</translation>
 <translation id="7971136598759319605">Ενεργή 1 ημέρα πριν</translation>
 <translation id="7975379999046275268">Προεπισκόπηση σελίδας <ph name="BEGIN_NEW"/>Νέο<ph name="END_NEW"/></translation>
@@ -1277,6 +1288,7 @@
 <translation id="8216351761227087153">Παρακολούθηση</translation>
 <translation id="8218052821161047641">Γρήγορη σελίδα</translation>
 <translation id="8218622182176210845">Διαχείριση του λογαριασμού σας</translation>
+<translation id="8221656072740924283">Συνέχεια</translation>
 <translation id="8223642481677794647">Μενού της κάρτας ροής</translation>
 <translation id="8250920743982581267">Έγγραφα</translation>
 <translation id="5138664332909611586">Αυτή η σελίδα χρησιμοποιεί πάρα πολλή μνήμη. Για αυτόν τον λόγο, το Brave κατάργησε κάποιο περιεχόμενο.</translation>
@@ -1382,6 +1394,7 @@
 <translation id="8730621377337864115">Ολοκληρώθηκε</translation>
 <translation id="8746155870861185046">Κοινοποίηση επισήμανσης</translation>
 <translation id="8748850008226585750">Κρυφό περιεχόμενο</translation>
+<translation id="8756969031206844760">Ενημέρωση κωδικού πρόσβασης;</translation>
 <translation id="8766529642647037772">Δημιουργία ενός συνδέσμου που επισημαίνεται όπως αυτός;</translation>
 <translation id="8773160212632396039">Αίτημα επεξεργασίας</translation>
 <translation id="8788265440806329501">Το Ιστορικό πλοήγηση έκλεισε</translation>
@@ -1407,10 +1420,10 @@
 <translation id="8909135823018751308">Κοινοποίηση…</translation>
 <translation id="2684652081942622950">Λογαριασμός Brave</translation>
 <translation id="8920114477895755567">Αναμονή για λεπτομέρειες γονέων.</translation>
+<translation id="8921980840204105660">Χρησιμοποιήστε τον συγχρονισμό για να λάβετε τους σελιδοδείκτες από τις άλλες συσκευές σας</translation>
 <translation id="8922289737868596582">Κατεβάστε σελίδες από το κουμπί "Περισσότερες επιλογές" για να τις χρησιμοποιήσετε εκτός σύνδεσης</translation>
 <translation id="8924575305646776101"><ph name="BEGIN_LINK"/>Μάθετε περισσότερα<ph name="END_LINK"/></translation>
 <translation id="892496902842311796">Η γλώσσα <ph name="LANG"/> είναι έτοιμη</translation>
-<translation id="8928626432984354940">Η λίστα φακέλων σελιδοδεικτών άνοιξε στο μισό ύψος</translation>
 <translation id="6894658278639191411">Για να σας βοηθήσει να ολοκληρώνετε τις εργασίες σας, η Brave θα λάβει τα URL και το περιεχόμενο των ιστοτόπων στους οποίους χρησιμοποιείτε τον Βοηθό, καθώς και τις πληροφορίες που υποβάλετε μέσω του Βοηθού. Αυτές οι πληροφορίες μπορεί να αποθηκεύονται στον Λογαριασμό σας Brave. Μπορείτε να απενεργοποιήσετε τον Βοηθό στις ρυθμίσεις του Brave.</translation>
 <translation id="1174893863889683998">Να καταργηθεί η δραστηριότητα του Brave από το Digital Wellbeing;</translation>
 <translation id="8942627711005830162">Άνοιγμα σε άλλο παράθυρο</translation>
@@ -1470,7 +1483,6 @@
 <translation id="932327136139879170">Αρχική σελίδα</translation>
 <translation id="938850635132480979">Σφάλμα: <ph name="ERROR_CODE"/></translation>
 <translation id="939598580284253335">Εισαγωγή φράσης πρόσβασης</translation>
-<translation id="948039501338975565">Λίστα φακέλων σελιδοδεικτών</translation>
 <translation id="5406914950576900927">Το Brave μπορεί να χρησιμοποιήσει το <ph name="BEGIN_BOLD"/>Sogou<ph name="END_BOLD"/> για την αναζήτηση στην Κίνα. Μπορείτε να αλλάξετε αυτήν την επιλογή στις <ph name="BEGIN_LINK"/>Ρυθμίσεις<ph name="END_LINK"/>.</translation>
 <translation id="962979164594783469">Εγκατάσταση αυτής της εφαρμογής</translation>
 <translation id="96681097142096641">Προβολή απλοποιημένης σελίδας;</translation>
@@ -1479,6 +1491,7 @@
 <translation id="981121421437150478">Εκτός σύνδεσης</translation>
 <translation id="983192555821071799">Κλείσιμο όλων των καρτελών</translation>
 <translation id="987264212798334818">Γενικά</translation>
+<translation id="992745192656291733"><ph name="TAB_COUNT"/> καρτέλες</translation>
 <translation id="996149300115483134">Το μενού της κάρτας ροής είναι κλειστό</translation>
 <translation id="5186185447130319458">Ανώνυμη Περιήγηση</translation>
 <translation id="5711390076756601471">Κλειδώστε τις ιδιωτικές καρτέλες όταν φύγετε από τον Brave</translation>

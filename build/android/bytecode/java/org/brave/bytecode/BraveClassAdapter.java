@@ -43,6 +43,7 @@ public class BraveClassAdapter {
         chain = new BravePermissionDialogDelegateClassAdapter(chain);
         chain = new BravePermissionDialogModelClassAdapter(chain);
         chain = new BraveQueryTileSectionClassAdapter(chain);
+        chain = new BraveReaderModeManagerClassAdapter(chain);
         chain = new BraveSearchEngineAdapterClassAdapter(chain);
         chain = new BraveSettingsLauncherImplClassAdapter(chain);
         chain = new BraveShareDelegateImplClassAdapter(chain);

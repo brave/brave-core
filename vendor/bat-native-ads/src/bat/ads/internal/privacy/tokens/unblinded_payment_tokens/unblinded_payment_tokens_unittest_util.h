@@ -18,7 +18,7 @@ namespace privacy {
 class UnblindedPaymentTokens;
 struct UnblindedPaymentTokenInfo;
 
-UnblindedPaymentTokens* get_unblinded_payment_tokens();
+UnblindedPaymentTokens* GetUnblindedPaymentTokens();
 
 UnblindedPaymentTokenList SetUnblindedPaymentTokens(const int count);
 

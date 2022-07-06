@@ -10,6 +10,7 @@
 #include "bat/ads/internal/base/containers/container_util.h"
 #include "bat/ads/internal/base/unittest/unittest_base.h"
 #include "bat/ads/internal/base/unittest/unittest_time_util.h"
+#include "url/gurl.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
@@ -114,7 +115,7 @@ TEST_F(BatAdsCreativeNotificationAdsDatabaseTableTest,
 TEST_F(BatAdsCreativeNotificationAdsDatabaseTableTest,
        SaveCreativeNotificationAdsInBatches) {
   // Arrange
-  database_table_->set_batch_size(2);
+  database_table_->SetBatchSize(2);
 
   CreativeNotificationAdList creative_ads;
 
@@ -578,7 +579,7 @@ TEST_F(BatAdsCreativeNotificationAdsDatabaseTableTest,
   Save(creative_ads);
 
   // Act
-  FastForwardClockBy(base::Hours(1));
+  AdvanceClockBy(base::Hours(1));
 
   // Assert
   CreativeNotificationAdList expected_creative_ads;

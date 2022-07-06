@@ -33,7 +33,7 @@ class RefillUnblindedTokens final {
   RefillUnblindedTokens(const RefillUnblindedTokens&) = delete;
   RefillUnblindedTokens& operator=(const RefillUnblindedTokens&) = delete;
 
-  void set_delegate(RefillUnblindedTokensDelegate* delegate) {
+  void SetDelegate(RefillUnblindedTokensDelegate* delegate) {
     DCHECK_EQ(delegate_, nullptr);
     delegate_ = delegate;
   }
@@ -60,7 +60,7 @@ class RefillUnblindedTokens final {
 
   int CalculateAmountOfTokensToRefill() const;
 
-  raw_ptr<privacy::TokenGeneratorInterface> token_generator_ =
+  const raw_ptr<privacy::TokenGeneratorInterface> token_generator_ =
       nullptr;  // NOT OWNED
 
   raw_ptr<RefillUnblindedTokensDelegate> delegate_ = nullptr;

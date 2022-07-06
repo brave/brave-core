@@ -55,7 +55,7 @@ TEST_F(BatAdsCreativeNewTabPageAdsDatabaseTableTest,
 TEST_F(BatAdsCreativeNewTabPageAdsDatabaseTableTest,
        SaveCreativeNewTabPageAdsInBatches) {
   // Arrange
-  database_table.set_batch_size(2);
+  database_table.SetBatchSize(2);
 
   const CreativeNewTabPageAdList& creative_ads = BuildCreativeNewTabPageAds(3);
 
@@ -275,7 +275,7 @@ TEST_F(BatAdsCreativeNewTabPageAdsDatabaseTableTest,
   SaveCreativeAds(creative_ads);
 
   // Act
-  FastForwardClockBy(base::Seconds(1));
+  AdvanceClockBy(base::Seconds(1));
 
   // Assert
   CreativeNewTabPageAdList expected_creative_ads;

@@ -32,6 +32,7 @@
 #include "bat/ads/internal/creatives/notification_ads/creative_notification_ad_info.h"
 #include "bat/ads/internal/creatives/segments_database_table.h"
 #include "bat/ads/internal/segments/segments_util.h"
+#include "url/gurl.h"
 
 namespace ads {
 namespace database {
@@ -194,7 +195,7 @@ void CreativeNotificationAds::Save(
     segments_database_table_->InsertOrUpdate(transaction.get(), creative_ads);
   }
 
-  AdsClientHelper::Get()->RunDBTransaction(
+  AdsClientHelper::GetInstance()->RunDBTransaction(
       std::move(transaction),
       std::bind(&OnResultCallback, std::placeholders::_1, callback));
 }
@@ -204,7 +205,7 @@ void CreativeNotificationAds::Delete(ResultCallback callback) {
 
   DeleteTable(transaction.get(), GetTableName());
 
-  AdsClientHelper::Get()->RunDBTransaction(
+  AdsClientHelper::GetInstance()->RunDBTransaction(
       std::move(transaction),
       std::bind(&OnResultCallback, std::placeholders::_1, callback));
 }
@@ -300,7 +301,7 @@ void CreativeNotificationAds::GetForSegments(
   mojom::DBTransactionPtr transaction = mojom::DBTransaction::New();
   transaction->commands.push_back(std::move(command));
 
-  AdsClientHelper::Get()->RunDBTransaction(
+  AdsClientHelper::GetInstance()->RunDBTransaction(
       std::move(transaction),
       std::bind(&CreativeNotificationAds::OnGetForSegments, this,
                 std::placeholders::_1, segments, callback));
@@ -382,7 +383,7 @@ void CreativeNotificationAds::GetAll(
   mojom::DBTransactionPtr transaction = mojom::DBTransaction::New();
   transaction->commands.push_back(std::move(command));
 
-  AdsClientHelper::Get()->RunDBTransaction(
+  AdsClientHelper::GetInstance()->RunDBTransaction(
       std::move(transaction), std::bind(&CreativeNotificationAds::OnGetAll,
                                         this, std::placeholders::_1, callback));
 }

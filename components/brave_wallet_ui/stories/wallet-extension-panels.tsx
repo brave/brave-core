@@ -423,10 +423,6 @@ export const _AllowAddChangeNetwork = () => {
     alert('Canceled Adding Network')
   }
 
-  const onLearnMore = () => {
-    alert('Will nav to Learn More')
-  }
-
   return (
     <StyledExtensionWrapperLonger>
       <AllowAddChangeNetworkPanel
@@ -436,7 +432,6 @@ export const _AllowAddChangeNetwork = () => {
         onApproveChangeNetwork={onApprove}
         onCancel={onCancel}
         networkPayload={mockNetworks[0]}
-        onLearnMore={onLearnMore}
       />
     </StyledExtensionWrapperLonger>
   )
@@ -935,6 +930,7 @@ export const _ConnectHardwareWallet = () => {
     <StyledExtensionWrapper>
       <ConnectHardwareWalletPanel
         walletName='Ledger 1'
+        coinType={BraveWallet.CoinType.ETH}
         onCancel={onCancel}
         retryCallable={onConfirmTransaction}
         onClickInstructions={onClickInstructions}

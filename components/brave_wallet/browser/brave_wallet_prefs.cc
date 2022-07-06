@@ -15,6 +15,7 @@
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#include "brave/components/p3a_utils/feature_usage.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
 #include "components/sync_preferences/pref_service_syncable.h"
@@ -23,22 +24,22 @@ namespace brave_wallet {
 
 namespace {
 
-base::Value GetDefaultUserAssets() {
-  base::Value user_assets_pref(base::Value::Type::DICTIONARY);
-  user_assets_pref.SetKey(kEthereumPrefKey,
-                          BraveWalletService::GetDefaultEthereumAssets());
-  user_assets_pref.SetKey(kSolanaPrefKey,
-                          BraveWalletService::GetDefaultSolanaAssets());
-  user_assets_pref.SetKey(kFilecoinPrefKey,
-                          BraveWalletService::GetDefaultFilecoinAssets());
+base::Value::Dict GetDefaultUserAssets() {
+  base::Value::Dict user_assets_pref;
+  user_assets_pref.Set(kEthereumPrefKey,
+                       BraveWalletService::GetDefaultEthereumAssets());
+  user_assets_pref.Set(kSolanaPrefKey,
+                       BraveWalletService::GetDefaultSolanaAssets());
+  user_assets_pref.Set(kFilecoinPrefKey,
+                       BraveWalletService::GetDefaultFilecoinAssets());
   return user_assets_pref;
 }
 
-base::Value GetDefaultSelectedNetworks() {
-  base::Value selected_networks(base::Value::Type::DICTIONARY);
-  selected_networks.SetStringKey(kEthereumPrefKey, mojom::kMainnetChainId);
-  selected_networks.SetStringKey(kSolanaPrefKey, mojom::kSolanaMainnet);
-  selected_networks.SetStringKey(kFilecoinPrefKey, mojom::kFilecoinMainnet);
+base::Value::Dict GetDefaultSelectedNetworks() {
+  base::Value::Dict selected_networks;
+  selected_networks.Set(kEthereumPrefKey, mojom::kMainnetChainId);
+  selected_networks.Set(kSolanaPrefKey, mojom::kSolanaMainnet);
+  selected_networks.Set(kFilecoinPrefKey, mojom::kFilecoinMainnet);
 
   return selected_networks;
 }
@@ -66,12 +67,15 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterDictionaryPref(kBraveWalletCustomNetworks);
   registry->RegisterDictionaryPref(kBraveWalletHiddenNetworks);
   registry->RegisterDictionaryPref(kBraveWalletSelectedNetworks,
-                                   GetDefaultSelectedNetworks());
+                                   base::Value(GetDefaultSelectedNetworks()));
   registry->RegisterDictionaryPref(kBraveWalletUserAssets,
-                                   GetDefaultUserAssets());
+                                   base::Value(GetDefaultUserAssets()));
   registry->RegisterIntegerPref(kBraveWalletAutoLockMinutes, 5);
   registry->RegisterStringPref(kBraveWalletSelectedAccount, "");
   registry->RegisterBooleanPref(kSupportEip1559OnLocalhostChain, false);
+  p3a_utils::RegisterFeatureUsagePrefs(registry, kBraveWalletP3AFirstUnlockTime,
+                                       kBraveWalletP3ALastUnlockTime,
+                                       kBraveWalletP3AUsedSecondDay, nullptr);
 }
 
 void RegisterProfilePrefsForMigration(

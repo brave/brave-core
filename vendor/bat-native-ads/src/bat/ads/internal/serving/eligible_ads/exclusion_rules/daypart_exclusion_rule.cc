@@ -10,6 +10,7 @@
 #include "base/time/time.h"
 #include "bat/ads/internal/base/calendar/calendar_util.h"
 #include "bat/ads/internal/base/time/time_util.h"
+#include "bat/ads/internal/creatives/creative_ad_info.h"
 
 namespace ads {
 

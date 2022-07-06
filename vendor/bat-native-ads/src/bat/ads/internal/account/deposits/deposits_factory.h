@@ -12,11 +12,13 @@
 
 namespace ads {
 
+class AdType;
 class ConfirmationType;
 
 class DepositsFactory final {
  public:
   static std::unique_ptr<DepositInterface> Build(
+      const AdType& ad_type,
       const ConfirmationType& confirmation_type);
 };
 

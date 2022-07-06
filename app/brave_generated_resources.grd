@@ -594,7 +594,7 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
           Try Brave Search
         </message>
         <message name="IDS_BRAVE_SEARCH_CONVERSION_DISMISS_BUTTON_TOOLTIP" desc="The tooltip text for the dismiss button in a promotion match">
-          Dismiss brave search conversion
+          Don't show this again
         </message>
         <message name="IDS_BRAVE_SEARCH_CONVERSION_DISMISS_BUTTON_LABEL" desc="The text for the dismiss button in a promotion match">
           Dismiss
@@ -705,6 +705,9 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
         </message>
         <message name="IDS_SPEEDREADER_ICON_SPEEDREADER_SETTINGS" desc="Accessible text shown when a page is in Speedreader Mode">
           Speedreader settings
+        </message>
+        <message name="IDR_SPEEDREADER_SHOW_ORIGINAL_PAGE_LINK">
+          Show original page
         </message>
       </if>
 
@@ -895,6 +898,15 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
       </message>
       <message name="IDS_FIRSTRUN_DLG_CANCEL_BUTTON_LABEL" desc="Text for FirstRun dialog cancel button">
         Maybe later
+      </message>
+
+      <!-- Importer -->
+      <message name="IDS_BRAVE_IMPORT_FROM_EDGE" desc="browser combo box: Microsoft Edge Legacy">
+        Microsoft Edge Legacy
+      </message>
+
+      <message name="IDS_IMPORTED_FROM_BOOKMARK_FOLDER" desc="Name for bookmark panel folder imported from another browser">
+        Imported from <ph name="BROWSER_NAME">$1<ex>Chrome</ex></ph>.
       </message>
 
       <!--Add new items to the appropriate sections above -->

@@ -42,3 +42,15 @@ base::FilePath GetChromiumUserDataFolder() {
 
   return result;
 }
+
+base::FilePath GetEdgeUserDataFolder() {
+  base::FilePath result;
+  if (!base::PathService::Get(base::DIR_LOCAL_APP_DATA, &result))
+    return base::FilePath();
+
+  result = result.AppendASCII("Microsoft");
+  result = result.AppendASCII("Edge");
+  result = result.AppendASCII("User Data");
+
+  return result;
+}

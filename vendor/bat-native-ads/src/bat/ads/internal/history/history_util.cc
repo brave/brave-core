@@ -5,41 +5,21 @@
 
 #include "bat/ads/internal/history/history_util.h"
 
-#include "base/time/time.h"
 #include "bat/ads/ad_info.h"
 #include "bat/ads/confirmation_type.h"
 #include "bat/ads/history_item_info.h"
 #include "bat/ads/internal/deprecated/client/client_state_manager.h"
+#include "bat/ads/internal/history/history_item_util.h"
 
 namespace ads {
 
-HistoryItemInfo BuildHistoryItem(const AdInfo& ad,
-                                 const ConfirmationType& confirmation_type,
-                                 const std::string& title,
-                                 const std::string& description) {
-  HistoryItemInfo history_item;
-
-  history_item.created_at = base::Time::Now();
-
-  history_item.ad_content.type = ad.type;
-  history_item.ad_content.placement_id = ad.placement_id;
-  history_item.ad_content.creative_instance_id = ad.creative_instance_id;
-  history_item.ad_content.creative_set_id = ad.creative_set_id;
-  history_item.ad_content.campaign_id = ad.campaign_id;
-  history_item.ad_content.advertiser_id = ad.advertiser_id;
-  history_item.ad_content.brand = title;
-  history_item.ad_content.brand_info = description;
-  history_item.ad_content.brand_display_url = ad.target_url.host();
-  history_item.ad_content.brand_url = ad.target_url;
-  history_item.ad_content.like_action_type =
-      ClientStateManager::Get()->GetAdContentLikeActionTypeForAdvertiser(
-          ad.advertiser_id);
-  history_item.ad_content.confirmation_type = confirmation_type;
-  history_item.category_content.opt_action_type =
-      ClientStateManager::Get()->GetCategoryContentOptActionTypeForSegment(
-          ad.segment);
-  history_item.category_content.category = ad.segment;
-
+HistoryItemInfo AddHistory(const AdInfo& ad,
+                           const ConfirmationType& confirmation_type,
+                           const std::string& title,
+                           const std::string& description) {
+  const HistoryItemInfo history_item =
+      BuildHistoryItem(ad, confirmation_type, title, description);
+  ClientStateManager::GetInstance()->AppendHistory(history_item);
   return history_item;
 }
 

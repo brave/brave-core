@@ -8,8 +8,8 @@
 #include <memory>
 #include <utility>
 
-#include "base/guid.h"
 #include "base/json/json_writer.h"
+#include "base/json/values_util.h"
 #include "base/memory/weak_ptr.h"
 #include "base/metrics/histogram_macros.h"
 #include "base/threading/thread_restrictions.h"
@@ -18,6 +18,7 @@
 #include "brave/browser/brave_ads/ads_service_factory.h"
 #include "brave/browser/ntp_background_images/view_counter_service_factory.h"
 #include "brave/browser/profiles/profile_util.h"
+#include "brave/browser/search_engines/pref_names.h"
 #include "brave/browser/search_engines/search_engine_provider_util.h"
 #include "brave/browser/ui/webui/new_tab_page/brave_new_tab_ui.h"
 #include "brave/components/brave_perf_predictor/common/pref_names.h"
@@ -54,86 +55,67 @@ using ntp_background_images::prefs::
 #include "brave/components/ftx/common/pref_names.h"
 #endif
 
-#if BUILDFLAG(ENABLE_TOR)
-#include "brave/components/tor/tor_launcher_factory.h"
-#endif
-
 namespace {
 
 bool IsPrivateNewTab(Profile* profile) {
   return profile->IsIncognitoProfile() || profile->IsGuestSession();
 }
 
-base::DictionaryValue GetStatsDictionary(PrefService* prefs) {
-  base::DictionaryValue stats_data;
-  stats_data.SetInteger(
-      "adsBlockedStat",
-      prefs->GetUint64(kAdsBlocked) + prefs->GetUint64(kTrackersBlocked));
-  stats_data.SetInteger("javascriptBlockedStat",
-                        prefs->GetUint64(kJavascriptBlocked));
-  stats_data.SetInteger("fingerprintingBlockedStat",
-                        prefs->GetUint64(kFingerprintingBlocked));
-  stats_data.SetDouble(
-      "bandwidthSavedStat",
-      prefs->GetUint64(brave_perf_predictor::prefs::kBandwidthSavedBytes));
+base::Value::Dict GetStatsDictionary(PrefService* prefs) {
+  base::Value::Dict stats_data;
+  stats_data.Set("adsBlockedStat",
+                 base::Int64ToValue(prefs->GetUint64(kAdsBlocked) +
+                                    prefs->GetUint64(kTrackersBlocked)));
+  stats_data.Set("javascriptBlockedStat",
+                 base::Int64ToValue(prefs->GetUint64(kJavascriptBlocked)));
+  stats_data.Set("fingerprintingBlockedStat",
+                 base::Int64ToValue(prefs->GetUint64(kFingerprintingBlocked)));
+  stats_data.Set("bandwidthSavedStat",
+                 base::Int64ToValue(prefs->GetUint64(
+                     brave_perf_predictor::prefs::kBandwidthSavedBytes)));
   return stats_data;
 }
 
-base::DictionaryValue GetPreferencesDictionary(PrefService* prefs) {
-  base::DictionaryValue pref_data;
-  pref_data.SetBoolean("showBackgroundImage",
-                       prefs->GetBoolean(kNewTabPageShowBackgroundImage));
-  pref_data.SetBoolean(
+base::Value::Dict GetPreferencesDictionary(PrefService* prefs) {
+  base::Value::Dict pref_data;
+  pref_data.Set("showBackgroundImage",
+                prefs->GetBoolean(kNewTabPageShowBackgroundImage));
+  pref_data.Set(
       "brandedWallpaperOptIn",
       prefs->GetBoolean(kNewTabPageShowSponsoredImagesBackgroundImage));
-  pref_data.SetBoolean("showClock", prefs->GetBoolean(kNewTabPageShowClock));
-  pref_data.SetString("clockFormat", prefs->GetString(kNewTabPageClockFormat));
-  pref_data.SetBoolean("showStats", prefs->GetBoolean(kNewTabPageShowStats));
-  pref_data.SetBoolean(
-      "showToday", prefs->GetBoolean(brave_news::prefs::kNewTabPageShowToday));
-  pref_data.SetBoolean("showRewards",
-                       prefs->GetBoolean(kNewTabPageShowRewards));
-  pref_data.SetBoolean(
-      "isBrandedWallpaperNotificationDismissed",
-      prefs->GetBoolean(kBrandedWallpaperNotificationDismissed));
-  pref_data.SetBoolean(
-      "isBraveTodayOptedIn",
-      prefs->GetBoolean(brave_news::prefs::kBraveTodayOptedIn));
-  pref_data.SetBoolean("hideAllWidgets",
-                       prefs->GetBoolean(kNewTabPageHideAllWidgets));
-  pref_data.SetBoolean("showBinance",
-                       prefs->GetBoolean(kNewTabPageShowBinance));
-  pref_data.SetBoolean("showBraveTalk",
-                       prefs->GetBoolean(kNewTabPageShowBraveTalk));
-  pref_data.SetBoolean("showGemini", prefs->GetBoolean(kNewTabPageShowGemini));
+  pref_data.Set("showClock", prefs->GetBoolean(kNewTabPageShowClock));
+  pref_data.Set("clockFormat", prefs->GetString(kNewTabPageClockFormat));
+  pref_data.Set("showStats", prefs->GetBoolean(kNewTabPageShowStats));
+  pref_data.Set("showToday",
+                prefs->GetBoolean(brave_news::prefs::kNewTabPageShowToday));
+  pref_data.Set("showRewards", prefs->GetBoolean(kNewTabPageShowRewards));
+  pref_data.Set("isBrandedWallpaperNotificationDismissed",
+                prefs->GetBoolean(kBrandedWallpaperNotificationDismissed));
+  pref_data.Set("isBraveTodayOptedIn",
+                prefs->GetBoolean(brave_news::prefs::kBraveTodayOptedIn));
+  pref_data.Set("hideAllWidgets", prefs->GetBoolean(kNewTabPageHideAllWidgets));
+  pref_data.Set("showBinance", prefs->GetBoolean(kNewTabPageShowBinance));
+  pref_data.Set("showBraveTalk", prefs->GetBoolean(kNewTabPageShowBraveTalk));
+  pref_data.Set("showGemini", prefs->GetBoolean(kNewTabPageShowGemini));
 #if BUILDFLAG(CRYPTO_DOT_COM_ENABLED)
-  pref_data.SetBoolean(
-      "showCryptoDotCom",
-      prefs->GetBoolean(kCryptoDotComNewTabPageShowCryptoDotCom));
+  pref_data.Set("showCryptoDotCom",
+                prefs->GetBoolean(kCryptoDotComNewTabPageShowCryptoDotCom));
 #endif
 #if BUILDFLAG(ENABLE_FTX)
-  pref_data.SetBoolean("showFTX", prefs->GetBoolean(kFTXNewTabPageShowFTX));
+  pref_data.Set("showFTX", prefs->GetBoolean(kFTXNewTabPageShowFTX));
 #endif
   return pref_data;
 }
 
-base::DictionaryValue GetPrivatePropertiesDictionary(PrefService* prefs) {
-  base::DictionaryValue private_data;
-  private_data.SetBoolean(
+base::Value::Dict GetPrivatePropertiesDictionary(PrefService* prefs) {
+  base::Value::Dict private_data;
+  private_data.Set(
       "useAlternativePrivateSearchEngine",
-      prefs->GetBoolean(kUseAlternativeSearchEngineProvider));
-  private_data.SetBoolean(
+      prefs->GetBoolean(kUseAlternativePrivateSearchEngineProvider));
+  private_data.Set(
       "showAlternativePrivateSearchEngineToggle",
-      prefs->GetBoolean(kShowAlternativeSearchEngineProviderToggle));
+      prefs->GetBoolean(kShowAlternativePrivateSearchEngineProviderToggle));
   return private_data;
-}
-
-base::DictionaryValue GetTorPropertiesDictionary(bool connected,
-                                                 const std::string& progress) {
-  base::DictionaryValue tor_data;
-  tor_data.SetBoolean("torCircuitEstablished", connected);
-  tor_data.SetString("torInitProgress", progress);
-  return tor_data;
 }
 
 // TODO(petemill): Move p3a to own NTP component so it can
@@ -212,17 +194,9 @@ BraveNewTabMessageHandler* BraveNewTabMessageHandler::Create(
 BraveNewTabMessageHandler::BraveNewTabMessageHandler(Profile* profile)
     : profile_(profile), weak_ptr_factory_(this) {
   ads_service_ = brave_ads::AdsServiceFactory::GetForProfile(profile_);
-#if BUILDFLAG(ENABLE_TOR)
-  tor_launcher_factory_ = TorLauncherFactory::GetInstance();
-#endif
 }
 
-BraveNewTabMessageHandler::~BraveNewTabMessageHandler() {
-#if BUILDFLAG(ENABLE_TOR)
-  if (tor_launcher_factory_)
-    tor_launcher_factory_->RemoveObserver(this);
-#endif
-}
+BraveNewTabMessageHandler::~BraveNewTabMessageHandler() = default;
 
 void BraveNewTabMessageHandler::RegisterMessages() {
   // TODO(petemill): This MessageHandler can be split up to
@@ -244,10 +218,6 @@ void BraveNewTabMessageHandler::RegisterMessages() {
       base::BindRepeating(
           &BraveNewTabMessageHandler::HandleGetPrivateProperties,
           base::Unretained(this)));
-  web_ui()->RegisterMessageCallback(
-      "getNewTabPageTorProperties",
-      base::BindRepeating(&BraveNewTabMessageHandler::HandleGetTorProperties,
-                          base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
       "getNewTabAdsData",
       base::BindRepeating(&BraveNewTabMessageHandler::HandleGetNewTabAdsData,
@@ -310,12 +280,7 @@ void BraveNewTabMessageHandler::OnJavascriptAllowed() {
   if (IsPrivateNewTab(profile_)) {
     // Private New Tab Page preferences
     pref_change_registrar_.Add(
-        kUseAlternativeSearchEngineProvider,
-        base::BindRepeating(
-            &BraveNewTabMessageHandler::OnPrivatePropertiesChanged,
-            base::Unretained(this)));
-    pref_change_registrar_.Add(
-        kAlternativeSearchEngineProviderInTor,
+        kUseAlternativePrivateSearchEngineProvider,
         base::BindRepeating(
             &BraveNewTabMessageHandler::OnPrivatePropertiesChanged,
             base::Unretained(this)));
@@ -387,11 +352,6 @@ void BraveNewTabMessageHandler::OnJavascriptAllowed() {
                           base::Unretained(this)));
 #endif
 
-#if BUILDFLAG(ENABLE_TOR)
-  if (tor_launcher_factory_)
-    tor_launcher_factory_->AddObserver(this);
-#endif
-
   if (ads_service_) {
     ads_service_observation_.Reset();
     ads_service_observation_.Observe(ads_service_);
@@ -400,10 +360,6 @@ void BraveNewTabMessageHandler::OnJavascriptAllowed() {
 
 void BraveNewTabMessageHandler::OnJavascriptDisallowed() {
   pref_change_registrar_.RemoveAll();
-#if BUILDFLAG(ENABLE_TOR)
-  if (tor_launcher_factory_)
-    tor_launcher_factory_->RemoveObserver(this);
-#endif
   ads_service_observation_.Reset();
   weak_ptr_factory_.InvalidateWeakPtrs();
 }
@@ -413,14 +369,14 @@ void BraveNewTabMessageHandler::HandleGetPreferences(
   AllowJavascript();
   PrefService* prefs = profile_->GetPrefs();
   auto data = GetPreferencesDictionary(prefs);
-  ResolveJavascriptCallback(args[0], data);
+  ResolveJavascriptCallback(args[0], base::Value(std::move(data)));
 }
 
 void BraveNewTabMessageHandler::HandleGetStats(const base::Value::List& args) {
   AllowJavascript();
   PrefService* prefs = profile_->GetPrefs();
   auto data = GetStatsDictionary(prefs);
-  ResolveJavascriptCallback(args[0], data);
+  ResolveJavascriptCallback(args[0], base::Value(std::move(data)));
 }
 
 void BraveNewTabMessageHandler::HandleGetPrivateProperties(
@@ -428,20 +384,7 @@ void BraveNewTabMessageHandler::HandleGetPrivateProperties(
   AllowJavascript();
   PrefService* prefs = profile_->GetPrefs();
   auto data = GetPrivatePropertiesDictionary(prefs);
-  ResolveJavascriptCallback(args[0], data);
-}
-
-void BraveNewTabMessageHandler::HandleGetTorProperties(
-    const base::Value::List& args) {
-  AllowJavascript();
-#if BUILDFLAG(ENABLE_TOR)
-  auto data = GetTorPropertiesDictionary(
-      tor_launcher_factory_ ? tor_launcher_factory_->IsTorConnected() : false,
-      "");
-#else
-  auto data = GetTorPropertiesDictionary(false, "");
-#endif
-  ResolveJavascriptCallback(args[0], data);
+  ResolveJavascriptCallback(args[0], base::Value(std::move(data)));
 }
 
 void BraveNewTabMessageHandler::HandleGetNewTabAdsData(
@@ -453,12 +396,16 @@ void BraveNewTabMessageHandler::HandleGetNewTabAdsData(
   AllowJavascript();
 
   base::Value data = GetAdsDataDictionary();
-  ResolveJavascriptCallback(args[0], data);
+  ResolveJavascriptCallback(args[0], std::move(data));
 }
 
 void BraveNewTabMessageHandler::HandleToggleAlternativeSearchEngineProvider(
     const base::Value::List& args) {
-  brave::ToggleUseAlternativeSearchEngineProvider(profile_);
+  // Alternative search related code will not be used.
+  // Cleanup "toggleAlternativePrivateSearchEngine" message handler when it's
+  // deleted from NTP Webui.
+  // https://github.com/brave/brave-browser/issues/23493
+  NOTREACHED();
 }
 
 void BraveNewTabMessageHandler::HandleSaveNewTabPagePref(
@@ -590,7 +537,7 @@ void BraveNewTabMessageHandler::HandleGetWallpaperData(
     return;
   }
 
-  auto data = service->GetCurrentWallpaperForDisplay();
+  base::Value data = service->GetCurrentWallpaperForDisplay();
 
   if (!data.is_dict()) {
     ResolveJavascriptCallback(args[0], std::move(wallpaper));
@@ -608,11 +555,14 @@ void BraveNewTabMessageHandler::HandleGetWallpaperData(
     return;
   }
 
+  const std::string* creative_instance_id =
+      data.FindStringKey(ntp_background_images::kCreativeInstanceIDKey);
+  const std::string* wallpaper_id =
+      data.FindStringKey(ntp_background_images::kWallpaperIDKey);
+  service->BrandedWallpaperWillBeDisplayed(wallpaper_id, creative_instance_id);
+
   constexpr char kBrandedWallpaperKey[] = "brandedWallpaper";
-  const std::string wallpaper_id = base::GenerateGUID();
-  data.SetStringKey(ntp_background_images::kWallpaperIDKey, wallpaper_id);
   wallpaper.SetKey(kBrandedWallpaperKey, std::move(data));
-  service->BrandedWallpaperWillBeDisplayed(wallpaper_id);
   ResolveJavascriptCallback(args[0], std::move(wallpaper));
 }
 
@@ -627,19 +577,19 @@ void BraveNewTabMessageHandler::HandleCustomizeClicked(
 void BraveNewTabMessageHandler::OnPrivatePropertiesChanged() {
   PrefService* prefs = profile_->GetPrefs();
   auto data = GetPrivatePropertiesDictionary(prefs);
-  FireWebUIListener("private-tab-data-updated", data);
+  FireWebUIListener("private-tab-data-updated", base::Value(std::move(data)));
 }
 
 void BraveNewTabMessageHandler::OnStatsChanged() {
   PrefService* prefs = profile_->GetPrefs();
   auto data = GetStatsDictionary(prefs);
-  FireWebUIListener("stats-updated", data);
+  FireWebUIListener("stats-updated", base::Value(std::move(data)));
 }
 
 void BraveNewTabMessageHandler::OnPreferencesChanged() {
   PrefService* prefs = profile_->GetPrefs();
   auto data = GetPreferencesDictionary(prefs);
-  FireWebUIListener("preferences-changed", data);
+  FireWebUIListener("preferences-changed", base::Value(std::move(data)));
 }
 
 base::Value BraveNewTabMessageHandler::GetAdsDataDictionary() const {
@@ -655,18 +605,7 @@ base::Value BraveNewTabMessageHandler::GetAdsDataDictionary() const {
   return base::Value(std::move(ads_data));
 }
 
-void BraveNewTabMessageHandler::OnTorCircuitEstablished(bool result) {
-  auto data = GetTorPropertiesDictionary(result, "");
-  FireWebUIListener("tor-tab-data-updated", data);
-}
-
-void BraveNewTabMessageHandler::OnTorInitializing(
-    const std::string& percentage) {
-  auto data = GetTorPropertiesDictionary(false, percentage);
-  FireWebUIListener("tor-tab-data-updated", data);
-}
-
 void BraveNewTabMessageHandler::OnNeedsBrowserUpdateToSeeAds() {
   base::Value data = GetAdsDataDictionary();
-  FireWebUIListener("new-tab-ads-data-updated", data);
+  FireWebUIListener("new-tab-ads-data-updated", std::move(data));
 }

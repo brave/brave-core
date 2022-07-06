@@ -5,6 +5,7 @@
 
 #include "bat/ads/internal/ad_events/inline_content_ads/inline_content_ad_event_factory.h"
 
+#include "base/check.h"
 #include "bat/ads/inline_content_ad_info.h"
 #include "bat/ads/internal/ad_events/inline_content_ads/inline_content_ad_event_clicked.h"
 #include "bat/ads/internal/ad_events/inline_content_ads/inline_content_ad_event_served.h"
@@ -15,6 +16,8 @@ namespace inline_content_ads {
 
 std::unique_ptr<AdEventInterface<InlineContentAdInfo>> AdEventFactory::Build(
     const mojom::InlineContentAdEventType event_type) {
+  DCHECK(mojom::IsKnownEnumValue(event_type));
+
   switch (event_type) {
     case mojom::InlineContentAdEventType::kServed: {
       return std::make_unique<AdEventServed>();

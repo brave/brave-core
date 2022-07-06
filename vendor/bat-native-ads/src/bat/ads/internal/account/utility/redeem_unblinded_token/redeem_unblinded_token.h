@@ -26,7 +26,7 @@ class RedeemUnblindedToken final {
   RedeemUnblindedToken(const RedeemUnblindedToken&) = delete;
   RedeemUnblindedToken& operator=(const RedeemUnblindedToken&) = delete;
 
-  void set_delegate(RedeemUnblindedTokenDelegate* delegate) {
+  void SetDelegate(RedeemUnblindedTokenDelegate* delegate) {
     DCHECK_EQ(delegate_, nullptr);
     delegate_ = delegate;
   }
@@ -52,7 +52,8 @@ class RedeemUnblindedToken final {
       const ConfirmationInfo& confirmation,
       const privacy::UnblindedPaymentTokenInfo& unblinded_payment_token);
   void OnFailedToRedeemUnblindedToken(const ConfirmationInfo& confirmation,
-                                      const bool should_retry);
+                                      const bool should_retry,
+                                      const bool should_backoff);
 
   raw_ptr<RedeemUnblindedTokenDelegate> delegate_ = nullptr;
 };

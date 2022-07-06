@@ -61,6 +61,8 @@ import org.chromium.base.annotations.JNINamespace;
 import org.chromium.base.annotations.NativeMethods;
 import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.supplier.UnownedUserDataSupplier;
+import org.chromium.base.task.PostTask;
+import org.chromium.base.task.TaskTraits;
 import org.chromium.brave_wallet.mojom.AssetRatioService;
 import org.chromium.brave_wallet.mojom.BlockchainRegistry;
 import org.chromium.brave_wallet.mojom.BraveWalletService;
@@ -147,6 +149,7 @@ import org.chromium.chrome.browser.util.BraveConstants;
 import org.chromium.chrome.browser.util.BraveDbUtil;
 import org.chromium.chrome.browser.util.ConfigurationUtils;
 import org.chromium.chrome.browser.util.PackageUtils;
+import org.chromium.chrome.browser.util.TabUtils;
 import org.chromium.chrome.browser.vpn.BraveVpnNativeWorker;
 import org.chromium.chrome.browser.vpn.BraveVpnObserver;
 import org.chromium.chrome.browser.vpn.activities.BraveVpnProfileActivity;
@@ -185,6 +188,7 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
                    OnBraveSetDefaultBrowserListener, ConnectionErrorHandler {
     public static final String ADD_FUNDS_URL = "brave://rewards/#add-funds";
     public static final String BRAVE_REWARDS_SETTINGS_URL = "brave://rewards/";
+    private static final String BRAVE_TALK_URL = "https://talk.brave.com/";
     public static final String BRAVE_REWARDS_SETTINGS_WALLET_VERIFICATION_URL =
             "brave://rewards/#verify";
     public static final String REWARDS_AC_SETTINGS_URL = "brave://rewards/contribute";
@@ -228,12 +232,12 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
     private SolanaTxManagerProxy mSolanaTxManagerProxy;
     private AssetRatioService mAssetRatioService;
     public CompositorViewHolder compositorView;
-    public View inflatedSettingsBarLayout;
     public boolean mLoadedFeed;
     public boolean mComesFromNewTab;
     public CopyOnWriteArrayList<FeedItemsCard> mNewsItemsFeedCards;
     private boolean isProcessingPendingDappsTxRequest;
     private int mLastTabId;
+    private boolean mNativeInitialized;
 
     @SuppressLint("VisibleForTests")
     public BraveActivity() {
@@ -249,12 +253,35 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
             InAppPurchaseWrapper.getInstance().startBillingServiceConnection(BraveActivity.this);
             BraveVpnNativeWorker.getInstance().addObserver(this);
         }
+        Tab tab = getActivityTab();
+        if (tab != null) {
+            // Set proper active DSE whenever brave returns to foreground.
+            // If active tab is private, set private DSE as an active DSE.
+            BraveSearchEngineUtils.updateActiveDSE(tab.isIncognito());
+        }
+
+        // The check on mNativeInitialized is mostly to ensure that mojo
+        // services for wallet are initialized.
+        // TODO(sergz): verify do we need it in that phase or not.
+        if (mNativeInitialized) {
+            BraveToolbarLayoutImpl layout = getBraveToolbarLayout();
+            if (layout == null || !layout.isWalletIconVisible()) {
+                return;
+            }
+            updateWalletBadgeVisibility();
+        }
     }
 
     @Override
     public void onPauseWithNative() {
         if (BraveVpnUtils.isBraveVpnFeatureEnable()) {
             BraveVpnNativeWorker.getInstance().removeObserver(this);
+        }
+        Tab tab = getActivityTab();
+        if (tab != null && tab.isIncognito()) {
+            // Set normal DSE as an active DSE when brave goes in background
+            // because currently set DSE is used by outside of brave(ex, brave search widget).
+            BraveSearchEngineUtils.updateActiveDSE(false);
         }
         super.onPauseWithNative();
     }
@@ -284,6 +311,8 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
             ApplicationLifetime.terminate(false);
         } else if (id == R.id.set_default_browser) {
             BraveSetDefaultBrowserUtils.showBraveSetDefaultBrowserDialog(BraveActivity.this, true);
+        } else if (id == R.id.brave_talk_id) {
+            TabUtils.openUrlInNewTab(false, BRAVE_TALK_URL);
         } else if (id == R.id.brave_rewards_id) {
             openNewOrSelectExistingTab(BRAVE_REWARDS_SETTINGS_URL);
         } else if (id == R.id.brave_wallet_id) {
@@ -347,7 +376,6 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
             maybeShowSignMessageRequestLayout();
         });
     }
-
 
     private void setWalletBadgeVisibility(boolean visibile) {
         BraveToolbarLayoutImpl layout = getBraveToolbarLayout();
@@ -447,10 +475,14 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
         }
     }
 
-    public void showWalletPanel() {
+    public void showWalletPanel(boolean ignoreWeb3NotificationPreference) {
         BraveToolbarLayoutImpl layout = getBraveToolbarLayout();
         if (layout != null) {
             layout.showWalletIcon(true);
+        }
+        if (!ignoreWeb3NotificationPreference
+                && !BraveWalletPreferences.getPrefWeb3NotificationsEnabled()) {
+            return;
         }
         assert mKeyringService != null;
         mKeyringService.isLocked(locked -> {
@@ -466,6 +498,9 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
         BraveToolbarLayoutImpl layout = getBraveToolbarLayout();
         if (layout != null) {
             layout.showWalletIcon(true);
+            if (!BraveWalletPreferences.getPrefWeb3NotificationsEnabled()) {
+                return;
+            }
             layout.showWalletPanel();
         }
     }
@@ -663,29 +698,9 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
                 BraveSetDefaultBrowserUtils.setBraveDefaultSuccess();
             }
         }
-        Tab tab = getActivityTab();
-        if (tab == null)
-            return;
 
-        // Set proper active DSE whenever brave returns to foreground.
-        // If active tab is private, set private DSE as an active DSE.
-        BraveSearchEngineUtils.updateActiveDSE(tab.isIncognito());
-        BraveStatsUtil.removeShareStatsFile();
-        updateWalletBadgeVisibility();
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        Tab tab = getActivityTab();
-        if (tab == null)
-            return;
-
-        // Set normal DSE as an active DSE when brave goes in background
-        // because currently set DSE is used by outside of brave(ex, brave search widget).
-        if (tab.isIncognito()) {
-            BraveSearchEngineUtils.updateActiveDSE(false);
-        }
+        PostTask.postTask(
+                TaskTraits.BEST_EFFORT_MAY_BLOCK, () -> { BraveStatsUtil.removeShareStatsFile(); });
     }
 
     @Override
@@ -707,6 +722,8 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
     @Override
     public void finishNativeInitialization() {
         super.finishNativeInitialization();
+
+        BraveHelper.maybeMigrateSettings();
 
         if (SharedPreferencesManager.getInstance().readBoolean(
                     BravePreferenceKeys.BRAVE_DOUBLE_RESTART, false)) {
@@ -832,24 +849,6 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
 
         checkFingerPrintingOnUpgrade();
         compositorView = null;
-        inflatedSettingsBarLayout = null;
-
-        if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_NEWS)) {
-            Tab tab = getActivityTab();
-
-            if (tab != null) {
-                // if it's new tab add the brave news settings bar to the layout
-                if (tab != null && tab.getUrl().getSpec() != null
-                        && UrlUtilities.isNTPUrl(tab.getUrl().getSpec())
-                        && BravePrefServiceBridge.getInstance().getNewsOptIn()) {
-                    // inflateNewsSettingsBar();
-                } else {
-                    removeSettingsBar();
-                }
-            } else {
-                removeSettingsBar();
-            }
-        }
 
         if (BraveVpnUtils.isBraveVpnFeatureEnable()
                 && InAppPurchaseWrapper.getInstance().isSubscriptionSupported()) {
@@ -887,6 +886,7 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
         if (OnboardingPrefManager.getInstance().isOnboardingSearchBoxTooltip()) {
             showSearchBoxTooltip();
         }
+        mNativeInitialized = true;
     }
 
     private void showSearchBoxTooltip() {
@@ -941,79 +941,17 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
                 getSupportFragmentManager(), "BraveVpnCalloutDialogFragment");
     }
 
-    public void inflateNewsSettingsBar() {
-        // get the main compositor view that we'll use to manipulate the views
-        compositorView = findViewById(R.id.compositor_view_holder);
-        ViewGroup controlContainer = findViewById(R.id.control_container);
-        if (compositorView != null && controlContainer != null) {
-            LayoutInflater inflater = LayoutInflater.from(this);
-            // inflate the settings bar layout
-            View inflatedSettingsBarLayout =
-                    inflater.inflate(R.layout.brave_news_settings_bar_layout, null);
-            View newContentButtonLayout =
-                    inflater.inflate(R.layout.brave_news_load_new_content, null);
-            // add the bar to the layout stack
-            if (compositorView.findViewById(R.id.news_settings_bar) != null) {
-                inflatedSettingsBarLayout = compositorView.findViewById(R.id.news_settings_bar);
-            } else {
-                compositorView.addView(inflatedSettingsBarLayout, 2);
-            }
-            inflatedSettingsBarLayout.setAlpha(0f);
-            if (compositorView.findViewById(R.id.new_content_layout_id) != null) {
-                newContentButtonLayout = compositorView.findViewById(R.id.new_content_layout_id);
-            } else {
-                compositorView.addView(newContentButtonLayout, 3);
-            }
-            FrameLayout.LayoutParams inflatedLayoutParams = new FrameLayout.LayoutParams(
-                    FrameLayout.LayoutParams.MATCH_PARENT, dpToPx(this, 55));
-
-            FrameLayout.LayoutParams newContentButtonLayoutParams = new FrameLayout.LayoutParams(
-                    FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT);
-            int compensation = ConfigurationUtils.isTablet(this)
-                    ? (getToolbarShadowHeight() > 3) ? 28 : (dpToPx(this, 12))
-                    : getToolbarShadowHeight();
-            // position bellow the control_container element (nevigation bar) with
-            // compensation
-            inflatedLayoutParams.setMargins(0, controlContainer.getBottom() - compensation, 0, 0);
-            newContentButtonLayoutParams.setMargins(0, dpToPx(this, 200), 0, 0);
-            newContentButtonLayoutParams.gravity = Gravity.CENTER_HORIZONTAL;
-            inflatedSettingsBarLayout.setLayoutParams(inflatedLayoutParams);
-            newContentButtonLayout.setLayoutParams(newContentButtonLayoutParams);
-
-            // inflatedSettingsBarLayout.setVisibility(View.VISIBLE);
-
-            compositorView.invalidate();
-        }
-    }
-
-    public void removeSettingsBar() {
-        CompositorViewHolder compositorView = findViewById(R.id.compositor_view_holder);
-
-        if (compositorView != null) {
-            View settingsBar = compositorView.getChildAt(2);
-            if (settingsBar != null) {
-                if (settingsBar.getId() == R.id.news_settings_bar) {
-                    compositorView.removeView(settingsBar);
-                }
-            }
-        }
-    }
-
     // Sets NTP background
     public void setBackground(Bitmap bgWallpaper) {
         CompositorViewHolder compositorView = findViewById(R.id.compositor_view_holder);
-
         if (compositorView != null) {
             ViewGroup root = (ViewGroup) compositorView.getChildAt(1);
-
-            if (root.getChildAt(0) instanceof NestedScrollView) {
-                NestedScrollView scrollView = (NestedScrollView) root.getChildAt(0);
-
+            if (root.getChildAt(0) instanceof FrameLayout) {
+                FrameLayout frameLayout = (FrameLayout) root.getChildAt(0);
                 DisplayMetrics displayMetrics = new DisplayMetrics();
                 getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
                 int mDeviceHeight = displayMetrics.heightPixels;
                 int mDeviceWidth = displayMetrics.widthPixels;
-
                 Glide.with(this)
                         .asBitmap()
                         .load(bgWallpaper)
@@ -1026,7 +964,7 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
                             public void onResourceReady(@NonNull Bitmap resource,
                                     @Nullable Transition<? super Bitmap> transition) {
                                 Drawable drawable = new BitmapDrawable(getResources(), resource);
-                                scrollView.setBackground(drawable);
+                                frameLayout.setBackground(drawable);
                             }
                             @Override
                             public void onLoadCleared(@Nullable Drawable placeholder) {}
@@ -1306,6 +1244,14 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
         }
     }
 
+    private void clearWalletModelServices() {
+        if (walletModel == null) {
+            return;
+        }
+
+        walletModel.resetServices(null, null, null, null, null, null, null, null);
+    }
+
     private void setupWalletModel() {
         if (walletModel == null) {
             walletModel = new WalletModel(mKeyringService, mBlockchainRegistry, mJsonRpcService,
@@ -1504,13 +1450,28 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
         return 0;
     }
 
-    public int getToolbarBottom() {
+    public float getToolbarBottom() {
         View toolbarShadow = findViewById(R.id.toolbar_hairline);
         assert toolbarShadow != null;
         if (toolbarShadow != null) {
-            return toolbarShadow.getBottom();
+            return toolbarShadow.getY();
         }
         return 0;
+    }
+
+    public boolean isViewBelowToolbar(View view) {
+        View toolbarShadow = findViewById(R.id.toolbar_hairline);
+        assert toolbarShadow != null;
+        assert view != null;
+        if (toolbarShadow != null && view != null) {
+            int[] coordinatesToolbar = new int[2];
+            toolbarShadow.getLocationInWindow(coordinatesToolbar);
+            int[] coordinatesView = new int[2];
+            view.getLocationInWindow(coordinatesView);
+            return coordinatesView[1] >= coordinatesToolbar[1];
+        }
+
+        return false;
     }
 
     @NativeMethods
@@ -1609,6 +1570,7 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
     }
 
     private void cleanUpNativeServices() {
+        clearWalletModelServices();
         if (mKeyringService != null) mKeyringService.close();
         if (mAssetRatioService != null) mAssetRatioService.close();
         if (mBlockchainRegistry != null) mBlockchainRegistry.close();

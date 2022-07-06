@@ -87,11 +87,6 @@ type::ExternalWalletPtr ExternalWalletPtrFromJSON(std::string wallet_string,
     wallet->member_id = *member_id;
   }
 
-  auto* verify_url = dictionary->FindStringKey("verify_url");
-  if (verify_url) {
-    wallet->verify_url = *verify_url;
-  }
-
   auto* add_url = dictionary->FindStringKey("add_url");
   if (add_url) {
     wallet->add_url = *add_url;
@@ -169,7 +164,6 @@ bool SetWallet(LedgerImpl* ledger,
   new_wallet.SetStringKey("code_verifier", wallet->code_verifier);
   new_wallet.SetStringKey("user_name", wallet->user_name);
   new_wallet.SetStringKey("member_id", wallet->member_id);
-  new_wallet.SetStringKey("verify_url", wallet->verify_url);
   new_wallet.SetStringKey("add_url", wallet->add_url);
   new_wallet.SetStringKey("withdraw_url", wallet->withdraw_url);
   new_wallet.SetStringKey("account_url", wallet->account_url);

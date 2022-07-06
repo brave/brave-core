@@ -135,6 +135,21 @@
     "message": "Recompensas Brave está a ter um problema. Por favor, tente novamente mais tarde.",
     "description": ""
   },
+  "rewardsLogInToSeeBalance": {
+    "message": "$begin_bold$Inicie sessão na conta $provider$ $end_bold$ para consultar o seu saldo",
+    "description": "",
+    "placeholders": {
+      "begin_bold": {
+        "content": "$1"
+      },
+      "provider": {
+        "content": "$2"
+      },
+      "end_bold": {
+        "content": "$3"
+      }
+    }
+  },
   "rewardsPaymentCheckStatus": {
     "message": "Verificar estado",
     "description": ""

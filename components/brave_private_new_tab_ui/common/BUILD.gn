@@ -1,0 +1,21 @@
+import("//mojo/public/tools/bindings/mojom.gni")
+
+static_library("common") {
+  sources = [
+    "constants.h",
+    "pref_names.cc",
+    "pref_names.h",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/components/resources:strings",
+    "//components/prefs:prefs",
+    "//ui/base",
+  ]
+}
+
+mojom("mojom") {
+  sources = [ "brave_private_new_tab.mojom" ]
+  public_deps = [ "//mojo/public/mojom/base" ]
+}

@@ -84,7 +84,20 @@
 <translation id="6587448235155023666">Suas alterações terão efeito na próxima vez que você rodar o Brave</translation>
 <translation id="8701563696941209024">RODANDO NOVAMENTE AGORA</translation>
 <translation id="834487290629916192">MAIS TARDE</translation>
+<translation id="7207456302801184289">Bem-vindo ao Brave Software Brave</translation>
+<translation id="4117451092682672487">Privacidade simplificada.</translation>
+<translation id="7909375417585209817">Com o Brave como padrão, todos os links em que você toca são abertos com as proteções de segurança do Brave.</translation>
+<translation id="5148943178722443958">Ajude a melhorar o Brave.</translation>
+<translation id="6188781052835527980">Envie relatórios de diagnóstico anônimos se ocorrer uma falha ou um congelamento.</translation>
+<translation id="1929905278861178845">Compartilhe informações de produtos totalmente privadas e anônimas sobre quais recursos estão sendo usados pelos usuários do Brave.</translation>
+<translation id="2877653791257935258">Digite o nome ou URL de um site</translation>
+<translation id="5329830149661250028">Veja o diferencial do Brave: nada de anúncios. Nada de rastreadores. Páginas que carregam bem mais rápido.</translation>
+<translation id="3545804467215833536">Toque para ver as Proteções do Brave</translation>
+<translation id="1724327820822194498">Veja todo o conteúdo indesejado bloqueado pelo Brave, em todas as páginas, com as Proteções.</translation>
+<translation id="5386259141409498372"><ph name="BIG_TECH"/> e mais <ph name="TRACKER"/> anúncios e rastreadores bloqueados</translation>
+<translation id="3092683655478890840"><ph name="TRACKER_COUNT"/> anúncios e rastreadores bloqueados</translation>
 <translation id="8281886186245836920">Pular</translation>
+<translation id="6165508094623778733">Saiba mais</translation>
 <translation id="986879628471635371">Solução de problemas para onboarding</translation>
 <translation id="5808759341041733958">Escolher motor de pesquisa padrão</translation>
 <translation id="1331593888918588693">Você pode alterar suas preferências a qualquer momento nas configurações do aplicativo.</translation>
@@ -112,12 +125,12 @@
 <translation id="1166682575529520472">Mensalmente</translation>
 <translation id="1628742278973105368">Sua primeira contribuição mensal será enviada em:</translation>
 <translation id="298349922412901215">OBSERVAÇÃO: este criador ainda não se inscreveu para receber contribuições de usuários do Brave. Continuaremos tentando contribuir até que ele seja verificado ou até que passem 90 dias.</translation>
-<translation id="635752162765375187">OBSERVADOR: no momento, este criador não está configurado para receber doações da sua carteira. Qualquer doação que você fizer ficará pendente na sua carteira, e novas tentativas serão realizadas automaticamente por 90 dias.</translation>
+<translation id="635752162765375187">OBSERVAÇÃO: no momento, este criador não está configurado para receber doações do serviço de carteira custodial das suas Recompensas. Qualquer doação que você fizer ficará pendente, e novas tentativas serão realizadas automaticamente por 90 dias.</translation>
 <translation id="1910721550319506122">Bem-vindo!</translation>
 <translation id="3165726837666415756">Você pode apoiar o site fazendo uma doação. É uma maneira de agradecer pelo conteúdo de excelente qualidade produzido. Criadores de conteúdo verificados são pagos pelas doações na primeira semana de cada mês.</translation>
 <translation id="1704859330137112950">Caso deseje, você pode agendar doações mensais para apoiar esse site regularmente.</translation>
 <translation id="245015745140252435">Valor da doação</translation>
-<translation id="7873874596836611687">saldo:</translation>
+<translation id="7873874596836611687">Saldo das Recompensas:</translation>
 <translation id="2573313946367623146">doar</translation>
 <translation id="3250511771491660127">Faça isso mensalmente</translation>
 <translation id="7658239707568436148">Cancelar</translation>
@@ -137,7 +150,7 @@
 <translation id="8220228041552340594">OUTUBRO</translation>
 <translation id="8280223431922155812">NOVEMBRO</translation>
 <translation id="4254029385847607686">DEZEMBRO</translation>
-<translation id="4258022280942725182">Sua carteira</translation>
+<translation id="4258022280942725182">Suas Recompensas Brave</translation>
 <translation id="3960619311638643872">Brave VPN</translation>
 <translation id="1772301834467143364">Notícias Brave</translation>
 <translation id="7760215798627399379"><ph name="VALUE"/> USD</translation>
@@ -171,8 +184,8 @@
 <translation id="8689997599821157251">Você ganhou</translation>
 <translation id="7550470870580166294">Fundos Insuficientes</translation>
 <translation id="2775064702681588061">Sua conta de Recompensas do Brave está aguardando um depósito.</translation>
-<translation id="2630264552940126640">Fazer Backup da Carteira</translation>
-<translation id="238922425564381955">Faça o backup da sua carteira Brave.</translation>
+<translation id="2630264552940126640">Fazer backup das Recompensas Brave</translation>
+<translation id="238922425564381955">Faça o backup das suas Recompensas Brave.</translation>
 <translation id="2323069945529668668">Uh oh!</translation>
 <translation id="7510166204621526816">O servidor do Brave Rewards não está respondendo. Iremos corrigir isso o mais rápido possível.</translation>
 <translation id="683765328936486920">no YouTube</translation>
@@ -546,7 +559,7 @@ Tem certeza de que deseja continuar?</translation>
 <translation id="5493402808936397665">Ative a biometria para desbloquear rapidamente sua carteira sem precisar inserir sua senha.</translation>
 <translation id="8030647312184163932">Desbloqueio por impressão digital</translation>
 <translation id="4090490645603511157">Use a biometria para desbloquear rapidamente sua carteira sem precisar inserir sua senha.</translation>
-<translation id="1544192797660353713">Carteira (beta)</translation>
+<translation id="1544192797660353713">Carteira</translation>
 <translation id="6901810042765869341">Insira sua frase de recuperação para restaurar sua conta de criptomoedas do Brave Wallet.</translation>
 <translation id="9120654436199628567">Restaurar conta de criptomoedas</translation>
 <translation id="4811736040444856406">Mostrar frase de recuperação</translation>
@@ -610,7 +623,7 @@ Tem certeza de que deseja continuar?</translation>
 <translation id="8239147115686034860">Bloquear automaticamente a Carteira Brave</translation>
 <translation id="414639769490080648">O número de minutos a aguardar até o bloqueio automático da Carteira Brave</translation>
 <translation id="4993345308607970390">Redefinir Carteira Brave</translation>
-<translation id="4322846864135539519">Tem certeza de que deseja redefinir sua carteira? Se sua carteira não for armazenada em backup, a redefinição fará com que você perca todos os dados da conta (incluindo todos os fundos associados). Digite "<ph name="CONFIRMATION_PHRASE"/>" para confirmar.</translation>
+<translation id="4322846864135539519">Tem certeza de que deseja redefinir suas Recompensas Brave? Se sua carteira não for armazenada em backup, a redefinição fará com que você perca todos os dados da conta (incluindo todos os fundos associados). Digite "<ph name="CONFIRMATION_PHRASE"/>" para confirmar.</translation>
 <translation id="4862812525895306758">Limpar informações de transações e nonce</translation>
 <translation id="5693968582510626466">A limpeza de transações pode ser útil para desenvolvedores ou ao limpar o estado em um servidor local</translation>
 <translation id="5421107279168565467">Tem certeza de que deseja redefinir as informações de transações e nonce? Essa opção é usada principalmente por desenvolvedores ao executar um servidor de teste local. Digite "<ph name="CONFIRMATION_PHRASE"/>" para confirmar.</translation>
@@ -630,8 +643,8 @@ Tem certeza de que deseja continuar?</translation>
 <translation id="1190117345570417902">Usa o túnel VPN seguro e criptografado Wireguard</translation>
 <translation id="1571230671455380494">Nunca compartilharemos nem venderemos suas informações</translation>
 <translation id="276866628038850725">Todos os planos incluem um teste gratuito de 7 dias!</translation>
-<translation id="7280825497485894053">Assinatura mensal</translation>
-<translation id="3001303523417455986">Assinatura anual</translation>
+<translation id="1532536259167115948">Assinatura mensal <ph name="TRIAL_TEXT"/></translation>
+<translation id="6344668702581136255">Assinatura anual <ph name="TRIAL_TEXT"/></translation>
 <translation id="6748319398471481216">Renova mensalmente</translation>
 <translation id="7734634586133069282"><ph name="MONTHLY_AMOUNT"/>/mês</translation>
 <translation id="1163809943099641131">Um ano</translation>
@@ -652,8 +665,7 @@ Tem certeza de que deseja continuar?</translation>
 Se você não aceitar essa solicitação, a VPN não se reconectará, e sua conexão de internet não será protegida.</translation>
 <translation id="2429299231491852747">Aceitar solicitação de conexão</translation>
 <translation id="3428909627460825679">Houve uma falha na criação do perfil de VPN. Tente novamente.</translation>
-<translation id="1264320790738638119">Houve uma falha na verificação da compra. Tente novamente.</translation>
-<translation id="8905950042180169719">A VPN está em execução em segundo plano</translation>
+<translation id="1264320790738638119">Sua assinatura expirou. Você pode assinar novamente a qualquer momento.</translation>
 <translation id="8681480718817027245">Assinatura</translation>
 <translation id="7805768142964895445">Status</translation>
 <translation id="5747552184818312860">Expira em</translation>
@@ -681,15 +693,15 @@ Se você não aceitar essa solicitação, a VPN não se reconectará, e sua cone
 <translation id="1219475260382643267">O site não funciona</translation>
 <translation id="7138678301420049075">Outro</translation>
 <translation id="4827315939627587219">Redefinir configuração de VPN</translation>
-<translation id="6883280223123252086">Tem certeza de que deseja redefinir a configuração da VPN?</translation>
+<translation id="1705662265912724430">Tem certeza de que deseja redefinir a configuração da VPN?</translation>
 <translation id="604124094241169006">Automático</translation>
 <translation id="7475580600756356589">Conectando ao seu servidor. Isso só deve levar alguns instantes...</translation>
 <translation id="1342728075788541348">Desconectando do seu servidor. Isso só deve levar alguns instantes...</translation>
 <translation id="669072536454692117">A assinatura foi adquirida</translation>
 <translation id="1187506504156101449">Houve uma falha ao confirmar a compra:</translation>
 <translation id="8420522105268941892">Você já possui a assinatura. Tente restaurá-la.</translation>
-<translation id="404414664190867625">ERRO!\nCausado pelo cancelamento do fluxo de compra por parte de um usuário.</translation>
-<translation id="3515141458161417228">ERRO!\nHouve uma falha na compra.</translation>
+<translation id="404414664190867625">Você saiu da sua compra de assinatura.</translation>
+<translation id="3515141458161417228">Houve uma falha na compra. Entre em contato com o suporte do Google Play.</translation>
 <translation id="6452181791372256707">Rejeitar</translation>
 <translation id="8030852056903932865">Aprovar</translation>
 <translation id="1597199892790541240">Taxa de Gás</translation>
@@ -724,6 +736,7 @@ Se você não aceitar essa solicitação, a VPN não se reconectará, e sua cone
 <translation id="2199215899212542417">TIPO DE FUNÇÃO: <ph name="FTYPE"/></translation>
 <translation id="4803003663447398145">Não há dados</translation>
 <translation id="9061799688859969073"><ph name="ACCOUNT_NAME"/> enviou <ph name="CRYPTO_VALUE"/> <ph name="ASSET"/> (US$ <ph name="FIAT_VALUE"/>) - <ph name="DATE"/></translation>
+<translation id="1148985422232712046"><ph name="ACCOUNT_NAME"/> enviou <ph name="ASSET"/> #nº <ph name="ASSET_ID"/> - <ph name="DATE"/></translation>
 <translation id="2911329628253651823"><ph name="ACCOUNT_NAME"/> aprovou <ph name="ASSET"/> - <ph name="DATE"/></translation>
 <translation id="7400134344541309180">Aprovou <ph name="ASSET"/> ilimitado - <ph name="PROXY"/></translation>
 <translation id="2428770727194227378">Swap de <ph name="ACCOUNT_NAME"/> - <ph name="DATE"/></translation>
@@ -788,6 +801,7 @@ Se você não aceitar essa solicitação, a VPN não se reconectará, e sua cone
 <translation id="7732576862074737148">≈ <ph name="VALUE"/> USD</translation>
 <translation id="3079421456571897484"><ph name="VALUE"/> BAT</translation>
 <translation id="5802665280774361839">Exibir preenchimento automático na barra de endereço</translation>
+<translation id="8982438328166986164">Exibe sugestões de sites com base nos seus favoritos e no seu histórico de navegação.</translation>
 <translation id="1241283133946520352">Redes</translation>
 <translation id="1062463687579789365">Personalização de redes de carteiras</translation>
 <translation id="2512821599885971349">Adicionar rede</translation>
@@ -822,7 +836,6 @@ Se você não aceitar essa solicitação, a VPN não se reconectará, e sua cone
 <translation id="3586752056660754651">Assinar</translation>
 <translation id="6592721981110586529">Conectar-se à Carteira Brave</translation>
 <translation id="329813193938846695">Selecionar conta(s)</translation>
-<translation id="3890989020011724401">Nova conta</translation>
 <translation id="291375746846291973">Conecte-se apenas com sites em que você confie.</translation>
 <translation id="385051799172605136">Voltar</translation>
 <translation id="1060221736464994328">Permitir que este site altere a rede?</translation>
@@ -839,22 +852,32 @@ Se você não aceitar essa solicitação, a VPN não se reconectará, e sua cone
 <translation id="85136472535634474">Abrir configurações de VPN</translation>
 <translation id="8352805003811526272">Redefinindo configuração...</translation>
 <translation id="6809312301323611382">Você já selecionou o mesmo servidor.</translation>
-<translation id="5665084657857645952">A permissão foi cancelada</translation>
+<translation id="5665084657857645952">Você interrompeu a instalação do perfil de VPN.</translation>
 <translation id="9106265941552476098">Rejeitar <ph name="TRANSACTION_LENGTH"/> transações</translation>
 <translation id="523862956770478816">Permissões de site</translation>
 <translation id="2141313140218636977"><ph name="VALUE"/> contas conectadas</translation>
+<translation id="3890989020011724401">Nova conta</translation>
 <translation id="4305817255990598646">Trocar</translation>
 <translation id="4804818685124855865">Desconectar</translation>
 <translation id="8009571545960303544">Sua assinatura está sendo solicitada</translation>
+<translation id="3484981968509595506">Um DApp está solicitando sua chave de criptografia pública</translation>
+<translation id="2291002548681057345">está solicitando a chave de criptografia pública da sua carteira. Se você consentir com o fornecimento dessa chave, o site poderá enviar mensagens criptografadas para você.</translation>
+<translation id="3340247553212049934">Providenciar</translation>
 <translation id="1982257600591932657">Nome da rede</translation>
 <translation id="5052727830821470769">URL da rede</translation>
 <translation id="4822132585477111396">ID da Cadeia</translation>
 <translation id="7131971375297699539">Símbolo de moeda</translation>
 <translation id="7982789257301363584">Rede</translation>
-<translation id="2521480044079508357">Isso permitirá que essa rede seja usada na Carteira Brave.</translation>
+<translation id="7540715999708954128">Isso permitirá que essa rede seja usada na Carteira Brave. Saiba mais.</translation>
+<translation id="8759753423332885148">Saiba mais.</translation>
 <translation id="4717431746210146708">Permitir que este site adicione uma rede?</translation>
 <translation id="3378339846292573874">Adicionar token sugerido</translation>
 <translation id="2322227405137827074">Você deseja importar este token?</translation>
 <translation id="1324417023773393937">Navegador Brave</translation>
 <translation id="6044189892950611565">Canal de notificações do navegador Brave</translation>
+<translation id="1173919438868967364">Selecionar conta</translation>
+<translation id="8922793255489232731">Não foi possível obter o fuso horário correspondente para: <ph name="VALUE"/></translation>
+<translation id="8231907121684689093">Mostrar os principais sites</translation>
+<translation id="6471216025161697462">Conectada a <ph name="VALUE"/></translation>
+<translation id="1968852757206592413">Teste</translation>
 </translationbundle>

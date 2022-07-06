@@ -5,7 +5,7 @@
 
 #include "bat/ads/internal/diagnostics/entries/locale_diagnostic_entry.h"
 
-#include "brave/components/l10n/browser/locale_helper.h"
+#include "bat/ads/internal/locale/locale_manager.h"
 
 namespace ads {
 
@@ -26,7 +26,7 @@ std::string LocaleDiagnosticEntry::GetName() const {
 }
 
 std::string LocaleDiagnosticEntry::GetValue() const {
-  return brave_l10n::LocaleHelper::GetInstance()->GetLocale();
+  return LocaleManager::GetInstance()->GetLocale();
 }
 
 }  // namespace ads

@@ -10,8 +10,8 @@
 #include "base/check.h"
 #include "bat/ads/internal/base/logging_util.h"
 #include "bat/ads/internal/deprecated/client/client_state_manager.h"
+#include "bat/ads/internal/locale/locale_manager.h"
 #include "bat/ads/internal/serving/targeting/models/contextual/text_classification/text_classification_aliases.h"
-#include "brave/components/l10n/browser/locale_helper.h"
 
 namespace ads {
 namespace targeting {
@@ -19,10 +19,10 @@ namespace model {
 
 namespace {
 
-SegmentProbabilitiesMap GetSegmentProbabilities(
-    const TextClassificationProbabilitiesList&
+SegmentProbabilityMap GetSegmentProbabilities(
+    const TextClassificationProbabilityList&
         text_classification_probabilities) {
-  SegmentProbabilitiesMap segment_probabilities;
+  SegmentProbabilityMap segment_probabilities;
 
   for (const auto& probabilities : text_classification_probabilities) {
     for (const auto& probability : probabilities) {
@@ -44,10 +44,10 @@ SegmentProbabilitiesMap GetSegmentProbabilities(
   return segment_probabilities;
 }
 
-SegmentProbabilitiesList ToSortedSegmentProbabilitiesList(
-    const SegmentProbabilitiesMap& segment_probabilities) {
+SegmentProbabilityList ToSortedSegmentProbabilityList(
+    const SegmentProbabilityMap& segment_probabilities) {
   const int count = segment_probabilities.size();
-  SegmentProbabilitiesList list(count);
+  SegmentProbabilityList list(count);
 
   std::partial_sort_copy(
       segment_probabilities.cbegin(), segment_probabilities.cend(),
@@ -59,8 +59,7 @@ SegmentProbabilitiesList ToSortedSegmentProbabilitiesList(
   return list;
 }
 
-SegmentList ToSegmentList(
-    const SegmentProbabilitiesList& segment_probabilities) {
+SegmentList ToSegmentList(const SegmentProbabilityList& segment_probabilities) {
   SegmentList segments;
 
   for (const auto& segment_probability : segment_probabilities) {
@@ -80,23 +79,22 @@ TextClassification::TextClassification() = default;
 TextClassification::~TextClassification() = default;
 
 SegmentList TextClassification::GetSegments() const {
-  const TextClassificationProbabilitiesList probabilities =
-      ClientStateManager::Get()->GetTextClassificationProbabilitiesHistory();
+  const TextClassificationProbabilityList probabilities =
+      ClientStateManager::GetInstance()
+          ->GetTextClassificationProbabilitiesHistory();
 
   if (probabilities.empty()) {
-    const std::string locale =
-        brave_l10n::LocaleHelper::GetInstance()->GetLocale();
-    BLOG(1, "No text classification probabilities found for " << locale
-                                                              << " locale");
+    BLOG(1, "No text classification probabilities found for "
+                << LocaleManager::GetInstance()->GetLocale() << " locale");
 
     return {};
   }
 
-  const SegmentProbabilitiesMap segment_probabilities =
+  const SegmentProbabilityMap segment_probabilities =
       GetSegmentProbabilities(probabilities);
 
-  const SegmentProbabilitiesList sorted_segment_probabilities =
-      ToSortedSegmentProbabilitiesList(segment_probabilities);
+  const SegmentProbabilityList sorted_segment_probabilities =
+      ToSortedSegmentProbabilityList(segment_probabilities);
 
   return ToSegmentList(sorted_segment_probabilities);
 }

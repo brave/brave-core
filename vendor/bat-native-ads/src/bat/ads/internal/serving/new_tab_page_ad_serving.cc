@@ -18,6 +18,7 @@
 #include "bat/ads/internal/serving/eligible_ads/pipelines/new_tab_page_ads/eligible_new_tab_page_ads_factory.h"
 #include "bat/ads/internal/serving/permission_rules/new_tab_page_ads/new_tab_page_ad_permission_rules.h"
 #include "bat/ads/internal/serving/serving_features.h"
+#include "bat/ads/internal/serving/targeting/top_segments.h"
 #include "bat/ads/internal/serving/targeting/user_model_builder.h"
 #include "bat/ads/internal/serving/targeting/user_model_info.h"
 #include "bat/ads/new_tab_page_ad_info.h"
@@ -37,12 +38,12 @@ Serving::Serving(geographic::SubdivisionTargeting* subdivision_targeting,
 
 Serving::~Serving() = default;
 
-void Serving::AddObserver(NewTabPageServingObserver* observer) {
+void Serving::AddObserver(ServingObserver* observer) {
   DCHECK(observer);
   observers_.AddObserver(observer);
 }
 
-void Serving::RemoveObserver(NewTabPageServingObserver* observer) {
+void Serving::RemoveObserver(ServingObserver* observer) {
   DCHECK(observer);
   observers_.RemoveObserver(observer);
 }
@@ -73,6 +74,12 @@ void Serving::MaybeServeAd(GetNewTabPageAdCallback callback) {
   eligible_ads_->GetForUserModel(
       user_model, [=](const bool had_opportunity,
                       const CreativeNewTabPageAdList& creative_ads) {
+        if (had_opportunity) {
+          const SegmentList segments =
+              targeting::GetTopChildSegments(user_model);
+          NotifyOpportunityAroseToServeNewTabPageAd(segments);
+        }
+
         if (creative_ads.empty()) {
           BLOG(1, "New tab page ad not served: No eligible ads found");
           FailedToServeAd(callback);
@@ -110,8 +117,11 @@ bool Serving::ServeAd(const NewTabPageAdInfo& ad,
                       GetNewTabPageAdCallback callback) const {
   DCHECK(ad.IsValid());
 
-  // TODO(https://github.com/brave/brave-browser/issues/14015): Add logging for
-  // wallpapers
+  if (ad.wallpapers.empty()) {
+    callback(/* success */ false, ad);
+    return false;
+  }
+
   BLOG(1, "Serving new tab page ad:\n"
               << "  placementId: " << ad.placement_id << "\n"
               << "  creativeInstanceId: " << ad.creative_instance_id << "\n"
@@ -122,7 +132,11 @@ bool Serving::ServeAd(const NewTabPageAdInfo& ad,
               << "  companyName: " << ad.company_name << "\n"
               << "  imageUrl: " << ad.image_url << "\n"
               << "  alt: " << ad.alt << "\n"
-              << "  targetUrl: " << ad.target_url);
+              << "  targetUrl: " << ad.target_url << "\n"
+              << "  wallpaperImageUrl: " << ad.wallpapers[0].image_url << "\n"
+              << "  wallpaperFocalPointX: " << ad.wallpapers[0].focal_point.x
+              << "\n"
+              << "  wallpaperFocalPointY: " << ad.wallpapers[0].focal_point.y);
 
   callback(/* success */ true, ad);
 
@@ -139,17 +153,24 @@ void Serving::FailedToServeAd(GetNewTabPageAdCallback callback) {
 
 void Serving::ServedAd(const NewTabPageAdInfo& ad) {
   DCHECK(eligible_ads_);
-  eligible_ads_->set_last_served_ad(ad);
+  eligible_ads_->SetLastServedAd(ad);
+}
+
+void Serving::NotifyOpportunityAroseToServeNewTabPageAd(
+    const SegmentList& segments) const {
+  for (ServingObserver& observer : observers_) {
+    observer.OnOpportunityAroseToServeNewTabPageAd(segments);
+  }
 }
 
 void Serving::NotifyDidServeNewTabPageAd(const NewTabPageAdInfo& ad) const {
-  for (NewTabPageServingObserver& observer : observers_) {
+  for (ServingObserver& observer : observers_) {
     observer.OnDidServeNewTabPageAd(ad);
   }
 }
 
 void Serving::NotifyFailedToServeNewTabPageAd() const {
-  for (NewTabPageServingObserver& observer : observers_) {
+  for (ServingObserver& observer : observers_) {
     observer.OnFailedToServeNewTabPageAd();
   }
 }

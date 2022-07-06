@@ -80,11 +80,10 @@ TEST_F(BitflyerUtilTest, GetFeeAddress) {
   ASSERT_EQ(result, kFeeAddressStaging);
 }
 
-TEST_F(BitflyerUtilTest, GetAuthorizeUrl) {
+TEST_F(BitflyerUtilTest, GetLoginUrl) {
   // production
   ledger::_environment = type::Environment::PRODUCTION;
-  std::string result =
-      bitflyer::GetAuthorizeUrl("my-state", "my-code-verifier");
+  std::string result = bitflyer::GetLoginUrl("my-state", "my-code-verifier");
   ASSERT_EQ(
       result,
       base::StrCat(
@@ -101,7 +100,7 @@ TEST_F(BitflyerUtilTest, GetAuthorizeUrl) {
 
   // staging
   ledger::_environment = type::Environment::STAGING;
-  result = bitflyer::GetAuthorizeUrl("my-state", "my-code-verifier");
+  result = bitflyer::GetLoginUrl("my-state", "my-code-verifier");
   ASSERT_EQ(
       result,
       base::StrCat(
@@ -174,7 +173,6 @@ TEST_F(BitflyerUtilTest, GetWallet) {
     "status": 2,
     "token": "4c80232r219c30cdf112208890a32c7e00",
     "user_name": "test",
-    "verify_url": "https://sandbox.bitflyer.com/authorize/4c2b665ca060d",
     "withdraw_url": ""
   })");
 
@@ -209,7 +207,7 @@ TEST_F(BitflyerUtilTest, GenerateLinks) {
   auto wallet = type::ExternalWallet::New();
   wallet->address = "123123123124234234234";
 
-  const char kVerifiedUrlTemplate[] =
+  const char kLoginUrlTemplate[] =
       "%s/ex/OAuth/authorize"
       "?client_id=%s"
       "&scope=assets create_deposit_id withdraw_to_deposit_id"
@@ -218,8 +216,8 @@ TEST_F(BitflyerUtilTest, GenerateLinks) {
       "&response_type=code"
       "&code_challenge_method=S256"
       "&code_challenge=47DEQpj8HBSa-_TImW-5JCeuQeRkm5NMpJWZG3hSuFU";
-  const auto kVerifiedUrl =
-      base::StringPrintf(kVerifiedUrlTemplate, BUILDFLAG(BITFLYER_STAGING_URL),
+  const auto kLoginUrl =
+      base::StringPrintf(kLoginUrlTemplate, BUILDFLAG(BITFLYER_STAGING_URL),
                          BUILDFLAG(BITFLYER_STAGING_CLIENT_ID));
   const auto kStagingUrl =
       base::StrCat({BUILDFLAG(BITFLYER_STAGING_URL), "/ex/Home?login=1"});
@@ -229,7 +227,7 @@ TEST_F(BitflyerUtilTest, GenerateLinks) {
   auto result = bitflyer::GenerateLinks(wallet->Clone());
   ASSERT_EQ(result->add_url, "");
   ASSERT_EQ(result->withdraw_url, "");
-  ASSERT_EQ(result->verify_url, kVerifiedUrl);
+  ASSERT_EQ(result->login_url, kLoginUrl);
   ASSERT_EQ(result->account_url, kStagingUrl);
 
   // Connected
@@ -237,7 +235,7 @@ TEST_F(BitflyerUtilTest, GenerateLinks) {
   result = bitflyer::GenerateLinks(wallet->Clone());
   ASSERT_EQ(result->add_url, "");
   ASSERT_EQ(result->withdraw_url, "");
-  ASSERT_EQ(result->verify_url, kVerifiedUrl);
+  ASSERT_EQ(result->login_url, kLoginUrl);
   ASSERT_EQ(result->account_url, kStagingUrl);
 
   // Verified
@@ -245,7 +243,7 @@ TEST_F(BitflyerUtilTest, GenerateLinks) {
   result = bitflyer::GenerateLinks(wallet->Clone());
   ASSERT_EQ(result->add_url, kStagingUrl);
   ASSERT_EQ(result->withdraw_url, kStagingUrl);
-  ASSERT_EQ(result->verify_url, kVerifiedUrl);
+  ASSERT_EQ(result->login_url, kLoginUrl);
   ASSERT_EQ(result->account_url, kStagingUrl);
 
   // Disconnected Non-Verified
@@ -253,7 +251,7 @@ TEST_F(BitflyerUtilTest, GenerateLinks) {
   result = bitflyer::GenerateLinks(wallet->Clone());
   ASSERT_EQ(result->add_url, "");
   ASSERT_EQ(result->withdraw_url, "");
-  ASSERT_EQ(result->verify_url, kVerifiedUrl);
+  ASSERT_EQ(result->login_url, kLoginUrl);
   ASSERT_EQ(result->account_url, kStagingUrl);
 
   // Disconnected Verified
@@ -261,7 +259,7 @@ TEST_F(BitflyerUtilTest, GenerateLinks) {
   result = bitflyer::GenerateLinks(wallet->Clone());
   ASSERT_EQ(result->add_url, "");
   ASSERT_EQ(result->withdraw_url, "");
-  ASSERT_EQ(result->verify_url, kVerifiedUrl);
+  ASSERT_EQ(result->login_url, kLoginUrl);
   ASSERT_EQ(result->account_url, kStagingUrl);
 
   // Pending
@@ -269,7 +267,7 @@ TEST_F(BitflyerUtilTest, GenerateLinks) {
   result = bitflyer::GenerateLinks(wallet->Clone());
   ASSERT_EQ(result->add_url, "");
   ASSERT_EQ(result->withdraw_url, "");
-  ASSERT_EQ(result->verify_url, kVerifiedUrl);
+  ASSERT_EQ(result->login_url, kLoginUrl);
   ASSERT_EQ(result->account_url, kStagingUrl);
 }
 

@@ -161,6 +161,7 @@ provideStrings({
 
   // Tool Tips
   braveWalletToolTipCopyToClipboard: 'Copy to Clipboard',
+  braveWalletToolTipCopiedToClipboard: 'Copied!',
 
   // Accounts Tab
   braveWalletAccountsPrimary: 'Primary crypto accounts',
@@ -295,6 +296,7 @@ provideStrings({
   braveWalletSignWarningTitle: 'Sign at your own risk',
   braveWalletSignTransactionMessageTitle: 'Message',
   braveWalletSignTransactionButton: 'Sign',
+  braveWalletApproveTransaction: 'Approve transaction',
 
   // Encryption Key Panel
   braveWalletProvideEncryptionKeyTitle: 'A DApp is requesting your public encryption key',
@@ -399,7 +401,8 @@ provideStrings({
   braveWalletConnectHardwarePanelDisconnected: '$1 disconnected',
   braveWalletConnectHardwarePanelInstructions: 'Instructions',
   braveWalletConnectHardwarePanelConnect: 'Connect your $1',
-  braveWalletConnectHardwarePanelConfirmation: 'Hardware wallet requires transaction confirmation. $1',
+  braveWalletConnectHardwarePanelConfirmation: 'Hardware wallet requires transaction confirmation $1',
+  braveWalletConnectHardwarePanelOpenApp: 'Hardware wallet requires $1 App opened on $2',
 
   // Transaction List Item
   braveWalletTransactionSent: 'sent',
@@ -412,6 +415,7 @@ provideStrings({
   braveWalletTransactionRetry: 'Retry transaction',
   braveWalletTransactionPlaceholder: 'Transactions will appear here',
   braveWalletTransactionApproveUnlimited: 'Unlimited',
+  braveWalletApprovalTransactionIntent: 'approve',
 
   // Edit Gas
   braveWalletEditGasTitle1: 'Max priority fee',
@@ -530,5 +534,30 @@ provideStrings({
   braveWalletTransactionConfirmingTitle: 'Transaction is processing',
   // [FIXME]: change the wording after ETH2.
   braveWalletTransactionConfirmingDescription: 'Transaction was successfully included in a block. To avoid the risk of double spending, we recommend waiting for block confirmations.',
-  braveWalletTransactionConfirmingText: 'Confirming'
+  braveWalletTransactionConfirmingText: 'Confirming',
+
+  // Solana ProgramID Names
+  braveWalletSolanaSystemProgram: 'System Program',
+  braveWalletSolanaConfigProgram: 'Config Program',
+  braveWalletSolanaStakeProgram: 'Stake Program',
+  braveWalletSolanaVoteProgram: 'Vote Program',
+  braveWalletSolanaBPFLoader: 'BPF Loader',
+  braveWalletSolanaEd25519Program: 'Ed25519 Program',
+  braveWalletSolanaSecp256k1Program: 'Secp256k1 Program',
+
+  // Solana Instruction Paramater Names
+  braveWalletSolanaParamKeyFromPubkey: 'From Address: ',
+  braveWalletSolanaParamKeyToPubkey: 'To Address: ',
+  braveWalletSolanaParamKeyLamports: 'Amount: ',
+  braveWalletSolanaParamKeyNewAccountPubkey: 'New Account: ',
+  braveWalletSolanaAccounts: 'Accounts:',
+  braveWalletSolanaData: 'Data:',
+  braveWalletSolanaProgramID: 'Program ID:',
+  braveWalletSolanaMaxRetries: 'Max Retries:',
+  braveWalletSolanaPreflightCommitment: 'Preflight Commitment:',
+  braveWalletSolanaSkipPreflight: 'Skip Preflight:',
+
+  // Help Center
+  braveWalletHelpCenter: 'Help Center',
+  braveWalletHelpCenterText: 'Need help? See'
 })

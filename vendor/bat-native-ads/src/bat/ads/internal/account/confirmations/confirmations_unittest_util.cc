@@ -33,7 +33,7 @@ ConfirmationInfo BuildConfirmation(const std::string& id,
   confirmation.type = type;
   confirmation.ad_type = ad_type;
 
-  privacy::UnblindedTokens* unblinded_tokens = privacy::get_unblinded_tokens();
+  privacy::UnblindedTokens* unblinded_tokens = privacy::GetUnblindedTokens();
   if (unblinded_tokens && !unblinded_tokens->IsEmpty()) {
     const privacy::UnblindedTokenInfo& unblinded_token =
         unblinded_tokens->GetToken();

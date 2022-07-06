@@ -15,6 +15,7 @@
 // npm run test -- brave_unit_tests --filter=BatAds*
 
 namespace ads {
+namespace search_result_ads {
 
 class BatAdsSearchResultAdsPerHourPermissionRuleTest : public UnitTestBase {
  protected:
@@ -41,7 +42,7 @@ TEST_F(BatAdsSearchResultAdsPerHourPermissionRuleTest,
   // Arrange
 
   // Act
-  SearchResultAdsPerHourPermissionRule permission_rule;
+  AdsPerHourPermissionRule permission_rule;
   const bool is_allowed = permission_rule.ShouldAllow();
 
   // Assert
@@ -55,7 +56,7 @@ TEST_F(BatAdsSearchResultAdsPerHourPermissionRuleTest,
   RecordAdEvents(AdType::kSearchResultAd, ConfirmationType::kServed, count);
 
   // Act
-  SearchResultAdsPerHourPermissionRule permission_rule;
+  AdsPerHourPermissionRule permission_rule;
   const bool is_allowed = permission_rule.ShouldAllow();
 
   // Assert
@@ -68,10 +69,10 @@ TEST_F(BatAdsSearchResultAdsPerHourPermissionRuleTest,
   const int count = features::GetMaximumSearchResultAdsPerHour();
   RecordAdEvents(AdType::kSearchResultAd, ConfirmationType::kServed, count);
 
-  FastForwardClockBy(base::Hours(1));
+  AdvanceClockBy(base::Hours(1));
 
   // Act
-  SearchResultAdsPerHourPermissionRule permission_rule;
+  AdsPerHourPermissionRule permission_rule;
   const bool is_allowed = permission_rule.ShouldAllow();
 
   // Assert
@@ -84,14 +85,15 @@ TEST_F(BatAdsSearchResultAdsPerHourPermissionRuleTest,
   const int count = features::GetMaximumSearchResultAdsPerHour();
   RecordAdEvents(AdType::kSearchResultAd, ConfirmationType::kServed, count);
 
-  FastForwardClockBy(base::Minutes(59));
+  AdvanceClockBy(base::Hours(1) - base::Seconds(1));
 
   // Act
-  SearchResultAdsPerHourPermissionRule permission_rule;
+  AdsPerHourPermissionRule permission_rule;
   const bool is_allowed = permission_rule.ShouldAllow();
 
   // Assert
   EXPECT_FALSE(is_allowed);
 }
 
+}  // namespace search_result_ads
 }  // namespace ads

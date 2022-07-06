@@ -5,12 +5,16 @@
 
 #include "bat/ads/internal/history/history_util.h"
 
-#include "bat/ads/ad_info.h"
 #include "bat/ads/confirmation_type.h"
-#include "bat/ads/history_info.h"
 #include "bat/ads/history_item_info.h"
+#include "bat/ads/internal/base/containers/container_util.h"
 #include "bat/ads/internal/base/unittest/unittest_base.h"
 #include "bat/ads/internal/base/unittest/unittest_time_util.h"
+#include "bat/ads/internal/creatives/notification_ads/creative_notification_ad_unittest_util.h"
+#include "bat/ads/internal/creatives/notification_ads/notification_ad_builder.h"
+#include "bat/ads/internal/history/history_constants.h"
+#include "bat/ads/internal/history/history_manager.h"
+#include "bat/ads/notification_ad_info.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
@@ -23,47 +27,75 @@ class BatAdsHistoryUtilTest : public UnitTestBase {
   ~BatAdsHistoryUtilTest() override = default;
 };
 
-TEST_F(BatAdsHistoryUtilTest, BuildAd) {
+TEST_F(BatAdsHistoryUtilTest, AddHistory) {
   // Arrange
-  AdInfo ad;
-  ad.type = AdType::kNotificationAd;
-  ad.placement_id = "56b604b7-5eeb-4b7f-84cc-bf965556a550";
-  ad.creative_instance_id = "c7a368fd-572d-4af8-be4c-3966475a29b3";
-  ad.creative_set_id = "121e5e50-4397-4128-ae38-47525bc1d421";
-  ad.campaign_id = "e0fc8a2d-db96-44fb-8522-d299cb98559e";
-  ad.advertiser_id = "49e008eb-5e37-4828-975f-e0de3a017b02";
-  ad.segment = "technology & computing-software";
-  ad.target_url = GURL("https://brave.com");
+  const CreativeNotificationAdInfo creative_ad = BuildCreativeNotificationAd();
+  const NotificationAdInfo ad = BuildNotificationAd(creative_ad);
 
   // Act
-  const HistoryItemInfo& history_item =
-      BuildHistoryItem(ad, ConfirmationType::kViewed, "title", "description");
+  const HistoryItemInfo history_item =
+      AddHistory(ad, ConfirmationType::kViewed, ad.title, ad.body);
 
   // Assert
-  HistoryItemInfo expected_history_item;
+  const base::circular_deque<HistoryItemInfo> expected_history = {history_item};
 
-  expected_history_item.created_at = Now();
-  expected_history_item.ad_content.type = ad.type;
-  expected_history_item.ad_content.placement_id = ad.placement_id;
-  expected_history_item.ad_content.creative_instance_id =
-      ad.creative_instance_id;
-  expected_history_item.ad_content.creative_set_id = ad.creative_set_id;
-  expected_history_item.ad_content.campaign_id = ad.campaign_id;
-  expected_history_item.ad_content.advertiser_id = ad.advertiser_id;
-  expected_history_item.ad_content.brand = "title";
-  expected_history_item.ad_content.brand_info = "description";
-  expected_history_item.ad_content.brand_display_url = ad.target_url.host();
-  expected_history_item.ad_content.brand_url = ad.target_url;
-  expected_history_item.ad_content.confirmation_type =
-      ConfirmationType::kViewed;
-  expected_history_item.ad_content.like_action_type =
-      AdContentLikeActionType::kNeutral;
+  const base::circular_deque<HistoryItemInfo> history =
+      ClientStateManager::GetInstance()->GetHistory();
 
-  expected_history_item.category_content.category = ad.segment;
-  expected_history_item.category_content.opt_action_type =
-      CategoryContentOptActionType::kNone;
+  EXPECT_TRUE(IsEqualContainers(expected_history, history));
+}
 
-  EXPECT_EQ(expected_history_item, history_item);
+TEST_F(BatAdsHistoryUtilTest, PurgeHistoryOlderThanTimeWindow) {
+  // Arrange
+  const CreativeNotificationAdInfo creative_ad_1 =
+      BuildCreativeNotificationAd();
+  const NotificationAdInfo ad_1 = BuildNotificationAd(creative_ad_1);
+  HistoryManager::GetInstance()->Add(ad_1, ConfirmationType::kViewed);
+
+  AdvanceClockBy(kHistoryTimeWindow + base::Seconds(1));
+
+  // Act
+  const CreativeNotificationAdInfo creative_ad_2 =
+      BuildCreativeNotificationAd();
+  const NotificationAdInfo ad_2 = BuildNotificationAd(creative_ad_2);
+  const HistoryItemInfo history_item_2 =
+      HistoryManager::GetInstance()->Add(ad_2, ConfirmationType::kViewed);
+
+  // Assert
+  const base::circular_deque<HistoryItemInfo> expected_history = {
+      history_item_2};
+
+  const base::circular_deque<HistoryItemInfo> history =
+      ClientStateManager::GetInstance()->GetHistory();
+
+  EXPECT_TRUE(IsEqualContainers(expected_history, history));
+}
+
+TEST_F(BatAdsHistoryUtilTest, DoNotPurgeHistoryWithinTimeWindow) {
+  // Arrange
+  const CreativeNotificationAdInfo creative_ad_1 =
+      BuildCreativeNotificationAd();
+  const NotificationAdInfo ad_1 = BuildNotificationAd(creative_ad_1);
+  const HistoryItemInfo history_item_1 =
+      HistoryManager::GetInstance()->Add(ad_1, ConfirmationType::kViewed);
+
+  AdvanceClockBy(kHistoryTimeWindow);
+
+  // Act
+  const CreativeNotificationAdInfo creative_ad_2 =
+      BuildCreativeNotificationAd();
+  const NotificationAdInfo ad_2 = BuildNotificationAd(creative_ad_2);
+  const HistoryItemInfo history_item_2 =
+      HistoryManager::GetInstance()->Add(ad_2, ConfirmationType::kViewed);
+
+  // Assert
+  const base::circular_deque<HistoryItemInfo> expected_history = {
+      history_item_2, history_item_1};
+
+  const base::circular_deque<HistoryItemInfo> history =
+      ClientStateManager::GetInstance()->GetHistory();
+
+  EXPECT_TRUE(IsEqualContainers(expected_history, history));
 }
 
 }  // namespace ads

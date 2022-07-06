@@ -8,6 +8,7 @@
 #include <string>
 #include <utility>
 
+#include "base/files/file.h"
 #include "bat/ads/internal/base/unittest/unittest_base.h"
 #include "bat/ads/internal/base/unittest/unittest_file_util.h"
 

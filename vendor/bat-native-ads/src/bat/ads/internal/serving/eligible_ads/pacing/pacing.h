@@ -9,10 +9,11 @@
 #include <algorithm>
 #include <iterator>
 
-#include "bat/ads/internal/creatives/creative_ad_info.h"
 #include "bat/ads/internal/serving/eligible_ads/pacing/pacing_util.h"
 
 namespace ads {
+
+struct CreativeAdInfo;
 
 template <typename T>
 T PaceAds(const T& ads) {
@@ -23,7 +24,7 @@ T PaceAds(const T& ads) {
   T paced_ads;
 
   std::copy_if(ads.cbegin(), ads.cend(), std::back_inserter(paced_ads),
-               [&](const CreativeAdInfo& creative_ad) {
+               [](const CreativeAdInfo& creative_ad) {
                  return !ShouldPaceAd(creative_ad);
                });
 

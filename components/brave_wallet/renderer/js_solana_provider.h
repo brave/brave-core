@@ -10,18 +10,19 @@
 #include <string>
 #include <vector>
 
-#include "base/memory/raw_ptr.h"
-#include "base/memory/weak_ptr.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "content/public/renderer/render_frame.h"
+#include "content/public/renderer/render_frame_observer.h"
 #include "content/public/renderer/v8_value_converter.h"
 #include "gin/arguments.h"
 #include "gin/wrappable.h"
+#include "mojo/public/cpp/bindings/receiver.h"
 #include "mojo/public/cpp/bindings/remote.h"
 
 namespace brave_wallet {
 
 class JSSolanaProvider final : public gin::Wrappable<JSSolanaProvider>,
+                               public content::RenderFrameObserver,
                                public mojom::SolanaEventsListener {
  public:
   ~JSSolanaProvider() override;
@@ -41,9 +42,7 @@ class JSSolanaProvider final : public gin::Wrappable<JSSolanaProvider>,
   };
 
   static void Install(bool allow_overwrite_window_solana,
-                      bool is_main_world,
-                      content::RenderFrame* render_frame,
-                      v8::Local<v8::Context> context);
+                      content::RenderFrame* render_frame);
 
   // gin::WrappableBase
   gin::ObjectTemplateBuilder GetObjectTemplateBuilder(
@@ -56,8 +55,12 @@ class JSSolanaProvider final : public gin::Wrappable<JSSolanaProvider>,
  private:
   explicit JSSolanaProvider(content::RenderFrame* render_frame);
 
+  // RenderFrameObserver implementation.
+  void OnDestruct() override {}
+  void WillReleaseScriptContext(v8::Local<v8::Context>,
+                                int32_t world_id) override;
+
   bool EnsureConnected();
-  void OnRemoteDisconnect();
 
   bool GetIsPhantom(gin::Arguments* arguments);
   bool GetIsBraveWallet(gin::Arguments* arguments);
@@ -156,6 +159,12 @@ class JSSolanaProvider final : public gin::Wrappable<JSSolanaProvider>,
   absl::optional<std::string> GetSerializedMessage(
       v8::Local<v8::Value> transaction);
 
+  absl::optional<std::vector<mojom::SignaturePubkeyPairPtr>> GetSignatures(
+      v8::Local<v8::Value> transaction);
+
+  mojom::SolanaSignTransactionParamPtr GetSignTransactionParam(
+      v8::Local<v8::Value> transaction);
+
   // use @solana/web3.js and create publicKey from base58 string
   v8::Local<v8::Value> CreatePublicKey(v8::Local<v8::Context> context,
                                        const std::string& base58_str);
@@ -165,12 +174,10 @@ class JSSolanaProvider final : public gin::Wrappable<JSSolanaProvider>,
       v8::Local<v8::Context> context,
       const std::vector<uint8_t> serialized_tx);
 
-  raw_ptr<content::RenderFrame> render_frame_ = nullptr;
   std::unique_ptr<content::V8ValueConverter> v8_value_converter_;
   V8ConverterStrategy strategy_;
   mojo::Remote<mojom::SolanaProvider> solana_provider_;
   mojo::Receiver<mojom::SolanaEventsListener> receiver_{this};
-  base::WeakPtrFactory<JSSolanaProvider> weak_ptr_factory_{this};
 };
 
 }  // namespace brave_wallet

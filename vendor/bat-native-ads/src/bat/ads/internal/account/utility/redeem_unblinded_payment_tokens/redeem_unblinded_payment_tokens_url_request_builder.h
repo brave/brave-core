@@ -14,7 +14,8 @@
 #include "bat/ads/internal/privacy/tokens/unblinded_payment_tokens/unblinded_payment_token_info_aliases.h"
 #include "bat/ads/internal/server/url/url_request_builder_interface.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
-#include "url/gurl.h"
+
+class GURL;
 
 namespace ads {
 

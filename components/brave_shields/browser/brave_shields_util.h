@@ -17,6 +17,10 @@ namespace content {
 struct Referrer;
 }
 
+namespace content_settings {
+class CookieSettings;
+}
+
 class GURL;
 class HostContentSettingsMap;
 class PrefService;
@@ -85,14 +89,18 @@ DomainBlockingType GetDomainBlockingType(HostContentSettingsMap* map,
                                          const GURL& url);
 
 void SetCookieControlType(HostContentSettingsMap* map,
+                          PrefService* profile_state,
                           ControlType type,
                           const GURL& url,
                           PrefService* local_state = nullptr);
-ControlType GetCookieControlType(HostContentSettingsMap* map, const GURL& url);
+ControlType GetCookieControlType(
+    HostContentSettingsMap* map,
+    content_settings::CookieSettings* cookie_settings,
+    const GURL& url);
 
 // Referrers is always set along with cookies so there is no setter and
 // these is just included for backwards compat.
-bool AllowReferrers(HostContentSettingsMap* map, const GURL& url);
+bool AreReferrersAllowed(HostContentSettingsMap* map, const GURL& url);
 
 void SetFingerprintingControlType(HostContentSettingsMap* map,
                                   ControlType type,

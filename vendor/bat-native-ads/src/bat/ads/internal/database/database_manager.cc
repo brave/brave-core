@@ -10,6 +10,7 @@
 
 #include "base/check.h"
 #include "bat/ads/internal/ads_client_helper.h"
+#include "bat/ads/internal/base/logging_util.h"
 #include "bat/ads/internal/legacy_migration/database/database_constants.h"
 #include "bat/ads/internal/legacy_migration/database/database_migration.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
@@ -31,7 +32,7 @@ DatabaseManager::~DatabaseManager() {
 }
 
 // static
-DatabaseManager* DatabaseManager::Get() {
+DatabaseManager* DatabaseManager::GetInstance() {
   DCHECK(g_database_manager_instance);
   return g_database_manager_instance;
 }
@@ -63,17 +64,13 @@ void DatabaseManager::CreateOrOpen(ResultCallback callback) {
 
   transaction->commands.push_back(std::move(command));
 
-  AdsClientHelper::Get()->RunDBTransaction(
+  AdsClientHelper::GetInstance()->RunDBTransaction(
       std::move(transaction), [=](mojom::DBCommandResponsePtr response) {
         DCHECK(response);
 
-        if (response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
-          NotifyFailedToCreateOrOpenDatabase();
-          callback(/* success */ false);
-          return;
-        }
-
-        if (!response->result) {
+        if (response->status != mojom::DBCommandResponse::Status::RESPONSE_OK ||
+            !response->result) {
+          BLOG(0, "Failed to open or create database");
           NotifyFailedToCreateOrOpenDatabase();
           callback(/* success */ false);
           return;
@@ -100,15 +97,23 @@ void DatabaseManager::MaybeMigrate(const int from_version,
     return;
   }
 
+  BLOG(1, "Migrating database from schema version "
+              << from_version << " to schema version " << to_version);
+
   NotifyWillMigrateDatabase(from_version, to_version);
 
   database::Migration database_migration;
   database_migration.FromVersion(from_version, [=](const bool success) {
     if (!success) {
+      BLOG(1, "Failed to migrate database from schema version "
+                  << from_version << " to schema version " << to_version);
       NotifyFailedToMigrateDatabase(from_version, to_version);
       callback(/* success */ false);
       return;
     }
+
+    BLOG(1, "Migrated database from schema version "
+                << from_version << " to schema version " << to_version);
 
     NotifyDidMigrateDatabase(from_version, to_version);
 

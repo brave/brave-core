@@ -44,8 +44,10 @@ public class WalletModel {
         mCryptoModel = new CryptoModel(mTxService, mKeyringService, mBlockchainRegistry,
                 mJsonRpcService, mEthTxManagerProxy, mSolanaTxManagerProxy, mBraveWalletService,
                 mAssetRatioService);
-        mDappsModel = new DappsModel(mJsonRpcService, mBraveWalletService, mCryptoModel.getPendingTxHelper());
-        mKeyringModel = new KeyringModel(keyringService, mCryptoModel.getSharedData());
+        mDappsModel = new DappsModel(
+                mJsonRpcService, mBraveWalletService, mCryptoModel.getPendingTxHelper());
+        mKeyringModel =
+                new KeyringModel(keyringService, mCryptoModel.getSharedData(), braveWalletService);
         init();
     }
 
@@ -64,8 +66,9 @@ public class WalletModel {
         mCryptoModel.resetServices(mTxService, mKeyringService, mBlockchainRegistry,
                 mJsonRpcService, mEthTxManagerProxy, mSolanaTxManagerProxy, mBraveWalletService,
                 mAssetRatioService);
-        mDappsModel.resetServices(mJsonRpcService, mBraveWalletService, mCryptoModel.getPendingTxHelper());
-        mKeyringModel.resetService(mKeyringService);
+        mDappsModel.resetServices(
+                mJsonRpcService, mBraveWalletService, mCryptoModel.getPendingTxHelper());
+        mKeyringModel.resetService(mKeyringService, braveWalletService);
         init();
     }
 
@@ -82,10 +85,10 @@ public class WalletModel {
     }
 
     public boolean hasAllServices() {
-        return getKeyringService() != null || getBlockchainRegistry() != null
-                || getJsonRpcService() != null || getTxService() != null
-                || getEthTxManagerProxy() != null || getSolanaTxManagerProxy() != null
-                || getAssetRatioService() != null || getBraveWalletService() != null;
+        return getKeyringService() != null && getBlockchainRegistry() != null
+                && getJsonRpcService() != null && getTxService() != null
+                && getEthTxManagerProxy() != null && getSolanaTxManagerProxy() != null
+                && getAssetRatioService() != null && getBraveWalletService() != null;
     }
 
     public CryptoModel getCryptoModel() {

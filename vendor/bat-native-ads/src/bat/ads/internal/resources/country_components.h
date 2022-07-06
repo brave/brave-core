@@ -12,7 +12,7 @@
 
 namespace ads {
 
-const base::flat_set<std::string> kComponentCountryIds = {
+const base::flat_set<std::string> kCountryComponentIds = {
     "jememeholcpjpoahinnlafoiaknnmfgl", "hfonhokmgmjionconfpknjfphfahdklo",
     "anlkmbkbgleadcacchhgdoecllpllknb", "imoolhehjnpebcjecoinphmohihmbccj",
     "kgnhcdjacgcanjnbdcmngdeoncckfmfh", "pmlmnjficamnkblapnohndlnhkkoaoco",

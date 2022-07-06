@@ -91,7 +91,6 @@ declare namespace RewardsTip {
     address: string
     status: ExternalWalletStatus
     type: WalletType
-    verifyUrl: string
     addUrl: string
     withdrawUrl: string
     userName: string

@@ -9,6 +9,7 @@
 #include "base/memory/ref_counted.h"
 #include "base/metrics/histogram_macros.h"
 #include "base/metrics/statistics_recorder.h"
+#include "brave/components/p3a_utils/bucket.h"
 
 namespace brave {
 
@@ -58,11 +59,9 @@ void HistogramsBraveizer::DoHistogramBravetization(
     base::HistogramBase::Sample sample) {
   DCHECK(histogram_name);
   if (strcmp("Bookmarks.Count.OnProfileLoad", histogram_name) == 0) {
-    constexpr int kIntervals[] = {5, 20, 100, 500, 1000, 5000, 10000};
-    const int* it = std::lower_bound(kIntervals, std::end(kIntervals), sample);
-    const int answer = it - kIntervals;
-    UMA_HISTOGRAM_EXACT_LINEAR("Brave.Core.BookmarksCountOnProfileLoad.2",
-                               answer, std::size(kIntervals));
+    p3a_utils::RecordToHistogramBucket(
+        "Brave.Core.BookmarksCountOnProfileLoad.2",
+        {5, 20, 100, 500, 1000, 5000, 10000}, sample);
     return;
   }
 

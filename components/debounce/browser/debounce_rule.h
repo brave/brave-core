@@ -6,10 +6,17 @@
 #ifndef BRAVE_COMPONENTS_DEBOUNCE_BROWSER_DEBOUNCE_RULE_H_
 #define BRAVE_COMPONENTS_DEBOUNCE_BROWSER_DEBOUNCE_RULE_H_
 
+#include <memory>
 #include <string>
+#include <utility>
+#include <vector>
 
+#include "base/containers/flat_set.h"
 #include "base/json/json_value_converter.h"
+#include "base/strings/escape.h"
+#include "base/types/expected.h"
 #include "base/values.h"
+#include "components/prefs/pref_service.h"
 #include "extensions/common/url_pattern_set.h"
 
 class GURL;
@@ -19,7 +26,14 @@ namespace debounce {
 enum DebounceAction {
   kDebounceNoAction,
   kDebounceRedirectToParam,
+  kDebounceRegexPath,
   kDebounceBase64DecodeAndRedirectToParam
+};
+
+enum DebouncePrependScheme {
+  kDebounceNoSchemePrepend,
+  kDebounceSchemePrependHttp,
+  kDebounceSchemePrependHttps
 };
 
 class DebounceRule {
@@ -33,19 +47,34 @@ class DebounceRule {
       base::JSONValueConverter<DebounceRule>* converter);
   static bool ParseDebounceAction(base::StringPiece value,
                                   DebounceAction* field);
+  static bool ParsePrependScheme(base::StringPiece value,
+                                 DebouncePrependScheme* field);
+  static base::expected<std::pair<std::vector<std::unique_ptr<DebounceRule>>,
+                                  base::flat_set<std::string>>,
+                        std::string>
+  ParseRules(const std::string& contents);
+  static const std::string GetETLDForDebounce(const std::string& host);
   static bool GetURLPatternSetFromValue(const base::Value* value,
                                         extensions::URLPatternSet* result);
 
-  bool Apply(const GURL& original_url, GURL* final_url) const;
+  bool Apply(const GURL& original_url,
+             GURL* final_url,
+             const PrefService* prefs) const;
   const extensions::URLPatternSet& include_pattern_set() const {
     return include_pattern_set_;
   }
 
  private:
+  bool CheckPrefForRule(const PrefService* prefs) const;
+  bool ValidateAndParsePatternRegex(const std::string& pattern,
+                                    const std::string& path,
+                                    std::string* parsed_value) const;
   extensions::URLPatternSet include_pattern_set_;
   extensions::URLPatternSet exclude_pattern_set_;
   DebounceAction action_;
+  DebouncePrependScheme prepend_scheme_;
   std::string param_;
+  std::string pref_;
 };
 
 }  // namespace debounce

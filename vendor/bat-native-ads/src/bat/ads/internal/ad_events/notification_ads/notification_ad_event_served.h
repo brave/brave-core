@@ -7,9 +7,11 @@
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_AD_EVENTS_NOTIFICATION_ADS_NOTIFICATION_AD_EVENT_SERVED_H_
 
 #include "bat/ads/internal/ad_events/ad_event_interface.h"
-#include "bat/ads/notification_ad_info.h"
 
 namespace ads {
+
+struct NotificationAdInfo;
+
 namespace notification_ads {
 
 class AdEventServed final : public AdEventInterface<NotificationAdInfo> {

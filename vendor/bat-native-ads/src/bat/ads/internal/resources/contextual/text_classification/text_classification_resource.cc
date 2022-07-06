@@ -46,6 +46,7 @@ void TextClassification::OnLoadAndParseResource(
          "Failed to load " << kResourceId << " text classification resource");
     return;
   }
+
   BLOG(1, "Successfully loaded " << kResourceId
                                  << " text classification resource");
 
@@ -62,7 +63,7 @@ void TextClassification::OnLoadAndParseResource(
                                       << " text classification resource");
 }
 
-ml::pipeline::TextProcessing* TextClassification::get() const {
+ml::pipeline::TextProcessing* TextClassification::Get() const {
   return text_processing_pipeline_.get();
 }
 

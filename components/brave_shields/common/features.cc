@@ -46,25 +46,19 @@ const base::Feature kBraveDomainBlock{"BraveDomainBlock",
 // filters. 1PES will be enabled only if neither cookies nor localStorage data
 // is stored for the website.
 const base::Feature kBraveDomainBlock1PES{"BraveDomainBlock1PES",
-                                          base::FEATURE_DISABLED_BY_DEFAULT};
+                                          base::FEATURE_ENABLED_BY_DEFAULT};
 // When enabled, network requests initiated by extensions will be checked and
 // potentially blocked by Brave Shields.
 const base::Feature kBraveExtensionNetworkBlocking{
     "BraveExtensionNetworkBlocking", base::FEATURE_DISABLED_BY_DEFAULT};
 // When enabled, language headers and APIs may be altered by Brave Shields.
 const base::Feature kBraveReduceLanguage{"BraveReduceLanguage",
-                                         base::FEATURE_ENABLED_BY_DEFAULT};
+                                         base::FEATURE_DISABLED_BY_DEFAULT};
 // When enabled, Brave will always report Light in Fingerprinting: Strict mode
 const base::Feature kBraveDarkModeBlock{"BraveDarkModeBlock",
                                         base::FEATURE_ENABLED_BY_DEFAULT};
 // load the cosmetic filter rules using sync ipc
 const base::Feature kCosmeticFilteringSyncLoad{
     "CosmeticFilterSyncLoad", base::FEATURE_ENABLED_BY_DEFAULT};
-// When enabled, an extension version of the panel will render
-const base::Feature kBraveShieldsPanelV1{"BraveShieldsPanelV1",
-                                         base::FEATURE_DISABLED_BY_DEFAULT};
-// When enabled, a mojom version of the panel will render
-const base::Feature kBraveShieldsPanelV2{"BraveShieldsPanelV2",
-                                         base::FEATURE_ENABLED_BY_DEFAULT};
 }  // namespace features
 }  // namespace brave_shields

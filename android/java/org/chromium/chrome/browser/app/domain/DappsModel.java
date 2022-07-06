@@ -17,10 +17,8 @@ import org.chromium.brave_wallet.mojom.JsonRpcService;
 import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.brave_wallet.mojom.TransactionInfo;
 import org.chromium.brave_wallet.mojom.TransactionStatus;
-
 import org.chromium.chrome.browser.crypto_wallet.util.PendingTxHelper;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
-
 
 public class DappsModel {
     private JsonRpcService mJsonRpcService;
@@ -30,9 +28,10 @@ public class DappsModel {
     private final MutableLiveData<Boolean> _mWalletIconNotificationVisible =
             new MutableLiveData<>(false);
     public final LiveData<Boolean> mWalletIconNotificationVisible = _mWalletIconNotificationVisible;
+    private final Object mLock = new Object();
 
-    public DappsModel(JsonRpcService jsonRpcService,
-            BraveWalletService braveWalletService, PendingTxHelper pendingTxHelper) {
+    public DappsModel(JsonRpcService jsonRpcService, BraveWalletService braveWalletService,
+            PendingTxHelper pendingTxHelper) {
         mBraveWalletService = braveWalletService;
         mJsonRpcService = jsonRpcService;
         mPendingTxHelper = pendingTxHelper;
@@ -40,12 +39,32 @@ public class DappsModel {
 
     public void resetServices(JsonRpcService jsonRpcService,
             BraveWalletService braveWalletService, PendingTxHelper pendingTxHelper) {
-        mBraveWalletService = braveWalletService;
-        mJsonRpcService = jsonRpcService;
-        mPendingTxHelper = pendingTxHelper;
+        synchronized (mLock) {
+            mBraveWalletService = braveWalletService;
+            mJsonRpcService = jsonRpcService;
+            mPendingTxHelper = pendingTxHelper;
+        }
     }
 
     public void updateWalletBadgeVisibility() {
+        synchronized (mLock) {
+            updateWalletBadgeVisibilityInternal();
+        }
+    }
+
+    public void setWalletBadgeVisible() {
+        _mWalletIconNotificationVisible.setValue(true);
+    }
+
+    public void setWalletBadgeInvisible() {
+        _mWalletIconNotificationVisible.setValue(false);
+    }
+
+    private void updateWalletBadgeVisibilityInternal() {
+        if (mBraveWalletService == null || mJsonRpcService == null || mPendingTxHelper == null) {
+            return;
+        }
+
         _mWalletIconNotificationVisible.setValue(false);
 
         mBraveWalletService.getPendingSignMessageRequests(requests -> {
@@ -78,19 +97,17 @@ public class DappsModel {
                 return;
             }
         });
+        mBraveWalletService.getPendingDecryptRequests(requests -> {
+            if (requests != null && requests.length > 0) {
+                setWalletBadgeVisible();
+                return;
+            }
+        });
         for (TransactionInfo info : mPendingTxHelper.mTransactionInfoLd.getValue()) {
             if (info.txStatus == TransactionStatus.UNAPPROVED) {
                 setWalletBadgeVisible();
                 break;
             }
         }
-    }
-
-    public void setWalletBadgeVisible() {
-        _mWalletIconNotificationVisible.setValue(true);
-    }
-
-    public void setWalletBadgeInvisible() {
-        _mWalletIconNotificationVisible.setValue(false);
     }
 }

@@ -8,7 +8,7 @@
 
 #include <string>
 
-#include "bat/ads/ads_client_aliases.h"
+#include "bat/ads/ads_client_callback.h"
 #include "bat/ads/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_info_aliases.h"
 #include "bat/ads/internal/database/database_table_interface.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"

@@ -9,6 +9,8 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
+@class FaviconAttributes;
+
 typedef NSInteger BraveFaviconLoaderSize NS_TYPED_ENUM
     NS_SWIFT_NAME(FaviconLoader.Sizes);
 /// Minimal acceptable favicon size, in points.
@@ -17,8 +19,6 @@ OBJC_EXPORT BraveFaviconLoaderSize const BraveFaviconLoaderSizeMin;
 OBJC_EXPORT BraveFaviconLoaderSize const BraveFaviconLoaderSizeDesiredSmall;
 /// Desired medium favicon size, in points.
 OBJC_EXPORT BraveFaviconLoaderSize const BraveFaviconLoaderSizeDesiredMedium;
-
-@class BraveFaviconAttributes;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -39,16 +39,15 @@ NS_SWIFT_NAME(FaviconLoader)
               sizeInPoints:(BraveFaviconLoaderSize)sizeInPoints
            minSizeInPoints:(BraveFaviconLoaderSize)minSizeInPoints
     fallbackToGoogleServer:(bool)fallbackToGoogleServer
-                completion:
-                    (void (^)(BraveFaviconAttributes* attributes))completion;
+                completion:(void (^)(FaviconAttributes* attributes))completion;
 
 /// |sizeInPoints| the desired size of the favIcon
 /// |completion| may be called more than once (once with a default image, and
 /// one with the actual fav-icon if found).
 - (void)faviconForPageURLOrHost:(NSURL*)url
                    sizeInPoints:(BraveFaviconLoaderSize)sizeInPoints
-                     completion:(void (^)(BraveFaviconAttributes* attributes))
-                                    completion;
+                     completion:
+                         (void (^)(FaviconAttributes* attributes))completion;
 
 /// |sizeInPoints| the desired size of the favIcon
 /// |completion| may be called more than once (once with a default image, and
@@ -56,8 +55,7 @@ NS_SWIFT_NAME(FaviconLoader)
 - (void)faviconForIconURL:(NSURL*)url
              sizeInPoints:(BraveFaviconLoaderSize)sizeInPoints
           minSizeInPoints:(BraveFaviconLoaderSize)minSizeInPoints
-               completion:
-                   (void (^)(BraveFaviconAttributes* attributes))completion;
+               completion:(void (^)(FaviconAttributes* attributes))completion;
 @end
 
 NS_ASSUME_NONNULL_END

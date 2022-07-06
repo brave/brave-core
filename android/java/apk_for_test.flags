@@ -481,3 +481,12 @@
 -keep class org.chromium.chrome.browser.ChromeApplicationImpl
 
 -keep class org.chromium.chrome.browser.BraveApplicationImplBase
+
+-keep class org.chromium.chrome.browser.dom_distiller.ReaderModeManager {
+    *** mTab;
+    <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.dom_distiller.BraveReaderModeManager {
+    <init>(...);
+}

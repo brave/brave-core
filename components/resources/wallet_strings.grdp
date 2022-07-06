@@ -146,6 +146,7 @@
   <message name="IDS_BRAVE_WALLET_RESTORE_LEGACY_CHECK_BOX" desc="Restore Wallet screen import legacy checkbox">Import from legacy Brave crypto wallets?</message>
   <message name="IDS_BRAVE_WALLET_RESTORE_FORM_TEXT" desc="Restore Wallet new password input">New Password</message>
   <message name="IDS_BRAVE_WALLET_TOOL_TIP_COPY_TO_CLIPBOARD" desc="General tooltip copy to clipboard">Copy to Clipboard</message>
+  <message name="IDS_BRAVE_WALLET_TOOL_TIP_COPIED_TO_CLIPBOARD" desc="General tooltip copy to clipboard">Copied!</message>
   <message name="IDS_BRAVE_WALLET_ACCOUNTS_PRIMARY" desc="Accounts screen primary accounts title">Primary crypto accounts</message>
   <message name="IDS_BRAVE_WALLET_ACCOUNTS_SECONDARY" desc="Accounts screen secondary accounts title">Imported accounts</message>
   <message name="IDS_BRAVE_WALLET_ACCOUNTS_PRIMARY_DISCLAIMER" desc="Accounts screen primary description">You can create primary accounts in Brave Wallet that may be backed up or restored from your recovery phrase. To learn more about account types visit account help.</message>
@@ -212,7 +213,8 @@
   <message name="IDS_BRAVE_WALLET_ICON_URL" desc="Visible assets modal Icon URL label">Icon URL</message>
   <message name="IDS_BRAVE_WALLET_ADD_ASSET" desc="Asset Panel add asset button">Add asset</message>
   <message name="IDS_BRAVE_WALLET_ACCOUNT_SETTINGS_DISCLAIMER" desc="Account settings modal warning">WARNING: Never share your recovery phrase. Anyone with this phrase can take your assets forever.</message>
-  <message name="IDS_BRAVE_WALLET_FIL_EXPORT_PRIVATE_KEY_FORMAT_DESCRIPTION" desc="Filecoin private key format description">NOTE: Private key is provided as a hex-encoded JSON that contains private key and protocol information. See https://lotus.filecoin.io/lotus/manage/lotus-cli/#lotus-wallet-import for more info.</message>
+  <message name="IDS_BRAVE_WALLET_FIL_EXPORT_PRIVATE_KEY_FORMAT_DESCRIPTION" desc="Filecoin private key format description">NOTE: Private key is provided as a hex-encoded JSON that contains private key and protocol information. <ph name="LINK_START">$1</ph>Learn more<ph name="LINK_END">$2</ph>.</message>
+  <message name="IDS_BRAVE_WALLET_FIL_IMPORT_PRIVATE_KEY_FORMAT_DESCRIPTION" desc="Filecoin private key format description">NOTE: Private key must be provided as a hex-encoded JSON that contains private key and protocol information. <ph name="LINK_START">$1</ph>Learn more<ph name="LINK_END">$2</ph>.</message>
   <message name="IDS_BRAVE_WALLET_ACCOUNT_SETTINGS_SHOW_KEY" desc="Account settings modal show key button">Show key</message>
   <message name="IDS_BRAVE_WALLET_ACCOUNT_SETTINGS_HIDE_KEY" desc="Account settings modal hide key button">Hide key</message>
   <message name="IDS_BRAVE_WALLET_ACCOUNT_SETTINGS_UPDATE_ERROR" desc="Account settings modal failed to updated name error">Failed to update account name, please try again.</message>
@@ -250,7 +252,7 @@
   <message name="IDS_BRAVE_WALLET_SIGN_TRANSACTION_MESSAGE_TITLE" desc="Sign panel message title">Message</message>
   <message name="IDS_BRAVE_WALLET_SIGN_TRANSACTION_BUTTON" desc="Sign panel sign button">Sign</message>
   <message name="IDS_BRAVE_WALLET_PROVIDE_ENCRYPTION_KEY_TITLE" desc="Provide Encryption Key Panel Title">A DApp is requesting your public encryption key</message>
-  <message name="IDS_BRAVE_WALLET_PROVIDE_ENCRYPTION_KEY_DESCRIPTION" desc="Provide Encryption Key Panel Details"><ph name="URL_BEFORE">$1</ph>$url<ph name="URL_AFTER">$2</ph> is requesting your wallets public encryption key. If you consent to providing this key, the site will be able to compose encrypted messages to you.</message>
+  <message name="IDS_BRAVE_WALLET_PROVIDE_ENCRYPTION_KEY_DESCRIPTION" desc="Provide Encryption Key Panel Details"><ph name="URL_BEFORE">$1</ph>$url<ph name="URL_AFTER">$2</ph> is requesting your wallet's public encryption key. If you consent to providing this key, the site will be able to compose encrypted messages to you.</message>
   <message name="IDS_BRAVE_WALLET_PROVIDE_ENCRYPTION_KEY_BUTTON" desc="Provide Encryption Key Panel Provide Button">Provide</message>
   <message name="IDS_BRAVE_WALLET_READ_ENCRYPTED_MESSAGE_TITLE" desc="Read Encrypted Message Panel Title">This DApp would like to read this message to complete your request</message>
   <message name="IDS_BRAVE_WALLET_READ_ENCRYPTED_MESSAGE_DECRYPT_BUTTON" desc="Read Encrypted Message Panel Decrypt Button">Decrypt message</message>
@@ -327,8 +329,8 @@
   <message name="IDS_BRAVE_WALLET_CONNECT_HARDWARE_PANEL_DISCONNECTED" desc="Connect Hardware panel disconnected status"><ph name="DEVICE_NAME"><ex>Ledger</ex>$1</ph> disconnected</message>
   <message name="IDS_BRAVE_WALLET_CONNECT_HARDWARE_PANEL_INSTRUCTIONS" desc="Connect Hardware panel instructions button">Instructions</message>
   <message name="IDS_BRAVE_WALLET_CONNECT_HARDWARE_PANEL_CONNECT" desc="Connect Hardware panel title">Connect your <ph name="DEVICE_NAME"><ex>Ledger</ex>$1</ph></message>
-  <message name="IDS_BRAVE_WALLET_CONNECT_HARDWARE_PANEL_CONFIRMATION" desc="Connect Hardware panel confirmation description">Hardware wallet requires confirmation on device. <ph name="DEVICE_NAME"><ex>Ledger</ex>$1</ph></message>
-  <message name="IDS_BRAVE_WALLET_CONNECT_HARDWARE_PANEL_OPEN_APP" desc="Connect Hardware panel open app text">Hardware wallet requires Ethereum App opened on <ph name="DEVICE_NAME"><ex>Ledger</ex>$1</ph></message>
+  <message name="IDS_BRAVE_WALLET_CONNECT_HARDWARE_PANEL_CONFIRMATION" desc="Connect Hardware panel confirmation description">Hardware wallet requires confirmation on device <ph name="DEVICE_NAME"><ex>Ledger</ex>$1</ph></message>
+  <message name="IDS_BRAVE_WALLET_CONNECT_HARDWARE_PANEL_OPEN_APP" desc="Connect Hardware panel open app text">Hardware wallet requires <ph name="NETWORK"><ex>Ethereum</ex>$1</ph> App opened on <ph name="DEVICE_NAME"><ex>Ledger</ex>$2</ph></message>
   <message name="IDS_BRAVE_WALLET_TRANSACTION_SENT" desc="Transaction sent label">sent</message>
   <message name="IDS_BRAVE_WALLET_TRANSACTION_RECEIVED" desc="Transaction received label">received</message>
   <message name="IDS_BRAVE_WALLET_TRANSACTION_EXPLORER_MISSING" desc="Alert for when no block explorer is available">Block explorer URL is not available.</message>
@@ -408,7 +410,7 @@
   <message name="IDS_BRAVE_WALLET_SIGN_TYPED_MESSAGE_CHAIN_ID_MISMATCH" desc="Sign typed message error"><ph name="ADDRESS">chainId $1<ex>1</ex></ph> is not current network</message>
   <message name="IDS_BRAVE_WALLET_UNLOCK_ERROR" desc="Connect hardware wallet panel, error when device unlock failed">Unable to unlock device, try to reconnect</message>
   <message name="IDS_BRAVE_WALLET_UNKNOWN_SCHEME_ERROR" desc="Connect hardware wallet panel, error when requested unsupported scheme for device">Internal error, unknown scheme</message>
-  <message name="IDS_BRAVE_WALLET_APPROVAL_TRANSACTION_INTENT" desc="Token approval transaction description">approved</message>
+  <message name="IDS_BRAVE_WALLET_APPROVAL_TRANSACTION_INTENT" desc="Token approval transaction description">approve</message>
   <message name="IDS_BRAVE_WALLET_LEDGER_VALIDATION_ERROR" desc="Ledger signature validation error text">Ledger: The signature doesnt match the right address</message>
   <message name="IDS_BRAVE_WALLET_HARDWARE_ACCOUNT_NOT_FOUND_ERROR" desc="Hardware account not found error message">Hardware account not found</message>
   <message name="IDS_BRAVE_WALLET_IMPORT_JSON_ERROR" desc="Importer error message">JSON data is not expected</message>
@@ -468,6 +470,26 @@
   <message name="IDS_WALLET_TRANSACTION_STATUS_UPDATE_MESSAGE_TEXT" desc="Notification message text when transaction status updated">Click here to check transaction details for <ph name="VALUE">$1<ex>0xABC</ex></ph></message>
   <message name="IDS_WALLET_TRANSACTION_STATUS_UPDATE_MESSAGE_TITLE_CONFIRMED" desc="Notification message title when transaction confirmed">Transaction confirmed</message>
   <message name="IDS_WALLET_TRANSACTION_STATUS_UPDATE_MESSAGE_TITLE_ERROR" desc="Notification message title when transaction error">Transaction error</message>
- <message name="IDS_WALLET_TRANSACTION_STATUS_UPDATE_MESSAGE_TITLE_DROPPED" desc="Notification message title when transaction dropped">Transaction dropped</message>  
- <message name="IDS_WALLET_TAB_IS_NOT_ACTIVE_ERROR" desc="Error message if it comes from an inactive tab">The tab is not active</message>
+  <message name="IDS_WALLET_TRANSACTION_STATUS_UPDATE_MESSAGE_TITLE_DROPPED" desc="Notification message title when transaction dropped">Transaction dropped</message>  
+  <message name="IDS_WALLET_TAB_IS_NOT_ACTIVE_ERROR" desc="Error message if it comes from an inactive tab">The tab is not active</message> 
+  <message name="IDS_BRAVE_WALLET_APPROVE_TRANSACTION" desc="Title message when dApp transaction approval is requested">Approve transaction</message>  
+  <message name="IDS_BRAVE_WALLET_SOLANA_SYSTEM_PROGRAM" desc="Name of Solana System Program">System Program</message>  
+  <message name="IDS_BRAVE_WALLET_SOLANA_CONFIG_PROGRAM" desc="Name of Solana Config Program">Config Program</message>  
+  <message name="IDS_BRAVE_WALLET_SOLANA_STAKE_PROGRAM" desc="Name of Solana Stake Program">Stake Program</message>  
+  <message name="IDS_BRAVE_WALLET_SOLANA_VOTE_PROGRAM" desc="Name of Solana Vote Program">Vote Program</message>  
+  <message name="IDS_BRAVE_WALLET_SOLANA_BP_FLOADER" desc="Name of Solana BPF Loader">BPF Loader</message>  
+  <message name="IDS_BRAVE_WALLET_SOLANA_ED25519_PROGRAM" desc="Name of Solana Ed25519 Program">Ed25519 Program</message>  
+  <message name="IDS_BRAVE_WALLET_SOLANA_SECP256K1_PROGRAM" desc="Name of Solana Secp256k1 Program">Secp256k1 Program</message>
+  <message name="IDS_BRAVE_WALLET_SOLANA_PARAM_KEY_FROMPUBKEY" desc="Name of Solana instruction 'fromPubkey' param">From Address: </message>  
+  <message name="IDS_BRAVE_WALLET_SOLANA_PARAM_KEY_TOPUBKEY" desc="Name of Solana instruction 'toPubkey' param">To Address: </message>  
+  <message name="IDS_BRAVE_WALLET_SOLANA_PARAM_KEY_LAMPORTS" desc="Name of Solana instruction 'lamports' param">Amount: </message>  
+  <message name="IDS_BRAVE_WALLET_SOLANA_PARAM_KEY_NEWACCOUNTPUBKEY" desc="Name of Solana instruction 'newAccountPubkey' param">New Account: </message>  
+  <message name="IDS_BRAVE_WALLET_SOLANA_ACCOUNTS" desc="Name of Solana instruction 'accounts' param">Accounts:</message>  
+  <message name="IDS_BRAVE_WALLET_SOLANA_DATA" desc="Name of Solana instruction 'data' param">Data:</message>  
+  <message name="IDS_BRAVE_WALLET_SOLANA_PROGRAM_ID" desc="Name of Solana instruction 'programID' param">Program ID:</message>  
+  <message name="IDS_BRAVE_WALLET_SOLANA_MAX_RETRIES" desc="Name of Solana instruction 'programID' param">Max Retries:</message>  
+  <message name="IDS_BRAVE_WALLET_SOLANA_PREFLIGHT_COMMITMENT" desc="Name of Solana instruction 'programID' param">Preflight Commitment:</message>  
+  <message name="IDS_BRAVE_WALLET_SOLANA_SKIP_PREFLIGHT" desc="Name of Solana instruction 'programID' param">Skip Preflight:</message>
+  <message name="IDS_BRAVE_WALLET_HELP_CENTER" desc="Help Center link label">Help Center</message>
+  <message name="IDS_BRAVE_WALLET_HELP_CENTER_TEXT" desc="Help Center text description below buy-send-swap">Need help? See</message>
 </grit-part>

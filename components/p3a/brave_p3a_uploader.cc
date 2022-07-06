@@ -72,12 +72,10 @@ net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotation(
 BraveP3AUploader::BraveP3AUploader(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
     const GURL& p3a_endpoint,
-    const GURL& p2a_endpoint,
-    const UploadCallback& on_upload_complete)
+    const GURL& p2a_endpoint)
     : url_loader_factory_(url_loader_factory),
       p3a_endpoint_(p3a_endpoint),
-      p2a_endpoint_(p2a_endpoint),
-      on_upload_complete_(on_upload_complete) {}
+      p2a_endpoint_(p2a_endpoint) {}
 
 BraveP3AUploader::~BraveP3AUploader() = default;
 
@@ -114,15 +112,7 @@ void BraveP3AUploader::UploadLog(const std::string& compressed_log_data,
 
 void BraveP3AUploader::OnUploadComplete(
     std::unique_ptr<std::string> response_body) {
-  int response_code = -1;
-  if (url_loader_->ResponseInfo() && url_loader_->ResponseInfo()->headers)
-    response_code = url_loader_->ResponseInfo()->headers->response_code();
-
-  int error_code = url_loader_->NetError();
-
-  bool was_https = url_loader_->GetFinalURL().SchemeIs(url::kHttpsScheme);
   url_loader_.reset();
-  on_upload_complete_.Run(response_code, error_code, was_https);
 }
 
 }  // namespace brave

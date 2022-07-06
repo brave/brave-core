@@ -18,8 +18,9 @@ constexpr char kEnvProduction[] = "production";
 constexpr char kEnvStaging[] = "staging";
 constexpr char kEnvDevelopment[] = "development";
 
-std::string GetEnvironment();
-std::string GetDomain(std::string prefix);
+std::string GetDefaultEnvironment();
+std::string GetDomain(const std::string& prefix, const std::string& domain);
+std::string GetEnvironmentForDomain(const std::string& domain);
 void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry);
 
 }  // namespace skus

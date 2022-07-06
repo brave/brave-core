@@ -113,7 +113,7 @@ bool ShouldFilterSegment(const std::string& segment) {
   DCHECK(!segment.empty());
 
   const FilteredCategoryList filtered_segments =
-      ClientStateManager::Get()->GetFilteredCategories();
+      ClientStateManager::GetInstance()->GetFilteredCategories();
 
   if (filtered_segments.empty()) {
     return false;

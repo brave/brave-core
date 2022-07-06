@@ -21,8 +21,13 @@
 #include "bat/ads/internal/deprecated/client/client_state_manager.h"
 #include "bat/ads/internal/deprecated/confirmations/confirmation_state_manager.h"
 #include "bat/ads/internal/diagnostics/diagnostic_manager.h"
+#include "bat/ads/internal/history/history_manager.h"
+#include "bat/ads/internal/locale/locale_manager.h"
+#include "bat/ads/internal/prefs/pref_manager.h"
+#include "bat/ads/internal/resources/resource_manager.h"
 #include "bat/ads/internal/tabs/tab_manager.h"
 #include "bat/ads/internal/user_interaction/browsing/user_activity_manager.h"
+#include "bat/ads/internal/user_interaction/idle_detection/idle_detection_manager.h"
 #include "brave/components/l10n/browser/locale_helper_mock.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -35,6 +40,8 @@ class TimeDelta;
 namespace ads {
 
 constexpr char kDatabaseFilename[] = "database.sqlite";
+
+constexpr char kDefaultLocale[] = "en-US";
 
 class Database;
 class NotificationAdManager;
@@ -70,11 +77,13 @@ class UnitTestBase : public testing::Test {
   // |CopyDirectoryFromTestPathToTempPath| to copy directories.
   bool CopyFileFromTestPathToTempPath(const std::string& from_path,
                                       const std::string& to_path) const;
+  bool CopyFileFromTestPathToTempPath(const std::string& path) const;
 
   // Copies the given path from "data/test", and all subdirectories and their
   // contents as well to the temp directory.
   bool CopyDirectoryFromTestPathToTempPath(const std::string& from_path,
                                            const std::string& to_path) const;
+  bool CopyDirectoryFromTestPathToTempPath(const std::string& path) const;
 
   // Fast-forwards virtual time by |time_delta|, causing all tasks on the main
   // thread and thread pool with a remaining delay less than or equal to
@@ -152,7 +161,12 @@ class UnitTestBase : public testing::Test {
   std::unique_ptr<CovariateManager> covariate_manager_;
   std::unique_ptr<DatabaseManager> database_manager_;
   std::unique_ptr<DiagnosticManager> diagnostic_manager_;
+  std::unique_ptr<HistoryManager> history_manager_;
+  std::unique_ptr<IdleDetectionManager> idle_detection_manager_;
+  std::unique_ptr<LocaleManager> locale_manager_;
   std::unique_ptr<NotificationAdManager> notification_ad_manager_;
+  std::unique_ptr<PrefManager> pref_manager_;
+  std::unique_ptr<ResourceManager> resource_manager_;
   std::unique_ptr<TabManager> tab_manager_;
   std::unique_ptr<UserActivityManager> user_activity_manager_;
 };

@@ -46,13 +46,15 @@ namespace brave_wallet {
 
 namespace {
 
-void OnRunWithStorage(
-    base::OnceCallback<void(std::unique_ptr<base::DictionaryValue>)> callback,
-    ValueStore* storage) {
+void OnRunWithStorage(base::OnceCallback<void(base::Value::Dict)> callback,
+                      ValueStore* storage) {
   DCHECK(IsOnBackendSequence());
   DCHECK(storage);
-  ValueStore::ReadResult result = storage->Get();
-  std::move(callback).Run(result.PassSettings());
+  auto current_settings = storage->Get().PassSettings();
+  if (current_settings)
+    std::move(callback).Run(std::move(*current_settings->GetIfDict()));
+  else
+    std::move(callback).Run(base::Value::Dict());
 }
 
 static base::span<const uint8_t> ToSpan(base::StringPiece sp) {
@@ -60,19 +62,18 @@ static base::span<const uint8_t> ToSpan(base::StringPiece sp) {
 }
 
 std::string GetLegacyCryptoWalletsPassword(const std::string& password,
-                                           base::Value&& dict) {
+                                           base::Value::Dict dict) {
   std::string legacy_crypto_wallets_password;
-  const base::Value* argon_params_value =
-      dict.FindPath("data.KeyringController.argonParams");
-  CHECK(argon_params_value);
-  if (!argon_params_value->is_dict()) {
+  const auto* argon_params =
+      dict.FindDictByDottedPath("data.KeyringController.argonParams");
+  if (!argon_params) {
     VLOG(0) << "data.KeyringController.argonParams is not dict";
     return std::string();
   }
-  auto hash_len = argon_params_value->FindIntKey("hashLen");
-  auto mem = argon_params_value->FindIntKey("mem");
-  auto time = argon_params_value->FindIntKey("time");
-  auto type = argon_params_value->FindIntKey("type");
+  auto hash_len = argon_params->FindInt("hashLen");
+  auto mem = argon_params->FindInt("mem");
+  auto time = argon_params->FindInt("time");
+  auto type = argon_params->FindInt("type");
   if (!hash_len || !mem || !time) {
     VLOG(0) << "missing hashLen, mem, time or type in argonParams";
     return std::string();
@@ -84,7 +85,7 @@ std::string GetLegacyCryptoWalletsPassword(const std::string& password,
   }
 
   const std::string* salt_str =
-      dict.FindStringPath("data.KeyringController.salt");
+      dict.FindStringByDottedPath("data.KeyringController.salt");
   if (!salt_str) {
     VLOG(0) << "missing data.KeyringController.salt";
     return std::string();
@@ -146,7 +147,7 @@ ExternalWalletsImporter::ExternalWalletsImporter(
     mojom::ExternalWalletType type,
     content::BrowserContext* context)
     : type_(type), context_(context), weak_ptr_factory_(this) {
-  DCHECK(!storage_data_);
+  DCHECK(!storage_data_.has_value());
 }
 ExternalWalletsImporter::~ExternalWalletsImporter() = default;
 
@@ -182,7 +183,7 @@ void ExternalWalletsImporter::Initialize(InitCallback callback) {
 }
 
 bool ExternalWalletsImporter::IsInitialized() const {
-  return !!storage_data_;
+  return storage_data_.has_value();
 }
 
 void ExternalWalletsImporter::OnCryptoWalletsLoaded(InitCallback callback) {
@@ -228,7 +229,7 @@ bool ExternalWalletsImporter::IsExternalWalletInstalled() const {
 bool ExternalWalletsImporter::IsExternalWalletInitialized() const {
   if (!IsInitialized())
     return false;
-  return storage_data_->FindPath("data.KeyringController");
+  return storage_data_->FindByDottedPath("data.KeyringController") != nullptr;
 }
 
 void ExternalWalletsImporter::GetImportInfo(
@@ -247,12 +248,11 @@ void ExternalWalletsImporter::GetImportInfo(
     return;
   }
 
-  if (storage_data_->FindPath("data.KeyringController.argonParams")) {
-    auto storage_data_clone = storage_data_->Clone();
+  if (storage_data_->FindByDottedPath("data.KeyringController.argonParams")) {
     base::ThreadPool::PostTaskAndReplyWithResult(
         FROM_HERE, {base::MayBlock()},
         base::BindOnce(&GetLegacyCryptoWalletsPassword, password,
-                       std::move(storage_data_clone)),
+                       storage_data_->Clone()),
         base::BindOnce(&ExternalWalletsImporter::GetMnemonic,
                        weak_ptr_factory_.GetWeakPtr(), true,
                        std::move(callback)));
@@ -304,9 +304,8 @@ void ExternalWalletsImporter::GetLocalStorage(
                              std::move(callback)))));
 }
 
-void ExternalWalletsImporter::OnGetLocalStorage(
-    InitCallback callback,
-    std::unique_ptr<base::DictionaryValue> dict) {
+void ExternalWalletsImporter::OnGetLocalStorage(InitCallback callback,
+                                                base::Value::Dict dict) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   storage_data_ = std::move(dict);
   std::move(callback).Run(true);
@@ -325,23 +324,24 @@ void ExternalWalletsImporter::GetMnemonic(bool is_legacy_crypto_wallets,
   }
 
   const std::string* vault_str =
-      storage_data_->FindStringPath("data.KeyringController.vault");
+      storage_data_->FindStringByDottedPath("data.KeyringController.vault");
   if (!vault_str) {
     VLOG(0) << "cannot find data.KeyringController.vault";
     std::move(callback).Run(false, ImportInfo(), ImportError::kJsonError);
     return;
   }
-  auto vault =
+  auto parsed_vault =
       base::JSONReader::Read(*vault_str, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
                                              base::JSON_ALLOW_TRAILING_COMMAS);
+  auto* vault = parsed_vault ? parsed_vault->GetIfDict() : nullptr;
   if (!vault) {
     VLOG(1) << "not a valid JSON: " << *vault_str;
     std::move(callback).Run(false, ImportInfo(), ImportError::kJsonError);
     return;
   }
-  auto* data_str = vault->FindStringKey("data");
-  auto* iv_str = vault->FindStringKey("iv");
-  auto* salt_str = vault->FindStringKey("salt");
+  auto* data_str = vault->FindString("data");
+  auto* iv_str = vault->FindString("iv");
+  auto* salt_str = vault->FindString("salt");
   if (!data_str || !iv_str || !salt_str) {
     VLOG(1) << "data or iv or salt is missing";
     std::move(callback).Run(false, ImportInfo(), ImportError::kJsonError);
@@ -393,9 +393,10 @@ void ExternalWalletsImporter::GetMnemonic(bool is_legacy_crypto_wallets,
 
   absl::optional<std::string> mnemonic = absl::nullopt;
   absl::optional<int> number_of_accounts = absl::nullopt;
-  for (const auto& keyring : keyrings->GetList()) {
-    DCHECK(keyring.is_dict());
-    const auto* type = keyring.FindStringKey("type");
+  for (const auto& keyring_listed : keyrings->GetList()) {
+    DCHECK(keyring_listed.is_dict());
+    const auto& keyring = *keyring_listed.GetIfDict();
+    const auto* type = keyring.FindString("type");
     if (!type) {
       VLOG(0) << "keyring.type is missing";
       std::move(callback).Run(false, ImportInfo(), ImportError::kJsonError);
@@ -403,11 +404,11 @@ void ExternalWalletsImporter::GetMnemonic(bool is_legacy_crypto_wallets,
     }
     if (*type != "HD Key Tree")
       continue;
-    const std::string* str_mnemonic = keyring.FindStringPath("data.mnemonic");
+    const std::string* str_mnemonic =
+        keyring.FindStringByDottedPath("data.mnemonic");
     // data.mnemonic is not string, try utf8 encoded byte array
     if (!str_mnemonic) {
-      const auto& dict = keyring.GetDict();
-      const auto* list = dict.FindListByDottedPath("data.mnemonic");
+      const auto* list = keyring.FindListByDottedPath("data.mnemonic");
       std::vector<uint8_t> utf8_encoded_mnemonic;
       if (list) {
         for (const auto& item : *list) {
@@ -427,7 +428,7 @@ void ExternalWalletsImporter::GetMnemonic(bool is_legacy_crypto_wallets,
     } else {
       mnemonic = *str_mnemonic;
     }
-    number_of_accounts = keyring.FindIntPath("data.numberOfAccounts");
+    number_of_accounts = keyring.FindIntByDottedPath("data.numberOfAccounts");
     break;
   }
 
@@ -444,8 +445,7 @@ void ExternalWalletsImporter::GetMnemonic(bool is_legacy_crypto_wallets,
       ImportError::kNone);
 }
 
-void ExternalWalletsImporter::SetStorageDataForTesting(
-    std::unique_ptr<base::DictionaryValue> data) {
+void ExternalWalletsImporter::SetStorageDataForTesting(base::Value::Dict data) {
   storage_data_ = std::move(data);
 }
 

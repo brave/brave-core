@@ -7,9 +7,10 @@
 
 #include "base/command_line.h"
 #include "base/notreached.h"
+#include "base/strings/string_util.h"
 #include "brave/components/skus/browser/pref_names.h"
-#include "brave/components/skus/browser/switches.h"
 #include "components/pref_registry/pref_registry_syncable.h"
+#include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 
 namespace skus {
 
@@ -20,25 +21,16 @@ namespace skus {
 constexpr char kProductTalk[] = "talk";
 constexpr char kProductVPN[] = "vpn";
 
-std::string GetEnvironment() {
-  auto* cmd = base::CommandLine::ForCurrentProcess();
-  if (!cmd->HasSwitch(switches::kSkusEnv)) {
+std::string GetDefaultEnvironment() {
 #if defined(OFFICIAL_BUILD)
     return kEnvProduction;
 #else
     return kEnvDevelopment;
 #endif
-  }
-
-  const std::string value = cmd->GetSwitchValueASCII(switches::kSkusEnv);
-  DCHECK(value == kEnvProduction || value == kEnvStaging ||
-         value == kEnvDevelopment);
-  return value;
 }
 
-std::string GetDomain(std::string prefix) {
-  std::string environment = GetEnvironment();
-
+std::string GetDomain(const std::string& prefix,
+                      const std::string& environment) {
   DCHECK(prefix == kProductTalk || prefix == kProductVPN);
 
   if (environment == kEnvProduction) {
@@ -51,6 +43,19 @@ std::string GetDomain(std::string prefix) {
 
   NOTREACHED();
 
+  return "";
+}
+
+std::string GetEnvironmentForDomain(const std::string& domain) {
+  auto base_domain = net::registry_controlled_domains::GetDomainAndRegistry(
+      domain, net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES);
+  if (base_domain == "brave.com")
+    return kEnvProduction;
+  if (base_domain == "bravesoftware.com")
+    return kEnvStaging;
+  if (base_domain == "brave.software")
+    return kEnvDevelopment;
+  NOTIMPLEMENTED();
   return "";
 }
 

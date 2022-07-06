@@ -13,18 +13,17 @@
 #include "bat/ads/internal/serving/serving_features.h"
 
 namespace ads {
+namespace new_tab_page_ads {
 
 namespace {
 constexpr base::TimeDelta kTimeConstraint = base::Days(1);
 }  // namespace
 
-NewTabPageAdsPerDayPermissionRule::NewTabPageAdsPerDayPermissionRule() =
-    default;
+AdsPerDayPermissionRule::AdsPerDayPermissionRule() = default;
 
-NewTabPageAdsPerDayPermissionRule::~NewTabPageAdsPerDayPermissionRule() =
-    default;
+AdsPerDayPermissionRule::~AdsPerDayPermissionRule() = default;
 
-bool NewTabPageAdsPerDayPermissionRule::ShouldAllow() {
+bool AdsPerDayPermissionRule::ShouldAllow() {
   const std::vector<base::Time>& history =
       GetAdEvents(AdType::kNewTabPageAd, ConfirmationType::kServed);
 
@@ -36,14 +35,15 @@ bool NewTabPageAdsPerDayPermissionRule::ShouldAllow() {
   return true;
 }
 
-std::string NewTabPageAdsPerDayPermissionRule::GetLastMessage() const {
+std::string AdsPerDayPermissionRule::GetLastMessage() const {
   return last_message_;
 }
 
-bool NewTabPageAdsPerDayPermissionRule::DoesRespectCap(
+bool AdsPerDayPermissionRule::DoesRespectCap(
     const std::vector<base::Time>& history) {
   return DoesHistoryRespectRollingTimeConstraint(
       history, kTimeConstraint, features::GetMaximumNewTabPageAdsPerDay());
 }
 
+}  // namespace new_tab_page_ads
 }  // namespace ads

@@ -135,6 +135,21 @@
     "message": "「Brave 報酬」發生問題了。請待會再試一次。",
     "description": ""
   },
+  "rewardsLogInToSeeBalance": {
+    "message": "$begin_bold$登入 $provider$ $end_bold$ 即可查看您的餘額",
+    "description": "",
+    "placeholders": {
+      "begin_bold": {
+        "content": "$1"
+      },
+      "provider": {
+        "content": "$2"
+      },
+      "end_bold": {
+        "content": "$3"
+      }
+    }
+  },
   "rewardsPaymentCheckStatus": {
     "message": "查看狀態",
     "description": ""

@@ -46,8 +46,17 @@ bool HistoryItemInfo::FromJson(const std::string& json) {
   }
 
   if (document.HasMember("timestamp_in_seconds")) {
-    created_at =
-        base::Time::FromDoubleT(document["timestamp_in_seconds"].GetDouble());
+    if (document["timestamp_in_seconds"].IsNumber()) {
+      // Migrate legacy timestamp
+      created_at =
+          base::Time::FromDoubleT(document["timestamp_in_seconds"].GetDouble());
+    } else {
+      double timestamp = 0.0;
+      if (base::StringToDouble(document["timestamp_in_seconds"].GetString(),
+                               &timestamp)) {
+        created_at = base::Time::FromDoubleT(timestamp);
+      }
+    }
   }
 
   if (document.HasMember("ad_content")) {
@@ -76,7 +85,9 @@ void SaveToJson(JsonWriter* writer, const HistoryItemInfo& info) {
   writer->StartObject();
 
   writer->String("timestamp_in_seconds");
-  writer->Double(info.created_at.ToDoubleT());
+  const std::string created_at =
+      base::NumberToString(info.created_at.ToDoubleT());
+  writer->String(created_at.c_str());
 
   writer->String("ad_content");
   SaveToJson(writer, info.ad_content);

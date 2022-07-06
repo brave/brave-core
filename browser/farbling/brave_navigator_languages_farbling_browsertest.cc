@@ -37,6 +37,7 @@
 #include "third_party/blink/renderer/core/frame/navigator_language.h"
 
 using brave_shields::ControlType;
+using brave_shields::features::kBraveReduceLanguage;
 using content::TitleWatcher;
 
 namespace {
@@ -48,6 +49,7 @@ class BraveNavigatorLanguagesFarblingBrowserTest : public InProcessBrowserTest {
  public:
   BraveNavigatorLanguagesFarblingBrowserTest()
       : https_server_(net::EmbeddedTestServer::TYPE_HTTPS) {
+    feature_list_.InitAndEnableFeature(kBraveReduceLanguage);
     brave::RegisterPathProvider();
     base::FilePath test_data_dir;
     base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);

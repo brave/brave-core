@@ -41,7 +41,7 @@ TEST_F(BatAdsInlineContentAdsPerDayPermissionRuleTest,
   // Arrange
 
   // Act
-  InlineContentAdsPerDayPermissionRule permission_rule;
+  AdsPerDayPermissionRule permission_rule;
   const bool is_allowed = permission_rule.ShouldAllow();
 
   // Assert
@@ -55,7 +55,7 @@ TEST_F(BatAdsInlineContentAdsPerDayPermissionRuleTest,
   RecordAdEvents(AdType::kInlineContentAd, ConfirmationType::kServed, count);
 
   // Act
-  InlineContentAdsPerDayPermissionRule permission_rule;
+  AdsPerDayPermissionRule permission_rule;
   const bool is_allowed = permission_rule.ShouldAllow();
 
   // Assert
@@ -68,10 +68,10 @@ TEST_F(BatAdsInlineContentAdsPerDayPermissionRuleTest,
   const int count = features::GetMaximumInlineContentAdsPerDay();
   RecordAdEvents(AdType::kInlineContentAd, ConfirmationType::kServed, count);
 
-  FastForwardClockBy(base::Days(1));
+  AdvanceClockBy(base::Days(1));
 
   // Act
-  InlineContentAdsPerDayPermissionRule permission_rule;
+  AdsPerDayPermissionRule permission_rule;
   const bool is_allowed = permission_rule.ShouldAllow();
 
   // Assert
@@ -84,10 +84,10 @@ TEST_F(BatAdsInlineContentAdsPerDayPermissionRuleTest,
   const int count = features::GetMaximumInlineContentAdsPerDay();
   RecordAdEvents(AdType::kInlineContentAd, ConfirmationType::kServed, count);
 
-  FastForwardClockBy(base::Hours(23));
+  AdvanceClockBy(base::Days(1) - base::Seconds(1));
 
   // Act
-  InlineContentAdsPerDayPermissionRule permission_rule;
+  AdsPerDayPermissionRule permission_rule;
   const bool is_allowed = permission_rule.ShouldAllow();
 
   // Assert

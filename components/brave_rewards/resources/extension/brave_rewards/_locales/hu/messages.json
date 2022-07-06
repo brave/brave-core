@@ -135,6 +135,21 @@
     "message": "A Brave Jutalmak problémába ütközött. Próbáld újra később.",
     "description": ""
   },
+  "rewardsLogInToSeeBalance": {
+    "message": "$begin_bold$Lépjen be ide:  $provider$ $end_bold$ hogy megtekinthesse az egyenlegét",
+    "description": "",
+    "placeholders": {
+      "begin_bold": {
+        "content": "$1"
+      },
+      "provider": {
+        "content": "$2"
+      },
+      "end_bold": {
+        "content": "$3"
+      }
+    }
+  },
   "rewardsPaymentCheckStatus": {
     "message": "Állapot ellenőrzése",
     "description": ""

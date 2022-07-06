@@ -15,6 +15,8 @@
 
 class Profile;
 
+namespace brave_federated {
+
 class FederatedInternalsPageHandler;
 
 class FederatedInternalsUI
@@ -46,5 +48,7 @@ class FederatedInternalsUI
 
   WEB_UI_CONTROLLER_TYPE_DECL();
 };
+
+}  // namespace brave_federated
 
 #endif  // BRAVE_BROWSER_UI_WEBUI_BRAVE_FEDERATED_FEDERATED_INTERNALS_UI_H_

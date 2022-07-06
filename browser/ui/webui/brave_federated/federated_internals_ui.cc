@@ -5,7 +5,6 @@
 
 #include "brave/browser/ui/webui/brave_federated/federated_internals_ui.h"
 
-#include <memory>
 #include <utility>
 #include <vector>
 
@@ -24,6 +23,8 @@
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_ui.h"
 #include "content/public/browser/web_ui_data_source.h"
+
+namespace brave_federated {
 
 FederatedInternalsUI::FederatedInternalsUI(content::WebUI* web_ui)
     : MojoWebUIController(web_ui) {
@@ -61,3 +62,5 @@ void FederatedInternalsUI::CreatePageHandler(
       std::make_unique<FederatedInternalsPageHandler>(
           std::move(receiver), std::move(page), profile_);
 }
+
+}  // namespace brave_federated

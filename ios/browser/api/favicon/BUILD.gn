@@ -7,23 +7,26 @@ source_set("favicon") {
   configs += [ "//build/config/compiler:enable_arc" ]
 
   sources = [
-    "favicon_attributes.h",
-    "favicon_attributes.mm",
+    "favicon_driver.h",
+    "favicon_driver.mm",
     "favicon_loader.h",
     "favicon_loader.mm",
-    "favicon_view.h",
-    "favicon_view.mm",
   ]
 
   deps = [
     "//base",
+    "//brave/ios/browser/favicon",
     "//components/favicon/core",
     "//components/favicon_base",
+    "//components/keyed_service/core",
     "//ios/chrome/browser:application_context",
     "//ios/chrome/browser/browser_state",
     "//ios/chrome/browser/favicon",
     "//ios/chrome/common/ui/favicon",
     "//ios/chrome/common/ui/favicon:favicon_constants",
+    "//ios/web/favicon",
+    "//ios/web/js_messaging",
+    "//ios/web/public/js_messaging",
     "//net",
   ]
 

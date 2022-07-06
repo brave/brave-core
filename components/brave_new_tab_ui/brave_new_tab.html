@@ -13,16 +13,10 @@
 <script src="/strings.js"></script>
 <script src="/brave_new_tab.bundle.js"></script>
 <style>
-  #root { height: 100%; }
   body {
-    --default-bg-color: white;
-    background-color: var(--default-bg-color)
+    background: $i18n{backgroundColor};
   }
-  @media (prefers-color-scheme: dark) {
-    body {
-      --default-bg-color: #333639;
-    }
-  }
+  #root { height: 100%; }
 </style>
 </head>
 <body>

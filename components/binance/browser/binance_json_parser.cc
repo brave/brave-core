@@ -31,15 +31,15 @@ bool BinanceJSONParser::GetTokensFromJSON(
           json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
                     base::JSONParserOptions::JSON_PARSE_RFC);
   absl::optional<base::Value>& records_v = value_with_error.value;
-  if (!records_v) {
+  if (!records_v || !records_v->is_dict()) {
     LOG(ERROR) << "Invalid response, could not parse JSON, JSON is: " << json;
     return false;
   }
 
-  const base::Value* token = records_v->FindKey(type);
+  const auto* token = records_v->GetDict().FindString(type);
 
-  if (token && token->is_string()) {
-    *value = token->GetString();
+  if (token) {
+    *value = *token;
   }
 
   return true;
@@ -75,37 +75,33 @@ bool BinanceJSONParser::GetAccountBalancesFromJSON(
                     base::JSONParserOptions::JSON_PARSE_RFC);
   absl::optional<base::Value>& records_v = value_with_error.value;
 
-  if (!records_v) {
+  if (!records_v || !records_v->is_dict()) {
     LOG(ERROR) << "Invalid response, could not parse JSON, JSON is: " << json;
     return false;
   }
 
-  const base::Value* pv_arr = records_v->FindKey("data");
-  if (!pv_arr || !pv_arr->is_list()) {
+  const auto* pv_arr = records_v->GetDict().FindList("data");
+  if (!pv_arr) {
     return false;
   }
 
-  for (const base::Value& val : pv_arr->GetList()) {
-    const base::Value* asset = val.FindKey("asset");
-    const base::Value* free_amount = val.FindKey("free");
-    const base::Value* btc_val = val.FindKey("btcValuation");
-    const base::Value* fiat_val = val.FindKey("fiatValuation");
+  for (const base::Value& val : *pv_arr) {
+    DCHECK(val.is_dict());
+    const auto* asset = val.GetDict().FindString("asset");
+    const auto* free_amount = val.GetDict().FindString("free");
+    const auto* btc_val = val.GetDict().FindString("btcValuation");
+    const auto* fiat_val = val.GetDict().FindString("fiatValuation");
 
-    bool has_asset = asset && asset->is_string();
-    bool has_free = free_amount && free_amount->is_string();
-    bool has_btc_val = btc_val && btc_val->is_string();
-    bool has_fiat_val = fiat_val && fiat_val->is_string();
-
-    if (!has_asset || !has_free || !has_btc_val || !has_fiat_val) {
+    if (!asset || !free_amount || !btc_val || !fiat_val) {
       continue;
     }
 
     std::vector<std::string> balance_data;
-    balance_data.push_back(free_amount->GetString());
-    balance_data.push_back(btc_val->GetString());
-    balance_data.push_back(fiat_val->GetString());
+    balance_data.push_back(*free_amount);
+    balance_data.push_back(*btc_val);
+    balance_data.push_back(*fiat_val);
 
-    balances->insert({asset->GetString(), balance_data});
+    balances->insert({*asset, balance_data});
   }
 
   return true;
@@ -140,27 +136,36 @@ bool BinanceJSONParser::GetQuoteInfoFromJSON(
           json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
                     base::JSONParserOptions::JSON_PARSE_RFC);
   absl::optional<base::Value>& records_v = value_with_error.value;
-  if (!records_v) {
+  if (!records_v || !records_v->is_dict()) {
     LOG(ERROR) << "Invalid response, could not parse JSON, JSON is: " << json;
     return false;
   }
 
-  const base::DictionaryValue* response_dict;
-  if (!records_v->GetAsDictionary(&response_dict)) {
+  const auto& response_dict = records_v->GetDict();
+  const auto* data_dict = response_dict.FindDict("data");
+  if (!data_dict) {
     return false;
   }
 
-  const base::DictionaryValue* data_dict;
-  if (!response_dict->GetDictionary("data", &data_dict)) {
-    return false;
-  }
+  // if (!data_dict->GetString("quoteId", quote_id) ||
+  //     !data_dict->GetString("quotePrice", quote_price) ||
+  //     !data_dict->GetString("totalFee", total_fee) ||
+  //     !data_dict->GetString("totalAmount", total_amount)) {
+  //   return false;
+  // }
 
-  if (!data_dict->GetString("quoteId", quote_id) ||
-      !data_dict->GetString("quotePrice", quote_price) ||
-      !data_dict->GetString("totalFee", total_fee) ||
-      !data_dict->GetString("totalAmount", total_amount)) {
+  const auto* local_quote_id = data_dict->FindString("quoteId");
+  const auto* local_quote_price = data_dict->FindString("quotePrice");
+  const auto* local_total_fee = data_dict->FindString("totalFee");
+  const auto* local_total_amount = data_dict->FindString("totalAmount");
+  if (!local_quote_id || !local_quote_price || !local_total_fee ||
+      !local_total_amount)
     return false;
-  }
+
+  *quote_id = *local_quote_id;
+  *quote_price = *local_quote_price;
+  *total_fee = *local_total_fee;
+  *total_amount = *local_total_amount;
 
   return true;
 }
@@ -190,26 +195,26 @@ bool BinanceJSONParser::GetDepositInfoFromJSON(
                     base::JSONParserOptions::JSON_PARSE_RFC);
   absl::optional<base::Value>& records_v = value_with_error.value;
 
-  if (!records_v) {
+  if (!records_v || !records_v->is_dict()) {
     LOG(ERROR) << "Invalid response, could not parse JSON, JSON is: " << json;
     return false;
   }
 
-  const base::DictionaryValue* response_dict;
-  if (!records_v->GetAsDictionary(&response_dict)) {
+  const auto& response_dict = records_v->GetDict();
+  const auto* data_dict = response_dict.FindDict("data");
+  if (!data_dict) {
     return false;
   }
 
-  const base::DictionaryValue* data_dict;
-  if (!response_dict->GetDictionary("data", &data_dict)) {
+  const auto* local_tag = data_dict->FindString("tag");
+  const auto* local_address = data_dict->FindString("address");
+
+  if (!local_tag || !local_address) {
     return false;
   }
 
-  if (!data_dict->GetString("tag", tag) ||
-      !data_dict->GetString("address", address)) {
-    return false;
-  }
-
+  *tag = *local_tag;
+  *address = *local_address;
   return true;
 }
 
@@ -246,24 +251,20 @@ bool BinanceJSONParser::GetConfirmStatusFromJSON(
           json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
                     base::JSONParserOptions::JSON_PARSE_RFC);
   absl::optional<base::Value>& records_v = value_with_error.value;
-  if (!records_v) {
+  if (!records_v || !records_v->is_dict()) {
     LOG(ERROR) << "Invalid response, could not parse JSON, JSON is: " << json;
     return false;
   }
 
-  const base::DictionaryValue* response_dict;
-  if (!records_v->GetAsDictionary(&response_dict)) {
-    return false;
-  }
-
-  const base::DictionaryValue* data_dict;
-  if (!response_dict->GetDictionary("data", &data_dict)) {
-    std::string message;
-    if (!response_dict->GetString("message", &message)) {
+  const auto& response_dict = records_v->GetDict();
+  const auto* data_dict = response_dict.FindDict("data");
+  if (!data_dict) {
+    const auto* message = response_dict.FindString("message");
+    if (!message) {
       return false;
     }
     *success_status = false;
-    *error_message = message;
+    *error_message = *message;
     return true;
   }
 
@@ -316,32 +317,33 @@ bool BinanceJSONParser::GetConvertAssetsFromJSON(const std::string& json,
                     base::JSONParserOptions::JSON_PARSE_RFC);
   absl::optional<base::Value>& records_v = value_with_error.value;
 
-  if (!records_v) {
+  if (!records_v || !records_v->is_dict()) {
     LOG(ERROR) << "Invalid response, could not parse JSON, JSON is: " << json;
     return false;
   }
 
-  const base::Value* data_arr = records_v->FindKey("data");
-  if (data_arr && data_arr->is_list()) {
-    for (const base::Value& val : data_arr->GetList()) {
-      const base::Value* asset_code = val.FindKey("assetCode");
-      if (asset_code && asset_code->is_string()) {
+  const auto* data_arr = records_v->GetDict().FindList("data");
+  if (data_arr) {
+    for (const base::Value& val : *data_arr) {
+      DCHECK(val.is_dict());
+      const auto* asset_symbol = val.GetDict().FindString("assetCode");
+      if (asset_symbol) {
         std::vector<std::map<std::string, std::string>> sub_selectors;
-        std::string asset_symbol = asset_code->GetString();
-        const base::Value* selectors = val.FindKey("subSelector");
-        if (selectors && selectors->is_list()) {
-          for (const base::Value& selector : selectors->GetList()) {
+        const auto* selectors = val.GetDict().FindList("subSelector");
+        if (selectors) {
+          for (const base::Value& selector : *selectors) {
+            DCHECK(selector.is_dict());
             std::map<std::string, std::string> sub_selector;
-            const base::Value* sub_code = selector.FindKey("assetCode");
-            const base::Value* min_limit = selector.FindKey("perTimeMinLimit");
-            if (sub_code && sub_code->is_string() &&
-                min_limit && min_limit->is_string()) {
-              sub_selector.insert({"asset", sub_code->GetString()});
-              sub_selector.insert({"minAmount", min_limit->GetString()});
+            const auto* sub_code = selector.GetDict().FindString("assetCode");
+            const auto* min_limit =
+                selector.GetDict().FindString("perTimeMinLimit");
+            if (sub_code && min_limit) {
+              sub_selector.insert({"asset", *sub_code});
+              sub_selector.insert({"minAmount", *min_limit});
             }
             sub_selectors.push_back(sub_selector);
           }
-          assets->insert({asset_symbol, sub_selectors});
+          assets->insert({*asset_symbol, sub_selectors});
         }
       }
     }
@@ -370,17 +372,13 @@ bool BinanceJSONParser::RevokeTokenFromJSON(
           json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
                     base::JSONParserOptions::JSON_PARSE_RFC);
   absl::optional<base::Value>& records_v = value_with_error.value;
-  if (!records_v) {
+  if (!records_v || !records_v->is_dict()) {
     LOG(ERROR) << "Invalid response, could not parse JSON, JSON is: " << json;
     return false;
   }
 
-  const base::DictionaryValue* response_dict;
-  if (!records_v->GetAsDictionary(&response_dict)) {
-    return false;
-  }
-
-  absl::optional<bool> success_optional = response_dict->FindBoolKey("success");
+  const auto& response_dict = records_v->GetDict();
+  absl::optional<bool> success_optional = response_dict.FindBool("success");
   if (!success_optional.has_value())
     return false;
 
@@ -420,37 +418,35 @@ bool BinanceJSONParser::GetCoinNetworksFromJSON(
                     base::JSONParserOptions::JSON_PARSE_RFC);
   absl::optional<base::Value>& records_v = value_with_error.value;
 
-  if (!records_v) {
+  if (!records_v || !records_v->is_dict()) {
     LOG(ERROR) << "Invalid response, could not parse JSON, JSON is: " << json;
     return false;
   }
 
-  const base::Value* data_arr = records_v->FindKey("data");
-  if (!data_arr || !data_arr->is_list()) {
+  const auto* data_arr = records_v->GetDict().FindList("data");
+  if (!data_arr) {
     return false;
   }
 
-  for (const base::Value& coin : data_arr->GetList()) {
-    const base::Value* coin_name = coin.FindKey("coin");
-    if (!coin_name || !coin_name->is_string()) {
+  for (const base::Value& coin : *data_arr) {
+    DCHECK(coin.is_dict());
+    const auto* coin_name = coin.GetDict().FindString("coin");
+    if (!coin_name) {
       return false;
     }
 
-    const base::Value* network_list = coin.FindKey("networkList");
-    if (!network_list || !network_list->is_list()) {
+    const auto* network_list = coin.GetDict().FindList("networkList");
+    if (!network_list) {
       return false;
     }
 
-    for (const base::Value& network : network_list->GetList()) {
-      const base::Value* network_name = network.FindKey("network");
-      const base::Value* is_default = network.FindKey("isDefault");
-      const bool default_valid =
-          is_default && is_default->is_bool() && is_default->GetBool();
-      const bool network_name_valid =
-          network_name && network_name->is_string();
+    for (const base::Value& network : *network_list) {
+      DCHECK(network.is_dict());
+      const auto* network_name = network.GetDict().FindString("network");
+      const auto is_default = network.GetDict().FindBool("isDefault");
 
-      if (default_valid && network_name_valid) {
-        networks->insert({coin_name->GetString(), network_name->GetString()});
+      if (is_default.has_value() && is_default.value() && network_name) {
+        networks->insert({*coin_name, *network_name});
         break;
       }
     }

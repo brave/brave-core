@@ -15,7 +15,7 @@
 namespace ads {
 
 bool ShouldRewardUser() {
-  return AdsClientHelper::Get()->GetBooleanPref(prefs::kEnabled);
+  return AdsClientHelper::GetInstance()->GetBooleanPref(prefs::kEnabled);
 }
 
 void ResetRewards(ResetRewardsCallback callback) {
@@ -26,13 +26,13 @@ void ResetRewards(ResetRewardsCallback callback) {
       return;
     }
 
-    ConfirmationStateManager::Get()->reset_failed_confirmations();
+    ConfirmationStateManager::GetInstance()->reset_failed_confirmations();
 
     privacy::UnblindedPaymentTokens* unblinded_payment_tokens =
-        ConfirmationStateManager::Get()->get_unblinded_payment_tokens();
+        ConfirmationStateManager::GetInstance()->GetUnblindedPaymentTokens();
     unblinded_payment_tokens->RemoveAllTokens();
 
-    ConfirmationStateManager::Get()->Save();
+    ConfirmationStateManager::GetInstance()->Save();
 
     callback(/* success */ true);
   });

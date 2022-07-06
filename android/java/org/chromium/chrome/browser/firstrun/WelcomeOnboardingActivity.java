@@ -193,6 +193,7 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
             mTvCard.setText(getResources().getString(R.string.p3a_title));
             mBtnPositive.setText(getResources().getString(R.string.continue_text));
             mBtnNegative.setText(getResources().getString(R.string.learn_more_onboarding));
+            mBtnNegative.setVisibility(View.VISIBLE);
 
             if (PackageUtils.isFirstInstall(this)
                     && (getPackageName().equals(BraveConstants.BRAVE_NIGHTLY_PACKAGE_NAME)

@@ -64,13 +64,8 @@ bool GetAdaptiveCaptchaChallenge::ParseBody(const std::string& body,
     return false;
   }
 
-  base::DictionaryValue* dictionary = nullptr;
-  if (!value->GetAsDictionary(&dictionary)) {
-    LOG(ERROR) << "Invalid JSON";
-    return false;
-  }
-
-  const std::string* captcha_id_value = dictionary->FindStringKey("captchaID");
+  const auto& dict = value->GetDict();
+  const std::string* captcha_id_value = dict.FindString("captchaID");
   if (!captcha_id_value) {
     LOG(ERROR) << "Missing captcha id";
     return false;

@@ -7,6 +7,8 @@
 
 #include "base/check.h"
 
+#include "bat/ads/internal/privacy/challenge_bypass_ristretto/token.h"
+
 namespace ads {
 namespace privacy {
 

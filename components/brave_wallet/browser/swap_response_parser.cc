@@ -10,10 +10,10 @@
 
 namespace {
 
-bool ParseResultFromDict(const base::DictionaryValue* response_dict,
+bool ParseResultFromDict(const base::Value::Dict& response_dict,
                          const std::string& key,
                          std::string* output_val) {
-  auto* val = response_dict->FindStringKey(key);
+  const auto* val = response_dict.FindString(key);
   if (!val) {
     return false;
   }
@@ -58,16 +58,12 @@ bool ParseSwapResponse(const std::string& json,
           json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
                     base::JSONParserOptions::JSON_PARSE_RFC);
   auto& records_v = value_with_error.value;
-  if (!records_v) {
+  if (!records_v || !records_v->is_dict()) {
     LOG(ERROR) << "Invalid response, could not parse JSON, JSON is: " << json;
     return false;
   }
 
-  const base::DictionaryValue* response_dict;
-  if (!records_v->GetAsDictionary(&response_dict)) {
-    return false;
-  }
-
+  const auto& response_dict = records_v->GetDict();
   if (!ParseResultFromDict(response_dict, "price", &response->price))
     return false;
 

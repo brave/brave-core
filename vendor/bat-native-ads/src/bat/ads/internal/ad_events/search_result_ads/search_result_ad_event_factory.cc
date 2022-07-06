@@ -5,6 +5,7 @@
 
 #include "bat/ads/internal/ad_events/search_result_ads/search_result_ad_event_factory.h"
 
+#include "base/check.h"
 #include "bat/ads/internal/ad_events/search_result_ads/search_result_ad_event_clicked.h"
 #include "bat/ads/internal/ad_events/search_result_ads/search_result_ad_event_served.h"
 #include "bat/ads/internal/ad_events/search_result_ads/search_result_ad_event_viewed.h"
@@ -15,6 +16,8 @@ namespace search_result_ads {
 
 std::unique_ptr<AdEventInterface<SearchResultAdInfo>> AdEventFactory::Build(
     const mojom::SearchResultAdEventType event_type) {
+  DCHECK(mojom::IsKnownEnumValue(event_type));
+
   switch (event_type) {
     case mojom::SearchResultAdEventType::kServed: {
       return std::make_unique<AdEventServed>();

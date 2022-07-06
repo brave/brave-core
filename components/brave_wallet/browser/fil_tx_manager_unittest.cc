@@ -136,15 +136,18 @@ class FilTxManagerUnitTest : public testing::Test {
       absl::optional<std::string> expected_message) {
     base::RunLoop run_loop;
     fil_tx_manager()->GetTransactionMessageToSign(
-        tx_meta_id, base::BindLambdaForTesting(
-                        [&](const absl::optional<std::string>& message) {
-                          EXPECT_EQ(message.has_value(),
-                                    expected_message.has_value());
-                          if (expected_message.has_value()) {
-                            EqualJSONs(*message, *expected_message);
-                          }
-                          run_loop.Quit();
-                        }));
+        tx_meta_id,
+        base::BindLambdaForTesting([&](mojom::MessageToSignUnionPtr message) {
+          EXPECT_EQ(!!message, expected_message.has_value());
+          if (expected_message.has_value()) {
+            ASSERT_TRUE(message->is_message_str());
+            absl::optional<std::string> message_str =
+                message->get_message_str();
+            EqualJSONs(*message_str, *expected_message);
+            EXPECT_EQ(message_str.has_value(), expected_message.has_value());
+          }
+          run_loop.Quit();
+        }));
     run_loop.Run();
   }
 

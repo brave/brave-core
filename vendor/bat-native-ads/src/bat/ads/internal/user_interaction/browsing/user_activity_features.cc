@@ -15,7 +15,7 @@ namespace features {
 
 namespace {
 
-constexpr char kFeatureName[] = "UserActivityManager";
+constexpr char kFeatureName[] = "UserActivity";
 
 constexpr char kFieldTrialParameterTriggers[] = "triggers";
 constexpr char kDefaultTriggers[] = "01=.5;02=.5;08=1;09=1;0D=1;0E=1";

@@ -469,60 +469,6 @@ void DatabasePromotion::OnGetRecords(
   callback(std::move(list));
 }
 
-void DatabasePromotion::GetRecordsByType(
-    const std::vector<type::PromotionType>& types,
-    client::GetPromotionListCallback callback) {
-  if (types.empty()) {
-    BLOG(1, "List of types is empty");
-    callback({});
-    return;
-  }
-  auto transaction = type::DBTransaction::New();
-
-  std::vector<std::string> in_case;
-
-  for (const auto& type : types) {
-    in_case.push_back(std::to_string(static_cast<int>(type)));
-  }
-
-  const std::string query = base::StringPrintf(
-      "SELECT promotion_id, version, type, public_keys, suggestions, "
-      "approximate_value, status, created_at, claimable_until, expires_at, "
-      "claimed_at, claim_id, legacy "
-      "FROM %s WHERE type IN (%s)",
-      kTableName, base::JoinString(in_case, ",").c_str());
-
-  auto command = type::DBCommand::New();
-  command->type = type::DBCommand::Type::READ;
-  command->command = query;
-
-  command->record_bindings = {type::DBCommand::RecordBindingType::STRING_TYPE,
-                              type::DBCommand::RecordBindingType::INT_TYPE,
-                              type::DBCommand::RecordBindingType::INT_TYPE,
-                              type::DBCommand::RecordBindingType::STRING_TYPE,
-                              type::DBCommand::RecordBindingType::INT64_TYPE,
-                              type::DBCommand::RecordBindingType::DOUBLE_TYPE,
-                              type::DBCommand::RecordBindingType::INT_TYPE,
-                              type::DBCommand::RecordBindingType::INT64_TYPE,
-                              type::DBCommand::RecordBindingType::INT64_TYPE,
-                              type::DBCommand::RecordBindingType::INT64_TYPE,
-                              type::DBCommand::RecordBindingType::INT64_TYPE,
-                              type::DBCommand::RecordBindingType::STRING_TYPE,
-                              type::DBCommand::RecordBindingType::BOOL_TYPE};
-
-  transaction->commands.push_back(std::move(command));
-
-  auto transaction_callback =
-      std::bind(&DatabasePromotion::OnGetRecords,
-          this,
-          _1,
-          callback);
-
-  ledger_->ledger_client()->RunDBTransaction(
-      std::move(transaction),
-      transaction_callback);
-}
-
 void DatabasePromotion::UpdateRecordsBlankPublicKey(
     const std::vector<std::string>& ids,
     ledger::ResultCallback callback) {

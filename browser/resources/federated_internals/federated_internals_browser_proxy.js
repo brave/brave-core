@@ -1,4 +1,4 @@
-import {PageCallbackRouter, PageHandlerFactory, PageHandlerRemote} from './federated_internals.mojom-webui.js';
+import {PageCallbackRouter, PageHandlerFactory, PageHandlerRemote} from './brave/browser/ui/webui/brave_federated/federated_internals.mojom-webui.js';
 
 export class FederatedInternalsBrowserProxy {
   handler;
@@ -13,8 +13,8 @@ export class FederatedInternalsBrowserProxy {
         this.handler.$.bindNewPipeAndPassReceiver());
   }
 
-  getAdStoreInfo() {
-    return this.handler.getAdStoreInfo();
+  updateDataStoresInfo() {
+    return this.handler.updateDataStoresInfo();
   }
 
   static getInstance() {

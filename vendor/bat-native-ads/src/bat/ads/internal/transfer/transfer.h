@@ -7,6 +7,7 @@
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_TRANSFER_TRANSFER_H_
 
 #include <cstdint>
+#include <string>
 #include <vector>
 
 #include "base/observer_list.h"
@@ -33,7 +34,7 @@ class Transfer final : public TabManagerObserver {
   void AddObserver(TransferObserver* observer);
   void RemoveObserver(TransferObserver* observer);
 
-  void set_last_clicked_ad(const AdInfo& ad) { last_clicked_ad_ = ad; }
+  void SetLastClickedAd(const AdInfo& ad) { last_clicked_ad_ = ad; }
 
   void MaybeTransferAd(const int32_t tab_id,
                        const std::vector<GURL>& redirect_chain);
@@ -46,12 +47,17 @@ class Transfer final : public TabManagerObserver {
 
   void Cancel(const int32_t tab_id);
 
+  void FailedToTransferAd(const AdInfo& ad) const;
+
   void NotifyWillTransferAd(const AdInfo& ad, const base::Time time) const;
   void NotifyDidTransferAd(const AdInfo& ad) const;
   void NotifyCancelledTransfer(const AdInfo& ad, const int32_t tab_id) const;
   void NotifyFailedToTransferAd(const AdInfo& ad) const;
 
   // TabManagerObserver:
+  void OnHtmlContentDidChange(const int32_t id,
+                              const std::vector<GURL>& redirect_chain,
+                              const std::string& content) override;
   void OnDidCloseTab(const int32_t id) override;
 
   base::ObserverList<TransferObserver> observers_;

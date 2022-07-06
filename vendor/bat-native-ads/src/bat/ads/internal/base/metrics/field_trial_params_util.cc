@@ -42,7 +42,7 @@ base::TimeDelta GetFieldTrialParamByFeatureAsTimeDelta(
   const absl::optional<base::TimeDelta> time_delta =
       base::TimeDeltaFromString(value);
   if (!time_delta.has_value()) {
-    BLOG(1, "Failed to parse field trial param "
+    BLOG(0, "Failed to parse field trial param "
                 << param_name << " with string value " << value
                 << " under feature " << feature.name
                 << " into a base::TimeDelta. Falling back to default value of "

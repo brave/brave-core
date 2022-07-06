@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
 #include "build/build_config.h"
+#include "chrome/browser/content_settings/cookie_settings_factory.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/test/base/chrome_test_utils.h"
@@ -35,6 +36,10 @@ class CookiePrefServiceTest : public PlatformBrowserTest {
     return HostContentSettingsMapFactory::GetForProfile(profile());
   }
 
+  scoped_refptr<content_settings::CookieSettings> cookie_settings() {
+    return CookieSettingsFactory::GetForProfile(profile());
+  }
+
   ContentSetting GetCookiePref() {
     return IntToContentSetting(profile()->GetPrefs()->GetInteger(
         "profile.default_content_setting_values.cookies"));
@@ -56,62 +61,45 @@ class CookiePrefServiceTest : public PlatformBrowserTest {
 
 IN_PROC_BROWSER_TEST_F(CookiePrefServiceTest, CookieControlType_Preference) {
   // Initial state
-  auto setting =
-      brave_shields::GetCookieControlType(content_settings(), GURL());
+  auto setting = brave_shields::GetCookieControlType(
+      content_settings(), cookie_settings().get(), GURL());
   EXPECT_EQ(ControlType::BLOCK_THIRD_PARTY, setting);
-  EXPECT_EQ(CONTENT_SETTING_ALLOW, GetCookiePref());
-
-  // Control -> preference
-  /* BLOCK */
-  brave_shields::SetCookieControlType(content_settings(),
-                                      ControlType::BLOCK,
-                                      GURL());
-  EXPECT_EQ(CONTENT_SETTING_BLOCK, GetCookiePref());
-
-  /* ALLOW */
-  brave_shields::SetCookieControlType(content_settings(),
-                                      ControlType::ALLOW,
-                                      GURL());
-  EXPECT_EQ(CONTENT_SETTING_ALLOW, GetCookiePref());
-
-  /* BLOCK_THIRD_PARTY */
-  brave_shields::SetCookieControlType(content_settings(),
-                                      ControlType::BLOCK,
-                                      GURL());
-  EXPECT_EQ(CONTENT_SETTING_BLOCK, GetCookiePref());
-  brave_shields::SetCookieControlType(content_settings(),
-                                      ControlType::BLOCK_THIRD_PARTY,
-                                      GURL());
   EXPECT_EQ(CONTENT_SETTING_ALLOW, GetCookiePref());
 
   // Preference -> control
   /* BLOCK */
   SetCookiePref(CONTENT_SETTING_BLOCK);
   EXPECT_EQ(ControlType::BLOCK,
-            brave_shields::GetCookieControlType(content_settings(), GURL()));
+            brave_shields::GetCookieControlType(
+                content_settings(), cookie_settings().get(), GURL()));
 
   /* ALLOW */
   SetCookiePref(CONTENT_SETTING_ALLOW);
   SetThirdPartyCookiePref(false);
   EXPECT_EQ(ControlType::ALLOW,
-            brave_shields::GetCookieControlType(content_settings(), GURL()));
+            brave_shields::GetCookieControlType(
+                content_settings(), cookie_settings().get(), GURL()));
 
   /* BLOCK_THIRD_PARTY */
   SetCookiePref(CONTENT_SETTING_ALLOW);
   SetThirdPartyCookiePref(true);
   EXPECT_EQ(ControlType::BLOCK_THIRD_PARTY,
-            brave_shields::GetCookieControlType(content_settings(), GURL()));
+            brave_shields::GetCookieControlType(
+                content_settings(), cookie_settings().get(), GURL()));
 
   // Preserve CONTENT_SETTING_SESSION_ONLY
   SetCookiePref(CONTENT_SETTING_BLOCK);
   EXPECT_EQ(ControlType::BLOCK,
-            brave_shields::GetCookieControlType(content_settings(), GURL()));
+            brave_shields::GetCookieControlType(
+                content_settings(), cookie_settings().get(), GURL()));
   SetCookiePref(CONTENT_SETTING_SESSION_ONLY);
   SetThirdPartyCookiePref(false);
   EXPECT_EQ(ControlType::ALLOW,
-            brave_shields::GetCookieControlType(content_settings(), GURL()));
+            brave_shields::GetCookieControlType(
+                content_settings(), cookie_settings().get(), GURL()));
   SetCookiePref(CONTENT_SETTING_ALLOW);
   SetThirdPartyCookiePref(false);
   EXPECT_EQ(ControlType::ALLOW,
-            brave_shields::GetCookieControlType(content_settings(), GURL()));
+            brave_shields::GetCookieControlType(
+                content_settings(), cookie_settings().get(), GURL()));
 }

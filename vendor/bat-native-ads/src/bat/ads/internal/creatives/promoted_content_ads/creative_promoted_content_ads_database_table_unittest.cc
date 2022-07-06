@@ -8,6 +8,7 @@
 #include "bat/ads/internal/base/containers/container_util.h"
 #include "bat/ads/internal/base/unittest/unittest_base.h"
 #include "bat/ads/internal/base/unittest/unittest_time_util.h"
+#include "url/gurl.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
@@ -115,7 +116,7 @@ TEST_F(BatAdsCreativePromotedContentAdsDatabaseTableTest,
 TEST_F(BatAdsCreativePromotedContentAdsDatabaseTableTest,
        SaveCreativePromotedContentAdsInBatches) {
   // Arrange
-  database_table_->set_batch_size(2);
+  database_table_->SetBatchSize(2);
 
   CreativeDaypartInfo daypart_info;
   CreativePromotedContentAdList creative_promoted_content_ads;
@@ -691,7 +692,7 @@ TEST_F(BatAdsCreativePromotedContentAdsDatabaseTableTest,
   Save(creative_promoted_content_ads);
 
   // Act
-  FastForwardClockBy(base::Hours(1));
+  AdvanceClockBy(base::Hours(1));
 
   // Assert
   CreativePromotedContentAdList expected_creative_promoted_content_ads;

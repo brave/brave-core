@@ -18,6 +18,8 @@ struct ADS_EXPORT NewTabPageAdWallpaperInfo final {
   NewTabPageAdWallpaperInfo& operator=(const NewTabPageAdWallpaperInfo& info);
   ~NewTabPageAdWallpaperInfo();
 
+  bool operator==(const NewTabPageAdWallpaperInfo& rhs) const;
+
   GURL image_url;
   NewTabPageAdWallpaperFocalPointInfo focal_point;
 };

@@ -9,6 +9,11 @@ namespace translate {
 
 const char kBraveTranslateOrigin[] = "https://translate.brave.com";
 const char kBraveTranslateScriptURL[] =
-    "https://translate.brave.com/static/element.js";
+    "https://translate.brave.com/static/v1/element.js";
+
+// The used version of translate static resources (js/css files).
+// Used in brave_translate.js as a replacement to /translate_static/ part in
+// original script URLs.
+const char kBraveTranslateStaticPath[] = "/static/v1/";
 
 }  // namespace translate

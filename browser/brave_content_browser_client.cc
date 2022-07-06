@@ -67,7 +67,7 @@
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/sidebar/buildflags/buildflags.h"
 #include "brave/components/skus/common/skus_sdk.mojom.h"
-#include "brave/components/speedreader/buildflags.h"
+#include "brave/components/speedreader/common/buildflags.h"
 #include "brave/components/speedreader/speedreader_util.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "brave/components/translate/core/common/brave_translate_switches.h"
@@ -171,6 +171,7 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN) && !BUILDFLAG(IS_ANDROID)
+#include "brave/browser/brave_vpn/brave_vpn_service_factory.h"
 #include "brave/browser/ui/webui/brave_vpn/vpn_panel_ui.h"
 #include "brave/components/brave_vpn/brave_vpn_utils.h"
 #include "brave/components/brave_vpn/mojom/brave_vpn.mojom.h"
@@ -195,7 +196,9 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #include "brave/browser/ui/webui/brave_wallet/wallet_page_ui.h"
 #include "brave/browser/ui/webui/brave_wallet/wallet_panel_ui.h"
 #include "brave/browser/ui/webui/new_tab_page/brave_new_tab_ui.h"
+#include "brave/browser/ui/webui/private_new_tab_page/brave_private_new_tab_ui.h"
 #include "brave/components/brave_new_tab_ui/brave_new_tab_page.mojom.h"
+#include "brave/components/brave_private_new_tab_ui/common/brave_private_new_tab.mojom.h"
 #include "brave/components/brave_shields/common/brave_shields_panel.mojom.h"
 #include "brave/components/brave_today/common/brave_news.mojom.h"
 #include "brave/components/brave_today/common/features.h"
@@ -369,6 +372,15 @@ void BindBraveSearchDefaultHost(
   }
 }
 
+#if BUILDFLAG(ENABLE_BRAVE_VPN) && !BUILDFLAG(IS_ANDROID)
+void MaybeBindBraveVpnImpl(
+    content::RenderFrameHost* const frame_host,
+    mojo::PendingReceiver<brave_vpn::mojom::ServiceHandler> receiver) {
+  auto* context = frame_host->GetBrowserContext();
+  brave_vpn::BraveVpnServiceFactory::BindForContext(context,
+                                                    std::move(receiver));
+}
+#endif
 void MaybeBindSkusSdkImpl(
     content::RenderFrameHost* const frame_host,
     mojo::PendingReceiver<skus::mojom::SkusService> receiver) {
@@ -437,6 +449,17 @@ void BraveContentBrowserClient::
             std::move(receiver), render_frame_host);
       },
       &render_frame_host));
+
+#if BUILDFLAG(ENABLE_SPEEDREADER)
+  associated_registry.AddInterface(base::BindRepeating(
+      [](content::RenderFrameHost* render_frame_host,
+         mojo::PendingAssociatedReceiver<speedreader::mojom::SpeedreaderHost>
+             receiver) {
+        speedreader::SpeedreaderTabHelper::BindSpeedreaderHost(
+            std::move(receiver), render_frame_host);
+      },
+      &render_frame_host));
+#endif
 
   ChromeContentBrowserClient::
       RegisterAssociatedInterfaceBindersForRenderFrameHost(render_frame_host,
@@ -527,22 +550,24 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
 
   map->Add<skus::mojom::SkusService>(
       base::BindRepeating(&MaybeBindSkusSdkImpl));
-
+#if BUILDFLAG(ENABLE_BRAVE_VPN) && !BUILDFLAG(IS_ANDROID)
+  map->Add<brave_vpn::mojom::ServiceHandler>(
+      base::BindRepeating(&MaybeBindBraveVpnImpl));
+#endif
 #if !BUILDFLAG(IS_ANDROID)
   chrome::internal::RegisterWebUIControllerInterfaceBinder<
       brave_wallet::mojom::PanelHandlerFactory, WalletPanelUI>(map);
   chrome::internal::RegisterWebUIControllerInterfaceBinder<
       brave_wallet::mojom::PageHandlerFactory, WalletPageUI>(map);
-  if (base::FeatureList::IsEnabled(
-          brave_shields::features::kBraveShieldsPanelV2)) {
-    chrome::internal::RegisterWebUIControllerInterfaceBinder<
-        brave_shields::mojom::PanelHandlerFactory, ShieldsPanelUI>(map);
-  }
+  chrome::internal::RegisterWebUIControllerInterfaceBinder<
+      brave_private_new_tab::mojom::PageHandler, BravePrivateNewTabUI>(map);
+  chrome::internal::RegisterWebUIControllerInterfaceBinder<
+      brave_shields::mojom::PanelHandlerFactory, ShieldsPanelUI>(map);
   if (base::FeatureList::IsEnabled(
           brave_federated::features::kFederatedLearning)) {
     chrome::internal::RegisterWebUIControllerInterfaceBinder<
-        federated_internals::mojom::PageHandlerFactory, FederatedInternalsUI>(
-        map);
+        federated_internals::mojom::PageHandlerFactory,
+        brave_federated::FederatedInternalsUI>(map);
   }
 #endif
 
@@ -802,7 +827,7 @@ void BraveContentBrowserClient::MaybeHideReferrer(
   }
 
   Profile* profile = Profile::FromBrowserContext(browser_context);
-  const bool allow_referrers = brave_shields::AllowReferrers(
+  const bool allow_referrers = brave_shields::AreReferrersAllowed(
       HostContentSettingsMapFactory::GetForProfile(profile), document_url);
   const bool shields_up = brave_shields::GetBraveShieldsEnabled(
       HostContentSettingsMapFactory::GetForProfile(profile), document_url);

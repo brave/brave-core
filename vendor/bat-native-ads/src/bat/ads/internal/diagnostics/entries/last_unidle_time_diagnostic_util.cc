@@ -19,7 +19,7 @@ void SetLastUnIdleTimeDiagnosticEntry() {
       std::make_unique<LastUnIdleTimeDiagnosticEntry>();
   last_unidle_time_diagnostic_entry->SetLastUnIdleTime(base::Time::Now());
 
-  DiagnosticManager::Get()->SetEntry(
+  DiagnosticManager::GetInstance()->SetEntry(
       std::move(last_unidle_time_diagnostic_entry));
 }
 

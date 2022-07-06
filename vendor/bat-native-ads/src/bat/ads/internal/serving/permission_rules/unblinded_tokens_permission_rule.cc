@@ -38,7 +38,7 @@ bool UnblindedTokensPermissionRule::DoesRespectCap() {
   }
 
   const int count =
-      ConfirmationStateManager::Get()->get_unblinded_tokens()->Count();
+      ConfirmationStateManager::GetInstance()->GetUnblindedTokens()->Count();
   if (count < kUnblindedTokensMinimumThreshold) {
     return false;
   }

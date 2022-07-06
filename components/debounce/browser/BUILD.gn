@@ -19,11 +19,13 @@ source_set("browser") {
     "//brave/components/debounce/common",
     "//brave/extensions:common",
     "//components/content_settings/core/browser",
+    "//components/prefs:prefs",
     "//content/public/browser",
     "//content/public/common",
     "//services/network/public/cpp",
     "//services/network/public/mojom",
     "//third_party/blink/public/common",
+    "//third_party/re2:re2",
     "//url",
   ]
 }

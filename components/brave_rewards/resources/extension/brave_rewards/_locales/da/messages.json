@@ -135,6 +135,21 @@
     "message": "Brave Rewards har et problem. Prøv venligst igen senere. ",
     "description": ""
   },
+  "rewardsLogInToSeeBalance": {
+    "message": "$begin_bold$Log ind i $provider$ $end_bold$for at se din saldo",
+    "description": "",
+    "placeholders": {
+      "begin_bold": {
+        "content": "$1"
+      },
+      "provider": {
+        "content": "$2"
+      },
+      "end_bold": {
+        "content": "$3"
+      }
+    }
+  },
   "rewardsPaymentCheckStatus": {
     "message": "Kontrollér status",
     "description": ""

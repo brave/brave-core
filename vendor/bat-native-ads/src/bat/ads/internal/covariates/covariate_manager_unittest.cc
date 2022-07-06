@@ -7,6 +7,7 @@
 
 #include "bat/ads/internal/base/unittest/unittest_base.h"
 #include "bat/ads/internal/base/unittest/unittest_time_util.h"
+#include "bat/ads/internal/covariates/log_entries/notification_ad_event.h"
 
 // npm run test -- brave_unit_tests --filter=BatAdsCovariateManagerTest*
 
@@ -23,24 +24,25 @@ TEST_F(BatAdsCovariateManagerTest, GetTrainingInstance) {
   // Arrange
 
   // Act
-  brave_federated::mojom::TrainingInstancePtr training_covariates =
-      CovariateManager::Get()->GetTrainingInstance();
+  std::vector<brave_federated::mojom::CovariatePtr> training_covariates =
+      CovariateManager::GetInstance()->GetTrainingInstance();
 
   // Assert
-  EXPECT_EQ(30U, training_covariates->covariates.size());
+  EXPECT_EQ(30U, training_covariates.size());
 }
 
 TEST_F(BatAdsCovariateManagerTest, GetTrainingInstanceWithSetters) {
   // Arrange
-  CovariateManager::Get()->SetNotificationAdServedAt(Now());
-  CovariateManager::Get()->SetNotificationAdClicked(true);
+  CovariateManager::GetInstance()->SetNotificationAdServedAt(Now());
+  CovariateManager::GetInstance()->SetNotificationAdEvent(
+      mojom::NotificationAdEventType::kClicked);
 
   // Act
-  brave_federated::mojom::TrainingInstancePtr training_covariates =
-      CovariateManager::Get()->GetTrainingInstance();
+  std::vector<brave_federated::mojom::CovariatePtr> training_covariates =
+      CovariateManager::GetInstance()->GetTrainingInstance();
 
   // Assert
-  EXPECT_EQ(32U, training_covariates->covariates.size());
+  EXPECT_EQ(32U, training_covariates.size());
 }
 
 }  // namespace ads

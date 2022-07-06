@@ -32,10 +32,12 @@ class RedeemUnblindedTokenDelegate {
       const privacy::UnblindedPaymentTokenInfo& unblinded_payment_token) {}
 
   // Invoked to tell the delegate unblinded token redemption failed for the
-  // corresponding |confirmation| and whether we should retry
+  // corresponding |confirmation| and whether we should retry and backoff for
+  // subsequent failures
   virtual void OnFailedToRedeemUnblindedToken(
       const ConfirmationInfo& confirmation,
-      const bool should_retry) {}
+      const bool should_retry,
+      const bool should_backoff) {}
 };
 
 }  // namespace ads

@@ -19,14 +19,14 @@
 namespace ads {
 namespace privacy {
 
-UnblindedPaymentTokens* get_unblinded_payment_tokens() {
-  return ConfirmationStateManager::Get()->get_unblinded_payment_tokens();
+UnblindedPaymentTokens* GetUnblindedPaymentTokens() {
+  return ConfirmationStateManager::GetInstance()->GetUnblindedPaymentTokens();
 }
 
 UnblindedPaymentTokenList SetUnblindedPaymentTokens(const int count) {
   const UnblindedPaymentTokenList& unblinded_payment_tokens =
       GetUnblindedPaymentTokens(count);
-  get_unblinded_payment_tokens()->SetTokens(unblinded_payment_tokens);
+  GetUnblindedPaymentTokens()->SetTokens(unblinded_payment_tokens);
   return unblinded_payment_tokens;
 }
 

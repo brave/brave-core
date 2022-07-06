@@ -5,8 +5,6 @@
 
 #include "brave/components/brave_federated/brave_federated_service.h"
 
-#include <memory>
-#include <string>
 #include <utility>
 
 #include "base/logging.h"

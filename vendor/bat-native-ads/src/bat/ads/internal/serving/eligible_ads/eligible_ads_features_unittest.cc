@@ -30,7 +30,7 @@ TEST(BatAdsEligibleAdsFeaturesTest, AdFeatureWeightLength) {
   // Arrange
 
   // Act
-  const AdPredictorWeights weights = GetAdPredictorWeights();
+  const AdPredictorWeightList weights = GetAdPredictorWeights();
 
   // Assert
   EXPECT_EQ(kNumberOfServingFeatures, weights.size());
@@ -40,10 +40,10 @@ TEST(BatAdsEligibleAdsFeaturesTest, DefaultAdFeatureWeights) {
   // Arrange
 
   // Act
-  const AdPredictorWeights weights = GetAdPredictorWeights();
+  const AdPredictorWeightList weights = GetAdPredictorWeights();
 
   // Assert
-  AdPredictorWeights expected_weights = {1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0};
+  AdPredictorWeightList expected_weights = {1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0};
   EXPECT_EQ(expected_weights, weights);
 }
 

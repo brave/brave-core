@@ -1,6 +1,5 @@
 include_rules = [
-  "+bat/ads/pref_names.h",
-  "+bat/ads/public",
+  "+bat/ads",
   "+content/public/browser",
   "+content/public/common",
   "+third_party/skia",

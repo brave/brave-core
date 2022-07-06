@@ -18,9 +18,9 @@
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/base/logging_util.h"
 #include "bat/ads/internal/deprecated/client/client_info.h"
+#include "bat/ads/internal/deprecated/client/client_state_manager_constants.h"
 #include "bat/ads/internal/deprecated/json/json_helper.h"
 #include "bat/ads/internal/features/text_classification_features.h"
-#include "bat/ads/internal/history/history.h"
 #include "bat/ads/internal/history/history_constants.h"
 #include "bat/ads/internal/resources/behavioral/purchase_intent/purchase_intent_signal_history_info.h"
 #include "bat/ads/internal/serving/serving_features.h"
@@ -83,12 +83,12 @@ uint64_t GenerateHash(const std::string& value) {
 }
 
 void SetHash(const std::string& value) {
-  AdsClientHelper::Get()->SetUint64Pref(prefs::kClientHash,
-                                        GenerateHash(value));
+  AdsClientHelper::GetInstance()->SetUint64Pref(prefs::kClientHash,
+                                                GenerateHash(value));
 }
 
 bool IsMutated(const std::string& value) {
-  return AdsClientHelper::Get()->GetUint64Pref(prefs::kClientHash) !=
+  return AdsClientHelper::GetInstance()->GetUint64Pref(prefs::kClientHash) !=
          GenerateHash(value);
 }
 
@@ -105,7 +105,7 @@ ClientStateManager::~ClientStateManager() {
 }
 
 // static
-ClientStateManager* ClientStateManager::Get() {
+ClientStateManager* ClientStateManager::GetInstance() {
   DCHECK(g_client_instance);
   return g_client_instance;
 }
@@ -145,12 +145,11 @@ void ClientStateManager::AppendHistory(const HistoryItemInfo& history_item) {
 
   client_->history.push_front(history_item);
 
-  const base::Time distant_past =
-      base::Time::Now() - base::Days(history::kDays);
+  const base::Time distant_past = base::Time::Now() - kHistoryTimeWindow;
 
   const auto iter =
       std::remove_if(client_->history.begin(), client_->history.end(),
-                     [&distant_past](const HistoryItemInfo& history_item) {
+                     [distant_past](const HistoryItemInfo& history_item) {
                        return history_item.created_at < distant_past;
                      });
 
@@ -498,7 +497,7 @@ base::Time ClientStateManager::GetServeAdAt() {
 }
 
 void ClientStateManager::AppendTextClassificationProbabilitiesToHistory(
-    const targeting::TextClassificationProbabilitiesMap& probabilities) {
+    const targeting::TextClassificationProbabilityMap& probabilities) {
   DCHECK(is_initialized_);
 
   client_->text_classification_probabilities.push_front(probabilities);
@@ -512,7 +511,7 @@ void ClientStateManager::AppendTextClassificationProbabilitiesToHistory(
   Save();
 }
 
-const targeting::TextClassificationProbabilitiesList&
+const targeting::TextClassificationProbabilityList&
 ClientStateManager::GetTextClassificationProbabilitiesHistory() {
   DCHECK(is_initialized_);
 
@@ -552,13 +551,15 @@ void ClientStateManager::Save() {
 
   BLOG(9, "Saving client state");
 
-  auto json = client_->ToJson();
+  const std::string json = client_->ToJson();
 
-  SetHash(json);
+  if (!is_mutated_) {
+    SetHash(json);
+  }
 
   auto callback =
       std::bind(&ClientStateManager::OnSaved, this, std::placeholders::_1);
-  AdsClientHelper::Get()->Save(kClientFilename, json, callback);
+  AdsClientHelper::GetInstance()->Save(kClientFilename, json, callback);
 }
 
 void ClientStateManager::OnSaved(const bool success) {
@@ -576,12 +577,12 @@ void ClientStateManager::Load() {
 
   auto callback = std::bind(&ClientStateManager::OnLoaded, this,
                             std::placeholders::_1, std::placeholders::_2);
-  AdsClientHelper::Get()->Load(kClientFilename, callback);
+  AdsClientHelper::GetInstance()->Load(kClientFilename, callback);
 }
 
 void ClientStateManager::OnLoaded(const bool success, const std::string& json) {
   if (!success) {
-    BLOG(3, "ClientStateManager state does not exist, creating default state");
+    BLOG(3, "Client state does not exist, creating default state");
 
     is_initialized_ = true;
 
@@ -603,6 +604,9 @@ void ClientStateManager::OnLoaded(const bool success, const std::string& json) {
   }
 
   is_mutated_ = IsMutated(client_->ToJson());
+  if (is_mutated_) {
+    BLOG(9, "Client state is mutated");
+  }
 
   callback_(/* success  */ true);
 }

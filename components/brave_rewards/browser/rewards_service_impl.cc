@@ -158,14 +158,13 @@ std::pair<std::string, base::Value> LoadStateOnFileTaskRunner(
     return result;
   }
 
-  const auto dict = base::DictionaryValue::From(std::move(value));
-  if (!dict) {
+  if (!value->is_dict()) {
     VLOG(0) << "Corrupted ledger state.";
     return result;
   }
 
-  p3a::ExtractAndLogStats(*dict);
-  result.second = std::move(*dict);
+  p3a::ExtractAndLogStats(value->GetDict());
+  result.second = std::move(*value);
 
   return result;
 }
@@ -1144,29 +1143,17 @@ void ParseCaptchaResponse(
     return;
   }
 
-  base::DictionaryValue* dictionary = nullptr;
-  if (!value->GetAsDictionary(&dictionary)) {
+  const auto& dict = value->GetDict();
+  const auto* captcha_image = dict.FindString("captchaImage");
+  const auto* captcha_hint = dict.FindString("hint");
+  const auto* captcha_id = dict.FindString("captchaId");
+  if (!captcha_image || !captcha_hint || !captcha_id) {
     return;
   }
 
-  auto* captcha_image = dictionary->FindKey("captchaImage");
-  if (!captcha_image || !captcha_image->is_string()) {
-    return;
-  }
-
-  auto* captcha_hint = dictionary->FindKey("hint");
-  if (!captcha_hint || !captcha_hint->is_string()) {
-    return;
-  }
-
-  auto* captcha_id = dictionary->FindKey("captchaId");
-  if (!captcha_id || !captcha_id->is_string()) {
-    return;
-  }
-
-  *image = captcha_image->GetString();
-  *hint = captcha_hint->GetString();
-  *id = captcha_id->GetString();
+  *image = *captcha_image;
+  *hint = *captcha_hint;
+  *id = *captcha_id;
 }
 
 void RewardsServiceImpl::OnClaimPromotion(

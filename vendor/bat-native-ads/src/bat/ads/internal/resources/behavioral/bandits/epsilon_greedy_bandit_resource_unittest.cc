@@ -9,6 +9,7 @@
 
 #include "bat/ads/internal/base/unittest/unittest_base.h"
 #include "bat/ads/internal/base/unittest/unittest_file_util.h"
+#include "bat/ads/internal/catalog/catalog.h"
 #include "bat/ads/internal/catalog/catalog_info.h"
 #include "bat/ads/internal/catalog/catalog_json_reader.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
@@ -32,19 +33,21 @@ class BatAdsEpsilonGreedyBanditResourceTest : public UnitTestBase {
 TEST_F(BatAdsEpsilonGreedyBanditResourceTest,
        SuccessfullyInitializeWithCatalog) {
   // Arrange
+  Catalog catalog;
+
   const absl::optional<std::string> json_optional =
       ReadFileFromTestPathToString(kCatalog);
   ASSERT_TRUE(json_optional.has_value());
   const std::string& json = json_optional.value();
 
-  const absl::optional<CatalogInfo> catalog_optional =
+  const absl::optional<CatalogInfo> catalog_info_optional =
       JSONReader::ReadCatalog(json);
-  ASSERT_TRUE(catalog_optional);
-  const CatalogInfo& catalog = catalog_optional.value();
+  ASSERT_TRUE(catalog_info_optional);
+  const CatalogInfo& catalog_info = catalog_info_optional.value();
 
   // Act
-  EpsilonGreedyBandit resource;
-  resource.LoadFromCatalog(catalog);
+  EpsilonGreedyBandit resource(&catalog);
+  resource.LoadFromCatalog(catalog_info);
 
   // Assert
   const bool is_initialized = resource.IsInitialized();
@@ -54,11 +57,12 @@ TEST_F(BatAdsEpsilonGreedyBanditResourceTest,
 TEST_F(BatAdsEpsilonGreedyBanditResourceTest,
        SuccessfullyInitializeWithEmptyCatalog) {
   // Arrange
-  CatalogInfo catalog;
+  Catalog catalog;
+  CatalogInfo catalog_info;
 
   // Act
-  EpsilonGreedyBandit resource;
-  resource.LoadFromCatalog(catalog);
+  EpsilonGreedyBandit resource(&catalog);
+  resource.LoadFromCatalog(catalog_info);
 
   // Assert
   const bool is_initialized = resource.IsInitialized();
@@ -68,9 +72,10 @@ TEST_F(BatAdsEpsilonGreedyBanditResourceTest,
 TEST_F(BatAdsEpsilonGreedyBanditResourceTest,
        FailToInitializeIfCatalogIsNotLoaded) {
   // Arrange
+  Catalog catalog;
 
   // Act
-  EpsilonGreedyBandit resource;
+  EpsilonGreedyBandit resource(&catalog);
 
   // Assert
   const bool is_initialized = resource.IsInitialized();

@@ -11,10 +11,10 @@
 #include "bat/ads/internal/serving/permission_rules/do_not_disturb_permission_rule.h"
 #include "bat/ads/internal/serving/permission_rules/full_screen_mode_permission_rule.h"
 #include "bat/ads/internal/serving/permission_rules/media_permission_rule.h"
-#include "bat/ads/internal/serving/permission_rules/minimum_wait_time_permission_rule.h"
 #include "bat/ads/internal/serving/permission_rules/network_connection_permission_rule.h"
-#include "bat/ads/internal/serving/permission_rules/notification_ads/ads_per_day_permission_rule.h"
-#include "bat/ads/internal/serving/permission_rules/notification_ads/ads_per_hour_permission_rule.h"
+#include "bat/ads/internal/serving/permission_rules/notification_ads/notification_ads_minimum_wait_time_permission_rule.h"
+#include "bat/ads/internal/serving/permission_rules/notification_ads/notification_ads_per_day_permission_rule.h"
+#include "bat/ads/internal/serving/permission_rules/notification_ads/notification_ads_per_hour_permission_rule.h"
 #include "bat/ads/internal/serving/permission_rules/permission_rule_util.h"
 #include "bat/ads/internal/serving/permission_rules/user_activity_permission_rule.h"
 

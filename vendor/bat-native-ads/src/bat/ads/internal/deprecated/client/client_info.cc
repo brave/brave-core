@@ -8,6 +8,8 @@
 #include <vector>
 
 #include "base/check.h"
+#include "base/notreached.h"
+#include "base/strings/string_number_conversions.h"
 #include "bat/ads/internal/base/logging_util.h"
 #include "bat/ads/internal/deprecated/json/json_helper.h"
 #include "build/build_config.h"
@@ -116,21 +118,38 @@ bool ClientInfo::FromJson(const std::string& json) {
   }
 
   if (document.HasMember("nextCheckServeAd")) {
-    const double timestamp = document["nextCheckServeAd"].GetDouble();
-    serve_ad_at = base::Time::FromDoubleT(timestamp);
+    if (document["nextCheckServeAd"].IsNumber()) {
+      // Migrate legacy timestamp
+      serve_ad_at =
+          base::Time::FromDoubleT(document["nextCheckServeAd"].GetDouble());
+    } else {
+      double timestamp = 0.0;
+      if (base::StringToDouble(document["nextCheckServeAd"].GetString(),
+                               &timestamp)) {
+        serve_ad_at = base::Time::FromDoubleT(timestamp);
+      }
+    }
   }
 
   if (document.HasMember("textClassificationProbabilitiesHistory")) {
     for (const auto& probabilities :
          document["textClassificationProbabilitiesHistory"].GetArray()) {
-      targeting::TextClassificationProbabilitiesMap new_probabilities;
+      targeting::TextClassificationProbabilityMap new_probabilities;
 
       for (const auto& probability :
            probabilities["textClassificationProbabilities"].GetArray()) {
         const std::string segment = probability["segment"].GetString();
         DCHECK(!segment.empty());
 
-        const double page_score = probability["pageScore"].GetDouble();
+        double page_score = 0.0;
+        if (probability["pageScore"].IsNumber()) {
+          // Migrate legacy page score
+          page_score = document["pageScore"].GetDouble();
+        } else {
+          const bool success = base::StringToDouble(
+              probability["pageScore"].GetString(), &page_score);
+          DCHECK(success);
+        }
 
         new_probabilities.insert({segment, page_score});
       }
@@ -211,7 +230,9 @@ void SaveToJson(JsonWriter* writer, const ClientInfo& info) {
   writer->EndObject();
 
   writer->String("nextCheckServeAd");
-  writer->Double(info.serve_ad_at.ToDoubleT());
+  const std::string next_check_server_ad =
+      base::NumberToString(info.serve_ad_at.ToDoubleT());
+  writer->String(next_check_server_ad.c_str());
 
   writer->String("textClassificationProbabilitiesHistory");
   writer->StartArray();
@@ -230,8 +251,8 @@ void SaveToJson(JsonWriter* writer, const ClientInfo& info) {
       writer->String(segment.c_str());
 
       writer->String("pageScore");
-      const double page_score = probability.second;
-      writer->Double(page_score);
+      const std::string page_score = base::NumberToString(probability.second);
+      writer->String(page_score.c_str());
 
       writer->EndObject();
     }

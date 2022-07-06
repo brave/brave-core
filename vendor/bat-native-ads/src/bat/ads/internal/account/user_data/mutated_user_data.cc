@@ -21,8 +21,8 @@ constexpr char kMutatedKey[] = "mutated";
 base::DictionaryValue GetMutated() {
   base::DictionaryValue user_data;
 
-  if (ConfirmationStateManager::Get()->is_mutated() ||
-      ClientStateManager::Get()->is_mutated()) {
+  if (ConfirmationStateManager::GetInstance()->is_mutated() ||
+      ClientStateManager::GetInstance()->is_mutated()) {
     user_data.SetBoolKey(kMutatedKey, true);
   }
 

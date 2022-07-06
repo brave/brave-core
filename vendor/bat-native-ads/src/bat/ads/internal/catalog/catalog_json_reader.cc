@@ -26,8 +26,9 @@ absl::optional<CatalogInfo> ReadCatalog(const std::string& json) {
   rapidjson::Document document;
   document.Parse(json.c_str());
 
-  const std::string json_schema = AdsClientHelper::Get()->LoadDataResource(
-      g_catalog_json_schema_data_resource_name);
+  const std::string json_schema =
+      AdsClientHelper::GetInstance()->LoadDataResource(
+          g_catalog_json_schema_data_resource_name);
 
   if (!helper::JSON::Validate(&document, json_schema)) {
     BLOG(1, helper::JSON::GetLastError(&document));
@@ -240,6 +241,12 @@ absl::optional<CatalogInfo> ReadCatalog(const std::string& json) {
             wallpaper.focal_point.y = focal_point["y"].GetInt();
 
             creative.payload.wallpapers.push_back(wallpaper);
+          }
+
+          if (creative.payload.wallpapers.empty()) {
+            BLOG(1, "Invalid wallpapers for creative instance id "
+                        << creative_instance_id);
+            continue;
           }
 
           creative_set.creative_new_tab_page_ads.push_back(creative);

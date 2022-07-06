@@ -11,13 +11,14 @@
 #include <vector>
 
 #include "bat/ads/ad_content_action_types.h"
-#include "bat/ads/ads_aliases.h"
+#include "bat/ads/ads_callback.h"
 #include "bat/ads/category_content_action_types.h"
 #include "bat/ads/export.h"
 #include "bat/ads/history_filter_types.h"
 #include "bat/ads/history_sort_types.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
-#include "url/gurl.h"
+
+class GURL;
 
 namespace base {
 class Time;
@@ -99,7 +100,8 @@ class ADS_EXPORT Ads {
   // seconds that the user was idle. |was_locked| should be |true| if the screen
   // was locked, otherwise |false|. NOTE: This should not be called on mobile
   // devices.
-  virtual void OnUnIdle(const int idle_time, const bool was_locked) = 0;
+  virtual void OnUnIdle(const base::TimeDelta idle_time,
+                        const bool was_locked) = 0;
 
   // Called when a user has been idle for the threshold set in
   // |prefs::kIdleTimeThreshold|. NOTE: This should not be called on mobile
@@ -217,7 +219,9 @@ class ADS_EXPORT Ads {
 
   // Called to purge orphaned served ad events. NOTE: You should call before
   // triggering new ad events for the specified |ad_type|.
-  virtual void PurgeOrphanedAdEventsForType(const mojom::AdType ad_type) = 0;
+  virtual void PurgeOrphanedAdEventsForType(
+      const mojom::AdType ad_type,
+      PurgeOrphanedAdEventsForTypeCallback callback) = 0;
 
   // Called to remove all history. The callback takes one argument - |bool| is
   // set to |true| if successful otherwise |false|.
@@ -258,14 +262,14 @@ class ADS_EXPORT Ads {
   // Returns |CategoryContentOptActionType| containing the current state.
   virtual CategoryContentOptActionType ToggleAdOptIn(
       const std::string& category,
-      const CategoryContentOptActionType& action) = 0;
+      const CategoryContentOptActionType& action_type) = 0;
 
   // Called to receive ads for the specified category. This is a toggle, so
   // calling it again returns the setting to the neutral state. Returns
   // |CategoryContentOptActionType| containing the current state.
   virtual CategoryContentOptActionType ToggleAdOptOut(
       const std::string& category,
-      const CategoryContentOptActionType& action) = 0;
+      const CategoryContentOptActionType& action_type) = 0;
 
   // Called to save an ad for later viewing. This is a toggle, so calling it
   // again removes the ad from the saved list. Returns |true| if the ad was

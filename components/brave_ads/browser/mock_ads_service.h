@@ -78,6 +78,8 @@ class MockAdsService : public AdsService {
                void(const std::string&,
                     const std::string&,
                     ads::mojom::NewTabPageAdEventType));
+  MOCK_METHOD2(OnFailedToServeNewTabPageAd,
+               void(const std::string&, const std::string&));
 
   MOCK_METHOD3(TriggerPromotedContentAdEvent,
                void(const std::string&,
@@ -96,7 +98,11 @@ class MockAdsService : public AdsService {
                     const ads::mojom::SearchResultAdEventType,
                     TriggerSearchResultAdEventCallback));
 
-  MOCK_METHOD1(PurgeOrphanedAdEventsForType, void(const ads::mojom::AdType));
+  MOCK_METHOD0(GetPrefetchedNewTabPageAd,
+               absl::optional<ads::NewTabPageAdInfo>());
+
+  MOCK_METHOD2(PurgeOrphanedAdEventsForType,
+               void(ads::mojom::AdType, PurgeOrphanedAdEventsForTypeCallback));
 
   MOCK_METHOD3(GetHistory, void(base::Time, base::Time, OnGetHistoryCallback));
 

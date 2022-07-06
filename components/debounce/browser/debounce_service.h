@@ -8,6 +8,7 @@
 
 #include "base/memory/weak_ptr.h"
 #include "components/keyed_service/core/keyed_service.h"
+#include "components/prefs/pref_service.h"
 
 class GURL;
 
@@ -17,7 +18,8 @@ class DebounceComponentInstaller;
 
 class DebounceService : public KeyedService {
  public:
-  explicit DebounceService(DebounceComponentInstaller* component_installer);
+  explicit DebounceService(DebounceComponentInstaller* component_installer,
+                           PrefService* prefs);
   DebounceService(const DebounceService&) = delete;
   DebounceService& operator=(const DebounceService&) = delete;
   ~DebounceService() override;
@@ -25,6 +27,7 @@ class DebounceService : public KeyedService {
 
  private:
   DebounceComponentInstaller* component_installer_ = nullptr;  // NOT OWNED
+  raw_ptr<PrefService> prefs_ = nullptr;
   base::WeakPtrFactory<DebounceService> weak_factory_{this};
 };
 

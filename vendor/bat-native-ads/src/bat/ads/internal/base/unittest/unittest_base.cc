@@ -77,6 +77,11 @@ bool UnitTestBase::CopyFileFromTestPathToTempPath(
   return success;
 }
 
+bool UnitTestBase::CopyFileFromTestPathToTempPath(
+    const std::string& path) const {
+  return CopyFileFromTestPathToTempPath(path, path);
+}
+
 bool UnitTestBase::CopyDirectoryFromTestPathToTempPath(
     const std::string& from_path,
     const std::string& to_path) const {
@@ -92,6 +97,11 @@ bool UnitTestBase::CopyDirectoryFromTestPathToTempPath(
   CHECK(success) << "Failed to copy directory from " << from_test_path << " to "
                  << to_temp_path;
   return success;
+}
+
+bool UnitTestBase::CopyDirectoryFromTestPathToTempPath(
+    const std::string& path) const {
+  return CopyDirectoryFromTestPathToTempPath(path, path);
 }
 
 void UnitTestBase::FastForwardClockBy(const base::TimeDelta time_delta) {
@@ -148,15 +158,16 @@ void UnitTestBase::Initialize() {
 
   SetDefaultPrefs();
 
-  SetUpMocks();
-
   if (is_integration_test_) {
+    SetUpMocks();
     SetUpIntegrationTest();
     return;
   }
 
   ads_client_helper_ =
       std::make_unique<AdsClientHelper>(ads_client_mock_.get());
+
+  SetUpMocks();
 
   browser_manager_ = std::make_unique<BrowserManager>();
 
@@ -176,9 +187,19 @@ void UnitTestBase::Initialize() {
 
   diagnostic_manager_ = std::make_unique<DiagnosticManager>();
 
+  history_manager_ = std::make_unique<HistoryManager>();
+
+  idle_detection_manager_ = std::make_unique<IdleDetectionManager>();
+
+  locale_manager_ = std::make_unique<LocaleManager>();
+
   notification_ad_manager_ = std::make_unique<NotificationAdManager>();
   notification_ad_manager_->Initialize(
       [](const bool success) { ASSERT_TRUE(success); });
+
+  pref_manager_ = std::make_unique<PrefManager>();
+
+  resource_manager_ = std::make_unique<ResourceManager>();
 
   tab_manager_ = std::make_unique<TabManager>();
 
@@ -194,7 +215,7 @@ void UnitTestBase::InitializeMocks() {
 
   MockEnvironment(mojom::Environment::kStaging);
 
-  MockLocaleHelper(locale_helper_mock_, "en-US");
+  MockLocaleHelper(locale_helper_mock_, kDefaultLocale);
 
   MockPlatformHelper(platform_helper_mock_, PlatformType::kWindows);
 
@@ -265,6 +286,7 @@ void UnitTestBase::SetDefaultPrefs() {
 
   ads_client_mock_->SetTimePref(prefs::kNextTokenRedemptionAt, DistantFuture());
 
+  ads_client_mock_->SetBooleanPref(prefs::kHasMigratedClientState, true);
   ads_client_mock_->SetBooleanPref(prefs::kHasMigratedConversionState, true);
   ads_client_mock_->SetBooleanPref(prefs::kHasMigratedRewardsState, true);
 

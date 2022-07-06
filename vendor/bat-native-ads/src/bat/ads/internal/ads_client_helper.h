@@ -17,7 +17,7 @@ class AdsClientHelper final {
   AdsClientHelper(const AdsClientHelper&) = delete;
   AdsClientHelper& operator=(const AdsClientHelper&) = delete;
 
-  static AdsClient* Get();
+  static AdsClient* GetInstance();
 
   static bool HasInstance();
 };

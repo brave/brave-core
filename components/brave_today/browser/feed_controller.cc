@@ -80,7 +80,7 @@ void FeedController::GetOrFetchFeed(GetFeedCallback callback) {
           return;
         } else {
           // There was a problem fetching the feed.
-          std::move(callback).Run(nullptr);
+          std::move(callback).Run(brave_news::mojom::Feed::New());
         }
       },
       base::Unretained(this), std::move(callback)));

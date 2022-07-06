@@ -39,7 +39,7 @@ class Confirmations final : public RedeemUnblindedTokenDelegate {
   Confirmations(const Confirmations&) = delete;
   Confirmations& operator=(const Confirmations&) = delete;
 
-  void set_delegate(ConfirmationsDelegate* delegate) {
+  void SetDelegate(ConfirmationsDelegate* delegate) {
     DCHECK_EQ(delegate_, nullptr);
     delegate_ = delegate;
   }
@@ -73,11 +73,12 @@ class Confirmations final : public RedeemUnblindedTokenDelegate {
                                  const privacy::UnblindedPaymentTokenInfo&
                                      unblinded_payment_token) override;
   void OnFailedToRedeemUnblindedToken(const ConfirmationInfo& confirmation,
-                                      const bool should_retry) override;
+                                      const bool should_retry,
+                                      const bool should_backoff) override;
 
   raw_ptr<ConfirmationsDelegate> delegate_ = nullptr;
 
-  raw_ptr<privacy::TokenGeneratorInterface> token_generator_ =
+  const raw_ptr<privacy::TokenGeneratorInterface> token_generator_ =
       nullptr;  // NOT OWNED
 
   std::unique_ptr<RedeemUnblindedToken> redeem_unblinded_token_;

@@ -5,6 +5,7 @@
 
 #include "bat/ads/ad_type.h"
 
+#include "base/check.h"
 #include "base/notreached.h"
 
 namespace ads {
@@ -47,6 +48,8 @@ AdType::AdType(const std::string& value) {
 }
 
 AdType::AdType(const mojom::AdType value) {
+  DCHECK(mojom::IsKnownEnumValue(value));
+
   switch (value) {
     case mojom::AdType::kUndefined: {
       value_ = kUndefined;
@@ -110,6 +113,9 @@ std::string AdType::ToString() const {
       return kSearchResultAdType;
     }
   }
+
+  NOTREACHED() << "Unexpected value for Value: " << value_;
+  return kUndefinedType;
 }
 
 bool AdType::operator==(const AdType& rhs) const {

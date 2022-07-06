@@ -8,7 +8,8 @@
 #include "bat/ads/confirmation_type.h"
 #include "bat/ads/internal/ad_events/ad_events.h"
 #include "bat/ads/internal/base/logging_util.h"
-#include "bat/ads/internal/history/history.h"
+#include "bat/ads/internal/deprecated/client/client_state_manager.h"
+#include "bat/ads/new_tab_page_ad_info.h"
 
 namespace ads {
 namespace new_tab_page_ads {
@@ -30,6 +31,8 @@ void AdEventServed::FireEvent(const NewTabPageAdInfo& ad) {
 
     BLOG(6, "Successfully logged new tab page ad served event");
   });
+
+  ClientStateManager::GetInstance()->UpdateSeenAd(ad);
 }
 
 }  // namespace new_tab_page_ads

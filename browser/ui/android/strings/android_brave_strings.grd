@@ -325,21 +325,6 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_BRAVE_STATS_TEXT_TIME" desc="Title for the estimated saved time">
         Est. Time\nSaved
       </message>
-      <message name="IDS_SETTINGS_DESKTOP_MODE_TITLE" desc="Title for desktop mode in site settings">
-        Desktop Mode
-      </message>
-      <message name="IDS_SETTINGS_DESKTOP_MODE_ON" desc="Desc for desktop mode in site settings">
-        Enable Desktop View for new tabs
-      </message>
-      <message name="IDS_SETTINGS_DESKTOP_MODE_OFF" desc="Desc for desktop mode in site settings">
-       Use mobile versions of sites for new tabs (recommended)
-      </message>
-      <message name="IDS_SETTINGS_DESKTOP_MODE_DISABLED_SUMMARY" desc="Summary for desktop mode in site settings">
-        Prefer mobile version of sites
-      </message>
-      <message name="IDS_SETTINGS_DESKTOP_MODE_ENABLED_SUMMARY" desc="Summary for desktop mode in site settings">
-        Prefer desktop version of sites
-      </message>
       <message name="IDS_SETTINGS_PLAY_YT_VIDEO_IN_BROWSER_TITLE" desc="Title for desktop mode in site settings">
         Video playback in Brave
       </message>
@@ -506,6 +491,9 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       </message>
       <message name="IDS_BRAVE_DEFAULT_BROWSER_GO_TO_SETTINGS" desc="Toast message for those without 7.0 to go to settings to change default browser">
         You've already set a default browser. You may change the default browser in your app settings.
+      </message>
+      <message name="IDS_MENU_BRAVE_TALK" desc="Title for brave talk menu item">
+        Brave Talk
       </message>
       <message name="IDS_MENU_BRAVE_REWARDS" desc="Title for brave rewards menu item">
         Brave Rewards
@@ -2959,8 +2947,8 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_BRAVE_WALLET_PROVIDE_ENCRYPTION_KEY_TITLE" desc="Provide encryption key title message dialog description.">
       A DApp is requesting your public encryption key
     </message>
-    <message name="IDS_BRAVE_WALLET_PROVIDE_ENCRYPTION_KEY_DESCRIPTION" desc="Provide encryption key panel details">
-      is requesting your wallets public encryption key. If you consent to providing this key, the site will be able to compose encrypted messages to you.
+    <message name="IDS_BRAVE_WALLET_PROVIDE_ENCRYPTION_KEY_DESCRIPTION" desc="Provide Encryption Key Panel Details">
+      <ph name="URL">%1$s</ph> is requesting your wallet's public encryption key. If you consent to providing this key, the site will be able to compose encrypted messages to you.
     </message>
     <message name="IDS_BRAVE_WALLET_PROVIDE_ENCRYPTION_KEY_BUTTON" desc="Provide encryption key panel provide button">
       Provide
@@ -2988,6 +2976,15 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     </message>
     <message name="IDS_BRAVE_WALLET_ALLOW_ADD_NETWORK_HEADING" desc="Add network panel title">
       Allow this site to add a network?
+    </message>
+    <message name="IDS_BRAVE_WALLET_READ_ENCRYPTED_MESSAGE_TITLE" desc="Read encrypted message panel title">
+      This DApp would like to read this message to complete your request.      
+    </message>
+    <message name="IDS_BRAVE_WALLET_READ_ENCRYPTED_MESSAGE_DECRYPT_BUTTON" desc="Read encrypted message panel decrypt button">
+      Decrypt message
+    </message>
+    <message name="IDS_BRAVE_WALLET_READ_ENCRYPTED_MESSAGE_BUTTON" desc="Read encrypted message panel allow button">
+      Allow
     </message>
     <message name="IDS_FRAGMENT_ADD_TOKEN_TITLE" desc="Add token dialog title.">
       Add suggested token
@@ -3017,7 +3014,7 @@ If you don't accept this request, VPN will not reconnect and your internet conne
       Ethereum
     </message>
     <message name="IDS_SHOW_TOP_SITES" desc="New tab page settings title">
-      Show Top sites
+      Show Top Sites
     </message>
     <message name="IDS_CONNECTED_TO_HOST" desc="Brave Vpn notification statistics text">
       Connected to <ph name="VALUE">%1$s</ph>
@@ -3045,6 +3042,39 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     </message>
     <message name="IDS_TRIAL" desc="Brave VPN trial text">
       Trial
+    </message>
+    <message name="IDS_BRAVE_WALLET_SHOW_WEB3_NOTIFICATIONS" desc="Brave wallet show web3 notifications preference title text">
+      Display Web3 notifications
+    </message>
+    <message name="IDS_SUPPORT_EMAIL_TEXT" desc="Vpn support email text">
+      \n\n\n\n#### Brave doesn’t track you or know how you use our app, so we don’t know how you’ve set up VPN. Please share info about the issue you’re experiencing and we’ll do our best to resolve it as soon as we can. ####\n\n
+    </message>
+    <message name="IDS_VPN_HOST_TEXT" desc="Vpn support email text">
+      \n\nVPN Hostname\n <ph name="VALUE">%1$s</ph>
+    </message>
+    <message name="IDS_SUBSCRIPTION_TYPE_TEXT" desc="Vpn support email text">
+      \n\nSubscription Type\n <ph name="VALUE">%1$s</ph>
+    </message>
+    <message name="IDS_PLAYSTORE_TOKEN_TEXT" desc="Vpn support email text">
+      \n\nPlaystore Token\n <ph name="VALUE">%1$s</ph>
+    </message>
+    <message name="IDS_APP_VERSION_TEXT" desc="Vpn support email text">
+      \n\nApp Version\n <ph name="VALUE">%1$s</ph>
+    </message>
+    <message name="IDS_TIMEZONE_TEXT" desc="Vpn support email text">
+      \n\nTimezone\n
+    </message>
+    <message name="IDS_NETWORK_TYPE_TEXT" desc="Vpn support email text">
+      \n\nNetwork Type\n
+    </message>
+    <message name="IDS_CELLULAR_CARRIER_TEXT" desc="Vpn support email text">
+      \n\nCellular Carrier\n
+    </message>
+    <message name="IDS_OTHER_ISSUE_TEXT" desc="Vpn support email text">
+      \n\nOther Issue\n
+    </message>
+    <message name="IDS_PLATFORM_TEXT" desc="Vpn support email text">
+      \n\nPlatform\n
     </message>
   </messages>
   </release>

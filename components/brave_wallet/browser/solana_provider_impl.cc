@@ -153,31 +153,24 @@ absl::optional<SolanaMessage> SolanaProviderImpl::GetDeserializedMessage(
   }
 
   auto msg = SolanaMessage::Deserialize(message_bytes);
-  if (!msg) {
+  if (!msg)
     return absl::nullopt;
-  }
 
   // Sanity check after deserialization:
-  // 1. Fee payer should be the current selected account.
-  // 2. Serialize the created message object and encode in Base58 will be the
-  //    same as original encoded message.
-  // 3. Only one signer (the fee payer) is allowed, we do not support multisig
-  //    for dApp requests currently.
+  //   - Fee payer should be the current selected account.
+  // Note: We cannot check Base58Encode(msg->Serialize()) is equal to the
+  // original encoded message passed in because the order of accounts with the
+  // same is_signer and is_writable value can be different between different
+  // implementation. See https://github.com/brave/brave-browser/issues/23542
+  // for more details.
   if (account != msg->fee_payer())
     return absl::nullopt;
-  std::vector<std::string> signers;
-  auto serialized_message = msg->Serialize(&signers);
-  if (!serialized_message ||
-      Base58Encode(*serialized_message) != encoded_serialized_msg ||
-      signers.size() != 1) {
-    return absl::nullopt;
-  }
 
   return msg;
 }
 
 void SolanaProviderImpl::SignTransaction(
-    const std::string& encoded_serialized_msg,
+    mojom::SolanaSignTransactionParamPtr param,
     SignTransactionCallback callback) {
   absl::optional<std::string> account =
       keyring_service_->GetSelectedAccount(mojom::CoinType::SOL);
@@ -193,7 +186,7 @@ void SolanaProviderImpl::SignTransaction(
                             std::vector<uint8_t>());
     return;
   }
-  auto msg = GetDeserializedMessage(encoded_serialized_msg, *account);
+  auto msg = GetDeserializedMessage(param->encoded_serialized_msg, *account);
   if (!msg) {
     std::move(callback).Run(mojom::SolanaProviderError::kInternalError,
                             l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR),
@@ -201,20 +194,22 @@ void SolanaProviderImpl::SignTransaction(
     return;
   }
 
-  SolanaTransaction tx = SolanaTransaction(std::move(*msg));
-  tx.set_tx_type(mojom::TransactionType::SolanaDappSignTransaction);
+  auto tx =
+      std::make_unique<SolanaTransaction>(std::move(*msg), std::move(param));
+  tx->set_tx_type(mojom::TransactionType::SolanaDappSignTransaction);
   auto request = mojom::SignTransactionRequest::New(
       MakeOriginInfo(delegate_->GetOrigin()), -1, *account,
-      mojom::TxDataUnion::NewSolanaTxData(tx.ToSolanaTxData()));
+      mojom::TxDataUnion::NewSolanaTxData(tx->ToSolanaTxData()));
   brave_wallet_service_->AddSignTransactionRequest(
       std::move(request),
       base::BindOnce(&SolanaProviderImpl::OnSignTransactionRequestProcessed,
-                     weak_factory_.GetWeakPtr(), tx, std::move(callback)));
+                     weak_factory_.GetWeakPtr(), std::move(tx),
+                     std::move(callback)));
   delegate_->ShowPanel();
 }
 
 void SolanaProviderImpl::OnSignTransactionRequestProcessed(
-    const SolanaTransaction& tx,
+    std::unique_ptr<SolanaTransaction> tx,
     SignTransactionCallback callback,
     bool approved) {
   if (!approved) {
@@ -225,7 +220,7 @@ void SolanaProviderImpl::OnSignTransactionRequestProcessed(
     return;
   }
 
-  auto signed_tx = tx.GetSignedTransactionBytes(keyring_service_);
+  auto signed_tx = tx->GetSignedTransactionBytes(keyring_service_);
   if (!signed_tx) {
     std::move(callback).Run(mojom::SolanaProviderError::kInternalError,
                             l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR),
@@ -237,7 +232,7 @@ void SolanaProviderImpl::OnSignTransactionRequestProcessed(
 }
 
 void SolanaProviderImpl::SignAllTransactions(
-    const std::vector<std::string>& encoded_serialized_msgs,
+    std::vector<mojom::SolanaSignTransactionParamPtr> params,
     SignAllTransactionsCallback callback) {
   absl::optional<std::string> account =
       keyring_service_->GetSelectedAccount(mojom::CoinType::SOL);
@@ -255,9 +250,9 @@ void SolanaProviderImpl::SignAllTransactions(
   }
 
   std::vector<mojom::TxDataUnionPtr> tx_datas;
-  std::vector<SolanaTransaction> txs;
-  for (const auto& encoded_serialized_msg : encoded_serialized_msgs) {
-    auto msg = GetDeserializedMessage(encoded_serialized_msg, *account);
+  std::vector<std::unique_ptr<SolanaTransaction>> txs;
+  for (auto& param : params) {
+    auto msg = GetDeserializedMessage(param->encoded_serialized_msg, *account);
     if (!msg) {
       std::move(callback).Run(
           mojom::SolanaProviderError::kInternalError,
@@ -266,10 +261,11 @@ void SolanaProviderImpl::SignAllTransactions(
       return;
     }
 
-    SolanaTransaction tx = SolanaTransaction(std::move(*msg));
-    tx.set_tx_type(mojom::TransactionType::SolanaDappSignTransaction);
+    auto tx =
+        std::make_unique<SolanaTransaction>(std::move(*msg), std::move(param));
+    tx->set_tx_type(mojom::TransactionType::SolanaDappSignTransaction);
     tx_datas.push_back(
-        mojom::TxDataUnion::NewSolanaTxData(tx.ToSolanaTxData()));
+        mojom::TxDataUnion::NewSolanaTxData(tx->ToSolanaTxData()));
     txs.push_back(std::move(tx));
   }
 
@@ -280,12 +276,13 @@ void SolanaProviderImpl::SignAllTransactions(
   brave_wallet_service_->AddSignAllTransactionsRequest(
       std::move(request),
       base::BindOnce(&SolanaProviderImpl::OnSignAllTransactionsRequestProcessed,
-                     weak_factory_.GetWeakPtr(), txs, std::move(callback)));
+                     weak_factory_.GetWeakPtr(), std::move(txs),
+                     std::move(callback)));
   delegate_->ShowPanel();
 }
 
 void SolanaProviderImpl::OnSignAllTransactionsRequestProcessed(
-    const std::vector<SolanaTransaction>& txs,
+    const std::vector<std::unique_ptr<SolanaTransaction>>& txs,
     SignAllTransactionsCallback callback,
     bool approved) {
   if (!approved) {
@@ -298,7 +295,7 @@ void SolanaProviderImpl::OnSignAllTransactionsRequestProcessed(
 
   std::vector<std::vector<uint8_t>> signed_txs;
   for (const auto& tx : txs) {
-    auto signed_tx = tx.GetSignedTransactionBytes(keyring_service_);
+    auto signed_tx = tx->GetSignedTransactionBytes(keyring_service_);
     if (!signed_tx) {
       std::move(callback).Run(
           mojom::SolanaProviderError::kInternalError,
@@ -313,7 +310,7 @@ void SolanaProviderImpl::OnSignAllTransactionsRequestProcessed(
 }
 
 void SolanaProviderImpl::SignAndSendTransaction(
-    const std::string& encoded_serialized_msg,
+    mojom::SolanaSignTransactionParamPtr param,
     absl::optional<base::Value> send_options,
     SignAndSendTransactionCallback callback) {
   absl::optional<std::string> account =
@@ -331,7 +328,7 @@ void SolanaProviderImpl::SignAndSendTransaction(
     return;
   }
 
-  auto msg = GetDeserializedMessage(encoded_serialized_msg, *account);
+  auto msg = GetDeserializedMessage(param->encoded_serialized_msg, *account);
   if (!msg) {
     std::move(callback).Run(mojom::SolanaProviderError::kInternalError,
                             l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR),
@@ -339,7 +336,7 @@ void SolanaProviderImpl::SignAndSendTransaction(
     return;
   }
 
-  SolanaTransaction tx = SolanaTransaction(std::move(*msg));
+  SolanaTransaction tx = SolanaTransaction(std::move(*msg), std::move(param));
   tx.set_tx_type(mojom::TransactionType::SolanaDappSignAndSendTransaction);
   tx.set_send_options(
       SolanaTransaction::SendOptions::FromValue(std::move(send_options)));
@@ -487,7 +484,8 @@ void SolanaProviderImpl::Request(base::Value arg, RequestCallback callback) {
       return;
     }
     SignTransaction(
-        *message,
+        mojom::SolanaSignTransactionParam::New(
+            *message, std::vector<mojom::SignaturePubkeyPairPtr>()),
         base::BindOnce(&SolanaProviderImpl::OnRequestSignTransaction,
                        weak_factory_.GetWeakPtr(), std::move(callback)));
   } else if (*method == solana::kSignAndSendTransaction) {
@@ -503,7 +501,10 @@ void SolanaProviderImpl::Request(base::Value arg, RequestCallback callback) {
     absl::optional<base::Value> options = absl::nullopt;
     if (options_dict)
       options = base::Value(std::move(*options_dict));
-    SignAndSendTransaction(*message, std::move(options), std::move(callback));
+    SignAndSendTransaction(
+        mojom::SolanaSignTransactionParam::New(
+            *message, std::vector<mojom::SignaturePubkeyPairPtr>()),
+        std::move(options), std::move(callback));
   } else if (*method == solana::kSignAllTransactions) {
     const base::Value::List* messages = params->FindList(kMessage);
     if (!messages) {
@@ -513,14 +514,17 @@ void SolanaProviderImpl::Request(base::Value arg, RequestCallback callback) {
           base::Value(base::Value::Type::DICTIONARY));
       return;
     }
-    std::vector<std::string> encoded_serialized_msgs;
+
+    std::vector<mojom::SolanaSignTransactionParamPtr> params;
     for (const auto& message : *messages) {
+      auto param = mojom::SolanaSignTransactionParam::New();
       const std::string* encoded_serialized_msg = message.GetIfString();
       if (encoded_serialized_msg)
-        encoded_serialized_msgs.push_back(*encoded_serialized_msg);
+        param->encoded_serialized_msg = *encoded_serialized_msg;
+      params.push_back(std::move(param));
     }
     SignAllTransactions(
-        encoded_serialized_msgs,
+        std::move(params),
         base::BindOnce(&SolanaProviderImpl::OnRequestSignAllTransactions,
                        weak_factory_.GetWeakPtr(), std::move(callback)));
   } else if (*method == solana::kSignMessage) {
@@ -643,7 +647,7 @@ void SolanaProviderImpl::OnRequestSignTransaction(
     auto tx = SolanaTransaction::FromSignedTransactionBytes(serialized_tx);
     DCHECK(tx);
     result.GetDict().Set(kPublicKey, tx->message()->fee_payer());
-    result.GetDict().Set(kSignature, Base58Encode(tx->signatures()));
+    result.GetDict().Set(kSignature, Base58Encode(tx->raw_signatures()));
   }
   std::move(callback).Run(error, error_message, std::move(result));
 }
@@ -664,7 +668,7 @@ void SolanaProviderImpl::OnRequestSignAllTransactions(
         // transactions in the array.
         result.GetDict().Set(kPublicKey, tx->message()->fee_payer());
       }
-      signatures.Append(Base58Encode(tx->signatures()));
+      signatures.Append(Base58Encode(tx->raw_signatures()));
     }
     result.GetDict().Set(kSignature, std::move(signatures));
   }

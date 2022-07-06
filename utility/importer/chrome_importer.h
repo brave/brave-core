@@ -10,6 +10,7 @@
 
 #include <map>
 #include <set>
+#include <string>
 #include <vector>
 
 #include "base/compiler_specific.h"
@@ -71,6 +72,8 @@ class ChromeImporter : public Importer {
       const std::vector<std::u16string>& parent_path,
       bool is_in_toolbar,
       std::vector<ImportedBookmarkEntry>* bookmarks);
+
+  std::u16string importer_name_;
 };
 
 #endif  // BRAVE_UTILITY_IMPORTER_CHROME_IMPORTER_H_

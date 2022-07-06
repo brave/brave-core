@@ -26,7 +26,7 @@ std::string GetUrl();
 
 std::string GetFeeAddress();
 
-std::string GetAuthorizeUrl(const std::string& state);
+std::string GetLoginUrl(const std::string& state);
 
 std::string GetAddUrl();
 

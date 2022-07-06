@@ -79,13 +79,14 @@ TEST_F(BatAdsDismissedExclusionRuleTest,
   for (const auto& confirmation_type : confirmation_types) {
     const AdEventInfo ad_event = BuildAdEvent(
         creative_ad, AdType::kNotificationAd, confirmation_type, Now());
-
     ad_events.push_back(ad_event);
 
-    FastForwardClockBy(base::Minutes(5));
+    AdvanceClockBy(base::Minutes(5));
   }
 
-  FastForwardClockBy(base::Hours(47));
+  AdvanceClockBy(base::Hours(48) -
+                 (base::Minutes(5) * confirmation_types.size()) -
+                 base::Seconds(1));
 
   // Act
   DismissedExclusionRule exclusion_rule(ad_events);
@@ -171,13 +172,14 @@ TEST_F(BatAdsDismissedExclusionRuleTest,
   for (const auto& confirmation_type : confirmation_types) {
     const AdEventInfo ad_event = BuildAdEvent(
         creative_ad, AdType::kNotificationAd, confirmation_type, Now());
-
     ad_events.push_back(ad_event);
 
-    FastForwardClockBy(base::Minutes(5));
+    AdvanceClockBy(base::Minutes(5));
   }
 
-  FastForwardClockBy(base::Hours(47));
+  AdvanceClockBy(base::Hours(48) -
+                 (base::Minutes(5) * confirmation_types.size()) -
+                 base::Seconds(1));
 
   // Act
   DismissedExclusionRule exclusion_rule(ad_events);
@@ -215,13 +217,13 @@ TEST_F(BatAdsDismissedExclusionRuleTest,
   for (const auto& confirmation_type : confirmation_types) {
     const AdEventInfo ad_event = BuildAdEvent(
         creative_ad, AdType::kNotificationAd, confirmation_type, Now());
-
     ad_events.push_back(ad_event);
 
-    FastForwardClockBy(base::Minutes(5));
+    AdvanceClockBy(base::Minutes(5));
   }
 
-  FastForwardClockBy(base::Hours(48));
+  AdvanceClockBy(base::Hours(48) -
+                 (base::Minutes(5) * confirmation_types.size()));
 
   // Act
   DismissedExclusionRule exclusion_rule(ad_events);
@@ -259,13 +261,14 @@ TEST_F(BatAdsDismissedExclusionRuleTest,
   for (const auto& confirmation_type : confirmation_types) {
     const AdEventInfo ad_event = BuildAdEvent(
         creative_ad, AdType::kNotificationAd, confirmation_type, Now());
-
     ad_events.push_back(ad_event);
 
-    FastForwardClockBy(base::Minutes(5));
+    AdvanceClockBy(base::Minutes(5));
   }
 
-  FastForwardClockBy(base::Hours(47));
+  AdvanceClockBy(base::Hours(48) -
+                 (base::Minutes(5) * confirmation_types.size()) -
+                 base::Seconds(1));
 
   // Act
   DismissedExclusionRule exclusion_rule(ad_events);
@@ -303,13 +306,13 @@ TEST_F(BatAdsDismissedExclusionRuleTest,
   for (const auto& confirmation_type : confirmation_types) {
     const AdEventInfo ad_event = BuildAdEvent(
         creative_ad, AdType::kNotificationAd, confirmation_type, Now());
-
     ad_events.push_back(ad_event);
 
-    FastForwardClockBy(base::Minutes(5));
+    AdvanceClockBy(base::Minutes(5));
   }
 
-  FastForwardClockBy(base::Hours(48));
+  AdvanceClockBy(base::Hours(48) -
+                 (base::Minutes(5) * confirmation_types.size()));
 
   // Act
   DismissedExclusionRule exclusion_rule(ad_events);
@@ -348,13 +351,12 @@ TEST_F(BatAdsDismissedExclusionRuleTest,
   for (const auto& confirmation_type : confirmation_types) {
     const AdEventInfo ad_event = BuildAdEvent(
         creative_ad, AdType::kNotificationAd, confirmation_type, Now());
-
     ad_events.push_back(ad_event);
 
-    FastForwardClockBy(base::Minutes(5));
+    AdvanceClockBy(base::Minutes(5));
   }
 
-  FastForwardClockBy(base::Hours(48));
+  AdvanceClockBy(base::Hours(48));
 
   // Act
   DismissedExclusionRule exclusion_rule(ad_events);
@@ -393,13 +395,14 @@ TEST_F(BatAdsDismissedExclusionRuleTest,
   for (const auto& confirmation_type : confirmation_types) {
     const AdEventInfo ad_event = BuildAdEvent(
         creative_ad, AdType::kNotificationAd, confirmation_type, Now());
-
     ad_events.push_back(ad_event);
 
-    FastForwardClockBy(base::Minutes(5));
+    AdvanceClockBy(base::Minutes(5));
   }
 
-  FastForwardClockBy(base::Hours(47));
+  AdvanceClockBy(base::Hours(48) -
+                 (base::Minutes(5) * confirmation_types.size()) -
+                 base::Seconds(1));
 
   // Act
   DismissedExclusionRule exclusion_rule(ad_events);
@@ -438,13 +441,8 @@ TEST_F(BatAdsDismissedExclusionRuleTest,
   for (const auto& confirmation_type : confirmation_types) {
     const AdEventInfo ad_event = BuildAdEvent(
         creative_ad, AdType::kNotificationAd, confirmation_type, Now());
-
     ad_events.push_back(ad_event);
-
-    FastForwardClockBy(base::Minutes(5));
   }
-
-  FastForwardClockBy(base::Hours(47));
 
   // Act
   DismissedExclusionRule exclusion_rule(ad_events);
@@ -486,13 +484,14 @@ TEST_F(BatAdsDismissedExclusionRuleTest,
   for (const auto& confirmation_type : confirmation_types) {
     const AdEventInfo ad_event = BuildAdEvent(
         creative_ad_2, AdType::kNotificationAd, confirmation_type, Now());
-
     ad_events.push_back(ad_event);
 
-    FastForwardClockBy(base::Minutes(5));
+    AdvanceClockBy(base::Minutes(5));
   }
 
-  FastForwardClockBy(base::Hours(47));
+  AdvanceClockBy(base::Hours(48) -
+                 (base::Minutes(5) * confirmation_types.size()) -
+                 base::Seconds(1));
 
   // Act
   DismissedExclusionRule exclusion_rule(ad_events);
@@ -522,13 +521,13 @@ TEST_F(BatAdsDismissedExclusionRuleTest,
   for (const auto& confirmation_type : confirmation_types) {
     const AdEventInfo ad_event = BuildAdEvent(
         creative_ad_2, AdType::kNotificationAd, confirmation_type, Now());
-
     ad_events.push_back(ad_event);
 
-    FastForwardClockBy(base::Minutes(5));
+    AdvanceClockBy(base::Minutes(5));
   }
 
-  FastForwardClockBy(base::Hours(48));
+  AdvanceClockBy(base::Hours(48) -
+                 (base::Minutes(5) * confirmation_types.size()));
 
   // Act
   DismissedExclusionRule exclusion_rule(ad_events);

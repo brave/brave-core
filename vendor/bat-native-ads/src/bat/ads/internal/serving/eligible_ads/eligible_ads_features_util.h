@@ -12,7 +12,7 @@
 
 namespace ads {
 
-AdPredictorWeights ToAdPredictorWeights(const std::string& param_value);
+AdPredictorWeightList ToAdPredictorWeights(const std::string& param_value);
 
 }  // namespace ads
 

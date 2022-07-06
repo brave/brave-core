@@ -37,32 +37,28 @@ void Conversions::Load() {
 void Conversions::OnLoadAndParseResource(
     ParsingResultPtr<ConversionsInfo> result) {
   if (!result) {
-    BLOG(1, "Failed to load resource " << kResourceId);
+    BLOG(1, "Failed to load " << kResourceId << " conversions resource");
     is_initialized_ = false;
     return;
   }
 
-  BLOG(1, "Successfully loaded resource " << kResourceId);
+  BLOG(1, "Successfully loaded " << kResourceId << " conversions resource");
 
   if (!result->resource) {
     BLOG(1, result->error_message);
-    BLOG(1, "Failed to initialize resource " << kResourceId);
+    BLOG(1, "Failed to initialize " << kResourceId << " conversions resource");
     is_initialized_ = false;
     return;
   }
 
   conversions_info_ = std::move(result->resource);
 
-  BLOG(1, "Parsed verifiable conversion resource version "
-              << conversions_info_->version);
+  BLOG(1, "Parsed conversions resource version " << conversions_info_->version);
 
   is_initialized_ = true;
 
-  BLOG(1, "Successfully initialized resource " << kResourceId);
-}
-
-const ConversionsInfo* Conversions::get() const {
-  return conversions_info_.get();
+  BLOG(1,
+       "Successfully initialized " << kResourceId << " conversions resource");
 }
 
 }  // namespace resource

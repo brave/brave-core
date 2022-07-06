@@ -50,12 +50,17 @@ public class BraveSetDefaultBrowserUtils {
             return false;
         }
 
-        return resolveInfo.activityInfo.packageName.equals(
-                       BraveConstants.BRAVE_PRODUCTION_PACKAGE_NAME)
-                || resolveInfo.activityInfo.packageName.equals(
-                        BraveConstants.BRAVE_BETA_PACKAGE_NAME)
-                || resolveInfo.activityInfo.packageName.equals(
-                        BraveConstants.BRAVE_NIGHTLY_PACKAGE_NAME);
+        if (context.getPackageName().equals(BraveConstants.BRAVE_PRODUCTION_PACKAGE_NAME)) {
+            return resolveInfo.activityInfo.packageName.equals(
+                    BraveConstants.BRAVE_PRODUCTION_PACKAGE_NAME);
+        } else {
+            return resolveInfo.activityInfo.packageName.equals(
+                           BraveConstants.BRAVE_PRODUCTION_PACKAGE_NAME)
+                    || resolveInfo.activityInfo.packageName.equals(
+                            BraveConstants.BRAVE_BETA_PACKAGE_NAME)
+                    || resolveInfo.activityInfo.packageName.equals(
+                            BraveConstants.BRAVE_NIGHTLY_PACKAGE_NAME);
+        }
     }
 
     public static void checkSetDefaultBrowserModal(AppCompatActivity activity) {

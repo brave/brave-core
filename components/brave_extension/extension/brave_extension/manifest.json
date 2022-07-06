@@ -4,10 +4,6 @@
   "manifest_version": 2,
   "description": "__MSG_appName__",
   "default_locale": "en_US",
-  "browser_action": {
-    "default_title": "Brave Shields",
-    "default_popup": "braveShieldsPanel.html"
-  },
   "icons": {
     "16": "assets/img/icon-16.png",
     "32": "assets/img/icon-32.png",

@@ -4,10 +4,13 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "base/containers/flat_map.h"
+#include "base/files/file_enumerator.h"
 #include "base/memory/raw_ptr.h"
 #include "base/path_service.h"
 #include "base/run_loop.h"
 #include "base/scoped_observation.h"
+#include "base/task/thread_pool.h"
+#include "base/test/bind.h"
 #include "base/test/thread_test_helper.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
@@ -24,6 +27,7 @@
 #include "chrome/test/base/ui_test_utils.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
+#include "extensions/common/file_util.h"
 #include "net/dns/mock_host_resolver.h"
 #include "ui/base/ui_base_switches.h"
 
@@ -556,6 +560,61 @@ IN_PROC_BROWSER_TEST_F(GreaselionServiceTest, CleanShutdown) {
 
   CloseAllBrowsers();
   ui_test_utils::WaitForBrowserToClose(browser());
+}
+
+IN_PROC_BROWSER_TEST_F(GreaselionServiceTest, FoldersAreRemovedOnUpdate) {
+  ASSERT_TRUE(InstallMockExtension());
+
+  auto io_runner = base::ThreadPool::CreateSequencedTaskRunner(
+      {base::MayBlock(), base::TaskShutdownBehavior::BLOCK_SHUTDOWN});
+
+  auto count_folders_on_io_runner = [&io_runner]() {
+    base::RunLoop run_loop;
+    size_t folder_count;
+
+    auto set_folder_count = [&folder_count, &run_loop](size_t count) {
+      folder_count = count;
+      run_loop.Quit();
+    };
+
+    auto count_folders = []() {
+      base::FilePath install_dir =
+          GreaselionServiceFactory::GetInstallDirectory();
+
+      base::FilePath extensions_dir =
+          extensions::file_util::GetInstallTempDir(install_dir);
+
+      base::FileEnumerator enumerator(extensions_dir, false,
+                                      base::FileEnumerator::DIRECTORIES);
+      size_t count = 0;
+      for (base::FilePath name = enumerator.Next(); !name.empty();
+           name = enumerator.Next()) {
+        ++count;
+      }
+      return count;
+    };
+
+    io_runner->PostTaskAndReplyWithResult(
+        FROM_HERE, base::BindOnce(count_folders),
+        base::BindLambdaForTesting(set_folder_count));
+
+    run_loop.Run();
+    return folder_count;
+  };
+
+  size_t start_count = count_folders_on_io_runner();
+  EXPECT_GT(start_count, 0ul);
+
+  // Trigger an update to reinstall extension folders and wait for all
+  // extensions to finish loading.
+  GreaselionService* greaselion_service =
+      GreaselionServiceFactory::GetForBrowserContext(profile());
+  ASSERT_TRUE(greaselion_service);
+  greaselion_service->UpdateInstalledExtensions();
+  GreaselionServiceWaiter(greaselion_service).Wait();
+
+  size_t after_update = count_folders_on_io_runner();
+  EXPECT_EQ(after_update, start_count);
 }
 
 #if !BUILDFLAG(IS_MAC)

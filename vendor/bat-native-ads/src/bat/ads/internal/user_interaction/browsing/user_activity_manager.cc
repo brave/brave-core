@@ -13,6 +13,7 @@
 #include "base/time/time.h"
 #include "bat/ads/internal/base/logging_util.h"
 #include "bat/ads/internal/browser/browser_manager.h"
+#include "bat/ads/internal/tabs/tab_info.h"
 #include "bat/ads/internal/tabs/tab_manager.h"
 #include "bat/ads/internal/user_interaction/browsing/page_transition_util.h"
 #include "bat/ads/internal/user_interaction/browsing/user_activity_constants.h"
@@ -34,7 +35,7 @@ void LogEvent(const UserActivityEventType event_type) {
 
   const base::TimeDelta time_window = user_activity::features::GetTimeWindow();
   const UserActivityEventList events =
-      UserActivityManager::Get()->GetHistoryForTimeWindow(time_window);
+      UserActivityManager::GetInstance()->GetHistoryForTimeWindow(time_window);
 
   const double score = GetUserActivityScore(triggers, events);
 
@@ -54,20 +55,20 @@ UserActivityManager::UserActivityManager() {
   DCHECK(!g_user_activity_manager_instance);
   g_user_activity_manager_instance = this;
 
-  BrowserManager::Get()->AddObserver(this);
-  TabManager::Get()->AddObserver(this);
+  BrowserManager::GetInstance()->AddObserver(this);
+  TabManager::GetInstance()->AddObserver(this);
 }
 
 UserActivityManager::~UserActivityManager() {
-  BrowserManager::Get()->RemoveObserver(this);
-  TabManager::Get()->RemoveObserver(this);
+  BrowserManager::GetInstance()->RemoveObserver(this);
+  TabManager::GetInstance()->RemoveObserver(this);
 
   DCHECK_EQ(this, g_user_activity_manager_instance);
   g_user_activity_manager_instance = nullptr;
 }
 
 // static
-UserActivityManager* UserActivityManager::Get() {
+UserActivityManager* UserActivityManager::GetInstance() {
   DCHECK(g_user_activity_manager_instance);
   return g_user_activity_manager_instance;
 }
@@ -106,7 +107,7 @@ UserActivityEventList UserActivityManager::GetHistoryForTimeWindow(
 
   const auto iter =
       std::remove_if(filtered_history.begin(), filtered_history.end(),
-                     [&time](const UserActivityEventInfo& event) {
+                     [time](const UserActivityEventInfo& event) {
                        return event.created_at < time;
                      });
 
@@ -168,11 +169,11 @@ void UserActivityManager::OnTabDidChangeFocus(const int32_t id) {
   RecordEvent(UserActivityEventType::kTabChangedFocus);
 }
 
-void UserActivityManager::OnTabDidChange(const int32_t id) {
+void UserActivityManager::OnTabDidChange(const TabInfo& tab) {
   RecordEvent(UserActivityEventType::kTabUpdated);
 }
 
-void UserActivityManager::OnDidOpenNewTab(const int32_t id) {
+void UserActivityManager::OnDidOpenNewTab(const TabInfo& tab) {
   RecordEvent(UserActivityEventType::kOpenedNewTab);
 }
 

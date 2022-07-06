@@ -13,7 +13,11 @@
 #define GetWidthOfLargestSelectableRegion    \
   GetWidthOfLargestSelectableRegion() const; \
   int GetWidthOfLargestSelectableRegion_ChromiumImpl
+#define ActiveStateChanged           \
+  ActiveStateChanged_ChromiumImpl(); \
+  void ActiveStateChanged
 #include "src/chrome/browser/ui/views/tabs/tab.h"
+#undef ActiveStateChanged
 #undef GetWidthOfLargestSelectableRegion
 #undef kMinimumContentsWidthForCloseButtons
 

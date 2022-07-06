@@ -11,7 +11,7 @@
 #include <string>
 
 #include "base/check_op.h"
-#include "bat/ads/ads_client_aliases.h"
+#include "bat/ads/ads_client_callback.h"
 #include "bat/ads/internal/creatives/inline_content_ads/creative_inline_content_ad_info_aliases.h"
 #include "bat/ads/internal/database/database_table_interface.h"
 #include "bat/ads/internal/segments/segments_aliases.h"
@@ -68,7 +68,7 @@ class CreativeInlineContentAds final : public TableInterface {
 
   void GetAll(GetCreativeInlineContentAdsCallback callback);
 
-  void set_batch_size(const int batch_size) {
+  void SetBatchSize(const int batch_size) {
     DCHECK_GT(batch_size, 0);
 
     batch_size_ = batch_size;

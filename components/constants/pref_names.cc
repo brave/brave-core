@@ -29,12 +29,6 @@ const char kThresholdQuery[] = "brave.stats.threshold_query";
 const char kWeekOfInstallation[] = "brave.stats.week_of_installation";
 const char kWidevineOptedIn[] = "brave.widevine_opted_in";
 const char kAskWidevineInstall[] = "brave.ask_widevine_install";
-const char kUseAlternativeSearchEngineProvider[] =
-    "brave.use_alternate_private_search_engine";
-const char kShowAlternativeSearchEngineProviderToggle[] =
-    "brave.show_alternate_private_search_engine_toggle";
-const char kAlternativeSearchEngineProviderInTor[] =
-    "brave.alternate_private_search_engine_in_tor";
 const char kShowBookmarksButton[] = "brave.show_bookmarks_button";
 const char kLocationBarIsWide[] = "brave.location_bar_is_wide";
 const char kReferralDownloadID[] = "brave.referral.download_id";
@@ -71,10 +65,6 @@ const char kBinanceAccessToken[] = "brave.binance.access_token";
 const char kBinanceRefreshToken[] = "brave.binance.refresh_token";
 const char kAlwaysShowBookmarkBarOnNTP[] =
     "brave.always_show_bookmark_bar_on_ntp";
-const char kAutocompleteEnabled[] = "brave.autocomplete_enabled";
-const char kTopSiteSuggestionsEnabled[] = "brave.top_site_suggestions_enabled";
-const char kBraveSuggestedSiteSuggestionsEnabled[] =
-    "brave.brave_suggested_site_suggestions_enabled";
 const char kBraveDarkMode[] = "brave.dark_mode";
 const char kOtherBookmarksMigrated[] = "brave.other_bookmarks_migrated";
 const char kBraveShieldsSettingsVersion[] = "brave.shields_settings_version";

@@ -292,10 +292,6 @@ class Database {
       const std::vector<std::string>& ids,
       client::GetPromotionListCallback callback);
 
-  void GetPromotionListByType(
-      const std::vector<type::PromotionType>& types,
-      client::GetPromotionListCallback callback);
-
   void UpdatePromotionsBlankPublicKey(
       const std::vector<std::string>& ids,
       ledger::ResultCallback callback);
@@ -416,9 +412,7 @@ class Database {
       const std::string& redeem_id,
       ledger::ResultCallback callback);
 
-  void GetSpendableUnblindedTokensByTriggerIds(
-      const std::vector<std::string>& trigger_ids,
-      GetUnblindedTokenListCallback callback);
+  void GetSpendableUnblindedTokens(GetUnblindedTokenListCallback callback);
 
   void GetReservedUnblindedTokens(
       const std::string& redeem_id,

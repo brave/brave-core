@@ -13,6 +13,7 @@
 #include "base/callback.h"
 #include "base/callback_helpers.h"
 #include "base/containers/flat_map.h"
+#include "base/files/file_path.h"
 #include "net/traffic_annotation/network_traffic_annotation.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 #include "url/gurl.h"
@@ -27,6 +28,8 @@ namespace api_request_helper {
 // Anyone is welcome to use APIRequestHelper to reduce boilerplate
 class APIRequestHelper {
  public:
+  using Ticket = std::list<std::unique_ptr<network::SimpleURLLoader>>::iterator;
+
   APIRequestHelper(
       net::NetworkTrafficAnnotationTag annotation_tag,
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
@@ -46,7 +49,7 @@ class APIRequestHelper {
   // into string before validating the response. For these purposes
   // conversion_callback is added which receives raw response and can perform
   // necessary conversions.
-  void Request(
+  Ticket Request(
       const std::string& method,
       const GURL& url,
       const std::string& payload,
@@ -57,15 +60,39 @@ class APIRequestHelper {
       size_t max_body_size = -1u,
       ResponseConversionCallback conversion_callback = base::NullCallback());
 
+  using DownloadCallback = base::OnceCallback<void(base::FilePath)>;
+  Ticket Download(const GURL& url,
+                  const std::string& payload,
+                  const std::string& payload_content_type,
+                  bool auto_retry_on_network_change,
+                  const base::FilePath& path,
+                  DownloadCallback callback,
+                  const base::flat_map<std::string, std::string>& headers = {});
+
+  void Cancel(const Ticket& ticket);
+
  private:
   APIRequestHelper(const APIRequestHelper&) = delete;
   APIRequestHelper& operator=(const APIRequestHelper&) = delete;
+
+  std::unique_ptr<network::SimpleURLLoader> CreateLoader(
+      const std::string& method,
+      const GURL& url,
+      const std::string& payload,
+      const std::string& payload_content_type,
+      bool auto_retry_on_network_change,
+      bool allow_http_error_result,
+      const base::flat_map<std::string, std::string>& headers);
+
   using SimpleURLLoaderList =
       std::list<std::unique_ptr<network::SimpleURLLoader>>;
   void OnResponse(SimpleURLLoaderList::iterator iter,
                   ResultCallback callback,
                   ResponseConversionCallback conversion_callback,
                   const std::unique_ptr<std::string> response_body);
+  void OnDownload(SimpleURLLoaderList::iterator iter,
+                  DownloadCallback callback,
+                  base::FilePath path);
 
   net::NetworkTrafficAnnotationTag annotation_tag_;
   SimpleURLLoaderList url_loaders_;

@@ -41,7 +41,7 @@ bool DoNotDisturbPermissionRule::DoesRespectCap() {
     return true;
   }
 
-  if (BrowserManager::Get()->IsActive()) {
+  if (BrowserManager::GetInstance()->IsBrowserActive()) {
     return true;
   }
 

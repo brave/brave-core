@@ -11,8 +11,6 @@ namespace decentralized_dns {
 constexpr const char* kUnstoppableDomains[] = {
     ".crypto", ".x",   ".coin",       ".nft",    ".dao",
     ".wallet", ".888", ".blockchain", ".bitcoin"};
-constexpr char kUnstoppableDomainsDoHResolver[] =
-    "https://resolver.unstoppable.io/dns-query{?brave_UD}";
 
 constexpr char kEthDomain[] = ".eth";
 constexpr char kDNSForEthDomain[] = ".eth.link";

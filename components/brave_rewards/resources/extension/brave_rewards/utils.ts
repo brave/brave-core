@@ -99,7 +99,7 @@ export const handleExternalWalletLink = (balance: RewardsExtension.Balance, exte
   if (!externalWallet || (externalWallet && externalWallet.status === 0)) {
     link = 'brave://rewards/#verify'
   } else {
-    link = externalWallet.verifyUrl
+    link = externalWallet.loginUrl
   }
 
   chrome.tabs.create({

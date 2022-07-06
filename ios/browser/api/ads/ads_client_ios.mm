@@ -203,6 +203,6 @@ void AdsClientIOS::RecordP2AEvent(const std::string& name,
 }
 
 void AdsClientIOS::LogTrainingInstance(
-    brave_federated::mojom::TrainingInstancePtr training_instance) {
+    std::vector<brave_federated::mojom::CovariatePtr> training_instance) {
   [bridge_ logTrainingInstance:std::move(training_instance)];
 }

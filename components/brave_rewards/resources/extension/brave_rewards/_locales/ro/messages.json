@@ -135,6 +135,21 @@
     "message": "Brave Rewards are o problemă. Vă rugăm încercați din nou mai târziu.",
     "description": ""
   },
+  "rewardsLogInToSeeBalance": {
+    "message": "$begin_bold$Conectați-vă la $provider$ $end_bold$pentru a vă consulta soldul",
+    "description": "",
+    "placeholders": {
+      "begin_bold": {
+        "content": "$1"
+      },
+      "provider": {
+        "content": "$2"
+      },
+      "end_bold": {
+        "content": "$3"
+      }
+    }
+  },
   "rewardsPaymentCheckStatus": {
     "message": "Verificați starea",
     "description": ""

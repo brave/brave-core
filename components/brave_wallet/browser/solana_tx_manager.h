@@ -36,6 +36,9 @@ class SolanaTxManager : public TxManager, public SolanaBlockTracker::Observer {
                   PrefService* prefs);
   ~SolanaTxManager() override;
 
+  using ProcessSolanaHardwareSignatureCallback =
+      mojom::SolanaTxManagerProxy::ProcessSolanaHardwareSignatureCallback;
+
   // TxManager
   void AddUnapprovedTransaction(mojom::TxDataUnionPtr tx_data_union,
                                 const std::string& from,
@@ -74,12 +77,20 @@ class SolanaTxManager : public TxManager, public SolanaBlockTracker::Observer {
       MakeTokenProgramTransferTxDataCallback callback);
   void GetEstimatedTxFee(const std::string& tx_meta_id,
                          GetEstimatedTxFeeCallback callback);
+  void ProcessSolanaHardwareSignature(
+      const std::string& tx_meta_id,
+      const std::vector<uint8_t>& signature_bytes,
+      ProcessSolanaHardwareSignatureCallback callback);
 
   std::unique_ptr<SolanaTxMeta> GetTxForTesting(const std::string& tx_meta_id);
 
  private:
   FRIEND_TEST_ALL_PREFIXES(SolanaTxManagerUnitTest, AddAndApproveTransaction);
   FRIEND_TEST_ALL_PREFIXES(SolanaTxManagerUnitTest, DropTxWithInvalidBlockhash);
+  FRIEND_TEST_ALL_PREFIXES(SolanaTxManagerUnitTest,
+                           GetTransactionMessageToSign);
+  FRIEND_TEST_ALL_PREFIXES(SolanaTxManagerUnitTest,
+                           ProcessSolanaHardwareSignature);
 
   // TxManager
   void UpdatePendingTransactions() override;
@@ -94,6 +105,13 @@ class SolanaTxManager : public TxManager, public SolanaBlockTracker::Observer {
                             uint64_t last_valid_block_height,
                             mojom::SolanaProviderError error,
                             const std::string& error_message);
+  void OnGetLatestBlockhashHardware(
+      std::unique_ptr<SolanaTxMeta> meta,
+      GetTransactionMessageToSignCallback callback,
+      const std::string& latest_blockhash,
+      uint64_t last_valid_block_height,
+      mojom::SolanaProviderError error,
+      const std::string& error_message);
   void OnSendSolanaTransaction(const std::string& tx_meta_id,
                                ApproveTransactionCallback callback,
                                const std::string& tx_hash,

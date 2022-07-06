@@ -118,7 +118,7 @@ absl::optional<ConversionQueueItemList> FromJson(const std::string& json) {
 }  // namespace
 
 void Migrate(InitializeCallback callback) {
-  if (AdsClientHelper::Get()->GetBooleanPref(
+  if (AdsClientHelper::GetInstance()->GetBooleanPref(
           prefs::kHasMigratedConversionState)) {
     callback(/* success */ true);
     return;
@@ -126,13 +126,13 @@ void Migrate(InitializeCallback callback) {
 
   BLOG(3, "Loading conversion state");
 
-  AdsClientHelper::Get()->Load(
+  AdsClientHelper::GetInstance()->Load(
       kFilename, [=](const bool success, const std::string& json) {
         if (!success) {
           // Conversion state does not exist
           BLOG(3, "Successfully migrated conversion state");
 
-          AdsClientHelper::Get()->SetBooleanPref(
+          AdsClientHelper::GetInstance()->SetBooleanPref(
               prefs::kHasMigratedConversionState, true);
 
           callback(/* success */ true);
@@ -161,7 +161,7 @@ void Migrate(InitializeCallback callback) {
                 return;
               }
 
-              AdsClientHelper::Get()->SetBooleanPref(
+              AdsClientHelper::GetInstance()->SetBooleanPref(
                   prefs::kHasMigratedConversionState, true);
 
               BLOG(3, "Successfully migrated conversion state");

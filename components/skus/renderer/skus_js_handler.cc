@@ -8,13 +8,19 @@
 #include <tuple>
 #include <utility>
 
+#include "base/bind.h"
+#include "base/callback_helpers.h"
 #include "base/json/json_reader.h"
 #include "base/no_destructor.h"
 #include "base/strings/utf_string_conversions.h"
+#include "brave/components/brave_vpn/buildflags/buildflags.h"
+#include "brave/components/brave_vpn/mojom/brave_vpn.mojom.h"
 #include "content/public/renderer/render_frame.h"
 #include "content/public/renderer/v8_value_converter.h"
 #include "gin/arguments.h"
 #include "gin/function_template.h"
+#include "gin/handle.h"
+#include "gin/object_template_builder.h"
 #include "third_party/blink/public/common/browser_interface_broker_proxy.h"
 #include "third_party/blink/public/mojom/devtools/console_message.mojom.h"
 #include "third_party/blink/public/platform/web_string.h"
@@ -24,6 +30,8 @@
 #include "third_party/blink/public/web/web_script_source.h"
 
 namespace skus {
+
+gin::WrapperInfo SkusJSHandler::kWrapperInfo = {gin::kEmbedderNativeGin};
 
 SkusJSHandler::SkusJSHandler(content::RenderFrame* render_frame)
     : render_frame_(render_frame) {}
@@ -35,8 +43,16 @@ bool SkusJSHandler::EnsureConnected() {
     render_frame_->GetBrowserInterfaceBroker()->GetInterface(
         skus_service_.BindNewPipeAndPassReceiver());
   }
+  bool result = skus_service_.is_bound();
+#if BUILDFLAG(ENABLE_BRAVE_VPN) && !BUILDFLAG(IS_ANDROID)
+  if (!vpn_service_.is_bound()) {
+    render_frame_->GetBrowserInterfaceBroker()->GetInterface(
+        vpn_service_.BindNewPipeAndPassReceiver());
+  }
+  result = result && vpn_service_.is_bound();
+#endif
 
-  return skus_service_.is_bound();
+  return result;
 }
 
 void SkusJSHandler::AddJavaScriptObjectToFrame(v8::Local<v8::Context> context) {
@@ -47,17 +63,6 @@ void SkusJSHandler::AddJavaScriptObjectToFrame(v8::Local<v8::Context> context) {
 
   v8::Context::Scope context_scope(context);
 
-  BindFunctionsToObject(isolate, context);
-}
-
-void SkusJSHandler::ResetRemote(content::RenderFrame* render_frame) {
-  render_frame_ = render_frame;
-  skus_service_.reset();
-  EnsureConnected();
-}
-
-void SkusJSHandler::BindFunctionsToObject(v8::Isolate* isolate,
-                                          v8::Local<v8::Context> context) {
   v8::Local<v8::Object> global = context->Global();
 
   // window.chrome
@@ -74,61 +79,30 @@ void SkusJSHandler::BindFunctionsToObject(v8::Isolate* isolate,
   }
 
   // window.chrome.braveSkus
-  v8::Local<v8::Object> skus_obj;
-  v8::Local<v8::Value> skus_value;
-  if (!chrome_obj->Get(context, gin::StringToV8(isolate, "braveSkus"))
-           .ToLocal(&skus_value) ||
-      !skus_value->IsObject()) {
-    skus_obj = v8::Object::New(isolate);
-    chrome_obj
-        ->Set(context, gin::StringToSymbol(isolate, "braveSkus"), skus_obj)
-        .Check();
-  } else {
-    skus_obj = skus_value->ToObject(context).ToLocalChecked();
-  }
+  gin::Handle<SkusJSHandler> handler = gin::CreateHandle(isolate, this);
+  CHECK(!handler.IsEmpty());
+  v8::PropertyDescriptor skus_desc(handler.ToV8(), false);
+  skus_desc.set_configurable(false);
 
-  // window.chrome.braveSkus.refresh_order
-  BindFunctionToObject(isolate, skus_obj, "refresh_order",
-                       base::BindRepeating(&SkusJSHandler::RefreshOrder,
-                                           base::Unretained(this), isolate));
-
-  // window.chrome.braveSkus.fetch_order_credentials
-  BindFunctionToObject(
-      isolate, skus_obj, "fetch_order_credentials",
-      base::BindRepeating(&SkusJSHandler::FetchOrderCredentials,
-                          base::Unretained(this), isolate));
-
-  // window.chrome.braveSkus.prepare_credentials_presentation
-  BindFunctionToObject(
-      isolate, skus_obj, "prepare_credentials_presentation",
-      base::BindRepeating(&SkusJSHandler::PrepareCredentialsPresentation,
-                          base::Unretained(this), isolate));
-
-  // window.chrome.braveSkus.credential_summary
-  BindFunctionToObject(isolate, skus_obj, "credential_summary",
-                       base::BindRepeating(&SkusJSHandler::CredentialSummary,
-                                           base::Unretained(this), isolate));
+  chrome_obj
+      ->DefineProperty(isolate->GetCurrentContext(),
+                       gin::StringToV8(isolate, "braveSkus"), skus_desc)
+      .Check();
 }
 
-template <typename Sig>
-void SkusJSHandler::BindFunctionToObject(
-    v8::Isolate* isolate,
-    v8::Local<v8::Object> javascript_object,
-    const std::string& name,
-    const base::RepeatingCallback<Sig>& callback) {
-  v8::Local<v8::Context> context = isolate->GetCurrentContext();
-  javascript_object
-      ->Set(context, gin::StringToSymbol(isolate, name),
-            gin::CreateFunctionTemplate(isolate, callback)
-                ->GetFunction(context)
-                .ToLocalChecked())
-      .Check();
+void SkusJSHandler::ResetRemote(content::RenderFrame* render_frame) {
+  render_frame_ = render_frame;
+  skus_service_.reset();
+  vpn_service_.reset();
+  DCHECK(EnsureConnected());
 }
 
 // window.chrome.braveSkus.refresh_order
 v8::Local<v8::Promise> SkusJSHandler::RefreshOrder(v8::Isolate* isolate,
                                                    std::string order_id) {
-  if (!EnsureConnected())
+  auto host = render_frame_->GetWebFrame()->GetSecurityOrigin().Host().Utf8();
+  auto connected = EnsureConnected();
+  if (!connected)
     return v8::Local<v8::Promise>();
 
   v8::MaybeLocal<v8::Promise::Resolver> resolver =
@@ -136,18 +110,16 @@ v8::Local<v8::Promise> SkusJSHandler::RefreshOrder(v8::Isolate* isolate,
   if (resolver.IsEmpty()) {
     return v8::Local<v8::Promise>();
   }
-
   auto promise_resolver(
       v8::Global<v8::Promise::Resolver>(isolate, resolver.ToLocalChecked()));
+
   auto context_old(
       v8::Global<v8::Context>(isolate, isolate->GetCurrentContext()));
-
   skus_service_->RefreshOrder(
-      order_id,
+      host, order_id,
       base::BindOnce(&SkusJSHandler::OnRefreshOrder, base::Unretained(this),
                      std::move(promise_resolver), isolate,
                      std::move(context_old)));
-
   return resolver.ToLocalChecked()->GetPromise();
 }
 
@@ -209,9 +181,9 @@ v8::Local<v8::Promise> SkusJSHandler::FetchOrderCredentials(
       v8::Global<v8::Promise::Resolver>(isolate, resolver.ToLocalChecked()));
   auto context_old(
       v8::Global<v8::Context>(isolate, isolate->GetCurrentContext()));
-
+  auto host = render_frame_->GetWebFrame()->GetSecurityOrigin().Host().Utf8();
   skus_service_->FetchOrderCredentials(
-      order_id,
+      host, order_id,
       base::BindOnce(&SkusJSHandler::OnFetchOrderCredentials,
                      base::Unretained(this), std::move(promise_resolver),
                      isolate, std::move(context_old)));
@@ -301,15 +273,16 @@ v8::Local<v8::Promise> SkusJSHandler::CredentialSummary(v8::Isolate* isolate,
       v8::Global<v8::Context>(isolate, isolate->GetCurrentContext()));
 
   skus_service_->CredentialSummary(
-      domain,
-      base::BindOnce(&SkusJSHandler::OnCredentialSummary,
-                     base::Unretained(this), std::move(promise_resolver),
-                     isolate, std::move(context_old)));
+      domain, base::BindOnce(&SkusJSHandler::OnCredentialSummary,
+                             base::Unretained(this), domain,
+                             std::move(promise_resolver), isolate,
+                             std::move(context_old)));
 
   return resolver.ToLocalChecked()->GetPromise();
 }
 
 void SkusJSHandler::OnCredentialSummary(
+    const std::string& domain,
     v8::Global<v8::Promise::Resolver> promise_resolver,
     v8::Isolate* isolate,
     v8::Global<v8::Context> context_old,
@@ -344,10 +317,23 @@ void SkusJSHandler::OnCredentialSummary(
     std::ignore = resolver->Reject(context, result);
     return;
   }
-
+#if BUILDFLAG(ENABLE_BRAVE_VPN) && !BUILDFLAG(IS_ANDROID)
+  vpn_service_->LoadPurchasedState(domain);
+#endif
   v8::Local<v8::Value> local_result =
       content::V8ValueConverter::Create()->ToV8Value(result_dict, context);
   std::ignore = resolver->Resolve(context, local_result);
+}
+
+gin::ObjectTemplateBuilder SkusJSHandler::GetObjectTemplateBuilder(
+    v8::Isolate* isolate) {
+  return gin::Wrappable<SkusJSHandler>::GetObjectTemplateBuilder(isolate)
+      .SetMethod("refresh_order", &SkusJSHandler::RefreshOrder)
+      .SetMethod("fetch_order_credentials",
+                 &SkusJSHandler::FetchOrderCredentials)
+      .SetMethod("prepare_credentials_presentation",
+                 &SkusJSHandler::PrepareCredentialsPresentation)
+      .SetMethod("credential_summary", &SkusJSHandler::CredentialSummary);
 }
 
 }  // namespace skus

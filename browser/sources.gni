@@ -29,6 +29,7 @@ import("//brave/browser/new_tab/sources.gni")
 import("//brave/browser/notifications/sources.gni")
 import("//brave/browser/ntp_background_images/sources.gni")
 import("//brave/browser/permissions/sources.gni")
+import("//brave/browser/playlist/sources.gni")
 import("//brave/browser/search_engines/sources.gni")
 import("//brave/browser/speedreader/sources.gni")
 import("//brave/browser/themes/sources.gni")
@@ -155,12 +156,13 @@ brave_chrome_browser_deps = [
   "//brave/components/ntp_tiles",
   "//brave/components/p3a",
   "//brave/components/p3a:buildflags",
+  "//brave/components/playlist/buildflags",
   "//brave/components/privacy_sandbox",
   "//brave/components/resources",
   "//brave/components/sidebar/buildflags",
   "//brave/components/skus/browser",
   "//brave/components/skus/common",
-  "//brave/components/speedreader:buildflags",
+  "//brave/components/speedreader/common:buildflags",
   "//brave/components/tor/buildflags",
   "//brave/components/translate/core/common:buildflags",
   "//brave/components/version_info",
@@ -253,6 +255,8 @@ if (is_android) {
   brave_chrome_browser_sources += [
     "//brave/browser/p3a/p3a_core_metrics.cc",
     "//brave/browser/p3a/p3a_core_metrics.h",
+    "//brave/browser/profile_resetter/brave_profile_resetter.cc",
+    "//brave/browser/profile_resetter/brave_profile_resetter.h",
   ]
 
   brave_chrome_browser_deps += [
@@ -409,6 +413,7 @@ brave_chrome_browser_sources += brave_browser_new_tab_sources
 brave_chrome_browser_sources += brave_browser_notifications_sources
 brave_chrome_browser_sources += brave_browser_ntp_background_images_sources
 brave_chrome_browser_sources += brave_browser_permissions_sources
+brave_chrome_browser_sources += brave_browser_playlist_sources
 brave_chrome_browser_sources += brave_browser_search_engines_sources
 brave_chrome_browser_sources += brave_browser_speedreader_sources
 brave_chrome_browser_sources += brave_browser_themes_sources
@@ -437,6 +442,7 @@ brave_chrome_browser_deps += brave_browser_new_tab_deps
 brave_chrome_browser_deps += brave_browser_notifications_deps
 brave_chrome_browser_deps += brave_browser_ntp_background_images_deps
 brave_chrome_browser_deps += brave_browser_permissions_deps
+brave_chrome_browser_deps += brave_browser_playlist_deps
 brave_chrome_browser_deps += brave_browser_search_engines_deps
 brave_chrome_browser_deps += brave_browser_speedreader_deps
 brave_chrome_browser_deps += brave_browser_themes_deps

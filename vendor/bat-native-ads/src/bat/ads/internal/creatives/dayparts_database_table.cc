@@ -72,7 +72,7 @@ void Dayparts::Delete(ResultCallback callback) {
 
   DeleteTable(transaction.get(), GetTableName());
 
-  AdsClientHelper::Get()->RunDBTransaction(
+  AdsClientHelper::GetInstance()->RunDBTransaction(
       std::move(transaction),
       std::bind(&OnResultCallback, std::placeholders::_1, callback));
 }

@@ -8,6 +8,7 @@
 #include <memory>
 
 #include "bat/ads/internal/base/unittest/unittest_base.h"
+#include "url/gurl.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
@@ -62,15 +63,15 @@ class BatAdsTransferTest : public TransferObserver, public UnitTestBase {
 TEST_F(BatAdsTransferTest, DoNotTransferAdIfUrlIsMissingHTTPOrHTTPSScheme) {
   // Arrange
   const AdInfo ad = BuildAdForType(AdType::kPromotedContentAd);
-  transfer_->set_last_clicked_ad(ad);
+  transfer_->SetLastClickedAd(ad);
 
-  TabManager::Get()->OnUpdated(1, GURL("https://brave.com"),
-                               /* is_visible */ true,
-                               /* is_incognito */ false);
+  TabManager::GetInstance()->OnTabUpdated(1, GURL("https://brave.com"),
+                                          /* is_visible */ true,
+                                          /* is_incognito */ false);
 
   // Act
   transfer_->MaybeTransferAd(1, {GURL("brave.com")});
-  FastForwardClockBy(base::Seconds(10));
+  AdvanceClockBy(base::Seconds(10));
 
   // Assert
   EXPECT_EQ(0, GetTransferCount());
@@ -80,15 +81,15 @@ TEST_F(BatAdsTransferTest,
        DoNotTransferAdIfTheUrlDoesNotMatchTheLastClickedAd) {
   // Arrange
   const AdInfo ad = BuildAdForType(AdType::kNewTabPageAd);
-  transfer_->set_last_clicked_ad(ad);
+  transfer_->SetLastClickedAd(ad);
 
-  TabManager::Get()->OnUpdated(1, GURL("https://foobar.com"),
-                               /* is_visible */ true,
-                               /* is_incognito */ false);
+  TabManager::GetInstance()->OnTabUpdated(1, GURL("https://foobar.com"),
+                                          /* is_visible */ true,
+                                          /* is_incognito */ false);
 
   // Act
   transfer_->MaybeTransferAd(1, {GURL("brave.com")});
-  FastForwardClockBy(base::Seconds(10));
+  AdvanceClockBy(base::Seconds(10));
 
   // Assert
   EXPECT_EQ(0, GetTransferCount());
@@ -97,16 +98,17 @@ TEST_F(BatAdsTransferTest,
 TEST_F(BatAdsTransferTest, DoNotTransferAdIfTheSameAdIsAlreadyTransferring) {
   // Arrange
   const AdInfo ad = BuildAdForType(AdType::kNotificationAd);
-  transfer_->set_last_clicked_ad(ad);
+  transfer_->SetLastClickedAd(ad);
 
-  TabManager::Get()->OnUpdated(1, GURL("https://brave.com"),
-                               /* is_visible */ true,
-                               /* is_incognito */ false);
+  TabManager::GetInstance()->OnTabUpdated(1, GURL("https://brave.com"),
+                                          /* is_visible */ true,
+                                          /* is_incognito */ false);
 
   transfer_->MaybeTransferAd(1, {GURL("https://brave.com")});
 
   // Act
   transfer_->MaybeTransferAd(1, {GURL("https://brave.com")});
+
   FastForwardClockBy(base::Seconds(10));
 
   // Assert
@@ -116,24 +118,25 @@ TEST_F(BatAdsTransferTest, DoNotTransferAdIfTheSameAdIsAlreadyTransferring) {
 TEST_F(BatAdsTransferTest, TransferAdIfAnotherAdIsAlreadyTransferring) {
   // Arrange
   const AdInfo ad = BuildAdForType(AdType::kSearchResultAd);
-  transfer_->set_last_clicked_ad(ad);
+  transfer_->SetLastClickedAd(ad);
 
-  TabManager::Get()->OnUpdated(1, GURL("https://foobar.com"),
-                               /* is_visible */ true,
-                               /* is_incognito */ false);
+  TabManager::GetInstance()->OnTabUpdated(1, GURL("https://foobar.com"),
+                                          /* is_visible */ true,
+                                          /* is_incognito */ false);
 
   transfer_->MaybeTransferAd(1, {GURL("https://foobar.com")});
 
-  TabManager::Get()->OnUpdated(1, GURL("https://foobar.com"),
-                               /* is_visible */ false,
-                               /* is_incognito */ false);
+  TabManager::GetInstance()->OnTabUpdated(1, GURL("https://foobar.com"),
+                                          /* is_visible */ false,
+                                          /* is_incognito */ false);
 
-  TabManager::Get()->OnUpdated(2, GURL("https://brave.com"),
-                               /* is_visible */ true,
-                               /* is_incognito */ false);
+  TabManager::GetInstance()->OnTabUpdated(2, GURL("https://brave.com"),
+                                          /* is_visible */ true,
+                                          /* is_incognito */ false);
 
   // Act
   transfer_->MaybeTransferAd(2, {GURL("https://brave.com")});
+
   FastForwardClockBy(base::Seconds(10));
 
   // Assert
@@ -144,14 +147,15 @@ TEST_F(BatAdsTransferTest,
        TransferAdIfTheTabIsVisibleAndTheUrlIsTheSameAsTheDomainOrHost) {
   // Arrange
   const AdInfo ad = BuildAdForType(AdType::kNewTabPageAd);
-  transfer_->set_last_clicked_ad(ad);
+  transfer_->SetLastClickedAd(ad);
 
-  TabManager::Get()->OnUpdated(1, GURL("https://brave.com"),
-                               /* is_visible */ true,
-                               /* is_incognito */ false);
+  TabManager::GetInstance()->OnTabUpdated(1, GURL("https://brave.com"),
+                                          /* is_visible */ true,
+                                          /* is_incognito */ false);
 
   // Act
   transfer_->MaybeTransferAd(1, {GURL("https://brave.com")});
+
   FastForwardClockBy(base::Seconds(10));
 
   // Assert
@@ -161,14 +165,15 @@ TEST_F(BatAdsTransferTest,
 TEST_F(BatAdsTransferTest, FailToTransferAdIfNotVisible) {
   // Arrange
   const AdInfo ad = BuildAdForType(AdType::kNotificationAd);
-  transfer_->set_last_clicked_ad(ad);
+  transfer_->SetLastClickedAd(ad);
 
-  TabManager::Get()->OnUpdated(1, GURL("https://brave.com"),
-                               /* is_visible */ false,
-                               /* is_incognito */ false);
+  TabManager::GetInstance()->OnTabUpdated(1, GURL("https://brave.com"),
+                                          /* is_visible */ false,
+                                          /* is_incognito */ false);
 
   // Act
   transfer_->MaybeTransferAd(1, {GURL("https://brave.com")});
+
   FastForwardClockBy(base::Seconds(10));
 
   // Assert
@@ -179,18 +184,18 @@ TEST_F(BatAdsTransferTest,
        FailToTransferAdIfTheTabUrlIsNotTheSameAsTheDomainOrHost) {
   // Arrange
   const AdInfo ad = BuildAdForType(AdType::kInlineContentAd);
-  transfer_->set_last_clicked_ad(ad);
+  transfer_->SetLastClickedAd(ad);
 
-  TabManager::Get()->OnUpdated(1, GURL("https://brave.com"),
-                               /* is_visible */ true,
-                               /* is_incognito */ false);
+  TabManager::GetInstance()->OnTabUpdated(1, GURL("https://brave.com"),
+                                          /* is_visible */ true,
+                                          /* is_incognito */ false);
 
   transfer_->MaybeTransferAd(1, {GURL("https://brave.com")});
 
   // Act
-  TabManager::Get()->OnUpdated(1, GURL("https://foobar.com"),
-                               /* is_visible */ true,
-                               /* is_incognito */ false);
+  TabManager::GetInstance()->OnTabUpdated(1, GURL("https://foobar.com"),
+                                          /* is_visible */ true,
+                                          /* is_incognito */ false);
 
   FastForwardClockBy(base::Seconds(10));
 

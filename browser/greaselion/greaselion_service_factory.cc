@@ -36,6 +36,12 @@ GreaselionService* GreaselionServiceFactory::GetForBrowserContext(
       GetInstance()->GetServiceForBrowserContext(context, true));
 }
 
+base::FilePath GreaselionServiceFactory::GetInstallDirectory() {
+  base::FilePath install_directory;
+  base::PathService::Get(chrome::DIR_USER_DATA, &install_directory);
+  return install_directory.AppendASCII("Greaselion");
+}
+
 GreaselionServiceFactory::GreaselionServiceFactory()
     : BrowserContextKeyedServiceFactory(
           "GreaselionService",
@@ -54,9 +60,6 @@ KeyedService* GreaselionServiceFactory::BuildServiceInstanceFor(
   extension_system->InitForRegularProfile(true /* extensions_enabled */);
   extensions::ExtensionRegistry* extension_registry =
       extensions::ExtensionRegistry::Get(context);
-  base::FilePath install_directory;
-  base::PathService::Get(chrome::DIR_USER_DATA, &install_directory);
-  install_directory = install_directory.AppendASCII("Greaselion");
   scoped_refptr<base::SequencedTaskRunner> task_runner =
       extensions::GetExtensionFileTaskRunner();
   greaselion::GreaselionDownloadService* download_service = nullptr;
@@ -65,7 +68,7 @@ KeyedService* GreaselionServiceFactory::BuildServiceInstanceFor(
   if (g_brave_browser_process)
     download_service = g_brave_browser_process->greaselion_download_service();
   std::unique_ptr<GreaselionServiceImpl> greaselion_service(
-      new GreaselionServiceImpl(download_service, install_directory,
+      new GreaselionServiceImpl(download_service, GetInstallDirectory(),
                                 extension_system, extension_registry,
                                 task_runner));
   return greaselion_service.release();

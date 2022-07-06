@@ -9,6 +9,7 @@
 
 #include "base/strings/stringprintf.h"
 #include "bat/ads/internal/ads_client_helper.h"
+#include "bat/ads/internal/creatives/creative_ad_info.h"
 #include "bat/ads/internal/serving/eligible_ads/exclusion_rules/exclusion_rule_features.h"
 #include "bat/ads/pref_names.h"
 
@@ -20,8 +21,9 @@ constexpr int kConversionCap = 1;
 
 ConversionExclusionRule::ConversionExclusionRule(const AdEventList& ad_events)
     : ad_events_(ad_events) {
-  should_allow_conversion_tracking_ = AdsClientHelper::Get()->GetBooleanPref(
-      prefs::kShouldAllowConversionTracking);
+  should_allow_conversion_tracking_ =
+      AdsClientHelper::GetInstance()->GetBooleanPref(
+          prefs::kShouldAllowConversionTracking);
 }
 
 ConversionExclusionRule::~ConversionExclusionRule() = default;

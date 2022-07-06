@@ -1,6 +1,5 @@
 import * as React from 'react'
 import { reduceAddress } from '../../../utils/reduce-address'
-import { copyToClipboard } from '../../../utils/copy-to-clipboard'
 import { create } from 'ethereum-blockies'
 import { Tooltip } from '../../shared'
 import {
@@ -8,6 +7,7 @@ import {
   WalletAccountType
 } from '../../../constants/types'
 import { getLocale } from '../../../../common/locale'
+import { useCopy } from '../../../common/hooks'
 
 // Styled Components
 import {
@@ -40,8 +40,11 @@ function AccountListItem (props: Props) {
     onRemoveAccount
   } = props
 
+  // custom hooks
+  const { copied, copyText } = useCopy()
+
   const onCopyToClipboard = async () => {
-    await copyToClipboard(account.address)
+    await copyText(account.address)
   }
 
   const onSelectAccount = () => {
@@ -68,7 +71,11 @@ function AccountListItem (props: Props) {
             {isHardwareWallet && <HardwareIcon />}
             <AccountName onClick={onSelectAccount}>{account.name}</AccountName>
           </AccountNameRow>
-          <Tooltip text={getLocale('braveWalletToolTipCopyToClipboard')}>
+          <Tooltip
+            text={getLocale('braveWalletToolTipCopyToClipboard')}
+            actionText={getLocale('braveWalletToolTipCopiedToClipboard')}
+            isActionVisible={copied}
+          >
             <AccountAddress onClick={onCopyToClipboard}>{reduceAddress(account.address)}</AccountAddress>
           </Tooltip>
         </AccountAndAddress>

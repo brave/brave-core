@@ -7,8 +7,10 @@
 
 #include <string>
 
+#include "base/check.h"
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/base/logging_util.h"
+#include "bat/ads/internal/catalog/catalog.h"
 #include "bat/ads/internal/catalog/catalog_info.h"
 #include "bat/ads/internal/segments/segments_json_reader.h"
 #include "bat/ads/internal/segments/segments_json_writer.h"
@@ -21,7 +23,7 @@ namespace resource {
 namespace {
 
 SegmentList GetSegments() {
-  const std::string json = AdsClientHelper::Get()->GetStringPref(
+  const std::string json = AdsClientHelper::GetInstance()->GetStringPref(
       prefs::kEpsilonGreedyBanditEligibleSegments);
 
   return JSONReader::ReadSegments(json);
@@ -29,9 +31,15 @@ SegmentList GetSegments() {
 
 }  // namespace
 
-EpsilonGreedyBandit::EpsilonGreedyBandit() = default;
+EpsilonGreedyBandit::EpsilonGreedyBandit(Catalog* catalog) : catalog_(catalog) {
+  DCHECK(catalog_);
 
-EpsilonGreedyBandit::~EpsilonGreedyBandit() = default;
+  catalog_->AddObserver(this);
+}
+
+EpsilonGreedyBandit::~EpsilonGreedyBandit() {
+  catalog_->RemoveObserver(this);
+}
 
 bool EpsilonGreedyBandit::IsInitialized() const {
   return is_initialized_;
@@ -42,7 +50,7 @@ void EpsilonGreedyBandit::LoadFromCatalog(const CatalogInfo& catalog) {
   const SegmentList parent_segments = GetParentSegments(segments);
   const std::string json = JSONWriter::WriteSegments(parent_segments);
 
-  AdsClientHelper::Get()->SetStringPref(
+  AdsClientHelper::GetInstance()->SetStringPref(
       prefs::kEpsilonGreedyBanditEligibleSegments, json);
 
   BLOG(2, "Successfully loaded epsilon greedy bandit segments:");
@@ -53,8 +61,14 @@ void EpsilonGreedyBandit::LoadFromCatalog(const CatalogInfo& catalog) {
   is_initialized_ = true;
 }
 
-SegmentList EpsilonGreedyBandit::get() const {
+SegmentList EpsilonGreedyBandit::Get() const {
   return GetSegments();
+}
+
+///////////////////////////////////////////////////////////////////////////////
+
+void EpsilonGreedyBandit::OnDidUpdateCatalog(const CatalogInfo& catalog) {
+  LoadFromCatalog(catalog);
 }
 
 }  // namespace resource

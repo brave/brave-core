@@ -7,13 +7,6 @@ import { defaultState as welcomeData } from '../../components/brave_welcome_ui/s
 import { defaultState as rewardsData } from '../../components/brave_rewards/resources/page/storage'
 import { defaultState as adblockData } from '../../components/brave_adblock_ui/storage'
 
-// Types
-import { Tab } from '../brave_extension/extension/brave_extension/types/state/shieldsPannelState'
-import { BlockDetails } from '../brave_extension/extension/brave_extension/types/actions/shieldsPanelActions'
-
-// Helpers
-import deepFreeze from './deepFreeze'
-
 export class ChromeEvent {
   listeners: Array<() => void>
 
@@ -60,80 +53,9 @@ export const newTabInitialState: NewTab.ApplicationState = {
   }
 }
 
-interface CustomTab extends Tab {
-  url: string
-}
-
-interface Tabs {
-  [key: number]: CustomTab
-}
-
-export const tabs: Tabs = {
-  2: {
-    id: 2,
-    url: 'https://www.brave.com/test',
-    origin: 'https://www.brave.com',
-    hostname: 'www.brave.com',
-    ads: 'block',
-    adsBlocked: 0,
-    trackers: 'block',
-    httpUpgradableResources: 'block',
-    javascript: 'block',
-    fingerprinting: 'block',
-    cookies: 'block',
-    controlsOpen: false,
-    httpsRedirected: 0,
-    javascriptBlocked: 0,
-    fingerprintingBlocked: 0,
-    braveShields: 'block',
-    trackersBlocked: 0,
-    noScriptInfo: {},
-    adsBlockedResources: [],
-    trackersBlockedResources: [],
-    httpsRedirectedResources: [],
-    fingerprintingBlockedResources: []
-  }
-}
-
-export const activeTabData = tabs[2]
-
-export const blockedResource: BlockDetails = {
-  blockType: 'shieldsAds',
-  tabId: 2,
-  subresource: 'https://www.brave.com/test'
-}
-
 // see: https://developer.chrome.com/extensions/events
 interface OnMessageEvent extends chrome.events.Event<(message: object, options: any, responseCallback: any) => void> {
   emit: (message: object) => void
-}
-
-type MockSettingsStore = {
-  [key: string]: chrome.settingsPrivate.PrefObject
-}
-
-// Initialize with defaults.
-// TODO: do this in individual tests that rely on individual settings,
-//   using the `addMockSetting` function
-let mockSettings: MockSettingsStore = {
-  'brave.shields.advanced_view_enabled': {
-    key: 'brave.shields.advanced_view_enabled',
-    type: 'BOOLEAN',
-    value: false
-  },
-  'brave.shields.stats_badge_visible': {
-    key: 'brave.shields.stats_badge_visible',
-    type: 'BOOLEAN',
-    value: true
-  }
-}
-
-export function addMockSetting (key: string, pref: chrome.settingsPrivate.PrefObject) {
-  mockSettings[key] = pref
-}
-
-export function clearMockSettings () {
-  mockSettings = {}
 }
 
 export const getMockChrome = () => {
@@ -142,11 +64,6 @@ export const getMockChrome = () => {
     getVariableValue: () => undefined,
     braveRewards: {
       getPublisherData: (id: number, url: string, favicon: string) => undefined
-    },
-    braveTheme: {
-      setBraveThemeType: function (theme: string) {
-
-      }
     },
     runtime: {
       onMessage: new ChromeEvent(),
@@ -179,12 +96,6 @@ export const getMockChrome = () => {
       }
     },
     tabs: {
-      queryAsync: function () {
-        return Promise.resolve([activeTabData])
-      },
-      getAsync: function (tabId: number) {
-        return Promise.resolve(tabs[tabId])
-      },
       create: function (createProperties: object, cb: () => void) {
         setImmediate(cb)
       },
@@ -202,61 +113,14 @@ export const getMockChrome = () => {
       },
       onActivated: new ChromeEvent(),
       onCreated: new ChromeEvent(),
-      onUpdated: new ChromeEvent()
+      onUpdated: new ChromeEvent(),
+      onRemoved: new ChromeEvent()
     },
     windows: {
       onFocusChanged: new ChromeEvent(),
       onCreated: new ChromeEvent(),
       onRemoved: new ChromeEvent(),
       getAllAsync: function () {
-        return new Promise(() => [])
-      }
-    },
-    braveShields: {
-      onBlocked: new ChromeEvent(),
-      allowScriptsOnce: function (origins: string[], tabId: number, cb: () => void) {
-        setImmediate(cb)
-      },
-      getBraveShieldsEnabledAsync: function (url: string) {
-        return Promise.resolve(false)
-      },
-      getAdControlTypeAsync: function (url: string) {
-        return Promise.resolve('block')
-      },
-      isFirstPartyCosmeticFilteringEnabledAsync: function (url: string) {
-        return Promise.resolve(false)
-      },
-      getCookieControlTypeAsync: function (url: string) {
-        return Promise.resolve('block')
-      },
-      getFingerprintingControlTypeAsync: function (url: string) {
-        return Promise.resolve('block')
-      },
-      getHTTPSEverywhereEnabledAsync: function (url: string) {
-        return Promise.resolve(true)
-      },
-      getNoScriptControlTypeAsync: function (url: string) {
-        return Promise.resolve('block')
-      },
-      setBraveShieldsEnabledAsync: function (url: string, enabled: boolean) {
-        return new Promise(() => [])
-      },
-      setAdControlTypeAsync: function (url: string, controlType: string) {
-        return new Promise(() => [])
-      },
-      setCosmeticFilteringControlTypeAsync: function (url: string, controlType: string) {
-        return new Promise(() => [])
-      },
-      setCookieControlTypeAsync: function (url: string, controlType: string) {
-        return new Promise(() => [])
-      },
-      setFingerprintingControlTypeAsync: function (url: string, controlType: string) {
-        return new Promise(() => [])
-      },
-      setHTTPSEverywhereEnabledAsync: function (url: string, enabled: boolean) {
-        return new Promise(() => [])
-      },
-      setNoScriptControlTypeAsync: function (url: string, controlType: string) {
         return new Promise(() => [])
       }
     },
@@ -298,34 +162,10 @@ export const getMockChrome = () => {
       create: function (data: any) {
         return Promise.resolve()
       },
-      onBlocked: new ChromeEvent(),
       allowScriptsOnce: function (origins: string[], tabId: number, cb: () => void) {
         setImmediate(cb)
       },
       onClicked: new ChromeEvent()
-    },
-    settingsPrivate: {
-      getPref (key: string, callback: chrome.settingsPrivate.GetPrefCallback): void {
-        if (!mockSettings[key]) {
-          throw new Error(`Mock Settings Store did not have a value for key "${key}". Please seed the store before the test is run using \`addMockSetting\``)
-        }
-        callback(mockSettings[key])
-      },
-      setPref (key: string, value: any, pageId?: string | null, callback?: chrome.settingsPrivate.SetPrefCallback): void {
-        if (!mockSettings[key]) {
-          throw new Error(`Mock Settings Store did not have a value for key "${key}". Please seed the store before the test is run using \`addMockSetting\`.`)
-        }
-        mockSettings[key].value = value
-        callback(true)
-      },
-      PrefType: {
-        BOOLEAN: 'BOOLEAN',
-        NUMBER: 'NUMBER',
-        STRING: 'STRING',
-        URL: 'URL',
-        LIST: 'LIST',
-        DICTIONARY: 'DICTIONARY'
-      }
     }
   }
   return mock
@@ -339,28 +179,6 @@ export const window = () => {
   }
   return mock
 }
-
-export const initialState = deepFreeze({
-  runtime: {},
-  shieldsPanel: {
-    currentWindowId: -1,
-    tabs: {},
-    windows: {},
-    persistentData: { isFirstAccess: true },
-    settingsData: { showAdvancedView: false, statsBadgeVisible: true }
-  }
-})
-
-export const mockThemes = [
-  {
-    name: 'Dark',
-    index: '0'
-  },
-  {
-    name: 'Light',
-    index: '1'
-  }
-]
 
 export const mockSearchProviders = [
   {

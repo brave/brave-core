@@ -587,7 +587,7 @@ const util = {
       util.run('goma_ctl', ['showflags'], options)
       util.run('goma_ctl', ['stat'], options)
     }
-    
+
     // Setting `AUTONINJA_BUILD_ID` allows tracing Goma remote execution which helps with
     // debugging issues (e.g., slowness or remote-failures).
     options.env.AUTONINJA_BUILD_ID = buildId
@@ -627,13 +627,53 @@ const util = {
         '--base_branch=' + options.base], cmd_options)
   },
 
-  format: (options = {}) => {
+  presubmit: (options = {}) => {
+    if (!options.base) {
+      options.base = 'origin/master'
+    }
+    // Temporary cleanup call, should be removed when everyone will remove
+    // 'gerrit.host' from their brave checkout.
+    util.runGit(
+        config.braveCoreDir, ['config', '--unset-all', 'gerrit.host'], true)
     let cmd_options = config.defaultOptions
     cmd_options.cwd = config.braveCoreDir
     cmd_options = mergeWithDefault(cmd_options)
-    util.run('vpython', [path.join(config.braveCoreDir, 'build', 'commands', 'scripts', 'format.py'), options.full ? '--full' : ''], cmd_options)
+    cmd = 'git'
+    args = ['cl', 'presubmit', options.base, '--force']
+    if (options.all)
+      args.push('--all')
+    if (options.files)
+      args.push('--files', options.files)
+    util.run(cmd, args, cmd_options)
   },
 
+  format: (options = {}) => {
+    if (!options.base) {
+      options.base = 'origin/master'
+    }
+    let cmd_options = config.defaultOptions
+    cmd_options.cwd = config.braveCoreDir
+    cmd_options = mergeWithDefault(cmd_options)
+    cmd = 'git'
+    args = ['cl', 'format', '--upstream=' + options.base]
+    if (options.full)
+      args.push('--full')
+    if (options.js)
+      args.push('--js')
+    if (options.python)
+      args.push('--python')
+     if (options.rust)
+      args.push('--rust-fmt')
+    if (options.swift)
+      args.push('--swift-format')
+    util.run(cmd, args, cmd_options)
+  },
+
+  massRename: (options = {}) => {
+    let cmd_options = config.defaultOptions
+    cmd_options.cwd = config.braveCoreDir
+    util.run('python3', [path.join(config.srcDir, 'tools', 'git', 'mass-rename.py')], cmd_options)
+  },
 
   shouldUpdateChromium: (chromiumRef = config.getProjectRef('chrome')) => {
     const headSHA = util.runGit(config.srcDir, ['rev-parse', 'HEAD'], true)

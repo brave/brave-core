@@ -5,6 +5,7 @@
 
 #include "bat/ads/internal/ad_events/promoted_content_ads/promoted_content_ad_event_factory.h"
 
+#include "base/check.h"
 #include "bat/ads/internal/ad_events/promoted_content_ads/promoted_content_ad_event_clicked.h"
 #include "bat/ads/internal/ad_events/promoted_content_ads/promoted_content_ad_event_served.h"
 #include "bat/ads/internal/ad_events/promoted_content_ads/promoted_content_ad_event_viewed.h"
@@ -15,6 +16,8 @@ namespace promoted_content_ads {
 
 std::unique_ptr<AdEventInterface<PromotedContentAdInfo>> AdEventFactory::Build(
     const mojom::PromotedContentAdEventType event_type) {
+  DCHECK(mojom::IsKnownEnumValue(event_type));
+
   switch (event_type) {
     case mojom::PromotedContentAdEventType::kServed: {
       return std::make_unique<AdEventServed>();

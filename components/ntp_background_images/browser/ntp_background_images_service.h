@@ -75,6 +75,7 @@ class NTPBackgroundImagesService {
  private:
   friend class TestNTPBackgroundImagesService;
   friend class NTPBackgroundImagesServiceTest;
+  friend class NTPBackgroundImagesViewCounterTest;
   FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesServiceTest, InternalDataTest);
   FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesServiceTest,
                            MultipleCampaignsTest);

@@ -11,6 +11,8 @@
 
 #include "base/observer_list.h"
 #include "bat/ads/internal/base/timer/timer.h"
+#include "bat/ads/internal/prefs/pref_manager_observer.h"
+#include "bat/ads/internal/segments/segments_aliases.h"
 #include "bat/ads/internal/serving/notification_ad_serving_observer.h"
 
 namespace base {
@@ -34,18 +36,16 @@ namespace notification_ads {
 
 class EligibleAdsBase;
 
-class Serving final {
+class Serving final : public PrefManagerObserver {
  public:
   Serving(geographic::SubdivisionTargeting* subdivision_targeting,
           resource::AntiTargeting* anti_targeting_resource);
-  ~Serving();
+  ~Serving() override;
   Serving(const Serving&) = delete;
   Serving& operator=(const Serving&) = delete;
 
-  void AddObserver(NotificationAdServingObserver* observer);
-  void RemoveObserver(NotificationAdServingObserver* observer);
-
-  void OnPrefChanged(const std::string& path);
+  void AddObserver(ServingObserver* observer);
+  void RemoveObserver(ServingObserver* observer);
 
   void StartServingAdsAtRegularIntervals();
   void StopServingAdsAtRegularIntervals();
@@ -69,10 +69,15 @@ class Serving final {
   void FailedToServeAd();
   void ServedAd(const NotificationAdInfo& ad);
 
+  void NotifyOpportunityAroseToServeNotificationAd(
+      const SegmentList& segments) const;
   void NotifyDidServeNotificationAd(const NotificationAdInfo& ad) const;
   void NotifyFailedToServeNotificationAd() const;
 
-  base::ObserverList<NotificationAdServingObserver> observers_;
+  // PrefManagerObserver:
+  void OnPrefChanged(const std::string& path) override;
+
+  base::ObserverList<ServingObserver> observers_;
 
   bool is_serving_ = false;
 

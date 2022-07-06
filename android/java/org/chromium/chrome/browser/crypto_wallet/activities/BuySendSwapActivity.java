@@ -455,7 +455,6 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
     }
 
     private void resetSwapFromToAssets() {
-        if (mActivityType == ActivityType.BUY) return;
         if (mBlockchainRegistry != null && mCustomAccountAdapter != null
                 && mInitialLayoutInflationComplete) {
             final BlockchainToken eth =
@@ -494,17 +493,15 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
     }
 
     private void resetSwapToAsset(BlockchainToken eth, String swapFromAssetSymbol) {
-        if (mActivityType != ActivityType.SWAP) {
-            return;
-        }
-        String swapToAsset = "BAT";
+        if (mActivityType != ActivityType.SWAP) return;
+        final String defaultSwapToAsset = "BAT";
         // Swap to
-        if (swapToAsset.equals(swapFromAssetSymbol)) { // swap from BAT
+        if (defaultSwapToAsset.equals(swapFromAssetSymbol)) { // swap from BAT
             updateBuySendSwapAsset(eth.symbol, eth, false);
         } else {
             // Only ERC20 tokens can be swapped
-            mBlockchainRegistry.getTokenBySymbol(
-                    BraveWalletConstants.MAINNET_CHAIN_ID, CoinType.ETH, swapToAsset, token -> {
+            mBlockchainRegistry.getTokenBySymbol(BraveWalletConstants.MAINNET_CHAIN_ID,
+                    CoinType.ETH, defaultSwapToAsset, token -> {
                         if (token != null) {
                             updateBuySendSwapAsset(token.symbol, token, false);
                         }
@@ -1419,7 +1416,6 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
             mFromValueBlock.setVisibility(View.GONE);
         } else {
             mFromValueBlock.setVisibility(View.VISIBLE);
-            mFromValueText.setText("");
         }
         if (buySend && mActivityType == ActivityType.SWAP || !buySend) {
             enableDisableSwapButton();

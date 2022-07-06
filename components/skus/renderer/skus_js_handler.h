@@ -10,9 +10,11 @@
 #include <string>
 #include <vector>
 
+#include "brave/components/brave_vpn/mojom/brave_vpn.mojom.h"
 #include "brave/components/skus/common/skus_sdk.mojom.h"
 #include "content/public/renderer/render_frame.h"
 #include "content/public/renderer/render_frame_observer.h"
+#include "gin/wrappable.h"
 #include "mojo/public/cpp/bindings/remote.h"
 #include "url/gurl.h"
 #include "v8/include/v8.h"
@@ -31,28 +33,24 @@ namespace skus {
 // will be able to purchase VPN from account.brave.com and the browser can
 // detect the purchase and use those credentials during authentication when
 // establishing a connection to our partner providing the VPN service.
-//
-// TODO(bsclifton): trying to cleanup the gin.
-// Looking at chrome/renderer/net/net_error_page_controller.h as an example
-class SkusJSHandler {
+class SkusJSHandler : public gin::Wrappable<SkusJSHandler> {
  public:
+  static gin::WrapperInfo kWrapperInfo;
+
   explicit SkusJSHandler(content::RenderFrame* render_frame);
   SkusJSHandler(const SkusJSHandler&) = delete;
   SkusJSHandler& operator=(const SkusJSHandler&) = delete;
-  ~SkusJSHandler();
+  ~SkusJSHandler() override;
 
   void AddJavaScriptObjectToFrame(v8::Local<v8::Context> context);
   void ResetRemote(content::RenderFrame* render_frame);
 
  private:
-  template <typename Sig>
-  void BindFunctionToObject(v8::Isolate* isolate,
-                            v8::Local<v8::Object> javascript_object,
-                            const std::string& name,
-                            const base::RepeatingCallback<Sig>& callback);
-  void BindFunctionsToObject(v8::Isolate* isolate,
-                             v8::Local<v8::Context> context);
   bool EnsureConnected();
+
+  // gin::WrappableBase
+  gin::ObjectTemplateBuilder GetObjectTemplateBuilder(
+      v8::Isolate* isolate) override;
 
   // window.brave.skus.refresh_order
   v8::Local<v8::Promise> RefreshOrder(v8::Isolate* isolate,
@@ -84,13 +82,15 @@ class SkusJSHandler {
   // window.brave.skus.credential_summary
   v8::Local<v8::Promise> CredentialSummary(v8::Isolate* isolate,
                                            std::string domain);
-  void OnCredentialSummary(v8::Global<v8::Promise::Resolver> promise_resolver,
+  void OnCredentialSummary(const std::string& domain,
+                           v8::Global<v8::Promise::Resolver> promise_resolver,
                            v8::Isolate* isolate,
                            v8::Global<v8::Context> context_old,
                            const std::string& response);
 
   content::RenderFrame* render_frame_;
   mojo::Remote<skus::mojom::SkusService> skus_service_;
+  mojo::Remote<brave_vpn::mojom::ServiceHandler> vpn_service_;
 };
 
 }  // namespace skus

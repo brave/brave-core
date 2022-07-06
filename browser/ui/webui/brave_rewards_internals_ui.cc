@@ -158,14 +158,14 @@ void RewardsInternalsDOMHandler::OnGetRewardsInternalsInfo(
     return;
   }
 
-  base::DictionaryValue info_dict;
+  base::Value::Dict info_dict;
   if (info) {
-    info_dict.SetString("walletPaymentId", info->payment_id);
-    info_dict.SetBoolean("isKeyInfoSeedValid", info->is_key_info_seed_valid);
-    info_dict.SetInteger("bootStamp", info->boot_stamp);
+    info_dict.Set("walletPaymentId", info->payment_id);
+    info_dict.Set("isKeyInfoSeedValid", info->is_key_info_seed_valid);
+    info_dict.Set("bootStamp", static_cast<int>(info->boot_stamp));
   }
   CallJavascriptFunction("brave_rewards_internals.onGetRewardsInternalsInfo",
-                         info_dict);
+                         base::Value(std::move(info_dict)));
 }
 
 void RewardsInternalsDOMHandler::GetBalance(const base::Value::List& args) {
@@ -187,20 +187,20 @@ void RewardsInternalsDOMHandler::OnGetBalance(
     return;
   }
 
-  base::Value balance_value(base::Value::Type::DICTIONARY);
+  base::Value::Dict balance_value;
 
   if (result == ledger::type::Result::LEDGER_OK && balance) {
-    balance_value.SetDoubleKey("total", balance->total);
+    balance_value.Set("total", balance->total);
 
-    base::Value wallets(base::Value::Type::DICTIONARY);
+    base::Value::Dict wallets;
     for (auto const& wallet : balance->wallets) {
-      wallets.SetDoubleKey(wallet.first, wallet.second);
+      wallets.Set(wallet.first, wallet.second);
     }
-    balance_value.SetKey("wallets", std::move(wallets));
+    balance_value.Set("wallets", std::move(wallets));
   }
 
   CallJavascriptFunction("brave_rewards_internals.balance",
-                         std::move(balance_value));
+                         base::Value(std::move(balance_value)));
 }
 
 void RewardsInternalsDOMHandler::GetContributions(
@@ -439,25 +439,27 @@ void RewardsInternalsDOMHandler::OnGetAdDiagnostics(const bool success,
     return;
   }
 
-  base::Value diagnostics(base::Value::Type::LIST);
+  base::Value::List diagnostics;
   if (success && !json.empty()) {
     absl::optional<base::Value> serialized_json = base::JSONReader::Read(json);
     if (serialized_json && serialized_json->is_list() &&
         !serialized_json->GetList().empty()) {
-      diagnostics = std::move(*serialized_json);
+      diagnostics = std::move(*serialized_json->GetIfList());
     }
   }
 
 #if DCHECK_IS_ON()
-  DCHECK(diagnostics.is_list()) << "Diagnostics must be a list";
-  for (const auto& entry : diagnostics.GetList()) {
+  for (const auto& entry : diagnostics) {
     DCHECK(entry.is_dict()) << "Diagnostic entry must be a dictionary";
-    DCHECK(entry.FindKey("name")) << "Diagnostic entry missing 'name' key";
-    DCHECK(entry.FindKey("value")) << "Diagnostic entry missing 'value' key";
+    DCHECK(entry.GetDict().Find("name"))
+        << "Diagnostic entry missing 'name' key";
+    DCHECK(entry.GetDict().Find("value"))
+        << "Diagnostic entry missing 'value' key";
   }
 #endif  // DCHECK_IS_ON()
 
-  CallJavascriptFunction("brave_rewards_internals.adDiagnostics", diagnostics);
+  CallJavascriptFunction("brave_rewards_internals.adDiagnostics",
+                         base::Value(std::move(diagnostics)));
 }
 
 }  // namespace

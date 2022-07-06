@@ -101,7 +101,6 @@ static const auto kOneDay =
 
 /// Ledger Prefs, keys will be defined in `bat/ledger/option_keys.h`
 const std::map<std::string, bool> kBoolOptions = {
-    {ledger::option::kClaimUGP, true},
     {ledger::option::kIsBitflyerRegion, false}};
 const std::map<std::string, int> kIntegerOptions = {};
 const std::map<std::string, double> kDoubleOptions = {};
@@ -627,12 +626,6 @@ BATClassLedgerBridge(BOOL, isDebug, setDebug, is_debug)
         completion(static_cast<LedgerResult>(result),
                    static_cast<LedgerDrainStatus>(status));
       });
-}
-
-- (void)transferrableAmount:(void (^)(double amount))completion {
-  ledger->GetTransferableAmount(^(double amount) {
-    completion(amount);
-  });
 }
 
 #pragma mark - User Wallets

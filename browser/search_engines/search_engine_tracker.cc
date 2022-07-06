@@ -7,6 +7,8 @@
 
 #include "base/metrics/histogram_macros.h"
 #include "base/strings/string_util.h"
+#include "brave/components/brave_search_conversion/p3a.h"
+#include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/search_engines/template_url_service_factory.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
@@ -17,6 +19,9 @@ namespace {
 // Preference name switch events are stored under.
 constexpr char kSwitchSearchEngineP3AStorage[] =
     "brave.search.p3a_default_switch";
+constexpr char kBraveDomain[] = "brave.com";
+constexpr char kGoogleDomain[] = "google.com";
+constexpr char kDDGDomain[] = "duckduckgo.com";
 
 // Deduces the search engine from |type|, if nothing is found - from |url|.
 // Not all engines added by Brave are present in |SearchEngineType| enumeration.
@@ -56,20 +61,20 @@ SearchEngineSwitchP3A SearchEngineSwitchP3AMapAnswer(const GURL& to,
   DCHECK(from.is_valid());
   DCHECK(to.is_valid());
 
-  if (from.DomainIs("brave.com")) {
+  if (from.DomainIs(kBraveDomain)) {
     // Switching away from Brave Search.
-    if (to.DomainIs("google.com")) {
+    if (to.DomainIs(kGoogleDomain)) {
       answer = SearchEngineSwitchP3A::kBraveToGoogle;
-    } else if (to.DomainIs("duckduckgo.com")) {
+    } else if (to.DomainIs(kDDGDomain)) {
       answer = SearchEngineSwitchP3A::kBraveToDDG;
     } else {
       answer = SearchEngineSwitchP3A::kBraveToOther;
     }
-  } else if (to.DomainIs("brave.com")) {
+  } else if (to.DomainIs(kBraveDomain)) {
     // Switching to Brave Search.
-    if (from.DomainIs("google.com")) {
+    if (from.DomainIs(kGoogleDomain)) {
       answer = SearchEngineSwitchP3A::kGoogleToBrave;
-    } else if (from.DomainIs("duckduckgo.com")) {
+    } else if (from.DomainIs(kDDGDomain)) {
       answer = SearchEngineSwitchP3A::kDDGToBrave;
     } else {
       answer = SearchEngineSwitchP3A::kOtherToBrave;
@@ -103,9 +108,11 @@ KeyedService* SearchEngineTrackerFactory::BuildServiceInstanceFor(
   auto* profile = Profile::FromBrowserContext(context);
   auto* template_url_service =
       TemplateURLServiceFactory::GetForProfile(profile);
-  auto* user_prefs = profile->GetPrefs();
-  if (template_url_service && user_prefs) {
-    return new SearchEngineTracker(template_url_service, user_prefs);
+  auto* profile_prefs = profile->GetPrefs();
+  auto* local_state = g_browser_process->local_state();
+  if (template_url_service && profile_prefs && local_state) {
+    return new SearchEngineTracker(template_url_service, profile_prefs,
+                                   local_state);
   }
   return nullptr;
 }
@@ -121,8 +128,10 @@ void SearchEngineTrackerFactory::RegisterProfilePrefs(
 
 SearchEngineTracker::SearchEngineTracker(
     TemplateURLService* template_url_service,
-    PrefService* user_prefs)
-    : switch_record_(user_prefs, kSwitchSearchEngineP3AStorage),
+    PrefService* profile_prefs,
+    PrefService* local_state)
+    : switch_record_(profile_prefs, kSwitchSearchEngineP3AStorage),
+      local_state_(local_state),
       template_url_service_(template_url_service) {
   observer_.Observe(template_url_service_);
   const TemplateURL* template_url =
@@ -176,6 +185,10 @@ void SearchEngineTracker::RecordSwitchP3A(const GURL& url) {
     answer = SearchEngineSwitchP3AMapAnswer(url, previous_search_url_);
     previous_search_url_ = url;
     switch_record_.Add(static_cast<int>(answer));
+
+    if (url.DomainIs(kBraveDomain)) {
+      brave_search_conversion::p3a::RecordDefaultEngineChange(local_state_);
+    }
   }
 
   UMA_HISTOGRAM_ENUMERATION(kSwitchSearchEngineMetric, answer);

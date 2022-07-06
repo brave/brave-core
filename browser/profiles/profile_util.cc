@@ -25,6 +25,8 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_key.h"
 #include "chrome/browser/profiles/profile_manager.h"
+#include "components/content_settings/core/browser/cookie_settings.h"
+#include "components/content_settings/core/common/pref_names.h"
 #include "components/prefs/pref_service.h"
 #include "components/search_engines/search_engines_pref_names.h"
 
@@ -242,6 +244,13 @@ void SetDefaultSearchVersion(Profile* profile, bool is_new_profile) {
             ? TemplateURLPrepopulateData::kBraveCurrentDataVersion
             : TemplateURLPrepopulateData::kBraveFirstTrackedDataVersion);
   }
+}
+
+void SetDefaultThirdPartyCookieBlockValue(Profile* profile) {
+  profile->GetPrefs()->SetDefaultPrefValue(
+      prefs::kCookieControlsMode,
+      base::Value(static_cast<int>(
+          content_settings::CookieControlsMode::kBlockThirdParty)));
 }
 
 }  // namespace brave

@@ -12,7 +12,7 @@
 
 namespace ads {
 
-const base::flat_set<std::string> kComponentLanguageIds = {
+const base::flat_set<std::string> kLanguageComponentIds = {
     "ijmgabghpbflfadffhpmjklamndnonha", "hddanjaanmjbdklklpldpgpmbdmaiihb",
     "blcjdmhlkddhompnlbjlpccpelipihem", "pecokcgeeiabdlkfkfjpmfldfhhjlmom",
     "pgkommhmfkkkfbbcnnfhlkagbodoimjm", "emopjfcnkbjfedjbfgajdajnkkfekcbl",

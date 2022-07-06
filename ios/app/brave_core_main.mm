@@ -19,7 +19,6 @@
 #include "brave/components/brave_wallet/browser/solana_provider_impl.h"
 #include "brave/components/brave_wallet/browser/wallet_data_files_installer.h"
 #include "brave/components/brave_wallet/resources/grit/brave_wallet_script_generated.h"
-#include "brave/components/skus/browser/switches.h"
 #include "brave/ios/app/brave_main_delegate.h"
 #include "brave/ios/browser/api/bookmarks/brave_bookmarks_api+private.h"
 #include "brave/ios/browser/api/brave_stats/brave_stats+private.h"
@@ -70,8 +69,6 @@ const BraveCoreSwitch BraveCoreSwitchVModule =
     base::SysUTF8ToNSString(switches::kVModule);
 const BraveCoreSwitch BraveCoreSwitchSyncURL =
     base::SysUTF8ToNSString(syncer::kSyncServiceURL);
-const BraveCoreSwitch BraveCoreSwitchSkusEnvironment =
-    base::SysUTF8ToNSString(skus::switches::kSkusEnv);
 
 @interface BraveCoreMain () {
   std::unique_ptr<BraveWebClient> _webClient;

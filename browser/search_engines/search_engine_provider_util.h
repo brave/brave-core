@@ -10,19 +10,20 @@ class Profile;
 
 namespace user_prefs {
 class PrefRegistrySyncable;
-}
+}  // namespace user_prefs
 
 namespace brave {
 
-bool UseAlternativeSearchEngineProviderEnabled(Profile* profile);
-
-bool ShowAlternativeSearchEngineProviderToggleEnabled(Profile* profile);
-
-void ToggleUseAlternativeSearchEngineProvider(Profile* profile);
-
-void SetShowAlternativeSearchEngineProviderToggle(Profile* profile);
-
 bool IsRegionForQwant(Profile* profile);
+
+// For prefs migration.
+void RegisterSearchEngineProviderPrefsForMigration(
+    user_prefs::PrefRegistrySyncable* registry);
+void MigrateSearchEngineProviderPrefs(Profile* profile);
+
+// Initialize default provider for private profile.
+void SetDefaultPrivateSearchProvider(Profile* profile);
+void ClearDefaultPrivateSearchProvider(Profile* profile);
 
 }  // namespace brave
 

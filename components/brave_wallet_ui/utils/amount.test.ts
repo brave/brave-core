@@ -1,5 +1,12 @@
 import Amount from './amount'
 
+let languageGetter
+
+beforeEach(() => {
+  languageGetter = jest.spyOn(window.navigator, 'language', 'get')
+  languageGetter.mockReturnValue('en-GB')
+})
+
 describe('Amount class', () => {
   describe('instantiation tests', () => {
     it('should create Amount object using empty value', () => {

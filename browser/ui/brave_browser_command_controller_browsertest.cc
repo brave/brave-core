@@ -53,7 +53,7 @@ class BraveBrowserCommandControllerTest : public InProcessBrowserTest {
     auto target_state = purchased
                             ? brave_vpn::mojom::PurchasedState::PURCHASED
                             : brave_vpn::mojom::PurchasedState::NOT_PURCHASED;
-    service->SetPurchasedState(target_state);
+    service->SetPurchasedState(skus::GetDefaultEnvironment(), target_state);
     // Call explicitely to update vpn commands status because mojo works in
     // async way.
     static_cast<chrome::BraveBrowserCommandController*>(

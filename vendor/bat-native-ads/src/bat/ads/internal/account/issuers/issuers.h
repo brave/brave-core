@@ -24,7 +24,7 @@ class Issuers {
   Issuers(const Issuers&) = delete;
   Issuers& operator=(const Issuers&) = delete;
 
-  void set_delegate(IssuersDelegate* delegate) {
+  void SetDelegate(IssuersDelegate* delegate) {
     DCHECK_EQ(delegate_, nullptr);
     delegate_ = delegate;
   }
@@ -35,8 +35,8 @@ class Issuers {
   void Fetch();
   void OnFetch(const mojom::UrlResponse& url_response);
 
-  void OnDidFetchIssuers(const IssuersInfo& issuers);
-  void OnFailedToFetchIssuers(const bool should_retry);
+  void SuccessfullyFetchedIssuers(const IssuersInfo& issuers);
+  void FailedToFetchIssuers(const bool should_retry);
 
   void FetchAfterDelay();
   base::TimeDelta GetFetchDelay() const;

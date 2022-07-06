@@ -10,7 +10,7 @@
 #include <string>
 
 #include "base/check_op.h"
-#include "bat/ads/ads_client_aliases.h"
+#include "bat/ads/ads_client_callback.h"
 #include "bat/ads/internal/conversions/conversion_queue_item_info_aliases.h"
 #include "bat/ads/internal/database/database_table_interface.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
@@ -54,7 +54,7 @@ class ConversionQueue final : public TableInterface {
       const std::string& creative_instance_id,
       GetConversionQueueForCreativeInstanceIdCallback callback);
 
-  void set_batch_size(const int batch_size) {
+  void SetBatchSize(const int batch_size) {
     DCHECK_GT(batch_size, 0);
 
     batch_size_ = batch_size;

@@ -13,6 +13,7 @@
 #include "bat/ads/internal/base/unittest/unittest_mock_util.h"
 #include "bat/ads/internal/privacy/challenge_bypass_ristretto/public_key.h"
 #include "bat/ads/internal/privacy/challenge_bypass_ristretto/unblinded_token.h"
+#include "url/gurl.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
@@ -115,7 +116,7 @@ TEST_F(BatAdsRedeemUnblindedPaymentTokensRequestTest, BuildUrlForRPill) {
     expected_url_request->content_type = "application/json";
     expected_url_request->method = mojom::UrlRequestMethod::kPut;
 
-    EXPECT_TRUE(url_request.Equals(expected_url_request));
+    EXPECT_EQ(url_request, expected_url_request);
   });
 
   // Assert
@@ -158,7 +159,7 @@ TEST_F(BatAdsRedeemUnblindedPaymentTokensRequestTest, BuildUrlForBPill) {
     expected_url_request->content_type = "application/json";
     expected_url_request->method = mojom::UrlRequestMethod::kPut;
 
-    EXPECT_TRUE(url_request.Equals(expected_url_request));
+    EXPECT_EQ(url_request, expected_url_request);
   });
 
   // Assert

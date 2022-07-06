@@ -10,8 +10,7 @@
 #include <string>
 
 #include "base/containers/circular_deque.h"
-#include "bat/ads/ads_aliases.h"
-#include "bat/ads/notification_ad_info.h"
+#include "bat/ads/ads_callback.h"
 #include "build/build_config.h"
 
 namespace base {
@@ -21,6 +20,8 @@ class Value;
 
 namespace ads {
 
+struct NotificationAdInfo;
+
 class NotificationAdManager final {
  public:
   NotificationAdManager();
@@ -28,7 +29,7 @@ class NotificationAdManager final {
   NotificationAdManager(const NotificationAdManager&) = delete;
   NotificationAdManager& operator=(const NotificationAdManager&) = delete;
 
-  static NotificationAdManager* Get();
+  static NotificationAdManager* GetInstance();
 
   static bool HasInstance();
 

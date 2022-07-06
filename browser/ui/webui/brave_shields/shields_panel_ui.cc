@@ -11,6 +11,7 @@
 #include "brave/browser/ui/brave_browser_window.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
 #include "brave/components/brave_shields/resources/panel/grit/brave_shields_panel_generated_map.h"
+#include "brave/components/constants/pref_names.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/l10n/common/locale_util.h"
 #include "chrome/browser/profiles/profile.h"
@@ -38,6 +39,9 @@ ShieldsPanelUI::ShieldsPanelUI(content::WebUI* web_ui)
         brave_l10n::GetLocalizedResourceUTF16String(str.id);
     source->AddString(str.name, l10n_str);
   }
+
+  source->AddBoolean("isAdvancedViewEnabled", profile_->GetPrefs()->GetBoolean(
+                                                  kShieldsAdvancedViewEnabled));
 
   content::URLDataSource::Add(
       profile_, std::make_unique<FaviconSource>(
@@ -71,7 +75,7 @@ void ShieldsPanelUI::CreatePanelHandler(
 
   panel_handler_ = std::make_unique<ShieldsPanelHandler>(
       std::move(panel_receiver), this,
-      static_cast<BraveBrowserWindow*>(browser_->window()));
+      static_cast<BraveBrowserWindow*>(browser_->window()), profile);
   data_handler_ = std::make_unique<ShieldsPanelDataHandler>(
       std::move(data_handler_receiver), this, browser_->tab_strip_model());
 }

@@ -34,7 +34,7 @@ class BatAdsRedeemUnblindedPaymentTokensTest : public UnitTestBase {
         redeem_unblinded_payment_tokens_delegate_mock_(
             std::make_unique<
                 NiceMock<RedeemUnblindedPaymentTokensDelegateMock>>()) {
-    redeem_unblinded_payment_tokens_->set_delegate(
+    redeem_unblinded_payment_tokens_->SetDelegate(
         redeem_unblinded_payment_tokens_delegate_mock_.get());
   }
 
@@ -48,7 +48,7 @@ class BatAdsRedeemUnblindedPaymentTokensTest : public UnitTestBase {
 
 TEST_F(BatAdsRedeemUnblindedPaymentTokensTest, RedeemUnblindedPaymentTokens) {
   // Arrange
-  const URLEndpoints& endpoints = {
+  const URLEndpointMap& endpoints = {
       {R"(/v2/confirmation/payment/27a39b2f-9b2e-4eb0-bbb2-2f84447496e7)",
        {{net::HTTP_OK, R"(
             {
@@ -66,11 +66,12 @@ TEST_F(BatAdsRedeemUnblindedPaymentTokensTest, RedeemUnblindedPaymentTokens) {
           )"}}}};
   MockUrlRequest(ads_client_mock_, endpoints);
 
-  AdsClientHelper::Get()->SetTimePref(prefs::kNextTokenRedemptionAt, Now());
+  AdsClientHelper::GetInstance()->SetTimePref(prefs::kNextTokenRedemptionAt,
+                                              Now());
 
   const privacy::UnblindedPaymentTokenList& unblinded_payment_tokens =
       privacy::GetUnblindedPaymentTokens(1);
-  privacy::get_unblinded_payment_tokens()->SetTokens(unblinded_payment_tokens);
+  privacy::GetUnblindedPaymentTokens()->SetTokens(unblinded_payment_tokens);
 
   // Act
   EXPECT_CALL(*redeem_unblinded_payment_tokens_delegate_mock_,
@@ -99,13 +100,13 @@ TEST_F(BatAdsRedeemUnblindedPaymentTokensTest, RedeemUnblindedPaymentTokens) {
   FastForwardClockToNextPendingTask();
 
   // Assert
-  EXPECT_TRUE(privacy::get_unblinded_payment_tokens()->IsEmpty());
+  EXPECT_TRUE(privacy::GetUnblindedPaymentTokens()->IsEmpty());
 }
 
 TEST_F(BatAdsRedeemUnblindedPaymentTokensTest,
        RedeemUnblindedPaymentTokensMultipleTimes) {
   // Arrange
-  const URLEndpoints& endpoints = {
+  const URLEndpointMap& endpoints = {
       {R"(/v2/confirmation/payment/27a39b2f-9b2e-4eb0-bbb2-2f84447496e7)",
        {{net::HTTP_OK, R"(
             {
@@ -137,11 +138,12 @@ TEST_F(BatAdsRedeemUnblindedPaymentTokensTest,
           )"}}}};
   MockUrlRequest(ads_client_mock_, endpoints);
 
-  AdsClientHelper::Get()->SetTimePref(prefs::kNextTokenRedemptionAt, Now());
+  AdsClientHelper::GetInstance()->SetTimePref(prefs::kNextTokenRedemptionAt,
+                                              Now());
 
   const privacy::UnblindedPaymentTokenList& unblinded_payment_tokens =
       privacy::GetUnblindedPaymentTokens(1);
-  privacy::get_unblinded_payment_tokens()->SetTokens(unblinded_payment_tokens);
+  privacy::GetUnblindedPaymentTokens()->SetTokens(unblinded_payment_tokens);
 
   // Act
   EXPECT_CALL(*redeem_unblinded_payment_tokens_delegate_mock_,
@@ -174,7 +176,7 @@ TEST_F(BatAdsRedeemUnblindedPaymentTokensTest,
 
 TEST_F(BatAdsRedeemUnblindedPaymentTokensTest, ScheduleNextTokenRedemption) {
   // Arrange
-  const URLEndpoints& endpoints = {
+  const URLEndpointMap& endpoints = {
       {R"(/v2/confirmation/payment/27a39b2f-9b2e-4eb0-bbb2-2f84447496e7)",
        {{net::HTTP_OK, R"(
             {
@@ -192,11 +194,12 @@ TEST_F(BatAdsRedeemUnblindedPaymentTokensTest, ScheduleNextTokenRedemption) {
           )"}}}};
   MockUrlRequest(ads_client_mock_, endpoints);
 
-  AdsClientHelper::Get()->SetTimePref(prefs::kNextTokenRedemptionAt, Now());
+  AdsClientHelper::GetInstance()->SetTimePref(prefs::kNextTokenRedemptionAt,
+                                              Now());
 
   const privacy::UnblindedPaymentTokenList& unblinded_payment_tokens =
       privacy::GetUnblindedPaymentTokens(1);
-  privacy::get_unblinded_payment_tokens()->SetTokens(unblinded_payment_tokens);
+  privacy::GetUnblindedPaymentTokens()->SetTokens(unblinded_payment_tokens);
 
   // Act
   EXPECT_CALL(*redeem_unblinded_payment_tokens_delegate_mock_,
@@ -225,12 +228,12 @@ TEST_F(BatAdsRedeemUnblindedPaymentTokensTest, ScheduleNextTokenRedemption) {
   FastForwardClockToNextPendingTask();
 
   // Assert
-  EXPECT_TRUE(privacy::get_unblinded_payment_tokens()->IsEmpty());
+  EXPECT_TRUE(privacy::GetUnblindedPaymentTokens()->IsEmpty());
 }
 
 TEST_F(BatAdsRedeemUnblindedPaymentTokensTest, InvalidWallet) {
   // Arrange
-  const URLEndpoints& endpoints = {
+  const URLEndpointMap& endpoints = {
       {R"(/v2/confirmation/payment/27a39b2f-9b2e-4eb0-bbb2-2f84447496e7)",
        {{net::HTTP_OK, R"(
             {
@@ -248,11 +251,12 @@ TEST_F(BatAdsRedeemUnblindedPaymentTokensTest, InvalidWallet) {
           )"}}}};
   MockUrlRequest(ads_client_mock_, endpoints);
 
-  AdsClientHelper::Get()->SetTimePref(prefs::kNextTokenRedemptionAt, Now());
+  AdsClientHelper::GetInstance()->SetTimePref(prefs::kNextTokenRedemptionAt,
+                                              Now());
 
   const privacy::UnblindedPaymentTokenList& unblinded_payment_tokens =
       privacy::GetUnblindedPaymentTokens(1);
-  privacy::get_unblinded_payment_tokens()->SetTokens(unblinded_payment_tokens);
+  privacy::GetUnblindedPaymentTokens()->SetTokens(unblinded_payment_tokens);
 
   // Act
   InSequence seq;
@@ -281,12 +285,12 @@ TEST_F(BatAdsRedeemUnblindedPaymentTokensTest, InvalidWallet) {
   redeem_unblinded_payment_tokens_->MaybeRedeemAfterDelay(invalid_wallet);
 
   // Assert
-  EXPECT_EQ(1, privacy::get_unblinded_payment_tokens()->Count());
+  EXPECT_EQ(1, privacy::GetUnblindedPaymentTokens()->Count());
 }
 
 TEST_F(BatAdsRedeemUnblindedPaymentTokensTest, NoUnblindedPaymentTokens) {
   // Arrange
-  const URLEndpoints& endpoints = {
+  const URLEndpointMap& endpoints = {
       {R"(/v2/confirmation/payment/27a39b2f-9b2e-4eb0-bbb2-2f84447496e7)",
        {{net::HTTP_OK, R"(
             {
@@ -304,7 +308,8 @@ TEST_F(BatAdsRedeemUnblindedPaymentTokensTest, NoUnblindedPaymentTokens) {
           )"}}}};
   MockUrlRequest(ads_client_mock_, endpoints);
 
-  AdsClientHelper::Get()->SetTimePref(prefs::kNextTokenRedemptionAt, Now());
+  AdsClientHelper::GetInstance()->SetTimePref(prefs::kNextTokenRedemptionAt,
+                                              Now());
 
   // Act
   EXPECT_CALL(*redeem_unblinded_payment_tokens_delegate_mock_,
@@ -333,12 +338,12 @@ TEST_F(BatAdsRedeemUnblindedPaymentTokensTest, NoUnblindedPaymentTokens) {
   FastForwardClockToNextPendingTask();
 
   // Assert
-  EXPECT_TRUE(privacy::get_unblinded_payment_tokens()->IsEmpty());
+  EXPECT_TRUE(privacy::GetUnblindedPaymentTokens()->IsEmpty());
 }
 
 TEST_F(BatAdsRedeemUnblindedPaymentTokensTest, Retry) {
   // Arrange
-  const URLEndpoints& endpoints = {
+  const URLEndpointMap& endpoints = {
       {R"(/v2/confirmation/payment/27a39b2f-9b2e-4eb0-bbb2-2f84447496e7)",
        {{net::HTTP_NOT_FOUND, ""}, {net::HTTP_OK, R"(
             {
@@ -356,11 +361,12 @@ TEST_F(BatAdsRedeemUnblindedPaymentTokensTest, Retry) {
           )"}}}};
   MockUrlRequest(ads_client_mock_, endpoints);
 
-  AdsClientHelper::Get()->SetTimePref(prefs::kNextTokenRedemptionAt, Now());
+  AdsClientHelper::GetInstance()->SetTimePref(prefs::kNextTokenRedemptionAt,
+                                              Now());
 
   const privacy::UnblindedPaymentTokenList& unblinded_payment_tokens =
       privacy::GetUnblindedPaymentTokens(1);
-  privacy::get_unblinded_payment_tokens()->SetTokens(unblinded_payment_tokens);
+  privacy::GetUnblindedPaymentTokens()->SetTokens(unblinded_payment_tokens);
 
   // Act
   InSequence seq;
@@ -392,7 +398,7 @@ TEST_F(BatAdsRedeemUnblindedPaymentTokensTest, Retry) {
   FastForwardClockToNextPendingTask();
 
   // Assert
-  EXPECT_TRUE(privacy::get_unblinded_payment_tokens()->IsEmpty());
+  EXPECT_TRUE(privacy::GetUnblindedPaymentTokens()->IsEmpty());
 }
 
 }  // namespace ads

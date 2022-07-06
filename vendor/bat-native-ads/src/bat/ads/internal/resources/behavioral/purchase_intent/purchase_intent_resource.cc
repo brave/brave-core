@@ -65,7 +65,7 @@ void PurchaseIntent::OnLoadAndParseResource(
                                       << " purchase intent resource");
 }
 
-const targeting::PurchaseIntentInfo* PurchaseIntent::get() const {
+const targeting::PurchaseIntentInfo* PurchaseIntent::Get() const {
   return purchase_intent_.get();
 }
 

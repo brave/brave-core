@@ -15,6 +15,7 @@
 // npm run test -- brave_unit_tests --filter=BatAds*
 
 namespace ads {
+namespace promoted_content_ads {
 
 class BatAdsPromotedContentAdsPerDayPermissionRuleTest : public UnitTestBase {
  protected:
@@ -41,7 +42,7 @@ TEST_F(BatAdsPromotedContentAdsPerDayPermissionRuleTest,
   // Arrange
 
   // Act
-  PromotedContentAdsPerDayPermissionRule permission_rule;
+  AdsPerDayPermissionRule permission_rule;
   const bool is_allowed = permission_rule.ShouldAllow();
 
   // Assert
@@ -55,7 +56,7 @@ TEST_F(BatAdsPromotedContentAdsPerDayPermissionRuleTest,
   RecordAdEvents(AdType::kPromotedContentAd, ConfirmationType::kServed, count);
 
   // Act
-  PromotedContentAdsPerDayPermissionRule permission_rule;
+  AdsPerDayPermissionRule permission_rule;
   const bool is_allowed = permission_rule.ShouldAllow();
 
   // Assert
@@ -68,10 +69,10 @@ TEST_F(BatAdsPromotedContentAdsPerDayPermissionRuleTest,
   const int count = features::GetMaximumPromotedContentAdsPerDay();
   RecordAdEvents(AdType::kPromotedContentAd, ConfirmationType::kServed, count);
 
-  FastForwardClockBy(base::Days(1));
+  AdvanceClockBy(base::Days(1));
 
   // Act
-  PromotedContentAdsPerDayPermissionRule permission_rule;
+  AdsPerDayPermissionRule permission_rule;
   const bool is_allowed = permission_rule.ShouldAllow();
 
   // Assert
@@ -84,14 +85,15 @@ TEST_F(BatAdsPromotedContentAdsPerDayPermissionRuleTest,
   const int count = features::GetMaximumPromotedContentAdsPerDay();
   RecordAdEvents(AdType::kPromotedContentAd, ConfirmationType::kServed, count);
 
-  FastForwardClockBy(base::Hours(23));
+  AdvanceClockBy(base::Days(1) - base::Seconds(1));
 
   // Act
-  PromotedContentAdsPerDayPermissionRule permission_rule;
+  AdsPerDayPermissionRule permission_rule;
   const bool is_allowed = permission_rule.ShouldAllow();
 
   // Assert
   EXPECT_FALSE(is_allowed);
 }
 
+}  // namespace promoted_content_ads
 }  // namespace ads

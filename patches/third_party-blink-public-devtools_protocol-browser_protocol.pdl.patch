@@ -1,0 +1,13 @@
+diff --git a/third_party/blink/public/devtools_protocol/browser_protocol.pdl b/third_party/blink/public/devtools_protocol/browser_protocol.pdl
+index 6892529ee04d4f2d000180b51a0d80d5b2ae0dc6..a0b7a3ca952cf4980f5c8a9c247d6e70b0640c88 100644
+--- a/third_party/blink/public/devtools_protocol/browser_protocol.pdl
++++ b/third_party/blink/public/devtools_protocol/browser_protocol.pdl
+@@ -7060,6 +7060,8 @@ domain Page
+       web-share
+       window-placement
+       xr-spatial-tracking
++      ethereum
++      solana
+ 
+   # Reason for a permissions policy feature to be disabled.
+   experimental type PermissionsPolicyBlockReason extends string

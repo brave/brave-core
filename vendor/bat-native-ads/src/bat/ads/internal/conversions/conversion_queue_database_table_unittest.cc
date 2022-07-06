@@ -111,7 +111,7 @@ TEST_F(BatAdsConversionQueueDatabaseTableTest,
 TEST_F(BatAdsConversionQueueDatabaseTableTest,
        SaveConversionQueueItemsInBatches) {
   // Arrange
-  database_table_->set_batch_size(2);
+  database_table_->SetBatchSize(2);
 
   ConversionQueueItemList conversion_queue_items;
 

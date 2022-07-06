@@ -7,7 +7,9 @@
 
 #include <string>
 
+#include "base/feature_list.h"
 #include "base/rand_util.h"
+#include "brave/components/brave_shields/common/features.h"
 #include "brave/components/brave_shields/common/pref_names.h"
 #include "components/pref_registry/pref_registry_syncable.h"
 #include "crypto/hmac.h"
@@ -60,8 +62,10 @@ bool BraveFarblingService::MakePseudoRandomGeneratorForURL(
 // static
 void BraveFarblingService::RegisterProfilePrefs(
     user_prefs::PrefRegistrySyncable* registry) {
-  registry->RegisterBooleanPref(brave_shields::prefs::kReduceLanguageEnabled,
-                                true);
+  registry->RegisterBooleanPref(
+      brave_shields::prefs::kReduceLanguageEnabled,
+      base::FeatureList::IsEnabled(
+          brave_shields::features::kBraveReduceLanguage));
 }
 
 }  // namespace brave

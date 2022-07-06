@@ -16,7 +16,7 @@ extern const base::Feature kEligibleAds;
 
 bool IsEligibleAdsEnabled();
 
-AdPredictorWeights GetAdPredictorWeights();
+AdPredictorWeightList GetAdPredictorWeights();
 
 }  // namespace features
 }  // namespace ads

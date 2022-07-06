@@ -231,6 +231,7 @@ CreativesInfo BuildCreatives(const CatalogInfo& catalog) {
         info.image_url = creative.payload.image_url;
         info.alt = creative.payload.alt;
 
+        DCHECK(!creative.payload.wallpapers.empty());
         for (const auto& catalog_new_tab_page_ad_wallpaper :
              creative.payload.wallpapers) {
           CreativeNewTabPageAdWallpaperInfo wallpaper;
@@ -339,7 +340,7 @@ CreativesInfo BuildCreatives(const CatalogInfo& catalog) {
       }
 
       if (entries == 0) {
-        BLOG(1, "creative set id " << creative_set.creative_set_id
+        BLOG(1, "Creative set id " << creative_set.creative_set_id
                                    << " has no entries");
 
         continue;

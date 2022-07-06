@@ -142,6 +142,17 @@ interface EthereumProvider {
   IsLocked() => (bool isLocked);
 };
 
+// https://github.com/solana-labs/solana-web3.js/blob/6482d0d/src/transaction.ts#L126
+struct SignaturePubkeyPair {
+  array<uint8>? signature;
+  string public_key;
+};
+
+struct SolanaSignTransactionParam {
+  string encoded_serialized_msg;
+  array<SignaturePubkeyPair> signatures;
+};
+
 interface SolanaProvider {
   // Initializes an SolanaEventsListener
   Init(pending_remote<SolanaEventsListener> events_listener);
@@ -159,10 +170,10 @@ interface SolanaProvider {
   GetPublicKey() => (string public_key);
   // It takes a base58 encoded serialized Message and return a serialized
   // Transaction with signature in wire format.
-  SignTransaction(string encoded_serialized_msg)
+  SignTransaction(SolanaSignTransactionParam param)
     => (SolanaProviderError error, string error_message,
         array<uint8> serialized_tx);
-  SignAllTransactions(array<string> encoded_serialized_msg)
+  SignAllTransactions(array<SolanaSignTransactionParam> params)
     => (SolanaProviderError error, string error_message,
         array<array<uint8>> serialized_txs);
   // It takes a base58 encoded serialized Message and return an object
@@ -176,7 +187,7 @@ interface SolanaProvider {
   //     skipPreflight?: <boolean>
   //   }
   SignAndSendTransaction(
-      string encoded_serialized_msg,
+      SolanaSignTransactionParam param,
       mojo_base.mojom.DeprecatedDictionaryValue? send_options)
     => (SolanaProviderError error, string error_message,
         mojo_base.mojom.DeprecatedDictionaryValue result);
@@ -431,10 +442,10 @@ enum OnRampProvider {
 
 // List of tokens and coins that are supported.
 interface BlockchainRegistry {
-  // Obtains token information by an address lookup
+  // Obtains token information by an address lookup.
   GetTokenByAddress(string chain_id, CoinType coin, string address) => (BlockchainToken? token);
 
-  // Obtains token information by a symbol lookup
+  // Obtains token information by a symbol lookup.
   GetTokenBySymbol(string chain_id, CoinType coin, string symbol) => (BlockchainToken? token);
 
   // Obtains all tokens Send/Swap UI
@@ -444,8 +455,11 @@ interface BlockchainRegistry {
   // Obtains all tokens for the Buy UI
   GetBuyTokens(OnRampProvider provider, string chain_id) => (array<BlockchainToken> tokens);
 
-  // Obtains the URL used for buying assets
+  // Obtains the URL used for buying assets.
   GetBuyUrl(OnRampProvider provider, string chain_id, string address, string symbol, string amount) => (string url, string? error);
+
+  // Returns networks filtered by chain_id and/or chain_name.
+  SearchNetworks(string? chain_id_filter, string? chain_name_filter) => (array<NetworkInfo> networks);
 };
 
 // Implements the HD wallet, Ledger & Trezor integration, account management,
@@ -493,10 +507,6 @@ interface KeyringService {
   // Imports an account via JSON
   ImportAccountFromJson(string accountName, string password, string json)
     => (bool success, string address);
-
-  // Obtains the private key for an imported account
-  GetPrivateKeyForImportedAccount(string address, CoinType coin)
-    => (bool success, string privateKey);
 
   // Removes an imported account
   RemoveImportedAccount(string address, CoinType coin) => (bool success);
@@ -740,6 +750,8 @@ interface JsonRpcService {
   SetNetwork(string chain_id, CoinType coin) => (bool success);
   GetNetwork(CoinType coin) => (NetworkInfo network);
   GetAllNetworks(CoinType coin) => (array<NetworkInfo> networks);
+  GetCustomNetworks(CoinType coin) => (array<string> chain_ids);
+  GetKnownNetworks(CoinType coin) => (array<string> chain_ids);
   GetHiddenNetworks(CoinType coin) => (array<string> chain_ids);
 
   // Obtains the current network's chain ID
@@ -904,13 +916,18 @@ interface TxService {
   // Used to retry a transaction
   RetryTransaction(CoinType coin_type, string tx_meta_id) => (bool success, string tx_meta_id, string error_message);
 
-  GetTransactionMessageToSign(CoinType coin_type, string tx_meta_id) => (string? message);
+  GetTransactionMessageToSign(CoinType coin_type, string tx_meta_id) => (MessageToSignUnion? message);
 
   // Adds an observer for TxService
   AddObserver(pending_remote<TxServiceObserver> observer);
 
   // Resets the keyring and the related preferences
   Reset();
+};
+
+union MessageToSignUnion {
+  string message_str;
+  array<uint8> message_bytes;
 };
 
 // Transaction related APIs specific to EVM.
@@ -938,6 +955,8 @@ interface SolanaTxManagerProxy {
   // Get transaction data for transfering SOL.
   MakeSystemProgramTransferTxData(string from, string to, uint64 lamports)
       => (SolanaTxData? tx_data, SolanaProviderError error, string error_message);
+
+  ProcessSolanaHardwareSignature(string tx_meta_id, array<uint8> signature_bytes) => (bool status, ProviderErrorUnion error_union, string error_message);
 
   // Get transaction data for transfering SPL tokens from one associated token
   // account to another.
@@ -1140,6 +1159,8 @@ interface BraveWalletService {
 
   IsBase58EncodedSolanaPubkey(string key) => (bool result);
 
+  Base58Encode(array<array<uint8>> addresses) => (array<string> addresses);
+
   // Resets the keyring and the related preferences
   Reset();
 };
@@ -1184,6 +1205,10 @@ struct SolanaTxData {
   // Currently it might be specified by solana.signAndSendTransaction provider
   // API as the options to be passed to sendTransaction RPC call.
   SolanaSendTransactionOptions? send_options;
+  // Passed by dApp when calling signAndSendTransaction, signTransaction,
+  // signAllTransactions provider APIs, which includes serialized message and
+  // signatures from partial_sign.
+  SolanaSignTransactionParam? sign_transaction_param;
 };
 
 // This is used by BraveWalletProviderDelegate::RequestPermissions for us to

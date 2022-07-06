@@ -9,7 +9,6 @@
 #include <string>
 
 #include "base/memory/raw_ptr.h"
-#include "bat/ads/internal/creatives/creative_ad_info.h"
 #include "bat/ads/internal/serving/eligible_ads/exclusion_rules/exclusion_rule_interface.h"
 
 namespace ads {
@@ -17,6 +16,8 @@ namespace ads {
 namespace geographic {
 class SubdivisionTargeting;
 }  // namespace geographic
+
+struct CreativeAdInfo;
 
 class SubdivisionTargetingExclusionRule final
     : public ExclusionRuleInterface<CreativeAdInfo> {
@@ -39,7 +40,7 @@ class SubdivisionTargetingExclusionRule final
  private:
   bool DoesRespectCap(const CreativeAdInfo& creative_ad);
 
-  raw_ptr<geographic::SubdivisionTargeting> subdivision_targeting_ =
+  const raw_ptr<geographic::SubdivisionTargeting> subdivision_targeting_ =
       nullptr;  // NOT OWNED
 
   std::string last_message_;

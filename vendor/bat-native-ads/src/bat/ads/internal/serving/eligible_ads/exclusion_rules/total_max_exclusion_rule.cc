@@ -9,6 +9,7 @@
 #include <iterator>
 
 #include "base/strings/stringprintf.h"
+#include "bat/ads/internal/creatives/creative_ad_info.h"
 
 namespace ads {
 

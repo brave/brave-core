@@ -24,6 +24,7 @@
 #include "brave/components/ntp_background_images/browser/ntp_sponsored_images_data.h"
 #include "brave/components/ntp_background_images/browser/url_constants.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
+#include "brave/components/p3a_utils/bucket.h"
 #include "brave/components/time_period_storage/weekly_storage.h"
 #include "components/pref_registry/pref_registry_syncable.h"
 #include "components/prefs/pref_service.h"
@@ -108,15 +109,12 @@ ViewCounterService::ViewCounterService(
 ViewCounterService::~ViewCounterService() = default;
 
 void ViewCounterService::BrandedWallpaperWillBeDisplayed(
-    const std::string& wallpaper_id) {
+    const std::string* wallpaper_id,
+    const std::string* creative_instance_id) {
   if (ads_service_) {
-    base::Value data = ViewCounterService::GetCurrentWallpaperForDisplay();
-    DCHECK(!data.is_none());
-
-    const std::string* creative_instance_id =
-        data.FindStringKey(kCreativeInstanceIDKey);
     ads_service_->TriggerNewTabPageAdEvent(
-        wallpaper_id, creative_instance_id ? *creative_instance_id : "",
+        wallpaper_id ? *wallpaper_id : "",
+        creative_instance_id ? *creative_instance_id : "",
         ads::mojom::NewTabPageAdEventType::kViewed);
   }
 
@@ -137,12 +135,20 @@ NTPSponsoredImagesData* ViewCounterService::GetCurrentBrandedWallpaperData()
   return service_->GetBrandedImagesData(false);
 }
 
-base::Value ViewCounterService::GetCurrentWallpaperForDisplay() const {
+base::Value ViewCounterService::GetCurrentWallpaperForDisplay() {
   if (ShouldShowBrandedWallpaper()) {
-    return GetCurrentBrandedWallpaper();
-  } else {
-    return GetCurrentWallpaper();
+    base::Value branded_wallpaper = GetCurrentBrandedWallpaper();
+    if (branded_wallpaper.is_dict()) {
+      return branded_wallpaper;
+    }
+    // Failed to get branded wallpaper as it was frequency capped by ads
+    // service. In this case next background wallpaper should be shown on NTP.
+    // To do this we need to increment background wallpaper index as it wasn't
+    // incremented during the last RegisterPageView() call.
+    model_.IncreaseBackgroundWallpaperImageIndex();
   }
+
+  return GetCurrentWallpaper();
 }
 
 base::Value ViewCounterService::GetCurrentWallpaper() const {
@@ -159,16 +165,46 @@ base::Value ViewCounterService::GetCurrentWallpaper() const {
 }
 
 base::Value ViewCounterService::GetCurrentBrandedWallpaper() const {
-  if (GetCurrentBrandedWallpaperData()) {
-    size_t current_campaign_index;
-    size_t current_background_index;
-    std::tie(current_campaign_index, current_background_index) =
-        model_.GetCurrentBrandedImageIndex();
-    return GetCurrentBrandedWallpaperData()->GetBackgroundAt(
-        current_campaign_index, current_background_index);
+  NTPSponsoredImagesData* images_data = GetCurrentBrandedWallpaperData();
+  if (!images_data) {
+    return base::Value();
   }
 
-  return base::Value();
+  const bool should_frequency_cap_ads =
+      ads_service_ && ads_service_->IsEnabled();
+  if (should_frequency_cap_ads && !images_data->IsSuperReferral()) {
+    return GetCurrentBrandedWallpaperByAdInfo();
+  }
+
+  return GetCurrentBrandedWallpaperFromModel();
+}
+
+base::Value ViewCounterService::GetCurrentBrandedWallpaperByAdInfo() const {
+  DCHECK(ads_service_);
+
+  absl::optional<ads::NewTabPageAdInfo> ad_info =
+      ads_service_->GetPrefetchedNewTabPageAd();
+  if (!ad_info) {
+    return base::Value();
+  }
+
+  base::Value branded_wallpaper_data =
+      GetCurrentBrandedWallpaperData()->GetBackgroundByAdInfo(*ad_info);
+  if (!branded_wallpaper_data.is_dict()) {
+    ads_service_->OnFailedToServeNewTabPageAd(ad_info->placement_id,
+                                              ad_info->creative_instance_id);
+  }
+
+  return branded_wallpaper_data;
+}
+
+base::Value ViewCounterService::GetCurrentBrandedWallpaperFromModel() const {
+  size_t current_campaign_index;
+  size_t current_background_index;
+  std::tie(current_campaign_index, current_background_index) =
+      model_.GetCurrentBrandedImageIndex();
+  return GetCurrentBrandedWallpaperData()->GetBackgroundAt(
+      current_campaign_index, current_background_index);
 }
 
 std::vector<TopSite> ViewCounterService::GetTopSitesData() const {
@@ -340,27 +376,24 @@ std::string ViewCounterService::GetSuperReferralCode() const {
 
 void ViewCounterService::UpdateP3AValues() const {
   uint64_t new_tab_count = new_tab_count_state_->GetHighestValueInWeek();
-  constexpr int kNewTabCount[] = {0, 3, 8, 20, 50, 100};
-  const int* it_count =
-      std::lower_bound(kNewTabCount, std::end(kNewTabCount), new_tab_count);
-  int answer = it_count - kNewTabCount;
-  UMA_HISTOGRAM_EXACT_LINEAR("Brave.NTP.NewTabsCreated", answer,
-                             std::size(kNewTabCount) + 1);
+  p3a_utils::RecordToHistogramBucket("Brave.NTP.NewTabsCreated",
+                                     {0, 3, 8, 20, 50, 100}, new_tab_count);
 
-  constexpr double kSponsoredRatio[] = {0, 10.0, 20.0, 30.0, 40.0, 50.0};
+  constexpr char kSponsoredNewTabsHistogramName[] =
+      "Brave.NTP.SponsoredNewTabsCreated";
+  constexpr int kSponsoredRatio[] = {0, 10, 20, 30, 40, 50};
   uint64_t branded_new_tab_count =
       branded_new_tab_count_state_->GetHighestValueInWeek();
   if (branded_new_tab_count == 0 || new_tab_count == 0) {
-    answer = 0;
+    UMA_HISTOGRAM_EXACT_LINEAR(kSponsoredNewTabsHistogramName, 0,
+                               std::size(kSponsoredRatio) + 1);
   } else {
     double ratio = (branded_new_tab_count /
                     static_cast<double>(new_tab_count)) * 100;
-    const double* it_ratio =
-        std::lower_bound(kSponsoredRatio, std::end(kSponsoredRatio), ratio);
-    answer = it_ratio - kSponsoredRatio;
+    p3a_utils::RecordToHistogramBucket(kSponsoredNewTabsHistogramName,
+                                       kSponsoredRatio,
+                                       static_cast<int>(ratio));
   }
-  UMA_HISTOGRAM_EXACT_LINEAR("Brave.NTP.SponsoredNewTabsCreated", answer,
-                             std::size(kSponsoredRatio) + 1);
 }
 
 }  // namespace ntp_background_images

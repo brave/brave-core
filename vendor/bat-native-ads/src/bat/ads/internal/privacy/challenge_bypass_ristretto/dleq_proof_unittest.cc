@@ -7,10 +7,14 @@
 
 #include <sstream>
 
+#include "bat/ads/internal/privacy/challenge_bypass_ristretto/blinded_token.h"
 #include "bat/ads/internal/privacy/challenge_bypass_ristretto/blinded_token_unittest_util.h"
 #include "bat/ads/internal/privacy/challenge_bypass_ristretto/challenge_bypass_ristretto_unittest_constants.h"
+#include "bat/ads/internal/privacy/challenge_bypass_ristretto/public_key.h"
 #include "bat/ads/internal/privacy/challenge_bypass_ristretto/public_key_unittest_util.h"
+#include "bat/ads/internal/privacy/challenge_bypass_ristretto/signed_token.h"
 #include "bat/ads/internal/privacy/challenge_bypass_ristretto/signed_token_unittest_util.h"
+#include "bat/ads/internal/privacy/challenge_bypass_ristretto/signing_key.h"
 #include "bat/ads/internal/privacy/challenge_bypass_ristretto/signing_key_unittest_util.h"
 #include "testing/gtest/include/gtest/gtest.h"
 

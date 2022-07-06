@@ -135,6 +135,21 @@
     "message": "Brave Rewards hat ein Problem. Bitte versuchen Sie es später erneut.",
     "description": ""
   },
+  "rewardsLogInToSeeBalance": {
+    "message": "$begin_bold$Anmelden $provider$ $end_bold$um Ihren Kontostand zu sehen",
+    "description": "",
+    "placeholders": {
+      "begin_bold": {
+        "content": "$1"
+      },
+      "provider": {
+        "content": "$2"
+      },
+      "end_bold": {
+        "content": "$3"
+      }
+    }
+  },
   "rewardsPaymentCheckStatus": {
     "message": "Status überprüfen",
     "description": ""

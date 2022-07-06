@@ -42,6 +42,20 @@ export default class Amount {
     return new Amount(this.value.plus(value))
   }
 
+  minus (value: AmountLike): Amount {
+    if (value instanceof Amount) {
+      return this.minus(value.value || '')
+    }
+
+    if (value === '') {
+      return this
+    } else if (this.value === undefined) {
+      return new Amount(value)
+    }
+
+    return new Amount(this.value.minus(value))
+  }
+
   times (value: AmountLike): Amount {
     if (value instanceof Amount) {
       return this.times(value.value || '')
@@ -221,34 +235,34 @@ export default class Amount {
   }
 
   formatAsFiat (currency?: string): string {
-    const fmt = {
-      decimalSeparator: '.',
-      groupSeparator: ',',
-      groupSize: 3
-    } as BigNumber.Format
+    let decimals
+    let value
 
-    let result
     if (this.value === undefined || this.value.isNaN()) {
-      result = ''
-    } else if (this.value.isZero()) {
-      result = '0.00'
-    } else if (this.value.decimalPlaces() < 2) {
-      result = this.value.toFormat(2, BigNumber.ROUND_UP, fmt)
-    } else if (this.value.isGreaterThanOrEqualTo(10)) {
-      result = this.value.toFormat(2, BigNumber.ROUND_UP, fmt)
-    } else if (this.value.isGreaterThanOrEqualTo(1)) {
-      result = this.value.toFormat(3, BigNumber.ROUND_UP, fmt)
-    } else {
-      result = this.format(4, true)
-    }
-
-    if (!result) {
       return ''
+    } else if (this.value.decimalPlaces() < 2 || this.value.isGreaterThanOrEqualTo(10)) {
+      decimals = 2
+      value = this.value.toNumber()
+    } else if (this.value.isGreaterThanOrEqualTo(1)) {
+      decimals = 3
+      value = this.value.toNumber()
+    } else {
+      value = new BigNumber(this.format(4)).toNumber()
     }
 
-    return currency !== undefined
-      ? `${CurrencySymbols[currency]}${result}`
-      : result
+    const options: Intl.NumberFormatOptions = {
+      style: 'decimal',
+      minimumFractionDigits: decimals || 0,
+      maximumFractionDigits: decimals || 20
+    }
+
+    if (currency && CurrencySymbols[currency]) {
+      options.style = 'currency'
+      options.currency = currency
+      options.currencyDisplay = 'narrowSymbol'
+    }
+
+    return Intl.NumberFormat(navigator.language, options).format(value)
   }
 
   toHex (): string {

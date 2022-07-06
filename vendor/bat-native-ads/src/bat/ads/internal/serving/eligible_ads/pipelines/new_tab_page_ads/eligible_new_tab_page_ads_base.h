@@ -9,7 +9,7 @@
 #include "base/memory/raw_ptr.h"
 #include "bat/ads/ad_info.h"
 #include "bat/ads/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_info_aliases.h"
-#include "bat/ads/internal/serving/eligible_ads/eligible_ads_aliases.h"
+#include "bat/ads/internal/serving/eligible_ads/eligible_ads_callback.h"
 
 namespace ads {
 
@@ -35,16 +35,16 @@ class EligibleAdsBase {
       const targeting::UserModelInfo& user_model,
       GetEligibleAdsCallback<CreativeNewTabPageAdList> callback) = 0;
 
-  void set_last_served_ad(const AdInfo& ad) { last_served_ad_ = ad; }
+  void SetLastServedAd(const AdInfo& ad) { last_served_ad_ = ad; }
 
  protected:
   EligibleAdsBase(geographic::SubdivisionTargeting* subdivision_targeting,
                   resource::AntiTargeting* anti_targeting_resource);
 
-  raw_ptr<geographic::SubdivisionTargeting> subdivision_targeting_ =
+  const raw_ptr<geographic::SubdivisionTargeting> subdivision_targeting_ =
       nullptr;  // NOT OWNED
 
-  raw_ptr<resource::AntiTargeting> anti_targeting_resource_ =
+  const raw_ptr<resource::AntiTargeting> anti_targeting_resource_ =
       nullptr;  // NOT OWNED
 
   AdInfo last_served_ad_;

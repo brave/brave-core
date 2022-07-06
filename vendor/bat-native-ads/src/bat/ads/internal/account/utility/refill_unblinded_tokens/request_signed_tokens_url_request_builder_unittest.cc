@@ -12,6 +12,7 @@
 #include "bat/ads/internal/privacy/challenge_bypass_ristretto/blinded_token.h"
 #include "bat/ads/internal/privacy/challenge_bypass_ristretto/blinded_token_util.h"
 #include "bat/ads/internal/privacy/challenge_bypass_ristretto/token.h"
+#include "url/gurl.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
@@ -110,7 +111,7 @@ TEST_F(BatAdsRequestSignedTokensUrlRequestBuilderTest, BuildUrlForRPill) {
   expected_url_request->content_type = "application/json";
   expected_url_request->method = mojom::UrlRequestMethod::kPost;
 
-  EXPECT_TRUE(url_request.Equals(expected_url_request));
+  EXPECT_EQ(url_request, expected_url_request);
 }
 
 TEST_F(BatAdsRequestSignedTokensUrlRequestBuilderTest, BuildUrlForBPill) {
@@ -148,7 +149,7 @@ TEST_F(BatAdsRequestSignedTokensUrlRequestBuilderTest, BuildUrlForBPill) {
   expected_url_request->content_type = "application/json";
   expected_url_request->method = mojom::UrlRequestMethod::kPost;
 
-  EXPECT_TRUE(url_request.Equals(expected_url_request));
+  EXPECT_EQ(url_request, expected_url_request);
 }
 
 }  // namespace ads

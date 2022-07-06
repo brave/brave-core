@@ -28,6 +28,7 @@
 #include "bat/ads/statement_info.h"
 #include "bat/ads/transaction_info.h"
 #include "bat/ads/transaction_info_aliases.h"
+#include "url/gurl.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
@@ -48,14 +49,24 @@ constexpr char kInvalidWalletSeed[] =
 
 class BatAdsAccountTest : public AccountObserver, public UnitTestBase {
  protected:
-  BatAdsAccountTest()
-      : token_generator_mock_(
-            std::make_unique<NiceMock<privacy::TokenGeneratorMock>>()),
-        account_(std::make_unique<Account>(token_generator_mock_.get())) {
+  BatAdsAccountTest() = default;
+
+  ~BatAdsAccountTest() override = default;
+
+  void SetUp() override {
+    UnitTestBase::SetUp();
+
+    token_generator_mock_ =
+        std::make_unique<NiceMock<privacy::TokenGeneratorMock>>();
+    account_ = std::make_unique<Account>(token_generator_mock_.get());
     account_->AddObserver(this);
   }
 
-  ~BatAdsAccountTest() override = default;
+  void TearDown() override {
+    account_->RemoveObserver(this);
+
+    UnitTestBase::TearDown();
+  }
 
   void Save(const CreativeNotificationAdList& creative_ads) {
     database::table::CreativeNotificationAds database_table;
@@ -159,11 +170,11 @@ TEST_F(BatAdsAccountTest, GetWallet) {
 
 TEST_F(BatAdsAccountTest, GetIssuersIfAdsAreEnabled) {
   // Arrange
-  AdsClientHelper::Get()->SetBooleanPref(prefs::kEnabled, true);
+  AdsClientHelper::GetInstance()->SetBooleanPref(prefs::kEnabled, true);
 
-  const URLEndpoints& endpoints = {{// Get issuers request
-                                    R"(/v1/issuers/)",
-                                    {{net::HTTP_OK, R"(
+  const URLEndpointMap& endpoints = {{// Get issuers request
+                                      R"(/v1/issuers/)",
+                                      {{net::HTTP_OK, R"(
         {
           "ping": 7200000,
           "issuers": [
@@ -206,7 +217,7 @@ TEST_F(BatAdsAccountTest, GetIssuersIfAdsAreEnabled) {
         )"}}}};
   MockUrlRequest(ads_client_mock_, endpoints);
 
-  account_->MaybeGetIssuers();
+  account_->Process();
 
   // Act
   const IssuersInfo& issuers = GetIssuers();
@@ -226,11 +237,11 @@ TEST_F(BatAdsAccountTest, GetIssuersIfAdsAreEnabled) {
 
 TEST_F(BatAdsAccountTest, DoNotGetIssuersIfAdsAreDisabled) {
   // Arrange
-  AdsClientHelper::Get()->SetBooleanPref(prefs::kEnabled, false);
+  AdsClientHelper::GetInstance()->SetBooleanPref(prefs::kEnabled, false);
 
-  const URLEndpoints& endpoints = {{// Get issuers request
-                                    R"(/v1/issuers/)",
-                                    {{net::HTTP_OK, R"(
+  const URLEndpointMap& endpoints = {{// Get issuers request
+                                      R"(/v1/issuers/)",
+                                      {{net::HTTP_OK, R"(
         {
           "ping": 7200000,
           "issuers": [
@@ -273,7 +284,7 @@ TEST_F(BatAdsAccountTest, DoNotGetIssuersIfAdsAreDisabled) {
         )"}}}};
   MockUrlRequest(ads_client_mock_, endpoints);
 
-  account_->MaybeGetIssuers();
+  account_->Process();
 
   // Act
   const IssuersInfo& issuers = GetIssuers();
@@ -286,13 +297,13 @@ TEST_F(BatAdsAccountTest, DoNotGetIssuersIfAdsAreDisabled) {
 
 TEST_F(BatAdsAccountTest, DoNotGetInvalidIssuers) {
   // Arrange
-  AdsClientHelper::Get()->SetBooleanPref(prefs::kEnabled, true);
+  AdsClientHelper::GetInstance()->SetBooleanPref(prefs::kEnabled, true);
 
   BuildAndSetIssuers();
 
-  const URLEndpoints& endpoints = {{// Get issuers request
-                                    R"(/v1/issuers/)",
-                                    {{net::HTTP_OK, R"(
+  const URLEndpointMap& endpoints = {{// Get issuers request
+                                      R"(/v1/issuers/)",
+                                      {{net::HTTP_OK, R"(
         {
           "ping": 7200000,
           "issuers": [
@@ -339,7 +350,7 @@ TEST_F(BatAdsAccountTest, DoNotGetInvalidIssuers) {
         )"}}}};
   MockUrlRequest(ads_client_mock_, endpoints);
 
-  account_->MaybeGetIssuers();
+  account_->Process();
 
   // Act
   const IssuersInfo& issuers = GetIssuers();
@@ -357,13 +368,13 @@ TEST_F(BatAdsAccountTest, DoNotGetInvalidIssuers) {
 
 TEST_F(BatAdsAccountTest, DoNotGetMissingPaymentIssuers) {
   // Arrange
-  AdsClientHelper::Get()->SetBooleanPref(prefs::kEnabled, true);
+  AdsClientHelper::GetInstance()->SetBooleanPref(prefs::kEnabled, true);
 
   BuildAndSetIssuers();
 
-  const URLEndpoints& endpoints = {{// Get issuers request
-                                    R"(/v1/issuers/)",
-                                    {{net::HTTP_OK, R"(
+  const URLEndpointMap& endpoints = {{// Get issuers request
+                                      R"(/v1/issuers/)",
+                                      {{net::HTTP_OK, R"(
         {
           "ping": 7200000,
           "issuers": [
@@ -385,7 +396,7 @@ TEST_F(BatAdsAccountTest, DoNotGetMissingPaymentIssuers) {
         )"}}}};
   MockUrlRequest(ads_client_mock_, endpoints);
 
-  account_->MaybeGetIssuers();
+  account_->Process();
 
   // Act
   const IssuersInfo& issuers = GetIssuers();
@@ -403,9 +414,9 @@ TEST_F(BatAdsAccountTest, DoNotGetMissingPaymentIssuers) {
 
 TEST_F(BatAdsAccountTest, DepositForCash) {
   // Arrange
-  AdsClientHelper::Get()->SetBooleanPref(prefs::kEnabled, true);
+  AdsClientHelper::GetInstance()->SetBooleanPref(prefs::kEnabled, true);
 
-  const URLEndpoints& endpoints = {
+  const URLEndpointMap& endpoints = {
       {// Create confirmation request
        R"(/v2/confirmation/9fd71bc4-1b8e-4c1e-8ddc-443193a09f91/eyJwYXlsb2FkIjoie1wiYmxpbmRlZFBheW1lbnRUb2tlblwiOlwiRXY1SkU0LzlUWkkvNVRxeU45SldmSjFUbzBIQndRdzJyV2VBUGNkalgzUT1cIixcImJ1aWxkQ2hhbm5lbFwiOlwidGVzdFwiLFwiY3JlYXRpdmVJbnN0YW5jZUlkXCI6XCI3MDgyOWQ3MS1jZTJlLTQ0ODMtYTRjMC1lMWUyYmVlOTY1MjBcIixcInBheWxvYWRcIjp7fSxcInBsYXRmb3JtXCI6XCJ0ZXN0XCIsXCJ0eXBlXCI6XCJ2aWV3XCJ9Iiwic2lnbmF0dXJlIjoiRkhiczQxY1h5eUF2SnkxUE9HVURyR1FoeUtjRkVMSXVJNU5yT3NzT2VLbUV6N1p5azZ5aDhweDQ0WmFpQjZFZkVRc0pWMEpQYmJmWjVUMGt2QmhEM0E9PSIsInQiOiJWV0tFZEliOG5Nd21UMWVMdE5MR3VmVmU2TlFCRS9TWGpCcHlsTFlUVk1KVFQrZk5ISTJWQmQyenRZcUlwRVdsZWF6TiswYk5jNGF2S2ZrY3YyRkw3Zz09In0=)",
        {{net::HTTP_CREATED, R"(

@@ -39,11 +39,7 @@ pub(crate) struct HttpHandler<'a, D, U> {
 
 impl<'a, D, U> HttpHandler<'a, D, U> {
     pub fn new(max_attempts: usize, display_name: D, client: &'a U) -> Self {
-        HttpHandler {
-            client,
-            max_attempts,
-            display_name,
-        }
+        HttpHandler { client, max_attempts, display_name }
     }
 }
 
@@ -82,10 +78,7 @@ where
             | InternalError::InvalidResponse(_) => {
                 // Default to an exponential backoff with jitter along the full range
                 // https://aws.amazon.com/blogs/architecture/exponential-backoff-and-jitter/
-                rng.gen_range(
-                    0,
-                    cmp::min(MAX_DELAY_MS, BASE_DELAY_MS * (1 << current_attempt)),
-                )
+                rng.gen_range(0, cmp::min(MAX_DELAY_MS, BASE_DELAY_MS * (1 << current_attempt)))
             }
             InternalError::RetryLater(Some(after)) => {
                 let after_ms = (after.as_millis() as u64) + 1;
@@ -126,14 +119,9 @@ pub fn clone_resp(resp: &Response<Vec<u8>>) -> Response<Vec<u8>> {
 }
 
 pub fn delay_from_response<T>(resp: &http::Response<T>) -> Option<Duration> {
-    resp.headers()
-        .get(http::header::RETRY_AFTER)
-        .and_then(|value| {
-            value
-                .to_str()
-                .ok()
-                .and_then(|value| value.parse::<u64>().ok().map(Duration::from_secs))
-        })
+    resp.headers().get(http::header::RETRY_AFTER).and_then(|value| {
+        value.to_str().ok().and_then(|value| value.parse::<u64>().ok().map(Duration::from_secs))
+    })
 }
 
 impl<U> SDK<U> {

@@ -17,10 +17,10 @@
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/task/cancelable_task_tracker.h"
+#include "base/task/sequenced_task_runner.h"
+#include "base/time/time.h"
 #include "base/timer/timer.h"
-#include "bat/ads/ads.h"
 #include "bat/ads/ads_client.h"
-#include "bat/ads/database.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
 #include "bat/ledger/mojom_structs.h"
 #include "brave/browser/brave_ads/background_helper/background_helper.h"
@@ -41,18 +41,22 @@
 #include "brave/components/brave_adaptive_captcha/brave_adaptive_captcha_service.h"
 #endif
 
+class GURL;
+
 class NotificationDisplayService;
 class Profile;
 
+namespace ads {
+class Database;
+struct NewTabPageAdInfo;
+struct NotificationAdInfo;
+}  // namespace ads
+
 namespace base {
 class SequencedTaskRunner;
-class Time;
 }  // namespace base
 
 namespace brave_federated {
-class AdNotificationTimingDataStore;
-struct AdNotificationTimingTaskLog;
-template <class T, class U>
 class AsyncDataStore;
 }  // namespace brave_federated
 
@@ -91,10 +95,7 @@ class AdsServiceImpl : public AdsService,
 #endif
       history::HistoryService* history_service,
       brave_rewards::RewardsService* rewards_service,
-      brave_federated::AsyncDataStore<
-          brave_federated::AdNotificationTimingDataStore,
-          brave_federated::AdNotificationTimingTaskLog>*
-          ad_notification_timing_data_store);
+      brave_federated::AsyncDataStore* notification_ad_timing_data_store);
   ~AdsServiceImpl() override;
 
   AdsServiceImpl(const AdsServiceImpl&) = delete;
@@ -161,6 +162,9 @@ class AdsServiceImpl : public AdsService,
       const std::string& placement_id,
       const std::string& creative_instance_id,
       const ads::mojom::NewTabPageAdEventType event_type) override;
+  void OnFailedToServeNewTabPageAd(
+      const std::string& placement_id,
+      const std::string& creative_instance_id) override;
 
   void TriggerPromotedContentAdEvent(
       const std::string& placement_id,
@@ -180,7 +184,11 @@ class AdsServiceImpl : public AdsService,
       const ads::mojom::SearchResultAdEventType event_type,
       TriggerSearchResultAdEventCallback callback) override;
 
-  void PurgeOrphanedAdEventsForType(const ads::mojom::AdType ad_type) override;
+  absl::optional<ads::NewTabPageAdInfo> GetPrefetchedNewTabPageAd() override;
+
+  void PurgeOrphanedAdEventsForType(
+      const ads::mojom::AdType ad_type,
+      PurgeOrphanedAdEventsForTypeCallback callback) override;
 
   void GetHistory(const base::Time from_time,
                   const base::Time to_time,
@@ -224,6 +232,7 @@ class AdsServiceImpl : public AdsService,
   void OnCreate();
 
   void OnInitialize(const bool success);
+  void SetupOnFirstInitialize();
 
   void ShutdownBatAds();
   void OnShutdownBatAds(const bool success);
@@ -233,6 +242,7 @@ class AdsServiceImpl : public AdsService,
   void MaybeStart(const bool should_restart);
   void Start(const uint32_t number_of_start);
   void Stop();
+  base::TimeDelta GetBatAdsServiceRestartDelay();
 
   void ResetState();
   void OnShutdownAndResetBatAds(const bool success);
@@ -270,6 +280,9 @@ class AdsServiceImpl : public AdsService,
 
   void RegisterResourceComponentsForLocale(const std::string& locale);
 
+  void PrefetchNewTabPageAd();
+  void OnPrefetchNewTabPageAd(bool success, const std::string& json);
+
   void OnURLRequestStarted(
       const GURL& final_url,
       const network::mojom::URLResponseHead& response_head);
@@ -290,6 +303,8 @@ class AdsServiceImpl : public AdsService,
       const bool success,
       const std::string& placement_id,
       const ads::mojom::SearchResultAdEventType event_type);
+
+  void OnPurgeOrphanedAdEventsForNewTabPageAds(const bool success);
 
   void OnGetHistory(OnGetHistoryCallback callback, const std::string& json);
 
@@ -322,7 +337,9 @@ class AdsServiceImpl : public AdsService,
                          const std::string& json);
 
   void OnLoaded(const ads::LoadCallback& callback, const std::string& value);
-  void OnFileLoaded(ads::LoadFileCallback callback, base::File value);
+  void OnFileLoaded(
+      ads::LoadFileCallback callback,
+      std::unique_ptr<base::File, base::OnTaskRunnerDeleter> file);
   void OnSaved(const ads::ResultCallback& callback, const bool success);
 
   void OnRunDBTransaction(ads::RunDBTransactionCallback callback,
@@ -431,7 +448,7 @@ class AdsServiceImpl : public AdsService,
                       const ads::mojom::P2AEventType type,
                       const std::string& value) override;
 
-  void LogTrainingInstance(const brave_federated::mojom::TrainingInstancePtr
+  void LogTrainingInstance(std::vector<brave_federated::mojom::CovariatePtr>
                                training_instance) override;
   void OnLogTrainingInstance(bool success);
 
@@ -479,7 +496,7 @@ class AdsServiceImpl : public AdsService,
 
   bool is_initialized_ = false;
 
-  bool deprecated_data_files_removed_ = false;
+  bool is_setup_on_first_initialize_done_ = false;
 
   bool needs_browser_update_to_see_ads_ = false;
 
@@ -488,6 +505,8 @@ class AdsServiceImpl : public AdsService,
   // This is needed to check if current ads service init become stale as
   // another ads service start is in progress
   uint32_t total_number_of_starts_ = 0;
+
+  base::Time last_bat_ads_service_restart_time_;
 
   const scoped_refptr<base::SequencedTaskRunner> file_task_runner_;
 
@@ -502,6 +521,9 @@ class AdsServiceImpl : public AdsService,
 
   std::unique_ptr<ads::Database> database_;
 
+  absl::optional<ads::NewTabPageAdInfo> prefetched_new_tab_page_ad_info_;
+  absl::optional<base::Time> purge_orphaned_new_tab_page_ad_events_time_;
+
   ui::IdleState last_idle_state_;
   int last_idle_time_;
 
@@ -515,10 +537,8 @@ class AdsServiceImpl : public AdsService,
   raw_ptr<brave_rewards::RewardsService> rewards_service_{
       nullptr};  // NOT OWNED
 
-  raw_ptr<brave_federated::AsyncDataStore<
-      brave_federated::AdNotificationTimingDataStore,
-      brave_federated::AdNotificationTimingTaskLog>>
-      ad_notification_timing_data_store_ = nullptr;  // NOT OWNED
+  raw_ptr<brave_federated::AsyncDataStore> notification_ad_timing_data_store_ =
+      nullptr;  // NOT OWNED
 
   mojo::AssociatedReceiver<bat_ads::mojom::BatAdsClient>
       bat_ads_client_receiver_;

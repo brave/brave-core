@@ -10,6 +10,7 @@ namespace translate {
 
 extern const char kBraveTranslateOrigin[];
 extern const char kBraveTranslateScriptURL[];
+extern const char kBraveTranslateStaticPath[];
 
 }  // namespace translate
 

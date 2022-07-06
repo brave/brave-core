@@ -10,7 +10,7 @@ export type FilecoinNetwork = typeof FilecoinNetworkTypes[number]
 export type HardwareWalletResponseCodeType =
   | 'deviceNotConnected'
   | 'deviceBusy'
-  | 'openEthereumApp'
+  | 'openLedgerApp'
   | 'transactionRejected'
 
 export interface SignHardwareTransactionType {
@@ -31,7 +31,7 @@ export type HardwareOperationResult = {
 }
 
 export type SignHardwareTransactionOperationResult = HardwareOperationResult & {
-  payload?: EthereumSignedTx | SignedLotusMessage
+  payload?: EthereumSignedTx | SignedLotusMessage | Buffer
 }
 
 export type SignHardwareMessageOperationResult = HardwareOperationResult & {
@@ -57,8 +57,12 @@ export enum TrezorDerivationPaths {
 const DerivationSchemeTypes = [LedgerDerivationPaths.LedgerLive, LedgerDerivationPaths.Legacy, LedgerDerivationPaths.Deprecated, TrezorDerivationPaths.Default] as const
 export type HardwareDerivationScheme = typeof DerivationSchemeTypes[number]
 
+type HardwareWalletAccountBytesAddress = BraveWallet.HardwareWalletAccount & {
+  addressBytes?: Buffer
+}
+
 export type GetAccountsHardwareOperationResult = HardwareOperationResult & {
-  payload?: BraveWallet.HardwareWalletAccount[]
+  payload?: HardwareWalletAccountBytesAddress[]
 }
 
 // Batch size of accounts imported from the device in one step.

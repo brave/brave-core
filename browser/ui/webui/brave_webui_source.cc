@@ -6,6 +6,7 @@
 #include "brave/browser/ui/webui/brave_webui_source.h"
 
 #include <map>
+#include <string>
 #include <vector>
 
 #include "base/strings/utf_string_conversions.h"
@@ -26,7 +27,14 @@
 #if !BUILDFLAG(IS_ANDROID)
 #include "brave/browser/ui/webui/navigation_bar_data_provider.h"
 #include "brave/components/brave_rewards/resources/grit/brave_rewards_resources.h"
+#include "chrome/browser/ui/browser_finder.h"
+#include "chrome/browser/ui/browser_window.h"
+#include "chrome/browser/ui/color/chrome_color_id.h"
 #include "chrome/grit/chromium_strings.h"
+#include "content/public/browser/web_contents.h"
+#include "third_party/skia/include/core/SkColor.h"
+#include "ui/color/color_provider.h"
+#include "ui/color/color_provider_utils.h"
 #endif
 
 namespace {
@@ -1118,3 +1126,42 @@ content::WebUIDataSource* CreateAndAddWebUIDataSource(
   content::WebUIDataSource::Add(Profile::FromWebUI(web_ui), data_source);
   return data_source;
 }
+
+// Android doesn't need WebUI WebContents to match background color
+#if !BUILDFLAG(IS_ANDROID)
+
+void AddBackgroundColorToSource(content::WebUIDataSource* source,
+                                content::WebContents* contents) {
+  // Get the specific background color for the type of browser window
+  // that the contents is in.
+  // TODO(petemill): we do not use web_contents->GetColorProvider()
+  // here because it does not include BravePrivateWindowThemeSupplier. This
+  // should get fixed, potentially via `WebContents::SetColorProviderSource`.
+  auto* browser_window =
+      BrowserWindow::FindBrowserWindowWithWebContents(contents);
+  if (!browser_window) {
+    // Some newly created WebContents aren't yet attached
+    // to a browser window, so get any that match the current profile,
+    // which is fine for color provider.
+    Profile* profile =
+        Profile::FromBrowserContext(contents->GetBrowserContext());
+    const Browser* browser = chrome::FindBrowserWithProfile(profile);
+    if (browser) {
+      browser_window = browser->window();
+    }
+  }
+  if (!browser_window) {
+    DLOG(ERROR) << "No BrowserWindow could be found for WebContents";
+    return;
+  }
+  const ui::ColorProvider* color_provider = browser_window->GetColorProvider();
+  SkColor ntp_background_color =
+      color_provider->GetColor(kColorNewTabPageBackground);
+  // Set to a template replacement string that can be inserted to the
+  // html.
+  std::string ntp_background_color_css =
+      ui::ConvertSkColorToCSSColor(ntp_background_color);
+  source->AddString("backgroundColor", ntp_background_color_css);
+}
+
+#endif  // !BUILDFLAG(IS_ANDROID)

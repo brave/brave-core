@@ -333,10 +333,7 @@ void CosmeticFiltersJSHandler::ApplyRules(bool de_amp_enabled) {
         blink::BackForwardCacheAware::kAllow);
   }
 
-  if (!render_frame_->IsMainFrame())
-    return;
-
-  // Working on css rules, we do that on a main frame only
+  // Working on css rules
   generichide_ = resources_dict_->FindBoolKey("generichide").value_or(false);
   std::string cosmetic_filtering_init_script = base::StringPrintf(
       kCosmeticFilteringInitScript, enabled_1st_party_cf_ ? "true" : "false",

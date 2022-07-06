@@ -29,6 +29,7 @@ using ::testing::Field;
 using ::testing::Matcher;
 
 namespace ads {
+namespace notification_ads {
 
 namespace {
 
@@ -43,9 +44,7 @@ Matcher<const NotificationAdInfo&> DoesMatchCreativeInstanceId(
 
 class BatAdsNotificationAdServingIntegrationTest : public UnitTestBase {
  protected:
-  BatAdsNotificationAdServingIntegrationTest()
-      : database_table_(
-            std::make_unique<database::table::CreativeNotificationAds>()) {}
+  BatAdsNotificationAdServingIntegrationTest() = default;
 
   ~BatAdsNotificationAdServingIntegrationTest() override = default;
 
@@ -57,7 +56,7 @@ class BatAdsNotificationAdServingIntegrationTest : public UnitTestBase {
     CopyFileFromTestPathToTempPath("confirmations_with_unblinded_tokens.json",
                                    kConfirmationsFilename);
 
-    const URLEndpoints endpoints = {
+    const URLEndpointMap endpoints = {
         {"/v9/catalog", {{net::HTTP_OK, "/empty_catalog.json"}}},
         {// Get issuers request
          R"(/v1/issuers/)",
@@ -100,18 +99,16 @@ class BatAdsNotificationAdServingIntegrationTest : public UnitTestBase {
   void ServeAd() {
     geographic::SubdivisionTargeting subdivision_targeting;
     resource::AntiTargeting anti_targeting_resource;
-    notification_ads::Serving serving(&subdivision_targeting,
-                                      &anti_targeting_resource);
+    Serving serving(&subdivision_targeting, &anti_targeting_resource);
 
     serving.MaybeServeAd();
   }
 
   void Save(const CreativeNotificationAdList& creative_ads) {
-    database_table_->Save(creative_ads,
-                          [](const bool success) { ASSERT_TRUE(success); });
+    database::table::CreativeNotificationAds database_table;
+    database_table.Save(creative_ads,
+                        [](const bool success) { ASSERT_TRUE(success); });
   }
-
-  std::unique_ptr<database::table::CreativeNotificationAds> database_table_;
 };
 
 TEST_F(BatAdsNotificationAdServingIntegrationTest, ServeAd) {
@@ -185,8 +182,7 @@ TEST_F(BatAdsNotificationAdServingIntegrationTest, ServeAdWithServingVersion2) {
 
   geographic::SubdivisionTargeting subdivision_targeting;
   resource::AntiTargeting anti_targeting_resource;
-  notification_ads::Serving serving(&subdivision_targeting,
-                                    &anti_targeting_resource);
+  Serving serving(&subdivision_targeting, &anti_targeting_resource);
 
   std::map<std::string, std::string> serving_parameters;
   serving_parameters["ad_serving_version"] = "2";
@@ -208,4 +204,5 @@ TEST_F(BatAdsNotificationAdServingIntegrationTest, ServeAdWithServingVersion2) {
   // Assert
 }
 
+}  // namespace notification_ads
 }  // namespace ads

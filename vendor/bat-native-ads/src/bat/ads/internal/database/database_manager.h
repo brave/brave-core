@@ -7,7 +7,7 @@
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_DATABASE_DATABASE_MANAGER_H_
 
 #include "base/observer_list.h"
-#include "bat/ads/ads_client_aliases.h"
+#include "bat/ads/ads_client_callback.h"
 #include "bat/ads/internal/database/database_manager_observer.h"
 
 namespace ads {
@@ -20,7 +20,7 @@ class DatabaseManager final {
   DatabaseManager(const DatabaseManager&) = delete;
   DatabaseManager& operator=(const DatabaseManager&) = delete;
 
-  static DatabaseManager* Get();
+  static DatabaseManager* GetInstance();
 
   static bool HasInstance();
 

@@ -15,6 +15,7 @@
 // npm run test -- brave_unit_tests --filter=BatAds*
 
 namespace ads {
+namespace new_tab_page_ads {
 
 class BatAdsNewTabPageAdsPerHourPermissionRuleTest : public UnitTestBase {
  protected:
@@ -41,7 +42,7 @@ TEST_F(BatAdsNewTabPageAdsPerHourPermissionRuleTest,
   // Arrange
 
   // Act
-  NewTabPageAdsPerHourPermissionRule permission_rule;
+  AdsPerHourPermissionRule permission_rule;
   const bool is_allowed = permission_rule.ShouldAllow();
 
   // Assert
@@ -55,7 +56,7 @@ TEST_F(BatAdsNewTabPageAdsPerHourPermissionRuleTest,
   RecordAdEvents(AdType::kNewTabPageAd, ConfirmationType::kServed, count);
 
   // Act
-  NewTabPageAdsPerHourPermissionRule permission_rule;
+  AdsPerHourPermissionRule permission_rule;
   const bool is_allowed = permission_rule.ShouldAllow();
 
   // Assert
@@ -68,10 +69,10 @@ TEST_F(BatAdsNewTabPageAdsPerHourPermissionRuleTest,
   const int count = features::GetMaximumNewTabPageAdsPerHour();
   RecordAdEvents(AdType::kNewTabPageAd, ConfirmationType::kServed, count);
 
-  FastForwardClockBy(base::Hours(1));
+  AdvanceClockBy(base::Hours(1));
 
   // Act
-  NewTabPageAdsPerHourPermissionRule permission_rule;
+  AdsPerHourPermissionRule permission_rule;
   const bool is_allowed = permission_rule.ShouldAllow();
 
   // Assert
@@ -84,14 +85,15 @@ TEST_F(BatAdsNewTabPageAdsPerHourPermissionRuleTest,
   const int count = features::GetMaximumNewTabPageAdsPerHour();
   RecordAdEvents(AdType::kNewTabPageAd, ConfirmationType::kServed, count);
 
-  FastForwardClockBy(base::Minutes(59));
+  AdvanceClockBy(base::Hours(1) - base::Seconds(1));
 
   // Act
-  NewTabPageAdsPerHourPermissionRule permission_rule;
+  AdsPerHourPermissionRule permission_rule;
   const bool is_allowed = permission_rule.ShouldAllow();
 
   // Assert
   EXPECT_FALSE(is_allowed);
 }
 
+}  // namespace new_tab_page_ads
 }  // namespace ads

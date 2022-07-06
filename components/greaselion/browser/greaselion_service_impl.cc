@@ -294,6 +294,15 @@ void GreaselionServiceImpl::CreateAndInstallExtensions() {
   DCHECK(update_in_progress_);
   all_rules_installed_successfully_ = true;
   pending_installs_ = 0;
+
+  // At this point, any GL extensions that were previously loaded have now been
+  // unloaded. We can now clean up their corresponding temp folders.
+  if (!extension_dirs_.empty()) {
+    task_runner_->PostTask(
+        FROM_HERE,
+        base::BindOnce(&DeleteExtensionDirs, std::move(extension_dirs_)));
+  }
+
   std::vector<std::unique_ptr<GreaselionRule>>* rules =
       download_service_->rules();
   for (const std::unique_ptr<GreaselionRule>& rule : *rules) {

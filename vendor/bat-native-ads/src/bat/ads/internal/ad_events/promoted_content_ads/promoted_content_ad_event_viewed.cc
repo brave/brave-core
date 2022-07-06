@@ -6,9 +6,11 @@
 #include "bat/ads/internal/ad_events/promoted_content_ads/promoted_content_ad_event_viewed.h"
 
 #include "bat/ads/confirmation_type.h"
+#include "bat/ads/history_item_info.h"
 #include "bat/ads/internal/ad_events/ad_events.h"
 #include "bat/ads/internal/base/logging_util.h"
-#include "bat/ads/internal/history/history.h"
+#include "bat/ads/internal/history/history_manager.h"
+#include "bat/ads/promoted_content_ad_info.h"
 
 namespace ads {
 namespace promoted_content_ads {
@@ -31,7 +33,7 @@ void AdEventViewed::FireEvent(const PromotedContentAdInfo& ad) {
     BLOG(6, "Successfully logged promoted content ad viewed event");
   });
 
-  history::AddPromotedContentAd(ad, ConfirmationType::kViewed);
+  HistoryManager::GetInstance()->Add(ad, ConfirmationType::kViewed);
 }
 
 }  // namespace promoted_content_ads

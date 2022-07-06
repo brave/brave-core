@@ -5,11 +5,12 @@
 
 #include "brave/components/brave_federated/data_stores/data_store.h"
 
-#include <string>
+#include <utility>
 
 #include "base/bind.h"
+#include "base/check.h"
+#include "base/containers/flat_map.h"
 #include "base/numerics/safe_conversions.h"
-#include "base/sequence_checker.h"
 #include "base/strings/stringprintf.h"
 #include "base/time/time.h"
 #include "sql/recovery.h"
@@ -19,7 +20,7 @@
 namespace {
 
 void DatabaseErrorCallback(sql::Database* db,
-                           const base::FilePath& db_path,
+                           const base::FilePath& db_file_path,
                            int extended_error,
                            sql::Statement* stmt) {
   if (sql::Recovery::ShouldRecover(extended_error)) {
@@ -28,7 +29,7 @@ void DatabaseErrorCallback(sql::Database* db,
 
     // After this call, the |db| handle is poisoned so that future calls will
     // return errors until the handle is re-opened.
-    sql::Recovery::RecoverDatabase(db, db_path);
+    sql::Recovery::RecoverDatabase(db, db_file_path);
 
     // The DLOG(FATAL) below is intended to draw immediate attention to errors
     // in newly-written code.  Database corruption is generally a result of OS
@@ -44,65 +45,156 @@ void DatabaseErrorCallback(sql::Database* db,
     DLOG(FATAL) << db->GetErrorMessage();
 }
 
+void BindCovariateToStatement(
+    const brave_federated::mojom::Covariate& covariate,
+    int training_instance_id,
+    base::Time created_at,
+    sql::Statement* stmt) {
+  DCHECK(stmt);
+
+  stmt->BindInt(0, training_instance_id);
+  stmt->BindInt(1, static_cast<int>(covariate.type));
+  stmt->BindInt(2, static_cast<int>(covariate.data_type));
+  stmt->BindString(3, covariate.value);
+  stmt->BindDouble(4, created_at.ToDoubleT());
+}
+
 }  // namespace
 
 namespace brave_federated {
 
-DataStore::DataStore(const base::FilePath& database_path)
-    : db_({.exclusive_locking = true, .page_size = 4096, .cache_size = 500}),
-      database_path_(database_path) {}
+DataStore::DataStore(const DataStoreTask data_store_task,
+                     const base::FilePath& db_file_path)
+    : database_(
+          {.exclusive_locking = true, .page_size = 4096, .cache_size = 500}),
+      db_file_path_(db_file_path),
+      data_store_task_(data_store_task) {}
 
-bool DataStore::Init(int task_id,
-                     const std::string& task_name,
-                     int max_number_of_records,
-                     int max_retention_days) {
+DataStore::~DataStore() = default;
+
+bool DataStore::InitializeDatabase() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-
-  task_id_ = task_id;
-  task_name_ = task_name;
-  max_number_of_records_ = max_number_of_records;
-  max_retention_days_ = max_retention_days;
-
-  db_.set_histogram_tag(task_name);
+  database_.set_histogram_tag(data_store_task_.name);
 
   // To recover from corruption.
-  db_.set_error_callback(
-      base::BindRepeating(&DatabaseErrorCallback, &db_, database_path_));
+  database_.set_error_callback(
+      base::BindRepeating(&DatabaseErrorCallback, &database_, db_file_path_));
 
   // Attach the database to our index file.
-  return db_.Open(database_path_) && EnsureTable();
+  return database_.Open(db_file_path_) && MaybeCreateTable();
 }
 
-DataStore::~DataStore() {}
+int DataStore::GetNextTrainingInstanceId() {
+  sql::Statement statement(database_.GetUniqueStatement(
+      base::StringPrintf("SELECT MAX(training_instance_id) FROM %s",
+                         data_store_task_.name.c_str())
+          .c_str()));
 
-bool DataStore::DeleteLogs() {
+  if (statement.Step()) {
+    return statement.ColumnInt(0) + 1;
+  }
+  return 0;
+}
+
+void DataStore::SaveCovariate(
+    const brave_federated::mojom::Covariate& covariate,
+    int training_instance_id,
+    const base::Time created_at) {
+  sql::Statement statement(database_.GetUniqueStatement(
+      base::StringPrintf("INSERT INTO %s (training_instance_id, "
+                         "feature_name, feature_type, "
+                         "feature_value, created_at) "
+                         "VALUES (?,?,?,?,?)",
+                         data_store_task_.name.c_str())
+          .c_str()));
+
+  BindCovariateToStatement(covariate, training_instance_id, created_at,
+                           &statement);
+  statement.Run();
+}
+
+bool DataStore::AddTrainingInstance(
+    const std::vector<brave_federated::mojom::CovariatePtr> training_instance) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
-  if (!db_.Execute(
-          base::StringPrintf("DELETE FROM %s", task_name_.c_str()).c_str()))
-    return false;
+  const int training_instance_id = GetNextTrainingInstanceId();
+  const base::Time created_at = base::Time::Now();
 
-  std::ignore = db_.Execute("VACUUM");
+  for (const auto& covariate : training_instance) {
+    SaveCovariate(*covariate, training_instance_id, created_at);
+  }
+
   return true;
 }
 
-void DataStore::EnforceRetentionPolicy() {
+TrainingData DataStore::LoadTrainingData() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
-  sql::Statement s(db_.GetUniqueStatement(
-      base::StringPrintf(" DELETE FROM %s WHERE creation_date < ? OR id NOT IN "
-                         "(SELECT id FROM %s ORDER BY id DESC LIMIT ?)",
-                         task_name_.c_str(), task_name_.c_str())
+  TrainingData training_instances;
+  sql::Statement statement(database_.GetUniqueStatement(
+      base::StringPrintf("SELECT id, training_instance_id, feature_name, "
+                         "feature_type, feature_value FROM %s",
+                         data_store_task_.name.c_str())
           .c_str()));
-  base::Time expiration_threshold =
-      base::Time::Now() - base::Seconds(max_retention_days_ * 24 * 60 * 60);
-  s.BindInt64(0, expiration_threshold.ToInternalValue());
-  s.BindInt(1, max_number_of_records_);
-  s.Run();
+
+  training_instances.clear();
+  while (statement.Step()) {
+    const int training_instance_id = statement.ColumnInt(1);
+    mojom::CovariatePtr covariate = mojom::Covariate::New();
+    covariate->type = (mojom::CovariateType)statement.ColumnInt(2);
+    covariate->data_type = (mojom::DataType)statement.ColumnInt(3);
+    covariate->value = statement.ColumnString(4);
+
+    training_instances[training_instance_id].push_back(std::move(covariate));
+  }
+
+  return training_instances;
 }
 
-bool DataStore::EnsureTable() {
-  return false;
+bool DataStore::DeleteTrainingData() {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+
+  if (!database_.Execute(
+          base::StringPrintf("DELETE FROM %s", data_store_task_.name.c_str())
+              .c_str()))
+    return false;
+
+  std::ignore = database_.Execute("VACUUM");
+  return true;
+}
+
+void DataStore::PurgeTrainingDataAfterExpirationDate() {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+
+  sql::Statement delete_statement(database_.GetUniqueStatement(
+      base::StringPrintf(" DELETE FROM %s WHERE created_at < ? OR id NOT IN "
+                         "(SELECT id FROM %s ORDER BY id DESC LIMIT ?)",
+                         data_store_task_.name.c_str(),
+                         data_store_task_.name.c_str())
+          .c_str()));
+  base::Time expiration_threshold =
+      base::Time::Now() - data_store_task_.max_retention_days;
+  delete_statement.BindDouble(0, expiration_threshold.ToDoubleT());
+  delete_statement.BindInt(1, data_store_task_.max_number_of_records);
+  delete_statement.Run();
+}
+
+bool DataStore::MaybeCreateTable() {
+  if (database_.DoesTableExist(data_store_task_.name)) {
+    return true;
+  }
+
+  sql::Transaction transaction(&database_);
+  return transaction.Begin() &&
+         database_.Execute(
+             base::StringPrintf(
+                 "CREATE TABLE %s (id INTEGER PRIMARY KEY AUTOINCREMENT, "
+                 "training_instance_id INTEGER NOT NULL, feature_name INTEGER "
+                 "NOT NULL, feature_type INTEGER NOT NULL, "
+                 "feature_value TEXT NOT NULL, created_at DOUBLE NOT NULL)",
+                 data_store_task_.name.c_str())
+                 .c_str()) &&
+         transaction.Commit();
 }
 
 }  // namespace brave_federated

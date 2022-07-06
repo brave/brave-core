@@ -9,7 +9,7 @@
 #include <memory>
 #include <string>
 
-#include "bat/ads/ads_aliases.h"
+#include "bat/ads/ads_callback.h"
 #include "bat/ads/internal/account/confirmations/confirmation_info_aliases.h"
 #include "bat/ads/internal/account/issuers/issuer_info_aliases.h"
 
@@ -34,7 +34,7 @@ class ConfirmationStateManager final {
   ConfirmationStateManager(const ConfirmationStateManager&) = delete;
   ConfirmationStateManager& operator=(const ConfirmationStateManager&) = delete;
 
-  static ConfirmationStateManager* Get();
+  static ConfirmationStateManager* GetInstance();
 
   static bool HasInstance();
 
@@ -52,12 +52,12 @@ class ConfirmationStateManager final {
   bool RemoveFailedConfirmation(const ConfirmationInfo& confirmation);
   void reset_failed_confirmations() { failed_confirmations_ = {}; }
 
-  privacy::UnblindedTokens* get_unblinded_tokens() const {
+  privacy::UnblindedTokens* GetUnblindedTokens() const {
     DCHECK(is_initialized_);
     return unblinded_tokens_.get();
   }
 
-  privacy::UnblindedPaymentTokens* get_unblinded_payment_tokens() const {
+  privacy::UnblindedPaymentTokens* GetUnblindedPaymentTokens() const {
     DCHECK(is_initialized_);
     return unblinded_payment_tokens_.get();
   }

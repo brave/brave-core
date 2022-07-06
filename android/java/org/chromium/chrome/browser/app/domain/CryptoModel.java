@@ -15,6 +15,7 @@ import org.chromium.brave_wallet.mojom.BlockchainRegistry;
 import org.chromium.brave_wallet.mojom.BraveWalletConstants;
 import org.chromium.brave_wallet.mojom.BraveWalletService;
 import org.chromium.brave_wallet.mojom.CoinType;
+import org.chromium.brave_wallet.mojom.DecryptRequest;
 import org.chromium.brave_wallet.mojom.EthTxManagerProxy;
 import org.chromium.brave_wallet.mojom.GetEncryptionPublicKeyRequest;
 import org.chromium.brave_wallet.mojom.JsonRpcService;
@@ -29,6 +30,7 @@ import org.chromium.mojo.bindings.Callbacks.Callback1;
 import org.chromium.url.internal.mojom.Origin;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class CryptoModel {
@@ -50,6 +52,7 @@ public class CryptoModel {
             new MutableLiveData<>();
     public final LiveData<BraveWalletDAppsActivity.ActivityType> mProcessNextDAppsRequest =
             _mProcessNextDAppsRequest;
+    private final Object mLock = new Object();
 
     private NetworkModel mNetworkModel;
     // Todo: create a models for portfolio
@@ -77,54 +80,92 @@ public class CryptoModel {
             BlockchainRegistry mBlockchainRegistry, JsonRpcService mJsonRpcService,
             EthTxManagerProxy mEthTxManagerProxy, SolanaTxManagerProxy mSolanaTxManagerProxy,
             BraveWalletService mBraveWalletService, AssetRatioService mAssetRatioService) {
-        this.mTxService = mTxService;
-        this.mKeyringService = mKeyringService;
-        this.mBlockchainRegistry = mBlockchainRegistry;
-        this.mJsonRpcService = mJsonRpcService;
-        this.mEthTxManagerProxy = mEthTxManagerProxy;
-        this.mSolanaTxManagerProxy = mSolanaTxManagerProxy;
-        this.mBraveWalletService = mBraveWalletService;
-        this.mAssetRatioService = mAssetRatioService;
-        mPendingTxHelper.setTxService(mTxService);
+        synchronized (mLock) {
+            this.mTxService = mTxService;
+            this.mKeyringService = mKeyringService;
+            this.mBlockchainRegistry = mBlockchainRegistry;
+            this.mJsonRpcService = mJsonRpcService;
+            this.mEthTxManagerProxy = mEthTxManagerProxy;
+            this.mSolanaTxManagerProxy = mSolanaTxManagerProxy;
+            this.mBraveWalletService = mBraveWalletService;
+            this.mAssetRatioService = mAssetRatioService;
+            mPendingTxHelper.setTxService(mTxService);
+            mNetworkModel.resetServices(mJsonRpcService);
+        }
         init();
     }
 
     public void init() {
-        getPendingTxHelper().fetchTransactions(null);
-        mKeyringService.getKeyringInfo(BraveWalletConstants.DEFAULT_KEYRING_ID,
-                keyringInfo -> { mPendingTxHelper.setAccountInfos(keyringInfo.accountInfos); });
+        synchronized (mLock) {
+            if (mKeyringService == null || mPendingTxHelper == null) {
+                return;
+            }
+            getPendingTxHelper().fetchTransactions(null);
+            mKeyringService.getKeyringInfo(BraveWalletConstants.DEFAULT_KEYRING_ID,
+                    keyringInfo -> { mPendingTxHelper.setAccountInfos(keyringInfo.accountInfos); });
 
-        // filter out a separate list of unapproved transactions
-        mPendingTransactions =
-                Transformations.map(mPendingTxHelper.mTransactionInfoLd, transactionInfos -> {
-                    List<TransactionInfo> pendingTransactionInfo = new ArrayList<>();
-                    for (TransactionInfo info : transactionInfos) {
-                        if (info.txStatus == TransactionStatus.UNAPPROVED) {
-                            pendingTransactionInfo.add(info);
+            // filter out a separate list of unapproved transactions
+            mPendingTransactions =
+                    Transformations.map(mPendingTxHelper.mTransactionInfoLd, transactionInfos -> {
+                        List<TransactionInfo> pendingTransactionInfo = new ArrayList<>();
+                        for (TransactionInfo info : transactionInfos) {
+                            if (info.txStatus == TransactionStatus.UNAPPROVED) {
+                                pendingTransactionInfo.add(info);
+                            }
                         }
-                    }
-                    return pendingTransactionInfo;
-                });
-        mNetworkModel.init();
+                        return pendingTransactionInfo;
+                    });
+            mNetworkModel.init();
+        }
     }
 
     public void getPublicEncryptionRequest(Callback1<GetEncryptionPublicKeyRequest> onResult) {
-        mBraveWalletService.getPendingGetEncryptionPublicKeyRequests(requests -> {
-            GetEncryptionPublicKeyRequest request = null;
-            if (requests != null && requests.length > 0) {
-                request = requests[0];
+        synchronized (mLock) {
+            if (mBraveWalletService == null) {
+                return;
             }
-            onResult.call(request);
-        });
+            mBraveWalletService.getPendingGetEncryptionPublicKeyRequests(requests -> {
+                GetEncryptionPublicKeyRequest request = null;
+                if (requests != null && requests.length > 0) {
+                    request = requests[0];
+                }
+                onResult.call(request);
+            });
+        }
+    }
+
+    public void getDecryptMessageRequest(Callback1<DecryptRequest> onResult) {
+        synchronized (mLock) {
+            if (mBraveWalletService == null) {
+                return;
+            }
+            mBraveWalletService.getPendingDecryptRequests(requests -> {
+                DecryptRequest request = null;
+                if (requests != null && requests.length > 0) {
+                    request = requests[0];
+                }
+                onResult.call(request);
+            });
+        }
     }
 
     public void refreshTransactions() {
-        mKeyringService.getKeyringInfo(BraveWalletConstants.DEFAULT_KEYRING_ID,
-                keyringInfo -> { mPendingTxHelper.setAccountInfos(keyringInfo.accountInfos); });
+        synchronized (mLock) {
+            if (mKeyringService == null || mPendingTxHelper == null) {
+                return;
+            }
+            mKeyringService.getKeyringInfo(BraveWalletConstants.DEFAULT_KEYRING_ID,
+                    keyringInfo -> { mPendingTxHelper.setAccountInfos(keyringInfo.accountInfos); });
+        }
     }
 
     public LiveData<TransactionInfo> getSelectedPendingRequest() {
-        return mPendingTxHelper.mSelectedPendingRequest;
+        synchronized (mLock) {
+            if (mPendingTxHelper == null) {
+                return new MutableLiveData<>();
+            }
+            return mPendingTxHelper.mSelectedPendingRequest;
+        }
     }
 
     public LiveData<List<TransactionInfo>> getPendingTransactions() {
@@ -132,24 +173,52 @@ public class CryptoModel {
     }
 
     public LiveData<List<TransactionInfo>> getAllTransactions() {
-        return mPendingTxHelper.mTransactionInfoLd;
+        synchronized (mLock) {
+            if (mPendingTxHelper == null) {
+                return new MutableLiveData<>(Collections.emptyList());
+            }
+            return mPendingTxHelper.mTransactionInfoLd;
+        }
     }
 
     public void processPublicEncryptionKey(boolean isApproved, Origin origin) {
-        mBraveWalletService.notifyGetPublicKeyRequestProcessed(isApproved, origin);
-        mBraveWalletService.getPendingGetEncryptionPublicKeyRequests(requests -> {
-            // either process the next request (if available) or finish the flow
-            if (requests != null && requests.length > 0) {
-                _mProcessNextDAppsRequest.postValue(
-                        BraveWalletDAppsActivity.ActivityType.GET_ENCRYPTION_PUBLIC_KEY_REQUEST);
-            } else {
-                _mProcessNextDAppsRequest.postValue(BraveWalletDAppsActivity.ActivityType.FINISH);
+        synchronized (mLock) {
+            if (mBraveWalletService == null) {
+                return;
             }
-        });
+            mBraveWalletService.notifyGetPublicKeyRequestProcessed(isApproved, origin);
+            mBraveWalletService.getPendingGetEncryptionPublicKeyRequests(requests -> {
+                if (requests != null && requests.length > 0) {
+                    _mProcessNextDAppsRequest.postValue(BraveWalletDAppsActivity.ActivityType
+                                                                .GET_ENCRYPTION_PUBLIC_KEY_REQUEST);
+                } else {
+                    _mProcessNextDAppsRequest.postValue(
+                            BraveWalletDAppsActivity.ActivityType.FINISH);
+                }
+            });
+        }
     }
 
     public void clearDappsState() {
         _mProcessNextDAppsRequest.postValue(null);
+    }
+
+    public void processDecryptRequest(boolean isApproved, Origin origin) {
+        synchronized (mLock) {
+            if (mBraveWalletService == null) {
+                return;
+            }
+            mBraveWalletService.notifyDecryptRequestProcessed(isApproved, origin);
+            mBraveWalletService.getPendingDecryptRequests(requests -> {
+                if (requests != null && requests.length > 0) {
+                    _mProcessNextDAppsRequest.postValue(
+                            BraveWalletDAppsActivity.ActivityType.DECRYPT_REQUEST);
+                } else {
+                    _mProcessNextDAppsRequest.postValue(
+                            BraveWalletDAppsActivity.ActivityType.FINISH);
+                }
+            });
+        }
     }
 
     public PendingTxHelper getPendingTxHelper() {

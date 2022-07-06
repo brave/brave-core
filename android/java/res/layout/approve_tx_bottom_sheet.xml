@@ -139,7 +139,9 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/amount_fiat"
         app:tabGravity="fill"
-        app:tabIndicatorColor="@color/tab_color"
+        app:tabIndicator="@drawable/tab_gradient_separator"
+        app:tabIndicatorHeight="@dimen/brave_wallet_tab_indicator_height"
+        app:tabIndicatorColor="@null"
         app:tabSelectedTextColor="@color/tab_color"
         app:tabTextAppearance="@style/BraveWalletTabsTextAppearance"
         app:tabTextColor="@color/wallet_text_color" />
@@ -177,22 +179,14 @@
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/reject"
-                style="?android:attr/borderlessButtonStyle"
+                style="@style/BraveWalletButtonHollow"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="start"
                 android:layout_marginStart="12dp"
                 android:layout_marginEnd="12dp"
                 android:layout_weight="1"
-                android:background="@drawable/crypto_wallet_blue_button"
-                android:gravity="center"
-                android:paddingStart="16dp"
-                android:paddingTop="8dp"
-                android:paddingEnd="16dp"
-                android:paddingBottom="8dp"
                 android:text="@string/reject"
-                android:textAllCaps="false"
-                android:textColor="@android:color/white"
                 android:textSize="16sp" />
 
             <androidx.appcompat.widget.AppCompatButton

@@ -8,7 +8,8 @@
 
 #include "bat/ads/internal/server/url/url_request_builder_interface.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
-#include "url/gurl.h"
+
+class GURL;
 
 namespace ads {
 

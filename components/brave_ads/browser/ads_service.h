@@ -15,16 +15,13 @@
 #include "bat/ads/public/interfaces/ads.mojom.h"
 #include "brave/components/brave_adaptive_captcha/buildflags/buildflags.h"
 #include "brave/components/brave_ads/browser/ads_service_observer.h"
+#include "brave/vendor/bat-native-ads/include/bat/ads/new_tab_page_ad_info.h"
 #include "brave/vendor/bat-native-ads/include/bat/ads/public/interfaces/ads.mojom.h"
 #include "build/build_config.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "components/sessions/core/session_id.h"
 
 class GURL;
-
-namespace ads {
-struct HistoryInfo;
-}  // namespace ads
 
 namespace base {
 class DictionaryValue;
@@ -65,6 +62,9 @@ using GetStatementOfAccountsCallback = base::OnceCallback<
 
 using GetDiagnosticsCallback =
     base::OnceCallback<void(const bool, const std::string&)>;
+
+using PurgeOrphanedAdEventsForTypeCallback =
+    base::OnceCallback<void(const bool)>;
 
 class AdsService : public KeyedService {
  public:
@@ -136,6 +136,9 @@ class AdsService : public KeyedService {
       const std::string& placement_id,
       const std::string& creative_instance_id,
       const ads::mojom::NewTabPageAdEventType event_type) = 0;
+  virtual void OnFailedToServeNewTabPageAd(
+      const std::string& placement_id,
+      const std::string& creative_instance_id) = 0;
 
   virtual void TriggerPromotedContentAdEvent(
       const std::string& placement_id,
@@ -154,8 +157,11 @@ class AdsService : public KeyedService {
       const ads::mojom::SearchResultAdEventType event_type,
       TriggerSearchResultAdEventCallback callback) = 0;
 
+  virtual absl::optional<ads::NewTabPageAdInfo> GetPrefetchedNewTabPageAd() = 0;
+
   virtual void PurgeOrphanedAdEventsForType(
-      const ads::mojom::AdType ad_type) = 0;
+      const ads::mojom::AdType ad_type,
+      PurgeOrphanedAdEventsForTypeCallback callback) = 0;
 
   virtual void GetHistory(const base::Time from_time,
                           const base::Time to_time,

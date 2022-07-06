@@ -18,7 +18,7 @@ export const root = styled.div`
   }
 
   .brave-theme-dark & {
-    background: var(--brave-palette-grey800);
+    background: #17171e;
   }
 `
 
@@ -65,12 +65,16 @@ export const close = styled.div`
     color: var(--brave-palette-grey500);
     cursor: pointer;
 
-    .brave-theme-dark & {
-      color: var(--brave-palette-grey700);
-    }
-
     &:active {
       color: var(--brave-palette-grey600);
+    }
+
+    .brave-theme-dark & {
+      color: var(--brave-palette-grey600);
+    }
+
+    .brave-theme-dark &:active {
+      color: var(--brave-palette-grey500);
     }
   }
 

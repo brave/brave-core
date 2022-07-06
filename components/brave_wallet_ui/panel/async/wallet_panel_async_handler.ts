@@ -38,7 +38,8 @@ import {
   cancelHardwareOperation,
   dialogErrorFromLedgerErrorCode,
   dialogErrorFromTrezorErrorCode,
-  signLedgerFilecoinTransaction
+  signLedgerFilecoinTransaction,
+  signLedgerSolanaTransaction
 } from '../../common/async/hardware'
 
 import { Store } from '../../common/async/types'
@@ -111,6 +112,26 @@ async function getPendingSignMessageRequest () {
   const braveWalletService = getWalletPanelApiProxy().braveWalletService
   const requests =
     (await braveWalletService.getPendingSignMessageRequests()).requests
+  if (requests && requests.length) {
+    return requests
+  }
+  return null
+}
+
+async function getPendingSignTransactionRequests () {
+  const { braveWalletService } = getWalletPanelApiProxy()
+  const { requests } = await braveWalletService.getPendingSignTransactionRequests()
+
+  if (requests && requests.length) {
+    return requests
+  }
+  return null
+}
+
+async function getPendingSignAllTransactionsRequests () {
+  const { braveWalletService } = getWalletPanelApiProxy()
+  const { requests } = await braveWalletService.getPendingSignAllTransactionsRequests()
+
   if (requests && requests.length) {
     return requests
   }
@@ -197,6 +218,19 @@ handler.on(WalletActions.initialize.getType(), async (store) => {
       store.dispatch(PanelActions.addEthereumChain(addChainRequest))
       return
     }
+
+    const signTransactionRequests = await getPendingSignTransactionRequests()
+    if (signTransactionRequests) {
+      store.dispatch(PanelActions.signTransaction(signTransactionRequests))
+      return
+    }
+
+    const signAllTransactionsRequests = await getPendingSignAllTransactionsRequests()
+    if (signAllTransactionsRequests) {
+      store.dispatch(PanelActions.signAllTransactions(signAllTransactionsRequests))
+      return
+    }
+
     const signMessageRequest = await getPendingSignMessageRequest()
     if (signMessageRequest) {
       store.dispatch(PanelActions.signMessage(signMessageRequest))
@@ -260,9 +294,21 @@ handler.on(PanelActions.approveHardwareTransaction.getType(), async (store: Stor
   await navigateToConnectHardwareWallet(store)
   const apiProxy = getWalletPanelApiProxy()
   if (hardwareAccount.vendor === BraveWallet.LEDGER_HARDWARE_VENDOR) {
-    const { success, error, code } = (found.coin === BraveWallet.CoinType.ETH)
-       ? await signLedgerEthereumTransaction(apiProxy, hardwareAccount.path, txInfo, found.coin)
-       : await signLedgerFilecoinTransaction(apiProxy, txInfo, found.coin)
+    let success, error, code
+    switch (found.coin) {
+      case BraveWallet.CoinType.ETH:
+        ({ success, error, code } = await signLedgerEthereumTransaction(apiProxy, hardwareAccount.path, txInfo, found.coin))
+        break
+      case BraveWallet.CoinType.FIL:
+        ({ success, error, code } = await signLedgerFilecoinTransaction(apiProxy, txInfo, found.coin))
+        break
+      case BraveWallet.CoinType.SOL:
+        ({ success, error, code } = await signLedgerSolanaTransaction(apiProxy, hardwareAccount.path, txInfo, found.coin))
+        break
+      default:
+        await store.dispatch(PanelActions.navigateToMain())
+        return
+    }
     if (success) {
       refreshTransactionHistory(txInfo.fromAddress)
       await store.dispatch(PanelActions.setSelectedTransaction(txInfo))
@@ -494,6 +540,42 @@ handler.on(PanelActions.signMessageHardwareProcessed.getType(), async (store, pa
     return
   }
   apiProxy.panelHandler.closeUI()
+})
+
+// Sign Transaction
+handler.on(PanelActions.signTransaction.getType(), async (store: Store, payload: BraveWallet.SignTransactionRequest[]) => {
+  store.dispatch(PanelActions.navigateTo('signTransaction'))
+  const { panelHandler } = getWalletPanelApiProxy()
+  panelHandler.showUI()
+})
+
+handler.on(PanelActions.signTransactionProcessed.getType(), async (store: Store, payload: SignMessageProcessedPayload) => {
+  const { braveWalletService, panelHandler } = getWalletPanelApiProxy()
+  braveWalletService.notifySignTransactionRequestProcessed(payload.approved, payload.id)
+  const requests = await getPendingSignTransactionRequests()
+  if (requests) {
+    store.dispatch(PanelActions.signTransaction(requests))
+    return
+  }
+  panelHandler.closeUI()
+})
+
+// Sign All Transactions
+handler.on(PanelActions.signAllTransactions.getType(), async (store: Store, payload: BraveWallet.SignAllTransactionsRequest[]) => {
+  store.dispatch(PanelActions.navigateTo('signAllTransactions'))
+  const apiProxy = getWalletPanelApiProxy()
+  apiProxy.panelHandler.showUI()
+})
+
+handler.on(PanelActions.signAllTransactionsProcessed.getType(), async (store: Store, payload: SignMessageProcessedPayload) => {
+  const { braveWalletService, panelHandler } = getWalletPanelApiProxy()
+  braveWalletService.notifySignAllTransactionsRequestProcessed(payload.approved, payload.id)
+  const requests = await getPendingSignAllTransactionsRequests()
+  if (requests) {
+    store.dispatch(PanelActions.signAllTransactions(requests))
+    return
+  }
+  panelHandler.closeUI()
 })
 
 handler.on(PanelActions.addSuggestToken.getType(), async (store: Store, payload: BraveWallet.AddSuggestTokenRequest[]) => {

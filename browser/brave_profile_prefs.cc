@@ -40,9 +40,10 @@
 #include "brave/components/gemini/browser/buildflags/buildflags.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/ntp_background_images/buildflags/buildflags.h"
+#include "brave/components/omnibox/browser/brave_omnibox_prefs.h"
 #include "brave/components/search_engines/brave_prepopulated_engines.h"
 #include "brave/components/sidebar/buildflags/buildflags.h"
-#include "brave/components/speedreader/buildflags.h"
+#include "brave/components/speedreader/common/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "brave/components/translate/core/common/buildflags.h"
 #include "build/build_config.h"
@@ -59,6 +60,7 @@
 #include "components/password_manager/core/common/password_manager_pref_names.h"
 #include "components/policy/core/common/policy_pref_names.h"
 #include "components/pref_registry/pref_registry_syncable.h"
+#include "components/prefs/pref_registry_simple.h"
 #include "components/privacy_sandbox/privacy_sandbox_prefs.h"
 #include "components/safe_browsing/core/common/safe_browsing_prefs.h"
 #include "components/search_engines/search_engines_pref_names.h"
@@ -126,7 +128,9 @@
 #endif
 
 #if !BUILDFLAG(IS_ANDROID)
+#include "brave/browser/search_engines/search_engine_provider_util.h"
 #include "brave/browser/ui/startup/default_brave_browser_prompt.h"
+#include "brave/components/brave_private_new_tab_ui/common/pref_names.h"
 #endif
 
 #if BUILDFLAG(ENABLE_SIDEBAR)
@@ -157,6 +161,9 @@ void RegisterProfilePrefsForMigration(
   dark_mode::RegisterBraveDarkModePrefsForMigration(registry);
 #if !BUILDFLAG(IS_ANDROID)
   new_tab_page::RegisterNewTabPagePrefsForMigration(registry);
+
+  // Added 06/2022
+  brave::RegisterSearchEngineProviderPrefsForMigration(registry);
 #endif
 
   brave_wallet::RegisterProfilePrefsForMigration(registry);
@@ -164,10 +171,6 @@ void RegisterProfilePrefsForMigration(
   // Restore "Other Bookmarks" migration
   registry->RegisterBooleanPref(kOtherBookmarksMigrated, false);
 
-  // Added 04/2021
-  registry->RegisterIntegerPref(
-      kAlternativeSearchEngineProviderInTor,
-      TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_INVALID);
   // Added 05/2021
   registry->RegisterBooleanPref(kBraveTodayIntroDismissed, false);
 
@@ -343,6 +346,11 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterBooleanPref(kNewTabPageShowGemini, false);
   registry->RegisterBooleanPref(kNewTabPageHideAllWidgets, false);
 
+// Private New Tab Page
+#if !BUILDFLAG(IS_ANDROID)
+  brave_private_new_tab::prefs::RegisterProfilePrefs(registry);
+#endif
+
   registry->RegisterIntegerPref(
       kNewTabPageShowsOptions,
       static_cast<int>(NewTabPageShowsOptions::kDashboard));
@@ -366,6 +374,16 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
     brave_search::BraveSearchDefaultHost::RegisterProfilePrefs(registry);
   }
 
+  // Restore default behaviour for Android until we figure out if we want this
+  // option there.
+#if BUILDFLAG(IS_ANDROID)
+  bool allow_open_search_engines = true;
+#else
+  bool allow_open_search_engines = false;
+#endif
+  registry->RegisterBooleanPref(prefs::kAddOpenSearchEngines,
+                                allow_open_search_engines);
+
   // Binance widget
 #if BUILDFLAG(BINANCE_ENABLED)
   registry->RegisterStringPref(kBinanceAccessToken, "");
@@ -378,10 +396,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterStringPref(kGeminiRefreshToken, "");
 #endif
 
-  // Autocomplete in address bar
-  registry->RegisterBooleanPref(kAutocompleteEnabled, true);
-  registry->RegisterBooleanPref(kTopSiteSuggestionsEnabled, true);
-  registry->RegisterBooleanPref(kBraveSuggestedSiteSuggestionsEnabled, false);
+  omnibox::RegisterBraveProfilePrefs(registry);
 
   // Password leak detection should be disabled
   registry->SetDefaultPrefValue(

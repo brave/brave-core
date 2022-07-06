@@ -19,10 +19,25 @@ namespace ipfs {
 int OnBeforeURLRequest_IPFSRedirectWork(
     const brave::ResponseCallback& next_callback,
     std::shared_ptr<brave::BraveRequestInfo> ctx) {
-  if (!ctx->browser_context || !brave::IsRegularProfile(ctx->browser_context))
+  const bool has_ipfs_scheme = IsIPFSScheme(ctx->request_url);
+  if (!ctx->browser_context) {
+    // IPFS url translation depends on selected gateway.
+    // So we block IPFS requests if we don't have access to prefs.
+    if (has_ipfs_scheme) {
+      ctx->blocked_by = brave::kOtherBlocked;
+    }
     return net::OK;
+  }
+
   auto* prefs = user_prefs::UserPrefs::Get(ctx->browser_context);
-  if (IsIpfsResolveMethodDisabled(prefs)) {
+  const bool ipfs_disabled = IsIpfsResolveMethodDisabled(prefs);
+
+  if (ipfs_disabled || !brave::IsRegularProfile(ctx->browser_context)) {
+    // Don't allow IPFS requests without translation of IPFS urls.
+    if (has_ipfs_scheme &&
+        ctx->resource_type != blink::mojom::ResourceType::kMainFrame) {
+      ctx->blocked_by = brave::kOtherBlocked;
+    }
     return net::OK;
   }
 

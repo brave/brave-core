@@ -6,10 +6,12 @@
 #include "bat/ads/internal/ad_events/notification_ads/notification_ad_event_dismissed.h"
 
 #include "bat/ads/confirmation_type.h"
+#include "bat/ads/history_item_info.h"
 #include "bat/ads/internal/ad_events/ad_events.h"
 #include "bat/ads/internal/base/logging_util.h"
 #include "bat/ads/internal/creatives/notification_ads/notification_ad_manager.h"
-#include "bat/ads/internal/history/history.h"
+#include "bat/ads/internal/history/history_manager.h"
+#include "bat/ads/notification_ad_info.h"
 
 namespace ads {
 namespace notification_ads {
@@ -23,7 +25,7 @@ void AdEventDismissed::FireEvent(const NotificationAdInfo& ad) {
               << ad.placement_id << " and creative instance id "
               << ad.creative_instance_id);
 
-  NotificationAdManager::Get()->Remove(ad.placement_id);
+  NotificationAdManager::GetInstance()->Remove(ad.placement_id);
 
   LogAdEvent(ad, ConfirmationType::kDismissed, [](const bool success) {
     if (!success) {
@@ -34,7 +36,7 @@ void AdEventDismissed::FireEvent(const NotificationAdInfo& ad) {
     BLOG(6, "Successfully logged notification ad dismissed event");
   });
 
-  history::AddNotificationAd(ad, ConfirmationType::kDismissed);
+  HistoryManager::GetInstance()->Add(ad, ConfirmationType::kDismissed);
 }
 
 }  // namespace notification_ads

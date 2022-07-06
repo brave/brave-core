@@ -17,7 +17,7 @@ void Log(const char* file,
     return;
   }
 
-  AdsClientHelper::Get()->Log(file, line, verbose_level, message);
+  AdsClientHelper::GetInstance()->Log(file, line, verbose_level, message);
 }
 
 }  // namespace ads

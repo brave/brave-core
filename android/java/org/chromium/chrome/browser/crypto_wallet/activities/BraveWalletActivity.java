@@ -421,7 +421,7 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
                 finish();
                 BraveActivity activity = BraveActivity.getBraveActivity();
                 if (activity != null) {
-                    activity.showWalletPanel();
+                    activity.showWalletPanel(true);
                 }
 
                 return;

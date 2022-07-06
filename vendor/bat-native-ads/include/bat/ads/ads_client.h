@@ -10,7 +10,7 @@
 #include <string>
 #include <vector>
 
-#include "bat/ads/ads_client_aliases.h"
+#include "bat/ads/ads_client_callback.h"
 #include "bat/ads/export.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
 #include "brave/components/brave_federated/public/interfaces/brave_federated.mojom.h"
@@ -133,7 +133,8 @@ class ADS_EXPORT AdsClient {
 
   // Log |training_instance|.
   virtual void LogTrainingInstance(
-      const brave_federated::mojom::TrainingInstancePtr training_instance) = 0;
+      const std::vector<brave_federated::mojom::CovariatePtr>
+          training_instance) = 0;
 
   // Log a |message| to |file| and the console log with |line| and
   // |verbose_level|.

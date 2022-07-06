@@ -11,8 +11,6 @@
 #include "components/grit/brave_components_strings.h"
 #include "ui/base/webui/web_ui_util.h"
 
-#define FPL FILE_PATH_LITERAL
-
 namespace brave_shields {
 
 const char kAds[] = "shieldsAds";
@@ -23,7 +21,7 @@ const char kJavaScript[] = "javascript";
 const char kFingerprintingV2[] = "fingerprintingV2";
 const char kBraveShields[] = "braveShields";
 const char kReferrers[] = "referrers";
-const char kCookies[] = "shieldsCookies";
+const char kCookies[] = "shieldsCookiesV3";
 const char kFacebookEmbeds[] = "fb-embeds";
 const char kTwitterEmbeds[] = "twitter-embeds";
 const char kLinkedInEmbeds[] = "linked-in-embeds";
@@ -32,13 +30,14 @@ const char kLinkedInEmbeds[] = "linked-in-embeds";
 // for migration purposes only.
 const char kObsoleteAds[] = "ads";
 const char kObsoleteCookies[] = "cookies";
+const char kObsoleteShieldsCookies[] = "shieldsCookies";
 
 // Some users were not properly migrated from fingerprinting V1.
 const char kObsoleteFingerprinting[] = "fingerprinting";
 
 // Filename for cached text from a custom filter list subscription
 const base::FilePath::CharType kCustomSubscriptionListText[] =
-    FPL("list_text.txt");
+    FILE_PATH_LITERAL("list_text.txt");
 
 const char kCookieListUuid[] = "AC023D22-AE88-4060-A978-4FEEEC4221693";
 

@@ -12,8 +12,9 @@ import("//brave/components/gemini/browser/buildflags/buildflags.gni")
 import("//brave/components/gemini/browser/buildflags/buildflags.gni")
 import("//brave/components/greaselion/browser/buildflags/buildflags.gni")
 import("//brave/components/ipfs/buildflags/buildflags.gni")
+import("//brave/components/playlist/buildflags/buildflags.gni")
 import("//brave/components/sidebar/buildflags/buildflags.gni")
-import("//brave/components/speedreader/buildflags.gni")
+import("//brave/components/speedreader/common/buildflags.gni")
 import("//brave/components/tor/buildflags/buildflags.gni")
 import("//brave/components/translate/core/common/buildflags.gni")
 import("//brave/test/testing.gni")
@@ -224,6 +225,7 @@ test("brave_unit_tests") {
     "//brave/components/child_process_monitor:unittests",
     "//brave/components/constants",
     "//brave/components/de_amp/browser/test:unit_tests",
+    "//brave/components/debounce/browser/test:unit_tests",
     "//brave/components/ipfs/buildflags",
     "//brave/components/ipfs/test:brave_ipfs_unit_tests",
     "//brave/components/json:brave_json_unit_tests",
@@ -234,11 +236,13 @@ test("brave_unit_tests") {
     "//brave/components/ntp_widget_utils/browser",
     "//brave/components/omnibox/browser:unit_tests",
     "//brave/components/p3a",
+    "//brave/components/p3a_utils/test:p3a_utils_unit_tests",
     "//brave/components/permissions:unit_tests",
     "//brave/components/search_engines:unit_tests",
     "//brave/components/services/ipfs/test:ipfs_service_unit_tests",
     "//brave/components/sidebar:unit_tests",
     "//brave/components/signin/public/identity_manager:unit_tests",
+    "//brave/components/skus/browser:unit_tests",
     "//brave/components/sync/driver:unit_tests",
     "//brave/components/sync/engine:unit_tests",
     "//brave/components/time_period_storage",
@@ -291,9 +295,11 @@ test("brave_unit_tests") {
   ]
 
   if (enable_brave_vpn) {
-    deps += [ "//brave/components/brave_vpn:unit_tests" ]
+    deps += [
+      "//brave/components/brave_vpn:unit_tests",
+      "//brave/components/skus/browser:unit_tests",
+    ]
   }
-
   if (toolkit_views) {
     deps += [ "//chrome/browser/ui/views" ]
   }
@@ -350,10 +356,6 @@ test("brave_unit_tests") {
       "//brave/chromium_src/components/translate/core/browser/translate_manager_unittest.cc",
       "//brave/components/brave_shields/browser/brave_shields_p3a_unittest.cc",
       "//brave/components/brave_shields/browser/brave_shields_util_unittest.cc",
-      "//brave/components/omnibox/browser/fake_autocomplete_provider_client.cc",
-      "//brave/components/omnibox/browser/fake_autocomplete_provider_client.h",
-      "//brave/components/omnibox/browser/suggested_sites_provider_unittest.cc",
-      "//brave/components/omnibox/browser/topsites_provider_unittest.cc",
     ]
     deps += [
       "//brave/app:brave_generated_resources_grit",
@@ -392,10 +394,7 @@ test("brave_unit_tests") {
   if (binance_enabled) {
     sources +=
         [ "//brave/components/binance/browser/binance_json_parser_unittest.cc" ]
-    deps += [
-      "//brave/components/binance/browser",
-      "//brave/components/content_settings/core/common",
-    ]
+    deps += [ "//brave/components/binance/browser" ]
   }
 
   if (gemini_enabled) {
@@ -403,7 +402,6 @@ test("brave_unit_tests") {
         [ "//brave/components/gemini/browser/gemini_json_parser_unittest.cc" ]
     deps += [
       "//brave/components/binance/browser",
-      "//brave/components/content_settings/core/common",
       "//brave/components/gemini/browser",
     ]
   }
@@ -664,7 +662,6 @@ if (!is_android) {
       "//brave/browser/ephemeral_storage/ephemeral_storage_browsertest.h",
       "//brave/browser/ephemeral_storage/ephemeral_storage_qa_browsertest.cc",
       "//brave/browser/ephemeral_storage/hsts_partitioning_browsertest.cc",
-      "//brave/browser/extensions/api/brave_shields_api_browsertest.cc",
       "//brave/browser/extensions/api/brave_theme_api_browsertest.cc",
       "//brave/browser/extensions/brave_base_local_data_files_browsertest.cc",
       "//brave/browser/extensions/brave_base_local_data_files_browsertest.h",
@@ -708,6 +705,7 @@ if (!is_android) {
       "//brave/browser/ui/webui/brave_wallet/wallet_panel_ui_browsertest.cc",
       "//brave/browser/ui/webui/brave_welcome_ui_browsertest.cc",
       "//brave/browser/ui/webui/new_tab_page/brave_new_tab_ui_browsertest.cc",
+      "//brave/browser/ui/webui/private_new_tab_page/brave_private_new_tab_page_browsertest.cc",
       "//brave/chromium_src/chrome/browser/safe_browsing/download_protection/check_client_download_request_base_browsertest.cc",
       "//brave/chromium_src/chrome/browser/ui/hats/hats_service_browsertest.cc",
       "//brave/chromium_src/chrome/browser/ui/views/location_bar/location_bar_view_browsertest.cc",
@@ -805,11 +803,13 @@ if (!is_android) {
       "//brave/components/resources:strings_grit",
       "//brave/components/skus/common",
       "//brave/components/tor",
+      "//brave/renderer/skus:browser_tests",
       "//brave/renderer/test:browser_tests",
       "//brave/vendor/bat-native-ads",
       "//brave/vendor/bat-native-ledger",
       "//brave/vendor/bat-native-ledger:publishers_proto",
       "//chrome/browser",
+      "//chrome/browser/ui/color:mixers",
       "//components/commerce/core:feature_list",
       "//components/gcm_driver:gcm_buildflags",
       "//components/history_clusters/core",
@@ -903,6 +903,10 @@ if (!is_android) {
         "//brave/browser/ui/speedreader/speedreader_bubble_browsertest.cc",
       ]
       deps += [ "//brave/components/speedreader" ]
+    }
+
+    if (enable_playlist) {
+      deps += [ "//brave/browser/playlist/test:browser_tests" ]
     }
 
     if (is_win || is_linux) {
@@ -1246,6 +1250,7 @@ if (is_android) {
       "//chrome/browser/safe_browsing/android:java",
       "//chrome/browser/safety_check/android:java",
       "//chrome/browser/settings:test_support_java",
+      "//chrome/browser/share:java",
       "//chrome/browser/tab:java",
       "//chrome/browser/tabmodel:java",
       "//chrome/browser/ui/android/appmenu:java",

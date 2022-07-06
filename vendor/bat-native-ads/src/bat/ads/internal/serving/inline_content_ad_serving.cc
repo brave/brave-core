@@ -19,6 +19,7 @@
 #include "bat/ads/internal/serving/eligible_ads/pipelines/inline_content_ads/eligible_inline_content_ads_factory.h"
 #include "bat/ads/internal/serving/permission_rules/inline_content_ads/inline_content_ad_permission_rules.h"
 #include "bat/ads/internal/serving/serving_features.h"
+#include "bat/ads/internal/serving/targeting/top_segments.h"
 #include "bat/ads/internal/serving/targeting/user_model_builder.h"
 #include "bat/ads/internal/serving/targeting/user_model_info.h"
 
@@ -37,12 +38,12 @@ Serving::Serving(geographic::SubdivisionTargeting* subdivision_targeting,
 
 Serving::~Serving() = default;
 
-void Serving::AddObserver(InlineContentServingObserver* observer) {
+void Serving::AddObserver(ServingObserver* observer) {
   DCHECK(observer);
   observers_.AddObserver(observer);
 }
 
-void Serving::RemoveObserver(InlineContentServingObserver* observer) {
+void Serving::RemoveObserver(ServingObserver* observer) {
   DCHECK(observer);
   observers_.RemoveObserver(observer);
 }
@@ -76,6 +77,12 @@ void Serving::MaybeServeAd(const std::string& dimensions,
       user_model, dimensions,
       [=](const bool had_opportunity,
           const CreativeInlineContentAdList& creative_ads) {
+        if (had_opportunity) {
+          const SegmentList segments =
+              targeting::GetTopChildSegments(user_model);
+          NotifyOpportunityAroseToServeInlineContentAd(segments);
+        }
+
         if (creative_ads.empty()) {
           BLOG(1, "Inline content ad not served: No eligible ads found");
           FailedToServeAd(dimensions, callback);
@@ -143,18 +150,25 @@ void Serving::FailedToServeAd(const std::string& dimensions,
 
 void Serving::ServedAd(const InlineContentAdInfo& ad) {
   DCHECK(eligible_ads_);
-  eligible_ads_->set_last_served_ad(ad);
+  eligible_ads_->SetLastServedAd(ad);
+}
+
+void Serving::NotifyOpportunityAroseToServeInlineContentAd(
+    const SegmentList& segments) const {
+  for (ServingObserver& observer : observers_) {
+    observer.OnOpportunityAroseToServeInlineContentAd(segments);
+  }
 }
 
 void Serving::NotifyDidServeInlineContentAd(
     const InlineContentAdInfo& ad) const {
-  for (InlineContentServingObserver& observer : observers_) {
+  for (ServingObserver& observer : observers_) {
     observer.OnDidServeInlineContentAd(ad);
   }
 }
 
 void Serving::NotifyFailedToServeInlineContentAd() const {
-  for (InlineContentServingObserver& observer : observers_) {
+  for (ServingObserver& observer : observers_) {
     observer.OnFailedToServeInlineContentAd();
   }
 }

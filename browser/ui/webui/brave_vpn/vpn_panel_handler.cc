@@ -14,12 +14,12 @@
 #include "brave/components/brave_vpn/brave_vpn_utils.h"
 #include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
+#include "chrome/browser/ui/singleton_tabs.h"
 
 namespace {
 
-GURL GetURLForUIType(const std::string& type) {
+GURL GetURLForUIType(const std::string& type, GURL manage_url) {
   if (type == "recover" || type == "checkout") {
-    GURL manage_url = GURL(brave_vpn::GetManageUrl());
     DCHECK(manage_url.is_valid());
     std::string query = "intent=" + type + "&product=vpn";
     GURL::Replacements replacements;
@@ -31,7 +31,11 @@ GURL GetURLForUIType(const std::string& type) {
     return GURL(brave_vpn::kAboutUrl);
   }
   DCHECK_EQ(type, "manage");
-  return GURL(brave_vpn::GetManageUrl());
+  return manage_url;
+}
+
+bool ShouldOpenSingletonTab(const std::string& type) {
+  return type == "manage" || type == "privacy" || type == "about";
 }
 
 }  // namespace
@@ -53,7 +57,7 @@ void VPNPanelHandler::ShowUI() {
   DCHECK(vpn_service);
   if (embedder) {
     embedder->ShowUI();
-    vpn_service->LoadPurchasedState();
+    vpn_service->ReloadPurchasedState();
   }
 }
 
@@ -64,7 +68,22 @@ void VPNPanelHandler::CloseUI() {
   }
 }
 
-void VPNPanelHandler::OpenVpnUI(const std::string& type) {
+void VPNPanelHandler::OpenVpnUIUrl(
+    const std::string& type,
+    brave_vpn::mojom::ProductUrlsPtr product_urls) {
   auto* browser = chrome::FindLastActiveWithProfile(profile_);
-  chrome::AddTabAt(browser, GetURLForUIType(type), -1, true);
+  auto url = GetURLForUIType(type, GURL(product_urls->manage));
+  if (ShouldOpenSingletonTab(type)) {
+    ShowSingletonTab(browser, url);
+  } else {
+    chrome::AddTabAt(browser, url, -1, true);
+  }
+}
+
+void VPNPanelHandler::OpenVpnUI(const std::string& type) {
+  brave_vpn::BraveVpnService* vpn_service =
+      brave_vpn::BraveVpnServiceFactory::GetForProfile(profile_);
+  DCHECK(vpn_service);
+  vpn_service->GetProductUrls(base::BindOnce(&VPNPanelHandler::OpenVpnUIUrl,
+                                             base::Unretained(this), type));
 }

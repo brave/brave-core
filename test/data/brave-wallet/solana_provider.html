@@ -7,9 +7,21 @@
   var signTransactionResult = ''
   var signAllTransactionsResult = ''
   var requestResult = ''
+  var accountChangedResult = ''
+
+  function registerAccountChanged() {
+    window.braveSolana.on('accountChanged', result => {
+        if (result instanceof Object) {
+          accountChangedResult = result.toString()
+        } else {
+          accountChangedResult = ''
+        }
+        window.domAutomationController.send('result ready')
+    })
+  }
 
   function solanaConnect() {
-    window.solana.connect().then(result => {
+    window.braveSolana.connect().then(result => {
         connectedAccount = result.publicKey.toString()
     }).catch(error => {
         connectedAccount = ''
@@ -17,7 +29,7 @@
   }
 
   async function solanaDisconnect() {
-    const result = await window.solana.disconnect()
+    const result = await window.braveSolana.disconnect()
     if (result == undefined)
       window.domAutomationController.send(true)
     else
@@ -29,12 +41,12 @@
   }
 
   function isSolanaConnected() {
-    window.domAutomationController.send(window.solana.isConnected)
+    window.domAutomationController.send(window.braveSolana.isConnected)
   }
 
   function solanaSignMessage(message, encoding) {
     const encodedMessage = new TextEncoder().encode(message)
-    window.solana.signMessage(encodedMessage, encoding)
+    window.braveSolana.signMessage(encodedMessage, encoding)
       .then(result => {
         signMessageResult = result.signature.join()
         window.domAutomationController.send('result ready')
@@ -44,9 +56,13 @@
       })
   }
 
-  function solanaSignAndSendTransaction(serializedTx, sendOptions) {
-    const tx = window._brave_solana.createTransaction(serializedTx)
-    window.solana.signAndSendTransaction(tx, sendOptions)
+  function solanaSignAndSendTransaction(serializedTx, sendOptions, pubkeyString, signature) {
+    let tx = window._brave_solana.createTransaction(serializedTx)
+    if (pubkeyString) {
+      const pubkey = window._brave_solana.createPublickey(pubkeyString).publicKey
+      tx.addSignature(pubkey, signature)
+    }
+    window.braveSolana.signAndSendTransaction(tx, sendOptions)
       .then(result => {
         signAndSendTransactionResult = result.signature
         window.domAutomationController.send('result ready')
@@ -56,9 +72,13 @@
       })
   }
 
-  function solanaSignTransaction(serializedTx) {
-    const tx = window._brave_solana.createTransaction(serializedTx)
-    window.solana.signTransaction(tx)
+  function solanaSignTransaction(serializedTx, pubkeyString, signature) {
+    let tx = window._brave_solana.createTransaction(serializedTx)
+    if (pubkeyString) {
+      const pubkey = window._brave_solana.createPublickey(pubkeyString).publicKey
+      tx.addSignature(pubkey, signature)
+    }
+    window.braveSolana.signTransaction(tx)
       .then(result => {
         signTransactionResult = result.serialize().join()
         window.domAutomationController.send('result ready')
@@ -66,12 +86,16 @@
         signTransactionResult = error.message
         window.domAutomationController.send('result ready')
       })
-  }
+    }
 
-  function solanaSignAllTransactions(serializedTx, expectedSignTx) {
-    const tx = window._brave_solana.createTransaction(serializedTx)
+  function solanaSignAllTransactions(serializedTx, expectedSignTx, pubkeyString, signature) {
+    tx = window._brave_solana.createTransaction(serializedTx)
+    if (pubkeyString) {
+      const pubkey = window._brave_solana.createPublickey(pubkeyString).publicKey
+      tx.addSignature(pubkey, signature)
+    }
     const expectedTx = expectedSignTx.join()
-    window.solana.signAllTransactions([tx, tx])
+    window.braveSolana.signAllTransactions([tx, tx])
       .then(result => {
         const isSameTx =
           (tx) => tx.serialize().join() === expectedTx
@@ -87,7 +111,7 @@
   }
 
   function solanaRequest(json) {
-    window.solana.request(json)
+    window.braveSolana.request(json)
       .then(result => {
         switch (json.method) {
           case "connect":
@@ -133,6 +157,11 @@
   function getRequestResult() {
     window.domAutomationController.send(requestResult)
     requestResult = ''
+  }
+
+  function getAccountChangedResult() {
+    window.domAutomationController.send(accountChangedResult)
+    accountChangedResult = ''
   }
 
 </script>

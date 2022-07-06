@@ -9,13 +9,12 @@
 #include <string>
 #include <vector>
 
+#include "base/values.h"
 #include "build/build_config.h"
 #include "extensions/buildflags/buildflags.h"
 
 namespace base {
 class FilePath;
-class ListValue;
-class Value;
 }  // namespace base
 
 base::FilePath GetChromeUserDataFolder();
@@ -24,8 +23,10 @@ base::FilePath GetCanaryUserDataFolder();
 #endif
 base::FilePath GetChromiumUserDataFolder();
 
-base::ListValue* GetChromeSourceProfiles(
-  const base::FilePath& user_data_folder);
+base::FilePath GetEdgeUserDataFolder();
+
+base::Value::List GetChromeSourceProfiles(
+    const base::FilePath& user_data_folder);
 
 bool ChromeImporterCanImport(const base::FilePath& profile,
                              uint16_t* services_supported);

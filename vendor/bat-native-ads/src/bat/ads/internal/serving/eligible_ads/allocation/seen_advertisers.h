@@ -10,16 +10,17 @@
 #include <string>
 
 #include "bat/ads/internal/base/logging_util.h"
-#include "bat/ads/internal/creatives/creative_ad_info.h"
-#include "bat/ads/internal/deprecated/client/client_state_manager.h"
 #include "bat/ads/internal/serving/eligible_ads/allocation/round_robin_advertisers.h"
 
 namespace ads {
 
+class ClientStateManager;
+struct CreativeAdInfo;
+
 template <typename T>
 T FilterSeenAdvertisersAndRoundRobinIfNeeded(const T& ads, const AdType& type) {
   const std::map<std::string, bool> seen_advertisers =
-      ClientStateManager::Get()->GetSeenAdvertisersForType(type);
+      ClientStateManager::GetInstance()->GetSeenAdvertisersForType(type);
 
   const T filtered_ads = FilterSeenAdvertisers(ads, seen_advertisers);
   if (!filtered_ads.empty()) {
@@ -34,8 +35,8 @@ T FilterSeenAdvertisersAndRoundRobinIfNeeded(const T& ads, const AdType& type) {
     cast_creative_ads.push_back(cast_creative_ad);
   }
 
-  ClientStateManager::Get()->ResetSeenAdvertisersForType(cast_creative_ads,
-                                                         type);
+  ClientStateManager::GetInstance()->ResetSeenAdvertisersForType(
+      cast_creative_ads, type);
 
   return ads;
 }

@@ -13,14 +13,17 @@
 #include <vector>
 
 #include "base/memory/weak_ptr.h"
-#include "bat/ads/ads.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
-#include "bat/ads/statement_info.h"
 #include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
+
+class GURL;
 
 namespace ads {
 class Ads;
-}
+struct NewTabPageAdInfo;
+struct InlineContentAdInfo;
+struct StatementInfo;
+}  // namespace ads
 
 namespace bat_ads {
 
@@ -58,7 +61,8 @@ class BatAdsImpl :
 
   void OnUserGesture(const int32_t page_transition_type) override;
 
-  void OnUnIdle(const int idle_time, const bool was_locked) override;
+  void OnUnIdle(const base::TimeDelta idle_time,
+                const bool was_locked) override;
   void OnIdle() override;
 
   void OnBrowserDidEnterForeground() override;
@@ -83,6 +87,8 @@ class BatAdsImpl :
       const std::string& placement_id,
       const ads::mojom::NotificationAdEventType event_type) override;
 
+  void GetNewTabPageAd(GetNewTabPageAdCallback callback) override;
+
   void TriggerNewTabPageAdEvent(
       const std::string& placement_id,
       const std::string& creative_instance_id,
@@ -105,7 +111,9 @@ class BatAdsImpl :
       const ads::mojom::SearchResultAdEventType event_type,
       TriggerSearchResultAdEventCallback callback) override;
 
-  void PurgeOrphanedAdEventsForType(const ads::mojom::AdType ad_type) override;
+  void PurgeOrphanedAdEventsForType(
+      const ads::mojom::AdType ad_type,
+      PurgeOrphanedAdEventsForTypeCallback callback) override;
 
   void RemoveAllHistory(
       RemoveAllHistoryCallback callback) override;
@@ -171,6 +179,11 @@ class BatAdsImpl :
     static void OnShutdown(CallbackHolder<ShutdownCallback>* holder,
                            const bool success);
 
+    static void OnGetNewTabPageAd(
+        CallbackHolder<GetNewTabPageAdCallback>* holder,
+        const bool success,
+        const ads::NewTabPageAdInfo& ad);
+
     static void OnGetInlineContentAd(
         CallbackHolder<GetInlineContentAdCallback>* holder,
         const bool success,
@@ -182,6 +195,10 @@ class BatAdsImpl :
         const bool success,
         const std::string& placement_id,
         const ads::mojom::SearchResultAdEventType event_type);
+
+    static void OnPurgeOrphanedAdEventsForType(
+        CallbackHolder<PurgeOrphanedAdEventsForTypeCallback>* holder,
+        const bool success);
 
     static void OnRemoveAllHistory(
         CallbackHolder<RemoveAllHistoryCallback>* holder,

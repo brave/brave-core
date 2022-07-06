@@ -90,6 +90,10 @@ const EditVisibleAssetsModal = ({ onClose }: Props) => {
   const [iconURL, setIconURL] = React.useState<string>('')
   const [customAssetsNetwork, setCustomAssetsNetwork] = React.useState<BraveWallet.NetworkInfo>(networkList[0])
 
+  React.useEffect(() => {
+    setCustomAssetsNetwork(networkList[0])
+  }, [networkList])
+
   // If a user removes all of their assets from the userVisibleTokenInfo list,
   // there is a check in the async/lib.ts folder that will still return the networks
   // native asset (example 'ETH') with the value of visible: false to prevent breaking

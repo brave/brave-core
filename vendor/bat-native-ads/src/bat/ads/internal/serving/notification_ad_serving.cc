@@ -19,9 +19,8 @@
 #include "bat/ads/internal/creatives/notification_ads/notification_ad_builder.h"
 #include "bat/ads/internal/deprecated/client/client_state_manager.h"
 #include "bat/ads/internal/geographic/subdivision/subdivision_targeting.h"
-#include "bat/ads/internal/privacy/p2a/opportunities/p2a_opportunity.h"
+#include "bat/ads/internal/prefs/pref_manager.h"
 #include "bat/ads/internal/resources/behavioral/anti_targeting/anti_targeting_resource.h"
-#include "bat/ads/internal/segments/segments_aliases.h"
 #include "bat/ads/internal/serving/delivery/notification_ads/notification_ad_delivery.h"
 #include "bat/ads/internal/serving/eligible_ads/pipelines/notification_ads/eligible_notification_ads_base.h"
 #include "bat/ads/internal/serving/eligible_ads/pipelines/notification_ads/eligible_notification_ads_factory.h"
@@ -55,24 +54,22 @@ Serving::Serving(geographic::SubdivisionTargeting* subdivision_targeting,
   const int version = features::GetServingVersion();
   eligible_ads_ = EligibleAdsFactory::Build(version, subdivision_targeting,
                                             anti_targeting_resource);
+
+  PrefManager::GetInstance()->AddObserver(this);
 }
 
-Serving::~Serving() = default;
+Serving::~Serving() {
+  PrefManager::GetInstance()->RemoveObserver(this);
+}
 
-void Serving::AddObserver(NotificationAdServingObserver* observer) {
+void Serving::AddObserver(ServingObserver* observer) {
   DCHECK(observer);
   observers_.AddObserver(observer);
 }
 
-void Serving::RemoveObserver(NotificationAdServingObserver* observer) {
+void Serving::RemoveObserver(ServingObserver* observer) {
   DCHECK(observer);
   observers_.RemoveObserver(observer);
-}
-
-void Serving::OnPrefChanged(const std::string& path) {
-  if (path == prefs::kAdsPerHour) {
-    OnAdsPerHourPrefChanged();
-  }
 }
 
 void Serving::StartServingAdsAtRegularIntervals() {
@@ -86,7 +83,7 @@ void Serving::StartServingAdsAtRegularIntervals() {
 
   if (!HasPreviouslyServedAnAd()) {
     const base::Time serve_ad_at = base::Time::Now() + delay;
-    ClientStateManager::Get()->SetServeAdAt(serve_ad_at);
+    ClientStateManager::GetInstance()->SetServeAdAt(serve_ad_at);
   }
 
   const base::Time serve_ad_at = MaybeServeAdAfter(delay);
@@ -131,10 +128,9 @@ void Serving::MaybeServeAd() {
       user_model, [=](const bool had_opportunity,
                       const CreativeNotificationAdList& creative_ads) {
         if (had_opportunity) {
-          const SegmentList& segments =
+          const SegmentList segments =
               targeting::GetTopChildSegments(user_model);
-          privacy::p2a::RecordAdOpportunityForSegments(AdType::kNotificationAd,
-                                                       segments);
+          NotifyOpportunityAroseToServeNotificationAd(segments);
         }
 
         if (creative_ads.empty()) {
@@ -162,22 +158,6 @@ void Serving::MaybeServeAd() {
 
 ///////////////////////////////////////////////////////////////////////////////
 
-void Serving::OnAdsPerHourPrefChanged() {
-  const int64_t ads_per_hour = settings::GetAdsPerHour();
-  BLOG(1, "Maximum ads per hour changed to " << ads_per_hour);
-
-  if (!ShouldServeAdsAtRegularIntervals()) {
-    return;
-  }
-
-  if (ads_per_hour == 0) {
-    StopServingAdsAtRegularIntervals();
-    return;
-  }
-
-  MaybeServeAdAtNextRegularInterval();
-}
-
 bool Serving::IsSupported() const {
   if (!eligible_ads_) {
     return false;
@@ -191,11 +171,12 @@ bool Serving::ShouldServeAdsAtRegularIntervals() const {
 }
 
 bool Serving::HasPreviouslyServedAnAd() const {
-  return !ClientStateManager::Get()->GetServeAdAt().is_null();
+  return !ClientStateManager::GetInstance()->GetServeAdAt().is_null();
 }
 
 bool Serving::ShouldServeAd() const {
-  const base::Time serve_ad_at = ClientStateManager::Get()->GetServeAdAt();
+  const base::Time serve_ad_at =
+      ClientStateManager::GetInstance()->GetServeAdAt();
   if (base::Time::Now() < serve_ad_at) {
     return false;
   }
@@ -213,7 +194,7 @@ base::TimeDelta Serving::CalculateDelayBeforeServingAnAd() const {
   }
 
   base::TimeDelta delay =
-      ClientStateManager::Get()->GetServeAdAt() - base::Time::Now();
+      ClientStateManager::GetInstance()->GetServeAdAt() - base::Time::Now();
   if (delay.is_negative()) {
     delay = base::TimeDelta();
   }
@@ -248,7 +229,7 @@ void Serving::RetryServingAdAtNextInterval() {
 
 base::Time Serving::MaybeServeAdAfter(const base::TimeDelta delay) {
   const base::Time serve_ad_at = base::Time::Now() + delay;
-  ClientStateManager::Get()->SetServeAdAt(serve_ad_at);
+  ClientStateManager::GetInstance()->SetServeAdAt(serve_ad_at);
 
   return timer_.Start(
       FROM_HERE, delay,
@@ -289,23 +270,52 @@ void Serving::FailedToServeAd() {
 
 void Serving::ServedAd(const NotificationAdInfo& ad) {
   DCHECK(eligible_ads_);
-  eligible_ads_->set_last_served_ad(ad);
+  eligible_ads_->SetLastServedAd(ad);
 
   is_serving_ = false;
 
   MaybeServeAdAtNextRegularInterval();
 }
 
+void Serving::NotifyOpportunityAroseToServeNotificationAd(
+    const SegmentList& segments) const {
+  for (ServingObserver& observer : observers_) {
+    observer.OnOpportunityAroseToServeNotificationAd(segments);
+  }
+}
+
 void Serving::NotifyDidServeNotificationAd(const NotificationAdInfo& ad) const {
-  for (NotificationAdServingObserver& observer : observers_) {
+  for (ServingObserver& observer : observers_) {
     observer.OnDidServeNotificationAd(ad);
   }
 }
 
 void Serving::NotifyFailedToServeNotificationAd() const {
-  for (NotificationAdServingObserver& observer : observers_) {
+  for (ServingObserver& observer : observers_) {
     observer.OnFailedToServeNotificationAd();
   }
+}
+
+void Serving::OnPrefChanged(const std::string& path) {
+  if (path == prefs::kAdsPerHour) {
+    OnAdsPerHourPrefChanged();
+  }
+}
+
+void Serving::OnAdsPerHourPrefChanged() {
+  const int64_t ads_per_hour = settings::GetAdsPerHour();
+  BLOG(1, "Maximum ads per hour changed to " << ads_per_hour);
+
+  if (!ShouldServeAdsAtRegularIntervals()) {
+    return;
+  }
+
+  if (ads_per_hour == 0) {
+    StopServingAdsAtRegularIntervals();
+    return;
+  }
+
+  MaybeServeAdAtNextRegularInterval();
 }
 
 }  // namespace notification_ads

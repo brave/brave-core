@@ -13,11 +13,13 @@ import {
 import { NavButton } from '..'
 import { getLocale } from '../../../../common/locale'
 import useInterval from '../../../common/hooks/interval'
+import { BraveWallet } from '../../../constants/types'
 import { HardwareWalletResponseCodeType } from '../../../common/hardware/types'
 
 export interface Props {
   onCancel: () => void
   walletName: string
+  coinType: BraveWallet.CoinType
   hardwareWalletCode: HardwareWalletResponseCodeType | undefined
   retryCallable: () => void
   onClickInstructions: () => void
@@ -27,6 +29,7 @@ function ConnectHardwareWalletPanel (props: Props) {
   const {
     onCancel,
     walletName,
+    coinType,
     hardwareWalletCode,
     retryCallable,
     onClickInstructions
@@ -41,8 +44,11 @@ function ConnectHardwareWalletPanel (props: Props) {
       return getLocale('braveWalletConnectHardwarePanelConfirmation').replace('$1', walletName)
     }
 
-    if (hardwareWalletCode === 'openEthereumApp') {
-      return getLocale('braveWalletConnectHardwarePanelOpenApp').replace('$1', walletName)
+    if (hardwareWalletCode === 'openLedgerApp') {
+      let network = (coinType === BraveWallet.CoinType.SOL) ? 'Solana' : 'Ethereum'
+      return getLocale('braveWalletConnectHardwarePanelOpenApp')
+        .replace('$1', network)
+        .replace('$2', walletName)
     }
 
     return getLocale('braveWalletConnectHardwarePanelConnect').replace('$1', walletName)

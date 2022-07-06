@@ -8,11 +8,11 @@
 
 #include <vector>
 
-#include "bat/ads/internal/privacy/challenge_bypass_ristretto/signed_token.h"
-
 namespace ads {
 namespace privacy {
 namespace cbr {
+
+class SignedToken;
 
 SignedToken GetSignedToken();
 std::vector<SignedToken> GetSignedTokens();

@@ -1,0 +1,21 @@
+// Copyright (c) 2022 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// you can obtain one at http://mozilla.org/MPL/2.0/.
+
+module brave_private_new_tab.mojom;
+
+// Browser-side handler for requests from WebUI page.
+interface PageHandler {
+  // Registers the webui page.
+  SetClientPage(pending_remote<PrivateTabPage> page);
+  SetDisclaimerDismissed(bool dismissed);
+  GetDisclaimerDismissed() => (bool dismissed);
+  GetIsTorConnected() => (bool is_connected);
+  GoToBraveSearch(string input, bool open_new_tab);
+};
+
+interface PrivateTabPage {
+  OnTorCircuitEstablished(bool has_established);
+  OnTorInitializing(string percentage);
+};

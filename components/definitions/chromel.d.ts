@@ -289,17 +289,6 @@ declare namespace chrome.braveToday {
 
 type BlockTypes = 'shieldsAds' | 'trackers' | 'httpUpgradableResources' | 'javascript' | 'fingerprinting'
 
-interface BlockDetails {
-  blockType: BlockTypes
-  tabId: number
-  subresource: string
-}
-
-interface BlockDetails {
-  blockType: BlockTypes
-  tabId: number
-  subresource: string
-}
 declare namespace chrome.tabs {
   const setAsync: any
   const getAsync: any
@@ -310,36 +299,8 @@ declare namespace chrome.windows {
 }
 
 declare namespace chrome.braveShields {
-  const onBlocked: {
-    addListener: (callback: (detail: BlockDetails) => void) => void
-    emit: (detail: BlockDetails) => void
-  }
-
-  const allowScriptsOnce: any
-  const setBraveShieldsEnabledAsync: any
-  const getBraveShieldsEnabledAsync: any
-  const setCosmeticFilteringControlTypeAsync: any
-  const isFirstPartyCosmeticFilteringEnabledAsync: any
-  const setAdControlTypeAsync: any
-  const getAdControlTypeAsync: any
-  const setCookieControlTypeAsync: any
-  const getCookieControlTypeAsync: any
-  const setFingerprintingControlTypeAsync: any
-  const getFingerprintingControlTypeAsync: any
-  const setHTTPSEverywhereEnabledAsync: any
-  const getHTTPSEverywhereEnabledAsync: any
-  const setNoScriptControlTypeAsync: any
-  const getNoScriptControlTypeAsync: any
-  const onShieldsPanelShown: any
-  const reportBrokenSite: any
-
   const addSiteCosmeticFilter: (origin: string, cssSelector: string) => void
   const openFilterManagementPage: () => void
-
-  type BraveShieldsViewPreferences = {
-    showAdvancedView: boolean
-    statsBadgeVisible: boolean
-  }
 }
 
 declare namespace chrome.braveWallet {

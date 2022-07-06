@@ -16,10 +16,13 @@ namespace brave_wallet {
 
 using TokenListMap =
     base::flat_map<std::string, std::vector<mojom::BlockchainTokenPtr>>;
+using ChainList = std::vector<mojom::NetworkInfoPtr>;
+
 bool ParseTokenList(const std::string& json,
                     TokenListMap* token_list,
                     mojom::CoinType coin);
 std::string GetTokenListKey(mojom::CoinType coin, const std::string& chain_id);
+bool ParseChainList(const std::string& json, ChainList* chain_list);
 
 }  // namespace brave_wallet
 

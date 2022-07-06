@@ -6,6 +6,7 @@
 #include "bat/ads/internal/serving/permission_rules/new_tab_page_ads/new_tab_page_ad_permission_rules.h"
 
 #include "bat/ads/internal/serving/permission_rules/catalog_permission_rule.h"
+#include "bat/ads/internal/serving/permission_rules/new_tab_page_ads/new_tab_page_ads_minimum_wait_time_permission_rule.h"
 #include "bat/ads/internal/serving/permission_rules/new_tab_page_ads/new_tab_page_ads_per_day_permission_rule.h"
 #include "bat/ads/internal/serving/permission_rules/new_tab_page_ads/new_tab_page_ads_per_hour_permission_rule.h"
 #include "bat/ads/internal/serving/permission_rules/permission_rule_util.h"
@@ -33,13 +34,18 @@ bool PermissionRules::HasPermission() const {
     return false;
   }
 
-  NewTabPageAdsPerDayPermissionRule ads_per_day_permission_rule;
+  AdsPerDayPermissionRule ads_per_day_permission_rule;
   if (!ShouldAllow(&ads_per_day_permission_rule)) {
     return false;
   }
 
-  NewTabPageAdsPerHourPermissionRule ads_per_hour_permission_rule;
+  AdsPerHourPermissionRule ads_per_hour_permission_rule;
   if (!ShouldAllow(&ads_per_hour_permission_rule)) {
+    return false;
+  }
+
+  MinimumWaitTimePermissionRule minimum_wait_time_permission_rule;
+  if (!ShouldAllow(&minimum_wait_time_permission_rule)) {
     return false;
   }
 

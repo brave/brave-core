@@ -10,27 +10,27 @@
 
 #include "bat/ads/internal/base/timer/backoff_timer.h"
 #include "bat/ads/internal/base/timer/timer.h"
+#include "bat/ads/internal/locale/locale_manager_observer.h"
+#include "bat/ads/internal/prefs/pref_manager_observer.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ads {
 namespace geographic {
 
-class SubdivisionTargeting final {
+class SubdivisionTargeting final : public LocaleManagerObserver,
+                                   public PrefManagerObserver {
  public:
   SubdivisionTargeting();
-  ~SubdivisionTargeting();
+  ~SubdivisionTargeting() override;
   SubdivisionTargeting(const SubdivisionTargeting&) = delete;
   SubdivisionTargeting& operator=(const SubdivisionTargeting&) = delete;
-
-  void OnPrefChanged(const std::string& path);
 
   bool ShouldAllowForLocale(const std::string& locale) const;
 
   bool IsDisabled() const;
 
-  void MaybeFetchForLocale(const std::string& locale);
-  void MaybeFetchForCurrentLocale();
+  void MaybeFetch();
 
   std::string GetSubdivisionCode() const;
 
@@ -42,15 +42,21 @@ class SubdivisionTargeting final {
   std::string GetLazySubdivisionCode() const;
 
   bool IsSupportedLocale(const std::string& locale) const;
-  void MaybeAllowForLocale(const std::string& locale);
 
   bool ShouldAutoDetect() const;
 
+  void MaybeFetchForLocale(const std::string& locale);
   void Fetch();
   void OnFetch(const mojom::UrlResponse& url_response);
   bool ParseJson(const std::string& json);
   void Retry();
   void FetchAfterDelay();
+
+  // LocaleManagerObserver:
+  void OnLocaleDidChange(const std::string& locale) override;
+
+  // PrefManagerObserver:
+  void OnPrefChanged(const std::string& path) override;
 
   Timer timer_;
   BackoffTimer retry_timer_;

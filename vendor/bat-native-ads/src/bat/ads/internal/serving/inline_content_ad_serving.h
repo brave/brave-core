@@ -10,7 +10,8 @@
 #include <string>
 
 #include "base/observer_list.h"
-#include "bat/ads/ads_aliases.h"
+#include "bat/ads/ads_callback.h"
+#include "bat/ads/internal/segments/segments_aliases.h"
 #include "bat/ads/internal/serving/inline_content_ad_serving_observer.h"
 
 namespace ads {
@@ -37,8 +38,8 @@ class Serving final {
   Serving(const Serving&) = delete;
   Serving& operator=(const Serving&) = delete;
 
-  void AddObserver(InlineContentServingObserver* observer);
-  void RemoveObserver(InlineContentServingObserver* observer);
+  void AddObserver(ServingObserver* observer);
+  void RemoveObserver(ServingObserver* observer);
 
   void MaybeServeAd(const std::string& dimensions,
                     GetInlineContentAdCallback callback);
@@ -52,10 +53,12 @@ class Serving final {
                        GetInlineContentAdCallback callback);
   void ServedAd(const InlineContentAdInfo& ad);
 
+  void NotifyOpportunityAroseToServeInlineContentAd(
+      const SegmentList& segments) const;
   void NotifyDidServeInlineContentAd(const InlineContentAdInfo& ad) const;
   void NotifyFailedToServeInlineContentAd() const;
 
-  base::ObserverList<InlineContentServingObserver> observers_;
+  base::ObserverList<ServingObserver> observers_;
 
   std::unique_ptr<EligibleAdsBase> eligible_ads_;
 };

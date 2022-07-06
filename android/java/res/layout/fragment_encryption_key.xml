@@ -2,7 +2,7 @@
 <!-- Copyright (c) 2022 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. 
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/.
 -->
 
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -10,8 +10,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="20dp"
     android:background="@color/wallet_bg"
+    android:padding="20dp"
     tools:context=".browser.crypto_wallet.fragments.dapps.SignMessageFragment">
 
     <TextView
@@ -30,8 +30,8 @@
         android:id="@+id/fragment_encryption_msg_cv_account_image_container"
         android:layout_width="60dp"
         android:layout_height="60dp"
-        android:layout_marginTop="20dp"
         android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
         android:elevation="12dp"
         android:innerRadius="0dp"
         android:shape="ring"
@@ -57,6 +57,21 @@
     </com.google.android.material.card.MaterialCardView>
 
     <TextView
+        android:id="@+id/fragment_encryption_msg_tv_eTldPlusOne"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="12dp"
+        android:gravity="center"
+        android:textColor="@color/brave_wallet_dapp_text_color"
+        android:textSize="15sp"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/fragment_encryption_msg_cv_account_image_container"
+        tools:text="brave.com" />
+
+    <TextView
         android:id="@+id/fragment_encryption_msg_tv_account_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -68,20 +83,20 @@
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/fragment_encryption_msg_cv_account_image_container"
+        app:layout_constraintTop_toBottomOf="@id/fragment_encryption_msg_tv_eTldPlusOne"
         tools:text="Ledger Nano" />
 
     <TextView
         android:id="@+id/fragment_encryption_msg_tv_message"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginVertical="8dp"
         android:gravity="center"
+        android:text="@string/brave_wallet_provide_encryption_key_title"
         android:textColor="@color/brave_wallet_dapp_text_color"
         android:textSize="20sp"
         android:textStyle="bold"
-        android:text="@string/brave_wallet_provide_encryption_key_title"
+        app:layout_constraintBottom_toTopOf="@+id/fragment_encryption_msg_title"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/fragment_encryption_msg_tv_account_name" />
@@ -93,52 +108,72 @@
         android:layout_marginTop="32dp"
         android:layout_marginBottom="8dp"
         android:gravity="center"
+        android:text="@string/message"
         android:textColor="@color/brave_wallet_dapp_text_color"
         android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/fragment_encryption_msg_tv_message"
-        android:text="@string/message"
         tools:ignore="SpeakableTextPresentCheck" />
 
     <View
         android:id="@+id/view_tab_line"
         android:layout_width="match_parent"
-        android:background="@color/tab_color"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
+        android:layout_height="2dp"
+        android:layout_marginVertical="10dp"
+        android:background="@drawable/tab_gradient_separator"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/fragment_encryption_msg_title"
-        android:layout_height="2dp" />
+        app:layout_constraintTop_toBottomOf="@+id/fragment_encryption_msg_title" />
 
-    <TextView
-        android:id="@+id/fragment_encryption_msg_desc"
+    <ScrollView
+        android:id="@+id/fragment_encryption_msg_container"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginVertical="30dp"
-        android:padding="12dp"
-        android:textColor="@color/brave_wallet_dapp_text_color"
-        android:textSize="16sp"
         android:background="@drawable/rounded_wallet_edittext"
+        android:padding="12dp"
+        app:layout_constraintBottom_toTopOf="@id/approve_tx_bottom_sheet_action"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/view_tab_line"
-        app:layout_constraintBottom_toTopOf="@id/approve_tx_bottom_sheet_action"
-        tools:text="Message" />
+        app:layout_constraintTop_toBottomOf="@+id/view_tab_line">
+
+        <TextView
+            android:id="@+id/fragment_encryption_msg_desc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/brave_wallet_dapp_text_color"
+            android:textSize="16sp"
+            tools:text="Some long message" />
+    </ScrollView>
+
+    <TextView
+        android:id="@+id/fragment_encryption_tv_decrypt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="@string/brave_wallet_read_encrypted_message_decrypt_button"
+        android:textColor="@color/brave_action_color"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/fragment_encryption_msg_container"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/fragment_encryption_msg_container" />
 
     <LinearLayout
         android:id="@+id/approve_tx_bottom_sheet_action"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginVertical="12dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent">
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/fragment_encryption_msg_btn_cancel"
-            style="@style/BraveWalletButton"
+            style="@style/BraveWalletButtonHollow"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="start"
@@ -150,7 +185,7 @@
             tools:ignore="DuplicateSpeakableTextCheck" />
 
         <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/fragment_encryption_msg_btn_sign"
+            android:id="@+id/fragment_encryption_msg_btn_provide_allow"
             style="@style/BraveWalletButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

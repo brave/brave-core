@@ -24,16 +24,15 @@ namespace resource {
 class TextClassification final {
  public:
   TextClassification();
-  ~TextClassification();
-
   TextClassification(const TextClassification&) = delete;
   TextClassification& operator=(const TextClassification&) = delete;
+  ~TextClassification();
 
   bool IsInitialized() const;
 
   void Load();
 
-  ml::pipeline::TextProcessing* get() const;
+  ml::pipeline::TextProcessing* Get() const;
 
  private:
   void OnLoadAndParseResource(

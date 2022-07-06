@@ -12,11 +12,9 @@
 #include "bat/ads/internal/base/containers/container_util.h"
 #include "bat/ads/internal/segments/segments_aliases.h"
 #include "bat/ads/internal/serving/choose/ad_predictor_aliases.h"
-#include "bat/ads/internal/serving/choose/ad_predictor_info.h"
 #include "bat/ads/internal/serving/eligible_ads/eligible_ads_aliases.h"
 #include "bat/ads/internal/serving/eligible_ads/eligible_ads_features.h"
 #include "bat/ads/internal/serving/targeting/top_segments.h"
-#include "bat/ads/internal/serving/targeting/user_model_info.h"
 
 namespace ads {
 
@@ -27,6 +25,13 @@ constexpr size_t kDoesMatchInterestParentSegmentsIndex = 3;
 constexpr size_t AdLastSeenHoursAgoIndex = 4;
 constexpr size_t kAdvertiserLastSeenHoursAgoIndex = 5;
 constexpr size_t kPriorityIndex = 6;
+
+namespace targeting {
+struct UserModelInfo;
+}  // namespace targeting
+
+template <typename T>
+struct AdPredictorInfo;
 
 template <typename T>
 CreativeAdPredictorMap<T> GroupCreativeAdsByCreativeInstanceId(
@@ -107,7 +112,7 @@ AdPredictorInfo<T> ComputePredictorFeatures(
 
 template <typename T>
 double ComputePredictorScore(const AdPredictorInfo<T>& ad_predictor) {
-  const AdPredictorWeights weights = features::GetAdPredictorWeights();
+  const AdPredictorWeightList weights = features::GetAdPredictorWeights();
   double score = 0.0;
 
   if (ad_predictor.does_match_intent_child_segments) {

@@ -6,7 +6,10 @@
 #include "bat/ads/internal/tabs/tab_manager.h"
 
 #include "base/check_op.h"
+#include "base/hash/hash.h"
 #include "bat/ads/internal/base/logging_util.h"
+#include "bat/ads/internal/tabs/tab_info.h"
+#include "url/gurl.h"
 
 namespace ads {
 
@@ -25,7 +28,7 @@ TabManager::~TabManager() {
 }
 
 // static
-TabManager* TabManager::Get() {
+TabManager* TabManager::GetInstance() {
   DCHECK(g_tab_manager_instance);
   return g_tab_manager_instance;
 }
@@ -45,7 +48,7 @@ void TabManager::RemoveObserver(TabManagerObserver* observer) {
   observers_.RemoveObserver(observer);
 }
 
-bool TabManager::IsVisible(const int32_t id) const {
+bool TabManager::IsTabVisible(const int32_t id) const {
   if (id == 0) {
     return false;
   }
@@ -53,10 +56,10 @@ bool TabManager::IsVisible(const int32_t id) const {
   return visible_tab_id_ == id;
 }
 
-void TabManager::OnUpdated(const int32_t id,
-                           const GURL& url,
-                           const bool is_visible,
-                           const bool is_incognito) {
+void TabManager::OnTabUpdated(const int32_t id,
+                              const GURL& url,
+                              const bool is_visible,
+                              const bool is_incognito) {
   if (is_incognito) {
     BLOG(7, "Tab id " << id << " is incognito");
     return;
@@ -65,13 +68,12 @@ void TabManager::OnUpdated(const int32_t id,
   if (!is_visible) {
     BLOG(7, "Tab id " << id << " is occluded");
 
-    if (!GetForId(id)) {
-      // Readd reloaded tabs when browser is restarted
+    if (!GetTabForId(id)) {
+      // Re-add reloaded tabs when browser is restarted
       TabInfo tab;
       tab.id = id;
       tab.url = url;
-
-      AddTab(id, tab);
+      AddTab(tab);
     } else {
       if (tabs_[id].url == url) {
         return;
@@ -81,7 +83,7 @@ void TabManager::OnUpdated(const int32_t id,
 
       tabs_[id].url = url;
 
-      NotifyTabDidChange(id);
+      NotifyTabDidChange(tabs_[id]);
     }
 
     return;
@@ -96,7 +98,7 @@ void TabManager::OnUpdated(const int32_t id,
 
     tabs_[id].url = url;
 
-    NotifyTabDidChange(id);
+    NotifyTabDidChange(tabs_[id]);
 
     return;
   }
@@ -107,26 +109,59 @@ void TabManager::OnUpdated(const int32_t id,
 
   visible_tab_id_ = id;
 
-  TabInfo tab;
-  tab.id = id;
-  tab.url = url;
-
-  if (GetForId(id)) {
+  const absl::optional<TabInfo> tab_optional = GetTabForId(id);
+  if (tab_optional) {
     BLOG(2, "Focused on existing tab id " << id);
 
-    UpdateTab(id, tab);
+    const TabInfo& tab = tab_optional.value();
+    UpdateTab(tab);
 
     NotifyTabDidChangeFocus(id);
   } else {
     BLOG(2, "Opened a new tab with id " << id);
 
-    AddTab(id, tab);
+    TabInfo tab;
+    tab.id = id;
+    tab.url = url;
+    AddTab(tab);
 
-    NotifyDidOpenNewTab(id);
+    NotifyDidOpenNewTab(tab);
   }
 }
 
-void TabManager::OnClosed(const int32_t id) {
+void TabManager::OnTextContentDidChange(const int32_t id,
+                                        const std::vector<GURL>& redirect_chain,
+                                        const std::string& content) {
+  DCHECK(!redirect_chain.empty());
+
+  const uint32_t hash = base::FastHash(content);
+  if (hash == last_text_content_hash_) {
+    return;
+  }
+  last_text_content_hash_ = hash;
+
+  BLOG(2, "Tab id " << id << " text content changed");
+
+  NotifyTextContentDidChange(id, redirect_chain, content);
+}
+
+void TabManager::OnHtmlContentDidChange(const int32_t id,
+                                        const std::vector<GURL>& redirect_chain,
+                                        const std::string& content) {
+  DCHECK(!redirect_chain.empty());
+
+  const uint32_t hash = base::FastHash(content);
+  if (hash == last_html_content_hash_) {
+    return;
+  }
+  last_html_content_hash_ = hash;
+
+  BLOG(2, "Tab id " << id << " HTML content changed");
+
+  NotifyHtmlContentDidChange(id, redirect_chain, content);
+}
+
+void TabManager::OnTabClosed(const int32_t id) {
   BLOG(2, "Tab id " << id << " was closed");
 
   RemoveTab(id);
@@ -159,7 +194,7 @@ void TabManager::OnMediaStopped(const int32_t id) {
 }
 
 bool TabManager::IsPlayingMedia(const int32_t id) const {
-  const absl::optional<TabInfo> tab = GetForId(id);
+  const absl::optional<TabInfo> tab = GetTabForId(id);
   if (!tab) {
     return false;
   }
@@ -167,15 +202,15 @@ bool TabManager::IsPlayingMedia(const int32_t id) const {
   return tab->is_playing_media;
 }
 
-absl::optional<TabInfo> TabManager::GetVisible() const {
-  return GetForId(visible_tab_id_);
+absl::optional<TabInfo> TabManager::GetVisibleTab() const {
+  return GetTabForId(visible_tab_id_);
 }
 
-absl::optional<TabInfo> TabManager::GetLastVisible() const {
-  return GetForId(last_visible_tab_id_);
+absl::optional<TabInfo> TabManager::GetLastVisibleTab() const {
+  return GetTabForId(last_visible_tab_id_);
 }
 
-absl::optional<TabInfo> TabManager::GetForId(const int32_t id) const {
+absl::optional<TabInfo> TabManager::GetTabForId(const int32_t id) const {
   if (tabs_.find(id) == tabs_.end()) {
     return absl::nullopt;
   }
@@ -185,14 +220,14 @@ absl::optional<TabInfo> TabManager::GetForId(const int32_t id) const {
 
 ///////////////////////////////////////////////////////////////////////////////
 
-void TabManager::AddTab(const int32_t id, const TabInfo& tab) {
-  DCHECK(!GetForId(id));
-  tabs_[id] = tab;
+void TabManager::AddTab(const TabInfo& tab) {
+  DCHECK(!GetTabForId(tab.id));
+  tabs_[tab.id] = tab;
 }
 
-void TabManager::UpdateTab(const int32_t id, const TabInfo& tab) {
-  DCHECK(GetForId(id));
-  tabs_[id] = tab;
+void TabManager::UpdateTab(const TabInfo& tab) {
+  DCHECK(GetTabForId(tab.id));
+  tabs_[tab.id] = tab;
 }
 
 void TabManager::RemoveTab(const int32_t id) {
@@ -205,15 +240,33 @@ void TabManager::NotifyTabDidChangeFocus(const int32_t id) const {
   }
 }
 
-void TabManager::NotifyTabDidChange(const int32_t id) const {
+void TabManager::NotifyTabDidChange(const TabInfo& tab) const {
   for (TabManagerObserver& observer : observers_) {
-    observer.OnTabDidChange(id);
+    observer.OnTabDidChange(tab);
   }
 }
 
-void TabManager::NotifyDidOpenNewTab(const int32_t id) const {
+void TabManager::NotifyDidOpenNewTab(const TabInfo& tab) const {
   for (TabManagerObserver& observer : observers_) {
-    observer.OnDidOpenNewTab(id);
+    observer.OnDidOpenNewTab(tab);
+  }
+}
+
+void TabManager::NotifyTextContentDidChange(
+    const int32_t id,
+    const std::vector<GURL>& redirect_chain,
+    const std::string& content) {
+  for (TabManagerObserver& observer : observers_) {
+    observer.OnTextContentDidChange(id, redirect_chain, content);
+  }
+}
+
+void TabManager::NotifyHtmlContentDidChange(
+    const int32_t id,
+    const std::vector<GURL>& redirect_chain,
+    const std::string& content) {
+  for (TabManagerObserver& observer : observers_) {
+    observer.OnHtmlContentDidChange(id, redirect_chain, content);
   }
 }
 

@@ -18,13 +18,11 @@ namespace {
 constexpr base::TimeDelta kTimeConstraint = base::Days(1);
 }  // namespace
 
-InlineContentAdsPerDayPermissionRule::InlineContentAdsPerDayPermissionRule() =
-    default;
+AdsPerDayPermissionRule::AdsPerDayPermissionRule() = default;
 
-InlineContentAdsPerDayPermissionRule::~InlineContentAdsPerDayPermissionRule() =
-    default;
+AdsPerDayPermissionRule::~AdsPerDayPermissionRule() = default;
 
-bool InlineContentAdsPerDayPermissionRule::ShouldAllow() {
+bool AdsPerDayPermissionRule::ShouldAllow() {
   const std::vector<base::Time>& history =
       GetAdEvents(AdType::kInlineContentAd, ConfirmationType::kServed);
 
@@ -36,11 +34,11 @@ bool InlineContentAdsPerDayPermissionRule::ShouldAllow() {
   return true;
 }
 
-std::string InlineContentAdsPerDayPermissionRule::GetLastMessage() const {
+std::string AdsPerDayPermissionRule::GetLastMessage() const {
   return last_message_;
 }
 
-bool InlineContentAdsPerDayPermissionRule::DoesRespectCap(
+bool AdsPerDayPermissionRule::DoesRespectCap(
     const std::vector<base::Time>& history) {
   return DoesHistoryRespectRollingTimeConstraint(
       history, kTimeConstraint, features::GetMaximumInlineContentAdsPerDay());

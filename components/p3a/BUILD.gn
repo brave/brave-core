@@ -37,6 +37,7 @@ static_library("p3a") {
     "//brave/components/brave_referrals/common",
     "//brave/components/brave_stats/browser",
     "//brave/components/p3a:buildflags",
+    "//brave/components/p3a_utils",
     "//brave/components/version_info",
     "//brave/vendor/brave_base",
     "//components/metrics",

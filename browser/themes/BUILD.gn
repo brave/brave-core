@@ -31,8 +31,9 @@ source_set("themes") {
     deps += [
       "//brave/components/brave_vpn/buildflags",
       "//brave/components/sidebar/buildflags",
-      "//brave/components/speedreader:buildflags",
+      "//brave/components/speedreader/common:buildflags",
       "//chrome/browser:theme_properties",
+      "//chrome/browser/ui/color:mixers",
       "//skia:skia",
       "//ui/gfx:color_utils",
       "//ui/native_theme:native_theme",

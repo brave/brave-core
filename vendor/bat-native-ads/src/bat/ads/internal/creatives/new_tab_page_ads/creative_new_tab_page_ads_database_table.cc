@@ -32,6 +32,7 @@
 #include "bat/ads/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_wallpapers_database_table.h"
 #include "bat/ads/internal/creatives/segments_database_table.h"
 #include "bat/ads/internal/segments/segments_util.h"
+#include "url/gurl.h"
 
 namespace ads {
 namespace database {
@@ -212,7 +213,7 @@ void CreativeNewTabPageAds::Save(const CreativeNewTabPageAdList& creative_ads,
     segments_database_table_->InsertOrUpdate(transaction.get(), creative_ads);
   }
 
-  AdsClientHelper::Get()->RunDBTransaction(
+  AdsClientHelper::GetInstance()->RunDBTransaction(
       std::move(transaction),
       std::bind(&OnResultCallback, std::placeholders::_1, callback));
 }
@@ -222,7 +223,7 @@ void CreativeNewTabPageAds::Delete(ResultCallback callback) {
 
   DeleteTable(transaction.get(), GetTableName());
 
-  AdsClientHelper::Get()->RunDBTransaction(
+  AdsClientHelper::GetInstance()->RunDBTransaction(
       std::move(transaction),
       std::bind(&OnResultCallback, std::placeholders::_1, callback));
 }
@@ -320,7 +321,7 @@ void CreativeNewTabPageAds::GetForCreativeInstanceId(
   mojom::DBTransactionPtr transaction = mojom::DBTransaction::New();
   transaction->commands.push_back(std::move(command));
 
-  AdsClientHelper::Get()->RunDBTransaction(
+  AdsClientHelper::GetInstance()->RunDBTransaction(
       std::move(transaction),
       std::bind(&CreativeNewTabPageAds::OnGetForCreativeInstanceId, this,
                 std::placeholders::_1, creative_instance_id, callback));
@@ -428,7 +429,7 @@ void CreativeNewTabPageAds::GetForSegments(
   mojom::DBTransactionPtr transaction = mojom::DBTransaction::New();
   transaction->commands.push_back(std::move(command));
 
-  AdsClientHelper::Get()->RunDBTransaction(
+  AdsClientHelper::GetInstance()->RunDBTransaction(
       std::move(transaction),
       std::bind(&CreativeNewTabPageAds::OnGetForSegments, this,
                 std::placeholders::_1, segments, callback));
@@ -520,7 +521,7 @@ void CreativeNewTabPageAds::GetAll(GetCreativeNewTabPageAdsCallback callback) {
   mojom::DBTransactionPtr transaction = mojom::DBTransaction::New();
   transaction->commands.push_back(std::move(command));
 
-  AdsClientHelper::Get()->RunDBTransaction(
+  AdsClientHelper::GetInstance()->RunDBTransaction(
       std::move(transaction), std::bind(&CreativeNewTabPageAds::OnGetAll, this,
                                         std::placeholders::_1, callback));
 }

@@ -161,7 +161,8 @@ OBJC_EXPORT
                            eventType:(AdsPromotedContentAdEventType)eventType;
 
 /// Purge orphaned ad events for a given ad type
-- (void)purgeOrphanedAdEvents:(AdsAdType)adType;
+- (void)purgeOrphanedAdEvents:(AdsAdType)adType
+                   completion:(void (^)(BOOL success))completion;
 
 /// Get the number of ads received and the estimated earnings of viewing said
 /// ads for this cycle

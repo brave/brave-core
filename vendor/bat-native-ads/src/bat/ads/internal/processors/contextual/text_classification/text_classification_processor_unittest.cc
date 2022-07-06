@@ -42,8 +42,9 @@ TEST_F(BatAdsTextClassificationProcessorTest,
   processor.Process(text);
 
   // Assert
-  const targeting::TextClassificationProbabilitiesList list =
-      ClientStateManager::Get()->GetTextClassificationProbabilitiesHistory();
+  const targeting::TextClassificationProbabilityList list =
+      ClientStateManager::GetInstance()
+          ->GetTextClassificationProbabilitiesHistory();
 
   EXPECT_TRUE(list.empty());
 }
@@ -55,8 +56,9 @@ TEST_F(BatAdsTextClassificationProcessorTest, DoNotProcessForEmptyText) {
   processor.Process(text);
 
   // Assert
-  const targeting::TextClassificationProbabilitiesList list =
-      ClientStateManager::Get()->GetTextClassificationProbabilitiesHistory();
+  const targeting::TextClassificationProbabilityList list =
+      ClientStateManager::GetInstance()
+          ->GetTextClassificationProbabilitiesHistory();
 
   EXPECT_TRUE(list.empty());
 }
@@ -67,8 +69,9 @@ TEST_F(BatAdsTextClassificationProcessorTest, NeverProcessed) {
   const SegmentList segments = model.GetSegments();
 
   // Assert
-  const targeting::TextClassificationProbabilitiesList list =
-      ClientStateManager::Get()->GetTextClassificationProbabilitiesHistory();
+  const targeting::TextClassificationProbabilityList list =
+      ClientStateManager::GetInstance()
+          ->GetTextClassificationProbabilitiesHistory();
 
   EXPECT_TRUE(list.empty());
 }
@@ -80,8 +83,9 @@ TEST_F(BatAdsTextClassificationProcessorTest, ProcessText) {
   processor.Process(text);
 
   // Assert
-  const targeting::TextClassificationProbabilitiesList list =
-      ClientStateManager::Get()->GetTextClassificationProbabilitiesHistory();
+  const targeting::TextClassificationProbabilityList list =
+      ClientStateManager::GetInstance()
+          ->GetTextClassificationProbabilitiesHistory();
 
   EXPECT_EQ(1UL, list.size());
 }
@@ -100,8 +104,9 @@ TEST_F(BatAdsTextClassificationProcessorTest, ProcessMultipleText) {
   processor.Process(text_3);
 
   // Assert
-  const targeting::TextClassificationProbabilitiesList list =
-      ClientStateManager::Get()->GetTextClassificationProbabilitiesHistory();
+  const targeting::TextClassificationProbabilityList list =
+      ClientStateManager::GetInstance()
+          ->GetTextClassificationProbabilitiesHistory();
 
   EXPECT_EQ(3UL, list.size());
 }

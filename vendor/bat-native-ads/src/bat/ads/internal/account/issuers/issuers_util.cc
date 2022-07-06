@@ -48,16 +48,18 @@ bool IsIssuerValid(const IssuerInfo& issuer) {
 }
 
 void SetIssuers(const IssuersInfo& issuers) {
-  AdsClientHelper::Get()->SetIntegerPref(prefs::kIssuerPing, issuers.ping);
+  AdsClientHelper::GetInstance()->SetIntegerPref(prefs::kIssuerPing,
+                                                 issuers.ping);
 
-  ConfirmationStateManager::Get()->SetIssuers(issuers.issuers);
-  ConfirmationStateManager::Get()->Save();
+  ConfirmationStateManager::GetInstance()->SetIssuers(issuers.issuers);
+  ConfirmationStateManager::GetInstance()->Save();
 }
 
 IssuersInfo GetIssuers() {
   IssuersInfo issuers;
-  issuers.ping = AdsClientHelper::Get()->GetIntegerPref(prefs::kIssuerPing);
-  issuers.issuers = ConfirmationStateManager::Get()->GetIssuers();
+  issuers.ping =
+      AdsClientHelper::GetInstance()->GetIntegerPref(prefs::kIssuerPing);
+  issuers.issuers = ConfirmationStateManager::GetInstance()->GetIssuers();
 
   return issuers;
 }
@@ -95,7 +97,7 @@ bool IssuerExistsForType(const IssuerType issuer_type) {
 absl::optional<IssuerInfo> GetIssuerForType(const IssuersInfo& issuers,
                                             const IssuerType issuer_type) {
   const auto iter = std::find_if(issuers.issuers.begin(), issuers.issuers.end(),
-                                 [&issuer_type](const IssuerInfo& issuer) {
+                                 [issuer_type](const IssuerInfo& issuer) {
                                    return issuer.type == issuer_type;
                                  });
   if (iter == issuers.issuers.end()) {

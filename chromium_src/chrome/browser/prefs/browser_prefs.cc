@@ -13,6 +13,7 @@
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/decentralized_dns/utils.h"
+#include "brave/components/omnibox/browser/brave_omnibox_prefs.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "brave/components/translate/core/common/buildflags.h"
 #include "chrome/browser/profiles/profile.h"
@@ -21,6 +22,10 @@
 #include "components/translate/core/browser/translate_prefs.h"
 #include "extensions/buildflags/buildflags.h"
 #include "third_party/widevine/cdm/buildflags.h"
+
+#if !BUILDFLAG(IS_ANDROID)
+#include "brave/browser/search_engines/search_engine_provider_util.h"
+#endif
 
 #if BUILDFLAG(ENABLE_TOR)
 #include "brave/components/tor/tor_utils.h"
@@ -51,6 +56,7 @@
 
 // This method should be periodically pruned of year+ old migrations.
 void MigrateObsoleteProfilePrefs(Profile* profile) {
+  // BEGIN_MIGRATE_OBSOLETE_PROFILE_PREFS
 #if !BUILDFLAG(USE_GCM_FROM_PLATFORM)
   // Added 02/2020.
   // Must be called before ChromiumImpl because it's migrating a Chromium pref
@@ -69,17 +75,18 @@ void MigrateObsoleteProfilePrefs(Profile* profile) {
   // Added 12/2019.
   dark_mode::MigrateBraveDarkModePrefs(profile);
 
-  // Added 9/2020
 #if !BUILDFLAG(IS_ANDROID)
+  // Added 9/2020
   new_tab_page::MigrateNewTabPagePrefs(profile);
+
+  // Added 06/2022
+  brave::MigrateSearchEngineProviderPrefs(profile);
 #endif
 
   brave_wallet::KeyringService::MigrateObsoleteProfilePrefs(
       profile->GetPrefs());
   brave_wallet::MigrateObsoleteProfilePrefs(profile->GetPrefs());
 
-  // Added 04/2021
-  profile->GetPrefs()->ClearPref(kAlternativeSearchEngineProviderInTor);
   // Added 05/2021
   profile->GetPrefs()->ClearPref(kBraveTodayIntroDismissed);
   // Added 07/2021
@@ -92,10 +99,12 @@ void MigrateObsoleteProfilePrefs(Profile* profile) {
 #if BUILDFLAG(ENABLE_BRAVE_TRANSLATE_GO)
   translate::MigrateBraveProfilePrefs(profile->GetPrefs());
 #endif
+  // END_MIGRATE_OBSOLETE_PROFILE_PREFS
 }
 
 // This method should be periodically pruned of year+ old migrations.
 void MigrateObsoleteLocalStatePrefs(PrefService* local_state) {
+  // BEGIN_MIGRATE_OBSOLETE_LOCAL_STATE_PREFS
   MigrateObsoleteLocalStatePrefs_ChromiumImpl(local_state);
 
 #if BUILDFLAG(ENABLE_WIDEVINE)
@@ -109,4 +118,6 @@ void MigrateObsoleteLocalStatePrefs(PrefService* local_state) {
 #endif
 
   decentralized_dns::MigrateObsoleteLocalStatePrefs(local_state);
+
+  // END_MIGRATE_OBSOLETE_LOCAL_STATE_PREFS
 }

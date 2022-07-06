@@ -90,7 +90,7 @@ public class BraveRewardsUserWalletActivity extends AsyncInitializationActivity 
             // Disconnect
             btn1.setText(getResources().getString(R.string.user_wallet_complete_verification));
             SetBtnOpenUrlClickHandler(
-                    btn1, intent.getStringExtra(BraveRewardsExternalWallet.VERIFY_URL));
+                    btn1, intent.getStringExtra(BraveRewardsExternalWallet.LOGIN_URL));
         }
 
         SetBtnOpenUrlClickHandler(

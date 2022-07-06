@@ -35,6 +35,8 @@ constexpr char kBraveWalletWeeklyHistogramName[] =
     "Brave.Wallet.UsageDaysInWeek";
 constexpr char kBraveWalletMonthlyHistogramName[] =
     "Brave.Wallet.UsageMonthly.2";
+constexpr char kBraveWalletNewUserReturningHistogramName[] =
+    "Brave.Wallet.NewUserReturning";
 
 class KeyringService;
 class JsonRpcService;
@@ -68,9 +70,9 @@ class BraveWalletService : public KeyedService,
   static void MigrateMultichainUserAssets(PrefService* prefs);
   static void MigrateUserAssetsAddPreloadingNetworks(PrefService* prefs);
 
-  static base::Value GetDefaultEthereumAssets();
-  static base::Value GetDefaultSolanaAssets();
-  static base::Value GetDefaultFilecoinAssets();
+  static base::Value::Dict GetDefaultEthereumAssets();
+  static base::Value::Dict GetDefaultSolanaAssets();
+  static base::Value::Dict GetDefaultFilecoinAssets();
 
   // mojom::BraveWalletService:
   void AddObserver(::mojo::PendingRemote<mojom::BraveWalletServiceObserver>
@@ -162,6 +164,9 @@ class BraveWalletService : public KeyedService,
       const std::string& key,
       IsBase58EncodedSolanaPubkeyCallback callback) override;
 
+  void Base58Encode(const std::vector<std::vector<std::uint8_t>>& addresses,
+                    Base58EncodeCallback callback) override;
+
   // BraveWalletServiceDelegate::Observer:
   void OnActiveOriginChanged(const mojom::OriginInfoPtr& origin_info) override;
 
@@ -215,7 +220,7 @@ class BraveWalletService : public KeyedService,
   void OnWalletUnlockPreferenceChanged(const std::string& pref_name);
   void OnP3ATimerFired();
 
-  void RecordWalletUsage();
+  void RecordWalletUsage(bool unlocked);
 
   void WriteStatsToHistogram(base::Time wallet_last_used,
                              base::Time first_p3a_report,

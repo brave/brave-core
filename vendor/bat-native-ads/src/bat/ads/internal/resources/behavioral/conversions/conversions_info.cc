@@ -21,7 +21,7 @@ std::unique_ptr<ConversionsInfo> ConversionsInfo::CreateFromValue(
     base::Value resource_value,
     std::string* error_message) {
   DCHECK(error_message);
-  auto conversions_info = std::make_unique<ConversionsInfo>();
+  auto conversion = std::make_unique<ConversionsInfo>();
 
   if (!resource_value.is_dict()) {
     *error_message = "Failed to load from JSON, json is not a dictionary";
@@ -33,7 +33,7 @@ std::unique_ptr<ConversionsInfo> ConversionsInfo::CreateFromValue(
       *error_message = "Failed to load from JSON, version missing";
       return {};
     }
-    conversions_info->version = *version;
+    conversion->version = *version;
   }
 
   base::Value* conversion_id_patterns_value =
@@ -66,10 +66,10 @@ std::unique_ptr<ConversionsInfo> ConversionsInfo::CreateFromValue(
     info.id_pattern = *id_pattern;
     info.search_in = *search_in;
     info.url_pattern = value.first;
-    conversions_info->conversion_id_patterns.insert({info.url_pattern, info});
+    conversion->id_patterns.insert({info.url_pattern, info});
   }
 
-  return conversions_info;
+  return conversion;
 }
 
 }  // namespace resource

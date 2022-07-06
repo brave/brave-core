@@ -32,6 +32,7 @@
 #include "bat/ads/internal/creatives/inline_content_ads/creative_inline_content_ad_info.h"
 #include "bat/ads/internal/creatives/segments_database_table.h"
 #include "bat/ads/internal/segments/segments_util.h"
+#include "url/gurl.h"
 
 namespace ads {
 namespace database {
@@ -201,7 +202,7 @@ void CreativeInlineContentAds::Save(
     segments_database_table_->InsertOrUpdate(transaction.get(), creative_ads);
   }
 
-  AdsClientHelper::Get()->RunDBTransaction(
+  AdsClientHelper::GetInstance()->RunDBTransaction(
       std::move(transaction),
       std::bind(&OnResultCallback, std::placeholders::_1, callback));
 }
@@ -211,7 +212,7 @@ void CreativeInlineContentAds::Delete(ResultCallback callback) {
 
   DeleteTable(transaction.get(), GetTableName());
 
-  AdsClientHelper::Get()->RunDBTransaction(
+  AdsClientHelper::GetInstance()->RunDBTransaction(
       std::move(transaction),
       std::bind(&OnResultCallback, std::placeholders::_1, callback));
 }
@@ -304,7 +305,7 @@ void CreativeInlineContentAds::GetForCreativeInstanceId(
   mojom::DBTransactionPtr transaction = mojom::DBTransaction::New();
   transaction->commands.push_back(std::move(command));
 
-  AdsClientHelper::Get()->RunDBTransaction(
+  AdsClientHelper::GetInstance()->RunDBTransaction(
       std::move(transaction),
       std::bind(&CreativeInlineContentAds::OnGetForCreativeInstanceId, this,
                 std::placeholders::_1, creative_instance_id, callback));
@@ -409,7 +410,7 @@ void CreativeInlineContentAds::GetForSegmentsAndDimensions(
   mojom::DBTransactionPtr transaction = mojom::DBTransaction::New();
   transaction->commands.push_back(std::move(command));
 
-  AdsClientHelper::Get()->RunDBTransaction(
+  AdsClientHelper::GetInstance()->RunDBTransaction(
       std::move(transaction),
       std::bind(&CreativeInlineContentAds::OnGetForSegmentsAndDimensions, this,
                 std::placeholders::_1, segments, callback));
@@ -505,7 +506,7 @@ void CreativeInlineContentAds::GetForDimensions(
   mojom::DBTransactionPtr transaction = mojom::DBTransaction::New();
   transaction->commands.push_back(std::move(command));
 
-  AdsClientHelper::Get()->RunDBTransaction(
+  AdsClientHelper::GetInstance()->RunDBTransaction(
       std::move(transaction),
       std::bind(&CreativeInlineContentAds::OnGetForDimensions, this,
                 std::placeholders::_1, callback));
@@ -593,7 +594,7 @@ void CreativeInlineContentAds::GetAll(
   mojom::DBTransactionPtr transaction = mojom::DBTransaction::New();
   transaction->commands.push_back(std::move(command));
 
-  AdsClientHelper::Get()->RunDBTransaction(
+  AdsClientHelper::GetInstance()->RunDBTransaction(
       std::move(transaction), std::bind(&CreativeInlineContentAds::OnGetAll,
                                         this, std::placeholders::_1, callback));
 }

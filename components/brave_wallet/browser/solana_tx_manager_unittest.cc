@@ -7,6 +7,7 @@
 
 #include <utility>
 
+#include "base/base64.h"
 #include "base/json/json_reader.h"
 #include "base/test/bind.h"
 #include "base/test/scoped_feature_list.h"
@@ -23,6 +24,7 @@
 #include "brave/components/brave_wallet/common/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
 #include "brave/components/brave_wallet/common/features.h"
+#include "brave/components/brave_wallet/common/solana_utils.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "services/data_decoder/public/cpp/test_support/in_process_data_decoder.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
@@ -329,6 +331,47 @@ class SolanaTxManagerUnitTest : public testing::Test {
     run_loop.Run();
   }
 
+  void TestGetTransactionMessageToSign(
+      const std::string& tx_meta_id,
+      absl::optional<std::vector<std::uint8_t>> expected_tx_message) {
+    base::RunLoop run_loop;
+    solana_tx_manager()->GetTransactionMessageToSign(
+        tx_meta_id,
+        base::BindLambdaForTesting(
+            [&](mojom::MessageToSignUnionPtr tx_message) {
+              EXPECT_EQ(!!tx_message, expected_tx_message.has_value());
+              if (expected_tx_message.has_value()) {
+                ASSERT_TRUE(tx_message->is_message_bytes());
+                absl::optional<std::vector<std::uint8_t>> message_bytes =
+                    tx_message->get_message_bytes();
+                EXPECT_EQ(message_bytes, expected_tx_message);
+              }
+              run_loop.Quit();
+            }));
+    run_loop.Run();
+  }
+
+  void TestProcessSolanaHardwareSignature(
+      const std::string& tx_meta_id,
+      const std::vector<uint8_t>& signature,
+      bool expected_result,
+      mojom::SolanaProviderError expected_error,
+      const std::string& expected_error_message) {
+    base::RunLoop run_loop;
+    solana_tx_manager()->ProcessSolanaHardwareSignature(
+        tx_meta_id, signature,
+        base::BindLambdaForTesting([&](bool result,
+                                       mojom::ProviderErrorUnionPtr error_union,
+                                       const std::string& error_message) {
+          EXPECT_EQ(expected_result, result);
+          ASSERT_TRUE(error_union->is_solana_provider_error());
+          EXPECT_EQ(error_union->get_solana_provider_error(), expected_error);
+          EXPECT_EQ(expected_error_message, error_message);
+          run_loop.Quit();
+        }));
+    run_loop.Run();
+  }
+
  protected:
   base::test::TaskEnvironment task_environment_;
   sync_preferences::TestingPrefServiceSyncable prefs_;
@@ -372,7 +415,7 @@ TEST_F(SolanaTxManagerUnitTest, AddAndApproveTransaction) {
       "" /* recent_blockhash */, 0, from_account, to_account,
       "" /* spl_token_mint_address */, 10000000u /* lamport */, 0 /* amount */,
       mojom::TransactionType::SolanaSystemTransfer, std::move(instructions),
-      nullptr);
+      nullptr, nullptr);
 
   auto tx = SolanaTransaction::FromSolanaTxData(solana_tx_data.Clone());
   ASSERT_TRUE(tx);
@@ -400,14 +443,12 @@ TEST_F(SolanaTxManagerUnitTest, AddAndApproveTransaction) {
   // Wait for tx to be updated.
   base::RunLoop().RunUntilIdle();
 
-  auto approved_tx = std::make_unique<SolanaTransaction>(*tx);
-  approved_tx->message()->set_recent_blockhash(latest_blockhash1_);
-  approved_tx->message()->set_last_valid_block_height(
-      last_valid_block_height1_);
+  tx->message()->set_recent_blockhash(latest_blockhash1_);
+  tx->message()->set_last_valid_block_height(last_valid_block_height1_);
 
   tx_meta1 = solana_tx_manager()->GetTxForTesting(meta_id1);
   ASSERT_TRUE(tx_meta1);
-  EXPECT_EQ(*tx_meta1->tx(), *approved_tx);
+  EXPECT_EQ(*tx_meta1->tx(), *tx);
   EXPECT_EQ(tx_meta1->signature_status(), SolanaSignatureStatus());
   EXPECT_EQ(tx_meta1->from(), from_account);
   EXPECT_EQ(tx_meta1->status(), mojom::TransactionStatus::Submitted);
@@ -421,7 +462,7 @@ TEST_F(SolanaTxManagerUnitTest, AddAndApproveTransaction) {
 
   tx_meta2 = solana_tx_manager()->GetTxForTesting(meta_id2);
   ASSERT_TRUE(tx_meta2);
-  EXPECT_EQ(*tx_meta2->tx(), *approved_tx);
+  EXPECT_EQ(*tx_meta2->tx(), *tx);
   EXPECT_EQ(tx_meta2->signature_status(), SolanaSignatureStatus());
   EXPECT_EQ(tx_meta2->from(), from_account);
   EXPECT_EQ(tx_meta2->status(), mojom::TransactionStatus::Submitted);
@@ -506,7 +547,7 @@ TEST_F(SolanaTxManagerUnitTest, MakeSystemProgramTransferTxData) {
   auto tx_data =
       mojom::SolanaTxData::New("", 0, from_account, to_account, "", 10000000, 0,
                                mojom::TransactionType::SolanaSystemTransfer,
-                               std::move(instructions), nullptr);
+                               std::move(instructions), nullptr, nullptr);
 
   TestMakeSystemProgramTransferTxData(from_account, to_account, 10000000,
                                       std::move(tx_data),
@@ -558,7 +599,7 @@ TEST_F(SolanaTxManagerUnitTest, MakeTokenProgramTransferTxData) {
   auto tx_data = mojom::SolanaTxData::New(
       "", 0, from_wallet_address, to_wallet_address, spl_token_mint_address, 0,
       10000000, mojom::TransactionType::SolanaSPLTokenTransfer,
-      std::move(instructions), nullptr);
+      std::move(instructions), nullptr, nullptr);
 
   // Owner is the token program account.
   std::string json = R"(
@@ -614,7 +655,7 @@ TEST_F(SolanaTxManagerUnitTest, MakeTokenProgramTransferTxData) {
       10000000,
       mojom::TransactionType::
           SolanaSPLTokenTransferWithAssociatedTokenAccountCreation,
-      std::move(instructions), nullptr);
+      std::move(instructions), nullptr, nullptr);
 
   // Test owner is not token program account.
   json = R"(
@@ -793,6 +834,84 @@ TEST_F(SolanaTxManagerUnitTest, DropTxWithInvalidBlockhash) {
           mojom::TransactionStatus::Submitted, absl::nullopt);
   ASSERT_EQ(pending_transactions.size(), 1u);
   EXPECT_EQ(pending_transactions[0]->id(), meta_id2);
+}
+
+TEST_F(SolanaTxManagerUnitTest, GetTransactionMessageToSign) {
+  // Unknown tx_meta_id yields null message
+  TestGetTransactionMessageToSign("Unknown", absl::nullopt);
+
+  const std::string from = "89DzXVKJ79xf9MkzTxatQESh5fcvsqBo9fCsbAXkCaZE";
+  const std::string to = "148FvZU6e67eSB12wv7fXCH5FsTDW8tsxXo3nFuZhfCF";
+  mojom::SolanaTxDataPtr system_transfer_data = nullptr;
+  TestMakeSystemProgramTransferTxData(from, to, 1, nullptr,
+                                      mojom::SolanaProviderError::kSuccess, "",
+                                      &system_transfer_data);
+  ASSERT_TRUE(system_transfer_data);
+  std::string system_transfer_meta_id;
+  AddUnapprovedTransaction(std::move(system_transfer_data), from,
+                           &system_transfer_meta_id);
+  ASSERT_FALSE(system_transfer_meta_id.empty());
+
+  // Invalid latest blockhash yields null message
+  SetInterceptor("", 0, "");
+  TestGetTransactionMessageToSign(system_transfer_meta_id, absl::nullopt);
+
+  // Valid latest blockhash yields valid transaction message to sign
+  SetInterceptor(latest_blockhash1_, last_valid_block_height1_, "");
+  absl::optional<std::vector<std::uint8_t>> message = base::Base64Decode(
+      "AQABA2odJRVUDnxVZv71pBNy0DZ/"
+      "ui6dv1N37VgGEA+"
+      "aezhZAMzywrLOSju1o9VJQ5KaB2lsblgqvdjtkDFlmZHz4KQAAAAAAAAAAAAAAAAAAAAAAAA"
+      "AAAAAAAAAAAAAAAAAAMxJDpKM0uOHO7ND/"
+      "JXaMxecpg9Nv0bCw26RKZ1V1Oa5AQICAAEMAgAAAAEAAAAAAAAA");
+  TestGetTransactionMessageToSign(system_transfer_meta_id, message);
+
+  // Valid cached latest blockhash
+  SetInterceptor("", 0, "", "");
+  TestGetTransactionMessageToSign(system_transfer_meta_id, message);
+}
+
+TEST_F(SolanaTxManagerUnitTest, ProcessSolanaHardwareSignature) {
+  // Unknown tx_meta_id is invalid
+  TestProcessSolanaHardwareSignature(
+      "Unknown", std::vector<uint8_t>(), false,
+      mojom::SolanaProviderError::kInternalError,
+      l10n_util::GetStringUTF8(IDS_BRAVE_WALLET_TRANSACTION_NOT_FOUND));
+
+  const std::string from = "89DzXVKJ79xf9MkzTxatQESh5fcvsqBo9fCsbAXkCaZE";
+  const std::string to = "148FvZU6e67eSB12wv7fXCH5FsTDW8tsxXo3nFuZhfCF";
+  mojom::SolanaTxDataPtr system_transfer_data = nullptr;
+  TestMakeSystemProgramTransferTxData(from, to, 1, nullptr,
+                                      mojom::SolanaProviderError::kSuccess, "",
+                                      &system_transfer_data);
+  ASSERT_TRUE(system_transfer_data);
+  std::string system_transfer_meta_id;
+  AddUnapprovedTransaction(std::move(system_transfer_data), from,
+                           &system_transfer_meta_id);
+  ASSERT_FALSE(system_transfer_meta_id.empty());
+
+  std::string decoded_signature;
+  std::string signature =
+      "fJaHU9cDUoLsWLXJSPTgW3bAkhuZL319v2479igQtSp1ZyBjPi923jWkALg48uS75z5fp1JK"
+      "1T4vdWi2D35fFEj";
+  std::vector<uint8_t> signature_bytes;
+  EXPECT_TRUE(Base58Decode(signature, &signature_bytes, kSolanaSignatureSize));
+
+  // Blockhash not set is invalid
+  TestProcessSolanaHardwareSignature(
+      system_transfer_meta_id, signature_bytes, false,
+      mojom::SolanaProviderError::kInternalError,
+      l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+
+  auto meta = solana_tx_manager()->GetTxForTesting(system_transfer_meta_id);
+  meta->tx()->message()->set_recent_blockhash(latest_blockhash1_);
+  meta->tx()->message()->set_last_valid_block_height(last_valid_block_height1_);
+  solana_tx_manager()->GetSolanaTxStateManager()->AddOrUpdateTx(*meta);
+
+  // Valid blockhash and valid number of signers is valid
+  TestProcessSolanaHardwareSignature(system_transfer_meta_id, signature_bytes,
+                                     true, mojom::SolanaProviderError::kSuccess,
+                                     "");
 }
 
 }  // namespace brave_wallet

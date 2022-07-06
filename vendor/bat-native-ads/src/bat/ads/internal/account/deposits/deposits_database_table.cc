@@ -10,6 +10,7 @@
 
 #include "base/check.h"
 #include "base/strings/stringprintf.h"
+#include "bat/ads/internal/account/deposits/deposit_info.h"
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/base/database/database_bind_util.h"
 #include "bat/ads/internal/base/database/database_column_util.h"
@@ -80,7 +81,7 @@ void Deposits::Save(const DepositInfo& deposit, ResultCallback callback) {
 
   InsertOrUpdate(transaction.get(), deposit);
 
-  AdsClientHelper::Get()->RunDBTransaction(
+  AdsClientHelper::GetInstance()->RunDBTransaction(
       std::move(transaction),
       std::bind(&OnResultCallback, std::placeholders::_1, callback));
 }
@@ -141,7 +142,7 @@ void Deposits::GetForCreativeInstanceId(const std::string& creative_instance_id,
   mojom::DBTransactionPtr transaction = mojom::DBTransaction::New();
   transaction->commands.push_back(std::move(command));
 
-  AdsClientHelper::Get()->RunDBTransaction(
+  AdsClientHelper::GetInstance()->RunDBTransaction(
       std::move(transaction),
       std::bind(&Deposits::OnGetForCreativeInstanceId, this,
                 std::placeholders::_1, creative_instance_id, callback));
@@ -160,7 +161,7 @@ void Deposits::PurgeExpired(ResultCallback callback) {
   mojom::DBTransactionPtr transaction = mojom::DBTransaction::New();
   transaction->commands.push_back(std::move(command));
 
-  AdsClientHelper::Get()->RunDBTransaction(
+  AdsClientHelper::GetInstance()->RunDBTransaction(
       std::move(transaction),
       std::bind(&OnResultCallback, std::placeholders::_1, callback));
 }

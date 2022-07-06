@@ -6,9 +6,11 @@
 #include "bat/ads/internal/ad_events/inline_content_ads/inline_content_ad_event_viewed.h"
 
 #include "bat/ads/confirmation_type.h"
+#include "bat/ads/history_item_info.h"
+#include "bat/ads/inline_content_ad_info.h"
 #include "bat/ads/internal/ad_events/ad_events.h"
 #include "bat/ads/internal/base/logging_util.h"
-#include "bat/ads/internal/history/history.h"
+#include "bat/ads/internal/history/history_manager.h"
 #include "bat/ads/internal/privacy/p2a/impressions/p2a_impression.h"
 
 namespace ads {
@@ -32,7 +34,7 @@ void AdEventViewed::FireEvent(const InlineContentAdInfo& ad) {
     BLOG(6, "Successfully logged inline content ad viewed event");
   });
 
-  history::AddInlineContentAd(ad, ConfirmationType::kViewed);
+  HistoryManager::GetInstance()->Add(ad, ConfirmationType::kViewed);
 
   privacy::p2a::RecordAdImpression(ad);
 }

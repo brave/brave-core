@@ -8,6 +8,7 @@
 
 #include <memory>
 #include <string>
+#include <utility>
 #include <vector>
 
 #include "base/gtest_prod_util.h"
@@ -56,8 +57,11 @@ class SolanaTransaction {
                     const std::string& fee_payer,
                     std::vector<SolanaInstruction>&& instructions);
   SolanaTransaction(SolanaMessage&& message,
-                    const std::vector<uint8_t>& signatures);
-  SolanaTransaction(const SolanaTransaction&);
+                    const std::vector<uint8_t>& raw_signatures);
+  SolanaTransaction(SolanaMessage&& message,
+                    mojom::SolanaSignTransactionParamPtr sign_tx_param);
+  SolanaTransaction(const SolanaTransaction&) = delete;
+  SolanaTransaction& operator=(const SolanaTransaction&) = delete;
   ~SolanaTransaction();
   bool operator==(const SolanaTransaction&) const;
   bool operator!=(const SolanaTransaction&) const;
@@ -67,15 +71,20 @@ class SolanaTransaction {
   // Serialize and encode the message in Base64.
   std::string GetBase64EncodedMessage() const;
   absl::optional<std::vector<uint8_t>> GetSignedTransactionBytes(
-      KeyringService* keyring_service) const;
+      KeyringService* keyring_service,
+      const std::vector<uint8_t>* fee_payer_signature = nullptr) const;
+
+  // Returns message bytes and signer addresses (public keys).
+  absl::optional<std::pair<std::vector<uint8_t>, std::vector<std::string>>>
+  GetSerializedMessage() const;
 
   mojom::SolanaTxDataPtr ToSolanaTxData() const;
   base::Value ToValue() const;
 
   static std::unique_ptr<SolanaTransaction> FromSolanaTxData(
       mojom::SolanaTxDataPtr solana_tx_data);
-  static absl::optional<SolanaTransaction> FromValue(const base::Value& value);
-  static absl::optional<SolanaTransaction> FromSignedTransactionBytes(
+  static std::unique_ptr<SolanaTransaction> FromValue(const base::Value& value);
+  static std::unique_ptr<SolanaTransaction> FromSignedTransactionBytes(
       const std::vector<uint8_t>& bytes);
 
   std::string to_wallet_address() const { return to_wallet_address_; }
@@ -84,7 +93,7 @@ class SolanaTransaction {
   uint64_t lamports() const { return lamports_; }
   uint64_t amount() const { return amount_; }
   SolanaMessage* message() { return &message_; }
-  const std::vector<uint8_t>& signatures() const { return signatures_; }
+  const std::vector<uint8_t>& raw_signatures() const { return raw_signatures_; }
   absl::optional<SolanaTransaction::SendOptions> send_options() const {
     return send_options_;
   }
@@ -101,12 +110,25 @@ class SolanaTransaction {
   void set_send_options(absl::optional<SendOptions> options) {
     send_options_ = options;
   }
+  void set_sign_tx_param(mojom::SolanaSignTransactionParamPtr sign_tx_param) {
+    sign_tx_param_ = std::move(sign_tx_param);
+  }
 
  private:
   FRIEND_TEST_ALL_PREFIXES(SolanaTransactionUnitTest, GetBase64EncodedMessage);
   SolanaMessage message_;
   // Value will be assigned when FromSignedTransactionBytes is called.
-  std::vector<uint8_t> signatures_;
+  std::vector<uint8_t> raw_signatures_;
+
+  // Passed by dApp when calling signAndSendTransaction, signTransaction,
+  // signAllTransactions provider APIs, which includes serialized message and
+  // signatures from partial_sign. If this exists, we will use the serialized
+  // message inside when signing the transaction instead of serializing the
+  // message by ourselves. This is the order of accounts with the same
+  // is_signer and is_writable properties can be different across
+  // implementations, we need to sign the exact serialized message being passed
+  // by dApp.
+  mojom::SolanaSignTransactionParamPtr sign_tx_param_ = nullptr;
 
   // Data fields to be used for UI, they are filled currently when we create
   // SolanaTxData to transfer SOL or SPL tokens for UI.

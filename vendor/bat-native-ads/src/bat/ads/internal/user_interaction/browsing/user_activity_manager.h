@@ -20,6 +20,8 @@ class TimeDelta;
 
 namespace ads {
 
+struct TabInfo;
+
 class UserActivityManager final : public BrowserManagerObserver,
                                   public TabManagerObserver {
  public:
@@ -29,7 +31,7 @@ class UserActivityManager final : public BrowserManagerObserver,
   UserActivityManager(const UserActivityManager&) = delete;
   UserActivityManager& operator=(const UserActivityManager&) = delete;
 
-  static UserActivityManager* Get();
+  static UserActivityManager* GetInstance();
 
   static bool HasInstance();
 
@@ -50,8 +52,8 @@ class UserActivityManager final : public BrowserManagerObserver,
 
   // TabManagerObserver:
   void OnTabDidChangeFocus(const int32_t id) override;
-  void OnTabDidChange(const int32_t id) override;
-  void OnDidOpenNewTab(const int32_t id) override;
+  void OnTabDidChange(const TabInfo& tab) override;
+  void OnDidOpenNewTab(const TabInfo& tab) override;
   void OnDidCloseTab(const int32_t id) override;
   void OnTabDidStartPlayingMedia(const int32_t id) override;
   void OnTabDidStopPlayingMedia(const int32_t id) override;
