@@ -8,8 +8,16 @@
 #include "bat/ads/internal/creatives/creative_ad_info.h"
 #include "bat/ads/internal/creatives/creative_ad_unittest_util.h"
 #include "bat/ads/internal/creatives/notification_ads/creative_notification_ad_info.h"
+#include "bat/ads/internal/creatives/notification_ads/creative_notification_ads_database_table.h"
+#include "third_party/googletest/src/googletest/include/gtest/gtest.h"
 
 namespace ads {
+
+void SaveCreativeAds(const CreativeNotificationAdList& creative_ads) {
+  database::table::CreativeNotificationAds database_table;
+  database_table.Save(creative_ads,
+                      [](const bool success) { ASSERT_TRUE(success); });
+}
 
 CreativeNotificationAdList BuildCreativeNotificationAds(const int count) {
   CreativeNotificationAdList creative_ads;

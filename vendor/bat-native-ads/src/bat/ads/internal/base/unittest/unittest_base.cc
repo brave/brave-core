@@ -12,7 +12,6 @@
 #include "bat/ads/internal/base/unittest/unittest_file_util.h"
 #include "bat/ads/internal/base/unittest/unittest_mock_util.h"
 #include "bat/ads/internal/base/unittest/unittest_time_util.h"
-#include "bat/ads/internal/creatives/notification_ads/notification_ad_manager.h"
 #include "bat/ads/pref_names.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
 
@@ -154,7 +153,7 @@ void UnitTestBase::AdvanceClockToMidnight(const bool is_local) {
 ///////////////////////////////////////////////////////////////////////////////
 
 void UnitTestBase::Initialize() {
-  InitializeMocks();
+  SetDefaultMocks();
 
   SetDefaultPrefs();
 
@@ -168,6 +167,11 @@ void UnitTestBase::Initialize() {
       std::make_unique<AdsClientHelper>(ads_client_mock_.get());
 
   SetUpMocks();
+
+  if (is_integration_test_) {
+    SetUpIntegrationTest();
+    return;
+  }
 
   browser_manager_ = std::make_unique<BrowserManager>();
 
@@ -210,7 +214,7 @@ void UnitTestBase::Initialize() {
   task_environment_.FastForwardUntilNoTasksRemain();
 }
 
-void UnitTestBase::InitializeMocks() {
+void UnitTestBase::SetDefaultMocks() {
   MockBuildChannel(BuildChannelType::kRelease);
 
   MockEnvironment(mojom::Environment::kStaging);
@@ -225,6 +229,7 @@ void UnitTestBase::InitializeMocks() {
   MockIsBrowserInFullScreenMode(ads_client_mock_, false);
 
   MockShouldShowNotifications(ads_client_mock_, true);
+  MockCanShowBackgroundNotifications(ads_client_mock_, false);
   MockShowNotification(ads_client_mock_);
   MockCloseNotification(ads_client_mock_);
 

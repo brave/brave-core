@@ -6,10 +6,8 @@
 #include "bat/ads/internal/ads/ad_events/new_tab_page_ads/new_tab_page_ad_event_clicked.h"
 
 #include "bat/ads/confirmation_type.h"
-#include "bat/ads/history_item_info.h"
 #include "bat/ads/internal/ads/ad_events/ad_events.h"
 #include "bat/ads/internal/base/logging_util.h"
-#include "bat/ads/internal/history/history_manager.h"
 #include "bat/ads/new_tab_page_ad_info.h"
 
 namespace ads {
@@ -32,8 +30,6 @@ void AdEventClicked::FireEvent(const NewTabPageAdInfo& ad) {
 
     BLOG(6, "Successfully logged new tab page ad clicked event");
   });
-
-  HistoryManager::GetInstance()->Add(ad, ConfirmationType::kClicked);
 }
 
 }  // namespace new_tab_page_ads

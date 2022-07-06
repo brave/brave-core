@@ -6,11 +6,8 @@
 #include "bat/ads/internal/creatives/promoted_content_ads/creative_promoted_content_ads_database_table.h"
 
 #include <algorithm>
-#include <functional>
 #include <map>
-#include <string>
 #include <utility>
-#include <vector>
 
 #include "base/strings/string_util.h"
 #include "base/strings/stringprintf.h"

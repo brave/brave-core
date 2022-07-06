@@ -45,10 +45,9 @@ class Serving final {
  private:
   bool IsSupported() const;
 
-  bool ServeAd(const NewTabPageAdInfo& ad,
-               MaybeServeNewTabPageAdCallback callback) const;
+  void ServeAd(const NewTabPageAdInfo& ad,
+               MaybeServeNewTabPageAdCallback callback);
   void FailedToServeAd(MaybeServeNewTabPageAdCallback callback);
-  void ServedAd(const NewTabPageAdInfo& ad);
 
   void NotifyOpportunityAroseToServeNewTabPageAd(
       const SegmentList& segments) const;

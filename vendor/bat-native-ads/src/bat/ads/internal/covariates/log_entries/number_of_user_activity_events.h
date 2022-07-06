@@ -9,7 +9,7 @@
 #include <string>
 
 #include "bat/ads/internal/covariates/covariate_log_entry_interface.h"
-#include "bat/ads/internal/user_interaction/browsing/user_activity_event_types.h"
+#include "bat/ads/internal/user_interaction/user_activity/user_activity_event_types.h"
 
 namespace ads {
 

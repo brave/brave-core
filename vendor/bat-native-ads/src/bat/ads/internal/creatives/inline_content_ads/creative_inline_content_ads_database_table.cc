@@ -6,9 +6,7 @@
 #include "bat/ads/internal/creatives/inline_content_ads/creative_inline_content_ads_database_table.h"
 
 #include <algorithm>
-#include <functional>
 #include <map>
-#include <string>
 #include <utility>
 #include <vector>
 

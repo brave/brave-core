@@ -6,8 +6,8 @@
 #include "bat/ads/internal/covariates/log_entries/number_of_user_activity_events.h"
 
 #include "base/strings/string_number_conversions.h"
-#include "bat/ads/internal/user_interaction/browsing/user_activity_manager.h"
-#include "bat/ads/internal/user_interaction/browsing/user_activity_util.h"
+#include "bat/ads/internal/user_interaction/user_activity/user_activity_manager.h"
+#include "bat/ads/internal/user_interaction/user_activity/user_activity_util.h"
 
 namespace ads {
 

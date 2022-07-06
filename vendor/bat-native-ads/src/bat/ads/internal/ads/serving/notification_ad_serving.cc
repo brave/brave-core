@@ -11,7 +11,6 @@
 #include "base/rand_util.h"
 #include "base/time/time.h"
 #include "bat/ads/ad_type.h"
-#include "bat/ads/internal/ads/serving/delivery/notification_ads/notification_ad_delivery.h"
 #include "bat/ads/internal/ads/serving/eligible_ads/pipelines/notification_ads/eligible_notification_ads_base.h"
 #include "bat/ads/internal/ads/serving/eligible_ads/pipelines/notification_ads/eligible_notification_ads_factory.h"
 #include "bat/ads/internal/ads/serving/permission_rules/notification_ads/notification_ad_permission_rules.h"
@@ -145,14 +144,7 @@ void Serving::MaybeServeAd() {
         const CreativeNotificationAdInfo& creative_ad = creative_ads.at(rand);
 
         const NotificationAdInfo& ad = BuildNotificationAd(creative_ad);
-        if (!ServeAd(ad)) {
-          BLOG(1, "Failed to serve notification ad");
-          FailedToServeAd();
-          return;
-        }
-
-        BLOG(1, "Served notification ad");
-        ServedAd(ad);
+        ServeAd(ad);
       });
 }
 
@@ -236,10 +228,14 @@ base::Time Serving::MaybeServeAdAfter(const base::TimeDelta delay) {
       base::BindOnce(&Serving::MaybeServeAd, base::Unretained(this)));
 }
 
-bool Serving::ServeAd(const NotificationAdInfo& ad) const {
-  DCHECK(ad.IsValid());
+void Serving::ServeAd(const NotificationAdInfo& ad) {
+  if (!ad.IsValid()) {
+    BLOG(1, "Failed to serve notification ad");
+    FailedToServeAd();
+    return;
+  }
 
-  BLOG(1, "Serving notification ad:\n"
+  BLOG(1, "Served notification ad:\n"
               << "  placementId: " << ad.placement_id << "\n"
               << "  creativeInstanceId: " << ad.creative_instance_id << "\n"
               << "  creativeSetId: " << ad.creative_set_id << "\n"
@@ -250,14 +246,14 @@ bool Serving::ServeAd(const NotificationAdInfo& ad) const {
               << "  body: " << ad.body << "\n"
               << "  targetUrl: " << ad.target_url);
 
-  Delivery delivery;
-  if (!delivery.MaybeDeliverAd(ad)) {
-    return false;
-  }
+  DCHECK(eligible_ads_);
+  eligible_ads_->SetLastServedAd(ad);
 
   NotifyDidServeNotificationAd(ad);
 
-  return true;
+  is_serving_ = false;
+
+  MaybeServeAdAtNextRegularInterval();
 }
 
 void Serving::FailedToServeAd() {
@@ -266,15 +262,6 @@ void Serving::FailedToServeAd() {
   NotifyFailedToServeNotificationAd();
 
   RetryServingAdAtNextInterval();
-}
-
-void Serving::ServedAd(const NotificationAdInfo& ad) {
-  DCHECK(eligible_ads_);
-  eligible_ads_->SetLastServedAd(ad);
-
-  is_serving_ = false;
-
-  MaybeServeAdAtNextRegularInterval();
 }
 
 void Serving::NotifyOpportunityAroseToServeNotificationAd(

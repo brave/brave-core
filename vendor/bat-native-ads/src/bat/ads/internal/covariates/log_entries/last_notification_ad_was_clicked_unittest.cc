@@ -12,7 +12,7 @@
 #include "bat/ads/internal/history/history_manager.h"
 #include "bat/ads/notification_ad_info.h"
 
-// npm run test -- brave_unit_tests --filter=BatAdsFederatedLogEntries*
+// npm run test -- brave_unit_tests --filter=BatAds*
 
 namespace ads {
 

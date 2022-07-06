@@ -14,21 +14,22 @@
 namespace ads {
 
 template <typename T>
-base::flat_map<unsigned int, T> SortAdsIntoPrioritizedBuckets(const T& ads) {
+base::flat_map<unsigned int, T> SortCreativeAdsIntoPrioritizedBuckets(
+    const T& creative_ads) {
   base::flat_map<unsigned int, T> buckets;
 
-  for (const auto& ad : ads) {
-    if (ad.priority == 0) {
+  for (const auto& creative_ad : creative_ads) {
+    if (creative_ad.priority == 0) {
       continue;
     }
 
-    const auto iter = buckets.find(ad.priority);
+    const auto iter = buckets.find(creative_ad.priority);
     if (iter == buckets.end()) {
-      buckets.insert({ad.priority, {ad}});
+      buckets.insert({creative_ad.priority, {creative_ad}});
       continue;
     }
 
-    iter->second.push_back(ad);
+    iter->second.push_back(creative_ad);
   }
 
   return buckets;

@@ -15,7 +15,7 @@
 #include "bat/ads/internal/features/epsilon_greedy_bandit_features.h"
 #include "bat/ads/internal/features/purchase_intent_features.h"
 #include "bat/ads/internal/features/text_classification_features.h"
-#include "bat/ads/internal/user_interaction/browsing/user_activity_features.h"
+#include "bat/ads/internal/user_interaction/user_activity/user_activity_features.h"
 
 namespace ads {
 

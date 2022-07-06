@@ -26,6 +26,8 @@ TransactionInfo BuildTransaction(const double value,
 TransactionInfo BuildTransaction(const double value,
                                  const ConfirmationType& confirmation_type);
 
+int GetTransactionCount();
+
 }  // namespace ads
 
 #endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ACCOUNT_TRANSACTIONS_TRANSACTIONS_UNITTEST_UTIL_H_

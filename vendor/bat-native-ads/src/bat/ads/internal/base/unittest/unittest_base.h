@@ -17,6 +17,7 @@
 #include "bat/ads/internal/base/platform/platform_helper_mock.h"
 #include "bat/ads/internal/browser/browser_manager.h"
 #include "bat/ads/internal/covariates/covariate_manager.h"
+#include "bat/ads/internal/creatives/notification_ads/notification_ad_manager.h"
 #include "bat/ads/internal/database/database_manager.h"
 #include "bat/ads/internal/deprecated/client/client_state_manager.h"
 #include "bat/ads/internal/deprecated/confirmations/confirmation_state_manager.h"
@@ -26,8 +27,8 @@
 #include "bat/ads/internal/prefs/pref_manager.h"
 #include "bat/ads/internal/resources/resource_manager.h"
 #include "bat/ads/internal/tabs/tab_manager.h"
-#include "bat/ads/internal/user_interaction/browsing/user_activity_manager.h"
 #include "bat/ads/internal/user_interaction/idle_detection/idle_detection_manager.h"
+#include "bat/ads/internal/user_interaction/user_activity/user_activity_manager.h"
 #include "brave/components/l10n/browser/locale_helper_mock.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -44,7 +45,6 @@ constexpr char kDatabaseFilename[] = "database.sqlite";
 constexpr char kDefaultLocale[] = "en-US";
 
 class Database;
-class NotificationAdManager;
 
 class UnitTestBase : public testing::Test {
  public:
@@ -136,7 +136,7 @@ class UnitTestBase : public testing::Test {
  private:
   void Initialize();
 
-  void InitializeMocks();
+  void SetDefaultMocks();
 
   void SetDefaultPrefs();
 

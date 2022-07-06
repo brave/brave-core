@@ -42,7 +42,9 @@ void MockIsBrowserInFullScreenMode(const std::unique_ptr<AdsClientMock>& mock,
 
 void MockShouldShowNotifications(const std::unique_ptr<AdsClientMock>& mock,
                                  const bool should_show);
-
+void MockCanShowBackgroundNotifications(
+    const std::unique_ptr<AdsClientMock>& mock,
+    const bool can_show);
 void MockShowNotification(const std::unique_ptr<AdsClientMock>& mock);
 void MockCloseNotification(const std::unique_ptr<AdsClientMock>& mock);
 

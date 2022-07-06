@@ -164,6 +164,13 @@ void MockShouldShowNotifications(const std::unique_ptr<AdsClientMock>& mock,
   ON_CALL(*mock, ShouldShowNotifications()).WillByDefault(Return(should_show));
 }
 
+void MockCanShowBackgroundNotifications(
+    const std::unique_ptr<AdsClientMock>& mock,
+    const bool can_show) {
+  ON_CALL(*mock, CanShowBackgroundNotifications())
+      .WillByDefault(Return(can_show));
+}
+
 void MockShowNotification(const std::unique_ptr<AdsClientMock>& mock) {
   ON_CALL(*mock, ShowNotification(_))
       .WillByDefault(Invoke([](const NotificationAdInfo& notification_ad) {

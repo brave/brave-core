@@ -12,6 +12,8 @@ namespace ads {
 
 struct CreativeNotificationAdInfo;
 
+void SaveCreativeAds(const CreativeNotificationAdList& creative_ads);
+
 CreativeNotificationAdList BuildCreativeNotificationAds(const int count);
 CreativeNotificationAdInfo BuildCreativeNotificationAd();
 

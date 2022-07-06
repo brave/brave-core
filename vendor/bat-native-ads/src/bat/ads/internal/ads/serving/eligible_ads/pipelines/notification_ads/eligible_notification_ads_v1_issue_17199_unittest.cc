@@ -43,8 +43,9 @@ TEST_F(BatAdsEligibleNotificationAdsV1Issue17199Test, GetEligibleAds) {
 
   eligible_ads.GetForUserModel(
       targeting::BuildUserModel({"technology & computing-computing"}, {}, {}),
-      [](const bool success, const CreativeNotificationAdList& creative_ads) {
-        EXPECT_TRUE(success);
+      [](const bool had_opportunity,
+         const CreativeNotificationAdList& creative_ads) {
+        EXPECT_TRUE(had_opportunity);
         EXPECT_FALSE(creative_ads.empty());
       });
 

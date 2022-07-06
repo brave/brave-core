@@ -6,9 +6,7 @@
 #include "bat/ads/internal/creatives/creative_ads_database_table.h"
 
 #include <algorithm>
-#include <functional>
 #include <map>
-#include <string>
 #include <utility>
 
 #include "base/check.h"
