@@ -239,8 +239,6 @@ public class BytecodeTest {
                 "org/chromium/chrome/browser/partnerbookmarks/BravePartnerBookmarksDelegateImpl"));
         Assert.assertTrue(classExists(
                 "org/chromium/chrome/browser/share/send_tab_to_self/ManageAccountDevicesLinkView"));
-        Assert.assertTrue(classExists(
-                "org/chromium/chrome/browser/share/send_tab_to_self/BraveDevicePickerBottomSheetContent"));
         Assert.assertTrue(
                 classExists("org/chromium/chrome/browser/dom_distiller/ReaderModeManager"));
         Assert.assertTrue(
