@@ -161,3 +161,45 @@ extension BraveSyncAPI {
     }
   }
 }
+
+extension BraveSyncAPI.QrCodeDataValidationResult {
+  var errorDescription: String {
+    switch self {
+    case .valid:
+      return ""
+    case .notWellFormed:
+      return Strings.invalidSyncCodeDescription
+    case .versionDeprecated:
+      return Strings.syncDeprecatedVersionError
+    case .expired:
+      return Strings.syncExpiredError
+    case .validForTooLong:
+      return Strings.syncValidForTooLongError
+    default:
+      assertionFailure("Invalid Error Description")
+      return Strings.invalidSyncCodeDescription
+    }
+  }
+}
+
+extension BraveSyncAPI.WordsValidationStatus {
+  var errorDescription: String {
+    switch self {
+    case .valid:
+      return ""
+    case .notValidPureWords:
+      return Strings.invalidSyncCodeDescription
+    case .versionDeprecated:
+      return Strings.syncDeprecatedVersionError
+    case .expired:
+      return Strings.syncExpiredError
+    case .validForTooLong:
+      return Strings.syncValidForTooLongError
+    case .wrongWordsNumber:
+      return Strings.notEnoughWordsDescription
+    default:
+      assertionFailure("Invalid Error Description")
+      return Strings.invalidSyncCodeDescription
+    }
+  }
+}

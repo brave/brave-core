@@ -193,59 +193,21 @@ class SyncPairCameraViewController: SyncViewController {
       present(alert, animated: true)
       return
     }
-
-    // QR Code (Unversioned - Version #1)
-    if data.filter(\.isHexDigit).count == data.count {
-      if Date().timeIntervalSince1970 >= TimeInterval(BraveSyncQRCodeModel.sunsetDate) {
-        // Insecure version (Past the Sunset Date)
-        cameraView.cameraOverlayError()
-        showErrorAlert(error: .insecure)
-      } else if syncAPI.isValidSyncCode(syncAPI.syncCode(fromHexSeed: data)) {
-        // Valid Hex Code
-        cameraView.cameraOverlaySuccess()
-        self.delegate?.syncOnScannedHexCode(self, hexCode: data)
-      } else {
-        // Invalid Hex Code
-        cameraView.cameraOverlayError()
-        showErrorAlert(error: .invalidFormat)
-      }
-      return
-    }
-
-    // QR Code (Versioned - Version #2+)
-    guard let model = BraveSyncQRCodeModel.from(string: data) else {
+    
+    let wordsValidation = syncAPI.getQRCodeValidationResult(data)
+    if wordsValidation == .valid {
+      // Sync code is valid
+      delegate?.syncOnScannedHexCode(self, hexCode: syncAPI.getHexSeed(fromQrCodeJson: data))
+    } else {
       cameraView.cameraOverlayError()
-      showErrorAlert(error: .invalidFormat)
-      return
+      showErrorAlert(message: wordsValidation.errorDescription)
     }
-
-    // Validation
-    let errorCode = model.validate(syncAPI: syncAPI)
-    if errorCode != .none {
-      cameraView.cameraOverlayError()
-      showErrorAlert(error: errorCode)
-      return
-    }
-
-    // Sync code is valid
-    delegate?.syncOnScannedHexCode(self, hexCode: model.syncHexCode)
   }
 
-  private func showErrorAlert(error: BraveSyncQRCodeError) {
-    let errorMessage = { (error: BraveSyncQRCodeError) -> String in
-      switch error {
-      case .insecure: return Strings.syncInsecureVersionError
-      case .newerVersion: return Strings.syncNewerVersionError
-      case .invalidFormat: return Strings.syncInvalidVersionError
-      case .expired: return Strings.syncExpiredError
-      case .futureDate: return Strings.syncFutureVersionError
-      default: return Strings.syncGenericError
-      }
-    }
-
+  private func showErrorAlert(message: String) {
     let alert = UIAlertController(
       title: Strings.syncUnableCreateGroup,
-      message: errorMessage(error),
+      message: message,
       preferredStyle: .alert)
 
     alert.addAction(

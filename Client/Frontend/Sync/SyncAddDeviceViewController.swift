@@ -107,7 +107,7 @@ class SyncAddDeviceViewController: SyncViewController {
       make.size.equalTo(barcodeSize)
     }
 
-    self.codewordsView.text = syncAPI.getSyncCode()
+    self.codewordsView.text = syncAPI.getTimeLimitedWords(fromWords: syncAPI.getSyncCode())
     self.setupVisuals()
   }
   

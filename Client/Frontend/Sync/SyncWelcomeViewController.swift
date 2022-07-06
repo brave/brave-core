@@ -281,6 +281,5 @@ extension SyncWelcomeViewController: SyncPairControllerDelegate {
     syncAPI.joinSyncGroup(codeWords: codeWords, syncProfileService: syncProfileServices)
     syncAPI.requestSync()
     syncAPI.setSetupComplete()
-
   }
 }

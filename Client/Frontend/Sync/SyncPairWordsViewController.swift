@@ -184,10 +184,9 @@ class SyncPairWordsViewController: SyncViewController {
       self.present(alert, animated: true, completion: nil)
     }
 
-    let codes = self.codewordsView.codeWords()
-
-    // Maybe temporary validation, sync server has issues without this validation
-    if codes.count < BraveSyncAPI.seedByteLength / 2 {
+    let codes = self.codewordsView.codeWords().joined(separator: " ")
+    let syncCodeValidation = syncAPI.getWordsValidationResult(codes)
+    if syncCodeValidation == .wrongWordsNumber {
       alert(title: Strings.notEnoughWordsTitle, message: Strings.notEnoughWordsDescription)
       return
     }
@@ -203,10 +202,11 @@ class SyncPairWordsViewController: SyncViewController {
         alert()
       })
 
-    if syncAPI.isValidSyncCode(codes.joined(separator: " ")) {
-      delegate?.syncOnWordsEntered(self, codeWords: codes.joined(separator: " "))
+    if syncCodeValidation == .valid {
+      let words = syncAPI.getWordsFromTimeLimitedWords(codes)
+      delegate?.syncOnWordsEntered(self, codeWords: words)
     } else {
-      alert(message: Strings.invalidSyncCodeDescription)
+      alert(message: syncCodeValidation.errorDescription)
       disableNavigationPrevention()
     }
 

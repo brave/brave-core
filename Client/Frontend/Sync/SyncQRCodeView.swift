@@ -11,33 +11,12 @@ class SyncQRCodeView: UIImageView {
 
     contentMode = .scaleAspectFill
 
-    let json: String? = {
-      let hexCode = syncApi.hexSeed(fromSyncCode: syncApi.getSyncCode())
-      if hexCode.isEmpty {
-        return nil
-      }
-
-      // Typically QR Codes use isoLatin1, but it doesn't matter here
-      // as we're not encoding any special characters
-      guard let syncCodeString = BraveSyncQRCodeModel(syncHexCode: hexCode).jsonString,
-        !syncCodeString.isEmpty
-      else {
-        return nil
-      }
-      
-      return syncCodeString
-    }()
-    
-    guard let json = json else {
-      image = nil
-      return
-    }
-
-    let result = QRCodeGenerator().generateQRCode(.init(data: json,
-                                                        shouldRender: true,
-                                                        renderLogoInCenter: true,
-                                                        renderModuleStyle: .circles,
-                                                        renderLocatorStyle: .rounded))
+    let json = syncApi.qrCodeJson(fromHexSeed: syncApi.hexSeed(fromSyncCode: syncApi.getSyncCode()))
+    let result = QRCodeGenerator().generateQRCode(QRCodeGenerator.Options(data: json,
+                                                                          shouldRender: true,
+                                                                          renderLogoInCenter: true,
+                                                                          renderModuleStyle: .circles,
+                                                                          renderLocatorStyle: .rounded))
     image = result.image ?? getQRCodeImage(json, size: CGSize(width: barcodeSize, height: barcodeSize))
   }
 
