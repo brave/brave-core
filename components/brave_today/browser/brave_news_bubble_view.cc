@@ -9,6 +9,7 @@
 
 #include "base/bind.h"
 #include "base/callback_helpers.h"
+#include "base/memory/weak_ptr.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/task/task_runner.h"
 #include "base/threading/sequenced_task_runner_handle.h"
@@ -37,13 +38,16 @@
 #include "ui/views/style/typography.h"
 #include "ui/views/view.h"
 #include "ui/views/view_class_properties.h"
+#include "ui/views/widget/widget.h"
 
 // static
-void BraveNewsBubbleView::Show(views::View* anchor,
-                               content::WebContents* contents) {
-  views::BubbleDialogDelegateView::CreateBubble(
-      std::make_unique<BraveNewsBubbleView>(anchor, contents))
-      ->Show();
+base::WeakPtr<views::Widget> BraveNewsBubbleView::Show(
+    views::View* anchor,
+    content::WebContents* contents) {
+  auto* widget = views::BubbleDialogDelegateView::CreateBubble(
+      std::make_unique<BraveNewsBubbleView>(anchor, contents));
+  widget->Show();
+  return widget->GetWeakPtr();
 }
 
 class BraveNewsFeedRow : public views::View,
@@ -78,9 +82,7 @@ class BraveNewsFeedRow : public views::View,
     Update();
   }
 
-  ~BraveNewsFeedRow() override {
-    tab_helper_->RemoveObserver(this);
-  }
+  ~BraveNewsFeedRow() override { tab_helper_->RemoveObserver(this); }
 
   void Update() {
     DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
@@ -91,8 +93,8 @@ class BraveNewsFeedRow : public views::View,
     }
 
     auto is_subscribed = tab_helper->is_subscribed(feed_details_);
-    subscribe_button_->SetText(is_subscribed ? u"Unsubscribe" :
-    u"Subscribe"); subscribe_button_->SetProminent(!is_subscribed);
+    subscribe_button_->SetText(is_subscribed ? u"Unsubscribe" : u"Subscribe");
+    subscribe_button_->SetProminent(!is_subscribed);
   }
 
   void OnAvailableFeedsChanged(
@@ -100,9 +102,7 @@ class BraveNewsFeedRow : public views::View,
     Update();
   }
 
-  void OnPressed() {
-    tab_helper_->ToggleSubscription(feed_details_);
-  }
+  void OnPressed() { tab_helper_->ToggleSubscription(feed_details_); }
 
  private:
   raw_ptr<views::MdTextButton> subscribe_button_ = nullptr;

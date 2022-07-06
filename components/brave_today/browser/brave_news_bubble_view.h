@@ -13,9 +13,10 @@
 #include "ui/views/bubble/bubble_dialog_delegate_view.h"
 #include "ui/views/controls/label.h"
 #include "ui/views/view.h"
+#include "ui/views/widget/widget.h"
 class BraveNewsBubbleView : public views::BubbleDialogDelegateView {
  public:
-  static void Show(views::View* anchor, content::WebContents* contents);
+  static base::WeakPtr<views::Widget> Show(views::View* anchor, content::WebContents* contents);
 
   METADATA_HEADER(BraveNewsBubbleView);
   explicit BraveNewsBubbleView(views::View* action_view,

@@ -13,6 +13,7 @@
 #include "brave/components/brave_today/common/brave_news.mojom-forward.h"
 #include "content/public/browser/web_contents_observer.h"
 #include "content/public/browser/web_contents_user_data.h"
+#include "ui/views/widget/widget.h"
 
 class Page;
 

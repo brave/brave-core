@@ -47,6 +47,8 @@ class BraveTodayActionView : public views::LabelButton,
 
   Profile* profile_;
   TabStripModel* tab_strip_;
+  base::WeakPtr<views::Widget> bubble_widget_;
+
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_BRAVE_ACTIONS_BRAVE_TODAY_ACTION_VIEW_H_
