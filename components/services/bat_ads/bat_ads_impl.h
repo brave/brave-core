@@ -87,8 +87,7 @@ class BatAdsImpl :
       const std::string& placement_id,
       const ads::mojom::NotificationAdEventType event_type) override;
 
-  void GetNewTabPageAd(GetNewTabPageAdCallback callback) override;
-
+  void MaybeServeNewTabPageAd(MaybeServeNewTabPageAdCallback callback) override;
   void TriggerNewTabPageAdEvent(
       const std::string& placement_id,
       const std::string& creative_instance_id,
@@ -99,8 +98,9 @@ class BatAdsImpl :
       const std::string& creative_instance_id,
       const ads::mojom::PromotedContentAdEventType event_type) override;
 
-  void GetInlineContentAd(const std::string& dimensions,
-                          GetInlineContentAdCallback callback) override;
+  void MaybeServeInlineContentAd(
+      const std::string& dimensions,
+      MaybeServeInlineContentAdCallback callback) override;
   void TriggerInlineContentAdEvent(
       const std::string& placement_id,
       const std::string& creative_instance_id,
@@ -179,13 +179,13 @@ class BatAdsImpl :
     static void OnShutdown(CallbackHolder<ShutdownCallback>* holder,
                            const bool success);
 
-    static void OnGetNewTabPageAd(
-        CallbackHolder<GetNewTabPageAdCallback>* holder,
+    static void OnMaybeServeNewTabPageAd(
+        CallbackHolder<MaybeServeNewTabPageAdCallback>* holder,
         const bool success,
         const ads::NewTabPageAdInfo& ad);
 
-    static void OnGetInlineContentAd(
-        CallbackHolder<GetInlineContentAdCallback>* holder,
+    static void OnMaybeServeInlineContentAd(
+        CallbackHolder<MaybeServeInlineContentAdCallback>* holder,
         const bool success,
         const std::string& dimensions,
         const ads::InlineContentAdInfo& ad);

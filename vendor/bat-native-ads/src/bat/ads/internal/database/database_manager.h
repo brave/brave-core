@@ -41,6 +41,7 @@ class DatabaseManager final {
                                 const int to_version) const;
   void NotifyFailedToMigrateDatabase(const int from_version,
                                      const int to_version) const;
+  void NotifyDatabaseIsReady() const;
 
   base::ObserverList<DatabaseManagerObserver> observers_;
 };

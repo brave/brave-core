@@ -141,13 +141,14 @@ void BatAdsImpl::TriggerNotificationAdEvent(
   ads_->TriggerNotificationAdEvent(placement_id, event_type);
 }
 
-void BatAdsImpl::GetNewTabPageAd(GetNewTabPageAdCallback callback) {
-  auto* holder = new CallbackHolder<GetNewTabPageAdCallback>(
+void BatAdsImpl::MaybeServeNewTabPageAd(
+    MaybeServeNewTabPageAdCallback callback) {
+  auto* holder = new CallbackHolder<MaybeServeNewTabPageAdCallback>(
       AsWeakPtr(), std::move(callback));
 
-  auto get_new_tab_page_ad_callback =
-      std::bind(BatAdsImpl::OnGetNewTabPageAd, holder, _1, _2);
-  ads_->GetNewTabPageAd(get_new_tab_page_ad_callback);
+  auto maybe_serve_new_tab_page_ad_callback =
+      std::bind(BatAdsImpl::OnMaybeServeNewTabPageAd, holder, _1, _2);
+  ads_->MaybeServeNewTabPageAd(maybe_serve_new_tab_page_ad_callback);
 }
 
 void BatAdsImpl::TriggerNewTabPageAdEvent(
@@ -166,14 +167,16 @@ void BatAdsImpl::TriggerPromotedContentAdEvent(
                                       event_type);
 }
 
-void BatAdsImpl::GetInlineContentAd(const std::string& dimensions,
-                                    GetInlineContentAdCallback callback) {
-  auto* holder = new CallbackHolder<GetInlineContentAdCallback>(
+void BatAdsImpl::MaybeServeInlineContentAd(
+    const std::string& dimensions,
+    MaybeServeInlineContentAdCallback callback) {
+  auto* holder = new CallbackHolder<MaybeServeInlineContentAdCallback>(
       AsWeakPtr(), std::move(callback));
 
-  auto get_inline_content_ads_callback =
-      std::bind(BatAdsImpl::OnGetInlineContentAd, holder, _1, _2, _3);
-  ads_->GetInlineContentAd(dimensions, get_inline_content_ads_callback);
+  auto maybe_serve_inline_content_ads_callback =
+      std::bind(BatAdsImpl::OnMaybeServeInlineContentAd, holder, _1, _2, _3);
+  ads_->MaybeServeInlineContentAd(dimensions,
+                                  maybe_serve_inline_content_ads_callback);
 }
 
 void BatAdsImpl::TriggerInlineContentAdEvent(
@@ -331,8 +334,8 @@ void BatAdsImpl::OnShutdown(CallbackHolder<ShutdownCallback>* holder,
 }
 
 // static
-void BatAdsImpl::OnGetNewTabPageAd(
-    CallbackHolder<GetNewTabPageAdCallback>* holder,
+void BatAdsImpl::OnMaybeServeNewTabPageAd(
+    CallbackHolder<MaybeServeNewTabPageAdCallback>* holder,
     const bool success,
     const ads::NewTabPageAdInfo& ad) {
   DCHECK(holder);
@@ -343,8 +346,8 @@ void BatAdsImpl::OnGetNewTabPageAd(
   delete holder;
 }
 
-void BatAdsImpl::OnGetInlineContentAd(
-    CallbackHolder<GetInlineContentAdCallback>* holder,
+void BatAdsImpl::OnMaybeServeInlineContentAd(
+    CallbackHolder<MaybeServeInlineContentAdCallback>* holder,
     const bool success,
     const std::string& dimensions,
     const ads::InlineContentAdInfo& ad) {

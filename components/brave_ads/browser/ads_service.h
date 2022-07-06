@@ -49,7 +49,7 @@ using OnToggleSavedAdCallback = base::OnceCallback<void(const std::string&)>;
 
 using OnToggleFlaggedAdCallback = base::OnceCallback<void(const std::string&)>;
 
-using OnGetInlineContentAdCallback = base::OnceCallback<
+using OnMaybeServeInlineContentAdCallback = base::OnceCallback<
     void(const bool, const std::string&, const base::DictionaryValue&)>;
 
 using TriggerSearchResultAdEventCallback =
@@ -132,6 +132,7 @@ class AdsService : public KeyedService {
 
   virtual void OnResourceComponentUpdated(const std::string& id) = 0;
 
+  virtual absl::optional<ads::NewTabPageAdInfo> GetPrefetchedNewTabPageAd() = 0;
   virtual void TriggerNewTabPageAdEvent(
       const std::string& placement_id,
       const std::string& creative_instance_id,
@@ -145,8 +146,9 @@ class AdsService : public KeyedService {
       const std::string& creative_instance_id,
       const ads::mojom::PromotedContentAdEventType event_type) = 0;
 
-  virtual void GetInlineContentAd(const std::string& dimensions,
-                                  OnGetInlineContentAdCallback callback) = 0;
+  virtual void MaybeServeInlineContentAd(
+      const std::string& dimensions,
+      OnMaybeServeInlineContentAdCallback callback) = 0;
   virtual void TriggerInlineContentAdEvent(
       const std::string& placement_id,
       const std::string& creative_instance_id,
@@ -156,8 +158,6 @@ class AdsService : public KeyedService {
       ads::mojom::SearchResultAdPtr ad_mojom,
       const ads::mojom::SearchResultAdEventType event_type,
       TriggerSearchResultAdEventCallback callback) = 0;
-
-  virtual absl::optional<ads::NewTabPageAdInfo> GetPrefetchedNewTabPageAd() = 0;
 
   virtual void PurgeOrphanedAdEventsForType(
       const ads::mojom::AdType ad_type,

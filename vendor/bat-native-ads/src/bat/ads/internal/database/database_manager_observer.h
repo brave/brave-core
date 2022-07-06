@@ -33,6 +33,9 @@ class DatabaseManagerObserver : public base::CheckedObserver {
   virtual void OnFailedToMigrateDatabase(const int from_version,
                                          const int to_version) {}
 
+  // Invoked when the database was created or opened and migrated.
+  virtual void OnDatabaseIsReady() {}
+
  protected:
   ~DatabaseManagerObserver() override = default;
 };
