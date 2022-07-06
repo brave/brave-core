@@ -85,6 +85,7 @@ BraveNewsController::BraveNewsController(
                        &api_request_helper_),
       weak_ptr_factory_(this) {
   DCHECK(prefs);
+  LOG(ERROR) << "Constructing new controller";
   // Set up preference listeners
   pref_change_registrar_.Init(prefs);
   pref_change_registrar_.Add(
@@ -116,6 +117,7 @@ void BraveNewsController::ClearHistory() {
 
 mojo::PendingRemote<mojom::BraveNewsController>
 BraveNewsController::MakeRemote() {
+  LOG(ERROR) << "Made remote";
   mojo::PendingRemote<mojom::BraveNewsController> remote;
   receivers_.Add(this, remote.InitWithNewPipeAndPassReceiver());
   return remote;
@@ -137,7 +139,7 @@ void BraveNewsController::FindFeeds(const GURL& possible_feed_or_site_url,
 
 void BraveNewsController::SubscribeToNewDirectFeed(
     const GURL& feed_url,
-    SubscribeToNewDire ctFeedCallback callback) {
+    SubscribeToNewDirectFeedCallback callback) {
   // Verify the url points at a valid feed
   VLOG(1) << "SubscribeToNewDirectFeed: " << feed_url.spec();
   if (!feed_url.is_valid()) {

@@ -40,16 +40,19 @@ bool ParseCombinedPublisherList(const std::string& json,
     publisher->publisher_name = *publisher_raw.FindStringKey("publisher_name");
     publisher->category_name = *publisher_raw.FindStringKey("category");
     publisher->is_enabled = publisher_raw.FindBoolKey("enabled").value_or(true);
+    GURL feed_source(*publisher_raw.FindStringKey("feed_url"));
+    if (feed_source.is_valid()) {
+      publisher->feed_source = feed_source;
+    }
 
-    std::string site_url_raw =  *publisher_raw.FindStringKey("site_url");
+    std::string site_url_raw = *publisher_raw.FindStringKey("site_url");
     if (!base::StartsWith(site_url_raw, "https://")) {
       site_url_raw = "https://" + site_url_raw;
     }
     GURL site_url(site_url_raw);
     if (!site_url.is_valid()) {
       LOG(ERROR) << "Found invalid site url for Brave News publisher "
-                 << publisher->publisher_name
-                 << "(was " << site_url_raw << ")";
+                 << publisher->publisher_name << "(was " << site_url_raw << ")";
       continue;
     }
     publisher->site_url = site_url;
@@ -72,7 +75,7 @@ void ParseDirectPublisherList(const base::Value* direct_feeds_pref_value,
     }
     VLOG(1) << "Found direct feed in prefs: " << kv.first;
     const auto& value = kv.second;
-    
+
     GURL feed_source(
         *value.FindStringKey(prefs::kBraveTodayDirectFeedsKeySource));
     if (!feed_source.is_valid()) {

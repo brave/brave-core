@@ -14,6 +14,7 @@
 #include "brave/components/brave_today/common/pref_names.h"
 #include "chrome/browser/profiles/profile.h"
 #include "content/public/browser/browser_context.h"
+#include "content/public/browser/browser_thread.h"
 #include "content/public/browser/web_contents.h"
 #include "ui/accessibility/ax_enums.mojom-shared.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
@@ -43,13 +44,15 @@ void BraveNewsBubbleView::Show(views::View* anchor,
       ->Show();
 }
 
-class BraveNewsFeedRow : public views::View {
+class BraveNewsFeedRow : public views::View,
+                         public BraveNewsTabHelper::PageFeedsObserver {
  public:
   explicit BraveNewsFeedRow(BraveNewsTabHelper::FeedDetails details,
                             content::WebContents* contents)
-      : contents_(contents) {
+      : feed_details_(details), contents_(contents) {
     DCHECK(contents_);
     tab_helper_ = BraveNewsTabHelper::FromWebContents(contents);
+    tab_helper_->AddObserver(this);
 
     auto* const layout =
         SetLayoutManager(std::make_unique<views::FlexLayout>());
@@ -65,19 +68,49 @@ class BraveNewsFeedRow : public views::View {
         views::FlexSpecification(views::MinimumFlexSizeRule::kScaleToMinimum,
                                  views::MaximumFlexSizeRule::kUnbounded));
 
-    bool is_subscribed = tab_helper_->is_subscribed(details);
-    auto* button = AddChildView(std::make_unique<views::MdTextButton>(
+    subscribe_button_ = AddChildView(std::make_unique<views::MdTextButton>(
         base::BindRepeating(&BraveNewsFeedRow::OnPressed,
                             base::Unretained(this)),
-        is_subscribed ? u"Unsubscribe" : u"Subscribe"));
-    button->SetProminent(!is_subscribed);
+        u""));
+    Update();
   }
 
-  ~BraveNewsFeedRow() override = default;
+  ~BraveNewsFeedRow() override {
+    DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
+    LOG(ERROR) << "Destroyed feed row" << feed_details_.title;
+    tab_helper_->RemoveObserver(this);
+  }
 
-  void OnPressed() { LOG(ERROR) << "Pressed the button"; }
+  void Update() {
+    DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
+
+    LOG(ERROR) << "Before Update " << feed_details_.title;
+    auto* tab_helper = BraveNewsTabHelper::FromWebContents(contents_);
+    if (!tab_helper) {
+      LOG(ERROR) << "Bailed..?";
+      return;
+    }
+    bool is_subscribed = tab_helper->is_subscribed(feed_details_);
+    subscribe_button_->SetText(is_subscribed ? u"Unsubscribe" : u"Subscribe");
+    subscribe_button_->SetProminent(!is_subscribed);
+    LOG(ERROR) << "After Update " << feed_details_.title;
+  }
+
+  void OnAvailableFeedsChanged(
+      const std::vector<BraveNewsTabHelper::FeedDetails>& feeds) override {
+    Update();
+  }
+
+  void OnPressed() {
+    LOG(ERROR) << "Before press";
+    tab_helper_->ToggleSubscription(feed_details_);
+    LOG(ERROR) << "After press";
+  }
 
  private:
+  raw_ptr<views::MdTextButton> subscribe_button_ = nullptr;
+
+  BraveNewsTabHelper::FeedDetails feed_details_;
   raw_ptr<content::WebContents> contents_;
   raw_ptr<BraveNewsTabHelper> tab_helper_;
 };
@@ -107,7 +140,8 @@ BraveNewsBubbleView::BraveNewsBubbleView(views::View* action_view,
 
   auto* tab_helper = BraveNewsTabHelper::FromWebContents(contents);
   for (const auto& feed_item : tab_helper->available_feeds()) {
-    auto* child = AddChildView(std::make_unique<BraveNewsFeedRow>(feed_item));
+    auto* child =
+        AddChildView(std::make_unique<BraveNewsFeedRow>(feed_item, contents));
     child->SetProperty(views::kMarginsKey, gfx::Insets::TLBR(10, 0, 0, 0));
   }
 
@@ -123,7 +157,10 @@ BraveNewsBubbleView::BraveNewsBubbleView(views::View* action_view,
                                views::MaximumFlexSizeRule::kPreferred));
 }
 
-BraveNewsBubbleView::~BraveNewsBubbleView() = default;
+BraveNewsBubbleView::~BraveNewsBubbleView() {
+  LOG(ERROR) << "Destroyed bubble";
+  RemoveAllChildViews();
+}
 
 void BraveNewsBubbleView::Update() {}
 

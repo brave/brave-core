@@ -50,6 +50,7 @@ BraveNewsTabHelper::BraveNewsTabHelper(content::WebContents* contents)
 }
 
 BraveNewsTabHelper::~BraveNewsTabHelper() {
+  LOG(ERROR) << "Destroyed!";
   controller_->publisher_controller()->RemoveObserver(this);
 }
 
@@ -81,7 +82,6 @@ void BraveNewsTabHelper::ToggleSubscription(const FeedDetails& feed_details) {
         feed_details.publisher_id,
         subscribed ? brave_news::mojom::UserEnabled::DISABLED
                    : brave_news::mojom::UserEnabled::ENABLED);
-    AvailableFeedsChanged();
   } else if (!subscribed) {
     controller_->SubscribeToNewDirectFeed(feed_details.feed_url,
                                           base::DoNothing());
@@ -114,9 +114,10 @@ void BraveNewsTabHelper::OnFoundFeeds(
         {feed->feed_url, publisher_id, feed->feed_title});
   }
 
-  content::GetUIThreadTaskRunner({})->PostTask(
-      FROM_HERE, base::BindOnce(&BraveNewsTabHelper::AvailableFeedsChanged,
-                                weak_ptr_factory_.GetWeakPtr()));
+AvailableFeedsChanged();
+  // content::GetUIThreadTaskRunner({})->PostTask(
+  //     FROM_HERE, base::BindOnce(&BraveNewsTabHelper::AvailableFeedsChanged,
+  //                               weak_ptr_factory_.GetWeakPtr()));
 }
 
 void BraveNewsTabHelper::AddObserver(PageFeedsObserver* observer) {
@@ -129,11 +130,11 @@ void BraveNewsTabHelper::RemoveObserver(PageFeedsObserver* observer) {
 
 void BraveNewsTabHelper::AvailableFeedsChanged() {
   for (auto* observer : observers_)
-    observer->OnAvailableFeedsChanged(available_feeds_);
+    observer->OnAvailableFeedsChanged(available_feeds());
 
-  for (const auto& feed : available_feeds_)
-    LOG(ERROR) << "Feed: " << feed.title << ", URL: " << feed.feed_url
-               << ", Id: " << feed.publisher_id;
+  // for (const auto& feed : available_feeds_)
+  //   LOG(ERROR) << "Feed: " << feed.title << ", URL: " << feed.feed_url
+  //              << ", Id: " << feed.publisher_id;
 }
 
 void BraveNewsTabHelper::PrimaryPageChanged(content::Page& page) {
@@ -155,14 +156,13 @@ void BraveNewsTabHelper::PrimaryPageChanged(content::Page& page) {
   }
 
 #if BUILDFLAG(ENABLE_FEED_V2)
-  auto callback = base::BindOnce(&BraveNewsTabHelper::OnReceivedRssUrls,
-                                 weak_ptr_factory_.GetWeakPtr(),
-                                 contents->GetLastCommittedURL());
-  base::SequencedTaskRunnerHandle::Get()->PostTask(FROM_HERE,
-  base::BindOnce(&feed::FetchRssLinks,
-                                            contents->GetLastCommittedURL(),
-                                            contents,
-                                            std::move(callback)));
+  // auto callback = base::BindOnce(&BraveNewsTabHelper::OnReceivedRssUrls,
+  //                                weak_ptr_factory_.GetWeakPtr(),
+  //                                contents->GetLastCommittedURL());
+  // base::SequencedTaskRunnerHandle::Get()->PostTask(
+  //     FROM_HERE,
+  //     base::BindOnce(&feed::FetchRssLinks, contents->GetLastCommittedURL(),
+  //                    contents, std::move(callback)));
 #endif
 
   AvailableFeedsChanged();
@@ -170,6 +170,7 @@ void BraveNewsTabHelper::PrimaryPageChanged(content::Page& page) {
 
 void BraveNewsTabHelper::OnPublishersUpdated(
     brave_news::PublishersController*) {
+  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   AvailableFeedsChanged();
 }
 
