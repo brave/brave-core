@@ -164,8 +164,5 @@ void BraveTodayActionView::ToggleSubscribed() {
   if (tab_helper->available_feeds().empty())
     return;
 
-  // auto default_feed = tab_helper->available_feeds()[0];
-  // tab_helper->ToggleSubscription(default_feed);
-
   BraveNewsBubbleView::Show(this, tab_strip_->GetActiveWebContents());
 }

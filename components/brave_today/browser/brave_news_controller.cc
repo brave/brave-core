@@ -85,7 +85,6 @@ BraveNewsController::BraveNewsController(
                        &api_request_helper_),
       weak_ptr_factory_(this) {
   DCHECK(prefs);
-  LOG(ERROR) << "Constructing new controller";
   // Set up preference listeners
   pref_change_registrar_.Init(prefs);
   pref_change_registrar_.Add(

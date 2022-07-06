@@ -10,6 +10,8 @@
 #include "base/bind.h"
 #include "base/callback_helpers.h"
 #include "base/strings/utf_string_conversions.h"
+#include "base/task/task_runner.h"
+#include "base/threading/sequenced_task_runner_handle.h"
 #include "brave/components/brave_today/browser/brave_news_tab_helper.h"
 #include "brave/components/brave_today/common/pref_names.h"
 #include "chrome/browser/profiles/profile.h"
@@ -72,6 +74,7 @@ class BraveNewsFeedRow : public views::View,
         base::BindRepeating(&BraveNewsFeedRow::OnPressed,
                             base::Unretained(this)),
         u""));
+
     Update();
   }
 
@@ -90,10 +93,10 @@ class BraveNewsFeedRow : public views::View,
       LOG(ERROR) << "Bailed..?";
       return;
     }
-    bool is_subscribed = tab_helper->is_subscribed(feed_details_);
-    subscribe_button_->SetText(is_subscribed ? u"Unsubscribe" : u"Subscribe");
-    subscribe_button_->SetProminent(!is_subscribed);
-    LOG(ERROR) << "After Update " << feed_details_.title;
+
+    auto is_subscribed = tab_helper->is_subscribed(feed_details_);
+    subscribe_button_->SetText(is_subscribed ? u"Unsubscribe" :
+    u"Subscribe"); subscribe_button_->SetProminent(!is_subscribed);
   }
 
   void OnAvailableFeedsChanged(
@@ -102,9 +105,7 @@ class BraveNewsFeedRow : public views::View,
   }
 
   void OnPressed() {
-    LOG(ERROR) << "Before press";
     tab_helper_->ToggleSubscription(feed_details_);
-    LOG(ERROR) << "After press";
   }
 
  private:

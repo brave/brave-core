@@ -114,10 +114,7 @@ void BraveNewsTabHelper::OnFoundFeeds(
         {feed->feed_url, publisher_id, feed->feed_title});
   }
 
-AvailableFeedsChanged();
-  // content::GetUIThreadTaskRunner({})->PostTask(
-  //     FROM_HERE, base::BindOnce(&BraveNewsTabHelper::AvailableFeedsChanged,
-  //                               weak_ptr_factory_.GetWeakPtr()));
+  AvailableFeedsChanged();
 }
 
 void BraveNewsTabHelper::AddObserver(PageFeedsObserver* observer) {
@@ -125,16 +122,12 @@ void BraveNewsTabHelper::AddObserver(PageFeedsObserver* observer) {
 }
 
 void BraveNewsTabHelper::RemoveObserver(PageFeedsObserver* observer) {
-  std::ignore = std::remove(observers_.begin(), observers_.end(), observer);
+  observers_.erase(std::find(observers_.begin(), observers_.end(), observer));
 }
 
 void BraveNewsTabHelper::AvailableFeedsChanged() {
   for (auto* observer : observers_)
     observer->OnAvailableFeedsChanged(available_feeds());
-
-  // for (const auto& feed : available_feeds_)
-  //   LOG(ERROR) << "Feed: " << feed.title << ", URL: " << feed.feed_url
-  //              << ", Id: " << feed.publisher_id;
 }
 
 void BraveNewsTabHelper::PrimaryPageChanged(content::Page& page) {
@@ -156,13 +149,13 @@ void BraveNewsTabHelper::PrimaryPageChanged(content::Page& page) {
   }
 
 #if BUILDFLAG(ENABLE_FEED_V2)
-  // auto callback = base::BindOnce(&BraveNewsTabHelper::OnReceivedRssUrls,
-  //                                weak_ptr_factory_.GetWeakPtr(),
-  //                                contents->GetLastCommittedURL());
-  // base::SequencedTaskRunnerHandle::Get()->PostTask(
-  //     FROM_HERE,
-  //     base::BindOnce(&feed::FetchRssLinks, contents->GetLastCommittedURL(),
-  //                    contents, std::move(callback)));
+  auto callback = base::BindOnce(&BraveNewsTabHelper::OnReceivedRssUrls,
+                                 weak_ptr_factory_.GetWeakPtr(),
+                                 contents->GetLastCommittedURL());
+  base::SequencedTaskRunnerHandle::Get()->PostTask(
+      FROM_HERE,
+      base::BindOnce(&feed::FetchRssLinks, contents->GetLastCommittedURL(),
+                     contents, std::move(callback)));
 #endif
 
   AvailableFeedsChanged();
