@@ -87,6 +87,7 @@ export const ConnectedPanel = (props: Props) => {
 
   // state
   const [showMore, setShowMore] = React.useState<boolean>(false)
+  const [isSolanaConnected, setIsSolanaConnected] = React.useState<boolean>(false)
 
   // custom hooks
   const { computeFiatAmount } = usePricing(spotPrices)
@@ -123,6 +124,15 @@ export const ConnectedPanel = (props: Props) => {
     dispatch(PanelActions.openWalletSettings())
   }
 
+  // effects
+  React.useEffect(() => {
+    if (selectedCoin === BraveWallet.CoinType.SOL) {
+      isSolanaAccountConnected(selectedAccount)
+        .then(result => setIsSolanaConnected(result))
+        .catch(e => console.log(e))
+    }
+  }, [selectedAccount, selectedCoin, isSolanaAccountConnected])
+
   // memos
   const bg = React.useMemo(() => {
     return background({ seed: selectedAccount.address.toLowerCase() })
@@ -142,14 +152,14 @@ export const ConnectedPanel = (props: Props) => {
 
   const isConnected = React.useMemo((): boolean => {
     if (selectedCoin === BraveWallet.CoinType.SOL) {
-      return isSolanaAccountConnected()
+      return isSolanaConnected
     }
     if (originInfo.originSpec === WalletOrigin) {
       return true
     } else {
       return connectedAccounts.some(account => account.address === selectedAccount.address)
     }
-  }, [connectedAccounts, selectedAccount, originInfo, selectedCoin, isSolanaAccountConnected])
+  }, [connectedAccounts, selectedAccount, originInfo, selectedCoin, isSolanaConnected])
 
   const connectedStatusText = React.useMemo((): string => {
     if (selectedCoin === BraveWallet.CoinType.SOL) {

@@ -13,7 +13,8 @@ import {
   PanelState,
   WalletState,
   HardwareInfo,
-  WalletRoutes
+  WalletRoutes,
+  WalletAccountType
 } from '../../constants/types'
 import {
   AccountPayloadType,
@@ -174,10 +175,10 @@ async function navigateToConnectHardwareWallet (store: Store) {
   await store.dispatch(PanelActions.setHardwareWalletInteractionError(undefined))
 }
 
-export function isSolanaAccountConnected (): boolean {
-  // Add logic for window.solana.isConnected here.
-  // const status = window.solana.isConnected
-  return true
+export async function isSolanaAccountConnected (selectedAccount: WalletAccountType): Promise<boolean> {
+  const apiProxy = getWalletPanelApiProxy()
+  const result = await apiProxy.panelHandler.isSolanaAccountConnected(selectedAccount.address)
+  return result.connected
 }
 
 handler.on(WalletActions.initialize.getType(), async (store) => {
