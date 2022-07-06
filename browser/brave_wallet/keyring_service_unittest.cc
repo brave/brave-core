@@ -15,6 +15,7 @@
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/brave_wallet/json_rpc_service_factory.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/fil_transaction.h"
 #include "brave/components/brave_wallet/browser/filecoin_keyring.h"
 #include "brave/components/brave_wallet/browser/hd_keyring.h"
@@ -475,6 +476,13 @@ class KeyringServiceUnitTest : public testing::Test {
     return success;
   }
 
+  static void UpdateNameForHardwareAccount(KeyringService* service,
+                                           const std::string& address,
+                                           const std::string& account_name,
+                                           mojom::CoinType coin) {
+    service->UpdateNameForHardwareAccountSync(address, account_name, coin);
+  }
+
   static bool AddFilecoinAccount(KeyringService* service,
                                  const std::string& account_name,
                                  const std::string& network) {
@@ -500,7 +508,8 @@ class KeyringServiceUnitTest : public testing::Test {
           imported_accounts[i].import_payload, imported_accounts[i].network);
       ASSERT_TRUE(address.has_value());
       EXPECT_EQ(address.value(), imported_accounts[i].address);
-
+      // ImportFilecoinAccount waits only until account is added,
+      // But there are still mojo tasks we need to wait
       base::RunLoop().RunUntilIdle();
       EXPECT_TRUE(service->IsKeyringCreated(keyring_id));
       if (i == 0) {
@@ -1241,7 +1250,8 @@ TEST_F(KeyringServiceUnitTest, LockAndUnlock) {
     ASSERT_NE(
         service.CreateKeyring(brave_wallet::mojom::kFilecoinKeyringId, "brave"),
         nullptr);
-    ASSERT_TRUE(AddAccount(&service, "FIL Account 1", mojom::CoinType::FIL));
+    ASSERT_TRUE(
+        AddFilecoinAccount(&service, "FIL Account 1", mojom::kFilecoinMainnet));
     ASSERT_NE(
         service.CreateKeyring(brave_wallet::mojom::kSolanaKeyringId, "brave"),
         nullptr);
@@ -1827,11 +1837,10 @@ TEST_F(KeyringServiceUnitTest, GetPrivateKeyForKeyringAccount) {
 }
 
 TEST_F(KeyringServiceUnitTest, GetMainKeyringIdForCoin) {
-  EXPECT_EQ(KeyringService::GetMainKeyringIdForCoin(mojom::CoinType::FIL),
-            mojom::kFilecoinKeyringId);
-  EXPECT_EQ(KeyringService::GetMainKeyringIdForCoin(mojom::CoinType::SOL),
+  EXPECT_FALSE(KeyringService::GetKeyringIdForCoinNonFIL(mojom::CoinType::FIL));
+  EXPECT_EQ(*KeyringService::GetKeyringIdForCoinNonFIL(mojom::CoinType::SOL),
             mojom::kSolanaKeyringId);
-  EXPECT_EQ(KeyringService::GetMainKeyringIdForCoin(mojom::CoinType::ETH),
+  EXPECT_EQ(*KeyringService::GetKeyringIdForCoinNonFIL(mojom::CoinType::ETH),
             mojom::kDefaultKeyringId);
 }
 
@@ -2100,7 +2109,10 @@ TEST_F(KeyringServiceUnitTest, HardwareAccounts) {
   EXPECT_TRUE(observer.AccountsChangedFired());
   observer.Reset();
   for (const auto& account : new_accounts) {
-    auto keyring_id = KeyringService::GetMainKeyringIdForCoin(account->coin);
+    auto keyring_id =
+        account->coin == mojom::CoinType::FIL
+            ? brave_wallet::GetFilecoinKeyringId(*account->network)
+            : *KeyringService::GetKeyringIdForCoinNonFIL(account->coin);
     auto path = keyring_id + ".hardware." + account->device_id +
                 ".account_metas." + account->address;
     ASSERT_TRUE(
@@ -2597,6 +2609,79 @@ TEST_F(KeyringServiceUnitTest, GetSetAutoLockMinutes) {
   EXPECT_EQ(kAutoLockMinutesMax, GetAutoLockMinutes(&service));
 }
 
+TEST_F(KeyringServiceUnitTest, UpdateNameForHardwareAccountSync) {
+  KeyringService service(json_rpc_service(), GetPrefs());
+
+  ASSERT_TRUE(CreateWallet(&service, "brave"));
+
+  std::vector<mojom::HardwareWalletAccountPtr> new_accounts;
+  new_accounts.push_back(mojom::HardwareWalletAccount::New(
+      "0x111", "m/44'/60'/1'/0/0", "name 1", "Ledger", "device1",
+      mojom::CoinType::ETH, absl::nullopt));
+  new_accounts.push_back(mojom::HardwareWalletAccount::New(
+      "0x264", "m/44'/461'/0'/0/0", "name 2", "Ledger", "device1",
+      mojom::CoinType::FIL, mojom::kFilecoinMainnet));
+  new_accounts.push_back(mojom::HardwareWalletAccount::New(
+      "0xEA0", "m/44'/60'/2'/0/0", "name 3", "Ledger", "device2",
+      mojom::CoinType::ETH, absl::nullopt));
+  new_accounts.push_back(mojom::HardwareWalletAccount::New(
+      "0xFIL", "m/44'/461'/2'/0/0", "filecoin 1", "Ledger", "device2",
+      mojom::CoinType::FIL, mojom::kFilecoinMainnet));
+  new_accounts.push_back(mojom::HardwareWalletAccount::New(
+      "0x222", "m/44'/60'/3'/0/0", "name 4", "Ledger", "device1",
+      mojom::CoinType::ETH, absl::nullopt));
+  new_accounts.push_back(mojom::HardwareWalletAccount::New(
+      "0xFILTEST", "m/44'/1'/2'/0/0", "filecoin testnet 1", "Ledger", "device2",
+      mojom::CoinType::FIL, mojom::kFilecoinTestnet));
+
+  service.AddHardwareAccounts(std::move(new_accounts));
+
+  UpdateNameForHardwareAccount(&service, "0x111", "name 1 changed",
+                               mojom::CoinType::ETH);
+  UpdateNameForHardwareAccount(&service, "0xFIL", "filecoin 1 changed",
+                               mojom::CoinType::FIL);
+  UpdateNameForHardwareAccount(&service, "0xFILTEST",
+                               "filecoin testnet 1 changed",
+                               mojom::CoinType::FIL);
+
+  {
+    base::RunLoop run_loop;
+    service.GetKeyringInfo(
+        mojom::kDefaultKeyringId,
+        base::BindLambdaForTesting([&](mojom::KeyringInfoPtr keyring_info) {
+          EXPECT_FALSE(keyring_info->account_infos[1]->address.empty());
+          EXPECT_EQ(keyring_info->account_infos[1]->name, "name 1 changed");
+          run_loop.Quit();
+        }));
+    run_loop.Run();
+  }
+
+  {
+    base::RunLoop run_loop;
+    service.GetKeyringInfo(
+        mojom::kFilecoinKeyringId,
+        base::BindLambdaForTesting([&](mojom::KeyringInfoPtr keyring_info) {
+          EXPECT_FALSE(keyring_info->account_infos[1]->address.empty());
+          EXPECT_EQ(keyring_info->account_infos[1]->name, "filecoin 1 changed");
+          run_loop.Quit();
+        }));
+    run_loop.Run();
+  }
+
+  {
+    base::RunLoop run_loop;
+    service.GetKeyringInfo(
+        mojom::kFilecoinTestnetKeyringId,
+        base::BindLambdaForTesting([&](mojom::KeyringInfoPtr keyring_info) {
+          EXPECT_FALSE(keyring_info->account_infos[0]->address.empty());
+          EXPECT_EQ(keyring_info->account_infos[0]->name,
+                    "filecoin testnet 1 changed");
+          run_loop.Quit();
+        }));
+    run_loop.Run();
+  }
+}
+
 TEST_F(KeyringServiceUnitTest, SetDefaultKeyringHardwareAccountName) {
   KeyringService service(json_rpc_service(), GetPrefs());
 
@@ -2780,9 +2865,11 @@ TEST_F(KeyringServiceUnitTest, AddFilecoinAccounts) {
   {
     ASSERT_TRUE(CreateWallet(&service, "brave"));
 #if BUILDFLAG(IS_ANDROID)
-    ASSERT_FALSE(AddAccount(&service, "FIL account1", mojom::CoinType::FIL));
+    ASSERT_FALSE(
+        AddFilecoinAccount(&service, "FIL account1", mojom::kFilecoinTestnet));
 #else
-    ASSERT_TRUE(AddAccount(&service, "FIL account1", mojom::CoinType::FIL));
+    ASSERT_TRUE(
+        AddFilecoinAccount(&service, "FIL account1", mojom::kFilecoinTestnet));
 #endif
     service.Reset();
   }

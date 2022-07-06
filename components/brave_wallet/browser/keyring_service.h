@@ -74,7 +74,8 @@ class KeyringService : public KeyedService, public mojom::KeyringService {
       const absl::optional<std::string> name,
       const absl::optional<std::string> address,
       const std::string& id);
-  static std::string GetMainKeyringIdForCoin(mojom::CoinType coin);
+  static absl::optional<std::string> GetKeyringIdForCoinNonFIL(
+      mojom::CoinType coin);
   static std::string GetAccountNameForKeyring(PrefService* prefs,
                                               const std::string& account_path,
                                               const std::string& id);
@@ -294,6 +295,7 @@ class KeyringService : public KeyedService, public mojom::KeyringService {
   friend class KeyringServiceAccountDiscoveryUnitTest;
   friend class EthTxManagerUnitTest;
   friend class FilTxManagerUnitTest;
+  friend class KeyringServiceUnitTest;
 
   absl::optional<std::string> FindImportedFilecoinKeyringId(
       const std::string& address) const;
