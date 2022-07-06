@@ -88,7 +88,7 @@ std::string GetSubscriberCredentialFromJson(const std::string& json) {
           json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
                     base::JSONParserOptions::JSON_PARSE_RFC);
   absl::optional<base::Value>& records_v = value_with_error.value;
-  if (!records_v && records_v->is_dict()) {
+  if (!records_v || !records_v->is_dict()) {
     VLOG(1) << __func__ << "Invalid response, could not parse JSON.";
     return "";
   }
