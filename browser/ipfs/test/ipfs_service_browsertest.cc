@@ -13,6 +13,7 @@
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/ipfs/ipfs_blob_context_getter_factory.h"
+#include "brave/browser/ipfs/ipfs_dns_resolver_impl.h"
 #include "brave/browser/ipfs/ipfs_service_factory.h"
 #include "brave/components/constants/brave_paths.h"
 #include "brave/components/ipfs/blob_context_getter_factory.h"
@@ -64,7 +65,8 @@ class FakeIpfsService : public ipfs::IpfsService {
                           std::move(blob_getter_factory),
                           updater,
                           user_dir,
-                          channel) {}
+                          channel,
+                          std::make_unique<ipfs::IpfsDnsResolverImpl>()) {}
   ~FakeIpfsService() override {}
 
   void LaunchDaemon(BoolCallback callback) override {

@@ -109,7 +109,6 @@ void IpfsServiceImpl::Launch(mojom::IpfsConfigPtr config,
 
   // Check if IPFS configs are ready, if not, run ipfs init to initialize them.
   base::FilePath config_path = config->config_path;
-
   if (base::PathExists(data_path.AppendASCII(kRepoLockFile))) {
     base::KillProcesses(config->binary_path.BaseName().value(), 1, nullptr);
     base::DeleteFile(data_path.AppendASCII(kRepoLockFile));
