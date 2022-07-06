@@ -557,7 +557,7 @@ void JSEthereumProvider::InjectInitScript(bool is_main_world) {
 
 void JSEthereumProvider::FireEvent(const std::string& event,
                                    base::Value event_args) {
-  base::Value args_list = base::Value(base::Value::Type::LIST);
+  base::Value::List args_list;
   args_list.Append(event);
   args_list.Append(std::move(event_args));
 
@@ -567,7 +567,7 @@ void JSEthereumProvider::FireEvent(const std::string& event,
       render_frame_->GetWebFrame()->MainWorldScriptContext();
 
   std::vector<v8::Local<v8::Value>> args;
-  for (auto const& argument : args_list.GetList()) {
+  for (auto const& argument : args_list) {
     args.push_back(
         content::V8ValueConverter::Create()->ToV8Value(&argument, context));
   }
@@ -584,9 +584,9 @@ void JSEthereumProvider::ConnectEvent() {
 }
 
 void JSEthereumProvider::OnGetChainId(const std::string& chain_id) {
-  base::DictionaryValue event_args;
-  event_args.SetStringKey("chainId", chain_id);
-  FireEvent(kConnectEvent, std::move(event_args));
+  base::Value::Dict event_args;
+  event_args.Set("chainId", chain_id);
+  FireEvent(kConnectEvent, base::Value(std::move(event_args)));
   is_connected_ = true;
   chain_id_ = chain_id;
   UpdateAndBindJSProperties();
