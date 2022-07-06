@@ -102,7 +102,8 @@ IpfsService::IpfsService(
     BlobContextGetterFactoryPtr blob_context_getter_factory,
     ipfs::BraveIpfsClientUpdater* ipfs_client_updater,
     const base::FilePath& user_data_dir,
-    version_info::Channel channel)
+    version_info::Channel channel,
+    std::unique_ptr<ipfs::IpfsDnsResolver> ipfs_dns_resover)
     : prefs_(prefs),
       url_loader_factory_(url_loader_factory),
       blob_context_getter_factory_(std::move(blob_context_getter_factory)),
@@ -110,6 +111,7 @@ IpfsService::IpfsService(
       user_data_dir_(user_data_dir),
       ipfs_client_updater_(ipfs_client_updater),
       channel_(channel),
+      ipfs_dns_resolver_(std::move(ipfs_dns_resover)),
       file_task_runner_(base::ThreadPool::CreateSequencedTaskRunner(
           {base::MayBlock(), base::TaskPriority::BEST_EFFORT,
            base::TaskShutdownBehavior::BLOCK_SHUTDOWN})),
@@ -129,6 +131,10 @@ IpfsService::IpfsService(
       server_endpoint_);
   AddObserver(ipns_keys_manager_.get());
 #endif
+
+  ipfs_dns_resolver_subscription_ =
+      ipfs_dns_resolver_->AddObserver(base::BindRepeating(
+          &IpfsService::OnDnsConfigChanged, base::Unretained(this)));
 }
 
 IpfsService::~IpfsService() {
@@ -199,7 +205,7 @@ void IpfsService::LaunchIfNotRunning(const base::FilePath& executable_path) {
   auto config = mojom::IpfsConfig::New(
       executable_path, GetConfigFilePath(), GetDataPath(),
       GetGatewayPort(channel_), GetAPIPort(channel_), GetSwarmPort(channel_),
-      GetStorageSize());
+      GetStorageSize(), ipfs_dns_resolver_->GetFirstDnsOverHttpsServer());
 
   ipfs_service_->Launch(
       std::move(config),
@@ -281,6 +287,10 @@ void IpfsService::Shutdown() {
   }
   ipfs_service_.reset();
   ipfs_pid_ = -1;
+}
+
+void IpfsService::OnDnsConfigChanged(absl::optional<std::string> dns_server) {
+  RestartDaemon();
 }
 
 #if BUILDFLAG(ENABLE_IPFS_LOCAL_NODE)
