@@ -8,7 +8,9 @@
 #include <utility>
 
 #include "base/callback.h"
+#include "brave/browser/brave_wallet/brave_wallet_tab_helper.h"
 #include "brave/components/permissions/contexts/brave_wallet_permission_context.h"
+#include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/web_contents.h"
 
 // It's safe to bind the active webcontents when panel is created because
@@ -55,6 +57,27 @@ void WalletPanelHandler::SetCloseOnDeactivate(bool close) {
   if (close_on_deactivation_)
     close_on_deactivation_.Run(close);
 }
+
 void WalletPanelHandler::Focus() {
   webui_controller_->web_ui()->GetWebContents()->Focus();
+}
+
+void WalletPanelHandler::IsSolanaAccountConnected(
+    const std::string& account,
+    IsSolanaAccountConnectedCallback callback) {
+  content::RenderFrameHost* rfh = nullptr;
+  if (!(rfh = active_web_contents_->GetFocusedFrame())) {
+    std::move(callback).Run(false);
+    return;
+  }
+
+  auto* tab_helper =
+      brave_wallet::BraveWalletTabHelper::FromWebContents(active_web_contents_);
+  if (!tab_helper) {
+    std::move(callback).Run(false);
+    return;
+  }
+
+  std::move(callback).Run(
+      tab_helper->IsSolanaAccountConnected(rfh->GetGlobalId(), account));
 }

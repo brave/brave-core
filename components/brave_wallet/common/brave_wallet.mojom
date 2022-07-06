@@ -256,6 +256,8 @@ interface PanelHandler {
   CancelConnectToSite();
   SetCloseOnDeactivate(bool close);
   Focus();
+
+  IsSolanaAccountConnected(string account) => (bool connected);
 };
 
 // Browser-side handler for requests from WebUI page.
