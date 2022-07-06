@@ -2969,10 +2969,7 @@ If you don't accept this request, VPN will not reconnect and your internet conne
       Network
     </message>
     <message name="IDS_BRAVE_WALLET_ALLOW_ADD_NETWORK_DESCRIPTION" desc="Add network panel description">
-      This will allow this network to be used within Brave Wallet. Learn more.
-    </message>
-    <message name="IDS_BRAVE_WALLET_LEARN_MORE" desc="Learn more text for string detection with localization">
-      Learn more.
+      This will allow this network to be used within Brave Wallet. <ph name="CLICK_START">%1$s</ph>Learn more<ph name="CLICK_END">%2$s</ph>.
     </message>
     <message name="IDS_BRAVE_WALLET_ALLOW_ADD_NETWORK_HEADING" desc="Add network panel title">
       Allow this site to add a network?
