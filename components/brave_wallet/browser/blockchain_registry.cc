@@ -144,15 +144,15 @@ void BlockchainRegistry::GetBuyUrl(mojom::OnRampProvider provider,
                                    const std::string& amount,
                                    GetBuyUrlCallback callback) {
   std::string url;
-  const std::string defaultCurrency = "USD";
+  const std::string default_currency = "USD";
   if (provider == mojom::OnRampProvider::kWyre) {
     url = base::StringPrintf(kWyreBuyUrl, address.c_str(),
-                             defaultCurrency.c_str(), symbol.c_str(),
+                             default_currency.c_str(), symbol.c_str(),
                              amount.c_str(), kWyreID);
     std::move(callback).Run(std::move(url), absl::nullopt);
   } else if (provider == mojom::OnRampProvider::kRamp) {
     url = base::StringPrintf(kRampBuyUrl, address.c_str(), symbol.c_str(),
-                             amount.c_str(), defaultCurrency.c_str(), kRampID);
+                             amount.c_str(), default_currency.c_str(), kRampID);
     std::move(callback).Run(std::move(url), absl::nullopt);
   } else {
     std::move(callback).Run(url, "UNSUPPORTED_ONRAMP_PROVIDER");
