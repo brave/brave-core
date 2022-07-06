@@ -28,52 +28,51 @@ absl::optional<std::string> ExtractChainIdFromValue(
 
 mojom::NetworkInfoPtr ValueToEthNetworkInfo(const base::Value& value) {
   mojom::NetworkInfo chain;
-  const base::DictionaryValue* params_dict = nullptr;
-  if (!value.GetAsDictionary(&params_dict) || !params_dict)
+  const base::Value::Dict* params_dict = value.GetIfDict();
+  if (!params_dict)
     return nullptr;
 
-  const std::string* chain_id = params_dict->FindStringKey("chainId");
+  const std::string* chain_id = params_dict->FindString("chainId");
   if (!chain_id) {
     return nullptr;
   }
   chain.chain_id = *chain_id;
 
-  const std::string* chain_name = params_dict->FindStringKey("chainName");
+  const std::string* chain_name = params_dict->FindString("chainName");
   if (chain_name) {
     chain.chain_name = *chain_name;
   }
 
-  const base::Value* explorerUrlsListValue =
-      params_dict->FindListKey("blockExplorerUrls");
+  const auto* explorerUrlsListValue =
+      params_dict->FindList("blockExplorerUrls");
   if (explorerUrlsListValue) {
-    for (const auto& entry : explorerUrlsListValue->GetList())
+    for (const auto& entry : *explorerUrlsListValue)
       chain.block_explorer_urls.push_back(entry.GetString());
   }
 
-  const base::Value* iconUrlsValue = params_dict->FindListKey("iconUrls");
+  const auto* iconUrlsValue = params_dict->FindList("iconUrls");
   if (iconUrlsValue) {
-    for (const auto& entry : iconUrlsValue->GetList())
+    for (const auto& entry : *iconUrlsValue)
       chain.icon_urls.push_back(entry.GetString());
   }
 
-  const base::Value* rpcUrlsValue = params_dict->FindListKey("rpcUrls");
+  const auto* rpcUrlsValue = params_dict->FindList("rpcUrls");
   if (rpcUrlsValue) {
-    for (const auto& entry : rpcUrlsValue->GetList())
+    for (const auto& entry : *rpcUrlsValue)
       chain.rpc_urls.push_back(entry.GetString());
   }
-  const base::Value* nativeCurrencyValue =
-      params_dict->FindDictKey("nativeCurrency");
+  const auto* nativeCurrencyValue = params_dict->FindDict("nativeCurrency");
   chain.decimals = 0;
   if (nativeCurrencyValue) {
-    const std::string* symbol_name = nativeCurrencyValue->FindStringKey("name");
+    const std::string* symbol_name = nativeCurrencyValue->FindString("name");
     if (symbol_name) {
       chain.symbol_name = *symbol_name;
     }
-    const std::string* symbol = nativeCurrencyValue->FindStringKey("symbol");
+    const std::string* symbol = nativeCurrencyValue->FindString("symbol");
     if (symbol) {
       chain.symbol = *symbol;
     }
-    absl::optional<int> decimals = nativeCurrencyValue->FindIntKey("decimals");
+    absl::optional<int> decimals = nativeCurrencyValue->FindInt("decimals");
     if (decimals) {
       chain.decimals = decimals.value();
     }
@@ -81,7 +80,7 @@ mojom::NetworkInfoPtr ValueToEthNetworkInfo(const base::Value& value) {
 
   chain.coin = mojom::CoinType::ETH;
 
-  absl::optional<bool> is_eip1559 = params_dict->FindBoolKey("is_eip1559");
+  absl::optional<bool> is_eip1559 = params_dict->FindBool("is_eip1559");
   if (is_eip1559) {
     chain.data = mojom::NetworkInfoData::NewEthData(
         mojom::NetworkInfoDataETH::New(*is_eip1559));
@@ -90,98 +89,96 @@ mojom::NetworkInfoPtr ValueToEthNetworkInfo(const base::Value& value) {
   return chain.Clone();
 }
 
-base::Value EthNetworkInfoToValue(const mojom::NetworkInfo& chain) {
-  base::Value dict(base::Value::Type::DICTIONARY);
+base::Value::Dict EthNetworkInfoToValue(const mojom::NetworkInfo& chain) {
+  base::Value::Dict dict;
   DCHECK_EQ(chain.coin, mojom::CoinType::ETH);
-  dict.SetStringKey("chainId", chain.chain_id);
-  dict.SetStringKey("chainName", chain.chain_name);
+  dict.Set("chainId", chain.chain_id);
+  dict.Set("chainName", chain.chain_name);
   bool is_eip1559 = false;
   if (chain.data && chain.data->is_eth_data()) {
     is_eip1559 = chain.data->get_eth_data()->is_eip1559;
   }
-  dict.SetBoolKey("is_eip1559", is_eip1559);
+  dict.Set("is_eip1559", is_eip1559);
 
-  base::ListValue blockExplorerUrlsValue;
+  base::Value::List blockExplorerUrlsValue;
   if (!chain.block_explorer_urls.empty()) {
     for (const auto& url : chain.block_explorer_urls) {
       blockExplorerUrlsValue.Append(url);
     }
   }
-  dict.SetKey("blockExplorerUrls", std::move(blockExplorerUrlsValue));
+  dict.Set("blockExplorerUrls", std::move(blockExplorerUrlsValue));
 
-  base::ListValue iconUrlsValue;
+  base::Value::List iconUrlsValue;
   if (!chain.icon_urls.empty()) {
     for (const auto& url : chain.icon_urls) {
       iconUrlsValue.Append(url);
     }
   }
-  dict.SetKey("iconUrls", std::move(iconUrlsValue));
+  dict.Set("iconUrls", std::move(iconUrlsValue));
 
-  base::ListValue rpcUrlsValue;
+  base::Value::List rpcUrlsValue;
   for (const auto& url : chain.rpc_urls) {
     rpcUrlsValue.Append(url);
   }
-  dict.SetKey("rpcUrls", std::move(rpcUrlsValue));
-  base::Value currency(base::Value::Type::DICTIONARY);
-  currency.SetStringKey("name", chain.symbol_name);
-  currency.SetStringKey("symbol", chain.symbol);
-  currency.SetIntKey("decimals", chain.decimals);
-  dict.SetKey("nativeCurrency", std::move(currency));
+  dict.Set("rpcUrls", std::move(rpcUrlsValue));
+  base::Value::Dict currency;
+  currency.Set("name", chain.symbol_name);
+  currency.Set("symbol", chain.symbol);
+  currency.Set("decimals", chain.decimals);
+  dict.Set("nativeCurrency", std::move(currency));
   return dict;
 }
 
-mojom::BlockchainTokenPtr ValueToBlockchainToken(const base::Value& value,
+mojom::BlockchainTokenPtr ValueToBlockchainToken(const base::Value::Dict& value,
                                                  const std::string& chain_id,
                                                  mojom::CoinType coin) {
   mojom::BlockchainTokenPtr tokenPtr = mojom::BlockchainToken::New();
-  if (!value.is_dict())
-    return nullptr;
 
-  const std::string* contract_address = value.FindStringKey("address");
+  const std::string* contract_address = value.FindString("address");
   if (!contract_address)
     return nullptr;
   tokenPtr->contract_address = *contract_address;
 
-  const std::string* name = value.FindStringKey("name");
+  const std::string* name = value.FindString("name");
   if (!name)
     return nullptr;
   tokenPtr->name = *name;
 
-  const std::string* symbol = value.FindStringKey("symbol");
+  const std::string* symbol = value.FindString("symbol");
   if (!symbol)
     return nullptr;
   tokenPtr->symbol = *symbol;
 
-  const std::string* logo = value.FindStringKey("logo");
+  const std::string* logo = value.FindString("logo");
   if (logo) {
     tokenPtr->logo = *logo;
   }
 
-  absl::optional<bool> is_erc20 = value.FindBoolKey("is_erc20");
+  absl::optional<bool> is_erc20 = value.FindBool("is_erc20");
   if (!is_erc20)
     return nullptr;
   tokenPtr->is_erc20 = is_erc20.value();
 
-  absl::optional<bool> is_erc721 = value.FindBoolKey("is_erc721");
+  absl::optional<bool> is_erc721 = value.FindBool("is_erc721");
   if (!is_erc721)
     return nullptr;
   tokenPtr->is_erc721 = is_erc721.value();
 
-  absl::optional<int> decimals = value.FindIntKey("decimals");
+  absl::optional<int> decimals = value.FindInt("decimals");
   if (!decimals)
     return nullptr;
   tokenPtr->decimals = decimals.value();
 
-  absl::optional<bool> visible = value.FindBoolKey("visible");
+  absl::optional<bool> visible = value.FindBool("visible");
   if (!visible)
     return nullptr;
   tokenPtr->visible = visible.value();
 
-  const std::string* token_id = value.FindStringKey("token_id");
+  const std::string* token_id = value.FindString("token_id");
   if (token_id)
     tokenPtr->token_id = *token_id;
 
-  const std::string* coingecko_id = value.FindStringKey("coingecko_id");
+  const std::string* coingecko_id = value.FindString("coingecko_id");
   if (coingecko_id)
     tokenPtr->coingecko_id = *coingecko_id;
 
@@ -193,37 +190,37 @@ mojom::BlockchainTokenPtr ValueToBlockchainToken(const base::Value& value,
 
 // Creates a response object as described in:
 // https://eips.ethereum.org/EIPS/eip-2255
-base::ListValue PermissionRequestResponseToValue(
+base::Value::List PermissionRequestResponseToValue(
     const url::Origin& origin,
     const std::vector<std::string> accounts) {
-  base::ListValue container_list;
-  base::Value dict(base::Value::Type::DICTIONARY);
-  dict.SetStringKey("id", base::GenerateGUID());
+  base::Value::List container_list;
+  base::Value::Dict dict;
+  dict.Set("id", base::GenerateGUID());
 
-  base::ListValue context_list;
+  base::Value::List context_list;
   context_list.Append(base::Value("https://github.com/MetaMask/rpc-cap"));
-  dict.SetKey("context", std::move(context_list));
+  dict.Set("context", std::move(context_list));
 
-  base::ListValue caveats_list;
-  base::Value caveats_obj1(base::Value::Type::DICTIONARY);
-  caveats_obj1.SetStringKey("name", "primaryAccountOnly");
-  caveats_obj1.SetStringKey("type", "limitResponseLength");
-  caveats_obj1.SetIntKey("value", 1);
+  base::Value::List caveats_list;
+  base::Value::Dict caveats_obj1;
+  caveats_obj1.Set("name", "primaryAccountOnly");
+  caveats_obj1.Set("type", "limitResponseLength");
+  caveats_obj1.Set("value", 1);
   caveats_list.Append(std::move(caveats_obj1));
-  base::Value caveats_obj2(base::Value::Type::DICTIONARY);
-  caveats_obj2.SetStringKey("name", "exposedAccounts");
-  caveats_obj2.SetStringKey("type", "filterResponse");
-  base::ListValue filter_response_list;
+  base::Value::Dict caveats_obj2;
+  caveats_obj2.Set("name", "exposedAccounts");
+  caveats_obj2.Set("type", "filterResponse");
+  base::Value::List filter_response_list;
   for (auto account : accounts) {
-    filter_response_list.Append(base::Value(account));
+    filter_response_list.Append(account);
   }
-  caveats_obj2.SetKey("value", std::move(filter_response_list));
+  caveats_obj2.Set("value", std::move(filter_response_list));
   caveats_list.Append(std::move(caveats_obj2));
-  dict.SetKey("caveats", std::move(caveats_list));
+  dict.Set("caveats", std::move(caveats_list));
 
-  dict.SetDoubleKey("date", base::Time::Now().ToJsTime());
-  dict.SetStringKey("invoker", origin.Serialize());
-  dict.SetStringKey("parentCapability", "eth_accounts");
+  dict.Set("date", base::Time::Now().ToJsTime());
+  dict.Set("invoker", origin.Serialize());
+  dict.Set("parentCapability", "eth_accounts");
   container_list.Append(std::move(dict));
   return container_list;
 }

@@ -843,7 +843,7 @@ void EthereumProviderImpl::OnSignMessageRequestProcessed(
     base::Value formed_response = GetProviderErrorDictionary(
         mojom::ProviderError::kInternalError, *error);
     reject = true;
-    std::move(callback).Run(std::move(id), std::move(*formed_response), reject,
+    std::move(callback).Run(std::move(id), std::move(formed_response), reject,
                             "", false);
     return;
   }
@@ -867,8 +867,7 @@ void EthereumProviderImpl::OnSignMessageRequestProcessed(
                                      signature_with_err.error_message);
       reject = true;
     } else {
-      formed_response = 
-          base::Value(ToHex(*signature_with_err.signature));
+      formed_response = base::Value(ToHex(*signature_with_err.signature));
     }
   } else {
     if (!signature || !signature->is_str()) {  // Missing hardware signature.
@@ -877,13 +876,12 @@ void EthereumProviderImpl::OnSignMessageRequestProcessed(
           l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
       reject = true;
     } else {
-      formed_response =
-          base::Value(signature->get_str());
+      formed_response = base::Value(signature->get_str());
     }
   }
 
-  std::move(callback).Run(std::move(id), std::move(formed_response), reject,
-                          "", false);
+  std::move(callback).Run(std::move(id), std::move(formed_response), reject, "",
+                          false);
 }
 
 bool EthereumProviderImpl::CheckAccountAllowed(
@@ -1288,7 +1286,8 @@ void EthereumProviderImpl::OnRequestEthereumPermissions(
         NOTREACHED();
     }
   } else if (method == kRequestPermissionsMethod) {
-    formed_response = PermissionRequestResponseToValue(origin, accounts);
+    formed_response =
+        base::Value(PermissionRequestResponseToValue(origin, accounts));
   } else {
     base::Value::List list;
     for (size_t i = 0; i < accounts.size(); i++) {
@@ -1371,7 +1370,8 @@ void EthereumProviderImpl::OnContinueGetAllowedAccounts(
     formed_response = base::Value(std::move(list));
     update_bindings = false;
   } else {
-    formed_response = PermissionRequestResponseToValue(origin, accounts);
+    formed_response =
+        base::Value(PermissionRequestResponseToValue(origin, accounts));
     update_bindings = true;
   }
   std::move(callback).Run(std::move(id), std::move(formed_response), reject, "",

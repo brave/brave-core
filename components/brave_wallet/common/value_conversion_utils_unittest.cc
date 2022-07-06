@@ -18,11 +18,11 @@ namespace brave_wallet {
 
 namespace {
 
-void TestValueToBlockchainTokenFailCases(const base::Value& value,
+void TestValueToBlockchainTokenFailCases(const base::Value::Dict& value,
                                          const std::vector<std::string>& keys) {
   for (const auto& key : keys) {
     auto invalid_value = value.Clone();
-    invalid_value.RemoveKey(key);
+    invalid_value.Remove(key);
     EXPECT_FALSE(
         ValueToBlockchainToken(invalid_value, "0x1", mojom::CoinType::ETH))
         << "ValueToBlockchainToken should fail if " << key << " not exists";
@@ -115,32 +115,36 @@ TEST(ValueConversionUtilsUnitTest, EthNetworkInfoToValueTest) {
       "chain_id", "chain_name", {"https://url1.com"}, {"https://url1.com"},
       {"https://url1.com"}, "symbol_name", "symbol", 11, mojom::CoinType::ETH,
       mojom::NetworkInfoData::NewEthData(mojom::NetworkInfoDataETH::New(true)));
-  base::Value value = brave_wallet::EthNetworkInfoToValue(chain);
-  EXPECT_EQ(*value.FindStringKey("chainId"), chain.chain_id);
-  EXPECT_EQ(*value.FindStringKey("chainName"), chain.chain_name);
-  EXPECT_EQ(*value.FindStringPath("nativeCurrency.name"), chain.symbol_name);
-  EXPECT_EQ(*value.FindStringPath("nativeCurrency.symbol"), chain.symbol);
-  EXPECT_EQ(*value.FindIntPath("nativeCurrency.decimals"), chain.decimals);
-  EXPECT_EQ(value.FindBoolKey("is_eip1559").value(), true);
-  for (const auto& entry : value.FindListKey("rpcUrls")->GetList()) {
+  base::Value::Dict value = brave_wallet::EthNetworkInfoToValue(chain);
+  EXPECT_EQ(*value.FindString("chainId"), chain.chain_id);
+  EXPECT_EQ(*value.FindString("chainName"), chain.chain_name);
+  EXPECT_EQ(*value.FindStringByDottedPath("nativeCurrency.name"),
+            chain.symbol_name);
+  EXPECT_EQ(*value.FindStringByDottedPath("nativeCurrency.symbol"),
+            chain.symbol);
+  EXPECT_EQ(*value.FindIntByDottedPath("nativeCurrency.decimals"),
+            chain.decimals);
+  EXPECT_EQ(value.FindBool("is_eip1559").value(), true);
+  auto* rpc_urls = value.FindList("rpcUrls");
+  for (const auto& entry : *rpc_urls) {
     ASSERT_NE(std::find(chain.rpc_urls.begin(), chain.rpc_urls.end(),
                         entry.GetString()),
               chain.rpc_urls.end());
   }
 
-  for (const auto& entry : value.FindListKey("iconUrls")->GetList()) {
+  for (const auto& entry : *value.FindList("iconUrls")) {
     ASSERT_NE(std::find(chain.icon_urls.begin(), chain.icon_urls.end(),
                         entry.GetString()),
               chain.icon_urls.end());
   }
-  auto* blocked_urls = value.FindListKey("blockExplorerUrls");
-  for (const auto& entry : blocked_urls->GetList()) {
+  auto* blocked_urls = value.FindList("blockExplorerUrls");
+  for (const auto& entry : *blocked_urls) {
     ASSERT_NE(std::find(chain.block_explorer_urls.begin(),
                         chain.block_explorer_urls.end(), entry.GetString()),
               chain.block_explorer_urls.end());
   }
 
-  auto result = ValueToEthNetworkInfo(value);
+  auto result = ValueToEthNetworkInfo(base::Value(value.Clone()));
   ASSERT_TRUE(result->Equals(chain));
 }
 
@@ -164,20 +168,20 @@ TEST(ValueConversionUtilsUnitTest, ValueToBlockchainToken) {
       "bat.png", true, false, "BAT", 18, true, "", "", "0x1",
       mojom::CoinType::ETH);
 
-  mojom::BlockchainTokenPtr token =
-      ValueToBlockchainToken(json_value.value(), "0x1", mojom::CoinType::ETH);
+  mojom::BlockchainTokenPtr token = ValueToBlockchainToken(
+      json_value->GetDict(), "0x1", mojom::CoinType::ETH);
   EXPECT_EQ(token, expected_token);
 
   // Test input value with required keys.
-  TestValueToBlockchainTokenFailCases(
-      json_value.value(), {"address", "name", "symbol", "is_erc20", "is_erc721",
-                           "decimals", "visible"});
+  TestValueToBlockchainTokenFailCases(json_value->GetDict(),
+                                      {"address", "name", "symbol", "is_erc20",
+                                       "is_erc721", "decimals", "visible"});
 
   // Test input value with optional keys.
-  base::Value optional_value = json_value.value().Clone();
-  optional_value.RemoveKey("logo");
-  optional_value.RemoveKey("token_id");
-  optional_value.RemoveKey("coingecko_id");
+  base::Value::Dict optional_value = json_value->GetDict().Clone();
+  optional_value.Remove("logo");
+  optional_value.Remove("token_id");
+  optional_value.Remove("coingecko_id");
   expected_token->logo = "";
   token = ValueToBlockchainToken(optional_value, "0x1", mojom::CoinType::ETH);
   EXPECT_EQ(token, expected_token);
@@ -187,7 +191,7 @@ TEST(ValueConversionUtilsUnitTest, PermissionRequestResponseToValue) {
   url::Origin origin = url::Origin::Create(GURL("https://brave.com"));
   std::vector<std::string> accounts{
       "0xA99D71De40D67394eBe68e4D0265cA6C9D421029"};
-  base::Value value = PermissionRequestResponseToValue(origin, accounts);
+  base::Value::List value = PermissionRequestResponseToValue(origin, accounts);
 
   // [{
   //   "caveats":[
@@ -210,57 +214,53 @@ TEST(ValueConversionUtilsUnitTest, PermissionRequestResponseToValue) {
   //   "parentCapability":"eth_accounts"
   // }]"
 
-  base::ListValue* list_value;
-  ASSERT_TRUE(value.GetAsList(&list_value));
-  ASSERT_EQ(list_value->GetList().size(), 1UL);
+  ASSERT_EQ(value.size(), 1UL);
 
-  base::Value& param0 = list_value->GetList()[0];
-  base::Value* caveats = param0.FindListPath("caveats");
+  auto& param0 = value[0].GetDict();
+  auto* caveats = param0.FindList("caveats");
   ASSERT_NE(caveats, nullptr);
-  ASSERT_EQ(caveats->GetList().size(), 2UL);
+  ASSERT_EQ(caveats->size(), 2UL);
 
-  base::Value& caveats0 = caveats->GetList()[0];
-  std::string* name = caveats0.FindStringKey("name");
+  auto& caveats0 = (*caveats)[0].GetDict();
+  std::string* name = caveats0.FindString("name");
   ASSERT_NE(name, nullptr);
   EXPECT_EQ(*name, "primaryAccountOnly");
-  std::string* type = caveats0.FindStringKey("type");
+  std::string* type = caveats0.FindString("type");
   ASSERT_NE(type, nullptr);
   EXPECT_EQ(*type, "limitResponseLength");
-  absl::optional<int> primary_accounts_only_value =
-      caveats0.FindIntKey("value");
+  absl::optional<int> primary_accounts_only_value = caveats0.FindInt("value");
   ASSERT_NE(primary_accounts_only_value, absl::nullopt);
   EXPECT_EQ(*primary_accounts_only_value, 1);
 
-  base::Value& caveats1 = caveats->GetList()[1];
-  name = caveats1.FindStringKey("name");
+  auto& caveats1 = (*caveats)[1].GetDict();
+  name = caveats1.FindString("name");
   ASSERT_NE(name, nullptr);
   EXPECT_EQ(*name, "exposedAccounts");
-  type = caveats1.FindStringKey("type");
+  type = caveats1.FindString("type");
   ASSERT_NE(type, nullptr);
   EXPECT_EQ(*type, "filterResponse");
-  base::Value* exposed_accounts = caveats1.FindListKey("value");
+  auto* exposed_accounts = caveats1.FindList("value");
   ASSERT_NE(exposed_accounts, nullptr);
-  ASSERT_EQ(exposed_accounts->GetList().size(), 1UL);
-  EXPECT_EQ(exposed_accounts->GetList()[0],
+  ASSERT_EQ(exposed_accounts->size(), 1UL);
+  EXPECT_EQ((*exposed_accounts)[0],
             base::Value("0xA99D71De40D67394eBe68e4D0265cA6C9D421029"));
 
-  base::Value* context = param0.FindListPath("context");
+  auto* context = param0.FindList("context");
   ASSERT_NE(context, nullptr);
-  ASSERT_EQ(context->GetList().size(), 1UL);
-  EXPECT_EQ(context->GetList()[0],
-            base::Value("https://github.com/MetaMask/rpc-cap"));
+  ASSERT_EQ(context->size(), 1UL);
+  EXPECT_EQ((*context)[0], base::Value("https://github.com/MetaMask/rpc-cap"));
 
-  absl::optional<double> date = param0.FindDoubleKey("date");
+  absl::optional<double> date = param0.FindDouble("date");
   ASSERT_NE(date, absl::nullopt);
 
-  std::string* id = param0.FindStringKey("id");
+  std::string* id = param0.FindString("id");
   ASSERT_NE(id, nullptr);
 
-  std::string* invoker = param0.FindStringKey("invoker");
+  std::string* invoker = param0.FindString("invoker");
   ASSERT_NE(invoker, nullptr);
   EXPECT_EQ(*invoker, "https://brave.com");
 
-  std::string* parent_capability = param0.FindStringKey("parentCapability");
+  std::string* parent_capability = param0.FindString("parentCapability");
   ASSERT_NE(parent_capability, nullptr);
   EXPECT_EQ(*parent_capability, "eth_accounts");
 }
