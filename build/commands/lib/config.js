@@ -361,14 +361,13 @@ Config.prototype.buildArgs = function () {
     args.last_chrome_installer = this.last_chrome_installer
   }
 
-  if (process.platform === 'darwin' || this.targetOS === 'mac') {
+  if (process.platform === 'darwin')
     args.allow_runtime_configurable_key_storage = true
-    // always use hermetic xcode for macos when available
-    if (this.targetOS !== 'ios' && fs.existsSync(path.join(
-        this.srcDir, 'build', 'mac_files', 'xcode_binaries', 'Contents'))) {
+
+  if (this.getTargetOS() === 'mac' &&
+      fs.existsSync(path.join(this.srcDir, 'build', 'mac_files', 'xcode_binaries', 'Contents')))
+      // always use hermetic xcode for macos when available
       args.use_system_xcode = false
-    }
-  }
 
   if (this.isDebug() &&
       this.targetOS !== 'ios' &&
@@ -397,7 +396,7 @@ Config.prototype.buildArgs = function () {
     args.symbol_level = 1
   }
 
-  if (this.targetOS === 'linux' && this.targetArch === 'x64') {
+  if (this.getTargetOS() === 'linux' && this.targetArch === 'x64') {
     // Include vaapi support
     args.use_vaapi = true
   }
@@ -885,6 +884,17 @@ Config.prototype.update = function (options) {
   if (options.target) {
     this.buildTarget = options.target
   }
+}
+
+Config.prototype.getTargetOS = function() {
+  if (this.targetOS)
+    return this.targetOS
+  if (process.platform === 'darwin')
+    return 'mac'
+  if (process.platform === 'win32')
+    return 'win'
+  assert(process.platform === 'linux')
+  return 'linux'
 }
 
 Config.prototype.getCachePath = function () {
