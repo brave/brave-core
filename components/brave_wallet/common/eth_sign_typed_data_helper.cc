@@ -6,6 +6,7 @@
 #include "brave/components/brave_wallet/common/eth_sign_typed_data_helper.h"
 
 #include <limits>
+#include <utility>
 
 #include "base/logging.h"
 #include "base/strings/strcat.h"
@@ -21,27 +22,20 @@ namespace brave_wallet {
 
 // static
 std::unique_ptr<EthSignTypedDataHelper> EthSignTypedDataHelper::Create(
-    const base::Value& types,
+    base::Value::Dict types,
     Version version) {
-  if (!types.is_dict())
-    return nullptr;
   return std::unique_ptr<EthSignTypedDataHelper>(
-      new EthSignTypedDataHelper(types, version));
+      new EthSignTypedDataHelper(std::move(types), version));
 }
 
-EthSignTypedDataHelper::EthSignTypedDataHelper(const base::Value& types,
+EthSignTypedDataHelper::EthSignTypedDataHelper(base::Value::Dict types,
                                                Version version)
-    : types_(types.Clone()), version_(version) {
-  CHECK(types_.is_dict());
-}
+    : types_(std::move(types)), version_(version) {}
 
 EthSignTypedDataHelper::~EthSignTypedDataHelper() = default;
 
-bool EthSignTypedDataHelper::SetTypes(const base::Value& types) {
-  if (!types_.is_dict())
-    return false;
-  types_ = types.Clone();
-  return true;
+void EthSignTypedDataHelper::SetTypes(base::Value::Dict types) {
+  types_ = std::move(types);
 }
 
 void EthSignTypedDataHelper::SetVersion(Version version) {
@@ -54,13 +48,12 @@ void EthSignTypedDataHelper::FindAllDependencyTypes(
   DCHECK(!anchor_type_name.empty());
   DCHECK(known_types);
 
-  const base::Value* anchor_type =
-      types_.FindKeyOfType(anchor_type_name, base::Value::Type::LIST);
+  const auto* anchor_type = types_.FindList(anchor_type_name);
   if (!anchor_type)
     return;
   known_types->emplace(anchor_type_name, anchor_type->Clone());
 
-  for (const auto& field : anchor_type->GetList()) {
+  for (const auto& field : *anchor_type) {
     const std::string* type = field.FindStringKey("type");
     if (type) {
       auto type_split = base::SplitString(*type, "[", base::KEEP_WHITESPACE,
@@ -123,7 +116,7 @@ std::vector<uint8_t> EthSignTypedDataHelper::GetTypeHash(
 
 absl::optional<std::vector<uint8_t>> EthSignTypedDataHelper::HashStruct(
     const std::string primary_type_name,
-    const base::Value& data) const {
+    const base::Value::Dict& data) const {
   auto encoded_data = EncodeData(primary_type_name, data);
   if (!encoded_data)
     return absl::nullopt;
@@ -134,21 +127,20 @@ absl::optional<std::vector<uint8_t>> EthSignTypedDataHelper::HashStruct(
 // from primary type. See unittests for some examples.
 absl::optional<std::vector<uint8_t>> EthSignTypedDataHelper::EncodeData(
     const std::string& primary_type_name,
-    const base::Value& data) const {
-  DCHECK(data.is_dict());
-  const base::Value* primary_type = types_.FindKey(primary_type_name);
+    const base::Value::Dict& data) const {
+  const auto* primary_type = types_.FindList(primary_type_name);
   DCHECK(primary_type);
-  DCHECK(primary_type->is_list());
   std::vector<uint8_t> result;
 
   const std::vector<uint8_t> type_hash = GetTypeHash(primary_type_name);
   result.insert(result.end(), type_hash.begin(), type_hash.end());
 
-  for (const auto& field : primary_type->GetList()) {
-    const std::string* type_str = field.FindStringKey("type");
-    const std::string* name_str = field.FindStringKey("name");
+  for (const auto& item : *primary_type) {
+    const auto& field = item.GetDict();
+    const std::string* type_str = field.FindString("type");
+    const std::string* name_str = field.FindString("name");
     DCHECK(type_str && name_str);
-    const base::Value* value = data.FindKey(*name_str);
+    const base::Value* value = data.Find(*name_str);
     if (value) {
       auto encoded_field = EncodeField(*type_str, *value);
       if (!encoded_field)
@@ -313,7 +305,8 @@ absl::optional<std::vector<uint8_t>> EthSignTypedDataHelper::EncodeField(
       result.push_back(static_cast<uint8_t>((encoded_value >> i) & 0xFF));
     }
   } else {
-    auto encoded_data = EncodeData(type, value);
+    DCHECK(value.is_dict());
+    auto encoded_data = EncodeData(type, value.GetDict());
     if (!encoded_data)
       return absl::nullopt;
     std::vector<uint8_t> encoded_value = KeccakHash(*encoded_data);
@@ -325,14 +318,14 @@ absl::optional<std::vector<uint8_t>> EthSignTypedDataHelper::EncodeField(
 
 absl::optional<std::vector<uint8_t>>
 EthSignTypedDataHelper::GetTypedDataDomainHash(
-    const base::Value& domain_separator) const {
+    const base::Value::Dict& domain_separator) const {
   return HashStruct("EIP712Domain", domain_separator);
 }
 
 absl::optional<std::vector<uint8_t>>
 EthSignTypedDataHelper::GetTypedDataPrimaryHash(
     const std::string& primary_type_name,
-    const base::Value& message) const {
+    const base::Value::Dict& message) const {
   return HashStruct(primary_type_name, message);
 }
 

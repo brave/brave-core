@@ -22,39 +22,38 @@ namespace brave_wallet {
 class EthSignTypedDataHelper {
  public:
   enum class Version { kV3, kV4 };
-  static std::unique_ptr<EthSignTypedDataHelper> Create(
-      const base::Value& types,
-      Version version);
+  static std::unique_ptr<EthSignTypedDataHelper> Create(base::Value::Dict types,
+                                                        Version version);
 
   ~EthSignTypedDataHelper();
   EthSignTypedDataHelper(const EthSignTypedDataHelper&) = delete;
   EthSignTypedDataHelper& operator=(const EthSignTypedDataHelper&) = delete;
 
-  bool SetTypes(const base::Value& types);
+  void SetTypes(base::Value::Dict types);
   void SetVersion(Version version);
 
   std::vector<uint8_t> GetTypeHash(const std::string primary_type_name) const;
   absl::optional<std::vector<uint8_t>> HashStruct(
       const std::string primary_type_name,
-      const base::Value& data) const;
+      const base::Value::Dict& data) const;
   absl::optional<std::vector<uint8_t>> EncodeData(
       const std::string& primary_type_name,
-      const base::Value& data) const;
+      const base::Value::Dict& data) const;
   static absl::optional<std::vector<uint8_t>> GetTypedDataMessageToSign(
       const std::vector<uint8_t>& domain_hash,
       const std::vector<uint8_t>& primary_hash);
   absl::optional<std::vector<uint8_t>> GetTypedDataPrimaryHash(
       const std::string& primary_type_name,
-      const base::Value& message) const;
+      const base::Value::Dict& message) const;
   absl::optional<std::vector<uint8_t>> GetTypedDataDomainHash(
-      const base::Value& domain_separator) const;
+      const base::Value::Dict& domain_separator) const;
 
  private:
   FRIEND_TEST_ALL_PREFIXES(EthSignedTypedDataHelperUnitTest, EncodeTypes);
   FRIEND_TEST_ALL_PREFIXES(EthSignedTypedDataHelperUnitTest, EncodeTypesArrays);
   FRIEND_TEST_ALL_PREFIXES(EthSignedTypedDataHelperUnitTest, EncodeField);
 
-  explicit EthSignTypedDataHelper(const base::Value& types, Version version);
+  explicit EthSignTypedDataHelper(base::Value::Dict types, Version version);
 
   void FindAllDependencyTypes(
       base::flat_map<std::string, base::Value>* known_types,
@@ -67,7 +66,7 @@ class EthSignTypedDataHelper {
       const std::string& type,
       const base::Value& value) const;
 
-  base::Value types_;
+  base::Value::Dict types_;
   Version version_;
 };
 

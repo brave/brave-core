@@ -761,7 +761,7 @@ TEST(EthRequestHelperUnitTest, ParseEthSignTypedDataParams) {
 
   std::string address;
   std::string message;
-  base::Value domain;
+  base::Value::Dict domain;
   std::vector<uint8_t> domain_hash;
   std::vector<uint8_t> primary_hash;
 
@@ -777,17 +777,16 @@ TEST(EthRequestHelperUnitTest, ParseEthSignTypedDataParams) {
       "\"0xCD2a3d9F938E13CD947Ec05AbC7FE734Df8DD826\"},\"to\":{\"name\":"
       "\"Bob\",\"wallet\":\"0xbBbBBBBbbBBBbbbBbbBbbbbBBbBbbbbBbBbbBBbB\"}}");
 
-  std::string* ds_name = domain.FindStringKey("name");
+  std::string* ds_name = domain.FindString("name");
   ASSERT_TRUE(ds_name);
   EXPECT_EQ(*ds_name, "Ether Mail");
-  std::string* ds_version = domain.FindStringKey("version");
+  std::string* ds_version = domain.FindString("version");
   ASSERT_TRUE(ds_version);
   EXPECT_EQ(*ds_version, "1");
-  auto chain_id = domain.FindIntKey("chainId");
+  auto chain_id = domain.FindInt("chainId");
   ASSERT_TRUE(chain_id);
   EXPECT_EQ(*chain_id, 1);
-  std::string* ds_verifying_contract =
-      domain.FindStringKey("verifyingContract");
+  std::string* ds_verifying_contract = domain.FindString("verifyingContract");
   ASSERT_TRUE(ds_verifying_contract);
   EXPECT_EQ(*ds_verifying_contract,
             "0xCcCCccccCCCCcCCCCCCcCcCccCcCCCcCcccccccC");

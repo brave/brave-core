@@ -718,12 +718,12 @@ void EthereumProviderImpl::SignTypedMessage(
     const std::string& message,
     const std::vector<uint8_t>& domain_hash,
     const std::vector<uint8_t>& primary_hash,
-    base::Value domain,
+    base::Value::Dict domain,
     RequestCallback callback,
     base::Value id) {
   bool reject = false;
-  if (!EthAddress::IsValidAddress(address) || !domain.is_dict() ||
-      domain_hash.empty() || primary_hash.empty()) {
+  if (!EthAddress::IsValidAddress(address) || domain_hash.empty() ||
+      primary_hash.empty()) {
     base::Value formed_response = GetProviderErrorDictionary(
         mojom::ProviderError::kInvalidParams,
         l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
@@ -732,7 +732,7 @@ void EthereumProviderImpl::SignTypedMessage(
                             "", false);
     return;
   }
-  auto chain_id = domain.FindDoubleKey("chainId");
+  auto chain_id = domain.FindDouble("chainId");
   if (chain_id) {
     const std::string chain_id_hex =
         Uint256ValueToHex((uint256_t)(uint64_t)*chain_id);
@@ -1041,7 +1041,7 @@ void EthereumProviderImpl::CommonRequestOrSendAsync(base::Value input_value,
   } else if (method == kEthSignTypedDataV3 || method == kEthSignTypedDataV4) {
     std::string address;
     std::string message;
-    base::Value domain;
+    base::Value::Dict domain;
     std::vector<uint8_t> message_to_sign;
     std::vector<uint8_t> domain_hash_out;
     std::vector<uint8_t> primary_hash_out;

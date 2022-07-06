@@ -408,7 +408,7 @@ bool ParsePersonalEcRecoverParams(const std::string& json,
 bool ParseEthSignTypedDataParams(const std::string& json,
                                  std::string* address,
                                  std::string* message_out,
-                                 base::Value* domain_out,
+                                 base::Value::Dict* domain_out,
                                  EthSignTypedDataHelper::Version version,
                                  std::vector<uint8_t>* domain_hash_out,
                                  std::vector<uint8_t>* primary_hash_out) {
@@ -438,11 +438,11 @@ bool ParseEthSignTypedDataParams(const std::string& json,
   if (!primary_type)
     return false;
 
-  base::Value* domain = dict->Find("domain");
+  auto* domain = dict->FindDict("domain");
   if (!domain)
     return false;
 
-  const base::Value* message = dict->Find("message");
+  const auto* message = dict->FindDict("message");
   if (!message)
     return false;
 
@@ -450,11 +450,11 @@ bool ParseEthSignTypedDataParams(const std::string& json,
   if (!base::JSONWriter::Write(*message, message_out))
     return false;
 
-  const base::Value* types = dict->Find("types");
+  auto* types = dict->FindDict("types");
   if (!types)
     return false;
   std::unique_ptr<EthSignTypedDataHelper> helper =
-      EthSignTypedDataHelper::Create(*types, version);
+      EthSignTypedDataHelper::Create(std::move(*types), version);
   if (!helper)
     return false;
   auto domain_hash = helper->GetTypedDataDomainHash(*domain);
