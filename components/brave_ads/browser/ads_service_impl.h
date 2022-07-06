@@ -18,6 +18,7 @@
 #include "base/memory/weak_ptr.h"
 #include "base/task/cancelable_task_tracker.h"
 #include "base/task/sequenced_task_runner.h"
+#include "base/time/time.h"
 #include "base/timer/timer.h"
 #include "bat/ads/ads_client.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
@@ -53,7 +54,6 @@ struct NotificationAdInfo;
 
 namespace base {
 class SequencedTaskRunner;
-class Time;
 }  // namespace base
 
 namespace brave_federated {
@@ -242,6 +242,7 @@ class AdsServiceImpl : public AdsService,
   void MaybeStart(const bool should_restart);
   void Start(const uint32_t number_of_start);
   void Stop();
+  base::TimeDelta GetBatAdsServiceRestartDelay();
 
   void ResetState();
   void OnShutdownAndResetBatAds(const bool success);
@@ -504,6 +505,8 @@ class AdsServiceImpl : public AdsService,
   // This is needed to check if current ads service init become stale as
   // another ads service start is in progress
   uint32_t total_number_of_starts_ = 0;
+
+  base::Time last_bat_ads_service_restart_time_;
 
   const scoped_refptr<base::SequencedTaskRunner> file_task_runner_;
 

@@ -33,7 +33,6 @@
 #include "base/task/sequenced_task_runner.h"
 #include "base/task/task_runner_util.h"
 #include "base/task/thread_pool.h"
-#include "base/time/time.h"
 #include "bat/ads/ads.h"
 #include "bat/ads/database.h"
 #include "bat/ads/history_info.h"
@@ -125,6 +124,14 @@ namespace brave_ads {
 namespace {
 
 constexpr unsigned int kRetriesCountOnNetworkChange = 1;
+
+constexpr base::TimeDelta kBatAdsServiceRestartDelay = base::Seconds(1);
+
+constexpr base::TimeDelta kBatAdsServiceRepeatedRestartDelay =
+    base::Seconds(20);
+
+constexpr base::TimeDelta kBatAdsServiceRepeatedRestartCheckInterval =
+    base::Seconds(60);
 
 constexpr int kHttpUpgradeRequiredStatusCode = 426;
 
@@ -783,7 +790,7 @@ void AdsServiceImpl::MaybeStart(const bool should_restart) {
         FROM_HERE,
         base::BindOnce(&AdsServiceImpl::Start, AsWeakPtr(),
                        total_number_of_starts_),
-        base::Seconds(1));
+        GetBatAdsServiceRestartDelay());
   } else {
     Start(total_number_of_starts_);
   }
@@ -795,6 +802,19 @@ void AdsServiceImpl::Start(const uint32_t number_of_start) {
 
 void AdsServiceImpl::Stop() {
   ShutdownBatAds();
+}
+
+base::TimeDelta AdsServiceImpl::GetBatAdsServiceRestartDelay() {
+  base::TimeDelta restart_delay = kBatAdsServiceRestartDelay;
+  // Increase the bat ads service restart delay if we have two close restarts.
+  if (!last_bat_ads_service_restart_time_.is_null() &&
+      last_bat_ads_service_restart_time_ +
+              kBatAdsServiceRepeatedRestartCheckInterval >
+          base::Time::Now()) {
+    restart_delay = kBatAdsServiceRepeatedRestartDelay;
+  }
+  last_bat_ads_service_restart_time_ = base::Time::Now();
+  return restart_delay;
 }
 
 void AdsServiceImpl::ResetState() {
@@ -913,6 +933,11 @@ void AdsServiceImpl::OnEnsureBaseDirectoryExists(const uint32_t number_of_start,
                                                  const bool success) {
   if (!success) {
     VLOG(0) << "Failed to create base directory";
+    return;
+  }
+
+  // Check if bat ads service shouldn't be started.
+  if (!ShouldStart()) {
     return;
   }
 
