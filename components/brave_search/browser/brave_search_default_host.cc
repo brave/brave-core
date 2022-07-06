@@ -12,6 +12,8 @@
 #include "brave/components/brave_search/browser/brave_search_fallback_host.h"
 #include "brave/components/brave_search/browser/prefs.h"
 #include "brave/components/brave_search/common/features.h"
+#include "brave/components/brave_search_conversion/types.h"
+#include "brave/components/brave_search_conversion/utils.h"
 #include "brave/components/time_period_storage/daily_storage.h"
 #include "build/build_config.h"
 #include "components/prefs/pref_registry_simple.h"
@@ -19,7 +21,14 @@
 #include "components/search_engines/template_url.h"
 #include "components/search_engines/template_url_service.h"
 
+using brave_search_conversion::ConversionType;
+using brave_search_conversion::GetConversionType;
+
 namespace {
+
+bool IsSearchPromotionEnabled(PrefService* prefs, TemplateURLService* service) {
+  return GetConversionType(prefs, service) != ConversionType::kNone;
+}
 
 TemplateURL* GetSearchTemplateForSite(TemplateURLService* service,
                                       const std::string& host) {
@@ -100,6 +109,11 @@ bool BraveSearchDefaultHost::CanSetDefaultSearchProvider(TemplateURL* provider,
             << "Not allowed to make site search engine the default: " << host_;
     return false;
   }
+
+  // Don't check 24h limit.
+  if (can_always_set_default_)
+    return true;
+
   if (!is_historic) {
     // Limit how often user can be asked. This is not site-specific
     // since this API has only 1 intentional public site at the moment.
@@ -134,6 +148,15 @@ uint64_t BraveSearchDefaultHost::GetMaxDailyCanAskCount() {
 uint64_t BraveSearchDefaultHost::GetMaxTotalCanAskCount() {
   return static_cast<uint64_t>(
       features::kBraveSearchDefaultAPITotalLimit.Get());
+}
+
+void BraveSearchDefaultHost::SetCanAlwaysSetDefault() {
+  // We have 24h limit if search promotion url is not loaded.
+  // When renderer detected that current url is for promotion,
+  // renderer requests to remove this limit. In that case,
+  // limit is removed when promotion is enabled.
+  can_always_set_default_ =
+      IsSearchPromotionEnabled(prefs_, template_url_service_);
 }
 
 void BraveSearchDefaultHost::GetCanSetDefaultSearchProvider(

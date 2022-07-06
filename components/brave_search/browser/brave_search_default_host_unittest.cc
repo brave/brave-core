@@ -10,12 +10,16 @@
 
 #include "base/callback_forward.h"
 #include "base/callback_helpers.h"
+#include "base/feature_list.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/test/mock_callback.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/time/time.h"
 #include "brave/components/brave_search/browser/prefs.h"
 #include "brave/components/brave_search/common/features.h"
+#include "brave/components/brave_search_conversion/features.h"
+#include "brave/components/brave_search_conversion/utils.h"
+#include "brave/components/l10n/browser/locale_helper.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/testing_pref_service.h"
@@ -30,7 +34,13 @@ namespace brave_search {
 namespace {
 
 using ::testing::_;
+using ::testing::NiceMock;
 using ::testing::Return;
+
+class LocaleHelperMock : public brave_l10n::LocaleHelper {
+ public:
+  MOCK_CONST_METHOD0(GetLocale, std::string());
+};
 
 std::unique_ptr<TemplateURL> CreateSearchProvider(std::string host) {
   std::string base_url = "https://" + host + '/';
@@ -60,6 +70,7 @@ class BraveSearchDefaultHostTest : public ::testing::Test {
   void SetUp() override {
     pref_service_.registry()->RegisterListPref(prefs::kDailyAsked);
     pref_service_.registry()->RegisterIntegerPref(prefs::kTotalAsked, 0);
+    brave_search_conversion::RegisterPrefs(pref_service_.registry());
   }
 
   void TearDown() override {
@@ -141,6 +152,50 @@ TEST_F(BraveSearchDefaultHostTest, DisallowsAfterMaxTimesAsked) {
   host->GetCanSetDefaultSearchProvider(second.Get());
   host->GetCanSetDefaultSearchProvider(third.Get());
   host->GetCanSetDefaultSearchProvider(fourth.Get());
+}
+
+TEST_F(BraveSearchDefaultHostTest, CanSetDefaultAlwaysTestWithSearchPromotion) {
+  base::test::ScopedFeatureList feature_list;
+
+  NiceMock<LocaleHelperMock> locale_helper_mock;
+  brave_l10n::LocaleHelper::GetInstance()->SetForTesting(&locale_helper_mock);
+  ON_CALL(locale_helper_mock, GetLocale()).WillByDefault(Return("en-US"));
+
+  BraveSearchDefaultHost* host = GetAPIHost("search.test.com");
+  // Add a search provider for the host
+  AddSearchProviderForHost("search.test.com");
+  // Make another search provider default
+  auto* default_provider = AddSearchProviderForHost("search.test2.com");
+  ASSERT_TRUE(template_url_service_.CanMakeDefault(default_provider));
+  template_url_service_.SetUserSelectedDefaultSearchProvider(default_provider);
+
+  // Failed at fourth try by default.
+  MockGetCanSetCallback first, second, third, fourth, fifth, sixth;
+  EXPECT_CALL(first, Run(true));
+  EXPECT_CALL(second, Run(true));
+  EXPECT_CALL(third, Run(true));
+  EXPECT_CALL(fourth, Run(false));
+
+  host->GetCanSetDefaultSearchProvider(first.Get());
+  host->GetCanSetDefaultSearchProvider(second.Get());
+  host->GetCanSetDefaultSearchProvider(third.Get());
+  host->GetCanSetDefaultSearchProvider(fourth.Get());
+
+  feature_list.InitAndEnableFeature(
+      brave_search_conversion::features::kOmniboxBanner);
+  host->SetCanAlwaysSetDefault();
+
+  // Can set after calling SetCanAlwaysSetDefault() with promotion features
+  // enabled.
+  EXPECT_CALL(fifth, Run(true));
+  host->GetCanSetDefaultSearchProvider(fifth.Get());
+
+  // Can't set if promotion feature is disabled.
+  feature_list.Reset();
+  host->SetCanAlwaysSetDefault();
+
+  EXPECT_CALL(sixth, Run(false));
+  host->GetCanSetDefaultSearchProvider(sixth.Get());
 }
 
 }  // namespace

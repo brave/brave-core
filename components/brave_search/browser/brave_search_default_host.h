@@ -32,6 +32,7 @@ class BraveSearchDefaultHost final
   ~BraveSearchDefaultHost() override;
 
   // brave_search::mojom::BraveSearchDefault:
+  void SetCanAlwaysSetDefault() override;
   void GetCanSetDefaultSearchProvider(
       GetCanSetDefaultSearchProviderCallback callback) override;
   void SetIsDefaultSearchProvider() override;
@@ -41,6 +42,7 @@ class BraveSearchDefaultHost final
   uint64_t GetMaxDailyCanAskCount();
   uint64_t GetMaxTotalCanAskCount();
 
+  bool can_always_set_default_ = false;
   bool can_set_default_ = false;
   const std::string host_;
   raw_ptr<TemplateURLService> template_url_service_ = nullptr;

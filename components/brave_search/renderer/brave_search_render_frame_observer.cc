@@ -5,13 +5,10 @@
 
 #include "brave/components/brave_search/renderer/brave_search_render_frame_observer.h"
 
-#include <string>
-#include <vector>
-
-#include "base/no_destructor.h"
 #include "brave/components/brave_search/common/brave_search_utils.h"
 #include "brave/components/brave_search/renderer/brave_search_default_js_handler.h"
 #include "content/public/renderer/render_frame.h"
+#include "net/base/url_util.h"
 #include "third_party/blink/public/web/web_local_frame.h"
 #include "url/gurl.h"
 
@@ -30,20 +27,34 @@ void BraveSearchRenderFrameObserver::DidCreateScriptContext(
   if (!render_frame()->IsMainFrame() || world_id_ != world_id)
     return;
 
-  GURL url =
+  GURL origin =
       url::Origin(render_frame()->GetWebFrame()->GetSecurityOrigin()).GetURL();
 
-  if (!IsAllowedHost(url))
+  if (!IsAllowedHost(origin))
     return;
 
+  bool can_always_set_default = false;
+  for (net::QueryIterator it(url_); !it.IsAtEnd(); it.Advance()) {
+    if (it.GetKey() == "action" && it.GetValue() == "makeDefault") {
+      can_always_set_default = true;
+      break;
+    }
+  }
+
   if (!native_javascript_handle_) {
-    native_javascript_handle_.reset(
-        new BraveSearchDefaultJSHandler(render_frame()));
+    native_javascript_handle_.reset(new BraveSearchDefaultJSHandler(
+        render_frame(), can_always_set_default));
   } else {
     native_javascript_handle_->ResetRemote(render_frame());
   }
 
   native_javascript_handle_->AddJavaScriptObjectToFrame(context);
+}
+
+void BraveSearchRenderFrameObserver::DidStartNavigation(
+    const GURL& url,
+    absl::optional<blink::WebNavigationType> navigation_type) {
+  url_ = url;
 }
 
 void BraveSearchRenderFrameObserver::OnDestruct() {
