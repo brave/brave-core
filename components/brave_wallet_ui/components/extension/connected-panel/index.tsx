@@ -26,7 +26,7 @@ import { reduceAccountDisplayName } from '../../../utils/reduce-account-name'
 import Amount from '../../../utils/amount'
 
 // Hooks
-import { useExplorer, usePricing } from '../../../common/hooks'
+import { useExplorer, usePricing, useIsMounted } from '../../../common/hooks'
 
 // types
 import {
@@ -94,6 +94,7 @@ export const ConnectedPanel = (props: Props) => {
   // custom hooks
   const { computeFiatAmount } = usePricing(spotPrices)
   const onClickViewOnBlockExplorer = useExplorer(selectedNetwork)
+  const isMounted = useIsMounted()
 
   // methods
   const navigate = React.useCallback((path: PanelTypes) => () => {
@@ -132,12 +133,16 @@ export const ConnectedPanel = (props: Props) => {
       const isSolanaAccountConnected = async () => {
         const apiProxy = getWalletPanelApiProxy()
         await apiProxy.panelHandler.isSolanaAccountConnected(selectedAccount.address)
-          .then(result => setIsSolanaConnected(result.connected))
+          .then(result => {
+            if (isMounted) {
+              setIsSolanaConnected(result.connected)
+            }
+          })
           .catch(e => console.log(e))
       }
       isSolanaAccountConnected()
     }
-  }, [selectedAccount, selectedCoin])
+  }, [selectedAccount, selectedCoin, isMounted])
 
   // memos
   const bg = React.useMemo(() => {
