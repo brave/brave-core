@@ -120,9 +120,9 @@ export const ConnectedPanel = (props: Props) => {
     await copyToClipboard(selectedAccount.address)
   }, [selectedAccount.address])
 
-  const onOpenSettings = () => {
+  const onOpenSettings = React.useCallback(() => {
     dispatch(PanelActions.openWalletSettings())
-  }
+  }, [])
 
   // effects
   React.useEffect(() => {
@@ -256,7 +256,7 @@ export const ConnectedPanel = (props: Props) => {
         isSwapDisabled={!isSwapSupported}
         onNavigate={navAction}
       />
-    </StyledWrapper >
+    </StyledWrapper>
   )
 }
 

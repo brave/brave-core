@@ -13,7 +13,7 @@ import {
 import { PanelActions } from '../../../panel/actions'
 
 // Types
-import { WalletState } from '../../../constants/types'
+import { WalletAccountType, WalletState } from '../../../constants/types'
 
 // Utils
 import { getLocale } from '../../../../common/locale'
@@ -38,7 +38,7 @@ import {
   NewAccountButton
 } from './style'
 
-const SitePermissions = () => {
+export const SitePermissions = () => {
   const dispatch = useDispatch()
   const {
     accounts,
@@ -48,12 +48,12 @@ const SitePermissions = () => {
   } = useSelector(({ wallet }: { wallet: WalletState }) => wallet)
 
   // methods
-  const onAddAccount = () => {
+  const onAddAccount = React.useCallback(() => {
     dispatch(PanelActions.expandWalletAccounts())
-  }
+  }, [])
 
   // memos
-  const accountByCoinType = React.useMemo(() => {
+  const accountByCoinType = React.useMemo((): WalletAccountType[] => {
     return accounts.filter((account) => account.coin === selectedCoin)
   }, [accounts, selectedCoin])
 

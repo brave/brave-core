@@ -8,13 +8,7 @@ import CheckMark from '../../../assets/svg-icons/big-checkmark.svg'
 import SwitchDown from '../../../assets/svg-icons/switch-icon.svg'
 import { WalletButton } from '../../shared/style'
 
-interface StyleProps {
-  panelBackground: string
-  orb: string
-  isConnected: boolean
-}
-
-export const StyledWrapper = styled.div<Partial<StyleProps>>`
+export const StyledWrapper = styled.div<{ panelBackground: string }>`
   display: flex;
   height: 100%;
   width: 100%;
@@ -35,7 +29,7 @@ export const CenterColumn = styled.div`
   max-width: 300px;
 `
 
-export const AccountCircle = styled(WalletButton) <Partial<StyleProps>>`
+export const AccountCircle = styled(WalletButton) <{ orb: string }>`
   display: flex;
   cursor: pointer;
   width: 54px;
@@ -172,7 +166,7 @@ export const MoreAssetsButton = styled(WalletButton)`
   color: ${(p) => p.theme.palette.white};
 `
 
-export const ConnectedStatusBubble = styled.div<Partial<StyleProps>>`
+export const ConnectedStatusBubble = styled.div<{ isConnected: boolean }>`
   display: flex;
   align-items: center;
   justify-content: center;
