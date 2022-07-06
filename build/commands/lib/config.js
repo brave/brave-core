@@ -365,12 +365,6 @@ Config.prototype.buildArgs = function () {
     args.allow_runtime_configurable_key_storage = true
   }
 
-  if (this.getTargetOS() === 'mac' &&
-      fs.existsSync(path.join(this.srcDir, 'build', 'mac_files', 'xcode_binaries', 'Contents'))) {
-      // always use hermetic xcode for macos when available
-      args.use_system_xcode = false
-  }
-
   if (this.isDebug() &&
       this.targetOS !== 'ios' &&
       this.targetOS !== 'android') {
@@ -396,6 +390,12 @@ Config.prototype.buildArgs = function () {
   if (this.targetArch === 'x86' && process.platform === 'linux') {
     // Minimal symbols for target Linux x86, because ELF32 cannot be > 4GiB
     args.symbol_level = 1
+  }
+
+  if (this.getTargetOS() === 'mac' &&
+      fs.existsSync(path.join(this.srcDir, 'build', 'mac_files', 'xcode_binaries', 'Contents'))) {
+      // always use hermetic xcode for macos when available
+      args.use_system_xcode = false
   }
 
   if (this.getTargetOS() === 'linux' && this.targetArch === 'x64') {
