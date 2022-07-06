@@ -397,9 +397,7 @@ Config.prototype.buildArgs = function () {
     args.symbol_level = 1
   }
 
-  if (this.targetArch === 'x64' &&
-    (this.targetOS || process.platform) === 'linux' &&
-    this.targetOS !== 'android') {
+  if (this.targetOS === 'linux' && this.targetArch === 'x64') {
     // Include vaapi support
     args.use_vaapi = true
   }
