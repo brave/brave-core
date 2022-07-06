@@ -85,6 +85,7 @@ provideStrings({
   braveWalletSwapDisclaimerDescription: '0x will process the Ethereum address and IP address to fulfill a transaction (including getting quotes). 0x will ONLY use this data for the purposes of processing transactions.',
   braveWalletSwapFeesNotice: 'Quote includes a 0.875% Brave fee.',
   braveWalletDecimalPlacesError: 'Too many decimal places',
+  braveWalletBuyTapBuyNotSupportedMessage: 'Buy not supported for selected network',
 
   // Create Account Tab
   braveWalletCreateAccountDescription: 'You don’t yet have a $1 account. Create one now?',

@@ -649,7 +649,8 @@ constexpr webui::LocalizedString kLocalizedStrings[] = {
     {"braveWalletNetworkFilterSecondary",
      IDS_BRAVE_WALLET_NETWORK_FILTER_SECONDARY},
     {"braveWalletHelpCenter", IDS_BRAVE_WALLET_HELP_CENTER},
-    {"braveWalletHelpCenterText", IDS_BRAVE_WALLET_HELP_CENTER_TEXT}};
+    {"braveWalletHelpCenterText", IDS_BRAVE_WALLET_HELP_CENTER_TEXT},
+    {"braveWalletBuyTapBuyNotSupportedMessage", IDS_BRAVE_WALLET_BUY_TAB_BUY_NOT_SUPPORTED_MESSAGE}};
 
 // Swap constants
 constexpr char kRopstenSwapBaseAPIURL[] = "https://ropsten.api.0x.org/";
