@@ -34,7 +34,6 @@
 
 #if BUILDFLAG(IS_ANDROID)
 #include "brave/browser/android/preferences/background_video_playback_tab_helper.h"
-#include "brave/browser/android/preferences/website/desktop_mode_tab_helper.h"
 #endif
 
 #if !BUILDFLAG(IS_ANDROID)
@@ -84,7 +83,6 @@ void AttachTabHelpers(content::WebContents* web_contents) {
   }
 
 #if BUILDFLAG(IS_ANDROID)
-  DesktopModeTabHelper::CreateForWebContents(web_contents);
   BackgroundVideoPlaybackTabHelper::CreateForWebContents(web_contents);
 #else
   // Add tab helpers here unless they are intended for android too
