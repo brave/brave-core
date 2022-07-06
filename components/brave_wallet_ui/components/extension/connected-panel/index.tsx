@@ -9,6 +9,9 @@ import {
   useSelector
 } from 'react-redux'
 
+// Proxies
+import getWalletPanelApiProxy from '../../../panel/wallet_panel_api_proxy'
+
 // Actions
 import { PanelActions } from '../../../panel/actions'
 
@@ -24,7 +27,6 @@ import Amount from '../../../utils/amount'
 
 // Hooks
 import { useExplorer, usePricing } from '../../../common/hooks'
-import { isSolanaAccountConnected } from '../../../panel/async/wallet_panel_async_handler'
 
 // types
 import {
@@ -127,11 +129,15 @@ export const ConnectedPanel = (props: Props) => {
   // effects
   React.useEffect(() => {
     if (selectedCoin === BraveWallet.CoinType.SOL) {
-      isSolanaAccountConnected(selectedAccount)
-        .then(result => setIsSolanaConnected(result))
-        .catch(e => console.log(e))
+      const isSolanaAccountConnected = async () => {
+        const apiProxy = getWalletPanelApiProxy()
+        await apiProxy.panelHandler.isSolanaAccountConnected(selectedAccount.address)
+          .then(result => setIsSolanaConnected(result.connected))
+          .catch(e => console.log(e))
+      }
+      isSolanaAccountConnected()
     }
-  }, [selectedAccount, selectedCoin, isSolanaAccountConnected])
+  }, [selectedAccount, selectedCoin])
 
   // memos
   const bg = React.useMemo(() => {
