@@ -12,7 +12,9 @@
 #include <utility>
 #include <vector>
 
+#include "base/bind.h"
 #include "base/callback_forward.h"
+#include "base/location.h"
 #include "base/one_shot_event.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
 #include "brave/components/brave_private_cdn/headers.h"
@@ -22,6 +24,7 @@
 #include "brave/components/brave_today/common/brave_news.mojom-forward.h"
 #include "brave/components/brave_today/common/brave_news.mojom.h"
 #include "brave/components/brave_today/common/pref_names.h"
+#include "content/public/browser/browser_thread.h"
 #include "url/origin.h"
 
 namespace brave_news {
@@ -88,11 +91,16 @@ void PublishersController::GetOrFetchPublishers(
             // (with success or error, so we would still check for valid data
             // again, but it's fine to just send the empty array). Provide data
             // clone for ownership outside of this class.
+            auto start = base::Time::Now();
             Publishers clone;
             for (auto const& kv : controller->publishers_) {
               clone.insert_or_assign(kv.first, kv.second->Clone());
             }
+            LOG(ERROR) << "Cloning publishers took: "
+                       << (base::Time::Now() - start).InMilliseconds();
             std::move(callback).Run(std::move(clone));
+            LOG(ERROR) << "& running callback took "
+                       << (base::Time::Now() - start).InMilliseconds();
           },
           base::Unretained(this), std::move(callback)),
       wait_for_current_update);
@@ -130,6 +138,8 @@ void PublishersController::EnsurePublishersIsUpdating() {
       [](PublishersController* controller, const int status,
          const std::string& body,
          const base::flat_map<std::string, std::string>& headers) {
+          auto start = base::Time::Now();
+          LOG(ERROR) << "Started: " << start;
         VLOG(1) << "Downloaded sources, status: " << status;
         // TODO(petemill): handle bad status or response
         Publishers publisher_list;
@@ -178,6 +188,8 @@ void PublishersController::EnsurePublishersIsUpdating() {
         for (auto& observer : controller->observers_) {
           observer.OnPublishersUpdated(controller);
         }
+
+        LOG(ERROR) << "Finished: " << (base::Time::Now() - start).InMilliseconds();
       },
       base::Unretained(this));
   api_request_helper_->Request("GET", sources_url, "", "", true,
