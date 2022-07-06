@@ -28,22 +28,21 @@ void CosmeticFiltersResources::HiddenClassIdSelectors(
     HiddenClassIdSelectorsCallback callback) {
   DCHECK(ad_block_service_->GetTaskRunner()->RunsTasksInCurrentSequence());
   absl::optional<base::Value> input_value = base::JSONReader::Read(input);
-  if (!input_value || !input_value->is_dict()) {
+  if (!input_value) {
     // Nothing to work with
     std::move(callback).Run(base::Value());
 
     return;
   }
-  base::DictionaryValue* input_dict;
-  if (!input_value->GetAsDictionary(&input_dict)) {
+  base::Value::Dict* input_dict = input_value->GetIfDict();
+  if (!input_dict) {
     std::move(callback).Run(base::Value());
-
     return;
   }
   std::vector<std::string> classes;
-  base::ListValue* classes_list;
-  if (input_dict->GetList("classes", &classes_list)) {
-    for (const auto& class_item : classes_list->GetList()) {
+  base::Value::List* classes_list = input_dict->FindList("classes");
+  if (classes_list) {
+    for (const auto& class_item : *classes_list) {
       if (!class_item.is_string()) {
         continue;
       }
@@ -51,9 +50,9 @@ void CosmeticFiltersResources::HiddenClassIdSelectors(
     }
   }
   std::vector<std::string> ids;
-  base::ListValue* ids_list;
-  if (input_dict->GetList("ids", &ids_list)) {
-    for (const auto& id_item : ids_list->GetList()) {
+  base::Value::List* ids_list = input_dict->FindList("ids");
+  if (ids_list) {
+    for (const auto& id_item : *ids_list) {
       if (!id_item.is_string()) {
         continue;
       }
