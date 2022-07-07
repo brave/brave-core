@@ -13,6 +13,7 @@
 #include <utility>
 #include <vector>
 
+#include "absl/types/optional.h"
 #include "base/barrier_callback.h"
 #include "base/bind.h"
 #include "base/callback.h"
@@ -31,6 +32,7 @@
 #include "brave/components/brave_today/common/pref_names.h"
 #include "brave/components/brave_today/rust/lib.rs.h"
 #include "components/prefs/pref_service.h"
+#include "content/public/browser/browser_thread.h"
 #include "net/base/load_flags.h"
 #include "net/http/http_request_headers.h"
 #include "services/network/public/cpp/resource_request.h"
