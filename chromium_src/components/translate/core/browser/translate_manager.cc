@@ -49,7 +49,7 @@ void TranslateManager::FilterIsTranslatePossible(
       decision, translate_prefs, page_language_code, target_lang);
 #if BUILDFLAG(ENABLE_BRAVE_TRANSLATE_GO)
 #if BUILDFLAG(IS_ANDROID)
-  // Disable translate complety if brave translate feature is disabled.
+  // Disable translate completely if brave translate feature is disabled.
   // The code is Android only because desktops use TranslateManager to show
   // Google translate extension bubble.
   if (!IsBraveTranslateGoAvailable()) {
