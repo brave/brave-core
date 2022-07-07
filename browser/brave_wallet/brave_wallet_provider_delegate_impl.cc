@@ -17,7 +17,6 @@
 #include "brave/components/brave_wallet/browser/permission_utils.h"
 #include "brave/components/permissions/contexts/brave_wallet_permission_context.h"
 #include "components/content_settings/core/common/content_settings.h"
-#include "content/public/browser/page.h"
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/visibility.h"
 #include "content/public/browser/web_contents.h"
@@ -217,7 +216,7 @@ void BraveWalletProviderDelegateImpl::RenderFrameHostChanged(
   auto* tab_helper =
       brave_wallet::BraveWalletTabHelper::FromWebContents(web_contents_);
   if (tab_helper)
-    tab_helper->ClearSolanaConnectedAccounts(old_host->GetGlobalId());
+    tab_helper->ClearSolanaConnectedAccounts(host_id_);
 }
 
 void BraveWalletProviderDelegateImpl::PrimaryPageChanged(content::Page& page) {
@@ -226,8 +225,7 @@ void BraveWalletProviderDelegateImpl::PrimaryPageChanged(content::Page& page) {
   auto* tab_helper =
       brave_wallet::BraveWalletTabHelper::FromWebContents(web_contents_);
   if (tab_helper)
-    tab_helper->ClearSolanaConnectedAccounts(
-        page.GetMainDocument().GetGlobalId());
+    tab_helper->ClearSolanaConnectedAccounts(host_id_);
 }
 
 }  // namespace brave_wallet
