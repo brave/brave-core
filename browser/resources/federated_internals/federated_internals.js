@@ -117,10 +117,16 @@ function formatDate(date) {
 }
 
 function onLogsDump() {
-  const data = JSON.stringify(dataStoresLogs[selectedDataStore]);
-  const blob = new Blob([data], {'type': 'text/json'});
+  var data = 'training_instance_id,type,data_type,value\n'
+  for (const [training_instance_id, training_instance] of Object.entries(dataStoresLogs[selectedDataStore])) {
+    training_instance.covariates.forEach(function(covariate) {
+      data += training_instance_id.toString() + ',' + covariate.type.toString() + ',' + 
+            covariate.dataType.toString() + ',' + covariate.value.toString() + '\n';
+    });
+  }
+  const blob = new Blob([data], {'type': 'text/csv'});
   const url = URL.createObjectURL(blob);
-  const filename = selectedDataStore + 'dump.json';
+  const filename = selectedDataStore + '_dump.csv';
 
   const a = document.createElement('a');
   a.setAttribute('href', url);
