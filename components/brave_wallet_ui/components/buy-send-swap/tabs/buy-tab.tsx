@@ -49,11 +49,6 @@ function BuyTab (props: Props) {
     setBuyView('buy')
   }
 
-  const onSelectCurrency = React.useCallback(() => {
-    // hide currency selection view
-    setBuyView('buy')
-  }, [setBuyView])
-
   const goBack = () => {
     setBuyView('buy')
   }
@@ -90,7 +85,6 @@ function BuyTab (props: Props) {
           assetOptions={filteredAssetOptions}
           onClickSelectAccount={onClickSelectAccount}
           onSelectedAsset={onSelectedAsset}
-          onSelectCurrency={onSelectCurrency}
           selectedView={buyView}
         />
       }

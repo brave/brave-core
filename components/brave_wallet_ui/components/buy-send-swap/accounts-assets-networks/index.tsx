@@ -22,14 +22,13 @@ import { useDispatch, useSelector } from 'react-redux'
 
 // Actions
 import { WalletActions } from '../../../common/actions'
-import { SelectCurrency } from '../select-currency/select-currency'
 
 export interface Props {
   selectedView: BuySendSwapViewTypes
   assetOptions: BraveWallet.BlockchainToken[]
+
   onClickSelectAccount: (account: UserAccountType) => () => void
   onSelectedAsset: (account: BraveWallet.BlockchainToken) => () => void
-  onSelectCurrency?: () => void
   goBack: () => void
 }
 
@@ -39,8 +38,7 @@ export const AccountsAssetsNetworks = (props: Props) => {
     assetOptions,
     onClickSelectAccount,
     goBack,
-    onSelectedAsset,
-    onSelectCurrency
+    onSelectedAsset
   } = props
 
   // redux
@@ -52,7 +50,6 @@ export const AccountsAssetsNetworks = (props: Props) => {
   })
   const dispatch = useDispatch()
 
-  // methods
   const onAddNetwork = () => {
     dispatch(WalletActions.expandWalletNetworks())
   }
@@ -80,13 +77,6 @@ export const AccountsAssetsNetworks = (props: Props) => {
           onBack={goBack}
           hasAddButton={true}
           onAddNetwork={onAddNetwork}
-        />
-      }
-
-      {selectedView === 'currencies' &&
-        <SelectCurrency
-          onSelectCurrency={onSelectCurrency}
-          onBack={goBack}
         />
       }
     </StyledWrapper>

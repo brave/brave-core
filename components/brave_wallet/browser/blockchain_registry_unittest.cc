@@ -465,8 +465,7 @@ TEST(BlockchainRegistryUnitTest, GetBuyUrlWyre) {
                                      const absl::optional<std::string>& error) {
         EXPECT_EQ(url,
                   "https://pay.sendwyre.com/"
-                  "?dest=ethereum:0xdeadbeef&sourceCurrency=USD&destCurrency="
-                  "USDC&amount=99.99&"
+                  "?dest=ethereum:0xdeadbeef&destCurrency=USDC&amount=99.99&"
                   "accountId=AC_MGNVBGHPA9T&paymentMethod=debit-card");
         EXPECT_FALSE(error);
 
