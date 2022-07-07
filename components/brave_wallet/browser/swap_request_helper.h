@@ -11,7 +11,8 @@
 
 namespace brave_wallet {
 
-std::string EncodeJupiterTransactionParams(mojom::JupiterSwapParamsPtr params);
+absl::optional<std::string> EncodeJupiterTransactionParams(
+    mojom::JupiterSwapParamsPtr params);
 
 }  // namespace brave_wallet
 

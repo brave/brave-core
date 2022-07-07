@@ -61,7 +61,7 @@ export const SwapDisclaimerRow = styled.div`
 export const SwapDisclaimerText = styled.span`
   font-family: Poppins;
   letter-spacing: 0.01em;
-  font-size: 12px;
+  font-size: 11px;
   line-height: 16px;
   color: ${(p) => p.theme.color.text02};
   word-break: break-word;
@@ -74,7 +74,7 @@ export const SwapDisclaimerButton = styled(WalletButton)`
   background: none;
   border: none;
   font-family: Poppins;
-  font-size: 12px;
+  font-size: 11px;
   line-height: 16px;
   letter-spacing: 0.01em;
   color: ${(p) => p.theme.color.interactive05};

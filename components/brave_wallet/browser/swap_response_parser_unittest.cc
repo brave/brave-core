@@ -30,7 +30,7 @@ const char* GetJupiterQuoteTemplate() {
           "otherAmountThreshold": "258660",
           "outAmountWithSlippage": "258660",
           "swapMode": "ExactIn",
-          "priceImpactPct": 0.008955716118219659,
+          "priceImpactPct": "0.008955716118219659",
           "marketInfos": [
             {
               "id": "2yNwARmTmc3NzYMETCZQjAE5GGCPgviH6hiBsxaeikTK",
@@ -40,22 +40,22 @@ const char* GetJupiterQuoteTemplate() {
               "notEnoughLiquidity": false,
               "inAmount": "10000",
               "outAmount": "117001203",
-              "priceImpactPct": 1.196568750220778e-7,
+              "priceImpactPct": "0.0000001196568750220778",
               "lpFee": {
-                "amount": %s,
+                "amount": "%s",
                 "mint": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
-                "pct": 0.003
+                "pct": "0.003"
 			  },
               "platformFee": {
-                "amount": 0,
+                "amount": "0",
                 "mint": "MNDEFzGvMt87ueuHvVU9VcTqsAP5b3fTGPsHuuPA5ey",
-                "pct": 0
+                "pct": "0"
               }
             }
           ]
         }
       ],
-      "timeTaken": 0.044471802000089156
+      "timeTaken": "0.044471802000089156"
     })";
 }
 }  // namespace
@@ -227,6 +227,11 @@ TEST(SwapResponseParserUnitTest, ParseJupiterQuote) {
   swap_quote = ParseJupiterQuote(json);
   ASSERT_TRUE(swap_quote);
 
+  // OK: Max uint64 for lpFee value
+  json = base::StringPrintf(json_template, "10000", "18446744073709551615");
+  swap_quote = ParseJupiterQuote(json);
+  ASSERT_TRUE(swap_quote);
+
   // KO: Malformed quote
   ASSERT_FALSE(ParseJupiterQuote(""));
 
@@ -243,18 +248,13 @@ TEST(SwapResponseParserUnitTest, ParseJupiterQuote) {
   swap_quote = ParseJupiterQuote(json);
   ASSERT_FALSE(swap_quote);
 
-  // OK: kMaxSafeIntegerUint64 for lpFee value
-  json = base::StringPrintf(json_template, "10000", "30");
-  swap_quote = ParseJupiterQuote(json);
-  ASSERT_TRUE(swap_quote);
-
   // KO: Integer lpFee value underflow
   json = base::StringPrintf(json_template, "10000", "-1");
   swap_quote = ParseJupiterQuote(json);
   ASSERT_FALSE(swap_quote);
 
-  // KO: Integer lpFee value overflow (kMaxSafeIntegerUint64 + 1)
-  json = base::StringPrintf(json_template, "10000", "9007199254740992");
+  // KO: Integer lpFee value overflow (UINT64_MAX + 1)
+  json = base::StringPrintf(json_template, "10000", "18446744073709551616");
   swap_quote = ParseJupiterQuote(json);
   ASSERT_FALSE(swap_quote);
 }

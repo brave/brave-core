@@ -6,6 +6,7 @@ mod ffi {
         fn convert_string_value_to_uint64(path: &str, json: &str, optional: bool) -> String;
         fn convert_string_value_to_int64(path: &str, json: &str, optional: bool) -> String;
         fn convert_uint64_in_object_array_to_string(path: &str, key: &str, json: &str) -> String;
+        fn convert_all_numbers_to_string(json: &str) -> String;
     }
 }
 
@@ -211,4 +212,49 @@ pub fn convert_uint64_in_object_array_to_string(path: &str, key: &str, json: &st
     }
 
     serde_json::to_string(&unwrapped_value).unwrap_or_else(|_| "".into())
+}
+
+/// Parses and re-serializes json with all numbers (`u64`/`i64`/`f64`)
+/// converted to strings.
+///
+/// Values other than `u64`/`i64`/`f64` are unchanged. The fields could be
+/// arbitrarily nested, as the conversion is applied to the entire JSON
+/// recursively. Returns an empty String if such conversion is not possible.
+///
+/// Known double fields in the JSON may have `0` as the value, which will be
+/// interpreted as a `u64`. For this reason, `f64` values are also converted to
+/// string to be consistent with how we handle `u64`. Callers must extract the
+/// appropriate values from the string fields using the following Chromium
+/// helpers:
+///   * `u64` -> `base::StringToUint64()`
+///   * `i64` -> `base::StringToInt64()`
+///   * `f64` -> `base::StringToDouble()`
+///
+/// # Arguments
+/// * `json` - A arbitrary JSON string
+///
+/// # Examples
+///
+/// ```js
+/// {"a":1,"b":-1,"c":3.14} -> {"a":"1","b":"-1","c":"3.14"}
+/// {"some":[{"deeply":{"nested":[{"path":123}]}}]} -> {"some":[{"deeply":{"nested":[{"path":"123"}]}}]}
+/// ```
+pub fn convert_all_numbers_to_string(json: &str) -> String {
+    use serde_json::Value;
+
+    fn convert_recursively(json: &mut Value) {
+        match json {
+            Value::Number(n) if n.is_u64() || n.is_i64() || n.is_f64() => {
+                *json = Value::String(n.to_string());
+            }
+            Value::Array(a) => a.iter_mut().for_each(convert_recursively),
+            Value::Object(o) => o.values_mut().for_each(convert_recursively),
+            _ => (),
+        }
+    }
+
+    serde_json::from_str(json).map(|mut v: Value| {
+        convert_recursively(&mut v);
+        v.to_string()
+    }).unwrap_or_else(|_| "".into())
 }

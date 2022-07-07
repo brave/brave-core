@@ -294,6 +294,24 @@ TEST_F(SolanaTransactionUnitTest, FromSignedTransactionBytes) {
        23,  72,  82,  18,  31,  99,  52,  175, 135, 38,  202, 71,  215,
        64,  171, 122, 99,  178, 217, 144, 109, 88,  75,  198, 137, 92,
        222, 109, 229, 52,  138, 101, 182, 42,  134, 216, 4});
+  const std::vector<uint8_t> valid_signed_tx_with_one_empty_signature(
+      {1,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,
+       0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,
+       0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,
+       0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,
+       0,   0,   0,   0,   0,   0,   0,   0,   0,   2,   0,   1,   3,   161,
+       51,  89,  91,  115, 210, 217, 212, 76,  159, 171, 200, 40,  150, 157,
+       70,  197, 71,  24,  44,  209, 108, 143, 4,   58,  251, 215, 62,  201,
+       172, 159, 197, 255, 224, 228, 245, 94,  238, 23,  132, 206, 40,  82,
+       249, 219, 203, 103, 158, 110, 219, 93,  249, 143, 134, 207, 172, 179,
+       76,  67,  6,   169, 164, 149, 38,  0,   0,   0,   0,   0,   0,   0,
+       0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,
+       0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   131, 191, 83,
+       201, 108, 193, 222, 255, 176, 67,  136, 209, 219, 42,  6,   169, 240,
+       137, 142, 185, 169, 6,   17,  87,  123, 6,   42,  55,  162, 64,  120,
+       91,  1,   2,   2,   0,   1,   12,  2,   0,   0,   0,   128, 150, 152,
+       0,   0,   0,   0,   0});
+  const std::vector<uint8_t> empty_signature(64, 0);
 
   for (size_t i = 1; i < valid_signed_tx_with_two_signer.size(); ++i) {
     EXPECT_FALSE(SolanaTransaction::FromSignedTransactionBytes(
@@ -323,6 +341,13 @@ TEST_F(SolanaTransactionUnitTest, FromSignedTransactionBytes) {
   EXPECT_NE(*result, transaction);
   EXPECT_EQ(*result->message(), *transaction.message());
   EXPECT_EQ(result->raw_signatures(), signatures);
+
+  // Signed transaction bytes with empty signature
+  result = SolanaTransaction::FromSignedTransactionBytes(
+      valid_signed_tx_with_one_empty_signature);
+  ASSERT_TRUE(result);
+  EXPECT_EQ(*result->message(), *transaction.message());
+  EXPECT_EQ(result->raw_signatures(), empty_signature);
 }
 
 TEST_F(SolanaTransactionUnitTest, FromToSolanaTxData) {
@@ -515,7 +540,8 @@ TEST_F(SolanaTransactionUnitTest, SetTxType) {
       mojom::TransactionType::
           SolanaSPLTokenTransferWithAssociatedTokenAccountCreation,
       mojom::TransactionType::SolanaDappSignAndSendTransaction,
-      mojom::TransactionType::SolanaDappSignTransaction};
+      mojom::TransactionType::SolanaDappSignTransaction,
+      mojom::TransactionType::SolanaSwap};
   for (int i = 0; i <= max; i++) {
     auto type = static_cast<mojom::TransactionType>(i);
     if (valid_types.contains(type)) {

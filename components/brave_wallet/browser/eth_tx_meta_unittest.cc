@@ -31,12 +31,14 @@ TEST(EthTxMetaUnitTest, ToTransactionInfo) {
   EXPECT_TRUE(base::Time::FromUTCExploded(x, &confirmed_time));
   meta.set_submitted_time(confirmed_time - base::Seconds(3));
   meta.set_created_time(confirmed_time - base::Minutes(1));
+  meta.set_group_id("mockGroupId");
 
   mojom::TransactionInfoPtr ti = meta.ToTransactionInfo();
   EXPECT_EQ(ti->id, meta.id());
   EXPECT_EQ(ti->from_address, meta.from());
   EXPECT_EQ(ti->tx_hash, meta.tx_hash());
   EXPECT_EQ(ti->tx_status, meta.status());
+  EXPECT_EQ(ti->group_id, meta.group_id());
 
   ASSERT_TRUE(ti->tx_data_union->is_eth_tx_data_1559());
   EXPECT_EQ(ti->tx_data_union->get_eth_tx_data_1559()->base_data->nonce,

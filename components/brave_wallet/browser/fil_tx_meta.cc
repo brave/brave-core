@@ -41,7 +41,7 @@ mojom::TransactionInfoPtr FilTxMeta::ToTransactionInfo() const {
       base::Milliseconds(created_time_.ToJavaTime()),
       base::Milliseconds(submitted_time_.ToJavaTime()),
       base::Milliseconds(confirmed_time_.ToJavaTime()),
-      origin_.has_value() ? MakeOriginInfo(*origin_) : nullptr);
+      origin_.has_value() ? MakeOriginInfo(*origin_) : nullptr, group_id_);
 }
 
 }  // namespace brave_wallet

@@ -93,6 +93,7 @@ function SwapTab () {
             toAssetBalance={swap.toAssetBalance}
             fromAsset={swap.fromAsset}
             toAsset={swap.toAsset}
+            swapProvider={swap.swapProvider}
           />
         </>
       }

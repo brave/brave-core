@@ -76,7 +76,7 @@ public class SendModel {
                         if (error == 0) {
                             mTxService.addUnapprovedTransaction(
                                     WalletUtils.toTxDataUnion(solanaTxData), fromAddress, null,
-                                    (success, txMetaId, errorMessage) -> {
+                                    null, (success, txMetaId, errorMessage) -> {
                                         callback.call(success, txMetaId, errorMessage);
                                     });
                         }
@@ -88,7 +88,7 @@ public class SendModel {
                         if (error == 0) {
                             mTxService.addUnapprovedTransaction(
                                     WalletUtils.toTxDataUnion(solanaTxData), fromAddress, null,
-                                    (success, txMetaId, errorMessage) -> {
+                                    null, (success, txMetaId, errorMessage) -> {
                                         callback.call(success, txMetaId, errorMessage);
                                     });
                         }

@@ -56,12 +56,14 @@ import {
   BuySendSwapViewTypes,
   ToOrFromType
 } from '../constants/types'
+
 import { AppsList } from '../options/apps-list-options'
 import LockPanel from '../components/extension/lock-panel'
 import { getNetworkInfo } from '../utils/network-utils'
 import { isHardwareAccount } from '../utils/address-utils'
 import { useAssets, useSwap, useSend, useHasAccount, usePrevNetwork } from '../common/hooks'
 import { getUniqueAssets } from '../utils/asset-utils'
+import { isSolanaTransaction } from '../utils/tx-utils'
 import { ConfirmSolanaTransactionPanel } from '../components/extension/confirm-transaction-panel/confirm-solana-transaction-panel'
 import { SignTransactionPanel } from '../components/extension/sign-panel/sign-transaction-panel'
 import { useDispatch, useSelector } from 'react-redux'
@@ -488,12 +490,7 @@ function Container () {
     return (
       <PanelWrapper isLonger={true}>
         <LongWrapper>
-          {[
-            BraveWallet.TransactionType.SolanaDappSignAndSendTransaction,
-            BraveWallet.TransactionType.SolanaSPLTokenTransfer,
-            BraveWallet.TransactionType.SolanaSPLTokenTransferWithAssociatedTokenAccountCreation,
-            BraveWallet.TransactionType.SolanaSystemTransfer
-          ].includes(selectedPendingTransaction.txType)
+          {isSolanaTransaction(selectedPendingTransaction)
             ? <ConfirmSolanaTransactionPanel
               onConfirm={onConfirmTransaction}
               onReject={onRejectTransaction}

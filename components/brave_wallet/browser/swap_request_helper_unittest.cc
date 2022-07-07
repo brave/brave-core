@@ -27,7 +27,7 @@ const char* GetJupiterQuoteTemplate() {
           "otherAmountThreshold": "258660",
           "outAmountWithSlippage": "258660",
           "swapMode": "ExactIn",
-          "priceImpactPct": 0.008955716118219659,
+          "priceImpactPct": "0.008955716118219659",
           "marketInfos": [
             {
               "id": "2yNwARmTmc3NzYMETCZQjAE5GGCPgviH6hiBsxaeikTK",
@@ -37,22 +37,22 @@ const char* GetJupiterQuoteTemplate() {
               "notEnoughLiquidity": false,
               "inAmount": "10000",
               "outAmount": "117001203",
-              "priceImpactPct": 1.196568750220778e-7,
+              "priceImpactPct": "0.0000001196568750220778",
               "lpFee": {
-                "amount": %s,
+                "amount": "%s",
                 "mint": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
-                "pct": 0.003
+                "pct": "0.003"
 			  },
               "platformFee": {
-                "amount": 0,
+                "amount": "0",
                 "mint": "MNDEFzGvMt87ueuHvVU9VcTqsAP5b3fTGPsHuuPA5ey",
-                "pct": 0
+                "pct": "0"
               }
             }
           ]
         }
       ],
-      "timeTaken": 0.044471802000089156
+      "timeTaken": "0.044471802000089156"
     })";
 }
 }  // namespace
@@ -66,11 +66,12 @@ TEST(SwapRequestHelperUnitTest, EncodeJupiterTransactionParams) {
   mojom::JupiterSwapParams params;
   params.route = swap_quote->routes.at(0).Clone();
   params.user_public_key = "mockPubKey";
+  params.output_mint = "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v";  // USDC
   auto encoded_params = EncodeJupiterTransactionParams(params.Clone());
 
   std::string expected_params(R"(
     {
-      "feeAccount": "8eekKfUAGSJbq3CdA2TmHb8tKuyzd5gtEas3MYAtXzrT",
+      "feeAccount": "6qzJdco58Q4VN76mX4c6rjkRSsvpaBz6wsnJxW4uWswC",
       "route": {
         "inAmount": 10000,
         "outAmount": 261273,
@@ -107,9 +108,15 @@ TEST(SwapRequestHelperUnitTest, EncodeJupiterTransactionParams) {
   auto expected_params_value = base::JSONReader::Read(
       expected_params,
       base::JSON_PARSE_CHROMIUM_EXTENSIONS | base::JSON_ALLOW_TRAILING_COMMAS);
-  ASSERT_EQ(encoded_params, GetJSON(*expected_params_value));
+  ASSERT_NE(encoded_params, absl::nullopt);
+  ASSERT_EQ(*encoded_params, GetJSON(*expected_params_value));
 
   // Empty params
   EXPECT_DCHECK_DEATH(EncodeJupiterTransactionParams(nullptr));
+
+  // Invalid output mint
+  params.output_mint = "invalid output mint";
+  encoded_params = EncodeJupiterTransactionParams(params.Clone());
+  ASSERT_EQ(encoded_params, absl::nullopt);
 }
 }  // namespace brave_wallet

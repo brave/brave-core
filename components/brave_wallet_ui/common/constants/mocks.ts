@@ -32,7 +32,7 @@ export const getMockedTransactionInfo = (): BraveWallet.TransactionInfo => {
       },
       ethTxData: {} as any,
       filTxData: undefined,
-      solanaTxData: {} as any
+      solanaTxData: undefined
     },
     txStatus: BraveWallet.TransactionStatus.Approved,
     txType: BraveWallet.TransactionType.Other,
@@ -50,7 +50,8 @@ export const getMockedTransactionInfo = (): BraveWallet.TransactionInfo => {
       },
       originSpec: 'https://brave.com',
       eTldPlusOne: 'brave.com'
-    }
+    },
+    groupId: undefined
   }
 }
 

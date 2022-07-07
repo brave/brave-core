@@ -23,18 +23,20 @@ import usePricing from './pricing'
 import useTokenInfo from './token'
 import { useLib } from './useLib'
 
-// types
+// Constants
 import { WalletState, BraveWallet } from '../../constants/types'
 import {
   UpdateUnapprovedTransactionGasFieldsType,
   UpdateUnapprovedTransactionNonceType
 } from '../constants/action_types'
+import { isSolanaTransaction, sortTransactionByDate } from '../../utils/tx-utils'
 
 export const usePendingTransactions = () => {
   // redux
   const dispatch = useDispatch()
   const {
     accounts,
+    transactions,
     selectedNetwork,
     selectedPendingTransaction: transactionInfo,
     userVisibleTokensInfo: visibleTokens,
@@ -80,14 +82,7 @@ export const usePendingTransactions = () => {
   const isERC721SafeTransferFrom = transactionInfo?.txType === BraveWallet.TransactionType.ERC721SafeTransferFrom
   const isERC721TransferFrom = transactionInfo?.txType === BraveWallet.TransactionType.ERC721TransferFrom
 
-  const isSolanaTransaction = transactionInfo?.txType && [
-    BraveWallet.TransactionType.SolanaDappSignAndSendTransaction,
-    BraveWallet.TransactionType.SolanaDappSignTransaction,
-    BraveWallet.TransactionType.SolanaSPLTokenTransfer,
-    BraveWallet.TransactionType.SolanaSPLTokenTransferWithAssociatedTokenAccountCreation,
-    BraveWallet.TransactionType.SolanaSystemTransfer
-  ].includes(transactionInfo.txType)
-
+  const isSolanaTxn = transactionInfo && isSolanaTransaction(transactionInfo)
   const isSolanaDappTransaction = transactionInfo?.txType && [
     BraveWallet.TransactionType.SolanaDappSignAndSendTransaction,
     BraveWallet.TransactionType.SolanaDappSignTransaction
@@ -124,6 +119,34 @@ export const usePendingTransactions = () => {
   const updateUnapprovedTransactionGasFields = React.useCallback((payload: UpdateUnapprovedTransactionGasFieldsType) => {
     dispatch(WalletActions.updateUnapprovedTransactionGasFields(payload))
   }, [])
+
+  // List of all transactions that belong to the same group as the selected
+  // pending transaction.
+  const groupTransactions = React.useMemo(() =>
+    transactionInfo?.groupId && transactionInfo?.fromAddress
+      ? sortTransactionByDate(
+          transactions[transactionInfo.fromAddress]
+            .filter(txn => txn.groupId === transactionInfo.groupId))
+      : [],
+    [transactionInfo, transactions])
+
+  const unconfirmedGroupTransactionIds = React.useMemo(() =>
+    groupTransactions
+      .filter(txn => txn.txStatus !== BraveWallet.TransactionStatus.Confirmed)
+      .map(txn => txn.id),
+    [groupTransactions])
+
+  // Position of the selected pending transaction in the group, if exists.
+  const selectedPendingTransactionGroupIndex = React.useMemo(() =>
+    groupTransactions.findIndex(txn => transactionInfo?.id === txn.id),
+    [groupTransactions, transactionInfo])
+
+  // The selected pending transaction can only be approved if:
+  //   - it does not belong to a transaction group
+  //   - it is the first unconfirmed transaction in the group
+  const canSelectedPendingTransactionBeApproved = React.useMemo(() =>
+    unconfirmedGroupTransactionIds.findIndex(idx => transactionInfo?.id === idx) <= 0,
+    [transactionInfo, unconfirmedGroupTransactionIds])
 
   // memos
   const fromOrb = React.useMemo(() => {
@@ -163,7 +186,8 @@ export const usePendingTransactions = () => {
       transactionDetails?.insufficientFundsError === undefined ||
       transactionDetails?.insufficientFundsForGasError ||
       transactionDetails?.insufficientFundsError ||
-      !!transactionDetails?.missingGasLimitError
+      !!transactionDetails?.missingGasLimitError ||
+      !canSelectedPendingTransactionBeApproved
     )
   }, [transactionDetails])
 
@@ -238,7 +262,7 @@ export const usePendingTransactions = () => {
     isERC721SafeTransferFrom,
     isERC721TransferFrom,
     isSolanaDappTransaction,
-    isSolanaTransaction,
+    isSolanaTransaction: isSolanaTxn,
     isAssociatedTokenAccountCreation,
     isFilecoinTransaction,
     onEditAllowanceSave,
@@ -253,6 +277,8 @@ export const usePendingTransactions = () => {
     transactionTitle,
     sendOptions: transactionInfo?.txDataUnion.solanaTxData?.sendOptions,
     updateUnapprovedTransactionGasFields,
-    updateUnapprovedTransactionNonce
+    updateUnapprovedTransactionNonce,
+    groupTransactions,
+    selectedPendingTransactionGroupIndex
   }
 }

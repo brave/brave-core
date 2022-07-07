@@ -12,15 +12,25 @@
 #include "base/values.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/json_rpc_requests_helper.h"
+#include "brave/components/brave_wallet/browser/solana_keyring.h"
 #include "brave/components/json/rs/src/lib.rs.h"
 
 namespace brave_wallet {
 
-std::string EncodeJupiterTransactionParams(mojom::JupiterSwapParamsPtr params) {
+absl::optional<std::string> EncodeJupiterTransactionParams(
+    mojom::JupiterSwapParamsPtr params) {
   DCHECK(params);
-
   base::Value::Dict tx_params;
-  tx_params.Set("feeAccount", brave_wallet::kSolanaFeeRecipient);
+
+  // feeAccount is the ATA account for the output mint where the fee will be
+  // sent to.
+  absl::optional<std::string> associated_token_account =
+      SolanaKeyring::GetAssociatedTokenAccount(
+          params->output_mint, brave_wallet::kSolanaFeeRecipient);
+  if (!associated_token_account)
+    return absl::nullopt;
+
+  tx_params.Set("feeAccount", *associated_token_account);
   tx_params.Set("userPublicKey", params->user_public_key);
 
   base::Value::Dict route;

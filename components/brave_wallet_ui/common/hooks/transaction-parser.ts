@@ -22,6 +22,7 @@ import {
 import { getLocale } from '../../../common/locale'
 import Amount from '../../utils/amount'
 import { getTypedSolanaTxInstructions, TypedSolanaInstructionWithParams } from '../../utils/solana-instruction-utils'
+import { isSolanaTransaction } from '../../utils/tx-utils'
 
 // Hooks
 import usePricing from './pricing'
@@ -107,16 +108,10 @@ export function useTransactionFeesParser (selectedNetwork: BraveWallet.NetworkIn
   }, [])
 
   return React.useCallback((transactionInfo: BraveWallet.TransactionInfo): ParsedTransactionFees => {
-    const { txDataUnion: { ethTxData1559: txData, filTxData }, txType } = transactionInfo
-
-    const isSolTransaction =
-      txType === BraveWallet.TransactionType.SolanaSystemTransfer ||
-      txType === BraveWallet.TransactionType.SolanaSPLTokenTransfer ||
-      txType === BraveWallet.TransactionType.SolanaSPLTokenTransferWithAssociatedTokenAccountCreation ||
-      txType === BraveWallet.TransactionType.SolanaDappSignAndSendTransaction ||
-      txType === BraveWallet.TransactionType.SolanaDappSignTransaction
+    const { txDataUnion: { ethTxData1559: txData, filTxData } } = transactionInfo
 
     const isFilTransaction = filTxData !== undefined
+    const isSolanaTxn = isSolanaTransaction(transactionInfo)
 
     const gasLimit = isFilTransaction
       ? filTxData.gasLimit
@@ -127,7 +122,9 @@ export function useTransactionFeesParser (selectedNetwork: BraveWallet.NetworkIn
     const maxPriorityFeePerGas = txData?.maxPriorityFeePerGas || ''
     const isEIP1559Transaction = maxPriorityFeePerGas !== '' && maxFeePerGas !== ''
 
-    const gasFee = isSolTransaction
+    // [FIXME] - Extract actual fees used in the Solana transaction, instead of
+    //   populating current estimates.
+    const gasFee = isSolanaTxn
       ? new Amount(solFeeEstimates?.fee.toString() ?? '').format()
       : isEIP1559Transaction
         ? new Amount(maxFeePerGas)
@@ -148,7 +145,9 @@ export function useTransactionFeesParser (selectedNetwork: BraveWallet.NetworkIn
         .times(networkSpotPrice)
         .formatAsFiat(),
       isEIP1559Transaction,
-      missingGasLimitError: isSolTransaction ? undefined : checkForMissingGasLimitError(gasLimit),
+      missingGasLimitError: isSolanaTxn
+        ? undefined
+        : checkForMissingGasLimitError(gasLimit),
       gasPremium: isFilTransaction ? new Amount(filTxData.gasPremium).format() : '',
       gasFeeCap: isFilTransaction ? new Amount(filTxData.gasFeeCap).format() : ''
     }
@@ -245,30 +244,21 @@ export function useTransactionParser (
     const { gasFeeFiat, gasFee } = feeDetails
 
     const isFilTransaction = filTxData !== undefined
-
-    const isSolanaDappTransaction =
-      txType === BraveWallet.TransactionType.SolanaDappSignAndSendTransaction ||
-      txType === BraveWallet.TransactionType.SolanaDappSignTransaction
+    const isSolanaTxn = isSolanaTransaction(transactionInfo)
 
     const isSPLTransaction =
       txType === BraveWallet.TransactionType.SolanaSPLTokenTransfer ||
       txType === BraveWallet.TransactionType.SolanaSPLTokenTransferWithAssociatedTokenAccountCreation
 
-    const isSolTransaction =
-      txType === BraveWallet.TransactionType.SolanaSystemTransfer ||
-      isSPLTransaction ||
-      isSolanaDappTransaction
-
     const value =
       isSPLTransaction ? solTxData?.amount.toString() ?? ''
-        : isSolTransaction ? solTxData?.lamports.toString() ?? ''
+        : isSolanaTxn ? solTxData?.lamports.toString() ?? ''
           : isFilTransaction ? filTxData.value || ''
             : txData?.baseData.value || ''
 
-    let to =
-      isSolTransaction ? solTxData?.toWalletAddress ?? ''
-        : isFilTransaction ? filTxData.to ?? ''
-          : txData?.baseData.to || ''
+    let to = isSolanaTxn ? solTxData?.toWalletAddress ?? ''
+      : isFilTransaction ? filTxData.to ?? ''
+        : txData?.baseData.to || ''
 
     const nonce = txData?.baseData.nonce || ''
     const account = accounts.find((account) => account.address.toLowerCase() === fromAddress.toLowerCase())
@@ -278,7 +268,9 @@ export function useTransactionParser (
 
     switch (true) {
       case txType === BraveWallet.TransactionType.SolanaDappSignTransaction:
-      case txType === BraveWallet.TransactionType.SolanaDappSignAndSendTransaction: {
+      case txType === BraveWallet.TransactionType.SolanaDappSignAndSendTransaction:
+      case txType === BraveWallet.TransactionType.SolanaSwap:
+      case txType === BraveWallet.TransactionType.Other && solTxData !== undefined: {
         const instructions = solTxData ? getTypedSolanaTxInstructions(solTxData) : []
 
         const lamportsMovedFromInstructions = instructions.reduce((acc, { type, params }) => {
@@ -380,7 +372,7 @@ export function useTransactionParser (
           insufficientFundsForGasError: accountNativeBalance !== ''
             ? new Amount(gasFee).gt(accountNativeBalance)
             : undefined,
-          isSwap: false,
+          isSwap: txType === BraveWallet.TransactionType.SolanaSwap,
           instructions,
           ...feeDetails
         }
