@@ -78,11 +78,16 @@ void BraveNewsTabHelper::ToggleSubscription(const FeedDetails& feed_details) {
   bool subscribed = is_subscribed(feed_details);
   auto publisher = controller_->publisher_controller()->GetPublisherById(
       feed_details.publisher_id);
+  publisher = controller_->publisher_controller()->GetPublisherForFeed(
+      feed_details.feed_url);
   if (publisher) {
+    LOG(ERROR) << "Subscribed " << subscribed
+               << " Id: " << publisher->publisher_id;
     controller_->SetPublisherPref(
-        feed_details.publisher_id,
+        publisher->publisher_id,
         subscribed ? brave_news::mojom::UserEnabled::DISABLED
                    : brave_news::mojom::UserEnabled::ENABLED);
+    AvailableFeedsChanged();
   } else if (!subscribed) {
     controller_->SubscribeToNewDirectFeed(feed_details.feed_url,
                                           base::DoNothing());

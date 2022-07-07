@@ -91,16 +91,11 @@ void PublishersController::GetOrFetchPublishers(
             // (with success or error, so we would still check for valid data
             // again, but it's fine to just send the empty array). Provide data
             // clone for ownership outside of this class.
-            auto start = base::Time::Now();
             Publishers clone;
             for (auto const& kv : controller->publishers_) {
               clone.insert_or_assign(kv.first, kv.second->Clone());
             }
-            LOG(ERROR) << "Cloning publishers took: "
-                       << (base::Time::Now() - start).InMilliseconds();
             std::move(callback).Run(std::move(clone));
-            LOG(ERROR) << "& running callback took "
-                       << (base::Time::Now() - start).InMilliseconds();
           },
           base::Unretained(this), std::move(callback)),
       wait_for_current_update);
@@ -138,9 +133,6 @@ void PublishersController::EnsurePublishersIsUpdating() {
       [](PublishersController* controller, const int status,
          const std::string& body,
          const base::flat_map<std::string, std::string>& headers) {
-          auto start = base::Time::Now();
-          LOG(ERROR) << "Started: " << start;
-        VLOG(1) << "Downloaded sources, status: " << status;
         // TODO(petemill): handle bad status or response
         Publishers publisher_list;
         ParseCombinedPublisherList(body, &publisher_list);
@@ -188,8 +180,6 @@ void PublishersController::EnsurePublishersIsUpdating() {
         for (auto& observer : controller->observers_) {
           observer.OnPublishersUpdated(controller);
         }
-
-        LOG(ERROR) << "Finished: " << (base::Time::Now() - start).InMilliseconds();
       },
       base::Unretained(this));
   api_request_helper_->Request("GET", sources_url, "", "", true,
