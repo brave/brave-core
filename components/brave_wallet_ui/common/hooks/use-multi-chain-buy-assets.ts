@@ -24,7 +24,7 @@ import { BuyOptions } from '../../options/buy-with-options'
 import { useIsMounted } from './useIsMounted'
 import { useLib } from './useLib'
 
-export function useMultiChainBuyAssets () {
+export const useMultiChainBuyAssets = () => {
   // redux
   const networkList = useSelector(({ wallet }: { wallet: WalletState }) => wallet.networkList)
   const selectedCurrency = useSelector(({ wallet }: { wallet: WalletState }) => wallet.selectedCurrency)
@@ -114,7 +114,13 @@ export function useMultiChainBuyAssets () {
         })
       })
       .catch(e => console.error(e))
-  }, [getBuyAssetUrl, selectedAssetNetwork, buyAmount, selectedAsset])
+  }, [
+    selectedAsset,
+    selectedAssetNetwork,
+    getBuyAssetUrl,
+    buyAmount,
+    selectedCurrency
+  ])
 
   return {
     allAssetOptions: options.allAssetOptions,
