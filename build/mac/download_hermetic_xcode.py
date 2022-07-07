@@ -18,7 +18,7 @@ from urllib.error import URLError  # pylint: disable=no-name-in-module,import-er
 import pkg_resources
 
 import deps
-from deps_config import DEPS_PACKAGES_URL
+from deps_config import DEPS_PACKAGES_URL, MAC_TOOLCHAIN_ROOT
 
 
 def LoadPList(path):
@@ -40,20 +40,17 @@ HERMETIC_XCODE_BINARY = (
 # the OS minimum through Xcode 12.4, still seems to work.
 MAC_MINIMUM_OS_VERSION = [19, 4]
 
-BASE_DIR = os.path.abspath(
-    os.path.join(os.path.dirname(__file__), '..', '..', '..', 'build'))
-TOOLCHAIN_ROOT = os.path.join(BASE_DIR, 'mac_files')
-TOOLCHAIN_BUILD_DIR = os.path.join(TOOLCHAIN_ROOT, 'Xcode.app')
+TOOLCHAIN_BUILD_DIR = os.path.join(MAC_TOOLCHAIN_ROOT, 'Xcode.app')
 
 
 def PlatformMeetsHermeticXcodeRequirements():
-    if sys.platform != 'darwin':
-        return False
-    needed = MAC_MINIMUM_OS_VERSION
-    major_version = [
-        int(v) for v in platform.release().split('.')[:len(needed)]
-    ]
-    return major_version >= needed
+    if sys.platform == 'darwin':
+        needed = MAC_MINIMUM_OS_VERSION
+        major_version = [
+            int(v) for v in platform.release().split('.')[:len(needed)]
+        ]
+        return major_version >= needed
+    return sys.platform.startswith('linux')
 
 
 def GetHermeticXcodeVersion(binaries_root):
@@ -76,7 +73,7 @@ def InstallXcodeBinaries():
         print("Goma server host is not configured for Brave")
         return 0
 
-    binaries_root = os.path.join(TOOLCHAIN_ROOT, 'xcode_binaries')
+    binaries_root = os.path.join(MAC_TOOLCHAIN_ROOT, 'xcode_binaries')
     if (XCODE_VERSION == GetHermeticXcodeVersion(binaries_root) and
             not os.path.islink(binaries_root)):
         print(f"Hermetic Xcode {XCODE_VERSION} already installed")
@@ -91,6 +88,13 @@ def InstallXcodeBinaries():
         print("Exiting.")
         return 1
 
+    if sys.platform == 'darwin':
+        AcceptXcodeLicense(binaries_root)
+
+    return 0
+
+
+def AcceptXcodeLicense(binaries_root):
     # Accept the license for this version of Xcode if it's newer than the
     # currently accepted version.
     hermetic_xcode_version = GetHermeticXcodeVersion(binaries_root)
@@ -112,7 +116,7 @@ def InstallXcodeBinaries():
             should_overwrite_license = False
 
     if not should_overwrite_license:
-        return 0
+        return
 
     # Use puppet's sudoers script to accept the license if its available.
     license_accept_script = '/usr/local/bin/xcode_accept_license.py'
@@ -123,7 +127,7 @@ def InstallXcodeBinaries():
             hermetic_xcode_license_version
         ]
         subprocess.check_call(args)
-        return 0
+        return
 
     # Otherwise manually accept the license. This will prompt for sudo.
     print('Accepting new Xcode license. Requires sudo.')
@@ -141,7 +145,7 @@ def InstallXcodeBinaries():
     args = ['sudo', 'plutil', '-convert', 'xml1', current_license_path]
     subprocess.check_call(args)
 
-    return 0
+    return
 
 
 def main():
