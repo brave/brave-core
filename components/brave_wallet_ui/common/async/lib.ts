@@ -171,14 +171,16 @@ export async function getBuyAssetUrl (args: {
   chainId: string
   address: string
   amount: string
+  currencyCode: string
 }) {
   const { blockchainRegistry } = getAPIProxy()
-  const { url, error } = await blockchainRegistry.getBuyUrl(
+  const { url, error } = await blockchainRegistry.getBuyUrlV1(
     args.onRampProvider,
     args.chainId,
     args.address,
     args.asset.symbol,
-    args.amount
+    args.amount,
+    args.currencyCode
   )
 
   if (error) {

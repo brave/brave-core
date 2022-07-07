@@ -125,3 +125,6 @@ export const setSelectedNetworkFilter = createAction<BraveWallet.NetworkInfo>('s
 export const setDefaultAccounts = createAction<BraveWallet.AccountInfo[]>('setDefaultAccounts')
 export const setShowTestNetworks = createAction<boolean>('setShowTestNetworks')
 export const addAccount = createAction<AddAccountPayloadType>('addAccount')
+export const getOnRampCurrencies = createAction('getOnRampCurrencies')
+export const setOnRampCurrencies = createAction<BraveWallet.OnRampCurrency[]>('setOnRampCurrencies')
+export const selectCurrency = createAction<BraveWallet.OnRampCurrency>('selectCurrency')
