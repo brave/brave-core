@@ -620,6 +620,7 @@ using GetCapabilitiesParamType = std::tuple<
     std::string,                        // input Uphold wallet
     type::UrlResponse,                  // Uphold Get User response
     type::UrlResponse,                  // Uphold Get Capabilities response
+    type::UrlResponse,                  // Rewards Delete Claim response
     type::Result,                       // expected result
     absl::optional<type::WalletStatus>  // expected status
 >;
@@ -648,6 +649,7 @@ INSTANTIATE_TEST_SUITE_P(
         {},
         {}
       },
+      type::UrlResponse{},
       type::Result::EXPIRED_TOKEN,
       type::WalletStatus::NOT_CONNECTED
     },
@@ -669,6 +671,7 @@ INSTANTIATE_TEST_SUITE_P(
         {},
         {}
       },
+      type::UrlResponse{},
       type::Result::CONTINUE,
       type::WalletStatus::PENDING
     },
@@ -690,6 +693,7 @@ INSTANTIATE_TEST_SUITE_P(
         {},
         {}
       },
+      type::UrlResponse{},
       type::Result::CONTINUE,
       type::WalletStatus::PENDING
     },
@@ -711,6 +715,7 @@ INSTANTIATE_TEST_SUITE_P(
         R"([ { "key": "sends", "enabled": true } ])",
         {}
       },
+      type::UrlResponse{},
       type::Result::CONTINUE,
       type::WalletStatus::PENDING
     },
@@ -732,6 +737,7 @@ INSTANTIATE_TEST_SUITE_P(
         R"([ { "key": "receives", "enabled": true } ])",
         {}
       },
+      type::UrlResponse{},
       type::Result::CONTINUE,
       type::WalletStatus::PENDING
     },
@@ -750,9 +756,10 @@ INSTANTIATE_TEST_SUITE_P(
         {},
         {},
         net::HttpStatusCode::HTTP_OK,
-        R"([ { "key": "receives", "enabled": true }, { "key": "sends", "enabled": false } ])",
+        R"([ { "key": "receives", "enabled": true, "requirements": [] }, { "key": "sends", "enabled": false, "requirements": [] } ])",
         {}
       },
+      type::UrlResponse{},
       type::Result::UPHOLD_INSUFFICIENT_CAPABILITIES,
       type::WalletStatus::NOT_CONNECTED
     },
@@ -773,6 +780,7 @@ INSTANTIATE_TEST_SUITE_P(
         {},
         {}
       },
+      type::UrlResponse{},
       type::Result::EXPIRED_TOKEN,
       type::WalletStatus::DISCONNECTED_VERIFIED
     },
@@ -794,6 +802,7 @@ INSTANTIATE_TEST_SUITE_P(
         {},
         {}
       },
+      type::UrlResponse{},
       type::Result::CONTINUE,
       type::WalletStatus::VERIFIED
     },
@@ -815,6 +824,7 @@ INSTANTIATE_TEST_SUITE_P(
         {},
         {}
       },
+      type::UrlResponse{},
       type::Result::CONTINUE,
       type::WalletStatus::VERIFIED
     },
@@ -836,6 +846,7 @@ INSTANTIATE_TEST_SUITE_P(
         R"([ { "key": "sends", "enabled": true } ])",
         {}
       },
+      type::UrlResponse{},
       type::Result::CONTINUE,
       type::WalletStatus::VERIFIED
     },
@@ -857,6 +868,7 @@ INSTANTIATE_TEST_SUITE_P(
         R"([ { "key": "receives", "enabled": true } ])",
         {}
       },
+      type::UrlResponse{},
       type::Result::CONTINUE,
       type::WalletStatus::VERIFIED
     },
@@ -875,11 +887,18 @@ INSTANTIATE_TEST_SUITE_P(
         {},
         {},
         net::HttpStatusCode::HTTP_OK,
-        R"([ { "key": "receives", "enabled": true }, { "key": "sends", "enabled": false } ])",
+        R"([ { "key": "receives", "enabled": true, "requirements": [] }, { "key": "sends", "enabled": false, "requirements": [] } ])",
+        {}
+      },
+      type::UrlResponse{
+        {},
+        {},
+        net::HttpStatusCode::HTTP_OK,
+        {},
         {}
       },
       type::Result::UPHOLD_INSUFFICIENT_CAPABILITIES,
-      type::WalletStatus::DISCONNECTED_VERIFIED
+      type::WalletStatus::NOT_CONNECTED
     },
     GetCapabilitiesParamType{  // Happy path. (VERIFIED)
       "12_VERIFIED_happy_path",
@@ -895,9 +914,10 @@ INSTANTIATE_TEST_SUITE_P(
         {},
         {},
         net::HttpStatusCode::HTTP_OK,
-        R"([ { "key": "receives", "enabled": true }, { "key": "sends", "enabled": true } ])",
+        R"([ { "key": "receives", "enabled": true, "requirements": [] }, { "key": "sends", "enabled": true, "requirements": [] } ])",
         {}
       },
+      type::UrlResponse{},
       type::Result::LEDGER_OK,
       type::WalletStatus::VERIFIED
     }),
@@ -910,8 +930,9 @@ TEST_P(GetCapabilities, Paths) {
   std::string uphold_wallet = std::get<1>(params);
   const auto& uphold_get_user_response = std::get<2>(params);
   const auto& uphold_get_capabilities_response = std::get<3>(params);
-  const auto expected_result = std::get<4>(params);
-  const auto expected_status = std::get<5>(params);
+  const auto& rewards_services_delete_claim_response = std::get<4>(params);
+  const auto expected_result = std::get<5>(params);
+  const auto expected_status = std::get<6>(params);
 
   ON_CALL(*mock_ledger_client_, GetStringState(state::kWalletUphold))
       .WillByDefault(
@@ -924,12 +945,15 @@ TEST_P(GetCapabilities, Paths) {
       });
 
   EXPECT_CALL(*mock_ledger_client_, LoadURL(_, _))
-      .Times(AtMost(2))
+      .Times(AtMost(3))
       .WillOnce([&](type::UrlRequestPtr, client::LoadURLCallback callback) {
         callback(uphold_get_user_response);
       })
       .WillOnce([&](type::UrlRequestPtr, client::LoadURLCallback callback) {
         callback(uphold_get_capabilities_response);
+      })
+      .WillOnce([&](type::UrlRequestPtr, client::LoadURLCallback callback) {
+        callback(rewards_services_delete_claim_response);
       });
 
   ON_CALL(*mock_ledger_impl_, database())
@@ -937,6 +961,16 @@ TEST_P(GetCapabilities, Paths) {
 
   ON_CALL(*mock_ledger_impl_, promotion())
       .WillByDefault(Return(mock_promotion_.get()));
+
+  ON_CALL(*mock_ledger_client_, GetStringState(state::kWalletBrave))
+      .WillByDefault([] {
+        return R"(
+          {
+            "payment_id": "f375da3c-c206-4f09-9422-665b8e5952db",
+            "recovery_seed": "OG2zYotDSeZ81qLtr/uq5k/GC6WE5/7BclT1lHi4l+w="
+          }
+        )";
+      });
 
   uphold_->GenerateWallet(
       [&](type::Result result) { ASSERT_EQ(result, expected_result); });
@@ -983,7 +1017,7 @@ INSTANTIATE_TEST_SUITE_P(
         {},
         {},
         net::HttpStatusCode::HTTP_OK,
-        R"([ { "key": "receives", "enabled": true }, { "key": "sends", "enabled": true } ])",
+        R"([ { "key": "receives", "enabled": true, "requirements": [] }, { "key": "sends", "enabled": true, "requirements": [] } ])",
         {}
       },
       type::UrlResponse{
@@ -1013,7 +1047,7 @@ INSTANTIATE_TEST_SUITE_P(
         {},
         {},
         net::HttpStatusCode::HTTP_OK,
-        R"([ { "key": "receives", "enabled": true }, { "key": "sends", "enabled": true } ])",
+        R"([ { "key": "receives", "enabled": true, "requirements": [] }, { "key": "sends", "enabled": true, "requirements": [] } ])",
         {}
       },
       type::UrlResponse{
@@ -1119,7 +1153,7 @@ INSTANTIATE_TEST_SUITE_P(
         {},
         {},
         net::HttpStatusCode::HTTP_OK,
-        R"([ { "key": "receives", "enabled": true }, { "key": "sends", "enabled": true } ])",
+        R"([ { "key": "receives", "enabled": true, "requirements": [] }, { "key": "sends", "enabled": true, "requirements": [] } ])",
         {}
       },
       type::UrlResponse{
@@ -1430,7 +1464,7 @@ INSTANTIATE_TEST_SUITE_P(
         {},
         {},
         net::HttpStatusCode::HTTP_OK,
-        R"([ { "key": "receives", "enabled": true }, { "key": "sends", "enabled": true } ])",
+        R"([ { "key": "receives", "enabled": true, "requirements": [] }, { "key": "sends", "enabled": true, "requirements": [] } ])",
         {}
       },
       type::UrlResponse{
@@ -1466,7 +1500,7 @@ INSTANTIATE_TEST_SUITE_P(
         {},
         {},
         net::HttpStatusCode::HTTP_OK,
-        R"([ { "key": "receives", "enabled": true }, { "key": "sends", "enabled": true } ])",
+        R"([ { "key": "receives", "enabled": true, "requirements": [] }, { "key": "sends", "enabled": true, "requirements": [] } ])",
         {}
       },
       type::UrlResponse{
@@ -1507,7 +1541,7 @@ INSTANTIATE_TEST_SUITE_P(
         {},
         {},
         net::HttpStatusCode::HTTP_OK,
-        R"([ { "key": "receives", "enabled": true }, { "key": "sends", "enabled": true } ])",
+        R"([ { "key": "receives", "enabled": true, "requirements": [] }, { "key": "sends", "enabled": true, "requirements": [] } ])",
         {}
       },
       type::UrlResponse{
@@ -1548,7 +1582,7 @@ INSTANTIATE_TEST_SUITE_P(
         {},
         {},
         net::HttpStatusCode::HTTP_OK,
-        R"([ { "key": "receives", "enabled": true }, { "key": "sends", "enabled": true } ])",
+        R"([ { "key": "receives", "enabled": true, "requirements": [] }, { "key": "sends", "enabled": true, "requirements": [] } ])",
         {}
       },
       type::UrlResponse{
@@ -1589,7 +1623,7 @@ INSTANTIATE_TEST_SUITE_P(
         {},
         {},
         net::HttpStatusCode::HTTP_OK,
-        R"([ { "key": "receives", "enabled": true }, { "key": "sends", "enabled": true } ])",
+        R"([ { "key": "receives", "enabled": true, "requirements": [] }, { "key": "sends", "enabled": true, "requirements": [] } ])",
         {}
       },
       type::UrlResponse{
@@ -1630,7 +1664,7 @@ INSTANTIATE_TEST_SUITE_P(
         {},
         {},
         net::HttpStatusCode::HTTP_OK,
-        R"([ { "key": "receives", "enabled": true }, { "key": "sends", "enabled": true } ])",
+        R"([ { "key": "receives", "enabled": true, "requirements": [] }, { "key": "sends", "enabled": true, "requirements": [] } ])",
         {}
       },
       type::UrlResponse{
@@ -1707,7 +1741,7 @@ INSTANTIATE_TEST_SUITE_P(
         {},
         {},
         net::HttpStatusCode::HTTP_OK,
-        R"([ { "key": "receives", "enabled": true }, { "key": "sends", "enabled": true } ])",
+        R"([ { "key": "receives", "enabled": true, "requirements": [] }, { "key": "sends", "enabled": true, "requirements": [] } ])",
         {}
       },
       type::UrlResponse{
