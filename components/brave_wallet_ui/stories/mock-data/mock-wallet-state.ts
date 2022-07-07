@@ -25,7 +25,8 @@ const mockAccount: WalletAccountType = {
   nativeBalanceRegistry: {
     [BraveWallet.MAINNET_CHAIN_ID]: '496917339073158043',
     [BraveWallet.ROPSTEN_CHAIN_ID]: '496917339073158043'
-  }
+  },
+  keyringId: undefined
 }
 
 const mockNetworkList = [
@@ -314,7 +315,8 @@ export const mockWalletState: WalletState = {
       coin: mockAccount.coin,
       name: mockAccount.name,
       isImported: false,
-      hardware: undefined
+      hardware: undefined,
+      keyringId: undefined
     }
   ]
 }
