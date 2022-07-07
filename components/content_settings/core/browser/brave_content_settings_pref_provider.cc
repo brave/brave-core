@@ -157,6 +157,10 @@ void BravePrefProvider::MigrateShieldsSettings(bool incognito) {
                 *shields_cookies);
   }
 
+  // Fix any wildcard entries that could cause issues like
+  // https://github.com/brave/brave-browser/issues/23113
+  EnsureNoWildcardEntries();
+
   // Prior to Chromium 88, we used the "plugins" ContentSettingsType along with
   // ResourceIdentifiers to store our settings, which we need to migrate now
   // first of all, before attempting any other migration.
@@ -166,6 +170,17 @@ void BravePrefProvider::MigrateShieldsSettings(bool incognito) {
   MigrateShieldsSettingsV1ToV2();
 
   MigrateShieldsSettingsV2ToV3();
+}
+
+void BravePrefProvider::EnsureNoWildcardEntries() {
+  // ContentSettingsType::BRAVE_SHIELDS should not have wildcard entries, i.e.
+  // there is no global disabled value.
+  // TODO(petemill): This should also be done for the other shields
+  // content settings types, and we can use default boolean prefs to represent
+  // defaults, e.g. `profile.default_content_setting_values.https_everywhere`.
+  SetWebsiteSetting(ContentSettingsPattern::Wildcard(),
+                    ContentSettingsPattern::Wildcard(),
+                    ContentSettingsType::BRAVE_SHIELDS, base::Value(), {});
 }
 
 void BravePrefProvider::MigrateShieldsSettingsFromResourceIds() {
@@ -552,8 +567,12 @@ void BravePrefProvider::UpdateCookieRules(ContentSettingsType content_type,
 
   // Adding shields down rules (they always override cookie rules).
   for (const auto& shield_rule : shield_rules) {
-    // There is no global shields rule
-    DCHECK(!shield_rule.primary_pattern.MatchesAllHosts());
+    // There is no global shields rule, so if we have one ignore it. It would
+    // get replaced with EnsureNoWildcardEntries().
+    if (shield_rule.primary_pattern.MatchesAllHosts()) {
+      LOG(ERROR) << "Found a wildcard shields rule which matches all hosts.";
+      continue;
+    }
 
     // Shields down.
     if (ValueToContentSetting(shield_rule.value) == CONTENT_SETTING_BLOCK) {

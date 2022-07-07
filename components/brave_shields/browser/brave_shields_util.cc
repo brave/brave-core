@@ -7,7 +7,9 @@
 
 #include <memory>
 
+#include "base/debug/dump_without_crashing.h"
 #include "base/feature_list.h"
+#include "base/logging.h"
 #include "base/notreached.h"
 #include "base/strings/string_number_conversions.h"
 #include "brave/components/brave_shields/browser/brave_shields_p3a.h"
@@ -181,12 +183,30 @@ void SetBraveShieldsEnabled(HostContentSettingsMap* map,
   if (url.is_valid() && !url.SchemeIsHTTPOrHTTPS())
     return;
 
-  DCHECK(!url.is_empty()) << "url for shields setting cannot be blank";
+  if (url.is_empty()) {
+    LOG(ERROR) << "url for shields setting cannot be blank";
+    return;
+  }
 
   auto primary_pattern = GetPatternFromURL(url);
 
-  if (!primary_pattern.IsValid())
+  if (primary_pattern.MatchesAllHosts()) {
+    LOG(ERROR) << "Url for shields setting cannot be blank or result in a "
+                  "wildcard content setting.";
+
+#if DCHECK_IS_ON()
+    DCHECK(false);
+#else
+    base::debug::DumpWithoutCrashing();
+#endif
     return;
+  }
+
+  if (!primary_pattern.IsValid()) {
+    DLOG(ERROR) << "Invalid primary pattern for Url: "
+                << url.possibly_invalid_spec();
+    return;
+  }
 
   map->SetContentSettingCustomScope(
       primary_pattern, ContentSettingsPattern::Wildcard(),

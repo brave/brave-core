@@ -13,6 +13,7 @@
 #include "brave/components/content_settings/core/browser/brave_content_settings_pref_provider.h"
 #include "brave/components/content_settings/core/browser/brave_content_settings_utils.h"
 #include "chrome/test/base/testing_profile.h"
+#include "components/content_settings/core/browser/content_settings_pref.h"
 #include "components/content_settings/core/browser/content_settings_registry.h"
 #include "components/content_settings/core/common/content_settings.h"
 #include "components/content_settings/core/common/content_settings_pattern.h"
@@ -608,6 +609,27 @@ TEST_F(BravePrefProviderTest, TestShieldsSettingsMigrationV2toV3) {
   shields_cookie_settings.CheckSettingsWouldBlock(blocked);
   cookie_settings.CheckSettingsWouldBlock(blocked);
 
+  provider.ShutdownOnUIThread();
+}
+
+TEST_F(BravePrefProviderTest, EnsureNoWildcardEntries) {
+  BravePrefProvider provider(
+      testing_profile()->GetPrefs(), false /* incognito */,
+      true /* store_last_modified */, false /* restore_session */);
+  ShieldsEnabledSetting shields_enabled_settings(&provider);
+  GURL example_url("https://example.com");
+  shields_enabled_settings.CheckSettingsAreDefault(example_url);
+  // Set wildcard entry
+  auto pattern = ContentSettingsPattern::Wildcard();
+  provider.SetWebsiteSetting(pattern, pattern,
+                             ContentSettingsType::BRAVE_SHIELDS,
+                             base::Value(CONTENT_SETTING_ALLOW), {});
+  // Verify global has changed
+  shields_enabled_settings.CheckSettingsWouldAllow(example_url);
+  // Remove wildcards
+  provider.EnsureNoWildcardEntries();
+  // Verify global has reset
+  shields_enabled_settings.CheckSettingsAreDefault(example_url);
   provider.ShutdownOnUIThread();
 }
 
