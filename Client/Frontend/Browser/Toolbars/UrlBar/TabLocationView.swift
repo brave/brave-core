@@ -259,6 +259,7 @@ class TabLocationView: UIView {
 
     tabOptionsStackView.layoutMargins = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 3)
     tabOptionsStackView.isLayoutMarginsRelativeArrangement = true
+    tabOptionsStackView.insetsLayoutMarginsFromSafeArea = false
     addSubview(contentView)
 
     contentView.snp.makeConstraints { make in

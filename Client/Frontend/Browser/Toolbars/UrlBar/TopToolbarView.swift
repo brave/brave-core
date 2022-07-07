@@ -276,6 +276,7 @@ class TopToolbarView: UIView, ToolbarProtocol {
     $0.spacing = 8
     $0.translatesAutoresizingMaskIntoConstraints = false
     $0.isLayoutMarginsRelativeArrangement = true
+    $0.insetsLayoutMarginsFromSafeArea = false
   }
 
   private let navigationStackView = UIStackView().then {

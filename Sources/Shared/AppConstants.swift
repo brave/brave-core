@@ -46,7 +46,6 @@ public enum KVOConstants: String {
   case title = "title"
   case canGoBack = "canGoBack"
   case canGoForward = "canGoForward"
-  case contentSize = "contentSize"
   case hasOnlySecureContent = "hasOnlySecureContent"
   case serverTrust = "serverTrust"
 }

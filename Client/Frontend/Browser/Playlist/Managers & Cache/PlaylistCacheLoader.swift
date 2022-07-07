@@ -403,7 +403,6 @@ class PlaylistWebLoader: UIView {
 
       browserController.tab(tab, didCreateWebView: webView)
       KVOs.forEach { webView.removeObserver(browserController, forKeyPath: $0.rawValue) }
-      webView.scrollView.removeObserver(browserController.scrollController, forKeyPath: KVOConstants.contentSize.rawValue)
     }
 
     // When creating a tab, TabManager automatically adds a uiDelegate

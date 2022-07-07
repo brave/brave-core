@@ -63,6 +63,7 @@ extension BrowserViewController: WKNavigationDelegate {
     if tabManager.selectedTab?.webView !== webView {
       return
     }
+    toolbarVisibilityViewModel.toolbarState = .expanded
 
     tabManager.selectedTab?.isWalletIconVisible = false
 
@@ -467,8 +468,6 @@ extension BrowserViewController: WKNavigationDelegate {
     
     // Need to evaluate Night mode script injection after url is set inside the Tab
     tab.nightMode = Preferences.General.nightModeEnabled.value
-
-    self.scrollController.resetZoomState()
 
     rewards.reportTabNavigation(tabId: tab.rewardsId)
 
