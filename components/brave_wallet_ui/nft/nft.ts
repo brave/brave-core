@@ -15,7 +15,6 @@ const params = new Proxy(new URLSearchParams(window.location.search), {
 const imageUrl = params['imageUrl']
 const imageWidth = params['imageWidth']
 const imageHeight = params['imageHeight']
-console.log({ imageWidth, imageHeight })
 /* eslint-enable  @typescript-eslint/dot-notation */
 const imageEl = <HTMLImageElement>document.getElementById('image')
 
