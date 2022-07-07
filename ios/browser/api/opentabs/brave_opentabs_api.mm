@@ -4,6 +4,8 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/ios/browser/api/opentabs/brave_opentabs_api.h"
+#include "brave/ios/browser/api/opentabs/brave_opentabs_observer.h"
+#include "brave/ios/browser/api/opentabs/opentabs_session_listener_ios.h"
 
 #include "base/bind.h"
 #include "base/strings/sys_string_conversions.h"
@@ -15,8 +17,6 @@
 #include "net/base/mac/url_conversions.h"
 #include "url/gurl.h"
 
-#include "brave/ios/browser/api/opentabs/brave_opentabs_observer.h"
-#include "brave/ios/browser/api/opentabs/opentabs_session_listener_ios.h"
 
 #if !defined(__has_feature) || !__has_feature(objc_arc)
 #error "This file requires ARC support."
@@ -153,6 +153,12 @@ SyncDeviceType SyncEnumsDeviceTypeFromSyncDeviceType(
 @end
 
 #pragma mark - BraveOpenTabsAPI
+
+namespace web {
+
+
+}  // namespace web
+
 
 @interface BraveOpenTabsAPI () {
   // Session Sync Service is needed in order to receive session details from different instances

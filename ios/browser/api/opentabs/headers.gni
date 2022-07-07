@@ -1,0 +1,5 @@
+browser_api_opentabs_public_headers = [
+  "//brave/ios/browser/api/opentabs/brave_opentabs_api.h",
+  "//brave/ios/browser/api/opentabs/brave_opentabs_observer.h",
+  "//brave/ios/browser/api/opentabs/brave_tab.h",
+]

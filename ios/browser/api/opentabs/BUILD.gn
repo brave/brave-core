@@ -14,6 +14,8 @@ source_set("opentabs") {
     "brave_opentabs_api.h",
     "brave_opentabs_api.mm",
     "brave_opentabs_observer.h",
+    "brave_tab.h",
+    "brave_tab.mm",
     "opentabs_session_listener_ios.h",
     "opentabs_session_listener_ios.mm",
   ]
@@ -33,5 +35,5 @@ source_set("opentabs") {
     "//url",
   ]
 
-  frameworks = [ "Foundation.framework" ]
+  frameworks = [ "Foundation.framework", "WebKit.framework" ]
 }
