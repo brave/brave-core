@@ -31,6 +31,7 @@
 #include <memory>
 #include <vector>
 
+#include "base/power_monitor/power_observer.h"
 #include "base/scoped_observation.h"
 #include "base/timer/timer.h"
 #include "brave/components/brave_vpn/brave_vpn_connection_info.h"
@@ -59,6 +60,7 @@ namespace brave_vpn {
 class BraveVpnService :
 #if !BUILDFLAG(IS_ANDROID)
     public BraveVPNOSConnectionAPI::Observer,
+    public base::PowerSuspendObserver,
 #endif
     public mojom::ServiceHandler,
     public KeyedService {
@@ -111,6 +113,8 @@ class BraveVpnService :
                            const std::string& body,
                            CreateSupportTicketCallback callback) override;
   void GetSupportData(GetSupportDataCallback callback) override;
+  void OnSuspend() override;
+  void OnResume() override;
 #endif  // !BUILDFLAG(IS_ANDROID)
 
   using ResponseCallback =
