@@ -45,7 +45,7 @@ class GetCapabilitiesTest : public testing::Test {
   std::unique_ptr<GetCapabilities> get_capabilities_;
 };
 
-TEST_F(GetCapabilitiesTest, ServerReturns200OK) {
+TEST_F(GetCapabilitiesTest, ServerReturns200OKSufficientReceivesAndSends) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(
           Invoke([](type::UrlRequestPtr, client::LoadURLCallback callback) {
@@ -54,111 +54,83 @@ TEST_F(GetCapabilitiesTest, ServerReturns200OK) {
             response.body = R"(
 [
   {
-    "category": "features",
-    "enabled": true,
-    "key": "change_phone",
-    "name": "Change Phone",
-    "requirements": [],
-    "restrictions": []
-  },
-  {
-    "category": "features",
-    "enabled": true,
-    "key": "change_pii",
-    "name": "ChangePII",
-    "requirements": [],
-    "restrictions": []
-  },
-  {
-    "category": "features",
-    "enabled": true,
-    "key": "equities",
-    "name": "Equities",
-    "requirements": [
-      "user-must-accept-equities-terms-of-services"
-    ],
-    "restrictions": []
-  },
-  {
-    "category": "features",
-    "enabled": true,
-    "key": "limit_orders",
-    "name": "Limit Orders",
-    "requirements": [],
-    "restrictions": []
-  },
-  {
-    "category": "features",
-    "enabled": false,
-    "key": "physical_card_eea",
-    "name": "Physical Card EEA",
-    "requirements": [],
-    "restrictions": [
-      "user-country-not-supported"
-    ]
-  },
-  {
-    "category": "features",
-    "enabled": false,
-    "key": "physical_card_us",
-    "name": "Physical Card US",
-    "requirements": [],
-    "restrictions": [
-      "user-country-not-supported"
-    ]
-  },
-  {
-    "category": "features",
-    "enabled": false,
-    "key": "physical_card",
-    "name": "Physical Card",
-    "requirements": [],
-    "restrictions": [
-      "user-country-not-supported"
-    ]
-  },
-  {
-    "category": "features",
-    "enabled": true,
-    "key": "referrals",
-    "name": "Referrals",
-    "requirements": [],
-    "restrictions": []
-  },
-  {
-    "category": "features",
-    "enabled": true,
-    "key": "staking",
-    "name": "Staking",
-    "requirements": [],
-    "restrictions": []
-  },
-  {
-    "category": "features",
-    "enabled": true,
-    "key": "virtual_iban",
-    "name": "Virtual IBAN",
-    "requirements": [
-      "user-must-accept-virtual-iban-terms-of-services"
-    ],
-    "restrictions": []
-  },
-  {
     "category": "permissions",
     "enabled": true,
-    "key": "deposits",
-    "name": "Deposits",
+    "key": "receives",
+    "name": "Receives",
     "requirements": [],
     "restrictions": []
   },
   {
     "category": "permissions",
     "enabled": true,
-    "key": "invites",
-    "name": "Invites",
+    "key": "sends",
+    "name": "Sends",
     "requirements": [],
     "restrictions": []
+  }
+]
+            )";
+            callback(std::move(response));
+          }));
+
+  get_capabilities_->Request(
+      "193a77cf-02e8-4e10-8127-8a1b5a8bfece",
+      [](type::Result result, Capabilities capabilities) {
+        EXPECT_EQ(result, type::Result::LEDGER_OK);
+        EXPECT_EQ(capabilities.can_receive, true);
+        EXPECT_EQ(capabilities.can_send, true);
+      });
+}
+
+TEST_F(GetCapabilitiesTest, ServerReturns200OKInsufficientReceives1) {
+  ON_CALL(*mock_ledger_client_, LoadURL(_, _))
+      .WillByDefault(
+          Invoke([](type::UrlRequestPtr, client::LoadURLCallback callback) {
+            type::UrlResponse response;
+            response.status_code = net::HTTP_OK;
+            response.body = R"(
+[
+  {
+    "category": "permissions",
+    "enabled": true,
+    "key": "receives",
+    "name": "Receives",
+    "requirements": [
+      "user-must-submit-customer-due-diligence"
+    ],
+    "restrictions": []
   },
+  {
+    "category": "permissions",
+    "enabled": true,
+    "key": "sends",
+    "name": "Sends",
+    "requirements": [],
+    "restrictions": []
+  }
+]
+            )";
+            callback(std::move(response));
+          }));
+
+  get_capabilities_->Request(
+      "193a77cf-02e8-4e10-8127-8a1b5a8bfece",
+      [](type::Result result, Capabilities capabilities) {
+        EXPECT_EQ(result, type::Result::LEDGER_OK);
+        EXPECT_EQ(capabilities.can_receive, false);
+        EXPECT_EQ(capabilities.can_send, true);
+      });
+}
+
+TEST_F(GetCapabilitiesTest, ServerReturns200OKInsufficientReceives2) {
+  ON_CALL(*mock_ledger_client_, LoadURL(_, _))
+      .WillByDefault(
+          Invoke([](type::UrlRequestPtr, client::LoadURLCallback callback) {
+            type::UrlResponse response;
+            response.status_code = net::HTTP_OK;
+            response.body = R"(
+[
   {
     "category": "permissions",
     "enabled": false,
@@ -174,20 +146,162 @@ TEST_F(GetCapabilitiesTest, ServerReturns200OK) {
     "name": "Sends",
     "requirements": [],
     "restrictions": []
-  },
+  }
+]
+            )";
+            callback(std::move(response));
+          }));
+
+  get_capabilities_->Request(
+      "193a77cf-02e8-4e10-8127-8a1b5a8bfece",
+      [](type::Result result, Capabilities capabilities) {
+        EXPECT_EQ(result, type::Result::LEDGER_OK);
+        EXPECT_EQ(capabilities.can_receive, false);
+        EXPECT_EQ(capabilities.can_send, true);
+      });
+}
+
+TEST_F(GetCapabilitiesTest, ServerReturns200OKInsufficientSends1) {
+  ON_CALL(*mock_ledger_client_, LoadURL(_, _))
+      .WillByDefault(
+          Invoke([](type::UrlRequestPtr, client::LoadURLCallback callback) {
+            type::UrlResponse response;
+            response.status_code = net::HTTP_OK;
+            response.body = R"(
+[
   {
     "category": "permissions",
     "enabled": true,
-    "key": "trades",
-    "name": "Trades",
+    "key": "receives",
+    "name": "Receives",
     "requirements": [],
     "restrictions": []
   },
   {
     "category": "permissions",
     "enabled": true,
-    "key": "withdrawals",
-    "name": "Withdrawals",
+    "key": "sends",
+    "name": "Sends",
+    "requirements": [
+      "user-must-submit-customer-due-diligence"
+    ],
+    "restrictions": []
+  }
+]
+            )";
+            callback(std::move(response));
+          }));
+
+  get_capabilities_->Request(
+      "193a77cf-02e8-4e10-8127-8a1b5a8bfece",
+      [](type::Result result, Capabilities capabilities) {
+        EXPECT_EQ(result, type::Result::LEDGER_OK);
+        EXPECT_EQ(capabilities.can_receive, true);
+        EXPECT_EQ(capabilities.can_send, false);
+      });
+}
+
+TEST_F(GetCapabilitiesTest, ServerReturns200OKInsufficientSends2) {
+  ON_CALL(*mock_ledger_client_, LoadURL(_, _))
+      .WillByDefault(
+          Invoke([](type::UrlRequestPtr, client::LoadURLCallback callback) {
+            type::UrlResponse response;
+            response.status_code = net::HTTP_OK;
+            response.body = R"(
+[
+  {
+    "category": "permissions",
+    "enabled": true,
+    "key": "receives",
+    "name": "Receives",
+    "requirements": [],
+    "restrictions": []
+  },
+  {
+    "category": "permissions",
+    "enabled": false,
+    "key": "sends",
+    "name": "Sends",
+    "requirements": [],
+    "restrictions": []
+  }
+]
+            )";
+            callback(std::move(response));
+          }));
+
+  get_capabilities_->Request(
+      "193a77cf-02e8-4e10-8127-8a1b5a8bfece",
+      [](type::Result result, Capabilities capabilities) {
+        EXPECT_EQ(result, type::Result::LEDGER_OK);
+        EXPECT_EQ(capabilities.can_receive, true);
+        EXPECT_EQ(capabilities.can_send, false);
+      });
+}
+
+TEST_F(GetCapabilitiesTest, ServerReturns200OKInsufficientReceivesAndSends1) {
+  ON_CALL(*mock_ledger_client_, LoadURL(_, _))
+      .WillByDefault(
+          Invoke([](type::UrlRequestPtr, client::LoadURLCallback callback) {
+            type::UrlResponse response;
+            response.status_code = net::HTTP_OK;
+            response.body = R"(
+[
+  {
+    "category": "permissions",
+    "enabled": true,
+    "key": "receives",
+    "name": "Receives",
+    "requirements": [
+      "user-must-submit-customer-due-diligence"
+    ],
+    "restrictions": []
+  },
+  {
+    "category": "permissions",
+    "enabled": true,
+    "key": "sends",
+    "name": "Sends",
+    "requirements": [
+      "user-must-submit-customer-due-diligence"
+    ],
+    "restrictions": []
+  }
+]
+            )";
+            callback(std::move(response));
+          }));
+
+  get_capabilities_->Request(
+      "193a77cf-02e8-4e10-8127-8a1b5a8bfece",
+      [](type::Result result, Capabilities capabilities) {
+        EXPECT_EQ(result, type::Result::LEDGER_OK);
+        EXPECT_EQ(capabilities.can_receive, false);
+        EXPECT_EQ(capabilities.can_send, false);
+      });
+}
+
+TEST_F(GetCapabilitiesTest, ServerReturns200OKInsufficientReceivesAndSends2) {
+  ON_CALL(*mock_ledger_client_, LoadURL(_, _))
+      .WillByDefault(
+          Invoke([](type::UrlRequestPtr, client::LoadURLCallback callback) {
+            type::UrlResponse response;
+            response.status_code = net::HTTP_OK;
+            response.body = R"(
+[
+  {
+    "category": "permissions",
+    "enabled": false,
+    "key": "receives",
+    "name": "Receives",
+    "requirements": [],
+    "restrictions": []
+  },
+  {
+    "category": "permissions",
+    "enabled": false,
+    "key": "sends",
+    "name": "Sends",
     "requirements": [],
     "restrictions": []
   }
@@ -201,7 +315,7 @@ TEST_F(GetCapabilitiesTest, ServerReturns200OK) {
       [](type::Result result, Capabilities capabilities) {
         EXPECT_EQ(result, type::Result::LEDGER_OK);
         EXPECT_EQ(capabilities.can_receive, false);
-        EXPECT_EQ(capabilities.can_send, true);
+        EXPECT_EQ(capabilities.can_send, false);
       });
 }
 
