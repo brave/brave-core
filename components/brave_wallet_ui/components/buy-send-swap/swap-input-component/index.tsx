@@ -1,5 +1,4 @@
 import * as React from 'react'
-import { useSelector } from 'react-redux'
 import {
   BraveWallet,
   OrderTypes,
@@ -7,8 +6,7 @@ import {
   ExpirationPresetObjectType,
   SwapValidationErrorType,
   AmountPresetTypes,
-  DefaultCurrencies,
-  WalletState
+  DefaultCurrencies
 } from '../../../constants/types'
 import { AmountPresetOptions } from '../../../options/amount-preset-options'
 import { SlippagePresetOptions } from '../../../options/slippage-preset-options'
@@ -43,8 +41,7 @@ import {
   AddressConfirmationText,
   ButtonLeftSide,
   LearnMoreButton,
-  WarningRow,
-  Spacer
+  WarningRow
 } from './style'
 
 import { BubbleContainer } from '../shared-styles'
@@ -85,7 +82,6 @@ export interface Props {
   onShowSelection?: () => void
   onRefresh?: () => void
   onPaste?: () => void
-  onShowCurrencySelection?: () => void
 }
 
 function SwapInputComponent (props: Props) {
@@ -106,6 +102,7 @@ function SwapInputComponent (props: Props) {
     orderExpiration,
     validationError,
     customSlippageTolerance,
+    defaultCurrencies,
     selectedPreset,
     onCustomSlippageToleranceChange,
     onInputChange,
@@ -114,15 +111,11 @@ function SwapInputComponent (props: Props) {
     onSelectPresetAmount,
     onSelectSlippageTolerance,
     onSelectExpiration,
-    onShowSelection,
-    onShowCurrencySelection
+    onShowSelection
   } = props
   const [spin, setSpin] = React.useState<number>(0)
   const [expandSelector, setExpandSelector] = React.useState<boolean>(false)
   const [showSlippageWarning, setShowSlippageWarning] = React.useState<boolean>(false)
-
-  // redux
-  const { selectedCurrency } = useSelector((state: { wallet: WalletState }) => state.wallet)
 
   const toggleExpandSelector = () => {
     setExpandSelector(!expandSelector)
@@ -290,11 +283,7 @@ function SwapInputComponent (props: Props) {
           }
           <Row componentType={componentType}>
             {componentType === 'buyAmount' &&
-              <AssetButton onClick={onShowCurrencySelection}>
-                <AssetTicker>{CurrencySymbols[selectedCurrency?.currencyCode ?? 'USD']}</AssetTicker>
-                <CaratDownIcon />
-                <Spacer />
-              </AssetButton>
+              <AssetTicker>{CurrencySymbols[defaultCurrencies?.fiat ?? 'USD']}</AssetTicker>
             }
             {!selectedAsset?.isErc721 &&
               <Input
