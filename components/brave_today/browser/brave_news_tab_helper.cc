@@ -4,11 +4,13 @@
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
 #include "brave/components/brave_today/browser/brave_news_tab_helper.h"
+
 #include <dirent.h>
 #include <algorithm>
 #include <string>
 #include <utility>
 #include <vector>
+
 #include "absl/types/optional.h"
 #include "base/bind.h"
 #include "base/callback_forward.h"
@@ -50,7 +52,6 @@ BraveNewsTabHelper::BraveNewsTabHelper(content::WebContents* contents)
 }
 
 BraveNewsTabHelper::~BraveNewsTabHelper() {
-  LOG(ERROR) << "Destroyed!";
   controller_->publisher_controller()->RemoveObserver(this);
 }
 
