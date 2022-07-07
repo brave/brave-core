@@ -93,18 +93,33 @@ class BraveNewsFeedRow : public views::View,
     }
 
     auto is_subscribed = tab_helper->is_subscribed(feed_details_);
-    subscribe_button_->SetText(is_subscribed ? u"Unsubscribe" : u"Subscribe");
+    subscribe_button_->SetText(loading_        ? u"Loading..."
+                               : is_subscribed ? u"Unsubscribe"
+                                               : u"Subscribe");
     subscribe_button_->SetProminent(!is_subscribed);
+    subscribe_button_->SetState(loading_
+                                    ? views::Button::ButtonState::STATE_DISABLED
+                                    : views::Button::ButtonState::STATE_NORMAL);
   }
 
   void OnAvailableFeedsChanged(
       const std::vector<BraveNewsTabHelper::FeedDetails>& feeds) override {
+    loading_ = false;
     Update();
   }
 
-  void OnPressed() { tab_helper_->ToggleSubscription(feed_details_); }
+  void OnPressed() {
+    // Don't queue multiple toggles.
+    if (loading_)
+      return;
+
+    tab_helper_->ToggleSubscription(feed_details_);
+    loading_ = true;
+    Update();
+  }
 
  private:
+  bool loading_;
   raw_ptr<views::MdTextButton> subscribe_button_ = nullptr;
 
   BraveNewsTabHelper::FeedDetails feed_details_;

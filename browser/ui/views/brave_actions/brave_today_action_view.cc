@@ -69,6 +69,7 @@ BraveTodayActionView::BraveTodayActionView(Profile* profile,
   SetHasInkDropActionOnClick(true);
 
   tab_strip_->AddObserver(this);
+  Update();
 }
 
 BraveTodayActionView::~BraveTodayActionView() {
@@ -169,5 +170,6 @@ void BraveTodayActionView::ToggleSubscribed() {
     bubble_widget_->Close();
   }
 
-  bubble_widget_ = BraveNewsBubbleView::Show(this, tab_strip_->GetActiveWebContents());
+  bubble_widget_ =
+      BraveNewsBubbleView::Show(this, tab_strip_->GetActiveWebContents());
 }
