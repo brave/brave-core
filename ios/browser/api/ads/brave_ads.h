@@ -28,6 +28,14 @@ OBJC_EXPORT
 @end
 
 OBJC_EXPORT
+@protocol BraveAdsCaptchaHandler
+@required
+/// Handle an adaptive captcha request for a given payment ID and captcha ID
+- (void)handleAdaptiveCaptchaForPaymentId:(NSString*)paymentId
+                                captchaId:(NSString*)captchaId;
+@end
+
+OBJC_EXPORT
 @interface BraveAds : NSObject
 
 /// The notifications handler.
@@ -35,6 +43,11 @@ OBJC_EXPORT
 /// @see BraveAdsNotificationHandler
 @property(nonatomic, weak, nullable) id<BraveAdsNotificationHandler>
     notificationsHandler;
+
+/// An object to handle adaptive captcha requests
+///
+/// @see BraveAdsCaptchaHandler
+@property(nonatomic, weak, nullable) id<BraveAdsCaptchaHandler> captchaHandler;
 
 #pragma mark - Global
 
