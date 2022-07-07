@@ -117,7 +117,13 @@ public class BrowserViewController: UIViewController, BrowserViewControllerDeleg
   // Backdrop used for displaying greyed background for private tabs
   var webViewContainerBackdrop: UIView!
 
-  var scrollController = TabScrollingController()
+  var toolbarVisibilityViewModel = ToolbarVisibilityViewModel(estimatedTransitionDistance: 44)
+  private var toolbarLayoutGuide = UILayoutGuide().then {
+    $0.identifier = "toolbar-visibility-layout-guide"
+  }
+  private var toolbarTopConstraint: Constraint?
+  private var toolbarBottomConstraint: Constraint?
+  private var toolbarVisibilityCancellable: AnyCancellable?
 
   var keyboardState: KeyboardState?
 
@@ -367,15 +373,12 @@ public class BrowserViewController: UIViewController, BrowserViewControllerDeleg
 
     coordinator.animate(
       alongsideTransition: { context in
-        self.scrollController.updateMinimumZoom()
         if let popover = self.displayedPopoverController {
           self.updateDisplayedPopoverProperties?()
           self.present(popover, animated: true, completion: nil)
         }
       },
       completion: { _ in
-        self.scrollController.setMinimumZoom()
-
         if let tab = self.tabManager.selectedTab {
           WindowRenderHelperScript.executeScript(for: tab)
         }
@@ -611,7 +614,7 @@ public class BrowserViewController: UIViewController, BrowserViewControllerDeleg
     displayedPopoverController?.dismiss(animated: true, completion: nil)
     coordinator.animate(
       alongsideTransition: { context in
-        self.scrollController.showToolbars(animated: false)
+        self.toolbarVisibilityViewModel.toolbarState = .expanded
         if self.isViewLoaded {
           self.statusBarOverlay.backgroundColor = self.topToolbar.backgroundColor
           self.setNeedsStatusBarAppearanceUpdate()
@@ -644,7 +647,7 @@ public class BrowserViewController: UIViewController, BrowserViewControllerDeleg
   }
 
   @objc func tappedTopArea() {
-    scrollController.showToolbars(animated: true)
+    toolbarVisibilityViewModel.toolbarState = .expanded
   }
 
   @objc func appWillResignActiveNotification() {
@@ -687,7 +690,7 @@ public class BrowserViewController: UIViewController, BrowserViewControllerDeleg
       })
 
     // Re-show toolbar which might have been hidden during scrolling (prior to app moving into the background)
-    scrollController.showToolbars(animated: false)
+    toolbarVisibilityViewModel.toolbarState = .expanded
   }
 
   override public func viewDidLoad() {
@@ -771,12 +774,13 @@ public class BrowserViewController: UIViewController, BrowserViewControllerDeleg
 
     clipboardBarDisplayHandler = ClipboardBarDisplayHandler(tabManager: tabManager)
     clipboardBarDisplayHandler?.delegate = self
-
-    scrollController.topToolbar = topToolbar
-    scrollController.header = header
-    scrollController.tabsBar = tabsBar
-    scrollController.footer = footer
-    scrollController.snackBars = alertStackView
+    
+    view.addLayoutGuide(toolbarLayoutGuide)
+    toolbarLayoutGuide.snp.makeConstraints {
+      self.toolbarTopConstraint = $0.top.equalTo(view.safeArea.top).constraint
+      self.toolbarBottomConstraint = $0.bottom.equalTo(view).constraint
+      $0.leading.trailing.equalTo(view)
+    }
 
     self.updateToolbarStateForTraitCollection(self.traitCollection)
 
@@ -927,7 +931,7 @@ public class BrowserViewController: UIViewController, BrowserViewControllerDeleg
 
   fileprivate func setupConstraints() {
     header.snp.makeConstraints { make in
-      scrollController.headerTopConstraint = make.top.equalTo(view.safeArea.top).constraint
+      make.top.equalTo(toolbarLayoutGuide)
       make.left.right.equalTo(self.view)
     }
 
@@ -956,6 +960,10 @@ public class BrowserViewController: UIViewController, BrowserViewControllerDeleg
       make.top.left.right.equalTo(self.view)
       make.bottom.equalTo(view.safeArea.top)
     }
+    toolbarVisibilityViewModel.transitionDistance = header.bounds.height
+    // Since the height of the WKWebView changes while collapsing we need to use a stable value to determine
+    // if the toolbars can collapse
+    toolbarVisibilityViewModel.minimumCollapsableContentHeight = webViewContainer.bounds.height + header.bounds.height + footer.bounds.height + view.safeAreaInsets.top + view.safeAreaInsets.bottom
   }
 
   override public var canBecomeFirstResponder: Bool {
@@ -1084,14 +1092,14 @@ public class BrowserViewController: UIViewController, BrowserViewControllerDeleg
     webViewContainer.snp.remakeConstraints { make in
       make.left.right.equalTo(self.view)
 
-      webViewContainerTopOffset = make.top.equalTo(readerModeBar?.snp.bottom ?? self.header.snp.bottom).constraint
+      webViewContainerTopOffset = make.top.equalTo(self.readerModeBar?.snp.bottom ?? self.header.snp.bottom).constraint
 
       let findInPageHeight = (findInPageBar == nil) ? 0 : UIConstants.toolbarHeight
       make.bottom.equalTo(self.footer.snp.top).offset(-findInPageHeight)
     }
 
     footer.snp.remakeConstraints { make in
-      scrollController.footerBottomConstraint = make.bottom.equalTo(self.view.snp.bottom).constraint
+      make.bottom.equalTo(toolbarLayoutGuide)
       make.leading.trailing.equalTo(self.view)
       let height = self.toolbar == nil ? 0 : UIConstants.bottomToolbarHeight
       make.height.equalTo(height)
@@ -1564,7 +1572,7 @@ public class BrowserViewController: UIViewController, BrowserViewControllerDeleg
 
   func updateUIForReaderHomeStateForTab(_ tab: Tab) {
     updateURLBar()
-    scrollController.showToolbars(animated: false)
+    toolbarVisibilityViewModel.toolbarState = .expanded
 
     if let url = tab.url {
       if url.isReaderModeURL {
@@ -2062,6 +2070,69 @@ public class BrowserViewController: UIViewController, BrowserViewControllerDeleg
   private func focusLocationField() {
     topToolbar.tabLocationViewDidTapLocation(topToolbar.locationView)
   }
+  
+  private func handleToolbarVisibilityStateChange(
+    _ state: ToolbarVisibilityViewModel.ToolbarState,
+    progress: CGFloat?
+  ) {
+    guard
+      let tab = tabManager.selectedTab,
+      tab.mimeType != MIMEType.PDF, // Constraint-based animation is causing PDF docs to flicker.
+      let webView = tab.webView,
+      !webView.isLoading else {
+      
+      toolbarTopConstraint?.update(offset: 0)
+      toolbarBottomConstraint?.update(offset: 0)
+      
+      // Check if UI side is collapsed already
+      if topToolbar.locationContainer.alpha < 1 {
+        let animator = toolbarVisibilityViewModel.toolbarChangePropertyAnimator
+        animator.addAnimations { [self] in
+          view.layoutIfNeeded()
+          topToolbar.locationContainer.alpha = 1
+          topToolbar.actionButtons.forEach { $0.alpha = topToolbar.locationContainer.alpha }
+          tabsBar.view.subviews.forEach { $0.alpha = topToolbar.locationContainer.alpha }
+        }
+        animator.startAnimation()
+      }
+      return
+    }
+    let headerHeight = toolbarVisibilityViewModel.transitionDistance
+    let footerHeight = footer.bounds.height
+    if let progress = progress {
+      switch state {
+      case .expanded:
+        toolbarTopConstraint?.update(offset: -min(headerHeight, max(0, headerHeight * progress)))
+        topToolbar.locationContainer.alpha = max(0, min(1, 1 - (progress * 1.5))) // Have it disappear a bit faster
+        toolbarBottomConstraint?.update(offset: min(footerHeight, max(0, footerHeight * progress)))
+      case .collapsed:
+        toolbarTopConstraint?.update(offset: -min(headerHeight, max(0, headerHeight * (1 - progress))))
+        topToolbar.locationContainer.alpha = progress
+        toolbarBottomConstraint?.update(offset: min(footerHeight, max(0, footerHeight * (1 - progress))))
+      }
+      topToolbar.actionButtons.forEach { $0.alpha = topToolbar.locationContainer.alpha }
+      tabsBar.view.subviews.forEach { $0.alpha = topToolbar.locationContainer.alpha }
+      return
+    }
+    switch state {
+    case .expanded:
+      toolbarTopConstraint?.update(offset: 0)
+      toolbarBottomConstraint?.update(offset: 0)
+      topToolbar.locationContainer.alpha = 1
+      tabsBar.view.subviews.forEach { $0.alpha = topToolbar.locationContainer.alpha }
+    case .collapsed:
+      toolbarTopConstraint?.update(offset: -headerHeight)
+      topToolbar.locationContainer.alpha = 0
+      tabsBar.view.subviews.forEach { $0.alpha = topToolbar.locationContainer.alpha }
+      toolbarBottomConstraint?.update(offset: footerHeight)
+    }
+    
+    let animator = toolbarVisibilityViewModel.toolbarChangePropertyAnimator
+    animator.addAnimations {
+      self.view.layoutIfNeeded()
+    }
+    animator.startAnimation()
+  }
 }
 
 extension BrowserViewController: ClipboardBarDisplayHandlerDelegate {
@@ -2144,12 +2215,12 @@ extension BrowserViewController: TabsBarViewControllerDelegate {
 }
 
 extension BrowserViewController: TabDelegate {
-
   func tab(_ tab: Tab, didCreateWebView webView: WKWebView) {
+    webView.scrollView.contentInsetAdjustmentBehavior = .never
     webView.frame = webViewContainer.frame
+    
     // Observers that live as long as the tab. Make sure these are all cleared in willDeleteWebView below!
     KVOs.forEach { webView.addObserver(self, forKeyPath: $0.rawValue, options: .new, context: nil) }
-    webView.scrollView.addObserver(self.scrollController, forKeyPath: KVOConstants.contentSize.rawValue, options: .new, context: nil)
     webView.uiDelegate = self
 
     let formPostHelper = FormPostHelper(tab: tab)
@@ -2231,7 +2302,7 @@ extension BrowserViewController: TabDelegate {
   func tab(_ tab: Tab, willDeleteWebView webView: WKWebView) {
     tab.cancelQueuedAlerts()
     KVOs.forEach { webView.removeObserver(self, forKeyPath: $0.rawValue) }
-    webView.scrollView.removeObserver(self.scrollController, forKeyPath: KVOConstants.contentSize.rawValue)
+    toolbarVisibilityViewModel.endScrollViewObservation(webView.scrollView)
     webView.uiDelegate = nil
     webView.scrollView.delegate = nil
     webView.removeFromSuperview()
@@ -2444,6 +2515,8 @@ extension BrowserViewController: TabManagerDelegate {
     // Remove the old accessibilityLabel. Since this webview shouldn't be visible, it doesn't need it
     // and having multiple views with the same label confuses tests.
     if let wv = previous?.webView {
+      toolbarVisibilityViewModel.endScrollViewObservation(wv.scrollView)
+      
       wv.endEditing(true)
       wv.accessibilityLabel = nil
       wv.accessibilityElementsHidden = true
@@ -2453,6 +2526,16 @@ extension BrowserViewController: TabManagerDelegate {
 
     toolbar?.setSearchButtonState(url: selected?.url)
     if let tab = selected, let webView = tab.webView {
+      toolbarVisibilityViewModel.beginObservingScrollView(webView.scrollView)
+      toolbarVisibilityCancellable = toolbarVisibilityViewModel.objectWillChange
+        .receive(on: DispatchQueue.main)
+        .sink(receiveValue: { [weak self] in
+          guard let self = self else { return }
+          let (state, progress) = (self.toolbarVisibilityViewModel.toolbarState,
+                                   self.toolbarVisibilityViewModel.interactiveTransitionProgress)
+          self.handleToolbarVisibilityStateChange(state, progress: progress)
+        })
+      
       updateURLBar()
 
       if let url = tab.url, !InternalURL.isValid(url: url) {
@@ -2469,7 +2552,6 @@ extension BrowserViewController: TabManagerDelegate {
       readerModeCache = ReaderMode.cache(for: tab)
       ReaderModeHandlers.readerModeCache = readerModeCache
 
-      scrollController.tab = selected
       webViewContainer.addSubview(webView)
       webView.snp.remakeConstraints { make in
         make.left.right.top.bottom.equalTo(self.webViewContainer)
@@ -2784,6 +2866,8 @@ extension BrowserViewController: WKUIDelegate {
     let newTab = tabManager.addPopupForParentTab(parentTab, configuration: configuration)
 
     newTab.url = URL(string: "about:blank")
+    
+    toolbarVisibilityViewModel.toolbarState = .expanded
 
     return newTab.webView
   }
@@ -3044,7 +3128,7 @@ extension BrowserViewController: WKUIDelegate {
         })
       self.show(toast: toast)
     }
-    self.scrollController.showToolbars(animated: true)
+    self.toolbarVisibilityViewModel.toolbarState = .expanded
   }
 }
 

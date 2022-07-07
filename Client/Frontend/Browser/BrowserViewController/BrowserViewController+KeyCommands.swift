@@ -40,7 +40,7 @@ extension BrowserViewController {
 
   @objc private func selectLocationBarKeyCommand() {
     if favoritesController == nil {
-      scrollController.showToolbars(animated: true)
+      toolbarVisibilityViewModel.toolbarState = .expanded
       topToolbar.tabLocationViewDidTapLocation(topToolbar.locationView)
     }
   }
