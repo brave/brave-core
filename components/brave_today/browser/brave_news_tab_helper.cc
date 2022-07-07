@@ -56,13 +56,8 @@ BraveNewsTabHelper::~BraveNewsTabHelper() {
 }
 
 bool BraveNewsTabHelper::is_subscribed(const FeedDetails& feed_details) {
-  // This must be a direct feed that we aren't subscribed to.
   auto publisher = controller_->publisher_controller()->GetPublisherForFeed(
       feed_details.feed_url);
-  if (!publisher) {
-    publisher = controller_->publisher_controller()->GetPublisherById(
-        feed_details.publisher_id);
-  }
   return brave_news::IsPublisherEnabled(publisher);
 }
 
@@ -76,17 +71,13 @@ bool BraveNewsTabHelper::is_subscribed() {
 
 void BraveNewsTabHelper::ToggleSubscription(const FeedDetails& feed_details) {
   bool subscribed = is_subscribed(feed_details);
-  auto publisher = controller_->publisher_controller()->GetPublisherById(
-      feed_details.publisher_id);
-  publisher = controller_->publisher_controller()->GetPublisherForFeed(
+  auto publisher = controller_->publisher_controller()->GetPublisherForFeed(
       feed_details.feed_url);
   if (publisher) {
-    LOG(ERROR) << "Subscribed " << subscribed
-               << " Id: " << publisher->publisher_id;
     controller_->SetPublisherPref(
-        publisher->publisher_id,
-        subscribed ? brave_news::mojom::UserEnabled::DISABLED
-                   : brave_news::mojom::UserEnabled::ENABLED);
+        publisher->publisher_id, subscribed
+                                     ? brave_news::mojom::UserEnabled::DISABLED
+                                     : brave_news::mojom::UserEnabled::ENABLED);
     AvailableFeedsChanged();
   } else if (!subscribed) {
     controller_->SubscribeToNewDirectFeed(feed_details.feed_url,
@@ -113,11 +104,7 @@ void BraveNewsTabHelper::OnFoundFeeds(
     return;
 
   for (const auto& feed : feeds) {
-    auto publisher = controller_->publisher_controller()->GetPublisherForFeed(
-        feed->feed_url);
-    auto publisher_id = publisher ? publisher->publisher_id : "";
-    available_feeds_.push_back(
-        {feed->feed_url, publisher_id, feed->feed_title});
+    available_feeds_.push_back({feed->feed_url, feed->feed_title});
   }
 
   AvailableFeedsChanged();
@@ -149,19 +136,15 @@ void BraveNewsTabHelper::PrimaryPageChanged(content::Page& page) {
       controller_->publisher_controller()->GetPublisherForSite(
           contents->GetLastCommittedURL());
   if (default_publisher) {
-    available_feeds_.push_back({default_publisher->feed_source,
-                                default_publisher->publisher_id,
-                                default_publisher->publisher_name});
+    available_feeds_.push_back(
+        {default_publisher->feed_source, default_publisher->publisher_name});
   }
 
 #if BUILDFLAG(ENABLE_FEED_V2)
-  auto callback = base::BindOnce(&BraveNewsTabHelper::OnReceivedRssUrls,
-                                 weak_ptr_factory_.GetWeakPtr(),
-                                 contents->GetLastCommittedURL());
-  base::SequencedTaskRunnerHandle::Get()->PostTask(
-      FROM_HERE,
-      base::BindOnce(&feed::FetchRssLinks, contents->GetLastCommittedURL(),
-                     contents, std::move(callback)));
+  feed::FetchRssLinks(contents->GetLastCommittedURL(), contents,
+                      base::BindOnce(&BraveNewsTabHelper::OnReceivedRssUrls,
+                                     weak_ptr_factory_.GetWeakPtr(),
+                                     contents->GetLastCommittedURL()));
 #endif
 
   AvailableFeedsChanged();

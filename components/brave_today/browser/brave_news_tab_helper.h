@@ -25,7 +25,6 @@ class BraveNewsTabHelper
   struct FeedDetails {
    public:
     GURL feed_url;
-    std::string publisher_id;
     std::string title;
   };
 
@@ -40,7 +39,9 @@ class BraveNewsTabHelper
 
   ~BraveNewsTabHelper() override;
 
-  const std::vector<FeedDetails>& available_feeds() const { return available_feeds_; }
+  const std::vector<FeedDetails>& available_feeds() const {
+    return available_feeds_;
+  }
   bool is_subscribed(const FeedDetails& feed_details);
   bool is_subscribed();
 

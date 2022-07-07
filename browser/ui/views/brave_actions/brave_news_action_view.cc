@@ -1,4 +1,5 @@
-#include "brave/browser/ui/views/brave_actions/brave_today_action_view.h"
+#include "brave/browser/ui/views/brave_actions/brave_news_action_view.h"
+
 #include <memory>
 #include <string>
 #include <vector>
