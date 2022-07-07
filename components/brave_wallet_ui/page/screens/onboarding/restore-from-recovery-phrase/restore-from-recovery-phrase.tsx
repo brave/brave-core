@@ -128,7 +128,12 @@ export const OnboardingRestoreFromRecoveryPhrase = ({
         newPassword: '' // required arg, just checking import Password
       }))
     }
-  }, [isImportingFromMetaMaskExtension, isImportingFromLegacyExtension, extensionPassword, importWalletAttempts])
+  }, [
+    isImportingFromMetaMaskExtension,
+    isImportingFromLegacyExtension,
+    extensionPassword,
+    importWalletAttempts
+  ])
 
   const toggleShowPhrase = React.useCallback(() => {
     setIsPhraseShown(prev => !prev)
@@ -173,7 +178,14 @@ export const OnboardingRestoreFromRecoveryPhrase = ({
       isLegacy: false,
       completeWalletSetup: false // postpone until wallet onboarding success screen
     }))
-  }, [isPasswordValid, phraseInput, password, invalidMnemonic, isImportingFromMetaMaskExtension, isImportingFromLegacyExtension])
+  }, [
+    isPasswordValid,
+    phraseInput,
+    password,
+    invalidMnemonic,
+    isImportingFromMetaMaskExtension,
+    isImportingFromLegacyExtension
+  ])
 
   const onPhraseInputChanged = React.useCallback((event: React.ChangeEvent<
     HTMLInputElement | HTMLTextAreaElement
