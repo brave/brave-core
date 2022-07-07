@@ -145,7 +145,6 @@ static_library("browser") {
     "//components/keyed_service/core",
     "//components/prefs",
     "//components/sync_preferences",
-    "//content/public/browser",
     "//crypto",
     "//services/data_decoder/public/cpp",
     "//services/network/public/cpp",

@@ -8,7 +8,6 @@
 namespace brave_wallet {
 
 bool BraveWalletProviderDelegate::IsSolanaAccountConnected(
-    const content::GlobalRenderFrameHostId& id,
     const std::string& account) {
   return false;
 }

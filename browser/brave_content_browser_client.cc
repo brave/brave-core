@@ -329,8 +329,7 @@ void MaybeBindSolanaProvider(
       content::WebContents::FromRenderFrameHost(frame_host);
   mojo::MakeSelfOwnedReceiver(
       std::make_unique<brave_wallet::SolanaProviderImpl>(
-          frame_host->GetGlobalId(), keyring_service, brave_wallet_service,
-          tx_service,
+          keyring_service, brave_wallet_service, tx_service,
           std::make_unique<brave_wallet::BraveWalletProviderDelegateImpl>(
               web_contents, frame_host)),
       std::move(receiver));

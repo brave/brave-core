@@ -19,7 +19,6 @@
 namespace content {
 class Page;
 class RenderFrameHost;
-struct GlobalRenderFrameHostId;
 class WebContents;
 }  // namespace content
 
@@ -51,12 +50,9 @@ class BraveWalletProviderDelegateImpl : public BraveWalletProviderDelegate,
   void IsAccountAllowed(mojom::CoinType type,
                         const std::string& account,
                         IsAccountAllowedCallback callback) override;
-  void AddSolanaConnectedAccount(const content::GlobalRenderFrameHostId& id,
-                                 const std::string& account) override;
-  void RemoveSolanaConnectedAccount(const content::GlobalRenderFrameHostId& id,
-                                    const std::string& account) override;
-  bool IsSolanaAccountConnected(const content::GlobalRenderFrameHostId& id,
-                                const std::string& account) override;
+  void AddSolanaConnectedAccount(const std::string& account) override;
+  void RemoveSolanaConnectedAccount(const std::string& account) override;
+  bool IsSolanaAccountConnected(const std::string& account) override;
 
  private:
   // content::WebContentsObserver overrides

@@ -13,7 +13,6 @@
 #include "base/gtest_prod_util.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
-#include "content/public/browser/global_routing_id.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/remote.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
@@ -33,8 +32,7 @@ class SolanaProviderImpl final : public mojom::SolanaProvider,
  public:
   using RequestPermissionsError = mojom::RequestPermissionsError;
 
-  SolanaProviderImpl(const content::GlobalRenderFrameHostId& rfh_id,
-                     KeyringService* keyring_service,
+  SolanaProviderImpl(KeyringService* keyring_service,
                      BraveWalletService* brave_wallet_service,
                      TxService* tx_service,
                      std::unique_ptr<BraveWalletProviderDelegate> delegate);
@@ -128,7 +126,6 @@ class SolanaProviderImpl final : public mojom::SolanaProvider,
   void OnUnapprovedTxUpdated(mojom::TransactionInfoPtr tx_info) override {}
   void OnTransactionStatusChanged(mojom::TransactionInfoPtr tx_info) override;
 
-  content::GlobalRenderFrameHostId rfh_id_;
   base::flat_map<std::string, SignAndSendTransactionCallback>
       sign_and_send_tx_callbacks_;
   // Pending callback and arg are for waiting user unlock before connect

@@ -110,8 +110,7 @@ class SolanaProviderImplUnitTest : public testing::Test {
     tx_service_ =
         brave_wallet::TxServiceFactory::GetServiceForContext(browser_context());
     provider_ = std::make_unique<SolanaProviderImpl>(
-        web_contents()->GetMainFrame()->GetGlobalId(), keyring_service_,
-        brave_wallet_service_, tx_service_,
+        keyring_service_, brave_wallet_service_, tx_service_,
         std::make_unique<brave_wallet::BraveWalletProviderDelegateImpl>(
             web_contents(), web_contents()->GetMainFrame()));
     observer_.reset(new TestEventsListener());
