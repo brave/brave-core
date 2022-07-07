@@ -252,8 +252,10 @@ class AdsServiceImpl : public AdsService,
   void OnDetectUncertainFuture(const uint32_t number_of_start,
                                const bool is_uncertain_future);
 
-  void EnsureBaseDirectoryExists(const uint32_t number_of_start);
+  void EnsureBaseDirectoryExists(const uint32_t number_of_start,
+                                 ads::mojom::SysInfoPtr sys_info);
   void OnEnsureBaseDirectoryExists(const uint32_t number_of_start,
+                                   ads::mojom::SysInfoPtr sys_info,
                                    const bool success);
 
   void SetEnvironment();
