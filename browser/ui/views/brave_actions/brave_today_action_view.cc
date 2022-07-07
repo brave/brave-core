@@ -52,7 +52,7 @@ SkColor selectedColor = SkColorSetRGB(30, 33, 82);
 BraveTodayActionView::BraveTodayActionView(Profile* profile,
                                            TabStripModel* tab_strip)
     : views::LabelButton(
-          base::BindRepeating(&BraveTodayActionView::ToggleSubscribed,
+          base::BindRepeating(&BraveTodayActionView::ShowBubble,
                               base::Unretained(this))),
       profile_(profile),
       tab_strip_(tab_strip) {
@@ -157,7 +157,7 @@ void BraveTodayActionView::OnAvailableFeedsChanged(
   Update();
 }
 
-void BraveTodayActionView::ToggleSubscribed() {
+void BraveTodayActionView::ShowBubble() {
   if (!tab_strip_->GetActiveWebContents())
     return;
 

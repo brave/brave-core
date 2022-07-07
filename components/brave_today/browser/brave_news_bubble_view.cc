@@ -96,10 +96,7 @@ class BraveNewsFeedRow : public views::View,
     subscribe_button_->SetText(loading_        ? u"Loading..."
                                : is_subscribed ? u"Unsubscribe"
                                                : u"Subscribe");
-    subscribe_button_->SetProminent(!is_subscribed);
-    subscribe_button_->SetState(loading_
-                                    ? views::Button::ButtonState::STATE_DISABLED
-                                    : views::Button::ButtonState::STATE_NORMAL);
+    subscribe_button_->SetProminent(!is_subscribed && !loading_);
   }
 
   void OnAvailableFeedsChanged(
@@ -119,7 +116,7 @@ class BraveNewsFeedRow : public views::View,
   }
 
  private:
-  bool loading_;
+  bool loading_ = false;
   raw_ptr<views::MdTextButton> subscribe_button_ = nullptr;
 
   BraveNewsTabHelper::FeedDetails feed_details_;

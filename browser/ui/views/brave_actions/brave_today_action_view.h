@@ -43,7 +43,7 @@ class BraveTodayActionView : public views::LabelButton,
       const std::vector<BraveNewsTabHelper::FeedDetails>& feeds) override;
 
  private:
-  void ToggleSubscribed();
+  void ShowBubble();
 
   Profile* profile_;
   TabStripModel* tab_strip_;
