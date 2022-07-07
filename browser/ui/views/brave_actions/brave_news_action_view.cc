@@ -16,6 +16,7 @@
 #include "brave/components/brave_today/browser/brave_news_controller.h"
 #include "brave/components/brave_today/browser/brave_news_tab_helper.h"
 #include "brave/components/brave_today/common/brave_news.mojom-shared.h"
+#include "brave/components/brave_today/common/pref_names.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/tabs/tab_strip_model_observer.h"
@@ -52,9 +53,8 @@ SkColor selectedColor = SkColorSetRGB(30, 33, 82);
 
 BraveTodayActionView::BraveTodayActionView(Profile* profile,
                                            TabStripModel* tab_strip)
-    : views::LabelButton(
-          base::BindRepeating(&BraveTodayActionView::ShowBubble,
-                              base::Unretained(this))),
+    : views::LabelButton(base::BindRepeating(&BraveTodayActionView::ShowBubble,
+                                             base::Unretained(this))),
       profile_(profile),
       tab_strip_(tab_strip) {
   DCHECK(profile_);
@@ -70,6 +70,12 @@ BraveTodayActionView::BraveTodayActionView(Profile* profile,
   SetHasInkDropActionOnClick(true);
 
   tab_strip_->AddObserver(this);
+
+  is_hidden_.Init(brave_news::prefs::kBraveTodayActionViewHidden,
+                  profile->GetPrefs(),
+                  base::BindRepeating(&BraveTodayActionView::Update,
+                                      base::Unretained(this)));
+
   Update();
 }
 
@@ -82,6 +88,11 @@ void BraveTodayActionView::Init() {
 }
 
 void BraveTodayActionView::Update() {
+  if (is_hidden_.GetValue()) {
+    SetVisible(false);
+    return;
+  }
+
   auto* contents = tab_strip_->GetActiveWebContents();
   bool subscribed = false;
   absl::optional<BraveNewsTabHelper::FeedDetails> feed = absl::nullopt;

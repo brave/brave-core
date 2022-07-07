@@ -8,6 +8,7 @@
 #include "brave/components/brave_today/browser/publishers_controller.h"
 #include "brave/components/brave_today/common/brave_news.mojom-forward.h"
 #include "chrome/browser/ui/tabs/tab_strip_model_observer.h"
+#include "components/prefs/pref_member.h"
 #include "ui/gfx/geometry/point.h"
 #include "ui/views/controls/button/label_button.h"
 
@@ -44,6 +45,8 @@ class BraveTodayActionView : public views::LabelButton,
 
  private:
   void ShowBubble();
+
+  BooleanPrefMember is_hidden_;
 
   Profile* profile_;
   TabStripModel* tab_strip_;
