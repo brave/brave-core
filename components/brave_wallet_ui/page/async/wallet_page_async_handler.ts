@@ -23,7 +23,8 @@ import {
   ImportAccountFromJsonPayloadType,
   ImportFromExternalWalletPayloadType,
   ImportFilecoinAccountPayloadType,
-  RestoreWalletPayloadType
+  RestoreWalletPayloadType,
+  ImportWalletErrorPayloadType
 } from '../constants/action_types'
 import {
   findHardwareAccountInfo,
@@ -46,6 +47,41 @@ async function refreshWalletInfo (store: Store) {
   const walletHandler = getWalletPageApiProxy().walletHandler
   const result = await walletHandler.getWalletInfo()
   store.dispatch(WalletActions.initialized({ ...result, selectedAccount: '', visibleTokens: [] }))
+}
+
+async function importFromExternalWallet (
+  walletType: BraveWallet.ExternalWalletType,
+  payload: ImportFromExternalWalletPayloadType
+): Promise<ImportWalletErrorPayloadType> {
+  const {
+    braveWalletService,
+    keyringService
+  } = getWalletPageApiProxy()
+
+  const result = await braveWalletService.importFromExternalWallet(
+    walletType,
+    payload.password,
+    payload.newPassword
+  )
+
+  // complete backup if a new password was provided
+  if (payload.newPassword && result.success) {
+    keyringService.notifyWalletBackupComplete()
+  }
+
+  // was the provided import password correct?
+  const checkExistingPasswordError = result.errorMessage === getLocale('braveWalletImportPasswordError')
+    ? result.errorMessage
+    : undefined
+
+  // was import successful (if attempted)
+  const importError = payload.newPassword ? result.errorMessage || undefined : undefined
+
+  return {
+    hasError: !!(importError || checkExistingPasswordError),
+    errorMessage: importError || checkExistingPasswordError,
+    incrementAttempts: true
+  }
 }
 
 handler.on(WalletPageActions.createWallet.getType(), async (store: Store, payload: CreateWalletPayloadType) => {
@@ -188,51 +224,19 @@ handler.on(WalletPageActions.checkWalletsToImport.getType(), async (store) => {
 })
 
 handler.on(WalletPageActions.importFromCryptoWallets.getType(), async (store: Store, payload: ImportFromExternalWalletPayloadType) => {
-  const braveWalletService = getWalletPageApiProxy().braveWalletService
-  const keyringService = getWalletPageApiProxy().keyringService
-  const result =
-    await braveWalletService.importFromExternalWallet(
-      BraveWallet.ExternalWalletType.CryptoWallets, payload.password, payload.newPassword)
-  if (result.success) {
-    keyringService.notifyWalletBackupComplete()
-  }
-  store.dispatch(WalletPageActions.setImportWalletError({
-    hasError: !result.success,
-    errorMessage: result.errorMessage ?? undefined,
-    incrementAttempts: true
-  }))
+  const results: ImportWalletErrorPayloadType = await importFromExternalWallet(
+    BraveWallet.ExternalWalletType.CryptoWallets,
+    payload
+  )
+  store.dispatch(WalletPageActions.setImportWalletError(results))
 })
 
 handler.on(WalletPageActions.importFromMetaMask.getType(), async (store: Store, payload: ImportFromExternalWalletPayloadType) => {
-  const {
-    braveWalletService,
-    keyringService
-  } = getWalletPageApiProxy()
-
-  const result = await braveWalletService.importFromExternalWallet(
+  const results: ImportWalletErrorPayloadType = await importFromExternalWallet(
     BraveWallet.ExternalWalletType.MetaMask,
-    payload.password,
-    payload.newPassword
+    payload
   )
-
-  // complete backup if a new password was provided
-  if (payload.newPassword && result.success) {
-    keyringService.notifyWalletBackupComplete()
-  }
-
-  // was the provided import password correct?
-  const checkExistingPasswordError = result.errorMessage === getLocale('braveWalletImportPasswordError')
-    ? result.errorMessage
-    : undefined
-
-  // was import successful (if attempted)
-  const importError = payload.newPassword ? result.errorMessage || undefined : undefined
-
-  store.dispatch(WalletPageActions.setImportWalletError({
-    hasError: !!(importError || checkExistingPasswordError),
-    errorMessage: importError || checkExistingPasswordError,
-    incrementAttempts: true
-  }))
+  store.dispatch(WalletPageActions.setImportWalletError(results))
 })
 
 handler.on(WalletActions.newUnapprovedTxAdded.getType(), async (store: Store, payload: NewUnapprovedTxAdded) => {
