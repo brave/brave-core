@@ -205,4 +205,8 @@
     "META": {"sizes": {"includes": [250]}},
     "includes": [59520]
   },
+  "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-cookie_list_opt_in/cookie_list_opt_in.grd": {
+    "META": {"sizes": {"includes": [30]}},
+    "includes": [59770]
+  }
 }

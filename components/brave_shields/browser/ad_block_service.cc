@@ -353,6 +353,7 @@ base::SequencedTaskRunner* AdBlockService::GetTaskRunner() {
 }
 
 void RegisterPrefsForAdBlockService(PrefRegistrySimple* registry) {
+  registry->RegisterBooleanPref(prefs::kAdBlockCookieListOptInShown, false);
   registry->RegisterBooleanPref(prefs::kAdBlockCookieListSettingTouched, false);
   registry->RegisterStringPref(prefs::kAdBlockCustomFilters, std::string());
   registry->RegisterDictionaryPref(prefs::kAdBlockRegionalFilters);
