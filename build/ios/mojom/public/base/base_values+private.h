@@ -6,13 +6,10 @@
 #ifndef BRAVE_BUILD_IOS_MOJOM_PUBLIC_BASE_BASE_VALUES_PRIVATE_H_
 #define BRAVE_BUILD_IOS_MOJOM_PUBLIC_BASE_BASE_VALUES_PRIVATE_H_
 
+#include "base/values.h"
 #include "brave/build/ios/mojom/public/base/base_values.h"
 
 @class MojoBaseValue;
-
-namespace base {
-class Value;
-}  // namespace base
 
 namespace brave {
 
@@ -34,6 +31,11 @@ base::Value BaseValueFromNSArray(NSArray<MojoBaseValue*>*);
 // Clone the contents of an NSDictionary into a `base::Value` with the type
 // `base::Value::Type::DICTIONARY`
 base::Value BaseValueFromNSDictionary(NSDictionary<NSString*, MojoBaseValue*>*);
+
+NSDictionary<NSString*, MojoBaseValue*>* NSDictionaryFromBaseValueDict(
+    const base::Value::Dict);
+base::Value::Dict BaseValueDictFromNSDictionary(
+    NSDictionary<NSString*, MojoBaseValue*>*);
 
 }  // namespace brave
 

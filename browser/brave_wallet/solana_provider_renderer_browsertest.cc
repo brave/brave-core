@@ -283,7 +283,7 @@ class TestSolanaProvider final : public brave_wallet::mojom::SolanaProvider {
       events_listener_.Bind(std::move(events_listener));
     }
   }
-  void Connect(absl::optional<base::Value> arg,
+  void Connect(absl::optional<base::Value::Dict> arg,
                ConnectCallback callback) override {
     if (error_ == SolanaProviderError::kSuccess) {
       std::move(callback).Run(SolanaProviderError::kSuccess, "",
@@ -339,7 +339,7 @@ class TestSolanaProvider final : public brave_wallet::mojom::SolanaProvider {
   }
   void SignAndSendTransaction(
       brave_wallet::mojom::SolanaSignTransactionParamPtr param,
-      absl::optional<base::Value> send_options,
+      absl::optional<base::Value::Dict> send_options,
       SignAndSendTransactionCallback callback) override {
     EXPECT_EQ(param->encoded_serialized_msg,
               brave_wallet::Base58Encode(kSerializedMessage));
@@ -351,10 +351,10 @@ class TestSolanaProvider final : public brave_wallet::mojom::SolanaProvider {
     ASSERT_TRUE(expect_send_options);
     EXPECT_EQ(send_options, send_options_);
 
-    base::Value result(base::Value::Type::DICTIONARY);
+    base::Value::Dict result;
     if (error_ == SolanaProviderError::kSuccess) {
-      result.SetStringKey("publicKey", kTestPublicKey);
-      result.SetStringKey("signature", kTestSignature);
+      result.Set("publicKey", kTestPublicKey);
+      result.Set("signature", kTestSignature);
       std::move(callback).Run(SolanaProviderError::kSuccess, "",
                               std::move(result));
     } else {
@@ -366,10 +366,10 @@ class TestSolanaProvider final : public brave_wallet::mojom::SolanaProvider {
                    const absl::optional<std::string>& display_encoding,
                    SignMessageCallback callback) override {
     EXPECT_EQ(blob_msg, kMessageToSign);
-    base::Value result(base::Value::Type::DICTIONARY);
+    base::Value::Dict result;
     if (error_ == SolanaProviderError::kSuccess) {
-      result.SetStringKey("publicKey", kTestPublicKey);
-      result.SetStringKey("signature", kTestSignature);
+      result.Set("publicKey", kTestPublicKey);
+      result.Set("signature", kTestSignature);
       std::move(callback).Run(SolanaProviderError::kSuccess, "",
                               std::move(result));
     } else {
@@ -377,11 +377,11 @@ class TestSolanaProvider final : public brave_wallet::mojom::SolanaProvider {
       ClearError();
     }
   }
-  void Request(base::Value arg, RequestCallback callback) override {
-    base::Value result(base::Value::Type::DICTIONARY);
+  void Request(base::Value::Dict arg, RequestCallback callback) override {
+    base::Value::Dict result;
     if (error_ == SolanaProviderError::kSuccess) {
-      result.SetStringKey("publicKey", kTestPublicKey);
-      result.SetStringKey("signature", kTestSignature);
+      result.Set("publicKey", kTestPublicKey);
+      result.Set("signature", kTestSignature);
       std::move(callback).Run(SolanaProviderError::kSuccess, "",
                               std::move(result));
     } else {
@@ -395,7 +395,7 @@ class TestSolanaProvider final : public brave_wallet::mojom::SolanaProvider {
     error_message_ = error_message;
   }
 
-  void SetSendOptions(absl::optional<base::Value> options) {
+  void SetSendOptions(absl::optional<base::Value::Dict> options) {
     send_options_ = std::move(options);
   }
 
@@ -411,7 +411,7 @@ class TestSolanaProvider final : public brave_wallet::mojom::SolanaProvider {
   SolanaProviderError error_ = SolanaProviderError::kSuccess;
   std::string error_message_;
   bool emit_empty_account_changed_ = false;
-  absl::optional<base::Value> send_options_;
+  absl::optional<base::Value::Dict> send_options_;
   mojo::Remote<brave_wallet::mojom::SolanaEventsListener> events_listener_;
 };
 
@@ -901,7 +901,8 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, SignAndSendTransaction) {
   TestSolanaProvider* provider = test_content_browser_client_.GetProvider(
       web_contents(browser())->GetMainFrame());
   ASSERT_TRUE(provider);
-  provider->SetSendOptions(base::JSONReader::Read(send_options));
+  provider->SetSendOptions(
+      base::JSONReader::Read(send_options)->GetDict().Clone());
 
   auto send_options_result =
       EvalJs(web_contents(browser()),
@@ -925,7 +926,7 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, SignAndSendTransaction) {
   }
 
   // allow extra parameters
-  provider->SetSendOptions(base::Value(base::Value::Type::DICTIONARY));
+  provider->SetSendOptions(base::Value::Dict());
   const std::string tx2 = base::StrCat({"(", tx, ", {}, {})"});
   auto result2 =
       EvalJs(web_contents(browser()), SignAndSendTransactionScript(tx2),

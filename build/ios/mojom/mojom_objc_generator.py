@@ -300,17 +300,17 @@ class BaseDictionaryValueMojoTypemap(MojoTypemap):
     def IsMojoType(kind):
         return (mojom.IsStructKind(kind) and
                 kind.qualified_name == \
-                    'mojo_base.mojom.DeprecatedDictionaryValue')
+                    'mojo_base.mojom.DictionaryValue')
     def ObjCWrappedType(self):
         return "NSDictionary<NSString*,MojoBaseValue*>*"
     def ExpectedCppType(self):
-        return "base::Value"
+        return "base::Value::Dict"
     def DefaultObjCValue(self, default):
         return "@{}"
     def ObjCToCpp(self, accessor):
-        return "brave::BaseValueFromNSDictionary(%s)" % accessor
+        return "brave::BaseValueDictFromNSDictionary(%s)" % accessor
     def CppToObjC(self, accessor):
-        return "brave::NSDictionaryFromBaseValue(%s.Clone())" % accessor
+        return "brave::NSDictionaryFromBaseValueDict(%s.Clone())" % accessor
 
 class BaseListValueMojoTypemap(MojoTypemap):
     @staticmethod

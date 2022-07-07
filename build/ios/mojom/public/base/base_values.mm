@@ -8,7 +8,6 @@
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "base/strings/sys_string_conversions.h"
-#include "base/values.h"
 #include "brave/build/ios/mojom/public/base/base_values+private.h"
 
 #if !defined(__has_feature) || !__has_feature(objc_arc)
@@ -341,6 +340,26 @@ base::Value BaseValueFromNSDictionary(
   for (NSString* key in dictionary) {
     MojoBaseValue* value = dictionary[key];
     dict.SetKey(base::SysNSStringToUTF8(key), value.cppObjPtr);
+  }
+  return dict;
+}
+
+NSDictionary<NSString*, MojoBaseValue*>* NSDictionaryFromBaseValueDict(
+    base::Value::Dict value) {
+  auto result = [[NSMutableDictionary alloc] init];
+  for (auto kv : value) {
+    result[base::SysUTF8ToNSString(kv.first)] =
+        [[MojoBaseValue alloc] initWithValue:kv.second.Clone()];
+  }
+  return result;
+}
+
+base::Value::Dict BaseValueDictFromNSDictionary(
+    NSDictionary<NSString*, MojoBaseValue*>* dictionary) {
+  base::Value::Dict dict;
+  for (NSString* key in dictionary) {
+    MojoBaseValue* value = dictionary[key];
+    dict.Set(base::SysNSStringToUTF8(key), value.cppObjPtr);
   }
   return dict;
 }
