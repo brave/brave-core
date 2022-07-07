@@ -1,3 +1,6 @@
+<script type="module" src="../settings_shared_css.js"></script>
+<script type="module" src="../settings_vars_css.js"></script>
+
 <style include="settings-shared">
   .icon-picture-button {
     align-self: right;
@@ -12,6 +15,12 @@
     margin-bottom: 15px;
     padding-top: 15px;
   }
+  .search-separator {
+    border-bottom: var(--cr-separator-line);
+    padding-bottom: 15px;
+    margin-bottom: 15px;
+    padding-top: 15px;
+  }
   .urls-button-container {
     margin-bottom: 15px;
   }
@@ -23,6 +32,15 @@
 <cr-dialog show-close-button show-on-attach>
   <div slot="title">$i18n{walletAddNetworkDialogTitle}</div>
   <div slot="body">
+    <div class="search-separator">
+      <cr-searchable-drop-down items="[[searchItems_]]"
+                               id="searchDropDown"
+                               label="$i18n{walletAddNetworkDialogSearchForNetworkLabel}"
+                               value="{{searchValue_}}"
+                               update-value-on-input
+                               placeholder="$i18n{walletAddNetworkDialogSearchForNetworkPlaceholder}">
+      </cr-searchable-drop-down>
+    </div>
     <cr-input id="chainId"
               label="$i18n{walletAddNetworkDialogChainIdTitle}"
               type="number"
@@ -33,8 +51,7 @@
               invalid="{{chainIdInvalid_}}"
               class="mandatory"
               on-input=chainIdChanged_
-              value="{{chainIdValue_}}"
-              autofocus>
+              value="{{chainIdValue_}}">
     </cr-input>
     <cr-input id="chainName"
               label="$i18n{walletAddNetworkDialogChainNameTitle}"
@@ -45,8 +62,7 @@
               invalid="{{chainNameInvalid_}}"
               class="mandatory"
               on-input=chainNameChanged_
-              value="{{chainNameValue_}}"
-              autofocus>
+              value="{{chainNameValue_}}">
     </cr-input>
     <cr-input id="currencyName"
               label="$i18n{walletAddNetworkDialogCurrencyNameTitle}"
@@ -56,8 +72,7 @@
               spellcheck="false"
               class="wallet-input"
               on-input=nativeCurrencyChanged_
-              value="{{currencyNameValue_}}"
-              autofocus>
+              value="{{currencyNameValue_}}">
     </cr-input>
     <cr-input id="currencySymbol"
               label="$i18n{walletAddNetworkDialogCurrencySymbolTitle}"
@@ -67,8 +82,7 @@
               spellcheck="false"
               on-input=nativeCurrencyChanged_
               class="wallet-input"
-              value="{{currencySymbolValue_}}"
-              autofocus>
+              value="{{currencySymbolValue_}}">
     </cr-input>
     <cr-input id="currencyDecimals"
               label="$i18n{walletAddNetworkDialogCurrencyDecimalsTitle}"
@@ -78,8 +92,7 @@
               spellcheck="false"
               on-input=nativeCurrencyChanged_
               class="wallet-input"
-              value="{{currencyDecimalsValue_}}"
-              autofocus>
+              value="{{currencyDecimalsValue_}}">
     </cr-input>
     <div >
       <div class="settings-row urls-button-container">
@@ -97,8 +110,7 @@
                     error-message="$i18n{walletAddNetworkInvalidURLInput}"
                     spellcheck="false"
                     on-input=urlChangedRpc_
-                    value="{{item.value}}"
-                    autofocus>
+                    value="{{item.value}}">
           </cr-input>
         </template>
       </iron-list>
@@ -122,8 +134,7 @@
                     spellcheck="false"
                     on-input=urlChangedIcons_
                     value="{{item.value}}"
-                    class="wallet-input"
-                    autofocus>
+                    class="wallet-input">
           </cr-input>
         </template>
       </iron-list>
@@ -147,8 +158,7 @@
                     on-input=urlChangedBlock_
                     value="{{item.value}}"
                     class="wallet-input"
-                    type="url"
-                    autofocus>
+                    type="url">
           </cr-input>
         </template>
       </iron-list>

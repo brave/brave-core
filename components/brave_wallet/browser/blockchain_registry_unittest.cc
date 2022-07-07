@@ -497,7 +497,7 @@ TEST(BlockchainRegistryUnitTest, GetBuyUrlRamp) {
   run_loop.Run();
 }
 
-TEST(BlockchainRegistryUnitTest, SearchNetworksFilter) {
+TEST(BlockchainRegistryUnitTest, GetPrepopulatedNetworks) {
   base::test::TaskEnvironment task_environment;
   auto* registry = BlockchainRegistry::GetInstance();
 
@@ -505,26 +505,11 @@ TEST(BlockchainRegistryUnitTest, SearchNetworksFilter) {
   ASSERT_TRUE(ParseChainList(chain_list_json, &chain_list));
   registry->UpdateChainList(std::move(chain_list));
 
-  EXPECT_THAT(GetChainIds(registry->SearchNetworks("", "")),
+  EXPECT_THAT(GetChainIds(registry->GetPrepopulatedNetworks()),
               ElementsAreArray({"0x1", "0x89"}));
-  EXPECT_THAT(GetChainIds(registry->SearchNetworks("0x", "")),
-              ElementsAreArray({"0x1", "0x89"}));
-  EXPECT_THAT(GetChainIds(registry->SearchNetworks("0x1", "")),
-              ElementsAreArray({"0x1"}));
-  EXPECT_THAT(GetChainIds(registry->SearchNetworks("0x89", "")),
-              ElementsAreArray({"0x89"}));
-  EXPECT_THAT(GetChainIds(registry->SearchNetworks("", "Ethereum")),
-              ElementsAreArray({"0x1"}));
-  EXPECT_THAT(GetChainIds(registry->SearchNetworks("", "Polygon")),
-              ElementsAreArray({"0x89"}));
-
-  EXPECT_THAT(GetChainIds(registry->SearchNetworks("", "qwe")),
-              ElementsAreArray(std::vector<std::string>{}));
-  EXPECT_THAT(GetChainIds(registry->SearchNetworks("123", "")),
-              ElementsAreArray(std::vector<std::string>{}));
 }
 
-TEST(BlockchainRegistryUnitTest, SearchNetworksKnownOnesArePreferred) {
+TEST(BlockchainRegistryUnitTest, GetPrepopulatedNetworksKnownOnesArePreferred) {
   base::test::TaskEnvironment task_environment;
   auto* registry = BlockchainRegistry::GetInstance();
 
@@ -533,8 +518,8 @@ TEST(BlockchainRegistryUnitTest, SearchNetworksKnownOnesArePreferred) {
   chain_list[0]->chain_name = "Custom Name";
   registry->UpdateChainList(std::move(chain_list));
 
-  auto found_networks = registry->SearchNetworks("0x1", "");
-  EXPECT_EQ(1u, found_networks.size());
+  auto found_networks = registry->GetPrepopulatedNetworks();
+  EXPECT_EQ(2u, found_networks.size());
   EXPECT_EQ(found_networks[0]->chain_name, "Ethereum Mainnet");
 }
 
