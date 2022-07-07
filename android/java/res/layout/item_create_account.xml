@@ -46,4 +46,18 @@
             android:textSize="14sp" />
 
     </LinearLayout>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/item_create_account_btn_create"
+        style="@style/BraveWalletButtonHollow"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:paddingVertical="4dp"
+        android:layout_marginTop="0dp"
+        android:layout_weight=".25"
+        android:minHeight="0dp"
+        android:text="@string/add_import_account"
+        android:textSize="14sp" />
+
 </LinearLayout>

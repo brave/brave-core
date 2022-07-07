@@ -180,6 +180,17 @@ public class AddAccountActivity extends BraveWalletBaseActivity {
                                             getString(R.string.account_name_empty_error));
                                 }
                             });
+                    //                    mKeyringService.addAccount(
+                    //                            mAddAccountText.getText().toString(),
+                    //                            mCryptoAccountTypeInfo.getCoinType(), result -> {
+                    //                                if (result) {
+                    //                                    setResult(Activity.RESULT_OK);
+                    //                                    finish();
+                    //                                } else {
+                    //                                    mAddAccountText.setError(
+                    //                                            getString(R.string.account_name_empty_error));
+                    //                                }
+                    //                            });
                 }
             }
         });

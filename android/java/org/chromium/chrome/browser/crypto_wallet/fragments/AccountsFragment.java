@@ -79,6 +79,11 @@ public class AccountsFragment extends Fragment implements OnWalletListItemClick 
             BottomSheetDialogFragment sheetDialogFragment = new CreateAccountBottomSheetFragment();
             sheetDialogFragment.show(
                     getChildFragmentManager(), CreateAccountBottomSheetFragment.TAG);
+            //            Intent addAccountActivityIntent = new Intent(getActivity(),
+            //            AddAccountActivity.class);
+            //            addAccountActivityIntent.putExtra(Utils.ISUPDATEACCOUNT, false);
+            //            startActivityForResult(addAccountActivityIntent,
+            //            Utils.ACCOUNT_REQUEST_CODE);
         });
 
         TextView backupBtn = view.findViewById(R.id.accounts_backup);
@@ -156,7 +161,6 @@ public class AccountsFragment extends Fragment implements OnWalletListItemClick 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
         if (requestCode == Utils.ACCOUNT_REQUEST_CODE) {
             if (resultCode == Activity.RESULT_OK) {
                 if (rootView != null) {

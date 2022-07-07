@@ -59,7 +59,7 @@ public class CreateAccountAdapter extends RecyclerView.Adapter<CreateAccountAdap
         holder.tvDesc.setText(accountTypeInfo.getDesc());
         holder.ivNetworkPicture.setImageResource(accountTypeInfo.getIcon());
 
-        holder.itemView.setOnClickListener(v -> {
+        holder.btnCreate.setOnClickListener(v -> {
             assert mCreateAccountClickListener != null;
             mCreateAccountClickListener.onAccountClick(accountTypeInfo);
         });
@@ -78,12 +78,14 @@ public class CreateAccountAdapter extends RecyclerView.Adapter<CreateAccountAdap
         ImageView ivNetworkPicture;
         TextView tvTitle;
         TextView tvDesc;
+        Button btnCreate;
 
         ViewHolder(View itemView) {
             super(itemView);
             ivNetworkPicture = itemView.findViewById(R.id.item_create_account_iv_icon);
             tvTitle = itemView.findViewById(R.id.item_create_account_tv_title);
             tvDesc = itemView.findViewById(R.id.item_create_account_tv_desc);
+            btnCreate = itemView.findViewById(R.id.item_create_account_btn_create);
         }
     }
 

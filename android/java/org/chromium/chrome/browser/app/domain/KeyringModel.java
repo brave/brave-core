@@ -41,11 +41,9 @@ public class KeyringModel implements KeyringServiceObserver {
     private final MutableLiveData<AccountInfo> _mSelectedAccount;
     public LiveData<List<AccountInfo>> mAccountInfos;
     private final MutableLiveData<List<AccountInfo>> _mAccountInfos;
-    // Prefer using getSelectedAccountOrAccountPerOrigin, especially for dapps
     public LiveData<AccountInfo> mSelectedAccount;
     private CryptoSharedData mSharedData;
     private AccountsPermissionsHelper mAccountsPermissionsHelper;
-    private final Object mLock = new Object();
     private CryptoModelActions mCryptoModelActions;
     private HashMap<Integer, String> mKeyringToCoin;
 
@@ -68,41 +66,31 @@ public class KeyringModel implements KeyringServiceObserver {
     }
 
     public void init() {
-        synchronized (mLock) {
-            if (mKeyringService == null) {
-                return;
-            }
-            mKeyringService.addObserver(this);
-        }
+        mKeyringService.addObserver(this);
     }
 
     private void update(int coinType) {
-        synchronized (mLock) {
-            if (mKeyringService == null) {
-                return;
-            }
-            mKeyringService.getKeyringInfo(getSelectedCoinKeyringId(coinType),
-                    keyringInfo -> { _mSelectedCoinKeyringInfoLiveData.postValue(keyringInfo); });
-            mKeyringService.getKeyringsInfo(mSharedData.getEnabledKeyrings(), keyringInfos -> {
-                List<AccountInfo> accountInfos = getAccountInfosFromKeyrings(keyringInfos);
-                _mAccountInfos.postValue(accountInfos);
-                _mKeyringInfosLiveData.postValue(keyringInfos);
-                mKeyringService.getSelectedAccount(coinType, accountAddress -> {
-                    if (accountAddress != null && !accountAddress.isEmpty()) {
-                        AccountInfo selectedAccountInfo = null;
-                        for (AccountInfo accountInfo : accountInfos) {
-                            if (accountInfo.address.equals(accountAddress)) {
-                                selectedAccountInfo = accountInfo;
-                                break;
-                            }
+        mKeyringService.getKeyringInfo(getSelectedCoinKeyringId(coinType),
+                keyringInfo -> { _mSelectedCoinKeyringInfoLiveData.postValue(keyringInfo); });
+        mKeyringService.getKeyringsInfo(mSharedData.getEnabledKeyrings(), keyringInfos -> {
+            List<AccountInfo> accountInfos = getAccountInfosFromKeyrings(keyringInfos);
+            _mAccountInfos.postValue(accountInfos);
+            _mKeyringInfosLiveData.postValue(keyringInfos);
+            mKeyringService.getSelectedAccount(coinType, accountAddress -> {
+                if (accountAddress != null && !accountAddress.isEmpty()) {
+                    AccountInfo selectedAccountInfo = null;
+                    for (AccountInfo accountInfo : accountInfos) {
+                        if (accountInfo.address.equals(accountAddress)) {
+                            selectedAccountInfo = accountInfo;
+                            break;
                         }
-                        _mSelectedAccount.postValue(selectedAccountInfo);
-                    } else if (accountInfos.size() > 0) {
-                        _mSelectedAccount.postValue(accountInfos.get(0));
                     }
-                });
+                    _mSelectedAccount.postValue(selectedAccountInfo);
+                } else if (accountInfos.size() > 0) {
+                    _mSelectedAccount.postValue(accountInfos.get(0));
+                }
             });
-        }
+        });
     }
 
     private void update() {
@@ -135,34 +123,22 @@ public class KeyringModel implements KeyringServiceObserver {
      */
     @UiThread
     public LiveData<AccountInfo> getSelectedAccountOrAccountPerOrigin() {
-        synchronized (mLock) {
-            if (mKeyringService == null) {
-                return mSelectedAccount;
+        _mSelectedAccount.setValue(null);
+        mKeyringService.getSelectedAccount(mSharedData.getCoinType(), accountAddress -> {
+            if (accountAddress == null) {
+                mKeyringService.getKeyringInfo(BraveWalletConstants.DEFAULT_KEYRING_ID,
+                        keyringInfo -> { updateSelectedAccountPerOriginOrFirst(keyringInfo); });
+            } else {
+                update();
             }
-            _mSelectedAccount.setValue(null);
-            mKeyringService.getSelectedAccount(mSharedData.getCoinType(), accountAddress -> {
-                if (accountAddress == null) {
-                    mKeyringService.getKeyringInfo(
-                            getSelectedCoinKeyringId(mSharedData.getCoinType()),
-                            keyringInfo -> { updateSelectedAccountPerOriginOrFirst(keyringInfo); });
-                } else {
-                    update();
-                }
-            });
-        }
+        });
         return mSelectedAccount;
     }
 
     public void setSelectedAccount(String accountAddress, int coin) {
-        synchronized (mLock) {
-            if (mKeyringService == null) {
-                return;
-            }
-            mKeyringService.setSelectedAccount(accountAddress, coin, isAccountSelected -> {
-                mBraveWalletService.setSelectedCoin(coin);
-                mCryptoModelActions.updateCoinType();
-            });
-        }
+        mKeyringService.setSelectedAccount(accountAddress, coin, isAccountSelected -> {
+            mCryptoModelActions.updateCoinType();
+        });
     }
 
     public KeyringInfo getKeyringInfo() {
@@ -170,17 +146,13 @@ public class KeyringModel implements KeyringServiceObserver {
     }
 
     public void resetService(KeyringService keyringService, BraveWalletService braveWalletService) {
-        synchronized (mLock) {
-            if (mKeyringService != keyringService) {
-                mKeyringService = keyringService;
-            }
-            if (mBraveWalletService != braveWalletService) {
-                mBraveWalletService = braveWalletService;
-            }
+        if (mKeyringService != keyringService) {
+            mKeyringService = keyringService;
         }
-        if (mKeyringService != null && mBraveWalletService != null) {
-            init();
+        if (mBraveWalletService != braveWalletService) {
+            mBraveWalletService = braveWalletService;
         }
+        init();
     }
 
     public void getAccounts(Callbacks.Callback1<AccountInfo[]> callback1) {
@@ -201,19 +173,24 @@ public class KeyringModel implements KeyringServiceObserver {
 
     public void addAccount(String accountName, @CoinType.EnumType int coinType,
             Callbacks.Callback1<Boolean> callback) {
+        //        KeyringInfo keyringInfo = _mKeyringInfoLiveData.getValue();
+        //        AccountInfo accountInfos[] = new AccountInfo[0];
+        //        if (keyringInfo != null) {
+        //            accountInfos = _mKeyringInfoLiveData.getValue().accountInfos;
+        //        }
         final AccountInfo[] finalAccountInfos =
                 getAccountInfosFromKeyrings(_mKeyringInfosLiveData.getValue())
                         .toArray(new AccountInfo[0]);
         mKeyringService.addAccount(accountName, coinType, result -> {
             if (result) {
-                boolean hasNoExistingAccountType = true;
+                boolean hasExistingAccountType = false;
                 for (AccountInfo accountInfo : finalAccountInfos) {
-                    hasNoExistingAccountType = !(accountInfo.coin == coinType);
-                    if (hasNoExistingAccountType) break;
+                    hasExistingAccountType = accountInfo.coin == coinType;
+                    if (hasExistingAccountType) break;
                 }
-                if (hasNoExistingAccountType) {
+                if (!hasExistingAccountType) {
                     mKeyringService.getKeyringInfo(
-                            getSelectedCoinKeyringId(coinType), updatedKeyringInfo -> {
+                            BraveWalletConstants.DEFAULT_KEYRING_ID, updatedKeyringInfo -> {
                                 for (AccountInfo accountInfo : updatedKeyringInfo.accountInfos) {
                                     if (accountInfo.coin == coinType) {
                                         setSelectedAccount(accountInfo.address, coinType);
