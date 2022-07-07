@@ -11,7 +11,7 @@ import {
   BraveWallet,
   SolFeeEstimates,
   TimeDelta,
-  WalletAccountType
+  WalletState
 } from '../../constants/types'
 import {
   MAX_UINT256,
@@ -30,6 +30,7 @@ import useBalance from './balance'
 
 // Options
 import { makeNetworkAsset } from '../../options/asset-options'
+import { useSelector } from 'react-redux'
 
 type SolanaParamsWithLamports = Solana.CreateAccountParams | Solana.CreateAccountWithSeedParams | Solana.TransferParams | Solana.TransferWithSeedParams | Solana.WithdrawNonceParams
 
@@ -155,13 +156,17 @@ export function useTransactionFeesParser (selectedNetwork: BraveWallet.NetworkIn
 }
 
 export function useTransactionParser (
-  selectedNetwork: BraveWallet.NetworkInfo,
-  accounts: WalletAccountType[],
-  spotPrices: BraveWallet.AssetPrice[],
-  visibleTokens: BraveWallet.BlockchainToken[],
-  fullTokenList?: BraveWallet.BlockchainToken[],
-  solFeeEstimates?: SolFeeEstimates
+  transactionNetwork?: BraveWallet.NetworkInfo
 ) {
+  const {
+    selectedNetwork: reduxSelectedNetwork,
+    fullTokenList,
+    userVisibleTokensInfo: visibleTokens,
+    accounts,
+    transactionSpotPrices: spotPrices,
+    solFeeEstimates
+  } = useSelector(({ wallet }: { wallet: WalletState }) => wallet)
+  const selectedNetwork = transactionNetwork || reduxSelectedNetwork
   const nativeAsset = React.useMemo(
     () => makeNetworkAsset(selectedNetwork),
     [selectedNetwork]

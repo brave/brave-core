@@ -1,4 +1,6 @@
+import * as React from 'react'
 import { renderHook } from '@testing-library/react-hooks'
+import { Provider } from 'react-redux'
 
 import { BraveWallet } from '../../constants/types'
 import {
@@ -10,6 +12,37 @@ import {
 } from '../constants/mocks'
 import { SwapExchangeProxy } from './address-labels'
 import { useTransactionParser } from './transaction-parser'
+import { mockWalletState } from '../../stories/mock-data/mock-wallet-state'
+import { combineReducers, createStore } from 'redux'
+import { createWalletReducer } from '../reducers/wallet_reducer'
+
+const customMockedWalletState = {
+  ...mockWalletState,
+  transactionSpotPrices: mockAssetPrices,
+  fullTokenList: [...mockWalletState.fullTokenList, { ...mockERC20Token, contractAddress: '0xdeadbeef' }, mockERC20Token],
+  selectedNetwork: mockNetwork,
+  networkList: [mockNetwork]
+}
+
+const makeStore = (customStore?: any) => {
+  const store = customStore || createStore(combineReducers({
+    wallet: createWalletReducer(customMockedWalletState)
+  }))
+
+  store.dispatch = jest.fn(store.dispatch)
+  return store
+}
+
+const store = makeStore()
+
+function renderHookOptionsWithCustomStore (store: any) {
+  return {
+    wrapper: ({ children }: { children?: React.ReactChildren }) =>
+      <Provider store={store}>
+        {children}
+      </Provider>
+  }
+}
 
 describe('useTransactionParser hook', () => {
   describe('check for sameAddressError', () => {
@@ -18,9 +51,8 @@ describe('useTransactionParser hook', () => {
       ['ERC20Approve', BraveWallet.TransactionType.ERC20Approve, 'approval target']
     ])('%s', (_, txType, toLabel) => {
       it(`should be defined when sender and ${toLabel} are same`, () => {
-        const { result: { current: transactionParser } } = renderHook(() => useTransactionParser(
-          mockNetwork, [], [], [], []
-        ))
+        const { result: { current: transactionParser } } = renderHook(() => useTransactionParser(),
+          renderHookOptionsWithCustomStore(store))
 
         const mockTransactionInfo = getMockedTransactionInfo()
         const parsedTransaction = transactionParser({
@@ -34,9 +66,8 @@ describe('useTransactionParser hook', () => {
       })
 
       it(`should be undefined when sender and ${toLabel} are different`, () => {
-        const { result: { current: transactionParser } } = renderHook(() => useTransactionParser(
-          mockNetwork, [], [], [], []
-        ))
+        const { result: { current: transactionParser } } = renderHook(() => useTransactionParser(),
+          renderHookOptionsWithCustomStore(store))
 
         const mockTransactionInfo = getMockedTransactionInfo()
         const parsedTransaction = transactionParser({
@@ -55,9 +86,8 @@ describe('useTransactionParser hook', () => {
       ['ERC721SafeTransferFrom', BraveWallet.TransactionType.ERC721SafeTransferFrom]
     ])('%s', (_, txType) => {
       it('should be undefined when sender and recipient are same', () => {
-        const { result: { current: transactionParser } } = renderHook(() => useTransactionParser(
-          mockNetwork, [], [], [], []
-        ))
+        const { result: { current: transactionParser } } = renderHook(() => useTransactionParser(),
+          renderHookOptionsWithCustomStore(store))
 
         const mockTransactionInfo = getMockedTransactionInfo()
         const parsedTransaction = transactionParser({
@@ -71,9 +101,8 @@ describe('useTransactionParser hook', () => {
       })
 
       it('should be defined when owner and recipient are same', () => {
-        const { result: { current: transactionParser } } = renderHook(() => useTransactionParser(
-          mockNetwork, [], [], [], []
-        ))
+        const { result: { current: transactionParser } } = renderHook(() => useTransactionParser(),
+          renderHookOptionsWithCustomStore(store))
 
         const mockTransactionInfo = getMockedTransactionInfo()
         const parsedTransaction = transactionParser({
@@ -87,9 +116,8 @@ describe('useTransactionParser hook', () => {
       })
 
       it('should be undefined when owner and recipient are different', () => {
-        const { result: { current: transactionParser } } = renderHook(() => useTransactionParser(
-          mockNetwork, [], [], [], []
-        ))
+        const { result: { current: transactionParser } } = renderHook(() => useTransactionParser(),
+          renderHookOptionsWithCustomStore(store))
 
         const mockTransactionInfo = getMockedTransactionInfo()
         const parsedTransaction = transactionParser({
@@ -110,9 +138,8 @@ describe('useTransactionParser hook', () => {
       ['0x Swap', BraveWallet.TransactionType.Other]
     ])('%s', (name, txType) => {
       it('should always be undefined', () => {
-        const { result: { current: transactionParser } } = renderHook(() => useTransactionParser(
-          mockNetwork, [], [], [], []
-        ))
+        const { result: { current: transactionParser } } = renderHook(() => useTransactionParser(),
+          renderHookOptionsWithCustomStore(store))
 
         const mockTransactionInfo = getMockedTransactionInfo()
         const parsedTransaction = transactionParser({
@@ -146,10 +173,8 @@ describe('useTransactionParser hook', () => {
       ['0x Swap', BraveWallet.TransactionType.Other]
     ])('%s', (name, txType) => {
       it('should always be undefined', () => {
-        const { result: { current: transactionParser } } = renderHook(() => useTransactionParser(
-          mockNetwork, [], [], [],
-          [{ ...mockERC20Token, contractAddress: '0xdeadbeef' }]
-        ))
+        const { result: { current: transactionParser } } = renderHook(() => useTransactionParser(),
+          renderHookOptionsWithCustomStore(store))
 
         const mockTransactionInfo = getMockedTransactionInfo()
         const parsedTransaction = transactionParser({
@@ -180,10 +205,8 @@ describe('useTransactionParser hook', () => {
       ['ERC721SafeTransferFrom', BraveWallet.TransactionType.ERC721SafeTransferFrom]
     ])('%s', (_, txType) => {
       it('should be defined when recipient is a known contract address', () => {
-        const { result: { current: transactionParser } } = renderHook(() => useTransactionParser(
-          mockNetwork, [], [], [],
-          [{ ...mockERC20Token, contractAddress: '0xdeadbeef' }]
-        ))
+        const { result: { current: transactionParser } } = renderHook(() => useTransactionParser(),
+          renderHookOptionsWithCustomStore(store))
 
         const mockTransactionInfo = getMockedTransactionInfo()
         const parsedTransaction = transactionParser({
@@ -198,10 +221,8 @@ describe('useTransactionParser hook', () => {
       })
 
       it('should be undefined when recipient is an unknown contract address', () => {
-        const { result: { current: transactionParser } } = renderHook(() => useTransactionParser(
-          mockNetwork, [], [], [],
-          [{ ...mockERC20Token, contractAddress: '0xdeadbeef' }]
-        ))
+        const { result: { current: transactionParser } } = renderHook(() => useTransactionParser(),
+          renderHookOptionsWithCustomStore(store))
 
         const mockTransactionInfo = getMockedTransactionInfo()
         const parsedTransaction = transactionParser({
@@ -235,21 +256,29 @@ describe('useTransactionParser hook', () => {
          *   - gasPrice: 150 Gwei
          *   - gasLimit: 21000
          */
+        const customStore = createStore(combineReducers({
+            wallet: createWalletReducer({
+              ...mockWalletState,
+              transactionSpotPrices: mockAssetPrices,
+              fullTokenList: [...mockWalletState.fullTokenList, { ...mockERC20Token, contractAddress: '0xdeadbeef' }, mockERC20Token],
+              accounts: [
+                ...mockWalletState.accounts,
+                {
+                  ...mockAccount,
+                  tokenBalanceRegistry: {
+                    [mockERC20Token.contractAddress.toLowerCase()]: '1000000000000000' // 0.01 ETH
+                  },
+                  address: '0xdeadbeef',
+                  nativeBalanceRegistry: {
+                    '0x1': '1000000000000000' // 0.001 ETH
+                  }
+                }
+              ]
+            })
+          }))
 
-        const { result: { current: transactionParser } } = renderHook(() => useTransactionParser(
-          mockNetwork,
-          [{
-            ...mockAccount,
-            tokenBalanceRegistry: {
-              [mockERC20Token.contractAddress.toLowerCase()]: '1000000000000000'
-            },
-            address: '0xdeadbeef',
-            nativeBalanceRegistry: {
-              '0x1': '1000000000000000' // 0.001 ETH
-            }
-          }],
-          mockAssetPrices, [], []
-        ))
+        const { result: { current: transactionParser } } = renderHook(() => useTransactionParser(),
+            renderHookOptionsWithCustomStore(customStore))
 
         const mockTransactionInfo = getMockedTransactionInfo()
         const parsedTransaction = transactionParser({
@@ -292,31 +321,11 @@ describe('useTransactionParser hook', () => {
          *   - gasPrice: 150 Gwei
          *   - gasLimit: 21000
          */
-
         const mockTransactionInfo = getMockedTransactionInfo()
         const mockTxData: BraveWallet.TxData1559 = mockTransactionInfo.txDataUnion.ethTxData1559!
 
-        const { result: { current: transactionParser } } = renderHook(() => useTransactionParser(
-          mockNetwork,
-          [{
-            ...mockAccount,
-            address: '0xdeadbeef',
-            nativeBalanceRegistry: {
-              '0x1': '1000000000000000000' // 1 ETH
-            },
-            tokenBalanceRegistry: {
-              [mockTxData.baseData.to.toLowerCase()]: '0'
-            }
-          }],
-          mockAssetPrices,
-          [
-            {
-              ...mockERC20Token,
-              contractAddress: mockTxData.baseData.to.toLowerCase()
-            }
-          ],
-          []
-        ))
+        const { result: { current: transactionParser } } = renderHook(() => useTransactionParser(),
+          renderHookOptionsWithCustomStore(store))
 
         const parsedTransaction = transactionParser({
           ...mockTransactionInfo,
@@ -350,6 +359,27 @@ describe('useTransactionParser hook', () => {
       ['ETHSend', BraveWallet.TransactionType.ETHSend],
       ['Other', BraveWallet.TransactionType.Other]
     ])('%s', (_, txType) => {
+      const mockTransactionInfo = getMockedTransactionInfo()
+      const transactionInfo: BraveWallet.TransactionInfo = {
+        ...mockTransactionInfo,
+        fromAddress: '0xdeadbeef',
+        txType,
+        txDataUnion: {
+          ethTxData: {} as any,
+          filTxData: undefined,
+          solanaTxData: {} as any,
+          ethTxData1559: {
+            ...mockTransactionInfo.txDataUnion.ethTxData1559!,
+            baseData: {
+              ...mockTransactionInfo.txDataUnion.ethTxData1559!.baseData,
+              value: '0xde0b6b3a7640000', // 1 ETH
+              gasLimit: '0x5208', // 21000
+              gasPrice: '0x22ecb25c00' // 150 Gwei
+            }
+          }
+        }
+      }
+
       it('should be true when funds are insufficient for send amount', () => {
         /**
          * Account balance: 0.004 ETH
@@ -361,40 +391,24 @@ describe('useTransactionParser hook', () => {
          *
          * Remarks: sufficient funds for gas, but not for send amount.
          */
-
-        const { result: { current: transactionParser } } = renderHook(() => useTransactionParser(
-          mockNetwork,
-          [{
-            ...mockAccount,
-            address: '0xdeadbeef',
-            nativeBalanceRegistry: {
-              '0x1': '4000000000000000' // 0.004 ETH
-            }
-          }],
-          mockAssetPrices, [], []
-        ))
-
-        const mockTransactionInfo = getMockedTransactionInfo()
-        const parsedTransaction = transactionParser({
-          ...mockTransactionInfo,
-          fromAddress: '0xdeadbeef',
-          txType,
-          txDataUnion: {
-            ethTxData: {} as any,
-            filTxData: undefined,
-            solanaTxData: {} as any,
-            ethTxData1559: {
-              ...mockTransactionInfo.txDataUnion.ethTxData1559!,
-              baseData: {
-                ...mockTransactionInfo.txDataUnion.ethTxData1559!.baseData,
-                value: '0xde0b6b3a7640000', // 1 ETH
-                gasLimit: '0x5208', // 21000
-                gasPrice: '0x22ecb25c00' // 150 Gwei
+        const customStore = createStore(combineReducers({
+          wallet: createWalletReducer({
+            ...customMockedWalletState,
+            accounts: [{
+              ...mockAccount,
+              address: '0xdeadbeef',
+              nativeBalanceRegistry: {
+                '0x1': '4000000000000000' // 0.004 ETH
               }
-            }
-          }
-        })
+            }],
+            selectedNetwork: mockNetwork
+          })
+        }))
 
+        const { result: { current: transactionParser } } = renderHook(() => useTransactionParser(),
+          renderHookOptionsWithCustomStore(customStore))
+
+        const parsedTransaction = transactionParser(transactionInfo)
         expect(parsedTransaction.insufficientFundsError).toBeTruthy()
         expect(parsedTransaction.insufficientFundsForGasError).toBeFalsy()
       })
@@ -411,99 +425,70 @@ describe('useTransactionParser hook', () => {
          * Remarks: sufficient funds for gas, and for send amount.
          */
 
-        const { result: { current: transactionParser } } = renderHook(() => useTransactionParser(
-          mockNetwork,
-          [{
-            ...mockAccount,
-            address: '0xdeadbeef',
-            nativeBalanceRegistry: {
-              '0x1': '1003150000000000000' // 1.00315 ETH
-            }
-          }],
-          mockAssetPrices, [], []
-        ))
+        const customStore = createStore(combineReducers({
+            wallet: createWalletReducer({
+              ...customMockedWalletState,
+              accounts: [{
+                ...mockAccount,
+                address: '0xdeadbeef',
+                nativeBalanceRegistry: {
+                  '0x1': '1003150000000000000' // 1.00315 ETH
+                }
+              }]
+            })
+          }))
 
-        const mockTransactionInfo = getMockedTransactionInfo()
-        const parsedTransaction = transactionParser({
-          ...mockTransactionInfo,
-          fromAddress: '0xdeadbeef',
-          txType,
-          txDataUnion: {
-            ethTxData: {} as any,
-            filTxData: undefined,
-            solanaTxData: {} as any,
-            ethTxData1559: {
-              ...mockTransactionInfo.txDataUnion.ethTxData1559!,
-              baseData: {
-                ...mockTransactionInfo.txDataUnion.ethTxData1559!.baseData,
-                value: '0xde0b6b3a7640000', // 1 ETH
-                gasLimit: '0x5208', // 21000
-                gasPrice: '0x22ecb25c00' // 150 Gwei
-              }
-            }
-          }
-        })
+        const { result: { current: transactionParser } } = renderHook(() => useTransactionParser(),
+            renderHookOptionsWithCustomStore(customStore))
 
+        const parsedTransaction = transactionParser(transactionInfo)
         expect(parsedTransaction.insufficientFundsError).toBeFalsy()
         expect(parsedTransaction.insufficientFundsForGasError).toBeFalsy()
       })
     })
 
     describe('ERC20Transfer', () => {
-      it('should be true when funds are insufficient for send amount', () => {
-        /**
-         * Account ETH balance: 0.00315 ETH
-         * Account DOG balance: 0.001 DOG
-         * Transaction value: 1 DOG
-         *
-         * Gas fee: 0.00315 ETH
-         *   - gasPrice: 150 Gwei
-         *   - gasLimit: 21000
-         *
-         * Remarks: sufficient funds for gas, but not for send amount.
-         */
-
-        const { result: { current: transactionParser } } = renderHook(() => useTransactionParser(
-          mockNetwork,
-          [{
-            ...mockAccount,
-            tokenBalanceRegistry: {
-              [mockERC20Token.contractAddress.toLowerCase()]: '1000000000000000' // 0.001 DOG
-            },
-            address: '0xdeadbeef',
-            nativeBalanceRegistry: {
-              '0x1': '3150000000000000' // 0.00315 ETH
-            }
-          }],
-          mockAssetPrices, [], []
-        ))
-
-        const mockTransactionInfo = getMockedTransactionInfo()
-        const parsedTransaction = transactionParser({
-          ...mockTransactionInfo,
-          fromAddress: '0xdeadbeef',
-          txArgs: [
-            'mockRecipient',
-            '0xde0b6b3a7640000' // 1 DOG
-          ],
-          txType: BraveWallet.TransactionType.ERC20Transfer,
-          txDataUnion: {
-            ethTxData: {} as any,
-            filTxData: undefined,
-            solanaTxData: {} as any,
-            ethTxData1559: {
-              ...mockTransactionInfo.txDataUnion.ethTxData1559!,
-              baseData: {
-                ...mockTransactionInfo.txDataUnion.ethTxData1559!.baseData,
-                to: mockERC20Token.contractAddress,
-                value: '0x0', // 0 ETH
-                gasLimit: '0x5208', // 21000
-                gasPrice: '0x22ecb25c00' // 150 Gwei
-              }
+      /**
+       * Account ETH balance: 0.00315 ETH
+       * Account DOG balance: 1 DOG
+       * Transaction value: 1 DOG
+       *
+       * Gas fee: 0.00315 ETH
+       *   - gasPrice: 150 Gwei
+       *   - gasLimit: 21000
+       *
+       * Remarks: sufficient funds for gas, but not for send amount.
+       */
+      const mockTransactionInfo = getMockedTransactionInfo()
+      const transactionInfo: BraveWallet.TransactionInfo = {
+        ...mockTransactionInfo,
+        fromAddress: '0xdeadbeef',
+        txArgs: [
+          'mockRecipient',
+          '0xde0b6b3a7640000' // 1 DOG
+        ],
+        txType: BraveWallet.TransactionType.ERC20Transfer,
+        txDataUnion: {
+          ethTxData: {} as any,
+          filTxData: undefined,
+          solanaTxData: {} as any,
+          ethTxData1559: {
+            ...mockTransactionInfo.txDataUnion.ethTxData1559!,
+            baseData: {
+              ...mockTransactionInfo.txDataUnion.ethTxData1559!.baseData,
+              to: mockERC20Token.contractAddress,
+              value: '0x0', // 0 ETH
+              gasLimit: '0x5208', // 21000
+              gasPrice: '0x22ecb25c00' // 150 Gwei
             }
           }
-        })
+        }
+      }
+      const { result: { current: transactionParser } } = renderHook(() => useTransactionParser(),
+        renderHookOptionsWithCustomStore(store))
+      const parsedTransaction = transactionParser(transactionInfo)
 
+      it('should be true when funds are insufficient for send amount', () => {
         // [FIXME] - Difficult to capture results from reinvocation of a
         // useCallback(), which fails the following assertion. Fix this
         // by returning insufficientFundsError as part of the result. The
@@ -516,61 +501,6 @@ describe('useTransactionParser hook', () => {
       })
 
       it('should be false when funds are sufficient for send amount', () => {
-        /**
-         * Account ETH balance: 0.00315 ETH
-         * Account DOG balance: 1 DOG
-         * Transaction value: 1 DOG
-         *
-         * Gas fee: 0.00315 ETH
-         *   - gasPrice: 150 Gwei
-         *   - gasLimit: 21000
-         *
-         * Remarks: sufficient funds for gas, but not for send amount.
-         */
-
-        const { result: { current: transactionParser } } = renderHook(() => useTransactionParser(
-          mockNetwork,
-          [{
-            ...mockAccount,
-            tokenBalanceRegistry: {
-              [mockERC20Token.contractAddress.toLowerCase()]: '1000000000000000000' // 1 DOG
-            },
-            address: '0xdeadbeef',
-            nativeBalanceRegistry: {
-              '0x1': '3150000000000000' // 0.00315 ETH
-            }
-          }],
-          mockAssetPrices,
-          [],
-          [mockERC20Token]
-        ))
-
-        const mockTransactionInfo = getMockedTransactionInfo()
-        const parsedTransaction = transactionParser({
-          ...mockTransactionInfo,
-          fromAddress: '0xdeadbeef',
-          txArgs: [
-            'mockRecipient',
-            '0xde0b6b3a7640000' // 1 DOG
-          ],
-          txType: BraveWallet.TransactionType.ERC20Transfer,
-          txDataUnion: {
-            ethTxData: {} as any,
-            filTxData: undefined,
-            solanaTxData: {} as any,
-            ethTxData1559: {
-              ...mockTransactionInfo.txDataUnion.ethTxData1559!,
-              baseData: {
-                ...mockTransactionInfo.txDataUnion.ethTxData1559!.baseData,
-                to: mockERC20Token.contractAddress,
-                value: '0x0', // 0 ETH
-                gasLimit: '0x5208', // 21000
-                gasPrice: '0x22ecb25c00' // 150 Gwei
-              }
-            }
-          }
-        })
-
         expect(parsedTransaction.insufficientFundsError).toBeFalsy()
         expect(parsedTransaction.insufficientFundsForGasError).toBeFalsy()
       })
@@ -584,9 +514,8 @@ describe('useTransactionParser hook', () => {
       ['ERC721SafeTransferFrom', BraveWallet.TransactionType.ERC721SafeTransferFrom]
     ])('%s', (_, txType) => {
       it('should be empty', () => {
-        const { result: { current: transactionParser } } = renderHook(() => useTransactionParser(
-          mockNetwork, [mockAccount], [], [mockERC20Token]
-        ))
+        const { result: { current: transactionParser } } = renderHook(() => useTransactionParser(),
+          renderHookOptionsWithCustomStore(store))
 
         const mockTransactionInfo = getMockedTransactionInfo()
         const parsedTransaction = transactionParser({
@@ -612,39 +541,10 @@ describe('useTransactionParser hook', () => {
 
         expect(parsedTransaction.symbol).toEqual('')
       })
+
       it('Gets token symbol from visibleList, should be DOG', () => {
-        const { result: { current: transactionParser } } = renderHook(() => useTransactionParser(
-          mockNetwork, [mockAccount], [], [mockERC20Token]
-        ))
-
-        const mockTransactionInfo = getMockedTransactionInfo()
-        const parsedTransaction = transactionParser({
-          ...mockTransactionInfo,
-          txType,
-          txDataUnion: {
-            ethTxData: {} as any,
-            filTxData: undefined,
-            solanaTxData: {} as any,
-            ethTxData1559: {
-              ...mockTransactionInfo.txDataUnion.ethTxData1559!,
-              baseData: {
-                ...mockTransactionInfo.txDataUnion.ethTxData1559!.baseData,
-                to: 'mockContractAddress'
-              }
-            }
-          },
-          txArgs: [
-            'mockRecipient',
-            '0xde0b6b3a7640000'
-          ]
-        })
-
-        expect(parsedTransaction.symbol).toEqual('DOG')
-      })
-      it('Gets token symbol from fallback fullTokenList, should be DOG', () => {
-        const { result: { current: transactionParser } } = renderHook(() => useTransactionParser(
-          mockNetwork, [mockAccount], [], [], [mockERC20Token]
-        ))
+        const { result: { current: transactionParser } } = renderHook(() => useTransactionParser(),
+          renderHookOptionsWithCustomStore(store))
 
         const mockTransactionInfo = getMockedTransactionInfo()
         const parsedTransaction = transactionParser({
@@ -683,9 +583,8 @@ describe('useTransactionParser hook', () => {
       ['Other', BraveWallet.TransactionType.Other]
     ])('%s', (_, txType) => {
       it('should return missingGasLimitError if gas limit is zero or empty', () => {
-        const { result: { current: transactionParser } } = renderHook(() => useTransactionParser(
-          mockNetwork, [mockAccount], [], [], [mockERC20Token]
-        ))
+        const { result: { current: transactionParser } } = renderHook(() => useTransactionParser(),
+          renderHookOptionsWithCustomStore(store))
 
         const baseMockTransactionInfo = {
           ...getMockedTransactionInfo(),

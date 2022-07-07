@@ -75,8 +75,6 @@ const TransactionDetailPanel = (props: Props) => {
     transaction,
     selectedNetwork,
     accounts,
-    visibleTokens,
-    transactionSpotPrices,
     defaultCurrencies,
     onBack,
     onRetryTransaction,
@@ -105,7 +103,7 @@ const TransactionDetailPanel = (props: Props) => {
     return transactionsList.find(tx => tx.id === transaction.id) ?? transaction
   }, [transaction, transactionsList])
 
-  const parseTransaction = useTransactionParser(transactionsNetwork, accounts, transactionSpotPrices, visibleTokens)
+  const parseTransaction = useTransactionParser(transactionsNetwork)
   const transactionDetails = React.useMemo(
     () => parseTransaction(liveTransaction),
     [liveTransaction]

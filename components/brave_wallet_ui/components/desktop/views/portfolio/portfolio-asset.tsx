@@ -153,7 +153,7 @@ export const PortfolioAsset = () => {
   }, [selectedNetwork, selectedAsset, networkList])
 
   // more custom hooks
-  const parseTransaction = useTransactionParser(selectedAssetsNetwork, accounts, transactionSpotPrices, userVisibleTokensInfo)
+  const parseTransaction = useTransactionParser(selectedAssetsNetwork)
   const { computeFiatAmount } = usePricing(transactionSpotPrices)
 
   // memos / computed
