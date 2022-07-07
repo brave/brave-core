@@ -18,6 +18,7 @@
 #include "brave/browser/ui/webui/webcompat_reporter_ui.h"
 #include "brave/components/brave_federated/features.h"
 #include "brave/components/brave_rewards/common/features.h"
+#include "brave/components/brave_shields/common/features.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
@@ -34,6 +35,7 @@
 #if !BUILDFLAG(IS_ANDROID)
 #include "brave/browser/ui/webui/brave_rewards/rewards_panel_ui.h"
 #include "brave/browser/ui/webui/brave_settings_ui.h"
+#include "brave/browser/ui/webui/brave_shields/cookie_list_opt_in_ui.h"
 #include "brave/browser/ui/webui/brave_shields/shields_panel_ui.h"
 #include "brave/browser/ui/webui/brave_wallet/wallet_page_ui.h"
 #include "brave/browser/ui/webui/brave_wallet/wallet_panel_ui.h"
@@ -134,6 +136,11 @@ WebUIController* NewWebUI(WebUI* web_ui, const GURL& url) {
     return new BraveNewTabUI(web_ui, url.host());
   } else if (host == kShieldsPanelHost) {
     return new ShieldsPanelUI(web_ui);
+  } else if (host == kCookieListOptInHost) {
+    if (base::FeatureList::IsEnabled(
+            brave_shields::features::kBraveAdblockCookieListOptIn)) {
+      return new CookieListOptInUI(web_ui);
+    }
 #endif  // !BUILDFLAG(IS_ANDROID)
 #if BUILDFLAG(ENABLE_TOR)
   } else if (host == kTorInternalsHost) {
@@ -170,6 +177,9 @@ WebUIFactoryFunction GetWebUIFactoryFunction(WebUI* web_ui, const GURL& url) {
       url.host_piece() == kWalletPageHost ||
 #endif
       url.host_piece() == kShieldsPanelHost ||
+      (url.host_piece() == kCookieListOptInHost &&
+       base::FeatureList::IsEnabled(
+           brave_shields::features::kBraveAdblockCookieListOptIn)) ||
       url.host_piece() == kRewardsPageHost ||
       url.host_piece() == kFederatedInternalsHost ||
       url.host_piece() == kRewardsInternalsHost ||

@@ -44,6 +44,8 @@ extern const char kUntrustedTrezorHost[];
 extern const char kUntrustedTrezorURL[];
 extern const char kShieldsPanelURL[];
 extern const char kShieldsPanelHost[];
+extern const char kCookieListOptInHost[];
+extern const char kCookieListOptInURL[];
 extern const char kSidebarBookmarksHost[];
 extern const char kFederatedInternalsURL[];
 extern const char kFederatedInternalsHost[];
