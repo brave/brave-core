@@ -71,10 +71,10 @@ BraveTodayActionView::BraveTodayActionView(Profile* profile,
 
   tab_strip_->AddObserver(this);
 
-  is_hidden_.Init(brave_news::prefs::kBraveTodayActionViewHidden,
-                  profile->GetPrefs(),
-                  base::BindRepeating(&BraveTodayActionView::Update,
-                                      base::Unretained(this)));
+  should_show_.Init(brave_news::prefs::kShouldShowToolbarButton,
+                    profile->GetPrefs(),
+                    base::BindRepeating(&BraveTodayActionView::Update,
+                                        base::Unretained(this)));
 
   Update();
 }
@@ -88,7 +88,7 @@ void BraveTodayActionView::Init() {
 }
 
 void BraveTodayActionView::Update() {
-  if (is_hidden_.GetValue()) {
+  if (!should_show_.GetValue()) {
     SetVisible(false);
     return;
   }

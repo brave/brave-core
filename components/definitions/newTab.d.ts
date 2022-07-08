@@ -107,6 +107,7 @@ declare namespace NewTab {
     brandedWallpaperOptIn: boolean
     showStats: boolean
     showToday: boolean
+    showBraveNewsButton: boolean
     showClock: boolean
     clockFormat: string
     showTopSites: boolean

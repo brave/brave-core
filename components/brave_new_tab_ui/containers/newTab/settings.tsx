@@ -55,6 +55,7 @@ export interface Props {
   toggleShowClock: () => void
   toggleShowStats: () => void
   toggleShowToday: () => any
+  toggleShowBraveNewsButton: () => any
   toggleShowTopSites: () => void
   setMostVisitedSettings: (show: boolean, customize: boolean) => void
   toggleShowRewards: () => void
@@ -69,6 +70,7 @@ export interface Props {
   showBackgroundImage: boolean
   showStats: boolean
   showToday: boolean
+  showBraveNewsButton: boolean;
   showClock: boolean
   clockFormat: string
   showTopSites: boolean
@@ -382,6 +384,8 @@ export default class Settings extends React.PureComponent<Props, State> {
                     onClearPrefs={this.props.onClearTodayPrefs}
                     showToday={this.props.showToday}
                     toggleShowToday={this.props.toggleShowToday}
+                    showBraveNewsButton={this.props.showBraveNewsButton}
+                    toggleShowBraveNewsButton={this.props.toggleShowBraveNewsButton}
                   />
                 ) : null
               }

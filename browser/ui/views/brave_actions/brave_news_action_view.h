@@ -46,7 +46,7 @@ class BraveTodayActionView : public views::LabelButton,
  private:
   void ShowBubble();
 
-  BooleanPrefMember is_hidden_;
+  BooleanPrefMember should_show_;
 
   Profile* profile_;
   TabStripModel* tab_strip_;

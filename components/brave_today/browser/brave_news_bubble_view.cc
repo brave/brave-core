@@ -174,7 +174,7 @@ void BraveNewsBubbleView::DismissForever() {
   GetWidget()->Hide();
   auto* profile = Profile::FromBrowserContext(contents_->GetBrowserContext());
   profile->GetPrefs()->SetBoolean(
-      brave_news::prefs::kBraveTodayActionViewHidden, true);
+      brave_news::prefs::kShouldShowToolbarButton, false);
 }
 
 BEGIN_METADATA(BraveNewsBubbleView, views::BubbleDialogDelegateView)

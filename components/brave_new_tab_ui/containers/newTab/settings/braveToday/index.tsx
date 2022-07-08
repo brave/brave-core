@@ -22,6 +22,8 @@ export interface Props {
   onClearPrefs: () => any
   showToday: boolean
   toggleShowToday: () => any
+  showBraveNewsButton: boolean;
+  toggleShowBraveNewsButton: () => any;
 }
 
 export default function BraveTodayPrefs (props: Props) {
@@ -58,6 +60,13 @@ export default function BraveTodayPrefs (props: Props) {
           />
         </SettingsRow>
       )}
+      {!category && props.showToday && <SettingsRow>
+        <SettingsText>Show Brave News button in the toolbar.</SettingsText>
+        <Toggle
+          checked={props.showBraveNewsButton}
+          onChange={props.toggleShowBraveNewsButton}
+          size='large'/>
+        </SettingsRow>}
       {shouldShowSources &&
       <Sources category={category} setCategory={setCategory} {...props} />
       }
