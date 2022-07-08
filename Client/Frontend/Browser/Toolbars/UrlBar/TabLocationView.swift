@@ -80,8 +80,10 @@ class TabLocationView: UIView {
       lockImageView.isHidden = true
     case .insecure:
       lockImageView.setImage(UIImage(named: "insecure-site-icon", in: .current, compatibleWith: nil)!, for: .normal)
+      lockImageView.accessibilityLabel = Strings.tabToolbarWarningImageAccessibilityLabel
     case .secure, .unknown:
       lockImageView.setImage(UIImage(named: "lock_verified", in: .current, compatibleWith: nil)!.template, for: .normal)
+      lockImageView.accessibilityLabel = Strings.tabToolbarLockImageAccessibilityLabel
     }
   }
 
