@@ -59,7 +59,7 @@ const PortfolioAssetItem = (props: Props) => {
 
   const AssetIconWithPlaceholder = React.useMemo(() => {
     return withPlaceholderIcon(token.isErc721 ? NFTAssetIcon : AssetIcon, { size: 'big', marginLeft: 0, marginRight: 8 })
-  }, [])
+  }, [token])
 
   const formattedAssetBalance = token.isErc721
     ? new Amount(assetBalance)
