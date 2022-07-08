@@ -8,6 +8,7 @@ package org.chromium.chrome.browser;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import org.chromium.base.Callback;
 import org.chromium.base.ContextUtils;
 import org.chromium.base.Log;
 import org.chromium.base.ThreadUtils;
@@ -200,6 +201,15 @@ public class BraveSyncWorker {
                 mNativeBraveSyncWorker, isDismissed);
     }
 
+    @CalledByNative
+    private static void onPermanentlyDeleteAccountResult(Callback<String> callback, String result) {
+        callback.onResult(result);
+    }
+
+    public void permanentlyDeleteAccount(Callback<String> callback) {
+        BraveSyncWorkerJni.get().permanentlyDeleteAccount(mNativeBraveSyncWorker, callback);
+    }
+
     @NativeMethods
     interface Natives {
         void init(BraveSyncWorker caller);
@@ -231,5 +241,6 @@ public class BraveSyncWorker {
         boolean getSyncV1WasEnabled(long nativeBraveSyncWorker);
         boolean getSyncV2MigrateNoticeDismissed(long nativeBraveSyncWorker);
         void setSyncV2MigrateNoticeDismissed(long nativeBraveSyncWorker, boolean isDismissed);
+        void permanentlyDeleteAccount(long nativeBraveSyncWorker, Callback<String> callback);
     }
 }
