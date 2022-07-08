@@ -9,6 +9,8 @@
 
 #include "base/bind.h"
 #include "base/strings/sys_string_conversions.h"
+#include "components/sync/driver/sync_service.h"
+#include "components/sync_sessions/session_sync_service.h"
 
 #include "ios/chrome/browser/browser_state/chrome_browser_state.h"
 #include "ios/chrome/browser/ui/recent_tabs/synced_sessions.h"
@@ -161,22 +163,27 @@ namespace web {
 
 
 @interface BraveOpenTabsAPI () {
+  // SyncService is needed in order to observe sync changes
+  syncer::SyncService* sync_service_;
+
   // Session Sync Service is needed in order to receive session details from different instances
-  sync_sessions::SessionSyncService* sync_service_;
+  sync_sessions::SessionSyncService* session_sync_service_;
 }
 @end
 
 @implementation BraveOpenTabsAPI
 
-- (instancetype)initWithSessionSyncService:(sync_sessions::SessionSyncService*)sessionSyncService {
+- (instancetype)initWithSyncService:(syncer::SyncService*)syncService sessionSyncService:(sync_sessions::SessionSyncService*)sessionSyncService {
   if ((self = [super init])) {
-    sync_service_ = sessionSyncService;
+    sync_service_ = syncService;
+    session_sync_service_ = sessionSyncService;
   }
   return self;
 }
 
 - (void)dealloc {
   sync_service_ = nullptr;
+  session_sync_service_ = nullptr;
 }
 
 - (id<OpenTabsSessionStateListener>)addObserver:(id<OpenTabsSessionStateObserver>)observer {
@@ -191,7 +198,7 @@ namespace web {
 - (void)getSyncedSessions:(void (^)(NSArray<IOSOpenDistantSession*>*))completion {
   // Getting SyncedSessions from SessionSyncService
   auto syncedSessions =
-      std::make_unique<synced_sessions::SyncedSessions>(sync_service_);
+      std::make_unique<synced_sessions::SyncedSessions>(session_sync_service_);
 
   NSMutableArray<IOSOpenDistantSession*>* distantSessionList = [[NSMutableArray alloc] init];
 

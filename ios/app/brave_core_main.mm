@@ -300,11 +300,14 @@ static bool CustomLogHandler(int severity,
 
 - (BraveOpenTabsAPI*)openTabsAPI {
   if (!_openTabsAPI) {
-    sync_sessions::SessionSyncService* sync_service_ =
+    syncer::SyncService* sync_service_ =
+        SyncServiceFactory::GetForBrowserState(_mainBrowserState);
+
+    sync_sessions::SessionSyncService* session_sync_service_ =
         SessionSyncServiceFactory::GetForBrowserState(_mainBrowserState);
     
     _openTabsAPI = 
-        [[BraveOpenTabsAPI alloc] initWithSessionSyncService:sync_service_];
+        [[BraveOpenTabsAPI alloc] initWithSyncService:sync_service_ sessionSyncService:session_sync_service_];
   }
   return _openTabsAPI;
 }
