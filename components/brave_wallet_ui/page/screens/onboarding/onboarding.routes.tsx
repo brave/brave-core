@@ -77,18 +77,37 @@ export const OnboardingRoutes = () => {
       </Route>
 
       <Route path={WalletRoutes.OnboardingRestoreWallet} exact>
-        <OnboardingRestoreFromRecoveryPhrase restoreFrom='seed' />
+        <OnboardingRestoreFromRecoveryPhrase
+          key='seed' // keys are set here to prevent holding state between page changes
+          restoreFrom='seed'
+        />
       </Route>
 
       <Route path={WalletRoutes.OnboardingImportMetaMask} exact>
         <OnboardingRestoreFromRecoveryPhrase
-          restoreFrom={'metamask'}
+          key='metamask'
+          restoreFrom='metamask'
+        />
+      </Route>
+
+      <Route path={WalletRoutes.OnboardingImportMetaMaskSeed} exact>
+        <OnboardingRestoreFromRecoveryPhrase
+          key='metamask-seed'
+          restoreFrom='metamask-seed'
         />
       </Route>
 
       <Route path={WalletRoutes.OnboardingImportCryptoWallets} exact>
         <OnboardingRestoreFromRecoveryPhrase
+          key='legacy'
           restoreFrom='legacy'
+        />
+      </Route>
+
+      <Route path={WalletRoutes.OnboardingImportCryptoWalletsSeed} exact>
+        <OnboardingRestoreFromRecoveryPhrase
+          key='legacy-seed'
+          restoreFrom='legacy-seed'
         />
       </Route>
 

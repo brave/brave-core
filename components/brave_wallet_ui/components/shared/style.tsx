@@ -268,6 +268,17 @@ export const GreenCheckmark = styled.div`
   vertical-align: middle;
 `
 
+export const CloseIcon = styled.div`
+  width: 20px;
+  height: 20px;
+  background-color: ${(p) => p.theme.color.text02};
+  -webkit-mask-image: url(${CloseSvg});
+  mask-image: url(${CloseSvg});
+  mask-size: 20px;
+  mask-position: center center;
+  display: inline-block;
+`
+
 export const ErrorXIcon = styled.div`
   width: 12px;
   height: 12px;

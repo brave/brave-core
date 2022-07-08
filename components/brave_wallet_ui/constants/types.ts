@@ -613,8 +613,10 @@ export enum WalletRoutes {
   // onboarding (import / restore)
   OnboardingImportOrRestore = '/crypto/onboarding/import-or-restore',
   OnboardingImportMetaMask = '/crypto/onboarding/import-metamask-wallet',
+  OnboardingImportMetaMaskSeed = '/crypto/onboarding/import-metamask-seed',
   OnboardingRestoreWallet = '/crypto/onboarding/restore-wallet',
   OnboardingImportCryptoWallets = '/crypto/onboarding/import-legacy-wallet',
+  OnboardingImportCryptoWalletsSeed = '/crypto/onboarding/import-legacy-seed',
 
   // onboarding complete
   OnboardingComplete = '/crypto/onboarding/complete',

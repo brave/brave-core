@@ -24,7 +24,7 @@ export interface StepsNavigationProps<T extends string> {
   onSkip?: () => void
   preventSkipAhead?: boolean
   readonly steps: T[]
-  skipButtonText?: string
+  skipButtonText?: React.ReactNode
 }
 
 export const StepsNavigation: <T extends string>(
