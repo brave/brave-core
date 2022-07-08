@@ -22,7 +22,7 @@ export const httpifyIpfsUrl = (url: string | undefined) => {
     return url
   }
 
-  return `chrome://image/?${url.includes('ipfs://') ? url.replace('ipfs://', 'https://ipfs.io/ipfs/') : url}`
+  return url.includes('ipfs://') ? url.replace('ipfs://', 'https://ipfs.io/ipfs/') : url
 }
 
 export const getRampNetworkPrefix = (chainId: string) => {
