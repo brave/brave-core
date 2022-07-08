@@ -82,6 +82,7 @@ interface State {
   activeSettingsTab: SettingsTabType | null
   isPromptingBraveToday: boolean
   showSearchPromotion: boolean
+  forceToHideWidget: boolean
 }
 
 function GetBackgroundImageSrc (props: Props) {
@@ -108,6 +109,15 @@ function GetShouldShowSearchPromotion (props: Props, state: State) {
   return props.newTabData.searchPromotionEnabled && state.showSearchPromotion
 }
 
+function GetShouldForceToHideWidget(props: Props, state: State) {
+  console.error(window.innerWidth)
+  if (!GetShouldShowSearchPromotion(props, state)) {
+    return false
+  }
+
+  return window.innerWidth < 1000
+}
+
 function GetIsShowingBrandedWallpaper (props: Props) {
   const { newTabData } = props
   return !!((newTabData.brandedWallpaper &&
@@ -126,7 +136,8 @@ class NewTabPage extends React.Component<Props, State> {
     backgroundHasLoaded: false,
     activeSettingsTab: null,
     isPromptingBraveToday: false,
-    showSearchPromotion: false
+    showSearchPromotion: false,
+    forceToHideWidget: false
   }
 
   braveNewsPromptTimerId: number
@@ -163,12 +174,14 @@ class NewTabPage extends React.Component<Props, State> {
       }, 1700)
     }
     this.setState({showSearchPromotion: this.props.newTabData.searchPromotionEnabled})
+    window.addEventListener('resize', this.handleResize.bind(this))
   }
 
   componentWillUnmount () {
     if (this.braveNewsPromptTimerId) {
       window.clearTimeout(this.braveNewsPromptTimerId)
     }
+    window.removeEventListener('resize', this.handleResize.bind(this));
   }
 
   componentDidUpdate (prevProps: Props) {
@@ -192,6 +205,12 @@ class NewTabPage extends React.Component<Props, State> {
         !GetShouldShowBrandedWallpaperNotification(this.props)) {
       this.stopWaitingForBrandedWallpaperNotificationAutoDismiss()
     }
+  }
+
+  handleResize() {
+    this.setState({
+      forceToHideWidget: GetShouldForceToHideWidget(this.props, this.state)
+    })
   }
 
   trackCachedImage () {
@@ -484,7 +503,8 @@ class NewTabPage extends React.Component<Props, State> {
 
   closeSearchPromotion = () => {
     this.setState({
-      showSearchPromotion: false
+      showSearchPromotion: false,
+      forceToHideWidget: false
     })
   }
 
@@ -1122,7 +1142,7 @@ class NewTabPage extends React.Component<Props, State> {
 
   render () {
     const { newTabData, gridSitesData, actions } = this.props
-    const { showSettingsMenu, showEditTopSite, targetTopSiteForEditing } = this.state
+    const { showSettingsMenu, showEditTopSite, targetTopSiteForEditing, forceToHideWidget } = this.state
 
     if (!newTabData) {
       return null
@@ -1132,14 +1152,21 @@ class NewTabPage extends React.Component<Props, State> {
     const isShowingBrandedWallpaper = !!newTabData.brandedWallpaper
     // Custom background that user uploaded doesn't display its info in footer.
     const hasWallpaperInfo = !!newTabData.backgroundWallpaper && !!newTabData.backgroundWallpaper.author && !!newTabData.backgroundWallpaper.link
-    const cryptoContent = this.renderCryptoContent()
+    let cryptoContent = this.renderCryptoContent()
     const showAddNewSiteMenuItem = newTabData.customLinksNum < MAX_GRID_SIZE
 
-    let showTopSites = newTabData.showTopSites
+    let { showTopSites, showStats, showClock } = newTabData
     // In favorites mode, add site tile is visible by default if there is no
     // item. In frecency, top sites widget is hidden with empty tiles.
     if (showTopSites && !newTabData.customLinksEnabled) {
       showTopSites = this.props.gridSitesData.gridSites.length !== 0
+    }
+
+    if (forceToHideWidget) {
+      showTopSites = false;
+      showStats = false
+      showClock = false
+      cryptoContent = null
     }
 
     return (
@@ -1154,8 +1181,8 @@ class NewTabPage extends React.Component<Props, State> {
             hasImage={hasImage}
             imageSrc={this.imageSource}
             imageHasLoaded={this.state.backgroundHasLoaded}
-            showClock={newTabData.showClock}
-            showStats={newTabData.showStats}
+            showClock={showClock}
+            showStats={showStats}
             showRewards={!!cryptoContent}
             showBraveTalk={newTabData.showBraveTalk && newTabData.braveTalkSupported}
             showBinance={newTabData.showBinance}
@@ -1163,7 +1190,7 @@ class NewTabPage extends React.Component<Props, State> {
             showBrandedWallpaper={isShowingBrandedWallpaper}
         >
           {this.renderSearchPromotion()}
-          {newTabData.showStats &&
+          {showStats &&
           <Page.GridItemStats>
             <Stats
               paddingType={'right'}
@@ -1175,7 +1202,7 @@ class NewTabPage extends React.Component<Props, State> {
             />
           </Page.GridItemStats>
           }
-          {newTabData.showClock &&
+          {showClock &&
           <Page.GridItemClock>
             <Clock
               paddingType={'right'}
