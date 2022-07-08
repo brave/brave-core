@@ -1644,7 +1644,7 @@ public class Utils {
 
     public static Spanned geteTLD(GURL url, String etldPlusOne) {
         String formattedeTLD = geteTLDHTMLFormatted(url, etldPlusOne);
-        return AndroidUtils.formateHTML(formattedeTLD);
+        return AndroidUtils.formatHTML(formattedeTLD);
     }
 
     private static String geteTLDHTMLFormatted(GURL url, String etldPlusOne) {

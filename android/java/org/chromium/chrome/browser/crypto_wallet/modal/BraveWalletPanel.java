@@ -27,6 +27,7 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.view.menu.MenuBuilder;
+import androidx.lifecycle.Observer;
 
 import org.chromium.base.SysUtils;
 import org.chromium.brave_wallet.mojom.AccountInfo;
@@ -39,6 +40,7 @@ import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.brave_wallet.mojom.NetworkInfo;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.BraveActivity;
+import org.chromium.chrome.browser.app.domain.WalletModel;
 import org.chromium.chrome.browser.crypto_wallet.activities.AccountSelectorActivity;
 import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletDAppsActivity;
 import org.chromium.chrome.browser.crypto_wallet.activities.NetworkSelectorActivity;
@@ -77,6 +79,26 @@ public class BraveWalletPanel implements DialogInterface {
     private BraveWalletPanelServices mBraveWalletPanelServices;
     private ImageView mAccountChangeAnchor;
     private View mContainerConstraintLayout;
+    private WalletModel mWalletModel;
+    private Observer<AccountInfo> mAccountInfoObserver = accountInfo -> {
+        if (accountInfo == null) return;
+        // TODO (pav): remove BraveWalletConstants.DEFAULT_KEYRING_ID
+        mBraveWalletPanelServices.getKeyringService().getKeyringInfo(
+                BraveWalletConstants.DEFAULT_KEYRING_ID, keyringInfo -> {
+                    if (keyringInfo != null) {
+                        mAccountInfos = keyringInfo.accountInfos;
+                    }
+                    AccountsPermissionsHelper accountsPermissionsHelper =
+                            new AccountsPermissionsHelper(
+                                    mBraveWalletPanelServices.getBraveWalletService(),
+                                    mAccountInfos, Utils.getCurrentMojomOrigin());
+                    accountsPermissionsHelper.checkAccounts(() -> {
+                        mAccountsWithPermissions =
+                                accountsPermissionsHelper.getAccountsWithPermissions();
+                        updateAccountInfo(accountInfo.address);
+                    });
+                });
+    };
 
     public interface BraveWalletPanelServices {
         AssetRatioService getAssetRatioService();
@@ -118,6 +140,10 @@ public class BraveWalletPanel implements DialogInterface {
                 dismiss();
             }
         });
+        BraveActivity activity = BraveActivity.getBraveActivity();
+        if (activity != null) {
+            mWalletModel = activity.getWalletModel();
+        }
         setUpViews();
     }
 
@@ -196,6 +222,7 @@ public class BraveWalletPanel implements DialogInterface {
 
     @Override
     public void dismiss() {
+        cleanUpObservers();
         mPopupWindow.dismiss();
         if (mOnDismissListener != null) {
             mOnDismissListener.onDismiss(this);
@@ -203,10 +230,15 @@ public class BraveWalletPanel implements DialogInterface {
     }
 
     public void resume() {
+        setUpObservers();
         if (isShowing()) {
             updateState();
-            updateStatus();
+            //            updateStatus();
         }
+    }
+
+    public void pause() {
+        cleanUpObservers();
     }
 
     public boolean isShowing() {
@@ -224,48 +256,15 @@ public class BraveWalletPanel implements DialogInterface {
         });
     }
 
-    private void updateStatus() {
-        mBraveWalletPanelServices.getKeyringService().getKeyringInfo(
-                BraveWalletConstants.DEFAULT_KEYRING_ID, keyringInfo -> {
-                    if (keyringInfo != null) {
-                        mAccountInfos = keyringInfo.accountInfos;
-                    }
-                    AccountsPermissionsHelper accountsPermissionsHelper =
-                            new AccountsPermissionsHelper(
-                                    mBraveWalletPanelServices.getBraveWalletService(),
-                                    mAccountInfos, Utils.getCurrentMojomOrigin());
-                    accountsPermissionsHelper.checkAccounts(() -> {
-                        mAccountsWithPermissions =
-                                accountsPermissionsHelper.getAccountsWithPermissions();
-                        updateAccount();
-                    });
-                });
+    private void setUpObservers() {
+        cleanUpObservers();
+        mWalletModel.getKeyringModel().getSelectedAccountOrAccountPerOrigin().observeForever(
+                mAccountInfoObserver);
     }
 
-    private void updateAccount() {
-        mBraveWalletPanelServices.getKeyringService().getSelectedAccount(CoinType.ETH, address -> {
-            String selectedAccount = "";
-            if (address != null && !address.isEmpty()) {
-                selectedAccount = address;
-                updateAccountInfo(selectedAccount);
-            } else {
-                if (!mAccountsWithPermissions.isEmpty()) {
-                    selectedAccount = mAccountsWithPermissions.iterator().next().address;
-                } else if (mAccountInfos.length > 0) {
-                    selectedAccount = mAccountInfos[0].address;
-                }
-                setSelectedAccount(selectedAccount);
-            }
-        });
-    }
-
-    private void setSelectedAccount(String selectedAccount) {
-        mBraveWalletPanelServices.getKeyringService().setSelectedAccount(
-                selectedAccount, CoinType.ETH, success -> {
-                    if (success) {
-                        updateAccountInfo(selectedAccount);
-                    }
-                });
+    private void cleanUpObservers() {
+        mWalletModel.getKeyringModel().getSelectedAccountOrAccountPerOrigin().removeObserver(
+                mAccountInfoObserver);
     }
 
     private void updateAccountInfo(String selectedAccount) {
@@ -387,6 +386,7 @@ public class BraveWalletPanel implements DialogInterface {
             }
         });
         updateState();
-        updateStatus();
+        setUpObservers();
+        //        updateStatus();
     }
 }
