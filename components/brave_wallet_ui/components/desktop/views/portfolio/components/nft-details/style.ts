@@ -21,19 +21,27 @@ export const StyledWrapper = styled.div`
   margin: 16px 0 50px 0;
 `
 
-export const NftImageWrapper = styled.div`
+export const NftImageWrapper = styled.div<StyleProps>`
   display: flex;
-  width: ${nftImageDimension};
-  height: ${nftImageDimension};
+  width: ${p => p.isLoading ? 0 : nftImageDimension};
+  height: ${p => p.isLoading ? 0 : nftImageDimension};
+  visibility: ${p => p.isLoading ? 'hidden' : 'visible'};
+  margin-right: 28px;
+  border-radius: 12px;
 `
 
 export const NTFImageIframe = styled.iframe`
   display: block;
   width: ${nftImageDimension};
   height: ${nftImageDimension};
+  border: transparent;
+`
+
+export const NFTImageSkeletonWrapper = styled.div`
+  min-width: ${nftImageDimension};
+  height: ${nftImageDimension};
   margin-right: 28px;
   border-radius: 12px;
-  border: transparent;
 `
 
 export const DetailColumn = styled.div`
