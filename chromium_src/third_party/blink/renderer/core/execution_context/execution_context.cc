@@ -299,9 +299,18 @@ WTF::String BraveSessionCache::FarbledUserAgent(WTF::String real_user_agent) {
 bool BraveSessionCache::AllowFontFamily(
     blink::WebContentSettingsClient* settings,
     const AtomicString& family_name) {
+    LOG(ERROR) << "AllowFontFamily.debug.start";
+    LOG(ERROR) << CanRestrictFontFamiliesOnThisPlatform();
+    LOG(ERROR) << farbling_enabled_;
+    LOG(ERROR) << settings->IsReduceLanguageEnabled();
+    LOG(ERROR) << family_name.LowerASCII().Ascii();
+    LOG(ERROR) << GetAllowedFontFamilies().contains(family_name.LowerASCII().Ascii());
+    LOG(ERROR) << GetAllowedFontFamilies().size();
+    LOG(ERROR) << "AllowFontFamily.debug.end";
   if (!CanRestrictFontFamiliesOnThisPlatform() || !farbling_enabled_ ||
       !settings || !settings->IsReduceLanguageEnabled())
     return true;
+  LOG(ERROR) << "Whitelisting is happening";
   switch (settings->GetBraveFarblingLevel()) {
     case BraveFarblingLevel::OFF:
       break;

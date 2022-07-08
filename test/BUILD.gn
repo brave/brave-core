@@ -813,6 +813,7 @@ if (!is_android) {
       "//brave/components/tor",
       "//brave/renderer/skus:browser_tests",
       "//brave/renderer/test:browser_tests",
+      "//brave/third_party/blink/renderer:renderer",
       "//brave/vendor/bat-native-ads",
       "//brave/vendor/bat-native-ledger",
       "//brave/vendor/bat-native-ledger:publishers_proto",

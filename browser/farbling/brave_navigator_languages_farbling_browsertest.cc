@@ -15,6 +15,7 @@
 #include "brave/components/brave_shields/common/features.h"
 #include "brave/components/constants/brave_paths.h"
 #include "brave/components/constants/pref_names.h"
+#include "brave/third_party/blink/renderer/brave_font_whitelist.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/extensions/extension_browsertest.h"
 #include "chrome/browser/ui/browser.h"
@@ -35,6 +36,23 @@
 #include "third_party/blink/renderer/core/frame/local_dom_window.h"
 #include "third_party/blink/renderer/core/frame/navigator.h"
 #include "third_party/blink/renderer/core/frame/navigator_language.h"
+
+#include "base/memory/raw_ptr.h"
+#include "base/test/scoped_feature_list.h"
+#include "brave/components/content_settings/renderer/brave_content_settings_agent_impl.h"
+#include "brave/renderer/brave_content_renderer_client.h"
+#include "chrome/test/base/chrome_render_view_test.h"
+#include "components/content_settings/core/common/content_settings.h"
+#include "components/content_settings/core/common/content_settings_utils.h"
+#include "components/content_settings/renderer/content_settings_agent_impl.h"
+#include "content/public/renderer/render_frame.h"
+#include "content/public/renderer/render_view.h"
+#include "content/public/test/render_view_test.h"
+#include "mojo/public/cpp/bindings/self_owned_receiver.h"
+#include "testing/gtest/include/gtest/gtest.h"
+#include "third_party/blink/public/common/associated_interfaces/associated_interface_registry.h"
+#include "third_party/blink/public/platform/web_string.h"
+#include "third_party/blink/public/web/web_element.h"
 
 using brave_shields::ControlType;
 using brave_shields::features::kBraveReduceLanguage;
@@ -266,3 +284,160 @@ IN_PROC_BROWSER_TEST_F(BraveNavigatorLanguagesFarblingBrowserTest,
   BlockFingerprinting(domain_d);
   NavigateToURLUntilLoadStop(url_d);
 }
+
+namespace content_settings {
+namespace {
+
+class MockContentSettingsManagerImpl : public mojom::ContentSettingsManager {
+ public:
+  struct Log {
+    int on_content_blocked_count = 0;
+    ContentSettingsType on_content_blocked_type = ContentSettingsType::DEFAULT;
+  };
+
+  explicit MockContentSettingsManagerImpl(Log* log) : log_(log) {}
+  ~MockContentSettingsManagerImpl() override = default;
+
+  // mojom::ContentSettingsManager methods:
+  void Clone(
+      mojo::PendingReceiver<mojom::ContentSettingsManager> receiver) override {
+    ADD_FAILURE() << "Not reached";
+  }
+
+  void AllowStorageAccess(int32_t render_frame_id,
+                          StorageType storage_type,
+                          const url::Origin& origin,
+                          const ::net::SiteForCookies& site_for_cookies,
+                          const url::Origin& top_frame_origin,
+                          base::OnceCallback<void(bool)> callback) override {}
+
+  void AllowEphemeralStorageAccess(
+      int32_t render_frame_id,
+      const ::url::Origin& origin,
+      const ::net::SiteForCookies& site_for_cookies,
+      const ::url::Origin& top_frame_origin,
+      AllowEphemeralStorageAccessCallback callback) override {}
+
+  void OnContentBlocked(int32_t render_frame_id,
+                        ContentSettingsType type) override {
+    ++log_->on_content_blocked_count;
+    log_->on_content_blocked_type = type;
+  }
+
+ private:
+  raw_ptr<Log> log_ = nullptr;
+};
+
+class MockContentSettingsAgentImpl : public BraveContentSettingsAgentImpl {
+ public:
+  explicit MockContentSettingsAgentImpl(content::RenderFrame* render_frame);
+  MockContentSettingsAgentImpl(const MockContentSettingsAgentImpl&) = delete;
+  MockContentSettingsAgentImpl& operator=(const MockContentSettingsAgentImpl&) =
+      delete;
+  ~MockContentSettingsAgentImpl() override {}
+
+  // ContentSettingAgentImpl methods:
+  void BindContentSettingsManager(
+      mojo::Remote<mojom::ContentSettingsManager>* manager) override;
+
+  bool IsReduceLanguageEnabled() override {
+    LOG(ERROR) << "IsReduceLanguageEnabled";
+    // calling from here does nothing
+    brave::set_allowed_font_families_for_testing(
+        true,
+        base::MakeFlatSet<base::StringPiece>(std::vector<base::StringPiece>{}));
+    return true;
+  }
+  int on_content_blocked_count() const { return log_.on_content_blocked_count; }
+  ContentSettingsType on_content_blocked_type() const {
+    return log_.on_content_blocked_type;
+  }
+
+ private:
+  MockContentSettingsManagerImpl::Log log_;
+};
+
+MockContentSettingsAgentImpl::MockContentSettingsAgentImpl(
+    content::RenderFrame* render_frame)
+    : BraveContentSettingsAgentImpl(
+          render_frame,
+          false,
+          std::make_unique<ContentSettingsAgentImpl::Delegate>()) {}
+
+void MockContentSettingsAgentImpl::BindContentSettingsManager(
+    mojo::Remote<mojom::ContentSettingsManager>* manager) {
+  mojo::MakeSelfOwnedReceiver(
+      std::make_unique<MockContentSettingsManagerImpl>(&log_),
+      manager->BindNewPipeAndPassReceiver());
+}
+}  // namespace
+
+class FontLocalSourceFarblingTest : public content::RenderViewTest {
+ public:
+  FontLocalSourceFarblingTest() {
+    feature_list_.InitAndEnableFeature(kBraveReduceLanguage);
+  }
+  ~FontLocalSourceFarblingTest() override = default;
+
+  void SetUp() override {
+    RenderViewTest::SetUp();
+
+    // Set up a fake url loader factory to ensure that script loader can create
+    // a WebURLLoader.
+    CreateFakeWebURLLoaderFactory();
+
+    // Unbind the ContentSettingsAgent interface that would be registered by
+    // the ContentSettingsAgentImpl created when the render frame is created.
+    GetMainRenderFrame()->GetAssociatedInterfaceRegistry()->RemoveInterface(
+        mojom::ContentSettingsAgent::Name_);
+  }
+
+  content::ContentBrowserClient* CreateContentBrowserClient() override {
+    return new BraveContentBrowserClient();
+  }
+
+#if 0
+    content::ContentRendererClient* CreateContentRendererClient() override {
+    return new BraveContentRendererClient();
+  }
+#endif
+
+ private:
+  base::test::ScopedFeatureList feature_list_;
+};
+
+const char kFontLocalSourceHTML[] =
+    "<html><head><style>@font-face{font-family:Helvetica "
+    "Shadow;src:local('Helvetica')}</style></head><body><p id='test1' "
+    "style=\"font-family: 'Helvetica'\">mmMwWLliI0fiflO&1</p><p id='test2' "
+    "style=\"font-family: 'Helvetica "
+    "Shadow'\">mmMwWLliI0fiflO&1</p></body></html>";
+TEST_F(FontLocalSourceFarblingTest, Foo) {
+  // calling from here does nothing
+  brave::set_allowed_font_families_for_testing(
+      true,
+      base::MakeFlatSet<base::StringPiece>(std::vector<base::StringPiece>{}));
+  MockContentSettingsAgentImpl agent(GetMainRenderFrame());
+  LoadHTMLWithUrlOverride(kFontLocalSourceHTML,
+                          GURL("http://a.test/").spec().c_str());
+  blink::WebDocument document = GetMainFrame()->GetDocument();
+  blink::WebElement p1 =
+      document.GetElementById(blink::WebString::FromUTF8("test1"));
+  ASSERT_FALSE(p1.IsNull());
+  LOG(ERROR) << p1.GetComputedValue("font-family")
+                    .Utf8();  // BoundsInViewport().width();
+  blink::WebElement p2 =
+      document.GetElementById(blink::WebString::FromUTF8("test2"));
+  ASSERT_FALSE(p2.IsNull());
+  LOG(ERROR) << p2.GetComputedValue("font-family")
+                    .Utf8();  // BoundsInViewport().width();
+  EXPECT_TRUE(0 == 1);
+}
+
+}  // namespace content_settings
+
+#if 0
+brave::set_allowed_font_families_for_testing(
+    brave::CanRestrictFontFamiliesOnThisPlatform(),
+    base::MakeFlatSet<base::StringPiece>(std::vector<base::StringPiece>{}));
+#endif
