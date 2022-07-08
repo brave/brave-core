@@ -16,6 +16,7 @@
 #include "brave/components/brave_rewards/browser/rewards_service_observer.h"
 #include "components/sessions/core/session_id.h"
 
+class Browser;
 class Profile;
 
 namespace content {
@@ -45,10 +46,11 @@ class BraveAdsHost : public brave_ads::mojom::BraveAdsHost,
                     bool ads_enabled) override;
 
  private:
-  bool ShowRewardsPopup(brave_rewards::RewardsService* rewards_service);
+  bool ShowRewardsPopup();
   void RunCallbacksAndReset(bool result);
 
   raw_ptr<Profile> profile_ = nullptr;
+  raw_ptr<Browser> browser_ = nullptr;
   SessionID tab_id_;
   std::vector<RequestAdsEnabledCallback> callbacks_;
   base::ScopedObservation<brave_rewards::RewardsService,

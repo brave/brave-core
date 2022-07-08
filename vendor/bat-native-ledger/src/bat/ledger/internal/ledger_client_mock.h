@@ -44,6 +44,10 @@ class MockLedgerClient : public LedgerClient {
       type::PublisherInfoPtr,
       uint64_t windowId));
 
+  MOCK_METHOD0(OnPublisherRegistryUpdated, void());
+
+  MOCK_METHOD1(OnPublisherUpdated, void(const std::string& publisher_id));
+
   MOCK_METHOD3(FetchFavIcon, void(
       const std::string& url,
       const std::string& favicon_key,

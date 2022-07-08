@@ -10,8 +10,6 @@ import { NavBar } from './navbar'
 import { PanelOverlays } from './panel_overlays'
 import { PublisherCard } from './publisher_card'
 
-import * as style from './panel.style'
-
 type ActiveView = 'tip' | 'summary'
 
 export function Panel () {
@@ -43,28 +41,30 @@ export function Panel () {
   })
 
   return (
-    <style.root data-test-id='rewards-panel'>
-      <WalletCard
-        balance={balance}
-        externalWallet={externalWallet}
-        earningsThisMonth={earningsInfo.earningsThisMonth}
-        earningsLastMonth={earningsInfo.earningsLastMonth}
-        nextPaymentDate={earningsInfo.nextPaymentDate}
-        exchangeRate={exchangeInfo.rate}
-        exchangeCurrency={exchangeInfo.currency}
-        showSummary={activeView === 'summary'}
-        summaryData={summaryData}
-        autoContributeEnabled={settings.autoContributeEnabled}
-        onExternalWalletAction={host.handleExternalWalletAction}
-      />
-      {activeView === 'tip' && <PublisherCard />}
-      <NavBar
-        canTip={Boolean(publisherInfo)}
-        activeView={activeView}
-        onActiveViewChange={setActiveView}
-        onSettingsClick={host.openRewardsSettings}
-      />
+    <div>
+      <div className='rewards-panel' data-test-id='rewards-panel'>
+        <WalletCard
+          balance={balance}
+          externalWallet={externalWallet}
+          earningsThisMonth={earningsInfo.earningsThisMonth}
+          earningsLastMonth={earningsInfo.earningsLastMonth}
+          nextPaymentDate={earningsInfo.nextPaymentDate}
+          exchangeRate={exchangeInfo.rate}
+          exchangeCurrency={exchangeInfo.currency}
+          showSummary={activeView === 'summary'}
+          summaryData={summaryData}
+          autoContributeEnabled={settings.autoContributeEnabled}
+          onExternalWalletAction={host.handleExternalWalletAction}
+        />
+        {activeView === 'tip' && <PublisherCard />}
+        <NavBar
+          canTip={Boolean(publisherInfo)}
+          activeView={activeView}
+          onActiveViewChange={setActiveView}
+          onSettingsClick={host.openRewardsSettings}
+        />
+      </div>
       <PanelOverlays />
-    </style.root>
+    </div>
   )
 }

@@ -94,6 +94,10 @@ void TestLedgerClient::OnPanelPublisherInfo(
     mojom::PublisherInfoPtr publisher_info,
     uint64_t windowId) {}
 
+void TestLedgerClient::OnPublisherRegistryUpdated() {}
+
+void TestLedgerClient::OnPublisherUpdated(const std::string& publisher_id) {}
+
 void TestLedgerClient::FetchFavIcon(const std::string& url,
                                     const std::string& favicon_key,
                                     client::FetchIconCallback callback) {

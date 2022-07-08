@@ -13,7 +13,9 @@
 #include "base/bind.h"
 #include "base/strings/string_number_conversions.h"
 #include "brave/browser/brave_ads/ads_service_factory.h"
+#include "brave/browser/brave_rewards/rewards_panel/rewards_panel_coordinator.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
+#include "brave/browser/brave_rewards/rewards_tab_helper.h"
 #include "brave/browser/brave_rewards/tip_dialog.h"
 #include "brave/browser/extensions/api/brave_action_api.h"
 #include "brave/browser/extensions/brave_component_loader.h"
@@ -25,10 +27,11 @@
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/l10n/browser/locale_helper.h"
 #include "chrome/browser/extensions/api/tabs/tabs_constants.h"
-#include "chrome/browser/extensions/chrome_extension_function_details.h"
 #include "chrome/browser/extensions/extension_service.h"
 #include "chrome/browser/extensions/extension_tab_util.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/ui/browser_finder.h"
+#include "components/prefs/pref_service.h"
 #include "content/public/browser/web_contents.h"
 #include "extensions/browser/extension_system.h"
 #include "extensions/common/constants.h"
@@ -40,8 +43,10 @@
 
 using brave_ads::AdsService;
 using brave_ads::AdsServiceFactory;
+using brave_rewards::RewardsPanelCoordinator;
 using brave_rewards::RewardsService;
 using brave_rewards::RewardsServiceFactory;
+using brave_rewards::RewardsTabHelper;
 
 namespace {
 
@@ -50,6 +55,29 @@ const char kShouldAllowAdsSubdivisionTargeting[] =
 const char kAdsSubdivisionTargeting[] = "adsSubdivisionTargeting";
 const char kAutoDetectedAdsSubdivisionTargeting[] =
     "automaticallyDetectedAdsSubdivisionTargeting";
+
+RewardsTabHelper* GetRewardsTabHelperForTabId(
+    int tab_id,
+    content::BrowserContext* browser_context) {
+  DCHECK(browser_context);
+  content::WebContents* web_contents = nullptr;
+  bool found = extensions::ExtensionTabUtil::GetTabById(
+      tab_id, browser_context, false, nullptr, nullptr, &web_contents, nullptr);
+  if (!found || !web_contents) {
+    return nullptr;
+  }
+  return RewardsTabHelper::FromWebContents(web_contents);
+}
+
+RewardsPanelCoordinator* GetPanelCoordinator(ExtensionFunction* function) {
+  DCHECK(function);
+  auto* web_contents = function->GetSenderWebContents();
+  if (!web_contents) {
+    return nullptr;
+  }
+  auto* browser = chrome::FindBrowserWithWebContents(web_contents);
+  return browser ? RewardsPanelCoordinator::FromBrowser(browser) : nullptr;
+}
 
 }  // namespace
 
@@ -63,41 +91,37 @@ ExtensionFunction::ResponseAction BraveRewardsGetLocaleFunction::Run() {
   return RespondNow(OneArgument(base::Value(std::move(locale))));
 }
 
-BraveRewardsOpenBrowserActionUIFunction::
-~BraveRewardsOpenBrowserActionUIFunction() {
+BraveRewardsOpenRewardsPanelFunction::~BraveRewardsOpenRewardsPanelFunction() =
+    default;
+
+ExtensionFunction::ResponseAction BraveRewardsOpenRewardsPanelFunction::Run() {
+  if (auto* coordinator = GetPanelCoordinator(this)) {
+    coordinator->OpenRewardsPanel();
+  }
+  return RespondNow(NoArguments());
 }
 
-ExtensionFunction::ResponseAction
-BraveRewardsOpenBrowserActionUIFunction::Run() {
-  std::unique_ptr<brave_rewards::OpenBrowserActionUI::Params> params(
-      brave_rewards::OpenBrowserActionUI::Params::Create(args()));
+BraveRewardsShowRewardsTourFunction::~BraveRewardsShowRewardsTourFunction() =
+    default;
+
+ExtensionFunction::ResponseAction BraveRewardsShowRewardsTourFunction::Run() {
+  if (auto* coordinator = GetPanelCoordinator(this)) {
+    coordinator->ShowRewardsTour();
+  }
+  return RespondNow(NoArguments());
+}
+
+BraveRewardsShowGrantCaptchaFunction::~BraveRewardsShowGrantCaptchaFunction() =
+    default;
+
+ExtensionFunction::ResponseAction BraveRewardsShowGrantCaptchaFunction::Run() {
+  auto params = brave_rewards::ShowGrantCaptcha::Params::Create(args());
   EXTENSION_FUNCTION_VALIDATE(params.get());
 
-  auto* profile = Profile::FromBrowserContext(browser_context());
-
-  // Start the rewards ledger process if it is not already started
-  auto* rewards_service = RewardsServiceFactory::GetForProfile(profile);
-  if (!rewards_service)
-    return RespondNow(Error("Rewards service is not initialized"));
-
-  rewards_service->StartProcess(base::DoNothing());
-
-  // Load the rewards extension if it is not already loaded
-  auto* extension_service =
-      extensions::ExtensionSystem::Get(profile)->extension_service();
-  if (!extension_service)
-    return RespondNow(Error("Extension service is not initialized"));
-
-  static_cast<BraveComponentLoader*>(extension_service->component_loader())
-      ->AddRewardsExtension();
-
-  std::string error;
-  if (!BraveActionAPI::ShowActionUI(this,
-      brave_rewards_extension_id,
-      std::move(params->window_id),
-      std::move(params->relative_path), &error)) {
-    return RespondNow(Error(error));
+  if (auto* coordinator = GetPanelCoordinator(this)) {
+    coordinator->ShowGrantCaptcha(params->grant_id);
   }
+
   return RespondNow(NoArguments());
 }
 
@@ -173,6 +197,80 @@ void BraveRewardsGetPublisherInfoFunction::OnGetPublisherInfo(
   dict.SetStringKey("favIconUrl", info->favicon_url);
 
   Respond(TwoArguments(base::Value(static_cast<int>(result)), std::move(dict)));
+}
+
+BraveRewardsSetPublisherIdForTabFunction::
+    ~BraveRewardsSetPublisherIdForTabFunction() {}
+
+ExtensionFunction::ResponseAction
+BraveRewardsSetPublisherIdForTabFunction::Run() {
+  auto params = brave_rewards::SetPublisherIdForTab::Params::Create(args());
+  EXTENSION_FUNCTION_VALIDATE(params.get());
+
+  auto* tab_helper =
+      GetRewardsTabHelperForTabId(params->tab_id, browser_context());
+
+  if (tab_helper) {
+    tab_helper->SetPublisherIdForTab(params->publisher_id);
+  }
+
+  return RespondNow(NoArguments());
+}
+
+BraveRewardsGetPublisherInfoForTabFunction::
+    ~BraveRewardsGetPublisherInfoForTabFunction() {}
+
+ExtensionFunction::ResponseAction
+BraveRewardsGetPublisherInfoForTabFunction::Run() {
+  auto params = brave_rewards::GetPublisherInfoForTab::Params::Create(args());
+  EXTENSION_FUNCTION_VALIDATE(params.get());
+
+  auto* profile = Profile::FromBrowserContext(browser_context());
+
+  auto* rewards_service = RewardsServiceFactory::GetForProfile(profile);
+  if (!rewards_service) {
+    return RespondNow(NoArguments());
+  }
+
+  auto* tab_helper = GetRewardsTabHelperForTabId(params->tab_id, profile);
+  if (!tab_helper) {
+    return RespondNow(NoArguments());
+  }
+
+  std::string publisher_id = tab_helper->GetPublisherIdForTab();
+  if (publisher_id.empty()) {
+    return RespondNow(NoArguments());
+  }
+
+  rewards_service->GetPublisherPanelInfo(
+      publisher_id,
+      base::BindOnce(
+          &BraveRewardsGetPublisherInfoForTabFunction::OnGetPublisherPanelInfo,
+          this));
+
+  return RespondLater();
+}
+
+void BraveRewardsGetPublisherInfoForTabFunction::OnGetPublisherPanelInfo(
+    ledger::type::Result result,
+    ledger::type::PublisherInfoPtr info) {
+  if (!info) {
+    Respond(NoArguments());
+    return;
+  }
+
+  base::Value dict(base::Value::Type::DICTIONARY);
+  dict.SetStringKey("publisherKey", info->id);
+  dict.SetStringKey("name", info->name);
+  dict.SetIntKey("percentage", info->percent);
+  dict.SetIntKey("status", static_cast<int>(info->status));
+  dict.SetBoolKey("excluded",
+                  info->excluded == ledger::type::PublisherExclude::EXCLUDED);
+  dict.SetStringKey("url", info->url);
+  dict.SetStringKey("provider", info->provider);
+  dict.SetStringKey("favIconUrl", info->favicon_url);
+
+  Respond(OneArgument(std::move(dict)));
 }
 
 BraveRewardsGetPublisherPanelInfoFunction::
@@ -318,18 +416,7 @@ ExtensionFunction::ResponseAction BraveRewardsTipUserFunction::Run() {
     return RespondNow(Error("Rewards service is not initialized"));
   }
 
-  extensions::ExtensionService* extension_service =
-      extensions::ExtensionSystem::Get(profile)->extension_service();
-  if (!extension_service) {
-    return RespondNow(Error("Extension service is not initialized"));
-  }
-
   AddRef();
-
-  extensions::ComponentLoader* component_loader =
-      extension_service->component_loader();
-  static_cast<extensions::BraveComponentLoader*>(component_loader)
-      ->AddRewardsExtension();
 
   rewards_service->StartProcess(
       base::BindOnce(&BraveRewardsTipUserFunction::OnProcessStarted, this,

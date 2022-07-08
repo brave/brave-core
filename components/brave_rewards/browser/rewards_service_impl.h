@@ -250,6 +250,9 @@ class RewardsServiceImpl : public RewardsService,
       const uint64_t duration,
       const bool first_visit) override;
 
+  void IsPublisherRegistered(const std::string& publisher_id,
+                             base::OnceCallback<void(bool)> callback) override;
+
   void GetPublisherInfo(
       const std::string& publisher_key,
       GetPublisherInfoCallback callback) override;
@@ -648,6 +651,9 @@ class RewardsServiceImpl : public RewardsService,
   uint64_t GetUint64Option(const std::string& name) const override;
 
   void PublisherListNormalized(ledger::type::PublisherInfoList list) override;
+
+  void OnPublisherRegistryUpdated() override;
+  void OnPublisherUpdated(const std::string& publisher_id) override;
 
   void ShowNotification(
       const std::string& type,

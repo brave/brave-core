@@ -148,6 +148,15 @@ void BatLedgerClientMojoBridge::PublisherListNormalized(
   bat_ledger_client_->PublisherListNormalized(std::move(list));
 }
 
+void BatLedgerClientMojoBridge::OnPublisherRegistryUpdated() {
+  bat_ledger_client_->OnPublisherRegistryUpdated();
+}
+
+void BatLedgerClientMojoBridge::OnPublisherUpdated(
+    const std::string& publisher_id) {
+  bat_ledger_client_->OnPublisherUpdated(publisher_id);
+}
+
 void BatLedgerClientMojoBridge::SetBooleanState(const std::string& name,
                                                bool value) {
   bat_ledger_client_->SetBooleanState(name, value);

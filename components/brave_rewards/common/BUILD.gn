@@ -1,3 +1,5 @@
+import("//mojo/public/tools/bindings/mojom.gni")
+
 source_set("features") {
   sources = [
     "features.cc",
@@ -25,4 +27,10 @@ static_library("common") {
     "//base",
     "//third_party/abseil-cpp:absl",
   ]
+}
+
+mojom("mojom") {
+  sources = [ "brave_rewards_panel.mojom" ]
+
+  public_deps = [ "//mojo/public/mojom/base" ]
 }
