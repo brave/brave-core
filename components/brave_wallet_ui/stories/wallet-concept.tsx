@@ -42,7 +42,7 @@ export const _WalletOnboardingConcept = () => {
         isSolanaEnabled: true,
         isFilecoinEnabled: true,
         isWalletBackedUp: false,
-        isWalletCreated: true
+        isWalletCreated: false
       }}
       pageStateOverride={{
         isCryptoWalletsInitialized: true,
