@@ -8,27 +8,17 @@ import Shared
 private let log = Logger.browserLogger
 
 enum FileType: String {
-  case dat, json, tgz
+  case dat, json
 }
 
 enum AdblockerType {
   case general
-  case httpse
   case regional(locale: String)
-
-  var locale: String? {
-    switch self {
-    case .regional(let locale): return locale
-    default: return nil
-    }
-  }
-
   var associatedFiles: [FileType] { return [.json, fileForStatsLibrary] }
 
   private var fileForStatsLibrary: FileType {
     switch self {
     case .general, .regional: return .dat
-    case .httpse: return .tgz
     }
   }
 
@@ -36,28 +26,37 @@ enum AdblockerType {
   var identifier: String {
     switch self {
     case .general: return BlocklistName.ad.filename
-    case .httpse: return BlocklistName.https.filename
     case .regional(let locale): return locale
     }
   }
 
   /// A name under which given resource is stored on server.
-  func resourceName(for fileType: FileType) -> String? {
+  func resourcePath(for fileType: FileType) -> String? {
     switch self {
-    case .general: return AdblockResourcesMappings.generalAdblockName(for: fileType)
-    case .httpse: return AdblockResourcesMappings.generalHttpseName
+    case .general:
+      switch fileType {
+      // We take the same regional file as desktop/android
+      case .dat: return "/4/rs-ABPFilterParserData.dat"
+      // This file contains the regional content blocking json format (only iOS)
+      case .json: return "/ios/latest.json"
+      }
     case .regional(let locale):
       guard let regionalName = ResourceLocale(rawValue: locale)?.resourceName(for: fileType) else {
         return nil
       }
-      return "\(regionalName)-latest"
+      
+      switch fileType {
+      // We take the same regional file as desktop/android
+      case .dat: return "/4/rs-\(regionalName).dat"
+      // This file contains the regional content blocking json format (only iOS)
+      case .json: return "/ios/\(regionalName)-latest.json"
+      }
     }
   }
 
   var blockListName: BlocklistName? {
     switch self {
     case .general: return BlocklistName.ad
-    case .httpse: return BlocklistName.https
     case .regional(let locale): return ContentBlockerRegion.with(localeCode: locale)
     }
   }

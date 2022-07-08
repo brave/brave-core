@@ -172,6 +172,7 @@ let package = Package(
         .copy("Frontend/UserContent/UserScripts/WindowRenderHelper.js"),
         .copy("Frontend/UserContent/UserScripts/YoutubeAdblock.js"),
         .copy("Frontend/UserContent/UserScripts/DeAMP.js"),
+        .copy("Frontend/UserContent/UserScripts/RequestBlocking.js"),
         .copy("WebFilters/ContentBlocker/build-disconnect.py"),
         .copy("WebFilters/ContentBlocker/Lists/block-ads.json"),
         .copy("WebFilters/ContentBlocker/Lists/block-cookies.json"),

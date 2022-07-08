@@ -81,6 +81,14 @@ class UserScriptManager {
       reloadUserScripts()
     }
   }
+  
+  /// Whether request blocking is enabled for webview
+  var isRequestBlockingEnabled: Bool {
+    didSet {
+      guard oldValue != isRequestBlockingEnabled else { return }
+      reloadUserScripts()
+    }
+  }
 
   // TODO: @JS Add other scripts to this list to avoid uneccesary calls to `reloadUserScripts()`
   /// Domain script types that are currently injected into the web-view. Will reloaded scripts if this set changes.
@@ -122,6 +130,7 @@ class UserScriptManager {
     self.isDeAMPEnabled = isDeAMPEnabled
     self.userScriptTypes = []
     self.walletProviderJS = walletProviderJS
+    self.isRequestBlockingEnabled = true
     
     reloadUserScripts()
   }
@@ -168,6 +177,38 @@ class UserScriptManager {
       in: .page)
   }()
   
+  /// A script that adds blocking for invalid fetch and ajax calls
+  private let requestBlockingUserScript: WKUserScript? = {
+    guard let path = Bundle.current.path(forResource: "RequestBlocking", ofType: "js"), var source: String = try? String(contentsOfFile: path) else {
+      log.error("Failed to load cookie control user script")
+      return nil
+    }
+    
+    do {
+      guard let fakeParams = try UserScriptHelper.makeRequestBlockingParams(securityToken: securityTokenString) else {
+        assertionFailure("A nil here is impossible")
+        return nil
+      }
+      
+      source = [
+        source,
+        "window.braveBlockRequests(\(fakeParams))",
+        "delete window.braveBlockRequests"
+      ].joined(separator: "\n")
+
+      return WKUserScript.create(
+        source: source,
+        injectionTime: .atDocumentStart,
+        forMainFrameOnly: false,
+        in: .page
+      )
+    } catch {
+      assertionFailure(error.localizedDescription)
+      log.error(error.localizedDescription)
+      return nil
+    }
+  }()
+  
   /// A script that detects if we're at an amp page and redirects the user to the original (canonical) version if available.
   ///
   /// - Note: This script is only a smaller part (2 of 3) of de-amping.
@@ -180,7 +221,10 @@ class UserScriptManager {
     }
     
     do {
-      let arguments = try UserScriptHelper.makeDeAmpScriptParamters()
+      guard let arguments = try UserScriptHelper.makeDeAmpScriptParamters() else {
+        assertionFailure("A nil here is impossible")
+        return nil
+      }
       
       source = [
         source,
@@ -420,6 +464,12 @@ class UserScriptManager {
   private func reloadUserScripts() {
     tab?.webView?.configuration.userContentController.do {
       $0.removeAllUserScripts()
+      // This has to be added before `packedUserScripts` because some scripts do
+      // rewarding even if the request is blocked.
+      if isRequestBlockingEnabled, let script = requestBlockingUserScript {
+        $0.addUserScript(script)
+      }
+      
       self.packedUserScripts.forEach($0.addUserScript)
       
       if isCookieBlockingEnabled, let script = cookieControlUserScript {
