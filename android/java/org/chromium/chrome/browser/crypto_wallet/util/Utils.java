@@ -1095,6 +1095,52 @@ public class Utils {
         return eth;
     }
 
+    public static BlockchainToken makeNetworkAsset(NetworkInfo network) {
+        String logo;
+
+        // TODO: Add missing logos
+        //             case "SOL":
+        //                 logo = "sol.png";
+        //                 break;
+        //             case "FIL":
+        //                 logo = "fil.png";
+        //                 break;
+        //             case network.chainId === BraveWallet.OPTIMISM_MAINNET_CHAIN_ID:
+        //                 logo = "optimism.png";
+        //                 break;
+        //             case network.chainId === BraveWallet.AVALANCHE_MAINNET_CHAIN_ID:
+        //                 logo = "avax.png";
+        //                 break;
+        //             case network.chainId === BraveWallet.FANTOM_MAINNET_CHAIN_ID:
+        //                 logo = "fantom.png";
+        //                 break;
+        //             case network.chainId === BraveWallet.CELO_MAINNET_CHAIN_ID:
+        //                 logo = "celo.png";
+        //                 break;
+        if (network.chainId.equals(BraveWalletConstants.MAINNET_CHAIN_ID)) {
+            logo = "eth.png";
+        } else if (network.chainId.equals(BraveWalletConstants.POLYGON_MAINNET_CHAIN_ID)) {
+            logo = "matic.png";
+        } else if (network.chainId.equals(
+                           BraveWalletConstants.BINANCE_SMART_CHAIN_MAINNET_CHAIN_ID)) {
+            logo = "bnb.png";
+        } else {
+            logo = "";
+        }
+
+        BlockchainToken asset = new BlockchainToken();
+        asset.name = network.symbolName;
+        asset.symbol = network.symbol;
+        asset.contractAddress = "";
+        asset.isErc20 = false;
+        asset.isErc721 = false;
+        asset.logo = logo;
+        asset.decimals = network.decimals;
+        asset.visible = true;
+        asset.chainId = network.chainId;
+        return asset;
+    }
+
     public static BlockchainToken[] fixupTokensRegistry(BlockchainToken[] tokens, String chainId) {
         for (BlockchainToken token : tokens) {
             token.contractAddress =

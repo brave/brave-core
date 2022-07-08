@@ -302,13 +302,16 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
                     // Shall be fine regardless of activity type
                     mFromValueText.setText("");
                     mFromValueText.setHint("0");
-                    resetSwapFromToAssets();
 
                     mJsonRpcService.setNetwork(chainId, CoinType.ETH, (success) -> {
                         if (!success) {
                             Log.e(TAG, "Could not set network");
                         }
                         mCurrentChainId = chainId;
+                        mJsonRpcService.getNetwork(CoinType.ETH, selectedNetwork -> {
+                            BlockchainToken nativeAsset = Utils.makeNetworkAsset(selectedNetwork);
+                            resetSwapFromToAssets(nativeAsset);
+                        });
                     });
                     updateBalanceMaybeSwap(getCurrentSelectedAccountAddr());
                 });
@@ -454,23 +457,27 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
         checkBalanceShowError(response, errorResponse);
     }
 
-    private void resetSwapFromToAssets() {
+    // TODO (Wengling): change to pass NetworkInfo with
+    // https://github.com/brave/brave-core/pull/14046
+    private void resetSwapFromToAssets(BlockchainToken defaultToken) {
         if (mBlockchainRegistry != null && mCustomAccountAdapter != null
                 && mInitialLayoutInflationComplete) {
-            final BlockchainToken eth =
-                    Utils.createEthereumBlockchainToken(BraveWalletConstants.MAINNET_CHAIN_ID);
+            final BlockchainToken nativeAsset = defaultToken == null
+                    ? Utils.createEthereumBlockchainToken(BraveWalletConstants.MAINNET_CHAIN_ID)
+                    : defaultToken;
             // Swap from
             String swapFromAssetSymbol = getIntent().getStringExtra("swapFromAssetSymbol");
             if (swapFromAssetSymbol == null
-                    || swapFromAssetSymbol.equals(eth.symbol)) { // default swap from ETH
-                updateBuySendSwapAsset(eth.symbol, eth, true);
-                resetSwapToAsset(eth, swapFromAssetSymbol);
+                    || swapFromAssetSymbol.equals(
+                            nativeAsset.symbol)) { // default swap from native asset
+                updateBuySendSwapAsset(nativeAsset.symbol, nativeAsset, true);
+                resetSwapToAsset(nativeAsset, swapFromAssetSymbol);
             } else {
                 mBlockchainRegistry.getTokenBySymbol(BraveWalletConstants.MAINNET_CHAIN_ID,
                         CoinType.ETH, swapFromAssetSymbol, token -> {
                             if (token != null) {
                                 updateBuySendSwapAsset(token.symbol, token, true);
-                                resetSwapToAsset(eth, swapFromAssetSymbol);
+                                resetSwapToAsset(nativeAsset, swapFromAssetSymbol);
 
                                 return;
                             }
@@ -482,7 +489,7 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
                                             if (swapFromAssetSymbol.equals(filteredToken.symbol)) {
                                                 updateBuySendSwapAsset(
                                                         filteredToken.symbol, filteredToken, true);
-                                                resetSwapToAsset(eth, swapFromAssetSymbol);
+                                                resetSwapToAsset(nativeAsset, swapFromAssetSymbol);
                                                 break;
                                             }
                                         }
@@ -492,12 +499,12 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
         }
     }
 
-    private void resetSwapToAsset(BlockchainToken eth, String swapFromAssetSymbol) {
+    private void resetSwapToAsset(BlockchainToken nativeAsset, String swapFromAssetSymbol) {
         if (mActivityType != ActivityType.SWAP) return;
         final String defaultSwapToAsset = "BAT";
         // Swap to
         if (defaultSwapToAsset.equals(swapFromAssetSymbol)) { // swap from BAT
-            updateBuySendSwapAsset(eth.symbol, eth, false);
+            updateBuySendSwapAsset(nativeAsset.symbol, nativeAsset, false);
         } else {
             // Only ERC20 tokens can be swapped
             mBlockchainRegistry.getTokenBySymbol(BraveWalletConstants.MAINNET_CHAIN_ID,
@@ -1515,7 +1522,7 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
 
                                 // updateBuySendSwapAsset needs mCustomAccountAdapter to be
                                 // initialized
-                                resetSwapFromToAssets();
+                                resetSwapFromToAssets(null);
                             });
                 }
             });
