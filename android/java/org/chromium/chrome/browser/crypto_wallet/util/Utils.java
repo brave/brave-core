@@ -29,9 +29,11 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Handler;
 import android.text.Html;
+import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.ClickableSpan;
+import android.text.style.URLSpan;
 import android.util.Pair;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -40,6 +42,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
+import androidx.annotation.StringRes;
 import androidx.annotation.VisibleForTesting;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -87,6 +90,7 @@ import org.chromium.chrome.browser.crypto_wallet.model.WalletListItemModel;
 import org.chromium.chrome.browser.crypto_wallet.observers.ApprovedTxObserver;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.util.TabUtils;
+import org.chromium.ui.text.NoUnderlineClickableSpan;
 import org.chromium.ui.widget.Toast;
 import org.chromium.url.GURL;
 
@@ -1532,8 +1536,27 @@ public class Utils {
             String text, ClickableSpan clickListener, int startIndex, int endIndex, int flags) {
         assert null != text;
         SpannableString spannableString = new SpannableString(text);
-        spannableString.setSpan(clickListener, startIndex, endIndex, flags);
+        if (startIndex >= 0 && endIndex > startIndex && endIndex < text.length()) {
+            spannableString.setSpan(clickListener, startIndex, endIndex, flags);
+        }
         return spannableString;
+    }
+
+    public static Spannable createSpannableUsingHTML(
+            Context context, @StringRes int resId, View.OnClickListener onClickListener) {
+        String htmlString =
+                String.format(context.getResources().getString(resId), "<a href=\"\">", "<\\a>");
+        Spannable spannable = new SpannableString(AndroidUtils.formateHTML(htmlString));
+        URLSpan[] spans = spannable.getSpans(0, spannable.length(), URLSpan.class);
+        for (URLSpan urlSpan : spans) {
+            NoUnderlineClickableSpan linkSpan = new NoUnderlineClickableSpan(context,
+                    R.color.brave_theme_color, (view) -> { onClickListener.onClick(view); });
+            int spanStart = spannable.getSpanStart(urlSpan);
+            int spanEnd = spannable.getSpanEnd(urlSpan);
+            spannable.setSpan(linkSpan, spanStart, spanEnd, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            spannable.removeSpan(urlSpan);
+        }
+        return spannable;
     }
 
     public static SpannableString createSpannableString(
