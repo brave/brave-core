@@ -308,8 +308,6 @@ public class CosmeticFiltersResourceDownloader {
           into: engine,
           data: $0.resource.data,
           id: $0.type.identifier)
-      case .tgz:
-        return nil
       }
     })
     

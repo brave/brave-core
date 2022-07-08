@@ -2312,6 +2312,7 @@ extension BrowserViewController: TabDelegate {
     tab.addContentScript(AdsMediaReporting(rewards: rewards, tab: tab), name: AdsMediaReporting.name(), contentWorld: .defaultClient)
     tab.addContentScript(ReadyStateScriptHelper(tab: tab), name: ReadyStateScriptHelper.name(), contentWorld: .page)
     tab.addContentScript(DeAmpHelper(tab: tab), name: DeAmpHelper.name(), contentWorld: .defaultClient)
+    tab.addContentScript(RequestBlockingContentHelper(), name: RequestBlockingContentHelper.name(), contentWorld: .page)
   }
 
   func tab(_ tab: Tab, willDeleteWebView webView: WKWebView) {

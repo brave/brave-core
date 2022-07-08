@@ -25,7 +25,15 @@ public class AdblockResourceDownloader {
   private let servicesKeyName = "SERVICES_KEY"
   private let servicesKeyHeaderValue = "BraveServiceKey"
 
-  static let endpoint = "https://adblock-data.s3.brave.com/ios"
+  /// The base s3 environment url that hosts the debouncing (and other) files.
+  /// Cannot be used as-is and must be combined with a path
+  private lazy var baseResourceURL: URL = {
+    if AppConstants.buildChannel.isPublic {
+      return URL(string: "https://adblock-data.s3.brave.com")!
+    } else {
+      return URL(string: "https://adblock-data-staging.s3.bravesoftware.com")!
+    }
+  }()
 
   init(networkManager: NetworkManager = NetworkManager(), locale: String? = Locale.current.languageCode) {
     if locale == nil {
@@ -102,22 +110,23 @@ public class AdblockResourceDownloader {
       
       let fileExtension = fileType.rawValue
       let etagExtension = fileExtension + ".etag"
+      let cacheFileName = [fileName, etagExtension].joined(separator: ".")
 
-      guard let resourceName = type.resourceName(for: fileType),
-        var url = URL(string: AdblockResourceDownloader.endpoint)
-      else {
+      guard let resourcePath = type.resourcePath(for: fileType) else {
         return nil
       }
 
-      url.appendPathComponent(resourceName)
-      url.appendPathExtension(fileExtension)
-
+      guard let url = URL(string: resourcePath, relativeTo: baseResourceURL) else {
+        assertionFailure("This uses all hardcoded components so it should not fail unless we made a mistake somewhere")
+        return nil
+      }
+      
       var headers = [String: String]()
       if let servicesKeyValue = Bundle.main.getPlistString(for: self.servicesKeyName) {
         headers[self.servicesKeyHeaderValue] = servicesKeyValue
       }
 
-      let etag = self.fileFromDocumentsAsString("\(fileName).\(etagExtension)", inFolder: folderName)
+      let etag = self.fileFromDocumentsAsString(cacheFileName, inFolder: folderName)
       return nm.downloadResource(
         with: url,
         resourceType: .cached(etag: etag),
@@ -229,8 +238,6 @@ public class AdblockResourceDownloader {
           return self.compileContentBlocker(resources: resources)
         }
         return nil
-      case .tgz:
-        return nil  // TODO: Add downloadable httpse list
       }
     }
     

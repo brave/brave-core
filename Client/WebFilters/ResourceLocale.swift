@@ -4,18 +4,6 @@
 
 import Foundation
 
-struct AdblockResourcesMappings {
-  static func generalAdblockName(for fileType: FileType) -> String? {
-    switch fileType {
-    case .dat, .json: return "latest"
-    default: return nil
-    }
-  }
-
-  static let generalHttpseName = "httpse"
-  static let defaultLocale = "en"
-}
-
 enum ResourceLocale: String {
   case ar, bg, zh, cs, de, da, et, fi, fr, el, hu, id, hi, fa, `is`, he, it, ja, ko, lt, lv, nl,
     pl, ru, uk, be, es, sl, sv, tr, vi
