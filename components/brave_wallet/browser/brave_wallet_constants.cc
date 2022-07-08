@@ -181,4 +181,16 @@ const std::vector<mojom::OnRampCurrency>& GetOnRampCurrenciesList() {
   return *currencies;
 }
 
+const base::flat_map<std::string, std::string>& GetInfuraChainEndpoints() {
+  static base::NoDestructor<base::flat_map<std::string, std::string>> endpoints(
+      {{brave_wallet::mojom::kPolygonMainnetChainId,
+        "https://mainnet-polygon.brave.com/"},
+       {brave_wallet::mojom::kOptimismMainnetChainId,
+        "https://mainnet-optimism.brave.com/"},
+       {brave_wallet::mojom::kAuroraMainnetChainId,
+        "https://mainnet-aurora.brave.com/"}});
+
+  return *endpoints;
+}
+
 }  // namespace brave_wallet
