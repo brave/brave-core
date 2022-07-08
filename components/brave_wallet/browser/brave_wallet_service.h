@@ -49,9 +49,17 @@ class BraveWalletService : public KeyedService,
                            public BraveWalletServiceDelegate::Observer {
  public:
   using SignMessageRequestCallback =
-      base::OnceCallback<void(bool, const std::string&, const std::string&)>;
-  using SignTransactionRequestCallback = base::OnceCallback<void(bool)>;
-  using SignAllTransactionsRequestCallback = base::OnceCallback<void(bool)>;
+      base::OnceCallback<void(bool,
+                              mojom::ByteArrayStringUnionPtr,
+                              const absl::optional<std::string>&)>;
+  using SignTransactionRequestCallback =
+      base::OnceCallback<void(bool,
+                              mojom::ByteArrayStringUnionPtr,
+                              const absl::optional<std::string>&)>;
+  using SignAllTransactionsRequestCallback = base::OnceCallback<void(
+      bool,
+      absl::optional<std::vector<mojom::ByteArrayStringUnionPtr>>,
+      const absl::optional<std::string>&)>;
   using AddSuggestTokenCallback =
       base::OnceCallback<void(bool, mojom::ProviderError, const std::string&)>;
 
@@ -139,15 +147,21 @@ class BraveWalletService : public KeyedService,
       GetPendingSignTransactionRequestsCallback callback) override;
   void GetPendingSignAllTransactionsRequests(
       GetPendingSignAllTransactionsRequestsCallback callback) override;
-  void NotifySignTransactionRequestProcessed(bool approved, int id) override;
-  void NotifySignAllTransactionsRequestProcessed(bool approved,
-                                                 int id) override;
-  void NotifySignMessageRequestProcessed(bool approved, int id) override;
-  void NotifySignMessageHardwareRequestProcessed(
+  void NotifySignTransactionRequestProcessed(
       bool approved,
       int id,
-      const std::string& signature,
-      const std::string& error) override;
+      mojom::ByteArrayStringUnionPtr signature,
+      const absl::optional<std::string>& error) override;
+  void NotifySignAllTransactionsRequestProcessed(
+      bool approved,
+      int id,
+      absl::optional<std::vector<mojom::ByteArrayStringUnionPtr>> signatures,
+      const absl::optional<std::string>& error) override;
+  void NotifySignMessageRequestProcessed(
+      bool approved,
+      int id,
+      mojom::ByteArrayStringUnionPtr signature,
+      const absl::optional<std::string>& error) override;
   void GetPendingAddSuggestTokenRequests(
       GetPendingAddSuggestTokenRequestsCallback callback) override;
   void GetPendingGetEncryptionPublicKeyRequests(

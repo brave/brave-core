@@ -82,7 +82,7 @@ public class SignMessageFragment extends BaseDAppsBottomSheetDialogFragment {
 
     private void notifySignMessageRequestProcessed(boolean approved) {
         getBraveWalletService().notifySignMessageRequestProcessed(
-                approved, mCurrentSignMessageRequest.id);
+                approved, mCurrentSignMessageRequest.id, null, null);
         fillSignMessageInfo(false);
     }
 

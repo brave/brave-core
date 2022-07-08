@@ -1029,6 +1029,10 @@ struct SignMessageRequest {
   // Should be used only if is_eip712 is true
   string? domain_hash;
   string? primary_hash;
+
+  // This will be passed for Solana, in hardware keyring case, it will be used
+  // to sign.
+  array<uint8>? message_bytes;
   CoinType coin;
 };
 
@@ -1037,6 +1041,8 @@ struct SignTransactionRequest {
   int32 id;
   string from_address;
   TxDataUnion tx_data;
+  ByteArrayStringUnion raw_message;
+  CoinType coin;
 };
 
 struct SignAllTransactionsRequest {
@@ -1044,6 +1050,8 @@ struct SignAllTransactionsRequest {
   int32 id;
   string from_address;
   array<TxDataUnion> tx_datas;
+  array<ByteArrayStringUnion> raw_messages;
+  CoinType coin;
 };
 
 enum ExternalWalletType {
@@ -1054,6 +1062,11 @@ enum ExternalWalletType {
 struct AddSuggestTokenRequest {
   OriginInfo origin;
   BlockchainToken token;
+};
+
+union ByteArrayStringUnion {
+  array<uint8> bytes;
+  string str;
 };
 
 // For default wallet setting, user assets, permission checks, importing
@@ -1143,20 +1156,20 @@ interface BraveWalletService {
     => (bool success);
 
   // These are used for UI notifying native when the user approve/reject SignMessage[Hardware]Request
-  NotifySignMessageRequestProcessed(bool approved, int32 id);
+  NotifySignMessageRequestProcessed(bool approved, int32 id, ByteArrayStringUnion? signature, string? error);
   // Obtains the pending sign message requests
   GetPendingSignMessageRequests() => (array<SignMessageRequest> requests);
-  NotifySignMessageHardwareRequestProcessed(bool approved, int32 id, string signature, string error);
 
   GetPendingSignTransactionRequests() => (array<SignTransactionRequest> requests);
   // Used for UI notifying native when the user apprrove/reject sign
   // transaction request.
-  NotifySignTransactionRequestProcessed(bool approved, int32 id);
+  NotifySignTransactionRequestProcessed(bool approved, int32 id, ByteArrayStringUnion? signature, string? error);
 
   GetPendingSignAllTransactionsRequests() => (array<SignAllTransactionsRequest> requests);
   // Used for UI notifying native when the user apprrove/reject sign all
   // transactions request.
-  NotifySignAllTransactionsRequestProcessed(bool approved, int32 id);
+  NotifySignAllTransactionsRequestProcessed(bool approved, int32 id,
+      array<ByteArrayStringUnion>? signatures, string? error);
 
   // Used for UI notifying native when the user apprrove/reject add suggest
   // token requests.
