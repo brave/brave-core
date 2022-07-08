@@ -168,7 +168,7 @@ export const PortfolioAsset = () => {
     return assetId.length > 15
       ? userVisibleTokensInfo.find((token) => tokenId ? token.contractAddress === assetId && token.tokenId === tokenId : token.contractAddress === assetId)
       : userVisibleTokensInfo.find((token) => token.symbol.toLowerCase() === assetId?.toLowerCase())
-  }, [assetId, userVisibleTokensInfo, selectedTimeline])
+  }, [assetId, userVisibleTokensInfo, selectedTimeline, tokenId])
 
   // This will scrape all of the user's accounts and combine the fiat value for every asset
   const fullPortfolioFiatBalance = React.useMemo(() => {
