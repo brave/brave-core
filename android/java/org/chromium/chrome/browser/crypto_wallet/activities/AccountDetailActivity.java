@@ -61,6 +61,7 @@ public class AccountDetailActivity
     private String mAddress;
     private String mName;
     private boolean mIsImported;
+    private boolean mIsSolana;
     private TextView mAccountText;
     private ExecutorService mExecutor;
     private Handler mHandler;
@@ -76,6 +77,7 @@ public class AccountDetailActivity
             mAddress = getIntent().getStringExtra(Utils.ADDRESS);
             mName = getIntent().getStringExtra(Utils.NAME);
             mIsImported = getIntent().getBooleanExtra(Utils.ISIMPORTED, false);
+            mIsSolana = getIntent().getBooleanExtra(Utils.ISSOLANA, false);
         }
 
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -125,7 +127,7 @@ public class AccountDetailActivity
         PortfolioHelper portfolioHelper = new PortfolioHelper(
                 getBraveWalletService(), getAssetRatioService(), mJsonRpcService, accountInfos);
         portfolioHelper.setChainId(chainId);
-        portfolioHelper.calculateBalances(() -> {
+        portfolioHelper.calculateBalances(mIsSolana ? CoinType.SOL : CoinType.ETH, () -> {
             RecyclerView rvAssets = findViewById(R.id.rv_assets);
 
             BlockchainToken[] userAssets = portfolioHelper.getUserAssets();
@@ -144,24 +146,27 @@ public class AccountDetailActivity
 
     private void fetchAccountInfo(String chainId) {
         assert mKeyringService != null;
-        mKeyringService.getKeyringInfo(BraveWalletConstants.DEFAULT_KEYRING_ID, keyringInfo -> {
-            if (keyringInfo == null) {
-                return;
-            }
-            for (AccountInfo accountInfo : keyringInfo.accountInfos) {
-                if (accountInfo.address.equals(mAddress) && accountInfo.name.equals(mName)) {
-                    AccountInfo[] accountInfos = new AccountInfo[1];
-                    accountInfos[0] = accountInfo;
-                    WalletListItemModel thisAccountItemModel = new WalletListItemModel(
-                            R.drawable.ic_eth, mName, mAddress, null, null, mIsImported);
-                    Utils.setUpTransactionList(accountInfos, mAssetRatioService, mTxService,
-                            mBlockchainRegistry, mBraveWalletService, thisAccountItemModel,
-                            findViewById(R.id.rv_transactions), this, this, mJsonRpcService,
-                            mWalletTxCoinAdapter);
-                    break;
-                }
-            }
-        });
+        mKeyringService.getKeyringInfo(!mIsSolana ? BraveWalletConstants.DEFAULT_KEYRING_ID
+                                                  : BraveWalletConstants.SOLANA_KEYRING_ID,
+                keyringInfo -> {
+                    if (keyringInfo == null) {
+                        return;
+                    }
+                    for (AccountInfo accountInfo : keyringInfo.accountInfos) {
+                        if (accountInfo.address.equals(mAddress)
+                                && accountInfo.name.equals(mName)) {
+                            AccountInfo[] accountInfos = new AccountInfo[1];
+                            accountInfos[0] = accountInfo;
+                            WalletListItemModel thisAccountItemModel = new WalletListItemModel(
+                                    R.drawable.ic_eth, mName, mAddress, null, null, mIsImported);
+                            Utils.setUpTransactionList(accountInfos, mAssetRatioService, mTxService,
+                                    mBlockchainRegistry, mBraveWalletService, thisAccountItemModel,
+                                    findViewById(R.id.rv_transactions), this, this, mJsonRpcService,
+                                    mWalletTxCoinAdapter);
+                            break;
+                        }
+                    }
+                });
     }
 
     @Override
@@ -182,7 +187,7 @@ public class AccountDetailActivity
 
         initState();
         assert mJsonRpcService != null;
-        mJsonRpcService.getChainId(CoinType.ETH, chainId -> {
+        mJsonRpcService.getChainId(mIsSolana ? CoinType.SOL : CoinType.ETH, chainId -> {
             setUpAssetList(chainId);
             fetchAccountInfo(chainId);
         });
@@ -191,7 +196,7 @@ public class AccountDetailActivity
     @Override
     public void onAssetClick(BlockchainToken asset) {
         assert mJsonRpcService != null;
-        mJsonRpcService.getChainId(CoinType.ETH, chainId -> {
+        mJsonRpcService.getChainId(mIsSolana ? CoinType.SOL : CoinType.ETH, chainId -> {
             Utils.openAssetDetailsActivity(AccountDetailActivity.this, chainId, asset.symbol,
                     asset.name, asset.tokenId, asset.contractAddress, asset.logo, asset.decimals);
         });
@@ -234,7 +239,7 @@ public class AccountDetailActivity
         accountInfo.address = mAddress;
         accountInfo.name = mName;
         accountInfo.isImported = mIsImported;
-        accountInfo.coin = CoinType.ETH;
+        accountInfo.coin = !mIsSolana ? CoinType.ETH : CoinType.SOL;
         return accountInfo;
     }
 

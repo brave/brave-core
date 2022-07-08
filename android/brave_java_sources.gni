@@ -150,6 +150,7 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/util/SingleTokenBalanceHelper.java",
   "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/util/SmoothLineChartEquallySpaced.java",
   "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/util/TokenUtils.java",
+  "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/util/TransactionUtils.java",
   "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/util/Utils.java",
   "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/util/Validations.java",
   "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/util/WalletConstants.java",

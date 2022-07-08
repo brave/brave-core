@@ -23,6 +23,7 @@ public class WalletListItemModel {
     private String mId;
     private BlockchainToken mBlockchainToken;
     private boolean mIsAccount;
+    private boolean mIsSolanaAccount;
     private boolean mIsImportedAccount;
     private boolean mIsUserSelected;
     private double mTotalGas;
@@ -137,6 +138,14 @@ public class WalletListItemModel {
 
     public boolean getIsImportedAccount() {
         return mIsImportedAccount;
+    }
+
+    public void setIsSolanaAccount(boolean isSolanaAccount) {
+        mIsSolanaAccount = isSolanaAccount;
+    }
+
+    public boolean getIsSolanaAccount() {
+        return mIsSolanaAccount;
     }
 
     public int getIcon() {

@@ -413,7 +413,7 @@ public class PortfolioFragment
                 String chainId = Utils.getNetworkChainId(
                         getActivity(), mSelectedChainNetworkName, customNetworks);
                 mPortfolioHelper.setChainId(chainId);
-                mPortfolioHelper.calculateBalances(() -> {
+                mPortfolioHelper.calculateBalances(CoinType.ETH, () -> {
                     final String fiatSumString = String.format(
                             Locale.getDefault(), "$%,.2f", mPortfolioHelper.getTotalFiatSum());
                     PostTask.runOrPostTask(UiThreadTaskTraits.DEFAULT, () -> {

@@ -106,6 +106,19 @@ public class AsyncUtils {
         }
     }
 
+    public static class GetSolanaBalanceResponseContext extends GetBalanceResponseBaseContext
+            implements JsonRpcService.GetSolanaBalance_Response {
+        public GetSolanaBalanceResponseContext(Runnable responseCompleteCallback) {
+            super(responseCompleteCallback);
+        }
+
+        @Override
+        public void call(Long balance, Integer error, String errorMessage) {
+            warnWhenError(TAG, "getSolanaBalance", error, errorMessage);
+            super.callBase(balance.toString(), error, errorMessage);
+        }
+    }
+
     public static class GetErc721TokenBalanceResponseContext extends GetBalanceResponseBaseContext
             implements JsonRpcService.GetErc721TokenBalance_Response {
         public GetErc721TokenBalanceResponseContext(Runnable responseCompleteCallback) {

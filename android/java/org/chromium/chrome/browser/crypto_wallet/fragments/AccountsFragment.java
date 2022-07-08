@@ -24,6 +24,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.BraveWalletConstants;
+import org.chromium.brave_wallet.mojom.CoinType;
 import org.chromium.brave_wallet.mojom.KeyringInfo;
 import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.chrome.R;
@@ -103,9 +104,11 @@ public class AccountsFragment extends Fragment implements OnWalletListItemClick 
                     List<WalletListItemModel> walletListItemModelList = new ArrayList<>();
                     for (AccountInfo accountInfo : accountInfos) {
                         if (!accountInfo.isImported) {
-                            walletListItemModelList.add(new WalletListItemModel(R.drawable.ic_eth,
-                                    accountInfo.name, accountInfo.address, null, null,
-                                    accountInfo.isImported));
+                            WalletListItemModel walletModel = new WalletListItemModel(
+                                    R.drawable.ic_eth, accountInfo.name, accountInfo.address, null,
+                                    null, accountInfo.isImported);
+                            walletModel.setIsSolanaAccount(accountInfo.coin == CoinType.SOL);
+                            walletListItemModelList.add(walletModel);
                         }
                     }
                     if (walletCoinAdapter != null) {
@@ -150,6 +153,8 @@ public class AccountsFragment extends Fragment implements OnWalletListItemClick 
         accountDetailActivityIntent.putExtra(Utils.ADDRESS, walletListItemModel.getSubTitle());
         accountDetailActivityIntent.putExtra(
                 Utils.ISIMPORTED, walletListItemModel.getIsImportedAccount());
+        accountDetailActivityIntent.putExtra(
+                Utils.ISSOLANA, walletListItemModel.getIsSolanaAccount());
         startActivity(accountDetailActivityIntent);
     }
 

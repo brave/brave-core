@@ -106,13 +106,12 @@ public class PortfolioHelper {
         return Double.valueOf(mFiatHistory[mFiatHistory.length - 1].price);
     }
 
-    public void calculateBalances(Runnable runWhenDone) {
+    public void calculateBalances(int coin, Runnable runWhenDone) {
         resetResultData();
 
         TokenUtils.getUserAssetsFiltered(
-                mBraveWalletService, mChainId, TokenUtils.TokenType.ALL, (userAssets) -> {
+                mBraveWalletService, mChainId, TokenUtils.TokenType.ALL, coin, (userAssets) -> {
                     mUserAssets = userAssets;
-
                     AsyncUtils.MultiResponseHandler balancesMultiResponse =
                             new AsyncUtils.MultiResponseHandler(
                                     mAccountInfos.length * mUserAssets.length);
@@ -123,14 +122,23 @@ public class PortfolioHelper {
                     // Tokens balances
                     for (AccountInfo accountInfo : mAccountInfos) {
                         for (BlockchainToken userAsset : mUserAssets) {
-                            if (userAsset.contractAddress.isEmpty()) {
+                            if (userAsset.coin == CoinType.SOL) {
+                                Log.d(TAG, TAG + " getSolanaBalance");
+                                AsyncUtils.GetSolanaBalanceResponseContext context =
+                                        new AsyncUtils.GetSolanaBalanceResponseContext(
+                                                balancesMultiResponse.singleResponseComplete);
+                                context.userAsset = userAsset;
+                                contexts.add(context);
+                                mJsonRpcService.getSolanaBalance(
+                                         accountInfo.address, userAsset.chainId, context);
+                            } else if (userAsset.contractAddress.isEmpty()) {
                                 AsyncUtils.GetBalanceResponseContext context =
                                         new AsyncUtils.GetBalanceResponseContext(
                                                 balancesMultiResponse.singleResponseComplete);
                                 context.userAsset = userAsset;
                                 contexts.add(context);
                                 mJsonRpcService.getBalance(
-                                        accountInfo.address, CoinType.ETH, mChainId, context);
+                                        accountInfo.address, coin, mChainId, context);
                             } else if (userAsset.isErc721) {
                                 AsyncUtils.GetErc721TokenBalanceResponseContext context =
                                         new AsyncUtils.GetErc721TokenBalanceResponseContext(

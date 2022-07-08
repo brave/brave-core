@@ -132,6 +132,7 @@ public class Utils {
     public static final String ADDRESS = "address";
     public static final String NAME = "name";
     public static final String ISIMPORTED = "isImported";
+    public static final String ISSOLANA = "isSolana";
     public static final String ISUPDATEACCOUNT = "isUpdateAccount";
     public static final String SWAP_EXCHANGE_PROXY = "0xdef1c0ded9bec7f1a1670819833240f027b25eff";
     public static final String ASSET_SYMBOL = "assetSymbol";
@@ -1124,6 +1125,18 @@ public class Utils {
         return eth;
     }
 
+    public static BlockchainToken createSolanaBlockchainToken(String chainId) {
+        BlockchainToken eth = new BlockchainToken();
+        eth.name = "Ethereum";
+        eth.symbol = "ETH";
+        eth.contractAddress = "";
+        eth.logo = "sol.png";
+        eth.decimals = 18;
+        eth.chainId = chainId;
+        eth.coin = CoinType.SOL;
+        return eth;
+    }
+
     public static BlockchainToken makeNetworkAsset(NetworkInfo network) {
         String logo;
 
@@ -1788,7 +1801,9 @@ public class Utils {
             String cryptoBalanceString =
                     String.format(Locale.getDefault(), "%.4f %s", cryptoBalance, userAsset.symbol);
 
-            WalletListItemModel walletListItemModel = new WalletListItemModel(R.drawable.ic_eth,
+            WalletListItemModel walletListItemModel = new WalletListItemModel(
+                    userAsset.symbol.equals("ETH") ? R.drawable.ic_eth
+                                                   : R.drawable.ic_sol_asset_icon,
                     userAsset.name, userAsset.symbol, userAsset.tokenId,
                     // Amount in USD
                     fiatBalanceString,
@@ -1797,6 +1812,8 @@ public class Utils {
 
             if (userAsset.symbol.equals("ETH")) {
                 userAsset.logo = "eth.png";
+            } else if (userAsset.symbol.equals("SOL")) {
+                userAsset.logo = "sol.png";
             }
             walletListItemModel.setIconPath("file://" + tokensPath + "/" + userAsset.logo);
             walletListItemModel.setBlockchainToken(userAsset);
@@ -1812,8 +1829,8 @@ public class Utils {
     public static void getExactUserAsset(BraveWalletService braveWalletService, String chainId,
             String assetSymbol, String assetName, String assetId, String contractAddress,
             int assetDecimals, Callback<BlockchainToken> callback) {
-        TokenUtils.getUserAssetsFiltered(
-                braveWalletService, chainId, TokenUtils.TokenType.ALL, (userAssets) -> {
+        TokenUtils.getUserAssetsFiltered(braveWalletService, chainId, TokenUtils.TokenType.ALL,
+                CoinType.ETH, (userAssets) -> {
                     BlockchainToken resultToken = null;
                     for (BlockchainToken userAsset : userAssets) {
                         if (chainId.equals(userAsset.chainId)
