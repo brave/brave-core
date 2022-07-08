@@ -43,7 +43,7 @@ constexpr webui::LocalizedString kLocalizedStrings[] = {
     {"braveWalletUnlockNeededToCreateAccount",
      BRAVE_WALLET_UNLOCK_NEEDED_TO_CREATE_ACCOUNT},
     {"braveWalletMultiChain", BRAVE_WALLET_MULTI_CHAIN},
-    {"braveWalletPerksNftStorage", BRAVE_WALLET_PERKS_NFT_STORAGE},
+    {"braveWalletPerksBrowserNative", BRAVE_WALLET_PERKS_BROWSER_NATIVE},
     {"braveWalletPerksTokens", BRAVE_WALLET_PERKS_TOKENS},
     {"braveWallet", IDS_BRAVE_WALLET},
     {"braveWalletDefiCategory", IDS_BRAVE_WALLET_DEFI_CATEGORY},
@@ -129,8 +129,8 @@ constexpr webui::LocalizedString kLocalizedStrings[] = {
     {"braveWalletWelcomeButton", IDS_BRAVE_WALLET_WELCOME_BUTTON},
     {"braveWalletWelcomeRestoreButton",
      IDS_BRAVE_WALLET_WELCOME_RESTORE_BUTTON},
-    {"braveWalletWelcomeIAlreadyHaveAWallet",
-     IDS_BRAVE_WALLET_WELCOME_I_ALREADY_HAVE_A_WALLET},
+    {"braveWalletImportExistingWallet",
+     BRAVE_WALLET_IMPORT_EXISTING_WALLET},
     {"braveWalletBackupIntroTitle", IDS_BRAVE_WALLET_BACKUP_INTRO_TITLE},
     {"braveWalletBackupIntroDescription",
      IDS_BRAVE_WALLET_BACKUP_INTRO_DESCRIPTION},
@@ -775,8 +775,8 @@ constexpr webui::LocalizedString kLocalizedStrings[] = {
      IDS_BRAVE_WALLET_DEPOSIT_ONLY_SEND_ON_X_NETWORK},
     {"braveWalletFundWalletDescription",
      IDS_BRAVE_WALLET_FUND_WALLET_DESCRIPTION},
-    {"braveWalletWhatIsACryptoWallet",
-     IDS_BRAVE_WALLET_WHAT_IS_A_CRYPTO_WALLET}};
+    {"braveWalletLearnMoreAboutBraveWallet",
+     IDS_BRAVE_WALLET_LEARN_MORE_ABOUT_BRAVE_WALLET}};
 
 // 0x swap constants
 constexpr char kRopstenSwapBaseAPIURL[] = "https://ropsten.api.0x.org/";
