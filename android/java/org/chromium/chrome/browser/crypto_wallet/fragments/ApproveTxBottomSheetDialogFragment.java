@@ -47,6 +47,7 @@ import org.chromium.chrome.browser.crypto_wallet.adapters.ApproveTxFragmentPageA
 import org.chromium.chrome.browser.crypto_wallet.listeners.TransactionConfirmationListener;
 import org.chromium.chrome.browser.crypto_wallet.observers.ApprovedTxObserver;
 import org.chromium.chrome.browser.crypto_wallet.util.TokenUtils;
+import org.chromium.chrome.browser.crypto_wallet.util.TransactionUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.url.GURL;
 
@@ -195,8 +196,8 @@ public class ApproveTxBottomSheetDialogFragment extends BottomSheetDialogFragmen
         ((View) parent).getLayoutParams().height = ViewGroup.LayoutParams.WRAP_CONTENT;
         JsonRpcService jsonRpcService = getJsonRpcService();
         assert jsonRpcService != null;
-        jsonRpcService.getChainId(CoinType.ETH, chainId -> {
-            jsonRpcService.getAllNetworks(CoinType.ETH, chains -> {
+        jsonRpcService.getChainId(TransactionUtils.getCoinType(mTxInfo), chainId -> {
+            jsonRpcService.getAllNetworks(TransactionUtils.getCoinType(mTxInfo), chains -> {
                 NetworkInfo[] customNetworks = Utils.getCustomNetworks(chains);
                 TextView networkName = view.findViewById(R.id.network_name);
                 networkName.setText(
@@ -274,6 +275,7 @@ public class ApproveTxBottomSheetDialogFragment extends BottomSheetDialogFragmen
                                     fillAssetDependentControls(mChainSymbol, view, mChainDecimals);
                                 }
                             });
+                } else if (TransactionUtils.isSolTransaction(mTxInfo)) {
                 } else {
                     if (mTxInfo.txDataUnion.getEthTxData1559()
                                     .baseData.to.toLowerCase(Locale.getDefault())
@@ -419,7 +421,7 @@ public class ApproveTxBottomSheetDialogFragment extends BottomSheetDialogFragmen
         if (txService == null) {
             return;
         }
-        txService.rejectTransaction(CoinType.ETH, mTxInfo.id, success -> {
+        txService.rejectTransaction(TransactionUtils.getCoinType(mTxInfo), mTxInfo.id, success -> {
             assert success;
             if (!success || !dismiss) {
                 return;
@@ -437,19 +439,20 @@ public class ApproveTxBottomSheetDialogFragment extends BottomSheetDialogFragmen
         if (txService == null) {
             return;
         }
-        txService.approveTransaction(CoinType.ETH, mTxInfo.id, (success, error, errorMessage) -> {
-            assert success;
-            Utils.warnWhenError(ApproveTxBottomSheetDialogFragment.TAG_FRAGMENT,
-                    "approveTransaction", error.getProviderError(), errorMessage);
-            if (!success) {
-                return;
-            }
-            mApproved = true;
-            if (mTransactionConfirmationListener != null) {
-                mTransactionConfirmationListener.onApproveTransaction();
-            }
-            dismiss();
-        });
+        txService.approveTransaction(TransactionUtils.getCoinType(mTxInfo), mTxInfo.id,
+                (success, error, errorMessage) -> {
+                    assert success;
+                    Utils.warnWhenError(ApproveTxBottomSheetDialogFragment.TAG_FRAGMENT,
+                            "approveTransaction", error.getProviderError(), errorMessage);
+                    if (!success) {
+                        return;
+                    }
+                    mApproved = true;
+                    if (mTransactionConfirmationListener != null) {
+                        mTransactionConfirmationListener.onApproveTransaction();
+                    }
+                    dismiss();
+                });
     }
 
     @Override
