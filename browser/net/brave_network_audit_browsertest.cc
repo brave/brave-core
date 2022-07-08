@@ -11,6 +11,7 @@
 #include "base/path_service.h"
 #include "base/run_loop.h"
 #include "base/test/bind.h"
+#include "base/test/scoped_run_loop_timeout.h"
 #include "base/test/test_timeouts.h"
 #include "base/threading/thread_task_runner_handle.h"
 #include "base/time/time.h"
@@ -45,7 +46,7 @@ namespace {
 // In particular:
 //   --ui-test-action-timeout: should be greater than |kMaxTimeoutPerLoadedURL|.
 //   --test-launcher-timeout: should be able to fit the total sum of timeouts.
-const int kMaxTimeoutPerLoadedURL = 300000;
+const int kMaxTimeoutPerLoadedURL = 30;
 
 // Based on the implementation of isPrivateIP() from NPM's "ip" module.
 // See https://github.com/indutny/node-ip/blob/master/lib/ip.js
@@ -61,9 +62,11 @@ constexpr const char* kPrivateIPRegexps[] = {
     "::"};
 
 void WaitForTimeout(int timeout) {
+  base::test::ScopedRunLoopTimeout file_download_timeout(
+      FROM_HERE, base::Seconds(kMaxTimeoutPerLoadedURL + 1));
   base::RunLoop run_loop;
   base::ThreadTaskRunnerHandle::Get()->PostDelayedTask(
-      FROM_HERE, run_loop.QuitClosure(), base::Milliseconds(timeout));
+      FROM_HERE, run_loop.QuitClosure(), base::Seconds(timeout));
   run_loop.Run();
 }
 
