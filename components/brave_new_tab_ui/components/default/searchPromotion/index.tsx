@@ -14,9 +14,9 @@ import {
   StyledSearchPromotionPopupTitleWrapper,
   StyledSearchPromotionPopupDesc,
   StyledSearchPromotionPopupBottomWrapper,
-  StyledSearchPromotionPopupBottom,
+  StyledSearchPromotionPopupBottom
 } from './style'
-import SearchBox from "./search-box"
+import SearchBox from './search-box'
 import { getLocale } from '../../../../common/locale'
 
 function ColorBar () {

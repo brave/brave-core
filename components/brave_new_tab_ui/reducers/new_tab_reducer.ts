@@ -107,7 +107,7 @@ export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.S
         ...state,
         searchPromotionEnabled: false
       }
-      break;
+      break
 
     case types.CUSTOM_BACKGROUND_UPDATED:
       // While customizing background, background has

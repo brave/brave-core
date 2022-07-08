@@ -103,13 +103,12 @@ function GetBackgroundImageSrc (props: Props) {
 }
 
 function GetShouldShowSearchPromotion (props: Props, state: State) {
-  if (GetIsShowingBrandedWallpaper(props))
-    return false
+  if (GetIsShowingBrandedWallpaper(props)) { return false }
 
   return props.newTabData.searchPromotionEnabled && state.showSearchPromotion
 }
 
-function GetShouldForceToHideWidget(props: Props, state: State) {
+function GetShouldForceToHideWidget (props: Props, state: State) {
   console.error(window.innerWidth)
   if (!GetShouldShowSearchPromotion(props, state)) {
     return false
@@ -173,7 +172,7 @@ class NewTabPage extends React.Component<Props, State> {
         this.setState({ isPromptingBraveToday: true })
       }, 1700)
     }
-    this.setState({showSearchPromotion: this.props.newTabData.searchPromotionEnabled})
+    this.setState({ showSearchPromotion: this.props.newTabData.searchPromotionEnabled })
     window.addEventListener('resize', this.handleResize.bind(this))
   }
 
@@ -181,7 +180,7 @@ class NewTabPage extends React.Component<Props, State> {
     if (this.braveNewsPromptTimerId) {
       window.clearTimeout(this.braveNewsPromptTimerId)
     }
-    window.removeEventListener('resize', this.handleResize.bind(this));
+    window.removeEventListener('resize', this.handleResize.bind(this))
   }
 
   componentDidUpdate (prevProps: Props) {
@@ -207,7 +206,7 @@ class NewTabPage extends React.Component<Props, State> {
     }
   }
 
-  handleResize() {
+  handleResize () {
     this.setState({
       forceToHideWidget: GetShouldForceToHideWidget(this.props, this.state)
     })
@@ -1163,7 +1162,7 @@ class NewTabPage extends React.Component<Props, State> {
     }
 
     if (forceToHideWidget) {
-      showTopSites = false;
+      showTopSites = false
       showStats = false
       showClock = false
       cryptoContent = null
