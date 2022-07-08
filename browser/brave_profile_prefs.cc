@@ -270,9 +270,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   feed::RegisterProfilePrefs(registry);
   registry->RegisterBooleanPref(feed::prefs::kEnableSnippets, false);
   registry->RegisterBooleanPref(feed::prefs::kArticlesListVisible, false);
-  // Translate is not available on Android
-  registry->SetDefaultPrefValue(translate::prefs::kOfferTranslateEnabled,
-                                base::Value(false));
+
   // Explicitly disable safe browsing extended reporting by default in case they
   // change it in upstream.
   registry->SetDefaultPrefValue(prefs::kSafeBrowsingScoutReportingEnabled,
