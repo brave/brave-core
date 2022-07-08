@@ -70,7 +70,7 @@ const AssetIconWithPlaceholder = withPlaceholderIcon(AssetIcon, { size: 'big', m
 export const PortfolioAsset = () => {
   // routing
   const history = useHistory()
-  const { id: assetId } = useParams<{ id?: string }>()
+  const { id: assetId, tokenId } = useParams<{ id?: string, tokenId?: string }>()
 
   // redux
   const dispatch = useDispatch()
@@ -98,7 +98,6 @@ export const PortfolioAsset = () => {
     isFetchingNFTMetadata,
     nftMetadata
   } = useSelector(({ page }: { page: PageState }) => page)
-
   // custom hooks
   const getAccountBalance = useBalance(networkList)
 
@@ -167,7 +166,7 @@ export const PortfolioAsset = () => {
 
     // If the id length is greater than 15 assumes it's a contractAddress
     return assetId.length > 15
-      ? userVisibleTokensInfo.find((token) => token.contractAddress === assetId)
+      ? userVisibleTokensInfo.find((token) => tokenId ? token.contractAddress === assetId && token.tokenId === tokenId : token.contractAddress === assetId)
       : userVisibleTokensInfo.find((token) => token.symbol.toLowerCase() === assetId?.toLowerCase())
   }, [assetId, userVisibleTokensInfo, selectedTimeline])
 

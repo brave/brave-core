@@ -611,7 +611,7 @@ export enum WalletRoutes {
 
   // portfolio
   Portfolio = '/crypto/portfolio',
-  PortfolioAsset = '/crypto/portfolio/:id',
+  PortfolioAsset = '/crypto/portfolio/:id/:tokenId?',
 
   // portfolio asset modals
   AddAssetModal = '/crypto/portfolio/add-asset',

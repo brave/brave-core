@@ -173,8 +173,11 @@ export const PortfolioOverview = () => {
     if (asset.contractAddress === '') {
       history.push(`${WalletRoutes.Portfolio}/${asset.symbol}`)
       return
+    } else if (asset.isErc721) {
+      history.push(`${WalletRoutes.Portfolio}/${asset.contractAddress}/${asset.tokenId}`)
+    } else {
+      history.push(`${WalletRoutes.Portfolio}/${asset.contractAddress}`)
     }
-    history.push(`${WalletRoutes.Portfolio}/${asset.contractAddress}`)
 
     dispatch(WalletPageActions.selectAsset({ asset, timeFrame: selectedTimeline }))
   }, [selectedTimeline])
