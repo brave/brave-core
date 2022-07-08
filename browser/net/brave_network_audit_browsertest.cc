@@ -249,7 +249,7 @@ class BraveNetworkAuditTest : public InProcessBrowserTest {
 
     // Ensure the root value is a dictionary.
     auto* main = parsed->GetIfDict();
-    ASSERT_TRUE(parsed);
+    ASSERT_TRUE(main);
 
     // Ensure it has a "constants" property.
     auto* constants = main->FindDict("constants");
