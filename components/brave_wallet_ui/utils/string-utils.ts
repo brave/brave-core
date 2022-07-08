@@ -18,10 +18,6 @@ export const httpifyIpfsUrl = (url: string | undefined) => {
     return ''
   }
 
-  if (url.startsWith('data:image/')) {
-    return url
-  }
-
   return url.includes('ipfs://') ? url.replace('ipfs://', 'https://ipfs.io/ipfs/') : url
 }
 
