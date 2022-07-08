@@ -6,24 +6,20 @@
 package org.chromium.chrome.browser.crypto_wallet.activities;
 
 import android.annotation.SuppressLint;
-import android.content.Intent;
-import android.view.MenuItem;
 
-import androidx.appcompat.widget.Toolbar;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.appbar.MaterialToolbar;
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.app.domain.KeyringModel;
 import org.chromium.chrome.browser.crypto_wallet.adapters.WalletCoinAdapter;
-import org.chromium.chrome.browser.crypto_wallet.fragments.AccountsFragment;
+import org.chromium.chrome.browser.crypto_wallet.fragments.CreateAccountBottomSheetFragment;
 import org.chromium.chrome.browser.crypto_wallet.listeners.OnWalletListItemClick;
 import org.chromium.chrome.browser.crypto_wallet.model.WalletListItemModel;
-import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,34 +51,33 @@ public class AccountSelectorActivity
         mRVNetworkSelector.setAdapter(mWalletCoinAdapter);
         mWalletCoinAdapter.setOnWalletListItemClick(this);
         mWalletCoinAdapter.setOnWalletListItemClick(this);
-        mKeyringModel.mKeyringInfoLiveData.observe(this, keyringInfo -> {
-            if (keyringInfo != null) {
-                mAccountInfos = keyringInfo.accountInfos;
-                List<WalletListItemModel> walletListItemModelList = new ArrayList<>();
-                for (AccountInfo accountInfo : mAccountInfos) {
-                    if (!accountInfo.isImported) {
-                        walletListItemModelList.add(
-                                new WalletListItemModel(R.drawable.ic_eth, accountInfo.name,
-                                        accountInfo.address, null, null, accountInfo.isImported));
-                    }
+        mKeyringModel.getAccounts(accountInfos -> {
+            mAccountInfos = accountInfos;
+            List<WalletListItemModel> walletListItemModelList = new ArrayList<>();
+            for (AccountInfo accountInfo : mAccountInfos) {
+                if (!accountInfo.isImported) {
+                    walletListItemModelList.add(
+                            new WalletListItemModel(R.drawable.ic_eth, accountInfo.name,
+                                    accountInfo.address, null, null, accountInfo.isImported));
                 }
-
-                mWalletCoinAdapter.setWalletListItemModelList(walletListItemModelList);
-                mWalletCoinAdapter.notifyDataSetChanged();
             }
+
+            mWalletCoinAdapter.setWalletListItemModelList(walletListItemModelList);
+            mWalletCoinAdapter.notifyDataSetChanged();
+
+            mKeyringModel.mSelectedAccount.observe(this, selectedAccountInfo -> {
+                if (selectedAccountInfo != null) {
+                    mWalletCoinAdapter.updateSelectedNetwork(
+                            selectedAccountInfo.name, selectedAccountInfo.address);
+                }
+            });
         });
 
-        mKeyringModel.mSelectedAccount.observe(this, selectedAccountInfo -> {
-            if (selectedAccountInfo != null) {
-                mWalletCoinAdapter.updateSelectedNetwork(
-                        selectedAccountInfo.name, selectedAccountInfo.address);
-            }
-        });
         MaterialToolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setOnMenuItemClickListener(item -> {
-            Intent intent = new Intent(this, AddAccountActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-            startActivity(intent);
+            BottomSheetDialogFragment sheetDialogFragment = new CreateAccountBottomSheetFragment();
+            sheetDialogFragment.show(
+                    getSupportFragmentManager(), CreateAccountBottomSheetFragment.TAG);
             return true;
         });
     }

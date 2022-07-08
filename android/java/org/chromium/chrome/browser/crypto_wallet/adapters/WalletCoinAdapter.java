@@ -65,8 +65,7 @@ public class WalletCoinAdapter extends RecyclerView.Adapter<WalletCoinAdapter.Vi
     }
 
     @Override
-    public @NonNull WalletCoinAdapter.ViewHolder onCreateViewHolder(
-            ViewGroup parent, int viewType) {
+    public @NonNull ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         context = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
         View walletCoinView = inflater.inflate(R.layout.wallet_coin_list_item, parent, false);
@@ -74,7 +73,7 @@ public class WalletCoinAdapter extends RecyclerView.Adapter<WalletCoinAdapter.Vi
     }
 
     @Override
-    public void onBindViewHolder(@NonNull WalletCoinAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         WalletListItemModel walletListItemModel = walletListItemModelList.get(position);
         // When ViewHolder is re-used, it has the obeservers which are fired when
         // we modifying checkbox. This may cause unwanted modifying of the model

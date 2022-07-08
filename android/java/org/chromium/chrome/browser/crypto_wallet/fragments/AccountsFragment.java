@@ -20,11 +20,15 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
+
 import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.BraveWalletConstants;
 import org.chromium.brave_wallet.mojom.KeyringInfo;
 import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.app.BraveActivity;
+import org.chromium.chrome.browser.app.domain.WalletModel;
 import org.chromium.chrome.browser.crypto_wallet.activities.AccountDetailActivity;
 import org.chromium.chrome.browser.crypto_wallet.activities.AddAccountActivity;
 import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletActivity;
@@ -42,6 +46,8 @@ import java.util.List;
 public class AccountsFragment extends Fragment implements OnWalletListItemClick {
     private View rootView;
     private WalletCoinAdapter walletCoinAdapter;
+    private WalletModel mWalletModel;
+
     public static AccountsFragment newInstance() {
         return new AccountsFragment();
     }
@@ -50,6 +56,10 @@ public class AccountsFragment extends Fragment implements OnWalletListItemClick 
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+        BraveActivity activity = BraveActivity.getBraveActivity();
+        if (activity != null) {
+            mWalletModel = activity.getWalletModel();
+        }
     }
 
     @Nullable
@@ -66,9 +76,9 @@ public class AccountsFragment extends Fragment implements OnWalletListItemClick 
 
         TextView addAccountBtn = view.findViewById(R.id.add_account_btn);
         addAccountBtn.setOnClickListener(v -> {
-            Intent addAccountActivityIntent = new Intent(getActivity(), AddAccountActivity.class);
-            addAccountActivityIntent.putExtra(Utils.ISUPDATEACCOUNT, false);
-            startActivityForResult(addAccountActivityIntent, Utils.ACCOUNT_REQUEST_CODE);
+            BottomSheetDialogFragment sheetDialogFragment = new CreateAccountBottomSheetFragment();
+            sheetDialogFragment.show(
+                    getChildFragmentManager(), CreateAccountBottomSheetFragment.TAG);
         });
 
         TextView backupBtn = view.findViewById(R.id.accounts_backup);
@@ -88,11 +98,8 @@ public class AccountsFragment extends Fragment implements OnWalletListItemClick 
     private void setUpAccountList(View view) {
         RecyclerView rvAccounts = view.findViewById(R.id.rv_accounts);
         walletCoinAdapter = new WalletCoinAdapter(WalletCoinAdapter.AdapterType.ACCOUNTS_LIST);
-        KeyringService keyringService = getKeyringService();
-        if (keyringService != null) {
-            keyringService.getKeyringInfo(BraveWalletConstants.DEFAULT_KEYRING_ID, keyringInfo -> {
-                if (keyringInfo != null) {
-                    AccountInfo[] accountInfos = keyringInfo.accountInfos;
+        mWalletModel.getKeyringModel().mAccountInfos.observe(
+                getViewLifecycleOwner(), accountInfos -> {
                     List<WalletListItemModel> walletListItemModelList = new ArrayList<>();
                     for (AccountInfo accountInfo : accountInfos) {
                         if (!accountInfo.isImported) {
@@ -108,20 +115,15 @@ public class AccountsFragment extends Fragment implements OnWalletListItemClick 
                         rvAccounts.setAdapter(walletCoinAdapter);
                         rvAccounts.setLayoutManager(new LinearLayoutManager(getActivity()));
                     }
-                }
-            });
-        }
+                });
     }
 
     private void setUpSecondaryAccountList(View view) {
         RecyclerView rvSecondaryAccounts = view.findViewById(R.id.rv_secondary_accounts);
         WalletCoinAdapter walletCoinAdapter =
                 new WalletCoinAdapter(WalletCoinAdapter.AdapterType.ACCOUNTS_LIST);
-        KeyringService keyringService = getKeyringService();
-        if (keyringService != null) {
-            keyringService.getKeyringInfo(BraveWalletConstants.DEFAULT_KEYRING_ID, keyringInfo -> {
-                if (keyringInfo != null) {
-                    AccountInfo[] accountInfos = keyringInfo.accountInfos;
+        mWalletModel.getKeyringModel().mAccountInfos.observe(
+                getViewLifecycleOwner(), accountInfos -> {
                     List<WalletListItemModel> walletListItemModelList = new ArrayList<>();
                     for (AccountInfo accountInfo : accountInfos) {
                         if (accountInfo.isImported) {
@@ -138,9 +140,7 @@ public class AccountsFragment extends Fragment implements OnWalletListItemClick 
                         rvSecondaryAccounts.setLayoutManager(
                                 new LinearLayoutManager(getActivity()));
                     }
-                }
-            });
-        }
+                });
     }
 
     @Override
@@ -150,7 +150,7 @@ public class AccountsFragment extends Fragment implements OnWalletListItemClick 
         accountDetailActivityIntent.putExtra(Utils.ADDRESS, walletListItemModel.getSubTitle());
         accountDetailActivityIntent.putExtra(
                 Utils.ISIMPORTED, walletListItemModel.getIsImportedAccount());
-        startActivityForResult(accountDetailActivityIntent, Utils.ACCOUNT_REQUEST_CODE);
+        startActivity(accountDetailActivityIntent);
     }
 
     @Override

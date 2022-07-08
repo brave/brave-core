@@ -17,6 +17,7 @@ const base::Feature* kBraveFeaturesExposedToJava[] = {
     &brave_rewards::features::kBraveRewards,
     &blink::features::kForceWebContentsDarkMode,
     &brave_wallet::features::kNativeBraveWalletFeature,
+    &brave_wallet::features::kBraveWalletSolanaFeature,
     &brave_today::features::kBraveNewsFeature,
 };
 

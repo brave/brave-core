@@ -5,14 +5,18 @@
 
 package org.chromium.chrome.browser.app.domain;
 
+import android.content.Context;
+
 import org.chromium.brave_wallet.mojom.AssetRatioService;
 import org.chromium.brave_wallet.mojom.BlockchainRegistry;
 import org.chromium.brave_wallet.mojom.BraveWalletService;
 import org.chromium.brave_wallet.mojom.EthTxManagerProxy;
 import org.chromium.brave_wallet.mojom.JsonRpcService;
 import org.chromium.brave_wallet.mojom.KeyringService;
+import org.chromium.brave_wallet.mojom.SolanaProvider;
 import org.chromium.brave_wallet.mojom.SolanaTxManagerProxy;
 import org.chromium.brave_wallet.mojom.TxService;
+import org.chromium.brave_wallet.mojom.WalletHandler;
 
 // Under development, some parts not tested so use with caution
 // A container for all the native services and APIs
@@ -28,11 +32,15 @@ public class WalletModel {
     private final CryptoModel mCryptoModel;
     private final DappsModel mDappsModel;
     private final KeyringModel mKeyringModel;
+    private Context mContext;
+    private CryptoActions mCryptoActions;
 
-    public WalletModel(KeyringService keyringService, BlockchainRegistry blockchainRegistry,
-            JsonRpcService jsonRpcService, TxService txService, EthTxManagerProxy ethTxManagerProxy,
+    public WalletModel(Context context, KeyringService keyringService,
+            BlockchainRegistry blockchainRegistry, JsonRpcService jsonRpcService,
+            TxService txService, EthTxManagerProxy ethTxManagerProxy,
             SolanaTxManagerProxy solanaTxManagerProxy, AssetRatioService assetRatioService,
             BraveWalletService braveWalletService) {
+        mContext = context;
         mKeyringService = keyringService;
         mBlockchainRegistry = blockchainRegistry;
         mJsonRpcService = jsonRpcService;
@@ -41,19 +49,23 @@ public class WalletModel {
         mSolanaTxManagerProxy = solanaTxManagerProxy;
         mAssetRatioService = assetRatioService;
         mBraveWalletService = braveWalletService;
-        mCryptoModel = new CryptoModel(mTxService, mKeyringService, mBlockchainRegistry,
+        mCryptoActions = new CryptoActions();
+        mCryptoModel = new CryptoModel(mContext, mTxService, mKeyringService, mBlockchainRegistry,
                 mJsonRpcService, mEthTxManagerProxy, mSolanaTxManagerProxy, mBraveWalletService,
                 mAssetRatioService);
-        mDappsModel = new DappsModel(mJsonRpcService, mBraveWalletService, mCryptoModel.getPendingTxHelper());
-        mKeyringModel =
-                new KeyringModel(keyringService, mCryptoModel.getSharedData(), braveWalletService);
+        mDappsModel = new DappsModel(
+                mJsonRpcService, mBraveWalletService, mCryptoModel.getPendingTxHelper());
+        mKeyringModel = new KeyringModel(
+                keyringService, mCryptoModel.getSharedData(), braveWalletService, mCryptoActions);
         init();
     }
 
-    public void resetServices(KeyringService keyringService, BlockchainRegistry blockchainRegistry,
-            JsonRpcService jsonRpcService, TxService txService, EthTxManagerProxy ethTxManagerProxy,
+    public void resetServices(Context context, KeyringService keyringService,
+            BlockchainRegistry blockchainRegistry, JsonRpcService jsonRpcService,
+            TxService txService, EthTxManagerProxy ethTxManagerProxy,
             SolanaTxManagerProxy solanaTxManagerProxy, AssetRatioService assetRatioService,
             BraveWalletService braveWalletService) {
+        mContext = context;
         setKeyringService(keyringService);
         setBlockchainRegistry(blockchainRegistry);
         setJsonRpcService(jsonRpcService);
@@ -62,7 +74,7 @@ public class WalletModel {
         setSolanaTxManagerProxy(solanaTxManagerProxy);
         setAssetRatioService(assetRatioService);
         setBraveWalletService(braveWalletService);
-        mCryptoModel.resetServices(mTxService, mKeyringService, mBlockchainRegistry,
+        mCryptoModel.resetServices(mContext, mTxService, mKeyringService, mBlockchainRegistry,
                 mJsonRpcService, mEthTxManagerProxy, mSolanaTxManagerProxy, mBraveWalletService,
                 mAssetRatioService);
         mDappsModel.resetServices(mJsonRpcService, mBraveWalletService, mCryptoModel.getPendingTxHelper());
@@ -159,5 +171,12 @@ public class WalletModel {
 
     public void setAssetRatioService(AssetRatioService mAssetRatioService) {
         this.mAssetRatioService = mAssetRatioService;
+    }
+
+    class CryptoActions implements CryptoModelActions {
+        @Override
+        public void updateCoinType() {
+            mCryptoModel.updateCoinType();
+        }
     }
 }
