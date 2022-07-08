@@ -39,8 +39,10 @@ import {
   ExplorerButton,
   NTFImageIframe,
   nftImageDimension,
-  NftImageWrapper
+  NftImageWrapper,
+  NFTImageSkeletonWrapper
 } from './style'
+import { LoadingSkeleton } from '../../../../../shared'
 
 export interface Props {
   isLoading: boolean
@@ -57,6 +59,7 @@ const NFTDetails = (props: Props) => {
     nftMetadata,
     selectedNetwork
   } = props
+  const [isImageLoaded, setIsImageLoaded] = React.useState(false)
 
   const onClickViewOnBlockExplorer = useExplorer(selectedNetwork)
 
@@ -93,12 +96,16 @@ const NFTDetails = (props: Props) => {
       }
       {nftMetadata &&
         <>
-          <NftImageWrapper>
+          <NftImageWrapper isLoading={!isImageLoaded}>
             <NTFImageIframe
               src={`chrome-untrusted://nft-display?imageUrl=${encodeURIComponent(nftMetadata.imageURL)}&imageWidth=${nftImageDimension}&imageHeight=${nftImageDimension}`}
               sandbox="allow-scripts"
+              onLoad={() => setIsImageLoaded(true)}
             />
           </NftImageWrapper>
+          {!isImageLoaded &&
+            <LoadingSkeleton wrapper={NFTImageSkeletonWrapper} />
+          }
           <DetailColumn>
             <TokenName>
               {selectedAsset.name} {
