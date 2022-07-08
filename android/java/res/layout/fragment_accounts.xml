@@ -87,7 +87,7 @@
             android:id = "@+id/add_account_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/add_account"
+            android:text="@string/add_import_account"
             android:textColor="@color/wallet_text_color"
             android:background="@drawable/rounded_white_holo_bg"
             android:gravity="center"

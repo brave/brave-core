@@ -19,6 +19,8 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
+
 import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.BraveWalletConstants;
 import org.chromium.brave_wallet.mojom.BraveWalletService;
@@ -29,6 +31,7 @@ import org.chromium.chrome.browser.ChromeTabbedActivity;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.crypto_wallet.activities.AddAccountActivity;
 import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletBaseActivity;
+import org.chromium.chrome.browser.crypto_wallet.fragments.CreateAccountBottomSheetFragment;
 import org.chromium.chrome.browser.crypto_wallet.permission.BraveEthereumPermissionAccountsListAdapter;
 import org.chromium.chrome.browser.crypto_wallet.util.AccountsPermissionsHelper;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
@@ -104,9 +107,10 @@ public class ConnectAccountFragment extends BaseDAppsFragment
         mbtNewAccount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), AddAccountActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                startActivity(intent);
+                BottomSheetDialogFragment sheetDialogFragment =
+                        new CreateAccountBottomSheetFragment();
+                sheetDialogFragment.show(
+                        getChildFragmentManager(), CreateAccountBottomSheetFragment.TAG);
             }
         });
         mRecyclerView = view.findViewById(R.id.accounts_list);
