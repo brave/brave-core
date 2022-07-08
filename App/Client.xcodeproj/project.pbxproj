@@ -145,6 +145,61 @@
 		273DFB18284FDB1D007781AF /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = Shortcuts/ja.lproj/BrowserIntents.strings; sourceTree = "<group>"; };
 		27465DC3284FDB6F0056FDB2 /* sv */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sv; path = Shortcuts/sv.lproj/BrowserIntents.strings; sourceTree = "<group>"; };
 		275A4C39284FDB290016F5A8 /* ko-KR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "ko-KR"; path = "Shortcuts/ko-KR.lproj/BrowserIntents.strings"; sourceTree = "<group>"; };
+		276101FD287890A10039AB22 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/BraveWallet.strings; sourceTree = "<group>"; };
+		276101FF287890A10039AB22 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/BraveShared.strings; sourceTree = "<group>"; };
+		27610201287890A10039AB22 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
+		27610202287890A10039AB22 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/BraveWallet.strings; sourceTree = "<group>"; };
+		27610203287890A10039AB22 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/BraveShared.strings; sourceTree = "<group>"; };
+		27610204287890A10039AB22 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Localizable.strings; sourceTree = "<group>"; };
+		27610205287890A10039AB22 /* zh-TW */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-TW"; path = "zh-TW.lproj/BraveWallet.strings"; sourceTree = "<group>"; };
+		27610206287890A10039AB22 /* zh-TW */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-TW"; path = "zh-TW.lproj/BraveShared.strings"; sourceTree = "<group>"; };
+		27610207287890A10039AB22 /* zh-TW */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-TW"; path = "zh-TW.lproj/Localizable.strings"; sourceTree = "<group>"; };
+		27610208287890A10039AB22 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/BraveWallet.strings; sourceTree = "<group>"; };
+		27610209287890A10039AB22 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/BraveShared.strings; sourceTree = "<group>"; };
+		2761020A287890A10039AB22 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		2761020B287890A10039AB22 /* uk */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = uk; path = uk.lproj/BraveWallet.strings; sourceTree = "<group>"; };
+		2761020C287890A10039AB22 /* uk */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = uk; path = uk.lproj/BraveShared.strings; sourceTree = "<group>"; };
+		2761020D287890A10039AB22 /* uk */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = uk; path = uk.lproj/Localizable.strings; sourceTree = "<group>"; };
+		2761020E287890A10039AB22 /* nb */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nb; path = nb.lproj/BraveWallet.strings; sourceTree = "<group>"; };
+		2761020F287890A10039AB22 /* nb */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nb; path = nb.lproj/BraveShared.strings; sourceTree = "<group>"; };
+		27610210287890A10039AB22 /* nb */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nb; path = nb.lproj/Localizable.strings; sourceTree = "<group>"; };
+		27610211287890A10039AB22 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/BraveWallet.strings; sourceTree = "<group>"; };
+		27610212287890A10039AB22 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/BraveShared.strings; sourceTree = "<group>"; };
+		27610213287890A10039AB22 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Localizable.strings; sourceTree = "<group>"; };
+		27610214287890A10039AB22 /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = it.lproj/BraveWallet.strings; sourceTree = "<group>"; };
+		27610215287890A10039AB22 /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = it.lproj/BraveShared.strings; sourceTree = "<group>"; };
+		27610216287890A10039AB22 /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = it.lproj/Localizable.strings; sourceTree = "<group>"; };
+		27610217287890A10039AB22 /* ms */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ms; path = ms.lproj/BraveWallet.strings; sourceTree = "<group>"; };
+		27610218287890A10039AB22 /* ms */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ms; path = ms.lproj/BraveShared.strings; sourceTree = "<group>"; };
+		27610219287890A10039AB22 /* ms */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ms; path = ms.lproj/Localizable.strings; sourceTree = "<group>"; };
+		2761021A287890A10039AB22 /* sv */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sv; path = sv.lproj/BraveWallet.strings; sourceTree = "<group>"; };
+		2761021B287890A10039AB22 /* sv */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sv; path = sv.lproj/BraveShared.strings; sourceTree = "<group>"; };
+		2761021C287890A10039AB22 /* sv */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sv; path = sv.lproj/Localizable.strings; sourceTree = "<group>"; };
+		2761021D287890A10039AB22 /* ko-KR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "ko-KR"; path = "ko-KR.lproj/BraveWallet.strings"; sourceTree = "<group>"; };
+		2761021E287890A10039AB22 /* ko-KR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "ko-KR"; path = "ko-KR.lproj/BraveShared.strings"; sourceTree = "<group>"; };
+		2761021F287890A10039AB22 /* ko-KR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "ko-KR"; path = "ko-KR.lproj/Localizable.strings"; sourceTree = "<group>"; };
+		27610220287890A10039AB22 /* id-ID */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "id-ID"; path = "id-ID.lproj/BraveWallet.strings"; sourceTree = "<group>"; };
+		27610221287890A10039AB22 /* id-ID */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "id-ID"; path = "id-ID.lproj/BraveShared.strings"; sourceTree = "<group>"; };
+		27610222287890A10039AB22 /* id-ID */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "id-ID"; path = "id-ID.lproj/Localizable.strings"; sourceTree = "<group>"; };
+		27610223287890A10039AB22 /* tr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = tr; path = tr.lproj/BraveWallet.strings; sourceTree = "<group>"; };
+		27610224287890A10039AB22 /* tr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = tr; path = tr.lproj/BraveShared.strings; sourceTree = "<group>"; };
+		27610225287890A10039AB22 /* tr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = tr; path = tr.lproj/Localizable.strings; sourceTree = "<group>"; };
+		27610226287890A10039AB22 /* pl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pl; path = pl.lproj/BraveWallet.strings; sourceTree = "<group>"; };
+		27610227287890A10039AB22 /* pl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pl; path = pl.lproj/BraveShared.strings; sourceTree = "<group>"; };
+		27610228287890A10039AB22 /* pl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pl; path = pl.lproj/Localizable.strings; sourceTree = "<group>"; };
+		27610229287890A10039AB22 /* pt-BR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "pt-BR"; path = "pt-BR.lproj/BraveWallet.strings"; sourceTree = "<group>"; };
+		2761022A287890A10039AB22 /* pt-BR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "pt-BR"; path = "pt-BR.lproj/BraveShared.strings"; sourceTree = "<group>"; };
+		2761022B287890A10039AB22 /* pt-BR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "pt-BR"; path = "pt-BR.lproj/Localizable.strings"; sourceTree = "<group>"; };
+		2761022C287890A10039AB22 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/BraveWallet.strings; sourceTree = "<group>"; };
+		2761022D287890A10039AB22 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/BraveShared.strings; sourceTree = "<group>"; };
+		2761022E287890A10039AB22 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
+		2761022F287890A10039AB22 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/BraveWallet.strings; sourceTree = "<group>"; };
+		27610230287890A10039AB22 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/BraveShared.strings; sourceTree = "<group>"; };
+		27610231287890A10039AB22 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
+		27610232287890A10039AB22 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		27610233287890A10039AB22 /* zh */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = zh; path = zh.lproj/BraveWallet.strings; sourceTree = "<group>"; };
+		27610234287890A10039AB22 /* zh */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = zh; path = zh.lproj/BraveShared.strings; sourceTree = "<group>"; };
+		27610235287890A10039AB22 /* zh */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = zh; path = zh.lproj/Localizable.strings; sourceTree = "<group>"; };
 		276FEA8B284FDB7A001A0718 /* tr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = tr; path = Shortcuts/tr.lproj/BrowserIntents.strings; sourceTree = "<group>"; };
 		277CA004284FDB34002E8470 /* ms */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ms; path = Shortcuts/ms.lproj/BrowserIntents.strings; sourceTree = "<group>"; };
 		27995074284FDAE400BC2054 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = Shortcuts/de.lproj/BrowserIntents.strings; sourceTree = "<group>"; };
@@ -401,6 +456,17 @@
 			path = iOS;
 			sourceTree = "<group>";
 		};
+		276101FB287890A10039AB22 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				276101FC287890A10039AB22 /* BraveWallet.strings */,
+				276101FE287890A10039AB22 /* BraveShared.strings */,
+				27610200287890A10039AB22 /* Localizable.strings */,
+				27610232287890A10039AB22 /* Info.plist */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
 		27F443962135E11200296C58 /* ShareExtension */ = {
 			isa = PBXGroup;
 			children = (
@@ -416,6 +482,7 @@
 			children = (
 				272A00F42847B682009F1DC9 /* README.md */,
 				27AAA14A283E89AF004C9B5E /* Strings.swift */,
+				276101FB287890A10039AB22 /* Resources */,
 				27FDCE882835AF5400E78FAD /* BraveWallet */,
 				27FDCE852835AF3500E78FAD /* Shared */,
 				27FDCE842835AF2B00E78FAD /* BraveShared */,
@@ -974,6 +1041,81 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
+		276101FC287890A10039AB22 /* BraveWallet.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				276101FD287890A10039AB22 /* de */,
+				27610202287890A10039AB22 /* ja */,
+				27610205287890A10039AB22 /* zh-TW */,
+				27610208287890A10039AB22 /* en */,
+				2761020B287890A10039AB22 /* uk */,
+				2761020E287890A10039AB22 /* nb */,
+				27610211287890A10039AB22 /* es */,
+				27610214287890A10039AB22 /* it */,
+				27610217287890A10039AB22 /* ms */,
+				2761021A287890A10039AB22 /* sv */,
+				2761021D287890A10039AB22 /* ko-KR */,
+				27610220287890A10039AB22 /* id-ID */,
+				27610223287890A10039AB22 /* tr */,
+				27610226287890A10039AB22 /* pl */,
+				27610229287890A10039AB22 /* pt-BR */,
+				2761022C287890A10039AB22 /* ru */,
+				2761022F287890A10039AB22 /* fr */,
+				27610233287890A10039AB22 /* zh */,
+			);
+			name = BraveWallet.strings;
+			sourceTree = "<group>";
+		};
+		276101FE287890A10039AB22 /* BraveShared.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				276101FF287890A10039AB22 /* de */,
+				27610203287890A10039AB22 /* ja */,
+				27610206287890A10039AB22 /* zh-TW */,
+				27610209287890A10039AB22 /* en */,
+				2761020C287890A10039AB22 /* uk */,
+				2761020F287890A10039AB22 /* nb */,
+				27610212287890A10039AB22 /* es */,
+				27610215287890A10039AB22 /* it */,
+				27610218287890A10039AB22 /* ms */,
+				2761021B287890A10039AB22 /* sv */,
+				2761021E287890A10039AB22 /* ko-KR */,
+				27610221287890A10039AB22 /* id-ID */,
+				27610224287890A10039AB22 /* tr */,
+				27610227287890A10039AB22 /* pl */,
+				2761022A287890A10039AB22 /* pt-BR */,
+				2761022D287890A10039AB22 /* ru */,
+				27610230287890A10039AB22 /* fr */,
+				27610234287890A10039AB22 /* zh */,
+			);
+			name = BraveShared.strings;
+			sourceTree = "<group>";
+		};
+		27610200287890A10039AB22 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				27610201287890A10039AB22 /* de */,
+				27610204287890A10039AB22 /* ja */,
+				27610207287890A10039AB22 /* zh-TW */,
+				2761020A287890A10039AB22 /* en */,
+				2761020D287890A10039AB22 /* uk */,
+				27610210287890A10039AB22 /* nb */,
+				27610213287890A10039AB22 /* es */,
+				27610216287890A10039AB22 /* it */,
+				27610219287890A10039AB22 /* ms */,
+				2761021C287890A10039AB22 /* sv */,
+				2761021F287890A10039AB22 /* ko-KR */,
+				27610222287890A10039AB22 /* id-ID */,
+				27610225287890A10039AB22 /* tr */,
+				27610228287890A10039AB22 /* pl */,
+				2761022B287890A10039AB22 /* pt-BR */,
+				2761022E287890A10039AB22 /* ru */,
+				27610231287890A10039AB22 /* fr */,
+				27610235287890A10039AB22 /* zh */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
 		27D67621282DAD3700BCE16E /* BrowserIntents.intentdefinition */ = {
 			isa = PBXVariantGroup;
 			children = (
