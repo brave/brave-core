@@ -48,8 +48,12 @@ SkColor GetLocationBarBackground(bool dark, bool priv, bool hover) {
 
 // Omnibox result bg colors
 SkColor GetOmniboxResultBackground(int id, bool dark, bool priv) {
+#if !defined(USE_AURA)
+  ui::NativeTheme* native_theme = nullptr;
+#else
   // For high contrast, selected rows use inverted colors to stand out more.
   ui::NativeTheme* native_theme = ui::NativeTheme::GetInstanceForNativeUi();
+#endif  // !defined(USE_AURA)
   bool high_contrast =
       native_theme && native_theme->UserHasContrastPreference();
   float omnibox_opacity = 0.0f;
