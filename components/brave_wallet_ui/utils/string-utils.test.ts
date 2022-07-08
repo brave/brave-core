@@ -1,4 +1,4 @@
-import { isRemoteImageURL, isValidIconExtension } from './string-utils'
+import { isRemoteImageURL, isValidIconExtension, formatAsDouble } from './string-utils'
 
 describe('Checking URL is remote image or not', () => {
   test('HTTP URL should return true', () => {
@@ -41,5 +41,14 @@ describe('Checking URL ends with a valid icon extension', () => {
 
   test('Ends with .com should return false', () => {
     expect(isValidIconExtension('https://test.com/')).toEqual(false)
+  })
+})
+
+describe('Check toDouble values', () => {
+  test('Value with a USD symbol, should remove the USD symbol', () => {
+    expect(formatAsDouble('$1,689.16')).toEqual('1,689.16')
+  })
+  test('Value with a Euro symbol, should remove the Euro symbol', () => {
+    expect(formatAsDouble('689,16€')).toEqual('689,16')
   })
 })
