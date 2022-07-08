@@ -84,10 +84,10 @@ export const OnboardingWelcome = () => {
             {getLocale('braveWalletPerksTokens')}
           </span>
           <span>
-            {getLocale('braveWalletPerksNftStorage')}
+            {getLocale('braveWalletMultiChain')}
           </span>
           <span>
-            {getLocale('braveWalletMultiChain')}
+            {getLocale('braveWalletPerksBrowserNative')}
           </span>
         </BlockQuoteTextContainer>
       </BlockQuote>
@@ -105,7 +105,7 @@ export const OnboardingWelcome = () => {
 
         <NavButton
           buttonType='secondary'
-          text={getLocale('braveWalletWelcomeIAlreadyHaveAWallet')}
+          text={getLocale('braveWalletImportExistingWallet')}
           onSubmit={showRestoredWalletDisclosures}
           maxHeight={'48px'}
           minWidth={'267px'}
@@ -120,7 +120,7 @@ export const OnboardingWelcome = () => {
         target='_blank'
         rel='noreferrer'
       >
-        {getLocale('braveWalletWhatIsACryptoWallet')}
+        {getLocale('braveWalletLearnMoreAboutBraveWallet')}
       </LearnMoreLink>
 
     </OnboardingWrapper>

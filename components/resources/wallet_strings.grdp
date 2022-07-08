@@ -109,10 +109,10 @@
   <message name="IDS_BRAVE_WALLET_BUTTON_CLOSE" desc="General Close button">Close</message>
   <message name="IDS_BRAVE_WALLET_BUTTON_MORE" desc="General More button">More</message>
   <message name="IDS_BRAVE_WALLET_BUTTON_DONE" desc="General Done button">Done</message>
-  <message name="IDS_BRAVE_WALLET_WELCOME_TITLE" desc="Onboarding welcome screen title">Keeping your crypto secure doesn’t have to be hard</message>
+  <message name="IDS_BRAVE_WALLET_WELCOME_TITLE" desc="Onboarding welcome screen title">Secure. Multi-chain. And oh-so-easy to use. Your Brave Wallet is just a few clicks away</message>
   <message name="IDS_BRAVE_WALLET_WELCOME_RESTORE_BUTTON" desc="Restore screen button">Restore</message>
   <message name="IDS_BRAVE_WALLET_WELCOME_BUTTON" desc="Onboarding get started button">Create a new wallet</message>
-  <message name="IDS_BRAVE_WALLET_WELCOME_I_ALREADY_HAVE_A_WALLET" desc="Wallet onboarding welcome Restore wallet button">I already have a wallet</message>
+  <message name="BRAVE_WALLET_IMPORT_EXISTING_WALLET" desc="Wallet onboarding welcome import wallet button">Import an existing wallet</message>
   <message name="IDS_BRAVE_WALLET_BACKUP_INTRO_TITLE" desc="Backup screen title">Back up your crypto wallet</message>
   <message name="IDS_BRAVE_WALLET_BACKUP_INTRO_DESCRIPTION" desc="Backup screen description">In the next step you’ll see a <ph name="RECOVERY_PHRASE_LENGTH">$1</ph>-word recovery phrase, which you can use to recover your primary crypto accounts. Save it someplace safe. Your recovery phrase is the only way to regain account access in case of forgotten password, lost or stolen device, or you want to switch wallets.</message>
   <message name="IDS_BRAVE_WALLET_BACKUP_INTRO_TERMS" desc="Backup screen terms check box">I understand that if I lose my recovery words, I will not be able to access my crypto wallet.</message>
@@ -516,6 +516,7 @@
   <message name="IDS_BRAVE_WALLET_AURORA_MODAL_LEARN_MORE" desc="Bridge to Aurora modal learn more link text">Learn more</message>
   <message name="IDS_BRAVE_WALLET_AURORA_MODAL_OPEN_BUTTON_TEXT" desc="Bridge to Aurora modal action button text">Open rainbowbridge.app</message>
   <message name="IDS_BRAVE_WALLET_WHAT_IS_A_CRYPTO_WALLET" desc="Link to article explaining crypto wallets">Learn more about crypto wallets</message>
+  <message name="IDS_BRAVE_WALLET_LEARN_MORE_ABOUT_BRAVE_WALLET" desc="Link to article explaining crypto wallets">Learn more about Brave Wallet</message>
   <message name="IDS_BRAVE_WALLET_PASSWORD_STRENGTH_TOOLTIP_HEADING" desc="Heading of password strength tooltip">At least:</message>
   <message name="IDS_BRAVE_WALLET_PASSWORD_STRENGTH_TOOLTIP_IS_LONG_ENOUGH" desc="Password strength length requirements">7 characters</message>
   <message name="IDS_BRAVE_WALLET_PASSWORD_STRENGTH_TOOLTIP_CONTAINS_NUMBER" desc="Password strength number requirements">1 number</message>
@@ -573,9 +574,9 @@
   <message name="IDS_BRAVE_WALLET_DEPOSIT_SOL_SPL_TOKENS" desc="Description of depositable Solana wallet assets">Deposit Solana or SPL tokens</message>
   <message name="IDS_BRAVE_WALLET_DEPOSIT_ERC" desc="Description of depositable ERC assets">Deposit ERC-based tokens</message>
   <message name="IDS_BRAVE_WALLET_DEPOSIT_ONLY_SEND_ON_X_NETWORK" desc="Warning to only send tokens to a address via a specific network">Only send tokens to this address on <ph name="VALUE">$1</ph></message>
-  <message name="BRAVE_WALLET_PERKS_TOKENS" desc="Description of how the wallet allows access to many crypto tokens">Buy, send, swap with 200+ tokens</message>
-  <message name="BRAVE_WALLET_PERKS_NFT_STORAGE" desc="Description of how the wallet allows storage of NFT assets">Store your NFTs</message>
-  <message name="BRAVE_WALLET_MULTI_CHAIN" desc="Description of how the wallet allows access to multiple blockchains">Trade across multi-chains in seconds</message>
+  <message name="BRAVE_WALLET_PERKS_TOKENS" desc="Description of how the wallet allows access to many crypto tokens">Buy, send, and swap 200+ crypto assets</message>
+  <message name="BRAVE_WALLET_PERKS_BROWSER_NATIVE" desc="Description of how the wallet is browser-native">Browser-native, no risky extensions</message>
+  <message name="BRAVE_WALLET_MULTI_CHAIN" desc="Description of how the wallet allows access to multiple blockchains">Multi-chain &amp; NFT support</message>
   <message name="BRAVE_WALLET_UNLOCK_NEEDED_TO_CREATE_ACCOUNT" desc="Message to inform the user that their wallet must be unlocked before a new account can be created">Unlock needed to create an account</message>
   <message name="BRAVE_WALLET_CLICK_TO_SWITCH" desc="Action text for switching selection">Click to switch</message>
 </grit-part>

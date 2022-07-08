@@ -110,10 +110,10 @@ provideStrings({
   braveWalletButtonCancel: 'Cancel',
 
   // Onboarding - Welcome
-  braveWalletWelcomeTitle: 'Keeping your crypto secure doesn’t have to be hard',
+  braveWalletWelcomeTitle: 'Secure. Multi-chain. And oh-so-easy to use. Your Brave Wallet is just a few clicks away',
   braveWalletWelcomeButton: 'Create a new wallet',
-  braveWalletWhatIsACryptoWallet: 'Learn more about crypto wallets',
-  braveWalletWelcomeIAlreadyHaveAWallet: 'I already have a wallet',
+  braveWalletLearnMoreAboutBraveWallet: 'Learn more about Brave Wallet',
+  braveWalletImportExistingWallet: 'Import an existing wallet',
   braveWalletWelcomeRestoreButton: 'Restore',
 
   // Onboarding - Disclosures
@@ -667,7 +667,7 @@ provideStrings({
   braveWalletInputLabelPassword: 'Password',
 
   // Wallet Welcome Perks
-  braveWalletPerksTokens: 'Buy, send, swap with 200+ tokens',
-  braveWalletPerksNftStorage: 'Store your NFTs',
-  braveWalletMultiChain: 'Trade across multi-chains in seconds'
+  braveWalletPerksTokens: 'Buy, send, and swap 200+ crypto assets',
+  braveWalletMultiChain: 'Multi-chain & NFT support',
+  braveWalletPerksBrowserNative: 'Browser-native, no risky extensions'
 })
