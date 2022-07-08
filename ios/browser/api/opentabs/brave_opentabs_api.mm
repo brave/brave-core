@@ -179,12 +179,12 @@ namespace web {
   sync_service_ = nullptr;
 }
 
-- (id<OpenTabsSessionServiceListener>)addObserver:(id<OpenTabsSessionServiceObserver>)observer {
+- (id<OpenTabsSessionStateListener>)addObserver:(id<OpenTabsSessionStateObserver>)observer {
   return [[OpenTabsSessionListenerImpl alloc] init:observer
                                        syncService:sync_service_];
 }
 
-- (void)removeObserver:(id<OpenTabsSessionServiceListener>)observer {
+- (void)removeObserver:(id<OpenTabsSessionStateListener>)observer {
   [observer destroy];
 }
 

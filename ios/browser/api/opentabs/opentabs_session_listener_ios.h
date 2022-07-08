@@ -14,8 +14,8 @@
 #include "components/sync/driver/sync_service.h"
 #include "components/sync/driver/sync_service_observer.h"
 
-@interface OpenTabsSessionListenerImpl : NSObject <OpenTabsSessionServiceListener>
-- (instancetype)init:(id<OpenTabsSessionServiceObserver>)observer
+@interface OpenTabsSessionListenerImpl : NSObject <OpenTabsSessionStateListener>
+- (instancetype)init:(id<OpenTabsSessionStateObserver>)observer
          syncService:(void*)service;
 @end
 
@@ -24,7 +24,7 @@ namespace ios {
 
 class OpenTabsSessionListenerIOS : public syncer::SyncServiceObserver {
  public:
-  explicit OpenTabsSessionListenerIOS(id<OpenTabsSessionServiceObserver> observer,
+  explicit OpenTabsSessionListenerIOS(id<OpenTabsSessionStateObserver> observer,
                                       syncer::SyncService* service);
   ~OpenTabsSessionListenerIOS() override;
 
@@ -35,7 +35,7 @@ class OpenTabsSessionListenerIOS : public syncer::SyncServiceObserver {
   void OnSyncConfigurationCompleted(syncer::SyncService* sync) override;
   void OnSyncShutdown(syncer::SyncService* sync) override;
 
-  id<OpenTabsSessionServiceObserver> observer_;
+  id<OpenTabsSessionStateObserver> observer_;
   syncer::SyncService* service_;  // NOT OWNED
 };
 

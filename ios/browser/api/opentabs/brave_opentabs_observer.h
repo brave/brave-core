@@ -11,27 +11,27 @@
 NS_ASSUME_NONNULL_BEGIN
 
 OBJC_EXPORT
-@protocol OpenTabsSessionServiceObserver <NSObject>
+@protocol OpenTabsSessionStateObserver <NSObject>
 
 /// Observing open tabs synced session data changes. 
 /// Notifying when `synced session` info should be updated.
-- (void)onSyncStateChanged;
+- (void)openTabsSyncStateChanged;
 
 @optional
 
 /// Handling sync cycle completed events in a special way
-- (void)onSyncCycleCompleted;
+- (void)openTabsSyncCycleCompleted;
 
 /// Observing synced session when sync cycle is completed .
-- (void)onSyncCycleCompleted;
+- (void)openTabsSyncConfigurationCompleted;
 
 /// Called when the sync service is being shutdown permanently.
-- (void)onSyncShutdown;
+- (void)openTabsSyncShutdown;
 
 @end
 
 OBJC_EXPORT
-@protocol OpenTabsSessionServiceListener
+@protocol OpenTabsSessionStateListener
 - (void)destroy;
 @end
 

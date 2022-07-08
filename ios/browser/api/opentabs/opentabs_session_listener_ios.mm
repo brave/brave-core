@@ -20,7 +20,7 @@ namespace brave {
 namespace ios {
 
 OpenTabsSessionListenerIOS::OpenTabsSessionListenerIOS(
-    id<OpenTabsSessionServiceObserver> observer,
+    id<OpenTabsSessionStateObserver> observer,
     syncer::SyncService* service)
     : observer_(observer), service_(service) {
   DCHECK(observer_);
@@ -35,29 +35,29 @@ OpenTabsSessionListenerIOS::~OpenTabsSessionListenerIOS() {
 
 void OpenTabsSessionListenerIOS::OnStateChanged(
     syncer::SyncService* sync) {
-  if ([observer_ respondsToSelector:@selector(onSyncStateChanged)]) {
-    [observer_ onSyncStateChanged];
+  if ([observer_ respondsToSelector:@selector(openTabsSyncStateChanged)]) {
+    [observer_ openTabsSyncStateChanged];
   }
 }
 
 void OpenTabsSessionListenerIOS::OnSyncCycleCompleted(
     syncer::SyncService* sync) {
-  if ([observer_ respondsToSelector:@selector(onSyncCycleCompleted)]) {
-    [observer_ onSyncCycleCompleted];
+  if ([observer_ respondsToSelector:@selector(openTabsSyncCycleCompleted)]) {
+    [observer_ openTabsSyncCycleCompleted];
   }
 }
 
 void OpenTabsSessionListenerIOS::OnSyncConfigurationCompleted(
     syncer::SyncService* sync) {
-  if ([observer_ respondsToSelector:@selector(onSyncStateChanged)]) {
-    [observer_ onSyncStateChanged];
+  if ([observer_ respondsToSelector:@selector(openTabsSyncConfigurationCompleted)]) {
+    [observer_ openTabsSyncConfigurationCompleted];
   }
 }
 
 void OpenTabsSessionListenerIOS::OnSyncShutdown(
     syncer::SyncService* sync) {
-  if ([observer_ respondsToSelector:@selector(onSyncShutdown)]) {
-    [observer_ onSyncShutdown];
+  if ([observer_ respondsToSelector:@selector(openTabsSyncShutdown)]) {
+    [observer_ openTabsSyncShutdown];
   }
 }
 
@@ -71,7 +71,7 @@ void OpenTabsSessionListenerIOS::OnSyncShutdown(
 @end
 
 @implementation OpenTabsSessionListenerImpl
-- (instancetype)init:(id<OpenTabsSessionServiceObserver>)observer
+- (instancetype)init:(id<OpenTabsSessionStateObserver>)observer
       syncService:(void*)service {
   if ((self = [super init])) {
     observer_ = std::make_unique<brave::ios::OpenTabsSessionListenerIOS>(

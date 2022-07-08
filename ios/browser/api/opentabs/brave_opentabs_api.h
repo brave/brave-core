@@ -21,8 +21,8 @@ typedef NS_ENUM(NSUInteger, SyncDeviceType) {
   SyncDeviceTypeTablet
 };
 
-// @protocol OpenTabsSessionServiceObserver;
-// @protocol OpenTabsSessionServiceListener;
+@protocol OpenTabsSessionStateObserver;
+@protocol OpenTabsSessionStateListener;
 
 @class IOSOpenDistantTab;
 @class IOSOpenDistantSession;
@@ -74,8 +74,8 @@ NS_SWIFT_NAME(BraveOpenTabsAPI)
 OBJC_EXPORT
 @interface BraveOpenTabsAPI : NSObject
 
-// - (id<OpenTabsSessionServiceListener>)addObserver:(id<OpenTabsSessionServiceObserver>)observer;
-// - (void)removeObserver:(id<OpenTabsSessionServiceListener>)observer;
+- (id<OpenTabsSessionStateListener>)addObserver:(id<OpenTabsSessionStateObserver>)observer;
+- (void)removeObserver:(id<OpenTabsSessionStateListener>)observer;
 
 - (instancetype)init NS_UNAVAILABLE;
 
