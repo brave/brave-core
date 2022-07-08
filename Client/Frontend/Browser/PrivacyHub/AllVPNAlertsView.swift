@@ -47,7 +47,7 @@ extension PrivacyReportsView {
             .font(.headline)
         }
         .padding()
-        .background(Color("total_alerts_background"))
+        .background(Color("total_alerts_background", bundle: .current))
         .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
         
         if sizeCategory.isAccessibilityCategory && horizontalSizeClass == .compact {
