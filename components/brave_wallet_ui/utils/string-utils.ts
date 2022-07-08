@@ -14,11 +14,8 @@ export const isValidIconExtension = (url?: string) =>
   url?.endsWith('.jpg') || url?.endsWith('.jpeg') || url?.endsWith('.png') || url?.endsWith('.svg') || url?.endsWith('.gif')
 
 export const httpifyIpfsUrl = (url: string | undefined) => {
-  if (!url) {
-    return ''
-  }
-
-  return url.includes('ipfs://') ? url.replace('ipfs://', 'https://ipfs.io/ipfs/') : url
+  const trimmedUrl = url ? url.trim() : ''
+  return trimmedUrl.startsWith('ipfs://') ? trimmedUrl.replace('ipfs://', 'https://ipfs.io/ipfs/') : trimmedUrl
 }
 
 export const getRampNetworkPrefix = (chainId: string) => {
