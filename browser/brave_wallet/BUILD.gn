@@ -56,6 +56,7 @@ source_set("brave_wallet_delegate") {
   ]
   deps = [
     "//brave/browser/brave_wallet",
+    "//brave/browser/brave_wallet:tab_helper",
     "//brave/components/brave_wallet/browser",
     "//brave/components/brave_wallet/browser:constants",
     "//brave/components/brave_wallet/browser:permission_utils",
@@ -83,7 +84,6 @@ source_set("brave_wallet_delegate") {
       "brave_wallet_service_delegate_impl.h",
     ]
     deps += [
-      "//brave/browser/brave_wallet:tab_helper",
       "//brave/browser/ui",
       "//chrome/browser/ui",
     ]

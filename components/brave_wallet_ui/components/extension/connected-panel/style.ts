@@ -1,14 +1,14 @@
+// Copyright (c) 2022 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// you can obtain one at http://mozilla.org/MPL/2.0/.s
+
 import styled from 'styled-components'
 import CheckMark from '../../../assets/svg-icons/big-checkmark.svg'
 import SwitchDown from '../../../assets/svg-icons/switch-icon.svg'
 import { WalletButton } from '../../shared/style'
 
-interface StyleProps {
-  panelBackground: string
-  orb: string
-}
-
-export const StyledWrapper = styled.div<Partial<StyleProps>>`
+export const StyledWrapper = styled.div<{ panelBackground: string }>`
   display: flex;
   height: 100%;
   width: 100%;
@@ -29,7 +29,7 @@ export const CenterColumn = styled.div`
   max-width: 300px;
 `
 
-export const AccountCircle = styled(WalletButton) <Partial<StyleProps>>`
+export const AccountCircle = styled(WalletButton) <{ orb: string }>`
   display: flex;
   cursor: pointer;
   width: 54px;
@@ -164,4 +164,16 @@ export const MoreAssetsButton = styled(WalletButton)`
   line-height: 18px;
   letter-spacing: 0.01em;
   color: ${(p) => p.theme.palette.white};
+`
+
+export const ConnectedStatusBubble = styled.div<{ isConnected: boolean }>`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 10px;
+  height: 10px;
+  border-radius: 100%;
+  background-color: ${(p) => p.isConnected ? p.theme.color.successBorder : p.theme.color.errorBorder};
+  margin-right: 6px;
+  border: 1px solid rgba(255,255,255, 1);
 `
