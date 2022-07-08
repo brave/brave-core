@@ -246,16 +246,13 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
             if (null == getActivity()) {
                 return;
             }
-            if (null != message && !message.isEmpty()) {
-                message = " [" + message + "]";
-            }
-            final String messageFinal = (null == message) ? "" : message;
+            final String messageFinal = (null == message || message.isEmpty())
+                    ? getResources().getString(R.string.sync_device_failure)
+                    : message;
             getActivity().runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    showEndDialog(
-                            getResources().getString(R.string.sync_device_failure) + messageFinal,
-                            () -> {});
+                    showEndDialog(messageFinal, () -> {});
                 }
             });
         } catch (Exception exc) {
