@@ -214,6 +214,7 @@ class BraveWalletService : public KeyedService,
 
  private:
   friend class EthereumProviderImplUnitTest;
+  friend class SolanaProviderImplUnitTest;
   friend class BraveWalletServiceUnitTest;
 
   FRIEND_TEST_ALL_PREFIXES(BraveWalletServiceUnitTest, GetChecksumAddress);
