@@ -14,7 +14,6 @@ import {
   FilecoinNetwork,
   GetAccountsHardwareOperationResult,
   HardwareOperationResult,
-  SignHardwareMessageOperationResult,
   SignHardwareTransactionOperationResult
 } from '../types'
 import { getLocale } from '../../../../common/locale'
@@ -101,7 +100,7 @@ export default class FilecoinLedgerKeyring implements LedgerFilecoinKeyring {
     }
   }
 
-  signPersonalMessage (path: string, address: string, message: string): Promise<SignHardwareMessageOperationResult> {
+  signPersonalMessage (path: string, address: string, message: string): Promise<SignHardwareTransactionOperationResult> {
     throw new Error('Method not implemented.')
   }
 

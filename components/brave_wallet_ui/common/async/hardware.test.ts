@@ -16,7 +16,8 @@ import {
   signTrezorTransaction,
   signLedgerEthereumTransaction,
   signLedgerFilecoinTransaction,
-  signLedgerSolanaTransaction
+  signLedgerSolanaTransaction,
+  signRawTransactionWithHardwareKeyring
 } from './hardware'
 import WalletApiProxy from '../../common/wallet_api_proxy'
 import { getLocale } from '../../../common/locale'
@@ -211,7 +212,7 @@ const signSolTransactionWithLedger = (expectedSignature: Buffer, signatureRespon
   return signLedgerSolanaTransaction(
     apiProxy as unknown as WalletApiProxy,
     expectedPath,
-    txInfo,
+    txInfo.id,
     BraveWallet.CoinType.SOL,
     mockedKeyring as unknown as SolanaLedgerKeyring
   )
@@ -243,6 +244,11 @@ const signTransactionWithTrezor = (signed: Success<EthereumSignedTx> | Unsuccess
   return signTrezorTransaction(apiProxy as unknown as WalletApiProxy,
     expectedPath, txInfo, mockedKeyring as unknown as TrezorBridgeKeyring)
 }
+
+test('Test sign raw Eth Ledger transaction', () => {
+  const mockedKeyring = getMockedLedgerEthKeyring('', '')
+  return expect(signRawTransactionWithHardwareKeyring(mockedKeyring.type(), BraveWallet.CoinType.ETH)).resolves.toStrictEqual(hardwareTransactionErrorResponse('braveWalletHardwareOperationUnsupportedError'))
+})
 
 test('Test sign Ledger transaction, approved, no message to sign', () => {
   const txInfo = getMockedTransactionInfo()

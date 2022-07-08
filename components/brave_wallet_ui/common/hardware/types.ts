@@ -31,11 +31,7 @@ export type HardwareOperationResult = {
 }
 
 export type SignHardwareTransactionOperationResult = HardwareOperationResult & {
-  payload?: EthereumSignedTx | SignedLotusMessage | Buffer
-}
-
-export type SignHardwareMessageOperationResult = HardwareOperationResult & {
-  payload?: string
+  payload?: EthereumSignedTx | SignedLotusMessage | Buffer | string
 }
 
 export interface TrezorBridgeAccountsPayload {

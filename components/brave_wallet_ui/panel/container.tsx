@@ -280,19 +280,10 @@ function Container () {
   }
 
   const onCancelSigning = () => {
-    if (isHardwareAccount(accounts, signMessageData[0].address)) {
-      dispatch(WalletPanelActions.signMessageHardwareProcessed({
-        success: false,
-        id: signMessageData[0].id,
-        signature: '',
-        error: ''
-      }))
-    } else {
-      dispatch(WalletPanelActions.signMessageProcessed({
-        approved: false,
-        id: signMessageData[0].id
-      }))
-    }
+    dispatch(WalletPanelActions.signMessageProcessed({
+      approved: false,
+      id: signMessageData[0].id
+    }))
   }
 
   const onSignData = () => {
@@ -355,11 +346,8 @@ function Container () {
     }
   }
 
-  const onCancelConnectHardwareWallet = () => {
-    if (!selectedPendingTransaction) {
-      return
-    }
-    dispatch(WalletPanelActions.cancelConnectHardwareWallet(selectedPendingTransaction))
+  const onCancelConnectHardwareWallet = (accountAddress: string, coinType: BraveWallet.CoinType) => {
+    dispatch(WalletPanelActions.cancelConnectHardwareWallet({ accountAddress, coinType }))
   }
 
   const onAddAccount = () => {
@@ -485,6 +473,7 @@ function Container () {
           <ConnectHardwareWalletPanel
             onCancel={onCancelConnectHardwareWallet}
             walletName={selectedAccount.name}
+            accountAddress={selectedAccount.address}
             coinType={selectedAccount.coin}
             hardwareWalletCode={hardwareWalletCode}
             retryCallable={retryHardwareOperation}

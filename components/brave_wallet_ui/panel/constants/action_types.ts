@@ -29,12 +29,14 @@ export type SignMessagePayload = {
 export type SignMessageProcessedPayload = {
   approved: boolean
   id: number
+  signature?: BraveWallet.ByteArrayStringUnion
+  error?: string
 }
 
-export type SignMessageHardwareProcessedPayload = {
-  success: Boolean
+export type SignAllTransactionsProcessedPayload = {
+  approved: boolean
   id: number
-  signature?: string
+  signatures?: BraveWallet.ByteArrayStringUnion[]
   error?: string
 }
 
@@ -56,4 +58,9 @@ export type GetEncryptionPublicKeyProcessedPayload = {
 export type DecryptProcessedPayload = {
   approved: boolean
   origin: Origin
+}
+
+export type CancelConnectHardwareWalletPayload = {
+  accountAddress: string
+  coinType: BraveWallet.CoinType
 }

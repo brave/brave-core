@@ -28,7 +28,6 @@ import { hardwareDeviceIdFromAddress } from '../hardwareDeviceIdFromAddress'
 import {
   GetAccountsHardwareOperationResult,
   HardwareOperationResult,
-  SignHardwareMessageOperationResult,
   SignHardwareTransactionOperationResult,
   TrezorDerivationPaths
 } from '../types'
@@ -120,7 +119,7 @@ export default class TrezorBridgeKeyring implements TrezorKeyring {
     return { success: true, payload: response.payload }
   }
 
-  signPersonalMessage = async (path: string, message: string): Promise<SignHardwareMessageOperationResult> => {
+  signPersonalMessage = async (path: string, message: string): Promise<SignHardwareTransactionOperationResult> => {
     if (!this.isUnlocked()) {
       const unlocked = await this.unlock()
       if (!unlocked.success) {
@@ -145,7 +144,7 @@ export default class TrezorBridgeKeyring implements TrezorKeyring {
     return { success: true, payload: '0x' + response.payload.signature }
   }
 
-  signEip712Message = async (path: string, domainSeparatorHex: string, hashStructMessageHex: string): Promise<SignHardwareMessageOperationResult> => {
+  signEip712Message = async (path: string, domainSeparatorHex: string, hashStructMessageHex: string): Promise<SignHardwareTransactionOperationResult> => {
     if (!this.isUnlocked()) {
       const unlocked = await this.unlock()
       if (!unlocked.success) {

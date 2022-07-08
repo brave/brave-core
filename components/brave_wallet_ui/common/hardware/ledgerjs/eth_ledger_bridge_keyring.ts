@@ -12,7 +12,6 @@ import { hardwareDeviceIdFromAddress } from '../hardwareDeviceIdFromAddress'
 import {
   GetAccountsHardwareOperationResult,
   SignatureVRS,
-  SignHardwareMessageOperationResult,
   SignHardwareTransactionOperationResult,
   HardwareOperationResult, LedgerDerivationPaths
 } from '../types'
@@ -102,7 +101,7 @@ export default class LedgerBridgeKeyring extends LedgerEthereumKeyring {
     }
   }
 
-  signEip712Message = async (path: string, domainSeparatorHex: string, hashStructMessageHex: string): Promise<SignHardwareMessageOperationResult> => {
+  signEip712Message = async (path: string, domainSeparatorHex: string, hashStructMessageHex: string): Promise<SignHardwareTransactionOperationResult> => {
     try {
       const unlocked = await this.unlock()
       if (!unlocked.success || !this.app) {
@@ -117,7 +116,7 @@ export default class LedgerBridgeKeyring extends LedgerEthereumKeyring {
     }
   }
 
-  signPersonalMessage = async (path: string, message: string): Promise<SignHardwareMessageOperationResult> => {
+  signPersonalMessage = async (path: string, message: string): Promise<SignHardwareTransactionOperationResult> => {
     try {
       const unlocked = await this.unlock()
       if (!unlocked.success || !this.app) {
