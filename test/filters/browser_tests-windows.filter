@@ -24,6 +24,7 @@
 -DisallowCurrentProfile_DifferentUserSignedIn/ExistingWinBrowserProfilesSigninUtilTest.*
 -DisallowCurrentProfile_SameUserSignedInDefaultProfile/ExistingWinBrowserProfilesSigninUtilTest.*
 -DocumentPictureInPictureWindowControllerBrowserTest.*
+-EdgeImporterBrowserTest.EdgeImporter
 -Enabled/NetworkServiceSandboxEnabledTest.IsRespected/0
 -Enabled/RendererAppContainerEnabledTest.IsRespected/0
 -ExtensionInstalledBubbleViewsBrowserTest.*
