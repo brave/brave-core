@@ -117,5 +117,13 @@
             style="@style/BraveSyncButton"
             android:background="@android:color/transparent"
             android:textColor="@color/modern_grey_600" />
+
+        <android.widget.Button android:id="@+id/brave_sync_btn_delete_account"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/brave_sync_delete_account_text"
+            style="@style/BraveSyncButton"
+            android:background="@android:color/transparent"
+            android:textColor="@color/modern_grey_600" />
     </LinearLayout>
 </ScrollView>

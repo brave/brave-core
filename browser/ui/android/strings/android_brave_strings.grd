@@ -873,6 +873,22 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_BRAVE_SYNC_CATEGORIES_TEXT" desc="Text for button to show data types to sync. Renamed from Categories">
   Data Preferences
       </message>
+      <message name="IDS_BRAVE_SYNC_DELETE_ACCOUNT_TEXT" desc="Text for button which deletes all sync chain data on the server">
+  Delete Sync account
+      </message>
+      <message name="IDS_BRAVE_SYNC_DELETE_ACCOUNT_MESSAGE" desc="Text for confirmation message for permanently delete Brave Sync account">
+  Deleting your account will remove your encrypted data from Brave servers and disable Sync on all of your connected devices. It will not however delete the data that is stored locally on those devices.
+  This deletion is permanent and there is no way to recover the data. Should you decide to start using Sync again, you will need to create a new account and re-add each device one by one.
+      </message>
+      <message name="IDS_BRAVE_SYNC_DELETE_ACCOUNT_BUTTON" desc="Text for the confirmation button which deletes all sync chain data on the server">
+  Permanently delete account
+      </message>
+      <message name="IDS_BRAVE_SYNC_DELETE_ACCOUNT_SUCCEEDED_TOAST" desc="Text for toast notification for the case when sync account deletion succeeded">
+  Sync account was deleted successfully
+      </message>
+      <message name="IDS_BRAVE_SYNC_DELETE_ACCOUNT_FAILED_TOAST" desc="Text for toast notification for the case when sync account deletion failed">
+  Failed to delete sync account
+      </message>
       <message name="IDS_BRAVE_SYNC_REMOVE_DEVICE_TEXT" desc="Text for Brave Sync remove device message.">
 	Remove device
       </message>
