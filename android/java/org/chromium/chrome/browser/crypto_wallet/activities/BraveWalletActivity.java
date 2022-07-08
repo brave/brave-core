@@ -437,6 +437,7 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
 
     @Override
     public void gotoOnboardingPage() {
+        mBraveWalletService.onOnboardingShown();
         replaceNavigationFragments(ONBOARDING_ACTION, true);
     }
 

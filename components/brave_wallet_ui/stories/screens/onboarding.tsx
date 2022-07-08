@@ -40,6 +40,7 @@ export const Onboarding = () => {
 
   // effects
   React.useEffect(() => {
+    dispatch(WalletPageActions.onOnboardingShown())
     dispatch(WalletPageActions.checkWalletsToImport())
   }, [])
 
