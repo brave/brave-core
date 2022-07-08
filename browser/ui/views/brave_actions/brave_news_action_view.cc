@@ -24,11 +24,13 @@
 #include "chrome/browser/ui/views/chrome_layout_provider.h"
 #include "chrome/browser/ui/views/toolbar/toolbar_ink_drop_util.h"
 #include "components/grit/brave_components_resources.h"
+#include "components/grit/brave_components_strings.h"
 #include "content/public/browser/browser_context.h"
 #include "extensions/common/constants.h"
 #include "include/core/SkBitmap.h"
 #include "include/core/SkColor.h"
 #include "include/core/SkPath.h"
+#include "ui/base/l10n/l10n_util.h"
 #include "ui/base/resource/resource_bundle.h"
 #include "ui/gfx/color_utils.h"
 #include "ui/gfx/geometry/insets.h"
@@ -58,7 +60,8 @@ BraveTodayActionView::BraveTodayActionView(Profile* profile,
       profile_(profile),
       tab_strip_(tab_strip) {
   DCHECK(profile_);
-  SetAccessibleName(u"Brave Today Button");
+  SetAccessibleName(
+      l10n_util::GetStringUTF16(IDS_BRAVE_NEWS_ACTION_VIEW_TOOLTIP));
   SetHorizontalAlignment(gfx::HorizontalAlignment::ALIGN_CENTER);
 
   auto* ink_drop = views::InkDrop::Get(this);
@@ -132,9 +135,7 @@ SkPath BraveTodayActionView::GetHighlightPath() const {
 }
 
 std::u16string BraveTodayActionView::GetTooltipText(const gfx::Point& p) const {
-  bool enabled = false;
-
-  return enabled ? u"Unsubscribe" : u"Subscribe";
+  return l10n_util::GetStringUTF16(IDS_BRAVE_NEWS_ACTION_VIEW_TOOLTIP);
 }
 
 std::unique_ptr<views::LabelButtonBorder>

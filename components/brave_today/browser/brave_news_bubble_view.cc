@@ -20,6 +20,7 @@
 #include "content/public/browser/browser_thread.h"
 #include "content/public/browser/web_contents.h"
 #include "ui/accessibility/ax_enums.mojom-shared.h"
+#include "ui/base/l10n/l10n_util.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/base/ui_base_types.h"
 #include "ui/gfx/geometry/insets.h"
@@ -39,6 +40,7 @@
 #include "ui/views/view.h"
 #include "ui/views/view_class_properties.h"
 #include "ui/views/widget/widget.h"
+#include "components/grit/brave_components_strings.h"
 
 // static
 base::WeakPtr<views::Widget> BraveNewsBubbleView::Show(
@@ -93,9 +95,9 @@ class BraveNewsFeedRow : public views::View,
     }
 
     auto is_subscribed = tab_helper->is_subscribed(feed_details_);
-    subscribe_button_->SetText(loading_        ? u"Loading..."
-                               : is_subscribed ? u"Unsubscribe"
-                                               : u"Subscribe");
+    subscribe_button_->SetText(l10n_util::GetStringUTF16(loading_        ? IDS_BRAVE_NEWS_BUBBLE_FEED_ITEM_LOADING
+                               : is_subscribed ? IDS_BRAVE_NEWS_BUBBLE_FEED_ITEM_UNSUBSCRIBE
+                                               : IDS_BRAVE_NEWS_BUBBLE_FEED_ITEM_SUBSCRIBE));
     subscribe_button_->SetProminent(!is_subscribed && !loading_);
   }
 
@@ -137,7 +139,7 @@ BraveNewsBubbleView::BraveNewsBubbleView(views::View* action_view,
   set_adjust_if_offscreen(true);
 
   title_label_ = AddChildView(
-      std::make_unique<views::Label>(u"Subscribe to this site via Brave News",
+      std::make_unique<views::Label>(l10n_util::GetStringUTF16(IDS_BRAVE_NEWS_BUBBLE_DISMISS_FOREVER),
                                      views::style::CONTEXT_DIALOG_TITLE));
 
   views::FlexLayout* const layout =

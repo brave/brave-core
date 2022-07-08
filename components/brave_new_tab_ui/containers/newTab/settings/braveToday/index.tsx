@@ -61,7 +61,7 @@ export default function BraveTodayPrefs (props: Props) {
         </SettingsRow>
       )}
       {!category && props.showToday && <SettingsRow>
-        <SettingsText>Show Brave News button in the toolbar.</SettingsText>
+        <SettingsText>{getLocale('braveTodayShowToolbarButton')}</SettingsText>
         <Toggle
           checked={props.showBraveNewsButton}
           onChange={props.toggleShowBraveNewsButton}
