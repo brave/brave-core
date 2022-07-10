@@ -1,10 +1,10 @@
 // Copyright (c) 2022 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// you can obtain one at http://mozilla.org/MPL/2.0/.
+// You can obtain one at http://mozilla.org/MPL/2.0/.
 
-#ifndef BRAVE_COMPONENTS_BRAVE_TODAY_BROWSER_BRAVE_NEWS_BUBBLE_VIEW_H_
-#define BRAVE_COMPONENTS_BRAVE_TODAY_BROWSER_BRAVE_NEWS_BUBBLE_VIEW_H_
+#ifndef BRAVE_BROWSER_UI_VIEWS_BRAVE_NEWS_BRAVE_NEWS_BUBBLE_VIEW_H_
+#define BRAVE_BROWSER_UI_VIEWS_BRAVE_NEWS_BRAVE_NEWS_BUBBLE_VIEW_H_
 
 #include "base/memory/raw_ptr.h"
 #include "content/public/browser/web_contents.h"
@@ -33,4 +33,4 @@ class BraveNewsBubbleView : public views::BubbleDialogDelegateView {
   raw_ptr<views::Label> title_label_ = nullptr;
 };
 
-#endif  // BRAVE_COMPONENTS_BRAVE_TODAY_BROWSER_BRAVE_NEWS_BUBBLE_VIEW_H_
+#endif  // BRAVE_BROWSER_UI_VIEWS_BRAVE_NEWS_BRAVE_NEWS_BUBBLE_VIEW_H_

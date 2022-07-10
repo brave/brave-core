@@ -12,7 +12,7 @@
 #include "brave/app/vector_icons/vector_icons.h"
 #include "brave/browser/brave_news/brave_news_controller_factory.h"
 #include "brave/browser/ui/views/brave_actions/brave_action_view.h"
-#include "brave/components/brave_today/browser/brave_news_bubble_view.h"
+#include "brave/browser/ui/views/brave_news/brave_news_bubble_view.h"
 #include "brave/components/brave_today/browser/brave_news_controller.h"
 #include "brave/components/brave_today/browser/brave_news_tab_helper.h"
 #include "brave/components/brave_today/common/brave_news.mojom-shared.h"
