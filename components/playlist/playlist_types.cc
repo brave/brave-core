@@ -10,58 +10,45 @@
 
 namespace playlist {
 
-std::string PlaylistChangeParams::GetPlaylistChangeTypeAsString(
-    PlaylistChangeParams::ChangeType type) {
+std::string PlaylistItemChangeParams::GetPlaylistChangeTypeAsString(
+    PlaylistItemChangeParams::Type type) {
   switch (type) {
-    case PlaylistChangeParams::ChangeType::kChangeTypeAdded:
-      return "added";
-    case PlaylistChangeParams::ChangeType::kChangeTypeDeleted:
-      return "deleted";
-    case PlaylistChangeParams::ChangeType::kChangeTypeAllDeleted:
-      return "all_deleted";
-    case PlaylistChangeParams::ChangeType::kChangeTypeAborted:
-      return "aborted";
-    case PlaylistChangeParams::ChangeType::kChangeTypeThumbnailReady:
-      return "thumbnail_ready";
-    case PlaylistChangeParams::ChangeType::kChangeTypeThumbnailFailed:
-      return "thumbnail_failed";
-    case PlaylistChangeParams::ChangeType::kChangeTypePlayReady:
-      return "play_ready";
-    case PlaylistChangeParams::ChangeType::kChangeTypeNone:
+    case PlaylistItemChangeParams::Type::kAdded:
+      return "item: added";
+    case PlaylistItemChangeParams::Type::kDeleted:
+      return "item: deleted";
+    case PlaylistItemChangeParams::Type::kAborted:
+      return "item: aborted";
+    case PlaylistItemChangeParams::Type::kThumbnailReady:
+      return "item: thumbnail_ready";
+    case PlaylistItemChangeParams::Type::kThumbnailFailed:
+      return "item: thumbnail_failed";
+    case PlaylistItemChangeParams::Type::kPlayReady:
+      return "item: play_ready";
+    case PlaylistItemChangeParams::Type::kAllDeleted:
+      return "item: all deleted";
+    case PlaylistItemChangeParams::Type::kNone:
       [[fallthrough]];
     default:
       NOTREACHED();
-      return "unknown";
+      return "item: unknown";
   }
 }
 
-PlaylistChangeParams::PlaylistChangeParams() = default;
+PlaylistItemChangeParams::PlaylistItemChangeParams() = default;
 
-PlaylistChangeParams::PlaylistChangeParams(ChangeType type,
-                                           const std::string& id)
+PlaylistItemChangeParams::PlaylistItemChangeParams(Type type,
+                                                   const std::string& id)
     : change_type(type), playlist_id(id) {}
-PlaylistChangeParams::~PlaylistChangeParams() = default;
+PlaylistItemChangeParams::~PlaylistItemChangeParams() = default;
 
-MediaFileInfo::MediaFileInfo(const std::string& url, const std::string& title)
-    : media_file_url(url), media_file_title(title) {}
-MediaFileInfo::~MediaFileInfo() {}
-
-CreatePlaylistParams::CreatePlaylistParams() = default;
-CreatePlaylistParams::~CreatePlaylistParams() = default;
-CreatePlaylistParams::CreatePlaylistParams(const CreatePlaylistParams& rhs) =
+PlaylistItemInfo::PlaylistItemInfo() = default;
+PlaylistItemInfo::~PlaylistItemInfo() = default;
+PlaylistItemInfo::PlaylistItemInfo(const PlaylistItemInfo& rhs) = default;
+PlaylistItemInfo& PlaylistItemInfo::operator=(const PlaylistItemInfo& rhs) =
     default;
-CreatePlaylistParams& CreatePlaylistParams::operator=(
-    const CreatePlaylistParams& rhs) = default;
-CreatePlaylistParams::CreatePlaylistParams(
-    CreatePlaylistParams&& rhs) noexcept = default;
-CreatePlaylistParams& CreatePlaylistParams::operator=(
-    CreatePlaylistParams&& rhs) noexcept = default;
-
-PlaylistInfo::PlaylistInfo() = default;
-PlaylistInfo::~PlaylistInfo() = default;
-PlaylistInfo::PlaylistInfo(const PlaylistInfo& rhs) = default;
-PlaylistInfo& PlaylistInfo::operator=(const PlaylistInfo& rhs) = default;
-PlaylistInfo::PlaylistInfo(PlaylistInfo&& rhs) noexcept = default;
-PlaylistInfo& PlaylistInfo::operator=(PlaylistInfo&& rhs) noexcept = default;
+PlaylistItemInfo::PlaylistItemInfo(PlaylistItemInfo&& rhs) noexcept = default;
+PlaylistItemInfo& PlaylistItemInfo::operator=(PlaylistItemInfo&& rhs) noexcept =
+    default;
 
 }  // namespace playlist

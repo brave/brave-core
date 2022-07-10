@@ -11,68 +11,42 @@
 
 namespace playlist {
 
-struct PlaylistChangeParams {
-  enum class ChangeType {
-    kChangeTypeNone,
-    kChangeTypeAdded,            // New playlist added but not ready state
-    kChangeTypeThumbnailReady,   // Thumbnail ready to use for playlist
-    kChangeTypeThumbnailFailed,  // Failed to fetch thumbnail
-    kChangeTypePlayReady,        // Playlist ready to play
-    kChangeTypeDeleted,          // A playlist deleted
-    kChangeTypeAllDeleted,       // All playlist are deleted
-    kChangeTypeAborted,          // Aborted during the creation process
+struct PlaylistItemChangeParams {
+  enum class Type {
+    kNone,
+    kAdded,            // New playlist added but not ready state
+    kThumbnailReady,   // Thumbnail ready to use for playlist
+    kThumbnailFailed,  // Failed to fetch thumbnail
+    kPlayReady,        // Playlist ready to play
+    kDeleted,          // A playlist deleted
+    kAborted,          // Aborted during the creation process
+
+    // TODO(sko) This should be event of Playlist, not of PlaylistItem.
+    kAllDeleted,  // All playlist are deleted
   };
-  static std::string GetPlaylistChangeTypeAsString(
-      PlaylistChangeParams::ChangeType type);
+  static std::string GetPlaylistChangeTypeAsString(Type type);
 
-  PlaylistChangeParams();
-  PlaylistChangeParams(ChangeType type, const std::string& id);
-  ~PlaylistChangeParams();
+  PlaylistItemChangeParams();
+  PlaylistItemChangeParams(Type type, const std::string& id);
+  ~PlaylistItemChangeParams();
 
-  ChangeType change_type = ChangeType::kChangeTypeNone;
+  Type change_type = Type::kNone;
   std::string playlist_id;
 };
 
-struct MediaFileInfo {
-  MediaFileInfo(const std::string& url, const std::string& title);
-  ~MediaFileInfo();
-
-  std::string media_file_url;
-  std::string media_file_title;
-};
-
-struct CreatePlaylistParams {
-  CreatePlaylistParams();
-  CreatePlaylistParams(const CreatePlaylistParams& rhs);
-  CreatePlaylistParams& operator=(const CreatePlaylistParams& rhs);
-  CreatePlaylistParams(CreatePlaylistParams&& rhs) noexcept;
-  CreatePlaylistParams& operator=(CreatePlaylistParams&& rhs) noexcept;
-  ~CreatePlaylistParams();
-
-  std::string playlist_thumbnail_url;
-  std::string playlist_name;
-  std::vector<MediaFileInfo> video_media_files;
-  std::vector<MediaFileInfo> audio_media_files;
-};
-
-// TODO(simonhong): Rename to PlaylistItemInfo
-struct PlaylistInfo {
-  PlaylistInfo();
-  PlaylistInfo(const PlaylistInfo& rhs);
-  PlaylistInfo& operator=(const PlaylistInfo& rhs);
-  PlaylistInfo(PlaylistInfo&& rhs) noexcept;
-  PlaylistInfo& operator=(PlaylistInfo&& rhs) noexcept;
-  ~PlaylistInfo();
+struct PlaylistItemInfo {
+  PlaylistItemInfo();
+  PlaylistItemInfo(const PlaylistItemInfo& rhs);
+  PlaylistItemInfo& operator=(const PlaylistItemInfo& rhs);
+  PlaylistItemInfo(PlaylistItemInfo&& rhs) noexcept;
+  PlaylistItemInfo& operator=(PlaylistItemInfo&& rhs) noexcept;
+  ~PlaylistItemInfo();
 
   std::string id;
-  // TODO(simonhong): Delete this. |create_params| has it.
-  std::string playlist_name;
+  std::string title;
   std::string thumbnail_path;
-  std::string video_media_file_path;
-  std::string audio_media_file_path;
+  std::string media_file_path;
   bool ready{false};
-
-  CreatePlaylistParams create_params;
 };
 
 }  // namespace playlist

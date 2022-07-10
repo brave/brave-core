@@ -14,12 +14,9 @@ class Value;
 
 namespace playlist {
 
-struct PlaylistInfo;
-struct MediaFileInfo;
+struct PlaylistItemInfo;
 
-base::Value GetValueFromMediaFiles(
-    const std::vector<MediaFileInfo>& media_files);
-base::Value GetValueFromPlaylistInfo(const PlaylistInfo& info);
+base::Value GetValueFromPlaylistItemInfo(const PlaylistItemInfo& info);
 
 }  // namespace playlist
 
