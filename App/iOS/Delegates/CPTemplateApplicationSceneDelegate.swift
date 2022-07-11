@@ -7,6 +7,7 @@ import Foundation
 import UIKit
 import CarPlay
 import Shared
+import Brave
 
 private let log = Logger.browserLogger
 

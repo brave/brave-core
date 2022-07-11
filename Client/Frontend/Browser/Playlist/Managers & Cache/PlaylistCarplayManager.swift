@@ -174,7 +174,7 @@ public class PlaylistCarplayManager: NSObject {
 }
 
 extension PlaylistCarplayManager: CPSessionConfigurationDelegate {
-  func connect(interfaceController: CPInterfaceController) {
+  public func connect(interfaceController: CPInterfaceController) {
     carplayInterface = interfaceController
     carplaySessionConfiguration = CPSessionConfiguration(delegate: self)
 
@@ -185,7 +185,7 @@ extension PlaylistCarplayManager: CPSessionConfigurationDelegate {
     }
   }
 
-  func disconnect(interfaceController: CPInterfaceController) {
+  public func disconnect(interfaceController: CPInterfaceController) {
     isCarPlayAvailable = false
     carplayInterface = nil
     carplayInterface?.delegate = nil
