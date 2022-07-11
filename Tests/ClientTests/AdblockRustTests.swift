@@ -22,11 +22,23 @@ class AdblockRustTests: XCTestCase {
     let engine = AdblockEngine(rules: rules)
     AdblockEngine.setDomainResolver(AdblockEngine.defaultDomainResolver)
 
-    XCTAssert(engine.shouldBlock(requestUrl: "http://example.com/-advertisement-icon.", requestHost: "example.com", sourceHost: "example.com"))
-
-    XCTAssertFalse(engine.shouldBlock(requestUrl: "https://brianbondy.com", requestHost: "https://brianbondy.com", sourceHost: "example.com"))
-
-    XCTAssertFalse(engine.shouldBlock(requestUrl: "http://example.com/good-advertisement-icon.", requestHost: "example.com", sourceHost: "example.com"))
+    XCTAssertTrue(engine.shouldBlock(
+      requestURL: URL(string: "http://example.com/-advertisement-icon.")!,
+      sourceURL: URL(string: "https://example.com")!,
+      resourceType: .xmlhttprequest
+    ))
+    
+    XCTAssertFalse(engine.shouldBlock(
+      requestURL: URL(string: "https://brianbondy.com")!,
+      sourceURL: URL(string: "https://example.com")!,
+      resourceType: .xmlhttprequest
+    ))
+    
+    XCTAssertFalse(engine.shouldBlock(
+      requestURL: URL(string: "http://example.com/good-advertisement-icon.")!,
+      sourceURL: URL(string: "https://example.com")!,
+      resourceType: .xmlhttprequest
+    ))
   }
 
 }

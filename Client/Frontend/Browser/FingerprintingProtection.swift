@@ -25,7 +25,7 @@ class FingerprintingProtection: TabContentScript {
   func userContentController(_ userContentController: WKUserContentController, didReceiveScriptMessage message: WKScriptMessage, replyHandler: (Any?, String?) -> Void) {
     defer { replyHandler(nil, nil) }
     if let stats = self.tab?.contentBlocker.stats {
-      self.tab?.contentBlocker.stats = stats.addingFingerprintingBlock()
+      self.tab?.contentBlocker.stats = stats.adding(fingerprintingCount: 1)
       BraveGlobalShieldStats.shared.fpProtection += 1
     }
   }

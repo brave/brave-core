@@ -715,7 +715,7 @@ extension PlaylistWebLoader: WKNavigationDelegate {
       // If an upgraded https load happens with a host which was upgraded, increase the stats
       if url.scheme == "https", let _ = pendingHTTPUpgrades.removeValue(forKey: urlHost) {
         BraveGlobalShieldStats.shared.httpse += 1
-        tab.contentBlocker.stats = tab.contentBlocker.stats.create(byAddingListItem: .https)
+        tab.contentBlocker.stats = tab.contentBlocker.stats.adding(httpsCount: 1)
       }
     }
 

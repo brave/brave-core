@@ -51,6 +51,9 @@ public class AdBlockStats: LocalAdblockResourceProtocol {
     }
   }
   
+  /// Checks the general and regional engines to see if the request should be blocked
+  ///
+  /// - Warning: This method needs to be synced on `AdBlockStatus.adblockSerialQueue`
   func shouldBlock(requestURL: URL, sourceURL: URL, resourceType: AdblockEngine.ResourceType) -> Bool {
     let key = [requestURL.absoluteString, sourceURL.absoluteString, resourceType.rawValue].joined(separator: "_")
     
@@ -121,38 +124,6 @@ public class AdBlockStats: LocalAdblockResourceProtocol {
           log.debug("Successfully Setup Adblock Stats")
         }
     }
-  }
-
-  func shouldBlock(_ request: URLRequest, currentTabUrl: URL?) -> Bool {
-    guard let url = request.url, let requestHost = url.host else {
-      return false
-    }
-
-    // Do not block main frame urls
-    // e.g. user clicked on an ad intentionally (adblock could block redirect to requested site)
-    if url == currentTabUrl { return false }
-
-    let mainDocDomain = stripLocalhostWebServer(request.mainDocumentURL?.host ?? "")
-
-    // A cache entry is like: fifoOfCachedUrlChunks[0]["www.microsoft.com_http://some.url"] = true/false for blocking
-    let key = [mainDocDomain, stripLocalhostWebServer(url.absoluteString)].joined(separator: "_")
-
-    if let checkedItem = fifoCacheOfUrlsChecked.getElement(key) {
-        return checkedItem
-    }
-
-    let isBlocked = generalAdblockEngine.shouldBlock(
-      requestUrl: url.absoluteString,
-      requestHost: requestHost,
-      sourceHost: mainDocDomain
-    ) || (isRegionalAdblockEnabled && regionalAdblockEngine?.shouldBlock(
-      requestUrl: url.absoluteString,
-      requestHost: requestHost,
-      sourceHost: mainDocDomain
-    ) ?? false)
-
-    fifoCacheOfUrlsChecked.addElement(isBlocked, forKey: key)
-    return isBlocked
   }
 
   // Firefox has uses urls of the form

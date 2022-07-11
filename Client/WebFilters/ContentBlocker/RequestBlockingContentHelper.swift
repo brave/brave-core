@@ -7,6 +7,8 @@ import Foundation
 import Shared
 import WebKit
 import BraveCore
+import BraveShared
+import Data
 
 private let log = Logger.braveCoreLogger
 
@@ -30,11 +32,27 @@ class RequestBlockingContentHelper: TabContentScript {
     return ["requestBlockingContentHelper", UserScriptManager.messageHandlerTokenString].joined(separator: "_")
   }
   
+  private weak var tab: Tab?
+  private var blockedRequests: Set<URL> = []
+  
+  init(tab: Tab) {
+    self.tab = tab
+  }
+  
+  func clearBlockedRequests() {
+    blockedRequests.removeAll()
+  }
+  
   func scriptMessageHandlerName() -> String? {
     return Self.scriptMessageHandlerName()
   }
   
   func userContentController(_ userContentController: WKUserContentController, didReceiveScriptMessage message: WKScriptMessage, replyHandler: @escaping (Any?, String?) -> Void) {
+    guard let tab = tab, let currentTabURL = tab.webView?.url else {
+      assertionFailure("Should have a tab set")
+      return
+    }
+
     do {
       let data = try JSONSerialization.data(withJSONObject: message.body)
       let dto = try JSONDecoder().decode(RequestBlockingDTO.self, from: data)
@@ -45,12 +63,31 @@ class RequestBlockingContentHelper: TabContentScript {
         return
       }
       
+      let isPrivateBrowsing = PrivateBrowsingManager.shared.isPrivateBrowsing
+      let domain = Domain.getOrCreate(forUrl: currentTabURL, persistent: !isPrivateBrowsing)
+      guard let domainURLString = domain.url else { return }
+      
       AdBlockStats.shared.shouldBlock(
         requestURL: dto.data.resourceURL,
         sourceURL: dto.data.sourceURL,
         resourceType: dto.data.resourceType
-      ) { shouldBlock in
+      ) { [weak self] shouldBlock in
         assertIsMainThread("Result should happen on the main thread")
+        
+        if shouldBlock, Preferences.PrivacyReports.captureShieldsData.value,
+           let domainURL = URL(string: domainURLString),
+           let blockedResourceHost = dto.data.resourceURL.baseDomain,
+           !PrivateBrowsingManager.shared.isPrivateBrowsing {
+          PrivacyReportsManager.pendingBlockedRequests.append((blockedResourceHost, domainURL, Date()))
+        }
+
+        if shouldBlock && !(self?.blockedRequests.contains(dto.data.resourceURL) ?? true) {
+          BraveGlobalShieldStats.shared.adblock += 1
+          let stats = tab.contentBlocker.stats
+          tab.contentBlocker.stats = stats.adding(adCount: 1)
+          self?.blockedRequests.insert(dto.data.resourceURL)
+        }
+        
         replyHandler(shouldBlock, nil)
       }
     } catch {

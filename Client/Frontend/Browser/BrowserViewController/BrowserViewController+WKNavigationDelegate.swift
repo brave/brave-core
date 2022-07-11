@@ -398,7 +398,7 @@ extension BrowserViewController: WKNavigationDelegate {
       if url.scheme == "https", let _ = pendingHTTPUpgrades.removeValue(forKey: urlHost) {
         BraveGlobalShieldStats.shared.httpse += 1
         if let stats = self.tabManager[webView]?.contentBlocker.stats {
-          self.tabManager[webView]?.contentBlocker.stats = stats.create(byAddingListItem: .https)
+          self.tabManager[webView]?.contentBlocker.stats = stats.adding(httpsCount: 1)
         }
       }
     }
