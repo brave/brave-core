@@ -625,7 +625,6 @@ public class BrowserViewController: UIViewController, BrowserViewControllerDeleg
     displayedPopoverController?.dismiss(animated: true, completion: nil)
     coordinator.animate(
       alongsideTransition: { context in
-        self.toolbarVisibilityViewModel.toolbarState = .expanded
         if self.isViewLoaded {
           self.statusBarOverlay.backgroundColor = self.topToolbar.backgroundColor
           self.setNeedsStatusBarAppearanceUpdate()
