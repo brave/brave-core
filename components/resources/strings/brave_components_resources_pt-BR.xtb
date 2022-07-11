@@ -722,7 +722,7 @@
 <translation id="4780526507945807546">Usar um nó local do IPFS do Brave</translation>
 <translation id="8148464361648742409">Usar um gateway público</translation>
 <translation id="5123478056123923857">O IPFS (Sistema de Arquivos Interplanetário) é a rede pública para armazenamento e fornecimento de dados par-a-par (P2P). Esse protocolo possui considerações de privacidade diferentes de HTTP(S).</translation>
-<translation id="5410952114182173389">Seu computador contribui para a rede pública, mas seu endereço de IP e todo conteúdo que você está solicitando ou disponibilizando podem ser expostos. O conteúdo que você solicitar via IPFS é verificado antes de ser oferecido a você.</translation>
+<translation id="1216911189668016151">Seu computador contribui para a rede pública, mas seu endereço de IP e todo conteúdo que você está solicitando ou disponibilizando podem ser expostos. O conteúdo que você solicita via IPFS é verificado antes de ser oferecido a você. As solicitações de rede podem não usar as configurações de proxy e DNS do navegador.</translation>
 <translation id="8664689531113048642">Protege o seu endereço de IP e conteúdos que você está solicitando de possíveis terceiros observadores, mas não do operador de gateway público. O operador de gateway é responsável por garantir que o conteúdo oferecido a você via gateway é o conteúdo que você solicitou. Além disso, seu computador não contribui para a rede do IFPS (Sistema de Arquivos Interplanetário).</translation>
 <translation id="3977809385703587108">Você poder alterar suas preferências novamente em</translation>
 <translation id="3340978935015468852">configurações</translation>
@@ -914,6 +914,7 @@
 <translation id="4359319875297001084">Importar das carteiras de criptomoedas legadas do Brave?</translation>
 <translation id="3331452756822160641">Nova senha</translation>
 <translation id="8624315169751085215">Copiar para área de transferência</translation>
+<translation id="7885157704277298658">Copiado!</translation>
 <translation id="1121335910737476837">Contas de criptomoedas principais</translation>
 <translation id="6969147029062037757">Contas importadas</translation>
 <translation id="4057718162494343222">Você pode criar contas principais na Carteira Brave que podem ser armazenadas em backup ou restauradas por meio da sua frase de recuperação. Para saber mais sobre os tipos de conta, acesse a ajuda da conta.</translation>
@@ -971,6 +972,8 @@
 <translation id="7642841516562576649">URL de ícone</translation>
 <translation id="2144247757675997850">Adicionar ativo</translation>
 <translation id="2708402071160162126">ATENÇÃO: nunca compartilhe sua frase de recuperação. Qualquer pessoa com essa frase pode obter seus ativos para sempre.</translation>
+<translation id="2416098547200943834">OBSERVAÇÃO: a chave privada é fornecida como um JSON com codificação hexadecimal que contém informações da chave privada e de protocolo. <ph name="LINK_START"/>Saiba mais<ph name="LINK_END"/>.</translation>
+<translation id="7657130382217527063">OBSERVAÇÃO: a chave privada precisa ser fornecida como um JSON com codificação hexadecimal que contém informações da chave privada e de protocolo. <ph name="LINK_START"/>Saiba mais<ph name="LINK_END"/>.</translation>
 <translation id="2902856457593699108">Mostrar chave</translation>
 <translation id="8033497299373164724">Ocultar chave</translation>
 <translation id="2702143907607790516">Houve uma falha ao obter o nome da conta. Tente novamente.</translation>
@@ -1006,7 +1009,7 @@
 <translation id="5488357322146334497">Mensagem</translation>
 <translation id="3586752056660754651">Assinar</translation>
 <translation id="3484981968509595506">Um DApp está solicitando sua chave de criptografia pública</translation>
-<translation id="1915212737651531313"><ph name="URL_BEFORE"/>$url<ph name="URL_AFTER"/> está solicitando a chave de criptografia pública da sua carteira. Se você consentir com o fornecimento dessa chave, o site poderá enviar mensagens criptografadas para você.</translation>
+<translation id="2950511942409261729"><ph name="URL_BEFORE"/>$url<ph name="URL_AFTER"/> está solicitando a chave de criptografia pública da sua carteira. Se você consentir com o fornecimento dessa chave, o site poderá enviar mensagens criptografadas para você.</translation>
 <translation id="3340247553212049934">Providenciar</translation>
 <translation id="1619778919922494944">Este DApp deseja ler esta mensagem para concluir sua solicitação</translation>
 <translation id="714506544401754321">Descriptografar mensagem</translation>
@@ -1073,8 +1076,8 @@
 <translation id="7051244143160304048"><ph name="DEVICE_NAME"/> desconectada</translation>
 <translation id="5317781812114905957">Instruções</translation>
 <translation id="1178198982208000092">Conecte sua <ph name="DEVICE_NAME"/></translation>
-<translation id="4358411489835404360">A carteira de hardware exige confirmação no dispositivo. <ph name="DEVICE_NAME"/></translation>
-<translation id="3087887714936696603">A carteira de hardware exige que o app Ethereum esteja aberto na <ph name="DEVICE_NAME"/></translation>
+<translation id="6291765462876399333">A carteira de hardware exige confirmação no dispositivo <ph name="DEVICE_NAME"/></translation>
+<translation id="2288190100157580461">A carteira de hardware exige que o app <ph name="NETWORK"/> esteja aberto no dispositivo <ph name="DEVICE_NAME"/></translation>
 <translation id="8687869982094542529">enviada</translation>
 <translation id="5013754027092416509">recebida</translation>
 <translation id="5867988533873716616">O URL do Block Explorer não está disponível.</translation>
@@ -1145,7 +1148,7 @@
 <translation id="1470129769517088397"><ph name="ADDRESS"/> não é a rede atual</translation>
 <translation id="7340805872138998391">Não foi possível desbloquear o dispositivo. Tente reconectar.</translation>
 <translation id="1984410139271779110">Erro interno. Esquema desconhecido.</translation>
-<translation id="8682200134223578011">aprovado</translation>
+<translation id="6989562355845156390">aprovar</translation>
 <translation id="4674380028960132654">Ledger: a assinatura não corresponde ao endereço correto</translation>
 <translation id="3183932890629254743">Conta de hardware não encontrada</translation>
 <translation id="4287068151777838754">Os dados JSON não são esperados</translation>
@@ -1188,6 +1191,26 @@
 <translation id="2317956709076373213">Transação confirmada</translation>
 <translation id="310693998838023022">Erro na transação</translation>
 <translation id="6395870673621520684">Transação descartada</translation>
+<translation id="1237782734462409503">A guia não está ativa</translation>
+<translation id="756701799684433105">Aprovar transação</translation>
+<translation id="6450792191436242818">Programa do sistema</translation>
+<translation id="6252742184395380448">Programa de configuração</translation>
+<translation id="5358970666412490132">Programa de staking</translation>
+<translation id="346636227344244984">Programa de voto</translation>
+<translation id="3538368258493053874">Carregador BPF</translation>
+<translation id="2334098351242742927">Programa Ed25519</translation>
+<translation id="8780753288764281797">Programa Secp256k1</translation>
+<translation id="5275550100743015683">Endereço do remetente:</translation>
+<translation id="2678433693746214764">Endereço do destinatário:</translation>
+<translation id="4576396475962922672">Nova conta:</translation>
+<translation id="4719005063558335704">Contas:</translation>
+<translation id="4337554812324118382">Dados:</translation>
+<translation id="569870799832027680">ID do programa:</translation>
+<translation id="7843211152394841558">Máximo de novas tentativas:</translation>
+<translation id="8496335570810457">Commitment de simulação de transação:</translation>
+<translation id="5100124500279922001">Pular simulação de transação:</translation>
+<translation id="8060029310790625334">Central de Ajuda</translation>
+<translation id="2095142195578664632">Precisa de ajuda? Consulte a</translation>
 <translation id="3155170474926428993">Inicializador Tor</translation>
 <translation id="3745016858329272300">Informação Geral</translation>
 <translation id="4045404575593562245">Eventos de Controle do Tor</translation>

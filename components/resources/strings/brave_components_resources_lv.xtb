@@ -722,7 +722,7 @@
 <translation id="4780526507945807546">Izmantot Brave vietējo IPFS mezglu</translation>
 <translation id="8148464361648742409">Izmantot publisko vārteju</translation>
 <translation id="5123478056123923857">IPFS (InterPlanetary failu sistēma) ir publiskais tīkls vienādranga datu glabāšanai un piegādei. Šim protokolam salīdzinājumā ar HTTP(S) ir atšķirīgi konfidencialitātes apsvērumi.</translation>
-<translation id="5410952114182173389">Jūsu dators piedalās publiskajā tīklā, taču jūsu IP adrese un jebkāds saturs, kuru pieprasāt vai nodrošināt, var tikt atklāts. Saturs, kuru pieprasāt, izmantojot IPFS, pirms piegādāšanas jums tiek pārbaudīts.</translation>
+<translation id="1216911189668016151">Jūsu dators ir pieslēgts publiskam tīklam, bet jūsu IP adrese un pieprasītais vai piedāvātais saturs var tikt atklāti. Saturs, kuru pieprasāt IPFS, pirms nodošanas jums tiek pārbaudīts. Tīkla pieprasījumi nedrīkst izmantot pārlūkprogrammas starpniekservera un DNS iestatījumus.</translation>
 <translation id="8664689531113048642">Aizsargā jūsu IP adresi un pieprasīto saturu no potenciālajiem trešo pušu novērotājiem, taču ne no publiskās vārtejas operatora. Vārtejas operators ir atbildīgs par to, lai saturs, kas jums tiek piegādāts, izmantojot vārteju, būtu jūsu pieprasītais saturs. Turklāt jūsu dators nepiedalās publiskajā IPFS tīklā.</translation>
 <translation id="3977809385703587108">Savas preferences varēsiet atkal mainīt</translation>
 <translation id="3340978935015468852">iestatījumi</translation>
@@ -914,6 +914,7 @@
 <translation id="4359319875297001084">Vai importēt no mantotajiem Brave kriptovalūtas makiem?</translation>
 <translation id="3331452756822160641">Jaunā parole</translation>
 <translation id="8624315169751085215">Kopēt starpliktuvē</translation>
+<translation id="7885157704277298658">Nokopēts!</translation>
 <translation id="1121335910737476837">Primārie kriptovalūtas konti</translation>
 <translation id="6969147029062037757">Importēti konti</translation>
 <translation id="4057718162494343222">Jūs varat izveidot primāros kontus Brave makā, ko var kopēt vai atjaunot ar jūsu atkopšanas frāzi. Lai uzzinātu vairāk par kontu veidiem, apmeklējiet palīdzības sadaļu par kontiem.</translation>
@@ -971,6 +972,8 @@
 <translation id="7642841516562576649">Ikonas URL</translation>
 <translation id="2144247757675997850">Pievienot aktīvu</translation>
 <translation id="2708402071160162126">BRĪDINĀJUMS: Nekad neizpaudiet atkopšanas frāzi. Jebkurš, kam ir šī frāze, var neatgriezeniski atņemt jūsu līdzekļus.</translation>
+<translation id="2416098547200943834">PIEZĪME. Privātā atslēga ir heksadecimālā kodējuma JSON un satur privāto atslēgu un protokola informāciju. <ph name="LINK_START"/>Uzzināt vairāk<ph name="LINK_END"/>.</translation>
+<translation id="7657130382217527063">PIEZĪME. Privātajai atslēgai ir jābūt heksadecimāla kodējuma JSON un jāsatur privātā atslēga un protokola informācija. <ph name="LINK_START"/>Uzzināt vairāk<ph name="LINK_END"/>.</translation>
 <translation id="2902856457593699108">Rādīt atslēgu</translation>
 <translation id="8033497299373164724">Slēpt atslēgu</translation>
 <translation id="2702143907607790516">Neizdevās atjaunināt konta nosaukumu. Lūdzu, mēģiniet vēlreiz.</translation>
@@ -1006,7 +1009,7 @@
 <translation id="5488357322146334497">Ziņojums</translation>
 <translation id="3586752056660754651">Parakstīt</translation>
 <translation id="3484981968509595506">DApp pieprasa jūsu publisko šifrēšanas atslēgu</translation>
-<translation id="1915212737651531313"><ph name="URL_BEFORE"/>$url<ph name="URL_AFTER"/> pieprasa jūsu maka publisko šifrēšanas atslēgu. Ja piekrītat šīs atslēgas sniegšanai jums varēs sacerēt šifrētus ziņojumus.</translation>
+<translation id="2950511942409261729"><ph name="URL_BEFORE"/>$url<ph name="URL_AFTER"/> pieprasa jūsu maka publisko šifrēšanas atslēgu. Ja piekrītat dot šo atslēgu, šī vietne varēs sastādīt jums paredzētus šifrētus ziņojumus.</translation>
 <translation id="3340247553212049934">Iesniegt</translation>
 <translation id="1619778919922494944">Šī DApp vēlas lasīt šo ziņojumu, lai pabeigtu jūsu pieprasījumu</translation>
 <translation id="714506544401754321">Atšifrēt ziņojumu</translation>
@@ -1073,8 +1076,8 @@
 <translation id="7051244143160304048"><ph name="DEVICE_NAME"/> atvienots</translation>
 <translation id="5317781812114905957">Instrukcijas</translation>
 <translation id="1178198982208000092">Savienojiet savu <ph name="DEVICE_NAME"/></translation>
-<translation id="4358411489835404360">Aparatūras maks pieprasa apstiprināšanu ierīcē. <ph name="DEVICE_NAME"/></translation>
-<translation id="3087887714936696603">Aparatūras maciņam nepieciešams, lai lietotne Ethereum būtu atvērta<ph name="DEVICE_NAME"/></translation>
+<translation id="6291765462876399333">Aparatūras maks pieprasa apstiprinājumu ierīcē <ph name="DEVICE_NAME"/></translation>
+<translation id="2288190100157580461">Aparatūras maks pieprasa, lai <ph name="DEVICE_NAME"/> tiktu atvērta <ph name="NETWORK"/> lietotne</translation>
 <translation id="8687869982094542529">nosūtīts</translation>
 <translation id="5013754027092416509">saņemts</translation>
 <translation id="5867988533873716616">Pārlūka URL bloķēšana nav pieejama.</translation>
@@ -1145,7 +1148,7 @@
 <translation id="1470129769517088397"><ph name="ADDRESS"/> nav pašreizējais tīkls</translation>
 <translation id="7340805872138998391">Nespēj atbloķēt ierīci, mēģiniet izveidot savienojumu atkārtoti</translation>
 <translation id="1984410139271779110">Iekšēja kļūda, nezināma shēma</translation>
-<translation id="8682200134223578011">apstiprināts</translation>
+<translation id="6989562355845156390">apstiprināt</translation>
 <translation id="4674380028960132654">Reģistrs: paraksts neatbilst pareizajai adresei</translation>
 <translation id="3183932890629254743">Aparatūras konts netika atrasts</translation>
 <translation id="4287068151777838754">JSON dati nav paredzēti</translation>
@@ -1188,6 +1191,26 @@
 <translation id="2317956709076373213">Darījums apstiprināts.</translation>
 <translation id="310693998838023022">Darījuma kļūda</translation>
 <translation id="6395870673621520684">Darījums atmests</translation>
+<translation id="1237782734462409503">Cilne nav aktīva</translation>
+<translation id="756701799684433105">Apstiprināt darījumu</translation>
+<translation id="6450792191436242818">System Program</translation>
+<translation id="6252742184395380448">Config Program</translation>
+<translation id="5358970666412490132">Stake Program</translation>
+<translation id="346636227344244984">Vote Program</translation>
+<translation id="3538368258493053874">BPF Loader</translation>
+<translation id="2334098351242742927">Ed25519 Program</translation>
+<translation id="8780753288764281797">Secp256k1 Program</translation>
+<translation id="5275550100743015683">Sūtītāja adrese:</translation>
+<translation id="2678433693746214764">Saņēmēja adrese:</translation>
+<translation id="4576396475962922672">Jauns konts:</translation>
+<translation id="4719005063558335704">Konti:</translation>
+<translation id="4337554812324118382">Dati:</translation>
+<translation id="569870799832027680">Programmas ID:</translation>
+<translation id="7843211152394841558">Maks. mēģinājumu skaits:</translation>
+<translation id="8496335570810457">Pirmslidojuma saistības:</translation>
+<translation id="5100124500279922001">Izlaist pirmslidojumu:</translation>
+<translation id="8060029310790625334">Palīdzības dienests</translation>
+<translation id="2095142195578664632">Vajag palīdzību? Skatīt</translation>
 <translation id="3155170474926428993">Tor palaidējs</translation>
 <translation id="3745016858329272300">Vispārīga informācija</translation>
 <translation id="4045404575593562245">Tor kontroles notikumi</translation>

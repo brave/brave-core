@@ -105,6 +105,16 @@
 <translation id="4870911314065352661">关闭所有标签页？</translation>
 <translation id="7551864359422178684">在此浏览器窗口中还有 <ph name="NUMBER_OF_TABS"/> 个标签页处于开启状态。</translation>
 <translation id="2571596981920752023"><ph name="NUMBER_OF_TABS"/> 个标签页</translation>
+<translation id="2272117088509540883">- Brave 搜索</translation>
+<translation id="2701279958223202597">支持隐私性更好的独立搜索。Brave 的搜索功能不会追踪您、您的查询或您的点击行为。</translation>
+<translation id="6438467592401259882">支持隐私性更好的独立搜索。</translation>
+<translation id="1688359110799098115">支持隐私性更好的独立搜索。</translation>
+<translation id="8579317236683491484">Brave 的搜索功能不会追踪您、您的查询或您的点击行为。</translation>
+<translation id="5240031343741051161">尝试Brave搜索</translation>
+<translation id="5026874946691314267">别再给我看这个了</translation>
+<translation id="5234764350956374838">关闭</translation>
+<translation id="214744058941501853">"&gt;
+          关闭 Brave 的搜索转换。按 Enter 删除此建议</translation>
 <translation id="2515126961943087659">Bat Ads 服务</translation>
 <translation id="7924918279836988121">Bat Ledger 服务</translation>
 <translation id="6040143037577758943">关闭</translation>
@@ -134,6 +144,7 @@
 <translation id="8490082094734500369">关闭阅读器模式</translation>
 <translation id="2036503787657622020">打开阅读器模式</translation>
 <translation id="5226458915125328323">速读器设置</translation>
+<translation id="1621606336827646158">显示原始页面</translation>
 <translation id="6284218950354553099">自动向 Brave 发送每日使用 ping</translation>
 <translation id="5288333155754958121">这种匿名的私人 ping 可以让 Brave 估计活跃用户数</translation>
 <translation id="1872784258300710671">Brave 使用完全隐私的产品分析来估计某些功能的整体使用情况</translation>
@@ -184,6 +195,8 @@
 <translation id="6817415381278637662">将 Brave 设置为你的默认浏览器，以便你打开的每个网页都获得 Brave 的隐私保护。</translation>
 <translation id="8722651357687610395">将 Brave 设置为默认</translation>
 <translation id="2370739752330685659">回头再说</translation>
+<translation id="961012016278832836">Microsoft Edge 旧版</translation>
+<translation id="6436994631426134065">已从 <ph name="BROWSER_NAME"/> 导入。</translation>
 <translation id="9156965752763025780">您所做的更改会在下次重新启动 Brave 时生效。</translation>
 <translation id="7179921470347911571">立即重新启动</translation>
 <translation id="4472575034687746823">开始使用</translation>
@@ -200,9 +213,11 @@
 <translation id="2906510232093002459">Brave 默认图片</translation>
 <translation id="2396127686705429331">显示书签栏按钮</translation>
 <translation id="2814998458708016836">使用宽地址栏</translation>
-<translation id="5802665280774361839">在地址栏中显示自动完成</translation>
-<translation id="597020512043916976">在自动完成建议中显示顶级网站</translation>
-<translation id="301088458323355543">在自动完成建议中显示建议的网站</translation>
+<translation id="4109670531935487117">在地址栏中显示自动完成建议</translation>
+<translation id="2858138569776157458">热门网站</translation>
+<translation id="65774893852758517">建议的网站</translation>
+<translation id="7859704718976024901">浏览记录</translation>
+<translation id="8820817407110198400">书签栏</translation>
 <translation id="6333347122924254968">在地址栏显示 Brave 奖励图标</translation>
 <translation id="1811404036171336214">总是显示新标签页上的书签</translation>
 <translation id="5529693968082667490">显示标签页搜索按钮</translation>
@@ -361,6 +376,8 @@
 确定要这么做吗？</translation>
 <translation id="6285118765755298263">对其他搜索引擎构建索引</translation>
 <translation id="919715748352669592">自动对遵循 OpenSearch 规范的网站构建索引</translation>
+<translation id="842628013524824194">一般窗口 - 地址栏中使用的搜索引擎</translation>
+<translation id="5324939009884545145">隐私窗口 - 地址栏中使用的搜索引擎</translation>
 <translation id="6864914031231797928">允许 Google 登录以获取扩展程序</translation>
 <translation id="6554397389149987360">使用环聊组件在浏览器中启用屏幕共享和其他功能。</translation>
 <translation id="7878791177459550035">媒体路由器在浏览器中启用投射功能。</translation>
@@ -460,6 +477,7 @@
 <translation id="616058968889448209">IPFS 服务启动错误，更多信息参见<ph name="BEGIN_LINK"/>诊断页<ph name="END_LINK"/></translation>
 <translation id="6912148685459054619">'<ph name="KEY_NAME"/>' 密钥导入失败</translation>
 <translation id="3364053282600191535"><ph name="KEY_NAME"/>' 密钥导出失败</translation>
+<translation id="5840868269342837751">注意：网络请求不得使用浏览器代理和 DNS 设置。</translation>
 <translation id="8275038454117074363">导入</translation>
 <translation id="3654980960391973513">生成</translation>
 <translation id="5531501313997312487">启动节点</translation>

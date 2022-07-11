@@ -136,7 +136,7 @@
     "description": ""
   },
   "rewardsLogInToSeeBalance": {
-    "message": "$begin_bold$Log in to $provider$ $end_bold$to see your balance",
+    "message": "$begin_bold$Prijavite se u $provider$ $end_bold$ da biste vidjeli raspoloživo stanje",
     "description": "",
     "placeholders": {
       "begin_bold": {

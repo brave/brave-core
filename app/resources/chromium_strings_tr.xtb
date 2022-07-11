@@ -352,8 +352,8 @@ Web sitelerine ve uygulamalara önceden vermiş olduğunuz izinler bu hesap içi
 Web sitelerine ve uygulamalara önceden vermiş olduğunuz izinler bu hesap için geçerli olabilir. Brave senkronizasyon zincirlerinizi <ph name="SETTINGS_LINK_BEGIN"/>Ayarlar<ph name="SETTINGS_LINK_END"/> kısmından yönetebilirsiniz.</translation>
 <translation id="1743665722170667430">Bilinmeyen kaynaklardan gelen uzantılar, uygulamalar ve temalar cihazınıza zarar verebilir. Brave sadece <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> kaynaklı yüklemeleri önerir.</translation>
 <translation id="1299765473362724475">Uyarı: Brave, uzantıların tarama geçmişinizi kaydetmesini engelleyemez. Gizli modda bu uzantıyı devre dışı bırakmak için bu seçeneğin onay işaretini kaldırın.</translation>
-<translation id="1448049584457347995">Brave'u daha güvenli bir hale getirmek için <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> altında listelenmeyen ve bilginiz dışında eklenmiş olabilecek bazı uzantıları devre dışı bıraktık.</translation>
-<translation id="8848045066928358658">Brave'u daha güvenli bir hale getirmek için <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> altında listelenmeyen ve bilginiz dışında eklenmiş olabilecek aşağıdaki uzantıyı devre dışı bıraktık.</translation>
+<translation id="1448049584457347995">Brave'i daha güvenli bir hale getirmek için <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> üzerinde listelenmeyen ve bilginiz dışında eklenmiş olabilecek bazı uzantıları devre dışı bıraktık.</translation>
+<translation id="8848045066928358658">Brave'i daha güvenli bir hale getirmek için <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> altında listelenmeyen ve bilginiz dışında eklenmiş olabilecek aşağıdaki uzantıyı devre dışı bıraktık.</translation>
 <translation id="669092380621816981">Bu kullanıcının tarama verileri bu cihazdan silinecektir. Verileri kurtarmak için Brave'da <ph name="USER_EMAIL"/> olarak oturum açın.</translation>
 <translation id="4624945300945265642">Bağlantıyı Brave &amp;gizli penceresinde aç</translation>
 <translation id="6554952862405000915">Bağlantıyı Brave &amp;Gizli Penceresinde Aç</translation>

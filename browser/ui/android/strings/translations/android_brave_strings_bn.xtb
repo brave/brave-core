@@ -60,11 +60,6 @@
 <translation id="5987838417172370108">Brave ব্রাউজার ক্র্যাশ করলে বা আটকে গেলে স্বয়ংক্রিয়ভাবে সমস্যা নির্ণয়ের রিপোর্টগুলো পাঠিয়ে Brave এর পণ্যের স্থিতিশীলতা উন্নত করতে সহায়তা করুন।</translation>
 <translation id="7977176350719484850">আনুমানিক ডেটা\nসাশ্রয়</translation>
 <translation id="9008534313521214777">গোপনীয়তাকে মর্যাদা\nদেওয়া</translation>
-<translation id="6572660632052512096">ডেস্কটপ মোড</translation>
-<translation id="1340503115760585811">নতুন ট্যাবগুলির জন্য ডেস্কটপ ভিউ সক্ষম করুন</translation>
-<translation id="7924540991929826186">নতুন ট্যাবগুলির জন্য সাইটগুলির মোবাইল সংস্করণ ব্যবহার করুন (সুপারিশকৃত)</translation>
-<translation id="807636106793708118">সাইটগুলির পছন্দের মোবাইল সংস্করণ</translation>
-<translation id="4479934682648362332">সাইটগুলির পছন্দের ডেস্কটপ সংস্করণ</translation>
 <translation id="1842747674580016420">Brave-এ ভিডিও প্লেব্যাক</translation>
 <translation id="5368992950177874750">যদি সক্ষম করা থাকে তবে ভিডিওগুলি সংশ্লিষ্ট অ্যাপের পরিবর্তে Brave প্লে করা হবে</translation>
 <translation id="410351446219883937">স্বতঃচালানো</translation>
@@ -92,7 +87,7 @@
 <translation id="1929905278861178845">Brave-এর ইউজাররা কী ধরনের ফিচার ব্যবহার করে সেই সম্পর্কে সম্পূর্ণ ব্যক্তিগত ও বেনামী প্রোডাক্টের তথ্য শেয়ার করুন।</translation>
 <translation id="2877653791257935258">ওয়েবসাইটের নাম বা URL লিখুন</translation>
 <translation id="5329830149661250028">Brave-এর পার্থক্য দেখুন: কোনও বিজ্ঞাপন নেই। কোনও ট্র্যাকার নেই। পেজ দ্রুত লোড হওয়ার উপায়।</translation>
-<translation id="3545804467215833536">Brave Shields দেখতে ট্যাপ করুন</translation>
+<translation id="3545804467215833536">Brave শিল্ড দেখতে ট্যাপ করুন</translation>
 <translation id="1724327820822194498">শিল্ডের সাথে প্রতিটি পেজে Brave ব্লকের সব খারাপ জিনিসগুলো দেখুন।</translation>
 <translation id="5386259141409498372"><ph name="BIG_TECH"/> এবং অন্য <ph name="TRACKER"/>টি বিজ্ঞাপন &amp; ট্র্যাকার ব্লক করা আছে</translation>
 <translation id="3092683655478890840"><ph name="TRACKER_COUNT"/>টি বিজ্ঞাপন &amp; ট্র্যাকার ব্লক করা হয়েছে</translation>
@@ -119,6 +114,7 @@
 <translation id="19715420010996093">Brave ব্রাউজার নির্বাচন করুন এবং 'সর্বদা' ট্যাপ করুন</translation>
 <translation id="3546439402724649282">ইতিমধ্যেই আপনার ডিফল্ট ব্রাউজার হিসাবে Brave সেট করা হয়েছে।</translation>
 <translation id="8389661903259423907">আপনি ইতিমধ্যেই একটি ডিফল্ট ব্রাউজার সেট করেছেন। আপনি আপনার অ্যাপ সেটিংসে ডিফল্ট ব্রাউজার পরিবর্তন করতে পারেন।</translation>
+<translation id="8112367589167674370">Brave বাক্যালাপ</translation>
 <translation id="8826007068782654809">আপনাকে ধন্যবাদ</translation>
 <translation id="6665366815203065060">আপনি এইমাত্র একটি বখশিশ পাঠিয়েছেন একে:</translation>
 <translation id="5441565662498481293">আপনি স্বয়ংক্রিয়ভাবে একটি বখশিশ পাঠিয়েছেন একে:</translation>
@@ -864,23 +860,34 @@
 <translation id="4804818685124855865">সংযোগ বিচ্ছিন্ন করুন</translation>
 <translation id="8009571545960303544">আপনার স্বাক্ষরের অনুরোধ জানানো হয়েছে</translation>
 <translation id="3484981968509595506">একটি DApp আপনাকে সর্বজনীন এনক্রিপশন কী পাঠানোর অনুরোধ করছে।</translation>
-<translation id="2291002548681057345">আপনার ওয়ালেট পাবলিক এনক্রিপশন কী দরকার। আপনি এই কী দিতে সম্মতি জানালে, সাইট আপনার জন্য এনক্রিপ্টেড মেসেজ লিখতে পারবে।</translation>
 <translation id="3340247553212049934">সরবরাহ করুন</translation>
 <translation id="1982257600591932657">নেটওয়ার্কের নাম</translation>
 <translation id="5052727830821470769">নেটওয়ার্ক URL</translation>
 <translation id="4822132585477111396">চেন আইডি</translation>
 <translation id="7131971375297699539">মুদ্রার প্রতীক</translation>
 <translation id="7982789257301363584">নেটওয়ার্ক</translation>
-<translation id="7540715999708954128">এটি Brave ওয়ালেটের মধ্যে এই নেটওয়ার্কটি ব্যবহার করার অনুমতি দেবে। আরও জানুন।</translation>
-<translation id="8759753423332885148">আরও জানুন।</translation>
 <translation id="4717431746210146708">এই সাইটটিকে একটি নেটওয়ার্ক যুক্ত করার অনুমতি দেবেন?</translation>
+<translation id="4857321293515555666">আপনার অনুরোধ সম্পূর্ণ করতে এই DApp এই বার্তাটি পড়তে চায়।</translation>
+<translation id="714506544401754321">ডিক্রিপ্ট বার্তা</translation>
+<translation id="5039804452771397117">অনুমতি দিন</translation>
 <translation id="3378339846292573874">প্রস্তাবিত টোকেন যোগ করুন</translation>
 <translation id="2322227405137827074">আপনি কি এই টোকেনটি ইম্পোর্ট করতে চান?</translation>
 <translation id="1324417023773393937">Brave ব্রাউজার</translation>
 <translation id="6044189892950611565">Brave ব্রাউজারের জন্য বিজ্ঞপ্তির চ্যানেল</translation>
 <translation id="1173919438868967364">অ্যাকাউন্ট নির্বাচন করুন</translation>
 <translation id="8922793255489232731">এর জন্য ম্যাচিং টাইমজোন পাওয়া যায়নি: <ph name="VALUE"/></translation>
-<translation id="8231907121684689093">শীর্ষ স্থানীয় সাইটগুলি দেখান</translation>
+<translation id="8643377320501056697">শীর্ষ স্থানীয় সাইটগুলি দেখান</translation>
 <translation id="6471216025161697462"><ph name="VALUE"/>-এ সংযুক্ত হয়েছে</translation>
 <translation id="1968852757206592413">ট্রায়াল</translation>
+<translation id="7733890291091968191">Web3 বিজ্ঞপ্তি প্রদর্শন করুন</translation>
+<translation id="1371627247679035769">\n\n\n\n#### Brave আপনাকে ট্র্যাক করে না বা আপনি কীভাবে আমাদের অ্যাপ ব্যবহার করেন তা জানেন না, তাই আপনি কীভাবে VPN সেট আপ করেছেন তা আমরা জানি না। আপনি যে সমস্যার সম্মুখীন হচ্ছেন সে সম্পর্কে তথ্য শেয়ার করুন এবং আমরা যত তাড়াতাড়ি সম্ভব এটি সমাধান করার জন্য যথাসাধ্য চেষ্টা করব। ####\n\n</translation>
+<translation id="3367162038532116157">\n\nVPN হোস্টনাম\n <ph name="VALUE"/></translation>
+<translation id="6173438324126027458">\n\nসদস্যতার ধরন\n <ph name="VALUE"/></translation>
+<translation id="1478875290576741766">\n\nপ্লেস্টোর টোকেন\n <ph name="VALUE"/></translation>
+<translation id="1403057798797848522">\n\nঅ্যাপ সংস্করণ\n <ph name="VALUE"/></translation>
+<translation id="2282835936933247509">\n\nসময় অঞ্চল\n</translation>
+<translation id="8107843365677337047">\n\nনেটওয়ার্ক টাইপ\n</translation>
+<translation id="5334952096674914470">\n\nসেলুলার ক্যারিয়ার\n</translation>
+<translation id="5393042357629679588">\n\nঅন্যান্য সমস্যা\n</translation>
+<translation id="8095666712177294104">\n\nপ্ল্যাটফর্ম\n</translation>
 </translationbundle>

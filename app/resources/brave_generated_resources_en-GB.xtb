@@ -106,6 +106,8 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="4870911314065352661">Close all tabs?</translation>
 <translation id="7551864359422178684">You have <ph name="NUMBER_OF_TABS"/> tabs open in this browser window.</translation>
 <translation id="2571596981920752023"><ph name="NUMBER_OF_TABS"/> tabs</translation>
+<translation id="5026874946691314267">Don't show this again</translation>
+<translation id="5234764350956374838">Dismiss</translation>
 <translation id="2515126961943087659">Bat Ads Service</translation>
 <translation id="7924918279836988121">Bat Ledger Service</translation>
 <translation id="6040143037577758943">Close</translation>
@@ -201,9 +203,9 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="2906510232093002459">Brave default images</translation>
 <translation id="2396127686705429331">Show bookmarks button</translation>
 <translation id="2814998458708016836">Use wide address bar</translation>
-<translation id="5802665280774361839">Show autocomplete in address bar</translation>
-<translation id="597020512043916976">Show top sites in autocomplete suggestions</translation>
-<translation id="301088458323355543">Show suggested sites in autocomplete suggestions</translation>
+<translation id="2858138569776157458">Top sites</translation>
+<translation id="7859704718976024901">Browsing History</translation>
+<translation id="8820817407110198400">Bookmarks</translation>
 <translation id="6333347122924254968">Show Brave Rewards icon in address bar</translation>
 <translation id="1811404036171336214">Always show bookmarks on new tab page</translation>
 <translation id="5529693968082667490">Show tab search button</translation>

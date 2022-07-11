@@ -105,6 +105,16 @@
 <translation id="4870911314065352661">Aizvērt visas cilnes?</translation>
 <translation id="7551864359422178684">Šajā pārlūkprogrammas logā jums ir atvērta(-s) <ph name="NUMBER_OF_TABS"/> cilne(-s).</translation>
 <translation id="2571596981920752023"><ph name="NUMBER_OF_TABS"/> cilnes</translation>
+<translation id="2272117088509540883">- Brave meklēšana</translation>
+<translation id="2701279958223202597">Nodrošina neatkarīgu meklēšanu un labāku privātumu. Brave meklētājs neizseko jūs, jūsu meklējumus vai jūsu klikšķus.</translation>
+<translation id="6438467592401259882">Nodrošina neatkarīgu meklēšanu un labāku privātumu.</translation>
+<translation id="1688359110799098115">Nodrošina neatkarīgu meklēšanu un labāku privātumu</translation>
+<translation id="8579317236683491484">Brave meklētājs neizseko jūs, jūsu meklējumus vai jūsu klikšķus.</translation>
+<translation id="5240031343741051161">Izmēģiniet Brave meklēšanu</translation>
+<translation id="5026874946691314267">Vairs nerādīt</translation>
+<translation id="5234764350956374838">Noraidīt</translation>
+<translation id="214744058941501853">"&gt;
+Atmest Brave meklēšanas konversiju, nospiediet Enter, lai atceltu šo ieteikumu</translation>
 <translation id="2515126961943087659">BAT reklāmu pakalpojums</translation>
 <translation id="7924918279836988121">BAT norēķinu pakalpojums</translation>
 <translation id="6040143037577758943">Aizvērt</translation>
@@ -134,6 +144,7 @@
 <translation id="8490082094734500369">Izslēgt lasītāja režīmu</translation>
 <translation id="2036503787657622020">Ieslēgt lasītāja režīmu</translation>
 <translation id="5226458915125328323">Ātrā lasītāja iestatījumi</translation>
+<translation id="1621606336827646158">Rādīt oriģinālo lapu</translation>
 <translation id="6284218950354553099">Automātiski nosūtīt dienas lietošanas ehotestu Brave</translation>
 <translation id="5288333155754958121">Šis anonīmais un privātais ehotests ļauj Brave aprēķināt aktīvos lietotājus.</translation>
 <translation id="1872784258300710671">Brave izmanto pilnīgi privātu produktu analīzi, lai novērtētu konkrētu funkciju vispārējo lietojumu.</translation>
@@ -184,6 +195,8 @@
 <translation id="6817415381278637662">Iestatiet Brave kā savu noklusējuma pārlūku, lai saņemtu Brave privātuma aizsardzību ikvienā tīmekļa lapā, kuru atverat.</translation>
 <translation id="8722651357687610395">Iestatīt Brave kā noklusējuma pārlūku</translation>
 <translation id="2370739752330685659">Varbūt vēlāk</translation>
+<translation id="961012016278832836">Microsoft Edge Legacy</translation>
+<translation id="6436994631426134065">Importēts no <ph name="BROWSER_NAME"/>.</translation>
 <translation id="9156965752763025780">Izmaiņas stāsies spēkā, kad restartēsiet Brave.</translation>
 <translation id="7179921470347911571">Restartēt tūlīt</translation>
 <translation id="4472575034687746823">Sākt darbu</translation>
@@ -200,9 +213,11 @@
 <translation id="2906510232093002459">Brave noklusējuma attēli</translation>
 <translation id="2396127686705429331">Parādīt grāmatzīmju pogu</translation>
 <translation id="2814998458708016836">Izmantot platu adreses joslu</translation>
-<translation id="5802665280774361839">Parādīt automātiskās pabeigšanas ierakstus adreses joslā</translation>
-<translation id="597020512043916976">Rādīt populārākās vietnes automātiskās pabeigšanas ieteikumos</translation>
-<translation id="301088458323355543">Rādīt ieteiktās vietnes automātiskās pabeigšanas ieteikumos</translation>
+<translation id="4109670531935487117">Rādīt automātiskās pabeigšanas ieteikumus adrešu joslā</translation>
+<translation id="2858138569776157458">Populāras</translation>
+<translation id="65774893852758517">Ieteiktās vietnes</translation>
+<translation id="7859704718976024901">Pārlūkošanas vēsture</translation>
+<translation id="8820817407110198400">Grāmatzīmju josla</translation>
 <translation id="6333347122924254968">Rādīt Brave Atlīdzību ikonu adrešu joslā</translation>
 <translation id="1811404036171336214">Vienmēr rādīt grāmatzīmes jaunas cilnes lapā</translation>
 <translation id="5529693968082667490">Rādīt pogu "Meklēt cilnes"</translation>
@@ -361,6 +376,8 @@ Lūdzu, vēlreiz pārbaudiet, vai šos atslēgvārdus ģenerēja ierīce, kas pi
 Vai tiešām vēlaties to darīt?</translation>
 <translation id="6285118765755298263">Indeksēt citas meklētājprogrammas</translation>
 <translation id="919715748352669592">Automātiski indeksē tīmekļa vietnes, kas atbilst OpenSearch specifikācijām.</translation>
+<translation id="842628013524824194">Parastais logs - adrešu joslā izmantotā meklētājprogramma</translation>
+<translation id="5324939009884545145">Privātais logs - adrešu joslā izmantotā meklētājprogramma</translation>
 <translation id="6864914031231797928">Atļaut Google pieteikšanos paplašinājumiem</translation>
 <translation id="6554397389149987360">Izmanto funkcijas Hangouts elementu, lai pārlūkprogrammā iespējotu ekrāna kopīgošanu un citas funkcijas.</translation>
 <translation id="7878791177459550035">Multivides maršrutētājs pārlūkā nodrošina apraides funkciju.</translation>
@@ -460,6 +477,7 @@ Vai tiešām vēlaties to darīt?</translation>
 <translation id="616058968889448209">IPFS pakalpojuma palaišanas kļūda, papildu informācija ir pieejama <ph name="BEGIN_LINK"/>diagnostikas lapā<ph name="END_LINK"/></translation>
 <translation id="6912148685459054619">'<ph name="KEY_NAME"/>' atslēgas importēšana neizdevās</translation>
 <translation id="3364053282600191535">'<ph name="KEY_NAME"/>' atslēgu neizdevās eksportēt</translation>
+<translation id="5840868269342837751">Piezīme. Tīkla pieprasījumi nedrīkst izmantot pārlūkprogrammas starpniekservera un DNS iestatījumus.</translation>
 <translation id="8275038454117074363">Importēt</translation>
 <translation id="3654980960391973513">Ģenerēt</translation>
 <translation id="5531501313997312487">Palaist mezglu</translation>
