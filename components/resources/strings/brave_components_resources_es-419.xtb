@@ -1311,4 +1311,5 @@ Se han bloqueado <ph name="NUMBER"/> rastreadores, anuncios y otros elementos</t
 <translation id="6973157709854838218">Oculta tus saldos de la pantalla</translation>
 <translation id="4548946945059463969">Muestra tus saldos en la pantalla</translation>
 <translation id="242959166945779492">No tienes ningún saldo en tu cuenta. Visita FTX para adquirir un poco.</translation>
+<translation id="5410952114182173389">Tu computadora contribuye a la red pública, pero tu dirección IP y cualquier contenido que solicites o proporciones podrían quedar expuestos. El contenido que solicitas a través de IPFS se verifica antes de que lo recibas.</translation>
 </translationbundle>

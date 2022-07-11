@@ -1311,4 +1311,5 @@
 <translation id="6973157709854838218">Az egyenlegek elrejtése a megjelenítésből</translation>
 <translation id="4548946945059463969">Az egyenlegek mutatása a képernyőn</translation>
 <translation id="242959166945779492">Fiókja nem rendelkezik egyenleggel. A beszerzéshez látogasson el az FTX-re.</translation>
+<translation id="5410952114182173389">Számítógéped egy nyilvános hálózattal része, de IP-címed és bármilyen lekért vagy szolgáltatott tartalmad nyilvánosságra kerülhet. Az IPFS-en lekért tartalmakat ellenőrzik, mielőtt átadják neked.</translation>
 </translationbundle>

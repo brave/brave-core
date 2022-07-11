@@ -1311,5 +1311,5 @@ Blokirano <ph name="NUMBER"/> element/a/ata za praćenje, oglas/a i više</trans
 <translation id="6973157709854838218">Sakrij svoje raspoložive iznose sa zaslona</translation>
 <translation id="4548946945059463969">Otkrij svoje raspoložive iznose na ekranu</translation>
 <translation id="242959166945779492">Nemate raspoloživih iznosa na svom računu. Posjetite FTX da biste ih kupili.</translation>
-<translation id="2236833281018938257">Adresa 0x ili URL</translation>
+<translation id="5410952114182173389">Vašim se računalom doprinosi javnoj mreži, ali vaša adresa IP i bilo koji sadržaj koji tražite ili pružate može se izložiti. Sadržaj koji tražite preko IPFS-a provjerava se prije nego što vam se pruži.</translation>
 </translationbundle>

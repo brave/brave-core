@@ -1310,4 +1310,5 @@
 <translation id="6973157709854838218">Skjul saldoene dine fra visning</translation>
 <translation id="4548946945059463969">Avslør saldoene dine på skjermen</translation>
 <translation id="242959166945779492">Saldoen på kontoen din er tom. Besøk FTX for å endre dette.</translation>
+<translation id="5410952114182173389">Datamaskinen din bidrar til det åpne nettverket, men IP-adressen din, og eventuelt innhold du ber om eller legger inn, kan være eksponert. Innhold du ber om over IPFS blir verifisert før det leveres til deg.</translation>
 </translationbundle>

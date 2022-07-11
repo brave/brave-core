@@ -881,13 +881,6 @@ Jos et hyväksy tätä pyyntöä, yhteyttä VPN:ään ei muodosta uudelleen ja I
 <translation id="1968852757206592413">Kokeilujakso</translation>
 <translation id="7733890291091968191">Näytä Web3-ilmoitukset</translation>
 <translation id="1371627247679035769">\n\n\n\n#### Brave ei seuraa sinua eikä tiedä, kuinka käytät sovellustamme, joten emme tiedä VPN-asetuksiasi. Jaa tietoja kohtaamastasi ongelmasta, niin teemme parhaamme ratkaistaksemme sen mahdollisimman pian. ####\n\n</translation>
-<translation id="635752162765375187">HUOMAA: Tätä tekijää ei ole tällä hetkellä määritetty saamaan tippejä lompakostasi. Kaikki antamasi tipit pysyvät lompakossasi, ja niitä yritetään antaa automaattisesti 90 päivän ajan.</translation>
-<translation id="7873874596836611687">lompakon saldo:</translation>
-<translation id="4322846864135539519">Haluatko varmasti nollata lompakkosi? Jos lompakkoasi ei ole varmuuskopioitu, nollaus johtaa kaikkien tilitietojen menetykseen (mukaan lukien kaikki siihen liittyvät varat). Vahvista kirjoittamalla <ph name="CONFIRMATION_PHRASE"/>.</translation>
-<translation id="1264320790738638119">Oston vahvistus epäonnistui. Yritä uudelleen.</translation>
-<translation id="404414664190867625">VIRHE!!\nSyynä on käyttäjän peruuttama ostos.</translation>
-<translation id="3515141458161417228">VIRHE!!\nOstaminen epäonnistui..</translation>
-<translation id="5665084657857645952">Lupa peruutettiin</translation>
 <translation id="3367162038532116157">\n\nVPN-isäntänimi\n <ph name="VALUE"/></translation>
 <translation id="6173438324126027458">\n\nTilaustyyppi\n <ph name="VALUE"/></translation>
 <translation id="1478875290576741766">\n\nPlay Kaupan token\n <ph name="VALUE"/></translation>

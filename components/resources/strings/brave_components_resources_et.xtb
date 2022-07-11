@@ -1311,4 +1311,5 @@
 <translation id="6973157709854838218">Varja oma saldod kuval</translation>
 <translation id="4548946945059463969">Näita kuval oma saldosid</translation>
 <translation id="242959166945779492">Teie konto saldo on tühi. Külastage FTXi, et vahendeid osta.</translation>
+<translation id="5410952114182173389">Teie arvuti panustab avalikku võrku, kuid teie IP-aadress ja kogu sisu, mida taotlete või edastate, võivad olla nähtavad. IPFS-i kaudu taotletud sisu kontrollitakse enne selle teile edastamist.</translation>
 </translationbundle>
