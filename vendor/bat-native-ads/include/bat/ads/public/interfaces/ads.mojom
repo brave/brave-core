@@ -13,6 +13,7 @@ enum Environment {
 };
 
 struct SysInfo {
+  string device_id;
   bool did_override_command_line_args_flag;
   bool is_uncertain_future;
 };
