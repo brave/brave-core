@@ -109,6 +109,12 @@ RegisterPolymerTemplateModifications({
     if (!basicPageEl) {
       console.error('[Brave Settings Overrides] Could not find basicPage element to insert Getting Started section')
     } else {
+      const privacyGuidePromoSection = actualTemplate.content.querySelector('#privacyGuidePromoSection')
+      if (!privacyGuidePromoSection) {
+        console.error('[Brave Settings Overrides] Could not find privacyGuidePromoSection element to hide')
+      } else {
+        privacyGuidePromoSection.remove()
+      }
       const sectionGetStarted = document.createElement('template')
       sectionGetStarted.setAttribute('is', 'dom-if')
       sectionGetStarted.setAttribute('restamp', true)
