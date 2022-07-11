@@ -42,6 +42,7 @@ Of voer later wijzigingen door via <ph name="SETTINGS_EXTENIONS_LINK"/>.</transl
 <translation id="3094628781200061820">Bestanden publiceren en ophalen uit IPFS</translation>
 <translation id="7398397225367092613">.onion</translation>
 <translation id="406832631167785034">Openen met .onion-adres</translation>
+<translation id="4759098689276706664">Plakken forceren</translation>
 <translation id="4901618511712685702">Naar IPFS importeren</translation>
 <translation id="6794469945030154569">Deze pagina</translation>
 <translation id="5037852323412456577">Geselecteerde afbeelding</translation>
@@ -69,6 +70,7 @@ Of voer later wijzigingen door via <ph name="SETTINGS_EXTENIONS_LINK"/>.</transl
 <translation id="3425600262621021599">Een link in een Brave privévenster met Tor openen</translation>
 <translation id="3229091547987707389">Een directory importeren en delen</translation>
 <translation id="5029193871181468990">Brave Beloningen-pictogram verbergen</translation>
+<translation id="7595540212376041331">Brave-walletpictogram verbergen</translation>
 <translation id="4928988318462976765">Web Extensions Store</translation>
 <translation id="9181207987584064303">Bekijken in Web Extensions Store</translation>
 <translation id="3161744659507801211">Waarschuwing: Brave kan niet voorkomen dat extensies uw browsergeschiedenis opslaan.</translation>
@@ -104,9 +106,20 @@ Of voer later wijzigingen door via <ph name="SETTINGS_EXTENIONS_LINK"/>.</transl
 <translation id="4870911314065352661">Wilt u alle tabbladen sluiten?</translation>
 <translation id="7551864359422178684">U hebt <ph name="NUMBER_OF_TABS"/> tabbladen openstaan in dit browservenster.</translation>
 <translation id="2571596981920752023"><ph name="NUMBER_OF_TABS"/> tabbladen</translation>
+<translation id="2272117088509540883">- Brave Zoeken</translation>
+<translation id="2701279958223202597">Ondersteun onafhankelijk zoeken met betere privacy. Brave Zoeken volgt u, uw zoekopdrachten en/of uw klikken niet.</translation>
+<translation id="6438467592401259882">Ondersteun onafhankelijk zoeken met betere privacy.</translation>
+<translation id="1688359110799098115">Ondersteun onafhankelijk zoeken met betere privacy</translation>
+<translation id="8579317236683491484">Brave Zoeken volgt u, uw zoekopdrachten en/of uw klikken niet.</translation>
+<translation id="5240031343741051161">Brave Zoeken proberen</translation>
+<translation id="5026874946691314267">Laat dit niet meer zien</translation>
+<translation id="5234764350956374838">Sluiten</translation>
+<translation id="214744058941501853">"&gt;
+          Brave Zoeken-conversie afwijzen, druk op Enter om deze suggestie te verwijderen</translation>
 <translation id="2515126961943087659">Bat Ads-service</translation>
 <translation id="7924918279836988121">Batregisterservice</translation>
 <translation id="6040143037577758943">Sluit</translation>
+<translation id="6665472986740899785">Brave-meldingenadvertentie</translation>
 <translation id="4174337572777167894">Web Discovery Project</translation>
 <translation id="8659271182272561965">Draag wat anonieme zoek- en browsegegevens bij om Brave Search te verfijnen.</translation>
 <translation id="1516554614404600536">Tooltip van Brave</translation>
@@ -132,6 +145,7 @@ Of voer later wijzigingen door via <ph name="SETTINGS_EXTENIONS_LINK"/>.</transl
 <translation id="8490082094734500369">Lezermodus uitschakelen</translation>
 <translation id="2036503787657622020">Lezermodus inschakelen</translation>
 <translation id="5226458915125328323">Speedreader-instellingen</translation>
+<translation id="1621606336827646158">Originele pagina weergeven</translation>
 <translation id="6284218950354553099">Dagelijks automatisch gebruiksping verzenden naar Brave</translation>
 <translation id="5288333155754958121">Met deze anonieme privéping kan Brave het aantal actieve gebruikers inschatten.</translation>
 <translation id="1872784258300710671">Brave maakt gebruik van volledig privé productanalyses om het totale gebruik van bepaalde functies te schatten</translation>
@@ -182,6 +196,8 @@ Of voer later wijzigingen door via <ph name="SETTINGS_EXTENIONS_LINK"/>.</transl
 <translation id="6817415381278637662">Stel Brave in als je standaardbrowser om gebruik te kunnen maken van de privacybescherming van Brave op elke webpagina die je opent.</translation>
 <translation id="8722651357687610395">Stel Brave in als standaard</translation>
 <translation id="2370739752330685659">Misschien later</translation>
+<translation id="961012016278832836">Microsoft Edge Legacy</translation>
+<translation id="6436994631426134065">Geïmporteerd uit <ph name="BROWSER_NAME"/></translation>
 <translation id="9156965752763025780">Je wijzigingen worden toegepast wanneer je Brave opnieuw start.</translation>
 <translation id="7179921470347911571">Nu Opnieuw Opstarten</translation>
 <translation id="4472575034687746823">Aan de slag</translation>
@@ -198,10 +214,11 @@ Of voer later wijzigingen door via <ph name="SETTINGS_EXTENIONS_LINK"/>.</transl
 <translation id="2906510232093002459">brave standaardafbeeldingen</translation>
 <translation id="2396127686705429331">Bladwijzerknop weergeven</translation>
 <translation id="2814998458708016836">Gebruik brede adresbalk</translation>
-<translation id="5802665280774361839">Autocomplete weergeven in adresbalk</translation>
-<translation id="597020512043916976">Toon topsites in de 
-suggesties voor automatisch aanvullen</translation>
-<translation id="301088458323355543">Voorgestelde sites in de suggesties voor automatisch aanvullen tonen</translation>
+<translation id="4109670531935487117">Suggesties voor automatisch aanvullen in de adresbalk weergeven</translation>
+<translation id="2858138569776157458">Topsites</translation>
+<translation id="65774893852758517">Voorgestelde sites</translation>
+<translation id="7859704718976024901">Browsegeschiedenis</translation>
+<translation id="8820817407110198400">Bladwijzers</translation>
 <translation id="6333347122924254968">Het Brave Beloningen-pictogram tonen in de adresbalk</translation>
 <translation id="1811404036171336214">Toon bladwijzers altijd op een nieuwe tabbladpagina</translation>
 <translation id="5529693968082667490">Knop voor het zoeken van tabbladen tonen</translation>
@@ -237,14 +254,29 @@ suggesties voor automatisch aanvullen</translation>
 <translation id="7390783310074170337">Standaard weergave</translation>
 <translation id="130615081792797568">Eenvoudig overzicht</translation>
 <translation id="2360360976480535628">Geavanceerde weergave</translation>
+<translation id="6486983549008741930">Contentfilter</translation>
+<translation id="8694564340481124390">Schakel aangepaste filters in die regionale en taalspecifieke trackers en storende elementen blokkeren.</translation>
+<translation id="6522618763902154348">Schakel aangepaste filters in die regionale en taalspecifieke trackers en 
+    <ph name="BEGIN_LINK"/>storende elementen<ph name="END_LINK"/> blokkeren.</translation>
+<translation id="3482656215021340727">Aangepaste filterlijsten toevoegen</translation>
+<translation id="1020877116991797978">Voeg extra lijsten toe die gemaakt en beheerd worden door uw vertrouwde community.</translation>
 <translation id="7617831480435794399">Abonneer je alleen op lijsten van entiteiten die je kent. Je browser zal regelmatig controleren of er lijstbijwerkingen zijn van de URL's die je invoert, waarbij jouw IP-adres wordt getoond aan hun server.</translation>
+<translation id="2831397936251948638">Aangepaste filters maken</translation>
+<translation id="4618274268052410139">Voeg aangepaste filters die u hebt gemaakt in het veld hieronder in (één per regel). Gebruik de <ph name="BEGIN_LINK"/>Adblock-filtersyntaxis<ph name="END_LINK"/>.</translation>
 <translation id="7791543448312431591">Toevoegen</translation>
+<translation id="571950783952070673">Lijst-URL</translation>
 <translation id="9204006549413740506">Laatst bijgewerkt</translation>
 <translation id="6745592621698551453">Nu updaten</translation>
 <translation id="5334844597069022743">Bron bekijken</translation>
 <translation id="4720556299488643018">Afmelden</translation>
+<translation id="6532106788206463496">Wijzigingen opslaan</translation>
 <translation id="4516904298421534459">Lijsten filteren</translation>
+<translation id="4435215931544457255">Aanvullende veelgebruikte community-lijsten. Houd er rekening mee dat als u te veel filters inschakelt, dit invloed heeft op de snelheid van de browser.</translation>
 <translation id="802154636333426148">Downloaden mislukt</translation>
+<translation id="7889605993994647168">Update mislukt</translation>
+<translation id="5438573563213942361">Aangepaste lijsten</translation>
+<translation id="4182731739150761577">Volledige lijst weergeven</translation>
+<translation id="1340263054776016283">URL van filterlijst invoeren</translation>
 <translation id="6821903322090655051">Brave-beloningen zijn uitgeschakeld</translation>
 <translation id="413570371620795359">Open het venster Beloningen om in te schakelen en aan de slag te gaan</translation>
 <translation id="3849957491997306859">Automatisch gedetecteerd</translation>
@@ -331,6 +363,7 @@ suggesties voor automatisch aanvullen</translation>
 <translation id="5093410893656857925">Apparaattype kiezen</translation>
 <translation id="4581190919849683048">Naar welk type apparaat wil je synchroniseren?</translation>
 <translation id="4112587618563511470">Ongeldige synchronisatie code, check and probeer opnieuw.</translation>
+<translation id="3995714999835224798">Deze code is ongeldig</translation>
 <translation id="859506441384380749">Deze code is gegenereerd door een verouderde versie van Brave; upgrade eerst uw andere apparaat</translation>
 <translation id="3132642509209154999">Deze code is verlopen. Genereer een nieuwe code op je andere apparaat en probeer het opnieuw.</translation>
 <translation id="2859229680945501779">Deze code is ongeldig. Controleer of de tijd en tijdzone correct zijn ingesteld op uw apparaat.</translation>
@@ -344,6 +377,8 @@ suggesties voor automatisch aanvullen</translation>
     Weet u zeker dat u dit wilt doen?</translation>
 <translation id="6285118765755298263">Overzicht van andere zoekmachines</translation>
 <translation id="919715748352669592">Indexeert automatisch websites die de OpenSearch-specificaties volgen.</translation>
+<translation id="842628013524824194">Normaal venster - gebruikte zoekmachine in de adresbalk</translation>
+<translation id="5324939009884545145">Privévenster - gebruikte zoekmachine in de adresbalk</translation>
 <translation id="6864914031231797928">Google-login voor extensies toestaan</translation>
 <translation id="6554397389149987360">Gebruikt een Hangouts-component om het delen van het scherm en andere functies in de browser mogelijk te maken.</translation>
 <translation id="7878791177459550035">Mediarouter maakt castfunctie beschikbaar in de browser.</translation>
@@ -404,6 +439,7 @@ suggesties voor automatisch aanvullen</translation>
 <translation id="1062463687579789365">Wallet-netwerken aanpassen</translation>
 <translation id="2234108191702901162">Kan netwerk niet toevoegen</translation>
 <translation id="8996633027318264334">Weet je zeker dat je <ph name="KEY_NAME"/> wilt verwijderen?</translation>
+<translation id="7893578599666249602">Weet u zeker dat u <ph name="KEY_NAME"/> wilt resetten?</translation>
 <translation id="2618193846561624884">Wil je het bestaande netwerk bijwerken?</translation>
 <translation id="9170907049676078643">Methode voor het oplossen van IPFS-bronnen</translation>
 <translation id="1327977588028644528">Gateway</translation>
@@ -442,6 +478,7 @@ suggesties voor automatisch aanvullen</translation>
 <translation id="616058968889448209">IPFS-fout bij starten van de service. Meer informatie is beschikbaar op de <ph name="BEGIN_LINK"/>pagina met diagnostiek<ph name="END_LINK"/></translation>
 <translation id="6912148685459054619">Importeren van sleutel '<ph name="KEY_NAME"/>' is mislukt</translation>
 <translation id="3364053282600191535">Exporteren van sleutel '<ph name="KEY_NAME"/>' is mislukt</translation>
+<translation id="5840868269342837751">Opmerking: netwerkverzoeken gebruiken mogelijk geen browserproxy en DNS-instellingen.</translation>
 <translation id="8275038454117074363">Importeren</translation>
 <translation id="3654980960391973513">Genereren</translation>
 <translation id="5531501313997312487">Knooppunt starten</translation>

@@ -60,11 +60,6 @@
 <translation id="5987838417172370108">Brave 브라우저가 작동이 멎거나 프리징이 발생하면 진단 보고서를 자동 전송하여 Brave 제품 안정성 향상에 도움을 주세요.</translation>
 <translation id="7977176350719484850">절약 예상\n데이터량</translation>
 <translation id="9008534313521214777">예상\n절약 시간</translation>
-<translation id="6572660632052512096">데스크톱 모드</translation>
-<translation id="1340503115760585811">새 탭에 데스크톱 보기 사용</translation>
-<translation id="7924540991929826186">새 탭에서 모바일 버전 사이트 사용 (권장)</translation>
-<translation id="807636106793708118">모바일 버전 사이트 선호</translation>
-<translation id="4479934682648362332">데스크톱 버전 사이트 선호</translation>
 <translation id="1842747674580016420">Brave에서 비디오 녹화 재생</translation>
 <translation id="5368992950177874750">사용 시 동영상이 대응하는 앱 대신 Brave에서 재생됩니다</translation>
 <translation id="410351446219883937">자동재생</translation>
@@ -119,6 +114,7 @@
 <translation id="19715420010996093">Brave Browser를 선택하고 "항상"을 탭하세요</translation>
 <translation id="3546439402724649282">Brave가 이미 기본 브라우저로 설정되어 있습니다.</translation>
 <translation id="8389661903259423907">이미 기본 브라우저가 설정되어 있습니다. 앱 설정에서 기본 브라우저를 변경할 수 있습니다.</translation>
+<translation id="8112367589167674370">Brave Talk</translation>
 <translation id="8826007068782654809">감사합니다</translation>
 <translation id="6665366815203065060">팁을 다음 사용자에게 보내셨습니다:</translation>
 <translation id="5441565662498481293">귀하께서는 다음 사용자에게 자동으로 팁을 보내고 있습니다:</translation>
@@ -862,23 +858,34 @@
 <translation id="4804818685124855865">연결 해제</translation>
 <translation id="8009571545960303544">서명을 요청 중입니다.</translation>
 <translation id="3484981968509595506">DApp이 공개 암호화 키를 요청합니다.</translation>
-<translation id="2291002548681057345">월렛 공개 암호화 키를 요청합니다. 키 제공에 동의하시면 이 사이트가 암호화된 메시지를 작성하여 보내드릴 수 있습니다.</translation>
 <translation id="3340247553212049934">제공</translation>
 <translation id="1982257600591932657">네트워크 이름</translation>
 <translation id="5052727830821470769">네트워크 URL</translation>
 <translation id="4822132585477111396">체인 ID</translation>
 <translation id="7131971375297699539">통화 기호</translation>
 <translation id="7982789257301363584">네트워크</translation>
-<translation id="7540715999708954128">이 네트워크를 Brave 월렛 내에서 사용할 수 있게 됩니다. 자세히 알아보세요.</translation>
-<translation id="8759753423332885148">더 알아보기.</translation>
 <translation id="4717431746210146708">이 사이트가 네트워크를 추가할 수 있게 허용하시겠습니까?</translation>
+<translation id="4857321293515555666">이 DApp이 이 메시지를 읽고 요청을 완료하고자 합니다.</translation>
+<translation id="714506544401754321">메시지 암호 해독</translation>
+<translation id="5039804452771397117">허용</translation>
 <translation id="3378339846292573874">추천 토큰 추가</translation>
 <translation id="2322227405137827074">이 토큰을 가져오시겠습니까?</translation>
 <translation id="1324417023773393937">Brave 브라우저</translation>
 <translation id="6044189892950611565">Brave 브라우저의 알림 채널</translation>
 <translation id="1173919438868967364">계정 선택</translation>
 <translation id="8922793255489232731">다음에 일치하는 시간대를 가져올 수 없음: <ph name="VALUE"/></translation>
-<translation id="8231907121684689093">인기 사이트 표시</translation>
+<translation id="8643377320501056697">탑 사이트 보기</translation>
 <translation id="6471216025161697462"><ph name="VALUE"/>에 연결됨</translation>
 <translation id="1968852757206592413">평가판</translation>
+<translation id="7733890291091968191">Web3 알림 표시</translation>
+<translation id="1371627247679035769">\n\n\n\n#### Brave는 귀하를 추적하지 않아 앱을 어떻게 사용하는지 파악할 수 없기 때문에 VPN을 어떻게 셋업하셨는지 전혀 알지 못합니다. 겪으신 문제에 대한 정보를 공유해주시면 최대한 신속하게 해결책을 알아내서 도움을 드리겠습니다. ####\n\n</translation>
+<translation id="3367162038532116157">\n\nVPN 호스트 이름\n <ph name="VALUE"/></translation>
+<translation id="6173438324126027458">\n\n구독 유형\n <ph name="VALUE"/></translation>
+<translation id="1478875290576741766">\n\nPlay 스토어 토큰\n <ph name="VALUE"/></translation>
+<translation id="1403057798797848522">\n\n앱 버전\n <ph name="VALUE"/></translation>
+<translation id="2282835936933247509">\n\n시간대\n</translation>
+<translation id="8107843365677337047">\n\n네트워크 유형\n</translation>
+<translation id="5334952096674914470">\n\n이동통신사\n</translation>
+<translation id="5393042357629679588">\n\n기타 문제\n</translation>
+<translation id="8095666712177294104">\n\n플랫폼\n</translation>
 </translationbundle>

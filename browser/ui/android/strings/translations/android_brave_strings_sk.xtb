@@ -60,11 +60,6 @@
 <translation id="5987838417172370108">Pomôžte zlepšiť stabilitu produktu Brave automatickým odosielaním diagnostických správ, keď prehliadač Brave spadne alebo zamrzne.</translation>
 <translation id="7977176350719484850">Odhad. dáta\nUšetrené</translation>
 <translation id="9008534313521214777">Približný ušetrený\nčas</translation>
-<translation id="6572660632052512096">Desktop mód</translation>
-<translation id="1340503115760585811">Povoliť desktop mód v nových kartách</translation>
-<translation id="7924540991929826186">Použiť mobilné verzie stránok v nových kartách (odporúčané)</translation>
-<translation id="807636106793708118">Preferovať mobilnú verziu stránok</translation>
-<translation id="4479934682648362332">Preferovať verziu stránok pre počítače</translation>
 <translation id="1842747674580016420">Prehrávanie videa v prehliadači Brave</translation>
 <translation id="5368992950177874750">Ak je povolené, videá sa budú prehrávať v prehliadači Brave namiesto zodpovedajúcej aplikácie</translation>
 <translation id="410351446219883937">Automatické prehrávanie</translation>
@@ -119,6 +114,7 @@
 <translation id="19715420010996093">Zvoľte si Prehliadač Brave a klepnite na „Vždy“</translation>
 <translation id="3546439402724649282">Brave je už nastavený ako váš predvolený prehliadač.</translation>
 <translation id="8389661903259423907">Už ste nastavili predvolený prehliadač. Môžete ho zmeniť v nastaveniach aplikácie.</translation>
+<translation id="8112367589167674370">Brave Talk</translation>
 <translation id="8826007068782654809">Ďakujeme</translation>
 <translation id="6665366815203065060">Práve ste poslali príspevok na:</translation>
 <translation id="5441565662498481293">Príspevok odosielate automaticky na:</translation>
@@ -862,23 +858,34 @@ Ak túto žiadosť neprijmete, VPN sa znova nepripojí a vaše pripojenie na int
 <translation id="4804818685124855865">Odpojiť</translation>
 <translation id="8009571545960303544">Je vyžadován váš podpis</translation>
 <translation id="3484981968509595506">Aplikácia DApp požaduje váš verejný šifrovací kľúč</translation>
-<translation id="2291002548681057345">žiada o verejný šifrovací kľúč vašej peňaženky. Ak súhlasíte s poskytnutím tohto kľúča, stránka bude môcť vytvárať šifrované správy.</translation>
 <translation id="3340247553212049934">Poskytnúť</translation>
 <translation id="1982257600591932657">Názov siete</translation>
 <translation id="5052727830821470769">Adresa URL siete</translation>
 <translation id="4822132585477111396">ID reťazca</translation>
 <translation id="7131971375297699539">Symbol meny</translation>
 <translation id="7982789257301363584">Sieť</translation>
-<translation id="7540715999708954128">To umožní, aby mohla byť táto sieť použitá v rámci peňaženky Brave. Ďalšie informácie.</translation>
-<translation id="8759753423332885148">Dozvedieť sa viac.</translation>
 <translation id="4717431746210146708">Povoliť tejto stránke pridať sieť?</translation>
+<translation id="4857321293515555666">Táto DApp by si rada prečítala túto správu a dokončila vašu požiadavku.</translation>
+<translation id="714506544401754321">Dešifrovať správu</translation>
+<translation id="5039804452771397117">Povoliť</translation>
 <translation id="3378339846292573874">Pridať odporúčaný token</translation>
 <translation id="2322227405137827074">Chcete importovať tento token?</translation>
 <translation id="1324417023773393937">Prehliadač Brave</translation>
 <translation id="6044189892950611565">Kanál s upozorneniami pre prehliadač Brave</translation>
 <translation id="1173919438868967364">Vybrať účet</translation>
 <translation id="8922793255489232731">Nepodarilo sa získať zodpovedajúce časové pásmo pre: <ph name="VALUE"/></translation>
-<translation id="8231907121684689093">Zobraziť najlepšie stránky</translation>
+<translation id="8643377320501056697">Zobraziť top stránky</translation>
 <translation id="6471216025161697462">Pripojené k <ph name="VALUE"/></translation>
 <translation id="1968852757206592413">Skúšobná verzia</translation>
+<translation id="7733890291091968191">Zobrazenie upozornení Web3</translation>
+<translation id="1371627247679035769">\n\n\n\n#### Prehliadač Brave vás nesleduje ani nevie, ako používate našu aplikáciu, takže nevieme, ako ste si nastavili sieť VPN. Zdieľajte informácie o probléme, ktorý máte, a my urobíme všetko pre to, aby sme ho čo najskôr vyriešili. ####\n\n</translation>
+<translation id="3367162038532116157">\n\nNázov hostiteľa siete VPN\n <ph name="VALUE"/></translation>
+<translation id="6173438324126027458">\n\nTyp predplatného\n <ph name="VALUE"/></translation>
+<translation id="1478875290576741766">\n\nToken Playstore\n <ph name="VALUE"/></translation>
+<translation id="1403057798797848522">\n\nVerzia aplikácie\n <ph name="VALUE"/></translation>
+<translation id="2282835936933247509">\n\nČasové pásmo\n</translation>
+<translation id="8107843365677337047">\n\nTyp siete\n</translation>
+<translation id="5334952096674914470">\n\nPoskytovateľ mobilného pripojenia\n</translation>
+<translation id="5393042357629679588">\n\nOstatné problémy\n</translation>
+<translation id="8095666712177294104">\n\nPlatforma\n</translation>
 </translationbundle>

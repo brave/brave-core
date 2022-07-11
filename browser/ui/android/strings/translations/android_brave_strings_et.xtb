@@ -60,11 +60,6 @@
 <translation id="5987838417172370108">Aidake parandada Brave'i toote stabiilsust, saates automaatselt diagnostikaaruandeid, kui Brave'i brauser läheb krahhi või hangub.</translation>
 <translation id="7977176350719484850">Hin. andmed\nSalvestatud</translation>
 <translation id="9008534313521214777">Eeldatav\nsäästetud aeg</translation>
-<translation id="6572660632052512096">Arvutirežiim</translation>
-<translation id="1340503115760585811">Luba arvutivaade uute kaartide jaoks</translation>
-<translation id="7924540991929826186">Kasuta saitide mobiiliversioone uute kaartide jaoks (soovitatud)</translation>
-<translation id="807636106793708118">Eelista saitide mobiilivaadet</translation>
-<translation id="4479934682648362332">Eelista saitide arvutivaadet</translation>
 <translation id="1842747674580016420">Video taasesitus Brave'is</translation>
 <translation id="5368992950177874750">Lubamisel esitatakse videoid tavalise videoesitaja asemel Brave’is</translation>
 <translation id="410351446219883937">Automaatesitus</translation>
@@ -119,6 +114,7 @@
 <translation id="19715420010996093">Valige Brave'i brauser ja puudutage valikut „Alati“</translation>
 <translation id="3546439402724649282">Brave on juba vaikebrauser.</translation>
 <translation id="8389661903259423907">Oled juba määranud vaikebrauseri. Seda saad muuda rakenduse seadetest.</translation>
+<translation id="8112367589167674370">Brave Talk</translation>
 <translation id="8826007068782654809">Täname</translation>
 <translation id="6665366815203065060">Saatsite just preemia:</translation>
 <translation id="5441565662498481293">Saadate automaatselt preemiaid:</translation>
@@ -864,23 +860,34 @@ Kui te selle taotlusega ei nõustu, siis VPN-i ühendust ei taastata ja teie int
 <translation id="4804818685124855865">Katkesta ühendus</translation>
 <translation id="8009571545960303544">Taotletakse teie allkirja</translation>
 <translation id="3484981968509595506">Detsentraliseeritud rakendus küsib teie avalikku krüptovõtit</translation>
-<translation id="2291002548681057345">küsib teie rahakoti avalikku krüptovõtit. Kui nõustute selle võtme andmisega, saab see veebisait koostada teile krüptitud sõnumeid.</translation>
 <translation id="3340247553212049934">Pakkuda</translation>
 <translation id="1982257600591932657">Võrgu nimi</translation>
 <translation id="5052727830821470769">Võrgu URL</translation>
 <translation id="4822132585477111396">Ahela ID</translation>
 <translation id="7131971375297699539">Valuuta tähis</translation>
 <translation id="7982789257301363584">Võrk</translation>
-<translation id="7540715999708954128">See võimaldab kasutada seda võrku Brave'i rahakotis. Lugege lähemalt.</translation>
-<translation id="8759753423332885148">Lisateave.</translation>
 <translation id="4717431746210146708">Kas lubada sellel veebisaidil võrku lisada?</translation>
+<translation id="4857321293515555666">See detsentraliseeritud rakendus soovib lugeda seda sõnumit, et täita teie päring.</translation>
+<translation id="714506544401754321">Sõnumi dekrüpteerimine</translation>
+<translation id="5039804452771397117">Luba</translation>
 <translation id="3378339846292573874">Lisage soovitatud token</translation>
 <translation id="2322227405137827074">Kas soovite selle tokeni importida?</translation>
 <translation id="1324417023773393937">Brave'i brauser</translation>
 <translation id="6044189892950611565">Brave'i brauseri teavituskanal</translation>
 <translation id="1173919438868967364">Konto valimine</translation>
 <translation id="8922793255489232731">Ei õnnestunud saada sobivat ajavööndit: <ph name="VALUE"/></translation>
-<translation id="8231907121684689093">Kuva parimad veebisaidid</translation>
+<translation id="8643377320501056697">Kuva popid saidid</translation>
 <translation id="6471216025161697462">Ühendatud võrguga <ph name="VALUE"/></translation>
 <translation id="1968852757206592413">Proov</translation>
+<translation id="7733890291091968191">Kuva Web3 märguanded</translation>
+<translation id="1371627247679035769">\n\n\n\n#### Brave ei jälgi teid ega tea, kuidas te meie rakendust kasutate, mistõttu me ei tea, kuidas olete VPN-i seadistanud. Jagage probleemi kohta teavet ja anname endast parima, et see võimalikult kiiresti lahendada. ####\n\n</translation>
+<translation id="3367162038532116157">\n\nVPN-i hostinimi\n <ph name="VALUE"/></translation>
+<translation id="6173438324126027458">\n\nTellimuse tüüp\n <ph name="VALUE"/></translation>
+<translation id="1478875290576741766">\n\nPlay poe token\n <ph name="VALUE"/></translation>
+<translation id="1403057798797848522">\n\nRakenduse versioon\n <ph name="VALUE"/></translation>
+<translation id="2282835936933247509">\n\nAjavöönd\n</translation>
+<translation id="8107843365677337047">\n\nVõrgu tüüp\n</translation>
+<translation id="5334952096674914470">\n\nMobiilsideoperaator\n</translation>
+<translation id="5393042357629679588">\n\nMuu probleem\n</translation>
+<translation id="8095666712177294104">\n\nPlatvorm\n</translation>
 </translationbundle>

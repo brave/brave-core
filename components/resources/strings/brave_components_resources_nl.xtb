@@ -236,6 +236,7 @@
 <translation id="1911900517212490188">De ingevoerde herstelsleutel wordt niet meer ondersteund. U kunt <ph name="BEGIN_LINK"/>hier<ph name="END_LINK"/> een nieuwe sleutel krijgen.</translation>
 <translation id="7583327070390027131">Datum volgende maandelijkse bijdrage</translation>
 <translation id="6231182869178328516">Ik heb <ph name="NAME"/> zojuist een fooi gegeven via de Brave Browser. Ontdek meer op https://brave.com/tips.</translation>
+<translation id="5916536234616514390">Geweldig dat ik met <ph name="HASHTAG"/>Brave makers kan steunen! Heb net <ph name="NAME"/> een fooi gegeven met <ph name="HASHTAG2"/>BAT. Die kan via vóór <ph name="DATE"/> via https://creators.brave.com verifiëren om de BAT te innen.</translation>
 <translation id="8404935570206006581">FooiVanBrave</translation>
 <translation id="3082557070674409251">Geklikt</translation>
 <translation id="7119308337584989771">Afgewezen</translation>
@@ -256,6 +257,7 @@
 <translation id="8218538368080510976">Fout: regio niet ondersteund</translation>
 <translation id="5382684862562314222">BAT wordt in Uphold nog niet ondersteund in jouw regio.</translation>
 <translation id="9074594632540931067">Fout: BAT niet beschikbaar</translation>
+<translation id="5376524136040178759">Volgens Uphold gelden er momenteel enkele beperkingen voor uw Uphold-account. Log in bij uw Uphold-account en controleer of er meldingen zijn of er gegevens ontbreken. Probeer het vervolgens opnieuw.</translation>
 <translation id="6996157559236886133">Fout: beperkte Uphold-accountfunctionaliteit</translation>
 <translation id="3274650021044762770">Er is een probleem opgetreden bij het valideren van het verzoek van uw browser om Brave Beloningen te koppelen aan uw <ph name="PROVIDER"/>-account. U kunt <ph name="BEGIN_LINK"/>contact opnemen met de ondersteuning <ph name="END_LINK"/> als u meer hulp nodig hebt.</translation>
 <translation id="1316066811927496401">Fout: verzoek kan niet worden gevalideerd</translation>
@@ -274,6 +276,8 @@
 <translation id="5112354605357157725">Doorgaan met aanmelden</translation>
 <translation id="1280764044837262633">Om een <ph name="PROVIDER"/>-account te maken, is een minimum saldo van <ph name="AMOUNT"/> BAT vereist. Als je eerder een account hebt gekoppeld,</translation>
 <translation id="1892970806832316900">In behandeling tot <ph name="DATE"/></translation>
+<translation id="7849926087559412554">Uw browser kan geen Brave-privéadvertenties weergeven.</translation>
+<translation id="5177429570315095022">Uw browser moet worden bijgewerkt om advertenties te blijven weergeven.</translation>
 <translation id="752216563428219524">Advertenties zijn niet geïnitialiseerd. Vernieuw de pagina.</translation>
 <translation id="7422678632904904341">Bedrag:</translation>
 <translation id="6969783933307596818">Automatisch elke 5 seconden ververst</translation>
@@ -718,7 +722,7 @@
 <translation id="4780526507945807546">Een lokaal IPFS-knooppunt van Brave gebruiken</translation>
 <translation id="8148464361648742409">Gebruik een publieke gateway</translation>
 <translation id="5123478056123923857">IPFS (InterPlanetary File System) is het openbare netwerk voor peer-to-peer gegevensopslag en -overdracht. Dit protocol maakt gebruik van andere privacy-overwegingen dan HTTP(S).</translation>
-<translation id="5410952114182173389">Uw computer neemt deel aan het openbare netwerk, maar uw IP-adres en de inhoud die u opvraagt of verstrekt zijn mogelijk zichtbaar. Inhoud die u via IPFS opvraagt wordt geverifieerd voordat deze aan u wordt aangeboden.</translation>
+<translation id="1216911189668016151">Uw computer is onderdeel van het openbare netwerk, maar uw IP-adres en de inhoud die u opvraagt of verstrekt zijn mogelijk zichtbaar. Inhoud die u via IPFS opvraagt wordt geverifieerd voordat deze aan u wordt aangeboden. Netwerkverzoeken gebruiken mogelijk geen proxy- en DNS-browserinstellingen.</translation>
 <translation id="8664689531113048642">Beschermt uw IP-adres en de inhoud die u opvraagt van mogelijke externe waarnemers, maar niet van de beheerder van de publieke gateway. De beheerder van de gateway is er verantwoordelijk voor dat de inhoud die via een gateway aan u wordt aangeboden, ook de inhoud is die u hebt opgevraagd. Ook draagt uw computer niet bij aan het openbare IPFS-netwerk.</translation>
 <translation id="3977809385703587108">U kunt uw voorkeuren opnieuw wijzigen in</translation>
 <translation id="3340978935015468852">instellingen</translation>
@@ -754,6 +758,7 @@
 <translation id="7306880305145342514">Gefeliciteerd! Uw beloningen voor <ph name="MONTH"/> zijn er!</translation>
 <translation id="3007207731685398329">Uw beloningen voor <ph name="MONTH"/> ter waarde van <ph name="AMOUNT"/> zijn er over <ph name="DAYS"/></translation>
 <translation id="5878420576943709750">Uw beloningen voor <ph name="MONTH"/> ter waarde van <ph name="AMOUNT"/> zijn onderweg. Houd een oogje in het zeil!</translation>
+<translation id="3825131544027418568"><ph name="BEGIN_BOLD"/>Log in bij <ph name="PROVIDER"/><ph name="END_BOLD"/> om uw saldo te bekijken</translation>
 <translation id="2659764755126740206">Ga naar mijn <ph name="PROVIDER"/> account</translation>
 <translation id="1165667598801520610">Voeg geld toe</translation>
 <translation id="2394961582378297792">Uitgelogd</translation>
@@ -793,6 +798,7 @@
 <translation id="167698752210114155">Er is een interne fout opgetreden</translation>
 <translation id="2326876601333401685">Deze RPC-methode wordt niet ondersteund.</translation>
 <translation id="1128992132632883337">Er is een fout opgetreden bij parseren van het antwoord</translation>
+<translation id="5382339341735118861">Er is een fout opgetreden bij het verwerken van een algemene aanvraag</translation>
 <translation id="1680597601664421644">De mnemonic die wordt geïmporteerd, is niet geldig voor de Brave-wallet</translation>
 <translation id="4641919696349069826">Er is al een verzoek in behandeling</translation>
 <translation id="872806943696014633">Transactiegegevens ontbreken</translation>
@@ -818,6 +824,7 @@
 <translation id="875506212625074179">Ongeldige respons van keten-ID vanuit RPC-service</translation>
 <translation id="5486744676117070166">Fout bij het ophalen van volgende nonce-waarde</translation>
 <translation id="6180576227145734714">Transactiegegevens 'naar' moeten een geldig adres zijn wanneer deze worden vermeld</translation>
+<translation id="6688162556547723415">De aangevraagde methode en/of rekening is niet geautoriseerd door de gebruiker.</translation>
 <translation id="4958950550253325418">Defi-apps</translation>
 <translation id="735961408871282410">NFT-marktplaatsen</translation>
 <translation id="7740287852186792672">Resultaten zoeken</translation>
@@ -860,6 +867,8 @@
 <translation id="1191686659164947414">Frontrunning van transactie is mogelijk</translation>
 <translation id="632241521608275119">Risicotolerantie</translation>
 <translation id="4500473291496079954">Vervalt over</translation>
+<translation id="2236833281018938257">Wallet-adres of URL</translation>
+<translation id="928500657730628112">Wallet-adres</translation>
 <translation id="2860280209982026951">Brave gebruikt <ph name="LINK_BEFORE"/>0x<ph name="LINK_AFTER"/> als DEX-aggregator.</translation>
 <translation id="151946611346774041">0x verwerkt het Ethereum-adres en het IP-adres om een transactie uit te voeren (inclusief het ophalen van prijsindicaties). 0x gebruikt deze gegevens ALLEEN met het doel om transacties te verwerken.</translation>
 <translation id="4626407663177532837">Offerte is inclusief 0,875% Brave-kosten.</translation>
@@ -867,6 +876,7 @@
 <translation id="6575120282593094155">U hebt nog geen <ph name="ACCOUNT_TYPE"/>-account. Wilt u er nu een aanmaken?</translation>
 <translation id="2704606927547763573">Gekopieerd</translation>
 <translation id="1420318137760245955">Welkom bij de nieuwe Brave-wallet</translation>
+<translation id="3671745544278414606">Houd cryptoassets in uw eigen bezit. Volg portfolioprestaties en communiceer met Web3 DApps. Verhandel, investeer, leen en leen uit met DeFi. Dit allemaal rechtstreeks vanuit de Brave-privébrowser. Er zijn geen extensies of downloads vereist.</translation>
 <translation id="6972754398087986839">Aan de slag</translation>
 <translation id="375882617301124395">Back-up maken van je cryptowallet</translation>
 <translation id="180032279811483155">Bij de volgende stap ziet u een herstelzin van <ph name="RECOVERY_PHRASE_LENGTH"/> woorden die u kunt gebruiken om uw primaire cryptoaccounts te herstellen. Bewaar hem op een veilige plek. Alleen met uw herstelzin kunt u weer toegang krijgen tot uw account wanneer u uw wachtwoord bent vergeten, uw apparaat kwijt is of is gestolen en wanneer u van wallet wilt wisselen.</translation>
@@ -895,6 +905,7 @@
 <translation id="163697698769819510">Maak nu een back-up van uw wallet om uw assets te beschermen en ervoor te zorgen dat u de toegang ertoe nooit verliest.</translation>
 <translation id="1018806299114415224">Nu een back-up maken</translation>
 <translation id="5234764350956374838">Dismiss</translation>
+<translation id="1400709719911593089">Brave Wallet is niet ingesteld als uw standaardwallet en reageert niet op Web3 DApps. Ga naar de instellingen om uw standaardwallet bij te werken.</translation>
 <translation id="4362717653795263052">Primaire cryptoaccounts herstellen</translation>
 <translation id="3038077262567136741">Voer je herstelzin in om je Brave-wallet-cryptoaccount te herstellen.</translation>
 <translation id="955918646509748368">De ingevoerde herstelzin is ongeldig.</translation>
@@ -903,8 +914,11 @@
 <translation id="4359319875297001084">Importeren vanuit verouderde Brave-cryptowallets?</translation>
 <translation id="3331452756822160641">Nieuw wachtwoord</translation>
 <translation id="8624315169751085215">Kopieer naar klembord</translation>
+<translation id="7885157704277298658">Gekopieerde!</translation>
 <translation id="1121335910737476837">Primaire cryptoaccounts</translation>
 <translation id="6969147029062037757">Geïmporteerde accounts</translation>
+<translation id="4057718162494343222">U kunt primaire accounts in de Brave-wallet maken waarvan mogelijk een back-up bestaat of die kunnen worden hersteld vanuit uw herstelwoorden. Voor meer informatie over accounttypen gaat u naar de Help voor accounts.</translation>
+<translation id="1011614786846182272">Deze accounts kunnen gebruikt worden met Web3 DApps en kunnen worden weergegeven in uw portfolio. Houd er echter rekening mee dat secondaire accounts niet kunnen worden hersteld met de herstelzin vanuit de back-up van uw primaire account.</translation>
 <translation id="1940465339426637378">Activa</translation>
 <translation id="2236507293802791911">Zichtbare assets</translation>
 <translation id="7525067979554623046">creëren</translation>
@@ -958,6 +972,8 @@
 <translation id="7642841516562576649">Pictogram-URL</translation>
 <translation id="2144247757675997850">Asset toevoegen</translation>
 <translation id="2708402071160162126">WAARSCHUWING: deel je herstelzin nooit met anderen. Iedereen met deze zin kan voor altijd toegang krijgen tot jouw assets.</translation>
+<translation id="2416098547200943834">OPMERKING: privésleutel wordt geleverd als een hexadecimaal gecodeerde JSON die informatie bevat over de privésleutel en het protocol. <ph name="LINK_START"/>Meer informatie<ph name="LINK_END"/>.</translation>
+<translation id="7657130382217527063">OPMERKING: privésleutel moet worden geleverd als een hexadecimaal gecodeerde JSON die informatie bevat over de privésleutel en het protocol. <ph name="LINK_START"/>Meer informatie<ph name="LINK_END"/>.</translation>
 <translation id="2902856457593699108">Sleutel weergeven</translation>
 <translation id="8033497299373164724">Sleutel verbergen</translation>
 <translation id="2702143907607790516">Fout bij het bijwerken van de accountnaam; probeer het opnieuw.</translation>
@@ -986,13 +1002,14 @@
 <translation id="8569380433211549748">Prijs in</translation>
 <translation id="2490428413101944234">Kraan testen</translation>
 <translation id="3352959425838279177">Haal Ether op uit een kraan voor <ph name="SELECTED_NETWORK"/></translation>
+<translation id="6449626816252815844">Betaalmethode selecteren</translation>
 <translation id="8009571545960303544">Uw handtekening wordt aangevraagd</translation>
 <translation id="5294062982587710720">Houd er rekening mee dat Brave niet kan controleren wat er gebeurt als je tekent. Een ondertekening kan bijna elke bewerking in jouw account of namens jouw account autoriseren, waaronder (maar niet beperkt tot) het geven van volledige controle over jouw account en cryptoassets aan de website die het verzoek doet. Teken alleen als je deze actie wilt uitvoeren en de aanvragende website vertrouwt.</translation>
 <translation id="3474375934783434676">Tekenen op eigen risico</translation>
 <translation id="5488357322146334497">Bericht</translation>
 <translation id="3586752056660754651">Teken</translation>
 <translation id="3484981968509595506">Een DApp vraagt uw openbare coderingssleutel aan</translation>
-<translation id="1915212737651531313"><ph name="URL_BEFORE"/>$url<ph name="URL_AFTER"/> vraagt de openbare coderingssleutel van uw wallet aan. Indien u deze sleutel deelt, kan de site versleutelde berichten aan u opstellen.</translation>
+<translation id="2950511942409261729"><ph name="URL_BEFORE"/>$url<ph name="URL_AFTER"/> vraagt de openbare coderingssleutel van uw wallet aan. Indien u deze sleutel deelt, kan de site versleutelde berichten aan u opstellen.</translation>
 <translation id="3340247553212049934">Verlenen</translation>
 <translation id="1619778919922494944">Deze DApp wil dit bericht lezen om uw verzoek af te ronden</translation>
 <translation id="714506544401754321">Bericht decoderen</translation>
@@ -1034,6 +1051,7 @@
 <translation id="3890989020011724401">Nieuw account</translation>
 <translation id="7257603403519636638">Accountassets bekijken</translation>
 <translation id="2092132085082887098">Accountassets</translation>
+<translation id="4612979983851181941">Gebruik dit scherm om veilig toegang te krijgen tot Web3 en al uw cryptoassets.</translation>
 <translation id="4460220693591349571">FUNCTIETYPE</translation>
 <translation id="838933475572692615">HEX-GEGEVENS</translation>
 <translation id="2240831799756994975">BYTES</translation>
@@ -1045,19 +1063,21 @@
 <translation id="7739762330714405363">Hetzelfde wachtwoord gebruiken</translation>
 <translation id="1085027414516521238">MetaMask</translation>
 <translation id="7102907656918333773">Geïmporteerd via <ph name="WALLET_EXTENSION"/></translation>
+<translation id="1737856990004825123">Importeer uw <ph name="WALLET_EXTENSION"/>-accounts in Brave Wallet. Profiteer van een snellere en veiligere manier om cryptoassets te beheren en met Web3 DApps te communiceren.</translation>
 <translation id="4237840336687249184">MetaMask-wachtwoord</translation>
 <translation id="2381605201035323535">cryptowallets</translation>
 <translation id="2770851145415891830">Bestaande cryptowallets gedetecteerd</translation>
 <translation id="4938145712652668388">Wanneer je klikt op 'Aan de slag' importeer je je vorige cryptowallet naar de nieuwe Brave-walletervaring en profiteer je van alle voordelen die hierboven zijn beschreven. Probeer het eens uit en laat ons weten wat je ervan vindt!</translation>
 <translation id="2237759620789871865">Als je het importeren liever wilt overslaan en de oude cryptowalletervaring wilt houden, navigeer je naar de <ph name="LINK_BEFORE"/>instellingen<ph name="LINK_AFTER"/> van de Brave-browser en stel je cryptowallets weer als standaard in. Je kunt ook importeren, de nieuwe Brave-wallet uitproberen en teruggaan wanneer je wilt.</translation>
+<translation id="5590175005414413980">Voer je bestaande cryptowallet-wachtwoord in om naar Brave Wallet te importeren. Profiteer van een snellere en veiligere manier om crypto-assets te beheren en om met Web3 DApps te communiceren.</translation>
 <translation id="9099900965604225657">Cryptowalletwachtwoord</translation>
 <translation id="4020495774166914146">Ik ben mijn wachtwoord en herstelzin vergeten en ik wil een nieuwe wallet aanmaken.</translation>
 <translation id="6344138931392227467"><ph name="DEVICE_NAME"/> verbonden</translation>
 <translation id="7051244143160304048"><ph name="DEVICE_NAME"/> losgekoppeld</translation>
 <translation id="5317781812114905957">Instructies</translation>
 <translation id="1178198982208000092">Maak verbinding met <ph name="DEVICE_NAME"/></translation>
-<translation id="4358411489835404360">Hardwarewallet vereist bevestiging op apparaat.<ph name="DEVICE_NAME"/></translation>
-<translation id="3087887714936696603">Hardwarewallet vereist een geopende Ethereum-app op de <ph name="DEVICE_NAME"/></translation>
+<translation id="6291765462876399333">Hardwarewallet vereist bevestiging op apparaat <ph name="DEVICE_NAME"/></translation>
+<translation id="2288190100157580461">Hardwarewallet vereist <ph name="NETWORK"/>-app geopend op <ph name="DEVICE_NAME"/></translation>
 <translation id="8687869982094542529">verzonden</translation>
 <translation id="5013754027092416509">ontvangen</translation>
 <translation id="5867988533873716616">Explorer-URL-blokkeren is niet beschikbaar.</translation>
@@ -1105,6 +1125,7 @@
 <translation id="1599636444563952897">Toestemming voor bestedingslimiet staat <ph name="SITE_ORIGIN"/> toe om maximaal het volgende bedrag op te nemen en te besteden:</translation>
 <translation id="4512871563176965522">Aangepaste toewijzing</translation>
 <translation id="749944179568745958">Geen geldig ETH-adres</translation>
+<translation id="2832270987629018596">Geen geldig SOL-adres</translation>
 <translation id="882486206986535424">Geen geldig adres</translation>
 <translation id="6825399159373612149">Domein <ph name="DOMAIN_NAME"/> is niet geregistreerd</translation>
 <translation id="8971278306757462297">Het ontvangende adres is je eigen adres</translation>
@@ -1127,7 +1148,7 @@
 <translation id="1470129769517088397"><ph name="ADDRESS"/> is niet het huidige netwerk</translation>
 <translation id="7340805872138998391">Kan apparaat niet ontgrendelen, probeer opnieuw verbinding te maken</translation>
 <translation id="1984410139271779110">Interne fout, onbekend formaat</translation>
-<translation id="8682200134223578011">goedgekeurd</translation>
+<translation id="6989562355845156390">goedkeuren</translation>
 <translation id="4674380028960132654">Ledger: handtekening komt niet overeen met het juiste adres</translation>
 <translation id="3183932890629254743">Hardware-account niet gevonden</translation>
 <translation id="4287068151777838754">JSON-gegevens niet verwacht</translation>
@@ -1157,11 +1178,39 @@
 <translation id="6423985584914773314">Geen geldig FIL-adres</translation>
 <translation id="3898731124813934210">Kopen met Wyre</translation>
 <translation id="5522073372365069684">Kopen met Ramp</translation>
+<translation id="8725252491405767337">Ramp.Network</translation>
+<translation id="7623800836425615432">Wyre</translation>
+<translation id="7667423728712601865">Koop crypto met Visa of Mastercard.</translation>
 <translation id="8528916244724490964">Alle netwerken</translation>
 <translation id="2781668117338732220">Secundaire netwerken</translation>
 <translation id="2816106784624007524">Gaslimiet moet een geheel getal zijn dat groter dan 0 is</translation>
 <translation id="3354376789153561654">Transactiegegevens 'naar' moeten worden vermeld</translation>
 <translation id="8728991256628663004">Transactiegegevens 'vanuit' moeten een geldig Filecoin-adres zijn</translation>
+<translation id="7003028930816622496">Ledger-apparaat vergrendeld</translation>
+<translation id="3939390290522058485">Klik hier om transactiegegevens te bekijken voor <ph name="VALUE"/></translation>
+<translation id="2317956709076373213">Transactie bevestigd</translation>
+<translation id="310693998838023022">Transactiefout</translation>
+<translation id="6395870673621520684">Transactie verwijderd</translation>
+<translation id="1237782734462409503">Het tabblad is niet actief</translation>
+<translation id="756701799684433105">Transactie goedkeuren</translation>
+<translation id="6450792191436242818">Systeemprogramma</translation>
+<translation id="6252742184395380448">Configuratieprogramma</translation>
+<translation id="5358970666412490132">Aandelenprogramma</translation>
+<translation id="346636227344244984">Stemprogramma</translation>
+<translation id="3538368258493053874">BPF-lader</translation>
+<translation id="2334098351242742927">Ed25519-programma</translation>
+<translation id="8780753288764281797">Secp256k1-programma</translation>
+<translation id="5275550100743015683">Van adres:</translation>
+<translation id="2678433693746214764">Naar adres:</translation>
+<translation id="4576396475962922672">Nieuw account:</translation>
+<translation id="4719005063558335704">Accounts:</translation>
+<translation id="4337554812324118382">Gegevens:</translation>
+<translation id="569870799832027680">Programma-ID:</translation>
+<translation id="7843211152394841558">Max. aantal nieuwe pogingen:</translation>
+<translation id="8496335570810457">Preflight-toezegging:</translation>
+<translation id="5100124500279922001">Preflight overslaan:</translation>
+<translation id="8060029310790625334">Helpcentrum</translation>
+<translation id="2095142195578664632">Hulp nodig? Bekijk</translation>
 <translation id="3155170474926428993">Tor Launcher</translation>
 <translation id="3745016858329272300">Algemene informatie</translation>
 <translation id="4045404575593562245">Tor-controlegebeurtenissen</translation>
@@ -1176,6 +1225,7 @@
 <translation id="7709075156958117386">Als deze website niet lijkt te werken, probeer Shields dan te deactiveren. 
     <ph name="LINK_BEFORE"/>Let op: dit kan ervoor zorgen dat de privacybescherming van Brave minder goed werkt.<ph name="LINK_AFTER"/></translation>
 <translation id="8377155647357436161">Trackers, advertenties en meer hebben <ph name="LINK_BEFORE"/> geblokkeerd. Meer informatie over<ph name="LINK_AFTER"/></translation>
+<translation id="7604553853176833536">Niet beschermd door Brave Shields <ph name="LINK_BEFORE"/>Meer informatie<ph name="LINK_AFTER"/></translation>
 <translation id="650318023204990401">Geavanceerde instellingen</translation>
 <translation id="5799940914270080805">Het wijzigen van deze instellingen kan ervoor zorgen dat websites niet meer werken.</translation>
 <translation id="9204041448536398473">Algemene Schilden-instellingen</translation>
@@ -1202,6 +1252,7 @@
 <translation id="7194012750329511146">Brave Shields
 <ph name="NUMBER"/> Trackers, advertenties en meer geblokkeerd</translation>
 <translation id="4292121526390005808">Geblokkeerde scripts</translation>
+<translation id="3541307549916475335">Gebruikersinterface Brave VPN-venster</translation>
 <translation id="1742469581923031760">Verbinden…</translation>
 <translation id="1287487756047817908">Verbinding verbreken…</translation>
 <translation id="2325196879156848326">Verbinden mislukt</translation>
@@ -1219,8 +1270,11 @@
 <translation id="3181339219453722970">Kies je VPN-locatie</translation>
 <translation id="1751947227857853925">Snel en ongelimiteerd tot 100 Mbps</translation>
 <translation id="1400240082805528049">24/7 ondersteuning</translation>
+<translation id="1693568075761612600">Ondersteuningsticket maken mislukt, controleer de verbinding.</translation>
 <translation id="8463313539532697053">Een ogenblik geduld tijdens het laden…</translation>
+<translation id="4317307602527599178">De status van uw aankoop kan niet worden gecontroleerd. Dit kan worden veroorzaakt door een netwerkprobleem.</translation>
 <translation id="4613076894734402086">Betaalmethode bewerken</translation>
+<translation id="8373427068383038263">Het lijkt erop dat uw meest recente betaling voor <ph name="VALUE"/> is mislukt. De toegang tot dit abonnement wordt gepauzeerd totdat het betalingsprobleem is opgelost. Probeer uw betaalmethode te bewerken of neem contact op met de Brave-ondersteuning.</translation>
 <translation id="1839021455997460752">Uw e-mailadres</translation>
 <translation id="5154702632169343078">Onderwerp</translation>
 <translation id="6625978880678465492">Kies een reden</translation>
@@ -1237,6 +1291,9 @@
 <translation id="6676791921618140305">OS-versie:</translation>
 <translation id="1156325797949437777">Ondersteuning wordt verleend in samenwerking met Guardian.</translation>
 <translation id="3307461350293459700">VPN-verbinding mislukt. Probeer opnieuw verbinding te maken en klik op Toestaan om de VPN-configuratie van Brave in te schakelen.</translation>
+<translation id="7261518280726313829">Als u beveiligde DNS uitschakelt of standaardservers gebruikt in Windows, zijn de namen van sites die u bezoekt mogelijk zichtbaar voor uw internetprovider. Brave raadt dit niet aan. Wilt u toch doorgaan?</translation>
+<translation id="888284761945060750">Beveiligde DNS is uitgeschakeld vanwege het beleid van uw organisatie. Als u Brave VPN gebruikt zonder beveiligde DNS, zijn de namen van sites die u bezoekt mogelijk zichtbaar voor uw internetprovider of organisatie.</translation>
+<translation id="1657858090675311947">Deze waarschuwing niet meer weergeven.</translation>
 <translation id="7586151660465233733">Meer markten op <ph name="SITE_NAME"/></translation>
 <translation id="952067063131306699">Markten bekijken en crypto verhandelen op FTX</translation>
 <translation id="5963745988819586370">Markten</translation>
