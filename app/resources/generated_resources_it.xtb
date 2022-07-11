@@ -4465,7 +4465,7 @@ e Ctrl + Alt + Riduzione luminosità per diminuire lo zoom.</translation>
 <translation id="5392192690789334093">Possono inviare notifiche</translation>
 <translation id="5393761864111565424">{COUNT,plural, =1{Link}other{# link}}</translation>
 <translation id="5396325212236512832">Accedi automaticamente ai siti e alle app usando le credenziali memorizzate. Se la funzionalità è disattivata, ti verrà chiesta una conferma ogni volta che vuoi accedere a un sito o a un'app.</translation>
-<translation id="5397378439569041789">Registra dispositivi kiosk o insegna</translation>
+<translation id="5397378439569041789">Registra dispositivi kiosk o segnaletica</translation>
 <translation id="5397794290049113714">Tu</translation>
 <translation id="5398497406011404839">Preferiti nascosti</translation>
 <translation id="5398572795982417028">Riferimento pagina oltre i limiti. Il limite è <ph name="MAXIMUM_PAGE"/></translation>
@@ -5532,7 +5532,7 @@ Puoi assegnare più sensori a questa azione.</translation>
 <translation id="6466258437571594570">I siti non possono interromperti quando chiedono di poter inviare notifiche</translation>
 <translation id="6466988389784393586">&amp;Apri tutti i Preferiti</translation>
 <translation id="6467304607960172345">Ottimizza video a schermo intero</translation>
-<translation id="6467377768028664108"><ph name="DEVICE_TYPE"/> potrà poi:</translation>
+<translation id="6467377768028664108">Su <ph name="DEVICE_TYPE"/>:</translation>
 <translation id="6468485451923838994">Caratteri</translation>
 <translation id="6468773105221177474"><ph name="FILE_COUNT"/> file</translation>
 <translation id="6469557521904094793">Attiva rete mobile</translation>

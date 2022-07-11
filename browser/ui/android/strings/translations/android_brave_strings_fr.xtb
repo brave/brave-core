@@ -60,11 +60,6 @@
 <translation id="5987838417172370108">Contribuez à améliorer la stabilité des produits de Brave en envoyant automatiquement des rapports de diagnostic lorsque le navigateur Brave plante ou se bloque.</translation>
 <translation id="7977176350719484850">Données\néconomisées</translation>
 <translation id="9008534313521214777">Durée estimée\nenregistrée</translation>
-<translation id="6572660632052512096">Mode bureau</translation>
-<translation id="1340503115760585811">Activer l'affichage du bureau pour les nouveaux onglets</translation>
-<translation id="7924540991929826186">Utiliser les versions mobiles des sites pour les nouveaux onglets (recommandé)</translation>
-<translation id="807636106793708118">Je préfère la version mobile des sites</translation>
-<translation id="4479934682648362332">Je préfère la version de bureau des sites</translation>
 <translation id="1842747674580016420">Lecture vidéo dans Brave</translation>
 <translation id="5368992950177874750">Si la possibilité est activée, les vidéos seront lues dans Brave au lieu de l'appli correspondante</translation>
 <translation id="410351446219883937">Lecture automatique</translation>
@@ -119,6 +114,7 @@
 <translation id="19715420010996093">Sélectionnez le navigateur Brave et appuyez sur « Toujours ».</translation>
 <translation id="3546439402724649282">Brave est déjà configuré comme votre navigateur par défaut.</translation>
 <translation id="8389661903259423907">Vous avez déjà configuré un navigateur par défaut. Vous pouvez changer le navigateur par défaut dans les paramètres de votre application.</translation>
+<translation id="8112367589167674370">Brave Talk</translation>
 <translation id="8826007068782654809">Merci</translation>
 <translation id="6665366815203065060">Vous venez d'envoyer un don à :</translation>
 <translation id="5441565662498481293">Vous envoyez automatiquement des dons à :</translation>
@@ -862,23 +858,34 @@ Si vous n'acceptez pas cette demande, le VPN ne se reconnectera pas et votre con
 <translation id="4804818685124855865">Se déconnecter</translation>
 <translation id="8009571545960303544">Votre signature est demandée</translation>
 <translation id="3484981968509595506">Une DApp demande votre clé de chiffrement publique</translation>
-<translation id="2291002548681057345">souhaite obtenir la clé de chiffrement publique de vos portefeuilles. Si vous acceptez de fournir cette clé, le site sera en mesure de vous composer des messages chiffrés.</translation>
 <translation id="3340247553212049934">Fournir</translation>
 <translation id="1982257600591932657">Nom du réseau</translation>
 <translation id="5052727830821470769">URL de réseau</translation>
 <translation id="4822132585477111396">ID de chaîne</translation>
 <translation id="7131971375297699539">Symbole de devise</translation>
 <translation id="7982789257301363584">Réseau</translation>
-<translation id="7540715999708954128">Ce réseau pourra ainsi être utilisé dans le portefeuille Brave. En savoir plus.</translation>
-<translation id="8759753423332885148">En savoir plus.</translation>
 <translation id="4717431746210146708">Autoriser ce site à ajouter un réseau ?</translation>
+<translation id="4857321293515555666">Cette DApp souhaite lire ce message pour traiter votre demande.</translation>
+<translation id="714506544401754321">Décrypter le message</translation>
+<translation id="5039804452771397117">Autoriser</translation>
 <translation id="3378339846292573874">Ajouter un jeton suggéré</translation>
 <translation id="2322227405137827074">Voulez-vous importer ce jeton ?</translation>
 <translation id="1324417023773393937">Le navigateur Brave</translation>
 <translation id="6044189892950611565">Canal de notification pour le navigateur Brave</translation>
 <translation id="1173919438868967364">Sélectionner un compte</translation>
 <translation id="8922793255489232731">Impossible de récupérer le fuseau horaire correspondant pour : <ph name="VALUE"/></translation>
-<translation id="8231907121684689093">Afficher les sites les plus visités</translation>
+<translation id="8643377320501056697">Afficher les sites les plus visités</translation>
 <translation id="6471216025161697462">Connecté à <ph name="VALUE"/></translation>
 <translation id="1968852757206592413">Version d'essai</translation>
+<translation id="7733890291091968191">Afficher les notifications Web3</translation>
+<translation id="1371627247679035769">\n\n\n\n#### Brave ne vous suit pas et ne connaît pas votre utilisation de notre application, nous ne savons donc pas comment vous avez configuré le VPN. Veuillez nous communiquer des informations quant au problème que vous rencontrez et nous ferons de notre mieux pour le résoudre dès que possible. ####\n\n</translation>
+<translation id="3367162038532116157">\n\nNom d'hôte du VPN\n <ph name="VALUE"/></translation>
+<translation id="6173438324126027458">\n\nType d'abonnement\n <ph name="VALUE"/></translation>
+<translation id="1478875290576741766">\n\nJeton du Playstore\n <ph name="VALUE"/></translation>
+<translation id="1403057798797848522">\n\nVersion de l'application\n <ph name="VALUE"/></translation>
+<translation id="2282835936933247509">\n\nFuseau horaire\n</translation>
+<translation id="8107843365677337047">\n\nType de réseau\n</translation>
+<translation id="5334952096674914470">\n\nOpérateur mobile\n</translation>
+<translation id="5393042357629679588">\n\nAutre problème\n</translation>
+<translation id="8095666712177294104">\n\nPlateforme\n</translation>
 </translationbundle>

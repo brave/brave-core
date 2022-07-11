@@ -60,11 +60,6 @@
 <translation id="5987838417172370108">Ajudeu a millorar l'estabilitat del producte de Brave\u2019s enviant automàticament informes de diagnòstic quan el Navegador de Brave falla o es congela.</translation>
 <translation id="7977176350719484850">Data estimada\ndesada</translation>
 <translation id="9008534313521214777">Temps estalviat estimat</translation>
-<translation id="6572660632052512096">Mode d'escriptori</translation>
-<translation id="1340503115760585811">Activa la vista d'escriptori per a noves pestanyes</translation>
-<translation id="7924540991929826186">Utilitza versions mòbil de llocs per a noves pestanyes (recomanat)</translation>
-<translation id="807636106793708118">Prefereix la versió mòbil dels llocs</translation>
-<translation id="4479934682648362332">Prefereix la versió d'escriptori de llocs</translation>
 <translation id="1842747674580016420">Reproducció de vídeo a Brave</translation>
 <translation id="5368992950177874750">Si estan activats, els vídeos es reprodueixen a Brave en comptes de fer-ho a l'aplicació corresponent</translation>
 <translation id="410351446219883937">Reproducció automàtica</translation>
@@ -94,7 +89,7 @@
 <translation id="5329830149661250028">Nota la diferència de Brave: sense anuncis, sense rastrejadors, amb una càrrega de pàgina molt més ràpida.</translation>
 <translation id="3545804467215833536">Toca per veure els protectors de Brave</translation>
 <translation id="1724327820822194498">Consulta tots els elements indesitjables que ha bloquejat Brave, a cada pàgina, amb els protectors.</translation>
-<translation id="5386259141409498372"><ph name="BIG_TECH"/> i <ph name="TRACKER"/> altres anuncis &amp; rastrejadors bloquejats</translation>
+<translation id="5386259141409498372"><ph name="BIG_TECH"/> i <ph name="TRACKER"/> altres anuncis i rastrejadors bloquejats</translation>
 <translation id="3092683655478890840"><ph name="TRACKER_COUNT"/> anuncis &amp; rastrejadors bloquejats</translation>
 <translation id="8281886186245836920">Omet</translation>
 <translation id="6165508094623778733">Saber més</translation>
@@ -119,6 +114,7 @@
 <translation id="19715420010996093">Selecciona el navegador Brave i clica 'Sempre'</translation>
 <translation id="3546439402724649282">Brave ja s'ha configurat com el teu navegador predeterminat.</translation>
 <translation id="8389661903259423907">Ja has configurat un navegador predeterminat. Pots modificar el navegador predeterminat a la configuració de l'aplicació.</translation>
+<translation id="8112367589167674370">Brave Talk</translation>
 <translation id="8826007068782654809">Gràcies</translation>
 <translation id="6665366815203065060">Has enviat una propina a:</translation>
 <translation id="5441565662498481293">Envies una propina automàticament a:</translation>
@@ -865,23 +861,34 @@ Si no accepteu la sol·licitud, la VPN no es tornarà a connectar i la vostra co
 <translation id="4804818685124855865">Desconnectar</translation>
 <translation id="8009571545960303544">Es necessita la teva firma</translation>
 <translation id="3484981968509595506">Una DApp està sol·licitant la vostra clau pública de xifratge</translation>
-<translation id="2291002548681057345">està sol·licitant la clau de xifratge pública de les teves carteres. Si dons el teu consentiment per proporcionar aquesta clau, el lloc podrà redactar missatges xifrats per a tu.</translation>
 <translation id="3340247553212049934">Proporcionar</translation>
 <translation id="1982257600591932657">Nom de la xarxa</translation>
 <translation id="5052727830821470769">URL de la xarxa</translation>
 <translation id="4822132585477111396">Cadena ID</translation>
 <translation id="7131971375297699539">Símbol de moneda</translation>
 <translation id="7982789257301363584">Xarxa</translation>
-<translation id="7540715999708954128">Això permetrà utilitzar aquesta xarxa a la cartera de Brave. Més informació.</translation>
-<translation id="8759753423332885148">Més informació.</translation>
 <translation id="4717431746210146708">Voleu permetre que aquest lloc afegeixi una xarxa?</translation>
+<translation id="4857321293515555666">Aquesta DApp voldria llegir aquest missatge per a completar la seva acció</translation>
+<translation id="714506544401754321">Desencriptar el missatge</translation>
+<translation id="5039804452771397117">Permet</translation>
 <translation id="3378339846292573874">Afegeix un testimoni suggerit</translation>
 <translation id="2322227405137827074">Vols importar aquest testimoni?</translation>
 <translation id="1324417023773393937">Navegador Brave</translation>
 <translation id="6044189892950611565">Canal de notificacions per al navegador de Brave</translation>
 <translation id="1173919438868967364">Selecciona un compte</translation>
 <translation id="8922793255489232731">No s'ha pogut obtenir la zona horària corresponent per a: <ph name="VALUE"/></translation>
-<translation id="8231907121684689093">Mostra els llocs destacats</translation>
+<translation id="8643377320501056697">Mostrar llocs destacats</translation>
 <translation id="6471216025161697462">Connectat anb <ph name="VALUE"/></translation>
 <translation id="1968852757206592413">Prova</translation>
+<translation id="7733890291091968191">Mostra les notificacions de Web3</translation>
+<translation id="1371627247679035769">\n\n\n\n#### El Brave no us fa el seguiment ni sap com utilitzeu la nostra aplicació, així que no sabem com heu configurat la VPN. Compartiu informació sobre el problema que experimenteu i farem tot el possible per resoldre'l tan aviat com puguem. ####\n\n</translation>
+<translation id="3367162038532116157">\n\nNom de l'amfitrió VPN\n <ph name="VALUE"/></translation>
+<translation id="6173438324126027458">\n\nTipus de subscripció\n <ph name="VALUE"/></translation>
+<translation id="1478875290576741766">\n\nTestimoni de Playstore\n <ph name="VALUE"/></translation>
+<translation id="1403057798797848522">\n\nVersió de l'aplicació\n <ph name="VALUE"/></translation>
+<translation id="2282835936933247509">\n\nZona horària\n</translation>
+<translation id="8107843365677337047">\n\nTipus de xarxa\n</translation>
+<translation id="5334952096674914470">\n\nOperador mòbil\n</translation>
+<translation id="5393042357629679588">\n\nUn altre problema\n</translation>
+<translation id="8095666712177294104">\n\nPlataforma\n</translation>
 </translationbundle>

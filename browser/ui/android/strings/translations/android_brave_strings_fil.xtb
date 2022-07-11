@@ -60,11 +60,6 @@
 <translation id="5987838417172370108">Tulungang mapabuti ang estabilidad ng produkto ng Brave\u2019s sa pamamagitan ng kusang pagpapadala ng mga ulat ng diagnostic kapag nagkaproblema o tumigil ang Brave Browser.</translation>
 <translation id="7977176350719484850">Tinatantyang Natipid na\nData</translation>
 <translation id="9008534313521214777">Tinatantyang Oras na\nNatipid</translation>
-<translation id="6572660632052512096">Desktop Mode</translation>
-<translation id="1340503115760585811">I-enable ang View sa Desktop para sa mga bagong tab</translation>
-<translation id="7924540991929826186">Gamitin ang mga bersyong pang-mobile ng mga site para sa mga bagong tab (inirerekomenda)</translation>
-<translation id="807636106793708118">Piliin ang pang-mobile na bersyon ng mga site</translation>
-<translation id="4479934682648362332">Piliin ang pang-desktop na bersyon ng mga site</translation>
 <translation id="1842747674580016420">Pag-playback ng video sa Brave</translation>
 <translation id="5368992950177874750">Kung naka-enable, magpe-playback ang mga video sa Brave sa halip na sa katugmang app</translation>
 <translation id="410351446219883937">I-autoplay</translation>
@@ -119,6 +114,7 @@
 <translation id="19715420010996093">Piliin ang Brave Browser at i-tap ang 'Palagi'</translation>
 <translation id="3546439402724649282">Nakatakda na ang Brave bilang iyong default na browser.</translation>
 <translation id="8389661903259423907">Nagtakda ka na ng default na browser. Maaari mong palitan ang default na browser sa mga setting ng app mo.</translation>
+<translation id="8112367589167674370">Brave Talk</translation>
 <translation id="8826007068782654809">Salamat</translation>
 <translation id="6665366815203065060">Nagpadala ka ng tip kay:</translation>
 <translation id="5441565662498481293">Awtomatiko kang nagpapadala ng tip kay:</translation>
@@ -703,7 +699,7 @@ Kung hindi mo tatanggapin ang kahilingang ito, hindi kokonekta ulit ang VPN at h
 <translation id="669072536454692117">Matagumpay na nagamit ang subscription</translation>
 <translation id="1187506504156101449">Hindi nagawang kilalanin ang pagbili :</translation>
 <translation id="8420522105268941892">Naka-subscribe ka na sa subscription. Subukang ibalik ang subscription.</translation>
-<translation id="404414664190867625">Mag-quit ka sa pagbili ng iyong subscription.</translation>
+<translation id="404414664190867625">Nag-quit ka sa pagbili ng iyong subscription.</translation>
 <translation id="3515141458161417228">Hindi nabili. Paki-contact ang Google Play support.</translation>
 <translation id="6452181791372256707">Tanggihan</translation>
 <translation id="8030852056903932865">Aprubahan</translation>
@@ -864,23 +860,34 @@ Kung hindi mo tatanggapin ang kahilingang ito, hindi kokonekta ulit ang VPN at h
 <translation id="4804818685124855865">I-disconnect</translation>
 <translation id="8009571545960303544">Hinihiling ang iyong signature</translation>
 <translation id="3484981968509595506">Hinihingi ng DApp ang iyong public encryption key</translation>
-<translation id="2291002548681057345">hinihiling ang iyong wallets public encryption key. Kung papayagan mo ang pagbibigay ng key na ito, makakapagpadala ang site ng mga naka-encrypt na mensahe sa iyo.</translation>
 <translation id="3340247553212049934">Magbigay ng</translation>
 <translation id="1982257600591932657">Pangalan ng network</translation>
 <translation id="5052727830821470769">URL ng Network</translation>
 <translation id="4822132585477111396">Chain ID</translation>
 <translation id="7131971375297699539">Simbolo ng pera</translation>
 <translation id="7982789257301363584">Network</translation>
-<translation id="7540715999708954128">Bibigyang-daan nito ang network na ito na magamit sa loob ng Brave Wallet. Matuto pa.</translation>
-<translation id="8759753423332885148">Matuto pa.</translation>
 <translation id="4717431746210146708">Pahintulutan ang site na ito na magdagdag ng network?</translation>
+<translation id="4857321293515555666">Gusto ng DApp na ito na basahin ang mensaheng ito para kumpletuhin ang iyong kahilingan.</translation>
+<translation id="714506544401754321">I-decrypt ang mensahe</translation>
+<translation id="5039804452771397117">Payagan</translation>
 <translation id="3378339846292573874">Magdagdag ng iminumungkahing token</translation>
 <translation id="2322227405137827074">Gusto mo bang i-import ang token na ito?</translation>
 <translation id="1324417023773393937">Brave Browser</translation>
 <translation id="6044189892950611565">Channel ng notification para sa Brave Browser</translation>
 <translation id="1173919438868967364">Pumili ng Account</translation>
 <translation id="8922793255489232731">Hindi nakuha ang katugmang timezone para sa : <ph name="VALUE"/></translation>
-<translation id="8231907121684689093">Ipakita ang mga Nangungunang site</translation>
+<translation id="8643377320501056697">Ipakita ang Mga Nangungunang Site</translation>
 <translation id="6471216025161697462">Nakakonekta sa <ph name="VALUE"/></translation>
 <translation id="1968852757206592413">Trial</translation>
+<translation id="7733890291091968191">Magpakita ng mga Web3 notification</translation>
+<translation id="1371627247679035769">\n\n\n\n#### Hindi ka sinusubaybayan ng Brave o inaalam kung paano mo ginagamit ang aming app, kaya hindi namin alam kung paano mo na-set up ang VPN. Magbahagi ng impormasyon tungkol sa isyung nararanasan mo at gagawin namin ang aming makakaya para lutasin ito sa lalong madaling panahon. ####\n\n</translation>
+<translation id="3367162038532116157">\n\nHostname ng VPN\n <ph name="VALUE"/></translation>
+<translation id="6173438324126027458">\n\nUri ng Subscription\n <ph name="VALUE"/></translation>
+<translation id="1478875290576741766">\n\nToken sa Playstore\n <ph name="VALUE"/></translation>
+<translation id="1403057798797848522">\n\nBersyon ng App\n <ph name="VALUE"/></translation>
+<translation id="2282835936933247509">\n\nTimezone\n</translation>
+<translation id="8107843365677337047">\n\nUri ng Network\n</translation>
+<translation id="5334952096674914470">\n\nCellular Carrier\n</translation>
+<translation id="5393042357629679588">\n\nIba Pang Isyu\n</translation>
+<translation id="8095666712177294104">\n\nPlatform\n</translation>
 </translationbundle>
