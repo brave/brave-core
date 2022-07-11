@@ -82,15 +82,15 @@ GreaselionPreconditionValue GreaselionRule::ParsePrecondition(
   return condition;
 }
 
-void GreaselionRule::Parse(base::DictionaryValue* preconditions_value,
-                           base::ListValue* urls_value,
-                           base::ListValue* scripts_value,
+void GreaselionRule::Parse(base::Value::Dict* preconditions_value,
+                           base::Value::List* urls_value,
+                           base::Value::List* scripts_value,
                            const std::string& run_at_value,
                            const std::string& minimum_brave_version_value,
                            const base::FilePath& messages_value,
                            const base::FilePath& resource_dir) {
   if (preconditions_value) {
-    for (const auto kv : preconditions_value->DictItems()) {
+    for (const auto kv : *preconditions_value) {
       GreaselionPreconditionValue condition = ParsePrecondition(kv.second);
       if (kv.first == kRewards) {
         preconditions_.rewards_enabled = condition;
@@ -113,7 +113,7 @@ void GreaselionRule::Parse(base::DictionaryValue* preconditions_value,
       }
     }
   }
-  for (const auto& urls_it : urls_value->GetList()) {
+  for (const auto& urls_it : *urls_value) {
     std::string pattern_string = urls_it.GetString();
     URLPattern pattern;
     pattern.SetValidSchemes(URLPattern::SCHEME_HTTP | URLPattern::SCHEME_HTTPS);
@@ -124,7 +124,7 @@ void GreaselionRule::Parse(base::DictionaryValue* preconditions_value,
     }
     url_patterns_.push_back(pattern_string);
   }
-  for (const auto& scripts_it : scripts_value->GetList()) {
+  for (const auto& scripts_it : *scripts_value) {
     base::FilePath script_path = resource_dir.AppendASCII(
         scripts_it.GetString());
     if (script_path.ReferencesParent()) {
@@ -281,28 +281,23 @@ void GreaselionDownloadService::OnDATFileDataReady(std::string contents) {
     return;
   }
   absl::optional<base::Value> root = base::JSONReader::Read(contents);
-  if (!root) {
+  if (!root || !root->is_list()) {
     LOG(ERROR) << "Failed to parse Greaselion configuration";
     return;
   }
-  base::ListValue* root_list = nullptr;
-  root->GetAsList(&root_list);
-  for (base::Value& rule_it : root_list->GetList()) {
-    base::DictionaryValue* rule_dict = nullptr;
-    rule_it.GetAsDictionary(&rule_dict);
-    base::DictionaryValue* preconditions_value = nullptr;
-    rule_dict->GetDictionary(kPreconditions, &preconditions_value);
-    base::ListValue* urls_value = nullptr;
-    rule_dict->GetList(kURLs, &urls_value);
-    base::ListValue* scripts_value = nullptr;
-    rule_dict->GetList(kScripts, &scripts_value);
-    const std::string* run_at_ptr = rule_it.FindStringPath(kRunAt);
+  auto& root_list = root->GetList();
+  for (base::Value& rule_it : root_list) {
+    auto& rule_dict = rule_it.GetDict();
+    auto* preconditions_value = rule_dict.FindDict(kPreconditions);
+    auto* urls_value = rule_dict.FindList(kURLs);
+    auto* scripts_value = rule_dict.FindList(kScripts);
+    const std::string* run_at_ptr = rule_dict.FindStringByDottedPath(kRunAt);
     const std::string run_at_value = run_at_ptr ? *run_at_ptr : "";
-    const std::string* minimum_brave_version_ptr = rule_it.FindStringPath(
-        kMinimumBraveVersion);
+    const std::string* minimum_brave_version_ptr =
+        rule_dict.FindStringByDottedPath(kMinimumBraveVersion);
     const std::string minimum_brave_version_value =
         minimum_brave_version_ptr ? *minimum_brave_version_ptr : "";
-    const std::string* messages = rule_it.FindStringPath(kMessages);
+    const std::string* messages = rule_dict.FindStringByDottedPath(kMessages);
     base::FilePath messages_path;
     if (messages) {
       messages_path = base::FilePath::FromUTF8Unsafe(messages->c_str());
