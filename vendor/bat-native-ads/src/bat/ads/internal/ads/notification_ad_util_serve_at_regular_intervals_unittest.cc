@@ -80,9 +80,9 @@ class BatAdsNotificationAdUtilServeAtRegularIntervalsTest
     : public UnitTestBase,
       public ::testing::WithParamInterface<ParamInfo> {
  protected:
-  BatAdsNotificationAdUtilServeAtRegularIntervalsTest() {}
+  BatAdsNotificationAdUtilServeAtRegularIntervalsTest() = default;
 
-  ~BatAdsNotificationAdUtilServeAtRegularIntervalsTest() override {}
+  ~BatAdsNotificationAdUtilServeAtRegularIntervalsTest() override = default;
 
   void SetUpMocks() override {
     const ParamInfo param = GetParam();

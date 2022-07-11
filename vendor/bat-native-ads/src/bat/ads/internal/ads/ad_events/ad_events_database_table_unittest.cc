@@ -10,10 +10,12 @@
 // npm run test -- brave_unit_tests --filter=BatAds*
 
 namespace ads {
+namespace database {
+namespace table {
 
 TEST(BatAdsAdEventsDatabaseTableTest, TableName) {
   // Arrange
-  database::table::AdEvents database_table;
+  AdEvents database_table;
 
   // Act
   const std::string table_name = database_table.GetTableName();
@@ -23,4 +25,6 @@ TEST(BatAdsAdEventsDatabaseTableTest, TableName) {
   EXPECT_EQ(expected_table_name, table_name);
 }
 
+}  // namespace table
+}  // namespace database
 }  // namespace ads

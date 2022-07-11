@@ -8,27 +8,28 @@
 #include "bat/ads/internal/base/containers/container_util.h"
 #include "bat/ads/internal/base/unittest/unittest_base.h"
 #include "bat/ads/internal/base/unittest/unittest_time_util.h"
+#include "bat/ads/internal/creatives/promoted_content_ads/creative_promoted_content_ads_database_util.h"
 #include "url/gurl.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
 namespace ads {
+namespace database {
+namespace table {
 
 class BatAdsCreativePromotedContentAdsDatabaseTableTest : public UnitTestBase {
  protected:
-  BatAdsCreativePromotedContentAdsDatabaseTableTest()
-      : database_table_(
-            std::make_unique<database::table::CreativePromotedContentAds>()) {}
+  BatAdsCreativePromotedContentAdsDatabaseTableTest() = default;
 
   ~BatAdsCreativePromotedContentAdsDatabaseTableTest() override = default;
 
-  void Save(
-      const CreativePromotedContentAdList& creative_promoted_content_ads) {
-    database_table_->Save(creative_promoted_content_ads,
-                          [](const bool success) { ASSERT_TRUE(success); });
+  void SetUp() override {
+    UnitTestBase::SetUp();
+
+    database_table_ = std::make_unique<CreativePromotedContentAds>();
   }
 
-  std::unique_ptr<database::table::CreativePromotedContentAds> database_table_;
+  std::unique_ptr<CreativePromotedContentAds> database_table_;
 };
 
 TEST_F(BatAdsCreativePromotedContentAdsDatabaseTableTest,
@@ -37,7 +38,7 @@ TEST_F(BatAdsCreativePromotedContentAdsDatabaseTableTest,
   CreativePromotedContentAdList creative_promoted_content_ads = {};
 
   // Act
-  Save(creative_promoted_content_ads);
+  SaveCreativePromotedContentAds(creative_promoted_content_ads);
 
   // Assert
 }
@@ -94,7 +95,7 @@ TEST_F(BatAdsCreativePromotedContentAdsDatabaseTableTest,
   creative_promoted_content_ads.push_back(info_2);
 
   // Act
-  Save(creative_promoted_content_ads);
+  SaveCreativePromotedContentAds(creative_promoted_content_ads);
 
   // Assert
   const CreativePromotedContentAdList expected_creative_promoted_content_ads =
@@ -191,7 +192,7 @@ TEST_F(BatAdsCreativePromotedContentAdsDatabaseTableTest,
   creative_promoted_content_ads.push_back(info_3);
 
   // Act
-  Save(creative_promoted_content_ads);
+  SaveCreativePromotedContentAds(creative_promoted_content_ads);
 
   // Assert
   const CreativePromotedContentAdList expected_creative_promoted_content_ads =
@@ -239,10 +240,10 @@ TEST_F(BatAdsCreativePromotedContentAdsDatabaseTableTest,
   info.ptr = 1.0;
   creative_promoted_content_ads.push_back(info);
 
-  Save(creative_promoted_content_ads);
+  SaveCreativePromotedContentAds(creative_promoted_content_ads);
 
   // Act
-  Save(creative_promoted_content_ads);
+  SaveCreativePromotedContentAds(creative_promoted_content_ads);
 
   // Assert
   const CreativePromotedContentAdList expected_creative_promoted_content_ads =
@@ -313,7 +314,7 @@ TEST_F(BatAdsCreativePromotedContentAdsDatabaseTableTest, GetForSegments) {
   info_2.ptr = 1.0;
   creative_promoted_content_ads.push_back(info_2);
 
-  Save(creative_promoted_content_ads);
+  SaveCreativePromotedContentAds(creative_promoted_content_ads);
 
   // Act
 
@@ -372,7 +373,7 @@ TEST_F(BatAdsCreativePromotedContentAdsDatabaseTableTest,
   info.ptr = 1.0;
   creative_promoted_content_ads.push_back(info);
 
-  Save(creative_promoted_content_ads);
+  SaveCreativePromotedContentAds(creative_promoted_content_ads);
 
   // Act
 
@@ -423,7 +424,7 @@ TEST_F(BatAdsCreativePromotedContentAdsDatabaseTableTest,
   info.ptr = 1.0;
   creative_promoted_content_ads.push_back(info);
 
-  Save(creative_promoted_content_ads);
+  SaveCreativePromotedContentAds(creative_promoted_content_ads);
 
   // Act
 
@@ -468,7 +469,7 @@ TEST_F(BatAdsCreativePromotedContentAdsDatabaseTableTest,
   info.ptr = 1.0;
   creative_promoted_content_ads.push_back(info);
 
-  Save(creative_promoted_content_ads);
+  SaveCreativePromotedContentAds(creative_promoted_content_ads);
 
   // Act
 
@@ -518,7 +519,7 @@ TEST_F(BatAdsCreativePromotedContentAdsDatabaseTableTest,
   info.ptr = 1.0;
   creative_promoted_content_ads.push_back(info);
 
-  Save(creative_promoted_content_ads);
+  SaveCreativePromotedContentAds(creative_promoted_content_ads);
 
   // Act
 
@@ -614,7 +615,7 @@ TEST_F(BatAdsCreativePromotedContentAdsDatabaseTableTest,
   info_3.ptr = 1.0;
   creative_promoted_content_ads.push_back(info_3);
 
-  Save(creative_promoted_content_ads);
+  SaveCreativePromotedContentAds(creative_promoted_content_ads);
 
   // Act
 
@@ -689,7 +690,7 @@ TEST_F(BatAdsCreativePromotedContentAdsDatabaseTableTest,
   info_2.ptr = 1.0;
   creative_promoted_content_ads.push_back(info_2);
 
-  Save(creative_promoted_content_ads);
+  SaveCreativePromotedContentAds(creative_promoted_content_ads);
 
   // Act
   AdvanceClockBy(base::Hours(1));
@@ -763,7 +764,7 @@ TEST_F(BatAdsCreativePromotedContentAdsDatabaseTableTest,
   info_2.ptr = 1.0;
   creative_promoted_content_ads.push_back(info_2);
 
-  Save(creative_promoted_content_ads);
+  SaveCreativePromotedContentAds(creative_promoted_content_ads);
 
   // Act
 
@@ -795,4 +796,6 @@ TEST_F(BatAdsCreativePromotedContentAdsDatabaseTableTest, TableName) {
   EXPECT_EQ(expected_table_name, table_name);
 }
 
+}  // namespace table
+}  // namespace database
 }  // namespace ads

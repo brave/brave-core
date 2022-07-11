@@ -16,6 +16,7 @@
 #include "bat/ads/internal/base/unittest/unittest_time_util.h"
 #include "bat/ads/internal/conversions/conversion_queue_database_table.h"
 #include "bat/ads/internal/conversions/conversions_database_table.h"
+#include "bat/ads/internal/conversions/conversions_database_util.h"
 #include "bat/ads/internal/creatives/creative_ad_info.h"
 #include "bat/ads/internal/creatives/creative_ad_unittest_util.h"
 #include "bat/ads/internal/resources/behavioral/conversions/conversions_info.h"
@@ -44,11 +45,6 @@ class BatAdsConversionsTest : public UnitTestBase {
         std::make_unique<database::table::Conversions>();
   }
 
-  void SaveConversions(const ConversionList& conversions) {
-    conversions_database_table_->Save(
-        conversions, [](const bool success) { ASSERT_TRUE(success); });
-  }
-
   base::Time CalculateExpireAtTime(const int observation_window) {
     return Now() + base::Days(observation_window);
   }
@@ -75,7 +71,7 @@ TEST_F(BatAdsConversionsTest, ShouldNotAllowConversionTracking) {
   conversion.expire_at = CalculateExpireAtTime(conversion.observation_window);
   conversions.push_back(conversion);
 
-  SaveConversions(conversions);
+  database::SaveConversions(conversions);
 
   // Act
   conversions_->MaybeConvert({GURL("https://www.foobar.com/signup")}, "", {});
@@ -111,7 +107,7 @@ TEST_F(BatAdsConversionsTest,
   conversion.observation_window = 3;
   conversion.expire_at = CalculateExpireAtTime(conversion.observation_window);
   conversions.push_back(conversion);
-  SaveConversions(conversions);
+  database::SaveConversions(conversions);
 
   // Act
   conversions_->MaybeConvert({GURL("https://www.foo.com/bar")}, "", {});
@@ -146,7 +142,7 @@ TEST_F(BatAdsConversionsTest, ConvertViewedNotificationAdWhenAdsAreEnabled) {
   conversion.observation_window = 3;
   conversion.expire_at = CalculateExpireAtTime(conversion.observation_window);
   conversions.push_back(conversion);
-  SaveConversions(conversions);
+  database::SaveConversions(conversions);
 
   // Act
   conversions_->MaybeConvert({GURL("https://www.foo.com/bar")}, "", {});
@@ -189,7 +185,7 @@ TEST_F(BatAdsConversionsTest,
   conversion.observation_window = 3;
   conversion.expire_at = CalculateExpireAtTime(conversion.observation_window);
   conversions.push_back(conversion);
-  SaveConversions(conversions);
+  database::SaveConversions(conversions);
 
   // Act
   conversions_->MaybeConvert({GURL("https://www.foo.com/bar")}, "", {});
@@ -227,7 +223,7 @@ TEST_F(BatAdsConversionsTest, ConvertClickedNotificationAdWhenAdsAreEnabled) {
   conversion.observation_window = 3;
   conversion.expire_at = CalculateExpireAtTime(conversion.observation_window);
   conversions.push_back(conversion);
-  SaveConversions(conversions);
+  database::SaveConversions(conversions);
 
   // Act
   conversions_->MaybeConvert({GURL("https://www.foo.com/bar")}, "", {});
@@ -267,7 +263,7 @@ TEST_F(BatAdsConversionsTest,
   conversion.observation_window = 3;
   conversion.expire_at = CalculateExpireAtTime(conversion.observation_window);
   conversions.push_back(conversion);
-  SaveConversions(conversions);
+  database::SaveConversions(conversions);
 
   // Act
   conversions_->MaybeConvert({GURL("https://www.foo.com/bar")}, "", {});
@@ -302,7 +298,7 @@ TEST_F(BatAdsConversionsTest, ConvertViewedNewTabPageAdWhenAdsAreEnabled) {
   conversion.observation_window = 3;
   conversion.expire_at = CalculateExpireAtTime(conversion.observation_window);
   conversions.push_back(conversion);
-  SaveConversions(conversions);
+  database::SaveConversions(conversions);
 
   // Act
   conversions_->MaybeConvert({GURL("https://www.foo.com/bar")}, "", {});
@@ -345,7 +341,7 @@ TEST_F(BatAdsConversionsTest,
   conversion.observation_window = 3;
   conversion.expire_at = CalculateExpireAtTime(conversion.observation_window);
   conversions.push_back(conversion);
-  SaveConversions(conversions);
+  database::SaveConversions(conversions);
 
   // Act
   conversions_->MaybeConvert({GURL("https://www.foo.com/bar")}, "", {});
@@ -383,7 +379,7 @@ TEST_F(BatAdsConversionsTest, ConvertClickedNewTabPageAdWhenAdsAreEnabled) {
   conversion.observation_window = 3;
   conversion.expire_at = CalculateExpireAtTime(conversion.observation_window);
   conversions.push_back(conversion);
-  SaveConversions(conversions);
+  database::SaveConversions(conversions);
 
   // Act
   conversions_->MaybeConvert({GURL("https://www.foo.com/bar")}, "", {});
@@ -424,7 +420,7 @@ TEST_F(BatAdsConversionsTest,
   conversion.observation_window = 3;
   conversion.expire_at = CalculateExpireAtTime(conversion.observation_window);
   conversions.push_back(conversion);
-  SaveConversions(conversions);
+  database::SaveConversions(conversions);
 
   // Act
   conversions_->MaybeConvert({GURL("https://www.foo.com/bar")}, "", {});
@@ -460,7 +456,7 @@ TEST_F(BatAdsConversionsTest, ConvertViewedPromotedContentAdWhenAdsAreEnabled) {
   conversion.observation_window = 3;
   conversion.expire_at = CalculateExpireAtTime(conversion.observation_window);
   conversions.push_back(conversion);
-  SaveConversions(conversions);
+  database::SaveConversions(conversions);
 
   // Act
   conversions_->MaybeConvert({GURL("https://www.foo.com/bar")}, "", {});
@@ -505,7 +501,7 @@ TEST_F(BatAdsConversionsTest,
   conversion.observation_window = 3;
   conversion.expire_at = CalculateExpireAtTime(conversion.observation_window);
   conversions.push_back(conversion);
-  SaveConversions(conversions);
+  database::SaveConversions(conversions);
 
   // Act
   conversions_->MaybeConvert({GURL("https://www.foo.com/bar")}, "", {});
@@ -546,7 +542,7 @@ TEST_F(BatAdsConversionsTest,
   conversion.observation_window = 3;
   conversion.expire_at = CalculateExpireAtTime(conversion.observation_window);
   conversions.push_back(conversion);
-  SaveConversions(conversions);
+  database::SaveConversions(conversions);
 
   // Act
   conversions_->MaybeConvert({GURL("https://www.foo.com/bar")}, "", {});
@@ -586,7 +582,7 @@ TEST_F(BatAdsConversionsTest,
   conversion.observation_window = 3;
   conversion.expire_at = CalculateExpireAtTime(conversion.observation_window);
   conversions.push_back(conversion);
-  SaveConversions(conversions);
+  database::SaveConversions(conversions);
 
   // Act
   conversions_->MaybeConvert({GURL("https://www.foo.com/bar")}, "", {});
@@ -622,7 +618,7 @@ TEST_F(BatAdsConversionsTest,
   conversion.observation_window = 3;
   conversion.expire_at = CalculateExpireAtTime(conversion.observation_window);
   conversions.push_back(conversion);
-  SaveConversions(conversions);
+  database::SaveConversions(conversions);
 
   // Act
   conversions_->MaybeConvert({GURL("https://www.foo.com/bar")}, "", {});
@@ -660,7 +656,7 @@ TEST_F(BatAdsConversionsTest, ConvertClickedInlineContentAdWhenAdsAreDisabled) {
   conversion.observation_window = 3;
   conversion.expire_at = CalculateExpireAtTime(conversion.observation_window);
   conversions.push_back(conversion);
-  SaveConversions(conversions);
+  database::SaveConversions(conversions);
 
   // Act
   conversions_->MaybeConvert({GURL("https://www.foo.com/bar/baz")}, "", {});
@@ -702,7 +698,7 @@ TEST_F(BatAdsConversionsTest, ConvertClickedInlineContentAdWhenAdsAreEnabled) {
   conversion.observation_window = 3;
   conversion.expire_at = CalculateExpireAtTime(conversion.observation_window);
   conversions.push_back(conversion);
-  SaveConversions(conversions);
+  database::SaveConversions(conversions);
 
   // Act
   conversions_->MaybeConvert({GURL("https://www.foo.com/bar/baz")}, "", {});
@@ -742,7 +738,7 @@ TEST_F(BatAdsConversionsTest,
   conversion.observation_window = 3;
   conversion.expire_at = CalculateExpireAtTime(conversion.observation_window);
   conversions.push_back(conversion);
-  SaveConversions(conversions);
+  database::SaveConversions(conversions);
 
   // Act
   conversions_->MaybeConvert({GURL("https://www.foo.com/bar")}, "", {});
@@ -777,7 +773,7 @@ TEST_F(BatAdsConversionsTest, ConvertViewedSearchResultAdWhenAdsAreEnabled) {
   conversion.observation_window = 3;
   conversion.expire_at = CalculateExpireAtTime(conversion.observation_window);
   conversions.push_back(conversion);
-  SaveConversions(conversions);
+  database::SaveConversions(conversions);
 
   // Act
   conversions_->MaybeConvert({GURL("https://www.foo.com/bar")}, "", {});
@@ -820,7 +816,7 @@ TEST_F(BatAdsConversionsTest,
   conversion.observation_window = 3;
   conversion.expire_at = CalculateExpireAtTime(conversion.observation_window);
   conversions.push_back(conversion);
-  SaveConversions(conversions);
+  database::SaveConversions(conversions);
 
   // Act
   conversions_->MaybeConvert({GURL("https://www.foo.com/bar")}, "", {});
@@ -858,7 +854,7 @@ TEST_F(BatAdsConversionsTest, ConvertClickedSearchResultAdWhenAdsAreEnabled) {
   conversion.observation_window = 3;
   conversion.expire_at = CalculateExpireAtTime(conversion.observation_window);
   conversions.push_back(conversion);
-  SaveConversions(conversions);
+  database::SaveConversions(conversions);
 
   // Act
   conversions_->MaybeConvert({GURL("https://www.foo.com/bar")}, "", {});
@@ -902,7 +898,7 @@ TEST_F(BatAdsConversionsTest, ConvertMultipleAds) {
       CalculateExpireAtTime(conversion_2.observation_window);
   conversions.push_back(conversion_2);
 
-  SaveConversions(conversions);
+  database::SaveConversions(conversions);
 
   const AdEventInfo& ad_event_1 =
       BuildAdEvent("7ee858e8-6306-4317-88c3-9e7d58afad26",
@@ -961,7 +957,7 @@ TEST_F(BatAdsConversionsTest, ConvertViewedAdWhenAdWasDismissed) {
   conversion.expire_at = CalculateExpireAtTime(conversion.observation_window);
   conversions.push_back(conversion);
 
-  SaveConversions(conversions);
+  database::SaveConversions(conversions);
 
   const AdEventInfo& ad_event_1 =
       BuildAdEvent(conversion.creative_set_id, ConfirmationType::kViewed);
@@ -1002,7 +998,7 @@ TEST_F(BatAdsConversionsTest, DoNotConvertNonViewedOrClickedAds) {
   conversion.expire_at = CalculateExpireAtTime(conversion.observation_window);
   conversions.push_back(conversion);
 
-  SaveConversions(conversions);
+  database::SaveConversions(conversions);
 
   const AdEventInfo& ad_event_1 =
       BuildAdEvent(conversion.creative_set_id, ConfirmationType::kDismissed);
@@ -1054,7 +1050,7 @@ TEST_F(BatAdsConversionsTest, DoNotConvertViewedAdForPostClick) {
   conversion.expire_at = CalculateExpireAtTime(conversion.observation_window);
   conversions.push_back(conversion);
 
-  SaveConversions(conversions);
+  database::SaveConversions(conversions);
 
   const AdEventInfo& ad_event =
       BuildAdEvent(conversion.creative_set_id, ConfirmationType::kViewed);
@@ -1113,7 +1109,7 @@ TEST_F(BatAdsConversionsTest,
   conversion.expire_at = CalculateExpireAtTime(conversion.observation_window);
   conversions.push_back(conversion);
 
-  SaveConversions(conversions);
+  database::SaveConversions(conversions);
 
   const AdEventInfo& ad_event =
       BuildAdEvent(conversion.creative_set_id, ConfirmationType::kViewed);
@@ -1154,7 +1150,7 @@ TEST_F(BatAdsConversionsTest,
   conversion.expire_at = CalculateExpireAtTime(conversion.observation_window);
   conversions.push_back(conversion);
 
-  SaveConversions(conversions);
+  database::SaveConversions(conversions);
 
   const AdEventInfo& ad_event =
       BuildAdEvent(conversion.creative_set_id, ConfirmationType::kViewed);
@@ -1188,7 +1184,7 @@ TEST_F(BatAdsConversionsTest, ConvertAdWhenTheConversionIsOnTheCuspOfExpiring) {
   conversion.expire_at = CalculateExpireAtTime(conversion.observation_window);
   conversions.push_back(conversion);
 
-  SaveConversions(conversions);
+  database::SaveConversions(conversions);
 
   const AdEventInfo& ad_event =
       BuildAdEvent(conversion.creative_set_id, ConfirmationType::kViewed);
@@ -1228,7 +1224,7 @@ TEST_F(BatAdsConversionsTest, DoNotConvertAdWhenTheConversionHasExpired) {
   conversion.expire_at = CalculateExpireAtTime(conversion.observation_window);
   conversions.push_back(conversion);
 
-  SaveConversions(conversions);
+  database::SaveConversions(conversions);
 
   const AdEventInfo& ad_event =
       BuildAdEvent(conversion.creative_set_id, ConfirmationType::kViewed);
@@ -1264,7 +1260,7 @@ TEST_F(BatAdsConversionsTest, ConvertAdForRedirectChainIntermediateUrl) {
   conversion.expire_at = CalculateExpireAtTime(conversion.observation_window);
   conversions.push_back(conversion);
 
-  SaveConversions(conversions);
+  database::SaveConversions(conversions);
 
   const AdEventInfo& ad_event =
       BuildAdEvent(conversion.creative_set_id, ConfirmationType::kViewed);
@@ -1305,7 +1301,7 @@ TEST_F(BatAdsConversionsTest, ConvertAdForRedirectChainOriginalUrl) {
   conversion.expire_at = CalculateExpireAtTime(conversion.observation_window);
   conversions.push_back(conversion);
 
-  SaveConversions(conversions);
+  database::SaveConversions(conversions);
 
   const AdEventInfo& ad_event =
       BuildAdEvent(conversion.creative_set_id, ConfirmationType::kViewed);
@@ -1346,7 +1342,7 @@ TEST_F(BatAdsConversionsTest, ConvertAdForRedirectChainUrl) {
   conversion.expire_at = CalculateExpireAtTime(conversion.observation_window);
   conversions.push_back(conversion);
 
-  SaveConversions(conversions);
+  database::SaveConversions(conversions);
 
   const AdEventInfo& ad_event =
       BuildAdEvent(conversion.creative_set_id, ConfirmationType::kViewed);
@@ -1393,7 +1389,7 @@ TEST_F(BatAdsConversionsTest, ExtractConversionId) {
   conversion.expire_at = CalculateExpireAtTime(conversion.observation_window);
   conversions.push_back(conversion);
 
-  SaveConversions(conversions);
+  database::SaveConversions(conversions);
 
   const AdEventInfo& ad_event =
       BuildAdEvent(conversion.creative_set_id, ConfirmationType::kViewed);
@@ -1443,7 +1439,7 @@ TEST_F(BatAdsConversionsTest, ExtractConversionIdWithResourcePatternFromHtml) {
   conversion.expire_at = CalculateExpireAtTime(conversion.observation_window);
   conversions.push_back(conversion);
 
-  SaveConversions(conversions);
+  database::SaveConversions(conversions);
 
   const AdEventInfo& ad_event =
       BuildAdEvent(conversion.creative_set_id, ConfirmationType::kViewed);
@@ -1495,7 +1491,7 @@ TEST_F(BatAdsConversionsTest, ExtractConversionIdWithResourcePatternFromUrl) {
   conversion.expire_at = CalculateExpireAtTime(conversion.observation_window);
   conversions.push_back(conversion);
 
-  SaveConversions(conversions);
+  database::SaveConversions(conversions);
 
   const AdEventInfo& ad_event =
       BuildAdEvent(conversion.creative_set_id, ConfirmationType::kViewed);

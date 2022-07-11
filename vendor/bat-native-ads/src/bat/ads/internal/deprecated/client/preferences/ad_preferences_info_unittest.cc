@@ -40,8 +40,9 @@ constexpr char kSampleAdPreferencesInfoJson[] = R"(
 
 class BatAdsAdPreferencesInfoTest : public UnitTestBase {
  public:
-  BatAdsAdPreferencesInfoTest() {}
-  ~BatAdsAdPreferencesInfoTest() override {}
+  BatAdsAdPreferencesInfoTest() = default;
+
+  ~BatAdsAdPreferencesInfoTest() override = default;
 
   void ParseJsonAndCompareWithSampleAdPreferencesInfo(const std::string& json) {
     // Arrange

@@ -17,9 +17,9 @@ namespace ads {
 
 class BatAdsNotificationAdUtilTest : public UnitTestBase {
  protected:
-  BatAdsNotificationAdUtilTest() {}
+  BatAdsNotificationAdUtilTest() = default;
 
-  ~BatAdsNotificationAdUtilTest() override {}
+  ~BatAdsNotificationAdUtilTest() override = default;
 
   void ShowAdNotification() {
     const CreativeNotificationAdInfo creative_ad =
