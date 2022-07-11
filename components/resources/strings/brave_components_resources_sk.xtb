@@ -722,7 +722,7 @@
 <translation id="4780526507945807546">Použiť lokálny uzol IPFS prehliadača Brave</translation>
 <translation id="8148464361648742409">Použiť verejnú bránu</translation>
 <translation id="5123478056123923857">IPFS (InterPlanetary File System) je verejná sieť na ukladanie a doručovanie peer-to-peer dát. Tento protokol má odlišné aspekty ochrany osobných údajov než HTTP(S).</translation>
-<translation id="5410952114182173389">Váš počítač prispieva do verejnej siete, ale vaša IP adresa a akýkoľvek obsah, ktorý požadujete alebo poskytujete môže byť vystavený. Obsah, ktorý požadujete cez IPFS, je overený predtým, než vám bude k dispozícii.</translation>
+<translation id="1216911189668016151">Váš počítač prispieva do verejnej siete, ale vaša IP adresa a akýkoľvek obsah, ktorý požadujete alebo poskytujete, môže byť vystavený. Obsah, ktorý požadujete cez IPFS, je overený predtým, než vám bude k dispozícii. Sieťové požiadavky nemusia používať nastavenia proxy servera a DNS prehliadača.</translation>
 <translation id="8664689531113048642">Chráni vašu IP adresu a obsah, ktorý požadujete od potenciálnych pozorovateľov tretích strán, nie však od operátora verejnej brány. Prevádzkovateľ brány zodpovedá za zabezpečenie toho, že obsah, ktorý vám bude poskytovaný cez bránu, je ten požadovaný. Váš počítač tiež neprispieva do verejnej siete IPFS.</translation>
 <translation id="3977809385703587108">Svoje preferencie si môžete znova zmeniť v</translation>
 <translation id="3340978935015468852">nastavenia</translation>
@@ -914,6 +914,7 @@
 <translation id="4359319875297001084">Importovať zo starších kryptopeňaženiek Brave?</translation>
 <translation id="3331452756822160641">Nové heslo</translation>
 <translation id="8624315169751085215">Vložiť do schránky</translation>
+<translation id="7885157704277298658">Zkopírováno!</translation>
 <translation id="1121335910737476837">Hlavné kryptoúčty</translation>
 <translation id="6969147029062037757">Importované účty</translation>
 <translation id="4057718162494343222">V peňaženke Brave môžete vytvoriť primárne účty, ktoré možno zálohovať alebo obnoviť prostredníctvom frázy na obnovenie. Ak sa chcete dozvedieť viac o typoch účtov, pozrite si pomocníka pre účty.</translation>
@@ -971,6 +972,8 @@
 <translation id="7642841516562576649">URL adresa ikony</translation>
 <translation id="2144247757675997850">Pridať aktívum</translation>
 <translation id="2708402071160162126">VAROVANIE: Nikdy nezverejňujte svoju frázu na zálohovanie. Každý, kto má túto frázu, vám môže navždy vziať aktíva.</translation>
+<translation id="2416098547200943834">POZNÁMKA: Súkromný kľúč sa poskytuje ako hex-kódovaný JSON, ktorý obsahuje súkromný kľúč a informácie o protokole. <ph name="LINK_START"/>Viac informácií nájdete na <ph name="LINK_END"/>.</translation>
+<translation id="7657130382217527063">POZNÁMKA: Súkromný kľúč musí byť poskytnutý ako hex-kódovaný JSON, ktorý obsahuje súkromný kľúč a informácie o protokole. <ph name="LINK_START"/>Viac informácií nájdete na<ph name="LINK_END"/>.</translation>
 <translation id="2902856457593699108">Zobraziť kľúč</translation>
 <translation id="8033497299373164724">Skryť kľúč</translation>
 <translation id="2702143907607790516">Aktualizácia názvu účtu zlyhala, skúste to znova.</translation>
@@ -1006,7 +1009,7 @@
 <translation id="5488357322146334497">Zpráva</translation>
 <translation id="3586752056660754651">Podepsat</translation>
 <translation id="3484981968509595506">Aplikácia DApp požaduje váš verejný šifrovací kľúč</translation>
-<translation id="1915212737651531313"><ph name="URL_BEFORE"/>$url<ph name="URL_AFTER"/> vyžaduje verejný šifrovací kľúč vašich peňaženiek. Ak súhlasíte s poskytnutím tohto kľúča, webová stránka vám bude môcť vytvárať šifrované správy.</translation>
+<translation id="2950511942409261729"><ph name="URL_BEFORE"/>$url<ph name="URL_AFTER"/> vyžaduje verejný šifrovací kľúč vašich peňaženiek. Ak súhlasíte s poskytnutím tohto kľúča, webová stránka vám bude môcť vytvárať šifrované správy.</translation>
 <translation id="3340247553212049934">Poskytnúť</translation>
 <translation id="1619778919922494944">Táto DApp by si rada prečítala túto správu a dokončila vašu požiadavku</translation>
 <translation id="714506544401754321">Dešifrovať správu</translation>
@@ -1073,8 +1076,8 @@
 <translation id="7051244143160304048"><ph name="DEVICE_NAME"/> odpojené</translation>
 <translation id="5317781812114905957">Pokyny</translation>
 <translation id="1178198982208000092">Pripojte si <ph name="DEVICE_NAME"/></translation>
-<translation id="4358411489835404360">Hardvérová peňaženka vyžaduje potvrdenie na zariadení. <ph name="DEVICE_NAME"/></translation>
-<translation id="3087887714936696603">Hardvérová peňaženka vyžaduje otvorenie aplikácie Ethereum na <ph name="DEVICE_NAME"/></translation>
+<translation id="6291765462876399333">Hardvérová peňaženka vyžaduje potvrdenie na zariadení <ph name="DEVICE_NAME"/></translation>
+<translation id="2288190100157580461">Hardvérová peňaženka vyžaduje <ph name="NETWORK"/> aplikáciu otvorenú na <ph name="DEVICE_NAME"/></translation>
 <translation id="8687869982094542529">odoslané</translation>
 <translation id="5013754027092416509">prijaté</translation>
 <translation id="5867988533873716616">Adresa URL blokovacieho prieskumníka nie je k dispozícii.</translation>
@@ -1145,7 +1148,7 @@
 <translation id="1470129769517088397"><ph name="ADDRESS"/> nie je aktuálna sieť</translation>
 <translation id="7340805872138998391">Nepodarilo sa odomknúť zariadenie, skúste sa pripojiť znova</translation>
 <translation id="1984410139271779110">Interná chyba, neznáma schéma</translation>
-<translation id="8682200134223578011">schválené</translation>
+<translation id="6989562355845156390">schváliť</translation>
 <translation id="4674380028960132654">Ledger: Podpis sa nezhoduje so správnou adresou</translation>
 <translation id="3183932890629254743">Hardvérový účet sa nenašiel</translation>
 <translation id="4287068151777838754">Dáta z JSON nie sú očakávané</translation>
@@ -1188,6 +1191,26 @@
 <translation id="2317956709076373213">Transakcia potvrdená</translation>
 <translation id="310693998838023022">Chyba transakcie</translation>
 <translation id="6395870673621520684">Transakcia zrušená</translation>
+<translation id="1237782734462409503">Karta nie je aktívna</translation>
+<translation id="756701799684433105">Schváliť transakciu</translation>
+<translation id="6450792191436242818">Systémový program</translation>
+<translation id="6252742184395380448">Konfiguračný program</translation>
+<translation id="5358970666412490132">Program s podielmi</translation>
+<translation id="346636227344244984">Program hlasovania</translation>
+<translation id="3538368258493053874">Zavádzací program BPF</translation>
+<translation id="2334098351242742927">Program Ed25519</translation>
+<translation id="8780753288764281797">Program Secp256k1</translation>
+<translation id="5275550100743015683">Z adresy:</translation>
+<translation id="2678433693746214764">Na adresu:</translation>
+<translation id="4576396475962922672">Nový účet:</translation>
+<translation id="4719005063558335704">Účty:</translation>
+<translation id="4337554812324118382">Údaje:</translation>
+<translation id="569870799832027680">ID programu:</translation>
+<translation id="7843211152394841558">Maximálny počet opakovaných pokusov:</translation>
+<translation id="8496335570810457">Záväzok pred skutočnou transakciou:</translation>
+<translation id="5100124500279922001">Preskočiť simulovanú transakciu:</translation>
+<translation id="8060029310790625334">Centrum pomoci</translation>
+<translation id="2095142195578664632">Potrebujete pomoc? Pozri</translation>
 <translation id="3155170474926428993">Spúšťač Tor</translation>
 <translation id="3745016858329272300">Všeobecné informácie</translation>
 <translation id="4045404575593562245">Udalosti riadenia Tor</translation>

@@ -60,11 +60,6 @@
 <translation id="5987838417172370108">Help de productstabiliteit van Brave te verbeteren door automatisch diagnostische rapporten te verzenden wanneer de Brave-browser crasht of vastloopt.</translation>
 <translation id="7977176350719484850">Geschatte hoeveelheid\ndata bespaard</translation>
 <translation id="9008534313521214777">Gem. bespaarde\ntijd</translation>
-<translation id="6572660632052512096">Desktop-modus</translation>
-<translation id="1340503115760585811">Schakel Desktop Weergave in voor nieuwe tabbladen</translation>
-<translation id="7924540991929826186">Gebruik mobiele versies van sites voor nieuwe tabbladen (aanbevolen)</translation>
-<translation id="807636106793708118">Voorkeur voor mobiele versie van sites</translation>
-<translation id="4479934682648362332">Voorkeur voor desktopversie van sites</translation>
 <translation id="1842747674580016420">Video afspelen in Brave</translation>
 <translation id="5368992950177874750">Indien ingeschakeld, worden video's afgespeeld in Brave in plaats van de bijbehorende app</translation>
 <translation id="410351446219883937">Automatisch afspelen</translation>
@@ -85,6 +80,17 @@
 <translation id="8701563696941209024">HERSTART NU</translation>
 <translation id="834487290629916192">LATER</translation>
 <translation id="7207456302801184289">Welkom bij Brave</translation>
+<translation id="4117451092682672487">Privacy, eenvoudig geregeld.</translation>
+<translation id="7909375417585209817">Met Brave als standaardbrowser worden de privacyfuncties van Brave geopend voor elke koppeling waar u op tikt.</translation>
+<translation id="5148943178722443958">Help ons Brave beter te maken.</translation>
+<translation id="6188781052835527980">Verzend anonieme diagnostische rapporten als uw systeem crasht of vastloopt.</translation>
+<translation id="1929905278861178845">Deel gegevens over de functies die in Brave worden gebruikt, volledig privé en anoniem.</translation>
+<translation id="2877653791257935258">Typ de naam of URL van een website</translation>
+<translation id="5329830149661250028">Brave maakt het verschil: geen advertenties, geen trackers, veel kortere laadtijden.</translation>
+<translation id="3545804467215833536">Tik om Brave Shields te bekijken</translation>
+<translation id="1724327820822194498">Bekijk alles wat Brave heeft geblokkeerd op alle pagina's met Shields.</translation>
+<translation id="5386259141409498372"><ph name="BIG_TECH"/> en nog <ph name="TRACKER"/> advertenties en trackers geblokkeerd</translation>
+<translation id="3092683655478890840"><ph name="TRACKER_COUNT"/> advertenties en trackers geblokkeerd</translation>
 <translation id="8281886186245836920">Overslaan</translation>
 <translation id="6165508094623778733">Meer Leren</translation>
 <translation id="986879628471635371">Problemen met onboarding oplossingen</translation>
@@ -108,16 +114,19 @@
 <translation id="19715420010996093">Selecteer de Brave Browser en druk op 'Altijd'</translation>
 <translation id="3546439402724649282">Brave is al ingesteld als je standaardbrowser.</translation>
 <translation id="8389661903259423907">Je hebt al een standaardbrowser ingesteld. Je kunt de standaardbrowser wijzigen in de instellingen van je app.</translation>
+<translation id="8112367589167674370">Brave Talk</translation>
 <translation id="8826007068782654809">Bedankt</translation>
 <translation id="6665366815203065060">Je hebt zojuist een tip verzonden naar:</translation>
 <translation id="5441565662498481293">Je stuurt automatisch een fooi naar:</translation>
 <translation id="1166682575529520472">Maandelijks</translation>
 <translation id="1628742278973105368">Je eerste maandelijkse tip wordt verzonden op:</translation>
 <translation id="298349922412901215">OPMERKING: deze maker heeft zich nog niet aangemeld om bijdragen van Brave-gebruikers te ontvangen. We blijven proberen bij te dragen tot ze verifiëren of tot 90 dagen zijn verstreken.</translation>
+<translation id="635752162765375187">OPMERKING: deze maker is momenteel nog niet geconfigureerd voor het ontvangen van fooi uit uw beheerde Beloningen-wallet. Alle fooien die u stuurt, blijven in uw wallet in behandeling. Na 90 dagen wordt automatisch opnieuw geprobeerd om de fooi te verzenden.</translation>
 <translation id="1910721550319506122">Welkom!</translation>
 <translation id="3165726837666415756">Je kunt deze site ondersteunen door een fooitje te sturen. Het is een manier om hen te bedanken voor het maken van geweldige content. Geverifieerde makers van content ontvangen hun fooi tijdens de eerste week van elke kalendermaand.</translation>
 <translation id="1704859330137112950">Als je wilt, kun je maandelijks tippen instellen om deze website continue te steunen.</translation>
 <translation id="245015745140252435">Tip bedrag</translation>
+<translation id="7873874596836611687">Beloningensaldo:</translation>
 <translation id="2573313946367623146">stuur mijn fooi</translation>
 <translation id="3250511771491660127">Laat dit maandelijks plaatsvinden</translation>
 <translation id="7658239707568436148">Annuleren</translation>
@@ -613,6 +622,7 @@ Beschikbaar</translation>
 <translation id="8239147115686034860">Brave-wallet automatisch vergrendelen</translation>
 <translation id="414639769490080648">Het aantal minuten dat je moet wachten voordat de Brave-wallet automatisch wordt vergrendeld</translation>
 <translation id="4993345308607970390">Brave-wallet opnieuw instellen</translation>
+<translation id="4322846864135539519">Weet u zeker dat u uw Brave-beloningen opnieuw wilt instellen? Als u geen back-up van uw wallet hebt, gaan alle accountgegevens verloren (inclusief het eventuele saldo) wanneer u uw wallet opnieuw instelt. Typ '<ph name="CONFIRMATION_PHRASE"/>' om te bevestigen.</translation>
 <translation id="4862812525895306758">Transactie wissen en nonce-info</translation>
 <translation id="5693968582510626466">Transacties wissen kan nuttig zijn voor ontwikkelaars of wanneer een lokale server wordt opgeschoond</translation>
 <translation id="5421107279168565467">Weet u zeker dat u uw transactie en nonce-informatie opnieuw wilt instellen? Deze optie wordt voornamelijk gebruikt door ontwikkelaars die een lokale testserver uitvoeren. Typ "<ph name="CONFIRMATION_PHRASE"/>" om te bevestigen.</translation>
@@ -632,6 +642,8 @@ Beschikbaar</translation>
 <translation id="1190117345570417902">Maakt gebruik van een beveiligde, versleutelde VPN-tunnel van Wireguard</translation>
 <translation id="1571230671455380494">We delen of verkopen je info nooit</translation>
 <translation id="276866628038850725">Alle abonnementen bieden een 7-daagse proefperiode!</translation>
+<translation id="1532536259167115948">Maandabonnement <ph name="TRIAL_TEXT"/></translation>
+<translation id="6344668702581136255">Jaarabonnement <ph name="TRIAL_TEXT"/></translation>
 <translation id="6748319398471481216">Wordt maandelijks verlengd</translation>
 <translation id="7734634586133069282"><ph name="MONTHLY_AMOUNT"/> per maand.</translation>
 <translation id="1163809943099641131">Eén jaar</translation>
@@ -652,6 +664,7 @@ Beschikbaar</translation>
 Als je dit verzoek niet accepteert, maakt VPN niet opnieuw verbinding en is je internetverbinding niet beveiligd.</translation>
 <translation id="2429299231491852747">Verbindingsverzoek accepteren</translation>
 <translation id="3428909627460825679">Aanmaken van een VPN-profiel is mislukt. Probeer het opnieuw.</translation>
+<translation id="1264320790738638119">Uw abonnement is verlopen. U kunt wanneer u maar wilt een nieuw abonnement afsluiten.</translation>
 <translation id="8681480718817027245">Abonnement</translation>
 <translation id="7805768142964895445">staat</translation>
 <translation id="5747552184818312860">Verloopt</translation>
@@ -679,12 +692,15 @@ Als je dit verzoek niet accepteert, maakt VPN niet opnieuw verbinding en is je i
 <translation id="1219475260382643267">Website werkt niet</translation>
 <translation id="7138678301420049075">Overige</translation>
 <translation id="4827315939627587219">VPN-configuratie resetten</translation>
+<translation id="1705662265912724430">Weet u zeker dat u de VPN-configuratie opnieuw wilt instellen?</translation>
 <translation id="604124094241169006">Automatisch</translation>
 <translation id="7475580600756356589">Er wordt verbinding gemaakt met je server. Een ogenblik...</translation>
 <translation id="1342728075788541348">Verbinding met je server aan het verbreken. Een ogenblik...</translation>
 <translation id="669072536454692117">Abonnement afgesloten</translation>
 <translation id="1187506504156101449">Fout bij het bevestigen van de aankoop:</translation>
 <translation id="8420522105268941892">Je maakt al gebruik van dit abonnement. Probeer het abonnement te herstellen.</translation>
+<translation id="404414664190867625">U hebt het aankoopproces gesloten.</translation>
+<translation id="3515141458161417228">Aankoop mislukt. Neem contact op met Google Play-ondersteuning.</translation>
 <translation id="6452181791372256707">Afwijzen</translation>
 <translation id="8030852056903932865">Goedkeuren</translation>
 <translation id="1597199892790541240">Gas vergoeding</translation>
@@ -719,6 +735,7 @@ Als je dit verzoek niet accepteert, maakt VPN niet opnieuw verbinding en is je i
 <translation id="2199215899212542417">FUNCTIETYPE: <ph name="FTYPE"/></translation>
 <translation id="4803003663447398145">Geen gegevens</translation>
 <translation id="9061799688859969073"><ph name="ACCOUNT_NAME"/> heeft <ph name="CRYPTO_VALUE"/> <ph name="ASSET"/> verzonden ($ <ph name="FIAT_VALUE"/>) - <ph name="DATE"/></translation>
+<translation id="1148985422232712046"><ph name="ACCOUNT_NAME"/> verzonden<ph name="ASSET"/> #<ph name="ASSET_ID"/> - <ph name="DATE"/></translation>
 <translation id="2911329628253651823"><ph name="ACCOUNT_NAME"/> heeft <ph name="ASSET"/> - <ph name="DATE"/> goedgekeurd</translation>
 <translation id="7400134344541309180">Onbeperkte <ph name="ASSET"/> - <ph name="PROXY"/> goedgekeurd</translation>
 <translation id="2428770727194227378"><ph name="ACCOUNT_NAME"/>-uitwisseling - <ph name="DATE"/></translation>
@@ -783,6 +800,7 @@ Als je dit verzoek niet accepteert, maakt VPN niet opnieuw verbinding en is je i
 <translation id="7732576862074737148">≈ <ph name="VALUE"/> USD</translation>
 <translation id="3079421456571897484"><ph name="VALUE"/> BAT</translation>
 <translation id="5802665280774361839">Automatische aanvulling weergeven in adresbalk</translation>
+<translation id="8982438328166986164">Hiermee worden websitesuggesties weergegeven op basis van uw bladwijzers en browsegeschiedenis.</translation>
 <translation id="1241283133946520352">Netwerken</translation>
 <translation id="1062463687579789365">Wallet-netwerken aanpassen</translation>
 <translation id="2512821599885971349">Netwerk toevoegen</translation>
@@ -833,6 +851,7 @@ Als je dit verzoek niet accepteert, maakt VPN niet opnieuw verbinding en is je i
 <translation id="85136472535634474">VPN-instellingen openen</translation>
 <translation id="8352805003811526272">Configuratie aan het resetten ...</translation>
 <translation id="6809312301323611382">U hebt dezelfde server al geselecteerd.</translation>
+<translation id="5665084657857645952">U hebt de installatie van het VPN-profiel gestopt.</translation>
 <translation id="9106265941552476098"><ph name="TRANSACTION_LENGTH"/> transacties weigeren</translation>
 <translation id="523862956770478816">Toestemmingen site</translation>
 <translation id="2141313140218636977"><ph name="VALUE"/> verbonden accounts</translation>
@@ -847,10 +866,28 @@ Als je dit verzoek niet accepteert, maakt VPN niet opnieuw verbinding en is je i
 <translation id="4822132585477111396">Chain ID</translation>
 <translation id="7131971375297699539">Valutasymbool</translation>
 <translation id="7982789257301363584">Netwerk</translation>
-<translation id="8759753423332885148">Meer informatie.</translation>
 <translation id="4717431746210146708">Deze website toestaan om een netwerk toe te voegen?</translation>
+<translation id="4857321293515555666">Deze DApp wil dit bericht lezen om uw verzoek af te ronden.</translation>
+<translation id="714506544401754321">Bericht decoderen</translation>
+<translation id="5039804452771397117">Toestaan</translation>
 <translation id="3378339846292573874">Voorgestelde token toevoegen</translation>
 <translation id="2322227405137827074">Wil je deze token importeren?</translation>
 <translation id="1324417023773393937">Brave-browser</translation>
 <translation id="6044189892950611565">Meldingkanaal voor Brave Browser</translation>
+<translation id="1173919438868967364">Rekening selecteren</translation>
+<translation id="8922793255489232731">Geen overeenkomstige tijdzone gevonden voor: <ph name="VALUE"/></translation>
+<translation id="8643377320501056697">Topsites Weergeven</translation>
+<translation id="6471216025161697462">Verbonden met <ph name="VALUE"/></translation>
+<translation id="1968852757206592413">Proefperiode</translation>
+<translation id="7733890291091968191">Web3-meldingen weergeven</translation>
+<translation id="1371627247679035769">\n\n\n\n#### Brave volgt u niet en weet niet hoe u uw app gebruikt, dus we weten niet hoe u uw VPN hebt ingesteld. Deel informatie over het probleem dat u ervaart en dan doen wij ons best om het zo snel mogelijk op te lossen. ####\n\n</translation>
+<translation id="3367162038532116157">\n\nVPN-hostnaam\n <ph name="VALUE"/></translation>
+<translation id="6173438324126027458">\n\nType abonnement\n <ph name="VALUE"/></translation>
+<translation id="1478875290576741766">\n\nPlaystore-token\n <ph name="VALUE"/></translation>
+<translation id="1403057798797848522">\n\nApp-versie\n <ph name="VALUE"/></translation>
+<translation id="2282835936933247509">\n\nTijdzone\n</translation>
+<translation id="8107843365677337047">\n\nNetwerktype\n</translation>
+<translation id="5334952096674914470">\n\nMobiele provider\n</translation>
+<translation id="5393042357629679588">\n\nAnder probleem\n</translation>
+<translation id="8095666712177294104">\n\nPlatform\n</translation>
 </translationbundle>

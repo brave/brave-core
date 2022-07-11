@@ -136,7 +136,7 @@
     "description": ""
   },
   "rewardsLogInToSeeBalance": {
-    "message": "$begin_bold$Log in to $provider$ $end_bold$to see your balance",
+    "message": "$begin_bold$Đăng nhập vào $provider$ $end_bold$để xem số dư của bạn",
     "description": "",
     "placeholders": {
       "begin_bold": {

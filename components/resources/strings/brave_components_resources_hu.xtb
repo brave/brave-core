@@ -722,7 +722,7 @@
 <translation id="4780526507945807546">Brave helyi IPFS-csomópont használata</translation>
 <translation id="8148464361648742409">Használj egy nyilvános átjárót</translation>
 <translation id="5123478056123923857">Az IPFS (Bolygóközi fájlrendszer) egy társközi adattárolási és kézbesítési hálózat. Ezt a protokollt másképp kezeli adatvédelmi szempontból a HTTP(S).</translation>
-<translation id="5410952114182173389">Számítógéped egy nyilvános hálózattal része, de IP-címed és bármilyen lekért vagy szolgáltatott tartalmad nyilvánosságra kerülhet. Az IPFS-en lekért tartalmakat ellenőrzik, mielőtt átadják neked.</translation>
+<translation id="1216911189668016151">Számítógépe egy nyilvános hálózat része, de IP-címe és bármilyen lekért vagy közzétett tartalma nyilvánosságra kerülhet. Az IPFS-en lekért tartalmakat a rendszer ellenőrzi, mielőtt átadná azokat Önnek. Előfordulhat, hogy a hálózati kérések nem használják a böngésző proxy- vagy DNS-beállításait.</translation>
 <translation id="8664689531113048642">Elrejti IP-címedet és a lekért tartalmakat az esetleges külső megfigyelőktől, de nem a nyilvános átjáró működtetőjétől. Az átjáró működtetője felelőssége biztosítani, hogy az átjárón keresztül átadott tartalmak az általad kért tartalmak legyenek. Ugyanakkor, számítógéped nem járul hozzá a nyilvános IPFS hálózathoz.</translation>
 <translation id="3977809385703587108">Újra változtathatod a preferenciákat:</translation>
 <translation id="3340978935015468852">beállítások</translation>
@@ -914,6 +914,7 @@
 <translation id="4359319875297001084">Importál régebbi Brave kriptotárcákból?</translation>
 <translation id="3331452756822160641">Új jelszó</translation>
 <translation id="8624315169751085215">Másolás vágólapra</translation>
+<translation id="7885157704277298658">Kimásolva!</translation>
 <translation id="1121335910737476837">Elsődleges kriptoszámlák</translation>
 <translation id="6969147029062037757">Importált fiókok</translation>
 <translation id="4057718162494343222">Létrehozhat elsődleges számlákat a Brave pénztárcában, amelyekről biztonsági másolat készíthető, illetve visszaállíthatók a helyreállítási kifejezéssel. A számlatípusokkal kapcsolatos további tudnivalókat a fiókokkal kapcsolatos súgóban talál.</translation>
@@ -971,6 +972,8 @@
 <translation id="7642841516562576649">Ikon URL-je</translation>
 <translation id="2144247757675997850">Eszköz hozzáadása</translation>
 <translation id="2708402071160162126">FIGYELMEZTETÉS: Senkivel ne ossza meg a helyreállítási kifejezését! Ennek a kifejezésnek a birtokában bárki örökre elveheti az eszközeit.</translation>
+<translation id="2416098547200943834">MEGJEGYZÉS: a privát kulcs hexadecimális kódolású JSON-fájlként lesz elérhető az Ön számára, amely tartalmazza a privát kulcsot és a protokollra vonatkozó adatokat. <ph name="LINK_START"/>További információk<ph name="LINK_END"/>.</translation>
+<translation id="7657130382217527063">MEGJEGYZÉS: a privát kulcsot hexadecimális kódolású JSON-fájlként kell megadni, amely tartalmazza a privát kulcsot és a protokollra vonatkozó adatokat. <ph name="LINK_START"/>További információk<ph name="LINK_END"/>.</translation>
 <translation id="2902856457593699108">Kulcs mutatása</translation>
 <translation id="8033497299373164724">Kulcs elrejtése</translation>
 <translation id="2702143907607790516">Sikertelen a számla nevének frissítése, próbálja újra.</translation>
@@ -1006,7 +1009,7 @@
 <translation id="5488357322146334497">Üzenet</translation>
 <translation id="3586752056660754651">Aláír</translation>
 <translation id="3484981968509595506">Egy DApp az Ön nyilvános titkosítási kulcsát kéri</translation>
-<translation id="1915212737651531313">A(z) <ph name="URL_BEFORE"/>$url<ph name="URL_AFTER"/> a tárcája nyilvános titkosítási kulcsát kéri. Ha hozzájárul a kulcsa megadásához, a webhely képes lesz titkosított üzeneteket létrehozni Önnek.</translation>
+<translation id="2950511942409261729"><ph name="URL_BEFORE"/>$url<ph name="URL_AFTER"/> a tárcája nyilvános titkosítási kulcsát kéri. Ha hozzájárul a kulcsa megadásához, a webhely képes lesz titkosított üzeneteket létrehozni Önnek.</translation>
 <translation id="3340247553212049934">Megadás</translation>
 <translation id="1619778919922494944">Ez a DApp el szeretné olvasni az üzenetet a kérelem befejezéséhez</translation>
 <translation id="714506544401754321">Üzenet visszafejtése</translation>
@@ -1073,8 +1076,8 @@
 <translation id="7051244143160304048"><ph name="DEVICE_NAME"/> csatlakozása megszakítva</translation>
 <translation id="5317781812114905957">Utasítások</translation>
 <translation id="1178198982208000092">Csatlakoztassa a következőt: <ph name="DEVICE_NAME"/></translation>
-<translation id="4358411489835404360">A hardware pénztárcához visszaigazolás szükséges az eszközön. <ph name="DEVICE_NAME"/></translation>
-<translation id="3087887714936696603">A hardware pénztárcához a következőn kell megnyitni az Ethereum alkalmazást: <ph name="DEVICE_NAME"/></translation>
+<translation id="6291765462876399333">A hardware pénztárcához visszaigazolás szükséges a(z) <ph name="DEVICE_NAME"/> eszközön</translation>
+<translation id="2288190100157580461">A hardware pénztárcához meg kell nyitni a(z) <ph name="NETWORK"/> alkalmazást a következőn: <ph name="DEVICE_NAME"/></translation>
 <translation id="8687869982094542529">elküldött</translation>
 <translation id="5013754027092416509">beérkezett</translation>
 <translation id="5867988533873716616">A block explorer URL-je nem elérhető.</translation>
@@ -1145,7 +1148,7 @@
 <translation id="1470129769517088397"><ph name="ADDRESS"/> nem az aktuális hálózat</translation>
 <translation id="7340805872138998391">Nem sikerült feloldani az eszköz zárolását, próbáljon meg újra csatlakozni</translation>
 <translation id="1984410139271779110">Belső hiba, ismeretlen séma</translation>
-<translation id="8682200134223578011">jóváhagyva</translation>
+<translation id="6989562355845156390">jóváhagyás</translation>
 <translation id="4674380028960132654">Ledger: az aláírás nem egyezik a megfelelő címmel</translation>
 <translation id="3183932890629254743">A hardware fiók nem található</translation>
 <translation id="4287068151777838754">JSON-adatok nem várhatók</translation>
@@ -1188,6 +1191,26 @@
 <translation id="2317956709076373213">Tranzakció megerősítve</translation>
 <translation id="310693998838023022">Tranzakciós hiba</translation>
 <translation id="6395870673621520684">Tranzakció elvetve</translation>
+<translation id="1237782734462409503">A lap nem aktív</translation>
+<translation id="756701799684433105">Tranzakció jóváhagyása</translation>
+<translation id="6450792191436242818">System Program (Rendszerprogram)</translation>
+<translation id="6252742184395380448">Config Program (Konfig. program)</translation>
+<translation id="5358970666412490132">Stake Program (Kockázati program)</translation>
+<translation id="346636227344244984">Vote Program (Szavazási program)</translation>
+<translation id="3538368258493053874">BPF Loader (betöltő program)</translation>
+<translation id="2334098351242742927">Ed25519 program</translation>
+<translation id="8780753288764281797">Secp256k1 program</translation>
+<translation id="5275550100743015683">Feladó címe:</translation>
+<translation id="2678433693746214764">Címzett címe:</translation>
+<translation id="4576396475962922672">Új fiók:</translation>
+<translation id="4719005063558335704">Fiókok:</translation>
+<translation id="4337554812324118382">Adat:</translation>
+<translation id="569870799832027680">Programazonosító:</translation>
+<translation id="7843211152394841558">Ismételt próbálkozások max. száma:</translation>
+<translation id="8496335570810457">Előzetes vállalás:</translation>
+<translation id="5100124500279922001">Előzetes kihagyása:</translation>
+<translation id="8060029310790625334">Súgó</translation>
+<translation id="2095142195578664632">Segítségre van szüksége? Kattintson ide:</translation>
 <translation id="3155170474926428993">Tor indítóprogram</translation>
 <translation id="3745016858329272300">Általános információk</translation>
 <translation id="4045404575593562245">Tor vezérlési események</translation>

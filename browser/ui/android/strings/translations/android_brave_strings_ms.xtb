@@ -60,11 +60,6 @@
 <translation id="5987838417172370108">Bantu dalam meningkatkan kestabilan produk\u2019sBrave dengan menghantar laporan diagnostik secara automatik apabila Penyemak Imbas Brave ranap atau pegun.</translation>
 <translation id="7977176350719484850">Anggaran Data\nDijimatkan</translation>
 <translation id="9008534313521214777">Anggaran Masa\nDijimat</translation>
-<translation id="6572660632052512096">Mod Desktop</translation>
-<translation id="1340503115760585811">Bolehkan Pandangan Desktop untuk tab baru</translation>
-<translation id="7924540991929826186">Gunakan laman web versi mudah alih untuk tab baru (disarankan)</translation>
-<translation id="807636106793708118">Mengutamakan laman web versi mudah alih</translation>
-<translation id="4479934682648362332">Utamakan laman web versi desktop</translation>
 <translation id="1842747674580016420">Main balik video dalam Brave</translation>
 <translation id="5368992950177874750">Jika didayakan, video akan dimainkan di dalam Brave dan bukan di dalam aplikasi berkaitan</translation>
 <translation id="410351446219883937">Automain</translation>
@@ -119,6 +114,7 @@
 <translation id="19715420010996093">Pilih Pelayar Brave dan ketik 'Sentiasa'</translation>
 <translation id="3546439402724649282">Brave sudah pun ditetapkan sebagai pelayar lalai anda.</translation>
 <translation id="8389661903259423907">Anda telah pun menetapkan pelayar lalai. Anda boleh mengubah pelayar lalai melalui tetapan aplikasi anda.</translation>
+<translation id="8112367589167674370">Brave Talk</translation>
 <translation id="8826007068782654809">Terima kasih</translation>
 <translation id="6665366815203065060">Anda baru sahaja menghantar tip kepada:</translation>
 <translation id="5441565662498481293">Anda menghantar tip secara automatik kepada:</translation>
@@ -863,23 +859,34 @@ Jika anda tidak menerima permintaan ini, VPN tidak akan bersambung semula dan sa
 <translation id="4804818685124855865">Putuskan sambungan</translation>
 <translation id="8009571545960303544">Tandatangan anda sedang diminta</translation>
 <translation id="3484981968509595506">DApp meminta kekunci penyulitan awam anda</translation>
-<translation id="2291002548681057345">meminta kunci penyulitan awam dompet anda. Jika anda bersetuju untuk memberikan kunci ini, tapak tersebut boleh mengarang mesej tersulit kepada anda.</translation>
 <translation id="3340247553212049934">Sediakan</translation>
 <translation id="1982257600591932657">Nama rangkaian</translation>
 <translation id="5052727830821470769">URL Rangkaian</translation>
 <translation id="4822132585477111396">ID Rantaian</translation>
 <translation id="7131971375297699539">Simbol mata wang</translation>
 <translation id="7982789257301363584">Rangkaian</translation>
-<translation id="7540715999708954128">Tindakan ini akan membenarkan rangkaian ini digunakan dalam Dompet Brave. Ketahui lebih lanjut.</translation>
-<translation id="8759753423332885148">Ketahui lebih lanjut</translation>
 <translation id="4717431746210146708">Benarkan laman ini untuk menambah rangkaian?</translation>
+<translation id="4857321293515555666">DApp ini mahu membaca mesej ini untuk melengkapkan permintaan anda.</translation>
+<translation id="714506544401754321">Nyahsulitkan mesej</translation>
+<translation id="5039804452771397117">Benarkan</translation>
 <translation id="3378339846292573874">Tambah token yang disyorkan</translation>
 <translation id="2322227405137827074">Adakah anda ingin mengimport token ini?</translation>
 <translation id="1324417023773393937">Pelayar Brave</translation>
 <translation id="6044189892950611565">Saluran pemberitahuan untuk Penyemak Imbas Brave</translation>
 <translation id="1173919438868967364">Pilih Akaun</translation>
 <translation id="8922793255489232731">Tidak berjaya mendapatkan zon waktu yang sepadan untuk : <ph name="VALUE"/></translation>
-<translation id="8231907121684689093">Tunjukkan Tapak teratas</translation>
+<translation id="8643377320501056697">Tunjukkan Tapak Teratas</translation>
 <translation id="6471216025161697462">Bersambung dengan <ph name="VALUE"/></translation>
 <translation id="1968852757206592413">Percubaan</translation>
+<translation id="7733890291091968191">Paparkan pemberitahuan Web3</translation>
+<translation id="1371627247679035769">\n\n\n\n#### Brave tidak menjejaki anda atau tahu cara anda menggunakan apl kami, jadi, kami tidak tahu cara anda menyediakan VPN. Sila kongsikan maklumat tentang isu yang anda alami dan kami akan berusaha sedaya upaya untuk menyelesaikan isu tersebut secepat mungkin. ####\n\n</translation>
+<translation id="3367162038532116157">\n\nNama hos VPN\n <ph name="VALUE"/></translation>
+<translation id="6173438324126027458">\n\nJenis Langganan\n <ph name="VALUE"/></translation>
+<translation id="1478875290576741766">\n\nToken Playstore\n <ph name="VALUE"/></translation>
+<translation id="1403057798797848522">\n\nVersi Apl\n <ph name="VALUE"/></translation>
+<translation id="2282835936933247509">\n\nZon Waktu\n</translation>
+<translation id="8107843365677337047">\n\nJenis Rangkaian\n</translation>
+<translation id="5334952096674914470">\n\nPembawa Selular\n</translation>
+<translation id="5393042357629679588">\n\nIsu Lain\n</translation>
+<translation id="8095666712177294104">\n\nPlatform\n</translation>
 </translationbundle>

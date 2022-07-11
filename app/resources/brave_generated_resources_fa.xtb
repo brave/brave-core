@@ -105,6 +105,8 @@
 <translation id="4870911314065352661">همه زبانه‌ها بسته شود؟</translation>
 <translation id="7551864359422178684">شما <ph name="NUMBER_OF_TABS"/> زبانه باز در این پنجره مرورگر دارید.</translation>
 <translation id="2571596981920752023"><ph name="NUMBER_OF_TABS"/> زبانه</translation>
+<translation id="5026874946691314267">این مورد دیگر نشان داده نشود</translation>
+<translation id="5234764350956374838">لغو کردن</translation>
 <translation id="2515126961943087659">سرویس آگهی‌های Bat</translation>
 <translation id="7924918279836988121">سرویس بت لجر</translation>
 <translation id="6040143037577758943">بستن</translation>
@@ -200,9 +202,9 @@
 <translation id="2906510232093002459">تصاویر پیش‌فرض Brave</translation>
 <translation id="2396127686705429331">نمایش دکمه نشانک‌ها</translation>
 <translation id="2814998458708016836">استفاده از نوار نشانی عریض</translation>
-<translation id="5802665280774361839">نشان دادن تکمیل خودکار در نوار نشانی</translation>
-<translation id="597020512043916976">نشان دادن سایت‌های برتر در پیشنهادهای تکمیل خودکار</translation>
-<translation id="301088458323355543">نشان دادن سایت‌های پیشنهادی در پیشنهادهای تکمیل خودکار</translation>
+<translation id="2858138569776157458">سایت‌های برتر</translation>
+<translation id="7859704718976024901">سابقه مرور</translation>
+<translation id="8820817407110198400">نشانک‌ها</translation>
 <translation id="6333347122924254968">نمایش نماد Brave Rewards در نوار نشانی</translation>
 <translation id="1811404036171336214">نشانک‌ها همیشه در صفحه برگه جدید نمایش داده شود</translation>
 <translation id="5529693968082667490">نمایش دکمه جستجوی زبانه‌ها</translation>
