@@ -7,7 +7,7 @@
 
 namespace ntp_tiles {
 
-const size_t kMaxNumCustomLinks = 12;
+const size_t kMaxNumCustomLinks = 48;
 const size_t kMaxNumMostVisited = 12;
 
 }  // namespace ntp_tiles

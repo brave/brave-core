@@ -72,25 +72,58 @@ export const AddSiteTile = styled('button')<AddSiteTileProps>`
   }
 `
 
-export interface ListProps {
-  blockNumber: number
-}
-
-export const List = styled('div')<ListProps>`
-  justify-self: start;
-  align-items: normal;
+export const List = styled('div')`
   height: 100%;
+  justify-self: start;
+
+  // Add right padding of one column, so there's a nice gap between pages.
+  padding-right: var(--grid-column-width);
+  
   display: grid;
-  grid-template-columns: repeat(${p => Math.min(p.blockNumber, 6).toString()}, 86px);
   justify-content: var(--ntp-item-justify, start);
-  padding: 24px 56px 24px 24px;
+  grid-template-columns: repeat(var(--grid-columns), var(--grid-column-width));
+
+  scroll-snap-align: start;
+`
+
+export const PagesContainer = styled('div')`
+  max-width: 100vw;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  margin-bottom: 24px;
+
+  --grid-columns: 6;
+  --grid-column-width: 86px;
 
   @media screen and (max-width: 700px) {
-    grid-template-columns: repeat(${p => Math.min(p.blockNumber, 3).toString()}, 86px);
+    --grid-columns: 4;
   }
 
-  @media screen and (max-width: 390px) {
-    grid-template-columns: repeat(${p => Math.min(p.blockNumber, 2).toString()}, 86px);
+  @media screen and (max-width: 360px) {
+    --grid-columns: 3;
+  }
+`
+
+export const GridPagesContainer = styled('div')<{ customLinksEnabled: boolean }>`
+  display: flex;
+  flex-direction: row;
+
+  padding: 24px 24px 0 24px;
+  max-width: calc((var(--grid-columns) + 1) * var(--grid-column-width));
+  overflow-x: ${p => p.customLinksEnabled ? 'auto' : 'hidden'};
+
+  scroll-snap-type: x mandatory;
+  scroll-snap-stop: always;
+
+  @media screen and (max-width: 870px) {
+    margin-left: var(--grid-column-width);
+  }
+
+  ::-webkit-scrollbar {
+    display: none;
   }
 `
 
@@ -110,8 +143,12 @@ export const TileActionsContainer = styled('nav')<{}>`
 
 export const TileMenu = styled('div')<{}>`
   position: absolute;
-  top: 15px;
-  left: 80px;
+
+  // Here we apply a negative 12px offset so the menu has a 12px overlap with
+  // the button.
+  margin-left: -12px;
+  margin-top: -12px;
+
   min-width: 185px;
   height: 72px;
   padding: 8px 0;
@@ -119,7 +156,7 @@ export const TileMenu = styled('div')<{}>`
   flex-direction: column;
   border-radius: 4px;
   box-shadow: 0px 0px 16px 0px rgba(0, 0, 0, 0.3);
-  z-index: 2;
+  z-index: 10;
 
   background: white;
   @media (prefers-color-scheme: dark) {
