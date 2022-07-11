@@ -251,7 +251,7 @@ public class PopoverController: UIViewController {
 
   // MARK: - UI
 
-  private(set) var contentController: UIViewController & PopoverContentComponent
+  public private(set) var contentController: UIViewController & PopoverContentComponent
 
   private let containerView = ContainerView()
 
