@@ -1963,6 +1963,18 @@ void RewardsServiceImpl::UpdateMediaDuration(
       first_visit);
 }
 
+void RewardsServiceImpl::IsPublisherRegistered(
+    const std::string& publisher_id,
+    base::OnceCallback<void(bool)> callback) {
+  if (!Connected()) {
+    base::SequencedTaskRunnerHandle::Get()->PostTask(
+        FROM_HERE, base::BindOnce(std::move(callback), false));
+    return;
+  }
+
+  bat_ledger_->IsPublisherRegistered(publisher_id, std::move(callback));
+}
+
 void RewardsServiceImpl::GetPublisherInfo(
     const std::string& publisher_key,
     GetPublisherInfoCallback callback) {
@@ -2523,6 +2535,18 @@ void RewardsServiceImpl::PublisherListNormalized(
       }
     }
     observer.OnPublisherListNormalized(this, std::move(new_list));
+  }
+}
+
+void RewardsServiceImpl::OnPublisherRegistryUpdated() {
+  for (auto& observer : observers_) {
+    observer.OnPublisherRegistryUpdated();
+  }
+}
+
+void RewardsServiceImpl::OnPublisherUpdated(const std::string& publisher_id) {
+  for (auto& observer : observers_) {
+    observer.OnPublisherUpdated(publisher_id);
   }
 }
 

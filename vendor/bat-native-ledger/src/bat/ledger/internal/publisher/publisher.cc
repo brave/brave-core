@@ -81,6 +81,7 @@ void Publisher::SetPublisherServerListTimer() {
     // Attempt to reprocess any contributions for previously
     // unverified publishers that are now verified.
     ledger_->contribution()->ContributeUnverifiedPublishers();
+    ledger_->ledger_client()->OnPublisherRegistryUpdated();
   });
 }
 
@@ -789,19 +790,41 @@ void Publisher::OnGetPublisherBannerPublisher(
 void Publisher::GetServerPublisherInfo(
     const std::string& publisher_key,
     client::GetServerPublisherInfoCallback callback) {
+  GetServerPublisherInfo(publisher_key, false, std::move(callback));
+}
+
+void Publisher::GetServerPublisherInfo(
+    const std::string& publisher_key,
+    bool use_prefix_list,
+    client::GetServerPublisherInfoCallback callback) {
   ledger_->database()->GetServerPublisherInfo(
-      publisher_key,
-      std::bind(&Publisher::OnServerPublisherInfoLoaded,
-          this,
-          _1,
-          publisher_key,
-          callback));
+      publisher_key, std::bind(&Publisher::OnServerPublisherInfoLoaded, this,
+                               _1, publisher_key, use_prefix_list, callback));
 }
 
 void Publisher::OnServerPublisherInfoLoaded(
     type::ServerPublisherInfoPtr server_info,
     const std::string& publisher_key,
+    bool use_prefix_list,
     client::GetServerPublisherInfoCallback callback) {
+  if (!server_info && use_prefix_list) {
+    // If we don't have a record in the database for this publisher, search the
+    // prefix list. If the prefix list indicates that the publisher is likely
+    // registered, then fetch the publisher data.
+    ledger_->database()->SearchPublisherPrefixList(
+        publisher_key, [this, publisher_key, callback](bool publisher_exists) {
+          if (publisher_exists) {
+            FetchServerPublisherInfo(
+                publisher_key, [callback](type::ServerPublisherInfoPtr info) {
+                  callback(std::move(info));
+                });
+          } else {
+            callback(nullptr);
+          }
+        });
+    return;
+  }
+
   if (ShouldFetchServerPublisherInfo(server_info.get())) {
     // Store the current server publisher info so that if fetching fails
     // we can execute the callback with the last known valid data.

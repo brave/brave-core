@@ -63,8 +63,6 @@ const TransactionsListItem = (props: Props) => {
   const {
     transaction,
     selectedNetwork,
-    visibleTokens,
-    transactionSpotPrices,
     accounts,
     onSelectTransaction,
     defaultCurrencies
@@ -78,7 +76,7 @@ const TransactionsListItem = (props: Props) => {
     return getNetworkFromTXDataUnion(transaction.txDataUnion, defaultNetworks, selectedNetwork)
   }, [defaultNetworks, transaction, selectedNetwork])
 
-  const parseTransaction = useTransactionParser(transactionsNetwork, accounts, transactionSpotPrices, visibleTokens)
+  const parseTransaction = useTransactionParser(transactionsNetwork)
   const transactionDetails = React.useMemo(
     () => parseTransaction(transaction),
     [transaction]

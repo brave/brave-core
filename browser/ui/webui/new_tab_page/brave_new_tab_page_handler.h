@@ -13,6 +13,9 @@
 #include "base/memory/weak_ptr.h"
 #include "base/scoped_observation.h"
 #include "brave/components/brave_new_tab_ui/brave_new_tab_page.mojom.h"
+#include "components/prefs/pref_change_registrar.h"
+#include "components/search_engines/template_url_service.h"
+#include "components/search_engines/template_url_service_observer.h"
 #include "mojo/public/cpp/bindings/receiver.h"
 #include "mojo/public/cpp/bindings/remote.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
@@ -38,7 +41,8 @@ class NtpCustomBackgroundService;
 class Profile;
 
 class BraveNewTabPageHandler : public brave_new_tab_page::mojom::PageHandler,
-                               public ui::SelectFileDialog::Listener {
+                               public ui::SelectFileDialog::Listener,
+                               public TemplateURLServiceObserver {
  public:
   BraveNewTabPageHandler(
       mojo::PendingReceiver<brave_new_tab_page::mojom::PageHandler>
@@ -55,6 +59,11 @@ class BraveNewTabPageHandler : public brave_new_tab_page::mojom::PageHandler,
   // brave_new_tab_page::mojom::PageHandler overrides:
   void ChooseLocalCustomBackground() override;
   void UseBraveBackground() override;
+  void TryBraveSearchPromotion(const std::string& input,
+                               bool open_new_tab) override;
+  void DismissBraveSearchPromotion() override;
+  void IsSearchPromotionEnabled(
+      IsSearchPromotionEnabledCallback callback) override;
 
   // Observe NTPCustomBackgroundImagesService.
   void OnCustomBackgroundImageUpdated();
@@ -65,6 +74,10 @@ class BraveNewTabPageHandler : public brave_new_tab_page::mojom::PageHandler,
                     void* params) override;
   void FileSelectionCanceled(void* params) override;
 
+  // TemplateURLServiceObserver overrides:
+  void OnTemplateURLServiceChanged() override;
+  void OnTemplateURLServiceShuttingDown() override;
+
   bool IsCustomBackgroundEnabled() const;
   image_fetcher::ImageDecoder* GetImageDecoder();
   void ConvertSelectedImageFileAndSave(const base::FilePath& image_file);
@@ -73,7 +86,13 @@ class BraveNewTabPageHandler : public brave_new_tab_page::mojom::PageHandler,
   void OnSavedEncodedImage(bool success);
   base::FilePath GetSanitizedImageFilePath() const;
   void DeleteSanitizedImageFile();
+  void OnSearchPromotionDismissed();
+  void NotifySearchPromotionDisabledIfNeeded() const;
+  void InitForSearchPromotion();
 
+  PrefChangeRegistrar pref_change_registrar_;
+  base::ScopedObservation<TemplateURLService, TemplateURLServiceObserver>
+      template_url_service_observation_{this};
   mojo::Receiver<brave_new_tab_page::mojom::PageHandler> page_handler_;
   mojo::Remote<brave_new_tab_page::mojom::Page> page_;
   raw_ptr<Profile> profile_ = nullptr;

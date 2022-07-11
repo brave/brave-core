@@ -16,6 +16,7 @@ import useExplorer from './explorer'
 import useAssetManagement from './assets-management'
 import useHasAccount from './has-account'
 import usePrevNetwork from './previous-network'
+import useIsMounted from './useIsMounted'
 import { useLib } from './useLib'
 import { useCopy } from './use-copy'
 
@@ -35,5 +36,6 @@ export {
   useLib,
   useHasAccount,
   usePrevNetwork,
-  useCopy
+  useCopy,
+  useIsMounted
 }

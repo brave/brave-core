@@ -11,7 +11,7 @@
 #include "base/check.h"
 #include "bat/ads/internal/account/deposits/deposits_database_table.h"
 #include "bat/ads/internal/account/transactions/transactions_database_table.h"
-#include "bat/ads/internal/ad_events/ad_events_database_table.h"
+#include "bat/ads/internal/ads/ad_events/ad_events_database_table.h"
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/base/database/database_transaction_util.h"
 #include "bat/ads/internal/conversions/conversion_queue_database_table.h"

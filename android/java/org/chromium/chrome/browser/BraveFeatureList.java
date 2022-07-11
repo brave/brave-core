@@ -18,6 +18,7 @@ public abstract class BraveFeatureList {
     public static final String ENABLE_FORCE_DARK = "enable-force-dark";
     public static final String ENABLE_TAB_GROUPS = "enable-tab-groups";
     public static final String ENABLE_TAB_GRID = "enable-tab-grid-layout";
+    public static final String BRAVE_WALLET_SOLANA = "BraveWalletSolana";
 
     public static void enableFeature(
             String featureName, boolean enabled, boolean fallbackToDefault) {

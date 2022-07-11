@@ -11,6 +11,7 @@
 
 #include "base/bind.h"
 #include "brave/browser/brave_wallet/brave_wallet_provider_delegate_impl_helper.h"
+#include "brave/browser/brave_wallet/brave_wallet_tab_helper.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/permission_utils.h"
@@ -171,8 +172,60 @@ void BraveWalletProviderDelegateImpl::IsAccountAllowed(
       base::BindOnce(&OnIsAccountAllowed, account, std::move(callback)));
 }
 
+void BraveWalletProviderDelegateImpl::AddSolanaConnectedAccount(
+    const std::string& account) {
+  if (!web_contents_)
+    return;
+  auto* tab_helper =
+      brave_wallet::BraveWalletTabHelper::FromWebContents(web_contents_);
+  if (tab_helper)
+    tab_helper->AddSolanaConnectedAccount(host_id_, account);
+}
+
+void BraveWalletProviderDelegateImpl::RemoveSolanaConnectedAccount(
+    const std::string& account) {
+  if (!web_contents_)
+    return;
+  auto* tab_helper =
+      brave_wallet::BraveWalletTabHelper::FromWebContents(web_contents_);
+  if (tab_helper)
+    tab_helper->RemoveSolanaConnectedAccount(host_id_, account);
+}
+
+bool BraveWalletProviderDelegateImpl::IsSolanaAccountConnected(
+    const std::string& account) {
+  if (!web_contents_)
+    return false;
+  auto* tab_helper =
+      brave_wallet::BraveWalletTabHelper::FromWebContents(web_contents_);
+  if (!tab_helper)
+    return false;
+
+  return tab_helper->IsSolanaAccountConnected(host_id_, account);
+}
+
 void BraveWalletProviderDelegateImpl::WebContentsDestroyed() {
   web_contents_ = nullptr;
+}
+
+void BraveWalletProviderDelegateImpl::RenderFrameHostChanged(
+    content::RenderFrameHost* old_host,
+    content::RenderFrameHost* new_host) {
+  if (!old_host)
+    return;
+  auto* tab_helper =
+      brave_wallet::BraveWalletTabHelper::FromWebContents(web_contents_);
+  if (tab_helper)
+    tab_helper->ClearSolanaConnectedAccounts(host_id_);
+}
+
+void BraveWalletProviderDelegateImpl::PrimaryPageChanged(content::Page& page) {
+  if (!web_contents_)
+    return;
+  auto* tab_helper =
+      brave_wallet::BraveWalletTabHelper::FromWebContents(web_contents_);
+  if (tab_helper)
+    tab_helper->ClearSolanaConnectedAccounts(host_id_);
 }
 
 }  // namespace brave_wallet

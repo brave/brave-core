@@ -48,7 +48,7 @@ jobs:
           echo "Looking for any uplifted PRs"
           readarray -t prs < <(echo "${pr_body}" | grep -ioP "${UPLIFT_PR_REGEX}" || :)
           readarray -t issues_uplift_pr < <(echo "${prs[@]}" | xargs -n 1 -I{} gh pr view {} -R brave/brave-core --json body --jq ".body" | normalize_issue_links | grep -ioP "${RESOLVE_ISSUE_REGEX}")
-          readarray -t issues < <(printf "%s\n" "${issues_pr[@]}" "${issues_uplift_pr[@]}"| sort -u)
+          readarray -t issues < <(printf "%s\n" "${issues_pr[@]}" "${issues_uplift_pr[@]}"| sort -u | sed '/^\s*$/d')
           echo "Relevant issues detected:"
           printf "%s\n" "${issues[@]}"
 

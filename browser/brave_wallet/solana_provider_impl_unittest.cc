@@ -12,6 +12,7 @@
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/brave_wallet/brave_wallet_provider_delegate_impl.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
+#include "brave/browser/brave_wallet/brave_wallet_tab_helper.h"
 #include "brave/browser/brave_wallet/keyring_service_factory.h"
 #include "brave/browser/brave_wallet/tx_service_factory.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
@@ -97,6 +98,9 @@ class SolanaProviderImplUnitTest : public testing::Test {
   void SetUp() override {
     web_contents_ =
         content::TestWebContents::Create(browser_context(), nullptr);
+    brave_wallet::BraveWalletTabHelper::CreateForWebContents(
+        web_contents_.get());
+    brave_wallet_tab_helper()->SetSkipDelegateForTesting(true);
     permissions::PermissionRequestManager::CreateForWebContents(web_contents());
     keyring_service_ =
         KeyringServiceFactory::GetServiceForContext(browser_context());
@@ -115,6 +119,11 @@ class SolanaProviderImplUnitTest : public testing::Test {
 
   content::BrowserContext* browser_context() { return &profile_; }
   content::TestWebContents* web_contents() { return web_contents_.get(); }
+
+  brave_wallet::BraveWalletTabHelper* brave_wallet_tab_helper() {
+    return brave_wallet::BraveWalletTabHelper::FromWebContents(
+        web_contents_.get());
+  }
 
   void Navigate(const GURL& url) { web_contents()->NavigateAndCommit(url); }
   url::Origin GetOrigin() {

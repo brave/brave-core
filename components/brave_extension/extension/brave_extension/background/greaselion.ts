@@ -283,6 +283,8 @@ const handleSavePublisherVisit = (tabId: number, mediaType: string, data: SavePu
 
   publisherKeysByTabId.set(tabId, data.publisherKey)
 
+  chrome.braveRewards.setPublisherIdForTab(tabId, data.publisherKey)
+
   if (data.mediaKey && !publisherKeysByMediaKey.has(data.mediaKey)) {
     publisherKeysByMediaKey.set(data.mediaKey, data.publisherKey)
   }

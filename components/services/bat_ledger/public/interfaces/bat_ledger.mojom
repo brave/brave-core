@@ -107,6 +107,8 @@ interface BatLedger {
 
   UpdateMediaDuration(uint64 window_id, string publisher_key, uint64 duration, bool first_visit);
 
+  IsPublisherRegistered(string publisher_id) => (bool registered);
+
   GetPublisherInfo(string publisher_key) => (ledger.mojom.Result result, ledger.mojom.PublisherInfo? info);
 
   GetPublisherPanelInfo(string publisher_key) =>
@@ -181,6 +183,9 @@ interface BatLedgerClient {
   URIEncode(string value) => (string encoded_value);
 
   PublisherListNormalized(array<ledger.mojom.PublisherInfo> list);
+
+  OnPublisherRegistryUpdated();
+  OnPublisherUpdated(string publisher_id);
 
   [Sync]
   GetBooleanState(string name) => (bool value);

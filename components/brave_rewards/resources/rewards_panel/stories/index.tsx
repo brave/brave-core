@@ -36,7 +36,9 @@ function actionLogger (name: string) {
 
 function createHost (): Host {
   const stateManager = createStateManager<HostState>({
+    openTime: Date.now(),
     loading: false,
+    requestedView: null,
     rewardsEnabled: false,
     settings: {
       adsPerHour: 3,
@@ -252,6 +254,9 @@ function createHost (): Host {
         case 'error':
           break
       }
+    },
+    onAppRendered () {
+      console.log('onAppRendered')
     }
   }
 }

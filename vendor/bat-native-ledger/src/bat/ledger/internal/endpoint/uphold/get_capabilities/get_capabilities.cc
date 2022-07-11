@@ -42,14 +42,17 @@ void GetCapabilities::OnRequest(const type::UrlResponse& response,
 
   Capabilities capabilities;
   if (capability_map.count("receives") && capability_map.count("sends")) {
-    capabilities.can_receive = capability_map["receives"];
-    capabilities.can_send = capability_map["sends"];
+    const auto receives = capability_map["receives"];
+    const auto sends = capability_map["sends"];
+
+    capabilities.can_receive = receives.enabled && receives.requirements_empty;
+    capabilities.can_send = sends.enabled && sends.requirements_empty;
   }
 
   callback(result, std::move(capabilities));
 }
 
-std::pair<type::Result, std::map<std::string, bool>>
+std::pair<type::Result, GetCapabilities::CapabilityMap>
 GetCapabilities::ProcessResponse(const type::UrlResponse& response) {
   const auto status_code = response.status_code;
 
@@ -69,9 +72,9 @@ GetCapabilities::ProcessResponse(const type::UrlResponse& response) {
           std::move(capability_map)};
 }
 
-std::map<std::string, bool> GetCapabilities::ParseBody(
+GetCapabilities::CapabilityMap GetCapabilities::ParseBody(
     const std::string& body) {
-  std::map<std::string, bool> capability_map;
+  std::map<std::string, Capability> capability_map;
 
   const auto value = base::JSONReader::Read(body);
   const base::ListValue* list_value = nullptr;
@@ -82,13 +85,15 @@ std::map<std::string, bool> GetCapabilities::ParseBody(
     for (const auto& item : list_value->GetList()) {
       const auto* key = item.FindStringKey("key");
       const auto enabled = item.FindBoolKey("enabled");
+      const auto* requirements = item.FindListKey("requirements");
 
-      if (!key || !enabled) {
+      if (!key || !enabled || !requirements) {
         capability_map.clear();
         break;
       }
 
-      capability_map.emplace(*key, *enabled);
+      capability_map.emplace(
+          *key, Capability{*enabled, requirements->GetList().empty()});
     }
   }
 

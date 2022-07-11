@@ -64,13 +64,18 @@ export interface Options {
   autoContributeAmounts: number[]
 }
 
+type RequestedView = 'rewards-tour' | 'brave-talk-opt-in'
+
 export interface HostState {
+  openTime: number
   loading: boolean
+  requestedView: RequestedView | null
   rewardsEnabled: boolean
   balance: number
   settings: Settings
   options: Options
   grantCaptchaInfo: GrantCaptchaInfo | null
+  adaptiveCaptchaInfo: AdaptiveCaptchaInfo | null
   exchangeInfo: ExchangeInfo
   earningsInfo: EarningsInfo
   publisherInfo: PublisherInfo | null
@@ -79,7 +84,6 @@ export interface HostState {
   externalWallet: ExternalWallet | null
   summaryData: RewardsSummaryData
   notifications: Notification[]
-  adaptiveCaptchaInfo: AdaptiveCaptchaInfo | null
 }
 
 export type HostListener = (state: HostState) => void
@@ -105,4 +109,5 @@ export interface Host {
   clearGrantCaptcha: () => void
   clearAdaptiveCaptcha: () => void
   handleAdaptiveCaptchaResult: (result: AdaptiveCaptchaResult) => void
+  onAppRendered: () => void
 }

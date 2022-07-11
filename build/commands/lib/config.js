@@ -363,11 +363,6 @@ Config.prototype.buildArgs = function () {
 
   if (process.platform === 'darwin') {
     args.allow_runtime_configurable_key_storage = true
-    // always use hermetic xcode for macos when available
-    if (this.targetOS !== 'ios' && fs.existsSync(path.join(
-        this.srcDir, 'build', 'mac_files', 'xcode_binaries', 'Contents'))) {
-      args.use_system_xcode = false
-    }
   }
 
   if (this.isDebug() &&
@@ -397,15 +392,22 @@ Config.prototype.buildArgs = function () {
     args.symbol_level = 1
   }
 
-  if (this.targetArch === 'x64' &&
-    process.platform === 'linux' &&
-    this.targetOS !== 'android') {
+  if (this.getTargetOS() === 'mac' &&
+      fs.existsSync(path.join(this.srcDir, 'build', 'mac_files', 'xcode_binaries', 'Contents'))) {
+      // always use hermetic xcode for macos when available
+      args.use_system_xcode = false
+  }
+
+  if (this.getTargetOS() === 'linux' && this.targetArch === 'x64') {
     // Include vaapi support
     args.use_vaapi = true
   }
 
+  if (this.targetOS) {
+    args.target_os = this.targetOS;
+  }
+
   if (this.targetOS === 'android') {
-    args.target_os = 'android'
     args.android_channel = this.channel
     args.enable_jdk_library_desugaring = false
     if (!this.isOfficialBuild()) {
@@ -462,7 +464,6 @@ Config.prototype.buildArgs = function () {
   }
 
   if (this.targetOS === 'ios') {
-    args.target_os = 'ios'
     if (this.targetEnvironment) {
       args.target_environment = this.targetEnvironment
     }
@@ -885,6 +886,17 @@ Config.prototype.update = function (options) {
   if (options.target) {
     this.buildTarget = options.target
   }
+}
+
+Config.prototype.getTargetOS = function() {
+  if (this.targetOS)
+    return this.targetOS
+  if (process.platform === 'darwin')
+    return 'mac'
+  if (process.platform === 'win32')
+    return 'win'
+  assert(process.platform === 'linux')
+  return 'linux'
 }
 
 Config.prototype.getCachePath = function () {

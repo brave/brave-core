@@ -21,6 +21,7 @@
 #include "brave/components/l10n/common/locale_util.h"
 #include "brave/components/ntp_background_images/browser/ntp_custom_images_source.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/search_engines/template_url_service_factory.h"
 #include "chrome/common/pref_names.h"
 #include "components/grit/brave_components_resources.h"
 #include "components/strings/grit/components_strings.h"

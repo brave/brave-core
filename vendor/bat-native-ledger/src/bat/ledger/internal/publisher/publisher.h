@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVELEDGER_PUBLISHER_PUBLISHER_H_
-#define BRAVELEDGER_PUBLISHER_PUBLISHER_H_
+#ifndef BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_PUBLISHER_PUBLISHER_H_
+#define BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_PUBLISHER_PUBLISHER_H_
 
 #include <string>
 #include <memory>
@@ -97,6 +97,10 @@ class Publisher {
   void GetServerPublisherInfo(
       const std::string& publisher_key,
       client::GetServerPublisherInfoCallback callback);
+
+  void GetServerPublisherInfo(const std::string& publisher_key,
+                              bool use_prefix_list,
+                              client::GetServerPublisherInfoCallback callback);
 
   void UpdateMediaDuration(
       const uint64_t window_id,
@@ -217,6 +221,7 @@ class Publisher {
   void OnServerPublisherInfoLoaded(
       type::ServerPublisherInfoPtr server_info,
       const std::string& publisher_key,
+      bool use_prefix_list,
       client::GetServerPublisherInfoCallback callback);
 
   LedgerImpl* ledger_;  // NOT OWNED
@@ -232,4 +237,4 @@ class Publisher {
 }  // namespace publisher
 }  // namespace ledger
 
-#endif  // BRAVELEDGER_PUBLISHER_PUBLISHER_H_
+#endif  // BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_PUBLISHER_PUBLISHER_H_

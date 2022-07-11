@@ -22,6 +22,7 @@ interface API {
   pageCallbackRouter: BraveNewTabPage.PageCallbackRouter
   pageHandler: BraveNewTabPage.PageHandlerRemote
   addCustomBackgroundUpdatedListener: (listener: CustomBackgroundUpdated) => void
+  addSearchPromotionDisabledListener: (listener: () => void) => void
 }
 
 type CustomBackgroundUpdated = (background: BraveNewTabPage.CustomBackground) => void
@@ -42,6 +43,10 @@ class NTPBrowserAPI implements API {
 
   addCustomBackgroundUpdatedListener (listener: CustomBackgroundUpdated) {
     this.pageCallbackRouter.onBackgroundUpdated.addListener(listener)
+  }
+
+  addSearchPromotionDisabledListener (listener: () => void) {
+    this.pageCallbackRouter.onSearchPromotionDisabled.addListener(listener)
   }
 }
 

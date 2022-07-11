@@ -151,11 +151,14 @@ void UpholdWallet::OnGetCapabilities(type::Result result,
 
   if (!*capabilities.can_receive || !*capabilities.can_send) {
     BLOG(0, "User doesn't have the required Uphold capabilities!");
-    // Entering NOT_CONNECTED or DISCONNECTED_VERIFIED.
-    ledger_->uphold()->DisconnectWallet(
-        uphold_wallet->status == type::WalletStatus::VERIFIED
-            ? ledger::notifications::kWalletDisconnected
-            : "");
+    // Entering NOT_CONNECTED.
+    if (uphold_wallet->status == type::WalletStatus::VERIFIED) {
+      ledger_->ledger_client()->ShowNotification(
+          ledger::notifications::kWalletDisconnected, {"Uphold"}, [](auto) {});
+      ledger_->wallet()->DisconnectWallet(constant::kWalletUphold, [](auto) {});
+    } else {
+      ledger_->uphold()->DisconnectWallet("");
+    }
     return callback(type::Result::UPHOLD_INSUFFICIENT_CAPABILITIES);
   }
 

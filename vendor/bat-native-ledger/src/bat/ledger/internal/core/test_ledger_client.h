@@ -66,6 +66,10 @@ class TestLedgerClient : public LedgerClient {
                             mojom::PublisherInfoPtr publisher_info,
                             uint64_t windowId) override;
 
+  void OnPublisherRegistryUpdated() override;
+
+  void OnPublisherUpdated(const std::string& publisher_id) override;
+
   void FetchFavIcon(const std::string& url,
                     const std::string& favicon_key,
                     client::FetchIconCallback callback) override;

@@ -22,10 +22,10 @@ using ShutdownCallback = std::function<void(const bool)>;
 
 using RemoveAllHistoryCallback = std::function<void(const bool)>;
 
-using GetNewTabPageAdCallback =
+using MaybeServeNewTabPageAdCallback =
     std::function<void(const bool, const NewTabPageAdInfo&)>;
 
-using GetInlineContentAdCallback = std::function<
+using MaybeServeInlineContentAdCallback = std::function<
     void(const bool, const std::string&, const InlineContentAdInfo&)>;
 
 using TriggerSearchResultAdEventCallback =

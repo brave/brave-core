@@ -166,6 +166,8 @@ public class DAppsWalletController implements ConnectionErrorHandler, KeyringSer
         if (isShowingDialog()) {
             mDAppsDialog.dismiss();
         }
+        mBraveWalletPanel = null;
+        mDAppsDialog = null;
         cleanUp();
     }
 
@@ -239,6 +241,13 @@ public class DAppsWalletController implements ConnectionErrorHandler, KeyringSer
                 public void onResume(@NonNull LifecycleOwner owner) {
                     if (mBraveWalletPanel != null) {
                         mBraveWalletPanel.resume();
+                    }
+                }
+
+                @Override
+                public void onPause(@NonNull LifecycleOwner owner) {
+                    if (mBraveWalletPanel != null) {
+                        mBraveWalletPanel.pause();
                     }
                 }
             };

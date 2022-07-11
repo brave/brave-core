@@ -48,6 +48,7 @@ export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.S
         cryptoDotComSupported: initialDataPayload.cryptoDotComSupported,
         ftxSupported: initialDataPayload.ftxSupported,
         binanceSupported: initialDataPayload.binanceSupported,
+        searchPromotionEnabled: initialDataPayload.searchPromotionEnabled,
         // Auto-dismiss of together prompt only
         // takes effect on the next page view and not the
         // page view that the action occured on.
@@ -99,6 +100,13 @@ export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.S
       state = {
         ...state,
         stats
+      }
+      break
+
+    case types.SEARCH_PROMOTION_DISABLED:
+      state = {
+        ...state,
+        searchPromotionEnabled: false
       }
       break
 

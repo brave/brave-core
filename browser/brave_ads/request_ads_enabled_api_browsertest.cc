@@ -8,6 +8,7 @@
 #include "base/test/scoped_feature_list.h"
 #include "bat/ads/pref_names.h"
 #include "brave/browser/brave_ads/ads_service_factory.h"
+#include "brave/browser/brave_rewards/rewards_panel/rewards_panel_coordinator.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
 #include "brave/components/brave_ads/common/features.h"
@@ -27,12 +28,13 @@
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "content/public/test/content_mock_cert_verifier.h"
-#include "extensions/common/constants.h"
 #include "net/dns/mock_host_resolver.h"
 
 // npm run test -- brave_browser_tests --filter=RequestAdsEnabledApiTest*
 
 namespace {
+
+using brave_rewards::RewardsPanelCoordinator;
 
 constexpr char kAllowedDomain[] = "talk.brave.com";
 constexpr char kNotAllowedDomain[] = "brave.com";
@@ -121,11 +123,8 @@ class RequestAdsEnabledApiTestBase : public InProcessBrowserTest {
 
       // Check that this notification is for the Rewards panel and not, say,
       // the extension background page.
-      std::string url = (*popup_contents)->GetLastCommittedURL().spec();
-      std::string rewards_panel_url = std::string("chrome-extension://") +
-                                      brave_rewards_extension_id +
-                                      "/request_ads_enabled_panel.html";
-      return url == rewards_panel_url;
+      return RewardsPanelCoordinator::IsRewardsPanelURLForTesting(
+          (*popup_contents)->GetLastCommittedURL());
     };
 
     content::WindowedNotificationObserver popup_observer(

@@ -81,7 +81,16 @@ void DatabaseManager::CreateOrOpen(ResultCallback callback) {
         DCHECK(response->result->get_value()->which() ==
                mojom::DBValue::Tag::kIntValue);
         const int from_version = response->result->get_value()->get_int_value();
-        MaybeMigrate(from_version, callback);
+        MaybeMigrate(from_version, [=](const bool success) {
+          if (!success) {
+            callback(/* success */ false);
+            return;
+          }
+
+          NotifyDatabaseIsReady();
+
+          callback(/* success */ true);
+        });
       });
 }
 
@@ -158,6 +167,12 @@ void DatabaseManager::NotifyFailedToMigrateDatabase(
     const int to_version) const {
   for (DatabaseManagerObserver& observer : observers_) {
     observer.OnFailedToMigrateDatabase(from_version, to_version);
+  }
+}
+
+void DatabaseManager::NotifyDatabaseIsReady() const {
+  for (DatabaseManagerObserver& observer : observers_) {
+    observer.OnDatabaseIsReady();
   }
 }
 

@@ -92,11 +92,10 @@ export const closeAction = styled.div`
 
 export const helpAction = styled.div`
   margin-top: 36px;
+  text-align: center;
 
-  button {
-    display: block;
-    height: auto;
-    margin: 0 auto;
+  a {
+    display: inline-block;
     padding: 10px 22px;
     font-weight: 600;
     font-size: 13px;
@@ -104,9 +103,9 @@ export const helpAction = styled.div`
     background: var(--brave-palette-white);
     color: #212529;
     border: 1px solid var(--brave-palette-grey500);
-    box-sizing: border-box;
     border-radius: 48px;
     cursor: pointer;
+    text-decoration: none;
 
     &:active {
       background: var(--brave-palette-grey000);

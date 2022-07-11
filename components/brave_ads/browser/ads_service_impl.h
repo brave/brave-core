@@ -158,6 +158,7 @@ class AdsServiceImpl : public AdsService,
 
   void OnResourceComponentUpdated(const std::string& id) override;
 
+  absl::optional<ads::NewTabPageAdInfo> GetPrefetchedNewTabPageAd() override;
   void TriggerNewTabPageAdEvent(
       const std::string& placement_id,
       const std::string& creative_instance_id,
@@ -171,8 +172,9 @@ class AdsServiceImpl : public AdsService,
       const std::string& creative_instance_id,
       const ads::mojom::PromotedContentAdEventType event_type) override;
 
-  void GetInlineContentAd(const std::string& dimensions,
-                          OnGetInlineContentAdCallback callback) override;
+  void MaybeServeInlineContentAd(
+      const std::string& dimensions,
+      OnMaybeServeInlineContentAdCallback callback) override;
 
   void TriggerInlineContentAdEvent(
       const std::string& placement_id,
@@ -183,8 +185,6 @@ class AdsServiceImpl : public AdsService,
       ads::mojom::SearchResultAdPtr ad_mojom,
       const ads::mojom::SearchResultAdEventType event_type,
       TriggerSearchResultAdEventCallback callback) override;
-
-  absl::optional<ads::NewTabPageAdInfo> GetPrefetchedNewTabPageAd() override;
 
   void PurgeOrphanedAdEventsForType(
       const ads::mojom::AdType ad_type,
@@ -252,8 +252,10 @@ class AdsServiceImpl : public AdsService,
   void OnDetectUncertainFuture(const uint32_t number_of_start,
                                const bool is_uncertain_future);
 
-  void EnsureBaseDirectoryExists(const uint32_t number_of_start);
+  void EnsureBaseDirectoryExists(const uint32_t number_of_start,
+                                 ads::mojom::SysInfoPtr sys_info);
   void OnEnsureBaseDirectoryExists(const uint32_t number_of_start,
+                                   ads::mojom::SysInfoPtr sys_info,
                                    const bool success);
 
   void SetEnvironment();
@@ -293,10 +295,10 @@ class AdsServiceImpl : public AdsService,
 
   void OnGetBraveWallet(ledger::type::BraveWalletPtr wallet);
 
-  void OnGetInlineContentAd(OnGetInlineContentAdCallback callback,
-                            const bool success,
-                            const std::string& dimensions,
-                            const std::string& json);
+  void OnMaybeServeInlineContentAd(OnMaybeServeInlineContentAdCallback callback,
+                                   const bool success,
+                                   const std::string& dimensions,
+                                   const std::string& json);
 
   void OnTriggerSearchResultAdEvent(
       TriggerSearchResultAdEventCallback callback,

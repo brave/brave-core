@@ -347,7 +347,7 @@ void BraveNewsController::GetDisplayAd(GetDisplayAdCallback callback) {
         std::move(callback).Run(std::move(ad));
       },
       std::move(callback));
-  ads_service_->GetInlineContentAd("900x750", std::move(on_ad_received));
+  ads_service_->MaybeServeInlineContentAd("900x750", std::move(on_ad_received));
 }
 
 void BraveNewsController::OnInteractionSessionStarted() {

@@ -160,10 +160,12 @@ class ADS_EXPORT Ads {
       const std::string& placement_id,
       const mojom::NotificationAdEventType event_type) = 0;
 
-  // Should be called to get a new tab page ad. The callback takes two arguments
+  // Should be called to serve a new tab page ad. The callback takes two
+  // arguments
   // - |bool| is set to |true| if successful otherwise |false| and
-  // |NewTabPageAdInfo| containing the info for the ad.
-  virtual void GetNewTabPageAd(GetNewTabPageAdCallback callback) = 0;
+  //   |NewTabPageAdInfo| containing the info for the ad.
+  virtual void MaybeServeNewTabPageAd(
+      MaybeServeNewTabPageAdCallback callback) = 0;
 
   // Called when a user views or interacts with a new tab page ad to trigger an
   // |event_type| event for the specified |placement_id| and
@@ -187,12 +189,13 @@ class ADS_EXPORT Ads {
       const std::string& creative_instance_id,
       const mojom::PromotedContentAdEventType event_type) = 0;
 
-  // Should be called to get an inline content ad for the specified
+  // Should be called to serve an inline content ad for the specified
   // |dimensions|. The callback takes three arguments - |bool| is set to |true|
   // if successful otherwise |false|, |std::string| containing the dimensions
   // and |InlineContentAdInfo| containing the info for the ad.
-  virtual void GetInlineContentAd(const std::string& dimensions,
-                                  GetInlineContentAdCallback callback) = 0;
+  virtual void MaybeServeInlineContentAd(
+      const std::string& dimensions,
+      MaybeServeInlineContentAdCallback callback) = 0;
 
   // Called when a user views or interacts with an inline content ad to trigger
   // an |event_type| event for the specified |placement_id| and

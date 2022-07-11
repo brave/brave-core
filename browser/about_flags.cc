@@ -47,6 +47,7 @@ using brave_shields::features::kBraveAdblockCnameUncloaking;
 using brave_shields::features::kBraveAdblockCollapseBlockedElements;
 using brave_shields::features::kBraveAdblockCookieListDefault;
 using brave_shields::features::kBraveAdblockCosmeticFiltering;
+using brave_shields::features::kBraveAdblockCosmeticFilteringChildFrames;
 using brave_shields::features::kBraveAdblockCspRules;
 using brave_shields::features::kBraveAdblockDefault1pBlocking;
 using brave_shields::features::kBraveDarkModeBlock;
@@ -87,6 +88,11 @@ constexpr char kBraveAdblockCosmeticFilteringName[] =
     "Enable cosmetic filtering";
 constexpr char kBraveAdblockCosmeticFilteringDescription[] =
     "Enable support for cosmetic filtering";
+
+constexpr char kBraveAdblockCosmeticFilteringChildFramesName[] =
+    "Enable cosmetic filtering in child frames";
+constexpr char kBraveAdblockCosmeticFilteringChildFramesDescription[] =
+    "Apply cosmetic filtering to frames other than the main frame of a page";
 
 constexpr char kBraveAdblockCspRulesName[] = "Enable support for CSP rules";
 constexpr char kBraveAdblockCspRulesDescription[] =
@@ -213,6 +219,11 @@ constexpr char kBraveRewardsGeminiName[] = "Enable Gemini for Brave Rewards";
 constexpr char kBraveRewardsGeminiDescription[] =
     "Enables support for Gemini as an external wallet provider for Brave";
 #endif
+
+constexpr char kBraveRewardsWebUIPanelName[] = "Use WebUI Rewards Panel";
+constexpr char kBraveRewardsWebUIPanelDescription[] =
+    "When enabled, the Brave Rewards panel will be displayed using WebUI "
+    "instead of the built-in Rewards extension.";
 
 constexpr char kBraveRewardsVerboseLoggingName[] =
     "Enable Brave Rewards verbose logging";
@@ -432,7 +443,7 @@ constexpr char kRestrictWebSocketsPoolDescription[] =
     {"brave-translate-go",                                           \
      flag_descriptions::kBraveTranslateGoName,                       \
      flag_descriptions::kBraveTranslateGoDescription,                \
-     kOsDesktop,                                                     \
+     kOsDesktop | kOsAndroid,                                        \
      FEATURE_VALUE_TYPE(translate::features::kUseBraveTranslateGo)},
 #else
 #define BRAVE_TRANSLATE_GO_FEATURE_ENTRIES
@@ -463,6 +474,10 @@ constexpr char kRestrictWebSocketsPoolDescription[] =
      flag_descriptions::kBraveAdblockCosmeticFilteringName,                 \
      flag_descriptions::kBraveAdblockCosmeticFilteringDescription, kOsAll,  \
      FEATURE_VALUE_TYPE(kBraveAdblockCosmeticFiltering)},                   \
+    {"brave-adblock-cosmetic-filtering-child-frames",                         \
+     flag_descriptions::kBraveAdblockCosmeticFilteringChildFramesName,        \
+     flag_descriptions::kBraveAdblockCosmeticFilteringChildFramesDescription, \
+     kOsAll, FEATURE_VALUE_TYPE(kBraveAdblockCosmeticFilteringChildFrames)},  \
     {"brave-adblock-csp-rules",                                             \
      flag_descriptions::kBraveAdblockCspRulesName,                          \
      flag_descriptions::kBraveAdblockCspRulesDescription, kOsAll,           \
@@ -526,6 +541,11 @@ constexpr char kRestrictWebSocketsPoolDescription[] =
      flag_descriptions::kBraveRewardsVerboseLoggingDescription,             \
      kOsDesktop | kOsAndroid,                                               \
      FEATURE_VALUE_TYPE(brave_rewards::features::kVerboseLoggingFeature)},  \
+    {"brave-rewards-webui-panel",                                           \
+     flag_descriptions::kBraveRewardsWebUIPanelName,                        \
+     flag_descriptions::kBraveRewardsWebUIPanelDescription,                 \
+     kOsDesktop,                                                            \
+     FEATURE_VALUE_TYPE(brave_rewards::features::kWebUIPanelFeature)},      \
     {"brave-ads-custom-push-notifications-ads",                             \
      flag_descriptions::kBraveAdsCustomNotificationsName,                   \
      flag_descriptions::kBraveAdsCustomNotificationsDescription,            \

@@ -4,9 +4,9 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "base/strings/stringprintf.h"
-#include "bat/ads/internal/ad_events/ad_event_info.h"
-#include "bat/ads/internal/ad_events/ad_event_unittest_util.h"
-#include "bat/ads/internal/ad_events/ad_events.h"
+#include "bat/ads/internal/ads/ad_events/ad_event_info.h"
+#include "bat/ads/internal/ads/ad_events/ad_event_unittest_util.h"
+#include "bat/ads/internal/ads/ad_events/ad_events.h"
 #include "bat/ads/internal/base/unittest/unittest_base.h"
 #include "bat/ads/internal/base/unittest/unittest_time_util.h"
 #include "bat/ads/internal/creatives/creative_ad_info.h"

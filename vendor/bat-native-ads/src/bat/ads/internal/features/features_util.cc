@@ -8,13 +8,13 @@
 #include <string>
 
 #include "bat/ads/internal/account/statement/ad_rewards_features.h"
+#include "bat/ads/internal/ads/serving/eligible_ads/exclusion_rules/exclusion_rule_features.h"
+#include "bat/ads/internal/ads/serving/permission_rules/permission_rule_features.h"
+#include "bat/ads/internal/ads/serving/serving_features.h"
 #include "bat/ads/internal/base/logging_util.h"
 #include "bat/ads/internal/features/epsilon_greedy_bandit_features.h"
 #include "bat/ads/internal/features/purchase_intent_features.h"
 #include "bat/ads/internal/features/text_classification_features.h"
-#include "bat/ads/internal/serving/eligible_ads/exclusion_rules/exclusion_rule_features.h"
-#include "bat/ads/internal/serving/permission_rules/permission_rule_features.h"
-#include "bat/ads/internal/serving/serving_features.h"
 #include "bat/ads/internal/user_interaction/browsing/user_activity_features.h"
 
 namespace ads {

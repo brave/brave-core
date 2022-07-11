@@ -4,6 +4,18 @@
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
+import {
+  useDispatch,
+  useSelector
+} from 'react-redux'
+
+// Proxies
+import getWalletPanelApiProxy from '../../../panel/wallet_panel_api_proxy'
+
+// Actions
+import { PanelActions } from '../../../panel/actions'
+
+// Components
 import { create, background } from 'ethereum-blockies'
 
 // Utils
@@ -14,15 +26,15 @@ import { reduceAccountDisplayName } from '../../../utils/reduce-account-name'
 import Amount from '../../../utils/amount'
 
 // Hooks
-import { useExplorer, usePricing } from '../../../common/hooks'
+import { useExplorer, usePricing, useIsMounted } from '../../../common/hooks'
 
 // types
 import {
-  WalletAccountType,
   PanelTypes,
   BraveWallet,
   BuySupportedChains,
-  DefaultCurrencies
+  WalletState,
+  WalletOrigin
 } from '../../../constants/types'
 
 // Components
@@ -47,42 +59,42 @@ import {
   StatusRow,
   BalanceColumn,
   SwitchIcon,
-  MoreAssetsButton
+  MoreAssetsButton,
+  ConnectedStatusBubble
 } from './style'
 
 import { VerticalSpacer } from '../../shared/style'
 
 export interface Props {
-  spotPrices: BraveWallet.AssetPrice[]
-  selectedAccount: WalletAccountType
-  selectedNetwork: BraveWallet.NetworkInfo
-  isConnected: boolean
-  originInfo: BraveWallet.OriginInfo
   isSwapSupported: boolean
-  defaultCurrencies: DefaultCurrencies
   navAction: (path: PanelTypes) => void
-  onOpenSettings: () => void
 }
 
 export const ConnectedPanel = (props: Props) => {
   const {
-    spotPrices,
-    onOpenSettings,
-    isConnected,
     isSwapSupported,
-    navAction,
+    navAction
+  } = props
+
+  const dispatch = useDispatch()
+  const {
+    defaultCurrencies,
+    transactionSpotPrices: spotPrices,
+    activeOrigin: originInfo,
     selectedAccount,
     selectedNetwork,
-    originInfo,
-    defaultCurrencies
-  } = props
+    selectedCoin,
+    connectedAccounts
+  } = useSelector(({ wallet }: { wallet: WalletState }) => wallet)
 
   // state
   const [showMore, setShowMore] = React.useState<boolean>(false)
+  const [isSolanaConnected, setIsSolanaConnected] = React.useState<boolean>(false)
 
   // custom hooks
   const { computeFiatAmount } = usePricing(spotPrices)
   const onClickViewOnBlockExplorer = useExplorer(selectedNetwork)
+  const isMounted = useIsMounted()
 
   // methods
   const navigate = React.useCallback((path: PanelTypes) => () => {
@@ -111,6 +123,27 @@ export const ConnectedPanel = (props: Props) => {
     await copyToClipboard(selectedAccount.address)
   }, [selectedAccount.address])
 
+  const onOpenSettings = React.useCallback(() => {
+    dispatch(PanelActions.openWalletSettings())
+  }, [])
+
+  // effects
+  React.useEffect(() => {
+    if (selectedCoin === BraveWallet.CoinType.SOL) {
+      const isSolanaAccountConnected = async () => {
+        const apiProxy = getWalletPanelApiProxy()
+        await apiProxy.panelHandler.isSolanaAccountConnected(selectedAccount.address)
+          .then(result => {
+            if (isMounted) {
+              setIsSolanaConnected(result.connected)
+            }
+          })
+          .catch(e => console.log(e))
+      }
+      isSolanaAccountConnected()
+    }
+  }, [selectedAccount, selectedCoin, isMounted])
+
   // memos
   const bg = React.useMemo(() => {
     return background({ seed: selectedAccount.address.toLowerCase() })
@@ -127,6 +160,35 @@ export const ConnectedPanel = (props: Props) => {
   const selectedAccountFiatBalance = React.useMemo(() => computeFiatAmount(
     selectedAccount.nativeBalanceRegistry[selectedNetwork.chainId], selectedNetwork.symbol, selectedNetwork.decimals
   ), [computeFiatAmount, selectedNetwork, selectedAccount])
+
+  const isConnected = React.useMemo((): boolean => {
+    if (selectedCoin === BraveWallet.CoinType.SOL) {
+      return isSolanaConnected
+    }
+    if (originInfo.originSpec === WalletOrigin) {
+      return true
+    } else {
+      return connectedAccounts.some(account => account.address === selectedAccount.address)
+    }
+  }, [connectedAccounts, selectedAccount, originInfo, selectedCoin, isSolanaConnected])
+
+  const connectedStatusText = React.useMemo((): string => {
+    if (selectedCoin === BraveWallet.CoinType.SOL) {
+      return isConnected
+        ? getLocale('braveWalletPanelConnected')
+        : getLocale('braveWalletPanelDisconnected')
+    }
+    return isConnected
+      ? getLocale('braveWalletPanelConnected')
+      : getLocale('braveWalletPanelNotConnected')
+  }, [isConnected, selectedCoin])
+
+  const showConnectButton = React.useMemo((): boolean => {
+    if (selectedCoin === BraveWallet.CoinType.SOL) {
+      return connectedAccounts.length !== 0
+    }
+    return originInfo?.origin?.scheme !== 'chrome'
+  }, [selectedCoin, connectedAccounts, originInfo])
 
   // computed
   const formattedAssetBalance = new Amount(selectedAccount.nativeBalanceRegistry[selectedNetwork.chainId] ?? '')
@@ -145,10 +207,16 @@ export const ConnectedPanel = (props: Props) => {
       />
       <CenterColumn>
         <StatusRow>
-          {originInfo?.origin?.scheme !== 'chrome' ? (
+          {showConnectButton ? (
             <OvalButton onClick={onShowSitePermissions}>
-              {isConnected && <BigCheckMark />}
-              <OvalButtonText>{isConnected ? getLocale('braveWalletPanelConnected') : getLocale('braveWalletPanelNotConnected')}</OvalButtonText>
+              {selectedCoin === BraveWallet.CoinType.SOL ? (
+                <ConnectedStatusBubble isConnected={isConnected} />
+              ) : (
+                <>
+                  {isConnected && <BigCheckMark />}
+                </>
+              )}
+              <OvalButtonText>{connectedStatusText}</OvalButtonText>
             </OvalButton>
           ) : (
             <div />

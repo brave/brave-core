@@ -11,9 +11,9 @@
 #include <string>
 #include <vector>
 
+#include "bat/ads/internal/ads/serving/targeting/models/behavioral/purchase_intent/purchase_intent_funnel_keyword_info.h"
 #include "bat/ads/internal/resources/behavioral/purchase_intent/purchase_intent_segment_keyword_info.h"
 #include "bat/ads/internal/resources/behavioral/purchase_intent/purchase_intent_site_info.h"
-#include "bat/ads/internal/serving/targeting/models/behavioral/purchase_intent/purchase_intent_funnel_keyword_info.h"
 
 namespace base {
 class Value;

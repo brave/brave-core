@@ -28,7 +28,7 @@ const onboardingCompleted = new OnboardingCompletedStore()
 export function showRewardsOnboarding () {
   if (!onboardingCompleted.load()) {
     onboardingCompleted.save()
-    chrome.braveRewards.openBrowserActionUI('brave_rewards_panel.html#tour')
+    chrome.braveRewards.showRewardsTour()
   }
 }
 
@@ -94,8 +94,7 @@ export const RewardsWidget = createWidget((props: RewardsProps) => {
 
   const onClaimGrant = () => {
     if (grantInfo) {
-      chrome.braveRewards.openBrowserActionUI(
-        `brave_rewards_panel.html#grant_${grantInfo.id}`)
+      chrome.braveRewards.showGrantCaptcha(grantInfo.id)
     }
   }
 

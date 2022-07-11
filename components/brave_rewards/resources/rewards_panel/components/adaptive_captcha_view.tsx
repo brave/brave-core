@@ -5,6 +5,7 @@
 import * as React from 'react'
 
 import { LocaleContext } from '../../shared/lib/locale_context'
+import { NewTabLink } from '../../shared/components/new_tab_link'
 import { AdaptiveCaptchaInfo, AdaptiveCaptchaResult } from '../../rewards_panel/lib/interfaces'
 
 import * as styles from './adaptive_captcha_view.style'
@@ -74,11 +75,6 @@ export function AdaptiveCaptchaView (props: Props) {
     return () => { window.removeEventListener('message', listener) }
   }, [props.onCaptchaResult])
 
-  function onContactSupport () {
-    window.open('https://support.brave.com/', '_blank')
-    props.onClose()
-  }
-
   function renderCaptcha () {
     return (
       <styles.overlay>
@@ -127,9 +123,12 @@ export function AdaptiveCaptchaView (props: Props) {
             {getString('captchaMaxAttemptsExceededText')}
           </styles.text>
           <styles.helpAction>
-            <button onClick={onContactSupport}>
+            <NewTabLink
+              href='https://support.brave.com/'
+              onClick={props.onClose}
+            >
               {getString('captchaContactSupport')}
-            </button>
+            </NewTabLink>
           </styles.helpAction>
         </styles.modalRoot>
       </styles.overlay>

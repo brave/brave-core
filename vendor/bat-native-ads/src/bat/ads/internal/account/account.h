@@ -31,10 +31,10 @@ class ConfirmationType;
 class Issuers;
 class RedeemUnblindedPaymentTokens;
 class RefillUnblindedTokens;
-struct TransactionInfo;
 class Wallet;
 struct IssuersInfo;
 struct StatementInfo;
+struct TransactionInfo;
 struct WalletInfo;
 
 using GetStatementCallback =

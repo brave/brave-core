@@ -57,3 +57,6 @@ export const customizeClicked = () => action(types.CUSTOMIZE_CLICKED, {})
 
 export const customBackgroundUpdated = (customBackground: CustomBackground) =>
   action(types.CUSTOM_BACKGROUND_UPDATED, { customBackground })
+
+export const searchPromotionDisabled = () =>
+  action(types.SEARCH_PROMOTION_DISABLED, {})

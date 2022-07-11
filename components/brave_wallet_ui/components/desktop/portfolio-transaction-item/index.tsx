@@ -74,7 +74,6 @@ const PortfolioTransactionItem = (props: Props) => {
   // redux
   const dispatch = useDispatch()
   const {
-    transactionSpotPrices,
     defaultCurrencies,
     userVisibleTokensInfo
   } = useSelector(({ wallet }: { wallet: WalletState }) => wallet)
@@ -92,7 +91,7 @@ const PortfolioTransactionItem = (props: Props) => {
   // custom hooks
   const transactionsNetwork = useTransactionsNetwork(transaction)
   const onClickViewOnBlockExplorer = useExplorer(transactionsNetwork)
-  const parseTransaction = useTransactionParser(transactionsNetwork, accounts, transactionSpotPrices, userVisibleTokensInfo)
+  const parseTransaction = useTransactionParser(transactionsNetwork)
 
   // methods
   const onShowTransactionPopup = () => setShowTransactionPopup(true)
