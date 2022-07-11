@@ -39,9 +39,7 @@ class BraveNewsTabHelper
 
   ~BraveNewsTabHelper() override;
 
-  const std::vector<FeedDetails>& available_feeds() const {
-    return available_feeds_;
-  }
+  std::vector<FeedDetails> GetAvailableFeeds();
   bool is_subscribed(const FeedDetails& feed_details);
   bool is_subscribed();
 
@@ -68,7 +66,7 @@ class BraveNewsTabHelper
 
   raw_ptr<brave_news::BraveNewsController> controller_;
 
-  std::vector<FeedDetails> available_feeds_;
+  std::vector<FeedDetails> rss_page_feeds_;
   std::vector<PageFeedsObserver*> observers_;
 
   base::WeakPtrFactory<BraveNewsTabHelper> weak_ptr_factory_{this};

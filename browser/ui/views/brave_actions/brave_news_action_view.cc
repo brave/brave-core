@@ -94,8 +94,8 @@ void BraveTodayActionView::Update() {
 
   if (contents) {
     auto* tab_helper = BraveNewsTabHelper::FromWebContents(contents);
-    if (!tab_helper->available_feeds().empty()) {
-      feed = tab_helper->available_feeds()[0];
+    if (!tab_helper->GetAvailableFeeds().empty()) {
+      feed = tab_helper->GetAvailableFeeds()[0];
       subscribed = tab_helper->is_subscribed();
     }
   }
@@ -168,7 +168,7 @@ void BraveTodayActionView::ShowBubble() {
 
   auto* tab_helper =
       BraveNewsTabHelper::FromWebContents(tab_strip_->GetActiveWebContents());
-  if (tab_helper->available_feeds().empty())
+  if (tab_helper->GetAvailableFeeds().empty())
     return;
 
   if (bubble_widget_) {

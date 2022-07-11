@@ -43,6 +43,21 @@ BraveNewsTabHelper::~BraveNewsTabHelper() {
   controller_->publisher_controller()->RemoveObserver(this);
 }
 
+std::vector<BraveNewsTabHelper::FeedDetails>
+BraveNewsTabHelper::GetAvailableFeeds() {
+  std::vector<FeedDetails> feeds(rss_page_feeds_);
+
+  auto default_publisher =
+      controller_->publisher_controller()->GetPublisherForSite(
+          GetWebContents().GetLastCommittedURL());
+  if (default_publisher) {
+    feeds.insert(feeds.begin(), {default_publisher->feed_source,
+                                 default_publisher->publisher_name});
+  }
+
+  return feeds;
+}
+
 bool BraveNewsTabHelper::is_subscribed(const FeedDetails& feed_details) {
   auto publisher = controller_->publisher_controller()->GetPublisherForFeed(
       feed_details.feed_url);
@@ -50,7 +65,7 @@ bool BraveNewsTabHelper::is_subscribed(const FeedDetails& feed_details) {
 }
 
 bool BraveNewsTabHelper::is_subscribed() {
-  for (const auto& feed : available_feeds_) {
+  for (const auto& feed : rss_page_feeds_) {
     if (is_subscribed(feed))
       return true;
   }
@@ -92,7 +107,7 @@ void BraveNewsTabHelper::OnFoundFeeds(
     return;
 
   for (const auto& feed : feeds) {
-    available_feeds_.push_back({feed->feed_url, feed->feed_title});
+    rss_page_feeds_.push_back({feed->feed_url, feed->feed_title});
   }
 
   AvailableFeedsChanged();
@@ -108,31 +123,20 @@ void BraveNewsTabHelper::RemoveObserver(PageFeedsObserver* observer) {
 
 void BraveNewsTabHelper::AvailableFeedsChanged() {
   for (auto* observer : observers_)
-    observer->OnAvailableFeedsChanged(available_feeds());
+    observer->OnAvailableFeedsChanged(GetAvailableFeeds());
 }
 
 void BraveNewsTabHelper::PrimaryPageChanged(content::Page& page) {
   // Invalidate all weak pointers - we're on a new page now.
   weak_ptr_factory_.InvalidateWeakPtrs();
 
-  available_feeds_.clear();
-
-  auto* contents =
-      content::WebContents::FromRenderFrameHost(&page.GetMainDocument());
-
-  auto default_publisher =
-      controller_->publisher_controller()->GetPublisherForSite(
-          contents->GetLastCommittedURL());
-  if (default_publisher) {
-    available_feeds_.push_back(
-        {default_publisher->feed_source, default_publisher->publisher_name});
-  }
+  rss_page_feeds_.clear();
 
 #if BUILDFLAG(ENABLE_FEED_V2)
-  feed::FetchRssLinks(contents->GetLastCommittedURL(), contents,
+  feed::FetchRssLinks(GetWebContents().GetLastCommittedURL(), &GetWebContents(),
                       base::BindOnce(&BraveNewsTabHelper::OnReceivedRssUrls,
                                      weak_ptr_factory_.GetWeakPtr(),
-                                     contents->GetLastCommittedURL()));
+                                     GetWebContents().GetLastCommittedURL()));
 #endif
 
   AvailableFeedsChanged();

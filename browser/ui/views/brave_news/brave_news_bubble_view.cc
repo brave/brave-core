@@ -146,7 +146,7 @@ BraveNewsBubbleView::BraveNewsBubbleView(views::View* action_view,
   layout->SetCollapseMargins(true);
 
   auto* tab_helper = BraveNewsTabHelper::FromWebContents(contents);
-  for (const auto& feed_item : tab_helper->available_feeds()) {
+  for (const auto& feed_item : tab_helper->GetAvailableFeeds()) {
     auto* child =
         AddChildView(std::make_unique<BraveNewsFeedRow>(feed_item, contents));
     child->SetProperty(views::kMarginsKey, gfx::Insets::TLBR(10, 0, 0, 0));
