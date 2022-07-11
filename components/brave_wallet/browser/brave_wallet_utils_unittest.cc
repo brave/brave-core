@@ -11,6 +11,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/containers/flat_set.h"
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "base/strings/string_number_conversions.h"
@@ -882,6 +883,12 @@ TEST_F(BraveWalletUtilsUnitTest, GetKnownEthChain) {
   prefs.registry()->RegisterDictionaryPref(kBraveWalletCustomNetworks);
   prefs.registry()->RegisterBooleanPref(kSupportEip1559OnLocalhostChain, false);
 
+  const base::flat_set<std::string> non_eip1559_networks = {
+      brave_wallet::mojom::kLocalhostChainId,
+      brave_wallet::mojom::kBinanceSmartChainMainnetChainId,
+      brave_wallet::mojom::kCeloMainnetChainId,
+      brave_wallet::mojom::kOptimismMainnetChainId};
+
   auto known_chains = brave_wallet::GetAllKnownNetworksForTesting();
   ASSERT_FALSE(known_chains.empty());
   for (const auto& chain : known_chains) {
@@ -897,7 +904,7 @@ TEST_F(BraveWalletUtilsUnitTest, GetKnownEthChain) {
     ASSERT_TRUE(network->data);
     ASSERT_TRUE(network->data->is_eth_data());
     EXPECT_EQ(network->data->get_eth_data()->is_eip1559,
-              chain->chain_id != brave_wallet::mojom::kLocalhostChainId);
+              !non_eip1559_networks.contains(chain->chain_id));
   }
 
   prefs.SetBoolean(kSupportEip1559OnLocalhostChain, true);
