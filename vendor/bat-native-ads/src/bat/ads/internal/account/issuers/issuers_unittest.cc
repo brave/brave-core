@@ -142,24 +142,4 @@ TEST_F(BatAdsIssuersTest, FetchIssuersNonHttpOkResponse) {
   EXPECT_EQ(expected_issuers, GetIssuers());
 }
 
-TEST_F(BatAdsIssuersTest, FetchIssuersHttpUpgradeRequiredResponse) {
-  // Arrange
-  const URLEndpointMap& endpoints = {{// Issuers request
-                                      R"(/v1/issuers/)",
-                                      {{net::kHttpUpgradeRequired, ""}}}};
-  MockUrlRequest(ads_client_mock_, endpoints);
-
-  EXPECT_CALL(*issuers_delegate_mock_, OnDidFetchIssuers(_)).Times(0);
-  EXPECT_CALL(*issuers_delegate_mock_, OnFailedToFetchIssuers()).Times(1);
-  EXPECT_CALL(*issuers_delegate_mock_, OnWillRetryFetchingIssuers(_)).Times(0);
-  EXPECT_CALL(*issuers_delegate_mock_, OnDidRetryFetchingIssuers()).Times(0);
-
-  // Act
-  issuers_->MaybeFetch();
-
-  // Assert
-  const IssuersInfo expected_issuers;
-  EXPECT_EQ(expected_issuers, GetIssuers());
-}
-
 }  // namespace ads
