@@ -799,6 +799,7 @@ source_set("ads") {
     "src/bat/ads/internal/deprecated/client/preferences/saved_ad_info_aliases.h",
     "src/bat/ads/internal/deprecated/confirmations/confirmation_state_manager.cc",
     "src/bat/ads/internal/deprecated/confirmations/confirmation_state_manager.h",
+    "src/bat/ads/internal/deprecated/confirmations/confirmation_state_manager_constants.h",
     "src/bat/ads/internal/deprecated/json/json_helper.cc",
     "src/bat/ads/internal/deprecated/json/json_helper.h",
     "src/bat/ads/internal/diagnostics/diagnostic_aliases.h",
