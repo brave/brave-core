@@ -102,18 +102,18 @@ function GetBackgroundImageSrc (props: Props) {
   return undefined
 }
 
-function GetShouldShowSearchPromotion (props: Props, state: State) {
+function GetShouldShowSearchPromotion (props: Props, showSearchPromotion: boolean) {
   if (GetIsShowingBrandedWallpaper(props)) { return false }
 
-  return props.newTabData.searchPromotionEnabled && state.showSearchPromotion
+  return props.newTabData.searchPromotionEnabled && showSearchPromotion
 }
 
-function GetShouldForceToHideWidget (props: Props, state: State) {
-  console.error(window.innerWidth)
-  if (!GetShouldShowSearchPromotion(props, state)) {
+function GetShouldForceToHideWidget (props: Props, showSearchPromotion: boolean) {
+  if (!GetShouldShowSearchPromotion(props, showSearchPromotion)) {
     return false
   }
 
+  // Avoid promotion popup and other widgets overlap with narrow window.
   return window.innerWidth < 1000
 }
 
@@ -172,7 +172,11 @@ class NewTabPage extends React.Component<Props, State> {
         this.setState({ isPromptingBraveToday: true })
       }, 1700)
     }
-    this.setState({ showSearchPromotion: this.props.newTabData.searchPromotionEnabled })
+    const searchPromotionEnabled = this.props.newTabData.searchPromotionEnabled
+    this.setState({
+      showSearchPromotion: searchPromotionEnabled,
+      forceToHideWidget: GetShouldForceToHideWidget(this.props, searchPromotionEnabled)
+    })
     window.addEventListener('resize', this.handleResize.bind(this))
   }
 
@@ -208,7 +212,7 @@ class NewTabPage extends React.Component<Props, State> {
 
   handleResize () {
     this.setState({
-      forceToHideWidget: GetShouldForceToHideWidget(this.props, this.state)
+      forceToHideWidget: GetShouldForceToHideWidget(this.props, this.state.showSearchPromotion)
     })
   }
 
@@ -900,7 +904,7 @@ class NewTabPage extends React.Component<Props, State> {
   }
 
   renderSearchPromotion () {
-    if (!GetShouldShowSearchPromotion(this.props, this.state)) {
+    if (!GetShouldShowSearchPromotion(this.props, this.state.showSearchPromotion)) {
       return null
     }
 

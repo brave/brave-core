@@ -19,7 +19,7 @@ enum class ConversionType;
 
 bool IsNTPPromotionEnabled(PrefService* prefs, TemplateURLService* service);
 
-// Promotion tyoe from omnibox.
+// Promotion type from omnibox.
 ConversionType GetConversionType(PrefService* prefs,
                                  TemplateURLService* service);
 void RegisterPrefs(PrefRegistrySimple* registry);
