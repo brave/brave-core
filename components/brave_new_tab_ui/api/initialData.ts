@@ -90,9 +90,7 @@ export async function getInitialData (): Promise<InitialData> {
           resolve(supported)
         })
       }),
-      getNTPBrowserAPI().pageHandler.isSearchPromotionEnabled().then(
-        value => value.enabled
-      )
+      getNTPBrowserAPI().pageHandler.isSearchPromotionEnabled().then(({ enabled }) => enabled)
     ])
     console.timeStamp('Got all initial data.')
     return {
