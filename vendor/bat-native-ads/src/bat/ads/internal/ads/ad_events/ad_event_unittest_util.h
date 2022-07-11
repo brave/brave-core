@@ -48,8 +48,7 @@ void FireAdEvent(const AdEventInfo& ad_event);
 void FireAdEvents(const AdEventInfo& ad_event, const int count);
 
 int GetAdEventCount(const AdType& ad_type,
-                    const ConfirmationType& confirmation_type,
-                    const AdEventList& ad_events);
+                    const ConfirmationType& confirmation_type);
 
 }  // namespace ads
 

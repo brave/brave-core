@@ -9,6 +9,7 @@
 #include "base/time/time.h"
 #include "bat/ads/ad_type.h"
 #include "bat/ads/confirmation_type.h"
+#include "bat/ads/internal/account/transactions/transactions.h"
 #include "bat/ads/internal/account/transactions/transactions_database_table.h"
 #include "bat/ads/internal/base/unittest/unittest_time_util.h"
 #include "bat/ads/transaction_info.h"
@@ -42,6 +43,20 @@ TransactionInfo BuildTransaction(const double value,
 TransactionInfo BuildTransaction(const double value,
                                  const ConfirmationType& confirmation_type) {
   return BuildTransaction(value, confirmation_type, base::Time());
+}
+
+int GetTransactionCount() {
+  int count = 0;
+
+  transactions::GetForDateRange(
+      DistantPast(), DistantFuture(),
+      [&count](const bool success,
+               const TransactionList& transactions) mutable {
+        ASSERT_TRUE(success);
+        count = transactions.size();
+      });
+
+  return count;
 }
 
 }  // namespace ads

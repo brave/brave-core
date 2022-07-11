@@ -6,7 +6,6 @@
 #include "bat/ads/internal/covariates/covariate_manager.h"
 
 #include <utility>
-#include <vector>
 
 #include "base/check.h"
 #include "base/no_destructor.h"

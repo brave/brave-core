@@ -16,19 +16,20 @@ namespace ads {
 struct CreativeAdInfo;
 
 template <typename T>
-T PaceAds(const T& ads) {
-  if (ads.empty()) {
+T PaceCreativeAds(const T& creative_ads) {
+  if (creative_ads.empty()) {
     return {};
   }
 
-  T paced_ads;
+  T paced_creative_ads;
 
-  std::copy_if(ads.cbegin(), ads.cend(), std::back_inserter(paced_ads),
+  std::copy_if(creative_ads.cbegin(), creative_ads.cend(),
+               std::back_inserter(paced_creative_ads),
                [](const CreativeAdInfo& creative_ad) {
                  return !ShouldPaceAd(creative_ad);
                });
 
-  return paced_ads;
+  return paced_creative_ads;
 }
 
 }  // namespace ads

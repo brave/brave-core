@@ -9,7 +9,7 @@
 #include "bat/ads/internal/deprecated/json/json_helper.h"
 #include "url/gurl.h"
 
-// npm run test -- brave_unit_tests --filter=BatAdsNewTabPageAdInfoTest*
+// npm run test -- brave_unit_tests --filter=BatAds*
 
 namespace ads {
 

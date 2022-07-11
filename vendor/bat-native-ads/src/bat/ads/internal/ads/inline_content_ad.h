@@ -13,8 +13,6 @@
 #include "bat/ads/ads_callback.h"
 #include "bat/ads/internal/ads/ad_events/inline_content_ads/inline_content_ad_event_handler_observer.h"
 #include "bat/ads/internal/ads/serving/inline_content_ad_serving_observer.h"
-#include "bat/ads/internal/geographic/subdivision/subdivision_targeting.h"
-#include "bat/ads/internal/resources/behavioral/anti_targeting/anti_targeting_resource.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
 
 namespace ads {
@@ -59,6 +57,7 @@ class InlineContentAd final : public inline_content_ads::EventHandlerObserver,
   void OnDidServeInlineContentAd(const InlineContentAdInfo& ad) override;
 
   // inline_content_ads::EventHandlerObserver:
+  void OnInlineContentAdServed(const InlineContentAdInfo& ad) override;
   void OnInlineContentAdViewed(const InlineContentAdInfo& ad) override;
   void OnInlineContentAdClicked(const InlineContentAdInfo& ad) override;
 

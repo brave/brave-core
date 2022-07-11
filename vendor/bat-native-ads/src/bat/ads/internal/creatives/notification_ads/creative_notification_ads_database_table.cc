@@ -6,11 +6,8 @@
 #include "bat/ads/internal/creatives/notification_ads/creative_notification_ads_database_table.h"
 
 #include <algorithm>
-#include <functional>
 #include <map>
-#include <string>
 #include <utility>
-#include <vector>
 
 #include "base/strings/string_util.h"
 #include "base/strings/stringprintf.h"

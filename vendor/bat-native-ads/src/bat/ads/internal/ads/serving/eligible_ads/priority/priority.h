@@ -10,26 +10,27 @@
 
 #include "base/containers/flat_map.h"
 #include "bat/ads/internal/ads/serving/eligible_ads/priority/priority_util.h"
+#include "bat/ads/internal/base/logging_util.h"
 
 namespace ads {
 
 template <typename T>
-T PrioritizeAds(const T& ads) {
-  if (ads.empty()) {
+T PrioritizeCreativeAds(const T& creative_ads) {
+  if (creative_ads.empty()) {
     return {};
   }
 
   const base::flat_map<unsigned int, T> buckets =
-      SortAdsIntoPrioritizedBuckets(ads);
+      SortCreativeAdsIntoPrioritizedBuckets(creative_ads);
   if (buckets.empty()) {
     return {};
   }
 
   const std::pair<unsigned int, T> bucket = GetHighestPriorityBucket(buckets);
   const unsigned int priority = bucket.first;
-  const T creative_ads = bucket.second;
+  const T prioritized_creative_ads = bucket.second;
 
-  BLOG(2, creative_ads.size()
+  BLOG(2, prioritized_creative_ads.size()
               << " ads with a priority of " << priority << " in bucket 1");
 
   int index = 2;
@@ -43,7 +44,7 @@ T PrioritizeAds(const T& ads) {
     index++;
   }
 
-  return creative_ads;
+  return prioritized_creative_ads;
 }
 
 }  // namespace ads

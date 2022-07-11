@@ -7,7 +7,7 @@
 
 #include "base/time/time.h"
 #include "bat/ads/internal/ads_client_helper.h"
-#include "bat/ads/internal/user_interaction/browsing/user_activity_features.h"
+#include "bat/ads/internal/user_interaction/user_activity/user_activity_features.h"
 #include "bat/ads/pref_names.h"
 
 namespace ads {

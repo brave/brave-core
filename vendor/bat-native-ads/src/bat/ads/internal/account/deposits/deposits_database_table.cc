@@ -5,7 +5,6 @@
 
 #include "bat/ads/internal/account/deposits/deposits_database_table.h"
 
-#include <functional>
 #include <utility>
 
 #include "base/check.h"

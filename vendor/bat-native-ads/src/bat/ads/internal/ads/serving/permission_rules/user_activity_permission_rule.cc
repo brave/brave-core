@@ -7,7 +7,7 @@
 
 #include "bat/ads/internal/account/account_util.h"
 #include "bat/ads/internal/base/platform/platform_helper.h"
-#include "bat/ads/internal/user_interaction/browsing/user_activity_scoring_util.h"
+#include "bat/ads/internal/user_interaction/user_activity/user_activity_scoring_util.h"
 
 namespace ads {
 

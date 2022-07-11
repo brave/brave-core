@@ -5,7 +5,6 @@
 
 #include "bat/ads/internal/segments/segments_util.h"
 
-#include <algorithm>
 #include <set>
 #include <vector>
 

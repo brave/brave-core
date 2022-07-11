@@ -5,7 +5,6 @@
 
 #include "bat/ads/internal/conversions/conversions_database_table.h"
 
-#include <functional>
 #include <utility>
 
 #include "base/check.h"

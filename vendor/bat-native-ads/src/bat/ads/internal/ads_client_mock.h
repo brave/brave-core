@@ -6,12 +6,10 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ADS_CLIENT_MOCK_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ADS_CLIENT_MOCK_H_
 
-#include "bat/ads/ads_client.h"
-
 #include <string>
 #include <vector>
 
-#include "bat/ads/public/interfaces/ads.mojom.h"
+#include "bat/ads/ads_client.h"
 #include "testing/gmock/include/gmock/gmock.h"
 
 namespace ads {

@@ -10,11 +10,9 @@
 
 #include "bat/ads/internal/ads/ad_events/ad_event_util.h"
 #include "bat/ads/internal/ads/serving/choose/ad_predictor_aliases.h"
-#include "bat/ads/internal/ads/serving/choose/ad_predictor_info.h"
 #include "bat/ads/internal/ads/serving/eligible_ads/eligible_ads_aliases.h"
 #include "bat/ads/internal/ads/serving/eligible_ads/eligible_ads_features.h"
 #include "bat/ads/internal/ads/serving/targeting/top_segments.h"
-#include "bat/ads/internal/ads/serving/targeting/user_model_info.h"
 #include "bat/ads/internal/base/containers/container_util.h"
 #include "bat/ads/internal/segments/segments_aliases.h"
 

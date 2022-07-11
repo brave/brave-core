@@ -6,9 +6,14 @@
 #include "bat/ads/internal/ads/new_tab_page_ad.h"
 
 #include "bat/ads/confirmation_type.h"
+#include "bat/ads/history_item_info.h"
 #include "bat/ads/internal/account/account.h"
 #include "bat/ads/internal/ads/ad_events/new_tab_page_ads/new_tab_page_ad_event_handler.h"
 #include "bat/ads/internal/ads/serving/new_tab_page_ad_serving.h"
+#include "bat/ads/internal/deprecated/client/client_state_manager.h"
+#include "bat/ads/internal/geographic/subdivision/subdivision_targeting.h"
+#include "bat/ads/internal/history/history_manager.h"
+#include "bat/ads/internal/resources/behavioral/anti_targeting/anti_targeting_resource.h"
 #include "bat/ads/internal/transfer/transfer.h"
 #include "bat/ads/new_tab_page_ad_info.h"
 
@@ -24,11 +29,10 @@ NewTabPageAd::NewTabPageAd(
   DCHECK(transfer_);
 
   event_handler_ = std::make_unique<new_tab_page_ads::EventHandler>();
+  event_handler_->AddObserver(this);
 
   serving_ = std::make_unique<new_tab_page_ads::Serving>(
       subdivision_targeting, anti_targeting_resource);
-
-  event_handler_->AddObserver(this);
   serving_->AddObserver(this);
 }
 
@@ -52,17 +56,25 @@ void NewTabPageAd::TriggerEvent(const std::string& placement_id,
 ///////////////////////////////////////////////////////////////////////////////
 
 void NewTabPageAd::OnDidServeNewTabPageAd(const NewTabPageAdInfo& ad) {
-  event_handler_->FireEvent(ad.placement_id, ad.creative_instance_id,
-                            mojom::NewTabPageAdEventType::kServed);
+  TriggerEvent(ad.placement_id, ad.creative_instance_id,
+               mojom::NewTabPageAdEventType::kServed);
+}
+
+void NewTabPageAd::OnNewTabPageAdServed(const NewTabPageAdInfo& ad) {
+  ClientStateManager::GetInstance()->UpdateSeenAd(ad);
 }
 
 void NewTabPageAd::OnNewTabPageAdViewed(const NewTabPageAdInfo& ad) {
+  HistoryManager::GetInstance()->Add(ad, ConfirmationType::kViewed);
+
   account_->Deposit(ad.creative_instance_id, ad.type,
                     ConfirmationType::kViewed);
 }
 
 void NewTabPageAd::OnNewTabPageAdClicked(const NewTabPageAdInfo& ad) {
   transfer_->SetLastClickedAd(ad);
+
+  HistoryManager::GetInstance()->Add(ad, ConfirmationType::kClicked);
 
   account_->Deposit(ad.creative_instance_id, ad.type,
                     ConfirmationType::kClicked);

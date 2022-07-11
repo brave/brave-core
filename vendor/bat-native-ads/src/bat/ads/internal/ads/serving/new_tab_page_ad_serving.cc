@@ -92,14 +92,7 @@ void Serving::MaybeServeAd(MaybeServeNewTabPageAdCallback callback) {
         const CreativeNewTabPageAdInfo& creative_ad = creative_ads.at(rand);
 
         const NewTabPageAdInfo& ad = BuildNewTabPageAd(creative_ad);
-        if (!ServeAd(ad, callback)) {
-          BLOG(1, "Failed to serve new tab page ad");
-          FailedToServeAd(callback);
-          return;
-        }
-
-        BLOG(1, "Served new tab page ad");
-        ServedAd(ad);
+        ServeAd(ad, callback);
       });
 }
 
@@ -113,16 +106,21 @@ bool Serving::IsSupported() const {
   return true;
 }
 
-bool Serving::ServeAd(const NewTabPageAdInfo& ad,
-                      MaybeServeNewTabPageAdCallback callback) const {
-  DCHECK(ad.IsValid());
-
-  if (ad.wallpapers.empty()) {
-    callback(/* success */ false, ad);
-    return false;
+void Serving::ServeAd(const NewTabPageAdInfo& ad,
+                      MaybeServeNewTabPageAdCallback callback) {
+  if (!ad.IsValid()) {
+    BLOG(1, "Failed to serve new tab page ad");
+    FailedToServeAd(callback);
+    return;
   }
 
-  BLOG(1, "Serving new tab page ad:\n"
+  if (ad.wallpapers.empty()) {
+    BLOG(1, "Failed to serve new tab page ad due to missing wallpapers");
+    callback(/* success */ false, ad);
+    return;
+  }
+
+  BLOG(1, "Served new tab page ad:\n"
               << "  placementId: " << ad.placement_id << "\n"
               << "  creativeInstanceId: " << ad.creative_instance_id << "\n"
               << "  creativeSetId: " << ad.creative_set_id << "\n"
@@ -133,27 +131,24 @@ bool Serving::ServeAd(const NewTabPageAdInfo& ad,
               << "  imageUrl: " << ad.image_url << "\n"
               << "  alt: " << ad.alt << "\n"
               << "  targetUrl: " << ad.target_url << "\n"
-              << "  wallpaperImageUrl: " << ad.wallpapers[0].image_url << "\n"
-              << "  wallpaperFocalPointX: " << ad.wallpapers[0].focal_point.x
-              << "\n"
-              << "  wallpaperFocalPointY: " << ad.wallpapers[0].focal_point.y);
+              << "  wallpaper:\n"
+              << "    imageUrl: " << ad.wallpapers[0].image_url << "\n"
+              << "    focalPoint:\n"
+              << "      x: " << ad.wallpapers[0].focal_point.x << "\n"
+              << "      y: " << ad.wallpapers[0].focal_point.y);
 
-  callback(/* success */ true, ad);
+  DCHECK(eligible_ads_);
+  eligible_ads_->SetLastServedAd(ad);
 
   NotifyDidServeNewTabPageAd(ad);
 
-  return true;
+  callback(/* success */ true, ad);
 }
 
 void Serving::FailedToServeAd(MaybeServeNewTabPageAdCallback callback) {
-  callback(/* success */ false, {});
-
   NotifyFailedToServeNewTabPageAd();
-}
 
-void Serving::ServedAd(const NewTabPageAdInfo& ad) {
-  DCHECK(eligible_ads_);
-  eligible_ads_->SetLastServedAd(ad);
+  callback(/* success */ false, {});
 }
 
 void Serving::NotifyOpportunityAroseToServeNewTabPageAd(

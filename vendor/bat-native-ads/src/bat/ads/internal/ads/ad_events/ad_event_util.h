@@ -25,7 +25,6 @@ bool HasFiredAdEvent(const AdInfo& ad,
 
 absl::optional<base::Time> GetLastSeenAdTime(const AdEventList& ad_events,
                                              const CreativeAdInfo& creative_ad);
-
 absl::optional<base::Time> GetLastSeenAdvertiserTime(
     const AdEventList& ad_events,
     const CreativeAdInfo& creative_ad);

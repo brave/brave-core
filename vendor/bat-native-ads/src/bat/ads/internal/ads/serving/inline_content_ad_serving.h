@@ -47,11 +47,10 @@ class Serving final {
  private:
   bool IsSupported() const;
 
-  bool ServeAd(const InlineContentAdInfo& ad,
-               MaybeServeInlineContentAdCallback callback) const;
+  void ServeAd(const InlineContentAdInfo& ad,
+               MaybeServeInlineContentAdCallback callback);
   void FailedToServeAd(const std::string& dimensions,
                        MaybeServeInlineContentAdCallback callback);
-  void ServedAd(const InlineContentAdInfo& ad);
 
   void NotifyOpportunityAroseToServeInlineContentAd(
       const SegmentList& segments) const;
