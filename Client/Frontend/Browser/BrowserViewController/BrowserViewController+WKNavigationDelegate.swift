@@ -9,6 +9,7 @@ import Data
 import BraveShared
 import BraveCore
 import BraveUI
+import BraveWallet
 
 private let log = Logger.browserLogger
 private let rewardsLog = Logger.braveCoreLogger
@@ -65,7 +66,16 @@ extension BrowserViewController: WKNavigationDelegate {
     }
     toolbarVisibilityViewModel.toolbarState = .expanded
 
-    tabManager.selectedTab?.isWalletIconVisible = false
+    if let selectedTab = tabManager.selectedTab,
+       selectedTab.url?.origin != webView.url?.origin {
+      // new site has a different origin, hide wallet icon.
+      tabManager.selectedTab?.isWalletIconVisible = false
+      // close wallet panel if it's open
+      if let popoverController = self.presentedViewController as? PopoverController,
+         popoverController.contentController is WalletPanelHostingController {
+        self.dismiss(animated: true)
+      }
+    }
 
     updateFindInPageVisibility(visible: false)
     displayPageZoom(visible: false)
