@@ -193,11 +193,7 @@ void SubdivisionTargeting::OnFetch(const mojom::UrlResponse& url_response) {
   BLOG(6, UrlResponseToString(url_response));
   BLOG(7, UrlResponseHeadersToString(url_response));
 
-  if (url_response.status_code == net::kHttpUpgradeRequired) {
-    BLOG(1,
-         "Failed to fetch subdivision target as a browser upgrade is required");
-    return;
-  } else if (url_response.status_code != net::HTTP_OK) {
+  if (url_response.status_code != net::HTTP_OK) {
     BLOG(1, "Failed to fetch subdivision target");
     Retry();
     return;
