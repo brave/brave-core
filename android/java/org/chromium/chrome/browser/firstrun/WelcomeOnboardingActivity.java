@@ -196,8 +196,6 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
             mBtnNegative.setVisibility(View.VISIBLE);
 
             if (PackageUtils.isFirstInstall(this)
-                    && (getPackageName().equals(BraveConstants.BRAVE_NIGHTLY_PACKAGE_NAME)
-                            || getPackageName().equals(BraveConstants.BRAVE_BETA_PACKAGE_NAME))
                     && !OnboardingPrefManager.getInstance().isP3aCrashReportingMessageShown()) {
                 mCheckboxCrash.setChecked(true);
                 UmaSessionStats.changeMetricsReportingConsent(true);
