@@ -53,6 +53,8 @@ class NewTabPageAd final : public new_tab_page_ads::EventHandlerObserver,
 
  private:
   // new_tab_page_ads::ServingObserver:
+  void OnOpportunityAroseToServeNewTabPageAd(
+      const SegmentList& segments) override;
   void OnDidServeNewTabPageAd(const NewTabPageAdInfo& ad) override;
 
   // new_tab_page_ads::EventHandlerObserver:

@@ -10,6 +10,7 @@
 #include "bat/ads/internal/account/account.h"
 #include "bat/ads/internal/ads/ad_events/new_tab_page_ads/new_tab_page_ad_event_handler.h"
 #include "bat/ads/internal/ads/serving/new_tab_page_ad_serving.h"
+#include "bat/ads/internal/base/logging_util.h"
 #include "bat/ads/internal/deprecated/client/client_state_manager.h"
 #include "bat/ads/internal/geographic/subdivision/subdivision_targeting.h"
 #include "bat/ads/internal/history/history_manager.h"
@@ -54,6 +55,11 @@ void NewTabPageAd::TriggerEvent(const std::string& placement_id,
 }
 
 ///////////////////////////////////////////////////////////////////////////////
+
+void NewTabPageAd::OnOpportunityAroseToServeNewTabPageAd(
+    const SegmentList& segments) {
+  BLOG(1, "Opportunity arose to serve a new tab page ad");
+}
 
 void NewTabPageAd::OnDidServeNewTabPageAd(const NewTabPageAdInfo& ad) {
   TriggerEvent(ad.placement_id, ad.creative_instance_id,

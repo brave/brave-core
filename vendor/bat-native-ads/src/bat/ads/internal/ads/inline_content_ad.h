@@ -54,6 +54,8 @@ class InlineContentAd final : public inline_content_ads::EventHandlerObserver,
 
  private:
   // inline_content_ads::ServingObserver:
+  void OnOpportunityAroseToServeInlineContentAd(
+      const SegmentList& segments) override;
   void OnDidServeInlineContentAd(const InlineContentAdInfo& ad) override;
 
   // inline_content_ads::EventHandlerObserver:
