@@ -7,8 +7,6 @@ static_library("browser") {
     "brave_news_controller.h",
     "brave_news_p3a.cc",
     "brave_news_p3a.h",
-    "brave_news_tab_helper.cc",
-    "brave_news_tab_helper.h",
     "direct_feed_controller.cc",
     "direct_feed_controller.h",
     "feed_building.cc",
@@ -32,6 +30,7 @@ static_library("browser") {
   deps = [
     "//base",
     "//brave/components/api_request_helper",
+    "//brave/components/brave_ads/browser",
     "//brave/components/brave_private_cdn",
     "//brave/components/brave_today/common",
     "//brave/components/brave_today/common:mojom",

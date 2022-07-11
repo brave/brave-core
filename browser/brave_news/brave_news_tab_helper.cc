@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
-#include "brave/components/brave_today/browser/brave_news_tab_helper.h"
+#include "brave/browser/brave_news/brave_news_tab_helper.h"
 
 #include <dirent.h>
 #include <algorithm>

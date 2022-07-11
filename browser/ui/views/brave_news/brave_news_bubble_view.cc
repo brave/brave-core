@@ -13,7 +13,7 @@
 #include "base/strings/utf_string_conversions.h"
 #include "base/task/task_runner.h"
 #include "base/threading/sequenced_task_runner_handle.h"
-#include "brave/components/brave_today/browser/brave_news_tab_helper.h"
+#include "brave/browser/brave_news/brave_news_tab_helper.h"
 #include "brave/components/brave_today/common/pref_names.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/grit/brave_components_strings.h"

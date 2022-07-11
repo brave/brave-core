@@ -4,7 +4,7 @@
 #include <string>
 #include <vector>
 #include "brave/components/brave_today/browser/brave_news_controller.h"
-#include "brave/components/brave_today/browser/brave_news_tab_helper.h"
+#include "brave/browser/brave_news/brave_news_tab_helper.h"
 #include "brave/components/brave_today/browser/publishers_controller.h"
 #include "brave/components/brave_today/common/brave_news.mojom-forward.h"
 #include "chrome/browser/ui/tabs/tab_strip_model_observer.h"
