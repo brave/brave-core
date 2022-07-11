@@ -24,9 +24,13 @@ interface PageHandler {
   // Choose custom background from local file system.
   ChooseLocalCustomBackground();
   UseBraveBackground();
+  TryBraveSearchPromotion(string input, bool open_new_tab);
+  DismissBraveSearchPromotion();
+  IsSearchPromotionEnabled() => (bool enabled);
 };
 
 // WebUI-side handler for requests from the browser.
 interface Page {
   OnBackgroundUpdated(CustomBackground custom_background);
+  OnSearchPromotionDisabled();
 };

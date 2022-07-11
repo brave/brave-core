@@ -8,6 +8,7 @@ import * as statsAPI from './stats'
 import * as privateTabDataAPI from './privateTabData'
 import * as wallpaper from './wallpaper'
 import * as newTabAdsDataAPI from './newTabAdsData'
+import getNTPBrowserAPI from './background'
 
 export type InitialData = {
   preferences: NewTab.Preferences
@@ -19,6 +20,7 @@ export type InitialData = {
   binanceSupported: boolean
   cryptoDotComSupported: boolean
   ftxSupported: boolean
+  searchPromotionEnabled: boolean
 }
 
 export type PreInitialRewardsData = {
@@ -51,7 +53,8 @@ export async function getInitialData (): Promise<InitialData> {
       geminiSupported,
       cryptoDotComSupported,
       ftxSupported,
-      binanceSupported
+      binanceSupported,
+      searchPromotionEnabled
     ] = await Promise.all([
       preferencesAPI.getPreferences(),
       statsAPI.getStats(),
@@ -86,7 +89,8 @@ export async function getInitialData (): Promise<InitialData> {
         chrome.binance.isSupportedRegion((supported: boolean) => {
           resolve(supported)
         })
-      })
+      }),
+      getNTPBrowserAPI().pageHandler.isSearchPromotionEnabled().then(({ enabled }) => enabled)
     ])
     console.timeStamp('Got all initial data.')
     return {
@@ -98,7 +102,8 @@ export async function getInitialData (): Promise<InitialData> {
       geminiSupported,
       cryptoDotComSupported,
       ftxSupported,
-      binanceSupported
+      binanceSupported,
+      searchPromotionEnabled
     } as InitialData
   } catch (e) {
     console.error(e)

@@ -21,6 +21,9 @@ const base::Feature kOmniboxBanner{"BraveSearchOmniboxBanner",
 const base::Feature kOmniboxButton{"BraveSearchOmniboxButton",
                                    base::FEATURE_DISABLED_BY_DEFAULT};
 
+// Brave search promotion at NTP.
+const base::Feature kNTP{"BraveSearchNTP", base::FEATURE_DISABLED_BY_DEFAULT};
+
 }  // namespace features
 
 }  // namespace brave_search_conversion
