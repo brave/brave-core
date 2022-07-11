@@ -38,6 +38,7 @@
 #include "content/public/common/url_constants.h"
 #include "extensions/common/url_pattern.h"
 #include "mojo/public/cpp/bindings/remote.h"
+#include "net/dns/public/dns_query_type.h"
 #include "net/proxy_resolution/proxy_config.h"
 #include "net/proxy_resolution/proxy_config_service.h"
 #include "net/proxy_resolution/proxy_config_with_annotation.h"
@@ -100,6 +101,7 @@ class AdblockCnameResolveHostClient : public network::mojom::ResolveHostClient {
     network::mojom::ResolveHostParametersPtr optional_parameters =
         network::mojom::ResolveHostParameters::New();
     optional_parameters->include_canonical_name = true;
+    optional_parameters->dns_query_type = net::DnsQueryType::A;
 
     SecureDnsConfig secure_dns_config =
         SystemNetworkContextManager::GetStubResolverConfigReader()
