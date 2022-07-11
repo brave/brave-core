@@ -200,6 +200,10 @@ void BravePrefProvider::MigrateShieldsSettings(bool incognito) {
   if (incognito)
     return;
 
+  // Fix any wildcard entries that could cause issues like
+  // https://github.com/brave/brave-browser/issues/23113
+  EnsureNoWildcardEntries();
+
   // Prior to Chromium 88, we used the "plugins" ContentSettingsType along with
   // ResourceIdentifiers to store our settings, which we need to migrate now
   // first of all, before attempting any other migration.
