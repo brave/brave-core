@@ -9,7 +9,6 @@
 #include <memory>
 #include <string>
 
-#include "absl/types/optional.h"
 #include "base/callback_forward.h"
 #include "base/containers/flat_map.h"
 #include "base/memory/raw_ptr.h"

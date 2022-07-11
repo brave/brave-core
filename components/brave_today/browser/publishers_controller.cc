@@ -24,7 +24,6 @@
 #include "brave/components/brave_today/common/brave_news.mojom-forward.h"
 #include "brave/components/brave_today/common/brave_news.mojom.h"
 #include "brave/components/brave_today/common/pref_names.h"
-#include "content/public/browser/browser_thread.h"
 #include "url/origin.h"
 
 namespace brave_news {

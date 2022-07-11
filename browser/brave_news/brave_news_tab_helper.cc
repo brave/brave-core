@@ -11,7 +11,6 @@
 #include <utility>
 #include <vector>
 
-#include "absl/types/optional.h"
 #include "base/bind.h"
 #include "base/callback_forward.h"
 #include "base/callback_helpers.h"
