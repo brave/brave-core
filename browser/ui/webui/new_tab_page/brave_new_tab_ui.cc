@@ -16,7 +16,6 @@
 #include "brave/browser/ui/webui/new_tab_page/brave_new_tab_page_handler.h"
 #include "brave/browser/ui/webui/new_tab_page/top_sites_message_handler.h"
 #include "brave/components/brave_new_tab/resources/grit/brave_new_tab_generated_map.h"
-#include "brave/components/brave_search_conversion/utils.h"
 #include "brave/components/brave_today/browser/brave_news_controller.h"
 #include "brave/components/brave_today/common/features.h"
 #include "brave/components/l10n/common/locale_util.h"
@@ -29,7 +28,6 @@
 #include "content/public/browser/url_data_source.h"
 #include "content/public/browser/web_ui_data_source.h"
 
-using brave_search_conversion::IsNTPPromotionEnabled;
 using ntp_background_images::NTPCustomBackgroundImagesServiceFactory;
 using ntp_background_images::NTPCustomImagesSource;
 
@@ -69,10 +67,6 @@ BraveNewTabUI::BraveNewTabUI(content::WebUI* web_ui, const std::string& name)
   source->AddBoolean("featureFlagBraveNewsPromptEnabled",
                      base::FeatureList::IsEnabled(
                          brave_today::features::kBraveNewsCardPeekFeature));
-  source->AddBoolean(
-      "searchPromotionEnabled",
-      IsNTPPromotionEnabled(profile->GetPrefs(),
-                            TemplateURLServiceFactory::GetForProfile(profile)));
   web_ui->AddMessageHandler(
       base::WrapUnique(BraveNewTabMessageHandler::Create(source, profile)));
   web_ui->AddMessageHandler(

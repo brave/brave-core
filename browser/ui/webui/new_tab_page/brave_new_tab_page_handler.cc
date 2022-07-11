@@ -132,6 +132,11 @@ void BraveNewTabPageHandler::DismissBraveSearchPromotion() {
   brave_search_conversion::SetDismissed(profile_->GetPrefs());
 }
 
+void BraveNewTabPageHandler::IsSearchPromotionEnabled(
+    IsSearchPromotionEnabledCallback callback) {
+  std::move(callback).Run(IsNTPPromotionEnabled(profile_));
+}
+
 void BraveNewTabPageHandler::NotifySearchPromotionDisabledIfNeeded() const {
   // If enabled, we don't do anything. When NTP is reloaded or opened,
   // user will see promotion.
