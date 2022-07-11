@@ -56,6 +56,7 @@ public class OnboardingPrefManager {
     private static final String PREF_SHOW_SEARCHBOX_TOOLTIP = "show_searchbox_tooltip";
     private static final String PREF_P3A_CRASH_REPORTING_MESSAGE_SHOWN =
             "p3a_crash_reporting_message_shown";
+    private static final String PREF_URL_FOCUS_COUNT = "url_focus_count";
 
     private static OnboardingPrefManager sInstance;
 
@@ -187,6 +188,16 @@ public class OnboardingPrefManager {
     public void setSearchEngineOnboardingShown(boolean isShown) {
         SharedPreferences.Editor sharedPreferencesEditor = mSharedPreferences.edit();
         sharedPreferencesEditor.putBoolean(PREF_SEARCH_ENGINE_ONBOARDING, isShown);
+        sharedPreferencesEditor.apply();
+    }
+
+    public int getUrlFocusCount() {
+        return mSharedPreferences.getInt(PREF_URL_FOCUS_COUNT, 0);
+    }
+
+    public void updateUrlFocusCount() {
+        SharedPreferences.Editor sharedPreferencesEditor = mSharedPreferences.edit();
+        sharedPreferencesEditor.putInt(PREF_URL_FOCUS_COUNT, 1);
         sharedPreferencesEditor.apply();
     }
 
