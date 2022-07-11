@@ -242,6 +242,33 @@ void BraveWalletPermissionContext::GetAllowedAccounts(
 }
 
 // static
+bool BraveWalletPermissionContext::IsPermissionDenied(
+    blink::PermissionType permission,
+    content::RenderFrameHost* rfh) {
+  if (!rfh) {
+    return false;
+  }
+
+  // Fail if there is no last committed URL yet
+  auto* web_contents = content::WebContents::FromRenderFrameHost(rfh);
+  if (web_contents->GetMainFrame()->GetLastCommittedURL().is_empty()) {
+    return false;
+  }
+
+  auto* permission_manager = static_cast<permissions::BravePermissionManager*>(
+      permissions::PermissionsClient::Get()->GetPermissionManager(
+          web_contents->GetBrowserContext()));
+  if (!permission_manager) {
+    return false;
+  }
+
+  url::Origin origin = url::Origin::Create(rfh->GetLastCommittedURL());
+  return permission_manager->GetPermissionStatusForOrigin(permission, rfh,
+                                                          origin.GetURL()) ==
+         blink::mojom::PermissionStatus::DENIED;
+}
+
+// static
 bool BraveWalletPermissionContext::AddPermission(
     blink::PermissionType permission,
     content::BrowserContext* context,
@@ -285,6 +312,12 @@ bool BraveWalletPermissionContext::HasPermission(
       permissions::PermissionsClient::Get()->GetPermissionManager(context));
   if (!permission_manager)
     return false;
+
+  if (permission_manager->GetPermissionStatus(permission, origin.GetURL(),
+                                              origin.GetURL()) ==
+      blink::mojom::PermissionStatus::DENIED) {
+    return true;
+  }
 
   const ContentSettingsType content_settings_type =
       PermissionUtil::PermissionTypeToContentSettingSafe(permission);

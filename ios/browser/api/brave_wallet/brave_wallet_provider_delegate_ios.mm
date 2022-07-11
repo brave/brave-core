@@ -98,4 +98,9 @@ void BraveWalletProviderDelegateBridge::GetAllowedAccounts(
                    completion:completion];
 }
 
+bool BraveWalletProviderDelegateBridge::IsPermissionDenied(
+    mojom::CoinType type) {
+  return [bridge_ isPermissionDenied:static_cast<BraveWalletCoinType>(type)];
+}
+
 }  // namespace brave_wallet
