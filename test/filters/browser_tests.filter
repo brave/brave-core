@@ -23,6 +23,7 @@
 -All/DeclarativeNetRequestBrowserTest.*
 -All/DownloadFramePolicyBrowserTest_UpdateIframeSandboxFlags.*
 -All/DownloadReferrerPolicyTest.*
+-All/GetAuthTokenFunctionEnableGranularPermissionsTest.EnableGranularPermissions/*
 -All/IdentityGetProfileUserInfoFunctionTestWithAccountStatusParam.*
 -All/IntentPickerBubbleViewBrowserTest.*
 -All/IntentPickerBubbleViewFencedFrameBrowserTest.*
