@@ -19,10 +19,10 @@ enum class ImporterSource {
   kBookmarksHTMLFile,
   kChrome,
   kFirefox,
-  kMicrosoft, // includes IE, Legacy Edge, Chromium Edge
+  kMicrosoft,  // includes IE, Legacy Edge, Chromium Edge
   kOpera,
   kSafari,
-  kOther, // includes Vivaldi and can include others
+  kOther,  // includes Vivaldi and can include others
   kSize
 };
 }  // namespace
