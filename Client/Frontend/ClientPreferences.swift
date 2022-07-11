@@ -325,4 +325,9 @@ extension Preferences {
     public static let ntpOnboardingCompleted =
     Option<Bool>(key: "privacy-hub.onboarding-completed", default: true)
   }
+  
+  final public class WebsiteRedirects {
+    static let reddit = Option<Bool>(key: "website-redirect.reddit", default: false)
+    static let npr = Option<Bool>(key: "website-redirect.npr", default: false)
+  }
 }
