@@ -3823,3 +3823,23 @@ extension Strings {
   public static let invalidDetailsMessage = NSLocalizedString("invalidDetailsMessage", tableName: "BraveShared", bundle: .strings, value: "Invalid details in payment request", comment: "Error message if details don't have the right type or values")
   public static let clientErrorMessage = NSLocalizedString("clientErrorMessage", tableName: "BraveShared", bundle: .strings, value: "Client error", comment: "Client is in an invalid state which caused the error")
 }
+
+extension Strings {
+  public static let urlRedirectsSettings =
+  NSLocalizedString("urlRedirectsSettings", tableName: "BraveShared",
+                    bundle: .strings,
+                    value: "Website Redirects",
+                    comment: "Setting title for option to automatically redirect a url to another url")
+  
+  public static let redditRedirectFooter =
+  NSLocalizedString("redditRedirectFooter", tableName: "BraveShared",
+                    bundle: .strings,
+                    value: "Automatically redirects Reddit links to the older interface (at old.reddit.com). To force the new Reddit interface, use new.reddit.com instead.",
+                    comment: "Setting title for option to automatically redirect a url to another url")
+  
+  public static let nprRedirectFooter =
+  NSLocalizedString("nprRedirectFooter", tableName: "BraveShared",
+                    bundle: .strings,
+                    value: "Automatically redirects NPR links to their text-based version (at text.npr.org).",
+                    comment: "Setting title for option to automatically redirect a url to another url")
+}

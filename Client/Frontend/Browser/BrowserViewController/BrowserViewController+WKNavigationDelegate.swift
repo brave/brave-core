@@ -204,7 +204,17 @@ extension BrowserViewController: WKNavigationDelegate {
       forUrl: url,
       persistent: !isPrivateBrowsing
     )
-
+    
+    // Website redirection logic
+    if url.isWebPage(includeDataURIs: false),
+       navigationAction.targetFrame?.isMainFrame == true,
+       let redirectURL = WebsiteRedirects.redirect(for: url) {
+      
+      decisionHandler(.cancel, preferences)
+      tab?.loadRequest(URLRequest(url: redirectURL))
+      return
+    }
+        
     // Debouncing logic
     // Handle debouncing for main frame only and only if the site (etld+1) changes
     // We also only handle `http` and `https` requests

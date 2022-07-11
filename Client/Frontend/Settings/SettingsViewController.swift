@@ -314,6 +314,15 @@ class SettingsViewController: TableViewController {
         option: Preferences.General.mediaAutoBackgrounding,
         image: UIImage(named: "background_play_settings_icon", in: .current, compatibleWith: nil)!.template),
     ])
+    
+    let websiteRedirectsRow = Row(
+      text: Strings.urlRedirectsSettings,
+      selection: { [unowned self] in
+        let controller = UIHostingController(rootView: WebsiteRedirectsSettingsView())
+        self.navigationController?.pushViewController(controller, animated: true)
+      }, image: .init(systemName: "repeat"), accessory: .disclosureIndicator, cellClass: MultilineSubtitleCell.self)
+    
+    general.rows.append(websiteRedirectsRow)
 
     return general
   }()
