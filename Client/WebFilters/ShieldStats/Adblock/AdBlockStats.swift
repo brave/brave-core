@@ -43,7 +43,7 @@ public class AdBlockStats: LocalAdblockResourceProtocol {
   /// - Note: This method is should not be synced on `AdBlockStatus.adblockSerialQueue` and the result is synced on the main thread.
   func shouldBlock(requestURL: URL, sourceURL: URL, resourceType: AdblockEngine.ResourceType, callback: @escaping (Bool) -> Void) {
     Self.adblockSerialQueue.async { [weak self] in
-      let shouldBlock = self?.shouldBlock(requestURL: requestURL, sourceURL: sourceURL, resourceType: resourceType) == false
+      let shouldBlock = self?.shouldBlock(requestURL: requestURL, sourceURL: sourceURL, resourceType: resourceType) == true
       
       DispatchQueue.main.async {
         callback(shouldBlock)
