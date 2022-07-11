@@ -45,7 +45,7 @@ std::string eth_accounts();
 // Returns the number of most recent block.
 std::string eth_blockNumber();
 // Returns the fee history.
-std::string eth_feeHistory(int num_blocks,
+std::string eth_feeHistory(const std::string& num_blocks,
                            const std::string& head,
                            const std::vector<double>& reward_percentiles);
 // Returns the balance of the account of given address.
