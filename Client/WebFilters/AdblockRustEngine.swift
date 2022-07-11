@@ -19,6 +19,11 @@ extension AdblockEngine {
     // Note: `baseDomain` returns etld+1
     let isThirdParty = requestURL.baseDomain != sourceURL.baseDomain
     
+    guard requestURL.scheme != "data" else {
+      // TODO: @JS Investigate if we need to deal with data schemes and if so, how?
+      return false
+    }
+    
     guard sourceURL.absoluteString != "about:blank" else {
       // TODO: @JS Investigate why sometimes `sourceURL` is `about:blank` and find out how to deal with it
       return false
