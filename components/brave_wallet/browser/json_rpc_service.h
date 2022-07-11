@@ -168,6 +168,9 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
   void EnsGetEthAddr(const std::string& domain,
                      EnsGetEthAddrCallback callback) override;
 
+  bool SetNetwork(const std::string& chain_id,
+                  mojom::CoinType coin,
+                  bool silent);
   bool SetNetwork(const std::string& chain_id, mojom::CoinType coin);
   void SetNetwork(const std::string& chain_id,
                   mojom::CoinType coin,
