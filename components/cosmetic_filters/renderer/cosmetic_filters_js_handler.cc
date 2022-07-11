@@ -263,7 +263,7 @@ void CosmeticFiltersJSHandler::OnRemoteDisconnect() {
 bool CosmeticFiltersJSHandler::ProcessURL(
     const GURL& url,
     absl::optional<base::OnceClosure> callback) {
-  resources_dict_.reset();
+  resources_dict_ = absl::nullopt;
   url_ = url;
   enabled_1st_party_cf_ = false;
 
@@ -297,8 +297,10 @@ bool CosmeticFiltersJSHandler::ProcessURL(
         "Brave.CosmeticFilters.UrlCosmeticResourcesSync");
     base::Value result;
     cosmetic_filters_resources_->UrlCosmeticResources(url_.spec(), &result);
-    resources_dict_ = base::DictionaryValue::From(
-        base::Value::ToUniquePtrValue(std::move(result)));
+
+    auto* dict = result.GetIfDict();
+    if (dict)
+      resources_dict_ = std::move(*dict);
   }
 
   return true;
@@ -310,8 +312,10 @@ void CosmeticFiltersJSHandler::OnUrlCosmeticResources(
   if (!EnsureConnected())
     return;
 
-  resources_dict_ = base::DictionaryValue::From(
-      base::Value::ToUniquePtrValue(std::move(result)));
+  auto* dict = result.GetIfDict();
+  if (dict)
+    resources_dict_ = std::move(*dict);
+
   std::move(callback).Run();
 }
 
@@ -321,7 +325,7 @@ void CosmeticFiltersJSHandler::ApplyRules(bool de_amp_enabled) {
     return;
 
   std::string scriptlet_script;
-  base::Value* injected_script = resources_dict_->FindPath("injected_script");
+  base::Value* injected_script = resources_dict_->Find("injected_script");
   if (injected_script &&
       base::JSONWriter::Write(*injected_script, &scriptlet_script)) {
     scriptlet_script = base::StringPrintf(kScriptletInitScript,
@@ -342,7 +346,7 @@ void CosmeticFiltersJSHandler::ApplyRules(bool de_amp_enabled) {
   }
 
   // Working on css rules
-  generichide_ = resources_dict_->FindBoolKey("generichide").value_or(false);
+  generichide_ = resources_dict_->FindBool("generichide").value_or(false);
   std::string cosmetic_filtering_init_script = base::StringPrintf(
       kCosmeticFilteringInitScript, enabled_1st_party_cf_ ? "true" : "false",
       generichide_ ? "true" : "false");
@@ -355,40 +359,40 @@ void CosmeticFiltersJSHandler::ApplyRules(bool de_amp_enabled) {
       blink::BackForwardCacheAware::kAllow);
   ExecuteObservingBundleEntryPoint();
 
-  CSSRulesRoutine(resources_dict_.get());
+  CSSRulesRoutine(*resources_dict_);
 }
 
 void CosmeticFiltersJSHandler::CSSRulesRoutine(
-    base::DictionaryValue* resources_dict) {
+    const base::Value::Dict& resources_dict) {
   blink::WebLocalFrame* web_frame = render_frame_->GetWebFrame();
-  base::ListValue* cf_exceptions_list;
-  if (resources_dict->GetList("exceptions", &cf_exceptions_list)) {
-    for (size_t i = 0; i < cf_exceptions_list->GetList().size(); i++) {
-      exceptions_.push_back(cf_exceptions_list->GetList()[i].GetString());
+  const auto* cf_exceptions_list = resources_dict.FindList("exceptions");
+  if (cf_exceptions_list) {
+    for (const auto& item : *cf_exceptions_list) {
+      DCHECK(item.is_string());
+      exceptions_.push_back(item.GetString());
     }
   }
   // If its a vetted engine AND we're not in aggressive mode, don't apply
   // cosmetic filtering from the default engine.
-  base::ListValue* hide_selectors_list;
-  if (!resources_dict->GetList("hide_selectors", &hide_selectors_list) ||
-      (IsVettedSearchEngine(url_) && !enabled_1st_party_cf_)) {
-    hide_selectors_list = nullptr;
-  }
+  const auto* hide_selectors_list =
+      (IsVettedSearchEngine(url_) && !enabled_1st_party_cf_)
+          ? nullptr
+          : resources_dict.FindList("hide_selectors");
 
   std::string stylesheet = "";
 
-  if (hide_selectors_list && hide_selectors_list->GetList().size() != 0) {
+  if (hide_selectors_list && !hide_selectors_list->empty()) {
     // treat `hide_selectors` the same as `force_hide_selectors` if aggressive
     // mode is enabled.
     if (enabled_1st_party_cf_) {
-      for (auto& selector : hide_selectors_list->GetList()) {
+      for (auto& selector : *hide_selectors_list) {
         DCHECK(selector.is_string());
         stylesheet += selector.GetString() + "{display:none !important}";
       }
     } else {
       std::string json_selectors;
-      if (!base::JSONWriter::Write(*hide_selectors_list, &json_selectors) ||
-          json_selectors.empty()) {
+      base::JSONWriter::Write(*hide_selectors_list, &json_selectors);
+      if (json_selectors.empty()) {
         json_selectors = "[]";
       }
       // Building a script for stylesheet modifications
@@ -402,25 +406,24 @@ void CosmeticFiltersJSHandler::CSSRulesRoutine(
     }
   }
 
-  base::Value* force_hide_selectors_list =
-      resources_dict->FindListKey("force_hide_selectors");
-  if (force_hide_selectors_list &&
-      force_hide_selectors_list->GetList().size() != 0) {
-    for (auto& selector : force_hide_selectors_list->GetList()) {
+  const auto* force_hide_selectors_list =
+      resources_dict.FindList("force_hide_selectors");
+  if (force_hide_selectors_list) {
+    for (auto& selector : *force_hide_selectors_list) {
       DCHECK(selector.is_string());
       stylesheet += selector.GetString() + "{display:none !important}";
     }
   }
 
-  base::Value* style_selectors_dictionary =
-      resources_dict->FindDictKey("style_selectors");
+  const auto* style_selectors_dictionary =
+      resources_dict.FindDict("style_selectors");
   if (style_selectors_dictionary) {
-    for (const auto kv : style_selectors_dictionary->DictItems()) {
+    for (const auto kv : *style_selectors_dictionary) {
+      DCHECK(kv.second.is_list());
       std::string selector = kv.first;
-      base::Value& styles = kv.second;
-      DCHECK(styles.is_list());
+      const auto& styles = kv.second.GetList();
       stylesheet += selector + '{';
-      for (auto& style : styles.GetList()) {
+      for (auto& style : styles) {
         DCHECK(style.is_string());
         stylesheet += style.GetString() + ';';
       }
