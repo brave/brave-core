@@ -8,7 +8,7 @@ import { debounce } from '../../../common/debounce'
 const keyName = 'rewards-data'
 
 export const defaultState: Rewards.State = {
-  version: 1,
+  version: 2,
   createdTimestamp: null,
   enabledAds: false,
   enabledAdsMigrated: false,
@@ -76,7 +76,8 @@ export const defaultState: Rewards.State = {
   parameters: {
     autoContributeChoice: 0,
     autoContributeChoices: [],
-    rate: 0
+    rate: 0,
+    payoutStatus: {}
   },
   initializing: true,
   paymentId: '',

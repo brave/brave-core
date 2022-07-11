@@ -1,10 +1,11 @@
 /* This Source Code Form is subject to the terms of the Mozilla Public
-* License, v. 2.0. If a copy of the MPL was not distributed with this file,
-* You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
 
 import { LocaleContext, formatMessage } from '../lib/locale_context'
+import { ProviderPayoutStatus } from '../lib/provider_payout_status'
 
 import { NewTabLink } from './new_tab_link'
 import { TokenAmount } from './token_amount'
@@ -23,24 +24,6 @@ const pendingDaysFormatter = new Intl.NumberFormat(undefined, {
 const monthNameFormatter = new Intl.DateTimeFormat(undefined, {
   month: 'long'
 })
-
-const completedMessageDaysVisible = 3
-
-export function shouldShowRewardsPaymentCompleted (
-  nextPaymentDate: number | Date
-) {
-  if (typeof nextPaymentDate === 'number') {
-    nextPaymentDate = new Date(nextPaymentDate)
-  }
-
-  const now = Date.now()
-  if (nextPaymentDate.getTime() < now) {
-    return false
-  }
-
-  const days = new Date(now).getDate() - nextPaymentDate.getDate()
-  return days >= 0 && days <= completedMessageDaysVisible
-}
 
 export function getDaysUntilRewardsPayment (nextPaymentDate: number | Date) {
   if (typeof nextPaymentDate === 'number') {
@@ -95,6 +78,7 @@ interface Props {
   earningsLastMonth: number
   earningsReceived: boolean
   nextPaymentDate: number
+  providerPayoutStatus: ProviderPayoutStatus
 }
 
 export function PaymentStatusView (props: Props) {
@@ -122,11 +106,7 @@ export function PaymentStatusView (props: Props) {
     )
   }
 
-  if (!shouldShowRewardsPaymentCompleted(props.nextPaymentDate)) {
-    return null
-  }
-
-  if (props.earningsReceived) {
+  if (props.earningsReceived && props.providerPayoutStatus === 'complete') {
     return (
       <div className='rewards-payment-completed'>
         <div><PaymentCompleteIcon /></div>
@@ -141,30 +121,32 @@ export function PaymentStatusView (props: Props) {
     )
   }
 
-  return (
-    <div className='rewards-payment-processing'>
-      <div>
-        {
-          formatMessage(getString('rewardsPaymentProcessing'), [
-            <RewardAmount key='amount' amount={props.earningsLastMonth} />,
-            getPaymentMonth()
-          ])
-        }&nbsp;
-        <span className='rewards-payment-check-status'>
-          <NewTabLink key='status' href={urls.payoutStatusURL}>
-            {getString('rewardsPaymentCheckStatus')}
-          </NewTabLink>
-        </span>
+  if (!props.earningsReceived && props.providerPayoutStatus === 'processing') {
+    return (
+      <div className='rewards-payment-processing'>
+        <div>
+          {
+            formatMessage(getString('rewardsPaymentProcessing'), [
+              <RewardAmount key='amount' amount={props.earningsLastMonth} />,
+              getPaymentMonth()
+            ])
+          }&nbsp;
+          <span className='rewards-payment-check-status'>
+            <NewTabLink key='status' href={urls.payoutStatusURL}>
+              {getString('rewardsPaymentCheckStatus')}
+            </NewTabLink>
+          </span>
+        </div>
       </div>
-    </div>
-  )
+    )
+  }
+
+  return null
 }
 
 export function shouldRenderPendingRewards (
   earningsLastMonth: number,
   nextPaymentDate: number
 ) {
-  return earningsLastMonth > 0 && (
-    getDaysUntilRewardsPayment(nextPaymentDate) ||
-    shouldShowRewardsPaymentCompleted(nextPaymentDate))
+  return earningsLastMonth > 0 && getDaysUntilRewardsPayment(nextPaymentDate)
 }

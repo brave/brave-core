@@ -4,6 +4,7 @@
 
 import { ExternalWallet, ExternalWalletProvider } from '../../shared/lib/external_wallet'
 import { GrantInfo } from '../../shared/lib/grant_info'
+import { ProviderPayoutStatus } from '../../shared/lib/provider_payout_status'
 import { PublisherPlatform } from '../../shared/lib/publisher_platform'
 import { ExternalWalletAction, RewardsSummaryData } from '../../shared/components/wallet_card'
 import { Notification, NotificationAction } from '../../shared/components/notifications'
@@ -78,6 +79,7 @@ export interface HostState {
   adaptiveCaptchaInfo: AdaptiveCaptchaInfo | null
   exchangeInfo: ExchangeInfo
   earningsInfo: EarningsInfo
+  payoutStatus: Record<string, ProviderPayoutStatus>
   publisherInfo: PublisherInfo | null
   publisherRefreshing: boolean
   externalWalletProviders: ExternalWalletProvider[]

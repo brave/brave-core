@@ -6,6 +6,7 @@ import * as React from 'react'
 
 import { LocaleContext, formatMessage } from '../../lib/locale_context'
 import { ExternalWallet, getExternalWalletProviderName } from '../../lib/external_wallet'
+import { ProviderPayoutStatus } from '../../lib/provider_payout_status'
 
 import { TokenAmount } from '../token_amount'
 import { ExchangeAmount } from '../exchange_amount'
@@ -27,6 +28,7 @@ const rangeFormatter = new Intl.DateTimeFormat(undefined, {
 interface Props {
   balance: number
   externalWallet: ExternalWallet | null
+  providerPayoutStatus: ProviderPayoutStatus
   earningsThisMonth: number
   earningsLastMonth: number
   nextPaymentDate: number
@@ -155,6 +157,7 @@ export function WalletCard (props: Props) {
           ? <style.summaryBox>
               <RewardsSummary
                 data={props.summaryData}
+                providerPayoutStatus={props.providerPayoutStatus}
                 autoContributeEnabled={props.autoContributeEnabled}
                 hideAdEarnings={Boolean(props.externalWallet)}
                 earningsLastMonth={props.earningsLastMonth}
@@ -169,6 +172,7 @@ export function WalletCard (props: Props) {
                 earningsLastMonth={props.earningsLastMonth}
                 earningsReceived={props.summaryData.adEarnings > 0}
                 nextPaymentDate={props.nextPaymentDate}
+                providerPayoutStatus={props.providerPayoutStatus}
               />
             </style.pendingBox>
       }

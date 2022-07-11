@@ -23,6 +23,8 @@ import {
   StyledNeedsBrowserUpdateContentBody
 } from './style'
 
+import { externalWalletProviderFromString } from '../../shared/lib/external_wallet'
+import { getProviderPayoutStatus } from '../../shared/lib/provider_payout_status'
 import { PaymentStatusView } from '../../shared/components/payment_status_view'
 
 // Utils
@@ -221,6 +223,7 @@ class AdsBox extends React.Component<Props, {}> {
     const {
       adsData,
       balanceReport,
+      externalWallet,
       safetyNetFailed,
       parameters
     } = this.props.rewardsData
@@ -269,6 +272,13 @@ class AdsBox extends React.Component<Props, {}> {
 
     const tokenString = getLocale('tokens')
 
+    const walletStatus = externalWallet ? externalWallet.status : null
+    const walletProvider = externalWallet
+      ? externalWalletProviderFromString(externalWallet.type) : null
+    const providerPayoutStatus = getProviderPayoutStatus(
+      parameters.payoutStatus,
+      walletProvider && walletStatus ? walletProvider : null)
+
     return (
       <BoxMobile
         title={getLocale('adsTitle')}
@@ -282,6 +292,7 @@ class AdsBox extends React.Component<Props, {}> {
             earningsLastMonth={earningsLastMonth}
             earningsReceived={adEarningsReceived}
             nextPaymentDate={nextPaymentDate}
+            providerPayoutStatus={providerPayoutStatus}
           />
         </StyledArrivingSoon>
         <List title={<StyledListContent>{getLocale('adsCurrentEarnings')}</StyledListContent>}>

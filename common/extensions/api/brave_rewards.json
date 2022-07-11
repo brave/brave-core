@@ -705,7 +705,7 @@
       {
         "name": "getRewardsParameters",
         "type": "function",
-        "description": "Get default values that we get from the server",
+        "description": "Get default Rewards parameters",
         "parameters": [
           {
             "type": "function",
@@ -733,6 +733,12 @@
                     "items": {
                       "type": "number",
                       "minimum": 0
+                    }
+                  },
+                  "payoutStatus": {
+                    "type": "object",
+                    "additionalProperties": {
+                      "type": "string"
                     }
                   }
                 }

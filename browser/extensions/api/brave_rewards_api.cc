@@ -578,12 +578,11 @@ BraveRewardsGetRewardsParametersFunction::Run() {
   }
 
   rewards_service->GetRewardsParameters(base::BindOnce(
-      &BraveRewardsGetRewardsParametersFunction::OnGet,
-      this));
+      &BraveRewardsGetRewardsParametersFunction::OnGetRewardsParameters, this));
   return RespondLater();
 }
 
-void BraveRewardsGetRewardsParametersFunction::OnGet(
+void BraveRewardsGetRewardsParametersFunction::OnGetRewardsParameters(
     ledger::type::RewardsParametersPtr parameters) {
   base::DictionaryValue data;
 
@@ -603,6 +602,12 @@ void BraveRewardsGetRewardsParametersFunction::OnGet(
     ac_choices->Append(choice);
   }
   data.SetList("autoContributeChoices", std::move(ac_choices));
+
+  auto payout_status = std::make_unique<base::DictionaryValue>();
+  for (const auto& [key, value] : parameters->payout_status) {
+    payout_status->SetString(key, value);
+  }
+  data.Set("payoutStatus", std::move(payout_status));
 
   Respond(OneArgument(std::move(data)));
 }

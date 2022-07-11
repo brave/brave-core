@@ -81,7 +81,8 @@ export const defaultState: NewTab.State = {
     totalContribution: 0.0,
     parameters: {
       rate: 0,
-      monthlyTipChoices: []
+      monthlyTipChoices: [],
+      payoutStatus: {}
     }
   },
   currentStackWidget: '',

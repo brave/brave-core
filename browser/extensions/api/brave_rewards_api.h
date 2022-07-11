@@ -180,7 +180,7 @@ class BraveRewardsGetRewardsParametersFunction : public ExtensionFunction {
   ResponseAction Run() override;
 
  private:
-  void OnGet(ledger::type::RewardsParametersPtr parameters);
+  void OnGetRewardsParameters(ledger::type::RewardsParametersPtr parameters);
 };
 
 class BraveRewardsGetBalanceReportFunction : public ExtensionFunction {

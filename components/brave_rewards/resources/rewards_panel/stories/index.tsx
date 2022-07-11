@@ -74,6 +74,9 @@ function createHost (): Host {
       earningsLastMonth: 2.4,
       nextPaymentDate: Date.now() + 1000 * 60 * 60 * 24 * 3
     },
+    payoutStatus: {
+      uphold: 'complete'
+    },
     publisherInfo: {
       id: 'brave.com',
       name: 'brave.com',

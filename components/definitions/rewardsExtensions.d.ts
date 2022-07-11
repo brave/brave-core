@@ -119,10 +119,13 @@ declare namespace RewardsExtension {
     hint: string
   }
 
+  export type ProviderPayoutStatus = 'off' | 'processing' | 'complete'
+
   export interface RewardsParameters {
     rate: number
     monthlyTipChoices: number[]
     autoContributeChoices: number[]
+    payoutStatus: Record<string, ProviderPayoutStatus>
   }
 
   export interface BalanceReport {
