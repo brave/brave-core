@@ -40,7 +40,7 @@ class PublishersController {
   mojom::PublisherPtr GetPublisherForSite(const GURL& site_url);
   mojom::PublisherPtr GetPublisherForFeed(const GURL& feed_url);
   mojom::PublisherPtr GetPublisherById(const std::string& publisher_id);
-  
+
   void AddObserver(Observer* observer);
   void RemoveObserver(Observer* observer);
   void GetOrFetchPublishers(GetPublishersCallback callback,

@@ -1,10 +1,17 @@
-#ifndef BRAVE_BROWSER_UI_VIEWS_BRAVE_ACTIONS_BRAVE_TODAY_ACTION_VIEW_H_
-#define BRAVE_BROWSER_UI_VIEWS_BRAVE_ACTIONS_BRAVE_TODAY_ACTION_VIEW_H_
+// Copyright (c) 2022 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// you can obtain one at http://mozilla.org/MPL/2.0/.
 
+#ifndef BRAVE_BROWSER_UI_VIEWS_BRAVE_ACTIONS_BRAVE_NEWS_ACTION_VIEW_H_
+#define BRAVE_BROWSER_UI_VIEWS_BRAVE_ACTIONS_BRAVE_NEWS_ACTION_VIEW_H_
+
+#include <memory>
 #include <string>
 #include <vector>
-#include "brave/components/brave_today/browser/brave_news_controller.h"
+
 #include "brave/browser/brave_news/brave_news_tab_helper.h"
+#include "brave/components/brave_today/browser/brave_news_controller.h"
 #include "brave/components/brave_today/browser/publishers_controller.h"
 #include "brave/components/brave_today/common/brave_news.mojom-forward.h"
 #include "chrome/browser/ui/tabs/tab_strip_model_observer.h"
@@ -51,7 +58,6 @@ class BraveTodayActionView : public views::LabelButton,
   Profile* profile_;
   TabStripModel* tab_strip_;
   base::WeakPtr<views::Widget> bubble_widget_;
-
 };
 
-#endif  // BRAVE_BROWSER_UI_VIEWS_BRAVE_ACTIONS_BRAVE_TODAY_ACTION_VIEW_H_
+#endif  // BRAVE_BROWSER_UI_VIEWS_BRAVE_ACTIONS_BRAVE_NEWS_ACTION_VIEW_H_

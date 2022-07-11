@@ -89,9 +89,8 @@ base::Value::Dict GetPreferencesDictionary(PrefService* prefs) {
   pref_data.Set("showStats", prefs->GetBoolean(kNewTabPageShowStats));
   pref_data.Set("showToday",
                 prefs->GetBoolean(brave_news::prefs::kNewTabPageShowToday));
-  pref_data.Set(
-      "showBraveNewsButton",
-      prefs->GetBoolean(brave_news::prefs::kShouldShowToolbarButton));
+  pref_data.Set("showBraveNewsButton",
+                prefs->GetBoolean(brave_news::prefs::kShouldShowToolbarButton));
   pref_data.Set("showRewards", prefs->GetBoolean(kNewTabPageShowRewards));
   pref_data.Set("isBrandedWallpaperNotificationDismissed",
                 prefs->GetBoolean(kBrandedWallpaperNotificationDismissed));

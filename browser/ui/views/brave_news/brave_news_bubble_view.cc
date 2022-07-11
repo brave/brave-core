@@ -6,6 +6,7 @@
 #include "brave/browser/ui/views/brave_news/brave_news_bubble_view.h"
 
 #include <memory>
+#include <vector>
 
 #include "base/bind.h"
 #include "base/callback_helpers.h"

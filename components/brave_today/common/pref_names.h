@@ -16,7 +16,8 @@ constexpr char kBraveTodayIntroDismissed[] = "brave.today.intro_dismissed";
 constexpr char kBraveTodayOptedIn[] = "brave.today.opted_in";
 constexpr char kBraveTodayDaysInMonthUsedCount[] =
     "brave.today.p3a_days_in_month_count";
-constexpr char kShouldShowToolbarButton[] = "brave.today.should_show_toolbar_button";
+constexpr char kShouldShowToolbarButton[] =
+    "brave.today.should_show_toolbar_button";
 constexpr char kBraveTodayWeeklySessionCount[] =
     "brave.today.p3a_weekly_session_count";
 constexpr char kBraveTodayWeeklyCardViewsCount[] =
