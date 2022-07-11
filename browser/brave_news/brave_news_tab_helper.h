@@ -12,10 +12,8 @@
 #include "base/memory/weak_ptr.h"
 #include "brave/components/brave_today/browser/brave_news_controller.h"
 #include "brave/components/brave_today/browser/publishers_controller.h"
-#include "brave/components/brave_today/common/brave_news.mojom-forward.h"
 #include "content/public/browser/web_contents_observer.h"
 #include "content/public/browser/web_contents_user_data.h"
-#include "ui/views/widget/widget.h"
 
 class Page;
 
