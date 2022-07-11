@@ -9,8 +9,9 @@ import BraveUI
 import BraveShared
 
 class BraveSearchPromotionCell: UITableViewCell {
-  
-  struct UX {
+  private struct DesignUX {
+    static let paddingX: CGFloat = 15.0
+    static let paddingY: CGFloat = 10.0
     static let contentBorderColor = UIColor.borderColor
     static let contentBackgroundColor = UIColor.backgroundColor
   }
@@ -25,64 +26,45 @@ class BraveSearchPromotionCell: UITableViewCell {
     $0.layer.cornerRadius = 16
     $0.layer.cornerCurve = .continuous
     $0.layer.borderWidth = 1.0
-    $0.layer.borderColor = UX.contentBorderColor.cgColor
-    $0.backgroundColor = UX.contentBackgroundColor
   }
   
-  private let mainStackView = UIStackView().then {
-    $0.axis = .vertical
-    $0.alignment = .fill
-  }
-  
-  private let buttonsStackView = UIStackView().then {
-    $0.axis = .horizontal
-    $0.distribution = .fillProportionally
-    $0.alignment = .fill
-    $0.spacing = 8.0
-  }
-  
-  private let promotionalImageView = UIImageView(image: UIImage(named: "brave-search-promotion", in: .current, compatibleWith: nil)).then {
-    $0.contentMode = .scaleAspectFill
-    $0.isUserInteractionEnabled = false
-  }
-
   private let titleLabel = UILabel().then {
     $0.text = Strings.BraveSearchPromotion.braveSearchPromotionBannerTitle
-    $0.textColor = .bravePrimary
-    $0.textAlignment = .left
     $0.font = .preferredFont(forTextStyle: .headline)
+    $0.textColor = .bravePrimary
     $0.numberOfLines = 0
-    $0.setContentHuggingPriority(.defaultHigh, for: .vertical)
-    $0.setContentCompressionResistancePriority(.defaultHigh, for: .vertical)
+    $0.lineBreakMode = .byWordWrapping
   }
 
-  private let bodyLabel = UILabel().then {
+  private let subtitleLabel = UILabel().then {
     $0.text = Strings.BraveSearchPromotion.braveSearchPromotionBannerDescription
-    $0.textColor = .braveLabel
-    $0.textAlignment = .left
     $0.font = .preferredFont(forTextStyle: .body)
+    $0.textColor = .braveLabel
     $0.numberOfLines = 0
-    $0.setContentHuggingPriority(.defaultHigh, for: .vertical)
-    $0.setContentCompressionResistancePriority(.defaultHigh, for: .vertical)
-  }
-
-  let tryButton = TrySearchButton().then {
-    $0.titleLabel.text = Strings.BraveSearchPromotion.braveSearchPromotionBannerTryButtonTitle
+    $0.lineBreakMode = .byWordWrapping
+    $0.setContentHuggingPriority(.required, for: .vertical)
+    $0.setContentCompressionResistancePriority(.required, for: .vertical)
   }
   
-  private let dismissButton = UIButton().then {
-    $0.titleLabel?.font = .preferredFont(forTextStyle: .headline)
-    $0.titleLabel?.minimumScaleFactor = 0.75
-    $0.titleLabel?.lineBreakMode = .byWordWrapping
-    $0.titleLabel?.textAlignment = .center
+  private let promotionalImageView = UIImageView(
+    image: UIImage(named: "brave-search-promotion", in: .current, compatibleWith: nil)).then {
+    $0.contentMode = .scaleAspectFill
+    $0.isUserInteractionEnabled = false
+    $0.clipsToBounds = false
+  }
 
-    $0.setTitleColor(.braveOrange, for: .normal)
-    $0.setTitle(
-      Preferences.BraveSearch.braveSearchPromotionCompletionState.value != BraveSearchPromotionState.maybeLaterUpcomingSession.rawValue ?
-        Strings.BraveSearchPromotion.braveSearchPromotionBannerMaybeLaterButtonTitle :
-        Strings.BraveSearchPromotion.braveSearchPromotionBannerDismissButtonTitle,
-      for: .normal)
-    $0.backgroundColor = .clear
+  let tryButton = TrySearchButton()
+  let dismissButton = UIButton()
+  
+  private let vStackView = UIStackView().then {
+    $0.axis = .vertical
+  }
+
+  private let hStackView = UIStackView().then {
+    $0.spacing = 9.0
+    $0.distribution = .equalCentering
+    $0.alignment = .fill
+    $0.setContentHuggingPriority(.required, for: .horizontal)
   }
 
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -90,58 +72,118 @@ class BraveSearchPromotionCell: UITableViewCell {
     
     backgroundColor = .secondaryBraveBackground
     selectionStyle = .none
-
+    
     contentView.addSubview(promotionContentView)
     promotionContentView.snp.makeConstraints {
-      $0.leading.equalTo(safeArea.leading).inset(8)
-      $0.trailing.equalTo(safeArea.trailing).inset(8)
+      $0.leading.equalTo(contentView.safeArea.leading).inset(8)
+      $0.trailing.equalTo(contentView.safeArea.trailing).inset(8)
       
       if #available(iOS 15, *) {
-        $0.top.equalTo(safeArea.top)
-        $0.bottom.equalTo(safeArea.bottom)
+        $0.top.equalTo(contentView.safeArea.top)
+        $0.bottom.equalTo(contentView.safeArea.bottom)
       } else {
         // iOS 14 table headers look different, solid color, adding small inset to make it look better.
-        $0.top.equalTo(safeArea.top).inset(8)
-        $0.bottom.equalTo(safeArea.bottom).inset(8)
+        $0.top.equalTo(contentView.safeArea.top).inset(8)
+        $0.bottom.equalTo(contentView.safeArea.bottom).inset(8)
       }
     }
     
-    [tryButton, dismissButton].forEach(buttonsStackView.addArrangedSubview(_:))
-    
-    mainStackView.addStackViewItems(
-      .view(titleLabel),
-      .customSpace(8.0),
-      .view(bodyLabel),
-      .customSpace(16.0),
-      .view(buttonsStackView)
-    )
-    
+    promotionContentView.addSubview(vStackView)
     promotionContentView.addSubview(promotionalImageView)
-    promotionContentView.addSubview(mainStackView)
 
-    mainStackView.snp.makeConstraints {
-      $0.leading.top.equalToSuperview().offset(16)
-      $0.bottom.equalToSuperview().offset(-16)
-      $0.trailing.equalTo(promotionalImageView.snp.leading).offset(-16)
-    }
-    
-    promotionContentView.snp.makeConstraints {
-      $0.edges.equalToSuperview()
+    vStackView.snp.makeConstraints {
+      $0.leading.equalToSuperview().inset(12.0)
+      $0.trailing.equalTo(promotionalImageView.snp.leading)
+      $0.top.bottom.equalToSuperview().inset(8.0)
     }
     
     promotionalImageView.snp.makeConstraints {
-      $0.width.equalTo(promotionContentView.snp.width).multipliedBy(0.25)
+      $0.width.equalTo(promotionContentView.snp.width).multipliedBy(0.20)
       $0.top.bottom.equalToSuperview()
       $0.trailing.equalToSuperview()
     }
 
     tryButton.addTarget(self, action: #selector(tryAction), for: .touchUpInside)
     dismissButton.addTarget(self, action: #selector(dismissAction), for: .touchUpInside)
+
+    resetLayout()
   }
 
   @available(*, unavailable)
   required init(coder: NSCoder) { fatalError() }
 
+  func resetLayout() {
+    themeViews()
+    doLayout()
+  }
+
+  private func doLayout() {
+    vStackView.arrangedSubviews.forEach({ $0.removeFromSuperview() })
+    hStackView.arrangedSubviews.forEach({ $0.removeFromSuperview() })
+
+    let spacer = UIView().then {
+      $0.setContentHuggingPriority(.defaultLow, for: .horizontal)
+      $0.setContentCompressionResistancePriority(.required, for: .horizontal)
+    }
+
+    [titleLabel, subtitleLabel, hStackView].forEach({
+      self.vStackView.addArrangedSubview($0)
+    })
+
+    vStackView.setCustomSpacing(8.0, after: titleLabel)
+    vStackView.setCustomSpacing(22.0, after: subtitleLabel)
+
+    [tryButton, dismissButton, spacer].forEach({
+      self.hStackView.addArrangedSubview($0)
+    })
+  }
+
+  private func themeViews() {
+    let titleEdgeInsets = UIEdgeInsets(
+      top: -DesignUX.paddingY,
+      left: -DesignUX.paddingX,
+      bottom: -DesignUX.paddingY,
+      right: -DesignUX.paddingX)
+
+    let contentEdgeInsets = UIEdgeInsets(
+      top: DesignUX.paddingY,
+      left: DesignUX.paddingX,
+      bottom: DesignUX.paddingY,
+      right: DesignUX.paddingX)
+
+    tryButton.do {
+      $0.titleLabel.snp.makeConstraints {
+        $0.edges.equalToSuperview().inset(8.0)
+      }
+      $0.backgroundColor = .braveOrange
+    }
+
+    dismissButton.do {
+      $0.setTitle(
+        Preferences.BraveSearch.braveSearchPromotionCompletionState.value != BraveSearchPromotionState.maybeLaterUpcomingSession.rawValue ?
+          Strings.BraveSearchPromotion.braveSearchPromotionBannerMaybeLaterButtonTitle :
+          Strings.BraveSearchPromotion.braveSearchPromotionBannerDismissButtonTitle,
+        for: .normal)
+      $0.setTitleColor(.braveOrange, for: .normal)
+      $0.titleLabel?.font = .preferredFont(forTextStyle: .subheadline, weight: .semibold)
+      $0.titleLabel?.minimumScaleFactor = 0.5
+      $0.titleEdgeInsets = titleEdgeInsets
+      $0.contentEdgeInsets = contentEdgeInsets
+      $0.backgroundColor = .clear
+    }
+    
+    promotionContentView.do {
+     $0.layer.borderColor = DesignUX.contentBorderColor.cgColor
+     $0.backgroundColor = DesignUX.contentBackgroundColor
+    }
+  }
+
+  override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+    super.traitCollectionDidChange(previousTraitCollection)
+
+    themeViews()
+  }
+  
   @objc func tryAction() {
     trySearchEngineTapped?()
   }
@@ -169,7 +211,8 @@ class TrySearchButton: UIControl {
   
   let titleLabel = UILabel().then {
     $0.textColor = .white
-    $0.font = .preferredFont(forTextStyle: .headline)
+    $0.text = Strings.BraveSearchPromotion.braveSearchPromotionBannerTryButtonTitle
+    $0.font = .preferredFont(forTextStyle: .subheadline, weight: .semibold)
     $0.numberOfLines = 0
     $0.lineBreakMode = .byWordWrapping
     $0.textAlignment = .center
@@ -188,29 +231,23 @@ class TrySearchButton: UIControl {
   override public init(frame: CGRect) {
     super.init(frame: frame)
 
-    let stackView = UIStackView().then {
-      $0.axis = .vertical
-      $0.alignment = .center
-      $0.isUserInteractionEnabled = false
-    }
-
     addSubview(backgroundView)
-    addSubview(stackView)
-    stackView.addArrangedSubview(titleLabel)
+    addSubview(titleLabel)
 
     backgroundView.snp.makeConstraints {
       $0.edges.equalTo(self)
     }
 
-    stackView.snp.makeConstraints {
-      $0.edges.equalTo(self).inset(UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8))
+    titleLabel.snp.makeConstraints {
+      $0.top.equalTo(safeArea.top).inset(8)
+      $0.leading.equalTo(safeArea.leading)
+      $0.bottom.equalTo(safeArea.bottom)
+      $0.trailing.equalTo(safeArea.trailing)
     }
-
-    backgroundColor = .clear
 
     layer.borderColor = UIColor.black.withAlphaComponent(0.15).cgColor
     layer.borderWidth = 1.0 / UIScreen.main.scale
-    layer.cornerRadius = bounds.height / 2.0
+    layer.cornerRadius = 16
     layer.shadowColor = UIColor.black.cgColor
     layer.shadowOpacity = 0.25
     layer.shadowOffset = CGSize(width: 0, height: 1)

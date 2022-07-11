@@ -10,9 +10,9 @@ import Shared
 
 class RecentSearchHeaderView: UICollectionReusableView {
   private struct DesignUX {
-    static let buttonHeight: CGFloat = 40.0
-    static let paddingX: CGFloat = 15.0
-    static let paddingY: CGFloat = 10.0
+    static let buttonHeight = 40.0
+    static let paddingX = 15.0
+    static let paddingY = 10.0
   }
 
   private var showRecentSearches = false
