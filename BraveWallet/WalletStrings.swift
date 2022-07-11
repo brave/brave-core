@@ -2115,6 +2115,13 @@ extension Strings {
       value: "Default Base Currency",
       comment: "The title that appears before the current default base currency code. Example: \"Default base currency: USD\""
     )
+    public static let showTestNetworksTitle = NSLocalizedString(
+      "wallet.showTestNetworksTitle",
+      tableName: "BraveWallet",
+      bundle: .strings,
+      value: "Show Test Networks",
+      comment: "A label beside the toggle for showing / hiding test networks in the Networks screen of Wallet settings"
+    )
     public static let addSuggestedTokenTitle = NSLocalizedString(
       "wallet.addSuggestedTokenTitle",
       tableName: "BraveWallet",
