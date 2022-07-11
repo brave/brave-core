@@ -611,8 +611,9 @@ void JsonRpcService::GetFeeHistory(GetFeeHistoryCallback callback) {
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
 
   RequestInternal(
-      eth::eth_feeHistory(40, "latest", std::vector<double>{20, 50, 80}), true,
-      network_urls_[mojom::CoinType::ETH], std::move(internal_callback));
+      eth::eth_feeHistory("0x28",  // blockCount = 40
+                          "latest", std::vector<double>{20, 50, 80}),
+      true, network_urls_[mojom::CoinType::ETH], std::move(internal_callback));
 }
 
 void JsonRpcService::OnGetFeeHistory(
