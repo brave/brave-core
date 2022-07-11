@@ -999,6 +999,7 @@ extension TabManager: WKNavigationDelegate {
   func webView(_ webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) {
     if let tab = self[webView] {
       tab.contentBlocker.clearPageStats()
+      tab.requestBlockingContentHelper.clearBlockedRequests()
     }
   }
 

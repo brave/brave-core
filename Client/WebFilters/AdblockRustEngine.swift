@@ -38,16 +38,6 @@ extension AdblockEngine {
     ).didMatchRule
   }
   
-  public func shouldBlock(requestUrl: String, requestHost: String, sourceHost: String) -> Bool {
-    return matches(
-      url: requestUrl,
-      host: requestHost,
-      tabHost: sourceHost,
-      isThirdParty: requestUrl != sourceHost,
-      resourceType: "script"
-    ).didMatchRule
-  }
-  
   @available(*, deprecated, renamed: "deserialize(data:)")
   @discardableResult
   public func set(data: Data) -> Bool {

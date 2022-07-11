@@ -35,9 +35,22 @@ function install() {
     }
   })
 
-  function sendMessage(url, resourceType) {
-    if (url) {
-      webkit.messageHandlers.trackingProtectionStats.postMessage({"securitytoken": SECURITY_TOKEN, "data": { url: url, resourceType: resourceType === undefined ? null : resourceType }});
+  function sendMessage(urlString, resourceType) {
+    if (urlString) {
+      try {
+        let resourceURL = new URL(urlString, window.location.href)
+        
+        webkit.messageHandlers.trackingProtectionStats.postMessage({
+          securityToken: SECURITY_TOKEN,
+          data: {
+            resourceURL: resourceURL.href,
+            sourceURL: window.location.href,
+            resourceType: resourceType
+          }
+        });
+      } catch (_) {
+        
+      }
     }
   }
 
@@ -89,18 +102,25 @@ function install() {
     }
 
     xhrProto.open = function(method, url) {
+      // Blocked async XMLHttpRequest are handled via RequestBlocking.js
+      // We only handle sync requests
+      this._shouldTrack = arguments[2] !== undefined && !arguments[2]
       this._url = url;
       return originalOpen.apply(this, arguments);
     };
 
     xhrProto.send = function(body) {
+      if (this._url === undefined || !this._shouldTrack) {
+        return originalSend.apply(this, arguments);
+      }
+      
       // Only attach the `error` event listener once for this
       // `XMLHttpRequest` instance.
       if (!this._tpErrorHandler) {
         // If this `XMLHttpRequest` instance fails to load, we
         // can assume it has been blocked.
         this._tpErrorHandler = function() {
-          sendMessage(this._url);
+          sendMessage(this._url, "xmlhttprequest");
         };
         this.addEventListener("error", this._tpErrorHandler);
       }
