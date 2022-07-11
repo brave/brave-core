@@ -23,11 +23,13 @@
 
 using brave_search_conversion::ConversionType;
 using brave_search_conversion::GetConversionType;
+using brave_search_conversion::IsNTPPromotionEnabled;
 
 namespace {
 
 bool IsSearchPromotionEnabled(PrefService* prefs, TemplateURLService* service) {
-  return GetConversionType(prefs, service) != ConversionType::kNone;
+  return (GetConversionType(prefs, service) != ConversionType::kNone) ||
+         IsNTPPromotionEnabled(prefs, service);
 }
 
 TemplateURL* GetSearchTemplateForSite(TemplateURLService* service,
