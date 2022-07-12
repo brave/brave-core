@@ -29,3 +29,7 @@ export const getRampNetworkPrefix = (chainId: string) => {
       return ''
   }
 }
+
+export const formatAsDouble = (value: string): string =>
+  // Removes all characters except numbers, commas and decimals
+  value.replace(/[^0-9.,]+/g, '')
