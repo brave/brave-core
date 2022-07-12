@@ -161,7 +161,7 @@ const brave_wallet::mojom::NetworkInfo kKnownEthNetworks[] = {
      "Ether",
      18,
      brave_wallet::mojom::CoinType::ETH,
-     mojom::NetworkInfoData::NewEthData(mojom::NetworkInfoDataETH::New(true))},
+     mojom::NetworkInfoData::NewEthData(mojom::NetworkInfoDataETH::New(false))},
     {brave_wallet::mojom::kRinkebyChainId,
      "Rinkeby Test Network",
      {"https://rinkeby.etherscan.io"},
