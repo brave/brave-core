@@ -27,8 +27,7 @@ base::FilePath GetEdgeUserDataFolder();
 
 base::FilePath GetVivaldiUserDataFolder();
 
-base::Value::List GetChromeSourceProfiles(
-    const base::FilePath& user_data_folder);
+base::Value::List GetChromeSourceProfiles(const base::FilePath& local_state);
 
 bool ChromeImporterCanImport(const base::FilePath& profile,
                              uint16_t* services_supported);

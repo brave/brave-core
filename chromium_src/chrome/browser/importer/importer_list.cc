@@ -50,23 +50,33 @@ void DetectChromeProfiles(std::vector<importer::SourceProfile>* profiles) {
   base::ScopedBlockingCall scoped_blocking_call(FROM_HERE,
                                                 base::BlockingType::WILL_BLOCK);
   AddChromeToProfiles(
-      profiles, GetChromeSourceProfiles(GetChromeUserDataFolder()),
+      profiles,
+      GetChromeSourceProfiles(GetChromeUserDataFolder().Append(
+          base::FilePath::StringType(FILE_PATH_LITERAL("Local State")))),
       GetChromeUserDataFolder(), "Chrome ", importer::TYPE_CHROME);
 #if !BUILDFLAG(IS_LINUX)
   AddChromeToProfiles(
-      profiles, GetChromeSourceProfiles(GetCanaryUserDataFolder()),
+      profiles,
+      GetChromeSourceProfiles(GetCanaryUserDataFolder().Append(
+          base::FilePath::StringType(FILE_PATH_LITERAL("Local State")))),
       GetCanaryUserDataFolder(), "Chrome Canary ", importer::TYPE_CHROME);
 #endif
   AddChromeToProfiles(
-      profiles, GetChromeSourceProfiles(GetChromiumUserDataFolder()),
+      profiles,
+      GetChromeSourceProfiles(GetChromiumUserDataFolder().Append(
+          base::FilePath::StringType(FILE_PATH_LITERAL("Local State")))),
       GetChromiumUserDataFolder(), "Chromium ", importer::TYPE_CHROME);
 
   AddChromeToProfiles(
-      profiles, GetChromeSourceProfiles(GetEdgeUserDataFolder()),
+      profiles,
+      GetChromeSourceProfiles(GetEdgeUserDataFolder().Append(
+          base::FilePath::StringType(FILE_PATH_LITERAL("Local State")))),
       GetEdgeUserDataFolder(), "Microsoft Edge ", importer::TYPE_EDGE_CHROMIUM);
 
   AddChromeToProfiles(
-      profiles, GetChromeSourceProfiles(GetVivaldiUserDataFolder()),
+      profiles,
+      GetChromeSourceProfiles(GetVivaldiUserDataFolder().Append(
+          base::FilePath::StringType(FILE_PATH_LITERAL("Local State")))),
       GetVivaldiUserDataFolder(), "Vivaldi ", importer::TYPE_VIVALDI);
 }
 
