@@ -39,68 +39,78 @@ TEST(EthABIDecoderTest, ABIDecodeAddress) {
 TEST(EthABIDecoderTest, ABIDecodeUint256) {
   std::vector<std::string> tx_params;
   std::vector<std::string> tx_args;
-
   std::vector<uint8_t> data;
+
+  // OK: 32-bytes well-formed uint256
   ASSERT_TRUE(PrefixedHexStringToBytes(
       "0x00000000000000000000000000000000000000000000000000000000000000ff",
       &data));
   auto decoded = ABIDecode({"uint256"}, data);
   ASSERT_NE(decoded, absl::nullopt);
   std::tie(tx_params, tx_args) = *decoded;
-
   ASSERT_EQ(tx_params.size(), 1UL);
   EXPECT_EQ(tx_params[0], "uint256");
   EXPECT_EQ(tx_args[0], "0xff");
 
-  // Insufficient uint256 length
+  // KO: insufficient uint256 length
   ASSERT_TRUE(PrefixedHexStringToBytes("0xff", &data));
   ASSERT_FALSE(ABIDecode({"uint256"}, data));
 
-  // Extra uint256 length
+  // OK: extra uint256 length
   ASSERT_TRUE(PrefixedHexStringToBytes(
       "0x00000000000000000000000000000000000000000000000000000000000000ff"
       "ff",
       &data));
-  ASSERT_FALSE(ABIDecode({"uint256"}, data));
+  decoded = ABIDecode({"uint256"}, data);
+  ASSERT_NE(decoded, absl::nullopt);
+  std::tie(tx_params, tx_args) = *decoded;
+  ASSERT_EQ(tx_params.size(), 1UL);
+  EXPECT_EQ(tx_params[0], "uint256");
+  EXPECT_EQ(tx_args[0], "0xff");
 }
 
 TEST(EthABIDecoderTest, ABIDecodeBool) {
   std::vector<std::string> tx_params;
   std::vector<std::string> tx_args;
-
   std::vector<uint8_t> data;
+
+  // OK: false
   ASSERT_TRUE(PrefixedHexStringToBytes(
       "0x0000000000000000000000000000000000000000000000000000000000000000",
       &data));
   auto decoded = ABIDecode({"bool"}, data);
   ASSERT_NE(decoded, absl::nullopt);
   std::tie(tx_params, tx_args) = *decoded;
-
   ASSERT_EQ(tx_params.size(), 1UL);
   EXPECT_EQ(tx_params[0], "bool");
   EXPECT_EQ(tx_args[0], "false");
 
+  // OK: true
   ASSERT_TRUE(PrefixedHexStringToBytes(
       "0x0000000000000000000000000000000000000000000000000000000000000001",
       &data));
   decoded = ABIDecode({"bool"}, data);
   ASSERT_NE(decoded, absl::nullopt);
   std::tie(tx_params, tx_args) = *decoded;
-
   ASSERT_EQ(tx_params.size(), 1UL);
   EXPECT_EQ(tx_params[0], "bool");
   EXPECT_EQ(tx_args[0], "true");
 
-  // Insufficient bool length
+  // KO: insufficient bool length
   ASSERT_TRUE(PrefixedHexStringToBytes("0x0", &data));
   ASSERT_FALSE(ABIDecode({"bool"}, data));
 
-  // Extra bool length
+  // OK: extra bool length
   ASSERT_TRUE(PrefixedHexStringToBytes(
       "0x0000000000000000000000000000000000000000000000000000000000000000"
       "00",
       &data));
-  ASSERT_FALSE(ABIDecode({"bool"}, data));
+  decoded = ABIDecode({"bool"}, data);
+  ASSERT_NE(decoded, absl::nullopt);
+  std::tie(tx_params, tx_args) = *decoded;
+  ASSERT_EQ(tx_params.size(), 1UL);
+  EXPECT_EQ(tx_params[0], "bool");
+  EXPECT_EQ(tx_args[0], "false");
 }
 
 TEST(EthABIDecoderTest, ABIDecodeAddressArray) {
