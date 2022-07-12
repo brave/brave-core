@@ -65,6 +65,10 @@ BraveTodayActionView::BraveTodayActionView(Profile* profile,
   SetHasInkDropActionOnClick(true);
 
   tab_strip_->AddObserver(this);
+  if (tab_strip_->GetActiveWebContents()) {
+    BraveNewsTabHelper::FromWebContents(tab_strip_->GetActiveWebContents())
+        ->AddObserver(this);
+  }
 
   should_show_.Init(brave_news::prefs::kShouldShowToolbarButton,
                     profile->GetPrefs(),
@@ -76,6 +80,10 @@ BraveTodayActionView::BraveTodayActionView(Profile* profile,
 
 BraveTodayActionView::~BraveTodayActionView() {
   tab_strip_->RemoveObserver(this);
+  if (tab_strip_->GetActiveWebContents()) {
+    BraveNewsTabHelper::FromWebContents(tab_strip_->GetActiveWebContents())
+        ->RemoveObserver(this);
+  }
 }
 
 void BraveTodayActionView::Init() {
@@ -98,6 +106,8 @@ void BraveTodayActionView::Update() {
       feed = tab_helper->GetAvailableFeeds()[0];
       subscribed = tab_helper->is_subscribed();
     }
+    LOG(ERROR) << "Subscribed: " << subscribed << ", Available Feeds: "
+               << tab_helper->GetAvailableFeeds().size();
   }
 
   auto background =
@@ -159,6 +169,7 @@ void BraveTodayActionView::OnTabStripModelChanged(
 
 void BraveTodayActionView::OnAvailableFeedsChanged(
     const std::vector<BraveNewsTabHelper::FeedDetails>& feeds) {
+  LOG(ERROR) << "AvailableFeedsChanged, updating";
   Update();
 }
 

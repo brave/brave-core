@@ -65,7 +65,7 @@ bool BraveNewsTabHelper::is_subscribed(const FeedDetails& feed_details) {
 }
 
 bool BraveNewsTabHelper::is_subscribed() {
-  for (const auto& feed : rss_page_feeds_) {
+  for (const auto& feed : GetAvailableFeeds()) {
     if (is_subscribed(feed))
       return true;
   }
@@ -81,7 +81,6 @@ void BraveNewsTabHelper::ToggleSubscription(const FeedDetails& feed_details) {
         publisher->publisher_id, subscribed
                                      ? brave_news::mojom::UserEnabled::DISABLED
                                      : brave_news::mojom::UserEnabled::ENABLED);
-    AvailableFeedsChanged();
   } else if (!subscribed) {
     controller_->SubscribeToNewDirectFeed(feed_details.feed_url,
                                           base::DoNothing());
