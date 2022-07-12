@@ -9,19 +9,17 @@
 #include <memory>
 #include <vector>
 
+#include "base/values.h"
+
 namespace bookmarks {
 class BookmarkNode;
 }  // namespace bookmarks
 
-namespace base {
-class Value;
-}  // namespace base
-
 namespace ios {
 namespace bookmarks_encoder {
-base::Value Encode(const bookmarks::BookmarkNode* bookmark_bar_node,
-                   const bookmarks::BookmarkNode* other_folder_node,
-                   const bookmarks::BookmarkNode* mobile_folder_node);
+base::Value::Dict Encode(const bookmarks::BookmarkNode* bookmark_bar_node,
+                         const bookmarks::BookmarkNode* other_folder_node,
+                         const bookmarks::BookmarkNode* mobile_folder_node);
 }  // namespace bookmarks_encoder
 }  // namespace ios
 
