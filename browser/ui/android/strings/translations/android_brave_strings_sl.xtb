@@ -60,11 +60,6 @@
 <translation id="5987838417172370108">Pomagajte izboljšati stabilnost izdelka Brave s samodejnim pošiljanjem diagnostičnih poročil, ko se brskalnik Brave zruši ali zamrzne.</translation>
 <translation id="7977176350719484850">Pribl. podatkov\nShranjeno</translation>
 <translation id="9008534313521214777">Pribl. čas\nSaved</translation>
-<translation id="6572660632052512096">Namizni način</translation>
-<translation id="1340503115760585811">Omogoči namizni ogled za nove zavihke</translation>
-<translation id="7924540991929826186">Uporabi mobilne različice spletnih strani za nove zavihke (priporočeno)</translation>
-<translation id="807636106793708118">Prednostna mobilna različica spletnih strani</translation>
-<translation id="4479934682648362332">Prednostna namizna različica spletnih strani</translation>
 <translation id="1842747674580016420">Predvajanje videoposnetka v brskalniku Brave</translation>
 <translation id="5368992950177874750">Če je možnost omogočena, se bodo videoposnetki predvajali v brskalniku Brave namesto v ustrezni aplikaciji</translation>
 <translation id="410351446219883937">Samodejno predvajanje</translation>
@@ -93,7 +88,7 @@
 <translation id="2877653791257935258">Vnesite ime spletnega mesta ali URL</translation>
 <translation id="5329830149661250028">Oglejte si razliko med Brave in Brave: Brez oglasov. Brez sledilnikov. Veliko hitrejše nalaganje strani.</translation>
 <translation id="3545804467215833536">Tapnite za ogled Brave Shields</translation>
-<translation id="1724327820822194498">Oglejte si vse slabe stvari, ki jih je Brave blokiral, na vsaki strani, s ščiti.</translation>
+<translation id="1724327820822194498">Oglejte si vso navlako, ki jih je Brave blokiral, na vsaki strani, s ščiti.</translation>
 <translation id="5386259141409498372"><ph name="BIG_TECH"/> in <ph name="TRACKER"/> drugi oglasi in sledilniki so blokirani</translation>
 <translation id="3092683655478890840"><ph name="TRACKER_COUNT"/> oglasi in sledilniki so blokirani</translation>
 <translation id="8281886186245836920">Preskoči</translation>
@@ -119,6 +114,7 @@
 <translation id="19715420010996093">Izberi brskalnik Brave in tapni 'Vedno'</translation>
 <translation id="3546439402724649282">Brskalnik Brave je že nastavljen kot privzeti brskalnik.</translation>
 <translation id="8389661903259423907">Privzeti brskalnik ste že nastavili. Privzeti brskalnik lahko spremenite v nastavitvah svoje aplikacije.</translation>
+<translation id="8112367589167674370">Brave Talk</translation>
 <translation id="8826007068782654809">Hvala.</translation>
 <translation id="6665366815203065060">Pravkar ste poslali donacijo prejemniku:</translation>
 <translation id="5441565662498481293">Samodejno pošiljate donacijo prejemniku:</translation>
@@ -863,23 +859,34 @@ Ali ste prepričani, da želite to storiti?</translation>
 <translation id="4804818685124855865">Prekini povezavo</translation>
 <translation id="8009571545960303544">Zahtevan je bil vaš podpis</translation>
 <translation id="3484981968509595506">Aplikacija DApp zahteva vaš javni šifrirni ključ</translation>
-<translation id="2291002548681057345">zahteva javni šifrirni ključ vaše denarnice. Če se strinjate s posredovanjem tega ključa, vam bo spletno mesto lahko pošiljalo šifrirana sporočila.</translation>
 <translation id="3340247553212049934">Zagotovite</translation>
 <translation id="1982257600591932657">Ime omrežja</translation>
 <translation id="5052727830821470769">URL omrežja</translation>
 <translation id="4822132585477111396">ID verige</translation>
 <translation id="7131971375297699539">Simbol valute</translation>
 <translation id="7982789257301363584">Omrežje</translation>
-<translation id="7540715999708954128">To bo omogočilo uporabo tega omrežja v denarnici Brave. Izvedite več.</translation>
-<translation id="8759753423332885148">Izvedite več.</translation>
 <translation id="4717431746210146708">Ali dovolite temu mestu, da doda omrežje?</translation>
+<translation id="4857321293515555666">Ta aplikacija želi prebrati to sporočilo, da bi izpolnila vašo zahtevo.</translation>
+<translation id="714506544401754321">Dešifriraj sporočilo</translation>
+<translation id="5039804452771397117">Dovoli</translation>
 <translation id="3378339846292573874">Dodajte predlagani žeton</translation>
 <translation id="2322227405137827074">Ali želite ta element uvoziti?</translation>
 <translation id="1324417023773393937">Brskalnik Brave</translation>
 <translation id="6044189892950611565">Kanal za obvestila za Brave Browser</translation>
 <translation id="1173919438868967364">Izberite račun</translation>
 <translation id="8922793255489232731">Ni bilo mogoče dobiti ustreznega časovnega pasu za: <ph name="VALUE"/></translation>
-<translation id="8231907121684689093">Prikaži najboljša mesta</translation>
+<translation id="8643377320501056697">Prikaži najbolj priljubljena spletna mesta</translation>
 <translation id="6471216025161697462">Povezani z <ph name="VALUE"/></translation>
 <translation id="1968852757206592413">Poskusna doba</translation>
+<translation id="7733890291091968191">Prikaži obvestila Web3</translation>
+<translation id="1371627247679035769">\n\n\n\n#### Brave vam ne sledi in ne ve, kako uporabljate našo aplikacijo, zato ne vemo, kako ste nastavili VPN. Sporočite težavo, s katero se soočate, in potrudili se bomo, da jo čim prej odpravimo. ####\n\n</translation>
+<translation id="3367162038532116157">\n\nVPN Ime gostitelja\n <ph name="VALUE"/></translation>
+<translation id="6173438324126027458">\n\nVrsta naročnine\n <ph name="VALUE"/></translation>
+<translation id="1478875290576741766">\n\nŽeton trgovine Playstore\n <ph name="VALUE"/></translation>
+<translation id="1403057798797848522">\n\nRazličica aplikacije\n <ph name="VALUE"/></translation>
+<translation id="2282835936933247509">\n\nČasovna cona\n</translation>
+<translation id="8107843365677337047">\n\nVrsta omrežja\n</translation>
+<translation id="5334952096674914470">\n\nMobilni operater\n</translation>
+<translation id="5393042357629679588">\n\nDruga težava\n</translation>
+<translation id="8095666712177294104">\n\nPlatforma\n</translation>
 </translationbundle>

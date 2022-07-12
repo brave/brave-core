@@ -106,6 +106,16 @@ Saate muuta ka hiljem veebilehel <ph name="SETTINGS_EXTENIONS_LINK"/>.</translat
 <translation id="4870911314065352661">Kas sulgeda kõik vahelehed?</translation>
 <translation id="7551864359422178684">Selles brauseriaknas on avatud <ph name="NUMBER_OF_TABS"/> vahelehte.</translation>
 <translation id="2571596981920752023"><ph name="NUMBER_OF_TABS"/> vahelehte</translation>
+<translation id="2272117088509540883">- Brave'i otsing</translation>
+<translation id="2701279958223202597">Toetage sõltumatut ja privaatsemat otsingut. Brave'i otsing ei jälgi teid, teie päringuid ega teie klikke.</translation>
+<translation id="6438467592401259882">Toetage sõltumatut ja privaatsemat otsingut.</translation>
+<translation id="1688359110799098115">Toetage sõltumatut ja privaatsemat otsingut</translation>
+<translation id="8579317236683491484">Brave'i otsing ei jälgi teid, teie päringuid ega teie klikke.</translation>
+<translation id="5240031343741051161">Proovi Brave'i otsingut</translation>
+<translation id="5026874946691314267">Ära seda enam näita</translation>
+<translation id="5234764350956374838">Loobu</translation>
+<translation id="214744058941501853">"&gt;
+          Loobuge Brave'i otsingu konversioonidest, vajutage selle soovituse eemaldamiseks sisestusklahvi</translation>
 <translation id="2515126961943087659">Bat reklaamide teenus</translation>
 <translation id="7924918279836988121">BAT-registri teenus</translation>
 <translation id="6040143037577758943">Sulge</translation>
@@ -135,6 +145,7 @@ Saate muuta ka hiljem veebilehel <ph name="SETTINGS_EXTENIONS_LINK"/>.</translat
 <translation id="8490082094734500369">Lugejarežiimi väljalülitamine</translation>
 <translation id="2036503787657622020">Lugejarežiimi sisselülitamine</translation>
 <translation id="5226458915125328323">Speedreader'i seaded</translation>
+<translation id="1621606336827646158">Näita algset lehte</translation>
 <translation id="6284218950354553099">Igapäevase kasutuse pingi automaatne saatmine Brave'ile</translation>
 <translation id="5288333155754958121">See anonüümne, privaatne ping võimaldab Brave'il hinnata aktiivsete kasutajate arvu.</translation>
 <translation id="1872784258300710671">Brave kasutab täielikult privaatset totoeanalüüsi, et hinnata teatud funktsioonide üldist kasutamist</translation>
@@ -185,6 +196,8 @@ Saate muuta ka hiljem veebilehel <ph name="SETTINGS_EXTENIONS_LINK"/>.</translat
 <translation id="6817415381278637662">Määrake Brave oma vaikebrauseriks, et kasutada Brave'i privaatsuskaitset igal veebilehel, mille avate.</translation>
 <translation id="8722651357687610395">Määra Brave vaikebrauseriks</translation>
 <translation id="2370739752330685659">Võib-olla hiljem</translation>
+<translation id="961012016278832836">Microsoft Edge Legacy</translation>
+<translation id="6436994631426134065">Imporditud brauserist <ph name="BROWSER_NAME"/></translation>
 <translation id="9156965752763025780">Teie muudatused jõustuvad järgmine kord, kui Bravei taaskäivitate.</translation>
 <translation id="7179921470347911571">Taaskäivita kohe</translation>
 <translation id="4472575034687746823">Alustamine</translation>
@@ -201,9 +214,11 @@ Saate muuta ka hiljem veebilehel <ph name="SETTINGS_EXTENIONS_LINK"/>.</translat
 <translation id="2906510232093002459">Brave'i tavapildid</translation>
 <translation id="2396127686705429331">Kuva järjehoidjate nupp</translation>
 <translation id="2814998458708016836">Kasuta laia aadressiriba</translation>
-<translation id="5802665280774361839">Näita aadressiribal automaatse täitmise teavet</translation>
-<translation id="597020512043916976">Näita automaatse täitmise soovitustes tuntumaid lehti</translation>
-<translation id="301088458323355543">Kuva soovitatud saidid automaatteksti soovitustes</translation>
+<translation id="4109670531935487117">Näita aadressiribal automaatse täitmise soovitusi</translation>
+<translation id="2858138569776157458">Popid saidid</translation>
+<translation id="65774893852758517">Soovitatud saidid</translation>
+<translation id="7859704718976024901">Lehitsemisajalugu</translation>
+<translation id="8820817407110198400">Järjehoidjad</translation>
 <translation id="6333347122924254968">Kuva aadressiribal Brave'i preemiate ikoon</translation>
 <translation id="1811404036171336214">Näita alati järjehoidjaid lehel Uus vahekaart</translation>
 <translation id="5529693968082667490">Kuva vahelehtede otsingu nupp</translation>
@@ -362,6 +377,8 @@ Saate muuta ka hiljem veebilehel <ph name="SETTINGS_EXTENIONS_LINK"/>.</translat
     Kas soovite seda kindlasti teha?</translation>
 <translation id="6285118765755298263">Indekseeri muid otsimootoreid</translation>
 <translation id="919715748352669592">Indekseerib automaatselt veebisaidid, mis järgivad OpenSearchi spetsifikatsiooni.</translation>
+<translation id="842628013524824194">Tavaaken – aadressiribal kasutatav otsingumootor</translation>
+<translation id="5324939009884545145">Privaatne aken – aadressiribal kasutatav otsingumootor</translation>
 <translation id="6864914031231797928">Luba laiendustel Google'i sisselogimine</translation>
 <translation id="6554397389149987360">Kasutab Hangouts-komponenti kuva jagamise ja muude funktsioonide aktiveerimiseks brauseris.</translation>
 <translation id="7878791177459550035">Meediumiruuter võimaldab brauseris esitamisfunktsiooni.</translation>
@@ -461,6 +478,7 @@ Saate muuta ka hiljem veebilehel <ph name="SETTINGS_EXTENIONS_LINK"/>.</translat
 <translation id="616058968889448209">IPFS-i teenuse käivitamise tõrge, lisateavet leiate veebisaidilt <ph name="BEGIN_LINK"/>diagnostic page<ph name="END_LINK"/>.</translation>
 <translation id="6912148685459054619">'<ph name="KEY_NAME"/>' võtme importimine ebaõnnestus</translation>
 <translation id="3364053282600191535">'<ph name="KEY_NAME"/>' võtme eksport ebaõnnestus</translation>
+<translation id="5840868269342837751">Märkus: võrgupäringud ei tohi kasutada brauseri puhverserveri ega DNS-seadeid.</translation>
 <translation id="8275038454117074363">Impordi</translation>
 <translation id="3654980960391973513">Genereeri</translation>
 <translation id="5531501313997312487">Käivita sõlm</translation>

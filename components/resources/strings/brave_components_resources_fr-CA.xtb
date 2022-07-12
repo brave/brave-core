@@ -722,7 +722,7 @@
 <translation id="4780526507945807546">Utiliser un nœud IPFS local Brave</translation>
 <translation id="8148464361648742409">Utiliser un portail public</translation>
 <translation id="5123478056123923857">L'IPFS (système de fichier inter-planétaire) est le réseau public de stockage et de diffusion de données entre homologues. Ce protocole a des considérations de confidentialité différentes de celles du HTTP(S).</translation>
-<translation id="5410952114182173389">Votre ordinateur contribue au réseau public, mais votre adresse IP et tout contenu que vous demandez ou fournissez pourraient être exposés. Le contenu que vous demandez par l'intermédiaire de l'IPFS est vérifié avant de vous être transmis.</translation>
+<translation id="1216911189668016151">Votre ordinateur contribue au réseau public, mais votre adresse IP et tout contenu que vous demandez ou fournissez pourraient être exposés. Le contenu que vous demandez par l'intermédiaire de l'IPFS est vérifié avant de vous être transmis. Les demandes réseau peuvent ne pas utiliser de paramètres DNS et du proxy du navigateur.</translation>
 <translation id="8664689531113048642">Protège votre adresse IP et le contenu que vous demandez aux observateurs tiers potentiels, mais pas à l'opérateur de la passerelle publique. L'opérateur de passerelle est responsable de s'assurer que le contenu qui vous est transmis via une passerelle est bien celui que vous avez demandé. De plus, votre ordinateur ne contribue pas au réseau de l'IPFS public.</translation>
 <translation id="3977809385703587108">Vous pouvez à nouveau modifier vos préférences dans</translation>
 <translation id="3340978935015468852">paramètres</translation>
@@ -914,6 +914,7 @@
 <translation id="4359319875297001084">Importer depuis les portefeuilles cryptos Brave hérités?</translation>
 <translation id="3331452756822160641">Nouveau mot de passe</translation>
 <translation id="8624315169751085215">Copier dans le presse-papiers</translation>
+<translation id="7885157704277298658">Copié!</translation>
 <translation id="1121335910737476837">Comptes cryptos principaux</translation>
 <translation id="6969147029062037757">Comptes importés</translation>
 <translation id="4057718162494343222">Le portefeuille Brave vous permet de créer des comptes principaux qui peuvent être sauvegardés ou restaurés à l'aide de votre phrase de récupération. Pour en savoir plus sur les types de comptes disponibles, reportez-vous à l'aide dédiée aux comptes.</translation>
@@ -971,6 +972,8 @@
 <translation id="7642841516562576649">URL d'icône</translation>
 <translation id="2144247757675997850">Ajouter un actif</translation>
 <translation id="2708402071160162126">AVERTISSEMENT : Ne révélez jamais votre phrase de récupération. N'importe qui détenant cette phrase peut voler vos actifs sans aucun recours possible.</translation>
+<translation id="2416098547200943834">REMARQUE : une clé privée est fournie en tant fichier JSON codé en hexadécimal contenant la clé privée et des informations du protocole. <ph name="LINK_START"/> En savoir plus<ph name="LINK_END"/>.</translation>
+<translation id="7657130382217527063">REMARQUE : une clé privée doit être fournie en tant fichier JSON codé en hexadécimal contenant la clé privée et des informations du protocole. <ph name="LINK_START"/> En savoir plus<ph name="LINK_END"/>.</translation>
 <translation id="2902856457593699108">Afficher la clé</translation>
 <translation id="8033497299373164724">Masquer la clé</translation>
 <translation id="2702143907607790516">Échec de la mise à jour du nom du compte, veuillez réessayer.</translation>
@@ -1006,7 +1009,7 @@
 <translation id="5488357322146334497">Message</translation>
 <translation id="3586752056660754651">Signer</translation>
 <translation id="3484981968509595506">Un DApp demande votre clé de chiffrement publique</translation>
-<translation id="1915212737651531313"><ph name="URL_BEFORE"/>$url<ph name="URL_AFTER"/> demande la clé de chiffrement publique de vos portefeuilles. Si vous consentez à fournir cette clé, le site sera en mesure de vous composer des messages chiffrés.</translation>
+<translation id="2950511942409261729"><ph name="URL_BEFORE"/>$url<ph name="URL_AFTER"/> demande la clé de chiffrement publique de votre portefeuille. Si vous consentez à fournir cette clé, le site sera en mesure de vous composer des messages chiffrés.</translation>
 <translation id="3340247553212049934">Fournir</translation>
 <translation id="1619778919922494944">Cette application décentralisée souhaite lire ce message pour traiter votre demande</translation>
 <translation id="714506544401754321">Déchiffrer le message</translation>
@@ -1073,8 +1076,8 @@
 <translation id="7051244143160304048"><ph name="DEVICE_NAME"/> déconnecté</translation>
 <translation id="5317781812114905957">Instructions</translation>
 <translation id="1178198982208000092">Connecter votre <ph name="DEVICE_NAME"/></translation>
-<translation id="4358411489835404360">Le portefeuille physique nécessite une confirmation sur l'appareil. <ph name="DEVICE_NAME"/></translation>
-<translation id="3087887714936696603">Le portefeuille physique nécessite que l'application Ethereum soit ouverte sur <ph name="DEVICE_NAME"/></translation>
+<translation id="6291765462876399333">Le portefeuille physique nécessite une confirmation sur l'appareil <ph name="DEVICE_NAME"/></translation>
+<translation id="2288190100157580461">Le portefeuille physique nécessite que l'application <ph name="NETWORK"/> soit ouverte sur <ph name="DEVICE_NAME"/></translation>
 <translation id="8687869982094542529">envoyé</translation>
 <translation id="5013754027092416509">reçu</translation>
 <translation id="5867988533873716616">L'URL de l'explorateur de bloc n'est pas disponible.</translation>
@@ -1145,7 +1148,7 @@
 <translation id="1470129769517088397"><ph name="ADDRESS"/> n'est pas le réseau actuel</translation>
 <translation id="7340805872138998391">Impossible de déverrouiller l'appareil, essayez de vous reconnecter</translation>
 <translation id="1984410139271779110">Erreur interne, plan inconnu</translation>
-<translation id="8682200134223578011">approuvé</translation>
+<translation id="6989562355845156390">approuver</translation>
 <translation id="4674380028960132654">Ledger : la signature ne correspond pas à l'adresse</translation>
 <translation id="3183932890629254743">Compte physique introuvable</translation>
 <translation id="4287068151777838754">Données JSON non attendues</translation>
@@ -1188,6 +1191,26 @@
 <translation id="2317956709076373213">Transaction confirmée</translation>
 <translation id="310693998838023022">Erreur lors de la transaction</translation>
 <translation id="6395870673621520684">Transaction abandonnée</translation>
+<translation id="1237782734462409503">L'onglet n'est pas actif</translation>
+<translation id="756701799684433105">Approuver la transaction</translation>
+<translation id="6450792191436242818">Programme du système</translation>
+<translation id="6252742184395380448">Programme de configuration</translation>
+<translation id="5358970666412490132">Programme d'enjeu</translation>
+<translation id="346636227344244984">Programme de vote</translation>
+<translation id="3538368258493053874">Chargeur BPF</translation>
+<translation id="2334098351242742927">Programme Ed25519</translation>
+<translation id="8780753288764281797">Programme Secp256k1</translation>
+<translation id="5275550100743015683">Adresse de l'expéditeur :</translation>
+<translation id="2678433693746214764">Adresse du destinataire :</translation>
+<translation id="4576396475962922672">Nouveau compte :</translation>
+<translation id="4719005063558335704">Comptes :</translation>
+<translation id="4337554812324118382">Données :</translation>
+<translation id="569870799832027680">ID du programme :</translation>
+<translation id="7843211152394841558">Nombre maximum de nouvelles tentatives :</translation>
+<translation id="8496335570810457">Engagement préalable :</translation>
+<translation id="5100124500279922001">Ignorer la simulation de transaction :</translation>
+<translation id="8060029310790625334">Centre d'aide</translation>
+<translation id="2095142195578664632">Besoin d'aide? Consulter</translation>
 <translation id="3155170474926428993">Lanceur Tor</translation>
 <translation id="3745016858329272300">Informations générales</translation>
 <translation id="4045404575593562245">Événements relatifs au contrôle de Tor</translation>

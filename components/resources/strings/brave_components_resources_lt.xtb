@@ -728,7 +728,7 @@ Window with Tor“ ir vėl įjunkite. Vis dar turite problemų?</translation>
 <translation id="4780526507945807546">Naudoti „Brave“ vietinį IPFS mazgą</translation>
 <translation id="8148464361648742409">Naudoti viešąjį tinklų sietuvą</translation>
 <translation id="5123478056123923857">IPFS (Tarpplanetinė failų sistema) – tai viešasis tinklas, skirtas tarpasmeniniam duomenų laikymui ir tiekimui. Šio protokolo privatumo nustatymai skiriasi nuo HTTP(S).</translation>
-<translation id="5410952114182173389">Jūsų kompiuteris prisideda prie viešojo tinklo, bet jūsų IP adresas ir bet koks turinys, kurio prašote ar teikiate, gali būti matomas. Turinys, kurio prašote per IPFS, patikrinamas prieš jums pateikiant.</translation>
+<translation id="1216911189668016151">Jūsų kompiuteris kuria viešąjį tinklą, todėl atsiranda tikimybė, kad jūsų IP adresas ir turinys, kurį prašote pateikti arba pateikiate, nebus apsaugotas. Turinys, kurio prašote per IPFS, pirmiausia patikrinamas ir tik tada pateikiamas jums. Gali būti, kad naršyklės tarpinio serverio ir DNS nuostatos tinklo užklausoms netaikomos.</translation>
 <translation id="8664689531113048642">Apsaugo jūsų IP adresą ir turinį, kurio prašote iš galimų trečiųjų šalių stebėtojų, bet ne iš viešojo tinklų sietuvo operatoriaus. Tinklų sietuvo operatorius atsakingas už tai, kad užtikrintų, jog turinys, kurį gaunate per tinklų sietuvą, yra tas turinys, kurio prašėte. Be to, jūsų kompiuteris neprisideda prie viešojo iPFS tinklo.</translation>
 <translation id="3977809385703587108">Savo nuostatas vėl galėsite pakeisti dalyje</translation>
 <translation id="3340978935015468852">nustatymų</translation>
@@ -920,6 +920,7 @@ Window with Tor“ ir vėl įjunkite. Vis dar turite problemų?</translation>
 <translation id="4359319875297001084">Importuoti iš senesnių „Brave“ kriptovaliutos piniginių?</translation>
 <translation id="3331452756822160641">Naujas slaptažodis</translation>
 <translation id="8624315169751085215">Kopijuoti į iškarpinę</translation>
+<translation id="7885157704277298658">Nukopijuota!</translation>
 <translation id="1121335910737476837">Pagrindinės kriptovaliutų sąskaitos</translation>
 <translation id="6969147029062037757">Importuotos paskyros</translation>
 <translation id="4057718162494343222">Galite susikurti pagrindines „Brave“ piniginės sąskaitas, kurias galima atkurti naudojant atkūrimo frazę arba daryti jų atsargines kopijas. Jei norite apie sąskaitų tipus sužinoti daugiau, apsilankykite sąskaitų žinyne.</translation>
@@ -977,6 +978,8 @@ Window with Tor“ ir vėl įjunkite. Vis dar turite problemų?</translation>
 <translation id="7642841516562576649">Piktogramos URL adresas</translation>
 <translation id="2144247757675997850">Pridėti svetainę</translation>
 <translation id="2708402071160162126">ĮSPĖJIMAS. Niekada neatskleiskite atkūrimo frazės. Sužinoję šią frazę, kiti asmenys gali visam laikui perimti jūsų aktyvus.</translation>
+<translation id="2416098547200943834">PASTABA. Privatus raktas pateikiamas šešioliktainiu šifru užšifruotame JSON faile, kuriame yra privatus raktas ir protokolo informacija. <ph name="LINK_START"/>Sužinokite daugiau<ph name="LINK_END"/>.</translation>
+<translation id="7657130382217527063">PASTABA. Privatus raktas turi būti pateiktas šešioliktainiu šifru užšifruotame JSON faile, kuriame yra privatus raktas ir protokolo informacija. <ph name="LINK_START"/>Learn more<ph name="LINK_END"/>.</translation>
 <translation id="2902856457593699108">Rodyti raktą</translation>
 <translation id="8033497299373164724">Slėpti raktą</translation>
 <translation id="2702143907607790516">Atnaujinti sąskaitos pavadinimo nepavyko, bandykite dar kartą.</translation>
@@ -1012,7 +1015,7 @@ Window with Tor“ ir vėl įjunkite. Vis dar turite problemų?</translation>
 <translation id="5488357322146334497">Pranešimas</translation>
 <translation id="3586752056660754651">Prisijunkite</translation>
 <translation id="3484981968509595506">„DApp“ prašo jūsų viešojo šifravimo rakto</translation>
-<translation id="1915212737651531313"><ph name="URL_BEFORE"/>$url<ph name="URL_AFTER"/> prašo jūsų piniginės viešojo šifravimo rakto. Jei pateikti šį raktą sutinkate, svetainė galės jums kurti šifruotas žinutes.</translation>
+<translation id="2950511942409261729"><ph name="URL_BEFORE"/>$url<ph name="URL_AFTER"/> prašo jūsų piniginės viešojo šifravimo rakto. Jei pateikti šį raktą sutinkate, svetainė galės jums kurti šifruotas žinutes.</translation>
 <translation id="3340247553212049934">Pateikite</translation>
 <translation id="1619778919922494944">Ši „DApp“ norėtų perskaityti šį pranešimą, kad įvykdytų jūsų prašymą</translation>
 <translation id="714506544401754321">Iššifruoti pranešimą</translation>
@@ -1079,8 +1082,8 @@ Window with Tor“ ir vėl įjunkite. Vis dar turite problemų?</translation>
 <translation id="7051244143160304048"><ph name="DEVICE_NAME"/> atjungtas</translation>
 <translation id="5317781812114905957">Instrukcijos</translation>
 <translation id="1178198982208000092">Prijunkite savo <ph name="DEVICE_NAME"/></translation>
-<translation id="4358411489835404360">Aparatinei piniginei reikalingas patvirtinimas. <ph name="DEVICE_NAME"/></translation>
-<translation id="3087887714936696603">Aparatinės įrangos piniginei reikia, kad <ph name="DEVICE_NAME"/> būtų atverta „Ethereum“ programėlė</translation>
+<translation id="6291765462876399333">Aparatinei piniginei reikalingas patvirtinimas įrenginyje <ph name="DEVICE_NAME"/></translation>
+<translation id="2288190100157580461">Aparatinei piniginei reikia, kad įrenginyje <ph name="DEVICE_NAME"/> būtų atverta programa <ph name="NETWORK"/></translation>
 <translation id="8687869982094542529">išsiųsta</translation>
 <translation id="5013754027092416509">gauta</translation>
 <translation id="5867988533873716616">Blokų naršyklės URL nepasiekiamas.</translation>
@@ -1151,7 +1154,7 @@ Window with Tor“ ir vėl įjunkite. Vis dar turite problemų?</translation>
 <translation id="1470129769517088397"><ph name="ADDRESS"/> nėra dabartinis tinklas</translation>
 <translation id="7340805872138998391">Prietaiso atrakinti nepavyko, pamėginkite prijungti iš naujo</translation>
 <translation id="1984410139271779110">Vidinė klaida, nežinoma schema</translation>
-<translation id="8682200134223578011">patvirtinta</translation>
+<translation id="6989562355845156390">patvirtinti</translation>
 <translation id="4674380028960132654">„Ledger“: parašas nesutampa su atitinkamu adresu</translation>
 <translation id="3183932890629254743">Aparatinės įrangos paskyra nerasta</translation>
 <translation id="4287068151777838754">JSON duomenų nesitikima</translation>
@@ -1194,6 +1197,26 @@ Window with Tor“ ir vėl įjunkite. Vis dar turite problemų?</translation>
 <translation id="2317956709076373213">Operacija patvirtinta</translation>
 <translation id="310693998838023022">Operacijos klaida</translation>
 <translation id="6395870673621520684">Operacija atmesta</translation>
+<translation id="1237782734462409503">Kortelė neaktyvi</translation>
+<translation id="756701799684433105">Tvirtinti operaciją</translation>
+<translation id="6450792191436242818">Sistemos programa</translation>
+<translation id="6252742184395380448">Konfigūravimo programa</translation>
+<translation id="5358970666412490132">Dalininkų programa</translation>
+<translation id="346636227344244984">Balsavimo programa</translation>
+<translation id="3538368258493053874">BPF įkėlimo programa</translation>
+<translation id="2334098351242742927">Ed25519 programa</translation>
+<translation id="8780753288764281797">Secp256k1 programa</translation>
+<translation id="5275550100743015683">Siuntėjo adresas:</translation>
+<translation id="2678433693746214764">Gavėjo adresas</translation>
+<translation id="4576396475962922672">Nauja paskyra:</translation>
+<translation id="4719005063558335704">Paskyros:</translation>
+<translation id="4337554812324118382">Duomenys:</translation>
+<translation id="569870799832027680">Programos ID:</translation>
+<translation id="7843211152394841558">Didžiausias kartojimo skaičius:</translation>
+<translation id="8496335570810457">Išankstinis patvirtinimas:</translation>
+<translation id="5100124500279922001">Praleisti išankstinę užklausą:</translation>
+<translation id="8060029310790625334">Pagalbos centras</translation>
+<translation id="2095142195578664632">Reikia pagalbos? Žr.</translation>
 <translation id="3155170474926428993">„Tor“ paleidimo priemonė</translation>
 <translation id="3745016858329272300">Bendroji informacija</translation>
 <translation id="4045404575593562245">„Tor“ valdymo įvykiai</translation>

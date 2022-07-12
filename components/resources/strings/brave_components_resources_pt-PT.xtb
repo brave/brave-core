@@ -722,7 +722,7 @@
 <translation id="4780526507945807546">Utilizar um nó IPFS local do Brave</translation>
 <translation id="8148464361648742409">Usar um gateway público</translation>
 <translation id="5123478056123923857">IPFS (InterPlanetary File System) é a rede pública para armazenamento e distribuição de dados par-a-par. Este protocolo apresenta diferentes considerações de privacidade do HTTP (S).</translation>
-<translation id="5410952114182173389">O seu computador contribui para a rede pública; todavia, o seu endereço IP e qualquer outro conteúdo por si solicitado ou fornecido podem ser tornados públicos. O conteúdo por si solicitado via IPFS é verificado antes de ser-lhe fornecido.</translation>
+<translation id="1216911189668016151">Seu computador contribui para a rede pública, mas seu endereço de IP e todo conteúdo que você está solicitando ou disponibilizando podem ser expostos. O conteúdo que você solicita via IPFS é verificado antes de ser oferecido a você. As solicitações de rede podem não usar as configurações de proxy e DNS do navegador.</translation>
 <translation id="8664689531113048642">Protege o seu endereço IP e o conteúdo que visa proteger de partes terceiras, mas não da operadora de gateway público.  A operadora do gateway é responsável por garantir que o conteúdo a que tem acesso via gateway é o conteúdo por si solicitado.  Além do mais, o seu computador não contribui para a rede IPFS pública.</translation>
 <translation id="3977809385703587108">Pode alterar as suas preferências novamente em</translation>
 <translation id="3340978935015468852">definições</translation>
@@ -914,6 +914,7 @@
 <translation id="4359319875297001084">Importar dos legados das carteiras cripto Brave?</translation>
 <translation id="3331452756822160641">Nova palavra-passe</translation>
 <translation id="8624315169751085215">Copiar para a Área de Transferência</translation>
+<translation id="7885157704277298658">Copiado!</translation>
 <translation id="1121335910737476837">Contas cripto primárias</translation>
 <translation id="6969147029062037757">Contas importadas</translation>
 <translation id="4057718162494343222">Pode criar contas principais na Carteira Brave que possam ter cópias de segurança ou ser restauradas através da sua frase de recuperação. Para saber mais sobre tipos de conta, consulte a ajuda da conta.</translation>
@@ -971,6 +972,8 @@
 <translation id="7642841516562576649">URL do ícone</translation>
 <translation id="2144247757675997850">Adicionar ativo</translation>
 <translation id="2708402071160162126">AVISO: Nunca divulgue a sua frase de recuperação. Qualquer pessoa na posse desta frase pode roubar os seus ativos permanentemente.</translation>
+<translation id="2416098547200943834">OBSERVAÇÃO: a chave privada é fornecida como um JSON com codificação hexadecimal que contém informações da chave privada e de protocolo. <ph name="LINK_START"/>Saiba mais<ph name="LINK_END"/>.</translation>
+<translation id="7657130382217527063">OBSERVAÇÃO: a chave privada precisa ser fornecida como um JSON com codificação hexadecimal que contém informações da chave privada e de protocolo. <ph name="LINK_START"/>Saiba mais<ph name="LINK_END"/>.</translation>
 <translation id="2902856457593699108">Mostrar chave</translation>
 <translation id="8033497299373164724">Ocultar chave</translation>
 <translation id="2702143907607790516">Falha ao atualizar nome da conta, tente novamente.</translation>
@@ -1006,7 +1009,7 @@
 <translation id="5488357322146334497">Mensagem</translation>
 <translation id="3586752056660754651">Assinar</translation>
 <translation id="3484981968509595506">Uma DApp requer a sua chave de encriptação pública</translation>
-<translation id="1915212737651531313"><ph name="URL_BEFORE"/>$url<ph name="URL_AFTER"/> está a solicitar a chave de encriptação pública da sua carteira. Se a fornecer, este site poderá compor mensagens encriptadas para si.</translation>
+<translation id="2950511942409261729"><ph name="URL_BEFORE"/>$url<ph name="URL_AFTER"/> está solicitando a chave de criptografia pública da sua carteira. Se você consentir com o fornecimento dessa chave, o site poderá enviar mensagens criptografadas para você.</translation>
 <translation id="3340247553212049934">Providenciar</translation>
 <translation id="1619778919922494944">Esta DApp pretende ler esta mensagem para concluir o seu pedido</translation>
 <translation id="714506544401754321">Descodificar mensagem</translation>
@@ -1073,8 +1076,8 @@
 <translation id="7051244143160304048"><ph name="DEVICE_NAME"/> desligado</translation>
 <translation id="5317781812114905957">Instruções</translation>
 <translation id="1178198982208000092">Ligar <ph name="DEVICE_NAME"/></translation>
-<translation id="4358411489835404360">A carteira de hardware exige confirmação no dispositivo.<ph name="DEVICE_NAME"/></translation>
-<translation id="3087887714936696603">A carteira de hardware exige que a aplicação Ethereum esteja aberta no <ph name="DEVICE_NAME"/></translation>
+<translation id="6291765462876399333">A carteira de hardware exige confirmação no dispositivo <ph name="DEVICE_NAME"/></translation>
+<translation id="2288190100157580461">A carteira de hardware exige que o app <ph name="NETWORK"/> esteja aberto no dispositivo <ph name="DEVICE_NAME"/></translation>
 <translation id="8687869982094542529">enviado</translation>
 <translation id="5013754027092416509">recebido</translation>
 <translation id="5867988533873716616">O URL do Block Explorer não está disponível.</translation>
@@ -1145,7 +1148,7 @@
 <translation id="1470129769517088397"><ph name="ADDRESS"/> não é a rede atual</translation>
 <translation id="7340805872138998391">Não é possível desbloquear o dispositivo. Tente estabelecer ligação novamente.</translation>
 <translation id="1984410139271779110">Erro interno. Esquema desconhecido</translation>
-<translation id="8682200134223578011">aprovado</translation>
+<translation id="6989562355845156390">aprovar</translation>
 <translation id="4674380028960132654">Ledger: a assinatura não corresponde ao endereço correto</translation>
 <translation id="3183932890629254743">Conta de hardware não encontrada</translation>
 <translation id="4287068151777838754">Os dados JSON não são o esperado</translation>
@@ -1188,6 +1191,26 @@
 <translation id="2317956709076373213">Transação confirmada</translation>
 <translation id="310693998838023022">Erro na transação</translation>
 <translation id="6395870673621520684">Transação interrompida</translation>
+<translation id="1237782734462409503">A guia não está ativa</translation>
+<translation id="756701799684433105">Aprovar transação</translation>
+<translation id="6450792191436242818">Programa do sistema</translation>
+<translation id="6252742184395380448">Programa de configuração</translation>
+<translation id="5358970666412490132">Programa de staking</translation>
+<translation id="346636227344244984">Programa de voto</translation>
+<translation id="3538368258493053874">Carregador BPF</translation>
+<translation id="2334098351242742927">Programa Ed25519</translation>
+<translation id="8780753288764281797">Programa Secp256k1</translation>
+<translation id="5275550100743015683">Endereço do remetente:</translation>
+<translation id="2678433693746214764">Endereço do destinatário:</translation>
+<translation id="4576396475962922672">Nova conta:</translation>
+<translation id="4719005063558335704">Contas:</translation>
+<translation id="4337554812324118382">Dados:</translation>
+<translation id="569870799832027680">ID do programa:</translation>
+<translation id="7843211152394841558">Máximo de novas tentativas:</translation>
+<translation id="8496335570810457">Commitment de simulação de transação:</translation>
+<translation id="5100124500279922001">Pular simulação de transação:</translation>
+<translation id="8060029310790625334">Central de Ajuda</translation>
+<translation id="2095142195578664632">Precisa de ajuda? Consulte a</translation>
 <translation id="3155170474926428993">Inicializador Tor</translation>
 <translation id="3745016858329272300">Informação geral</translation>
 <translation id="4045404575593562245">Eventos de controlo do Tor</translation>

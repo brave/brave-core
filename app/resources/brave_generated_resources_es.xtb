@@ -106,6 +106,16 @@ También puedes cambiar los permisos más adelante en <ph name="SETTINGS_EXTENIO
 <translation id="4870911314065352661">¿Quieres cerrar todas las pestañas?</translation>
 <translation id="7551864359422178684">Tienes <ph name="NUMBER_OF_TABS"/> pestañas abiertas en esta ventana del navegador.</translation>
 <translation id="2571596981920752023"><ph name="NUMBER_OF_TABS"/> pestañas</translation>
+<translation id="2272117088509540883">- Búsqueda de Brave</translation>
+<translation id="2701279958223202597">Apoya la búsqueda independiente con más privacidad. Búsqueda de Brave no rastrea tu actividad, tus consultas ni tus clics.</translation>
+<translation id="6438467592401259882">Apoya la búsqueda independiente con más privacidad.</translation>
+<translation id="1688359110799098115">Apoya la búsqueda independiente con más privacidad</translation>
+<translation id="8579317236683491484">Búsqueda de Brave no rastrea tu actividad, tus consultas ni tus clics.</translation>
+<translation id="5240031343741051161">Prueba Brave Search</translation>
+<translation id="5026874946691314267">No volver a mostrar esto de nuevo.</translation>
+<translation id="5234764350956374838">Descartar</translation>
+<translation id="214744058941501853">"&gt;
+          Descartar el cambio a Búsqueda de Brave; pulsa Intro para eliminar esta sugerencia</translation>
 <translation id="2515126961943087659">Servicio de Anuncios Bat</translation>
 <translation id="7924918279836988121">Servicio Bat Ledger</translation>
 <translation id="6040143037577758943">Cerrar</translation>
@@ -135,6 +145,7 @@ También puedes cambiar los permisos más adelante en <ph name="SETTINGS_EXTENIO
 <translation id="8490082094734500369">Desactivar el modo de lectura</translation>
 <translation id="2036503787657622020">Activar el modo de lectura</translation>
 <translation id="5226458915125328323">Ajustes de Speedreader</translation>
+<translation id="1621606336827646158">Mostrar página original</translation>
 <translation id="6284218950354553099">Enviar automáticamente el ping de uso diario a Brave</translation>
 <translation id="5288333155754958121">Este ping privado y anónimo permite a Brave calcular el número de usuarios activos.</translation>
 <translation id="1872784258300710671">Brave utiliza análisis de productos de manera completamente privada para estimar el uso general de ciertas funciones</translation>
@@ -185,6 +196,8 @@ También puedes cambiar los permisos más adelante en <ph name="SETTINGS_EXTENIO
 <translation id="6817415381278637662">Establece Brave como tu navegador predeterminado para beneficiarte de la protección de privacidad de Brave en todas las páginas que abras.</translation>
 <translation id="8722651357687610395">Establecer Brave como predeterminado</translation>
 <translation id="2370739752330685659">Quizás más tarde</translation>
+<translation id="961012016278832836">Versiones anteriores de Microsoft Edge</translation>
+<translation id="6436994631426134065">Importado desde <ph name="BROWSER_NAME"/></translation>
 <translation id="9156965752763025780">Tus cambios se aplicarán la próxima vez que reinicies Brave.</translation>
 <translation id="7179921470347911571">Relanzar Ahora</translation>
 <translation id="4472575034687746823">Empezar</translation>
@@ -201,9 +214,11 @@ También puedes cambiar los permisos más adelante en <ph name="SETTINGS_EXTENIO
 <translation id="2906510232093002459">Imágenes por defecto de Brave</translation>
 <translation id="2396127686705429331">Mostrar botón de marcadores</translation>
 <translation id="2814998458708016836">Usar la barra de direcciones extendida</translation>
-<translation id="5802665280774361839">Mostrar autocompletar en la barra de direcciones</translation>
-<translation id="597020512043916976">Mostrar los sitios principales en las sugerencias de autocompletar</translation>
-<translation id="301088458323355543">Mostrar los sitios sugeridos en las sugerencias de la opción de autocompletar</translation>
+<translation id="4109670531935487117">Mostrar sugerencias autocompletadas en la barra de direcciones</translation>
+<translation id="2858138569776157458">Populares</translation>
+<translation id="65774893852758517">Sitios sugeridos</translation>
+<translation id="7859704718976024901">Historial de Navegación</translation>
+<translation id="8820817407110198400">Marcadores</translation>
 <translation id="6333347122924254968">Mostrar el icono de Recompensas de Brave en la barra de direcciones</translation>
 <translation id="1811404036171336214">Mostrar siempre los marcadores en la página de la nueva pestaña</translation>
 <translation id="5529693968082667490">Mostrar el botón de búsqueda de pestañas</translation>
@@ -249,7 +264,7 @@ También puedes cambiar los permisos más adelante en <ph name="SETTINGS_EXTENIO
 <translation id="2831397936251948638">Crear filtros personalizados</translation>
 <translation id="4618274268052410139">Añade en cada línea del campo de abajo uno de los filtros personalizados que hayas creado. Asegúrate de usar la <ph name="BEGIN_LINK"/>sintaxis de filtros de Adblock<ph name="END_LINK"/>.</translation>
 <translation id="7791543448312431591">Añadir</translation>
-<translation id="571950783952070673">URL de la lista</translation>
+<translation id="571950783952070673">URL de las listas</translation>
 <translation id="9204006549413740506">Última actualización</translation>
 <translation id="6745592621698551453">Actualizar ahora</translation>
 <translation id="5334844597069022743">Ver fuente</translation>
@@ -362,6 +377,8 @@ Comprueba que un dispositivo tuyo haya generado estas palabras clave.
 ¿Seguro que quieres hacerlo?</translation>
 <translation id="6285118765755298263">Indexar otros motores de búsqueda</translation>
 <translation id="919715748352669592">Indexa automáticamente los sitios web que siguen las especificaciones OpenSearch.</translation>
+<translation id="842628013524824194">Ventana normal: motor de búsqueda usado en la barra de direcciones</translation>
+<translation id="5324939009884545145">Ventana privada: motor de búsqueda usado en la barra de direcciones</translation>
 <translation id="6864914031231797928">Permitir el inicio de sesión con Google para obtener extensiones</translation>
 <translation id="6554397389149987360">Usa el componente de Hangouts para habilitar la compartición de la pantalla y otras funciones en el navegador.</translation>
 <translation id="7878791177459550035">El router multimedia hace posibles las transmisiones en el navegador.</translation>
@@ -461,6 +478,7 @@ Comprueba que un dispositivo tuyo haya generado estas palabras clave.
 <translation id="616058968889448209">Error al iniciar el servicio de IPFS. Encontrarás más información en la <ph name="BEGIN_LINK"/>página de diagnóstico<ph name="END_LINK"/></translation>
 <translation id="6912148685459054619">Error al importar la clave '<ph name="KEY_NAME"/>'</translation>
 <translation id="3364053282600191535">'<ph name="KEY_NAME"/>' error al importar la clave</translation>
+<translation id="5840868269342837751">Nota: Es posible que las solicitudes de red no usen la configuración del DNS ni del proxy del navegador.</translation>
 <translation id="8275038454117074363">Importar</translation>
 <translation id="3654980960391973513">Generar</translation>
 <translation id="5531501313997312487">Iniciar nodo</translation>

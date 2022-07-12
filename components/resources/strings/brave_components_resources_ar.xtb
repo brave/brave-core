@@ -723,7 +723,6 @@
 <translation id="4780526507945807546">استخدم عقدة IPFS المحلية من متصفح Brave</translation>
 <translation id="8148464361648742409">استخدم عنوان بوابة عام</translation>
 <translation id="5123478056123923857">IPFS (نظام الملفات بين الكواكب) هي الشبكة العامة لتخزين وتسليم البيانات من نظير إلى نظير. هذا البروتوكول له اعتبارات خصوصية مختلفة عن HTTP(S).</translation>
-<translation id="5410952114182173389">يساهم جهاز الكمبيوتر الخاص بك في الشبكة العامة، ولكن قد يتم كشف عنوان IP وأي محتوى ’ تطلبه أو تقدمه. يتم التحقق من المحتوى الذي تطلبه عبر IPFS قبل تقديمه إليك.</translation>
 <translation id="8664689531113048642">يحمي عنوان IP الخاص بك والمحتوى ’ الذي تطلبه من مراقبين محتملين تابعين لجهات خارجية، ولكن ليس من مشغل البوابة العام. يعتبر مشغل البوابة مسؤولاً عن ضمان أن المحتوى الذي يتم تقديمه لك عبر البوابة هو المحتوى الذي طلبته. أيضاً، لا يساهم جهاز الكمبيوتر الخاص بك في شبكة IPFS العامة.</translation>
 <translation id="3977809385703587108">يمكنك تغيير تفضيلاتك مرة أخرى في</translation>
 <translation id="3340978935015468852">الإعدادات</translation>
@@ -915,6 +914,7 @@
 <translation id="4359319875297001084">هل ترغب في توريد محافظ التفشير القديمة الخاصة بـ Brave؟</translation>
 <translation id="3331452756822160641">كلمة مرور جديدة</translation>
 <translation id="8624315169751085215">نسخ إلى الحافظة</translation>
+<translation id="7885157704277298658">تم النسخ.</translation>
 <translation id="1121335910737476837">حسابات التفشير الأساسية</translation>
 <translation id="6969147029062037757">الحسابات المستوردة</translation>
 <translation id="4057718162494343222">يمكنك إنشاء حسابات أساسية في "محفظة Brave Wallet" والتي يمكن نسخها احتياطيًا أو استعادتها من العبارة الاستردادية. لمعرفة المزيد حول أنواع الحسابات، تفضّل بزيارة مساعدة الحساب.</translation>
@@ -1007,7 +1007,6 @@
 <translation id="5488357322146334497">رسالة</translation>
 <translation id="3586752056660754651">توقيع</translation>
 <translation id="3484981968509595506">يطلب DApp مفتاح التشفير العام الخاص بك</translation>
-<translation id="1915212737651531313">يطلب <ph name="URL_BEFORE"/>$url<ph name="URL_AFTER"/> مفتاح التشفير العام الخاص بمحافظك. في حال موافقتك على مشاركته، سيتمكن الموقع من إنشاء رسائل مشفرة لك.</translation>
 <translation id="3340247553212049934">تزويد</translation>
 <translation id="1619778919922494944">يرغب هذا التطبيق اللامركزي في قراءة هذه الرسالة لإكمال طلبك</translation>
 <translation id="714506544401754321">فك تشفير الرسالة</translation>
@@ -1074,8 +1073,6 @@
 <translation id="7051244143160304048"><ph name="DEVICE_NAME"/> غير متصل</translation>
 <translation id="5317781812114905957">تعليمات</translation>
 <translation id="1178198982208000092">قم بتوصيل <ph name="DEVICE_NAME"/></translation>
-<translation id="4358411489835404360">تتطلب المحفظة الموجودة على جهاز إجراء تأكيد على الجهاز.<ph name="DEVICE_NAME"/></translation>
-<translation id="3087887714936696603">تتطلب محفظة الجهاز وجود تطبيق Ethereum مفتوحًا على <ph name="DEVICE_NAME"/></translation>
 <translation id="8687869982094542529">تم الإرسال</translation>
 <translation id="5013754027092416509">تم الاستلام</translation>
 <translation id="5867988533873716616">عنوان URL لمستكشف الحظر غير متاح.</translation>
@@ -1146,7 +1143,6 @@
 <translation id="1470129769517088397"><ph name="ADDRESS"/> ليست شبكة حالية</translation>
 <translation id="7340805872138998391">تعذر إلغاء قفل الجهاز، حاول إعادة الاتصال</translation>
 <translation id="1984410139271779110">خطأ داخلي، مخطط غير معروف</translation>
-<translation id="8682200134223578011">تمت الموافقة عليه</translation>
 <translation id="4674380028960132654">Ledger: التوقيع لا يتطابق مع العنوان الصحيح</translation>
 <translation id="3183932890629254743">لم يتم العثور على حساب الجهاز</translation>
 <translation id="4287068151777838754">بيانات JSON غير متوقعة</translation>

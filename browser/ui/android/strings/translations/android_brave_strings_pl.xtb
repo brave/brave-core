@@ -60,11 +60,6 @@
 <translation id="5987838417172370108">Pomóż poprawić stabilność produktu Brave\u2019s, automatycznie przesyłając raporty diagnostyczne po awarii lub zacięciu przeglądarki Brave.</translation>
 <translation id="7977176350719484850">Zaoszczędzony transfer danych</translation>
 <translation id="9008534313521214777">Zaoszczędzony czas</translation>
-<translation id="6572660632052512096">Wersja na komputer</translation>
-<translation id="1340503115760585811">Włącz wersję na komputer dla nowych kart</translation>
-<translation id="7924540991929826186">Korzystaj z wersji mobilnej dla nowych kart (rekomendowane)</translation>
-<translation id="807636106793708118">Preferowana wersja mobilna stron</translation>
-<translation id="4479934682648362332">Preferowana wersja na komputer stron</translation>
 <translation id="1842747674580016420">Odtwarzanie wideo w Brave</translation>
 <translation id="5368992950177874750">Po włączeniu klipy wideo będą odtwarzane w Brave zamiast w odpowiedniej aplikacji</translation>
 <translation id="410351446219883937">Autoodtwarzanie</translation>
@@ -119,6 +114,7 @@
 <translation id="19715420010996093">Wybierz przeglądarkę Brave i kliknij „Zawsze”</translation>
 <translation id="3546439402724649282">Brave jest już ustawiona jako Twoja domyślna przeglądarka.</translation>
 <translation id="8389661903259423907">Domyślna przeglądarka jest już ustawiona. Możesz zmienić domyślną przeglądarkę w ustawieniach aplikacji.</translation>
+<translation id="8112367589167674370">Brave Talk</translation>
 <translation id="8826007068782654809">Dziękujemy</translation>
 <translation id="6665366815203065060">Wysłałeś własnie napiwek do:</translation>
 <translation id="5441565662498481293">Wysyłasz automatyczne napiwki do:</translation>
@@ -863,23 +859,34 @@ Jeżeli nie zaakceptujesz tego żądania, połączenie z VPN nie zostanie ponown
 <translation id="4804818685124855865">Rozłącz</translation>
 <translation id="8009571545960303544">Twój podpis jest wymagany</translation>
 <translation id="3484981968509595506">DApp żąda Twojego publicznego klucza szyfrowania</translation>
-<translation id="2291002548681057345">prosi o publiczny klucz szyfrowania portfela. Podanie klucza oznacza, że strona będzie mogła wysyłać do Ciebie szyfrowane wiadomości.</translation>
 <translation id="3340247553212049934">Dostarcz</translation>
 <translation id="1982257600591932657">Nazwa sieci</translation>
 <translation id="5052727830821470769">Adres URL sieci</translation>
 <translation id="4822132585477111396">Identyfikator łańcucha</translation>
 <translation id="7131971375297699539">Symbol waluty</translation>
 <translation id="7982789257301363584">Sieć</translation>
-<translation id="7540715999708954128">Umożliwi to korzystanie tej sieci w połączeniu z Portfelem Brave. Dowiedz się więcej.</translation>
-<translation id="8759753423332885148">Dowiedz się więcej.</translation>
 <translation id="4717431746210146708">Zezwolić tej stronie na dodanie sieci?</translation>
+<translation id="4857321293515555666">Ta aplikacja DApp chce odczytać tę wiadomość, aby ukończyć żądanie.</translation>
+<translation id="714506544401754321">Odszyfruj wiadomość</translation>
+<translation id="5039804452771397117">Zezwalaj</translation>
 <translation id="3378339846292573874">Dodaj sugerowany token</translation>
 <translation id="2322227405137827074">Czy chcesz zaimportować ten token?</translation>
 <translation id="1324417023773393937">Przeglądarka Brave</translation>
 <translation id="6044189892950611565">Kanał powiadomień przeglądarki Brave</translation>
 <translation id="1173919438868967364">Wybierz konto</translation>
 <translation id="8922793255489232731">Nie udało się ustawić pasującej strefy czasowej w wypadku: <ph name="VALUE"/></translation>
-<translation id="8231907121684689093">Wyświetl najpopularniejsze strony</translation>
+<translation id="8643377320501056697">Pokaż popularne strony</translation>
 <translation id="6471216025161697462">Połączono do <ph name="VALUE"/></translation>
 <translation id="1968852757206592413">Wersja próbna</translation>
+<translation id="7733890291091968191">Wyświetl powiadomienia Web3</translation>
+<translation id="1371627247679035769">\n\n\n\n#### Brave nie śledzi użytkowników ani nie wie, jak korzystają z naszej aplikacji, więc nie wiemy, jak sieć VPN została skonfigurowana. Udostępnij informacje o napotkanym problemie, a my zrobimy co w naszej mocy, aby możliwie szybko rozwiązać problem. ####\n\n</translation>
+<translation id="3367162038532116157">\n\nNazwa hosta VPN\n <ph name="VALUE"/></translation>
+<translation id="6173438324126027458">\n\nTyp subskrypcji\n <ph name="VALUE"/></translation>
+<translation id="1478875290576741766">\n\nToken Playstore\n <ph name="VALUE"/></translation>
+<translation id="1403057798797848522">\n\nWersja aplikacji\n <ph name="VALUE"/></translation>
+<translation id="2282835936933247509">\n\nStrefa czasowa\n</translation>
+<translation id="8107843365677337047">\n\nTyp sieci\n</translation>
+<translation id="5334952096674914470">\n\nOperator sieci komórkowej\n</translation>
+<translation id="5393042357629679588">\n\nInny problem\n</translation>
+<translation id="8095666712177294104">\n\nPlatforma\n</translation>
 </translationbundle>

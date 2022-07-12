@@ -106,6 +106,9 @@ Atau dapat mengubahnya nanti di <ph name="SETTINGS_EXTENIONS_LINK"/>.</translati
 <translation id="4870911314065352661">Tutup semua tab?</translation>
 <translation id="7551864359422178684">Anda memiliki <ph name="NUMBER_OF_TABS"/>tab terbuka di jendela peramban ini.</translation>
 <translation id="2571596981920752023"><ph name="NUMBER_OF_TABS"/> tab</translation>
+<translation id="5240031343741051161">Coba Pencarian Brave</translation>
+<translation id="5026874946691314267">Jangan tampilkan ini lagi</translation>
+<translation id="5234764350956374838">Tutup</translation>
 <translation id="2515126961943087659">Layanan Iklan Bat</translation>
 <translation id="7924918279836988121">Layanan Buku Besar BAT</translation>
 <translation id="6040143037577758943">Tutup</translation>
@@ -201,9 +204,10 @@ Atau dapat mengubahnya nanti di <ph name="SETTINGS_EXTENIONS_LINK"/>.</translati
 <translation id="2906510232093002459">Gambar default Brave</translation>
 <translation id="2396127686705429331">Tampilkan tombol markah</translation>
 <translation id="2814998458708016836">Gunakan bilah alamat lebar</translation>
-<translation id="5802665280774361839">Tampilkan melengkapi-otomatis di bilah alamat</translation>
-<translation id="597020512043916976">Tampilkan situs teratas di saran pengisian otomatis</translation>
-<translation id="301088458323355543">Menampilkan situs yang diusulkan dalam usulan yang dilengkapi secara otomatis</translation>
+<translation id="4109670531935487117">Tampilkan usulan penyelesaian otomatis pada bilah alamat</translation>
+<translation id="2858138569776157458">Situs populer</translation>
+<translation id="7859704718976024901">Riwayat Ramban</translation>
+<translation id="8820817407110198400">Bookmark</translation>
 <translation id="6333347122924254968">Tampilkan ikon Brave Rewards pada bilah alamat</translation>
 <translation id="1811404036171336214">Selalu tampilkan bookmark di halaman tab baru</translation>
 <translation id="5529693968082667490">Tampilkan tombol pencarian tab</translation>
@@ -240,7 +244,7 @@ Atau dapat mengubahnya nanti di <ph name="SETTINGS_EXTENIONS_LINK"/>.</translati
 <translation id="130615081792797568">Tampilan sederhana</translation>
 <translation id="2360360976480535628">Tampilan lanjut</translation>
 <translation id="6486983549008741930">Penyaringan Konten</translation>
-<translation id="8694564340481124390">Aktifkan filter khusus yang memblokir pelacak serta Gangguan regional dan berbahasa tertentu.</translation>
+<translation id="8694564340481124390">Aktifkan filter khusus yang memblokir pelacak serta gangguan regional dan berbahasa tertentu.</translation>
 <translation id="6522618763902154348">Aktifkan filter khusus yang memblokir pelacak serta
     <ph name="BEGIN_LINK"/>Gangguan<ph name="END_LINK"/> regional dan berbahasa tertentu.</translation>
 <translation id="3482656215021340727">Tambahkan daftar filter khusus</translation>
@@ -249,7 +253,7 @@ Atau dapat mengubahnya nanti di <ph name="SETTINGS_EXTENIONS_LINK"/>.</translati
 <translation id="2831397936251948638">Buat Filter Khusus</translation>
 <translation id="4618274268052410139">Tambahkan filter khusus yang Anda telah buat, satu per baris, pada bidang di bawah ini. Pastikanlah untuk menggunakan <ph name="BEGIN_LINK"/>sintaksis filter Adblock<ph name="END_LINK"/>.</translation>
 <translation id="7791543448312431591">Tambahkan</translation>
-<translation id="571950783952070673">URL Daftar</translation>
+<translation id="571950783952070673">Daftar URL</translation>
 <translation id="9204006549413740506">Terakhir diperbarui</translation>
 <translation id="6745592621698551453">Perbarui sekarang</translation>
 <translation id="5334844597069022743">Lihat sumber</translation>

@@ -722,7 +722,7 @@
 <translation id="4780526507945807546">একটি Brave স্থানীয় IPFS নোড ব্যবহার করুন</translation>
 <translation id="8148464361648742409">পাবলিক গেটওয়ে ব্যবহার করুন</translation>
 <translation id="5123478056123923857">IPFS (ইন্টারপ্ল্যানেটারি ফাইল সিস্টেম) পিয়ার-টু-পিয়ার ডেটা স্টোরেজ এবং ডেলিভারির জন্য সর্বজনীন নেটওয়ার্ক। এই প্রোটোকলটির HTTP(S) থেকে আলাদা আলাদা গোপনীয়তা বিবেচনা রয়েছে।</translation>
-<translation id="5410952114182173389">আপনার কম্পিউটারটি সর্বজনীন নেটওয়ার্কে অবদান রাখে, তবে আপনার আইপি ঠিকানা you’ এবং আপনার অনুরোধ করা বা সরবরাহ করা যে কোনও বিষয়বস্তু উন্মুক্ত হতে পারে। IPFS -এর মাধ্যমে আপনার অনুরোধ করা সামগ্রী আপনাকে পরিবেশন করার আগে যাচাই করা হয়েছে।</translation>
+<translation id="1216911189668016151">আপনার কম্পিউটার সর্বজনীন নেটওয়ার্কে অবদান রাখে, তবে আপনার IP ঠিকানা এবং আপনি অনুরোধ করছেন বা প্রদান করছেন এমন কোনো সামগ্রী প্রকাশ করা যেতে পারে। IPFS -এর মাধ্যমে আপনার অনুরোধ করা সামগ্রী আপনাকে পরিবেশন করার আগে যাচাই করা হয়েছে। নেটওয়ার্ক অনুরোধ ব্রাউজার প্রক্সি এবং DNS সেটিংস ব্যবহার নাও করতে পারে৷</translation>
 <translation id="8664689531113048642">আপনার আইপি ঠিকানা এবং সামগ্রীটিকে you’ আপনি সম্ভাব্য তৃতীয় পক্ষের পর্যবেক্ষকদের কাছ থেকে অনুরোধ করছেন, তবে পাবলিক গেটওয়ে অপারেটরের কাছ থেকে নয় গেটওয়ে অপারেটর যে গেটওয়ের মাধ্যমে আপনাকে প্রদত্ত সামগ্রীটি আপনি অনুরোধ করেছেন তা নিশ্চিত করার জন্য দায়বদ্ধ। এছাড়াও, আপনার কম্পিউটারটি সর্বজনীন IPFS নেটওয়ার্কে অবদান রাখে না।</translation>
 <translation id="3977809385703587108">আপনি নিজের পছন্দগুলিতে আবার পরিবর্তন করতে পারেন</translation>
 <translation id="3340978935015468852">সেটিংস</translation>
@@ -914,6 +914,7 @@
 <translation id="4359319875297001084">লিগ্যাসী Brave ক্রিপ্টো ওয়ালেটগুলো থেকে আমদানি করবেন?</translation>
 <translation id="3331452756822160641">নতুন পাসওয়ার্ড</translation>
 <translation id="8624315169751085215">ক্লিপবোর্ডে অনুলিপি করুন</translation>
+<translation id="7885157704277298658">কপি করা হয়েছে!</translation>
 <translation id="1121335910737476837">প্রাথমিক ক্রিপ্টো অ্যাকাউন্টগুলো</translation>
 <translation id="6969147029062037757">আমদানি করা অ্যাকাউন্টগুলো</translation>
 <translation id="4057718162494343222">Brave ওয়ালেটে আপনি প্রাথমিক অ্যাকাউন্টগুলো তৈরি করতে পারবেন যা ব্যাকআপ বা আপনার পুনরুদ্ধারের শব্দগুচ্ছ দিয়ে পুনরুদ্ধার করা যেতে পারে। অ্যাকাউন্টের ধরনগুলো সম্পর্কে আরও জানতে অ্যাকাউন্ট সহায়তা দেখুন।</translation>
@@ -971,6 +972,8 @@
 <translation id="7642841516562576649">আইকন URL</translation>
 <translation id="2144247757675997850">অ্যাসেট যোগ করুন</translation>
 <translation id="2708402071160162126">সতর্কতা: আপনার পুনরুদ্ধারের বাক্যাংশটি কখনও শেয়ার করবেন না। এই বাক্যাংশের সাথে যে কেউ আপনার সম্পদ চিরতরে নিতে পারে।</translation>
+<translation id="2416098547200943834">বিঃদ্রঃ: ব্যক্তিগত কী একটি হেক্স-এনকোডেড JSON হিসাবে প্রদান করা হয় যাতে ব্যক্তিগত কী এবং প্রোটোকল তথ্য থাকে। <ph name="LINK_START"/>আরও জানুন<ph name="LINK_END"/>৷</translation>
+<translation id="7657130382217527063">বিঃদ্রঃ: ব্যক্তিগত কী একটি হেক্স-এনকোডেড JSON হিসাবে প্রদান করা আবশ্যক যাতে ব্যক্তিগত কী এবং প্রোটোকল তথ্য থাকে। <ph name="LINK_START"/>আরও জানুন<ph name="LINK_END"/>।</translation>
 <translation id="2902856457593699108">চাবি দেখান</translation>
 <translation id="8033497299373164724">চাবি লুকান</translation>
 <translation id="2702143907607790516">অ্যাকাউন্টের নাম আপডেট করতে ব্যর্থ হয়েছে, অনুগ্রহ করে আবার চেষ্টা করুন।</translation>
@@ -1006,7 +1009,7 @@
 <translation id="5488357322146334497">বার্তা</translation>
 <translation id="3586752056660754651">স্বাক্ষর করুন</translation>
 <translation id="3484981968509595506">একটি DApp আপনাকে সর্বজনীন এনক্রিপশন কী পাঠানোর অনুরোধ করছে।</translation>
-<translation id="1915212737651531313"><ph name="URL_BEFORE"/>$url<ph name="URL_AFTER"/> আপনার ওয়ালেট পাবলিক এনক্রিপশন কী অনুরোধ করছে। আপনি যদি এই কী প্রদান করার সম্মতি দেন তাহলে সাইটটি আপনার জন্য এনক্রিপ্ট করা বার্তা সংকলন করতে সমর্থ হবে।</translation>
+<translation id="2950511942409261729"><ph name="URL_BEFORE"/>$url<ph name="URL_AFTER"/> আপনার ওয়ালেট পাবলিক এনক্রিপশন কী অনুরোধ করছে। আপনি যদি এই কী প্রদান করার সম্মতি দেন তাহলে সাইটটি আপনার জন্য এনক্রিপ্ট করা বার্তা সংকলন করতে সমর্থ হবে।</translation>
 <translation id="3340247553212049934">সরবরাহ করুন</translation>
 <translation id="1619778919922494944">আপনার অনুরোধ সম্পূর্ণ করতে এই DApp এই বার্তাটি পড়তে চায়</translation>
 <translation id="714506544401754321">ডিক্রিপ্ট বার্তা</translation>
@@ -1073,8 +1076,8 @@
 <translation id="7051244143160304048"><ph name="DEVICE_NAME"/> সংযোগ বিচ্ছিন্ন হয়েছে</translation>
 <translation id="5317781812114905957">নির্দেশাবলী</translation>
 <translation id="1178198982208000092">আপনার <ph name="DEVICE_NAME"/> সংযোগ করুন</translation>
-<translation id="4358411489835404360">ডিভাইসে হার্ডওয়্যার ওয়ালেটের জন্য লেনদেন নিশ্চিতকরণ প্রয়োজন। <ph name="DEVICE_NAME"/></translation>
-<translation id="3087887714936696603">হার্ডওয়্যার ওয়ালেটের <ph name="DEVICE_NAME"/> Ethereum অ্যাপ খোলা প্রয়োজন</translation>
+<translation id="6291765462876399333">ডিভাইসে হার্ডওয়্যার ওয়ালেটের জন্য লেনদেন নিশ্চিতকরণ প্রয়োজন। <ph name="DEVICE_NAME"/></translation>
+<translation id="2288190100157580461">হার্ডওয়্যার ওয়ালেটের জন্য লেজারে <ph name="NETWORK"/> অ্যাপ খোলা <ph name="DEVICE_NAME"/></translation>
 <translation id="8687869982094542529">পাঠানো হয়েছে</translation>
 <translation id="5013754027092416509">প্রাপ্ত</translation>
 <translation id="5867988533873716616">ব্লক এক্সপ্লোরারের URL উপলব্ধ নয়।</translation>
@@ -1145,7 +1148,7 @@
 <translation id="1470129769517088397"><ph name="ADDRESS"/> সাম্প্রতিক নেটওয়ার্ক নয়</translation>
 <translation id="7340805872138998391">ডিভাইস আনলক করা যায়্নি, পুনরায় সংযোগ করার চেষ্টা করুন</translation>
 <translation id="1984410139271779110">অভ্যন্তরীণ ত্রুটি, অজানা স্কিম</translation>
-<translation id="8682200134223578011">অনুমোদিত</translation>
+<translation id="6989562355845156390">অনুমোদন</translation>
 <translation id="4674380028960132654">লেজার: স্বাক্ষর সঠিক ঠিকানার সাথে মেলেনি</translation>
 <translation id="3183932890629254743">হার্ডওয়্যার অ্যাকাউন্ট পাওয়া যায়নি</translation>
 <translation id="4287068151777838754">JSON ডেটা প্রত্যাশিত নয়</translation>
@@ -1188,6 +1191,26 @@
 <translation id="2317956709076373213">লেনদেন নিশ্চিত করা হয়েছে</translation>
 <translation id="310693998838023022">লেনদেনের ত্রুটি</translation>
 <translation id="6395870673621520684">লেনদেন কমে গেছে</translation>
+<translation id="1237782734462409503">ট্যাবটি সক্রিয় নয়</translation>
+<translation id="756701799684433105">লেনদেন অনুমোদন করুন</translation>
+<translation id="6450792191436242818">সিস্টেম প্রোগ্রাম</translation>
+<translation id="6252742184395380448">কনফিগারেশন প্রোগ্রাম</translation>
+<translation id="5358970666412490132">স্টেক প্রোগ্রাম</translation>
+<translation id="346636227344244984">ভোট কর্মসূচি</translation>
+<translation id="3538368258493053874">BPF লোডার</translation>
+<translation id="2334098351242742927">Ed25519 প্রোগ্রাম</translation>
+<translation id="8780753288764281797">Secp256k1 প্রোগ্রাম</translation>
+<translation id="5275550100743015683">ঠিকানা থেকে:</translation>
+<translation id="2678433693746214764">সম্বোধন করা:</translation>
+<translation id="4576396475962922672">নতুন আ্যাকাউন্ট:</translation>
+<translation id="4719005063558335704">অ্যাকাউন্টসমূহ:</translation>
+<translation id="4337554812324118382">তথ্য:</translation>
+<translation id="569870799832027680">প্রোগ্রাম আইডি:</translation>
+<translation id="7843211152394841558">সর্বোচ্চ পুনঃপ্রচেষ্টা:</translation>
+<translation id="8496335570810457">প্রিফ্লাইট প্রতিশ্রুতি:</translation>
+<translation id="5100124500279922001">প্রিফ্লাইট এড়িয়ে যান:</translation>
+<translation id="8060029310790625334">সহায়তা কেন্দ্র</translation>
+<translation id="2095142195578664632">সাহায্য দরকার? দেখুন</translation>
 <translation id="3155170474926428993">টর লঞ্চার</translation>
 <translation id="3745016858329272300">সাধারণ তথ্য</translation>
 <translation id="4045404575593562245">টর নিয়ন্ত্রণ ইভেন্টগুলি</translation>
@@ -1202,7 +1225,7 @@
 <translation id="7709075156958117386">এই সাইট ভগ্ন মনে হলে, শিল্ড ডাউন করে দেখুন। 
     <ph name="LINK_BEFORE"/>দ্রষ্টব্য: এটি Brave এর গোপনীয়তা সুরক্ষা হ্রাস করতে পারে।<ph name="LINK_AFTER"/></translation>
 <translation id="8377155647357436161">ট্র্যাকার, বিজ্ঞাপন এবং আরও অনেক কিছু ব্লক করা হয়েছে, <ph name="LINK_BEFORE"/>আরও জানুন<ph name="LINK_AFTER"/></translation>
-<translation id="7604553853176833536">Brave Shields দিয়ে সুরক্ষিত নয়, <ph name="LINK_BEFORE"/>আরও জানুন<ph name="LINK_AFTER"/></translation>
+<translation id="7604553853176833536">Brave শিল্ড দিয়ে সুরক্ষিত নয়, <ph name="LINK_BEFORE"/>আরও জানুন<ph name="LINK_AFTER"/></translation>
 <translation id="650318023204990401">উন্নত ধরনের নিয়ন্ত্রণসমূহ</translation>
 <translation id="5799940914270080805">এই সেটিংস পরিবর্তন করা হলে সাইটগুলি ভেঙে যেতে পারে।</translation>
 <translation id="9204041448536398473">গ্লোবাল শিল্ড সেটিংস</translation>
