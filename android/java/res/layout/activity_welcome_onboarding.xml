@@ -123,13 +123,14 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:button="@drawable/ic_p3a_checkbox"
-                        android:layout_marginTop="6dp"
+                        android:layout_marginTop="2dp"
                         android:layout_marginEnd="12dp"/>
 
                     <TextView
                         android:id="@+id/tv_crash"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
                         android:text="@string/p3a_crash"
                         android:textSize="14sp"
                         android:textColor="@color/onboarding_card_text_color"/>
@@ -150,13 +151,14 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:button="@drawable/ic_p3a_checkbox"
-                        android:layout_marginTop="6dp"
+                        android:layout_marginTop="2dp"
                         android:layout_marginEnd="12dp"/>
 
                     <TextView
                         android:id="@+id/tv_p3a"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
                         android:text="@string/p3a_insights"
                         android:textSize="14sp"
                         android:textColor="@color/onboarding_card_text_color"/>
