@@ -1,0 +1,13 @@
+diff --git a/ui/webui/resources/BUILD.gn b/ui/webui/resources/BUILD.gn
+index ce220f689d9403408085ad659ca79d1c468bafed..dc6b3ec1e7d395bd8a41874d52fada1e2f6bca83 100644
+--- a/ui/webui/resources/BUILD.gn
++++ b/ui/webui/resources/BUILD.gn
+@@ -372,7 +372,7 @@ ts_library("library") {
+       "js/web_ui_listener_mixin.ts",
+     ]
+ 
+-    if (is_chromeos) {
++    if (!is_android || is_chromeos) {
+       # cr-searchable-drop-down is only used in smb and cups dialogs, both of
+       # which are chromeos only.
+       in_files += [
