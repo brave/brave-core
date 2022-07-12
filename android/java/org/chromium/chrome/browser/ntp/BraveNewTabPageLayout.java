@@ -204,7 +204,7 @@ public class BraveNewTabPageLayout
         if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_NEWS)) {
             mFeedHash = "";
             initBraveNewsController();
-            if (mIsDisplayNews && BraveActivity.getBraveActivity() != null
+            if (shouldDisplayNews() && BraveActivity.getBraveActivity() != null
                     && BraveActivity.getBraveActivity().isLoadedFeed()) {
                 CopyOnWriteArrayList<FeedItemsCard> existingNewsFeedObject =
                         BraveActivity.getBraveActivity().getNewsItemsFeedCards();
@@ -385,6 +385,7 @@ public class BraveNewTabPageLayout
                 }
             }
         } else {
+            mNtpAdapter.setRecyclerViewHeight(mRecyclerView.getHeight());
             mNtpAdapter.setTopSitesEnabled(mIsTopSitesEnabled);
             mNtpAdapter.setDisplayNews(mIsDisplayNews);
         }
