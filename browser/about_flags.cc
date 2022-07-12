@@ -416,7 +416,7 @@ constexpr char kRestrictWebSocketsPoolDescription[] =
     {"brave-translate-go",                                           \
      flag_descriptions::kBraveTranslateGoName,                       \
      flag_descriptions::kBraveTranslateGoDescription,                \
-     kOsDesktop,                                                     \
+     kOsDesktop | kOsAndroid,                                        \
      FEATURE_VALUE_TYPE(translate::features::kUseBraveTranslateGo)},
 #else
 #define BRAVE_TRANSLATE_GO_FEATURE_ENTRIES
