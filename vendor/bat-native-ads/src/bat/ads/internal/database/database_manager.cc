@@ -8,7 +8,7 @@
 #include <functional>
 #include <utility>
 
-#include "base/check.h"
+#include "base/check_op.h"
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/base/logging_util.h"
 #include "bat/ads/internal/legacy_migration/database/database_constants.h"
@@ -157,6 +157,8 @@ void DatabaseManager::NotifyWillMigrateDatabase(const int from_version,
 
 void DatabaseManager::NotifyDidMigrateDatabase(const int from_version,
                                                const int to_version) const {
+  DCHECK_NE(from_version, to_version);
+
   for (DatabaseManagerObserver& observer : observers_) {
     observer.OnDidMigrateDatabase(from_version, to_version);
   }
