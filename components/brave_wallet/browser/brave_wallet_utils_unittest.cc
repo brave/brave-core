@@ -887,7 +887,8 @@ TEST_F(BraveWalletUtilsUnitTest, GetKnownEthChain) {
       brave_wallet::mojom::kLocalhostChainId,
       brave_wallet::mojom::kBinanceSmartChainMainnetChainId,
       brave_wallet::mojom::kCeloMainnetChainId,
-      brave_wallet::mojom::kOptimismMainnetChainId};
+      brave_wallet::mojom::kOptimismMainnetChainId,
+      brave_wallet::mojom::kAuroraMainnetChainId};
 
   auto known_chains = brave_wallet::GetAllKnownNetworksForTesting();
   ASSERT_FALSE(known_chains.empty());
