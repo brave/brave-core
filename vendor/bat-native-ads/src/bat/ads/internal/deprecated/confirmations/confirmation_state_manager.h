@@ -20,8 +20,6 @@ class Value;
 
 namespace ads {
 
-constexpr char kConfirmationsFilename[] = "confirmations.json";
-
 namespace privacy {
 class UnblindedPaymentTokens;
 class UnblindedTokens;
