@@ -30,7 +30,7 @@ export type HardwareOperationResult = {
   code?: string | number
 }
 
-export type SignHardwareTransactionOperationResult = HardwareOperationResult & {
+export type SignHardwareOperationResult = HardwareOperationResult & {
   payload?: EthereumSignedTx | SignedLotusMessage | Buffer | string
 }
 

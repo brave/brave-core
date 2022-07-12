@@ -13,7 +13,7 @@ import { HardwareVendor } from '../../api/hardware_keyrings'
 import {
   GetAccountsHardwareOperationResult,
   HardwareOperationResult,
-  SignHardwareTransactionOperationResult
+  SignHardwareOperationResult
 } from '../types'
 
 import { hardwareDeviceIdFromAddress } from '../hardwareDeviceIdFromAddress'
@@ -84,7 +84,7 @@ export default class SolanaLedgerBridgeKeyring implements LedgerSolanaKeyring {
     return { success: this.isUnlocked() }
   }
 
-  signTransaction = async (path: string, rawTxBytes: Buffer): Promise<SignHardwareTransactionOperationResult> => {
+  signTransaction = async (path: string, rawTxBytes: Buffer): Promise<SignHardwareOperationResult> => {
     try {
       const unlocked = await this.unlock()
       if (!unlocked.success || !this.app) {

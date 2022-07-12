@@ -28,7 +28,7 @@ import { hardwareDeviceIdFromAddress } from '../hardwareDeviceIdFromAddress'
 import {
   GetAccountsHardwareOperationResult,
   HardwareOperationResult,
-  SignHardwareTransactionOperationResult,
+  SignHardwareOperationResult,
   TrezorDerivationPaths
 } from '../types'
 import { Unsuccessful } from 'trezor-connect'
@@ -95,7 +95,7 @@ export default class TrezorBridgeKeyring implements TrezorKeyring {
     return this.getAccountsFromDevice(paths, addZeroPath)
   }
 
-  signTransaction = async (path: string, txInfo: BraveWallet.TransactionInfo, chainId: string): Promise<SignHardwareTransactionOperationResult> => {
+  signTransaction = async (path: string, txInfo: BraveWallet.TransactionInfo, chainId: string): Promise<SignHardwareOperationResult> => {
     if (!this.isUnlocked()) {
       const unlocked = await this.unlock()
       if (!unlocked.success) {
@@ -119,7 +119,7 @@ export default class TrezorBridgeKeyring implements TrezorKeyring {
     return { success: true, payload: response.payload }
   }
 
-  signPersonalMessage = async (path: string, message: string): Promise<SignHardwareTransactionOperationResult> => {
+  signPersonalMessage = async (path: string, message: string): Promise<SignHardwareOperationResult> => {
     if (!this.isUnlocked()) {
       const unlocked = await this.unlock()
       if (!unlocked.success) {
@@ -144,7 +144,7 @@ export default class TrezorBridgeKeyring implements TrezorKeyring {
     return { success: true, payload: '0x' + response.payload.signature }
   }
 
-  signEip712Message = async (path: string, domainSeparatorHex: string, hashStructMessageHex: string): Promise<SignHardwareTransactionOperationResult> => {
+  signEip712Message = async (path: string, domainSeparatorHex: string, hashStructMessageHex: string): Promise<SignHardwareOperationResult> => {
     if (!this.isUnlocked()) {
       const unlocked = await this.unlock()
       if (!unlocked.success) {
