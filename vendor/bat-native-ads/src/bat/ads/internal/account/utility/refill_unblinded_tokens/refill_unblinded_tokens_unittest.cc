@@ -33,18 +33,22 @@ namespace ads {
 
 class BatAdsRefillUnblindedTokensTest : public UnitTestBase {
  protected:
-  BatAdsRefillUnblindedTokensTest()
-      : token_generator_mock_(
-            std::make_unique<NiceMock<privacy::TokenGeneratorMock>>()),
-        refill_unblinded_tokens_(std::make_unique<RefillUnblindedTokens>(
-            token_generator_mock_.get())),
-        refill_unblinded_tokens_delegate_mock_(
-            std::make_unique<NiceMock<RefillUnblindedTokensDelegateMock>>()) {
+  BatAdsRefillUnblindedTokensTest() = default;
+
+  ~BatAdsRefillUnblindedTokensTest() override = default;
+
+  void SetUp() override {
+    UnitTestBase::SetUp();
+
+    token_generator_mock_ =
+        std::make_unique<NiceMock<privacy::TokenGeneratorMock>>();
+    refill_unblinded_tokens_ =
+        std::make_unique<RefillUnblindedTokens>(token_generator_mock_.get());
+    refill_unblinded_tokens_delegate_mock_ =
+        std::make_unique<NiceMock<RefillUnblindedTokensDelegateMock>>();
     refill_unblinded_tokens_->SetDelegate(
         refill_unblinded_tokens_delegate_mock_.get());
   }
-
-  ~BatAdsRefillUnblindedTokensTest() override = default;
 
   std::vector<privacy::cbr::Token> GetTokens() {
     const std::vector<std::string>

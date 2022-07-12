@@ -13,6 +13,8 @@
 // npm run test -- brave_unit_tests --filter=BatAds*
 
 namespace ads {
+namespace database {
+namespace table {
 
 class BatAdsTransactionsDatabaseTableTest : public UnitTestBase {
  protected:
@@ -31,7 +33,7 @@ TEST_F(BatAdsTransactionsDatabaseTableTest, SaveEmptyTransactions) {
   // Assert
   const TransactionList& expected_transactions = transactions;
 
-  database::table::Transactions database_table;
+  Transactions database_table;
   database_table.GetAll(
       [&expected_transactions](const bool success,
                                const TransactionList& transactions) {
@@ -60,7 +62,7 @@ TEST_F(BatAdsTransactionsDatabaseTableTest, SaveTransactions) {
   // Assert
   const TransactionList& expected_transactions = transactions;
 
-  database::table::Transactions database_table;
+  Transactions database_table;
   database_table.GetAll(
       [&expected_transactions](const bool success,
                                const TransactionList& transactions) {
@@ -85,7 +87,7 @@ TEST_F(BatAdsTransactionsDatabaseTableTest, DoNotSaveDuplicateTransactions) {
   // Assert
   const TransactionList& expected_transactions = transactions;
 
-  database::table::Transactions database_table;
+  Transactions database_table;
   database_table.GetAll(
       [&expected_transactions](const bool success,
                                const TransactionList& transactions) {
@@ -113,7 +115,7 @@ TEST_F(BatAdsTransactionsDatabaseTableTest, GetTransactionsForDateRange) {
   // Act
   const TransactionList& expected_transactions = {info_2};
 
-  database::table::Transactions database_table;
+  Transactions database_table;
   database_table.GetForDateRange(
       Now(), DistantFuture(),
       [&expected_transactions](const bool success,
@@ -144,7 +146,7 @@ TEST_F(BatAdsTransactionsDatabaseTableTest, UpdateTransactions) {
   unblinded_payment_tokens.push_back(unblinded_payment_token);
 
   // Act
-  database::table::Transactions database_table;
+  Transactions database_table;
   database_table.Update(unblinded_payment_tokens,
                         [](const bool success) { ASSERT_TRUE(success); });
 
@@ -174,7 +176,7 @@ TEST_F(BatAdsTransactionsDatabaseTableTest, DeleteTransactions) {
 
   SaveTransactions(transactions);
 
-  database::table::Transactions database_table;
+  Transactions database_table;
 
   // Act
   database_table.Delete([](const bool success) { ASSERT_TRUE(success); });
@@ -189,7 +191,7 @@ TEST_F(BatAdsTransactionsDatabaseTableTest, DeleteTransactions) {
 
 TEST_F(BatAdsTransactionsDatabaseTableTest, TableName) {
   // Arrange
-  database::table::Transactions database_table;
+  Transactions database_table;
 
   // Act
   const std::string table_name = database_table.GetTableName();
@@ -199,4 +201,6 @@ TEST_F(BatAdsTransactionsDatabaseTableTest, TableName) {
   EXPECT_EQ(expected_table_name, table_name);
 }
 
+}  // namespace table
+}  // namespace database
 }  // namespace ads

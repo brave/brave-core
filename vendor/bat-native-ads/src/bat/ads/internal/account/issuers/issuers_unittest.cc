@@ -25,14 +25,17 @@ namespace ads {
 
 class BatAdsIssuersTest : public UnitTestBase {
  protected:
-  BatAdsIssuersTest()
-      : issuers_(std::make_unique<Issuers>()),
-        issuers_delegate_mock_(
-            std::make_unique<NiceMock<IssuersDelegateMock>>()) {
-    issuers_->SetDelegate(issuers_delegate_mock_.get());
-  }
+  BatAdsIssuersTest() = default;
 
   ~BatAdsIssuersTest() override = default;
+
+  void SetUp() override {
+    UnitTestBase::SetUp();
+
+    issuers_ = std::make_unique<Issuers>();
+    issuers_delegate_mock_ = std::make_unique<NiceMock<IssuersDelegateMock>>();
+    issuers_->SetDelegate(issuers_delegate_mock_.get());
+  }
 
   std::unique_ptr<Issuers> issuers_;
   std::unique_ptr<IssuersDelegateMock> issuers_delegate_mock_;

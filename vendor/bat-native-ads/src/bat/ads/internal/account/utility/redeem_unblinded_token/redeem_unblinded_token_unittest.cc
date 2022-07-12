@@ -26,15 +26,19 @@ namespace ads {
 
 class BatAdsRedeemUnblindedTokenTest : public UnitTestBase {
  protected:
-  BatAdsRedeemUnblindedTokenTest()
-      : redeem_unblinded_token_(std::make_unique<RedeemUnblindedToken>()),
-        redeem_unblinded_token_delegate_mock_(
-            std::make_unique<NiceMock<RedeemUnblindedTokenDelegateMock>>()) {
+  BatAdsRedeemUnblindedTokenTest() = default;
+
+  ~BatAdsRedeemUnblindedTokenTest() override = default;
+
+  void SetUp() override {
+    UnitTestBase::SetUp();
+
+    redeem_unblinded_token_ = std::make_unique<RedeemUnblindedToken>();
+    redeem_unblinded_token_delegate_mock_ =
+        std::make_unique<NiceMock<RedeemUnblindedTokenDelegateMock>>();
     redeem_unblinded_token_->SetDelegate(
         redeem_unblinded_token_delegate_mock_.get());
   }
-
-  ~BatAdsRedeemUnblindedTokenTest() override = default;
 
   std::unique_ptr<RedeemUnblindedToken> redeem_unblinded_token_;
   std::unique_ptr<RedeemUnblindedTokenDelegateMock>

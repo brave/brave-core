@@ -79,9 +79,9 @@ NewTabPageAdInfo GetSampleNewTabPageAdInfo() {
 
 class BatAdsNewTabPageAdInfoTest : public UnitTestBase {
  protected:
-  BatAdsNewTabPageAdInfoTest() {}
+  BatAdsNewTabPageAdInfoTest() = default;
 
-  ~BatAdsNewTabPageAdInfoTest() override {}
+  ~BatAdsNewTabPageAdInfoTest() override = default;
 };
 
 TEST_F(BatAdsNewTabPageAdInfoTest, DeserializeNewTabPageAdInfo) {

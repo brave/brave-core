@@ -8,26 +8,28 @@
 #include "bat/ads/internal/base/containers/container_util.h"
 #include "bat/ads/internal/base/unittest/unittest_base.h"
 #include "bat/ads/internal/base/unittest/unittest_time_util.h"
+#include "bat/ads/internal/creatives/inline_content_ads/creative_inline_content_ads_database_util.h"
 #include "url/gurl.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
 namespace ads {
+namespace database {
+namespace table {
 
 class BatAdsCreativeInlineContentAdsDatabaseTableTest : public UnitTestBase {
  protected:
-  BatAdsCreativeInlineContentAdsDatabaseTableTest()
-      : database_table_(
-            std::make_unique<database::table::CreativeInlineContentAds>()) {}
+  BatAdsCreativeInlineContentAdsDatabaseTableTest() = default;
 
   ~BatAdsCreativeInlineContentAdsDatabaseTableTest() override = default;
 
-  void Save(const CreativeInlineContentAdList& creative_ads) {
-    database_table_->Save(creative_ads,
-                          [](const bool success) { ASSERT_TRUE(success); });
+  void SetUp() override {
+    UnitTestBase::SetUp();
+
+    database_table_ = std::make_unique<CreativeInlineContentAds>();
   }
 
-  std::unique_ptr<database::table::CreativeInlineContentAds> database_table_;
+  std::unique_ptr<CreativeInlineContentAds> database_table_;
 };
 
 TEST_F(BatAdsCreativeInlineContentAdsDatabaseTableTest,
@@ -36,7 +38,7 @@ TEST_F(BatAdsCreativeInlineContentAdsDatabaseTableTest,
   const CreativeInlineContentAdList creative_ads = {};
 
   // Act
-  Save(creative_ads);
+  SaveCreativeInlineContentAds(creative_ads);
 
   // Assert
 }
@@ -96,7 +98,7 @@ TEST_F(BatAdsCreativeInlineContentAdsDatabaseTableTest,
   creative_ads.push_back(info_2);
 
   // Act
-  Save(creative_ads);
+  SaveCreativeInlineContentAds(creative_ads);
 
   // Assert
   const CreativeInlineContentAdList expected_creative_ads = creative_ads;
@@ -190,7 +192,7 @@ TEST_F(BatAdsCreativeInlineContentAdsDatabaseTableTest,
   creative_ads.push_back(info_3);
 
   // Act
-  Save(creative_ads);
+  SaveCreativeInlineContentAds(creative_ads);
 
   // Assert
   const CreativeInlineContentAdList expected_creative_ads = creative_ads;
@@ -233,10 +235,10 @@ TEST_F(BatAdsCreativeInlineContentAdsDatabaseTableTest,
   info.ptr = 1.0;
   creative_ads.push_back(info);
 
-  Save(creative_ads);
+  SaveCreativeInlineContentAds(creative_ads);
 
   // Act
-  Save(creative_ads);
+  SaveCreativeInlineContentAds(creative_ads);
 
   // Assert
   const CreativeInlineContentAdList expected_creative_ads = creative_ads;
@@ -303,7 +305,7 @@ TEST_F(BatAdsCreativeInlineContentAdsDatabaseTableTest,
   info_2.ptr = 0.9;
   creative_ads.push_back(info_2);
 
-  Save(creative_ads);
+  SaveCreativeInlineContentAds(creative_ads);
 
   // Act
 
@@ -357,7 +359,7 @@ TEST_F(BatAdsCreativeInlineContentAdsDatabaseTableTest,
   info.ptr = 1.0;
   creative_ads.push_back(info);
 
-  Save(creative_ads);
+  SaveCreativeInlineContentAds(creative_ads);
 
   // Act
 
@@ -407,7 +409,7 @@ TEST_F(BatAdsCreativeInlineContentAdsDatabaseTableTest,
   info.ptr = 1.0;
   creative_ads.push_back(info);
 
-  Save(creative_ads);
+  SaveCreativeInlineContentAds(creative_ads);
 
   // Act
 
@@ -453,7 +455,7 @@ TEST_F(BatAdsCreativeInlineContentAdsDatabaseTableTest,
   info.ptr = 1.0;
   creative_ads.push_back(info);
 
-  Save(creative_ads);
+  SaveCreativeInlineContentAds(creative_ads);
 
   // Act
 
@@ -502,7 +504,7 @@ TEST_F(BatAdsCreativeInlineContentAdsDatabaseTableTest,
   info.ptr = 1.0;
   creative_ads.push_back(info);
 
-  Save(creative_ads);
+  SaveCreativeInlineContentAds(creative_ads);
 
   // Act
 
@@ -599,7 +601,7 @@ TEST_F(BatAdsCreativeInlineContentAdsDatabaseTableTest,
   info_3.ptr = 1.0;
   creative_ads.push_back(info_3);
 
-  Save(creative_ads);
+  SaveCreativeInlineContentAds(creative_ads);
 
   // Act
 
@@ -675,7 +677,7 @@ TEST_F(BatAdsCreativeInlineContentAdsDatabaseTableTest,
   info_2.ptr = 0.9;
   creative_ads.push_back(info_2);
 
-  Save(creative_ads);
+  SaveCreativeInlineContentAds(creative_ads);
 
   // Act
   AdvanceClockBy(base::Hours(1));
@@ -750,7 +752,7 @@ TEST_F(BatAdsCreativeInlineContentAdsDatabaseTableTest,
   info_2.ptr = 0.9;
   creative_ads.push_back(info_2);
 
-  Save(creative_ads);
+  SaveCreativeInlineContentAds(creative_ads);
 
   // Act
 
@@ -781,4 +783,6 @@ TEST_F(BatAdsCreativeInlineContentAdsDatabaseTableTest, TableName) {
   EXPECT_EQ(expected_table_name, table_name);
 }
 
+}  // namespace table
+}  // namespace database
 }  // namespace ads
