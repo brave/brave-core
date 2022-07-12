@@ -138,16 +138,27 @@ bool ClientInfo::FromJson(const std::string& json) {
 
       for (const auto& probability :
            probabilities["textClassificationProbabilities"].GetArray()) {
-        const std::string segment = probability["segment"].GetString();
+        auto iterator = probability.FindMember("segment");
+        if (iterator == probability.MemberEnd() ||
+            !iterator->value.IsString()) {
+          continue;
+        }
+        const std::string segment = iterator->value.GetString();
         DCHECK(!segment.empty());
 
+        iterator = probability.FindMember("pageScore");
+        if (iterator == probability.MemberEnd() ||
+            (!iterator->value.IsString() && !iterator->value.IsNumber())) {
+          continue;
+        }
+
         double page_score = 0.0;
-        if (probability["pageScore"].IsNumber()) {
+        if (iterator->value.IsNumber()) {
           // Migrate legacy page score
-          page_score = document["pageScore"].GetDouble();
+          page_score = iterator->value.GetDouble();
         } else {
-          const bool success = base::StringToDouble(
-              probability["pageScore"].GetString(), &page_score);
+          const bool success =
+              base::StringToDouble(iterator->value.GetString(), &page_score);
           DCHECK(success);
         }
 
