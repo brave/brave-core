@@ -14,7 +14,6 @@
 #include "base/memory/ref_counted.h"
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
-#include "base/values.h"
 #include "brave/common/importer/scoped_copy_file.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "brave/utility/importer/brave_external_process_importer_bridge.h"
@@ -275,30 +274,31 @@ void ChromeImporter::ImportBookmarks() {
                          &bookmarks_content);
   absl::optional<base::Value> bookmarks_json =
       base::JSONReader::Read(bookmarks_content);
-  const base::DictionaryValue* bookmark_dict;
-  if (!bookmarks_json || !bookmarks_json->GetAsDictionary(&bookmark_dict))
+  if (!bookmarks_json)
     return;
-  std::vector<ImportedBookmarkEntry> bookmarks;
-  const base::DictionaryValue* roots;
-  const base::DictionaryValue* bookmark_bar;
-  const base::DictionaryValue* other;
-  if (bookmark_dict->GetDictionary("roots", &roots)) {
-    // Importing bookmark bar items
-    if (roots->GetDictionary("bookmark_bar", &bookmark_bar)) {
-      std::vector<std::u16string> path;
-      std::u16string name;
-      bookmark_bar->GetString("name", &name);
+  const base::Value::Dict* bookmark_dict = bookmarks_json->GetIfDict();
+  if (!bookmark_dict)
+    return;
 
-      path.push_back(name);
+  std::vector<ImportedBookmarkEntry> bookmarks;
+  const base::Value::Dict* roots = bookmark_dict->FindDict("roots");
+  if (roots) {
+    // Importing bookmark bar items
+    const base::Value::Dict* bookmark_bar = roots->FindDict("bookmark_bar");
+    if (bookmark_bar) {
+      std::vector<std::u16string> path;
+      const auto* name = bookmark_bar->FindString("name");
+
+      path.push_back(base::UTF8ToUTF16(name ? *name : std::string()));
       RecursiveReadBookmarksFolder(bookmark_bar, path, true, &bookmarks);
     }
     // Importing other items
-    if (roots->GetDictionary("other", &other)) {
+    const base::Value::Dict* other = roots->FindDict("other");
+    if (other) {
       std::vector<std::u16string> path;
-      std::u16string name;
-      other->GetString("name", &name);
+      const auto* name = other->FindString("name");
 
-      path.push_back(name);
+      path.push_back(base::UTF8ToUTF16(name ? *name : std::string()));
       RecursiveReadBookmarksFolder(other, path, false, &bookmarks);
     }
   }
@@ -386,50 +386,48 @@ void ChromeImporter::LoadFaviconData(
 }
 
 void ChromeImporter::RecursiveReadBookmarksFolder(
-    const base::DictionaryValue* folder,
+    const base::Value::Dict* folder,
     const std::vector<std::u16string>& parent_path,
     bool is_in_toolbar,
     std::vector<ImportedBookmarkEntry>* bookmarks) {
-  const base::ListValue* children;
-  if (folder->GetList("children", &children)) {
-    for (const auto& value : children->GetList()) {
-      const base::DictionaryValue* dict;
-      if (!value.GetAsDictionary(&dict))
+  const base::Value::List* children = folder->FindList("children");
+  if (children) {
+    for (const auto& value : *children) {
+      const base::Value::Dict* dict = value.GetIfDict();
+      if (!dict)
         continue;
-      std::string date_added, type, url;
-      std::u16string name;
-      dict->GetString("date_added", &date_added);
-      dict->GetString("name", &name);
-      dict->GetString("type", &type);
-      dict->GetString("url", &url);
+      const auto* date_added = dict->FindString("date_added");
+      const auto* name_found = dict->FindString("name");
+      auto name = base::UTF8ToUTF16(name_found ? *name_found : std::string());
+      const auto* type = dict->FindString("type");
+      const auto* url = dict->FindString("url");
       ImportedBookmarkEntry entry;
-      if (type == "folder") {
+      if (type && *type == "folder") {
         // Folders are added implicitly on adding children, so we only
         // explicitly add empty folders.
-        const base::ListValue* children;
-        if (dict->GetList("children", &children) &&
-            children->GetList().empty()) {
+        const base::Value::List* children = dict->FindList("children");
+        if (children && children->empty()) {
           entry.in_toolbar = is_in_toolbar;
           entry.is_folder = true;
           entry.url = GURL();
           entry.path = parent_path;
           entry.title = name;
           entry.creation_time = base::Time::FromDoubleT(
-              chromeTimeToDouble(std::stoll(date_added)));
+              chromeTimeToDouble(std::stoll(*date_added)));
           bookmarks->push_back(entry);
         }
 
         std::vector<std::u16string> path = parent_path;
         path.push_back(name);
         RecursiveReadBookmarksFolder(dict, path, is_in_toolbar, bookmarks);
-      } else if (type == "url") {
+      } else if (type && *type == "url") {
         entry.in_toolbar = is_in_toolbar;
         entry.is_folder = false;
-        entry.url = GURL(url);
+        entry.url = GURL(*url);
         entry.path = parent_path;
         entry.title = name;
-        entry.creation_time =
-            base::Time::FromDoubleT(chromeTimeToDouble(std::stoll(date_added)));
+        entry.creation_time = base::Time::FromDoubleT(
+            chromeTimeToDouble(std::stoll(*date_added)));
         bookmarks->push_back(entry);
       }
     }
