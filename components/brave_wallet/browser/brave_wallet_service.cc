@@ -823,11 +823,18 @@ void BraveWalletService::OnWalletUnlockPreferenceChanged(
   RecordWalletUsage(true);
 }
 
+void BraveWalletService::OnOnboardingShown() {
+  prefs_->SetBoolean(kBraveWalletWasOnboardingShown, true);
+  RecordWalletUsage(false);
+}
+
 void BraveWalletService::RecordWalletUsage(bool unlocked) {
   VLOG(1) << "Wallet P3A: starting report";
   base::Time wallet_last_used = prefs_->GetTime(kBraveWalletLastUnlockTime);
   base::Time first_p3a_report = prefs_->GetTime(kBraveWalletP3AFirstReportTime);
   base::Time last_p3a_report = prefs_->GetTime(kBraveWalletP3ALastReportTime);
+  bool was_onboarding_shown =
+      prefs_->GetBoolean(kBraveWalletWasOnboardingShown);
 
   VLOG(1) << "Wallet P3A: first report: " << first_p3a_report
           << " last_report: " << last_p3a_report;
@@ -840,7 +847,7 @@ void BraveWalletService::RecordWalletUsage(bool unlocked) {
   }
 
   WriteStatsToHistogram(wallet_last_used, first_p3a_report, last_p3a_report,
-                        weekly_store.GetWeeklySum());
+                        was_onboarding_shown, weekly_store.GetWeeklySum());
 
   prefs_->SetTime(kBraveWalletP3ALastReportTime, base::Time::Now());
   if (first_p3a_report.is_null())
@@ -864,6 +871,7 @@ void BraveWalletService::RecordWalletUsage(bool unlocked) {
 void BraveWalletService::WriteStatsToHistogram(base::Time wallet_last_used,
                                                base::Time first_p3a_report,
                                                base::Time last_p3a_report,
+                                               bool was_onboarding_shown,
                                                unsigned use_days_in_week) {
   base::Time::Exploded now_exp;
   base::Time::Exploded last_report_exp;
@@ -896,6 +904,11 @@ void BraveWalletService::WriteStatsToHistogram(base::Time wallet_last_used,
   } else {
     VLOG(1) << "Wallet P3A: Need 7 days of reports before recording "
                "daily/weekly, skipping";
+  }
+
+  if (was_onboarding_shown) {
+    UMA_HISTOGRAM_BOOLEAN(kBraveWalletOnboardingConvHistogramName,
+                          !wallet_last_used.is_null());
   }
 }
 
