@@ -11,6 +11,7 @@
 
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
+#include "base/strings/strcat.h"
 #include "brave/components/services/ipfs/public/mojom/ipfs_service.mojom.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 #include "third_party/re2/src/re2/re2.h"
@@ -38,35 +39,33 @@ bool UpdateConfigJSON(const std::string& source,
     VLOG(1) << "Could not parse JSON, JSON is: " << source;
     return false;
   }
-  base::DictionaryValue* dict = nullptr;
-  if (!records_v->GetAsDictionary(&dict)) {
+  base::Value::Dict* dict = records_v->GetIfDict();
+  if (!dict) {
     VLOG(1) << "Could not parse JSON, JSON is: " << source;
     return false;
   }
-  dict->Set("Addresses.API", std::make_unique<base::Value>(
-                                 "/ip4/127.0.0.1/tcp/" + config->api_port));
-  dict->Set("Addresses.Gateway",
-            std::make_unique<base::Value>("/ip4/127.0.0.1/tcp/" +
-                                          config->gateway_port));
-  dict->Set("Datastore.GCPeriod", std::make_unique<base::Value>("1h"));
-  dict->Set("Swarm.ConnMgr.GracePeriod", std::make_unique<base::Value>("20s"));
-  dict->Set("Swarm.ConnMgr.LowWater", std::make_unique<base::Value>(20));
-  dict->Set("Swarm.ConnMgr.HighWater", std::make_unique<base::Value>(40));
-  dict->Set("Datastore.StorageMax",
-            std::make_unique<base::Value>(config->storage_max));
+  dict->SetByDottedPath(
+      "Addresses.API", base::StrCat({"/ip4/127.0.0.1/tcp/", config->api_port}));
+  dict->SetByDottedPath(
+      "Addresses.Gateway",
+      base::StrCat({"/ip4/127.0.0.1/tcp/", config->gateway_port}));
+  dict->SetByDottedPath("Datastore.GCPeriod", "1h");
+  dict->SetByDottedPath("Swarm.ConnMgr.GracePeriod", "20s");
+  dict->SetByDottedPath("Swarm.ConnMgr.LowWater", 20);
+  dict->SetByDottedPath("Swarm.ConnMgr.HighWater", 40);
+  dict->SetByDottedPath("Datastore.StorageMax", config->storage_max);
 
   if (config->doh_server_url) {
-    std::unique_ptr<base::DictionaryValue> dns_resolvers =
-        std::make_unique<base::DictionaryValue>();
-    dns_resolvers->SetWithoutPathExpansion(
-        ".", std::make_unique<base::Value>(*(config->doh_server_url)));
-    dict->Set("DNS.Resolvers", std::move(dns_resolvers));
+    base::Value::Dict dns_resolvers;
+    dns_resolvers.Set(".", *config->doh_server_url);
+    dict->SetByDottedPath("DNS.Resolvers", std::move(dns_resolvers));
   }
 
-  std::unique_ptr<base::ListValue> list = std::make_unique<base::ListValue>();
-  list->Append(base::Value("/ip4/0.0.0.0/tcp/" + config->swarm_port));
-  list->Append(base::Value("/ip6/::/tcp/" + config->swarm_port));
-  dict->Set("Addresses.Swarm", std::move(list));
+  base::Value::List list;
+  list.Append(base::StrCat({"/ip4/0.0.0.0/tcp/", config->swarm_port}));
+  list.Append(base::StrCat({"/ip6/::/tcp/", config->swarm_port}));
+  dict->SetByDottedPath("Addresses.Swarm", std::move(list));
+
   std::string json_string;
   if (!base::JSONWriter::Write(records_v.value(), &json_string) ||
       json_string.empty()) {
