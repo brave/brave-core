@@ -4,6 +4,8 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #import "brave/ios/browser/favicon/brave_ios_web_favicon_driver.h"
+#import "brave/ios/browser/svg/svg_image.h"
+
 #include "base/bind.h"
 #include "base/memory/ptr_util.h"
 #include "components/favicon/core/favicon_url.h"
@@ -43,6 +45,11 @@ void BraveIOSWebFaviconDriver::CreateForBrowserState(
   browser_state->SetUserData("kBraveIOSWebFaviconDriver",
                              base::WrapUnique(new BraveIOSWebFaviconDriver(
                                  browser_state, favicon_service)));
+}
+
+void BraveIOSWebFaviconDriver::SetMaximumFaviconImageSize(
+    std::size_t max_image_size) {
+  max_image_size_ = max_image_size;
 }
 
 // FaviconDriver implementation.
@@ -87,9 +94,23 @@ int BraveIOSWebFaviconDriver::DownloadImage(const GURL& url,
         std::vector<SkBitmap> frames;
         std::vector<gfx::Size> sizes;
         if (data) {
-          frames = skia::ImageDataToSkBitmapsWithMaxSize(data, max_image_size);
+          frames = skia::ImageDataToSkBitmapsWithMaxSize(
+              data, max_image_size_ > 0 ? max_image_size_ : max_image_size);
           for (const auto& frame : frames) {
             sizes.push_back(gfx::Size(frame.width(), frame.height()));
+          }
+          DCHECK_EQ(frames.size(), sizes.size());
+
+          // When there are no frames, attempt to parse the image as SVG
+          // `skia::ImageDataToSkBitmapsWithMaxSize` parses all other formats
+          // but not SVG
+          if (!frames.size()) {
+            SkBitmap svg_image =
+                SVGImage::MakeFromData(data, max_image_size, max_image_size);
+            if (!svg_image.empty()) {
+              frames.push_back(svg_image);
+              sizes.push_back(gfx::Size(svg_image.width(), svg_image.height()));
+            }
           }
           DCHECK_EQ(frames.size(), sizes.size());
         }
@@ -144,7 +165,8 @@ BraveIOSWebFaviconDriver::BraveIOSWebFaviconDriver(
     : FaviconDriverImpl(favicon_service),
       image_fetcher_(browser_state->GetSharedURLLoaderFactory()),
       browser_state_(browser_state),
-      current_item_(new web::NavigationItemImpl()) {}
+      current_item_(new web::NavigationItemImpl()),
+      max_image_size_(0) {}
 
 BraveIOSWebFaviconDriver::~BraveIOSWebFaviconDriver() = default;
 

@@ -13,6 +13,7 @@ source_set("favicon") {
 
   deps = [
     "//base",
+    "//brave/ios/browser/svg",
     "//components/favicon/core",
     "//components/favicon/ios",
     "//components/favicon_base:favicon_base",
@@ -25,6 +26,5 @@ source_set("favicon") {
     "//ios/chrome/common/ui/favicon",
     "//ios/web/navigation:core",
     "//net",
-    "//ui/gfx",
   ]
 }
