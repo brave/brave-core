@@ -30,6 +30,21 @@ constexpr char kTimestampKey[] = "timestamp";
 constexpr char kCreativeSetIdKey[] = "creative_set_id";
 constexpr char kCreativeInstanceIdKey[] = "uuid";
 
+bool HasMigrated() {
+  return AdsClientHelper::GetInstance()->GetBooleanPref(
+      prefs::kHasMigratedConversionState);
+}
+
+void FailedToMigrate(InitializeCallback callback) {
+  callback(/* success */ false);
+}
+
+void SuccessfullyMigrated(InitializeCallback callback) {
+  AdsClientHelper::GetInstance()->SetBooleanPref(
+      prefs::kHasMigratedConversionState, true);
+  callback(/* success */ true);
+}
+
 absl::optional<ConversionQueueItemInfo> GetFromDictionary(
     const base::DictionaryValue* dictionary) {
   DCHECK(dictionary);
@@ -118,8 +133,7 @@ absl::optional<ConversionQueueItemList> FromJson(const std::string& json) {
 }  // namespace
 
 void Migrate(InitializeCallback callback) {
-  if (AdsClientHelper::GetInstance()->GetBooleanPref(
-          prefs::kHasMigratedConversionState)) {
+  if (HasMigrated()) {
     callback(/* success */ true);
     return;
   }
@@ -130,43 +144,35 @@ void Migrate(InitializeCallback callback) {
       kFilename, [=](const bool success, const std::string& json) {
         if (!success) {
           // Conversion state does not exist
-          BLOG(3, "Successfully migrated conversion state");
-
-          AdsClientHelper::GetInstance()->SetBooleanPref(
-              prefs::kHasMigratedConversionState, true);
-
-          callback(/* success */ true);
+          SuccessfullyMigrated(callback);
           return;
         }
 
-        const absl::optional<ConversionQueueItemList> conversion_queue_items =
-            FromJson(json);
-
-        if (!conversion_queue_items) {
-          BLOG(0, "Failed to migrate conversions");
-          callback(/* success */ false);
+        const absl::optional<ConversionQueueItemList>
+            conversion_queue_items_optional = FromJson(json);
+        if (!conversion_queue_items_optional) {
+          BLOG(0, "Failed to parse conversion state");
+          FailedToMigrate(callback);
           return;
         }
+        const ConversionQueueItemList& conversion_queue_items =
+            conversion_queue_items_optional.value();
 
         BLOG(3, "Successfully loaded conversion state");
 
         BLOG(1, "Migrating conversion state");
 
         database::table::ConversionQueue conversion_queue;
-        conversion_queue.Save(
-            conversion_queue_items.value(), [=](const bool success) {
-              if (!success) {
-                BLOG(0, "Failed to migrate conversion state");
-                callback(/* success */ false);
-                return;
-              }
+        conversion_queue.Save(conversion_queue_items, [=](const bool success) {
+          if (!success) {
+            BLOG(0, "Failed to save conversion state");
+            FailedToMigrate(callback);
+            return;
+          }
 
-              AdsClientHelper::GetInstance()->SetBooleanPref(
-                  prefs::kHasMigratedConversionState, true);
-
-              BLOG(3, "Successfully migrated conversion state");
-              callback(/* success */ true);
-            });
+          BLOG(3, "Successfully migrated conversion state");
+          SuccessfullyMigrated(callback);
+        });
       });
 }
 
