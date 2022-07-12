@@ -115,7 +115,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
                     android:visibility="gone"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:baselineAligned="false">
 
                     <android.widget.CheckBox
                         android:id="@+id/checkbox_crash"
@@ -141,7 +142,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:visibility="gone"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:baselineAligned="false">
 
                     <android.widget.CheckBox
                         android:id="@+id/checkbox_p3a"
