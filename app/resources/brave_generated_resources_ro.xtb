@@ -106,6 +106,8 @@ Sau modificați permisinile ulterior în <ph name="SETTINGS_EXTENIONS_LINK"/>.</
 <translation id="4870911314065352661">Închideți toate filele?</translation>
 <translation id="7551864359422178684">Aveți <ph name="NUMBER_OF_TABS"/> file deschise în această fereastră de browser.</translation>
 <translation id="2571596981920752023"><ph name="NUMBER_OF_TABS"/> file</translation>
+<translation id="5026874946691314267">Nu mai afișați acest mesaj din nou</translation>
+<translation id="5234764350956374838">Închide</translation>
 <translation id="2515126961943087659">Serviciu de anunțuri Bat</translation>
 <translation id="7924918279836988121">Serviciu Bat Ledger</translation>
 <translation id="6040143037577758943">Închide</translation>
@@ -201,9 +203,9 @@ Sau modificați permisinile ulterior în <ph name="SETTINGS_EXTENIONS_LINK"/>.</
 <translation id="2906510232093002459">Imagini implicite Brave</translation>
 <translation id="2396127686705429331">Afișați butonul pentru marcaje</translation>
 <translation id="2814998458708016836">Utilizați bara de adrese lată</translation>
-<translation id="5802665280774361839">Afișează completarea automată în bara de adrese</translation>
-<translation id="597020512043916976">Afișează principalele site-uri în sugestiile de completare automată</translation>
-<translation id="301088458323355543">Afișați site-urile sugerate în sugestiile de completare automată</translation>
+<translation id="2858138569776157458">Site-uri de top</translation>
+<translation id="7859704718976024901">Istoric de navigare</translation>
+<translation id="8820817407110198400">Bookmark</translation>
 <translation id="6333347122924254968">Afișați pictograma Recompense Brave în bara de adrese</translation>
 <translation id="1811404036171336214">Afișați întotdeauna marcajele pe o pagină nouă</translation>
 <translation id="5529693968082667490">Afișează butonul de căutare file</translation>
@@ -506,4 +508,7 @@ Sau modificați permisinile ulterior în <ph name="SETTINGS_EXTENIONS_LINK"/>.</
 <translation id="5318548116565208315">Avatar Porumb Bombon</translation>
 <translation id="1959966725083452288">Avatar Regal Bombon</translation>
 <translation id="2039034364578911089">Avatar Ninja Bombon</translation>
+<translation id="5802665280774361839">Afișează completarea automată în bara de adrese</translation>
+<translation id="597020512043916976">Afișează principalele site-uri în sugestiile de completare automată</translation>
+<translation id="301088458323355543">Afișați site-urile sugerate în sugestiile de completare automată</translation>
 </translationbundle>

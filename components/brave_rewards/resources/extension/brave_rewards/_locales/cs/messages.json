@@ -136,7 +136,7 @@
     "description": ""
   },
   "rewardsLogInToSeeBalance": {
-    "message": "$begin_bold$Log in to $provider$ $end_bold$to see your balance",
+    "message": "Pro zobrazení vašeho zůstatku $begin_bold$se přihlaste k poskytovateli $provider$ $end_bold$",
     "description": "",
     "placeholders": {
       "begin_bold": {

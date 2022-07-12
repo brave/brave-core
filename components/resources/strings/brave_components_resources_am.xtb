@@ -736,7 +736,6 @@
 <translation id="4780526507945807546">Brave local IPFS ኖድ ይጠቀሙ</translation>
 <translation id="8148464361648742409">አንድ የሕዝብ መተላለፊያ ይጠቀሙ</translation>
 <translation id="5123478056123923857">IPFS (InterPlanetary File System) የ አቻ-ለአቻ የውሂብ ማከማቻ እና አቅርቦት የህዝብ ኔትዎርክ ነው። ይህ ፕሮቶኮል ከ HTTP(S) የተለያዩ ከግምት ውስጥ የገቡ የ ግላዊነት ሁኔታዎች አሉት።</translation>
-<translation id="5410952114182173389">የእርስዎ ኮምፒተር ለህዝባዊ ኔትዎርክ አስተዋፅዖ ያደርጋል፣ ነገር ግን የእርስዎ IP አድራሻ እና እርስዎ የጠየቁት ወይም የሚያቀርቡት ማንኛውም ይዘት ሊጋለጥ ይችላል። በ IPFS ላይ የጠየቁት ይዘት ለእርስዎ ከመቅረቡ በፊት እንዲረጋገጥ ይደረጋል።</translation>
 <translation id="8664689531113048642">ከሶስተኛ ወገን ታዛቢዎች የሚጠይቁትን የእርስዎ IP አድራሻ እና ይዘት ይጠብቅዎታል፣ ነገር ግን ከህዝብ ጌትዌይ ኦፕሬተር አይደለም። ጌትዌይ ኦፕሬተር በጌትዌይ ለእርስዎ የቀረበው ይዘት እርስዎ የጠየቁት ይዘት መሆኑን የማረጋገጥ ሃላፊነት አለበት። እንዲሁም ኮምፒተርዎ ለህዝብ IPFS ኔትዎርክ አስተዋፅዖ አያደርግም።</translation>
 <translation id="3977809385703587108">ምርጫዎችዎን እንደገና መለወጥ ይችላሉ በ</translation>
 <translation id="3340978935015468852">ቅንብሮች</translation>
@@ -930,6 +929,7 @@
 <translation id="4359319875297001084">ከነባር Brave Crypto wallets ይምጡ?</translation>
 <translation id="3331452756822160641">አዲስ የይለፍ ቃል</translation>
 <translation id="8624315169751085215">ወደ ቅንጥብ ሰሌዳ ገልብጥ</translation>
+<translation id="7885157704277298658">ተቀድቷል</translation>
 <translation id="1121335910737476837">የመጀመሪያ ደረጃ crypto ሂሳቦች (መለያዎች)</translation>
 <translation id="6969147029062037757">ከሌላ የመጡ መለያዎች</translation>
 <translation id="4057718162494343222">በBrave ዋሌት ውስጥ ከመልሶ ማግኛ ሐረግዎ ምትኬ ሊቀመጥላቸው ወይም ወደነበሩበት ሊመለሱ የሚችሉ ዋና መለያዎችን መፍጠር ይችላሉ። ስለመለያ ዓይነቶች የበለጠ ለማወቅ የመለያ እገዛን ይጎብኙ።</translation>
@@ -1022,7 +1022,6 @@
 <translation id="5488357322146334497">መልዕክት</translation>
 <translation id="3586752056660754651">ፈርም</translation>
 <translation id="3484981968509595506">DApp ይፋዊ ምስጠራ ቁልፍዎን እየጠየቀ ነው።</translation>
-<translation id="1915212737651531313"><ph name="URL_BEFORE"/>$url<ph name="URL_AFTER"/> የዋሌትዎን ይፋዊ ምስጠራ ቁልፍ እየጠየቀ ነው። ይህን ቁልፍ ለማቅረብ ፍቃደኛ ከሆኑ፣ ጣቢያው የተመሰጠሩ መልእክቶችን ለእርስዎ መፃፍ ይችላል።</translation>
 <translation id="3340247553212049934">ያቅርቡ</translation>
 <translation id="1619778919922494944">ይህ DApp እርምጃዎን ለማጠናቀቅ ይህንን መልእክት ለማንበብ ይፈልጋል</translation>
 <translation id="714506544401754321">ዲክሪፕት መልእክት</translation>
@@ -1089,9 +1088,6 @@
 <translation id="7051244143160304048"><ph name="DEVICE_NAME"/> ተቋርጧል</translation>
 <translation id="5317781812114905957">መመሪያዎች</translation>
 <translation id="1178198982208000092">የእርስዎን <ph name="DEVICE_NAME"/>ያገናኙ</translation>
-<translation id="4358411489835404360">የሃርድዌር የኪስ ቦርሳ በመሳሪያው ላይ ማረጋገጫ ይጠይቃል።
-<ph name="DEVICE_NAME"/></translation>
-<translation id="3087887714936696603">የሃርድዌር ቦርሳ የEthereum መተግበሪያ በ <ph name="DEVICE_NAME"/> እንዲከፈት ይፈልጋል</translation>
 <translation id="8687869982094542529">ተልኳል</translation>
 <translation id="5013754027092416509">ደርሷል</translation>
 <translation id="5867988533873716616">የአሳሽ URL አግድ የለም።</translation>
@@ -1162,7 +1158,6 @@
 <translation id="1470129769517088397"><ph name="ADDRESS"/> አሁን በስራ ላይ ያለ አውታረ መረብ አይደለም</translation>
 <translation id="7340805872138998391">መሳሪያው መክፈት አልተቻለም፣ እንደገና ለማገናኘት ይሞክሩ</translation>
 <translation id="1984410139271779110">የውስጥ ስህተት፣ ያልታውቀ እቅድ</translation>
-<translation id="8682200134223578011">ጸድቋል</translation>
 <translation id="4674380028960132654">Ledger: ፊርማው ከትክክለኛው አድራሻ ጋር አይዛመድም</translation>
 <translation id="3183932890629254743">የሃርድዌር መለያ አልተገኘም</translation>
 <translation id="4287068151777838754">የ JSON ውሂብ ይጠበቃል</translation>
@@ -1219,7 +1214,7 @@
 <translation id="7709075156958117386">ይህ ጣቢያ የተበላሸ ከመሰለ፣ እባክዎ መከለያዎች ተነስተዋል ይሞክሩ። 
     <ph name="LINK_BEFORE"/>ማስታወሻ፡ ይህ የ Brave የግላዊነት ጥበቃ ሊቀንስ ይችላል።<ph name="LINK_AFTER"/></translation>
 <translation id="8377155647357436161">መከታተያዎች፣ ማስታወቂያዎች እና ሌሎችም ታግደዋል<ph name="LINK_BEFORE"/> የበለጠ<ph name="LINK_AFTER"/> ይወቁ</translation>
-<translation id="7604553853176833536">በBrave Shields አይጠበቅም <ph name="LINK_BEFORE"/>የበለጠ ይወቁ<ph name="LINK_AFTER"/></translation>
+<translation id="7604553853176833536">በBrave ጋሻ አይጠበቅም <ph name="LINK_BEFORE"/>የበለጠ ይወቁ<ph name="LINK_AFTER"/></translation>
 <translation id="650318023204990401">የጎለበቱ ቁጥጥሮች</translation>
 <translation id="5799940914270080805">እነዚህን ቅንብሮች መቀየር ጣቢያዎችን ሊሰብር ይችላል።</translation>
 <translation id="9204041448536398473">አለም አቀፍ የShield ቅንብሮች</translation>
@@ -1308,4 +1303,5 @@
 <translation id="6973157709854838218">ሂሳቦን ከማሳያ ይደብቁ</translation>
 <translation id="4548946945059463969">ቀሪ ሂሳብዎን በማያ ገጽ ላይ ያሳዩ</translation>
 <translation id="242959166945779492">በመለያዎ ውስጥ ምንም ቀሪ ሂሳቦች የሉዎትም። የተወሰኑትን ለመግዛት FTX ን ይጎብኙ።</translation>
+<translation id="5410952114182173389">የእርስዎ ኮምፒተር ለህዝባዊ ኔትዎርክ አስተዋፅዖ ያደርጋል፣ ነገር ግን የእርስዎ IP አድራሻ እና እርስዎ የጠየቁት ወይም የሚያቀርቡት ማንኛውም ይዘት ሊጋለጥ ይችላል። በ IPFS ላይ የጠየቁት ይዘት ለእርስዎ ከመቅረቡ በፊት እንዲረጋገጥ ይደረጋል።</translation>
 </translationbundle>
