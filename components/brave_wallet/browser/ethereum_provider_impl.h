@@ -156,6 +156,8 @@ class EthereumProviderImpl final
                            RequestEthereumPermissionsNoWallet);
   FRIEND_TEST_ALL_PREFIXES(EthereumProviderImplUnitTest,
                            RequestEthereumPermissionsLocked);
+  FRIEND_TEST_ALL_PREFIXES(EthereumProviderImplUnitTest,
+                           RequestEthereumPermissionsWithAccounts);
   friend class EthereumProviderImplUnitTest;
 
   // mojom::BraveWalletProvider:

@@ -1441,6 +1441,33 @@ TEST_F(EthereumProviderImplUnitTest, RequestEthereumPermissionsWithAccounts) {
   SetSelectedAccount(from(2), mojom::CoinType::ETH);
   EXPECT_EQ(RequestEthereumPermissions(),
             (std::vector<std::string>{from(0), from(1)}));
+
+  // CONTENT_SETTING_BLOCK will rule out previous granted permission.
+  host_content_settings_map()->SetContentSettingDefaultScope(
+      url, url, ContentSettingsType::BRAVE_ETHEREUM, CONTENT_SETTING_BLOCK);
+  base::RunLoop run_loop;
+  provider()->RequestEthereumPermissions(
+      base::BindLambdaForTesting([&](base::Value id,
+                                     base::Value formed_response,
+                                     const bool reject,
+                                     const std::string& first_allowed_account,
+                                     const bool update_bind_js_properties) {
+        mojom::ProviderError error;
+        std::string error_message;
+        GetErrorCodeMessage(std::move(formed_response), &error, &error_message);
+        EXPECT_EQ(error, mojom::ProviderError::kUserRejectedRequest);
+        EXPECT_EQ(error_message,
+                  l10n_util::GetStringUTF8(IDS_WALLET_USER_REJECTED_REQUEST));
+        run_loop.Quit();
+      }),
+      base::Value(), "", GetOrigin());
+  run_loop.Run();
+  // When CONTENT_SETTING_BLOCK is removed, previously granted permission works
+  // again.
+  host_content_settings_map()->SetContentSettingDefaultScope(
+      url, url, ContentSettingsType::BRAVE_ETHEREUM, CONTENT_SETTING_DEFAULT);
+  EXPECT_EQ(RequestEthereumPermissions(),
+            (std::vector<std::string>{from(0), from(1)}));
 }
 
 TEST_F(EthereumProviderImplUnitTest, RequestEthereumPermissionsLocked) {
