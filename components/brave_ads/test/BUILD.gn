@@ -93,7 +93,7 @@ source_set("brave_ads_unit_tests") {
     "//brave/vendor/bat-native-ads/src/bat/ads/internal/ads/notification_ad_test.cc",
     "//brave/vendor/bat-native-ads/src/bat/ads/internal/ads/notification_ad_unittest_util.cc",
     "//brave/vendor/bat-native-ads/src/bat/ads/internal/ads/notification_ad_unittest_util.h",
-    "//brave/vendor/bat-native-ads/src/bat/ads/internal/ads/notification_ad_util_serve_at_regular_intervals_unittest.cc",
+    "//brave/vendor/bat-native-ads/src/bat/ads/internal/ads/notification_ad_util_should_serve_at_regular_intervals_unittest.cc",
     "//brave/vendor/bat-native-ads/src/bat/ads/internal/ads/notification_ad_util_unittest.cc",
     "//brave/vendor/bat-native-ads/src/bat/ads/internal/ads/promoted_content_ad_test.cc",
     "//brave/vendor/bat-native-ads/src/bat/ads/internal/ads/search_result_ad_test.cc",
