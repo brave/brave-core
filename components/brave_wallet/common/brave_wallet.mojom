@@ -1129,6 +1129,9 @@ interface BraveWalletService {
   ResetPermission(CoinType coin, url.mojom.Origin origin, string account)
     => (bool success);
 
+  // Check if permission is denied for the origin
+  IsPermissionDenied(CoinType coin, url.mojom.Origin origin) => (bool denied);
+
   // Obtains the active origin info.
   GetActiveOrigin() => (OriginInfo origin_info);
 

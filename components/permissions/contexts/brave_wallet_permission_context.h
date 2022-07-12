@@ -73,7 +73,8 @@ class BraveWalletPermissionContext : public PermissionContextBase {
   // We will only check global setting and setting per origin since we won't
   // write block rule per address on an origin.
   static bool IsPermissionDenied(blink::PermissionType permission,
-                                 content::RenderFrameHost* rfh);
+                                 content::BrowserContext* context,
+                                 const url::Origin& origin);
 
   static bool AddPermission(blink::PermissionType permission,
                             content::BrowserContext* context,

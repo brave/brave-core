@@ -182,8 +182,16 @@ bool BraveWalletProviderDelegateImpl::IsPermissionDenied(mojom::CoinType type) {
     return false;
   }
 
+  auto* rfh = content::RenderFrameHost::FromID(host_id_);
+  if (!rfh) {
+    return false;
+  }
+
+  auto* web_contents = content::WebContents::FromRenderFrameHost(rfh);
+
   return permissions::BraveWalletPermissionContext::IsPermissionDenied(
-      *permission, content::RenderFrameHost::FromID(host_id_));
+      *permission, web_contents->GetBrowserContext(),
+      url::Origin::Create(rfh->GetLastCommittedURL()));
 }
 
 void BraveWalletProviderDelegateImpl::AddSolanaConnectedAccount(
