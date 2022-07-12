@@ -116,29 +116,18 @@ export const SignTransactionPanel = ({ signMode }: Props) => {
       return
     }
 
-    if (isHardwareAccount(accounts, selectedQueueData.fromAddress)) {
-      // TODO: waiting on SOL harware support
-      // dispatch(PanelActions.signAllTransactionsHardwareProcessed({})
-      // dispatch(PanelActions.signTransactionHardwareProcessed({
-      //   success: false,
-      //   id: selectedQueueData.id,
-      //   signature: '',
-      //   error: ''
-      // }))
-    } else {
-      if (signMode === 'signTx') {
-        dispatch(PanelActions.signTransactionProcessed({
-          approved: false,
-          id: selectedQueueData.id
-        }))
-        return
-      }
-      if (signMode === 'signAllTxs') {
-        dispatch(PanelActions.signAllTransactionsProcessed({
-          approved: false,
-          id: selectedQueueData.id
-        }))
-      }
+    if (signMode === 'signTx') {
+      dispatch(PanelActions.signTransactionProcessed({
+        approved: false,
+        id: selectedQueueData.id
+      }))
+      return
+    }
+    if (signMode === 'signAllTxs') {
+      dispatch(PanelActions.signAllTransactionsProcessed({
+        approved: false,
+        id: selectedQueueData.id
+      }))
     }
   }, [selectedQueueData, accounts, signMode])
 
@@ -147,24 +136,27 @@ export const SignTransactionPanel = ({ signMode }: Props) => {
       return
     }
 
-    if (isHardwareAccount(accounts, selectedQueueData.fromAddress)) {
-      // TODO: waiting on SOL harware support
-      // dispatch(PanelActions.signTransactionHardware(selectedQueueData))
-      // dispatch(PanelActions.signAllTransactionsHardware(selectedQueueData))
-    } else {
-      if (signMode === 'signTx') {
-        dispatch(PanelActions.signTransactionProcessed({
-          approved: true,
-          id: selectedQueueData.id
-        }))
+    const isHwAccount = isHardwareAccount(accounts, selectedQueueData.fromAddress)
+    if (signMode === 'signTx') {
+      if (isHwAccount) {
+        dispatch(PanelActions.signTransactionHardware(selectedQueueData as BraveWallet.SignTransactionRequest))
         return
       }
-      if (signMode === 'signAllTxs') {
-        dispatch(PanelActions.signAllTransactionsProcessed({
-          approved: true,
-          id: selectedQueueData.id
-        }))
+      dispatch(PanelActions.signTransactionProcessed({
+        approved: true,
+        id: selectedQueueData.id
+      }))
+      return
+    }
+    if (signMode === 'signAllTxs') {
+      if (isHwAccount) {
+        dispatch(PanelActions.signAllTransactionsHardware(selectedQueueData as BraveWallet.SignAllTransactionsRequest))
+        return
       }
+      dispatch(PanelActions.signAllTransactionsProcessed({
+        approved: true,
+        id: selectedQueueData.id
+      }))
     }
   }, [selectedQueueData, accounts, signMode])
 

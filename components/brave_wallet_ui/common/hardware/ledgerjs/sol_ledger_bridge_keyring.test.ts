@@ -4,7 +4,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import { BraveWallet } from '../../../constants/types'
-import SolanaLedgerKeyring from './sol_ledger_bridge_keyring'
+import SolanaLedgerBridgeKeyring from './sol_ledger_bridge_keyring'
 
 class MockApp {
   signature: Buffer
@@ -19,7 +19,7 @@ class MockApp {
 }
 
 const createSolanaLedgerKeyring = (app: MockApp = new MockApp()) => {
-  const solanaLedgerHardwareKeyring = new SolanaLedgerKeyring()
+  const solanaLedgerHardwareKeyring = new SolanaLedgerBridgeKeyring()
   solanaLedgerHardwareKeyring.unlock = async () => {
     solanaLedgerHardwareKeyring.app = app
     solanaLedgerHardwareKeyring.deviceId = 'device1'
@@ -59,19 +59,19 @@ test('Extracting accounts from device', () => {
 })
 
 test('Check ledger bridge type', () => {
-  const solanaLedgerHardwareKeyring = new SolanaLedgerKeyring()
+  const solanaLedgerHardwareKeyring = new SolanaLedgerBridgeKeyring()
   return expect(solanaLedgerHardwareKeyring.type()).toStrictEqual(BraveWallet.LEDGER_HARDWARE_VENDOR)
 })
 
 test('Check locks for device app only', () => {
-  const solanaLedgerHardwareKeyring = new SolanaLedgerKeyring()
+  const solanaLedgerHardwareKeyring = new SolanaLedgerBridgeKeyring()
   expect(solanaLedgerHardwareKeyring.isUnlocked()).toStrictEqual(false)
   solanaLedgerHardwareKeyring.app = new MockApp()
   expect(solanaLedgerHardwareKeyring.isUnlocked()).toStrictEqual(false)
 })
 
 test('Check locks for device app and device id', () => {
-  const solanaLedgerHardwareKeyring = new SolanaLedgerKeyring()
+  const solanaLedgerHardwareKeyring = new SolanaLedgerBridgeKeyring()
   expect(solanaLedgerHardwareKeyring.isUnlocked()).toStrictEqual(false)
   solanaLedgerHardwareKeyring.app = new MockApp()
   solanaLedgerHardwareKeyring.deviceId = 'test'
@@ -79,7 +79,7 @@ test('Check locks for device app and device id', () => {
 })
 
 test('Extract accounts from locked device yields unlock error', () => {
-  const solanaLedgerHardwareKeyring = new SolanaLedgerKeyring()
+  const solanaLedgerHardwareKeyring = new SolanaLedgerBridgeKeyring()
   solanaLedgerHardwareKeyring.unlock = async function () {
     return { success: false, error: 'braveWalletUnlockError' }
   }
@@ -88,7 +88,7 @@ test('Extract accounts from locked device yields unlock error', () => {
 })
 
 test('Sign transaction from locked device yields unlock error', () => {
-  const solanaLedgerHardwareKeyring = new SolanaLedgerKeyring()
+  const solanaLedgerHardwareKeyring = new SolanaLedgerBridgeKeyring()
   solanaLedgerHardwareKeyring.unlock = async function () {
     return { success: false, error: 'braveWalletUnlockError' }
   }
@@ -97,7 +97,7 @@ test('Sign transaction from locked device yields unlock error', () => {
 })
 
 test('Sign transaction unlocked device yields success', async () => {
-  const ledgerHardwareKeyring = new SolanaLedgerKeyring()
+  const ledgerHardwareKeyring = new SolanaLedgerBridgeKeyring()
   ledgerHardwareKeyring.unlock = async function () {
     return { success: true }
   }

@@ -285,7 +285,9 @@ export const mockSolDappSignTransactionRequest: BraveWallet.SignTransactionReque
       'sendOptions': undefined,
       'signTransactionParam': undefined
     }
-  }
+  },
+  'rawMessage': { bytes: [1], str: undefined },
+  'coin': BraveWallet.CoinType.SOL
 }
 
 // BraveWallet.TransactionInfo (selectedPendingTransaction)
@@ -427,5 +429,7 @@ export const mockSolDappSignAllTransactionsRequest: BraveWallet.SignAllTransacti
         'signTransactionParam': undefined
       }
     }
-  ]
+  ],
+  'rawMessages': [{ bytes: [1], str: undefined }],
+  'coin': BraveWallet.CoinType.SOL
 }
