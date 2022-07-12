@@ -454,9 +454,9 @@ class EthereumProviderImplUnitTest : public testing::Test {
         base::Value());
     // Wait for EthereumProviderImpl::ContinueSignMessage
     browser_task_environment_.RunUntilIdle();
-    brave_wallet_service_->NotifySignMessageHardwareRequestProcessed(
+    brave_wallet_service_->NotifySignMessageRequestProcessed(
         user_approved, brave_wallet_service_->sign_message_id_ - 1,
-        hardware_signature, error_in);
+        mojom::ByteArrayStringUnion::NewStr(hardware_signature), error_in);
     run_loop.Run();
   }
 
@@ -489,7 +489,8 @@ class EthereumProviderImplUnitTest : public testing::Test {
     browser_task_environment_.RunUntilIdle();
     if (user_approved)
       brave_wallet_service_->NotifySignMessageRequestProcessed(
-          *user_approved, brave_wallet_service_->sign_message_id_ - 1);
+          *user_approved, brave_wallet_service_->sign_message_id_ - 1, nullptr,
+          absl::nullopt);
     run_loop.Run();
   }
 
@@ -552,7 +553,8 @@ class EthereumProviderImplUnitTest : public testing::Test {
     browser_task_environment_.RunUntilIdle();
     if (user_approved)
       brave_wallet_service_->NotifySignMessageRequestProcessed(
-          *user_approved, brave_wallet_service_->sign_message_id_ - 1);
+          *user_approved, brave_wallet_service_->sign_message_id_ - 1, nullptr,
+          absl::nullopt);
     run_loop.Run();
   }
 
@@ -1786,18 +1788,20 @@ TEST_F(EthereumProviderImplUnitTest, SignMessageRequestQueue) {
   }
 
   // wrong order
-  brave_wallet_service_->NotifySignMessageRequestProcessed(true, id2);
+  brave_wallet_service_->NotifySignMessageRequestProcessed(true, id2, nullptr,
+                                                           absl::nullopt);
   EXPECT_EQ(GetSignMessageQueueSize(), 3u);
   EXPECT_EQ(GetSignMessageQueueFront()->id, id1);
   EXPECT_EQ(GetSignMessageQueueFront()->message, message1_in_queue);
 
-  brave_wallet_service_->NotifySignMessageHardwareRequestProcessed(true, id3,
-                                                                   "", "");
+  brave_wallet_service_->NotifySignMessageRequestProcessed(true, id3, nullptr,
+                                                           absl::nullopt);
   EXPECT_EQ(GetSignMessageQueueSize(), 3u);
   EXPECT_EQ(GetSignMessageQueueFront()->id, id1);
   EXPECT_EQ(GetSignMessageQueueFront()->message, message1_in_queue);
 
-  brave_wallet_service_->NotifySignMessageRequestProcessed(true, id1);
+  brave_wallet_service_->NotifySignMessageRequestProcessed(true, id1, nullptr,
+                                                           absl::nullopt);
   EXPECT_EQ(GetSignMessageQueueSize(), 2u);
   EXPECT_EQ(GetSignMessageQueueFront()->id, id2);
   EXPECT_EQ(GetSignMessageQueueFront()->message, message2_in_queue);
@@ -1811,12 +1815,14 @@ TEST_F(EthereumProviderImplUnitTest, SignMessageRequestQueue) {
   }
 
   // old id
-  brave_wallet_service_->NotifySignMessageRequestProcessed(true, id1);
+  brave_wallet_service_->NotifySignMessageRequestProcessed(true, id1, nullptr,
+                                                           absl::nullopt);
   EXPECT_EQ(GetSignMessageQueueSize(), 2u);
   EXPECT_EQ(GetSignMessageQueueFront()->id, id2);
   EXPECT_EQ(GetSignMessageQueueFront()->message, message2_in_queue);
 
-  brave_wallet_service_->NotifySignMessageRequestProcessed(true, id2);
+  brave_wallet_service_->NotifySignMessageRequestProcessed(true, id2, nullptr,
+                                                           absl::nullopt);
   EXPECT_EQ(GetSignMessageQueueSize(), 1u);
   EXPECT_EQ(GetSignMessageQueueFront()->id, id3);
   EXPECT_EQ(GetSignMessageQueueFront()->message, message3_in_queue);
@@ -1827,8 +1833,8 @@ TEST_F(EthereumProviderImplUnitTest, SignMessageRequestQueue) {
     EXPECT_EQ(queue[0]->message, message3_in_queue);
   }
 
-  brave_wallet_service_->NotifySignMessageHardwareRequestProcessed(true, id3,
-                                                                   "", "");
+  brave_wallet_service_->NotifySignMessageRequestProcessed(true, id3, nullptr,
+                                                           absl::nullopt);
   EXPECT_EQ(GetSignMessageQueueSize(), 0u);
   EXPECT_EQ(GetPendingSignMessageRequests().size(), 0u);
 }

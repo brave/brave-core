@@ -24,7 +24,7 @@ import TrezorBridgeKeyring from './trezor_bridge_keyring'
 import { TrezorBridgeTransport } from './trezor-bridge-transport'
 import { TrezorCommandHandler } from './trezor-command-handler'
 import { getMockedTransactionInfo } from '../../constants/mocks'
-import { HardwareOperationResult, SignHardwareTransactionOperationResult } from '../../hardware_operations'
+import { HardwareOperationResult, SignHardwareOperationResult } from '../../hardware_operations'
 import { Unsuccessful } from 'trezor-connect'
 import { SignHardwareMessageOperationResult, TrezorDerivationPaths } from '../types'
 
@@ -74,7 +74,7 @@ const createTransport = (url: string, hardwareTransport: TrezorBridgeTransport |
 
 const createTrezorTransport = (unlock: HardwareOperationResult,
                                accounts?: GetAccountsResponsePayload,
-                               signedPayload?: SignHardwareTransactionOperationResult,
+                               signedPayload?: SignHardwareOperationResult,
                                signedMessagePayload?: SignHardwareMessageOperationResult) => {
   let hardwareTransport = createTransport(kTrezorBridgeUrl, new TrezorBridgeTransport(kTrezorBridgeUrl))
   hardwareTransport.contentWindow = {
