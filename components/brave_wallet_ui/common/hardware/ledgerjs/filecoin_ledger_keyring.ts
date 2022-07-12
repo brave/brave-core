@@ -50,7 +50,8 @@ export default class FilecoinLedgerKeyring implements LedgerFilecoinKeyring {
         name: getCoinName(this.coin()) + ' ' + this.type(),
         hardwareVendor: this.type(),
         deviceId: this.deviceId,
-        coin: this.coin()
+        coin: this.coin(),
+        network: network
       })
     }
     return { success: true, payload: [...result] }

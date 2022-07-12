@@ -100,7 +100,8 @@ export const onConnectHardwareWallet = (opts: HardwareWalletConnectOpts): Promis
       name: 'Ledger 1',
       hardwareVendor: 'Ledger',
       deviceId: 'device1',
-      coin: BraveWallet.CoinType.ETH
+      coin: BraveWallet.CoinType.ETH,
+      network: undefined
     })))
   })
 }

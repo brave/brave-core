@@ -330,6 +330,8 @@ const string kLedgerHardwareVendor = "Ledger";
 const string kTrezorHardwareVendor = "Trezor";
 
 const string kFilecoinKeyringId = "filecoin";
+const string kFilecoinTestnetKeyringId = "filecoin_testnet";
+
 const string kSolanaKeyringId = "solana";
 const string kDefaultKeyringId = "default";
 
@@ -345,6 +347,7 @@ struct HardwareWalletAccount {
   string hardware_vendor;
   string device_id;
   CoinType coin;
+  string? network;
 };
 
 struct HardwareInfo {
@@ -359,6 +362,9 @@ struct AccountInfo {
   bool is_imported;
   HardwareInfo? hardware;
   CoinType coin;
+  // Keyring, account is attached on.
+  // Used for separate filecoin networks in the UI.
+  string? keyring_id;
 };
 
 struct KeyringInfo {
@@ -491,7 +497,11 @@ interface KeyringService {
   IsLocked() => (bool isLocked);
 
   // Adds an account to the keyring.
-  AddAccount(string accountName, CoinType coin ) => (bool success);
+  // For filecoin strictly use AddFilecoinAccount.
+  AddAccount(string accountName, CoinType coin) => (bool success);
+
+  // Adds an account to the filecoin(keyring is choosed by network).
+  AddFilecoinAccount(string accountName, string fileCoinNetwork) => (bool success);
 
   // Obtains the private key for the keyring.
   GetPrivateKeyForKeyringAccount(string address, CoinType coin)
@@ -499,6 +509,7 @@ interface KeyringService {
 
   // Imports an account with a specific private key to the corresponding keyring
   // privateKey can be coin preferred encoding, ex. hex or base58
+  // For filecoin strictly use ImportFilecoinAccount.
   ImportAccount(string accountName, string privateKey, CoinType coin)
     => (bool success, string address);
 
@@ -546,7 +557,11 @@ interface KeyringService {
   NotifyUserInteraction();
 
   // Obtains the selected account
+  // For filecoin strictly use GetFilecoinSelectedAccount
   GetSelectedAccount(CoinType coin) => (string? address);
+
+  // Obtains the selected filecoin account
+  GetFilecoinSelectedAccount(string network) => (string? address);
 
   // Sets the selected account
   SetSelectedAccount(string address, CoinType coin) => (bool success);

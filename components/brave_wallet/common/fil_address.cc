@@ -9,7 +9,6 @@
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
-#include "brave/components/brave_wallet/common/features.h"
 #include "brave/third_party/argon2/src/src/blake2/blake2.h"
 #include "components/base32/base32.h"
 

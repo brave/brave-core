@@ -40,8 +40,5 @@ const base::Feature kBraveWalletSolanaProviderFeature{
 const base::Feature kBraveWalletDappsSupportFeature{
     "BraveWalletDappsSupport", base::FEATURE_ENABLED_BY_DEFAULT};
 
-const base::FeatureParam<bool> kFilecoinTestnetEnabled = {
-    &kBraveWalletFilecoinFeature, "filecoin_testnet_enabled", false};
-
 }  // namespace features
 }  // namespace brave_wallet

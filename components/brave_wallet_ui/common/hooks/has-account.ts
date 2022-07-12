@@ -20,7 +20,12 @@ export function useHasAccount () {
   } = useSelector((state: { wallet: WalletState }) => state.wallet)
 
   const hasSolAccount = React.useMemo((): boolean => { return accounts.some(account => account.coin === BraveWallet.CoinType.SOL) }, [accounts])
-  const hasFilAccount = React.useMemo((): boolean => { return accounts.some(account => account.coin === BraveWallet.CoinType.FIL) }, [accounts])
+  const hasFilAccount = React.useMemo((): boolean => {
+    const keyringForCurrentNetwork = selectedNetwork.chainId === BraveWallet.FILECOIN_MAINNET
+        ? BraveWallet.FILECOIN_KEYRING_ID
+        : BraveWallet.FILECOIN_TESTNET_KEYRING_ID
+    return accounts.some(account => account.coin === BraveWallet.CoinType.FIL && account.keyringId === keyringForCurrentNetwork)
+  }, [accounts, selectedNetwork])
 
   const needsAccount = React.useMemo((): boolean => {
     if (selectedNetwork.coin === BraveWallet.CoinType.SOL) {
