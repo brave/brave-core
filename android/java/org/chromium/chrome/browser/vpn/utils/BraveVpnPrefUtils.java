@@ -13,6 +13,9 @@ import org.chromium.base.ContextUtils;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.vpn.models.BraveVpnPrefModel;
 
+import java.util.Collections;
+import java.util.Set;
+
 public class BraveVpnPrefUtils {
     private static final String PREF_BRAVE_VPN_CALLOUT = "brave_vpn_callout";
     private static final String PREF_BRAVE_VPN_CALLOUT_SETTINGS = "brave_vpn_callout_settings";
@@ -28,6 +31,7 @@ public class BraveVpnPrefUtils {
     private static final String PREF_BRAVE_VPN_SERVER_CHANGE_LOCATION = "server_change_location";
     private static final String PREF_BRAVE_VPN_RESET_CONFIGURATION =
             "brave_vpn_reset_configuration";
+    private static final String PREF_EXCLUDED_PACKAGES = "excluded_packages";
 
     public static final String PREF_BRAVE_VPN_AUTOMATIC = "automatic";
     public static final String PREF_BRAVE_VPN_FEATURE = "brave_vpn_feature";
@@ -245,5 +249,15 @@ public class BraveVpnPrefUtils {
         setClientId(braveVpnPrefModel.getClientId());
         setApiAuthToken(braveVpnPrefModel.getApiAuthToken());
         setResetConfiguration(false);
+    }
+
+    public static Set<String> getExcludedPackages() {
+        return mSharedPreferences.getStringSet(PREF_EXCLUDED_PACKAGES, Collections.emptySet());
+    }
+
+    public static void setExcludedPackages(Set<String> packages) {
+        SharedPreferences.Editor sharedPreferencesEditor = mSharedPreferences.edit();
+        sharedPreferencesEditor.putStringSet(PREF_EXCLUDED_PACKAGES, packages);
+        sharedPreferencesEditor.apply();
     }
 }

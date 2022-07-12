@@ -355,6 +355,10 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/vpn/models/BraveVpnProfileCredentials.java",
   "../../brave/android/java/org/chromium/chrome/browser/vpn/models/BraveVpnServerRegion.java",
   "../../brave/android/java/org/chromium/chrome/browser/vpn/models/BraveVpnWireguardProfileCredentials.java",
+  "../../brave/android/java/org/chromium/chrome/browser/vpn/split_tunnel/ApplicationDataModel.java",
+  "../../brave/android/java/org/chromium/chrome/browser/vpn/split_tunnel/ApplicationListAdapter.java",
+  "../../brave/android/java/org/chromium/chrome/browser/vpn/split_tunnel/ApplicationViewModel.java",
+  "../../brave/android/java/org/chromium/chrome/browser/vpn/split_tunnel/SplitTunnelActivity.java",
   "../../brave/android/java/org/chromium/chrome/browser/vpn/utils/BraveVpnApiResponseUtils.java",
   "../../brave/android/java/org/chromium/chrome/browser/vpn/utils/BraveVpnPrefUtils.java",
   "../../brave/android/java/org/chromium/chrome/browser/vpn/utils/BraveVpnProfileUtils.java",
@@ -417,4 +421,5 @@ brave_java_base_module_sources = [
 brave_java_base_module_deps = [
   "//brave/third_party/android_deps:com_wireguard_android_java",
   "//third_party/androidx:androidx_core_core_java",
+  "//third_party/androidx:androidx_lifecycle_lifecycle_viewmodel_java",
 ]

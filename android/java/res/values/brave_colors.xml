@@ -209,4 +209,6 @@
 
     <!--  Brave Wallet DApp  -->
     <color name="brave_wallet_dapp_text_color">#171919</color>
+
+    <color name="action_icon_tint_color">#FFFFFF</color>
 </resources>
