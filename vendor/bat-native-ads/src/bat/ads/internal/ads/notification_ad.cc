@@ -15,7 +15,6 @@
 #include "bat/ads/internal/ads/notification_ad_util.h"
 #include "bat/ads/internal/ads/serving/notification_ad_serving.h"
 #include "bat/ads/internal/base/logging_util.h"
-#include "bat/ads/internal/base/platform/platform_helper.h"
 #include "bat/ads/internal/browser/browser_manager.h"
 #include "bat/ads/internal/covariates/covariate_manager.h"
 #include "bat/ads/internal/deprecated/client/client_state_manager.h"
@@ -72,8 +71,7 @@ NotificationAd::~NotificationAd() {
 }
 
 void NotificationAd::MaybeServeAtRegularIntervals() {
-  if (!PlatformHelper::GetInstance()->IsMobile()) {
-    // Ads should not be shown on desktop at regular intervals.
+  if (!CanServeAtRegularIntervals()) {
     return;
   }
 
@@ -112,12 +110,7 @@ void NotificationAd::OnPrefChanged(const std::string& path) {
 
 void NotificationAd::OnUserDidBecomeActive(const base::TimeDelta idle_time,
                                            const bool was_locked) {
-  if (PlatformHelper::GetInstance()->IsMobile()) {
-    // Ads should not be shown on mobile when a user becomes active.
-    return;
-  }
-
-  if (!ShouldServe()) {
+  if (!CanServeIfUserIsActive() || !ShouldServe()) {
     return;
   }
 

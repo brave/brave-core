@@ -6,6 +6,7 @@
 #include "bat/ads/internal/ads/notification_ad_util.h"
 
 #include "bat/ads/internal/base/unittest/unittest_base.h"
+#include "bat/ads/internal/base/unittest/unittest_mock_util.h"
 #include "bat/ads/internal/creatives/notification_ads/creative_notification_ad_unittest_util.h"
 #include "bat/ads/internal/creatives/notification_ads/notification_ad_builder.h"
 #include "bat/ads/notification_ad_info.h"
@@ -29,6 +30,26 @@ class BatAdsNotificationAdUtilTest : public UnitTestBase {
   }
 };
 
+TEST_F(BatAdsNotificationAdUtilTest, CanServeIfUserIsActive) {
+  // Arrange
+  MockPlatformHelper(platform_helper_mock_, PlatformType::kWindows);
+
+  // Act
+
+  // Assert
+  EXPECT_TRUE(CanServeIfUserIsActive());
+}
+
+TEST_F(BatAdsNotificationAdUtilTest, DoNotServeIfUserIsActive) {
+  // Arrange
+  MockPlatformHelper(platform_helper_mock_, PlatformType::kAndroid);
+
+  // Act
+
+  // Assert
+  EXPECT_FALSE(CanServeIfUserIsActive());
+}
+
 TEST_F(BatAdsNotificationAdUtilTest, ShouldServe) {
   // Arrange
   AdsClientHelper::GetInstance()->SetBooleanPref(prefs::kEnabled, true);
@@ -47,6 +68,26 @@ TEST_F(BatAdsNotificationAdUtilTest, ShouldNotServe) {
 
   // Assert
   EXPECT_FALSE(ShouldServe());
+}
+
+TEST_F(BatAdsNotificationAdUtilTest, CanServeAtRegularIntervals) {
+  // Arrange
+  MockPlatformHelper(platform_helper_mock_, PlatformType::kAndroid);
+
+  // Act
+
+  // Assert
+  EXPECT_TRUE(CanServeAtRegularIntervals());
+}
+
+TEST_F(BatAdsNotificationAdUtilTest, DoNotServeAtRegularIntervals) {
+  // Arrange
+  MockPlatformHelper(platform_helper_mock_, PlatformType::kWindows);
+
+  // Act
+
+  // Assert
+  EXPECT_FALSE(CanServeAtRegularIntervals());
 }
 
 TEST_F(BatAdsNotificationAdUtilTest, ShowNotification) {

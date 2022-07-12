@@ -13,6 +13,10 @@ namespace ads {
 struct NotificationAdInfo;
 
 bool ShouldServe();
+
+bool CanServeIfUserIsActive();
+
+bool CanServeAtRegularIntervals();
 bool ShouldServeAtRegularIntervals();
 
 void ShowNotification(const NotificationAdInfo& ad);
