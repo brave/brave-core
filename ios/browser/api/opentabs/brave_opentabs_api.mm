@@ -19,7 +19,6 @@
 #include "net/base/mac/url_conversions.h"
 #include "url/gurl.h"
 
-
 #if !defined(__has_feature) || !__has_feature(objc_arc)
 #error "This file requires ARC support."
 #endif
@@ -156,12 +155,6 @@ SyncDeviceType SyncEnumsDeviceTypeFromSyncDeviceType(
 
 #pragma mark - BraveOpenTabsAPI
 
-namespace web {
-
-
-}  // namespace web
-
-
 @interface BraveOpenTabsAPI () {
   // SyncService is needed in order to observe sync changes
   syncer::SyncService* sync_service_;
@@ -195,7 +188,7 @@ namespace web {
   [observer destroy];
 }
 
-- (void)getSyncedSessions:(void (^)(NSArray<IOSOpenDistantSession*>*))completion {
+- (NSArray<IOSOpenDistantSession*>*)getSyncedSessions {
   // Getting SyncedSessions from SessionSyncService
   auto syncedSessions =
       std::make_unique<synced_sessions::SyncedSessions>(session_sync_service_);
@@ -217,7 +210,7 @@ namespace web {
     [distantSessionList addObject: distantSession];
   }
 
-  completion([distantSessionList copy]);
+  return [distantSessionList copy];
 }
 
 - (NSArray<IOSOpenDistantTab*>*)onDistantTabResults:

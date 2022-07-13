@@ -4,11 +4,13 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/ios/browser/api/opentabs/brave_tab.h"
-#import <WebKit/WebKit.h>
+
+#include <WebKit/WebKit.h>
 #include <memory>
 
 #include "base/time/time.h"
 #include "base/strings/sys_string_conversions.h"
+
 #include "ios/chrome/browser/application_context.h"
 #include "ios/chrome/browser/browser_state/chrome_browser_state.h"
 #include "ios/chrome/browser/browser_state/chrome_browser_state_manager.h"
@@ -16,19 +18,21 @@
 #include "ios/chrome/browser/main/browser_impl.h"
 #include "ios/chrome/browser/main/browser_list.h"
 #include "ios/chrome/browser/main/browser_list_factory.h"
+#include "ios/chrome/browser/sessions/ios_chrome_session_tab_helper.h"
+#include "ios/chrome/browser/tabs/synced_window_delegate_browser_agent.h"
+#include "ios/chrome/browser/ui/commands/command_dispatcher.h"
 #include "ios/chrome/browser/web_state_list/web_state_list.h"
-
+#include "ios/chrome/browser/web_state_list/web_state_opener.h"
+#include "ios/web/public/web_state_observer.h"
 #include "ios/web/navigation/navigation_manager_delegate.h"
 #include "ios/web/navigation/navigation_manager_impl.h"
 #include "ios/web/web_state/web_state_impl.h"
-#include "ios/chrome/browser/web_state_list/web_state_opener.h"
 #include "ios/web/web_state/ui/crw_web_view_navigation_proxy.h"
-#include "ios/chrome/browser/tabs/synced_window_delegate_browser_agent.h"
-#include "ios/chrome/browser/sessions/ios_chrome_session_tab_helper.h"
-#include "ios/web/public/web_state_observer.h"
+
 #include "net/base/mac/url_conversions.h"
 #include "url/gurl.h"
 
+#pragma mark - BackForwardList
 
 // Back Forward List for use in Navigation Manager
 @interface BackForwardList: NSObject
@@ -43,9 +47,7 @@
 @synthesize forwardList;
 
 - (instancetype)init {
-  if ((self = [super init])) {
-    
-  }
+  self = [super init];
   return self;
 }
 
@@ -74,7 +76,8 @@
 }
 @end
 
-// Navigation Proxy
+#pragma mark - NavigationProxy
+
 @interface NavigationProxy : NSObject<CRWWebViewNavigationProxy>
 @end
 
@@ -120,63 +123,64 @@ private:
   web::WebState* web_state_;
 };
 
-NavigationDelegate::NavigationDelegate(web::WebState* web_state) : web_state_(web_state) {
-
-}
-
 NavigationDelegate::~NavigationDelegate() = default;
 
-void NavigationDelegate::ClearDialogs() {
-  
-}
-
-void NavigationDelegate::RecordPageStateInNavigationItem() {
-
-}
-
-void NavigationDelegate::LoadCurrentItem(web::NavigationInitiationType type) {
-
-}
-
-void NavigationDelegate::LoadIfNecessary() {
-
-}
-
-void NavigationDelegate::Reload() {
-
-}
-
-void NavigationDelegate::OnNavigationItemCommitted(web::NavigationItem* item) {
-
+id<CRWWebViewNavigationProxy> NavigationDelegate::GetWebViewNavigationProxy() const {
+  return [[NavigationProxy alloc] init];
 }
 
 web::WebState* NavigationDelegate::GetWebState() {
   return web_state_;
 }
 
-void NavigationDelegate::SetWebStateUserAgent(web::UserAgentType user_agent_type) {
-
+web::NavigationItemImpl* NavigationDelegate::GetPendingItem() {
+  return nullptr;
 }
 
-id<CRWWebViewNavigationProxy> NavigationDelegate::GetWebViewNavigationProxy() const {
-  return [[NavigationProxy alloc] init];
+NavigationDelegate::NavigationDelegate(web::WebState* web_state) : web_state_(web_state) {
+  // Not needed on iOS
+}
+
+void NavigationDelegate::ClearDialogs() {
+  // Not needed on iOS
+}
+
+void NavigationDelegate::RecordPageStateInNavigationItem() {
+  // Not needed on iOS
+}
+
+void NavigationDelegate::LoadCurrentItem(web::NavigationInitiationType type) {
+  // Not needed on iOS
+}
+
+void NavigationDelegate::LoadIfNecessary() {
+  // Not needed on iOS
+}
+
+void NavigationDelegate::Reload() {
+  // Not needed on iOS
+}
+
+void NavigationDelegate::OnNavigationItemCommitted(web::NavigationItem* item) {
+  // Not needed on iOS
+}
+
+void NavigationDelegate::SetWebStateUserAgent(web::UserAgentType user_agent_type) {
+  // Not needed on iOS
 }
 
 void NavigationDelegate::GoToBackForwardListItem(WKBackForwardListItem* wk_item,
                                      web::NavigationItem* item,
                                      web::NavigationInitiationType type,
                              bool has_user_gesture) {
-
+  // Not needed on iOS
 }
-
 
 void NavigationDelegate::RemoveWebView() {
-
+  // Not needed on iOS
 }
 
-web::NavigationItemImpl* NavigationDelegate::GetPendingItem() {
-  return nullptr;
-}
+#pragma mark - BraveNativeTab
 
 class BraveNativeTab {
 public:
@@ -197,10 +201,10 @@ private:
   private:
     // WebStateObserver:
     void WebStateDestroyed(web::WebState* web_state) override;
-    BraveNativeTab* tab_;  // not-owned
+    BraveNativeTab* tab_; // NOT OWNED
   };
   
-  Browser* browser_;  // not-owned
+  Browser* browser_; // NOT OWNED
   SessionID session_id_;
   std::unique_ptr<NavigationDelegate> navigation_delegate_;
   web::WebState* web_state_;
@@ -268,10 +272,10 @@ void BraveNativeTab::SetTitle(const std::u16string& title) {
       item->SetTitle(title);
       static_cast<web::WebStateImpl*>(web_state_)->OnTitleChanged();
     } else {
-      VLOG(1) << "Invalid NavigationItem for Tab!!!";
+      VLOG(1) << "Invalid NavigationItem while setting up the tab";
     }
   } else {
-    VLOG(1) << "Invalid WebState for Tab!!!";
+    VLOG(1) << "Invalid WebState while setting up the tab";
   }
 }
 
@@ -316,13 +320,13 @@ void BraveNativeTab::Observer::WebStateDestroyed(
   web_state->RemoveObserver(this);
 }
 
-@interface BraveTab()
-{
+#pragma mark - BraveTa
+
+@interface BraveTab() {
   std::unique_ptr<BraveNativeTab> native_tab_;
 }
 @end
 
-#import "ios/chrome/browser/ui/commands/command_dispatcher.h"
 @implementation BraveTab
 static std::unique_ptr<Browser> browser_;
 

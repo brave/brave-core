@@ -10,8 +10,42 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+typedef NS_ENUM(NSUInteger, TargetDeviceType) {
+  TargetDeviceTypeUnset = 0,
+  TargetDeviceTypePC,
+  TargetDeviceTypeMobile
+};
+
 // @protocol SendTabSessionStateObserver;
 // @protocol SendTabSessionStateListener;
+
+@class IOSSendTabTargetDevice;
+
+NS_SWIFT_NAME(SendTabTargetDevice)
+OBJC_EXPORT
+@interface IOSSendTabTargetDevice : NSObject <NSCopying>
+
+@property(nonatomic, strong) NSString* fullName;
+@property(nonatomic, strong) NSString* shortName;
+@property(nonatomic, strong) NSString* deviceName;
+@property(nonatomic, strong) NSString* cacheId;
+@property(nonatomic) TargetDeviceType deviceType;
+@property(nonatomic, copy) NSDate* lastUpdatedTime;
+
+/// Target Device Constructor used with SendTabAPI
+/// @param fullName - Device full name
+/// @param shortName - Device short name
+/// @param deviceName - Device name
+/// @param cacheId - Device cacheId
+/// @param deviceType - Device type
+/// @param lastUpdatedTime - Last updated timestamp
+- (instancetype)initWithFullName:(NSString*)fullName
+                       shortName:(NSString*)shortName
+                      deviceName:(NSString*)deviceName
+                         cacheId:(NSString*)cacheId
+                      deviceType:(TargetDeviceType)deviceType
+                 lastUpdatedTime:(NSDate*)lastUpdatedTime;
+@end
 
 NS_SWIFT_NAME(BraveSendTabAPI)
 OBJC_EXPORT
@@ -22,7 +56,7 @@ OBJC_EXPORT
 
 - (instancetype)init NS_UNAVAILABLE;
 
-- (void)getListOfSyncedDevices;
+- (NSArray<IOSSendTabTargetDevice*>*)getListOfSyncedDevices;
 
 @end
 

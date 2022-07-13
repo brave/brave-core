@@ -16,7 +16,6 @@ IOSChromeSyncClient::CreateDataTypeControllers(
     syncer::SyncService* sync_service) {
   syncer::ModelTypeSet disabled_types = {syncer::AUTOFILL,
                                          syncer::READING_LIST,
-                                         syncer::SEND_TAB_TO_SELF,
                                          syncer::USER_CONSENTS};
   return component_factory_->CreateCommonDataTypeControllers(disabled_types,
                                                              sync_service);

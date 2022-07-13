@@ -12,6 +12,7 @@
 
 #include "components/send_tab_to_self/send_tab_to_self_model.h"
 #include "components/send_tab_to_self/send_tab_to_self_sync_service.h"
+#include "components/send_tab_to_self/target_device_info.h"
 
 #include "ios/chrome/browser/browser_state/chrome_browser_state.h"
 #include "ios/chrome/browser/ui/recent_tabs/synced_sessions.h"
@@ -21,12 +22,76 @@
 #include "net/base/mac/url_conversions.h"
 #include "url/gurl.h"
 
+namespace brave {
+namespace ios {
+TargetDeviceType DeviceTypeFromSyncDeviceType(
+    sync_pb::SyncEnums::DeviceType deviceType) {
+  switch (deviceType) {
+    case sync_pb::SyncEnums::DeviceType::SyncEnums_DeviceType_TYPE_WIN:
+    case sync_pb::SyncEnums::DeviceType::SyncEnums_DeviceType_TYPE_MAC:
+    case sync_pb::SyncEnums::DeviceType::SyncEnums_DeviceType_TYPE_LINUX:
+    case sync_pb::SyncEnums::DeviceType::SyncEnums_DeviceType_TYPE_CROS:
+      return TargetDeviceTypePC;
+    case sync_pb::SyncEnums::DeviceType::SyncEnums_DeviceType_TYPE_PHONE:
+    case sync_pb::SyncEnums::DeviceType::SyncEnums_DeviceType_TYPE_TABLET:
+      return TargetDeviceTypeMobile;
+    case sync_pb::SyncEnums::DeviceType::SyncEnums_DeviceType_TYPE_UNSET:
+    case sync_pb::SyncEnums::DeviceType::SyncEnums_DeviceType_TYPE_OTHER:
+      return TargetDeviceTypeUnset;
+  }
+}
+}  // namespace ios
+}  // namespace brave
+
+#pragma mark - IOSSendTabTargetDevice
+
+@implementation IOSSendTabTargetDevice
+
+- (instancetype)initWithFullName:(NSString*)fullName
+                       shortName:(NSString*)shortName
+                      deviceName:(NSString*)deviceName
+                         cacheId:(NSString*)cacheId
+                      deviceType:(TargetDeviceType)deviceType
+                 lastUpdatedTime:(NSDate*)lastUpdatedTime {
+  if ((self = [super init])) {
+    self.fullName = fullName;
+    self.shortName = shortName;
+    self.deviceName = deviceName;
+    self.cacheId = cacheId;
+    self.deviceType = deviceType;
+    self.lastUpdatedTime = lastUpdatedTime;
+  }
+
+  return self;
+}
+
+- (id)copyWithZone:(NSZone*)zone {
+  IOSSendTabTargetDevice* targetDevice = [[[self class] allocWithZone:zone] init];
+
+  if (targetDevice) {
+    targetDevice.fullName = self.fullName;
+    targetDevice.shortName = self.shortName;
+    targetDevice.deviceName = self.deviceName;
+    targetDevice.cacheId = self.cacheId;
+    targetDevice.deviceType = self.deviceType;
+    targetDevice.lastUpdatedTime = self.lastUpdatedTime;
+  }
+
+  return targetDevice;
+}
+
+@end
+
 #pragma mark - BraveSendTabAPI
 
 @interface BraveSendTabAPI () {
-  // SendTab Sync Service is needed in order to send session data to different devices
-  // And receive device information
+  // SendTab Sync Service is needed in order to send session data to
+  // different devices - receive device information
   send_tab_to_self::SendTabToSelfSyncService* sendtab_sync_service_;
+
+  // The list of devices with thier names, cache_guids, device types,
+  // and active times.
+  std::vector<send_tab_to_self::TargetDeviceInfo> target_device_list_;
 }
 @end
 
@@ -52,9 +117,26 @@
 //   [observer destroy];
 // }
 
-- (void)getListOfSyncedDevices {
+- (NSArray<IOSSendTabTargetDevice*>*)getListOfSyncedDevices {
+  DCHECK(sendtab_sync_service_);
 
+  NSMutableArray<IOSSendTabTargetDevice*>* targetDeviceList = [[NSMutableArray alloc] init];
 
+  target_device_list_ = sendtab_sync_service_->GetSendTabToSelfModel()->GetTargetDeviceInfoSortedList();
+
+  for (const auto& device : target_device_list_) {
+        IOSSendTabTargetDevice* targetDevice = [[IOSSendTabTargetDevice alloc] 
+            initWithFullName:base::SysUTF8ToNSString(device.full_name)
+                   shortName:base::SysUTF8ToNSString(device.short_name)
+                  deviceName:base::SysUTF8ToNSString(device.device_name)
+                     cacheId:base::SysUTF8ToNSString(device.cache_guid)
+                  deviceType:brave::ios::DeviceTypeFromSyncDeviceType(device.device_type)
+             lastUpdatedTime:device.last_updated_timestamp.ToNSDate()];
+
+    [targetDeviceList addObject: targetDevice];
+  }
+  
+  return [targetDeviceList copy];
 }
 
 @end

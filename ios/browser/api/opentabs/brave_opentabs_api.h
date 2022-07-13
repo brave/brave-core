@@ -79,7 +79,7 @@ OBJC_EXPORT
 
 - (instancetype)init NS_UNAVAILABLE;
 
-- (void)getSyncedSessions:(void (^)(NSArray<IOSOpenDistantSession*>*))completion;
+- (NSArray<IOSOpenDistantSession*>*)getSyncedSessions;
 
 @end
 
