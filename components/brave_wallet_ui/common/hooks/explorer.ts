@@ -15,7 +15,7 @@ export function buildExplorerUrl (
   const explorerURL = network.blockExplorerUrls[0]
 
   if (type === 'contract') {
-    return `${explorerURL}/${value}?a=${new Amount(id ?? '').format()}`
+    return id ? `${explorerURL}/${value}?a=${new Amount(id).format()}` : `${explorerURL}/${value}}`
   }
 
   const isFileCoinNet =

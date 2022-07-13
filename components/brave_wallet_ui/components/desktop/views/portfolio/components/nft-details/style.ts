@@ -26,7 +26,7 @@ export const NftImageWrapper = styled.div<StyleProps>`
   width: ${p => p.isLoading ? 0 : nftImageDimension};
   height: ${p => p.isLoading ? 0 : nftImageDimension};
   visibility: ${p => p.isLoading ? 'hidden' : 'visible'};
-  margin-right: 28px;
+  margin-right: ${p => p.isLoading ? 0 : '28px'};;
   border-radius: 12px;
 `
 

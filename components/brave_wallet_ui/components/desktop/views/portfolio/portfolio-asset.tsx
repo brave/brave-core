@@ -94,9 +94,7 @@ export const PortfolioAsset = () => {
     selectedAssetCryptoPrice,
     selectedAssetFiatPrice,
     selectedAssetPriceHistory,
-    selectedTimeline,
-    isFetchingNFTMetadata,
-    nftMetadata
+    selectedTimeline
   } = useSelector(({ page }: { page: PageState }) => page)
   // custom hooks
   const getAccountBalance = useBalance(networkList)
@@ -381,11 +379,7 @@ export const PortfolioAsset = () => {
 
       {selectedAsset?.isErc721 &&
         <NFTDetails
-          isLoading={isFetchingNFTMetadata}
           selectedAsset={selectedAsset}
-          nftMetadata={nftMetadata}
-          defaultCurrencies={defaultCurrencies}
-          selectedNetwork={selectedNetwork}
         />
       }
 

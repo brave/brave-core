@@ -1,10 +1,11 @@
 import * as React from 'react'
+import { useSelector } from 'react-redux'
 
 // Types
 import {
   BraveWallet,
-  NFTMetadataReturnType,
-  DefaultCurrencies
+  WalletState,
+  PageState
 } from '../../../../../../constants/types'
 
 // Hooks
@@ -43,25 +44,25 @@ import {
   NFTImageSkeletonWrapper
 } from './style'
 import { LoadingSkeleton } from '../../../../../shared'
+import { getTokensNetwork } from '../../../../../../utils/network-utils'
 
 export interface Props {
-  isLoading: boolean
   selectedAsset: BraveWallet.BlockchainToken
-  nftMetadata: NFTMetadataReturnType | undefined
-  defaultCurrencies: DefaultCurrencies
-  selectedNetwork: BraveWallet.NetworkInfo
 }
 
-const NFTDetails = (props: Props) => {
-  const {
-    isLoading,
-    selectedAsset,
-    nftMetadata,
-    selectedNetwork
-  } = props
+const NFTDetails = ({ selectedAsset }: Props) => {
   const [isImageLoaded, setIsImageLoaded] = React.useState(false)
 
-  const onClickViewOnBlockExplorer = useExplorer(selectedNetwork)
+  // redux
+  const { networkList } = useSelector(({ wallet }: { wallet: WalletState }) => wallet)
+  const {
+    isFetchingNFTMetadata: isLoading,
+    nftMetadata
+  } = useSelector(({ page }: { page: PageState }) => page)
+  const tokenNetwork = getTokensNetwork(networkList, selectedAsset)
+
+  // hooks
+  const onClickViewOnBlockExplorer = useExplorer(tokenNetwork)
 
   const onClickWebsite = () => {
     chrome.tabs.create({ url: nftMetadata?.contractInformation?.website }, () => {

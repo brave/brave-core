@@ -74,7 +74,7 @@ export const PortfolioOverview = () => {
     selectedNetworkFilter
   } = useSelector(({ wallet }: { wallet: WalletState }) => wallet)
 
-  const selectedTimeline = useSelector(({ page }: { page: PageState }) => page.selectedTimeline)
+  const { selectedTimeline, nftMetadata } = useSelector(({ page }: { page: PageState }) => page)
 
   // custom hooks
   const getAccountAssetBalance = useBalance(networkList)
@@ -180,6 +180,10 @@ export const PortfolioOverview = () => {
     }
 
     dispatch(WalletPageActions.selectAsset({ asset, timeFrame: selectedTimeline }))
+    if (asset.isErc721 && nftMetadata) {
+      // reset nft metadata
+      dispatch(WalletPageActions.updateNFTMetadata(undefined))
+    }
   }, [selectedTimeline])
 
   const onUpdateBalance = React.useCallback((value: number | undefined) => {
