@@ -404,9 +404,9 @@ class SolanaProviderImplUnitTest : public testing::Test {
  protected:
   std::unique_ptr<SolanaProviderImpl> provider_;
   std::unique_ptr<TestEventsListener> observer_;
+  raw_ptr<KeyringService> keyring_service_ = nullptr;
 
  private:
-  raw_ptr<KeyringService> keyring_service_ = nullptr;
   raw_ptr<BraveWalletService> brave_wallet_service_ = nullptr;
   raw_ptr<TxService> tx_service_ = nullptr;
   std::unique_ptr<content::TestWebContents> web_contents_;
@@ -537,6 +537,33 @@ TEST_F(SolanaProviderImplUnitTest, Disconnect) {
 
   provider_->Disconnect();
   EXPECT_FALSE(IsConnected());
+}
+
+TEST_F(SolanaProviderImplUnitTest,
+       AccountChangedEvent_RemoveSelectedHardwareAccount) {
+  ASSERT_FALSE(observer_->AccountChangedFired());
+  CreateWallet();
+  AddHardwareAccount(kHardwareAccountAddr);
+  EXPECT_FALSE(observer_->AccountChangedFired());
+
+  SetSelectedAccount(kHardwareAccountAddr, mojom::CoinType::SOL);
+  EXPECT_TRUE(observer_->AccountChangedFired());
+  observer_->Reset();
+
+  // Connect the account.
+  Navigate(GURL("https://brave.com"));
+  AddSolanaPermission(GetOrigin(), kHardwareAccountAddr);
+  std::string account = Connect(absl::nullopt, nullptr, nullptr);
+  ASSERT_TRUE(!account.empty());
+  ASSERT_TRUE(IsConnected());
+
+  // Remove selected hardware account.
+  keyring_service_->RemoveHardwareAccount(kHardwareAccountAddr,
+                                          mojom::CoinType::SOL);
+  EXPECT_TRUE(observer_->AccountChangedFired());
+  // Account is empty because GetSelectedAccount returns absl::nullopt.
+  EXPECT_TRUE(observer_->GetAccount().empty());
+  observer_->Reset();
 }
 
 TEST_F(SolanaProviderImplUnitTest, AccountChangedEvent) {
