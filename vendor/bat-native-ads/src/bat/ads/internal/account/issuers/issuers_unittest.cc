@@ -101,10 +101,9 @@ TEST_F(BatAdsIssuersTest, FetchIssuers) {
 
 TEST_F(BatAdsIssuersTest, FetchIssuersInvalidJsonResponse) {
   // Arrange
-  const URLEndpointMap& endpoints = {
-      {// Issuers request
-       R"(/v1/issuers/)",
-       {{net::HTTP_OK, "FOOBAR"}, {net::HTTP_OK, "FOOBAR"}}}};
+  const URLEndpointMap& endpoints = {{// Issuers request
+                                      R"(/v1/issuers/)",
+                                      {{net::HTTP_OK, "FOOBAR"}}}};
   MockUrlRequest(ads_client_mock_, endpoints);
 
   EXPECT_CALL(*issuers_delegate_mock_, OnDidFetchIssuers(_)).Times(0);
@@ -124,10 +123,9 @@ TEST_F(BatAdsIssuersTest, FetchIssuersInvalidJsonResponse) {
 
 TEST_F(BatAdsIssuersTest, FetchIssuersNonHttpOkResponse) {
   // Arrange
-  const URLEndpointMap& endpoints = {
-      {// Issuers request
-       R"(/v1/issuers/)",
-       {{net::HTTP_NOT_FOUND, ""}, {net::HTTP_NOT_FOUND, ""}}}};
+  const URLEndpointMap& endpoints = {{// Issuers request
+                                      R"(/v1/issuers/)",
+                                      {{net::HTTP_NOT_FOUND, ""}}}};
   MockUrlRequest(ads_client_mock_, endpoints);
 
   EXPECT_CALL(*issuers_delegate_mock_, OnDidFetchIssuers(_)).Times(0);
