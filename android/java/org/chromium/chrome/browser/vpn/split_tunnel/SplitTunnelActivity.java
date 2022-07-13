@@ -6,6 +6,7 @@
 package org.chromium.chrome.browser.vpn.split_tunnel;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -15,6 +16,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.widget.NestedScrollView;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.ViewModelProvider;
@@ -25,7 +28,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.firstrun.BraveFirstRunFlowSequencer;
 import org.chromium.chrome.browser.init.AsyncInitializationActivity;
+import org.chromium.chrome.browser.vpn.BraveVpnNativeWorker;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnPrefUtils;
+import org.chromium.chrome.browser.vpn.utils.BraveVpnUtils;
 
 public class SplitTunnelActivity extends AsyncInitializationActivity
         implements LifecycleOwner, ApplicationListAdapter.OnApplicationClickListener {
@@ -37,6 +42,13 @@ public class SplitTunnelActivity extends AsyncInitializationActivity
 
     private void initializeViews() {
         setContentView(R.layout.activity_split_tunnel);
+
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        ActionBar actionBar = getSupportActionBar();
+        assert actionBar != null;
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setTitle(getResources().getString(R.string.split_tunneling));
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -128,8 +140,16 @@ public class SplitTunnelActivity extends AsyncInitializationActivity
             if (mRecyclerViewAdapterExcludedApps != null) {
                 BraveVpnPrefUtils.setExcludedPackages(
                         mRecyclerViewAdapterExcludedApps.getApplicationPackages());
+                BraveVpnNativeWorker.getInstance().invalidateCredentials(
+                        BraveVpnPrefUtils.getHostname(), BraveVpnPrefUtils.getClientId(),
+                        BraveVpnPrefUtils.getSubscriberCredential(),
+                        BraveVpnPrefUtils.getApiAuthToken());
+                BraveVpnUtils.resetProfileConfiguration(SplitTunnelActivity.this);
+                finish();
                 return true;
             }
+        } else if (item.getItemId() == android.R.id.home) {
+            finish();
         }
         return super.onOptionsItemSelected(item);
     }

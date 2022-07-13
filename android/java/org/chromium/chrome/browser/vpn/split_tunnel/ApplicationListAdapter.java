@@ -110,9 +110,8 @@ public class ApplicationListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
         viewHolder.mAppName.setText(applicationDataModel.getName());
         viewHolder.mAppIcon.setImageDrawable(applicationDataModel.getIcon());
-        viewHolder.mActionIcon.setImageResource(mIsExcludedApps
-                        ? R.drawable.ic_baseline_close_24
-                        : R.drawable.ic_baseline_arrow_back_24);
+        viewHolder.mActionIcon.setImageResource(
+                mIsExcludedApps ? R.drawable.ic_baseline_close_24 : R.drawable.ic_baseline_add_24);
         viewHolder.mActionIcon.setOnClickListener(view
                 -> mOnApplicationClickListener.onApplicationCLick(
                         applicationDataModel, position, mIsExcludedApps));

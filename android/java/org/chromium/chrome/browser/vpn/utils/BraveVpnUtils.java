@@ -32,6 +32,7 @@ import org.chromium.chrome.browser.vpn.fragments.BraveVpnAlwaysOnErrorDialogFrag
 import org.chromium.chrome.browser.vpn.fragments.BraveVpnConfirmDialogFragment;
 import org.chromium.chrome.browser.vpn.models.BraveVpnServerRegion;
 import org.chromium.chrome.browser.vpn.models.BraveVpnWireguardProfileCredentials;
+import org.chromium.chrome.browser.vpn.split_tunnel.SplitTunnelActivity;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnPrefUtils;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnProfileUtils;
 import org.chromium.chrome.browser.vpn.utils.InAppPurchaseWrapper;
@@ -76,6 +77,11 @@ public class BraveVpnUtils {
     public static void openBraveVpnSupportActivity(Context context) {
         Intent braveVpnSupportIntent = new Intent(context, BraveVpnSupportActivity.class);
         braveVpnSupportIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        context.startActivity(braveVpnSupportIntent);
+    }
+
+    public static void openSplitTunnelActivity(Context context) {
+        Intent braveVpnSupportIntent = new Intent(context, SplitTunnelActivity.class);
         context.startActivity(braveVpnSupportIntent);
     }
 

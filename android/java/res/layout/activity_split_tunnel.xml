@@ -26,6 +26,13 @@
             android:orientation="vertical"
             tools:context=".SplitTunnelActivity">
 
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:theme="@style/BraveVpnToolbar"
+                android:minHeight="?attr/actionBarSize"/>
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
