@@ -274,6 +274,7 @@ public class Utils {
             case BraveWalletConstants.AVALANCHE_MAINNET_CHAIN_ID:
             case BraveWalletConstants.FANTOM_MAINNET_CHAIN_ID:
             case BraveWalletConstants.OPTIMISM_MAINNET_CHAIN_ID:
+            case BraveWalletConstants.AURORA_MAINNET_CHAIN_ID:
                 return false;
             default:
                 break;
@@ -291,6 +292,7 @@ public class Utils {
         categories.add(activity.getText(R.string.avalanche).toString());
         categories.add(activity.getText(R.string.fantom).toString());
         categories.add(activity.getText(R.string.optimism).toString());
+        categories.add(activity.getText(R.string.aurora).toString());
         categories.add(activity.getText(R.string.rinkeby).toString());
         categories.add(activity.getText(R.string.ropsten).toString());
         categories.add(activity.getText(R.string.goerli).toString());
@@ -316,6 +318,7 @@ public class Utils {
         categories.add(activity.getText(R.string.avalanche_short).toString());
         categories.add(activity.getText(R.string.fantom_short).toString());
         categories.add(activity.getText(R.string.optimism_short).toString());
+        categories.add(activity.getText(R.string.aurora_short).toString());
         categories.add(activity.getText(R.string.rinkeby_short).toString());
         categories.add(activity.getText(R.string.ropsten_short).toString());
         categories.add(activity.getText(R.string.goerli_short).toString());
@@ -372,6 +375,9 @@ public class Utils {
             case BraveWalletConstants.OPTIMISM_MAINNET_CHAIN_ID:
                 strNetwork = activity.getText(R.string.optimism);
                 break;
+            case BraveWalletConstants.AURORA_MAINNET_CHAIN_ID:
+                strNetwork = activity.getText(R.string.aurora);
+                break;
             default:
                 for (NetworkInfo chain : customNetworks) {
                     if (chain_id.equals(chain.chainId)) {
@@ -419,6 +425,9 @@ public class Utils {
                 break;
             case BraveWalletConstants.OPTIMISM_MAINNET_CHAIN_ID:
                 strNetwork = activity.getText(R.string.optimism_short);
+                break;
+            case BraveWalletConstants.AURORA_MAINNET_CHAIN_ID:
+                strNetwork = activity.getText(R.string.aurora_short);
                 break;
             case BraveWalletConstants.MAINNET_CHAIN_ID:
             default:
@@ -480,6 +489,8 @@ public class Utils {
             return BraveWalletConstants.FANTOM_MAINNET_CHAIN_ID;
         } else if (network.equals(activity.getText(R.string.optimism).toString())) {
             return BraveWalletConstants.OPTIMISM_MAINNET_CHAIN_ID;
+        } else if (network.equals(activity.getText(R.string.aurora).toString())) {
+            return BraveWalletConstants.AURORA_MAINNET_CHAIN_ID;
         }
 
         for (NetworkInfo chain : customNetworks) {
