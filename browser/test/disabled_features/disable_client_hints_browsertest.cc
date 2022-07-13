@@ -4,6 +4,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include <functional>
+#include <vector>
 
 #include "base/bind.h"
 #include "base/containers/contains.h"
@@ -21,6 +22,7 @@
 #include "net/test/embedded_test_server/embedded_test_server.h"
 #include "net/test/embedded_test_server/http_request.h"
 #include "services/network/public/cpp/client_hints.h"
+#include "services/network/public/mojom/web_client_hints_types.mojom-shared.h"
 #include "third_party/blink/public/common/client_hints/client_hints.h"
 #include "third_party/blink/public/common/features.h"
 
@@ -99,6 +101,10 @@ class ClientHintsBrowserTest : public InProcessBrowserTest,
     }
 
     scoped_feature_list_.InitWithFeatures(enabled_features, disabled_features);
+
+    if (IsClientHintHeaderEnabled()) {
+      PopulateAllowedClientHints();
+    }
     InProcessBrowserTest::SetUp();
   }
 
@@ -131,10 +137,21 @@ class ClientHintsBrowserTest : public InProcessBrowserTest,
   }
 
  private:
+  void PopulateAllowedClientHints() {
+    const auto& hints_map = network::GetClientHintToNameMap();
+    allowed_hints_.push_back(
+        hints_map.at(network::mojom::WebClientHintsType::kUA));
+    allowed_hints_.push_back(
+        hints_map.at(network::mojom::WebClientHintsType::kUAMobile));
+    allowed_hints_.push_back(
+        hints_map.at(network::mojom::WebClientHintsType::kUAPlatform));
+  }
+
   void MonitorResourceRequest(const net::test_server::HttpRequest& request) {
     for (const auto& elem : network::GetClientHintToNameMap()) {
       const auto& header = elem.second;
-      if (base::Contains(request.headers, header)) {
+      if (base::Contains(request.headers, header) &&
+          !base::Contains(allowed_hints_, header)) {
         count_client_hints_headers_seen_++;
       }
     }
@@ -146,6 +163,7 @@ class ClientHintsBrowserTest : public InProcessBrowserTest,
   GURL client_hints_meta_name_accept_ch_url_;
   GURL client_hints_url_;
   size_t count_client_hints_headers_seen_;
+  std::vector<std::string> allowed_hints_;
   base::test::ScopedFeatureList scoped_feature_list_;
 };
 

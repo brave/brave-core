@@ -5,7 +5,7 @@
 
 #include "third_party/blink/public/common/client_hints/enabled_client_hints.h"
 
-#define SetIsEnabled SetIsEnabled_Unused
+#define SetIsEnabled SetIsEnabled_ChromiumImpl
 
 #include "src/third_party/blink/common/client_hints/enabled_client_hints.cc"
 
@@ -15,7 +15,15 @@ namespace blink {
 
 void EnabledClientHints::SetIsEnabled(const WebClientHintsType type,
                                       const bool should_send) {
-  enabled_types_[static_cast<int>(type)] = false;
+  switch (type) {
+    case WebClientHintsType::kUA:
+    case WebClientHintsType::kUAMobile:
+    case WebClientHintsType::kUAPlatform:
+      SetIsEnabled_ChromiumImpl(type, should_send);
+      break;
+    default:
+      enabled_types_[static_cast<int>(type)] = false;
+  }
 }
 
 void EnabledClientHints::SetIsEnabled(
@@ -24,7 +32,16 @@ void EnabledClientHints::SetIsEnabled(
     const net::HttpResponseHeaders* response_headers,
     const network::mojom::WebClientHintsType type,
     const bool should_send) {
-  SetIsEnabled(type, false);
+  switch (type) {
+    case WebClientHintsType::kUA:
+    case WebClientHintsType::kUAMobile:
+    case WebClientHintsType::kUAPlatform:
+      SetIsEnabled_ChromiumImpl(url, third_party_url, response_headers, type,
+                                should_send);
+      break;
+    default:
+      SetIsEnabled(type, should_send);
+  }
 }
 
 }  // namespace blink
