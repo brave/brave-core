@@ -14,13 +14,9 @@ namespace pipeline {
 
 PipelineEmbeddingInfo::PipelineEmbeddingInfo() = default;
 
-PipelineEmbeddingInfo::PipelineEmbeddingInfo(const PipelineEmbeddingInfo& info) {
-  version = info.version;
-  timestamp = info.timestamp;
-  locale = info.locale;
-  embeddings_dim = info.embeddings_dim;
-  embeddings = info.embeddings;
-}
+PipelineEmbeddingInfo::PipelineEmbeddingInfo(PipelineEmbeddingInfo&& info) noexcept = default;
+
+PipelineEmbeddingInfo& PipelineEmbeddingInfo::operator=(PipelineEmbeddingInfo&& info) noexcept = default;
 
 PipelineEmbeddingInfo::~PipelineEmbeddingInfo() = default;
 
@@ -34,7 +30,6 @@ PipelineEmbeddingInfo::PipelineEmbeddingInfo(const int version,
       locale(locale),
       embeddings_dim(embeddings_dim),
       embeddings(embeddings) {
-  return;
 }
 
 }  // namespace pipeline

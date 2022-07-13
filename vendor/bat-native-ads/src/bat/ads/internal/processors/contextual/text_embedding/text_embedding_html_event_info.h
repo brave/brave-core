@@ -9,8 +9,6 @@
 #include <string>
 
 #include "base/time/time.h"
-#include "bat/ads/ad_type.h"
-#include "bat/ads/confirmation_type.h"
 
 namespace ads {
 

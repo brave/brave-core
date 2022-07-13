@@ -11,7 +11,6 @@
 
 #include "bat/ads/internal/ml/ml_aliases.h"
 #include "bat/ads/internal/ml/data/vector_data.h"
-#include "bat/ads/internal/ml/model/linear/linear.h"
 
 namespace ads {
 namespace ml {
@@ -19,7 +18,8 @@ namespace pipeline {
 
 struct PipelineEmbeddingInfo final {
   PipelineEmbeddingInfo();
-  PipelineEmbeddingInfo(const PipelineEmbeddingInfo& info);
+  PipelineEmbeddingInfo(PipelineEmbeddingInfo&& info) noexcept;
+  PipelineEmbeddingInfo& operator=(PipelineEmbeddingInfo&& info) noexcept;
   ~PipelineEmbeddingInfo();
 
   PipelineEmbeddingInfo(const int version,

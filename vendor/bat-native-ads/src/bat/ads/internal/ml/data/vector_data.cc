@@ -214,6 +214,22 @@ int VectorData::GetDimensionCountForTesting() const {
   return storage_->dimension_count();
 }
 
+int VectorData::GetNonZeroElementsCount() {
+  if (!storage_->dimension_count()) {
+    return 0;
+  }
+
+  int non_zero_count = 0;
+  size_t v_index = 0;
+  while (v_index < storage_->GetSize()) {
+    if (storage_->values()[v_index] != 0) {
+      non_zero_count += 1;
+    }
+    ++v_index;
+  }
+  return non_zero_count;
+}
+
 const std::vector<float>& VectorData::GetValuesForTesting() const {
   return storage_->values();
 }

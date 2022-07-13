@@ -60,7 +60,7 @@ void TextEmbedding::Process(const std::string& text) {
   }
 
   ml::VectorData text_embedding = embedding_proc_pipeline->EmbedText(cleaned_text);
-  if (text_embedding.VectorSumElements() == 0.0) {
+  if (text_embedding.GetNonZeroElementsCount() == 0) {
     BLOG(1, "Text not embedded");
     return;
   }

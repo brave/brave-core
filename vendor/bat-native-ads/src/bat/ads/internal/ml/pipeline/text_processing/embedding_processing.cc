@@ -5,8 +5,6 @@
 
 #include "bat/ads/internal/ml/pipeline/text_processing/embedding_processing.h"
 
-#include <algorithm>
-#include <utility>
 #include <iostream>
 
 #include "base/check.h"

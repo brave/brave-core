@@ -256,16 +256,16 @@ absl::optional<PipelineEmbeddingInfo> ParsePipelineEmbedding(base::Value resourc
   }
   int embeddings_dim = 1;
   std::map<std::string, VectorData> embeddings;
-  for (const auto [token, vec] : embeddings_value->GetDict()) {
-    const auto vector = std::move(vec.GetList());
+  for (const auto item : embeddings_value->GetDict()) {
+    const auto vector = std::move(item.second.GetList());
     std::vector<float> embedding;
     embedding.reserve(vector.size());
     for (const base::Value& v_raw : vector) {
       double v = v_raw.GetDouble();
       embedding.push_back(v);
     }
-    embeddings[token] = VectorData(std::move(embedding));
-    embeddings_dim = embeddings[token].GetDimensionCount();
+    embeddings[item.first] = VectorData(std::move(embedding));
+    embeddings_dim = embeddings[item.first].GetDimensionCount();
   }
 
   absl::optional<PipelineEmbeddingInfo> pipeline_embedding_info =
