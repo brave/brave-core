@@ -117,6 +117,10 @@ void BraveWalletProviderDelegateImpl::GetAllowedAccounts(
     mojom::CoinType type,
     const std::vector<std::string>& accounts,
     GetAllowedAccountsCallback callback) {
+  if (IsPermissionDenied(type)) {
+    std::move(callback).Run(true, std::vector<std::string>());
+    return;
+  }
   auto permission = CoinTypeToPermissionType(type);
   if (!permission) {
     std::move(callback).Run(false, std::vector<std::string>());
@@ -170,6 +174,24 @@ void BraveWalletProviderDelegateImpl::IsAccountAllowed(
   permissions::BraveWalletPermissionContext::GetAllowedAccounts(
       *permission, content::RenderFrameHost::FromID(host_id_), {account},
       base::BindOnce(&OnIsAccountAllowed, account, std::move(callback)));
+}
+
+bool BraveWalletProviderDelegateImpl::IsPermissionDenied(mojom::CoinType type) {
+  auto permission = CoinTypeToPermissionType(type);
+  if (!permission) {
+    return false;
+  }
+
+  auto* rfh = content::RenderFrameHost::FromID(host_id_);
+  if (!rfh) {
+    return false;
+  }
+
+  auto* web_contents = content::WebContents::FromRenderFrameHost(rfh);
+
+  return permissions::BraveWalletPermissionContext::IsPermissionDenied(
+      *permission, web_contents->GetBrowserContext(),
+      url::Origin::Create(rfh->GetLastCommittedURL()));
 }
 
 void BraveWalletProviderDelegateImpl::AddSolanaConnectedAccount(

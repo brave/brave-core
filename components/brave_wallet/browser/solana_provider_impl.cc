@@ -67,6 +67,12 @@ void SolanaProviderImpl::Init(
 void SolanaProviderImpl::Connect(absl::optional<base::Value> arg,
                                  ConnectCallback callback) {
   DCHECK(delegate_);
+  if (delegate_->IsPermissionDenied(mojom::CoinType::SOL)) {
+    std::move(callback).Run(
+        mojom::SolanaProviderError::kUserRejectedRequest,
+        l10n_util::GetStringUTF8(IDS_WALLET_USER_REJECTED_REQUEST), "");
+    return;
+  }
   absl::optional<std::string> account =
       keyring_service_->GetSelectedAccount(mojom::CoinType::SOL);
   if (!account) {

@@ -1158,6 +1158,12 @@ void EthereumProviderImpl::RequestEthereumPermissions(
     const std::string& method,
     const url::Origin& origin) {
   DCHECK(delegate_);
+  if (delegate_->IsPermissionDenied(mojom::CoinType::ETH)) {
+    OnRequestEthereumPermissions(std::move(callback), std::move(id), method,
+                                 origin, RequestPermissionsError::kNone,
+                                 std::vector<std::string>());
+    return;
+  }
   keyring_service_->GetKeyringInfo(
       brave_wallet::mojom::kDefaultKeyringId,
       base::BindOnce(

@@ -60,6 +60,9 @@ class BraveWalletServiceDelegateImpl : public BraveWalletServiceDelegate,
                        const url::Origin& origin,
                        const std::string& account,
                        ResetPermissionCallback callback) override;
+  void IsPermissionDenied(mojom::CoinType coin,
+                          const url::Origin& origin,
+                          IsPermissionDeniedCallback callback) override;
 
   void GetActiveOrigin(GetActiveOriginCallback callback) override;
 
