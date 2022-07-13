@@ -292,7 +292,8 @@ const EditVisibleAssetsModal = ({ onClose }: Props) => {
     return updatedTokensList.find((t) =>
       t.symbol.toLowerCase() === token.symbol.toLowerCase() &&
       t.contractAddress.toLowerCase() === token.contractAddress.toLowerCase() &&
-      t.chainId === token.chainId)
+      t.chainId === token.chainId &&
+      t.tokenId === token.tokenId)
   }
 
   const isUserToken = (token: BraveWallet.BlockchainToken) => {
@@ -333,7 +334,8 @@ const EditVisibleAssetsModal = ({ onClose }: Props) => {
         const tokenIndex = updatedTokensList.findIndex((t) =>
           t.contractAddress.toLowerCase() === token.contractAddress.toLowerCase() &&
           t.symbol.toLowerCase() === token.symbol.toLowerCase() &&
-          t.chainId === token.chainId)
+          t.chainId === token.chainId &&
+          t.tokenId === token.tokenId)
         let newList = [...updatedTokensList]
         newList.splice(tokenIndex, 1, updatedToken)
         setUpdatedTokensList(newList)
@@ -366,9 +368,9 @@ const EditVisibleAssetsModal = ({ onClose }: Props) => {
   }
 
   const onRemoveAsset = (token: BraveWallet.BlockchainToken) => {
-    const newUserList = updatedTokensList.filter((t) => t.contractAddress.toLowerCase() !== token.contractAddress.toLowerCase())
+    const newUserList = updatedTokensList.filter((t) => t.contractAddress.toLowerCase() !== token.contractAddress.toLowerCase() && t.tokenId === token.tokenId)
     setUpdatedTokensList(newUserList)
-    const newFilteredTokenList = filteredTokenList.filter((t) => t.contractAddress.toLowerCase() !== token.contractAddress.toLowerCase())
+    const newFilteredTokenList = filteredTokenList.filter((t) => t.contractAddress.toLowerCase() !== token.contractAddress.toLowerCase() && t.tokenId === token.tokenId)
     setFilteredTokenList(newFilteredTokenList)
   }
 
