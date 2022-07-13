@@ -15,12 +15,12 @@ export class BraveWalletBrowserProxy {
    isNativeWalletEnabled () {}
    getAutoLockMinutes () {}
    getNetworksList () {}
+   getPrepopulatedNetworksList() {}
    removeEthereumChain (chainId) {}
    resetEthereumChain (chainId) {}
    addEthereumChain (value) {}
    addHiddenNetwork (payload) {}
    removeHiddenNetwork (payload) {}
-   searchNetworks (chain_id_filter, chain_name_filter) {}
    setActiveNetwork (chainId) {}
    resetTransactionInfo () {}
 }
@@ -45,6 +45,11 @@ export class BraveWalletBrowserProxyImpl {
   /** @override */
   getNetworksList() {
     return sendWithPromise('getNetworksList')
+  }
+
+  /** @override */
+  getPrepopulatedNetworksList() {
+    return sendWithPromise('getPrepopulatedNetworksList')
   }
 
   /** @override */
@@ -75,11 +80,6 @@ export class BraveWalletBrowserProxyImpl {
   /** @override */
   removeHiddenNetwork (payload) {
     return sendWithPromise('removeHiddenNetwork', payload)
-  }
-
-  /** @override */
-  searchNetworks (chain_id_filter, chain_name_filter) {
-    return sendWithPromise('searchNetworks', chain_id_filter, chain_name_filter)
   }
 
   /** @override */

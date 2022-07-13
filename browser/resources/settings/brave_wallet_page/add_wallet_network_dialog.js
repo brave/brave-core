@@ -6,6 +6,7 @@
 import 'chrome://resources/cr_elements/cr_button/cr_button.m.js';
 import 'chrome://resources/cr_elements/cr_dialog/cr_dialog.m.js';
 import 'chrome://resources/cr_elements/cr_input/cr_input.m.js';
+import 'chrome://resources/cr_elements/cr_searchable_drop_down/cr_searchable_drop_down.js';
 import {Polymer, html} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js';
 import {I18nBehavior} from 'chrome://resources/js/i18n_behavior.m.js';
 import {BraveWalletBrowserProxyImpl} from './brave_wallet_browser_proxy.m.js';
@@ -92,9 +93,22 @@ Polymer({
     },
     currencyNameValue_: String,
     currencySymbolValue_: String,
-    currencyDecimalsValue_: Number
+    currencyDecimalsValue_: Number,
+    prepopulatedNetworks_: {
+      type: Array,
+      value: []
+    },
+    searchValue_: {
+      type: String,
+      value: '',
+      observer: 'onSearchValueChanged_',
+    },
+    searchItems_: {
+      type: Array,
+      value: []
+    },
   },
-  
+
   browserProxy_: null,
 
   /** @override */
@@ -102,7 +116,9 @@ Polymer({
     this.browserProxy_ = BraveWalletBrowserProxyImpl.getInstance();
   },
 
-  ready: function() {
+  ready: function () {
+    this.updatePrepopulatedNetworks()
+
     if (Object.keys(this.selected).length === 0)
       return
     this.chainIdValue_ = parseInt(this.selected.chainId, 16) | 0
@@ -122,6 +138,17 @@ Polymer({
     this.updatePlusButtonState('rpc')
     this.updatePlusButtonState('icon')
     this.updatePlusButtonState('block')
+  },
+
+  updatePrepopulatedNetworks() {
+    this.browserProxy_.getPrepopulatedNetworksList().then(payload => {
+      if (!payload)
+        return
+
+      this.prepopulatedNetworks_ = payload
+      this.prepopulatedNetworks_.forEach(item => item.searchString = BigInt(item.chainId).toString() + ' ' + item.chainName)
+      this.searchItems_ = this.prepopulatedNetworks_.map(item => item.searchString)
+    })
   },
 
   validateURL: function(value) {
@@ -328,5 +355,34 @@ Polymer({
       return
     }
     this.addNewNetwork(payload)
+  },
+  onSearchValueChanged_(newValue, oldValue) {
+    if (!newValue)
+      return
+    const found = this.prepopulatedNetworks_.find(item => item.searchString === newValue)
+    if (found) {
+      this.chainIdValue_ = parseInt(found.chainId, 16) | 0
+      this.invalidChainIdMessage_ = ''
+      this.chainIdInvalid_ = false
+      this.chainNameValue_ = found.chainName
+      this.chainNameInvalid_ = false
+      this.currencyNameValue_ = found.nativeCurrency.name
+      this.currencySymbolValue_ = found.nativeCurrency.symbol
+      const decimals = found.nativeCurrency.decimals
+      if (decimals) {
+        this.currencyDecimalsValue_ = decimals
+      }
+      this.rpcUrls = found.rpcUrls.map(element => { return { value: element } })
+      if (found.iconUrls.length)
+        this.iconUrls = found.iconUrls.map(element => { return { value: element } })
+      if (found.blockExplorerUrls.length)
+        this.blockUrls = found.blockExplorerUrls.map(element => { return { value: element } })
+      this.isSubmitButtonEnabled_ = true
+      this.updatePlusButtonState('rpc')
+      this.updatePlusButtonState('icon')
+      this.updatePlusButtonState('block')
+
+      this.searchValue_ = ''
+    }
   }
 });
