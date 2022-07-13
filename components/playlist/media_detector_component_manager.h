@@ -45,6 +45,8 @@ class MediaDetectorComponentManager {
 
   std::string script() const { return script_; }
 
+  void SetUseLocalScriptForTesting();
+
  private:
   void OnComponentReady(const base::FilePath& install_path);
   void OnGetScript(const std::string& script);
