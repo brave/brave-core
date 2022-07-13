@@ -6,6 +6,7 @@
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_BROWSER_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_BROWSER_H_
 
+#include "chrome/browser/ui/tabs/tab_strip_model_observer.h"
 #include "chrome/browser/ui/unload_controller.h"
 
 #define FinishWarnBeforeClosing virtual FinishWarnBeforeClosing

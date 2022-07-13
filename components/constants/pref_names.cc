@@ -97,6 +97,7 @@ const char kSafetynetStatus[] = "safetynet.status";
 #if !BUILDFLAG(IS_ANDROID)
 const char kEnableWindowClosingConfirm[] =
     "brave.enable_window_closing_confirm";
+const char kEnableClosingLastTab[] = "brave.enable_closing_last_tab";
 #endif
 
 const char kDefaultBrowserLaunchingCount[] =

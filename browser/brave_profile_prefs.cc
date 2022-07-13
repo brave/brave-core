@@ -446,6 +446,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->SetDefaultPrefValue(ntp_prefs::kNtpUseMostVisitedTiles,
                                 base::Value(true));
   registry->RegisterBooleanPref(kEnableWindowClosingConfirm, true);
+  registry->RegisterBooleanPref(kEnableClosingLastTab, true);
   RegisterDefaultBraveBrowserPromptPrefs(registry);
 #endif
 

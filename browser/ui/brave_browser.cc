@@ -76,6 +76,7 @@ void BraveBrowser::TabStripEmpty() {
     Browser::TabStripEmpty();
     return;
   }
+
   chrome::AddTabAt(this, GetNewTabURL(), -1, true);
 }
 

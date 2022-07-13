@@ -6,7 +6,6 @@
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_UNLOAD_CONTROLLER_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_UNLOAD_CONTROLLER_H_
 
-#include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/tabs/tab_strip_model_observer.h"
 
 #define TabStripEmpty           \

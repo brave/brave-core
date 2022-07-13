@@ -4,6 +4,8 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/ui/brave_browser.h"
+#include "brave/components/constants/pref_names.h"
+#include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
 #include "chrome/browser/ui/startup/launch_mode_recorder.h"
@@ -13,6 +15,7 @@
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
+#include "components/prefs/pref_service.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/test_navigation_observer.h"
 #include "content/public/test/test_utils.h"
@@ -41,6 +44,7 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserBrowserTest, OpenNewTabWhenTabStripIsEmpty) {
   ASSERT_TRUE(embedded_test_server()->Start());
   Browser* new_browser = OpenNewBrowser(browser()->profile());
   ASSERT_TRUE(new_browser);
+  new_browser->profile()->GetPrefs()->SetBoolean(kEnableClosingLastTab, false);
   TabStripModel* tab_strip = new_browser->tab_strip_model();
   auto page_url = embedded_test_server()->GetURL("/empty.html");
   ASSERT_TRUE(ui_test_utils::NavigateToURL(new_browser, page_url));
@@ -61,7 +65,28 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserBrowserTest, OpenNewTabWhenTabStripIsEmpty) {
   ASSERT_EQ(3, tab_strip->count());
   EXPECT_EQ(chrome::GetTotalBrowserCount(), 2u);
   // Close the browser window.
+  LOG(ERROR) << "WINDOW";
   new_browser->window()->Close();
+  base::RunLoop().RunUntilIdle();
+  EXPECT_EQ(chrome::GetTotalBrowserCount(), 1u);
+}
+
+IN_PROC_BROWSER_TEST_F(BraveBrowserBrowserTest,
+                       DoNotOpenNewTabWhenTabStripIsEmpty) {
+  ASSERT_TRUE(embedded_test_server()->Start());
+  Browser* new_browser = OpenNewBrowser(browser()->profile());
+  ASSERT_TRUE(new_browser);
+  new_browser->profile()->GetPrefs()->SetBoolean(kEnableClosingLastTab, true);
+  TabStripModel* tab_strip = new_browser->tab_strip_model();
+  auto page_url = embedded_test_server()->GetURL("/empty.html");
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(new_browser, page_url));
+
+  ASSERT_EQ(1, tab_strip->count());
+  EXPECT_EQ(page_url,
+            tab_strip->GetWebContentsAt(0)->GetURL().possibly_invalid_spec());
+  EXPECT_EQ(chrome::GetTotalBrowserCount(), 2u);
+  // Close the last tab.
+  tab_strip->GetActiveWebContents()->Close();
   base::RunLoop().RunUntilIdle();
   EXPECT_EQ(chrome::GetTotalBrowserCount(), 1u);
 }
