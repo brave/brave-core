@@ -678,6 +678,7 @@ brave_java_resources = [
   "java/res/drawable/ic_news.xml",
   "java/res/drawable/ic_news_settings.xml",
   "java/res/drawable/ic_notification.xml",
+  "java/res/drawable/ic_notification_info_icon.xml",
   "java/res/drawable/ic_onboarding_arrow_down.xml",
   "java/res/drawable/ic_onboarding_backup.xml",
   "java/res/drawable/ic_onboarding_backup_dark.xml",
