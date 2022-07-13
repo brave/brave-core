@@ -32,6 +32,9 @@ bool ParseEthGetTransactionReceipt(const std::string& json,
                                    TransactionReceipt* receipt);
 bool ParseEthSendRawTransaction(const std::string& json, std::string* tx_hash);
 bool ParseEthCall(const std::string& json, std::string* result);
+absl::optional<std::vector<std::string>> DecodeEthCallResponse(
+    const std::string& data,
+    const std::vector<std::string>& abi_types);
 bool ParseEthEstimateGas(const std::string& json, std::string* result);
 bool ParseEthGasPrice(const std::string& json, std::string* result);
 
