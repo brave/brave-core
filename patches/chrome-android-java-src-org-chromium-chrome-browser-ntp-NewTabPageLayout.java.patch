@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/ntp/NewTabPageLayout.java b/chrome/android/java/src/org/chromium/chrome/browser/ntp/NewTabPageLayout.java
-index f9aa769282375eea9e00f473f7bbd978d1109708..2bd800545db65de74d58756da08ce61b8bedea94 100644
+index f455f5df4388cc40ce0719896240701c914c82b6..fc8c68e936ca657e62293c70a299b578634e58d1 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/ntp/NewTabPageLayout.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/ntp/NewTabPageLayout.java
 @@ -338,6 +338,7 @@ public class NewTabPageLayout extends LinearLayout implements VrModeObserver {
