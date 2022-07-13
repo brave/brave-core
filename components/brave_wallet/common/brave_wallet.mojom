@@ -295,6 +295,8 @@ struct AssetPrice {
   string asset_timeframe_change;
 };
 
+// Structs to model 0x (swap) HTTP API interactions
+// Docs: https://docs.0x.org/0x-api-swap
 struct SwapParams {
   string taker_address;
   string sell_amount;
@@ -324,6 +326,62 @@ struct SwapResponse {
   string sell_token_to_eth_rate;
   string buy_token_to_eth_rate;
   // Note we could also expose "sources" later
+};
+
+// Structs to model Jupiter (swap) HTTP API interactions
+// Swagger spec: https://quote-api.jup.ag/docs/static/index.html
+//
+// Note that amount field is incorrectly modelled as number in spec,
+// but it has been fixed here.
+struct JupiterFee {
+  uint64 amount;
+  string mint;
+  double pct;
+};
+
+struct JupiterMarketInfo {
+  string id;
+  string label;
+  string input_mint;
+  string output_mint;
+  bool not_enough_liquidity;
+  uint64 in_amount;
+  uint64 out_amount;
+  double price_impact_pct;
+  JupiterFee lp_fee;
+  JupiterFee platform_fee;
+};
+
+struct JupiterRoute {
+  uint64 in_amount;
+  uint64 out_amount;
+  uint64 amount;
+  uint64 other_amount_threshold;
+  string swap_mode;
+  double price_impact_pct;
+  array<JupiterMarketInfo> market_infos;
+};
+
+struct JupiterQuote {
+  array<JupiterRoute> routes;
+};
+
+struct JupiterQuoteParams {
+  string input_mint;
+  string output_mint;
+  string amount;
+  double slippage_percentage;
+};
+
+struct JupiterSwapParams {
+  JupiterRoute route;
+  string user_public_key;
+};
+
+struct JupiterSwapTransactions {
+  string setup_transaction;
+  string swap_transaction;
+  string cleanup_transaction;
 };
 
 const string kLedgerHardwareVendor = "Ledger";
@@ -620,6 +678,14 @@ interface SwapService {
   // Obtains transaction payload data for a swap
   GetTransactionPayload(SwapParams params) =>
       (bool success, SwapResponse? response, string? error_response);
+
+  // Obtains a price quote from Jupiter for a Solana swap
+  GetJupiterQuote(JupiterQuoteParams params) =>
+      (bool success, JupiterQuote? response, string? error_response);
+
+  // Get the serialized transactions to perform the swap
+  GetJupiterSwapTransactions(JupiterSwapParams params) =>
+      (bool success, JupiterSwapTransactions? response, string? error_response);
 
   // Obtains whether the given chain id supports swap
   IsSwapSupported(string chain_id) => (bool result);
