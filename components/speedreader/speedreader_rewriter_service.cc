@@ -16,6 +16,7 @@
 #include "base/strings/string_util.h"
 #include "base/task/thread_pool.h"
 #include "brave/components/speedreader/common/features.h"
+#include "brave/components/speedreader/common/url_readable_hints.h"
 #include "brave/components/speedreader/rust/ffi/speedreader.h"
 #include "brave/components/speedreader/speedreader_component.h"
 #include "brave/components/speedreader/speedreader_util.h"
@@ -87,19 +88,11 @@ void SpeedreaderRewriterService::OnStylesheetReady(const base::FilePath& path) {
 }
 
 bool SpeedreaderRewriterService::URLLooksReadable(const GURL& url) {
-  // Only HTTP is readable.
-  if (!url.SchemeIsHTTPOrHTTPS())
-    return false;
-
-  // @pes research has shown basically no landing pages are readable.
-  if (!url.has_path() || url.path() == "/")
-    return false;
-
   // TODO(keur): Once implemented, check against the "maybe-speedreadable"
   // list here.
 
   // Check URL against precompiled regexes
-  return URLReadableHintExtractor::GetInstance()->HasHints(url);
+  return IsURLLooksReadable(url);
 }
 
 std::unique_ptr<Rewriter> SpeedreaderRewriterService::MakeRewriter(
