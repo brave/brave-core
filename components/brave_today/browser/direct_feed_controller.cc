@@ -11,12 +11,16 @@
 #include <memory>
 #include <string>
 #include <utility>
+#include <vector>
 
 #include "base/barrier_callback.h"
+#include "base/bind.h"
 #include "base/callback.h"
 #include "base/containers/flat_set.h"
+#include "base/location.h"
 #include "base/logging.h"
 #include "base/strings/string_util.h"
+#include "base/task/thread_pool.h"
 #include "base/time/time.h"
 #include "brave/components/brave_private_cdn/headers.h"
 #include "brave/components/brave_today/browser/html_parsing.h"
@@ -33,6 +37,7 @@
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "services/network/public/cpp/simple_url_loader.h"
 #include "services/network/public/mojom/url_response_head.mojom.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "ui/base/l10n/time_format.h"
 #include "url/gurl.h"
 
@@ -65,6 +70,28 @@ mojom::ArticlePtr RustFeedItemToArticle(const FeedItem& rust_feed_item) {
   auto seconds_since_publish = relative_time_delta.InSeconds();
   article->data->score = std::abs(std::log(seconds_since_publish));
   return article;
+}
+
+using ParseFeedCallback = base::OnceCallback<void(absl::optional<FeedData>)>;
+void ParseFeedDataOffMainThread(const GURL& feed_url,
+                                const std::string& body_content,
+                                ParseFeedCallback callback) {
+  base::ThreadPool::PostTaskAndReplyWithResult(
+      FROM_HERE,
+      base::BindOnce(
+          [](const GURL& feed_url,
+             const std::string& body_content) -> absl::optional<FeedData> {
+            brave_news::FeedData data;
+            if (!parse_feed_string(::rust::String(body_content), data)) {
+              VLOG(1) << feed_url.spec() << " not a valid feed.";
+              VLOG(2) << "Response body was:";
+              VLOG(2) << body_content;
+              return absl::nullopt;
+            }
+            return data;
+          },
+          feed_url, body_content),
+      std::move(callback));
 }
 
 }  // namespace
@@ -117,68 +144,89 @@ void DirectFeedController::FindFeeds(
               }
             }
             direct_feed_controller->url_loaders_.erase(iter);
-            std::vector<mojom::FeedSearchResultItemPtr> results;
+
             // Check valid response
             std::string body_content = response_body ? *response_body : "";
             if (response_code != 200 || body_content.empty()) {
               VLOG(1) << feed_url.spec()
                       << " invalid response, status: " << response_code;
-              std::move(callback).Run(std::move(results));
+              std::move(callback).Run(
+                  std::vector<mojom::FeedSearchResultItemPtr>());
               return;
             }
-            // Reponse is valid, but still might not be a feed
-            FeedData data;
-            if (parse_feed_string(::rust::String(body_content), data)) {
-              VLOG(1) << "Was valid feed";
-              auto feed_result = mojom::FeedSearchResultItem::New();
-              feed_result->feed_title = (std::string)data.title;
-              feed_result->feed_url = feed_url;
-              results.emplace_back(std::move(feed_result));
-              std::move(callback).Run(std::move(results));
-              return;
-            }
-            // Maybe it's an html doc
-            if (!mime_type.empty() &&
-                mime_type.find("html") != std::string::npos) {
-              VLOG(1) << "Had html type";
-              // Get feed links from doc
-              auto feed_urls =
-                  GetFeedURLsFromHTMLDocument(body_content, final_url);
-              auto all_done_handler = base::BindOnce(
-                  [](mojom::BraveNewsController::FindFeedsCallback callback,
-                     std::vector<std::unique_ptr<DirectFeedResponse>>
-                         responses) {
-                    std::vector<mojom::FeedSearchResultItemPtr> results;
-                    for (const auto& response : responses) {
-                      if (response->success && !response->data.title.empty() &&
-                          !response->data.items.empty()) {
+
+            // Response is valid, but still might not be a feed
+            ParseFeedDataOffMainThread(
+                feed_url, body_content,
+                base::BindOnce(
+                    [](const GURL& feed_url, const GURL& final_url,
+                       const std::string& mime_type,
+                       const std::string& body_content,
+                       DirectFeedController* direct_feed_controller,
+                       mojom::BraveNewsController::FindFeedsCallback callback,
+                       absl::optional<FeedData> data) {
+                      std::vector<mojom::FeedSearchResultItemPtr> results;
+                      if (data) {
                         auto feed_result = mojom::FeedSearchResultItem::New();
-                        feed_result->feed_title =
-                            (std::string)response->data.title;
-                        feed_result->feed_url = response->url;
+                        feed_result->feed_title = (std::string)data->title;
+                        feed_result->feed_url = feed_url;
                         results.emplace_back(std::move(feed_result));
+                        std::move(callback).Run(std::move(results));
+                        return;
                       }
-                    }
-                    VLOG(1) << "Valid feeds found via HTML content: "
-                            << results.size();
-                    std::move(callback).Run(std::move(results));
-                  },
-                  std::move(callback));
-              VLOG(1) << "Feed URLs found in HTML content: "
-                      << feed_urls.size();
-              auto feed_handler =
-                  base::BarrierCallback<std::unique_ptr<DirectFeedResponse>>(
-                      feed_urls.size(), std::move(all_done_handler));
-              for (auto& url : feed_urls) {
-                direct_feed_controller->DownloadFeed(url, feed_handler);
-              }
-              return;
-            }
-            // Invalid content found at url
-            VLOG(1) << feed_url.spec() << " not a valid feed or html doc.";
-            VLOG(2) << "Response body was:";
-            VLOG(2) << body_content;
-            std::move(callback).Run(std::move(results));
+
+                      // Maybe it's an html doc
+                      if (!mime_type.empty() &&
+                          mime_type.find("html") != std::string::npos) {
+                        VLOG(1) << "Had html type";
+                        // Get feed links from doc
+                        auto feed_urls = GetFeedURLsFromHTMLDocument(
+                            body_content, final_url);
+                        auto all_done_handler = base::BindOnce(
+                            [](mojom::BraveNewsController::FindFeedsCallback
+                                   callback,
+                               std::vector<std::unique_ptr<DirectFeedResponse>>
+                                   responses) {
+                              std::vector<mojom::FeedSearchResultItemPtr>
+                                  results;
+                              for (const auto& response : responses) {
+                                if (response->success &&
+                                    !response->data.title.empty() &&
+                                    !response->data.items.empty()) {
+                                  auto feed_result =
+                                      mojom::FeedSearchResultItem::New();
+                                  feed_result->feed_title =
+                                      (std::string)response->data.title;
+                                  feed_result->feed_url = response->url;
+                                  results.emplace_back(std::move(feed_result));
+                                }
+                              }
+                              VLOG(1) << "Valid feeds found via HTML content: "
+                                      << results.size();
+                              std::move(callback).Run(std::move(results));
+                            },
+                            std::move(callback));
+                        VLOG(1) << "Feed URLs found in HTML content: "
+                                << feed_urls.size();
+                        auto feed_handler = base::BarrierCallback<
+                            std::unique_ptr<DirectFeedResponse>>(
+                            feed_urls.size(), std::move(all_done_handler));
+                        for (auto& url : feed_urls) {
+                          direct_feed_controller->DownloadFeed(url,
+                                                               feed_handler);
+                        }
+                        return;
+                      }
+                      // Invalid content found at url
+                      VLOG(1) << feed_url.spec()
+                              << " not a valid feed or html doc.";
+                      VLOG(2) << "Response body was:";
+                      VLOG(2) << body_content;
+                      std::move(callback).Run(std::move(results));
+                    },
+                    feed_url, final_url, mime_type, body_content,
+                    base::Unretained(direct_feed_controller),
+                    std::move(callback)));
           },
           base::Unretained(this), iter, std::move(callback),
           possible_feed_or_site_url),
@@ -339,19 +387,20 @@ void DirectFeedController::OnResponse(
     std::move(callback).Run(std::move(result));
     return;
   }
-  // Reponse is valid, but still might not be a feed
-  FeedData data;
-  if (!parse_feed_string(::rust::String(body_content), data)) {
-    VLOG(1) << feed_url.spec() << " not a valid feed.";
-    VLOG(2) << "Response body was:";
-    VLOG(2) << body_content;
-    std::move(callback).Run(std::move(result));
-    return;
-  }
-  // Valid feed
-  result->success = true;
-  result->data = data;
-  std::move(callback).Run(std::move(result));
+
+  // Response is valid, but still might not be a feed
+  ParseFeedDataOffMainThread(feed_url, std::move(body_content),
+                             base::BindOnce(
+                                 [](DownloadFeedCallback callback,
+                                    std::unique_ptr<DirectFeedResponse> result,
+                                    absl::optional<FeedData> data) {
+                                   if (data) {
+                                     result->success = true;
+                                     result->data = data.value();
+                                   }
+                                   std::move(callback).Run(std::move(result));
+                                 },
+                                 std::move(callback), std::move(result)));
 }
 
 }  // namespace brave_news
