@@ -44,12 +44,11 @@ namespace network {
 class SharedURLLoaderFactory;
 }  // namespace network
 
-#if !BUILDFLAG(IS_ANDROID)
-
 class PrefService;
+
+#if !BUILDFLAG(IS_ANDROID)
 class BraveAppMenuBrowserTest;
 class BraveBrowserCommandControllerTest;
-
 #endif  // !BUILDFLAG(IS_ANDROID)
 
 namespace brave_vpn {
@@ -65,24 +64,17 @@ class BraveVpnService :
     public mojom::ServiceHandler,
     public KeyedService {
  public:
-#if BUILDFLAG(IS_ANDROID)
-  BraveVpnService(
-      scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
-      base::RepeatingCallback<mojo::PendingRemote<skus::mojom::SkusService>()>
-          skus_service_getter);
-#else
   BraveVpnService(
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
       PrefService* prefs,
       base::RepeatingCallback<mojo::PendingRemote<skus::mojom::SkusService>()>
           skus_service_getter);
-#endif
   ~BraveVpnService() override;
 
   BraveVpnService(const BraveVpnService&) = delete;
   BraveVpnService& operator=(const BraveVpnService&) = delete;
 
-  const std::string& GetCurrentEnvironment() const { return current_env_; }
+  std::string GetCurrentEnvironment() const;
 
 #if !BUILDFLAG(IS_ANDROID)
   void ToggleConnection();
@@ -165,10 +157,10 @@ class BraveVpnService :
                                   const std::string& monthly_pass);
 
  private:
+  friend class BraveVPNServiceTest;
 #if !BUILDFLAG(IS_ANDROID)
   friend class ::BraveAppMenuBrowserTest;
   friend class ::BraveBrowserCommandControllerTest;
-  friend class BraveVPNServiceTest;
 
   // BraveVPNOSConnectionAPI::Observer overrides:
   void OnCreated() override;
@@ -262,8 +254,8 @@ class BraveVpnService :
       const std::string& domain,
       const std::string& credential_as_cookie);
 
-#if !BUILDFLAG(IS_ANDROID)
   raw_ptr<PrefService> prefs_ = nullptr;
+#if !BUILDFLAG(IS_ANDROID)
   std::vector<mojom::Region> regions_;
   std::unique_ptr<Hostname> hostname_;
   BraveVPNConnectionInfo connection_info_;
@@ -288,7 +280,6 @@ class BraveVpnService :
       skus_service_getter_;
   mojo::Remote<skus::mojom::SkusService> skus_service_;
   absl::optional<mojom::PurchasedState> purchased_state_;
-  std::string current_env_ = skus::GetDefaultEnvironment();
   mojo::RemoteSet<mojom::ServiceObserver> observers_;
   api_request_helper::APIRequestHelper api_request_helper_;
   std::string skus_credential_;
