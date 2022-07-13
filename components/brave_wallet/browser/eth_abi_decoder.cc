@@ -242,14 +242,14 @@ absl::optional<std::vector<std::string>> UniswapEncodedPathDecode(
   return path;
 }
 
-absl::optional<std::tuple<std::vector<std::string>,   // tx_params
-                          std::vector<std::string>>>  // tx_args
+absl::optional<std::tuple<std::vector<std::string>,   // params
+                          std::vector<std::string>>>  // args
 ABIDecode(const std::vector<std::string>& types,
           const std::vector<uint8_t>& data) {
   size_t offset = 0;
   size_t calldata_tail = 0;
-  std::vector<std::string> tx_params;
-  std::vector<std::string> tx_args;
+  std::vector<std::string> params;
+  std::vector<std::string> args;
 
   for (const auto& type : types) {
     absl::optional<std::string> value;
@@ -285,15 +285,13 @@ ABIDecode(const std::vector<std::string>& types,
 
     offset += 32;
 
-    tx_args.push_back(*value);
-    tx_params.push_back(type);
+    args.push_back(*value);
+    params.push_back(type);
   }
 
-  // Extraneous calldata, unless in the tail section, is considered invalid.
-  if (offset != calldata_tail && offset < data.size())
-    return absl::nullopt;
+  // Extra calldata bytes are ignored.
 
-  return std::make_tuple(tx_params, tx_args);
+  return std::make_tuple(params, args);
 }
 
 }  // namespace brave_wallet
