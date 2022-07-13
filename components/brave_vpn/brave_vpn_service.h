@@ -113,6 +113,8 @@ class BraveVpnService :
                            const std::string& body,
                            CreateSupportTicketCallback callback) override;
   void GetSupportData(GetSupportDataCallback callback) override;
+
+  // base::PowerMonitor
   void OnSuspend() override;
   void OnResume() override;
 #endif  // !BUILDFLAG(IS_ANDROID)
