@@ -25,6 +25,11 @@ class RequestBridgesDialog extends RequestBridgesDialogBase {
 
   static get properties() {
     return {
+      status_: String,
+      captcha_: String,
+      captchaResolve_: String,
+      renewDisabled_: Boolean,
+      submitDisabled_: Boolean,
       bridges_: Array
     }
   }
@@ -34,12 +39,14 @@ class RequestBridgesDialog extends RequestBridgesDialogBase {
   ready() {
     super.ready()
 
+    this.status_ = this.i18n('torRequestBridgeDialogWaiting')
     this.bridges_ = null
     this.requestCaptcha_()
   }
 
   submitClicked_() {
-    this.browserProxy_.resolveBridgesCaptcha(this.$.captchaResolve.value).then(
+    this.enableSubmit_(false)
+    this.browserProxy_.resolveBridgesCaptcha(this.captchaResolve_).then(
       (response) => {
         this.bridges_ = response.bridges
         this.$.dialog.close()
@@ -54,27 +61,23 @@ class RequestBridgesDialog extends RequestBridgesDialogBase {
   }
 
   requestCaptcha_() {
-    this.$.captchaResolve.value = ''
-    this.$.status.textContent = this.i18n('torRequestBridgeDialogWaiting')
-    this.$.captchaImage.src = ''
+    this.captchaResolve_ = ''
+    this.status_ = this.i18n('torRequestBridgeDialogWaiting')
+    this.captcha_ = ''
     this.enableSubmit_(false)
     this.browserProxy_.requestBridgesCaptcha().then((result) => {
-      this.$.captchaImage.src = result.captcha
-      this.$.status.textContent = this.i18n('torRequestBridgeDialogSolve')
+      this.captcha_ = result.captcha
+      this.status_ = this.i18n('torRequestBridgeDialogSolve')
       this.enableSubmit_(true)
     }, () => {
-      this.$.status.textContent = this.i18n('torRequestBridgeDialogError')
-      this.$.renew.disabled = false
+      this.status_ = this.i18n('torRequestBridgeDialogError')
+      this.renewDisabled_ = false
     })
   }
 
   enableSubmit_(enabled) {
-    this.$.captchaResolve.disabled = !enabled
-    this.$.submit.disabled = !enabled
-    this.$.renew.disabled = !enabled
-    if (enabled) {
-      this.$.captchaResolve.focus()
-    }
+    this.renewDisabled_ = !enabled
+    this.submitDisabled_ = !enabled
   }
 }
 

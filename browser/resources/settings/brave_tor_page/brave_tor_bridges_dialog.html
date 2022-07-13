@@ -37,17 +37,18 @@
 <cr-dialog id="dialog" show-close-button show-on-attach>
   <div slot="title">$i18n{torRequestBridgeDialogTitle}</div>
   <div slot="body">
-    <div id="status">$i18n{torRequestBridgeDialogWaiting}</div>
+    <div id="status">[[status_]]</div>
     <div id="captcha">
-      <img id="captchaImage" alt="">
+      <img id="captchaImage" alt="" src="[[captcha_]]" focus="[[!submitDisabled_]]">
     </div>
     <div id="captchaInputBox">
-      <cr-input id="captchaResolve"></cr-input>
-      <cr-icon-button id="renew" on-click="requestCaptcha_"></cr-icon-button>
+      <cr-input id="captchaResolve" value="{{captchaResolve_}}"></cr-input>
+      <cr-icon-button id="renew" on-click="requestCaptcha_" disabled="[[renewDisabled_]]"></cr-icon-button>
     </div>
   </div>
   <div slot="button-container">
-    <cr-button class="action-button" id="submit" on-click="submitClicked_">$i18n{torSubmitDialogButton}</cr-button>
+    <cr-button class="action-button" id="submit" on-click="submitClicked_" disabled="[[submitDisabled_]]">
+      $i18n{torSubmitDialogButton}</cr-button>
     <cr-button class="cancel-button" id="cancel" on-click="cancelClicked_">$i18n{torCancelDialogButton}</cr-button>
   </div>
 </cr-dialog>

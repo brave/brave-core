@@ -55,6 +55,23 @@ function createSectionElement (sectionName, titleName, childName, childAttribute
   `
 }
 
+function createNestedSectionElement(sectionName, nestedUnder, titleName, childName, childAttributes) {
+  const childAttributesString = Object.keys(childAttributes).map(attribute =>
+    `${attribute}="${childAttributes[attribute]}"`)
+    .join(' ')
+  // This needs to be inside a template so that our components do not get created immediately.
+  // Otherwise the polymer bindings won't be setup correctly at first.
+  return html`
+    <settings-section page-title="${loadTimeData.getString(titleName)}" section="${sectionName}" nest-under-section="${nestedUnder}">
+      <${childName}
+        ${childAttributesString}
+      >
+      </${childName}>
+    </settings-section>
+  `
+}
+
+
 /**
  * Creates a settings-toggle-button element and returns it.
  * @param {string} pref - preference path to handle by toggle
@@ -133,8 +150,9 @@ RegisterPolymerTemplateModifications({
       sectionTor.setAttribute('is', 'dom-if')
       sectionTor.setAttribute('restamp', true)
       sectionTor.setAttribute('if', '[[showPage_(pageVisibility.braveTor)]]')
-      sectionTor.content.appendChild(createSectionElement(
+      sectionTor.content.appendChild(createNestedSectionElement(
         'tor',
+        'privacy',
         'braveTor',
         'settings-brave-tor-subpage',
         {

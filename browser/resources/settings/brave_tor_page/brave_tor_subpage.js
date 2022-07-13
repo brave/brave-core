@@ -115,7 +115,7 @@ class SettingsBraveTorPageElement extends SettingBraveTorPageElementBase {
 
       isConfigChanged_: {
         type: Boolean,
-        computed: 'computeIsConfigChanged_(useBridges_, builtinBridges_, requestedBridges_, providedBridges_, loadedConfig_, shouldShowBridgesGroup_)',
+        computed: 'computeIsConfigChanged_(useBridges_, builtinBridges_, requestedBridges_, providedBridges_, loadedConfig_, shouldShowBridgesGroup_, torEnabledPref_.value)',
         value: false,
         notify: true
       }
@@ -217,7 +217,7 @@ class SettingsBraveTorPageElement extends SettingBraveTorPageElementBase {
       return true
     }
 
-    if (!this.loadedConfig_ || !this.shouldShowBridgesGroup_)
+    if (!this.loadedConfig_ || !this.torEnabledPref_.value)
       return false
 
     const currentConfig = this.getCurrentConfig_()
@@ -246,11 +246,7 @@ class SettingsBraveTorPageElement extends SettingBraveTorPageElementBase {
   }
 
   computeShouldShowBridgesGroup_() {
-    const val = this.isUsingBridges_ && this.torEnabledPref_.value
-    if (val) {
-
-    }
-    return val
+    return this.isUsingBridges_ && this.torEnabledPref_.value
   }
 
   builtInTypeEqual_(item, selection) {
