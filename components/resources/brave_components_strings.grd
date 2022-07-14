@@ -623,7 +623,7 @@
       <message name="IDS_BRAVE_REWARDS_INTERNALS_WALLET_HISTORY" desc="">Wallet History</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_WALLET_INFO" desc="">Wallet info</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_WALLET_NOT_CREATED" desc="">Wallet was not yet created</message>
-      <message name="IDS_BRAVE_REWARDS_INTERNALS_WALLET_PAYMENT_ID" desc="Wallet payment ID">Wallet payment ID:</message>
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_WALLET_PAYMENT_ID" desc="Rewards payment ID">Rewards payment ID:</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_WALLET_STATUS" desc="Wallet status">Wallet status:</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_WALLET_STATUS_CONNECTED" desc="">Connected</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_WALLET_STATUS_NOT_CONNECTED" desc="">Not connected</message>
