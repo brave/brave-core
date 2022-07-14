@@ -35,7 +35,7 @@ void EligibleAdsV2::GetForUserModel(
     const targeting::UserModelInfo& user_model,
     const std::string& dimensions,
     GetEligibleAdsCallback<CreativeInlineContentAdList> callback) {
-  BLOG(1, "Get eligible inline content ads:");
+  BLOG(1, "Get eligible inline content ads");
 
   database::table::AdEvents database_table;
   database_table.GetForType(

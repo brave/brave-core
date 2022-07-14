@@ -34,7 +34,7 @@ EligibleAdsV2::~EligibleAdsV2() = default;
 void EligibleAdsV2::GetForUserModel(
     const targeting::UserModelInfo& user_model,
     GetEligibleAdsCallback<CreativeNotificationAdList> callback) {
-  BLOG(1, "Get eligible notification ads:");
+  BLOG(1, "Get eligible notification ads");
 
   database::table::AdEvents database_table;
   database_table.GetForType(
