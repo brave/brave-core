@@ -3,6 +3,9 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
+from __future__ import print_function
+from builtins import str
+from builtins import object
 import argparse
 import errno
 import hashlib
@@ -26,7 +29,7 @@ from lib.github import (GitHub, get_authenticated_user_login, parse_user_logins,
                         get_title_from_first_commit, push_branches_to_remote)
 
 
-class PrConfig:
+class PrConfig(object):
     channel_names = channels()
     channels_to_process = channels()
     is_verbose = False
