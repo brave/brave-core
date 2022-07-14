@@ -354,6 +354,7 @@ provideStrings({
   braveWalletPanelViewAccountAssets: 'View account assets',
   braveWalletAssetsPanelTitle: 'Account assets',
   braveWalletPanelDisconnected: 'Disconnected',
+  braveWalletPanelBlocked: 'Blocked',
 
   // Wallet Welcome Panel
   braveWalletWelcomePanelDescription: 'Use this panel to securely access Web3 and all your crypto assets.',
