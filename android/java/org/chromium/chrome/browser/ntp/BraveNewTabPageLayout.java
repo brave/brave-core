@@ -295,7 +295,9 @@ public class BraveNewTabPageLayout
                             && UrlUtilities.isNTPUrl(tab.getUrl().getSpec())) {
                         // purges display ads on tab change
                         if (BraveActivity.getBraveActivity().getLastTabId() != tab.getId()) {
-                            mBraveNewsController.onDisplayAdPurgeOrphanedEvents();
+                            if (mBraveNewsController != null) {
+                                mBraveNewsController.onDisplayAdPurgeOrphanedEvents();
+                            }
                         }
 
                         BraveActivity.getBraveActivity().setLastTabId(tab.getId());
