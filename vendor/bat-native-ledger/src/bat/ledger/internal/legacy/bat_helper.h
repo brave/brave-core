@@ -17,7 +17,7 @@
 
 namespace braveledger_bat_helper {
 
-bool getJSONValue(const std::string& fieldName,
+bool getJSONValue(const std::string& field_name,
                   const std::string& json,
                   std::string* value);
 
