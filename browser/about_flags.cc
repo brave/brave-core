@@ -46,6 +46,7 @@ using brave_shields::features::kBraveAdblockCnameUncloaking;
 using brave_shields::features::kBraveAdblockCollapseBlockedElements;
 using brave_shields::features::kBraveAdblockCookieListDefault;
 using brave_shields::features::kBraveAdblockCosmeticFiltering;
+using brave_shields::features::kBraveAdblockCosmeticFilteringChildFrames;
 using brave_shields::features::kBraveAdblockCspRules;
 using brave_shields::features::kBraveAdblockDefault1pBlocking;
 using brave_shields::features::kBraveDarkModeBlock;
@@ -86,6 +87,11 @@ constexpr char kBraveAdblockCosmeticFilteringName[] =
     "Enable cosmetic filtering";
 constexpr char kBraveAdblockCosmeticFilteringDescription[] =
     "Enable support for cosmetic filtering";
+
+constexpr char kBraveAdblockCosmeticFilteringChildFramesName[] =
+    "Enable cosmetic filtering in child frames";
+constexpr char kBraveAdblockCosmeticFilteringChildFramesDescription[] =
+    "Apply cosmetic filtering to frames other than the main frame of a page";
 
 constexpr char kBraveAdblockCspRulesName[] = "Enable support for CSP rules";
 constexpr char kBraveAdblockCspRulesDescription[] =
@@ -447,6 +453,10 @@ constexpr char kRestrictWebSocketsPoolDescription[] =
      flag_descriptions::kBraveAdblockCosmeticFilteringName,                 \
      flag_descriptions::kBraveAdblockCosmeticFilteringDescription, kOsAll,  \
      FEATURE_VALUE_TYPE(kBraveAdblockCosmeticFiltering)},                   \
+    {"brave-adblock-cosmetic-filtering-child-frames",                         \
+     flag_descriptions::kBraveAdblockCosmeticFilteringChildFramesName,        \
+     flag_descriptions::kBraveAdblockCosmeticFilteringChildFramesDescription, \
+     kOsAll, FEATURE_VALUE_TYPE(kBraveAdblockCosmeticFilteringChildFrames)},  \
     {"brave-adblock-csp-rules",                                             \
      flag_descriptions::kBraveAdblockCspRulesName,                          \
      flag_descriptions::kBraveAdblockCspRulesDescription, kOsAll,           \

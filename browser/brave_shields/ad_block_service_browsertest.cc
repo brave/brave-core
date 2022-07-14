@@ -80,6 +80,7 @@ using brave_shields::features::kBraveAdblockCnameUncloaking;
 using brave_shields::features::kBraveAdblockCollapseBlockedElements;
 using brave_shields::features::kBraveAdblockCookieListDefault;
 using brave_shields::features::kBraveAdblockCosmeticFiltering;
+using brave_shields::features::kBraveAdblockCosmeticFilteringChildFrames;
 using brave_shields::features::kBraveAdblockDefault1pBlocking;
 
 AdBlockServiceTest::AdBlockServiceTest() {
@@ -1856,9 +1857,21 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CosmeticFilteringSimple) {
   EXPECT_EQ(base::Value(true), result_third.value);
 }
 
+class CosmeticFilteringChildFramesFlagEnabledTest : public AdBlockServiceTest {
+ public:
+  CosmeticFilteringChildFramesFlagEnabledTest() {
+    feature_list_.InitAndEnableFeature(
+        kBraveAdblockCosmeticFilteringChildFrames);
+  }
+
+ private:
+  base::test::ScopedFeatureList feature_list_;
+};
+
 // Test that cosmetic filtering is applied independently in a third-party child
 // frame
-IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CosmeticFilteringFrames) {
+IN_PROC_BROWSER_TEST_F(CosmeticFilteringChildFramesFlagEnabledTest,
+                       CosmeticFilteringFrames) {
   ASSERT_TRUE(InstallDefaultAdBlockExtension());
   UpdateAdBlockInstanceWithRules("frame.com##.ad\n");
 
