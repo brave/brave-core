@@ -9,12 +9,8 @@
 #include <string>
 
 #include "base/callback.h"
+#include "base/values.h"
 #include "brave/vendor/bat-native-ads/include/bat/ads/public/interfaces/ads.mojom.h"
-
-namespace base {
-class DictionaryValue;
-class ListValue;
-}  // namespace base
 
 namespace ads {
 struct NewTabPageAdInfo;
@@ -29,7 +25,7 @@ using GetStatementOfAccountsCallback = base::OnceCallback<
     void(const bool, const double, const int, const double, const double)>;
 
 using MaybeServeInlineContentAdCallback = base::OnceCallback<
-    void(const bool, const std::string&, const base::DictionaryValue&)>;
+    void(const bool, const std::string&, const base::Value::Dict&)>;
 
 using TriggerSearchResultAdEventCallback =
     base::OnceCallback<void(const bool,

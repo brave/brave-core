@@ -5,9 +5,6 @@
 
 #include "bat/ads/internal/deprecated/client/preferences/flagged_ad_info.h"
 
-#include "bat/ads/internal/base/logging_util.h"
-#include "bat/ads/internal/deprecated/json/json_helper.h"
-
 namespace ads {
 
 FlaggedAdInfo::FlaggedAdInfo() = default;
@@ -18,35 +15,17 @@ FlaggedAdInfo& FlaggedAdInfo::operator=(const FlaggedAdInfo& info) = default;
 
 FlaggedAdInfo::~FlaggedAdInfo() = default;
 
-std::string FlaggedAdInfo::ToJson() const {
-  std::string json;
-  SaveToJson(*this, &json);
-  return json;
+base::Value::Dict FlaggedAdInfo::ToValue() const {
+  base::Value::Dict dict;
+  dict.Set("creative_set_id", creative_set_id);
+  return dict;
 }
 
-bool FlaggedAdInfo::FromJson(const std::string& json) {
-  rapidjson::Document document;
-  document.Parse(json.c_str());
-
-  if (document.HasParseError()) {
-    BLOG(1, helper::JSON::GetLastError(&document));
-    return false;
+bool FlaggedAdInfo::FromValue(const base::Value::Dict& root) {
+  if (const auto* value = root.FindString("creative_set_id")) {
+    creative_set_id = *value;
   }
-
-  if (document.HasMember("creative_set_id")) {
-    creative_set_id = document["creative_set_id"].GetString();
-  }
-
   return true;
-}
-
-void SaveToJson(JsonWriter* writer, const FlaggedAdInfo& info) {
-  writer->StartObject();
-
-  writer->String("creative_set_id");
-  writer->String(info.creative_set_id.c_str());
-
-  writer->EndObject();
 }
 
 }  // namespace ads

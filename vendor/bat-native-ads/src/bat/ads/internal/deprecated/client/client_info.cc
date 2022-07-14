@@ -5,13 +5,15 @@
 
 #include "bat/ads/internal/deprecated/client/client_info.h"
 
+#include <utility>
 #include <vector>
 
 #include "base/check.h"
+#include "base/json/json_reader.h"
+#include "base/json/json_writer.h"
 #include "base/notreached.h"
 #include "base/strings/string_number_conversions.h"
 #include "bat/ads/internal/base/logging_util.h"
-#include "bat/ads/internal/deprecated/json/json_helper.h"
 #include "build/build_config.h"
 
 namespace ads {
@@ -24,260 +26,217 @@ ClientInfo& ClientInfo::operator=(const ClientInfo& info) = default;
 
 ClientInfo::~ClientInfo() = default;
 
-std::string ClientInfo::ToJson() {
-  std::string json;
-  SaveToJson(*this, &json);
-  return json;
+base::Value::Dict ClientInfo::ToValue() const {
+  base::Value::Dict dict;
+
+  dict.Set("adPreferences", ad_preferences.ToValue());
+
+  base::Value::List ads_shown_history;
+  for (const auto& item : history) {
+    ads_shown_history.Append(item.ToValue());
+  }
+  dict.Set("adsShownHistory", std::move(ads_shown_history));
+
+  base::Value::Dict purchase_intent_dict;
+  for (const auto& [key, value] : purchase_intent_signal_history) {
+    base::Value::List history;
+    for (const auto& segment_history_item : value) {
+      history.Append(segment_history_item.ToValue());
+    }
+    purchase_intent_dict.Set(key, std::move(history));
+  }
+  dict.Set("purchaseIntentSignalHistory", std::move(purchase_intent_dict));
+
+  base::Value::Dict seen_ads_dict;
+  for (const auto& [key, value] : seen_ads) {
+    base::Value::Dict ad;
+    for (const auto& [ad_key, ad_value] : value) {
+      ad.Set(ad_key, ad_value);
+    }
+
+    seen_ads_dict.Set(key, std::move(ad));
+  }
+  dict.Set("seenAds", std::move(seen_ads_dict));
+
+  base::Value::Dict advertisers;
+  for (const auto& [key, value] : seen_advertisers) {
+    base::Value::Dict advertiser;
+    for (const auto& [key, value] : value) {
+      advertiser.Set(key, value);
+    }
+    advertisers.Set(key, std::move(advertiser));
+  }
+  dict.Set("seenAdvertisers", std::move(advertisers));
+
+  dict.Set("nextCheckServeAd", base::NumberToString(serve_ad_at.ToDoubleT()));
+
+  base::Value::List probabilities_history;
+  for (const auto& probabilities : text_classification_probabilities) {
+    base::Value::Dict classification_probabilities;
+    base::Value::List text_probabilities;
+    for (const auto& [key, value] : probabilities) {
+      base::Value::Dict prob;
+      DCHECK(!key.empty());
+      prob.Set("segment", key);
+      prob.Set("pageScore", base::NumberToString(value));
+      text_probabilities.Append(std::move(prob));
+    }
+    classification_probabilities.Set("textClassificationProbabilities",
+                                     std::move(text_probabilities));
+    probabilities_history.Append(std::move(classification_probabilities));
+  }
+  dict.Set("textClassificationProbabilitiesHistory",
+           std::move(probabilities_history));
+  dict.Set("version_code", version_code);
+  return dict;
 }
 
-bool ClientInfo::FromJson(const std::string& json) {
-  rapidjson::Document document;
-  document.Parse(json.c_str());
-
-  if (document.HasParseError()) {
-    BLOG(1, helper::JSON::GetLastError(&document));
-    return false;
-  }
-
-  if (document.HasMember("adPreferences")) {
-    rapidjson::StringBuffer buffer;
-    rapidjson::Writer<rapidjson::StringBuffer> writer(buffer);
-    const auto& value = document["adPreferences"];
-    if (!value.Accept(writer) || !ad_preferences.FromJson(buffer.GetString())) {
+bool ClientInfo::FromValue(const base::Value::Dict& root) {
+  if (const auto* value = root.FindDict("adPreferences")) {
+    if (!ad_preferences.FromValue(*value))
       return false;
-    }
   }
 
 #if !BUILDFLAG(IS_IOS)
-  if (document.HasMember("adsShownHistory")) {
-    for (const auto& ad_shown : document["adsShownHistory"].GetArray()) {
+  if (const auto* value = root.FindList("adsShownHistory")) {
+    for (const auto& ad_shown : *value) {
       // adsShownHistory used to be an array of timestamps, so if that's what we
       // have here don't import them and we'll just start fresh.
-      if (ad_shown.IsInt64()) {
+      if (!ad_shown.is_dict()) {
         continue;
       }
       HistoryItemInfo history_item;
-      rapidjson::StringBuffer buffer;
-      rapidjson::Writer<rapidjson::StringBuffer> writer(buffer);
-      if (ad_shown.Accept(writer) &&
-          history_item.FromJson(buffer.GetString())) {
+      if (history_item.FromValue(ad_shown.GetDict())) {
         history.push_back(history_item);
       }
     }
   }
 #endif
 
-  if (document.HasMember("purchaseIntentSignalHistory")) {
-    for (const auto& segment_history :
-         document["purchaseIntentSignalHistory"].GetObject()) {
-      std::string segment = segment_history.name.GetString();
-      DCHECK(!segment.empty());
-
+  if (const auto* value = root.FindDict("purchaseIntentSignalHistory")) {
+    for (const auto [key, value] : *value) {
       std::vector<targeting::PurchaseIntentSignalHistoryInfo> histories;
-      for (const auto& segment_history_item :
-           segment_history.value.GetArray()) {
+
+      const auto* segment_history_items = value.GetIfList();
+      if (!segment_history_items)
+        continue;
+
+      for (const auto& segment_history_item : *segment_history_items) {
+        if (!segment_history_item.is_dict())
+          continue;
+
         targeting::PurchaseIntentSignalHistoryInfo history;
-        rapidjson::StringBuffer buffer;
-        rapidjson::Writer<rapidjson::StringBuffer> writer(buffer);
-        if (segment_history_item.Accept(writer) &&
-            history.FromJson(buffer.GetString())) {
+        if (history.FromValue(segment_history_item.GetDict())) {
           histories.push_back(history);
         }
       }
 
-      purchase_intent_signal_history.insert({segment, histories});
+      purchase_intent_signal_history.emplace(key, histories);
     }
   }
 
-  if (document.HasMember("seenAds")) {
-    for (const auto& seen_ad_list : document["seenAds"].GetObject()) {
-      const std::string ad_type = seen_ad_list.name.GetString();
+  if (const auto* value = root.FindDict("seenAds")) {
+    for (const auto [list_key, list_value] : *value) {
+      if (!list_value.is_dict())
+        continue;
 
-      for (const auto& seen_ad : seen_ad_list.value.GetObject()) {
-        const std::string creative_instance_id = seen_ad.name.GetString();
-        const bool has_seen = seen_ad.value.GetBool();
-
-        seen_ads[ad_type][creative_instance_id] = has_seen;
+      for (const auto [key, value] : list_value.GetDict()) {
+        seen_ads[list_key][key] = value.GetBool();
       }
     }
   }
 
-  if (document.HasMember("seenAdvertisers")) {
-    for (const auto& seen_advertiser_list :
-         document["seenAdvertisers"].GetObject()) {
-      const std::string ad_type = seen_advertiser_list.name.GetString();
+  if (const auto* value = root.FindDict("seenAdvertisers")) {
+    for (const auto [list_key, list_value] : *value) {
+      if (!list_value.is_dict())
+        continue;
 
-      for (const auto& seen_advertiser :
-           seen_advertiser_list.value.GetObject()) {
-        const std::string advertiser_id = seen_advertiser.name.GetString();
-        const bool has_seen = seen_advertiser.value.GetBool();
-
-        seen_advertisers[ad_type][advertiser_id] = has_seen;
+      for (const auto [key, value] : list_value.GetDict()) {
+        seen_advertisers[list_key][key] = value.GetBool();
       }
     }
   }
 
-  if (document.HasMember("nextCheckServeAd")) {
-    if (document["nextCheckServeAd"].IsNumber()) {
-      // Migrate legacy timestamp
-      serve_ad_at =
-          base::Time::FromDoubleT(document["nextCheckServeAd"].GetDouble());
-    } else {
-      double timestamp = 0.0;
-      if (base::StringToDouble(document["nextCheckServeAd"].GetString(),
-                               &timestamp)) {
-        serve_ad_at = base::Time::FromDoubleT(timestamp);
-      }
+  if (const auto value = root.FindDouble("nextCheckServeAd")) {
+    // Migrate legacy timestamp
+    serve_ad_at = base::Time::FromDoubleT(*value);
+  } else if (const auto* value = root.FindString("nextCheckServeAd")) {
+    double timestamp = 0.0;
+    if (base::StringToDouble(*value, &timestamp)) {
+      serve_ad_at = base::Time::FromDoubleT(timestamp);
     }
   }
 
-  if (document.HasMember("textClassificationProbabilitiesHistory")) {
-    for (const auto& probabilities :
-         document["textClassificationProbabilitiesHistory"].GetArray()) {
+  if (const auto* value =
+          root.FindList("textClassificationProbabilitiesHistory")) {
+    for (const auto& probabilities : *value) {
+      if (!probabilities.is_dict())
+        continue;
+      const auto* probability_list =
+          probabilities.GetDict().FindList("textClassificationProbabilities");
+      if (!probability_list)
+        continue;
+
       targeting::TextClassificationProbabilityMap new_probabilities;
 
-      for (const auto& probability :
-           probabilities["textClassificationProbabilities"].GetArray()) {
-        auto iterator = probability.FindMember("segment");
-        if (iterator == probability.MemberEnd() ||
-            !iterator->value.IsString()) {
+      for (const auto& probability : *probability_list) {
+        const auto* probability_dict = probability.GetIfDict();
+        if (!probability_dict)
           continue;
-        }
-        const std::string segment = iterator->value.GetString();
-        DCHECK(!segment.empty());
 
-        iterator = probability.FindMember("pageScore");
-        if (iterator == probability.MemberEnd() ||
-            (!iterator->value.IsString() && !iterator->value.IsNumber())) {
+        const std::string* segment = probability_dict->FindString("segment");
+        if (!segment)
           continue;
-        }
 
         double page_score = 0.0;
-        if (iterator->value.IsNumber()) {
+        if (const auto value = root.FindDouble("pageScore")) {
           // Migrate legacy page score
-          page_score = iterator->value.GetDouble();
-        } else {
-          const bool success =
-              base::StringToDouble(iterator->value.GetString(), &page_score);
+          page_score = *value;
+        } else if (const auto* value = root.FindString("pageScore")) {
+          const bool success = base::StringToDouble(*value, &page_score);
           DCHECK(success);
         }
 
-        new_probabilities.insert({segment, page_score});
+        new_probabilities.insert({*segment, page_score});
       }
 
       text_classification_probabilities.push_back(new_probabilities);
     }
   }
 
-  if (document.HasMember("version_code")) {
-    version_code = document["version_code"].GetString();
+  if (const auto* value = root.FindString("version_code")) {
+    version_code = *value;
   }
 
   return true;
 }
 
-void SaveToJson(JsonWriter* writer, const ClientInfo& info) {
-  writer->StartObject();
+std::string ClientInfo::ToJson() {
+  std::string json;
+  base::JSONWriter::Write(ToValue(), &json);
+  return json;
+}
 
-  writer->String("adPreferences");
-  SaveToJson(writer, info.ad_preferences);
+bool ClientInfo::FromJson(const std::string& json) {
+  auto document = base::JSONReader::ReadAndReturnValueWithError(
+      json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
+                base::JSONParserOptions::JSON_PARSE_RFC);
 
-  writer->String("adsShownHistory");
-  writer->StartArray();
-  for (const auto& item : info.history) {
-    SaveToJson(writer, item);
+  if (!document.value.has_value()) {
+    BLOG(1, "Invalid client info. json="
+                << json << ", error line=" << document.error_line
+                << ", error column=" << document.error_column
+                << ", error message=" << document.error_message);
+    return false;
   }
-  writer->EndArray();
 
-  writer->String("purchaseIntentSignalHistory");
-  writer->StartObject();
-  for (const auto& segment_history : info.purchase_intent_signal_history) {
-    writer->String(segment_history.first.c_str());
-
-    writer->StartArray();
-    for (const auto& segment_history_item : segment_history.second) {
-      writer->String(segment_history_item.ToJson().c_str());
-    }
-    writer->EndArray();
+  const base::Value::Dict* root = document.value->GetIfDict();
+  if (!root) {
+    BLOG(1, "Invalid client info. json=" << json);
+    return false;
   }
-  writer->EndObject();
 
-  writer->String("seenAds");
-  writer->StartObject();
-  for (const auto& seen_ads : info.seen_ads) {
-    const std::string& ad_type = seen_ads.first;
-    writer->String(ad_type.c_str());
-    writer->StartObject();
-
-    for (const auto& seen_ad : seen_ads.second) {
-      const std::string& creative_instance_id = seen_ad.first;
-      writer->String(creative_instance_id.c_str());
-
-      const bool was_seen = seen_ad.second;
-      writer->Bool(was_seen);
-    }
-
-    writer->EndObject();
-  }
-  writer->EndObject();
-
-  writer->String("seenAdvertisers");
-  writer->StartObject();
-  for (const auto& seen_advertisers : info.seen_advertisers) {
-    const std::string& ad_type = seen_advertisers.first;
-    writer->String(ad_type.c_str());
-    writer->StartObject();
-
-    for (const auto& seen_advertiser : seen_advertisers.second) {
-      const std::string& advertiser_id = seen_advertiser.first;
-      writer->String(advertiser_id.c_str());
-
-      const bool was_seen = seen_advertiser.second;
-      writer->Bool(was_seen);
-    }
-
-    writer->EndObject();
-  }
-  writer->EndObject();
-
-  writer->String("nextCheckServeAd");
-  const std::string next_check_server_ad =
-      base::NumberToString(info.serve_ad_at.ToDoubleT());
-  writer->String(next_check_server_ad.c_str());
-
-  writer->String("textClassificationProbabilitiesHistory");
-  writer->StartArray();
-  for (const auto& probabilities : info.text_classification_probabilities) {
-    writer->StartObject();
-
-    writer->String("textClassificationProbabilities");
-    writer->StartArray();
-
-    for (const auto& probability : probabilities) {
-      writer->StartObject();
-
-      writer->String("segment");
-      const std::string segment = probability.first;
-      DCHECK(!segment.empty());
-      writer->String(segment.c_str());
-
-      writer->String("pageScore");
-      const std::string page_score = base::NumberToString(probability.second);
-      writer->String(page_score.c_str());
-
-      writer->EndObject();
-    }
-
-    writer->EndArray();
-
-    writer->EndObject();
-  }
-  writer->EndArray();
-
-  writer->String("version_code");
-  writer->String(info.version_code.c_str());
-
-  writer->EndObject();
+  return FromValue(*root);
 }
 
 }  // namespace ads

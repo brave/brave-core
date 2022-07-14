@@ -1289,7 +1289,7 @@ void AdsServiceImpl::MaybeServeInlineContentAd(
     const std::string& dimensions,
     MaybeServeInlineContentAdCallback callback) {
   if (!IsBatAdsBound()) {
-    std::move(callback).Run(false, "", base::DictionaryValue());
+    std::move(callback).Run(false, "", base::Value::Dict());
     return;
   }
 
@@ -2017,16 +2017,15 @@ void AdsServiceImpl::OnMaybeServeInlineContentAd(
     const bool success,
     const std::string& dimensions,
     const std::string& json) {
-  base::DictionaryValue dictionary;
+  base::Value::Dict dict;
 
   if (success) {
     ads::InlineContentAdInfo ad;
     ad.FromJson(json);
-
-    dictionary = ad.ToValue();
+    dict = ad.ToValue();
   }
 
-  std::move(callback).Run(success, dimensions, dictionary);
+  std::move(callback).Run(success, dimensions, dict);
 }
 
 void AdsServiceImpl::OnTriggerSearchResultAdEvent(
@@ -2056,24 +2055,19 @@ void AdsServiceImpl::OnGetHistory(GetHistoryCallback callback,
   base::ListValue list;
 
   for (const auto& item : history.items) {
-    base::DictionaryValue history_item_dictionary;
-    base::DictionaryValue ad_content_dictionary = item.ad_content.ToValue();
-    history_item_dictionary.SetPath("adContent",
-                                    std::move(ad_content_dictionary));
-    base::DictionaryValue category_content_dictionary =
-        item.category_content.ToValue();
-    history_item_dictionary.SetPath("categoryContent",
-                                    std::move(category_content_dictionary));
-    base::ListValue history_item_list;
-    history_item_list.Append(std::move(history_item_dictionary));
+    base::Value::Dict history_item_dict;
+    history_item_dict.Set("adContent", item.ad_content.ToValue());
+    history_item_dict.Set("categoryContent", item.category_content.ToValue());
+    base::Value::List history_item_list;
+    history_item_list.Append(std::move(history_item_dict));
 
-    base::DictionaryValue dictionary;
-    dictionary.SetStringKey("uuid", base::NumberToString(uuid++));
+    base::Value::Dict dict;
+    dict.Set("uuid", base::NumberToString(uuid++));
     const double js_time = item.created_at.ToJsTimeIgnoringNull();
-    dictionary.SetDoubleKey("timestampInMilliseconds", js_time);
-    dictionary.SetPath("adDetailRows", std::move(history_item_list));
+    dict.Set("timestampInMilliseconds", js_time);
+    dict.Set("adDetailRows", std::move(history_item_list));
 
-    list.Append(std::move(dictionary));
+    list.Append(std::move(dict));
   }
 
   std::move(callback).Run(list);

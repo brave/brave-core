@@ -5,10 +5,9 @@
 
 #include "bat/ads/ad_content_info.h"
 
-#include "base/values.h"
+#include "base/json/json_reader.h"
+#include "base/json/json_writer.h"
 #include "bat/ads/internal/base/logging_util.h"
-#include "bat/ads/internal/deprecated/json/json_helper.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ads {
 
@@ -53,111 +52,84 @@ AdContentLikeActionType AdContentInfo::ToggleThumbDownActionType() const {
   }
 }
 
-base::DictionaryValue AdContentInfo::ToValue() const {
-  base::DictionaryValue dictionary;
+base::Value::Dict AdContentInfo::ToValue() const {
+  base::Value::Dict dictionary;
 
-  dictionary.SetIntKey("adType", static_cast<int>(type.value()));
-  dictionary.SetStringKey("uuid", placement_id);
-  dictionary.SetStringKey("creativeInstanceId", creative_instance_id);
-  dictionary.SetStringKey("creativeSetId", creative_set_id);
-  dictionary.SetStringKey("campaignId", campaign_id);
-  dictionary.SetStringKey("advertiserId", advertiser_id);
-  dictionary.SetStringKey("brand", brand);
-  dictionary.SetStringKey("brandInfo", brand_info);
-  dictionary.SetStringKey("brandDisplayUrl", brand_display_url);
-  dictionary.SetStringKey("brandUrl", brand_url.spec());
-  dictionary.SetIntKey("likeAction", static_cast<int>(like_action_type));
-  dictionary.SetStringKey("adAction", confirmation_type.ToString());
-  dictionary.SetBoolKey("savedAd", is_saved);
-  dictionary.SetBoolKey("flaggedAd", is_flagged);
+  dictionary.Set("adType", static_cast<int>(type.value()));
+  dictionary.Set("uuid", placement_id);
+  dictionary.Set("creativeInstanceId", creative_instance_id);
+  dictionary.Set("creativeSetId", creative_set_id);
+  dictionary.Set("campaignId", campaign_id);
+  dictionary.Set("advertiserId", advertiser_id);
+  dictionary.Set("brand", brand);
+  dictionary.Set("brandInfo", brand_info);
+  dictionary.Set("brandDisplayUrl", brand_display_url);
+  dictionary.Set("brandUrl", brand_url.spec());
+  dictionary.Set("likeAction", static_cast<int>(like_action_type));
+  dictionary.Set("adAction", confirmation_type.ToString());
+  dictionary.Set("savedAd", is_saved);
+  dictionary.Set("flaggedAd", is_flagged);
 
   return dictionary;
 }
 
-bool AdContentInfo::FromValue(const base::Value& value) {
-  const base::DictionaryValue* dictionary = nullptr;
-  if (!(&value)->GetAsDictionary(&dictionary)) {
-    return false;
+bool AdContentInfo::FromValue(const base::Value::Dict& root) {
+  if (const auto* value = root.FindString("type")) {
+    type = AdType(*value);
+  } else {
+    type = AdType::kNotificationAd;
   }
 
-  const absl::optional<int> type_optional = dictionary->FindIntKey("adType");
-  if (type_optional) {
-    type = AdType(static_cast<AdType::Value>(type_optional.value()));
+  if (const auto* value = root.FindString("uuid")) {
+    placement_id = *value;
   }
 
-  const std::string* placement_id_value = dictionary->FindStringKey("uuid");
-  if (placement_id_value) {
-    placement_id = *placement_id_value;
+  if (const auto* value = root.FindString("creative_instance_id")) {
+    creative_instance_id = *value;
   }
 
-  const std::string* creative_instance_id_value =
-      dictionary->FindStringKey("creativeInstanceId");
-  if (creative_instance_id_value) {
-    creative_instance_id = *creative_instance_id_value;
+  if (const auto* value = root.FindString("creative_set_id")) {
+    creative_set_id = *value;
   }
 
-  const std::string* creative_set_id_value =
-      dictionary->FindStringKey("creativeSetId");
-  if (creative_set_id_value) {
-    creative_set_id = *creative_set_id_value;
+  if (const auto* value = root.FindString("campaign_id")) {
+    campaign_id = *value;
   }
 
-  const std::string* campaign_id_value =
-      dictionary->FindStringKey("campaignId");
-  if (campaign_id_value) {
-    campaign_id = *campaign_id_value;
+  if (const auto* value = root.FindString("advertiser_id")) {
+    advertiser_id = *value;
   }
 
-  const std::string* advertiser_id_value =
-      dictionary->FindStringKey("advertiserId");
-  if (advertiser_id_value) {
-    advertiser_id = *advertiser_id_value;
+  if (const auto* value = root.FindString("brand")) {
+    brand = *value;
   }
 
-  const std::string* brand_value = dictionary->FindStringKey("brand");
-  if (brand_value) {
-    brand = *brand_value;
+  if (const auto* value = root.FindString("brand_info")) {
+    brand_info = *value;
   }
 
-  const std::string* brand_info_value = dictionary->FindStringKey("brandInfo");
-  if (brand_info_value) {
-    brand_info = *brand_info_value;
+  if (const auto* value = root.FindString("brand_display_url")) {
+    brand_display_url = *value;
   }
 
-  const std::string* brand_display_url_value =
-      dictionary->FindStringKey("brandDisplayUrl");
-  if (brand_display_url_value) {
-    brand_display_url = *brand_display_url_value;
+  if (const auto* value = root.FindString("brand_url")) {
+    brand_url = GURL(*value);
   }
 
-  const std::string* brand_url_value = dictionary->FindStringKey("brandUrl");
-  if (brand_url_value) {
-    brand_url = GURL(*brand_url_value);
+  if (const auto value = root.FindInt("like_action")) {
+    like_action_type = static_cast<AdContentLikeActionType>(*value);
   }
 
-  const absl::optional<int> like_action_type_optional =
-      dictionary->FindIntKey("likeAction");
-  if (like_action_type_optional) {
-    like_action_type =
-        static_cast<AdContentLikeActionType>(like_action_type_optional.value());
+  if (const auto* value = root.FindString("ad_action")) {
+    confirmation_type = ConfirmationType(*value);
   }
 
-  const std::string* confirmation_type_value =
-      dictionary->FindStringKey("adAction");
-  if (confirmation_type_value) {
-    confirmation_type = ConfirmationType(*confirmation_type_value);
+  if (const auto value = root.FindBool("saved_ad")) {
+    is_saved = *value;
   }
 
-  const absl::optional<bool> is_saved_optional =
-      dictionary->FindBoolKey("savedAd");
-  if (is_saved_optional) {
-    is_saved = is_saved_optional.value();
-  }
-
-  const absl::optional<bool> is_flagged_optional =
-      dictionary->FindBoolKey("flaggedAd");
-  if (is_flagged_optional) {
-    is_flagged = is_flagged_optional.value();
+  if (const auto value = root.FindBool("flagged_ad")) {
+    is_flagged = *value;
   }
 
   return true;
@@ -165,128 +137,30 @@ bool AdContentInfo::FromValue(const base::Value& value) {
 
 std::string AdContentInfo::ToJson() const {
   std::string json;
-  SaveToJson(*this, &json);
+  base::JSONWriter::Write(ToValue(), &json);
   return json;
 }
 
 bool AdContentInfo::FromJson(const std::string& json) {
-  rapidjson::Document document;
-  document.Parse(json.c_str());
+  auto document = base::JSONReader::ReadAndReturnValueWithError(
+      json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
+                base::JSONParserOptions::JSON_PARSE_RFC);
 
-  if (document.HasParseError()) {
-    BLOG(1, helper::JSON::GetLastError(&document));
+  if (!document.value.has_value()) {
+    BLOG(1, "Invalid ad content info. json="
+                << json << ", error line=" << document.error_line
+                << ", error column=" << document.error_column
+                << ", error message=" << document.error_message);
     return false;
   }
 
-  if (document.HasMember("type") && document["type"].IsString()) {
-    type = AdType(document["type"].GetString());
-  } else {
-    type = AdType::kNotificationAd;
+  const base::Value::Dict* root = document.value->GetIfDict();
+  if (!root) {
+    BLOG(1, "Invalid ad content info. json=" << json);
+    return false;
   }
 
-  if (document.HasMember("uuid")) {
-    placement_id = document["uuid"].GetString();
-  }
-
-  if (document.HasMember("creative_instance_id")) {
-    creative_instance_id = document["creative_instance_id"].GetString();
-  }
-
-  if (document.HasMember("creative_set_id")) {
-    creative_set_id = document["creative_set_id"].GetString();
-  }
-
-  if (document.HasMember("campaign_id")) {
-    campaign_id = document["campaign_id"].GetString();
-  }
-
-  if (document.HasMember("advertiser_id")) {
-    advertiser_id = document["advertiser_id"].GetString();
-  }
-
-  if (document.HasMember("brand")) {
-    brand = document["brand"].GetString();
-  }
-
-  if (document.HasMember("brand_info")) {
-    brand_info = document["brand_info"].GetString();
-  }
-
-  if (document.HasMember("brand_display_url")) {
-    brand_display_url = document["brand_display_url"].GetString();
-  }
-
-  if (document.HasMember("brand_url")) {
-    brand_url = GURL(document["brand_url"].GetString());
-  }
-
-  if (document.HasMember("like_action")) {
-    like_action_type =
-        static_cast<AdContentLikeActionType>(document["like_action"].GetInt());
-  }
-
-  if (document.HasMember("ad_action")) {
-    confirmation_type = ConfirmationType(document["ad_action"].GetString());
-  }
-
-  if (document.HasMember("saved_ad")) {
-    is_saved = document["saved_ad"].GetBool();
-  }
-
-  if (document.HasMember("flagged_ad")) {
-    is_flagged = document["flagged_ad"].GetBool();
-  }
-
-  return true;
-}
-
-void SaveToJson(JsonWriter* writer, const AdContentInfo& info) {
-  writer->StartObject();
-
-  writer->String("type");
-  writer->String(info.type.ToString().c_str());
-
-  writer->String("uuid");
-  writer->String(info.placement_id.c_str());
-
-  writer->String("creative_instance_id");
-  writer->String(info.creative_instance_id.c_str());
-
-  writer->String("creative_set_id");
-  writer->String(info.creative_set_id.c_str());
-
-  writer->String("campaign_id");
-  writer->String(info.campaign_id.c_str());
-
-  writer->String("advertiser_id");
-  writer->String(info.advertiser_id.c_str());
-
-  writer->String("brand");
-  writer->String(info.brand.c_str());
-
-  writer->String("brand_info");
-  writer->String(info.brand_info.c_str());
-
-  writer->String("brand_display_url");
-  writer->String(info.brand_display_url.c_str());
-
-  writer->String("brand_url");
-  writer->String(info.brand_url.spec().c_str());
-
-  writer->String("like_action");
-  writer->Int(static_cast<int>(info.like_action_type));
-
-  writer->String("ad_action");
-  const std::string confirmation_type = info.confirmation_type.ToString();
-  writer->String(confirmation_type.c_str());
-
-  writer->String("saved_ad");
-  writer->Bool(info.is_saved);
-
-  writer->String("flagged_ad");
-  writer->Bool(info.is_flagged);
-
-  writer->EndObject();
+  return FromValue(*root);
 }
 
 }  // namespace ads

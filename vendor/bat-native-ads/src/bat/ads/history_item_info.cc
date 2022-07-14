@@ -5,9 +5,7 @@
 
 #include "bat/ads/history_item_info.h"
 
-#include "bat/ads/internal/base/logging_util.h"
 #include "bat/ads/internal/base/numbers/number_util.h"
-#include "bat/ads/internal/deprecated/json/json_helper.h"
 
 namespace ads {
 
@@ -30,72 +28,38 @@ bool HistoryItemInfo::operator!=(const HistoryItemInfo& rhs) const {
   return !(*this == rhs);
 }
 
-std::string HistoryItemInfo::ToJson() const {
-  std::string json;
-  SaveToJson(*this, &json);
-  return json;
+base::Value::Dict HistoryItemInfo::ToValue() const {
+  base::Value::Dict dictionary;
+
+  dictionary.Set("timestamp_in_seconds",
+                 base::NumberToString(created_at.ToDoubleT()));
+  dictionary.Set("ad_content", ad_content.ToValue());
+  dictionary.Set("category_content", category_content.ToValue());
+  return dictionary;
 }
 
-bool HistoryItemInfo::FromJson(const std::string& json) {
-  rapidjson::Document document;
-  document.Parse(json.c_str());
-
-  if (document.HasParseError()) {
-    BLOG(1, helper::JSON::GetLastError(&document));
-    return false;
-  }
-
-  if (document.HasMember("timestamp_in_seconds")) {
-    if (document["timestamp_in_seconds"].IsNumber()) {
-      // Migrate legacy timestamp
-      created_at =
-          base::Time::FromDoubleT(document["timestamp_in_seconds"].GetDouble());
-    } else {
-      double timestamp = 0.0;
-      if (base::StringToDouble(document["timestamp_in_seconds"].GetString(),
-                               &timestamp)) {
-        created_at = base::Time::FromDoubleT(timestamp);
-      }
+bool HistoryItemInfo::FromValue(const base::Value::Dict& root) {
+  if (const auto value = root.FindDouble("timestamp_in_seconds")) {
+    // Migrate legacy timestamp
+    created_at = base::Time::FromDoubleT(*value);
+  } else if (const auto* value = root.FindString("timestamp_in_seconds")) {
+    double timestamp = 0.0;
+    if (base::StringToDouble(*value, &timestamp)) {
+      created_at = base::Time::FromDoubleT(timestamp);
     }
   }
 
-  if (document.HasMember("ad_content")) {
-    rapidjson::StringBuffer buffer;
-    rapidjson::Writer<rapidjson::StringBuffer> writer(buffer);
-    const auto& value = document["ad_content"];
-    if (!value.Accept(writer) || !ad_content.FromJson(buffer.GetString())) {
+  if (const auto* value = root.FindDict("ad_content")) {
+    if (!ad_content.FromValue(*value)) {
       return false;
     }
   }
 
-  if (document.HasMember("category_content")) {
-    rapidjson::StringBuffer buffer;
-    rapidjson::Writer<rapidjson::StringBuffer> writer(buffer);
-    const auto& value = document["category_content"];
-    if (!value.Accept(writer) ||
-        !category_content.FromJson(buffer.GetString())) {
-      return false;
-    }
+  if (const auto* value = root.FindDict("category_content")) {
+    category_content.FromValue(*value);
   }
 
   return true;
-}
-
-void SaveToJson(JsonWriter* writer, const HistoryItemInfo& info) {
-  writer->StartObject();
-
-  writer->String("timestamp_in_seconds");
-  const std::string created_at =
-      base::NumberToString(info.created_at.ToDoubleT());
-  writer->String(created_at.c_str());
-
-  writer->String("ad_content");
-  SaveToJson(writer, info.ad_content);
-
-  writer->String("category_content");
-  SaveToJson(writer, info.category_content);
-
-  writer->EndObject();
 }
 
 }  // namespace ads

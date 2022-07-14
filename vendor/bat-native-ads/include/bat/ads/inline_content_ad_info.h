@@ -8,14 +8,10 @@
 
 #include <string>
 
+#include "base/values.h"
 #include "bat/ads/ad_info.h"
 #include "bat/ads/export.h"
 #include "url/gurl.h"
-
-namespace base {
-class DictionaryValue;
-class Value;
-}  // namespace base
 
 namespace ads {
 
@@ -30,8 +26,8 @@ struct ADS_EXPORT InlineContentAdInfo final : AdInfo {
 
   bool IsValid() const;
 
-  base::DictionaryValue ToValue() const;
-  bool FromValue(const base::Value& value);
+  base::Value::Dict ToValue() const;
+  bool FromValue(const base::Value::Dict& value);
 
   std::string ToJson() const;
   bool FromJson(const std::string& json);

@@ -5,9 +5,6 @@
 
 #include "bat/ads/internal/deprecated/client/preferences/saved_ad_info.h"
 
-#include "bat/ads/internal/base/logging_util.h"
-#include "bat/ads/internal/deprecated/json/json_helper.h"
-
 namespace ads {
 
 SavedAdInfo::SavedAdInfo() = default;
@@ -18,35 +15,17 @@ SavedAdInfo& SavedAdInfo::operator=(const SavedAdInfo& info) = default;
 
 SavedAdInfo::~SavedAdInfo() = default;
 
-std::string SavedAdInfo::ToJson() const {
-  std::string json;
-  SaveToJson(*this, &json);
-  return json;
+base::Value::Dict SavedAdInfo::ToValue() const {
+  base::Value::Dict dict;
+  dict.Set("uuid", creative_instance_id);
+  return dict;
 }
 
-bool SavedAdInfo::FromJson(const std::string& json) {
-  rapidjson::Document document;
-  document.Parse(json.c_str());
-
-  if (document.HasParseError()) {
-    BLOG(1, helper::JSON::GetLastError(&document));
-    return false;
+bool SavedAdInfo::FromValue(const base::Value::Dict& root) {
+  if (const auto* value = root.FindString("uuid")) {
+    creative_instance_id = *value;
   }
-
-  if (document.HasMember("uuid")) {
-    creative_instance_id = document["uuid"].GetString();
-  }
-
   return true;
-}
-
-void SaveToJson(JsonWriter* writer, const SavedAdInfo& info) {
-  writer->StartObject();
-
-  writer->String("uuid");
-  writer->String(info.creative_instance_id.c_str());
-
-  writer->EndObject();
 }
 
 }  // namespace ads

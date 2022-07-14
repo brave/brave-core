@@ -25,8 +25,8 @@ struct ADS_EXPORT HistoryItemInfo final {
   bool operator==(const HistoryItemInfo& rhs) const;
   bool operator!=(const HistoryItemInfo& rhs) const;
 
-  std::string ToJson() const;
-  bool FromJson(const std::string& json);
+  base::Value::Dict ToValue() const;
+  bool FromValue(const base::Value::Dict& value);
 
   base::Time created_at;
   AdContentInfo ad_content;

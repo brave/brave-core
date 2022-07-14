@@ -5,9 +5,11 @@
 
 #include "bat/ads/notification_ad_info.h"
 
+#include "base/json/json_reader.h"
+#include "base/json/json_writer.h"
+#include "base/logging.h"
 #include "bat/ads/confirmation_type.h"
 #include "bat/ads/internal/base/logging_util.h"
-#include "bat/ads/internal/deprecated/json/json_helper.h"
 
 namespace ads {
 
@@ -33,98 +35,91 @@ bool NotificationAdInfo::IsValid() const {
   return true;
 }
 
-std::string NotificationAdInfo::ToJson() const {
-  std::string json;
-  SaveToJson(*this, &json);
-  return json;
+base::Value::Dict NotificationAdInfo::ToValue() const {
+  base::Value::Dict dict;
+  dict.Set("type", type.ToString());
+  dict.Set("uuid", placement_id);
+  dict.Set("creative_instance_id", creative_instance_id);
+  dict.Set("creative_set_id", creative_set_id);
+  dict.Set("campaign_id", campaign_id);
+  dict.Set("advertiser_id", advertiser_id);
+  dict.Set("segment", segment);
+  dict.Set("title", title);
+  dict.Set("body", body);
+  dict.Set("target_url", target_url.spec());
+  return dict;
 }
 
-bool NotificationAdInfo::FromJson(const std::string& json) {
-  rapidjson::Document document;
-  document.Parse(json.c_str());
-
-  if (document.HasParseError()) {
-    BLOG(1, helper::JSON::GetLastError(&document));
-    return false;
+bool NotificationAdInfo::FromValue(const base::Value::Dict& root) {
+  if (const auto* value = root.FindString("type")) {
+    type = AdType(*value);
   }
 
-  if (document.HasMember("type")) {
-    type = AdType(document["type"].GetString());
+  if (const auto* value = root.FindString("uuid")) {
+    placement_id = *value;
   }
 
-  if (document.HasMember("uuid")) {
-    placement_id = document["uuid"].GetString();
+  if (const auto* value = root.FindString("creative_instance_id")) {
+    creative_instance_id = *value;
   }
 
-  if (document.HasMember("creative_instance_id")) {
-    creative_instance_id = document["creative_instance_id"].GetString();
+  if (const auto* value = root.FindString("creative_set_id")) {
+    creative_set_id = *value;
   }
 
-  if (document.HasMember("creative_set_id")) {
-    creative_set_id = document["creative_set_id"].GetString();
+  if (const auto* value = root.FindString("campaign_id")) {
+    campaign_id = *value;
   }
 
-  if (document.HasMember("campaign_id")) {
-    campaign_id = document["campaign_id"].GetString();
+  if (const auto* value = root.FindString("advertiser_id")) {
+    advertiser_id = *value;
   }
 
-  if (document.HasMember("advertiser_id")) {
-    advertiser_id = document["advertiser_id"].GetString();
+  if (const auto* value = root.FindString("segment")) {
+    segment = *value;
   }
 
-  if (document.HasMember("segment")) {
-    segment = document["segment"].GetString();
+  if (const auto* value = root.FindString("title")) {
+    title = *value;
   }
 
-  if (document.HasMember("title")) {
-    title = document["title"].GetString();
+  if (const auto* value = root.FindString("body")) {
+    body = *value;
   }
 
-  if (document.HasMember("body")) {
-    body = document["body"].GetString();
-  }
-
-  if (document.HasMember("target_url")) {
-    target_url = GURL(document["target_url"].GetString());
+  if (const auto* value = root.FindString("target_url")) {
+    target_url = GURL(*value);
   }
 
   return true;
 }
 
-void SaveToJson(JsonWriter* writer, const NotificationAdInfo& info) {
-  writer->StartObject();
+std::string NotificationAdInfo::ToJson() const {
+  std::string json;
+  base::JSONWriter::Write(ToValue(), &json);
+  return json;
+}
 
-  writer->String("type");
-  writer->String(info.type.ToString().c_str());
+bool NotificationAdInfo::FromJson(const std::string& json) {
+  auto document = base::JSONReader::ReadAndReturnValueWithError(
+      json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
+                base::JSONParserOptions::JSON_PARSE_RFC);
 
-  writer->String("uuid");
-  writer->String(info.placement_id.c_str());
+  if (!document.value.has_value()) {
+    BLOG(1, "Invalid notification ad info. json="
+                << json << ", error line=" << document.error_line
+                << ", error column=" << document.error_column
+                << ", error message=" << document.error_message);
+    return false;
+  }
 
-  writer->String("creative_instance_id");
-  writer->String(info.creative_instance_id.c_str());
+  const base::Value::Dict* root = document.value->GetIfDict();
+  if (!root) {
+    BLOG(1, "Invalid notifcation ad info. json=" << json);
+    return false;
+  }
 
-  writer->String("creative_set_id");
-  writer->String(info.creative_set_id.c_str());
-
-  writer->String("campaign_id");
-  writer->String(info.campaign_id.c_str());
-
-  writer->String("advertiser_id");
-  writer->String(info.advertiser_id.c_str());
-
-  writer->String("segment");
-  writer->String(info.segment.c_str());
-
-  writer->String("title");
-  writer->String(info.title.c_str());
-
-  writer->String("body");
-  writer->String(info.body.c_str());
-
-  writer->String("target_url");
-  writer->String(info.target_url.spec().c_str());
-
-  writer->EndObject();
+  return FromValue(*root);
 }
 
 }  // namespace ads

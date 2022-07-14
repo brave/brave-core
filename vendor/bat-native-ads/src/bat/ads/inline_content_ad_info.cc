@@ -5,10 +5,11 @@
 
 #include "bat/ads/inline_content_ad_info.h"
 
-#include "base/values.h"
+#include "base/json/json_reader.h"
+#include "base/json/json_writer.h"
+#include "base/logging.h"
 #include "bat/ads/confirmation_type.h"
 #include "bat/ads/internal/base/logging_util.h"
-#include "bat/ads/internal/deprecated/json/json_helper.h"
 
 namespace ads {
 
@@ -45,94 +46,76 @@ bool InlineContentAdInfo::IsValid() const {
   return true;
 }
 
-base::DictionaryValue InlineContentAdInfo::ToValue() const {
-  base::DictionaryValue dictionary;
+base::Value::Dict InlineContentAdInfo::ToValue() const {
+  base::Value::Dict dict;
 
-  dictionary.SetStringKey("uuid", placement_id);
-  dictionary.SetStringKey("creativeInstanceId", creative_instance_id);
-  dictionary.SetStringKey("creativeSetId", creative_set_id);
-  dictionary.SetStringKey("campaignId", campaign_id);
-  dictionary.SetStringKey("advertiserId", advertiser_id);
-  dictionary.SetStringKey("segment", segment);
-  dictionary.SetStringKey("title", title);
-  dictionary.SetStringKey("description", description);
-  dictionary.SetStringKey("imageUrl", image_url.spec());
-  dictionary.SetStringKey("dimensions", dimensions);
-  dictionary.SetStringKey("ctaText", cta_text);
-  dictionary.SetStringKey("targetUrl", target_url.spec());
+  dict.Set("uuid", placement_id);
+  dict.Set("creativeInstanceId", creative_instance_id);
+  dict.Set("creativeSetId", creative_set_id);
+  dict.Set("campaignId", campaign_id);
+  dict.Set("advertiserId", advertiser_id);
+  dict.Set("segment", segment);
+  dict.Set("title", title);
+  dict.Set("description", description);
+  dict.Set("imageUrl", image_url.spec());
+  dict.Set("dimensions", dimensions);
+  dict.Set("ctaText", cta_text);
+  dict.Set("targetUrl", target_url.spec());
 
-  return dictionary;
+  return dict;
 }
 
-bool InlineContentAdInfo::FromValue(const base::Value& value) {
-  const base::DictionaryValue* dictionary = nullptr;
-  if (!(&value)->GetAsDictionary(&dictionary)) {
-    return false;
+bool InlineContentAdInfo::FromValue(const base::Value::Dict& root) {
+  if (const auto* value = root.FindString("type")) {
+    type = AdType(*value);
   }
 
-  const std::string* placement_id_value = dictionary->FindStringKey("uuid");
-  if (placement_id_value) {
-    placement_id = *placement_id_value;
+  if (const auto* value = root.FindString("uuid")) {
+    placement_id = *value;
   }
 
-  const std::string* creative_instance_id_value =
-      dictionary->FindStringKey("creativeInstanceId");
-  if (creative_instance_id_value) {
-    creative_instance_id = *creative_instance_id_value;
+  if (const auto* value = root.FindString("creative_instance_id")) {
+    creative_instance_id = *value;
   }
 
-  const std::string* creative_set_id_value =
-      dictionary->FindStringKey("creativeSetId");
-  if (creative_set_id_value) {
-    creative_set_id = *creative_set_id_value;
+  if (const auto* value = root.FindString("creative_set_id")) {
+    creative_set_id = *value;
   }
 
-  const std::string* campaign_id_value =
-      dictionary->FindStringKey("campaignId");
-  if (campaign_id_value) {
-    campaign_id = *campaign_id_value;
+  if (const auto* value = root.FindString("campaign_id")) {
+    campaign_id = *value;
   }
 
-  const std::string* advertiser_id_value =
-      dictionary->FindStringKey("advertiserId");
-  if (advertiser_id_value) {
-    advertiser_id = *campaign_id_value;
+  if (const auto* value = root.FindString("advertiser_id")) {
+    advertiser_id = *value;
   }
 
-  const std::string* segment_value = dictionary->FindStringKey("segment");
-  if (segment_value) {
-    segment = *segment_value;
+  if (const auto* value = root.FindString("segment")) {
+    segment = *value;
   }
 
-  const std::string* title_value = dictionary->FindStringKey("title");
-  if (title_value) {
-    title = *title_value;
+  if (const auto* value = root.FindString("title")) {
+    title = *value;
   }
 
-  const std::string* description_value =
-      dictionary->FindStringKey("description");
-  if (description_value) {
-    description = *description_value;
+  if (const auto* value = root.FindString("description")) {
+    description = *value;
   }
 
-  const std::string* image_url_value = dictionary->FindStringKey("imageUrl");
-  if (image_url_value) {
-    image_url = GURL(*image_url_value);
+  if (const auto* value = root.FindString("image_url")) {
+    image_url = GURL(*value);
   }
 
-  const std::string* dimensions_value = dictionary->FindStringKey("dimensions");
-  if (dimensions_value) {
-    dimensions = *dimensions_value;
+  if (const auto* value = root.FindString("dimensions")) {
+    dimensions = *value;
   }
 
-  const std::string* cta_text_value = dictionary->FindStringKey("ctaText");
-  if (cta_text_value) {
-    cta_text = *cta_text_value;
+  if (const auto* value = root.FindString("cta_text")) {
+    cta_text = *value;
   }
 
-  const std::string* target_url_value = dictionary->FindStringKey("targetUrl");
-  if (target_url_value) {
-    target_url = GURL(*target_url_value);
+  if (const auto* value = root.FindString("target_url")) {
+    target_url = GURL(*value);
   }
 
   return true;
@@ -140,117 +123,30 @@ bool InlineContentAdInfo::FromValue(const base::Value& value) {
 
 std::string InlineContentAdInfo::ToJson() const {
   std::string json;
-  SaveToJson(*this, &json);
+  base::JSONWriter::Write(ToValue(), &json);
   return json;
 }
 
 bool InlineContentAdInfo::FromJson(const std::string& json) {
-  rapidjson::Document document;
-  document.Parse(json.c_str());
+  auto document = base::JSONReader::ReadAndReturnValueWithError(
+      json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
+                base::JSONParserOptions::JSON_PARSE_RFC);
 
-  if (document.HasParseError()) {
-    BLOG(1, helper::JSON::GetLastError(&document));
+  if (!document.value.has_value()) {
+    BLOG(1, "Invalid inline content ad info. json="
+                << json << ", error line=" << document.error_line
+                << ", error column=" << document.error_column
+                << ", error message=" << document.error_message);
     return false;
   }
 
-  if (document.HasMember("type")) {
-    type = AdType(document["type"].GetString());
+  const base::Value::Dict* root = document.value->GetIfDict();
+  if (!root) {
+    BLOG(1, "Invalid inline content ad info. json=" << json);
+    return false;
   }
 
-  if (document.HasMember("uuid")) {
-    placement_id = document["uuid"].GetString();
-  }
-
-  if (document.HasMember("creative_instance_id")) {
-    creative_instance_id = document["creative_instance_id"].GetString();
-  }
-
-  if (document.HasMember("creative_set_id")) {
-    creative_set_id = document["creative_set_id"].GetString();
-  }
-
-  if (document.HasMember("campaign_id")) {
-    campaign_id = document["campaign_id"].GetString();
-  }
-
-  if (document.HasMember("advertiser_id")) {
-    advertiser_id = document["advertiser_id"].GetString();
-  }
-
-  if (document.HasMember("segment")) {
-    segment = document["segment"].GetString();
-  }
-
-  if (document.HasMember("title")) {
-    title = document["title"].GetString();
-  }
-
-  if (document.HasMember("description")) {
-    description = document["description"].GetString();
-  }
-
-  if (document.HasMember("image_url")) {
-    image_url = GURL(document["image_url"].GetString());
-  }
-
-  if (document.HasMember("dimensions")) {
-    dimensions = document["dimensions"].GetString();
-  }
-
-  if (document.HasMember("cta_text")) {
-    cta_text = document["cta_text"].GetString();
-  }
-
-  if (document.HasMember("target_url")) {
-    target_url = GURL(document["target_url"].GetString());
-  }
-
-  return true;
-}
-
-void SaveToJson(JsonWriter* writer, const InlineContentAdInfo& info) {
-  writer->StartObject();
-
-  writer->String("type");
-  writer->String(info.type.ToString().c_str());
-
-  writer->String("uuid");
-  writer->String(info.placement_id.c_str());
-
-  writer->String("creative_instance_id");
-  writer->String(info.creative_instance_id.c_str());
-
-  writer->String("creative_set_id");
-  writer->String(info.creative_set_id.c_str());
-
-  writer->String("campaign_id");
-  writer->String(info.campaign_id.c_str());
-
-  writer->String("advertiser_id");
-  writer->String(info.advertiser_id.c_str());
-
-  writer->String("segment");
-  writer->String(info.segment.c_str());
-
-  writer->String("title");
-  writer->String(info.title.c_str());
-
-  writer->String("description");
-  writer->String(info.description.c_str());
-
-  writer->String("image_url");
-  writer->String(info.image_url.spec().c_str());
-
-  writer->String("dimensions");
-  writer->String(info.dimensions.c_str());
-
-  writer->String("cta_text");
-  writer->String(info.cta_text.c_str());
-
-  writer->String("target_url");
-  writer->String(info.target_url.spec().c_str());
-
-  writer->EndObject();
+  return FromValue(*root);
 }
 
 }  // namespace ads

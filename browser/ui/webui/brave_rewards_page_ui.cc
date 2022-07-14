@@ -1300,7 +1300,8 @@ void RewardsDOMHandler::ToggleAdThumbUp(const base::Value::List& args) {
 
   ads::AdContentInfo ad_content;
   const base::Value& value = args[0];
-  ad_content.FromValue(value);
+  if (value.is_dict())
+    ad_content.FromValue(value.GetDict());
 
   ads_service_->ToggleAdThumbUp(
       ad_content.ToJson(), base::BindOnce(&RewardsDOMHandler::OnToggleAdThumbUp,
@@ -1316,8 +1317,8 @@ void RewardsDOMHandler::OnToggleAdThumbUp(const std::string& json) {
   const bool success = ad_content.FromJson(json);
   DCHECK(success);
 
-  const base::Value value = ad_content.ToValue();
-  CallJavascriptFunction("brave_rewards.onToggleAdThumbUp", value);
+  CallJavascriptFunction("brave_rewards.onToggleAdThumbUp",
+                         base::Value(ad_content.ToValue()));
 }
 
 void RewardsDOMHandler::ToggleAdThumbDown(const base::Value::List& args) {
@@ -1331,7 +1332,8 @@ void RewardsDOMHandler::ToggleAdThumbDown(const base::Value::List& args) {
 
   ads::AdContentInfo ad_content;
   const base::Value& value = args[0];
-  ad_content.FromValue(value);
+  if (value.is_dict())
+    ad_content.FromValue(value.GetDict());
 
   ads_service_->ToggleAdThumbDown(
       ad_content.ToJson(),
@@ -1348,8 +1350,8 @@ void RewardsDOMHandler::OnToggleAdThumbDown(const std::string& json) {
   const bool success = ad_content.FromJson(json);
   DCHECK(success);
 
-  const base::Value value = ad_content.ToValue();
-  CallJavascriptFunction("brave_rewards.onToggleAdThumbDown", value);
+  CallJavascriptFunction("brave_rewards.onToggleAdThumbDown",
+                         base::Value(ad_content.ToValue()));
 }
 
 void RewardsDOMHandler::ToggleAdOptIn(const base::Value::List& args) {
@@ -1421,7 +1423,8 @@ void RewardsDOMHandler::ToggleSavedAd(const base::Value::List& args) {
 
   ads::AdContentInfo ad_content;
   const base::Value& value = args[0];
-  ad_content.FromValue(value);
+  if (value.is_dict())
+    ad_content.FromValue(value.GetDict());
 
   ads_service_->ToggleSavedAd(
       ad_content.ToJson(), base::BindOnce(&RewardsDOMHandler::OnToggleSavedAd,
@@ -1437,8 +1440,8 @@ void RewardsDOMHandler::OnToggleSavedAd(const std::string& json) {
   const bool success = ad_content.FromJson(json);
   DCHECK(success);
 
-  const base::Value value = ad_content.ToValue();
-  CallJavascriptFunction("brave_rewards.onToggleSavedAd", value);
+  CallJavascriptFunction("brave_rewards.onToggleSavedAd",
+                         base::Value(ad_content.ToValue()));
 }
 
 void RewardsDOMHandler::ToggleFlaggedAd(const base::Value::List& args) {
@@ -1452,7 +1455,8 @@ void RewardsDOMHandler::ToggleFlaggedAd(const base::Value::List& args) {
 
   ads::AdContentInfo ad_content;
   const base::Value& value = args[0];
-  ad_content.FromValue(value);
+  if (value.is_dict())
+    ad_content.FromValue(value.GetDict());
 
   ads_service_->ToggleFlaggedAd(
       ad_content.ToJson(), base::BindOnce(&RewardsDOMHandler::OnToggleFlaggedAd,
@@ -1468,8 +1472,8 @@ void RewardsDOMHandler::OnToggleFlaggedAd(const std::string& json) {
   const bool success = ad_content.FromJson(json);
   DCHECK(success);
 
-  const base::Value value = ad_content.ToValue();
-  CallJavascriptFunction("brave_rewards.onToggleFlaggedAd", value);
+  CallJavascriptFunction("brave_rewards.onToggleFlaggedAd",
+                         base::Value(ad_content.ToValue()));
 }
 
 void RewardsDOMHandler::SaveAdsSetting(const base::Value::List& args) {
