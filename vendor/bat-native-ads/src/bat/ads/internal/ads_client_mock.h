@@ -87,10 +87,8 @@ class AdsClientMock : public AdsClient {
 
   MOCK_METHOD0(OnAdRewardsChanged, void());
 
-  MOCK_METHOD3(RecordP2AEvent,
-               void(const std::string& name,
-                    const mojom::P2AEventType type,
-                    const std::string& value));
+  MOCK_METHOD2(RecordP2AEvent,
+               void(const std::string& name, const std::string& value));
 
   MOCK_METHOD1(LogTrainingInstance,
                void(const std::vector<brave_federated::mojom::CovariatePtr>

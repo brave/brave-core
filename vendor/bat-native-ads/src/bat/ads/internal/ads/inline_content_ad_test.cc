@@ -88,7 +88,7 @@ TEST_F(BatAdsInlineContentAdIntegrationTest, TriggerViewedEvent) {
   // Arrange
   const std::string name =
       privacy::p2a::GetAdImpressionNameForAdType(AdType::kNotificationAd);
-  EXPECT_CALL(*ads_client_mock_, RecordP2AEvent(name, _, _)).Times(1);
+  EXPECT_CALL(*ads_client_mock_, RecordP2AEvent(name, _)).Times(1);
 
   // Act
   GetAds()->TriggerInlineContentAdEvent(

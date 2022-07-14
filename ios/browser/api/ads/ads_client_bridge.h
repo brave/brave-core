@@ -70,9 +70,7 @@
 - (base::Time)getTimePref:(const std::string&)path;
 - (void)clearPref:(const std::string&)path;
 - (bool)hasPrefPath:(const std::string&)path;
-- (void)recordP2AEvent:(const std::string&)name
-                  type:(const ads::mojom::P2AEventType)type
-                 value:(const std::string&)value;
+- (void)recordP2AEvent:(const std::string&)name value:(const std::string&)value;
 - (void)logTrainingInstance:
     (const std::vector<brave_federated::mojom::CovariatePtr>)training_instance;
 

@@ -51,7 +51,7 @@ class BatAdsNotificationAdIntegrationTest : public UnitTestBase {
   void ServeAd() {
     const std::string name =
         privacy::p2a::GetAdOpportunityNameForAdType(AdType::kNotificationAd);
-    EXPECT_CALL(*ads_client_mock_, RecordP2AEvent(name, _, _)).Times(1);
+    EXPECT_CALL(*ads_client_mock_, RecordP2AEvent(name, _)).Times(1);
 
     GetAds()->OnUnIdle(base::TimeDelta::Min(), /* was_locked */ false);
   }
@@ -129,7 +129,7 @@ TEST_F(BatAdsNotificationAdIntegrationTest, TriggerViewedEvent) {
 
   const std::string name =
       privacy::p2a::GetAdImpressionNameForAdType(AdType::kNotificationAd);
-  EXPECT_CALL(*ads_client_mock_, RecordP2AEvent(name, _, _)).Times(1);
+  EXPECT_CALL(*ads_client_mock_, RecordP2AEvent(name, _)).Times(1);
 
   ServeAd();
 }

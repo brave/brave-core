@@ -2359,26 +2359,20 @@ void AdsServiceImpl::OnBrowsingHistorySearchComplete(
 }
 
 void AdsServiceImpl::RecordP2AEvent(const std::string& name,
-                                    const ads::mojom::P2AEventType type,
                                     const std::string& value) {
-  switch (type) {
-    case ads::mojom::P2AEventType::kListType: {
-      absl::optional<base::Value> maybe_list = base::JSONReader::Read(value);
-      if (!maybe_list || !maybe_list->is_list()) {
-        break;
-      }
+  absl::optional<base::Value> maybe_list = base::JSONReader::Read(value);
+  if (!maybe_list || !maybe_list->is_list()) {
+    return;
+  }
 
-      base::ListValue* list = nullptr;
-      if (!maybe_list->GetAsList(&list)) {
-        break;
-      }
+  base::ListValue* list = nullptr;
+  if (!maybe_list->GetAsList(&list)) {
+    return;
+  }
 
-      for (auto& item : list->GetList()) {
-        RecordInWeeklyStorageAndEmitP2AHistogramAnswer(profile_->GetPrefs(),
-                                                       item.GetString());
-      }
-      break;
-    }
+  for (auto& item : list->GetList()) {
+    RecordInWeeklyStorageAndEmitP2AHistogramAnswer(profile_->GetPrefs(),
+                                                   item.GetString());
   }
 }
 
