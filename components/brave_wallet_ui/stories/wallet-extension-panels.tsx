@@ -458,7 +458,8 @@ export const _SignData = () => {
     coin: BraveWallet.CoinType.ETH,
     isEip712: true,
     domainHash: '',
-    primaryHash: ''
+    primaryHash: '',
+    messageBytes: undefined
   }]
 
   return (
@@ -913,7 +914,7 @@ _SetupWallet.story = {
 }
 
 export const _ConnectHardwareWallet = () => {
-  const onCancel = () => {
+  const onCancel = (accountAddress: string, coinType: BraveWallet.CoinType) => {
     // Doesn't do anything in storybook
   }
 
@@ -930,6 +931,7 @@ export const _ConnectHardwareWallet = () => {
     <StyledExtensionWrapper>
       <ConnectHardwareWalletPanel
         walletName='Ledger 1'
+        accountAddress='0x7d66c9ddAED3115d93Bd1790332f3Cd06Cf52B14'
         coinType={BraveWallet.CoinType.ETH}
         onCancel={onCancel}
         retryCallable={onConfirmTransaction}

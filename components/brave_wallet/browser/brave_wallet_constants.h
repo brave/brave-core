@@ -591,6 +591,8 @@ constexpr webui::LocalizedString kLocalizedStrings[] = {
      IDS_BRAVE_WALLET_HARDWARE_TRANSACTION_NO_MESSAGE_TO_SIGN_ERROR},
     {"braveWalletProcessMessageError",
      IDS_BRAVE_WALLET_HARDWARE_SIGN_MESSAGE_ERROR},
+    {"braveWalletHardwareOperationUnsupportedError",
+     IDS_BRAVE_WALLET_HARDWARE_OPERATION_UNSUPPORTED_ERROR},
     {"braveWalletUnknownKeyringError",
      IDS_BRAVE_WALLET_HARDWARE_UNKNOWN_KEYRING_ERROR},
     {"braveWalletBridgeCommandInProgress",

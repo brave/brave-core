@@ -927,26 +927,11 @@ void BraveWalletService::GetPendingSignMessageRequests(
   std::move(callback).Run(std::move(requests));
 }
 
-void BraveWalletService::NotifySignMessageRequestProcessed(bool approved,
-                                                           int id) {
-  if (sign_message_requests_.empty() ||
-      sign_message_requests_.front()->id != id) {
-    VLOG(1) << "id: " << id << " is not expected, should be "
-            << sign_message_requests_.front()->id;
-    return;
-  }
-  auto callback = std::move(sign_message_callbacks_.front());
-  sign_message_requests_.pop_front();
-  sign_message_callbacks_.pop_front();
-
-  std::move(callback).Run(approved, std::string(), std::string());
-}
-
-void BraveWalletService::NotifySignMessageHardwareRequestProcessed(
+void BraveWalletService::NotifySignMessageRequestProcessed(
     bool approved,
     int id,
-    const std::string& signature,
-    const std::string& error) {
+    mojom::ByteArrayStringUnionPtr signature,
+    const absl::optional<std::string>& error) {
   if (sign_message_requests_.empty() ||
       sign_message_requests_.front()->id != id) {
     VLOG(1) << "id: " << id << " is not expected, should be "
@@ -957,7 +942,7 @@ void BraveWalletService::NotifySignMessageHardwareRequestProcessed(
   sign_message_requests_.pop_front();
   sign_message_callbacks_.pop_front();
 
-  std::move(callback).Run(approved, signature, error);
+  std::move(callback).Run(approved, std::move(signature), error);
 }
 
 void BraveWalletService::GetPendingSignTransactionRequests(
@@ -975,8 +960,11 @@ void BraveWalletService::GetPendingSignTransactionRequests(
   std::move(callback).Run(std::move(requests));
 }
 
-void BraveWalletService::NotifySignTransactionRequestProcessed(bool approved,
-                                                               int id) {
+void BraveWalletService::NotifySignTransactionRequestProcessed(
+    bool approved,
+    int id,
+    mojom::ByteArrayStringUnionPtr signature,
+    const absl::optional<std::string>& error) {
   if (sign_transaction_requests_.empty() ||
       sign_transaction_requests_.front()->id != id) {
     VLOG(1) << "id: " << id << " is not expected, should be "
@@ -987,7 +975,7 @@ void BraveWalletService::NotifySignTransactionRequestProcessed(bool approved,
   sign_transaction_requests_.pop_front();
   sign_transaction_callbacks_.pop_front();
 
-  std::move(callback).Run(approved);
+  std::move(callback).Run(approved, std::move(signature), error);
 }
 
 void BraveWalletService::GetPendingSignAllTransactionsRequests(
@@ -1007,7 +995,9 @@ void BraveWalletService::GetPendingSignAllTransactionsRequests(
 
 void BraveWalletService::NotifySignAllTransactionsRequestProcessed(
     bool approved,
-    int id) {
+    int id,
+    absl::optional<std::vector<mojom::ByteArrayStringUnionPtr>> signatures,
+    const absl::optional<std::string>& error) {
   if (sign_all_transactions_requests_.empty() ||
       sign_all_transactions_requests_.front()->id != id) {
     VLOG(1) << "id: " << id << " is not expected, should be "
@@ -1018,7 +1008,7 @@ void BraveWalletService::NotifySignAllTransactionsRequestProcessed(
   sign_all_transactions_requests_.pop_front();
   sign_all_transactions_callbacks_.pop_front();
 
-  std::move(callback).Run(approved);
+  std::move(callback).Run(approved, std::move(signatures), error);
 }
 
 void BraveWalletService::AddObserver(
@@ -1395,7 +1385,7 @@ void BraveWalletService::CancelAllSignMessageCallbacks() {
     auto callback = std::move(sign_message_callbacks_.front());
     sign_message_requests_.pop_front();
     sign_message_callbacks_.pop_front();
-    std::move(callback).Run(false, std::string(), std::string());
+    std::move(callback).Run(false, nullptr, absl::nullopt);
   }
 }
 
@@ -1404,7 +1394,7 @@ void BraveWalletService::CancelAllSignTransactionCallbacks() {
     auto callback = std::move(sign_transaction_callbacks_.front());
     sign_transaction_requests_.pop_front();
     sign_transaction_callbacks_.pop_front();
-    std::move(callback).Run(false);
+    std::move(callback).Run(false, nullptr, absl::nullopt);
   }
 }
 
@@ -1413,7 +1403,7 @@ void BraveWalletService::CancelAllSignAllTransactionsCallbacks() {
     auto callback = std::move(sign_all_transactions_callbacks_.front());
     sign_all_transactions_requests_.pop_front();
     sign_all_transactions_callbacks_.pop_front();
-    std::move(callback).Run(false);
+    std::move(callback).Run(false, absl::nullopt, absl::nullopt);
   }
 }
 
