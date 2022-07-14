@@ -22,14 +22,14 @@
 class Profile;
 class TabStripModel;
 
-class BraveTodayActionView : public views::LabelButton,
+class BraveNewsActionView : public views::LabelButton,
                              public TabStripModelObserver,
                              public BraveNewsTabHelper::PageFeedsObserver {
  public:
-  BraveTodayActionView(Profile* profile, TabStripModel* tab_strip);
-  ~BraveTodayActionView() override;
-  BraveTodayActionView(const BraveTodayActionView&) = delete;
-  BraveTodayActionView& operator=(const BraveTodayActionView&) = delete;
+  BraveNewsActionView(Profile* profile, TabStripModel* tab_strip);
+  ~BraveNewsActionView() override;
+  BraveNewsActionView(const BraveNewsActionView&) = delete;
+  BraveNewsActionView& operator=(const BraveNewsActionView&) = delete;
 
   void Init();
   void Update();

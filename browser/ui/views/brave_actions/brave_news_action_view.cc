@@ -45,9 +45,9 @@ namespace {
 SkColor selectedColor = SkColorSetRGB(30, 33, 82);
 }
 
-BraveTodayActionView::BraveTodayActionView(Profile* profile,
+BraveNewsActionView::BraveNewsActionView(Profile* profile,
                                            TabStripModel* tab_strip)
-    : views::LabelButton(base::BindRepeating(&BraveTodayActionView::ShowBubble,
+    : views::LabelButton(base::BindRepeating(&BraveNewsActionView::ShowBubble,
                                              base::Unretained(this))),
       profile_(profile),
       tab_strip_(tab_strip) {
@@ -72,13 +72,13 @@ BraveTodayActionView::BraveTodayActionView(Profile* profile,
 
   should_show_.Init(brave_news::prefs::kShouldShowToolbarButton,
                     profile->GetPrefs(),
-                    base::BindRepeating(&BraveTodayActionView::Update,
+                    base::BindRepeating(&BraveNewsActionView::Update,
                                         base::Unretained(this)));
 
   Update();
 }
 
-BraveTodayActionView::~BraveTodayActionView() {
+BraveNewsActionView::~BraveNewsActionView() {
   tab_strip_->RemoveObserver(this);
   if (tab_strip_->GetActiveWebContents()) {
     BraveNewsTabHelper::FromWebContents(tab_strip_->GetActiveWebContents())
@@ -86,11 +86,11 @@ BraveTodayActionView::~BraveTodayActionView() {
   }
 }
 
-void BraveTodayActionView::Init() {
+void BraveNewsActionView::Init() {
   Update();
 }
 
-void BraveTodayActionView::Update() {
+void BraveNewsActionView::Update() {
   if (!should_show_.GetValue()) {
     SetVisible(false);
     return;
@@ -123,7 +123,7 @@ void BraveTodayActionView::Update() {
   SetVisible(!!feed);
 }
 
-SkPath BraveTodayActionView::GetHighlightPath() const {
+SkPath BraveNewsActionView::GetHighlightPath() const {
   auto highlight_insets = gfx::Insets();
   gfx::Rect rect(GetPreferredSize());
   rect.Inset(highlight_insets);
@@ -134,19 +134,19 @@ SkPath BraveTodayActionView::GetHighlightPath() const {
   return path;
 }
 
-std::u16string BraveTodayActionView::GetTooltipText(const gfx::Point& p) const {
+std::u16string BraveNewsActionView::GetTooltipText(const gfx::Point& p) const {
   return l10n_util::GetStringUTF16(IDS_BRAVE_NEWS_ACTION_VIEW_TOOLTIP);
 }
 
 std::unique_ptr<views::LabelButtonBorder>
-BraveTodayActionView::CreateDefaultBorder() const {
+BraveNewsActionView::CreateDefaultBorder() const {
   std::unique_ptr<views::LabelButtonBorder> border =
       LabelButton::CreateDefaultBorder();
   border->set_insets(gfx::Insets::TLBR(3, 0, 3, 0));
   return border;
 }
 
-void BraveTodayActionView::OnTabStripModelChanged(
+void BraveNewsActionView::OnTabStripModelChanged(
     TabStripModel* tab_strip_model,
     const TabStripModelChange& change,
     const TabStripSelectionChange& selection) {
@@ -165,12 +165,12 @@ void BraveTodayActionView::OnTabStripModelChanged(
   Update();
 }
 
-void BraveTodayActionView::OnAvailableFeedsChanged(
+void BraveNewsActionView::OnAvailableFeedsChanged(
     const std::vector<BraveNewsTabHelper::FeedDetails>& feeds) {
   Update();
 }
 
-void BraveTodayActionView::ShowBubble() {
+void BraveNewsActionView::ShowBubble() {
   if (!tab_strip_->GetActiveWebContents())
     return;
 

@@ -111,7 +111,7 @@ void BraveActionsContainer::Init() {
     actions_[brave_rewards_extension_id].position_ = ACTION_ANY_POSITION;
   }
 
-  AddActionViewForToday();
+  AddActionViewForNews();
 
   // React to Brave Rewards preferences changes.
   show_brave_rewards_button_.Init(
@@ -282,13 +282,13 @@ void BraveActionsContainer::AddActionViewForRewards() {
   rewards_action_btn_->Update();
 }
 
-void BraveActionsContainer::AddActionViewForToday() {
-  today_action_btn_ =
-      AddChildViewAt(std::make_unique<BraveTodayActionView>(
+void BraveActionsContainer::AddActionViewForNews() {
+  news_action_btn_ =
+      AddChildViewAt(std::make_unique<BraveNewsActionView>(
                          browser_->profile(), browser_->tab_strip_model()),
                      0);
-  today_action_btn_->SetPreferredSize(GetToolbarActionSize());
-  today_action_btn_->Init();
+  news_action_btn_->SetPreferredSize(GetToolbarActionSize());
+  news_action_btn_->Init();
 }
 
 void BraveActionsContainer::Update() {
@@ -321,8 +321,8 @@ void BraveActionsContainer::UpdateVisibility() {
     can_show = can_show || rewards_action_btn_->GetVisible();
   }
 
-  if (today_action_btn_)
-    today_action_btn_->Update();
+  if (news_action_btn_)
+    news_action_btn_->Update();
 
   for (auto& [_, value] : actions_) {
     if (value.view_) {

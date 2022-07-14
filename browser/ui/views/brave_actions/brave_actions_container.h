@@ -33,6 +33,7 @@ class BraveActionsContainerTest;
 class BraveRewardsActionView;
 class BraveShieldsActionView;
 class RewardsBrowserTest;
+class BraveNewsActionView;
 
 namespace extensions {
 class ExtensionActionManager;
@@ -163,7 +164,7 @@ class BraveActionsContainer : public views::View,
   void AddActionStubForRewards();
   void AddActionViewForRewards();
   void AddActionViewForShields();
-  void AddActionViewForToday();
+  void AddActionViewForNews();
   void RemoveAction(const std::string& id);
   void UpdateActionVisibility(const std::string& id);
   views::Button* GetActionButton(const std::string& id) const;
@@ -215,6 +216,7 @@ class BraveActionsContainer : public views::View,
 
   raw_ptr<BraveShieldsActionView> shields_action_btn_ = nullptr;
   raw_ptr<BraveRewardsActionView> rewards_action_btn_ = nullptr;
+  raw_ptr<BraveNewsActionView> news_action_btn_ = nullptr;
 
   // Listen for Brave Rewards preferences changes.
   BooleanPrefMember brave_rewards_enabled_;
