@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 
 from __future__ import print_function
-import errno
 import json
 import os
 import sys
@@ -75,7 +74,7 @@ def get_platform_key():
 
 
 def get_env_var(name):
-    return (os.environ.get('BRAVE_' + name) or
+    return (os.environ.get('BRAVE_' + name, '') or
             os.environ.get('npm_config_BRAVE_' + name, ''))
 
 
