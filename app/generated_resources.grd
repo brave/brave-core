@@ -573,6 +573,9 @@ are declared in tools/grit/grit_rule.gni.
           <message name="IDS_CONTENT_CONTEXT_READ_ANYTHING" desc="Context menu menuitem to open page in Read Anything view">
            Open in Reader
           </message>
+          <message name="IDS_CONTENT_CONTEXT_RUN_PDF_OCR" desc="Context menu menuitem that runs a local machine intelligence model to extract the content of the current PDF and pass it to assisstive technologies.">
+           Recognize P&amp;DF text
+          </message>
           <message name="IDS_CONTENT_CONTEXT_RELOAD" desc="The name of the Reload command in the content area context menu">
             &amp;Reload
           </message>
@@ -759,6 +762,9 @@ are declared in tools/grit/grit_rule.gni.
           <message name="IDS_CONTENT_CONTEXT_SELECTALL" desc="The name of the Select All command in the content area context menu">
             Select &amp;all
           </message>
+          <message name="IDS_CONTENT_CONTEXT_PARTIAL_TRANSLATE" desc="The name of the Partial Translate command in the content area context menu">
+            &amp;Translate to <ph name="LANGUAGE">$1<ex>English</ex></ph>
+          </message>
           <message name="IDS_CONTENT_CONTEXT_SEARCHWEBFOR" desc="The name of the Search the Web for “string” command in the content area context menu">
             &amp;Search <ph name="SEARCH_ENGINE">$1<ex>Brave</ex></ph> for “<ph name="SEARCH_TERMS">$2<ex>flowers</ex></ph>”
           </message>
@@ -817,6 +823,9 @@ are declared in tools/grit/grit_rule.gni.
           </message>
           <message name="IDS_CONTENT_CONTEXT_READ_ANYTHING" desc="Context menu menuitem to open page in Read Anything view">
            Open in Reader
+          </message>
+          <message name="IDS_CONTENT_CONTEXT_RUN_PDF_OCR" desc="Context menu menuitem that runs a local machine intelligence model to extract the content of the current PDF and pass it to assisstive technologies.">
+           Recognize P&amp;DF text
           </message>
           <message name="IDS_CONTENT_CONTEXT_RELOAD" desc="In Title Case: The name of the Reload command in the content area context menu">
             &amp;Reload
@@ -1015,6 +1024,9 @@ are declared in tools/grit/grit_rule.gni.
           </message>
           <message name="IDS_CONTENT_CONTEXT_SELECTALL" desc="In Title Case: The name of the Select All command in the content area context menu">
             Select &amp;All
+          </message>
+          <message name="IDS_CONTENT_CONTEXT_PARTIAL_TRANSLATE" desc="In Title Case: The name of the Partial Translate command in the content area context menu">
+            &amp;Translate to <ph name="LANGUAGE">$1<ex>English</ex></ph>
           </message>
           <message name="IDS_CONTENT_CONTEXT_SEARCHWEBFOR" desc="In Title Case: The name of the Search the Web for “string” command in the content area context menu">
             &amp;Search <ph name="SEARCH_ENGINE">$1<ex>Brave</ex></ph> for “<ph name="SEARCH_TERMS">$2<ex>flowers</ex></ph>”
@@ -2357,6 +2369,9 @@ are declared in tools/grit/grit_rule.gni.
       </message>
       <message name="IDS_DOWNLOAD_BUBBLE_REVIEW" desc="Label for the button prompting the dialog containing the enterprise administrator's message explaining the violation.">
         Review
+      </message>
+      <message name="IDS_DOWNLOAD_BUBBLE_RETRY" desc="Label for the button prompting to retry a failed download.">
+        Try again
       </message>
       <message name="IDS_DOWNLOAD_BUBBLE_INTERRUPTED_STATUS_DISK_FULL" desc="Status text for a download item that was interrupted because there is not enough room on the disk to download this file.">
         Out of storage space
@@ -3963,14 +3978,14 @@ are declared in tools/grit/grit_rule.gni.
         <message name="IDS_EXTENSION_BLOCKED_ACTION_BUBBLE_OK_BUTTON" desc="The text of the button to proceed with the page refresh for running an extension.">
           Reload
         </message>
-        <message name="IDS_EXTENSION_BLOCKED_ACTION_BUBBLE_SINGLE_EXTENSION_TITLE" desc="Title of the bubble to tell users that in order to run an extension, they'll need to refresh the page.">
+        <message name="IDS_EXTENSION_BLOCKED_ACTION_BUBBLE_SINGLE_EXTENSION_TITLE" desc="Title of the bubble to tell users that in order to run or block an extension, they'll need to refresh the page.">
           Reload the page to use "<ph name="EXTENSION_NAME">$1<ex>Gmail Checker</ex></ph>"
+        </message>
+        <message name="IDS_EXTENSION_BLOCKED_ACTION_BUBBLE_MULTIPLE_EXTENSIONS_TITLE" desc="Title of the bubble to tell users that in order to run or block an extension, they'll need to refresh the page.">
+          Reload the page to use these extensions
         </message>
         <message name="IDS_EXTENSION_BLOCKED_ACTION_BUBBLE_UPDATE_PERMISSIONS_TITLE" desc="Title of the bubble to tell users that in order to change site permissions, they'll need to refresh the page.">
           Reload the page to apply your changes
-        </message>
-        <message name="IDS_EXTENSION_BLOCKED_ACTION_BUBBLE_CHECKBOX_LABEL" desc="The label of the checkbox to always allow the extensions to run on the current site.">
-          Always allow on this site
         </message>
       </if>
 
@@ -4463,6 +4478,16 @@ are declared in tools/grit/grit_rule.gni.
         <message name="IDS_EXTENSION_PROMPT_WARNING_ENTERPRISE_PLATFORMKEYS" desc="Permission string for enterprise platform keys permission.">
           Perform security-related tasks for your organization, such as managing certificates and keys stored on the device
         </message>
+        <if expr="is_win">
+          <message name="IDS_EXTENSION_PROMPT_WARNING_ENTERPRISE_REPORTING_PRIVATE_ENABLED_WIN" desc="Permission string for enterprise private reporting permission on Windows.">
+            Read information about your browser, OS, device, installed software, registry values and files
+          </message>
+        </if>
+        <if expr="is_macosx or is_linux">
+          <message name="IDS_EXTENSION_PROMPT_WARNING_ENTERPRISE_REPORTING_PRIVATE_ENABLED_LINUX_AND_MACOS" desc="Permission string for enterprise private reporting permission on Linux and MacOS.">
+            Read information about your browser, OS, device, installed software and files
+          </message>
+        </if>
         <message name="IDS_EXTENSION_PROMPT_WARNING_ENTERPRISE_REPORTING_PRIVATE" desc="Permission string for enterprise private reporting permission.">
           Read information about your browser, OS, and device
         </message>
@@ -6677,7 +6702,10 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_SIDE_PANEL_TITLE" desc="Title of the Side Panel">
         Side Panel
       </message>
-
+      <message name="IDS_SIDE_PANEL_COMBO_BOX_GOOGLE_LENS_LABEL" desc="The name of the Google Lens in the side panel combo box">
+        Google Lens
+      </message>
+      
       <!-- Read Anything strings -->
       <!-- TODO(crbug.com/1266555): Add final strings and make them translateable. -->
       <message name="IDS_READ_ANYTHING_TITLE" desc="Title of the Read Anything feature, which gives users an accessible reading experience." translateable="false">
@@ -6806,7 +6834,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
           Open with
         </message>
         <message name="IDS_INTENT_PICKER_BUBBLE_VIEW_REMEMBER_SELECTION" desc="Message contained in a checkbox that must be marked in order for the intent picker to not be shown again for a similar URL.">
-          Remember my choice
+          Remember this choice
         </message>
         <message name="IDS_INTENT_PICKER_BUBBLE_VIEW_OPEN" desc="Message contained in a button to continue the navigation in an app selected by the user.">
           Open
@@ -9334,6 +9362,12 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
         </message>
         <message name="IDS_SIGNIN_DICE_WEB_INTERCEPT_CREATE_BUBBLE_TITLE_V2" desc="Title of the web signin interception bubble. 'Separate' is an action verb. The prompt is shown to let the user choose to keep the browsing activity for a new account in the same profile as an existing one or to move it to a new profile.">
           Separate your browsing?
+        </message>
+        <message name="IDS_SIGNIN_DICE_WEB_INTERCEPT_MANAGED_DISCLAIMER" desc="Enterprise disclaimer for a managed account in the signin interception bubble.">
+          This new profile will be managed by your organization. <ph name="BEGIN_LINK">&lt;a href="$1" target="_blank"&gt;<ex>https://help.google.com/articleLink</ex></ph>Learn more<ph name="END_LINK">&lt;/a&gt;</ph>
+        </message>
+        <message name="IDS_SIGNIN_DICE_WEB_INTERCEPT_MANAGED_BY_DISCLAIMER" desc="Enterprise disclaimer for a managed account in the signin interception bubble, with the manager domain name.">
+          This new profile will be managed by <ph name="DOMAIN">$1<ex>example.com</ex></ph>. <ph name="BEGIN_LINK">&lt;a href="$2" target="_blank"&gt;<ex>https://help.google.com/articleLink</ex></ph>Learn more<ph name="END_LINK">&lt;/a&gt;</ph>
         </message>
       </if>
 
@@ -12404,29 +12438,6 @@ Please help our engineers fix this problem. Tell us what happened right before y
       Open now
     </message>
 
-    <!-- Tailored security dialog for consented primary accounts -->
-    <message name="IDS_TAILORED_SECURITY_ENABLED_MODAL_TITLE" desc="Title shown in the tab modal dialog when the account tailored security setting changes for a consented primary account">
-      Enhanced Safe Browsing is on
-    </message>
-    <message name="IDS_TAILORED_SECURITY_DISABLED_MODAL_TITLE" desc="Title shown in the tab modal dialog when the account tailored security setting changes for a consented primary account">
-      Enhanced Safe Browsing is off
-    </message>
-
-    <message name="IDS_TAILORED_SECURITY_ENABLED_MODAL_MAIN_TEXT" desc="Title shown in the tab modal dialog when the account tailored security setting changes for a consented primary account">
-      You have Brave's strongest security against dangerous websites, downloads and extensions
-    </message>
-    <message name="IDS_TAILORED_SECURITY_DISABLED_MODAL_MAIN_TEXT" desc="Title shown in the tab modal dialog when the account tailored security setting changes for a consented primary account">
-      You're getting standard security protection. To get more protection against dangerous websites, downloads, and extensions, turn on Enhanced Safe Browsing.
-    </message>
-    <message name="IDS_TAILORED_SECURITY_MODAL_ACCEPT_BUTTON" desc="The text on the accept button in the tab modal dialog when the account tailored security setting changes for a consented primary account">
-      OK
-    </message>
-    <message name="IDS_TAILORED_SECURITY_MODAL_SETTINGS_BUTTON" desc="The text on the cancel button in the tab modal dialog when the account tailored security setting changes for a consented primary account">
-      Brave settings
-    </message>
-
-
-
     <!-- Tailored security dialog for unconsented primary accounts -->
     <message name="IDS_TAILORED_SECURITY_UNCONSENTED_MODAL_TITLE" desc="Title shown in the tab modal dialog when the account tailored security setting changes for an unconsented primary account">
       Also turn on Enhanced Safe Browsing for this Brave profile?
@@ -12897,26 +12908,26 @@ Please help our engineers fix this problem. Tell us what happened right before y
 
     <!-- Automated Password Change on Desktop strings -->
     <if expr="not is_android">
-      <message name="IDS_AUTOFILL_ASSISTANT_PASSWORD_CHANGE_ONBOARDING_TITLE" translateable="false" desc="The title for the Automated Password Change on Desktop onboarding dialog. The onboarding dialog is a modal dialog that is shown if a user has not previously consented to using Assistant features.">
+      <message name="IDS_AUTOFILL_ASSISTANT_PASSWORD_CHANGE_ONBOARDING_TITLE" desc="The title for the Automated Password Change on Desktop onboarding dialog. The onboarding dialog is a modal dialog that is shown if a user has not previously consented to using Assistant features.">
         Let Brave Assistant help you change your password
       </message>
-      <message name="IDS_AUTOFILL_ASSISTANT_PASSWORD_CHANGE_ONBOARDING_DESCRIPTION" translateable="false" desc="The description / sub-title of the Automated Password Change on Desktop onboarding dialog.">
+      <message name="IDS_AUTOFILL_ASSISTANT_PASSWORD_CHANGE_ONBOARDING_DESCRIPTION" desc="The description / sub-title of the Automated Password Change on Desktop onboarding dialog.">
         Brave Assistant in Brave can complete actions across websites for you
       </message>
-      <message name="IDS_AUTOFILL_ASSISTANT_PASSWORD_CHANGE_ONBOARDING_CONSENT_TEXT" translateable="false" desc="The description of what kind of data Brave will send and process in order to enable Automated Password Change. This is shown at the bottom of the onboarding dialog.">
-        To help you complete tasks, Brave will receive the URLs and contents of sites on which you use Assistant, as well as information you submit through Assistant. This information may be stored in your Brave sync chain. You can turn it off in Brave settings. <ph name="LEARN_MORE">$1<ex>Learn more</ex></ph>
+      <message name="IDS_AUTOFILL_ASSISTANT_PASSWORD_CHANGE_ONBOARDING_CONSENT_TEXT" desc="The description of what kind of data Brave will send and process in order to enable Automated Password Change. This is shown at the bottom of the onboarding dialog.">
+        To help you complete tasks, Brave will receive the URLs and contents of sites on which you use Assistant, as well as information you submit through Assistant. This information may be stored in your Brave sync chain. You can turn off Assistant in Brave settings. <ph name="LEARN_MORE">$1<ex>Learn more</ex></ph>
       </message>
-      <message name="IDS_AUTOFILL_ASSISTANT_PASSWORD_CHANGE_ONBOARDING_LEARN_MORE" translateable="false" desc="The text displayed on a link on the onboarding dialog that a user can click to navigate to a Brave website with detailed information on how Automated Password Change on Desktop/ Assistant works and what data is collected.">
+      <message name="IDS_AUTOFILL_ASSISTANT_PASSWORD_CHANGE_ONBOARDING_LEARN_MORE" desc="The text displayed on a link on the onboarding dialog that a user can click to navigate to a Brave website with detailed information on how Automated Password Change on Desktop/ Assistant works and what data is collected.">
         Learn more
       </message>
-      <message name="IDS_AUTOFILL_ASSISTANT_PASSWORD_CHANGE_ONBOARDING_BUTTON_CANCEL_TEXT" translateable="false" desc="The text on the button that declines the onboarding for Automated Password Change on Desktop.">
+      <message name="IDS_AUTOFILL_ASSISTANT_PASSWORD_CHANGE_ONBOARDING_BUTTON_CANCEL_TEXT" desc="The text on the button that declines the onboarding for Automated Password Change on Desktop.">
         Cancel
       </message>
-      <message name="IDS_AUTOFILL_ASSISTANT_PASSWORD_CHANGE_ONBOARDING_BUTTON_ACCEPT_TEXT" translateable="false" desc="The text on the button that declines the onboarding for Automated Password Change on Desktop.">
+      <message name="IDS_AUTOFILL_ASSISTANT_PASSWORD_CHANGE_ONBOARDING_BUTTON_ACCEPT_TEXT" desc="The text on the button that declines the onboarding for Automated Password Change on Desktop.">
         I agree
       </message>
-      <message name="IDS_AUTOFILL_ASSISTANT_PASSWORD_CHANGE_STARTING_SCREEN_TITLE" translateable="false" desc="The title shown on the side panel after an Automated Password Change flow has been started. This message is shown until the first response from a script is received that resets the initial state.">
-        Opening <ph name="URL">$1<ex>www.example.com</ex></ph>...
+      <message name="IDS_AUTOFILL_ASSISTANT_PASSWORD_CHANGE_STARTING_SCREEN_TITLE" desc="The title shown on the side panel after an Automated Password Change flow has been started. This message is shown until the first response from a script is received that resets the initial state.">
+        Opening <ph name="URL">$1<ex>example.com</ex></ph>...
       </message>
     </if>
   </messages>

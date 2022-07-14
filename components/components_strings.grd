@@ -344,6 +344,7 @@
       </if>
       <if expr="is_android">
         <part file="android_system_error_page_strings.grdp" />
+        <part file="external_intents_strings.grdp" />
       </if>
       <if expr="is_ios">
         <part file="management_ios_strings.grdp" />
@@ -524,6 +525,9 @@
 
       <message name="IDS_PATCH_SERVICE_DISPLAY_NAME" desc="The display name (in the system task manager, etc) of the service process used for patching file operations.">
         Patch Service
+      </message>
+      <message name="IDS_PASSWORD_MANAGER_CSV_PASSWORD_PARSER_SERVICE_DISPLAY_NAME" desc="The display name (in the system task manager, etc) of the service process used for parsing a csv passwords file.">
+        CSV Password Parser Service
       </message>
       <message name="IDS_UNZIP_SERVICE_DISPLAY_NAME" desc="The display name (in the system task manager, etc) of the service process used for unzipping files.">
         Unzip Service

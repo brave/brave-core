@@ -974,10 +974,10 @@ Trust tokens improve privacy on the web and can’t be used to find out who you 
         Add <ph name="SITE">%1$s<ex>example.com</ex></ph>
       </message>
       <message name="IDS_PRIVACY_SANDBOX_ADD_INTEREST_SNACKBAR" desc="Text on a snackbar after an ad personalization interest was added to the Topics API of the Privacy Sandbox.">
-        Interest added
+        Brave can consider this interest
       </message>
       <message name="IDS_PRIVACY_SANDBOX_ADD_SITE_SNACKBAR" desc="Text on a snackbar after an ad personalization interest was added to the FLEDGE API of the Privacy Sandbox.">
-        Site added
+        Site can define interests
       </message>
       <message name="IDS_PRIVACY_SANDBOX_REMOVE_INTEREST_BUTTON_DESCRIPTION" desc="Content description for button that removes an ad interest for the Topics API of the Privacy Sandbox.">
         Remove <ph name="INTEREST">%1$s<ex>Acting and Theater</ex></ph>
@@ -1605,6 +1605,9 @@ Your Brave account may have other forms of browsing history like searches and ac
       <message name="IDS_LANGUAGES_SRP_SUBTITLE" desc="Subtitle warning a user that the language of their keyboard will not change if they change the application language of Brave on Android.">
         Your keyboard won’t change
       </message>
+      <message name="IDS_LANGUAGES_MORE_LANGUAGES" desc="Text used in a language picker to hide languages that a user is less likely to select. [CHAR_LIMIT=32]">
+        More languages
+      </message>
       <message name="IDS_LANGUAGES_SRP_LOADING_TEXT" desc="Text to display while a language pack is being downloaded.">
         Loading <ph name="LANG">%1$s<ex>Hindi</ex></ph>
       </message>
@@ -1857,10 +1860,6 @@ Your Brave account may have other forms of browsing history like searches and ac
       </message>
       <message name="IDS_ACCOUNT_MANAGEMENT_CHILD_CONTENT_ALL" desc="Setting that permits child accounts to visit any websites.">
         Allow all sites
-      </message>
-
-      <message name="IDS_POWERED_BY_CHROME_MESSAGE" desc="A message indicating that the current page is running in Brave.">
-        Powered by Brave
       </message>
 
       <!-- Sync strings in account management dialog -->
@@ -4222,6 +4221,9 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       <message name="IDS_TWA_RUNNING_IN_CHROME" desc="Message on a snackbar indicating that the current Activity may use Brave data (the rest of the app may not be).">
         Running in Brave
       </message>
+      <message name="IDS_TWA_RUNNING_IN_CHROME_TEMPLATE" desc="Message template that used to indicating that the current Activity may use Brave data (the rest of the app may not be). [CHAR_LIMIT=32]">
+        Running in <ph name="APP_NAME">%1$s<ex>Brave</ex></ph>
+      </message>
       <message name="IDS_TWA_RUNNING_IN_CHROME_V2" desc="Updated message on a snackbar indicating that the current Activity may use Brave data (the rest of the app may not be).">
         You'll see your <ph name="SITE_NAME">%1$s<ex>www.youtube.com</ex></ph> sign-in status, browsing data, and site data in Brave
       </message>
@@ -4620,15 +4622,6 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       <message name="IDS_SHARING_SENDING_NOTIFICATION_TITLE" desc="Title text displayed in a sharing sending notification.">
         Sharing to <ph name="DEVICE_NAME">%1$s<ex>Pixel 3</ex></ph>
       </message>
-      <message name="IDS_SHARING_NO_DEVICES_AVAILABLE_TITLE" desc="Text to show when no device targets are available for sharing.">
-        Turn on sync to share across devices
-      </message>
-      <message name="IDS_SHARING_NO_DEVICES_AVAILABLE_TEXT" desc="Text to show when no device targets are available for sharing.">
-        To share something from your phone to another device, turn on sync in Brave settings on both devices
-      </message>
-      <message name="IDS_SHARING_CHROME_SETTINGS" desc="Text shown in a button when user has turned off sync.">
-        Go to Brave settings
-      </message>
 
       <!-- Sharing Hub -->
       <message name="IDS_SHARING_HUB_NO_DEVICES_AVAILABLE_TEXT" desc="Text to show when no device targets are available for sharing.">
@@ -4719,9 +4712,6 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       </message>
       <message name="IDS_SHARED_CLIPBOARD_NOTIFICATION_TEXT" desc="Content text displayed in a shared clipboard notification.">
         Copied to your clipboard
-      </message>
-      <message name="IDS_SHARED_CLIPBOARD_SHARE_ACTIVITY_TITLE" desc="Title of the Shared Clipboard Share activity that will appear in the Android share dialog.">
-        Send text to Your Devices
       </message>
 
       <!-- Sms Fetcher -->

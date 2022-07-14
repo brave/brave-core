@@ -448,6 +448,10 @@ are declared in tools/grit/grit_rule.gni.
       <if expr="not use_titlecase">
         </if>
       <if expr="enable_extensions">
+        <if expr="is_win">
+          </if>
+        <if expr="is_macosx or is_linux">
+          </if>
         <if expr="reven">
           </if>
         <if expr="not reven">
