@@ -6,9 +6,6 @@ specific_include_rules = {
   "json_helper.h": [
     "+rapidjson",
   ],
-  "notification_ads.cc": [
-    "+brave/common/brave_channel_info.h",
-  ],
   "version_number_user_data.cc": [
     "+brave/components/version_info/version_info.h",
   ]
