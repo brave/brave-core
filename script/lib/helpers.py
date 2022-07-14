@@ -6,7 +6,6 @@
 from __future__ import print_function
 from builtins import range
 import os
-import json
 import requests
 from .config import get_raw_version, get_env_var
 
@@ -32,7 +31,7 @@ def get_channel_display_name():
 def call_github_api(url, headers):
     try:
         r = requests.get(url, headers=headers)
-    except requests.exceptions.ConnectionError as e:
+    except requests.exceptions.ConnectionError:
         print("Error: Received requests.exceptions.ConnectionError, Exiting...")
         exit(1)
     except Exception as e:
