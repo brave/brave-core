@@ -11,17 +11,6 @@ import("//ui/webui/resources/tools/generate_grd.gni")
 preprocess_folder =
     "$root_gen_dir/brave/browser/resources/sidebar/bookmarks/preprocessed"
 
-generate_grd("build_grdp") {
-  grd_prefix = "sidebar_bookmarks"
-  out_grd = "$target_gen_dir/resources.grdp"
-  deps = [ ":build_ts" ]
-  manifest_files = [
-    "$root_gen_dir/brave/browser/resources/sidebar/bookmarks/tsconfig.manifest",
-  ]
-  input_files = [ "bookmarks.html" ]
-  input_files_base_dir = rebase_path(".", "//")
-}
-
 preprocess_if_expr("preprocess") {
   in_folder = "./"
   out_folder = preprocess_folder
@@ -82,4 +71,14 @@ ts_library("build_ts") {
     ":preprocess_generated",
     ":preprocess_mojo",
   ]
+}
+
+generate_grd("build_grdp") {
+  grd_prefix = "sidebar_bookmarks"
+  out_grd = "$target_gen_dir/resources.grdp"
+  deps = [ ":build_ts" ]
+  manifest_files =
+      filter_include(get_target_outputs(":build_ts"), [ "*.manifest" ])
+  input_files = [ "bookmarks.html" ]
+  input_files_base_dir = rebase_path(".", "//")
 }
