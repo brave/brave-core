@@ -1933,6 +1933,9 @@ Are you sure you want to do this?
     <message name="IDS_OPTIMISM" desc="Brave Wallet network selection button text(network name)" translateable="false">
       Optimism
     </message>
+    <message name="IDS_AURORA" desc="Brave Wallet network selection button text(network name)" translateable="false">
+      Aurora Mainnet
+    </message>
     <message name="IDS_LOCALHOST" desc="Brave Wallet network selection button text(network name)" translateable="false">
       Localhost
     </message>
@@ -1968,6 +1971,9 @@ Are you sure you want to do this?
     </message>
     <message name="IDS_OPTIMISM_SHORT" desc="Brave Wallet network selection button text(network name short)" translateable="false">
       Optimism
+    </message>
+    <message name="IDS_AURORA_SHORT" desc="Brave Wallet network selection button text(network name short)" translateable="false">
+      Aurora
     </message>
     <message name="IDS_MARKET_PRICE_IN" desc="Brave Wallet buy-send-swap section text">
       Market Price in <ph name="ASSET">%1$s<ex>ETH</ex></ph>

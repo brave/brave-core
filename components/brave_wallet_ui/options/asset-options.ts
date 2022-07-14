@@ -11,6 +11,7 @@ import {
   FILECOINIconUrl
 } from '../assets/asset-icons'
 import {
+  AuroraIcon,
   CeloIcon,
   FantomIcon,
   OptimismIcon
@@ -20,6 +21,10 @@ import { AllNetworksOption } from './network-filter-options'
 export function makeNetworkAsset (network: BraveWallet.NetworkInfo) {
   let logo
   switch (true) {
+    case network.chainId === BraveWallet.AURORA_MAINNET_CHAIN_ID:
+      logo = AuroraIcon
+      break
+
     case network.chainId === BraveWallet.OPTIMISM_MAINNET_CHAIN_ID:
       logo = OptimismIcon
       break

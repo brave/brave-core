@@ -713,7 +713,7 @@ TEST_F(BraveWalletUtilsUnitTest, KnownEthChainExists) {
   UpdateCustomNetworks(&prefs, &values);
 
   auto known_chains = GetAllKnownEthChains(&prefs);
-  EXPECT_EQ(known_chains.size(), 12u);
+  EXPECT_EQ(known_chains.size(), 13u);
   for (auto& known_chain : known_chains) {
     EXPECT_TRUE(KnownEthChainExists(known_chain->chain_id));
   }
@@ -887,7 +887,8 @@ TEST_F(BraveWalletUtilsUnitTest, GetKnownEthChain) {
       brave_wallet::mojom::kLocalhostChainId,
       brave_wallet::mojom::kBinanceSmartChainMainnetChainId,
       brave_wallet::mojom::kCeloMainnetChainId,
-      brave_wallet::mojom::kOptimismMainnetChainId};
+      brave_wallet::mojom::kOptimismMainnetChainId,
+      brave_wallet::mojom::kAuroraMainnetChainId};
 
   auto known_chains = brave_wallet::GetAllKnownNetworksForTesting();
   ASSERT_FALSE(known_chains.empty());
@@ -990,8 +991,8 @@ TEST_F(BraveWalletUtilsUnitTest, GetAllKnownEthNetworkIds) {
       {"mainnet", mojom::kPolygonMainnetChainId,
        mojom::kBinanceSmartChainMainnetChainId, mojom::kCeloMainnetChainId,
        mojom::kAvalancheMainnetChainId, mojom::kFantomMainnetChainId,
-       mojom::kOptimismMainnetChainId, "rinkeby", "ropsten", "goerli", "kovan",
-       "http://localhost:7545/"});
+       mojom::kOptimismMainnetChainId, mojom::kAuroraMainnetChainId, "rinkeby",
+       "ropsten", "goerli", "kovan", "http://localhost:7545/"});
   ASSERT_EQ(GetAllKnownNetworksForTesting().size(),
             expected_network_ids.size());
   EXPECT_EQ(GetAllKnownEthNetworkIds(), expected_network_ids);
