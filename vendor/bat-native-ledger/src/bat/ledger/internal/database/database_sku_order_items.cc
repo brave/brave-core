@@ -105,9 +105,7 @@ void DatabaseSKUOrderItems::GetRecordsByOrderId(
           _1,
           callback);
 
-  ledger_->ledger_client()->RunDBTransaction(
-      std::move(transaction),
-      transaction_callback);
+  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 void DatabaseSKUOrderItems::OnGetRecordsByOrderId(

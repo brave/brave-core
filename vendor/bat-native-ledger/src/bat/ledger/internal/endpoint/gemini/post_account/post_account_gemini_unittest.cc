@@ -5,6 +5,7 @@
 
 #include <memory>
 #include <string>
+#include <utility>
 
 #include "base/test/task_environment.h"
 #include "bat/ledger/internal/endpoint/gemini/post_account/post_account_gemini.h"
@@ -64,7 +65,7 @@ TEST_F(GeminiPostAccountTest, ServerOK) {
               }],
               "memo_reference_code": "GEMAPLLV"
             })";
-            callback(response);
+            std::move(callback).Run(response);
           }));
 
   post_account_->Request(
@@ -85,7 +86,7 @@ TEST_F(GeminiPostAccountTest, ServerError401) {
             response.status_code = net::HTTP_UNAUTHORIZED;
             response.url = request->url;
             response.body = "";
-            callback(response);
+            std::move(callback).Run(response);
           }));
 
   post_account_->Request(
@@ -106,7 +107,7 @@ TEST_F(GeminiPostAccountTest, ServerError403) {
             response.status_code = net::HTTP_FORBIDDEN;
             response.url = request->url;
             response.body = "";
-            callback(response);
+            std::move(callback).Run(response);
           }));
 
   post_account_->Request(
@@ -127,7 +128,7 @@ TEST_F(GeminiPostAccountTest, ServerError404) {
             response.status_code = net::HTTP_NOT_FOUND;
             response.url = request->url;
             response.body = "";
-            callback(response);
+            std::move(callback).Run(response);
           }));
 
   post_account_->Request(
@@ -148,7 +149,7 @@ TEST_F(GeminiPostAccountTest, ServerErrorRandom) {
             response.status_code = 418;
             response.url = request->url;
             response.body = "";
-            callback(response);
+            std::move(callback).Run(response);
           }));
 
   post_account_->Request(

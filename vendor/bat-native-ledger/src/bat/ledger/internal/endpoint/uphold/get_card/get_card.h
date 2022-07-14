@@ -3,11 +3,12 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVELEDGER_ENDPOINT_UPHOLD_GET_CARD_GET_CARD_H_
-#define BRAVELEDGER_ENDPOINT_UPHOLD_GET_CARD_GET_CARD_H_
+#ifndef BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_ENDPOINT_UPHOLD_GET_CARD_GET_CARD_H_
+#define BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_ENDPOINT_UPHOLD_GET_CARD_GET_CARD_H_
 
 #include <string>
 
+#include "base/callback_forward.h"
 #include "bat/ledger/ledger.h"
 
 // GET https://api.uphold.com/v0/me/cards/{wallet_address}
@@ -76,9 +77,8 @@ class LedgerImpl;
 namespace endpoint {
 namespace uphold {
 
-using GetCardCallback = std::function<void(
-    const type::Result result,
-    const double available)>;
+using GetCardCallback =
+    base::OnceCallback<void(const type::Result result, const double available)>;
 
 class GetCard {
  public:
@@ -99,9 +99,7 @@ class GetCard {
       const std::string& body,
       double* available);
 
-  void OnRequest(
-      const type::UrlResponse& response,
-      GetCardCallback callback);
+  void OnRequest(GetCardCallback callback, const type::UrlResponse& response);
 
   LedgerImpl* ledger_;  // NOT OWNED
 };
@@ -110,4 +108,4 @@ class GetCard {
 }  // namespace endpoint
 }  // namespace ledger
 
-#endif  // BRAVELEDGER_ENDPOINT_UPHOLD_GET_CARD_GET_CARD_H_
+#endif  // BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_ENDPOINT_UPHOLD_GET_CARD_GET_CARD_H_

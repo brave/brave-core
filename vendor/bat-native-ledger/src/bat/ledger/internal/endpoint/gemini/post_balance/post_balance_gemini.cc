@@ -75,28 +75,29 @@ type::Result PostBalance::ParseBody(const std::string& body,
 
 void PostBalance::Request(const std::string& token,
                           PostBalanceCallback callback) {
-  auto url_callback = std::bind(&PostBalance::OnRequest, this, _1, callback);
+  auto url_callback = base::BindOnce(
+      &PostBalance::OnRequest, base::Unretained(this), std::move(callback));
   auto request = type::UrlRequest::New();
   request->url = GetUrl();
   request->method = type::UrlMethod::POST;
   request->headers = RequestAuthorization(token);
-  ledger_->LoadURL(std::move(request), url_callback);
+  ledger_->LoadURL(std::move(request), std::move(url_callback));
 }
 
-void PostBalance::OnRequest(const type::UrlResponse& response,
-                            PostBalanceCallback callback) {
+void PostBalance::OnRequest(PostBalanceCallback callback,
+                            const type::UrlResponse& response) {
   ledger::LogUrlResponse(__func__, response);
 
   type::Result result = CheckStatusCode(response.status_code);
 
   if (result != type::Result::LEDGER_OK) {
-    callback(result, 0.0);
+    std::move(callback).Run(result, 0.0);
     return;
   }
 
   double available;
   result = ParseBody(response.body, &available);
-  callback(result, available);
+  std::move(callback).Run(result, available);
 }
 
 }  // namespace gemini

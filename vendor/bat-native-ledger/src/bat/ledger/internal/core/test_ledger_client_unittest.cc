@@ -4,6 +4,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "bat/ledger/internal/core/test_ledger_client.h"
+#include "base/test/bind.h"
 #include "base/test/task_environment.h"
 #include "sql/statement.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -29,7 +30,10 @@ TEST_F(TestLedgerClientTest, LoadURLIsAsync) {
   auto request = mojom::UrlRequest::New();
   request->url = "https://brave.com";
   bool finished = false;
-  client_.LoadURL(std::move(request), [&finished](auto&) { finished = true; });
+  client_.LoadURL(
+      std::move(request),
+      base::BindLambdaForTesting(
+          [&finished](const type::UrlResponse&) { finished = true; }));
   ASSERT_FALSE(finished);
   task_environment_.RunUntilIdle();
   ASSERT_TRUE(finished);

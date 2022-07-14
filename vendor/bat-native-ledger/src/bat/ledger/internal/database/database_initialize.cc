@@ -34,13 +34,9 @@ void DatabaseInitialize::Start(
   command->type = type::DBCommand::Type::INITIALIZE;
   transaction->commands.push_back(std::move(command));
 
-  ledger_->ledger_client()->RunDBTransaction(
-      std::move(transaction),
-      std::bind(&DatabaseInitialize::OnInitialize,
-          this,
-          _1,
-          execute_create_script,
-          callback));
+  ledger_->RunDBTransaction(std::move(transaction),
+                            std::bind(&DatabaseInitialize::OnInitialize, this,
+                                      _1, execute_create_script, callback));
 }
 
 void DatabaseInitialize::OnInitialize(
@@ -103,9 +99,7 @@ void DatabaseInitialize::ExecuteCreateScript(
   command->command = script;
   transaction->commands.push_back(std::move(command));
 
-  ledger_->ledger_client()->RunDBTransaction(
-      std::move(transaction),
-      script_callback);
+  ledger_->RunDBTransaction(std::move(transaction), script_callback);
 }
 
 void DatabaseInitialize::OnExecuteCreateScript(

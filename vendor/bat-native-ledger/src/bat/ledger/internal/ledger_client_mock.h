@@ -55,9 +55,9 @@ class MockLedgerClient : public LedgerClient {
 
   MOCK_METHOD1(URIEncode, std::string(const std::string& value));
 
-  MOCK_METHOD2(LoadURL, void(
-      type::UrlRequestPtr request,
-      client::LoadURLCallback callback));
+  MOCK_METHOD2(LoadURL,
+               void(type::UrlRequestPtr request,
+                    client::LoadURLCallback callback));
 
   MOCK_METHOD2(SetPublisherExclude, void(
       const std::string& publisher_key,
@@ -150,9 +150,8 @@ class MockLedgerClient : public LedgerClient {
 
   MOCK_METHOD0(ReconcileStampReset, void());
 
-  MOCK_METHOD2(RunDBTransaction, void(
-      type::DBTransactionPtr,
-      client::RunDBTransactionCallback));
+  MOCK_METHOD2(RunDBTransaction,
+               void(type::DBTransactionPtr, client::RunDBTransactionCallback));
 
   MOCK_METHOD1(GetCreateScript, void(client::GetCreateScriptCallback));
 

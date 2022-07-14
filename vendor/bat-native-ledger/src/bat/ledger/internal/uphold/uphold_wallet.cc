@@ -203,8 +203,8 @@ void UpholdWallet::OnCreateCard(const type::Result result,
     return callback(type::Result::CONTINUE);
   }
 
-  GetAnonFunds(
-      std::bind(&UpholdWallet::OnGetAnonFunds, this, _1, _2, id, callback));
+  GetAnonFunds(base::BindOnce(&UpholdWallet::OnGetAnonFunds,
+                              base::Unretained(this), id, callback));
 }
 
 void UpholdWallet::GetAnonFunds(
@@ -212,28 +212,30 @@ void UpholdWallet::GetAnonFunds(
   // if we don't have user funds in anon card anymore
   // we can skip balance server ping
   if (!ledger_->state()->GetFetchOldBalanceEnabled()) {
-    return callback(type::Result::LEDGER_OK, type::Balance::New());
+    return std::move(callback).Run(type::Result::LEDGER_OK,
+                                   type::Balance::New());
   }
 
   const auto rewards_wallet = ledger_->wallet()->GetWallet();
   if (!rewards_wallet) {
     BLOG(1, "Rewards wallet is null!");
     ledger_->state()->SetFetchOldBalanceEnabled(false);
-    return callback(type::Result::LEDGER_OK, type::Balance::New());
+    return std::move(callback).Run(type::Result::LEDGER_OK,
+                                   type::Balance::New());
   }
 
   if (rewards_wallet->payment_id.empty()) {
     BLOG(0, "Payment ID is empty!");
-    return callback(type::Result::LEDGER_ERROR, nullptr);
+    return std::move(callback).Run(type::Result::LEDGER_ERROR, nullptr);
   }
 
-  promotion_server_->get_wallet_balance()->Request(callback);
+  promotion_server_->get_wallet_balance()->Request(std::move(callback));
 }
 
-void UpholdWallet::OnGetAnonFunds(const type::Result result,
-                                  type::BalancePtr balance,
-                                  const std::string& id,
-                                  ledger::ResultCallback callback) const {
+void UpholdWallet::OnGetAnonFunds(const std::string& id,
+                                  ledger::ResultCallback callback,
+                                  const type::Result result,
+                                  type::BalancePtr balance) const {
   auto uphold_wallet = ledger_->uphold()->GetWallet();
   if (!uphold_wallet) {
     BLOG(0, "Uphold wallet is null!");

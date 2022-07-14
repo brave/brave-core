@@ -54,7 +54,7 @@ TEST_F(GeminiPostRecipientIdTest, ServerOK) {
               "recipient_id": "60f9be89-ada7-486d-9cef-f6d3a10886d7",
               "label": "deposit_address"
             })";
-            callback(response);
+            std::move(callback).Run(response);
           }));
 
   post_recipient_id_->Request(
@@ -79,7 +79,7 @@ TEST_F(GeminiPostRecipientIdTest, ServerOK_Unverified) {
             })";
             response.headers.insert(std::pair<std::string, std::string>(
                 "www-authenticate", "Bearer error=\"unverified_account\""));
-            callback(response);
+            std::move(callback).Run(response);
           }));
 
   post_recipient_id_->Request(
@@ -98,7 +98,7 @@ TEST_F(GeminiPostRecipientIdTest, ServerError401) {
             response.status_code = net::HTTP_UNAUTHORIZED;
             response.url = request->url;
             response.body = "";
-            callback(response);
+            std::move(callback).Run(response);
           }));
 
   post_recipient_id_->Request(
@@ -117,7 +117,7 @@ TEST_F(GeminiPostRecipientIdTest, ServerError403) {
             response.status_code = net::HTTP_FORBIDDEN;
             response.url = request->url;
             response.body = "";
-            callback(response);
+            std::move(callback).Run(response);
           }));
 
   post_recipient_id_->Request(
@@ -136,7 +136,7 @@ TEST_F(GeminiPostRecipientIdTest, ServerError404) {
             response.status_code = net::HTTP_NOT_FOUND;
             response.url = request->url;
             response.body = "";
-            callback(response);
+            std::move(callback).Run(response);
           }));
 
   post_recipient_id_->Request(
@@ -155,7 +155,7 @@ TEST_F(GeminiPostRecipientIdTest, ServerErrorRandom) {
             response.status_code = 418;
             response.url = request->url;
             response.body = "";
-            callback(response);
+            std::move(callback).Run(response);
           }));
 
   post_recipient_id_->Request(

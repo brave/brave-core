@@ -77,7 +77,17 @@ class LedgerImpl : public Ledger {
   virtual database::Database* database() const;
 
   virtual void LoadURL(type::UrlRequestPtr request,
+                       client::LegacyLoadURLCallback callback);
+
+  virtual void LoadURL(type::UrlRequestPtr request,
                        client::LoadURLCallback callback);
+
+  virtual void RunDBTransaction(
+      type::DBTransactionPtr transaction,
+      client::LegacyRunDBTransactionCallback callback);
+
+  virtual void RunDBTransaction(type::DBTransactionPtr transaction,
+                                client::RunDBTransactionCallback callback);
 
   bool IsShuttingDown() const;
 
@@ -331,6 +341,13 @@ class LedgerImpl : public Ledger {
 
   template <typename T>
   void WhenReady(T callback);
+
+  template <typename LoadURLCallback>
+  void LoadURLImpl(type::UrlRequestPtr request, LoadURLCallback callback);
+
+  template <typename RunDBTransactionCallback>
+  void RunDBTransactionImpl(type::DBTransactionPtr transaction,
+                            RunDBTransactionCallback callback);
 
   LedgerClient* ledger_client_;
 

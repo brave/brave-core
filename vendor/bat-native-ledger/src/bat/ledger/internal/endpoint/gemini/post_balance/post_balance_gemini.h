@@ -8,6 +8,7 @@
 
 #include <string>
 
+#include "base/callback_forward.h"
 #include "bat/ledger/ledger.h"
 
 // GET https://gemini.jp/api/link/v1/account/inventory
@@ -47,7 +48,7 @@ namespace endpoint {
 namespace gemini {
 
 using PostBalanceCallback =
-    std::function<void(const type::Result result, const double available)>;
+    base::OnceCallback<void(const type::Result result, const double available)>;
 
 class PostBalance {
  public:
@@ -61,8 +62,8 @@ class PostBalance {
 
   type::Result ParseBody(const std::string& body, double* available);
 
-  void OnRequest(const type::UrlResponse& response,
-                 PostBalanceCallback callback);
+  void OnRequest(PostBalanceCallback callback,
+                 const type::UrlResponse& response);
 
   LedgerImpl* ledger_;  // NOT OWNED
 };

@@ -6,6 +6,7 @@
 
 #include <memory>
 #include <string>
+#include <utility>
 #include <vector>
 
 #include "base/test/task_environment.h"
@@ -77,7 +78,7 @@ TEST_F(PostSuggestionsClaimTest, ServerOK) {
             response.body = R"(
               {"drainId": "1af0bf71-c81c-4b18-9188-a0d3c4a1b53b"}
             )";
-            callback(response);
+            std::move(callback).Run(response);
           }));
 
   claim_->Request(*redeem_,
@@ -95,7 +96,7 @@ TEST_F(PostSuggestionsClaimTest, ServerNeedsRetry) {
             response.status_code = 200;
             response.url = request->url;
             response.body = "";
-            callback(response);
+            std::move(callback).Run(response);
           }));
 
   claim_->Request(*redeem_,
@@ -113,7 +114,7 @@ TEST_F(PostSuggestionsClaimTest, ServerError400) {
             response.status_code = 400;
             response.url = request->url;
             response.body = "";
-            callback(response);
+            std::move(callback).Run(response);
           }));
 
   claim_->Request(*redeem_,
@@ -131,7 +132,7 @@ TEST_F(PostSuggestionsClaimTest, ServerError500) {
             response.status_code = 500;
             response.url = request->url;
             response.body = "";
-            callback(response);
+            std::move(callback).Run(response);
           }));
 
   claim_->Request(*redeem_,

@@ -88,9 +88,7 @@ void DatabasePublisherInfo::InsertOrUpdate(
       _1,
       callback);
 
-  ledger_->ledger_client()->RunDBTransaction(
-      std::move(transaction),
-      transaction_callback);
+  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 void DatabasePublisherInfo::GetRecord(
@@ -137,9 +135,7 @@ void DatabasePublisherInfo::GetRecord(
       _1,
       callback);
 
-  ledger_->ledger_client()->RunDBTransaction(
-      std::move(transaction),
-      transaction_callback);
+  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 void DatabasePublisherInfo::OnGetRecord(
@@ -225,9 +221,7 @@ void DatabasePublisherInfo::GetPanelRecord(
       _1,
       callback);
 
-  ledger_->ledger_client()->RunDBTransaction(
-      std::move(transaction),
-      transaction_callback);
+  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 void DatabasePublisherInfo::OnGetPanelRecord(
@@ -283,7 +277,7 @@ void DatabasePublisherInfo::RestorePublishers(ledger::ResultCallback callback) {
 
   transaction->commands.push_back(std::move(command));
 
-  ledger_->ledger_client()->RunDBTransaction(
+  ledger_->RunDBTransaction(
       std::move(transaction),
       [this, callback](type::DBCommandResponsePtr response) {
         if (!response ||
@@ -332,9 +326,7 @@ void DatabasePublisherInfo::GetExcludedList(
       _1,
       callback);
 
-  ledger_->ledger_client()->RunDBTransaction(
-      std::move(transaction),
-      transaction_callback);
+  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 void DatabasePublisherInfo::OnGetExcludedList(

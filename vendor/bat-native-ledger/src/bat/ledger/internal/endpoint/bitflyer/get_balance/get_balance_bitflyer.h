@@ -8,6 +8,7 @@
 
 #include <string>
 
+#include "base/callback_forward.h"
 #include "bat/ledger/ledger.h"
 
 // GET https://bitflyer.com/api/link/v1/account/inventory
@@ -47,7 +48,7 @@ namespace endpoint {
 namespace bitflyer {
 
 using GetBalanceCallback =
-    std::function<void(const type::Result result, const double available)>;
+    base::OnceCallback<void(const type::Result result, const double available)>;
 
 class GetBalance {
  public:
@@ -63,8 +64,8 @@ class GetBalance {
 
   type::Result ParseBody(const std::string& body, double* available);
 
-  void OnRequest(const type::UrlResponse& response,
-                 GetBalanceCallback callback);
+  void OnRequest(GetBalanceCallback callback,
+                 const type::UrlResponse& response);
 
   LedgerImpl* ledger_;  // NOT OWNED
 };

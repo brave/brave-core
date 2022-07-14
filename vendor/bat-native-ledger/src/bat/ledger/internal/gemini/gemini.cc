@@ -104,39 +104,40 @@ void Gemini::FetchBalance(FetchBalanceCallback callback) {
   const auto wallet = GetWallet();
 
   if (!wallet || wallet->token.empty() || wallet->address.empty()) {
-    callback(type::Result::LEDGER_OK, 0.0);
+    std::move(callback).Run(type::Result::LEDGER_OK, 0.0);
     return;
   }
 
   if (wallet->status != type::WalletStatus::VERIFIED) {
     BLOG(1, "Wallet is not verified");
-    callback(type::Result::LEDGER_OK, 0.0);
+    std::move(callback).Run(type::Result::LEDGER_OK, 0.0);
     return;
   }
 
-  auto url_callback =
-      std::bind(&Gemini::OnFetchBalance, this, _1, _2, callback);
+  auto url_callback = base::BindOnce(
+      &Gemini::OnFetchBalance, base::Unretained(this), std::move(callback));
 
-  gemini_server_->post_balance()->Request(wallet->token, url_callback);
+  gemini_server_->post_balance()->Request(wallet->token,
+                                          std::move(url_callback));
 }
 
-void Gemini::OnFetchBalance(const type::Result result,
-                            const double available,
-                            FetchBalanceCallback callback) {
+void Gemini::OnFetchBalance(FetchBalanceCallback callback,
+                            const type::Result result,
+                            const double available) {
   if (result == type::Result::EXPIRED_TOKEN) {
     BLOG(0, "Expired token");
     DisconnectWallet();
-    callback(type::Result::EXPIRED_TOKEN, 0.0);
+    std::move(callback).Run(type::Result::EXPIRED_TOKEN, 0.0);
     return;
   }
 
   if (result != type::Result::LEDGER_OK) {
     BLOG(0, "Couldn't get balance");
-    callback(type::Result::LEDGER_ERROR, 0.0);
+    std::move(callback).Run(type::Result::LEDGER_ERROR, 0.0);
     return;
   }
 
-  callback(type::Result::LEDGER_OK, available);
+  std::move(callback).Run(type::Result::LEDGER_OK, available);
 }
 
 void Gemini::TransferFunds(const double amount,

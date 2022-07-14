@@ -70,14 +70,13 @@ TEST_F(UpholdTest, FetchBalanceConnectedWallet) {
       .WillByDefault(Return(wallet));
   EXPECT_CALL(*mock_ledger_client_, LoadURL(_, _)).Times(0);
 
-  FetchBalanceCallback callback = std::bind(
-      [&](type::Result result, double balance) {
+  FetchBalanceCallback callback =
+      base::BindOnce([](type::Result result, double balance) {
         ASSERT_EQ(result, type::Result::LEDGER_OK);
         ASSERT_EQ(balance, 0.0);
-      },
-      _1, _2);
+      });
 
-  uphold_->FetchBalance(callback);
+  uphold_->FetchBalance(std::move(callback));
 }
 
 absl::optional<type::WalletStatus> GetStatusFromJSON(
@@ -379,7 +378,7 @@ TEST_P(Authorize, Paths) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(
           [&](type::UrlRequestPtr, client::LoadURLCallback callback) {
-            callback(uphold_oauth_response);
+            std::move(callback).Run(uphold_oauth_response);
           });
 
   ON_CALL(*mock_ledger_impl_, database())
@@ -597,7 +596,7 @@ TEST_P(GetUser, Paths) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(
           [&](type::UrlRequestPtr, client::LoadURLCallback callback) {
-            callback(uphold_get_user_response);
+            std::move(callback).Run(uphold_get_user_response);
           });
 
   ON_CALL(*mock_ledger_impl_, database())
@@ -947,13 +946,13 @@ TEST_P(GetCapabilities, Paths) {
   EXPECT_CALL(*mock_ledger_client_, LoadURL(_, _))
       .Times(AtMost(3))
       .WillOnce([&](type::UrlRequestPtr, client::LoadURLCallback callback) {
-        callback(uphold_get_user_response);
+        std::move(callback).Run(uphold_get_user_response);
       })
       .WillOnce([&](type::UrlRequestPtr, client::LoadURLCallback callback) {
-        callback(uphold_get_capabilities_response);
+        std::move(callback).Run(uphold_get_capabilities_response);
       })
       .WillOnce([&](type::UrlRequestPtr, client::LoadURLCallback callback) {
-        callback(rewards_services_delete_claim_response);
+        std::move(callback).Run(rewards_services_delete_claim_response);
       });
 
   ON_CALL(*mock_ledger_impl_, database())
@@ -1249,19 +1248,19 @@ TEST_P(GetCardID, Paths) {
   EXPECT_CALL(*mock_ledger_client_, LoadURL(_, _))
       .Times(AtMost(5))
       .WillOnce([&](type::UrlRequestPtr, client::LoadURLCallback callback) {
-        callback(uphold_get_user_response);
+        std::move(callback).Run(uphold_get_user_response);
       })
       .WillOnce([&](type::UrlRequestPtr, client::LoadURLCallback callback) {
-        callback(uphold_get_capabilities_response);
+        std::move(callback).Run(uphold_get_capabilities_response);
       })
       .WillOnce([&](type::UrlRequestPtr, client::LoadURLCallback callback) {
-        callback(uphold_list_cards_response);
+        std::move(callback).Run(uphold_list_cards_response);
       })
       .WillOnce([&](type::UrlRequestPtr, client::LoadURLCallback callback) {
-        callback(uphold_create_card_response);
+        std::move(callback).Run(uphold_create_card_response);
       })
       .WillOnce([&](type::UrlRequestPtr, client::LoadURLCallback callback) {
-        callback(uphold_update_card_response);
+        std::move(callback).Run(uphold_update_card_response);
       });
 
   ON_CALL(*mock_ledger_impl_, database())
@@ -1396,16 +1395,16 @@ TEST_P(GetAnonFunds, Paths) {
   EXPECT_CALL(*mock_ledger_client_, LoadURL(_, _))
       .Times(AtMost(4))
       .WillOnce([&](type::UrlRequestPtr, client::LoadURLCallback callback) {
-        callback(uphold_get_user_response);
+        std::move(callback).Run(uphold_get_user_response);
       })
       .WillOnce([&](type::UrlRequestPtr, client::LoadURLCallback callback) {
-        callback(uphold_get_capabilities_response);
+        std::move(callback).Run(uphold_get_capabilities_response);
       })
       .WillOnce([&](type::UrlRequestPtr, client::LoadURLCallback callback) {
-        callback(uphold_list_cards_response);
+        std::move(callback).Run(uphold_list_cards_response);
       })
       .WillOnce([&](type::UrlRequestPtr, client::LoadURLCallback callback) {
-        callback(rewards_services_get_wallet_balance_response);
+        std::move(callback).Run(rewards_services_get_wallet_balance_response);
       });
 
   ON_CALL(*mock_ledger_impl_, database())
@@ -1792,16 +1791,16 @@ TEST_P(LinkWallet, Paths) {
   EXPECT_CALL(*mock_ledger_client_, LoadURL(_, _))
       .Times(AtMost(4))
       .WillOnce([&](type::UrlRequestPtr, client::LoadURLCallback callback) {
-        callback(uphold_get_user_response);
+        std::move(callback).Run(uphold_get_user_response);
       })
       .WillOnce([&](type::UrlRequestPtr, client::LoadURLCallback callback) {
-        callback(uphold_get_capabilities_response);
+        std::move(callback).Run(uphold_get_capabilities_response);
       })
       .WillOnce([&](type::UrlRequestPtr, client::LoadURLCallback callback) {
-        callback(uphold_list_cards_response);
+        std::move(callback).Run(uphold_list_cards_response);
       })
       .WillOnce([&](type::UrlRequestPtr, client::LoadURLCallback callback) {
-        callback(rewards_link_wallet_response);
+        std::move(callback).Run(rewards_link_wallet_response);
       });
 
   ON_CALL(*mock_ledger_impl_, database())
@@ -1993,7 +1992,7 @@ TEST_P(DisconnectUpholdWallet, Paths) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(
           [&](type::UrlRequestPtr, client::LoadURLCallback callback) {
-            callback(rewards_unlink_wallet_response);
+            std::move(callback).Run(rewards_unlink_wallet_response);
           });
 
   mock_ledger_impl_->SetInitializedForTesting();

@@ -56,9 +56,8 @@ void DatabaseEventLog::Insert(
 
   transaction->commands.push_back(std::move(command));
 
-  ledger_->ledger_client()->RunDBTransaction(
-      std::move(transaction),
-      [](type::DBCommandResponsePtr response){});
+  ledger_->RunDBTransaction(std::move(transaction),
+                            [](type::DBCommandResponsePtr response) {});
 }
 
 void DatabaseEventLog::InsertRecords(
@@ -95,9 +94,7 @@ void DatabaseEventLog::InsertRecords(
       _1,
       callback);
 
-  ledger_->ledger_client()->RunDBTransaction(
-      std::move(transaction),
-      transaction_callback);
+  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 void DatabaseEventLog::GetLastRecords(ledger::GetEventLogsCallback callback) {
@@ -126,9 +123,7 @@ void DatabaseEventLog::GetLastRecords(ledger::GetEventLogsCallback callback) {
       _1,
       callback);
 
-  ledger_->ledger_client()->RunDBTransaction(
-      std::move(transaction),
-      transaction_callback);
+  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 void DatabaseEventLog::OnGetAllRecords(

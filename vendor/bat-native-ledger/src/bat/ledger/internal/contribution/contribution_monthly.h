@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVELEDGER_CONTRIBUTION_CONTRIBUTION_MONTHLY_H_
-#define BRAVELEDGER_CONTRIBUTION_CONTRIBUTION_MONTHLY_H_
+#ifndef BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_CONTRIBUTION_CONTRIBUTION_MONTHLY_H_
+#define BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_CONTRIBUTION_CONTRIBUTION_MONTHLY_H_
 
 #include "bat/ledger/ledger.h"
 
@@ -36,9 +36,9 @@ class ContributionMonthly {
   void OnSavePendingContribution(const type::Result result);
 
   void OnSufficientBalanceWallet(
+      ledger::HasSufficientBalanceToReconcileCallback callback,
       const type::Result result,
-      type::BalancePtr info,
-      ledger::HasSufficientBalanceToReconcileCallback callback);
+      type::BalancePtr info);
 
   void OnHasSufficientBalance(
       const type::PublisherInfoList& publisher_list,
@@ -50,4 +50,4 @@ class ContributionMonthly {
 
 }  // namespace contribution
 }  // namespace ledger
-#endif  // BRAVELEDGER_CONTRIBUTION_CONTRIBUTION_MONTHLY_H_
+#endif  // BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_CONTRIBUTION_CONTRIBUTION_MONTHLY_H_

@@ -115,19 +115,16 @@ void ContributionMonthly::OnSavePendingContribution(
 void ContributionMonthly::HasSufficientBalance(
     ledger::HasSufficientBalanceToReconcileCallback callback) {
   auto fetch_callback =
-      std::bind(&ContributionMonthly::OnSufficientBalanceWallet,
-          this,
-          _1,
-          _2,
-          callback);
+      base::BindOnce(&ContributionMonthly::OnSufficientBalanceWallet,
+                     base::Unretained(this), std::move(callback));
 
-  ledger_->wallet()->FetchBalance(fetch_callback);
+  ledger_->wallet()->FetchBalance(std::move(fetch_callback));
 }
 
 void ContributionMonthly::OnSufficientBalanceWallet(
+    ledger::HasSufficientBalanceToReconcileCallback callback,
     const type::Result result,
-    type::BalancePtr info,
-    ledger::HasSufficientBalanceToReconcileCallback callback) {
+    type::BalancePtr info) {
   if (result != type::Result::LEDGER_OK || !info) {
     BLOG(0, "Problem getting balance");
     return;

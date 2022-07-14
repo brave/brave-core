@@ -76,17 +76,15 @@ TEST_F(DatabaseActivityInfoTest, InsertOrUpdateOk) {
 
   ON_CALL(*mock_ledger_client_, RunDBTransaction(_, _))
       .WillByDefault(
-        Invoke([&](
-            type::DBTransactionPtr transaction,
-            ledger::client::RunDBTransactionCallback callback) {
-          ASSERT_TRUE(transaction);
-          ASSERT_EQ(transaction->commands.size(), 1u);
-          ASSERT_EQ(
-              transaction->commands[0]->type,
-              type::DBCommand::Type::RUN);
-          ASSERT_EQ(transaction->commands[0]->command, query);
-          ASSERT_EQ(transaction->commands[0]->bindings.size(), 7u);
-        }));
+          Invoke([&](type::DBTransactionPtr transaction,
+                     ledger::client::RunDBTransactionCallback callback) {
+            ASSERT_TRUE(transaction);
+            ASSERT_EQ(transaction->commands.size(), 1u);
+            ASSERT_EQ(transaction->commands[0]->type,
+                      type::DBCommand::Type::RUN);
+            ASSERT_EQ(transaction->commands[0]->command, query);
+            ASSERT_EQ(transaction->commands[0]->bindings.size(), 7u);
+          }));
 
   activity_->InsertOrUpdate(
       std::move(info),
@@ -116,18 +114,16 @@ TEST_F(DatabaseActivityInfoTest, GetRecordsListEmpty) {
 
   ON_CALL(*mock_ledger_client_, RunDBTransaction(_, _))
       .WillByDefault(
-        Invoke([&](
-            type::DBTransactionPtr transaction,
-            ledger::client::RunDBTransactionCallback callback) {
-          ASSERT_TRUE(transaction);
-          ASSERT_EQ(transaction->commands.size(), 1u);
-          ASSERT_EQ(
-              transaction->commands[0]->type,
-              type::DBCommand::Type::READ);
-          ASSERT_EQ(transaction->commands[0]->command, query);
-          ASSERT_EQ(transaction->commands[0]->record_bindings.size(), 14u);
-          ASSERT_EQ(transaction->commands[0]->bindings.size(), 1u);
-        }));
+          Invoke([&](type::DBTransactionPtr transaction,
+                     ledger::client::RunDBTransactionCallback callback) {
+            ASSERT_TRUE(transaction);
+            ASSERT_EQ(transaction->commands.size(), 1u);
+            ASSERT_EQ(transaction->commands[0]->type,
+                      type::DBCommand::Type::READ);
+            ASSERT_EQ(transaction->commands[0]->command, query);
+            ASSERT_EQ(transaction->commands[0]->record_bindings.size(), 14u);
+            ASSERT_EQ(transaction->commands[0]->bindings.size(), 1u);
+          }));
 
   auto filter = type::ActivityInfoFilter::New();
 
@@ -155,18 +151,16 @@ TEST_F(DatabaseActivityInfoTest, GetRecordsListOk) {
 
   ON_CALL(*mock_ledger_client_, RunDBTransaction(_, _))
       .WillByDefault(
-        Invoke([&](
-            type::DBTransactionPtr transaction,
-            ledger::client::RunDBTransactionCallback callback) {
-          ASSERT_TRUE(transaction);
-          ASSERT_EQ(transaction->commands.size(), 1u);
-          ASSERT_EQ(
-              transaction->commands[0]->type,
-              type::DBCommand::Type::READ);
-          ASSERT_EQ(transaction->commands[0]->command, query);
-          ASSERT_EQ(transaction->commands[0]->record_bindings.size(), 14u);
-          ASSERT_EQ(transaction->commands[0]->bindings.size(), 2u);
-        }));
+          Invoke([&](type::DBTransactionPtr transaction,
+                     ledger::client::RunDBTransactionCallback callback) {
+            ASSERT_TRUE(transaction);
+            ASSERT_EQ(transaction->commands.size(), 1u);
+            ASSERT_EQ(transaction->commands[0]->type,
+                      type::DBCommand::Type::READ);
+            ASSERT_EQ(transaction->commands[0]->command, query);
+            ASSERT_EQ(transaction->commands[0]->record_bindings.size(), 14u);
+            ASSERT_EQ(transaction->commands[0]->bindings.size(), 2u);
+          }));
 
   auto filter = type::ActivityInfoFilter::New();
   filter->id = "publisher_key";
@@ -199,17 +193,15 @@ TEST_F(DatabaseActivityInfoTest, DeleteRecordOk) {
 
   ON_CALL(*mock_ledger_client_, RunDBTransaction(_, _))
       .WillByDefault(
-        Invoke([&](
-            type::DBTransactionPtr transaction,
-            ledger::client::RunDBTransactionCallback callback) {
-          ASSERT_TRUE(transaction);
-          ASSERT_EQ(transaction->commands.size(), 1u);
-          ASSERT_EQ(
-              transaction->commands[0]->type,
-              type::DBCommand::Type::RUN);
-          ASSERT_EQ(transaction->commands[0]->command, query);
-          ASSERT_EQ(transaction->commands[0]->bindings.size(), 2u);
-        }));
+          Invoke([&](type::DBTransactionPtr transaction,
+                     ledger::client::RunDBTransactionCallback callback) {
+            ASSERT_TRUE(transaction);
+            ASSERT_EQ(transaction->commands.size(), 1u);
+            ASSERT_EQ(transaction->commands[0]->type,
+                      type::DBCommand::Type::RUN);
+            ASSERT_EQ(transaction->commands[0]->command, query);
+            ASSERT_EQ(transaction->commands[0]->bindings.size(), 2u);
+          }));
 
   activity_->DeleteRecord("publisher_key", [](const type::Result){});
 }

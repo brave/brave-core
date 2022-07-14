@@ -71,7 +71,7 @@ TEST_F(GetCapabilitiesTest, ServerReturns200OKSufficientReceivesAndSends) {
   }
 ]
             )";
-            callback(std::move(response));
+            std::move(callback).Run(response);
           }));
 
   get_capabilities_->Request(
@@ -111,7 +111,7 @@ TEST_F(GetCapabilitiesTest, ServerReturns200OKInsufficientReceives1) {
   }
 ]
             )";
-            callback(std::move(response));
+            std::move(callback).Run(response);
           }));
 
   get_capabilities_->Request(
@@ -149,7 +149,7 @@ TEST_F(GetCapabilitiesTest, ServerReturns200OKInsufficientReceives2) {
   }
 ]
             )";
-            callback(std::move(response));
+            std::move(callback).Run(std::move(response));
           }));
 
   get_capabilities_->Request(
@@ -189,7 +189,7 @@ TEST_F(GetCapabilitiesTest, ServerReturns200OKInsufficientSends1) {
   }
 ]
             )";
-            callback(std::move(response));
+            std::move(callback).Run(response);
           }));
 
   get_capabilities_->Request(
@@ -227,7 +227,7 @@ TEST_F(GetCapabilitiesTest, ServerReturns200OKInsufficientSends2) {
   }
 ]
             )";
-            callback(std::move(response));
+            std::move(callback).Run(response);
           }));
 
   get_capabilities_->Request(
@@ -269,7 +269,7 @@ TEST_F(GetCapabilitiesTest, ServerReturns200OKInsufficientReceivesAndSends1) {
   }
 ]
             )";
-            callback(std::move(response));
+            std::move(callback).Run(response);
           }));
 
   get_capabilities_->Request(
@@ -307,7 +307,7 @@ TEST_F(GetCapabilitiesTest, ServerReturns200OKInsufficientReceivesAndSends2) {
   }
 ]
             )";
-            callback(std::move(response));
+            std::move(callback).Run(response);
           }));
 
   get_capabilities_->Request(
@@ -325,7 +325,7 @@ TEST_F(GetCapabilitiesTest, ServerReturns401Unauthorized) {
           Invoke([](type::UrlRequestPtr, client::LoadURLCallback callback) {
             type::UrlResponse response;
             response.status_code = net::HTTP_UNAUTHORIZED;
-            callback(std::move(response));
+            std::move(callback).Run(std::move(response));
           }));
 
   get_capabilities_->Request(
@@ -343,7 +343,7 @@ TEST_F(GetCapabilitiesTest, ServerReturnsUnexpectedHTTPStatus) {
           Invoke([](type::UrlRequestPtr, client::LoadURLCallback callback) {
             type::UrlResponse response;
             response.status_code = net::HTTP_INTERNAL_SERVER_ERROR;
-            callback(std::move(response));
+            std::move(callback).Run(response);
           }));
 
   get_capabilities_->Request(

@@ -12,6 +12,7 @@
 #include <string>
 #include <map>
 
+#include "base/callback_forward.h"
 #include "bat/ledger/export.h"
 #include "bat/ledger/mojom_structs.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
@@ -21,13 +22,18 @@ namespace client {
 
 using FetchIconCallback = std::function<void(bool, const std::string&)>;
 
-using LoadURLCallback = std::function<void(const type::UrlResponse&)>;
+using LegacyLoadURLCallback = std::function<void(const type::UrlResponse&)>;
+
+using LoadURLCallback = base::OnceCallback<void(const type::UrlResponse&)>;
 
 using OnLoadCallback =
     std::function<void(const type::Result, const std::string&)>;
 
-using RunDBTransactionCallback =
+using LegacyRunDBTransactionCallback =
     std::function<void(type::DBCommandResponsePtr)>;
+
+using RunDBTransactionCallback =
+    base::OnceCallback<void(type::DBCommandResponsePtr)>;
 
 using GetCreateScriptCallback =
     std::function<void(const std::string&, const int)>;
@@ -73,9 +79,8 @@ class LEDGER_EXPORT LedgerClient {
 
   virtual std::string URIEncode(const std::string& value) = 0;
 
-  virtual void LoadURL(
-      type::UrlRequestPtr request,
-      client::LoadURLCallback callback) = 0;
+  virtual void LoadURL(type::UrlRequestPtr request,
+                       client::LoadURLCallback callback) = 0;
 
   virtual void Log(
       const char* file,
@@ -144,9 +149,8 @@ class LEDGER_EXPORT LedgerClient {
 
   virtual void ReconcileStampReset() = 0;
 
-  virtual void RunDBTransaction(
-      type::DBTransactionPtr transaction,
-      client::RunDBTransactionCallback callback) = 0;
+  virtual void RunDBTransaction(type::DBTransactionPtr transaction,
+                                client::RunDBTransactionCallback callback) = 0;
 
   virtual void GetCreateScript(client::GetCreateScriptCallback callback) = 0;
 

@@ -74,9 +74,7 @@ void DatabaseContributionQueue::InsertOrUpdate(
           shared_info,
           callback);
 
-  ledger_->ledger_client()->RunDBTransaction(
-      std::move(transaction),
-      transaction_callback);
+  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 void DatabaseContributionQueue::OnInsertOrUpdate(
@@ -131,9 +129,7 @@ void DatabaseContributionQueue::GetFirstRecord(
           _1,
           callback);
 
-  ledger_->ledger_client()->RunDBTransaction(
-      std::move(transaction),
-      transaction_callback);
+  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 void DatabaseContributionQueue::OnGetFirstRecord(
@@ -214,9 +210,7 @@ void DatabaseContributionQueue::MarkRecordAsComplete(
       _1,
       callback);
 
-  ledger_->ledger_client()->RunDBTransaction(
-      std::move(transaction),
-      transaction_callback);
+  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 }  // namespace database

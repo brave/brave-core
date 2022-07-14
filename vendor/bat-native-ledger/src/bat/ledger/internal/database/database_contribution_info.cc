@@ -94,9 +94,7 @@ void DatabaseContributionInfo::InsertOrUpdate(
       _1,
       callback);
 
-  ledger_->ledger_client()->RunDBTransaction(
-      std::move(transaction),
-      transaction_callback);
+  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 void DatabaseContributionInfo::GetRecord(
@@ -133,9 +131,7 @@ void DatabaseContributionInfo::GetRecord(
           _1,
           callback);
 
-  ledger_->ledger_client()->RunDBTransaction(
-      std::move(transaction),
-      transaction_callback);
+  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 void DatabaseContributionInfo::OnGetRecord(
@@ -226,9 +222,7 @@ void DatabaseContributionInfo::GetAllRecords(
           _1,
           callback);
 
-  ledger_->ledger_client()->RunDBTransaction(
-      std::move(transaction),
-      transaction_callback);
+  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 void DatabaseContributionInfo::GetOneTimeTips(
@@ -291,9 +285,7 @@ void DatabaseContributionInfo::GetOneTimeTips(
           _1,
           callback);
 
-  ledger_->ledger_client()->RunDBTransaction(
-      std::move(transaction),
-      transaction_callback);
+  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 void DatabaseContributionInfo::OnGetOneTimeTips(
@@ -374,9 +366,7 @@ void DatabaseContributionInfo::GetContributionReport(
           _1,
           callback);
 
-  ledger_->ledger_client()->RunDBTransaction(
-      std::move(transaction),
-      transaction_callback);
+  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 void DatabaseContributionInfo::OnGetContributionReport(
@@ -504,9 +494,7 @@ void DatabaseContributionInfo::GetNotCompletedRecords(
           _1,
           callback);
 
-  ledger_->ledger_client()->RunDBTransaction(
-      std::move(transaction),
-      transaction_callback);
+  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 void DatabaseContributionInfo::OnGetList(
@@ -604,9 +592,7 @@ void DatabaseContributionInfo::UpdateStep(
       _1,
       callback);
 
-  ledger_->ledger_client()->RunDBTransaction(
-      std::move(transaction),
-      transaction_callback);
+  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 void DatabaseContributionInfo::UpdateStepAndCount(
@@ -640,9 +626,7 @@ void DatabaseContributionInfo::UpdateStepAndCount(
       _1,
       callback);
 
-  ledger_->ledger_client()->RunDBTransaction(
-      std::move(transaction),
-      transaction_callback);
+  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 void DatabaseContributionInfo::UpdateContributedAmount(
@@ -677,9 +661,7 @@ void DatabaseContributionInfo::FinishAllInProgressRecords(
       _1,
       callback);
 
-  ledger_->ledger_client()->RunDBTransaction(
-      std::move(transaction),
-      transaction_callback);
+  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 }  // namespace database

@@ -31,7 +31,7 @@ void LedgerClientIOS::LoadPublisherState(
 }
 void LedgerClientIOS::LoadURL(ledger::type::UrlRequestPtr request,
                               ledger::client::LoadURLCallback callback) {
-  [bridge_ loadURL:std::move(request) callback:callback];
+  [bridge_ loadURL:std::move(request) callback:std::move(callback)];
 }
 void LedgerClientIOS::Log(const char* file,
                           const int line,
@@ -148,7 +148,8 @@ void LedgerClientIOS::ReconcileStampReset() {
 void LedgerClientIOS::RunDBTransaction(
     ledger::type::DBTransactionPtr transaction,
     ledger::client::RunDBTransactionCallback callback) {
-  [bridge_ runDBTransaction:std::move(transaction) callback:callback];
+  [bridge_ runDBTransaction:std::move(transaction)
+                   callback:std::move(callback)];
 }
 void LedgerClientIOS::GetCreateScript(
     ledger::client::GetCreateScriptCallback callback) {

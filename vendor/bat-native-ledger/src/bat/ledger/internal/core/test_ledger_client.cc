@@ -112,9 +112,9 @@ void TestLedgerClient::LoadURL(mojom::UrlRequestPtr request,
                                client::LoadURLCallback callback) {
   DCHECK(request);
   base::SequencedTaskRunnerHandle::Get()->PostTask(
-      FROM_HERE,
-      base::BindOnce(&TestLedgerClient::LoadURLAfterDelay,
-                     weak_factory_.GetWeakPtr(), std::move(request), callback));
+      FROM_HERE, base::BindOnce(&TestLedgerClient::LoadURLAfterDelay,
+                                weak_factory_.GetWeakPtr(), std::move(request),
+                                std::move(callback)));
 }
 
 void TestLedgerClient::Log(const char* file,
@@ -273,7 +273,7 @@ void TestLedgerClient::RunDBTransaction(
   base::SequencedTaskRunnerHandle::Get()->PostTask(
       FROM_HERE, base::BindOnce(&TestLedgerClient::RunDBTransactionAfterDelay,
                                 weak_factory_.GetWeakPtr(),
-                                std::move(transaction), callback));
+                                std::move(transaction), std::move(callback)));
 }
 
 void TestLedgerClient::GetCreateScript(
@@ -326,7 +326,7 @@ void TestLedgerClient::LoadURLAfterDelay(mojom::UrlRequestPtr request,
                            });
 
   if (iter != network_results_.end()) {
-    callback(*iter->response);
+    std::move(callback).Run(*iter->response);
     network_results_.erase(iter);
     return;
   }
@@ -337,14 +337,14 @@ void TestLedgerClient::LoadURLAfterDelay(mojom::UrlRequestPtr request,
   mojom::UrlResponse response;
   response.url = request->url;
   response.status_code = net::HTTP_BAD_REQUEST;
-  callback(response);
+  std::move(callback).Run(response);
 }
 
 void TestLedgerClient::RunDBTransactionAfterDelay(
     mojom::DBTransactionPtr transaction,
     client::RunDBTransactionCallback callback) {
   auto response = ledger_database_.RunTransaction(std::move(transaction));
-  callback(std::move(response));
+  std::move(callback).Run(std::move(response));
 }
 
 }  // namespace ledger

@@ -12,6 +12,7 @@
 #include <memory>
 #include <string>
 
+#include "base/callback_forward.h"
 #include "base/containers/flat_map.h"
 #include "base/timer/timer.h"
 #include "bat/ledger/ledger.h"
@@ -35,7 +36,7 @@ class GeminiTransfer;
 class GeminiAuthorization;
 class GeminiWallet;
 
-using FetchBalanceCallback = std::function<void(type::Result, double)>;
+using FetchBalanceCallback = base::OnceCallback<void(type::Result, double)>;
 
 class Gemini {
  public:
@@ -76,9 +77,9 @@ class Gemini {
                              const std::string& publisher_key,
                              ledger::ResultCallback callback);
 
-  void OnFetchBalance(const type::Result result,
-                      const double available,
-                      FetchBalanceCallback callback);
+  void OnFetchBalance(FetchBalanceCallback callback,
+                      const type::Result result,
+                      const double available);
 
   void SaveTransferFee(const std::string& contribution_id, const double amount);
 

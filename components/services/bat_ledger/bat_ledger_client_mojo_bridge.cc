@@ -21,10 +21,10 @@ BatLedgerClientMojoBridge::BatLedgerClientMojoBridge(
 
 BatLedgerClientMojoBridge::~BatLedgerClientMojoBridge() = default;
 
-void OnLoadURL(
-    const ledger::client::LoadURLCallback& callback,
-    ledger::type::UrlResponsePtr response_ptr) {
-  callback(response_ptr ? *response_ptr : ledger::type::UrlResponse());
+void OnLoadURL(ledger::client::LoadURLCallback callback,
+               ledger::type::UrlResponsePtr response_ptr) {
+  std::move(callback).Run(response_ptr ? *response_ptr
+                                       : ledger::type::UrlResponse());
 }
 
 void BatLedgerClientMojoBridge::LoadURL(
@@ -326,10 +326,9 @@ void BatLedgerClientMojoBridge::ReconcileStampReset() {
   bat_ledger_client_->ReconcileStampReset();
 }
 
-void OnRunDBTransaction(
-    const ledger::client::RunDBTransactionCallback& callback,
-    ledger::type::DBCommandResponsePtr response) {
-  callback(std::move(response));
+void OnRunDBTransaction(ledger::client::RunDBTransactionCallback callback,
+                        ledger::type::DBCommandResponsePtr response) {
+  std::move(callback).Run(std::move(response));
 }
 
 void BatLedgerClientMojoBridge::RunDBTransaction(

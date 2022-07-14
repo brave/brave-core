@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVELEDGER_CONTRIBUTION_CONTRIBUTION_H_
-#define BRAVELEDGER_CONTRIBUTION_CONTRIBUTION_H_
+#ifndef BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_CONTRIBUTION_CONTRIBUTION_H_
+#define BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_CONTRIBUTION_CONTRIBUTION_H_
 
 #include <stdint.h>
 
@@ -111,10 +111,9 @@ class Contribution {
 
   void NotCompletedContributions(type::ContributionInfoList list);
 
-  void OnBalance(
-      const type::Result result,
-      type::BalancePtr info,
-      std::shared_ptr<type::ContributionQueuePtr> shared_queue);
+  void OnBalance(type::ContributionQueuePtr queue,
+                 const type::Result result,
+                 type::BalancePtr info);
 
   void CreateNewEntry(
       const std::string& wallet_type,
@@ -188,4 +187,4 @@ class Contribution {
 
 }  // namespace contribution
 }  // namespace ledger
-#endif  // BRAVELEDGER_CONTRIBUTION_CONTRIBUTION_H_
+#endif  // BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_CONTRIBUTION_CONTRIBUTION_H_

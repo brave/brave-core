@@ -343,9 +343,8 @@ void GitHub::OnPublisherPanelInfo(
   }
 }
 
-void GitHub::FetchDataFromUrl(
-    const std::string& url,
-    ledger::client::LoadURLCallback callback) {
+void GitHub::FetchDataFromUrl(const std::string& url,
+                              ledger::client::LegacyLoadURLCallback callback) {
   auto request = ledger::type::UrlRequest::New();
   request->url = url;
   request->skip_log = true;

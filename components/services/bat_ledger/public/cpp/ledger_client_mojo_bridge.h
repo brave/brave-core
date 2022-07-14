@@ -189,17 +189,9 @@ class LedgerClientMojoBridge :
       bool success,
       const std::string& favicon_url);
 
-  static void OnLoadURL(
-      CallbackHolder<LoadURLCallback>* holder,
-      const ledger::type::UrlResponse& response);
-
   static void OnShowNotification(
     CallbackHolder<ShowNotificationCallback>* holder,
     const ledger::type::Result result);
-
-  static void OnRunDBTransaction(
-      CallbackHolder<RunDBTransactionCallback>* holder,
-      ledger::type::DBCommandResponsePtr response);
 
   static void OnGetCreateScript(
       CallbackHolder<GetCreateScriptCallback>* holder,

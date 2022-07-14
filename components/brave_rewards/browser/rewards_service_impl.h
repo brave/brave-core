@@ -564,9 +564,8 @@ class RewardsServiceImpl : public RewardsService,
       ledger::type::PromotionPtr promotion);
   void LoadLedgerState(ledger::client::OnLoadCallback callback) override;
   void LoadPublisherState(ledger::client::OnLoadCallback callback) override;
-  void LoadURL(
-      ledger::type::UrlRequestPtr request,
-      ledger::client::LoadURLCallback callback) override;
+  void LoadURL(ledger::type::UrlRequestPtr request,
+               ledger::client::LoadURLCallback callback) override;
   void SetPublisherMinVisits(int visits) const override;
   void SetPublisherAllowNonVerified(bool allow) const override;
   void SetPublisherAllowVideos(bool allow) const override;
@@ -741,9 +740,8 @@ class RewardsServiceImpl : public RewardsService,
       const ledger::type::Result result,
       ledger::type::MonthlyReportInfoPtr report);
 
-  void OnRunDBTransaction(
-      ledger::client::RunDBTransactionCallback callback,
-      ledger::type::DBCommandResponsePtr response);
+  void OnRunDBTransaction(ledger::client::RunDBTransactionCallback callback,
+                          ledger::type::DBCommandResponsePtr response);
 
   void OnGetAllMonthlyReportIds(
       GetAllMonthlyReportIdsCallback callback,

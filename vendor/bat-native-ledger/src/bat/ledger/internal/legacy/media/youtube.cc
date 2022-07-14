@@ -576,9 +576,8 @@ void YouTube::SavePublisherInfo(const uint64_t duration,
   }
 }
 
-void YouTube::FetchDataFromUrl(
-    const std::string& url,
-    ledger::client::LoadURLCallback callback) {
+void YouTube::FetchDataFromUrl(const std::string& url,
+                               ledger::client::LegacyLoadURLCallback callback) {
   auto request = ledger::type::UrlRequest::New();
   request->url = url;
   request->skip_log = true;

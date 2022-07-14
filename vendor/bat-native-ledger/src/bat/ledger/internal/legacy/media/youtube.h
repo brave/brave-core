@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVELEDGER_MEDIA_YOUTUBE_H_
-#define BRAVELEDGER_MEDIA_YOUTUBE_H_
+#ifndef BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_LEGACY_MEDIA_YOUTUBE_H_
+#define BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_LEGACY_MEDIA_YOUTUBE_H_
 
 #include <memory>
 #include <string>
@@ -107,7 +107,7 @@ class YouTube {
                          const std::string& channel_id);
 
   void FetchDataFromUrl(const std::string& url,
-                        ledger::client::LoadURLCallback callback);
+                        ledger::client::LegacyLoadURLCallback callback);
 
   void WatchPath(uint64_t window_id,
                  const ledger::type::VisitData& visit_data);
@@ -178,4 +178,4 @@ class YouTube {
 
 }  // namespace braveledger_media
 
-#endif  // BRAVELEDGER_MEDIA_YOUTUBE_H_
+#endif  // BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_LEGACY_MEDIA_YOUTUBE_H_

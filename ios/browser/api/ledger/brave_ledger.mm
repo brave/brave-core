@@ -332,7 +332,8 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
   transaction->commands.push_back(command->Clone());
 
   [self runDBTransaction:std::move(transaction)
-                callback:^(ledger::type::DBCommandResponsePtr response) {
+                callback:base::BindOnce(^(
+                             ledger::type::DBCommandResponsePtr response) {
                   // Failed to even run the check, tables probably don't exist,
                   // restart from scratch
                   if (response->status !=
@@ -362,7 +363,7 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
                   [self savePrefs];
 
                   completion(NO);
-                }];
+                })];
 }
 
 - (NSString*)rewardsDatabasePath {
@@ -535,7 +536,7 @@ BATClassLedgerBridge(BOOL, isDebug, setDebug, is_debug)
 
 - (void)fetchBalance:(void (^)(LedgerBalance* _Nullable))completion {
   const auto __weak weakSelf = self;
-  ledger->FetchBalance(
+  ledger->FetchBalance(base::BindOnce(
       ^(ledger::type::Result result, ledger::type::BalancePtr balance) {
         const auto strongSelf = weakSelf;
         if (result == ledger::type::Result::LEDGER_OK) {
@@ -552,7 +553,7 @@ BATClassLedgerBridge(BOOL, isDebug, setDebug, is_debug)
             completion(strongSelf.balance);
           }
         });
-      });
+      }));
 }
 
 - (void)recoverWalletUsingPassphrase:(NSString*)passphrase
@@ -1865,6 +1866,7 @@ BATLedgerBridge(BOOL,
 
   const auto copiedURL = base::SysUTF8ToNSString(request->url);
 
+  auto cb = std::make_shared<decltype(callback)>(std::move(callback));
   return [self.commonOps
       loadURLRequest:request->url
              headers:request->headers
@@ -1882,7 +1884,9 @@ BATLedgerBridge(BOOL,
               url_response.body = response;
               url_response.headers = headers;
 
-              callback(url_response);
+              if (cb) {
+                std::move(*cb).Run(url_response);
+              }
             }];
 }
 
@@ -2042,10 +2046,13 @@ BATLedgerBridge(BOOL,
   DCHECK(rewardsDatabase);
   rewardsDatabase.AsyncCall(&ledger::LedgerDatabase::RunTransaction)
       .WithArgs(std::move(transaction))
-      .Then(base::BindOnce(^(ledger::type::DBCommandResponsePtr response) {
-        if (weakSelf)
-          callback(std::move(response));
-      }));
+      .Then(base::BindOnce(
+          ^(ledger::client::RunDBTransactionCallback callback,
+            ledger::type::DBCommandResponsePtr response) {
+            if (weakSelf)
+              std::move(callback).Run(std::move(response));
+          },
+          std::move(callback)));
 }
 
 - (void)pendingContributionSaved:(const ledger::type::Result)result {

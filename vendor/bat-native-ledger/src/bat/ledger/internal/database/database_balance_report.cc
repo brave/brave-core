@@ -91,9 +91,7 @@ void DatabaseBalanceReport::InsertOrUpdate(
       _1,
       callback);
 
-  ledger_->ledger_client()->RunDBTransaction(
-      std::move(transaction),
-      transaction_callback);
+  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 void DatabaseBalanceReport::InsertOrUpdateList(
@@ -133,9 +131,7 @@ void DatabaseBalanceReport::InsertOrUpdateList(
       _1,
       callback);
 
-  ledger_->ledger_client()->RunDBTransaction(
-      std::move(transaction),
-      transaction_callback);
+  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 void DatabaseBalanceReport::SetAmount(
@@ -183,9 +179,7 @@ void DatabaseBalanceReport::SetAmount(
       _1,
       callback);
 
-  ledger_->ledger_client()->RunDBTransaction(
-      std::move(transaction),
-      transaction_callback);
+  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 void DatabaseBalanceReport::GetRecord(
@@ -243,9 +237,7 @@ void DatabaseBalanceReport::GetRecord(
       _1,
       callback);
 
-  ledger_->ledger_client()->RunDBTransaction(
-      std::move(transaction),
-      transaction_callback);
+  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
 }
 void DatabaseBalanceReport::OnGetRecord(
     type::DBCommandResponsePtr response,
@@ -308,9 +300,7 @@ void DatabaseBalanceReport::GetAllRecords(
           _1,
           callback);
 
-  ledger_->ledger_client()->RunDBTransaction(
-      std::move(transaction),
-      transaction_callback);
+  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 void DatabaseBalanceReport::OnGetAllRecords(
@@ -357,9 +347,7 @@ void DatabaseBalanceReport::DeleteAllRecords(
       _1,
       callback);
 
-  ledger_->ledger_client()->RunDBTransaction(
-      std::move(transaction),
-      transaction_callback);
+  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 }  // namespace database
