@@ -15,6 +15,9 @@ namespace p2a {
 
 void RecordEvent(const std::string& name,
                  const std::vector<std::string>& questions) {
+  DCHECK(!name.empty());
+  DCHECK(!questions.empty());
+
   base::Value list(base::Value::Type::LIST);
   for (const auto& question : questions) {
     list.Append(question);
