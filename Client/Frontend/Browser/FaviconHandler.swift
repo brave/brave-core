@@ -52,7 +52,7 @@ class FaviconHandler {
         FaviconMO.add(favicon, forSiteUrl: currentURL, persistent: !tab.isPrivate)
       }
       
-      let onCompletedSiteFavicon: ImageCacheCompletion = { image, data, _, _, url in
+      let onCompletedSiteFavicon: ImageCacheCompletion = { [weak tab] image, data, _, _, url in
         let favicon = Favicon(url: url.absoluteString, date: Date(), type: type)
         
         guard let image = image,
@@ -63,6 +63,10 @@ class FaviconHandler {
           
           onSuccess(favicon, data)
           return
+        }
+        
+        if let tab = tab, !tab.isPrivate {
+          webImageCache.cacheImage(image: image, data: imageData, url: url)
         }
         
         if let header = "%PDF".data(using: .utf8),
@@ -84,8 +88,8 @@ class FaviconHandler {
         onSuccess(favicon, data)
       }
       
-      let onCompletedPageFavicon: ImageCacheCompletion = { image, data, _, _, url in
-        guard let image = image else {
+      let onCompletedPageFavicon: ImageCacheCompletion = { [weak tab] image, data, _, _, url in
+        guard let image = image, let data = data else {
           // If we failed to download a page-level icon, try getting the domain-level icon
           // instead before ultimately failing.
           let siteIconURL = currentURL.domainURL.appendingPathComponent("favicon.ico")
@@ -96,6 +100,10 @@ class FaviconHandler {
         let favicon = Favicon(url: url.absoluteString, date: Date(), type: type)
         favicon.width = Int(image.size.width)
         favicon.height = Int(image.size.height)
+        
+        if let tab = tab, !tab.isPrivate {
+          webImageCache.cacheImage(image: image, data: data, url: url)
+        }
         
         onSuccess(favicon, data)
       }
