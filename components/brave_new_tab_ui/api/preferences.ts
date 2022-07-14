@@ -43,7 +43,7 @@ export function saveShowToday (value: boolean): void {
 }
 
 export function saveShowBraveNewsButton (value: boolean): void {
-  sendSavePref('showBraveNewsButton', value);
+  sendSavePref('showBraveNewsButton', value)
 }
 
 export function saveShowRewards (value: boolean): void {

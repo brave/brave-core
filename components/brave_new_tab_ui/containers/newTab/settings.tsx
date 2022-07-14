@@ -70,7 +70,7 @@ export interface Props {
   showBackgroundImage: boolean
   showStats: boolean
   showToday: boolean
-  showBraveNewsButton: boolean;
+  showBraveNewsButton: boolean
   showClock: boolean
   clockFormat: string
   showTopSites: boolean
