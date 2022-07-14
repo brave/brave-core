@@ -15,6 +15,7 @@
 #include "bat/ads/internal/account/user_data/mutated_user_data.h"
 #include "bat/ads/internal/account/user_data/odyssey_user_data.h"
 #include "bat/ads/internal/account/user_data/platform_user_data.h"
+#include "bat/ads/internal/account/user_data/rotating_hash_user_data.h"
 #include "bat/ads/internal/account/user_data/studies_user_data.h"
 #include "bat/ads/internal/account/user_data/system_timestamp_user_data.h"
 #include "bat/ads/internal/account/user_data/version_number_user_data.h"
@@ -61,6 +62,10 @@ void ConfirmationsUserDataBuilder::Build(
         const base::DictionaryValue platform_user_data =
             user_data::GetPlatform();
         user_data.MergeDictionary(&platform_user_data);
+
+        const base::DictionaryValue rotating_hash_user_data =
+            user_data::GetRotatingHash(creative_instance_id_);
+        user_data.MergeDictionary(&rotating_hash_user_data);
 
         const base::DictionaryValue studies_user_data = user_data::GetStudies();
         user_data.MergeDictionary(&studies_user_data);

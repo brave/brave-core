@@ -49,6 +49,9 @@ TEST_F(BatAdsConfirmationUserDataTest, BuildForNonConversionConfirmationType) {
 
   SysInfo().is_uncertain_future = false;
 
+  SysInfo().device_id =
+      "21b4677de1a9b4a197ab671a1481d3fcb24f826a4358a05aafbaee5a9a51b57e";
+
   const base::Time time =
       TimeFromString("November 18 2020 12:34:56.789", /* is_local */ false);
   AdvanceClockTo(time);
@@ -64,7 +67,7 @@ TEST_F(BatAdsConfirmationUserDataTest, BuildForNonConversionConfirmationType) {
     base::JSONWriter::Write(user_data, &json);
 
     const std::string pattern =
-        R"~({"buildChannel":"release","catalog":\[{"id":"29e5c8bc0ba319069980bb390d8e8f9b58c05a20"}],"countryCode":"US","createdAtTimestamp":"2020-11-18T12:00:00.000Z","mutated":true,"odyssey":"host","platform":"windows","studies":\[],"systemTimestamp":"2020-11-18T12:00:00.000Z","versionNumber":"\d{1,}\.\d{1,}\.\d{1,}\.\d{1,}"})~";
+        R"~({"buildChannel":"release","catalog":\[{"id":"29e5c8bc0ba319069980bb390d8e8f9b58c05a20"}],"countryCode":"US","createdAtTimestamp":"2020-11-18T12:00:00.000Z","mutated":true,"odyssey":"host","platform":"windows","rotating_hash":"3091761660","studies":\[],"systemTimestamp":"2020-11-18T12:00:00.000Z","versionNumber":"\d{1,}\.\d{1,}\.\d{1,}\.\d{1,}"})~";
     EXPECT_TRUE(RE2::FullMatch(json, pattern));
   });
 }
@@ -78,6 +81,9 @@ TEST_F(BatAdsConfirmationUserDataTest, BuildForConversionConfirmationType) {
   SetCatalogId(kCatalogId);
 
   SysInfo().is_uncertain_future = false;
+
+  SysInfo().device_id =
+      "21b4677de1a9b4a197ab671a1481d3fcb24f826a4358a05aafbaee5a9a51b57e";
 
   const base::Time time =
       TimeFromString("November 18 2020 12:34:56.789", /* is_local */ false);
@@ -94,7 +100,7 @@ TEST_F(BatAdsConfirmationUserDataTest, BuildForConversionConfirmationType) {
     base::JSONWriter::Write(user_data, &json);
 
     const std::string pattern =
-        R"~({"buildChannel":"release","catalog":\[{"id":"29e5c8bc0ba319069980bb390d8e8f9b58c05a20"}],"conversionEnvelope":{"alg":"crypto_box_curve25519xsalsa20poly1305","ciphertext":"(.{64})","epk":"(.{44})","nonce":"(.{32})"},"countryCode":"US","createdAtTimestamp":"2020-11-18T12:00:00.000Z","mutated":true,"odyssey":"host","platform":"windows","studies":\[],"systemTimestamp":"2020-11-18T12:00:00.000Z","versionNumber":"\d{1,}\.\d{1,}\.\d{1,}\.\d{1,}"})~";
+        R"~({"buildChannel":"release","catalog":\[{"id":"29e5c8bc0ba319069980bb390d8e8f9b58c05a20"}],"conversionEnvelope":{"alg":"crypto_box_curve25519xsalsa20poly1305","ciphertext":"(.{64})","epk":"(.{44})","nonce":"(.{32})"},"countryCode":"US","createdAtTimestamp":"2020-11-18T12:00:00.000Z","mutated":true,"odyssey":"host","platform":"windows","rotating_hash":"3091761660","studies":\[],"systemTimestamp":"2020-11-18T12:00:00.000Z","versionNumber":"\d{1,}\.\d{1,}\.\d{1,}\.\d{1,}"})~";
     EXPECT_TRUE(RE2::FullMatch(json, pattern));
   });
 }

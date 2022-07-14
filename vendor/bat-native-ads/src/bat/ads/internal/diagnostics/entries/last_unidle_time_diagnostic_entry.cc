@@ -10,7 +10,10 @@
 namespace ads {
 
 namespace {
+
 constexpr char kName[] = "Last unidle time";
+constexpr char kNever[] = "Never";
+
 }  // namespace
 
 LastUnIdleTimeDiagnosticEntry::LastUnIdleTimeDiagnosticEntry() = default;
@@ -31,7 +34,7 @@ std::string LastUnIdleTimeDiagnosticEntry::GetName() const {
 
 std::string LastUnIdleTimeDiagnosticEntry::GetValue() const {
   if (last_unidle_time_.is_null()) {
-    return {};
+    return kNever;
   }
 
   return base::TimeToISO8601(last_unidle_time_);
