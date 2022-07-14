@@ -4,6 +4,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "third_party/blink/public/common/client_hints/enabled_client_hints.h"
+#include "third_party/blink/public/common/features.h"
 
 #define SetIsEnabled SetIsEnabled_ChromiumImpl
 
@@ -19,8 +20,12 @@ void EnabledClientHints::SetIsEnabled(const WebClientHintsType type,
     case WebClientHintsType::kUA:
     case WebClientHintsType::kUAMobile:
     case WebClientHintsType::kUAPlatform:
-      SetIsEnabled_ChromiumImpl(type, should_send);
-      break;
+      if (base::FeatureList::IsEnabled(
+              blink::features::kAllowCertainClientHints)) {
+        SetIsEnabled_ChromiumImpl(type, should_send);
+        break;
+      }
+      ABSL_FALLTHROUGH_INTENDED;
     default:
       enabled_types_[static_cast<int>(type)] = false;
   }
@@ -36,9 +41,13 @@ void EnabledClientHints::SetIsEnabled(
     case WebClientHintsType::kUA:
     case WebClientHintsType::kUAMobile:
     case WebClientHintsType::kUAPlatform:
-      SetIsEnabled_ChromiumImpl(url, third_party_url, response_headers, type,
-                                should_send);
-      break;
+      if (base::FeatureList::IsEnabled(
+              blink::features::kAllowCertainClientHints)) {
+        SetIsEnabled_ChromiumImpl(url, third_party_url, response_headers, type,
+                                  should_send);
+        break;
+      }
+      ABSL_FALLTHROUGH_INTENDED;
     default:
       SetIsEnabled(type, should_send);
   }
