@@ -135,7 +135,15 @@ IN_PROC_BROWSER_TEST_F(BraveTabHoverTest, ThumbnailHelperIsAlwaysAttached) {
                 contents()));
 }
 
-IN_PROC_BROWSER_TEST_F(BraveTabHoverTest, HoverModesAreCorrectlyConfigured) {
+// This is based on |TabHoverCardBubbleViewBrowserTest|. Unfortunately, all the
+// tests that do similar things are flakey, and this one is too.
+// See crbug.com/1050765.
+#if BUILDFLAG(IS_WIN)
+#define MAYBE_HoverModesAreCorrectlyConfigured DISABLED_HoverModesAreCorrectlyConfigured
+#else
+#define MAYBE_HoverModesAreCorrectlyConfigured HoverModesAreCorrectlyConfigured
+#endif
+IN_PROC_BROWSER_TEST_F(BraveTabHoverTest, MAYBE_HoverModesAreCorrectlyConfigured) {
   // In Card mode, the widget should become visible but the thumbnail should not
   // be created.
   browser()->profile()->GetPrefs()->SetInteger(brave_tabs::kTabHoverMode,
@@ -164,7 +172,7 @@ IN_PROC_BROWSER_TEST_F(BraveTabHoverTest, HoverModesAreCorrectlyConfigured) {
   EXPECT_TRUE(widget->IsVisible());
 
   // Clear focus, to hide the bubble.
-  HoverOverTab(nullptr);
+  HoverOverTab(nullptr);  
   EXPECT_FALSE(widget->IsVisible());
 
   // In Tooltip mode, the widget should not be made visible.
