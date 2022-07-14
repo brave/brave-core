@@ -761,7 +761,7 @@ void SolanaProviderImpl::SelectedAccountChanged(mojom::CoinType coin) {
   DCHECK(keyring_service_);
   absl::optional<std::string> account =
       keyring_service_->GetSelectedAccount(mojom::CoinType::SOL);
-  if (IsAccountConnected(*account))
+  if (account && IsAccountConnected(*account))
     events_listener_->AccountChangedEvent(account);
   else
     events_listener_->AccountChangedEvent(absl::nullopt);
