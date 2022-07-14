@@ -1,4 +1,5 @@
 import * as React from 'react'
+import { debounce } from '../../common/debounce'
 
 const overflowScrollableRegex = /(auto)|(scroll)/g
 const isScrollable = (element: Element) => {
@@ -32,4 +33,33 @@ export const useParentScrolled = (element: HTMLElement | null, handler: (e: Even
             scrollable.removeEventListener('scroll', handler)
         }
     }, [handler, element])
+}
+
+
+export const useMaintainScrollPosition = (localStorageKey: string, elementRef: React.MutableRefObject<HTMLElement | undefined>, bufferRate=200) => {
+    React.useEffect(() => {
+        if (!elementRef.current) return;
+
+        const debouncedSave = debounce(() => {
+            window.localStorage.setItem(localStorageKey, JSON.stringify({ top: elementRef.current?.scrollTop, left: elementRef.current?.scrollLeft }));
+        }, bufferRate);
+
+        const handler = () => {
+            debouncedSave();
+        };
+
+        elementRef.current.addEventListener('scroll', handler);
+
+        return () => {
+            elementRef.current?.removeEventListener('scroll', handler);
+        }
+    }, [elementRef, localStorageKey, bufferRate]);
+
+    React.useEffect(() => {
+        if (!elementRef.current) return;
+
+        const scrollPosition: { top: number, left: number } | null = JSON.parse(localStorage.getItem(localStorageKey) ?? 'null');
+        if (!scrollPosition) return;
+        elementRef.current.scrollTo(scrollPosition);
+    }, [elementRef, localStorageKey]);
 }
