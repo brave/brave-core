@@ -580,7 +580,7 @@ public class BraveRewardsPanel
                         R.string.brave_ui_pending_contribution_title);
                 description = mPopupView.getResources().getString(
                         R.string.brave_ui_verified_publisher_notification, pubName);
-                notificationIcon = R.drawable.ic_hearts_rewards;
+                notificationIcon = R.drawable.ic_notification_info_icon;
                 break;
             case REWARDS_NOTIFICATION_NO_INTERNET:
                 title = "";
