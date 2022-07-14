@@ -126,12 +126,12 @@ struct AssetDetailView: View {
     }
     .background(
       Color.clear
-    .sheet(isPresented: $isShowingAddAccount) {
-      NavigationView {
-        AddAccountView(keyringStore: keyringStore)
-      }
-      .navigationViewStyle(StackNavigationViewStyle())
-    }
+        .sheet(isPresented: $isShowingAddAccount) {
+          NavigationView {
+            AddAccountView(keyringStore: keyringStore)
+          }
+          .navigationViewStyle(StackNavigationViewStyle())
+        }
     )
     .background(
       Color.clear

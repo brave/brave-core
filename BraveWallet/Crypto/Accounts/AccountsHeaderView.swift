@@ -6,6 +6,7 @@
 import SwiftUI
 import Strings
 import DesignSystem
+import BraveCore
 
 struct AccountsHeaderView: View {
   @ObservedObject var keyringStore: KeyringStore
@@ -38,7 +39,9 @@ struct AccountsHeaderView: View {
       )
       Spacer()
       HStack(spacing: 16) {
-        Button(action: { isPresentingAddAccount = true }) {
+        Button(action: {
+          isPresentingAddAccount = true
+        }) {
           Label(Strings.Wallet.addAccountTitle, systemImage: "plus")
             .labelStyle(.iconOnly)
         }

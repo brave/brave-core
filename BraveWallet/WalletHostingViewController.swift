@@ -7,6 +7,7 @@ import Foundation
 import SwiftUI
 import BraveCore
 import Combine
+import BraveUI
 
 /// Methods for handling actions that occur while the user is interacting with Brave Wallet that require
 /// some integration with the browser
