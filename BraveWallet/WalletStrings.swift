@@ -2500,5 +2500,61 @@ extension Strings {
       value: "Warning: A screenshot of your message may get backed up to a cloud file service, and be readable by any application with photos access. Brave recommends that you not save this screenshot, and delete it as soon as possible.",
       comment: "The message displayed when the user takes a screenshot of their dapp decrypt request."
     )
+    public static let coinTypeEthereum = NSLocalizedString(
+      "wallet.coinTypeEthereum",
+      tableName: "BraveWallet",
+      bundle: .strings,
+      value: "Ethereum",
+      comment: "One of the coin types for users to create an account in Ethereum mainnet or any EVM networks."
+    )
+    public static let coinTypeSolana = NSLocalizedString(
+      "wallet.coinTypeSolana",
+      tableName: "BraveWallet",
+      bundle: .strings,
+      value: "Solana",
+      comment: "One of the coin types for users to create an account with in Solana network"
+    )
+    public static let coinTypeFilecoin = NSLocalizedString(
+      "wallet.coinTypeFilecoin",
+      tableName: "BraveWallet",
+      bundle: .strings,
+      value: "Filecoin",
+      comment: "One of the coin types for users to create an account to store FIL assets"
+    )
+    public static let coinTypeEthereumDescription = NSLocalizedString(
+      "wallet.coinTypeEthereum",
+      tableName: "BraveWallet",
+      bundle: .strings,
+      value: "Supports EVM compatible assets on the Ethereum blockchain (ERC-20, ERC-721, ERC-1551, ERC-1155)",
+      comment: "A description for Ethereum coin type."
+    )
+    public static let coinTypeSolanaDescription = NSLocalizedString(
+      "wallet.coinTypeSolanaDescription",
+      tableName: "BraveWallet",
+      bundle: .strings,
+      value: "Supports SPL compatible assets on the Solana blockchain",
+      comment: "A description for Solana coin type."
+    )
+    public static let coinTypeFilecoinDescription = NSLocalizedString(
+      "wallet.coinTypeFilecoinDescription",
+      tableName: "BraveWallet",
+      bundle: .strings,
+      value: "Store FIL asset",
+      comment: "A description for Filecoin coin type."
+    )
+    public static let coinTypeUnknown = NSLocalizedString(
+      "wallet.coinTypeUnknown",
+      tableName: "BraveWallet",
+      bundle: .strings,
+      value: "Unknown",
+      comment: "A placeholder for unknown coin type."
+    )
+    public static let coinTypeSelectionHeader = NSLocalizedString(
+      "wallet.coinTypeSelectionHeader",
+      tableName: "BraveWallet",
+      bundle: .strings,
+      value: "Select one of the following account types",
+      comment: "A header displayed above coin types selection."
+    )
   }
 }

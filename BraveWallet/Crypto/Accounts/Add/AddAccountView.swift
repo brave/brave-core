@@ -7,6 +7,7 @@ import SwiftUI
 import BraveUI
 import DesignSystem
 import Strings
+import BraveCore
 
 struct AddAccountView: View {
   @ObservedObject var keyringStore: KeyringStore
@@ -17,8 +18,14 @@ struct AddAccountView: View {
   @State private var isLoadingFile: Bool = false
   @State private var originPassword: String = ""
   @State private var failedToImport: Bool = false
+  @State private var selectedCoin: BraveWallet.CoinType?
   @ScaledMetric(relativeTo: .body) private var privateKeyFieldHeight: CGFloat = 140.0
   @Environment(\.presentationMode) @Binding var presentationMode
+  
+  @ScaledMetric private var iconSize = 40.0
+  private let maxIconSize: CGFloat = 80.0
+  
+  var preSelectedCoin: BraveWallet.CoinType?
 
   private func addAccount() {
     if privateKey.isEmpty {
@@ -57,8 +64,12 @@ struct AddAccountView: View {
       return false
     }
   }
-
-  var body: some View {
+  
+  private var showCoinSelection: Bool {
+    preSelectedCoin == nil && WalletConstants.supportedCoinTypes.count > 1
+  }
+  
+  @ViewBuilder private var addAccountView: some View {
     List {
       accountNameSection
       if isJSONImported {
@@ -66,28 +77,6 @@ struct AddAccountView: View {
       }
       privateKeySection
     }
-    .listStyle(InsetGroupedListStyle())
-    .sheet(isPresented: $isPresentingImport) {
-      DocumentOpenerView(allowedContentTypes: [.text, .json]) { urls in
-        guard let fileURL = urls.first else { return }
-        self.isLoadingFile = true
-        DispatchQueue.global(qos: .userInitiated).async {
-          do {
-            let data = try String(contentsOf: fileURL)
-            DispatchQueue.main.async {
-              self.privateKey = data
-              self.isLoadingFile = false
-            }
-          } catch {
-            DispatchQueue.main.async {
-              // Error: Couldn't load file
-              self.isLoadingFile = false
-            }
-          }
-        }
-      }
-    }
-    .animation(.default, value: isJSONImported)
     .navigationBarTitleDisplayMode(.inline)
     .navigationTitle(Strings.Wallet.addAccountTitle)
     .navigationBarItems(
@@ -95,22 +84,74 @@ struct AddAccountView: View {
       trailing: Button(action: addAccount) {
         Text(Strings.Wallet.add)
       }
-      .buttonStyle(BraveFilledButtonStyle(size: .small))
+        .buttonStyle(BraveFilledButtonStyle(size: .small))
     )
-    .toolbar {
-      ToolbarItemGroup(placement: .cancellationAction) {
-        Button(action: { presentationMode.dismiss() }) {
-          Text(Strings.cancelButtonTitle)
-            .foregroundColor(Color(.braveOrange))
-        }
-      }
-    }
     .alert(isPresented: $failedToImport) {
       Alert(
         title: Text(Strings.Wallet.failedToImportAccountErrorTitle),
         message: Text(Strings.Wallet.failedToImportAccountErrorMessage),
         dismissButton: .cancel(Text(Strings.OKString))
       )
+    }
+  }
+  
+  @ViewBuilder private var coinSelectionView: some View {
+    List {
+      Section(
+        header: WalletListHeaderView(
+          title: Text(Strings.Wallet.coinTypeSelectionHeader)
+        )
+      ) {
+        ForEach(WalletConstants.supportedCoinTypes) { coin in
+          NavigationLink(
+            tag: coin,
+            selection: $selectedCoin) {
+              addAccountView
+            } label: {
+              HStack(spacing: 10) {
+                Image(coin.iconName, bundle: .current)
+                  .resizable()
+                  .aspectRatio(contentMode: .fit)
+                  .clipShape(Circle())
+                  .frame(width: min(iconSize, maxIconSize), height: min(iconSize, maxIconSize))
+                VStack(alignment: .leading, spacing: 3) {
+                  Text(coin.localizedTitle)
+                    .foregroundColor(Color(.bravePrimary))
+                    .font(.headline)
+                    .multilineTextAlignment(.leading)
+                  Text(coin.localizedDescription)
+                    .foregroundColor(Color(.braveLabel))
+                    .font(.footnote)
+                    .multilineTextAlignment(.leading)
+                }
+              }
+              .padding(.vertical, 10)
+            }
+        }
+      }
+    }
+    .listStyle(InsetGroupedListStyle())
+    .navigationBarTitleDisplayMode(.inline)
+    .navigationTitle(Strings.Wallet.addAccountTitle)
+  }
+
+  var body: some View {
+    Group {
+      if showCoinSelection {
+        coinSelectionView
+      } else {
+        addAccountView
+      }
+    }
+    .toolbar {
+      ToolbarItemGroup(placement: .cancellationAction) {
+        Button(action: {
+          presentationMode.dismiss()
+        }) {
+          Text(Strings.cancelButtonTitle)
+            .foregroundColor(Color(.braveOrange))
+        }
+      }
     }
   }
 

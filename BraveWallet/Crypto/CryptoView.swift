@@ -111,7 +111,9 @@ public struct CryptoView: View {
             case .accountSelection:
               AccountListView(
                 keyringStore: keyringStore,
-                onDismiss: { dismissAction?() }
+                onDismiss: {
+                  dismissAction?()
+                }
               )
             case .transactionHistory:
               NavigationView {
@@ -302,6 +304,7 @@ private struct CryptoContainerView<DismissContent: ToolbarContent>: View {
           } else {
             cryptoStore?.buySendSwapDestination = destination
           }
-        }))
+        })
+    )
   }
 }

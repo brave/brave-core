@@ -199,3 +199,48 @@ extension BraveWallet.CoinType {
     }
   }
 }
+
+extension BraveWallet.CoinType: Identifiable {
+  public var id: Int {
+    rawValue
+  }
+  
+  var localizedTitle: String {
+    switch self {
+    case .eth:
+      return Strings.Wallet.coinTypeEthereum
+    case .sol:
+      return Strings.Wallet.coinTypeSolana
+    case .fil:
+      return Strings.Wallet.coinTypeFilecoin
+    @unknown default:
+      return Strings.Wallet.coinTypeUnknown
+    }
+  }
+  
+  var localizedDescription: String {
+    switch self {
+    case .eth:
+      return Strings.Wallet.coinTypeEthereumDescription
+    case .sol:
+      return Strings.Wallet.coinTypeSolanaDescription
+    case .fil:
+      return Strings.Wallet.coinTypeFilecoinDescription
+    @unknown default:
+      return Strings.Wallet.coinTypeUnknown
+    }
+  }
+  
+  var iconName: String {
+    switch self {
+    case .eth:
+      return "eth-asset-icon"
+    case .sol:
+      return "sol-asset-icon"
+    case .fil:
+      return "filecoin-asset-icon"
+    @unknown default:
+      return ""
+    }
+  }
+}

@@ -11,6 +11,7 @@ struct AccountListView: View {
   @ObservedObject var keyringStore: KeyringStore
   
   @Environment(\.presentationMode) @Binding private var presentationMode
+  
   @State private var isPresentingAddAccount: Bool = false
   
   var onDismiss: () -> Void
@@ -45,20 +46,22 @@ struct AccountListView: View {
           }
         }
         ToolbarItemGroup(placement: .primaryAction) {
-          Button(action: { isPresentingAddAccount = true }) {
+          Button(action: {
+            isPresentingAddAccount = true
+          }) {
             Label(Strings.Wallet.addAccountTitle, systemImage: "plus")
               .foregroundColor(Color(.braveOrange))
           }
         }
       }
-      .sheet(isPresented: $isPresentingAddAccount) {
-        NavigationView {
-          AddAccountView(keyringStore: keyringStore)
-        }
-        .navigationViewStyle(StackNavigationViewStyle())
-      }
     }
     .navigationViewStyle(StackNavigationViewStyle())
+    .sheet(isPresented: $isPresentingAddAccount) {
+      NavigationView {
+        AddAccountView(keyringStore: keyringStore)
+      }
+      .navigationViewStyle(StackNavigationViewStyle())
+    }
   }
 }
 
