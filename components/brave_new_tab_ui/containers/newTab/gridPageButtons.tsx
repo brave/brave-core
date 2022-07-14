@@ -35,21 +35,21 @@ interface GridPageButtonProps {
     pageContainerRef: React.MutableRefObject<HTMLDivElement | undefined>
 }
 
-function GridPageButton(props: GridPageButtonProps) {
+function GridPageButton (props: GridPageButtonProps) {
     const handleClick = () => {
         const element = props
             .pageContainerRef
             .current
-            ?.children[props.page];
+            ?.children[props.page] as HTMLElement
         if (!element) return
-        
+
         // Ideally we'd use |element.scrollIntoView| here but it applies a
         // vertical scroll even when it's not needed, which triggers the Brave
         // News peek.
         // |element.scrollIntoViewIfNeeded| is also out, because it doesn't
         // support animating the scroll.
-        props.pageContainerRef.current?.scrollTo({ left: element['offsetLeft'], behavior: 'smooth' });
-    };
+        props.pageContainerRef.current?.scrollTo({ left: element.offsetLeft, behavior: 'smooth' })
+    }
 
     return <StyledButton onClick={handleClick}>
         {PageIndicator}

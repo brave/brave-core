@@ -89,7 +89,7 @@ function TopSitesList (props: Props) {
     props.actions.tilesReordered(gridSites, draggingIndex, droppedIndex)
   }
 
-  useMaintainScrollPosition('grid-pages-container-scroll-position', gridPagesContainerRef);
+  useMaintainScrollPosition('grid-pages-container-scroll-position', gridPagesContainerRef)
 
   return <PagesContainer>
     <GridPagesContainer customLinksEnabled={customLinksEnabled} ref={gridPagesContainerRef as any}>
@@ -100,9 +100,9 @@ function TopSitesList (props: Props) {
         </SortableContext>
       </DndContext>
     </GridPagesContainer>
-    {customLinksEnabled
-      && pageCount > 1
-      && <GridPageButtons numPages={pageCount} pageContainerRef={gridPagesContainerRef} />}
+    {customLinksEnabled &&
+      pageCount > 1 &&
+      <GridPageButtons numPages={pageCount} pageContainerRef={gridPagesContainerRef} />}
   </PagesContainer>
 }
 

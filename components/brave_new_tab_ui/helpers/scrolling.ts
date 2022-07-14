@@ -35,31 +35,30 @@ export const useParentScrolled = (element: HTMLElement | null, handler: (e: Even
     }, [handler, element])
 }
 
-
-export const useMaintainScrollPosition = (localStorageKey: string, elementRef: React.MutableRefObject<HTMLElement | undefined>, bufferRate=200) => {
+export const useMaintainScrollPosition = (localStorageKey: string, elementRef: React.MutableRefObject<HTMLElement | undefined>, bufferRate = 200) => {
     React.useEffect(() => {
-        if (!elementRef.current) return;
+        if (!elementRef.current) return
 
         const debouncedSave = debounce(() => {
-            window.localStorage.setItem(localStorageKey, JSON.stringify({ top: elementRef.current?.scrollTop, left: elementRef.current?.scrollLeft }));
-        }, bufferRate);
+            window.localStorage.setItem(localStorageKey, JSON.stringify({ top: elementRef.current?.scrollTop, left: elementRef.current?.scrollLeft }))
+        }, bufferRate)
 
         const handler = () => {
-            debouncedSave();
-        };
+            debouncedSave()
+        }
 
-        elementRef.current.addEventListener('scroll', handler);
+        elementRef.current.addEventListener('scroll', handler)
 
         return () => {
-            elementRef.current?.removeEventListener('scroll', handler);
+            elementRef.current?.removeEventListener('scroll', handler)
         }
-    }, [elementRef, localStorageKey, bufferRate]);
+    }, [elementRef, localStorageKey, bufferRate])
 
     React.useEffect(() => {
-        if (!elementRef.current) return;
+        if (!elementRef.current) return
 
-        const scrollPosition: { top: number, left: number } | null = JSON.parse(localStorage.getItem(localStorageKey) ?? 'null');
-        if (!scrollPosition) return;
-        elementRef.current.scrollTo(scrollPosition);
-    }, [elementRef, localStorageKey]);
+        const scrollPosition: { top: number, left: number } | null = JSON.parse(localStorage.getItem(localStorageKey) ?? 'null')
+        if (!scrollPosition) return
+        elementRef.current.scrollTo(scrollPosition)
+    }, [elementRef, localStorageKey])
 }
