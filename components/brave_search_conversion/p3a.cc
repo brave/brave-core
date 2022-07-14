@@ -17,24 +17,28 @@ namespace p3a {
 
 namespace {
 
-const char* GetOmniboxShownPrefName(ConversionType type) {
+const char* GetPromoShownPrefName(ConversionType type) {
   switch (type) {
     case ConversionType::kBanner:
       return prefs::kP3ABannerShown;
     case ConversionType::kButton:
       return prefs::kP3AButtonShown;
+    case ConversionType::kNTP:
+      return prefs::kP3ANTPShown;
     default:
       NOTREACHED();
       return nullptr;
   }
 }
 
-const char* GetOmniboxTriggeredPrefName(ConversionType type) {
+const char* GetPromoTriggeredPrefName(ConversionType type) {
   switch (type) {
     case ConversionType::kBanner:
       return prefs::kP3ABannerTriggered;
     case ConversionType::kButton:
       return prefs::kP3AButtonTriggered;
+    case ConversionType::kNTP:
+      return prefs::kP3ANTPTriggered;
     default:
       NOTREACHED();
       return nullptr;
@@ -47,6 +51,8 @@ const char* GetPromoTypeHistogramName(ConversionType type) {
       return kSearchPromoBannerHistogramName;
     case ConversionType::kButton:
       return kSearchPromoButtonHistogramName;
+    case ConversionType::kNTP:
+      return kSearchPromoNTPHistogramName;
     default:
       NOTREACHED();
       return nullptr;
@@ -54,16 +60,16 @@ const char* GetPromoTypeHistogramName(ConversionType type) {
 }
 
 void UpdateHistograms(PrefService* prefs) {
-  const ConversionType types[] = {ConversionType::kBanner,
-                                  ConversionType::kButton};
+  const ConversionType types[] = {
+      ConversionType::kBanner, ConversionType::kButton, ConversionType::kNTP};
 
   VLOG(1) << "SearchConversionP3A: updating histograms";
 
   const bool default_engine_triggered =
       prefs->GetBoolean(prefs::kP3ADefaultEngineChanged);
   for (const auto type : types) {
-    const char* shown_pref_name = GetOmniboxShownPrefName(type);
-    const char* triggered_pref_name = GetOmniboxTriggeredPrefName(type);
+    const char* shown_pref_name = GetPromoShownPrefName(type);
+    const char* triggered_pref_name = GetPromoTriggeredPrefName(type);
     const char* histogram_name = GetPromoTypeHistogramName(type);
     DCHECK(shown_pref_name);
     DCHECK(triggered_pref_name);
@@ -93,16 +99,20 @@ void UpdateHistograms(PrefService* prefs) {
 void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
   registry->RegisterBooleanPref(prefs::kP3AButtonShown, false);
   registry->RegisterBooleanPref(prefs::kP3ABannerShown, false);
+  registry->RegisterBooleanPref(prefs::kP3ANTPShown, false);
+
   registry->RegisterBooleanPref(prefs::kP3ABannerTriggered, false);
   registry->RegisterBooleanPref(prefs::kP3AButtonTriggered, false);
+  registry->RegisterBooleanPref(prefs::kP3ANTPTriggered, false);
+
   registry->RegisterBooleanPref(prefs::kP3ADefaultEngineChanged, false);
 }
 
-void RecordOmniboxPromoShown(PrefService* prefs, ConversionType type) {
-  const char* pref_name = GetOmniboxShownPrefName(type);
+void RecordPromoShown(PrefService* prefs, ConversionType type) {
+  const char* pref_name = GetPromoShownPrefName(type);
   DCHECK(pref_name);
 
-  VLOG(1) << "SearchConversionP3A: omnibox promo shown, pref = " << pref_name;
+  VLOG(1) << "SearchConversionP3A: promo shown, pref = " << pref_name;
 
   const bool prev_setting = prefs->GetBoolean(pref_name);
   if (prev_setting) {
@@ -112,12 +122,11 @@ void RecordOmniboxPromoShown(PrefService* prefs, ConversionType type) {
   UpdateHistograms(prefs);
 }
 
-void RecordOmniboxPromoTrigger(PrefService* prefs, ConversionType type) {
-  const char* pref_name = GetOmniboxTriggeredPrefName(type);
+void RecordPromoTrigger(PrefService* prefs, ConversionType type) {
+  const char* pref_name = GetPromoTriggeredPrefName(type);
   DCHECK(pref_name);
 
-  VLOG(1) << "SearchConversionP3A: omnibox promo triggered, pref = "
-          << pref_name;
+  VLOG(1) << "SearchConversionP3A: promo triggered, pref = " << pref_name;
 
   const bool prev_setting = prefs->GetBoolean(pref_name);
   if (prev_setting) {

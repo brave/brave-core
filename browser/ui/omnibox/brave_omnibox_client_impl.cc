@@ -100,7 +100,7 @@ void BraveOmniboxClientImpl::OnURLOpenedFromOmnibox(OmniboxLog* log) {
     return;
   const auto match = log->result.match_at(log->selected_index);
   if (IsBraveSearchPromotionMatch(match)) {
-    brave_search_conversion::p3a::RecordOmniboxPromoTrigger(
+    brave_search_conversion::p3a::RecordPromoTrigger(
         g_browser_process->local_state(), GetConversionTypeFromMatch(match));
   }
 }

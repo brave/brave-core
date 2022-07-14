@@ -49,6 +49,7 @@ constexpr inline auto kCollectedHistograms =
     "Brave.Search.DefaultEngine.4",
     "Brave.Search.Promo.Banner",
     "Brave.Search.Promo.Button",
+    "Brave.Search.Promo.NewTabPage",
     "Brave.Search.SwitchEngine",
     "Brave.Shields.AdBlockSetting",
     "Brave.Shields.DomainAdsSettingsAboveGlobal",

@@ -16,10 +16,11 @@ namespace p3a {
 
 constexpr char kSearchPromoButtonHistogramName[] = "Brave.Search.Promo.Button";
 constexpr char kSearchPromoBannerHistogramName[] = "Brave.Search.Promo.Banner";
+constexpr char kSearchPromoNTPHistogramName[] = "Brave.Search.Promo.NewTabPage";
 
 void RegisterLocalStatePrefs(PrefRegistrySimple* registry);
-void RecordOmniboxPromoShown(PrefService* prefs, ConversionType type);
-void RecordOmniboxPromoTrigger(PrefService* prefs, ConversionType type);
+void RecordPromoShown(PrefService* prefs, ConversionType type);
+void RecordPromoTrigger(PrefService* prefs, ConversionType type);
 void RecordDefaultEngineChange(PrefService* prefs);
 
 }  // namespace p3a
