@@ -24,7 +24,9 @@
 #include "brave/components/brave_wallet/common/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/brave_wallet/common/solana_utils.h"
+#include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/test/base/testing_profile.h"
+#include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/permissions/permission_request_manager.h"
 #include "content/public/test/browser_task_environment.h"
@@ -413,9 +415,9 @@ class SolanaProviderImplUnitTest : public testing::Test {
  protected:
   std::unique_ptr<SolanaProviderImpl> provider_;
   std::unique_ptr<TestEventsListener> observer_;
+  raw_ptr<KeyringService> keyring_service_ = nullptr;
 
  private:
-  raw_ptr<KeyringService> keyring_service_ = nullptr;
   raw_ptr<BraveWalletService> brave_wallet_service_ = nullptr;
   raw_ptr<TxService> tx_service_ = nullptr;
   std::unique_ptr<content::TestWebContents> web_contents_;
@@ -440,7 +442,8 @@ TEST_F(SolanaProviderImplUnitTest, Connect) {
   EXPECT_EQ(error, mojom::SolanaProviderError::kInternalError);
   EXPECT_FALSE(IsConnected());
 
-  Navigate(GURL("https://brave.com"));
+  GURL url("https://brave.com");
+  Navigate(url);
   AddSolanaPermission(GetOrigin(), address);
   account = Connect(absl::nullopt, &error, &error_message);
   EXPECT_EQ(account, address);
@@ -482,6 +485,26 @@ TEST_F(SolanaProviderImplUnitTest, Connect) {
   EXPECT_EQ(pending_error, mojom::SolanaProviderError::kSuccess);
   EXPECT_TRUE(pending_error_message.empty());
   EXPECT_TRUE(IsConnected());
+
+  // CONTENT_SETTING_BLOCK will rule out previous granted permission.
+  scoped_refptr<HostContentSettingsMap> map =
+      HostContentSettingsMapFactory::GetForProfile(browser_context());
+  ASSERT_TRUE(map);
+  map->SetContentSettingDefaultScope(
+      url, url, ContentSettingsType::BRAVE_SOLANA, CONTENT_SETTING_BLOCK);
+  account = Connect(absl::nullopt, &error, &error_message);
+  EXPECT_TRUE(account.empty());
+  EXPECT_EQ(error, mojom::SolanaProviderError::kUserRejectedRequest);
+  EXPECT_EQ(error_message,
+            l10n_util::GetStringUTF8(IDS_WALLET_USER_REJECTED_REQUEST));
+  // When CONTENT_SETTING_BLOCK is removed, previously granted permission works
+  // again.
+  map->SetContentSettingDefaultScope(
+      url, url, ContentSettingsType::BRAVE_SOLANA, CONTENT_SETTING_DEFAULT);
+  account = Connect(absl::nullopt, &error, &error_message);
+  EXPECT_EQ(account, address);
+  EXPECT_EQ(error, mojom::SolanaProviderError::kSuccess);
+  EXPECT_TRUE(error_message.empty());
 }
 
 TEST_F(SolanaProviderImplUnitTest, EagerlyConnect) {
@@ -546,6 +569,33 @@ TEST_F(SolanaProviderImplUnitTest, Disconnect) {
 
   provider_->Disconnect();
   EXPECT_FALSE(IsConnected());
+}
+
+TEST_F(SolanaProviderImplUnitTest,
+       AccountChangedEvent_RemoveSelectedHardwareAccount) {
+  ASSERT_FALSE(observer_->AccountChangedFired());
+  CreateWallet();
+  AddHardwareAccount(kHardwareAccountAddr);
+  EXPECT_FALSE(observer_->AccountChangedFired());
+
+  SetSelectedAccount(kHardwareAccountAddr, mojom::CoinType::SOL);
+  EXPECT_TRUE(observer_->AccountChangedFired());
+  observer_->Reset();
+
+  // Connect the account.
+  Navigate(GURL("https://brave.com"));
+  AddSolanaPermission(GetOrigin(), kHardwareAccountAddr);
+  std::string account = Connect(absl::nullopt, nullptr, nullptr);
+  ASSERT_TRUE(!account.empty());
+  ASSERT_TRUE(IsConnected());
+
+  // Remove selected hardware account.
+  keyring_service_->RemoveHardwareAccount(kHardwareAccountAddr,
+                                          mojom::CoinType::SOL);
+  EXPECT_TRUE(observer_->AccountChangedFired());
+  // Account is empty because GetSelectedAccount returns absl::nullopt.
+  EXPECT_TRUE(observer_->GetAccount().empty());
+  observer_->Reset();
 }
 
 TEST_F(SolanaProviderImplUnitTest, AccountChangedEvent) {

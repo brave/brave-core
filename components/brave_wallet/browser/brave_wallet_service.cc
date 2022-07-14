@@ -611,6 +611,16 @@ void BraveWalletService::ResetPermission(mojom::CoinType coin,
     std::move(callback).Run(false);
 }
 
+void BraveWalletService::IsPermissionDenied(
+    mojom::CoinType coin,
+    const url::Origin& origin,
+    IsPermissionDeniedCallback callback) {
+  if (delegate_)
+    delegate_->IsPermissionDenied(coin, origin, std::move(callback));
+  else
+    std::move(callback).Run(false);
+}
+
 void BraveWalletService::GetWebSitesWithPermission(
     mojom::CoinType coin,
     GetWebSitesWithPermissionCallback callback) {

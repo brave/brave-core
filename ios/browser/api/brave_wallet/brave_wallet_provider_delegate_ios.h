@@ -38,6 +38,7 @@ OBJC_EXPORT
 - (void)getAllowedAccounts:(BraveWalletCoinType)type
                   accounts:(NSArray<NSString*>*)accounts
                 completion:(GetAllowedAccountsCallback)completion;
+- (bool)isPermissionDenied:(BraveWalletCoinType)type;
 @end
 
 NS_ASSUME_NONNULL_END

@@ -237,7 +237,7 @@ class BraveVPNServiceTest : public testing::Test {
   void UpdateAndNotifyConnectionStateChange(mojom::ConnectionState state) {
     service_->UpdateAndNotifyConnectionStateChange(state);
   }
-
+  void Suspend() { service_->OnSuspend(); }
   std::vector<mojom::Region>& regions() const { return service_->regions_; }
 
   mojom::Region device_region() const {
@@ -994,6 +994,18 @@ TEST_F(BraveVPNServiceTest, LoadPurchasedStateForAnotherEnvFailed) {
   EXPECT_FALSE(observer.GetPurchasedState().has_value());
   EXPECT_EQ(GetCurrentEnvironment(), skus::GetDefaultEnvironment());
   EXPECT_EQ(GetPurchasedStateSync(), PurchasedState::PURCHASED);
+}
+
+TEST_F(BraveVPNServiceTest, ResumeAfterSuspend) {
+  connection_state() = ConnectionState::CONNECTED;
+  needs_connect() = false;
+  Suspend();
+  EXPECT_TRUE(needs_connect());
+
+  connection_state() = ConnectionState::DISCONNECTED;
+  needs_connect() = false;
+  Suspend();
+  EXPECT_FALSE(needs_connect());
 }
 
 }  // namespace brave_vpn

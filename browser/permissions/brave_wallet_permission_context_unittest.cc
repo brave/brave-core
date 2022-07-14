@@ -8,7 +8,10 @@
 
 #include "brave/components/brave_wallet/browser/permission_utils.h"
 #include "brave/components/permissions/contexts/brave_wallet_permission_context.h"
+#include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/test/base/testing_profile.h"
+#include "components/content_settings/core/browser/host_content_settings_map.h"
+#include "components/permissions/permission_util.h"
 #include "content/public/test/browser_task_environment.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "url/gurl.h"
@@ -20,6 +23,12 @@ class BraveWalletPermissionContextUnitTest : public testing::Test {
   BraveWalletPermissionContextUnitTest() = default;
   ~BraveWalletPermissionContextUnitTest() override = default;
 
+  void SetUp() override {
+    map_ = HostContentSettingsMapFactory::GetForProfile(&profile_);
+  }
+
+  HostContentSettingsMap* map() { return map_.get(); }
+
   content::BrowserContext* browser_context() { return &profile_; }
   bool Matches(const GURL& url1, const GURL& url2) {
     return (url1.scheme() == url2.scheme()) && (url1.host() == url2.host()) &&
@@ -30,6 +39,7 @@ class BraveWalletPermissionContextUnitTest : public testing::Test {
  private:
   content::BrowserTaskEnvironment browser_task_environment_;
   TestingProfile profile_;
+  scoped_refptr<HostContentSettingsMap> map_;
 };
 
 TEST_F(BraveWalletPermissionContextUnitTest, AddPermission) {
@@ -42,23 +52,46 @@ TEST_F(BraveWalletPermissionContextUnitTest, AddPermission) {
                {"BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8",
                 blink::PermissionType::BRAVE_SOLANA}};
   for (size_t i = 0; i < sizeof(cases) / sizeof(cases[0]); ++i) {
+    SCOPED_TRACE(cases[i].address);
     bool has_permission;
     bool success = permissions::BraveWalletPermissionContext::HasPermission(
         cases[i].type, browser_context(), origin, cases[i].address,
         &has_permission);
-    EXPECT_TRUE(success) << "case: " << i;
-    EXPECT_FALSE(has_permission) << "case: " << i;
+    EXPECT_TRUE(success);
+    EXPECT_FALSE(has_permission);
 
     success = permissions::BraveWalletPermissionContext::AddPermission(
         cases[i].type, browser_context(), origin, cases[i].address);
-    EXPECT_TRUE(success) << "case: " << i;
+    EXPECT_TRUE(success);
 
     // Verify the permission is set
     success = permissions::BraveWalletPermissionContext::HasPermission(
         cases[i].type, browser_context(), origin, cases[i].address,
         &has_permission);
-    EXPECT_TRUE(success) << "case: " << i;
-    EXPECT_TRUE(has_permission) << "case: " << i;
+    EXPECT_TRUE(success);
+    EXPECT_TRUE(has_permission);
+
+    // Set blocked content setting for the url.
+    map()->SetContentSettingDefaultScope(
+        origin.GetURL(), origin.GetURL(),
+        PermissionUtil::PermissionTypeToContentSettingSafe(cases[i].type),
+        CONTENT_SETTING_BLOCK);
+    success = permissions::BraveWalletPermissionContext::HasPermission(
+        cases[i].type, browser_context(), origin, cases[i].address,
+        &has_permission);
+    EXPECT_TRUE(success);
+    EXPECT_FALSE(has_permission);
+
+    // Set content setting to default
+    map()->SetContentSettingDefaultScope(
+        origin.GetURL(), origin.GetURL(),
+        PermissionUtil::PermissionTypeToContentSettingSafe(cases[i].type),
+        CONTENT_SETTING_DEFAULT);
+    success = permissions::BraveWalletPermissionContext::HasPermission(
+        cases[i].type, browser_context(), origin, cases[i].address,
+        &has_permission);
+    EXPECT_TRUE(success);
+    EXPECT_TRUE(has_permission);
   }
 }
 
@@ -72,33 +105,43 @@ TEST_F(BraveWalletPermissionContextUnitTest, ResetPermission) {
                {"BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8",
                 blink::PermissionType::BRAVE_SOLANA}};
   for (size_t i = 0; i < sizeof(cases) / sizeof(cases[0]); ++i) {
+    SCOPED_TRACE(cases[i].address);
     bool success = permissions::BraveWalletPermissionContext::AddPermission(
         cases[i].type, browser_context(), origin, cases[i].address);
-    EXPECT_TRUE(success) << "case: " << i;
+    EXPECT_TRUE(success);
 
     // Adding twice is OK
     success = permissions::BraveWalletPermissionContext::AddPermission(
         cases[i].type, browser_context(), origin, cases[i].address);
-    EXPECT_TRUE(success) << "case: " << i;
+    EXPECT_TRUE(success);
 
     // Verify the permission is set
     bool has_permission;
     success = permissions::BraveWalletPermissionContext::HasPermission(
         cases[i].type, browser_context(), origin, cases[i].address,
         &has_permission);
-    EXPECT_TRUE(success) << "case: " << i;
-    EXPECT_TRUE(has_permission) << "case: " << i;
+    EXPECT_TRUE(success);
+    EXPECT_TRUE(has_permission);
 
+    // CONTENT_SETTING_BLOCK shouldn't affect reset.
+    map()->SetContentSettingDefaultScope(
+        origin.GetURL(), origin.GetURL(),
+        PermissionUtil::PermissionTypeToContentSettingSafe(cases[i].type),
+        CONTENT_SETTING_BLOCK);
     // Reset the permission
     ASSERT_TRUE(permissions::BraveWalletPermissionContext::ResetPermission(
         cases[i].type, browser_context(), origin, cases[i].address));
+    map()->SetContentSettingDefaultScope(
+        origin.GetURL(), origin.GetURL(),
+        PermissionUtil::PermissionTypeToContentSettingSafe(cases[i].type),
+        CONTENT_SETTING_DEFAULT);
 
     // Verify the permission is reset
     success = permissions::BraveWalletPermissionContext::HasPermission(
         cases[i].type, browser_context(), origin, cases[i].address,
         &has_permission);
-    EXPECT_TRUE(success) << "case: " << i;
-    EXPECT_FALSE(has_permission) << "case: " << i;
+    EXPECT_TRUE(success);
+    EXPECT_FALSE(has_permission);
   }
 }
 
@@ -115,9 +158,10 @@ TEST_F(BraveWalletPermissionContextUnitTest, GetWebSitesWithPermission) {
       {"BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8",
        ContentSettingsType::BRAVE_SOLANA, blink::PermissionType::BRAVE_SOLANA}};
   for (size_t i = 0; i < sizeof(cases) / sizeof(cases[0]); ++i) {
+    SCOPED_TRACE(cases[i].address);
     bool success = permissions::BraveWalletPermissionContext::AddPermission(
         cases[i].permission, browser_context(), origin, cases[i].address);
-    EXPECT_TRUE(success) << "case: " << i;
+    EXPECT_TRUE(success);
 
     std::vector<std::string> web_sites =
         permissions::BraveWalletPermissionContext::GetWebSitesWithPermission(
@@ -151,9 +195,10 @@ TEST_F(BraveWalletPermissionContextUnitTest, ResetWebSitePermission) {
       {"BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8",
        ContentSettingsType::BRAVE_SOLANA, blink::PermissionType::BRAVE_SOLANA}};
   for (size_t i = 0; i < sizeof(cases) / sizeof(cases[0]); ++i) {
+    SCOPED_TRACE(cases[i].address);
     bool success = permissions::BraveWalletPermissionContext::AddPermission(
         cases[i].permission, browser_context(), origin, cases[i].address);
-    EXPECT_TRUE(success) << "case: " << i;
+    EXPECT_TRUE(success);
 
     std::vector<std::string> web_sites =
         permissions::BraveWalletPermissionContext::GetWebSitesWithPermission(
