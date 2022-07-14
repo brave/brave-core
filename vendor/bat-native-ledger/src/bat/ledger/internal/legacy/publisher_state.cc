@@ -38,7 +38,7 @@ bool LegacyPublisherState::GetPublisherAllowVideos() const {
   return state_->allow_contribution_to_videos;
 }
 
-void LegacyPublisherState::Load(ledger::ResultCallback callback) {
+void LegacyPublisherState::Load(ledger::LegacyResultCallback callback) {
   auto load_callback = std::bind(&LegacyPublisherState::OnLoad,
       this,
       _1,
@@ -47,10 +47,9 @@ void LegacyPublisherState::Load(ledger::ResultCallback callback) {
   ledger_->ledger_client()->LoadPublisherState(load_callback);
 }
 
-void LegacyPublisherState::OnLoad(
-    const ledger::type::Result result,
-    const std::string& data,
-    ledger::ResultCallback callback) {
+void LegacyPublisherState::OnLoad(ledger::type::Result result,
+                                  const std::string& data,
+                                  ledger::LegacyResultCallback callback) {
   if (result != ledger::type::Result::LEDGER_OK) {
     callback(result);
     return;

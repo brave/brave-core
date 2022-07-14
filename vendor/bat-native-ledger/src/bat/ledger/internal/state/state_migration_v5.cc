@@ -21,7 +21,7 @@ StateMigrationV5::StateMigrationV5(LedgerImpl* ledger) :
 
 StateMigrationV5::~StateMigrationV5() = default;
 
-void StateMigrationV5::Migrate(ledger::ResultCallback callback) {
+void StateMigrationV5::Migrate(ledger::LegacyResultCallback callback) {
   const auto seed = ledger_->ledger_client()->GetStringState(
       kRecoverySeed);
   if (seed.empty()) {

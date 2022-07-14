@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVELEDGER_CONTRIBUTION_CONTRIBUTION_TIP_H_
-#define BRAVELEDGER_CONTRIBUTION_CONTRIBUTION_TIP_H_
+#ifndef BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_CONTRIBUTION_CONTRIBUTION_TIP_H_
+#define BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_CONTRIBUTION_CONTRIBUTION_TIP_H_
 
 #include <string>
 
@@ -21,34 +21,28 @@ class ContributionTip {
 
   ~ContributionTip();
 
-  void Process(
-      const std::string& publisher_key,
-      const double amount,
-      ledger::ResultCallback callback);
+  void Process(const std::string& publisher_key,
+               double amount,
+               ledger::LegacyResultCallback callback);
 
  private:
-  void ServerPublisher(
-      type::ServerPublisherInfoPtr server_info,
-      const std::string& publisher_key,
-      const double amount,
-      ledger::ResultCallback callback);
+  void ServerPublisher(type::ServerPublisherInfoPtr server_info,
+                       const std::string& publisher_key,
+                       double amount,
+                       ledger::LegacyResultCallback callback);
 
-  void QueueSaved(
-      const type::Result result,
-      ledger::ResultCallback callback);
+  void QueueSaved(type::Result result, ledger::LegacyResultCallback callback);
 
-  void SavePending(
-      const std::string& publisher_key,
-      const double amount,
-      ledger::ResultCallback callback);
+  void SavePending(const std::string& publisher_key,
+                   double amount,
+                   ledger::LegacyResultCallback callback);
 
-  void OnSavePending(
-      const type::Result result,
-      ledger::ResultCallback callback);
+  void OnSavePending(type::Result result,
+                     ledger::LegacyResultCallback callback);
 
   LedgerImpl* ledger_;  // NOT OWNED
 };
 
 }  // namespace contribution
 }  // namespace ledger
-#endif  // BRAVELEDGER_CONTRIBUTION_CONTRIBUTION_TIP_H_
+#endif  // BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_CONTRIBUTION_CONTRIBUTION_TIP_H_

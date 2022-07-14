@@ -142,15 +142,15 @@ TEST_F(GetMeTest, ServerOK) {
 
   ::ledger::uphold::User expected_user;
 
-
-  me_->Request(
-      "4c2b665ca060d912fec5c735c734859a06118cc8",
-      [&](const type::Result result, const ::ledger::uphold::User& user) {
-        EXPECT_EQ(result, type::Result::LEDGER_OK);
-        EXPECT_EQ(user.name, "John");
-        EXPECT_EQ(user.member_id, "b34060c9-5ca3-4bdb-bc32-1f826ecea36e");
-        EXPECT_EQ(user.bat_not_allowed, false);
-      });
+  me_->Request("4c2b665ca060d912fec5c735c734859a06118cc8",
+               base::BindOnce(
+                   [](type::Result result, const ::ledger::uphold::User& user) {
+                     EXPECT_EQ(result, type::Result::LEDGER_OK);
+                     EXPECT_EQ(user.name, "John");
+                     EXPECT_EQ(user.member_id,
+                               "b34060c9-5ca3-4bdb-bc32-1f826ecea36e");
+                     EXPECT_EQ(user.bat_not_allowed, false);
+                   }));
 }
 
 TEST_F(GetMeTest, ServerError401) {
@@ -167,9 +167,9 @@ TEST_F(GetMeTest, ServerError401) {
   ::ledger::uphold::User expected_user;
   me_->Request(
       "4c2b665ca060d912fec5c735c734859a06118cc8",
-      [&](const type::Result result, const ::ledger::uphold::User& user) {
+      base::BindOnce([](type::Result result, const ::ledger::uphold::User&) {
         EXPECT_EQ(result, type::Result::EXPIRED_TOKEN);
-      });
+      }));
 }
 
 TEST_F(GetMeTest, ServerErrorRandom) {
@@ -186,9 +186,9 @@ TEST_F(GetMeTest, ServerErrorRandom) {
   ::ledger::uphold::User expected_user;
   me_->Request(
       "4c2b665ca060d912fec5c735c734859a06118cc8",
-      [&](const type::Result result, const ::ledger::uphold::User& user) {
+      base::BindOnce([](type::Result result, const ::ledger::uphold::User&) {
         EXPECT_EQ(result, type::Result::LEDGER_ERROR);
-      });
+      }));
 }
 
 }  // namespace uphold

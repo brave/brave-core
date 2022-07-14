@@ -53,7 +53,7 @@ DatabaseContributionInfo::~DatabaseContributionInfo() = default;
 
 void DatabaseContributionInfo::InsertOrUpdate(
     type::ContributionInfoPtr info,
-    ledger::ResultCallback callback) {
+    ledger::LegacyResultCallback callback) {
   if (!info) {
     BLOG(1, "Info is null");
     callback(type::Result::LEDGER_ERROR);
@@ -565,8 +565,8 @@ void DatabaseContributionInfo::OnGetListPublishers(
 
 void DatabaseContributionInfo::UpdateStep(
     const std::string& contribution_id,
-    const type::ContributionStep step,
-    ledger::ResultCallback callback) {
+    type::ContributionStep step,
+    ledger::LegacyResultCallback callback) {
   if (contribution_id.empty()) {
     BLOG(1, "Contribution id is empty");
     callback(type::Result::LEDGER_ERROR);
@@ -597,9 +597,9 @@ void DatabaseContributionInfo::UpdateStep(
 
 void DatabaseContributionInfo::UpdateStepAndCount(
     const std::string& contribution_id,
-    const type::ContributionStep step,
-    const int32_t retry_count,
-    ledger::ResultCallback callback) {
+    type::ContributionStep step,
+    int32_t retry_count,
+    ledger::LegacyResultCallback callback) {
   if (contribution_id.empty()) {
     BLOG(1, "Contribution id is empty");
     callback(type::Result::LEDGER_ERROR);
@@ -632,7 +632,7 @@ void DatabaseContributionInfo::UpdateStepAndCount(
 void DatabaseContributionInfo::UpdateContributedAmount(
     const std::string& contribution_id,
     const std::string& publisher_key,
-    ledger::ResultCallback callback) {
+    ledger::LegacyResultCallback callback) {
   publishers_->UpdateContributedAmount(
       contribution_id,
       publisher_key,
@@ -640,7 +640,7 @@ void DatabaseContributionInfo::UpdateContributedAmount(
 }
 
 void DatabaseContributionInfo::FinishAllInProgressRecords(
-    ledger::ResultCallback callback) {
+    ledger::LegacyResultCallback callback) {
   auto transaction = type::DBTransaction::New();
   const std::string query = base::StringPrintf(
     "UPDATE %s SET step = ?, retry_count = 0 WHERE step >= 0",

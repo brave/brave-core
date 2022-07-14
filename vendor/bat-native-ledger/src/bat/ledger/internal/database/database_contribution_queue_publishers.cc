@@ -34,7 +34,7 @@ DatabaseContributionQueuePublishers::
 void DatabaseContributionQueuePublishers::InsertOrUpdate(
     const std::string& id,
     type::ContributionQueuePublisherList list,
-    ledger::ResultCallback callback) {
+    ledger::LegacyResultCallback callback) {
   if (id.empty() || list.empty()) {
     BLOG(1, "Empty data");
     callback(type::Result::LEDGER_ERROR);

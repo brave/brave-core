@@ -103,12 +103,11 @@ TEST_F(GetCardsTest, ServerOK) {
             std::move(callback).Run(response);
           }));
 
-  card_->Request(
-      "4c2b665ca060d912fec5c735c734859a06118cc8",
-      [](const type::Result result, const std::string& id) {
-        EXPECT_EQ(result, type::Result::LEDGER_OK);
-        EXPECT_EQ(id, "3ed3b2c4-a715-4c01-b302-fa2681a971ea");
-      });
+  card_->Request("4c2b665ca060d912fec5c735c734859a06118cc8",
+                 base::BindOnce([](type::Result result, const std::string& id) {
+                   EXPECT_EQ(result, type::Result::LEDGER_OK);
+                   EXPECT_EQ(id, "3ed3b2c4-a715-4c01-b302-fa2681a971ea");
+                 }));
 }
 
 TEST_F(GetCardsTest, CardNotFound) {
@@ -172,12 +171,11 @@ TEST_F(GetCardsTest, CardNotFound) {
             std::move(callback).Run(response);
           }));
 
-  card_->Request(
-      "4c2b665ca060d912fec5c735c734859a06118cc8",
-      [](const type::Result result, const std::string& id) {
-        EXPECT_EQ(result, type::Result::LEDGER_ERROR);
-        EXPECT_EQ(id, "");
-      });
+  card_->Request("4c2b665ca060d912fec5c735c734859a06118cc8",
+                 base::BindOnce([](type::Result result, const std::string& id) {
+                   EXPECT_EQ(result, type::Result::LEDGER_ERROR);
+                   EXPECT_EQ(id, "");
+                 }));
 }
 
 TEST_F(GetCardsTest, ServerError401) {
@@ -191,12 +189,11 @@ TEST_F(GetCardsTest, ServerError401) {
             std::move(callback).Run(response);
           }));
 
-  card_->Request(
-      "4c2b665ca060d912fec5c735c734859a06118cc8",
-      [](const type::Result result, const std::string& id) {
-        EXPECT_EQ(result, type::Result::EXPIRED_TOKEN);
-        EXPECT_EQ(id, "");
-      });
+  card_->Request("4c2b665ca060d912fec5c735c734859a06118cc8",
+                 base::BindOnce([](type::Result result, const std::string& id) {
+                   EXPECT_EQ(result, type::Result::EXPIRED_TOKEN);
+                   EXPECT_EQ(id, "");
+                 }));
 }
 
 TEST_F(GetCardsTest, ServerErrorRandom) {
@@ -210,12 +207,11 @@ TEST_F(GetCardsTest, ServerErrorRandom) {
             std::move(callback).Run(response);
           }));
 
-  card_->Request(
-      "4c2b665ca060d912fec5c735c734859a06118cc8",
-      [](const type::Result result, const std::string& id) {
-        EXPECT_EQ(result, type::Result::LEDGER_ERROR);
-        EXPECT_EQ(id, "");
-      });
+  card_->Request("4c2b665ca060d912fec5c735c734859a06118cc8",
+                 base::BindOnce([](type::Result result, const std::string& id) {
+                   EXPECT_EQ(result, type::Result::LEDGER_ERROR);
+                   EXPECT_EQ(id, "");
+                 }));
 }
 
 }  // namespace uphold

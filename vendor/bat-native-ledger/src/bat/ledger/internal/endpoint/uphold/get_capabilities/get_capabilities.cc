@@ -13,7 +13,6 @@
 #include "net/http/http_status_code.h"
 
 using ledger::uphold::Capabilities;
-using std::placeholders::_1;
 
 namespace ledger {
 namespace endpoint {
@@ -29,13 +28,13 @@ void GetCapabilities::Request(const std::string& token,
   auto request = type::UrlRequest::New();
   request->url = GetServerUrl("/v0/me/capabilities");
   request->headers = RequestAuthorization(token);
-  ledger_->LoadURL(
-      std::move(request),
-      std::bind(&GetCapabilities::OnRequest, this, _1, std::move(callback)));
+  ledger_->LoadURL(std::move(request),
+                   base::BindOnce(&GetCapabilities::OnRequest,
+                                  base::Unretained(this), std::move(callback)));
 }
 
-void GetCapabilities::OnRequest(const type::UrlResponse& response,
-                                GetCapabilitiesCallback callback) {
+void GetCapabilities::OnRequest(GetCapabilitiesCallback callback,
+                                const type::UrlResponse& response) {
   ledger::LogUrlResponse(__func__, response);
 
   auto [result, capability_map] = ProcessResponse(response);
@@ -49,7 +48,7 @@ void GetCapabilities::OnRequest(const type::UrlResponse& response,
     capabilities.can_send = sends.enabled && sends.requirements_empty;
   }
 
-  callback(result, std::move(capabilities));
+  std::move(callback).Run(result, std::move(capabilities));
 }
 
 std::pair<type::Result, GetCapabilities::CapabilityMap>

@@ -13,8 +13,6 @@
 #include "bat/ledger/internal/ledger_impl.h"
 #include "net/http/http_status_code.h"
 
-using std::placeholders::_1;
-
 namespace ledger {
 namespace endpoint {
 namespace uphold {
@@ -59,7 +57,8 @@ type::Result PatchCard::CheckStatusCode(const int status_code) {
 void PatchCard::Request(const std::string& token,
                         const std::string& address,
                         PatchCardCallback callback) {
-  auto url_callback = std::bind(&PatchCard::OnRequest, this, _1, callback);
+  auto url_callback = base::BindOnce(
+      &PatchCard::OnRequest, base::Unretained(this), std::move(callback));
 
   auto request = type::UrlRequest::New();
   request->url = GetUrl(address);
@@ -67,13 +66,13 @@ void PatchCard::Request(const std::string& token,
   request->headers = RequestAuthorization(token);
   request->content_type = "application/json; charset=utf-8";
   request->method = type::UrlMethod::PATCH;
-  ledger_->LoadURL(std::move(request), url_callback);
+  ledger_->LoadURL(std::move(request), std::move(url_callback));
 }
 
-void PatchCard::OnRequest(const type::UrlResponse& response,
-                          PatchCardCallback callback) {
+void PatchCard::OnRequest(PatchCardCallback callback,
+                          const type::UrlResponse& response) {
   ledger::LogUrlResponse(__func__, response);
-  callback(CheckStatusCode(response.status_code));
+  std::move(callback).Run(CheckStatusCode(response.status_code));
 }
 
 }  // namespace uphold

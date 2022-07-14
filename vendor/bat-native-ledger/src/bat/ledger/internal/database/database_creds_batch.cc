@@ -28,9 +28,8 @@ DatabaseCredsBatch::DatabaseCredsBatch(
 
 DatabaseCredsBatch::~DatabaseCredsBatch() = default;
 
-void DatabaseCredsBatch::InsertOrUpdate(
-    type::CredsBatchPtr creds,
-    ledger::ResultCallback callback) {
+void DatabaseCredsBatch::InsertOrUpdate(type::CredsBatchPtr creds,
+                                        ledger::LegacyResultCallback callback) {
   if (!creds) {
     BLOG(1, "Creds is null");
     callback(type::Result::LEDGER_ERROR);
@@ -149,7 +148,7 @@ void DatabaseCredsBatch::OnGetRecordByTrigger(
 
 void DatabaseCredsBatch::SaveSignedCreds(
     type::CredsBatchPtr creds,
-    ledger::ResultCallback callback) {
+    ledger::LegacyResultCallback callback) {
   if (!creds) {
     BLOG(1, "Creds is null");
     callback(type::Result::LEDGER_ERROR);
@@ -253,11 +252,10 @@ void DatabaseCredsBatch::OnGetRecords(
   callback(std::move(list));
 }
 
-void DatabaseCredsBatch::UpdateStatus(
-    const std::string& trigger_id,
-    const type::CredsBatchType trigger_type,
-    const type::CredsBatchStatus status,
-    ledger::ResultCallback callback) {
+void DatabaseCredsBatch::UpdateStatus(const std::string& trigger_id,
+                                      type::CredsBatchType trigger_type,
+                                      type::CredsBatchStatus status,
+                                      ledger::LegacyResultCallback callback) {
   if (trigger_id.empty()) {
     BLOG(0, "Trigger id is empty");
     callback(type::Result::LEDGER_ERROR);
@@ -289,9 +287,9 @@ void DatabaseCredsBatch::UpdateStatus(
 
 void DatabaseCredsBatch::UpdateRecordsStatus(
     const std::vector<std::string>& trigger_ids,
-    const type::CredsBatchType trigger_type,
-    const type::CredsBatchStatus status,
-    ledger::ResultCallback callback) {
+    type::CredsBatchType trigger_type,
+    type::CredsBatchStatus status,
+    ledger::LegacyResultCallback callback) {
   if (trigger_ids.empty()) {
     BLOG(0, "Trigger id is empty");
     callback(type::Result::LEDGER_ERROR);

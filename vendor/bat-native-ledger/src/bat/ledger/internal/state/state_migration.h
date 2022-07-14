@@ -32,17 +32,16 @@ class StateMigration {
   explicit StateMigration(LedgerImpl* ledger);
   ~StateMigration();
 
-  void Start(ledger::ResultCallback callback);
+  void Start(ledger::LegacyResultCallback callback);
 
-  void Migrate(ledger::ResultCallback callback);
+  void Migrate(ledger::LegacyResultCallback callback);
 
  private:
-  void FreshInstall(ledger::ResultCallback callback);
+  void FreshInstall(ledger::LegacyResultCallback callback);
 
-  void OnMigration(
-      type::Result result,
-      const int version,
-      ledger::ResultCallback callback);
+  void OnMigration(type::Result result,
+                   int version,
+                   ledger::LegacyResultCallback callback);
 
   std::unique_ptr<StateMigrationV1> v1_;
   std::unique_ptr<StateMigrationV2> v2_;

@@ -468,9 +468,8 @@ void Promotion::ProcessFetchedPromotions(
   callback(result, std::move(promotions));
 }
 
-void Promotion::GetCredentials(
-    type::PromotionPtr promotion,
-    ledger::ResultCallback callback) {
+void Promotion::GetCredentials(type::PromotionPtr promotion,
+                               ledger::LegacyResultCallback callback) {
   if (!promotion) {
     BLOG(0, "Promotion is null");
     callback(type::Result::LEDGER_ERROR);
@@ -491,10 +490,9 @@ void Promotion::GetCredentials(
   credentials_->Start(trigger, creds_callback);
 }
 
-void Promotion::CredentialsProcessed(
-    const type::Result result,
-    const std::string& promotion_id,
-    ledger::ResultCallback callback) {
+void Promotion::CredentialsProcessed(type::Result result,
+                                     const std::string& promotion_id,
+                                     ledger::LegacyResultCallback callback) {
   if (result == type::Result::RETRY) {
     retry_timer_.Start(FROM_HERE, base::Seconds(5),
                        base::BindOnce(&Promotion::OnRetryTimerElapsed,
@@ -760,7 +758,7 @@ void Promotion::ErrorCredsStatusSaved(const type::Result result) {
 }
 
 void Promotion::TransferTokens(ledger::PostSuggestionsClaimCallback callback) {
-  transfer_->Start(callback);
+  transfer_->Start(std::move(callback));
 }
 
 void Promotion::OnRetryTimerElapsed() {

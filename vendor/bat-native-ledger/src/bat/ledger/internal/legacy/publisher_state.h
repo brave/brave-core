@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVELEDGER_LEGACY_PUBLISHER_STATE_H_
-#define BRAVELEDGER_LEGACY_PUBLISHER_STATE_H_
+#ifndef BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_LEGACY_PUBLISHER_STATE_H_
+#define BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_LEGACY_PUBLISHER_STATE_H_
 
 #include <string>
 #include <map>
@@ -35,17 +35,16 @@ class LegacyPublisherState {
 
   bool GetPublisherAllowVideos() const;
 
-  void Load(ledger::ResultCallback callback);
+  void Load(ledger::LegacyResultCallback callback);
 
   std::vector<std::string> GetAlreadyProcessedPublishers() const;
 
   void GetAllBalanceReports(ledger::type::BalanceReportInfoList* reports);
 
  private:
-  void OnLoad(
-      const ledger::type::Result result,
-      const std::string& data,
-      ledger::ResultCallback callback);
+  void OnLoad(ledger::type::Result result,
+              const std::string& data,
+              ledger::LegacyResultCallback callback);
 
   ledger::LedgerImpl* ledger_;  // NOT OWNED
   std::unique_ptr<ledger::PublisherSettingsProperties> state_;
@@ -54,4 +53,4 @@ class LegacyPublisherState {
 }  // namespace publisher
 }  // namespace ledger
 
-#endif  // BRAVELEDGER_LEGACY_PUBLISHER_STATE_H_
+#endif  // BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_LEGACY_PUBLISHER_STATE_H_

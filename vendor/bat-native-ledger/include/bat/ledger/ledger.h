@@ -40,7 +40,7 @@ using FetchBalanceCallback =
     base::OnceCallback<void(type::Result, type::BalancePtr)>;
 
 using ExternalWalletCallback =
-    std::function<void(type::Result, type::ExternalWalletPtr)>;
+    base::OnceCallback<void(type::Result, type::ExternalWalletPtr)>;
 
 using ExternalWalletAuthorizationCallback =
     std::function<void(type::Result, base::flat_map<std::string, std::string>)>;
@@ -84,7 +84,9 @@ using GetTransactionReportCallback =
 
 using GetAllPromotionsCallback = std::function<void(type::PromotionMap)>;
 
-using ResultCallback = std::function<void(const type::Result)>;
+using LegacyResultCallback = std::function<void(type::Result)>;
+
+using ResultCallback = base::OnceCallback<void(type::Result)>;
 
 using PendingContributionsTotalCallback = std::function<void(double)>;
 
@@ -105,7 +107,7 @@ using GetPublisherInfoCallback =
 using GetBraveWalletCallback = std::function<void(type::BraveWalletPtr)>;
 
 using PostSuggestionsClaimCallback =
-    std::function<void(type::Result result, std::string drain_id)>;
+    base::OnceCallback<void(type::Result result, std::string drain_id)>;
 
 using GetDrainCallback =
     std::function<void(type::Result result, type::DrainStatus status)>;
@@ -124,13 +126,13 @@ class LEDGER_EXPORT Ledger {
 
   static Ledger* CreateInstance(LedgerClient* client);
 
-  virtual void Initialize(bool execute_create_script, ResultCallback) = 0;
+  virtual void Initialize(bool execute_create_script, LegacyResultCallback) = 0;
 
-  virtual void CreateWallet(ResultCallback callback) = 0;
+  virtual void CreateWallet(LegacyResultCallback callback) = 0;
 
   virtual void OneTimeTip(const std::string& publisher_key,
                           double amount,
-                          ResultCallback callback) = 0;
+                          LegacyResultCallback callback) = 0;
 
   virtual void OnLoad(type::VisitDataPtr visit_data, uint64_t current_time) = 0;
 
@@ -236,13 +238,13 @@ class LEDGER_EXPORT Ledger {
   virtual type::AutoContributePropertiesPtr GetAutoContributeProperties() = 0;
 
   virtual void RecoverWallet(const std::string& pass_phrase,
-                             ResultCallback callback) = 0;
+                             LegacyResultCallback callback) = 0;
 
   virtual void SetPublisherExclude(const std::string& publisher_id,
                                    type::PublisherExclude exclude,
-                                   ResultCallback callback) = 0;
+                                   LegacyResultCallback callback) = 0;
 
-  virtual void RestorePublishers(ResultCallback callback) = 0;
+  virtual void RestorePublishers(LegacyResultCallback callback) = 0;
 
   virtual void GetPublisherActivityFromUrl(
       uint64_t window_id,
@@ -253,7 +255,7 @@ class LEDGER_EXPORT Ledger {
                                   PublisherBannerCallback callback) = 0;
 
   virtual void RemoveRecurringTip(const std::string& publisher_key,
-                                  ResultCallback callback) = 0;
+                                  LegacyResultCallback callback) = 0;
 
   virtual uint64_t GetCreationStamp() = 0;
 
@@ -264,7 +266,7 @@ class LEDGER_EXPORT Ledger {
       RewardsInternalsInfoCallback callback) = 0;
 
   virtual void SaveRecurringTip(type::RecurringTipPtr info,
-                                ResultCallback callback) = 0;
+                                LegacyResultCallback callback) = 0;
 
   virtual void GetRecurringTips(PublisherInfoListCallback callback) = 0;
 
@@ -296,7 +298,7 @@ class LEDGER_EXPORT Ledger {
 
   virtual void SavePublisherInfo(uint64_t window_id,
                                  type::PublisherInfoPtr publisher_info,
-                                 ResultCallback callback) = 0;
+                                 LegacyResultCallback callback) = 0;
 
   virtual void SetInlineTippingPlatformEnabled(
       type::InlineTipsPlatforms platform,
@@ -312,9 +314,9 @@ class LEDGER_EXPORT Ledger {
       PendingContributionInfoListCallback callback) = 0;
 
   virtual void RemovePendingContribution(uint64_t id,
-                                         ResultCallback callback) = 0;
+                                         LegacyResultCallback callback) = 0;
 
-  virtual void RemoveAllPendingContributions(ResultCallback callback) = 0;
+  virtual void RemoveAllPendingContributions(LegacyResultCallback callback) = 0;
 
   virtual void GetPendingContributionsTotal(
       PendingContributionsTotalCallback callback) = 0;
@@ -330,11 +332,11 @@ class LEDGER_EXPORT Ledger {
       ExternalWalletAuthorizationCallback callback) = 0;
 
   virtual void DisconnectWallet(const std::string& wallet_type,
-                                ResultCallback callback) = 0;
+                                LegacyResultCallback callback) = 0;
 
   virtual void GetAllPromotions(GetAllPromotionsCallback callback) = 0;
 
-  virtual void GetAnonWalletStatus(ResultCallback callback) = 0;
+  virtual void GetAnonWalletStatus(LegacyResultCallback callback) = 0;
 
   virtual void GetTransactionReport(type::ActivityMonth month,
                                     int year,
@@ -348,7 +350,7 @@ class LEDGER_EXPORT Ledger {
   virtual void GetAllContributions(ContributionInfoListCallback callback) = 0;
 
   virtual void SavePublisherInfoForTip(type::PublisherInfoPtr info,
-                                       ResultCallback callback) = 0;
+                                       LegacyResultCallback callback) = 0;
 
   virtual void GetMonthlyReport(type::ActivityMonth month,
                                 int year,
@@ -361,7 +363,7 @@ class LEDGER_EXPORT Ledger {
                           const std::string& wallet_type,
                           SKUOrderCallback callback) = 0;
 
-  virtual void Shutdown(ResultCallback callback) = 0;
+  virtual void Shutdown(LegacyResultCallback callback) = 0;
 
   virtual void GetEventLogs(GetEventLogsCallback callback) = 0;
 

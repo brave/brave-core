@@ -14,8 +14,6 @@
 #include "bat/ledger/internal/uphold/uphold_card.h"
 #include "net/http/http_status_code.h"
 
-using std::placeholders::_1;
-
 namespace ledger {
 namespace endpoint {
 namespace uphold {
@@ -85,32 +83,29 @@ type::Result GetCards::ParseBody(
 void GetCards::Request(
     const std::string& token,
     GetCardsCallback callback) {
-  auto url_callback = std::bind(&GetCards::OnRequest,
-      this,
-      _1,
-      callback);
+  auto url_callback = base::BindOnce(
+      &GetCards::OnRequest, base::Unretained(this), std::move(callback));
 
   auto request = type::UrlRequest::New();
   request->url = GetUrl();
   request->headers = RequestAuthorization(token);
-  ledger_->LoadURL(std::move(request), url_callback);
+  ledger_->LoadURL(std::move(request), std::move(url_callback));
 }
 
-void GetCards::OnRequest(
-    const type::UrlResponse& response,
-    GetCardsCallback callback) {
+void GetCards::OnRequest(GetCardsCallback callback,
+                         const type::UrlResponse& response) {
   ledger::LogUrlResponse(__func__, response);
 
   type::Result result = CheckStatusCode(response.status_code);
 
   if (result != type::Result::LEDGER_OK) {
-    callback(result, "");
+    std::move(callback).Run(result, "");
     return;
   }
 
   std::string id;
   result = ParseBody(response.body, &id);
-  callback(result, id);
+  std::move(callback).Run(result, id);
 }
 
 }  // namespace uphold

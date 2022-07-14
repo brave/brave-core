@@ -62,7 +62,7 @@ void DatabaseEventLog::Insert(
 
 void DatabaseEventLog::InsertRecords(
     const std::map<std::string, std::string>& records,
-    ledger::ResultCallback callback) {
+    ledger::LegacyResultCallback callback) {
   if (records.empty()) {
     BLOG(0, "No records");
     callback(type::Result::NOT_FOUND);

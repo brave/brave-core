@@ -29,7 +29,7 @@ class MockLedgerImpl : public LedgerImpl {
 
   MOCK_CONST_METHOD0(promotion, promotion::Promotion*());
 
-  MOCK_METHOD2(Initialize, void(bool, ledger::ResultCallback));
+  MOCK_METHOD2(Initialize, void(bool, ledger::LegacyResultCallback));
 };
 
 }  // namespace ledger

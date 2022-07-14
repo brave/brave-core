@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVELEDGER_DATABASE_DATABASE_BALANCE_REPORT_H_
-#define BRAVELEDGER_DATABASE_DATABASE_BALANCE_REPORT_H_
+#ifndef BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_DATABASE_DATABASE_BALANCE_REPORT_H_
+#define BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_DATABASE_DATABASE_BALANCE_REPORT_H_
 
 #include <string>
 
@@ -18,20 +18,17 @@ class DatabaseBalanceReport : public DatabaseTable {
   explicit DatabaseBalanceReport(LedgerImpl* ledger);
   ~DatabaseBalanceReport() override;
 
-  void InsertOrUpdate(
-      type::BalanceReportInfoPtr info,
-      ledger::ResultCallback callback);
+  void InsertOrUpdate(type::BalanceReportInfoPtr info,
+                      ledger::LegacyResultCallback callback);
 
-  void InsertOrUpdateList(
-      type::BalanceReportInfoList list,
-      ledger::ResultCallback callback);
+  void InsertOrUpdateList(type::BalanceReportInfoList list,
+                          ledger::LegacyResultCallback callback);
 
-  void SetAmount(
-      type::ActivityMonth month,
-      int year,
-      type::ReportType type,
-      double amount,
-      ledger::ResultCallback callback);
+  void SetAmount(type::ActivityMonth month,
+                 int year,
+                 type::ReportType type,
+                 double amount,
+                 ledger::LegacyResultCallback callback);
 
   void GetRecord(
       type::ActivityMonth month,
@@ -41,8 +38,7 @@ class DatabaseBalanceReport : public DatabaseTable {
   void GetAllRecords(
       ledger::GetBalanceReportListCallback callback);
 
-  void DeleteAllRecords(
-      ledger::ResultCallback callback);
+  void DeleteAllRecords(ledger::LegacyResultCallback callback);
 
  private:
   void OnGetRecord(
@@ -57,4 +53,4 @@ class DatabaseBalanceReport : public DatabaseTable {
 }  // namespace database
 }  // namespace ledger
 
-#endif  // BRAVELEDGER_DATABASE_DATABASE_BALANCE_REPORT_H_
+#endif  // BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_DATABASE_DATABASE_BALANCE_REPORT_H_

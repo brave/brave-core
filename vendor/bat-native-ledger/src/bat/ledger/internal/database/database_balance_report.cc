@@ -58,7 +58,7 @@ DatabaseBalanceReport::~DatabaseBalanceReport() = default;
 
 void DatabaseBalanceReport::InsertOrUpdate(
     type::BalanceReportInfoPtr info,
-    ledger::ResultCallback callback) {
+    ledger::LegacyResultCallback callback) {
   if (!info || info->id.empty()) {
     BLOG(1, "Id is empty");
     callback(type::Result::LEDGER_ERROR);
@@ -96,7 +96,7 @@ void DatabaseBalanceReport::InsertOrUpdate(
 
 void DatabaseBalanceReport::InsertOrUpdateList(
     type::BalanceReportInfoList list,
-    ledger::ResultCallback callback) {
+    ledger::LegacyResultCallback callback) {
   if (list.empty()) {
     BLOG(1, "List is empty");
     callback(type::Result::LEDGER_OK);
@@ -134,12 +134,11 @@ void DatabaseBalanceReport::InsertOrUpdateList(
   ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
-void DatabaseBalanceReport::SetAmount(
-    type::ActivityMonth month,
-    int year,
-    type::ReportType type,
-    double amount,
-    ledger::ResultCallback callback) {
+void DatabaseBalanceReport::SetAmount(type::ActivityMonth month,
+                                      int year,
+                                      type::ReportType type,
+                                      double amount,
+                                      ledger::LegacyResultCallback callback) {
   if (month == type::ActivityMonth::ANY || year == 0) {
     BLOG(1, "Record size is not correct " << month << "/" << year);
     callback(type::Result::LEDGER_ERROR);
@@ -332,7 +331,7 @@ void DatabaseBalanceReport::OnGetAllRecords(
 }
 
 void DatabaseBalanceReport::DeleteAllRecords(
-    ledger::ResultCallback callback) {
+    ledger::LegacyResultCallback callback) {
   auto transaction = type::DBTransaction::New();
 
   const std::string query = base::StringPrintf("DELETE FROM %s", kTableName);

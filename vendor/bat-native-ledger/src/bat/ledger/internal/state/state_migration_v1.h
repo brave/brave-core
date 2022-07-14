@@ -22,24 +22,20 @@ class StateMigrationV1 {
   explicit StateMigrationV1(LedgerImpl* ledger);
   ~StateMigrationV1();
 
-  void Migrate(ledger::ResultCallback callback);
+  void Migrate(ledger::LegacyResultCallback callback);
 
   bool legacy_data_migrated() const { return legacy_data_migrated_; }
 
  private:
-  void OnLoadState(
-      const type::Result result,
-      ledger::ResultCallback callback);
+  void OnLoadState(type::Result result, ledger::LegacyResultCallback callback);
 
-  void BalanceReportsSaved(
-      const type::Result result,
-      ledger::ResultCallback callback);
+  void BalanceReportsSaved(type::Result result,
+                           ledger::LegacyResultCallback callback);
 
-  void SaveProcessedPublishers(ledger::ResultCallback callback);
+  void SaveProcessedPublishers(ledger::LegacyResultCallback callback);
 
-  void ProcessedPublisherSaved(
-      const type::Result result,
-      ledger::ResultCallback callback);
+  void ProcessedPublisherSaved(type::Result result,
+                               ledger::LegacyResultCallback callback);
 
   std::unique_ptr<publisher::LegacyPublisherState> legacy_publisher_;
   LedgerImpl* ledger_;  // NOT OWNED

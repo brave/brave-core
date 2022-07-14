@@ -18,7 +18,7 @@ StateMigrationV8::StateMigrationV8(LedgerImpl* ledger) :
 
 StateMigrationV8::~StateMigrationV8() = default;
 
-void StateMigrationV8::Migrate(ledger::ResultCallback callback) {
+void StateMigrationV8::Migrate(ledger::LegacyResultCallback callback) {
   const bool enabled = ledger_->ledger_client()->GetBooleanState("enabled");
 
   if (!enabled) {

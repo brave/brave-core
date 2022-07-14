@@ -28,7 +28,7 @@ WalletCreate::WalletCreate(LedgerImpl* ledger) :
 
 WalletCreate::~WalletCreate() = default;
 
-void WalletCreate::Start(ledger::ResultCallback callback) {
+void WalletCreate::Start(ledger::LegacyResultCallback callback) {
   bool corrupted = false;
   auto wallet = ledger_->wallet()->GetWallet(&corrupted);
 
@@ -61,10 +61,9 @@ void WalletCreate::Start(ledger::ResultCallback callback) {
   promotion_server_->post_wallet_brave()->Request(url_callback);
 }
 
-void WalletCreate::OnCreate(
-    const type::Result result,
-    const std::string& payment_id,
-    ledger::ResultCallback callback) {
+void WalletCreate::OnCreate(type::Result result,
+                            const std::string& payment_id,
+                            ledger::LegacyResultCallback callback) {
   if (result != type::Result::LEDGER_OK) {
     callback(result);
     return;

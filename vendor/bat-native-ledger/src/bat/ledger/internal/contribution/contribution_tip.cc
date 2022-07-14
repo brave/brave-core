@@ -22,10 +22,9 @@ ContributionTip::ContributionTip(LedgerImpl* ledger) :
 
 ContributionTip::~ContributionTip() = default;
 
-void ContributionTip::Process(
-    const std::string& publisher_key,
-    const double amount,
-    ledger::ResultCallback callback) {
+void ContributionTip::Process(const std::string& publisher_key,
+                              double amount,
+                              ledger::LegacyResultCallback callback) {
   if (publisher_key.empty()) {
     BLOG(0, "Failed to do tip due to missing publisher key");
     callback(type::Result::NOT_FOUND);
@@ -44,11 +43,10 @@ void ContributionTip::Process(
       server_callback);
 }
 
-void ContributionTip::ServerPublisher(
-    type::ServerPublisherInfoPtr server_info,
-    const std::string& publisher_key,
-    const double amount,
-    ledger::ResultCallback callback) {
+void ContributionTip::ServerPublisher(type::ServerPublisherInfoPtr server_info,
+                                      const std::string& publisher_key,
+                                      double amount,
+                                      ledger::LegacyResultCallback callback) {
   auto status = type::PublisherStatus::NOT_VERIFIED;
   if (server_info) {
     status = server_info->status;
@@ -90,9 +88,8 @@ void ContributionTip::ServerPublisher(
   ledger_->database()->SaveContributionQueue(std::move(queue), save_callback);
 }
 
-void ContributionTip::QueueSaved(
-    const type::Result result,
-    ledger::ResultCallback callback) {
+void ContributionTip::QueueSaved(type::Result result,
+                                 ledger::LegacyResultCallback callback) {
   if (result == type::Result::LEDGER_OK) {
     ledger_->contribution()->ProcessContributionQueue();
   } else {
@@ -102,10 +99,9 @@ void ContributionTip::QueueSaved(
   callback(type::Result::LEDGER_OK);
 }
 
-void ContributionTip::SavePending(
-    const std::string& publisher_key,
-    const double amount,
-    ledger::ResultCallback callback) {
+void ContributionTip::SavePending(const std::string& publisher_key,
+                                  double amount,
+                                  ledger::LegacyResultCallback callback) {
   auto contribution = type::PendingContribution::New();
   contribution->publisher_key = publisher_key;
   contribution->amount = amount;
@@ -117,9 +113,8 @@ void ContributionTip::SavePending(
   ledger_->database()->SavePendingContribution(std::move(list), callback);
 }
 
-void ContributionTip::OnSavePending(
-    const type::Result result,
-    ledger::ResultCallback callback) {
+void ContributionTip::OnSavePending(type::Result result,
+                                    ledger::LegacyResultCallback callback) {
   if (result != type::Result::LEDGER_OK) {
     BLOG(0, "Pending tip save failed");
   } else {

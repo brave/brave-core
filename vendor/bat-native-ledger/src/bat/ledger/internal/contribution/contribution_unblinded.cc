@@ -104,10 +104,9 @@ Unblinded::Unblinded(LedgerImpl* ledger) : ledger_(ledger) {
 
 Unblinded::~Unblinded() = default;
 
-void Unblinded::Start(
-    const std::vector<type::CredsBatchType>& types,
-    const std::string& contribution_id,
-    ledger::ResultCallback callback) {
+void Unblinded::Start(const std::vector<type::CredsBatchType>& types,
+                      const std::string& contribution_id,
+                      ledger::LegacyResultCallback callback) {
   if (contribution_id.empty()) {
     BLOG(0, "Contribution id is empty");
     callback(type::Result::LEDGER_ERROR);
@@ -216,7 +215,7 @@ void Unblinded::PrepareTokens(
     type::ContributionInfoPtr contribution,
     const std::vector<type::UnblindedToken>& unblinded_tokens,
     const std::vector<type::CredsBatchType>& types,
-    ledger::ResultCallback callback) {
+    ledger::LegacyResultCallback callback) {
   if (!contribution) {
     BLOG(0, "Contribution not found");
     callback(type::Result::LEDGER_ERROR);
@@ -269,11 +268,11 @@ void Unblinded::PrepareTokens(
 }
 
 void Unblinded::OnMarkUnblindedTokensAsReserved(
-    const type::Result result,
+    type::Result result,
     const std::vector<type::UnblindedToken>& unblinded_tokens,
     std::shared_ptr<type::ContributionInfoPtr> shared_contribution,
     const std::vector<type::CredsBatchType>& types,
-    ledger::ResultCallback callback) {
+    ledger::LegacyResultCallback callback) {
   if (result != type::Result::LEDGER_OK) {
     BLOG(0, "Failed to reserve unblinded tokens");
     callback(type::Result::LEDGER_ERROR);
@@ -295,7 +294,7 @@ void Unblinded::PreparePublishers(
     const std::vector<type::UnblindedToken>& unblinded_tokens,
     type::ContributionInfoPtr contribution,
     const std::vector<type::CredsBatchType>& types,
-    ledger::ResultCallback callback) {
+    ledger::LegacyResultCallback callback) {
   if (!contribution) {
     BLOG(0, "Contribution not found");
     callback(type::Result::LEDGER_ERROR);
@@ -382,10 +381,10 @@ type::ContributionPublisherList Unblinded::PrepareAutoContribution(
 }
 
 void Unblinded::OnPrepareAutoContribution(
-    const type::Result result,
+    type::Result result,
     const std::vector<type::CredsBatchType>& types,
     const std::string& contribution_id,
-    ledger::ResultCallback callback) {
+    ledger::LegacyResultCallback callback) {
   if (result != type::Result::LEDGER_OK) {
     BLOG(0, "Contribution not saved");
     callback(type::Result::RETRY);
@@ -405,11 +404,10 @@ void Unblinded::OnPrepareAutoContribution(
       save_callback);
 }
 
-void Unblinded::PrepareStepSaved(
-    const type::Result result,
-    const std::vector<type::CredsBatchType>& types,
-    const std::string& contribution_id,
-    ledger::ResultCallback callback) {
+void Unblinded::PrepareStepSaved(type::Result result,
+                                 const std::vector<type::CredsBatchType>& types,
+                                 const std::string& contribution_id,
+                                 ledger::LegacyResultCallback callback) {
   if (result != type::Result::LEDGER_OK) {
     BLOG(0, "Prepare step was not saved");
     callback(type::Result::RETRY);
@@ -419,10 +417,9 @@ void Unblinded::PrepareStepSaved(
   ProcessTokens(types, contribution_id, callback);
 }
 
-void Unblinded::ProcessTokens(
-    const std::vector<type::CredsBatchType>& types,
-    const std::string& contribution_id,
-    ledger::ResultCallback callback) {
+void Unblinded::ProcessTokens(const std::vector<type::CredsBatchType>& types,
+                              const std::string& contribution_id,
+                              ledger::LegacyResultCallback callback) {
   auto get_callback =  std::bind(&Unblinded::OnProcessTokens,
       this,
       _1,
@@ -434,7 +431,7 @@ void Unblinded::ProcessTokens(
 void Unblinded::OnProcessTokens(
     type::ContributionInfoPtr contribution,
     const std::vector<type::UnblindedToken>& unblinded_tokens,
-    ledger::ResultCallback callback) {
+    ledger::LegacyResultCallback callback) {
   if (!contribution || contribution->publishers.empty()) {
     BLOG(0, "Contribution not found");
     callback(type::Result::LEDGER_ERROR);
@@ -494,12 +491,11 @@ void Unblinded::OnProcessTokens(
   callback(type::Result::LEDGER_OK);
 }
 
-void Unblinded::TokenProcessed(
-    const type::Result result,
-    const std::string& contribution_id,
-    const std::string& publisher_key,
-    const bool final_publisher,
-    ledger::ResultCallback callback) {
+void Unblinded::TokenProcessed(type::Result result,
+                               const std::string& contribution_id,
+                               const std::string& publisher_key,
+                               bool final_publisher,
+                               ledger::LegacyResultCallback callback) {
   if (result != type::Result::LEDGER_OK) {
     BLOG(0, "Tokens were not processed correctly");
     callback(type::Result::RETRY);
@@ -519,11 +515,10 @@ void Unblinded::TokenProcessed(
       save_callback);
 }
 
-void Unblinded::ContributionAmountSaved(
-    const type::Result result,
-    const std::string& contribution_id,
-    const bool final_publisher,
-    ledger::ResultCallback callback) {
+void Unblinded::ContributionAmountSaved(type::Result result,
+                                        const std::string& contribution_id,
+                                        bool final_publisher,
+                                        ledger::LegacyResultCallback callback) {
   if (final_publisher) {
     callback(result);
     return;
@@ -532,10 +527,9 @@ void Unblinded::ContributionAmountSaved(
   callback(type::Result::RETRY_LONG);
 }
 
-void Unblinded::Retry(
-    const std::vector<type::CredsBatchType>& types,
-    type::ContributionInfoPtr contribution,
-    ledger::ResultCallback callback) {
+void Unblinded::Retry(const std::vector<type::CredsBatchType>& types,
+                      type::ContributionInfoPtr contribution,
+                      ledger::LegacyResultCallback callback) {
   if (!contribution) {
     BLOG(0, "Contribution is null");
     callback(type::Result::LEDGER_ERROR);
@@ -598,7 +592,7 @@ void Unblinded::OnReservedUnblindedTokensForRetryAttempt(
     const type::UnblindedTokenList& unblinded_tokens,
     const std::vector<type::CredsBatchType>& types,
     std::shared_ptr<type::ContributionInfoPtr> shared_contribution,
-    ledger::ResultCallback callback) {
+    ledger::LegacyResultCallback callback) {
   if (unblinded_tokens.empty()) {
     BLOG(0, "Token list is empty");
     callback(type::Result::LEDGER_ERROR);

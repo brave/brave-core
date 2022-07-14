@@ -25,7 +25,7 @@ class State {
   explicit State(LedgerImpl* ledger);
   ~State();
 
-  void Initialize(ledger::ResultCallback callback);
+  void Initialize(ledger::LegacyResultCallback callback);
 
   void SetVersion(const int version);
 

@@ -254,7 +254,8 @@ std::string TestLedgerClient::GetLegacyWallet() {
 
 void TestLedgerClient::ShowNotification(const std::string& type,
                                         const std::vector<std::string>& args,
-                                        client::ResultCallback callback) {}
+                                        client::LegacyResultCallback callback) {
+}
 
 mojom::ClientInfoPtr TestLedgerClient::GetClientInfo() {
   auto info = mojom::ClientInfo::New();
@@ -287,7 +288,7 @@ void TestLedgerClient::ClearAllNotifications() {}
 
 void TestLedgerClient::WalletDisconnected(const std::string& wallet_type) {}
 
-void TestLedgerClient::DeleteLog(client::ResultCallback callback) {
+void TestLedgerClient::DeleteLog(client::LegacyResultCallback callback) {
   callback(mojom::Result::LEDGER_OK);
 }
 

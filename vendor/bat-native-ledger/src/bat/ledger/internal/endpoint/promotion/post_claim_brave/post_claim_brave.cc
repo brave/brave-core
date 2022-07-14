@@ -13,8 +13,6 @@
 #include "bat/ledger/internal/ledger_impl.h"
 #include "net/http/http_status_code.h"
 
-using std::placeholders::_1;
-
 namespace {
 
 std::string GetPath(const std::string& payment_id) {
@@ -89,16 +87,14 @@ type::Result PostClaimBrave::CheckStatusCode(const int status_code) {
 void PostClaimBrave::Request(
     const std::string& destination_payment_id,
     PostClaimBraveCallback callback) {
-  auto url_callback = std::bind(&PostClaimBrave::OnRequest,
-      this,
-      _1,
-      callback);
+  auto url_callback = base::BindOnce(
+      &PostClaimBrave::OnRequest, base::Unretained(this), std::move(callback));
   const std::string payload = GeneratePayload(destination_payment_id);
 
   const auto wallet = ledger_->wallet()->GetWallet();
   if (!wallet) {
     BLOG(0, "Wallet is null");
-    callback(type::Result::LEDGER_ERROR);
+    std::move(callback).Run(type::Result::LEDGER_ERROR);
     return;
   }
 
@@ -117,14 +113,13 @@ void PostClaimBrave::Request(
   request->headers = headers;
   request->content_type = "application/json; charset=utf-8";
   request->method = type::UrlMethod::POST;
-  ledger_->LoadURL(std::move(request), url_callback);
+  ledger_->LoadURL(std::move(request), std::move(url_callback));
 }
 
-void PostClaimBrave::OnRequest(
-    const type::UrlResponse& response,
-    PostClaimBraveCallback callback) {
+void PostClaimBrave::OnRequest(PostClaimBraveCallback callback,
+                               const type::UrlResponse& response) {
   ledger::LogUrlResponse(__func__, response);
-  callback(CheckStatusCode(response.status_code));
+  std::move(callback).Run(CheckStatusCode(response.status_code));
 }
 
 }  // namespace promotion

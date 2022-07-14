@@ -135,7 +135,7 @@ class TestLedgerClient : public LedgerClient {
 
   void ShowNotification(const std::string& type,
                         const std::vector<std::string>& args,
-                        client::ResultCallback callback) override;
+                        client::LegacyResultCallback callback) override;
 
   mojom::ClientInfoPtr GetClientInfo() override;
 
@@ -154,7 +154,7 @@ class TestLedgerClient : public LedgerClient {
 
   void WalletDisconnected(const std::string& wallet_type) override;
 
-  void DeleteLog(client::ResultCallback callback) override;
+  void DeleteLog(client::LegacyResultCallback callback) override;
 
   absl::optional<std::string> EncryptString(const std::string& value) override;
 

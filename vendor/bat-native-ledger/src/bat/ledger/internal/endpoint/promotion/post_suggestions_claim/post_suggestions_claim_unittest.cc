@@ -82,10 +82,10 @@ TEST_F(PostSuggestionsClaimTest, ServerOK) {
           }));
 
   claim_->Request(*redeem_,
-                  [](const type::Result result, std::string drain_id) {
+                  base::BindOnce([](type::Result result, std::string drain_id) {
                     EXPECT_EQ(result, type::Result::LEDGER_OK);
                     EXPECT_EQ(drain_id, "1af0bf71-c81c-4b18-9188-a0d3c4a1b53b");
-                  });
+                  }));
 }
 
 TEST_F(PostSuggestionsClaimTest, ServerNeedsRetry) {
@@ -100,10 +100,10 @@ TEST_F(PostSuggestionsClaimTest, ServerNeedsRetry) {
           }));
 
   claim_->Request(*redeem_,
-                  [](const type::Result result, std::string drain_id) {
+                  base::BindOnce([](type::Result result, std::string drain_id) {
                     EXPECT_EQ(result, type::Result::LEDGER_ERROR);
                     EXPECT_EQ(drain_id, "");
-                  });
+                  }));
 }
 
 TEST_F(PostSuggestionsClaimTest, ServerError400) {
@@ -118,10 +118,10 @@ TEST_F(PostSuggestionsClaimTest, ServerError400) {
           }));
 
   claim_->Request(*redeem_,
-                  [](const type::Result result, std::string drain_id) {
+                  base::BindOnce([](type::Result result, std::string drain_id) {
                     EXPECT_EQ(result, type::Result::LEDGER_ERROR);
                     EXPECT_EQ(drain_id, "");
-                  });
+                  }));
 }
 
 TEST_F(PostSuggestionsClaimTest, ServerError500) {
@@ -136,10 +136,10 @@ TEST_F(PostSuggestionsClaimTest, ServerError500) {
           }));
 
   claim_->Request(*redeem_,
-                  [](const type::Result result, std::string drain_id) {
+                  base::BindOnce([](type::Result result, std::string drain_id) {
                     EXPECT_EQ(result, type::Result::LEDGER_ERROR);
                     EXPECT_EQ(drain_id, "");
-                  });
+                  }));
 }
 
 }  // namespace promotion
