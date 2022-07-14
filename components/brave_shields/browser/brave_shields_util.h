@@ -73,8 +73,6 @@ ControlType GetCosmeticFilteringControlType(HostContentSettingsMap* map,
 bool IsFirstPartyCosmeticFilteringEnabled(HostContentSettingsMap* map,
                                           const GURL& url);
 
-bool ShouldDoDebouncing(HostContentSettingsMap* map, const GURL& url);
-
 bool IsReduceLanguageEnabledForProfile(PrefService* pref_service);
 
 bool ShouldDoReduceLanguage(HostContentSettingsMap* map,
