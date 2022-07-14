@@ -22,6 +22,8 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
+using ::testing::Invoke;
+
 namespace ads {
 
 class BatAdsNotificationAdIntegrationTest : public UnitTestBase {
@@ -51,7 +53,7 @@ class BatAdsNotificationAdIntegrationTest : public UnitTestBase {
 TEST_F(BatAdsNotificationAdIntegrationTest, Serve) {
   // Arrange
   EXPECT_CALL(*ads_client_mock_, ShowNotification)
-      .WillOnce(testing::Invoke([=](const NotificationAdInfo& ad) {
+      .WillOnce(Invoke([=](const NotificationAdInfo& ad) {
         ASSERT_TRUE(
             NotificationAdManager::GetInstance()->Exists(ad.placement_id));
       }));
@@ -78,7 +80,7 @@ TEST_F(BatAdsNotificationAdIntegrationTest, DoNotServeAtRegularIntervals) {
 TEST_F(BatAdsNotificationAdIntegrationTest, TriggerServedEvent) {
   // Arrange
   EXPECT_CALL(*ads_client_mock_, ShowNotification)
-      .WillOnce(testing::Invoke([=](const NotificationAdInfo& ad) {
+      .WillOnce(Invoke([=](const NotificationAdInfo& ad) {
         ASSERT_TRUE(
             NotificationAdManager::GetInstance()->Exists(ad.placement_id));
 
@@ -101,7 +103,7 @@ TEST_F(BatAdsNotificationAdIntegrationTest, TriggerServedEvent) {
 TEST_F(BatAdsNotificationAdIntegrationTest, TriggerViewedEvent) {
   // Arrange
   EXPECT_CALL(*ads_client_mock_, ShowNotification)
-      .WillOnce(testing::Invoke([=](const NotificationAdInfo& ad) {
+      .WillOnce(Invoke([=](const NotificationAdInfo& ad) {
         ASSERT_TRUE(
             NotificationAdManager::GetInstance()->Exists(ad.placement_id));
 
@@ -124,7 +126,7 @@ TEST_F(BatAdsNotificationAdIntegrationTest, TriggerViewedEvent) {
 TEST_F(BatAdsNotificationAdIntegrationTest, TriggerClickedEvent) {
   // Arrange
   EXPECT_CALL(*ads_client_mock_, ShowNotification)
-      .WillOnce(testing::Invoke([=](const NotificationAdInfo& ad) {
+      .WillOnce(Invoke([=](const NotificationAdInfo& ad) {
         ASSERT_TRUE(
             NotificationAdManager::GetInstance()->Exists(ad.placement_id));
         EXPECT_CALL(*ads_client_mock_, CloseNotification(ad.placement_id))
@@ -147,7 +149,7 @@ TEST_F(BatAdsNotificationAdIntegrationTest, TriggerClickedEvent) {
 TEST_F(BatAdsNotificationAdIntegrationTest, TriggerDismissedEvent) {
   // Arrange
   EXPECT_CALL(*ads_client_mock_, ShowNotification)
-      .WillOnce(testing::Invoke([=](const NotificationAdInfo& ad) {
+      .WillOnce(Invoke([=](const NotificationAdInfo& ad) {
         ASSERT_TRUE(
             NotificationAdManager::GetInstance()->Exists(ad.placement_id));
 
@@ -170,7 +172,7 @@ TEST_F(BatAdsNotificationAdIntegrationTest, TriggerDismissedEvent) {
 TEST_F(BatAdsNotificationAdIntegrationTest, TriggerTimedOutEvent) {
   // Arrange
   EXPECT_CALL(*ads_client_mock_, ShowNotification)
-      .WillOnce(testing::Invoke([=](const NotificationAdInfo& ad) {
+      .WillOnce(Invoke([=](const NotificationAdInfo& ad) {
         ASSERT_TRUE(
             NotificationAdManager::GetInstance()->Exists(ad.placement_id));
 
