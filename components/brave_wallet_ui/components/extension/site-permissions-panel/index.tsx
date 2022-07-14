@@ -13,10 +13,14 @@ import {
 import { PanelActions } from '../../../panel/actions'
 
 // Types
-import { WalletAccountType, WalletState } from '../../../constants/types'
+import { BraveWallet, WalletAccountType, WalletState } from '../../../constants/types'
 
 // Utils
 import { getLocale } from '../../../../common/locale'
+import { PluralStringProxyImpl } from 'chrome://resources/js/plural_string_proxy.js'
+
+// Hooks
+import { useIsMounted } from '../../../common/hooks'
 
 // Components
 import {
@@ -47,6 +51,12 @@ export const SitePermissions = () => {
     selectedCoin
   } = useSelector(({ wallet }: { wallet: WalletState }) => wallet)
 
+  // hooks
+  const isMounted = useIsMounted()
+
+  // state
+  const [connectedAccountsTitle, setConnectedAccountsTitle] = React.useState<string>('')
+
   // methods
   const onAddAccount = React.useCallback(() => {
     dispatch(PanelActions.expandWalletAccounts())
@@ -56,6 +66,28 @@ export const SitePermissions = () => {
   const accountByCoinType = React.useMemo((): WalletAccountType[] => {
     return accounts.filter((account) => account.coin === selectedCoin)
   }, [accounts, selectedCoin])
+
+  const connectedAccountsTitleStringId = React.useMemo((): string => {
+    return selectedCoin === BraveWallet.CoinType.SOL
+      ? 'braveWalletSitePermissionsAccountsTrusted'
+      : 'braveWalletSitePermissionsAccountsConnected'
+  }, [selectedCoin])
+
+  // effects
+  React.useEffect(() => {
+    const getString = async () => {
+      await PluralStringProxyImpl
+        .getInstance()
+        .getPluralString(connectedAccountsTitleStringId, connectedAccounts.length)
+        .then(result => {
+          if (isMounted) {
+            setConnectedAccountsTitle(result)
+          }
+        })
+        .catch(e => console.log(e))
+    }
+    getString()
+  }, [selectedCoin, connectedAccounts, connectedAccountsTitleStringId, isMounted])
 
   return (
     <StyledWrapper>
@@ -68,7 +100,7 @@ export const SitePermissions = () => {
               eTldPlusOne={activeOrigin.eTldPlusOne}
             />
           </SiteOriginTitle>
-          <AccountsTitle>{getLocale('braveWalletSitePermissionsAccounts').replace('$1', connectedAccounts.length.toString())}</AccountsTitle>
+          <AccountsTitle>{connectedAccountsTitle}</AccountsTitle>
         </HeaderColumn>
       </HeaderRow>
       <AddressContainer>

@@ -31,6 +31,8 @@
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_list.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
+#include "chrome/browser/ui/webui/metrics_handler.h"
+#include "chrome/browser/ui/webui/plural_string_handler.h"
 #include "chrome/browser/ui/webui/sanitized_image_source.h"
 #include "chrome/browser/ui/webui/webui_util.h"
 #include "components/grit/brave_components_resources.h"
@@ -68,6 +70,17 @@ WalletPanelUI::WalletPanelUI(content::WebUI* web_ui)
   content::WebUIDataSource::Add(profile, source);
   brave_wallet::AddBlockchainTokenImageSource(profile);
   active_web_contents_ = brave_wallet::GetActiveWebContents();
+  auto plural_string_handler = std::make_unique<PluralStringHandler>();
+  plural_string_handler->AddLocalizedString(
+      "braveWalletSitePermissionsAccountsConnected",
+      IDS_BRAVE_WALLET_SITE_PERMISSIONS_ACCOUNTS_CONNECTED);
+  plural_string_handler->AddLocalizedString(
+      "braveWalletSitePermissionsAccountsTrusted",
+      IDS_BRAVE_WALLET_SITE_PERMISSIONS_ACCOUNTS_TRUSTED);
+  web_ui->AddMessageHandler(std::move(plural_string_handler));
+
+  // Add the metrics handler to write uma stats.
+  web_ui->AddMessageHandler(std::make_unique<MetricsHandler>());
 }
 
 WalletPanelUI::~WalletPanelUI() = default;

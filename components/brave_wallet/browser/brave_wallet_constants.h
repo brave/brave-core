@@ -399,8 +399,6 @@ constexpr webui::LocalizedString kLocalizedStrings[] = {
      IDS_BRAVE_WALLET_CONFIRM_TRANSACTION_ACCOUNT_CREATION_FEE},
     {"braveWalletPanelTitle", IDS_BRAVE_WALLET_PANEL_TITLE},
     {"braveWalletPanelConnected", IDS_BRAVE_WALLET_PANEL_CONNECTED},
-    {"braveWalletSitePermissionsAccounts",
-     IDS_BRAVE_WALLET_SITE_PERMISSIONS_ACCOUNTS},
     {"braveWalletSitePermissionsTitle",
      IDS_BRAVE_WALLET_SITE_PERMISSIONS_TITLE},
     {"braveWalletSitePermissionsDisconnect",

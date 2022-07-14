@@ -363,7 +363,8 @@ provideStrings({
 
   // Site Permissions Panel
   braveWalletSitePermissionsTitle: 'Site permissions',
-  braveWalletSitePermissionsAccounts: '$1 accounts connected',
+  braveWalletSitePermissionsAccountsConnected: '$1 accounts connected',
+  braveWalletSitePermissionsAccountsTrusted: '$1 accounts trusted',
   braveWalletSitePermissionsDisconnect: 'Disconnect',
   braveWalletSitePermissionsSwitch: 'Switch',
   braveWalletSitePermissionsNewAccount: 'New account',
