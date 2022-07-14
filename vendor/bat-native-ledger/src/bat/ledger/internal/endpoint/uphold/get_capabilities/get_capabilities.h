@@ -182,13 +182,20 @@ class GetCapabilities {
   void Request(const std::string& token, GetCapabilitiesCallback callback);
 
  private:
+  struct Capability {
+    bool enabled = false;
+    bool requirements_empty = false;
+  };
+
+  using CapabilityMap = std::map<std::string, Capability>;
+
   void OnRequest(const type::UrlResponse& response,
                  GetCapabilitiesCallback callback);
 
-  std::pair<type::Result, std::map<std::string, bool>> ProcessResponse(
+  std::pair<type::Result, CapabilityMap> ProcessResponse(
       const type::UrlResponse& response);
 
-  std::map<std::string, bool> ParseBody(const std::string& body);
+  CapabilityMap ParseBody(const std::string& body);
 
   LedgerImpl* ledger_;  // NOT OWNED
 };
