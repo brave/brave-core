@@ -287,17 +287,18 @@ void GreaselionDownloadService::OnDATFileDataReady(std::string contents) {
   }
   auto& root_list = root->GetList();
   for (base::Value& rule_it : root_list) {
+    DCHECK(rule_it.is_dict());
     auto& rule_dict = rule_it.GetDict();
     auto* preconditions_value = rule_dict.FindDict(kPreconditions);
     auto* urls_value = rule_dict.FindList(kURLs);
     auto* scripts_value = rule_dict.FindList(kScripts);
-    const std::string* run_at_ptr = rule_dict.FindStringByDottedPath(kRunAt);
+    const std::string* run_at_ptr = rule_dict.FindString(kRunAt);
     const std::string run_at_value = run_at_ptr ? *run_at_ptr : "";
     const std::string* minimum_brave_version_ptr =
-        rule_dict.FindStringByDottedPath(kMinimumBraveVersion);
+        rule_dict.FindString(kMinimumBraveVersion);
     const std::string minimum_brave_version_value =
         minimum_brave_version_ptr ? *minimum_brave_version_ptr : "";
-    const std::string* messages = rule_dict.FindStringByDottedPath(kMessages);
+    const std::string* messages = rule_dict.FindString(kMessages);
     base::FilePath messages_path;
     if (messages) {
       messages_path = base::FilePath::FromUTF8Unsafe(messages->c_str());
