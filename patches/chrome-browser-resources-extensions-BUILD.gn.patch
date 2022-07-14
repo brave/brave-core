@@ -1,18 +1,18 @@
 diff --git a/chrome/browser/resources/extensions/BUILD.gn b/chrome/browser/resources/extensions/BUILD.gn
-index cd3ee9766ea9246d75293a829fb6562729f17e8e..1db8dd230d892d8ea59cb19c4117be3dae9d358a 100644
+index b5ddcf8e745c5714b1b436878c3031e15dfbe7a8..e8c3d93fb05c19e6e867ce77dc39b19315d9dadf 100644
 --- a/chrome/browser/resources/extensions/BUILD.gn
 +++ b/chrome/browser/resources/extensions/BUILD.gn
-@@ -50,6 +50,7 @@ generate_grd("build_grd") {
-     deps = [ ":build_ts" ]
-     manifest_files = [ "$target_gen_dir/tsconfig.manifest" ]
-   }
-+  deps += [ "//brave/browser/resources/extensions:resources" ]
- }
- 
- preprocess_if_expr("preprocess") {
-@@ -121,4 +122,5 @@ ts_library("build_ts") {
+@@ -104,6 +104,7 @@ ts_library("build_ts") {
      ":preprocess",
      ":preprocess_generated",
    ]
 +  in_files += brave_deps_chrome_browser_resources_extensions_in_files extra_deps += brave_deps_chrome_browser_resources_extensions_extra_deps
+ }
+ 
+ generate_grd("build_grd") {
+@@ -121,4 +122,5 @@ generate_grd("build_grd") {
+     manifest_files =
+         filter_include(get_target_outputs(":build_ts"), [ "*.manifest" ])
+   }
++  deps += [ "//brave/browser/resources/extensions:resources" ]
  }

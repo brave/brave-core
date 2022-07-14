@@ -1,18 +1,18 @@
 diff --git a/chrome/browser/resources/history/BUILD.gn b/chrome/browser/resources/history/BUILD.gn
-index f52a8ca323333322f07d9889a06d268d2f9fbf19..565e5a3f87bf80d46d70161b2a4462c6a9409ddf 100644
+index af87f665617a9f1806869d2d68603978ca6bd5a4..8eea7d2311a0477ba3b74725e10676659272575f 100644
 --- a/chrome/browser/resources/history/BUILD.gn
 +++ b/chrome/browser/resources/history/BUILD.gn
-@@ -65,6 +65,7 @@ generate_grd("build_grd") {
-     deps = [ ":build_ts" ]
-     manifest_files = [ "$target_gen_dir/tsconfig.manifest" ]
-   }
-+  deps += [ "//brave/browser/resources/history:resources" ]
- }
- 
- preprocess_if_expr("preprocess") {
-@@ -128,4 +129,5 @@ ts_library("build_ts") {
+@@ -102,6 +102,7 @@ ts_library("build_ts") {
      ":preprocess",
      ":preprocess_generated",
    ]
 +  in_files += brave_deps_chrome_browser_resources_history_in_files extra_deps += brave_deps_chrome_browser_resources_history_extra_deps
+ }
+ 
+ generate_grd("build_grd") {
+@@ -128,4 +129,5 @@ generate_grd("build_grd") {
+     manifest_files =
+         filter_include(get_target_outputs(":build_ts"), [ "*.manifest" ])
+   }
++  deps += [ "//brave/browser/resources/history:resources" ]
  }

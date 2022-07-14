@@ -1,12 +1,13 @@
 diff --git a/chrome/browser/themes/theme_helper_win.h b/chrome/browser/themes/theme_helper_win.h
-index ef35bd8a699c2d7ec53e6ef84e7761000f59fb89..478626871d4269cc70b4959b6abfb9235a9862ce 100644
+index 648620d8315d6960736afa95426c04a99f8f2c70..410a6916f17ac82f23411e3bda31ff53c8b9cd56 100644
 --- a/chrome/browser/themes/theme_helper_win.h
 +++ b/chrome/browser/themes/theme_helper_win.h
-@@ -19,6 +19,7 @@ class ThemeHelperWin : public ThemeHelper {
+@@ -12,6 +12,8 @@ class ThemeHelperWin : public ThemeHelper {
+   ThemeHelperWin() = default;
+   ~ThemeHelperWin() override = default;
  
-   ThemeHelperWin(const ThemeHelperWin&) = delete;
-   ThemeHelperWin& operator=(const ThemeHelperWin&) = delete;
 +  BRAVE_THEME_HELPER_WIN_H_
- 
-  private:
++
    // ThemeService:
+   bool ShouldUseNativeFrame(
+       const CustomThemeSupplier* theme_supplier) const override;

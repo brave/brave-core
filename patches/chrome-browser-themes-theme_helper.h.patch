@@ -1,12 +1,13 @@
 diff --git a/chrome/browser/themes/theme_helper.h b/chrome/browser/themes/theme_helper.h
-index 9af2cf64f861da09394f02979dc796c171c5480d..2c883a723becadc6f3ec322d18744521532e2a53 100644
+index 6dc522c40f2afcc16102227d35c0dae4a8446bd3..24eb02feb53bf5339f85b15d804daaeef1832450 100644
 --- a/chrome/browser/themes/theme_helper.h
 +++ b/chrome/browser/themes/theme_helper.h
-@@ -107,6 +107,7 @@ class ThemeHelper {
-       bool incognito,
-       const CustomThemeSupplier* theme_supplier) const;
+@@ -95,6 +95,8 @@ class ThemeHelper {
+     DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+   }
  
 +  BRAVE_THEME_HELPER_H_
++
   private:
    friend class theme_service_internal::ThemeServiceTest;
  
