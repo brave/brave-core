@@ -664,7 +664,7 @@ IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest,
 }
 
 IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest,
-                       SplitProcessorAutoContribution) {
+                       DISABLED_SplitProcessorAutoContribution) {
   response_->SetVerifiedWallet(true);
   rewards_browsertest_util::CreateWallet(rewards_service_);
   rewards_service_->SetAutoContributeEnabled(true);
@@ -790,7 +790,8 @@ IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest,
   run_loop_second.Run();
 }
 
-IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest, SplitProcessOneTimeTip) {
+IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest,
+                       DISABLED_SplitProcessOneTimeTip) {
   response_->SetVerifiedWallet(true);
   rewards_browsertest_util::CreateWallet(rewards_service_);
   contribution_->SetUpUpholdWallet(rewards_service_, 50.0);
