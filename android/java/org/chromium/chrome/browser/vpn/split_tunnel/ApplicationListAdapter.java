@@ -19,7 +19,6 @@ import androidx.recyclerview.widget.SortedList;
 import org.chromium.chrome.R;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 public class ApplicationListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {

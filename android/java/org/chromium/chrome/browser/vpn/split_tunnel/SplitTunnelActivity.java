@@ -56,7 +56,7 @@ public class SplitTunnelActivity extends AsyncInitializationActivity
         DividerItemDecoration dividerItemDecoration =
                 new DividerItemDecoration(SplitTunnelActivity.this, LinearLayoutManager.VERTICAL);
 
-        RecyclerView recyclerViewExcludedApps = findViewById(R.id.rv_main1);
+        RecyclerView recyclerViewExcludedApps = findViewById(R.id.rv_excluded_apps);
         recyclerViewExcludedApps.setLayoutManager(linearLayoutManager);
         recyclerViewExcludedApps.addItemDecoration(dividerItemDecoration);
         mRecyclerViewAdapterExcludedApps = new ApplicationListAdapter(this, true);
@@ -65,7 +65,7 @@ public class SplitTunnelActivity extends AsyncInitializationActivity
         LinearLayoutManager linearLayoutManager2 = new LinearLayoutManager(this);
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
 
-        RecyclerView recyclerViewApps = findViewById(R.id.rv_main2);
+        RecyclerView recyclerViewApps = findViewById(R.id.rv_apps);
         recyclerViewApps.setLayoutManager(linearLayoutManager2);
         recyclerViewApps.addItemDecoration(dividerItemDecoration);
         mRecyclerViewAdapterApps = new ApplicationListAdapter(this, false);
@@ -74,7 +74,7 @@ public class SplitTunnelActivity extends AsyncInitializationActivity
         LinearLayoutManager linearLayoutManager3 = new LinearLayoutManager(this);
         linearLayoutManager3.setOrientation(LinearLayoutManager.VERTICAL);
 
-        mRecyclerViewSystemApps = findViewById(R.id.rv_system);
+        mRecyclerViewSystemApps = findViewById(R.id.rv_system_apps);
         mRecyclerViewSystemApps.setLayoutManager(linearLayoutManager3);
         mRecyclerViewSystemApps.addItemDecoration(dividerItemDecoration);
         mRecyclerViewAdapterSystemApps = new ApplicationListAdapter(this, false);
@@ -126,6 +126,7 @@ public class SplitTunnelActivity extends AsyncInitializationActivity
         onInitialLayoutInflationComplete();
     }
 
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.split_tunnel_menu, menu);

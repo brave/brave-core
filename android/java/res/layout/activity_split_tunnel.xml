@@ -51,7 +51,7 @@
                 android:text="@string/split_tunnel_desc" />
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rv_main1"
+                android:id="@+id/rv_excluded_apps"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:nestedScrollingEnabled="true" />
@@ -64,7 +64,7 @@
                 android:text="@string/allowed_regular_apps" />
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rv_main2"
+                android:id="@+id/rv_apps"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:nestedScrollingEnabled="true" />
@@ -87,7 +87,7 @@
                 android:text="@string/show_system_apps" />
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rv_system"
+                android:id="@+id/rv_system_apps"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:visibility="gone"
