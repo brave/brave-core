@@ -6,7 +6,7 @@ const PageIndicator = <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/s
     <circle cx="50" cy="50" r="50" />
 </svg>
 
-const ListPageButtonContainer = styled('div')<{}>`
+const ListPageButtonContainer = styled('div') <{}>`
   display: flex;
   flex-direction: row;
 
@@ -35,17 +35,28 @@ interface GridPageButtonProps {
     pageContainerRef: React.MutableRefObject<HTMLDivElement | undefined>
 }
 
-function GridPageButton (props: GridPageButtonProps) {
-    return <StyledButton onClick={() => props
-        .pageContainerRef
-        .current
-        ?.children[props.page]
-        .scrollIntoView({ behavior: 'smooth' })}>
+function GridPageButton(props: GridPageButtonProps) {
+    const handleClick = () => {
+        const element = props
+            .pageContainerRef
+            .current
+            ?.children[props.page];
+        if (!element) return
+        
+        // Ideally we'd use |element.scrollIntoView| here but it applies a
+        // vertical scroll even when it's not needed, which triggers the Brave
+        // News peek.
+        // |element.scrollIntoViewIfNeeded| is also out, because it doesn't
+        // support animating the scroll.
+        props.pageContainerRef.current?.scrollTo({ left: element['offsetLeft'], behavior: 'smooth' });
+    };
+
+    return <StyledButton onClick={handleClick}>
         {PageIndicator}
     </StyledButton>
 }
 
-const GridPageIndicatorContainer = styled('div')<{}>`
+const GridPageIndicatorContainer = styled('div') <{}>`
   position: absolute;
   color: var(--brave-palette-white);
 
