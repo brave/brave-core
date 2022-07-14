@@ -32,7 +32,7 @@ constexpr inline auto kCollectedHistograms =
     "Brave.Core.TabCount",
     "Brave.Core.TorEverUsed",
     "Brave.Core.WindowCount.2",
-    "Brave.Importer.ImporterSource",
+    "Brave.Importer.ImporterSource.2",
     "Brave.NTP.CustomizeUsageStatus",
     "Brave.NTP.NewTabsCreated",
     "Brave.NTP.SponsoredImagesEnabled",

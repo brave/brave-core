@@ -21,6 +21,17 @@ base::FilePath GetChromeUserDataFolder() {
   return result;
 }
 
+base::FilePath GetVivaldiUserDataFolder() {
+  base::FilePath result;
+  if (!base::PathService::Get(base::DIR_HOME, &result))
+    return base::FilePath();
+
+  result = result.Append(".config");
+  result = result.Append("vivaldi");
+
+  return result;
+}
+
 base::FilePath GetChromiumUserDataFolder() {
   base::FilePath result;
   if (!base::PathService::Get(base::DIR_HOME, &result))
