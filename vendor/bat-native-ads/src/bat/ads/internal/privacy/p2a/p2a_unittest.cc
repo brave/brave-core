@@ -29,8 +29,7 @@ class BatAdsP2ATest : public UnitTestBase {
 
 TEST_F(BatAdsP2ATest, RecordEvent) {
   // Arrange
-  EXPECT_CALL(*ads_client_mock_, RecordP2AEvent(kName, kExpectedValue))
-      .Times(1);
+  EXPECT_CALL(*ads_client_mock_, RecordP2AEvent(kName, kExpectedValue));
 
   // Act
 

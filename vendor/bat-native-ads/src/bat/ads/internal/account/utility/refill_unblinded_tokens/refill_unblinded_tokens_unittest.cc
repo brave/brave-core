@@ -155,8 +155,7 @@ TEST_F(BatAdsRefillUnblindedTokensTest, RefillUnblindedTokens) {
 
   // Act
   EXPECT_CALL(*refill_unblinded_tokens_delegate_mock_,
-              OnDidRefillUnblindedTokens())
-      .Times(1);
+              OnDidRefillUnblindedTokens());
 
   EXPECT_CALL(*refill_unblinded_tokens_delegate_mock_,
               OnFailedToRefillUnblindedTokens())
@@ -220,8 +219,7 @@ TEST_F(BatAdsRefillUnblindedTokensTest, RefillUnblindedTokensCaptchaRequired) {
       .Times(0);
 
   EXPECT_CALL(*refill_unblinded_tokens_delegate_mock_,
-              OnCaptchaRequiredToRefillUnblindedTokens("captcha-id"))
-      .Times(1);
+              OnCaptchaRequiredToRefillUnblindedTokens("captcha-id"));
 
   const WalletInfo& wallet = GetWallet();
   refill_unblinded_tokens_->MaybeRefill(wallet);
@@ -254,8 +252,7 @@ TEST_F(BatAdsRefillUnblindedTokensTest, IssuersPublicKeyMismatch) {
       .Times(0);
 
   EXPECT_CALL(*refill_unblinded_tokens_delegate_mock_,
-              OnFailedToRefillUnblindedTokens())
-      .Times(1);
+              OnFailedToRefillUnblindedTokens());
 
   EXPECT_CALL(*refill_unblinded_tokens_delegate_mock_,
               OnWillRetryRefillingUnblindedTokens(_))
@@ -281,8 +278,7 @@ TEST_F(BatAdsRefillUnblindedTokensTest, InvalidIssuersFormat) {
       .Times(0);
 
   EXPECT_CALL(*refill_unblinded_tokens_delegate_mock_,
-              OnFailedToRefillUnblindedTokens())
-      .Times(1);
+              OnFailedToRefillUnblindedTokens());
 
   EXPECT_CALL(*refill_unblinded_tokens_delegate_mock_,
               OnWillRetryRefillingUnblindedTokens(_))
@@ -308,8 +304,7 @@ TEST_F(BatAdsRefillUnblindedTokensTest, InvalidWallet) {
       .Times(0);
 
   EXPECT_CALL(*refill_unblinded_tokens_delegate_mock_,
-              OnFailedToRefillUnblindedTokens())
-      .Times(1);
+              OnFailedToRefillUnblindedTokens());
 
   EXPECT_CALL(*refill_unblinded_tokens_delegate_mock_,
               OnWillRetryRefillingUnblindedTokens(_))
@@ -408,20 +403,16 @@ TEST_F(BatAdsRefillUnblindedTokensTest,
   InSequence seq;
 
   EXPECT_CALL(*refill_unblinded_tokens_delegate_mock_,
-              OnFailedToRefillUnblindedTokens())
-      .Times(1);
+              OnFailedToRefillUnblindedTokens());
 
   EXPECT_CALL(*refill_unblinded_tokens_delegate_mock_,
-              OnWillRetryRefillingUnblindedTokens(_))
-      .Times(1);
+              OnWillRetryRefillingUnblindedTokens(_));
 
   EXPECT_CALL(*refill_unblinded_tokens_delegate_mock_,
-              OnDidRetryRefillingUnblindedTokens())
-      .Times(1);
+              OnDidRetryRefillingUnblindedTokens());
 
   EXPECT_CALL(*refill_unblinded_tokens_delegate_mock_,
-              OnDidRefillUnblindedTokens())
-      .Times(1);
+              OnDidRefillUnblindedTokens());
 
   const WalletInfo& wallet = GetWallet();
   refill_unblinded_tokens_->MaybeRefill(wallet);
@@ -450,8 +441,7 @@ TEST_F(BatAdsRefillUnblindedTokensTest, RequestSignedTokensMissingNonce) {
       .Times(0);
 
   EXPECT_CALL(*refill_unblinded_tokens_delegate_mock_,
-              OnFailedToRefillUnblindedTokens())
-      .Times(1);
+              OnFailedToRefillUnblindedTokens());
 
   EXPECT_CALL(*refill_unblinded_tokens_delegate_mock_,
               OnWillRetryRefillingUnblindedTokens(_))
@@ -555,20 +545,16 @@ TEST_F(BatAdsRefillUnblindedTokensTest,
   InSequence seq;
 
   EXPECT_CALL(*refill_unblinded_tokens_delegate_mock_,
-              OnFailedToRefillUnblindedTokens())
-      .Times(1);
+              OnFailedToRefillUnblindedTokens());
 
   EXPECT_CALL(*refill_unblinded_tokens_delegate_mock_,
-              OnWillRetryRefillingUnblindedTokens(_))
-      .Times(1);
+              OnWillRetryRefillingUnblindedTokens(_));
 
   EXPECT_CALL(*refill_unblinded_tokens_delegate_mock_,
-              OnDidRetryRefillingUnblindedTokens())
-      .Times(1);
+              OnDidRetryRefillingUnblindedTokens());
 
   EXPECT_CALL(*refill_unblinded_tokens_delegate_mock_,
-              OnDidRefillUnblindedTokens())
-      .Times(1);
+              OnDidRefillUnblindedTokens());
 
   const WalletInfo& wallet = GetWallet();
   refill_unblinded_tokens_->MaybeRefill(wallet);
@@ -605,8 +591,7 @@ TEST_F(BatAdsRefillUnblindedTokensTest, GetSignedTokensInvalidResponse) {
       .Times(0);
 
   EXPECT_CALL(*refill_unblinded_tokens_delegate_mock_,
-              OnFailedToRefillUnblindedTokens())
-      .Times(1);
+              OnFailedToRefillUnblindedTokens());
 
   EXPECT_CALL(*refill_unblinded_tokens_delegate_mock_,
               OnWillRetryRefillingUnblindedTokens(_))
@@ -705,8 +690,7 @@ TEST_F(BatAdsRefillUnblindedTokensTest, GetSignedTokensMissingPublicKey) {
       .Times(0);
 
   EXPECT_CALL(*refill_unblinded_tokens_delegate_mock_,
-              OnFailedToRefillUnblindedTokens())
-      .Times(1);
+              OnFailedToRefillUnblindedTokens());
 
   EXPECT_CALL(*refill_unblinded_tokens_delegate_mock_,
               OnWillRetryRefillingUnblindedTokens(_))
@@ -805,8 +789,7 @@ TEST_F(BatAdsRefillUnblindedTokensTest, GetSignedTokensMissingBatchProofDleq) {
       .Times(0);
 
   EXPECT_CALL(*refill_unblinded_tokens_delegate_mock_,
-              OnFailedToRefillUnblindedTokens())
-      .Times(1);
+              OnFailedToRefillUnblindedTokens());
 
   EXPECT_CALL(*refill_unblinded_tokens_delegate_mock_,
               OnWillRetryRefillingUnblindedTokens(_))
@@ -854,8 +837,7 @@ TEST_F(BatAdsRefillUnblindedTokensTest, GetSignedTokensMissingSignedTokens) {
       .Times(0);
 
   EXPECT_CALL(*refill_unblinded_tokens_delegate_mock_,
-              OnFailedToRefillUnblindedTokens())
-      .Times(1);
+              OnFailedToRefillUnblindedTokens());
 
   EXPECT_CALL(*refill_unblinded_tokens_delegate_mock_,
               OnWillRetryRefillingUnblindedTokens(_))
@@ -955,8 +937,7 @@ TEST_F(BatAdsRefillUnblindedTokensTest, GetInvalidSignedTokens) {
       .Times(0);
 
   EXPECT_CALL(*refill_unblinded_tokens_delegate_mock_,
-              OnFailedToRefillUnblindedTokens())
-      .Times(1);
+              OnFailedToRefillUnblindedTokens());
 
   EXPECT_CALL(*refill_unblinded_tokens_delegate_mock_,
               OnWillRetryRefillingUnblindedTokens(_))
@@ -1105,8 +1086,7 @@ TEST_F(BatAdsRefillUnblindedTokensTest, RefillIfBelowTheMinimumThreshold) {
 
   // Act
   EXPECT_CALL(*refill_unblinded_tokens_delegate_mock_,
-              OnDidRefillUnblindedTokens())
-      .Times(1);
+              OnDidRefillUnblindedTokens());
 
   EXPECT_CALL(*refill_unblinded_tokens_delegate_mock_,
               OnFailedToRefillUnblindedTokens())

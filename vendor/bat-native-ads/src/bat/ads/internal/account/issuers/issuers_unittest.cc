@@ -87,8 +87,7 @@ TEST_F(BatAdsIssuersTest, FetchIssuers) {
                    {{"JiwFR2EU/Adf1lgox+xqOVPuc6a/rxdy/LguFG5eaXg=", 0.0},
                     {"bPE1QE65mkIgytffeu7STOfly+x10BXCGuk5pVlOHQU=", 0.1}});
 
-  EXPECT_CALL(*issuers_delegate_mock_, OnDidFetchIssuers(expected_issuers))
-      .Times(1);
+  EXPECT_CALL(*issuers_delegate_mock_, OnDidFetchIssuers(expected_issuers));
   EXPECT_CALL(*issuers_delegate_mock_, OnFailedToFetchIssuers()).Times(0);
   EXPECT_CALL(*issuers_delegate_mock_, OnWillRetryFetchingIssuers(_)).Times(0);
   EXPECT_CALL(*issuers_delegate_mock_, OnDidRetryFetchingIssuers()).Times(0);
@@ -109,7 +108,7 @@ TEST_F(BatAdsIssuersTest, FetchIssuersInvalidJsonResponse) {
   EXPECT_CALL(*issuers_delegate_mock_, OnDidFetchIssuers(_)).Times(0);
   EXPECT_CALL(*issuers_delegate_mock_, OnFailedToFetchIssuers()).Times(2);
   EXPECT_CALL(*issuers_delegate_mock_, OnWillRetryFetchingIssuers(_)).Times(2);
-  EXPECT_CALL(*issuers_delegate_mock_, OnDidRetryFetchingIssuers()).Times(1);
+  EXPECT_CALL(*issuers_delegate_mock_, OnDidRetryFetchingIssuers());
 
   // Act
   issuers_->MaybeFetch();
@@ -131,7 +130,7 @@ TEST_F(BatAdsIssuersTest, FetchIssuersNonHttpOkResponse) {
   EXPECT_CALL(*issuers_delegate_mock_, OnDidFetchIssuers(_)).Times(0);
   EXPECT_CALL(*issuers_delegate_mock_, OnFailedToFetchIssuers()).Times(2);
   EXPECT_CALL(*issuers_delegate_mock_, OnWillRetryFetchingIssuers(_)).Times(2);
-  EXPECT_CALL(*issuers_delegate_mock_, OnDidRetryFetchingIssuers()).Times(1);
+  EXPECT_CALL(*issuers_delegate_mock_, OnDidRetryFetchingIssuers());
 
   // Act
   issuers_->MaybeFetch();

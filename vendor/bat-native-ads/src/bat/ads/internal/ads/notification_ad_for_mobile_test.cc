@@ -154,8 +154,7 @@ TEST_F(BatAdsNotificationAdForMobileIntegrationTest, TriggerClickedEvent) {
       .WillOnce(Invoke([=](const NotificationAdInfo& ad) {
         ASSERT_TRUE(
             NotificationAdManager::GetInstance()->Exists(ad.placement_id));
-        EXPECT_CALL(*ads_client_mock_, CloseNotification(ad.placement_id))
-            .Times(1);
+        EXPECT_CALL(*ads_client_mock_, CloseNotification(ad.placement_id));
 
         // Act
         GetAds()->TriggerNotificationAdEvent(
