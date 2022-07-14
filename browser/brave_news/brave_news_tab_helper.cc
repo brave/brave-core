@@ -8,6 +8,7 @@
 #include <dirent.h>
 #include <algorithm>
 #include <string>
+#include <unordered_set>
 #include <utility>
 #include <vector>
 
@@ -45,14 +46,25 @@ BraveNewsTabHelper::~BraveNewsTabHelper() {
 
 std::vector<BraveNewsTabHelper::FeedDetails>
 BraveNewsTabHelper::GetAvailableFeeds() {
-  std::vector<FeedDetails> feeds(rss_page_feeds_);
+  std::vector<FeedDetails> feeds;
 
+  std::unordered_set<std::string> seen_feeds;
   auto default_publisher =
       controller_->publisher_controller()->GetPublisherForSite(
           GetWebContents().GetLastCommittedURL());
   if (default_publisher) {
+    seen_feeds.insert(default_publisher->feed_source.spec());
     feeds.insert(feeds.begin(), {default_publisher->feed_source,
                                  default_publisher->publisher_name});
+  }
+
+  for (const auto& rss_feed : rss_page_feeds_) {
+    auto url = rss_feed.feed_url.spec();
+    if (seen_feeds.find(url) != seen_feeds.end())
+      continue;
+
+    seen_feeds.insert(url);
+    feeds.push_back(rss_feed);
   }
 
   return feeds;
@@ -129,9 +141,8 @@ void BraveNewsTabHelper::PrimaryPageChanged(content::Page& page) {
   // Invalidate all weak pointers - we're on a new page now.
   weak_ptr_factory_.InvalidateWeakPtrs();
 
-  rss_page_feeds_.clear();
-
 #if BUILDFLAG(ENABLE_FEED_V2)
+  rss_page_feeds_.clear();
   feed::FetchRssLinks(GetWebContents().GetLastCommittedURL(), &GetWebContents(),
                       base::BindOnce(&BraveNewsTabHelper::OnReceivedRssUrls,
                                      weak_ptr_factory_.GetWeakPtr(),

@@ -69,6 +69,16 @@ class BraveNewsFeedRow : public views::View,
     title->SetProperty(
         views::kFlexBehaviorKey,
         views::FlexSpecification(views::MinimumFlexSizeRule::kScaleToMinimum,
+                                 views::MaximumFlexSizeRule::kScaleToMaximum));
+    title->SetMultiLine(false);
+    title->SetMaximumWidthSingleLine(150);
+    title->SetElideBehavior(gfx::ELIDE_TAIL);
+
+    auto* spacer = AddChildView(std::make_unique<views::View>());
+    spacer->SetPreferredSize(gfx::Size(8, 0));
+    spacer->SetProperty(
+        views::kFlexBehaviorKey,
+        views::FlexSpecification(views::MinimumFlexSizeRule::kScaleToMinimum,
                                  views::MaximumFlexSizeRule::kUnbounded));
 
     subscribe_button_ = AddChildView(std::make_unique<views::MdTextButton>(

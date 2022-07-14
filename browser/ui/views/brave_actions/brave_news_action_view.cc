@@ -106,8 +106,6 @@ void BraveTodayActionView::Update() {
       feed = tab_helper->GetAvailableFeeds()[0];
       subscribed = tab_helper->is_subscribed();
     }
-    LOG(ERROR) << "Subscribed: " << subscribed << ", Available Feeds: "
-               << tab_helper->GetAvailableFeeds().size();
   }
 
   auto background =
@@ -169,7 +167,6 @@ void BraveTodayActionView::OnTabStripModelChanged(
 
 void BraveTodayActionView::OnAvailableFeedsChanged(
     const std::vector<BraveNewsTabHelper::FeedDetails>& feeds) {
-  LOG(ERROR) << "AvailableFeedsChanged, updating";
   Update();
 }
 
