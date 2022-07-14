@@ -90,6 +90,7 @@ export const ConnectedPanel = (props: Props) => {
   // state
   const [showMore, setShowMore] = React.useState<boolean>(false)
   const [isSolanaConnected, setIsSolanaConnected] = React.useState<boolean>(false)
+  const [isPermissionDenied, setIsPermissionDenied] = React.useState<boolean>(false)
 
   // custom hooks
   const { computeFiatAmount } = usePricing(spotPrices)
@@ -106,8 +107,15 @@ export const ConnectedPanel = (props: Props) => {
   }, [navAction])
 
   const onShowSitePermissions = React.useCallback(() => {
+    if (isPermissionDenied) {
+      const contentPath = selectedCoin === BraveWallet.CoinType.SOL ? 'solana' : 'ethereum'
+      chrome.tabs.create({
+        url: `brave://settings/content/${contentPath}`
+      }).catch((e) => { console.error(e) })
+      return
+    }
     navAction('sitePermissions')
-  }, [navAction])
+  }, [navAction, isPermissionDenied, selectedCoin])
 
   const onShowMore = React.useCallback(() => {
     setShowMore(true)
@@ -129,6 +137,17 @@ export const ConnectedPanel = (props: Props) => {
 
   // effects
   React.useEffect(() => {
+    const checkPermission = async () => {
+      const braveWalletService = getWalletPanelApiProxy().braveWalletService
+      await braveWalletService.isPermissionDenied(selectedCoin, originInfo.origin)
+        .then(result => {
+          if (isMounted) {
+            setIsPermissionDenied(result.denied)
+          }
+        })
+        .catch(e => console.log(e))
+    }
+    checkPermission()
     if (selectedCoin === BraveWallet.CoinType.SOL) {
       const isSolanaAccountConnected = async () => {
         const apiProxy = getWalletPanelApiProxy()
@@ -142,7 +161,7 @@ export const ConnectedPanel = (props: Props) => {
       }
       isSolanaAccountConnected()
     }
-  }, [selectedAccount, selectedCoin, isMounted])
+  }, [selectedAccount, selectedCoin, isMounted, originInfo])
 
   // memos
   const bg = React.useMemo(() => {
@@ -173,6 +192,9 @@ export const ConnectedPanel = (props: Props) => {
   }, [connectedAccounts, selectedAccount, originInfo, selectedCoin, isSolanaConnected])
 
   const connectedStatusText = React.useMemo((): string => {
+    if (isPermissionDenied) {
+      return getLocale('braveWalletPanelBlocked')
+    }
     if (selectedCoin === BraveWallet.CoinType.SOL) {
       return isConnected
         ? getLocale('braveWalletPanelConnected')
@@ -181,14 +203,17 @@ export const ConnectedPanel = (props: Props) => {
     return isConnected
       ? getLocale('braveWalletPanelConnected')
       : getLocale('braveWalletPanelNotConnected')
-  }, [isConnected, selectedCoin])
+  }, [isConnected, selectedCoin, isPermissionDenied])
 
   const showConnectButton = React.useMemo((): boolean => {
+    if (isPermissionDenied) {
+      return true
+    }
     if (selectedCoin === BraveWallet.CoinType.SOL) {
       return connectedAccounts.length !== 0
     }
     return originInfo?.origin?.scheme !== 'chrome'
-  }, [selectedCoin, connectedAccounts, originInfo])
+  }, [selectedCoin, connectedAccounts, originInfo, isPermissionDenied])
 
   // computed
   const formattedAssetBalance = new Amount(selectedAccount.nativeBalanceRegistry[selectedNetwork.chainId] ?? '')
