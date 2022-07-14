@@ -97,7 +97,9 @@ function TopSitesList (props: Props) {
         </SortableContext>
       </DndContext>
     </GridPagesContainer>
-    {customLinksEnabled && <GridPageButtons numPages={pageCount} pageContainerRef={gridPagesContainerRef} />}
+    {customLinksEnabled
+      && pageCount > 1
+      && <GridPageButtons numPages={pageCount} pageContainerRef={gridPagesContainerRef} />}
   </PagesContainer>
 }
 
