@@ -5,7 +5,6 @@
 
 #include "bat/ads/internal/privacy/p2a/opportunities/p2a_opportunity.h"
 
-#include <string>
 #include <vector>
 
 #include "base/strings/stringprintf.h"
@@ -17,10 +16,13 @@ namespace ads {
 namespace privacy {
 namespace p2a {
 
+std::string GetAdOpportunityNameForAdType(const AdType& ad_type) {
+  return base::StringPrintf("%s_opportunity", ad_type.ToString().c_str());
+}
+
 void RecordAdOpportunityForSegments(const AdType& ad_type,
                                     const SegmentList& segments) {
-  const std::string name =
-      base::StringPrintf("%s_opportunity", ad_type.ToString().c_str());
+  const std::string name = GetAdOpportunityNameForAdType(ad_type);
 
   const std::vector<std::string> questions =
       CreateAdOpportunityQuestions(segments);
