@@ -100,7 +100,7 @@ base::Value::List GetChromeSourceProfiles(
       if (info_cache) {
         for (const auto value : *info_cache) {
           const auto* profile = value.second.GetIfDict();
-          if (profile)
+          if (!profile)
             continue;
 
           auto* name = profile->FindString("name");
