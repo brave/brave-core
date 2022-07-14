@@ -270,6 +270,11 @@ void BraveRenderViewContextMenu::AddSpellCheckServiceItem(
   // Suppress adding "Spellcheck->Ask Brave for suggestions" item.
 }
 
+void BraveRenderViewContextMenu::AddAccessibilityLabelsServiceItem(
+    bool is_checked) {
+  // Suppress adding "Get image descriptions from Brave"
+}
+
 #if BUILDFLAG(ENABLE_IPFS)
 bool BraveRenderViewContextMenu::IsIPFSCommandIdEnabled(int command) const {
   if (!ipfs::IsIpfsMenuEnabled(GetProfile()->GetPrefs()))
