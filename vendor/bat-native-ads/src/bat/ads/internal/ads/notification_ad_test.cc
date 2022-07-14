@@ -17,11 +17,14 @@
 #include "bat/ads/internal/base/unittest/unittest_mock_util.h"
 #include "bat/ads/internal/creatives/notification_ads/creative_notification_ad_unittest_util.h"
 #include "bat/ads/internal/history/history_unittest_util.h"
+#include "bat/ads/internal/privacy/p2a/impressions/p2a_impression.h"
+#include "bat/ads/internal/privacy/p2a/opportunities/p2a_opportunity.h"
 #include "bat/ads/notification_ad_info.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
+using ::testing::_;
 using ::testing::Invoke;
 
 namespace ads {
@@ -46,6 +49,10 @@ class BatAdsNotificationAdIntegrationTest : public UnitTestBase {
   }
 
   void ServeAd() {
+    const std::string name =
+        privacy::p2a::GetAdOpportunityNameForAdType(AdType::kNotificationAd);
+    EXPECT_CALL(*ads_client_mock_, RecordP2AEvent(name, _, _)).Times(1);
+
     GetAds()->OnUnIdle(base::TimeDelta::Min(), /* was_locked */ false);
   }
 };
@@ -119,6 +126,10 @@ TEST_F(BatAdsNotificationAdIntegrationTest, TriggerViewedEvent) {
         EXPECT_EQ(1, GetHistoryItemCount());
         EXPECT_EQ(1, GetTransactionCount());
       }));
+
+  const std::string name =
+      privacy::p2a::GetAdImpressionNameForAdType(AdType::kNotificationAd);
+  EXPECT_CALL(*ads_client_mock_, RecordP2AEvent(name, _, _)).Times(1);
 
   ServeAd();
 }

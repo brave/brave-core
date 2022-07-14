@@ -17,6 +17,8 @@
 #include "bat/ads/internal/base/unittest/unittest_mock_util.h"
 #include "bat/ads/internal/creatives/notification_ads/creative_notification_ad_unittest_util.h"
 #include "bat/ads/internal/history/history_unittest_util.h"
+#include "bat/ads/internal/privacy/p2a/impressions/p2a_impression.h"
+#include "bat/ads/internal/privacy/p2a/opportunities/p2a_opportunity.h"
 #include "bat/ads/notification_ad_info.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
 
@@ -50,6 +52,11 @@ class BatAdsNotificationAdForMobileIntegrationTest : public UnitTestBase {
 
   void ServeNextAd() {
     ASSERT_TRUE(IsServingAdAtRegularIntervals());
+
+    const std::string name =
+        privacy::p2a::GetAdOpportunityNameForAdType(AdType::kNotificationAd);
+    EXPECT_CALL(*ads_client_mock_, RecordP2AEvent(name, _));
+
     const base::Time serve_ad_at =
         ClientStateManager::GetInstance()->GetServeAdAt();
     FastForwardClockTo(serve_ad_at);
@@ -133,6 +140,10 @@ TEST_F(BatAdsNotificationAdForMobileIntegrationTest, TriggerViewedEvent) {
         EXPECT_EQ(1, GetHistoryItemCount());
         EXPECT_EQ(1, GetTransactionCount());
       }));
+
+  const std::string name =
+      privacy::p2a::GetAdImpressionNameForAdType(AdType::kNotificationAd);
+  EXPECT_CALL(*ads_client_mock_, RecordP2AEvent(name, _));
 
   ServeNextAd();
 }
