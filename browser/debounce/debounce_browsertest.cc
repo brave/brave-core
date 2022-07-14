@@ -173,9 +173,6 @@ IN_PROC_BROWSER_TEST_F(DebounceBrowserTest, Base64Redirect) {
   NavigateToURLAndWaitForRedirects(original_url, landing_url);
 }
 
-// Test that debounce rules continue to be processed in order
-// by constructing a URL that should be debounced to a second
-// URL that should then be debounced to a third URL.
 IN_PROC_BROWSER_TEST_F(DebounceBrowserTest, DoubleRedirect) {
   ASSERT_TRUE(InstallMockExtension());
   GURL url_z = embedded_test_server()->GetURL("z.com", "/");
@@ -183,6 +180,13 @@ IN_PROC_BROWSER_TEST_F(DebounceBrowserTest, DoubleRedirect) {
       embedded_test_server()->GetURL("double.b.com", "/"), url_z);
   GURL url_a = add_redirect_param(
       embedded_test_server()->GetURL("double.a.com", "/"), url_b);
+  NavigateToURLAndWaitForRedirects(url_a, url_z);
+
+  url_z = embedded_test_server()->GetURL("z.com", "/");
+  url_b = add_redirect_param(
+      embedded_test_server()->GetURL("double.a.com", "/"), url_z);
+  url_a = add_redirect_param(
+      embedded_test_server()->GetURL("double.b.com", "/"), url_b);
   NavigateToURLAndWaitForRedirects(url_a, url_z);
 }
 
@@ -237,18 +241,16 @@ IN_PROC_BROWSER_TEST_F(DebounceBrowserTest, RedirectThroughOriginalSite) {
   content::SetBrowserClientForTesting(old_client);
 }
 
-// Test that debounce rules are not processed twice by constructing
-// a URL that should be debounced to a second URL that would be
-// debounced to a third URL except that that rule has already been
-// processed, so it won't.
-IN_PROC_BROWSER_TEST_F(DebounceBrowserTest, NotDoubleRedirect) {
+IN_PROC_BROWSER_TEST_F(DebounceBrowserTest, RedirectLoop) {
   ASSERT_TRUE(InstallMockExtension());
-  GURL final_url = embedded_test_server()->GetURL("z.com", "/");
-  GURL intermediate_url = add_redirect_param(
-      embedded_test_server()->GetURL("double.a.com", "/"), final_url);
+  GURL finish_url = embedded_test_server()->GetURL("double.a.com", "/");
+  GURL loop_url = add_redirect_param(
+      embedded_test_server()->GetURL("double.b.com", "/"), finish_url);
   GURL start_url = add_redirect_param(
-      embedded_test_server()->GetURL("double.b.com", "/"), intermediate_url);
-  NavigateToURLAndWaitForRedirects(start_url, intermediate_url);
+      embedded_test_server()->GetURL("double.b.com", "/"),
+      add_redirect_param(embedded_test_server()->GetURL("double.a.com", "/"),
+                         loop_url));
+  NavigateToURLAndWaitForRedirects(start_url, loop_url);
 }
 
 // Test wildcard URL patterns by constructing a URL that should be
