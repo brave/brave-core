@@ -7,19 +7,11 @@ from __future__ import print_function
 from builtins import str
 from builtins import object
 import argparse
-import errno
-import hashlib
-import os
-import requests
 import re
-import shutil
-import subprocess
 import sys
-import tempfile
 import json
 
-from io import StringIO
-from lib.config import get_env_var, SOURCE_ROOT, BRAVE_CORE_ROOT, get_raw_version
+from lib.config import get_env_var, BRAVE_CORE_ROOT
 from lib.util import execute, scoped_cwd
 from lib.helpers import *
 from lib.github import (GitHub, get_authenticated_user_login, parse_user_logins,
@@ -64,7 +56,7 @@ class PrConfig(object):
                         raise Exception(
                             '`BRAVE_GITHUB_TOKEN` value not found!')
                     self.github_token = result
-                except Exception as e:
+                except Exception:
                     print('[ERROR] no valid GitHub token was found either in npmrc or ' +
                           'via environment variables (BRAVE_GITHUB_TOKEN)')
                     return 1
@@ -135,7 +127,7 @@ def validate_channel(channel):
     global config
     try:
         config.channel_names.index(channel)
-    except Exception as e:
+    except Exception:
         raise Exception('Channel name "' + channel + '" is not valid!')
 
 
@@ -220,7 +212,7 @@ def main():
         try:
             start_index = config.channel_names.index(args.start_from)
             config.channels_to_process = config.channel_names[start_index:]
-        except Exception as e:
+        except Exception:
             print('[ERROR] specified `start-from` value "' +
                   args.start_from + '" not found in channel list')
             return 1
@@ -269,7 +261,7 @@ def main():
             try:
                 branch_sha = execute(
                     ['git', 'rev-parse', '-q', '--verify', local_branch])
-            except Exception as e:
+            except Exception:
                 branch_sha = ''
             if len(branch_sha) > 0:
                 # branch exists; reset it
@@ -344,7 +336,7 @@ def is_sha(ref):
             json_response = json.loads(response)
             if json_response['sha'] == ref:
                 return True
-        except Exception as e2:
+        except Exception:
             return False
         return False
 
@@ -374,7 +366,7 @@ def create_branch(channel, top_level_base, remote_base, local_branch, args):
             try:
                 branch_sha = execute(
                     ['git', 'rev-parse', '-q', '--verify', channel_branch])
-            except Exception as e:
+            except Exception:
                 branch_sha = ''
 
             if len(branch_sha) > 0:
@@ -496,5 +488,4 @@ def submit_pr(channel, top_level_base, remote_base, local_branch, issues_fixed):
 
 
 if __name__ == '__main__':
-    import sys
     sys.exit(main())
