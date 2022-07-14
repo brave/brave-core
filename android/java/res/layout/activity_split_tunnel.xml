@@ -82,6 +82,8 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
                 android:textSize="16sp"
+                android:textAllCaps="false"
+                android:textColor="@android:color/white"
                 android:text="@string/show_system_apps" />
 
             <androidx.recyclerview.widget.RecyclerView

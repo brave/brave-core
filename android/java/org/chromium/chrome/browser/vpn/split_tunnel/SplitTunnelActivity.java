@@ -100,9 +100,7 @@ public class SplitTunnelActivity extends AsyncInitializationActivity
                     if (applicationDataModels.size() > 0) {
                         mRecyclerViewAdapterExcludedApps.addAll(applicationDataModels);
                     } else {
-                        TextView emptyExcludedAppsText =
-                                findViewById(R.id.empty_excluded_apps_text);
-                        emptyExcludedAppsText.setVisibility(View.VISIBLE);
+                        findViewById(R.id.empty_excluded_apps_text).setVisibility(View.VISIBLE);
                     }
                 });
         viewModel.getApplicationDataMutableLiveData().observe(
@@ -174,6 +172,7 @@ public class SplitTunnelActivity extends AsyncInitializationActivity
                     mRecyclerViewAdapterApps.removeApplication(applicationDataModel);
                 }
             }
+            findViewById(R.id.empty_excluded_apps_text).setVisibility(mRecyclerViewAdapterExcludedApps.getApplicationPackages().size() > 0 ? View.GONE : View.VISIBLE);
         }
     }
 
