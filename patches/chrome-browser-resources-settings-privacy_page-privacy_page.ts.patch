@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/settings/privacy_page/privacy_page.ts b/chrome/browser/resources/settings/privacy_page/privacy_page.ts
-index 98a6d4a2e3784022cf703a03a37a6321b6c95fb3..aadbfd524267ce1290cd52710c1ecdca49f707c6 100644
+index 6b45373171e9beef0457545702263e7e5238d935..83451b6a42b0b0e56a0d84c6bf9cd553ab0e49e1 100644
 --- a/chrome/browser/resources/settings/privacy_page/privacy_page.ts
 +++ b/chrome/browser/resources/settings/privacy_page/privacy_page.ts
 @@ -19,6 +19,7 @@ import '../site_settings/site_data_details_subpage.js';

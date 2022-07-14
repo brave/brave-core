@@ -1,8 +1,8 @@
 diff --git a/components/favicon/core/favicon_database.cc b/components/favicon/core/favicon_database.cc
-index 9b9eb09b8cbb6b2058bdec18aba05dc3dda7baaf..13a63ff2891b33356115c589d3547e1dfda144ac 100644
+index a8f5b1b801c15463273b39c82d8dea56b210a6f6..e4c2770f49ebc8f374d8250e0e1870531d56d71c 100644
 --- a/components/favicon/core/favicon_database.cc
 +++ b/components/favicon/core/favicon_database.cc
-@@ -507,6 +507,7 @@ FaviconBitmapID FaviconDatabase::AddFaviconBitmap(
+@@ -508,6 +508,7 @@ FaviconBitmapID FaviconDatabase::AddFaviconBitmap(
      base::Time time,
      const gfx::Size& pixel_size) {
    DCHECK(icon_id);
@@ -10,7 +10,7 @@ index 9b9eb09b8cbb6b2058bdec18aba05dc3dda7baaf..13a63ff2891b33356115c589d3547e1d
  
    sql::Statement statement(db_.GetCachedStatement(
        SQL_FROM_HERE,
-@@ -559,8 +560,8 @@ bool FaviconDatabase::SetFaviconBitmap(
+@@ -560,8 +561,8 @@ bool FaviconDatabase::SetFaviconBitmap(
    } else {
      statement.BindNull(0);
    }
@@ -21,7 +21,7 @@ index 9b9eb09b8cbb6b2058bdec18aba05dc3dda7baaf..13a63ff2891b33356115c589d3547e1d
    statement.BindInt64(3, bitmap_id);
  
    return statement.Run();
-@@ -568,6 +569,7 @@ bool FaviconDatabase::SetFaviconBitmap(
+@@ -569,6 +570,7 @@ bool FaviconDatabase::SetFaviconBitmap(
  
  bool FaviconDatabase::SetFaviconBitmapLastUpdateTime(FaviconBitmapID bitmap_id,
                                                       base::Time time) {

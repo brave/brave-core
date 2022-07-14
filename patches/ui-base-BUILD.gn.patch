@@ -1,8 +1,8 @@
 diff --git a/ui/base/BUILD.gn b/ui/base/BUILD.gn
-index 80658c7684963d3ba8ac9f876ffff87dc45d6af1..8632c79b9ce21a3cd137a7a90b050b6156beb66f 100644
+index a922dc6ce99ed32ede8812a63a836f72691bece3..2f4480e730924c8f737ccb5f84b881a6c56239a5 100644
 --- a/ui/base/BUILD.gn
 +++ b/ui/base/BUILD.gn
-@@ -489,6 +489,7 @@ component("base") {
+@@ -491,6 +491,7 @@ component("base") {
      "//ui/strings",
      "//url",
    ]
