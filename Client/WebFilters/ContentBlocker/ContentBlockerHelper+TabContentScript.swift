@@ -14,8 +14,8 @@ extension ContentBlockerHelper: TabContentScript {
   private struct ContentBlockerDTO: Decodable {
     struct ContentblockerDTOData: Decodable {
       let resourceType: AdblockEngine.ResourceType
-      let resourceURL: URL
-      let sourceURL: URL
+      let resourceURL: String
+      let sourceURL: String
     }
     
     let securityToken: String
@@ -66,6 +66,10 @@ extension ContentBlockerHelper: TabContentScript {
         return
       }
       
+      // Because javascript urls allow some characters that `URL` does not,
+      // we use `NSURL(idnString: String)` to parse them
+      guard let requestURL = NSURL(idnString: dto.data.resourceURL) as URL? else { return }
+      guard let sourceURL = NSURL(idnString: dto.data.sourceURL) as URL? else { return }
       guard let domainURLString = domain.url else { return }
       
       // Getting this domain and current tab urls before going into asynchronous closure
@@ -74,14 +78,14 @@ extension ContentBlockerHelper: TabContentScript {
       let enabledLists = BlocklistName.blocklists(forDomain: domain).on
 
       TPStatsBlocklistChecker.shared.isBlocked(
-        requestURL: dto.data.resourceURL,
-        sourceURL: dto.data.sourceURL,
+        requestURL: requestURL,
+        sourceURL: sourceURL,
         enabledLists: enabledLists,
         resourceType: dto.data.resourceType
       ) { listItem in
         guard let listItem = listItem else { return }
  
-        if listItem == .https && dto.data.resourceType != .image && currentTabURL.scheme == "https" && dto.data.resourceURL.scheme == "http" {
+        if listItem == .https && dto.data.resourceType != .image && currentTabURL.scheme == "https" && requestURL.scheme == "http" {
           // WKWebView will block loading this URL so we can't count it due to mixed content restrictions
           // Unfortunately, it does not check to see if a content blocker would promote said URL to https
           // before blocking the load
@@ -92,14 +96,14 @@ extension ContentBlockerHelper: TabContentScript {
         
         if listItem == .ad, Preferences.PrivacyReports.captureShieldsData.value,
            let domainURL = URL(string: domainURLString),
-           let blockedResourceHost = dto.data.resourceURL.baseDomain,
+           let blockedResourceHost = requestURL.baseDomain,
            !PrivateBrowsingManager.shared.isPrivateBrowsing {
           PrivacyReportsManager.pendingBlockedRequests.append((blockedResourceHost, domainURL, Date()))
         }
         
         // First check to make sure we're not counting the same repetitive requests multiple times
-        guard !self.blockedRequests.contains(dto.data.resourceURL) else { return }
-        self.blockedRequests.insert(dto.data.resourceURL)
+        guard !self.blockedRequests.contains(requestURL) else { return }
+        self.blockedRequests.insert(requestURL)
 
         // Increase global stats (here due to BlocklistName being in Client and BraveGlobalShieldStats being
         // in BraveShared)
