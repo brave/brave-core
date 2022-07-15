@@ -5,12 +5,12 @@
 
 #include "brave/browser/themes/brave_dark_mode_utils.h"
 #include "brave/browser/themes/theme_properties.h"
+#include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/browser/ui/color/brave_color_mixer.h"
 #include "brave/browser/ui/color/color_palette.h"
 #include "brave/components/constants/pref_names.h"
 #include "build/build_config.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/themes/theme_properties.h"
 #include "chrome/browser/themes/theme_service.h"
 #include "chrome/browser/themes/theme_service_factory.h"
 #include "chrome/browser/ui/browser.h"
@@ -69,23 +69,18 @@ class BraveThemeServiceTestWithoutSystemTheme : public InProcessBrowserTest {
 IN_PROC_BROWSER_TEST_F(BraveThemeServiceTestWithoutSystemTheme,
                        BraveThemeChangeTest) {
   Profile* profile = browser()->profile();
-  Profile* profile_private =
-      profile->GetPrimaryOTRProfile(/*create_if_needed=*/true);
-
-  const ui::ThemeProvider& tp =
-      ThemeService::GetThemeProviderForProfile(profile);
-  const ui::ThemeProvider& tp_private =
-      ThemeService::GetThemeProviderForProfile(profile_private);
-
-  auto test_theme_property = BraveThemeProperties::COLOR_FOR_TEST;
+  auto test_theme_color = kColorForTest;
 
   // Test light theme
   dark_mode::SetBraveDarkModeType(
       dark_mode::BraveDarkModeType::BRAVE_DARK_MODE_TYPE_LIGHT);
   EXPECT_EQ(dark_mode::BraveDarkModeType::BRAVE_DARK_MODE_TYPE_LIGHT,
             dark_mode::GetActiveBraveDarkModeType());
+
+  const ui::ColorProvider* color_provider =
+      ThemeServiceFactory::GetForProfile(profile)->GetColorProvider();
   EXPECT_EQ(BraveThemeProperties::kLightColorForTest,
-            tp.GetColor(test_theme_property));
+            color_provider->GetColor(test_theme_color));
 
   // Test dark theme
   dark_mode::SetBraveDarkModeType(
@@ -93,12 +88,20 @@ IN_PROC_BROWSER_TEST_F(BraveThemeServiceTestWithoutSystemTheme,
   EXPECT_EQ(
       dark_mode::BraveDarkModeType::BRAVE_DARK_MODE_TYPE_DARK,
       dark_mode::GetActiveBraveDarkModeType());
+
+  color_provider =
+      ThemeServiceFactory::GetForProfile(profile)->GetColorProvider();
   EXPECT_EQ(BraveThemeProperties::kDarkColorForTest,
-            tp.GetColor(test_theme_property));
+            color_provider->GetColor(test_theme_color));
 
   // Test dark theme private
-  EXPECT_EQ(BraveThemeProperties::kPrivateColorForTest,
-            tp_private.GetColor(test_theme_property));
+  Profile* profile_private =
+      profile->GetPrimaryOTRProfile(/*create_if_needed=*/true);
+  const ui::ColorProvider* color_provider_private =
+      ThemeServiceFactory::GetForProfile(profile_private)->GetColorProvider();
+  // Private color mixer overrides are not loaded because there's no theme.
+  EXPECT_EQ(BraveThemeProperties::kDarkColorForTest,
+            color_provider_private->GetColor(test_theme_color));
 }
 
 // Test whether appropriate native/web theme observer is called when brave theme

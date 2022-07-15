@@ -8,8 +8,8 @@
 #include <utility>
 
 #include "base/strings/utf_string_conversions.h"
-#include "brave/browser/themes/theme_properties.h"
 #include "brave/browser/ui/brave_browser.h"
+#include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/browser/ui/sidebar/sidebar_controller.h"
 #include "brave/browser/ui/sidebar/sidebar_service_factory.h"
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
@@ -45,23 +45,20 @@ class SidebarAddItemButton : public views::LabelButton {
  public:
   METADATA_HEADER(SidebarAddItemButton);
   // Get theme provider to use browser's theme color in this dialog.
-  SidebarAddItemButton(bool bold, const ui::ColorProvider* colour_provider)
-      : colour_provider_(colour_provider) {
+  SidebarAddItemButton(bool bold, const ui::ColorProvider* color_provider)
+      : color_provider_(color_provider) {
     constexpr auto kDefaultAddItemInsets = gfx::Insets::TLBR(10, 34, 4, 8);
     SetBorder(views::CreateEmptyBorder(kDefaultAddItemInsets));
-    if (colour_provider_) {
+    if (color_provider_) {
       SetTextColor(
           views::Button::STATE_NORMAL,
-          colour_provider_->GetColor(
-              BraveThemeProperties::COLOR_SIDEBAR_ADD_BUBBLE_ITEM_TEXT_NORMAL));
-      SetTextColor(views::Button::STATE_HOVERED,
-                   colour_provider_->GetColor(
-                       BraveThemeProperties::
-                           COLOR_SIDEBAR_ADD_BUBBLE_ITEM_TEXT_HOVERED));
-      SetTextColor(views::Button::STATE_PRESSED,
-                   colour_provider_->GetColor(
-                       BraveThemeProperties::
-                           COLOR_SIDEBAR_ADD_BUBBLE_ITEM_TEXT_HOVERED));
+          color_provider_->GetColor(kColorSidebarAddBubbleItemTextNormal));
+      SetTextColor(
+          views::Button::STATE_HOVERED,
+          color_provider_->GetColor(kColorSidebarAddBubbleItemTextHovered));
+      SetTextColor(
+          views::Button::STATE_PRESSED,
+          color_provider_->GetColor(kColorSidebarAddBubbleItemTextHovered));
     }
 
     const int size_diff = 13 - views::Label::GetDefaultFontList().GetFontSize();
@@ -81,10 +78,9 @@ class SidebarAddItemButton : public views::LabelButton {
       cc::PaintFlags flags;
       flags.setAntiAlias(true);
       flags.setStyle(cc::PaintFlags::kFill_Style);
-      if (colour_provider_) {
-        flags.setColor(colour_provider_->GetColor(
-            BraveThemeProperties::
-                COLOR_SIDEBAR_ADD_BUBBLE_ITEM_TEXT_BACKGROUND_HOVERED));
+      if (color_provider_) {
+        flags.setColor(color_provider_->GetColor(
+            kColorSidebarAddBubbleItemTextBackgroundHovered));
       }
 
       constexpr int kItemRadius = 6;
@@ -94,7 +90,7 @@ class SidebarAddItemButton : public views::LabelButton {
   }
 
  private:
-  const ui::ColorProvider* colour_provider_;
+  const ui::ColorProvider* color_provider_;
 };
 
 BEGIN_METADATA(SidebarAddItemButton, views::LabelButton)
@@ -114,10 +110,9 @@ SidebarAddItemBubbleDelegateView::SidebarAddItemBubbleDelegateView(
   set_title_margins(gfx::Insets());
   SetButtons(ui::DIALOG_BUTTON_NONE);
 
-  if (const ui::ColorProvider* colour_provider =
+  if (const ui::ColorProvider* color_provider =
           BrowserView::GetBrowserViewForBrowser(browser_)->GetColorProvider()) {
-    set_color(colour_provider->GetColor(
-        BraveThemeProperties::COLOR_SIDEBAR_ADD_BUBBLE_BACKGROUND));
+    set_color(color_provider->GetColor(kColorSidebarAddBubbleBackground));
   }
   AddChildViews();
 }
@@ -159,11 +154,11 @@ void SidebarAddItemBubbleDelegateView::AddChildViews() {
       brave_l10n::GetLocalizedResourceUTF16String(
           IDS_SIDEBAR_ADD_ITEM_BUBBLE_TITLE),
       font));
-  const ui::ColorProvider* colour_provider =
+  const ui::ColorProvider* color_provider =
       BrowserView::GetBrowserViewForBrowser(browser_)->GetColorProvider();
-  if (colour_provider) {
-    header->SetEnabledColor(colour_provider->GetColor(
-        BraveThemeProperties::COLOR_SIDEBAR_ADD_BUBBLE_HEADER_TEXT));
+  if (color_provider) {
+    header->SetEnabledColor(
+        color_provider->GetColor(kColorSidebarAddBubbleHeaderText));
   }
   header->SetAutoColorReadabilityEnabled(false);
   constexpr auto kHeaderInsets = gfx::Insets::TLBR(10, 34, 4, 8);
@@ -172,7 +167,7 @@ void SidebarAddItemBubbleDelegateView::AddChildViews() {
 
   if (sidebar::CanAddCurrentActiveTabToSidebar(browser_)) {
     auto* button = site_part->AddChildView(
-        std::make_unique<SidebarAddItemButton>(true, colour_provider));
+        std::make_unique<SidebarAddItemButton>(true, color_provider));
     const GURL active_tab_url =
         browser_->tab_strip_model()->GetActiveWebContents()->GetVisibleURL();
     button->SetText(base::UTF8ToUTF16(active_tab_url.host()));
@@ -187,9 +182,8 @@ void SidebarAddItemBubbleDelegateView::AddChildViews() {
     return;
 
   auto* separator = AddChildView(std::make_unique<views::Separator>());
-  if (colour_provider) {
-    separator->SetColorId(colour_provider->GetColor(
-        BraveThemeProperties::COLOR_SIDEBAR_SEPARATOR));
+  if (color_provider) {
+    separator->SetColorId(kColorSidebarSeparator);
   }
 
   // |default_part| includes hidden default items.
@@ -200,7 +194,7 @@ void SidebarAddItemBubbleDelegateView::AddChildViews() {
 
   for (const auto& item : hidden_default_items) {
     auto* button = default_part->AddChildView(
-        std::make_unique<SidebarAddItemButton>(false, colour_provider));
+        std::make_unique<SidebarAddItemButton>(false, color_provider));
     button->SetText(item.title);
     button->SetCallback(base::BindRepeating(
         &SidebarAddItemBubbleDelegateView::OnDefaultItemsButtonPressed,

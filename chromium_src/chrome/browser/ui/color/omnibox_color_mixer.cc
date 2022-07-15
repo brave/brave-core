@@ -18,10 +18,11 @@ void AddBraveOmniboxColorMixer(ui::ColorProvider* provider,
   // Apply brave theme when there is no custom theme.
   if (key.custom_theme)
     return;
-
+#if !BUILDFLAG(IS_ANDROID)
   key.color_mode == ui::ColorProviderManager::ColorMode::kDark
       ? AddBraveOmniboxDarkThemeColorMixer(provider, key)
       : AddBraveOmniboxLightThemeColorMixer(provider, key);
+#endif  // #if !BUILDFLAG(IS_ANDROID)
 }
 
 }  // namespace

@@ -8,7 +8,7 @@
 #include <utility>
 
 #include "brave/browser/brave_vpn/brave_vpn_service_factory.h"
-#include "brave/browser/themes/theme_properties.h"
+#include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/components/brave_vpn/brave_vpn_service.h"
 #include "brave/components/l10n/common/locale_util.h"
 #include "brave/grit/brave_generated_resources.h"
@@ -67,8 +67,7 @@ BraveVPNStatusLabel::BraveVPNStatusLabel(Browser* browser)
 
   if (const ui::ColorProvider* provider =
           BrowserView::GetBrowserViewForBrowser(browser_)->GetColorProvider()) {
-    SetEnabledColor(provider->GetColor(
-        BraveThemeProperties::COLOR_MENU_ITEM_SUB_TEXT_COLOR));
+    SetEnabledColor(provider->GetColor(kColorMenuItemSubText));
   }
   longest_state_string_id_ = GetLongestStringIdForConnectionState();
 }

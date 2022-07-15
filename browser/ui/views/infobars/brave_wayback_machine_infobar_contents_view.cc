@@ -10,7 +10,6 @@
 #include <utility>
 
 #include "brave/app/vector_icons/vector_icons.h"
-#include "brave/browser/themes/theme_properties.h"
 #include "brave/browser/ui/views/infobars/brave_wayback_machine_infobar_button_container.h"
 #include "brave/components/brave_wayback_machine/brave_wayback_machine_infobar_delegate.h"
 #include "brave/components/brave_wayback_machine/pref_names.h"
@@ -18,7 +17,6 @@
 #include "brave/components/l10n/common/locale_util.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "brave/grit/brave_theme_resources.h"
-#include "chrome/browser/themes/theme_properties.h"
 #include "chrome/browser/ui/color/chrome_color_id.h"
 #include "chrome/browser/ui/views/chrome_layout_provider.h"
 #include "chrome/browser/ui/views/chrome_typography.h"
@@ -47,7 +45,7 @@
 namespace {
 // IDs of the colors to use for infobar elements.
 constexpr int kInfoBarLabelBackgroundColor = kColorInfoBarBackground;
-constexpr int kInfoBarLabelTextColor = ThemeProperties::COLOR_BOOKMARK_TEXT;
+constexpr int kInfoBarLabelTextColor = kColorBookmarkBarForeground;
 }  // namespace
 
 BraveWaybackMachineInfoBarContentsView::BraveWaybackMachineInfoBarContentsView(
@@ -245,9 +243,8 @@ void BraveWaybackMachineInfoBarContentsView::UpdateChildrenVisibility(
 }
 
 SkColor BraveWaybackMachineInfoBarContentsView::GetColor(int id) const {
-  const auto* colour_provider = GetColorProvider();
-  return colour_provider ? colour_provider->GetColor(id)
-                         : gfx::kPlaceholderColor;
+  const auto* color_provider = GetColorProvider();
+  return color_provider ? color_provider->GetColor(id) : gfx::kPlaceholderColor;
 }
 
 void BraveWaybackMachineInfoBarContentsView::FetchWaybackURL() {

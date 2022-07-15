@@ -9,12 +9,12 @@
 
 #include "base/bind.h"
 #include "brave/browser/brave_vpn/brave_vpn_service_factory.h"
-#include "brave/browser/themes/theme_properties.h"
 #include "brave/components/brave_vpn/brave_vpn_service.h"
 #include "brave/components/l10n/common/locale_util.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
+#include "ui/color/color_id.h"
 
 using ConnectionState = brave_vpn::mojom::ConnectionState;
 using PurchasedState = brave_vpn::mojom::PurchasedState;
@@ -33,14 +33,10 @@ BraveVPNToggleButton::BraveVPNToggleButton(Browser* browser)
 
   if (const ui::ColorProvider* provider =
           BrowserView::GetBrowserViewForBrowser(browser_)->GetColorProvider()) {
-    SetThumbOnColor(provider->GetColor(
-        BraveThemeProperties::COLOR_TOGGLE_BUTTON_THUMB_ON_COLOR));
-    SetThumbOffColor(provider->GetColor(
-        BraveThemeProperties::COLOR_TOGGLE_BUTTON_THUMB_OFF_COLOR));
-    SetTrackOnColor(provider->GetColor(
-        BraveThemeProperties::COLOR_TOGGLE_BUTTON_TRACK_ON_COLOR));
-    SetTrackOffColor(provider->GetColor(
-        BraveThemeProperties::COLOR_TOGGLE_BUTTON_TRACK_OFF_COLOR));
+    SetThumbOnColor(provider->GetColor(ui::kColorToggleButtonThumbOn));
+    SetThumbOffColor(provider->GetColor(ui::kColorToggleButtonThumbOff));
+    SetTrackOnColor(provider->GetColor(ui::kColorToggleButtonTrackOn));
+    SetTrackOffColor(provider->GetColor(ui::kColorToggleButtonTrackOff));
   }
 
   // TODO(simonhong): Re-visit this name.

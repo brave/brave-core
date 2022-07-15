@@ -15,10 +15,10 @@
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/l10n/common/locale_util.h"
 #include "brave/grit/brave_generated_resources.h"
-#include "chrome/browser/themes/theme_properties.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/ui/browser_list.h"
+#include "chrome/browser/ui/color/chrome_color_id.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/prefs/pref_service.h"
@@ -109,9 +109,8 @@ void WalletButton::OnWalletPressed(const ui::Event& event) {
 }
 
 void WalletButton::UpdateImageAndText() {
-  const ui::ColorProvider* colour_provider = GetColorProvider();
-  SkColor icon_color =
-      colour_provider->GetColor(ThemeProperties::COLOR_TOOLBAR_BUTTON_ICON);
+  const ui::ColorProvider* color_provider = GetColorProvider();
+  SkColor icon_color = color_provider->GetColor(kColorToolbarButtonIcon);
   SetImage(views::Button::STATE_NORMAL,
            gfx::CreateVectorIcon(kWalletToolbarButtonIcon, icon_color));
   SetTooltipText(

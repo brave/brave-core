@@ -3,15 +3,24 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
-brave_browser_ui_color_mixers_sources = [
-  "//brave/browser/ui/color/brave_color_mixer.cc",
-  "//brave/browser/ui/color/brave_color_mixer.h",
-  "//brave/browser/ui/color/color_palette.h",
-]
+brave_browser_ui_color_mixers_sources = []
+brave_browser_ui_color_mixers_deps = []
 
-brave_browser_ui_color_mixers_deps = [
-  "//skia",
-  "//ui/color",
-  "//ui/gfx",
-  "//ui/native_theme",
-]
+if (!is_android) {
+  brave_browser_ui_color_mixers_sources += [
+    "//brave/browser/ui/color/brave_color_id.h",
+    "//brave/browser/ui/color/brave_color_mixer.cc",
+    "//brave/browser/ui/color/brave_color_mixer.h",
+    "//brave/browser/ui/color/color_palette.h",
+  ]
+
+  brave_browser_ui_color_mixers_deps += [
+    "//brave/components/brave_vpn/buildflags",
+    "//brave/components/sidebar/buildflags",
+    "//brave/components/speedreader/common:buildflags",
+    "//skia",
+    "//ui/color",
+    "//ui/gfx",
+    "//ui/native_theme",
+  ]
+}

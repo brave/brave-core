@@ -8,7 +8,7 @@
 #include <memory>
 
 #include "base/ranges/algorithm.h"
-#include "chrome/browser/themes/theme_properties.h"
+#include "chrome/browser/ui/color/chrome_color_id.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/color/color_provider.h"
 #include "ui/views/border.h"
@@ -41,8 +41,7 @@ void BraveSidePanel::UpdateBorder() {
     // Negative top border so panel is flush with main tab content
     SetBorder(views::CreateSolidSidedBorder(
         gfx::Insets::TLBR(-1, 0, 0, kBorderThickness),
-        color_provider->GetColor(
-            ThemeProperties::COLOR_TOOLBAR_CONTENT_AREA_SEPARATOR)));
+        color_provider->GetColor(kColorToolbarContentAreaSeparator)));
   }
 }
 

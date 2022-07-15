@@ -9,8 +9,8 @@
 
 #include "base/auto_reset.h"
 #include "base/bind.h"
-#include "brave/browser/themes/theme_properties.h"
 #include "brave/browser/ui/brave_browser.h"
+#include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/browser/ui/sidebar/sidebar_controller.h"
 #include "brave/browser/ui/sidebar/sidebar_model.h"
 #include "brave/browser/ui/sidebar/sidebar_service_factory.h"
@@ -20,8 +20,8 @@
 #include "brave/browser/ui/views/sidebar/sidebar_side_panel_utils.h"
 #include "brave/components/sidebar/sidebar_item.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/themes/theme_properties.h"
 #include "chrome/browser/ui/browser_window.h"
+#include "chrome/browser/ui/color/chrome_color_id.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/side_panel/side_panel_entry.h"
 #include "chrome/browser/ui/views/toolbar/toolbar_view.h"
@@ -132,10 +132,10 @@ void SidebarContainerView::MenuClosed() {
 }
 
 void SidebarContainerView::UpdateBackground() {
-  if (const ui::ColorProvider* colour_provider = GetColorProvider()) {
+  if (const ui::ColorProvider* color_provider = GetColorProvider()) {
     // Fill background because panel's color uses alpha value.
-    SetBackground(views::CreateSolidBackground(
-        colour_provider->GetColor(ThemeProperties::COLOR_TOOLBAR)));
+    SetBackground(
+        views::CreateSolidBackground(color_provider->GetColor(kColorToolbar)));
   }
 }
 

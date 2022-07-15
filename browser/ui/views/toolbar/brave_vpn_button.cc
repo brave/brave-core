@@ -13,13 +13,13 @@
 #include "brave/app/brave_command_ids.h"
 #include "brave/app/vector_icons/vector_icons.h"
 #include "brave/browser/brave_vpn/brave_vpn_service_factory.h"
-#include "brave/browser/themes/theme_properties.h"
+#include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/components/brave_vpn/brave_vpn_service.h"
 #include "brave/components/l10n/common/locale_util.h"
 #include "brave/grit/brave_generated_resources.h"
-#include "chrome/browser/themes/theme_properties.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_commands.h"
+#include "chrome/browser/ui/color/chrome_color_id.h"
 #include "chrome/browser/ui/layout_constants.h"
 #include "chrome/browser/ui/views/toolbar/toolbar_ink_drop_util.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
@@ -163,23 +163,21 @@ void BraveVPNButton::OnConnectionStateChanged(ConnectionState state) {
 }
 
 void BraveVPNButton::UpdateColorsAndInsets() {
-  if (const ui::ColorProvider* colour_provider = GetColorProvider()) {
+  if (const ui::ColorProvider* color_provider = GetColorProvider()) {
     const gfx::Insets paint_insets =
         gfx::Insets((height() - GetLayoutConstant(LOCATION_BAR_HEIGHT)) / 2);
     SetBackground(views::CreateBackgroundFromPainter(
         views::Painter::CreateSolidRoundRectPainter(
-            colour_provider->GetColor(ThemeProperties::COLOR_TOOLBAR),
-            kButtonRadius, paint_insets)));
+            color_provider->GetColor(kColorToolbar), kButtonRadius,
+            paint_insets)));
 
-    SetEnabledTextColors(colour_provider->GetColor(
-        IsConnected()
-            ? BraveThemeProperties::COLOR_BRAVE_VPN_BUTTON_TEXT_CONNECTED
-            : BraveThemeProperties::COLOR_BRAVE_VPN_BUTTON_TEXT_DISCONNECTED));
+    SetEnabledTextColors(color_provider->GetColor(
+        IsConnected() ? kColorBraveVpnButtonTextConnected
+                      : kColorBraveVpnButtonTextDisconnected));
 
     std::unique_ptr<views::Border> border = views::CreateRoundedRectBorder(
         1, kButtonRadius, gfx::Insets(),
-        colour_provider->GetColor(
-            BraveThemeProperties::COLOR_BRAVE_VPN_BUTTON_BORDER));
+        color_provider->GetColor(kColorBraveVpnButtonBorder));
     constexpr auto kTargetInsets = gfx::Insets::VH(3, 7);
     const gfx::Insets extra_insets = kTargetInsets - border->GetInsets();
     SetBorder(views::CreatePaddedBorder(std::move(border), extra_insets));

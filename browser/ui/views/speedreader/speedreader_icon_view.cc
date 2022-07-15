@@ -13,7 +13,7 @@
 #include "brave/app/brave_command_ids.h"
 #include "brave/app/vector_icons/vector_icons.h"
 #include "brave/browser/speedreader/speedreader_tab_helper.h"
-#include "brave/browser/themes/theme_properties.h"
+#include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/components/l10n/common/locale_util.h"
 #include "brave/components/speedreader/common/features.h"
 #include "brave/grit/brave_generated_resources.h"
@@ -59,8 +59,8 @@ void SpeedreaderIconView::UpdateImpl() {
 
   if (const ui::ColorProvider* color_provider = GetColorProvider()) {
     if (speedreader::PageStateIsDistilled(state)) {
-      const SkColor icon_color_active = color_provider->GetColor(
-          BraveThemeProperties::COLOR_SPEEDREADER_ICON);
+      const SkColor icon_color_active =
+          color_provider->GetColor(kColorSpeedreaderIcon);
       SetIconColor(icon_color_active);
     } else if (speedreader::PageSupportsDistillation(state)) {
       // Reset the icon color

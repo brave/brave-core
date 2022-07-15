@@ -13,7 +13,7 @@
 #include "base/notreached.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/browser/speedreader/speedreader_tab_helper.h"
-#include "brave/browser/themes/theme_properties.h"
+#include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/browser/ui/views/speedreader/speedreader_bubble_util.h"
 #include "brave/browser/ui/views/speedreader/speedreader_dancing_books.h"
 #include "brave/components/constants/url_constants.h"
@@ -153,13 +153,13 @@ void SpeedreaderModeBubble::Init() {
 }
 
 void SpeedreaderModeBubble::UpdateColors() {
-  if (const ui::ColorProvider* colour_provider = GetColorProvider()) {
+  if (const ui::ColorProvider* color_provider = GetColorProvider()) {
     // TODO(keur): We shoud be able to remove these once brave overrides
     // views::ToggleButton globally with our own theme
-    site_toggle_button_->SetThumbOnColor(colour_provider->GetColor(
-        BraveThemeProperties::COLOR_SPEEDREADER_TOGGLE_THUMB));
-    site_toggle_button_->SetTrackOnColor(colour_provider->GetColor(
-        BraveThemeProperties::COLOR_SPEEDREADER_TOGGLE_TRACK));
+    site_toggle_button_->SetThumbOnColor(
+        color_provider->GetColor(kColorSpeedreaderToggleThumb));
+    site_toggle_button_->SetTrackOnColor(
+        color_provider->GetColor(kColorSpeedreaderToggleTrack));
   }
 }
 
