@@ -28,6 +28,7 @@
 #include "brave/components/speedreader/common/buildflags.h"
 #include "brave/components/translate/core/common/brave_translate_features.h"
 #include "brave/components/translate/core/common/buildflags.h"
+#include "components/translate/core/browser/translate_prefs.h"
 #include "net/base/features.h"
 #include "third_party/blink/public/common/features.h"
 
@@ -291,9 +292,14 @@ constexpr char kUseDevUpdaterUrlDescription[] =
 constexpr char kBraveTranslateGoName[] =
     "Enable internal translate engine (brave-translate-go)";
 constexpr char kBraveTranslateGoDescription[] =
-    "Enable internal translate engine, which are build on top of client engine "
+    "For Android also enable `translate` flag. Enable internal translate "
+    "engine, which are build on top of client engine "
     "and brave translation backed. Also disables suggestions to install google "
     "translate extension.";
+
+constexpr char kTranslateName[] = "Enable Chromium Translate feature";
+constexpr char kTranslateDescription[] =
+    "Should be used with brave-translate-go, see the description here.";
 
 constexpr char kBraveFederatedName[] =
     "Enables local data collection for notification ad timing "
@@ -444,7 +450,12 @@ constexpr char kRestrictWebSocketsPoolDescription[] =
      flag_descriptions::kBraveTranslateGoName,                       \
      flag_descriptions::kBraveTranslateGoDescription,                \
      kOsDesktop | kOsAndroid,                                        \
-     FEATURE_VALUE_TYPE(translate::features::kUseBraveTranslateGo)},
+     FEATURE_VALUE_TYPE(translate::features::kUseBraveTranslateGo)}, \
+    {"translate",                                                    \
+     flag_descriptions::kTranslateName,                              \
+     flag_descriptions::kTranslateDescription,                       \
+     kOsAndroid,                                                     \
+     FEATURE_VALUE_TYPE(translate::kTranslate)},
 #else
 #define BRAVE_TRANSLATE_GO_FEATURE_ENTRIES
 #endif  // BUILDFLAG(ENABLE_BRAVE_TRANSLATE_GO)
