@@ -31,7 +31,6 @@
 #include "ui/base/default_style.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/base/resource/resource_bundle.h"
-#include "ui/base/theme_provider.h"
 #include "ui/base/window_open_disposition.h"
 #include "ui/compositor/compositor.h"
 #include "ui/events/event.h"
@@ -158,8 +157,8 @@ void SidebarItemsContentsView::ShowContextMenuForViewImpl(
   view_for_context_menu_ = source;
   context_menu_model_ = std::make_unique<ui::SimpleMenuModel>(this);
   SkColor icon_color = SK_ColorWHITE;
-  if (const ui::ThemeProvider* theme_provider = GetThemeProvider()) {
-    icon_color = theme_provider->GetColor(
+  if (const ui::ColorProvider* colour_provider = GetColorProvider()) {
+    icon_color = colour_provider->GetColor(
         BraveThemeProperties::COLOR_SIDEBAR_BUTTON_BASE);
   }
   context_menu_model_->AddItemWithIcon(
@@ -245,8 +244,8 @@ void SidebarItemsContentsView::SetDefaultImageAt(
     int index,
     const sidebar::SidebarItem& item) {
   SkColor text_color = SK_ColorWHITE;
-  if (const ui::ThemeProvider* theme_provider = GetThemeProvider()) {
-    text_color = theme_provider->GetColor(
+  if (const ui::ColorProvider* colour_provider = GetColorProvider()) {
+    text_color = colour_provider->GetColor(
         BraveThemeProperties::COLOR_SIDEBAR_BUTTON_BASE);
   }
 
@@ -412,8 +411,8 @@ gfx::ImageSkia SidebarItemsContentsView::GetImageForBuiltInItems(
     sidebar::SidebarItem::BuiltInItemType type,
     bool focused) const {
   SkColor base_button_color = SK_ColorWHITE;
-  if (const ui::ThemeProvider* theme_provider = GetThemeProvider()) {
-    base_button_color = theme_provider->GetColor(
+  if (const ui::ColorProvider* colour_provider = GetColorProvider()) {
+    base_button_color = colour_provider->GetColor(
         BraveThemeProperties::COLOR_SIDEBAR_BUTTON_BASE);
   }
   constexpr int kBuiltInIconSize = 16;

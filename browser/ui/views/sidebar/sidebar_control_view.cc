@@ -21,7 +21,6 @@
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/base/resource/resource_bundle.h"
-#include "ui/base/theme_provider.h"
 #include "ui/gfx/paint_vector_icon.h"
 #include "ui/views/background.h"
 #include "ui/views/border.h"
@@ -116,13 +115,13 @@ void SidebarControlView::OnThemeChanged() {
 }
 
 void SidebarControlView::UpdateBackgroundAndBorder() {
-  if (const ui::ThemeProvider* theme_provider = GetThemeProvider()) {
+  if (const ui::ColorProvider* colour_provider = GetColorProvider()) {
     constexpr int kBorderThickness = 1;
     SetBackground(views::CreateSolidBackground(
-        theme_provider->GetColor(ThemeProperties::COLOR_TOOLBAR)));
+        colour_provider->GetColor(ThemeProperties::COLOR_TOOLBAR)));
     SetBorder(views::CreateSolidSidedBorder(
         gfx::Insets::TLBR(0, 0, 0, kBorderThickness),
-        theme_provider->GetColor(
+        colour_provider->GetColor(
             ThemeProperties::COLOR_TOOLBAR_CONTENT_AREA_SEPARATOR)));
   }
 }
@@ -238,12 +237,12 @@ void SidebarControlView::UpdateItemAddButtonState() {
 
 void SidebarControlView::UpdateSettingsButtonState() {
   DCHECK(sidebar_settings_view_);
-  if (const ui::ThemeProvider* theme_provider = GetThemeProvider()) {
+  if (const ui::ColorProvider* colour_provider = GetColorProvider()) {
     sidebar_settings_view_->SetImage(
         views::Button::STATE_NORMAL,
         gfx::CreateVectorIcon(
             kSidebarSettingsIcon,
-            theme_provider->GetColor(
+            colour_provider->GetColor(
                 BraveThemeProperties::COLOR_SIDEBAR_BUTTON_BASE)));
     auto& bundle = ui::ResourceBundle::GetSharedInstance();
     sidebar_settings_view_->SetImage(

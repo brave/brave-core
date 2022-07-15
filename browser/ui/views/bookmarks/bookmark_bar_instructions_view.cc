@@ -20,7 +20,6 @@
 #include "chrome/browser/ui/chrome_pages.h"
 #include "chrome/browser/ui/color/chrome_color_id.h"
 #include "ui/accessibility/ax_node_data.h"
-#include "ui/base/theme_provider.h"
 #include "ui/color/color_id.h"
 #include "ui/color/color_provider.h"
 #include "ui/events/event.h"
@@ -123,16 +122,15 @@ SkColor BookmarkBarInstructionsView::GetInstructionsTextColor() {
   // TODO(simonhong): Move this logic to color mixer when we finish
   // our color migration to color pipeline.
   SkColor text_color = gfx::kPlaceholderColor;
-  const ui::ColorProvider* cp = GetColorProvider();
-  const ui::ThemeProvider* tp = GetThemeProvider();
-  if (!cp || !tp)
+  const ui::ColorProvider* colour_provider = GetColorProvider();
+  if (!colour_provider)
     return text_color;
 
   if (browser_->profile()->IsIncognitoProfile()) {
-    text_color = tp->GetColor(
+    text_color = colour_provider->GetColor(
         BraveThemeProperties::COLOR_BOOKMARK_BAR_INSTRUCTIONS_TEXT);
   } else {
-    const SkColor toolbar_color = cp->GetColor(kColorToolbar);
+    const SkColor toolbar_color = colour_provider->GetColor(kColorToolbar);
     text_color = color_utils::PickContrastingColor(
         kLightToolbarIcon, SK_ColorWHITE, toolbar_color);
   }

@@ -10,7 +10,7 @@
 #include "chrome/browser/ui/views/event_utils.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/base/resource/resource_bundle.h"
-#include "ui/base/theme_provider.h"
+#include "ui/color/color_provider.h"
 #include "ui/gfx/canvas.h"
 
 SidebarItemView::SidebarItemView(Delegate* delegate,
@@ -45,8 +45,8 @@ void SidebarItemView::OnPaintBorder(gfx::Canvas* canvas) {
                          0, 0);
   }
 
-  const ui::ThemeProvider* theme_provider = GetThemeProvider();
-  if (draw_horizontal_border_ && theme_provider) {
+  const ui::ColorProvider* colour_provider = GetColorProvider();
+  if (draw_horizontal_border_ && colour_provider) {
     constexpr float kHorizontalBorderWidth = 2;
     gfx::Rect border_rect(GetLocalBounds());
 
@@ -57,7 +57,7 @@ void SidebarItemView::OnPaintBorder(gfx::Canvas* canvas) {
 
     canvas->FillRect(
         border_rect,
-        theme_provider->GetColor(
+        colour_provider->GetColor(
             BraveThemeProperties::COLOR_SIDEBAR_ITEM_DRAG_INDICATOR_COLOR));
   }
 }
@@ -71,11 +71,11 @@ bool SidebarItemView::IsTriggerableEvent(const ui::Event& e) {
 void SidebarItemView::OnPaintBackground(gfx::Canvas* canvas) {
   SidebarButtonView::OnPaintBackground(canvas);
 
-  if (const ui::ThemeProvider* theme_provider = GetThemeProvider()) {
+  if (const ui::ColorProvider* colour_provider = GetColorProvider()) {
     if (paint_background_on_hovered_ && GetState() == STATE_HOVERED) {
       canvas->FillRect(
           GetLocalBounds(),
-          theme_provider->GetColor(
+          colour_provider->GetColor(
               BraveThemeProperties::COLOR_SIDEBAR_ITEM_BACKGROUND_HOVERED));
     }
   }

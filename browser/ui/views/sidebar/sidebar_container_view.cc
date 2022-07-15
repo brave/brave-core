@@ -29,7 +29,6 @@
 #include "content/public/browser/native_web_keyboard_event.h"
 #include "content/public/browser/web_contents.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
-#include "ui/base/theme_provider.h"
 #include "ui/events/event_observer.h"
 #include "ui/events/types/event_type.h"
 #include "ui/gfx/geometry/point.h"
@@ -133,10 +132,10 @@ void SidebarContainerView::MenuClosed() {
 }
 
 void SidebarContainerView::UpdateBackground() {
-  if (const ui::ThemeProvider* theme_provider = GetThemeProvider()) {
+  if (const ui::ColorProvider* colour_provider = GetColorProvider()) {
     // Fill background because panel's color uses alpha value.
     SetBackground(views::CreateSolidBackground(
-        theme_provider->GetColor(ThemeProperties::COLOR_TOOLBAR)));
+        colour_provider->GetColor(ThemeProperties::COLOR_TOOLBAR)));
   }
 }
 

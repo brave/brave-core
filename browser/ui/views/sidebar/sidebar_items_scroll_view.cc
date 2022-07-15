@@ -29,7 +29,6 @@
 #include "ui/base/dragdrop/drag_drop_types.h"
 #include "ui/base/dragdrop/mojom/drag_drop_types.mojom.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
-#include "ui/base/theme_provider.h"
 #include "ui/events/event.h"
 #include "ui/gfx/canvas.h"
 #include "ui/gfx/color_palette.h"
@@ -61,15 +60,15 @@ class SidebarItemsArrowView : public views::ImageButton {
   gfx::Size CalculatePreferredSize() const override { return {42, 24}; }
 
   void OnPaintBackground(gfx::Canvas* canvas) override {
-    if (const ui::ThemeProvider* theme_provider = GetThemeProvider()) {
+    if (const ui::ColorProvider* colour_provider = GetColorProvider()) {
       const SkColor background_color =
-          theme_provider->GetColor(ThemeProperties::COLOR_TOOLBAR);
+          colour_provider->GetColor(ThemeProperties::COLOR_TOOLBAR);
       gfx::Rect bounds = GetContentsBounds();
       canvas->FillRect(bounds, background_color);
 
       // Draw additional rounded rect over background for hover effect.
       if (GetState() == STATE_HOVERED) {
-        const SkColor hovered_bg_color = theme_provider->GetColor(
+        const SkColor hovered_bg_color = colour_provider->GetColor(
             BraveThemeProperties::COLOR_SIDEBAR_ARROW_BACKGROUND_HOVERED);
         cc::PaintFlags flags;
         flags.setColor(hovered_bg_color);
@@ -239,10 +238,10 @@ void SidebarItemsScrollView::OnFaviconUpdatedForItem(
 }
 
 void SidebarItemsScrollView::UpdateArrowViewsTheme() {
-  if (const ui::ThemeProvider* theme_provider = GetThemeProvider()) {
-    const SkColor arrow_normal = theme_provider->GetColor(
+  if (const ui::ColorProvider* colour_provider = GetColorProvider()) {
+    const SkColor arrow_normal = colour_provider->GetColor(
         BraveThemeProperties::COLOR_SIDEBAR_ARROW_NORMAL);
-    const SkColor arrow_disabled = theme_provider->GetColor(
+    const SkColor arrow_disabled = colour_provider->GetColor(
         BraveThemeProperties::COLOR_SIDEBAR_ARROW_DISABLED);
 
     up_arrow_->SetImage(

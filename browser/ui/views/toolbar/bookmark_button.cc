@@ -16,7 +16,6 @@
 #include "chrome/grit/generated_resources.h"
 #include "components/omnibox/browser/vector_icons.h"
 #include "components/strings/grit/components_strings.h"
-#include "ui/base/theme_provider.h"
 #include "ui/gfx/paint_vector_icon.h"
 
 BookmarkButton::BookmarkButton(PressedCallback callback)
@@ -37,9 +36,9 @@ void BookmarkButton::SetToggled(bool on) {
 }
 
 void BookmarkButton::UpdateImageAndText() {
-  const ui::ThemeProvider* tp = GetThemeProvider();
-
-  SkColor icon_color = tp->GetColor(ThemeProperties::COLOR_TOOLBAR_BUTTON_ICON);
+  const ui::ColorProvider* colour_provider = GetColorProvider();
+  SkColor icon_color =
+      colour_provider->GetColor(ThemeProperties::COLOR_TOOLBAR_BUTTON_ICON);
   const gfx::VectorIcon& icon =
       active_ ? omnibox::kStarActiveIcon : omnibox::kStarIcon;
   SetImage(views::Button::STATE_NORMAL,

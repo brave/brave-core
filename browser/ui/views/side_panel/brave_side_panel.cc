@@ -10,7 +10,7 @@
 #include "base/ranges/algorithm.h"
 #include "chrome/browser/themes/theme_properties.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
-#include "ui/base/theme_provider.h"
+#include "ui/color/color_provider.h"
 #include "ui/views/border.h"
 #include "ui/views/layout/fill_layout.h"
 
@@ -36,12 +36,12 @@ void BraveSidePanel::UpdateVisibility() {
 }
 
 void BraveSidePanel::UpdateBorder() {
-  if (const ui::ThemeProvider* theme_provider = GetThemeProvider()) {
+  if (const ui::ColorProvider* color_provider = GetColorProvider()) {
     constexpr int kBorderThickness = 1;
     // Negative top border so panel is flush with main tab content
     SetBorder(views::CreateSolidSidedBorder(
         gfx::Insets::TLBR(-1, 0, 0, kBorderThickness),
-        theme_provider->GetColor(
+        color_provider->GetColor(
             ThemeProperties::COLOR_TOOLBAR_CONTENT_AREA_SEPARATOR)));
   }
 }

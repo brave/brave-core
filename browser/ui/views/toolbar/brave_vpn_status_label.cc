@@ -14,7 +14,6 @@
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
-#include "ui/base/theme_provider.h"
 
 using ConnectionState = brave_vpn::mojom::ConnectionState;
 using PurchasedState = brave_vpn::mojom::PurchasedState;
@@ -66,8 +65,8 @@ BraveVPNStatusLabel::BraveVPNStatusLabel(Browser* browser)
   SetAutoColorReadabilityEnabled(false);
   UpdateState();
 
-  if (auto* provider =
-          BrowserView::GetBrowserViewForBrowser(browser_)->GetThemeProvider()) {
+  if (const ui::ColorProvider* provider =
+          BrowserView::GetBrowserViewForBrowser(browser_)->GetColorProvider()) {
     SetEnabledColor(provider->GetColor(
         BraveThemeProperties::COLOR_MENU_ITEM_SUB_TEXT_COLOR));
   }

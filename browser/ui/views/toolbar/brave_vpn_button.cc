@@ -163,22 +163,23 @@ void BraveVPNButton::OnConnectionStateChanged(ConnectionState state) {
 }
 
 void BraveVPNButton::UpdateColorsAndInsets() {
-  if (const auto* tp = GetThemeProvider()) {
+  if (const ui::ColorProvider* colour_provider = GetColorProvider()) {
     const gfx::Insets paint_insets =
         gfx::Insets((height() - GetLayoutConstant(LOCATION_BAR_HEIGHT)) / 2);
     SetBackground(views::CreateBackgroundFromPainter(
         views::Painter::CreateSolidRoundRectPainter(
-            tp->GetColor(ThemeProperties::COLOR_TOOLBAR), kButtonRadius,
-            paint_insets)));
+            colour_provider->GetColor(ThemeProperties::COLOR_TOOLBAR),
+            kButtonRadius, paint_insets)));
 
-    SetEnabledTextColors(tp->GetColor(
+    SetEnabledTextColors(colour_provider->GetColor(
         IsConnected()
             ? BraveThemeProperties::COLOR_BRAVE_VPN_BUTTON_TEXT_CONNECTED
             : BraveThemeProperties::COLOR_BRAVE_VPN_BUTTON_TEXT_DISCONNECTED));
 
     std::unique_ptr<views::Border> border = views::CreateRoundedRectBorder(
         1, kButtonRadius, gfx::Insets(),
-        tp->GetColor(BraveThemeProperties::COLOR_BRAVE_VPN_BUTTON_BORDER));
+        colour_provider->GetColor(
+            BraveThemeProperties::COLOR_BRAVE_VPN_BUTTON_BORDER));
     constexpr auto kTargetInsets = gfx::Insets::VH(3, 7);
     const gfx::Insets extra_insets = kTargetInsets - border->GetInsets();
     SetBorder(views::CreatePaddedBorder(std::move(border), extra_insets));

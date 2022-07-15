@@ -13,7 +13,6 @@
 #include "brave/grit/brave_theme_resources.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/base/resource/resource_bundle.h"
-#include "ui/base/theme_provider.h"
 #include "ui/gfx/paint_vector_icon.h"
 
 SidebarItemAddButton::SidebarItemAddButton(
@@ -101,10 +100,10 @@ bool SidebarItemAddButton::IsBubbleVisible() const {
 void SidebarItemAddButton::UpdateButtonImages() {
   SkColor button_base_color = SK_ColorWHITE;
   SkColor button_disabled_color = SK_ColorWHITE;
-  if (const ui::ThemeProvider* theme_provider = GetThemeProvider()) {
-    button_base_color = theme_provider->GetColor(
+  if (const ui::ColorProvider* colour_provider = GetColorProvider()) {
+    button_base_color = colour_provider->GetColor(
         BraveThemeProperties::COLOR_SIDEBAR_BUTTON_BASE);
-    button_disabled_color = theme_provider->GetColor(
+    button_disabled_color = colour_provider->GetColor(
         BraveThemeProperties::COLOR_SIDEBAR_ADD_BUTTON_DISABLED);
   }
 
