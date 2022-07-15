@@ -16,8 +16,8 @@ class RequestBlockingContentHelper: TabContentScript {
   private struct RequestBlockingDTO: Decodable {
     struct RequestBlockingDTOData: Decodable, Hashable {
       let resourceType: AdblockEngine.ResourceType
-      let resourceURL: URL
-      let sourceURL: URL
+      let resourceURL: String
+      let sourceURL: String
     }
     
     let securityToken: String
@@ -63,29 +63,33 @@ class RequestBlockingContentHelper: TabContentScript {
         return
       }
       
+      // Because javascript urls allow some characters that `URL` does not,
+      // we use `NSURL(idnString: String)` to parse them
+      guard let requestURL = NSURL(idnString: dto.data.resourceURL) as URL? else { return }
+      guard let sourceURL = NSURL(idnString: dto.data.sourceURL) as URL? else { return }
       let isPrivateBrowsing = PrivateBrowsingManager.shared.isPrivateBrowsing
       let domain = Domain.getOrCreate(forUrl: currentTabURL, persistent: !isPrivateBrowsing)
       guard let domainURLString = domain.url else { return }
       
       AdBlockStats.shared.shouldBlock(
-        requestURL: dto.data.resourceURL,
-        sourceURL: dto.data.sourceURL,
+        requestURL: requestURL,
+        sourceURL: sourceURL,
         resourceType: dto.data.resourceType
       ) { [weak self] shouldBlock in
         assertIsMainThread("Result should happen on the main thread")
         
         if shouldBlock, Preferences.PrivacyReports.captureShieldsData.value,
            let domainURL = URL(string: domainURLString),
-           let blockedResourceHost = dto.data.resourceURL.baseDomain,
+           let blockedResourceHost = requestURL.baseDomain,
            !PrivateBrowsingManager.shared.isPrivateBrowsing {
           PrivacyReportsManager.pendingBlockedRequests.append((blockedResourceHost, domainURL, Date()))
         }
 
-        if shouldBlock && !(self?.blockedRequests.contains(dto.data.resourceURL) ?? true) {
+        if shouldBlock && !(self?.blockedRequests.contains(requestURL) ?? true) {
           BraveGlobalShieldStats.shared.adblock += 1
           let stats = tab.contentBlocker.stats
           tab.contentBlocker.stats = stats.adding(adCount: 1)
-          self?.blockedRequests.insert(dto.data.resourceURL)
+          self?.blockedRequests.insert(requestURL)
         }
         
         replyHandler(shouldBlock, nil)

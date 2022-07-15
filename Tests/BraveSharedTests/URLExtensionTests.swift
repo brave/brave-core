@@ -7,7 +7,6 @@ import Foundation
 import XCTest
 
 class URLExtensionTests: XCTestCase {
-  
   func testOrigin() {
     let urls = [
       ("https://www.example.com/index.html", "https://www.example.com"),
