@@ -28,7 +28,7 @@ struct CustomNetworkListView: View {
   }
   
   private var customNetworks: [BraveWallet.NetworkInfo] {
-    networkStore.ethereumChains.filter { $0.isCustom }
+    networkStore.allChains.filter { $0.isCustom }
   }
   
   @ViewBuilder private var customNetworksList: some View {

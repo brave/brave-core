@@ -50,6 +50,7 @@ struct PortfolioView: View {
         balance: portfolioStore.balance,
         historicalBalances: portfolioStore.historicalBalances,
         isLoading: portfolioStore.isLoadingBalances,
+        keyringStore: keyringStore,
         networkStore: networkStore,
         selectedDateRange: $portfolioStore.timeframe
       )
@@ -136,6 +137,7 @@ struct BalanceHeaderView: View {
   var balance: String
   var historicalBalances: [BalanceTimePrice]
   var isLoading: Bool
+  var keyringStore: KeyringStore
   @ObservedObject var networkStore: NetworkStore
   @Binding var selectedDateRange: BraveWallet.AssetPriceTimeframe
 
@@ -150,8 +152,8 @@ struct BalanceHeaderView: View {
         if sizeCategory.isAccessibilityCategory {
           VStack(alignment: .leading) {
             NetworkPicker(
-              networkStore: networkStore,
-              selectedNetwork: networkStore.selectedChainBinding
+              keyringStore: keyringStore,
+              networkStore: networkStore
             )
             Text(verbatim: balance)
               .font(.largeTitle.bold())
@@ -161,8 +163,8 @@ struct BalanceHeaderView: View {
             Text(verbatim: balance)
               .font(.largeTitle.bold())
             NetworkPicker(
-              networkStore: networkStore,
-              selectedNetwork: networkStore.selectedChainBinding
+              keyringStore: keyringStore,
+              networkStore: networkStore
             )
             Spacer()
           }

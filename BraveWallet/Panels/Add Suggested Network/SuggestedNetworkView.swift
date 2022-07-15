@@ -56,7 +56,7 @@ struct SuggestedNetworkView: View {
     case let .addNetwork(chain):
       return chain
     case let .switchNetworks(chainId):
-      return networkStore.ethereumChains.first(where: { $0.chainId == chainId })
+      return networkStore.allChains.first(where: { $0.chainId == chainId })
     }
   }
   

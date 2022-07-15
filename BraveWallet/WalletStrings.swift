@@ -2556,5 +2556,19 @@ extension Strings {
       value: "Select one of the following account types",
       comment: "A header displayed above coin types selection."
     )
+    public static let createAccountAlertTitle = NSLocalizedString(
+      "wallet.createAccountAlertTitle",
+      tableName: "BraveWallet",
+      bundle: .strings,
+      value: "You don't have a %@ account",
+      comment: "The title of the alert shown when a user switches to a network they do not have an account for yet. '%@' will be replaced with a network name such as 'Solana' or 'Filecoin'."
+    )
+    public static let createAccountAlertMessage = NSLocalizedString(
+      "wallet.createAccountAlertMessage",
+      tableName: "BraveWallet",
+      bundle: .strings,
+      value: "Create one now?",
+      comment: "The message of the alert shown when a user switches to a network they do not have an account for yet."
+    )
   }
 }

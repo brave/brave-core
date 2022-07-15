@@ -148,8 +148,10 @@ extension BrowserViewController {
       }
       MenuItemButton(icon: UIImage(named: "menu-settings", in: .current, compatibleWith: nil)!.template, title: Strings.settingsMenuItem) { [unowned self, unowned menuController] in
         var settingsStore: SettingsStore?
-        if let keyringService = BraveWallet.KeyringServiceFactory.get(privateMode: PrivateBrowsingManager.shared.isPrivateBrowsing),
-          let walletService = BraveWallet.ServiceFactory.get(privateMode: PrivateBrowsingManager.shared.isPrivateBrowsing),
+        let keyringService = BraveWallet.KeyringServiceFactory.get(privateMode: PrivateBrowsingManager.shared.isPrivateBrowsing)
+        let walletService = BraveWallet.ServiceFactory.get(privateMode: PrivateBrowsingManager.shared.isPrivateBrowsing)
+        if let keyringService = keyringService,
+          let walletService = walletService,
           let txService = BraveWallet.TxServiceFactory.get(privateMode: PrivateBrowsingManager.shared.isPrivateBrowsing) {
           settingsStore = SettingsStore(
             keyringService: keyringService,
@@ -158,14 +160,19 @@ extension BrowserViewController {
           )
         }
         var networkStore: NetworkStore?
-        if let rpcService = BraveWallet.JsonRpcServiceFactory.get(privateMode: PrivateBrowsingManager.shared.isPrivateBrowsing),
-           let walletService = BraveWallet.ServiceFactory.get(privateMode: PrivateBrowsingManager.shared.isPrivateBrowsing) {
-          networkStore = NetworkStore(rpcService: rpcService, walletService: walletService)
+        if let keyringService = keyringService,
+           let rpcService = BraveWallet.JsonRpcServiceFactory.get(privateMode: PrivateBrowsingManager.shared.isPrivateBrowsing),
+           let walletService = walletService {
+          networkStore = NetworkStore(
+            keyringService: keyringService,
+            rpcService: rpcService,
+            walletService: walletService
+          )
         }
         
         var keyringStore: KeyringStore?
-        if let keyringService = BraveWallet.KeyringServiceFactory.get(privateMode: PrivateBrowsingManager.shared.isPrivateBrowsing),
-           let walletService = BraveWallet.ServiceFactory.get(privateMode: PrivateBrowsingManager.shared.isPrivateBrowsing) {
+        if let keyringService = keyringService,
+           let walletService = walletService {
             keyringStore = KeyringStore(keyringService: keyringService, walletService: walletService)
         }
 
