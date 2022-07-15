@@ -42,6 +42,7 @@ private let KVOs: [KVOConstants] = [
 
 private struct BrowserViewControllerUX {
   fileprivate static let showHeaderTapAreaHeight: CGFloat = 32
+  fileprivate static let showFooterTapAreaHeight: CGFloat = 44
   fileprivate static let bookmarkStarAnimationDuration: Double = 0.5
   fileprivate static let bookmarkStarAnimationOffset: CGFloat = 80
 }
@@ -111,6 +112,7 @@ public class BrowserViewController: UIViewController, BrowserViewControllerDeleg
   let header = HeaderContainerView()
   var footer: UIView!
   fileprivate var topTouchArea: UIButton!
+  fileprivate let bottomTouchArea = UIButton()
 
   // These constraints allow to show/hide tabs bar
   var webViewContainerTopOffset: Constraint?
@@ -750,6 +752,10 @@ public class BrowserViewController: UIViewController, BrowserViewControllerDeleg
     topTouchArea.addTarget(self, action: #selector(tappedTopArea), for: .touchUpInside)
     view.addSubview(topTouchArea)
 
+    bottomTouchArea.isAccessibilityElement = false
+    bottomTouchArea.addTarget(self, action: #selector(tappedTopArea), for: .touchUpInside)
+    view.addSubview(bottomTouchArea)
+    
     // Setup the URL bar, wrapped in a view to get transparency effect
     topToolbar = TopToolbarView()
     topToolbar.translatesAutoresizingMaskIntoConstraints = false
@@ -964,6 +970,10 @@ public class BrowserViewController: UIViewController, BrowserViewControllerDeleg
       make.height.equalTo(BrowserViewControllerUX.showHeaderTapAreaHeight)
     }
 
+    bottomTouchArea.snp.makeConstraints { make in
+      make.bottom.left.right.equalTo(self.view)
+      make.height.equalTo(BrowserViewControllerUX.showFooterTapAreaHeight)
+    }
   }
 
   override public func viewDidLayoutSubviews() {
