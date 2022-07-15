@@ -1,5 +1,5 @@
 diff --git a/chrome/test/BUILD.gn b/chrome/test/BUILD.gn
-index 6fe81c3f29e4ee99174dee091337ff3869e7ad35..3ae24411194ebba87c9f6515f5f31f9b3a866614 100644
+index 358d75b0def673dae9a75dfe76fa5c1bed846951..8c8606b6647c532cf24c76c621fb8a249a44917e 100644
 --- a/chrome/test/BUILD.gn
 +++ b/chrome/test/BUILD.gn
 @@ -316,6 +316,7 @@ static_library("test_support") {
@@ -14,8 +14,8 @@ index 6fe81c3f29e4ee99174dee091337ff3869e7ad35..3ae24411194ebba87c9f6515f5f31f9b
  }
  
  config("pdb_larger_than_4gb") {
-   if (is_win && symbol_level == 2 && use_thin_lto) {
-+  } if (is_win) {
+-  if (is_win && symbol_level == 2 && use_thin_lto) {
++  if (is_win) {
      # These binaries create PDBs larger than 4 GiB. Increasing the PDB page
      # size allows larger PDBs, but not all tools can handle such large PDBs
      # yet.
