@@ -53,8 +53,8 @@ struct AssetDetailHeaderView: View {
           VStack(alignment: .leading) {
             HStack {
               NetworkPicker(
-                networkStore: networkStore,
-                selectedNetwork: networkStore.selectedChainBinding
+                keyringStore: keyringStore,
+                networkStore: networkStore
               )
               if horizontalSizeClass == .regular {
                 Spacer()
@@ -81,8 +81,8 @@ struct AssetDetailHeaderView: View {
               .fixedSize(horizontal: false, vertical: true)
               .font(.title3.weight(.semibold))
             NetworkPicker(
-              networkStore: networkStore,
-              selectedNetwork: networkStore.selectedChainBinding
+              keyringStore: keyringStore,
+              networkStore: networkStore
             )
             if horizontalSizeClass == .regular {
               Spacer()

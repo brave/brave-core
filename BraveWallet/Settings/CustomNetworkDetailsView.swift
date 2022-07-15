@@ -470,7 +470,7 @@ struct CustomNetworkDetailsView: View {
     }
     // Check if input chain id already existed for non-edit mode
     if !model.mode.isEditMode,
-      networkStore.ethereumChains.contains(where: { $0.id == chainIdInHex }) {
+      networkStore.allChains.contains(where: { $0.id == chainIdInHex }) {
       customNetworkError = .duplicateId
       return
     }

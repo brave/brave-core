@@ -119,6 +119,7 @@ extension BraveWallet.NetworkInfo: Identifiable {
   public var isCustom: Bool {
     /// Will be able to get known/custom networks after
     /// https://github.com/brave/brave-ios/issues/5489
+    // brave-core/components/brave_wallet/browser/brave_wallet_utils.cc
     let knownEthNetworks = [
       BraveWallet.MainnetChainId,
       BraveWallet.RinkebyChainId,
@@ -133,7 +134,19 @@ extension BraveWallet.NetworkInfo: Identifiable {
       BraveWallet.FantomMainnetChainId,
       BraveWallet.OptimismMainnetChainId
     ]
-    return !knownEthNetworks.contains(id)
+    let knownSolNetworks = [
+      BraveWallet.SolanaMainnet,
+      BraveWallet.SolanaTestnet,
+      BraveWallet.SolanaDevnet,
+      BraveWallet.LocalhostChainId
+    ]
+    let knownFilNetworks = [
+      BraveWallet.FilecoinMainnet,
+      BraveWallet.FilecoinTestnet,
+      BraveWallet.LocalhostChainId
+    ]
+    let knownNetworks = knownEthNetworks + knownSolNetworks + knownFilNetworks
+    return !knownNetworks.contains(id)
   }
   
   // Only Eth Mainnet or EVM has eip 1559

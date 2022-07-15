@@ -158,7 +158,7 @@ public struct CryptoView: View {
               case .swap:
                 SwapCryptoView(
                   keyringStore: keyringStore,
-                  ethNetworkStore: store.networkStore,
+                  networkStore: store.networkStore,
                   swapTokensStore: store.openSwapTokenStore(destination.initialToken),
                   completion: { success in
                     if success {
@@ -269,7 +269,7 @@ private struct CryptoContainerView<DismissContent: ToolbarContent>: View {
           case .swap:
             SwapCryptoView(
               keyringStore: keyringStore,
-              ethNetworkStore: cryptoStore.networkStore,
+              networkStore: cryptoStore.networkStore,
               swapTokensStore: cryptoStore.openSwapTokenStore(action.initialToken),
               onDismiss: { cryptoStore.buySendSwapDestination = nil }
             )

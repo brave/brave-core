@@ -163,7 +163,7 @@ struct MarketPriceView: View {
 
 struct SwapCryptoView: View {
   @ObservedObject var keyringStore: KeyringStore
-  @ObservedObject var ethNetworkStore: NetworkStore
+  @ObservedObject var networkStore: NetworkStore
   @ObservedObject var swapTokensStore: SwapTokenStore
 
   @State private var orderType: OrderType = .market
@@ -180,7 +180,7 @@ struct SwapCryptoView: View {
       VStack(alignment: .leading, spacing: 4.0) {
         Text(Strings.Wallet.swapCryptoUnsupportNetworkTitle)
           .font(.headline)
-        Text(String.localizedStringWithFormat(Strings.Wallet.swapCryptoUnsupportNetworkDescription, ethNetworkStore.selectedChain.chainName))
+        Text(String.localizedStringWithFormat(Strings.Wallet.swapCryptoUnsupportNetworkDescription, networkStore.selectedChain.chainName))
           .font(.subheadline)
           .foregroundColor(Color(.secondaryBraveLabel))
       }
@@ -224,7 +224,7 @@ struct SwapCryptoView: View {
   }
 
   private var isSwapEnabled: Bool {
-    let selectedChain = ethNetworkStore.selectedChainId
+    let selectedChain = networkStore.selectedChainId
     return selectedChain == BraveWallet.MainnetChainId || selectedChain == BraveWallet.RopstenChainId
   }
 
@@ -232,7 +232,7 @@ struct SwapCryptoView: View {
     Section(
       header: WalletListHeaderView(title: Text(Strings.Wallet.swapCryptoFromTitle))
     ) {
-      NavigationLink(destination: SwapTokenSearchView(swapTokenStore: swapTokensStore, searchType: .fromToken, network: ethNetworkStore.selectedChain)) {
+      NavigationLink(destination: SwapTokenSearchView(swapTokenStore: swapTokensStore, searchType: .fromToken, network: networkStore.selectedChain)) {
         HStack {
           if let token = swapTokensStore.selectedFromToken {
             AssetIconView(token: token, length: 26)
@@ -291,7 +291,7 @@ struct SwapCryptoView: View {
       header: WalletListHeaderView(title: Text(Strings.Wallet.swapCryptoToTitle))
     ) {
       NavigationLink(
-        destination: SwapTokenSearchView(swapTokenStore: swapTokensStore, searchType: .toToken, network: ethNetworkStore.selectedChain)
+        destination: SwapTokenSearchView(swapTokenStore: swapTokensStore, searchType: .toToken, network: networkStore.selectedChain)
       ) {
         HStack {
           if let token = swapTokensStore.selectedToToken {
@@ -463,7 +463,7 @@ struct SwapCryptoView: View {
         Section(
           header: AccountPicker(
             keyringStore: keyringStore,
-            networkStore: ethNetworkStore
+            networkStore: networkStore
           )
           .listRowBackground(Color.clear)
           .resetListHeaderStyle()
@@ -502,7 +502,7 @@ struct SwapCryptoView_Previews: PreviewProvider {
   static var previews: some View {
     SwapCryptoView(
       keyringStore: .previewStore,
-      ethNetworkStore: .previewStore,
+      networkStore: .previewStore,
       swapTokensStore: .previewStore,
       onDismiss: {}
     )

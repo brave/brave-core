@@ -30,6 +30,6 @@ struct WalletConstants {
     BraveWallet.FilecoinTestnet
   ]
   
-  /// The supported coin types for wallet acount creation
+  /// The currently supported coin types.
   static let supportedCoinTypes: [BraveWallet.CoinType] = [.eth]
 }
