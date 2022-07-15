@@ -4,6 +4,19 @@
 
 import UIKit
 
+extension UITraitCollection {
+  /// Returns the size category to be used for toolbar buttons based on the current preferred size category
+  var toolbarButtonContentSizeCategory: UIContentSizeCategory {
+    let sizeCategory = preferredContentSizeCategory
+    if sizeCategory < UIContentSizeCategory.extraLarge {
+      return .large
+    } else if sizeCategory < UIContentSizeCategory.extraExtraLarge {
+      return .extraLarge
+    }
+    return .extraExtraLarge
+  }
+}
+
 class ToolbarButton: UIButton {
   fileprivate var selectedTintColor: UIColor?
   fileprivate var primaryTintColor: UIColor?

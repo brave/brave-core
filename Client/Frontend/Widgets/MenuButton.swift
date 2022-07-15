@@ -51,9 +51,9 @@ class MenuButton: ToolbarButton {
       // TODO: All badges become background only
     } else {
       view.snp.makeConstraints {
-        $0.bottom.equalTo(imageView.snp.top)
-        $0.leading.equalTo(imageView.snp.trailing)
-        $0.height.equalTo(13)
+        $0.centerY.equalTo(imageView.snp.top)
+        $0.centerX.equalTo(imageView.snp.trailing)
+        $0.size.equalTo(13)
       }
       if animated {
         view.transform = CGAffineTransform(scaleX: 0.0001, y: 0.0001)

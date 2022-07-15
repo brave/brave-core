@@ -23,14 +23,14 @@ class RewardsButton: UIButton {
   private let lookAtMeBadge = UIImageView(image: UIImage(named: "rewards-look-at-me", in: .current, compatibleWith: nil)!).then {
     $0.isHidden = true
     $0.isUserInteractionEnabled = false
-    $0.frame = CGRect(x: 17, y: 7, width: 16, height: 16)
   }
 
   override init(frame: CGRect) {
     super.init(frame: frame)
 
     adjustsImageWhenHighlighted = false
-    imageView?.contentMode = .center
+    imageView?.contentMode = .scaleAspectFit
+    imageView?.adjustsImageSizeForAccessibilityContentSizeCategory = true
 
     accessibilityLabel = Strings.rewardsPanel
     accessibilityIdentifier = "urlBar-rewardsButton"
@@ -38,18 +38,24 @@ class RewardsButton: UIButton {
     addSubview(lookAtMeBadge)
 
     updateView()
+    
+    lookAtMeBadge.snp.makeConstraints {
+      $0.top.equalToSuperview()
+      $0.leading.equalTo(imageView!.snp.centerX)
+      $0.size.equalTo(16)
+    }
   }
 
   private func updateView() {
     switch iconState {
     case .initial:
-      setImage(UIImage(named: "brave_rewards_button_enabled", in: .current, compatibleWith: nil)!, for: .normal)
+      setImage(UIImage(sharedNamed: "brave.basicattentiontoken")!, for: .normal)
       lookAtMeBadge.isHidden = false
     case .enabled:
-      setImage(UIImage(named: "brave_rewards_button_enabled", in: .current, compatibleWith: nil)!, for: .normal)
+      setImage(UIImage(sharedNamed: "brave.basicattentiontoken")!, for: .normal)
       lookAtMeBadge.isHidden = true
     case .disabled:
-      setImage(UIImage(named: "brave_rewards_button_disabled", in: .current, compatibleWith: nil)!, for: .normal)
+      setImage(UIImage(sharedNamed: "brave.basicattentiontoken.greyscale")!, for: .normal)
       lookAtMeBadge.isHidden = true
     }
   }

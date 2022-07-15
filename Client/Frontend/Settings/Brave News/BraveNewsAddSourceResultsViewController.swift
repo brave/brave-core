@@ -104,7 +104,7 @@ class BraveNewsAddSourceResultsViewController: UITableViewController {
       return UITableViewCell()
     }
     let cell = tableView.dequeueReusableCell(for: indexPath) as FeedLocationCell
-    cell.imageView?.image = indexPath.section == 0 ? UIImage(named: "lock_verified", in: .current, compatibleWith: nil)!.template : UIImage(named: "insecure-site-icon", in: .current, compatibleWith: nil)!
+    cell.imageView?.image = indexPath.section == 0 ? UIImage(braveSystemNamed: "brave.lock.alt", compatibleWith: nil)?.applyingSymbolConfiguration(.init(font: .preferredFont(forTextStyle: .body, weight: .semibold), scale: .small)) : UIImage(named: "insecure-site-icon", in: .current, compatibleWith: nil)!
     cell.imageView?.tintColor = .braveLabel
     cell.textLabel?.text = location.title
     cell.detailTextLabel?.text = location.url.absoluteString

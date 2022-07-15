@@ -9,14 +9,12 @@ import UIKit
 
 private struct TabsButtonUX {
   static let cornerRadius: CGFloat = 3
-  static let titleFont: UIFont = UIConstants.defaultChromeSmallFontBold
   static let borderStrokeWidth: CGFloat = 1.5
 }
 
 class TabsButton: UIButton {
 
   private let countLabel = UILabel().then {
-    $0.font = TabsButtonUX.titleFont
     $0.textAlignment = .center
     $0.isUserInteractionEnabled = false
     $0.textColor = .braveLabel
@@ -42,12 +40,7 @@ class TabsButton: UIButton {
     countLabel.snp.makeConstraints {
       $0.edges.equalToSuperview()
     }
-    borderView.snp.makeConstraints {
-      $0.center.equalToSuperview()
-      $0.size.equalTo(19)
-    }
-
-    borderView.layer.borderColor = UIColor.braveLabel.resolvedColor(with: traitCollection).cgColor
+    updateForTraitCollection()
   }
 
   @available(*, unavailable)
@@ -65,8 +58,20 @@ class TabsButton: UIButton {
 
   override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
     super.traitCollectionDidChange(previousTraitCollection)
+    updateForTraitCollection()
+  }
+  
+  private func updateForTraitCollection() {
     // CGColor's do not get automatic updates
     borderView.layer.borderColor = isHighlighted ? UIColor.braveOrange.cgColor : UIColor.braveLabel.resolvedColor(with: traitCollection).cgColor
+    
+    let toolbarTraitCollection = UITraitCollection(preferredContentSizeCategory: traitCollection.toolbarButtonContentSizeCategory)
+    let metrics = UIFontMetrics(forTextStyle: .body)
+    borderView.snp.remakeConstraints {
+      $0.center.equalToSuperview()
+      $0.size.equalTo(metrics.scaledValue(for: 19, compatibleWith: toolbarTraitCollection))
+    }
+    countLabel.font = .systemFont(ofSize: UIFont.preferredFont(forTextStyle: .caption2, compatibleWith: toolbarTraitCollection).pointSize, weight: .bold)
   }
 
   private var currentCount: Int?

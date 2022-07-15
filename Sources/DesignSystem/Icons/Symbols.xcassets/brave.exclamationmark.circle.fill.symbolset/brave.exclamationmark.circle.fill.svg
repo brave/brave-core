@@ -1,5 +1,5 @@
 <svg width="3300" height="2200" viewBox="0 0 3300 2200" fill="none" xmlns="http://www.w3.org/2000/svg">
-<g id="brave.plus">
+<g id="brave.exclamationmark.circle.fill">
 <g id="Notes">
 <path id="artboard" d="M3300 0H0V2200H3300V0Z" fill="white"/>
 <path id="Vector" d="M263 292H3036" stroke="black" stroke-width="0.5"/>
@@ -45,7 +45,7 @@
 <text id="design is preserved when submitting to Xcode." fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="13" letter-spacing="0em"><tspan x="1289" y="1988.73">design is preserved when submitting to Xcode.</tspan></text>
 <text id="template-version" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="13" letter-spacing="0em"><tspan x="2946" y="1932.73">Template v.3.0</tspan></text>
 <text id="Requires Xcode 13 or greater" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="13" letter-spacing="0em"><tspan x="2857" y="1950.73">Requires Xcode 13 or greater</tspan></text>
-<text id="descriptive-name" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="13" letter-spacing="0em"><tspan x="2910" y="1968.73">Generated from plus</tspan></text>
+<text id="descriptive-name" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="13" letter-spacing="0em"><tspan x="2777" y="1968.73">Generated from exclamationmark.circle.fill</tspan></text>
 <text id="Typeset at 100 points" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="13" letter-spacing="0em"><tspan x="2903" y="1986.73">Typeset at 100 points</tspan></text>
 <text id="Small" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="13" letter-spacing="0em"><tspan x="263" y="725.727">Small</tspan></text>
 <text id="Medium_2" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="13" letter-spacing="0em"><tspan x="263" y="1155.73">Medium</tspan></text>
@@ -67,18 +67,18 @@
 </g>
 <path id="Baseline-L" d="M263 1556H3036" stroke="#27AAE1" stroke-width="0.5"/>
 <path id="Capline-L" d="M263 1485.54H3036" stroke="#27AAE1" stroke-width="0.5"/>
-<path id="left-margin-Regular-M" d="M1397.12 1030.79V1150.12" stroke="#00AEEF" stroke-width="0.5"/>
-<path id="right-margin-Regular-M" d="M1502.57 1030.79V1150.12" stroke="#00AEEF" stroke-width="0.5"/>
+<path id="left-margin-Regular-M" d="M1391.32 1030.79V1150.12" stroke="#00AEEF" stroke-width="0.5"/>
+<path id="right-margin-Regular-M" d="M1508.37 1030.79V1150.12" stroke="#00AEEF" stroke-width="0.5"/>
 </g>
 <g id="Symbols">
 <g id="Regular-L">
-<path id="Path" d="M1501.79 1525.49H1454.49V1572.79C1454.49 1575.4 1452.37 1577.52 1449.76 1577.52C1447.15 1577.52 1445.03 1575.4 1445.03 1572.79V1525.49H1397.73C1395.12 1525.49 1393 1523.37 1393 1520.76C1393 1518.15 1395.12 1516.03 1397.73 1516.03H1445.03V1468.73C1445.03 1466.12 1447.15 1464 1449.76 1464C1452.37 1464 1454.49 1466.12 1454.49 1468.73V1516.03H1501.79C1504.4 1516.03 1506.52 1518.15 1506.52 1520.76C1506.52 1523.37 1504.4 1525.49 1501.79 1525.49Z" fill="black"/>
+<path id="Shape" fill-rule="evenodd" clip-rule="evenodd" d="M1386.5 1520.86C1386.5 1555.8 1414.92 1584.22 1449.86 1584.22C1484.8 1584.22 1513.22 1555.8 1513.22 1520.86C1513.22 1485.92 1484.8 1457.5 1449.86 1457.5C1414.92 1457.5 1386.5 1485.92 1386.5 1520.86ZM1449.86 1536.7C1446.94 1536.7 1444.58 1534.33 1444.58 1531.42V1489.18C1444.58 1486.27 1446.94 1483.9 1449.86 1483.9C1452.78 1483.9 1455.14 1486.27 1455.14 1489.18V1531.42C1455.14 1534.33 1452.78 1536.7 1449.86 1536.7ZM1449.86 1557.82C1448.49 1557.82 1447.11 1557.24 1446.11 1556.29C1445.16 1555.29 1444.58 1553.91 1444.58 1552.54C1444.58 1551.11 1445.16 1549.79 1446.11 1548.79C1448.06 1546.84 1451.6 1546.84 1453.61 1548.79C1454.56 1549.79 1455.14 1551.11 1455.14 1552.54C1455.14 1553.91 1454.56 1555.29 1453.61 1556.29C1452.61 1557.24 1451.23 1557.82 1449.86 1557.82Z" fill="black"/>
 </g>
 <g id="Regular-M">
-<path id="Path_2" d="M1490.44 1094.67H1453.78V1131.33C1453.78 1133.36 1452.13 1135 1450.11 1135C1448.09 1135 1446.44 1133.36 1446.44 1131.33V1094.67H1409.78C1407.75 1094.67 1406.11 1093.02 1406.11 1091C1406.11 1088.98 1407.75 1087.33 1409.78 1087.33H1446.44V1050.67C1446.44 1048.64 1448.09 1047 1450.11 1047C1452.13 1047 1453.78 1048.64 1453.78 1050.67V1087.33H1490.44C1492.47 1087.33 1494.11 1088.98 1494.11 1091C1494.11 1093.02 1492.47 1094.67 1490.44 1094.67Z" fill="black"/>
+<path id="Shape_2" fill-rule="evenodd" clip-rule="evenodd" d="M1400.25 1090.5C1400.25 1117.8 1422.46 1140 1449.75 1140C1477.05 1140 1499.25 1117.8 1499.25 1090.5C1499.25 1063.2 1477.05 1041 1449.75 1041C1422.46 1041 1400.25 1063.2 1400.25 1090.5ZM1449.75 1102.88C1447.47 1102.88 1445.63 1101.03 1445.63 1098.75V1065.75C1445.63 1063.47 1447.47 1061.62 1449.75 1061.62C1452.03 1061.62 1453.88 1063.47 1453.88 1065.75V1098.75C1453.88 1101.03 1452.03 1102.88 1449.75 1102.88ZM1449.75 1119.37C1448.68 1119.37 1447.61 1118.92 1446.82 1118.18C1446.08 1117.39 1445.63 1116.32 1445.63 1115.25C1445.63 1114.14 1446.08 1113.1 1446.82 1112.32C1448.35 1110.79 1451.11 1110.79 1452.68 1112.32C1453.42 1113.1 1453.88 1114.14 1453.88 1115.25C1453.88 1116.32 1453.42 1117.39 1452.68 1118.18C1451.9 1118.92 1450.82 1119.37 1449.75 1119.37Z" fill="black"/>
 </g>
 <g id="Regular-S">
-<path id="Path_3" d="M1481.17 663.833H1452.83V692.167C1452.83 693.731 1451.56 695 1450 695C1448.44 695 1447.17 693.731 1447.17 692.167V663.833H1418.83C1417.27 663.833 1416 662.564 1416 661C1416 659.436 1417.27 658.167 1418.83 658.167H1447.17V629.833C1447.17 628.269 1448.44 627 1450 627C1451.56 627 1452.83 628.269 1452.83 629.833V658.167H1481.17C1482.73 658.167 1484 659.436 1484 661C1484 662.564 1482.73 663.833 1481.17 663.833Z" fill="black"/>
+<path id="Shape_3" fill-rule="evenodd" clip-rule="evenodd" d="M1411.5 660.758C1411.5 682.131 1428.89 699.517 1450.26 699.517C1471.63 699.517 1489.02 682.131 1489.02 660.758C1489.02 639.386 1471.63 622 1450.26 622C1428.89 622 1411.5 639.386 1411.5 660.758ZM1450.26 670.448C1448.47 670.448 1447.03 669.001 1447.03 667.218V641.379C1447.03 639.596 1448.47 638.149 1450.26 638.149C1452.04 638.149 1453.49 639.596 1453.49 641.379V667.218C1453.49 669.001 1452.04 670.448 1450.26 670.448ZM1450.26 683.367C1449.42 683.367 1448.58 683.012 1447.97 682.431C1447.38 681.817 1447.03 680.977 1447.03 680.138C1447.03 679.266 1447.38 678.458 1447.97 677.844C1449.16 676.649 1451.32 676.649 1452.55 677.844C1453.13 678.458 1453.49 679.266 1453.49 680.138C1453.49 680.977 1453.13 681.817 1452.55 682.431C1451.94 683.012 1451.1 683.367 1450.26 683.367Z" fill="black"/>
 </g>
 </g>
 </g>

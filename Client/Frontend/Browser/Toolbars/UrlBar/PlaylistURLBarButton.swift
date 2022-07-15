@@ -6,6 +6,7 @@
 import Foundation
 import UIKit
 import DesignSystem
+import SnapKit
 
 class PlaylistURLBarButton: UIButton {
   enum State {
@@ -18,11 +19,13 @@ class PlaylistURLBarButton: UIButton {
     didSet {
       switch buttonState {
       case .addToPlaylist:
-        setImage(UIImage(named: "playlist_toolbar_add_button", in: .current, compatibleWith: nil)!, for: .normal)
+        setImage(UIImage(braveSystemNamed: "brave.text.badge.plus"), for: .normal)
+        tintColor = .white
         gradientView.isHidden = false
         backgroundView.isHidden = true
       case .addedToPlaylist:
-        setImage(UIImage(named: "playlist_toolbar_added_button", in: .current, compatibleWith: nil)!, for: .normal)
+        setImage(UIImage(braveSystemNamed: "brave.text.badge.checkmark"), for: .normal)
+        tintColor = .braveSuccessLabel
         gradientView.isHidden = true
         backgroundView.isHidden = false
       case .none:
@@ -30,6 +33,7 @@ class PlaylistURLBarButton: UIButton {
         gradientView.isHidden = true
         backgroundView.isHidden = true
       }
+      updateForTraitCollection()
     }
   }
 
@@ -47,22 +51,45 @@ class PlaylistURLBarButton: UIButton {
 
     [backgroundView, gradientView].forEach {
       $0.do {
-        $0.layer.cornerRadius = 13.0
+        $0.layer.cornerCurve = .continuous
         $0.layer.masksToBounds = true
         $0.isUserInteractionEnabled = false
 
         $0.snp.makeConstraints {
-          $0.center.equalToSuperview()
-          $0.leading.equalToSuperview()
-          $0.trailing.equalToSuperview().inset(5.0)
-          $0.width.equalTo(40.0)
-          $0.height.equalTo(26.0)
+          $0.edges.equalToSuperview()
         }
       }
     }
+    
+    updateForTraitCollection()
   }
 
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
+  }
+  
+  override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+    super.traitCollectionDidChange(previousTraitCollection)
+    updateForTraitCollection()
+  }
+  
+  override func layoutSubviews() {
+    super.layoutSubviews()
+    
+    let radius = backgroundView.bounds.height / 2.0
+    backgroundView.layer.cornerRadius = radius
+    gradientView.layer.cornerRadius = radius
+  }
+  
+  private func updateForTraitCollection() {
+    let sizeCategory = traitCollection.toolbarButtonContentSizeCategory
+    let pointSize = UIFont.preferredFont(
+      forTextStyle: .body,
+      compatibleWith: .init(preferredContentSizeCategory: sizeCategory)
+    ).pointSize
+    setPreferredSymbolConfiguration(
+      .init(pointSize: pointSize, weight: .regular, scale: .medium),
+      forImageIn: .normal
+    )
   }
 }

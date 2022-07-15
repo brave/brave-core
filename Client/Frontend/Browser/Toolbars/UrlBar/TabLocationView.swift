@@ -63,10 +63,10 @@ class TabLocationView: UIView {
   var loading: Bool = false {
     didSet {
       if loading {
-        reloadButton.setImage(UIImage(named: "nav-stop", in: .current, compatibleWith: nil)!.template, for: .normal)
+        reloadButton.setImage(UIImage(systemName: "xmark"), for: .normal)
         reloadButton.accessibilityLabel = Strings.tabToolbarStopButtonAccessibilityLabel
       } else {
-        reloadButton.setImage(UIImage(named: "nav-refresh", in: .current, compatibleWith: nil)!.template, for: .normal)
+        reloadButton.setImage(UIImage(braveSystemNamed: "brave.refresh"), for: .normal)
         reloadButton.accessibilityLabel = Strings.tabToolbarReloadButtonAccessibilityLabel
       }
     }
@@ -74,15 +74,17 @@ class TabLocationView: UIView {
 
   private func updateLockImageView() {
     lockImageView.isHidden = false
-
+    
     switch secureContentState {
     case .localHost:
       lockImageView.isHidden = true
     case .insecure:
-      lockImageView.setImage(UIImage(named: "insecure-site-icon", in: .current, compatibleWith: nil)!, for: .normal)
+      lockImageView.setImage(UIImage(braveSystemNamed: "brave.exclamationmark.circle.fill")?
+        .withRenderingMode(.alwaysOriginal)
+        .withTintColor(.braveErrorLabel), for: .normal)
       lockImageView.accessibilityLabel = Strings.tabToolbarWarningImageAccessibilityLabel
     case .secure, .unknown:
-      lockImageView.setImage(UIImage(named: "lock_verified", in: .current, compatibleWith: nil)!.template, for: .normal)
+      lockImageView.setImage(UIImage(braveSystemNamed: "brave.lock.alt", compatibleWith: nil), for: .normal)
       lockImageView.accessibilityLabel = Strings.tabToolbarLockImageAccessibilityLabel
     }
   }
@@ -127,9 +129,10 @@ class TabLocationView: UIView {
 
     // Prevent the field from compressing the toolbar buttons on the 4S in landscape.
     urlTextField.setContentCompressionResistancePriority(UILayoutPriority(rawValue: 250), for: .horizontal)
+    urlTextField.setContentCompressionResistancePriority(.required, for: .vertical)
     urlTextField.attributedPlaceholder = self.placeholder
     urlTextField.accessibilityIdentifier = "url"
-    urlTextField.font = UIConstants.defaultChromeFont
+    urlTextField.font = .preferredFont(forTextStyle: .body)
     urlTextField.backgroundColor = .clear
     urlTextField.clipsToBounds = true
     urlTextField.textColor = .braveLabel
@@ -143,9 +146,9 @@ class TabLocationView: UIView {
   }()
 
   private(set) lazy var lockImageView = ToolbarButton(top: true).then {
-    $0.setImage(UIImage(named: "lock_verified", in: .current, compatibleWith: nil)!.template, for: .normal)
+    $0.setImage(UIImage(braveSystemNamed: "brave.lock.alt", compatibleWith: nil), for: .normal)
     $0.isHidden = true
-    $0.tintColor = #colorLiteral(red: 0.3764705882, green: 0.3843137255, blue: 0.4, alpha: 1)
+    $0.tintColor = .braveLabel
     $0.isAccessibilityElement = true
     $0.imageView?.contentMode = .center
     $0.contentHorizontalAlignment = .center
@@ -161,7 +164,6 @@ class TabLocationView: UIView {
     readerModeButton.isAccessibilityElement = true
     readerModeButton.isHidden = true
     readerModeButton.imageView?.contentMode = .scaleAspectFit
-    readerModeButton.contentHorizontalAlignment = .center
     readerModeButton.accessibilityLabel = Strings.tabToolbarReaderViewButtonAccessibilityLabel
     readerModeButton.accessibilityIdentifier = "TabLocationView.readerModeButton"
     readerModeButton.accessibilityCustomActions = [UIAccessibilityCustomAction(name: Strings.tabToolbarReaderViewButtonTitle, target: self, selector: #selector(readerModeCustomAction))]
@@ -190,7 +192,7 @@ class TabLocationView: UIView {
     $0.accessibilityIdentifier = "TabToolbar.stopReloadButton"
     $0.isAccessibilityElement = true
     $0.accessibilityLabel = Strings.tabToolbarReloadButtonAccessibilityLabel
-    $0.setImage(UIImage(named: "nav-refresh", in: .current, compatibleWith: nil)!.template, for: .normal)
+    $0.setImage(UIImage(braveSystemNamed: "brave.refresh", compatibleWith: nil), for: .normal)
     $0.tintColor = .braveLabel
     let longPressGestureStopReloadButton = UILongPressGestureRecognizer(target: self, action: #selector(didLongPressStopReload(_:)))
     $0.addGestureRecognizer(longPressGestureStopReloadButton)
@@ -199,10 +201,11 @@ class TabLocationView: UIView {
 
   lazy var shieldsButton: ToolbarButton = {
     let button = ToolbarButton(top: true)
-    button.setImage(UIImage(named: "shields-menu-icon", in: .current, compatibleWith: nil)!, for: .normal)
+    button.setImage(UIImage(sharedNamed: "brave.logo"), for: .normal)
     button.addTarget(self, action: #selector(didClickBraveShieldsButton), for: .touchUpInside)
-    button.imageView?.contentMode = .center
+    button.imageView?.contentMode = .scaleAspectFit
     button.accessibilityLabel = Strings.bravePanel
+    button.imageView?.adjustsImageSizeForAccessibilityContentSizeCategory = true
     button.accessibilityIdentifier = "urlBar-shieldsButton"
     return button
   }()
@@ -221,7 +224,12 @@ class TabLocationView: UIView {
     $0.layoutMargins = UIEdgeInsets(top: 0, left: 2, bottom: 0, right: 2)
   }
 
-  lazy var tabOptionsStackView = UIStackView()
+  lazy var tabOptionsStackView = UIStackView().then {
+    $0.alignment = .center
+    $0.layoutMargins = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 3)
+    $0.isLayoutMarginsRelativeArrangement = true
+    $0.insetsLayoutMarginsFromSafeArea = false
+  }
 
   override init(frame: CGRect) {
     super.init(frame: frame)
@@ -247,29 +255,25 @@ class TabLocationView: UIView {
       tabOptionsStackView.addArrangedSubview($0)
     }
 
+    // Visual centering
+    rewardsButton.contentEdgeInsets = .init(top: 1, left: 5, bottom: 1, right: 5)
+    playlistButton.contentEdgeInsets = .init(top: 2, left: 10, bottom: 2, right: 6)
+    
     urlTextField.setContentHuggingPriority(.defaultLow, for: .horizontal)
 
     let subviews = [lockImageView, urlTextField, tabOptionsStackView]
     contentView = UIStackView(arrangedSubviews: subviews)
     contentView.distribution = .fill
     contentView.alignment = .center
-    contentView.layoutMargins = UIEdgeInsets(top: 0, left: TabLocationViewUX.spacing, bottom: 0, right: 0)
+    contentView.layoutMargins = UIEdgeInsets(top: 2, left: TabLocationViewUX.spacing, bottom: 2, right: 0)
     contentView.isLayoutMarginsRelativeArrangement = true
     contentView.insetsLayoutMarginsFromSafeArea = false
-    contentView.spacing = 10
-    contentView.setCustomSpacing(5, after: urlTextField)
-
-    tabOptionsStackView.layoutMargins = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 3)
-    tabOptionsStackView.isLayoutMarginsRelativeArrangement = true
-    tabOptionsStackView.insetsLayoutMarginsFromSafeArea = false
+    contentView.spacing = 8
+    contentView.setCustomSpacing(4, after: urlTextField)
     addSubview(contentView)
 
     contentView.snp.makeConstraints { make in
       make.leading.trailing.top.bottom.equalTo(self)
-    }
-
-    tabOptionsStackView.snp.makeConstraints { make in
-      make.top.bottom.equalTo(contentView)
     }
 
     // Setup UIDragInteraction to handle dragging the location
@@ -283,10 +287,40 @@ class TabLocationView: UIView {
       .sink(receiveValue: { [weak self] isPrivateBrowsing in
         self?.updateColors(isPrivateBrowsing)
       })
+    
+    updateForTraitCollection()
   }
 
   required init(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
+  }
+  
+  override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+    super.traitCollectionDidChange(previousTraitCollection)
+    if previousTraitCollection?.preferredContentSizeCategory != traitCollection.preferredContentSizeCategory {
+      updateForTraitCollection()
+    }
+  }
+  
+  private func updateForTraitCollection() {
+    let clampedTraitCollection = traitCollection.clampingSizeCategory(maximum: .accessibilityLarge)
+    lockImageView.setPreferredSymbolConfiguration(
+      .init(pointSize: UIFont.preferredFont(forTextStyle: .body, compatibleWith: clampedTraitCollection).pointSize, weight: .heavy, scale: .small),
+      forImageIn: .normal
+    )
+    let toolbarTraitCollection = UITraitCollection(preferredContentSizeCategory: traitCollection.toolbarButtonContentSizeCategory)
+    urlTextField.font = .preferredFont(forTextStyle: .body, compatibleWith: clampedTraitCollection)
+    let pointSize = UIFont.preferredFont(
+      forTextStyle: .footnote,
+      compatibleWith: toolbarTraitCollection
+    ).pointSize
+    reloadButton.setPreferredSymbolConfiguration(
+      .init(pointSize: pointSize, weight: .regular, scale: .large),
+      forImageIn: .normal
+    )
+    reloadButton.snp.remakeConstraints {
+      $0.width.equalTo(UIFontMetrics(forTextStyle: .body).scaledValue(for: 32, compatibleWith: toolbarTraitCollection))
+    }
   }
   
   private func updateColors(_ isPrivateBrowsing: Bool) {
@@ -376,7 +410,7 @@ class TabLocationView: UIView {
   }
   
   fileprivate func updateTextWithURL() {
-    (urlTextField as? DisplayTextField)?.hostString = url?.host ?? ""
+    (urlTextField as? DisplayTextField)?.hostString = url?.withoutWWW.host ?? ""
     urlTextField.text = url?.withoutWWW.schemelessAbsoluteString.trim("/")
   }
 }

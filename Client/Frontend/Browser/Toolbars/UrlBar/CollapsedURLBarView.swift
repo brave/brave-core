@@ -17,7 +17,7 @@ class CollapsedURLBarView: UIView {
   }
   
   private let lockImageView = ToolbarButton(top: true).then {
-    $0.setImage(UIImage(named: "lock_verified", in: .current, compatibleWith: nil)!.template, for: .normal)
+    $0.setImage(UIImage(braveSystemNamed: "brave.lock.alt", compatibleWith: nil), for: .normal)
     $0.isHidden = true
     $0.tintColor = .bravePrimary
     $0.isAccessibilityElement = true
@@ -30,7 +30,6 @@ class CollapsedURLBarView: UIView {
   private let urlLabel = UILabel().then {
     $0.font = .preferredFont(forTextStyle: .caption1)
     $0.textColor = .bravePrimary
-    $0.adjustsFontForContentSizeCategory = true
     $0.lineBreakMode = .byTruncatingHead
     $0.numberOfLines = 1
     $0.textAlignment = .right
@@ -44,10 +43,12 @@ class CollapsedURLBarView: UIView {
     case .localHost:
       lockImageView.isHidden = true
     case .insecure:
-      lockImageView.setImage(UIImage(named: "insecure-site-icon", in: .current, compatibleWith: nil)!, for: .normal)
+      lockImageView.setImage(UIImage(braveSystemNamed: "brave.exclamationmark.circle.fill")?
+        .withRenderingMode(.alwaysOriginal)
+        .withTintColor(.braveErrorLabel), for: .normal)
       lockImageView.accessibilityLabel = Strings.tabToolbarWarningImageAccessibilityLabel
     case .secure, .unknown:
-      lockImageView.setImage(UIImage(named: "lock_verified", in: .current, compatibleWith: nil)!.template, for: .normal)
+      lockImageView.setImage(UIImage(braveSystemNamed: "brave.lock.alt", compatibleWith: nil), for: .normal)
       lockImageView.accessibilityLabel = Strings.tabToolbarLockImageAccessibilityLabel
     }
   }
@@ -92,6 +93,28 @@ class CollapsedURLBarView: UIView {
       $0.top.equalTo(self.snp.bottom)
       $0.leading.trailing.equalToSuperview()
     }
+    
+    updateForTraitCollection()
+  }
+  
+  override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+    super.traitCollectionDidChange(previousTraitCollection)
+    updateForTraitCollection()
+  }
+  
+  private func updateForTraitCollection() {
+    let clampedTraitCollection = traitCollection.clampingSizeCategory(maximum: .accessibilityLarge)
+    lockImageView.setPreferredSymbolConfiguration(
+      .init(
+        pointSize: UIFont.preferredFont(
+          forTextStyle: .footnote,
+          compatibleWith: clampedTraitCollection
+        ).pointSize,
+        weight: .semibold
+      ),
+      forImageIn: .normal
+    )
+    urlLabel.font = .preferredFont(forTextStyle: .caption1, compatibleWith: clampedTraitCollection)
   }
   
   override func layoutSubviews() {

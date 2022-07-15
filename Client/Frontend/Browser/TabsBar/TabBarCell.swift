@@ -59,7 +59,8 @@ class TabBarCell: UICollectionViewCell {
     
     [deselectedOverlayView, closeButton, titleLabel, separatorLine, separatorLineRight].forEach { contentView.addSubview($0) }
     initConstraints()
-
+    updateFont()
+    
     isSelected = false
     privateModeCancellable = PrivateBrowsingManager.shared
       .$isPrivateBrowsing
@@ -146,6 +147,18 @@ class TabBarCell: UICollectionViewCell {
       closeButton.isHidden = true
       deselectedOverlayView.isHidden = false
     }
+    updateFont()
+  }
+  
+  override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+    super.traitCollectionDidChange(previousTraitCollection)
+    updateFont()
+  }
+  
+  private func updateFont() {
+    let clampedTraitCollection = self.traitCollection.clampingSizeCategory(maximum: .extraExtraLarge)
+    let font = UIFont.preferredFont(forTextStyle: .caption1, compatibleWith: clampedTraitCollection)
+    titleLabel.font = .systemFont(ofSize: font.pointSize, weight: isSelected ? .semibold : .regular)
   }
 
   @objc func closeTab() {
