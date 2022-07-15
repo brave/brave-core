@@ -201,59 +201,53 @@ void IPFSOnboardingPage::CommandReceived(const std::string& command) {
 }
 
 void IPFSOnboardingPage::PopulateInterstitialStrings(
-    base::Value* load_time_data) {
-  load_time_data->SetStringKey(
-      "tabTitle",
-      brave_l10n::GetLocalizedResourceUTF16String(IDS_IPFS_ONBOARDING_TITLE));
-  load_time_data->SetStringKey(
-      "heading",
-      brave_l10n::GetLocalizedResourceUTF16String(IDS_IPFS_ONBOARDING_HEADING));
-  load_time_data->SetStringKey("primaryParagraph",
-                               brave_l10n::GetLocalizedResourceUTF16String(
-                                   IDS_IPFS_ONBOARDING_PRIMARY_PARAGRAPH));
-  load_time_data->SetStringKey("localNodeButton",
-                               brave_l10n::GetLocalizedResourceUTF16String(
-                                   IDS_IPFS_ONBOARDING_LOCAL_NODE_BUTTON));
-  load_time_data->SetStringKey("publicGatewayButton",
-                               brave_l10n::GetLocalizedResourceUTF16String(
-                                   IDS_IPFS_ONBOARDING_PUBLIC_GATEWAY_BUTTON));
-  load_time_data->SetStringKey("learnMore",
-                               brave_l10n::GetLocalizedResourceUTF16String(
-                                   IDS_IPFS_ONBOARDING_LEARN_MORE));
-  load_time_data->SetStringKey("localNodeText",
-                               brave_l10n::GetLocalizedResourceUTF16String(
-                                   IDS_IPFS_ONBOARDING_LOCAL_NODE_TEXT));
-  load_time_data->SetStringKey("publicGatewayText",
-                               brave_l10n::GetLocalizedResourceUTF16String(
-                                   IDS_IPFS_ONBOARDING_PUBLIC_GATEWAY_TEXT));
-  load_time_data->SetStringKey("footerText",
-                               brave_l10n::GetLocalizedResourceUTF16String(
-                                   IDS_IPFS_ONBOARDING_FOOTER_TEXT));
-  load_time_data->SetStringKey("settings",
-                               brave_l10n::GetLocalizedResourceUTF16String(
-                                   IDS_IPFS_ONBOARDING_SETTINGS));
-  load_time_data->SetStringKey("retryText",
-                               brave_l10n::GetLocalizedResourceUTF16String(
-                                   IDS_IPFS_SERVICE_LAUNCH_RETRY));
-  load_time_data->SetStringKey("installationText",
-                               brave_l10n::GetLocalizedResourceUTF16String(
-                                   IDS_IPFS_ONBOARDING_INSTALLATION_STATUS));
-  load_time_data->SetStringKey("watingPeersText",
-                               brave_l10n::GetLocalizedResourceUTF16String(
-                                   IDS_IPFS_ONBOARDING_WAITING_PEERS_STATUS));
-  load_time_data->SetStringKey("retryLimitPeersText",
-                               brave_l10n::GetLocalizedResourceUTF16String(
-                                   IDS_IPFS_ONBOARDING_PEERS_LIMIT_ERROR));
-  load_time_data->SetStringKey("tryAgainText",
-                               brave_l10n::GetLocalizedResourceUTF16String(
-                                   IDS_IPFS_ONBOARDING_TRY_AGAIN));
-  load_time_data->SetStringKey("localNodeError",
-                               brave_l10n::GetLocalizedResourceUTF16String(
-                                   IDS_IPFS_SERVICE_LAUNCH_ERROR));
-  load_time_data->SetStringKey("installationError",
-                               brave_l10n::GetLocalizedResourceUTF16String(
-                                   IDS_IPFS_ONBOARDING_INSTALLATION_ERROR));
-  load_time_data->SetStringKey(
+    base::Value::Dict& load_time_data) {
+  load_time_data.Set("tabTitle", brave_l10n::GetLocalizedResourceUTF16String(
+                                     IDS_IPFS_ONBOARDING_TITLE));
+  load_time_data.Set("heading", brave_l10n::GetLocalizedResourceUTF16String(
+                                    IDS_IPFS_ONBOARDING_HEADING));
+  load_time_data.Set("primaryParagraph",
+                     brave_l10n::GetLocalizedResourceUTF16String(
+                         IDS_IPFS_ONBOARDING_PRIMARY_PARAGRAPH));
+  load_time_data.Set("localNodeButton",
+                     brave_l10n::GetLocalizedResourceUTF16String(
+                         IDS_IPFS_ONBOARDING_LOCAL_NODE_BUTTON));
+  load_time_data.Set("publicGatewayButton",
+                     brave_l10n::GetLocalizedResourceUTF16String(
+                         IDS_IPFS_ONBOARDING_PUBLIC_GATEWAY_BUTTON));
+  load_time_data.Set("learnMore", brave_l10n::GetLocalizedResourceUTF16String(
+                                      IDS_IPFS_ONBOARDING_LEARN_MORE));
+  load_time_data.Set("localNodeText",
+                     brave_l10n::GetLocalizedResourceUTF16String(
+                         IDS_IPFS_ONBOARDING_LOCAL_NODE_TEXT));
+  load_time_data.Set("publicGatewayText",
+                     brave_l10n::GetLocalizedResourceUTF16String(
+                         IDS_IPFS_ONBOARDING_PUBLIC_GATEWAY_TEXT));
+  load_time_data.Set("footerText", brave_l10n::GetLocalizedResourceUTF16String(
+                                       IDS_IPFS_ONBOARDING_FOOTER_TEXT));
+  load_time_data.Set("settings", brave_l10n::GetLocalizedResourceUTF16String(
+                                     IDS_IPFS_ONBOARDING_SETTINGS));
+  load_time_data.Set("retryText", brave_l10n::GetLocalizedResourceUTF16String(
+                                      IDS_IPFS_SERVICE_LAUNCH_RETRY));
+  load_time_data.Set("installationText",
+                     brave_l10n::GetLocalizedResourceUTF16String(
+                         IDS_IPFS_ONBOARDING_INSTALLATION_STATUS));
+  load_time_data.Set("watingPeersText",
+                     brave_l10n::GetLocalizedResourceUTF16String(
+                         IDS_IPFS_ONBOARDING_WAITING_PEERS_STATUS));
+  load_time_data.Set("retryLimitPeersText",
+                     brave_l10n::GetLocalizedResourceUTF16String(
+                         IDS_IPFS_ONBOARDING_PEERS_LIMIT_ERROR));
+  load_time_data.Set("tryAgainText",
+                     brave_l10n::GetLocalizedResourceUTF16String(
+                         IDS_IPFS_ONBOARDING_TRY_AGAIN));
+  load_time_data.Set("localNodeError",
+                     brave_l10n::GetLocalizedResourceUTF16String(
+                         IDS_IPFS_SERVICE_LAUNCH_ERROR));
+  load_time_data.Set("installationError",
+                     brave_l10n::GetLocalizedResourceUTF16String(
+                         IDS_IPFS_ONBOARDING_INSTALLATION_ERROR));
+  load_time_data.Set(
       "peersError",
       l10n_util::GetStringFUTF16(IDS_IPFS_ONBOARDING_PEERS_ERROR, u"{value}"));
 
@@ -262,11 +256,11 @@ void IPFSOnboardingPage::PopulateInterstitialStrings(
       ui::NativeTheme::GetInstanceForNativeUi()->ShouldUseDarkColors()
           ? u"dark"
           : u"light";
-  load_time_data->SetStringKey("braveTheme", theme_type);
-  load_time_data->SetStringKey("os", "");
+  load_time_data.Set("braveTheme", theme_type);
+  load_time_data.Set("os", "");
 #else
-  load_time_data->SetStringKey("braveTheme", "light");
-  load_time_data->SetStringKey("os", "Android");
+  load_time_data.Set("braveTheme", "light");
+  load_time_data.Set("os", "Android");
 #endif
 }
 
