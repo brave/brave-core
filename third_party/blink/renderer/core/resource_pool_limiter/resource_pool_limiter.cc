@@ -85,7 +85,7 @@ ResourcePoolLimiter::IssueResourceInUseTracker(
   String resource_id = GetResourceIdInUse(
       GetTopFrameOrContextSecurityOrigin(context), resource_type);
 
-  MutexLocker locker(resources_in_use_lock_);
+  base::AutoLock locker(resources_in_use_lock_);
   // `insert` doesn't change the value if it already exists.
   int& resource_in_use_count =
       resources_in_use_.insert(resource_id, 0).stored_value->value;
@@ -99,7 +99,7 @@ ResourcePoolLimiter::IssueResourceInUseTracker(
 
 void ResourcePoolLimiter::DropResourceInUse(
     const ResourceInUseTracker* resource_in_use_tracker) {
-  MutexLocker locker(resources_in_use_lock_);
+  base::AutoLock locker(resources_in_use_lock_);
   auto resource_in_use_it =
       resources_in_use_.find(resource_in_use_tracker->resource_id());
   DCHECK(resource_in_use_it != resources_in_use_.end());
