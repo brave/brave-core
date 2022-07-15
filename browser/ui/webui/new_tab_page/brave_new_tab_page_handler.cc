@@ -13,7 +13,9 @@
 #include "base/files/file_util.h"
 #include "base/memory/ref_counted_memory.h"
 #include "base/task/thread_pool.h"
+#include "base/values.h"
 #include "brave/browser/ntp_background_images/constants.h"
+#include "brave/browser/ntp_background_images/view_counter_service_factory.h"
 #include "brave/components/brave_search_conversion/p3a.h"
 #include "brave/components/brave_search_conversion/pref_names.h"
 #include "brave/components/brave_search_conversion/types.h"
@@ -21,6 +23,7 @@
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/l10n/common/locale_util.h"
 #include "brave/components/ntp_background_images/browser/url_constants.h"
+#include "brave/components/ntp_background_images/browser/view_counter_service.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/image_fetcher/image_decoder_impl.h"
 #include "chrome/browser/profiles/profile.h"
@@ -48,8 +51,26 @@ data_decoder::DataDecoder* GetDataDecoder() {
 }
 
 bool IsNTPPromotionEnabled(Profile* profile) {
-  return brave_search_conversion::IsNTPPromotionEnabled(
-      profile->GetPrefs(), TemplateURLServiceFactory::GetForProfile(profile));
+  if (!brave_search_conversion::IsNTPPromotionEnabled(
+          profile->GetPrefs(),
+          TemplateURLServiceFactory::GetForProfile(profile))) {
+    return false;
+  }
+
+  auto* service =
+      ntp_background_images::ViewCounterServiceFactory::GetForProfile(profile);
+  if (!service)
+    return false;
+
+  // Only show promotion if current wallpaper is not sponsored images.
+  base::Value data = service->GetCurrentWallpaperForDisplay();
+  if (const auto* dict = data.GetIfDict()) {
+    if (const auto is_background =
+            dict->FindBool(ntp_background_images::kIsBackgroundKey)) {
+      return is_background.value();
+    }
+  }
+  return false;
 }
 
 }  // namespace
