@@ -165,6 +165,7 @@ public class BrowserViewController: UIViewController, BrowserViewControllerDeleg
   let safeBrowsing: SafeBrowsing?
 
   let rewards: BraveRewards
+  var ledgerObserver: LedgerObserver?
   let legacyWallet: BraveLedger?
   var promotionFetchTimer: Timer?
   private var notificationsHandler: AdsNotificationHandler?
