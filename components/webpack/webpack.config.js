@@ -123,7 +123,10 @@ module.exports = async function (env, argv) {
         {
           test: (input) => {
             console.error('>>>>', input);
-            return input.endsWith('htmlparser2/lib/esm/index.js');
+            return (
+              input.endsWith('htmlparser2/lib/esm/index.js') ||
+              input.endsWith("htmlparser2\\lib\\esm\\index.js")
+            );
           },
           use: [{
             loader: "babel-loader", // This should be the last loader of course
