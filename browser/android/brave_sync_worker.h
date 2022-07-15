@@ -58,6 +58,9 @@ class BraveSyncWorker : public syncer::SyncServiceObserver {
       JNIEnv* env,
       const base::android::JavaParamRef<jobject>& callback);
 
+  void ClearAccountDeletedNoticePending(JNIEnv* env);
+  bool IsAccountDeletedNoticePending(JNIEnv* env);
+
  private:
   syncer::BraveSyncServiceImpl* GetSyncService() const;
   void MarkFirstSetupComplete();

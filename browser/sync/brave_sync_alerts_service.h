@@ -32,11 +32,7 @@ class BraveSyncAlertsService : public KeyedService,
   void OnStateChanged(syncer::SyncService* service) override;
   void OnSyncShutdown(syncer::SyncService* sync) override;
 
-#if BUILDFLAG(IS_ANDROID)
-  void ShowAndroidInfobar();
-#else
-  void ShowDesktopInfobar();
-#endif
+  void ShowInfobar();
 
   raw_ptr<Profile> profile_ = nullptr;
   base::ScopedMultiSourceObservation<syncer::SyncService,

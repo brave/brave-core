@@ -12,7 +12,10 @@
 #include "chrome/browser/ui/browser_finder.h"
 #include "components/infobars/content/content_infobar_manager.h"
 
-#if !BUILDFLAG(IS_ANDROID)
+#if BUILDFLAG(IS_ANDROID)
+#include "base/android/jni_android.h"
+#include "brave/build/android/jni_headers/BraveSyncAccountDeletedInformer_jni.h"
+#else
 #include "chrome/browser/ui/browser.h"
 #endif
 
@@ -41,11 +44,7 @@ void BraveSyncAlertsService::OnStateChanged(syncer::SyncService* service) {
     return;
   }
 
-#if BUILDFLAG(IS_ANDROID)
-  ShowAndroidInfobar();
-#else
-  ShowDesktopInfobar();
-#endif
+  ShowInfobar();
 }
 
 void BraveSyncAlertsService::OnSyncShutdown(syncer::SyncService* sync_service) {
@@ -54,15 +53,11 @@ void BraveSyncAlertsService::OnSyncShutdown(syncer::SyncService* sync_service) {
   }
 }
 
+void BraveSyncAlertsService::ShowInfobar() {
 #if BUILDFLAG(IS_ANDROID)
-
-void BraveSyncAlertsService::ShowAndroidInfobar() {
-  DCHECK(false);
-}
-
+  JNIEnv* env = base::android::AttachCurrentThread();
+  Java_BraveSyncAccountDeletedInformer_show(env);
 #else
-
-void BraveSyncAlertsService::ShowDesktopInfobar() {
   Browser* browser = chrome::FindLastActive();
   if (browser) {
     content::WebContents* active_web_contents =
@@ -75,6 +70,5 @@ void BraveSyncAlertsService::ShowDesktopInfobar() {
                                                      browser);
     }
   }
-}
-
 #endif
+}
