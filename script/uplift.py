@@ -15,10 +15,11 @@ from lib.config import get_env_var, BRAVE_CORE_ROOT
 from lib.util import execute, scoped_cwd
 from lib.helpers import *
 from lib.github import (GitHub, get_authenticated_user_login, parse_user_logins,
-                        parse_labels, get_file_contents, add_reviewers_to_pull_request,
-                        get_milestones, create_pull_request, set_issue_details,
+                        parse_labels, get_file_contents, get_milestones,
+                        add_reviewers_to_pull_request, create_pull_request,
                         fetch_origin_check_staged, get_local_branch_name,
-                        get_title_from_first_commit, push_branches_to_remote)
+                        get_title_from_first_commit, push_branches_to_remote,
+                        set_issue_details)
 
 
 class PrConfig(object):
@@ -423,7 +424,8 @@ def get_milestone_for_branch(channel_branch):
     return None
 
 
-def submit_pr(channel, top_level_base, remote_base, local_branch, issues_fixed):
+def submit_pr(channel, top_level_base, remote_base,
+              local_branch, issues_fixed):
     global config
 
     try:
