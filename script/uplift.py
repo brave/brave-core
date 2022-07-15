@@ -259,9 +259,7 @@ def main():
             top_level_base = top_level_sha
         else:
             # don't allow uplift of PRs which are not merged
-            print('[ERROR] Pull request ' + str(pr_number) + ' has not been merged yet. ' +
-                  'Only merged requests can be uplifted.')
-            return 1
+            print('[WARNING] Pull request ' + str(pr_number) + ' has not been merged yet.')
 
         # create local branch which matches the contents of the PR
         with scoped_cwd(BRAVE_CORE_ROOT):
