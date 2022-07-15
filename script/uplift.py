@@ -101,12 +101,7 @@ def get_previous_version_branch(version):
     if version[0] == 'v':
         version = version[1:]
     parts = version.split('.', 3)
-    # TODO(bsclifton): hack used when deprecating dev channel
-    # remove me when 1.7 hits release channel
-    if int(parts[1]) == 7:
-        parts[1] = "5"
-    else:
-        parts[1] = str(int(parts[1]) - 1)
+    parts[1] = str(int(parts[1]) - 1)
     parts[2] = 'x'
     return '.'.join(parts)
 
@@ -339,6 +334,7 @@ def is_sha(ref):
         except Exception:
             return False
         return False
+    return False
 
 
 def create_branch(channel, top_level_base, remote_base, local_branch, args):
@@ -485,6 +481,7 @@ def submit_pr(channel, top_level_base, remote_base, local_branch, issues_fixed):
                           verbose=config.is_verbose, dryrun=config.is_dryrun)
     except Exception as e:
         print('[ERROR] unhandled error occurred:', str(e))
+    return 0
 
 
 if __name__ == '__main__':
