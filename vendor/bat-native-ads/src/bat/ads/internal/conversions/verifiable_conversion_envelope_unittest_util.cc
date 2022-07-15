@@ -103,7 +103,7 @@ absl::optional<std::string> OpenEnvelope(
   const std::vector<uint8_t> plaintext =
       Decrypt(ciphertext, nonce, ephemeral_public_key, advertiser_secret_key);
 
-  return (const char*)&plaintext.front();
+  return std::string((const char*)&plaintext.front());
 }
 
 absl::optional<std::string> OpenEvenlopeForUserDataAndAdvertiserSecretKey(
