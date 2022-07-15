@@ -32,6 +32,7 @@ import androidx.lifecycle.Observer;
 import org.chromium.base.SysUtils;
 import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.AssetRatioService;
+import org.chromium.brave_wallet.mojom.BlockchainToken;
 import org.chromium.brave_wallet.mojom.BraveWalletConstants;
 import org.chromium.brave_wallet.mojom.BraveWalletService;
 import org.chromium.brave_wallet.mojom.CoinType;
@@ -302,13 +303,15 @@ public class BraveWalletPanel implements DialogInterface {
         if (selectedAccount.length == 0) {
             return;
         }
-        mBraveWalletPanelServices.getJsonRpcService().getChainId(CoinType.ETH, chainId -> {
+        mBraveWalletPanelServices.getJsonRpcService().getNetwork(CoinType.ETH, selectedNetwork -> {
             mBraveWalletPanelServices.getJsonRpcService().getAllNetworks(CoinType.ETH, chains -> {
                 SingleTokenBalanceHelper singleTokenBalanceHelper = new SingleTokenBalanceHelper(
                         mBraveWalletPanelServices.getAssetRatioService(),
                         mBraveWalletPanelServices.getJsonRpcService());
-                String chainSymbol = "ETH";
-                int chainDecimals = 18;
+                BlockchainToken nativeAsset = Utils.makeNetworkAsset(selectedNetwork);
+                final String chainId = selectedNetwork.chainId;
+                String chainSymbol = nativeAsset.symbol;
+                int chainDecimals = nativeAsset.decimals;
                 for (NetworkInfo chain : chains) {
                     if (chainId.equals(chain.chainId) && Utils.isCustomNetwork(chainId)) {
                         chainSymbol = chain.symbol;
