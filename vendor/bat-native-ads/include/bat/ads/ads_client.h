@@ -126,9 +126,8 @@ class ADS_EXPORT AdsClient {
   virtual void OnAdRewardsChanged() = 0;
 
   // Record a P2A (Privacy Preserving Anonymous) event with |value| for the
-  // specfied |name| and |type|.
+  // specfied |name|.
   virtual void RecordP2AEvent(const std::string& name,
-                              const mojom::P2AEventType type,
                               const std::string& value) = 0;
 
   // Log |training_instance|.

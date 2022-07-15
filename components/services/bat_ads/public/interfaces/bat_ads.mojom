@@ -67,7 +67,7 @@ interface BatAdsClient {
   GetBrowsingHistory(int32 max_count, int32 days_ago) => (array<url.mojom.Url> history);
   RunDBTransaction(ads.mojom.DBTransaction transaction) => (ads.mojom.DBCommandResponse response);
   OnAdRewardsChanged();
-  RecordP2AEvent(string name, ads.mojom.P2AEventType type, string value);
+  RecordP2AEvent(string name, string value);
   LogTrainingInstance(array<brave_federated.mojom.Covariate> training_instance);
   Log(string file, int32 line, int32 verbose_level, string message);
   SetBooleanPref(string path, bool value);

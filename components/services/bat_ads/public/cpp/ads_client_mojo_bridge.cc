@@ -171,9 +171,8 @@ void AdsClientMojoBridge::GetBrowsingHistory(
 }
 
 void AdsClientMojoBridge::RecordP2AEvent(const std::string& name,
-                                         const ads::mojom::P2AEventType type,
                                          const std::string& out_value) {
-  ads_client_->RecordP2AEvent(name, type, out_value);
+  ads_client_->RecordP2AEvent(name, out_value);
 }
 
 void AdsClientMojoBridge::LogTrainingInstance(

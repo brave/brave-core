@@ -17,12 +17,15 @@
 #include "bat/ads/internal/base/unittest/unittest_mock_util.h"
 #include "bat/ads/internal/creatives/notification_ads/creative_notification_ad_unittest_util.h"
 #include "bat/ads/internal/history/history_unittest_util.h"
+#include "bat/ads/internal/privacy/p2a/impressions/p2a_impression.h"
+#include "bat/ads/internal/privacy/p2a/opportunities/p2a_opportunity.h"
 #include "bat/ads/notification_ad_info.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
 using ::testing::_;
+using ::testing::Invoke;
 
 namespace ads {
 
@@ -49,6 +52,11 @@ class BatAdsNotificationAdForMobileIntegrationTest : public UnitTestBase {
 
   void ServeNextAd() {
     ASSERT_TRUE(IsServingAdAtRegularIntervals());
+
+    const std::string name =
+        privacy::p2a::GetAdOpportunityNameForAdType(AdType::kNotificationAd);
+    EXPECT_CALL(*ads_client_mock_, RecordP2AEvent(name, _));
+
     const base::Time serve_ad_at =
         ClientStateManager::GetInstance()->GetServeAdAt();
     FastForwardClockTo(serve_ad_at);
@@ -62,7 +70,7 @@ class BatAdsNotificationAdForMobileIntegrationTest : public UnitTestBase {
 TEST_F(BatAdsNotificationAdForMobileIntegrationTest, ServeAtRegularIntervals) {
   // Arrange
   EXPECT_CALL(*ads_client_mock_, ShowNotification)
-      .WillOnce(testing::Invoke([=](const NotificationAdInfo& ad) {
+      .WillOnce(Invoke([=](const NotificationAdInfo& ad) {
         ASSERT_TRUE(
             NotificationAdManager::GetInstance()->Exists(ad.placement_id));
       }));
@@ -93,7 +101,7 @@ TEST_F(BatAdsNotificationAdForMobileIntegrationTest,
 TEST_F(BatAdsNotificationAdForMobileIntegrationTest, TriggerServedEvent) {
   // Arrange
   EXPECT_CALL(*ads_client_mock_, ShowNotification)
-      .WillOnce(testing::Invoke([=](const NotificationAdInfo& ad) {
+      .WillOnce(Invoke([=](const NotificationAdInfo& ad) {
         ASSERT_TRUE(
             NotificationAdManager::GetInstance()->Exists(ad.placement_id));
 
@@ -116,7 +124,7 @@ TEST_F(BatAdsNotificationAdForMobileIntegrationTest, TriggerServedEvent) {
 TEST_F(BatAdsNotificationAdForMobileIntegrationTest, TriggerViewedEvent) {
   // Arrange
   EXPECT_CALL(*ads_client_mock_, ShowNotification)
-      .WillOnce(testing::Invoke([=](const NotificationAdInfo& ad) {
+      .WillOnce(Invoke([=](const NotificationAdInfo& ad) {
         ASSERT_TRUE(
             NotificationAdManager::GetInstance()->Exists(ad.placement_id));
 
@@ -133,17 +141,20 @@ TEST_F(BatAdsNotificationAdForMobileIntegrationTest, TriggerViewedEvent) {
         EXPECT_EQ(1, GetTransactionCount());
       }));
 
+  const std::string name =
+      privacy::p2a::GetAdImpressionNameForAdType(AdType::kNotificationAd);
+  EXPECT_CALL(*ads_client_mock_, RecordP2AEvent(name, _));
+
   ServeNextAd();
 }
 
 TEST_F(BatAdsNotificationAdForMobileIntegrationTest, TriggerClickedEvent) {
   // Arrange
   EXPECT_CALL(*ads_client_mock_, ShowNotification)
-      .WillOnce(testing::Invoke([=](const NotificationAdInfo& ad) {
+      .WillOnce(Invoke([=](const NotificationAdInfo& ad) {
         ASSERT_TRUE(
             NotificationAdManager::GetInstance()->Exists(ad.placement_id));
-        EXPECT_CALL(*ads_client_mock_, CloseNotification(ad.placement_id))
-            .Times(1);
+        EXPECT_CALL(*ads_client_mock_, CloseNotification(ad.placement_id));
 
         // Act
         GetAds()->TriggerNotificationAdEvent(
@@ -156,13 +167,15 @@ TEST_F(BatAdsNotificationAdForMobileIntegrationTest, TriggerClickedEvent) {
         EXPECT_EQ(1, GetTransactionCount());
       }));
 
+  EXPECT_CALL(*ads_client_mock_, LogTrainingInstance(_));
+
   ServeNextAd();
 }
 
 TEST_F(BatAdsNotificationAdForMobileIntegrationTest, TriggerDismissedEvent) {
   // Arrange
   EXPECT_CALL(*ads_client_mock_, ShowNotification)
-      .WillOnce(testing::Invoke([=](const NotificationAdInfo& ad) {
+      .WillOnce(Invoke([=](const NotificationAdInfo& ad) {
         ASSERT_TRUE(
             NotificationAdManager::GetInstance()->Exists(ad.placement_id));
 
@@ -179,13 +192,15 @@ TEST_F(BatAdsNotificationAdForMobileIntegrationTest, TriggerDismissedEvent) {
         EXPECT_EQ(1, GetTransactionCount());
       }));
 
+  EXPECT_CALL(*ads_client_mock_, LogTrainingInstance(_));
+
   ServeNextAd();
 }
 
 TEST_F(BatAdsNotificationAdForMobileIntegrationTest, TriggerTimedOutEvent) {
   // Arrange
   EXPECT_CALL(*ads_client_mock_, ShowNotification)
-      .WillOnce(testing::Invoke([=](const NotificationAdInfo& ad) {
+      .WillOnce(Invoke([=](const NotificationAdInfo& ad) {
         ASSERT_TRUE(
             NotificationAdManager::GetInstance()->Exists(ad.placement_id));
 
@@ -199,6 +214,8 @@ TEST_F(BatAdsNotificationAdForMobileIntegrationTest, TriggerTimedOutEvent) {
         EXPECT_EQ(0, GetHistoryItemCount());
         EXPECT_EQ(0, GetTransactionCount());
       }));
+
+  EXPECT_CALL(*ads_client_mock_, LogTrainingInstance(_));
 
   ServeNextAd();
 }

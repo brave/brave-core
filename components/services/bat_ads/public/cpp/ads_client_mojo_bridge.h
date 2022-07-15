@@ -81,7 +81,6 @@ class AdsClientMojoBridge
                           GetBrowsingHistoryCallback callback) override;
 
   void RecordP2AEvent(const std::string& name,
-                      const ads::mojom::P2AEventType type,
                       const std::string& out_value) override;
 
   void LogTrainingInstance(std::vector<brave_federated::mojom::CovariatePtr>

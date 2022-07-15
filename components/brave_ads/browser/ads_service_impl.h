@@ -451,7 +451,6 @@ class AdsServiceImpl : public AdsService,
   void OnAdRewardsChanged() override;
 
   void RecordP2AEvent(const std::string& name,
-                      const ads::mojom::P2AEventType type,
                       const std::string& value) override;
 
   void LogTrainingInstance(std::vector<brave_federated::mojom::CovariatePtr>

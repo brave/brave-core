@@ -86,10 +86,6 @@ enum SearchResultAdEventType {
   kClicked
 };
 
-enum P2AEventType {
-  kListType = 0
-};
-
 enum UrlRequestMethod {
   kGet = 0,
   kPut,

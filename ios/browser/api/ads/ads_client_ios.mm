@@ -197,9 +197,8 @@ bool AdsClientIOS::HasPrefPath(const std::string& path) const {
 }
 
 void AdsClientIOS::RecordP2AEvent(const std::string& name,
-                                  const ads::mojom::P2AEventType type,
                                   const std::string& value) {
-  [bridge_ recordP2AEvent:name type:type value:value];
+  [bridge_ recordP2AEvent:name value:value];
 }
 
 void AdsClientIOS::LogTrainingInstance(

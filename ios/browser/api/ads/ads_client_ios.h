@@ -79,7 +79,6 @@ class AdsClientIOS : public ads::AdsClient {
   void ClearPref(const std::string& path) override;
   bool HasPrefPath(const std::string& path) const override;
   void RecordP2AEvent(const std::string& name,
-                      const ads::mojom::P2AEventType type,
                       const std::string& value) override;
   void LogTrainingInstance(
       const std::vector<brave_federated::mojom::CovariatePtr> training_instance)
