@@ -292,12 +292,12 @@ constexpr char kUseDevUpdaterUrlDescription[] =
 constexpr char kBraveTranslateGoName[] =
     "Enable internal translate engine (brave-translate-go)";
 constexpr char kBraveTranslateGoDescription[] =
-    "For Android also enable `translate` flag. Enable internal translate engine, which are build on top of client engine "
+    "For Android also enable `translate` flag. Enable internal translate "
+    "engine, which are build on top of client engine "
     "and brave translation backed. Also disables suggestions to install google "
     "translate extension.";
 
-constexpr char kTranslateName[] =
-    "Enable Chromium Translate feature";
+constexpr char kTranslateName[] = "Enable Chromium Translate feature";
 constexpr char kTranslateDescription[] =
     "Should be used with brave-translate-go, see the description here.";
 
