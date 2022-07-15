@@ -263,7 +263,22 @@ BravePrepopulatedEngineID GetDefaultSearchEngine(int country_id, int version) {
           {country_codes::CountryCharsToCountryID('U', 'Z'),
            PREPOPULATED_ENGINE_ID_YANDEX},
       });
-
+  static const base::NoDestructor<
+      base::flat_map<int, BravePrepopulatedEngineID>>
+      content_v20({
+          {country_codes::CountryCharsToCountryID('A', 'T'),
+           PREPOPULATED_ENGINE_ID_BRAVE},
+          {country_codes::CountryCharsToCountryID('E', 'S'),
+           PREPOPULATED_ENGINE_ID_BRAVE},
+          {country_codes::CountryCharsToCountryID('M', 'X'),
+           PREPOPULATED_ENGINE_ID_BRAVE},
+      });
+  if (version > 19) {
+    auto it = content_v20->find(country_id);
+    if (it != content_v20->end()) {
+      return it->second;
+    }
+  }
   if (version > 16) {
     auto it = content_v17->find(country_id);
     if (it == content_v17->end()) {
