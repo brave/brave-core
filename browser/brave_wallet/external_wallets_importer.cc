@@ -50,11 +50,7 @@ void OnRunWithStorage(base::OnceCallback<void(base::Value::Dict)> callback,
                       ValueStore* storage) {
   DCHECK(IsOnBackendSequence());
   DCHECK(storage);
-  auto current_settings = storage->Get().PassSettings();
-  if (current_settings)
-    std::move(callback).Run(std::move(*current_settings->GetIfDict()));
-  else
-    std::move(callback).Run(base::Value::Dict());
+  std::move(callback).Run(storage->Get().PassSettings());
 }
 
 std::string GetLegacyCryptoWalletsPassword(const std::string& password,
