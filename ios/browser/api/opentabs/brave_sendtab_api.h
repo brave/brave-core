@@ -58,6 +58,8 @@ OBJC_EXPORT
 
 - (NSArray<IOSSendTabTargetDevice*>*)getListOfSyncedDevices;
 
+- (void)sendActiveTabToDevice:(NSString*)deviceID tabTitle:(NSString*)tabTitle activeURL:(NSURL*)activeURL;
+ 
 @end
 
 NS_ASSUME_NONNULL_END

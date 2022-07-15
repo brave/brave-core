@@ -92,6 +92,9 @@ TargetDeviceType DeviceTypeFromSyncDeviceType(
   // The list of devices with thier names, cache_guids, device types,
   // and active times.
   std::vector<send_tab_to_self::TargetDeviceInfo> target_device_list_;
+
+  // Model to send current tab to other devices
+  send_tab_to_self::SendTabToSelfModel* send_tab_to_self_model_;
 }
 @end
 
@@ -137,6 +140,16 @@ TargetDeviceType DeviceTypeFromSyncDeviceType(
   }
   
   return [targetDeviceList copy];
+}
+
+- (void)sendActiveTabToDevice:(NSString*)deviceID tabTitle:(NSString*)tabTitle activeURL:(NSURL*)activeURL {
+  send_tab_to_self_model_ = sendtab_sync_service_->GetSendTabToSelfModel();
+
+  GURL url = net::GURLWithNSURL(activeURL); 
+  std::string title = base::SysNSStringToUTF8(tabTitle);
+  std::string target_device = base::SysNSStringToUTF8(deviceID);
+
+  send_tab_to_self_model_->AddEntry(url, title, target_device);
 }
 
 @end
