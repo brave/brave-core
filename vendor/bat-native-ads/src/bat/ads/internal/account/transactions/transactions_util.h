@@ -18,8 +18,6 @@ TransactionList GetTransactionsForDateRange(const TransactionList& transactions,
                                             const base::Time from_time,
                                             const base::Time to_time);
 
-double GetEarningsForTransactions(const TransactionList& transactions);
-
 }  // namespace ads
 
 #endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ACCOUNT_TRANSACTIONS_TRANSACTIONS_UTIL_H_
