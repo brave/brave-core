@@ -121,13 +121,16 @@ module.exports = async function (env, argv) {
           loader: 'file-loader'
         },
         {
-            test: /htmlparser2\/lib\/esm\/index\.js$/,
-            use: [{
-                 loader: "babel-loader", // This should be the last loader of course
-                 options: {
-                      plugins: ["@babel/plugin-proposal-export-namespace-from"]
-                 }
-            }]
+          test: (input) => {
+            console.error('>>>>', input);
+            return input.endsWith('htmlparser2/lib/esm/index.js');
+          },
+          use: [{
+            loader: "babel-loader", // This should be the last loader of course
+            options: {
+              plugins: ["@babel/plugin-proposal-export-namespace-from"]
+            }
+          }]
         },
       ]
     },
