@@ -12,7 +12,6 @@
 #include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
 #include "base/time/time.h"
-#include "bat/ads/internal/user_interaction/user_activity/user_activity_trigger_info.h"
 
 namespace ads {
 

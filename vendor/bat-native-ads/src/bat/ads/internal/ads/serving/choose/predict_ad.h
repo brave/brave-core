@@ -8,7 +8,7 @@
 
 #include <vector>
 
-#include "bat/ads/internal/ads/serving/choose/ad_predictor_aliases.h"
+#include "bat/ads/internal/ads/serving/choose/ad_predictor_info.h"
 #include "bat/ads/internal/ads/serving/choose/eligible_ads_predictor_util.h"
 #include "bat/ads/internal/ads/serving/choose/sample_ads.h"
 #include "bat/ads/internal/ads/serving/eligible_ads/pacing/pacing.h"

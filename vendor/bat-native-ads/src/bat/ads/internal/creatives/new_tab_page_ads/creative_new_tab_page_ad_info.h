@@ -7,9 +7,10 @@
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_CREATIVES_NEW_TAB_PAGE_ADS_CREATIVE_NEW_TAB_PAGE_AD_INFO_H_
 
 #include <string>
+#include <vector>
 
 #include "bat/ads/internal/creatives/creative_ad_info.h"
-#include "bat/ads/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_wallpaper_info_aliases.h"
+#include "bat/ads/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_wallpaper_info.h"
 #include "url/gurl.h"
 
 namespace ads {
@@ -29,6 +30,8 @@ struct CreativeNewTabPageAdInfo final : CreativeAdInfo {
   std::string alt;
   CreativeNewTabPageAdWallpaperList wallpapers;
 };
+
+using CreativeNewTabPageAdList = std::vector<CreativeNewTabPageAdInfo>;
 
 }  // namespace ads
 

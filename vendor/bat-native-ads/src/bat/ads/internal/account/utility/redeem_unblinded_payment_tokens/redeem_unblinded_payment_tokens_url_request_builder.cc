@@ -15,7 +15,6 @@
 #include "bat/ads/internal/privacy/challenge_bypass_ristretto/token_preimage.h"
 #include "bat/ads/internal/privacy/challenge_bypass_ristretto/verification_key.h"
 #include "bat/ads/internal/privacy/challenge_bypass_ristretto/verification_signature.h"
-#include "bat/ads/internal/privacy/tokens/unblinded_payment_tokens/unblinded_payment_token_info.h"
 #include "bat/ads/internal/server/headers/via_header_util.h"
 #include "bat/ads/internal/server/url/hosts/server_host_util.h"
 #include "url/gurl.h"

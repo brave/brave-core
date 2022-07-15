@@ -13,10 +13,6 @@
 #include "bat/ads/internal/database/database_manager_observer.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
 
-namespace base {
-class TimeDelta;
-}  // namespace base
-
 namespace ads {
 
 struct CatalogInfo;

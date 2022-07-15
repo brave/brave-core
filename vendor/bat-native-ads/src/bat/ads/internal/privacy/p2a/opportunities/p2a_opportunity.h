@@ -8,7 +8,7 @@
 
 #include <string>
 
-#include "bat/ads/internal/segments/segments_aliases.h"
+#include "bat/ads/internal/segments/segment_alias.h"
 
 namespace ads {
 

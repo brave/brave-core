@@ -9,7 +9,7 @@
 #include "base/memory/raw_ptr.h"
 #include "bat/ads/ad_info.h"
 #include "bat/ads/internal/ads/serving/eligible_ads/eligible_ads_callback.h"
-#include "bat/ads/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_info_aliases.h"
+#include "bat/ads/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_info.h"
 
 namespace ads {
 

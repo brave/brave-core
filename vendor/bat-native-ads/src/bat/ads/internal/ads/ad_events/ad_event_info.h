@@ -7,6 +7,7 @@
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ADS_AD_EVENTS_AD_EVENT_INFO_H_
 
 #include <string>
+#include <vector>
 
 #include "base/time/time.h"
 #include "bat/ads/ad_type.h"
@@ -29,6 +30,8 @@ struct AdEventInfo final {
   std::string advertiser_id;
   base::Time created_at;
 };
+
+using AdEventList = std::vector<AdEventInfo>;
 
 }  // namespace ads
 

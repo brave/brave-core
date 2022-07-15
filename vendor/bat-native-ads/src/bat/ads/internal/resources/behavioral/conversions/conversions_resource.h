@@ -9,7 +9,6 @@
 #include <memory>
 
 #include "base/memory/weak_ptr.h"
-#include "bat/ads/internal/resources/behavioral/conversions/conversion_id_pattern_info_aliases.h"
 #include "bat/ads/internal/resources/parsing_result.h"
 
 namespace ads {

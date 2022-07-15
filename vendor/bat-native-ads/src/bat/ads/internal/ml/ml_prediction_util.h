@@ -6,7 +6,7 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ML_ML_PREDICTION_UTIL_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ML_ML_PREDICTION_UTIL_H_
 
-#include "bat/ads/internal/ml/ml_aliases.h"
+#include "bat/ads/internal/ml/ml_alias.h"
 
 namespace ads {
 namespace ml {

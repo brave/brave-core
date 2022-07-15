@@ -12,7 +12,7 @@
 #include "bat/ads/internal/account/wallet/wallet_info.h"
 #include "bat/ads/internal/base/timer/backoff_timer.h"
 #include "bat/ads/internal/base/timer/timer.h"
-#include "bat/ads/internal/privacy/tokens/unblinded_payment_tokens/unblinded_payment_token_info_aliases.h"
+#include "bat/ads/internal/privacy/tokens/unblinded_payment_tokens/unblinded_payment_token_info.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
 
 namespace base {

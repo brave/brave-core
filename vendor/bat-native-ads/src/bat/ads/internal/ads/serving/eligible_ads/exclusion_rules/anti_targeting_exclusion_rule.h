@@ -8,13 +8,11 @@
 
 #include <string>
 
-#include "bat/ads/internal/ads/serving/eligible_ads/exclusion_rules/exclusion_rule_aliases.h"
+#include "bat/ads/internal/ads/serving/eligible_ads/exclusion_rules/exclusion_rule_alias.h"
 #include "bat/ads/internal/ads/serving/eligible_ads/exclusion_rules/exclusion_rule_interface.h"
 #include "bat/ads/internal/resources/behavioral/anti_targeting/anti_targeting_info.h"
 
 namespace ads {
-
-struct CreativeAdInfo;
 
 namespace resource {
 class AntiTargeting;

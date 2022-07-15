@@ -22,14 +22,13 @@
 #include "bat/ads/internal/base/logging_util.h"
 #include "bat/ads/internal/base/time/time_formatting_util.h"
 #include "bat/ads/internal/creatives/campaigns_database_table.h"
-#include "bat/ads/internal/creatives/creative_ad_info_aliases.h"
+#include "bat/ads/internal/creatives/creative_ad_info.h"
 #include "bat/ads/internal/creatives/creative_ads_database_table.h"
 #include "bat/ads/internal/creatives/dayparts_database_table.h"
 #include "bat/ads/internal/creatives/geo_targets_database_table.h"
-#include "bat/ads/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_info.h"
 #include "bat/ads/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_wallpapers_database_table.h"
 #include "bat/ads/internal/creatives/segments_database_table.h"
-#include "bat/ads/internal/segments/segments_util.h"
+#include "bat/ads/internal/segments/segment_util.h"
 #include "url/gurl.h"
 
 namespace ads {

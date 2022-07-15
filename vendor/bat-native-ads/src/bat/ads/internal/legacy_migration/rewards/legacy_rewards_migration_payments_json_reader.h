@@ -8,7 +8,7 @@
 
 #include <string>
 
-#include "bat/ads/internal/legacy_migration/rewards/payment_info_aliases.h"
+#include "bat/ads/internal/legacy_migration/rewards/payment_info.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ads {

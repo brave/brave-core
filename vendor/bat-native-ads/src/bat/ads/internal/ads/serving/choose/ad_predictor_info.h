@@ -6,7 +6,10 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ADS_SERVING_CHOOSE_AD_PREDICTOR_INFO_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ADS_SERVING_CHOOSE_AD_PREDICTOR_INFO_H_
 
-#include "bat/ads/internal/segments/segments_aliases.h"
+#include <map>
+#include <string>
+
+#include "bat/ads/internal/segments/segment_alias.h"
 
 namespace ads {
 
@@ -27,6 +30,9 @@ struct AdPredictorInfo final {
   int advertiser_last_seen_hours_ago = 0;
   double score = 0.0;
 };
+
+template <typename T>
+using CreativeAdPredictorMap = std::map<std::string, AdPredictorInfo<T>>;
 
 }  // namespace ads
 

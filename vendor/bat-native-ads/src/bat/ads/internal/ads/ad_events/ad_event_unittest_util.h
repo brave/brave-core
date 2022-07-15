@@ -8,8 +8,6 @@
 
 #include <string>
 
-#include "bat/ads/internal/ads/ad_events/ad_event_info_aliases.h"
-
 namespace base {
 class Time;
 }  // namespace base

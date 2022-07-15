@@ -7,6 +7,7 @@
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ACCOUNT_CONFIRMATIONS_CONFIRMATION_INFO_H_
 
 #include <string>
+#include <vector>
 
 #include "base/time/time.h"
 #include "bat/ads/ad_type.h"
@@ -41,6 +42,8 @@ struct ConfirmationInfo final {
   base::Time created_at;
   bool was_created = false;
 };
+
+using ConfirmationList = std::vector<ConfirmationInfo>;
 
 }  // namespace ads
 

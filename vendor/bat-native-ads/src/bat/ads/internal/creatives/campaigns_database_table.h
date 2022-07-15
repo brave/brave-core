@@ -9,7 +9,7 @@
 #include <string>
 
 #include "bat/ads/ads_client_callback.h"
-#include "bat/ads/internal/creatives/creative_ad_info_aliases.h"
+#include "bat/ads/internal/creatives/creative_ad_info.h"
 #include "bat/ads/internal/database/database_table_interface.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
 

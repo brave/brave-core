@@ -6,7 +6,6 @@
 #include "bat/ads/internal/creatives/notification_ads/creative_notification_ads_database_util.h"
 
 #include "bat/ads/internal/base/logging_util.h"
-#include "bat/ads/internal/creatives/notification_ads/creative_notification_ad_info.h"
 #include "bat/ads/internal/creatives/notification_ads/creative_notification_ads_database_table.h"
 
 namespace ads {

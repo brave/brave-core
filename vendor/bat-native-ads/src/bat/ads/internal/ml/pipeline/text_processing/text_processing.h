@@ -10,7 +10,7 @@
 #include <memory>
 #include <string>
 
-#include "bat/ads/internal/ml/ml_aliases.h"
+#include "bat/ads/internal/ml/ml_alias.h"
 #include "bat/ads/internal/ml/model/linear/linear.h"
 
 namespace base {
