@@ -54,6 +54,19 @@ function createSectionElement (sectionName, titleName, childName, childAttribute
   `
 }
 
+/**
+ * Creates a settings-toggle-button element and returns it.
+ * @param {string} pref - preference path to handle by toggle
+ * @param {string} label - label for the element
+ * @returns {Element}
+ */
+ function createToggleButtonElement (pref, label) {
+  return html`
+    <settings-toggle-button class="cr-row" pref="{{${pref}}}" label="${loadTimeData.getString(label)}">
+    </settings-toggle-button>
+  `
+}
+
 RegisterStyleOverride(
   'settings-basic-page',
   html`
@@ -240,6 +253,10 @@ RegisterPolymerTemplateModifications({
       // Move help tips after downloads
       const sectionDownloads = getSectionElement(advancedSubSectionsTemplate.content, 'downloads')
       sectionDownloads.insertAdjacentElement('afterend', sectionHelpTips)
+      // Add an element to Chromium's system section
+      const buttonElement = createToggleButtonElement("prefs.brave.enable_closing_last_tab", "braveHelpTipsClosingLastTab")
+      const sectionSystem = getSectionElement(advancedSubSectionsTemplate.content, 'system')
+      sectionSystem.appendChild(buttonElement)
     }
   }
 })
