@@ -119,7 +119,17 @@ module.exports = async function (env, argv) {
         {
           test: /\.(ttf|eot|ico|svg|png|jpg|jpeg|gif)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
           loader: 'file-loader'
-        }]
+        },
+        {
+            test: /htmlparser2\/lib\/esm\/index\.js$/,
+            use: [{
+                 loader: "babel-loader", // This should be the last loader of course
+                 options: {
+                      plugins: ["@babel/plugin-proposal-export-namespace-from"]
+                 }
+            }]
+        },
+      ]
     },
     node: {
       fs: 'empty'
