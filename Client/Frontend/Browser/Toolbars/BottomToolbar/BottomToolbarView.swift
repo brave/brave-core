@@ -54,6 +54,8 @@ class BottomToolbarView: UIView, ToolbarProtocol {
         self?.updateColors(PrivateBrowsingManager.shared.isPrivateBrowsing)
       }
       .store(in: &cancellables)
+    
+    helper?.updateForTraitCollection(traitCollection)
   }
 
   private var privateModeCancellable: AnyCancellable?
@@ -89,6 +91,11 @@ class BottomToolbarView: UIView, ToolbarProtocol {
       make.bottom.equalTo(self.safeArea.bottom)
     }
     super.updateConstraints()
+  }
+  
+  override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+    super.traitCollectionDidChange(previousTraitCollection)
+    helper?.updateForTraitCollection(traitCollection)
   }
 
   private func setupAccessibility() {

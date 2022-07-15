@@ -1,5 +1,5 @@
 <svg width="3300" height="2200" viewBox="0 0 3300 2200" fill="none" xmlns="http://www.w3.org/2000/svg">
-<g id="brave.plus">
+<g id="brave.circle.refresh">
 <g id="Notes">
 <path id="artboard" d="M3300 0H0V2200H3300V0Z" fill="white"/>
 <path id="Vector" d="M263 292H3036" stroke="black" stroke-width="0.5"/>
@@ -45,7 +45,7 @@
 <text id="design is preserved when submitting to Xcode." fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="13" letter-spacing="0em"><tspan x="1289" y="1988.73">design is preserved when submitting to Xcode.</tspan></text>
 <text id="template-version" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="13" letter-spacing="0em"><tspan x="2946" y="1932.73">Template v.3.0</tspan></text>
 <text id="Requires Xcode 13 or greater" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="13" letter-spacing="0em"><tspan x="2857" y="1950.73">Requires Xcode 13 or greater</tspan></text>
-<text id="descriptive-name" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="13" letter-spacing="0em"><tspan x="2910" y="1968.73">Generated from plus</tspan></text>
+<text id="descriptive-name" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="13" letter-spacing="0em"><tspan x="2902" y="1968.73">Generated from circle</tspan></text>
 <text id="Typeset at 100 points" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="13" letter-spacing="0em"><tspan x="2903" y="1986.73">Typeset at 100 points</tspan></text>
 <text id="Small" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="13" letter-spacing="0em"><tspan x="263" y="725.727">Small</tspan></text>
 <text id="Medium_2" fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="13" letter-spacing="0em"><tspan x="263" y="1155.73">Medium</tspan></text>
@@ -67,18 +67,18 @@
 </g>
 <path id="Baseline-L" d="M263 1556H3036" stroke="#27AAE1" stroke-width="0.5"/>
 <path id="Capline-L" d="M263 1485.54H3036" stroke="#27AAE1" stroke-width="0.5"/>
-<path id="left-margin-Regular-M" d="M1397.12 1030.79V1150.12" stroke="#00AEEF" stroke-width="0.5"/>
-<path id="right-margin-Regular-M" d="M1502.57 1030.79V1150.12" stroke="#00AEEF" stroke-width="0.5"/>
+<path id="left-margin-Regular-M" d="M1391.32 1030.79V1150.12" stroke="#00AEEF" stroke-width="0.5"/>
+<path id="right-margin-Regular-M" d="M1508.37 1030.79V1150.12" stroke="#00AEEF" stroke-width="0.5"/>
 </g>
 <g id="Symbols">
 <g id="Regular-L">
-<path id="Path" d="M1501.79 1525.49H1454.49V1572.79C1454.49 1575.4 1452.37 1577.52 1449.76 1577.52C1447.15 1577.52 1445.03 1575.4 1445.03 1572.79V1525.49H1397.73C1395.12 1525.49 1393 1523.37 1393 1520.76C1393 1518.15 1395.12 1516.03 1397.73 1516.03H1445.03V1468.73C1445.03 1466.12 1447.15 1464 1449.76 1464C1452.37 1464 1454.49 1466.12 1454.49 1468.73V1516.03H1501.79C1504.4 1516.03 1506.52 1518.15 1506.52 1520.76C1506.52 1523.37 1504.4 1525.49 1501.79 1525.49Z" fill="black"/>
+<path id="Union" fill-rule="evenodd" clip-rule="evenodd" d="M1507.71 1492.57C1514.92 1494.72 1520.16 1501.37 1520.16 1509.25C1520.16 1518.86 1512.33 1526.66 1502.66 1526.66C1492.99 1526.66 1485.16 1518.86 1485.16 1509.25C1485.16 1502.37 1489.16 1496.43 1494.97 1493.6C1485.67 1478.49 1468.93 1468.61 1450.16 1468.61C1421.17 1468.61 1397.67 1492 1397.67 1520.86C1397.67 1549.71 1421.17 1573.1 1450.16 1573.1C1464.75 1573.1 1478.37 1567.16 1488.22 1556.84C1490.44 1554.52 1494.14 1554.42 1496.47 1556.63C1498.81 1558.84 1498.9 1562.51 1496.68 1564.84C1484.65 1577.44 1467.98 1584.71 1450.16 1584.71C1414.73 1584.71 1386 1556.12 1386 1520.86C1386 1485.59 1414.73 1457 1450.16 1457C1475.13 1457 1497.14 1471.29 1507.71 1492.57Z" fill="black"/>
 </g>
 <g id="Regular-M">
-<path id="Path_2" d="M1490.44 1094.67H1453.78V1131.33C1453.78 1133.36 1452.13 1135 1450.11 1135C1448.09 1135 1446.44 1133.36 1446.44 1131.33V1094.67H1409.78C1407.75 1094.67 1406.11 1093.02 1406.11 1091C1406.11 1088.98 1407.75 1087.33 1409.78 1087.33H1446.44V1050.67C1446.44 1048.64 1448.09 1047 1450.11 1047C1452.13 1047 1453.78 1048.64 1453.78 1050.67V1087.33H1490.44C1492.47 1087.33 1494.11 1088.98 1494.11 1091C1494.11 1093.02 1492.47 1094.67 1490.44 1094.67Z" fill="black"/>
+<path id="Union_2" fill-rule="evenodd" clip-rule="evenodd" d="M1494.35 1068.57C1499.93 1070.24 1504 1075.4 1504 1081.5C1504 1088.95 1497.93 1095 1490.43 1095C1482.94 1095 1476.87 1088.95 1476.87 1081.5C1476.87 1076.17 1479.97 1071.57 1484.47 1069.37C1477.27 1057.66 1464.29 1050 1449.74 1050C1427.26 1050 1409.04 1068.13 1409.04 1090.5C1409.04 1112.87 1427.26 1131 1449.74 1131C1461.05 1131 1471.61 1126.39 1479.24 1118.39C1480.96 1116.59 1483.83 1116.52 1485.64 1118.23C1487.45 1119.94 1487.52 1122.79 1485.8 1124.59C1476.47 1134.36 1463.55 1140 1449.74 1140C1422.27 1140 1400 1117.84 1400 1090.5C1400 1063.16 1422.27 1041 1449.74 1041C1469.09 1041 1486.16 1052.08 1494.35 1068.57Z" fill="black"/>
 </g>
 <g id="Regular-S">
-<path id="Path_3" d="M1481.17 663.833H1452.83V692.167C1452.83 693.731 1451.56 695 1450 695C1448.44 695 1447.17 693.731 1447.17 692.167V663.833H1418.83C1417.27 663.833 1416 662.564 1416 661C1416 659.436 1417.27 658.167 1418.83 658.167H1447.17V629.833C1447.17 628.269 1448.44 627 1450 627C1451.56 627 1452.83 628.269 1452.83 629.833V658.167H1481.17C1482.73 658.167 1484 659.436 1484 661C1484 662.564 1482.73 663.833 1481.17 663.833Z" fill="black"/>
+<path id="Union_3" fill-rule="evenodd" clip-rule="evenodd" d="M1484.87 643.588C1489.25 644.897 1492.43 648.934 1492.43 653.712C1492.43 659.549 1487.68 664.282 1481.81 664.282C1475.94 664.282 1471.19 659.549 1471.19 653.712C1471.19 649.54 1473.62 645.933 1477.14 644.214C1471.5 635.044 1461.34 629.047 1449.95 629.047C1432.35 629.047 1418.08 643.245 1418.08 660.758C1418.08 678.272 1432.35 692.47 1449.95 692.47C1458.8 692.47 1467.07 688.863 1473.05 682.6C1474.39 681.189 1476.64 681.133 1478.05 682.473C1479.47 683.814 1479.53 686.044 1478.18 687.454C1470.88 695.103 1460.76 699.517 1449.95 699.517C1428.44 699.517 1411 682.164 1411 660.758C1411 639.353 1428.44 622 1449.95 622C1465.1 622 1478.46 630.675 1484.87 643.588Z" fill="black"/>
 </g>
 </g>
 </g>

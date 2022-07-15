@@ -265,7 +265,7 @@ extension BrowserViewController: PlaylistHelperDelegate {
 
           let pulseAnimation = RadialPulsingAnimation(ringCount: 3)
           pulseAnimation.present(
-            icon: UIImage(named: "welcome-view-playlist-button-icon", in: .current, compatibleWith: nil)!,
+            icon: self.topToolbar.locationView.playlistButton.snapshot,
             from: self.topToolbar.locationView.playlistButton,
             on: popover,
             browser: self)

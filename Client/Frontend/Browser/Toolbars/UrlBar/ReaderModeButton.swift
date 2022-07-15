@@ -3,6 +3,7 @@
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import UIKit
+import DesignSystem
 
 class ReaderModeButton: UIButton {
   var selectedTintColor: UIColor?
@@ -11,7 +12,8 @@ class ReaderModeButton: UIButton {
   override init(frame: CGRect) {
     super.init(frame: frame)
     adjustsImageWhenHighlighted = false
-    setImage(UIImage(named: "reader", in: .current, compatibleWith: nil)!.template, for: .normal)
+    setImage(UIImage(braveSystemNamed: "brave.text.alignleft"), for: .normal)
+    updateIconSize()
   }
 
   @available(*, unavailable)
@@ -42,7 +44,24 @@ class ReaderModeButton: UIButton {
   }
 
   private var _readerModeState: ReaderModeState = .unavailable
-
+  
+  override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+    super.traitCollectionDidChange(previousTraitCollection)
+    updateIconSize()
+  }
+  
+  private func updateIconSize() {
+    let sizeCategory = traitCollection.toolbarButtonContentSizeCategory
+    let pointSize = UIFont.preferredFont(
+      forTextStyle: .body,
+      compatibleWith: .init(preferredContentSizeCategory: sizeCategory)
+    ).pointSize
+    setPreferredSymbolConfiguration(
+      .init(pointSize: pointSize, weight: .regular, scale: .large),
+      forImageIn: .normal
+    )
+  }
+  
   var readerModeState: ReaderModeState {
     get {
       return _readerModeState

@@ -33,9 +33,11 @@ class WalletURLBarButton: UIButton {
     super.init(frame: frame)
     
     adjustsImageWhenHighlighted = false
-    setImage(UIImage(named: "menu-crypto", in: .current, compatibleWith: nil)!.template, for: .normal)
+    setImage(UIImage(braveSystemNamed: "brave.wallet"), for: .normal)
     imageView?.contentMode = .scaleAspectFit
     imageEdgeInsets = .init(top: 3, left: 3, bottom: 3, right: 3)
+    
+    updateIconSize()
   }
   
   override open var isHighlighted: Bool {
@@ -60,10 +62,27 @@ class WalletURLBarButton: UIButton {
     if let imageView = imageView {
       badgeView.snp.makeConstraints { make in
         make.size.equalTo(badgeSize)
-        make.centerX.equalTo(imageView.snp.trailing)
-        make.top.equalTo(imageView.snp.top)
+        make.centerX.equalTo(imageView.snp.trailing).inset(badgeSize/4)
+        make.centerY.equalTo(imageView.snp.top).inset(badgeSize/4)
       }
     }
+  }
+  
+  override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+    super.traitCollectionDidChange(previousTraitCollection)
+    updateIconSize()
+  }
+  
+  private func updateIconSize() {
+    let sizeCategory = traitCollection.toolbarButtonContentSizeCategory
+    let pointSize = UIFont.preferredFont(
+      forTextStyle: .body,
+      compatibleWith: .init(preferredContentSizeCategory: sizeCategory)
+    ).pointSize
+    setPreferredSymbolConfiguration(
+      .init(pointSize: pointSize, weight: .regular, scale: .large),
+      forImageIn: .normal
+    )
   }
   
   override func layoutSubviews() {
