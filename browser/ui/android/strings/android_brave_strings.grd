@@ -1017,6 +1017,12 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_BRAVE_ANDROID_SYNC_DISABLED_DONT_SHOW" desc="The text on button on informer which is fired when Android system sync settings switch is toggled off, to disable informer">
         Don't show again
       </message>
+      <message name="IDS_BRAVE_SYNC_ACCOUNT_DELETED_INFOBAR_MESSAGE" desc="Message text shown to users who's Sync account was deleted">
+        This Brave Sync account was deleted. You can setup a new chain instead
+      </message>
+      <message name="IDS_BRAVE_SYNC_ACCOUNT_DELETED_INFOBAR_COMMAND" desc="Command text shown to users who's Sync account was disabled if they want to setup a new chain.">
+        Begin Setup
+      </message>
       <message name="IDS_SYNC_FINAL_WARNING_TITLE" desc="Sync final warning alert dialog title">
         Warning
       </message>
