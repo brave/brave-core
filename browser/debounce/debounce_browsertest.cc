@@ -164,6 +164,30 @@ IN_PROC_BROWSER_TEST_F(DebounceBrowserTest, Redirect) {
   NavigateToURLAndWaitForRedirects(original_url, landing_url);
 }
 
+IN_PROC_BROWSER_TEST_F(DebounceBrowserTest, BackForward) {
+  ASSERT_TRUE(InstallMockExtension());
+
+  // starting page for back/foward
+  GURL start_url = embedded_test_server()->GetURL("z.com", "/");
+  NavigateToURLAndWaitForRedirects(start_url, start_url);
+
+  // debounce
+  GURL base_url = embedded_test_server()->GetURL("simple.a.com", "/");
+  GURL landing_url = embedded_test_server()->GetURL("simple.b.com", "/");
+  GURL original_url = add_redirect_param(base_url, landing_url);
+  NavigateToURLAndWaitForRedirects(original_url, landing_url);
+
+  // back
+  web_contents()->GetController().GoBack();
+  WaitForLoadStop(web_contents());
+  EXPECT_EQ(web_contents()->GetLastCommittedURL(), start_url);
+
+  // forward
+  web_contents()->GetController().GoForward();
+  WaitForLoadStop(web_contents());
+  EXPECT_EQ(web_contents()->GetLastCommittedURL(), landing_url);
+}
+
 // Test base64-encoded redirection by query parameter.
 IN_PROC_BROWSER_TEST_F(DebounceBrowserTest, Base64Redirect) {
   ASSERT_TRUE(InstallMockExtension());
