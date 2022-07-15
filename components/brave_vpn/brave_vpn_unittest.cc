@@ -699,6 +699,7 @@ TEST_F(BraveVPNServiceTest, ConnectionInfoTest) {
   service_->SetSelectedRegion(mojom::Region().Clone());
   EXPECT_FALSE(GetConnectionInfo().IsValid());
 }
+
 TEST_F(BraveVPNServiceTest, NeedsConnectTest) {
   std::string env = skus::GetDefaultEnvironment();
   // Connection state can be changed with purchased.
@@ -899,8 +900,6 @@ TEST_F(BraveVPNServiceTest, ResumeAfterSuspend) {
   EXPECT_FALSE(needs_connect());
 }
 
-#endif
-
 TEST_F(BraveVPNServiceTest, CheckInitialPurchasedStateTest) {
   // Purchased state is not checked for fresh user.
   EXPECT_EQ(PurchasedState::NOT_PURCHASED, GetPurchasedStateSync());
@@ -911,6 +910,7 @@ TEST_F(BraveVPNServiceTest, CheckInitialPurchasedStateTest) {
   ResetVpnService();
   EXPECT_EQ(PurchasedState::LOADING, GetPurchasedStateSync());
 }
+#endif
 
 TEST_F(BraveVPNServiceTest, GetPurchasedStateSync) {
   std::string env = skus::GetDefaultEnvironment();
