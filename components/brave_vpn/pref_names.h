@@ -18,7 +18,7 @@ constexpr char kBraveVPNSelectedRegion[] =
     "brave.brave_vpn.selected_region_name";
 constexpr char kBraveVPNShowDNSPolicyWarningDialog[] =
     "brave.brave_vpn.show_dns_policy_warning_dialog";
-
+constexpr char kBraveVPNEEnvironment[] = "brave.brave_vpn.env";
 void RegisterProfilePrefs(PrefRegistrySimple* registry);
 
 }  // namespace prefs

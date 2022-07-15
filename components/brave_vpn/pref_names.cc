@@ -5,17 +5,22 @@
 
 #include "brave/components/brave_vpn/pref_names.h"
 
+#include "brave/components/skus/browser/skus_utils.h"
 #include "components/prefs/pref_registry_simple.h"
 
 namespace brave_vpn {
 namespace prefs {
 
 void RegisterProfilePrefs(PrefRegistrySimple* registry) {
+#if !BUILDFLAG(IS_ANDROID)
   registry->RegisterBooleanPref(kBraveVPNShowButton, true);
   registry->RegisterListPref(kBraveVPNRegionList);
   registry->RegisterStringPref(kBraveVPNDeviceRegion, "");
   registry->RegisterStringPref(kBraveVPNSelectedRegion, "");
   registry->RegisterBooleanPref(kBraveVPNShowDNSPolicyWarningDialog, true);
+#endif
+  registry->RegisterStringPref(kBraveVPNEEnvironment,
+                               skus::GetDefaultEnvironment());
 }
 
 }  // namespace prefs
