@@ -7,9 +7,9 @@ import 'chrome://resources/cr_elements/cr_button/cr_button.m.js';
 import 'chrome://resources/cr_elements/cr_dialog/cr_dialog.m.js';
 import 'chrome://resources/cr_elements/cr_input/cr_input.m.js';
 import 'chrome://resources/cr_elements/cr_searchable_drop_down/cr_searchable_drop_down.js';
-import {Polymer, html} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js';
-import {I18nBehavior} from 'chrome://resources/js/i18n_behavior.m.js';
-import {BraveWalletBrowserProxyImpl} from './brave_wallet_browser_proxy.m.js';
+import { Polymer, html } from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js';
+import { I18nBehavior } from 'chrome://resources/js/i18n_behavior.m.js';
+import { BraveWalletBrowserProxyImpl } from './brave_wallet_browser_proxy.m.js';
 
 Polymer({
   is: 'add-wallet-network-dialog',
@@ -31,19 +31,19 @@ Polymer({
     rpcUrls: {
       type: Array,
       value() {
-        return [{value: ''}];
+        return [{ value: '' }];
       }
     },
     iconUrls: {
       type: Array,
       value() {
-        return [{value: ''}];
+        return [{ value: '' }];
       }
     },
     blockUrls: {
       type: Array,
       value() {
-        return [{value: ''}];
+        return [{ value: '' }];
       }
     },
     isRpcPlusButtonDisabled_: {
@@ -112,7 +112,7 @@ Polymer({
   browserProxy_: null,
 
   /** @override */
-  created: function() {
+  created: function () {
     this.browserProxy_ = BraveWalletBrowserProxyImpl.getInstance();
   },
 
@@ -129,15 +129,28 @@ Polymer({
     if (decimals) {
       this.currencyDecimalsValue_ = decimals
     }
-    this.rpcUrls = this.selected.rpcUrls.map(element => { return {value: element}})
+    this.rpcUrls = this.selected.rpcUrls.map(element => { return { value: element } })
     if (this.selected.iconUrls.length)
-      this.iconUrls = this.selected.iconUrls.map(element => { return {value: element}})
+      this.iconUrls = this.selected.iconUrls.map(element => { return { value: element } })
     if (this.selected.blockExplorerUrls.length)
-      this.blockUrls = this.selected.blockExplorerUrls.map(element => { return {value: element}})
+      this.blockUrls = this.selected.blockExplorerUrls.map(element => { return { value: element } })
     this.isSubmitButtonEnabled_ = true
     this.updatePlusButtonState('rpc')
     this.updatePlusButtonState('icon')
     this.updatePlusButtonState('block')
+  },
+
+  connectedCallback: function () {
+    if (loadTimeData.getBoolean('shouldExposeElementsForTesting')) {
+      window.testing = window.testing || {}
+      window.testing['addWalletNetworkDialog'] = this.shadowRoot
+    }
+  },
+
+  disconnectedCallback: function () {
+    if (loadTimeData.getBoolean('shouldExposeElementsForTesting')) {
+      delete window.testing['addWalletNetworkDialog']
+    }
   },
 
   updatePrepopulatedNetworks() {
@@ -151,7 +164,7 @@ Polymer({
     })
   },
 
-  validateURL: function(value) {
+  validateURL: function (value) {
     const url_ = value
     if (url_.trim() == '') {
       return false;
@@ -166,7 +179,7 @@ Polymer({
     return url.protocol === "http:" || url.protocol === "https:"
   },
   /** @private */
-  chainIdChanged_: function(event) {
+  chainIdChanged_: function (event) {
     const value = event.target.value
     this.chainIdInvalid_ = value <= 0
     if (this.chainIdInvalid_) {
@@ -175,19 +188,19 @@ Polymer({
     this.updateSubmitButtonState_()
   },
 
-  chainNameChanged_: function(event) {
+  chainNameChanged_: function (event) {
     const element = event.target
     this.chainNameInvalid_ = element.value.trim() === ''
     this.updateSubmitButtonState_()
   },
 
-  isInvalidInputForList_: function(value, list) {
+  isInvalidInputForList_: function (value, list) {
     if (value.trim() === '') {
       return (list === 'icon' || list === 'block') ? false : true
     }
     return !this.validateURL(value)
   },
-  getTailOfUrlsArray: function(list) {
+  getTailOfUrlsArray: function (list) {
     if (list === 'rpc') {
       return this.rpcUrls.at(0).value
     } else if (list === 'icon') {
@@ -196,18 +209,18 @@ Polymer({
       return this.blockUrls.at(0).value
     }
   },
-  updatePlusButtonState: function(list) {
+  updatePlusButtonState: function (list) {
     const inputElementValue = this.getTailOfUrlsArray(list)
     const disabled = (!inputElementValue || inputElementValue.trim() === '')
     if (list === 'rpc') {
       this.isRpcPlusButtonDisabled_ = disabled
-    }  else if (list === 'icon') {
+    } else if (list === 'icon') {
       this.isIconPlusButtonDisabled_ = disabled
     } else if (list === 'block') {
       this.isBlockPlusButtonDisabled_ = disabled
     }
   },
-  updateSubmitButtonState_: function() {
+  updateSubmitButtonState_: function () {
     for (const input of this.shadowRoot.querySelectorAll('.mandatory')) {
       if (input && (input.invalid || !input.value || (input.value.trim && input.value.trim() === ''))) {
         this.isSubmitButtonEnabled_ = false
@@ -236,72 +249,72 @@ Polymer({
 
     this.isSubmitButtonEnabled_ = true
   },
-  nativeCurrencyChanged_: function(event) {
+  nativeCurrencyChanged_: function (event) {
     this.isCurrencyErrorHidden_ = true
   },
   // Called for any change in the urls inputs
   // validates value of focused one and shows error if the value is invalid
   // calls update for Plus buton state
-  urlChangedImpl_: function(element, list) {
+  urlChangedImpl_: function (element, list) {
     element.invalid = this.isInvalidInputForList_(element.value, list)
     this.updateSubmitButtonState_()
     const empty = element.value.trim() === ''
     if (list == 'rpc' && element.invalid) {
       const text = empty && !this.hasValidRPCUrls() ? this.i18n('walletAddNetworkMandarotyFieldError')
-                         : this.i18n('walletAddNetworkInvalidURLInput')
+        : this.i18n('walletAddNetworkInvalidURLInput')
       element.setAttribute('error-message', text)
     }
     if (!element.invalid || empty) {
       this.updatePlusButtonState(list)
     }
   },
-  hasValidRPCUrls: function() {
+  hasValidRPCUrls: function () {
     return this.rpcUrls.find(element => this.validateURL(element.value))
   },
-  urlChangedIcons_: function(event) {
+  urlChangedIcons_: function (event) {
     return this.urlChangedImpl_(event.target, 'icon')
   },
-  urlChangedRpc_: function(event) {
+  urlChangedRpc_: function (event) {
     return this.urlChangedImpl_(event.target, 'rpc')
   },
-  urlChangedBlock_: function(event) {
+  urlChangedBlock_: function (event) {
     return this.urlChangedImpl_(event.target, 'block')
   },
-  onAddRpcUrlTap_: function(item) {
-    this.splice('rpcUrls', 0, 0, {value: ''});
+  onAddRpcUrlTap_: function (item) {
+    this.splice('rpcUrls', 0, 0, { value: '' });
     this.isRpcPlusButtonDisabled_ = true
   },
-  onAddIconUrlTap_: function(item) {
-    this.splice('iconUrls', 0, 0, {value: ''});
+  onAddIconUrlTap_: function (item) {
+    this.splice('iconUrls', 0, 0, { value: '' });
     this.isIconPlusButtonDisabled_ = true
   },
-  onAddBlockUrlTap_: function(item) {
-    this.splice('blockUrls', 0, 0, {value: ''});
+  onAddBlockUrlTap_: function (item) {
+    this.splice('blockUrls', 0, 0, { value: '' });
     this.isBlockPlusButtonDisabled_ = true
   },
-  transformListForSerializaion_: function(list) {
+  transformListForSerializaion_: function (list) {
     return list.reduce((filtered, item) => {
       if (item && item.value.trim() !== '') {
         if (!filtered) {
-         filtered = []
+          filtered = []
         }
         filtered.push(item.value)
       }
       return filtered
     }, null)
   },
-  showCurrencyError: function() {
+  showCurrencyError: function () {
     this.isSubmissionErrorHidden_ = true
     this.isCurrencyErrorHidden_ = false
   },
-  setSubmissionResult: function(success, errorMessage) {
+  setSubmissionResult: function (success, errorMessage) {
     this.isCurrencyErrorHidden_ = this.isSubmissionErrorHidden_ = true
     if (!success) {
       this.isSubmissionErrorHidden_ = false
       this.submissionErrorMessage_ = errorMessage
     }
   },
-  addNewNetwork: function(payload) {
+  addNewNetwork: function (payload) {
     this.browserProxy_.addEthereumChain(payload)
       .then(([success, errorMessage]) => {
         this.setSubmissionResult(success, errorMessage)
@@ -311,10 +324,10 @@ Polymer({
         }
       })
   },
-  getHexNumber: function(value) {
+  getHexNumber: function (value) {
     return '0x' + Number(this.chainIdValue_).toString(16)
   },
-  onAddNetworkTap_: function(item) {
+  onAddNetworkTap_: function (item) {
     let payload = Object({
       chainId: this.getHexNumber(),
       chainName: this.chainNameValue_,

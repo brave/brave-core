@@ -92,4 +92,24 @@ void BraveSettingsUI::AddResources(content::WebUIDataSource* html_source,
   html_source->AddBoolean(
       "isDeAmpFeatureEnabled",
       base::FeatureList::IsEnabled(de_amp::features::kBraveDeAMP));
+
+  if (ShouldDisableCSPForTesting()) {
+    html_source->DisableContentSecurityPolicy();
+  }
+
+  if (ShouldExposeElementsForTesting()) {
+    html_source->AddBoolean("shouldExposeElementsForTesting", true);
+  }
+}
+
+// static
+bool& BraveSettingsUI::ShouldDisableCSPForTesting() {
+  static bool disable_csp = false;
+  return disable_csp;
+}
+
+// static
+bool& BraveSettingsUI::ShouldExposeElementsForTesting() {
+  static bool expose_elements = false;
+  return expose_elements;
 }

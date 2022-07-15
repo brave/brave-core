@@ -62,6 +62,9 @@ WalletPanelUI::WalletPanelUI(content::WebUI* web_ui)
       network::mojom::CSPDirectiveName::FrameSrc,
       std::string("frame-src ") + kUntrustedTrezorURL + ";");
   source->AddString("braveWalletTrezorBridgeUrl", kUntrustedTrezorURL);
+  if (ShouldDisableCSPForTesting()) {
+    source->DisableContentSecurityPolicy();
+  }
   auto* profile = Profile::FromWebUI(web_ui);
   content::URLDataSource::Add(profile,
                               std::make_unique<SanitizedImageSource>(profile));
@@ -141,4 +144,10 @@ void WalletPanelUI::CreatePanelHandler(
   if (blockchain_registry) {
     blockchain_registry->Bind(std::move(blockchain_registry_receiver));
   }
+}
+
+// static
+bool& WalletPanelUI::ShouldDisableCSPForTesting() {
+  static bool disable_csp = false;
+  return disable_csp;
 }
