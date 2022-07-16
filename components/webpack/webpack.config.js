@@ -122,18 +122,20 @@ module.exports = async function (env, argv) {
         },
         {
           test: (input) => {
-            console.error('>>>>', input);
+            // Handle both Windows and Linux/Mac paths formats
             return (
-              input.endsWith('htmlparser2/lib/esm/index.js') ||
-              input.endsWith("htmlparser2\\lib\\esm\\index.js")
+              input.endsWith('/htmlparser2/lib/esm/index.js') ||
+              input.endsWith('\\htmlparser2\\lib\\esm\\index.js')
             );
           },
-          use: [{
-            loader: "babel-loader", // This should be the last loader of course
-            options: {
-              plugins: ["@babel/plugin-proposal-export-namespace-from"]
-            }
-          }]
+          use: [
+            {
+              loader: 'babel-loader', // This should be the last loader of course
+              options: {
+                plugins: ['@babel/plugin-proposal-export-namespace-from'],
+              },
+            },
+          ],
         },
       ]
     },
