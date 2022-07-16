@@ -147,6 +147,7 @@ BraveVpnService::BraveVpnService(
 BraveVpnService::~BraveVpnService() {
 #if !BUILDFLAG(IS_ANDROID)
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  base::PowerMonitor::RemovePowerSuspendObserver(this);
 #endif  // !BUILDFLAG(IS_ANDROID)
 }
 std::string BraveVpnService::GetCurrentEnvironment() const {
