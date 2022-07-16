@@ -805,7 +805,7 @@ TEST_F(BraveVPNServiceTest, PurchasedStateWithoutConnection) {
   TestBraveVPNServiceObserver observer;
   AddObserver(observer.GetReceiver());
   EXPECT_EQ(PurchasedState::NOT_PURCHASED, GetPurchasedStateSync());
-  SetPurchasedState(PurchasedState::PURCHASED);
+  SetPurchasedState(env, PurchasedState::PURCHASED);
 
   EXPECT_EQ(PurchasedState::PURCHASED, GetPurchasedStateSync());
   connection_state() = ConnectionState::CONNECTED;
