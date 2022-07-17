@@ -23,15 +23,24 @@
 #include "url/gurl.h"
 
 namespace {
-std::string NonWriteableScript(const std::string& method,
-                               const std::string& args) {
+std::string NonWriteableScriptProperty(const std::string& property) {
   return base::StringPrintf(
-      R"(window.ethereum.%s = () => { return "brave" }
-         if (window.ethereum.%s%s === "brave")
+      R"(window.ethereum.%s = "brave"
+         if (window.ethereum.%s === "brave")
            window.domAutomationController.send(false)
          else
            window.domAutomationController.send(true))",
-      method.c_str(), method.c_str(), args.c_str());
+      property.c_str(), property.c_str());
+}
+std::string NonWriteableScriptMethod(const std::string& provider,
+                                     const std::string& method) {
+  return base::StringPrintf(
+      R"(window.%s.%s = "brave"
+         if (typeof window.%s.%s === "function")
+           window.domAutomationController.send(true)
+         else
+           window.domAutomationController.send(false))",
+      provider.c_str(), method.c_str(), provider.c_str(), method.c_str());
 }
 }  // namespace
 
@@ -79,11 +88,6 @@ class JSEthereumProviderBrowserTest : public InProcessBrowserTest {
 
   content::RenderFrameHost* main_frame() {
     return web_contents()->GetMainFrame();
-  }
-
-  void NavigateToURLAndWaitForLoadStop(const GURL& url) {
-    ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url)) << ":" << url;
-    ASSERT_TRUE(WaitForLoadStop(web_contents())) << ":" << url;
   }
 
   void ReloadAndWaitForLoadStop() {
@@ -158,28 +162,31 @@ IN_PROC_BROWSER_TEST_F(JSEthereumProviderBrowserTest, NonWritable) {
   const GURL url = https_server_.GetURL("/simple.html");
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
 
-  // window.ethereum.*
+  // window.ethereum.* (properties)
+  for (const std::string& property :
+       {"_metamask", "chainId", "networkVersion", "selectedAddress"}) {
+    SCOPED_TRACE(property);
+    auto result = EvalJs(web_contents(), NonWriteableScriptProperty(property),
+                         content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
+    EXPECT_EQ(base::Value(true), result.value) << result.error;
+  }
+
+  // window.ethereum.* (methods)
+  for (const std::string& method :
+       {"on", "emit", "removeListener", "removeAllListeners", "request",
+        "isConnected", "enable", "sendAsync", "send"}) {
+    SCOPED_TRACE(method);
+    auto result =
+        EvalJs(web_contents(), NonWriteableScriptMethod("ethereum", method),
+               content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
+    EXPECT_EQ(base::Value(true), result.value) << result.error;
+  }
+  // window._metamask.isUnlocked()
   auto result =
-      EvalJs(web_contents(), NonWriteableScript("on", R"(('connect', ()=>{}))"),
-             content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
-  LOG(ERROR) << result.error;
-  EXPECT_EQ(base::Value(true), result.value);
-
-  auto result2 =
-      EvalJs(web_contents(), NonWriteableScript("emit", R"(('connect'))"),
-             content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
-  EXPECT_EQ(base::Value(true), result2.value);
-
-  auto result3 =
       EvalJs(web_contents(),
-             NonWriteableScript("removeListener", R"(('connect', ()=>{}))"),
+             NonWriteableScriptMethod("ethereum._metamask", "isUnlocked"),
              content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
-  EXPECT_EQ(base::Value(true), result3.value);
-
-  auto result4 =
-      EvalJs(web_contents(), NonWriteableScript("removeAllListeners", R"(())"),
-             content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
-  EXPECT_EQ(base::Value(true), result4.value);
+  EXPECT_EQ(base::Value(true), result.value) << result.error;
 }
 
 // See https://github.com/brave/brave-browser/issues/22213 for details

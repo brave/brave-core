@@ -110,8 +110,9 @@ void JSSolanaProvider::Install(bool allow_overwrite_window_solana,
       gin::CreateHandle(isolate, new JSSolanaProvider(render_frame));
   if (provider.IsEmpty())
     return;
+  v8::Local<v8::Value> provider_value = provider.ToV8();
 
-  SetProviderNonWritable(context, global, provider.ToV8(),
+  SetProviderNonWritable(context, global, provider_value,
                          gin::StringToV8(isolate, "braveSolana"), true);
 
   // This is to prevent window._brave_solana from being defined and set
@@ -127,12 +128,11 @@ void JSSolanaProvider::Install(bool allow_overwrite_window_solana,
            .ToLocal(&solana_value) ||
       !solana_value->IsObject()) {
     if (!allow_overwrite_window_solana) {
-      SetProviderNonWritable(context, global, provider.ToV8(),
+      SetProviderNonWritable(context, global, provider_value,
                              gin::StringToV8(isolate, "solana"), true);
     } else {
       global
-          ->Set(context, gin::StringToSymbol(isolate, "solana"),
-                provider.ToV8())
+          ->Set(context, gin::StringToSymbol(isolate, "solana"), provider_value)
           .Check();
     }
   } else {
@@ -140,6 +140,15 @@ void JSSolanaProvider::Install(bool allow_overwrite_window_solana,
         blink::WebConsoleMessage(blink::mojom::ConsoleMessageLevel::kWarning,
                                  "Brave Wallet will not insert window.solana "
                                  "because it already exists!"));
+  }
+
+  // Non-function properties are readonly guaranteed by gin::Wrappable
+  for (const std::string& method :
+       {"connect", "disconnect", "signAndSendTransaction", "signMessage",
+        "request", "signTransaction", "signAllTransactions"}) {
+    SetOwnPropertyNonWritable(
+        context, provider_value->ToObject(context).ToLocalChecked(),
+        gin::StringToV8(isolate, method));
   }
 
   blink::WebLocalFrame* web_frame = render_frame->GetWebFrame();
