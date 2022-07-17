@@ -16,6 +16,7 @@ import { GridPagesContainer, List, PagesContainer } from '../../components/defau
 import createWidget from '../../components/default/widget'
 // Constants
 import { MAX_GRID_SIZE } from '../../constants/new_tab_ui'
+import { useMaintainScrollPosition } from '../../helpers/scrolling'
 import AddSiteTile from './addSiteTile'
 import { GridPageButtons } from './gridPageButtons'
 // Component groups
@@ -88,6 +89,8 @@ function TopSitesList (props: Props) {
     props.actions.tilesReordered(gridSites, draggingIndex, droppedIndex)
   }
 
+  useMaintainScrollPosition('grid-pages-container-scroll-position', gridPagesContainerRef)
+
   return <PagesContainer>
     <GridPagesContainer customLinksEnabled={customLinksEnabled} ref={gridPagesContainerRef as any}>
       <DndContext onDragEnd={handleDragEnd} autoScroll={autoScrollOptions} sensors={sensors}>
@@ -97,7 +100,9 @@ function TopSitesList (props: Props) {
         </SortableContext>
       </DndContext>
     </GridPagesContainer>
-    {customLinksEnabled && <GridPageButtons numPages={pageCount} pageContainerRef={gridPagesContainerRef} />}
+    {customLinksEnabled &&
+      pageCount > 1 &&
+      <GridPageButtons numPages={pageCount} pageContainerRef={gridPagesContainerRef} />}
   </PagesContainer>
 }
 
