@@ -23,8 +23,8 @@ class Profile;
 class TabStripModel;
 
 class BraveNewsActionView : public views::LabelButton,
-                             public TabStripModelObserver,
-                             public BraveNewsTabHelper::PageFeedsObserver {
+                            public TabStripModelObserver,
+                            public BraveNewsTabHelper::PageFeedsObserver {
  public:
   BraveNewsActionView(Profile* profile, TabStripModel* tab_strip);
   ~BraveNewsActionView() override;

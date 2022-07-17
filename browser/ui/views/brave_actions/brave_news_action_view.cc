@@ -46,7 +46,7 @@ SkColor selectedColor = SkColorSetRGB(30, 33, 82);
 }
 
 BraveNewsActionView::BraveNewsActionView(Profile* profile,
-                                           TabStripModel* tab_strip)
+                                         TabStripModel* tab_strip)
     : views::LabelButton(base::BindRepeating(&BraveNewsActionView::ShowBubble,
                                              base::Unretained(this))),
       profile_(profile),
