@@ -117,6 +117,12 @@ std::string TimeLimitedWords::GenerateForNow(const std::string& pure_words) {
 
 std::string TimeLimitedWords::GenerateForDate(const std::string& pure_words,
                                               const Time& not_after) {
+  if (pure_words.empty()) {
+    // Most likely we could not get access to the keychain on macOS or Linux
+    // and could not decrypt and provide the correct pure words
+    return std::string();
+  }
+
   int days_since_words_v2_epoch =
       GetRoundedDaysDiff(GetWordsV2Epoch(), not_after);
 

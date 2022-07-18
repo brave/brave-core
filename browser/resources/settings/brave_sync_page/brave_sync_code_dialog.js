@@ -118,7 +118,11 @@ Polymer({
   },
 
   getQRCode_: async function() {
-    if (!this.syncCode || this.codeType !== 'qr') {
+    if (this.codeType !== 'qr') {
+      return
+    }
+    if (!this.syncCode) {
+      console.warn('Skip getQRCode because code words are empty')
       return
     }
     try {

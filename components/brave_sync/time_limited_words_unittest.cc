@@ -73,6 +73,10 @@ TEST(TimeLimitedWordsTest, GenerateForDate) {
                     TimeLimitedWords::GetWordsV2Epoch() - base::Days(1)));
 }
 
+TEST(TimeLimitedWordsTest, GenerateForEmptyPureWords) {
+  EXPECT_EQ("", TimeLimitedWords::GenerateForNow(""));
+}
+
 TEST(TimeLimitedWordsTest, Parse) {
   std::string pure_words;
   TimeLimitedWords::PureWordsWithStatus pure_words_with_status;
