@@ -13,7 +13,12 @@
 #include "base/logging.h"
 #include "base/memory/ref_counted.h"
 #include "base/strings/sys_string_conversions.h"
+#include "base/task/thread_pool.h"
+#include "brave/components/adblock_rust_ffi/src/wrapper.h"
 #include "brave/components/brave_component_updater/browser/brave_on_demand_updater.h"
+#include "brave/components/brave_component_updater/browser/dat_file_util.h"
+#include "brave/components/brave_shields/browser/ad_block_component_installer.h"
+#include "brave/components/brave_shields/browser/ad_block_service_helper.h"
 #include "brave/components/brave_wallet/browser/blockchain_registry.h"
 #include "brave/components/brave_wallet/browser/ethereum_provider_impl.h"
 #include "brave/components/brave_wallet/browser/solana_provider_impl.h"
@@ -21,6 +26,7 @@
 #include "brave/components/brave_wallet/resources/grit/brave_wallet_script_generated.h"
 #include "brave/ios/app/brave_main_delegate.h"
 #include "brave/ios/browser/api/bookmarks/brave_bookmarks_api+private.h"
+#include "brave/ios/browser/api/brave_shields/adblock_filter_list+private.h"
 #include "brave/ios/browser/api/brave_stats/brave_stats+private.h"
 #include "brave/ios/browser/api/brave_wallet/brave_wallet.mojom.objc+private.h"
 #include "brave/ios/browser/api/brave_wallet/brave_wallet_provider_delegate_ios+private.h"
@@ -35,6 +41,7 @@
 #include "brave/ios/browser/brave_wallet/tx_service_factory.h"
 #include "brave/ios/browser/brave_web_client.h"
 #include "brave/ios/browser/component_updater/component_updater_utils.h"
+#include "components/component_updater/component_updater_service.h"
 #include "components/component_updater/component_updater_switches.h"
 #include "components/component_updater/installer_policies/safety_tips_component_installer.h"
 #include "components/history/core/browser/history_service.h"
@@ -84,6 +91,8 @@ const BraveCoreSwitch BraveCoreSwitchSyncURL =
 @property(nonatomic) BravePasswordAPI* passwordAPI;
 @property(nonatomic) BraveSyncAPI* syncAPI;
 @property(nonatomic) BraveSyncProfileServiceIOS* syncProfileService;
+@property(nonatomic) NSString* shieldsInstallPath;
+@property(nonatomic, copy) NSArray<AdblockFilterList*>* regionalFilterLists;
 @end
 
 @implementation BraveCoreMain
@@ -222,6 +231,66 @@ const BraveCoreSwitch BraveCoreSwitchSyncURL =
 
   RegisterSafetyTipsComponent(cus);
   brave_wallet::RegisterWalletDataFilesComponent(cus);
+
+  __weak auto weakSelf = self;
+  brave_shields::RegisterAdBlockDefaultComponent(
+      cus, base::BindRepeating(^(const base::FilePath& install_path) {
+        [weakSelf adblockComponentDidBecomeReady:install_path];
+      }));
+}
+
+- (void)adblockComponentDidBecomeReady:(const base::FilePath&)install_path {
+  auto component_path = install_path;
+
+  // Update shields install path (w/ KVO)
+  [self willChangeValueForKey:@"shieldsInstallPath"];
+  self.shieldsInstallPath = base::SysUTF8ToNSString(install_path.value());
+  [self didChangeValueForKey:@"shieldsInstallPath"];
+
+  // Get filter lists from catalog
+  base::ThreadPool::PostTaskAndReplyWithResult(
+      FROM_HERE, {base::MayBlock()},
+      base::BindOnce(&brave_component_updater::GetDATFileAsString,
+                     component_path.AppendASCII("regional_catalog.json")),
+      base::BindOnce(^(const std::string json) {
+        auto catalog = brave_shields::RegionalCatalogFromJSON(json);
+
+        NSMutableArray* lists = [[NSMutableArray alloc] init];
+        for (const auto& list : catalog) {
+          [lists addObject:[[AdblockFilterList alloc]
+                               initWithFilterList:adblock::FilterList(list)]];
+        }
+        self.regionalFilterLists = lists;
+
+        if (self.shieldsComponentReady) {
+          self.shieldsComponentReady(self.shieldsInstallPath);
+        }
+      }));
+}
+
+- (void)registerFilterListComponent:(AdblockFilterList*)filterList
+                     componentReady:(void (^)(AdblockFilterList* filterList,
+                                              NSString* _Nullable installPath))
+                                        componentReady {
+  component_updater::ComponentUpdateService* cus =
+      GetApplicationContext()->GetComponentUpdateService();
+  DCHECK(cus);
+
+  brave_shields::RegisterAdBlockRegionalComponent(
+      cus, base::SysNSStringToUTF8(filterList.base64PublicKey),
+      base::SysNSStringToUTF8(filterList.componentId),
+      base::SysNSStringToUTF8(filterList.title),
+      base::BindRepeating(^(const base::FilePath& install_path) {
+        const auto installPath = base::SysUTF8ToNSString(install_path.value());
+        componentReady(filterList, installPath);
+      }));
+}
+
+- (void)unregisterFilterListComponent:(AdblockFilterList*)filterList {
+  component_updater::ComponentUpdateService* cus =
+      GetApplicationContext()->GetComponentUpdateService();
+  DCHECK(cus);
+  cus->UnregisterComponent(base::SysNSStringToUTF8(filterList.componentId));
 }
 
 - (void)dealloc {

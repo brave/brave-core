@@ -14,6 +14,7 @@
 @class BraveSyncAPI;
 @class BraveSyncProfileServiceIOS;
 @class BraveStats;
+@class AdblockFilterList;
 
 @protocol BraveWalletBlockchainRegistry;
 @protocol BraveWalletEthereumProvider;
@@ -83,6 +84,26 @@ OBJC_EXPORT
 - (NSString*)providerScriptForCoinType:(BraveWalletCoinType)coinType;
 
 @property(readonly) BraveStats* braveStats;
+
+/// The main shields file install path (KVO compiliant)
+@property(readonly, nullable) NSString* shieldsInstallPath;
+
+/// Regional filter lists
+@property(readonly, nullable) NSArray<AdblockFilterList*>* regionalFilterLists;
+
+/// Executed each time the main shields component is updated
+@property(nonatomic, copy, nullable) void (^shieldsComponentReady)
+    (NSString* _Nullable installPath);
+
+/// Registers a filter list with the component updater and calls
+/// `componentReady` each time the component is updated
+- (void)registerFilterListComponent:(AdblockFilterList*)filterList
+                     componentReady:(void (^)(AdblockFilterList* filterList,
+                                              NSString* _Nullable installPath))
+                                        componentReady;
+
+/// Unregisters a filter list with the component updater
+- (void)unregisterFilterListComponent:(AdblockFilterList*)filterList;
 
 @end
 

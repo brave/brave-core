@@ -23,7 +23,9 @@ source_set("app") {
 
   deps = [
     "//base",
+    "//brave/components/adblock_rust_ffi",
     "//brave/components/brave_component_updater/browser",
+    "//brave/components/brave_shields/browser:component_installer",
     "//brave/components/brave_sync:constants",
     "//brave/components/brave_wallet/browser",
     "//brave/components/brave_wallet/resources:ethereum_provider_generated_resources",
@@ -34,6 +36,7 @@ source_set("app") {
     "//brave/ios/browser",
     "//brave/ios/browser/api/ads",
     "//brave/ios/browser/api/bookmarks",
+    "//brave/ios/browser/api/brave_shields",
     "//brave/ios/browser/api/brave_stats",
     "//brave/ios/browser/api/brave_wallet",
     "//brave/ios/browser/api/brave_wallet:wallet_mojom_wrappers",

@@ -8,6 +8,9 @@ source_set("brave_shields") {
   sources = [
     "adblock_engine.h",
     "adblock_engine.mm",
+    "adblock_filter_list+private.h",
+    "adblock_filter_list.h",
+    "adblock_filter_list.mm",
   ]
   deps = [
     "//base",
