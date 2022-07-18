@@ -4,28 +4,23 @@ source_set("browser") {
   sources = [
     "debounce_component_installer.cc",
     "debounce_component_installer.h",
+    "debounce_navigation_throttle.cc",
+    "debounce_navigation_throttle.h",
     "debounce_rule.cc",
     "debounce_rule.h",
     "debounce_service.cc",
     "debounce_service.h",
-    "debounce_throttle.cc",
-    "debounce_throttle.h",
   ]
 
   deps = [
     "//base",
     "//brave/components/brave_component_updater/browser",
     "//brave/components/brave_shields/browser",
-    "//brave/components/debounce/common",
     "//brave/extensions:common",
-    "//components/content_settings/core/browser",
     "//components/prefs:prefs",
     "//content/public/browser",
-    "//content/public/common",
-    "//services/network/public/cpp",
-    "//services/network/public/mojom",
-    "//third_party/blink/public/common",
     "//third_party/re2:re2",
+    "//ui/base",
     "//url",
   ]
 }
