@@ -55,21 +55,19 @@ class FaviconHandler {
       let onCompletedSiteFavicon: ImageCacheCompletion = { [weak tab] image, data, _, _, url in
         let favicon = Favicon(url: url.absoluteString, date: Date(), type: type)
         
-        guard let image = image,
-              let imageData = data
-        else {
+        guard let image = image else {
           favicon.width = 0
           favicon.height = 0
-          
           onSuccess(favicon, data)
           return
         }
         
         if let tab = tab, !tab.isPrivate {
-          webImageCache.cacheImage(image: image, data: imageData, url: url)
+          webImageCache.cacheImage(image: image, data: data ?? image.pngData(), url: url)
         }
         
         if let header = "%PDF".data(using: .utf8),
+           let imageData = data,
            imageData.count >= header.count,
            let range = imageData.range(of: header),
            range.lowerBound.distance(to: imageData.startIndex) < 8 {
@@ -84,12 +82,11 @@ class FaviconHandler {
         
         favicon.width = Int(image.size.width)
         favicon.height = Int(image.size.height)
-        
         onSuccess(favicon, data)
       }
       
       let onCompletedPageFavicon: ImageCacheCompletion = { [weak tab] image, data, _, _, url in
-        guard let image = image, let data = data else {
+        guard let image = image else {
           // If we failed to download a page-level icon, try getting the domain-level icon
           // instead before ultimately failing.
           let siteIconURL = currentURL.domainURL.appendingPathComponent("favicon.ico")
@@ -102,7 +99,8 @@ class FaviconHandler {
         favicon.height = Int(image.size.height)
         
         if let tab = tab, !tab.isPrivate {
-          webImageCache.cacheImage(image: image, data: data, url: url)
+          // Somehow `image` is valid and never null, but `data` can be! (On websites that return `.ico` for example.
+          webImageCache.cacheImage(image: image, data: data ?? image.pngData(), url: url)
         }
         
         onSuccess(favicon, data)
