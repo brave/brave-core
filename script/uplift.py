@@ -258,7 +258,6 @@ def main():
                   '" instead of "' + top_level_base + '"')
             top_level_base = top_level_sha
         else:
-            # don't allow uplift of PRs which are not merged
             print('[WARNING] Pull request ' + str(pr_number) + ' has not been merged yet.')
 
         # create local branch which matches the contents of the PR
