@@ -8,7 +8,7 @@
 
 #include <string>
 
-#include "bat/ads/internal/processors/behavioral/bandits/epsilon_greedy_bandit_arms_aliases.h"
+#include "bat/ads/internal/processors/behavioral/bandits/epsilon_greedy_bandit_arms_alias.h"
 
 namespace ads {
 namespace targeting {

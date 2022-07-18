@@ -9,7 +9,7 @@
 #include <string>
 
 #include "base/check.h"
-#include "bat/ads/internal/ads/ad_events/ad_event_info_aliases.h"
+#include "bat/ads/internal/ads/ad_events/ad_event_info.h"
 #include "bat/ads/internal/ads/serving/eligible_ads/exclusion_rules/exclusion_rule_interface.h"
 #include "bat/ads/internal/base/logging_util.h"
 

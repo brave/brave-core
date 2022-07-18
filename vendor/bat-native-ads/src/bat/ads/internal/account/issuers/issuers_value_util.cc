@@ -14,7 +14,7 @@
 #include "base/strings/string_number_conversions.h"
 #include "base/values.h"
 #include "bat/ads/internal/account/issuers/issuer_types.h"
-#include "bat/ads/internal/account/issuers/public_key_aliases.h"
+#include "bat/ads/internal/account/issuers/public_key_alias.h"
 
 namespace ads {
 

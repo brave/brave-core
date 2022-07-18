@@ -6,6 +6,8 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_INCLUDE_BAT_ADS_NEW_TAB_PAGE_AD_WALLPAPER_INFO_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_INCLUDE_BAT_ADS_NEW_TAB_PAGE_AD_WALLPAPER_INFO_H_
 
+#include <vector>
+
 #include "bat/ads/export.h"
 #include "bat/ads/new_tab_page_ad_wallpaper_focal_point_info.h"
 #include "url/gurl.h"
@@ -23,6 +25,8 @@ struct ADS_EXPORT NewTabPageAdWallpaperInfo final {
   GURL image_url;
   NewTabPageAdWallpaperFocalPointInfo focal_point;
 };
+
+using NewTabPageAdWallpaperList = std::vector<NewTabPageAdWallpaperInfo>;
 
 }  // namespace ads
 

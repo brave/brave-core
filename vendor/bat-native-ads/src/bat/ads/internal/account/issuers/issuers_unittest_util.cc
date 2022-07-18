@@ -5,7 +5,7 @@
 
 #include "bat/ads/internal/account/issuers/issuers_unittest_util.h"
 
-#include "bat/ads/internal/account/issuers/issuer_info_aliases.h"
+#include "bat/ads/internal/account/issuers/issuer_info.h"
 #include "bat/ads/internal/account/issuers/issuer_types.h"
 #include "bat/ads/internal/account/issuers/issuers_info.h"
 #include "bat/ads/internal/account/issuers/issuers_util.h"

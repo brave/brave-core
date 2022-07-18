@@ -176,7 +176,7 @@ TEST(BatAdsUrlUtilTest, UrlMatchesPatternWithNoWildcards) {
   const std::string pattern = "https://www.foo.com/";
 
   // Act
-  const bool does_match = DoesUrlMatchPattern(url, pattern);
+  const bool does_match = MatchUrlPattern(url, pattern);
 
   // Assert
   EXPECT_TRUE(does_match);
@@ -188,7 +188,7 @@ TEST(BatAdsUrlUtilTest, UrlWithPathMatchesPatternWithNoWildcards) {
   const std::string pattern = "https://www.foo.com/bar";
 
   // Act
-  const bool does_match = DoesUrlMatchPattern(url, pattern);
+  const bool does_match = MatchUrlPattern(url, pattern);
 
   // Assert
   EXPECT_TRUE(does_match);
@@ -200,7 +200,7 @@ TEST(BatAdsUrlUtilTest, UrlDoesNotMatchPattern) {
   const std::string pattern = "www.foo.com";
 
   // Act
-  const bool does_match = DoesUrlMatchPattern(url, pattern);
+  const bool does_match = MatchUrlPattern(url, pattern);
 
   // Assert
   EXPECT_FALSE(does_match);
@@ -212,7 +212,7 @@ TEST(BatAdsUrlUtilTest, UrlDoesNotMatchPatternWithMissingEmptyPath) {
   const std::string pattern = "https://www.foo.com";
 
   // Act
-  const bool does_match = DoesUrlMatchPattern(url, pattern);
+  const bool does_match = MatchUrlPattern(url, pattern);
 
   // Assert
   EXPECT_FALSE(does_match);
@@ -224,7 +224,7 @@ TEST(BatAdsUrlUtilTest, UrlMatchesEndWildcardPattern) {
   const std::string pattern = "https://www.foo.com/bar*";
 
   // Act
-  const bool does_match = DoesUrlMatchPattern(url, pattern);
+  const bool does_match = MatchUrlPattern(url, pattern);
 
   // Assert
   EXPECT_TRUE(does_match);
@@ -236,7 +236,7 @@ TEST(BatAdsUrlUtilTest, UrlMatchesMidWildcardPattern) {
   const std::string pattern = "https://www.foo.com/woo*hoo";
 
   // Act
-  const bool does_match = DoesUrlMatchPattern(url, pattern);
+  const bool does_match = MatchUrlPattern(url, pattern);
 
   // Assert
   EXPECT_TRUE(does_match);
@@ -248,7 +248,7 @@ TEST(BatAdsUrlUtilTest, UrlDoesNotMatchMidWildcardPattern) {
   const std::string pattern = "https://www.foo.com/woo*hoo";
 
   // Act
-  const bool does_match = DoesUrlMatchPattern(url, pattern);
+  const bool does_match = MatchUrlPattern(url, pattern);
 
   // Assert
   EXPECT_FALSE(does_match);

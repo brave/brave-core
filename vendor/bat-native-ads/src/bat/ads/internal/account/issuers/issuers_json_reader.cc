@@ -7,7 +7,7 @@
 
 #include "base/json/json_reader.h"
 #include "base/values.h"
-#include "bat/ads/internal/account/issuers/issuer_info_aliases.h"
+#include "bat/ads/internal/account/issuers/issuer_info.h"
 #include "bat/ads/internal/account/issuers/issuers_info.h"
 #include "bat/ads/internal/account/issuers/issuers_json_reader_util.h"
 

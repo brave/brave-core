@@ -8,7 +8,7 @@
 
 #include <cstdint>
 
-#include "bat/ads/internal/segments/segments_aliases.h"
+#include "bat/ads/internal/segments/segment_alias.h"
 #include "url/gurl.h"
 
 namespace ads {

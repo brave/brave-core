@@ -7,6 +7,7 @@
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_CONVERSIONS_CONVERSION_QUEUE_ITEM_INFO_H_
 
 #include <string>
+#include <vector>
 
 #include "base/time/time.h"
 #include "bat/ads/ad_type.h"
@@ -34,6 +35,8 @@ struct ConversionQueueItemInfo final {
 
   bool IsValid() const;
 };
+
+using ConversionQueueItemList = std::vector<ConversionQueueItemInfo>;
 
 }  // namespace ads
 

@@ -13,7 +13,7 @@
 #include "base/memory/raw_ptr.h"
 #include "bat/ads/internal/locale/locale_manager_observer.h"
 #include "bat/ads/internal/resources/resource_manager_observer.h"
-#include "bat/ads/internal/segments/segments_aliases.h"
+#include "bat/ads/internal/segments/segment_alias.h"
 #include "bat/ads/internal/tabs/tab_manager_observer.h"
 
 class GURL;

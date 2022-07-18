@@ -9,7 +9,7 @@
 #include <memory>
 
 #include "bat/ads/ads_callback.h"
-#include "bat/ads/internal/diagnostics/diagnostic_aliases.h"
+#include "bat/ads/internal/diagnostics/diagnostic_alias.h"
 
 namespace ads {
 

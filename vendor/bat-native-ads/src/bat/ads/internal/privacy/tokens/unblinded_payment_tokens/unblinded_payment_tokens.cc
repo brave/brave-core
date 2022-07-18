@@ -15,7 +15,6 @@
 #include "base/values.h"
 #include "bat/ads/internal/base/logging_util.h"
 #include "bat/ads/internal/privacy/challenge_bypass_ristretto/unblinded_token.h"
-#include "bat/ads/internal/privacy/tokens/unblinded_payment_tokens/unblinded_payment_token_info.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ads {

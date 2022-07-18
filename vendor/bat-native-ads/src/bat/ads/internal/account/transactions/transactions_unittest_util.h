@@ -6,7 +6,7 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ACCOUNT_TRANSACTIONS_TRANSACTIONS_UNITTEST_UTIL_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ACCOUNT_TRANSACTIONS_TRANSACTIONS_UNITTEST_UTIL_H_
 
-#include "bat/ads/transaction_info_aliases.h"
+#include "bat/ads/transaction_info.h"
 
 namespace base {
 class Time;
@@ -15,7 +15,6 @@ class Time;
 namespace ads {
 
 class ConfirmationType;
-struct TransactionInfo;
 
 void SaveTransactions(const TransactionList& transactions);
 

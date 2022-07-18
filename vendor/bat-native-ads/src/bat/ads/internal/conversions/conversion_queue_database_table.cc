@@ -17,7 +17,6 @@
 #include "bat/ads/internal/base/database/database_table_util.h"
 #include "bat/ads/internal/base/database/database_transaction_util.h"
 #include "bat/ads/internal/base/logging_util.h"
-#include "bat/ads/internal/conversions/conversion_queue_item_info.h"
 
 namespace ads {
 namespace database {

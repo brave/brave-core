@@ -7,6 +7,7 @@
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_PRIVACY_TOKENS_UNBLINDED_PAYMENT_TOKENS_UNBLINDED_PAYMENT_TOKEN_INFO_H_
 
 #include <string>
+#include <vector>
 
 #include "bat/ads/ad_type.h"
 #include "bat/ads/confirmation_type.h"
@@ -31,6 +32,8 @@ struct UnblindedPaymentTokenInfo final {
   ConfirmationType confirmation_type = ConfirmationType::kUndefined;
   AdType ad_type = AdType::kUndefined;
 };
+
+using UnblindedPaymentTokenList = std::vector<UnblindedPaymentTokenInfo>;
 
 }  // namespace privacy
 }  // namespace ads

@@ -17,7 +17,6 @@
 #include "bat/ads/internal/base/database/database_column_util.h"
 #include "bat/ads/internal/base/database/database_table_util.h"
 #include "bat/ads/internal/base/database/database_transaction_util.h"
-#include "bat/ads/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_info.h"
 
 namespace ads {
 namespace database {

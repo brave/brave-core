@@ -10,7 +10,6 @@
 #include "bat/ads/internal/covariates/covariate_constants.h"
 #include "bat/ads/internal/user_interaction/user_activity/user_activity_manager.h"
 #include "bat/ads/internal/user_interaction/user_activity/user_activity_trigger_info.h"
-#include "bat/ads/internal/user_interaction/user_activity/user_activity_trigger_info_aliases.h"
 #include "bat/ads/internal/user_interaction/user_activity/user_activity_util.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*

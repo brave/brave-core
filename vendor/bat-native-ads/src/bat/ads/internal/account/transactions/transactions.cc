@@ -11,7 +11,6 @@
 #include "bat/ads/ad_type.h"
 #include "bat/ads/confirmation_type.h"
 #include "bat/ads/internal/account/transactions/transactions_database_table.h"
-#include "bat/ads/transaction_info.h"
 
 namespace ads {
 namespace transactions {

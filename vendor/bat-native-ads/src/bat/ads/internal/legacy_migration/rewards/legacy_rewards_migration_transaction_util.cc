@@ -13,7 +13,6 @@
 #include "bat/ads/internal/base/time/time_util.h"
 #include "bat/ads/internal/legacy_migration/rewards/legacy_rewards_migration_payments_util.h"
 #include "bat/ads/internal/legacy_migration/rewards/legacy_rewards_migration_transaction_constants.h"
-#include "bat/ads/transaction_info.h"
 
 namespace ads {
 namespace rewards {
