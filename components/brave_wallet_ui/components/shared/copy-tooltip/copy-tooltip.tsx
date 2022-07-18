@@ -25,7 +25,7 @@ interface Props {
 }
 
 export const CopyTooltip = ({ children, tooltipText, actionText, text }: Props) => {
-  const { isCopied, copyToClipboard } = useCopyToClipboard()
+  const { isCopied, copyToClipboard } = useCopyToClipboard(1500)
 
   const handleClick = React.useCallback(async () => {
     if (text) {
