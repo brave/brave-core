@@ -1791,8 +1791,7 @@ TEST_F(JsonRpcServiceUnitTest, GetERC20TokenBalance) {
       "0x4e02f254184E904300e0775E4b8eeCB1", mojom::kMainnetChainId,
       base::BindOnce(&OnStringResponse, &callback_called,
                      mojom::ProviderError::kSuccess, "",
-                     "0x00000000000000000000000000000000000000000000000166e12cf"
-                     "ce39a0000"));
+                     "0x166e12cfce39a0000"));
   base::RunLoop().RunUntilIdle();
   EXPECT_TRUE(callback_called);
 
@@ -1867,8 +1866,7 @@ TEST_F(JsonRpcServiceUnitTest, GetERC20TokenAllowance) {
       "0xBFb30a082f650C2A15D0632f0e87bE4F8e64460a",
       base::BindOnce(&OnStringResponse, &callback_called,
                      mojom::ProviderError::kSuccess, "",
-                     "0x00000000000000000000000000000000000000000000000166e12cf"
-                     "ce39a0000"));
+                     "0x166e12cfce39a0000"));
   base::RunLoop().RunUntilIdle();
   EXPECT_TRUE(callback_called);
 

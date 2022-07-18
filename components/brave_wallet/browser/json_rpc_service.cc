@@ -975,7 +975,16 @@ void JsonRpcService::OnGetERC20TokenBalance(
     std::move(callback).Run("", error, error_message);
     return;
   }
-  std::move(callback).Run(result, mojom::ProviderError::kSuccess, "");
+
+  const auto& args = eth::DecodeEthCallResponse(result, {"uint256"});
+  if (args == absl::nullopt) {
+    std::move(callback).Run(
+        "", mojom::ProviderError::kInternalError,
+        l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+    return;
+  }
+
+  std::move(callback).Run(args->at(0), mojom::ProviderError::kSuccess, "");
 }
 
 void JsonRpcService::GetERC20TokenAllowance(
@@ -1018,7 +1027,16 @@ void JsonRpcService::OnGetERC20TokenAllowance(
     std::move(callback).Run("", error, error_message);
     return;
   }
-  std::move(callback).Run(result, mojom::ProviderError::kSuccess, "");
+
+  const auto& args = eth::DecodeEthCallResponse(result, {"uint256"});
+  if (args == absl::nullopt) {
+    std::move(callback).Run(
+        "", mojom::ProviderError::kInternalError,
+        l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+    return;
+  }
+
+  std::move(callback).Run(args->at(0), mojom::ProviderError::kSuccess, "");
 }
 
 void JsonRpcService::EnsRegistryGetResolver(const std::string& domain,

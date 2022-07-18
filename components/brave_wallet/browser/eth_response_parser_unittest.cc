@@ -71,6 +71,32 @@ TEST(EthResponseParserUnitTest, ParseEthCall) {
   ASSERT_EQ(result, "0x0");
 }
 
+TEST(EthResponseParserUnitTest, DecodeEthCallResponse) {
+  // OK: 32-byte uint256
+  std::string result =
+      "0x00000000000000000000000000000000000000000000000166e12cfce39a0000";
+  auto args = DecodeEthCallResponse(result, {"uint256"});
+  ASSERT_NE(args, absl::nullopt);
+  ASSERT_EQ(args->size(), 1UL);
+  ASSERT_EQ(args->at(0), "0x166e12cfce39a0000");
+
+  // OK: 32-byte uint256 with extra zero bytes
+  result =
+      "0x0000000000000000000000000000000000000000000000000000000000045d12000000"
+      "000000000000000000000000000000000000000000000000000000000000000000000000"
+      "00000000000000000000000000000000000000000000000000";
+  args = DecodeEthCallResponse(result, {"uint256"});
+  ASSERT_NE(args, absl::nullopt);
+  ASSERT_EQ(args->size(), 1UL);
+  ASSERT_EQ(args->at(0), "0x45d12");
+
+  // KO: insufficient length of response
+  ASSERT_EQ(DecodeEthCallResponse("0x0", {"uint256"}), absl::nullopt);
+
+  // KO: invalid response
+  ASSERT_EQ(DecodeEthCallResponse("foobarbaz", {"uint256"}), absl::nullopt);
+}
+
 TEST(EthResponseParserUnitTest, ParseEthGetTransactionReceipt) {
   std::string json(
       R"({
