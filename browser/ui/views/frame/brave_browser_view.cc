@@ -63,6 +63,12 @@
 #include "brave/browser/translate/brave_translate_utils.h"
 #endif
 
+#if BUILDFLAG(ENABLE_INSTANT_NEW_TAB)
+#include "brave/browser/new_tab/brave_new_tab_service.h"
+#include "brave/browser/new_tab/brave_new_tab_service_factory.h"
+#include "chrome/browser/ui/browser_list.h"
+#endif
+
 namespace {
 absl::optional<bool> g_download_confirm_return_allow_for_testing;
 }  // namespace
@@ -416,6 +422,17 @@ void BraveBrowserView::OnWindowClosingConfirmResponse(bool allowed_to_close) {
   }
 }
 
+#if BUILDFLAG(ENABLE_INSTANT_NEW_TAB)
+void BraveBrowserView::Close() {
+  auto* browser = GetBraveBrowser();
+  if (BrowserList::GetInstance()->size() < 2) {
+    BraveNewTabServiceFactory::GetInstance()
+        ->GetServiceForContext(browser->profile())
+        ->Reset();
+  }
+  BrowserView::Close();
+}
+#endif
 void BraveBrowserView::ConfirmBrowserCloseWithPendingDownloads(
     int download_count,
     Browser::DownloadCloseType dialog_type,

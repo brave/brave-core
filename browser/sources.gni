@@ -25,6 +25,7 @@ import("//brave/browser/gemini/sources.gni")
 import("//brave/browser/greaselion/sources.gni")
 import("//brave/browser/importer/sources.gni")
 import("//brave/browser/ipfs/sources.gni")
+import("//brave/browser/new_tab/buildflags/buildflags.gni")
 import("//brave/browser/new_tab/sources.gni")
 import("//brave/browser/notifications/sources.gni")
 import("//brave/browser/ntp_background_images/sources.gni")
@@ -211,6 +212,10 @@ brave_chrome_browser_deps = [
   "//ui/base",
   "//url",
 ]
+
+if (enable_instant_new_tab) {
+  brave_chrome_browser_deps += [ "//brave/browser/new_tab" ]
+}
 
 if (is_mac) {
   brave_chrome_browser_sources += [

@@ -3,6 +3,23 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
+import("//brave/browser/new_tab/buildflags/buildflags.gni")
+
+source_set("new_tab") {
+  assert(enable_instant_new_tab)
+  sources = [
+    "brave_new_tab_service.cc",
+    "brave_new_tab_service.h",
+    "brave_new_tab_service_factory.cc",
+    "brave_new_tab_service_factory.h",
+  ]
+  deps = [
+    "//chrome/common:common_lib",
+    "//components/keyed_service/content",
+    "//content/public/browser",
+  ]
+}
+
 source_set("unittest") {
   testonly = true
 

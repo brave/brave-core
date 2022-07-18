@@ -1,4 +1,5 @@
 import("//brave/browser/ethereum_remote_client/buildflags/buildflags.gni")
+import("//brave/browser/new_tab/buildflags/buildflags.gni")
 import("//brave/build/config.gni")
 import("//brave/components/brave_vpn/buildflags/buildflags.gni")
 import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
@@ -342,7 +343,9 @@ source_set("ui") {
     "//ui/resources",
     "//url",
   ]
-
+  if (enable_instant_new_tab) {
+    deps += [ "//brave/browser/new_tab" ]
+  }
   if (toolkit_views) {
     deps += [
       "//brave/browser/ui/views/brave_ads",

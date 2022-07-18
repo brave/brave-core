@@ -19,6 +19,7 @@
 #include "brave/browser/brave_wallet/tx_service_factory.h"
 #include "brave/browser/debounce/debounce_service_factory.h"
 #include "brave/browser/ethereum_remote_client/buildflags/buildflags.h"
+#include "brave/browser/new_tab/buildflags/buildflags.h"
 #include "brave/browser/ntp_background_images/view_counter_service_factory.h"
 #include "brave/browser/permissions/permission_lifetime_manager_factory.h"
 #include "brave/browser/search_engines/search_engine_tracker.h"
@@ -61,6 +62,9 @@
 #include "brave/browser/playlist/playlist_service_factory.h"
 #endif
 
+#if BUILDFLAG(ENABLE_INSTANT_NEW_TAB)
+#include "brave/browser/new_tab/brave_new_tab_service_factory.h"
+#endif
 namespace brave {
 
 void EnsureBrowserContextKeyedServiceFactoriesBuilt() {
@@ -114,6 +118,9 @@ void EnsureBrowserContextKeyedServiceFactoriesBuilt() {
 
 #if BUILDFLAG(ENABLE_PLAYLIST)
   playlist::PlaylistServiceFactory::GetInstance();
+#endif
+#if BUILDFLAG(ENABLE_INSTANT_NEW_TAB)
+  BraveNewTabServiceFactory::GetInstance();
 #endif
 }
 
