@@ -320,8 +320,7 @@ class SettingsViewController: TableViewController {
       selection: { [unowned self] in
         let controller = UIHostingController(rootView: WebsiteRedirectsSettingsView())
         self.navigationController?.pushViewController(controller, animated: true)
-      }, image: .init(systemName: "repeat"), accessory: .disclosureIndicator, cellClass: MultilineSubtitleCell.self)
-    
+      }, image: UIImage(named: "settings-website-redirects", in: .current, compatibleWith: nil)!.template, accessory: .disclosureIndicator, cellClass: MultilineSubtitleCell.self)
     general.rows.append(websiteRedirectsRow)
 
     return general
