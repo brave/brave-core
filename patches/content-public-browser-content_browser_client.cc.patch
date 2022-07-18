@@ -1,0 +1,13 @@
+diff --git a/content/public/browser/content_browser_client.cc b/content/public/browser/content_browser_client.cc
+index b4e2e5d8a5e962a59ba1898217c0b4a679c9242c..e3416de7df907d55407113c70b21e206e6ba63ec 100644
+--- a/content/public/browser/content_browser_client.cc
++++ b/content/public/browser/content_browser_client.cc
+@@ -9,7 +9,7 @@
+ // declarations instead of including more headers. If that is infeasible, adjust
+ // the limit. For more info, see
+ // https://chromium.googlesource.com/chromium/src/+/HEAD/docs/wmax_tokens.md
+-#pragma clang max_tokens_here 1050000
++#pragma clang max_tokens_here 1055000
+ 
+ #include <utility>
+ 
