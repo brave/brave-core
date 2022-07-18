@@ -35,9 +35,16 @@ export default function BraveTodayContent (props: Props) {
     if (!element) {
       return
     }
+    // Trigger when it's 900px from viewport bottom so it's more seamless
+    const intersectionOptions: IntersectionObserverInit = {
+      rootMargin: '0px 0px 900px 0px'
+    }
     const endOfCurrentArticlesListObserver = new IntersectionObserver((entries) => {
-      console.debug('Brave Today content Intersection Observer triggered')
-      if (entries.some(entry => entry.intersectionRatio > 0)) {
+      console.debug('Brave Today content Intersection Observer triggered', entries)
+      const hasReachedPaginationPoint = entries.some(
+        entry => entry.intersectionRatio > 0 ||
+                  entry.boundingClientRect.top < 0)
+      if (hasReachedPaginationPoint) {
         console.debug('Brave Today content Intersection Observer determined need new page.')
         if (!pageRequestPending) {
           pageRequestPending = true
@@ -47,7 +54,7 @@ export default function BraveTodayContent (props: Props) {
           })
         }
       }
-    })
+    }, intersectionOptions)
     // Load up more posts (infinite scroll)
     endOfCurrentArticlesListObserver.observe(element)
   }, [previousYAxis])
@@ -219,7 +226,7 @@ export default function BraveTodayContent (props: Props) {
             width: '1px',
             height: '1px',
             position: 'absolute',
-            bottom: '900px'
+            bottom: '0'
           }}
         />
       </>
