@@ -342,7 +342,9 @@ let locale: Record<string, string> = {
   editCardsTitle: 'Edit Cards',
   braveWalletBuyWithWyre: 'Buy with Wyre',
   braveWalletBuyWithRamp: 'Buy with Ramp',
-  braveWalletBuyContinueButton: 'Continue'
+  braveWalletBuyContinueButton: 'Continue',
+  braveWalletAllowAddNetworkNetworkPanelTitle: 'Network',
+  braveWalletAllowAddNetworkDetailsPanelTitle: 'Details'
 }
 
 export function provideStrings (strings: Record<string, string>) {

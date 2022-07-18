@@ -280,6 +280,8 @@
   <message name="IDS_BRAVE_WALLET_ALLOW_ADD_NETWORK_CHAIN_I_D" desc="Add network panel chain id label">Chain ID</message>
   <message name="IDS_BRAVE_WALLET_ALLOW_ADD_NETWORK_CURRENCY_SYMBOL" desc="Add network panel symbol label">Currency symbol</message>
   <message name="IDS_BRAVE_WALLET_ALLOW_ADD_NETWORK_EXPLORER" desc="Add network explorer label">Block explorer URL</message>
+  <message name="IDS_BRAVE_WALLET_ALLOW_ADD_NETWORK_PANEL_TITLE" desc="Add network, network panel title">Network</message>
+  <message name="IDS_BRAVE_WALLET_ALLOW_ADD_DETAILS_PANEL_TITLE" desc="Add network, details panel title">Details</message>
   <message name="IDS_BRAVE_WALLET_ALLOW_CHANGE_NETWORK_TITLE" desc="Change network panel title">Allow this site to switch the network?</message>
   <message name="IDS_BRAVE_WALLET_ALLOW_CHANGE_NETWORK_DESCRIPTION" desc="Change network panel description">This will switch the network to a previously added network.</message>
   <message name="IDS_BRAVE_WALLET_ALLOW_CHANGE_NETWORK_BUTTON" desc="Change network panel button">Switch network</message> 
