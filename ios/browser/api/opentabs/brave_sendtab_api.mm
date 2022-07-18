@@ -4,8 +4,8 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/ios/browser/api/opentabs/brave_sendtab_api.h"
-// #include "brave/ios/browser/api/opentabs/brave_sendtab_observer.h"
-// #include "brave/ios/browser/api/opentabs/sendtab_session_listener_ios.h"
+#include "brave/ios/browser/api/opentabs/brave_sendtab_observer.h"
+#include "brave/ios/browser/api/opentabs/sendtab_model_listener_ios.h"
 
 #include "base/bind.h"
 #include "base/strings/sys_string_conversions.h"
@@ -89,10 +89,6 @@ TargetDeviceType DeviceTypeFromSyncDeviceType(
   // different devices - receive device information
   send_tab_to_self::SendTabToSelfSyncService* sendtab_sync_service_;
 
-  // The list of devices with thier names, cache_guids, device types,
-  // and active times.
-  std::vector<send_tab_to_self::TargetDeviceInfo> target_device_list_;
-
   // Model to send current tab to other devices
   send_tab_to_self::SendTabToSelfModel* send_tab_to_self_model_;
 }
@@ -103,6 +99,7 @@ TargetDeviceType DeviceTypeFromSyncDeviceType(
 - (instancetype)initWithSyncService:(send_tab_to_self::SendTabToSelfSyncService*)syncService {
   if ((self = [super init])) {
     sendtab_sync_service_ = syncService;
+    send_tab_to_self_model_ = sendtab_sync_service_->GetSendTabToSelfModel();
   }
   return self;
 }
@@ -111,21 +108,24 @@ TargetDeviceType DeviceTypeFromSyncDeviceType(
   sendtab_sync_service_ = nullptr;
 }
 
-// - (id<SendTabSessionStateListener>)addObserver:(id<SendTabSessionStateObserver>)observer {
-//   return [[<SendTabSessionListenerImpl alloc] init:observer
-//                                        syncService:sync_service_];
-// }
+- (id<SendTabToSelfModelStateListener>)addObserver:(id<SendTabToSelfModelStateObserver>)observer {
+  return [[SendTabToSelfModelListenerImpl alloc] init:observer
+                                       sendTabToSelfModel:send_tab_to_self_model_];
+}
 
-// - (void)removeObserver:(id<SendTabSessionStateListener>)observer {
-//   [observer destroy];
-// }
+- (void)removeObserver:(id<SendTabToSelfModelStateListener>)observer {
+  [observer destroy];
+}
 
 - (NSArray<IOSSendTabTargetDevice*>*)getListOfSyncedDevices {
   DCHECK(sendtab_sync_service_);
 
   NSMutableArray<IOSSendTabTargetDevice*>* targetDeviceList = [[NSMutableArray alloc] init];
 
-  target_device_list_ = sendtab_sync_service_->GetSendTabToSelfModel()->GetTargetDeviceInfoSortedList();
+  // The list of devices with thier names, cache_guids, device types,
+  // and active times.
+  std::vector<send_tab_to_self::TargetDeviceInfo>  target_device_list_ = 
+      sendtab_sync_service_->GetSendTabToSelfModel()->GetTargetDeviceInfoSortedList();
 
   for (const auto& device : target_device_list_) {
         IOSSendTabTargetDevice* targetDevice = [[IOSSendTabTargetDevice alloc] 
@@ -143,8 +143,6 @@ TargetDeviceType DeviceTypeFromSyncDeviceType(
 }
 
 - (void)sendActiveTabToDevice:(NSString*)deviceID tabTitle:(NSString*)tabTitle activeURL:(NSURL*)activeURL {
-  send_tab_to_self_model_ = sendtab_sync_service_->GetSendTabToSelfModel();
-
   GURL url = net::GURLWithNSURL(activeURL); 
   std::string title = base::SysNSStringToUTF8(tabTitle);
   std::string target_device = base::SysNSStringToUTF8(deviceID);

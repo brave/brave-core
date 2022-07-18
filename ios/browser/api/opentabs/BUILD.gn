@@ -17,13 +17,13 @@ source_set("opentabs") {
     "brave_sendtab_api_private.h",
     "brave_sendtab_api.h",
     "brave_sendtab_api.mm",
-    # "brave_sendtab_observer.h",
+    "brave_sendtab_observer.h",
     "brave_tab.h",
     "brave_tab.mm",
     "opentabs_session_listener_ios.h",
     "opentabs_session_listener_ios.mm",
-    # "sendtab_session_listener.h",
-    # "sendtab_session_listener.mm",
+    "sendtab_model_listener_ios.h",
+    "sendtab_model_listener_ios.mm",
   ]
 
   deps = [

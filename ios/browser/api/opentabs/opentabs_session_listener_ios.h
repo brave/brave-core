@@ -5,9 +5,8 @@
 
 #import <Foundation/Foundation.h>
 
-#ifndef BRAVE_IOS_BROWSER_API_OPENTABS_SESSION_LISTENER_IOS_H_
-#define BRAVE_IOS_BROWSER_API_OPENTABS_SESSION_LISTENER_IOS_H_
-
+#ifndef BRAVE_IOS_BROWSER_API_OPENTABS_OPENTABS_SESSION_LISTENER_IOS_H_
+#define BRAVE_IOS_BROWSER_API_OPENTABS_OPENTABS_SESSION_LISTENER_IOS_H_
 
 #include "brave/ios/browser/api/opentabs/brave_opentabs_observer.h"
 
@@ -42,4 +41,4 @@ class OpenTabsSessionListenerIOS : public syncer::SyncServiceObserver {
 }  // namespace ios
 }  // namespace brave
 
-#endif  // BRAVE_IOS_BROWSER_API_OPENTABS_SESSION_LISTENER_IOS_H_
+#endif  // BRAVE_IOS_BROWSER_API_OPENTABS_OPENTABS_SESSION_LISTENER_IOS_H_

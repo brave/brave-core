@@ -16,8 +16,8 @@ typedef NS_ENUM(NSUInteger, TargetDeviceType) {
   TargetDeviceTypeMobile
 };
 
-// @protocol SendTabSessionStateObserver;
-// @protocol SendTabSessionStateListener;
+@protocol SendTabToSelfModelStateObserver;
+@protocol SendTabToSelfModelStateListener;
 
 @class IOSSendTabTargetDevice;
 
@@ -51,8 +51,8 @@ NS_SWIFT_NAME(BraveSendTabAPI)
 OBJC_EXPORT
 @interface BraveSendTabAPI : NSObject
 
-// - (id<SendTabSessionStateListener>)addObserver:(id<SendTabSessionStateObserver>)observer;
-// - (void)removeObserver:(id<SendTabSessionStateListener>)observer;
+- (id<SendTabToSelfModelStateListener>)addObserver:(id<SendTabToSelfModelStateObserver>)observer;
+- (void)removeObserver:(id<SendTabToSelfModelStateListener>)observer;
 
 - (instancetype)init NS_UNAVAILABLE;
 
