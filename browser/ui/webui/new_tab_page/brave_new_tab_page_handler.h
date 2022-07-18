@@ -55,6 +55,8 @@ class BraveNewTabPageHandler : public brave_new_tab_page::mojom::PageHandler,
   BraveNewTabPageHandler(const BraveNewTabPageHandler&) = delete;
   BraveNewTabPageHandler& operator=(const BraveNewTabPageHandler&) = delete;
 
+  void RotateBackground() const;
+
  private:
   // brave_new_tab_page::mojom::PageHandler overrides:
   void ChooseLocalCustomBackground() override;

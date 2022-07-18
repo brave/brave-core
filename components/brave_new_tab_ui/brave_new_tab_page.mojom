@@ -33,4 +33,5 @@ interface PageHandler {
 interface Page {
   OnBackgroundUpdated(CustomBackground custom_background);
   OnSearchPromotionDisabled();
+  OnRotateBackground();
 };

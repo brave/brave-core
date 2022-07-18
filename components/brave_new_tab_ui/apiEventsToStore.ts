@@ -11,6 +11,7 @@ import * as privateTabDataAPI from './api/privateTabData'
 import * as newTabAdsDataAPI from './api/newTabAdsData'
 import getNTPBrowserAPI, { CustomBackground } from './api/background'
 import { getInitialData, getRewardsInitialData, getRewardsPreInitialData } from './api/initialData'
+import { getWallpaper } from './api/wallpaper'
 
 async function updatePreferences (prefData: NewTab.Preferences) {
   getActions().preferencesUpdated(prefData)
@@ -43,6 +44,10 @@ async function onCustomBackgroundUpdated (customBackground: CustomBackground) {
   getActions().customBackgroundUpdated(customBackground)
 }
 
+async function onRotateBackground () {
+  getActions().rotateBackground(await getWallpaper())
+}
+
 // Not marked as async so we don't return a promise
 // and confuse callers
 export function wireApiEventsToStore () {
@@ -63,6 +68,7 @@ export function wireApiEventsToStore () {
     newTabAdsDataAPI.addChangeListener(updateNewTabAdsData)
     getNTPBrowserAPI().addCustomBackgroundUpdatedListener(onCustomBackgroundUpdated)
     getNTPBrowserAPI().addSearchPromotionDisabledListener(() => getActions().searchPromotionDisabled())
+    getNTPBrowserAPI().addRotateBackgroundListener(onRotateBackground)
   })
   .catch(e => {
     console.error('New Tab Page fatal error:', e)

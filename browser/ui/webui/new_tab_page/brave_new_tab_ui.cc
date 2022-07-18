@@ -107,6 +107,10 @@ void BraveNewTabUI::BindInterface(
   page_factory_receiver_.Bind(std::move(pending_receiver));
 }
 
+void BraveNewTabUI::RotateBackground() {
+  page_handler_->RotateBackground();
+}
+
 void BraveNewTabUI::CreatePageHandler(
     mojo::PendingRemote<brave_new_tab_page::mojom::Page> pending_page,
     mojo::PendingReceiver<brave_new_tab_page::mojom::PageHandler>

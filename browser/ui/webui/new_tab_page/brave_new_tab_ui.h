@@ -39,6 +39,7 @@ class BraveNewTabUI : public ui::MojoWebUIController,
   void BindInterface(
       mojo::PendingReceiver<brave_new_tab_page::mojom::PageHandlerFactory>
           pending_receiver);
+  void RotateBackground();
 
  private:
   // new_tab_page::mojom::PageHandlerFactory:

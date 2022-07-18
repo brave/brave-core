@@ -30,6 +30,29 @@ type SideEffectFunction = (currentState: NewTab.State) => void
 function performSideEffect (fn: SideEffectFunction): void {
   window.setTimeout(() => fn(sideEffectState), 0)
 }
+function updateWallpapers (state: NewTab.State, wallpaperData?: NewTab.Wallpaper): NewTab.State {
+  if (wallpaperData) {
+    state = {
+      ...state,
+      backgroundWallpaper: wallpaperData.backgroundWallpaper,
+      brandedWallpaper: wallpaperData.brandedWallpaper
+    }
+  }
+
+  // It's super referral when backgound is false and it's not sponsored.
+  if (state.brandedWallpaper && !state.brandedWallpaper.isSponsored) {
+    // Update feature flag if this is super referral wallpaper.
+    state = {
+      ...state,
+      featureFlagBraveNTPSponsoredImagesWallpaper: false
+    }
+  }
+  // Set default if we can't get both.
+  if (!state.backgroundWallpaper && !state.brandedWallpaper) {
+    state.backgroundWallpaper = backgroundAPI.randomBackgroundImage()
+  }
+  return state
+}
 
 export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.State, action) => {
   const payload = action.payload
@@ -54,27 +77,7 @@ export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.S
         // page view that the action occured on.
         braveTalkPromptDismissed: state.braveTalkPromptDismissed || state.braveTalkPromptAutoDismissed
       }
-
-      if (initialDataPayload.wallpaperData) {
-        state = {
-          ...state,
-          backgroundWallpaper: initialDataPayload.wallpaperData.backgroundWallpaper,
-          brandedWallpaper: initialDataPayload.wallpaperData.brandedWallpaper
-        }
-      }
-
-      // It's super referral when backgound is false and it's not sponsored.
-      if (state.brandedWallpaper && !state.brandedWallpaper.isSponsored) {
-        // Update feature flag if this is super referral wallpaper.
-        state = {
-          ...state,
-          featureFlagBraveNTPSponsoredImagesWallpaper: false
-        }
-      }
-      // Set default if we can't get both.
-      if (!state.backgroundWallpaper && !state.brandedWallpaper) {
-        state.backgroundWallpaper = backgroundAPI.randomBackgroundImage()
-      }
+      state = updateWallpapers(state, initialDataPayload.wallpaperData)
       console.timeStamp('reducer initial data received')
 
       performSideEffect(async function (state) {
@@ -109,7 +112,21 @@ export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.S
         searchPromotionEnabled: false
       }
       break
+    case types.ROTATE_BACKGROUND:
+      const wallpaperData = payload as NewTab.Wallpaper
 
+      state = updateWallpapers(state, wallpaperData)
+
+      performSideEffect(async function (state) {
+        if (!state.isIncognito) {
+          try {
+            await registerViewCount()
+          } catch (e) {
+            console.error('Error calling registerViewCount', e)
+          }
+        }
+      })
+      break
     case types.CUSTOM_BACKGROUND_UPDATED:
       // While customizing background, background has
       // custom or brave default background. Branded wallpaper will

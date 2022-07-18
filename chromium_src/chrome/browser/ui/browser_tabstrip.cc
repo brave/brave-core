@@ -7,6 +7,7 @@
 #if BUILDFLAG(ENABLE_INSTANT_NEW_TAB)
 #include "brave/browser/new_tab/brave_new_tab_service.h"
 #include "brave/browser/new_tab/brave_new_tab_service_factory.h"
+#include "brave/browser/ui/webui/new_tab_page/brave_new_tab_ui.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_navigator_params.h"
@@ -16,6 +17,18 @@
 #endif
 
 #if BUILDFLAG(ENABLE_INSTANT_NEW_TAB)
+void RotateBackground(content::WebContents* web_contents) {
+  content::WebUI* const webui = web_contents->GetWebUI();
+  if (!webui || !webui->GetController()) {
+    return;
+  }
+  BraveNewTabUI* new_tab_ui =
+      webui->GetController()->template GetAs<BraveNewTabUI>();
+  if (!new_tab_ui) {
+    return;
+  }
+  new_tab_ui->RotateBackground();
+}
 // Handles new tab creation logic. In case of multiple new tabs opened
 // Inserts it before active opened new tab to avoid refreshing the page.
 // Otherwise takes a new tab instance from cache and shows it instantly.
@@ -29,6 +42,7 @@ int OpenBraveNewTab(Browser* browser, NavigateParams* params, int idx) {
     if (is_new_tab_opened) {
       params->disposition = WindowOpenDisposition::NEW_BACKGROUND_TAB;
       // Prepend current tab by newly opened new tab
+      RotateBackground(active_contents);
       return active_index;
     }
   }
