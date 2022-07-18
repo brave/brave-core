@@ -52,7 +52,8 @@ class BraveHistoryURLProviderTest : public testing::Test,
   }
 
   // AutocompleteProviderListener:
-  void OnProviderUpdate(bool updated_matches) override {
+  void OnProviderUpdate(bool updated_matches,
+                        const AutocompleteProvider* provider) override {
     if (autocomplete_->done())
       run_loop_.QuitWhenIdle();
   }
