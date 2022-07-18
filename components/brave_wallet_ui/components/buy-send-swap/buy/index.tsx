@@ -98,14 +98,8 @@ function Buy (props: Props) {
 
   const isSelectedNetworkSupported = React.useMemo(() => {
     // Test networks are not supported in buy tab
-    if (SupportedTestNetworks.includes(selectedNetwork.chainId.toLowerCase())) {
-      return false
-    }
-
-    return [...rampAssetOptions, ...wyreAssetOptions]
-      .map(asset => asset.chainId.toLowerCase())
-      .includes(selectedNetwork.chainId.toLowerCase())
-  }, [selectedNetwork, rampAssetOptions, wyreAssetOptions])
+    return !SupportedTestNetworks.includes(selectedNetwork.chainId.toLowerCase())
+  }, [selectedNetwork])
 
   return (
     <StyledWrapper>
