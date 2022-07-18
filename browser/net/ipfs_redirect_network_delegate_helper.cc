@@ -59,7 +59,11 @@ int OnBeforeURLRequest_IPFSRedirectWork(
     } else {
       ctx->blocked_by = brave::kOtherBlocked;
     }
+  } else if (has_ipfs_scheme) {
+    // Block incorrect url.
+    ctx->blocked_by = brave::kOtherBlocked;
   }
+
   return net::OK;
 }
 
