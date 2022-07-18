@@ -48,7 +48,8 @@ def GetCommandOutput(command):
 def GetDumpSymsBinary(build_dir=None):
     """Returns the path to the dump_syms binary."""
     DUMP_SYMS = 'dump_syms'
-    dump_syms_bin = os.path.join(os.path.expanduser(build_dir), DUMP_SYMS)
+    dump_syms_bin = os.path.join(os.path.expanduser(build_dir),
+                                 'clang_x64', DUMP_SYMS)
     if not os.access(dump_syms_bin, os.X_OK):
         print("Cannot find {0}.".format(DUMP_SYMS))
         sys.exit(1)
