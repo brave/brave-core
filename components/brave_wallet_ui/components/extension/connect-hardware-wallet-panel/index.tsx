@@ -43,7 +43,7 @@ function ConnectHardwareWalletPanel (props: Props) {
 
   const title = React.useMemo(() => {
     if (hardwareWalletCode === 'deviceBusy') {
-      return getLocale('braveWalletConnectHardwarePanelConfirmation').replace('$1', walletName)
+      return getLocale('braveWalletConnectHardwarePanelConfirmation')
     }
 
     if (hardwareWalletCode === 'openLedgerApp') {

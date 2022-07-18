@@ -335,7 +335,7 @@
   <message name="IDS_BRAVE_WALLET_CONNECT_HARDWARE_PANEL_DISCONNECTED" desc="Connect Hardware panel disconnected status"><ph name="DEVICE_NAME"><ex>Ledger</ex>$1</ph> disconnected</message>
   <message name="IDS_BRAVE_WALLET_CONNECT_HARDWARE_PANEL_INSTRUCTIONS" desc="Connect Hardware panel instructions button">Instructions</message>
   <message name="IDS_BRAVE_WALLET_CONNECT_HARDWARE_PANEL_CONNECT" desc="Connect Hardware panel title">Connect your <ph name="DEVICE_NAME"><ex>Ledger</ex>$1</ph></message>
-  <message name="IDS_BRAVE_WALLET_CONNECT_HARDWARE_PANEL_CONFIRMATION" desc="Connect Hardware panel confirmation description">Hardware wallet requires confirmation on device <ph name="DEVICE_NAME"><ex>Ledger</ex>$1</ph></message>
+  <message name="IDS_BRAVE_WALLET_CONNECT_HARDWARE_PANEL_CONFIRMATION" desc="Connect Hardware panel confirmation description">Hardware wallet requires confirmation on device.</message>
   <message name="IDS_BRAVE_WALLET_CONNECT_HARDWARE_PANEL_OPEN_APP" desc="Connect Hardware panel open app text">Hardware wallet requires <ph name="NETWORK"><ex>Ethereum</ex>$1</ph> App opened on <ph name="DEVICE_NAME"><ex>Ledger</ex>$2</ph></message>
   <message name="IDS_BRAVE_WALLET_TRANSACTION_SENT" desc="Transaction sent label">sent</message>
   <message name="IDS_BRAVE_WALLET_TRANSACTION_RECEIVED" desc="Transaction received label">received</message>
