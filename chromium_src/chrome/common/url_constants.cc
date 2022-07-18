@@ -202,6 +202,9 @@ const char kSyncGoogleDashboardURL[] =
 const char kSyncLearnMoreURL[] =
     "https://support.brave.com/";
 
+const char kSigninInterceptManagedDisclaimerLearnMoreURL[] =
+    "https://support.brave.com/";
+
 #if !BUILDFLAG(IS_ANDROID)
 const char kSyncTrustedVaultOptInURL[] = "https://support.brave.com/";
 #endif
