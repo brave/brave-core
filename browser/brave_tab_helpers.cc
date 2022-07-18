@@ -16,6 +16,7 @@
 #include "brave/browser/ephemeral_storage/ephemeral_storage_tab_helper.h"
 #include "brave/browser/ui/bookmark/brave_bookmark_tab_helper.h"
 #include "brave/components/brave_perf_predictor/browser/perf_predictor_tab_helper.h"
+#include "brave/components/brave_today/common/features.h"
 #include "brave/components/brave_wayback_machine/buildflags.h"
 #include "brave/components/greaselion/browser/buildflags/buildflags.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
@@ -117,7 +118,11 @@ void AttachTabHelpers(content::WebContents* web_contents) {
   ipfs::IPFSTabHelper::MaybeCreateForWebContents(web_contents);
 #endif
 
-  BraveNewsTabHelper::CreateForWebContents(web_contents);
+  if (base::FeatureList::IsEnabled(
+          brave_today::features::kBraveNewsSubscribeButtonFeature)) {
+    BraveNewsTabHelper::CreateForWebContents(web_contents);
+  }
+
   brave_stats::BraveStatsTabHelper::CreateForWebContents(web_contents);
 
   if (base::FeatureList::IsEnabled(net::features::kBraveEphemeralStorage)) {

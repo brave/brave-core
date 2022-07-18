@@ -290,6 +290,12 @@ constexpr char kBraveNewsCardPeekFeatureDescription[] =
     "Prompt Brave News via the top featured article peeking up from the bottom "
     "of the New Tab Page, after a short delay.";
 
+constexpr char kBraveNewsSubscribeButtonName[] =
+    "Enable Brave New Subscribe Button";
+constexpr char kBraveNewsSubscribeButtonDescription[] =
+    "Show a button in the toolbar to allow you to add supported sites to Brave "
+    "News.";
+
 constexpr char kCryptoWalletsForNewInstallsName[] =
     "Enable Crypto Wallets option in settings";
 constexpr char kCryptoWalletsForNewInstallsDescription[] =
@@ -438,7 +444,13 @@ constexpr char kPlaylistDescription[] = "Enables Playlist";
      flag_descriptions::kBraveNewsCardPeekFeatureName,                     \
      flag_descriptions::kBraveNewsCardPeekFeatureDescription,              \
      kOsDesktop,                                                           \
-     FEATURE_VALUE_TYPE(brave_today::features::kBraveNewsCardPeekFeature)},
+     FEATURE_VALUE_TYPE(brave_today::features::kBraveNewsCardPeekFeature)}, \
+     {"brave-news-subscribe-button", \
+      flag_descriptions::kBraveNewsSubscribeButtonName, \
+      flag_descriptions::kBraveNewsSubscribeButtonDescription, \
+      kOsDesktop, \
+      FEATURE_VALUE_TYPE( \
+      brave_today::features::kBraveNewsSubscribeButtonFeature)},
 
 #define BRAVE_FEDERATED_FEATURE_ENTRIES                                 \
     {"brave-federated",                                                 \

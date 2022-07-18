@@ -10,6 +10,7 @@
 #include <utility>
 
 #include "base/command_line.h"
+#include "base/feature_list.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/browser/extensions/brave_component_loader.h"
 #include "brave/browser/profiles/profile_util.h"
@@ -23,6 +24,7 @@
 #include "brave/browser/ui/views/rounded_separator.h"
 #include "brave/components/brave_rewards/common/features.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
+#include "brave/components/brave_today/common/features.h"
 #include "brave/components/constants/brave_switches.h"
 #include "brave/components/constants/pref_names.h"
 #include "chrome/browser/extensions/extension_service.h"
@@ -111,7 +113,10 @@ void BraveActionsContainer::Init() {
     actions_[brave_rewards_extension_id].position_ = ACTION_ANY_POSITION;
   }
 
-  AddActionViewForNews();
+  if (base::FeatureList::IsEnabled(
+          brave_today::features::kBraveNewsSubscribeButtonFeature)) {
+    AddActionViewForNews();
+  }
 
   // React to Brave Rewards preferences changes.
   show_brave_rewards_button_.Init(
