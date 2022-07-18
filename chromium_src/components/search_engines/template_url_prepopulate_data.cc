@@ -266,6 +266,37 @@ BravePrepopulatedEngineID GetDefaultSearchEngine(int country_id, int version) {
   static const base::NoDestructor<
       base::flat_map<int, BravePrepopulatedEngineID>>
       content_v20({
+          {country_codes::CountryCharsToCountryID('A', 'M'),
+           PREPOPULATED_ENGINE_ID_YANDEX},
+          {country_codes::CountryCharsToCountryID('A', 'Z'),
+           PREPOPULATED_ENGINE_ID_YANDEX},
+          {country_codes::CountryCharsToCountryID('B', 'Y'),
+           PREPOPULATED_ENGINE_ID_YANDEX},
+          {country_codes::CountryCharsToCountryID('C', 'A'),
+           PREPOPULATED_ENGINE_ID_BRAVE},
+          {country_codes::CountryCharsToCountryID('D', 'E'),
+           PREPOPULATED_ENGINE_ID_BRAVE},
+          {country_codes::CountryCharsToCountryID('F', 'R'),
+           PREPOPULATED_ENGINE_ID_BRAVE},
+          {country_codes::CountryCharsToCountryID('G', 'B'),
+           PREPOPULATED_ENGINE_ID_BRAVE},
+          {country_codes::CountryCharsToCountryID('K', 'G'),
+           PREPOPULATED_ENGINE_ID_YANDEX},
+          {country_codes::CountryCharsToCountryID('K', 'Z'),
+           PREPOPULATED_ENGINE_ID_YANDEX},
+          {country_codes::CountryCharsToCountryID('M', 'D'),
+           PREPOPULATED_ENGINE_ID_YANDEX},
+          {country_codes::CountryCharsToCountryID('R', 'U'),
+           PREPOPULATED_ENGINE_ID_YANDEX},
+          {country_codes::CountryCharsToCountryID('T', 'J'),
+           PREPOPULATED_ENGINE_ID_YANDEX},
+          {country_codes::CountryCharsToCountryID('T', 'M'),
+           PREPOPULATED_ENGINE_ID_YANDEX},
+          {country_codes::CountryCharsToCountryID('U', 'S'),
+           PREPOPULATED_ENGINE_ID_BRAVE},
+          {country_codes::CountryCharsToCountryID('U', 'Z'),
+           PREPOPULATED_ENGINE_ID_YANDEX},
+          // Added values in this version bellow
           {country_codes::CountryCharsToCountryID('A', 'T'),
            PREPOPULATED_ENGINE_ID_BRAVE},
           {country_codes::CountryCharsToCountryID('E', 'S'),
@@ -275,11 +306,11 @@ BravePrepopulatedEngineID GetDefaultSearchEngine(int country_id, int version) {
       });
   if (version > 19) {
     auto it = content_v20->find(country_id);
-    if (it != content_v20->end()) {
-      return it->second;
+    if (it == content_v20->end()) {
+      return default_v6;
     }
-  }
-  if (version > 16) {
+    return it->second;
+  } else if (version > 16) {
     auto it = content_v17->find(country_id);
     if (it == content_v17->end()) {
       return default_v6;
