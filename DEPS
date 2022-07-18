@@ -6,7 +6,10 @@ deps = {
   "vendor/requests": "https://github.com/kennethreitz/requests@e4d59bedfd3c7f4f254f4f5d036587bcd8152458",
   "vendor/boto": "https://github.com/boto/boto@f7574aa6cc2c819430c1f05e9a1a1a666ef8169b",
   "vendor/python-patch": "https://github.com/brave/python-patch@d8880110be6554686bc08261766538c2926d4e82",
-  "vendor/omaha": "https://github.com/brave/omaha.git@3fe2f833fabd91f943a0babd5c69c4a55b1570cf",
+  "vendor/omaha": {
+    "url": "https://github.com/brave/omaha.git@3fe2f833fabd91f943a0babd5c69c4a55b1570cf",
+    "condition": "checkout_win",
+  },
   "vendor/sparkle": {
     "url": "https://github.com/brave/Sparkle.git@f69ba7b7fae7dda475ba6cda12fba8d72270478d",
     "condition": "checkout_mac",
