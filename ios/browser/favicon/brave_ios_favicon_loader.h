@@ -8,32 +8,29 @@
 
 #import <Foundation/Foundation.h>
 
-#include "base/supports_user_data.h"
 #include "base/task/cancelable_task_tracker.h"
 #include "components/keyed_service/core/keyed_service.h"
 
-class ChromeBrowserState;
+namespace favicon {
+class FaviconService;
+}  // namespace favicon
+
 class GURL;
 @class FaviconAttributes;
 
 namespace brave_favicon {
 
-class BraveFaviconLoader : public KeyedService,
-                           public base::SupportsUserData::Data {
+class BraveFaviconLoader : public KeyedService {
  public:
   // Type for completion block for FaviconForURL().
   typedef void (^FaviconAttributesCompletionBlock)(FaviconAttributes*);
 
-  explicit BraveFaviconLoader(ChromeBrowserState* browser_state);
+  explicit BraveFaviconLoader(favicon::FaviconService* favicon_service);
 
   BraveFaviconLoader(const BraveFaviconLoader&) = delete;
   BraveFaviconLoader& operator=(const BraveFaviconLoader&) = delete;
 
   ~BraveFaviconLoader() override;
-
-  static void CreateForBrowserState(ChromeBrowserState* browser_state);
-  static BraveFaviconLoader* FromBrowserState(
-      ChromeBrowserState* browser_state);
 
   void FaviconForPageUrlOrHost(
       const GURL& page_url,
@@ -48,7 +45,7 @@ class BraveFaviconLoader : public KeyedService,
   base::WeakPtr<BraveFaviconLoader> AsWeakPtr();
 
  private:
-  ChromeBrowserState* browser_state_;
+  favicon::FaviconService* favicon_service_;
 
   // Tracks tasks sent to HistoryService.
   base::CancelableTaskTracker cancelable_task_tracker_;

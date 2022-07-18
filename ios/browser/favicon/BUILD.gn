@@ -9,6 +9,8 @@ source_set("favicon") {
   sources = [
     "brave_ios_favicon_loader.h",
     "brave_ios_favicon_loader.mm",
+    "brave_ios_favicon_loader_factory.h",
+    "brave_ios_favicon_loader_factory.mm",
     "brave_ios_web_favicon_driver.h",
     "brave_ios_web_favicon_driver.mm",
   ]

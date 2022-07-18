@@ -18,7 +18,6 @@
 #include "components/favicon_base/favicon_callback.h"
 #include "components/favicon_base/favicon_types.h"
 #include "components/keyed_service/core/service_access_type.h"
-#include "ios/chrome/browser/browser_state/chrome_browser_state.h"
 #include "ios/chrome/browser/favicon/favicon_service_factory.h"
 #import "ios/chrome/browser/ui/util/uikit_ui_util.h"
 #import "ios/chrome/common/ui/favicon/favicon_attributes.h"
@@ -33,12 +32,13 @@ namespace {
 const CGFloat kFallbackIconDefaultTextColor = 0xAAAAAA;
 
 base::CancelableTaskTracker::TaskId GetIconRawBitmapForPageUrl(
-    ChromeBrowserState* browser_state,
+    favicon::FaviconService* favicon_service,
     const GURL& page_url,
     int min_source_size_in_pixel,
     int desired_size_in_pixel,
     favicon_base::LargeIconCallback raw_bitmap_callback,
     base::CancelableTaskTracker* tracker) {
+  DCHECK(favicon_service);
   DCHECK_LE(1, min_source_size_in_pixel);
   DCHECK_LE(0, desired_size_in_pixel);
 
@@ -49,12 +49,6 @@ base::CancelableTaskTracker::TaskId GetIconRawBitmapForPageUrl(
       {favicon_base::IconType::kWebManifestIcon,
        favicon_base::IconType::kFavicon, favicon_base::IconType::kTouchIcon,
        favicon_base::IconType::kTouchPrecomposedIcon});
-
-  favicon::FaviconService* favicon_service =
-      ios::FaviconServiceFactory::GetForBrowserState(
-          browser_state, ServiceAccessType::EXPLICIT_ACCESS);
-
-  DCHECK(favicon_service);
 
   scoped_refptr<favicon::LargeIconWorker> worker =
       base::MakeRefCounted<favicon::LargeIconWorker>(
@@ -70,28 +64,8 @@ base::CancelableTaskTracker::TaskId GetIconRawBitmapForPageUrl(
 }  // namespace
 
 namespace brave_favicon {
-BraveFaviconLoader* BraveFaviconLoader::FromBrowserState(
-    ChromeBrowserState* browser_state) {
-  DCHECK_CURRENTLY_ON(web::WebThread::UI);
-  DCHECK(browser_state);
-
-  return static_cast<BraveFaviconLoader*>(
-      browser_state->GetUserData("kBraveFaviconLoader"));
-}
-
-void BraveFaviconLoader::CreateForBrowserState(
-    ChromeBrowserState* browser_state) {
-  if (FromBrowserState(browser_state)) {
-    return;
-  }
-
-  browser_state->SetUserData(
-      "kBraveFaviconLoader",
-      base::WrapUnique(new BraveFaviconLoader(browser_state)));
-}
-
-BraveFaviconLoader::BraveFaviconLoader(ChromeBrowserState* browser_state)
-    : browser_state_(browser_state) {}
+BraveFaviconLoader::BraveFaviconLoader(favicon::FaviconService* favicon_service)
+    : favicon_service_(favicon_service) {}
 BraveFaviconLoader::~BraveFaviconLoader() {}
 
 void BraveFaviconLoader::FaviconForPageUrlOrHost(
@@ -136,7 +110,7 @@ void BraveFaviconLoader::FaviconForPageUrlOrHost(
   faviconBlockHandler([FaviconAttributes attributesWithDefaultImage]);
 
   // Now fetch the favicon image.
-  GetIconRawBitmapForPageUrl(browser_state_, page_url,
+  GetIconRawBitmapForPageUrl(favicon_service_, page_url,
                              scale * min_size_in_points, scale * size_in_points,
                              base::BindRepeating(favicon_block),
                              &cancelable_task_tracker_);

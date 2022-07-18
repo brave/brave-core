@@ -6,6 +6,7 @@
 #include "brave/ios/browser/api/favicon/favicon_loader.h"
 #include "base/strings/sys_string_conversions.h"
 #import "brave/ios/browser/favicon/brave_ios_favicon_loader.h"
+#import "brave/ios/browser/favicon/brave_ios_favicon_loader_factory.h"
 #include "components/favicon_base/favicon_types.h"
 #include "ios/chrome/browser/application_context.h"
 #include "ios/chrome/browser/browser_state/chrome_browser_state.h"
@@ -45,7 +46,8 @@ BraveFaviconLoaderSize const BraveFaviconLoaderSizeDesiredLargest =
 - (instancetype)initWithBrowserState:(ChromeBrowserState*)browserState {
   if ((self = [super init])) {
     brave_favicon_loader_ =
-        brave_favicon::BraveFaviconLoader::FromBrowserState(browserState);
+        brave_favicon::BraveIOSFaviconLoaderFactory::GetForBrowserState(
+            browserState);
     DCHECK(brave_favicon_loader_);
   }
   return self;
