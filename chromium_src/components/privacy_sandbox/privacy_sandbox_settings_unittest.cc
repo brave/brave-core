@@ -28,13 +28,8 @@ class MockPrivacySandboxDelegate : public PrivacySandboxSettings::Delegate {
     ON_CALL(*this, IsPrivacySandboxRestricted).WillByDefault([]() {
       return false;
     });
-    ON_CALL(*this, IsPrivacySandboxConfirmed).WillByDefault([]() {
-      // Return true to mock as if privacy sandbox is allowed to run.
-      return true;
-    });
   }
   MOCK_METHOD(bool, IsPrivacySandboxRestricted, (), (override));
-  MOCK_METHOD(bool, IsPrivacySandboxConfirmed, (), (override));
 };
 
 class PrivacySandboxSettingsTest : public testing::Test {
