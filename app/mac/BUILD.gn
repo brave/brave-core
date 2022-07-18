@@ -45,11 +45,12 @@ action("generate_breakpad_symbols") {
   script = "//brave/tools/posix/generate_breakpad_symbols.py"
   args = [
     "--symbols-dir=" + rebase_path(symbols_dir),
-    "--jobs=16",
+    "--jobs=1",
     "--build-dir=" + rebase_path(root_out_dir),
     "--binary=$binaries",
     "--libchromiumcontent-dir=" + rebase_path("//"),
     "--clear",
+    "-v",
   ]
 
   deps = [

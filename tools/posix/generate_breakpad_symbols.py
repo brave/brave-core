@@ -37,9 +37,11 @@ def GetCommandOutput(command):
 
     From chromium_utils.
     """
+    print('launch', command)
     devnull = open(os.devnull, 'w') # pylint: disable=consider-using-with
-    proc = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=devnull) # pylint: disable=consider-using-with
+    proc = subprocess.Popen(command, stdout=subprocess.PIPE) # pylint: disable=consider-using-with
     output = proc.communicate()[0]
+    print('end', command)
     return output.decode('utf-8')
 
 
@@ -203,6 +205,10 @@ def GenerateSymbols(options, binaries):
                 output_path = os.path.join(options.symbols_dir, module_line.group(2),
                                            module_line.group(1))
                 mkdir_p(output_path)
+                if options.verbose:
+                    with print_lock:
+                        print("final binary {0} size {1} name {2}".format(binary, len(syms), symbol_file) )
+
                 symbol_file = "%s.sym" % module_line.group(2)
                 f = open(os.path.join(output_path, symbol_file), 'w') # pylint: disable=consider-using-with
                 f.write(syms)
@@ -249,6 +255,7 @@ def main():
         try:
             shutil.rmtree(options.symbols_dir)
         except: # pylint: disable=bare-except
+            print('failed to clear', options.symbols_dir)
             pass
 
     parser = gn_helpers.GNValueParser(options.binary)
@@ -263,7 +270,7 @@ def main():
         new_deps = set(deps) - binaries
         binaries |= new_deps
         q.extend(list(new_deps))
-
+    print('binaries:', binaries)
     GenerateSymbols(options, binaries)
 
     return 0
