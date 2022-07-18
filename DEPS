@@ -10,7 +10,7 @@ deps = {
   "vendor/sparkle": {
     "url": "https://github.com/brave/Sparkle.git@f69ba7b7fae7dda475ba6cda12fba8d72270478d",
     "condition": "checkout_mac",
-  }
+  },
   "vendor/bat-native-rapidjson": "https://github.com/brave-intl/bat-native-rapidjson.git@60b7e4574cebdd79f441bdd6f0f3ab469fd7e04c",
   "vendor/bip39wally-core-native": "https://github.com/brave-intl/bat-native-bip39wally-core.git@0d3a8713a2b388d2156fe49a70ef3f7cdb44b190",
   "vendor/bat-native-anonize": "https://github.com/brave-intl/bat-native-anonize.git@e3742ba3e8942eea9e4755d91532491871bd3116",
