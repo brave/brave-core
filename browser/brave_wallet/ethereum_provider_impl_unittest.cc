@@ -1784,6 +1784,10 @@ TEST_F(EthereumProviderImplUnitTest, SignMessageRequestQueue) {
   const std::vector<std::string> addresses = GetAddresses();
 
   // Select account that is not participating in signing process.
+  // If there is allowed account which is also selected then only
+  // this account may be used for signin process.
+  // address[1] is not allowed because it has no permission.
+  // Also see EthereumProviderImpl.FilterAccounts method.
   SetSelectedAccount(addresses[1], mojom::CoinType::ETH);
 
   const std::string message1 = "0x68656c6c6f20776f726c64";

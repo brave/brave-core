@@ -399,11 +399,6 @@ bool JsonRpcService::SetNetwork(const std::string& chain_id,
   return true;
 }
 
-bool JsonRpcService::SetNetwork(const std::string& chain_id,
-                                mojom::CoinType coin) {
-  return SetNetwork(chain_id, coin, false);
-}
-
 void JsonRpcService::SetNetwork(const std::string& chain_id,
                                 mojom::CoinType coin,
                                 SetNetworkCallback callback) {
