@@ -339,12 +339,7 @@ let locale: Record<string, string> = {
   braveTodayOptInActionLabel: 'Show Brave News',
   braveTodayOptOutActionLabel: 'No thanks',
   braveTodayScrollHint: 'Scroll for Brave News',
-  editCardsTitle: 'Edit Cards',
-  braveWalletBuyWithWyre: 'Buy with Wyre',
-  braveWalletBuyWithRamp: 'Buy with Ramp',
-  braveWalletBuyContinueButton: 'Continue',
-  braveWalletAllowAddNetworkNetworkPanelTitle: 'Network',
-  braveWalletAllowAddNetworkDetailsPanelTitle: 'Details'
+  editCardsTitle: 'Edit Cards'
 }
 
 export function provideStrings (strings: Record<string, string>) {
