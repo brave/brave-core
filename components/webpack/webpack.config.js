@@ -120,6 +120,25 @@ module.exports = async function (env, argv) {
           test: /\.(ttf|eot|ico|svg|png|jpg|jpeg|gif)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
           loader: 'file-loader'
         },
+        // In order to fix a memory leak in WDP we introduced the 'linkedom'
+        // depencendy: https://github.com/brave/web-discovery-project/pull/197
+        //
+        // One of the transitive dependencies of 'linkedom' relies on a
+        // specific export syntax that is not supported by Webpack v4:
+        //
+        // > ERROR in ./vendor/web-discovery-project/node_modules/htmlparser2/lib/esm/index.js 59:9
+        // > Module parse failed: Unexpected token (59:9)
+        // > You may need an appropriate loader to handle this file type,
+        // > currently no loaders are configured to process this file. See
+        // > https://webpack.js.org/concepts#loaders
+        // | return getFeed(parseDOM(feed, options));
+        // | }
+        // > export * as DomUtils from "domutils";
+        //
+        // Updating to Webpack 5 was not possible at this point given the
+        // config to be updated and multiple dependencies and commands that
+        // would break, so instead we added 'babel-loader' specifically for
+        // this problematic file, which allows to support the export syntax.
         {
           test: (input) => {
             // Handle both Windows and Linux/Mac paths formats
