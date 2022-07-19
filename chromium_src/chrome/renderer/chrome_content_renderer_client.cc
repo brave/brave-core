@@ -9,6 +9,12 @@
 
 #define URLLoaderThrottleProviderImpl BraveURLLoaderThrottleProvider
 
+// We need to do this here rather than in |BraveContentRendererClient| because
+// it needs access to the registry on ChromeRenderFrameObserver.
+#define BRAVE_RENDER_FRAME_CREATED \
+  new feed::RssLinkReader(render_frame, registry);
+
 #include "src/chrome/renderer/chrome_content_renderer_client.cc"
 
+#undef BRAVE_RENDER_FRAME_CREATED
 #undef URLLoaderThrottleProviderImpl
