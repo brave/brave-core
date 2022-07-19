@@ -32,6 +32,7 @@ import android.text.Html;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.Spanned;
+import android.text.TextUtils;
 import android.text.style.ClickableSpan;
 import android.text.style.URLSpan;
 import android.util.Pair;
@@ -244,6 +245,23 @@ public class Utils {
         assetDetailIntent.putExtra(ASSET_CONTRACT_ADDRESS, contractAddress);
         assetDetailIntent.putExtra(ASSET_DECIMALS, assetDecimals);
         activity.startActivity(assetDetailIntent);
+    }
+
+    /**
+     * Get a short name of a network
+     * @param networkName of chain e.g. Ethereum Mainnet
+     * @return short name of the network e.g. Ethereum
+     */
+    public static String getShortNameOfNetwork(String networkName) {
+        if (!TextUtils.isEmpty(networkName)) {
+            String firstWord = networkName.split(" ")[0];
+            if (firstWord.length() > 18) {
+                return firstWord.substring(0, 16) + "..";
+            } else {
+                return firstWord;
+            }
+        }
+        return "";
     }
 
     public static NetworkInfo[] getCustomNetworks(NetworkInfo[] chains) {
@@ -464,32 +482,32 @@ public class Utils {
         }
     }
 
-    public static String getNetworkConst(
-            Activity activity, String network, NetworkInfo[] customNetworks) {
+    public static String getNetworkChainId(
+            Context context, String network, NetworkInfo[] customNetworks) {
         String networkConst = BraveWalletConstants.MAINNET_CHAIN_ID;
-        if (network.equals(activity.getText(R.string.rinkeby).toString())) {
+        if (network.equals(context.getText(R.string.rinkeby).toString())) {
             return BraveWalletConstants.RINKEBY_CHAIN_ID;
-        } else if (network.equals(activity.getText(R.string.ropsten).toString())) {
+        } else if (network.equals(context.getText(R.string.ropsten).toString())) {
             return BraveWalletConstants.ROPSTEN_CHAIN_ID;
-        } else if (network.equals(activity.getText(R.string.goerli).toString())) {
+        } else if (network.equals(context.getText(R.string.goerli).toString())) {
             return BraveWalletConstants.GOERLI_CHAIN_ID;
-        } else if (network.equals(activity.getText(R.string.kovan).toString())) {
+        } else if (network.equals(context.getText(R.string.kovan).toString())) {
             return BraveWalletConstants.KOVAN_CHAIN_ID;
-        } else if (network.equals(activity.getText(R.string.localhost).toString())) {
+        } else if (network.equals(context.getText(R.string.localhost).toString())) {
             return BraveWalletConstants.LOCALHOST_CHAIN_ID;
-        } else if (network.equals(activity.getText(R.string.polygon).toString())) {
+        } else if (network.equals(context.getText(R.string.polygon).toString())) {
             return BraveWalletConstants.POLYGON_MAINNET_CHAIN_ID;
-        } else if (network.equals(activity.getText(R.string.binance).toString())) {
+        } else if (network.equals(context.getText(R.string.binance).toString())) {
             return BraveWalletConstants.BINANCE_SMART_CHAIN_MAINNET_CHAIN_ID;
-        } else if (network.equals(activity.getText(R.string.celo).toString())) {
+        } else if (network.equals(context.getText(R.string.celo).toString())) {
             return BraveWalletConstants.CELO_MAINNET_CHAIN_ID;
-        } else if (network.equals(activity.getText(R.string.avalanche).toString())) {
+        } else if (network.equals(context.getText(R.string.avalanche).toString())) {
             return BraveWalletConstants.AVALANCHE_MAINNET_CHAIN_ID;
-        } else if (network.equals(activity.getText(R.string.fantom).toString())) {
+        } else if (network.equals(context.getText(R.string.fantom).toString())) {
             return BraveWalletConstants.FANTOM_MAINNET_CHAIN_ID;
-        } else if (network.equals(activity.getText(R.string.optimism).toString())) {
+        } else if (network.equals(context.getText(R.string.optimism).toString())) {
             return BraveWalletConstants.OPTIMISM_MAINNET_CHAIN_ID;
-        } else if (network.equals(activity.getText(R.string.aurora).toString())) {
+        } else if (network.equals(context.getText(R.string.aurora).toString())) {
             return BraveWalletConstants.AURORA_MAINNET_CHAIN_ID;
         }
 

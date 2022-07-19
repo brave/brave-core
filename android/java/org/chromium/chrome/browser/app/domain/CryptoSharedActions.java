@@ -9,6 +9,9 @@ import android.content.Context;
 
 import androidx.lifecycle.LiveData;
 
-public interface CryptoModelActions {
+import org.chromium.brave_wallet.mojom.CoinType;
+
+public interface CryptoSharedActions {
     void updateCoinType();
+    void updateCoinAccountNetworkInfo(@CoinType.EnumType int coin);
 }
