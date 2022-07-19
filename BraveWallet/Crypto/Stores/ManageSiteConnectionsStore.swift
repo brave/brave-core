@@ -77,6 +77,6 @@ class ManageSiteConnectionsStore: ObservableObject {
   }
   
   func accountInfo(for address: String) -> BraveWallet.AccountInfo? {
-    keyringStore.keyring.accountInfos.first(where: { $0.address == address })
+    keyringStore.allAccounts.first(where: { $0.address == address })
   }
 }

@@ -34,8 +34,8 @@ public struct WalletPanelContainerView: View {
   }
 
   private var visibleScreen: VisibleScreen {
-    let keyring = keyringStore.keyring
-    if keyringStore.keyring.id.isEmpty {
+    let keyring = keyringStore.defaultKeyring
+    if keyringStore.defaultKeyring.id.isEmpty {
       return .loading
     }
     if !keyring.isKeyringCreated || keyringStore.isOnboardingVisible {
@@ -133,7 +133,7 @@ public struct WalletPanelContainerView: View {
       }
     }
     .frame(idealWidth: 320, maxWidth: .infinity)
-    .onChange(of: keyringStore.keyring) { newValue in
+    .onChange(of: keyringStore.defaultKeyring) { newValue in
       if visibleScreen != .panel, !keyringStore.lockedManually {
         presentWalletWithContext?(.panelUnlockOrSetup)
       }

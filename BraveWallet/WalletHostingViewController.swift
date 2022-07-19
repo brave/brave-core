@@ -72,7 +72,7 @@ public class WalletHostingViewController: UIHostingController<CryptoView> {
         self.delegate?.openWalletURL(url)
       }
     }
-    cancellable = walletStore.keyringStore.$keyring
+    cancellable = walletStore.keyringStore.$defaultKeyring
       .dropFirst() // Drop initial value
       .map(\.isLocked)
       .removeDuplicates()

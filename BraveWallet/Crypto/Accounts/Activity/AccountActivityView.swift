@@ -28,7 +28,7 @@ struct AccountActivityView: View {
   }
 
   private var accountInfo: BraveWallet.AccountInfo {
-    guard let info = keyringStore.keyring.accountInfos.first(where: { $0.address == activityStore.account.address }) else {
+    guard let info = keyringStore.allAccounts.first(where: { $0.address == activityStore.account.address }) else {
       // The account has been removed... User should technically never see this state because
       // `AccountsViewController` pops this view off the stack when the account is removed
       return activityStore.account
@@ -128,8 +128,9 @@ struct AccountActivityView: View {
           )
         }
     )
-    .onReceive(keyringStore.$keyring) { keyring in
-      if !keyring.accountInfos.contains(where: { $0.address == accountInfo.address }) {
+    .onReceive(keyringStore.$allKeyrings) { allKeyrings in
+      let allAccounts = allKeyrings.flatMap(\.accountInfos)
+      if !allAccounts.contains(where: { $0.address == accountInfo.address }) {
         // Account was deleted
         detailsPresentation = nil
         presentationMode.dismiss()

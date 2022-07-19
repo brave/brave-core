@@ -79,7 +79,7 @@ struct EditSiteConnectionView: View {
         }
         permittedAccounts.removeAll(where: { $0 == account.address })
         
-        if let firstAllowedAdd = permittedAccounts.first, let firstAllowedAccount = keyringStore.keyring.accountInfos.first(where: { $0.id == firstAllowedAdd }) {
+        if let firstAllowedAdd = permittedAccounts.first, let firstAllowedAccount = keyringStore.defaultKeyring.accountInfos.first(where: { $0.id == firstAllowedAdd }) {
           keyringStore.selectedAccount = firstAllowedAccount
         }
       case .switch:
@@ -122,7 +122,7 @@ struct EditSiteConnectionView: View {
     NavigationView {
       Form {
         Section {
-          ForEach(keyringStore.keyring.accountInfos, id: \.self) { account in
+          ForEach(keyringStore.defaultKeyring.accountInfos) { account in
             let action = editAction(for: account)
             if sizeCategory.isAccessibilityCategory {
               VStack {
@@ -188,8 +188,8 @@ struct EditSiteConnectionView_Previews: PreviewProvider {
     EditSiteConnectionView(
       keyringStore: {
         let store = KeyringStore.previewStoreWithWalletCreated
-        store.addPrimaryAccount("Account 2", completion: nil)
-        store.addPrimaryAccount("Account 3", completion: nil)
+        store.addPrimaryAccount("Account 2", coin: .eth, completion: nil)
+        store.addPrimaryAccount("Account 3", coin: .eth, completion: nil)
         return store
       }(),
       origin: .init(url: URL(string: "https://app.uniswap.org")!),

@@ -27,11 +27,11 @@ struct AddAccountView: View {
   
   var preSelectedCoin: BraveWallet.CoinType?
 
-  private func addAccount() {
+  private func addAccount(for coin: BraveWallet.CoinType) {
     if privateKey.isEmpty {
       // Add normal account
-      let accountName = name.isEmpty ? String.localizedStringWithFormat(Strings.Wallet.defaultAccountName, keyringStore.keyring.accountInfos.filter(\.isPrimary).count + 1) : name
-      keyringStore.addPrimaryAccount(accountName) { success in
+      let accountName = name.isEmpty ? defaultAccountName(for: coin, isPrimary: true) : name
+      keyringStore.addPrimaryAccount(accountName, coin: coin) { success in
         if success {
           presentationMode.dismiss()
         }
@@ -44,11 +44,11 @@ struct AddAccountView: View {
           failedToImport = true
         }
       }
-      let accountName = name.isEmpty ? String.localizedStringWithFormat(Strings.Wallet.defaultSecondaryAccountName, keyringStore.keyring.accountInfos.filter(\.isImported).count + 1) : name
+      let accountName = name.isEmpty ? defaultAccountName(for: coin, isPrimary: false) : name
       if isJSONImported {
         keyringStore.addSecondaryAccount(accountName, json: privateKey, password: originPassword, completion: handler)
       } else {
-        keyringStore.addSecondaryAccount(accountName, privateKey: privateKey, completion: handler)
+        keyringStore.addSecondaryAccount(accountName, coin: coin, privateKey: privateKey, completion: handler)
       }
     }
   }
@@ -81,7 +81,9 @@ struct AddAccountView: View {
     .navigationTitle(Strings.Wallet.addAccountTitle)
     .navigationBarItems(
       // Have to use this instead of toolbar placement to have a custom button style
-      trailing: Button(action: addAccount) {
+      trailing: Button(action: {
+        addAccount(for: preSelectedCoin ?? (selectedCoin ?? .eth))
+      }) {
         Text(Strings.Wallet.add)
       }
         .buttonStyle(BraveFilledButtonStyle(size: .small))
@@ -230,6 +232,15 @@ struct AddAccountView: View {
       .disabled(isLoadingFile)
     }
     .listRowBackground(Color(.secondaryBraveGroupedBackground))
+  }
+  
+  private func defaultAccountName(for coin: BraveWallet.CoinType, isPrimary: Bool) -> String {
+    let keyringInfo = keyringStore.allKeyrings.first { $0.coin == coin }
+    if isPrimary {
+      return String.localizedStringWithFormat(coin.defaultAccountName, (keyringInfo?.accountInfos.filter(\.isPrimary).count ?? 0) + 1)
+    } else {
+      return String.localizedStringWithFormat(coin.defaultSecondaryAccountName, (keyringInfo?.accountInfos.filter(\.isImported).count ?? 0) + 1)
+    }
   }
 }
 

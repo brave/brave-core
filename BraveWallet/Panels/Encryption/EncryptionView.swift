@@ -45,7 +45,7 @@ struct EncryptionView: View {
   @Environment(\.sizeCategory) private var sizeCategory
   
   private var account: BraveWallet.AccountInfo {
-    keyringStore.keyring.accountInfos.first(where: { $0.address.caseInsensitiveCompare(request.address) == .orderedSame }) ?? keyringStore.selectedAccount
+    keyringStore.allAccounts.first(where: { $0.address.caseInsensitiveCompare(request.address) == .orderedSame }) ?? keyringStore.selectedAccount
   }
   
   private var navigationTitle: String {

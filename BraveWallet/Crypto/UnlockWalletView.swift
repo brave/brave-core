@@ -122,7 +122,7 @@ struct UnlockWalletView: View {
     }
     .onAppear {
       DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [self] in
-        if !keyringStore.lockedManually && !attemptedBiometricsUnlock && keyringStore.keyring.isLocked && UIApplication.shared.isProtectedDataAvailable {
+        if !keyringStore.lockedManually && !attemptedBiometricsUnlock && keyringStore.defaultKeyring.isLocked && UIApplication.shared.isProtectedDataAvailable {
           attemptedBiometricsUnlock = true
           fillPasswordFromKeychain()
         }

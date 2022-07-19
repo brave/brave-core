@@ -22,7 +22,7 @@ struct AccountListView: View {
         Section(
           header: WalletListHeaderView(title: Text(Strings.Wallet.accountsPageTitle))
         ) {
-          ForEach(keyringStore.keyring.accountInfos) { account in
+          ForEach(keyringStore.allAccounts) { account in
             AddressView(address: account.address) {
               Button(action: {
                 keyringStore.selectedAccount = account
@@ -70,8 +70,8 @@ struct AccountListView_Previews: PreviewProvider {
   static var previews: some View {
     AccountListView(keyringStore: {
       let store = KeyringStore.previewStoreWithWalletCreated
-      store.addPrimaryAccount("Account 2", completion: nil)
-      store.addPrimaryAccount("Account 3", completion: nil)
+      store.addPrimaryAccount("Account 2", coin: .eth, completion: nil)
+      store.addPrimaryAccount("Account 3", coin: .eth, completion: nil)
       return store
     }(), onDismiss: {})
   }

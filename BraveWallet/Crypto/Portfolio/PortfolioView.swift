@@ -22,7 +22,7 @@ struct PortfolioView: View {
   @State private var isPresentingEditUserAssets: Bool = false
 
   private var isShowingBackupBanner: Bool {
-    !keyringStore.keyring.isBackedUp && !dismissedBackupBannerThisSession
+    !keyringStore.defaultKeyring.isBackedUp && !dismissedBackupBannerThisSession
   }
 
   private var listHeader: some View {

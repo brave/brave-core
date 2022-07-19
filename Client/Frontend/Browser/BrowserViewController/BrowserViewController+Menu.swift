@@ -150,6 +150,8 @@ extension BrowserViewController {
         var settingsStore: SettingsStore?
         let keyringService = BraveWallet.KeyringServiceFactory.get(privateMode: PrivateBrowsingManager.shared.isPrivateBrowsing)
         let walletService = BraveWallet.ServiceFactory.get(privateMode: PrivateBrowsingManager.shared.isPrivateBrowsing)
+        let rpcService = BraveWallet.JsonRpcServiceFactory.get(privateMode: PrivateBrowsingManager.shared.isPrivateBrowsing)
+        
         if let keyringService = keyringService,
           let walletService = walletService,
           let txService = BraveWallet.TxServiceFactory.get(privateMode: PrivateBrowsingManager.shared.isPrivateBrowsing) {
@@ -161,7 +163,7 @@ extension BrowserViewController {
         }
         var networkStore: NetworkStore?
         if let keyringService = keyringService,
-           let rpcService = BraveWallet.JsonRpcServiceFactory.get(privateMode: PrivateBrowsingManager.shared.isPrivateBrowsing),
+           let rpcService = rpcService,
            let walletService = walletService {
           networkStore = NetworkStore(
             keyringService: keyringService,
@@ -172,8 +174,13 @@ extension BrowserViewController {
         
         var keyringStore: KeyringStore?
         if let keyringService = keyringService,
-           let walletService = walletService {
-            keyringStore = KeyringStore(keyringService: keyringService, walletService: walletService)
+           let walletService = walletService,
+           let rpcService = rpcService {
+          keyringStore = KeyringStore(
+            keyringService: keyringService,
+            walletService: walletService,
+            rpcService: rpcService
+          )
         }
 
         let vc = SettingsViewController(
