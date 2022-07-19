@@ -39,7 +39,7 @@ bool DebounceService::Debounce(const GURL& original_url,
       component_installer_->rules();
 
   for (const std::unique_ptr<DebounceRule>& rule : rules) {
-    if (rule->Apply(original_url, final_url, prefs_)) {
+    if (rule->Apply(original_url, final_url)) {
       if (original_url != *final_url) {
         return true;
       }
