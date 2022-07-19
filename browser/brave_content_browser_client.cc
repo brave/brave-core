@@ -65,6 +65,8 @@
 #include "brave/components/ftx/browser/buildflags/buildflags.h"
 #include "brave/components/gemini/browser/buildflags/buildflags.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
+#include "brave/components/playlist/buildflags/buildflags.h"
+#include "brave/components/playlist/features.h"
 #include "brave/components/sidebar/buildflags/buildflags.h"
 #include "brave/components/skus/common/skus_sdk.mojom.h"
 #include "brave/components/speedreader/common/buildflags.h"
@@ -212,6 +214,10 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #elif BUILDFLAG(ENABLE_EXTENSIONS)
 #include "brave/browser/brave_ads/brave_ads_host.h"
 #endif  // BUILDFLAG(IS_ANDROID)
+
+#if BUILDFLAG(ENABLE_PLAYLIST)
+#include "brave/browser/ui/webui/playlist_ui.h"
+#endif  // BUILDFLAG(ENABLE_PLAYLIST)
 
 namespace {
 
@@ -589,6 +595,13 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
   if (base::FeatureList::IsEnabled(brave_today::features::kBraveNewsFeature)) {
     chrome::internal::RegisterWebUIControllerInterfaceBinder<
         brave_news::mojom::BraveNewsController, BraveNewTabUI>(map);
+  }
+#endif
+
+#if BUILDFLAG(ENABLE_PLAYLIST)
+  if (base::FeatureList::IsEnabled(playlist::features::kPlaylist)) {
+    chrome::internal::RegisterWebUIControllerInterfaceBinder<
+        playlist::mojom::PageHandlerFactory, playlist::PlaylistUI>(map);
   }
 #endif
 

@@ -20,10 +20,9 @@ PlaylistMediaFileDownloadManager::PlaylistMediaFileDownloadManager(
     Delegate* delegate,
     const base::FilePath& base_dir)
     : base_dir_(base_dir), delegate_(delegate) {
-  // TODO(pilgrim) dynamically set file extensions based on format
-  // (may require changes to youtubedown parser)
+  // TODO(pilgrim) dynamically set file extensions based on format.
   media_file_downloader_ = std::make_unique<PlaylistMediaFileDownloader>(
-      this, context, FILE_PATH_LITERAL("media_file.mp4"));
+      this, context, kMediaFileName);
 }
 
 PlaylistMediaFileDownloadManager::~PlaylistMediaFileDownloadManager() = default;
@@ -108,7 +107,7 @@ void PlaylistMediaFileDownloadManager::OnMediaFileReady(
     const std::string& media_file_path) {
   VLOG(2) << __func__ << ": " << id << " is ready.";
 
-  delegate_->OnMediaFileReady(id, current_item_->media_file_path);
+  delegate_->OnMediaFileReady(id, media_file_path);
 
   current_item_.reset();
 

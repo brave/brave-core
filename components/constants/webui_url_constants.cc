@@ -43,3 +43,5 @@ const char kSidebarBookmarksHost[] = "sidebar-bookmarks.top-chrome";
 const char kFederatedInternalsURL[] = "brave://federated-internals";
 const char kFederatedInternalsHost[] = "federated-internals";
 const char kContentFiltersPath[] = "shields/filters";
+const char kPlaylistHost[] = "playlist";
+const char kPlaylistURL[] = "chrome://playlist/";

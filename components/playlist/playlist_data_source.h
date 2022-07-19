@@ -22,7 +22,7 @@ namespace playlist {
 
 class PlaylistService;
 
-// A URL data source for chrome://playlist-image/<playlist-id>
+// A URL data source for chrome://playlist-data/<playlist-id>/{thumbnail,media}/
 // resources, for use in webui pages that want to display downloaded
 // playlist thumbnail images
 class PlaylistDataSource : public content::URLDataSource {
@@ -37,14 +37,14 @@ class PlaylistDataSource : public content::URLDataSource {
   void StartDataRequest(const GURL& url,
                         const content::WebContents::Getter& wc_getter,
                         GotDataCallback got_data_callback) override;
-  std::string GetMimeType(const std::string&) override;
+  std::string GetMimeType(const std::string& path) override;
   bool AllowCaching() override;
 
  private:
-  void GetThumbnailImageFile(const base::FilePath& image_file_path,
-                             GotDataCallback got_data_callback);
-  void OnGotThumbnailImageFile(GotDataCallback got_data_callback,
-                               scoped_refptr<base::RefCountedMemory> input);
+  void GetDataFile(const base::FilePath& data_path,
+                   GotDataCallback got_data_callback);
+  void OnGotDataFile(GotDataCallback got_data_callback,
+                     scoped_refptr<base::RefCountedMemory> input);
 
   raw_ptr<PlaylistService> service_;
 
