@@ -6,11 +6,11 @@
 #include <algorithm>
 #include <utility>
 
-#include "bat/ledger/internal/legacy/bat_helper.h"
-#include "bat/ledger/internal/legacy/bat_state.h"
 #include "bat/ledger/internal/common/time_util.h"
 #include "bat/ledger/internal/ledger_impl.h"
-#include "bat/ledger/internal/legacy/client_state.h"
+#include "bat/ledger/internal/legacy/bat_helper.h"
+#include "bat/ledger/internal/legacy/bat_state.h"
+#include "bat/ledger/internal/legacy/client_properties.h"
 
 using std::placeholders::_1;
 using std::placeholders::_2;
@@ -42,8 +42,7 @@ void LegacyBatState::OnLoad(ledger::type::Result result,
   }
 
   ledger::ClientProperties state;
-  const ledger::ClientState client_state;
-  if (!client_state.FromJson(data, &state)) {
+  if (!state.FromJson(data)) {
     BLOG(0, "Failed to load client state");
     BLOG(6, "Client state contents: " << data);
     callback(ledger::type::Result::LEDGER_ERROR);
