@@ -22,12 +22,7 @@ const base::Feature kBraveWalletFilecoinFeature{
 };
 
 const base::Feature kBraveWalletSolanaFeature{
-#if BUILDFLAG(IS_ANDROID)
-  "BraveWalletSolana", base::FEATURE_DISABLED_BY_DEFAULT
-#else
-  "BraveWalletSolana", base::FEATURE_ENABLED_BY_DEFAULT
-#endif
-};
+  "BraveWalletSolana", base::FEATURE_ENABLED_BY_DEFAULT};
 
 const base::Feature kBraveWalletSolanaProviderFeature{
 #if BUILDFLAG(IS_ANDROID)
