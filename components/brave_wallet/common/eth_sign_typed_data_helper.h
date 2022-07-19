@@ -50,7 +50,8 @@ class EthSignTypedDataHelper {
       const base::Value& domain_separator) const;
 
  private:
-  FRIEND_TEST_ALL_PREFIXES(EthSignedTypedDataHelperUnitTest, Types);
+  FRIEND_TEST_ALL_PREFIXES(EthSignedTypedDataHelperUnitTest, EncodeTypes);
+  FRIEND_TEST_ALL_PREFIXES(EthSignedTypedDataHelperUnitTest, EncodeTypesArrays);
   FRIEND_TEST_ALL_PREFIXES(EthSignedTypedDataHelperUnitTest, EncodeField);
 
   explicit EthSignTypedDataHelper(const base::Value& types, Version version);

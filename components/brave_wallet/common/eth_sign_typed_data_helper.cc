@@ -62,8 +62,16 @@ void EthSignTypedDataHelper::FindAllDependencyTypes(
 
   for (const auto& field : anchor_type->GetList()) {
     const std::string* type = field.FindStringKey("type");
-    if (type && !known_types->contains(*type)) {
-      FindAllDependencyTypes(known_types, *type);
+    if (type) {
+      auto type_split = base::SplitString(*type, "[", base::KEEP_WHITESPACE,
+                                          base::SPLIT_WANT_ALL);
+      std::string lookup_type = *type;
+      if (type_split.size() == 2)
+        lookup_type = type_split[0];
+
+      if (!known_types->contains(lookup_type)) {
+        FindAllDependencyTypes(known_types, lookup_type);
+      }
     }
   }
 }
