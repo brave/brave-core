@@ -559,6 +559,9 @@ public class BytecodeTest {
                 constructorsMatch("org/chromium/chrome/browser/dom_distiller/ReaderModeManager",
                         "org/chromium/chrome/browser/dom_distiller/BraveReaderModeManager",
                         Tab.class, Supplier.class));
+        Assert.assertTrue(constructorsMatch(
+                "org/chromium/chrome/browser/crash/ChromePureJavaExceptionReporter",
+                "org/chromium/chrome/browser/crash/BravePureJavaExceptionReporter"));
     }
 
     @Test
