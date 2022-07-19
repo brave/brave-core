@@ -10,6 +10,8 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+@class IOSOpenDistantTab;
+
 OBJC_EXPORT
 @protocol SendTabToSelfModelStateObserver <NSObject>
 
@@ -18,7 +20,7 @@ OBJC_EXPORT
 - (void)sendTabToSelfModelLoaded;
 
 /// Invoked when elements of the model are added, removed, or updated
-- (void)sendTabToSelfEntriesAddedRemotely;
+- (void)sendTabToSelfEntriesAddedRemotely:(NSArray<IOSOpenDistantTab*>*)newEntries;
 
 - (void)sendTabToSelfEntriesRemovedRemotely;
 

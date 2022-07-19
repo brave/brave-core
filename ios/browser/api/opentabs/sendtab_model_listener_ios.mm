@@ -6,10 +6,15 @@
 #include "brave/ios/browser/api/opentabs/sendtab_model_listener_ios.h"
 
 #include "base/check.h"
+#include "base/strings/sys_string_conversions.h"
+
 #include "components/send_tab_to_self/send_tab_to_self_model.h"
 #include "components/send_tab_to_self/send_tab_to_self_entry.h"
 #include "components/send_tab_to_self/send_tab_to_self_model_observer.h"
 
+#include "net/base/mac/url_conversions.h"
+
+#include "brave/ios/browser/api/opentabs/brave_opentabs_api.h"
 #include "brave/ios/browser/api/opentabs/brave_sendtab_api.h"
 #include "brave/ios/browser/api/opentabs/brave_sendtab_observer.h"
 
@@ -42,8 +47,19 @@ void SendTabToSelfModelListenerIOS::SendTabToSelfModelLoaded() {
 
 void SendTabToSelfModelListenerIOS::EntriesAddedRemotely(
     const std::vector<const send_tab_to_self::SendTabToSelfEntry*>& new_entries) {
-  if ([observer_ respondsToSelector:@selector(sendTabToSelfEntriesAddedRemotely)]) {
-    [observer_ sendTabToSelfEntriesAddedRemotely];
+  NSMutableArray<IOSOpenDistantTab*>* entries = [[NSMutableArray alloc] init];
+
+  for (const send_tab_to_self::SendTabToSelfEntry* entry : new_entries) {
+    IOSOpenDistantTab* distantTab = [[IOSOpenDistantTab alloc]
+                initWithURL:net::NSURLWithGURL(entry->GetURL())
+                      title:base::SysUTF8ToNSString(entry->GetTitle())
+                      tabId:0
+                 sessionTag:base::SysUTF8ToNSString(entry->GetGUID())];
+    [entries addObject:distantTab];
+  }
+
+  if ([observer_ respondsToSelector:@selector(sendTabToSelfEntriesAddedRemotely:)]) {
+    [observer_ sendTabToSelfEntriesAddedRemotely:[entries copy]];
   }
 }
 
