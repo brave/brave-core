@@ -182,9 +182,33 @@ extension BraveWallet.NetworkInfo {
     coin: .eth,
     data: .init(ethData: .init(isEip1559: true))
   )
+  static let mockPolygon: BraveWallet.NetworkInfo = .init(
+    chainId: BraveWallet.PolygonMainnetChainId,
+    chainName: "Polygon Mainnet",
+    blockExplorerUrls: [""],
+    iconUrls: [],
+    rpcUrls: [],
+    symbol: "MATIC",
+    symbolName: "MATIC",
+    decimals: 18,
+    coin: .eth,
+    data: .init(ethData: .init(isEip1559: true))
+  )
   static let mockSolana: BraveWallet.NetworkInfo = .init(
     chainId: BraveWallet.SolanaMainnet,
     chainName: "Solana Mainnet",
+    blockExplorerUrls: [""],
+    iconUrls: [],
+    rpcUrls: [],
+    symbol: "SOL",
+    symbolName: "Solana",
+    decimals: 18,
+    coin: .sol,
+    data: nil
+  )
+  static let mockSolanaTestnet: BraveWallet.NetworkInfo = .init(
+    chainId: BraveWallet.SolanaTestnet,
+    chainName: "Solana Testnet",
     blockExplorerUrls: [""],
     iconUrls: [],
     rpcUrls: [],

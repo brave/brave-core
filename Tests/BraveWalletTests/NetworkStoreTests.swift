@@ -10,13 +10,15 @@ import BraveCore
 
 class NetworkStoreTests: XCTestCase {
   
+  private var cancellables: Set<AnyCancellable> = .init()
+  
   private func setupServices() -> (BraveWallet.TestKeyringService, BraveWallet.TestJsonRpcService, BraveWallet.TestBraveWalletService) {
     let currentNetwork: BraveWallet.NetworkInfo = .mockMainnet
     let currentChainId = currentNetwork.chainId
     let currentSelectedCoin: BraveWallet.CoinType = .eth
     let allNetworks: [BraveWallet.CoinType: [BraveWallet.NetworkInfo]] = [
-      .eth: [.mockMainnet, .mockRinkeby, .mockRopsten],
-      .sol: [.mockSolana]
+      .eth: [.mockMainnet, .mockRinkeby, .mockRopsten, .mockPolygon],
+      .sol: [.mockSolana, .mockSolanaTestnet]
     ]
     
     let keyringService = BraveWallet.TestKeyringService()
@@ -89,5 +91,35 @@ class NetworkStoreTests: XCTestCase {
     
     let error = await store.setSelectedChain(.mockSolana)
     XCTAssertEqual(error, .selectedChainHasNoAccounts, "Expected chain has no accounts error")
+  }
+  
+  func testUpdateChainList() {
+    let (keyringService, rpcService, walletService) = setupServices()
+    
+    let store = NetworkStore(
+      keyringService: keyringService,
+      rpcService: rpcService,
+      walletService: walletService
+    )
+    
+    let expectedAllChains: [BraveWallet.NetworkInfo] = [
+      .mockSolana,
+      .mockSolanaTestnet,
+      .mockMainnet,
+      .mockRinkeby,
+      .mockRopsten,
+      .mockPolygon
+    ]
+    
+    // wait for all chains to populate
+    let allChainsException = expectation(description: "networkStore-allChains")
+    store.$allChains
+      .dropFirst()
+      .sink { allChains in
+        defer { allChainsException.fulfill() }
+        XCTAssertEqual(allChains, expectedAllChains)
+      }
+      .store(in: &cancellables)
+    wait(for: [allChainsException], timeout: 10)
   }
 }

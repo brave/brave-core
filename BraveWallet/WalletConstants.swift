@@ -30,6 +30,22 @@ struct WalletConstants {
     BraveWallet.FilecoinTestnet
   ]
   
+  /// Primary network chain ids
+  static let primaryNetworkChainIds: [String] = [
+    BraveWallet.SolanaMainnet,
+    BraveWallet.MainnetChainId,
+    BraveWallet.FilecoinMainnet
+  ]
+  
   /// The currently supported coin types.
-  static let supportedCoinTypes: [BraveWallet.CoinType] = [.eth]
+  static var supportedCoinTypes: [BraveWallet.CoinType] {
+    if WalletDebugFlags.isSolanaEnabled {
+      return [.eth, .sol]
+    }
+    return [.eth]
+  }
+}
+
+struct WalletDebugFlags {
+  static var isSolanaEnabled: Bool = false
 }
