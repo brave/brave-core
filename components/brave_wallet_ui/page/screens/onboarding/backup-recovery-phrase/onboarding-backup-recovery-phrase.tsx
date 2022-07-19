@@ -112,7 +112,7 @@ export const OnboardingBackupRecoveryPhrase = () => {
                 rel='noreferrer'
                 referrerPolicy='no-referrer'
               >
-                {getLocale('braveWalletWelcomePanelButton')}
+                {getLocale('braveWalletLearnMore')}
               </LinkText>
             </Description>
           </TitleAndDescriptionContainer>

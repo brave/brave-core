@@ -40,7 +40,7 @@ export const WelcomePanel = ({ onSetup }: Props) => {
 
       <NavButton
         buttonType='primary'
-        text={getLocale('braveWalletWelcomePanelButton')}
+        text={getLocale('braveWalletLearnMore')}
         onSubmit={onSetup}
       />
 

@@ -31,9 +31,7 @@ import {
   NextButtonRow,
   MainWrapper
 } from '../onboarding.style'
-import {
-  CheckboxText
-} from './disclosures.style'
+import { CheckboxText } from './disclosures.style'
 
 export type OnboardingDisclosuresNextSteps =
   | WalletRoutes.OnboardingCreatePassword
