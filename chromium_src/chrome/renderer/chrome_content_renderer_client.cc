@@ -6,6 +6,7 @@
 #include "brave/components/content_settings/renderer/brave_content_settings_agent_impl.h"
 #include "brave/renderer/brave_url_loader_throttle_provider.h"
 #include "chrome/renderer/url_loader_throttle_provider_impl.h"
+#include "components/feed/content/renderer/rss_link_reader.h"
 
 #define URLLoaderThrottleProviderImpl BraveURLLoaderThrottleProvider
 

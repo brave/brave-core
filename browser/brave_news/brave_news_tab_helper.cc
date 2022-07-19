@@ -141,13 +141,11 @@ void BraveNewsTabHelper::PrimaryPageChanged(content::Page& page) {
   // Invalidate all weak pointers - we're on a new page now.
   weak_ptr_factory_.InvalidateWeakPtrs();
 
-#if BUILDFLAG(ENABLE_FEED_V2)
   rss_page_feeds_.clear();
   feed::FetchRssLinks(GetWebContents().GetLastCommittedURL(), &GetWebContents(),
                       base::BindOnce(&BraveNewsTabHelper::OnReceivedRssUrls,
                                      weak_ptr_factory_.GetWeakPtr(),
                                      GetWebContents().GetLastCommittedURL()));
-#endif
 
   AvailableFeedsChanged();
 }
