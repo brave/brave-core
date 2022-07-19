@@ -25,7 +25,6 @@ import android.os.Handler;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -33,10 +32,8 @@ import android.widget.FrameLayout;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
-import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.lifecycle.Observer;
 
 import com.android.billingclient.api.Purchase;
 import com.bumptech.glide.Glide;
@@ -44,6 +41,7 @@ import com.bumptech.glide.Priority;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.transition.Transition;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.wireguard.android.backend.GoBackend;
 import com.wireguard.android.backend.Tunnel;
 import com.wireguard.crypto.KeyPair;
@@ -63,6 +61,7 @@ import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.supplier.UnownedUserDataSupplier;
 import org.chromium.base.task.PostTask;
 import org.chromium.base.task.TaskTraits;
+import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.AssetRatioService;
 import org.chromium.brave_wallet.mojom.BlockchainRegistry;
 import org.chromium.brave_wallet.mojom.BraveWalletService;
@@ -71,11 +70,9 @@ import org.chromium.brave_wallet.mojom.JsonRpcService;
 import org.chromium.brave_wallet.mojom.KeyringInfo;
 import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.brave_wallet.mojom.SolanaTxManagerProxy;
-import org.chromium.brave_wallet.mojom.TransactionInfo;
 import org.chromium.brave_wallet.mojom.TxService;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.ApplicationLifetime;
-import org.chromium.chrome.browser.BraveFeatureList;
 import org.chromium.chrome.browser.BraveHelper;
 import org.chromium.chrome.browser.BraveRelaunchUtils;
 import org.chromium.chrome.browser.BraveRewardsHelper;
@@ -103,9 +100,9 @@ import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletActivity;
 import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletDAppsActivity;
 import org.chromium.chrome.browser.crypto_wallet.activities.NetworkSelectorActivity;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
+import org.chromium.chrome.browser.crypto_wallet.util.WalletUtils;
 import org.chromium.chrome.browser.custom_layout.popup_window_tooltip.PopupWindowTooltip;
 import org.chromium.chrome.browser.dependency_injection.ChromeActivityComponent;
-import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.flags.ChromeSwitches;
 import org.chromium.chrome.browser.fullscreen.BrowserControlsManager;
 import org.chromium.chrome.browser.informers.BraveAndroidSyncDisabledInformer;
@@ -225,7 +222,7 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
     private BraveWalletService mBraveWalletService;
     private KeyringService mKeyringService;
     private JsonRpcService mJsonRpcService;
-    private WalletModel walletModel;
+    private WalletModel mWalletModel;
     private BlockchainRegistry mBlockchainRegistry;
     private TxService mTxService;
     private EthTxManagerProxy mEthTxManagerProxy;
@@ -358,7 +355,7 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
     }
 
     public WalletModel getWalletModel() {
-        return walletModel;
+        return mWalletModel;
     }
 
     private void maybeHasPendingUnlockRequest() {
@@ -385,9 +382,9 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
     }
 
     private void maybeShowPendingTransactions() {
-        assert walletModel != null;
+        assert mWalletModel != null;
         // trigger to observer to refresh data to process the pending request
-        walletModel.getCryptoModel().refreshTransactions();
+        mWalletModel.getCryptoModel().refreshTransactions();
     }
 
     private void maybeShowSignMessageRequestLayout() {
@@ -520,8 +517,8 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
     }
 
     private void updateWalletBadgeVisibility() {
-        assert walletModel != null;
-        walletModel.getDappsModel().updateWalletBadgeVisibility();
+        assert mWalletModel != null;
+        mWalletModel.getDappsModel().updateWalletBadgeVisibility();
     }
 
     private void verifySubscription() {
@@ -1245,35 +1242,34 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
     }
 
     private void clearWalletModelServices() {
-        if (walletModel == null) {
+        if (mWalletModel == null) {
             return;
         }
 
-        walletModel.resetServices(
+        mWalletModel.resetServices(
                 getApplicationContext(), null, null, null, null, null, null, null, null);
     }
 
     private void setupWalletModel() {
-        if (walletModel == null) {
-            walletModel = new WalletModel(getApplicationContext(), mKeyringService,
+        if (mWalletModel == null) {
+            mWalletModel = new WalletModel(getApplicationContext(), mKeyringService,
                     mBlockchainRegistry, mJsonRpcService, mTxService, mEthTxManagerProxy,
                     mSolanaTxManagerProxy, mAssetRatioService, mBraveWalletService);
         } else {
-            walletModel.resetServices(getApplicationContext(), mKeyringService, mBlockchainRegistry,
-                    mJsonRpcService, mTxService, mEthTxManagerProxy, mSolanaTxManagerProxy,
-                    mAssetRatioService, mBraveWalletService);
+            mWalletModel.resetServices(getApplicationContext(), mKeyringService,
+                    mBlockchainRegistry, mJsonRpcService, mTxService, mEthTxManagerProxy,
+                    mSolanaTxManagerProxy, mAssetRatioService, mBraveWalletService);
         }
         setupObservers();
     }
 
     private void setupObservers() {
-        walletModel.getCryptoModel().getPendingTxHelper().mSelectedPendingRequest.removeObservers(
-                this);
-        walletModel.getCryptoModel().getPendingTxHelper().mSelectedPendingRequest.observe(
+        clearObservers();
+        mWalletModel.getCryptoModel().getPendingTxHelper().mSelectedPendingRequest.observe(
                 this, transactionInfo -> {
                     // don't show dapps panel if the wallet is locked and requests are being
                     // processed by the approve dialog already
-                    KeyringInfo keyringInfo = walletModel.getKeyringModel().getKeyringInfo();
+                    KeyringInfo keyringInfo = mWalletModel.getKeyringModel().getKeyringInfo();
                     if (transactionInfo != null && keyringInfo != null && !keyringInfo.isLocked
                             && !isProcessingPendingDappsTxRequest) {
                         isProcessingPendingDappsTxRequest = true;
@@ -1281,9 +1277,50 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
                                 BraveWalletDAppsActivity.ActivityType.CONFIRM_TRANSACTION);
                     }
                 });
-        walletModel.getDappsModel().mWalletIconNotificationVisible.removeObservers(this);
-        walletModel.getDappsModel().mWalletIconNotificationVisible.observe(
+        mWalletModel.getDappsModel().mWalletIconNotificationVisible.observe(
                 this, visible -> { setWalletBadgeVisibility(visible); });
+        mWalletModel.getCryptoModel().getNetworkModel().mNeedToCreateAccountForNetwork.observe(
+                this, networkInfo -> {
+                    if (networkInfo == null) return;
+                    MaterialAlertDialogBuilder builder =
+                            new MaterialAlertDialogBuilder(
+                                    this, R.style.BraveWalletAlertDialogTheme)
+                                    .setMessage(getString(
+                                            R.string.brave_wallet_create_account_description,
+                                            networkInfo.symbolName))
+                                    .setPositiveButton(R.string.wallet_action_yes,
+                                            (dialog, which) -> {
+                                                mWalletModel.getKeyringModel().addAccount(
+                                                        WalletUtils.getUniqueNextAccountName(this,
+                                                                mWalletModel.getKeyringModel()
+                                                                        .mAccountInfos.getValue()
+                                                                        .toArray(
+                                                                                new AccountInfo[0]),
+                                                                networkInfo.symbolName,
+                                                                networkInfo.coin),
+                                                        networkInfo.coin, isAccountAdded -> {});
+                                                mWalletModel.getCryptoModel()
+                                                        .getNetworkModel()
+                                                        .clearCreateAccountState();
+                                            })
+                                    .setNegativeButton(
+                                            R.string.wallet_action_no, (dialog, which) -> {
+                                                mWalletModel.getCryptoModel()
+                                                        .getNetworkModel()
+                                                        .clearCreateAccountState();
+                                                dialog.dismiss();
+                                            });
+                    builder.show();
+                });
+    }
+
+    private void clearObservers() {
+        mWalletModel.getCryptoModel().getPendingTxHelper().mSelectedPendingRequest.removeObservers(
+                this);
+        mWalletModel.getDappsModel().mWalletIconNotificationVisible.removeObservers(this);
+        mWalletModel.getCryptoModel()
+                .getNetworkModel()
+                .mNeedToCreateAccountForNetwork.removeObservers(this);
     }
 
     private void showBraveRateDialog() {

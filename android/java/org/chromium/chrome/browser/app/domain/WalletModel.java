@@ -10,13 +10,12 @@ import android.content.Context;
 import org.chromium.brave_wallet.mojom.AssetRatioService;
 import org.chromium.brave_wallet.mojom.BlockchainRegistry;
 import org.chromium.brave_wallet.mojom.BraveWalletService;
+import org.chromium.brave_wallet.mojom.CoinType;
 import org.chromium.brave_wallet.mojom.EthTxManagerProxy;
 import org.chromium.brave_wallet.mojom.JsonRpcService;
 import org.chromium.brave_wallet.mojom.KeyringService;
-import org.chromium.brave_wallet.mojom.SolanaProvider;
 import org.chromium.brave_wallet.mojom.SolanaTxManagerProxy;
 import org.chromium.brave_wallet.mojom.TxService;
-import org.chromium.brave_wallet.mojom.WalletHandler;
 
 // Under development, some parts not tested so use with caution
 // A container for all the native services and APIs
@@ -52,11 +51,13 @@ public class WalletModel {
         mCryptoActions = new CryptoActions();
         mCryptoModel = new CryptoModel(mContext, mTxService, mKeyringService, mBlockchainRegistry,
                 mJsonRpcService, mEthTxManagerProxy, mSolanaTxManagerProxy, mBraveWalletService,
-                mAssetRatioService);
+                mAssetRatioService, mCryptoActions);
         mDappsModel = new DappsModel(
                 mJsonRpcService, mBraveWalletService, mCryptoModel.getPendingTxHelper());
         mKeyringModel = new KeyringModel(
                 keyringService, mCryptoModel.getSharedData(), braveWalletService, mCryptoActions);
+        // be careful with dependencies, must avoid cycles
+        mCryptoModel.setAccountInfosFromKeyRingModel(mKeyringModel.mAccountInfos);
         init();
     }
 
@@ -84,7 +85,7 @@ public class WalletModel {
     }
 
     /*
-     * Explicit method to ensure the sage initialisation to start the required data process
+     * Explicit method to ensure the safe initialisation to start the required data process
      */
     private void init() {
         mCryptoModel.init();
@@ -174,10 +175,29 @@ public class WalletModel {
         this.mAssetRatioService = mAssetRatioService;
     }
 
-    class CryptoActions implements CryptoModelActions {
+    class CryptoActions implements CryptoSharedActions {
         @Override
         public void updateCoinType() {
             mCryptoModel.updateCoinType();
+        }
+
+        /**
+         * The network, coin, and account needs to be update whenever any of the other two are
+         * changed
+         *
+         * @param chainId of selected chain
+         * @param coin    of current account and network, SOL, ETH etc.
+         */
+        @Override
+        public void updateCoinAccountNetworkInfo(@CoinType.EnumType int coin) {
+            // update coin
+            mBraveWalletService.setSelectedCoin(coin);
+            mCryptoModel.updateCoinType(isCoinUpdated -> {
+                // update account per selected coin
+                mKeyringModel.update();
+                // update network per selected coin
+                mCryptoModel.getNetworkModel().init();
+            });
         }
     }
 }

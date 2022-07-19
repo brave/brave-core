@@ -12,12 +12,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.appbar.MaterialToolbar;
 
 import org.chromium.base.Log;
-import org.chromium.brave_wallet.mojom.CoinType;
-import org.chromium.brave_wallet.mojom.JsonRpcService;
 import org.chromium.brave_wallet.mojom.NetworkInfo;
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.app.BraveActivity;
+import org.chromium.chrome.browser.app.domain.WalletModel;
 import org.chromium.chrome.browser.crypto_wallet.adapters.NetworkSelectorAdapter;
-import org.chromium.chrome.browser.crypto_wallet.adapters.NetworkSelectorAdapter.NetworkSelectorItem;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 
 public class NetworkSelectorActivity
@@ -27,6 +26,7 @@ public class NetworkSelectorActivity
     private NetworkSelectorAdapter networkSelectorAdapter;
     private MaterialToolbar mToolbar;
     private String mSelectedNetwork;
+    private WalletModel mWalletModel;
 
     @Override
     protected void triggerLayoutInflation() {
@@ -46,55 +46,42 @@ public class NetworkSelectorActivity
     }
 
     private void initState() {
-        JsonRpcService jsonRpcService = getJsonRpcService();
-        assert jsonRpcService != null;
-        jsonRpcService.getAllNetworks(CoinType.ETH, chains -> {
-            NetworkInfo[] customNetworks = Utils.getCustomNetworks(chains);
-            networkSelectorAdapter =
-                    new NetworkSelectorAdapter(this, Utils.getNetworksList(this, customNetworks),
-                            Utils.getNetworksAbbrevList(this, customNetworks));
-            networkSelectorAdapter.setOnNetworkItemSelected(this);
-            mRVNetworkSelector.setAdapter(networkSelectorAdapter);
-            fetchSelectedNetwork();
-        });
+        BraveActivity activity = BraveActivity.getBraveActivity();
+        if (activity != null) {
+            mWalletModel = activity.getWalletModel();
+        }
+        mWalletModel.getCryptoModel().getNetworkModel().mCryptoNetworks.observe(
+                this, networkInfos -> {
+                    networkSelectorAdapter = new NetworkSelectorAdapter(this, networkInfos);
+                    networkSelectorAdapter.setOnNetworkItemSelected(this);
+                    mRVNetworkSelector.setAdapter(networkSelectorAdapter);
+                });
+        setSelectedNetworkObserver();
     }
 
-    private void fetchSelectedNetwork() {
-        JsonRpcService jsonRpcService = getJsonRpcService();
-        assert jsonRpcService != null;
-        jsonRpcService.getChainId(CoinType.ETH, chainId -> {
-            jsonRpcService.getAllNetworks(CoinType.ETH, chains -> {
-                NetworkInfo[] customNetworks = Utils.getCustomNetworks(chains);
-                mSelectedNetwork = Utils.getNetworkText(this, chainId, customNetworks).toString();
-                networkSelectorAdapter.setSelectedNetwork(mSelectedNetwork);
-            });
-        });
+    private void setSelectedNetworkObserver() {
+        mWalletModel.getCryptoModel().getNetworkModel().mDefaultNetwork.observe(
+                this, networkInfo -> {
+                    if (networkInfo != null) {
+                        mSelectedNetwork = Utils.getShortNameOfNetwork(networkInfo.chainName);
+                        networkSelectorAdapter.setSelectedNetwork(networkInfo.chainName);
+                    }
+                });
     }
 
     @Override
-    public void onNetworkItemSelected(NetworkSelectorItem networkSelectorItem) {
-        JsonRpcService jsonRpcService = getJsonRpcService();
-        if (jsonRpcService != null) {
-            jsonRpcService.getAllNetworks(CoinType.ETH, chains -> {
-                NetworkInfo[] customNetworks = Utils.getCustomNetworks(chains);
-                jsonRpcService.setNetwork(
-                        Utils.getNetworkConst(
-                                this, networkSelectorItem.getNetworkName(), customNetworks),
-                        CoinType.ETH, (success) -> {
-                            if (!success) {
-                                Toast.makeText(this,
-                                             getString(
-                                                     R.string.brave_wallet_network_selection_error,
-                                                     networkSelectorItem.getNetworkShortName()),
-                                             Toast.LENGTH_SHORT)
-                                        .show();
-                                networkSelectorAdapter.setSelectedNetwork(mSelectedNetwork);
-                                Log.e(TAG, "Could not set network");
-                            } else {
-                                finish();
-                            }
-                        });
-            });
-        }
+    public void onNetworkItemSelected(NetworkInfo networkInfo) {
+        mWalletModel.getCryptoModel().getNetworkModel().setNetwork(networkInfo, isSelected -> {
+            if (!isSelected) {
+                Toast.makeText(this,
+                             getString(R.string.brave_wallet_network_selection_error,
+                                     networkInfo.chainName),
+                             Toast.LENGTH_SHORT)
+                        .show();
+                networkSelectorAdapter.setSelectedNetwork(mSelectedNetwork);
+                Log.e(TAG, "Could not set network");
+            }
+            finish();
+        });
     }
 }

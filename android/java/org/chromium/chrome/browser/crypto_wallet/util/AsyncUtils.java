@@ -13,6 +13,7 @@ import org.chromium.brave_wallet.mojom.AssetTimePrice;
 import org.chromium.brave_wallet.mojom.BlockchainToken;
 import org.chromium.brave_wallet.mojom.BraveWalletService;
 import org.chromium.brave_wallet.mojom.JsonRpcService;
+import org.chromium.brave_wallet.mojom.NetworkInfo;
 import org.chromium.brave_wallet.mojom.TransactionInfo;
 import org.chromium.brave_wallet.mojom.TxService;
 
@@ -197,6 +198,21 @@ public class AsyncUtils {
         public void call(Boolean success, AssetTimePrice[] timePrices) {
             this.success = success;
             this.timePrices = timePrices;
+            super.fireResponseCompleteCallback();
+        }
+    }
+
+    public static class GetNetworkResponseContext
+            extends SingleResponseBaseContext implements JsonRpcService.GetAllNetworks_Response {
+        public NetworkInfo[] networkInfos;
+
+        public GetNetworkResponseContext(Runnable responseCompleteCallback) {
+            super(responseCompleteCallback);
+            networkInfos = new NetworkInfo[0];
+        }
+        @Override
+        public void call(NetworkInfo[] networkInfos) {
+            this.networkInfos = networkInfos;
             super.fireResponseCompleteCallback();
         }
     }

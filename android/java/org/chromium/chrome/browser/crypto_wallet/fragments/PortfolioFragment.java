@@ -20,12 +20,15 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import org.chromium.base.Log;
 import org.chromium.base.task.PostTask;
@@ -44,6 +47,7 @@ import org.chromium.brave_wallet.mojom.TransactionInfo;
 import org.chromium.brave_wallet.mojom.TxService;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.BraveActivity;
+import org.chromium.chrome.browser.app.domain.WalletModel;
 import org.chromium.chrome.browser.crypto_wallet.BlockchainRegistryFactory;
 import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletActivity;
 import org.chromium.chrome.browser.crypto_wallet.adapters.NetworkSpinnerAdapter;
@@ -55,6 +59,7 @@ import org.chromium.chrome.browser.crypto_wallet.util.PendingTxHelper;
 import org.chromium.chrome.browser.crypto_wallet.util.PortfolioHelper;
 import org.chromium.chrome.browser.crypto_wallet.util.SmoothLineChartEquallySpaced;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
+import org.chromium.chrome.browser.crypto_wallet.util.WalletUtils;
 import org.chromium.content_public.browser.UiThreadTaskTraits;
 
 import java.util.ArrayList;
@@ -74,6 +79,7 @@ public class PortfolioFragment
     private int mPreviousCheckedRadioId;
     private int mCurrentTimeframeType;
     private String mSelectedChainNetworkName = "";
+    private WalletModel mWalletModel;
 
     PortfolioHelper mPortfolioHelper;
 
@@ -109,6 +115,10 @@ public class PortfolioFragment
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
             @Nullable Bundle savedInstanceState) {
+        BraveActivity activity = BraveActivity.getBraveActivity();
+        if (activity != null) {
+            mWalletModel = activity.getWalletModel();
+        }
         View view = inflater.inflate(R.layout.fragment_portfolio, container, false);
 
         view.setOnTouchListener(new View.OnTouchListener() {
@@ -135,6 +145,14 @@ public class PortfolioFragment
 
         mBtnChangeNetwork = view.findViewById(R.id.fragment_portfolio_btn_change_networks);
         mBtnChangeNetwork.setOnClickListener(v -> { openNetworkSelection(); });
+        mBtnChangeNetwork.setOnLongClickListener(v -> {
+            NetworkInfo networkInfo =
+                    mWalletModel.getCryptoModel().getNetworkModel().mDefaultNetwork.getValue();
+            if (networkInfo != null) {
+                Toast.makeText(requireContext(), networkInfo.chainName, Toast.LENGTH_SHORT).show();
+            }
+            return true;
+        });
 
         mBalance = view.findViewById(R.id.balance);
         mBalance.setOnClickListener(new View.OnClickListener() {
@@ -143,8 +161,50 @@ public class PortfolioFragment
                 updatePortfolioGetPendingTx(false);
             }
         });
-
+        setUpObservers();
         return view;
+    }
+
+    private void setUpObservers() {
+        mWalletModel.getCryptoModel().getNetworkModel().mDefaultNetwork.observe(
+                getViewLifecycleOwner(), networkInfo -> {
+                    if (networkInfo == null) return;
+                    mBtnChangeNetwork.setText(Utils.getShortNameOfNetwork(networkInfo.chainName));
+                });
+        mWalletModel.getCryptoModel().getNetworkModel().mNeedToCreateAccountForNetwork.observe(
+                getViewLifecycleOwner(), networkInfo -> {
+                    if (networkInfo == null) return;
+                    MaterialAlertDialogBuilder builder =
+                            new MaterialAlertDialogBuilder(
+                                    requireContext(), R.style.BraveWalletAlertDialogTheme)
+                                    .setMessage(getString(
+                                            R.string.brave_wallet_create_account_description,
+                                            networkInfo.symbolName))
+                                    .setPositiveButton(R.string.wallet_action_yes,
+                                            (dialog, which) -> {
+                                                mWalletModel.getKeyringModel().addAccount(
+                                                        WalletUtils.getUniqueNextAccountName(
+                                                                requireContext(),
+                                                                mWalletModel.getKeyringModel()
+                                                                        .mAccountInfos.getValue()
+                                                                        .toArray(
+                                                                                new AccountInfo[0]),
+                                                                networkInfo.symbolName,
+                                                                networkInfo.coin),
+                                                        networkInfo.coin, isAccountAdded -> {});
+                                                mWalletModel.getCryptoModel()
+                                                        .getNetworkModel()
+                                                        .clearCreateAccountState();
+                                            })
+                                    .setNegativeButton(
+                                            R.string.wallet_action_no, (dialog, which) -> {
+                                                mWalletModel.getCryptoModel()
+                                                        .getNetworkModel()
+                                                        .clearCreateAccountState();
+                                                dialog.dismiss();
+                                            });
+                    builder.show();
+                });
     }
 
     private void updateNetwork() {
@@ -156,10 +216,7 @@ public class PortfolioFragment
                 mSelectedChainNetworkName =
                         Utils.getNetworkText(requireActivity(), chain_id, customNetworks)
                                 .toString();
-                String strNetworkShort =
-                        Utils.getNetworkShortText(requireActivity(), chain_id, customNetworks)
-                                .toString();
-                updateAccount(strNetworkShort);
+                updatePortfolioGetPendingTx(true);
             });
         });
     }
@@ -181,7 +238,7 @@ public class PortfolioFragment
             assert jsonRpcService != null;
             jsonRpcService.getAllNetworks(CoinType.ETH, chains -> {
                 NetworkInfo[] customNetworks = Utils.getCustomNetworks(chains);
-                String chainId = Utils.getNetworkConst(
+                String chainId = Utils.getNetworkChainId(
                         getActivity(), mSelectedChainNetworkName, customNetworks);
 
                 EditVisibleAssetsBottomSheetDialogFragment bottomSheetDialogFragment =
@@ -217,11 +274,6 @@ public class PortfolioFragment
         });
     }
 
-    private void updateAccount(String strNetwork) {
-        mBtnChangeNetwork.setText(strNetwork);
-        updatePortfolioGetPendingTx(true);
-    }
-
     private void setUpCoinList(BlockchainToken[] userAssets,
             HashMap<String, Double> perTokenCryptoSum, HashMap<String, Double> perTokenFiatSum) {
         View view = getView();
@@ -244,8 +296,8 @@ public class PortfolioFragment
         assert jsonRpcService != null;
         jsonRpcService.getAllNetworks(CoinType.ETH, chains -> {
             NetworkInfo[] customNetworks = Utils.getCustomNetworks(chains);
-            String chainId =
-                    Utils.getNetworkConst(getActivity(), mSelectedChainNetworkName, customNetworks);
+            String chainId = Utils.getNetworkChainId(
+                    getActivity(), mSelectedChainNetworkName, customNetworks);
             Utils.openAssetDetailsActivity(getActivity(), chainId, asset.symbol, asset.name,
                     asset.tokenId, asset.contractAddress, asset.logo, asset.decimals);
         });
@@ -358,7 +410,7 @@ public class PortfolioFragment
 
             jsonRpcService.getAllNetworks(CoinType.ETH, chains -> {
                 NetworkInfo[] customNetworks = Utils.getCustomNetworks(chains);
-                String chainId = Utils.getNetworkConst(
+                String chainId = Utils.getNetworkChainId(
                         getActivity(), mSelectedChainNetworkName, customNetworks);
                 mPortfolioHelper.setChainId(chainId);
                 mPortfolioHelper.calculateBalances(() -> {

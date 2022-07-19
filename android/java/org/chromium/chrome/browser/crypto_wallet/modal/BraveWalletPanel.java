@@ -24,6 +24,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.view.menu.MenuBuilder;
@@ -99,6 +100,10 @@ public class BraveWalletPanel implements DialogInterface {
                         updateAccountInfo(accountInfo.address);
                     });
                 });
+    };
+
+    private final Observer<NetworkInfo> mDefaultNetworkObserver = networkInfo -> {
+        mBtnSelectedNetwork.setText(Utils.getShortNameOfNetwork(networkInfo.chainName));
     };
 
     public interface BraveWalletPanelServices {
@@ -232,10 +237,6 @@ public class BraveWalletPanel implements DialogInterface {
 
     public void resume() {
         setUpObservers();
-        if (isShowing()) {
-            updateState();
-            //            updateStatus();
-        }
     }
 
     public void pause() {
@@ -246,26 +247,19 @@ public class BraveWalletPanel implements DialogInterface {
         return mPopupWindow != null && mPopupWindow.isShowing();
     }
 
-    private void updateState() {
-        mBraveWalletPanelServices.getJsonRpcService().getChainId(CoinType.ETH, chainId -> {
-            mBraveWalletPanelServices.getJsonRpcService().getAllNetworks(CoinType.ETH, chains -> {
-                NetworkInfo[] customNetworks = Utils.getCustomNetworks(chains);
-                String strNetwork =
-                        Utils.getNetworkShortText(mActivity, chainId, customNetworks).toString();
-                mBtnSelectedNetwork.setText(strNetwork);
-            });
-        });
-    }
-
     private void setUpObservers() {
         cleanUpObservers();
         mWalletModel.getKeyringModel().getSelectedAccountOrAccountPerOrigin().observeForever(
                 mAccountInfoObserver);
+        mWalletModel.getCryptoModel().getNetworkModel().mDefaultNetwork.observeForever(
+                mDefaultNetworkObserver);
     }
 
     private void cleanUpObservers() {
         mWalletModel.getKeyringModel().getSelectedAccountOrAccountPerOrigin().removeObserver(
                 mAccountInfoObserver);
+        mWalletModel.getCryptoModel().getNetworkModel().mDefaultNetwork.removeObserver(
+                mDefaultNetworkObserver);
     }
 
     private void updateAccountInfo(String selectedAccount) {
@@ -388,8 +382,14 @@ public class BraveWalletPanel implements DialogInterface {
                 activity.startActivity(new Intent(activity, AccountSelectorActivity.class));
             }
         });
-        updateState();
+        mBtnSelectedNetwork.setOnLongClickListener(v -> {
+            NetworkInfo networkInfo =
+                    mWalletModel.getCryptoModel().getNetworkModel().mDefaultNetwork.getValue();
+            if (networkInfo != null) {
+                Toast.makeText(mActivity, networkInfo.chainName, Toast.LENGTH_SHORT).show();
+            }
+            return true;
+        });
         setUpObservers();
-        //        updateStatus();
     }
 }
