@@ -30,12 +30,7 @@ struct NetworkPicker: View {
   var keyringStore: KeyringStore
   @ObservedObject var networkStore: NetworkStore
   @State private var isPresentingAddNetwork: Bool = false
-  /// If we are prompting the user to add an account for the `nextNetwork.coin` type
-  @State private var isShowingNextNetworkAlert = false
-  /// The network the user wishes to switch to, but does not (yet) have an account for `nextNetwork.coin` type
-  @State private var nextNetwork: BraveWallet.NetworkInfo?
-  /// If we are prompting the user to create a new account for the `nextNetwork.coin` type
-  @State private var isPresentingAddAccount: Bool = false
+  @State private var networkSelectionStore: NetworkSelectionStore?
   @Environment(\.presentationMode) @Binding private var presentationMode
   @Environment(\.buySendSwapDestination) @Binding private var buySendSwapDestination
   
@@ -69,34 +64,9 @@ struct NetworkPicker: View {
   }
   
   var body: some View {
-    Menu {
-      Picker(
-        Strings.Wallet.selectedNetworkAccessibilityLabel,
-        selection: Binding(
-          get: { networkStore.selectedChain },
-          set: { network in
-            Task { @MainActor in
-              let error = await networkStore.setSelectedChain(network)
-              switch error {
-              case .selectedChainHasNoAccounts:
-                self.isShowingNextNetworkAlert = true
-                self.nextNetwork = network
-              default:
-                break
-              }
-            }
-          }
-        )
-      ) {
-        ForEach(availableChains) {
-          Text($0.chainName).tag($0)
-        }
-      }
-      Divider()
-      Button(action: { isPresentingAddNetwork = true }) {
-        Label(Strings.Wallet.addCustomNetworkDropdownButtonTitle, systemImage: "plus")
-      }
-    } label: {
+    Button(action: {
+      networkSelectionStore = .init(networkStore: networkStore)
+    }) {
       HStack {
         Text(networkStore.selectedChain.shortChainName)
           .fontWeight(.bold)
@@ -111,43 +81,36 @@ struct NetworkPicker: View {
       )
       .clipShape(Capsule())
       .contentShape(Capsule())
-      .animation(nil, value: networkStore.selectedChain)
     }
-    .accessibilityLabel(Strings.Wallet.selectedNetworkAccessibilityLabel)
-    .accessibilityValue(networkStore.selectedChain.shortChainName)
-    .sheet(isPresented: $isPresentingAddNetwork) {
-      NavigationView {
-        CustomNetworkDetailsView(networkStore: networkStore, model: .init())
-      }
-    }
-    .alert(
-      isPresented: $isShowingNextNetworkAlert
-    ) {
-      Alert(
-        title: Text(String.localizedStringWithFormat(Strings.Wallet.createAccountAlertTitle, nextNetwork?.shortChainName ?? "")),
-        message: Text(Strings.Wallet.createAccountAlertMessage),
-        primaryButton: .default(Text(Strings.yes), action: {
-          // show create account for `nextNetwork.coin`
-          isPresentingAddAccount = true
-        }),
-        secondaryButton: .cancel(Text(Strings.no), action: {
-          // not creating account, don't switch to nextNetwork
-          self.nextNetwork = nil
-        })
-      )
-    }
-    .sheet(
-      isPresented: $isPresentingAddAccount
-    ) {
-      NavigationView {
-        AddAccountView(keyringStore: keyringStore, preSelectedCoin: nextNetwork?.coin)
-      }
-      .onDisappear {
-        // User either created an account, or cancelled. If account created,
-        // `NetworkStore`s `keyringCreated` observation will switch to the new account
-        self.nextNetwork = nil
-      }
-    }
+    .animation(nil, value: networkStore.selectedChain)
+    .background(
+      Color.clear
+        .sheet(isPresented: $isPresentingAddNetwork) {
+          NavigationView {
+            CustomNetworkDetailsView(networkStore: networkStore, model: .init())
+          }
+        }
+    )
+    .background(
+      Color.clear
+        .sheet(
+          isPresented: Binding(
+            get: { self.networkSelectionStore != nil },
+            set: { if !$0 { self.networkSelectionStore = nil } }
+          )
+        ) {
+          if let networkSelectionStore = networkSelectionStore {
+            NavigationView {
+              NetworkSelectionView(
+                keyringStore: keyringStore,
+                networkStore: networkStore,
+                networkSelectionStore: networkSelectionStore
+              )
+            }
+            .navigationViewStyle(.stack)
+          }
+        }
+    )
   }
 }
 
