@@ -428,12 +428,12 @@ TEST_F(BravePrefProviderTest, TestShieldsSettingsMigrationVersion) {
                              false /* restore_session */);
 
   // Should have migrated when constructed (with profile).
-  EXPECT_EQ(3, prefs->GetInteger(kBraveShieldsSettingsVersion));
+  EXPECT_EQ(4, prefs->GetInteger(kBraveShieldsSettingsVersion));
 
   // Reset and check that migration runs.
   prefs->SetInteger(kBraveShieldsSettingsVersion, 1);
   provider.MigrateShieldsSettings(/*incognito*/ false);
-  EXPECT_EQ(3, prefs->GetInteger(kBraveShieldsSettingsVersion));
+  EXPECT_EQ(4, prefs->GetInteger(kBraveShieldsSettingsVersion));
 
   // Test that migration doesn't run for another version.
   prefs->SetInteger(kBraveShieldsSettingsVersion, 5);
@@ -566,7 +566,7 @@ TEST_F(BravePrefProviderTest, TestShieldsSettingsMigrationFromUnknownSettings) {
   provider.ShutdownOnUIThread();
 }
 
-TEST_F(BravePrefProviderTest, TestShieldsSettingsMigrationV2toV3) {
+TEST_F(BravePrefProviderTest, TestShieldsSettingsMigrationV2toV4) {
   BravePrefProvider provider(
       testing_profile()->GetPrefs(), false /* incognito */,
       true /* store_last_modified */, false /* restore_session */);
@@ -606,6 +606,13 @@ TEST_F(BravePrefProviderTest, TestShieldsSettingsMigrationV2toV3) {
   // Enable shields -> cookies should be blocked according to settings.
   shields_enabled_settings.SetPreMigrationSettings(blocked_pattern,
                                                    CONTENT_SETTING_ALLOW);
+  shields_cookie_settings.CheckSettingsWouldBlock(blocked);
+  cookie_settings.CheckSettingsWouldBlock(blocked);
+
+  // V3 to V4
+  testing_profile()->GetPrefs()->SetInteger(kBraveShieldsSettingsVersion, 3);
+  provider.MigrateShieldsSettings(/*incognito*/ false);
+
   shields_cookie_settings.CheckSettingsWouldBlock(blocked);
   cookie_settings.CheckSettingsWouldBlock(blocked);
 
