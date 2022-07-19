@@ -201,7 +201,7 @@ def GenerateSymbols(options, binaries):
                 elif sys.platform == 'linux2':
                     binary = GetSymbolPath(options, binary)
 
-                syms = GetCommandOutput([GetDumpSymsBinary(options.build_dir), '-r', '-c', binary])
+                syms = GetCommandOutput([GetDumpSymsBinary(options.build_dir), '-c', binary])
                 module_line = re.match("MODULE [^ ]+ [^ ]+ ([0-9A-F]+) (.*)\n", syms)
                 output_path = os.path.join(options.symbols_dir, module_line.group(2),
                                            module_line.group(1))
