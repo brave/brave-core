@@ -27,6 +27,8 @@ export const getRampNetworkPrefix = (chainId: string) => {
       return 'SOLANA'
     case BraveWallet.OPTIMISM_MAINNET_CHAIN_ID:
       return 'OPTIMISM'
+    case BraveWallet.FILECOIN_MAINNET:
+      return 'FILECOIN'
     default:
       return ''
   }
