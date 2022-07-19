@@ -418,14 +418,6 @@ export const OnboardingRestoreFromRecoveryPhrase = ({
             skipButtonText={<CloseIcon />}
           />
 
-          <pre>
-            {JSON.stringify({
-              isImportingFromExtension,
-              restoreFrom,
-              currentStep
-            }, undefined, 2)}
-          </pre>
-
           <TitleAndDescriptionContainer>
             {
               isCheckingExtensions

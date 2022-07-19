@@ -108,6 +108,7 @@ provideStrings({
   braveWalletButtonDone: 'Done',
   braveWalletButtonSkip: 'Skip',
   braveWalletButtonCancel: 'Cancel',
+  braveWalletLearnMore: 'Learn more',
 
   // Onboarding - Welcome
   braveWalletWelcomeTitle: 'Secure. Multi-chain. And oh-so-easy to use. Your Brave Wallet is just a few clicks away',
@@ -117,15 +118,15 @@ provideStrings({
   braveWalletWelcomeRestoreButton: 'Restore',
 
   // Onboarding - Disclosures
-  braveWalletDisclosuresTitle: 'Before we begin',
-  braveWalletDisclosuresDescription: 'We require that you acknowledge the items below',
+  braveWalletDisclosuresTitle: 'Legal stuff',
+  braveWalletDisclosuresDescription: 'Please acknowledge the following:',
   braveWalletSelfCustodyDisclosureCheckboxText: 'I understand this is a self-custody wallet, and that I alone am responsible for any associated funds, assets, or accounts, and for taking appropriate action to secure, protect and backup my wallet. I understand that Brave can NOT access my wallet or reverse transactions on my behalf, and that my recovery phrase is the ONLY way to regain access in the event of a lost password, stolen device, or similar circumstance.',
   braveWalletTermsOfServiceCheckboxText: 'I have read and agree to the $1Terms of use$2',
 
   // Onboarding import or restore wallet page
   braveWalletCheckingInstalledExtensions: 'Checking for wallet extensions...',
   braveWalletImportOrRestoreWalletTitle: 'Connect to your existing wallet',
-  braveWalletImportOrRestoreDescription: 'You will need your wallet seed handy to get started. This is a 12-24 word sequence that you were given when you setup a wallet.',
+  braveWalletImportOrRestoreDescription: 'To connect a wallet you already have, you may need to enter your recovery phrase. At this time we support restoring / importing from Ethereum wallets.',
   braveWalletRestoreMyBraveWallet: 'Restore from seed phrase',
   braveWalletRestoreMyBraveWalletDescription: '12-24 words',
   braveWalletImportFromMetaMask: 'Import from MetaMask',
@@ -136,25 +137,25 @@ provideStrings({
   // onboarding import wallet screen
   braveWalletImportPasswordError: 'Password is not correct',
   braveWalletMetaMaskPasswordInputPlaceholder: 'Type MetaMask password',
-  braveWalletImportFromMetaMaskSeedInstructions: 'Type your MetaMask 12-24 word recovery phrase.',
+  braveWalletImportFromMetaMaskSeedInstructions: 'Type your MetaMask 12-word recovery phrase.',
   braveWalletMetaMaskExtensionDetected: 'We detected the MetaMask extension in your browser',
-  braveWalletMetaMaskExtensionImportDescription: 'By entering the password you can Import your MetaMask wallet to Brave Wallet easily.',
-  braveWalletRestoreMyBraveWalletInstructions: 'Type your Brave Wallet 12-24 word recovery phrase.',
+  braveWalletMetaMaskExtensionImportDescription: 'Enter your MetaMask wallet password to easily import to Brave Wallet.',
+  braveWalletRestoreMyBraveWalletInstructions: 'Type your Brave Wallet 12-word recovery phrase.',
 
   // Onboarding - Backup Wallet - Intro
   braveWalletOnboardingRecoveryPhraseBackupIntroTitle: 'Before you start backing up wallet',
-  braveWalletOnboardingRecoveryPhraseBackupIntroDescription: 'The 12-24 word recovery phrase that will be provided next step is a private key that allows you to access your wallet if you lose your devices.',
+  braveWalletOnboardingRecoveryPhraseBackupIntroDescription: 'The 12-word recovery phrase is a private key you can use to regain access to your wallet in case you lose a connected device(s). Store it someplace safe, and in the exact order it appears below.',
   braveWalletRecoveryPhraseBackupWarningImportant: '$1Important:$2 Never share your recovery phrase. Anyone with this phrase can take your assets forever.',
 
   // Onboarding - Backup Wallet - Recovery Phrase Backup
-  braveWalletRecoveryPhraseBackupTitle: 'Next, let\'s back up your wallet.',
-  braveWalletRecoveryPhraseBackupWarning: 'Brave cannot recover your secret recovery phrase. Keep it safe, never share this phrase with anyone.',
+  braveWalletRecoveryPhraseBackupTitle: 'Back up your wallet recovery phrase',
+  braveWalletRecoveryPhraseBackupWarning: 'Brave cannot access your secret recovery phrase. Keep it safe, and never share it with anyone else.',
   braveWalletCopiedToClipboard: 'Copied to clipboard',
-  braveWalletClickToSeeRecoveryPhrase: 'Click here to see phrase',
+  braveWalletClickToSeeRecoveryPhrase: 'Click to see your phrase',
 
   // Onboarding - Backup Wallet - Verify Recovery Phrase
   braveWalletVerifyRecoveryPhraseTitle: 'Verify your recovery phrase',
-  braveWalletVerifyRecoveryPhraseInstructions: 'Click the $1First(1st)$2, $3Third(3rd)$4, and $5Last($7th)$6 word of your recovery phrase.',
+  braveWalletVerifyRecoveryPhraseInstructions: 'Click the $1first (1st)$2, $3third (3rd)$4, and $5last ($7th)$6 words of your recovery phrase.',
   braveWalletVerifyPhraseError: 'Recovery phrase didn\'t match',
 
   // Recovery Phrase Backup - Intro
@@ -177,7 +178,7 @@ provideStrings({
 
   // Create Password
   braveWalletCreatePasswordTitle: 'Create a new password',
-  braveWalletCreatePasswordDescription: 'You will need this password to access your Brave Wallet.',
+  braveWalletCreatePasswordDescription: 'You\'ll use this password each time you access your wallet.',
   braveWalletCreatePasswordInput: 'Enter new password',
   braveWalletConfirmPasswordInput: 'Re-enter password',
   braveWalletCreatePasswordError: 'Password criteria doesn\'t match.',
@@ -194,8 +195,8 @@ provideStrings({
   braveWalletPasswordStrengthTooltipContainsSpecialChar: '1 special character',
 
   // Onboarding Success
-  braveWalletOnboardingSuccessTitle: 'Congratulations on setting up your Brave Wallet!',
-  braveWalletOnboardingSuccessDescription: 'Now you can easily access your wallet any time from the wallet icon in Brave Browser.',
+  braveWalletOnboardingSuccessTitle: 'Congratulations! Your Brave Wallet is ready to go!',
+  braveWalletOnboardingSuccessDescription: 'To access your wallet, just click the wallet icon at the top right of any Brave browser window.',
   braveWalletBuyCryptoButton: 'Buy Crypto',
   braveWalletDepositCryptoButton: 'Deposit',
   braveWalletLearnAboutMyWallet: 'Learn more about my new wallet',
@@ -459,7 +460,6 @@ provideStrings({
 
   // Wallet Welcome Panel
   braveWalletWelcomePanelDescription: 'Use this panel to securely access Web3 and all your crypto assets.',
-  braveWalletWelcomePanelButton: 'Learn more',
 
   // Site Permissions Panel
   braveWalletSitePermissionsTitle: 'Site permissions',

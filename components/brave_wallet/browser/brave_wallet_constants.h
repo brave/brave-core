@@ -445,7 +445,7 @@ constexpr webui::LocalizedString kLocalizedStrings[] = {
     {"braveWalletPanelBlocked", IDS_BRAVE_WALLET_PANEL_BLOCKED},
     {"braveWalletWelcomePanelDescription",
      IDS_BRAVE_WALLET_WELCOME_PANEL_DESCRIPTION},
-    {"braveWalletWelcomePanelButton", IDS_BRAVE_WALLET_WELCOME_PANEL_BUTTON},
+    {"braveWalletLearnMore", IDS_BRAVE_WALLET_LEARN_MORE},
     {"braveWalletTransactionDetailBoxFunction",
      IDS_BRAVE_WALLET_TRANSACTION_DETAIL_BOX_FUNCTION},
     {"braveWalletTransactionDetailBoxHex",
