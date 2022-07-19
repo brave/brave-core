@@ -206,11 +206,11 @@ def GenerateSymbols(options, binaries):
                 output_path = os.path.join(options.symbols_dir, module_line.group(2),
                                            module_line.group(1))
                 mkdir_p(output_path)
+                symbol_file = "%s.sym" % module_line.group(2)
                 if options.verbose:
                     with print_lock:
                         print("final binary {0} size {1} name {2}".format(binary, len(syms), symbol_file) )
 
-                symbol_file = "%s.sym" % module_line.group(2)
                 f = open(os.path.join(output_path, symbol_file), 'w') # pylint: disable=consider-using-with
                 f.write(syms)
                 f.close()
