@@ -84,6 +84,7 @@ class MockAdsService : public AdsService {
 
   MOCK_METHOD0(GetPrefetchedNewTabPageAd,
                absl::optional<ads::NewTabPageAdInfo>());
+  MOCK_METHOD0(PrefetchNewTabPageAd, void());
   MOCK_METHOD3(TriggerNewTabPageAdEvent,
                void(const std::string&,
                     const std::string&,

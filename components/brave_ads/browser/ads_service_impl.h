@@ -182,7 +182,7 @@ class AdsServiceImpl : public AdsService,
   bool StopNotificationAdTimeOutTimer(const std::string& placement_id);
   void NotificationAdTimedOut(const std::string& placement_id);
 
-  void PrefetchNewTabPageAd();
+  void PrefetchNewTabPageAd() override;
   void OnPrefetchNewTabPageAd(bool success, const std::string& json);
 
   void OnTriggerSearchResultAdEvent(
@@ -482,7 +482,8 @@ class AdsServiceImpl : public AdsService,
       notification_ad_timers_;
 
   absl::optional<ads::NewTabPageAdInfo> prefetched_new_tab_page_ad_info_;
-  absl::optional<base::Time> purge_orphaned_new_tab_page_ad_events_time_;
+  bool need_purge_orphaned_new_tab_page_ad_events_ = false;
+  bool prefetch_new_tab_page_ad_on_first_run_ = false;
 
   std::string retry_opening_new_tab_for_ad_with_placement_id_;
 

@@ -186,6 +186,9 @@ class AdsService : public KeyedService {
       const ads::mojom::InlineContentAdEventType event_type) = 0;
 
   // Called to prefetch the next new tab page ad.
+  virtual void PrefetchNewTabPageAd() = 0;
+
+  // Called to get a prefetched new tab page ad.
   virtual absl::optional<ads::NewTabPageAdInfo> GetPrefetchedNewTabPageAd() = 0;
 
   // Called when failing to prefetch a new tab page ad for |placement_id| and
