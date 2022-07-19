@@ -490,3 +490,11 @@
 -keep class org.chromium.chrome.browser.dom_distiller.BraveReaderModeManager {
     <init>(...);
 }
+
+-keep class org.chromium.chrome.browser.crash.ChromePureJavaExceptionReporter {
+    public <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.crash.BravePureJavaExceptionReporter {
+    public <init>(...);
+}
