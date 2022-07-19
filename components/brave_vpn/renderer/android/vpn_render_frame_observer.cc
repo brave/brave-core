@@ -17,8 +17,33 @@
 #include "content/public/renderer/render_frame.h"
 #include "third_party/blink/public/platform/web_security_origin.h"
 #include "third_party/blink/public/web/web_local_frame.h"
+#include "url/url_util.h"
 
 namespace brave_vpn {
+
+namespace {
+
+char kIntentParamName[] = "intent";
+char kIntentParamValue[] = "connect-receipt";
+char kProductParamName[] = "product";
+char kProductParamValue[] = "vpn";
+
+bool ExtractQueryParamValue(base::StringPiece str,
+                            const std::string& name,
+                            std::string* result) {
+  url::Component query(0, static_cast<int>(str.length())), key, value;
+  while (url::ExtractQueryKeyValue(str.data(), &query, &key, &value)) {
+    base::StringPiece key_str = str.substr(key.begin, key.len);
+    if (key_str != name)
+      continue;
+
+    *result = std::string(str.substr(value.begin, value.len));
+    return true;
+  }
+  return false;
+}
+
+}  // namespace
 
 VpnRenderFrameObserver::VpnRenderFrameObserver(
     content::RenderFrame* render_frame,
@@ -52,12 +77,15 @@ void VpnRenderFrameObserver::DidCreateScriptContext(
 
 #if BUILDFLAG(IS_ANDROID)
   vpn_service_->GetPurchaseToken(base::BindOnce(
-      &VpnRenderFrameObserver::OnGetPurchaseToken, base::Unretained(this)));
+      &VpnRenderFrameObserver::OnGetPurchaseToken, weak_factory_.GetWeakPtr()));
 #endif
 }
 
 void VpnRenderFrameObserver::OnGetPurchaseToken(
     const std::string& purchase_token) {
+  if (!IsAllowed())
+    return;
+
   auto* frame = render_frame();
   if (frame && purchase_token.length() > 0) {
     std::u16string set_local_storage(
@@ -90,13 +118,20 @@ bool VpnRenderFrameObserver::IsAllowed() {
     }
   }
 
-  // TODO: also check query string param (how??)
-  // need to make sure it has
-  // "?intent=connect-receipt&product=vpn"
-  // if (allowed && !has query string) {
-  //    return false;
-  // }
-  //
+  GURL current_url(
+      render_frame()->GetWebFrame()->GetDocument().Url().GetString().Utf8());
+  std::string intent;
+  if (!ExtractQueryParamValue(current_url.query_piece(), kIntentParamName,
+                              &intent) ||
+      intent != kIntentParamValue) {
+    return false;
+  }
+  std::string product;
+  if (!ExtractQueryParamValue(current_url.query_piece(), kProductParamName,
+                              &product) ||
+      product != kProductParamValue) {
+    return false;
+  }
   return allowed;
 }
 

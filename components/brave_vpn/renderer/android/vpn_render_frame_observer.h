@@ -8,6 +8,7 @@
 
 #include <memory>
 
+#include "base/memory/weak_ptr.h"
 #include "brave/components/brave_vpn/mojom/brave_vpn.mojom.h"
 #include "content/public/renderer/render_frame.h"
 #include "content/public/renderer/render_frame_observer.h"
@@ -27,7 +28,7 @@ namespace brave_vpn {
 class VpnRenderFrameObserver : public content::RenderFrameObserver {
  public:
   explicit VpnRenderFrameObserver(content::RenderFrame* render_frame,
-                                   int32_t world_id);
+                                  int32_t world_id);
   VpnRenderFrameObserver(const VpnRenderFrameObserver&) = delete;
   VpnRenderFrameObserver& operator=(const VpnRenderFrameObserver&) = delete;
   ~VpnRenderFrameObserver() override;
@@ -37,6 +38,8 @@ class VpnRenderFrameObserver : public content::RenderFrameObserver {
                               int32_t world_id) override;
 
  private:
+  FRIEND_TEST_ALL_PREFIXES(VpnRenderFrameObserverBrowserTest, IsAllowed);
+
   bool EnsureConnected();
   void OnGetPurchaseToken(const std::string& purchase_token);
 
@@ -47,6 +50,7 @@ class VpnRenderFrameObserver : public content::RenderFrameObserver {
 
   int32_t world_id_;
   mojo::Remote<brave_vpn::mojom::ServiceHandler> vpn_service_;
+  base::WeakPtrFactory<VpnRenderFrameObserver> weak_factory_{this};
 };
 
 }  // namespace brave_vpn
