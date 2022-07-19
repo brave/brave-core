@@ -88,8 +88,6 @@ export const OnboardingRestoreFromRecoveryPhrase = ({
   // redux
   const dispatch = useDispatch()
   const invalidMnemonic = useSelector(({ page }: { page: PageState }) => page.invalidMnemonic)
-  // const isMetaMaskInitialized = useSelector(({ page }: { page: PageState }) => page.isMetaMaskInitialized)
-  // const isLegacyCryptoWalletsInitialized = useSelector(({ page }: { page: PageState }) => page.isCryptoWalletsInitialized)
   const isImportWalletsCheckComplete = useSelector(({ page }: { page: PageState }) => page.isImportWalletsCheckComplete)
   const importWalletError = useSelector(({ page }: { page: PageState }) => page.importWalletError)
   const importWalletAttempts = useSelector(({ page }: { page: PageState }) => page.importWalletAttempts)
@@ -344,32 +342,6 @@ export const OnboardingRestoreFromRecoveryPhrase = ({
       history.push(WalletRoutes.OnboardingComplete)
     }
   }, [isWalletCreated])
-
-  // React.useEffect(() => {
-  //   if (
-  //     restoreFrom === 'seed' || // only watching during metamask or legacy import
-  //     !isImportWalletsCheckComplete // wait for redux store to be ready
-  //   ) {
-  //     return
-  //   }
-
-  //   // switch to phrase input if MM & legacy wallet was not detected
-  //   if (
-  //     currentStep === RestoreFromOtherWalletSteps.currentPassword &&
-  //     !isMetaMaskInitialized &&
-  //     !isLegacyCryptoWalletsInitialized
-  //   ) {
-  //     return history.push(WalletRoutes.OnboardingRestoreWallet)
-  //   }
-
-  //   // switch to password input if MM was detected
-  //   if (
-  //     currentStep === RestoreFromOtherWalletSteps.phrase &&
-  //     isMetaMaskInitialized
-  //   ) {
-  //     return setCurrentStep(RestoreFromOtherWalletSteps.currentPassword)
-  //   }
-  // }, [restoreFrom, isImportWalletsCheckComplete, currentStep, isMetaMaskInitialized, isLegacyCryptoWalletsInitialized])
 
   React.useEffect(() => {
     // clear other errors on step change

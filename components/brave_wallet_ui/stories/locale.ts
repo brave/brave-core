@@ -190,9 +190,7 @@ provideStrings({
 
   // Create Password - Stength Tooltip
   braveWalletPasswordStrengthTooltipHeading: 'At least:',
-  braveWalletPasswordStrengthTooltipIsLongEnough: '7 characters',
-  braveWalletPasswordStrengthTooltipContainsNumber: '1 number',
-  braveWalletPasswordStrengthTooltipContainsSpecialChar: '1 special character',
+  braveWalletPasswordStrengthTooltipIsLongEnough: '8 characters',
 
   // Onboarding Success
   braveWalletOnboardingSuccessTitle: 'Congratulations! Your Brave Wallet is ready to go!',

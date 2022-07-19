@@ -518,9 +518,7 @@
   <message name="IDS_BRAVE_WALLET_WHAT_IS_A_CRYPTO_WALLET" desc="Link to article explaining crypto wallets">Learn more about crypto wallets</message>
   <message name="IDS_BRAVE_WALLET_LEARN_MORE_ABOUT_BRAVE_WALLET" desc="Link to article explaining crypto wallets">Learn more about Brave Wallet</message>
   <message name="IDS_BRAVE_WALLET_PASSWORD_STRENGTH_TOOLTIP_HEADING" desc="Heading of password strength tooltip">At least:</message>
-  <message name="IDS_BRAVE_WALLET_PASSWORD_STRENGTH_TOOLTIP_IS_LONG_ENOUGH" desc="Password strength length requirements">7 characters</message>
-  <message name="IDS_BRAVE_WALLET_PASSWORD_STRENGTH_TOOLTIP_CONTAINS_NUMBER" desc="Password strength number requirements">1 number</message>
-  <message name="IDS_BRAVE_WALLET_PASSWORD_STRENGTH_TOOLTIP_CONTAINS_SPECIAL_CHAR" desc="Password strength special character requirements">1 special character</message>
+  <message name="IDS_BRAVE_WALLET_PASSWORD_STRENGTH_TOOLTIP_IS_LONG_ENOUGH" desc="Password strength length requirements">8 characters</message>
   <message name="IDS_BRAVE_WALLET_PASSWORD_MATCH" desc="Password and confirmed passwords match">Match!</message>
   <message name="IDS_BRAVE_WALLET_PASSWORD_IS_STRONG" desc="Password is strong">Strong!</message>
   <message name="IDS_BRAVE_WALLET_PASSWORD_IS_MEDIUM_STRENGTH" desc="Password is of medium strength">Medium</message>

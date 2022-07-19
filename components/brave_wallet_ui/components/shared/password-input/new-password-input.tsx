@@ -133,8 +133,6 @@ export const NewPasswordInput = ({
                 isVisible={isPasswordFieldFocused}
                 passwordStrength={passwordStrength}
                 criteria={[
-                  passwordStrength.containsNumber,
-                  passwordStrength.containsSpecialChar,
                   passwordStrength.isLongEnough
                 ]}
               />
