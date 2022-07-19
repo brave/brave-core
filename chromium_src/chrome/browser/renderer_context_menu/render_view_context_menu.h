@@ -41,6 +41,8 @@ class BraveRenderViewContextMenu : public RenderViewContextMenu_Chromium {
   static void AddSpellCheckServiceItem(ui::SimpleMenuModel* menu,
                                        bool is_checked);
   void AddAccessibilityLabelsServiceItem(bool is_checked) override;
+  void AddCleanCopyLinkItem();
+  void WriteCleanURLToClipboard(const GURL& url);
 
  private:
   // RenderViewContextMenuBase:

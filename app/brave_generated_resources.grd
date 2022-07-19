@@ -922,7 +922,9 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
       <message name="IDS_IMPORTED_FROM_BOOKMARK_FOLDER" desc="Name for bookmark panel folder imported from another browser">
         Imported from <ph name="BROWSER_NAME">$1<ex>Chrome</ex></ph>.
       </message>
-
+      <message name="IDS_CONTENT_CONTEXT_COPYCLEANLINKLOCATION" desc="The name of the context menu item to copy clean address location">
+        Copy clean link address
+      </message>
       <!--Add new items to the appropriate sections above -->
     </messages>
   </release>

@@ -161,6 +161,8 @@ bool BraveRenderViewContextMenu::IsCommandIdEnabled(int id) const {
       // IsPasteAndMatchStyleEnabled checks internally, but IsPasteEnabled
       // allows non text types
       return IsPasteAndMatchStyleEnabled();
+    case IDC_CONTENT_CONTEXT_COPYCLEANLINKLOCATION:
+      return params_.unfiltered_link_url.is_valid();
 #if BUILDFLAG(ENABLE_IPFS)
     case IDC_CONTENT_CONTEXT_IMPORT_IPFS:
     case IDC_CONTENT_CONTEXT_IMPORT_IPFS_PAGE:
@@ -221,8 +223,18 @@ void BraveRenderViewContextMenu::ExecuteIPFSCommand(int id, int event_flags) {
 }
 #endif
 
+void BraveRenderViewContextMenu::WriteCleanURLToClipboard(const GURL& url) {
+  GURL::Replacements replacements;
+  replacements.SetPathStr(url.path_piece());
+  WriteURLToClipboard(url.GetWithEmptyPath().ReplaceComponents(replacements));
+}
+
 void BraveRenderViewContextMenu::ExecuteCommand(int id, int event_flags) {
   switch (id) {
+    case IDC_CONTENT_CONTEXT_COPYCLEANLINKLOCATION:
+      WriteCleanURLToClipboard(params_.unfiltered_link_url);
+      break;
+
     case IDC_CONTENT_CONTEXT_FORCE_PASTE: {
       std::u16string result;
       ui::Clipboard::GetForCurrentThread()->ReadText(
@@ -370,6 +382,16 @@ void BraveRenderViewContextMenu::BuildIPFSMenu() {
 }
 #endif
 
+void BraveRenderViewContextMenu::AddCleanCopyLinkItem() {
+  int index =
+      menu_model_.GetIndexOfCommandId(IDC_CONTENT_CONTEXT_COPYLINKLOCATION);
+  if (index != -1) {
+    menu_model_.InsertItemWithStringIdAt(
+        index + 1, IDC_CONTENT_CONTEXT_COPYCLEANLINKLOCATION,
+        IDS_CONTENT_CONTEXT_COPYCLEANLINKLOCATION);
+  }
+}
+
 void BraveRenderViewContextMenu::InitMenu() {
   RenderViewContextMenu_Chromium::InitMenu();
 
@@ -406,6 +428,7 @@ void BraveRenderViewContextMenu::InitMenu() {
 #if BUILDFLAG(ENABLE_IPFS)
   BuildIPFSMenu();
 #endif
+  AddCleanCopyLinkItem();
 
 #if BUILDFLAG(ENABLE_BRAVE_TRANSLATE_GO)
   const bool remove_translate =
