@@ -8,6 +8,7 @@
 #include <map>
 #include <vector>
 
+#include "base/containers/fixed_flat_map.h"
 #include "base/containers/flat_map.h"
 #include "base/no_destructor.h"
 #include "base/stl_util.h"
@@ -263,9 +264,9 @@ BravePrepopulatedEngineID GetDefaultSearchEngine(int country_id, int version) {
           {country_codes::CountryCharsToCountryID('U', 'Z'),
            PREPOPULATED_ENGINE_ID_YANDEX},
       });
-  static const base::NoDestructor<
-      base::flat_map<int, BravePrepopulatedEngineID>>
-      content_v20({
+
+  static constexpr auto content_v20 =
+      base::MakeFixedFlatMap<int, BravePrepopulatedEngineID>({
           {country_codes::CountryCharsToCountryID('A', 'M'),
            PREPOPULATED_ENGINE_ID_YANDEX},
           {country_codes::CountryCharsToCountryID('A', 'Z'),
@@ -305,8 +306,8 @@ BravePrepopulatedEngineID GetDefaultSearchEngine(int country_id, int version) {
            PREPOPULATED_ENGINE_ID_BRAVE},
       });
   if (version > 19) {
-    auto it = content_v20->find(country_id);
-    if (it == content_v20->end()) {
+    auto* it = content_v20.find(country_id);
+    if (it == content_v20.end()) {
       return default_v6;
     }
     return it->second;
