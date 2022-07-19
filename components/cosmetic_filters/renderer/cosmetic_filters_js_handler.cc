@@ -8,12 +8,14 @@
 #include <utility>
 
 #include "base/bind.h"
+#include "base/feature_list.h"
 #include "base/json/json_writer.h"
 #include "base/metrics/histogram_macros.h"
 #include "base/no_destructor.h"
 #include "base/strings/stringprintf.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/trace_event/trace_event.h"
+#include "brave/components/brave_shields/common/features.h"
 #include "brave/components/content_settings/renderer/brave_content_settings_agent_impl.h"
 #include "brave/components/cosmetic_filters/resources/grit/cosmetic_filters_generated_map.h"
 #include "components/content_settings/renderer/content_settings_agent_impl.h"
@@ -331,6 +333,12 @@ void CosmeticFiltersJSHandler::ApplyRules(bool de_amp_enabled) {
         isolated_world_id_,
         blink::WebScriptSource(blink::WebString::FromUTF8(scriptlet_script)),
         blink::BackForwardCacheAware::kAllow);
+  }
+
+  if (!base::FeatureList::IsEnabled(
+          brave_shields::features::kBraveAdblockCosmeticFilteringChildFrames) &&
+      !render_frame_->IsMainFrame()) {
+    return;
   }
 
   // Working on css rules
