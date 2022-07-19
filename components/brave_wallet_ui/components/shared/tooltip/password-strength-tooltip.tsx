@@ -30,8 +30,6 @@ interface Props {
 
 const PasswordStrengthDetails = ({
   passwordStrength: {
-    containsNumber,
-    containsSpecialChar,
     isLongEnough
   }
 }: Pick<Props, 'passwordStrength'>) => {
@@ -45,20 +43,6 @@ const PasswordStrengthDetails = ({
         {isLongEnough && <GreenCheckmark />}
         <PasswordStrengthText isStrong={isLongEnough}>
           {getLocale('braveWalletPasswordStrengthTooltipIsLongEnough')}
-        </PasswordStrengthText>
-      </CriteriaCheckContainer>
-
-      <CriteriaCheckContainer>
-        {containsNumber && <GreenCheckmark />}
-        <PasswordStrengthText isStrong={containsNumber}>
-          {getLocale('braveWalletPasswordStrengthTooltipContainsNumber')}
-        </PasswordStrengthText>
-      </CriteriaCheckContainer>
-
-      <CriteriaCheckContainer>
-        {containsSpecialChar && <GreenCheckmark />}
-        <PasswordStrengthText isStrong={containsSpecialChar}>
-          {getLocale('braveWalletPasswordStrengthTooltipContainsSpecialChar')}
         </PasswordStrengthText>
       </CriteriaCheckContainer>
 
