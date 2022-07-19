@@ -14,7 +14,8 @@ import KeyIcon from '../../../../assets/svg-icons/key-icon.svg'
 import CheckIcon from '../../assets/filled-checkmark.svg'
 
 // styles
-import { WalletButton, WalletButtonLink } from '../../../shared/style'
+import { walletButtonFocusMixin } from '../../../shared/style'
+import { Link } from 'react-router-dom'
 
 interface StyledButtonProps {
   buttonType: PanelButtonTypes
@@ -25,21 +26,9 @@ interface StyledButtonProps {
   minWidth?: string
 }
 
-// lowercase prop names to prevent warnings
-interface StyledLinkProps {
-  kind: PanelButtonTypes
-  disabled?: boolean
-  to?: string // for links & routes
-  addtopmargin?: boolean
-  maxHeight?: string
-  minWidth?: string
-}
-
-const StyledButtonCssMixin = (p: Partial<StyledButtonProps & StyledLinkProps>) => {
-  const margin = p?.addTopMargin || p?.addtopmargin
-  const buttonType = p?.buttonType || p?.kind
-
-  return css<StyledButtonProps | StyledLinkProps>`
+const StyledButtonCssMixin = (p: StyledButtonProps) => {
+  return css<StyledButtonProps>`
+    ${walletButtonFocusMixin}
     min-width: ${(p) => p?.minWidth || 'unset'};
     max-height: ${(p) => p?.maxHeight || 'unset'};
     display: flex;
@@ -49,34 +38,52 @@ const StyledButtonCssMixin = (p: Partial<StyledButtonProps & StyledLinkProps>) =
     border-radius: 40px;
     padding: 10px 22px;
     outline: none;
-    margin-top: ${(p) => margin ? '8px' : '0px'};
+    margin-top: ${(p) => p?.addTopMargin ? '8px' : '0px'};
+
     background-color: ${(p) =>
-      p.disabled ? p.theme.color.disabled
-        : buttonType === 'primary' ||
-          buttonType === 'confirm' ||
-          buttonType === 'sign' ? p.theme.palette.blurple500
-          : buttonType === 'danger' ? p.theme.color.errorBorder
-            : 'transparent'};
+      p.disabled
+        ? p.theme.color.disabled
+        : p.buttonType === 'primary' ||
+          p.buttonType === 'confirm' ||
+          p.buttonType === 'sign'
+            ? p.theme.palette.blurple500
+            : p.buttonType === 'danger'
+              ? p.theme.color.errorBorder
+              : 'transparent'
+    };
+
     border: ${(p) =>
-      buttonType === 'secondary' ||
-        buttonType === 'reject' ? `1px solid ${p.theme.color.interactive08}`
-        : 'none'};
+      p.buttonType === 'secondary' ||
+      p.buttonType === 'reject'
+        ? `1px solid ${p.theme.color.interactive08}`
+        : 'none'
+    };
+
     margin-right: ${(p) =>
-      buttonType === 'primary' ||
-        buttonType === 'confirm' ||
-        buttonType === 'sign' ? '0px' : '8px'};
+      p.buttonType === 'primary' ||
+      p.buttonType === 'confirm' ||
+      p.buttonType === 'sign'
+        ? '0px'
+        : '8px'
+    };
+
     pointer-events: ${(p) => p.disabled ? 'none' : 'auto'};
 
     text-decoration: none;
   `
 }
 
-export const StyledButton = styled(WalletButton)<StyledButtonProps>`
+export const StyledButton = styled.button<StyledButtonProps>`
   ${(p) => StyledButtonCssMixin(p)}
 `
 
-export const StyledLink = styled(WalletButtonLink)<StyledLinkProps>`
-  ${StyledButtonCssMixin}
+export const StyledLink = styled(Link).withConfig<StyledButtonProps>({
+  shouldForwardProp: (prop) => {
+    // prevents reactDOM errors (Link does not support these props)
+    return prop !== 'minWidth' && prop !== 'maxHeight' && prop !== 'buttonType'
+  }
+})`
+  ${(p) => StyledButtonCssMixin(p)}
 `
 
 export const ButtonText = styled.span<{
@@ -87,8 +94,10 @@ export const ButtonText = styled.span<{
   line-height: 20px;
   color: ${(p) =>
     p.buttonType === 'secondary' ||
-      p.buttonType === 'reject' ? p.theme.color.interactive07
-      : p.theme.palette.white};
+    p.buttonType === 'reject'
+      ? p.theme.color.interactive07
+      : p.theme.palette.white
+  };
 `
 
 export const RejectIcon = styled.div`
