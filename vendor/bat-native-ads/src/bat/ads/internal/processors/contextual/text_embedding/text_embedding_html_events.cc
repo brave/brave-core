@@ -9,7 +9,6 @@
 #include <iostream>
 
 #include "base/time/time.h"
-#include "bat/ads/internal/processors/contextual/text_embedding/text_embedding_info.h"
 #include "bat/ads/internal/processors/contextual/text_embedding/text_embedding_html_event_info.h"
 #include "bat/ads/internal/processors/contextual/text_embedding/text_embedding_html_events_database_table.h"
 #include "bat/ads/internal/ads_client_helper.h"
@@ -18,22 +17,16 @@
 
 namespace ads {
 
-void LogTextEmbeddingHTMLEvent(const TextEmbeddingInfo& text_embedding_info, TextEmbeddingHTMLEventCallback callback) {
-  TextEmbeddingEventInfo text_embedding_html_event;
-  text_embedding_html_event.timestamp = base::Time::Now();
-  text_embedding_html_event.version = text_embedding_info.version;
-  text_embedding_html_event.locale = text_embedding_info.locale;
-  text_embedding_html_event.embedding = text_embedding_info.embedding;
-
-  LogTextEmbeddingHTMLEvent(text_embedding_html_event, callback);
-}
-
-void LogTextEmbeddingHTMLEvent(const TextEmbeddingEventInfo& text_embedding_html_event, TextEmbeddingHTMLEventCallback callback) {
-  // RecordAdEvent(text_embedding_html_event);
+void LogTextEmbeddingHTMLEvent(const std::string embedding_formatted, TextEmbeddingHTMLEventCallback callback) {
+  TextEmbeddingEventInfo text_embedding_event_info;
+  text_embedding_event_info.timestamp = base::Time::Now();
+  text_embedding_event_info.version = "";
+  text_embedding_event_info.locale = "";
+  text_embedding_event_info.embedding = embedding_formatted;
 
   database::table::TextEmbeddingHTMLEvents database_table;
   database_table.LogEvent(
-      text_embedding_html_event, [callback](const bool success) { callback(success); });
+      text_embedding_event_info, [callback](const bool success) { callback(success); });
 }
 
 void PurgeStaleTextEmbeddingHTMLEvents(TextEmbeddingHTMLEventCallback callback) {

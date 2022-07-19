@@ -1006,8 +1006,6 @@ source_set("ads") {
     "src/bat/ads/internal/processors/behavioral/purchase_intent/purchase_intent_signal_info.h",
     "src/bat/ads/internal/processors/contextual/text_classification/text_classification_processor.cc",
     "src/bat/ads/internal/processors/contextual/text_classification/text_classification_processor.h",
-    "src/bat/ads/internal/processors/contextual/text_embedding/text_embedding_info.cc",
-    "src/bat/ads/internal/processors/contextual/text_embedding/text_embedding_info.h",
     "src/bat/ads/internal/processors/contextual/text_embedding/text_embedding_processor.cc",
     "src/bat/ads/internal/processors/contextual/text_embedding/text_embedding_processor.h",
     "src/bat/ads/internal/processors/contextual/text_embedding/text_embedding_html_events.cc",

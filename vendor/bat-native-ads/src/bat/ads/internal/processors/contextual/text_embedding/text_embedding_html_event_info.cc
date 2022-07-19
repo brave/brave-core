@@ -8,11 +8,8 @@
 namespace ads {
 
 TextEmbeddingEventInfo::TextEmbeddingEventInfo() = default;
-
 TextEmbeddingEventInfo::TextEmbeddingEventInfo(const TextEmbeddingEventInfo& info) = default;
-
 TextEmbeddingEventInfo& TextEmbeddingEventInfo::operator=(const TextEmbeddingEventInfo& info) = default;
-
 TextEmbeddingEventInfo::~TextEmbeddingEventInfo() = default;
 
 }  // namespace ads

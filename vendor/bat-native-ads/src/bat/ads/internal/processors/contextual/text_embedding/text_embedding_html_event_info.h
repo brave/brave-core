@@ -8,6 +8,7 @@
 
 #include <string>
 
+#include "url/gurl.h"
 #include "base/time/time.h"
 
 namespace ads {

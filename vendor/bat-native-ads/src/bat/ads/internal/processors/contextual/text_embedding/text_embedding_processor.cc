@@ -3,7 +3,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "bat/ads/internal/processors/contextual/text_embedding/text_embedding_info.h"
 #include "bat/ads/internal/processors/contextual/text_embedding/text_embedding_processor.h"
 #include "bat/ads/internal/processors/contextual/text_embedding/text_embedding_html_events.h"
 
@@ -65,16 +64,13 @@ void TextEmbedding::Process(const std::string& text) {
     return;
   }
 
+  const std::string embedding_formatted = text_embedding.GetVectorAsString();
+
   std::cout << "\n\n";
-  std::cout << text_embedding.GetVectorAsString();
+  std::cout << embedding_formatted;
   std::cout << "\n\n";
 
-  TextEmbeddingInfo text_embedding_info;
-  text_embedding_info.version = "";
-  text_embedding_info.locale = "";
-  text_embedding_info.embedding = text_embedding.GetVectorAsString();
-
-  LogTextEmbeddingHTMLEvent(text_embedding_info, [](const bool success) {
+  LogTextEmbeddingHTMLEvent(embedding_formatted, [](const bool success) {
     if (!success) {
       BLOG(1, "Failed to text embedding html event");
       return;

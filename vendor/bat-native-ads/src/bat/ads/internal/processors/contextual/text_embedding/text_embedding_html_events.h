@@ -16,17 +16,12 @@ class Time;
 
 namespace ads {
 
-struct TextEmbeddingInfo;
 struct TextEmbeddingEventInfo;
 
 using TextEmbeddingHTMLEventCallback = std::function<void(const bool)>;
 
-void LogTextEmbeddingHTMLEvent(const TextEmbeddingInfo& text_embedding_info, TextEmbeddingHTMLEventCallback callback);
-
-void LogTextEmbeddingHTMLEvent(const TextEmbeddingEventInfo& text_embedding_html_event, TextEmbeddingHTMLEventCallback callback);
-
+void LogTextEmbeddingHTMLEvent(const std::string embedding_formatted, TextEmbeddingHTMLEventCallback callback);
 void PurgeStaleTextEmbeddingHTMLEvents(TextEmbeddingHTMLEventCallback callback);
-
 void GetTextEmbeddingEventsFromDatabase();
 
 }  // namespace ads
