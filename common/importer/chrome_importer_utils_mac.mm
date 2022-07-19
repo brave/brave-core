@@ -37,5 +37,5 @@ base::FilePath GetEdgeUserDataFolder() {
 
 base::FilePath GetOperaUserDataFolder() {
   base::FilePath result = base::mac::GetUserLibraryPath();
-  return result.Append("Application Support/Opera");
+  return result.Append("Application Support/com.operasoftware.Opera");
 }
