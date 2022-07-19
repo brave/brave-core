@@ -381,7 +381,7 @@ provideStrings({
   braveWalletBuyWithSardine: 'Buy with Sardine',
 
   // Fund Wallet Screen
-  braveWalletFundWalletTitle: 'Complete your $1 purchase through one of our partners',
+  braveWalletFundWalletTitle: 'To finish your $1 purchase, select one of our partners',
   braveWalletFundWalletDescription: 'On completion, your funds will be transfered to your Brave Wallet',
 
   // Deposit Funds Screen
