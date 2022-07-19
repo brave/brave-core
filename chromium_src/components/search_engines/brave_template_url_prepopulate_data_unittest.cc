@@ -185,6 +185,18 @@ TEST_F(BraveTemplateURLPrepopulateDataTest, DefaultSearchProvidersForIreland) {
   CheckForCountry('I', 'E', "Google");
 }
 
+TEST_F(BraveTemplateURLPrepopulateDataTest, DefaultSearchProvidersForAustria) {
+  CheckForCountry('A', 'T', "Brave");
+}
+
+TEST_F(BraveTemplateURLPrepopulateDataTest, DefaultSearchProvidersForSpain) {
+  CheckForCountry('E', 'S', "Brave");
+}
+
+TEST_F(BraveTemplateURLPrepopulateDataTest, DefaultSearchProvidersForMexico) {
+  CheckForCountry('M', 'X', "Brave");
+}
+
 TEST_F(BraveTemplateURLPrepopulateDataTest,
        DefaultSearchProvidersForRepublicOfArmenia) {
   CheckForCountry('A', 'M', "Yandex");
