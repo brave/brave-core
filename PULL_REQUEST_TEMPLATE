@@ -9,6 +9,10 @@ This pull request fixes #<number>
 
 - [ ] *Unit Tests* are updated to cover new or changed functionality
 - [ ] User-facing strings use `NSLocalizableString()`
+- [ ] New or updated UI has been tested across:
+  - [ ] Light & dark mode
+  - [ ] Different size classes (iPhone, landscape, iPad)
+  - [ ] Different dynamic type sizes
 
 ## Test Plan:
 <!-- Any useful notes explaining how best to test and verify. -->
