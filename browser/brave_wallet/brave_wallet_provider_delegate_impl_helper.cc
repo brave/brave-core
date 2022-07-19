@@ -14,7 +14,8 @@
 
 namespace {
 
-base::OnceCallback<void()> g_NewSetupNeededForTestingCallback;
+base::OnceCallback<void()> g_new_setup_needed_callback_for_testing;
+base::OnceCallback<void()> g_account_creation_callback_for_testing;
 
 }  // namespace
 
@@ -36,8 +37,20 @@ void ShowWalletOnboarding(content::WebContents* web_contents) {
 
   if (browser) {
     brave::ShowBraveWalletOnboarding(browser);
-  } else if (g_NewSetupNeededForTestingCallback) {
-    std::move(g_NewSetupNeededForTestingCallback).Run();
+  } else if (g_new_setup_needed_callback_for_testing) {
+    std::move(g_new_setup_needed_callback_for_testing).Run();
+  }
+}
+
+void ShowAccountCreation(content::WebContents* web_contents,
+                         const std::string& keyring_id) {
+  Browser* browser =
+      web_contents ? chrome::FindBrowserWithWebContents(web_contents) : nullptr;
+
+  if (browser) {
+    brave::ShowBraveWalletAccountCreation(browser, keyring_id);
+  } else if (g_account_creation_callback_for_testing) {
+    std::move(g_account_creation_callback_for_testing).Run();
   }
 }
 
@@ -51,7 +64,12 @@ bool IsWeb3NotificationAllowed() {
 
 void SetCallbackForNewSetupNeededForTesting(
     base::OnceCallback<void()> callback) {
-  g_NewSetupNeededForTestingCallback = std::move(callback);
+  g_new_setup_needed_callback_for_testing = std::move(callback);
+}
+
+void SetCallbackForAccountCreationForTesting(
+    base::OnceCallback<void()> callback) {
+  g_account_creation_callback_for_testing = std::move(callback);
 }
 
 }  // namespace brave_wallet

@@ -6,6 +6,8 @@
 #ifndef BRAVE_BROWSER_UI_BRAVE_PAGES_H_
 #define BRAVE_BROWSER_UI_BRAVE_PAGES_H_
 
+#include <string>
+
 #include "brave/components/ipfs/buildflags/buildflags.h"
 
 class Browser;
@@ -17,6 +19,8 @@ void ShowWebcompatReporter(Browser* browser);
 void ShowBraveRewards(Browser* browser);
 void ShowBraveWallet(Browser* browser);
 void ShowBraveWalletOnboarding(Browser* browser);
+void ShowBraveWalletAccountCreation(Browser* browser,
+                                    const std::string& keyring_id);
 void ShowExtensionSettings(Browser* browser);
 void ShowWalletSettings(Browser* browser);
 void ShowSync(Browser* browser);

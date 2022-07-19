@@ -35,6 +35,7 @@ class BraveWalletProviderDelegate {
   virtual void ShowPanel() = 0;
   virtual void WalletInteractionDetected() = 0;
   virtual void ShowWalletOnboarding() = 0;
+  virtual void ShowAccountCreation(mojom::CoinType type) = 0;
   virtual url::Origin GetOrigin() const = 0;
   virtual void RequestPermissions(mojom::CoinType type,
                                   const std::vector<std::string>& accounts,

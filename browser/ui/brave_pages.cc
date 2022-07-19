@@ -5,6 +5,7 @@
 
 #include "brave/browser/ui/brave_pages.h"
 
+#include "base/strings/strcat.h"
 #include "brave/browser/webcompat_reporter/webcompat_reporter_dialog.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
@@ -56,6 +57,14 @@ void ShowBraveWallet(Browser* browser) {
 void ShowBraveWalletOnboarding(Browser* browser) {
   NavigateParams params(GetSingletonTabNavigateParams(
       browser, GURL(kBraveUIWalletOnboardingURL)));
+  ShowSingletonTabOverwritingNTP(browser, &params);
+}
+
+void ShowBraveWalletAccountCreation(Browser* browser,
+                                    const std::string& keyring_id) {
+  NavigateParams params(GetSingletonTabNavigateParams(
+      browser,
+      GURL(base::StrCat({kBraveUIWalletAccountCreationURL, keyring_id}))));
   ShowSingletonTabOverwritingNTP(browser, &params);
 }
 

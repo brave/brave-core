@@ -11,6 +11,7 @@
 #include "base/test/bind.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/brave_wallet/brave_wallet_provider_delegate_impl.h"
+#include "brave/browser/brave_wallet/brave_wallet_provider_delegate_impl_helper.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
 #include "brave/browser/brave_wallet/brave_wallet_tab_helper.h"
 #include "brave/browser/brave_wallet/keyring_service_factory.h"
@@ -553,6 +554,32 @@ TEST_F(SolanaProviderImplUnitTest, EagerlyConnect) {
   EXPECT_EQ(error, mojom::SolanaProviderError::kSuccess);
   EXPECT_TRUE(error_message.empty());
   EXPECT_TRUE(IsConnected());
+}
+
+TEST_F(SolanaProviderImplUnitTest, ConnectWithNoSolanaAccount) {
+  bool account_creation_callback_called = false;
+  SetCallbackForAccountCreationForTesting(base::BindLambdaForTesting(
+      [&]() { account_creation_callback_called = true; }));
+  Navigate(GURL("https://brave.com"));
+
+  mojom::SolanaProviderError error;
+  std::string error_message;
+  // No wallet setup
+  std::string account = Connect(absl::nullopt, &error, &error_message);
+  EXPECT_TRUE(account.empty());
+  EXPECT_EQ(error, mojom::SolanaProviderError::kInternalError);
+  EXPECT_FALSE(IsConnected());
+  EXPECT_TRUE(account_creation_callback_called);
+
+  account_creation_callback_called = false;
+  SetCallbackForAccountCreationForTesting(base::BindLambdaForTesting(
+      [&]() { account_creation_callback_called = true; }));
+  // No solana account
+  account = Connect(absl::nullopt, &error, &error_message);
+  EXPECT_TRUE(account.empty());
+  EXPECT_EQ(error, mojom::SolanaProviderError::kInternalError);
+  EXPECT_FALSE(IsConnected());
+  EXPECT_TRUE(account_creation_callback_called);
 }
 
 TEST_F(SolanaProviderImplUnitTest, Disconnect) {
