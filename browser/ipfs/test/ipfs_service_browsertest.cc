@@ -3,16 +3,20 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include <string>
+
 #include "base/base64.h"
 #include "base/memory/raw_ptr.h"
 #include "base/path_service.h"
 #include "base/run_loop.h"
 #include "base/strings/strcat.h"
 #include "base/strings/stringprintf.h"
+#include "base/test/bind.h"
 #include "base/test/mock_callback.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/ipfs/ipfs_blob_context_getter_factory.h"
+#include "brave/browser/ipfs/ipfs_dns_resolver_impl.h"
 #include "brave/browser/ipfs/ipfs_service_factory.h"
 #include "brave/components/constants/brave_paths.h"
 #include "brave/components/ipfs/blob_context_getter_factory.h"
@@ -23,16 +27,23 @@
 #include "brave/components/ipfs/ipfs_service.h"
 #include "brave/components/ipfs/ipfs_utils.h"
 #include "brave/components/ipfs/pref_names.h"
+#include "chrome/browser/browser_process.h"
+#include "chrome/browser/net/secure_dns_config.h"
+#include "chrome/browser/net/stub_resolver_config_reader.h"
+#include "chrome/browser/net/system_network_context_manager.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/common/channel_info.h"
+#include "chrome/common/pref_names.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/prefs/pref_service.h"
+#include "content/public/browser/network_service_instance.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/content_mock_cert_verifier.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "net/dns/mock_host_resolver.h"
+#include "net/dns/public/secure_dns_mode.h"
 #include "net/test/embedded_test_server/http_request.h"
 #include "net/test/embedded_test_server/http_response.h"
 #include "net/test/url_request/url_request_failed_job.h"
@@ -64,18 +75,25 @@ class FakeIpfsService : public ipfs::IpfsService {
                           std::move(blob_getter_factory),
                           updater,
                           user_dir,
-                          channel) {}
+                          channel,
+                          std::make_unique<ipfs::IpfsDnsResolverImpl>()) {}
   ~FakeIpfsService() override {}
 
   void LaunchDaemon(BoolCallback callback) override {
+    launched_ = true;
     if (callback)
       std::move(callback).Run(launch_result_);
   }
 
+  void RestartDaemon() override { launched_ = true; }
+
   void SetLaunchResult(bool result) { launch_result_ = result; }
+  void SetLaunched(bool launched) { launched_ = launched; }
+  bool WasLaunched() { return launched_; }
 
  private:
   bool launch_result_ = true;
+  bool launched_ = false;
 };
 
 }  // namespace
@@ -1244,6 +1262,60 @@ IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest, ValidateGatewayURL) {
       base::BindOnce(&IpfsServiceBrowserTest::OnValidateGatewayFail,
                      base::Unretained(this)));
   WaitForRequest();
+}
+
+IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest, DNSResolversConfig) {
+  // Update prefs to enable Secure DNS in secure mode.
+  PrefService* local_state = g_browser_process->local_state();
+
+  StubResolverConfigReader* config_reader =
+      SystemNetworkContextManager::GetStubResolverConfigReader();
+  config_reader->OverrideParentalControlsForTesting(
+      /*parental_controls_override=*/false);
+  content::FlushNetworkServiceInstanceForTesting();
+
+  {
+    local_state->SetString(prefs::kDnsOverHttpsMode,
+                           SecureDnsConfig::kModeSecure);
+    local_state->SetString(prefs::kDnsOverHttpsTemplates,
+                           "https://bar.test/dns-query{?dns}");
+    config_reader->UpdateNetworkService(/*record_metrics=*/false);
+    base::RunLoop run_loop;
+    fake_ipfs_service()->StartDaemonAndLaunch(
+        base::BindLambdaForTesting([&]() { run_loop.Quit(); }));
+    run_loop.Run();
+    ASSERT_EQ(
+        fake_ipfs_service()->ipfs_dns_resolver_->GetFirstDnsOverHttpsServer(),
+        "https://bar.test/dns-query{?dns}");
+  }
+
+  {
+    base::RunLoop run_loop;
+    fake_ipfs_service()->SetLaunched(false);
+    local_state->SetString(prefs::kDnsOverHttpsTemplates,
+                           "https://foo.test/dns-query{?dns}");
+    config_reader->UpdateNetworkService(/*record_metrics=*/false);
+    while (!fake_ipfs_service()->WasLaunched()) {
+      run_loop.RunUntilIdle();
+    }
+    ASSERT_EQ(
+        fake_ipfs_service()->ipfs_dns_resolver_->GetFirstDnsOverHttpsServer(),
+        "https://foo.test/dns-query{?dns}");
+  }
+
+  {
+    base::RunLoop run_loop;
+    fake_ipfs_service()->SetLaunched(false);
+    local_state->SetString(prefs::kDnsOverHttpsMode, SecureDnsConfig::kModeOff);
+    local_state->SetString(prefs::kDnsOverHttpsTemplates, "");
+    config_reader->UpdateNetworkService(/*record_metrics=*/false);
+    while (!fake_ipfs_service()->WasLaunched()) {
+      run_loop.RunUntilIdle();
+    }
+    ASSERT_EQ(
+        fake_ipfs_service()->ipfs_dns_resolver_->GetFirstDnsOverHttpsServer(),
+        absl::nullopt);
+  }
 }
 
 }  // namespace ipfs

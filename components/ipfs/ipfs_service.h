@@ -23,6 +23,7 @@
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/ipfs/import/imported_data.h"
 #include "brave/components/ipfs/ipfs_constants.h"
+#include "brave/components/ipfs/ipfs_dns_resolver.h"
 #include "brave/components/ipfs/ipfs_p3a.h"
 #include "brave/components/ipfs/node_info.h"
 #include "brave/components/ipfs/repo_stats.h"
@@ -30,6 +31,7 @@
 #include "components/keyed_service/core/keyed_service.h"
 #include "components/version_info/channel.h"
 #include "mojo/public/cpp/bindings/remote.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "url/gurl.h"
 
 namespace base {
@@ -62,7 +64,8 @@ class IpfsService : public KeyedService,
               BlobContextGetterFactoryPtr blob_context_getter_factory,
               ipfs::BraveIpfsClientUpdater* ipfs_client_updater,
               const base::FilePath& user_data_dir,
-              version_info::Channel channel);
+              version_info::Channel channel,
+              std::unique_ptr<ipfs::IpfsDnsResolver> ipfs_dns_resover);
   IpfsService(const IpfsService&) = delete;
   IpfsService& operator=(const IpfsService&) = delete;
   ~IpfsService() override;
@@ -101,7 +104,7 @@ class IpfsService : public KeyedService,
   // KeyedService
   void Shutdown() override;
 
-  void RestartDaemon();
+  virtual void RestartDaemon();
   void RotateKey(const std::string& oldkey, BoolCallback callback);
   void ValidateGateway(const GURL& url, BoolCallback callback);
 
@@ -164,6 +167,7 @@ class IpfsService : public KeyedService,
                            UpdaterRegistrationSuccessLaunch);
   FRIEND_TEST_ALL_PREFIXES(IpfsServiceBrowserTest,
                            UpdaterRegistrationServiceNotLaunched);
+  FRIEND_TEST_ALL_PREFIXES(IpfsServiceBrowserTest, DNSResolversConfig);
   // BraveIpfsClientUpdater::Observer
   void OnExecutableReady(const base::FilePath& path) override;
   void OnInstallationEvent(ComponentUpdaterEvents event) override;
@@ -207,6 +211,8 @@ class IpfsService : public KeyedService,
   void OnPreWarmComplete(SimpleURLLoaderList::iterator iter,
                          std::unique_ptr<std::string> response_body);
   std::string GetStorageSize();
+  void OnDnsConfigChanged(absl::optional<std::string> dns_server);
+
   // The remote to the ipfs service running on an utility process. The browser
   // will not launch a new ipfs service process if this remote is already
   // bound.
@@ -236,6 +242,8 @@ class IpfsService : public KeyedService,
   base::FilePath user_data_dir_;
   raw_ptr<BraveIpfsClientUpdater> ipfs_client_updater_ = nullptr;
   version_info::Channel channel_;
+  std::unique_ptr<ipfs::IpfsDnsResolver> ipfs_dns_resolver_;
+  base::CallbackListSubscription ipfs_dns_resolver_subscription_;
 #if BUILDFLAG(ENABLE_IPFS_LOCAL_NODE)
   std::unordered_map<size_t, std::unique_ptr<IpfsImportWorkerBase>> importers_;
   std::unique_ptr<IpnsKeysManager> ipns_keys_manager_;
