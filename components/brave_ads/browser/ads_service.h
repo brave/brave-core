@@ -157,6 +157,9 @@ class AdsService : public KeyedService {
       const ads::mojom::SearchResultAdEventType event_type,
       TriggerSearchResultAdEventCallback callback) = 0;
 
+  // Called to prefetch the next new tab page ad.
+  virtual void PrefetchNewTabPageAd() = 0;
+
   virtual absl::optional<ads::NewTabPageAdInfo> GetPrefetchedNewTabPageAd() = 0;
 
   virtual void PurgeOrphanedAdEventsForType(

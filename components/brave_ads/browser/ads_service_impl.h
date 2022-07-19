@@ -279,7 +279,7 @@ class AdsServiceImpl : public AdsService,
 
   void RegisterResourceComponentsForLocale(const std::string& locale);
 
-  void PrefetchNewTabPageAd();
+  void PrefetchNewTabPageAd() override;
   void OnPrefetchNewTabPageAd(bool success, const std::string& json);
 
   void OnURLRequestStarted(
@@ -519,7 +519,8 @@ class AdsServiceImpl : public AdsService,
   std::unique_ptr<ads::Database> database_;
 
   absl::optional<ads::NewTabPageAdInfo> prefetched_new_tab_page_ad_info_;
-  absl::optional<base::Time> purge_orphaned_new_tab_page_ad_events_time_;
+  bool need_purge_orphaned_new_tab_page_ad_events_ = false;
+  bool prefetch_new_tab_page_ad_on_first_run_ = false;
 
   ui::IdleState last_idle_state_;
   int last_idle_time_;

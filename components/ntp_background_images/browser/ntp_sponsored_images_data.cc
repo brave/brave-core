@@ -347,7 +347,7 @@ base::Value NTPSponsoredImagesData::GetBackgroundByAdInfo(
     }
   }
   if (campaign_index == campaigns.size()) {
-    VLOG(0) << "Ad campaign wasn't found in NTP sposored images data: "
+    VLOG(0) << "The ad campaign wasn't found in the NTP sponsored images data: "
             << ad_info.campaign_id;
     return base::Value();
   }
