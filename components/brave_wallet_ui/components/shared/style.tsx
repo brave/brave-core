@@ -47,7 +47,6 @@ export const LinkText = styled.a`
   color: ${(p) => p.theme.color.interactive05};
   margin: 0px;
   cursor: pointer;
-  vertical-align: middle;
   display: inline-flex;
   flex-direction: row;
   gap: 8px;
