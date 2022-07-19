@@ -59,13 +59,19 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserBrowserTest, OpenNewTabWhenTabStripIsEmpty) {
   // Expecting a new tab is opened.
   EXPECT_EQ(new_browser->GetNewTabURL(),
             tab_strip->GetWebContentsAt(0)->GetURL().possibly_invalid_spec());
+  // No reentrancy for Ctrl+W
+  tab_strip->CloseSelectedTabs();
+  base::RunLoop().RunUntilIdle();
+  // Expecting a new tab is opened.
+  EXPECT_EQ(new_browser->GetNewTabURL(),
+            tab_strip->GetWebContentsAt(0)->GetURL().possibly_invalid_spec());
+
   // Add a couple of more tabs.
   chrome::AddTabAt(new_browser, new_browser->GetNewTabURL(), -1, true);
   chrome::AddTabAt(new_browser, new_browser->GetNewTabURL(), -1, true);
   ASSERT_EQ(3, tab_strip->count());
   EXPECT_EQ(chrome::GetTotalBrowserCount(), 2u);
   // Close the browser window.
-  LOG(ERROR) << "WINDOW";
   new_browser->window()->Close();
   base::RunLoop().RunUntilIdle();
   EXPECT_EQ(chrome::GetTotalBrowserCount(), 1u);

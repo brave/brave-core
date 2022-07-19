@@ -77,7 +77,9 @@ void BraveBrowser::TabStripEmpty() {
     return;
   }
 
-  chrome::AddTabAt(this, GetNewTabURL(), -1, true);
+  base::SequencedTaskRunnerHandle::Get()->PostTask(
+      FROM_HERE, base::BindOnce(&chrome::AddTabAt, this, GetNewTabURL(), -1,
+                                true, absl::nullopt));
 }
 
 bool BraveBrowser::ShouldDisplayFavicon(
