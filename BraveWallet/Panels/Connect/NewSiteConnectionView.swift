@@ -84,7 +84,7 @@ public struct NewSiteConnectionView: View {
         }
         .listRowBackground(Color(.braveGroupedBackground))
         Section {
-          ForEach(keyringStore.keyring.accountInfos) { account in
+          ForEach(keyringStore.defaultKeyring.accountInfos) { account in
             Button {
               if selectedAccounts.contains(account.id) {
                 selectedAccounts.remove(account.id)
@@ -154,12 +154,20 @@ public struct NewSiteConnectionView: View {
     }
     .navigationViewStyle(.stack)
     .onAppear {
-      selectedAccounts.insert(keyringStore.selectedAccount.id)
+      if keyringStore.selectedAccount.coin == .eth {
+        selectedAccounts.insert(keyringStore.selectedAccount.id)
+      } else { // fetch selected account for `.eth` coin type
+        Task { @MainActor in
+          if let selectedEthAccount = await keyringStore.selectedAccount(for: .eth) {
+            selectedAccounts.insert(selectedEthAccount.id)
+          }
+        }
+      }
     }
   }
   
   private var accountsAddressesToConfirm: String {
-    keyringStore.keyring.accountInfos
+    keyringStore.defaultKeyring.accountInfos
       .filter { selectedAccounts.contains($0.id) }
       .map(\.address.truncatedAddress)
       .joined(separator: ", ")
@@ -193,7 +201,7 @@ public struct NewSiteConnectionView: View {
       .listRowBackground(Color(.braveGroupedBackground))
       Section {
         Button {
-          let accounts = keyringStore.keyring.accountInfos
+          let accounts = keyringStore.defaultKeyring.accountInfos
             .filter { selectedAccounts.contains($0.id) }
             .map(\.address)
           onConnect(accounts)
@@ -218,8 +226,8 @@ struct NewSiteConnectionView_Previews: PreviewProvider {
       origin: .init(url: URL(string: "https://app.uniswap.org")!),
       keyringStore: {
         let store = KeyringStore.previewStoreWithWalletCreated
-        store.addPrimaryAccount("Account 2", completion: nil)
-        store.addPrimaryAccount("Account 3", completion: nil)
+        store.addPrimaryAccount("Account 2", coin: .eth, completion: nil)
+        store.addPrimaryAccount("Account 3", coin: .eth, completion: nil)
         return store
       }(),
       onConnect: { _ in },

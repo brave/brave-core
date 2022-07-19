@@ -348,3 +348,55 @@ class MockKeyringService: BraveWalletKeyringService {
   }
 
 }
+
+extension BraveWallet.AccountInfo {
+  static let mockEthAccount: BraveWallet.AccountInfo = .init(
+    address: "mock_eth_id",
+    name: "mock_eth_name",
+    isImported: false,
+    hardware: nil,
+    coin: .eth
+  )
+  
+  static let mockSolAccount: BraveWallet.AccountInfo = .init(
+    address: "mock_sol_id",
+    name: "mock_sol_name",
+    isImported: false,
+    hardware: nil,
+    coin: .sol
+  )
+  
+  static let mockFilAccount: BraveWallet.AccountInfo = .init(
+    address: "mock_fil_id",
+    name: "mock_fil_name",
+    isImported: false,
+    hardware: nil,
+    coin: .fil
+  )
+}
+
+extension BraveWallet.KeyringInfo {
+  static let mockDefaultKeyringInfo: BraveWallet.KeyringInfo = .init(
+    id: BraveWallet.DefaultKeyringId,
+    isKeyringCreated: true,
+    isLocked: false,
+    isBackedUp: false,
+    accountInfos: [.mockEthAccount]
+  )
+  
+  static let mockSolanaKeyringInfo: BraveWallet.KeyringInfo = .init(
+    id: BraveWallet.SolanaKeyringId,
+    isKeyringCreated: true,
+    isLocked: false,
+    isBackedUp: false,
+    accountInfos: [.mockSolAccount]
+  )
+  
+  static let mockFilecoinKeyringInfo: BraveWallet.KeyringInfo = .init(
+    id: BraveWallet.FilecoinKeyringId,
+    isKeyringCreated: true,
+    isLocked: false,
+    isBackedUp: false,
+    accountInfos: [.mockFilAccount]
+  )
+}

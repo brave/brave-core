@@ -25,7 +25,7 @@ struct AccountDetailsView: View {
   @Environment(\.presentationMode) @Binding private var presentationMode
 
   private func removeAccount() {
-    keyringStore.removeSecondaryAccount(forAddress: account.address)
+    keyringStore.removeSecondaryAccount(for: account)
   }
 
   private func renameAccountAndDismiss() {
@@ -171,7 +171,7 @@ struct AccountDetailsViewController_Previews: PreviewProvider {
   static var previews: some View {
     AccountDetailsView(
       keyringStore: .previewStoreWithWalletCreated,
-      account: KeyringStore.previewStoreWithWalletCreated.keyring.accountInfos.first!,
+      account: KeyringStore.previewStoreWithWalletCreated.defaultKeyring.accountInfos.first!,
       editMode: false
     )
     .previewColorSchemes()

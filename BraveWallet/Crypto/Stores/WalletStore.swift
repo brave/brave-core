@@ -30,7 +30,7 @@ public class WalletStore {
     txService: BraveWalletTxService,
     ethTxManagerProxy: BraveWalletEthTxManagerProxy
   ) {
-    self.keyringStore = .init(keyringService: keyringService, walletService: walletService)
+    self.keyringStore = .init(keyringService: keyringService, walletService: walletService, rpcService: rpcService)
     self.setUp(
       keyringService: keyringService,
       rpcService: rpcService,
@@ -53,7 +53,7 @@ public class WalletStore {
     txService: BraveWalletTxService,
     ethTxManagerProxy: BraveWalletEthTxManagerProxy
   ) {
-    self.cancellable = self.keyringStore.$keyring
+    self.cancellable = self.keyringStore.$defaultKeyring
       .map(\.isKeyringCreated)
       .removeDuplicates()
       .sink { [weak self] isDefaultKeyringCreated in

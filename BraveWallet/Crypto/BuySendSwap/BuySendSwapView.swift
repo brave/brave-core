@@ -18,7 +18,7 @@ struct BuySendSwapView: View {
   ) {
     self.network = network
     self.action = action
-    if network.isCustom {
+    if network.isCustom || network.coin != .eth {
       destinations = [BuySendSwapDestination(kind: .send)]
     } else {
       destinations = [

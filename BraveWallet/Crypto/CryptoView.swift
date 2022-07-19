@@ -42,7 +42,7 @@ public struct CryptoView: View {
   }
 
   private var visibleScreen: VisibleScreen {
-    let keyring = keyringStore.keyring
+    let keyring = keyringStore.defaultKeyring
     if !keyring.isKeyringCreated || keyringStore.isOnboardingVisible {
       return .onboarding
     }

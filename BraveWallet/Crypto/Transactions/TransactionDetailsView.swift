@@ -145,7 +145,7 @@ struct TransactionDetailsView: View {
   }
 
   private func namedAddress(for address: String) -> String {
-    NamedAddresses.name(for: address, accounts: keyringStore.keyring.accountInfos)
+    NamedAddresses.name(for: address, accounts: keyringStore.allAccounts)
   }
 
   private var title: String {

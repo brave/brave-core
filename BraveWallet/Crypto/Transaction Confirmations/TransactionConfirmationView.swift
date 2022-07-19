@@ -34,11 +34,11 @@ struct TransactionConfirmationView: View {
   @State private var viewMode: ViewMode = .transaction
 
   private var fromAccountName: String {
-    NamedAddresses.name(for: confirmationStore.activeTransaction.fromAddress, accounts: keyringStore.keyring.accountInfos)
+    NamedAddresses.name(for: confirmationStore.activeTransaction.fromAddress, accounts: keyringStore.allAccounts)
   }
 
   private var toAccountName: String {
-    return NamedAddresses.name(for: confirmationStore.activeTransaction.ethTxToAddress, accounts: keyringStore.keyring.accountInfos)
+    return NamedAddresses.name(for: confirmationStore.activeTransaction.ethTxToAddress, accounts: keyringStore.allAccounts)
   }
 
   private var transactionType: String {

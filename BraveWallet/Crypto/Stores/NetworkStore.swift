@@ -189,12 +189,6 @@ extension NetworkStore: BraveWalletKeyringServiceObserver {
   }
   
   public func keyringCreated(_ keyringId: String) {
-    Task { @MainActor in
-      // select the newly created account
-      let keyring = await keyringService.keyringInfo(keyringId)
-      guard let newAccount = keyring.accountInfos.first else { return }
-      await keyringService.setSelectedAccount(newAccount.address, coin: newAccount.coin)
-    }
   }
   
   public func keyringRestored(_ keyringId: String) {
