@@ -4,7 +4,7 @@
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
 import { FC } from 'react'
-import styled, { CSSProperties } from 'styled-components'
+import styled, { css, CSSProperties } from 'styled-components'
 import { Link } from 'react-router-dom'
 
 // types
@@ -68,6 +68,15 @@ interface FlexProps {
   gap?: CSSProperties['gap']
 }
 
+// Mixins
+export const walletButtonFocusMixin = css`
+  &:focus-visible {
+    outline-style: solid;
+    outline-color: ${p => p.theme.palette.blurple300};
+    outline-width: 2px;
+  }
+`
+
 // Containers
 export const Row = styled.div<FlexProps & {
   maxWidth?: CSSProperties['maxWidth']
@@ -127,15 +136,9 @@ export const StatusBubble = styled.div<{ status: BraveWallet.TransactionStatus }
 `
 
 // Buttons
-export const WalletButton = styled.button<{
-  isDraggedOver?: boolean
-}>`
-  &:focus-visible {
-    outline-style: solid;
-    outline-color: ${p => p.theme.palette.blurple300};
-    outline-width: 2px;
-  }
- `
+export const WalletButton = styled.button`
+  ${walletButtonFocusMixin}
+`
 
 export const WalletLink = styled(Link)`
   font-family: 'Poppins';
@@ -159,15 +162,9 @@ export const WalletLink = styled(Link)`
   }
 `
 
-export const WalletButtonLink = styled(Link)<{
-  isDraggedOver?: boolean
-}>`
-  &:focus-visible {
-    outline-style: solid;
-    outline-color: ${p => p.theme.palette.blurple300};
-    outline-width: 2px;
-  }
- `
+export const WalletButtonLink = styled(Link)`
+  ${walletButtonFocusMixin}
+`
 
 export const ToggleVisibilityButton = styled(WalletButton)<{
   isVisible: boolean

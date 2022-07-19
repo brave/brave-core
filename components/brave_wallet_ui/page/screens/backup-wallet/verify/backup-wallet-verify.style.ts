@@ -102,7 +102,9 @@ export const RecoveryBubbleText = styled.span<{
   color: ${(p) => p.isSelected ? p.theme.color.background02 : p.theme.color.text01};
 `
 
-export const SelectedBubble = styled(WalletButton)`
+export const SelectedBubble = styled(WalletButton)<{
+  isDraggedOver: boolean
+}>`
   cursor: pointer;
   outline: none;
   background: none;

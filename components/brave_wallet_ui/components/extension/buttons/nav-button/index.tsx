@@ -75,7 +75,7 @@ export const NavButton: React.FC<Props> = ({
   return url ? (
     <StyledLink
       disabled={disabled}
-      kind={buttonType}
+      buttonType={buttonType}
       onClick={onSubmit}
       to={url || ''}
       maxHeight={maxHeight}
