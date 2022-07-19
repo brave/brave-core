@@ -18,7 +18,7 @@ source_set("android") {
     "//brave/components/brave_vpn",
     "//brave/components/brave_vpn/buildflags",
     "//brave/components/brave_vpn/mojom",
-    "//content/public/renderer",
+    "//brave/components/skus/renderer",
     "//content/public/renderer",
     "//gin",
     "//mojo/public/cpp/bindings",

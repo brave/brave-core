@@ -9,8 +9,8 @@
 #include <vector>
 
 #include "base/feature_list.h"
-#include "base/no_destructor.h"
 #include "brave/components/skus/common/features.h"
+#include "brave/components/skus/renderer/skus_utils.h"
 #include "content/public/renderer/render_frame.h"
 #include "third_party/blink/public/platform/web_security_origin.h"
 #include "third_party/blink/public/web/web_local_frame.h"
@@ -44,23 +44,8 @@ void SkusRenderFrameObserver::DidCreateScriptContext(
 
 bool SkusRenderFrameObserver::IsAllowed() {
   DCHECK(base::FeatureList::IsEnabled(skus::features::kSkusFeature));
-  // NOTE: please open a security review when appending to this list.
-  static base::NoDestructor<std::vector<blink::WebSecurityOrigin>> safe_origins{
-      {{blink::WebSecurityOrigin::Create(GURL("https://account.brave.com"))},
-       {blink::WebSecurityOrigin::Create(
-           GURL("https://account.bravesoftware.com"))},
-       {blink::WebSecurityOrigin::Create(
-           GURL("https://account.brave.software"))}}};
 
-  const blink::WebSecurityOrigin& visited_origin =
-      render_frame()->GetWebFrame()->GetSecurityOrigin();
-  for (const blink::WebSecurityOrigin& safe_origin : *safe_origins) {
-    if (safe_origin.IsSameOriginWith(visited_origin)) {
-      return true;
-    }
-  }
-
-  return false;
+  return skus::IsSafeOrigin(render_frame()->GetWebFrame()->GetSecurityOrigin());
 }
 
 void SkusRenderFrameObserver::OnDestruct() {
