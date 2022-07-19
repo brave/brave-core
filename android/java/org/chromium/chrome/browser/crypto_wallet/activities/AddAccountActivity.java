@@ -20,13 +20,18 @@ import android.widget.TextView;
 
 import androidx.appcompat.widget.Toolbar;
 
+import com.google.android.gms.common.util.ArrayUtils;
+
 import org.chromium.base.Log;
 import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.BraveWalletConstants;
 import org.chromium.brave_wallet.mojom.CoinType;
 import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.app.BraveActivity;
+import org.chromium.chrome.browser.app.domain.WalletModel;
 import org.chromium.chrome.browser.crypto_wallet.KeyringServiceFactory;
+import org.chromium.chrome.browser.crypto_wallet.model.CryptoAccountTypeInfo;
 import org.chromium.chrome.browser.crypto_wallet.observers.KeyringServiceObserver;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.chrome.browser.init.AsyncInitializationActivity;
@@ -42,6 +47,8 @@ import java.util.List;
 import java.util.Map;
 
 public class AddAccountActivity extends BraveWalletBaseActivity {
+    public static final String ACCOUNT = "account";
+
     private String mAddress;
     private String mName;
     private boolean mIsUpdate;
@@ -49,6 +56,8 @@ public class AddAccountActivity extends BraveWalletBaseActivity {
     private EditText mPrivateKeyControl;
     private EditText mAddAccountText;
     private static final int FILE_PICKER_REQUEST_CODE = 1;
+    private CryptoAccountTypeInfo mCryptoAccountTypeInfo;
+    private WalletModel mWalletModel;
 
     public AddAccountActivity() {
         mIsUpdate = false;
@@ -63,10 +72,21 @@ public class AddAccountActivity extends BraveWalletBaseActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle(getResources().getString(R.string.add_account));
 
-        final Button btnAdd = findViewById(R.id.btn_add);
-        btnAdd.setEnabled(false);
-
         mAddAccountText = findViewById(R.id.add_account_text);
+        mPrivateKeyControl = findViewById(R.id.import_account_text);
+
+        final Button btnAdd = findViewById(R.id.btn_add);
+        TextView importBtn = findViewById(R.id.import_btn);
+        EditText importAccountPasswordText = findViewById(R.id.import_account_password_text);
+
+        btnAdd.setEnabled(false);
+        BraveActivity activity = BraveActivity.getBraveActivity();
+
+        assert activity != null;
+        mWalletModel = activity.getWalletModel();
+
+        mCryptoAccountTypeInfo = (CryptoAccountTypeInfo) getIntent().getSerializableExtra(ACCOUNT);
+
         mAddAccountText.addTextChangedListener(new TextWatcher() {
             @Override
             public void afterTextChanged(Editable s) {}
@@ -83,106 +103,93 @@ public class AddAccountActivity extends BraveWalletBaseActivity {
             }
         });
 
-        mPrivateKeyControl = findViewById(R.id.import_account_text);
-
-        EditText importAccountPasswordText = findViewById(R.id.import_account_password_text);
-
-        btnAdd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (mKeyringService != null) {
-                    if (mIsUpdate) {
-                        if (mIsImported) {
-                            mKeyringService.setKeyringImportedAccountName(
-                                    BraveWalletConstants.DEFAULT_KEYRING_ID, mAddress,
-                                    mAddAccountText.getText().toString(), result -> {
-                                        if (result) {
-                                            Intent returnIntent = new Intent();
-                                            returnIntent.putExtra(Utils.NAME,
-                                                    mAddAccountText.getText().toString());
-                                            setResult(Activity.RESULT_OK, returnIntent);
-                                            finish();
-                                        } else {
-                                            mAddAccountText.setError(
-                                                    getString(R.string.account_update_failed));
-                                        }
-                                    });
-                        } else {
-                            mKeyringService.setKeyringDerivedAccountName(
-                                    BraveWalletConstants.DEFAULT_KEYRING_ID, mAddress,
-                                    mAddAccountText.getText().toString(), result -> {
-                                        if (result) {
-                                            Intent returnIntent = new Intent();
-                                            returnIntent.putExtra(Utils.NAME,
-                                                    mAddAccountText.getText().toString());
-                                            setResult(Activity.RESULT_OK, returnIntent);
-                                            finish();
-                                        } else {
-                                            mAddAccountText.setError(
-                                                    getString(R.string.account_update_failed));
-                                        }
-                                    });
-                        }
-                    } else if (!TextUtils.isEmpty(mPrivateKeyControl.getText().toString())) {
-                        if (Utils.isJSONValid(mPrivateKeyControl.getText().toString())) {
-                            mKeyringService.importAccountFromJson(
-                                    mAddAccountText.getText().toString(),
-                                    importAccountPasswordText.getText().toString(),
-                                    mPrivateKeyControl.getText().toString(), (result, address) -> {
-                                        if (result) {
-                                            setResult(Activity.RESULT_OK);
-                                            Utils.clearClipboard(
-                                                    mPrivateKeyControl.getText().toString(), 0);
-                                            Utils.clearClipboard(
-                                                    importAccountPasswordText.getText().toString(),
-                                                    0);
-                                            finish();
-                                        } else {
-                                            mAddAccountText.setError(getString(
-                                                    R.string.wallet_failed_to_import_account));
-                                        }
-                                    });
-                        } else {
-                            mKeyringService.importAccount(mAddAccountText.getText().toString(),
-                                    mPrivateKeyControl.getText().toString().trim(), CoinType.ETH,
-                                    (result, address) -> {
-                                        if (result) {
-                                            setResult(Activity.RESULT_OK);
-                                            Utils.clearClipboard(
-                                                    mPrivateKeyControl.getText().toString(), 0);
-                                            finish();
-                                        } else {
-                                            mAddAccountText.setError(getString(
-                                                    R.string.wallet_failed_to_import_account));
-                                        }
-                                    });
-                        }
-                    } else {
-                        mKeyringService.addAccount(
-                                mAddAccountText.getText().toString(), CoinType.ETH, result -> {
+        btnAdd.setOnClickListener(v -> {
+            if (mKeyringService != null) {
+                if (mIsUpdate) {
+                    if (mIsImported) {
+                        mKeyringService.setKeyringImportedAccountName(
+                                BraveWalletConstants.DEFAULT_KEYRING_ID, mAddress,
+                                mAddAccountText.getText().toString(), result -> {
                                     if (result) {
-                                        setResult(Activity.RESULT_OK);
+                                        Intent returnIntent = new Intent();
+                                        returnIntent.putExtra(
+                                                Utils.NAME, mAddAccountText.getText().toString());
+                                        setResult(Activity.RESULT_OK, returnIntent);
                                         finish();
                                     } else {
                                         mAddAccountText.setError(
-                                                getString(R.string.account_name_empty_error));
+                                                getString(R.string.account_update_failed));
+                                    }
+                                });
+                    } else {
+                        mKeyringService.setKeyringDerivedAccountName(
+                                BraveWalletConstants.DEFAULT_KEYRING_ID, mAddress,
+                                mAddAccountText.getText().toString(), result -> {
+                                    if (result) {
+                                        Intent returnIntent = new Intent();
+                                        returnIntent.putExtra(
+                                                Utils.NAME, mAddAccountText.getText().toString());
+                                        setResult(Activity.RESULT_OK, returnIntent);
+                                        finish();
+                                    } else {
+                                        mAddAccountText.setError(
+                                                getString(R.string.account_update_failed));
                                     }
                                 });
                     }
+                } else if (!TextUtils.isEmpty(mPrivateKeyControl.getText().toString())) {
+                    if (Utils.isJSONValid(mPrivateKeyControl.getText().toString())) {
+                        mKeyringService.importAccountFromJson(mAddAccountText.getText().toString(),
+                                importAccountPasswordText.getText().toString(),
+                                mPrivateKeyControl.getText().toString(), (result, address) -> {
+                                    if (result) {
+                                        setResult(Activity.RESULT_OK);
+                                        Utils.clearClipboard(
+                                                mPrivateKeyControl.getText().toString(), 0);
+                                        Utils.clearClipboard(
+                                                importAccountPasswordText.getText().toString(), 0);
+                                        finish();
+                                    } else {
+                                        mAddAccountText.setError(getString(
+                                                R.string.wallet_failed_to_import_account));
+                                    }
+                                });
+                    } else {
+                        mKeyringService.importAccount(mAddAccountText.getText().toString(),
+                                mPrivateKeyControl.getText().toString().trim(),
+                                mCryptoAccountTypeInfo.getCoinType(), (result, address) -> {
+                                    if (result) {
+                                        setResult(Activity.RESULT_OK);
+                                        Utils.clearClipboard(
+                                                mPrivateKeyControl.getText().toString(), 0);
+                                        finish();
+                                    } else {
+                                        mAddAccountText.setError(getString(
+                                                R.string.wallet_failed_to_import_account));
+                                    }
+                                });
+                    }
+                } else {
+                    mWalletModel.getKeyringModel().addAccount(mAddAccountText.getText().toString(),
+                            mCryptoAccountTypeInfo.getCoinType(), result -> {
+                                if (result) {
+                                    setResult(Activity.RESULT_OK);
+                                    finish();
+                                } else {
+                                    mAddAccountText.setError(
+                                            getString(R.string.account_name_empty_error));
+                                }
+                            });
                 }
             }
         });
 
-        TextView importBtn = findViewById(R.id.import_btn);
-        importBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent chooseFile = new Intent(Intent.ACTION_GET_CONTENT);
-                chooseFile.setType("*/*");
-                chooseFile = Intent.createChooser(
-                        chooseFile, getResources().getString(R.string.choose_a_file));
-                startActivityForResult(chooseFile, FILE_PICKER_REQUEST_CODE);
-            }
+        importBtn.setOnClickListener(v -> {
+            Intent chooseFile = new Intent(Intent.ACTION_GET_CONTENT);
+            chooseFile.setType("*/*");
+            chooseFile = Intent.createChooser(
+                    chooseFile, getResources().getString(R.string.choose_a_file));
+            startActivityForResult(chooseFile, FILE_PICKER_REQUEST_CODE);
         });
 
         onInitialLayoutInflationComplete();
@@ -212,19 +219,25 @@ public class AddAccountActivity extends BraveWalletBaseActivity {
         getWindow().setFlags(
                 WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE);
         assert mKeyringService != null;
-        mKeyringService.getKeyringInfo(BraveWalletConstants.DEFAULT_KEYRING_ID, keyringInfo -> {
-            if (keyringInfo != null) {
-                mAddAccountText.setText(getUniqueNextAccountName(keyringInfo.accountInfos, 1));
+        mWalletModel.getKeyringModel().getAccounts(accountInfos -> {
+            ArrayList<AccountInfo> accountInfoList = new ArrayList<>();
+            for (AccountInfo accountInfo : accountInfos) {
+                if (accountInfo.coin == mCryptoAccountTypeInfo.getCoinType()) {
+                    accountInfoList.add(accountInfo);
+                }
             }
+            mAddAccountText.setText(getUniqueNextAccountName(
+                    accountInfoList.toArray(new AccountInfo[0]), 1, mCryptoAccountTypeInfo));
         });
     }
 
-    private String getUniqueNextAccountName(AccountInfo[] accountInfos, int number) {
-        String accountName = getString(
-                R.string.new_account_prefix, String.valueOf(accountInfos.length + number));
+    private String getUniqueNextAccountName(
+            AccountInfo[] accountInfos, int number, CryptoAccountTypeInfo cryptoAccountTypeInfo) {
+        String accountName = getString(R.string.new_account_prefix, cryptoAccountTypeInfo.getName(),
+                String.valueOf(accountInfos.length + number));
         for (AccountInfo accountInfo : accountInfos) {
             if (accountInfo.name.equals(accountName)) {
-                return getUniqueNextAccountName(accountInfos, number + 1);
+                return getUniqueNextAccountName(accountInfos, number + 1, cryptoAccountTypeInfo);
             }
         }
 

@@ -1331,18 +1331,19 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
             return;
         }
 
-        walletModel.resetServices(null, null, null, null, null, null, null, null);
+        walletModel.resetServices(
+                getApplicationContext(), null, null, null, null, null, null, null, null);
     }
 
     private void setupWalletModel() {
         if (walletModel == null) {
-            walletModel = new WalletModel(mKeyringService, mBlockchainRegistry, mJsonRpcService,
-                    mTxService, mEthTxManagerProxy, mSolanaTxManagerProxy, mAssetRatioService,
-                    mBraveWalletService);
+            walletModel = new WalletModel(getApplicationContext(), mKeyringService,
+                    mBlockchainRegistry, mJsonRpcService, mTxService, mEthTxManagerProxy,
+                    mSolanaTxManagerProxy, mAssetRatioService, mBraveWalletService);
         } else {
-            walletModel.resetServices(mKeyringService, mBlockchainRegistry, mJsonRpcService,
-                    mTxService, mEthTxManagerProxy, mSolanaTxManagerProxy, mAssetRatioService,
-                    mBraveWalletService);
+            walletModel.resetServices(getApplicationContext(), mKeyringService, mBlockchainRegistry,
+                    mJsonRpcService, mTxService, mEthTxManagerProxy, mSolanaTxManagerProxy,
+                    mAssetRatioService, mBraveWalletService);
         }
         setupObservers();
     }

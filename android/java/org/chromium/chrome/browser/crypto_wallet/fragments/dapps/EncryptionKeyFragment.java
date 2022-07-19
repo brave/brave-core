@@ -5,12 +5,10 @@
 
 package org.chromium.chrome.browser.crypto_wallet.fragments.dapps;
 
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.text.TextUtils;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -133,7 +131,7 @@ public class EncryptionKeyFragment extends Fragment implements View.OnClickListe
                                 getString(R.string.brave_wallet_provide_encryption_key_description),
                                 Utils.geteTLDHTMLFormatted(
                                         encryptionPublicKeyRequest.originInfo.eTldPlusOne));
-                        mTvMessageDesc.setText(AndroidUtils.formateHTML(formattedeTLD));
+                        mTvMessageDesc.setText(AndroidUtils.formatHTML(formattedeTLD));
                     }
                 });
             } else if (mActivityType == BraveWalletDAppsActivity.ActivityType.DECRYPT_REQUEST) {

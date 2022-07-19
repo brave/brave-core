@@ -1817,10 +1817,13 @@ Are you sure you want to do this?
       Buy, trade, or hold crypto. If you have an existing crypto account you may add it now.
     </message> -->
     <message name="IDS_NEW_ACCOUNT_PREFIX" desc="Brave Wallet new account default name prefix">
-      Account <ph name="ACCOUNT_NUMBER">%1$s<ex>2</ex></ph>
+      <ph name="ACCOUNT_NAME">%1$s<ex>Ethereum</ex></ph> Account <ph name="ACCOUNT_NUMBER">%2$s<ex>2</ex></ph>
     </message>
     <message name="IDS_ADD_ACCOUNT" desc="Brave Wallet account dialog button text">
       Add account
+    </message>
+    <message name="IDS_ADD_IMPORT_ACCOUNT" desc="Brave Wallet account dialog button text">
+      Add/Import account
     </message>
     <message name="IDS_UPDATE_ACCOUNT" desc="Brave Wallet account dialog button text">
       Update account
@@ -3078,6 +3081,12 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     </message>
     <message name="IDS_PLATFORM_TEXT" desc="Vpn support email text">
       \n\nPlatform\n
+    </message>
+    <message name="IDS_BRAVE_WALLET_CREATE_ACCOUNT_ETHEREUM_DESCRIPTION" desc="Add account modal create account Ethereum description">
+      Supports EVM compatible assets on the Ethereum blockchain (ERC-20, ERC-721, ERC-1551, ERC-1155)
+    </message>
+    <message name="IDS_BRAVE_WALLET_CREATE_ACCOUNT_SOLANA_DESCRIPTION" desc="Add account modal create account Solana description">
+      Supports SPL compatible assets on the Solana blockchain
     </message>
   </messages>
   </release>

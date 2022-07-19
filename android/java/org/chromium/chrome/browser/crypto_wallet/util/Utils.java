@@ -1565,7 +1565,7 @@ public class Utils {
             Context context, @StringRes int stringRes, View.OnClickListener onClickListener) {
         String htmlString =
                 String.format(context.getResources().getString(stringRes), "<a href=\"\">", "</a>");
-        Spannable spannable = new SpannableString(AndroidUtils.formateHTML(htmlString));
+        Spannable spannable = new SpannableString(AndroidUtils.formatHTML(htmlString));
         URLSpan[] spans = spannable.getSpans(0, spannable.length(), URLSpan.class);
         for (URLSpan urlSpan : spans) {
             NoUnderlineClickableSpan linkSpan = new NoUnderlineClickableSpan(context,
@@ -1655,7 +1655,7 @@ public class Utils {
 
     public static Spanned geteTLD(GURL url, String etldPlusOne) {
         String formattedeTLD = geteTLDHTMLFormatted(url, etldPlusOne);
-        return AndroidUtils.formateHTML(formattedeTLD);
+        return AndroidUtils.formatHTML(formattedeTLD);
     }
 
     private static String geteTLDHTMLFormatted(GURL url, String etldPlusOne) {
