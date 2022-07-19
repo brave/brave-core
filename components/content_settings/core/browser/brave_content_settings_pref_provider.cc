@@ -38,6 +38,9 @@ namespace content_settings {
 
 namespace {
 
+constexpr char kObsoleteShieldCookies[] =
+    "profile.content_settings.exceptions.shieldsCookies";
+
 constexpr char kGoogleAuthPattern[] = "https://accounts.google.com/*";
 constexpr char kFirebasePattern[] = "https://[*.]firebaseapp.com/*";
 
@@ -139,8 +142,7 @@ void BravePrefProvider::RegisterProfilePrefs(
   }
 #endif
 
-  registry->RegisterDictionaryPref(
-      "profile.content_settings.exceptions.shieldsCookies");
+  registry->RegisterDictionaryPref(kObsoleteShieldCookies);
 }
 
 void BravePrefProvider::MigrateShieldsSettings(bool incognito) {
@@ -150,11 +152,13 @@ void BravePrefProvider::MigrateShieldsSettings(bool incognito) {
   if (incognito)
     return;
 
-  auto* shields_cookies = prefs_->GetDictionary(
-      "profile.content_settings.exceptions.shieldsCookies");
+  const int version = prefs_->GetInteger(kBraveShieldsSettingsVersion);
+  auto* shields_cookies = prefs_->GetDictionary(kObsoleteShieldCookies);
   if (shields_cookies) {
-    prefs_->Set("profile.content_settings.exceptions.shieldsCookiesV3",
-                *shields_cookies);
+    if (version < 4) {
+      prefs_->Set("profile.content_settings.exceptions.shieldsCookiesV3",
+                  *shields_cookies);
+    }
   }
 
   // Fix any wildcard entries that could cause issues like
@@ -170,6 +174,8 @@ void BravePrefProvider::MigrateShieldsSettings(bool incognito) {
   MigrateShieldsSettingsV1ToV2();
 
   MigrateShieldsSettingsV2ToV3();
+
+  MigrateShieldsSettingsV3ToV4(version);
 }
 
 void BravePrefProvider::EnsureNoWildcardEntries() {
@@ -369,6 +375,20 @@ void BravePrefProvider::MigrateShieldsSettingsV2ToV3() {
 
   // Mark migration as done.
   prefs_->SetInteger(kBraveShieldsSettingsVersion, 3);
+}
+
+void BravePrefProvider::MigrateShieldsSettingsV3ToV4(int start_version) {
+  if (prefs_->GetInteger(kBraveShieldsSettingsVersion) != 3)
+    return;
+
+  if (start_version == 3) {
+    // Because of
+    // https://github.com/brave/brave-browser/issues/24119 the cookies
+    // overwritten by the obsolete cookies. Repeat v2 to v3 migration.
+    prefs_->SetInteger(kBraveShieldsSettingsVersion, 2);
+    MigrateShieldsSettingsV2ToV3();
+  }
+  prefs_->SetInteger(kBraveShieldsSettingsVersion, 4);
 }
 
 void BravePrefProvider::MigrateShieldsSettingsV1ToV2ForOneType(
