@@ -79,16 +79,12 @@ TEST_F(BatAdsUnblindedPaymentTokensTest, GetTokensAsList) {
   SetUnblindedPaymentTokens(8);
 
   // Act
-  const base::Value& list = GetUnblindedPaymentTokens()->GetTokensAsList();
-
-  // Assert
-  const base::Value::List& list_values = list.GetList();
-
-  const UnblindedPaymentTokenList& unblinded_payment_tokens =
+  const base::Value::List list = GetUnblindedPaymentTokens()->GetTokensAsList();
+  const UnblindedPaymentTokenList unblinded_payment_tokens =
       GetUnblindedPaymentTokens()->GetAllTokens();
-  EXPECT_EQ(list_values.size(), unblinded_payment_tokens.size());
+  EXPECT_EQ(list.size(), unblinded_payment_tokens.size());
 
-  for (auto& value : list_values) {
+  for (const auto& value : list) {
     const base::Value::Dict* dictionary = value.GetIfDict();
     ASSERT_TRUE(dictionary);
     const std::string* unblinded_payment_token_value =
@@ -121,10 +117,10 @@ TEST_F(BatAdsUnblindedPaymentTokensTest, GetTokensAsListWithEmptyList) {
   // Arrange
 
   // Act
-  const base::Value& list = GetUnblindedPaymentTokens()->GetTokensAsList();
+  const base::Value::List list = GetUnblindedPaymentTokens()->GetTokensAsList();
 
   // Assert
-  EXPECT_TRUE(list.GetList().empty());
+  EXPECT_TRUE(list.empty());
 }
 
 TEST_F(BatAdsUnblindedPaymentTokensTest, SetTokens) {
@@ -155,7 +151,7 @@ TEST_F(BatAdsUnblindedPaymentTokensTest, SetTokensWithEmptyList) {
 
 TEST_F(BatAdsUnblindedPaymentTokensTest, SetTokensFromList) {
   // Arrange
-  const base::Value& list = GetUnblindedPaymentTokensAsList(5);
+  const base::Value::List list = GetUnblindedPaymentTokensAsList(5);
 
   // Act
   GetUnblindedPaymentTokens()->SetTokensFromList(list);
@@ -200,7 +196,7 @@ TEST_F(BatAdsUnblindedPaymentTokensTest, SetTokensFromList) {
 
 TEST_F(BatAdsUnblindedPaymentTokensTest, SetTokensFromListWithEmptyList) {
   // Arrange
-  const base::Value& list = GetUnblindedPaymentTokensAsList(0);
+  const base::Value::List list = GetUnblindedPaymentTokensAsList(0);
 
   // Act
   GetUnblindedPaymentTokens()->SetTokensFromList(list);

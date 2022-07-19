@@ -12,7 +12,6 @@
 
 #include "base/check_op.h"
 #include "base/notreached.h"
-#include "base/values.h"
 #include "bat/ads/internal/base/logging_util.h"
 #include "bat/ads/internal/privacy/challenge_bypass_ristretto/unblinded_token.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
@@ -34,30 +33,27 @@ UnblindedTokenList UnblindedTokens::GetAllTokens() const {
   return unblinded_tokens_;
 }
 
-base::Value UnblindedTokens::GetTokensAsList() {
-  base::Value list(base::Value::Type::LIST);
+base::Value::List UnblindedTokens::GetTokensAsList() {
+  base::Value::List list;
 
   for (const auto& unblinded_token : unblinded_tokens_) {
-    base::Value dictionary(base::Value::Type::DICTIONARY);
-
-    const absl::optional<std::string> unblinded_token_base64_optional =
+    const absl::optional<std::string> unblinded_token_base64 =
         unblinded_token.value.EncodeBase64();
-    if (!unblinded_token_base64_optional) {
+    if (!unblinded_token_base64) {
       NOTREACHED();
       continue;
     }
-    dictionary.SetStringKey("unblinded_token",
-                            unblinded_token_base64_optional.value());
 
-    const absl::optional<std::string> public_key_base64_optional =
+    const absl::optional<std::string> public_key_base64 =
         unblinded_token.public_key.EncodeBase64();
-    if (!public_key_base64_optional) {
+    if (!public_key_base64) {
       NOTREACHED();
       continue;
     }
-    dictionary.SetStringKey("public_key", public_key_base64_optional.value());
-
-    list.Append(std::move(dictionary));
+    base::Value::Dict dict;
+    dict.Set("unblinded_token", *unblinded_token_base64);
+    dict.Set("public_key", *public_key_base64);
+    list.Append(std::move(dict));
   }
 
   return list;
@@ -67,10 +63,10 @@ void UnblindedTokens::SetTokens(const UnblindedTokenList& unblinded_tokens) {
   unblinded_tokens_ = unblinded_tokens;
 }
 
-void UnblindedTokens::SetTokensFromList(const base::Value& list) {
+void UnblindedTokens::SetTokensFromList(const base::Value::List& list) {
   UnblindedTokenList unblinded_tokens;
 
-  for (const auto& value : list.GetList()) {
+  for (const auto& value : list) {
     std::string unblinded_token_base64;
     std::string public_key_base64;
 
@@ -78,15 +74,14 @@ void UnblindedTokens::SetTokensFromList(const base::Value& list) {
       // Migrate legacy tokens
       unblinded_token_base64 = value.GetString();
     } else {
-      const base::DictionaryValue* dictionary = nullptr;
-      if (!value.GetAsDictionary(&dictionary)) {
+      if (!value.is_dict()) {
         BLOG(0, "Unblinded token should be a dictionary");
         continue;
       }
+      const base::Value::Dict& dict = value.GetDict();
 
       // Unblinded token
-      const std::string* unblinded_token =
-          dictionary->FindStringKey("unblinded_token");
+      const std::string* unblinded_token = dict.FindString("unblinded_token");
       if (!unblinded_token) {
         BLOG(0, "Unblinded token dictionary missing unblinded_token");
         continue;
@@ -94,7 +89,7 @@ void UnblindedTokens::SetTokensFromList(const base::Value& list) {
       unblinded_token_base64 = *unblinded_token;
 
       // Public key
-      const std::string* public_key = dictionary->FindStringKey("public_key");
+      const std::string* public_key = dict.FindString("public_key");
       if (!public_key) {
         BLOG(0, "Unblinded token dictionary missing public_key");
         continue;

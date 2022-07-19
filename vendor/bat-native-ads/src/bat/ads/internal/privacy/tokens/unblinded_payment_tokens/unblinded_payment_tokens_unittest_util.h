@@ -35,7 +35,7 @@ UnblindedPaymentTokenList GetUnblindedPaymentTokens(const int count);
 
 UnblindedPaymentTokenList GetRandomUnblindedPaymentTokens(const int count);
 
-base::Value GetUnblindedPaymentTokensAsList(const int count);
+base::Value::List GetUnblindedPaymentTokensAsList(const int count);
 
 }  // namespace privacy
 }  // namespace ads

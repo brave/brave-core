@@ -6,11 +6,8 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_PRIVACY_TOKENS_UNBLINDED_PAYMENT_TOKENS_UNBLINDED_PAYMENT_TOKENS_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_PRIVACY_TOKENS_UNBLINDED_PAYMENT_TOKENS_UNBLINDED_PAYMENT_TOKENS_H_
 
+#include "base/values.h"
 #include "bat/ads/internal/privacy/tokens/unblinded_payment_tokens/unblinded_payment_token_info.h"
-
-namespace base {
-class Value;
-}  // namespace base
 
 namespace ads {
 namespace privacy {
@@ -24,10 +21,10 @@ class UnblindedPaymentTokens final {
 
   UnblindedPaymentTokenInfo GetToken() const;
   UnblindedPaymentTokenList GetAllTokens() const;
-  base::Value GetTokensAsList();
+  base::Value::List GetTokensAsList();
 
   void SetTokens(const UnblindedPaymentTokenList& unblinded_payment_tokens);
-  void SetTokensFromList(const base::Value& list);
+  void SetTokensFromList(const base::Value::List& list);
 
   void AddTokens(const UnblindedPaymentTokenList& unblinded_payment_tokens);
 

@@ -12,7 +12,6 @@
 
 #include "base/check_op.h"
 #include "base/guid.h"
-#include "base/values.h"
 #include "bat/ads/internal/base/logging_util.h"
 #include "bat/ads/internal/privacy/challenge_bypass_ristretto/unblinded_token.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
@@ -34,40 +33,32 @@ UnblindedPaymentTokenList UnblindedPaymentTokens::GetAllTokens() const {
   return unblinded_payment_tokens_;
 }
 
-base::Value UnblindedPaymentTokens::GetTokensAsList() {
-  base::Value list(base::Value::Type::LIST);
+base::Value::List UnblindedPaymentTokens::GetTokensAsList() {
+  base::Value::List list;
 
   for (const auto& unblinded_payment_token : unblinded_payment_tokens_) {
-    base::Value dictionary(base::Value::Type::DICTIONARY);
-
-    dictionary.SetStringKey("transaction_id",
-                            unblinded_payment_token.transaction_id);
-
-    const absl::optional<std::string> unblinded_token_base64_optional =
+    const absl::optional<std::string> unblinded_token_base64 =
         unblinded_payment_token.value.EncodeBase64();
-    if (!unblinded_token_base64_optional) {
+    if (!unblinded_token_base64) {
       NOTREACHED();
       continue;
     }
-    dictionary.SetStringKey("unblinded_token",
-                            unblinded_token_base64_optional.value());
 
-    const absl::optional<std::string> public_key_base64_optional =
+    const absl::optional<std::string> public_key_base64 =
         unblinded_payment_token.public_key.EncodeBase64();
-    if (!public_key_base64_optional) {
+    if (!public_key_base64) {
       NOTREACHED();
       continue;
     }
-    dictionary.SetStringKey("public_key", public_key_base64_optional.value());
 
-    dictionary.SetStringKey(
-        "confirmation_type",
-        unblinded_payment_token.confirmation_type.ToString());
-
-    dictionary.SetStringKey("ad_type",
-                            unblinded_payment_token.ad_type.ToString());
-
-    list.Append(std::move(dictionary));
+    base::Value::Dict dict;
+    dict.Set("transaction_id", unblinded_payment_token.transaction_id);
+    dict.Set("unblinded_token", *unblinded_token_base64);
+    dict.Set("public_key", *public_key_base64);
+    dict.Set("confirmation_type",
+             unblinded_payment_token.confirmation_type.ToString());
+    dict.Set("ad_type", unblinded_payment_token.ad_type.ToString());
+    list.Append(std::move(dict));
   }
 
   return list;
@@ -78,21 +69,20 @@ void UnblindedPaymentTokens::SetTokens(
   unblinded_payment_tokens_ = unblinded_payment_tokens;
 }
 
-void UnblindedPaymentTokens::SetTokensFromList(const base::Value& list) {
+void UnblindedPaymentTokens::SetTokensFromList(const base::Value::List& list) {
   UnblindedPaymentTokenList unblinded_payment_tokens;
 
-  for (const auto& value : list.GetList()) {
-    const base::DictionaryValue* dictionary = nullptr;
-    if (!value.GetAsDictionary(&dictionary)) {
+  for (const auto& value : list) {
+    if (!value.is_dict()) {
       BLOG(0, "Unblinded payment token should be a dictionary");
       continue;
     }
+    const base::Value::Dict& dict = value.GetDict();
 
     UnblindedPaymentTokenInfo unblinded_payment_token;
 
     // Transaction id
-    const std::string* transaction_id_value =
-        dictionary->FindStringKey("transaction_id");
+    const std::string* transaction_id_value = dict.FindString("transaction_id");
     if (!transaction_id_value) {
       // Migrate legacy confirmations
       unblinded_payment_token.transaction_id =
@@ -103,7 +93,7 @@ void UnblindedPaymentTokens::SetTokensFromList(const base::Value& list) {
 
     // Unblinded payment token
     const std::string* unblinded_payment_token_value =
-        dictionary->FindStringKey("unblinded_token");
+        dict.FindString("unblinded_token");
     if (!unblinded_payment_token_value) {
       BLOG(
           0,
@@ -118,8 +108,7 @@ void UnblindedPaymentTokens::SetTokensFromList(const base::Value& list) {
     }
 
     // Public key
-    const std::string* public_key_value =
-        dictionary->FindStringKey("public_key");
+    const std::string* public_key_value = dict.FindString("public_key");
     if (!public_key_value) {
       BLOG(0, "Unblinded payment token dictionary missing public_key");
       continue;
@@ -132,14 +121,14 @@ void UnblindedPaymentTokens::SetTokensFromList(const base::Value& list) {
 
     // Confirmation type
     const std::string* confirmation_type_value =
-        dictionary->FindStringKey("confirmation_type");
+        dict.FindString("confirmation_type");
     if (confirmation_type_value) {
       unblinded_payment_token.confirmation_type =
           ConfirmationType(*confirmation_type_value);
     }
 
     // Ad type
-    const std::string* ad_type_value = dictionary->FindStringKey("ad_type");
+    const std::string* ad_type_value = dict.FindString("ad_type");
     if (ad_type_value) {
       unblinded_payment_token.ad_type = AdType(*ad_type_value);
     }
