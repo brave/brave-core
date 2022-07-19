@@ -107,15 +107,14 @@
 <translation id="7551864359422178684">這個瀏覽器視窗中還有 <ph name="NUMBER_OF_TABS"/> 個分頁維持於開啟狀態。</translation>
 <translation id="2571596981920752023"><ph name="NUMBER_OF_TABS"/> 個分頁</translation>
 <translation id="2272117088509540883">- Brave 搜尋</translation>
-<translation id="2701279958223202597">支援隱私權更佳的獨立搜尋。Brave 不會追蹤您、您的查詢或您的點選行為。</translation>
+<translation id="2701279958223202597">支援隱私權更佳的獨立搜尋。Brave 搜尋不會追蹤您、您的查詢或您的點選行為。</translation>
 <translation id="6438467592401259882">支援隱私權更佳的獨立搜尋。</translation>
 <translation id="1688359110799098115">支援隱私權更佳的獨立搜尋</translation>
-<translation id="8579317236683491484">Brave 不會追蹤您、您的查詢或您的點選行為。</translation>
+<translation id="8579317236683491484">Brave 搜尋不會追蹤您、您的查詢或您的點選行為。</translation>
 <translation id="5240031343741051161">尝试Brave搜索</translation>
 <translation id="5026874946691314267">不要再顯示本訊息</translation>
 <translation id="5234764350956374838">關閉</translation>
-<translation id="214744058941501853">"&gt;
-          關閉 Brave 搜尋轉換，請按 Enter 移除此建議</translation>
+<translation id="214744058941501853">關閉 Brave 搜尋切換，請按 Enter 移除此建議</translation>
 <translation id="2515126961943087659">BAT 廣告服務</translation>
 <translation id="7924918279836988121">Bat 分類帳服務</translation>
 <translation id="6040143037577758943">關閉</translation>

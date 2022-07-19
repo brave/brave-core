@@ -1196,9 +1196,9 @@
 <translation id="756701799684433105">Έγκριση συναλλαγής</translation>
 <translation id="6450792191436242818">Πρόγραμμα συστήματος (System Program)</translation>
 <translation id="6252742184395380448">Πρόγραμμα διαμόρφωσης (Config Program)</translation>
-<translation id="5358970666412490132">Πρόγραμμα Stake (Stake Program)</translation>
+<translation id="5358970666412490132">Πρόγραμμα μεριδίων (Stake Program)</translation>
 <translation id="346636227344244984">Πρόγραμμα ψήφου (Vote Program)</translation>
-<translation id="3538368258493053874">Πρόγραμμα BPF Loader</translation>
+<translation id="3538368258493053874">Πρόγραμμα Φορτωτή BPF</translation>
 <translation id="2334098351242742927">Πρόγραμμα Ed25519</translation>
 <translation id="8780753288764281797">Πρόγραμμα Secp256k1</translation>
 <translation id="5275550100743015683">Διεύθυνση αποστολέα:</translation>

@@ -736,6 +736,7 @@
 <translation id="4780526507945807546">Brave local IPFS ኖድ ይጠቀሙ</translation>
 <translation id="8148464361648742409">አንድ የሕዝብ መተላለፊያ ይጠቀሙ</translation>
 <translation id="5123478056123923857">IPFS (InterPlanetary File System) የ አቻ-ለአቻ የውሂብ ማከማቻ እና አቅርቦት የህዝብ ኔትዎርክ ነው። ይህ ፕሮቶኮል ከ HTTP(S) የተለያዩ ከግምት ውስጥ የገቡ የ ግላዊነት ሁኔታዎች አሉት።</translation>
+<translation id="1216911189668016151">ኮምፒውተርዎ ለህዝብ አውታረመረብ አስተዋጽዖ ያደርጋል፣ ነገር ግን የእርስዎ አይ.ፒ አድራሻ እና የሚጠይቁት ወይም የሚያቀርቡት ማንኛውም መረጃ ሊጋለጥ ይችላል። በIPFS ላይ የሚጠይቁት መረጃ ለእርስዎ ከመቅረቡ በፊት የሚረጋገጥ ነው። የአውታረ መረብ ጥያቄዎች የብሮውዘሩን ፕሮክሲ እና የዲ.ኤን.ኤስ ቅንብሮችን ላይጠቀሙ ይችላሉ።</translation>
 <translation id="8664689531113048642">ከሶስተኛ ወገን ታዛቢዎች የሚጠይቁትን የእርስዎ IP አድራሻ እና ይዘት ይጠብቅዎታል፣ ነገር ግን ከህዝብ ጌትዌይ ኦፕሬተር አይደለም። ጌትዌይ ኦፕሬተር በጌትዌይ ለእርስዎ የቀረበው ይዘት እርስዎ የጠየቁት ይዘት መሆኑን የማረጋገጥ ሃላፊነት አለበት። እንዲሁም ኮምፒተርዎ ለህዝብ IPFS ኔትዎርክ አስተዋፅዖ አያደርግም።</translation>
 <translation id="3977809385703587108">ምርጫዎችዎን እንደገና መለወጥ ይችላሉ በ</translation>
 <translation id="3340978935015468852">ቅንብሮች</translation>
@@ -987,6 +988,8 @@
 <translation id="7642841516562576649">አዶ ዩአርኤል</translation>
 <translation id="2144247757675997850">ንብረት አከል</translation>
 <translation id="2708402071160162126">ማስጠንቀቂያ - የመልሶ ማግኛ ሐረግዎን በጭራሽ አያጋሩ። ይህ ሐረግ ያለው ማንኛውም ሰው ንብረትዎን ለዘላለም ሊወስድ ይችላል።</translation>
+<translation id="2416098547200943834">ማሳሰቢያ፡ የግል ቁልፍ እንደ ሄክስ-ኢኮድ JSON የቀረበ ሲሆን ይህም የግል ቁልፍ እና የፕሮቶኮል መረጃን የያዘ ነው። <ph name="LINK_START"/> የበለጠ ለማወቅ እዚህ ጋር ይሂዱ <ph name="LINK_END"/>።</translation>
+<translation id="7657130382217527063">ማሳሰቢያ፡ የግል ቁልፍ እንደ ሄክስ-ኢኮድ JSON የቀረበ ሲሆን ይህም የግል ቁልፍ እና የፕሮቶኮል መረጃን የያዘ መሆን አለበት። <ph name="LINK_START"/> የበለጠ ለማወቅ እዚህ ጋር ይሂዱ <ph name="LINK_END"/>።</translation>
 <translation id="2902856457593699108">ቁልፍ አሳይ</translation>
 <translation id="8033497299373164724">ቁልፍን ደብቅ</translation>
 <translation id="2702143907607790516">የመለያ ስም ማዘመን አልተሳካም ፣ እባክዎ እንደገና ይሞክሩ።</translation>
@@ -1022,6 +1025,7 @@
 <translation id="5488357322146334497">መልዕክት</translation>
 <translation id="3586752056660754651">ፈርም</translation>
 <translation id="3484981968509595506">DApp ይፋዊ ምስጠራ ቁልፍዎን እየጠየቀ ነው።</translation>
+<translation id="2950511942409261729"><ph name="URL_BEFORE"/>$url<ph name="URL_AFTER"/>የዋሌትዎን ይፋዊ ምስጠራዊ ቁልፍ እየጠየቀ ነው። ይህን ቁልፍ ለማቅረብ ፍቃደኛ ከሆኑ፣ ድረገፁ የተመሰጠሩ መልእክቶችን ለእርስዎ መፃፍ ይችላል።</translation>
 <translation id="3340247553212049934">ያቅርቡ</translation>
 <translation id="1619778919922494944">ይህ DApp እርምጃዎን ለማጠናቀቅ ይህንን መልእክት ለማንበብ ይፈልጋል</translation>
 <translation id="714506544401754321">ዲክሪፕት መልእክት</translation>
@@ -1088,6 +1092,8 @@
 <translation id="7051244143160304048"><ph name="DEVICE_NAME"/> ተቋርጧል</translation>
 <translation id="5317781812114905957">መመሪያዎች</translation>
 <translation id="1178198982208000092">የእርስዎን <ph name="DEVICE_NAME"/>ያገናኙ</translation>
+<translation id="6291765462876399333">የሃርድዌር ዋሌት በመሳሪያው ላይ ማረጋገጫ ያስፈልገዋል <ph name="DEVICE_NAME"/></translation>
+<translation id="2288190100157580461">የሃርድዌር ዋሌቱ ይህ ያስፈልገዋል <ph name="NETWORK"/> በ <ph name="DEVICE_NAME"/> መተግበሪያ ላይ የተከፈተውን።</translation>
 <translation id="8687869982094542529">ተልኳል</translation>
 <translation id="5013754027092416509">ደርሷል</translation>
 <translation id="5867988533873716616">የአሳሽ URL አግድ የለም።</translation>
@@ -1158,6 +1164,7 @@
 <translation id="1470129769517088397"><ph name="ADDRESS"/> አሁን በስራ ላይ ያለ አውታረ መረብ አይደለም</translation>
 <translation id="7340805872138998391">መሳሪያው መክፈት አልተቻለም፣ እንደገና ለማገናኘት ይሞክሩ</translation>
 <translation id="1984410139271779110">የውስጥ ስህተት፣ ያልታውቀ እቅድ</translation>
+<translation id="6989562355845156390">አጽድቅ</translation>
 <translation id="4674380028960132654">Ledger: ፊርማው ከትክክለኛው አድራሻ ጋር አይዛመድም</translation>
 <translation id="3183932890629254743">የሃርድዌር መለያ አልተገኘም</translation>
 <translation id="4287068151777838754">የ JSON ውሂብ ይጠበቃል</translation>
@@ -1200,6 +1207,26 @@
 <translation id="2317956709076373213">ግብይት ተረጋግጧል</translation>
 <translation id="310693998838023022">የግብይት ስህተት</translation>
 <translation id="6395870673621520684">ግብይት ተቋርጧል</translation>
+<translation id="1237782734462409503">ገፁ ንቁ አይደለም።</translation>
+<translation id="756701799684433105">ግብይቱን አጽድቅ</translation>
+<translation id="6450792191436242818">የስርዓት ፕሮግራም</translation>
+<translation id="6252742184395380448">ማዋቀሪያ ፕሮግራም</translation>
+<translation id="5358970666412490132">የካስማ ፕሮግራም</translation>
+<translation id="346636227344244984">የድምጽ ፕሮግራም</translation>
+<translation id="3538368258493053874">BPF ጫኚ</translation>
+<translation id="2334098351242742927">የEd25519 ፕሮግራም</translation>
+<translation id="8780753288764281797">የSecp256k1 ፕሮግራም</translation>
+<translation id="5275550100743015683">የላኪ አድራሻ፡</translation>
+<translation id="2678433693746214764">የተቀባይ አድራሻ፡</translation>
+<translation id="4576396475962922672">አዲስ መለያ፡</translation>
+<translation id="4719005063558335704">መለያዎች፡</translation>
+<translation id="4337554812324118382">መረጃ፡</translation>
+<translation id="569870799832027680">የፕሮግራም መለያ፡</translation>
+<translation id="7843211152394841558">ከፍተኛ ሙከራዎች፡</translation>
+<translation id="8496335570810457">የቅድመ በረራ ቁርጠኝነት፡</translation>
+<translation id="5100124500279922001">ቅድመ በረራን ዝለል፡</translation>
+<translation id="8060029310790625334">የእገዛ ማዕከል</translation>
+<translation id="2095142195578664632">እርዳታ ይፈልጋሉ? ይህን ይመልከቱ</translation>
 <translation id="3155170474926428993">ቶር ማስጀመርያ</translation>
 <translation id="3745016858329272300">አጠቃላይ መረጃ</translation>
 <translation id="4045404575593562245">በ ቶር ቁጥጥር ያሉ ክስተቶች</translation>

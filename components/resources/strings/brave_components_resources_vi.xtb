@@ -1195,9 +1195,9 @@
 <translation id="756701799684433105">Duyệt giao dịch</translation>
 <translation id="6450792191436242818">Chương trình hệ thống</translation>
 <translation id="6252742184395380448">Chương trình cấu hình</translation>
-<translation id="5358970666412490132">Chương trình Stake</translation>
+<translation id="5358970666412490132">Chương trình đặt cọc</translation>
 <translation id="346636227344244984">Chương trình bình chọn</translation>
-<translation id="3538368258493053874">BPF Loader</translation>
+<translation id="3538368258493053874">Bộ tải BPF</translation>
 <translation id="2334098351242742927">Chương trình Ed25519</translation>
 <translation id="8780753288764281797">Chương trình Secp256k1</translation>
 <translation id="5275550100743015683">Từ địa chỉ:</translation>
@@ -1207,8 +1207,8 @@
 <translation id="4337554812324118382">Dữ liệu:</translation>
 <translation id="569870799832027680">Mã chương trình</translation>
 <translation id="7843211152394841558">Số lần thử tối đa:</translation>
-<translation id="8496335570810457">Cam kết Preflight:</translation>
-<translation id="5100124500279922001">Bỏ qua Preflight:</translation>
+<translation id="8496335570810457">Cam kết mô phỏng giao dịch:</translation>
+<translation id="5100124500279922001">Bỏ qua mô phỏng giao dịch:</translation>
 <translation id="8060029310790625334">Trung tâm trợ giúp</translation>
 <translation id="2095142195578664632">Cần trợ giúp? Xem</translation>
 <translation id="3155170474926428993">Trình chạy Tor</translation>
