@@ -5,7 +5,44 @@
 
 #include "bat/ledger/internal/legacy/report_balance_properties.h"
 
+#include "base/json/json_reader.h"
+#include "base/json/json_writer.h"
+#include "base/logging.h"
+#include "base/notreached.h"
+#include "bat/ledger/internal/legacy/bat_util.h"
+
 namespace ledger {
+
+namespace {
+
+// Do not change these values as they are required to transition legacy state
+const char kAutoContributionsKey[] = "auto_contribute";
+const char kAdEarningsKey[] = "earning_from_ads";
+const char kGrantsKey[] = "grants";
+const char kOneTimeDonationsKey[] = "one_time_donation";
+const char kRecurringDonationsKey[] = "recurring_donation";
+
+bool GetPropertyFromDict(const base::Value::Dict& dict,
+                         base::StringPiece key,
+                         double* value) {
+  DCHECK(value);
+
+  const auto balance = dict.FindDouble(key);
+  if (balance) {
+    *value = *balance;
+    return true;
+  }
+
+  const auto* balance_probi = dict.FindString(key);
+  if (!balance_probi) {
+    return false;
+  }
+
+  *value = braveledger_bat_util::ProbiToDouble(*balance_probi);
+  return true;
+}
+
+}  // namespace
 
 ReportBalanceProperties::ReportBalanceProperties()
     : grants(0.0),
@@ -37,6 +74,90 @@ bool ReportBalanceProperties::operator==(
 bool ReportBalanceProperties::operator!=(
     const ReportBalanceProperties& rhs) const {
   return !(*this == rhs);
+}
+
+base::Value::Dict ReportBalanceProperties::ToValue() const {
+  base::Value::Dict root;
+  root.Set(kGrantsKey, grants);
+  root.Set(kAdEarningsKey, ad_earnings);
+  root.Set(kAutoContributionsKey, auto_contributions);
+  root.Set(kRecurringDonationsKey, recurring_donations);
+  root.Set(kOneTimeDonationsKey, one_time_donations);
+  return root;
+}
+
+bool ReportBalanceProperties::FromValue(const base::Value::Dict& dict) {
+  // Grants
+  bool result = GetPropertyFromDict(dict, kGrantsKey, &grants);
+
+  if (!result) {
+    NOTREACHED();
+    return false;
+  }
+
+  // Earnings From Ads
+  result = GetPropertyFromDict(dict, kAdEarningsKey, &ad_earnings);
+
+  if (!result) {
+    NOTREACHED();
+    return false;
+  }
+
+  // Auto Contribute
+  result =
+      GetPropertyFromDict(dict, kAutoContributionsKey, &auto_contributions);
+
+  if (!result) {
+    NOTREACHED();
+    return false;
+  }
+
+  // Recurring Donation
+  result =
+      GetPropertyFromDict(dict, kRecurringDonationsKey, &recurring_donations);
+
+  if (!result) {
+    NOTREACHED();
+    return false;
+  }
+
+  // One Time Donation
+  result = GetPropertyFromDict(dict, kOneTimeDonationsKey, &one_time_donations);
+
+  if (!result) {
+    NOTREACHED();
+    return false;
+  }
+
+  return true;
+}
+
+std::string ReportBalanceProperties::ToJson() const {
+  std::string json;
+  base::JSONWriter::Write(ToValue(), &json);
+  return json;
+}
+
+bool ReportBalanceProperties::FromJson(const std::string& json) {
+  auto document = base::JSONReader::ReadAndReturnValueWithError(
+      json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
+                base::JSONParserOptions::JSON_PARSE_RFC);
+
+  if (!document.value.has_value()) {
+    LOG(ERROR) << "Invalid report balance properties. json=" << json
+               << ", error line=" << document.error_line
+               << ", error column=" << document.error_column
+               << ", error message=" << document.error_message;
+    return false;
+  }
+
+  const base::Value::Dict* root = document.value->GetIfDict();
+  if (!root) {
+    LOG(ERROR) << "Invalid report balance properties. json=" << json;
+    return false;
+  }
+
+  return FromValue(*root);
 }
 
 }  // namespace ledger
