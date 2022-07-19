@@ -76,6 +76,9 @@ void SolanaProviderImpl::Connect(absl::optional<base::Value> arg,
   absl::optional<std::string> account =
       keyring_service_->GetSelectedAccount(mojom::CoinType::SOL);
   if (!account) {
+    // Prompt users to create a Solana account. If wallet is not setup, users
+    // will be lead to onboarding first.
+    delegate_->ShowAccountCreation(mojom::CoinType::SOL);
     std::move(callback).Run(mojom::SolanaProviderError::kInternalError,
                             l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR),
                             "");

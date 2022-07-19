@@ -34,6 +34,11 @@ void BraveWalletProviderDelegateBridge::ShowWalletOnboarding() {
   [bridge_ showWalletOnboarding];
 }
 
+void BraveWalletProviderDelegateBridge::ShowAccountCreation(
+    mojom::CoinType type) {
+  [bridge_ showAccountCreation:static_cast<BraveWalletCoinType>(type)];
+}
+
 void BraveWalletProviderDelegateBridge::RequestPermissions(
     mojom::CoinType type,
     const std::vector<std::string>& accounts,

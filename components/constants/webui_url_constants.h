@@ -26,6 +26,7 @@ extern const char kBraveUITipHost[];
 extern const char kBraveUITipURL[];
 extern const char kBraveUIWalletURL[];
 extern const char kBraveUIWalletOnboardingURL[];
+extern const char kBraveUIWalletAccountCreationURL[];
 extern const char kBraveUIWalletPanelURL[];
 extern const char kWalletPanelHost[];
 extern const char kVPNPanelURL[];

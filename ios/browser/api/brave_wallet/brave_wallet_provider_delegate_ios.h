@@ -29,6 +29,7 @@ OBJC_EXPORT
 - (URLOriginIOS*)getOrigin;
 - (void)walletInteractionDetected;
 - (void)showWalletOnboarding;
+- (void)showAccountCreation:(BraveWalletCoinType)type;
 - (void)requestPermissions:(BraveWalletCoinType)type
                   accounts:(NSArray<NSString*>*)accounts
                 completion:(RequestPermissionsCallback)completion;

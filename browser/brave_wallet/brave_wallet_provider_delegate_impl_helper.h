@@ -6,6 +6,8 @@
 #ifndef BRAVE_BROWSER_BRAVE_WALLET_BRAVE_WALLET_PROVIDER_DELEGATE_IMPL_HELPER_H_
 #define BRAVE_BROWSER_BRAVE_WALLET_BRAVE_WALLET_PROVIDER_DELEGATE_IMPL_HELPER_H_
 
+#include <string>
+
 #include "base/callback.h"
 #include "build/build_config.h"
 
@@ -23,6 +25,10 @@ void ShowPanel(content::WebContents* web_contents);
 // Show wallet onboarding page.
 void ShowWalletOnboarding(content::WebContents* web_contents);
 
+// Show account creation page for keyring id
+void ShowAccountCreation(content::WebContents* web_contents,
+                         const std::string& keyring_id);
+
 // Triggers when any kind interaction from a DApp is detected
 void WalletInteractionDetected(content::WebContents* web_contents);
 
@@ -30,9 +36,9 @@ void WalletInteractionDetected(content::WebContents* web_contents);
 // show or not a permissions prompt dialog
 bool IsWeb3NotificationAllowed();
 
-#if !BUILDFLAG(IS_ANDROID)
 void SetCallbackForNewSetupNeededForTesting(base::OnceCallback<void()>);
-#endif
+
+void SetCallbackForAccountCreationForTesting(base::OnceCallback<void()>);
 
 }  // namespace brave_wallet
 
