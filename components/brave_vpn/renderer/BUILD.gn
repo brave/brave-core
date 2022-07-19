@@ -12,6 +12,9 @@ source_set("renderer") {
   deps = [
     "//base",
     "//brave/components/brave_vpn",
+    "//brave/components/brave_vpn/buildflags",
+    "//brave/components/brave_vpn/mojom",
+    "//content/public/renderer",
     "//content/public/renderer",
     "//gin",
     "//mojo/public/cpp/bindings",
@@ -21,4 +24,3 @@ source_set("renderer") {
     "//v8",
   ]
 }
-
