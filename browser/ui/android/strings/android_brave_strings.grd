@@ -3091,6 +3091,21 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_BRAVE_WALLET_CREATE_ACCOUNT_SOLANA_DESCRIPTION" desc="Add account modal create account Solana description">
       Supports SPL compatible assets on the Solana blockchain
     </message>
+    <message name="IDS_BRAVE_WALLET_CREATE_ACCOUNT_DESCRIPTION" desc="Create Account Tab Description">
+      You don’t yet have a <ph name="ACCOUNT_TYPE"><ex>Solana</ex>%1$s</ph> account. Create one now?
+    </message>
+    <message name="IDS_WALLET_ACTION_YES" desc="Action text for general positive actions">
+      Yes
+    </message>
+    <message name="IDS_WALLET_ACTION_NO" desc="Action text for general negative actions">
+      No
+    </message>
+    <message name="IDS_WALLET_ETH_NAME" desc="Name of ETH cointype">
+      Ethereum
+    </message>
+    <message name="IDS_WALLET_SOL_NAME" desc="Name of SOL cointype">
+      Solana
+    </message>
   </messages>
   </release>
 </grit>
