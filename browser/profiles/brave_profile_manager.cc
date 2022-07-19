@@ -17,6 +17,7 @@
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
 #include "brave/browser/profiles/profile_util.h"
+#include "brave/browser/url_sanitizer/url_sanitizer_service_factory.h"
 #include "brave/components/brave_today/common/features.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/content_settings/core/browser/brave_content_settings_pref_provider.h"
@@ -134,6 +135,7 @@ void BraveProfileManager::DoFinalInitForServices(Profile* profile,
     brave_news::BraveNewsControllerFactory::GetForContext(profile);
   }
   brave_federated::BraveFederatedServiceFactory::GetForBrowserContext(profile);
+  brave::URLSanitizerServiceFactory::GetForBrowserContext(profile);
 }
 
 bool BraveProfileManager::IsAllowedProfilePath(

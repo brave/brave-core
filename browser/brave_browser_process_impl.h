@@ -17,6 +17,7 @@
 #include "brave/components/speedreader/common/buildflags.h"
 #include "brave/components/tor/brave_tor_pluggable_transport_updater.h"
 #include "brave/components/tor/buildflags/buildflags.h"
+#include "brave/components/url_sanitizer/browser/url_sanitizer_component_installer.h"
 #include "chrome/browser/browser_process_impl.h"
 #include "extensions/buildflags/buildflags.h"
 
@@ -99,6 +100,8 @@ class BraveBrowserProcessImpl : public BraveBrowserProcess,
   greaselion::GreaselionDownloadService* greaselion_download_service() override;
 #endif
   debounce::DebounceComponentInstaller* debounce_component_installer() override;
+  brave::URLSanitizerComponentInstaller* URLSanitizerComponentInstaller()
+      override;
   brave_shields::HTTPSEverywhereService* https_everywhere_service() override;
   brave_component_updater::LocalDataFilesService* local_data_files_service()
       override;
@@ -155,6 +158,8 @@ class BraveBrowserProcessImpl : public BraveBrowserProcess,
 #endif
   std::unique_ptr<debounce::DebounceComponentInstaller>
       debounce_component_installer_;
+  std::unique_ptr<brave::URLSanitizerComponentInstaller>
+      url_sanitizer_component_installer_;
   bool created_https_everywhere_service_ = false;
   std::unique_ptr<brave_shields::HTTPSEverywhereService>
       https_everywhere_service_;

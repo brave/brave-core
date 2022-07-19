@@ -23,6 +23,7 @@
 #include "brave/browser/permissions/permission_lifetime_manager_factory.h"
 #include "brave/browser/search_engines/search_engine_tracker.h"
 #include "brave/browser/skus/skus_service_factory.h"
+#include "brave/browser/url_sanitizer/url_sanitizer_service_factory.h"
 #include "brave/components/brave_adaptive_captcha/buildflags/buildflags.h"
 #include "brave/components/brave_today/common/features.h"
 #include "brave/components/greaselion/browser/buildflags/buildflags.h"
@@ -70,6 +71,7 @@ void EnsureBrowserContextKeyedServiceFactoriesBuilt() {
   brave_rewards::RewardsServiceFactory::GetInstance();
   brave_shields::AdBlockPrefServiceFactory::GetInstance();
   debounce::DebounceServiceFactory::GetInstance();
+  brave::URLSanitizerServiceFactory::GetInstance();
 #if BUILDFLAG(ENABLE_GREASELION)
   greaselion::GreaselionServiceFactory::GetInstance();
 #endif
