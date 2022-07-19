@@ -361,7 +361,7 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
 
     public CryptoModel getCryptoModel() {
         if (getWalletModel() != null) {
-            return walletModel.getCryptoModel();
+            return mWalletModel.getCryptoModel();
         }
         return null;
     }
