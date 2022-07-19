@@ -29,7 +29,8 @@ import {
   Title,
   Description,
   NextButtonRow,
-  MainWrapper
+  MainWrapper,
+  TitleAndDescriptionContainer
 } from '../onboarding.style'
 import { CheckboxText } from './disclosures.style'
 
@@ -98,16 +99,14 @@ export const OnboardingDisclosures = ({ nextStep, onBack }: Props) => {
             preventSkipAhead
           />
 
-          <div>
+          <TitleAndDescriptionContainer style={{ marginLeft: 18 }}>
             <Title>
               {getLocale('braveWalletDisclosuresTitle')}
             </Title>
             <Description>
               {getLocale('braveWalletDisclosuresDescription')}
             </Description>
-          </div>
-
-          <VerticalSpace space='40px' />
+          </TitleAndDescriptionContainer>
 
           <div>
             <Checkbox
@@ -132,7 +131,7 @@ export const OnboardingDisclosures = ({ nextStep, onBack }: Props) => {
               </CheckboxText>
             </Checkbox>
 
-            <VerticalSpace space='120px' />
+            <VerticalSpace space='44px' />
           </div>
 
           <NextButtonRow>
