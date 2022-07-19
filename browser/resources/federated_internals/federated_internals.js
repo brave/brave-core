@@ -117,7 +117,7 @@ function formatDate(date) {
 }
 
 function onLogsDump() {
-  var data = 'training_instance_id,type,data_type,value\n'
+  let data = 'training_instance_id,type,data_type,value\n'
   for (const [training_instance_id, training_instance] of Object.entries(dataStoresLogs[selectedDataStore])) {
     training_instance.covariates.forEach(function(covariate) {
       data += training_instance_id.toString() + ',' + covariate.type.toString() + ',' + 
