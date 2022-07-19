@@ -86,7 +86,7 @@ void ReduceLanguageNavigationThrottle::UpdateHeaders() {
   // static value regardless of other preferences.
   if (fingerprinting_control_type == ControlType::BLOCK) {
     handle->SetRequestHeader(net::HttpRequestHeaders::kAcceptLanguage,
-                             "en-US,en");
+                             "en-US,en;q=0.9");
     return;
   }
 
