@@ -23,78 +23,44 @@ constexpr char kSegmentKey[] = "segment";
 constexpr char kValueKey[] = "value";
 constexpr char kPullsKey[] = "pulls";
 
-bool GetArmFromDictionary(const base::DictionaryValue* dictionary,
+bool GetArmFromDictionary(const base::Value::Dict& dict,
                           EpsilonGreedyBanditArmInfo* info) {
-  DCHECK(dictionary);
   DCHECK(info);
 
-  if (!dictionary) {
-    return false;
-  }
-
-  if (!info) {
-    return false;
-  }
-
   EpsilonGreedyBanditArmInfo arm;
-
-  const std::string* segment = dictionary->FindStringKey(kSegmentKey);
+  const std::string* segment = dict.FindString(kSegmentKey);
   if (!segment || segment->empty()) {
     return false;
   }
   arm.segment = *segment;
-  DCHECK(!arm.segment.empty());
-
-  arm.pulls = dictionary->FindIntKey(kPullsKey).value_or(0);
-
-  arm.value = dictionary->FindDoubleKey(kValueKey).value_or(1.0);
-
+  arm.pulls = dict.FindInt(kPullsKey).value_or(0);
+  arm.value = dict.FindDouble(kValueKey).value_or(1.0);
   *info = arm;
-
   return true;
 }
 
-EpsilonGreedyBanditArmMap GetArmsFromDictionary(
-    const base::DictionaryValue* dictionary) {
-  DCHECK(dictionary);
+EpsilonGreedyBanditArmMap GetArmsFromDictionary(const base::Value::Dict& dict) {
   EpsilonGreedyBanditArmMap arms;
-
-  if (!dictionary) {
-    return arms;
-  }
-
   bool found_errors = false;
-  for (const auto value : dictionary->DictItems()) {
-    if (value.first.empty()) {
+  for (const auto [key, value] : dict) {
+    if (!value.is_dict()) {
       found_errors = true;
       continue;
     }
-
-    if (!value.second.is_dict()) {
-      found_errors = true;
-      continue;
-    }
-
-    const base::DictionaryValue* arm_dictionary = nullptr;
-    value.second.GetAsDictionary(&arm_dictionary);
-    if (!arm_dictionary) {
-      found_errors = true;
-      continue;
-    }
+    const base::Value::Dict& arm_dict = value.GetDict();
 
     EpsilonGreedyBanditArmInfo arm;
-    if (!GetArmFromDictionary(arm_dictionary, &arm)) {
+    if (!GetArmFromDictionary(arm_dict, &arm)) {
       found_errors = true;
       continue;
     }
 
-    arms[value.first] = arm;
+    arms[key] = arm;
   }
 
   if (found_errors) {
     BLOG(0, "Errors detected when parsing epsilon greedy bandit arms");
   }
-
   return arms;
 }
 
@@ -111,31 +77,26 @@ EpsilonGreedyBanditArmMap EpsilonGreedyBanditArms::FromJson(
   if (!value || !value->is_dict()) {
     return arms;
   }
+  const base::Value::Dict& arm_dict = value->GetDict();
 
-  base::DictionaryValue* dictionary = nullptr;
-  if (!value->GetAsDictionary(&dictionary)) {
-    return arms;
-  }
-
-  arms = GetArmsFromDictionary(dictionary);
+  arms = GetArmsFromDictionary(arm_dict);
   return arms;
 }
 
 std::string EpsilonGreedyBanditArms::ToJson(
     const EpsilonGreedyBanditArmMap& arms) {
-  base::Value arms_dictionary(base::Value::Type::DICTIONARY);
+  base::Value::Dict dict;
 
-  for (const auto& arm : arms) {
-    base::Value dictionary(base::Value::Type::DICTIONARY);
-    dictionary.SetStringKey(kSegmentKey, arm.first);
-    dictionary.SetIntKey(kPullsKey, arm.second.pulls);
-    dictionary.SetDoubleKey(kValueKey, arm.second.value);
-    arms_dictionary.SetKey(arm.first, std::move(dictionary));
+  for (const auto& [key, value] : arms) {
+    base::Value::Dict item;
+    item.Set(kSegmentKey, key);
+    item.Set(kPullsKey, value.pulls);
+    item.Set(kValueKey, value.value);
+    dict.Set(key, std::move(item));
   }
 
   std::string json;
-  base::JSONWriter::Write(arms_dictionary, &json);
-
+  base::JSONWriter::Write(dict, &json);
   return json;
 }
 
