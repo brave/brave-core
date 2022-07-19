@@ -13,6 +13,7 @@
 #include "base/strings/utf_string_conversions.h"
 #include "brave/components/brave_vpn/brave_vpn_utils.h"
 #include "brave/components/brave_vpn/buildflags/buildflags.h"
+#include "brave/components/skus/common/skus_utils.h"
 #include "content/public/renderer/render_frame.h"
 #include "third_party/blink/public/platform/web_security_origin.h"
 #include "third_party/blink/public/web/web_local_frame.h"
@@ -95,25 +96,9 @@ void VpnRenderFrameObserver::OnGetPurchaseToken(
 
 bool VpnRenderFrameObserver::IsAllowed() {
   DCHECK(brave_vpn::IsBraveVPNEnabled());
-  // NOTE: please open a security review when appending to this list.
-  // TODO(bsclifton): this list also used in:
-  // components\skus\renderer\skus_render_frame_observer.cc
-  // maybe it can be pulled to a central place
-  static base::NoDestructor<std::vector<blink::WebSecurityOrigin>> safe_origins{
-      {{blink::WebSecurityOrigin::Create(GURL("https://account.brave.com"))},
-       {blink::WebSecurityOrigin::Create(
-           GURL("https://account.bravesoftware.com"))},
-       {blink::WebSecurityOrigin::Create(
-           GURL("https://account.brave.software"))}}};
 
-  bool allowed = false;
-  const blink::WebSecurityOrigin& visited_origin =
-      render_frame()->GetWebFrame()->GetSecurityOrigin();
-  for (const blink::WebSecurityOrigin& safe_origin : *safe_origins) {
-    if (safe_origin.IsSameOriginWith(visited_origin)) {
-      allowed = true;
-    }
-  }
+  if (!skus::IsSafeOrigin(render_frame()->GetWebFrame()->GetSecurityOrigin()))
+    return false;
 
   GURL current_url(
       render_frame()->GetWebFrame()->GetDocument().Url().GetString().Utf8());
@@ -129,7 +114,7 @@ bool VpnRenderFrameObserver::IsAllowed() {
       product != kProductParamValue) {
     return false;
   }
-  return allowed;
+  return true;
 }
 
 void VpnRenderFrameObserver::OnDestruct() {

@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_BRAVE_VPN_RENDERER_VPN_RENDER_FRAME_OBSERVER_H_
 
 #include <memory>
+#include <string>
 
 #include "base/memory/weak_ptr.h"
 #include "brave/components/brave_vpn/mojom/brave_vpn.mojom.h"
