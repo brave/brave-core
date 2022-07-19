@@ -15,44 +15,6 @@
 
 namespace ads {
 
-namespace {
-
-base::Time GetNextPaymentDateFromDictionary(base::DictionaryValue* dictionary) {
-  DCHECK(dictionary);
-
-  const std::string* value = dictionary->FindStringKey("next_payment_date");
-  if (!value) {
-    return base::Time();
-  }
-
-  double value_as_double = 0.0;
-  if (!base::StringToDouble(*value, &value_as_double)) {
-    return base::Time();
-  }
-
-  return base::Time::FromDoubleT(value_as_double);
-}
-
-double GetEarningsThisMonthFromDictionary(base::DictionaryValue* dictionary) {
-  DCHECK(dictionary);
-
-  return dictionary->FindDoubleKey("earnings_this_month").value_or(0.0);
-}
-
-double GetEarningsLastMonthFromDictionary(base::DictionaryValue* dictionary) {
-  DCHECK(dictionary);
-
-  return dictionary->FindDoubleKey("earnings_last_month").value_or(0.0);
-}
-
-int GetAdsReceivedThisMonthFromDictionary(base::DictionaryValue* dictionary) {
-  DCHECK(dictionary);
-
-  return dictionary->FindIntKey("ads_received_this_month").value_or(0);
-}
-
-}  // namespace
-
 StatementInfo::StatementInfo() = default;
 
 StatementInfo::StatementInfo(const StatementInfo& info) = default;
@@ -74,25 +36,24 @@ bool StatementInfo::operator!=(const StatementInfo& rhs) const {
 }
 
 std::string StatementInfo::ToJson() const {
-  base::Value dictionary(base::Value::Type::DICTIONARY);
+  base::Value::Dict dict;
 
   // Next payment date
-  dictionary.SetStringKey("next_payment_date",
-                          base::NumberToString(next_payment_date.ToDoubleT()));
+  dict.Set("next_payment_date",
+           base::NumberToString(next_payment_date.ToDoubleT()));
 
   // Earnings this month
-  dictionary.SetDoubleKey("earnings_this_month", earnings_this_month);
+  dict.Set("earnings_this_month", earnings_this_month);
 
   // Earnings last month
-  dictionary.SetDoubleKey("earnings_last_month", earnings_last_month);
+  dict.Set("earnings_last_month", earnings_last_month);
 
   // Ads received this month
-  dictionary.SetIntKey("ads_received_this_month", ads_received_this_month);
+  dict.Set("ads_received_this_month", ads_received_this_month);
 
   // Write to JSON
   std::string json;
-  base::JSONWriter::Write(dictionary, &json);
-
+  base::JSONWriter::Write(dict, &json);
   return json;
 }
 
@@ -102,17 +63,21 @@ bool StatementInfo::FromJson(const std::string& json) {
     return false;
   }
 
-  base::DictionaryValue* dictionary = nullptr;
-  if (!value->GetAsDictionary(&dictionary)) {
-    return false;
-  }
+  const base::Value::Dict& dict = value->GetDict();
 
-  next_payment_date = GetNextPaymentDateFromDictionary(dictionary);
+  next_payment_date = [&dict]() {
+    if (const std::string* value = dict.FindString("next_payment_date")) {
+      double value_as_double = 0.0;
+      if (base::StringToDouble(*value, &value_as_double)) {
+        return base::Time::FromDoubleT(value_as_double);
+      }
+    }
+    return base::Time();
+  }();
 
-  earnings_this_month = GetEarningsThisMonthFromDictionary(dictionary);
-  earnings_last_month = GetEarningsLastMonthFromDictionary(dictionary);
-
-  ads_received_this_month = GetAdsReceivedThisMonthFromDictionary(dictionary);
+  earnings_this_month = dict.FindDouble("earnings_this_month").value_or(0.0);
+  earnings_last_month = dict.FindDouble("earnings_last_month").value_or(0.0);
+  ads_received_this_month = dict.FindInt("ads_received_this_month").value_or(0);
 
   return true;
 }
