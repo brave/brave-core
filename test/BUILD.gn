@@ -363,6 +363,7 @@ test("brave_unit_tests") {
     ]
     deps += [
       "//brave/app:brave_generated_resources_grit",
+      "//brave/browser/ui/color:unit_tests",
       "//brave/browser/ui/toolbar:brave_app_menu_unit_test",
       "//brave/components/brave_shields/common:mojom",
       "//brave/components/brave_wallet/browser:pref_names",

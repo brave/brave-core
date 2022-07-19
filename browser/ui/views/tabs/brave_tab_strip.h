@@ -16,8 +16,14 @@ class BraveTabStrip : public TabStrip {
   BraveTabStrip& operator=(const BraveTabStrip&) = delete;
 
  private:
+  FRIEND_TEST_ALL_PREFIXES(ColorPaletteTest, LightThemeMinimumContrast);
+
   // TabStrip overrides:
   SkColor GetTabSeparatorColor() const override;
+  bool ShouldDrawStrokes() const override;
+
+  // Exposed for testing.
+  static constexpr float kBraveMinimumContrastRatioForOutlines = 1.2797f;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_TABS_BRAVE_TAB_STRIP_H_
