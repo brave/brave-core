@@ -1,0 +1,23 @@
+diff --git a/crypto/signature_verifier.cc b/crypto/signature_verifier.cc
+index 542c7f671b835d7b929a0623eca563ed8231fe3a..8f2cd17f29781281db695d1f54f174bc2535ad0c 100644
+--- a/crypto/signature_verifier.cc
++++ b/crypto/signature_verifier.cc
+@@ -12,6 +12,7 @@
+ #include "third_party/boringssl/src/include/openssl/digest.h"
+ #include "third_party/boringssl/src/include/openssl/evp.h"
+ #include "third_party/boringssl/src/include/openssl/rsa.h"
++#include "third_party/boringssl/src/include/openssl/err.h"
+ 
+ namespace crypto {
+ 
+@@ -44,6 +45,10 @@ bool SignatureVerifier::VerifyInit(SignatureAlgorithm signature_algorithm,
+       pkey_type = EVP_PKEY_EC;
+       digest = EVP_sha256();
+       break;
++    case ECDSA_SHA384:
++      pkey_type = EVP_PKEY_EC;
++      digest = EVP_sha384();
++      break;
+   }
+   DCHECK_NE(EVP_PKEY_NONE, pkey_type);
+   DCHECK(digest);

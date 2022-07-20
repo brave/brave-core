@@ -6,6 +6,8 @@
 #ifndef BRAVE_COMPONENTS_P3A_BRAVE_P3A_CONFIG_H_
 #define BRAVE_COMPONENTS_P3A_BRAVE_P3A_CONFIG_H_
 
+#include <string>
+
 #include "base/time/time.h"
 #include "url/gurl.h"
 
@@ -22,8 +24,7 @@ struct BraveP3AConfig {
   GURL p2a_json_upload_url;
   GURL p3a_star_upload_url;
   GURL p2a_star_upload_url;
-  GURL star_randomness_url;
-  GURL star_randomness_info_url;
+  std::string star_randomness_host;
 
   bool ignore_server_errors = false;
 

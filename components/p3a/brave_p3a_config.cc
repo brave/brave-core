@@ -5,8 +5,6 @@
 
 #include "brave/components/p3a/brave_p3a_config.h"
 
-#include <string>
-
 #include "base/command_line.h"
 #include "base/logging.h"
 #include "brave/components/p3a/brave_p3a_switches.h"
@@ -27,6 +25,14 @@ void LoadTimeDelta(base::CommandLine* cmdline,
     if (base::StringToInt64(seconds_str, &seconds) && seconds > 0) {
       *result = base::Seconds(seconds);
     }
+  }
+}
+
+void LoadString(base::CommandLine* cmdline,
+                const char* switch_name,
+                std::string* result) {
+  if (cmdline->HasSwitch(switch_name)) {
+    *result = cmdline->GetSwitchValueASCII(switch_name);
   }
 }
 
@@ -58,8 +64,7 @@ BraveP3AConfig::BraveP3AConfig()
       p2a_json_upload_url(BUILDFLAG(P2A_JSON_UPLOAD_URL)),
       p3a_star_upload_url(BUILDFLAG(P3A_STAR_UPLOAD_URL)),
       p2a_star_upload_url(BUILDFLAG(P2A_STAR_UPLOAD_URL)),
-      star_randomness_url(BUILDFLAG(STAR_RANDOMNESS_UPLOAD_URL)),
-      star_randomness_info_url(BUILDFLAG(STAR_RANDOMNESS_INFO_URL)) {}
+      star_randomness_host(BUILDFLAG(STAR_RANDOMNESS_HOST)) {}
 
 BraveP3AConfig::~BraveP3AConfig() {}
 
@@ -80,9 +85,7 @@ void BraveP3AConfig::LoadFromCommandLine() {
   LoadURL(cmdline, switches::kP2AJsonUploadUrl, &p2a_json_upload_url);
   LoadURL(cmdline, switches::kP3AStarUploadUrl, &p3a_star_upload_url);
   LoadURL(cmdline, switches::kP2AStarUploadUrl, &p2a_star_upload_url);
-  LoadURL(cmdline, switches::kP3AStarRandomnessUrl, &star_randomness_url);
-  LoadURL(cmdline, switches::kP3AStarRandomnessInfoUrl,
-          &star_randomness_info_url);
+  LoadString(cmdline, switches::kP3AStarRandomnessHost, &star_randomness_host);
 
   LoadBool(cmdline, switches::kP3AIgnoreServerErrors, &ignore_server_errors);
 
@@ -93,8 +96,7 @@ void BraveP3AConfig::LoadFromCommandLine() {
           << ", p2a_json_upload_url_ = " << p2a_json_upload_url.spec()
           << ", p3a_star_upload_url_ = " << p3a_star_upload_url.spec()
           << ", p2a_star_upload_url_ = " << p2a_star_upload_url.spec()
-          << ", star_randomness_info_url_ = " << star_randomness_info_url.spec()
-          << ", star_randomness_url_ = " << star_randomness_url.spec()
+          << ", star_randomness_host_ = " << star_randomness_host
           << ", rotation_interval_ = " << rotation_interval;
 }
 
