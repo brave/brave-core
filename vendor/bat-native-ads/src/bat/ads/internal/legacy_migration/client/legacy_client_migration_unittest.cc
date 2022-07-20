@@ -39,7 +39,7 @@ class BatAdsLegacyClientMigrationTest : public UnitTestBase {
 
 TEST_F(BatAdsLegacyClientMigrationTest, Migrate) {
   // Arrange
-  CopyFileFromTestPathToTempPath(kClientFilename);
+  CopyFileFromTestPathToTempPath(kClientStateFilename);
 
   SetHash(kClientJsonHash);
 
@@ -52,7 +52,7 @@ TEST_F(BatAdsLegacyClientMigrationTest, Migrate) {
 
 TEST_F(BatAdsLegacyClientMigrationTest, InvalidState) {
   // Arrange
-  CopyFileFromTestPathToTempPath(kInvalidJsonFilename, kClientFilename);
+  CopyFileFromTestPathToTempPath(kInvalidJsonFilename, kClientStateFilename);
 
   // Act
   Migrate(/* should_migrate */ false);
@@ -63,7 +63,7 @@ TEST_F(BatAdsLegacyClientMigrationTest, InvalidState) {
 
 TEST_F(BatAdsLegacyClientMigrationTest, AlreadyMigrated) {
   // Arrange
-  CopyFileFromTestPathToTempPath(kClientFilename);
+  CopyFileFromTestPathToTempPath(kClientStateFilename);
 
   SetHash(kClientJsonHash);
 

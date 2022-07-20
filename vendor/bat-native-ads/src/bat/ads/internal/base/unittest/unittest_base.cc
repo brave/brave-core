@@ -292,6 +292,7 @@ void UnitTestBase::SetDefaultPrefs() {
   ads_client_mock_->SetTimePref(prefs::kNextTokenRedemptionAt, DistantFuture());
 
   ads_client_mock_->SetBooleanPref(prefs::kHasMigratedClientState, true);
+  ads_client_mock_->SetBooleanPref(prefs::kHasMigratedConfirmationState, true);
   ads_client_mock_->SetBooleanPref(prefs::kHasMigratedConversionState, true);
   ads_client_mock_->SetBooleanPref(prefs::kHasMigratedRewardsState, true);
 

@@ -47,7 +47,8 @@ void Migrate(InitializeCallback callback) {
   BLOG(3, "Loading confirmations state");
 
   AdsClientHelper::GetInstance()->Load(
-      kConfirmationsFilename, [=](const bool success, const std::string& json) {
+      kConfirmationStateFilename,
+      [=](const bool success, const std::string& json) {
         if (!success) {
           // Confirmations state does not exist
           SuccessfullyMigrated(callback);

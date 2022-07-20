@@ -557,7 +557,7 @@ void ClientStateManager::Save() {
 
   auto callback =
       std::bind(&ClientStateManager::OnSaved, this, std::placeholders::_1);
-  AdsClientHelper::GetInstance()->Save(kClientFilename, json, callback);
+  AdsClientHelper::GetInstance()->Save(kClientStateFilename, json, callback);
 }
 
 void ClientStateManager::OnSaved(const bool success) {
@@ -575,7 +575,7 @@ void ClientStateManager::Load() {
 
   auto callback = std::bind(&ClientStateManager::OnLoaded, this,
                             std::placeholders::_1, std::placeholders::_2);
-  AdsClientHelper::GetInstance()->Load(kClientFilename, callback);
+  AdsClientHelper::GetInstance()->Load(kClientStateFilename, callback);
 }
 
 void ClientStateManager::OnLoaded(const bool success, const std::string& json) {

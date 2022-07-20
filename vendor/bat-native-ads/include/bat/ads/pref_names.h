@@ -42,6 +42,7 @@ extern const char kEpsilonGreedyBanditEligibleSegments[];
 extern const char kNextTokenRedemptionAt[];
 
 extern const char kHasMigratedClientState[];
+extern const char kHasMigratedConfirmationState[];
 extern const char kHasMigratedConversionState[];
 extern const char kHasMigratedRewardsState[];
 

@@ -35,7 +35,8 @@ TEST_F(BatAdsLegacyClientMigrationIssue23794Test, Migrate) {
   AdsClientHelper::GetInstance()->SetBooleanPref(prefs::kHasMigratedClientState,
                                                  false);
 
-  CopyFileFromTestPathToTempPath(kClientIssue23794Filename, kClientFilename);
+  CopyFileFromTestPathToTempPath(kClientIssue23794Filename,
+                                 kClientStateFilename);
 
   SetHash(kClientIssue23794JsonHash);
 

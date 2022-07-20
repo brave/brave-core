@@ -89,7 +89,8 @@ void ConfirmationStateManager::Load() {
   BLOG(3, "Loading confirmations state");
 
   AdsClientHelper::GetInstance()->Load(
-      kConfirmationsFilename, [=](const bool success, const std::string& json) {
+      kConfirmationStateFilename,
+      [=](const bool success, const std::string& json) {
         if (!success) {
           BLOG(3, "Confirmations state does not exist, creating default state");
 
@@ -134,7 +135,7 @@ void ConfirmationStateManager::Save() {
   }
 
   AdsClientHelper::GetInstance()->Save(
-      kConfirmationsFilename, json, [](const bool success) {
+      kConfirmationStateFilename, json, [](const bool success) {
         if (!success) {
           BLOG(0, "Failed to save confirmations state");
           return;
@@ -177,8 +178,6 @@ bool ConfirmationStateManager::RemoveFailedConfirmation(
 
   return true;
 }
-
-///////////////////////////////////////////////////////////////////////////////
 
 std::string ConfirmationStateManager::ToJson() {
   base::Value::Dict dict;
@@ -228,6 +227,8 @@ bool ConfirmationStateManager::FromJson(const std::string& json) {
 
   return true;
 }
+
+///////////////////////////////////////////////////////////////////////////////
 
 void ConfirmationStateManager::SetIssuers(const IssuerList& issuers) {
   DCHECK(is_initialized_);

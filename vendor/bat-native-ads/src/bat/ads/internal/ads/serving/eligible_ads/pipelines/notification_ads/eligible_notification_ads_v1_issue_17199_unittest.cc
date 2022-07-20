@@ -28,7 +28,8 @@ class BatAdsEligibleNotificationAdsV1Issue17199Test : public UnitTestBase {
     CopyFileFromTestPathToTempPath("database_issue_17199.sqlite",
                                    kDatabaseFilename);
 
-    CopyFileFromTestPathToTempPath("client_issue_17199.json", kClientFilename);
+    CopyFileFromTestPathToTempPath("client_issue_17199.json",
+                                   kClientStateFilename);
   }
 };
 

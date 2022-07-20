@@ -8,7 +8,7 @@
 
 namespace ads {
 
-constexpr char kClientFilename[] = "client.json";
+constexpr char kClientStateFilename[] = "client.json";
 
 }  // namespace ads
 

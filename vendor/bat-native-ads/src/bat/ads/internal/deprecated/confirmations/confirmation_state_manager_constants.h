@@ -8,7 +8,7 @@
 
 namespace ads {
 
-constexpr char kConfirmationsFilename[] = "confirmations.json";
+constexpr char kConfirmationStateFilename[] = "confirmations.json";
 
 }  // namespace ads
 

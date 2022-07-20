@@ -74,6 +74,8 @@ void AdsService::RegisterProfilePrefs(
                              base::Time::Now());
 
   registry->RegisterBooleanPref(ads::prefs::kHasMigratedClientState, false);
+  registry->RegisterBooleanPref(ads::prefs::kHasMigratedConfirmationState,
+                                false);
   registry->RegisterBooleanPref(ads::prefs::kHasMigratedConversionState, false);
   registry->RegisterBooleanPref(ads::prefs::kHasMigratedRewardsState, false);
 

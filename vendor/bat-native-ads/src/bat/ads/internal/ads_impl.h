@@ -191,6 +191,7 @@ class AdsImpl final : public Ads,
   void MigrateRewards(InitializeCallback callback);
   void MigrateClientState(InitializeCallback callback);
   void LoadClientState(InitializeCallback callback);
+  void MigrateConfirmationState(InitializeCallback callback);
   void LoadConfirmationState(InitializeCallback callback);
   void LoadNotificationAdState(InitializeCallback callback);
 
