@@ -79,6 +79,7 @@ OBJC_EXPORT
 
 - (instancetype)init NS_UNAVAILABLE;
 
+/// Fetch function that will return all synced sessions with tab information
 - (NSArray<IOSOpenDistantSession*>*)getSyncedSessions;
 
 @end

@@ -17,7 +17,7 @@
 
 @interface SendTabToSelfModelListenerImpl : NSObject <SendTabToSelfModelStateListener>
 - (instancetype)init:(id<SendTabToSelfModelStateObserver>)observer
-  sendTabToSelfModel:(void*)model;
+    sendTabToSelfModel:(void*)model;
 @end
 
 namespace brave {

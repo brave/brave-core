@@ -15,13 +15,15 @@ NS_ASSUME_NONNULL_BEGIN
 OBJC_EXPORT
 @protocol SendTabToSelfModelStateObserver <NSObject>
 
-@optional
-
-- (void)sendTabToSelfModelLoaded;
-
-/// Invoked when elements of the model are added, removed, or updated
+/// Invoked when elements of the model are added
 - (void)sendTabToSelfEntriesAddedRemotely:(NSArray<IOSOpenDistantTab*>*)newEntries;
 
+@optional
+
+/// Invoked when the model has finished loading
+- (void)sendTabToSelfModelLoaded;
+
+/// Invoked when elements of the model are removed, or updated
 - (void)sendTabToSelfEntriesRemovedRemotely;
 
 /// Notify listeners of new and existing entries

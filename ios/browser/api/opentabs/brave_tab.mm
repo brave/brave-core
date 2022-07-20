@@ -98,6 +98,8 @@
 }
 @end
 
+#pragma mark - NavigationDelegate
+
 class NavigationDelegate: public web::NavigationManagerDelegate {
 public:
   NavigationDelegate(web::WebState* web_state);
@@ -204,7 +206,7 @@ private:
     BraveNativeTab* tab_; // NOT OWNED
   };
   
-  Browser* browser_; // NOT OWNED
+  Browser* browser_;
   SessionID session_id_;
   std::unique_ptr<NavigationDelegate> navigation_delegate_;
   web::WebState* web_state_;
@@ -320,7 +322,7 @@ void BraveNativeTab::Observer::WebStateDestroyed(
   web_state->RemoveObserver(this);
 }
 
-#pragma mark - BraveTa
+#pragma mark - BraveTab
 
 @interface BraveTab() {
   std::unique_ptr<BraveNativeTab> native_tab_;

@@ -7,20 +7,11 @@
 #include "brave/ios/browser/api/opentabs/brave_sendtab_observer.h"
 #include "brave/ios/browser/api/opentabs/sendtab_model_listener_ios.h"
 
-#include "base/bind.h"
 #include "base/strings/sys_string_conversions.h"
-
 #include "components/send_tab_to_self/send_tab_to_self_model.h"
 #include "components/send_tab_to_self/send_tab_to_self_sync_service.h"
 #include "components/send_tab_to_self/target_device_info.h"
-
-#include "ios/chrome/browser/browser_state/chrome_browser_state.h"
-#include "ios/chrome/browser/ui/recent_tabs/synced_sessions.h"
-#include "ios/chrome/browser/sync/send_tab_to_self_sync_service_factory.h"
-
-#include "ios/web/public/thread/web_thread.h"
 #include "net/base/mac/url_conversions.h"
-#include "url/gurl.h"
 
 namespace brave {
 namespace ios {
@@ -142,7 +133,9 @@ TargetDeviceType DeviceTypeFromSyncDeviceType(
   return [targetDeviceList copy];
 }
 
-- (void)sendActiveTabToDevice:(NSString*)deviceID tabTitle:(NSString*)tabTitle activeURL:(NSURL*)activeURL {
+- (void)sendActiveTabToDevice:(NSString*)deviceID 
+                     tabTitle:(NSString*)tabTitle 
+                    activeURL:(NSURL*)activeURL {
   GURL url = net::GURLWithNSURL(activeURL); 
   std::string title = base::SysNSStringToUTF8(tabTitle);
   std::string target_device = base::SysNSStringToUTF8(deviceID);

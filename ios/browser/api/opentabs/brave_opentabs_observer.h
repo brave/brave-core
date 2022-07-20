@@ -22,10 +22,10 @@ OBJC_EXPORT
 /// Handling sync cycle completed events in a special way
 - (void)openTabsSyncCycleCompleted;
 
-/// Observing synced session when sync cycle is completed .
+/// Observing synced session when sync cycle is completed
 - (void)openTabsSyncConfigurationCompleted;
 
-/// Called when the sync service is being shutdown permanently.
+/// Called when the sync service is being shutdown permanently
 - (void)openTabsSyncShutdown;
 
 @end

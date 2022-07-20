@@ -56,9 +56,16 @@ OBJC_EXPORT
 
 - (instancetype)init NS_UNAVAILABLE;
 
+/// Fetch list of devices which will be used as receiver
 - (NSArray<IOSSendTabTargetDevice*>*)getListOfSyncedDevices;
 
-- (void)sendActiveTabToDevice:(NSString*)deviceID tabTitle:(NSString*)tabTitle activeURL:(NSURL*)activeURL;
+/// Send Tab URL & Title to a specific device 
+/// @param deviceID Id of the target device
+/// @param tabTitle Title of the Tab being sent
+/// @param activeURL URL of the Tab being sent
+- (void)sendActiveTabToDevice:(NSString*)deviceID 
+                     tabTitle:(NSString*)tabTitle 
+                    activeURL:(NSURL*)activeURL;
  
 @end
 
