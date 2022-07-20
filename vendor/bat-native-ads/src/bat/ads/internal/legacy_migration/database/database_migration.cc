@@ -7,7 +7,6 @@
 
 #include <functional>
 #include <utility>
-#include <iostream>
 
 #include "base/check.h"
 #include "bat/ads/internal/account/deposits/deposits_database_table.h"
@@ -45,12 +44,6 @@ void Migration::FromVersion(const int from_version, ResultCallback callback) {
   for (int i = from_version + 1; i <= to_version; i++) {
     ToVersion(transaction.get(), i);
   }
-
-  std::cout << "\n";
-  std::cout << from_version;
-  std::cout << "\n";
-  std::cout << to_version;
-  std::cout << "\n";
 
   mojom::DBCommandPtr command = mojom::DBCommand::New();
   command->type = mojom::DBCommand::Type::MIGRATE;

@@ -6,11 +6,12 @@
 #include "bat/ads/internal/processors/contextual/text_embedding/text_embedding_processor.h"
 #include "bat/ads/internal/processors/contextual/text_embedding/text_embedding_html_events.h"
 
-#include <iostream>
 #include <algorithm>
 
 #include "base/check.h"
 #include "bat/ads/internal/base/logging_util.h"
+#include "bat/ads/internal/base/search_engine/search_engine_results_page_util.h"
+#include "bat/ads/internal/base/search_engine/search_engine_util.h"
 #include "bat/ads/internal/ml/data/vector_data.h"
 #include "bat/ads/internal/features/text_embedding_features.h"
 #include "bat/ads/internal/locale/locale_manager.h"
@@ -65,34 +66,21 @@ void TextEmbedding::Process(const std::string& text) {
   }
 
   const std::string embedding_formatted = text_embedding.GetVectorAsString();
-
-  std::cout << "\n\n";
-  std::cout << embedding_formatted;
-  std::cout << "\n\n";
-
+  BLOG(1, "Embedding: " << embedding_formatted);
   LogTextEmbeddingHTMLEvent(embedding_formatted, [](const bool success) {
     if (!success) {
       BLOG(1, "Failed to text embedding html event");
       return;
     }
-    BLOG(1, "Successfully logged text embedding html event");
-    std::cout << "\n\n";
-    std::cout << "Successfully logged text embedding html event";
-    std::cout << "\n";
-
+    
     PurgeStaleTextEmbeddingHTMLEvents([](const bool success) {
       if (!success) {
         BLOG(1, "Failed to purge stale text embedding html events");
         return;
       }
-      BLOG(1, "Successfully purged stale text embedding html events");
-      std::cout << "Successfully purged stale text embedding html events";
-      std::cout << "\n";
     });
-
-    std::cout << "\n";
+    
     GetTextEmbeddingEventsFromDatabase();
-    std::cout << "\n";
 
   });
 }
@@ -113,21 +101,20 @@ void TextEmbedding::OnHtmlContentDidChange(
     const int32_t id,
     const std::vector<GURL>& redirect_chain,
     const std::string& html) {
+  const GURL& url = redirect_chain.back();
 
-  // const GURL& url = redirect_chain.back();
+  if (!url.SchemeIsHTTPOrHTTPS()) {
+    BLOG(
+        1,
+        url.scheme() << " scheme is not supported for processing html");
+    return;
+  }
 
-  // if (!url.SchemeIsHTTPOrHTTPS()) {
-  //   BLOG(
-  //       1,
-  //       url.scheme() << " scheme is not supported for processing html");
-  //   return;
-  // }
-
-  // if (IsSearchEngine(url) && !IsSearchEngineResultsPage(url)) {
-  //   BLOG(1,
-  //        "Search engine landing pages are not supported for processing html");
-  //   return;
-  // }
+  if (IsSearchEngine(url) && !IsSearchEngineResultsPage(url)) {
+    BLOG(1,
+         "Search engine landing pages are not supported for processing html");
+    return;
+  }
 
   if (TextEmbedding::IsEmbeddingEnabled()) { 
     Process(html);

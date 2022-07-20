@@ -6,9 +6,9 @@
 #include "bat/ads/internal/processors/contextual/text_embedding/text_embedding_html_events.h"
 
 #include <string>
-#include <iostream>
 
 #include "base/time/time.h"
+#include "bat/ads/internal/base/logging_util.h"
 #include "bat/ads/internal/processors/contextual/text_embedding/text_embedding_html_event_info.h"
 #include "bat/ads/internal/processors/contextual/text_embedding/text_embedding_html_events_database_table.h"
 #include "bat/ads/internal/ads_client_helper.h"
@@ -45,8 +45,7 @@ void GetTextEmbeddingEventsFromDatabase() {
     }
 
     for (const auto& text_embedding_html_event : text_embedding_html_events) {
-      std::cout << "\n\n";
-      std::cout << text_embedding_html_event.embedding;
+      BLOG(1, "Stored embedding: " << text_embedding_html_event.embedding);
     }
   });
 }

@@ -5,10 +5,9 @@
 
 #include "bat/ads/internal/ml/pipeline/text_processing/embedding_processing.h"
 
-#include <iostream>
-
 #include "base/check.h"
 #include "base/values.h"
+#include "bat/ads/internal/base/logging_util.h"
 #include "bat/ads/internal/ml/data/text_data.h"
 #include "bat/ads/internal/ml/data/vector_data.h"
 #include "bat/ads/internal/ml/pipeline/pipeline_embedding_info.h"
@@ -90,16 +89,13 @@ VectorData EmbeddingProcessing::EmbedText(const std::string& text) const {
   std::strcpy(text_c, text.c_str());
   char *token = std::strtok(text_c, " ");
   while (token != NULL) {
-
-    std::cout << "\n";
-    std::cout << token;
-
     const auto iter = embeddings_.find(token);
     if (iter != embeddings_.end()) {
-
-      std::cout << " - token found";
+      BLOG(1, token << " - token found");
       embedding_vector.VectorAddElementWise(iter->second);
       n_tokens += 1.0;
+    } else {
+      BLOG(1, token);
     }
     token = strtok(NULL, " ");
   }
