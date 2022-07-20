@@ -10,6 +10,7 @@
 #include "chrome/browser/lifetime/browser_close_manager.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/search/search.h"
+#include "chrome/browser/ui/browser_tabstrip.h"
 #include "chrome/common/webui_url_constants.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/common/url_constants.h"
@@ -68,6 +69,17 @@ void BraveBrowser::ScheduleUIUpdate(content::WebContents* source,
     }
   }
 #endif
+}
+
+void BraveBrowser::TabStripEmpty() {
+  if (unload_controller_.is_attempting_to_close_browser()) {
+    Browser::TabStripEmpty();
+    return;
+  }
+
+  base::SequencedTaskRunnerHandle::Get()->PostTask(
+      FROM_HERE, base::BindOnce(&chrome::AddTabAt, this, GetNewTabURL(), -1,
+                                true, absl::nullopt));
 }
 
 bool BraveBrowser::ShouldDisplayFavicon(

@@ -48,6 +48,7 @@ class BraveBrowser : public Browser {
       const base::RepeatingCallback<void(bool)>& on_close_confirmed) override;
   void ResetTryToCloseWindow() override;
 
+  void TabStripEmpty() override;
   // Returns true when we should ask browser closing to users before handling
   // any warning/onbeforeunload handlers.
   bool ShouldAskForBrowserClosingBeforeHandlers();

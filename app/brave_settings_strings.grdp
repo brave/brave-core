@@ -988,6 +988,9 @@
   <message name="IDS_SETTINGS_WINDOW_CLOSING_CONFIRM_OPTION_LABEL" desc="The text for settings option">
     Warn me before closing window with multiple tabs
   </message>
+  <message name="IDS_SETTINGS_CLOSING_LAST_TAB_OPTION_LABEL" desc="The text for settings option">
+    Close window when closing last tab
+  </message>
 
   <!-- Avatars. Generated via zsh and node:
         declare -i a=56
