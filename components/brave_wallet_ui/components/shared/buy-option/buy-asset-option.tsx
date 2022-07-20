@@ -43,14 +43,14 @@ export const BuyAssetOptionItem = ({
   isPanel
 }: Props) => {
   // memos
-  const networkDescription = React.useMemo(() => {
+  const networkDescription: string = React.useMemo(() => {
     if (tokenNetwork && !isPanel) {
       return getLocale('braveWalletPortfolioAssetNetworkDescription')
         .replace('$1', token.symbol)
         .replace('$2', tokenNetwork.chainName ?? '')
     }
     return token.symbol
-  }, [tokenNetwork, token])
+  }, [tokenNetwork, isPanel, token])
 
   // methods
   const handleOnClick = React.useCallback(() => {
