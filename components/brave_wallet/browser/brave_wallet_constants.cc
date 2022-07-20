@@ -104,6 +104,8 @@ const std::vector<mojom::BlockchainToken>& GetRampBuyTokens() {
        {"0x82030cdbd9e4b7c5bb0b811a61da6360d69449cc", "RealFevr", "", true,
         false, "FEVR", 18, true, "", "",
         mojom::kBinanceSmartChainMainnetChainId, mojom::CoinType::ETH},
+       {"", "Filecoin", "", false, false, "FIL", 18, true, "", "",
+        mojom::kFilecoinMainnet, mojom::CoinType::FIL},
        {"", "Celo", "", false, false, "CELO", 18, true, "", "",
         mojom::kCeloMainnetChainId, mojom::CoinType::ETH},
        {"0xD8763CBa276a3738E6DE85b4b3bF5FDed6D6cA73", "Celo Euro", "ceur.png",
