@@ -722,6 +722,7 @@
 <translation id="4780526507945807546">Utilizați un nod IPFS local Brave</translation>
 <translation id="8148464361648742409">Folosiți un gateway public</translation>
 <translation id="5123478056123923857">IPFS (InterPlanetary File System) este rețeaua publică pentru stocarea și livrarea de date peer-to-peer. Acest protocol are considerații diferite de confidențialitate față de HTTP(S).</translation>
+<translation id="1216911189668016151">Computerul dvs. contribuie la rețeaua publică, însă adresa de IP și conținutul pe care îl solicitați sau îl creați ar putea fi expuse. Conținutul pe care îl solicitați prin IPFS este verificat înainte de a vă fi afișat. Solicitările de rețea nu pot folosi setările proxy și DNS.</translation>
 <translation id="8664689531113048642">Vă protejează adresa IP și conținutul pe care îl solicitați de la observatori potențiali terți, însă nu de la operatorul public de gateway. Operatorul de gateway trebuie să se asigure că conținutul trimis către dvs. printr-un gateway este conținutul pe care l-ați solicitat. De asemenea, computerul dvs. nu contribuie la rețeaua publică IPFS.</translation>
 <translation id="3977809385703587108">Puteți să vă schimbați preferințele din nou în</translation>
 <translation id="3340978935015468852">setări</translation>
@@ -971,6 +972,8 @@
 <translation id="7642841516562576649">URL pictogramă</translation>
 <translation id="2144247757675997850">Adăugați element</translation>
 <translation id="2708402071160162126">AVERTISMENT: nu divulgați niciodată expresia de recuperare. Oricine știe această expresie vă poate prelua activele definitiv.</translation>
+<translation id="2416098547200943834">NOTĂ: Cheia privată este oferită ca fișier JSON hexa-codificat care conține cheia privată și informațiile de protocol <ph name="LINK_START"/>Aflați mai multe<ph name="LINK_END"/>.</translation>
+<translation id="7657130382217527063">Cheia privată trebuie să fie furnizată ca fișier JSON hexa-codificat care conține cheia privată și informațiile de protocol. <ph name="LINK_START"/>Aflați mai multe<ph name="LINK_END"/>.</translation>
 <translation id="2902856457593699108">Afișați cheia</translation>
 <translation id="8033497299373164724">Ascundeți cheia</translation>
 <translation id="2702143907607790516">Nu s-a reușit actualizarea numelui contului. Încercați din nou!</translation>
@@ -1006,6 +1009,7 @@
 <translation id="5488357322146334497">Mesaj</translation>
 <translation id="3586752056660754651">Semnați</translation>
 <translation id="3484981968509595506">A DApp vă solicită cheia publică de criptare</translation>
+<translation id="2950511942409261729"><ph name="URL_BEFORE"/>$url<ph name="URL_AFTER"/> solicită cheia de criptare personală a portofelului dvs. Dacă sunteți de acord să oferiți această cheie, site-ul va putea redacta mesaje criptate spre  dvs.</translation>
 <translation id="3340247553212049934">Indicați</translation>
 <translation id="1619778919922494944">Acest DApp vrea să citiți acest mesaj pentru a finaliza solictarea</translation>
 <translation id="714506544401754321">Decriptați mesajul</translation>
@@ -1072,6 +1076,8 @@
 <translation id="7051244143160304048">Dispozitivul <ph name="DEVICE_NAME"/> este deconectat</translation>
 <translation id="5317781812114905957">Instrucțiuni</translation>
 <translation id="1178198982208000092">Conectați dispozitivul <ph name="DEVICE_NAME"/></translation>
+<translation id="6291765462876399333">Portofelul hardware necesită confirmare pe dispozitivul <ph name="DEVICE_NAME"/></translation>
+<translation id="2288190100157580461">Portofelul hardware necesită aplicația<ph name="NETWORK"/> deschisă pe <ph name="DEVICE_NAME"/></translation>
 <translation id="8687869982094542529">trimisă</translation>
 <translation id="5013754027092416509">s-a primit</translation>
 <translation id="5867988533873716616">Adresa URL pentru exploratorul de blocuri nu este disponibilă.</translation>
@@ -1142,6 +1148,7 @@
 <translation id="1470129769517088397"><ph name="ADDRESS"/> nu este rețeaua actuală</translation>
 <translation id="7340805872138998391">Nu se poate debloca dispozitivul; încercați reconectarea</translation>
 <translation id="1984410139271779110">Eroare internă: schemă necunoscută</translation>
+<translation id="6989562355845156390">aprobați</translation>
 <translation id="4674380028960132654">Ledger: semnătura nu corespunde cu adresa</translation>
 <translation id="3183932890629254743">Contul hardware nu a fost găsit</translation>
 <translation id="4287068151777838754">Nu se așteaptă date JSON</translation>
@@ -1184,6 +1191,26 @@
 <translation id="2317956709076373213">Tranzacție confirmată</translation>
 <translation id="310693998838023022">Eroare la efectuarea tranzacției</translation>
 <translation id="6395870673621520684">Tranzacție întreruptă</translation>
+<translation id="1237782734462409503">Fila nu este activă</translation>
+<translation id="756701799684433105">Aprobați tranzacția</translation>
+<translation id="6450792191436242818">Programul sistemului</translation>
+<translation id="6252742184395380448">Program de configurare</translation>
+<translation id="5358970666412490132">Programe Stake</translation>
+<translation id="346636227344244984">Program de vot</translation>
+<translation id="3538368258493053874">Încărcător BPF</translation>
+<translation id="2334098351242742927">Program Ed25519</translation>
+<translation id="8780753288764281797">Program Secp256k1</translation>
+<translation id="5275550100743015683">De la adresa:</translation>
+<translation id="2678433693746214764">La adresa:</translation>
+<translation id="4576396475962922672">Cont nou</translation>
+<translation id="4719005063558335704">Conturi:</translation>
+<translation id="4337554812324118382">Date:</translation>
+<translation id="569870799832027680">ID program:</translation>
+<translation id="7843211152394841558">Nr. max de reîncercări:</translation>
+<translation id="8496335570810457">Angajament Preflight:</translation>
+<translation id="5100124500279922001">Omiteți Preflight:</translation>
+<translation id="8060029310790625334">Centru de ajutor</translation>
+<translation id="2095142195578664632">Aveți nevoie de ajutor?</translation>
 <translation id="3155170474926428993">Lansatorul Tor</translation>
 <translation id="3745016858329272300">Informații generale</translation>
 <translation id="4045404575593562245">Evenimente control Tor</translation>

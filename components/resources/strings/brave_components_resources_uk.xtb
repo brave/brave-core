@@ -1193,11 +1193,11 @@
 <translation id="6395870673621520684">Транзакцію скинуто</translation>
 <translation id="1237782734462409503">Вкладка неактивна</translation>
 <translation id="756701799684433105">Схвалити транзакцію</translation>
-<translation id="6450792191436242818">System Program</translation>
-<translation id="6252742184395380448">Config Program</translation>
+<translation id="6450792191436242818">Системна програма</translation>
+<translation id="6252742184395380448">Програма налаштувань</translation>
 <translation id="5358970666412490132">Stake Program</translation>
-<translation id="346636227344244984">Vote Program</translation>
-<translation id="3538368258493053874">BPF Loader</translation>
+<translation id="346636227344244984">Програма для голосувань</translation>
+<translation id="3538368258493053874">Завантажник BPF</translation>
 <translation id="2334098351242742927">Ed25519 Program</translation>
 <translation id="8780753288764281797">Secp256k1 Program</translation>
 <translation id="5275550100743015683">З адреси:</translation>
@@ -1207,8 +1207,8 @@
 <translation id="4337554812324118382">Дані:</translation>
 <translation id="569870799832027680">ID програми:</translation>
 <translation id="7843211152394841558">Максимальна кількість спроб:</translation>
-<translation id="8496335570810457">Попереднє зобов’язання:</translation>
-<translation id="5100124500279922001">Пропустити підготовку:</translation>
+<translation id="8496335570810457">Статус симуляції:</translation>
+<translation id="5100124500279922001">Пропустити симуляцію:</translation>
 <translation id="8060029310790625334">Довідковий центр</translation>
 <translation id="2095142195578664632">Потрібна допомога? Перегляньте</translation>
 <translation id="3155170474926428993">Tor Launcher</translation>

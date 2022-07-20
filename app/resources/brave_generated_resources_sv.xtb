@@ -106,16 +106,16 @@ Eller ändra senare på <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="4870911314065352661">Stäng alla flikar?</translation>
 <translation id="7551864359422178684">Du har <ph name="NUMBER_OF_TABS"/> flikar öppna i webbläsarfönstret.</translation>
 <translation id="2571596981920752023"><ph name="NUMBER_OF_TABS"/> flikar</translation>
-<translation id="2272117088509540883">- Brave Search</translation>
-<translation id="2701279958223202597">Stötta oberoende sökningar med bättre integritetsskydd. Brave Search spårar varken dig, dina sökningar eller dina klick.</translation>
+<translation id="2272117088509540883">- Brave-sökning</translation>
+<translation id="2701279958223202597">Stötta oberoende sökningar med bättre integritetsskydd. Brave-sökningar spårar varken dig, dina sökningar eller dina klick.</translation>
 <translation id="6438467592401259882">Stötta oberoende sökningar med bättre integritetsskydd.</translation>
 <translation id="1688359110799098115">Stötta oberoende sökningar med bättre integritetsskydd.</translation>
-<translation id="8579317236683491484">Brave Search spårar varken dig, dina sökningar eller dina klick.</translation>
-<translation id="5240031343741051161">Prova Brave Search</translation>
+<translation id="8579317236683491484">Brave-sökningar spårar varken dig, dina sökningar eller dina klick.</translation>
+<translation id="5240031343741051161">Prova Brave-sökning</translation>
 <translation id="5026874946691314267">Visa inte detta igen</translation>
 <translation id="5234764350956374838">Ta bort permanent</translation>
 <translation id="214744058941501853">"&gt;
-          Avfärda Brave Search-konvertering, tryck på Enter för att ta bort förslaget</translation>
+          Avfärda konvertering för Brave-sökningar, tryck på Enter för att ta bort förslaget</translation>
 <translation id="2515126961943087659">BAT-annonstjänst</translation>
 <translation id="7924918279836988121">Bat huvudbokstjänst</translation>
 <translation id="6040143037577758943">Stäng</translation>
@@ -196,7 +196,7 @@ Eller ändra senare på <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="6817415381278637662">Ange Brave som standardwebbläsare för att få Braves sekretesskydd på varje webbsida du öppnar.</translation>
 <translation id="8722651357687610395">Ställ in Brave som ordinarie.</translation>
 <translation id="2370739752330685659">Kanske senare</translation>
-<translation id="961012016278832836">Microsoft Edge-funktion</translation>
+<translation id="961012016278832836">Äldre Microsoft Edge-version</translation>
 <translation id="6436994631426134065">Importerade från <ph name="BROWSER_NAME"/>.</translation>
 <translation id="9156965752763025780">Ändringarna tillämpas nästa gång du startar om Brave.</translation>
 <translation id="7179921470347911571">Starta om nu</translation>

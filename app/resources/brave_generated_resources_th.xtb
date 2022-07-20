@@ -106,16 +106,16 @@
 <translation id="4870911314065352661">ปิดแท็บทั้งหมดหรือไม่</translation>
 <translation id="7551864359422178684">คุณเปิดแท็บทั้งหมด <ph name="NUMBER_OF_TABS"/> แท็บในหน้าต่างเบราว์เซอร์นี้</translation>
 <translation id="2571596981920752023"><ph name="NUMBER_OF_TABS"/> แท็บ</translation>
-<translation id="2272117088509540883">- Brave Search</translation>
-<translation id="2701279958223202597">ค้นหาได้อย่างอิสระกับความเป็นส่วนตัวยิ่งขึ้น Brave Search จะไม่ติดตามคุณ คำค้นหา หรือการคลิกของคุณ</translation>
+<translation id="2272117088509540883">- เครื่องมือค้นหา Brave</translation>
+<translation id="2701279958223202597">ค้นหาได้อย่างอิสระกับความเป็นส่วนตัวยิ่งขึ้น เครื่องมือค้นหา Brave จะไม่ติดตามคุณ คำค้นหา หรือการคลิกของคุณ</translation>
 <translation id="6438467592401259882">ค้นหาได้อย่างอิสระกับความเป็นส่วนตัวยิ่งขึ้น</translation>
 <translation id="1688359110799098115">ค้นหาได้อย่างอิสระกับความเป็นส่วนตัวยิ่งขึ้น</translation>
-<translation id="8579317236683491484">Brave Search จะไม่ติดตามคุณ คำค้นหา หรือการคลิกของคุณ</translation>
+<translation id="8579317236683491484">เครื่องมือค้นหา Brave จะไม่ติดตามคุณ คำค้นหา หรือการคลิกของคุณ</translation>
 <translation id="5240031343741051161">ลอง Brave Search</translation>
 <translation id="5026874946691314267">ไม่ต้องแสดงสิ่งนี้อีก</translation>
 <translation id="5234764350956374838">ปิด</translation>
 <translation id="214744058941501853">"&gt;
-          ปิดคอนเวอร์ชัน Brave Search และกด Enter เพื่อลบคำแนะนำนี้</translation>
+          ปิดคอนเวอร์ชันเครื่องมือค้นหา Brave และกด Enter เพื่อลบคำแนะนำนี้</translation>
 <translation id="2515126961943087659">บริการโฆษณา BAT</translation>
 <translation id="7924918279836988121">บริการรายการเดินบัญชี Bat</translation>
 <translation id="6040143037577758943">ปิด</translation>
@@ -196,7 +196,7 @@
 <translation id="6817415381278637662">ตั้งค่าให้ Brave เป็นเบราว์เซอร์เริ่มต้นของคุณเพื่อรับการป้องกันความเป็นส่วนตัวของ Brave ในทุกหน้าเว็บที่คุณเปิด</translation>
 <translation id="8722651357687610395">ตั้งค่า Brave เป็นค่าเริ่มต้น</translation>
 <translation id="2370739752330685659">ภายหลัง</translation>
-<translation id="961012016278832836">Microsoft Edge Legacy</translation>
+<translation id="961012016278832836">Microsoft Edge เวอร์ชันเก่า</translation>
 <translation id="6436994631426134065">นำเข้าจาก <ph name="BROWSER_NAME"/></translation>
 <translation id="9156965752763025780">การเปลี่ยนแปลงของคุณจะมีผลในครั้งถัดไปที่คุณเปิด Brave ขึ้นอีก</translation>
 <translation id="7179921470347911571">เปิดใหม่อีกครั้ง</translation>

@@ -106,8 +106,16 @@ Sau modificați permisinile ulterior în <ph name="SETTINGS_EXTENIONS_LINK"/>.</
 <translation id="4870911314065352661">Închideți toate filele?</translation>
 <translation id="7551864359422178684">Aveți <ph name="NUMBER_OF_TABS"/> file deschise în această fereastră de browser.</translation>
 <translation id="2571596981920752023"><ph name="NUMBER_OF_TABS"/> file</translation>
+<translation id="2272117088509540883">- Căutare Brave</translation>
+<translation id="2701279958223202597">Susțineți căutarea independentă cu confidențialitate sporită. Căutarea Brave nu vă urmărește pe dvs., interogările dvs. sau clicurile dvs.</translation>
+<translation id="6438467592401259882">Susțineți căutarea independentă cu condiții de confidențialitate sporită.</translation>
+<translation id="1688359110799098115">Susțineți căutarea independentă cu condiții de confidențialitate mai bune</translation>
+<translation id="8579317236683491484">Căutarea Brave nu vă urmărește pe dvs., interogările dvs. sau clicurile dvs.</translation>
+<translation id="5240031343741051161">Încercați Căutarea Brave</translation>
 <translation id="5026874946691314267">Nu mai afișați acest mesaj din nou</translation>
 <translation id="5234764350956374838">Închide</translation>
+<translation id="214744058941501853">"&gt;
+      Anulați coversia de căutare brave, apăsați Enter pentru a elimina această sugestie</translation>
 <translation id="2515126961943087659">Serviciu de anunțuri Bat</translation>
 <translation id="7924918279836988121">Serviciu Bat Ledger</translation>
 <translation id="6040143037577758943">Închide</translation>
@@ -137,6 +145,7 @@ Sau modificați permisinile ulterior în <ph name="SETTINGS_EXTENIONS_LINK"/>.</
 <translation id="8490082094734500369">Dezactivați modul de citire</translation>
 <translation id="2036503787657622020">Activați modul de citire</translation>
 <translation id="5226458915125328323">Setări extensie de citire rapidă</translation>
+<translation id="1621606336827646158">Afișați pagina originală</translation>
 <translation id="6284218950354553099">Trimiteți automat la Brave un ping privind utilizarea zilnică</translation>
 <translation id="5288333155754958121">Prin acest ping anonim și confidențial, Brave poate estima numărul de utilizatori activi.</translation>
 <translation id="1872784258300710671">Brave folosește statistici de produs complet private pentru a estima utilizarea totală a anumitor funcții</translation>
@@ -187,6 +196,8 @@ Sau modificați permisinile ulterior în <ph name="SETTINGS_EXTENIONS_LINK"/>.</
 <translation id="6817415381278637662">Setați Brave ca browser implicit pentru a beneficia de protecțiile de confidențialitate Brave pentru fiecare pagină deschisă.</translation>
 <translation id="8722651357687610395">Setați Brave ca browser prestabilit</translation>
 <translation id="2370739752330685659">Poate mai târziu</translation>
+<translation id="961012016278832836">Microsoft Edge Legacy</translation>
+<translation id="6436994631426134065">Importat din <ph name="BROWSER_NAME"/></translation>
 <translation id="9156965752763025780">Modificările dvs. vor intra în vigoare următoarea dată când reporniți Brave.</translation>
 <translation id="7179921470347911571">Relansare acum</translation>
 <translation id="4472575034687746823">Începeți</translation>
@@ -203,7 +214,9 @@ Sau modificați permisinile ulterior în <ph name="SETTINGS_EXTENIONS_LINK"/>.</
 <translation id="2906510232093002459">Imagini implicite Brave</translation>
 <translation id="2396127686705429331">Afișați butonul pentru marcaje</translation>
 <translation id="2814998458708016836">Utilizați bara de adrese lată</translation>
+<translation id="4109670531935487117">Afișați sugestiile de completare automată în bara de adrese</translation>
 <translation id="2858138569776157458">Site-uri de top</translation>
+<translation id="65774893852758517">Site-uri sugerate</translation>
 <translation id="7859704718976024901">Istoric de navigare</translation>
 <translation id="8820817407110198400">Bookmark</translation>
 <translation id="6333347122924254968">Afișați pictograma Recompense Brave în bara de adrese</translation>
@@ -364,6 +377,8 @@ Sau modificați permisinile ulterior în <ph name="SETTINGS_EXTENIONS_LINK"/>.</
     Sigur doriți să faceți acest lucru?</translation>
 <translation id="6285118765755298263">Indexare alte motoare de căutare</translation>
 <translation id="919715748352669592">Indexează automat site-urile care respectă specificațiile OpenSearch.</translation>
+<translation id="842628013524824194">Fereastră normală - Motor de căutare folosit în bara de adrese</translation>
+<translation id="5324939009884545145">Fereastră privată - Motor de căutare utilizat în bara de adrese</translation>
 <translation id="6864914031231797928">Permite conectarea cu contul Google pentru extensii</translation>
 <translation id="6554397389149987360">Utilizează componenta Hangouts pentru activarea partajării ecranului și alte funcții din browser.</translation>
 <translation id="7878791177459550035">Router-ul media activează funcția de proiecție în browser.</translation>
@@ -463,6 +478,7 @@ Sau modificați permisinile ulterior în <ph name="SETTINGS_EXTENIONS_LINK"/>.</
 <translation id="616058968889448209">Eroare la lansarea serviciului IPFS. Sunt disponibile informații suplimentare în <ph name="BEGIN_LINK"/>pagina de diagnosticare<ph name="END_LINK"/></translation>
 <translation id="6912148685459054619">Eroare la importarea cheii '<ph name="KEY_NAME"/>'</translation>
 <translation id="3364053282600191535">Eroare la exportarea cheii '<ph name="KEY_NAME"/>'</translation>
+<translation id="5840868269342837751">Notă: Solicitările de rețea nu pot folosi setările de proxy și DNS ale browserului.</translation>
 <translation id="8275038454117074363">Importă</translation>
 <translation id="3654980960391973513">Generare</translation>
 <translation id="5531501313997312487">Start nod</translation>
