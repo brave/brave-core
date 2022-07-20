@@ -82,6 +82,7 @@ export function TipForm () {
 
   const [tipAmount, setTipAmount] = React.useState(0)
   const [tipProcessed, setTipProcessed] = React.useState(false)
+  const [tipPending, setTipPending] = React.useState(false)
   const [wasMonthlySelected, setWasMonthlySelected] = React.useState(false)
 
   const [tipKind, setTipKind] = React.useState<TipKind>(() => {
@@ -93,6 +94,7 @@ export function TipForm () {
     return host.addListener((state) => {
       setTipProcessed(Boolean(state.tipProcessed))
       setTipAmount(state.tipAmount || 0)
+      setTipPending(state.tipPending || false)
       setRewardsParameters(state.rewardsParameters)
       setPublisherInfo(state.publisherInfo)
       setBalanceInfo(state.balanceInfo)
@@ -109,7 +111,13 @@ export function TipForm () {
   }
 
   if (tipProcessed) {
-    return <TipComplete tipKind={tipKind} tipAmount={tipAmount} />
+    return (
+      <TipComplete
+        tipKind={tipKind}
+        tipAmount={tipAmount}
+        tipPending={tipPending}
+      />
+    )
   }
 
   if (showTour) {
