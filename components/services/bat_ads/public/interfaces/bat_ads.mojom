@@ -15,106 +15,152 @@ import "url/mojom/url.mojom";
 interface BatAdsService {
   Create(pending_associated_remote<BatAdsClient> bat_ads_client,
          pending_associated_receiver<BatAds> database) => ();
-  SetEnvironment(ads.mojom.Environment environment) => ();
+
   SetSysInfo(ads.mojom.SysInfo sys_info) => ();
+
+  SetEnvironment(ads.mojom.Environment environment) => ();
+
   SetBuildChannel(ads.mojom.BuildChannel build_channel) => ();
+
   SetDebug(bool is_debug) => ();
 };
 
 interface BatAdsClient {
+  // See AdsClient for documentation.
+
   [Sync]
   IsNetworkConnectionAvailable() => (bool available);
+
   [Sync]
   IsBrowserActive() => (bool is_browser_active);
   [Sync]
   IsBrowserInFullScreenMode() => (bool is_browser_in_full_screen_mode);
-  [Sync]
-  ShouldShowNotifications() => (bool should_show);
-  [Sync]
-  CanShowBackgroundNotifications() => (bool can_show);
-  [Sync]
-  GetAdEvents(string ad_type, string confirmation_type) => (array<mojo_base.mojom.Time> ad_events);
-  [Sync]
-  LoadDataResource(string name) => (mojo_base.mojom.BigString value);
-  [Sync]
-  GetBooleanPref(string path) => (bool value);
-  [Sync]
-  GetIntegerPref(string path) => (int32 value);
-  [Sync]
-  GetDoublePref(string path) => (double value);
-  [Sync]
-  GetStringPref(string path) => (string value);
-  [Sync]
-  GetInt64Pref(string path) => (int64 value);
-  [Sync]
-  GetUint64Pref(string path) => (uint64 value);
-  [Sync]
-  GetTimePref(string path) => (mojo_base.mojom.Time value);
-  [Sync]
-  HasPrefPath(string path) => (bool value);
 
-  ShowNotification(string json);
-  CloseNotification(string uuid);
+  [Sync]
+  CanShowNotificationAds() => (bool can_show);
+  [Sync]
+  CanShowNotificationAdsWhileBrowserIsBackgrounded() => (bool can_show);
+  ShowNotificationAd(string json);
+  CloseNotificationAd(string placement_id);
+
+  UpdateAdRewards();
+
   RecordAdEventForId(string id, string ad_type, string confirmation_type, mojo_base.mojom.Time time);
-  ResetAdEventsForId(string id);
+  [Sync]
+  GetAdEventHistory(string ad_type, string confirmation_type) => (array<mojo_base.mojom.Time> ad_events);
+  ResetAdEventHistoryForId(string id);
+
+  GetBrowsingHistory(int32 max_count, int32 days_ago) => (array<url.mojom.Url> history);
+
   UrlRequest(ads.mojom.UrlRequest request) => (ads.mojom.UrlResponse response);
+
   Save(string name, string value) => (bool success);
   Load(string name) => (bool success, string value);
   LoadFileResource(string id, int32 version) => (mojo_base.mojom.File? file);
-  ClearScheduledCaptcha();
+  [Sync]
+  LoadDataResource(string name) => (mojo_base.mojom.BigString value);
+
   GetScheduledCaptcha(string payment_id) => (string captcha_id);
   ShowScheduledCaptchaNotification(string payment_id, string captcha_id);
-  GetBrowsingHistory(int32 max_count, int32 days_ago) => (array<url.mojom.Url> history);
+  ClearScheduledCaptcha();
+
   RunDBTransaction(ads.mojom.DBTransaction transaction) => (ads.mojom.DBCommandResponse response);
-  OnAdRewardsChanged();
+
   RecordP2AEvent(string name, string value);
+
   LogTrainingInstance(array<brave_federated.mojom.Covariate> training_instance);
-  Log(string file, int32 line, int32 verbose_level, string message);
+
+  [Sync]
+  GetBooleanPref(string path) => (bool value);
   SetBooleanPref(string path, bool value);
+  [Sync]
+  GetIntegerPref(string path) => (int32 value);
   SetIntegerPref(string path, int32 value);
+  [Sync]
+  GetDoublePref(string path) => (double value);
   SetDoublePref(string path, double value);
+  [Sync]
+  GetStringPref(string path) => (string value);
   SetStringPref(string path, string value);
+  [Sync]
+  GetInt64Pref(string path) => (int64 value);
   SetInt64Pref(string path, int64 value);
+  [Sync]
+  GetUint64Pref(string path) => (uint64 value);
   SetUint64Pref(string path, uint64 value);
+  [Sync]
+  GetTimePref(string path) => (mojo_base.mojom.Time value);
   SetTimePref(string path, mojo_base.mojom.Time value);
   ClearPref(string path);
+  [Sync]
+  HasPrefPath(string path) => (bool value);
+
+  Log(string file, int32 line, int32 verbose_level, string message);
 };
 
 interface BatAds {
+  // See Ads for documentation.
+
   Initialize() => (bool success);
   Shutdown() => (bool success);
-  ChangeLocale(string locale);
+
+  GetDiagnostics() => (bool success, string json);
+
+  OnChangeLocale(string locale);
+
   OnPrefChanged(string path);
+
+  OnResourceComponentUpdated(string id);
+
   OnHtmlLoaded(int32 tab_id, array<url.mojom.Url> redirect_chain, string html);
   OnTextLoaded(int32 tab_id, array<url.mojom.Url> redirect_chain, string text);
-  OnUserGesture(int32 page_transition_type);
-  OnUnIdle(mojo_base.mojom.TimeDelta idle_time, bool was_locked);
+
+  // User Interaction
   OnIdle();
+  OnUnIdle(mojo_base.mojom.TimeDelta idle_time, bool was_locked);
+
+  OnUserGesture(int32 page_transition_type);
+
+  // Browser
   OnBrowserDidEnterForeground();
   OnBrowserDidEnterBackground();
+
+  // Tabs
   OnMediaPlaying(int32 tab_id);
   OnMediaStopped(int32 tab_id);
+
   OnTabUpdated(int32 tab_id, url.mojom.Url url, bool is_active, bool is_browser_active, bool is_incognito);
   OnTabClosed(int32 tab_id);
-  GetNotificationAd(string placement_id) => (string json);
-  TriggerNotificationAdEvent(string placement_id, ads.mojom.NotificationAdEventType event_type);
-  MaybeServeNewTabPageAd() => (bool success, string json);
-  TriggerNewTabPageAdEvent(string placement_id, string creative_instance_id, ads.mojom.NewTabPageAdEventType event_type);
-  TriggerPromotedContentAdEvent(string placement_id, string creative_instance_id, ads.mojom.PromotedContentAdEventType event_type);
+
+  // Account
+  OnWalletUpdated(string payment_id, string seed);
+
+  GetStatementOfAccounts() => (bool success, string json);
+
+  // Ads
   MaybeServeInlineContentAd(string dimensions) => (bool success, string dimensions, string ad);
   TriggerInlineContentAdEvent(string placement_id, string creative_instance_id, ads.mojom.InlineContentAdEventType event_type);
+
+  MaybeServeNewTabPageAd() => (bool success, string json);
+  TriggerNewTabPageAdEvent(string placement_id, string creative_instance_id, ads.mojom.NewTabPageAdEventType event_type);
+
+  GetNotificationAd(string placement_id) => (string json);
+  TriggerNotificationAdEvent(string placement_id, ads.mojom.NotificationAdEventType event_type);
+
+  TriggerPromotedContentAdEvent(string placement_id, string creative_instance_id, ads.mojom.PromotedContentAdEventType event_type);
+
   TriggerSearchResultAdEvent(ads.mojom.SearchResultAd ad_mojom, ads.mojom.SearchResultAdEventType event_type) => (bool success, string placement_id, ads.mojom.SearchResultAdEventType event_type);
+
   PurgeOrphanedAdEventsForType(ads.mojom.AdType ad_type) => (bool success);
-  RemoveAllHistory() => (bool success);
-  OnWalletUpdated(string payment_id, string seed);
+
+  // History
   GetHistory(mojo_base.mojom.Time from_time, mojo_base.mojom.Time to_time) => (mojo_base.mojom.BigString json);
-  GetStatementOfAccounts() => (bool success, string json);
-  GetDiagnostics() => (bool success, string json);
+  RemoveAllHistory() => (bool success);
+
   ToggleAdThumbUp(string json) => (string json);
   ToggleAdThumbDown(string json) => (string json);
   ToggleAdOptIn(string category, int32 action) => (string category, int32 action);
   ToggleAdOptOut(string category, int32 action) => (string category, int32 action);
   ToggleSavedAd(string json) => (string json);
   ToggleFlaggedAd(string json) => (string json);
-  OnResourceComponentUpdated(string id);
 };

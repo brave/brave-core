@@ -21,7 +21,7 @@ class BatAdsAllowNotificationsPermissionRuleTest : public UnitTestBase {
 
 TEST_F(BatAdsAllowNotificationsPermissionRuleTest, AllowAd) {
   // Arrange
-  MockShouldShowNotifications(ads_client_mock_, true);
+  MockCanShowNotificationAds(ads_client_mock_, true);
 
   // Act
   AllowNotificationsPermissionRule permission_rule;
@@ -33,7 +33,7 @@ TEST_F(BatAdsAllowNotificationsPermissionRuleTest, AllowAd) {
 
 TEST_F(BatAdsAllowNotificationsPermissionRuleTest, DoNotAllowAd) {
   // Arrange
-  MockShouldShowNotifications(ads_client_mock_, false);
+  MockCanShowNotificationAds(ads_client_mock_, false);
 
   // Act
   AllowNotificationsPermissionRule permission_rule;

@@ -9,7 +9,7 @@
 namespace ads {
 namespace settings {
 
-int GetAdsPerHour();
+int GetNotificationAdsPerHour();
 
 }  // namespace settings
 }  // namespace ads

@@ -47,7 +47,7 @@ void PurgeExpiredAdEvents(AdEventCallback callback) {
   database::table::AdEvents database_table;
   database_table.PurgeExpired([callback](const bool success) {
     if (success) {
-      RebuildAdEventsFromDatabase();
+      RebuildAdEventHistoryFromDatabase();
     }
 
     callback(success);
@@ -59,14 +59,14 @@ void PurgeOrphanedAdEvents(const mojom::AdType ad_type,
   database::table::AdEvents database_table;
   database_table.PurgeOrphaned(ad_type, [callback](const bool success) {
     if (success) {
-      RebuildAdEventsFromDatabase();
+      RebuildAdEventHistoryFromDatabase();
     }
 
     callback(success);
   });
 }
 
-void RebuildAdEventsFromDatabase() {
+void RebuildAdEventHistoryFromDatabase() {
   database::table::AdEvents database_table;
   database_table.GetAll([=](const bool success, const AdEventList& ad_events) {
     if (!success) {
@@ -76,7 +76,7 @@ void RebuildAdEventsFromDatabase() {
 
     const std::string& id = GetInstanceId();
 
-    AdsClientHelper::GetInstance()->ResetAdEventsForId(id);
+    AdsClientHelper::GetInstance()->ResetAdEventHistoryForId(id);
 
     for (const auto& ad_event : ad_events) {
       RecordAdEvent(ad_event);
@@ -90,9 +90,10 @@ void RecordAdEvent(const AdEventInfo& ad_event) {
       ad_event.confirmation_type.ToString(), ad_event.created_at);
 }
 
-std::vector<base::Time> GetAdEvents(const AdType& ad_type,
-                                    const ConfirmationType& confirmation_type) {
-  return AdsClientHelper::GetInstance()->GetAdEvents(
+std::vector<base::Time> GetAdEventHistory(
+    const AdType& ad_type,
+    const ConfirmationType& confirmation_type) {
+  return AdsClientHelper::GetInstance()->GetAdEventHistory(
       ad_type.ToString(), confirmation_type.ToString());
 }
 

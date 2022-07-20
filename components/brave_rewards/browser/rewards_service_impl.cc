@@ -3193,7 +3193,7 @@ void RewardsServiceImpl::CompleteReset(SuccessCallback callback) {
 
   auto* ads_service = brave_ads::AdsServiceFactory::GetForProfile(profile_);
   if (ads_service) {
-    ads_service->ResetAllState(/* should_shutdown */ true);
+    ads_service->WipeState(/* should_shutdown */ true);
   }
 
   StopNotificationTimers();

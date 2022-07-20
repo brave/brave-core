@@ -63,7 +63,7 @@ AdsServiceFactory::AdsServiceFactory()
 #endif
 }
 
-AdsServiceFactory::~AdsServiceFactory() {}
+AdsServiceFactory::~AdsServiceFactory() = default;
 
 KeyedService* AdsServiceFactory::BuildServiceInstanceFor(
     content::BrowserContext* context) const {

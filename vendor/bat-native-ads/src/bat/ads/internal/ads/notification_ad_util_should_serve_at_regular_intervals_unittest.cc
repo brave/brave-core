@@ -17,61 +17,61 @@ namespace ads {
 namespace {
 
 struct ParamInfo final {
-  bool should_serve;
+  bool is_enabled;
   bool is_browser_active;
-  bool can_show_background_notifications;
+  bool can_show_while_browser_is_backgrounded;
   int ads_per_hour;
   bool should_serve_at_regular_intervals;
 };
 
 const ParamInfo kTests[] = {
-    {/* should_serve */ false, /* is_browser_active */ false,
-     /* can_show_background_notifications */ false, /* ads_per_hour */ 0,
+    {/* is_enabled */ false, /* is_browser_active */ false,
+     /* can_show_while_browser_is_backgrounded */ false, /* ads_per_hour */ 0,
      /* should_serve_at_regular_intervals */ false},
-    {/* should_serve */ false, /* is_browser_active */ false,
-     /* can_show_background_notifications */ false, /* ads_per_hour */ 1,
+    {/* is_enabled */ false, /* is_browser_active */ false,
+     /* can_show_while_browser_is_backgrounded */ false, /* ads_per_hour */ 1,
      /* should_serve_at_regular_intervals */ false},
-    {/* should_serve */ false, /* is_browser_active */ false,
-     /* can_show_background_notifications */ true, /* ads_per_hour */ 0,
+    {/* is_enabled */ false, /* is_browser_active */ false,
+     /* can_show_while_browser_is_backgrounded */ true, /* ads_per_hour */ 0,
      /* should_serve_at_regular_intervals */ false},
-    {/* should_serve */ false, /* is_browser_active */ false,
-     /* can_show_background_notifications */ true, /* ads_per_hour */ 1,
+    {/* is_enabled */ false, /* is_browser_active */ false,
+     /* can_show_while_browser_is_backgrounded */ true, /* ads_per_hour */ 1,
      /* should_serve_at_regular_intervals */ false},
-    {/* should_serve */ false, /* is_browser_active */ true,
-     /* can_show_background_notifications */ false, /* ads_per_hour */ 0,
+    {/* is_enabled */ false, /* is_browser_active */ true,
+     /* can_show_while_browser_is_backgrounded */ false, /* ads_per_hour */ 0,
      /* should_serve_at_regular_intervals */ false},
-    {/* should_serve */ false, /* is_browser_active */ true,
-     /* can_show_background_notifications */ false, /* ads_per_hour */ 1,
+    {/* is_enabled */ false, /* is_browser_active */ true,
+     /* can_show_while_browser_is_backgrounded */ false, /* ads_per_hour */ 1,
      /* should_serve_at_regular_intervals */ false},
-    {/* should_serve */ false, /* is_browser_active */ true,
-     /* can_show_background_notifications */ true, /* ads_per_hour */ 0,
+    {/* is_enabled */ false, /* is_browser_active */ true,
+     /* can_show_while_browser_is_backgrounded */ true, /* ads_per_hour */ 0,
      /* should_serve_at_regular_intervals */ false},
-    {/* should_serve */ false, /* is_browser_active */ true,
-     /* can_show_background_notifications */ true, /* ads_per_hour */ 1,
+    {/* is_enabled */ false, /* is_browser_active */ true,
+     /* can_show_while_browser_is_backgrounded */ true, /* ads_per_hour */ 1,
      /* should_serve_at_regular_intervals */ false},
-    {/* should_serve */ true, /* is_browser_active */ false,
-     /* can_show_background_notifications */ false, /* ads_per_hour */ 0,
+    {/* is_enabled */ true, /* is_browser_active */ false,
+     /* can_show_while_browser_is_backgrounded */ false, /* ads_per_hour */ 0,
      /* should_serve_at_regular_intervals */ false},
-    {/* should_serve */ true, /* is_browser_active */ false,
-     /* can_show_background_notifications */ false, /* ads_per_hour */ 1,
+    {/* is_enabled */ true, /* is_browser_active */ false,
+     /* can_show_while_browser_is_backgrounded */ false, /* ads_per_hour */ 1,
      /* should_serve_at_regular_intervals */ false},
-    {/* should_serve */ true, /* is_browser_active */ false,
-     /* can_show_background_notifications */ true, /* ads_per_hour */ 0,
+    {/* is_enabled */ true, /* is_browser_active */ false,
+     /* can_show_while_browser_is_backgrounded */ true, /* ads_per_hour */ 0,
      /* should_serve_at_regular_intervals */ false},
-    {/* should_serve */ true, /* is_browser_active */ false,
-     /* can_show_background_notifications */ true, /* ads_per_hour */ 1,
+    {/* is_enabled */ true, /* is_browser_active */ false,
+     /* can_show_while_browser_is_backgrounded */ true, /* ads_per_hour */ 1,
      /* should_serve_at_regular_intervals */ true},
-    {/* should_serve */ true, /* is_browser_active */ true,
-     /* can_show_background_notifications */ false, /* ads_per_hour */ 0,
+    {/* is_enabled */ true, /* is_browser_active */ true,
+     /* can_show_while_browser_is_backgrounded */ false, /* ads_per_hour */ 0,
      /* should_serve_at_regular_intervals */ false},
-    {/* should_serve */ true, /* is_browser_active */ true,
-     /* can_show_background_notifications */ false, /* ads_per_hour */ 1,
+    {/* is_enabled */ true, /* is_browser_active */ true,
+     /* can_show_while_browser_is_backgrounded */ false, /* ads_per_hour */ 1,
      /* should_serve_at_regular_intervals */ true},
-    {/* should_serve */ true, /* is_browser_active */ true,
-     /* can_show_background_notifications */ true, /* ads_per_hour */ 0,
+    {/* is_enabled */ true, /* is_browser_active */ true,
+     /* can_show_while_browser_is_backgrounded */ true, /* ads_per_hour */ 0,
      /* should_serve_at_regular_intervals */ false},
-    {/* should_serve */ true, /* is_browser_active */ true,
-     /* can_show_background_notifications */ true, /* ads_per_hour */ 1,
+    {/* is_enabled */ true, /* is_browser_active */ true,
+     /* can_show_while_browser_is_backgrounded */ true, /* ads_per_hour */ 1,
      /* should_serve_at_regular_intervals */ true}};
 
 }  // namespace
@@ -80,20 +80,20 @@ class BatAdsNotificationAdUtilServeAtRegularIntervalsTest
     : public UnitTestBase,
       public ::testing::WithParamInterface<ParamInfo> {
  protected:
-  BatAdsNotificationAdUtilServeAtRegularIntervalsTest() {}
+  BatAdsNotificationAdUtilServeAtRegularIntervalsTest() = default;
 
-  ~BatAdsNotificationAdUtilServeAtRegularIntervalsTest() override {}
+  ~BatAdsNotificationAdUtilServeAtRegularIntervalsTest() override = default;
 
   void SetUpMocks() override {
     const ParamInfo param = GetParam();
 
     AdsClientHelper::GetInstance()->SetBooleanPref(prefs::kEnabled,
-                                                   param.should_serve);
+                                                   param.is_enabled);
 
     MockIsBrowserActive(ads_client_mock_, param.is_browser_active);
 
-    MockCanShowBackgroundNotifications(ads_client_mock_,
-                                       param.can_show_background_notifications);
+    MockCanShowNotificationAdsWhileBrowserIsBackgrounded(
+        ads_client_mock_, param.can_show_while_browser_is_backgrounded);
 
     AdsClientHelper::GetInstance()->SetInt64Pref(prefs::kAdsPerHour,
                                                  param.ads_per_hour);
@@ -117,25 +117,25 @@ std::string TestParamToString(::testing::TestParamInfo<ParamInfo> test_param) {
           ? "ShouldServeAtRegularIntervals"
           : "ShouldNotServeAtRegularIntervals";
 
-  const std::string should_serve =
-      test_param.param.should_serve ? "ShouldServe" : "ShouldNotServe";
+  const std::string is_enabled =
+      test_param.param.is_enabled ? "IsEnabled" : "IsDisabled";
 
   const std::string is_browser_active = test_param.param.is_browser_active
                                             ? "BrowserIsActive"
                                             : "BrowserIsInactive";
 
-  const std::string can_show_background_notifications =
-      test_param.param.can_show_background_notifications
-          ? "BackgroundNotificationsAreEnabled"
-          : "BackgroundNotificationsAreDisabled";
+  const std::string can_show_while_browser_is_backgrounded =
+      test_param.param.can_show_while_browser_is_backgrounded
+          ? "CanShowWhileBrowserIsBackgrounded"
+          : "CannotShowWhileBrowserIsBackgrounded";
 
   const std::string ads_per_hour =
       base::StringPrintf("%dAdsPerHour", test_param.param.ads_per_hour);
 
   return base::StringPrintf(
       "%sIf%sAnd%sAnd%sAnd%s", should_serve_at_regular_intervals.c_str(),
-      should_serve.c_str(), is_browser_active.c_str(),
-      can_show_background_notifications.c_str(), ads_per_hour.c_str());
+      is_enabled.c_str(), is_browser_active.c_str(),
+      can_show_while_browser_is_backgrounded.c_str(), ads_per_hour.c_str());
 }
 
 INSTANTIATE_TEST_SUITE_P(,

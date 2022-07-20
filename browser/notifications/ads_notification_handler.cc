@@ -27,7 +27,7 @@ void AdsNotificationHandler::OnShow(Profile* profile, const std::string& id) {
     return;
   }
 
-  ads_service->OnShowNotificationAd(id);
+  ads_service->OnNotificationAdShown(id);
 }
 
 void AdsNotificationHandler::OnClose(Profile* profile,
@@ -40,7 +40,7 @@ void AdsNotificationHandler::OnClose(Profile* profile,
     return;
   }
 
-  ads_service->OnCloseNotificationAd(id, by_user);
+  ads_service->OnNotificationAdClosed(id, by_user);
 }
 
 void AdsNotificationHandler::OnClick(
@@ -55,7 +55,7 @@ void AdsNotificationHandler::OnClick(
     return;
   }
 
-  ads_service->OnClickNotificationAd(id);
+  ads_service->OnNotificationAdClicked(id);
 }
 
 void AdsNotificationHandler::OpenSettings(Profile* profile,
@@ -68,7 +68,7 @@ void AdsNotificationHandler::OpenSettings(Profile* profile,
   DCHECK(origin.has_query());
   const std::string id = origin.query();
 
-  ads_service->OnClickNotificationAd(id);
+  ads_service->OnNotificationAdClicked(id);
 }
 
 }  // namespace brave_ads

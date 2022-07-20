@@ -21,23 +21,21 @@ class BatAdsServiceImpl : public mojom::BatAdsService {
  public:
   explicit BatAdsServiceImpl(
       mojo::PendingReceiver<mojom::BatAdsService> receiver);
-
-  ~BatAdsServiceImpl() override;
-
   BatAdsServiceImpl(const BatAdsServiceImpl&) = delete;
   BatAdsServiceImpl& operator=(const BatAdsServiceImpl&) = delete;
+  ~BatAdsServiceImpl() override;
 
-  // Overridden from BatAdsService:
+  // BatAdsService:
   void Create(
       mojo::PendingAssociatedRemote<mojom::BatAdsClient> client_info,
       mojo::PendingAssociatedReceiver<mojom::BatAds> bat_ads,
       CreateCallback callback) override;
 
-  void SetEnvironment(const ads::mojom::Environment environment,
-                      SetEnvironmentCallback callback) override;
-
   void SetSysInfo(ads::mojom::SysInfoPtr sys_info,
                   SetSysInfoCallback callback) override;
+
+  void SetEnvironment(const ads::mojom::Environment environment,
+                      SetEnvironmentCallback callback) override;
 
   void SetBuildChannel(ads::mojom::BuildChannelPtr build_channel,
                        SetBuildChannelCallback callback) override;
@@ -48,8 +46,8 @@ class BatAdsServiceImpl : public mojom::BatAdsService {
 
  private:
   mojo::Receiver<mojom::BatAdsService> receiver_;
-  bool is_initialized_;
   mojo::UniqueAssociatedReceiverSet<mojom::BatAds> associated_receivers_;
+  bool is_initialized_ = false;
 };
 
 }  // namespace bat_ads

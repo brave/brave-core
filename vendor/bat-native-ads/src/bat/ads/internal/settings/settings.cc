@@ -15,7 +15,7 @@
 namespace ads {
 namespace settings {
 
-int GetAdsPerHour() {
+int GetNotificationAdsPerHour() {
   int64_t ads_per_hour =
       AdsClientHelper::GetInstance()->GetInt64Pref(prefs::kAdsPerHour);
 

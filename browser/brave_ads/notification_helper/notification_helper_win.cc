@@ -62,7 +62,7 @@ NotificationHelperWin::NotificationHelperWin() = default;
 
 NotificationHelperWin::~NotificationHelperWin() = default;
 
-bool NotificationHelperWin::CanShowNativeNotifications() {
+bool NotificationHelperWin::CanShowNativeNotifications() const {
   if (!base::FeatureList::IsEnabled(::features::kNativeNotifications)) {
     LOG(WARNING) << "Native notifications feature is disabled";
     return false;
@@ -90,11 +90,12 @@ bool NotificationHelperWin::CanShowNativeNotifications() {
   return true;
 }
 
-bool NotificationHelperWin::CanShowBackgroundNotifications() const {
+bool NotificationHelperWin::
+    CanShowNativeNotificationsWhileBrowserIsBackgrounded() const {
   return true;
 }
 
-bool NotificationHelperWin::ShowMyFirstNotificationAd() {
+bool NotificationHelperWin::ShowOnboardingNotification() {
   return false;
 }
 

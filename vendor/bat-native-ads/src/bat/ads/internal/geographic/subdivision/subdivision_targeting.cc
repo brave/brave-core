@@ -89,16 +89,15 @@ std::string SubdivisionTargeting::GetSubdivisionCode() const {
 
 ///////////////////////////////////////////////////////////////////////////////
 
-void SubdivisionTargeting::
-    OnAutoDetectedAdsSubdivisionTargetingCodePrefChanged() {
+void SubdivisionTargeting::OnAutoDetectedSubdivisionTargetingCodePrefChanged() {
   auto_detected_subdivision_code_optional_ =
       AdsClientHelper::GetInstance()->GetStringPref(
-          prefs::kAutoDetectedAdsSubdivisionTargetingCode);
+          prefs::kAutoDetectedSubdivisionTargetingCode);
 }
 
-void SubdivisionTargeting::OnAdsSubdivisionTargetingCodePrefChanged() {
+void SubdivisionTargeting::OnSubdivisionTargetingCodePrefChanged() {
   subdivision_code_optional_ = AdsClientHelper::GetInstance()->GetStringPref(
-      prefs::kAdsSubdivisionTargetingCode);
+      prefs::kSubdivisionTargetingCode);
 
   MaybeFetch();
 }
@@ -107,7 +106,7 @@ std::string SubdivisionTargeting::GetLazyAutoDetectedSubdivisionCode() const {
   if (!auto_detected_subdivision_code_optional_) {
     auto_detected_subdivision_code_optional_ =
         AdsClientHelper::GetInstance()->GetStringPref(
-            prefs::kAutoDetectedAdsSubdivisionTargetingCode);
+            prefs::kAutoDetectedSubdivisionTargetingCode);
   }
 
   return auto_detected_subdivision_code_optional_.value();
@@ -116,7 +115,7 @@ std::string SubdivisionTargeting::GetLazyAutoDetectedSubdivisionCode() const {
 std::string SubdivisionTargeting::GetLazySubdivisionCode() const {
   if (!subdivision_code_optional_) {
     subdivision_code_optional_ = AdsClientHelper::GetInstance()->GetStringPref(
-        prefs::kAdsSubdivisionTargetingCode);
+        prefs::kSubdivisionTargetingCode);
   }
 
   return subdivision_code_optional_.value();
@@ -151,7 +150,7 @@ void SubdivisionTargeting::MaybeFetchForLocale(const std::string& locale) {
                                                               << " locale");
 
     AdsClientHelper::GetInstance()->SetBooleanPref(
-        prefs::kShouldAllowAdsSubdivisionTargeting, false);
+        prefs::kShouldAllowSubdivisionTargeting, false);
 
     return;
   }
@@ -237,7 +236,7 @@ bool SubdivisionTargeting::ParseJson(const std::string& json) {
       base::StringPrintf("%s-%s", country->c_str(), region->c_str());
 
   AdsClientHelper::GetInstance()->SetStringPref(
-      prefs::kAutoDetectedAdsSubdivisionTargetingCode, subdivision_code);
+      prefs::kAutoDetectedSubdivisionTargetingCode, subdivision_code);
 
   return true;
 }
@@ -267,10 +266,10 @@ void SubdivisionTargeting::OnLocaleDidChange(const std::string& locale) {
 }
 
 void SubdivisionTargeting::OnPrefChanged(const std::string& path) {
-  if (path == prefs::kAutoDetectedAdsSubdivisionTargetingCode) {
-    OnAutoDetectedAdsSubdivisionTargetingCodePrefChanged();
-  } else if (path == prefs::kAdsSubdivisionTargetingCode) {
-    OnAdsSubdivisionTargetingCodePrefChanged();
+  if (path == prefs::kAutoDetectedSubdivisionTargetingCode) {
+    OnAutoDetectedSubdivisionTargetingCodePrefChanged();
+  } else if (path == prefs::kSubdivisionTargetingCode) {
+    OnSubdivisionTargetingCodePrefChanged();
   }
 }
 

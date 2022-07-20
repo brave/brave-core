@@ -15,12 +15,12 @@
 
 namespace ads {
 
-mojom::Environment g_environment = mojom::Environment::kStaging;
-
 mojom::SysInfo& SysInfo() {
   static base::NoDestructor<mojom::SysInfo> sys_info;
   return *sys_info;
 }
+
+mojom::Environment g_environment = mojom::Environment::kStaging;
 
 mojom::BuildChannel& BuildChannel() {
   static base::NoDestructor<mojom::BuildChannel> build_channel;

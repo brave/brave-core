@@ -32,7 +32,7 @@ bool AdsPerHourPermissionRule::ShouldAllow() {
   }
 
   const std::vector<base::Time> history =
-      GetAdEvents(AdType::kNotificationAd, ConfirmationType::kServed);
+      GetAdEventHistory(AdType::kNotificationAd, ConfirmationType::kServed);
 
   if (!DoesRespectCap(history)) {
     last_message_ = "You have exceeded the allowed notification ads per hour";
@@ -48,13 +48,14 @@ std::string AdsPerHourPermissionRule::GetLastMessage() const {
 
 bool AdsPerHourPermissionRule::DoesRespectCap(
     const std::vector<base::Time>& history) {
-  const int cap = settings::GetAdsPerHour();
-  if (cap == 0) {
+  const int ads_per_hour = settings::GetNotificationAdsPerHour();
+  if (ads_per_hour == 0) {
     // Never respect cap if set to 0
     return false;
   }
 
-  return DoesHistoryRespectRollingTimeConstraint(history, kTimeConstraint, cap);
+  return DoesHistoryRespectRollingTimeConstraint(history, kTimeConstraint,
+                                                 ads_per_hour);
 }
 
 }  // namespace notification_ads

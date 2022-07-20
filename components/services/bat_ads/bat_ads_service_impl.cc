@@ -18,7 +18,7 @@ BatAdsServiceImpl::BatAdsServiceImpl(
     : receiver_(this, std::move(receiver)),
       is_initialized_(false) {}
 
-BatAdsServiceImpl::~BatAdsServiceImpl() {}
+BatAdsServiceImpl::~BatAdsServiceImpl() = default;
 
 void BatAdsServiceImpl::Create(
     mojo::PendingAssociatedRemote<mojom::BatAdsClient> client_info,

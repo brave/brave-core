@@ -21,12 +21,13 @@ BatAdsClientMojoBridge::BatAdsClientMojoBridge(
 
 BatAdsClientMojoBridge::~BatAdsClientMojoBridge() = default;
 
-bool BatAdsClientMojoBridge::CanShowBackgroundNotifications() const {
+bool BatAdsClientMojoBridge::CanShowNotificationAdsWhileBrowserIsBackgrounded()
+    const {
   if (!connected())
     return false;
 
   bool can_show;
-  bat_ads_client_->CanShowBackgroundNotifications(&can_show);
+  bat_ads_client_->CanShowNotificationAdsWhileBrowserIsBackgrounded(&can_show);
   return can_show;
 }
 
@@ -60,32 +61,32 @@ bool BatAdsClientMojoBridge::IsBrowserInFullScreenMode() const {
   return is_browser_in_full_screen_mode;
 }
 
-void BatAdsClientMojoBridge::ShowNotification(
+void BatAdsClientMojoBridge::ShowNotificationAd(
     const ads::NotificationAdInfo& info) {
   if (!connected()) {
     return;
   }
 
-  bat_ads_client_->ShowNotification(info.ToJson());
+  bat_ads_client_->ShowNotificationAd(info.ToJson());
 }
 
-bool BatAdsClientMojoBridge::ShouldShowNotifications() {
+bool BatAdsClientMojoBridge::CanShowNotificationAds() {
   if (!connected()) {
     return false;
   }
 
-  bool should_show;
-  bat_ads_client_->ShouldShowNotifications(&should_show);
-  return should_show;
+  bool can_show;
+  bat_ads_client_->CanShowNotificationAds(&can_show);
+  return can_show;
 }
 
-void BatAdsClientMojoBridge::CloseNotification(
+void BatAdsClientMojoBridge::CloseNotificationAd(
     const std::string& placement_id) {
   if (!connected()) {
     return;
   }
 
-  bat_ads_client_->CloseNotification(placement_id);
+  bat_ads_client_->CloseNotificationAd(placement_id);
 }
 
 void BatAdsClientMojoBridge::RecordAdEventForId(
@@ -100,7 +101,7 @@ void BatAdsClientMojoBridge::RecordAdEventForId(
   bat_ads_client_->RecordAdEventForId(id, ad_type, confirmation_type, time);
 }
 
-std::vector<base::Time> BatAdsClientMojoBridge::GetAdEvents(
+std::vector<base::Time> BatAdsClientMojoBridge::GetAdEventHistory(
     const std::string& ad_type,
     const std::string& confirmation_type) const {
   if (!connected()) {
@@ -108,16 +109,18 @@ std::vector<base::Time> BatAdsClientMojoBridge::GetAdEvents(
   }
 
   std::vector<base::Time> ad_event_history;
-  bat_ads_client_->GetAdEvents(ad_type, confirmation_type, &ad_event_history);
+  bat_ads_client_->GetAdEventHistory(ad_type, confirmation_type,
+                                     &ad_event_history);
   return ad_event_history;
 }
 
-void BatAdsClientMojoBridge::ResetAdEventsForId(const std::string& id) const {
+void BatAdsClientMojoBridge::ResetAdEventHistoryForId(
+    const std::string& id) const {
   if (!connected()) {
     return;
   }
 
-  bat_ads_client_->ResetAdEventsForId(id);
+  bat_ads_client_->ResetAdEventHistoryForId(id);
 }
 
 void OnUrlRequest(const ads::UrlRequestCallback& callback,
@@ -284,12 +287,12 @@ void BatAdsClientMojoBridge::ShowScheduledCaptchaNotification(
   bat_ads_client_->ShowScheduledCaptchaNotification(payment_id, captcha_id);
 }
 
-void BatAdsClientMojoBridge::OnAdRewardsChanged() {
+void BatAdsClientMojoBridge::UpdateAdRewards() {
   if (!connected()) {
     return;
   }
 
-  bat_ads_client_->OnAdRewardsChanged();
+  bat_ads_client_->UpdateAdRewards();
 }
 
 void BatAdsClientMojoBridge::Log(

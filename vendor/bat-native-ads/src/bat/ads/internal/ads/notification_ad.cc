@@ -136,7 +136,7 @@ void NotificationAd::OnOpportunityAroseToServeNotificationAd(
 }
 
 void NotificationAd::OnDidServeNotificationAd(const NotificationAdInfo& ad) {
-  ShowNotification(ad);
+  ShowNotificationAd(ad);
 
   TriggerEvent(ad.placement_id, mojom::NotificationAdEventType::kServed);
 }
@@ -157,7 +157,7 @@ void NotificationAd::OnNotificationAdViewed(const NotificationAdInfo& ad) {
 }
 
 void NotificationAd::OnNotificationAdClicked(const NotificationAdInfo& ad) {
-  CloseNotification(ad.placement_id);
+  CloseNotificationAd(ad.placement_id);
 
   transfer_->SetLastClickedAd(ad);
 
@@ -175,7 +175,7 @@ void NotificationAd::OnNotificationAdClicked(const NotificationAdInfo& ad) {
 }
 
 void NotificationAd::OnNotificationAdDismissed(const NotificationAdInfo& ad) {
-  DismissNotification(ad.placement_id);
+  DismissNotificationAd(ad.placement_id);
 
   HistoryManager::GetInstance()->Add(ad, ConfirmationType::kDismissed);
 
@@ -191,7 +191,7 @@ void NotificationAd::OnNotificationAdDismissed(const NotificationAdInfo& ad) {
 }
 
 void NotificationAd::OnNotificationAdTimedOut(const NotificationAdInfo& ad) {
-  NotificationTimedOut(ad.placement_id);
+  NotificationAdTimedOut(ad.placement_id);
 
   epsilon_greedy_bandit_processor_->Process(
       {ad.segment, mojom::NotificationAdEventType::kTimedOut});

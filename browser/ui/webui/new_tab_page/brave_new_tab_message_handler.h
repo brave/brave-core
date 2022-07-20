@@ -73,7 +73,7 @@ class BraveNewTabMessageHandler : public content::WebUIMessageHandler,
   base::Value GetAdsDataDictionary() const;
 
   // brave_ads::AdsServiceObserver:
-  void OnNeedsBrowserUpdateToSeeAds() override;
+  void OnNeedsBrowserUpgradeToServeAds() override;
 
   PrefChangeRegistrar pref_change_registrar_;
   // Weak pointer.

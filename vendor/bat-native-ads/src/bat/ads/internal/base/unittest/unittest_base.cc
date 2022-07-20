@@ -215,9 +215,9 @@ void UnitTestBase::Initialize() {
 }
 
 void UnitTestBase::SetDefaultMocks() {
-  MockBuildChannel(BuildChannelType::kRelease);
-
   MockEnvironment(mojom::Environment::kStaging);
+
+  MockBuildChannel(BuildChannelType::kRelease);
 
   MockLocaleHelper(locale_helper_mock_, kDefaultLocale);
 
@@ -228,21 +228,26 @@ void UnitTestBase::SetDefaultMocks() {
   MockIsBrowserActive(ads_client_mock_, true);
   MockIsBrowserInFullScreenMode(ads_client_mock_, false);
 
-  MockShouldShowNotifications(ads_client_mock_, true);
-  MockCanShowBackgroundNotifications(ads_client_mock_, false);
-  MockShowNotification(ads_client_mock_);
-  MockCloseNotification(ads_client_mock_);
+  MockCanShowNotificationAds(ads_client_mock_, true);
+  MockCanShowNotificationAdsWhileBrowserIsBackgrounded(ads_client_mock_, false);
+  MockShowNotificationAd(ads_client_mock_);
+  MockCloseNotificationAd(ads_client_mock_);
 
   MockRecordAdEventForId(ads_client_mock_);
-  MockGetAdEvents(ads_client_mock_);
-  MockResetAdEventsForId(ads_client_mock_);
+  MockGetAdEventHistory(ads_client_mock_);
+  MockResetAdEventHistoryForId(ads_client_mock_);
 
   MockGetBrowsingHistory(ads_client_mock_);
 
+  MockSave(ads_client_mock_);
   MockLoad(ads_client_mock_, temp_dir_);
   MockLoadFileResource(ads_client_mock_);
   MockLoadDataResource(ads_client_mock_);
-  MockSave(ads_client_mock_);
+
+  const base::FilePath database_path =
+      temp_dir_.GetPath().AppendASCII(kDatabaseFilename);
+  database_ = std::make_unique<Database>(database_path);
+  MockRunDBTransaction(ads_client_mock_, database_);
 
   MockGetBooleanPref(ads_client_mock_);
   MockSetBooleanPref(ads_client_mock_);
@@ -260,11 +265,6 @@ void UnitTestBase::SetDefaultMocks() {
   MockSetTimePref(ads_client_mock_);
   MockClearPref(ads_client_mock_);
   MockHasPrefPath(ads_client_mock_);
-
-  const base::FilePath database_path =
-      temp_dir_.GetPath().AppendASCII(kDatabaseFilename);
-  database_ = std::make_unique<Database>(database_path);
-  MockRunDBTransaction(ads_client_mock_, database_);
 }
 
 void UnitTestBase::SetDefaultPrefs() {
@@ -276,11 +276,11 @@ void UnitTestBase::SetDefaultPrefs() {
 
   ads_client_mock_->SetBooleanPref(prefs::kShouldAllowConversionTracking, true);
 
-  ads_client_mock_->SetBooleanPref(prefs::kShouldAllowAdsSubdivisionTargeting,
+  ads_client_mock_->SetBooleanPref(prefs::kShouldAllowSubdivisionTargeting,
                                    false);
-  ads_client_mock_->SetStringPref(prefs::kAdsSubdivisionTargetingCode, "AUTO");
-  ads_client_mock_->SetStringPref(
-      prefs::kAutoDetectedAdsSubdivisionTargetingCode, "");
+  ads_client_mock_->SetStringPref(prefs::kSubdivisionTargetingCode, "AUTO");
+  ads_client_mock_->SetStringPref(prefs::kAutoDetectedSubdivisionTargetingCode,
+                                  "");
 
   ads_client_mock_->SetStringPref(prefs::kCatalogId, "");
   ads_client_mock_->SetIntegerPref(prefs::kCatalogVersion, 1);

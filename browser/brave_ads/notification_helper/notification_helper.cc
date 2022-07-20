@@ -15,15 +15,16 @@ NotificationHelper::NotificationHelper() = default;
 
 NotificationHelper::~NotificationHelper() = default;
 
-bool NotificationHelper::CanShowNativeNotifications() {
+bool NotificationHelper::CanShowNativeNotifications() const {
   return true;
 }
 
-bool NotificationHelper::CanShowBackgroundNotifications() const {
+bool NotificationHelper::CanShowNativeNotificationsWhileBrowserIsBackgrounded()
+    const {
   return true;
 }
 
-bool NotificationHelper::ShowMyFirstNotificationAd() {
+bool NotificationHelper::ShowOnboardingNotification() {
   return false;
 }
 

@@ -17,37 +17,37 @@ namespace ads {
 class AdsClientMock : public AdsClient {
  public:
   AdsClientMock();
-  ~AdsClientMock() override;
   AdsClientMock(const AdsClientMock&) = delete;
   AdsClientMock& operator=(const AdsClientMock&) = delete;
+  ~AdsClientMock() override;
 
   MOCK_CONST_METHOD0(IsNetworkConnectionAvailable, bool());
 
   MOCK_CONST_METHOD0(IsBrowserActive, bool());
-
   MOCK_CONST_METHOD0(IsBrowserInFullScreenMode, bool());
 
-  MOCK_METHOD0(ShouldShowNotifications, bool());
+  MOCK_METHOD0(CanShowNotificationAds, bool());
+  MOCK_CONST_METHOD0(CanShowNotificationAdsWhileBrowserIsBackgrounded, bool());
+  MOCK_METHOD1(ShowNotificationAd, void(const NotificationAdInfo& ad));
+  MOCK_METHOD1(CloseNotificationAd, void(const std::string& placement_id));
 
-  MOCK_CONST_METHOD0(CanShowBackgroundNotifications, bool());
-
-  MOCK_METHOD1(ShowNotification,
-               void(const NotificationAdInfo& notification_ad));
-
-  MOCK_METHOD1(CloseNotification, void(const std::string& uuid));
+  MOCK_METHOD0(UpdateAdRewards, void());
 
   MOCK_CONST_METHOD4(RecordAdEventForId,
                      void(const std::string& id,
                           const std::string& type,
                           const std::string& confirmation_type,
                           const base::Time time));
-
   MOCK_CONST_METHOD2(
-      GetAdEvents,
+      GetAdEventHistory,
       std::vector<base::Time>(const std::string& ad_type,
                               const std::string& confirmation_type));
+  MOCK_CONST_METHOD1(ResetAdEventHistoryForId, void(const std::string& id));
 
-  MOCK_CONST_METHOD1(ResetAdEventsForId, void(const std::string& id));
+  MOCK_METHOD3(GetBrowsingHistory,
+               void(const int max_count,
+                    const int days_ago,
+                    GetBrowsingHistoryCallback callback));
 
   MOCK_METHOD2(UrlRequest,
                void(mojom::UrlRequestPtr url_request,
@@ -57,35 +57,23 @@ class AdsClientMock : public AdsClient {
                void(const std::string& name,
                     const std::string& value,
                     ResultCallback callback));
-
   MOCK_METHOD2(Load, void(const std::string& name, LoadCallback callback));
-
   MOCK_METHOD3(LoadFileResource,
                void(const std::string& id,
                     const int version,
                     LoadFileCallback callback));
-
-  MOCK_METHOD3(GetBrowsingHistory,
-               void(const int max_count,
-                    const int days_ago,
-                    GetBrowsingHistoryCallback callback));
-
   MOCK_METHOD1(LoadDataResource, std::string(const std::string& name));
-
-  MOCK_METHOD0(ClearScheduledCaptcha, void());
 
   MOCK_METHOD2(GetScheduledCaptcha,
                void(const std::string& payment_id,
                     GetScheduledCaptchaCallback callback));
-
   MOCK_METHOD2(ShowScheduledCaptchaNotification,
                void(const std::string& payment_id,
                     const std::string& captcha_id));
+  MOCK_METHOD0(ClearScheduledCaptcha, void());
 
   MOCK_METHOD2(RunDBTransaction,
                void(mojom::DBTransactionPtr, RunDBTransactionCallback));
-
-  MOCK_METHOD0(OnAdRewardsChanged, void());
 
   MOCK_METHOD2(RecordP2AEvent,
                void(const std::string& name, const std::string& value));
@@ -93,12 +81,6 @@ class AdsClientMock : public AdsClient {
   MOCK_METHOD1(LogTrainingInstance,
                void(const std::vector<brave_federated::mojom::CovariatePtr>
                         training_instance));
-
-  MOCK_METHOD4(Log,
-               void(const char* file,
-                    const int line,
-                    const int verbose_level,
-                    const std::string& message));
 
   MOCK_CONST_METHOD1(GetBooleanPref, bool(const std::string& path));
   MOCK_METHOD2(SetBooleanPref, void(const std::string& path, const bool value));
@@ -121,6 +103,12 @@ class AdsClientMock : public AdsClient {
                void(const std::string& path, const base::Time value));
   MOCK_METHOD1(ClearPref, void(const std::string& path));
   MOCK_CONST_METHOD1(HasPrefPath, bool(const std::string& path));
+
+  MOCK_METHOD4(Log,
+               void(const char* file,
+                    const int line,
+                    const int verbose_level,
+                    const std::string& message));
 };
 
 }  // namespace ads

@@ -25,7 +25,7 @@ AdsPerDayPermissionRule::~AdsPerDayPermissionRule() = default;
 
 bool AdsPerDayPermissionRule::ShouldAllow() {
   const std::vector<base::Time>& history =
-      GetAdEvents(AdType::kNewTabPageAd, ConfirmationType::kServed);
+      GetAdEventHistory(AdType::kNewTabPageAd, ConfirmationType::kServed);
 
   if (!DoesRespectCap(history)) {
     last_message_ = "You have exceeded the allowed new tab page ads per day";

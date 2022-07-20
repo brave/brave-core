@@ -25,7 +25,7 @@ MinimumWaitTimePermissionRule::~MinimumWaitTimePermissionRule() = default;
 
 bool MinimumWaitTimePermissionRule::ShouldAllow() {
   const std::vector<base::Time>& history =
-      GetAdEvents(AdType::kNewTabPageAd, ConfirmationType::kServed);
+      GetAdEventHistory(AdType::kNewTabPageAd, ConfirmationType::kServed);
 
   if (!DoesRespectCap(history)) {
     last_message_ =

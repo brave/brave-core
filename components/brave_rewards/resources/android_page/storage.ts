@@ -8,7 +8,7 @@ import { debounce } from '../../../common/debounce'
 const keyName = 'rewards-data'
 
 export const defaultState: Rewards.State = {
-  version: 2,
+  version: 3,
   createdTimestamp: null,
   enabledAds: true,
   enabledAdsMigrated: false,
@@ -47,7 +47,7 @@ export const defaultState: Rewards.State = {
     shouldAllowAdsSubdivisionTargeting: true,
     adsUIEnabled: false,
     adsIsSupported: false,
-    needsBrowserUpdateToSeeAds: false,
+    needsBrowserUpgradeToServeAds: false,
     adsNextPaymentDate: 0,
     adsReceivedThisMonth: 0,
     adsEarningsThisMonth: 0,

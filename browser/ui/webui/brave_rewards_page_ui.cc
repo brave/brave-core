@@ -286,8 +286,8 @@ class RewardsDOMHandler
           notifications_list) override;
 
   // AdsServiceObserver implementation
-  void OnAdRewardsChanged() override;
-  void OnNeedsBrowserUpdateToSeeAds() override;
+  void OnAdRewardsDidChange() override;
+  void OnNeedsBrowserUpgradeToServeAds() override;
 
   void InitPrefChangeRegistrar();
   void OnPrefChanged(const std::string& key);
@@ -314,9 +314,9 @@ const int kDaysOfAdsHistory = 30;
 const char kShouldAllowAdsSubdivisionTargeting[] =
     "shouldAllowAdsSubdivisionTargeting";
 const char kAdsSubdivisionTargeting[] = "adsSubdivisionTargeting";
-const char kAutoDetectedAdsSubdivisionTargeting[] =
+const char kAutoDetectedSubdivisionTargeting[] =
     "automaticallyDetectedAdsSubdivisionTargeting";
-const char kNeedsBrowserUpdateToSeeAds[] = "needsBrowserUpdateToSeeAds";
+const char kNeedsBrowserUpgradeToServeAds[] = "needsBrowserUpgradeToServeAds";
 
 }  // namespace
 
@@ -566,7 +566,7 @@ void RewardsDOMHandler::InitPrefChangeRegistrar() {
       base::BindRepeating(&RewardsDOMHandler::OnPrefChanged,
                           base::Unretained(this)));
   pref_change_registrar_.Add(
-      ads::prefs::kAdsSubdivisionTargetingCode,
+      ads::prefs::kSubdivisionTargetingCode,
       base::BindRepeating(&RewardsDOMHandler::OnPrefChanged,
                           base::Unretained(this)));
 
@@ -1239,27 +1239,27 @@ void RewardsDOMHandler::GetAdsData(const base::Value::List& args) {
   auto is_enabled = ads_service_->IsEnabled();
   ads_data.SetBoolean("adsEnabled", is_enabled);
 
-  auto ads_per_hour = ads_service_->GetAdsPerHour();
+  auto ads_per_hour = ads_service_->GetNotificationAdsPerHour();
   ads_data.SetInteger("adsPerHour", ads_per_hour);
 
   const std::string subdivision_targeting_code =
-      ads_service_->GetAdsSubdivisionTargetingCode();
+      ads_service_->GetSubdivisionTargetingCode();
   ads_data.SetString(kAdsSubdivisionTargeting, subdivision_targeting_code);
 
   const std::string auto_detected_subdivision_targeting_code =
-      ads_service_->GetAutoDetectedAdsSubdivisionTargetingCode();
-  ads_data.SetString(kAutoDetectedAdsSubdivisionTargeting,
+      ads_service_->GetAutoDetectedSubdivisionTargetingCode();
+  ads_data.SetString(kAutoDetectedSubdivisionTargeting,
                      auto_detected_subdivision_targeting_code);
 
   const bool should_allow_subdivision_ad_targeting =
-      ads_service_->ShouldAllowAdsSubdivisionTargeting();
+      ads_service_->ShouldAllowSubdivisionTargeting();
   ads_data.SetBoolean(kShouldAllowAdsSubdivisionTargeting,
                       should_allow_subdivision_ad_targeting);
 
   ads_data.SetBoolean("adsUIEnabled", true);
 
-  ads_data.SetBoolean(kNeedsBrowserUpdateToSeeAds,
-                      ads_service_->NeedsBrowserUpdateToSeeAds());
+  ads_data.SetBoolean(kNeedsBrowserUpgradeToServeAds,
+                      ads_service_->NeedsBrowserUpgradeToServeAds());
 
   CallJavascriptFunction("brave_rewards.adsData", ads_data);
 }
@@ -1488,11 +1488,11 @@ void RewardsDOMHandler::SaveAdsSetting(const base::Value::List& args) {
         value == "true" && ads_service_->IsSupportedLocale();
     rewards_service_->SetAdsEnabled(is_enabled);
   } else if (key == "adsPerHour") {
-    ads_service_->SetAdsPerHour(std::stoull(value));
+    ads_service_->SetNotificationAdsPerHour(std::stoull(value));
   } else if (key == kAdsSubdivisionTargeting) {
-    ads_service_->SetAdsSubdivisionTargetingCode(value);
-  } else if (key == kAutoDetectedAdsSubdivisionTargeting) {
-    ads_service_->SetAutoDetectedAdsSubdivisionTargetingCode(value);
+    ads_service_->SetSubdivisionTargetingCode(value);
+  } else if (key == kAutoDetectedSubdivisionTargeting) {
+    ads_service_->SetAutoDetectedSubdivisionTargetingCode(value);
   }
 
   GetAdsData(base::Value::List());
@@ -1574,12 +1574,12 @@ void RewardsDOMHandler::OnStatementChanged(
   }
 }
 
-void RewardsDOMHandler::OnAdRewardsChanged() {
+void RewardsDOMHandler::OnAdRewardsDidChange() {
   ads_service_->GetStatementOfAccounts(base::BindOnce(
       &RewardsDOMHandler::OnGetStatement, weak_factory_.GetWeakPtr()));
 }
 
-void RewardsDOMHandler::OnNeedsBrowserUpdateToSeeAds() {
+void RewardsDOMHandler::OnNeedsBrowserUpgradeToServeAds() {
   GetAdsData(base::Value::List());
 }
 

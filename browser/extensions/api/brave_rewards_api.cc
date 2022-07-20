@@ -1298,20 +1298,20 @@ ExtensionFunction::ResponseAction BraveRewardsGetAdsDataFunction::Run() {
   auto is_enabled = ads_service->IsEnabled();
   ads_data.SetBoolean("adsEnabled", is_enabled);
 
-  auto ads_per_hour = ads_service->GetAdsPerHour();
+  auto ads_per_hour = ads_service->GetNotificationAdsPerHour();
   ads_data.SetInteger("adsPerHour", ads_per_hour);
 
   const std::string subdivision_targeting_code =
-      ads_service->GetAdsSubdivisionTargetingCode();
+      ads_service->GetSubdivisionTargetingCode();
   ads_data.SetString(kAdsSubdivisionTargeting, subdivision_targeting_code);
 
   const std::string auto_detected_subdivision_targeting_code =
-      ads_service->GetAutoDetectedAdsSubdivisionTargetingCode();
+      ads_service->GetAutoDetectedSubdivisionTargetingCode();
   ads_data.SetString(kAutoDetectedAdsSubdivisionTargeting,
                      auto_detected_subdivision_targeting_code);
 
   const bool should_allow_subdivision_ad_targeting =
-      ads_service->ShouldAllowAdsSubdivisionTargeting();
+      ads_service->ShouldAllowSubdivisionTargeting();
   ads_data.SetBoolean(kShouldAllowAdsSubdivisionTargeting,
                       should_allow_subdivision_ad_targeting);
 
@@ -1468,8 +1468,9 @@ void BraveRewardsGetPrefsFunction::GetAutoContributePropertiesCallback(
 
   if (ads_service) {
     prefs.SetBoolKey("adsEnabled", ads_service->IsEnabled());
-    prefs.SetDoubleKey("adsPerHour",
-                       static_cast<double>(ads_service->GetAdsPerHour()));
+    prefs.SetDoubleKey(
+        "adsPerHour",
+        static_cast<double>(ads_service->GetNotificationAdsPerHour()));
   } else {
     prefs.SetBoolKey("adsEnabled", false);
     prefs.SetDoubleKey("adsPerHour", 0);
@@ -1505,7 +1506,7 @@ ExtensionFunction::ResponseAction BraveRewardsUpdatePrefsFunction::Run() {
 
     int* ads_per_hour = params->prefs.ads_per_hour.get();
     if (ads_per_hour)
-      ads_service->SetAdsPerHour(*ads_per_hour);
+      ads_service->SetNotificationAdsPerHour(*ads_per_hour);
   }
 
   return RespondNow(NoArguments());

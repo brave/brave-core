@@ -17,14 +17,15 @@ namespace new_tab_page_ads {
 
 class ServingObserver : public base::CheckedObserver {
  public:
-  // Invoked when an opportunity arises to serve a new tab page ad
+  // Invoked when an opportunity arises to serve a new tab page ad for the
+  // |segments|.
   virtual void OnOpportunityAroseToServeNewTabPageAd(
       const SegmentList& segments) {}
 
-  // Invoked when a new tab page ad is served
+  // Invoked when a new tab page ad is served.
   virtual void OnDidServeNewTabPageAd(const NewTabPageAdInfo& ad) {}
 
-  // Invoked when a new tab page ad fails to serve
+  // Invoked when a new tab page ad fails to serve.
   virtual void OnFailedToServeNewTabPageAd() {}
 
  protected:
