@@ -143,12 +143,6 @@ export const OnboardingRestoreFromRecoveryPhrase = ({
     setIsPhraseShown(prev => !prev)
   }, [])
 
-  const onClickPasteFromClipboard = React.useCallback(async () => {
-    const phraseFromClipboard = await navigator.clipboard.readText()
-    setPhraseInput(phraseFromClipboard.trim())
-    clearClipboard()
-  }, [])
-
   const restoreWallet = React.useCallback(async () => {
     if (!isPasswordValid) {
       return
@@ -218,6 +212,17 @@ export const OnboardingRestoreFromRecoveryPhrase = ({
       cleanedInput.trim().split(/\s+/g).length < 12
     ))
   }, [phraseInput])
+
+  const onClickPasteFromClipboard = React.useCallback(async () => {
+    const phraseFromClipboard = await navigator.clipboard.readText()
+    setPhraseInput(phraseFromClipboard.trim())
+    clearClipboard()
+    onPhraseInputChanged({
+      target: { value: phraseFromClipboard }
+    } as React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement
+    >)
+  }, [onPhraseInputChanged])
 
   const handlePasswordChange = React.useCallback(({ isValid, password }: NewPasswordValues) => {
     setPassword(password)
