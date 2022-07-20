@@ -39,7 +39,6 @@ BraveVpnService* BraveVpnServiceFactory::GetForProfile(Profile* profile) {
 }
 
 // static
-#if !BUILDFLAG(IS_ANDROID)
 void BraveVpnServiceFactory::BindForContext(
     content::BrowserContext* context,
     mojo::PendingReceiver<brave_vpn::mojom::ServiceHandler> receiver) {
@@ -49,7 +48,6 @@ void BraveVpnServiceFactory::BindForContext(
     service->BindInterface(std::move(receiver));
   }
 }
-#endif
 
 BraveVpnServiceFactory::BraveVpnServiceFactory()
     : BrowserContextKeyedServiceFactory(

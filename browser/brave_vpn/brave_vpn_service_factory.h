@@ -26,11 +26,11 @@ class BraveVpnServiceFactory : public BrowserContextKeyedServiceFactory {
 
   BraveVpnServiceFactory(const BraveVpnServiceFactory&) = delete;
   BraveVpnServiceFactory& operator=(const BraveVpnServiceFactory&) = delete;
-#if !BUILDFLAG(IS_ANDROID)
+
   static void BindForContext(
       content::BrowserContext* context,
       mojo::PendingReceiver<brave_vpn::mojom::ServiceHandler> receiver);
-#endif
+
  private:
   friend struct base::DefaultSingletonTraits<BraveVpnServiceFactory>;
 

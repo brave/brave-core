@@ -159,6 +159,12 @@ void BraveVpnService::ReloadPurchasedState() {
   LoadPurchasedState(skus::GetDomain("vpn", GetCurrentEnvironment()));
 }
 
+void BraveVpnService::BindInterface(
+    mojo::PendingReceiver<mojom::ServiceHandler> receiver) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  receivers_.Add(this, std::move(receiver));
+}
+
 #if !BUILDFLAG(IS_ANDROID)
 void BraveVpnService::ScheduleBackgroundRegionDataFetch() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
@@ -399,12 +405,6 @@ void BraveVpnService::ToggleConnection() {
 const BraveVPNConnectionInfo& BraveVpnService::GetConnectionInfo() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   return connection_info_;
-}
-
-void BraveVpnService::BindInterface(
-    mojo::PendingReceiver<mojom::ServiceHandler> receiver) {
-  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  receivers_.Add(this, std::move(receiver));
 }
 
 void BraveVpnService::GetConnectionState(GetConnectionStateCallback callback) {
