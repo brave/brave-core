@@ -9,8 +9,6 @@
 
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
-#include "base/logging.h"
-#include "bat/ads/internal/base/logging_util.h"
 
 namespace ads {
 
@@ -136,25 +134,15 @@ std::string AdPreferencesInfo::ToJson() const {
 }
 
 bool AdPreferencesInfo::FromJson(const std::string& json) {
-  auto document = base::JSONReader::ReadAndReturnValueWithError(
-      json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
-                base::JSONParserOptions::JSON_PARSE_RFC);
+  absl::optional<base::Value> document =
+      base::JSONReader::Read(json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
+                                       base::JSONParserOptions::JSON_PARSE_RFC);
 
-  if (!document.value.has_value()) {
-    BLOG(1, "Invalid ad preference info. json="
-                << json << ", error line=" << document.error_line
-                << ", error column=" << document.error_column
-                << ", error message=" << document.error_message);
+  if (!document.has_value() || !document->is_dict()) {
     return false;
   }
 
-  const base::Value::Dict* root = document.value->GetIfDict();
-  if (!root) {
-    BLOG(1, "Invalid ad preference info. json=" << json);
-    return false;
-  }
-
-  return FromValue(*root);
+  return FromValue(document->GetDict());
 }
 
 }  // namespace ads
