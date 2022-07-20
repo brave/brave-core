@@ -76,6 +76,8 @@ import org.chromium.brave_wallet.mojom.TxDataUnion;
 import org.chromium.brave_wallet.mojom.TxService;
 import org.chromium.brave_wallet.mojom.TxServiceObserver;
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.app.BraveActivity;
+import org.chromium.chrome.browser.app.domain.WalletModel;
 import org.chromium.chrome.browser.crypto_wallet.BlockchainRegistryFactory;
 import org.chromium.chrome.browser.crypto_wallet.BraveWalletServiceFactory;
 import org.chromium.chrome.browser.crypto_wallet.JsonRpcServiceFactory;
@@ -122,10 +124,11 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
     private CameraSource mCameraSource;
     private CameraSourcePreview mCameraSourcePreview;
     private boolean mInitialLayoutInflationComplete;
+    private WalletModel mWalletModel;
 
     private int radioSlippageToleranceCheckedId;
     private TextView mMarketLimitPriceText;
-
+    private int mCoinType = CoinType.ETH;
     public enum ActivityType {
         BUY(0),
         SEND(1),
@@ -289,8 +292,40 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         if (parent.getId() == R.id.network_spinner) {
             String item = parent.getItemAtPosition(position).toString();
+            NetworkInfo[] allNetworks =
+                    mWalletModel.getCryptoModel().getNetworkModel().mCryptoNetworks.getValue();
+            NetworkInfo[] customNetworks = Utils.getCustomNetworks(allNetworks);
+            final String chainId = Utils.getNetworkChainId(this, item, customNetworks);
+            if (mActivityType == ActivityType.BUY) {
+                adjustTestFaucetControls(getPerNetworkUiInfo(chainId));
+            }
+            // Shall be fine regardless of activity type
+            mFromValueText.setText("");
+            mFromValueText.setHint("0");
+            for (NetworkInfo nInfo : allNetworks) {
+                if (nInfo.chainId.equals(chainId)) {
+                    mWalletModel.getCryptoModel().getNetworkModel().setNetwork(
+                            nInfo, isSelected -> {
+                                if (!isSelected) {
+                                    // Toast.makeText(this,
+                                    //              getString(R.string.brave_wallet_network_selection_error,
+                                    //                      networkInfo.chainName),
+                                    //              Toast.LENGTH_SHORT)
+                                    //         .show();
+                                    // networkSelectorAdapter.setSelectedNetwork(mSelectedNetwork);
+                                    // Log.e(TAG, "Could not set network");
+                                } else {
+                                    mCurrentChainId = chainId;
+                                    BlockchainToken nativeAsset = Utils.makeNetworkAsset(nInfo);
+                                    resetSwapFromToAssets(nativeAsset);
+                                }
+                                // finish();
+                            });
+                    break;
+                }
+            }
 
-            if (mJsonRpcService != null) {
+            /*if (mJsonRpcService != null) {
                 mJsonRpcService.getAllNetworks(CoinType.ETH, chains -> {
                     NetworkInfo[] customNetworks = Utils.getCustomNetworks(chains);
                     final String chainId = Utils.getNetworkChainId(this, item, customNetworks);
@@ -315,7 +350,7 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
                     });
                     updateBalanceMaybeSwap(getCurrentSelectedAccountAddr());
                 });
-            }
+            }*/
         } else if (parent.getId() == R.id.accounts_spinner) {
             updateBalanceMaybeSwap(mCustomAccountAdapter.getTitleAtPosition(position));
         }
@@ -463,7 +498,7 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
         if (mBlockchainRegistry != null && mCustomAccountAdapter != null
                 && mInitialLayoutInflationComplete) {
             final BlockchainToken nativeAsset = defaultToken == null
-                    ? Utils.createEthereumBlockchainToken(BraveWalletConstants.MAINNET_CHAIN_ID)
+                    ? (mCoinType==CoinType.ETH? Utils.createEthereumBlockchainToken(BraveWalletConstants.MAINNET_CHAIN_ID):Utils.createSolanaBlockchainToken(BraveWalletConstants.SOLANA_CHAIN_ID))
                     : defaultToken;
             // Swap from
             String swapFromAssetSymbol = getIntent().getStringExtra("swapFromAssetSymbol");
@@ -1465,68 +1500,150 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
         super.finishNativeInitialization();
         InitSwapService();
 
-        if (mJsonRpcService != null) {
-            mJsonRpcService.getChainId(CoinType.ETH, chainId -> {
-                mCurrentChainId = chainId;
-                Spinner spinner = findViewById(R.id.network_spinner);
-                spinner.setOnItemSelectedListener(this);
-                mJsonRpcService.getAllNetworks(CoinType.ETH, chains -> {
-                    NetworkInfo[] customNetworks = new NetworkInfo[0];
-                    // We want to hide custom networks for BUY and SWAP screens. We are
-                    // going to add a support for SWAP at least in the near future.
-                    if (mActivityType == ActivityType.SEND) {
-                        customNetworks = Utils.getCustomNetworks(chains);
-                    }
-                    // Creating adapter for spinner
-                    NetworkSpinnerAdapter dataAdapter = new NetworkSpinnerAdapter(this,
-                            Utils.getNetworksList(this, customNetworks),
-                            Utils.getNetworksAbbrevList(this, customNetworks));
-                    spinner.setAdapter(dataAdapter);
-                    spinner.setSelection(getIndexOf(spinner, chainId, customNetworks));
-
-                    for (NetworkInfo chain : chains) {
-                        if (chainId.equals(chain.chainId)) {
-                            TextView fromAssetText = findViewById(R.id.from_asset_text);
-                            TextView marketLimitPriceText =
-                                    findViewById(R.id.market_limit_price_text);
-                            if (Utils.isCustomNetwork(chainId)) {
-                                Utils.setBlockiesBitmapCustomAsset(mExecutor, mHandler, null, "",
-                                        chain.symbol, getResources().getDisplayMetrics().density,
-                                        fromAssetText, this, true, (float) 0.5);
-                            }
-                            fromAssetText.setText(chain.symbol);
-                            marketLimitPriceText.setText(String.format(
-                                    getString(R.string.market_price_in), chain.symbol));
-                            break;
-                        }
-                    }
-                });
-                if (mKeyringService != null) {
-                    mKeyringService.getKeyringInfo(
-                            BraveWalletConstants.DEFAULT_KEYRING_ID, keyring -> {
-                                String[] accountNames = new String[keyring.accountInfos.length];
-                                String[] accountTitles = new String[keyring.accountInfos.length];
-                                int currentPos = 0;
-                                for (AccountInfo info : keyring.accountInfos) {
-                                    accountNames[currentPos] = info.name;
-                                    accountTitles[currentPos] = info.address;
-                                    currentPos++;
-                                }
-                                mCustomAccountAdapter = new AccountSpinnerAdapter(
-                                        getApplicationContext(), accountNames, accountTitles);
-                                mAccountSpinner.setAdapter(mCustomAccountAdapter);
-                                mAccountSpinner.setOnItemSelectedListener(this);
-                                if (accountTitles.length > 0) {
-                                    updateBalanceMaybeSwap(accountTitles[0]);
-                                }
-
-                                // updateBuySendSwapAsset needs mCustomAccountAdapter to be
-                                // initialized
-                                resetSwapFromToAssets(null);
-                            });
-                }
-            });
+        BraveActivity activity = BraveActivity.getBraveActivity();
+        if (activity != null) {
+            mWalletModel = activity.getWalletModel();
         }
+        Log.d(TAG, "finishNativeInitialization");
+        if (mJsonRpcService != null && mWalletModel != null && mWalletModel.getCryptoModel() != null
+                && mWalletModel.getCryptoModel().getNetworkModel() != null) {
+            // mWalletModel.getCryptoModel().getNetworkModel().mChainId.observe(this, chainId-> {
+
+            mCurrentChainId = mWalletModel.getCryptoModel().getNetworkModel().mChainId.getValue();
+            Spinner spinner = findViewById(R.id.network_spinner);
+            spinner.setOnItemSelectedListener(this);
+            // mWalletModel.getCryptoModel().getNetworkModel().mCryptoNetworks.observe(
+            NetworkInfo[] networkInfos =
+                    mWalletModel.getCryptoModel().getNetworkModel().mCryptoNetworks.getValue();
+            // this, networkInfos -> {
+            // Log.d(TAG, "mCryptoNetworks.observe ");
+            NetworkInfo[] customNetworks = new NetworkInfo[0];
+            if (mActivityType == ActivityType.SEND) {
+                customNetworks = Utils.getCustomNetworks(networkInfos);
+            }
+            // Creating adapter for spinner
+            NetworkSpinnerAdapter dataAdapter =
+                    new NetworkSpinnerAdapter(this, Utils.getNetworksList(this, customNetworks),
+                            Utils.getNetworksAbbrevList(this, customNetworks));
+            spinner.setAdapter(dataAdapter);
+
+            spinner.setSelection(getIndexOf(spinner, mCurrentChainId, customNetworks));
+
+            for (NetworkInfo chain : networkInfos) {
+                if (mCurrentChainId.equals(chain.chainId)) {
+                    TextView fromAssetText = findViewById(R.id.from_asset_text);
+                    TextView marketLimitPriceText = findViewById(R.id.market_limit_price_text);
+                    if (Utils.isCustomNetwork(mCurrentChainId)) {
+                        Utils.setBlockiesBitmapCustomAsset(mExecutor, mHandler, null, "",
+                                chain.symbol, getResources().getDisplayMetrics().density,
+                                fromAssetText, this, true, (float) 0.5);
+                    }
+                    fromAssetText.setText(chain.symbol);
+                    marketLimitPriceText.setText(
+                            String.format(getString(R.string.market_price_in), chain.symbol));
+                    break;
+                }
+            }
+            mWalletModel.getCryptoModel().getNetworkModel().mDefaultNetwork.removeObservers(this);
+            mWalletModel.getCryptoModel().getNetworkModel().mDefaultNetwork.observe(this, chains-> {
+                setupAccountSpinnerAdapter();
+                
+            });
+            setupAccountSpinnerAdapter();
+
+            //});
+            /*mJsonRpcService.getAllNetworks(CoinType.ETH, chains -> {
+                NetworkInfo[] customNetworks = new NetworkInfo[0];
+                // We want to hide custom networks for BUY and SWAP screens. We are
+                // going to add a support for SWAP at least in the near future.
+                if (mActivityType == ActivityType.SEND) {
+                    customNetworks = Utils.getCustomNetworks(chains);
+                }
+                // Creating adapter for spinner
+                NetworkSpinnerAdapter dataAdapter = new NetworkSpinnerAdapter(this,
+                        Utils.getNetworksList(this, customNetworks),
+                        Utils.getNetworksAbbrevList(this, customNetworks));
+                spinner.setAdapter(dataAdapter);
+                spinner.setSelection(getIndexOf(spinner, chainId, customNetworks));
+
+                for (NetworkInfo chain : chains) {
+                    if (chainId.equals(chain.chainId)) {
+                        TextView fromAssetText = findViewById(R.id.from_asset_text);
+                        TextView marketLimitPriceText =
+                                findViewById(R.id.market_limit_price_text);
+                        if (Utils.isCustomNetwork(chainId)) {
+                            Utils.setBlockiesBitmapCustomAsset(mExecutor, mHandler, null, "",
+                                    chain.symbol, getResources().getDisplayMetrics().density,
+                                    fromAssetText, this, true, (float) 0.5);
+                        }
+                        fromAssetText.setText(chain.symbol);
+                        marketLimitPriceText.setText(String.format(
+                                getString(R.string.market_price_in), chain.symbol));
+                        break;
+                    }
+                }
+            });*/
+
+            /*if (mKeyringService != null) {
+                mKeyringService.getKeyringInfo(
+                        BraveWalletConstants.DEFAULT_KEYRING_ID, keyring -> {
+                            String[] accountNames = new String[keyring.accountInfos.length];
+                            String[] accountTitles = new String[keyring.accountInfos.length];
+                            int currentPos = 0;
+                            for (AccountInfo info : keyring.accountInfos) {
+                                accountNames[currentPos] = info.name;
+                                accountTitles[currentPos] = info.address;
+                                currentPos++;
+                            }
+                            mCustomAccountAdapter = new AccountSpinnerAdapter(
+                                    getApplicationContext(), accountNames, accountTitles);
+                            mAccountSpinner.setAdapter(mCustomAccountAdapter);
+                            mAccountSpinner.setOnItemSelectedListener(this);
+                            if (accountTitles.length > 0) {
+                                updateBalanceMaybeSwap(accountTitles[0]);
+                            }
+
+                            // updateBuySendSwapAsset needs mCustomAccountAdapter to be
+                            // initialized
+                            resetSwapFromToAssets(null);
+                        });
+            }*/
+            //});
+        }
+    }
+
+    private void setupAccountSpinnerAdapter(){
+        mWalletModel.getCryptoModel().mCoinTypeMutableLiveData.removeObservers(this);
+        mWalletModel.getCryptoModel().mCoinTypeMutableLiveData.observe(this, coinType->{
+        mCoinType = coinType;
+        List<AccountInfo> accountInfos = mWalletModel.getCryptoModel().mAccountInfosFromKeyRingModel.getValue();
+            ArrayList<String> accountNamesList = new ArrayList<String>();
+            ArrayList<String> accountTitlesList = new ArrayList<String>();
+            
+            for (AccountInfo info : accountInfos) {
+                if(coinType == info.coin){
+                    accountNamesList.add(info.name);
+                    accountTitlesList.add(info.address);
+                }
+            }
+            String[] accountNames = new String[accountNamesList.size()];
+            accountNames = accountNamesList.toArray(accountNames);
+            String[] accountTitles =  new String[ accountTitlesList.size()];
+            accountTitles = accountTitlesList.toArray(accountTitles);
+            mCustomAccountAdapter = new AccountSpinnerAdapter(
+                    getApplicationContext(), accountNames, accountTitles);
+            mAccountSpinner.setAdapter(mCustomAccountAdapter);
+            mAccountSpinner.setOnItemSelectedListener(this);
+            if (accountTitles.length > 0) {
+                updateBalanceMaybeSwap(accountTitles[0]);
+            }
+
+            // updateBuySendSwapAsset needs mCustomAccountAdapter to be
+            // initialized
+            resetSwapFromToAssets(null);
+        
+        });
+        
     }
 
     @Override
