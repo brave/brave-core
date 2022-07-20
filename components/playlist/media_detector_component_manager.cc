@@ -8,6 +8,7 @@
 #include "base/bind.h"
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
+#include "base/logging.h"
 #include "base/task/thread_pool.h"
 #include "brave/components/playlist/media_detector_component_installer.h"
 
@@ -16,9 +17,7 @@ namespace playlist {
 namespace {
 
 base::FilePath GetScriptPath(const base::FilePath& install_path) {
-  // TODO(sko) This will be replaced with new script.
-  constexpr char kYoutubeDownScript[] = "youtubedown.js";
-  return install_path.AppendASCII(kYoutubeDownScript);
+  return install_path.AppendASCII("index.js");
 }
 
 std::string ReadScript(const base::FilePath& path) {
@@ -64,6 +63,11 @@ void MediaDetectorComponentManager::OnComponentReady(
 }
 
 void MediaDetectorComponentManager::OnGetScript(const std::string& script) {
+  if (script.empty()) {
+    LOG(ERROR) << __FUNCTION__ << " script is empty!";
+    return;
+  }
+
   script_ = script;
 
   for (auto& observer : observer_list_)

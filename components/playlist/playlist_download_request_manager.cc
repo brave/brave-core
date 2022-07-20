@@ -55,9 +55,6 @@ PlaylistDownloadRequestManager::PlaylistDownloadRequestManager(
   observed_.Observe(media_detector_component_manager_);
 
   media_detector_script_ = media_detector_component_manager_->script();
-
-  // TODO(sko) This line should be removed when the component is ready.
-  media_detector_component_manager_->SetUseLocalScriptForTesting();
 }
 
 PlaylistDownloadRequestManager::~PlaylistDownloadRequestManager() = default;

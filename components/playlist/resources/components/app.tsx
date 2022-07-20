@@ -86,7 +86,9 @@ export class PlaylistPage extends React.Component<Props, State> {
           {
             content: (
                 <PlaylistItem id={item.id} name={item.name} onClick={this.onClickItem.bind(this)}
-                    thumbnailUrl={item.thumbnailPath.url.startsWith('http') ? item.thumbnailPath.url : this.getImgSrc(item.id)}/>
+                    thumbnailUrl={item.thumbnailPath.url.startsWith('http')
+                        ? '' // TODO(sko): currently, requesting for other host isn't allowed for this page
+                        : this.getImgSrc(item.id)}/>
             )
           },
           { content: (<span>{item.ready ? 'Ready' : 'Downloading'}</span>) },
