@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/enterprise/connectors/device_trust/key_management/browser/metrics_utils.cc b/chrome/browser/enterprise/connectors/device_trust/key_management/browser/metrics_utils.cc
+index bd0b5586106ba3b396818ea2e721ed6062bc28d7..c7e6c83746803a7e6547dba37cb46f5a1edcd3da 100644
+--- a/chrome/browser/enterprise/connectors/device_trust/key_management/browser/metrics_utils.cc
++++ b/chrome/browser/enterprise/connectors/device_trust/key_management/browser/metrics_utils.cc
+@@ -41,6 +41,7 @@ DTKeyType AlgorithmToType(
+     case crypto::SignatureVerifier::RSA_PSS_SHA256:
+       return DTKeyType::kRsa;
+     case crypto::SignatureVerifier::ECDSA_SHA256:
++    case crypto::SignatureVerifier::ECDSA_SHA384:
+       return DTKeyType::kEc;
+   }
+ }

@@ -16,6 +16,7 @@
 #include "base/logging.h"
 #include "base/values.h"
 #include "brave/components/nested_star/src/lib.rs.h"
+#include "brave/components/nitro_utils/attestation.h"
 #include "brave/components/p3a/brave_p3a_config.h"
 #include "brave/components/p3a/network_annotations.h"
 #include "components/prefs/pref_registry_simple.h"
@@ -114,6 +115,12 @@ void BraveP3AStarRandomness::RegisterPrefs(PrefRegistrySimple* registry) {
 }
 
 void BraveP3AStarRandomness::RequestRandomnessServerInfo() {
+  GURL attestation_url = GURL(config_->star_randomness_host + "/attestation");
+  nitro_utils::RequestAndVerifyAttestationDocument(
+      attestation_url, url_loader_factory_.get(),
+      base::BindOnce(&BraveP3AStarRandomness::HandleRandomnessAttestationResult,
+                     base::Unretained(this)));
+
   if (rnd_server_info_ == nullptr) {
     // if rnd_server_info is null, we can assume the call is from
     // initialization, and not an update call. Using cached server info, if
@@ -134,7 +141,7 @@ void BraveP3AStarRandomness::RequestRandomnessServerInfo() {
 
   rnd_server_info_.reset(nullptr);
   auto resource_request = std::make_unique<network::ResourceRequest>();
-  resource_request->url = config_->star_randomness_info_url;
+  resource_request->url = GURL(config_->star_randomness_host + "/info");
 
   rnd_info_url_loader_ = network::SimpleURLLoader::Create(
       std::move(resource_request), GetRandomnessRequestAnnotation());
@@ -147,6 +154,12 @@ void BraveP3AStarRandomness::RequestRandomnessServerInfo() {
       kMaxRandomnessResponseSize);
 }
 
+void BraveP3AStarRandomness::HandleRandomnessAttestationResult(
+    scoped_refptr<net::X509Certificate> approved_cert) {
+  VLOG(1) << "BraveP3AStarRandomness: approved cert? "
+          << (approved_cert != nullptr);
+}
+
 void BraveP3AStarRandomness::SendRandomnessRequest(
     const char* histogram_name,
     uint8_t epoch,
@@ -154,7 +167,7 @@ void BraveP3AStarRandomness::SendRandomnessRequest(
         randomness_request_state,
     const rust::Vec<nested_star::VecU8>& rand_req_points) {
   auto resource_request = std::make_unique<network::ResourceRequest>();
-  resource_request->url = config_->star_randomness_url;
+  resource_request->url = GURL(config_->star_randomness_host + "/randomness");
   resource_request->method = "POST";
 
   rnd_url_loader_ = network::SimpleURLLoader::Create(

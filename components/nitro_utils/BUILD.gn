@@ -1,0 +1,16 @@
+static_library("nitro_utils") {
+  sources = [
+    "attestation.cc",
+    "attestation.h",
+    "cose.cc",
+    "cose.h",
+  ]
+
+  deps = [
+    "//base",
+    "//components/cbor",
+    "//net",
+    "//services/network:network_service",
+    "//services/network/public/cpp",
+  ]
+}
