@@ -30,8 +30,8 @@
   sub-label="$i18n{autoOnionLocationDesc}" disabled="[[!torEnabledPref_.value]]">
 </settings-toggle-button>
 
-<settings-toggle-button id="useBridges" class="hr" label="$i18n{torUseBridgesTitle}"
-  sub-label="$i18n{torUseBridgesDesc}" learn-more-url="https://support.brave.com/" checked="{{isUsingBridges_}}"
+<settings-toggle-button id="useBridges" class="cr-row" label="$i18n{torUseBridgesTitle}"
+  sub-label="$i18n{torUseBridgesDesc}" learn-more-url="https://support.brave.com/" pref="{{isUsingBridges_}}"
   disabled="[[!torEnabledPref_.value]]">
   <template is="dom-if" if="[[isConfigChanged_]]">
     <cr-button id="apply" on-click="setBridgesConfig_" slot="more-actions">
@@ -39,9 +39,8 @@
     </cr-button>
   </template>
 </settings-toggle-button>
-<settings-radio-group id="bridgesGroup" selectable-elements="settings-collapse-radio-button"
-  selected="{{useBridgesValue_}}" on-change="onUseBridgesValueChanged_"
-  hidden="[[!shouldShowBridgesGroup_]]">
+<cr-radio-group id="bridgesGroup" selectable-elements="settings-collapse-radio-button" selected="{{useBridgesValue_}}"
+  on-selected-changed="onUseBridgesValueChanged_" hidden="[[!shouldShowBridgesGroup_]]">
   <settings-collapse-radio-button id="useBuiltIn" name="useBuiltIn" label="$i18n{torSelectBuiltInRadio}" no-collapse
     no-automatic-collapse expanded>
     <div slot="collapse">
@@ -57,8 +56,8 @@
   <settings-collapse-radio-button id="useRequested" name="useRequested" label="$i18n{torRequestBridgesRadio}"
     no-collapse no-automatic-collapse expanded>
     <div slot="collapse">
-      <textarea id="requestedBridges" multiline="true" rows="3" readonly="true"
-        value="[[requestedBridges_]]" placeholder="[[requestedBridgesPlaceholder_]]"></textarea>
+      <textarea id="requestedBridges" multiline="true" rows="3" readonly="true" value="[[requestedBridges_]]"
+        placeholder="[[requestedBridgesPlaceholder_]]"></textarea>
       <cr-button on-click="requestBridges_">$i18n{torRequestNewBridgeButton}</cr-button>
     </div>
   </settings-collapse-radio-button>
@@ -71,7 +70,7 @@
     </div>
   </settings-collapse-radio-button>
   <div id="footer"></div>
-</settings-radio-group>
+</cr-radio-group>
 
 <template is="dom-if" if="[[showRequestBridgesDialog_]]" restamp>
   <request-bridges-dialog id="requestBridgesDialog" on-close="showRequestBridgesDialogClosed_">

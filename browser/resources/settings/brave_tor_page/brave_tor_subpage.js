@@ -76,16 +76,17 @@ class SettingsBraveTorPageElement extends SettingBraveTorPageElementBase {
       },
 
       isUsingBridges_: {
-        type: Boolean,
-        value: false,
-        observer: 'isUsingBridgesChanged_',
+        type: Object,
+        value() {
+          return {}
+        },
         notify: true,
       },
 
       shouldShowBridgesGroup_: {
         type: Boolean,
         value: false,
-        computed: 'computeShouldShowBridgesGroup_(isUsingBridges_, torEnabledPref_.value)'
+        computed: 'computeShouldShowBridgesGroup_(isUsingBridges_.value, torEnabledPref_.value)'
       },
 
       requestedBridgesPlaceholder_: {
@@ -122,13 +123,23 @@ class SettingsBraveTorPageElement extends SettingBraveTorPageElementBase {
     }
   }
 
+  static get observers() {
+    return [
+      'isUsingBridgesChanged_(isUsingBridges_.value)'
+    ]
+  }
+
   browserProxy_ = BraveTorBrowserProxyImpl.getInstance()
 
   ready() {
     super.ready()
     this.browserProxy_.getBridgesConfig().then((config) => {
       this.loadedConfig_ = config
-      this.isUsingBridges_ = config.use_bridges != Usage.NOT_USED
+      this.isUsingBridges_ = {
+        key: '',
+        type: chrome.settingsPrivate.PrefType.BOOLEAN,
+        value: config.use_bridges != Usage.NOT_USED,
+      }
       this.useBridges_ = config.use_bridges
       this.builtinBridges_ = config.use_builtin_bridges
       this.requestedBridges_ = config.requested_bridges.join('\n')
@@ -172,7 +183,7 @@ class SettingsBraveTorPageElement extends SettingBraveTorPageElementBase {
   }
 
   onUseBridgesValueChanged_(event) {
-    switch (event.target.selected) {
+    switch (event.detail.value) {
       case 'useBuiltIn':
         this.useBridges_ = Usage.USE_BUILT_IN
         break
@@ -246,7 +257,7 @@ class SettingsBraveTorPageElement extends SettingBraveTorPageElementBase {
   }
 
   computeShouldShowBridgesGroup_() {
-    return this.isUsingBridges_ && this.torEnabledPref_.value
+    return this.isUsingBridges_.value && this.torEnabledPref_.value
   }
 
   builtInTypeEqual_(item, selection) {
