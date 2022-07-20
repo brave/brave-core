@@ -1197,7 +1197,7 @@
 <translation id="6252742184395380448">Konfigurér program</translation>
 <translation id="5358970666412490132">Belønningsprogram</translation>
 <translation id="346636227344244984">Afstemningsprogram</translation>
-<translation id="3538368258493053874">BPF Loader</translation>
+<translation id="3538368258493053874">BPF-indlæser</translation>
 <translation id="2334098351242742927">Ed25519-program</translation>
 <translation id="8780753288764281797">Secp256k1-program</translation>
 <translation id="5275550100743015683">Fra adresse:</translation>
@@ -1207,8 +1207,8 @@
 <translation id="4337554812324118382">Data:</translation>
 <translation id="569870799832027680">Program-ID:</translation>
 <translation id="7843211152394841558">Maks. forsøg:</translation>
-<translation id="8496335570810457">Preflight-forpligtelse:</translation>
-<translation id="5100124500279922001">Spring Preflight over:</translation>
+<translation id="8496335570810457">Transaktionssimulation-forpligtelse:</translation>
+<translation id="5100124500279922001">Spring transaktionssimulation over:</translation>
 <translation id="8060029310790625334">Hjælp</translation>
 <translation id="2095142195578664632">Har du brug for hjælp? Se</translation>
 <translation id="3155170474926428993">Tor Startprogram</translation>

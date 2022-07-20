@@ -867,6 +867,7 @@
 <translation id="7131971375297699539">نماد رمزارز</translation>
 <translation id="7982789257301363584">شبکه</translation>
 <translation id="4717431746210146708">این سایت مجاز به افزودن شبکه شود؟</translation>
+<translation id="4857321293515555666">این DApp می‌خواهد برای تکمیل درخواست شما،‌ این پیام را بخواند.</translation>
 <translation id="714506544401754321">رمزگشایی پیام</translation>
 <translation id="5039804452771397117">اجازه دادن</translation>
 <translation id="3378339846292573874">افزودن توکن پیشنهادی</translation>
@@ -878,4 +879,15 @@
 <translation id="8643377320501056697">نمایش سایت‌های برتر</translation>
 <translation id="6471216025161697462">به <ph name="VALUE"/> متصل شد</translation>
 <translation id="1968852757206592413">آزمایشی</translation>
+<translation id="7733890291091968191">نمایش اعلان‌های Web3</translation>
+<translation id="1371627247679035769">\n\n\n\n#### Brave شما را ردیابی نمی‌کند و نمی‌داند شما به چه شکل از برنامه ما استفاده می‌کنید، به همین دلیل نمی‌دانیم چطور VPN را راه‌اندازی کرده‌اید. لطفاً اطلاعاتی درباره مشکلی که با آن مواجه هستید در اختیارمان بگذارید و ما نهایت تلاش خود را برای حل آن در اسرع وقت انجام خواهیم داد. n. ####\n\n</translation>
+<translation id="3367162038532116157">\n\nVPN نام میزبان\n <ph name="VALUE"/></translation>
+<translation id="6173438324126027458">\n\nنوع اشتراک\n <ph name="VALUE"/></translation>
+<translation id="1478875290576741766">\n\nتوکن Playstore\n <ph name="VALUE"/></translation>
+<translation id="1403057798797848522">\n\nنسخه برنامه\n <ph name="VALUE"/></translation>
+<translation id="2282835936933247509">\n\nمنطقه زمانی\n</translation>
+<translation id="8107843365677337047">\n\nنوع شبکه\n</translation>
+<translation id="5334952096674914470">\n\nCشبکه مخابراتی\n</translation>
+<translation id="5393042357629679588">\n\nمشکلات دیگر\n</translation>
+<translation id="8095666712177294104">\n\nپلتفرم\n</translation>
 </translationbundle>

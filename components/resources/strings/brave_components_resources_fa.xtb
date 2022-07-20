@@ -722,6 +722,7 @@
 <translation id="4780526507945807546">استفاده از گره IPFS محلی Brave</translation>
 <translation id="8148464361648742409">استفاده از دروازه عمومی</translation>
 <translation id="5123478056123923857">IPFS (سیستم فایل InterPlanetary) شبکه عمومی برای ارسال و ذخیره‌سازی داده همتابه‌همتا است. ملاحظات حریم‌خصوصی این پروتکل با HTTP(ها) تفاوت دارد.</translation>
+<translation id="1216911189668016151">رایانه‌تان به شبکه عمومی کمک می‌کند، اما نشانی IP شما یا هر محتوایی که درخواست یا ارائه می‌کنید ممکن است در معرض نمایش قرار بگیرد. محتوایی که از طریق IPFS درخواست می‌کنید، قبل از ارائه به شما تأیید می‌شود. درخواست‌های شبکه ممکن است از تنظیمات پروکسی مرورگر و DNS استفاده نکنند.</translation>
 <translation id="8664689531113048642">از نشانی IP و محتوایی که از ناظرهای شخص ثالث بالقوه درخواست می‌کنید، و نه اپراتور دروازه عمومی، محافظت می‌کند. اپراتور دروازه مسئولیت دارد مطمئن شود محتوایی که از طریق دروازه به شما ارائه می‌شود همان محتوای درخواستی شما است. همچنین، رایانه شما به شبکه عمومی IPFS کمک نمی‌کند.</translation>
 <translation id="3977809385703587108">می‌توانید اولویت‌هایتان را اینجا دوباره تغییر دهید</translation>
 <translation id="3340978935015468852">تنظیمات</translation>
@@ -971,6 +972,8 @@
 <translation id="7642841516562576649">نشانی وب نماد</translation>
 <translation id="2144247757675997850">افزودن دارایی</translation>
 <translation id="2708402071160162126">هشدار: هرگز عبارت بازیابی را با کسی به اشتراک نگذارید. هر کسی با داشتن این عبارت می‌تواند دارایی‌های شما را به‌صورت همیشگی تصاحب کند.</translation>
+<translation id="2416098547200943834">توجه: کلید خصوصی در قالب یک JSON با رمزنگاری هگز که شامل اطلاعات کلید خصوصی و پروتکل است ارائه می‌شود. <ph name="LINK_START"/>بیشتر بدانید<ph name="LINK_END"/>.</translation>
+<translation id="7657130382217527063">توجه: کلید خصوصی باید در قالب یک JSON با رمزنگاری هگز که شامل اطلاعات کلید خصوصی و پروتکل است ارائه شود. <ph name="LINK_START"/>بیشتر بدانید<ph name="LINK_END"/>.</translation>
 <translation id="2902856457593699108">نمایش کلید</translation>
 <translation id="8033497299373164724">مخفی کردن کلید</translation>
 <translation id="2702143907607790516">نام حساب به‌روزرسانی نشد، لطفاً دوباره امتحان کنید.</translation>
@@ -1006,6 +1009,7 @@
 <translation id="5488357322146334497">پیام</translation>
 <translation id="3586752056660754651">علامت</translation>
 <translation id="3484981968509595506">یک DApp در حال ارائه درخواست برای کلید رمزگذاری عمومی شما است</translation>
+<translation id="2950511942409261729"><ph name="URL_BEFORE"/>$url<ph name="URL_AFTER"/> در حال درخواست کلید رمزگذاری عمومی کیف پولتان است. اگر با ارائه این کلید موافقت کنید، سایت می‌تواند پیام‌های رمزگذاری‌شده برای شما بنویسد.</translation>
 <translation id="3340247553212049934">تهیه کنید</translation>
 <translation id="1619778919922494944">این DApp می‌خواهد برای تکمیل درخواست شما،‌ این پیام را بخواند</translation>
 <translation id="714506544401754321">رمزگشایی پیام</translation>
@@ -1072,6 +1076,8 @@
 <translation id="7051244143160304048">اتصال <ph name="DEVICE_NAME"/> قطع شد</translation>
 <translation id="5317781812114905957">دستورالعمل‌ها</translation>
 <translation id="1178198982208000092"><ph name="DEVICE_NAME"/> را متصل کنید</translation>
+<translation id="6291765462876399333">کیف پول سخت‌افزاری به تأیید بر روی دستگاه نیاز دارد <ph name="DEVICE_NAME"/></translation>
+<translation id="2288190100157580461">کیف پول سخت‌افزاری نیاز دارد که برنامه <ph name="NETWORK"/> روی <ph name="DEVICE_NAME"/> باز باشد</translation>
 <translation id="8687869982094542529">ارسال شد</translation>
 <translation id="5013754027092416509">دریافت شد</translation>
 <translation id="5867988533873716616">نشانی وب کاوشگر بلوک در دسترس نیست.</translation>
@@ -1142,6 +1148,7 @@
 <translation id="1470129769517088397"><ph name="ADDRESS"/> شبکه فعلی نیست</translation>
 <translation id="7340805872138998391">باز کردن قفل دستگاه ممکن نیست، سعی کنید دوباره متصل شوید</translation>
 <translation id="1984410139271779110">خطای داخلی، طرح ناشناس</translation>
+<translation id="6989562355845156390">تأیید</translation>
 <translation id="4674380028960132654">Ledger: امضا با آدرس صحیح مطابقت ندارد</translation>
 <translation id="3183932890629254743">حساب سخت‌افزار پیدا نشد</translation>
 <translation id="4287068151777838754">داده‌های JSON پیش‌بینی نمی‌شود</translation>
@@ -1184,6 +1191,26 @@
 <translation id="2317956709076373213">تراکنش تأیید شد</translation>
 <translation id="310693998838023022">خطای تراکنش</translation>
 <translation id="6395870673621520684">تراکنش نزول کرد</translation>
+<translation id="1237782734462409503">زبانه فعال نیست</translation>
+<translation id="756701799684433105">تأیید تراکنش</translation>
+<translation id="6450792191436242818">برنامه سیستمی</translation>
+<translation id="6252742184395380448">برنامه پیکربندی</translation>
+<translation id="5358970666412490132">برنامه اثبات سهام</translation>
+<translation id="346636227344244984">برنامه رأی‌دهی</translation>
+<translation id="3538368258493053874">بارکننده BPF</translation>
+<translation id="2334098351242742927">برنامه Ed25519</translation>
+<translation id="8780753288764281797">برنامه Secp256k1</translation>
+<translation id="5275550100743015683">از نشانی:</translation>
+<translation id="2678433693746214764">به نشانی:</translation>
+<translation id="4576396475962922672">حساب جدید:</translation>
+<translation id="4719005063558335704">حساب:</translation>
+<translation id="4337554812324118382">تاریخ:</translation>
+<translation id="569870799832027680">شناسه برنامه:</translation>
+<translation id="7843211152394841558">حداکثر تعداد تلاش‌های مجدد:</translation>
+<translation id="8496335570810457">تعهد پیش از پرواز:</translation>
+<translation id="5100124500279922001">رد کردن پیش از پرواز:</translation>
+<translation id="8060029310790625334">مرکز راهنمایی</translation>
+<translation id="2095142195578664632">به راهنمایی نیاز دارید؟ نگاه کنید به</translation>
 <translation id="3155170474926428993">راه‌انداز تور</translation>
 <translation id="3745016858329272300">اطلاعات عمومی</translation>
 <translation id="4045404575593562245">رویدادهای کنترل Tor</translation>

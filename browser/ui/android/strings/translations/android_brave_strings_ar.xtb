@@ -860,6 +860,7 @@
 <translation id="7131971375297699539">رمز العملة</translation>
 <translation id="7982789257301363584">الشبكة</translation>
 <translation id="4717431746210146708">هل تسمح لهذا الموقع بإضافة شبكة؟</translation>
+<translation id="4857321293515555666">يود DApp هذا قراءة هذه الرسالة لإكمال طلبك.</translation>
 <translation id="714506544401754321">فك تشفير الرسالة</translation>
 <translation id="5039804452771397117">سماح</translation>
 <translation id="3378339846292573874">إضافة عملة رمزية مقترحة</translation>
@@ -871,4 +872,15 @@
 <translation id="8643377320501056697">عرض أهم المواقع</translation>
 <translation id="6471216025161697462">متصل بـ <ph name="VALUE"/></translation>
 <translation id="1968852757206592413">إصدار تجريبي</translation>
+<translation id="7733890291091968191">عرض إشعارات Web3</translation>
+<translation id="1371627247679035769">\n\n\n\n#### لا يقوم Brave بتتبعك أو معرفة كيفية استخدامك لتطبيقنا، لذلك لا نعرف كيف قمت بإعداد VPN. يرجى مشاركة المعلومات حول المشكلة التي تواجهها وسنبذل قصارى جهدنا لحلها بأسرع ما يمكن. ####\n\n</translation>
+<translation id="3367162038532116157">\n\nاسم مضيف VPN\n <ph name="VALUE"/></translation>
+<translation id="6173438324126027458">\n\nنوع الاشتراك\n <ph name="VALUE"/></translation>
+<translation id="1478875290576741766">\n\nالرمز المميز لـ Playstore\n <ph name="VALUE"/></translation>
+<translation id="1403057798797848522">\n\nنسخة التطبيق\n <ph name="VALUE"/></translation>
+<translation id="2282835936933247509">\n\nالمنطقة الزمنية\n</translation>
+<translation id="8107843365677337047">\n\nنوع الشبكة\n</translation>
+<translation id="5334952096674914470">\n\nالناقل الخلوي\n</translation>
+<translation id="5393042357629679588">\n\nإصدار آخر\n</translation>
+<translation id="8095666712177294104">\n\nالمنصة\n</translation>
 </translationbundle>

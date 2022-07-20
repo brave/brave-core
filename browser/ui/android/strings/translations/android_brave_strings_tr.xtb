@@ -859,12 +859,14 @@ Bu talebi kabul etmezseniz VPN yeniden bağlanmaz ve internet bağlantınız gü
 <translation id="4804818685124855865">Bağlantıyı Kes</translation>
 <translation id="8009571545960303544">İmzanız isteniyor</translation>
 <translation id="3484981968509595506">Bir DApp, açık şifreleme anahtarınızı istiyor</translation>
+<translation id="2300240008330189182"><ph name="URL"/> cüzdanınızın herkese açık şifreleme anahtarını istiyor. Bu anahtarı vermeyi kabul ederseniz, site size şifreli mesajlar yazabilir.</translation>
 <translation id="3340247553212049934">Ver</translation>
 <translation id="1982257600591932657">Ağ adı</translation>
 <translation id="5052727830821470769">Ağ URL'si</translation>
 <translation id="4822132585477111396">Chain ID</translation>
 <translation id="7131971375297699539">Para birimi sembolü</translation>
 <translation id="7982789257301363584">Ağ</translation>
+<translation id="6936860995365507185">Bu, bu ağın Brave Wallet içinde kullanılmasına izin verecektir. <ph name="CLICK_START"/>Daha fazla bilgi edin<ph name="CLICK_END"/>.</translation>
 <translation id="4717431746210146708">Bu sitenin bir ağ eklemesine izin verilsin mi?</translation>
 <translation id="4857321293515555666">Bu DApp, talebinizi tamamlamadan önce bu mesajı okumak istiyor.</translation>
 <translation id="714506544401754321">Mesajı çöz</translation>

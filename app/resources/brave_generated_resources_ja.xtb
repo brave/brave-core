@@ -106,16 +106,16 @@
 <translation id="4870911314065352661">すべてのタブを閉じますか？</translation>
 <translation id="7551864359422178684">このブラウザウィンドウで<ph name="NUMBER_OF_TABS"/>個のタブを開いています。</translation>
 <translation id="2571596981920752023"><ph name="NUMBER_OF_TABS"/>個のタブ</translation>
-<translation id="2272117088509540883">- Brave検索</translation>
-<translation id="2701279958223202597">より良いプライバシーで独立した検索をサポートします。Brave検索は、お客様の情報や検索したクエリ、クリックを追跡することはありません。</translation>
-<translation id="6438467592401259882">より良いプライバシーで独立した検索をサポートします。</translation>
-<translation id="1688359110799098115">より良いプライバシーで独立した検索をサポート</translation>
-<translation id="8579317236683491484">Brave検索は、お客様の情報や検索したクエリ、クリックを追跡することはありません。</translation>
+<translation id="2272117088509540883">- Brave Search</translation>
+<translation id="2701279958223202597">よりプライバシーが保護され、ビッグテックに依存しない検索をサポートしてください。Brave Searchは、お客様の情報や検索したクエリ、クリックを追跡することはありません。</translation>
+<translation id="6438467592401259882">よりプライバシーが保護され、ビッグテックに依存しない検索をサポートしてください。</translation>
+<translation id="1688359110799098115">よりプライバシーが保護され、ビッグテックに依存しない検索をサポートしてください。</translation>
+<translation id="8579317236683491484">Brave Searchは、お客様の情報や検索したクエリ、クリックを追跡することはありません。</translation>
 <translation id="5240031343741051161">Brave Searchを試してみる</translation>
 <translation id="5026874946691314267">再度表示しない</translation>
 <translation id="5234764350956374838">閉じる</translation>
 <translation id="214744058941501853">"&gt;
-          Brave検索への切り替えを解除します。Enterキーを押してこの提案を削除できます</translation>
+          Brave Searchへの切り替えを行いません。Enterキーを押してこの提案を非表示にできます</translation>
 <translation id="2515126961943087659">BAT 広告サービス</translation>
 <translation id="7924918279836988121">BAT 台帳サービス</translation>
 <translation id="6040143037577758943">近い</translation>
@@ -214,9 +214,9 @@
 <translation id="2906510232093002459">Braveデフォルト画像</translation>
 <translation id="2396127686705429331">ブックマークボタンを表示する</translation>
 <translation id="2814998458708016836">ワイドアドレスバーを使用する</translation>
-<translation id="4109670531935487117">アドレスバーに推奨サイトをオートコンプリートで表示</translation>
-<translation id="2858138569776157458">上位のサイト</translation>
-<translation id="65774893852758517">推奨サイト</translation>
+<translation id="4109670531935487117">アドレスバー入力中に自動でサイト候補を表示</translation>
+<translation id="2858138569776157458">トップサイトをサイト候補に含める</translation>
+<translation id="65774893852758517">Braveによる予測をサイト候補に含める</translation>
 <translation id="7859704718976024901">閲覧履歴</translation>
 <translation id="8820817407110198400">ブックマーク バー</translation>
 <translation id="6333347122924254968">アドレスバーにBraveリワードのアイコンを表示</translation>
@@ -255,12 +255,12 @@
 <translation id="130615081792797568">簡略表示</translation>
 <translation id="2360360976480535628">詳細表示</translation>
 <translation id="6486983549008741930">コンテンツフィルター</translation>
-<translation id="8694564340481124390">カスタムフィルターを有効にすると、地域や言語を特化したトラッカーや不快な表示をブロックできます。</translation>
-<translation id="6522618763902154348">カスタムフィルターを有効にすると、地域や言語を特化したトラッカーや
+<translation id="8694564340481124390">カスタムフィルターを有効にすると、地域や言語に応じたトラッカーや不快な表示をブロックできます。</translation>
+<translation id="6522618763902154348">カスタムフィルターを有効にすると、地域や言語に応じたトラッカーや
  <ph name="BEGIN_LINK"/>不快な表示<ph name="END_LINK"/>をブロックできます。</translation>
 <translation id="3482656215021340727">カスタムフィルターのリストを追加</translation>
 <translation id="1020877116991797978">信頼できるコミュニティにより作成および管理されているリストを追加します。</translation>
-<translation id="7617831480435794399">信頼するエンティティのリストにのみサブスクライブしてください。ブラウザでは入力されたURLからのリスト更新が定期的にチェックされ、IPアドレスがサーバーに表示されます。</translation>
+<translation id="7617831480435794399">信頼できる作成者のリストにのみ登録してください。ブラウザでは入力されたURLからのリスト更新が定期的にチェックされ、IPアドレスがサーバーに表示されます。</translation>
 <translation id="2831397936251948638">カスタムフィルターの作成</translation>
 <translation id="4618274268052410139">以下のフィールドで、作成したカスタムフィルターを1行に1つずつ追加します。必ず <ph name="BEGIN_LINK"/>Adblock フィルター構文<ph name="END_LINK"/>を使用してください。</translation>
 <translation id="7791543448312431591">追加</translation>

@@ -1198,7 +1198,7 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="6252742184395380448">โปรแกรมกำหนดค่า</translation>
 <translation id="5358970666412490132">โปรแกรมสเตก</translation>
 <translation id="346636227344244984">โปรแกรมโหวต</translation>
-<translation id="3538368258493053874">BPF Loader</translation>
+<translation id="3538368258493053874">โปรแกรมโหลด BPF</translation>
 <translation id="2334098351242742927">โปรแกรม Ed25519</translation>
 <translation id="8780753288764281797">โปรแกรม Secp256k1</translation>
 <translation id="5275550100743015683">จากที่อยู่:</translation>
@@ -1208,8 +1208,8 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="4337554812324118382">วันที่:</translation>
 <translation id="569870799832027680">ID โปรแกรม:</translation>
 <translation id="7843211152394841558">จำนวนความพยายามสูงสุด:</translation>
-<translation id="8496335570810457">คำมั่นสัญญาก่อนบิน:</translation>
-<translation id="5100124500279922001">ข้ามช่วงก่อนบิน:</translation>
+<translation id="8496335570810457">ความรับผิดชอบต่อการจำลองการทำธุรกรรม:</translation>
+<translation id="5100124500279922001">ข้ามการจำลองการทำธุรกรรม:</translation>
 <translation id="8060029310790625334">ศูนย์ช่วยเหลือ</translation>
 <translation id="2095142195578664632">ต้องการความช่วยเหลือใช่ไหม โปรดดู</translation>
 <translation id="3155170474926428993">Tor Launcher</translation>

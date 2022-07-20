@@ -866,6 +866,7 @@ Jika Anda tidak menerima permintaan ini, VPN tidak akan tersambung kembali dan s
 <translation id="7131971375297699539">Simbol mata uang</translation>
 <translation id="7982789257301363584">Jaringan</translation>
 <translation id="4717431746210146708">Izinkan situs ini untuk menambah jaringan?</translation>
+<translation id="4857321293515555666">DApp ini ingin membaca pesan ini untuk melengkapi permintaan Anda.</translation>
 <translation id="714506544401754321">Dekripsi pesan</translation>
 <translation id="5039804452771397117">Izinkan</translation>
 <translation id="3378339846292573874">Tambahkan token yang disarankan</translation>
@@ -877,4 +878,15 @@ Jika Anda tidak menerima permintaan ini, VPN tidak akan tersambung kembali dan s
 <translation id="8643377320501056697">Tampilkan Situs Teratas</translation>
 <translation id="6471216025161697462">Tersambung ke <ph name="VALUE"/></translation>
 <translation id="1968852757206592413">Percobaan</translation>
+<translation id="7733890291091968191">Tampilkan notifikasi Web3</translation>
+<translation id="1371627247679035769">\n\n\n\n#### Brave tidak melacak Anda atau mengetahui cara Anda menggunakan aplikasi kami, sehingga kami tidak tahu cara Anda menyiapkan VPN. Silakan bagikan info tentang masalah yang Anda alami dan kami akan melakukan yang terbaik unuk menyelesaikannya secepat mungkin. ####\n\n</translation>
+<translation id="3367162038532116157">\n\nNama Host VPN\n <ph name="VALUE"/></translation>
+<translation id="6173438324126027458">\n\nJenis Langganan\n <ph name="VALUE"/></translation>
+<translation id="1478875290576741766">\n\nToken Playstore\n <ph name="VALUE"/></translation>
+<translation id="1403057798797848522">\n\nVersi Aplikasi\n <ph name="VALUE"/></translation>
+<translation id="2282835936933247509">\n\nZona Waktu\n</translation>
+<translation id="8107843365677337047">\n\nTipe Jaringan\n</translation>
+<translation id="5334952096674914470">\n\nOperator Ponsel\n</translation>
+<translation id="5393042357629679588">\n\nMasalah Lain\n</translation>
+<translation id="8095666712177294104">\n\nPlatform\n</translation>
 </translationbundle>

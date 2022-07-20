@@ -106,8 +106,15 @@
 <translation id="4870911314065352661">Затваряне на всички раздели?</translation>
 <translation id="7551864359422178684">Имате <ph name="NUMBER_OF_TABS"/> раздела отворени в този прозорец на браузъра.</translation>
 <translation id="2571596981920752023"><ph name="NUMBER_OF_TABS"/> раздела</translation>
+<translation id="2272117088509540883">- Brave Търсене</translation>
+<translation id="2701279958223202597">Поддържайте независимо търсене с по-добра поверителност. Brave Търсене не следи нито вас, нито заявките ви, или кликванията ви.</translation>
+<translation id="6438467592401259882">Поддържайте независимо търсене с по-добра поверителност.</translation>
+<translation id="1688359110799098115">Поддържайте независимо търсене с по-добра поверителност.</translation>
+<translation id="8579317236683491484">Brave Търсене не следи нито вас, нито заявките ви, или кликванията ви.</translation>
+<translation id="5240031343741051161">Опитайте Brave Търсене</translation>
 <translation id="5026874946691314267">Не показвайте това отново</translation>
 <translation id="5234764350956374838">Отхвърляне</translation>
+<translation id="214744058941501853">Отхвълете преминаването към Brave Търсене, натиснете Enter, за да премахнете това предпожение.</translation>
 <translation id="2515126961943087659">Услуга за BAT реклами</translation>
 <translation id="7924918279836988121">Услуга "Bat Ledger"</translation>
 <translation id="6040143037577758943">Затваряне</translation>
@@ -137,6 +144,7 @@
 <translation id="8490082094734500369">Изключване на режима за четене</translation>
 <translation id="2036503787657622020">Включване на режима за четене</translation>
 <translation id="5226458915125328323">Настройки на Speedreader</translation>
+<translation id="1621606336827646158">Показване на оригиналната страница</translation>
 <translation id="6284218950354553099">Автоматично изпращане на ping за ежедневното използване до Brave</translation>
 <translation id="5288333155754958121">Това анонимно, поверително известие позволява на Brave да оцени активните потребители.</translation>
 <translation id="1872784258300710671">Brave използва изцяло частен анализ на продукти, за да оцени цялостното използване на определени функции</translation>
@@ -187,6 +195,8 @@
 <translation id="6817415381278637662">Задайте Brave като браузър по подразбиране, за да получите защитата на поверителността на Brave на всяка уеб страница, която отваряте.</translation>
 <translation id="8722651357687610395">Задайте Brave по подразбиране</translation>
 <translation id="2370739752330685659">Може би по-късно</translation>
+<translation id="961012016278832836">Предишни версии на Microsoft Edge</translation>
+<translation id="6436994631426134065">Импортирано от <ph name="BROWSER_NAME"/>.</translation>
 <translation id="9156965752763025780">Промените ви ще влязат в сила следващия път, когато стартирате отново Brave.</translation>
 <translation id="7179921470347911571">Презареди сега</translation>
 <translation id="4472575034687746823">Първи стъпки</translation>
@@ -203,7 +213,9 @@
 <translation id="2906510232093002459">Изображения по подразбиране в Brave</translation>
 <translation id="2396127686705429331">Показване на бутона за отметки</translation>
 <translation id="2814998458708016836">Използвайте широка адресна лента</translation>
+<translation id="4109670531935487117">Показване на предложенията за автоматично попълване в адресната лента</translation>
 <translation id="2858138569776157458">Водещи сайтове</translation>
+<translation id="65774893852758517">Предложени сайтове</translation>
 <translation id="7859704718976024901">История на сърфирането</translation>
 <translation id="8820817407110198400">Лента на отметките</translation>
 <translation id="6333347122924254968">Показване на иконата с Brave награди в адресната лента</translation>
@@ -364,6 +376,8 @@
     Сигурни ли сте, че искате да направите това?</translation>
 <translation id="6285118765755298263">Индексиране на други търсачки</translation>
 <translation id="919715748352669592">Автоматично индексира уебсайтове, които следват спецификациите на OpenSearch.</translation>
+<translation id="842628013524824194">Нормален прозорец - търсачката се използва в адресната лента</translation>
+<translation id="5324939009884545145">Частен прозорец - търсачката, използвана в адресната лента</translation>
 <translation id="6864914031231797928">Разрешаване на вход за Google за разширения</translation>
 <translation id="6554397389149987360">Използвайте "Hangouts" компоненти, за да разрешите споделяне на екрана и други функции в браузъра.</translation>
 <translation id="7878791177459550035">Медийният маршрутизатор активира функция за предаване в браузъра.</translation>
@@ -463,6 +477,7 @@
 <translation id="616058968889448209">Грешка при стартирането на услугата IPFS, повече информация можете да намерите на <ph name="BEGIN_LINK"/>страницата за диагностика<ph name="END_LINK"/></translation>
 <translation id="6912148685459054619">'<ph name="KEY_NAME"/>' въвеждането на ключа е неуспешно</translation>
 <translation id="3364053282600191535">Неуспешно експортиране на ключа '<ph name="KEY_NAME"/>'</translation>
+<translation id="5840868269342837751">Забележка: Заявките в мрежата може да не използват прокси сървърите и DNS настройките на браузъра.</translation>
 <translation id="8275038454117074363">Импортиране</translation>
 <translation id="3654980960391973513">Генериране</translation>
 <translation id="5531501313997312487">Стартиране на възела</translation>

@@ -867,6 +867,7 @@ If you don't accept this request, VPN will not reconnect and your Internet conne
 <translation id="7131971375297699539">Currency symbol</translation>
 <translation id="7982789257301363584">Network</translation>
 <translation id="4717431746210146708">Allow this site to add a network?</translation>
+<translation id="4857321293515555666">This DApp would like to read this message to complete your request.</translation>
 <translation id="714506544401754321">Decrypt message</translation>
 <translation id="5039804452771397117">Allow</translation>
 <translation id="3378339846292573874">Add suggested token</translation>
@@ -878,4 +879,15 @@ If you don't accept this request, VPN will not reconnect and your Internet conne
 <translation id="8643377320501056697">Show Top Sites</translation>
 <translation id="6471216025161697462">Connected to <ph name="VALUE"/></translation>
 <translation id="1968852757206592413">Trial</translation>
+<translation id="7733890291091968191">Display Web3 notifications</translation>
+<translation id="1371627247679035769">\n\n\n\n#### Brave doesn’t track you or know how you use our app, so we don’t know how you’ve set up VPN. Please share info about the issue you’re experiencing and we’ll do our best to resolve it as soon as we can. ####\n\n</translation>
+<translation id="3367162038532116157">\n\nVPN Hostname\n <ph name="VALUE"/></translation>
+<translation id="6173438324126027458">\n\nSubscription type\n <ph name="VALUE"/></translation>
+<translation id="1478875290576741766">\n\nPlaystore token\n <ph name="VALUE"/></translation>
+<translation id="1403057798797848522">\n\nApp version\n <ph name="VALUE"/></translation>
+<translation id="2282835936933247509">\n\nTimezone\n</translation>
+<translation id="8107843365677337047">\n\nNetwork type\n</translation>
+<translation id="5334952096674914470">\n\nMobile network operator\n</translation>
+<translation id="5393042357629679588">\n\nOther issue\n</translation>
+<translation id="8095666712177294104">\n\nPlatform\n</translation>
 </translationbundle>
