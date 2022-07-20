@@ -19,7 +19,7 @@ namespace confirmations {
 namespace {
 
 constexpr uint64_t kConfirmationJsonHash = 1891112954;
-constexpr uint64_t kMigratedConfirmationJsonHash = 3586161257;
+constexpr uint64_t kMigratedConfirmationJsonHash = 3092830138;
 
 constexpr char kInvalidJsonFilename[] = "invalid.json";
 
