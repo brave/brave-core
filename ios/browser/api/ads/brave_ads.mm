@@ -75,13 +75,12 @@ static NSString* const kAdsEnabledPrefKey =
     base::SysUTF8ToNSString(ads::prefs::kEnabled);
 static NSString* const kNumberOfAdsPerHourKey =
     base::SysUTF8ToNSString(ads::prefs::kAdsPerHour);
-static NSString* const kShouldAllowAdsSubdivisionTargetingPrefKey = [NSString
-    stringWithUTF8String:ads::prefs::kShouldAllowAdsSubdivisionTargeting];
+static NSString* const kShouldAllowAdsSubdivisionTargetingPrefKey =
+    base::SysUTF8ToNSString(ads::prefs::kShouldAllowSubdivisionTargeting);
 static NSString* const kAdsSubdivisionTargetingCodePrefKey =
-    base::SysUTF8ToNSString(ads::prefs::kAdsSubdivisionTargetingCode);
+    base::SysUTF8ToNSString(ads::prefs::kSubdivisionTargetingCode);
 static NSString* const kAutoDetectedAdsSubdivisionTargetingCodePrefKey =
-    [NSString stringWithUTF8String:
-                  ads::prefs::kAutoDetectedAdsSubdivisionTargetingCode];
+    base::SysUTF8ToNSString(ads::prefs::kAutoDetectedSubdivisionTargetingCode);
 static NSString* const kAdsResourceMetadataPrefKey = @"BATAdsResourceMetadata";
 
 namespace {
@@ -712,7 +711,7 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
 
 #pragma mark - Configuration
 
-- (uint64_t)getAdsPerHour {
+- (uint64_t)getNotificationAdsPerHour {
   return self.numberOfAllowableAdsPerHour;
 }
 
@@ -729,7 +728,7 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
   return true;
 }
 
-- (bool)canShowBackgroundNotifications {
+- (bool)canShowNotificationAdsWhileBrowserIsBackgrounded {
   return false;
 }
 
@@ -1231,19 +1230,20 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
   return nil;
 }
 
-- (bool)shouldShowNotifications {
+- (bool)canShowNotificationAds {
   return [self.notificationsHandler shouldShowNotifications];
 }
 
-- (void)showNotification:(const ads::NotificationAdInfo&)info {
+- (void)showNotificationAd:(const ads::NotificationAdInfo&)info {
   const auto notification =
       [[NotificationAdIOS alloc] initWithNotificationInfo:info];
   [self.notificationsHandler showNotification:notification];
 }
 
-- (void)closeNotification:(const std::string&)id {
-  const auto bridgedId = base::SysUTF8ToNSString(id);
-  [self.notificationsHandler clearNotificationWithIdentifier:bridgedId];
+- (void)closeNotificationAd:(const std::string&)placement_id {
+  const auto bridgedPlacementId = base::SysUTF8ToNSString(placement_id);
+  [self.notificationsHandler
+      clearNotificationWithIdentifier:bridgedPlacementId];
 }
 
 - (void)recordAdEventForId:(const std::string&)id
@@ -1257,8 +1257,9 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
   adEventHistory->RecordForId(id, ad_type, confirmation_type, time);
 }
 
-- (std::vector<base::Time>)getAdEvents:(const std::string&)ad_type
-                      confirmationType:(const std::string&)confirmation_type {
+- (std::vector<base::Time>)getAdEventHistory:(const std::string&)ad_type
+                            confirmationType:
+                                (const std::string&)confirmation_type {
   if (!adEventHistory) {
     return {};
   }
@@ -1266,7 +1267,7 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
   return adEventHistory->Get(ad_type, confirmation_type);
 }
 
-- (void)resetAdEventsForId:(const std::string&)id {
+- (void)resetAdEventHistoryForId:(const std::string&)id {
   if (!adEventHistory) {
     return;
   }
@@ -1320,7 +1321,7 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
       }));
 }
 
-- (void)onAdRewardsChanged {
+- (void)updateAdRewards {
   // Not needed on iOS because ads do not show unless you are viewing a tab
 }
 

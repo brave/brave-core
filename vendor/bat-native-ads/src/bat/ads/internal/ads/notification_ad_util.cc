@@ -30,25 +30,26 @@ bool CanServeAtRegularIntervals() {
 bool ShouldServeAtRegularIntervals() {
   return ShouldServe() &&
          (BrowserManager::GetInstance()->IsBrowserActive() ||
-          AdsClientHelper::GetInstance()->CanShowBackgroundNotifications()) &&
-         settings::GetAdsPerHour() > 0;
+          AdsClientHelper::GetInstance()
+              ->CanShowNotificationAdsWhileBrowserIsBackgrounded()) &&
+         settings::GetNotificationAdsPerHour() > 0;
 }
 
-void ShowNotification(const NotificationAdInfo& ad) {
+void ShowNotificationAd(const NotificationAdInfo& ad) {
   NotificationAdManager::GetInstance()->PushBack(ad);
-  AdsClientHelper::GetInstance()->ShowNotification(ad);
+  AdsClientHelper::GetInstance()->ShowNotificationAd(ad);
 }
 
-void DismissNotification(const std::string& placement_id) {
+void DismissNotificationAd(const std::string& placement_id) {
   NotificationAdManager::GetInstance()->Remove(placement_id);
 }
 
-void CloseNotification(const std::string& placement_id) {
+void CloseNotificationAd(const std::string& placement_id) {
   NotificationAdManager::GetInstance()->Remove(placement_id);
-  AdsClientHelper::GetInstance()->CloseNotification(placement_id);
+  AdsClientHelper::GetInstance()->CloseNotificationAd(placement_id);
 }
 
-void NotificationTimedOut(const std::string& placement_id) {
+void NotificationAdTimedOut(const std::string& placement_id) {
   NotificationAdManager::GetInstance()->Remove(placement_id);
 }
 

@@ -122,7 +122,7 @@ void NotificationAdManager::PushBack(const NotificationAdInfo& info) {
 void NotificationAdManager::PopFront(const bool should_dismiss) {
   if (!notification_ads_.empty()) {
     if (should_dismiss) {
-      AdsClientHelper::GetInstance()->CloseNotification(
+      AdsClientHelper::GetInstance()->CloseNotificationAd(
           notification_ads_.front().placement_id);
     }
     notification_ads_.pop_front();
@@ -160,7 +160,7 @@ void NotificationAdManager::CloseAndRemoveAll() {
   DCHECK(is_initialized_);
 
   for (const auto& notification_ad : notification_ads_) {
-    AdsClientHelper::GetInstance()->CloseNotification(
+    AdsClientHelper::GetInstance()->CloseNotificationAd(
         notification_ad.placement_id);
   }
 

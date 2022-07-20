@@ -102,7 +102,7 @@ class TestRewardsServiceObserver
     run_loop_->Run();
   }
 
-  // RewardsServiceObserver implementation
+  // RewardsServiceObserver:
   void OnRewardsInitialized(brave_rewards::RewardsService* service) override {
     rewards_initialized_ = true;
     if (run_loop_) {

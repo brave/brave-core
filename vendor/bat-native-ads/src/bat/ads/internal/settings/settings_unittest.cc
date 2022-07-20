@@ -41,7 +41,7 @@ TEST_F(BatAdsSettingsTest, AdsPerHourWhenUserHasChangedDefaultSetting) {
   AdsClientHelper::GetInstance()->SetInt64Pref(prefs::kAdsPerHour, 3);
 
   // Act
-  const uint64_t ads_per_hour = settings::GetAdsPerHour();
+  const uint64_t ads_per_hour = settings::GetNotificationAdsPerHour();
 
   // Assert
   const uint64_t expected_ads_per_hour = 3;
@@ -63,7 +63,7 @@ TEST_F(BatAdsSettingsTest, AdsPerHourWhenUserHasNotChangedDefaultSetting) {
                                                     disabled_features);
 
   // Act
-  const uint64_t ads_per_hour = settings::GetAdsPerHour();
+  const uint64_t ads_per_hour = settings::GetNotificationAdsPerHour();
 
   // Assert
   const uint64_t expected_ads_per_hour = 2;
@@ -85,7 +85,7 @@ TEST_F(BatAdsSettingsTest, ClampMinAdsPerHour) {
                                                     disabled_features);
 
   // Act
-  const uint64_t ads_per_hour = settings::GetAdsPerHour();
+  const uint64_t ads_per_hour = settings::GetNotificationAdsPerHour();
 
   // Assert
   const uint64_t expected_ads_per_hour = 0;
@@ -107,7 +107,7 @@ TEST_F(BatAdsSettingsTest, ClampMaxAdsPerHour) {
                                                     disabled_features);
 
   // Act
-  const uint64_t ads_per_hour = settings::GetAdsPerHour();
+  const uint64_t ads_per_hour = settings::GetNotificationAdsPerHour();
 
   // Assert
   const uint64_t expected_ads_per_hour = 10;

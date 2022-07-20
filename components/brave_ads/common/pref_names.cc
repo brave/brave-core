@@ -20,7 +20,7 @@ const char kHasAdsP3AState[] = "brave.brave_ads.has_p3a_state";
 const char kP2AStoragePrefNamePrefix[] = "brave.weekly_storage.";
 
 // Stores whether we should show the My First notification ad
-const char kShouldShowMyFirstNotificationAd[] =
+const char kShouldShowOnboardingNotification[] =
     "brave.brave_ads.should_show_my_first_ad_notification";
 
 // Stores the supported country codes current schema version number

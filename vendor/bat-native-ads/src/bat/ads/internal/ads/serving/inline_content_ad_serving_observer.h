@@ -17,14 +17,15 @@ namespace inline_content_ads {
 
 class ServingObserver : public base::CheckedObserver {
  public:
-  // Invoked when an opportunity arises to serve an inline content ad
+  // Invoked when an opportunity arises to serve an inline content ad for the
+  // |segments|.
   virtual void OnOpportunityAroseToServeInlineContentAd(
       const SegmentList& segments) {}
 
-  // Invoked when an inline content ad is served
+  // Invoked when an inline content ad is served.
   virtual void OnDidServeInlineContentAd(const InlineContentAdInfo& ad) {}
 
-  // Invoked when an inline content ad fails to serve
+  // Invoked when an inline content ad fails to serve.
   virtual void OnFailedToServeInlineContentAd() {}
 
  protected:

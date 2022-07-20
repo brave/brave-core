@@ -25,9 +25,9 @@ extern const char kAdsPerHour[];
 
 extern const char kIdleTimeThreshold[];
 
-extern const char kShouldAllowAdsSubdivisionTargeting[];
-extern const char kAdsSubdivisionTargetingCode[];
-extern const char kAutoDetectedAdsSubdivisionTargetingCode[];
+extern const char kShouldAllowSubdivisionTargeting[];
+extern const char kSubdivisionTargetingCode[];
+extern const char kAutoDetectedSubdivisionTargetingCode[];
 
 extern const char kCatalogId[];
 extern const char kCatalogVersion[];

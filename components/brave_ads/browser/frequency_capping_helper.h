@@ -27,11 +27,11 @@ class FrequencyCappingHelper {
                           const std::string& confirmation_type,
                           const base::Time time);
 
-  std::vector<base::Time> GetAdEvents(
+  std::vector<base::Time> GetAdEventHistory(
       const std::string& ad_type,
       const std::string& confirmation_type) const;
 
-  void ResetAdEventsForId(const std::string& id);
+  void ResetAdEventHistoryForId(const std::string& id);
 
  private:
   friend struct base::DefaultSingletonTraits<FrequencyCappingHelper>;

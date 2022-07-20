@@ -19,26 +19,26 @@ struct WalletInfo;
 
 class AccountObserver : public base::CheckedObserver {
  public:
-  // Invoked when the wallet has updated
+  // Invoked when the |wallet| has updated.
   virtual void OnWalletDidUpdate(const WalletInfo& wallet) {}
 
-  // Invoked when a wallet has changed
+  // Invoked when the |wallet| has changed.
   virtual void OnWalletDidChange(const WalletInfo& wallet) {}
 
-  // Invoked if the wallet is invalid
+  // Invoked if the wallet is invalid.
   virtual void OnInvalidWallet() {}
 
-  // Invoked after successfully processing a deposit
+  // Invoked after successfully processing a deposit for |transaction|.
   virtual void OnDidProcessDeposit(const TransactionInfo& transaction) {}
 
   // Invoked after failing to process a deposit for |creative_instance_id|,
-  // |ad_type| and |confirmation_type|
+  // |ad_type| and |confirmation_type|.
   virtual void OnFailedToProcessDeposit(
       const std::string& creative_instance_id,
       const AdType& ad_type,
       const ConfirmationType& confirmation_type) {}
 
-  // Invoked when the statement of accounts has changed
+  // Invoked when the statement of accounts have changed.
   virtual void OnStatementOfAccountsDidChange() {}
 
  protected:

@@ -433,7 +433,7 @@ TEST_F(NTPBackgroundImagesViewCounterTest, SponsoredImageAdFrequencyCapped) {
   EXPECT_CALL(ads_service_, IsEnabled()).WillOnce(Return(true));
   EXPECT_CALL(ads_service_, GetPrefetchedNewTabPageAd())
       .WillOnce(Return(absl::nullopt));
-  EXPECT_CALL(ads_service_, OnFailedToServeNewTabPageAd(_, _)).Times(0);
+  EXPECT_CALL(ads_service_, OnFailedToPrefetchNewTabPageAd(_, _)).Times(0);
 
   base::Value si_wallpaper = TryGetFirstSponsoredImageWallpaper();
   EXPECT_TRUE(si_wallpaper.FindBoolKey(ntp_background_images::kIsBackgroundKey)
@@ -453,7 +453,7 @@ TEST_F(NTPBackgroundImagesViewCounterTest, SponsoredImageAdServed) {
   EXPECT_CALL(ads_service_, IsEnabled()).WillOnce(Return(true));
   EXPECT_CALL(ads_service_, GetPrefetchedNewTabPageAd())
       .WillOnce(Return(ad_info));
-  EXPECT_CALL(ads_service_, OnFailedToServeNewTabPageAd(_, _)).Times(0);
+  EXPECT_CALL(ads_service_, OnFailedToPrefetchNewTabPageAd(_, _)).Times(0);
 
   base::Value si_wallpaper = TryGetFirstSponsoredImageWallpaper();
   EXPECT_FALSE(si_wallpaper.FindBoolKey(ntp_background_images::kIsBackgroundKey)
@@ -480,7 +480,7 @@ TEST_F(NTPBackgroundImagesViewCounterTest, WrongSponsoredImageAdServed) {
   EXPECT_CALL(ads_service_, IsEnabled()).WillOnce(Return(true));
   EXPECT_CALL(ads_service_, GetPrefetchedNewTabPageAd())
       .WillOnce(Return(ad_info));
-  EXPECT_CALL(ads_service_, OnFailedToServeNewTabPageAd(_, _));
+  EXPECT_CALL(ads_service_, OnFailedToPrefetchNewTabPageAd(_, _));
 
   base::Value si_wallpaper = TryGetFirstSponsoredImageWallpaper();
   EXPECT_TRUE(si_wallpaper.FindBoolKey(ntp_background_images::kIsBackgroundKey)

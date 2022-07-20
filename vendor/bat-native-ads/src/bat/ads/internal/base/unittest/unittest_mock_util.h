@@ -21,9 +21,9 @@ namespace ads {
 
 class Database;
 
-void MockBuildChannel(const BuildChannelType type);
-
 void MockEnvironment(const mojom::Environment environment);
+
+void MockBuildChannel(const BuildChannelType type);
 
 void MockLocaleHelper(const std::unique_ptr<brave_l10n::LocaleHelperMock>& mock,
                       const std::string& locale);
@@ -40,28 +40,28 @@ void MockIsBrowserActive(const std::unique_ptr<AdsClientMock>& mock,
 void MockIsBrowserInFullScreenMode(const std::unique_ptr<AdsClientMock>& mock,
                                    const bool is_browser_in_full_screen_mode);
 
-void MockShouldShowNotifications(const std::unique_ptr<AdsClientMock>& mock,
-                                 const bool should_show);
-void MockCanShowBackgroundNotifications(
+void MockCanShowNotificationAds(const std::unique_ptr<AdsClientMock>& mock,
+                                const bool can_show);
+void MockCanShowNotificationAdsWhileBrowserIsBackgrounded(
     const std::unique_ptr<AdsClientMock>& mock,
     const bool can_show);
-void MockShowNotification(const std::unique_ptr<AdsClientMock>& mock);
-void MockCloseNotification(const std::unique_ptr<AdsClientMock>& mock);
+void MockShowNotificationAd(const std::unique_ptr<AdsClientMock>& mock);
+void MockCloseNotificationAd(const std::unique_ptr<AdsClientMock>& mock);
 
 void MockRecordAdEventForId(const std::unique_ptr<AdsClientMock>& mock);
-void MockGetAdEvents(const std::unique_ptr<AdsClientMock>& mock);
-void MockResetAdEventsForId(const std::unique_ptr<AdsClientMock>& mock);
+void MockGetAdEventHistory(const std::unique_ptr<AdsClientMock>& mock);
+void MockResetAdEventHistoryForId(const std::unique_ptr<AdsClientMock>& mock);
 
 void MockGetBrowsingHistory(const std::unique_ptr<AdsClientMock>& mock);
 
+void MockUrlRequest(const std::unique_ptr<AdsClientMock>& mock,
+                    const URLEndpointMap& endpoints);
+
+void MockSave(const std::unique_ptr<AdsClientMock>& mock);
 void MockLoad(const std::unique_ptr<AdsClientMock>& mock,
               const base::ScopedTempDir& temp_dir);
 void MockLoadFileResource(const std::unique_ptr<AdsClientMock>& mock);
 void MockLoadDataResource(const std::unique_ptr<AdsClientMock>& mock);
-void MockSave(const std::unique_ptr<AdsClientMock>& mock);
-
-void MockUrlRequest(const std::unique_ptr<AdsClientMock>& mock,
-                    const URLEndpointMap& endpoints);
 
 void MockRunDBTransaction(const std::unique_ptr<AdsClientMock>& mock,
                           const std::unique_ptr<Database>& database);

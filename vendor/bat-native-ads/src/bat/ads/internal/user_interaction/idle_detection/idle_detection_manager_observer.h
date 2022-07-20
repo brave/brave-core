@@ -13,13 +13,13 @@ namespace ads {
 
 class IdleDetectionManagerObserver : public base::CheckedObserver {
  public:
-  // Invoked when the user did become active. |idle_time| is the amount of time
-  // in seconds that the user was idle. |was_locked| is |true| if the screen was
-  // locked, otherwise |false|.
+  // Invoked when the user becomes active. |idle_time| is the amount of time in
+  // seconds that the user was idle. |was_locked| is |true| if the user's screen
+  // was locked, otherwise |false|.
   virtual void OnUserDidBecomeActive(const base::TimeDelta idle_time,
                                      const bool was_locked) {}
 
-  // Invoked when the user did become idle.
+  // Invoked when the user becomes idle.
   virtual void OnUserDidBecomeIdle() {}
 
  protected:

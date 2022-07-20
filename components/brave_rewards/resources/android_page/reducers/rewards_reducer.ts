@@ -141,7 +141,7 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
       state.adsData.shouldAllowAdsSubdivisionTargeting = action.payload.adsData.shouldAllowAdsSubdivisionTargeting
       state.adsData.adsUIEnabled = action.payload.adsData.adsUIEnabled
       state.adsData.adsIsSupported = action.payload.adsData.adsIsSupported
-      state.adsData.needsBrowserUpdateToSeeAds = action.payload.adsData.needsBrowserUpdateToSeeAds
+      state.adsData.needsBrowserUpgradeToServeAds = action.payload.adsData.needsBrowserUpgradeToServeAds
       break
     }
     case types.GET_ADS_HISTORY: {

@@ -19,16 +19,17 @@ namespace inline_content_ads {
 
 class EventHandlerObserver : public base::CheckedObserver {
  public:
-  // Invoked when an inline content ad is served
+  // Invoked when the inline content |ad| is served.
   virtual void OnInlineContentAdServed(const InlineContentAdInfo& ad) {}
 
-  // Invoked when an inline content ad is viewed
+  // Invoked when the inline content |ad| is viewed.
   virtual void OnInlineContentAdViewed(const InlineContentAdInfo& ad) {}
 
-  // Invoked when an inline content ad is clicked
+  // Invoked when the inline content |ad| is clicked.
   virtual void OnInlineContentAdClicked(const InlineContentAdInfo& ad) {}
 
-  // Invoked when an inline content ad event fails
+  // Invoked when the inline content |ad| event fails for |placement_id|,
+  // |creative_instance_id| and |event_type|.
   virtual void OnInlineContentAdEventFailed(
       const std::string& placement_id,
       const std::string& creative_instance_id,

@@ -251,7 +251,7 @@ declare namespace Rewards {
     shouldAllowAdsSubdivisionTargeting: boolean
     adsUIEnabled: boolean
     adsIsSupported: boolean
-    needsBrowserUpdateToSeeAds: boolean
+    needsBrowserUpgradeToServeAds: boolean
     adsNextPaymentDate: number
     adsReceivedThisMonth: number
     adsEarningsThisMonth: number

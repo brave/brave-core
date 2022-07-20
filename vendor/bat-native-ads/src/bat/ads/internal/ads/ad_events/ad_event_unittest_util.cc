@@ -130,7 +130,7 @@ void FireAdEvents(const AdEventInfo& ad_event, const int count) {
 int GetAdEventCount(const AdType& ad_type,
                     const ConfirmationType& confirmation_type) {
   const std::vector<base::Time> ad_events =
-      GetAdEvents(ad_type, confirmation_type);
+      GetAdEventHistory(ad_type, confirmation_type);
   return ad_events.size();
 }
 

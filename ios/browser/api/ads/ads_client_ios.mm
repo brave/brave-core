@@ -29,20 +29,20 @@ bool AdsClientIOS::IsBrowserInFullScreenMode() const {
   return [bridge_ isBrowserInFullScreenMode];
 }
 
-bool AdsClientIOS::CanShowBackgroundNotifications() const {
-  return [bridge_ canShowBackgroundNotifications];
+bool AdsClientIOS::CanShowNotificationAdsWhileBrowserIsBackgrounded() const {
+  return [bridge_ canShowNotificationAdsWhileBrowserIsBackgrounded];
 }
 
-void AdsClientIOS::ShowNotification(const ads::NotificationAdInfo& info) {
-  [bridge_ showNotification:info];
+void AdsClientIOS::ShowNotificationAd(const ads::NotificationAdInfo& info) {
+  [bridge_ showNotificationAd:info];
 }
 
-bool AdsClientIOS::ShouldShowNotifications() {
-  return [bridge_ shouldShowNotifications];
+bool AdsClientIOS::CanShowNotificationAds() {
+  return [bridge_ canShowNotificationAds];
 }
 
-void AdsClientIOS::CloseNotification(const std::string& uuid) {
-  [bridge_ closeNotification:uuid];
+void AdsClientIOS::CloseNotificationAd(const std::string& placement_id) {
+  [bridge_ closeNotificationAd:placement_id];
 }
 
 void AdsClientIOS::RecordAdEventForId(const std::string& id,
@@ -55,14 +55,14 @@ void AdsClientIOS::RecordAdEventForId(const std::string& id,
                          time:time];
 }
 
-std::vector<base::Time> AdsClientIOS::GetAdEvents(
+std::vector<base::Time> AdsClientIOS::GetAdEventHistory(
     const std::string& ad_type,
     const std::string& confirmation_type) const {
-  return [bridge_ getAdEvents:ad_type confirmationType:confirmation_type];
+  return [bridge_ getAdEventHistory:ad_type confirmationType:confirmation_type];
 }
 
-void AdsClientIOS::ResetAdEventsForId(const std::string& id) const {
-  [bridge_ resetAdEventsForId:id];
+void AdsClientIOS::ResetAdEventHistoryForId(const std::string& id) const {
+  [bridge_ resetAdEventHistoryForId:id];
 }
 
 void AdsClientIOS::UrlRequest(ads::mojom::UrlRequestPtr url_request,
@@ -125,8 +125,8 @@ void AdsClientIOS::RunDBTransaction(ads::mojom::DBTransactionPtr transaction,
   [bridge_ runDBTransaction:std::move(transaction) callback:callback];
 }
 
-void AdsClientIOS::OnAdRewardsChanged() {
-  [bridge_ onAdRewardsChanged];
+void AdsClientIOS::UpdateAdRewards() {
+  [bridge_ updateAdRewards];
 }
 
 void AdsClientIOS::SetBooleanPref(const std::string& path, const bool value) {

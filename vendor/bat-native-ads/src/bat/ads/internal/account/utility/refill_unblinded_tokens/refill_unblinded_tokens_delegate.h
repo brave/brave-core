@@ -16,21 +16,22 @@ class RefillUnblindedTokensDelegate {
  public:
   virtual ~RefillUnblindedTokensDelegate() = default;
 
-  // Invoked to tell the delegate we successfully refilled unblinded tokens
+  // Invoked to tell the delegate we successfully refilled the unblinded tokens.
   virtual void OnDidRefillUnblindedTokens() {}
 
-  // Invoked to tell the delegate unblinded tokens failed to refill
+  // Invoked to tell the delegate we failed to refill the unblinded tokens.
   virtual void OnFailedToRefillUnblindedTokens() {}
 
-  // Invoked to tell the delegate that we will retry refilling unblinded tokens
-  // at the specified time
+  // Invoked to tell the delegate that we will retry refilling the unblinded
+  // tokens at |retry_at|.
   virtual void OnWillRetryRefillingUnblindedTokens(const base::Time retry_at) {}
 
-  // Invoked to tell the delegate that we did retry refilling unblinded tokens
+  // Invoked to tell the delegate that we retried refilling the unblinded
+  // tokens.
   virtual void OnDidRetryRefillingUnblindedTokens() {}
 
-  // Invoked to tell the delegate that the user must solve a scheduled
-  // captcha before refilling unblinded tokens
+  // Invoked to tell the delegate that the user must solve a scheduled captcha
+  // with the given |captcha_id| before we can refill the unblinded tokens.
   virtual void OnCaptchaRequiredToRefillUnblindedTokens(
       const std::string& captcha_id) {}
 };

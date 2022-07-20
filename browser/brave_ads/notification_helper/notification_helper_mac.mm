@@ -152,7 +152,7 @@ NotificationHelperMac::NotificationHelperMac() = default;
 
 NotificationHelperMac::~NotificationHelperMac() = default;
 
-bool NotificationHelperMac::CanShowNativeNotifications() {
+bool NotificationHelperMac::CanShowNativeNotifications() const {
   if (!base::FeatureList::IsEnabled(::features::kNativeNotifications)) {
     LOG(WARNING) << "Native notifications feature is disabled";
     return false;
@@ -175,11 +175,12 @@ bool NotificationHelperMac::CanShowNativeNotifications() {
   return true;
 }
 
-bool NotificationHelperMac::CanShowBackgroundNotifications() const {
+bool NotificationHelperMac::
+    CanShowNativeNotificationsWhileBrowserIsBackgrounded() const {
   return true;
 }
 
-bool NotificationHelperMac::ShowMyFirstNotificationAd() {
+bool NotificationHelperMac::ShowOnboardingNotification() {
   return false;
 }
 

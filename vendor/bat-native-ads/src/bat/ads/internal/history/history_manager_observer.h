@@ -16,32 +16,32 @@ struct AdContentInfo;
 
 class HistoryManagerObserver : public base::CheckedObserver {
  public:
-  // Invoked when history has changed.
+  // Invoked when the history has changed.
   virtual void OnHistoryDidChange() {}
 
-  // Invoked when liking an ad.
+  // Invoked when the user likes an ad.
   virtual void OnDidLikeAd(const AdContentInfo& ad_content) {}
 
-  // Invoked when disliking an ad.
+  // Invoked when the user dislikes an ad.
   virtual void OnDidDislikeAd(const AdContentInfo& ad_content) {}
 
-  // Invoked when marked to no longer recieve ads for |category|.
+  // Invoked when a user marks to no longer receive ads for the |category|.
   virtual void OnDidMarkToNoLongerReceiveAdsForCategory(
       const std::string& category) {}
 
-  // Invoked when marked to recieve ads for |category|.
+  // Invoked when a user marks to receive ads for the |category|.
   virtual void OnDidMarkToReceiveAdsForCategory(const std::string& category) {}
 
-  // Invoked when an ad is marked as inappropriate.
+  // Invoked when a user marks an ad as inappropriate.
   virtual void OnDidMarkAdAsInappropriate(const AdContentInfo& ad_content) {}
 
-  // Invoked when an ad is marked as appropriate.
+  // Invoked when a user marks an ad as appropriate.
   virtual void OnDidMarkAdAsAppropriate(const AdContentInfo& ad_content) {}
 
-  // Invoked when an ad was saved.
+  // Invoked when a user saves an ad.
   virtual void OnDidSaveAd(const AdContentInfo& ad_content) {}
 
-  // Invoked when an ad was unsaved.
+  // Invoked when a user unsaves an ad.
   virtual void OnDidUnsaveAd(const AdContentInfo& ad_content) {}
 
  protected:

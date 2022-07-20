@@ -17,14 +17,15 @@ namespace notification_ads {
 
 class ServingObserver : public base::CheckedObserver {
  public:
-  // Invoked when an opportunity arises to serve a notification ad
+  // Invoked when an opportunity arises to serve a notification ad for the
+  // |segments|.
   virtual void OnOpportunityAroseToServeNotificationAd(
       const SegmentList& segments) {}
 
-  // Invoked when a notification ad is served
+  // Invoked when a notification ad is served.
   virtual void OnDidServeNotificationAd(const NotificationAdInfo& ad) {}
 
-  // Invoked when a notification ad fails to serve
+  // Invoked when a notification ad fails to serve.
   virtual void OnFailedToServeNotificationAd() {}
 
  protected:

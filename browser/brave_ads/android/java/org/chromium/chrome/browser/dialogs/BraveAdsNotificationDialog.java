@@ -80,7 +80,7 @@ public class BraveAdsNotificationDialog {
                     if (Math.abs(deltaXDp) > MIN_DISTANCE_FOR_DISMISS) {
                         mAdsDialog.dismiss();
                         mAdsDialog = null;
-                        BraveAdsNativeHelper.nativeOnCloseNotificationAd(
+                        BraveAdsNativeHelper.nativeOnNotificationAdClosed(
                                 Profile.getLastUsedRegularProfile(), mNotificationId, true);
                         mNotificationId = null;
                     } else if (Math.abs(deltaXDp) <= MAX_DISTANCE_FOR_TAP) {
@@ -140,7 +140,7 @@ public class BraveAdsNotificationDialog {
         mAdsDialog = b.create();
 
         if (mNotificationId != null) {
-            BraveAdsNativeHelper.nativeOnShowNotificationAd(
+            BraveAdsNativeHelper.nativeOnNotificationAdShown(
                     Profile.getLastUsedRegularProfile(), mNotificationId);
         }
 
@@ -182,7 +182,7 @@ public class BraveAdsNotificationDialog {
         } else {
             mAdsDialog.dismiss();
             mAdsDialog = null;
-            BraveAdsNativeHelper.nativeOnClickNotificationAd(
+            BraveAdsNativeHelper.nativeOnNotificationAdClicked(
                     Profile.getLastUsedRegularProfile(), mNotificationId);
         }
         mNotificationId = null;
@@ -209,7 +209,7 @@ public class BraveAdsNotificationDialog {
             if (mNotificationId != null && mNotificationId.equals(notificationId) && mAdsDialog != null) {
                 mAdsDialog.dismiss();
                 mAdsDialog = null;
-                BraveAdsNativeHelper.nativeOnCloseNotificationAd(
+                BraveAdsNativeHelper.nativeOnNotificationAdClosed(
                         Profile.getLastUsedRegularProfile(), mNotificationId, false);
             }
         } catch (IllegalArgumentException e) {

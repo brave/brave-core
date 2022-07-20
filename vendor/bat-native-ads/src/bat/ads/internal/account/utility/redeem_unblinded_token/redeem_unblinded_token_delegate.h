@@ -18,22 +18,23 @@ class RedeemUnblindedTokenDelegate {
  public:
   virtual ~RedeemUnblindedTokenDelegate() = default;
 
-  // Invoked to tell the delegate a |confirmation| was sent
+  // Invoked to tell the delegate the |confirmation| was successfully sent.
   virtual void OnDidSendConfirmation(const ConfirmationInfo& confirmation) {}
 
-  // Invoked to tell the delegate a |confirmation| failed to send
+  // Invoked to tell the delegate the |confirmation| failed to send.
+  // |should_retry| is |true| if we should retry otherwise |false|.
   virtual void OnFailedToSendConfirmation(const ConfirmationInfo& confirmation,
                                           const bool should_retry) {}
 
   // Invoked to tell the delegate an unblinded token was redeemed for the
-  // corresponding |confirmation| and |unblinded_payment_token|
+  // corresponding |confirmation| and |unblinded_payment_token|.
   virtual void OnDidRedeemUnblindedToken(
       const ConfirmationInfo& confirmation,
       const privacy::UnblindedPaymentTokenInfo& unblinded_payment_token) {}
 
-  // Invoked to tell the delegate unblinded token redemption failed for the
-  // corresponding |confirmation| and whether we should retry and backoff for
-  // subsequent failures
+  // Invoked to tell the delegate an unblinded token redemption failed for the
+  // corresponding |confirmation| and whether we |should_retry| and
+  // |should_backoff| for subsequent failures.
   virtual void OnFailedToRedeemUnblindedToken(
       const ConfirmationInfo& confirmation,
       const bool should_retry,

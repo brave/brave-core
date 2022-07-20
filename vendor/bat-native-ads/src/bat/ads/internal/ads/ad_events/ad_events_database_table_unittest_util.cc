@@ -34,7 +34,7 @@ void Reset(ResultCallback callback) {
           return;
         }
 
-        RebuildAdEventsFromDatabase();
+        RebuildAdEventHistoryFromDatabase();
 
         callback(/* success */ true);
       });

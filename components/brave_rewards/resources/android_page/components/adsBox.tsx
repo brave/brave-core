@@ -218,7 +218,7 @@ class AdsBox extends React.Component<Props, {}> {
     let earningsThisMonth = 0
     let earningsLastMonth = 0
     let adEarningsReceived = false
-    let needsBrowserUpdateToSeeAds = false
+    let needsBrowserUpgradeToServeAds = false
 
     const {
       adsData,
@@ -236,7 +236,7 @@ class AdsBox extends React.Component<Props, {}> {
       adsReceivedThisMonth = adsData.adsReceivedThisMonth || 0
       earningsThisMonth = adsData.adsEarningsThisMonth || 0
       earningsLastMonth = adsData.adsEarningsLastMonth || 0
-      needsBrowserUpdateToSeeAds = adsData.needsBrowserUpdateToSeeAds
+      needsBrowserUpgradeToServeAds = adsData.needsBrowserUpgradeToServeAds
     }
 
     if (balanceReport) {
@@ -266,7 +266,7 @@ class AdsBox extends React.Component<Props, {}> {
     if (!isDisabled && !boxPropsExtra.checked) {
       boxPropsExtra.extraDescriptionChild = <AdsOnboarding />
     }
-    if (needsBrowserUpdateToSeeAds) {
+    if (needsBrowserUpgradeToServeAds) {
       boxPropsExtra.headerAlertContent = this.needsBrowserUpdateView()
     }
 

@@ -25,7 +25,7 @@ AdsPerHourPermissionRule::~AdsPerHourPermissionRule() = default;
 
 bool AdsPerHourPermissionRule::ShouldAllow() {
   const std::vector<base::Time>& history =
-      GetAdEvents(AdType::kSearchResultAd, ConfirmationType::kServed);
+      GetAdEventHistory(AdType::kSearchResultAd, ConfirmationType::kServed);
 
   if (!DoesRespectCap(history)) {
     last_message_ = "You have exceeded the allowed search result ads per hour";

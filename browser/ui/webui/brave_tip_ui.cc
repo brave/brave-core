@@ -368,7 +368,8 @@ void TipMessageHandler::GetAdsPerHour(const base::Value::List& args) {
     return;
   }
   AllowJavascript();
-  double adsPerHour = static_cast<double>(ads_service_->GetAdsPerHour());
+  double adsPerHour =
+      static_cast<double>(ads_service_->GetNotificationAdsPerHour());
   FireWebUIListener("adsPerHourUpdated", base::Value(adsPerHour));
 }
 
@@ -379,7 +380,7 @@ void TipMessageHandler::SetAdsPerHour(const base::Value::List& args) {
     return;
   }
   AllowJavascript();
-  ads_service_->SetAdsPerHour(adsPerHour);
+  ads_service_->SetNotificationAdsPerHour(adsPerHour);
   FireWebUIListener("adsPerHourUpdated", base::Value(adsPerHour));
 }
 

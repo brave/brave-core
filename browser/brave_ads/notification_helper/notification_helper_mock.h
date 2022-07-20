@@ -14,14 +14,15 @@ namespace brave_ads {
 class NotificationHelperMock : public NotificationHelper {
  public:
   NotificationHelperMock();
-  ~NotificationHelperMock() override;
-
   NotificationHelperMock(const NotificationHelperMock&) = delete;
   NotificationHelperMock& operator=(const NotificationHelperMock&) = delete;
+  ~NotificationHelperMock() override;
 
-  MOCK_METHOD0(CanShowNativeNotifications, bool());
-  MOCK_CONST_METHOD0(CanShowBackgroundNotifications, bool());
-  MOCK_METHOD0(ShowMyFirstNotificationAd, bool());
+  MOCK_CONST_METHOD0(CanShowNativeNotifications, bool());
+  MOCK_CONST_METHOD0(CanShowNativeNotificationsWhileBrowserIsBackgrounded,
+                     bool());
+
+  MOCK_METHOD0(ShowOnboardingNotification, bool());
 };
 
 }  // namespace brave_ads

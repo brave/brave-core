@@ -15,10 +15,9 @@ class NotificationHelperLinux
     : public NotificationHelper,
       public base::SupportsWeakPtr<NotificationHelperLinux> {
  public:
-  ~NotificationHelperLinux() override;
-
   NotificationHelperLinux(const NotificationHelperLinux&) = delete;
   NotificationHelperLinux& operator=(const NotificationHelperLinux&) = delete;
+  ~NotificationHelperLinux() override;
 
  protected:
   friend class NotificationHelperHolder;
@@ -27,11 +26,10 @@ class NotificationHelperLinux
 
  private:
   // NotificationHelper:
-  bool CanShowNativeNotifications() override;
+  bool CanShowNativeNotifications() const override;
+  bool CanShowNativeNotificationsWhileBrowserIsBackgrounded() const override;
 
-  bool CanShowBackgroundNotifications() const override;
-
-  bool ShowMyFirstNotificationAd() override;
+  bool ShowOnboardingNotification() override;
 };
 
 }  // namespace brave_ads

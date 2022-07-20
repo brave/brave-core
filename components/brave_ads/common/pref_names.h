@@ -15,7 +15,7 @@ extern const char kHasAdsP3AState[];
 
 extern const char kP2AStoragePrefNamePrefix[];
 
-extern const char kShouldShowMyFirstNotificationAd[];
+extern const char kShouldShowOnboardingNotification[];
 
 extern const char kSupportedCountryCodesLastSchemaVersion[];
 extern const char kSupportedCountryCodesSchemaVersion[];
