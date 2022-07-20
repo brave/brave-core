@@ -7,6 +7,7 @@
 
 #include <memory>
 #include <utility>
+#include <vector>
 
 #include "base/base64url.h"
 #include "net/base/url_util.h"
