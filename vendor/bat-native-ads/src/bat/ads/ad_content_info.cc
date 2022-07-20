@@ -5,6 +5,7 @@
 
 #include "bat/ads/ad_content_info.h"
 
+#include "base/check.h"
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "bat/ads/internal/base/logging_util.h"
@@ -137,7 +138,7 @@ bool AdContentInfo::FromValue(const base::Value::Dict& root) {
 
 std::string AdContentInfo::ToJson() const {
   std::string json;
-  base::JSONWriter::Write(ToValue(), &json);
+  CHECK(base::JSONWriter::Write(ToValue(), &json));
   return json;
 }
 

@@ -6,6 +6,7 @@
 #include "bat/ledger/internal/legacy/wallet_info_properties.h"
 
 #include "base/base64.h"
+#include "base/check.h"
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "base/logging.h"
@@ -94,7 +95,7 @@ bool WalletInfoProperties::FromValue(const base::Value::Dict& dict) {
 
 std::string WalletInfoProperties::ToJson() const {
   std::string json;
-  base::JSONWriter::Write(ToValue(), &json);
+  CHECK(base::JSONWriter::Write(ToValue(), &json));
   return json;
 }
 

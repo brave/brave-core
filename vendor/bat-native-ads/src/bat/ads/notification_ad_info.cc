@@ -94,7 +94,7 @@ bool NotificationAdInfo::FromValue(const base::Value::Dict& root) {
 
 std::string NotificationAdInfo::ToJson() const {
   std::string json;
-  base::JSONWriter::Write(ToValue(), &json);
+  CHECK(base::JSONWriter::Write(ToValue(), &json));
   return json;
 }
 

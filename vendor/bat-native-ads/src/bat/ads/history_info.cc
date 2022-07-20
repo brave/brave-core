@@ -5,6 +5,7 @@
 
 #include "bat/ads/history_info.h"
 
+#include "base/check.h"
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "bat/ads/history_item_info.h"
@@ -48,7 +49,7 @@ bool HistoryInfo::FromValue(const base::Value::Dict& root) {
 
 std::string HistoryInfo::ToJson() const {
   std::string json;
-  base::JSONWriter::Write(ToValue(), &json);
+  CHECK(base::JSONWriter::Write(ToValue(), &json));
   return json;
 }
 

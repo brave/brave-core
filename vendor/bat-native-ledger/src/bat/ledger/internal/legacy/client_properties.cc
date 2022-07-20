@@ -7,6 +7,7 @@
 
 #include <utility>
 
+#include "base/check.h"
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "base/json/values_util.h"
@@ -173,7 +174,7 @@ bool ClientProperties::FromValue(const base::Value::Dict& dict) {
 
 std::string ClientProperties::ToJson() const {
   std::string json;
-  base::JSONWriter::Write(ToValue(), &json);
+  CHECK(base::JSONWriter::Write(ToValue(), &json));
   return json;
 }
 

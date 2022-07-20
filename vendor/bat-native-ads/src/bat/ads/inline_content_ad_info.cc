@@ -5,6 +5,7 @@
 
 #include "bat/ads/inline_content_ad_info.h"
 
+#include "base/check.h"
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "bat/ads/confirmation_type.h"
@@ -121,7 +122,7 @@ bool InlineContentAdInfo::FromValue(const base::Value::Dict& root) {
 
 std::string InlineContentAdInfo::ToJson() const {
   std::string json;
-  base::JSONWriter::Write(ToValue(), &json);
+  CHECK(base::JSONWriter::Write(ToValue(), &json));
   return json;
 }
 

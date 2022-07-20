@@ -212,7 +212,7 @@ bool ClientInfo::FromValue(const base::Value::Dict& root) {
 
 std::string ClientInfo::ToJson() {
   std::string json;
-  base::JSONWriter::Write(ToValue(), &json);
+  CHECK(base::JSONWriter::Write(ToValue(), &json));
   return json;
 }
 
