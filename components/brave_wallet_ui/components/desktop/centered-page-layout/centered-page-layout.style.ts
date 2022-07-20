@@ -5,7 +5,7 @@
 
 import styled from 'styled-components'
 
-export const StyledWrapper = styled('div') <{}>`
+export const StyledWrapper = styled('div')`
   position: fixed;
   top: 0;
   bottom: 0;
@@ -18,7 +18,7 @@ export const StyledWrapper = styled('div') <{}>`
   overflow-y: scroll;
  `
 
-export const StyledContent = styled('div') <{}>`
+export const StyledContent = styled('div')`
   width: 456px;
   display: flex;
   flex-direction: column;
