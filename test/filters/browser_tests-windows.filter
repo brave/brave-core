@@ -87,4 +87,5 @@
 -WebAppBrowserTest_FileHandler.RegKeysFileExtension
 -WebAppGlassBrowserFrameViewTest.*
 -WebAppIntegrationBrowserTestWin.*
+-WebSocketBrowserTestWithAllowFileAccessFromFiles.CheckFileOrigin
 -WebUIBubbleManagerBrowserTest.*
