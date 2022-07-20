@@ -19,3 +19,19 @@ source_set("brave_news") {
     deps += [ "//brave/build/android:jni_headers" ]
   }
 }
+
+source_set("browser_tests") {
+  testonly = true
+  defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
+
+  if (!is_android) {
+    sources = [ "brave_news_tabhelper_browsertest.cc" ]
+
+    deps = [
+      "//chrome/browser",
+      "//testing/gtest",
+      "//testing/gmock",
+        "//brave/components//brave_rewards/browser",
+    ]
+  }
+}
