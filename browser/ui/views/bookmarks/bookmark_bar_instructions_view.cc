@@ -8,18 +8,23 @@
 #include <algorithm>
 
 #include "base/strings/utf_string_conversions.h"
+#include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/themes/theme_properties.h"
 #include "brave/browser/ui/brave_view_ids.h"
+#include "brave/browser/ui/color/color_palette.h"
 #include "brave/components/l10n/common/locale_util.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/defaults.h"
 #include "chrome/browser/themes/theme_properties.h"
+#include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/chrome_pages.h"
+#include "chrome/browser/ui/color/chrome_color_id.h"
 #include "ui/accessibility/ax_node_data.h"
 #include "ui/base/theme_provider.h"
 #include "ui/color/color_id.h"
 #include "ui/color/color_provider.h"
 #include "ui/events/event.h"
+#include "ui/gfx/color_utils.h"
 #include "ui/native_theme/native_theme.h"
 #include "ui/views/controls/label.h"
 #include "ui/views/controls/link.h"
@@ -39,7 +44,7 @@ int GetViewPadding() {
 }  // namespace
 
 BookmarkBarInstructionsView::BookmarkBarInstructionsView(Browser* browser)
-    : updated_colors_(false), browser_(browser) {
+    : browser_(browser) {
   SetID(BRAVE_VIEW_ID_BOOKMARK_IMPORT_INSTRUCTION_VIEW);
   instructions_ = new views::Label(
       brave_l10n::GetLocalizedResourceUTF16String(IDS_BOOKMARKS_NO_ITEMS),
@@ -99,12 +104,6 @@ void BookmarkBarInstructionsView::OnThemeChanged() {
   UpdateColors();
 }
 
-void BookmarkBarInstructionsView::ViewHierarchyChanged(
-    const views::ViewHierarchyChangedDetails& details) {
-  if (!updated_colors_ && details.is_add && GetWidget())
-    UpdateColors();
-}
-
 void BookmarkBarInstructionsView::GetAccessibleNodeData(
     ui::AXNodeData* node_data) {
   instructions_->GetAccessibleNodeData(node_data);
@@ -122,18 +121,32 @@ void BookmarkBarInstructionsView::ShowContextMenuForViewImpl(
   // the user right clicks on the "Import bookmarks now" link.
 }
 
-void BookmarkBarInstructionsView::UpdateColors() {
-  // We don't always have a theme provider (ui tests, for example).
-  const ui::ThemeProvider* theme_provider = GetThemeProvider();
-  if (!theme_provider)
-    return;
-  updated_colors_ = true;
-  SkColor text_color = theme_provider->GetColor(
-      BraveThemeProperties::COLOR_BOOKMARK_BAR_INSTRUCTIONS_TEXT);
-  instructions_->SetEnabledColor(text_color);
-  if (!import_link_)
-    return;
+SkColor BookmarkBarInstructionsView::GetInstructionsTextColor() {
+  // TODO(simonhong): Move this logic to color mixer when we finish
+  // our color migration to color pipeline.
+  SkColor text_color = gfx::kPlaceholderColor;
+  const ui::ColorProvider* cp = GetColorProvider();
+  const ui::ThemeProvider* tp = GetThemeProvider();
+  if (!cp || !tp)
+    return text_color;
 
-  SkColor link_color = GetColorProvider()->GetColor(ui::kColorLinkForeground);
-  import_link_->SetEnabledColor(link_color);
+  if (brave::IsRegularProfile(browser_->profile())) {
+    const SkColor toolbar_color = cp->GetColor(kColorToolbar);
+    text_color = color_utils::PickContrastingColor(
+        kLightToolbarIcon, SK_ColorWHITE, toolbar_color);
+  } else {
+    text_color = tp->GetColor(
+        BraveThemeProperties::COLOR_BOOKMARK_BAR_INSTRUCTIONS_TEXT);
+  }
+
+  return text_color;
+}
+
+void BookmarkBarInstructionsView::UpdateColors() {
+  instructions_->SetEnabledColor(GetInstructionsTextColor());
+
+  const ui::ColorProvider* cp = GetColorProvider();
+  if (cp && import_link_) {
+    import_link_->SetEnabledColor(cp->GetColor(ui::kColorLinkForeground));
+  }
 }
