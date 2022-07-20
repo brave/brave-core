@@ -18,6 +18,10 @@
 class PrefService;
 class PrefRegistrySimple;
 
+namespace net {
+class X509Certificate;
+}  // namespace net
+
 namespace network {
 class SharedURLLoaderFactory;
 class SimpleURLLoader;
@@ -82,6 +86,9 @@ class BraveP3AStarRandomness {
 
   void HandleRandomnessServerInfoResponse(
       std::unique_ptr<std::string> response_body);
+
+  void HandleRandomnessAttestationResult(
+      scoped_refptr<net::X509Certificate> approved_cert);
 
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
   std::unique_ptr<network::SimpleURLLoader> rnd_url_loader_;
