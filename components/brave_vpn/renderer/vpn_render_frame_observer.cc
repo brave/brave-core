@@ -83,7 +83,6 @@ void VpnRenderFrameObserver::OnGetPurchaseToken(
     const std::string& purchase_token) {
   if (!IsAllowed())
     return;
-
   auto* frame = render_frame();
   if (frame && purchase_token.length() > 0) {
     std::u16string set_local_storage(

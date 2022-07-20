@@ -5,15 +5,16 @@
 
 #include "base/base64.h"
 #include "base/json/json_reader.h"
+#include "base/run_loop.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/components/brave_vpn/features.h"
 #include "brave/components/brave_vpn/pref_names.h"
 #include "brave/components/skus/common/features.h"
+#include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/ui/browser.h"
-#include "chrome/common/chrome_isolated_world_ids.h"
-#include "chrome/test/base/in_process_browser_test.h"
-#include "chrome/test/base/ui_test_utils.h"
+#include "chrome/browser/profiles/profile_manager.h"
+#include "chrome/test/base/android/android_browser_test.h"
+#include "chrome/test/base/chrome_test_utils.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
@@ -41,16 +42,16 @@ bool URLLoaderInterceptorCallback(
 }
 }  // namespace
 
-class VpnReceiptBrowserTest : public InProcessBrowserTest {
+class VpnReceiptBrowserTest : public PlatformBrowserTest {
  public:
-  VpnReceiptBrowserTest() {
+  VpnReceiptBrowserTest() : PlatformBrowserTest() {
     scoped_feature_list_.InitWithFeatures(
         {skus::features::kSkusFeature, brave_vpn::features::kBraveVPN}, {});
   }
   ~VpnReceiptBrowserTest() override = default;
 
   void SetUpOnMainThread() override {
-    InProcessBrowserTest::SetUpOnMainThread();
+    PlatformBrowserTest::SetUpOnMainThread();
     // We use a URLLoaderInterceptor, rather than the EmbeddedTestServer, since
     // the origin trial token in the response is associated with a fixed
     // origin, whereas EmbeddedTestServer serves content on a random port.
@@ -58,14 +59,14 @@ class VpnReceiptBrowserTest : public InProcessBrowserTest {
         base::BindRepeating(&URLLoaderInterceptorCallback));
   }
 
-  void TearDownOnMainThread() override {
+  void TearDown() override {
     url_loader_interceptor_.reset();
-    InProcessBrowserTest::TearDownOnMainThread();
+    PlatformBrowserTest::TearDown();
   }
-
-  content::WebContents* web_contents(Browser* browser) const {
-    return browser->tab_strip_model()->GetActiveWebContents();
+  content::WebContents* GetWebContents() {
+    return chrome_test_utils::GetActiveWebContents(this);
   }
+  Profile* profile() { return ProfileManager::GetActiveUserProfile(); }
 
  protected:
   base::test::ScopedFeatureList scoped_feature_list_;
@@ -76,12 +77,14 @@ class VpnReceiptBrowserTest : public InProcessBrowserTest {
 
 IN_PROC_BROWSER_TEST_F(VpnReceiptBrowserTest, Receipt) {
   std::string test_token = "test";
-  browser()->profile()->GetPrefs()->SetString(
-      prefs::kBraveVPNPurchaseTokenAndroid, test_token);
+  profile()->GetPrefs()->SetString(prefs::kBraveVPNPurchaseTokenAndroid,
+                                   test_token);
   GURL url("https://account.brave.com/?intent=connect-receipt&product=vpn");
-  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
+  EXPECT_TRUE(content::NavigateToURL(GetWebContents(), url));
+  base::RunLoop().RunUntilIdle();
+  EXPECT_EQ(GetWebContents()->GetVisibleURL(), url);
   auto receipt =
-      content::EvalJs(web_contents(browser()),
+      content::EvalJs(GetWebContents(),
                       "window.sessionStorage.getItem('braveVpn.receipt')")
           .ExtractString();
   EXPECT_FALSE(receipt.empty());
@@ -97,17 +100,17 @@ IN_PROC_BROWSER_TEST_F(VpnReceiptBrowserTest, Receipt) {
 
 IN_PROC_BROWSER_TEST_F(VpnReceiptBrowserTest, Redirect) {
   std::string test_token = "test";
-  browser()->profile()->GetPrefs()->SetString(
-      prefs::kBraveVPNPurchaseTokenAndroid, test_token);
+  profile()->GetPrefs()->SetString(prefs::kBraveVPNPurchaseTokenAndroid,
+                                   test_token);
   GURL url(
       "https://account.brave.com/"
       "?intent=connect-receipt&product=vpn&redirect=true");
-  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
+  EXPECT_TRUE(content::NavigateToURL(GetWebContents(), url));
   EXPECT_TRUE(content::EvalJs(
-                  web_contents(browser()),
+                  GetWebContents(),
                   "window.sessionStorage.getItem('braveVpn.receipt') === null")
                   .ExtractBool());
-  EXPECT_EQ(web_contents(browser())->GetVisibleURL(),
+  EXPECT_EQ(GetWebContents()->GetVisibleURL(),
             GURL("https://account.brave.com/"));
 }
 
