@@ -11,8 +11,8 @@ import StoreKit
 private let log = Logger.browserLogger
 
 class BuyVPNViewController: UIViewController {
-
-  var iapObserver: IAPObserver
+    
+  let iapObserver: IAPObserver
   
   init(iapObserver: IAPObserver) {
     self.iapObserver = iapObserver
@@ -20,9 +20,7 @@ class BuyVPNViewController: UIViewController {
   }
   
   @available(*, unavailable)
-  required init(coder: NSCoder) {
-    fatalError()
-  }
+  required init?(coder: NSCoder) { fatalError() }
   
   private var buyVPNView: View {
     return view as! View  // swiftlint:disable:this force_cast
@@ -143,45 +141,20 @@ class BuyVPNViewController: UIViewController {
 // MARK: - IAPObserverDelegate
 
 extension BuyVPNViewController: IAPObserverDelegate {
-  func purchasedOrRestoredProduct() {
-    BraveVPN.configureFirstTimeUser { completion in
-      DispatchQueue.main.async {
-        self.isLoading = false
-      }
-
-      switch completion {
-      case .success:
-        // Not using `push` since we don't want the user to go back.
-        DispatchQueue.main.async {
-          self.navigationController?.setViewControllers(
-            [InstallVPNViewController()],
-            animated:
-              true)
-        }
-
-        // get the receipt from the server
-        BraveVPN.validateReceipt()
-
-      case .error(let type):
-        let (title, message) = { () -> (String, String) in
-          switch type {
-          // At the moment all errors have the same message.
-          // Still keeping a switch here to remind us of this place if new error type is added.
-          case .connectionProblems, .provisioning, .unknown:
-            return (
-              Strings.VPN.vpnConfigPermissionDeniedErrorTitle,
-              Strings.VPN.vpnConfigPermissionDeniedErrorBody
-            )
-          }
-        }()
-
-        DispatchQueue.main.async {
-          let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-          let ok = UIAlertAction(title: Strings.OKString, style: .default, handler: nil)
-          alert.addAction(ok)
-          self.present(alert, animated: true)
-        }
-      }
+  func purchasedOrRestoredProduct(validateReceipt: Bool) {
+    DispatchQueue.main.async {
+      self.isLoading = false
+    }
+    
+    // Not using `push` since we don't want the user to go back.
+    DispatchQueue.main.async {
+      self.navigationController?.setViewControllers(
+        [InstallVPNViewController()],
+        animated: true)
+    }
+    
+    if validateReceipt {
+      BraveVPN.validateReceipt()
     }
   }
 
