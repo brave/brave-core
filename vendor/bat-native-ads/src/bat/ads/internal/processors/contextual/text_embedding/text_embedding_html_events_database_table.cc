@@ -36,6 +36,7 @@ int BindParameters(mojom::DBCommand* command, const TextEmbeddingHTMLEventList& 
     BindDouble(command, index++, text_embedding_html_event.timestamp.ToDoubleT());
     BindString(command, index++, text_embedding_html_event.version);
     BindString(command, index++, text_embedding_html_event.locale);
+    BindString(command, index++, text_embedding_html_event.hashed_key);
     BindString(command, index++, text_embedding_html_event.embedding);
 
     count++;
@@ -52,7 +53,8 @@ TextEmbeddingEventInfo GetFromRecord(mojom::DBRecord* record) {
   text_embedding_html_event.timestamp = base::Time::FromDoubleT(ColumnDouble(record, 0));
   text_embedding_html_event.version = ColumnString(record, 1);
   text_embedding_html_event.locale = ColumnString(record, 2);
-  text_embedding_html_event.embedding = ColumnString(record, 3);
+  text_embedding_html_event.hashed_key = ColumnString(record, 3);
+  text_embedding_html_event.embedding = ColumnString(record, 4);
 
   return text_embedding_html_event;
 }
@@ -79,6 +81,7 @@ void TextEmbeddingHTMLEvents::GetAll(GetTextEmbeddingHTMLEventsCallback callback
       "tehe.timestamp, "
       "tehe.version, "
       "tehe.locale, "
+      "tehe.hashed_key, "
       "tehe.embedding "
       "FROM %s AS tehe "
       "ORDER BY timestamp DESC",
@@ -139,6 +142,7 @@ void TextEmbeddingHTMLEvents::RunTransaction(const std::string& query,
       mojom::DBCommand::RecordBindingType::DOUBLE_TYPE,  // timestamp
       mojom::DBCommand::RecordBindingType::STRING_TYPE,  // version
       mojom::DBCommand::RecordBindingType::STRING_TYPE,  // locale
+      mojom::DBCommand::RecordBindingType::STRING_TYPE,  // hashed_key
       mojom::DBCommand::RecordBindingType::STRING_TYPE  // embedding
   };
 
@@ -176,9 +180,10 @@ std::string TextEmbeddingHTMLEvents::BuildInsertOrUpdateQuery(mojom::DBCommand* 
       "(timestamp, "
       "version, "
       "locale, "
+      "hashed_key, "
       "embedding) VALUES %s",
       GetTableName().c_str(),
-      BuildBindingParameterPlaceholders(4, count).c_str());
+      BuildBindingParameterPlaceholders(5, count).c_str());
 }
 
 void TextEmbeddingHTMLEvents::OnGetTextEmbeddingHTMLEvents(mojom::DBCommandResponsePtr response,
@@ -209,6 +214,7 @@ void TextEmbeddingHTMLEvents::MigrateToV25(mojom::DBTransaction* transaction) {
       "timestamp TIMESTAMP NOT NULL, "
       "version TEXT NOT NULL, "
       "locale TEXT NOT NULL, "
+      "hashed_key TEXT NOT NULL UNIQUE, "
       "embedding TEXT NOT NULL)");
 
   mojom::DBCommandPtr command = mojom::DBCommand::New();

@@ -13,9 +13,9 @@
 #include "bat/ads/internal/base/logging_util.h"
 #include "bat/ads/internal/base/search_engine/search_engine_results_page_util.h"
 #include "bat/ads/internal/base/search_engine/search_engine_util.h"
-#include "bat/ads/internal/ml/data/vector_data.h"
 #include "bat/ads/internal/features/text_embedding_features.h"
 #include "bat/ads/internal/locale/locale_manager.h"
+#include "bat/ads/internal/ml/pipeline/text_processing/embedding_data.h"
 #include "bat/ads/internal/ml/pipeline/text_processing/embedding_processing.h"
 #include "bat/ads/internal/resources/contextual/text_embedding/text_embedding_resource.h"
 #include "bat/ads/internal/resources/language_components.h"
@@ -60,15 +60,15 @@ void TextEmbedding::Process(const std::string& text) {
     return;
   }
 
-  ml::VectorData text_embedding = embedding_proc_pipeline->EmbedText(cleaned_text);
-  if (text_embedding.GetNonZeroElementsCount() == 0) {
+  ml::pipeline::TextEmbeddingData embedding_data = embedding_proc_pipeline->EmbedText(cleaned_text);
+  if (embedding_data.embedding.GetNonZeroElementsCount() == 0) {
     BLOG(1, "Text not embedded");
     return;
   }
 
-  const std::string embedding_formatted = text_embedding.GetVectorAsString();
+  const std::string embedding_formatted = embedding_data.embedding.GetVectorAsString();
   BLOG(1, "Embedding: " << embedding_formatted);
-  LogTextEmbeddingHTMLEvent(embedding_formatted, [](const bool success) {
+  LogTextEmbeddingHTMLEvent(embedding_formatted, embedding_data.text_hashed, [](const bool success) {
     if (!success) {
       BLOG(1, "Failed to text embedding html event");
       return;

@@ -22,6 +22,7 @@ struct TextEmbeddingEventInfo final {
   base::Time timestamp;
   std::string version;
   std::string locale;
+  std::string hashed_key;
   std::string embedding;
 };
 

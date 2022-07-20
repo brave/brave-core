@@ -7,12 +7,15 @@
 
 #include "base/check.h"
 #include "base/values.h"
+#include "base/base64.h"
 #include "base/strings/string_split.h"
 #include "bat/ads/internal/base/logging_util.h"
 #include "bat/ads/internal/ml/data/text_data.h"
 #include "bat/ads/internal/ml/data/vector_data.h"
+#include "bat/ads/internal/base/crypto/crypto_util.h"
 #include "bat/ads/internal/ml/pipeline/pipeline_embedding_info.h"
 #include "bat/ads/internal/ml/pipeline/pipeline_util.h"
+#include "bat/ads/internal/ml/pipeline/text_processing/embedding_data.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 #include "bat/ads/internal/base/strings/string_strip_util.h"
 #include "bat/ads/internal/base/strings/string_html_parse_util.h"
@@ -76,24 +79,28 @@ std::string EmbeddingProcessing::CleanText(const std::string& text, bool is_html
   return cleaned_text;
 }
 
-VectorData EmbeddingProcessing::EmbedText(const std::string& text) const {
+TextEmbeddingData EmbeddingProcessing::EmbedText(const std::string& text) const {
 
   std::vector<float> embedding_initialize(embedding_pipeline_.embeddings_dim, 0.0);
   VectorData embedding_vector = VectorData(embedding_initialize);
+  TextEmbeddingData embedding_data;
+  embedding_data.embedding = embedding_vector;
 
   if (!IsInitialized()) {
-    return embedding_vector;
+    return embedding_data;
   }
 
   const std::vector<std::string> tokens = base::SplitString(
       text, " ", base::TRIM_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
 
+  std::string in_vocab_text;
   float n_tokens = 0.0;
   for (const auto& token : tokens) {
     const auto iter = embedding_pipeline_.embeddings.find(token);
     if (iter != embedding_pipeline_.embeddings.end()) {
       BLOG(1, token << " - token found");
-      embedding_vector.VectorAddElementWise(iter->second);
+      embedding_data.embedding.VectorAddElementWise(iter->second);
+      in_vocab_text += token + " ";
       n_tokens += 1.0;
     } else {
       BLOG(1, token);
@@ -101,11 +108,15 @@ VectorData EmbeddingProcessing::EmbedText(const std::string& text) const {
   }
 
   if (n_tokens == 0.0) {
-    return embedding_vector;
+    return embedding_data;
   }
 
-  embedding_vector.VectorDivideByScalar(n_tokens);
-  return embedding_vector;  
+  std::vector<uint8_t> hash_vector = security::Sha256(in_vocab_text);
+  std::string hashed_text = base::Base64Encode(hash_vector);
+  embedding_data.text_hashed = hashed_text;
+
+  embedding_data.embedding.VectorDivideByScalar(n_tokens);
+  return embedding_data;  
 }
 
 }  // namespace pipeline

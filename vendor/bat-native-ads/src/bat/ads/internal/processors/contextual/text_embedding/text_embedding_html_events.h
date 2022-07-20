@@ -20,7 +20,11 @@ struct TextEmbeddingEventInfo;
 
 using TextEmbeddingHTMLEventCallback = std::function<void(const bool)>;
 
-void LogTextEmbeddingHTMLEvent(const std::string embedding_formatted, TextEmbeddingHTMLEventCallback callback);
+void LogTextEmbeddingHTMLEvent(
+    const std::string embedding_formatted, 
+    const std::string hashed_key,
+    TextEmbeddingHTMLEventCallback callback
+);
 void PurgeStaleTextEmbeddingHTMLEvents(TextEmbeddingHTMLEventCallback callback);
 void GetTextEmbeddingEventsFromDatabase();
 

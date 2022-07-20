@@ -18,11 +18,14 @@
 
 namespace ads {
 
-void LogTextEmbeddingHTMLEvent(const std::string embedding_formatted, TextEmbeddingHTMLEventCallback callback) {
+void LogTextEmbeddingHTMLEvent(
+  const std::string embedding_formatted, const std::string hashed_key, TextEmbeddingHTMLEventCallback callback
+) {
   TextEmbeddingEventInfo text_embedding_event_info;
   text_embedding_event_info.timestamp = base::Time::Now();
   text_embedding_event_info.version = "";
   text_embedding_event_info.locale = "";
+  text_embedding_event_info.hashed_key = hashed_key;
   text_embedding_event_info.embedding = embedding_formatted;
 
   database::table::TextEmbeddingHTMLEvents database_table;

@@ -13,6 +13,7 @@
 
 #include "bat/ads/internal/ml/data/vector_data.h"
 #include "bat/ads/internal/ml/pipeline/pipeline_embedding_info.h"
+#include "bat/ads/internal/ml/pipeline/text_processing/embedding_data.h"
 
 namespace base {
 class Value;
@@ -43,7 +44,7 @@ class EmbeddingProcessing final {
 
   std::string CleanText(const std::string& text, bool is_html);
 
-  VectorData EmbedText(const std::string& text) const;
+  TextEmbeddingData EmbedText(const std::string& text) const;
 
  private:
   bool is_initialized_ = false;
