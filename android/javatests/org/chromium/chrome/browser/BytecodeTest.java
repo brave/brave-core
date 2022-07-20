@@ -551,6 +551,9 @@ public class BytecodeTest {
                 Resources.class, UiConfig.class, ViewGroup.class, ViewStub.class,
                 TileRenderer.class, PropertyModel.class, boolean.class, boolean.class,
                 boolean.class, Runnable.class, Runnable.class));
+        Assert.assertTrue(constructorsMatch(
+                "org/chromium/chrome/browser/crash/ChromePureJavaExceptionReporter",
+                "org/chromium/chrome/browser/crash/BravePureJavaExceptionReporter"));
     }
 
     @Test

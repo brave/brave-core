@@ -481,3 +481,11 @@
 -keep class org.chromium.chrome.browser.ChromeApplicationImpl
 
 -keep class org.chromium.chrome.browser.BraveApplicationImplBase
+
+-keep class org.chromium.chrome.browser.crash.ChromePureJavaExceptionReporter {
+    public <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.crash.BravePureJavaExceptionReporter {
+    public <init>(...);
+}
