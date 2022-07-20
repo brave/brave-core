@@ -5,7 +5,6 @@
 
 #include "bat/ads/internal/processors/contextual/text_embedding/text_embedding_html_events_database_table.h"
 
-#include <functional>
 #include <utility>
 
 #include "base/check.h"

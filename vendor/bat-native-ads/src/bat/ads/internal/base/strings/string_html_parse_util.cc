@@ -3,9 +3,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include <regex>
-
 #include "bat/ads/internal/base/strings/string_html_parse_util.h"
+
+#include <regex>
 
 namespace ads {
 
