@@ -16,8 +16,6 @@
 #include "bat/ledger/internal/ledger_impl.h"
 #include "net/http/http_status_code.h"
 
-using std::placeholders::_1;
-
 namespace ledger {
 namespace endpoint {
 namespace promotion {
@@ -77,14 +75,15 @@ void PostSuggestionsClaim::Request(
     const credential::CredentialsRedeem& redeem,
     PostSuggestionsClaimCallback callback) {
   auto url_callback =
-      std::bind(&PostSuggestionsClaim::OnRequest, this, _1, callback);
+      base::BindOnce(&PostSuggestionsClaim::OnRequest, base::Unretained(this),
+                     std::move(callback));
 
   const std::string payload = GeneratePayload(redeem);
 
   auto wallet = ledger_->wallet()->GetWallet();
   if (!wallet) {
     BLOG(0, "Wallet is null");
-    callback(type::Result::LEDGER_ERROR, "");
+    std::move(callback).Run(type::Result::LEDGER_ERROR, "");
     return;
   }
 
@@ -100,40 +99,39 @@ void PostSuggestionsClaim::Request(
   request->headers = headers;
   request->content_type = "application/json; charset=utf-8";
   request->method = type::UrlMethod::POST;
-  ledger_->LoadURL(std::move(request), url_callback);
+  ledger_->LoadURL(std::move(request), std::move(url_callback));
 }
 
-void PostSuggestionsClaim::OnRequest(
-    const type::UrlResponse& response,
-    PostSuggestionsClaimCallback callback) {
+void PostSuggestionsClaim::OnRequest(PostSuggestionsClaimCallback callback,
+                                     const type::UrlResponse& response) {
   ledger::LogUrlResponse(__func__, response);
   auto result = CheckStatusCode(response.status_code);
   if (result != type::Result::LEDGER_OK) {
-    callback(result, "");
+    std::move(callback).Run(result, "");
     return;
   }
 
   absl::optional<base::Value> value = base::JSONReader::Read(response.body);
   if (!value || !value->is_dict()) {
     BLOG(0, "Invalid JSON");
-    callback(type::Result::LEDGER_ERROR, "");
+    std::move(callback).Run(type::Result::LEDGER_ERROR, "");
     return;
   }
 
   base::DictionaryValue* dictionary = nullptr;
   if (!value->GetAsDictionary(&dictionary)) {
     BLOG(0, "Invalid JSON");
-    callback(type::Result::LEDGER_ERROR, "");
+    std::move(callback).Run(type::Result::LEDGER_ERROR, "");
     return;
   }
 
   auto* drain_id = dictionary->FindStringKey("drainId");
   if (!drain_id) {
     BLOG(0, "Missing drain id");
-    callback(type::Result::LEDGER_ERROR, "");
+    std::move(callback).Run(type::Result::LEDGER_ERROR, "");
     return;
   }
-  callback(result, *drain_id);
+  std::move(callback).Run(result, std::move(*drain_id));
 }
 
 }  // namespace promotion

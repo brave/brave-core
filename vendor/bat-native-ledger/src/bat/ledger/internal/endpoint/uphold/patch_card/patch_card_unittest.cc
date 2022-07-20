@@ -102,12 +102,11 @@ TEST_F(PatchCardTest, ServerOK) {
             std::move(callback).Run(response);
           }));
 
-  card_->Request(
-      "193a77cf-02e8-4e10-8127-8a1b5a8bfece",
-      "4c2b665ca060d912fec5c735c734859a06118cc8",
-      [](const type::Result result) {
-        EXPECT_EQ(result, type::Result::LEDGER_OK);
-      });
+  card_->Request("193a77cf-02e8-4e10-8127-8a1b5a8bfece",
+                 "4c2b665ca060d912fec5c735c734859a06118cc8",
+                 base::BindOnce([](type::Result result) {
+                   EXPECT_EQ(result, type::Result::LEDGER_OK);
+                 }));
 }
 
 TEST_F(PatchCardTest, ServerError401) {
@@ -121,12 +120,11 @@ TEST_F(PatchCardTest, ServerError401) {
             std::move(callback).Run(response);
           }));
 
-  card_->Request(
-      "193a77cf-02e8-4e10-8127-8a1b5a8bfece",
-      "4c2b665ca060d912fec5c735c734859a06118cc8",
-      [](const type::Result result) {
-        EXPECT_EQ(result, type::Result::EXPIRED_TOKEN);
-      });
+  card_->Request("193a77cf-02e8-4e10-8127-8a1b5a8bfece",
+                 "4c2b665ca060d912fec5c735c734859a06118cc8",
+                 base::BindOnce([](type::Result result) {
+                   EXPECT_EQ(result, type::Result::EXPIRED_TOKEN);
+                 }));
 }
 
 TEST_F(PatchCardTest, ServerErrorRandom) {
@@ -140,12 +138,11 @@ TEST_F(PatchCardTest, ServerErrorRandom) {
             std::move(callback).Run(response);
           }));
 
-  card_->Request(
-      "193a77cf-02e8-4e10-8127-8a1b5a8bfece",
-      "4c2b665ca060d912fec5c735c734859a06118cc8",
-      [](const type::Result result) {
-        EXPECT_EQ(result, type::Result::LEDGER_ERROR);
-      });
+  card_->Request("193a77cf-02e8-4e10-8127-8a1b5a8bfece",
+                 "4c2b665ca060d912fec5c735c734859a06118cc8",
+                 base::BindOnce([](type::Result result) {
+                   EXPECT_EQ(result, type::Result::LEDGER_ERROR);
+                 }));
 }
 
 }  // namespace uphold

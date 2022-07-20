@@ -29,13 +29,13 @@ class PromotionTransfer {
 
  private:
   void OnGetSpendableUnblindedTokens(
-      type::UnblindedTokenList tokens,
-      ledger::PostSuggestionsClaimCallback callback) const;
+      ledger::PostSuggestionsClaimCallback callback,
+      type::UnblindedTokenList tokens) const;
 
-  void OnDrainTokens(type::Result result,
-                     std::string drain_id,
+  void OnDrainTokens(ledger::PostSuggestionsClaimCallback callback,
                      double transfer_amount,
-                     ledger::PostSuggestionsClaimCallback callback) const;
+                     type::Result result,
+                     std::string drain_id) const;
 
   LedgerImpl* ledger_;  // NOT OWNED
   std::unique_ptr<credential::CredentialsPromotion> credentials_;

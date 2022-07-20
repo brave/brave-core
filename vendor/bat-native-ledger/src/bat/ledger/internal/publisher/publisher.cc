@@ -441,10 +441,9 @@ void Publisher::OnPublisherInfoSaved(const type::Result result) {
   SynopsisNormalizer();
 }
 
-void Publisher::SetPublisherExclude(
-    const std::string& publisher_id,
-    const type::PublisherExclude& exclude,
-    ledger::ResultCallback callback) {
+void Publisher::SetPublisherExclude(const std::string& publisher_id,
+                                    const type::PublisherExclude& exclude,
+                                    ledger::LegacyResultCallback callback) {
   ledger_->database()->GetPublisherInfo(
       publisher_id,
       std::bind(&Publisher::OnSetPublisherExclude,
@@ -455,11 +454,10 @@ void Publisher::SetPublisherExclude(
                 callback));
 }
 
-void Publisher::OnSetPublisherExclude(
-    type::PublisherExclude exclude,
-    type::Result result,
-    type::PublisherInfoPtr publisher_info,
-    ledger::ResultCallback callback) {
+void Publisher::OnSetPublisherExclude(type::PublisherExclude exclude,
+                                      type::Result result,
+                                      type::PublisherInfoPtr publisher_info,
+                                      ledger::LegacyResultCallback callback) {
   if (result != type::Result::LEDGER_OK &&
       result != type::Result::NOT_FOUND) {
     BLOG(0, "Publisher exclude status not saved");
@@ -494,9 +492,8 @@ void Publisher::OnSetPublisherExclude(
   callback(type::Result::LEDGER_OK);
 }
 
-void Publisher::OnRestorePublishers(
-    const type::Result result,
-    ledger::ResultCallback callback) {
+void Publisher::OnRestorePublishers(type::Result result,
+                                    ledger::LegacyResultCallback callback) {
   if (result != type::Result::LEDGER_OK) {
     BLOG(0, "Could not restore publishers.");
     callback(result);
@@ -916,10 +913,9 @@ void Publisher::OnGetPanelPublisherInfo(
   callback(result, std::move(info));
 }
 
-void Publisher::SavePublisherInfo(
-    const uint64_t window_id,
-    type::PublisherInfoPtr publisher_info,
-    ledger::ResultCallback callback) {
+void Publisher::SavePublisherInfo(uint64_t window_id,
+                                  type::PublisherInfoPtr publisher_info,
+                                  ledger::LegacyResultCallback callback) {
   if (!publisher_info || publisher_info->id.empty()) {
     BLOG(0, "Publisher key is missing for url");
     callback(type::Result::LEDGER_ERROR);
@@ -948,10 +944,10 @@ void Publisher::SavePublisherInfo(
 
 void Publisher::OnGetPublisherBannerForSavePublisherInfo(
     type::PublisherBannerPtr banner,
-    const uint64_t window_id,
+    uint64_t window_id,
     const std::string& publisher_key,
     const type::VisitData& visit_data,
-    ledger::ResultCallback callback) {
+    ledger::LegacyResultCallback callback) {
   type::VisitData new_visit_data = visit_data;
 
   if (banner && !banner->logo.empty()) {

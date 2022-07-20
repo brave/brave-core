@@ -58,8 +58,8 @@ void Gemini::Initialize() {
 
 void Gemini::StartContribution(const std::string& contribution_id,
                                type::ServerPublisherInfoPtr info,
-                               const double amount,
-                               ResultCallback callback) {
+                               double amount,
+                               LegacyResultCallback callback) {
   if (!info) {
     BLOG(0, "Publisher info is null");
     ContributionCompleted(type::Result::LEDGER_ERROR, "", contribution_id,
@@ -81,12 +81,12 @@ void Gemini::StartContribution(const std::string& contribution_id,
   transfer_->Start(transaction, contribution_callback);
 }
 
-void Gemini::ContributionCompleted(const type::Result result,
+void Gemini::ContributionCompleted(type::Result result,
                                    const std::string& transaction_id,
                                    const std::string& contribution_id,
-                                   const double fee,
+                                   double fee,
                                    const std::string& publisher_key,
-                                   ResultCallback callback) {
+                                   LegacyResultCallback callback) {
   if (result == type::Result::LEDGER_OK) {
     SaveTransferFee(contribution_id, fee);
 
@@ -156,7 +156,7 @@ void Gemini::WalletAuthorization(
 }
 
 void Gemini::GenerateWallet(ResultCallback callback) {
-  wallet_->Generate(callback);
+  wallet_->Generate(std::move(callback));
 }
 
 void Gemini::DisconnectWallet(const bool manual) {

@@ -33,7 +33,7 @@ DatabaseContributionQueue::~DatabaseContributionQueue() = default;
 
 void DatabaseContributionQueue::InsertOrUpdate(
     type::ContributionQueuePtr info,
-    ledger::ResultCallback callback) {
+    ledger::LegacyResultCallback callback) {
   if (!info) {
     BLOG(0, "Queue is null");
     callback(type::Result::LEDGER_ERROR);
@@ -80,7 +80,7 @@ void DatabaseContributionQueue::InsertOrUpdate(
 void DatabaseContributionQueue::OnInsertOrUpdate(
     type::DBCommandResponsePtr response,
     std::shared_ptr<type::ContributionQueuePtr> shared_queue,
-    ledger::ResultCallback callback) {
+    ledger::LegacyResultCallback callback) {
   if (!response ||
       response->status != type::DBCommandResponse::Status::RESPONSE_OK) {
     BLOG(0, "Response is not ok");
@@ -184,7 +184,7 @@ void DatabaseContributionQueue::OnGetPublishers(
 
 void DatabaseContributionQueue::MarkRecordAsComplete(
     const std::string& id,
-    ledger::ResultCallback callback) {
+    ledger::LegacyResultCallback callback) {
   if (id.empty()) {
     BLOG(1, "Id is empty");
     callback(type::Result::LEDGER_ERROR);

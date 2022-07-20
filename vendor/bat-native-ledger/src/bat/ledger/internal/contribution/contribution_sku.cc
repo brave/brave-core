@@ -99,31 +99,28 @@ ContributionSKU::ContributionSKU(LedgerImpl* ledger) :
 
 ContributionSKU::~ContributionSKU() = default;
 
-void ContributionSKU::AutoContribution(
-    const std::string& contribution_id,
-    const std::string& wallet_type,
-    ledger::ResultCallback callback) {
+void ContributionSKU::AutoContribution(const std::string& contribution_id,
+                                       const std::string& wallet_type,
+                                       ledger::LegacyResultCallback callback) {
   type::SKUOrderItem item;
   item.sku = GetACSKU();
 
   Start(contribution_id, item, wallet_type, callback);
 }
 
-void ContributionSKU::AnonUserFunds(
-    const std::string& contribution_id,
-    const std::string& wallet_type,
-    ledger::ResultCallback callback) {
+void ContributionSKU::AnonUserFunds(const std::string& contribution_id,
+                                    const std::string& wallet_type,
+                                    ledger::LegacyResultCallback callback) {
   type::SKUOrderItem item;
   item.sku = GetUserFundsSKU();
 
   Start(contribution_id, item, wallet_type, callback);
 }
 
-void ContributionSKU::Start(
-    const std::string& contribution_id,
-    const type::SKUOrderItem& item,
-    const std::string& wallet_type,
-    ledger::ResultCallback callback) {
+void ContributionSKU::Start(const std::string& contribution_id,
+                            const type::SKUOrderItem& item,
+                            const std::string& wallet_type,
+                            ledger::LegacyResultCallback callback) {
   auto get_callback = std::bind(&ContributionSKU::GetContributionInfo,
       this,
       _1,
@@ -138,20 +135,16 @@ void ContributionSKU::GetContributionInfo(
     type::ContributionInfoPtr contribution,
     const type::SKUOrderItem& item,
     const std::string& wallet_type,
-    ledger::ResultCallback callback) {
+    ledger::LegacyResultCallback callback) {
   if (!contribution) {
     BLOG(0, "Contribution not found");
     callback(type::Result::LEDGER_ERROR);
     return;
   }
 
-  ledger::ResultCallback complete_callback = std::bind(
-      &ContributionSKU::Completed,
-      this,
-      _1,
-      contribution->contribution_id,
-      contribution->type,
-      callback);
+  ledger::LegacyResultCallback complete_callback =
+      std::bind(&ContributionSKU::Completed, this, _1,
+                contribution->contribution_id, contribution->type, callback);
 
   auto process_callback = std::bind(&ContributionSKU::GetOrder,
       this,
@@ -175,11 +168,10 @@ void ContributionSKU::GetContributionInfo(
       contribution->contribution_id);
 }
 
-void ContributionSKU::GetOrder(
-    const type::Result result,
-    const std::string& order_id,
-    const std::string& contribution_id,
-    ledger::ResultCallback callback) {
+void ContributionSKU::GetOrder(type::Result result,
+                               const std::string& order_id,
+                               const std::string& contribution_id,
+                               ledger::LegacyResultCallback callback) {
   if (result != type::Result::LEDGER_OK) {
     BLOG(0, "SKU was not processed");
     callback(result);
@@ -194,10 +186,9 @@ void ContributionSKU::GetOrder(
   ledger_->database()->GetSKUOrder(order_id, get_callback);
 }
 
-void ContributionSKU::OnGetOrder(
-    type::SKUOrderPtr order,
-    const std::string& contribution_id,
-    ledger::ResultCallback callback) {
+void ContributionSKU::OnGetOrder(type::SKUOrderPtr order,
+                                 const std::string& contribution_id,
+                                 ledger::LegacyResultCallback callback) {
   if (!order) {
     BLOG(0, "Order was not found");
     callback(type::Result::LEDGER_ERROR);
@@ -211,11 +202,10 @@ void ContributionSKU::OnGetOrder(
   credentials_->Start(trigger, callback);
 }
 
-void ContributionSKU::Completed(
-    const type::Result result,
-    const std::string& contribution_id,
-    const type::RewardsType type,
-    ledger::ResultCallback callback) {
+void ContributionSKU::Completed(type::Result result,
+                                const std::string& contribution_id,
+                                type::RewardsType type,
+                                ledger::LegacyResultCallback callback) {
   if (result != type::Result::LEDGER_OK) {
     BLOG(0, "Order not completed");
     callback(result);
@@ -234,10 +224,9 @@ void ContributionSKU::Completed(
       save_callback);
 }
 
-void ContributionSKU::CredsStepSaved(
-    const type::Result result,
-    const std::string& contribution_id,
-    ledger::ResultCallback callback) {
+void ContributionSKU::CredsStepSaved(type::Result result,
+                                     const std::string& contribution_id,
+                                     ledger::LegacyResultCallback callback) {
   if (result != type::Result::LEDGER_OK) {
     BLOG(0, "Creds step not saved");
     callback(result);
@@ -339,9 +328,8 @@ void ContributionSKU::OnRedeemTokens(
   callback(result, "");
 }
 
-void ContributionSKU::Retry(
-    const type::ContributionInfoPtr contribution,
-    ledger::ResultCallback callback) {
+void ContributionSKU::Retry(type::ContributionInfoPtr contribution,
+                            ledger::LegacyResultCallback callback) {
   if (!contribution) {
     BLOG(0, "Contribution was not found");
     callback(type::Result::LEDGER_ERROR);
@@ -362,7 +350,7 @@ void ContributionSKU::Retry(
 void ContributionSKU::OnOrder(
     type::SKUOrderPtr order,
     std::shared_ptr<type::ContributionInfoPtr> shared_contribution,
-    ledger::ResultCallback callback) {
+    ledger::LegacyResultCallback callback) {
   auto contribution = std::move(*shared_contribution);
   if (!contribution) {
     BLOG(0, "Contribution is null");
@@ -400,10 +388,9 @@ void ContributionSKU::OnOrder(
   }
 }
 
-void ContributionSKU::RetryStartStep(
-    type::ContributionInfoPtr contribution,
-    type::SKUOrderPtr order,
-    ledger::ResultCallback callback) {
+void ContributionSKU::RetryStartStep(type::ContributionInfoPtr contribution,
+                                     type::SKUOrderPtr order,
+                                     ledger::LegacyResultCallback callback) {
   if (!contribution) {
     BLOG(0, "Contribution is null");
     callback(type::Result::LEDGER_ERROR);
@@ -444,7 +431,7 @@ void ContributionSKU::RetryStartStep(
     return;
   }
 
-  ledger::ResultCallback complete_callback =
+  ledger::LegacyResultCallback complete_callback =
       std::bind(&ContributionSKU::Completed, this, _1,
                 contribution->contribution_id, contribution->type, callback);
 

@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVELEDGER_SKU_TRANSACTION_H_
-#define BRAVELEDGER_SKU_TRANSACTION_H_
+#ifndef BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_SKU_SKU_TRANSACTION_H_
+#define BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_SKU_SKU_TRANSACTION_H_
 
 #include <map>
 #include <memory>
@@ -23,39 +23,33 @@ class SKUTransaction {
   explicit SKUTransaction(LedgerImpl* ledger);
   ~SKUTransaction();
 
-  void Create(
-      type::SKUOrderPtr order,
-      const std::string& destination,
-      const std::string& wallet_type,
-      ledger::ResultCallback callback);
+  void Create(type::SKUOrderPtr order,
+              const std::string& destination,
+              const std::string& wallet_type,
+              ledger::LegacyResultCallback callback);
 
-  void SendExternalTransaction(
-      const type::Result result,
-      const type::SKUTransaction& transaction,
-      ledger::ResultCallback callback);
+  void SendExternalTransaction(type::Result result,
+                               const type::SKUTransaction& transaction,
+                               ledger::LegacyResultCallback callback);
 
  private:
-  void OnTransactionSaved(
-      const type::Result result,
-      const type::SKUTransaction& transaction,
-      const std::string& destination,
-      const std::string& wallet_type,
-      ledger::ResultCallback callback);
+  void OnTransactionSaved(type::Result result,
+                          const type::SKUTransaction& transaction,
+                          const std::string& destination,
+                          const std::string& wallet_type,
+                          ledger::LegacyResultCallback callback);
 
-  void OnTransfer(
-      const type::Result result,
-      const std::string& external_transaction_id,
-      const type::SKUTransaction& transaction,
-      ledger::ResultCallback callback);
+  void OnTransfer(type::Result result,
+                  const std::string& external_transaction_id,
+                  const type::SKUTransaction& transaction,
+                  ledger::LegacyResultCallback callback);
 
-  void OnSaveSKUExternalTransaction(
-      const type::Result result,
-      const type::SKUTransaction& transaction,
-      ledger::ResultCallback callback);
+  void OnSaveSKUExternalTransaction(type::Result result,
+                                    const type::SKUTransaction& transaction,
+                                    ledger::LegacyResultCallback callback);
 
-  void OnSendExternalTransaction(
-      const type::Result result,
-      ledger::ResultCallback callback);
+  void OnSendExternalTransaction(type::Result result,
+                                 ledger::LegacyResultCallback callback);
 
   LedgerImpl* ledger_;  // NOT OWNED
   std::unique_ptr<endpoint::PaymentServer> payment_server_;
@@ -64,4 +58,4 @@ class SKUTransaction {
 }  // namespace sku
 }  // namespace ledger
 
-#endif  // BRAVELEDGER_SKU_TRANSACTION_H_
+#endif  // BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_SKU_SKU_TRANSACTION_H_

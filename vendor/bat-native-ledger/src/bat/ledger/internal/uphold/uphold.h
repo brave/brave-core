@@ -41,7 +41,7 @@ class UpholdWallet;
 
 using FetchBalanceCallback = base::OnceCallback<void(type::Result, double)>;
 using CreateCardCallback =
-    std::function<void(type::Result, const std::string&)>;
+    base::OnceCallback<void(type::Result, const std::string&)>;
 using endpoint::uphold::GetCapabilitiesCallback;
 
 class Uphold {
@@ -54,8 +54,8 @@ class Uphold {
 
   void StartContribution(const std::string& contribution_id,
                          type::ServerPublisherInfoPtr info,
-                         const double amount,
-                         ledger::ResultCallback callback);
+                         double amount,
+                         ledger::LegacyResultCallback callback);
 
   void FetchBalance(FetchBalanceCallback callback);
 
@@ -82,12 +82,12 @@ class Uphold {
   bool SetWallet(type::ExternalWalletPtr wallet);
 
  private:
-  void ContributionCompleted(const type::Result result,
+  void ContributionCompleted(type::Result result,
                              const std::string& transaction_id,
                              const std::string& contribution_id,
-                             const double fee,
+                             double fee,
                              const std::string& publisher_key,
-                             ledger::ResultCallback callback);
+                             ledger::LegacyResultCallback callback);
 
   void OnFetchBalance(FetchBalanceCallback callback,
                       const type::Result result,

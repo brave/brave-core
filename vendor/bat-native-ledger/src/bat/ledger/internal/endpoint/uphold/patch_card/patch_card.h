@@ -85,7 +85,7 @@ class LedgerImpl;
 namespace endpoint {
 namespace uphold {
 
-using PatchCardCallback = std::function<void(const type::Result result)>;
+using PatchCardCallback = base::OnceCallback<void(type::Result result)>;
 
 class PatchCard {
  public:
@@ -103,7 +103,7 @@ class PatchCard {
 
   type::Result CheckStatusCode(const int status_code);
 
-  void OnRequest(const type::UrlResponse& response, PatchCardCallback callback);
+  void OnRequest(PatchCardCallback callback, const type::UrlResponse& response);
 
   LedgerImpl* ledger_;  // NOT OWNED
 };

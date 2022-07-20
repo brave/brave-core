@@ -603,7 +603,8 @@ BATClassLedgerBridge(BOOL, isDebug, setDebug, is_debug)
                         completion:(void (^)(LedgerResult result,
                                              NSString* drainID))completion {
   ledger->LinkBraveWallet(base::SysNSStringToUTF8(paymentId),
-                          ^(ledger::type::Result result, std::string drain_id) {
+                          base::BindOnce(^(ledger::type::Result result,
+                                           std::string drain_id) {
                             // The internal draining API now returns a success
                             // code when there are no tokens to drain. Since
                             // brave-ios expects a valid drain ID when the
@@ -615,7 +616,7 @@ BATClassLedgerBridge(BOOL, isDebug, setDebug, is_debug)
                             }
                             completion(static_cast<LedgerResult>(result),
                                        base::SysUTF8ToNSString(drain_id));
-                          });
+                          }));
 }
 
 - (void)drainStatusForDrainId:(NSString*)drainId
@@ -634,23 +635,24 @@ BATClassLedgerBridge(BOOL, isDebug, setDebug, is_debug)
 - (void)fetchUpholdWallet:
     (nullable void (^)(LedgerExternalWallet* _Nullable wallet))completion {
   const auto __weak weakSelf = self;
-  ledger->GetExternalWallet(ledger::constant::kWalletUphold, ^(
-                                ledger::type::Result result,
-                                ledger::type::ExternalWalletPtr walletPtr) {
-    if (result == ledger::type::Result::LEDGER_OK &&
-        walletPtr.get() != nullptr) {
-      const auto bridgedWallet =
-          [[LedgerExternalWallet alloc] initWithExternalWallet:*walletPtr];
-      weakSelf.upholdWallet = bridgedWallet;
-      if (completion) {
-        completion(bridgedWallet);
-      }
-    } else {
-      if (completion) {
-        completion(nil);
-      }
-    }
-  });
+  ledger->GetExternalWallet(
+      ledger::constant::kWalletUphold,
+      base::BindOnce(^(ledger::type::Result result,
+                       ledger::type::ExternalWalletPtr walletPtr) {
+        if (result == ledger::type::Result::LEDGER_OK &&
+            walletPtr.get() != nullptr) {
+          const auto bridgedWallet =
+              [[LedgerExternalWallet alloc] initWithExternalWallet:*walletPtr];
+          weakSelf.upholdWallet = bridgedWallet;
+          if (completion) {
+            completion(bridgedWallet);
+          }
+        } else {
+          if (completion) {
+            completion(nil);
+          }
+        }
+      }));
 }
 
 - (void)disconnectWalletOfType:(ExternalWalletType)walletType
@@ -1803,44 +1805,6 @@ BATLedgerBridge(BOOL,
   }
 }
 
-- (void)loadState:(const std::string&)name
-         callback:(ledger::client::OnLoadCallback)callback {
-  const auto key = base::SysUTF8ToNSString(name);
-  const auto value = self.state[key];
-  if (value) {
-    callback(ledger::type::Result::LEDGER_OK, base::SysNSStringToUTF8(value));
-  } else {
-    callback(ledger::type::Result::LEDGER_ERROR, "");
-  }
-}
-
-- (void)resetState:(const std::string&)name
-          callback:(ledger::ResultCallback)callback {
-  const auto key = base::SysUTF8ToNSString(name);
-  self.state[key] = nil;
-  callback(ledger::type::Result::LEDGER_OK);
-  // In brave-core, failed callback returns `LEDGER_ERROR`
-  NSDictionary* state = [self.state copy];
-  NSString* path = [self.randomStatePath copy];
-  dispatch_async(self.fileWriteThread, ^{
-    [state writeToURL:[NSURL fileURLWithPath:path isDirectory:NO] error:nil];
-  });
-}
-
-- (void)saveState:(const std::string&)name
-            value:(const std::string&)value
-         callback:(ledger::ResultCallback)callback {
-  const auto key = base::SysUTF8ToNSString(name);
-  self.state[key] = base::SysUTF8ToNSString(value);
-  callback(ledger::type::Result::LEDGER_OK);
-  // In brave-core, failed callback returns `LEDGER_ERROR`
-  NSDictionary* state = [self.state copy];
-  NSString* path = [self.randomStatePath copy];
-  dispatch_async(self.fileWriteThread, ^{
-    [state writeToURL:[NSURL fileURLWithPath:path isDirectory:NO] error:nil];
-  });
-}
-
 #pragma mark - Network
 
 - (NSString*)customUserAgent {
@@ -2005,7 +1969,7 @@ BATLedgerBridge(BOOL,
 
 - (void)showNotification:(const std::string&)type
                     args:(const std::vector<std::string>&)args
-                callback:(ledger::ResultCallback)callback {
+                callback:(ledger::LegacyResultCallback)callback {
   const auto notificationID = base::SysUTF8ToNSString(type);
   const auto info = [[NSMutableDictionary<NSNumber*, NSString*> alloc] init];
   for (NSUInteger i = 0; i < args.size(); i++) {
@@ -2073,7 +2037,7 @@ BATLedgerBridge(BOOL,
   }
 }
 
-- (void)deleteLog:(ledger::ResultCallback)callback {
+- (void)deleteLog:(ledger::LegacyResultCallback)callback {
   callback(ledger::type::Result::LEDGER_OK);
 }
 

@@ -110,14 +110,12 @@ class Promotion {
       type::PromotionList promotions,
       ledger::FetchPromotionCallback callback);
 
-  void GetCredentials(
-      type::PromotionPtr promotion,
-      ledger::ResultCallback callback);
+  void GetCredentials(type::PromotionPtr promotion,
+                      ledger::LegacyResultCallback callback);
 
-  void CredentialsProcessed(
-      const type::Result result,
-      const std::string& promotion_id,
-      ledger::ResultCallback callback);
+  void CredentialsProcessed(type::Result result,
+                            const std::string& promotion_id,
+                            ledger::LegacyResultCallback callback);
 
   void Retry(type::PromotionMap promotions);
 

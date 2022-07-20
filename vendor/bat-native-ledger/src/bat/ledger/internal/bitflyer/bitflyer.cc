@@ -57,8 +57,8 @@ void Bitflyer::Initialize() {
 
 void Bitflyer::StartContribution(const std::string& contribution_id,
                                  type::ServerPublisherInfoPtr info,
-                                 const double amount,
-                                 ledger::ResultCallback callback) {
+                                 double amount,
+                                 ledger::LegacyResultCallback callback) {
   if (!info) {
     BLOG(0, "Publisher info is null");
     ContributionCompleted(type::Result::LEDGER_ERROR, "", contribution_id,
@@ -80,12 +80,12 @@ void Bitflyer::StartContribution(const std::string& contribution_id,
   transfer_->Start(transaction, contribution_callback);
 }
 
-void Bitflyer::ContributionCompleted(const type::Result result,
+void Bitflyer::ContributionCompleted(type::Result result,
                                      const std::string& transaction_id,
                                      const std::string& contribution_id,
-                                     const double fee,
+                                     double fee,
                                      const std::string& publisher_key,
-                                     ledger::ResultCallback callback) {
+                                     ledger::LegacyResultCallback callback) {
   if (result == type::Result::LEDGER_OK) {
     SaveTransferFee(contribution_id, fee);
 
@@ -155,7 +155,7 @@ void Bitflyer::WalletAuthorization(
 }
 
 void Bitflyer::GenerateWallet(ledger::ResultCallback callback) {
-  wallet_->Generate(callback);
+  wallet_->Generate(std::move(callback));
 }
 
 void Bitflyer::DisconnectWallet(const bool manual) {

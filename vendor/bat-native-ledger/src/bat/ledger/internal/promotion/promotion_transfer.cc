@@ -14,9 +14,6 @@
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/logging/event_log_keys.h"
 
-using std::placeholders::_1;
-using std::placeholders::_2;
-
 namespace ledger {
 namespace promotion {
 
@@ -29,21 +26,27 @@ PromotionTransfer::~PromotionTransfer() = default;
 
 void PromotionTransfer::Start(
     ledger::PostSuggestionsClaimCallback callback) const {
+  auto tokens_callback =
+      base::BindOnce(&PromotionTransfer::OnGetSpendableUnblindedTokens,
+                     base::Unretained(this), std::move(callback));
+
   ledger_->database()->GetSpendableUnblindedTokens(
-      std::bind(&PromotionTransfer::OnGetSpendableUnblindedTokens, this, _1,
-                std::move(callback)));
+      [callback = std::make_shared<decltype(tokens_callback)>(
+           std::move(tokens_callback))](type::UnblindedTokenList tokens) {
+        std::move(*callback).Run(std::move(tokens));
+      });
 }
 
 void PromotionTransfer::OnGetSpendableUnblindedTokens(
-    type::UnblindedTokenList tokens,
-    ledger::PostSuggestionsClaimCallback callback) const {
+    ledger::PostSuggestionsClaimCallback callback,
+    type::UnblindedTokenList tokens) const {
   std::vector<type::UnblindedToken> token_list;
   for (auto& token : tokens) {
     token_list.push_back(*token);
   }
 
   if (token_list.empty()) {
-    return callback(type::Result::LEDGER_OK, "");
+    return std::move(callback).Run(type::Result::LEDGER_OK, "");
   }
 
   credential::CredentialsRedeem redeem;
@@ -52,22 +55,22 @@ void PromotionTransfer::OnGetSpendableUnblindedTokens(
   redeem.token_list = std::move(token_list);
 
   credentials_->DrainTokens(
-      redeem, std::bind(&PromotionTransfer::OnDrainTokens, this, _1, _2,
-                        redeem.token_list.size() * constant::kVotePrice,
-                        std::move(callback)));
+      redeem, base::BindOnce(&PromotionTransfer::OnDrainTokens,
+                             base::Unretained(this), std::move(callback),
+                             redeem.token_list.size() * constant::kVotePrice));
 }
 
 void PromotionTransfer::OnDrainTokens(
-    type::Result result,
-    std::string drain_id,
+    ledger::PostSuggestionsClaimCallback callback,
     double transfer_amount,
-    ledger::PostSuggestionsClaimCallback callback) const {
+    type::Result result,
+    std::string drain_id) const {
   if (result == type::Result::LEDGER_OK) {
     ledger_->database()->SaveEventLog(log::kPromotionVBATDrained,
                                       base::NumberToString(transfer_amount));
   }
 
-  callback(result, drain_id);
+  std::move(callback).Run(result, std::move(drain_id));
 }
 
 }  // namespace promotion

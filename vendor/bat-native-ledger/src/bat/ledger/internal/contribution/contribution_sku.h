@@ -23,58 +23,49 @@ class ContributionSKU {
   explicit ContributionSKU(LedgerImpl* ledger);
   ~ContributionSKU();
 
-  void AutoContribution(
-      const std::string& contribution_id,
-      const std::string& wallet_type,
-      ledger::ResultCallback callback);
+  void AutoContribution(const std::string& contribution_id,
+                        const std::string& wallet_type,
+                        ledger::LegacyResultCallback callback);
 
-  void AnonUserFunds(
-      const std::string& contribution_id,
-      const std::string& wallet_type,
-      ledger::ResultCallback callback);
+  void AnonUserFunds(const std::string& contribution_id,
+                     const std::string& wallet_type,
+                     ledger::LegacyResultCallback callback);
 
   void Merchant(
       const type::SKUTransaction& transaction,
       client::TransactionCallback callback);
 
-  void Retry(
-      const type::ContributionInfoPtr contribution,
-      ledger::ResultCallback callback);
+  void Retry(type::ContributionInfoPtr contribution,
+             ledger::LegacyResultCallback callback);
 
  private:
-  void Start(
-      const std::string& contribution_id,
-      const type::SKUOrderItem& item,
-      const std::string& wallet_type,
-      ledger::ResultCallback callback);
+  void Start(const std::string& contribution_id,
+             const type::SKUOrderItem& item,
+             const std::string& wallet_type,
+             ledger::LegacyResultCallback callback);
 
-  void GetContributionInfo(
-      type::ContributionInfoPtr contribution,
-      const type::SKUOrderItem& item,
-      const std::string& wallet_type,
-      ledger::ResultCallback callback);
+  void GetContributionInfo(type::ContributionInfoPtr contribution,
+                           const type::SKUOrderItem& item,
+                           const std::string& wallet_type,
+                           ledger::LegacyResultCallback callback);
 
-  void GetOrder(
-      const type::Result result,
-      const std::string& order_id,
-      const std::string& contribution_id,
-      ledger::ResultCallback callback);
+  void GetOrder(type::Result result,
+                const std::string& order_id,
+                const std::string& contribution_id,
+                ledger::LegacyResultCallback callback);
 
-  void OnGetOrder(
-      type::SKUOrderPtr order,
-      const std::string& contribution_id,
-      ledger::ResultCallback callback);
+  void OnGetOrder(type::SKUOrderPtr order,
+                  const std::string& contribution_id,
+                  ledger::LegacyResultCallback callback);
 
-  void Completed(
-      const type::Result result,
-      const std::string& contribution_id,
-      const type::RewardsType type,
-      ledger::ResultCallback callback);
+  void Completed(type::Result result,
+                 const std::string& contribution_id,
+                 type::RewardsType type,
+                 ledger::LegacyResultCallback callback);
 
-  void CredsStepSaved(
-      const type::Result result,
-      const std::string& contribution_id,
-      ledger::ResultCallback callback);
+  void CredsStepSaved(type::Result result,
+                      const std::string& contribution_id,
+                      ledger::LegacyResultCallback callback);
 
   void GetUnblindedTokens(
       type::UnblindedTokenList list,
@@ -90,15 +81,13 @@ class ContributionSKU {
       const type::Result result,
       client::TransactionCallback callback);
 
-  void OnOrder(
-      type::SKUOrderPtr order,
-      std::shared_ptr<type::ContributionInfoPtr> shared_contribution,
-      ledger::ResultCallback callback);
+  void OnOrder(type::SKUOrderPtr order,
+               std::shared_ptr<type::ContributionInfoPtr> shared_contribution,
+               ledger::LegacyResultCallback callback);
 
-  void RetryStartStep(
-      type::ContributionInfoPtr contribution,
-      type::SKUOrderPtr order,
-      ledger::ResultCallback callback);
+  void RetryStartStep(type::ContributionInfoPtr contribution,
+                      type::SKUOrderPtr order,
+                      ledger::LegacyResultCallback callback);
 
   LedgerImpl* ledger_;  // NOT OWNED
   std::unique_ptr<credential::Credentials> credentials_;

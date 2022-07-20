@@ -19,15 +19,14 @@ class ContributionMonthly {
 
   ~ContributionMonthly();
 
-  void Process(ledger::ResultCallback callback);
+  void Process(ledger::LegacyResultCallback callback);
 
   void HasSufficientBalance(
       ledger::HasSufficientBalanceToReconcileCallback callback);
 
  private:
-  void PrepareTipList(
-      type::PublisherInfoList list,
-      ledger::ResultCallback callback);
+  void PrepareTipList(type::PublisherInfoList list,
+                      ledger::LegacyResultCallback callback);
 
   void GetVerifiedTipList(
       const type::PublisherInfoList& list,

@@ -38,11 +38,11 @@ StateMigration::StateMigration(LedgerImpl* ledger)
 
 StateMigration::~StateMigration() = default;
 
-void StateMigration::Start(ledger::ResultCallback callback) {
+void StateMigration::Start(ledger::LegacyResultCallback callback) {
   Migrate(callback);
 }
 
-void StateMigration::FreshInstall(ledger::ResultCallback callback) {
+void StateMigration::FreshInstall(ledger::LegacyResultCallback callback) {
   BLOG(1, "Fresh install, state version set to " << kCurrentVersionNumber);
   ledger_->state()->SetInlineTippingPlatformEnabled(
       type::InlineTipsPlatforms::REDDIT,
@@ -57,7 +57,7 @@ void StateMigration::FreshInstall(ledger::ResultCallback callback) {
   callback(type::Result::LEDGER_OK);
 }
 
-void StateMigration::Migrate(ledger::ResultCallback callback) {
+void StateMigration::Migrate(ledger::LegacyResultCallback callback) {
   int current_version = ledger_->state()->GetVersion();
 
   if (current_version < 0) {
@@ -129,10 +129,9 @@ void StateMigration::Migrate(ledger::ResultCallback callback) {
   NOTREACHED();
 }
 
-void StateMigration::OnMigration(
-    type::Result result,
-    const int version,
-    ledger::ResultCallback callback) {
+void StateMigration::OnMigration(type::Result result,
+                                 int version,
+                                 ledger::LegacyResultCallback callback) {
   if (result != type::Result::LEDGER_OK) {
     BLOG(0, "State: Error with migration from " << (version - 1) <<
         " to " << version);

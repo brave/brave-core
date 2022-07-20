@@ -81,9 +81,8 @@ CredentialsSKU::CredentialsSKU(LedgerImpl* ledger) :
 
 CredentialsSKU::~CredentialsSKU() = default;
 
-void CredentialsSKU::Start(
-    const CredentialsTrigger& trigger,
-    ledger::ResultCallback callback) {
+void CredentialsSKU::Start(const CredentialsTrigger& trigger,
+                           ledger::LegacyResultCallback callback) {
   DCHECK_EQ(trigger.data.size(), 2ul);
   if (trigger.data.empty()) {
     BLOG(0, "Trigger data is missing");
@@ -103,10 +102,9 @@ void CredentialsSKU::Start(
       get_callback);
 }
 
-void CredentialsSKU::OnStart(
-    type::CredsBatchPtr creds,
-    const CredentialsTrigger& trigger,
-    ledger::ResultCallback callback) {
+void CredentialsSKU::OnStart(type::CredsBatchPtr creds,
+                             const CredentialsTrigger& trigger,
+                             ledger::LegacyResultCallback callback) {
   type::CredsBatchStatus status = type::CredsBatchStatus::NONE;
   if (creds) {
     status = creds->status;
@@ -156,9 +154,8 @@ void CredentialsSKU::OnStart(
   }
 }
 
-void CredentialsSKU::Blind(
-    const CredentialsTrigger& trigger,
-    ledger::ResultCallback callback) {
+void CredentialsSKU::Blind(const CredentialsTrigger& trigger,
+                           ledger::LegacyResultCallback callback) {
   auto blinded_callback = std::bind(&CredentialsSKU::OnBlind,
       this,
       _1,
@@ -167,10 +164,9 @@ void CredentialsSKU::Blind(
   common_->GetBlindedCreds(trigger, blinded_callback);
 }
 
-void CredentialsSKU::OnBlind(
-    const type::Result result,
-    const CredentialsTrigger& trigger,
-    ledger::ResultCallback callback) {
+void CredentialsSKU::OnBlind(type::Result result,
+                             const CredentialsTrigger& trigger,
+                             ledger::LegacyResultCallback callback) {
   if (result != type::Result::LEDGER_OK) {
     BLOG(0, "Claim failed");
     callback(result);
@@ -189,8 +185,8 @@ void CredentialsSKU::OnBlind(
 }
 
 void CredentialsSKU::RetryPreviousStepSaved(
-    const type::Result result,
-    ledger::ResultCallback callback) {
+    type::Result result,
+    ledger::LegacyResultCallback callback) {
   if (result != type::Result::LEDGER_OK) {
     BLOG(0, "Previous step not saved");
     callback(type::Result::LEDGER_ERROR);
@@ -200,10 +196,9 @@ void CredentialsSKU::RetryPreviousStepSaved(
   callback(type::Result::RETRY);
 }
 
-void CredentialsSKU::Claim(
-    type::CredsBatchPtr creds,
-    const CredentialsTrigger& trigger,
-    ledger::ResultCallback callback) {
+void CredentialsSKU::Claim(type::CredsBatchPtr creds,
+                           const CredentialsTrigger& trigger,
+                           ledger::LegacyResultCallback callback) {
   if (!creds) {
     BLOG(0, "Creds not found");
     callback(type::Result::LEDGER_ERROR);
@@ -242,10 +237,9 @@ void CredentialsSKU::Claim(
       std::move(blinded_creds.value()), url_callback);
 }
 
-void CredentialsSKU::OnClaim(
-    const type::Result result,
-    const CredentialsTrigger& trigger,
-    ledger::ResultCallback callback) {
+void CredentialsSKU::OnClaim(type::Result result,
+                             const CredentialsTrigger& trigger,
+                             ledger::LegacyResultCallback callback) {
   if (result != type::Result::LEDGER_OK) {
     BLOG(0, "Failed to claim SKU creds");
     callback(type::Result::RETRY);
@@ -265,10 +259,9 @@ void CredentialsSKU::OnClaim(
       save_callback);
 }
 
-void CredentialsSKU::ClaimStatusSaved(
-    const type::Result result,
-    const CredentialsTrigger& trigger,
-    ledger::ResultCallback callback) {
+void CredentialsSKU::ClaimStatusSaved(type::Result result,
+                                      const CredentialsTrigger& trigger,
+                                      ledger::LegacyResultCallback callback) {
   if (result != type::Result::LEDGER_OK) {
     BLOG(0, "Claim status not saved: " << result);
     callback(type::Result::RETRY);
@@ -278,9 +271,8 @@ void CredentialsSKU::ClaimStatusSaved(
   FetchSignedCreds(trigger, callback);
 }
 
-void CredentialsSKU::FetchSignedCreds(
-    const CredentialsTrigger& trigger,
-    ledger::ResultCallback callback) {
+void CredentialsSKU::FetchSignedCreds(const CredentialsTrigger& trigger,
+                                      ledger::LegacyResultCallback callback) {
   auto url_callback = std::bind(&CredentialsSKU::OnFetchSignedCreds,
       this,
       _1,
@@ -294,11 +286,10 @@ void CredentialsSKU::FetchSignedCreds(
       url_callback);
 }
 
-void CredentialsSKU::OnFetchSignedCreds(
-    const type::Result result,
-    type::CredsBatchPtr batch,
-    const CredentialsTrigger& trigger,
-    ledger::ResultCallback callback) {
+void CredentialsSKU::OnFetchSignedCreds(type::Result result,
+                                        type::CredsBatchPtr batch,
+                                        const CredentialsTrigger& trigger,
+                                        ledger::LegacyResultCallback callback) {
   if (result != type::Result::LEDGER_OK) {
     BLOG(0, "Couldn't fetch credentials: " << result);
     callback(result);
@@ -316,10 +307,9 @@ void CredentialsSKU::OnFetchSignedCreds(
   ledger_->database()->SaveSignedCreds(std::move(batch), get_callback);
 }
 
-void CredentialsSKU::SignedCredsSaved(
-    const type::Result result,
-    const CredentialsTrigger& trigger,
-    ledger::ResultCallback callback) {
+void CredentialsSKU::SignedCredsSaved(type::Result result,
+                                      const CredentialsTrigger& trigger,
+                                      ledger::LegacyResultCallback callback) {
   if (result != type::Result::LEDGER_OK) {
     BLOG(0, "Signed creds were not saved");
     callback(type::Result::RETRY);
@@ -337,10 +327,9 @@ void CredentialsSKU::SignedCredsSaved(
       get_callback);
 }
 
-void CredentialsSKU::Unblind(
-    type::CredsBatchPtr creds,
-    const CredentialsTrigger& trigger,
-    ledger::ResultCallback callback) {
+void CredentialsSKU::Unblind(type::CredsBatchPtr creds,
+                             const CredentialsTrigger& trigger,
+                             ledger::LegacyResultCallback callback) {
   if (!creds) {
     BLOG(0, "Corrupted data");
     callback(type::Result::LEDGER_ERROR);
@@ -385,10 +374,9 @@ void CredentialsSKU::Unblind(
       save_callback);
 }
 
-void CredentialsSKU::Completed(
-    const type::Result result,
-    const CredentialsTrigger& trigger,
-    ledger::ResultCallback callback) {
+void CredentialsSKU::Completed(type::Result result,
+                               const CredentialsTrigger& trigger,
+                               ledger::LegacyResultCallback callback) {
   if (result != type::Result::LEDGER_OK) {
     BLOG(0, "Unblinded token save failed");
     callback(result);
@@ -399,9 +387,8 @@ void CredentialsSKU::Completed(
   callback(result);
 }
 
-void CredentialsSKU::RedeemTokens(
-    const CredentialsRedeem& redeem,
-    ledger::ResultCallback callback) {
+void CredentialsSKU::RedeemTokens(const CredentialsRedeem& redeem,
+                                  ledger::LegacyResultCallback callback) {
   if (redeem.publisher_key.empty() || redeem.token_list.empty()) {
     BLOG(0, "Pub key / token list empty");
     callback(type::Result::LEDGER_ERROR);
@@ -424,10 +411,10 @@ void CredentialsSKU::RedeemTokens(
 }
 
 void CredentialsSKU::OnRedeemTokens(
-    const type::Result result,
+    type::Result result,
     const std::vector<std::string>& token_id_list,
     const CredentialsRedeem& redeem,
-    ledger::ResultCallback callback) {
+    ledger::LegacyResultCallback callback) {
   if (result != type::Result::LEDGER_OK) {
     BLOG(0, "Failed to submit tokens");
     callback(type::Result::LEDGER_ERROR);

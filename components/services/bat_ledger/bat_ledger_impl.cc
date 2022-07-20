@@ -819,24 +819,9 @@ void BatLedgerImpl::FetchBalance(FetchBalanceCallback callback) {
   ledger_->FetchBalance(std::move(callback));
 }
 
-// static
-void BatLedgerImpl::OnGetExternalWallet(
-    CallbackHolder<GetExternalWalletCallback>* holder,
-    ledger::type::Result result,
-    ledger::type::ExternalWalletPtr wallet) {
-  if (holder->is_valid())
-    std::move(holder->get()).Run(result, std::move(wallet));
-  delete holder;
-}
-
 void BatLedgerImpl::GetExternalWallet(const std::string& wallet_type,
                                       GetExternalWalletCallback callback) {
-  auto* holder = new CallbackHolder<GetExternalWalletCallback>(
-      AsWeakPtr(), std::move(callback));
-
-  ledger_->GetExternalWallet(
-      wallet_type,
-      std::bind(BatLedgerImpl::OnGetExternalWallet, holder, _1, _2));
+  ledger_->GetExternalWallet(wallet_type, std::move(callback));
 }
 
 // static

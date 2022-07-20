@@ -7,6 +7,7 @@
 #include <utility>
 
 #include "base/json/json_reader.h"
+#include "base/test/bind.h"
 #include "base/test/task_environment.h"
 #include "bat/ledger/global_constants.h"
 #include "bat/ledger/internal/database/database_mock.h"
@@ -20,9 +21,6 @@
 #include "testing/gtest/include/gtest/gtest.h"
 
 // npm run test -- brave_unit_tests --filter=UpholdTest*
-
-using std::placeholders::_1;
-using std::placeholders::_2;
 
 using ::testing::_;
 using ::testing::AtMost;
@@ -466,7 +464,7 @@ TEST_P(Generate, Paths) {
   EXPECT_CALL(*mock_promotion_, TransferTokens(_))
       .Times(expected_to_call_transfer_tokens ? 1 : 0);
 
-  uphold_->GenerateWallet([&](type::Result result) {
+  uphold_->GenerateWallet(base::BindLambdaForTesting([&](type::Result result) {
     ASSERT_EQ(result, expected_result);
 
     const auto status = GetStatusFromJSON(uphold_wallet);
@@ -475,7 +473,7 @@ TEST_P(Generate, Paths) {
     } else {
       ASSERT_TRUE(!status && !expected_status);
     }
-  });
+  }));
 }
 
 // clang-format off
@@ -602,8 +600,8 @@ TEST_P(GetUser, Paths) {
   ON_CALL(*mock_ledger_impl_, database())
       .WillByDefault(Return(mock_database_.get()));
 
-  uphold_->GenerateWallet(
-      [&](type::Result result) { ASSERT_EQ(result, expected_result); });
+  uphold_->GenerateWallet(base::BindLambdaForTesting(
+      [&](type::Result result) { ASSERT_EQ(result, expected_result); }));
 
   const auto status = GetStatusFromJSON(uphold_wallet);
   if (status && expected_status) {
@@ -971,8 +969,8 @@ TEST_P(GetCapabilities, Paths) {
         )";
       });
 
-  uphold_->GenerateWallet(
-      [&](type::Result result) { ASSERT_EQ(result, expected_result); });
+  uphold_->GenerateWallet(base::BindLambdaForTesting(
+      [&](type::Result result) { ASSERT_EQ(result, expected_result); }));
 
   const auto status = GetStatusFromJSON(uphold_wallet);
   if (status && expected_status) {
@@ -1266,7 +1264,7 @@ TEST_P(GetCardID, Paths) {
   ON_CALL(*mock_ledger_impl_, database())
       .WillByDefault(Return(mock_database_.get()));
 
-  uphold_->GenerateWallet([&](type::Result result) {
+  uphold_->GenerateWallet(base::BindLambdaForTesting([&](type::Result result) {
     ASSERT_EQ(result, expected_result);
 
     const auto status = GetStatusFromJSON(uphold_wallet);
@@ -1275,7 +1273,7 @@ TEST_P(GetCardID, Paths) {
     } else {
       ASSERT_TRUE(!status && !expected_status);
     }
-  });
+  }));
 }
 
 // clang-format off
@@ -1416,7 +1414,7 @@ TEST_P(GetAnonFunds, Paths) {
   ON_CALL(*mock_ledger_client_, GetStringState(state::kWalletBrave))
       .WillByDefault(Return(input_rewards_wallet));
 
-  uphold_->GenerateWallet([&](type::Result result) {
+  uphold_->GenerateWallet(base::BindLambdaForTesting([&](type::Result result) {
     ASSERT_EQ(result, expected_result);
 
     const auto status = GetStatusFromJSON(uphold_wallet);
@@ -1425,7 +1423,7 @@ TEST_P(GetAnonFunds, Paths) {
     } else {
       ASSERT_TRUE(!status && !expected_status);
     }
-  });
+  }));
 }
 
 // clang-format off
@@ -1815,8 +1813,8 @@ TEST_P(LinkWallet, Paths) {
   ON_CALL(*mock_ledger_client_, GetStringState(state::kWalletBrave))
       .WillByDefault(Return(input_rewards_wallet));
 
-  uphold_->GenerateWallet(
-      [&](type::Result result) { ASSERT_EQ(result, expected_result); });
+  uphold_->GenerateWallet(base::BindLambdaForTesting(
+      [&](type::Result result) { ASSERT_EQ(result, expected_result); }));
 
   const auto status = GetStatusFromJSON(uphold_wallet);
   if (status && expected_status) {

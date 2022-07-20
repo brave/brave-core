@@ -28,10 +28,10 @@ class Wallet {
   explicit Wallet(LedgerImpl* ledger);
   ~Wallet();
 
-  void CreateWalletIfNecessary(ledger::ResultCallback callback);
+  void CreateWalletIfNecessary(ledger::LegacyResultCallback callback);
 
   void RecoverWallet(const std::string& pass_phrase,
-                     ledger::ResultCallback callback);
+                     ledger::LegacyResultCallback callback);
 
   std::string GetWalletPassphrase(type::BraveWalletPtr wallet);
 
@@ -43,11 +43,11 @@ class Wallet {
       ledger::ExternalWalletAuthorizationCallback callback);
 
   void DisconnectWallet(const std::string& wallet_type,
-                        ledger::ResultCallback callback);
+                        ledger::LegacyResultCallback callback);
 
-  void GetAnonWalletStatus(ledger::ResultCallback callback);
+  void GetAnonWalletStatus(ledger::LegacyResultCallback callback);
 
-  void DisconnectAllWallets(ledger::ResultCallback callback);
+  void DisconnectAllWallets(ledger::LegacyResultCallback callback);
 
   type::BraveWalletPtr GetWallet();
   type::BraveWalletPtr GetWallet(bool* corrupted);
@@ -61,6 +61,9 @@ class Wallet {
   void AuthorizeWallet(const std::string& wallet_type,
                        const base::flat_map<std::string, std::string>& args,
                        ledger::ExternalWalletAuthorizationCallback callback);
+
+  void OnClaimWallet(ledger::PostSuggestionsClaimCallback callback,
+                     type::Result result);
 
   LedgerImpl* ledger_;  // NOT OWNED
   std::unique_ptr<WalletCreate> create_;

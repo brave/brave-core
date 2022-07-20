@@ -293,10 +293,9 @@ void Contribution::ContributeUnverifiedPublishers() {
   unverified_->Contribute();
 }
 
-void Contribution::OneTimeTip(
-    const std::string& publisher_key,
-    const double amount,
-    ledger::ResultCallback callback) {
+void Contribution::OneTimeTip(const std::string& publisher_key,
+                              double amount,
+                              ledger::LegacyResultCallback callback) {
   tip_->Process(publisher_key, amount, callback);
 }
 
@@ -577,25 +576,23 @@ void Contribution::TransferFunds(
   BLOG(0, "Wallet type not supported: " << wallet_type);
 }
 
-void Contribution::SKUAutoContribution(
-    const std::string& contribution_id,
-    const std::string& wallet_type,
-    ledger::ResultCallback callback) {
+void Contribution::SKUAutoContribution(const std::string& contribution_id,
+                                       const std::string& wallet_type,
+                                       ledger::LegacyResultCallback callback) {
   sku_->AutoContribution(contribution_id, wallet_type, callback);
 }
 
 void Contribution::StartUnblinded(
     const std::vector<type::CredsBatchType>& types,
     const std::string& contribution_id,
-    ledger::ResultCallback callback) {
+    ledger::LegacyResultCallback callback) {
   unblinded_->Start(types, contribution_id, callback);
 }
 
 void Contribution::RetryUnblinded(
     const std::vector<type::CredsBatchType>& types,
     const std::string& contribution_id,
-    ledger::ResultCallback callback) {
-
+    ledger::LegacyResultCallback callback) {
   auto get_callback = std::bind(&Contribution::RetryUnblindedContribution,
       this,
       _1,
@@ -608,7 +605,7 @@ void Contribution::RetryUnblinded(
 void Contribution::RetryUnblindedContribution(
     type::ContributionInfoPtr contribution,
     const std::vector<type::CredsBatchType>& types,
-    ledger::ResultCallback callback) {
+    ledger::LegacyResultCallback callback) {
   unblinded_->Retry(types, std::move(contribution), callback);
 }
 

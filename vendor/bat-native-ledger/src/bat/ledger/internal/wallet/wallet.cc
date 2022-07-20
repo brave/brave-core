@@ -36,7 +36,7 @@ Wallet::Wallet(LedgerImpl* ledger)
 
 Wallet::~Wallet() = default;
 
-void Wallet::CreateWalletIfNecessary(ledger::ResultCallback callback) {
+void Wallet::CreateWalletIfNecessary(ledger::LegacyResultCallback callback) {
   create_->Start(std::move(callback));
 }
 
@@ -69,7 +69,7 @@ std::string Wallet::GetWalletPassphrase(type::BraveWalletPtr wallet) {
 }
 
 void Wallet::RecoverWallet(const std::string& pass_phrase,
-                           ledger::ResultCallback callback) {
+                           ledger::LegacyResultCallback callback) {
   recover_->Start(pass_phrase, [this, callback](const type::Result result) {
     if (result == type::Result::LEDGER_OK) {
       ledger_->database()->DeleteAllBalanceReports([](const type::Result _) {});
@@ -124,7 +124,7 @@ void Wallet::AuthorizeWallet(
 }
 
 void Wallet::DisconnectWallet(const std::string& wallet_type,
-                              ledger::ResultCallback callback) {
+                              ledger::LegacyResultCallback callback) {
   if (wallet_type == constant::kWalletUphold) {
     if (const auto uphold_wallet = ledger_->uphold()->GetWallet()) {
       switch (uphold_wallet->status) {
@@ -207,7 +207,7 @@ void Wallet::DisconnectWallet(const std::string& wallet_type,
   callback(type::Result::LEDGER_OK);
 }
 
-void Wallet::GetAnonWalletStatus(ledger::ResultCallback callback) {
+void Wallet::GetAnonWalletStatus(ledger::LegacyResultCallback callback) {
   const auto wallet = GetWallet();
   if (!wallet) {
     BLOG(0, "Wallet is null");
@@ -232,7 +232,7 @@ void Wallet::GetAnonWalletStatus(ledger::ResultCallback callback) {
   callback(type::Result::LEDGER_OK);
 }
 
-void Wallet::DisconnectAllWallets(ledger::ResultCallback callback) {
+void Wallet::DisconnectAllWallets(ledger::LegacyResultCallback callback) {
   DisconnectWallet(constant::kWalletUphold, [](const type::Result result) {});
   DisconnectWallet(constant::kWalletBitflyer, [](const type::Result result) {});
   DisconnectWallet(constant::kWalletGemini, [](const type::Result result) {});
@@ -331,15 +331,20 @@ bool Wallet::SetWallet(type::BraveWalletPtr wallet) {
 void Wallet::LinkBraveWallet(const std::string& destination_payment_id,
                              ledger::PostSuggestionsClaimCallback callback) {
   promotion_server_->post_claim_brave()->Request(
-      destination_payment_id, [this, callback](const type::Result result) {
-        if (result != type::Result::LEDGER_OK &&
-            result != type::Result::ALREADY_EXISTS) {
-          callback(result, "");
-          return;
-        }
+      destination_payment_id,
+      base::BindOnce(&Wallet::OnClaimWallet, base::Unretained(this),
+                     std::move(callback)));
+}
 
-        ledger_->promotion()->TransferTokens(callback);
-      });
+void Wallet::OnClaimWallet(ledger::PostSuggestionsClaimCallback callback,
+                           type::Result result) {
+  if (result != type::Result::LEDGER_OK &&
+      result != type::Result::ALREADY_EXISTS) {
+    std::move(callback).Run(result, "");
+    return;
+  }
+
+  ledger_->promotion()->TransferTokens(std::move(callback));
 }
 
 }  // namespace wallet

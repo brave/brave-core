@@ -22,13 +22,13 @@ class StateMigrationV10 {
   explicit StateMigrationV10(LedgerImpl* ledger);
   ~StateMigrationV10();
 
-  void Migrate(ledger::ResultCallback callback);
+  void Migrate(ledger::LegacyResultCallback callback);
 
  private:
   void OnGetWallet(type::Result result,
                    const std::string& custodian,
                    bool linked,
-                   ledger::ResultCallback callback);
+                   ledger::LegacyResultCallback callback);
 
   LedgerImpl* ledger_;  // NOT OWNED
   std::unique_ptr<ledger::endpoint::promotion::GetWallet> get_wallet_;

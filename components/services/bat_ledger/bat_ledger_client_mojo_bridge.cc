@@ -296,16 +296,15 @@ std::string BatLedgerClientMojoBridge::GetLegacyWallet() {
   return wallet;
 }
 
-void OnShowNotification(
-    const ledger::client::ResultCallback& callback,
-    const ledger::type::Result result) {
+void OnShowNotification(const ledger::client::LegacyResultCallback& callback,
+                        ledger::type::Result result) {
   callback(result);
 }
 
 void BatLedgerClientMojoBridge::ShowNotification(
     const std::string& type,
     const std::vector<std::string>& args,
-    ledger::client::ResultCallback callback) {
+    ledger::client::LegacyResultCallback callback) {
   bat_ledger_client_->ShowNotification(
       type,
       args,
@@ -366,14 +365,13 @@ void BatLedgerClientMojoBridge::WalletDisconnected(
   bat_ledger_client_->WalletDisconnected(wallet_type);
 }
 
-void OnDeleteLog(
-    const ledger::client::ResultCallback callback,
-    const ledger::type::Result result) {
+void OnDeleteLog(ledger::client::LegacyResultCallback callback,
+                 ledger::type::Result result) {
   callback(result);
 }
 
 void BatLedgerClientMojoBridge::DeleteLog(
-    ledger::client::ResultCallback callback) {
+    ledger::client::LegacyResultCallback callback) {
   bat_ledger_client_->DeleteLog(
       base::BindOnce(&OnDeleteLog, std::move(callback)));
 }

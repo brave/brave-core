@@ -24,7 +24,7 @@ LegacyBatState::LegacyBatState(ledger::LedgerImpl* ledger) :
 
 LegacyBatState::~LegacyBatState() = default;
 
-void LegacyBatState::Load(ledger::ResultCallback callback) {
+void LegacyBatState::Load(ledger::LegacyResultCallback callback) {
   auto load_callback = std::bind(&LegacyBatState::OnLoad,
       this,
       _1,
@@ -33,10 +33,9 @@ void LegacyBatState::Load(ledger::ResultCallback callback) {
   ledger_->ledger_client()->LoadLedgerState(load_callback);
 }
 
-void LegacyBatState::OnLoad(
-      const ledger::type::Result result,
-      const std::string& data,
-      ledger::ResultCallback callback) {
+void LegacyBatState::OnLoad(ledger::type::Result result,
+                            const std::string& data,
+                            ledger::LegacyResultCallback callback) {
   if (result != ledger::type::Result::LEDGER_OK) {
     callback(result);
     return;

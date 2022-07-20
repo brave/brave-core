@@ -172,7 +172,7 @@ namespace endpoint {
 namespace uphold {
 
 using GetCapabilitiesCallback =
-    std::function<void(type::Result, ledger::uphold::Capabilities)>;
+    base::OnceCallback<void(type::Result, ledger::uphold::Capabilities)>;
 
 class GetCapabilities {
  public:
@@ -189,8 +189,8 @@ class GetCapabilities {
 
   using CapabilityMap = std::map<std::string, Capability>;
 
-  void OnRequest(const type::UrlResponse& response,
-                 GetCapabilitiesCallback callback);
+  void OnRequest(GetCapabilitiesCallback callback,
+                 const type::UrlResponse& response);
 
   std::pair<type::Result, CapabilityMap> ProcessResponse(
       const type::UrlResponse& response);

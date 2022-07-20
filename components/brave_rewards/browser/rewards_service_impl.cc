@@ -503,9 +503,8 @@ void RewardsServiceImpl::OnLedgerCreated() {
       base::BindOnce(&RewardsServiceImpl::OnLedgerInitialized, AsWeakPtr()));
 }
 
-void RewardsServiceImpl::OnResult(
-    ledger::ResultCallback callback,
-    const ledger::type::Result result) {
+void RewardsServiceImpl::OnResult(ledger::LegacyResultCallback callback,
+                                  ledger::type::Result result) {
   callback(result);
 }
 
@@ -1111,7 +1110,7 @@ void RewardsServiceImpl::GetRewardsParameters(
 }
 
 void RewardsServiceImpl::OnFetchPromotions(
-    const ledger::type::Result result,
+    ledger::type::Result result,
     ledger::type::PromotionList promotions) {
   for (auto& observer : observers_) {
     ledger::type::PromotionList promotions_clone;
@@ -2909,9 +2908,9 @@ void RewardsServiceImpl::DisconnectWallet() {
 }
 
 void RewardsServiceImpl::ShowNotification(
-      const std::string& type,
-      const std::vector<std::string>& args,
-      ledger::ResultCallback callback) {
+    const std::string& type,
+    const std::vector<std::string>& args,
+    ledger::LegacyResultCallback callback) {
   if (type.empty()) {
     callback(ledger::type::Result::LEDGER_ERROR);
     return;
@@ -3231,14 +3230,15 @@ void RewardsServiceImpl::WalletDisconnected(const std::string& wallet_type) {
   OnDisconnectWallet(wallet_type, ledger::type::Result::LEDGER_OK);
 }
 
-void RewardsServiceImpl::DeleteLog(ledger::ResultCallback callback) {
+void RewardsServiceImpl::DeleteLog(ledger::LegacyResultCallback callback) {
   diagnostic_log_->Delete(
       base::BindOnce(&RewardsServiceImpl::OnDiagnosticLogDeleted, AsWeakPtr(),
                      std::move(callback)));
 }
 
-void RewardsServiceImpl::OnDiagnosticLogDeleted(ledger::ResultCallback callback,
-                                                const bool success) {
+void RewardsServiceImpl::OnDiagnosticLogDeleted(
+    ledger::LegacyResultCallback callback,
+    bool success) {
   const auto result = success
       ? ledger::type::Result::LEDGER_OK
       : ledger::type::Result::LEDGER_ERROR;

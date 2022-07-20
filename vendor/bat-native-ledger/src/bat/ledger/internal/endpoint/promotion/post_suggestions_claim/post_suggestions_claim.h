@@ -56,8 +56,8 @@ class PostSuggestionsClaim {
 
   type::Result CheckStatusCode(const int status_code);
 
-  void OnRequest(const type::UrlResponse& response,
-                 PostSuggestionsClaimCallback callback);
+  void OnRequest(PostSuggestionsClaimCallback callback,
+                 const type::UrlResponse& response);
 
   LedgerImpl* ledger_;  // NOT OWNED
 };

@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVELEDGER_DATABASE_DATABASE_INITIALIZE_H_
-#define BRAVELEDGER_DATABASE_DATABASE_INITIALIZE_H_
+#ifndef BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_DATABASE_DATABASE_INITIALIZE_H_
+#define BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_DATABASE_DATABASE_INITIALIZE_H_
 
 #include <memory>
 #include <string>
@@ -22,31 +22,22 @@ class DatabaseInitialize {
   explicit DatabaseInitialize(LedgerImpl* ledger);
   ~DatabaseInitialize();
 
-  void Start(
-      const bool execute_create_script,
-      ledger::ResultCallback callback);
+  void Start(bool execute_create_script, ledger::LegacyResultCallback callback);
 
  private:
-  void OnInitialize(
-      type::DBCommandResponsePtr response,
-      const bool execute_create_script,
-      ledger::ResultCallback callback);
+  void OnInitialize(type::DBCommandResponsePtr response,
+                    bool execute_create_script,
+                    ledger::LegacyResultCallback callback);
 
-  void EnsureCurrentVersion(
-      const int table_version,
-      ledger::ResultCallback callback);
+  void GetCreateScript(ledger::LegacyResultCallback callback);
 
-  void GetCreateScript(ledger::ResultCallback callback);
+  void ExecuteCreateScript(const std::string& script,
+                           int table_version,
+                           ledger::LegacyResultCallback callback);
 
-  void ExecuteCreateScript(
-      const std::string& script,
-      const int table_version,
-      ledger::ResultCallback callback);
-
-  void OnExecuteCreateScript(
-      type::DBCommandResponsePtr response,
-      const int table_version,
-      ledger::ResultCallback callback);
+  void OnExecuteCreateScript(type::DBCommandResponsePtr response,
+                             int table_version,
+                             ledger::LegacyResultCallback callback);
 
   std::unique_ptr<ledger::database::DatabaseMigration> migration_;
   LedgerImpl* ledger_;  // NOT OWNED
@@ -55,4 +46,4 @@ class DatabaseInitialize {
 }  // namespace database
 }  // namespace ledger
 
-#endif  // BRAVELEDGER_DATABASE_DATABASE_INITIALIZE_H_
+#endif  // BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_DATABASE_DATABASE_INITIALIZE_H_

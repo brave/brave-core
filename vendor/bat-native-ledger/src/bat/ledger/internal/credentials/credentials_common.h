@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVELEDGER_CREDENTIALS_COMMON_H_
-#define BRAVELEDGER_CREDENTIALS_COMMON_H_
+#ifndef BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_CREDENTIALS_CREDENTIALS_COMMON_H_
+#define BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_CREDENTIALS_CREDENTIALS_COMMON_H_
 
 #include <stdint.h>
 
@@ -25,27 +25,24 @@ class CredentialsCommon {
   explicit CredentialsCommon(LedgerImpl* ledger);
   ~CredentialsCommon();
 
-  void GetBlindedCreds(
-      const CredentialsTrigger& trigger,
-      ledger::ResultCallback callback);
+  void GetBlindedCreds(const CredentialsTrigger& trigger,
+                       ledger::LegacyResultCallback callback);
 
   void SaveUnblindedCreds(
-      const uint64_t expires_at,
-      const double token_value,
+      uint64_t expires_at,
+      double token_value,
       const type::CredsBatch& creds,
       const std::vector<std::string>& unblinded_encoded_creds,
       const CredentialsTrigger& trigger,
-      ledger::ResultCallback callback);
+      ledger::LegacyResultCallback callback);
 
  private:
-  void BlindedCredsSaved(
-      const type::Result result,
-      ledger::ResultCallback callback);
+  void BlindedCredsSaved(type::Result result,
+                         ledger::LegacyResultCallback callback);
 
-  void OnSaveUnblindedCreds(
-      const type::Result result,
-      const CredentialsTrigger& trigger,
-      ledger::ResultCallback callback);
+  void OnSaveUnblindedCreds(type::Result result,
+                            const CredentialsTrigger& trigger,
+                            ledger::LegacyResultCallback callback);
 
   LedgerImpl* ledger_;  // NOT OWNED
 };
@@ -53,4 +50,4 @@ class CredentialsCommon {
 }  // namespace credential
 }  // namespace ledger
 
-#endif  // BRAVELEDGER_CREDENTIALS_COMMON_H_
+#endif  // BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_CREDENTIALS_CREDENTIALS_COMMON_H_

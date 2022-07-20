@@ -26,9 +26,8 @@ CredentialsCommon::CredentialsCommon(LedgerImpl *ledger) :
 
 CredentialsCommon::~CredentialsCommon() = default;
 
-void CredentialsCommon::GetBlindedCreds(
-    const CredentialsTrigger& trigger,
-    ledger::ResultCallback callback) {
+void CredentialsCommon::GetBlindedCreds(const CredentialsTrigger& trigger,
+                                        ledger::LegacyResultCallback callback) {
   const auto creds = GenerateCreds(trigger.size);
 
   if (creds.empty()) {
@@ -66,8 +65,8 @@ void CredentialsCommon::GetBlindedCreds(
 }
 
 void CredentialsCommon::BlindedCredsSaved(
-    const type::Result result,
-    ledger::ResultCallback callback) {
+    type::Result result,
+    ledger::LegacyResultCallback callback) {
   if (result != type::Result::LEDGER_OK) {
     BLOG(0, "Creds batch save failed");
     callback(type::Result::RETRY);
@@ -78,12 +77,12 @@ void CredentialsCommon::BlindedCredsSaved(
 }
 
 void CredentialsCommon::SaveUnblindedCreds(
-    const uint64_t expires_at,
-    const double token_value,
+    uint64_t expires_at,
+    double token_value,
     const type::CredsBatch& creds,
     const std::vector<std::string>& unblinded_encoded_creds,
     const CredentialsTrigger& trigger,
-    ledger::ResultCallback callback) {
+    ledger::LegacyResultCallback callback) {
   type::UnblindedTokenList list;
   type::UnblindedTokenPtr unblinded;
   for (auto & cred : unblinded_encoded_creds) {
@@ -106,9 +105,9 @@ void CredentialsCommon::SaveUnblindedCreds(
 }
 
 void CredentialsCommon::OnSaveUnblindedCreds(
-    const type::Result result,
+    type::Result result,
     const CredentialsTrigger& trigger,
-    ledger::ResultCallback callback) {
+    ledger::LegacyResultCallback callback) {
   if (result != type::Result::LEDGER_OK) {
     BLOG(0, "Token list not saved");
     callback(type::Result::RETRY);

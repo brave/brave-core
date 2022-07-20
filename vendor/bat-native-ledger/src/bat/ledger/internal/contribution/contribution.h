@@ -62,10 +62,9 @@ class Contribution {
 
   void ContributeUnverifiedPublishers();
 
-  void OneTimeTip(
-      const std::string& publisher_key,
-      const double amount,
-      ledger::ResultCallback callback);
+  void OneTimeTip(const std::string& publisher_key,
+                  double amount,
+                  ledger::LegacyResultCallback callback);
 
   void CheckContributionQueue();
 
@@ -75,20 +74,17 @@ class Contribution {
       const std::string& wallet_type,
       client::TransactionCallback callback);
 
-  void SKUAutoContribution(
-      const std::string& contribution_id,
-      const std::string& wallet_type,
-      ledger::ResultCallback callback);
+  void SKUAutoContribution(const std::string& contribution_id,
+                           const std::string& wallet_type,
+                           ledger::LegacyResultCallback callback);
 
-  void StartUnblinded(
-      const std::vector<type::CredsBatchType>& types,
-      const std::string& contribution_id,
-      ledger::ResultCallback callback);
+  void StartUnblinded(const std::vector<type::CredsBatchType>& types,
+                      const std::string& contribution_id,
+                      ledger::LegacyResultCallback callback);
 
-  void RetryUnblinded(
-      const std::vector<type::CredsBatchType>& types,
-      const std::string& contribution_id,
-      ledger::ResultCallback callback);
+  void RetryUnblinded(const std::vector<type::CredsBatchType>& types,
+                      const std::string& contribution_id,
+                      ledger::LegacyResultCallback callback);
 
   void GetRecurringTips(ledger::PublisherInfoListCallback callback);
 
@@ -144,7 +140,7 @@ class Contribution {
   void RetryUnblindedContribution(
       type::ContributionInfoPtr contribution,
       const std::vector<type::CredsBatchType>& types,
-      ledger::ResultCallback callback);
+      ledger::LegacyResultCallback callback);
 
   void Result(
       const type::Result result,

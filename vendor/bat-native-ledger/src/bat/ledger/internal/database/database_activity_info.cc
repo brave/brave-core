@@ -141,7 +141,7 @@ DatabaseActivityInfo::~DatabaseActivityInfo() = default;
 
 void DatabaseActivityInfo::NormalizeList(
     type::PublisherInfoList list,
-    ledger::ResultCallback callback) {
+    ledger::LegacyResultCallback callback) {
   if (list.empty()) {
     callback(type::Result::LEDGER_OK);
     return;
@@ -186,7 +186,7 @@ void DatabaseActivityInfo::NormalizeList(
 
 void DatabaseActivityInfo::InsertOrUpdate(
     type::PublisherInfoPtr info,
-    ledger::ResultCallback callback) {
+    ledger::LegacyResultCallback callback) {
   if (!info) {
     callback(type::Result::LEDGER_ERROR);
     return;
@@ -318,9 +318,8 @@ void DatabaseActivityInfo::OnGetRecordsList(
   callback(std::move(list));
 }
 
-void DatabaseActivityInfo::DeleteRecord(
-    const std::string& publisher_key,
-    ledger::ResultCallback callback) {
+void DatabaseActivityInfo::DeleteRecord(const std::string& publisher_key,
+                                        ledger::LegacyResultCallback callback) {
   if (publisher_key.empty()) {
     callback(type::Result::LEDGER_ERROR);
     return;

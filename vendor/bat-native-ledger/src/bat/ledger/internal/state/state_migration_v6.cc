@@ -23,7 +23,7 @@ StateMigrationV6::StateMigrationV6(LedgerImpl* ledger) :
 
 StateMigrationV6::~StateMigrationV6() = default;
 
-void StateMigrationV6::Migrate(ledger::ResultCallback callback) {
+void StateMigrationV6::Migrate(ledger::LegacyResultCallback callback) {
   auto uphold_wallet = ledger_->ledger_client()->GetLegacyWallet();
   ledger_->ledger_client()->SetStringState(
       kWalletUphold,

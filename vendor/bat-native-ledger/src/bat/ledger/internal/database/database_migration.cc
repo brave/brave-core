@@ -55,8 +55,6 @@
 // you should keep old table with name unblinded_tokens_29
 // Reference: https://github.com/brave/brave-browser/issues/10784
 
-using std::placeholders::_1;
-
 namespace ledger {
 namespace database {
 
@@ -69,9 +67,8 @@ DatabaseMigration::DatabaseMigration(LedgerImpl* ledger) :
 
 DatabaseMigration::~DatabaseMigration() = default;
 
-void DatabaseMigration::Start(
-    const uint32_t table_version,
-    ledger::ResultCallback callback) {
+void DatabaseMigration::Start(uint32_t table_version,
+                              ledger::LegacyResultCallback callback) {
   const uint32_t start_version = table_version + 1;
   DCHECK_GT(start_version, 0u);
 

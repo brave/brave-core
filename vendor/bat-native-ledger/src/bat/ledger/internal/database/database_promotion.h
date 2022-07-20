@@ -22,9 +22,8 @@ class DatabasePromotion: public DatabaseTable {
   explicit DatabasePromotion(LedgerImpl* ledger);
   ~DatabasePromotion() override;
 
-  void InsertOrUpdate(
-      type::PromotionPtr info,
-      ledger::ResultCallback callback);
+  void InsertOrUpdate(type::PromotionPtr info,
+                      ledger::LegacyResultCallback callback);
 
   void GetRecord(
       const std::string& id,
@@ -37,28 +36,23 @@ class DatabasePromotion: public DatabaseTable {
   void GetAllRecords(
       ledger::GetAllPromotionsCallback callback);
 
-  void SaveClaimId(
-      const std::string& promotion_id,
-      const std::string& claim_id,
-      ledger::ResultCallback callback);
+  void SaveClaimId(const std::string& promotion_id,
+                   const std::string& claim_id,
+                   ledger::LegacyResultCallback callback);
 
-  void UpdateStatus(
-      const std::string& promotion_id,
-      const type::PromotionStatus status,
-      ledger::ResultCallback callback);
+  void UpdateStatus(const std::string& promotion_id,
+                    type::PromotionStatus status,
+                    ledger::LegacyResultCallback callback);
 
-  void UpdateRecordsStatus(
-      const std::vector<std::string>& ids,
-      const type::PromotionStatus status,
-      ledger::ResultCallback callback);
+  void UpdateRecordsStatus(const std::vector<std::string>& ids,
+                           type::PromotionStatus status,
+                           ledger::LegacyResultCallback callback);
 
-  void CredentialCompleted(
-      const std::string& promotion_id,
-      ledger::ResultCallback callback);
+  void CredentialCompleted(const std::string& promotion_id,
+                           ledger::LegacyResultCallback callback);
 
-  void UpdateRecordsBlankPublicKey(
-      const std::vector<std::string>& ids,
-      ledger::ResultCallback callback);
+  void UpdateRecordsBlankPublicKey(const std::vector<std::string>& ids,
+                                   ledger::LegacyResultCallback callback);
 
  private:
   void OnGetRecord(

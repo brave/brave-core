@@ -139,10 +139,10 @@ class MockLedgerClient : public LedgerClient {
       const std::string& publisher_key,
       const std::string& publisher_name));
 
-  MOCK_METHOD3(ShowNotification, void(
-      const std::string& type,
-      const std::vector<std::string>& args,
-      client::ResultCallback callback));
+  MOCK_METHOD3(ShowNotification,
+               void(const std::string& type,
+                    const std::vector<std::string>& args,
+                    client::LegacyResultCallback callback));
 
   MOCK_METHOD0(GetClientInfo, type::ClientInfoPtr());
 
@@ -161,7 +161,7 @@ class MockLedgerClient : public LedgerClient {
 
   MOCK_METHOD1(WalletDisconnected, void(const std::string& wallet_type));
 
-  MOCK_METHOD1(DeleteLog, void(const client::ResultCallback callback));
+  MOCK_METHOD1(DeleteLog, void(client::LegacyResultCallback callback));
 
   MOCK_METHOD0(GetLegacyWallet, std::string());
 };
