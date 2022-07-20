@@ -88,6 +88,9 @@ void BraveExtensionManagement::OnTorDisabledChanged() {
     TorProfileManager::GetInstance().CloseAllTorWindows();
     g_brave_browser_process->tor_client_updater()->Cleanup();
     g_brave_browser_process->tor_pluggable_transport_updater()->Cleanup();
+  } else if (TorProfileServiceFactory::GetTorBridgesConfig().use_bridges ==
+             tor::BridgesConfig::Usage::kNotUsed) {
+    g_brave_browser_process->tor_pluggable_transport_updater()->Cleanup();
   }
 #endif
 }

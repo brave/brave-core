@@ -288,7 +288,7 @@ IN_PROC_BROWSER_TEST_F(BraveTorTest, SetupBridges) {
                    nullptr));
 }
 
-IN_PROC_BROWSER_TEST_F(BraveTorTest, ResetBridges) {
+IN_PROC_BROWSER_TEST_F(BraveTorTest, PRE_ResetBridges) {
   EXPECT_FALSE(TorProfileServiceFactory::IsTorDisabled());
   DownloadTorClient();
   DownloadTorPluggableTransports();
@@ -311,4 +311,11 @@ IN_PROC_BROWSER_TEST_F(BraveTorTest, ResetBridges) {
   bridges_config.use_bridges = tor::BridgesConfig::Usage::kNotUsed;
   TorProfileServiceFactory::SetTorBridgesConfig(bridges_config);
   WaitProcessExit(tor::kSnowflakeExecutableName);
+}
+
+IN_PROC_BROWSER_TEST_F(BraveTorTest, ResetBridges) {
+  // Tor is enabled and bridges are disabled check pluggable transports are
+  // removed.
+  EXPECT_TRUE(CheckComponentExists(tor::kTorClientComponentId));
+  EXPECT_FALSE(CheckComponentExists(tor::kTorPluggableTransportComponentId));
 }
