@@ -87,7 +87,7 @@ void VpnRenderFrameObserver::OnGetPurchaseToken(
   auto* frame = render_frame();
   if (frame && purchase_token.length() > 0) {
     std::u16string set_local_storage(
-        u"window.localStorage.setItem(\"braveVpn.receipt\", \"");
+        u"window.sessionStorage.setItem(\"braveVpn.receipt\", \"");
     set_local_storage.append(base::UTF8ToUTF16(purchase_token));
     set_local_storage.append(u"\");");
     frame->ExecuteJavaScript(set_local_storage);
@@ -102,6 +102,7 @@ bool VpnRenderFrameObserver::IsAllowed() {
 
   GURL current_url(
       render_frame()->GetWebFrame()->GetDocument().Url().GetString().Utf8());
+
   std::string intent;
   if (!ExtractQueryParamValue(current_url.query_piece(), kIntentParamName,
                               &intent) ||

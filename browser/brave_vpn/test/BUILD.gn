@@ -16,3 +16,19 @@ source_set("unit_tests") {
     ]
   }
 }
+
+source_set("browser_tests") {
+  testonly = true
+  if (enable_brave_vpn) {
+    sources =
+        [ "//brave/browser/brave_vpn/test/android/vpn_receipt_browsertest.cc" ]
+    deps = [
+      "//brave/components/brave_vpn",
+      "//brave/components/skus/common",
+      "//chrome/common:constants",
+      "//chrome/test:test_support",
+      "//net",
+      "//testing/gtest",
+    ]
+  }
+}
