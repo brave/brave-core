@@ -4,9 +4,11 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/de_amp/browser/de_amp_util.h"
+#include <iostream>
 
 #include "base/feature_list.h"
 #include "base/no_destructor.h"
+#include "base/types/expected.h"
 #include "brave/components/de_amp/common/features.h"
 #include "brave/components/de_amp/common/pref_names.h"
 #include "components/prefs/pref_service.h"
@@ -44,11 +46,9 @@ bool VerifyCanonicalAmpUrl(const GURL& canonical_link,
          canonical_link != original_url;
 }
 
-// If AMP page, find canonical link
-// canonical link param is populated if found
-bool MaybeFindCanonicalAmpUrl(const std::string& body,
-                              std::string* canonical_url) {
-  RE2::Options opt;
+
+bool CheckIfAmpPage(const std::string& body) {
+    RE2::Options opt;
   opt.set_case_sensitive(false);
   opt.set_dot_nl(true);
   // The order of running these regexes is important:
@@ -57,28 +57,60 @@ bool MaybeFindCanonicalAmpUrl(const std::string& body,
                                                              opt);
   static const base::NoDestructor<re2::RE2> kDetectAmpRegex(kDetectAmpPattern,
                                                             opt);
+  // std::cerr << "body is " << body << "\n";
+
+  std::cerr << "Checking for AMP page" << "\n";
+
+  std::string html_tag;
+  if (!RE2::PartialMatch(body, *kGetHtmlTagRegex, &html_tag)) {
+    // Early exit if we can't find HTML tag - malformed document (or error)
+    std::cerr << "not HTML "
+              << "\n";
+    return false;
+  }
+  if (!RE2::PartialMatch(html_tag, *kDetectAmpRegex)) {
+    // Not AMP
+    std::cerr << "not AMP "
+              << "\n";
+    return false;
+  }
+  std::cerr << "Found AMP page!" << "\n";
+  return true;
+}
+
+// Find canonical link in body or return error
+base::expected<std::string, std::string> FindCanonicalAmpUrl(const std::string& body) {
+ 
+  RE2::Options opt;
+  opt.set_case_sensitive(false);
+  opt.set_dot_nl(true);
+
+  // The order of running these regexes is important
   static const base::NoDestructor<re2::RE2> kFindCanonicalLinkTagRegex(
       kFindCanonicalLinkTagPattern, opt);
   static const base::NoDestructor<re2::RE2> kFindCanonicalHrefInTagRegex(
       kFindCanonicalHrefInTagPattern, opt);
 
-  std::string html_tag;
-  if (!RE2::PartialMatch(body, *kGetHtmlTagRegex, &html_tag)) {
-    // Early exit if we can't find HTML tag - malformed document (or error)
-    return false;
-  }
-  if (!RE2::PartialMatch(html_tag, *kDetectAmpRegex)) {
-    // Not AMP
-    return false;
-  }
+  // std::cerr << "body is " << body << "\n";
+
   std::string link_tag;
   if (!RE2::PartialMatch(body, *kFindCanonicalLinkTagRegex, &link_tag)) {
     // Can't find link tag, exit
-    return false;
+    std::cerr << "can't find link tag "
+              << "\n";
+    return base::unexpected("Couldn't find link tag");
   }
-
-  return RE2::PartialMatch(link_tag, *kFindCanonicalHrefInTagRegex,
-                           canonical_url);
+  std::cerr << "canonical link tag is " << link_tag << "\n";
+  std::string canonical_url;
+  // Find href in canonical link tag
+  // Check there is only 1 href captured, else fail
+  if (!RE2::PartialMatch(link_tag, *kFindCanonicalHrefInTagRegex, &canonical_url)) {
+    // Didn't find canonical link, potentially try again
+    std::cerr << "can't find canonical link "
+              << "\n";
+    return base::unexpected("Couldn't find canonical URL in link tag");
+  }
+  return canonical_url;
 }
 
 }  // namespace de_amp

@@ -6,6 +6,7 @@
 #include "brave/components/de_amp/browser/de_amp_url_loader.h"
 
 #include <utility>
+#include <iostream>
 
 #include "base/logging.h"
 #include "brave/components/body_sniffer/body_sniffer_url_loader.h"
@@ -17,7 +18,8 @@ namespace de_amp {
 
 namespace {
 
-constexpr uint32_t kReadBufferSize = 65536;
+constexpr uint32_t kReadBufferSize = 65536; // bytes
+constexpr uint32_t kMaxBytesToCheck = kReadBufferSize * 2; // Should always be a multiple
 
 }  // namespace
 
@@ -61,7 +63,10 @@ DeAmpURLLoader::DeAmpURLLoader(
 DeAmpURLLoader::~DeAmpURLLoader() = default;
 
 void DeAmpURLLoader::OnBodyReadable(MojoResult) {
+  std::cerr << "entered OnBodyReadable" << "\n";
   if (state_ == State::kSending) {
+    // This is incorrect - we should not complete loading until we've seen all bytes.
+
     // The pipe becoming readable when kSending means all buffered body has
     // already been sent.
     ForwardBodyToClient();
@@ -70,48 +75,74 @@ void DeAmpURLLoader::OnBodyReadable(MojoResult) {
   if (!CheckBufferedBody(kReadBufferSize)) {
     return;
   }
+  std::cerr << "going to check de-amp check" << "\n";
+  bool redirected = MaybeRedirectToCanonicalLink();
 
-  if (!MaybeRedirectToCanonicalLink()) {
+  std::cerr << "redirected: " << redirected << ", found_amp_:  " << found_amp_ << ", read_bytes: " << read_bytes_ << ", max bytes to check: " << kMaxBytesToCheck << "\n";
+
+  // If we were not redirected (navigation is cancelled) and we didn't find AMP, 
+  // or if we did find AMP previously and we've already read more bytes than max,
+  // complete the load.
+  if ((!redirected && !found_amp_) || (!redirected && found_amp_ && read_bytes_ >= kMaxBytesToCheck)) {
+    std::cerr << "de-amp check failed, completing loading" << "\n";  
+    found_amp_ = false; // reset
     CompleteLoading(std::move(buffered_body_));
   }
-
   body_consumer_watcher_.ArmOrNotify();
 }
 
 bool DeAmpURLLoader::MaybeRedirectToCanonicalLink() {
-  std::string canonical_link;
-
-  if (de_amp_throttle_ &&
-      MaybeFindCanonicalAmpUrl(buffered_body_, &canonical_link)) {
-    const GURL canonical_url(canonical_link);
-    if (!VerifyCanonicalAmpUrl(canonical_url, response_url_)) {
-      VLOG(2) << __func__ << " canonical link check failed " << canonical_url;
-      return false;
-    }
-    VLOG(2) << __func__ << " de-amping and loading " << canonical_url;
-    if (!de_amp_throttle_->OpenCanonicalURL(canonical_url, response_url_)) {
-      return false;
-    }
-    // Only abort if we know we're successfully going to the canonical URL
-    Abort();
-    return true;
-  } else {
-    // Did not find AMP page and/or canonical link, load original
+  if (!de_amp_throttle_) {
     return false;
   }
+
+  //todo make sure that we're getting meaningfully different chunks every time.
+
+  if (!found_amp_ && !CheckIfAmpPage(buffered_body_)) {
+    return false;
+  }
+
+  found_amp_ = true; // If we get to this point, we have an AMP page
+
+  auto canonical_link = FindCanonicalAmpUrl(buffered_body_);
+  if (!canonical_link.has_value()) {
+    LOG(WARNING) << canonical_link.error();
+    std::cerr << "canonical link not found! " << canonical_link.error() << "\n";
+    return false;
+  }
+
+  const GURL canonical_url(canonical_link.value());
+  std::cerr << "Foudn canonical link! " << canonical_url << "\n";
+  if (!VerifyCanonicalAmpUrl(canonical_url, response_url_)) {
+    VLOG(2) << __func__ << " canonical link check failed " << canonical_url;
+    return false;
+  }
+  VLOG(2) << __func__ << " de-amping and loading " << canonical_url;
+  if (!de_amp_throttle_->OpenCanonicalURL(canonical_url, response_url_)) {
+    return false;
+  }
+  // Only abort if we know we're successfully going to the canonical URL
+  Abort();
+  return true;
 }
 
 void DeAmpURLLoader::OnBodyWritable(MojoResult r) {
   DCHECK_EQ(State::kSending, state_);
+  // todo: why do we care about bodywritable
+  std::cerr << "bytes remaining in buffer " << bytes_remaining_in_buffer_ << "\n";
   if (bytes_remaining_in_buffer_ > 0) {
-    SendReceivedBodyToClient();
+    SendBufferedBodyToClient();
   } else {
     ForwardBodyToClient();
   }
 }
 
+
+// No buffered data to be sent, read and forward data to producer (renderer)
 void DeAmpURLLoader::ForwardBodyToClient() {
+  std::cerr << "in forwardbodytoclient, state is " << static_cast<int>(state_) << ",bytes remaining in buffer: " << bytes_remaining_in_buffer_ << "\n";
   DCHECK_EQ(0u, bytes_remaining_in_buffer_);
+  // it's loading
   // Send the body from the consumer to the producer.
   const void* buffer;
   uint32_t buffer_size = 0;
