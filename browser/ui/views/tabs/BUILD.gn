@@ -6,7 +6,7 @@ source_set("browser_tests") {
 
   deps = [
     "//base",
-    "//brave/components/brave_tabs",
+    "//brave/browser/ui",
     "//chrome:resources",
     "//chrome:strings",
     "//chrome/browser",

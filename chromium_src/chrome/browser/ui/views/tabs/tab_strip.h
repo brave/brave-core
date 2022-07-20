@@ -14,8 +14,8 @@
   friend class BraveTabStrip;     \
   void UpdateHoverCard
 
-#define ShouldDrawStrokes     \
-  UnUsed() { return true; }   \
+#define ShouldDrawStrokes   \
+  UnUsed() { return true; } \
   virtual bool ShouldDrawStrokes
 
 #include "src/chrome/browser/ui/views/tabs/tab_strip.h"
