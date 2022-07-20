@@ -43,7 +43,7 @@ public class EnableVPNSettingHeader: UIView {
         return Strings.VPN.tryForFreeButton
       case .expired:
         return Strings.learnMore
-      case .purchased, .installed:
+      case .purchased:
         return Strings.VPN.enableButton
       }
     }()

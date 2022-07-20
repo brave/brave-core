@@ -10,44 +10,67 @@ import BraveShared
 
 private let log = Logger.browserLogger
 
-protocol IAPObserverDelegate: AnyObject {
-  func purchasedOrRestoredProduct()
+public protocol IAPObserverDelegate: AnyObject {
+  func purchasedOrRestoredProduct(validateReceipt: Bool)
   func purchaseFailed(error: IAPObserver.PurchaseError)
 }
 
 public class IAPObserver: NSObject, SKPaymentTransactionObserver {
 
-  enum PurchaseError {
+  public enum PurchaseError {
     case transactionError(error: SKError?)
     case receiptError
   }
 
-  weak var delegate: IAPObserverDelegate?
+  public weak var delegate: IAPObserverDelegate?
 
   public func paymentQueue(_ queue: SKPaymentQueue, updatedTransactions transactions: [SKPaymentTransaction]) {
-    transactions.forEach { transaction in
+    // This helper variable helps to call the IAPObserverDelegate delegate purchased method only once.
+    // Reason is when restoring or sometimes when purchasing or restoring a product there's multiple transactions
+    // that are returned in `transactions` array.
+    // Apple advices to call `finishTransaction` for all of them,
+    // but to show the UI we only want to call the delegate method once.
+    var callPurchaseDelegateOnce = true
+    
+    // For safety let's start processing from the newest transaction.
+    transactions
+      .sorted(by: { $0.transactionDate ?? Date() > $1.transactionDate ?? Date() })
+      .forEach { transaction in
       switch transaction.transactionState {
-      case .purchased, .restored:
-        log.debug("Received transaction state: purchased or restored")
-        BraveVPN.validateReceipt() { [weak self] expired in
-          guard let self = self else { return }
-          // This should be always called, no matter if transaction is successful or not.
-          SKPaymentQueue.default().finishTransaction(transaction)
-
-          if expired == false {
-            self.delegate?.purchasedOrRestoredProduct()
-          } else {
-            // Receipt either expired or receipt validation returned some error.
-            self.delegate?.purchaseFailed(error: .receiptError)
+      case .purchased:
+        log.debug("Received transaction state: purchased")
+        // This should be always called, no matter if transaction is successful or not.
+        SKPaymentQueue.default().finishTransaction(transaction)
+        if callPurchaseDelegateOnce {
+          self.delegate?.purchasedOrRestoredProduct(validateReceipt: true)
+        }
+        callPurchaseDelegateOnce = false
+      case .restored:
+        log.debug("Received transaction state: restored")
+        // This should be always called, no matter if transaction is successful or not.
+        SKPaymentQueue.default().finishTransaction(transaction)
+        
+        if callPurchaseDelegateOnce {
+          BraveVPN.validateReceipt() { [weak self] expired in
+            guard let self = self else { return }
+            
+            if expired == false {
+              self.delegate?.purchasedOrRestoredProduct(validateReceipt: false)
+            } else {
+              // Receipt either expired or receipt validation returned some error.
+              self.delegate?.purchaseFailed(error: .receiptError)
+            }
           }
         }
+        
+        callPurchaseDelegateOnce = false
       case .purchasing, .deferred:
         log.debug("Received transaction state: purchasing")
       case .failed:
         log.debug("Received transaction state: failed")
+        SKPaymentQueue.default().finishTransaction(transaction)
         self.delegate?.purchaseFailed(
           error: .transactionError(error: transaction.error as? SKError))
-        SKPaymentQueue.default().finishTransaction(transaction)
       @unknown default:
         assertionFailure("Unknown transactionState")
       }

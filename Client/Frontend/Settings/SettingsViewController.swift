@@ -137,9 +137,9 @@ class SettingsViewController: TableViewController {
       }
 
       switch BraveVPN.vpnState {
-      case .notPurchased, .expired, .purchased:
+      case .notPurchased, .expired:
         return true
-      case .installed:
+      case .purchased:
         return false
       }
     }()
@@ -459,9 +459,9 @@ class SettingsViewController: TableViewController {
 
     let (text, color) = { () -> (String, UIColor) in
       switch BraveVPN.vpnState {
-      case .notPurchased, .purchased:
+      case .notPurchased:
         return ("", UIColor.black)
-      case .installed(let enabled):
+      case .purchased(let enabled):
         if enabled {
           return (Strings.VPN.settingsVPNEnabled, .braveSuccessLabel)
         } else {
@@ -478,9 +478,9 @@ class SettingsViewController: TableViewController {
 
         let vc = { () -> UIViewController? in
           switch BraveVPN.vpnState {
-          case .notPurchased, .purchased, .expired:
+          case .notPurchased, .expired:
             return BraveVPN.vpnState.enableVPNDestinationVC
-          case .installed:
+          case .purchased:
             let vc = BraveVPNSettingsViewController()
             vc.faqButtonTapped = { [weak self] in
               self?.settingsDelegate?.settingsOpenURLInNewTab(BraveUX.braveVPNFaqURL)
@@ -719,10 +719,10 @@ class SettingsViewController: TableViewController {
     let state = BraveVPN.vpnState
 
     switch state {
-    case .notPurchased, .purchased, .expired:
+    case .notPurchased, .expired:
       guard let vc = state.enableVPNDestinationVC else { return }
       navigationController?.pushViewController(vc, animated: true)
-    case .installed:
+    case .purchased:
       BraveVPN.reconnect()
       dismiss(animated: true)
     }

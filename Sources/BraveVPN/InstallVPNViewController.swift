@@ -50,43 +50,27 @@ class InstallVPNViewController: UIViewController {
 
   @objc func installVPNAction() {
     installVPNView.installVPNButton.isLoading = true
-
-    BraveVPN.connectOrMigrateToNewNode() { [weak self] status in
+    
+    BraveVPN.connectToVPN() { [weak self] status in
       guard let self = self else { return }
-
+      
       DispatchQueue.main.async {
         self.installVPNView.installVPNButton.isLoading = false
       }
 
-      switch status {
-      case .success:
+      if status {
         self.dismiss(animated: true) {
           self.showSuccessAlert()
         }
-      case .error(let type):
-        let alert = { () -> UIAlertController in
-          let okAction = UIAlertAction(title: Strings.OKString, style: .default)
-
-          switch type {
-          case .permissionDenied:
-            let message = Strings.VPN.vpnConfigPermissionDeniedErrorBody
-
-            let alert = UIAlertController(
-              title: Strings.VPN.vpnConfigPermissionDeniedErrorTitle,
-              message: message, preferredStyle: .alert)
-            alert.addAction(okAction)
-            return alert
-          case .loadConfigError, .saveConfigError:
-            let message = Strings.VPN.vpnConfigGenericErrorBody
-            let alert = UIAlertController(
-              title: Strings.VPN.vpnConfigGenericErrorTitle,
-              message: message,
-              preferredStyle: .alert)
-            alert.addAction(okAction)
-            return alert
-          }
-        }()
-
+      } else {
+        let okAction = UIAlertAction(title: Strings.OKString, style: .default)
+        
+        let message = Strings.VPN.vpnConfigGenericErrorBody
+        let alert = UIAlertController(title: Strings.VPN.vpnConfigGenericErrorTitle,
+                                      message: message,
+                                      preferredStyle: .alert)
+        alert.addAction(okAction)
+        
         DispatchQueue.main.async {
           self.present(alert, animated: true)
         }
@@ -99,18 +83,17 @@ class InstallVPNViewController: UIViewController {
   }
 
   private func showSuccessAlert() {
-    let animation = AnimationView(name: "vpncheckmark", bundle: .current).then {
+      let animation = AnimationView(name: "vpncheckmark", bundle: .current).then {
       $0.bounds = CGRect(x: 0, y: 0, width: 300, height: 200)
       $0.contentMode = .scaleAspectFill
       $0.play()
     }
 
-    let popup = AlertPopupView(
-      imageView: animation,
-      title: Strings.VPN.installSuccessPopup, message: "",
-      titleWeight: .semibold, titleSize: 18,
-      dismissHandler: { true })
-
+    let popup = AlertPopupView(imageView: animation,
+                                    title: Strings.VPN.installSuccessPopup, message: "",
+                                    titleWeight: .semibold, titleSize: 18,
+                                    dismissHandler: { true })
+    
     popup.showWithType(showType: .flyUp, autoDismissTime: 1.5)
   }
 }

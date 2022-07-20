@@ -9,12 +9,13 @@ import BraveShared
 import BraveUI
 import Lottie
 import NetworkExtension
+import GuardianConnect
 
 class BraveVPNRegionPickerViewController: UIViewController {
-  private let regionList: [VPNRegion]
 
   private var overlayView: UIView?
   private let tableView: UITableView
+  private let regionList: [GRDRegion]
 
   private enum Section: Int, CaseIterable {
     case automatic = 0
@@ -59,10 +60,9 @@ class BraveVPNRegionPickerViewController: UIViewController {
     }
   }
 
-  init(serverList: [VPNRegion]) {
-    self.regionList =
-      serverList
-      .sorted { $0.namePretty < $1.namePretty }
+  init() {
+    self.regionList = BraveVPN.regions
+      .sorted { $0.displayName < $1.displayName }
 
     if #available(iOS 14, *) {
       tableView = UITableView(frame: .zero, style: .insetGrouped)
@@ -82,10 +82,9 @@ class BraveVPNRegionPickerViewController: UIViewController {
     tableView.delegate = self
     tableView.dataSource = self
     tableView.register(VPNRegionCell.self)
-
-    NotificationCenter.default.addObserver(
-      self, selector: #selector(vpnConfigChanged(notification:)),
-      name: .NEVPNStatusDidChange, object: nil)
+    
+    NotificationCenter.default.addObserver(self, selector: #selector(vpnConfigChanged(notification:)),
+                                           name: .NEVPNStatusDidChange, object: nil)
 
     view.addSubview(tableView)
     tableView.snp.makeConstraints {
@@ -134,13 +133,14 @@ extension BraveVPNRegionPickerViewController: UITableViewDelegate, UITableViewDa
     switch indexPath.section {
     case Section.automatic.rawValue:
       cell.textLabel?.text = Strings.VPN.regionPickerAutomaticModeCellText
-      if Preferences.VPN.vpnRegionOverride.value == nil {
+      if BraveVPN.isAutomaticRegion {
         cell.accessoryType = .checkmark
       }
     case Section.regionList.rawValue:
       guard let server = regionList[safe: indexPath.row] else { return cell }
-      cell.textLabel?.text = server.namePretty
-      if server.name == Preferences.VPN.vpnRegionOverride.value {
+      cell.textLabel?.text = server.displayName
+
+      if server.displayName == BraveVPN.selectedRegion?.displayName {
         cell.accessoryType = .checkmark
       }
     default:
@@ -155,8 +155,10 @@ extension BraveVPNRegionPickerViewController: UITableViewDelegate, UITableViewDa
     guard let region = regionList[safe: indexPath.row] else { return }
 
     // Tapped on the same cell, do nothing
-    if (region.name == Preferences.VPN.vpnRegionOverride.value)
-      || (indexPath.section == Section.automatic.rawValue && Preferences.VPN.vpnRegionOverride.value == nil) {
+    let sameRegionSelected = region.displayName == BraveVPN.selectedRegion?.displayName
+    let sameAutomaticRegionSelected = indexPath.section == Section.automatic.rawValue && BraveVPN.isAutomaticRegion
+    
+    if sameRegionSelected || sameAutomaticRegionSelected {
       return
     }
 
@@ -164,23 +166,19 @@ extension BraveVPNRegionPickerViewController: UITableViewDelegate, UITableViewDa
 
     isLoading = true
 
-    if indexPath.section == Section.automatic.rawValue {
-      Preferences.VPN.vpnRegionOverride.value = nil
-    } else {
-      Preferences.VPN.vpnRegionOverride.value = region.name
-    }
+    // Implementation detail: nil region means we use an automatic way to connect to the host.
+    let newRegion = indexPath.section == Section.automatic.rawValue ? nil : region
 
     self.dispatchGroup = DispatchGroup()
 
-    BraveVPN.reconfigureVPN() { [weak self] success in
+    BraveVPN.changeVPNRegion(to: newRegion) { [weak self] success in
       guard let self = self else { return }
 
       func _showError() {
         DispatchQueue.main.async {
-          let alert = AlertController(
-            title: Strings.VPN.regionPickerErrorTitle,
-            message: Strings.VPN.regionPickerErrorMessage,
-            preferredStyle: .alert)
+          let alert = AlertController(title: Strings.VPN.regionPickerErrorTitle,
+                                      message: Strings.VPN.regionPickerErrorMessage,
+                                      preferredStyle: .alert)
           let okAction = UIAlertAction(title: Strings.OKString, style: .default) { _ in
             self.dismiss(animated: true)
           }
@@ -226,13 +224,12 @@ extension BraveVPNRegionPickerViewController: UITableViewDelegate, UITableViewDa
       $0.contentMode = .scaleAspectFill
       $0.play()
     }
-
-    let popup = AlertPopupView(
-      imageView: animation,
-      title: Strings.VPN.regionSwitchSuccessPopupText, message: "",
-      titleWeight: .semibold, titleSize: 18,
-      dismissHandler: { true })
-
+    
+    let popup = AlertPopupView(imageView: animation,
+                               title: Strings.VPN.regionSwitchSuccessPopupText, message: "",
+                               titleWeight: .semibold, titleSize: 18,
+                               dismissHandler: { true })
+    
     popup.showWithType(showType: .flyUp, autoDismissTime: 1.5)
   }
 }

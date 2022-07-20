@@ -19,7 +19,7 @@ public class VPNProductInfo: NSObject {
   /// If the user has bought the vpn already, it returns `true` since we do not need price details anymore.
   public static var isComplete: Bool {
     switch BraveVPN.vpnState {
-    case .purchased, .installed:
+    case .purchased:
       return true
     case .notPurchased, .expired:
       guard let monthlyPlan = monthlySubProduct, let yearlyPlan = yearlySubProduct else {

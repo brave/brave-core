@@ -41,9 +41,6 @@ public class BraveVPNSettingsViewController: TableViewController {
     }
   }
 
-  /// This is local variable only to prevents users from spamming the reset configuration button.
-  private var lastTimeVPNWasResetted: Date?
-
   /// View to show when the vpn config reset is pending.
   private var overlayView: UIView?
 
@@ -70,126 +67,85 @@ public class BraveVPNSettingsViewController: TableViewController {
     }
   }
 
-  private var serverList = [VPNRegion]()
-
   public override func viewDidLoad() {
     super.viewDidLoad()
 
     title = Strings.VPN.vpnName
-    NotificationCenter.default.addObserver(
-      self, selector: #selector(vpnConfigChanged),
-      name: .NEVPNStatusDidChange, object: nil)
-
-    fetchRegionList()
-
-    let switchView = SwitchAccessoryView(
-      initialValue: BraveVPN.isConnected,
-      valueChange: { vpnOn in
-        if vpnOn {
-          BraveVPN.reconnect()
-        } else {
-          BraveVPN.disconnect()
-        }
-      })
-
+    NotificationCenter.default.addObserver(self, selector: #selector(vpnConfigChanged),
+                                           name: .NEVPNStatusDidChange, object: nil)
+    
+    let switchView = SwitchAccessoryView(initialValue: BraveVPN.isConnected, valueChange: { vpnOn in
+      if vpnOn {
+        BraveVPN.reconnect()
+      } else {
+        BraveVPN.disconnect()
+      }
+    })
+    
     self.vpnConnectionStatusSwitch = switchView
-
-    let vpnStatusSection = Section(
-      rows: [
-        Row(
-          text: Strings.VPN.settingsVPNEnabled,
+    
+    let vpnStatusSection = Section(rows: [
+      Row(text: Strings.VPN.settingsVPNEnabled,
           accessory: .view(switchView), uuid: vpnStatusSectionCellId)
-      ], uuid: vpnStatusSectionCellId)
-
-    let subscriptionStatus = BraveVPN.hasExpired == true ? Strings.VPN.subscriptionStatusExpired : BraveVPN.subscriptionName
-
+    ], uuid: vpnStatusSectionCellId)
+    
+    let subscriptionStatus = BraveVPN.hasExpired == true ?
+    Strings.VPN.subscriptionStatusExpired : BraveVPN.subscriptionName
+    
     let expiration = BraveVPN.hasExpired == true ? "-" : expirationDate
-
+    
     let subscriptionSection =
-      Section(
-        header: .title(Strings.VPN.settingsSubscriptionSection),
-        rows: [
-          Row(
-            text: Strings.VPN.settingsSubscriptionStatus,
-            detailText: subscriptionStatus),
-          Row(text: Strings.VPN.settingsSubscriptionExpiration, detailText: expiration),
-          Row(
-            text: Strings.VPN.settingsManageSubscription,
-            selection: { [unowned self] in
-              guard let url = self.manageSubcriptionURL else { return }
-              if UIApplication.shared.canOpenURL(url) {
-                // Opens Apple's 'manage subscription' screen.
-                UIApplication.shared.open(url, options: [:])
-              }
-            }, cellClass: ButtonCell.self),
-        ])
-
+    Section(header: .title(Strings.VPN.settingsSubscriptionSection),
+            rows: [Row(text: Strings.VPN.settingsSubscriptionStatus,
+                       detailText: subscriptionStatus),
+                   Row(text: Strings.VPN.settingsSubscriptionExpiration, detailText: expiration),
+                   Row(text: Strings.VPN.settingsManageSubscription,
+                       selection: { [unowned self] in
+      guard let url = self.manageSubcriptionURL else { return }
+      if UIApplication.shared.canOpenURL(url) {
+        // Opens Apple's 'manage subscription' screen.
+        UIApplication.shared.open(url, options: [:])
+      }
+    }, cellClass: ButtonCell.self)])
+    
     let location = BraveVPN.serverLocation ?? "-"
-
+    
     let serverSection =
-      Section(
-        header: .title(Strings.VPN.settingsServerSection),
-        rows: [
-          Row(text: Strings.VPN.settingsServerHost, detailText: hostname, uuid: hostCellId),
-          Row(
-            text: Strings.VPN.settingsServerLocation, detailText: location,
-            uuid: locationCellId),
-          Row(
-            text: Strings.VPN.settingsChangeLocation,
-            selection: { [unowned self] in
-              self.selectServerTapped()
-            },
-            cellClass: ButtonCell.self),
-          Row(
-            text: Strings.VPN.settingsResetConfiguration,
-            selection: { [unowned self] in
-              self.resetConfigurationTapped()
-            },
-            cellClass: ButtonCell.self, uuid: resetCellId),
-        ],
-        uuid: serverSectionId)
-
-    let techSupportSection = Section(rows: [
-      Row(
-        text: Strings.VPN.settingsContactSupport,
-        selection: { [unowned self] in
-          self.sendContactSupportEmail()
-        }, accessory: .disclosureIndicator, cellClass: ButtonCell.self)
-    ])
-
-    let termsSection = Section(rows: [
-      Row(
-        text: Strings.VPN.settingsFAQ,
-        selection: { [unowned self] in
-          self.faqButtonTapped?()
-        }, accessory: .disclosureIndicator, cellClass: ButtonCell.self)
-    ])
-
-    dataSource.sections = [
-      vpnStatusSection,
-      subscriptionSection,
-      serverSection,
-      techSupportSection,
-      termsSection,
-    ]
+    Section(header: .title(Strings.VPN.settingsServerSection),
+            rows: [Row(text: Strings.VPN.settingsServerHost, detailText: hostname, uuid: hostCellId),
+                   Row(text: Strings.VPN.settingsServerLocation, detailText: location,
+                       uuid: locationCellId),
+                   Row(text: Strings.VPN.settingsChangeLocation,
+                       selection: { [unowned self] in
+      self.selectServerTapped()
+    },
+                       cellClass: ButtonCell.self),
+                   Row(text: Strings.VPN.settingsResetConfiguration,
+                       selection: { [unowned self] in
+      self.resetConfigurationTapped()
+    },
+                       cellClass: ButtonCell.self, uuid: resetCellId)],
+            uuid: serverSectionId)
+    
+    let techSupportSection = Section(rows:
+                                      [Row(text: Strings.VPN.settingsContactSupport, selection: { [unowned self] in
+      self.sendContactSupportEmail()
+    }, accessory: .disclosureIndicator, cellClass: ButtonCell.self)])
+    
+    let termsSection = Section(rows:
+                                [Row(text: Strings.VPN.settingsFAQ, selection: { [unowned self] in
+      self.faqButtonTapped?()
+    }, accessory: .disclosureIndicator, cellClass: ButtonCell.self)])
+    
+    dataSource.sections = [vpnStatusSection,
+                           subscriptionSection,
+                           serverSection,
+                           techSupportSection,
+                           termsSection]
   }
 
   deinit {
     NotificationCenter.default.removeObserver(self)
-    serverListRequest?.cancel()
-  }
-
-  private var serverListRequest: URLSessionDataTask?
-
-  private func fetchRegionList() {
-    BraveVPN.requestAllServerRegions() { [weak self] regionList in
-      guard let regionList = regionList else {
-        log.error("Failed to fetch vpn region list")
-        return
-      }
-
-      self?.serverList = regionList
-    }
   }
 
   private var hostname: String {
@@ -210,18 +166,12 @@ public class BraveVPNSettingsViewController: TableViewController {
   }
 
   private func updateServerInfo() {
-    guard
-      let hostIndexPath =
-        dataSource
-        .indexPath(rowUUID: hostCellId, sectionUUID: serverSectionId)
-    else { return }
-
-    guard
-      let locationIndexPath =
-        dataSource
-        .indexPath(rowUUID: locationCellId, sectionUUID: serverSectionId)
-    else { return }
-
+    guard let hostIndexPath = dataSource
+      .indexPath(rowUUID: hostCellId, sectionUUID: serverSectionId) else { return }
+    
+    guard let locationIndexPath = dataSource
+      .indexPath(rowUUID: locationCellId, sectionUUID: serverSectionId) else { return }
+    
     dataSource.sections[hostIndexPath.section].rows[hostIndexPath.row]
       .detailText = hostname
     dataSource.sections[locationIndexPath.section].rows[locationIndexPath.row]
@@ -233,42 +183,32 @@ public class BraveVPNSettingsViewController: TableViewController {
   }
 
   private func resetConfigurationTapped() {
-    if BraveVPN.hasExpired == true { return }
-
-    if let lastResetTime = lastTimeVPNWasResetted {
-      let timeBetweenLastReset = Date().timeIntervalSince(lastResetTime)
-      if timeBetweenLastReset < 60 { return }
-    }
-
-    let alert = UIAlertController(
-      title: Strings.VPN.vpnResetAlertTitle,
-      message: Strings.VPN.vpnResetAlertBody,
-      preferredStyle: .actionSheet)
-
+    let alert = UIAlertController(title: Strings.VPN.vpnResetAlertTitle,
+                                  message: Strings.VPN.vpnResetAlertBody,
+                                  preferredStyle: .actionSheet)
+    
     let cancel = UIAlertAction(title: Strings.cancelButtonTitle, style: .cancel)
-    let reset = UIAlertAction(
-      title: Strings.VPN.vpnResetButton, style: .destructive,
-      handler: { [weak self] _ in
-        guard let self = self else { return }
-        self.vpnReconfigurationPending = true
-        self.lastTimeVPNWasResetted = Date()
-        self.isLoading = true
-        log.debug("Reconfiguring the vpn")
-
-        BraveVPN.reconfigureVPN() { success in
-          log.debug("Reconfiguration suceedeed: \(success)")
-          // Small delay before unlocking UI because enabling vpn
-          // takes a moment after we call to connect to the vpn.
-          DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-            self.isLoading = false
-            self.vpnReconfigurationPending = false
-            self.updateServerInfo()
-            if !success {
-              self.showVPNResetErrorAlert()
-            }
+    let reset = UIAlertAction(title: Strings.VPN.vpnResetButton, style: .destructive,
+                              handler: { [weak self] _ in
+      guard let self = self else { return }
+      self.vpnReconfigurationPending = true
+      self.isLoading = true
+      log.debug("Reconfiguring the vpn")
+      
+      BraveVPN.reconfigureVPN() { success in
+        log.debug("Reconfiguration suceedeed: \(success)")
+        // Small delay before unlocking UI because enabling vpn
+        // takes a moment after we call to connect to the vpn.
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+          self.isLoading = false
+          self.vpnReconfigurationPending = false
+          self.updateServerInfo()
+          if !success {
+            self.showVPNResetErrorAlert()
           }
         }
-      })
+      }
+    })
 
     alert.addAction(cancel)
     alert.addAction(reset)
@@ -276,8 +216,7 @@ public class BraveVPNSettingsViewController: TableViewController {
     if UIDevice.current.userInterfaceIdiom == .pad {
       alert.popoverPresentationController?.permittedArrowDirections = [.down, .up]
 
-      if let resetCellIndexPath =
-        dataSource
+      if let resetCellIndexPath = dataSource
         .indexPath(rowUUID: resetCellId, sectionUUID: serverSectionId) {
         let cell = tableView.cellForRow(at: resetCellIndexPath)
 
@@ -293,24 +232,25 @@ public class BraveVPNSettingsViewController: TableViewController {
   }
 
   private func selectServerTapped() {
-    if serverList.isEmpty {
-      let alert = UIAlertController(
-        title: Strings.VPN.vpnConfigGenericErrorTitle,
-        message: Strings.VPN.settingsFailedToFetchServerList,
-        preferredStyle: .alert)
+    if BraveVPN.regions.isEmpty {
+      let alert = UIAlertController(title: Strings.VPN.vpnConfigGenericErrorTitle,
+                                    message: Strings.VPN.settingsFailedToFetchServerList,
+                                    preferredStyle: .alert)
       alert.addAction(.init(title: Strings.OKString, style: .default))
+      // Failed to fetch regions at app init or first vpn configuration.
+      // Let's try again here.
+      BraveVPN.populateRegionDataIfNecessary()
       present(alert, animated: true)
       return
     }
 
-    let vc = BraveVPNRegionPickerViewController(serverList: serverList)
+    let vc = BraveVPNRegionPickerViewController()
     navigationController?.pushViewController(vc, animated: true)
   }
 
   private func showVPNResetErrorAlert() {
-    let alert = UIAlertController(
-      title: Strings.VPN.resetVPNErrorTitle,
-      message: Strings.VPN.resetVPNErrorBody, preferredStyle: .alert)
+    let alert = UIAlertController(title: Strings.VPN.resetVPNErrorTitle,
+                                  message: Strings.VPN.resetVPNErrorBody, preferredStyle: .alert)
 
     let okAction = UIAlertAction(title: Strings.OKString, style: .default)
     alert.addAction(okAction)
