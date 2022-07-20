@@ -8,7 +8,7 @@
 #include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
-#include "brave/components/brave_tabs/brave_tab_prefs.h"
+#include "brave/browser/ui/views/tabs/brave_tab_prefs.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/views/tabs/tab.h"

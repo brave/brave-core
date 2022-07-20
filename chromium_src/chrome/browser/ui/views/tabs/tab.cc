@@ -4,7 +4,8 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "chrome/browser/ui/views/tabs/tab.h"
-#include "brave/components/brave_tabs/brave_tab_prefs.h"
+
+#include "brave/browser/ui/views/tabs/brave_tab_prefs.h"
 #include "chrome/browser/profiles/profile.h"
 
 // Set alert indicator's pos to start of the title and
