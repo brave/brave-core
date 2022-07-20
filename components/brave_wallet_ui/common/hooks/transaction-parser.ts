@@ -335,7 +335,10 @@ export function useTransactionParser (
           }
         }, new Amount(0)) ?? 0
 
-        const transferedValue = lamportsMovedFromInstructions.toNumber() + value
+        const transferedValue = new Amount(value)
+          .divideByDecimals(selectedNetwork.decimals)
+          .plus(lamportsMovedFromInstructions)
+          .format()
 
         const transferedAmountFiat = computeFiatAmount(transferedValue, selectedNetwork.symbol, selectedNetwork.decimals)
 
