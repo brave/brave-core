@@ -866,6 +866,7 @@ Dacă nu acceptați această solicitare, nu se va realiza reconectarea la VPN, i
 <translation id="7131971375297699539">Simbolul monedei</translation>
 <translation id="7982789257301363584">Rețea</translation>
 <translation id="4717431746210146708">Permiteți acestui site să adauge o rețea?</translation>
+<translation id="4857321293515555666">DApp dorește să citească acest mesaj pentru a finaliza solicitarea.</translation>
 <translation id="714506544401754321">Decriptați mesajul</translation>
 <translation id="5039804452771397117">Permite</translation>
 <translation id="3378339846292573874">Adăugați token sugerat</translation>
@@ -877,4 +878,15 @@ Dacă nu acceptați această solicitare, nu se va realiza reconectarea la VPN, i
 <translation id="8643377320501056697">Afișare site-uri de top</translation>
 <translation id="6471216025161697462">Conectat la <ph name="VALUE"/></translation>
 <translation id="1968852757206592413">Versiune de încercare</translation>
+<translation id="7733890291091968191">Afișați notificările Web3</translation>
+<translation id="1371627247679035769">\n\n\n\n#### Brave nu vă urmărește pe dvs. sau cum utilizați aplicația, astfel că nu știm cum v-ați configurat conexiunea VPN. Trimiteți-ne informațiile despre problema pe care o întâmpinați și vom face tot posibilul să o rezolvăm cât mai repede cu putință.####\n\n</translation>
+<translation id="3367162038532116157">\n\nNume gazdă VPN\n <ph name="VALUE"/></translation>
+<translation id="6173438324126027458">\n\nTip abonament\n <ph name="VALUE"/></translation>
+<translation id="1478875290576741766">\n\nToken Playstore\n <ph name="VALUE"/></translation>
+<translation id="1403057798797848522">\n\nVersiune aplicație\n <ph name="VALUE"/></translation>
+<translation id="2282835936933247509">\n\nFus orar\n</translation>
+<translation id="8107843365677337047">\n\nTip rețea\n</translation>
+<translation id="5334952096674914470">\n\nFurnizor de date mobile\n</translation>
+<translation id="5393042357629679588">\n\nAltă problemă\n</translation>
+<translation id="8095666712177294104">\n\nPlatformă\n</translation>
 </translationbundle>

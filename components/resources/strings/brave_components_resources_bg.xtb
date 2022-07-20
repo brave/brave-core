@@ -722,6 +722,7 @@
 <translation id="4780526507945807546">Използване на локален IPFS възел на Brave</translation>
 <translation id="8148464361648742409">Използвайте обществен шлюз</translation>
 <translation id="5123478056123923857">IPFS (InterPlanetary File System) е публичната мрежа за съхранение и доставка на данни от партньорска мрежа. Този протокол има различни съображения за поверителност от HTTP(S).</translation>
+<translation id="1216911189668016151">Компютърът ви допринася за обществената мрежа, но вашият IP адрес и всяко съдържание, което заявявате или предоставяте, могат да бъдат изложени. Съдържанието, което заявите по IPFS, се проверява, преди да ви бъде предоставено. Заявките в мрежата може да не използват прокси сървърите и DNS настройките на браузъра.</translation>
 <translation id="8664689531113048642">Защитава вашия IP адрес и съдържание, което заявите, от потенциални наблюдатели - трети страни, но не и от оператора на обществения шлюз. Операторът на шлюза е отговорен да гарантира, че съдържанието, което ви е подадено през шлюз, е съдържанието, което сте заявили. Също така вашият компютър не допринася към публичната IPFS мрежа.</translation>
 <translation id="3977809385703587108">Можете отново да промените предпочитанията си в</translation>
 <translation id="3340978935015468852">настройки</translation>
@@ -971,6 +972,8 @@
 <translation id="7642841516562576649">URL адрес на икона</translation>
 <translation id="2144247757675997850">Добавяне на актив</translation>
 <translation id="2708402071160162126">ПРЕДУПРЕЖДЕНИЕ: никога не споделяйте фразата си за възстановяване. Всеки с тази фраза може да вземе активите ви завинаги.</translation>
+<translation id="2416098547200943834">ЗАБЕЛЕЖКА: Частният ключ се предоставя като шестнадесетично кодиран JSON, който съдържа информация за частния ключ и протокола. <ph name="LINK_START"/>Научете повече<ph name="LINK_END"/>.</translation>
+<translation id="7657130382217527063">ЗАБЕЛЕЖКА: Частният ключ трябва да бъде предоставен като шестнадесетично кодиран JSON, който съдържа информация за частния ключ и протокола. <ph name="LINK_START"/>Научете повече<ph name="LINK_END"/>.</translation>
 <translation id="2902856457593699108">Показване на ключ</translation>
 <translation id="8033497299373164724">Скриване на ключ</translation>
 <translation id="2702143907607790516">Неуспешно актуализиране на името на акаунта, опитайте отново.</translation>
@@ -1006,6 +1009,7 @@
 <translation id="5488357322146334497">Съобщение</translation>
 <translation id="3586752056660754651">Подпис</translation>
 <translation id="3484981968509595506">DApp изисква Вашия публичен ключ за криптиране</translation>
+<translation id="2950511942409261729"><ph name="URL_BEFORE"/>$url<ph name="URL_AFTER"/> изисква публичния ключ за криптиране на портфейла ви. Ако се съгласите да предоставите този ключ, сайтът ще може да съставя криптирани съобщения за вас.</translation>
 <translation id="3340247553212049934">Осигуряване</translation>
 <translation id="1619778919922494944">DApp иска да прочете това съобщение, за да изпълни заявката ви</translation>
 <translation id="714506544401754321">Дешифриране на съобщението</translation>
@@ -1072,6 +1076,8 @@
 <translation id="7051244143160304048">Връзката с <ph name="DEVICE_NAME"/> е прекъсната</translation>
 <translation id="5317781812114905957">Инструкции</translation>
 <translation id="1178198982208000092">Свързване на вашия <ph name="DEVICE_NAME"/></translation>
+<translation id="6291765462876399333">Хардуерният портфейл изисква потвърждение на устройството<ph name="DEVICE_NAME"/></translation>
+<translation id="2288190100157580461">Хардуерният портфейл изисква приложението <ph name="NETWORK"/> да бъде отворено на <ph name="DEVICE_NAME"/></translation>
 <translation id="8687869982094542529">изпратено</translation>
 <translation id="5013754027092416509">получено</translation>
 <translation id="5867988533873716616">URL адресът на Block Explorer не е достъпен.</translation>
@@ -1142,6 +1148,7 @@
 <translation id="1470129769517088397"><ph name="ADDRESS"/> не е текущата мрежа</translation>
 <translation id="7340805872138998391">Неуспешно отключване на устройството, опитайте да се свържете отново</translation>
 <translation id="1984410139271779110">Вътрешна грешка, неизвестна схема</translation>
+<translation id="6989562355845156390">одобри</translation>
 <translation id="4674380028960132654">Ledger: подписът не съвпада с правилния адрес</translation>
 <translation id="3183932890629254743">Хардуерната сметка не е намерена</translation>
 <translation id="4287068151777838754">Не се очакват JSON данни</translation>
@@ -1184,6 +1191,26 @@
 <translation id="2317956709076373213">Транзакцията е потвърдена</translation>
 <translation id="310693998838023022">Грешка на транзакцията</translation>
 <translation id="6395870673621520684">Транзакцията спадна</translation>
+<translation id="1237782734462409503">Разделът не е активен</translation>
+<translation id="756701799684433105">Одобряване на трансакцията</translation>
+<translation id="6450792191436242818">Системна програма</translation>
+<translation id="6252742184395380448">Програма за конфигуриране</translation>
+<translation id="5358970666412490132">Програма за залози</translation>
+<translation id="346636227344244984">Програма за гласуване</translation>
+<translation id="3538368258493053874">Зареждащ модул BPF</translation>
+<translation id="2334098351242742927">Програма Ed25519</translation>
+<translation id="8780753288764281797">Програма Secp256k1</translation>
+<translation id="5275550100743015683">От адрес:</translation>
+<translation id="2678433693746214764">До адрес:</translation>
+<translation id="4576396475962922672">Нов акаунт:</translation>
+<translation id="4719005063558335704">Акаунти:</translation>
+<translation id="4337554812324118382">Данни:</translation>
+<translation id="569870799832027680">Идентификатор на програмата:</translation>
+<translation id="7843211152394841558">Максимален брой повторни опити:</translation>
+<translation id="8496335570810457">Прифлайт обвързаност:</translation>
+<translation id="5100124500279922001">Пропускане на прифлайт:</translation>
+<translation id="8060029310790625334">Помощен център</translation>
+<translation id="2095142195578664632">Нуждаете се от помощ? Посетете</translation>
 <translation id="3155170474926428993">Програма за стартиране на Tor</translation>
 <translation id="3745016858329272300">Обща информация</translation>
 <translation id="4045404575593562245">Събития за контрол на Tor</translation>

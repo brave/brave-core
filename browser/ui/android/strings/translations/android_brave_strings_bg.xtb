@@ -866,6 +866,7 @@
 <translation id="7131971375297699539">Символ на валута</translation>
 <translation id="7982789257301363584">Мрежа</translation>
 <translation id="4717431746210146708">Разрешаване на този сайт да добави мрежа?</translation>
+<translation id="4857321293515555666">DApp иска да прочете това съобщение, за да изпълни заявката ви.</translation>
 <translation id="714506544401754321">Дешифриране на съобщението</translation>
 <translation id="5039804452771397117">Позволи</translation>
 <translation id="3378339846292573874">Добавяне на препоръчан маркер</translation>
@@ -877,4 +878,15 @@
 <translation id="8643377320501056697">Покажи най-добрите сайтове</translation>
 <translation id="6471216025161697462">Свързан с <ph name="VALUE"/></translation>
 <translation id="1968852757206592413">Пробен период</translation>
+<translation id="7733890291091968191">Показване на известия от Web3</translation>
+<translation id="1371627247679035769">\n\n\n\n#### Brave не ви следи и не знае как използвате нашето приложение, така че не знаем как сте настроили VPN. Моля, споделете информация за проблема, с който се сблъсквате, и ще направим всичко възможно, за да го разрешим възможно най-скоро. ####\n\n</translation>
+<translation id="3367162038532116157">\n\nИме на VPN хост\n <ph name="VALUE"/></translation>
+<translation id="6173438324126027458">\n\nТип абонамент\n <ph name="VALUE"/></translation>
+<translation id="1478875290576741766">\n\nЖетон за Playstore\n <ph name="VALUE"/></translation>
+<translation id="1403057798797848522">\n\nВерсия на приложението\n <ph name="VALUE"/></translation>
+<translation id="2282835936933247509">\n\nВремева зона\n</translation>
+<translation id="8107843365677337047">\n\nТип мрежа\n</translation>
+<translation id="5334952096674914470">\n\nМобилен оператор\n</translation>
+<translation id="5393042357629679588">\n\nДруг проблем\n</translation>
+<translation id="8095666712177294104">\n\nПлатформа\n</translation>
 </translationbundle>
