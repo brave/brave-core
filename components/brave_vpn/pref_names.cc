@@ -22,6 +22,8 @@ void RegisterProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterStringPref(kBraveVPNDeviceRegion, "");
   registry->RegisterStringPref(kBraveVPNSelectedRegion, "");
   registry->RegisterBooleanPref(kBraveVPNShowDNSPolicyWarningDialog, true);
+#elif BUILDFLAG(IS_ANDROID)
+  registry->RegisterStringPref(kBraveVPNPurchaseTokenAndroid, "");
 #endif
   registry->RegisterStringPref(kBraveVPNEEnvironment,
                                skus::GetDefaultEnvironment());

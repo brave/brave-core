@@ -1152,10 +1152,6 @@ if (!is_android) {
       "//testing/android/native_test:native_test_support",
     ]
 
-    if (enable_brave_vpn) {
-      deps += [ "//brave/components/brave_vpn" ]
-    }
-
     # There are three types of tests that need to be rewritten for Android:
     # 1. using extensions
     # 2. using desktop specific UI elements (e.g. TabStripModelObserver)
@@ -1176,6 +1172,11 @@ if (!is_android) {
       "//chrome/test/android/browsertests_apk/android_browsertests_jni_onload.cc",
       "//chrome/test/base/android/android_browser_test_browsertest_android.cc",
     ]
+
+    if (enable_brave_vpn) {
+      deps += [ "//brave/components/brave_vpn" ]
+      sources += [ "//brave/browser/brave_vpn/test/android/vpn_receipt_browsertest.cc" ]
+    }
 
     data = [
       "$root_out_dir/brave_100_percent.pak",
