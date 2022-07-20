@@ -6,4 +6,5 @@
 brave_shields_public_headers = [
   "//brave/ios/browser/api/brave_shields/adblock_engine.h",
   "//brave/ios/browser/api/brave_shields/adblock_filter_list.h",
+  "//brave/ios/browser/api/brave_shields/adblock_service.h",
 ]
