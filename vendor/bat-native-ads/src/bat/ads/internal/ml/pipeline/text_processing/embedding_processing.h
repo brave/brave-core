@@ -12,6 +12,7 @@
 #include <string>
 
 #include "bat/ads/internal/ml/data/vector_data.h"
+#include "bat/ads/internal/ml/pipeline/pipeline_embedding_info.h"
 
 namespace base {
 class Value;
@@ -46,11 +47,7 @@ class EmbeddingProcessing final {
 
  private:
   bool is_initialized_ = false;
-  uint16_t version_ = 0;
-  std::string timestamp_ = "";
-  std::string locale_ = "en";
-  int embeddings_dim_ = 0;
-  std::map<std::string, VectorData> embeddings_;
+  struct PipelineEmbeddingInfo embedding_pipeline_;
 };
 
 }  // namespace pipeline

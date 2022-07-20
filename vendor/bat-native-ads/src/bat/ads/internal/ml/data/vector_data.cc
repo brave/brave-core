@@ -210,10 +210,6 @@ int VectorData::GetDimensionCount() const {
   return storage_->dimension_count();
 }
 
-int VectorData::GetDimensionCountForTesting() const {
-  return storage_->dimension_count();
-}
-
 int VectorData::GetNonZeroElementsCount() {
   if (!storage_->dimension_count()) {
     return 0;

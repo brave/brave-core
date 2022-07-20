@@ -7,6 +7,7 @@
 
 #include "base/check.h"
 #include "base/values.h"
+#include "base/strings/string_split.h"
 #include "bat/ads/internal/base/logging_util.h"
 #include "bat/ads/internal/ml/data/text_data.h"
 #include "bat/ads/internal/ml/data/vector_data.h"
@@ -44,11 +45,11 @@ EmbeddingProcessing::EmbeddingProcessing() : is_initialized_(false) {}
 EmbeddingProcessing::~EmbeddingProcessing() = default;
 
 void EmbeddingProcessing::SetInfo(const PipelineEmbeddingInfo& info) {
-  version_ = info.version;
-  timestamp_ = info.timestamp;
-  locale_ = info.locale;
-  embeddings_dim_ = info.embeddings_dim;
-  embeddings_ = info.embeddings;
+  embedding_pipeline_.version = info.version;
+  embedding_pipeline_.timestamp = info.timestamp;
+  embedding_pipeline_.locale = info.locale;
+  embedding_pipeline_.embeddings_dim = info.embeddings_dim;
+  embedding_pipeline_.embeddings = info.embeddings;
 }
 
 bool EmbeddingProcessing::FromValue(base::Value resource_value) {
@@ -77,27 +78,26 @@ std::string EmbeddingProcessing::CleanText(const std::string& text, bool is_html
 
 VectorData EmbeddingProcessing::EmbedText(const std::string& text) const {
 
-  std::vector<float> embedding_initialize(embeddings_dim_, 0.0);
+  std::vector<float> embedding_initialize(embedding_pipeline_.embeddings_dim, 0.0);
   VectorData embedding_vector = VectorData(embedding_initialize);
 
   if (!IsInitialized()) {
     return embedding_vector;
   }
 
+  const std::vector<std::string> tokens = base::SplitString(
+      text, " ", base::TRIM_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
+
   float n_tokens = 0.0;
-  char text_c[text.length() + 1];
-  std::strcpy(text_c, text.c_str());
-  char *token = std::strtok(text_c, " ");
-  while (token != NULL) {
-    const auto iter = embeddings_.find(token);
-    if (iter != embeddings_.end()) {
+  for (const auto& token : tokens) {
+    const auto iter = embedding_pipeline_.embeddings.find(token);
+    if (iter != embedding_pipeline_.embeddings.end()) {
       BLOG(1, token << " - token found");
       embedding_vector.VectorAddElementWise(iter->second);
       n_tokens += 1.0;
     } else {
       BLOG(1, token);
     }
-    token = strtok(NULL, " ");
   }
 
   if (n_tokens == 0.0) {

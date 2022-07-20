@@ -31,7 +31,7 @@ TEST_F(BatAdsVectorDataTest, DenseVectorDataInitialization) {
 
   // Assert
   EXPECT_EQ(static_cast<int>(v_5.size()),
-            dense_data_vector_5.GetDimensionCountForTesting());
+            dense_data_vector_5.GetDimensionCount());
 }
 
 TEST_F(BatAdsVectorDataTest, SparseVectorDataInitialization) {
@@ -44,7 +44,7 @@ TEST_F(BatAdsVectorDataTest, SparseVectorDataInitialization) {
 
   // Assert
   EXPECT_EQ(kDimensionCount,
-            sparse_data_vector_6.GetDimensionCountForTesting());
+            sparse_data_vector_6.GetDimensionCount());
 }
 
 TEST_F(BatAdsVectorDataTest, DenseDenseProduct) {

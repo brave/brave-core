@@ -17,7 +17,7 @@ constexpr char kFeatureName[] = "TextEmbedding";
 
 constexpr char kFieldTrialParameterPageEmbeddingsHistorySize[] =
     "page_embeddings_history_size";
-const int kDefaultPageEmbeddingsHistorySize = 5;
+const int kDefaultPageEmbeddingsHistorySize = 10;
 
 constexpr char kFieldTrialParameterResourceVersion[] =
     "text_embedding_resource_version";

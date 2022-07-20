@@ -6,6 +6,7 @@
 #include "bat/ads/internal/processors/contextual/text_embedding/text_embedding_processor.h"
 #include "bat/ads/internal/processors/contextual/text_embedding/text_embedding_html_events.h"
 
+#include <vector>
 #include <algorithm>
 
 #include "base/check.h"
@@ -79,7 +80,7 @@ void TextEmbedding::Process(const std::string& text) {
         return;
       }
     });
-    
+
     GetTextEmbeddingEventsFromDatabase();
 
   });
