@@ -36,24 +36,17 @@ bool DebounceService::Debounce(const GURL& original_url,
   if (!base::Contains(host_cache, etldp1))
     return false;
 
-  bool changed = false;
-  GURL current_url = original_url;
   const std::vector<std::unique_ptr<DebounceRule>>& rules =
       component_installer_->rules();
 
-  // Debounce rules are applied in order. All rules are checked on every URL. If
-  // one rule applies, the URL is changed to the debounced URL and we continue
-  // to apply the rest of the rules to the new URL. Previously checked rules are
-  // not reapplied; i.e. we never restart the loop.
   for (const std::unique_ptr<DebounceRule>& rule : rules) {
-    if (rule->Apply(current_url, final_url, prefs_)) {
-      if (current_url != *final_url) {
-        changed = true;
-        current_url = *final_url;
+    if (rule->Apply(original_url, final_url, prefs_)) {
+      if (original_url != *final_url) {
+        return true;
       }
     }
   }
-  return changed;
+  return false;
 }
 
 }  // namespace debounce
