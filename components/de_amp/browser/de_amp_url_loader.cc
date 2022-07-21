@@ -19,7 +19,7 @@ namespace {
 
 constexpr uint32_t kReadBufferSize = 65536;  // bytes
 constexpr uint32_t kMaxBytesToCheck =
-    kReadBufferSize * 2;  // Should always be a multiple
+    kReadBufferSize * 3;  // Should always be a multiple
 
 }  // namespace
 

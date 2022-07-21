@@ -283,7 +283,7 @@ IN_PROC_BROWSER_TEST_F(DeAmpBrowserTest, CanonicalLinkOutsideChunkOutsideMax) {
   TogglePref(true);
   // Construct page with large <head>
   const std::string large_string = base::StringPrintf(
-      "%s\n%s", std::string(kTestReadBufferSize * 3, 'a').c_str(),
+      "%s\n%s", std::string(kTestReadBufferSize * 4, 'a').c_str(),
       kTestAmpCanonicalLink);
   const std::string amp_body_large =
       base::StringPrintf(kTestAmpBodyScaffolding, large_string.c_str());
