@@ -15,42 +15,76 @@ extension BraveWalletJsonRpcService {
   func balance(
     for token: BraveWallet.BlockchainToken,
     in account: BraveWallet.AccountInfo,
+    decimalFormatStyle: WeiFormatter.DecimalFormatStyle = .balance,
     completion: @escaping (Double?) -> Void
   ) {
-    let convert: (String, BraveWallet.ProviderError, String) -> Void = { wei, status, _ in
-      guard status == .success && !wei.isEmpty else {
-        completion(nil)
-        return
-      }
-      let formatter = WeiFormatter(decimalFormatStyle: .balance)
-      if let valueString = formatter.decimalString(
-        for: wei.removingHexPrefix,
-        radix: .hex,
-        decimals: Int(token.decimals)
-      ) {
-        completion(Double(valueString))
-      } else {
-        completion(nil)
-      }
-    }
     network(account.coin) { [self] network in
-      if token.symbol == network.symbol {
-        balance(account.address, coin: account.coin, chainId: network.chainId, completion: convert)
-      } else if token.isErc20 {
-        erc20TokenBalance(
-          token.contractAddress(in: network),
-          address: account.address,
-          chainId: network.chainId,
-          completion: convert
+      switch account.coin {
+      case .eth:
+        ethBalance(
+          for: token,
+          in: account.address,
+          network: network,
+          completion: { wei, status, _ in
+            guard status == .success && !wei.isEmpty else {
+              completion(nil)
+              return
+            }
+            let formatter = WeiFormatter(decimalFormatStyle: decimalFormatStyle)
+            if let valueString = formatter.decimalString(
+              for: wei.removingHexPrefix,
+              radix: .hex,
+              decimals: Int(token.decimals)
+            ) {
+              completion(Double(valueString))
+            } else {
+              completion(nil)
+            }
+          }
         )
-      } else if token.isErc721 {
-        erc721TokenBalance(
-          token.contractAddress,
-          tokenId: token.tokenId,
-          accountAddress: account.address,
-          chainId: network.chainId,
-          completion: convert)
-      } else {
+      case .sol:
+        if token.symbol == network.nativeToken.symbol {
+          solanaBalance(account.address, chainId: network.chainId) { lamports, status, errorMessage in
+            guard status == .success else {
+              completion(nil)
+              return
+            }
+            let formatter = WeiFormatter(decimalFormatStyle: decimalFormatStyle)
+            if let valueString = formatter.decimalString(
+              for: "\(lamports)",
+              radix: .decimal,
+              decimals: Int(token.decimals)
+            ) {
+              completion(Double(valueString))
+            } else {
+              completion(nil)
+            }
+          }
+        } else {
+          splTokenAccountBalance(
+            account.address,
+            tokenMintAddress: token.contractAddress,
+            chainId: network.chainId
+          ) { amount, _, _, status, errorMessage in
+            guard status == .success else {
+              completion(nil)
+              return
+            }
+            let formatter = WeiFormatter(decimalFormatStyle: decimalFormatStyle)
+            if let valueString = formatter.decimalString(
+              for: "\(amount)",
+              radix: .decimal,
+              decimals: Int(token.decimals)
+            ) {
+              completion(Double(valueString))
+            } else {
+              completion(nil)
+            }
+          }
+        }
+      case .fil:
+        completion(nil)
+      @unknown default:
         completion(nil)
       }
     }
@@ -83,42 +117,109 @@ extension BraveWalletJsonRpcService {
     decimalFormatStyle: WeiFormatter.DecimalFormatStyle,
     completion: @escaping (BDouble?) -> Void
   ) {
-    let convert: (String, BraveWallet.ProviderError, String) -> Void = { wei, status, _ in
-      guard status == .success && !wei.isEmpty else {
+    network(coin) { [self] network in
+      switch coin {
+      case .eth:
+        ethBalance(
+          for: token,
+          in: accountAddress,
+          network: network,
+          completion: { wei, status, _ in
+            guard status == .success && !wei.isEmpty else {
+              completion(nil)
+              return
+            }
+            let formatter = WeiFormatter(decimalFormatStyle: decimalFormatStyle)
+            if let valueString = formatter.decimalString(
+              for: wei.removingHexPrefix,
+              radix: .hex,
+              decimals: Int(token.decimals)
+            ) {
+              completion(BDouble(valueString))
+            } else {
+              completion(nil)
+            }
+          }
+        )
+      case .sol:
+        if token.symbol == network.nativeToken.symbol {
+          solanaBalance(accountAddress, chainId: network.chainId) { lamports, status, errorMessage in
+            guard status == .success else {
+              completion(nil)
+              return
+            }
+            let formatter = WeiFormatter(decimalFormatStyle: decimalFormatStyle)
+            if let valueString = formatter.decimalString(
+              for: "\(lamports)",
+              radix: .decimal,
+              decimals: Int(token.decimals)
+            ) {
+              completion(BDouble(valueString))
+            } else {
+              completion(nil)
+            }
+          }
+        } else {
+          splTokenAccountBalance(
+            accountAddress,
+            tokenMintAddress: token.contractAddress,
+            chainId: network.chainId
+          ) { amount, _, _, status, errorMessage in
+            guard status == .success else {
+              completion(nil)
+              return
+            }
+            let formatter = WeiFormatter(decimalFormatStyle: decimalFormatStyle)
+            if let valueString = formatter.decimalString(
+              for: "\(amount)",
+              radix: .decimal,
+              decimals: Int(token.decimals)
+            ) {
+              completion(BDouble(valueString))
+            } else {
+              completion(nil)
+            }
+          }
+        }
+      case .fil:
         completion(nil)
-        return
-      }
-      let formatter = WeiFormatter(decimalFormatStyle: decimalFormatStyle)
-      if let valueString = formatter.decimalString(
-        for: wei.removingHexPrefix,
-        radix: .hex,
-        decimals: Int(token.decimals)
-      ) {
-        completion(BDouble(valueString))
-      } else {
+      @unknown default:
         completion(nil)
       }
     }
-    network(coin) { [self] network in
-      if token.symbol == network.symbol {
-        balance(accountAddress, coin: coin, chainId: network.chainId, completion: convert)
-      } else if token.isErc20 {
-        erc20TokenBalance(
-          token.contractAddress(in: network),
-          address: accountAddress,
-          chainId: network.chainId,
-          completion: convert
-        )
-      } else if token.isErc721 {
-        erc721TokenBalance(
-          token.contractAddress,
-          tokenId: token.tokenId,
-          accountAddress: accountAddress,
-          chainId: network.chainId,
-          completion: convert)
-      } else {
-        completion(nil)
-      }
+  }
+  
+  private func ethBalance(
+    for token: BraveWallet.BlockchainToken,
+    in accountAddress: String,
+    network: BraveWallet.NetworkInfo,
+    completion: @escaping (String, BraveWallet.ProviderError, String) -> Void
+  ) {
+    if token.symbol == network.symbol {
+      balance(
+        accountAddress,
+        coin: .eth,
+        chainId: network.chainId,
+        completion: completion
+      )
+    } else if token.isErc20 {
+      erc20TokenBalance(
+        token.contractAddress(in: network),
+        address: accountAddress,
+        chainId: network.chainId,
+        completion: completion
+      )
+    } else if token.isErc721 {
+      erc721TokenBalance(
+        token.contractAddress,
+        tokenId: token.tokenId,
+        accountAddress: accountAddress,
+        chainId: network.chainId,
+        completion: completion
+      )
+    } else {
+      let errorMessage = "Unable to fetch ethereum balance for \(token.symbol) token in account address '\(accountAddress)'"
+      completion("", .internalError, errorMessage)
     }
   }
 }

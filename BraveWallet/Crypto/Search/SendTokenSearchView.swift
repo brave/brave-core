@@ -15,7 +15,7 @@ struct SendTokenSearchView: View {
   var network: BraveWallet.NetworkInfo
   
   var body: some View {
-    TokenList(tokens: sendTokenStore.userAssets.filter({ $0.isErc20 || $0.symbol == network.symbol })) { token in
+    TokenList(tokens: sendTokenStore.userAssets.filter { !$0.isErc721 || $0.symbol == network.symbol }) { token in
       Button(action: {
         sendTokenStore.selectedSendToken = token
         presentationMode.dismiss()

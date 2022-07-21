@@ -56,7 +56,7 @@ class AccountActivityStore: ObservableObject {
 
   func update() {
     Task { @MainActor in
-      let coin = await walletService.selectedCoin()
+      let coin = account.coin
       let network = await rpcService.network(coin)
       let keyring = await keyringService.keyringInfo(coin.keyringId)
       let allTokens: [BraveWallet.BlockchainToken] = await blockchainRegistry.allTokens(network.chainId, coin: network.coin)
@@ -83,12 +83,12 @@ class AccountActivityStore: ObservableObject {
       AssetViewModel(token: $0, decimalBalance: 0, price: "", history: [])
     }
     // fetch price for each asset
-    let (_, prices) = await assetRatioService.price(
+    let priceResult = await assetRatioService.priceWithIndividualRetry(
       userVisibleTokens.map { $0.symbol.lowercased() },
       toAssets: [currencyFormatter.currencyCode],
       timeframe: .oneDay
     )
-    for price in prices {
+    for price in priceResult.assetPrices {
       if let index = updatedAssets.firstIndex(where: {
         $0.token.symbol.caseInsensitiveCompare(price.fromAsset) == .orderedSame
       }) {
