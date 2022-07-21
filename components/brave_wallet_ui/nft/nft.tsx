@@ -40,7 +40,7 @@ const App = () => {
   const [nftMetadata, setNftMetadata] = React.useState<NFTMetadataReturnType>()
   const [tokenNetwork, setTokenNetwork] = React.useState<BraveWallet.NetworkInfo>()
   const [imageUrl, setImageUrl] = React.useState<string>()
-
+  console.log(imageUrl)
   const onMessageEventListener = React.useCallback((event: MessageEvent<CommandMessage>) => {
     // validate message origin
     if (event.origin !== braveWalletOrigin) return

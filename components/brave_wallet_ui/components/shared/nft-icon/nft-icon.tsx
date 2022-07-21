@@ -28,7 +28,7 @@ export const NftIcon = ({ icon }: AssetIconProps) => {
       onLoad={() => setLoaded(true)}
       ref={nftImageIframeRef}
       src="chrome-untrusted://nft-display"
-      sandbox="allow-scripts"
+      sandbox="allow-scripts allow-same-origin"
     />
   )
 }
