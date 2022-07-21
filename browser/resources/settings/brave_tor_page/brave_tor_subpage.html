@@ -29,10 +29,9 @@
 <settings-toggle-button pref="{{prefs.tor.auto_onion_location}}" class="cr-row" label="$i18n{autoOnionLocationLabel}"
   sub-label="$i18n{autoOnionLocationDesc}" disabled="[[!torEnabledPref_.value]]">
 </settings-toggle-button>
-
 <settings-toggle-button id="useBridges" class="cr-row" label="$i18n{torUseBridgesTitle}"
-  sub-label="$i18n{torUseBridgesDesc}" learn-more-url="https://support.brave.com/" pref="{{isUsingBridges_}}"
-  disabled="[[!torEnabledPref_.value]]">
+  sub-label="$i18n{torUseBridgesDesc}" learn-more-url="https://support.brave.com/hc/en-us/articles/7816553516045"
+  pref="{{isUsingBridges_}}" disabled="[[!torEnabledPref_.value]]">
   <template is="dom-if" if="[[isConfigChanged_]]">
     <cr-button id="apply" on-click="setBridgesConfig_" slot="more-actions">
       $i18n{torApplyChangesButton}
