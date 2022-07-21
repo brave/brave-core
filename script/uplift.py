@@ -186,7 +186,7 @@ def parse_issues_fixed(body):
         regex = r'((Resolves|Fixes|Fix|Closes|Close|resolves|fixes|fix|closes|close) https:\/\/github\.com\/brave\/brave-browser\/issues\/(\d*))'  # nopep8
         return re.findall(regex, body)
     except Exception as e:
-        print str(e)
+        print(str(e))
         return []
 
 
