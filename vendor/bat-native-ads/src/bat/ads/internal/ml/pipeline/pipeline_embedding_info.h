@@ -9,7 +9,6 @@
 #include <map>
 #include <string>
 
-#include "bat/ads/internal/ml/ml_aliases.h"
 #include "bat/ads/internal/ml/data/vector_data.h"
 
 namespace ads {
