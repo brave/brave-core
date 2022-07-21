@@ -164,6 +164,56 @@ TEST(DeAmpUtilUnitTest, SingleQuotes) {
   CheckFindCanonicalLinkResult("https://abc.com", body, true);
 }
 
+TEST(DeAmpUtilUnitTest, NoQuotes) {
+  const std::string body =
+      "<DOCTYPE! html>"
+      "<html AMP xyzzy>\n"
+      "<head><link rel=author href=https://xyz.com/>\n"
+      "<link href=https://abc.com rel=canonical>"
+      "</head><body></body></html>";
+  CheckFindCanonicalLinkResult("https://abc.com", body, true);
+}
+
+TEST(DeAmpUtilUnitTest, NoQuotesEndingWithHref) {
+  const std::string body =
+      "<DOCTYPE! html>"
+      "<html AMP xyzzy>\n"
+      "<head><link rel=author href=https://xyz.com/>\n"
+      "<link rel=canonical href=https://abc.com/>"
+      "</head><body></body></html>";
+  CheckFindCanonicalLinkResult("https://abc.com", body, true);
+}
+
+TEST(DeAmpUtilUnitTest, NoQuotesEndingWithSpaceSlashAngleBracket) {
+  const std::string body =
+      "<DOCTYPE! html>"
+      "<html AMP xyzzy>\n"
+      "<head><link rel=author href=https://xyz.com/>\n"
+      "<link rel=canonical href=https://abc.com />"
+      "</head><body></body></html>";
+  CheckFindCanonicalLinkResult("https://abc.com", body, true);
+}
+
+TEST(DeAmpUtilUnitTest, NoQuotesEndingWithAngleBracket) {
+  const std::string body =
+      "<DOCTYPE! html>"
+      "<html AMP xyzzy>\n"
+      "<head><link rel=author href=https://xyz.com/>\n"
+      "<link rel=canonical href=https://abc.com>"
+      "</head><body></body></html>";
+  CheckFindCanonicalLinkResult("https://abc.com", body, true);
+}
+
+TEST(DeAmpUtilUnitTest, NoQuotesEndingWithSpaceAngleBracket) {
+  const std::string body =
+      "<DOCTYPE! html>"
+      "<html AMP xyzzy>\n"
+      "<head>\n<link rel=canonical href=https://abc.com ><link rel=author "
+      "href=https://xyz.com/>"
+      "</head><body></body></html>";
+  CheckFindCanonicalLinkResult("https://abc.com", body, true);
+}
+
 TEST(DeAmpUtilUnitTest, CanonicalLinkMissingScheme) {
   CheckCheckCanonicalLinkResult("xyz.com", "https://amp.xyz.com", false);
 }

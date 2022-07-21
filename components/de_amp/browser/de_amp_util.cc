@@ -26,8 +26,9 @@ constexpr char kDetectAmpPattern[] =
 // Look for canonical link tag and get href
 // https://amp.dev/documentation/guides-and-tutorials/learn/spec/amphtml/?format=websites#canon
 constexpr char kFindCanonicalLinkTagPattern[] =
-    "(<\\s*?link\\s[^>]*?rel=(?:\"|')canonical(?:\"|')(?:\\s[^>]*?>|>|/>))";
-constexpr char kFindCanonicalHrefInTagPattern[] = "href=(?:\"|')(.*?)(?:\"|')";
+    "(<\\s*?link\\s[^>]*?rel=(?:\"|')?canonical(?:\"|')?(?:\\s[^>]*?>|>|/>))";
+constexpr char kFindCanonicalHrefInTagPattern[] =
+    "href=(?:\"|')?(.*?)(?:\"|')?(?:\\s[^>]*?>|>|/>)";
 }  // namespace
 
 bool IsDeAmpEnabled(PrefService* prefs) {
