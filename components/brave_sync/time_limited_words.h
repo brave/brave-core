@@ -25,6 +25,7 @@ FORWARD_DECLARE_TEST(TimeLimitedWordsTest, Parse);
 class TimeLimitedWords {
  public:
   enum class ValidationStatus {
+    kValid = 0,  // for iOS compatibility
     kNotValidPureWords = 1,
     kVersionDeprecated = 2,
     kExpired = 3,
