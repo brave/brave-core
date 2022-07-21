@@ -310,15 +310,21 @@ void Promotion::OnClaimPromotion(
   }
 
   ledger_->wallet()->CreateWalletIfNecessary(
-      [this, payload, callback](const type::Result result) {
-        if (result != type::Result::WALLET_CREATED) {
-          BLOG(0, "Wallet couldn't be created");
-          callback(type::Result::LEDGER_ERROR, "");
-          return;
-        }
+      base::BindOnce(&Promotion::OnCreateWalletIfNecessary,
+                     base::Unretained(this), std::move(callback), payload));
+}
 
-        attestation_->Start(payload, callback);
-      });
+void Promotion::OnCreateWalletIfNecessary(
+    ledger::ClaimPromotionCallback callback,
+    const std::string& payload,
+    type::Result result) {
+  if (result != type::Result::WALLET_CREATED) {
+    BLOG(0, "Wallet couldn't be created");
+    callback(type::Result::LEDGER_ERROR, "");
+    return;
+  }
+
+  attestation_->Start(payload, callback);
 }
 
 void Promotion::Attest(

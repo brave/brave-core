@@ -456,7 +456,7 @@ BATClassLedgerBridge(BOOL, isDebug, setDebug, is_debug)
   //   malformed data
   //   - REGISTRATION_VERIFICATION_FAILED: Missing master user token
   self.initializingWallet = YES;
-  ledger->CreateWallet(^(ledger::type::Result result) {
+  ledger->CreateWallet(base::BindOnce(^(ledger::type::Result result) {
     const auto strongSelf = weakSelf;
     if (!strongSelf) {
       return;
@@ -497,7 +497,7 @@ BATClassLedgerBridge(BOOL, isDebug, setDebug, is_debug)
         }
       }
     });
-  });
+  }));
 }
 
 - (void)currentWalletInfo:

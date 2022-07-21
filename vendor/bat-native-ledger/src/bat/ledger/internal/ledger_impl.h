@@ -96,7 +96,7 @@ class LedgerImpl : public Ledger {
   void Initialize(bool execute_create_script,
                   LegacyResultCallback callback) override;
 
-  void CreateWallet(LegacyResultCallback callback) override;
+  void CreateWallet(ResultCallback callback) override;
 
   void OneTimeTip(const std::string& publisher_key,
                   double amount,

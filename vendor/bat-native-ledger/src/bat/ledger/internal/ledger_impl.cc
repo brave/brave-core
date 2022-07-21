@@ -269,9 +269,10 @@ void LedgerImpl::OnStateInitialized(type::Result result,
   callback(type::Result::LEDGER_OK);
 }
 
-void LedgerImpl::CreateWallet(LegacyResultCallback callback) {
-  WhenReady(
-      [this, callback]() { wallet()->CreateWalletIfNecessary(callback); });
+void LedgerImpl::CreateWallet(ResultCallback callback) {
+  WhenReady([this, callback = std::move(callback)]() mutable {
+    wallet()->CreateWalletIfNecessary(std::move(callback));
+  });
 }
 
 void LedgerImpl::OneTimeTip(const std::string& publisher_key,

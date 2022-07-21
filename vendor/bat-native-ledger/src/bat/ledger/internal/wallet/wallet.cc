@@ -36,7 +36,7 @@ Wallet::Wallet(LedgerImpl* ledger)
 
 Wallet::~Wallet() = default;
 
-void Wallet::CreateWalletIfNecessary(ledger::LegacyResultCallback callback) {
+void Wallet::CreateWalletIfNecessary(ledger::ResultCallback callback) {
   create_->Start(std::move(callback));
 }
 
@@ -89,15 +89,22 @@ void Wallet::ExternalWalletAuthorization(
     const base::flat_map<std::string, std::string>& args,
     ledger::ExternalWalletAuthorizationCallback callback) {
   CreateWalletIfNecessary(
-      [this, wallet_type, args, callback](const type::Result result) {
-        if (result != type::Result::WALLET_CREATED) {
-          BLOG(0, "Wallet couldn't be created");
-          callback(type::Result::LEDGER_ERROR, {});
-          return;
-        }
+      base::BindOnce(&Wallet::OnCreateWalletIfNecessary, base::Unretained(this),
+                     std::move(callback), wallet_type, args));
+}
 
-        AuthorizeWallet(wallet_type, args, callback);
-      });
+void Wallet::OnCreateWalletIfNecessary(
+    ledger::ExternalWalletAuthorizationCallback callback,
+    const std::string& wallet_type,
+    const base::flat_map<std::string, std::string>& args,
+    type::Result result) {
+  if (result != type::Result::WALLET_CREATED) {
+    BLOG(0, "Wallet couldn't be created");
+    callback(type::Result::LEDGER_ERROR, {});
+    return;
+  }
+
+  AuthorizeWallet(wallet_type, args, callback);
 }
 
 void Wallet::AuthorizeWallet(

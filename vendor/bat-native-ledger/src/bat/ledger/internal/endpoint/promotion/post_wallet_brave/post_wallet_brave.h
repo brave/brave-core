@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVELEDGER_ENDPOINT_PROMOTION_POST_WALLET_BRAVE_POST_WALLET_BRAVE_H_
-#define BRAVELEDGER_ENDPOINT_PROMOTION_POST_WALLET_BRAVE_POST_WALLET_BRAVE_H_
+#ifndef BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_ENDPOINT_PROMOTION_POST_WALLET_BRAVE_POST_WALLET_BRAVE_H_
+#define BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_ENDPOINT_PROMOTION_POST_WALLET_BRAVE_POST_WALLET_BRAVE_H_
 
 #include <string>
 
@@ -33,9 +33,9 @@ class LedgerImpl;
 namespace endpoint {
 namespace promotion {
 
-using PostWalletBraveCallback = std::function<void(
-    const type::Result result,
-    const std::string& payment_id)>;
+using PostWalletBraveCallback =
+    base::OnceCallback<void(type::Result result,
+                            const std::string& payment_id)>;
 
 class PostWalletBrave {
  public:
@@ -53,9 +53,8 @@ class PostWalletBrave {
       const std::string& body,
       std::string* payment_id);
 
-  void OnRequest(
-      const type::UrlResponse& response,
-      PostWalletBraveCallback callback);
+  void OnRequest(PostWalletBraveCallback callback,
+                 const type::UrlResponse& response);
 
   LedgerImpl* ledger_;  // NOT OWNED
 };
@@ -64,4 +63,4 @@ class PostWalletBrave {
 }  // namespace endpoint
 }  // namespace ledger
 
-#endif  // BRAVELEDGER_ENDPOINT_PROMOTION_POST_WALLET_BRAVE_POST_WALLET_BRAVE_H_
+#endif  // BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_ENDPOINT_PROMOTION_POST_WALLET_BRAVE_POST_WALLET_BRAVE_H_

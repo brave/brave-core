@@ -128,7 +128,7 @@ class LEDGER_EXPORT Ledger {
 
   virtual void Initialize(bool execute_create_script, LegacyResultCallback) = 0;
 
-  virtual void CreateWallet(LegacyResultCallback callback) = 0;
+  virtual void CreateWallet(ResultCallback callback) = 0;
 
   virtual void OneTimeTip(const std::string& publisher_key,
                           double amount,

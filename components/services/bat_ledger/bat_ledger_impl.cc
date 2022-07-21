@@ -49,20 +49,8 @@ void BatLedgerImpl::Initialize(
       std::bind(BatLedgerImpl::OnInitialize, holder, _1));
 }
 
-// static
-void BatLedgerImpl::OnCreateWallet(
-    CallbackHolder<CreateWalletCallback>* holder,
-    ledger::type::Result result) {
-  if (holder->is_valid())
-    std::move(holder->get()).Run(result);
-  delete holder;
-}
-
 void BatLedgerImpl::CreateWallet(CreateWalletCallback callback) {
-  // deleted in OnCreateWallet
-  auto* holder = new CallbackHolder<CreateWalletCallback>(
-      AsWeakPtr(), std::move(callback));
-  ledger_->CreateWallet(std::bind(BatLedgerImpl::OnCreateWallet, holder, _1));
+  ledger_->CreateWallet(std::move(callback));
 }
 
 // static

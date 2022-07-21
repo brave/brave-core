@@ -296,10 +296,6 @@ class BatLedgerImpl :
       const ledger::type::Result result,
       ledger::type::PromotionPtr promotion);
 
-  static void OnCreateWallet(
-      CallbackHolder<CreateWalletCallback>* holder,
-      ledger::type::Result result);
-
   static void OnInitialize(
       CallbackHolder<InitializeCallback>* holder,
       ledger::type::Result result);

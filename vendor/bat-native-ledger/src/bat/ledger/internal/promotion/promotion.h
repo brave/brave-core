@@ -76,6 +76,10 @@ class Promotion {
       const std::string& payload,
       ledger::ClaimPromotionCallback callback);
 
+  void OnCreateWalletIfNecessary(ledger::ClaimPromotionCallback callback,
+                                 const std::string& payload,
+                                 type::Result result);
+
   void OnAttestPromotion(
       type::PromotionPtr promotion,
       const std::string& solution,

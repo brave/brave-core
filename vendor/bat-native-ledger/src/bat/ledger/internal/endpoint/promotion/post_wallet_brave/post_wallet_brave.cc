@@ -14,8 +14,6 @@
 #include "bat/ledger/internal/common/request_util.h"
 #include "net/http/http_status_code.h"
 
-using std::placeholders::_1;
-
 namespace ledger {
 namespace endpoint {
 namespace promotion {
@@ -83,7 +81,7 @@ void PostWalletBrave::Request(
   const auto wallet = ledger_->wallet()->GetWallet();
   if (!wallet) {
     BLOG(0, "Wallet is null");
-    callback(type::Result::LEDGER_ERROR, "");
+    std::move(callback).Run(type::Result::LEDGER_ERROR, "");
     return;
   }
 
@@ -93,33 +91,30 @@ void PostWalletBrave::Request(
       util::Security::GetPublicKeyHexFromSeed(wallet->recovery_seed),
       wallet->recovery_seed);
 
-  auto url_callback = std::bind(&PostWalletBrave::OnRequest,
-      this,
-      _1,
-      callback);
+  auto url_callback = base::BindOnce(
+      &PostWalletBrave::OnRequest, base::Unretained(this), std::move(callback));
 
   auto request = type::UrlRequest::New();
   request->url = GetUrl();
   request->headers = headers;
   request->method = type::UrlMethod::POST;
-  ledger_->LoadURL(std::move(request), url_callback);
+  ledger_->LoadURL(std::move(request), std::move(url_callback));
 }
 
-void PostWalletBrave::OnRequest(
-    const type::UrlResponse& response,
-    PostWalletBraveCallback callback) {
+void PostWalletBrave::OnRequest(PostWalletBraveCallback callback,
+                                const type::UrlResponse& response) {
   ledger::LogUrlResponse(__func__, response);
 
   std::string payment_id;
   type::Result result = CheckStatusCode(response.status_code);
 
   if (result != type::Result::LEDGER_OK) {
-    callback(result, payment_id);
+    std::move(callback).Run(result, payment_id);
     return;
   }
 
   result = ParseBody(response.body, &payment_id);
-  callback(result, payment_id);
+  std::move(callback).Run(result, payment_id);
 }
 
 }  // namespace promotion

@@ -24,12 +24,12 @@ class WalletCreate {
   explicit WalletCreate(LedgerImpl* ledger);
   ~WalletCreate();
 
-  void Start(ledger::LegacyResultCallback callback);
+  void Start(ledger::ResultCallback callback);
 
  private:
-  void OnCreate(type::Result result,
-                const std::string& payment_id,
-                ledger::LegacyResultCallback callback);
+  void OnCreate(ledger::ResultCallback callback,
+                type::Result result,
+                const std::string& payment_id);
 
   LedgerImpl* ledger_;  // NOT OWNED
   std::unique_ptr<endpoint::PromotionServer> promotion_server_;
