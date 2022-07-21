@@ -9,20 +9,26 @@ import { Redirect, useHistory, useParams } from 'react-router'
 
 // types
 import {
-  BraveWallet,
-  UserAssetInfoType,
   AddAccountNavTypes,
-  WalletState,
+  BraveWallet,
   PageState,
   SupportedTestNetworks,
-  WalletRoutes
+  UserAssetInfoType,
+  WalletRoutes,
+  WalletState
 } from '../../../../constants/types'
 
 // Utils
 import Amount from '../../../../utils/amount'
 import { mojoTimeDeltaToJSDate } from '../../../../../common/mojomUtils'
 import { sortTransactionByDate } from '../../../../utils/tx-utils'
-import { getTokensNetwork, getTokensCoinType } from '../../../../utils/network-utils'
+import { getTokensCoinType, getTokensNetwork } from '../../../../utils/network-utils'
+import {
+  NftUiCommand,
+  sendMessageToNftUiFrame,
+  UpdateLoadingMessage, UpdateNFtMetadataMessage,
+  UpdateSelectedAssetMessage, UpdateTokenNetworkMessage
+} from '../../../../nft/nft-ui-messages'
 
 // actions
 import { WalletPageActions } from '../../../../page/actions'
@@ -32,12 +38,9 @@ import { ChartTimelineOptions } from '../../../../options/chart-timeline-options
 import { AllNetworksOption } from '../../../../options/network-filter-options'
 
 // Components
-import { BackButton, withPlaceholderIcon } from '../../../shared'
-import {
-  ChartControlBar,
-  LineChart
-} from '../../'
-// import NFTDetails from './components/nft-details'
+import { BackButton } from '../../../shared'
+import withPlaceholderIcon from '../../../shared/create-placeholder-icon'
+import { ChartControlBar, LineChart } from '../../'
 import AccountsAndTransactionsList from './components/accounts-and-transctions-list'
 
 // Hooks
@@ -45,25 +48,25 @@ import { useBalance, usePricing, useTransactionParser } from '../../../../common
 
 // Styled Components
 import {
-  StyledWrapper,
-  TopRow,
-  AssetIcon,
-  AssetRow,
+  ArrowIcon,
   AssetColumn,
-  PriceRow,
+  AssetIcon,
   AssetNameText,
+  AssetRow,
+  BalanceRow,
   DetailText,
   InfoColumn,
-  PriceText,
+  NetworkDescription,
+  NftDetails,
   PercentBubble,
   PercentText,
-  ArrowIcon,
-  BalanceRow,
+  PriceRow,
+  PriceText,
   ShowBalanceButton,
-  NetworkDescription
+  StyledWrapper,
+  TopRow
 } from './style'
 import { Skeleton } from '../../../shared/loading-skeleton/styles'
-import NFTDetails from './components/nft-details'
 
 const AssetIconWithPlaceholder = withPlaceholderIcon(AssetIcon, { size: 'big', marginLeft: 0, marginRight: 12 })
 
@@ -71,7 +74,7 @@ export const PortfolioAsset = () => {
   // routing
   const history = useHistory()
   const { id: assetId, tokenId } = useParams<{ id?: string, tokenId?: string }>()
-
+  const nftDetailsRef = React.useRef<HTMLIFrameElement>(null)
   // redux
   const dispatch = useDispatch()
   const {
@@ -94,7 +97,9 @@ export const PortfolioAsset = () => {
     selectedAssetCryptoPrice,
     selectedAssetFiatPrice,
     selectedAssetPriceHistory,
-    selectedTimeline
+    selectedTimeline,
+    isFetchingNFTMetadata,
+    nftMetadata
   } = useSelector(({ page }: { page: PageState }) => page)
   // custom hooks
   const getAccountBalance = useBalance(networkList)
@@ -299,6 +304,43 @@ export const PortfolioAsset = () => {
     }
   }, [selectedAssetFromParams])
 
+  React.useEffect(() => {
+    if (nftDetailsRef && nftDetailsRef.current) {
+      const command: UpdateLoadingMessage = {
+        command: NftUiCommand.UpdateLoading,
+        payload: isFetchingNFTMetadata
+      }
+      sendMessageToNftUiFrame(nftDetailsRef.current.contentWindow, command)
+    }
+  }, [nftDetailsRef, isFetchingNFTMetadata])
+
+  React.useEffect(() => {
+    if (selectedAsset && nftDetailsRef && nftDetailsRef.current) {
+      const command: UpdateSelectedAssetMessage = {
+        command: NftUiCommand.UpdateSelectedAsset,
+        payload: selectedAsset
+      }
+      sendMessageToNftUiFrame(nftDetailsRef.current.contentWindow, command)
+    }
+
+    if (selectedAsset && networkList && nftDetailsRef.current) {
+      const tokenNetwork = getTokensNetwork(networkList, selectedAsset)
+      const command: UpdateTokenNetworkMessage = {
+        command: NftUiCommand.UpdateTokenNetwork,
+        payload: tokenNetwork
+      }
+      sendMessageToNftUiFrame(nftDetailsRef.current.contentWindow, command)
+    }
+
+    if (nftMetadata && nftDetailsRef && nftDetailsRef.current) {
+      const command: UpdateNFtMetadataMessage = {
+        command: NftUiCommand.UpdateNFTMetadata,
+        payload: nftMetadata
+      }
+      sendMessageToNftUiFrame(nftDetailsRef.current.contentWindow, command)
+    }
+  }, [nftDetailsRef, selectedAsset, nftMetadata, networkList])
+
   // token list needs to load before we can find an asset to select from the url params
   if (userVisibleTokensInfo.length === 0) {
     return <Skeleton />
@@ -377,11 +419,12 @@ export const PortfolioAsset = () => {
         />
       }
 
-      {selectedAsset?.isErc721 &&
-        <NFTDetails
-          selectedAsset={selectedAsset}
-        />
-      }
+      <NftDetails
+        visible={selectedAsset?.isErc721}
+        ref={nftDetailsRef}
+        sandbox="allow-scripts allow-popups allow-same-origin"
+        src='chrome-untrusted://nft-display'
+      />
 
       <AccountsAndTransactionsList
         formattedFullAssetBalance={formattedFullAssetBalance}
