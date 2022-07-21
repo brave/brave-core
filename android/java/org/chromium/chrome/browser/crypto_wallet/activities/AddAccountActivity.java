@@ -11,7 +11,6 @@ import android.net.Uri;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -20,31 +19,19 @@ import android.widget.TextView;
 
 import androidx.appcompat.widget.Toolbar;
 
-import com.google.android.gms.common.util.ArrayUtils;
-
 import org.chromium.base.Log;
 import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.BraveWalletConstants;
-import org.chromium.brave_wallet.mojom.CoinType;
-import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.app.domain.WalletModel;
-import org.chromium.chrome.browser.crypto_wallet.KeyringServiceFactory;
 import org.chromium.chrome.browser.crypto_wallet.model.CryptoAccountTypeInfo;
-import org.chromium.chrome.browser.crypto_wallet.observers.KeyringServiceObserver;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
-import org.chromium.chrome.browser.init.AsyncInitializationActivity;
-import org.chromium.mojo.bindings.ConnectionErrorHandler;
-import org.chromium.mojo.system.MojoException;
+import org.chromium.chrome.browser.crypto_wallet.util.WalletUtils;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 public class AddAccountActivity extends BraveWalletBaseActivity {
     public static final String ACCOUNT = "account";
@@ -220,28 +207,11 @@ public class AddAccountActivity extends BraveWalletBaseActivity {
                 WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE);
         assert mKeyringService != null;
         mWalletModel.getKeyringModel().getAccounts(accountInfos -> {
-            ArrayList<AccountInfo> accountInfoList = new ArrayList<>();
-            for (AccountInfo accountInfo : accountInfos) {
-                if (accountInfo.coin == mCryptoAccountTypeInfo.getCoinType()) {
-                    accountInfoList.add(accountInfo);
-                }
-            }
-            mAddAccountText.setText(getUniqueNextAccountName(
-                    accountInfoList.toArray(new AccountInfo[0]), 1, mCryptoAccountTypeInfo));
+            mAddAccountText.setText(WalletUtils.getUniqueNextAccountName(this,
+                    mWalletModel.getKeyringModel().mAccountInfos.getValue().toArray(
+                            new AccountInfo[0]),
+                    mCryptoAccountTypeInfo.getName(), mCryptoAccountTypeInfo.getCoinType()));
         });
-    }
-
-    private String getUniqueNextAccountName(
-            AccountInfo[] accountInfos, int number, CryptoAccountTypeInfo cryptoAccountTypeInfo) {
-        String accountName = getString(R.string.new_account_prefix, cryptoAccountTypeInfo.getName(),
-                String.valueOf(accountInfos.length + number));
-        for (AccountInfo accountInfo : accountInfos) {
-            if (accountInfo.name.equals(accountName)) {
-                return getUniqueNextAccountName(accountInfos, number + 1, cryptoAccountTypeInfo);
-            }
-        }
-
-        return accountName;
     }
 
     @Override

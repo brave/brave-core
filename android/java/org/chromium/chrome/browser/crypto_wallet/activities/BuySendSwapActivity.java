@@ -293,7 +293,7 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
             if (mJsonRpcService != null) {
                 mJsonRpcService.getAllNetworks(CoinType.ETH, chains -> {
                     NetworkInfo[] customNetworks = Utils.getCustomNetworks(chains);
-                    final String chainId = Utils.getNetworkConst(this, item, customNetworks);
+                    final String chainId = Utils.getNetworkChainId(this, item, customNetworks);
 
                     if (mActivityType == ActivityType.BUY) {
                         adjustTestFaucetControls(getPerNetworkUiInfo(chainId));
