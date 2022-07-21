@@ -112,7 +112,7 @@ provideStrings({
 
   // Onboarding - Welcome
   braveWalletWelcomeTitle: 'Secure. Multi-chain. And oh-so-easy to use. Your Brave Wallet is just a few clicks away',
-  braveWalletWelcomeButton: 'Create a new wallet',
+  braveWalletWelcomeButton: 'Create new wallet',
   braveWalletLearnMoreAboutBraveWallet: 'Learn more about Brave Wallet',
   braveWalletImportExistingWallet: 'Import an existing wallet',
   braveWalletWelcomeRestoreButton: 'Restore',
