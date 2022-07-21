@@ -64,6 +64,7 @@ WEB_CONTENTS_USER_DATA_KEY_IMPL(DebounceTabHelper);
 
 void ClearRedirectChain(NavigationHandle* navigation_handle) {
   if (!navigation_handle->IsInMainFrame() ||
+      !navigation_handle->GetNavigationEntry() ||
       navigation_handle->GetNavigationEntry()->GetTransitionType() &
           ui::PAGE_TRANSITION_IS_REDIRECT_MASK)
     return;
