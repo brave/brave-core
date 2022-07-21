@@ -8,11 +8,20 @@ source_set("brave_shields") {
   sources = [
     "adblock_engine.h",
     "adblock_engine.mm",
+    "adblock_filter_list+private.h",
+    "adblock_filter_list.h",
+    "adblock_filter_list.mm",
+    "adblock_service+private.h",
+    "adblock_service.h",
+    "adblock_service.mm",
   ]
   deps = [
     "//base",
     "//brave/base/mac",
     "//brave/components/adblock_rust_ffi",
+    "//brave/components/brave_component_updater/browser",
+    "//brave/components/brave_shields/browser:component_installer",
     "//brave/components/brave_shields/common",
+    "//components/component_updater",
   ]
 }

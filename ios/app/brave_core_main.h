@@ -14,6 +14,7 @@
 @class BraveSyncAPI;
 @class BraveSyncProfileServiceIOS;
 @class BraveStats;
+@class AdblockService;
 
 @protocol BraveWalletBlockchainRegistry;
 @protocol BraveWalletEthereumProvider;
@@ -83,6 +84,8 @@ OBJC_EXPORT
 - (NSString*)providerScriptForCoinType:(BraveWalletCoinType)coinType;
 
 @property(readonly) BraveStats* braveStats;
+
+@property(readonly) AdblockService* adblockService;
 
 @end
 
