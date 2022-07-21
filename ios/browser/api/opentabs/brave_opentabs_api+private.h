@@ -21,8 +21,9 @@ class SessionSyncService;
 }  // namespace sync_sessions
 
 @interface BraveOpenTabsAPI (Private)
-- (instancetype)initWithSyncService:(syncer::SyncService*)syncService 
-    sessionSyncService:(sync_sessions::SessionSyncService*)sessionSyncService;
+- (instancetype)initWithSyncService:(syncer::SyncService*)syncService
+                 sessionSyncService:
+                     (sync_sessions::SessionSyncService*)sessionSyncService;
 @end
 
 NS_ASSUME_NONNULL_END

@@ -33,8 +33,7 @@ OpenTabsSessionListenerIOS::~OpenTabsSessionListenerIOS() {
   service_->RemoveObserver(this);
 }
 
-void OpenTabsSessionListenerIOS::OnStateChanged(
-    syncer::SyncService* sync) {
+void OpenTabsSessionListenerIOS::OnStateChanged(syncer::SyncService* sync) {
   if ([observer_ respondsToSelector:@selector(openTabsSyncStateChanged)]) {
     [observer_ openTabsSyncStateChanged];
   }
@@ -49,13 +48,13 @@ void OpenTabsSessionListenerIOS::OnSyncCycleCompleted(
 
 void OpenTabsSessionListenerIOS::OnSyncConfigurationCompleted(
     syncer::SyncService* sync) {
-  if ([observer_ respondsToSelector:@selector(openTabsSyncConfigurationCompleted)]) {
+  if ([observer_
+          respondsToSelector:@selector(openTabsSyncConfigurationCompleted)]) {
     [observer_ openTabsSyncConfigurationCompleted];
   }
 }
 
-void OpenTabsSessionListenerIOS::OnSyncShutdown(
-    syncer::SyncService* sync) {
+void OpenTabsSessionListenerIOS::OnSyncShutdown(syncer::SyncService* sync) {
   if ([observer_ respondsToSelector:@selector(openTabsSyncShutdown)]) {
     [observer_ openTabsSyncShutdown];
   }
@@ -72,7 +71,7 @@ void OpenTabsSessionListenerIOS::OnSyncShutdown(
 
 @implementation OpenTabsSessionListenerImpl
 - (instancetype)init:(id<OpenTabsSessionStateObserver>)observer
-      syncService:(void*)service {
+         syncService:(void*)service {
   if ((self = [super init])) {
     observer_ = std::make_unique<brave::ios::OpenTabsSessionListenerIOS>(
         observer, static_cast<syncer::SyncService*>(service));

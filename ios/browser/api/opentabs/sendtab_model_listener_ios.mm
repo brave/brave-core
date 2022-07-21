@@ -8,8 +8,8 @@
 #include "base/check.h"
 #include "base/strings/sys_string_conversions.h"
 
-#include "components/send_tab_to_self/send_tab_to_self_model.h"
 #include "components/send_tab_to_self/send_tab_to_self_entry.h"
+#include "components/send_tab_to_self/send_tab_to_self_model.h"
 #include "components/send_tab_to_self/send_tab_to_self_model_observer.h"
 
 #include "net/base/mac/url_conversions.h"
@@ -40,39 +40,44 @@ SendTabToSelfModelListenerIOS::~SendTabToSelfModelListenerIOS() {
 }
 
 void SendTabToSelfModelListenerIOS::SendTabToSelfModelLoaded() {
-    if ([observer_ respondsToSelector:@selector(sendTabToSelfModelLoaded)]) {
+  if ([observer_ respondsToSelector:@selector(sendTabToSelfModelLoaded)]) {
     [observer_ sendTabToSelfModelLoaded];
   }
 }
 
 void SendTabToSelfModelListenerIOS::EntriesAddedRemotely(
-    const std::vector<const send_tab_to_self::SendTabToSelfEntry*>& new_entries) {
+    const std::vector<const send_tab_to_self::SendTabToSelfEntry*>&
+        new_entries) {
   NSMutableArray<IOSOpenDistantTab*>* entries = [[NSMutableArray alloc] init];
 
   for (const send_tab_to_self::SendTabToSelfEntry* entry : new_entries) {
     IOSOpenDistantTab* distantTab = [[IOSOpenDistantTab alloc]
-                initWithURL:net::NSURLWithGURL(entry->GetURL())
-                      title:base::SysUTF8ToNSString(entry->GetTitle())
-                      tabId:0
-                 sessionTag:base::SysUTF8ToNSString(entry->GetGUID())];
+        initWithURL:net::NSURLWithGURL(entry->GetURL())
+              title:base::SysUTF8ToNSString(entry->GetTitle())
+              tabId:0
+         sessionTag:base::SysUTF8ToNSString(entry->GetGUID())];
     [entries addObject:distantTab];
   }
 
-  if ([observer_ respondsToSelector:@selector(sendTabToSelfEntriesAddedRemotely:)]) {
+  if ([observer_
+          respondsToSelector:@selector(sendTabToSelfEntriesAddedRemotely:)]) {
     [observer_ sendTabToSelfEntriesAddedRemotely:[entries copy]];
   }
 }
 
 void SendTabToSelfModelListenerIOS::EntriesRemovedRemotely(
     const std::vector<std::string>& guids) {
-  if ([observer_ respondsToSelector:@selector(sendTabToSelfEntriesRemovedRemotely)]) {
+  if ([observer_
+          respondsToSelector:@selector(sendTabToSelfEntriesRemovedRemotely)]) {
     [observer_ sendTabToSelfEntriesRemovedRemotely];
   }
 }
 
 void SendTabToSelfModelListenerIOS::EntriesOpenedRemotely(
-    const std::vector<const send_tab_to_self::SendTabToSelfEntry*>& opened_entries) {
-  if ([observer_ respondsToSelector:@selector(sendTabToSelfEntriesOpenedRemotely)]) {
+    const std::vector<const send_tab_to_self::SendTabToSelfEntry*>&
+        opened_entries) {
+  if ([observer_
+          respondsToSelector:@selector(sendTabToSelfEntriesOpenedRemotely)]) {
     [observer_ sendTabToSelfEntriesOpenedRemotely];
   }
 }
@@ -88,7 +93,7 @@ void SendTabToSelfModelListenerIOS::EntriesOpenedRemotely(
 
 @implementation SendTabToSelfModelListenerImpl
 - (instancetype)init:(id<SendTabToSelfModelStateObserver>)observer
-  sendTabToSelfModel:(void*)model {
+    sendTabToSelfModel:(void*)model {
   if ((self = [super init])) {
     observer_ = std::make_unique<brave::ios::SendTabToSelfModelListenerIOS>(
         observer, static_cast<send_tab_to_self::SendTabToSelfModel*>(model));

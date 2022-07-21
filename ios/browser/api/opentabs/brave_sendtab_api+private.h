@@ -17,7 +17,8 @@ class SendTabToSelfSyncService;
 }  // namespace send_tab_to_self
 
 @interface BraveSendTabAPI (Private)
-- (instancetype)initWithSyncService:(send_tab_to_self::SendTabToSelfSyncService*)syncService;
+- (instancetype)initWithSyncService:
+    (send_tab_to_self::SendTabToSelfSyncService*)syncService;
 @end
 
 NS_ASSUME_NONNULL_END

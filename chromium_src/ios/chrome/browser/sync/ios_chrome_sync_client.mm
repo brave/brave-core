@@ -14,8 +14,7 @@ IOSChromeSyncClient::~IOSChromeSyncClient() = default;
 syncer::DataTypeController::TypeVector
 IOSChromeSyncClient::CreateDataTypeControllers(
     syncer::SyncService* sync_service) {
-  syncer::ModelTypeSet disabled_types = {syncer::AUTOFILL,
-                                         syncer::READING_LIST,
+  syncer::ModelTypeSet disabled_types = {syncer::AUTOFILL, syncer::READING_LIST,
                                          syncer::USER_CONSENTS};
   return component_factory_->CreateCommonDataTypeControllers(disabled_types,
                                                              sync_service);

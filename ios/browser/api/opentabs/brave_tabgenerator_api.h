@@ -12,7 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 NS_SWIFT_NAME(BraveSyncTab)
 OBJC_EXPORT
-@interface BraveSyncTab: NSObject
+@interface BraveSyncTab : NSObject
 
 - (instancetype)init NS_UNAVAILABLE;
 
@@ -23,7 +23,6 @@ OBJC_EXPORT
 /// @param url URL for the tab represantation
 - (void)setURL:(NSURL*)url;
 @end
-
 
 NS_SWIFT_NAME(BraveTabGeneratorAPI)
 OBJC_EXPORT

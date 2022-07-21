@@ -14,13 +14,13 @@ source_set("opentabs") {
     "brave_opentabs_api.h",
     "brave_opentabs_api.mm",
     "brave_opentabs_observer.h",
-    "brave_sendtab_api_private.h",
+    "brave_sendtab_api+private.h",
     "brave_sendtab_api.h",
     "brave_sendtab_api.mm",
     "brave_sendtab_observer.h",
+    "brave_tabgenerator_api+private.h",
     "brave_tabgenerator_api.h",
     "brave_tabgenerator_api.mm",
-    "brave_tabgenerator_api+private.h",
     "opentabs_session_listener_ios.h",
     "opentabs_session_listener_ios.mm",
     "sendtab_model_listener_ios.h",
@@ -35,13 +35,23 @@ source_set("opentabs") {
     "//components/sync_sessions",
     "//ios/chrome/browser",
     "//ios/chrome/browser/browser_state",
+    "//ios/chrome/browser/main:public",
+    "//ios/chrome/browser/sessions",
     "//ios/chrome/browser/sync",
+    "//ios/chrome/browser/tabs",
     "//ios/chrome/browser/ui/recent_tabs:synced_sessions",
+    "//ios/chrome/browser/web_state_list",
     "//ios/web/public/thread",
+    "//ios/web/web_state",
+    "//ios/web/web_state:web_state_impl_header",
+    "//ios/web/web_state/ui:crw_web_view_navigation_proxy",
     "//net",
     "//ui/base",
     "//url",
   ]
 
-  frameworks = [ "Foundation.framework", "WebKit.framework" ]
+  frameworks = [
+    "Foundation.framework",
+    "WebKit.framework",
+  ]
 }

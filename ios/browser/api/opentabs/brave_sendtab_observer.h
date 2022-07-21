@@ -16,7 +16,8 @@ OBJC_EXPORT
 @protocol SendTabToSelfModelStateObserver <NSObject>
 
 /// Invoked when elements of the model are added
-- (void)sendTabToSelfEntriesAddedRemotely:(NSArray<IOSOpenDistantTab*>*)newEntries;
+- (void)sendTabToSelfEntriesAddedRemotely:
+    (NSArray<IOSOpenDistantTab*>*)newEntries;
 
 @optional
 
@@ -39,4 +40,4 @@ OBJC_EXPORT
 
 NS_ASSUME_NONNULL_END
 
-#endif // BRAVE_IOS_BROWSER_API_OPENTABS_BRAVE_SENDTAB_OBSERVER_H_
+#endif  // BRAVE_IOS_BROWSER_API_OPENTABS_BRAVE_SENDTAB_OBSERVER_H_

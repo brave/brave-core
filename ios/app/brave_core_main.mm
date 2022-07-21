@@ -96,7 +96,7 @@ const BraveCoreLogSeverity BraveCoreLogSeverityVerbose =
   std::unique_ptr<BraveMainDelegate> _delegate;
   std::unique_ptr<web::WebMain> _webMain;
   std::unique_ptr<Browser> _browser;
-  BrowserList* _browserList; 
+  BrowserList* _browserList;
   ChromeBrowserState* _mainBrowserState;
   NSMutableDictionary<NSNumber* /* BraveWalletCoinType */, NSString*>*
       _providerScripts;
@@ -237,7 +237,8 @@ const BraveCoreLogSeverity BraveCoreLogSeverityVerbose =
   _syncAPI = nil;
   _tabGeneratorAPI = nil;
 
-  _browserList = BrowserListFactory::GetForBrowserState(_browser->GetBrowserState());
+  _browserList =
+      BrowserListFactory::GetForBrowserState(_browser->GetBrowserState());
   [_browser->GetCommandDispatcher() prepareForShutdown];
   _browserList->RemoveBrowser(_browser.get());
   _browser->GetWebStateList()->CloseAllWebStates(WebStateList::CLOSE_NO_FLAGS);
@@ -331,9 +332,10 @@ static bool CustomLogHandler(int severity,
 
     sync_sessions::SessionSyncService* session_sync_service_ =
         SessionSyncServiceFactory::GetForBrowserState(_mainBrowserState);
-    
-    _openTabsAPI = 
-        [[BraveOpenTabsAPI alloc] initWithSyncService:sync_service_ sessionSyncService:session_sync_service_];
+
+    _openTabsAPI =
+        [[BraveOpenTabsAPI alloc] initWithSyncService:sync_service_
+                                   sessionSyncService:session_sync_service_];
   }
   return _openTabsAPI;
 }
@@ -354,10 +356,9 @@ static bool CustomLogHandler(int severity,
 - (BraveSendTabAPI*)sendTabAPI {
   if (!_sendTabAPI) {
     send_tab_to_self::SendTabToSelfSyncService* sync_service_ =
-      SendTabToSelfSyncServiceFactory::GetForBrowserState(_mainBrowserState);
-    
-    _sendTabAPI = 
-        [[BraveSendTabAPI alloc] initWithSyncService:sync_service_];
+        SendTabToSelfSyncServiceFactory::GetForBrowserState(_mainBrowserState);
+
+    _sendTabAPI = [[BraveSendTabAPI alloc] initWithSyncService:sync_service_];
   }
   return _sendTabAPI;
 }
@@ -381,7 +382,8 @@ static bool CustomLogHandler(int severity,
 
 - (BraveTabGeneratorAPI*)tabGeneratorAPI {
   if (!_tabGeneratorAPI) {
-    _tabGeneratorAPI = [[BraveTabGeneratorAPI alloc] initWithBrowser:_browser.get()];
+    _tabGeneratorAPI =
+        [[BraveTabGeneratorAPI alloc] initWithBrowser:_browser.get()];
   }
   return _tabGeneratorAPI;
 }

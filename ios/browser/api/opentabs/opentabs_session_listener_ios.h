@@ -30,7 +30,7 @@ class OpenTabsSessionListenerIOS : public syncer::SyncServiceObserver {
  private:
   // OpenTabsSessionListener implementation.
   void OnStateChanged(syncer::SyncService* sync) override;
-  void OnSyncCycleCompleted(syncer::SyncService* sync) override;    
+  void OnSyncCycleCompleted(syncer::SyncService* sync) override;
   void OnSyncConfigurationCompleted(syncer::SyncService* sync) override;
   void OnSyncShutdown(syncer::SyncService* sync) override;
 

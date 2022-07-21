@@ -19,8 +19,8 @@
 
 #include "ios/web/public/thread/web_thread.h"
 #include "ios/web/public/web_state_observer.h"
-#include "ios/web/web_state/web_state_impl.h"
 #include "ios/web/web_state/ui/crw_web_view_navigation_proxy.h"
+#include "ios/web/web_state/web_state_impl.h"
 
 #include "net/base/mac/url_conversions.h"
 #include "url/gurl.h"
@@ -28,10 +28,11 @@
 #pragma mark - BackForwardList
 
 // Back Forward List for use in Navigation Manager
-@interface BackForwardList: NSObject
-@property (nonatomic, readonly, copy) WKBackForwardListItem* currentItem;
-@property (nonatomic, readonly, copy) NSArray<WKBackForwardListItem*> *backList;
-@property (nonatomic, readonly, copy) NSArray<WKBackForwardListItem*> *forwardList;
+@interface BackForwardList : NSObject
+@property(nonatomic, readonly, copy) WKBackForwardListItem* currentItem;
+@property(nonatomic, readonly, copy) NSArray<WKBackForwardListItem*>* backList;
+@property(nonatomic, readonly, copy)
+    NSArray<WKBackForwardListItem*>* forwardList;
 @end
 
 @implementation BackForwardList
@@ -44,19 +45,19 @@
   return self;
 }
 
-- (WKBackForwardListItem *)itemAtIndex:(NSInteger)index {
+- (WKBackForwardListItem*)itemAtIndex:(NSInteger)index {
   if (index == 0) {
     return currentItem;
   }
-  
+
   if (index > 0 && forwardList.count) {
     return forwardList[index - 1];
   }
-  
+
   if (backList.count) {
     return backList[backList.count + index];
   }
-  
+
   return nullptr;
 }
 
@@ -71,13 +72,12 @@
 
 #pragma mark - NavigationProxy
 
-@interface NavigationProxy : NSObject<CRWWebViewNavigationProxy>
+@interface NavigationProxy : NSObject <CRWWebViewNavigationProxy>
 @end
 
 @implementation NavigationProxy
 - (instancetype)init {
   if ((self = [super init])) {
-
   }
   return self;
 }
@@ -93,8 +93,8 @@
 
 #pragma mark - NavigationDelegate
 
-class NavigationDelegate: public web::NavigationManagerDelegate {
-public:
+class NavigationDelegate : public web::NavigationManagerDelegate {
+ public:
   NavigationDelegate(web::WebState* web_state);
   ~NavigationDelegate() override;
   void ClearDialogs() override;
@@ -107,20 +107,21 @@ public:
   void SetWebStateUserAgent(web::UserAgentType user_agent_type) override;
   id<CRWWebViewNavigationProxy> GetWebViewNavigationProxy() const override;
   void GoToBackForwardListItem(WKBackForwardListItem* wk_item,
-                                       web::NavigationItem* item,
-                                       web::NavigationInitiationType type,
+                               web::NavigationItem* item,
+                               web::NavigationInitiationType type,
                                bool has_user_gesture) override;
-  
+
   void RemoveWebView() override;
   web::NavigationItemImpl* GetPendingItem() override;
-  
-private:
+
+ private:
   web::WebState* web_state_;
 };
 
 NavigationDelegate::~NavigationDelegate() = default;
 
-id<CRWWebViewNavigationProxy> NavigationDelegate::GetWebViewNavigationProxy() const {
+id<CRWWebViewNavigationProxy> NavigationDelegate::GetWebViewNavigationProxy()
+    const {
   return [[NavigationProxy alloc] init];
 }
 
@@ -132,7 +133,8 @@ web::NavigationItemImpl* NavigationDelegate::GetPendingItem() {
   return nullptr;
 }
 
-NavigationDelegate::NavigationDelegate(web::WebState* web_state) : web_state_(web_state) {
+NavigationDelegate::NavigationDelegate(web::WebState* web_state)
+    : web_state_(web_state) {
   // Not needed on iOS
 }
 
@@ -160,14 +162,16 @@ void NavigationDelegate::OnNavigationItemCommitted(web::NavigationItem* item) {
   // Not needed on iOS
 }
 
-void NavigationDelegate::SetWebStateUserAgent(web::UserAgentType user_agent_type) {
+void NavigationDelegate::SetWebStateUserAgent(
+    web::UserAgentType user_agent_type) {
   // Not needed on iOS
 }
 
-void NavigationDelegate::GoToBackForwardListItem(WKBackForwardListItem* wk_item,
-                                     web::NavigationItem* item,
-                                     web::NavigationInitiationType type,
-                             bool has_user_gesture) {
+void NavigationDelegate::GoToBackForwardListItem(
+    WKBackForwardListItem* wk_item,
+    web::NavigationItem* item,
+    web::NavigationInitiationType type,
+    bool has_user_gesture) {
   // Not needed on iOS
 }
 
@@ -178,27 +182,27 @@ void NavigationDelegate::RemoveWebView() {
 #pragma mark - BraveNativeTab
 
 class BraveNativeTab {
-public:
+ public:
   BraveNativeTab(Browser* browser);
   ~BraveNativeTab();
-  
+
   void SetTitle(const std::u16string& title);
   void SetURL(const GURL& url);
-  
-private:
-  class Observer: public web::WebStateObserver {
-  public:
+
+ private:
+  class Observer : public web::WebStateObserver {
+   public:
     explicit Observer(BraveNativeTab* tab);
     Observer(const Observer&) = delete;
     Observer& operator=(const Observer&) = delete;
     ~Observer() override;
-    
-  private:
+
+   private:
     // WebStateObserver:
     void WebStateDestroyed(web::WebState* web_state) override;
-    BraveNativeTab* tab_; // NOT OWNED
+    BraveNativeTab* tab_;  // NOT OWNED
   };
-  
+
   Browser* browser_;
   SessionID session_id_;
   std::unique_ptr<NavigationDelegate> navigation_delegate_;
@@ -206,36 +210,37 @@ private:
   std::unique_ptr<Observer> web_state_observer_;
 };
 
-BraveNativeTab::BraveNativeTab(
-    Browser* browser) 
-    : browser_(browser), 
-    session_id_(SessionID::InvalidValue()), 
-    navigation_delegate_(nullptr), 
-    web_state_(nullptr), 
-    web_state_observer_(nullptr) {
+BraveNativeTab::BraveNativeTab(Browser* browser)
+    : browser_(browser),
+      session_id_(SessionID::InvalidValue()),
+      navigation_delegate_(nullptr),
+      web_state_(nullptr),
+      web_state_observer_(nullptr) {
   // First setup SessionID for the tab
-  session_id_ = SyncedWindowDelegateBrowserAgent::FromBrowser(browser_)->GetSessionId();
-  
+  session_id_ =
+      SyncedWindowDelegateBrowserAgent::FromBrowser(browser_)->GetSessionId();
+
   // Create WebState with parameters
   web::WebState::CreateParams create_params(browser->GetBrowserState());
   create_params.last_active_time = base::Time::Now();
-  auto web_state = web::WebState::CreateWithStorageSession(create_params, nullptr);
+  auto web_state =
+      web::WebState::CreateWithStorageSession(create_params, nullptr);
   web_state->ForceRealized();
-  
+
   // Setup Observers of the WebState
   web_state_ = web_state.get();
   web_state_observer_ = std::make_unique<Observer>(this);
 
   // Setup Navigation Delegate for the WebState
   navigation_delegate_ = std::make_unique<NavigationDelegate>(web_state_);
-  static_cast<web::NavigationManagerImpl*>(web_state_->GetNavigationManager())->SetDelegate(navigation_delegate_.get());
-  
+  static_cast<web::NavigationManagerImpl*>(web_state_->GetNavigationManager())
+      ->SetDelegate(navigation_delegate_.get());
+
   // Insert the WebState into the Browser && Activate it
-  browser_->GetWebStateList()->InsertWebState(browser_->GetWebStateList()->count(),
-                                              std::move(web_state),
-                                              WebStateList::INSERT_ACTIVATE,
-                                              WebStateOpener());
-  
+  browser_->GetWebStateList()->InsertWebState(
+      browser_->GetWebStateList()->count(), std::move(web_state),
+      WebStateList::INSERT_ACTIVATE, WebStateOpener());
+
   // Finally Set the WebState WindowID
   IOSChromeSessionTabHelper::FromWebState(web_state_)->SetWindowID(session_id_);
 }
@@ -243,15 +248,16 @@ BraveNativeTab::BraveNativeTab(
 BraveNativeTab::~BraveNativeTab() {
   // Cleanup the WebState Observer
   web_state_observer_.reset();
-  
+
   // Cleanup the WebState
   if (web_state_) {
     int index = browser_->GetWebStateList()->GetIndexOfWebState(web_state_);
     if (index >= 0) {
-      browser_->GetWebStateList()->CloseWebStateAt(index, WebStateList::ClosingFlags::CLOSE_USER_ACTION);
+      browser_->GetWebStateList()->CloseWebStateAt(
+          index, WebStateList::ClosingFlags::CLOSE_USER_ACTION);
     }
   }
-  
+
   // Cleanup everything else in reverse order of construction
   navigation_delegate_.reset();
   web_state_ = nullptr;
@@ -261,13 +267,14 @@ BraveNativeTab::~BraveNativeTab() {
 
 void BraveNativeTab::SetTitle(const std::u16string& title) {
   DCHECK(web_state_);
-  
+
   if (web_state_) {
-    web::NavigationManager* navigation_manager = web_state_->GetNavigationManager();
+    web::NavigationManager* navigation_manager =
+        web_state_->GetNavigationManager();
     DCHECK(navigation_manager);
 
     web::NavigationItem* item = navigation_manager->GetPendingItem() ?: navigation_manager->GetLastCommittedItem() ?: navigation_manager->GetVisibleItem();
-    
+
     if (item) {
       item->SetTitle(title);
       static_cast<web::WebStateImpl*>(web_state_)->OnTitleChanged();
@@ -281,18 +288,17 @@ void BraveNativeTab::SetTitle(const std::u16string& title) {
 
 void BraveNativeTab::SetURL(const GURL& url) {
   DCHECK(web_state_);
-  
+
   if (web_state_) {
-    web::NavigationManagerImpl* navigation_manager = static_cast<web::NavigationManagerImpl*>(web_state_->GetNavigationManager());
+    web::NavigationManagerImpl* navigation_manager =
+        static_cast<web::NavigationManagerImpl*>(
+            web_state_->GetNavigationManager());
     DCHECK(navigation_manager);
-    
-    navigation_manager->AddPendingItem(url,
-                   web::Referrer(),
-                   ui::PAGE_TRANSITION_TYPED,
-                   web::NavigationInitiationType::BROWSER_INITIATED,
-                   false,
-                   false);
-    
+
+    navigation_manager->AddPendingItem(
+        url, web::Referrer(), ui::PAGE_TRANSITION_TYPED,
+        web::NavigationInitiationType::BROWSER_INITIATED, false, false);
+
     navigation_manager->CommitPendingItem();
     static_cast<web::WebStateImpl*>(web_state_)->OnPageLoaded(url, true);
   } else {
@@ -312,8 +318,7 @@ BraveNativeTab::Observer::~Observer() {
   tab_ = nullptr;
 }
 
-void BraveNativeTab::Observer::WebStateDestroyed(
-    web::WebState* web_state) {
+void BraveNativeTab::Observer::WebStateDestroyed(web::WebState* web_state) {
   if (web_state == tab_->web_state_) {
     tab_->web_state_ = nullptr;
   }
@@ -322,7 +327,7 @@ void BraveNativeTab::Observer::WebStateDestroyed(
 
 #pragma mark - BraveSyncTab
 
-@interface BraveSyncTab() {
+@interface BraveSyncTab () {
   std::unique_ptr<BraveNativeTab> native_tab_;
 }
 @end
@@ -354,7 +359,7 @@ void BraveNativeTab::Observer::WebStateDestroyed(
 #pragma mark - BraveTabGeneratorAPI
 
 @interface BraveTabGeneratorAPI () {
-  Browser* browser_; 
+  Browser* browser_;
 }
 @end
 

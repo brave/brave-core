@@ -13,7 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 OBJC_EXPORT
 @protocol OpenTabsSessionStateObserver <NSObject>
 
-/// Observing open tabs synced session data changes. 
+/// Observing open tabs synced session data changes.
 /// Notifying when `synced session` info should be updated.
 - (void)openTabsSyncStateChanged;
 
@@ -37,4 +37,4 @@ OBJC_EXPORT
 
 NS_ASSUME_NONNULL_END
 
-#endif // BRAVE_IOS_BROWSER_API_OPENTABS_BRAVE_OPENTABS_OBSERVER_H_
+#endif  // BRAVE_IOS_BROWSER_API_OPENTABS_BRAVE_OPENTABS_OBSERVER_H_

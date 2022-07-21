@@ -57,7 +57,8 @@ TargetDeviceType DeviceTypeFromSyncDeviceType(
 }
 
 - (id)copyWithZone:(NSZone*)zone {
-  IOSSendTabTargetDevice* targetDevice = [[[self class] allocWithZone:zone] init];
+  IOSSendTabTargetDevice* targetDevice =
+      [[[self class] allocWithZone:zone] init];
 
   if (targetDevice) {
     targetDevice.fullName = self.fullName;
@@ -87,7 +88,8 @@ TargetDeviceType DeviceTypeFromSyncDeviceType(
 
 @implementation BraveSendTabAPI
 
-- (instancetype)initWithSyncService:(send_tab_to_self::SendTabToSelfSyncService*)syncService {
+- (instancetype)initWithSyncService:
+    (send_tab_to_self::SendTabToSelfSyncService*)syncService {
   if ((self = [super init])) {
     sendtab_sync_service_ = syncService;
     send_tab_to_self_model_ = sendtab_sync_service_->GetSendTabToSelfModel();
@@ -99,9 +101,10 @@ TargetDeviceType DeviceTypeFromSyncDeviceType(
   sendtab_sync_service_ = nullptr;
 }
 
-- (id<SendTabToSelfModelStateListener>)addObserver:(id<SendTabToSelfModelStateObserver>)observer {
+- (id<SendTabToSelfModelStateListener>)addObserver:
+    (id<SendTabToSelfModelStateObserver>)observer {
   return [[SendTabToSelfModelListenerImpl alloc] init:observer
-                                       sendTabToSelfModel:send_tab_to_self_model_];
+                                   sendTabToSelfModel:send_tab_to_self_model_];
 }
 
 - (void)removeObserver:(id<SendTabToSelfModelStateListener>)observer {
@@ -111,32 +114,35 @@ TargetDeviceType DeviceTypeFromSyncDeviceType(
 - (NSArray<IOSSendTabTargetDevice*>*)getListOfSyncedDevices {
   DCHECK(sendtab_sync_service_);
 
-  NSMutableArray<IOSSendTabTargetDevice*>* targetDeviceList = [[NSMutableArray alloc] init];
+  NSMutableArray<IOSSendTabTargetDevice*>* targetDeviceList =
+      [[NSMutableArray alloc] init];
 
   // The list of devices with thier names, cache_guids, device types,
   // and active times.
-  std::vector<send_tab_to_self::TargetDeviceInfo>  target_device_list_ = 
-      sendtab_sync_service_->GetSendTabToSelfModel()->GetTargetDeviceInfoSortedList();
+  std::vector<send_tab_to_self::TargetDeviceInfo> target_device_list_ =
+      sendtab_sync_service_->GetSendTabToSelfModel()
+          ->GetTargetDeviceInfoSortedList();
 
   for (const auto& device : target_device_list_) {
-        IOSSendTabTargetDevice* targetDevice = [[IOSSendTabTargetDevice alloc] 
-            initWithFullName:base::SysUTF8ToNSString(device.full_name)
-                   shortName:base::SysUTF8ToNSString(device.short_name)
-                  deviceName:base::SysUTF8ToNSString(device.device_name)
-                     cacheId:base::SysUTF8ToNSString(device.cache_guid)
-                  deviceType:brave::ios::DeviceTypeFromSyncDeviceType(device.device_type)
-             lastUpdatedTime:device.last_updated_timestamp.ToNSDate()];
+    IOSSendTabTargetDevice* targetDevice = [[IOSSendTabTargetDevice alloc]
+        initWithFullName:base::SysUTF8ToNSString(device.full_name)
+               shortName:base::SysUTF8ToNSString(device.short_name)
+              deviceName:base::SysUTF8ToNSString(device.device_name)
+                 cacheId:base::SysUTF8ToNSString(device.cache_guid)
+              deviceType:brave::ios::DeviceTypeFromSyncDeviceType(
+                             device.device_type)
+         lastUpdatedTime:device.last_updated_timestamp.ToNSDate()];
 
-    [targetDeviceList addObject: targetDevice];
+    [targetDeviceList addObject:targetDevice];
   }
-  
+
   return [targetDeviceList copy];
 }
 
-- (void)sendActiveTabToDevice:(NSString*)deviceID 
-                     tabTitle:(NSString*)tabTitle 
+- (void)sendActiveTabToDevice:(NSString*)deviceID
+                     tabTitle:(NSString*)tabTitle
                     activeURL:(NSURL*)activeURL {
-  GURL url = net::GURLWithNSURL(activeURL); 
+  GURL url = net::GURLWithNSURL(activeURL);
   std::string title = base::SysNSStringToUTF8(tabTitle);
   std::string target_device = base::SysNSStringToUTF8(deviceID);
 

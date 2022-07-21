@@ -19,8 +19,8 @@
 
 namespace brave {
 namespace ios {
-sync_pb::SyncEnums::DeviceType
-    SyncDeviceTypeFromSyncEnumsDeviceType(SyncDeviceType deviceType) {
+sync_pb::SyncEnums::DeviceType SyncDeviceTypeFromSyncEnumsDeviceType(
+    SyncDeviceType deviceType) {
   switch (deviceType) {
     case SyncDeviceTypeUnset:
       return sync_pb::SyncEnums::DeviceType::SyncEnums_DeviceType_TYPE_UNSET;
@@ -34,7 +34,7 @@ sync_pb::SyncEnums::DeviceType
       return sync_pb::SyncEnums::DeviceType::SyncEnums_DeviceType_TYPE_CROS;
     case SyncDeviceTypeOther:
       return sync_pb::SyncEnums::DeviceType::SyncEnums_DeviceType_TYPE_OTHER;
-     case SyncDeviceTypePhone:
+    case SyncDeviceTypePhone:
       return sync_pb::SyncEnums::DeviceType::SyncEnums_DeviceType_TYPE_PHONE;
     default:
       return sync_pb::SyncEnums::DeviceType::SyncEnums_DeviceType_TYPE_UNSET;
@@ -84,7 +84,8 @@ SyncDeviceType SyncEnumsDeviceTypeFromSyncDeviceType(
 }
 
 - (id)copyWithZone:(NSZone*)zone {
-  IOSOpenDistantTab* openDistantTabCopy = [[[self class] allocWithZone:zone] init];
+  IOSOpenDistantTab* openDistantTabCopy =
+      [[[self class] allocWithZone:zone] init];
 
   if (openDistantTabCopy) {
     openDistantTabCopy.url = self.url;
@@ -96,8 +97,7 @@ SyncDeviceType SyncEnumsDeviceTypeFromSyncDeviceType(
   return openDistantTabCopy;
 }
 
-- (void)updateOpenDistantTab:(NSURL*)url
-                       title:(NSString*)title {
+- (void)updateOpenDistantTab:(NSURL*)url title:(NSString*)title {
   [self setUrl:url];
 
   if ([title length] != 0) {
@@ -128,7 +128,8 @@ SyncDeviceType SyncEnumsDeviceTypeFromSyncDeviceType(
 }
 
 - (id)copyWithZone:(NSZone*)zone {
-  IOSOpenDistantSession* openDistantSession = [[[self class] allocWithZone:zone] init];
+  IOSOpenDistantSession* openDistantSession =
+      [[[self class] allocWithZone:zone] init];
 
   if (openDistantSession) {
     openDistantSession.name = self.name;
@@ -142,7 +143,7 @@ SyncDeviceType SyncEnumsDeviceTypeFromSyncDeviceType(
 }
 
 - (void)updateOpenDistantSessionModified:(NSDate*)modifiedTime {
-    [self setModifiedTime:modifiedTime];
+  [self setModifiedTime:modifiedTime];
 }
 
 @end
@@ -153,15 +154,17 @@ SyncDeviceType SyncEnumsDeviceTypeFromSyncDeviceType(
   // SyncService is needed in order to observe sync changes
   syncer::SyncService* sync_service_;
 
-  // Session Sync Service is needed in order to receive session details from different instances
+  // Session Sync Service is needed in order to receive session details from
+  // different instances
   sync_sessions::SessionSyncService* session_sync_service_;
 }
 @end
 
 @implementation BraveOpenTabsAPI
 
-- (instancetype)initWithSyncService:(syncer::SyncService*)syncService 
-    sessionSyncService:(sync_sessions::SessionSyncService*)sessionSyncService {
+- (instancetype)initWithSyncService:(syncer::SyncService*)syncService
+                 sessionSyncService:
+                     (sync_sessions::SessionSyncService*)sessionSyncService {
   if ((self = [super init])) {
     sync_service_ = syncService;
     session_sync_service_ = sessionSyncService;
@@ -174,7 +177,8 @@ SyncDeviceType SyncEnumsDeviceTypeFromSyncDeviceType(
   session_sync_service_ = nullptr;
 }
 
-- (id<OpenTabsSessionStateListener>)addObserver:(id<OpenTabsSessionStateObserver>)observer {
+- (id<OpenTabsSessionStateListener>)addObserver:
+    (id<OpenTabsSessionStateObserver>)observer {
   return [[OpenTabsSessionListenerImpl alloc] init:observer
                                        syncService:sync_service_];
 }
@@ -188,40 +192,46 @@ SyncDeviceType SyncEnumsDeviceTypeFromSyncDeviceType(
   auto syncedSessions =
       std::make_unique<synced_sessions::SyncedSessions>(session_sync_service_);
 
-  NSMutableArray<IOSOpenDistantSession*>* distantSessionList = [[NSMutableArray alloc] init];
+  NSMutableArray<IOSOpenDistantSession*>* distantSessionList =
+      [[NSMutableArray alloc] init];
 
   // Traversing Sync Sessions to fetch list of Distant Sessions
-  for (size_t sessionIndex = 0; sessionIndex < syncedSessions->GetSessionCount(); sessionIndex++) {
+  for (size_t sessionIndex = 0;
+       sessionIndex < syncedSessions->GetSessionCount(); sessionIndex++) {
     const synced_sessions::DistantSession* session =
         syncedSessions->GetSession(sessionIndex);
 
     // Create a DistantTab List information  for each Distant Session
-    NSArray<IOSOpenDistantTab*>* distantTabs = [self onDistantTabResults:session->tabs];
+    NSArray<IOSOpenDistantTab*>* distantTabs =
+        [self onDistantTabResults:session->tabs];
 
-    IOSOpenDistantSession* distantSession = [[IOSOpenDistantSession alloc] 
+    IOSOpenDistantSession* distantSession = [[IOSOpenDistantSession alloc]
         initWithName:base::SysUTF8ToNSString(session->name)
           sessionTag:base::SysUTF8ToNSString(session->tag)
          dateCreated:session->modified_time.ToNSDate()
-          deviceType:brave::ios::SyncEnumsDeviceTypeFromSyncDeviceType(session->device_type)
+          deviceType:brave::ios::SyncEnumsDeviceTypeFromSyncDeviceType(
+                         session->device_type)
                 tabs:distantTabs];
-    [distantSessionList addObject: distantSession];
+    [distantSessionList addObject:distantSession];
   }
 
   return [distantSessionList copy];
 }
 
 - (NSArray<IOSOpenDistantTab*>*)onDistantTabResults:
-    (const std::vector<std::unique_ptr<synced_sessions::DistantTab>> &)distantTabList {
-  NSMutableArray<IOSOpenDistantTab*>* distantTabs = [[NSMutableArray alloc] init];
+    (const std::vector<std::unique_ptr<synced_sessions::DistantTab>>&)
+        distantTabList {
+  NSMutableArray<IOSOpenDistantTab*>* distantTabs =
+      [[NSMutableArray alloc] init];
 
   for (const auto& tab : distantTabList) {
-    IOSOpenDistantTab* distantTab = [[IOSOpenDistantTab alloc] 
+    IOSOpenDistantTab* distantTab = [[IOSOpenDistantTab alloc]
         initWithURL:net::NSURLWithGURL(tab->virtual_url)
               title:base::SysUTF16ToNSString(tab->title)
               tabId:tab->tab_id.id()
          sessionTag:base::SysUTF8ToNSString(tab->session_tag)];
 
-    [distantTabs addObject: distantTab];
+    [distantTabs addObject:distantTab];
   }
 
   return [distantTabs copy];

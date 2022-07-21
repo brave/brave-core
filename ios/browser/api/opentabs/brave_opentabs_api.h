@@ -40,7 +40,8 @@ OBJC_EXPORT
 /// @param url - Mandatory URL field for the open tab object
 /// @param title - Title used for the URL
 /// @param tabId - Uniquely identifies this tab in its distant session
-/// @param sessionTag - Uniquely identifies the distant session this tab belongs to
+/// @param sessionTag - Uniquely identifies the distant session this tab belongs
+/// to
 - (instancetype)initWithURL:(NSURL*)url
                       title:(nullable NSString*)title
                       tabId:(NSInteger)tabId
@@ -74,7 +75,8 @@ NS_SWIFT_NAME(BraveOpenTabsAPI)
 OBJC_EXPORT
 @interface BraveOpenTabsAPI : NSObject
 
-- (id<OpenTabsSessionStateListener>)addObserver:(id<OpenTabsSessionStateObserver>)observer;
+- (id<OpenTabsSessionStateListener>)addObserver:
+    (id<OpenTabsSessionStateObserver>)observer;
 - (void)removeObserver:(id<OpenTabsSessionStateListener>)observer;
 
 - (instancetype)init NS_UNAVAILABLE;
