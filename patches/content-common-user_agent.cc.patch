@@ -1,8 +1,8 @@
 diff --git a/content/common/user_agent.cc b/content/common/user_agent.cc
-index bc2f280dfcc3a2a603f8abd68274cf620e00839b..3ebe3d424c9ddcb456a92833c47cf5f4ec9e6062 100644
+index 90815e4bb3277ef55ea25f25462820055c1900aa..b04bc641be97498d245306bdcb071cf06b18ed31 100644
 --- a/content/common/user_agent.cc
 +++ b/content/common/user_agent.cc
-@@ -330,6 +330,7 @@ std::string GetAndroidOSInfo(
+@@ -341,6 +341,7 @@ std::string GetAndroidOSInfo(
  
    // Send information about the device.
    bool semicolon_inserted = false;

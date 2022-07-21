@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/toolbar/toolbar_view.cc b/chrome/browser/ui/views/toolbar/toolbar_view.cc
-index 55fc13d5d929d20537c6960192e02e982372e024..119d4e65061a5499d5bf82c64e1061b0a6476abd 100644
+index ef34f041219b57493503d3dda3345f5a76cb2eec..f967c29c01cd900c6ed622c53b1dc9b58b206ca0 100644
 --- a/chrome/browser/ui/views/toolbar/toolbar_view.cc
 +++ b/chrome/browser/ui/views/toolbar/toolbar_view.cc
 @@ -365,6 +365,7 @@ void ToolbarView::Init() {
