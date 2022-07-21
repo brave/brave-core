@@ -32,9 +32,6 @@ group("symbol_dist_resources") {
 }
 
 action("generate_breakpad_symbols") {
-  # host_toolchain must be used for cross-compilation case.
-  # See chrome/updater/mac:syms
-  dump_syms = "//third_party/breakpad:dump_syms($host_toolchain)"
   symbols_dir = "$brave_dist_dir/$brave_product_name.breakpad.syms"
   outputs = [ symbols_dir ]
 
@@ -52,8 +49,6 @@ action("generate_breakpad_symbols") {
     "--build-dir=" + rebase_path(root_out_dir),
     "--binary=$binaries",
     "--libchromiumcontent-dir=" + rebase_path("//"),
-    "--dump-syms-bin=" + rebase_path(get_label_info(dump_syms, "root_out_dir") +
-                                     "/" + get_label_info(dump_syms, "name")),
     "--clear",
   ]
 
@@ -62,7 +57,7 @@ action("generate_breakpad_symbols") {
     "//chrome:chrome_dump_syms",
     "//chrome:chrome_framework",
     "//chrome:chrome_helper_app_default",
+    "//third_party/breakpad:dump_syms",
     "//third_party/crashpad/crashpad/handler:crashpad_handler",
-    dump_syms,
   ]
 }
