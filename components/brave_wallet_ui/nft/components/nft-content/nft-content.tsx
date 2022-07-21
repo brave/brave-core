@@ -1,5 +1,4 @@
 import * as React from 'react'
-import { useLocation } from 'react-router-dom'
 
 // components
 import { Image, LoadingOverlay, LoadIcon } from './nft-content-styles'
@@ -13,29 +12,16 @@ interface Props {
   selectedAsset?: BraveWallet.BlockchainToken
   nftMetadata?: NFTMetadataReturnType
   tokenNetwork?: BraveWallet.NetworkInfo
+  imageUrl?: string
 }
 
 export const NftContent = (props: Props) => {
-  const { isLoading, selectedAsset } = props
-
-  // hooks
-  const { search } = useLocation()
-
-  // memos
-  const params = React.useMemo(() => {
-    return new URLSearchParams(search)
-  }, [search])
-
-  const imageUrl = params.get('imageUrl')
-  const imageWidth = params.get('imageWidth')
-  const imageHeight = params.get('imageHeight')
+  const { isLoading, selectedAsset, imageUrl } = props
 
   return (
     <>
       {imageUrl
         ? <Image
-          customWidth={imageWidth ?? ''}
-          customHeight={imageHeight ?? ''}
           src={imageUrl}
         />
         : <>

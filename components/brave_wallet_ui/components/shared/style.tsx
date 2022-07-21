@@ -56,11 +56,6 @@ export const AssetIconFactory = styled.img.attrs<AssetIconProps>(props => ({
   loading: 'lazy'
 }))
 
-export const AssetIconIframe = styled.iframe.attrs<AssetIconProps>(props => ({
-  src: `chrome-untrusted://nft-display?imageUrl=${encodeURIComponent(props.icon || '')}`,
-  sandbox: 'allow-scripts'
-}))
-
 export const WalletButton = styled.button<{
   isDraggedOver?: boolean
 }>`

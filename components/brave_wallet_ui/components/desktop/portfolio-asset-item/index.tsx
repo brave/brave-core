@@ -20,8 +20,7 @@ import {
   NetworkIconWrapper,
   NameColumn,
   Spacer,
-  NetworkDescriptionText,
-  NFTAssetIcon
+  NetworkDescriptionText
 } from './style'
 import { withPlaceholderIcon, CreateNetworkIcon, LoadingSkeleton } from '../../shared'
 import { WithHideBalancePlaceholder } from '../'
@@ -31,6 +30,7 @@ import { getTokensNetwork } from '../../../utils/network-utils'
 // Hooks
 import { usePricing } from '../../../common/hooks'
 import { unbiasedRandom } from '../../../utils/random-utils'
+import { NftIcon } from '../../shared/nft-icon/nft-icon'
 
 interface Props {
   spotPrices: BraveWallet.AssetPrice[]
@@ -58,7 +58,7 @@ const PortfolioAssetItem = (props: Props) => {
   const [assetNetworkSkeletonWidth, setAssetNetworkSkeletonWidth] = React.useState(0)
 
   const AssetIconWithPlaceholder = React.useMemo(() => {
-    return withPlaceholderIcon(token.isErc721 ? NFTAssetIcon : AssetIcon, { size: 'big', marginLeft: 0, marginRight: 8 })
+    return withPlaceholderIcon(token.isErc721 ? NftIcon : AssetIcon, { size: 'big', marginLeft: 0, marginRight: 8 })
   }, [token])
 
   const formattedAssetBalance = token.isErc721

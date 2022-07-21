@@ -24,7 +24,7 @@ import {
   braveWalletOrigin,
   CommandMessage,
   NftUiCommand,
-  UpdateLoadingMessage,
+  UpdateLoadingMessage, UpdateNftImageUrl,
   UpdateNFtMetadataMessage,
   UpdateSelectedAssetMessage,
   UpdateTokenNetworkMessage
@@ -39,6 +39,7 @@ const App = () => {
   const [selectedAsset, setSelectedAsset] = React.useState<BraveWallet.BlockchainToken>()
   const [nftMetadata, setNftMetadata] = React.useState<NFTMetadataReturnType>()
   const [tokenNetwork, setTokenNetwork] = React.useState<BraveWallet.NetworkInfo>()
+  const [imageUrl, setImageUrl] = React.useState<string>()
 
   const onMessageEventListener = React.useCallback((event: MessageEvent<CommandMessage>) => {
     // validate message origin
@@ -69,6 +70,12 @@ const App = () => {
         setTokenNetwork(payload)
         break
       }
+
+      case NftUiCommand.UpdateNFTImageUrl: {
+        const { payload } = message as UpdateNftImageUrl
+        setImageUrl(payload)
+        break
+      }
     }
   }, [])
 
@@ -88,6 +95,7 @@ const App = () => {
         selectedAsset={selectedAsset}
         nftMetadata={nftMetadata}
         tokenNetwork={tokenNetwork}
+        imageUrl={imageUrl}
       />
     </BraveCoreThemeProvider>
     </BrowserRouter>

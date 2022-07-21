@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { AssetIconProps, AssetIconFactory, WalletButton, AssetIconIframe } from '../../shared/style'
+import { AssetIconProps, AssetIconFactory, WalletButton } from '../../shared/style'
 
 interface StyleProps {
   disabled: boolean
@@ -65,11 +65,6 @@ const assetIconProps = {
   height: 'auto'
 }
 export const AssetIcon = AssetIconFactory<AssetIconProps>(assetIconProps)
-export const NFTAssetIcon = AssetIconIframe<AssetIconProps>({
-  ...assetIconProps,
-  height: '40px',
-  border: 'transparent'
-})
 
 export const IconsWrapper = styled.div`
   display: flex;

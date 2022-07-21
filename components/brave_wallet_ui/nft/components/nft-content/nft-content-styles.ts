@@ -14,9 +14,8 @@ interface Props {
 
 export const Image = styled.img<Props>`
   border-radius: 4px;
-  border-color: ${p => p.theme.color.interactive08};
-  width: ${p => p.customWidth ? p.customWidth : '100%'};
-  height: ${p => p.customHeight ? p.customHeight : 'auto'};
+  width: 100%;
+  height: auto
 `
 
 export const LoadingOverlay = styled.div<Partial<StyleProps>>`
