@@ -188,7 +188,7 @@ class LedgerImpl : public Ledger {
 
   void SetPublisherExclude(const std::string& publisher_id,
                            type::PublisherExclude exclude,
-                           LegacyResultCallback callback) override;
+                           ResultCallback callback) override;
 
   void RestorePublishers(LegacyResultCallback callback) override;
 

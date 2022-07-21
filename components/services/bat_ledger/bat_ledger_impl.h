@@ -75,10 +75,9 @@ class BatLedgerImpl :
       const std::string& first_party_url, const std::string& referrer,
       ledger::type::VisitDataPtr visit_data) override;
 
-  void SetPublisherExclude(
-      const std::string& publisher_key,
-      const ledger::type::PublisherExclude exclude,
-      SetPublisherExcludeCallback callback) override;
+  void SetPublisherExclude(const std::string& publisher_key,
+                           ledger::type::PublisherExclude exclude,
+                           SetPublisherExcludeCallback callback) override;
   void RestorePublishers(RestorePublishersCallback callback) override;
 
   void FetchPromotions(FetchPromotionsCallback callback) override;
@@ -303,10 +302,6 @@ class BatLedgerImpl :
   static void OnRecoverWallet(
       CallbackHolder<RecoverWalletCallback>* holder,
       ledger::type::Result result);
-
-  static void OnSetPublisherExclude(
-      CallbackHolder<SetPublisherExcludeCallback>* holder,
-      const ledger::type::Result result);
 
   static void OnRestorePublishers(
       CallbackHolder<SetPublisherExcludeCallback>* holder,

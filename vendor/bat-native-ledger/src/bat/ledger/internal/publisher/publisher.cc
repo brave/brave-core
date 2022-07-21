@@ -443,36 +443,39 @@ void Publisher::OnPublisherInfoSaved(const type::Result result) {
 
 void Publisher::SetPublisherExclude(const std::string& publisher_id,
                                     const type::PublisherExclude& exclude,
-                                    ledger::LegacyResultCallback callback) {
+                                    ledger::ResultCallback callback) {
+  auto get_publisher_info_callback =
+      base::BindOnce(&Publisher::OnSetPublisherExclude, base::Unretained(this),
+                     std::move(callback), exclude);
+
   ledger_->database()->GetPublisherInfo(
       publisher_id,
-      std::bind(&Publisher::OnSetPublisherExclude,
-                this,
-                exclude,
-                _1,
-                _2,
-                callback));
+      [callback = std::make_shared<decltype(get_publisher_info_callback)>(
+           std::move(get_publisher_info_callback))](
+          type::Result result, type::PublisherInfoPtr publisher_info) {
+        std::move(*callback).Run(result, std::move(publisher_info));
+      });
 }
 
-void Publisher::OnSetPublisherExclude(type::PublisherExclude exclude,
+void Publisher::OnSetPublisherExclude(ledger::ResultCallback callback,
+                                      type::PublisherExclude exclude,
                                       type::Result result,
-                                      type::PublisherInfoPtr publisher_info,
-                                      ledger::LegacyResultCallback callback) {
+                                      type::PublisherInfoPtr publisher_info) {
   if (result != type::Result::LEDGER_OK &&
       result != type::Result::NOT_FOUND) {
     BLOG(0, "Publisher exclude status not saved");
-    callback(result);
+    std::move(callback).Run(result);
     return;
   }
 
   if (!publisher_info) {
     BLOG(0, "Publisher is null");
-    callback(type::Result::LEDGER_ERROR);
+    std::move(callback).Run(type::Result::LEDGER_ERROR);
     return;
   }
 
   if (publisher_info->excluded == exclude) {
-    callback(type::Result::LEDGER_OK);
+    std::move(callback).Run(type::Result::LEDGER_OK);
     return;
   }
 
@@ -489,7 +492,7 @@ void Publisher::OnSetPublisherExclude(type::PublisherExclude exclude,
       publisher_info->id,
       [](const type::Result _){});
   }
-  callback(type::Result::LEDGER_OK);
+  std::move(callback).Run(type::Result::LEDGER_OK);
 }
 
 void Publisher::OnRestorePublishers(type::Result result,

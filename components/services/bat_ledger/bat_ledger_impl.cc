@@ -137,29 +137,10 @@ void BatLedgerImpl::OnXHRLoad(uint32_t tab_id, const std::string& url,
         first_party_url, referrer, std::move(visit_data));
 }
 
-// static
-void BatLedgerImpl::OnSetPublisherExclude(
-    CallbackHolder<SetPublisherExcludeCallback>* holder,
-    const ledger::type::Result result) {
-  DCHECK(holder);
-  if (holder->is_valid()) {
-    std::move(holder->get()).Run(result);
-  }
-  delete holder;
-}
-
-void BatLedgerImpl::SetPublisherExclude(
-    const std::string& publisher_key,
-    const ledger::type::PublisherExclude exclude,
-    SetPublisherExcludeCallback callback) {
-  // delete in OnSetPublisherExclude
-  auto* holder = new CallbackHolder<SetPublisherExcludeCallback>(
-    AsWeakPtr(), std::move(callback));
-
-  ledger_->SetPublisherExclude(
-    publisher_key,
-    exclude,
-    std::bind(BatLedgerImpl::OnSetPublisherExclude, holder, _1));
+void BatLedgerImpl::SetPublisherExclude(const std::string& publisher_key,
+                                        ledger::type::PublisherExclude exclude,
+                                        SetPublisherExcludeCallback callback) {
+  ledger_->SetPublisherExclude(publisher_key, exclude, std::move(callback));
 }
 
 // static

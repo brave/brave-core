@@ -581,10 +581,12 @@ void LedgerImpl::RecoverWallet(const std::string& pass_phrase,
 
 void LedgerImpl::SetPublisherExclude(const std::string& publisher_id,
                                      type::PublisherExclude exclude,
-                                     LegacyResultCallback callback) {
-  WhenReady([this, publisher_id, exclude, callback]() {
-    publisher()->SetPublisherExclude(publisher_id, exclude, callback);
-  });
+                                     ResultCallback callback) {
+  WhenReady(
+      [this, publisher_id, exclude, callback = std::move(callback)]() mutable {
+        publisher()->SetPublisherExclude(publisher_id, exclude,
+                                         std::move(callback));
+      });
 }
 
 void LedgerImpl::RestorePublishers(LegacyResultCallback callback) {

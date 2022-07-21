@@ -796,7 +796,7 @@ BATClassLedgerBridge(BOOL, isDebug, setDebug, is_debug)
   ledger->SetPublisherExclude(
       base::SysNSStringToUTF8(publisherId),
       (ledger::type::PublisherExclude)state,
-      ^(const ledger::type::Result result) {
+      base::BindOnce(^(ledger::type::Result result) {
         if (result != ledger::type::Result::LEDGER_OK) {
           return;
         }
@@ -805,7 +805,7 @@ BATClassLedgerBridge(BOOL, isDebug, setDebug, is_debug)
             observer.excludedSitesChanged(publisherId, state);
           }
         }
-      });
+      }));
 }
 
 - (void)restoreAllExcludedPublishers {

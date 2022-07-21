@@ -58,7 +58,7 @@ class Publisher {
 
   void SetPublisherExclude(const std::string& publisher_id,
                            const type::PublisherExclude& exclude,
-                           ledger::LegacyResultCallback callback);
+                           ledger::ResultCallback callback);
 
   void OnPublisherInfoSaved(const type::Result result);
 
@@ -171,10 +171,10 @@ class Publisher {
                                 const std::string& favicon_url,
                                 uint64_t window_id);
 
-  void OnSetPublisherExclude(type::PublisherExclude exclude,
+  void OnSetPublisherExclude(ledger::ResultCallback callback,
+                             type::PublisherExclude exclude,
                              type::Result result,
-                             type::PublisherInfoPtr publisher_info,
-                             ledger::LegacyResultCallback callback);
+                             type::PublisherInfoPtr publisher_info);
 
   double concaveScore(const uint64_t& duration_seconds);
 
