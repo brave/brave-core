@@ -28,6 +28,7 @@ function getNextContribution (reconcileDate: Date | undefined) {
 interface Props {
   tipKind: TipKind
   tipAmount: number
+  tipPending: boolean
 }
 
 export function TipComplete (props: Props) {
@@ -100,8 +101,8 @@ export function TipComplete (props: Props) {
           </style.header>
           <style.message>
             {
-              getString(props.tipKind === 'monthly'
-                ? 'monthlyTipSet'
+              getString(props.tipKind === 'monthly' ? 'monthlyTipSet'
+                : props.tipPending ? 'tipIsPending'
                 : 'tipHasBeenSent')
             }
           </style.message>
@@ -109,7 +110,7 @@ export function TipComplete (props: Props) {
             {getSummaryTable()}
           </style.table>
           {
-            props.tipKind === 'one-time' &&
+            props.tipKind === 'one-time' && !props.tipPending &&
               <style.delayNote>
                 {
                   formatMessage(getString('tipDelayNote'), {

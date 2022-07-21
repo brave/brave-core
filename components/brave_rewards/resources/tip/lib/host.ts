@@ -73,7 +73,9 @@ export function createHost (): Host {
       } else {
         stateManager.update({ hostError: { type: 'ERR_TIP_FAILED' } })
       }
+      return true
     }
+    return false
   }
 
   addWebUIListeners({
@@ -189,7 +191,9 @@ export function createHost (): Host {
     },
 
     pendingContributionSaved (result: number) {
-      checkPendingTipResult(result)
+      if (checkPendingTipResult(result)) {
+        stateManager.update({ tipPending: true })
+      }
     },
 
     unblindedTokensReady () {

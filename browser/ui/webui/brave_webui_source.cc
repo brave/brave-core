@@ -947,6 +947,7 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "thanksForTheSupport", IDS_BRAVE_REWARDS_TIP_THANKS_FOR_THE_SUPPORT },  // NOLINT
         { "tipDelayNote", IDS_BRAVE_REWARDS_TIP_DELAY_NOTE },
         { "tipHasBeenSent", IDS_BRAVE_REWARDS_TIP_TIP_HAS_BEEN_SET },
+        { "tipIsPending", IDS_BRAVE_REWARDS_TIP_TIP_IS_PENDING },
         { "tipPostSubtitle", IDS_BRAVE_REWARDS_TIP_TIP_POST_SUBTITLE },
         { "tokens", IDS_BRAVE_UI_TOKENS },
         { "tweetAboutSupport", IDS_BRAVE_REWARDS_TIP_TWEET_ABOUT_SUPPORT },
