@@ -93,8 +93,6 @@ bool DeAmpURLLoader::MaybeRedirectToCanonicalLink() {
     return false;
   }
 
-  // todo make sure that we're getting meaningfully different chunks every time.
-
   // If we are not already on an AMP page, check if this chunk has the AMP HTML
   if (!found_amp_ && !CheckIfAmpPage(buffered_body_)) {
     return false;
@@ -131,10 +129,9 @@ void DeAmpURLLoader::OnBodyWritable(MojoResult r) {
   }
 }
 
-// No buffered data to be sent, read and forward data to producer (renderer)
+// No buffered data to be sent, read and forward data to producer
 void DeAmpURLLoader::ForwardBodyToClient() {
   DCHECK_EQ(0u, bytes_remaining_in_buffer_);
-  // it's loading
   // Send the body from the consumer to the producer.
   const void* buffer;
   uint32_t buffer_size = 0;

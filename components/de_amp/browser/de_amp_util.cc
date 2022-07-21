@@ -52,6 +52,7 @@ bool VerifyCanonicalAmpUrl(const GURL& canonical_link,
          canonical_link != original_url;
 }
 
+// Run a regex against a string to check if AMP page
 bool CheckIfAmpPage(const std::string& body) {
   auto opt = InitRegexOptions();
   // The order of running these regexes is important:
@@ -74,8 +75,7 @@ bool CheckIfAmpPage(const std::string& body) {
 }
 
 // Find canonical link in body or return error
-// NOTE: caller is responsible for making sure that we are already on an AMP
-// page
+// NOTE: caller makes sure that body is AMP page
 base::expected<std::string, std::string> FindCanonicalAmpUrl(
     const std::string& body) {
   auto opt = InitRegexOptions();
