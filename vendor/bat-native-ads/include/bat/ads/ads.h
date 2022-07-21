@@ -33,19 +33,8 @@ struct NotificationAdInfo;
 // Returns system information.
 mojom::SysInfo& SysInfo();
 
-// |g_environment| indicates whether URL requests should use the production or
-// staging environment. "--rewards=staging=false" and "--rewards=staging=true"
-// command-line arguments allow users' to override the environment.
-extern mojom::Environment g_environment;
-
 // Returns the build channel.
 mojom::BuildChannel& BuildChannel();
-
-// |g_is_debug| indicates whether to run ads in debug mode or not. The default
-// value should be set to |false| on production builds and |true| on debug
-// builds. The "brave-ads-debug" command-line argument allows users' to override
-// this flag.
-extern bool g_is_debug;
 
 // Data resources
 extern const char g_catalog_json_schema_data_resource_name[];

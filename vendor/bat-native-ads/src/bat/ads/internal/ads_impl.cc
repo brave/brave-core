@@ -34,6 +34,7 @@
 #include "bat/ads/internal/deprecated/confirmations/confirmation_state_manager.h"
 #include "bat/ads/internal/diagnostics/diagnostic_manager.h"
 #include "bat/ads/internal/features/features_util.h"
+#include "bat/ads/internal/flags/flag_manager.h"
 #include "bat/ads/internal/geographic/subdivision/subdivision_targeting.h"
 #include "bat/ads/internal/history/history_manager.h"
 #include "bat/ads/internal/legacy_migration/client/legacy_client_migration.h"
@@ -74,6 +75,7 @@ AdsImpl::AdsImpl(AdsClient* ads_client)
   covariate_manager_ = std::make_unique<CovariateManager>();
   database_manager_ = std::make_unique<DatabaseManager>();
   diagnostic_manager_ = std::make_unique<DiagnosticManager>();
+  flag_manager_ = std::make_unique<FlagManager>();
   history_manager_ = std::make_unique<HistoryManager>();
   idle_detection_manager_ = std::make_unique<IdleDetectionManager>();
   locale_manager_ = std::make_unique<LocaleManager>();

@@ -12,13 +12,13 @@
 #include "base/json/json_reader.h"
 #include "base/strings/stringprintf.h"
 #include "base/time/time.h"
-#include "bat/ads/ads.h"
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/base/logging_util.h"
 #include "bat/ads/internal/base/net/http/http_status_code.h"
 #include "bat/ads/internal/base/time/time_formatting_util.h"
 #include "bat/ads/internal/base/url/url_request_string_util.h"
 #include "bat/ads/internal/base/url/url_response_string_util.h"
+#include "bat/ads/internal/flags/flag_manager_util.h"
 #include "bat/ads/internal/geographic/subdivision/get_subdivision_url_request_builder.h"
 #include "bat/ads/internal/geographic/subdivision/supported_subdivision_codes.h"
 #include "bat/ads/internal/locale/locale_manager.h"
@@ -264,8 +264,9 @@ void SubdivisionTargeting::Retry() {
 }
 
 void SubdivisionTargeting::FetchAfterDelay() {
-  const base::TimeDelta delay = g_is_debug ? kDebugFetchSubdivisionTargetingPing
-                                           : kFetchSubdivisionTargetingPing;
+  const base::TimeDelta delay = ShouldDebug()
+                                    ? kDebugFetchSubdivisionTargetingPing
+                                    : kFetchSubdivisionTargetingPing;
 
   const base::Time fetch_at = timer_.StartWithPrivacy(
       FROM_HERE, delay,

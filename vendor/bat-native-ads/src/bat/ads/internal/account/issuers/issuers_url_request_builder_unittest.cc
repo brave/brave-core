@@ -5,14 +5,21 @@
 
 #include "bat/ads/internal/account/issuers/issuers_url_request_builder.h"
 
-#include "testing/gtest/include/gtest/gtest.h"
+#include "bat/ads/internal/base/unittest/unittest_base.h"
 #include "url/gurl.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
 namespace ads {
 
-TEST(BatAdsIssuersUrlRequestBuilderTest, BuildUrl) {
+class BatAdsIssuersUrlRequestBuilderTest : public UnitTestBase {
+ protected:
+  BatAdsIssuersUrlRequestBuilderTest() = default;
+
+  ~BatAdsIssuersUrlRequestBuilderTest() override = default;
+};
+
+TEST_F(BatAdsIssuersUrlRequestBuilderTest, BuildUrl) {
   // Arrange
   IssuersUrlRequestBuilder url_request_builder;
 

@@ -8,6 +8,7 @@
 #include "bat/ads/internal/ads/serving/targeting/user_model_builder_unittest_util.h"
 #include "bat/ads/internal/ads/serving/targeting/user_model_info.h"
 #include "bat/ads/internal/base/unittest/unittest_base.h"
+#include "bat/ads/internal/base/unittest/unittest_constants.h"
 #include "bat/ads/internal/base/unittest/unittest_time_util.h"
 #include "bat/ads/internal/deprecated/client/client_state_manager_constants.h"
 #include "bat/ads/internal/geographic/subdivision/subdivision_targeting.h"

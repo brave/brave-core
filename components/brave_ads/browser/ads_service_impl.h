@@ -109,11 +109,8 @@ class AdsServiceImpl : public AdsService,
   void InitializePrefChangeRegistrar();
 
   void SetSysInfo();
-  void SetEnvironment();
-  void SetBuildChannel();
-  void SetDebug();
 
-  void ParseCommandLineSwitches();
+  void SetBuildChannel();
 
   void MaybeStartOrStop(const bool should_restart);
   void StartBatAdsService();
@@ -128,8 +125,6 @@ class AdsServiceImpl : public AdsService,
   void DetectUncertainFuture(const uint32_t number_of_start);
   void OnDetectUncertainFuture(const uint32_t number_of_start,
                                const bool is_uncertain_future);
-
-  void DetectOverriddenCommandLineArgs(const uint32_t number_of_start);
 
   void EnsureBaseDirectoryExists(const uint32_t number_of_start);
   void OnEnsureBaseDirectoryExists(const uint32_t number_of_start,

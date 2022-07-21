@@ -6,7 +6,8 @@
 #include "bat/ads/internal/ads/serving/permission_rules/command_line_permission_rule.h"
 
 #include "bat/ads/internal/base/unittest/unittest_base.h"
-#include "bat/ads/internal/base/unittest/unittest_mock_util.h"
+#include "bat/ads/internal/flags/environment/environment_types.h"
+#include "bat/ads/internal/flags/flag_manager_util.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
@@ -20,10 +21,11 @@ class BatAdsCommandLinePermissionRuleTest : public UnitTestBase {
 };
 
 TEST_F(BatAdsCommandLinePermissionRuleTest,
-       AllowAdIfDidNotOverrideCommandLineArgsForProduction) {
+       AllowAdIfDidNotOverrideCommandLineSwitchesForProduction) {
   // Arrange
-  SysInfo().did_override_command_line_args_flag = false;
-  MockEnvironment(mojom::Environment::kProduction);
+  SetEnvironmentTypeForTesting(EnvironmentType::kProduction);
+
+  SetDidOverrideVariationsCommandLineSwitchesForTesting(false);
 
   // Act
   CommandLinePermissionRule permission_rule;
@@ -34,10 +36,11 @@ TEST_F(BatAdsCommandLinePermissionRuleTest,
 }
 
 TEST_F(BatAdsCommandLinePermissionRuleTest,
-       AllowAdIfDidNotOverrideCommandLineArgsForStaging) {
-  // did_override_command_line_args_flag
-  SysInfo().did_override_command_line_args_flag = false;
-  MockEnvironment(mojom::Environment::kStaging);
+       AllowAdIfDidNotOverrideCommandLineSwitchesForStaging) {
+  // Arrange
+  SetEnvironmentTypeForTesting(EnvironmentType::kStaging);
+
+  SetDidOverrideVariationsCommandLineSwitchesForTesting(false);
 
   // Act
   CommandLinePermissionRule permission_rule;
@@ -48,10 +51,11 @@ TEST_F(BatAdsCommandLinePermissionRuleTest,
 }
 
 TEST_F(BatAdsCommandLinePermissionRuleTest,
-       DoNotAllowAdIfDidOverrideCommandLineArgsForProduction) {
+       DoNotAllowAdIfDidOverrideCommandLineSwitchesForProduction) {
   // Arrange
-  SysInfo().did_override_command_line_args_flag = true;
-  MockEnvironment(mojom::Environment::kProduction);
+  SetEnvironmentTypeForTesting(EnvironmentType::kProduction);
+
+  SetDidOverrideVariationsCommandLineSwitchesForTesting(true);
 
   // Act
   CommandLinePermissionRule permission_rule;
@@ -62,10 +66,11 @@ TEST_F(BatAdsCommandLinePermissionRuleTest,
 }
 
 TEST_F(BatAdsCommandLinePermissionRuleTest,
-       AllowAdIfDidOverrideCommandLineArgsForStaging) {
+       AllowAdIfDidOverrideCommandLineSwitchesForStaging) {
   // Arrange
-  SysInfo().did_override_command_line_args_flag = true;
-  MockEnvironment(mojom::Environment::kStaging);
+  SetEnvironmentTypeForTesting(EnvironmentType::kStaging);
+
+  SetDidOverrideVariationsCommandLineSwitchesForTesting(true);
 
   // Act
   CommandLinePermissionRule permission_rule;

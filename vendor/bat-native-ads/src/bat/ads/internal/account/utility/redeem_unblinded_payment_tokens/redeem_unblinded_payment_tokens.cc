@@ -10,7 +10,6 @@
 #include <utility>
 
 #include "base/time/time.h"
-#include "bat/ads/ads.h"
 #include "bat/ads/internal/account/utility/redeem_unblinded_payment_tokens/redeem_unblinded_payment_tokens_url_request_builder.h"
 #include "bat/ads/internal/account/utility/redeem_unblinded_payment_tokens/redeem_unblinded_payment_tokens_user_data_builder.h"
 #include "bat/ads/internal/ads_client_helper.h"
@@ -20,6 +19,7 @@
 #include "bat/ads/internal/base/url/url_request_string_util.h"
 #include "bat/ads/internal/base/url/url_response_string_util.h"
 #include "bat/ads/internal/deprecated/confirmations/confirmation_state_manager.h"
+#include "bat/ads/internal/flags/flag_manager_util.h"
 #include "bat/ads/internal/privacy/tokens/unblinded_payment_tokens/unblinded_payment_tokens.h"
 #include "bat/ads/pref_names.h"
 #include "brave_base/random.h"
@@ -216,13 +216,8 @@ base::TimeDelta RedeemUnblindedPaymentTokens::CalculateTokenRedemptionDelay() {
 base::Time RedeemUnblindedPaymentTokens::CalculateNextTokenRedemptionDate() {
   const base::Time now = base::Time::Now();
 
-  int64_t delay;
-
-  if (!g_is_debug) {
-    delay = kNextTokenRedemptionAfterSeconds;
-  } else {
-    delay = kDebugNextTokenRedemptionAfterSeconds;
-  }
+  const int64_t delay = ShouldDebug() ? kDebugNextTokenRedemptionAfterSeconds
+                                      : kNextTokenRedemptionAfterSeconds;
 
   const int64_t rand_delay =
       static_cast<int64_t>(brave_base::random::Geometric(delay));

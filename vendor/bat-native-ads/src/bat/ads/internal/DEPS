@@ -3,6 +3,9 @@ include_rules = [
 ]
 
 specific_include_rules = {
+  "did_override_variations_command_line_switches_parser_util.cc": [
+    "+components/variations/variations_switches.h",
+  ],
   "json_helper.h": [
     "+rapidjson",
   ],

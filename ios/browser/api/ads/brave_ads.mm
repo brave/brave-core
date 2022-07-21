@@ -35,6 +35,7 @@
 #import "brave/build/ios/mojom/cpp_transformations.h"
 #import "brave/ios/browser/api/common/common_operations.h"
 #import "brave_ads.h"
+#include "build/build_config.h"
 #import "inline_content_ad_ios.h"
 #include "net/base/mac/url_conversions.h"
 #import "notification_ad_ios.h"
@@ -221,29 +222,15 @@ ads::mojom::DBCommandResponsePtr RunDBTransactionOnTaskRunner(
       stringWithFormat:@"%@_%@", locale.languageCode, locale.countryCode];
 }
 
-BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
-
-    + (AdsEnvironment)environment {
-  return static_cast<AdsEnvironment>(ads::g_environment);
-}
-
-+ (void)setEnvironment:(AdsEnvironment)environment {
-  ads::g_environment = static_cast<ads::mojom::Environment>(environment);
-}
-
 + (AdsSysInfo*)sysInfo {
   auto sys_info = [[AdsSysInfo alloc] init];
   sys_info.deviceId = base::SysUTF8ToNSString(ads::SysInfo().device_id);
-  sys_info.didOverrideCommandLineArgsFlag =
-      ads::SysInfo().did_override_command_line_args_flag;
   sys_info.isUncertainFuture = ads::SysInfo().is_uncertain_future;
   return sys_info;
 }
 
 + (void)setSysInfo:(AdsSysInfo*)sysInfo {
   ads::SysInfo().device_id = base::SysNSStringToUTF8(sysInfo.deviceId);
-  ads::SysInfo().did_override_command_line_args_flag =
-      sysInfo.didOverrideCommandLineArgsFlag;
   ads::SysInfo().is_uncertain_future = sysInfo.isUncertainFuture;
 }
 
@@ -976,12 +963,13 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
   };
 
   NSString* baseUrl;
-  if (ads::g_environment == ads::mojom::Environment::kProduction) {
-    baseUrl = @"https://brave-user-model-installer-input.s3.brave.com";
-  } else {
-    baseUrl =
-        @"https://brave-user-model-installer-input-dev.s3.bravesoftware.com";
-  }
+
+#if defined(OFFICIAL_BUILD)
+  baseUrl = @"https://brave-user-model-installer-input.s3.brave.com";
+#else   // OFFICIAL_BUILD
+  baseUrl =
+      @"https://brave-user-model-installer-input-dev.s3.bravesoftware.com";
+#endif  // !OFFICIAL_BUILD
 
   baseUrl = [baseUrl stringByAppendingPathComponent:folderName];
 

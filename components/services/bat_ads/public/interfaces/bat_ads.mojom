@@ -17,12 +17,7 @@ interface BatAdsService {
          pending_associated_receiver<BatAds> database) => ();
 
   SetSysInfo(ads.mojom.SysInfo sys_info) => ();
-
-  SetEnvironment(ads.mojom.Environment environment) => ();
-
   SetBuildChannel(ads.mojom.BuildChannel build_channel) => ();
-
-  SetDebug(bool is_debug) => ();
 };
 
 interface BatAdsClient {

@@ -61,6 +61,7 @@ class Conversions;
 class CovariateManager;
 class DatabaseManager;
 class DiagnosticManager;
+class FlagManager;
 class HistoryManager;
 class IdleDetectionManager;
 class InlineContentAd;
@@ -226,6 +227,7 @@ class AdsImpl final : public Ads,
 
   std::unique_ptr<BrowserManager> browser_manager_;
   std::unique_ptr<ClientStateManager> client_state_manager_;
+  std::unique_ptr<FlagManager> flag_manager_;
   std::unique_ptr<ConfirmationStateManager> confirmation_state_manager_;
   std::unique_ptr<CovariateManager> covariate_manager_;
   std::unique_ptr<DatabaseManager> database_manager_;

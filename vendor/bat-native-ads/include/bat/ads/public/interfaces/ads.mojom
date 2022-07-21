@@ -7,14 +7,8 @@ module ads.mojom;
 import "mojo/public/mojom/base/time.mojom";
 import "url/mojom/url.mojom";
 
-enum Environment {
-  kStaging = 0,
-  kProduction
-};
-
 struct SysInfo {
   string device_id;
-  bool did_override_command_line_args_flag;
   bool is_uncertain_future;
 };
 

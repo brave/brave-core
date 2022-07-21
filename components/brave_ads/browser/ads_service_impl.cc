@@ -9,11 +9,9 @@
 #include <utility>
 
 #include "base/base64.h"
-#include "base/base_switches.h"
 #include "base/bind.h"
 #include "base/callback_helpers.h"
 #include "base/containers/flat_map.h"
-#include "base/containers/flat_set.h"
 #include "base/cxx17_backports.h"
 #include "base/debug/dump_without_crashing.h"
 #include "base/feature_list.h"
@@ -58,7 +56,6 @@
 #include "brave/components/brave_rewards/browser/rewards_p3a.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
-#include "brave/components/brave_rewards/common/rewards_flags.h"
 #include "brave/components/brave_today/common/features.h"
 #include "brave/components/brave_today/common/pref_names.h"
 #include "brave/components/l10n/browser/locale_helper.h"
@@ -421,26 +418,6 @@ void AdsServiceImpl::SetSysInfo() {
   bat_ads_service_->SetSysInfo(sys_info_.Clone(), base::NullCallback());
 }
 
-void AdsServiceImpl::SetEnvironment() {
-  DCHECK(IsBatAdsServiceBound());
-
-  ads::mojom::Environment environment;
-
-#if defined(OFFICIAL_BUILD)
-  environment = ads::mojom::Environment::kProduction;
-#else   // OFFICIAL_BUILD
-  environment = ads::mojom::Environment::kStaging;
-#endif  // !OFFICIAL_BUILD
-
-#if BUILDFLAG(IS_ANDROID)
-  if (GetBooleanPref(brave_rewards::prefs::kUseRewardsStagingServer)) {
-    environment = ads::mojom::Environment::kStaging;
-  }
-#endif  // BUILDFLAG(IS_ANDROID)
-
-  bat_ads_service_->SetEnvironment(environment, base::NullCallback());
-}
-
 void AdsServiceImpl::SetBuildChannel() {
   DCHECK(IsBatAdsServiceBound());
 
@@ -450,20 +427,6 @@ void AdsServiceImpl::SetBuildChannel() {
 
   bat_ads_service_->SetBuildChannel(std::move(build_channel),
                                     base::NullCallback());
-}
-
-void AdsServiceImpl::SetDebug() {
-  DCHECK(IsBatAdsServiceBound());
-
-  bool is_debug;
-
-#if defined(NDEBUG)
-  is_debug = false;
-#else   // NDEBUG
-  is_debug = true;
-#endif  // !NDEBUG
-
-  bat_ads_service_->SetDebug(is_debug, base::NullCallback());
 }
 
 void AdsServiceImpl::MaybeStartOrStop(const bool should_restart) {
@@ -580,51 +543,6 @@ void AdsServiceImpl::OnDetectUncertainFuture(const uint32_t number_of_start,
                                              const bool is_uncertain_future) {
   sys_info_.is_uncertain_future = is_uncertain_future;
 
-  DetectOverriddenCommandLineArgs(number_of_start);
-}
-
-void AdsServiceImpl::DetectOverriddenCommandLineArgs(
-    const uint32_t number_of_start) {
-  // TODO(https://github.com/brave/brave-browser/issues/13793): Transition ads
-  // to components which will then provide access to |kFeatureName| and
-  // command-line switches rather than using hard coded strings below.
-
-  const auto* command_line = base::CommandLine::ForCurrentProcess();
-  if ((command_line->HasSwitch("fake-variations-channel") &&
-       !command_line->GetSwitchValueASCII("fake-variations-channel").empty()) ||
-      (command_line->HasSwitch("variations-override-country") &&
-       !command_line->GetSwitchValueASCII("variations-override-country")
-            .empty())) {
-    sys_info_.did_override_command_line_args_flag = true;
-  } else {
-    const base::flat_set<std::string> kCommandLineSwitches = {
-        switches::kEnableFeatures, switches::kFieldTrialHandle,
-        "force-fieldtrial-params"};
-
-    std::string concatenated_command_line_switches;
-    for (const auto& command_line_switch : kCommandLineSwitches) {
-      if (command_line->HasSwitch(command_line_switch)) {
-        concatenated_command_line_switches +=
-            command_line->GetSwitchValueASCII(command_line_switch);
-      }
-    }
-
-    constexpr const char* kFeatureNames[] = {
-        "AdRewards",        "AdServing",        "AntiTargeting",
-        "Conversions",      "EligibleAds",      "EpsilonGreedyBandit",
-        "FrequencyCapping", "InlineContentAds", "NewTabPageAds",
-        "PermissionRules",  "PurchaseIntent",   "TextClassification",
-        "UserActivity"};
-
-    for (const char* feature_name : kFeatureNames) {
-      if (concatenated_command_line_switches.find(feature_name) !=
-          std::string::npos) {
-        sys_info_.did_override_command_line_args_flag = true;
-        break;
-      }
-    }
-  }
-
   EnsureBaseDirectoryExists(number_of_start);
 }
 
@@ -644,11 +562,8 @@ void AdsServiceImpl::OnEnsureBaseDirectoryExists(const uint32_t number_of_start,
   }
 
   SetSysInfo();
-  SetEnvironment();
-  SetBuildChannel();
-  SetDebug();
 
-  ParseCommandLineSwitches();
+  SetBuildChannel();
 
   CreateBatAdsService(number_of_start);
 
@@ -841,30 +756,6 @@ void AdsServiceImpl::OnNewTabPageShowTodayPrefChanged() {
 void AdsServiceImpl::NotifyPrefChanged(const std::string& path) {
   if (IsBatAdsBound()) {
     bat_ads_->OnPrefChanged(path);
-  }
-}
-
-void AdsServiceImpl::ParseCommandLineSwitches() {
-  DCHECK(IsBatAdsServiceBound());
-
-  const auto& flags = brave_rewards::RewardsFlags::ForCurrentProcess();
-
-  if (flags.environment) {
-    ads::mojom::Environment environment;
-    switch (*flags.environment) {
-      case brave_rewards::RewardsFlags::Environment::kDevelopment:
-      case brave_rewards::RewardsFlags::Environment::kStaging:
-        environment = ads::mojom::Environment::kStaging;
-        break;
-      case brave_rewards::RewardsFlags::Environment::kProduction:
-        environment = ads::mojom::Environment::kProduction;
-        break;
-    }
-    bat_ads_service_->SetEnvironment(environment, base::NullCallback());
-  }
-
-  if (flags.debug) {
-    bat_ads_service_->SetDebug(true, base::NullCallback());
   }
 }
 

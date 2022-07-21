@@ -5,7 +5,7 @@
 
 #include "bat/ads/internal/ads/serving/permission_rules/command_line_permission_rule.h"
 
-#include "bat/ads/ads.h"
+#include "bat/ads/internal/flags/flag_manager_util.h"
 
 namespace ads {
 
@@ -27,8 +27,7 @@ std::string CommandLinePermissionRule::GetLastMessage() const {
 }
 
 bool CommandLinePermissionRule::DoesRespectCap() {
-  if (SysInfo().did_override_command_line_args_flag &&
-      g_environment == mojom::Environment::kProduction) {
+  if (IsProductionEnvironment() && DidOverrideVariationsCommandLineSwitches()) {
     return false;
   }
 

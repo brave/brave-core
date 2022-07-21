@@ -5,18 +5,25 @@
 
 #include "bat/ads/internal/server/url/hosts/static_server_host.h"
 
-#include "bat/ads/internal/base/unittest/unittest_mock_util.h"
-#include "bat/ads/internal/server/url/hosts/server_host_types.h"
+#include "bat/ads/internal/base/unittest/unittest_base.h"
+#include "bat/ads/internal/flags/environment/environment_types.h"
+#include "bat/ads/internal/flags/flag_manager_util.h"
 #include "bat/ads/internal/server/url/hosts/server_host_util.h"
-#include "testing/gtest/include/gtest/gtest.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
 namespace ads {
 
-TEST(BatAdsStaticServerHostTest, GetProductionHost) {
+class BatAdsStaticServerHostTest : public UnitTestBase {
+ protected:
+  BatAdsStaticServerHostTest() = default;
+
+  ~BatAdsStaticServerHostTest() override = default;
+};
+
+TEST_F(BatAdsStaticServerHostTest, GetProductionHost) {
   // Arrange
-  MockEnvironment(mojom::Environment::kProduction);
+  SetEnvironmentTypeForTesting(EnvironmentType::kProduction);
 
   // Act
   const std::string host = server::GetStaticHost();
@@ -26,9 +33,9 @@ TEST(BatAdsStaticServerHostTest, GetProductionHost) {
   EXPECT_EQ(expected_host, host);
 }
 
-TEST(BatAdsStaticServerHostTest, GetStagingHost) {
+TEST_F(BatAdsStaticServerHostTest, GetStagingHost) {
   // Arrange
-  MockEnvironment(mojom::Environment::kStaging);
+  SetEnvironmentTypeForTesting(EnvironmentType::kStaging);
 
   // Act
   const std::string host = server::GetStaticHost();

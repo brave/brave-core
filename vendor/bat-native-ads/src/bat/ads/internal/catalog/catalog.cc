@@ -12,7 +12,6 @@
 
 #include "base/check.h"
 #include "base/time/time.h"
-#include "bat/ads/ads.h"
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/base/logging_util.h"
 #include "bat/ads/internal/base/net/http/http_status_code.h"
@@ -25,6 +24,7 @@
 #include "bat/ads/internal/catalog/catalog_url_request_builder.h"
 #include "bat/ads/internal/catalog/catalog_util.h"
 #include "bat/ads/internal/database/database_manager.h"
+#include "bat/ads/internal/flags/flag_manager_util.h"
 
 namespace ads {
 
@@ -138,7 +138,7 @@ void Catalog::FetchAfterDelay() {
   retry_timer_.Stop();
 
   const base::TimeDelta delay =
-      g_is_debug ? kDebugCatalogPing : GetCatalogPing();
+      ShouldDebug() ? kDebugCatalogPing : GetCatalogPing();
 
   const base::Time fetch_at = timer_.StartWithPrivacy(
       FROM_HERE, delay,

@@ -58,10 +58,6 @@ OBJC_EXPORT
 /// Whether or not the users current locale (by `NSLocale`) is supported
 + (BOOL)isCurrentLocaleSupported;
 
-/// Whether or not to use staging servers. Defaults to false
-@property(nonatomic, class, getter=isDebug) BOOL debug;
-/// The environment that ads is communicating with.
-@property(nonatomic, class) AdsEnvironment environment;
 /// System info
 @property(nonatomic, class) AdsSysInfo* sysInfo;
 /// The build channel that ads is configured for

@@ -6,6 +6,7 @@
 #include "base/time/time.h"
 #include "bat/ads/internal/base/containers/container_util.h"
 #include "bat/ads/internal/base/unittest/unittest_base.h"
+#include "bat/ads/internal/base/unittest/unittest_constants.h"
 #include "bat/ads/internal/base/unittest/unittest_time_util.h"
 #include "bat/ads/internal/conversions/conversion_info.h"
 #include "bat/ads/internal/conversions/conversion_queue_database_table.h"

@@ -66,6 +66,7 @@ source_set("browser") {
     "//brave/common",
     "//brave/components/brave_federated",
     "//brave/components/brave_rewards/browser",
+    "//brave/components/brave_rewards/common",
     "//brave/components/brave_today/common",
     "//brave/components/rpill/common",
     "//brave/components/services/bat_ads/public/cpp",
