@@ -5,20 +5,24 @@
 
 #include "bat/ads/internal/ml/pipeline/text_processing/embedding_processing.h"
 
-#include "base/check.h"
-#include "base/values.h"
+#include <algorithm>
+#include <utility>
+#include <vector>
+
 #include "base/base64.h"
+#include "base/check.h"
 #include "base/strings/string_split.h"
+#include "base/values.h"
+#include "bat/ads/internal/base/crypto/crypto_util.h"
 #include "bat/ads/internal/base/logging_util.h"
+#include "bat/ads/internal/base/strings/string_html_parse_util.h"
+#include "bat/ads/internal/base/strings/string_strip_util.h"
 #include "bat/ads/internal/ml/data/text_data.h"
 #include "bat/ads/internal/ml/data/vector_data.h"
-#include "bat/ads/internal/base/crypto/crypto_util.h"
 #include "bat/ads/internal/ml/pipeline/pipeline_embedding_info.h"
 #include "bat/ads/internal/ml/pipeline/pipeline_util.h"
 #include "bat/ads/internal/ml/pipeline/text_processing/embedding_data.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
-#include "bat/ads/internal/base/strings/string_strip_util.h"
-#include "bat/ads/internal/base/strings/string_html_parse_util.h"
 
 namespace ads {
 namespace ml {
@@ -69,19 +73,22 @@ bool EmbeddingProcessing::FromValue(base::Value resource_value) {
   return is_initialized_;
 }
 
-std::string EmbeddingProcessing::CleanText(const std::string& text, bool is_html) {
+std::string EmbeddingProcessing::CleanText(const std::string& text,
+                                           bool is_html) {
   std::string cleaned_text = text;
   if (is_html) {
     cleaned_text = ParseTagAttribute(cleaned_text, "og:title", "content");
   }
   cleaned_text = StripNonAlphaCharacters(cleaned_text);
-  std::transform(cleaned_text.begin(), cleaned_text.end(), cleaned_text.begin(), ::tolower);
+  std::transform(cleaned_text.begin(), cleaned_text.end(), cleaned_text.begin(),
+                 ::tolower);
   return cleaned_text;
 }
 
-TextEmbeddingData EmbeddingProcessing::EmbedText(const std::string& text) const {
-
-  std::vector<float> embedding_initialize(embedding_pipeline_.embeddings_dim, 0.0);
+TextEmbeddingData EmbeddingProcessing::EmbedText(
+    const std::string& text) const {
+  std::vector<float> embedding_initialize(embedding_pipeline_.embeddings_dim,
+                                          0.0);
   VectorData embedding_vector = VectorData(embedding_initialize);
   TextEmbeddingData embedding_data;
   embedding_data.embedding = embedding_vector;
@@ -116,7 +123,7 @@ TextEmbeddingData EmbeddingProcessing::EmbedText(const std::string& text) const 
   embedding_data.text_hashed = hashed_text;
 
   embedding_data.embedding.VectorDivideByScalar(n_tokens);
-  return embedding_data;  
+  return embedding_data;
 }
 
 }  // namespace pipeline

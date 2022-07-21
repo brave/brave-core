@@ -10,10 +10,13 @@
 
 namespace ads {
 
-std::string FindFirstRegexMatch(std::string& search_text, const std::string& rgx_str);
+std::string FindFirstRegexMatch(const std::string& search_text,
+                                const std::string& rgx_str);
 
-std::string ParseTagAttribute(const std::string& html, const std::string& tag_substr, const std::string& tag_attribute);
+std::string ParseTagAttribute(const std::string& html,
+                              const std::string& tag_substr,
+                              const std::string& tag_attribute);
 
 }  // namespace ads
 
-#endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_BASE_STRINGS_STRING_STRING_HTML_PARSE_UTIL_H_
+#endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_BASE_STRINGS_STRING_HTML_PARSE_UTIL_H_

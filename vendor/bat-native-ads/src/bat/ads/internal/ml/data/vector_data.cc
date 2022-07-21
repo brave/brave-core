@@ -246,7 +246,7 @@ const std::string VectorData::GetVectorAsString() const {
     ++v_index;
   }
   return vctr;
-};
+}
 
 }  // namespace ml
 }  // namespace ads

@@ -17,7 +17,7 @@ namespace pipeline {
 
 struct TextEmbeddingData final {
   TextEmbeddingData();
-  TextEmbeddingData(TextEmbeddingData& data);
+  TextEmbeddingData(const TextEmbeddingData& data);
   TextEmbeddingData& operator=(const TextEmbeddingData& data);
   ~TextEmbeddingData();
 

@@ -10,8 +10,9 @@ namespace ml {
 namespace pipeline {
 
 TextEmbeddingData::TextEmbeddingData() = default;
-TextEmbeddingData::TextEmbeddingData(TextEmbeddingData& data) = default;
-TextEmbeddingData& TextEmbeddingData::operator=(const TextEmbeddingData& data) = default;
+TextEmbeddingData::TextEmbeddingData(const TextEmbeddingData& data) = default;
+TextEmbeddingData& TextEmbeddingData::operator=(const TextEmbeddingData& data) =
+    default;
 TextEmbeddingData::~TextEmbeddingData() = default;
 
 }  // namespace pipeline

@@ -7,6 +7,7 @@
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_PROCESSORS_CONTEXTUAL_TEXT_EMBEDDING_TEXT_EMBEDDING_HTML_EVENTS_H_
 
 #include <functional>
+#include <string>
 
 #include "bat/ads/public/interfaces/ads.mojom.h"
 
@@ -20,11 +21,9 @@ struct TextEmbeddingEventInfo;
 
 using TextEmbeddingHTMLEventCallback = std::function<void(const bool)>;
 
-void LogTextEmbeddingHTMLEvent(
-    const std::string embedding_formatted, 
-    const std::string hashed_key,
-    TextEmbeddingHTMLEventCallback callback
-);
+void LogTextEmbeddingHTMLEvent(const std::string embedding_formatted,
+                               const std::string hashed_key,
+                               TextEmbeddingHTMLEventCallback callback);
 void PurgeStaleTextEmbeddingHTMLEvents(TextEmbeddingHTMLEventCallback callback);
 void GetTextEmbeddingEventsFromDatabase();
 

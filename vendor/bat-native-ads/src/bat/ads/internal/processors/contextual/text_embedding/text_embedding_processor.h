@@ -26,8 +26,8 @@ class TextEmbedding;
 namespace processor {
 
 class TextEmbedding final : public LocaleManagerObserver,
-                                 public ResourceManagerObserver,
-                                 public TabManagerObserver {
+                            public ResourceManagerObserver,
+                            public TabManagerObserver {
  public:
   explicit TextEmbedding(resource::TextEmbedding* resource);
   ~TextEmbedding() override;

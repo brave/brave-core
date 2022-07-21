@@ -10,15 +10,16 @@
 #include <string>
 
 #include "bat/ads/ads_client_callback.h"
-#include "bat/ads/internal/processors/contextual/text_embedding/text_embedding_html_event_info_aliases.h"
 #include "bat/ads/internal/database/database_table_interface.h"
+#include "bat/ads/internal/processors/contextual/text_embedding/text_embedding_html_event_info_aliases.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
 
 namespace ads {
 namespace database {
 namespace table {
 
-using GetTextEmbeddingHTMLEventsCallback = std::function<void(const bool, const TextEmbeddingHTMLEventList&)>;
+using GetTextEmbeddingHTMLEventsCallback =
+    std::function<void(const bool, const TextEmbeddingHTMLEventList&)>;
 
 class TextEmbeddingHTMLEvents final : public TableInterface {
  public:
@@ -27,7 +28,8 @@ class TextEmbeddingHTMLEvents final : public TableInterface {
   TextEmbeddingHTMLEvents(const TextEmbeddingHTMLEvents&) = delete;
   TextEmbeddingHTMLEvents& operator=(const TextEmbeddingHTMLEvents&) = delete;
 
-  void LogEvent(const TextEmbeddingEventInfo& text_embedding_html_event, ResultCallback callback);
+  void LogEvent(const TextEmbeddingEventInfo& text_embedding_html_event,
+                ResultCallback callback);
 
   void GetAll(GetTextEmbeddingHTMLEventsCallback callback);
 
@@ -39,16 +41,20 @@ class TextEmbeddingHTMLEvents final : public TableInterface {
                const int to_version) override;
 
  private:
-  void RunTransaction(const std::string& query, GetTextEmbeddingHTMLEventsCallback callback);
+  void RunTransaction(const std::string& query,
+                      GetTextEmbeddingHTMLEventsCallback callback);
 
-  void InsertOrUpdate(mojom::DBTransaction* transaction,
-                      const TextEmbeddingHTMLEventList& text_embedding_html_events);
+  void InsertOrUpdate(
+      mojom::DBTransaction* transaction,
+      const TextEmbeddingHTMLEventList& text_embedding_html_events);
 
-  std::string BuildInsertOrUpdateQuery(mojom::DBCommand* command,
-                                       const TextEmbeddingHTMLEventList& text_embedding_html_events);
+  std::string BuildInsertOrUpdateQuery(
+      mojom::DBCommand* command,
+      const TextEmbeddingHTMLEventList& text_embedding_html_events);
 
-  void OnGetTextEmbeddingHTMLEvents(mojom::DBCommandResponsePtr response,
-                     GetTextEmbeddingHTMLEventsCallback callback);
+  void OnGetTextEmbeddingHTMLEvents(
+      mojom::DBCommandResponsePtr response,
+      GetTextEmbeddingHTMLEventsCallback callback);
 
   void MigrateToV25(mojom::DBTransaction* transaction);
 };

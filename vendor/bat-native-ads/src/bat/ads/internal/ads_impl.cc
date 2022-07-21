@@ -101,8 +101,7 @@ AdsImpl::AdsImpl(AdsClient* ads_client)
   purchase_intent_resource_ = std::make_unique<resource::PurchaseIntent>();
   text_classification_resource_ =
       std::make_unique<resource::TextClassification>();
-  text_embedding_resource_ =
-      std::make_unique<resource::TextEmbedding>();
+  text_embedding_resource_ = std::make_unique<resource::TextEmbedding>();
 
   epsilon_greedy_bandit_processor_ =
       std::make_unique<processor::EpsilonGreedyBandit>();
@@ -111,9 +110,8 @@ AdsImpl::AdsImpl(AdsClient* ads_client)
   text_classification_processor_ =
       std::make_unique<processor::TextClassification>(
           text_classification_resource_.get());
-  text_embedding_processor_ =
-      std::make_unique<processor::TextEmbedding>(
-          text_embedding_resource_.get());
+  text_embedding_processor_ = std::make_unique<processor::TextEmbedding>(
+      text_embedding_resource_.get());
 
   inline_content_ad_ = std::make_unique<InlineContentAd>(
       account_.get(), transfer_.get(), subdivision_targeting_.get(),

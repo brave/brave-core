@@ -27,7 +27,7 @@ constexpr int kDefaultResourceVersion = 1;
 }  // namespace
 
 const base::Feature kTextEmbedding{kFeatureName,
-                                        base::FEATURE_ENABLED_BY_DEFAULT};
+                                   base::FEATURE_ENABLED_BY_DEFAULT};
 
 bool IsTextEmbeddingEnabled() {
   return base::FeatureList::IsEnabled(kTextEmbedding);

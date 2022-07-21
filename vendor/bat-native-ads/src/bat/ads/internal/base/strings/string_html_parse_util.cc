@@ -9,12 +9,13 @@
 
 namespace ads {
 
-std::string FindFirstRegexMatch(std::string& search_text, const std::string& rgx_str) {
+std::string FindFirstRegexMatch(const std::string& search_text,
+                                const std::string& rgx_str) {
   std::string match_str;
   std::regex rgx(rgx_str);
   std::smatch match;
   while (std::regex_search(search_text, match, rgx)) {
-    for (auto x:match) {
+    for (auto x : match) {
       match_str = x;
       break;
     }
@@ -26,13 +27,18 @@ std::string FindFirstRegexMatch(std::string& search_text, const std::string& rgx
   return match_str;
 }
 
-std::string ParseTagAttribute(const std::string& html, const std::string& tag_substr, const std::string& tag_attribute) {
+std::string ParseTagAttribute(const std::string& html,
+                              const std::string& tag_substr,
+                              const std::string& tag_attribute) {
   std::string attribute_text;
-  std::string search_text = html;
-  attribute_text = FindFirstRegexMatch(search_text, "<[^>]*" + tag_substr + "[^<]*>");
+  const std::string search_text = html;
+  attribute_text =
+      FindFirstRegexMatch(search_text, "<[^>]*" + tag_substr + "[^<]*>");
   attribute_text = FindFirstRegexMatch(attribute_text, tag_attribute + "=.*>");
   if (attribute_text.length() > tag_attribute.length()) {
-    attribute_text = attribute_text.substr(tag_attribute.length(), attribute_text.length() - tag_attribute.length());
+    attribute_text =
+        attribute_text.substr(tag_attribute.length(),
+                              attribute_text.length() - tag_attribute.length());
   }
   return attribute_text;
 }

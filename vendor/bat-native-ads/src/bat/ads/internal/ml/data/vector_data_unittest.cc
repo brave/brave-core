@@ -43,8 +43,7 @@ TEST_F(BatAdsVectorDataTest, SparseVectorDataInitialization) {
   // Act
 
   // Assert
-  EXPECT_EQ(kDimensionCount,
-            sparse_data_vector_6.GetDimensionCount());
+  EXPECT_EQ(kDimensionCount, sparse_data_vector_6.GetDimensionCount());
 }
 
 TEST_F(BatAdsVectorDataTest, DenseDenseProduct) {

@@ -6,8 +6,8 @@
 #include "bat/ads/internal/processors/contextual/text_embedding/text_embedding_processor.h"
 #include "bat/ads/internal/processors/contextual/text_embedding/text_embedding_html_events.h"
 
-#include <vector>
 #include <algorithm>
+#include <vector>
 
 #include "base/check.h"
 #include "bat/ads/internal/base/logging_util.h"
@@ -47,43 +47,45 @@ bool TextEmbedding::IsEmbeddingEnabled() {
 
 void TextEmbedding::Process(const std::string& text) {
   if (!resource_->IsInitialized()) {
-    BLOG(1,
-         "Failed to process token embeddings as resource not initialized");
+    BLOG(1, "Failed to process token embeddings as resource not initialized");
     return;
   }
 
   ml::pipeline::EmbeddingProcessing* embedding_proc_pipeline = resource_->Get();
 
-  const std::string cleaned_text = embedding_proc_pipeline->CleanText(text, true);
+  const std::string cleaned_text =
+      embedding_proc_pipeline->CleanText(text, true);
   if (cleaned_text.length() == 0) {
     BLOG(1, "No text available for embedding");
     return;
   }
 
-  ml::pipeline::TextEmbeddingData embedding_data = embedding_proc_pipeline->EmbedText(cleaned_text);
+  ml::pipeline::TextEmbeddingData embedding_data =
+      embedding_proc_pipeline->EmbedText(cleaned_text);
   if (embedding_data.embedding.GetNonZeroElementsCount() == 0) {
     BLOG(1, "Text not embedded");
     return;
   }
 
-  const std::string embedding_formatted = embedding_data.embedding.GetVectorAsString();
+  const std::string embedding_formatted =
+      embedding_data.embedding.GetVectorAsString();
   BLOG(1, "Embedding: " << embedding_formatted);
-  LogTextEmbeddingHTMLEvent(embedding_formatted, embedding_data.text_hashed, [](const bool success) {
-    if (!success) {
-      BLOG(1, "Failed to text embedding html event");
-      return;
-    }
-    
-    PurgeStaleTextEmbeddingHTMLEvents([](const bool success) {
-      if (!success) {
-        BLOG(1, "Failed to purge stale text embedding html events");
-        return;
-      }
-    });
+  LogTextEmbeddingHTMLEvent(
+      embedding_formatted, embedding_data.text_hashed, [](const bool success) {
+        if (!success) {
+          BLOG(1, "Failed to text embedding html event");
+          return;
+        }
 
-    GetTextEmbeddingEventsFromDatabase();
+        PurgeStaleTextEmbeddingHTMLEvents([](const bool success) {
+          if (!success) {
+            BLOG(1, "Failed to purge stale text embedding html events");
+            return;
+          }
+        });
 
-  });
+        GetTextEmbeddingEventsFromDatabase();
+      });
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -105,9 +107,7 @@ void TextEmbedding::OnHtmlContentDidChange(
   const GURL& url = redirect_chain.back();
 
   if (!url.SchemeIsHTTPOrHTTPS()) {
-    BLOG(
-        1,
-        url.scheme() << " scheme is not supported for processing html");
+    BLOG(1, url.scheme() << " scheme is not supported for processing html");
     return;
   }
 
@@ -117,7 +117,7 @@ void TextEmbedding::OnHtmlContentDidChange(
     return;
   }
 
-  if (TextEmbedding::IsEmbeddingEnabled()) { 
+  if (TextEmbedding::IsEmbeddingEnabled()) {
     Process(html);
   }
 }

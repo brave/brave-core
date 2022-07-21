@@ -33,27 +33,24 @@ bool TextEmbedding::IsInitialized() const {
 }
 
 void TextEmbedding::Load() {
-  LoadAndParseResource(
-      kResourceId, targeting::features::GetTextEmbeddingResourceVersion(),
-      base::BindOnce(&TextEmbedding::OnLoadAndParseResource,
-                     weak_ptr_factory_.GetWeakPtr()));
+  LoadAndParseResource(kResourceId,
+                       targeting::features::GetTextEmbeddingResourceVersion(),
+                       base::BindOnce(&TextEmbedding::OnLoadAndParseResource,
+                                      weak_ptr_factory_.GetWeakPtr()));
 }
 
 void TextEmbedding::OnLoadAndParseResource(
     ParsingResultPtr<ml::pipeline::EmbeddingProcessing> result) {
-
   if (!result) {
-    BLOG(1,
-         "Failed to load " << kResourceId << " text embedding resource");
+    BLOG(1, "Failed to load " << kResourceId << " text embedding resource");
     return;
   }
-  BLOG(1, "Successfully loaded " << kResourceId
-                                 << " text embedding resource");
+  BLOG(1, "Successfully loaded " << kResourceId << " text embedding resource");
 
   if (!result->resource) {
     BLOG(1, result->error_message);
-    BLOG(1, "Failed to initialize " << kResourceId
-                                    << " text embedding resource");
+    BLOG(1,
+         "Failed to initialize " << kResourceId << " text embedding resource");
     return;
   }
 

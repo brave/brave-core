@@ -227,7 +227,8 @@ absl::optional<PipelineInfo> ParsePipelineValue(base::Value resource_value) {
                       std::move(linear_model_optional.value()));
 }
 
-absl::optional<PipelineEmbeddingInfo> ParsePipelineEmbedding(base::Value resource_value) {
+absl::optional<PipelineEmbeddingInfo> ParsePipelineEmbedding(
+    base::Value resource_value) {
   if (!resource_value.is_dict()) {
     return absl::nullopt;
   }
@@ -269,7 +270,8 @@ absl::optional<PipelineEmbeddingInfo> ParsePipelineEmbedding(base::Value resourc
   }
 
   absl::optional<PipelineEmbeddingInfo> pipeline_embedding_info =
-      PipelineEmbeddingInfo(version, timestamp, locale, embeddings_dim, embeddings);
+      PipelineEmbeddingInfo(version, timestamp, locale, embeddings_dim,
+                            embeddings);
 
   return pipeline_embedding_info;
 }

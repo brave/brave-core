@@ -7,30 +7,31 @@
 
 #include <utility>
 
-
 namespace ads {
 namespace ml {
 namespace pipeline {
 
 PipelineEmbeddingInfo::PipelineEmbeddingInfo() = default;
 
-PipelineEmbeddingInfo::PipelineEmbeddingInfo(PipelineEmbeddingInfo&& info) noexcept = default;
+PipelineEmbeddingInfo::PipelineEmbeddingInfo(
+    PipelineEmbeddingInfo&& info) noexcept = default;
 
-PipelineEmbeddingInfo& PipelineEmbeddingInfo::operator=(PipelineEmbeddingInfo&& info) noexcept = default;
+PipelineEmbeddingInfo& PipelineEmbeddingInfo::operator=(
+    PipelineEmbeddingInfo&& info) noexcept = default;
 
 PipelineEmbeddingInfo::~PipelineEmbeddingInfo() = default;
 
-PipelineEmbeddingInfo::PipelineEmbeddingInfo(const int version,
-                           const std::string& timestamp,
-                           const std::string& locale,
-                           const int embeddings_dim,
-                           const std::map<std::string, VectorData>& embeddings)
+PipelineEmbeddingInfo::PipelineEmbeddingInfo(
+    const int version,
+    const std::string& timestamp,
+    const std::string& locale,
+    const int embeddings_dim,
+    const std::map<std::string, VectorData>& embeddings)
     : version(version),
       timestamp(timestamp),
       locale(locale),
       embeddings_dim(embeddings_dim),
-      embeddings(embeddings) {
-}
+      embeddings(embeddings) {}
 
 }  // namespace pipeline
 }  // namespace ml
