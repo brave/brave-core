@@ -4,7 +4,6 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/de_amp/browser/de_amp_util.h"
-#include <iostream>
 
 #include "base/feature_list.h"
 #include "base/no_destructor.h"
@@ -61,26 +60,16 @@ bool CheckIfAmpPage(const std::string& body) {
                                                              opt);
   static const base::NoDestructor<re2::RE2> kDetectAmpRegex(kDetectAmpPattern,
                                                             opt);
-  // std::cerr << "body is " << body << "\n";
-
-  std::cerr << "Checking for AMP page"
-            << "\n";
 
   std::string html_tag;
   if (!RE2::PartialMatch(body, *kGetHtmlTagRegex, &html_tag)) {
     // Early exit if we can't find HTML tag - malformed document (or error)
-    std::cerr << "not HTML "
-              << "\n";
     return false;
   }
   if (!RE2::PartialMatch(html_tag, *kDetectAmpRegex)) {
     // Not AMP
-    std::cerr << "not AMP "
-              << "\n";
     return false;
   }
-  std::cerr << "Found AMP page!"
-            << "\n";
   return true;
 }
 
@@ -96,24 +85,17 @@ base::expected<std::string, std::string> FindCanonicalAmpUrl(
   static const base::NoDestructor<re2::RE2> kFindCanonicalHrefInTagRegex(
       kFindCanonicalHrefInTagPattern, opt);
 
-  // std::cerr << "body is " << body << "\n";
-
   std::string link_tag;
   if (!RE2::PartialMatch(body, *kFindCanonicalLinkTagRegex, &link_tag)) {
     // Can't find link tag, exit
-    std::cerr << "can't find link tag "
-              << "\n";
     return base::unexpected("Couldn't find link tag");
   }
-  std::cerr << "canonical link tag is " << link_tag << "\n";
   std::string canonical_url;
   // Find href in canonical link tag
   // Check there is only 1 href captured, else fail
   if (!RE2::PartialMatch(link_tag, *kFindCanonicalHrefInTagRegex,
                          &canonical_url)) {
     // Didn't find canonical link, potentially try again
-    std::cerr << "can't find canonical link "
-              << "\n";
     return base::unexpected("Couldn't find canonical URL in link tag");
   }
   return canonical_url;

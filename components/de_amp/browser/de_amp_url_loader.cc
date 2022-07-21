@@ -5,7 +5,6 @@
 
 #include "brave/components/de_amp/browser/de_amp_url_loader.h"
 
-#include <iostream>
 #include <utility>
 
 #include "base/logging.h"
@@ -64,8 +63,6 @@ DeAmpURLLoader::DeAmpURLLoader(
 DeAmpURLLoader::~DeAmpURLLoader() = default;
 
 void DeAmpURLLoader::OnBodyReadable(MojoResult) {
-  std::cerr << "entered OnBodyReadable"
-            << "\n";
   if (state_ == State::kSending) {
     if (bytes_remaining_in_buffer_ > 0) {
       SendBufferedBodyToClient();
@@ -77,22 +74,14 @@ void DeAmpURLLoader::OnBodyReadable(MojoResult) {
   if (!CheckBufferedBody(kReadBufferSize)) {
     return;
   }
-  std::cerr << "going to check de-amp check"
-            << "\n";
   bool redirected = MaybeRedirectToCanonicalLink();
   bool found_amp_but_not_canonical_link = !redirected && found_amp_;
-
-  std::cerr << "redirected: " << redirected << ", found_amp_:  " << found_amp_
-            << ", read_bytes: " << read_bytes_
-            << ", max bytes to check: " << kMaxBytesToCheck << "\n";
 
   // If we were not redirected (navigation is cancelled) and we didn't find AMP,
   // or if we did find AMP previously and we've already read more bytes than
   // max, complete the load.
   if ((!redirected && !found_amp_) ||
       (found_amp_but_not_canonical_link && read_bytes_ >= kMaxBytesToCheck)) {
-    std::cerr << "de-amp check failed, completing loading"
-              << "\n";
     found_amp_ = false;  // reset
     CompleteLoading(std::move(buffered_body_));
   }
@@ -116,12 +105,10 @@ bool DeAmpURLLoader::MaybeRedirectToCanonicalLink() {
   auto canonical_link = FindCanonicalAmpUrl(buffered_body_);
   if (!canonical_link.has_value()) {
     LOG(WARNING) << canonical_link.error();
-    std::cerr << "canonical link not found! " << canonical_link.error() << "\n";
     return false;
   }
 
   const GURL canonical_url(canonical_link.value());
-  std::cerr << "Foudn canonical link! " << canonical_url << "\n";
   if (!VerifyCanonicalAmpUrl(canonical_url, response_url_)) {
     VLOG(2) << __func__ << " canonical link check failed " << canonical_url;
     return false;
@@ -137,9 +124,6 @@ bool DeAmpURLLoader::MaybeRedirectToCanonicalLink() {
 
 void DeAmpURLLoader::OnBodyWritable(MojoResult r) {
   DCHECK_EQ(State::kSending, state_);
-  // todo: why do we care about bodywritable
-  std::cerr << "bytes remaining in buffer " << bytes_remaining_in_buffer_
-            << "\n";
   if (bytes_remaining_in_buffer_ > 0) {
     SendBufferedBodyToClient();
   } else {
@@ -149,9 +133,6 @@ void DeAmpURLLoader::OnBodyWritable(MojoResult r) {
 
 // No buffered data to be sent, read and forward data to producer (renderer)
 void DeAmpURLLoader::ForwardBodyToClient() {
-  std::cerr << "in forwardbodytoclient, state is " << static_cast<int>(state_)
-            << ",bytes remaining in buffer: " << bytes_remaining_in_buffer_
-            << "\n";
   DCHECK_EQ(0u, bytes_remaining_in_buffer_);
   // it's loading
   // Send the body from the consumer to the producer.
