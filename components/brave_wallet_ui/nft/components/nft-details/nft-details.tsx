@@ -39,6 +39,7 @@ import {
   NFTImageSkeletonWrapper
 } from './nft-details-styles'
 import { LoadingSkeleton } from '../../../components/shared'
+import { isValidateUrl } from '../../../utils/string-utils'
 
 interface Props {
   isLoading?: boolean
@@ -51,28 +52,26 @@ export const NftDetails = ({ selectedAsset, nftMetadata, tokenNetwork }: Props) 
   const [isImageLoaded, setIsImageLoaded] = React.useState<boolean>()
   const onClickViewOnBlockExplorer = useExplorer(tokenNetwork || new BraveWallet.NetworkInfo())
 
+  const onClickLink = React.useCallback((url?: string) => {
+    if (url && isValidateUrl(url)) {
+      chrome.tabs.create({ url }, () => {
+        if (chrome.runtime.lastError) {
+          console.error('tabs.create failed: ' + chrome.runtime.lastError.message)
+        }
+      })
+    }
+  }, [])
+
   const onClickWebsite = () => {
-    chrome.tabs.create({ url: nftMetadata?.contractInformation?.website }, () => {
-      if (chrome.runtime.lastError) {
-        console.error('tabs.create failed: ' + chrome.runtime.lastError.message)
-      }
-    })
+    onClickLink(nftMetadata?.contractInformation?.website)
   }
 
   const onClickTwitter = () => {
-    chrome.tabs.create({ url: nftMetadata?.contractInformation?.twitter }, () => {
-      if (chrome.runtime.lastError) {
-        console.error('tabs.create failed: ' + chrome.runtime.lastError.message)
-      }
-    })
+    onClickLink(nftMetadata?.contractInformation?.twitter)
   }
 
   const onClickFacebook = () => {
-    chrome.tabs.create({ url: nftMetadata?.contractInformation?.facebook }, () => {
-      if (chrome.runtime.lastError) {
-        console.error('tabs.create failed: ' + chrome.runtime.lastError.message)
-      }
-    })
+    onClickLink(nftMetadata?.contractInformation?.facebook)
   }
 
   return (
