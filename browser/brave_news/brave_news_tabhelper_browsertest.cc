@@ -1,19 +1,37 @@
+// Copyright (c) 2022 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// you can obtain one at http://mozilla.org/MPL/2.0/.
 
 #include <vector>
 #include "absl/types/optional.h"
+#include "base/command_line.h"
+#include "base/files/file_path.h"
+#include "base/path_service.h"
 #include "base/run_loop.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/brave_news/brave_news_tab_helper.h"
 #include "brave/components/brave_today/common/brave_news.mojom-forward.h"
 #include "brave/components/brave_today/common/features.h"
+#include "brave/components/constants/brave_paths.h"
 #include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/browser_navigator_params.h"
+#include "chrome/browser/ui/views/frame/browser_view.h"
+#include "chrome/common/chrome_switches.h"
 #include "chrome/test/base/in_process_browser_test.h"
+#include "chrome/test/base/ui_test_utils.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/test/browser_test.h"
+#include "content/public/test/browser_test_utils.h"
+#include "content/public/test/content_mock_cert_verifier.h"
+#include "content/public/test/test_navigation_observer.h"
+#include "content/public/test/test_utils.h"
+#include "net/dns/mock_host_resolver.h"
+#include "ui/base/page_transition_types.h"
 
 class WaitForFeedsChanged : public BraveNewsTabHelper::PageFeedsObserver {
  public:
-  WaitForFeedsChanged(BraveNewsTabHelper* tab_helper)
+  explicit WaitForFeedsChanged(BraveNewsTabHelper* tab_helper)
       : tab_helper_(tab_helper) {
     tab_helper_->AddObserver(this);
   }
@@ -41,19 +59,53 @@ class WaitForFeedsChanged : public BraveNewsTabHelper::PageFeedsObserver {
 
 class BraveNewsTabHelperTest : public InProcessBrowserTest {
  public:
-  BraveNewsTabHelperTest() {
+  BraveNewsTabHelperTest()
+      : https_server_(net::EmbeddedTestServer::TYPE_HTTPS) {
     features_.InitWithFeatures(
         {brave_today::features::kBraveNewsSubscribeButtonFeature}, {});
   }
 
-  void SetUp() override { InProcessBrowserTest::SetUp(); }
+  void SetUp() override {
+    brave::RegisterPathProvider();
+    base::FilePath test_data_dir;
+    base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);
+    https_server_.ServeFilesFromDirectory(test_data_dir);
+    https_server_.AddDefaultHandlers(GetChromeTestDataDir());
+
+    InProcessBrowserTest::SetUp();
+  }
+
+  void SetUpInProcessBrowserTestFixture() override {
+    InProcessBrowserTest::SetUpInProcessBrowserTestFixture();
+    cert_verifier_.SetUpInProcessBrowserTestFixture();
+  }
+
+  void TearDownInProcessBrowserTestFixture() override {
+    InProcessBrowserTest::TearDownInProcessBrowserTestFixture();
+    cert_verifier_.TearDownInProcessBrowserTestFixture();
+  }
+
+  void SetUpCommandLine(base::CommandLine* command_line) override {
+    command_line->AppendSwitch(switches::kAllowRunningInsecureContent);
+    cert_verifier_.SetUpCommandLine(command_line);
+  }
+
+  void SetUpOnMainThread() override {
+    InProcessBrowserTest::SetUpOnMainThread();
+    host_resolver()->AddRule("*", "127.0.0.1");
+    cert_verifier_.mock_cert_verifier()->set_default_result(net::OK);
+  }
 
   content::WebContents* contents() {
     return browser()->tab_strip_model()->GetActiveWebContents();
   }
 
+  net::EmbeddedTestServer* https_server() { return &https_server_; }
+
  private:
   base::test::ScopedFeatureList features_;
+  net::EmbeddedTestServer https_server_;
+  content::ContentMockCertVerifier cert_verifier_;
 };
 
 IN_PROC_BROWSER_TEST_F(BraveNewsTabHelperTest, TabHelperIsCreated) {
@@ -66,11 +118,50 @@ IN_PROC_BROWSER_TEST_F(BraveNewsTabHelperTest,
   WaitForFeedsChanged waiter(tab_helper);
 
   std::vector<brave_news::mojom::FeedSearchResultItemPtr> feeds;
-  feeds.emplace_back(brave_news::mojom::FeedSearchResultItem::New());
-  feeds.emplace_back(brave_news::mojom::FeedSearchResultItem::New());
-  tab_helper->OnFoundFeeds(contents()->GetLastCommittedURL(),
-                           std::move(feeds));
+  auto feed1 = brave_news::mojom::FeedSearchResultItem::New();
+  feed1->feed_url = GURL("https://example.com/1");
+
+  auto feed2 = brave_news::mojom::FeedSearchResultItem::New();
+  feed2->feed_url = GURL("https://example.com/2");
+  feeds.emplace_back(std::move(feed1));
+  feeds.emplace_back(std::move(feed2));
+  tab_helper->OnFoundFeeds(contents()->GetLastCommittedURL(), std::move(feeds));
 
   auto result = waiter.WaitForChange();
   EXPECT_EQ(2u, result.size());
+}
+
+IN_PROC_BROWSER_TEST_F(BraveNewsTabHelperTest, FeedsAreDeduplicated) {
+  auto* tab_helper = BraveNewsTabHelper::FromWebContents(contents());
+  WaitForFeedsChanged waiter(tab_helper);
+
+  std::vector<brave_news::mojom::FeedSearchResultItemPtr> feeds;
+  auto feed1 = brave_news::mojom::FeedSearchResultItem::New();
+  feed1->feed_url = GURL("https://example.com/1");
+  auto feed1_copy = feed1.Clone();
+  feeds.emplace_back(std::move(feed1));
+  feeds.emplace_back(std::move(feed1_copy));
+  tab_helper->OnFoundFeeds(contents()->GetLastCommittedURL(), std::move(feeds));
+
+  auto result = waiter.WaitForChange();
+  EXPECT_EQ(1u, result.size());
+}
+
+IN_PROC_BROWSER_TEST_F(BraveNewsTabHelperTest, FeedsAreFoundWhenTheyExists) {
+  ASSERT_TRUE(https_server()->Start());
+  GURL rss_page_url = https_server()->GetURL("/page_with_rss.html");
+
+  auto* tab_helper = BraveNewsTabHelper::FromWebContents(contents());
+  content::TestNavigationObserver observer(
+      contents(), content::MessageLoopRunner::QuitMode::DEFERRED);
+  NavigateParams params(browser(), rss_page_url, ui::PAGE_TRANSITION_LINK);
+  ui_test_utils::NavigateToURL(&params);
+
+  WaitForFeedsChanged waiter(tab_helper);
+  observer.WaitForNavigationFinished();
+  auto result = waiter.WaitForChange();
+
+  ASSERT_EQ(1u, result.size());
+  EXPECT_EQ("Channel Title", result[0].title);
+  EXPECT_EQ(https_server()->GetURL("/page_with_rss.xml"), result[0].feed_url);
 }

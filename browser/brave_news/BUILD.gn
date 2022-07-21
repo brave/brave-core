@@ -28,10 +28,11 @@ source_set("browser_tests") {
     sources = [ "brave_news_tabhelper_browsertest.cc" ]
 
     deps = [
+      "//brave/components//brave_rewards/browser",
+      "//brave/components/constants",
       "//chrome/browser",
-      "//testing/gtest",
       "//testing/gmock",
-        "//brave/components//brave_rewards/browser",
+      "//testing/gtest",
     ]
   }
 }

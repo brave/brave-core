@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss xmlns:dc="http://purl.org/dc/elements/1.1/"
+    xmlns:content="http://purl.org/rss/1.0/modules/content/"
+    xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+    <channel>
+        <title><![CDATA[Channel Title]]></title>
+        <description><![CDATA[Channel Description]]></description>
+        <link>https://example.com</link>
+        <lastBuildDate>Thu, 14 Jul 2022 11:53:46 GMT</lastBuildDate>
+        <item>
+            <title><![CDATA[Post 1]]></title>
+            <description><![CDATA[Some description]]></description>
+            <link>https://example.com/post1</link>
+            <pubDate>Wed, 15 Jun 2022 00:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[Post 2]]></title>
+            <description><![CDATA[Another description]]></description>
+            <link>https://example.com/post2</link>
+            <pubDate>Tue, 29 Mar 2022 00:00:00 GMT</pubDate>
+        </item>
+    </channel>
+</rss>
