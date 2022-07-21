@@ -33,15 +33,24 @@ void TestValueToBlockchainTokenFailCases(const base::Value::Dict& value,
 
 TEST(ValueConversionUtilsUnitTest, ValueToEthNetworkInfoTest) {
   {
-    mojom::NetworkInfoPtr chain =
-        brave_wallet::ValueToEthNetworkInfo(base::JSONReader::Read(R"({
+    auto value = base::JSONReader::Read(R"({
       "chainId": "0x5",
       "chainName": "Goerli",
       "rpcUrls": [
+        "ftp://bar/",
+        "ftp://localhost/",
+        "http://bar/",
+        "http://localhost/",
+        "http://127.0.0.1/",
         "https://goerli.infura.io/v3/INSERT_API_KEY_HERE",
         "https://second.infura.io/"
       ],
       "iconUrls": [
+        "ftp://bar/",
+        "ftp://localhost/",
+        "http://bar/",
+        "http://localhost/",
+        "http://127.0.0.1/",
         "https://xdaichain.com/fake/example/url/xdai.svg",
         "https://xdaichain.com/fake/example/url/xdai.png"
       ],
@@ -50,26 +59,59 @@ TEST(ValueConversionUtilsUnitTest, ValueToEthNetworkInfoTest) {
         "symbol": "gorETH",
         "decimals": 18
       },
-      "blockExplorerUrls": ["https://goerli.etherscan.io"],
+      "blockExplorerUrls": [
+        "ftp://bar/",
+        "ftp://localhost/",
+        "http://bar/",
+        "http://localhost/",
+        "http://127.0.0.1/",
+        "https://goerli.etherscan.io"
+      ],
       "is_eip1559": true
     })")
-                                                .value());
+                     .value();
+    mojom::NetworkInfoPtr chain =
+        brave_wallet::ValueToEthNetworkInfo(value, true);
+    mojom::NetworkInfoPtr chain2 =
+        brave_wallet::ValueToEthNetworkInfo(value, false);
     ASSERT_TRUE(chain);
+    ASSERT_TRUE(chain2);
     EXPECT_EQ("0x5", chain->chain_id);
     EXPECT_EQ("Goerli", chain->chain_name);
-    EXPECT_EQ(size_t(2), chain->rpc_urls.size());
-    EXPECT_EQ("https://goerli.infura.io/v3/INSERT_API_KEY_HERE",
-              chain->rpc_urls.front());
-    EXPECT_EQ("https://second.infura.io/", chain->rpc_urls.back());
-    EXPECT_EQ("https://goerli.etherscan.io",
-              chain->block_explorer_urls.front());
+    EXPECT_EQ(chain->rpc_urls,
+              std::vector<std::string>(
+                  {"http://localhost/", "http://127.0.0.1/",
+                   "https://goerli.infura.io/v3/INSERT_API_KEY_HERE",
+                   "https://second.infura.io/"}));
+    EXPECT_EQ(chain2->rpc_urls,
+              std::vector<std::string>(
+                  {"ftp://bar/", "ftp://localhost/", "http://bar/",
+                   "http://localhost/", "http://127.0.0.1/",
+                   "https://goerli.infura.io/v3/INSERT_API_KEY_HERE",
+                   "https://second.infura.io/"}));
+    EXPECT_EQ(
+        chain->block_explorer_urls,
+        std::vector<std::string>({"http://localhost/", "http://127.0.0.1/",
+                                  "https://goerli.etherscan.io"}));
+    EXPECT_EQ(chain2->block_explorer_urls,
+              std::vector<std::string>({"ftp://bar/", "ftp://localhost/",
+                                        "http://bar/", "http://localhost/",
+                                        "http://127.0.0.1/",
+                                        "https://goerli.etherscan.io"}));
     EXPECT_EQ("Goerli ETH", chain->symbol_name);
     EXPECT_EQ("gorETH", chain->symbol);
     EXPECT_EQ(18, chain->decimals);
-    EXPECT_EQ("https://xdaichain.com/fake/example/url/xdai.svg",
-              chain->icon_urls.front());
-    EXPECT_EQ("https://xdaichain.com/fake/example/url/xdai.png",
-              chain->icon_urls.back());
+    EXPECT_EQ(chain->icon_urls,
+              std::vector<std::string>(
+                  {"http://localhost/", "http://127.0.0.1/",
+                   "https://xdaichain.com/fake/example/url/xdai.svg",
+                   "https://xdaichain.com/fake/example/url/xdai.png"}));
+    EXPECT_EQ(chain2->icon_urls,
+              std::vector<std::string>(
+                  {"ftp://bar/", "ftp://localhost/", "http://bar/",
+                   "http://localhost/", "http://127.0.0.1/",
+                   "https://xdaichain.com/fake/example/url/xdai.svg",
+                   "https://xdaichain.com/fake/example/url/xdai.png"}));
     ASSERT_EQ(chain->coin, mojom::CoinType::ETH);
     ASSERT_TRUE(chain->data);
     ASSERT_TRUE(chain->data->is_eth_data());

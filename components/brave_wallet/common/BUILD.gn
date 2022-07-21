@@ -49,6 +49,7 @@ static_library("common") {
     "//brave/third_party/argon2",
     "//brave/third_party/ethash",
     "//components/base32",
+    "//net",
     "//url",
   ]
 
