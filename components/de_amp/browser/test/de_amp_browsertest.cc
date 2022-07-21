@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include <string>
 #include <iostream>
+#include <string>
 
 #include "base/bind.h"
 #include "base/strings/stringprintf.h"
@@ -53,10 +53,13 @@ const char kTestAmpBodyScaffolding[] =
     </head>
     </html>
     )";
-constexpr uint32_t kTestReadBufferSize = 65536; // bytes
-const char kTestAmpCanonicalLink[] = "<link rel='canonical' href='https://%s:%s%s'>";
-const std::string kTestAmpBody = base::StringPrintf(kTestAmpBodyScaffolding, kTestAmpCanonicalLink);
-const std::string kTestNonAmpBody = base::StringPrintf(kTestAmpBodyScaffolding, "simple");
+constexpr uint32_t kTestReadBufferSize = 65536;  // bytes
+const char kTestAmpCanonicalLink[] =
+    "<link rel='canonical' href='https://%s:%s%s'>";
+const char kTestAmpBody[] =
+    base::StringPrintf(kTestAmpBodyScaffolding, kTestAmpCanonicalLink).c_str();
+const char kTestNonAmpBody[] =
+    base::StringPrintf(kTestAmpBodyScaffolding, "simple").c_str();
 
 class DeAmpBrowserTest : public InProcessBrowserTest {
  public:
@@ -246,9 +249,12 @@ IN_PROC_BROWSER_TEST_F(DeAmpBrowserTest, SimpleDeAmp) {
 
 IN_PROC_BROWSER_TEST_F(DeAmpBrowserTest, CanonicalLinkOutsideChunkWithinMax) {
   TogglePref(true);
-  // Construct page with large <head> 
-  const std::string large_string = base::StringPrintf("%s\n%s", std::string(kTestReadBufferSize, 'a').c_str(), kTestAmpCanonicalLink);
-  const std::string amp_body_large = base::StringPrintf(kTestAmpBodyScaffolding, large_string.c_str());
+  // Construct page with large <head>
+  const std::string large_string = base::StringPrintf(
+      "%s\n%s", std::string(kTestReadBufferSize, 'a').c_str(),
+      kTestAmpCanonicalLink);
+  const std::string amp_body_large =
+      base::StringPrintf(kTestAmpBodyScaffolding, large_string.c_str());
   https_server_->RegisterRequestHandler(base::BindRepeating(
       HandleRequest, kTestSimpleNonAmpPage, kTestNonAmpBody));
 
@@ -272,10 +278,13 @@ IN_PROC_BROWSER_TEST_F(DeAmpBrowserTest, CanonicalLinkOutsideChunkWithinMax) {
 
 IN_PROC_BROWSER_TEST_F(DeAmpBrowserTest, CanonicalLinkOutsideChunkOutsideMax) {
   TogglePref(true);
-  // Construct page with large <head> 
-  const std::string large_string = base::StringPrintf("%s\n%s", std::string(kTestReadBufferSize * 2, 'a').c_str(), kTestAmpCanonicalLink);
-  const std::string amp_body_large = base::StringPrintf(kTestAmpBodyScaffolding, large_string.c_str());
-  
+  // Construct page with large <head>
+  const std::string large_string = base::StringPrintf(
+      "%s\n%s", std::string(kTestReadBufferSize * 2, 'a').c_str(),
+      kTestAmpCanonicalLink);
+  const std::string amp_body_large =
+      base::StringPrintf(kTestAmpBodyScaffolding, large_string.c_str());
+
   https_server_->RegisterRequestHandler(base::BindRepeating(
       HandleRequest, kTestSimpleNonAmpPage, kTestNonAmpBody));
 

@@ -8,14 +8,15 @@
 
 #include <string>
 
+#include "base/types/expected.h"
 #include "components/prefs/pref_service.h"
 #include "url/gurl.h"
-#include "base/types/expected.h"
 
 namespace de_amp {
 bool IsDeAmpEnabled(PrefService* prefs);
 bool CheckIfAmpPage(const std::string& body);
-base::expected<std::string, std::string> FindCanonicalAmpUrl(const std::string& body);
+base::expected<std::string, std::string> FindCanonicalAmpUrl(
+    const std::string& body);
 bool VerifyCanonicalAmpUrl(const GURL& canonical_url, const GURL& original_url);
 }  // namespace de_amp
 

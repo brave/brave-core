@@ -47,7 +47,6 @@ class DeAmpURLLoader : public body_sniffer::BodySnifferURLLoader {
   void OnBodyWritable(MojoResult) override;
   bool found_amp_ = false;
 
-
   bool MaybeRedirectToCanonicalLink();
 
   void ForwardBodyToClient();

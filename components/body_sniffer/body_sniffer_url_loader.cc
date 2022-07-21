@@ -5,8 +5,8 @@
 
 #include "brave/components/body_sniffer/body_sniffer_url_loader.h"
 
-#include <utility>
 #include <iostream>
+#include <utility>
 
 #include "base/bind.h"
 #include "brave/components/body_sniffer/body_sniffer_throttle.h"
@@ -161,28 +161,32 @@ void BodySnifferURLLoader::ResumeReadingBodyFromNet() {
 
 // Only returns true if MOJO_RESULT_OK
 bool BodySnifferURLLoader::CheckBufferedBody(uint32_t readBufferSize) {
-  size_t start_size = buffered_body_.size(); // Initial size
+  size_t start_size = buffered_body_.size();  // Initial size
   std::cerr << "read bytes before are " << read_bytes_ << "\n";
   std::cerr << "start size " << start_size << "\n";
   uint32_t read_bytes = readBufferSize;
-  buffered_body_.resize(start_size + read_bytes); // Increase size of the buffer vector
+  buffered_body_.resize(start_size +
+                        read_bytes);  // Increase size of the buffer vector
   std::cerr << "read bytes after are " << read_bytes_ << "\n";
 
   auto result = body_consumer_handle_->ReadData(
       &buffered_body_[0] + start_size, &read_bytes, MOJO_READ_DATA_FLAG_NONE);
   switch (result) {
     case MOJO_RESULT_OK:
-      std::cerr << "OK: buffered body size after reading is " << buffered_body_.size() << "\n";
+      std::cerr << "OK: buffered body size after reading is "
+                << buffered_body_.size() << "\n";
       read_bytes_ += read_bytes;
       buffered_body_.resize(start_size + read_bytes);
       return true;
     case MOJO_RESULT_FAILED_PRECONDITION:
-      std::cerr << "FAILED: buffered body size after reading is " << buffered_body_.size() << "\n";
+      std::cerr << "FAILED: buffered body size after reading is "
+                << buffered_body_.size() << "\n";
       buffered_body_.resize(start_size);
       CompleteLoading(std::move(buffered_body_));
       break;
     case MOJO_RESULT_SHOULD_WAIT:
-      std::cerr << "SHOULD WAIT: buffered body size after reading is " << buffered_body_.size() << "\n";
+      std::cerr << "SHOULD WAIT: buffered body size after reading is "
+                << buffered_body_.size() << "\n";
       body_consumer_watcher_.ArmOrNotify();
       break;
     default:
@@ -193,7 +197,8 @@ bool BodySnifferURLLoader::CheckBufferedBody(uint32_t readBufferSize) {
 }
 
 void BodySnifferURLLoader::CompleteLoading(std::string body) {
-  std::cerr << "In CompleteLoading" << "\n";
+  std::cerr << "In CompleteLoading"
+            << "\n";
   read_bytes_ = 0;
   DCHECK_EQ(State::kLoading, state_);
   state_ = State::kSending;
@@ -214,7 +219,9 @@ void BodySnifferURLLoader::CompleteLoading(std::string body) {
                           base::Unretained(this)));
 
   if (bytes_remaining_in_buffer_) {
-    std::cerr << "in completeloading, there are bytes remainign in buffer, send received body to client" << "\n";
+    std::cerr << "in completeloading, there are bytes remainign in buffer, "
+                 "send received body to client"
+              << "\n";
     SendBufferedBodyToClient();
     return;
   }
@@ -244,35 +251,42 @@ void BodySnifferURLLoader::CancelAndResetHandles() {
 }
 
 void BodySnifferURLLoader::SendBufferedBodyToClient() {
-  std::cerr << "in SendBufferedBodyToClient, bytes remaining in buffer " << bytes_remaining_in_buffer_ << "\n";
+  std::cerr << "in SendBufferedBodyToClient, bytes remaining in buffer "
+            << bytes_remaining_in_buffer_ << "\n";
   DCHECK_EQ(State::kSending, state_);
   // Send the buffered data first.
   DCHECK_GT(bytes_remaining_in_buffer_, 0u);
   size_t start_position = buffered_body_.size() - bytes_remaining_in_buffer_;
-  std::cerr << "in SendBufferedBodyToClient, start_position " << start_position << "\n";
+  std::cerr << "in SendBufferedBodyToClient, start_position " << start_position
+            << "\n";
   uint32_t bytes_sent = bytes_remaining_in_buffer_;
   MojoResult result =
       body_producer_handle_->WriteData(buffered_body_.data() + start_position,
                                        &bytes_sent, MOJO_WRITE_DATA_FLAG_NONE);
   switch (result) {
     case MOJO_RESULT_OK:
-      std::cerr << "in SendBufferedBodyToClient, bytes sent successfully " << "\n";
+      std::cerr << "in SendBufferedBodyToClient, bytes sent successfully "
+                << "\n";
       break;
     case MOJO_RESULT_FAILED_PRECONDITION:
       // The pipe is closed unexpectedly. |this| should be deleted once
       // URLLoaderPtr on the destination is released.
-      std::cerr << "in SendBufferedBodyToClient, FAILURE, bytes NOT sent successfully " << "\n";
+      std::cerr << "in SendBufferedBodyToClient, FAILURE, bytes NOT sent "
+                   "successfully "
+                << "\n";
       Abort();
       return;
     case MOJO_RESULT_SHOULD_WAIT:
-      std::cerr << "in SendBufferedBodyToClient, SHOULD WAIT " << "\n";
+      std::cerr << "in SendBufferedBodyToClient, SHOULD WAIT "
+                << "\n";
       body_producer_watcher_.ArmOrNotify();
       return;
     default:
       NOTREACHED();
       return;
   }
-  std::cerr << "in SendBufferedBodyToClient, bytes sent: " << bytes_sent << "\n";
+  std::cerr << "in SendBufferedBodyToClient, bytes sent: " << bytes_sent
+            << "\n";
   bytes_remaining_in_buffer_ -= bytes_sent;
   body_producer_watcher_.ArmOrNotify();
 }
@@ -290,4 +304,3 @@ void BodySnifferURLLoader::Abort() {
 }
 
 }  // namespace body_sniffer
- 

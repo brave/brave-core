@@ -33,6 +33,13 @@ constexpr char kFindCanonicalHrefInTagPattern[] =
     "href=(?:\"|')?(.*?)(?:\"|')?(?:\\s[^>]*?>|>|/>)";
 }  // namespace
 
+RE2::Options InitRegexOptions() {
+  RE2::Options opt;
+  opt.set_case_sensitive(false);
+  opt.set_dot_nl(true);
+  return opt;
+}
+
 bool IsDeAmpEnabled(PrefService* prefs) {
   return base::FeatureList::IsEnabled(features::kBraveDeAMP) &&
          prefs->GetBoolean(de_amp::kDeAmpPrefEnabled);
@@ -46,11 +53,8 @@ bool VerifyCanonicalAmpUrl(const GURL& canonical_link,
          canonical_link != original_url;
 }
 
-
 bool CheckIfAmpPage(const std::string& body) {
-    RE2::Options opt;
-  opt.set_case_sensitive(false);
-  opt.set_dot_nl(true);
+  auto opt = InitRegexOptions();
   // The order of running these regexes is important:
   // we first get the relevant HTML tag and then find the info.
   static const base::NoDestructor<re2::RE2> kGetHtmlTagRegex(kGetHtmlTagPattern,
@@ -59,7 +63,8 @@ bool CheckIfAmpPage(const std::string& body) {
                                                             opt);
   // std::cerr << "body is " << body << "\n";
 
-  std::cerr << "Checking for AMP page" << "\n";
+  std::cerr << "Checking for AMP page"
+            << "\n";
 
   std::string html_tag;
   if (!RE2::PartialMatch(body, *kGetHtmlTagRegex, &html_tag)) {
@@ -74,18 +79,17 @@ bool CheckIfAmpPage(const std::string& body) {
               << "\n";
     return false;
   }
-  std::cerr << "Found AMP page!" << "\n";
+  std::cerr << "Found AMP page!"
+            << "\n";
   return true;
 }
 
 // Find canonical link in body or return error
-// NOTE: caller is responsible for making sure that we are already on an AMP page
-base::expected<std::string, std::string> FindCanonicalAmpUrl(const std::string& body) {
- 
-  RE2::Options opt;
-  opt.set_case_sensitive(false);
-  opt.set_dot_nl(true);
-
+// NOTE: caller is responsible for making sure that we are already on an AMP
+// page
+base::expected<std::string, std::string> FindCanonicalAmpUrl(
+    const std::string& body) {
+  auto opt = InitRegexOptions();
   // The order of running these regexes is important
   static const base::NoDestructor<re2::RE2> kFindCanonicalLinkTagRegex(
       kFindCanonicalLinkTagPattern, opt);
@@ -105,7 +109,8 @@ base::expected<std::string, std::string> FindCanonicalAmpUrl(const std::string& 
   std::string canonical_url;
   // Find href in canonical link tag
   // Check there is only 1 href captured, else fail
-  if (!RE2::PartialMatch(link_tag, *kFindCanonicalHrefInTagRegex, &canonical_url)) {
+  if (!RE2::PartialMatch(link_tag, *kFindCanonicalHrefInTagRegex,
+                         &canonical_url)) {
     // Didn't find canonical link, potentially try again
     std::cerr << "can't find canonical link "
               << "\n";
