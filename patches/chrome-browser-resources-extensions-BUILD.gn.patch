@@ -1,18 +1,10 @@
 diff --git a/chrome/browser/resources/extensions/BUILD.gn b/chrome/browser/resources/extensions/BUILD.gn
-index b5ddcf8e745c5714b1b436878c3031e15dfbe7a8..e8c3d93fb05c19e6e867ce77dc39b19315d9dadf 100644
+index adb5e2d759d3f037f70ac3e8e9ddcc86eeef0f9e..95db3f10170da490de85a79896847643c91b07ad 100644
 --- a/chrome/browser/resources/extensions/BUILD.gn
 +++ b/chrome/browser/resources/extensions/BUILD.gn
-@@ -104,6 +104,7 @@ ts_library("build_ts") {
-     ":preprocess",
-     ":preprocess_generated",
-   ]
-+  in_files += brave_deps_chrome_browser_resources_extensions_in_files extra_deps += brave_deps_chrome_browser_resources_extensions_extra_deps
- }
- 
- generate_grd("build_grd") {
-@@ -121,4 +122,5 @@ generate_grd("build_grd") {
-     manifest_files =
-         filter_include(get_target_outputs(":build_ts"), [ "*.manifest" ])
+@@ -105,4 +105,5 @@ build_webui("build") {
+     optimize_webui_resource_paths_rewrites =
+         [ "extensions.rollup.js|extensions.js" ]
    }
-+  deps += [ "//brave/browser/resources/extensions:resources" ]
++  extra_build_grd_deps = [ "//brave/browser/resources/extensions:resources" ] extra_build_ts_in_files = brave_deps_chrome_browser_resources_extensions_in_files extra_build_ts_extra_deps = brave_deps_chrome_browser_resources_extensions_extra_deps
  }

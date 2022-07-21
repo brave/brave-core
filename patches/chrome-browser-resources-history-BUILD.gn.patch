@@ -1,18 +1,10 @@
 diff --git a/chrome/browser/resources/history/BUILD.gn b/chrome/browser/resources/history/BUILD.gn
-index af87f665617a9f1806869d2d68603978ca6bd5a4..8eea7d2311a0477ba3b74725e10676659272575f 100644
+index cbfe95d9eca7e0c57a1e02ed6c35c4a49a4c2d11..21f18e1f82bee5a96750a814c043fe5a62465e9f 100644
 --- a/chrome/browser/resources/history/BUILD.gn
 +++ b/chrome/browser/resources/history/BUILD.gn
-@@ -102,6 +102,7 @@ ts_library("build_ts") {
-     ":preprocess",
-     ":preprocess_generated",
-   ]
-+  in_files += brave_deps_chrome_browser_resources_history_in_files extra_deps += brave_deps_chrome_browser_resources_history_extra_deps
- }
- 
- generate_grd("build_grd") {
-@@ -128,4 +129,5 @@ generate_grd("build_grd") {
-     manifest_files =
-         filter_include(get_target_outputs(":build_ts"), [ "*.manifest" ])
+@@ -80,4 +80,5 @@ build_webui("build") {
+       "lazy_load.rollup.js|lazy_load.js",
+     ]
    }
-+  deps += [ "//brave/browser/resources/history:resources" ]
++  extra_build_grd_deps = [ "//brave/browser/resources/history:resources" ] extra_build_ts_in_files = brave_deps_chrome_browser_resources_history_in_files extra_build_ts_extra_deps = brave_deps_chrome_browser_resources_history_extra_deps
  }
