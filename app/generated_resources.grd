@@ -642,6 +642,10 @@ are declared in tools/grit/grit_rule.gni.
             Copy link to highlight
           </message>
 
+          <message name="IDS_CONTENT_CONTEXT_ADD_A_NOTE" desc="The name of the Add Note command in the content area context menu">
+            Add a note
+          </message>
+
           <message name="IDS_CONTENT_CONTEXT_REMOVELINKTOTEXT" desc="The name of the Remove Highlights command in the content area context menu">
             Remove highlight
           </message>
@@ -780,6 +784,9 @@ are declared in tools/grit/grit_rule.gni.
           <message name="IDS_CONTENT_CONTEXT_LENS_REGION_SEARCH_ALT2" desc="The name of the Lens Region Search command in the content area context menu">
             Search any part of the page with <ph name="VISUAL_SEARCH_PROVIDER">$1<ex>Google Lens</ex></ph>
           </message>
+          <message name="IDS_CONTENT_CONTEXT_LENS_REGION_SEARCH_ALT3" desc="The name of the Lens Region Search command in the content area context menu">
+            Search inside image with <ph name="VISUAL_SEARCH_PROVIDER">$1<ex>Google Lens</ex></ph>
+          </message>
           <message name="IDS_CONTENT_CONTEXT_LENS_REGION_SEARCH_ALT4" desc="The name of the Lens Region Search command in the content area context menu">
             Search images with <ph name="VISUAL_SEARCH_PROVIDER">$1<ex>Google Lens</ex></ph>
           </message>
@@ -891,6 +898,10 @@ are declared in tools/grit/grit_rule.gni.
 
           <message name="IDS_CONTENT_CONTEXT_COPYLINKTOTEXT" desc="In Title Case: The name of the Copy Link to Highlight command in the content area context menu">
             Copy Link to Highlight
+          </message>
+
+          <message name="IDS_CONTENT_CONTEXT_ADD_A_NOTE" desc="In Title Case: The name of the Add Note command in the content area context menu">
+            Add a Note
           </message>
 
           <message name="IDS_CONTENT_CONTEXT_REMOVELINKTOTEXT" desc="In TitleCase: The name of the Remove Highlights command in the content area context menu">
@@ -1042,6 +1053,9 @@ are declared in tools/grit/grit_rule.gni.
           </message>
           <message name="IDS_CONTENT_CONTEXT_LENS_REGION_SEARCH_ALT2" desc="In Title Case: The name of the Lens Region Search command in the content area context menu">
             Search Any Part of the Page with <ph name="VISUAL_SEARCH_PROVIDER">$1<ex>Google Lens</ex></ph>
+          </message>
+          <message name="IDS_CONTENT_CONTEXT_LENS_REGION_SEARCH_ALT3" desc="In Title Case: The name of the Lens Region Search command in the content area context menu">
+              Search inside Image with <ph name="VISUAL_SEARCH_PROVIDER">$1<ex>Google Lens</ex></ph>
           </message>
           <message name="IDS_CONTENT_CONTEXT_LENS_REGION_SEARCH_ALT4" desc="In Title Case: The name of the Lens Region Search command in the content area context menu">
             Search Images with <ph name="VISUAL_SEARCH_PROVIDER">$1<ex>Google Lens</ex></ph>
@@ -2478,6 +2492,38 @@ are declared in tools/grit/grit_rule.gni.
       <message name="IDS_DOWNLOAD_BUBBLE_STATUS_ASYNC_SCANNING_ENTERPRISE" desc="Status text for a download item that is being scanned by enterprise policy.">
         Checking with your organization's security policies...
       </message>
+      <message name="IDS_DOWNLOAD_BUBBLE_INCOGNITO_INFORMATION_ROW" desc="For Private/Guest mode, text notifying that downloads are visible to others on the device.">
+        Anyone using this device can see downloaded files
+      </message>
+      <message name="IDS_DOWNLOAD_BUBBLE_RESUME_QUICK_ACTION" desc="Accessibility/tooltip label for action to resume a download.">
+        Resume
+      </message>
+      <message name="IDS_DOWNLOAD_BUBBLE_PAUSE_QUICK_ACTION" desc="Accessibility/tooltip label for action to pause a download.">
+        Pause
+      </message>
+      <message name="IDS_DOWNLOAD_BUBBLE_CANCEL_QUICK_ACTION" desc="Accessibility/tooltip label for action to cancel a download.">
+        Cancel
+      </message>
+      <message name="IDS_DOWNLOAD_BUBBLE_OPEN_QUICK_ACTION" desc="Accessibility/tooltip label for action to open a download.">
+        Open
+      </message>
+      <if expr="is_macosx">
+            <message name="IDS_DOWNLOAD_BUBBLE_SHOW_IN_FOLDER_QUICK_ACTION" desc="Mac: Accessibility/tooltip label for showing the file in the Finder">
+              Show in Finder
+            </message>
+      </if>
+      <if expr="not is_macosx">
+        <if expr="not use_titlecase">
+            <message name="IDS_DOWNLOAD_BUBBLE_SHOW_IN_FOLDER_QUICK_ACTION" desc="Accessibility/tooltip label for showing the file in file explorer">
+              Show in folder
+            </message>
+          </if>
+          <if expr="use_titlecase">
+            <message name="IDS_DOWNLOAD_BUBBLE_SHOW_IN_FOLDER_QUICK_ACTION" desc="In Title Case: Accessibility/tooltip label for showing the file in file explorer">
+              Show in Folder
+            </message>
+          </if>
+      </if>
 
       <!-- Desktop omnibox PWA install icon -->
       <if expr="not is_android">
@@ -2767,7 +2813,7 @@ are declared in tools/grit/grit_rule.gni.
           Device Credentials
         </message>
         <!--
-          NOTE: As per Bluetooth v4.2 spec. (section 3.2.3.2):
+          NOTE: As per Bluetooth spec. v4.2 [Vol 3, Part C] (section 3.2.3.2):
           > When the Bluetooth PIN is referred to on the UI level, the term
           > 'Bluetooth Passkey' should be used."
         -->
@@ -2779,6 +2825,12 @@ are declared in tools/grit/grit_rule.gni.
         </message>
         <message name="IDS_BLUETOOTH_DEVICE_PAIR_CONFIRM_LABEL" desc="Label of the text prompt for Bluetooth device pair confirmation.">
           Bluetooth device <ph name="DEVICE">$1</ph> would like permission to pair.
+        </message>
+        <message name="IDS_BLUETOOTH_DEVICE_PASSKEY_CONFIRM_TITLE" desc="Title of the Bluetooth device pair passkey confirmation prompt dialog.">
+          Confirm passkey
+        </message>
+        <message name="IDS_BLUETOOTH_DEVICE_PASSKEY_CONFIRM_LABEL" desc="Label of the text prompt for Bluetooth device pair passkey confirmation.">
+          Please confirm that <ph name="PASSKEY">$1<ex>123456</ex></ph> is the passkey displayed on Bluetooth device <ph name="DEVICE">$2</ph>.
         </message>
       </if>
 
@@ -5429,8 +5481,8 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_COMPONENTS_EVT_STATUS_UPDATED" desc="Service Status">
         Component updated
       </message>
-      <message name="IDS_COMPONENTS_EVT_STATUS_NOTUPDATED" desc="Service Status">
-        Component not updated
+      <message name="IDS_COMPONENTS_EVT_STATUS_ALREADY_UP_TO_DATE" desc="Service Status">
+        Component already up to date
       </message>
       <message name="IDS_COMPONENTS_EVT_STATUS_UPDATE_ERROR" desc="Service Status">
         Update error
@@ -6587,6 +6639,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_NTP_MODULES_FIRST_RUN_EXPERIENCE_OPT_OUT_TOAST" desc="Opt out toast for Modular NTP Desktop v1 First Run Experience.">
        You won't see cards on this page again
       </message>
+      <message name="IDS_NTP_MODULES_FEED_TITLE" desc="Title shown in the header of the Following feed NTP module on the new tab page showing updates from sites followed by the user.">
+        Following
+      </message>
 
       <!-- Extensions NTP Middle Slot Promo -->
       <message name="IDS_EXTENSIONS_PROMO_PERFORMANCE">
@@ -6710,6 +6765,18 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <!-- TODO(crbug.com/1266555): Add final strings and make them translateable. -->
       <message name="IDS_READ_ANYTHING_TITLE" desc="Title of the Read Anything feature, which gives users an accessible reading experience." translateable="false">
         Read anything
+      </message>
+      <message name="IDS_READ_ANYTHING_TOOLBAR_LABEL" desc="Accessibility label for the text formatting toolbar of the Read Anything feature." translateable="false">
+        Text formatting
+      </message>
+      <message name="IDS_READ_ANYTHING_FONT_NAME_COMBOBOX_LABEL" desc="Accessibility label for the font name combobox of the Read Anything feature." translateable="false">
+        Font
+      </message>
+      <message name="IDS_READ_ANYTHING_DECREASE_FONT_SIZE_BUTTON_LABEL" desc="Accessibility label for the decrease font size button of the Read Anything feature." translateable="false">
+        Decrease font-size
+      </message>
+      <message name="IDS_READ_ANYTHING_INCREASE_FONT_SIZE_BUTTON_LABEL" desc="Accessibility label for the increase font size button of the Read Anything feature." translateable="false">
+        Increase font-size
       </message>
 
       <!-- User note strings -->
@@ -6848,9 +6915,6 @@ Keep your key file in a safe place. You will need it to create new versions of y
         <message name="IDS_INTENT_CHIP_OPEN_IN_APP" desc="The label of a button or dialog to open the current webpage in an installed app.">
           Open in app
         </message>
-        <message name="IDS_INTENT_CHIP_IPH" desc="The text for the In-Product Help bubble for the Intent Chip.">
-          Open websites in apps installed on your device
-        </message>
 
         <if expr="chromeos_ash or chromeos_lacros">
           <then>
@@ -6863,10 +6927,16 @@ Keep your key file in a safe place. You will need it to create new versions of y
             <message name="IDS_INTENT_PICKER_SELECT_AN_APP_SUBTITLE" desc="The subtitle of a dialog containing a list of installed applications. The dialog allows the user to select an app to open a web link.">
               Select an app on your <ph name="DEVICE_TYPE">$1<ex>Chromebook</ex></ph> to open this link
             </message>
+            <message name="IDS_INTENT_CHIP_IPH_CHROME_OS" desc="The text for the In-Product Help bubble for the Intent Chip on ChromeOS devices.">
+              Open websites in apps installed on your <ph name="DEVICE_TYPE">$1<ex>Chromebook</ex></ph>
+            </message>
           </then>
           <else>
             <message name="IDS_INTENT_PICKER_SELECT_AN_APP_GENERIC_SUBTITLE" desc="The subtitle of a dialog containing a list of installed applications. The dialog allows the user to select an app to open a web link.">
               Select an app on your device to open this link
+            </message>
+            <message name="IDS_INTENT_CHIP_IPH_GENERIC" desc="The text for the In-Product Help bubble for the Intent Chip.">
+              Open websites in apps installed on your device
             </message>
           </else>
         </if>
@@ -6974,6 +7044,12 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </message>
       <message name="IDS_ACCNAME_EXTENSIONS_MENU_SITE_ACCESS_COMBOBOX" desc="The accessible name for the extension's site access combobox in the extensions menu.">
         Site Access Option
+      </message>
+      <message name="IDS_ACCNAME_WEB_APP_DETAILED_INSTALL_DIALOG_LEADING_SCROLL_BUTTON" desc="The accessible name for the web app detailed install dialog scroll left button.">
+        Scroll backward
+      </message>
+      <message name="IDS_ACCNAME_WEB_APP_DETAILED_INSTALL_DIALOG_TRAILING_SCROLL_BUTTON" desc="The accessible name for the web app detailed install dialog scroll right button.">
+        Scroll forward
       </message>
 
       <!-- Clipboard permission -->
@@ -8117,6 +8193,12 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
       </message>
       <message name="IDS_TAB_SEARCH_EXPAND_RECENTLY_CLOSED_ITEMS" desc="The label for the button that toggles showing the recently closed items list section.">
         Toggle Recently Closed Items
+      </message>
+      <message name="IDS_TAB_SEARCH_EXPAND_RECENTLY_CLOSED" desc="The tooltip for the RECENTLY CLOSED button when it's collapsed">
+        Expand recently closed
+      </message>
+      <message name="IDS_TAB_SEARCH_COLLAPSE_RECENTLY_CLOSED" desc="The tooltip for the RECENTLY CLOSED button when it's expanded">
+        Collapse recently closed
       </message>
 
       <!-- Strings for Window Titles in Menus -->

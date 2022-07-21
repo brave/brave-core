@@ -331,6 +331,15 @@ are declared in tools/grit/grit_rule.gni.
         </message>
         </if>
 
+      <if expr="is_macosx">
+            </if>
+      <if expr="not is_macosx">
+        <if expr="not use_titlecase">
+            </if>
+          <if expr="use_titlecase">
+            </if>
+      </if>
+
       <if expr="not is_android">
         </if>
 
