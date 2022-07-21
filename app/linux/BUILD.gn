@@ -2,6 +2,9 @@ import("//brave/build/config.gni")
 
 if (should_generate_breakpad_symbols) {
   action("generate_breakpad_symbols") {
+    # host_toolchain must be used for cross-compilation case.
+    # See chrome/updater/mac:syms
+    dump_syms = "//third_party/breakpad:dump_syms($host_toolchain)"
     symbols_dir = "$brave_dist_dir/$brave_product_name.breakpad.syms"
     outputs = [ symbols_dir ]
 
@@ -14,12 +17,15 @@ if (should_generate_breakpad_symbols) {
       "--build-dir=" + rebase_path(root_out_dir),
       "--binary=$start",
       "--libchromiumcontent-dir=" + rebase_path("//"),
+      "--dump-syms-bin=" +
+          rebase_path(get_label_info(dump_syms, "root_out_dir") + "/" +
+                      get_label_info(dump_syms, "name")),
       "--clear",
     ]
 
     deps = [
       "//chrome",  # To be sure brave executable is ready now
-      "//third_party/breakpad:dump_syms",
+      dump_syms,
     ]
   }
 } else {
