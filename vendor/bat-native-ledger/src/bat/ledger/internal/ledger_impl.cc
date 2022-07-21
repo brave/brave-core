@@ -511,17 +511,17 @@ bool LedgerImpl::GetAutoContributeEnabled() {
 }
 
 void LedgerImpl::GetRewardsParameters(GetRewardsParametersCallback callback) {
-  WhenReady([this, callback]() {
+  WhenReady([this, callback = std::move(callback)]() mutable {
     auto params = state()->GetRewardsParameters();
     if (params->rate == 0.0) {
       // A rate of zero indicates that the rewards parameters have
       // not yet been successfully initialized from the server.
       BLOG(1, "Rewards parameters not set - fetching from server");
-      api()->FetchParameters(callback);
+      api()->FetchParameters(std::move(callback));
       return;
     }
 
-    callback(std::move(params));
+    std::move(callback).Run(std::move(params));
   });
 }
 

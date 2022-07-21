@@ -53,23 +53,9 @@ void BatLedgerImpl::CreateWallet(CreateWalletCallback callback) {
   ledger_->CreateWallet(std::move(callback));
 }
 
-// static
-void BatLedgerImpl::OnGetRewardsParameters(
-    CallbackHolder<GetRewardsParametersCallback>* holder,
-    ledger::type::RewardsParametersPtr parameters) {
-  DCHECK(holder);
-  if (holder->is_valid())
-    std::move(holder->get()).Run(std::move(parameters));
-  delete holder;
-}
-
 void BatLedgerImpl::GetRewardsParameters(
     GetRewardsParametersCallback callback) {
-  // delete in OnGetRewardsParameters
-  auto* holder = new CallbackHolder<GetRewardsParametersCallback>(
-      AsWeakPtr(), std::move(callback));
-  ledger_->GetRewardsParameters(
-      std::bind(BatLedgerImpl::OnGetRewardsParameters, holder, _1));
+  ledger_->GetRewardsParameters(std::move(callback));
 }
 
 void BatLedgerImpl::GetAutoContributeProperties(

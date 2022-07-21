@@ -304,10 +304,6 @@ class BatLedgerImpl :
       CallbackHolder<RecoverWalletCallback>* holder,
       ledger::type::Result result);
 
-  static void OnGetRewardsParameters(
-      CallbackHolder<GetRewardsParametersCallback>* holder,
-      ledger::type::RewardsParametersPtr properties);
-
   static void OnSetPublisherExclude(
       CallbackHolder<SetPublisherExcludeCallback>* holder,
       const ledger::type::Result result);

@@ -4,6 +4,9 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "bat/ledger/internal/api/api.h"
+
+#include <utility>
+
 #include "bat/ledger/internal/ledger_impl.h"
 
 namespace ledger {
@@ -22,7 +25,7 @@ void API::Initialize() {
 }
 
 void API::FetchParameters(ledger::GetRewardsParametersCallback callback) {
-  parameters_->Fetch(callback);
+  parameters_->Fetch(std::move(callback));
 }
 
 }  // namespace api

@@ -515,7 +515,8 @@ BATClassLedgerBridge(BOOL, isDebug, setDebug, is_debug)
 
 - (void)getRewardsParameters:
     (void (^)(LedgerRewardsParameters* _Nullable))completion {
-  ledger->GetRewardsParameters(^(ledger::type::RewardsParametersPtr info) {
+  ledger->GetRewardsParameters(base::BindOnce(^(
+      ledger::type::RewardsParametersPtr info) {
     if (info) {
       self.rewardsParameters = [[LedgerRewardsParameters alloc]
           initWithRewardsParametersPtr:std::move(info)];
@@ -528,7 +529,7 @@ BATClassLedgerBridge(BOOL, isDebug, setDebug, is_debug)
         completion(weakSelf.rewardsParameters);
       }
     });
-  });
+  }));
 }
 
 - (void)fetchBalance:(void (^)(LedgerBalance* _Nullable))completion {

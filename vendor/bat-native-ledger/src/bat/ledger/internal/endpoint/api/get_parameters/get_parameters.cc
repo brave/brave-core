@@ -13,8 +13,6 @@
 #include "bat/ledger/internal/ledger_impl.h"
 #include "net/http/http_status_code.h"
 
-using std::placeholders::_1;
-
 namespace ledger {
 namespace endpoint {
 namespace api {
@@ -146,31 +144,28 @@ type::Result GetParameters::ParseBody(
 }
 
 void GetParameters::Request(GetParametersCallback callback) {
-  auto url_callback = std::bind(&GetParameters::OnRequest,
-      this,
-      _1,
-      callback);
+  auto url_callback = base::BindOnce(
+      &GetParameters::OnRequest, base::Unretained(this), std::move(callback));
 
   auto request = type::UrlRequest::New();
   request->url = GetUrl();
-  ledger_->LoadURL(std::move(request), url_callback);
+  ledger_->LoadURL(std::move(request), std::move(url_callback));
 }
 
-void GetParameters::OnRequest(
-    const type::UrlResponse& response,
-    GetParametersCallback callback) {
+void GetParameters::OnRequest(GetParametersCallback callback,
+                              const type::UrlResponse& response) {
   ledger::LogUrlResponse(__func__, response);
 
   type::RewardsParameters parameters;
   type::Result result = CheckStatusCode(response.status_code);
 
   if (result != type::Result::LEDGER_OK) {
-    callback(result, parameters);
+    std::move(callback).Run(result, parameters);
     return;
   }
 
   result = ParseBody(response.body, &parameters);
-  callback(result, parameters);
+  std::move(callback).Run(result, parameters);
 }
 
 }  // namespace api

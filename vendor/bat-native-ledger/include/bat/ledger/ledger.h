@@ -30,7 +30,7 @@ extern int retry_interval;      // seconds
 using PublisherBannerCallback = std::function<void(type::PublisherBannerPtr)>;
 
 using GetRewardsParametersCallback =
-    std::function<void(type::RewardsParametersPtr)>;
+    base::OnceCallback<void(type::RewardsParametersPtr)>;
 
 using OnRefreshPublisherCallback = std::function<void(type::PublisherStatus)>;
 

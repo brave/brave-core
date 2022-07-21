@@ -83,9 +83,9 @@ TEST_F(GetParametersTest, ServerOK) {
             std::move(callback).Run(response);
           }));
 
-  parameters_->Request([](
-      const type::Result result,
-      const type::RewardsParameters& parameters) {
+  parameters_->Request(base::BindOnce([](type::Result result,
+                                         const type::RewardsParameters&
+                                             parameters) {
     type::RewardsParameters expected_parameters;
     expected_parameters.rate = 0.2476573499489187;
     expected_parameters.auto_contribute_choice = 20;
@@ -98,7 +98,7 @@ TEST_F(GetParametersTest, ServerOK) {
                                          {"bitflyer", "complete"}};
     EXPECT_EQ(result, type::Result::LEDGER_OK);
     EXPECT_TRUE(expected_parameters.Equals(parameters));
-  });
+  }));
 }
 
 TEST_F(GetParametersTest, ServerError400) {
@@ -112,11 +112,10 @@ TEST_F(GetParametersTest, ServerError400) {
             std::move(callback).Run(response);
           }));
 
-  parameters_->Request([](
-      const type::Result result,
-      const type::RewardsParameters& parameters) {
-    EXPECT_EQ(result, type::Result::RETRY_SHORT);
-  });
+  parameters_->Request(base::BindOnce(
+      [](type::Result result, const type::RewardsParameters& parameters) {
+        EXPECT_EQ(result, type::Result::RETRY_SHORT);
+      }));
 }
 
 TEST_F(GetParametersTest, ServerError500) {
@@ -130,11 +129,10 @@ TEST_F(GetParametersTest, ServerError500) {
             std::move(callback).Run(response);
           }));
 
-  parameters_->Request([](
-      const type::Result result,
-      const type::RewardsParameters& parameters) {
-    EXPECT_EQ(result, type::Result::RETRY_SHORT);
-  });
+  parameters_->Request(base::BindOnce(
+      [](type::Result result, const type::RewardsParameters& parameters) {
+        EXPECT_EQ(result, type::Result::RETRY_SHORT);
+      }));
 }
 
 TEST_F(GetParametersTest, ServerErrorRandom) {
@@ -148,11 +146,10 @@ TEST_F(GetParametersTest, ServerErrorRandom) {
             std::move(callback).Run(response);
           }));
 
-  parameters_->Request([](
-      const type::Result result,
-      const type::RewardsParameters& parameters) {
-    EXPECT_EQ(result, type::Result::LEDGER_ERROR);
-  });
+  parameters_->Request(base::BindOnce(
+      [](type::Result result, const type::RewardsParameters& parameters) {
+        EXPECT_EQ(result, type::Result::LEDGER_ERROR);
+      }));
 }
 
 TEST_F(GetParametersTest, WrongListValues) {
@@ -198,9 +195,9 @@ TEST_F(GetParametersTest, WrongListValues) {
             std::move(callback).Run(response);
           }));
 
-  parameters_->Request([](
-      const type::Result result,
-      const type::RewardsParameters& parameters) {
+  parameters_->Request(base::BindOnce([](type::Result result,
+                                         const type::RewardsParameters&
+                                             parameters) {
     type::RewardsParameters expected_parameters;
     EXPECT_EQ(result, type::Result::LEDGER_OK);
     expected_parameters.rate = 0.2476573499489187;
@@ -210,7 +207,7 @@ TEST_F(GetParametersTest, WrongListValues) {
                                          {"gemini", "off"},
                                          {"bitflyer", "complete"}};
     EXPECT_TRUE(expected_parameters.Equals(parameters));
-  });
+  }));
 }
 
 TEST_F(GetParametersTest, DoubleListValues) {
@@ -252,9 +249,9 @@ TEST_F(GetParametersTest, DoubleListValues) {
             std::move(callback).Run(response);
           }));
 
-  parameters_->Request([](
-      const type::Result result,
-      const type::RewardsParameters& parameters) {
+  parameters_->Request(base::BindOnce([](type::Result result,
+                                         const type::RewardsParameters&
+                                             parameters) {
     type::RewardsParameters expected_parameters;
     expected_parameters.rate = 0.2476573499489187;
     expected_parameters.auto_contribute_choice = 20;
@@ -267,7 +264,7 @@ TEST_F(GetParametersTest, DoubleListValues) {
                                          {"bitflyer", "complete"}};
     EXPECT_EQ(result, type::Result::LEDGER_OK);
     EXPECT_TRUE(expected_parameters.Equals(parameters));
-  });
+  }));
 }
 
 }  // namespace api
