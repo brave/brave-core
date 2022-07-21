@@ -6,7 +6,7 @@ index 687605471920341c78b2480635d567601ffe1c97..c73d67cfd6a67b0b26401b8743814e52
                                          int error_code,
                                          bool is_secure_dns_network_error,
                                          bool is_post) {
-+  COMPONENTS_ERROR_PAGE_COMMON_LOCALIZED_ERROR_LOOKUP_BRAVE_ERRORS
++  BRAVE_LOOKUP_ERROR_MAP
    if (error_domain == Error::kNetErrorDomain) {
      // Display a different page in the special case of navigating through the
      // history to an uncached page created by a POST.
