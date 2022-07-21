@@ -16,7 +16,7 @@ class NotificationHelper {
 
   static NotificationHelper* GetInstance();
 
-  virtual bool CanShowNativeNotifications() const;
+  virtual bool CanShowNativeNotifications();
   virtual bool CanShowNativeNotificationsWhileBrowserIsBackgrounded() const;
 
   virtual bool ShowOnboardingNotification();

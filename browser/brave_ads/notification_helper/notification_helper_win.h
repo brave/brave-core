@@ -44,7 +44,7 @@ class NotificationHelperWin
       notifier_;
 
   // NotificationHelper:
-  bool CanShowNativeNotifications() const override;
+  bool CanShowNativeNotifications() override;
   bool CanShowNativeNotificationsWhileBrowserIsBackgrounded() const override;
 
   bool ShowOnboardingNotification() override;

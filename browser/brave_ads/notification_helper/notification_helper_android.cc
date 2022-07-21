@@ -61,7 +61,7 @@ NotificationHelperAndroid::NotificationHelperAndroid() = default;
 
 NotificationHelperAndroid::~NotificationHelperAndroid() = default;
 
-bool NotificationHelperAndroid::CanShowNativeNotifications() const {
+bool NotificationHelperAndroid::CanShowNativeNotifications() {
   JNIEnv* env = base::android::AttachCurrentThread();
   const int status =
       Java_NotificationSystemStatusUtil_getAppNotificationStatus(env);

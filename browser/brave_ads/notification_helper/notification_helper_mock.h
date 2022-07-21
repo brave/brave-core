@@ -18,7 +18,7 @@ class NotificationHelperMock : public NotificationHelper {
   NotificationHelperMock& operator=(const NotificationHelperMock&) = delete;
   ~NotificationHelperMock() override;
 
-  MOCK_CONST_METHOD0(CanShowNativeNotifications, bool());
+  MOCK_METHOD0(CanShowNativeNotifications, bool());
   MOCK_CONST_METHOD0(CanShowNativeNotificationsWhileBrowserIsBackgrounded,
                      bool());
 

@@ -62,7 +62,7 @@ NotificationHelperWin::NotificationHelperWin() = default;
 
 NotificationHelperWin::~NotificationHelperWin() = default;
 
-bool NotificationHelperWin::CanShowNativeNotifications() const {
+bool NotificationHelperWin::CanShowNativeNotifications() {
   if (!base::FeatureList::IsEnabled(::features::kNativeNotifications)) {
     LOG(WARNING) << "Native notifications feature is disabled";
     return false;
