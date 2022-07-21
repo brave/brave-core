@@ -15,7 +15,7 @@ NotificationHelper::NotificationHelper() = default;
 
 NotificationHelper::~NotificationHelper() = default;
 
-bool NotificationHelper::CanShowNativeNotifications() const {
+bool NotificationHelper::CanShowNativeNotifications() {
   return true;
 }
 
