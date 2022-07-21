@@ -103,19 +103,20 @@ public class UserAssetsStore: ObservableObject {
   ) {
     walletService.selectedCoin { [weak self] coinType in
       guard let self = self else { return }
+      // TODO: Add network selection picker to `AddCustomAssetView`: Issue #5725
       self.rpcService.network(coinType) { network in
         let token = BraveWallet.BlockchainToken(
           contractAddress: address,
           name: name,
           logo: "",
-          isErc20: true,
+          isErc20: coinType == .eth,
           isErc721: false,
           symbol: symbol,
           decimals: Int32(decimals),
           visible: true,
           tokenId: "",
           coingeckoId: "",
-          chainId: "",
+          chainId: network.chainId,
           coin: network.coin
         )
         self.walletService.addUserAsset(token) { success in

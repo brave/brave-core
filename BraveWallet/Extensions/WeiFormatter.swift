@@ -60,11 +60,11 @@ struct WeiFormatter {
     }
   }
 
-  /// Get a decimal representation of a Wei value given some decimal precision of said Wei
+  /// Get a decimal representation of a value string given some decimal precision of said value
   ///
   /// - parameters:
-  ///     - value: A wei string
-  ///     - radix: The radix of the wei string, defaults to 10
+  ///     - value: A string representation of the value, typically a wei value string.
+  ///     - radix: The radix of the value string, defaults to 10
   ///     - decimals: The number of decimal precision to convert to. For example, ETH and
   ///                 ERC20 tokens will have 18 decimals by default
   func decimalString(for value: String, radix: Radix = .decimal, decimals: Int) -> String? {

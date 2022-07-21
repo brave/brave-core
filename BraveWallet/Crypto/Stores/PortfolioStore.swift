@@ -121,14 +121,12 @@ public class PortfolioStore: ObservableObject {
 
   /// Fetches the prices for a given list of symbols, giving a dictionary with the price for each symbol
   private func fetchPrices(for symbols: [String], completion: @escaping ([String: String]) -> Void) {
-    assetRatioService.price(
+    assetRatioService.priceWithIndividualRetry(
       symbols.map { $0.lowercased() },
       toAssets: [currencyFormatter.currencyCode],
       timeframe: timeframe
-    ) { success, assetPrices in
-      // `success` only refers to finding _all_ prices and if even 1 of N prices
-      // fail to fetch it will be false
-      let prices = Dictionary(uniqueKeysWithValues: assetPrices.map { ($0.fromAsset, $0.price) })
+    ) { priceResult in
+      let prices = Dictionary(uniqueKeysWithValues: priceResult.assetPrices.map { ($0.fromAsset, $0.price) })
       completion(prices)
     }
   }
