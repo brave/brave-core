@@ -5,8 +5,10 @@ import EyeOffIcon from '../../../../assets/svg-icons/eye-off-icon.svg'
 import { AssetIconProps, AssetIconFactory, WalletButton } from '../../../shared/style'
 
 interface StyleProps {
-  isDown: boolean
-  hideBalances: boolean
+  isDown?: boolean
+  hideBalances?: boolean
+  visible?: boolean
+  isLoading?: boolean
 }
 
 export const StyledWrapper = styled.div`
@@ -252,4 +254,11 @@ export const FilterTokenRow = styled.div`
   justify-content: space-between;
   flex-direction: row;
   width: 100%;
+`
+
+export const NftDetails = styled.iframe<StyleProps>`
+  width: 100%;
+  min-height: ${p => p.visible ? '490px' : 'hidden'};
+  border: none;
+  visibility: ${p => p.visible ? 'visible' : 'hidden'};
 `
