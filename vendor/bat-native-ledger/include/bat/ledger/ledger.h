@@ -46,7 +46,7 @@ using ExternalWalletAuthorizationCallback =
     std::function<void(type::Result, base::flat_map<std::string, std::string>)>;
 
 using FetchPromotionCallback =
-    std::function<void(type::Result, type::PromotionList)>;
+    base::OnceCallback<void(type::Result, type::PromotionList)>;
 
 using ClaimPromotionCallback =
     std::function<void(type::Result, const std::string&)>;

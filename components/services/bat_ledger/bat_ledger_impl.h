@@ -363,11 +363,6 @@ class BatLedgerImpl :
     CallbackHolder<GetPendingContributionsTotalCallback>* holder,
     double amount);
 
-  static void OnFetchPromotions(
-    CallbackHolder<FetchPromotionsCallback>* holder,
-    const ledger::type::Result result,
-    ledger::type::PromotionList promotions);
-
   static void OnHasSufficientBalanceToReconcile(
     CallbackHolder<HasSufficientBalanceToReconcileCallback>* holder,
     bool sufficient);

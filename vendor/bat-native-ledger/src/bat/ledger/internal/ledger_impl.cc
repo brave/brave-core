@@ -526,7 +526,9 @@ void LedgerImpl::GetRewardsParameters(GetRewardsParametersCallback callback) {
 }
 
 void LedgerImpl::FetchPromotions(FetchPromotionCallback callback) {
-  WhenReady([this, callback]() { promotion()->Fetch(callback); });
+  WhenReady([this, callback = std::move(callback)]() mutable {
+    promotion()->Fetch(std::move(callback));
+  });
 }
 
 void LedgerImpl::ClaimPromotion(const std::string& promotion_id,

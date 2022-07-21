@@ -1009,8 +1009,8 @@ BATClassLedgerBridge(BOOL, isDebug, setDebug, is_debug)
 - (void)fetchPromotions:
     (nullable void (^)(NSArray<LedgerPromotion*>* grants))completion {
   ledger->FetchPromotions(
-      ^(ledger::type::Result result,
-        std::vector<ledger::type::PromotionPtr> promotions) {
+      base::BindOnce(^(ledger::type::Result result,
+                       std::vector<ledger::type::PromotionPtr> promotions) {
         if (result != ledger::type::Result::LEDGER_OK) {
           return;
         }
@@ -1019,7 +1019,7 @@ BATClassLedgerBridge(BOOL, isDebug, setDebug, is_debug)
             completion(self.pendingPromotions);
           }
         }];
-      });
+      }));
 }
 
 - (void)claimPromotion:(NSString*)promotionId

@@ -114,46 +114,40 @@ void Promotion::Fetch(ledger::FetchPromotionCallback callback) {
         ledger_->state()->GetPromotionLastFetchStamp();
     const uint64_t now = util::GetCurrentTimeStamp();
     if (now - last_promo_stamp < kFetchPromotionsThresholdInSeconds) {
-      auto all_callback = std::bind(
-          &Promotion::OnGetAllPromotionsFromDatabase,
-          this,
-          _1,
-          callback);
-      ledger_->database()->GetAllPromotions(all_callback);
+      auto all_callback =
+          base::BindOnce(&Promotion::OnGetAllPromotionsFromDatabase,
+                         base::Unretained(this), std::move(callback));
+
+      ledger_->database()->GetAllPromotions(
+          [callback = std::make_shared<decltype(all_callback)>(
+               std::move(all_callback))](type::PromotionMap promotions) {
+            std::move(*callback).Run(std::move(promotions));
+          });
       return;
     }
   }
 
-  auto url_callback = std::bind(&Promotion::OnFetch,
-      this,
-      _1,
-      _2,
-      _3,
-      std::move(callback));
+  auto url_callback = base::BindOnce(
+      &Promotion::OnFetch, base::Unretained(this), std::move(callback));
 
   auto client_info = ledger_->ledger_client()->GetClientInfo();
   const std::string client = ParseClientInfoToString(std::move(client_info));
-  promotion_server_->get_available()->Request(client, url_callback);
+  promotion_server_->get_available()->Request(client, std::move(url_callback));
 }
 
-void Promotion::OnFetch(
-    const type::Result result,
-    type::PromotionList list,
-    const std::vector<std::string>& corrupted_promotions,
-    ledger::FetchPromotionCallback callback) {
+void Promotion::OnFetch(ledger::FetchPromotionCallback callback,
+                        type::Result result,
+                        type::PromotionList list,
+                        const std::vector<std::string>& corrupted_promotions) {
   if (result == type::Result::NOT_FOUND) {
-    ProcessFetchedPromotions(
-        type::Result::NOT_FOUND,
-        std::move(list),
-        callback);
+    ProcessFetchedPromotions(type::Result::NOT_FOUND, std::move(list),
+                             std::move(callback));
     return;
   }
 
   if (result == type::Result::LEDGER_ERROR) {
-    ProcessFetchedPromotions(
-        type::Result::LEDGER_ERROR,
-        std::move(list),
-        callback);
+    ProcessFetchedPromotions(type::Result::LEDGER_ERROR, std::move(list),
+                             std::move(callback));
     return;
   }
 
@@ -165,30 +159,24 @@ void Promotion::OnFetch(
       "Promotions are not correct: "
           << base::JoinString(corrupted_promotions, ", "));
 
-  auto shared_list = std::make_shared<type::PromotionList>(std::move(list));
+  auto all_callback =
+      base::BindOnce(&Promotion::OnGetAllPromotions, base::Unretained(this),
+                     std::move(callback), std::move(list));
 
-  auto all_callback = std::bind(&Promotion::OnGetAllPromotions,
-      this,
-      _1,
-      shared_list,
-      callback);
-
-  ledger_->database()->GetAllPromotions(all_callback);
+  ledger_->database()->GetAllPromotions(
+      [callback = std::make_shared<decltype(all_callback)>(
+           std::move(all_callback))](type::PromotionMap promotions) {
+        std::move(*callback).Run(std::move(promotions));
+      });
 }
 
-void Promotion::OnGetAllPromotions(
-    type::PromotionMap promotions,
-    std::shared_ptr<type::PromotionList> list,
-    ledger::FetchPromotionCallback callback) {
+void Promotion::OnGetAllPromotions(ledger::FetchPromotionCallback callback,
+                                   type::PromotionList list,
+                                   type::PromotionMap promotions) {
   HandleExpiredPromotions(ledger_, &promotions);
 
-  if (!list) {
-    callback(type::Result::LEDGER_ERROR, {});
-    return;
-  }
-
   type::PromotionList promotions_ui;
-  for (const auto& item : *list) {
+  for (const auto& item : list) {
     auto it = promotions.find(item->id);
     if (it != promotions.end()) {
       const auto status = it->second->status;
@@ -230,10 +218,9 @@ void Promotion::OnGetAllPromotions(
       continue;
     }
 
-    bool found =
-        std::any_of(list->begin(), list->end(), [&promotion](auto& item) {
-          return item->id == promotion.second->id;
-        });
+    bool found = std::any_of(
+        list.begin(), list.end(),
+        [&promotion](auto& item) { return item->id == promotion.second->id; });
 
     if (!found) {
       ledger_->database()->UpdatePromotionStatus(
@@ -243,15 +230,13 @@ void Promotion::OnGetAllPromotions(
     }
   }
 
-  ProcessFetchedPromotions(
-      type::Result::LEDGER_OK,
-      std::move(promotions_ui),
-      callback);
+  ProcessFetchedPromotions(type::Result::LEDGER_OK, std::move(promotions_ui),
+                           std::move(callback));
 }
 
 void Promotion::OnGetAllPromotionsFromDatabase(
-    type::PromotionMap promotions,
-    ledger::FetchPromotionCallback callback) {
+    ledger::FetchPromotionCallback callback,
+    type::PromotionMap promotions) {
   HandleExpiredPromotions(ledger_, &promotions);
 
   type::PromotionList promotions_ui;
@@ -260,7 +245,7 @@ void Promotion::OnGetAllPromotionsFromDatabase(
       promotions_ui.push_back(item.second->Clone());
     }
   }
-  callback(type::Result::LEDGER_OK, std::move(promotions_ui));
+  std::move(callback).Run(type::Result::LEDGER_OK, std::move(promotions_ui));
 }
 
 void Promotion::LegacyClaimedSaved(
@@ -471,7 +456,7 @@ void Promotion::ProcessFetchedPromotions(
   const bool retry = result != type::Result::LEDGER_OK &&
       result != type::Result::NOT_FOUND;
   Refresh(retry);
-  callback(result, std::move(promotions));
+  std::move(callback).Run(result, std::move(promotions));
 }
 
 void Promotion::GetCredentials(type::PromotionPtr promotion,
@@ -772,7 +757,7 @@ void Promotion::OnRetryTimerElapsed() {
 }
 
 void Promotion::OnLastCheckTimerElapsed() {
-  Fetch([](type::Result, type::PromotionList) {});
+  Fetch(base::DoNothing());
 }
 
 void Promotion::GetDrainStatus(const std::string& drain_id,

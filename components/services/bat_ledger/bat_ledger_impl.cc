@@ -147,24 +147,9 @@ void BatLedgerImpl::RestorePublishers(RestorePublishersCallback callback) {
   ledger_->RestorePublishers(std::move(callback));
 }
 
-void BatLedgerImpl::OnFetchPromotions(
-    CallbackHolder<FetchPromotionsCallback>* holder,
-    const ledger::type::Result result,
-    ledger::type::PromotionList promotions) {
-  DCHECK(holder);
-  if (holder->is_valid()) {
-    std::move(holder->get()).Run(result, std::move(promotions));
-  }
-  delete holder;
-}
-
 void BatLedgerImpl::FetchPromotions(
     FetchPromotionsCallback callback) {
-  // deleted in OnFetchPromotions
-  auto* holder = new CallbackHolder<FetchPromotionsCallback>(
-      AsWeakPtr(), std::move(callback));
-  ledger_->FetchPromotions(
-      std::bind(BatLedgerImpl::OnFetchPromotions, holder, _1, _2));
+  ledger_->FetchPromotions(std::move(callback));
 }
 
 // static

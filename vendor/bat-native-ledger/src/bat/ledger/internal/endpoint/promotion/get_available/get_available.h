@@ -49,8 +49,8 @@ class LedgerImpl;
 namespace endpoint {
 namespace promotion {
 
-using GetAvailableCallback = std::function<void(
-    const type::Result result,
+using GetAvailableCallback = base::OnceCallback<void(
+    type::Result result,
     type::PromotionList list,
     const std::vector<std::string>& corrupted_promotions)>;
 
@@ -73,9 +73,8 @@ class GetAvailable {
       type::PromotionList* list,
       std::vector<std::string>* corrupted_promotions);
 
-  void OnRequest(
-      const type::UrlResponse& response,
-      GetAvailableCallback callback);
+  void OnRequest(GetAvailableCallback callback,
+                 const type::UrlResponse& response);
 
   LedgerImpl* ledger_;  // NOT OWNED
 };
