@@ -159,24 +159,24 @@ class TestBraveWalletServiceObserver
 
   void OnDefaultEthereumWalletChanged(mojom::DefaultWallet wallet) override {
     default_ethereum_wallet_ = wallet;
-    defaultEthereumWalletChangedFired_ = true;
+    default_ethereum_wallet_changed_fired_ = true;
   }
   void OnDefaultSolanaWalletChanged(mojom::DefaultWallet wallet) override {
     default_solana_wallet_ = wallet;
-    defaultSolanaWalletChangedFired_ = true;
+    default_solana_wallet_changed_fired_ = true;
   }
   void OnActiveOriginChanged(mojom::OriginInfoPtr origin_info) override {}
   void OnDefaultBaseCurrencyChanged(const std::string& currency) override {
     currency_ = currency;
-    defaultBaseCurrencyChangedFired_ = true;
+    default_base_currency_changed_fired_ = true;
   }
   void OnDefaultBaseCryptocurrencyChanged(
       const std::string& cryptocurrency) override {
     cryptocurrency_ = cryptocurrency;
-    defaultBaseCryptocurrencyChangedFired_ = true;
+    default_base_cryptocurrency_changed_fired_ = true;
   }
 
-  void OnNetworkListChanged() override { networkListChangedFired_ = true; }
+  void OnNetworkListChanged() override { network_list_changed_fired_ = true; }
 
   mojom::DefaultWallet GetDefaultEthereumWallet() {
     return default_ethereum_wallet_;
@@ -185,20 +185,20 @@ class TestBraveWalletServiceObserver
     return default_solana_wallet_;
   }
   bool DefaultEthereumWalletChangedFired() {
-    return defaultEthereumWalletChangedFired_;
+    return default_ethereum_wallet_changed_fired_;
   }
   bool DefaultSolanaWalletChangedFired() {
-    return defaultSolanaWalletChangedFired_;
+    return default_solana_wallet_changed_fired_;
   }
   std::string GetDefaultBaseCurrency() { return currency_; }
   std::string GetDefaultBaseCryptocurrency() { return cryptocurrency_; }
   bool DefaultBaseCurrencyChangedFired() {
-    return defaultBaseCurrencyChangedFired_;
+    return default_base_currency_changed_fired_;
   }
   bool DefaultBaseCryptocurrencyChangedFired() {
-    return defaultBaseCryptocurrencyChangedFired_;
+    return default_base_cryptocurrency_changed_fired_;
   }
-  bool OnNetworkListChangedFired() { return networkListChangedFired_; }
+  bool OnNetworkListChangedFired() { return network_list_changed_fired_; }
 
   mojo::PendingRemote<brave_wallet::mojom::BraveWalletServiceObserver>
   GetReceiver() {
@@ -206,11 +206,11 @@ class TestBraveWalletServiceObserver
   }
 
   void Reset() {
-    defaultEthereumWalletChangedFired_ = false;
-    defaultSolanaWalletChangedFired_ = false;
-    defaultBaseCurrencyChangedFired_ = false;
-    defaultBaseCryptocurrencyChangedFired_ = false;
-    networkListChangedFired_ = false;
+    default_ethereum_wallet_changed_fired_ = false;
+    default_solana_wallet_changed_fired_ = false;
+    default_base_currency_changed_fired_ = false;
+    default_base_cryptocurrency_changed_fired_ = false;
+    network_list_changed_fired_ = false;
   }
 
  private:
@@ -218,11 +218,11 @@ class TestBraveWalletServiceObserver
       mojom::DefaultWallet::BraveWalletPreferExtension;
   mojom::DefaultWallet default_solana_wallet_ =
       mojom::DefaultWallet::BraveWalletPreferExtension;
-  bool defaultEthereumWalletChangedFired_ = false;
-  bool defaultSolanaWalletChangedFired_ = false;
-  bool defaultBaseCurrencyChangedFired_ = false;
-  bool defaultBaseCryptocurrencyChangedFired_ = false;
-  bool networkListChangedFired_ = false;
+  bool default_ethereum_wallet_changed_fired_ = false;
+  bool default_solana_wallet_changed_fired_ = false;
+  bool default_base_currency_changed_fired_ = false;
+  bool default_base_cryptocurrency_changed_fired_ = false;
+  bool network_list_changed_fired_ = false;
   std::string currency_;
   std::string cryptocurrency_;
   mojo::Receiver<brave_wallet::mojom::BraveWalletServiceObserver>
