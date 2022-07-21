@@ -14,10 +14,10 @@ class ConfirmationsDelegate {
  public:
   virtual ~ConfirmationsDelegate() = default;
 
-  // Invoked when a confirmation was successfully sent
+  // Invoked to tell the delegate that the |confirmation| was successfully sent.
   virtual void OnDidConfirm(const ConfirmationInfo& confirmation) {}
 
-  // Invoked when a confirmation failed to send
+  // Invoked to tell the delegate that we failed to send the |confirmation|.
   virtual void OnFailedToConfirm(const ConfirmationInfo& confirmation) {}
 };
 

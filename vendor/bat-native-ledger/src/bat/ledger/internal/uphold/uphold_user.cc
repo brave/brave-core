@@ -14,10 +14,6 @@
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/uphold/uphold_util.h"
 
-using std::placeholders::_1;
-using std::placeholders::_2;
-using std::placeholders::_3;
-
 namespace ledger {
 namespace uphold {
 
@@ -38,36 +34,32 @@ void UpholdUser::Get(GetUserCallback callback) {
   if (!wallet) {
     User user;
     BLOG(0, "Wallet is null");
-    callback(type::Result::LEDGER_ERROR, user);
+    std::move(callback).Run(type::Result::LEDGER_ERROR, user);
     return;
   }
 
-  auto url_callback = std::bind(&UpholdUser::OnGet,
-      this,
-      _1,
-      _2,
-      callback);
+  auto url_callback = base::BindOnce(&UpholdUser::OnGet, base::Unretained(this),
+                                     std::move(callback));
 
-  uphold_server_->get_me()->Request(wallet->token, url_callback);
+  uphold_server_->get_me()->Request(wallet->token, std::move(url_callback));
 }
 
-void UpholdUser::OnGet(
-    const type::Result result,
-    const User& user,
-    GetUserCallback callback) {
+void UpholdUser::OnGet(GetUserCallback callback,
+                       type::Result result,
+                       const User& user) {
   if (result == type::Result::EXPIRED_TOKEN) {
     BLOG(0, "Expired token");
-    callback(type::Result::EXPIRED_TOKEN, user);
+    std::move(callback).Run(type::Result::EXPIRED_TOKEN, user);
     return;
   }
 
   if (result != type::Result::LEDGER_OK) {
     BLOG(0, "Couldn't get user");
-    callback(type::Result::LEDGER_ERROR, user);
+    std::move(callback).Run(type::Result::LEDGER_ERROR, user);
     return;
   }
 
-  callback(type::Result::LEDGER_OK, user);
+  std::move(callback).Run(type::Result::LEDGER_OK, user);
 }
 
 }  // namespace uphold

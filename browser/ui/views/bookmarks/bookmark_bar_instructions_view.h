@@ -37,8 +37,6 @@ class BookmarkBarInstructionsView : public views::View,
   void Layout() override;
   const char* GetClassName() const override;
   void OnThemeChanged() override;
-  void ViewHierarchyChanged(
-      const views::ViewHierarchyChangedDetails& details) override;
   void GetAccessibleNodeData(ui::AXNodeData* node_data) override;
 
   // views::ContextMenuController:
@@ -48,13 +46,11 @@ class BookmarkBarInstructionsView : public views::View,
 
   void UpdateColors();
   void LinkClicked();
+  SkColor GetInstructionsTextColor();
 
   raw_ptr<views::Label> instructions_ = nullptr;
   raw_ptr<views::Link> import_link_ = nullptr;
 
-  // Have the colors of the child views been updated? This is initially false
-  // and set to true once we have a valid ThemeProvider.
-  bool updated_colors_;
   raw_ptr<Browser> browser_ = nullptr;
 };
 

@@ -131,6 +131,7 @@ class TestBraveVPNServiceObserver : public mojom::ServiceObserver {
     if (purchased_callback_)
       std::move(purchased_callback_).Run();
   }
+#if !BUILDFLAG(IS_ANDROID)
   void OnConnectionCreated() override {}
   void OnConnectionRemoved() override {}
   void OnConnectionStateChanged(ConnectionState state) override {
@@ -138,6 +139,7 @@ class TestBraveVPNServiceObserver : public mojom::ServiceObserver {
     if (connection_state_callback_)
       std::move(connection_state_callback_).Run();
   }
+#endif
   void WaitPurchasedStateChange(base::OnceClosure callback) {
     purchased_callback_ = std::move(callback);
   }
@@ -193,7 +195,7 @@ class BraveVPNServiceTest : public testing::Test {
         base::BindRepeating(&BraveVPNServiceTest::GetSkusService,
                             base::Unretained(this)));
   }
-
+  PrefService* prefs() { return &pref_service_; }
   mojo::PendingRemote<skus::mojom::SkusService> GetSkusService() {
     if (!skus_service_) {
       return mojo::PendingRemote<skus::mojom::SkusService>();
@@ -213,6 +215,43 @@ class BraveVPNServiceTest : public testing::Test {
     service_->AddObserver(std::move(observer));
   }
 
+  void SetPurchasedState(const std::string& env, PurchasedState state) {
+    service_->SetPurchasedState(env, state);
+  }
+  void LoadPurchasedState(const std::string& domain) {
+    service_->LoadPurchasedState(domain);
+  }
+  PurchasedState GetPurchasedStateSync() const {
+    return service_->GetPurchasedStateSync();
+  }
+
+#if !BUILDFLAG(IS_ANDROID)
+  mojom::Region device_region() const {
+    if (auto region_ptr = GetRegionPtrWithNameFromRegionList(
+            service_->GetDeviceRegion(), regions())) {
+      return *region_ptr;
+    }
+    return mojom::Region();
+  }
+
+  std::vector<mojom::Region>& regions() const { return service_->regions_; }
+
+  std::unique_ptr<Hostname>& hostname() { return service_->hostname_; }
+
+  bool& cancel_connecting() { return service_->cancel_connecting_; }
+
+  ConnectionState& connection_state() { return service_->connection_state_; }
+
+  void OnCredentialSummary(const std::string& domain,
+                           const std::string& summary) {
+    service_->OnCredentialSummary(domain, summary);
+  }
+
+  void UpdateAndNotifyConnectionStateChange(mojom::ConnectionState state) {
+    service_->UpdateAndNotifyConnectionStateChange(state);
+  }
+  void Suspend() { service_->OnSuspend(); }
+
   void OnFetchRegionList(bool background_fetch,
                          const std::string& region_list,
                          bool success) {
@@ -229,41 +268,6 @@ class BraveVPNServiceTest : public testing::Test {
     service_->OnFetchHostnames(region, hostnames, success);
   }
 
-  void OnCredentialSummary(const std::string& domain,
-                           const std::string& summary) {
-    service_->OnCredentialSummary(domain, summary);
-  }
-
-  void UpdateAndNotifyConnectionStateChange(mojom::ConnectionState state) {
-    service_->UpdateAndNotifyConnectionStateChange(state);
-  }
-  void Suspend() { service_->OnSuspend(); }
-  std::vector<mojom::Region>& regions() const { return service_->regions_; }
-
-  mojom::Region device_region() const {
-    if (auto region_ptr = GetRegionPtrWithNameFromRegionList(
-            service_->GetDeviceRegion(), regions())) {
-      return *region_ptr;
-    }
-    return mojom::Region();
-  }
-
-  std::unique_ptr<Hostname>& hostname() { return service_->hostname_; }
-
-  bool& cancel_connecting() { return service_->cancel_connecting_; }
-
-  ConnectionState& connection_state() { return service_->connection_state_; }
-
-  PurchasedState GetPurchasedStateSync() const {
-    return service_->GetPurchasedStateSync();
-  }
-
-  void SetPurchasedState(const std::string& env, PurchasedState state) {
-    service_->SetPurchasedState(env, state);
-  }
-  void LoadPurchasedState(const std::string& domain) {
-    service_->LoadPurchasedState(domain);
-  }
   std::string& skus_credential() { return service_->skus_credential_; }
 
   bool& is_simulation() { return service_->is_simulation_; }
@@ -272,22 +276,22 @@ class BraveVPNServiceTest : public testing::Test {
 
   void Connect() { service_->Connect(); }
 
-  PrefService* prefs() { return &pref_service_; }
-
   void Disconnect() { service_->Disconnect(); }
 
   void CreateVPNConnection() { service_->CreateVPNConnection(); }
-
+  void OnCreated() { service_->OnCreated(); }
   void LoadCachedRegionData() { service_->LoadCachedRegionData(); }
 
-  void OnCreated() { service_->OnCreated(); }
+  void OnConnected() { service_->OnConnected(); }
 
+  void OnDisconnected() { service_->OnDisconnected(); }
+
+  const BraveVPNConnectionInfo& GetConnectionInfo() {
+    return service_->GetConnectionInfo();
+  }
   void OnGetSubscriberCredentialV12(const std::string& subscriber_credential,
                                     bool success) {
     service_->OnGetSubscriberCredentialV12(subscriber_credential, success);
-  }
-  std::string GetCurrentEnvironment() {
-    return service_->GetCurrentEnvironment();
   }
   void OnGetProfileCredentials(const std::string& profile_credential,
                                bool success) {
@@ -299,15 +303,6 @@ class BraveVPNServiceTest : public testing::Test {
       const std::string& credential_as_cookie) {
     service_->OnPrepareCredentialsPresentation(domain, credential_as_cookie);
   }
-
-  void OnConnected() { service_->OnConnected(); }
-
-  void OnDisconnected() { service_->OnDisconnected(); }
-
-  const BraveVPNConnectionInfo& GetConnectionInfo() {
-    return service_->GetConnectionInfo();
-  }
-
   void SetDeviceRegion(const std::string& name) {
     service_->SetDeviceRegion(name);
   }
@@ -316,6 +311,12 @@ class BraveVPNServiceTest : public testing::Test {
 
   void SetTestTimezone(const std::string& timezone) {
     service_->test_timezone_ = timezone;
+  }
+
+#endif
+
+  std::string GetCurrentEnvironment() {
+    return service_->GetCurrentEnvironment();
   }
 
   std::string GetRegionsData() {
@@ -510,6 +511,7 @@ TEST(BraveVPNFeatureTest, FeatureTest) {
   EXPECT_FALSE(IsBraveVPNEnabled());
 }
 
+#if !BUILDFLAG(IS_ANDROID)
 TEST_F(BraveVPNServiceTest, RegionDataTest) {
   // Test invalid region data.
   OnFetchRegionList(false, std::string(), true);
@@ -677,18 +679,6 @@ TEST_F(BraveVPNServiceTest, ConnectionStateUpdateWithPurchasedStateTest) {
   UpdateAndNotifyConnectionStateChange(ConnectionState::CONNECTED);
   EXPECT_NE(ConnectionState::CONNECTED, connection_state());
 }
-
-TEST_F(BraveVPNServiceTest, CheckInitialPurchasedStateTest) {
-  // Purchased state is not checked for fresh user.
-  EXPECT_EQ(PurchasedState::NOT_PURCHASED, GetPurchasedStateSync());
-
-  // Dirty region list prefs to pretend it's already cached.
-  pref_service_.Set(prefs::kBraveVPNRegionList,
-                    base::Value(base::Value::Type::LIST));
-  ResetVpnService();
-  EXPECT_EQ(PurchasedState::LOADING, GetPurchasedStateSync());
-}
-
 TEST_F(BraveVPNServiceTest, ConnectionInfoTest) {
   // Having skus_credential is pre-requisite before try connecting.
   skus_credential() = "test_credentials";
@@ -808,86 +798,15 @@ TEST_F(BraveVPNServiceTest, LoadRegionDataFromPrefsTest) {
   EXPECT_FALSE(regions().empty());
 }
 
-TEST_F(BraveVPNServiceTest, GetPurchasedStateSync) {
-  std::string env = skus::GetDefaultEnvironment();
-  EXPECT_EQ(mojom::PurchasedState::NOT_PURCHASED, GetPurchasedStateSync());
-
-  SetPurchasedState(env, PurchasedState::LOADING);
-  EXPECT_EQ(PurchasedState::LOADING, GetPurchasedStateSync());
-
-  SetPurchasedState(env, PurchasedState::PURCHASED);
-  EXPECT_EQ(PurchasedState::PURCHASED, GetPurchasedStateSync());
-
-  SetPurchasedState(env, PurchasedState::EXPIRED);
-  EXPECT_EQ(PurchasedState::EXPIRED, GetPurchasedStateSync());
-
-  SetPurchasedState(env, PurchasedState::FAILED);
-  EXPECT_EQ(PurchasedState::FAILED, GetPurchasedStateSync());
-
-  SetPurchasedState(env, PurchasedState::NOT_PURCHASED);
-  EXPECT_EQ(PurchasedState::NOT_PURCHASED, GetPurchasedStateSync());
-}
-
-TEST_F(BraveVPNServiceTest, SetPurchasedState) {
-  std::string env = skus::GetDefaultEnvironment();
-  TestBraveVPNServiceObserver observer;
-  AddObserver(observer.GetReceiver());
-  EXPECT_EQ(PurchasedState::NOT_PURCHASED, GetPurchasedStateSync());
-
-  SetAndExpectPurchasedStateChange(&observer, env, PurchasedState::LOADING);
-  SetAndExpectPurchasedStateChange(&observer, env, PurchasedState::EXPIRED);
-  SetAndExpectPurchasedStateChange(&observer, env, PurchasedState::FAILED);
-  SetAndExpectPurchasedStateChange(&observer, env,
-                                   PurchasedState::NOT_PURCHASED);
-  SetAndExpectPurchasedStateChange(&observer, env, PurchasedState::PURCHASED);
-
-  SetPurchasedState(env, PurchasedState::PURCHASED);
-  base::RunLoop().RunUntilIdle();
-  observer.ResetStates();
-  // Do not notify if status is not changed.
-  EXPECT_FALSE(observer.GetPurchasedState().has_value());
-  SetPurchasedState(env, PurchasedState::PURCHASED);
-  base::RunLoop().RunUntilIdle();
-  EXPECT_FALSE(observer.GetPurchasedState().has_value());
-}
-
-TEST_F(BraveVPNServiceTest, LoadPurchasedStateNotifications) {
+// Load purchased state without connection.
+TEST_F(BraveVPNServiceTest, PurchasedStateWithoutConnection) {
   std::string env = skus::GetDefaultEnvironment();
   std::string domain = skus::GetDomain("vpn", env);
   TestBraveVPNServiceObserver observer;
   AddObserver(observer.GetReceiver());
   EXPECT_EQ(PurchasedState::NOT_PURCHASED, GetPurchasedStateSync());
+  SetPurchasedState(env, PurchasedState::PURCHASED);
 
-  LoadPurchasedState(domain);
-  {
-    // Loading state called if we fetch it first time.
-    base::RunLoop loop;
-    observer.WaitPurchasedStateChange(loop.QuitClosure());
-    loop.Run();
-    EXPECT_EQ(PurchasedState::LOADING, GetPurchasedStateSync());
-    EXPECT_TRUE(observer.GetPurchasedState().has_value());
-    EXPECT_EQ(PurchasedState::LOADING, observer.GetPurchasedState().value());
-  }
-  {
-    base::RunLoop loop;
-    observer.WaitPurchasedStateChange(loop.QuitClosure());
-    loop.Run();
-    EXPECT_EQ(PurchasedState::NOT_PURCHASED, GetPurchasedStateSync());
-    EXPECT_TRUE(observer.GetPurchasedState().has_value());
-    EXPECT_EQ(PurchasedState::NOT_PURCHASED,
-              observer.GetPurchasedState().value());
-  }
-  observer.ResetStates();
-  EXPECT_FALSE(observer.GetPurchasedState().has_value());
-  EXPECT_EQ(PurchasedState::NOT_PURCHASED, GetPurchasedStateSync());
-  LoadPurchasedState(domain);
-  base::RunLoop().RunUntilIdle();
-  // Observer event not called second time because the state is not changed.
-  EXPECT_FALSE(observer.GetPurchasedState().has_value());
-  // Observer called when state will be changed.
-  SetAndExpectPurchasedStateChange(&observer, env, PurchasedState::PURCHASED);
-
-  // Load purchased state without connection.
   EXPECT_EQ(PurchasedState::PURCHASED, GetPurchasedStateSync());
   connection_state() = ConnectionState::CONNECTED;
   auto network_change_notifier = net::NetworkChangeNotifier::CreateIfNeeded();
@@ -900,33 +819,6 @@ TEST_F(BraveVPNServiceTest, LoadPurchasedStateNotifications) {
   base::RunLoop().RunUntilIdle();
   EXPECT_EQ(PurchasedState::PURCHASED, GetPurchasedStateSync());
   EXPECT_EQ(observer.GetConnectionState(), ConnectionState::CONNECT_FAILED);
-}
-
-TEST_F(BraveVPNServiceTest, LoadPurchasedStateForAnotherEnv) {
-  auto development = SetupTestingStoreForEnv(skus::GetDefaultEnvironment());
-  EXPECT_EQ(skus::GetEnvironmentForDomain(development),
-            skus::GetDefaultEnvironment());
-  TestBraveVPNServiceObserver observer;
-  AddObserver(observer.GetReceiver());
-  EXPECT_EQ(PurchasedState::NOT_PURCHASED, GetPurchasedStateSync());
-  EXPECT_EQ(GetCurrentEnvironment(), skus::GetDefaultEnvironment());
-  LoadPurchasedState(development);
-  base::RunLoop().RunUntilIdle();
-  // Successfully set purchased state for dev env.
-  EXPECT_TRUE(observer.GetPurchasedState().has_value());
-  EXPECT_EQ(observer.GetPurchasedState().value(), PurchasedState::PURCHASED);
-  EXPECT_EQ(GetCurrentEnvironment(), skus::GetDefaultEnvironment());
-
-  observer.ResetStates();
-  auto staging = SetupTestingStoreForEnv(skus::kEnvStaging);
-  EXPECT_EQ(skus::GetEnvironmentForDomain(staging), skus::kEnvStaging);
-  EXPECT_EQ(GetCurrentEnvironment(), skus::GetDefaultEnvironment());
-  LoadPurchasedState(staging);
-  base::RunLoop().RunUntilIdle();
-  // Successfully changed purchased state for dev env.
-  EXPECT_TRUE(observer.GetPurchasedState().has_value());
-  EXPECT_EQ(observer.GetPurchasedState().value(), PurchasedState::PURCHASED);
-  EXPECT_EQ(GetCurrentEnvironment(), skus::kEnvStaging);
 }
 
 TEST_F(BraveVPNServiceTest, LoadPurchasedStateForAnotherEnvFailed) {
@@ -1006,6 +898,125 @@ TEST_F(BraveVPNServiceTest, ResumeAfterSuspend) {
   needs_connect() = false;
   Suspend();
   EXPECT_FALSE(needs_connect());
+}
+
+TEST_F(BraveVPNServiceTest, CheckInitialPurchasedStateTest) {
+  // Purchased state is not checked for fresh user.
+  EXPECT_EQ(PurchasedState::NOT_PURCHASED, GetPurchasedStateSync());
+
+  // Dirty region list prefs to pretend it's already cached.
+  pref_service_.Set(prefs::kBraveVPNRegionList,
+                    base::Value(base::Value::Type::LIST));
+  ResetVpnService();
+  EXPECT_EQ(PurchasedState::LOADING, GetPurchasedStateSync());
+}
+#endif
+
+TEST_F(BraveVPNServiceTest, GetPurchasedStateSync) {
+  std::string env = skus::GetDefaultEnvironment();
+  EXPECT_EQ(mojom::PurchasedState::NOT_PURCHASED, GetPurchasedStateSync());
+
+  SetPurchasedState(env, PurchasedState::LOADING);
+  EXPECT_EQ(PurchasedState::LOADING, GetPurchasedStateSync());
+
+  SetPurchasedState(env, PurchasedState::PURCHASED);
+  EXPECT_EQ(PurchasedState::PURCHASED, GetPurchasedStateSync());
+
+  SetPurchasedState(env, PurchasedState::EXPIRED);
+  EXPECT_EQ(PurchasedState::EXPIRED, GetPurchasedStateSync());
+
+  SetPurchasedState(env, PurchasedState::FAILED);
+  EXPECT_EQ(PurchasedState::FAILED, GetPurchasedStateSync());
+
+  SetPurchasedState(env, PurchasedState::NOT_PURCHASED);
+  EXPECT_EQ(PurchasedState::NOT_PURCHASED, GetPurchasedStateSync());
+}
+
+TEST_F(BraveVPNServiceTest, SetPurchasedState) {
+  std::string env = skus::GetDefaultEnvironment();
+  TestBraveVPNServiceObserver observer;
+  AddObserver(observer.GetReceiver());
+  EXPECT_EQ(PurchasedState::NOT_PURCHASED, GetPurchasedStateSync());
+
+  SetAndExpectPurchasedStateChange(&observer, env, PurchasedState::LOADING);
+  SetAndExpectPurchasedStateChange(&observer, env, PurchasedState::EXPIRED);
+  SetAndExpectPurchasedStateChange(&observer, env, PurchasedState::FAILED);
+  SetAndExpectPurchasedStateChange(&observer, env,
+                                   PurchasedState::NOT_PURCHASED);
+  SetAndExpectPurchasedStateChange(&observer, env, PurchasedState::PURCHASED);
+
+  SetPurchasedState(env, PurchasedState::PURCHASED);
+  base::RunLoop().RunUntilIdle();
+  observer.ResetStates();
+  // Do not notify if status is not changed.
+  EXPECT_FALSE(observer.GetPurchasedState().has_value());
+  SetPurchasedState(env, PurchasedState::PURCHASED);
+  base::RunLoop().RunUntilIdle();
+  EXPECT_FALSE(observer.GetPurchasedState().has_value());
+}
+
+TEST_F(BraveVPNServiceTest, LoadPurchasedStateNotifications) {
+  std::string env = skus::GetDefaultEnvironment();
+  std::string domain = skus::GetDomain("vpn", env);
+  TestBraveVPNServiceObserver observer;
+  AddObserver(observer.GetReceiver());
+  EXPECT_EQ(PurchasedState::NOT_PURCHASED, GetPurchasedStateSync());
+
+  LoadPurchasedState(domain);
+  {
+    // Loading state called if we fetch it first time.
+    base::RunLoop loop;
+    observer.WaitPurchasedStateChange(loop.QuitClosure());
+    loop.Run();
+    EXPECT_EQ(PurchasedState::LOADING, GetPurchasedStateSync());
+    EXPECT_TRUE(observer.GetPurchasedState().has_value());
+    EXPECT_EQ(PurchasedState::LOADING, observer.GetPurchasedState().value());
+  }
+  {
+    base::RunLoop loop;
+    observer.WaitPurchasedStateChange(loop.QuitClosure());
+    loop.Run();
+    EXPECT_EQ(PurchasedState::NOT_PURCHASED, GetPurchasedStateSync());
+    EXPECT_TRUE(observer.GetPurchasedState().has_value());
+    EXPECT_EQ(PurchasedState::NOT_PURCHASED,
+              observer.GetPurchasedState().value());
+  }
+  observer.ResetStates();
+  EXPECT_FALSE(observer.GetPurchasedState().has_value());
+  EXPECT_EQ(PurchasedState::NOT_PURCHASED, GetPurchasedStateSync());
+  LoadPurchasedState(domain);
+  base::RunLoop().RunUntilIdle();
+  // Observer event not called second time because the state is not changed.
+  EXPECT_FALSE(observer.GetPurchasedState().has_value());
+  // Observer called when state will be changed.
+  SetAndExpectPurchasedStateChange(&observer, env, PurchasedState::PURCHASED);
+}
+
+TEST_F(BraveVPNServiceTest, LoadPurchasedStateForAnotherEnv) {
+  auto development = SetupTestingStoreForEnv(skus::GetDefaultEnvironment());
+  EXPECT_EQ(skus::GetEnvironmentForDomain(development),
+            skus::GetDefaultEnvironment());
+  TestBraveVPNServiceObserver observer;
+  AddObserver(observer.GetReceiver());
+  EXPECT_EQ(PurchasedState::NOT_PURCHASED, GetPurchasedStateSync());
+  EXPECT_EQ(GetCurrentEnvironment(), skus::GetDefaultEnvironment());
+  LoadPurchasedState(development);
+  base::RunLoop().RunUntilIdle();
+  // Successfully set purchased state for dev env.
+  EXPECT_TRUE(observer.GetPurchasedState().has_value());
+  EXPECT_EQ(observer.GetPurchasedState().value(), PurchasedState::PURCHASED);
+  EXPECT_EQ(GetCurrentEnvironment(), skus::GetDefaultEnvironment());
+
+  observer.ResetStates();
+  auto staging = SetupTestingStoreForEnv(skus::kEnvStaging);
+  EXPECT_EQ(skus::GetEnvironmentForDomain(staging), skus::kEnvStaging);
+  EXPECT_EQ(GetCurrentEnvironment(), skus::GetDefaultEnvironment());
+  LoadPurchasedState(staging);
+  base::RunLoop().RunUntilIdle();
+  // Successfully changed purchased state for dev env.
+  EXPECT_TRUE(observer.GetPurchasedState().has_value());
+  EXPECT_EQ(observer.GetPurchasedState().value(), PurchasedState::PURCHASED);
+  EXPECT_EQ(GetCurrentEnvironment(), skus::kEnvStaging);
 }
 
 }  // namespace brave_vpn

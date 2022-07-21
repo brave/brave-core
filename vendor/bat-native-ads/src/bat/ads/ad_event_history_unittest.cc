@@ -32,7 +32,7 @@ class BatAdsAdEventHistoryTest : public UnitTestBase {
                                   confirmation_type.ToString(), Now());
   }
 
-  std::vector<base::Time> GetAdEvents(
+  std::vector<base::Time> GetAdEventHistory(
       const AdType& ad_type,
       const ConfirmationType& confirmation_type) {
     return ad_event_history_.Get(ad_type.ToString(),
@@ -48,7 +48,7 @@ TEST_F(BatAdsAdEventHistoryTest, RecordAdEventForNewType) {
 
   // Act
   const std::vector<base::Time>& history =
-      GetAdEvents(AdType::kNotificationAd, ConfirmationType::kViewed);
+      GetAdEventHistory(AdType::kNotificationAd, ConfirmationType::kViewed);
 
   // Assert
   const std::vector<base::Time>& expected_history = {Now()};
@@ -62,7 +62,7 @@ TEST_F(BatAdsAdEventHistoryTest, RecordAdEventForExistingType) {
 
   // Act
   const std::vector<base::Time>& history =
-      GetAdEvents(AdType::kNotificationAd, ConfirmationType::kViewed);
+      GetAdEventHistory(AdType::kNotificationAd, ConfirmationType::kViewed);
 
   // Assert
   const std::vector<base::Time>& expected_history = {Now(), Now()};
@@ -76,7 +76,7 @@ TEST_F(BatAdsAdEventHistoryTest, RecordAdEventForMultipleIds) {
 
   // Act
   const std::vector<base::Time>& history =
-      GetAdEvents(AdType::kNotificationAd, ConfirmationType::kViewed);
+      GetAdEventHistory(AdType::kNotificationAd, ConfirmationType::kViewed);
 
   // Assert
   const std::vector<base::Time>& expected_history = {Now(), Now()};
@@ -90,7 +90,7 @@ TEST_F(BatAdsAdEventHistoryTest, RecordAdEventForMultipleTypes) {
 
   // Act
   const std::vector<base::Time>& history =
-      GetAdEvents(AdType::kNotificationAd, ConfirmationType::kViewed);
+      GetAdEventHistory(AdType::kNotificationAd, ConfirmationType::kViewed);
 
   // Assert
   const std::vector<base::Time>& expected_history = {Now()};
@@ -107,7 +107,7 @@ TEST_F(BatAdsAdEventHistoryTest, PurgeHistoryOlderThan) {
 
   // Act
   const std::vector<base::Time>& history =
-      GetAdEvents(AdType::kNotificationAd, ConfirmationType::kViewed);
+      GetAdEventHistory(AdType::kNotificationAd, ConfirmationType::kViewed);
 
   // Assert
   const std::vector<base::Time>& expected_history = {Now()};

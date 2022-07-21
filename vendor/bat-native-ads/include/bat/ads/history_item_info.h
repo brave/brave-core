@@ -7,6 +7,7 @@
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_INCLUDE_BAT_ADS_HISTORY_ITEM_INFO_H_
 
 #include <string>
+#include <vector>
 
 #include "base/time/time.h"
 #include "bat/ads/ad_content_info.h"
@@ -31,6 +32,8 @@ struct ADS_EXPORT HistoryItemInfo final {
   AdContentInfo ad_content;
   CategoryContentInfo category_content;
 };
+
+using HistoryItemList = std::vector<HistoryItemInfo>;
 
 }  // namespace ads
 

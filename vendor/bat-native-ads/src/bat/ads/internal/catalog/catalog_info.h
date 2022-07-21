@@ -9,7 +9,7 @@
 #include <string>
 
 #include "base/time/time.h"
-#include "bat/ads/internal/catalog/campaign/catalog_campaign_info_aliases.h"
+#include "bat/ads/internal/catalog/campaign/catalog_campaign_info.h"
 
 namespace ads {
 

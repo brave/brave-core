@@ -38,8 +38,9 @@ using RunDBTransactionCallback =
 using GetCreateScriptCallback =
     std::function<void(const std::string&, const int)>;
 
-using ResultCallback =
-    std::function<void(const type::Result)>;
+using LegacyResultCallback = std::function<void(type::Result)>;
+
+using ResultCallback = base::OnceCallback<void(type::Result)>;
 
 using GetPromotionListCallback = std::function<void(type::PromotionList)>;
 
@@ -138,10 +139,9 @@ class LEDGER_EXPORT LedgerClient {
   // DEPRECATED
   virtual std::string GetLegacyWallet() = 0;
 
-  virtual void ShowNotification(
-      const std::string& type,
-      const std::vector<std::string>& args,
-      client::ResultCallback callback) = 0;
+  virtual void ShowNotification(const std::string& type,
+                                const std::vector<std::string>& args,
+                                client::LegacyResultCallback callback) = 0;
 
   virtual type::ClientInfoPtr GetClientInfo() = 0;
 
@@ -160,7 +160,7 @@ class LEDGER_EXPORT LedgerClient {
 
   virtual void WalletDisconnected(const std::string& wallet_type) = 0;
 
-  virtual void DeleteLog(client::ResultCallback callback) = 0;
+  virtual void DeleteLog(client::LegacyResultCallback callback) = 0;
 
   virtual absl::optional<std::string> EncryptString(
       const std::string& value) = 0;

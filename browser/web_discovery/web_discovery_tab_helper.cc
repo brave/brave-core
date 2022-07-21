@@ -5,6 +5,7 @@
 
 #include "brave/browser/web_discovery/web_discovery_tab_helper.h"
 
+#include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/ui/browser_dialogs.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/constants/url_constants.h"
@@ -24,8 +25,14 @@
 
 namespace {
 
-bool ShouldCreateWebDiscoveryTabHelper(PrefService* prefs) {
-  DCHECK(prefs);
+bool ShouldCreateWebDiscoveryTabHelper(content::WebContents* contents) {
+  DCHECK(contents);
+  auto* context = contents->GetBrowserContext();
+  if (!brave::IsRegularProfile(context))
+    return false;
+  auto* prefs = user_prefs::UserPrefs::Get(context);
+  if (!prefs)
+    return false;
   return !prefs->GetBoolean(kDontAskEnableWebDiscovery) &&
          prefs->GetInteger(kBraveSearchVisitCount) < 20;
 }
@@ -35,8 +42,7 @@ bool ShouldCreateWebDiscoveryTabHelper(PrefService* prefs) {
 // static
 void WebDiscoveryTabHelper::MaybeCreateForWebContents(
     content::WebContents* contents) {
-  auto* prefs = user_prefs::UserPrefs::Get(contents->GetBrowserContext());
-  if (prefs && ShouldCreateWebDiscoveryTabHelper(prefs))
+  if (contents && ShouldCreateWebDiscoveryTabHelper(contents))
     WebDiscoveryTabHelper::CreateForWebContents(contents);
 }
 

@@ -16,17 +16,17 @@ class IssuersDelegate {
  public:
   virtual ~IssuersDelegate() = default;
 
-  // Invoked to tell the delegate we successfuly fetched the issuers
+  // Invoked to tell the delegate we successfully fetched the |issuers|.
   virtual void OnDidFetchIssuers(const IssuersInfo& issuers) {}
 
-  // Invoked to tell the delegate we failed to fetch the issuers
+  // Invoked to tell the delegate we failed to fetch the issuers.
   virtual void OnFailedToFetchIssuers() {}
 
-  // Invoked to tell the delegate we will retry fetching issuers at the
-  // specified time
+  // Invoked to tell the delegate we will retry fetching the issuers at
+  // |retry_at|.
   virtual void OnWillRetryFetchingIssuers(const base::Time retry_at) {}
 
-  // Invoked to tell the delegate we did retry fetching issuers
+  // Invoked to tell the delegate we retried fetching the issuers.
   virtual void OnDidRetryFetchingIssuers() {}
 };
 

@@ -26,7 +26,7 @@ ContributionExternalWallet::~ContributionExternalWallet() = default;
 
 void ContributionExternalWallet::Process(
     const std::string& contribution_id,
-    ledger::ResultCallback callback) {
+    ledger::LegacyResultCallback callback) {
   if (contribution_id.empty()) {
     BLOG(0, "Contribution id is empty");
     callback(type::Result::LEDGER_ERROR);
@@ -42,7 +42,7 @@ void ContributionExternalWallet::Process(
 
 void ContributionExternalWallet::ContributionInfo(
     type::ContributionInfoPtr contribution,
-    ledger::ResultCallback callback) {
+    ledger::LegacyResultCallback callback) {
   if (!contribution) {
     BLOG(0, "Contribution is null");
     callback(type::Result::LEDGER_ERROR);
@@ -118,11 +118,11 @@ void ContributionExternalWallet::OnSavePendingContribution(
 void ContributionExternalWallet::OnServerPublisherInfo(
     type::ServerPublisherInfoPtr info,
     const std::string& contribution_id,
-    const double amount,
-    const type::RewardsType type,
-    const type::ContributionProcessor processor,
-    const bool single_publisher,
-    ledger::ResultCallback callback) {
+    double amount,
+    type::RewardsType type,
+    type::ContributionProcessor processor,
+    bool single_publisher,
+    ledger::LegacyResultCallback callback) {
   if (!info) {
     BLOG(0, "Publisher not found");
     callback(type::Result::LEDGER_ERROR);
@@ -198,9 +198,9 @@ void ContributionExternalWallet::OnServerPublisherInfo(
 }
 
 void ContributionExternalWallet::Completed(
-    const type::Result result,
-    const bool single_publisher,
-    ledger::ResultCallback callback) {
+    type::Result result,
+    bool single_publisher,
+    ledger::LegacyResultCallback callback) {
   if (single_publisher) {
     callback(result);
     return;
@@ -209,9 +209,8 @@ void ContributionExternalWallet::Completed(
   callback(type::Result::RETRY);
 }
 
-void ContributionExternalWallet::Retry(
-    type::ContributionInfoPtr contribution,
-    ledger::ResultCallback callback) {
+void ContributionExternalWallet::Retry(type::ContributionInfoPtr contribution,
+                                       ledger::LegacyResultCallback callback) {
   Process(contribution->contribution_id, callback);
 }
 

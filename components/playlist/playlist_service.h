@@ -71,10 +71,14 @@ class PlaylistService : public KeyedService,
   void RequestDownloadMediaFilesFromPage(const std::string& playlist_id,
                                          const std::string& url);
 
+  void RemoveItemFromPlaylist(const std::string& playlist_id,
+                              const std::string& item_id);
+
   void AddObserver(PlaylistServiceObserver* observer);
   void RemoveObserver(PlaylistServiceObserver* observer);
 
   bool GetThumbnailPath(const std::string& id, base::FilePath* thumbnail_path);
+  bool GetMediaPath(const std::string& id, base::FilePath* media_path);
 
   base::FilePath GetPlaylistItemDirPath(const std::string& id) const;
 

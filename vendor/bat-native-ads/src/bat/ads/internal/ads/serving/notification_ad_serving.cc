@@ -22,7 +22,6 @@
 #include "bat/ads/internal/base/platform/platform_helper.h"
 #include "bat/ads/internal/base/time/time_formatting_util.h"
 #include "bat/ads/internal/creatives/notification_ads/creative_notification_ad_info.h"
-#include "bat/ads/internal/creatives/notification_ads/creative_notification_ad_info_aliases.h"
 #include "bat/ads/internal/creatives/notification_ads/notification_ad_builder.h"
 #include "bat/ads/internal/deprecated/client/client_state_manager.h"
 #include "bat/ads/internal/geographic/subdivision/subdivision_targeting.h"
@@ -199,7 +198,7 @@ void Serving::MaybeServeAdAtNextRegularInterval() {
     return;
   }
 
-  const int64_t ads_per_hour = settings::GetAdsPerHour();
+  const int64_t ads_per_hour = settings::GetNotificationAdsPerHour();
   if (ads_per_hour == 0) {
     return;
   }
@@ -290,8 +289,8 @@ void Serving::OnPrefChanged(const std::string& path) {
 }
 
 void Serving::OnAdsPerHourPrefChanged() {
-  const int64_t ads_per_hour = settings::GetAdsPerHour();
-  BLOG(1, "Maximum ads per hour changed to " << ads_per_hour);
+  const int64_t ads_per_hour = settings::GetNotificationAdsPerHour();
+  BLOG(1, "Maximum notification ads per hour changed to " << ads_per_hour);
 
   if (!ShouldServeAdsAtRegularIntervals()) {
     return;

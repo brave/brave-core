@@ -27,7 +27,7 @@ export type PreInitialRewardsData = {
   rewardsEnabled: boolean
   enabledAds: boolean
   adsSupported: boolean
-  needsBrowserUpdateToSeeAds: boolean
+  needsBrowserUpgradeToServeAds: boolean
 }
 
 export type InitialRewardsData = {
@@ -127,13 +127,13 @@ export async function getRewardsPreInitialData (): Promise<PreInitialRewardsData
     newTabAdsDataAPI.getNewTabAdsData()
     ])
 
-  const needsBrowserUpdateToSeeAds = adsData.needsBrowserUpdateToSeeAds
+  const needsBrowserUpgradeToServeAds = adsData.needsBrowserUpgradeToServeAds
 
   return {
     rewardsEnabled,
     enabledAds,
     adsSupported,
-    needsBrowserUpdateToSeeAds
+    needsBrowserUpgradeToServeAds
   }
 }
 

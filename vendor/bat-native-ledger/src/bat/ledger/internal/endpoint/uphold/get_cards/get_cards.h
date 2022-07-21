@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVELEDGER_ENDPOINT_UPHOLD_GET_CARDS_GET_CARDS_H_
-#define BRAVELEDGER_ENDPOINT_UPHOLD_GET_CARDS_GET_CARDS_H_
+#ifndef BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_ENDPOINT_UPHOLD_GET_CARDS_GET_CARDS_H_
+#define BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_ENDPOINT_UPHOLD_GET_CARDS_GET_CARDS_H_
 
 #include <string>
 
@@ -77,9 +77,8 @@ class LedgerImpl;
 namespace endpoint {
 namespace uphold {
 
-using GetCardsCallback = std::function<void(
-    const type::Result result,
-    const std::string& id)>;
+using GetCardsCallback =
+    base::OnceCallback<void(type::Result result, const std::string& id)>;
 
 class GetCards {
  public:
@@ -99,9 +98,7 @@ class GetCards {
       const std::string& body,
       std::string* id);
 
-  void OnRequest(
-      const type::UrlResponse& response,
-      GetCardsCallback callback);
+  void OnRequest(GetCardsCallback callback, const type::UrlResponse& response);
 
   LedgerImpl* ledger_;  // NOT OWNED
 };
@@ -110,4 +107,4 @@ class GetCards {
 }  // namespace endpoint
 }  // namespace ledger
 
-#endif  // BRAVELEDGER_ENDPOINT_UPHOLD_GET_CARDS_GET_CARDS_H_
+#endif  // BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_ENDPOINT_UPHOLD_GET_CARDS_GET_CARDS_H_

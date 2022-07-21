@@ -17,9 +17,9 @@
 
 - (bool)isBrowserActive;
 - (bool)isBrowserInFullScreenMode;
-- (bool)canShowBackgroundNotifications;
+- (bool)canShowNotificationAdsWhileBrowserIsBackgrounded;
 - (bool)isNetworkConnectionAvailable;
-- (bool)shouldShowNotifications;
+- (bool)canShowNotificationAds;
 - (void)loadFileResource:(const std::string&)id
                  version:(const int)version
                 callback:(ads::LoadFileCallback)callback;
@@ -40,20 +40,21 @@
 - (void)save:(const std::string&)name
        value:(const std::string&)value
     callback:(ads::ResultCallback)callback;
-- (void)showNotification:(const ads::NotificationAdInfo&)info;
-- (void)closeNotification:(const std::string&)id;
+- (void)showNotificationAd:(const ads::NotificationAdInfo&)info;
+- (void)closeNotificationAd:(const std::string&)placement_id;
 - (void)recordAdEventForId:(const std::string&)id
                     adType:(const std::string&)ad_type
           confirmationType:(const std::string&)confirmation_type
                       time:(const base::Time)time;
-- (std::vector<base::Time>)getAdEvents:(const std::string&)ad_type
-                      confirmationType:(const std::string&)confirmation_type;
-- (void)resetAdEventsForId:(const std::string&)id;
+- (std::vector<base::Time>)getAdEventHistory:(const std::string&)ad_type
+                            confirmationType:
+                                (const std::string&)confirmation_type;
+- (void)resetAdEventHistoryForId:(const std::string&)id;
 - (void)UrlRequest:(ads::mojom::UrlRequestPtr)url_request
           callback:(ads::UrlRequestCallback)callback;
 - (void)runDBTransaction:(ads::mojom::DBTransactionPtr)transaction
                 callback:(ads::RunDBTransactionCallback)callback;
-- (void)onAdRewardsChanged;
+- (void)updateAdRewards;
 - (void)setBooleanPref:(const std::string&)path value:(const bool)value;
 - (bool)getBooleanPref:(const std::string&)path;
 - (void)setIntegerPref:(const std::string&)path value:(const int)value;
@@ -70,9 +71,7 @@
 - (base::Time)getTimePref:(const std::string&)path;
 - (void)clearPref:(const std::string&)path;
 - (bool)hasPrefPath:(const std::string&)path;
-- (void)recordP2AEvent:(const std::string&)name
-                  type:(const ads::mojom::P2AEventType)type
-                 value:(const std::string&)value;
+- (void)recordP2AEvent:(const std::string&)name value:(const std::string&)value;
 - (void)logTrainingInstance:
     (const std::vector<brave_federated::mojom::CovariatePtr>)training_instance;
 

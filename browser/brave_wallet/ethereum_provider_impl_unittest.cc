@@ -1783,6 +1783,13 @@ TEST_F(EthereumProviderImplUnitTest, SignMessageRequestQueue) {
   AddEthereumPermission(GetOrigin(), hardware);
   const std::vector<std::string> addresses = GetAddresses();
 
+  // Select account that is not participating in signing process.
+  // If there is allowed account which is also selected then only
+  // this account may be used for signin process.
+  // address[1] is not allowed because it has no permission.
+  // Also see EthereumProviderImpl.FilterAccounts method.
+  SetSelectedAccount(addresses[1], mojom::CoinType::ETH);
+
   const std::string message1 = "0x68656c6c6f20776f726c64";
   const std::string message2 = "0x4120756e69636f646520c68e20737472696e6720c3b1";
   const std::string message3 = "0xbeef03";

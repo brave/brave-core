@@ -5,10 +5,8 @@
 
 #include "components/translate/core/browser/translate_manager.h"
 
-#include "brave/components/translate/core/common/brave_translate_features.h"
 #include "brave/components/translate/core/common/brave_translate_language_filter.h"
 #include "brave/components/translate/core/common/buildflags.h"
-#include "build/build_config.h"
 #include "components/translate/core/browser/translate_download_manager.h"
 #include "components/translate/core/browser/translate_prefs.h"
 
@@ -48,18 +46,6 @@ void TranslateManager::FilterIsTranslatePossible(
   ChromiumTranslateManager::FilterIsTranslatePossible(
       decision, translate_prefs, page_language_code, target_lang);
 #if BUILDFLAG(ENABLE_BRAVE_TRANSLATE_GO)
-#if BUILDFLAG(IS_ANDROID)
-  // Disable translate completely if brave translate feature is disabled.
-  // The code is Android only because desktops use TranslateManager to show
-  // Google translate extension bubble.
-  if (!IsBraveTranslateGoAvailable()) {
-    decision->PreventAllTriggering();
-    decision->initiation_statuses.push_back(
-        TranslateBrowserMetrics::INITIATION_STATUS_DISABLED_BY_SWITCH);
-    GetActiveTranslateMetricsLogger()->LogTriggerDecision(
-        TriggerDecision::kDisabledTranslationFeatureDisabled);
-  }
-#endif
   // The source language is not supported by Brave backend. Currently we allow a
   // user to trigger a manual translation to have a chance to change the
   // incorrectly recognized source language to the correct one.

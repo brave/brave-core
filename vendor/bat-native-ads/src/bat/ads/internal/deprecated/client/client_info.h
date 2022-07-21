@@ -13,9 +13,9 @@
 #include "base/containers/flat_map.h"
 #include "base/time/time.h"
 #include "bat/ads/history_item_info.h"
-#include "bat/ads/internal/ads/serving/targeting/models/behavioral/purchase_intent/purchase_intent_aliases.h"
-#include "bat/ads/internal/ads/serving/targeting/models/contextual/text_classification/text_classification_aliases.h"
+#include "bat/ads/internal/ads/serving/targeting/models/contextual/text_classification/text_classification_alias.h"
 #include "bat/ads/internal/deprecated/client/preferences/ad_preferences_info.h"
+#include "bat/ads/internal/resources/behavioral/purchase_intent/purchase_intent_signal_history_info.h"
 
 namespace ads {
 

@@ -85,6 +85,13 @@ void PlaylistService::RequestDownloadMediaFilesFromPage(
   download_request_manager_->GetMediaFilesFromPage(url);
 }
 
+void PlaylistService::RemoveItemFromPlaylist(const std::string& playlist_id,
+                                             const std::string& item_id) {
+  VLOG(2) << __func__ << " " << playlist_id << " " << item_id;
+  // TODO(sko) consider |playlist_id|
+  DeletePlaylistItem(item_id);
+}
+
 void PlaylistService::OnPlaylistCreationParamsReady(
     const PlaylistItemInfo& params) {
   CreatePlaylistItem(params);
@@ -293,7 +300,7 @@ void PlaylistService::RemoveObserver(PlaylistServiceObserver* observer) {
 
 void PlaylistService::OnMediaFileReady(const std::string& id,
                                        const std::string& media_file_path) {
-  VLOG(2) << __func__ << ": " << id;
+  VLOG(2) << __func__ << ": " << id << " " << media_file_path;
   DCHECK(IsValidPlaylistItem(id));
 
   const base::Value* item_value_ptr =
@@ -364,6 +371,19 @@ bool PlaylistService::GetThumbnailPath(const std::string& id,
   *thumbnail_path = GetPlaylistItemDirPath(id).Append(kThumbnailFileName);
   if (thumbnail_path->ReferencesParent()) {
     thumbnail_path->clear();
+    return false;
+  }
+  return true;
+}
+
+bool PlaylistService::GetMediaPath(const std::string& id,
+                                   base::FilePath* media_path) {
+  // TODO(sko) The extension of the media file can differ.
+  // We should iterate files in the directory and find the match.
+  *media_path = GetPlaylistItemDirPath(id).Append(
+      PlaylistMediaFileDownloadManager::kMediaFileName);
+  if (media_path->ReferencesParent()) {
+    media_path->clear();
     return false;
   }
   return true;

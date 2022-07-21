@@ -80,18 +80,20 @@ bool NotificationHelperAndroid::CanShowNativeNotifications() {
 
   if (!is_foreground) {
     can_show_native_notifications =
-        can_show_native_notifications && CanShowBackgroundNotifications();
+        can_show_native_notifications &&
+        CanShowNativeNotificationsWhileBrowserIsBackgrounded();
   }
 
   return can_show_native_notifications;
 }
 
-bool NotificationHelperAndroid::CanShowBackgroundNotifications() const {
+bool NotificationHelperAndroid::
+    CanShowNativeNotificationsWhileBrowserIsBackgrounded() const {
   JNIEnv* env = base::android::AttachCurrentThread();
   return Java_BraveAdsSignupDialog_showAdsInBackground(env);
 }
 
-bool NotificationHelperAndroid::ShowMyFirstNotificationAd() {
+bool NotificationHelperAndroid::ShowOnboardingNotification() {
   const bool should_show_custom_notifications =
       features::IsCustomNotificationAdsEnabled();
 

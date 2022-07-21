@@ -23,7 +23,6 @@
 #include "bat/ads/internal/deprecated/json/json_helper.h"
 #include "bat/ads/internal/features/text_classification_features.h"
 #include "bat/ads/internal/history/history_constants.h"
-#include "bat/ads/internal/resources/behavioral/purchase_intent/purchase_intent_signal_history_info.h"
 #include "bat/ads/pref_names.h"
 #include "build/build_config.h"
 

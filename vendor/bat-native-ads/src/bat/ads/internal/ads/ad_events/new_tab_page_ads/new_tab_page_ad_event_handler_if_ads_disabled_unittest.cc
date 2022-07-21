@@ -10,6 +10,7 @@
 #include "base/guid.h"
 #include "bat/ads/ad_type.h"
 #include "bat/ads/confirmation_type.h"
+#include "bat/ads/internal/ads/ad_events/ad_event_info.h"
 #include "bat/ads/internal/ads/ad_events/ad_event_unittest_util.h"
 #include "bat/ads/internal/ads/ad_events/new_tab_page_ads/new_tab_page_ad_event_handler_observer.h"
 #include "bat/ads/internal/ads/serving/permission_rules/permission_rules_unittest_util.h"
@@ -78,7 +79,7 @@ class BatAdsNewTabPageAdEventHandlerIfAdsDisabledTest
   }
 
   void OnNewTabPageAdEventFailed(
-      const std::string& uuid,
+      const std::string& placement_id,
       const std::string& creative_instance_id,
       const mojom::NewTabPageAdEventType event_type) override {
     did_fail_to_fire_event_ = true;

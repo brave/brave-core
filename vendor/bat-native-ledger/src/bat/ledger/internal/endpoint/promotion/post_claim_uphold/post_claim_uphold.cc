@@ -20,8 +20,6 @@
 #include "bat/ledger/internal/uphold/uphold_util.h"
 #include "net/http/http_status_code.h"
 
-using std::placeholders::_1;
-
 namespace ledger {
 namespace endpoint {
 namespace promotion {
@@ -41,8 +39,10 @@ void PostClaimUphold::Request(const double user_funds,
   request->content = GeneratePayload(user_funds, address);
   request->content_type = "application/json; charset=utf-8";
 
-  ledger_->LoadURL(std::move(request), std::bind(&PostClaimUphold::OnRequest,
-                                                 this, _1, address, callback));
+  ledger_->LoadURL(
+      std::move(request),
+      base::BindOnce(&PostClaimUphold::OnRequest, base::Unretained(this),
+                     std::move(callback), address));
 }
 
 std::string PostClaimUphold::GeneratePayload(const double user_funds,
@@ -107,11 +107,11 @@ std::string PostClaimUphold::GetUrl() const {
   return GetServerUrl(path);
 }
 
-void PostClaimUphold::OnRequest(const type::UrlResponse& response,
+void PostClaimUphold::OnRequest(PostClaimUpholdCallback callback,
                                 const std::string& address,
-                                PostClaimUpholdCallback callback) const {
+                                const type::UrlResponse& response) const {
   ledger::LogUrlResponse(__func__, response);
-  callback(ProcessResponse(response), address);
+  std::move(callback).Run(ProcessResponse(response), address);
 }
 
 type::Result PostClaimUphold::ProcessResponse(

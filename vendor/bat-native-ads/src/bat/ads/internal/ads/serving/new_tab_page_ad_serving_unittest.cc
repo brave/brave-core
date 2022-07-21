@@ -16,7 +16,7 @@
 #include "bat/ads/internal/creatives/new_tab_page_ads/new_tab_page_ad_builder.h"
 #include "bat/ads/internal/geographic/subdivision/subdivision_targeting.h"
 #include "bat/ads/internal/resources/behavioral/anti_targeting/anti_targeting_resource.h"
-#include "bat/ads/internal/segments/segments_aliases.h"
+#include "bat/ads/internal/segments/segment_alias.h"
 #include "bat/ads/new_tab_page_ad_info.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*

@@ -35,7 +35,7 @@ DatabaseUnblindedToken::~DatabaseUnblindedToken() = default;
 
 void DatabaseUnblindedToken::InsertOrUpdateList(
     type::UnblindedTokenList list,
-    ledger::ResultCallback callback) {
+    ledger::LegacyResultCallback callback) {
   if (list.empty()) {
     BLOG(1, "List is empty");
     callback(type::Result::LEDGER_ERROR);
@@ -147,7 +147,7 @@ void DatabaseUnblindedToken::MarkRecordListAsSpent(
     const std::vector<std::string>& ids,
     type::RewardsType redeem_type,
     const std::string& redeem_id,
-    ledger::ResultCallback callback) {
+    ledger::LegacyResultCallback callback) {
   if (ids.empty()) {
     BLOG(1, "List of ids is empty");
     callback(type::Result::LEDGER_ERROR);
@@ -182,7 +182,7 @@ void DatabaseUnblindedToken::MarkRecordListAsSpent(
 void DatabaseUnblindedToken::MarkRecordListAsReserved(
     const std::vector<std::string>& ids,
     const std::string& redeem_id,
-    ledger::ResultCallback callback) {
+    ledger::LegacyResultCallback callback) {
   if (ids.empty()) {
     BLOG(1, "List of ids is empty");
     callback(type::Result::LEDGER_ERROR);
@@ -255,7 +255,7 @@ void DatabaseUnblindedToken::MarkRecordListAsReserved(
 void DatabaseUnblindedToken::OnMarkRecordListAsReserved(
     type::DBCommandResponsePtr response,
     size_t expected_row_count,
-    ledger::ResultCallback callback) {
+    ledger::LegacyResultCallback callback) {
   if (!response ||
       response->status != type::DBCommandResponse::Status::RESPONSE_OK) {
     BLOG(0, "Response is wrong");
@@ -274,7 +274,7 @@ void DatabaseUnblindedToken::OnMarkRecordListAsReserved(
 
 void DatabaseUnblindedToken::MarkRecordListAsSpendable(
     const std::string& redeem_id,
-    ledger::ResultCallback callback) {
+    ledger::LegacyResultCallback callback) {
   if (redeem_id.empty()) {
     BLOG(1, "Redeem id is empty");
     callback(type::Result::LEDGER_ERROR);

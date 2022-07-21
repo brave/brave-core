@@ -6,6 +6,7 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_USER_INTERACTION_USER_ACTIVITY_USER_ACTIVITY_EVENT_INFO_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_USER_INTERACTION_USER_ACTIVITY_USER_ACTIVITY_EVENT_INFO_H_
 
+#include "base/containers/circular_deque.h"
 #include "base/time/time.h"
 #include "bat/ads/internal/user_interaction/user_activity/user_activity_event_types.h"
 
@@ -25,6 +26,8 @@ struct UserActivityEventInfo final {
   UserActivityEventType type;
   base::Time created_at;
 };
+
+using UserActivityEventList = base::circular_deque<UserActivityEventInfo>;
 
 }  // namespace ads
 

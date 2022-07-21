@@ -27,4 +27,5 @@
       writable: false
     }
   })
+  Object.freeze(window._brave_solana)
 })()

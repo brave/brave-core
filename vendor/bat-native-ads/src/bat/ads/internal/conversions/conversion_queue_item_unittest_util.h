@@ -8,7 +8,7 @@
 
 #include <string>
 
-#include "bat/ads/internal/conversions/conversion_queue_item_info_aliases.h"
+#include "bat/ads/internal/conversions/conversion_queue_item_info.h"
 
 namespace ads {
 

@@ -30,45 +30,72 @@ AdsClientMojoBridge::AdsClientMojoBridge(
 
 AdsClientMojoBridge::~AdsClientMojoBridge() = default;
 
-bool AdsClientMojoBridge::IsBrowserActive(bool* out_is_browser_active) {
-  DCHECK(out_is_browser_active);
-  *out_is_browser_active = ads_client_->IsBrowserActive();
-  return true;
+// static
+void AdsClientMojoBridge::OnGetBrowsingHistory(
+    CallbackHolder<GetBrowsingHistoryCallback>* callback_holder,
+    const std::vector<GURL>& history) {
+  DCHECK(callback_holder);
+
+  if (callback_holder->is_valid()) {
+    std::move(callback_holder->get()).Run(std::move(history));
+  }
+
+  delete callback_holder;
 }
 
-void AdsClientMojoBridge::IsBrowserActive(IsBrowserActiveCallback callback) {
-  std::move(callback).Run(ads_client_->IsBrowserActive());
+// static
+void AdsClientMojoBridge::OnURLRequest(
+    CallbackHolder<UrlRequestCallback>* callback_holder,
+    const ads::mojom::UrlResponse& url_response) {
+  DCHECK(callback_holder);
+
+  if (callback_holder->is_valid()) {
+    std::move(callback_holder->get())
+        .Run(ads::mojom::UrlResponse::New(url_response));
+  }
+
+  delete callback_holder;
 }
 
-bool AdsClientMojoBridge::IsBrowserInFullScreenMode(
-    bool* out_is_browser_in_full_screen_mode) {
-  DCHECK(out_is_browser_in_full_screen_mode);
-  *out_is_browser_in_full_screen_mode =
-      ads_client_->IsBrowserInFullScreenMode();
-  return true;
+// static
+void AdsClientMojoBridge::OnSave(CallbackHolder<SaveCallback>* callback_holder,
+                                 const bool success) {
+  DCHECK(callback_holder);
+
+  if (callback_holder->is_valid()) {
+    std::move(callback_holder->get()).Run(success);
+  }
+
+  delete callback_holder;
 }
 
-void AdsClientMojoBridge::IsBrowserInFullScreenMode(
-    IsBrowserInFullScreenModeCallback callback) {
-  std::move(callback).Run(ads_client_->IsBrowserInFullScreenMode());
+// static
+void AdsClientMojoBridge::OnLoad(CallbackHolder<LoadCallback>* callback_holder,
+                                 const bool success,
+                                 const std::string& value) {
+  DCHECK(callback_holder);
+
+  if (callback_holder->is_valid()) {
+    std::move(callback_holder->get()).Run(success, std::move(value));
+  }
+
+  delete callback_holder;
 }
 
-bool AdsClientMojoBridge::CanShowBackgroundNotifications(
-    bool* out_can_show) {
-  DCHECK(out_can_show);
-  *out_can_show = ads_client_->CanShowBackgroundNotifications();
-  return true;
+// static
+void AdsClientMojoBridge::OnRunDBTransaction(
+    CallbackHolder<RunDBTransactionCallback>* callback_holder,
+    ads::mojom::DBCommandResponsePtr response) {
+  DCHECK(callback_holder);
+  if (callback_holder->is_valid()) {
+    std::move(callback_holder->get()).Run(std::move(response));
+  }
+  delete callback_holder;
 }
 
-void AdsClientMojoBridge::CanShowBackgroundNotifications(
-    CanShowBackgroundNotificationsCallback callback) {
-  std::move(callback).Run(ads_client_->CanShowBackgroundNotifications());
-}
-
-bool AdsClientMojoBridge::IsNetworkConnectionAvailable(
-    bool* out_is_available) {
-  DCHECK(out_is_available);
-  *out_is_available = ads_client_->IsNetworkConnectionAvailable();
+bool AdsClientMojoBridge::IsNetworkConnectionAvailable(bool* out_value) {
+  DCHECK(out_value);
+  *out_value = ads_client_->IsNetworkConnectionAvailable();
   return true;
 }
 
@@ -77,30 +104,143 @@ void AdsClientMojoBridge::IsNetworkConnectionAvailable(
   std::move(callback).Run(ads_client_->IsNetworkConnectionAvailable());
 }
 
-bool AdsClientMojoBridge::ShouldShowNotifications(
-    bool* out_should_show) {
-  DCHECK(out_should_show);
-  *out_should_show = ads_client_->ShouldShowNotifications();
+bool AdsClientMojoBridge::IsBrowserActive(bool* out_value) {
+  DCHECK(out_value);
+  *out_value = ads_client_->IsBrowserActive();
   return true;
 }
 
-void AdsClientMojoBridge::ShouldShowNotifications(
-    ShouldShowNotificationsCallback callback) {
-  std::move(callback).Run(ads_client_->ShouldShowNotifications());
+void AdsClientMojoBridge::IsBrowserActive(IsBrowserActiveCallback callback) {
+  std::move(callback).Run(ads_client_->IsBrowserActive());
 }
 
-bool AdsClientMojoBridge::GetAdEvents(const std::string& ad_type,
-                                      const std::string& confirmation_type,
-                                      std::vector<base::Time>* out_ad_events) {
-  DCHECK(out_ad_events);
-  *out_ad_events = ads_client_->GetAdEvents(ad_type, confirmation_type);
+bool AdsClientMojoBridge::IsBrowserInFullScreenMode(bool* out_value) {
+  DCHECK(out_value);
+  *out_value = ads_client_->IsBrowserInFullScreenMode();
   return true;
 }
 
-void AdsClientMojoBridge::GetAdEvents(const std::string& ad_type,
-                                      const std::string& confirmation_type,
-                                      GetAdEventsCallback callback) {
-  std::move(callback).Run(ads_client_->GetAdEvents(ad_type, confirmation_type));
+void AdsClientMojoBridge::IsBrowserInFullScreenMode(
+    IsBrowserInFullScreenModeCallback callback) {
+  std::move(callback).Run(ads_client_->IsBrowserInFullScreenMode());
+}
+
+bool AdsClientMojoBridge::CanShowNotificationAds(bool* out_value) {
+  DCHECK(out_value);
+  *out_value = ads_client_->CanShowNotificationAds();
+  return true;
+}
+
+void AdsClientMojoBridge::CanShowNotificationAds(
+    CanShowNotificationAdsCallback callback) {
+  std::move(callback).Run(ads_client_->CanShowNotificationAds());
+}
+
+bool AdsClientMojoBridge::CanShowNotificationAdsWhileBrowserIsBackgrounded(
+    bool* out_value) {
+  DCHECK(out_value);
+  *out_value = ads_client_->CanShowNotificationAdsWhileBrowserIsBackgrounded();
+  return true;
+}
+
+void AdsClientMojoBridge::CanShowNotificationAdsWhileBrowserIsBackgrounded(
+    CanShowNotificationAdsWhileBrowserIsBackgroundedCallback callback) {
+  std::move(callback).Run(
+      ads_client_->CanShowNotificationAdsWhileBrowserIsBackgrounded());
+}
+
+void AdsClientMojoBridge::ShowNotificationAd(const std::string& json) {
+  ads::NotificationAdInfo notification_ad;
+  if (!notification_ad.FromJson(json)) {
+    return;
+  }
+
+  ads_client_->ShowNotificationAd(notification_ad);
+}
+
+void AdsClientMojoBridge::CloseNotificationAd(const std::string& placement_id) {
+  ads_client_->CloseNotificationAd(placement_id);
+}
+
+void AdsClientMojoBridge::UpdateAdRewards() {
+  ads_client_->UpdateAdRewards();
+}
+
+void AdsClientMojoBridge::RecordAdEventForId(
+    const std::string& id,
+    const std::string& ad_type,
+    const std::string& confirmation_type,
+    const base::Time time) {
+  ads_client_->RecordAdEventForId(id, ad_type, confirmation_type, time);
+}
+
+bool AdsClientMojoBridge::GetAdEventHistory(
+    const std::string& ad_type,
+    const std::string& confirmation_type,
+    std::vector<base::Time>* out_value) {
+  DCHECK(out_value);
+  *out_value = ads_client_->GetAdEventHistory(ad_type, confirmation_type);
+  return true;
+}
+
+void AdsClientMojoBridge::GetAdEventHistory(
+    const std::string& ad_type,
+    const std::string& confirmation_type,
+    GetAdEventHistoryCallback callback) {
+  std::move(callback).Run(
+      ads_client_->GetAdEventHistory(ad_type, confirmation_type));
+}
+
+void AdsClientMojoBridge::ResetAdEventHistoryForId(const std::string& id) {
+  ads_client_->ResetAdEventHistoryForId(id);
+}
+
+void AdsClientMojoBridge::GetBrowsingHistory(
+    const int max_count,
+    const int days_ago,
+    GetBrowsingHistoryCallback callback) {
+  // Callback holder will be deleted in |OnGetBrowsingHistory|.
+  auto* callback_holder = new CallbackHolder<GetBrowsingHistoryCallback>(
+      AsWeakPtr(), std::move(callback));
+  ads_client_->GetBrowsingHistory(
+      max_count, days_ago,
+      std::bind(AdsClientMojoBridge::OnGetBrowsingHistory, callback_holder,
+                _1));
+}
+
+void AdsClientMojoBridge::UrlRequest(ads::mojom::UrlRequestPtr url_request,
+                                     UrlRequestCallback callback) {
+  // Callback holder gets deleted in |OnURLRequest|.
+  auto* callback_holder =
+      new CallbackHolder<UrlRequestCallback>(AsWeakPtr(), std::move(callback));
+  ads_client_->UrlRequest(
+      std::move(url_request),
+      std::bind(AdsClientMojoBridge::OnURLRequest, callback_holder, _1));
+}
+
+void AdsClientMojoBridge::Save(
+    const std::string& name,
+    const std::string& value,
+    SaveCallback callback) {
+  // Callback holder will be deleted in |OnSave|.
+  auto* callback_holder =
+      new CallbackHolder<SaveCallback>(AsWeakPtr(), std::move(callback));
+  ads_client_->Save(
+      name, value, std::bind(AdsClientMojoBridge::OnSave, callback_holder, _1));
+}
+
+void AdsClientMojoBridge::Load(const std::string& name, LoadCallback callback) {
+  // Callback holder will be deleted in |OnLoad|.
+  auto* callback_holder =
+      new CallbackHolder<LoadCallback>(AsWeakPtr(), std::move(callback));
+  ads_client_->Load(
+      name, std::bind(AdsClientMojoBridge::OnLoad, callback_holder, _1, _2));
+}
+
+void AdsClientMojoBridge::LoadFileResource(const std::string& id,
+                                           const int version,
+                                           LoadFileResourceCallback callback) {
+  ads_client_->LoadFileResource(id, version, std::move(callback));
 }
 
 bool AdsClientMojoBridge::LoadDataResource(const std::string& name,
@@ -115,10 +255,6 @@ void AdsClientMojoBridge::LoadDataResource(const std::string& name,
   std::move(callback).Run(ads_client_->LoadDataResource(name));
 }
 
-void AdsClientMojoBridge::ClearScheduledCaptcha() {
-  ads_client_->ClearScheduledCaptcha();
-}
-
 void AdsClientMojoBridge::GetScheduledCaptcha(
     const std::string& payment_id,
     GetScheduledCaptchaCallback callback) {
@@ -131,174 +267,28 @@ void AdsClientMojoBridge::ShowScheduledCaptchaNotification(
   ads_client_->ShowScheduledCaptchaNotification(payment_id, captcha_id);
 }
 
-void AdsClientMojoBridge::Log(
-    const std::string& file,
-    const int32_t line,
-    const int32_t verbose_level,
-    const std::string& message) {
-  ads_client_->Log(file.c_str(), line, verbose_level, message);
-}
-
-void AdsClientMojoBridge::LoadFileResource(const std::string& id,
-                                           const int version,
-                                           LoadFileResourceCallback callback) {
-  ads_client_->LoadFileResource(id, version, std::move(callback));
-}
-
-// static
-void AdsClientMojoBridge::OnGetBrowsingHistory(
-    CallbackHolder<GetBrowsingHistoryCallback>* holder,
-    const std::vector<GURL>& history) {
-  DCHECK(holder);
-
-  if (holder->is_valid()) {
-    std::move(holder->get()).Run(std::move(history));
-  }
-
-  delete holder;
-}
-
-void AdsClientMojoBridge::GetBrowsingHistory(
-    const int max_count,
-    const int days_ago,
-    GetBrowsingHistoryCallback callback) {
-  // this gets deleted in OnGetBrowsingHistory
-  auto* holder = new CallbackHolder<GetBrowsingHistoryCallback>(
-      AsWeakPtr(), std::move(callback));
-  ads_client_->GetBrowsingHistory(
-      max_count, days_ago,
-      std::bind(AdsClientMojoBridge::OnGetBrowsingHistory, holder, _1));
-}
-
-void AdsClientMojoBridge::RecordP2AEvent(const std::string& name,
-                                         const ads::mojom::P2AEventType type,
-                                         const std::string& out_value) {
-  ads_client_->RecordP2AEvent(name, type, out_value);
-}
-
-void AdsClientMojoBridge::LogTrainingInstance(
-    std::vector<brave_federated::mojom::CovariatePtr> training_instance) {
-  ads_client_->LogTrainingInstance(std::move(training_instance));
-}
-
-// static
-void AdsClientMojoBridge::OnLoad(CallbackHolder<LoadCallback>* holder,
-                                 const bool success,
-                                 const std::string& value) {
-  DCHECK(holder);
-
-  if (holder->is_valid()) {
-    std::move(holder->get()).Run(success, std::move(value));
-  }
-
-  delete holder;
-}
-
-void AdsClientMojoBridge::Load(
-    const std::string& name,
-    LoadCallback callback) {
-  // this gets deleted in OnLoad
-  auto* holder =
-      new CallbackHolder<LoadCallback>(AsWeakPtr(), std::move(callback));
-  ads_client_->Load(
-      name, std::bind(AdsClientMojoBridge::OnLoad, holder, _1, _2));
-}
-
-// static
-void AdsClientMojoBridge::OnSave(CallbackHolder<SaveCallback>* holder,
-                                 const bool success) {
-  DCHECK(holder);
-
-  if (holder->is_valid()) {
-    std::move(holder->get()).Run(success);
-  }
-
-  delete holder;
-}
-
-void AdsClientMojoBridge::Save(
-    const std::string& name,
-    const std::string& value,
-    SaveCallback callback) {
-  // this gets deleted in OnSave
-  auto* holder =
-      new CallbackHolder<SaveCallback>(AsWeakPtr(), std::move(callback));
-  ads_client_->Save(name, value,
-      std::bind(AdsClientMojoBridge::OnSave, holder, _1));
-}
-
-// static
-void AdsClientMojoBridge::OnURLRequest(
-    CallbackHolder<UrlRequestCallback>* holder,
-    const ads::mojom::UrlResponse& url_response) {
-  DCHECK(holder);
-
-  if (holder->is_valid()) {
-    std::move(holder->get()).Run(ads::mojom::UrlResponse::New(url_response));
-  }
-
-  delete holder;
-}
-
-void AdsClientMojoBridge::UrlRequest(ads::mojom::UrlRequestPtr url_request,
-                                     UrlRequestCallback callback) {
-  // this gets deleted in OnURLRequest
-  auto* holder =
-      new CallbackHolder<UrlRequestCallback>(AsWeakPtr(), std::move(callback));
-  ads_client_->UrlRequest(std::move(url_request),
-      std::bind(AdsClientMojoBridge::OnURLRequest, holder, _1));
-}
-
-// static
-void AdsClientMojoBridge::ShowNotification(
-    const std::string& json) {
-  ads::NotificationAdInfo notification_ad;
-  if (!notification_ad.FromJson(json)) {
-    return;
-  }
-
-  ads_client_->ShowNotification(notification_ad);
-}
-
-void AdsClientMojoBridge::CloseNotification(
-    const std::string& uuid) {
-  ads_client_->CloseNotification(uuid);
-}
-
-void AdsClientMojoBridge::RecordAdEventForId(
-    const std::string& id,
-    const std::string& ad_type,
-    const std::string& confirmation_type,
-    const base::Time time) {
-  ads_client_->RecordAdEventForId(id, ad_type, confirmation_type, time);
-}
-
-void AdsClientMojoBridge::ResetAdEventsForId(const std::string& id) {
-  ads_client_->ResetAdEventsForId(id);
-}
-
-// static
-void AdsClientMojoBridge::OnRunDBTransaction(
-    CallbackHolder<RunDBTransactionCallback>* holder,
-    ads::mojom::DBCommandResponsePtr response) {
-  DCHECK(holder);
-  if (holder->is_valid()) {
-    std::move(holder->get()).Run(std::move(response));
-  }
-  delete holder;
+void AdsClientMojoBridge::ClearScheduledCaptcha() {
+  ads_client_->ClearScheduledCaptcha();
 }
 
 void AdsClientMojoBridge::RunDBTransaction(
     ads::mojom::DBTransactionPtr transaction,
     RunDBTransactionCallback callback) {
-  auto* holder = new CallbackHolder<RunDBTransactionCallback>(AsWeakPtr(),
-      std::move(callback));
-  ads_client_->RunDBTransaction(std::move(transaction),
-      std::bind(AdsClientMojoBridge::OnRunDBTransaction, holder, _1));
+  auto* callback_holder = new CallbackHolder<RunDBTransactionCallback>(
+      AsWeakPtr(), std::move(callback));
+  ads_client_->RunDBTransaction(
+      std::move(transaction),
+      std::bind(AdsClientMojoBridge::OnRunDBTransaction, callback_holder, _1));
 }
 
-void AdsClientMojoBridge::OnAdRewardsChanged() {
-  ads_client_->OnAdRewardsChanged();
+void AdsClientMojoBridge::RecordP2AEvent(const std::string& name,
+                                         const std::string& out_value) {
+  ads_client_->RecordP2AEvent(name, out_value);
+}
+
+void AdsClientMojoBridge::LogTrainingInstance(
+    std::vector<brave_federated::mojom::CovariatePtr> training_instance) {
+  ads_client_->LogTrainingInstance(std::move(training_instance));
 }
 
 void AdsClientMojoBridge::GetBooleanPref(
@@ -391,6 +381,13 @@ void AdsClientMojoBridge::ClearPref(
 void AdsClientMojoBridge::HasPrefPath(const std::string& path,
                                       HasPrefPathCallback callback) {
   std::move(callback).Run(ads_client_->HasPrefPath(path));
+}
+
+void AdsClientMojoBridge::Log(const std::string& file,
+                              const int32_t line,
+                              const int32_t verbose_level,
+                              const std::string& message) {
+  ads_client_->Log(file.c_str(), line, verbose_level, message);
 }
 
 }  // namespace bat_ads

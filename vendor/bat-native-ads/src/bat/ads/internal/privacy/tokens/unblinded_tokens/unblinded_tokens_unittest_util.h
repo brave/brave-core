@@ -10,13 +10,12 @@
 #include <vector>
 
 #include "base/values.h"
-#include "bat/ads/internal/privacy/tokens/unblinded_tokens/unblinded_token_info_aliases.h"
+#include "bat/ads/internal/privacy/tokens/unblinded_tokens/unblinded_token_info.h"
 
 namespace ads {
 namespace privacy {
 
 class UnblindedTokens;
-struct UnblindedTokenInfo;
 
 UnblindedTokens* GetUnblindedTokens();
 

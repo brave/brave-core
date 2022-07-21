@@ -175,11 +175,12 @@ bool NotificationHelperMac::CanShowNativeNotifications() {
   return true;
 }
 
-bool NotificationHelperMac::CanShowBackgroundNotifications() const {
+bool NotificationHelperMac::
+    CanShowNativeNotificationsWhileBrowserIsBackgrounded() const {
   return true;
 }
 
-bool NotificationHelperMac::ShowMyFirstNotificationAd() {
+bool NotificationHelperMac::ShowOnboardingNotification() {
   return false;
 }
 

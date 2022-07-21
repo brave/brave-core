@@ -24,7 +24,7 @@ AdsPerDayPermissionRule::~AdsPerDayPermissionRule() = default;
 
 bool AdsPerDayPermissionRule::ShouldAllow() {
   const std::vector<base::Time>& history =
-      GetAdEvents(AdType::kInlineContentAd, ConfirmationType::kServed);
+      GetAdEventHistory(AdType::kInlineContentAd, ConfirmationType::kServed);
 
   if (!DoesRespectCap(history)) {
     last_message_ = "You have exceeded the allowed inline content ads per day";

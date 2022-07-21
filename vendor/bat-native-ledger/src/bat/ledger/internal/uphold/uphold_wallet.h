@@ -29,17 +29,17 @@ class UpholdWallet {
   void Generate(ledger::ResultCallback callback) const;
 
  private:
-  void OnGetUser(const type::Result result,
-                 const User& user,
-                 ledger::ResultCallback callback) const;
+  void OnGetUser(ledger::ResultCallback callback,
+                 type::Result result,
+                 const User& user) const;
 
-  void OnGetCapabilities(type::Result result,
-                         ledger::uphold::Capabilities capabilities,
-                         ledger::ResultCallback callback) const;
+  void OnGetCapabilities(ledger::ResultCallback callback,
+                         type::Result result,
+                         ledger::uphold::Capabilities capabilities) const;
 
-  void OnCreateCard(const type::Result result,
-                    const std::string& id,
-                    ledger::ResultCallback callback) const;
+  void OnCreateCard(ledger::ResultCallback callback,
+                    type::Result result,
+                    const std::string& id) const;
 
   void GetAnonFunds(
       endpoint::promotion::GetWalletBalanceCallback callback) const;
@@ -49,17 +49,17 @@ class UpholdWallet {
                       const type::Result result,
                       type::BalancePtr balance) const;
 
-  void LinkWallet(const double user_funds,
+  void LinkWallet(double user_funds,
                   const std::string& id,
                   endpoint::promotion::PostClaimUpholdCallback callback) const;
 
-  void OnLinkWallet(const type::Result result,
-                    const std::string& id,
-                    ledger::ResultCallback callback) const;
+  void OnLinkWallet(ledger::ResultCallback callback,
+                    type::Result result,
+                    const std::string& id) const;
 
-  void OnTransferTokens(const type::Result result,
-                        const std::string& drain_id,
-                        ledger::ResultCallback callback) const;
+  void OnTransferTokens(ledger::ResultCallback callback,
+                        type::Result result,
+                        std::string drain_id) const;
 
   LedgerImpl* ledger_;  // NOT OWNED
   std::unique_ptr<endpoint::PromotionServer> promotion_server_;

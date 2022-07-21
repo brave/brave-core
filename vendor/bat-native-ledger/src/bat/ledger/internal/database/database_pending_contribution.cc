@@ -35,7 +35,7 @@ DatabasePendingContribution::~DatabasePendingContribution() = default;
 
 void DatabasePendingContribution::InsertOrUpdateList(
     type::PendingContributionList list,
-    ledger::ResultCallback callback) {
+    ledger::LegacyResultCallback callback) {
   if (list.empty()) {
     BLOG(1, "List is empty");
     callback(type::Result::LEDGER_ERROR);
@@ -245,8 +245,8 @@ void DatabasePendingContribution::OnGetUnverifiedPublishers(
 }
 
 void DatabasePendingContribution::DeleteRecord(
-    const uint64_t id,
-    ledger::ResultCallback callback) {
+    uint64_t id,
+    ledger::LegacyResultCallback callback) {
   if (id == 0) {
     BLOG(1, "Id is 0");
     callback(type::Result::LEDGER_ERROR);
@@ -274,7 +274,7 @@ void DatabasePendingContribution::DeleteRecord(
 }
 
 void DatabasePendingContribution::DeleteAllRecords(
-    ledger::ResultCallback callback) {
+    ledger::LegacyResultCallback callback) {
   auto transaction = type::DBTransaction::New();
   const std::string query = base::StringPrintf("DELETE FROM %s", kTableName);
 

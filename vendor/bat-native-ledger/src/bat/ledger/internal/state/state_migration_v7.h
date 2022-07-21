@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVELEDGER_BAT_STATE_STATE_MIGRATION_V7_H_
-#define BRAVELEDGER_BAT_STATE_STATE_MIGRATION_V7_H_
+#ifndef BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_STATE_STATE_MIGRATION_V7_H_
+#define BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_STATE_STATE_MIGRATION_V7_H_
 
 #include "bat/ledger/ledger.h"
 
@@ -18,7 +18,7 @@ class StateMigrationV7 {
   explicit StateMigrationV7(LedgerImpl* ledger);
   ~StateMigrationV7();
 
-  void Migrate(ledger::ResultCallback callback);
+  void Migrate(ledger::LegacyResultCallback callback);
 
  private:
   LedgerImpl* ledger_;  // NOT OWNED
@@ -27,4 +27,4 @@ class StateMigrationV7 {
 }  // namespace state
 }  // namespace ledger
 
-#endif  // BRAVELEDGER_BAT_STATE_STATE_MIGRATION_V7_H_
+#endif  // BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_STATE_STATE_MIGRATION_V7_H_

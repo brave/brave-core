@@ -17,29 +17,28 @@ namespace brave_ads {
 class MockAdsService : public AdsService {
  public:
   MockAdsService();
-  ~MockAdsService() override;
-
   MockAdsService(const MockAdsService&) = delete;
   MockAdsService& operator=(const MockAdsService&) = delete;
+  ~MockAdsService() override;
 
   MOCK_CONST_METHOD0(IsSupportedLocale, bool());
 
   MOCK_CONST_METHOD0(IsEnabled, bool());
   MOCK_METHOD1(SetEnabled, void(bool));
 
+  MOCK_CONST_METHOD0(GetNotificationAdsPerHour, int64_t());
+  MOCK_METHOD1(SetNotificationAdsPerHour, void(int64_t));
+
   MOCK_METHOD1(SetAllowConversionTracking, void(bool));
 
-  MOCK_CONST_METHOD0(GetAdsPerHour, int64_t());
-  MOCK_METHOD1(SetAdsPerHour, void(int64_t));
-
-  MOCK_CONST_METHOD0(ShouldAllowAdsSubdivisionTargeting, bool());
-  MOCK_CONST_METHOD0(GetAdsSubdivisionTargetingCode, std::string());
-  MOCK_METHOD1(SetAdsSubdivisionTargetingCode, void(const std::string&));
-  MOCK_CONST_METHOD0(GetAutoDetectedAdsSubdivisionTargetingCode, std::string());
-  MOCK_METHOD1(SetAutoDetectedAdsSubdivisionTargetingCode,
+  MOCK_CONST_METHOD0(ShouldAllowSubdivisionTargeting, bool());
+  MOCK_CONST_METHOD0(GetSubdivisionTargetingCode, std::string());
+  MOCK_METHOD1(SetSubdivisionTargetingCode, void(const std::string&));
+  MOCK_CONST_METHOD0(GetAutoDetectedSubdivisionTargetingCode, std::string());
+  MOCK_METHOD1(SetAutoDetectedSubdivisionTargetingCode,
                void(const std::string&));
 
-  MOCK_CONST_METHOD0(NeedsBrowserUpdateToSeeAds, bool());
+  MOCK_CONST_METHOD0(NeedsBrowserUpgradeToServeAds, bool());
 
 #if BUILDFLAG(BRAVE_ADAPTIVE_CAPTCHA_ENABLED)
   MOCK_METHOD2(ShowScheduledCaptcha,
@@ -47,17 +46,20 @@ class MockAdsService : public AdsService {
   MOCK_METHOD0(SnoozeScheduledCaptcha, void());
 #endif
 
-  MOCK_METHOD1(OnShowNotificationAd, void(const std::string&));
-  MOCK_METHOD2(OnCloseNotificationAd, void(const std::string&, bool));
-  MOCK_METHOD1(OnClickNotificationAd, void(const std::string&));
+  MOCK_METHOD1(OnNotificationAdShown, void(const std::string&));
+  MOCK_METHOD2(OnNotificationAdClosed, void(const std::string&, bool));
+  MOCK_METHOD1(OnNotificationAdClicked, void(const std::string&));
 
-  MOCK_METHOD1(ChangeLocale, void(const std::string&));
+  MOCK_METHOD1(GetDiagnostics, void(GetDiagnosticsCallback));
+
+  MOCK_METHOD1(OnChangeLocale, void(const std::string&));
+
+  MOCK_METHOD1(OnResourceComponentUpdated, void(const std::string&));
 
   MOCK_METHOD3(OnHtmlLoaded,
                void(const SessionID&,
                     const std::vector<GURL>&,
                     const std::string&));
-
   MOCK_METHOD3(OnTextLoaded,
                void(const SessionID&,
                     const std::vector<GURL>&,
@@ -69,10 +71,16 @@ class MockAdsService : public AdsService {
   MOCK_METHOD1(OnMediaStop, void(const SessionID&));
 
   MOCK_METHOD4(OnTabUpdated, void(const SessionID&, const GURL&, bool, bool));
-
   MOCK_METHOD1(OnTabClosed, void(const SessionID&));
 
-  MOCK_METHOD1(OnResourceComponentUpdated, void(const std::string&));
+  MOCK_METHOD1(GetStatementOfAccounts, void(GetStatementOfAccountsCallback));
+
+  MOCK_METHOD2(MaybeServeInlineContentAd,
+               void(const std::string&, MaybeServeInlineContentAdCallback));
+  MOCK_METHOD3(TriggerInlineContentAdEvent,
+               void(const std::string&,
+                    const std::string&,
+                    ads::mojom::InlineContentAdEventType));
 
   MOCK_METHOD0(GetPrefetchedNewTabPageAd,
                absl::optional<ads::NewTabPageAdInfo>());
@@ -80,20 +88,13 @@ class MockAdsService : public AdsService {
                void(const std::string&,
                     const std::string&,
                     ads::mojom::NewTabPageAdEventType));
-  MOCK_METHOD2(OnFailedToServeNewTabPageAd,
+  MOCK_METHOD2(OnFailedToPrefetchNewTabPageAd,
                void(const std::string&, const std::string&));
 
   MOCK_METHOD3(TriggerPromotedContentAdEvent,
                void(const std::string&,
                     const std::string&,
                     ads::mojom::PromotedContentAdEventType));
-
-  MOCK_METHOD2(MaybeServeInlineContentAd,
-               void(const std::string&, OnMaybeServeInlineContentAdCallback));
-  MOCK_METHOD3(TriggerInlineContentAdEvent,
-               void(const std::string&,
-                    const std::string&,
-                    ads::mojom::InlineContentAdEventType));
 
   MOCK_METHOD3(TriggerSearchResultAdEvent,
                void(ads::mojom::SearchResultAdPtr,
@@ -103,29 +104,21 @@ class MockAdsService : public AdsService {
   MOCK_METHOD2(PurgeOrphanedAdEventsForType,
                void(ads::mojom::AdType, PurgeOrphanedAdEventsForTypeCallback));
 
-  MOCK_METHOD3(GetHistory, void(base::Time, base::Time, OnGetHistoryCallback));
-
-  MOCK_METHOD1(GetStatementOfAccounts, void(GetStatementOfAccountsCallback));
-
-  MOCK_METHOD1(GetDiagnostics, void(GetDiagnosticsCallback));
+  MOCK_METHOD3(GetHistory, void(base::Time, base::Time, GetHistoryCallback));
 
   MOCK_METHOD2(ToggleAdThumbUp,
-               void(const std::string&, OnToggleAdThumbUpCallback));
+               void(const std::string&, ToggleAdThumbUpCallback));
   MOCK_METHOD2(ToggleAdThumbDown,
-               void(const std::string&, OnToggleAdThumbDownCallback));
-
+               void(const std::string&, ToggleAdThumbDownCallback));
   MOCK_METHOD3(ToggleAdOptIn,
-               void(const std::string&, int, OnToggleAdOptInCallback));
+               void(const std::string&, int, ToggleAdOptInCallback));
   MOCK_METHOD3(ToggleAdOptOut,
-               void(const std::string&, int, OnToggleAdOptOutCallback));
-
-  MOCK_METHOD2(ToggleSavedAd,
-               void(const std::string&, OnToggleSavedAdCallback));
-
+               void(const std::string&, int, ToggleAdOptOutCallback));
+  MOCK_METHOD2(ToggleSavedAd, void(const std::string&, ToggleSavedAdCallback));
   MOCK_METHOD2(ToggleFlaggedAd,
-               void(const std::string&, OnToggleFlaggedAdCallback));
+               void(const std::string&, ToggleFlaggedAdCallback));
 
-  MOCK_METHOD1(ResetAllState, void(bool));
+  MOCK_METHOD1(WipeState, void(bool));
 };
 
 }  // namespace brave_ads

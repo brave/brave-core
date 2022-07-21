@@ -25,7 +25,7 @@ AdsPerDayPermissionRule::~AdsPerDayPermissionRule() = default;
 
 bool AdsPerDayPermissionRule::ShouldAllow() {
   const std::vector<base::Time>& history =
-      GetAdEvents(AdType::kPromotedContentAd, ConfirmationType::kServed);
+      GetAdEventHistory(AdType::kPromotedContentAd, ConfirmationType::kServed);
 
   if (!DoesRespectCap(history)) {
     last_message_ =

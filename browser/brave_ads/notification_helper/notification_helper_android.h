@@ -15,11 +15,10 @@ class NotificationHelperAndroid
     : public NotificationHelper,
       public base::SupportsWeakPtr<NotificationHelperAndroid> {
  public:
-  ~NotificationHelperAndroid() override;
-
   NotificationHelperAndroid(const NotificationHelperAndroid&) = delete;
   NotificationHelperAndroid& operator=(const NotificationHelperAndroid&) =
       delete;
+  ~NotificationHelperAndroid() override;
 
  protected:
   friend class NotificationHelperHolder;
@@ -29,10 +28,9 @@ class NotificationHelperAndroid
  private:
   // NotificationHelper:
   bool CanShowNativeNotifications() override;
+  bool CanShowNativeNotificationsWhileBrowserIsBackgrounded() const override;
 
-  bool CanShowBackgroundNotifications() const override;
-
-  bool ShowMyFirstNotificationAd() override;
+  bool ShowOnboardingNotification() override;
 };
 
 }  // namespace brave_ads

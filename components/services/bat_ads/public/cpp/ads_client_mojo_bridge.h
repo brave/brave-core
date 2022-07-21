@@ -27,89 +27,117 @@ class AdsClientMojoBridge
     : public mojom::BatAdsClient,
       public base::SupportsWeakPtr<AdsClientMojoBridge> {
  public:
-  explicit AdsClientMojoBridge(
-      ads::AdsClient* ads_client);
-
-  ~AdsClientMojoBridge() override;
-
+  explicit AdsClientMojoBridge(ads::AdsClient* ads_client);
   AdsClientMojoBridge(const AdsClientMojoBridge&) = delete;
   AdsClientMojoBridge& operator=(const AdsClientMojoBridge&) = delete;
+  ~AdsClientMojoBridge() override;
 
-  // Overridden from BatAdsClient:
-  bool IsBrowserActive(bool* out_is_browser_active) override;
-  void IsBrowserActive(IsBrowserActiveCallback callback) override;
-  bool IsBrowserInFullScreenMode(
-      bool* out_is_browser_in_full_screen_mosw) override;
-  void IsBrowserInFullScreenMode(
-      IsBrowserInFullScreenModeCallback callback) override;
-  bool IsNetworkConnectionAvailable(bool* out_available) override;
+ private:
+  // TODO(https://github.com/brave/brave-browser/issues/20940) Workaround to
+  // pass |base::OnceCallback| into |std::bind| until we refactor Brave Ads
+  // |std::function| to |base::OnceCallback|.
+  template <typename T>
+  class CallbackHolder {
+   public:
+    CallbackHolder(base::WeakPtr<AdsClientMojoBridge> client, T callback)
+        : client_(client), callback_(std::move(callback)) {}
+
+    ~CallbackHolder() = default;
+
+    bool is_valid() { return !!client_.get(); }
+
+    T& get() { return callback_; }
+
+   private:
+    base::WeakPtr<AdsClientMojoBridge> client_;
+    T callback_;
+  };
+
+  static void OnGetBrowsingHistory(
+      CallbackHolder<GetBrowsingHistoryCallback>* callback_holder,
+      const std::vector<GURL>& history);
+
+  static void OnURLRequest(CallbackHolder<UrlRequestCallback>* callback_holder,
+                           const ads::mojom::UrlResponse& url_response);
+
+  static void OnSave(CallbackHolder<SaveCallback>* callback_holder,
+                     const bool success);
+  static void OnLoad(CallbackHolder<LoadCallback>* callback_holder,
+                     const bool success,
+                     const std::string& value);
+
+  static void OnRunDBTransaction(
+      CallbackHolder<RunDBTransactionCallback>* callback_holder,
+      ads::mojom::DBCommandResponsePtr response);
+
+  // BatAdsClient:
+  bool IsNetworkConnectionAvailable(bool* out_value) override;
   void IsNetworkConnectionAvailable(
       IsNetworkConnectionAvailableCallback callback) override;
-  bool CanShowBackgroundNotifications(bool* out_can_show) override;
-  void CanShowBackgroundNotifications(
-      CanShowBackgroundNotificationsCallback callback) override;
-  bool ShouldShowNotifications(bool* out_should_show) override;
-  void ShouldShowNotifications(
-      ShouldShowNotificationsCallback callback) override;
-  bool GetAdEvents(const std::string& ad_type,
-                   const std::string& confirmation_type,
-                   std::vector<base::Time>* out_ad_events) override;
-  void GetAdEvents(const std::string& ad_type,
-                   const std::string& confirmation_type,
-                   GetAdEventsCallback callback) override;
 
-  bool LoadDataResource(const std::string& name,
-                        std::string* out_value) override;
-  void LoadDataResource(const std::string& name,
-                        LoadDataResourceCallback callback) override;
-  void ClearScheduledCaptcha() override;
-  void GetScheduledCaptcha(const std::string& payment_id,
-                           GetScheduledCaptchaCallback callback) override;
-  void ShowScheduledCaptchaNotification(const std::string& payment_id,
-                                        const std::string& captcha_id) override;
-  void Log(const std::string& file,
-           const int32_t line,
-           const int32_t verbose_level,
-           const std::string& message) override;
+  bool IsBrowserActive(bool* out_value) override;
+  void IsBrowserActive(IsBrowserActiveCallback callback) override;
+  bool IsBrowserInFullScreenMode(bool* out_value) override;
+  void IsBrowserInFullScreenMode(
+      IsBrowserInFullScreenModeCallback callback) override;
 
-  void LoadFileResource(const std::string& id,
-                        const int version,
-                        LoadFileResourceCallback callback) override;
+  bool CanShowNotificationAds(bool* out_value) override;
+  void CanShowNotificationAds(CanShowNotificationAdsCallback callback) override;
+  bool CanShowNotificationAdsWhileBrowserIsBackgrounded(
+      bool* out_value) override;
+  void CanShowNotificationAdsWhileBrowserIsBackgrounded(
+      CanShowNotificationAdsWhileBrowserIsBackgroundedCallback callback)
+      override;
+  void ShowNotificationAd(const std::string& json) override;
+  void CloseNotificationAd(const std::string& placement_id) override;
 
-  void GetBrowsingHistory(const int max_count,
-                          const int days_ago,
-                          GetBrowsingHistoryCallback callback) override;
-
-  void RecordP2AEvent(const std::string& name,
-                      const ads::mojom::P2AEventType type,
-                      const std::string& out_value) override;
-
-  void LogTrainingInstance(std::vector<brave_federated::mojom::CovariatePtr>
-                               training_instance) override;
-
-  void Load(
-      const std::string& name,
-      LoadCallback callback) override;
-  void Save(
-      const std::string& name,
-      const std::string& value,
-      SaveCallback callback) override;
-  void UrlRequest(ads::mojom::UrlRequestPtr url_request,
-                  UrlRequestCallback callback) override;
-  void ShowNotification(
-      const std::string& json) override;
-  void CloseNotification(
-      const std::string& uuid) override;
+  void UpdateAdRewards() override;
 
   void RecordAdEventForId(const std::string& id,
                           const std::string& ad_type,
                           const std::string& confirmation_type,
                           const base::Time time) override;
-  void ResetAdEventsForId(const std::string& id) override;
+  bool GetAdEventHistory(const std::string& ad_type,
+                         const std::string& confirmation_type,
+                         std::vector<base::Time>* out_value) override;
+  void GetAdEventHistory(const std::string& ad_type,
+                         const std::string& confirmation_type,
+                         GetAdEventHistoryCallback callback) override;
+  void ResetAdEventHistoryForId(const std::string& id) override;
+
+  void GetBrowsingHistory(const int max_count,
+                          const int days_ago,
+                          GetBrowsingHistoryCallback callback) override;
+
+  void UrlRequest(ads::mojom::UrlRequestPtr url_request,
+                  UrlRequestCallback callback) override;
+
+  void Save(const std::string& name,
+            const std::string& value,
+            SaveCallback callback) override;
+  void Load(const std::string& name, LoadCallback callback) override;
+  void LoadFileResource(const std::string& id,
+                        const int version,
+                        LoadFileResourceCallback callback) override;
+  bool LoadDataResource(const std::string& name,
+                        std::string* out_value) override;
+  void LoadDataResource(const std::string& name,
+                        LoadDataResourceCallback callback) override;
+
+  void GetScheduledCaptcha(const std::string& payment_id,
+                           GetScheduledCaptchaCallback callback) override;
+  void ShowScheduledCaptchaNotification(const std::string& payment_id,
+                                        const std::string& captcha_id) override;
+  void ClearScheduledCaptcha() override;
 
   void RunDBTransaction(ads::mojom::DBTransactionPtr transaction,
                         RunDBTransactionCallback callback) override;
-  void OnAdRewardsChanged() override;
+
+  void RecordP2AEvent(const std::string& name,
+                      const std::string& out_value) override;
+
+  void LogTrainingInstance(std::vector<brave_federated::mojom::CovariatePtr>
+                               training_instance) override;
 
   void GetBooleanPref(
       const std::string& path,
@@ -155,52 +183,10 @@ class AdsClientMojoBridge
   void HasPrefPath(const std::string& path,
                    HasPrefPathCallback callback) override;
 
- private:
-  // workaround to pass base::OnceCallback into std::bind
-  template <typename Callback>
-  class CallbackHolder {
-   public:
-    CallbackHolder(
-        base::WeakPtr<AdsClientMojoBridge> client,
-        Callback callback)
-        : client_(client),
-          callback_(std::move(callback)) {}
-
-    ~CallbackHolder() = default;
-
-    bool is_valid() {
-      return !!client_.get();
-    }
-
-    Callback& get() {
-      return callback_;
-    }
-
-   private:
-    base::WeakPtr<AdsClientMojoBridge> client_;
-    Callback callback_;
-  };
-
-  static void OnGetBrowsingHistory(
-      CallbackHolder<GetBrowsingHistoryCallback>* holder,
-      const std::vector<GURL>& history);
-
-  static void OnLoad(CallbackHolder<LoadCallback>* holder,
-                     const bool success,
-                     const std::string& value);
-
-  static void OnSave(CallbackHolder<SaveCallback>* holder, const bool success);
-
-  static void OnURLRequest(CallbackHolder<UrlRequestCallback>* holder,
-                           const ads::mojom::UrlResponse& url_response);
-
-  static void OnGetScheduledCaptcha(
-      CallbackHolder<GetScheduledCaptchaCallback>* holder,
-      const std::string& captcha_id);
-
-  static void OnRunDBTransaction(
-      CallbackHolder<RunDBTransactionCallback>* holder,
-      ads::mojom::DBCommandResponsePtr response);
+  void Log(const std::string& file,
+           const int32_t line,
+           const int32_t verbose_level,
+           const std::string& message) override;
 
   raw_ptr<ads::AdsClient> ads_client_ = nullptr;  // NOT OWNED
 };

@@ -67,7 +67,7 @@ bool SchemeIsSupported(const GURL& url) {
   return false;
 }
 
-bool DoesUrlMatchPattern(const GURL& url, const std::string& pattern) {
+bool MatchUrlPattern(const GURL& url, const std::string& pattern) {
   if (!url.is_valid() || pattern.empty()) {
     return false;
   }

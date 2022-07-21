@@ -10,7 +10,7 @@
 #include <memory>
 #include <string>
 
-#include "bat/ads/internal/resources/behavioral/anti_targeting/anti_targeting_info_aliases.h"
+#include "bat/ads/internal/resources/behavioral/anti_targeting/anti_targeting_info_alias.h"
 
 namespace base {
 class Value;

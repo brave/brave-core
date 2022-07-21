@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVELEDGER_ENDPOINT_UPHOLD_GET_ME_GET_ME_H_
-#define BRAVELEDGER_ENDPOINT_UPHOLD_GET_ME_GET_ME_H_
+#ifndef BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_ENDPOINT_UPHOLD_GET_ME_GET_ME_H_
+#define BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_ENDPOINT_UPHOLD_GET_ME_GET_ME_H_
 
 #include <string>
 
@@ -115,9 +115,9 @@ class LedgerImpl;
 namespace endpoint {
 namespace uphold {
 
-using GetMeCallback = std::function<void(
-    const type::Result result,
-    const ::ledger::uphold::User& user)>;
+using GetMeCallback =
+    base::OnceCallback<void(type::Result result,
+                            const ::ledger::uphold::User& user)>;
 
 class GetMe {
  public:
@@ -137,9 +137,7 @@ class GetMe {
       const std::string& body,
       ::ledger::uphold::User* user);
 
-  void OnRequest(
-      const type::UrlResponse& response,
-      GetMeCallback callback);
+  void OnRequest(GetMeCallback callback, const type::UrlResponse& response);
 
   LedgerImpl* ledger_;  // NOT OWNED
 };
@@ -148,4 +146,4 @@ class GetMe {
 }  // namespace endpoint
 }  // namespace ledger
 
-#endif  // BRAVELEDGER_ENDPOINT_UPHOLD_GET_ME_GET_ME_H_
+#endif  // BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_ENDPOINT_UPHOLD_GET_ME_GET_ME_H_

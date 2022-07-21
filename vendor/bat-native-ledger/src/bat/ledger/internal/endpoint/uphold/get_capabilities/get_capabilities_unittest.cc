@@ -76,11 +76,11 @@ TEST_F(GetCapabilitiesTest, ServerReturns200OKSufficientReceivesAndSends) {
 
   get_capabilities_->Request(
       "193a77cf-02e8-4e10-8127-8a1b5a8bfece",
-      [](type::Result result, Capabilities capabilities) {
+      base::BindOnce([](type::Result result, Capabilities capabilities) {
         EXPECT_EQ(result, type::Result::LEDGER_OK);
         EXPECT_EQ(capabilities.can_receive, true);
         EXPECT_EQ(capabilities.can_send, true);
-      });
+      }));
 }
 
 TEST_F(GetCapabilitiesTest, ServerReturns200OKInsufficientReceives1) {
@@ -116,11 +116,11 @@ TEST_F(GetCapabilitiesTest, ServerReturns200OKInsufficientReceives1) {
 
   get_capabilities_->Request(
       "193a77cf-02e8-4e10-8127-8a1b5a8bfece",
-      [](type::Result result, Capabilities capabilities) {
+      base::BindOnce([](type::Result result, Capabilities capabilities) {
         EXPECT_EQ(result, type::Result::LEDGER_OK);
         EXPECT_EQ(capabilities.can_receive, false);
         EXPECT_EQ(capabilities.can_send, true);
-      });
+      }));
 }
 
 TEST_F(GetCapabilitiesTest, ServerReturns200OKInsufficientReceives2) {
@@ -154,11 +154,11 @@ TEST_F(GetCapabilitiesTest, ServerReturns200OKInsufficientReceives2) {
 
   get_capabilities_->Request(
       "193a77cf-02e8-4e10-8127-8a1b5a8bfece",
-      [](type::Result result, Capabilities capabilities) {
+      base::BindOnce([](type::Result result, Capabilities capabilities) {
         EXPECT_EQ(result, type::Result::LEDGER_OK);
         EXPECT_EQ(capabilities.can_receive, false);
         EXPECT_EQ(capabilities.can_send, true);
-      });
+      }));
 }
 
 TEST_F(GetCapabilitiesTest, ServerReturns200OKInsufficientSends1) {
@@ -194,11 +194,11 @@ TEST_F(GetCapabilitiesTest, ServerReturns200OKInsufficientSends1) {
 
   get_capabilities_->Request(
       "193a77cf-02e8-4e10-8127-8a1b5a8bfece",
-      [](type::Result result, Capabilities capabilities) {
+      base::BindOnce([](type::Result result, Capabilities capabilities) {
         EXPECT_EQ(result, type::Result::LEDGER_OK);
         EXPECT_EQ(capabilities.can_receive, true);
         EXPECT_EQ(capabilities.can_send, false);
-      });
+      }));
 }
 
 TEST_F(GetCapabilitiesTest, ServerReturns200OKInsufficientSends2) {
@@ -232,11 +232,11 @@ TEST_F(GetCapabilitiesTest, ServerReturns200OKInsufficientSends2) {
 
   get_capabilities_->Request(
       "193a77cf-02e8-4e10-8127-8a1b5a8bfece",
-      [](type::Result result, Capabilities capabilities) {
+      base::BindOnce([](type::Result result, Capabilities capabilities) {
         EXPECT_EQ(result, type::Result::LEDGER_OK);
         EXPECT_EQ(capabilities.can_receive, true);
         EXPECT_EQ(capabilities.can_send, false);
-      });
+      }));
 }
 
 TEST_F(GetCapabilitiesTest, ServerReturns200OKInsufficientReceivesAndSends1) {
@@ -274,11 +274,11 @@ TEST_F(GetCapabilitiesTest, ServerReturns200OKInsufficientReceivesAndSends1) {
 
   get_capabilities_->Request(
       "193a77cf-02e8-4e10-8127-8a1b5a8bfece",
-      [](type::Result result, Capabilities capabilities) {
+      base::BindOnce([](type::Result result, Capabilities capabilities) {
         EXPECT_EQ(result, type::Result::LEDGER_OK);
         EXPECT_EQ(capabilities.can_receive, false);
         EXPECT_EQ(capabilities.can_send, false);
-      });
+      }));
 }
 
 TEST_F(GetCapabilitiesTest, ServerReturns200OKInsufficientReceivesAndSends2) {
@@ -312,11 +312,11 @@ TEST_F(GetCapabilitiesTest, ServerReturns200OKInsufficientReceivesAndSends2) {
 
   get_capabilities_->Request(
       "193a77cf-02e8-4e10-8127-8a1b5a8bfece",
-      [](type::Result result, Capabilities capabilities) {
+      base::BindOnce([](type::Result result, Capabilities capabilities) {
         EXPECT_EQ(result, type::Result::LEDGER_OK);
         EXPECT_EQ(capabilities.can_receive, false);
         EXPECT_EQ(capabilities.can_send, false);
-      });
+      }));
 }
 
 TEST_F(GetCapabilitiesTest, ServerReturns401Unauthorized) {
@@ -330,11 +330,11 @@ TEST_F(GetCapabilitiesTest, ServerReturns401Unauthorized) {
 
   get_capabilities_->Request(
       "193a77cf-02e8-4e10-8127-8a1b5a8bfece",
-      [](type::Result result, Capabilities capabilities) {
+      base::BindOnce([](type::Result result, Capabilities capabilities) {
         EXPECT_EQ(result, type::Result::EXPIRED_TOKEN);
         EXPECT_EQ(capabilities.can_receive, absl::nullopt);
         EXPECT_EQ(capabilities.can_send, absl::nullopt);
-      });
+      }));
 }
 
 TEST_F(GetCapabilitiesTest, ServerReturnsUnexpectedHTTPStatus) {
@@ -348,11 +348,11 @@ TEST_F(GetCapabilitiesTest, ServerReturnsUnexpectedHTTPStatus) {
 
   get_capabilities_->Request(
       "193a77cf-02e8-4e10-8127-8a1b5a8bfece",
-      [](type::Result result, Capabilities capabilities) {
+      base::BindOnce([](type::Result result, Capabilities capabilities) {
         EXPECT_EQ(result, type::Result::LEDGER_ERROR);
         EXPECT_EQ(capabilities.can_receive, absl::nullopt);
         EXPECT_EQ(capabilities.can_send, absl::nullopt);
-      });
+      }));
 }
 
 }  // namespace uphold

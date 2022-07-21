@@ -19,16 +19,17 @@ namespace new_tab_page_ads {
 
 class EventHandlerObserver : public base::CheckedObserver {
  public:
-  // Invoked when a new tab page ad is served
+  // Invoked when the new tab page |ad| is served.
   virtual void OnNewTabPageAdServed(const NewTabPageAdInfo& ad) {}
 
-  // Invoked when a new tab page ad is viewed
+  // Invoked when the new tab page |ad| is viewed.
   virtual void OnNewTabPageAdViewed(const NewTabPageAdInfo& ad) {}
 
-  // Invoked when a new tab page ad is clicked
+  // Invoked when the new tab page |ad| is clicked.
   virtual void OnNewTabPageAdClicked(const NewTabPageAdInfo& ad) {}
 
-  // Invoked when a new tab page ad event fails
+  // Invoked when the new tab page |ad| event fails for |placement_id|,
+  // |creative_instance_id| and |event_type|.
   virtual void OnNewTabPageAdEventFailed(
       const std::string& placement_id,
       const std::string& creative_instance_id,

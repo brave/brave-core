@@ -61,8 +61,8 @@ void Uphold::Initialize() {
 
 void Uphold::StartContribution(const std::string& contribution_id,
                                type::ServerPublisherInfoPtr info,
-                               const double amount,
-                               ledger::ResultCallback callback) {
+                               double amount,
+                               ledger::LegacyResultCallback callback) {
   if (!info) {
     BLOG(0, "Publisher info is null");
     ContributionCompleted(type::Result::LEDGER_ERROR, "", contribution_id,
@@ -84,12 +84,12 @@ void Uphold::StartContribution(const std::string& contribution_id,
   transfer_->Start(transaction, contribution_callback);
 }
 
-void Uphold::ContributionCompleted(const type::Result result,
+void Uphold::ContributionCompleted(type::Result result,
                                    const std::string& transaction_id,
                                    const std::string& contribution_id,
-                                   const double fee,
+                                   double fee,
                                    const std::string& publisher_key,
-                                   ledger::ResultCallback callback) {
+                                   ledger::LegacyResultCallback callback) {
   if (result == type::Result::LEDGER_OK) {
     SaveTransferFee(contribution_id, fee);
 
@@ -170,11 +170,11 @@ void Uphold::WalletAuthorization(
 }
 
 void Uphold::GenerateWallet(ledger::ResultCallback callback) {
-  wallet_->Generate(callback);
+  wallet_->Generate(std::move(callback));
 }
 
 void Uphold::CreateCard(CreateCardCallback callback) {
-  card_->CreateBATCardIfNecessary(callback);
+  card_->CreateBATCardIfNecessary(std::move(callback));
 }
 
 void Uphold::DisconnectWallet(const absl::optional<std::string>& notification) {
@@ -184,10 +184,7 @@ void Uphold::DisconnectWallet(const absl::optional<std::string>& notification) {
   }
 
   BLOG(1, "Disconnecting wallet");
-  ledger_->database()->SaveEventLog(log::kWalletDisconnected,
-                                    std::string(constant::kWalletUphold) +
-                                        (!wallet->address.empty() ? "/" : "") +
-                                        wallet->address.substr(0, 5));
+  const std::string uphold_wallet_address = wallet->address;
 
   const bool manual = !notification.has_value();
 
@@ -213,23 +210,29 @@ void Uphold::DisconnectWallet(const absl::optional<std::string>& notification) {
   if (!shutting_down) {
     ledger_->ledger_client()->WalletDisconnected(constant::kWalletUphold);
   }
+
+  ledger_->database()->SaveEventLog(
+      log::kWalletDisconnected,
+      std::string(constant::kWalletUphold) +
+          (!uphold_wallet_address.empty() ? "/" : "") +
+          uphold_wallet_address.substr(0, 5));
 }
 
 void Uphold::GetUser(GetUserCallback callback) {
-  user_->Get(callback);
+  user_->Get(std::move(callback));
 }
 
 void Uphold::GetCapabilities(GetCapabilitiesCallback callback) {
   auto uphold_wallet = GetWallet();
   if (!uphold_wallet) {
     BLOG(0, "Uphold wallet is null!");
-    return callback(type::Result::LEDGER_ERROR, {});
+    return std::move(callback).Run(type::Result::LEDGER_ERROR, {});
   }
 
   if (uphold_wallet->status != type::WalletStatus::PENDING &&
       uphold_wallet->status != type::WalletStatus::VERIFIED) {
     BLOG(0, "Uphold wallet is neither in PENDING, nor in VERIFIED state!");
-    return callback(type::Result::LEDGER_ERROR, {});
+    return std::move(callback).Run(type::Result::LEDGER_ERROR, {});
   }
 
   CheckWalletState(uphold_wallet.get());

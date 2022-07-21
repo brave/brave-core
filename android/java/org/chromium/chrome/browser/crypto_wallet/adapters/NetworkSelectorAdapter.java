@@ -18,6 +18,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import org.chromium.brave_wallet.mojom.NetworkInfo;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 
@@ -35,16 +36,16 @@ public class NetworkSelectorAdapter
     private final LayoutInflater inflater;
     private int previousSelectedPos;
     private NetworkClickListener networkClickListener;
+    private NetworkInfo[] mNetworkInfos;
 
-    public NetworkSelectorAdapter(
-            Context context, String[] networkNames, String[] networkShortNames) {
-        assert networkNames.length == networkShortNames.length;
+    public NetworkSelectorAdapter(Context context, NetworkInfo[] networkInfos) {
+        mNetworkInfos = networkInfos;
         this.mContext = context;
         inflater = (LayoutInflater.from(context));
         mExecutor = Executors.newSingleThreadExecutor();
         mHandler = new Handler(Looper.getMainLooper());
         networks = new ArrayList<>();
-        init(networkNames, networkShortNames);
+        init(mNetworkInfos);
     }
 
     @Override
@@ -59,15 +60,15 @@ public class NetworkSelectorAdapter
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         final NetworkSelectorItem network = networks.get(position);
 
-        holder.tvName.setText(network.getNetworkShortName());
+        holder.tvName.setText(network.getNetworkName());
         Utils.setBlockiesBitmapResource(
                 mExecutor, mHandler, holder.ivNetworkPicture, network.getNetworkName(), false);
         holder.ivSelected.setVisibility(network.isSelected() ? View.VISIBLE : View.GONE);
 
         holder.itemView.setOnClickListener(v -> {
-            updateSelectedNetwork(holder.getAdapterPosition());
+            updateSelectedNetwork(holder.getLayoutPosition());
             if (networkClickListener != null) {
-                networkClickListener.onNetworkItemSelected(network);
+                networkClickListener.onNetworkItemSelected(mNetworkInfos[position]);
             }
         });
     }
@@ -100,9 +101,9 @@ public class NetworkSelectorAdapter
         notifyItemChanged(selectedNetworkPosition);
     }
 
-    private void init(String[] networkNames, String[] networkShortNames) {
-        for (int i = 0; i < networkNames.length; i++) {
-            networks.add(new NetworkSelectorItem(networkNames[i], networkShortNames[i]));
+    private void init(NetworkInfo[] networkInfos) {
+        for (NetworkInfo networkInfo : networkInfos) {
+            networks.add(new NetworkSelectorItem(networkInfo.chainName, networkInfo.symbolName));
         }
     }
 
@@ -155,6 +156,6 @@ public class NetworkSelectorAdapter
     }
 
     public interface NetworkClickListener {
-        void onNetworkItemSelected(NetworkSelectorItem networkSelectorItem);
+        void onNetworkItemSelected(NetworkInfo networkInfo);
     }
 }

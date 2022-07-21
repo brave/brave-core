@@ -130,7 +130,7 @@ async function updateCoinAccountNetworkInfo (store: Store, coin: BraveWallet.Coi
   const selectedAccountAddress = coin === BraveWallet.CoinType.FIL
       ? await keyringService.getFilecoinSelectedAccount(coinsChainId.chainId)
       : await keyringService.getSelectedAccount(coin)
-  const defaultAccount = accounts.find((account) => account.address === selectedAccountAddress.address) ?? accounts[0]
+  const defaultAccount = accounts.find((account) => account.address === selectedAccountAddress.address) || accounts[0]
   await store.dispatch(WalletActions.setSelectedAccount(defaultAccount))
   await store.dispatch(refreshTransactionHistory(defaultAccount.address))
 
@@ -640,51 +640,15 @@ handler.on(WalletActions.setSelectedNetworkFilter.getType(), async (store: Store
   await store.dispatch(refreshTokenPriceHistory(selectedPortfolioTimeline))
 })
 
-handler.on(WalletActions.addAccount.getType(), async (store: Store, payload: AddAccountPayloadType) => {
-  const { keyringService, walletHandler } = getAPIProxy()
-  const { accounts } = getWalletState(store)
-
-  // Creates a new account by the payloads coinType
+handler.on(WalletActions.addAccount.getType(), async (_store: Store, payload: AddAccountPayloadType) => {
+  const { keyringService } = getAPIProxy()
   const result = await keyringService.addAccount(payload.accountName, payload.coin)
-
-  // Looks to see if an account exist for the payloads coinType
-  const hasCoinTypeAccount = accounts.some(account => account.coin === payload.coin)
-
-  // If this is the first time creating an account for a coinType
-  // we set it as the defualt account for that coinType.
-  if (result.success && !hasCoinTypeAccount) {
-    // Get updated accountInfo
-    const walletInfo = await walletHandler.getWalletInfo()
-    const updatedAccounts = walletInfo.accountInfos
-
-    // Finds the new account and sets it as default
-    const foundAccount = updatedAccounts.find((account) => account.coin === payload.coin)
-    await keyringService.setSelectedAccount(foundAccount?.address ?? updatedAccounts[0].address, foundAccount?.coin ?? updatedAccounts[0].coin)
-  }
   return result.success
 })
 
-handler.on(WalletActions.addFilecoinAccount.getType(), async (store: Store, payload: AddFilecoinAccountPayloadType) => {
-  const { keyringService, walletHandler } = getAPIProxy()
-  const { accounts } = getWalletState(store)
-
-  // Creates a new account by the payloads coinType
+handler.on(WalletActions.addFilecoinAccount.getType(), async (_store: Store, payload: AddFilecoinAccountPayloadType) => {
+  const { keyringService } = getAPIProxy()
   const result = await keyringService.addFilecoinAccount(payload.accountName, payload.network)
-
-  // Looks to see if an account exist for the payloads coinType
-  const hasCoinTypeAccount = accounts.some(account => account.coin === BraveWallet.CoinType.FIL)
-
-  // If this is the first time creating an account for a coinType
-  // we set it as the defualt account for that coinType.
-  if (result.success && !hasCoinTypeAccount) {
-    // Get updated accountInfo
-    const walletInfo = await walletHandler.getWalletInfo()
-    const updatedAccounts = walletInfo.accountInfos
-
-    // Finds the new account and sets it as default
-    const foundAccount = updatedAccounts.find((account) => account.coin === BraveWallet.CoinType.FIL)
-    await keyringService.setSelectedAccount(foundAccount?.address ?? updatedAccounts[0].address, foundAccount?.coin ?? updatedAccounts[0].coin)
-  }
   return result.success
 })
 

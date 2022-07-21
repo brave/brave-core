@@ -7,6 +7,7 @@
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_INCLUDE_BAT_ADS_TRANSACTION_INFO_H_
 
 #include <string>
+#include <vector>
 
 #include "base/time/time.h"
 #include "bat/ads/ad_type.h"
@@ -42,6 +43,8 @@ struct ADS_EXPORT TransactionInfo final {
   void ToDictionary(base::Value* dictionary) const;
   void FromDictionary(base::DictionaryValue* dictionary);
 };
+
+using TransactionList = std::vector<TransactionInfo>;
 
 }  // namespace ads
 

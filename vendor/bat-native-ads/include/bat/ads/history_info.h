@@ -10,10 +10,9 @@
 #include <vector>
 
 #include "bat/ads/export.h"
+#include "bat/ads/history_item_info.h"
 
 namespace ads {
-
-struct HistoryItemInfo;
 
 struct ADS_EXPORT HistoryInfo final {
   HistoryInfo();
@@ -24,7 +23,7 @@ struct ADS_EXPORT HistoryInfo final {
   std::string ToJson() const;
   bool FromJson(const std::string& json);
 
-  std::vector<HistoryItemInfo> items;
+  HistoryItemList items;
 };
 
 }  // namespace ads

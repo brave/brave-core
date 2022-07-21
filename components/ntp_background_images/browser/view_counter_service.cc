@@ -191,8 +191,8 @@ base::Value ViewCounterService::GetCurrentBrandedWallpaperByAdInfo() const {
   base::Value branded_wallpaper_data =
       GetCurrentBrandedWallpaperData()->GetBackgroundByAdInfo(*ad_info);
   if (!branded_wallpaper_data.is_dict()) {
-    ads_service_->OnFailedToServeNewTabPageAd(ad_info->placement_id,
-                                              ad_info->creative_instance_id);
+    ads_service_->OnFailedToPrefetchNewTabPageAd(ad_info->placement_id,
+                                                 ad_info->creative_instance_id);
   }
 
   return branded_wallpaper_data;

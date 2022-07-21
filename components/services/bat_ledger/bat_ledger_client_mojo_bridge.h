@@ -89,10 +89,9 @@ class BatLedgerClientMojoBridge :
 
   std::string GetLegacyWallet() override;
 
-  void ShowNotification(
-      const std::string& type,
-      const std::vector<std::string>& args,
-      ledger::client::ResultCallback callback) override;
+  void ShowNotification(const std::string& type,
+                        const std::vector<std::string>& args,
+                        ledger::client::LegacyResultCallback callback) override;
 
   ledger::type::ClientInfoPtr GetClientInfo() override;
 
@@ -118,7 +117,7 @@ class BatLedgerClientMojoBridge :
 
   void WalletDisconnected(const std::string& wallet_type) override;
 
-  void DeleteLog(ledger::client::ResultCallback callback) override;
+  void DeleteLog(ledger::client::LegacyResultCallback callback) override;
 
   absl::optional<std::string> EncryptString(const std::string& name) override;
 

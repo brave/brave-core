@@ -22,26 +22,22 @@ class DatabaseUnblindedToken: public DatabaseTable {
   explicit DatabaseUnblindedToken(LedgerImpl* ledger);
   ~DatabaseUnblindedToken() override;
 
-  void InsertOrUpdateList(
-      type::UnblindedTokenList list,
-      ledger::ResultCallback callback);
+  void InsertOrUpdateList(type::UnblindedTokenList list,
+                          ledger::LegacyResultCallback callback);
 
   void GetSpendableRecords(GetUnblindedTokenListCallback callback);
 
-  void MarkRecordListAsSpent(
-      const std::vector<std::string>& ids,
-      type::RewardsType redeem_type,
-      const std::string& redeem_id,
-      ledger::ResultCallback callback);
+  void MarkRecordListAsSpent(const std::vector<std::string>& ids,
+                             type::RewardsType redeem_type,
+                             const std::string& redeem_id,
+                             ledger::LegacyResultCallback callback);
 
-  void MarkRecordListAsReserved(
-      const std::vector<std::string>& ids,
-      const std::string& redeem_id,
-      ledger::ResultCallback callback);
+  void MarkRecordListAsReserved(const std::vector<std::string>& ids,
+                                const std::string& redeem_id,
+                                ledger::LegacyResultCallback callback);
 
-  void MarkRecordListAsSpendable(
-      const std::string& redeem_id,
-      ledger::ResultCallback callback);
+  void MarkRecordListAsSpendable(const std::string& redeem_id,
+                                 ledger::LegacyResultCallback callback);
 
   void GetReservedRecordList(
       const std::string& redeem_id,
@@ -56,10 +52,9 @@ class DatabaseUnblindedToken: public DatabaseTable {
       type::DBCommandResponsePtr response,
       GetUnblindedTokenListCallback callback);
 
-  void OnMarkRecordListAsReserved(
-      type::DBCommandResponsePtr response,
-      size_t expected_row_count,
-      ledger::ResultCallback callback);
+  void OnMarkRecordListAsReserved(type::DBCommandResponsePtr response,
+                                  size_t expected_row_count,
+                                  ledger::LegacyResultCallback callback);
 };
 
 }  // namespace database

@@ -19,10 +19,10 @@ bool CanServeIfUserIsActive();
 bool CanServeAtRegularIntervals();
 bool ShouldServeAtRegularIntervals();
 
-void ShowNotification(const NotificationAdInfo& ad);
-void CloseNotification(const std::string& placement_id);
-void DismissNotification(const std::string& placement_id);
-void NotificationTimedOut(const std::string& placement_id);
+void ShowNotificationAd(const NotificationAdInfo& ad);
+void CloseNotificationAd(const std::string& placement_id);
+void DismissNotificationAd(const std::string& placement_id);
+void NotificationAdTimedOut(const std::string& placement_id);
 
 }  // namespace ads
 

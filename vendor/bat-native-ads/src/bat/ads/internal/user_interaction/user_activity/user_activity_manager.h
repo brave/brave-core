@@ -10,7 +10,7 @@
 
 #include "bat/ads/internal/browser/browser_manager_observer.h"
 #include "bat/ads/internal/tabs/tab_manager_observer.h"
-#include "bat/ads/internal/user_interaction/user_activity/user_activity_event_info_aliases.h"
+#include "bat/ads/internal/user_interaction/user_activity/user_activity_event_info.h"
 #include "bat/ads/internal/user_interaction/user_activity/user_activity_event_types.h"
 #include "bat/ads/page_transition_types.h"
 

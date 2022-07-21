@@ -6,16 +6,17 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_BROWSER_ADS_SERVICE_OBSERVER_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_BROWSER_ADS_SERVICE_OBSERVER_H_
 
-#include "base/observer_list.h"
 #include "base/observer_list_types.h"
 
 namespace brave_ads {
 
 class AdsServiceObserver : public base::CheckedObserver {
  public:
-  virtual void OnAdRewardsChanged() {}
+  // Invoked when ad rewards have changed.
+  virtual void OnAdRewardsDidChange() {}
 
-  virtual void OnNeedsBrowserUpdateToSeeAds() {}
+  // Invoked when a browser upgrade is required to serve ads.
+  virtual void OnNeedsBrowserUpgradeToServeAds() {}
 
  protected:
   ~AdsServiceObserver() override = default;

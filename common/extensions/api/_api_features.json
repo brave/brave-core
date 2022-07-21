@@ -162,7 +162,8 @@
       "chrome://wallet/*",
       "chrome://wallet-panel.top-chrome/*",
       "chrome://brave-shields.top-chrome/*",
-      "chrome://rewards-panel.top-chrome/*"
+      "chrome://rewards-panel.top-chrome/*",
+      "chrome://playlist/*"
     ]
   }],
   "greaselion": [{

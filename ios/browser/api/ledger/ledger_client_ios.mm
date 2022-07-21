@@ -115,7 +115,7 @@ std::string LedgerClientIOS::GetLegacyWallet() {
 void LedgerClientIOS::ShowNotification(
     const std::string& type,
     const std::vector<std::string>& args,
-    ledger::client::ResultCallback callback) {
+    ledger::client::LegacyResultCallback callback) {
   [bridge_ showNotification:type args:args callback:callback];
 }
 bool LedgerClientIOS::GetBooleanOption(const std::string& name) const {
@@ -165,7 +165,7 @@ void LedgerClientIOS::ClearAllNotifications() {
 void LedgerClientIOS::WalletDisconnected(const std::string& wallet_type) {
   [bridge_ walletDisconnected:wallet_type];
 }
-void LedgerClientIOS::DeleteLog(ledger::client::ResultCallback callback) {
+void LedgerClientIOS::DeleteLog(ledger::client::LegacyResultCallback callback) {
   [bridge_ deleteLog:callback];
 }
 absl::optional<std::string> LedgerClientIOS::EncryptString(

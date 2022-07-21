@@ -119,9 +119,9 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
   (*s_brave_allowlist)[ads::prefs::kAdsPerHour] =
       settings_api::PrefType::PREF_TYPE_NUMBER;
-  (*s_brave_allowlist)[ads::prefs::kShouldAllowAdsSubdivisionTargeting] =
+  (*s_brave_allowlist)[ads::prefs::kShouldAllowSubdivisionTargeting] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
-  (*s_brave_allowlist)[ads::prefs::kAdsSubdivisionTargetingCode] =
+  (*s_brave_allowlist)[ads::prefs::kSubdivisionTargetingCode] =
       settings_api::PrefType::PREF_TYPE_STRING;
   (*s_brave_allowlist)[brave_rewards::prefs::kEnabled] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
@@ -249,6 +249,8 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
 #endif
   (*s_brave_allowlist)[kEnableWindowClosingConfirm] =
+      settings_api::PrefType::PREF_TYPE_BOOLEAN;
+  (*s_brave_allowlist)[kEnableClosingLastTab] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
   // Hangouts pref
   (*s_brave_allowlist)[kHangoutsEnabled] =

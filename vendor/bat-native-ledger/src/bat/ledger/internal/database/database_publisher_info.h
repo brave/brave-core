@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVELEDGER_DATABASE_DATABASE_PUBLISHER_INFO_H_
-#define BRAVELEDGER_DATABASE_DATABASE_PUBLISHER_INFO_H_
+#ifndef BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_DATABASE_DATABASE_PUBLISHER_INFO_H_
+#define BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_DATABASE_DATABASE_PUBLISHER_INFO_H_
 
 #include <string>
 
@@ -18,9 +18,8 @@ class DatabasePublisherInfo: public DatabaseTable {
   explicit DatabasePublisherInfo(LedgerImpl* ledger);
   ~DatabasePublisherInfo() override;
 
-  void InsertOrUpdate(
-      type::PublisherInfoPtr info,
-      ledger::ResultCallback callback);
+  void InsertOrUpdate(type::PublisherInfoPtr info,
+                      ledger::LegacyResultCallback callback);
 
   void GetRecord(
       const std::string& publisher_key,
@@ -30,7 +29,7 @@ class DatabasePublisherInfo: public DatabaseTable {
       type::ActivityInfoFilterPtr filter,
       ledger::PublisherInfoCallback callback);
 
-  void RestorePublishers(ledger::ResultCallback callback);
+  void RestorePublishers(ledger::LegacyResultCallback callback);
 
   void GetExcludedList(ledger::PublisherInfoListCallback callback);
 
@@ -51,4 +50,4 @@ class DatabasePublisherInfo: public DatabaseTable {
 }  // namespace database
 }  // namespace ledger
 
-#endif  // BRAVELEDGER_DATABASE_DATABASE_PUBLISHER_INFO_H_
+#endif  // BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_DATABASE_DATABASE_PUBLISHER_INFO_H_

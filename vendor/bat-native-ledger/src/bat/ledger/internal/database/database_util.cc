@@ -110,9 +110,8 @@ int32_t GetCompatibleVersion() {
   return kCompatibleVersionNumber;
 }
 
-void OnResultCallback(
-    type::DBCommandResponsePtr response,
-    ledger::ResultCallback callback) {
+void OnResultCallback(type::DBCommandResponsePtr response,
+                      ledger::LegacyResultCallback callback) {
   if (!response ||
       response->status != type::DBCommandResponse::Status::RESPONSE_OK) {
     callback(type::Result::LEDGER_ERROR);

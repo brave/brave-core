@@ -19,7 +19,7 @@
 #include "bat/ads/internal/creatives/notification_ads/creative_notification_ad_info.h"
 #include "bat/ads/internal/geographic/subdivision/subdivision_targeting.h"
 #include "bat/ads/internal/resources/behavioral/anti_targeting/anti_targeting_resource.h"
-#include "bat/ads/internal/segments/segments_aliases.h"
+#include "bat/ads/internal/segments/segment_alias.h"
 
 namespace ads {
 namespace inline_content_ads {
@@ -35,7 +35,7 @@ void EligibleAdsV2::GetForUserModel(
     const targeting::UserModelInfo& user_model,
     const std::string& dimensions,
     GetEligibleAdsCallback<CreativeInlineContentAdList> callback) {
-  BLOG(1, "Get eligible inline content ads:");
+  BLOG(1, "Get eligible inline content ads");
 
   database::table::AdEvents database_table;
   database_table.GetForType(

@@ -5,6 +5,7 @@ import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
 import("//brave/components/ftx/browser/buildflags/buildflags.gni")
 import("//brave/components/ipfs/buildflags/buildflags.gni")
 import("//brave/components/ntp_background_images/buildflags/buildflags.gni")
+import("//brave/components/playlist/buildflags/buildflags.gni")
 import("//brave/components/sidebar/buildflags/buildflags.gni")
 import("//brave/components/speedreader/common/buildflags.gni")
 import("//brave/components/tor/buildflags/buildflags.gni")
@@ -308,6 +309,8 @@ source_set("ui") {
     "//brave/components/ntp_background_images/common",
     "//brave/components/ntp_widget_utils/browser",
     "//brave/components/p3a:buildflags",
+    "//brave/components/playlist/buildflags",
+    "//brave/components/resources:static_resources",
     "//brave/components/sidebar/buildflags",
     "//brave/components/time_period_storage",
     "//brave/components/tor",
@@ -656,6 +659,19 @@ source_set("ui") {
 
   if (enable_ftx) {
     deps += [ "//brave/components/ftx/common" ]
+  }
+
+  if (enable_playlist) {
+    sources += [
+      "webui/playlist_page_handler.cc",
+      "webui/playlist_page_handler.h",
+      "webui/playlist_ui.cc",
+      "webui/playlist_ui.h",
+    ]
+    deps += [
+      "//brave/components/playlist/mojom",
+      "//brave/components/playlist/resources:generated_resources",
+    ]
   }
 
   if (toolkit_views) {

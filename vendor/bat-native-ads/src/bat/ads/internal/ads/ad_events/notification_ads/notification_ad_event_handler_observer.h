@@ -19,22 +19,23 @@ namespace notification_ads {
 
 class EventHandlerObserver : public base::CheckedObserver {
  public:
-  // Invoked when a notification ad is served
+  // Invoked when the notification |ad| is served.
   virtual void OnNotificationAdServed(const NotificationAdInfo& ad) {}
 
-  // Invoked when a notification ad is viewed
+  // Invoked when the notification |ad| is viewed.
   virtual void OnNotificationAdViewed(const NotificationAdInfo& ad) {}
 
-  // Invoked when a notification ad is clicked
+  // Invoked when the notification |ad| is clicked.
   virtual void OnNotificationAdClicked(const NotificationAdInfo& ad) {}
 
-  // Invoked when a notification ad is dismissed
+  // Invoked when the notification |ad| is dismissed.
   virtual void OnNotificationAdDismissed(const NotificationAdInfo& ad) {}
 
-  // Invoked when a notification ad times out
+  // Invoked when the notification |ad| times out.
   virtual void OnNotificationAdTimedOut(const NotificationAdInfo& ad) {}
 
-  // Invoked when a notification ad event fails
+  // Invoked when the notification |ad| event fails for |placement_id| and
+  // |event_type|.
   virtual void OnNotificationAdEventFailed(
       const std::string& placement_id,
       const mojom::NotificationAdEventType event_type) {}

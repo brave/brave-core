@@ -290,6 +290,8 @@ provideStrings({
   braveWalletBuyWyreName: 'Wyre',
   braveWalletBuyRampDescription: 'Buy with CC/Debit or ACH. Competitive Rates.',
   braveWalletBuyWyreDescription: 'Buy with CC/Debit or ACH. Competitive Rates.',
+  braveWalletBuyWithWyre: 'Buy with Wyre',
+  braveWalletBuyWithRamp: 'Buy with Ramp',
 
   // Sign Transaction Panel
   braveWalletSignTransactionTitle: 'Your signature is being requested',
@@ -332,6 +334,8 @@ provideStrings({
   braveWalletAllowChangeNetworkTitle: 'Allow this site to switch the network?',
   braveWalletAllowChangeNetworkDescription: 'This will switch the network to a previously added network.',
   braveWalletAllowChangeNetworkButton: 'Switch network',
+  braveWalletAllowAddNetworkNetworkPanelTitle: 'Network',
+  braveWalletAllowAddNetworkDetailsPanelTitle: 'Details',
 
   // Confirm Transaction Panel
   braveWalletConfirmTransactionTotal: 'Total',
@@ -406,7 +410,7 @@ provideStrings({
   braveWalletConnectHardwarePanelDisconnected: '$1 disconnected',
   braveWalletConnectHardwarePanelInstructions: 'Instructions',
   braveWalletConnectHardwarePanelConnect: 'Connect your $1',
-  braveWalletConnectHardwarePanelConfirmation: 'Hardware wallet requires transaction confirmation $1',
+  braveWalletConnectHardwarePanelConfirmation: 'Hardware wallet requires transaction confirmation on device.',
   braveWalletConnectHardwarePanelOpenApp: 'Hardware wallet requires $1 App opened on $2',
 
   // Transaction List Item

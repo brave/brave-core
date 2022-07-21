@@ -88,19 +88,21 @@ class AdsImpl final : public Ads,
                       public TransferObserver {
  public:
   explicit AdsImpl(AdsClient* ads_client);
-  ~AdsImpl() override;
   AdsImpl(const AdsImpl&) = delete;
   AdsImpl& operator=(const AdsImpl&) = delete;
-
-  bool IsInitialized() const;
+  ~AdsImpl() override;
 
   // Ads:
   void Initialize(InitializeCallback callback) override;
   void Shutdown(ShutdownCallback callback) override;
 
-  void ChangeLocale(const std::string& locale) override;
+  void GetDiagnostics(GetDiagnosticsCallback callback) override;
+
+  void OnChangeLocale(const std::string& locale) override;
 
   void OnPrefChanged(const std::string& path) override;
+
+  void OnResourceComponentUpdated(const std::string& id) override;
 
   void OnHtmlLoaded(const int32_t tab_id,
                     const std::vector<GURL>& redirect_chain,
@@ -109,11 +111,11 @@ class AdsImpl final : public Ads,
                     const std::vector<GURL>& redirect_chain,
                     const std::string& text) override;
 
-  void OnUserGesture(const int32_t page_transition_type) override;
-
   void OnIdle() override;
   void OnUnIdle(const base::TimeDelta idle_time,
                 const bool was_locked) override;
+
+  void OnUserGesture(const int32_t page_transition_type) override;
 
   void OnBrowserDidEnterForeground() override;
   void OnBrowserDidEnterBackground() override;
@@ -130,24 +132,7 @@ class AdsImpl final : public Ads,
 
   void OnWalletUpdated(const std::string& id, const std::string& seed) override;
 
-  void OnResourceComponentUpdated(const std::string& id) override;
-
-  bool GetNotificationAd(const std::string& placement_id,
-                         NotificationAdInfo* notification_ad) override;
-  void TriggerNotificationAdEvent(
-      const std::string& placement_id,
-      const mojom::NotificationAdEventType event_type) override;
-
-  void MaybeServeNewTabPageAd(MaybeServeNewTabPageAdCallback callback) override;
-  void TriggerNewTabPageAdEvent(
-      const std::string& placement_id,
-      const std::string& creative_instance_id,
-      const mojom::NewTabPageAdEventType event_type) override;
-
-  void TriggerPromotedContentAdEvent(
-      const std::string& placement_id,
-      const std::string& creative_instance_id,
-      const mojom::PromotedContentAdEventType event_type) override;
+  void GetStatementOfAccounts(GetStatementOfAccountsCallback callback) override;
 
   void MaybeServeInlineContentAd(
       const std::string& dimensions,
@@ -156,6 +141,23 @@ class AdsImpl final : public Ads,
       const std::string& placement_id,
       const std::string& creative_instance_id,
       const mojom::InlineContentAdEventType event_type) override;
+
+  void MaybeServeNewTabPageAd(MaybeServeNewTabPageAdCallback callback) override;
+  void TriggerNewTabPageAdEvent(
+      const std::string& placement_id,
+      const std::string& creative_instance_id,
+      const mojom::NewTabPageAdEventType event_type) override;
+
+  bool GetNotificationAd(const std::string& placement_id,
+                         NotificationAdInfo* notification_ad) override;
+  void TriggerNotificationAdEvent(
+      const std::string& placement_id,
+      const mojom::NotificationAdEventType event_type) override;
+
+  void TriggerPromotedContentAdEvent(
+      const std::string& placement_id,
+      const std::string& creative_instance_id,
+      const mojom::PromotedContentAdEventType event_type) override;
 
   void TriggerSearchResultAdEvent(
       mojom::SearchResultAdPtr ad_mojom,
@@ -172,33 +174,29 @@ class AdsImpl final : public Ads,
                          const base::Time to_time) override;
   void RemoveAllHistory(RemoveAllHistoryCallback callback) override;
 
-  void GetStatementOfAccounts(GetStatementOfAccountsCallback callback) override;
-
-  void GetDiagnostics(GetDiagnosticsCallback callback) override;
-
   AdContentLikeActionType ToggleAdThumbUp(const std::string& json) override;
   AdContentLikeActionType ToggleAdThumbDown(const std::string& json) override;
-
   CategoryContentOptActionType ToggleAdOptIn(
       const std::string& category,
       const CategoryContentOptActionType& action_type) override;
   CategoryContentOptActionType ToggleAdOptOut(
       const std::string& category,
       const CategoryContentOptActionType& action_type) override;
-
   bool ToggleSavedAd(const std::string& json) override;
-
   bool ToggleFlaggedAd(const std::string& json) override;
 
  private:
-  void InitializeDatabase(InitializeCallback callback);
+  void CreateOrOpenDatabase(InitializeCallback callback);
   void MigrateConversions(InitializeCallback callback);
   void MigrateRewards(InitializeCallback callback);
   void MigrateClientState(InitializeCallback callback);
   void LoadClientState(InitializeCallback callback);
   void LoadConfirmationState(InitializeCallback callback);
   void LoadNotificationAdState(InitializeCallback callback);
-  void Initialized(InitializeCallback callback);
+
+  void FailedToInitialize(InitializeCallback callback);
+  void SuccessfullyInitialized(InitializeCallback callback);
+  bool IsInitialized() const;
 
   void Start();
 

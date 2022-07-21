@@ -10,7 +10,6 @@
 
 #include "base/time/time.h"
 #include "bat/ads/internal/base/time/time_util.h"
-#include "bat/ads/transaction_info.h"
 
 namespace ads {
 

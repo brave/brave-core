@@ -14,11 +14,10 @@
 #include "bat/ads/internal/ads/serving/targeting/user_model_info.h"
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/base/logging_util.h"
-#include "bat/ads/internal/creatives/notification_ads/creative_notification_ad_info.h"
 #include "bat/ads/internal/creatives/notification_ads/creative_notification_ads_database_table.h"
 #include "bat/ads/internal/geographic/subdivision/subdivision_targeting.h"
 #include "bat/ads/internal/resources/behavioral/anti_targeting/anti_targeting_resource.h"
-#include "bat/ads/internal/segments/segments_aliases.h"
+#include "bat/ads/internal/segments/segment_alias.h"
 #include "bat/ads/notification_ad_info.h"
 
 namespace ads {
@@ -34,7 +33,7 @@ EligibleAdsV2::~EligibleAdsV2() = default;
 void EligibleAdsV2::GetForUserModel(
     const targeting::UserModelInfo& user_model,
     GetEligibleAdsCallback<CreativeNotificationAdList> callback) {
-  BLOG(1, "Get eligible notification ads:");
+  BLOG(1, "Get eligible notification ads");
 
   database::table::AdEvents database_table;
   database_table.GetForType(

@@ -9,7 +9,7 @@
 #include <cstdint>
 
 #include "base/time/time.h"
-#include "bat/ads/internal/segments/segments_aliases.h"
+#include "bat/ads/internal/segments/segment_alias.h"
 
 namespace ads {
 namespace targeting {

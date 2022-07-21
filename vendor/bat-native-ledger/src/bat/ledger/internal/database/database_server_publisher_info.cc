@@ -32,7 +32,7 @@ DatabaseServerPublisherInfo::~DatabaseServerPublisherInfo() = default;
 
 void DatabaseServerPublisherInfo::InsertOrUpdate(
     const type::ServerPublisherInfo& server_info,
-    ledger::ResultCallback callback) {
+    ledger::LegacyResultCallback callback) {
   if (server_info.publisher_key.empty()) {
     BLOG(0, "Publisher key is empty");
     callback(type::Result::LEDGER_ERROR);
@@ -151,8 +151,8 @@ void DatabaseServerPublisherInfo::OnGetRecord(
 }
 
 void DatabaseServerPublisherInfo::DeleteExpiredRecords(
-    const int64_t max_age_seconds,
-    ledger::ResultCallback callback) {
+    int64_t max_age_seconds,
+    ledger::LegacyResultCallback callback) {
   int64_t cutoff =
       util::GetCurrentTimeStamp() - max_age_seconds;
 
@@ -183,7 +183,7 @@ void DatabaseServerPublisherInfo::DeleteExpiredRecords(
 
 void DatabaseServerPublisherInfo::OnExpiredRecordsSelected(
     type::DBCommandResponsePtr response,
-    ledger::ResultCallback callback) {
+    ledger::LegacyResultCallback callback) {
   if (!response ||
       response->status != type::DBCommandResponse::Status::RESPONSE_OK) {
     BLOG(0, "Unable to query for expired records");

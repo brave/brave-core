@@ -8,6 +8,7 @@ package org.chromium.chrome.browser.app.domain;
 import androidx.annotation.NonNull;
 import androidx.annotation.UiThread;
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import org.chromium.brave_wallet.mojom.AccountInfo;
@@ -30,27 +31,25 @@ import java.util.HashSet;
 import java.util.List;
 
 public class KeyringModel implements KeyringServiceObserver {
-    private static final int NO_COIN_TYPE = Integer.MIN_VALUE;
-
     private KeyringService mKeyringService;
     private BraveWalletService mBraveWalletService;
     private MutableLiveData<KeyringInfo[]> _mKeyringInfosLiveData;
-    public LiveData<KeyringInfo[]> mKeyringInfosLiveData;
     private MutableLiveData<KeyringInfo> _mSelectedCoinKeyringInfoLiveData;
-    public LiveData<KeyringInfo> mSelectedCoinKeyringInfoLiveData;
     private final MutableLiveData<AccountInfo> _mSelectedAccount;
-    public LiveData<List<AccountInfo>> mAccountInfos;
     private final MutableLiveData<List<AccountInfo>> _mAccountInfos;
     // Prefer using getSelectedAccountOrAccountPerOrigin, especially for dapps
-    public LiveData<AccountInfo> mSelectedAccount;
     private CryptoSharedData mSharedData;
     private AccountsPermissionsHelper mAccountsPermissionsHelper;
     private final Object mLock = new Object();
-    private CryptoModelActions mCryptoModelActions;
+    private CryptoSharedActions mCryptoSharedActions;
     private HashMap<Integer, String> mKeyringToCoin;
+    public LiveData<List<AccountInfo>> mAccountInfos;
+    public LiveData<KeyringInfo> mSelectedCoinKeyringInfoLiveData;
+    public LiveData<AccountInfo> mSelectedAccount;
+    public LiveData<KeyringInfo[]> mKeyringInfosLiveData;
 
     public KeyringModel(KeyringService keyringService, CryptoSharedData sharedData,
-            BraveWalletService braveWalletService, CryptoModelActions cryptoModelActions) {
+            BraveWalletService braveWalletService, CryptoSharedActions cryptoSharedActions) {
         mKeyringToCoin = new HashMap<>();
         mKeyringService = keyringService;
         mBraveWalletService = braveWalletService;
@@ -59,7 +58,7 @@ public class KeyringModel implements KeyringServiceObserver {
         mKeyringInfosLiveData = _mKeyringInfosLiveData;
         _mSelectedAccount = new MutableLiveData<>();
         mSelectedAccount = _mSelectedAccount;
-        mCryptoModelActions = cryptoModelActions;
+        mCryptoSharedActions = cryptoSharedActions;
         _mSelectedCoinKeyringInfoLiveData = new MutableLiveData<>(null);
         mSelectedCoinKeyringInfoLiveData = _mSelectedCoinKeyringInfoLiveData;
         _mAccountInfos = new MutableLiveData<>(Collections.emptyList());
@@ -105,7 +104,7 @@ public class KeyringModel implements KeyringServiceObserver {
         }
     }
 
-    private void update() {
+    void update() {
         mBraveWalletService.getSelectedCoin(coinType -> { update(coinType); });
     }
 
@@ -160,7 +159,7 @@ public class KeyringModel implements KeyringServiceObserver {
             }
             mKeyringService.setSelectedAccount(accountAddress, coin, isAccountSelected -> {
                 mBraveWalletService.setSelectedCoin(coin);
-                mCryptoModelActions.updateCoinType();
+                mCryptoSharedActions.updateCoinType();
             });
         }
     }
@@ -206,12 +205,12 @@ public class KeyringModel implements KeyringServiceObserver {
                         .toArray(new AccountInfo[0]);
         mKeyringService.addAccount(accountName, coinType, result -> {
             if (result) {
-                boolean hasNoExistingAccountType = true;
+                boolean hasExistingAccountType = false;
                 for (AccountInfo accountInfo : finalAccountInfos) {
-                    hasNoExistingAccountType = !(accountInfo.coin == coinType);
-                    if (hasNoExistingAccountType) break;
+                    hasExistingAccountType = (accountInfo.coin == coinType);
+                    if (hasExistingAccountType) break;
                 }
-                if (hasNoExistingAccountType) {
+                if (!hasExistingAccountType) {
                     mKeyringService.getKeyringInfo(
                             getSelectedCoinKeyringId(coinType), updatedKeyringInfo -> {
                                 for (AccountInfo accountInfo : updatedKeyringInfo.accountInfos) {
@@ -223,7 +222,7 @@ public class KeyringModel implements KeyringServiceObserver {
                             });
                 }
             }
-            mCryptoModelActions.updateCoinType();
+            mCryptoSharedActions.updateCoinType();
             callback.call(result);
         });
     }
@@ -285,7 +284,7 @@ public class KeyringModel implements KeyringServiceObserver {
 
     @Override
     public void selectedAccountChanged(int coin) {
-        update(coin);
+        mCryptoSharedActions.updateCoinAccountNetworkInfo(coin);
     }
 
     @Override

@@ -4,6 +4,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "base/android/jni_android.h"
+#include "base/notreached.h"
 #include "brave/browser/brave_wallet/brave_wallet_provider_delegate_impl_helper.h"
 #include "brave/build/android/jni_headers/BraveWalletProviderDelegateImplHelper_jni.h"
 #include "content/public/browser/web_contents.h"
@@ -18,6 +19,11 @@ void ShowPanel(content::WebContents*) {
 void ShowWalletOnboarding(content::WebContents*) {
   JNIEnv* env = base::android::AttachCurrentThread();
   Java_BraveWalletProviderDelegateImplHelper_showWalletOnboarding(env);
+}
+
+void ShowAccountCreation(content::WebContents* web_contents,
+                         const std::string& keyring_id) {
+  NOTIMPLEMENTED();
 }
 
 void WalletInteractionDetected(content::WebContents* web_contents) {

@@ -11,7 +11,7 @@
 #include "base/memory/raw_ptr.h"
 #include "bat/ads/ad_info.h"
 #include "bat/ads/internal/ads/serving/eligible_ads/eligible_ads_callback.h"
-#include "bat/ads/internal/creatives/inline_content_ads/creative_inline_content_ad_info_aliases.h"
+#include "bat/ads/internal/creatives/inline_content_ads/creative_inline_content_ad_info.h"
 
 namespace ads {
 

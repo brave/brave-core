@@ -9,7 +9,7 @@
 #include <memory>
 #include <string>
 
-#include "bat/ads/internal/resources/behavioral/conversions/conversion_id_pattern_info_aliases.h"
+#include "bat/ads/internal/resources/behavioral/conversions/conversion_id_pattern_info.h"
 
 namespace base {
 class Value;

@@ -22,15 +22,15 @@ const char kAdsPerHour[] = "brave.brave_ads.ads_per_hour";
 const char kIdleTimeThreshold[] = "brave.brave_ads.idle_threshold";
 
 // Stores whether Brave ads should allow subdivision ad targeting
-const char kShouldAllowAdsSubdivisionTargeting[] =
+const char kShouldAllowSubdivisionTargeting[] =
     "brave.brave_ads.should_allow_ads_subdivision_targeting";
 
-// Stores the selected ads subdivision targeting code
-const char kAdsSubdivisionTargetingCode[] =
+// Stores the selected subdivision targeting code
+const char kSubdivisionTargetingCode[] =
     "brave.brave_ads.ads_subdivision_targeting_code";
 
-// Stores the automatically detected ads subdivision targeting code
-const char kAutoDetectedAdsSubdivisionTargetingCode[] =
+// Stores the automatically detected subdivision targeting code
+const char kAutoDetectedSubdivisionTargetingCode[] =
     "brave.brave_ads.automatically_detected_ads_subdivision_targeting_code";
 
 // Stores catalog id

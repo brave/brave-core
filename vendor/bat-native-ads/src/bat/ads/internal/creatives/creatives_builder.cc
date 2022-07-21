@@ -17,7 +17,7 @@
 #include "bat/ads/internal/base/logging_util.h"
 #include "bat/ads/internal/base/platform/platform_helper.h"
 #include "bat/ads/internal/catalog/catalog_info.h"
-#include "bat/ads/internal/creatives/creative_daypart_info_aliases.h"
+#include "bat/ads/internal/creatives/creative_daypart_info.h"
 #include "bat/ads/internal/creatives/creatives_info.h"
 #include "bat/ads/internal/creatives/inline_content_ads/creative_inline_content_ad_info.h"
 #include "bat/ads/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_info.h"

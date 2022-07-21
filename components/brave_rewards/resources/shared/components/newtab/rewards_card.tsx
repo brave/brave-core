@@ -65,7 +65,7 @@ interface Props {
   rewardsEnabled: boolean
   adsEnabled: boolean
   adsSupported: boolean
-  needsBrowserUpdateToSeeAds: boolean
+  needsBrowserUpgradeToServeAds: boolean
   rewardsBalance: number
   exchangeRate: number
   exchangeCurrency: string
@@ -121,7 +121,7 @@ export function RewardsCard (props: Props) {
       )
     }
 
-    if (props.needsBrowserUpdateToSeeAds && props.adsSupported) {
+    if (props.needsBrowserUpgradeToServeAds && props.adsSupported) {
       return (
         <style.balance>
           <style.needsBrowserUpdateView>

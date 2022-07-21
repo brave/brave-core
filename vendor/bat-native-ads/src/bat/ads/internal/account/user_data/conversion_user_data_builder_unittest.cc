@@ -8,7 +8,7 @@
 #include "base/json/json_writer.h"
 #include "base/values.h"
 #include "bat/ads/internal/base/unittest/unittest_base.h"
-#include "bat/ads/internal/conversions/conversion_queue_item_info_aliases.h"
+#include "bat/ads/internal/conversions/conversion_queue_item_info.h"
 #include "bat/ads/internal/conversions/conversion_queue_item_unittest_util.h"
 #include "bat/ads/internal/conversions/verifiable_conversion_envelope_info.h"
 #include "bat/ads/internal/conversions/verifiable_conversion_envelope_unittest_util.h"

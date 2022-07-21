@@ -93,6 +93,8 @@ class FilTxManagerUnitTest : public testing::Test {
     base::RunLoop().RunUntilIdle();
     keyring_service_->AddFilecoinAccount("Account 1", mojom::kFilecoinTestnet,
                                          base::DoNothing());
+    json_rpc_service_->SetNetwork(brave_wallet::mojom::kLocalhostChainId,
+                                  mojom::CoinType::FIL);
     base::RunLoop().RunUntilIdle();
   }
 

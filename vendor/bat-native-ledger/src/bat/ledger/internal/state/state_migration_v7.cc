@@ -18,7 +18,7 @@ StateMigrationV7::StateMigrationV7(LedgerImpl* ledger) :
 
 StateMigrationV7::~StateMigrationV7() = default;
 
-void StateMigrationV7::Migrate(ledger::ResultCallback callback) {
+void StateMigrationV7::Migrate(ledger::LegacyResultCallback callback) {
   const std::string brave =
       ledger_->ledger_client()->GetStringState(kWalletBrave);
 

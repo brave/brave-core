@@ -12,9 +12,9 @@
 #include "bat/ads/internal/base/logging_util.h"
 #include "bat/ads/internal/catalog/catalog.h"
 #include "bat/ads/internal/catalog/catalog_info.h"
-#include "bat/ads/internal/segments/segments_json_reader.h"
-#include "bat/ads/internal/segments/segments_json_writer.h"
-#include "bat/ads/internal/segments/segments_util.h"
+#include "bat/ads/internal/segments/segment_json_reader.h"
+#include "bat/ads/internal/segments/segment_json_writer.h"
+#include "bat/ads/internal/segments/segment_util.h"
 #include "bat/ads/pref_names.h"
 
 namespace ads {

@@ -6,7 +6,9 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_PRIVACY_P2A_OPPORTUNITIES_P2A_OPPORTUNITY_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_PRIVACY_P2A_OPPORTUNITIES_P2A_OPPORTUNITY_H_
 
-#include "bat/ads/internal/segments/segments_aliases.h"
+#include <string>
+
+#include "bat/ads/internal/segments/segment_alias.h"
 
 namespace ads {
 
@@ -14,6 +16,8 @@ class AdType;
 
 namespace privacy {
 namespace p2a {
+
+std::string GetAdOpportunityNameForAdType(const AdType& ad_type);
 
 void RecordAdOpportunityForSegments(const AdType& ad_type,
                                     const SegmentList& segments);

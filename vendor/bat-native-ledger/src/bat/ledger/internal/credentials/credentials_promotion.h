@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVELEDGER_CREDENTIALS_PROMOTION_H_
-#define BRAVELEDGER_CREDENTIALS_PROMOTION_H_
+#ifndef BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_CREDENTIALS_CREDENTIALS_PROMOTION_H_
+#define BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_CREDENTIALS_CREDENTIALS_PROMOTION_H_
 
 #include <map>
 #include <memory>
@@ -22,105 +22,83 @@ class CredentialsPromotion : public Credentials {
   explicit CredentialsPromotion(LedgerImpl* ledger);
   ~CredentialsPromotion() override;
 
-  void Start(
-      const CredentialsTrigger& trigger,
-      ledger::ResultCallback callback) override;
+  void Start(const CredentialsTrigger& trigger,
+             ledger::LegacyResultCallback callback) override;
 
   void RedeemTokens(const CredentialsRedeem& redeem,
-                    ledger::ResultCallback callback) override;
+                    ledger::LegacyResultCallback callback) override;
 
   void DrainTokens(const CredentialsRedeem& redeem,
                    ledger::PostSuggestionsClaimCallback callback);
 
  private:
-  void OnStart(
-      type::CredsBatchPtr creds,
-      const CredentialsTrigger& trigger,
-      ledger::ResultCallback callback);
+  void OnStart(type::CredsBatchPtr creds,
+               const CredentialsTrigger& trigger,
+               ledger::LegacyResultCallback callback);
 
-  void Blind(
-      const CredentialsTrigger& trigger,
-      ledger::ResultCallback callback) override;
+  void Blind(const CredentialsTrigger& trigger,
+             ledger::LegacyResultCallback callback) override;
 
-  void OnBlind(
-    const type::Result result,
-    const CredentialsTrigger& trigger,
-    ledger::ResultCallback callback);
+  void OnBlind(type::Result result,
+               const CredentialsTrigger& trigger,
+               ledger::LegacyResultCallback callback);
 
-  void Claim(
-      type::CredsBatchPtr creds,
-      const CredentialsTrigger& trigger,
-      ledger::ResultCallback callback) override;
+  void Claim(type::CredsBatchPtr creds,
+             const CredentialsTrigger& trigger,
+             ledger::LegacyResultCallback callback) override;
 
-  void OnClaim(
-      const type::Result result,
-      const std::string& claim_id,
-      const CredentialsTrigger& trigger,
-      ledger::ResultCallback callback);
+  void OnClaim(type::Result result,
+               const std::string& claim_id,
+               const CredentialsTrigger& trigger,
+               ledger::LegacyResultCallback callback);
 
-  void ClaimedSaved(
-      const type::Result result,
-      const CredentialsTrigger& trigger,
-      ledger::ResultCallback callback);
+  void ClaimedSaved(type::Result result,
+                    const CredentialsTrigger& trigger,
+                    ledger::LegacyResultCallback callback);
 
-  void ClaimStatusSaved(
-      const type::Result result,
-      const CredentialsTrigger& trigger,
-      ledger::ResultCallback callback);
+  void ClaimStatusSaved(type::Result result,
+                        const CredentialsTrigger& trigger,
+                        ledger::LegacyResultCallback callback);
 
-  void RetryPreviousStepSaved(
-      const type::Result result,
-      ledger::ResultCallback callback);
+  void RetryPreviousStepSaved(type::Result result,
+                              ledger::LegacyResultCallback callback);
 
-  void FetchSignedCreds(
-      type::PromotionPtr promotion,
-      const CredentialsTrigger& trigger,
-      ledger::ResultCallback callback);
+  void FetchSignedCreds(type::PromotionPtr promotion,
+                        const CredentialsTrigger& trigger,
+                        ledger::LegacyResultCallback callback);
 
-  void OnFetchSignedCreds(
-      const type::Result result,
-      type::CredsBatchPtr batch,
-      const CredentialsTrigger& trigger,
-      ledger::ResultCallback callback);
+  void OnFetchSignedCreds(type::Result result,
+                          type::CredsBatchPtr batch,
+                          const CredentialsTrigger& trigger,
+                          ledger::LegacyResultCallback callback);
 
-  void SignedCredsSaved(
-      const type::Result result,
-      const CredentialsTrigger& trigger,
-      ledger::ResultCallback callback);
+  void SignedCredsSaved(type::Result result,
+                        const CredentialsTrigger& trigger,
+                        ledger::LegacyResultCallback callback);
 
-  void Unblind(
-      type::CredsBatchPtr creds,
-      const CredentialsTrigger& trigger,
-      ledger::ResultCallback callback) override;
+  void Unblind(type::CredsBatchPtr creds,
+               const CredentialsTrigger& trigger,
+               ledger::LegacyResultCallback callback) override;
 
-  void VerifyPublicKey(
-      type::PromotionPtr promotion,
-      const CredentialsTrigger& trigger,
-      const type::CredsBatch& creds,
-      ledger::ResultCallback callback);
+  void VerifyPublicKey(type::PromotionPtr promotion,
+                       const CredentialsTrigger& trigger,
+                       const type::CredsBatch& creds,
+                       ledger::LegacyResultCallback callback);
 
-  void SaveUnblindedCreds(
-      type::PromotionPtr promotion,
-      const type::CredsBatch& creds,
-      const std::vector<std::string>& unblinded_encoded_creds,
-      const CredentialsTrigger& trigger,
-      ledger::ResultCallback callback);
+  void Completed(type::Result result,
+                 const CredentialsTrigger& trigger,
+                 ledger::LegacyResultCallback callback) override;
 
-  void Completed(
-      const type::Result result,
-      const CredentialsTrigger& trigger,
-      ledger::ResultCallback callback) override;
-
-  void OnRedeemTokens(const type::Result result,
+  void OnRedeemTokens(type::Result result,
                       const std::vector<std::string>& token_id_list,
                       const CredentialsRedeem& redeem,
-                      ledger::ResultCallback callback);
+                      ledger::LegacyResultCallback callback);
 
-  void OnDrainTokens(const type::Result result,
-                     std::string drain_id,
+  void OnDrainTokens(ledger::PostSuggestionsClaimCallback callback,
                      const std::vector<std::string>& token_id_list,
                      const CredentialsRedeem& redeem,
-                     ledger::PostSuggestionsClaimCallback callback);
+                     type::Result result,
+                     std::string drain_id);
 
   LedgerImpl* ledger_;  // NOT OWNED
   std::unique_ptr<CredentialsCommon> common_;
@@ -130,4 +108,4 @@ class CredentialsPromotion : public Credentials {
 }  // namespace credential
 }  // namespace ledger
 
-#endif  // BRAVELEDGER_CREDENTIALS_PROMOTION_H_
+#endif  // BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_CREDENTIALS_CREDENTIALS_PROMOTION_H_

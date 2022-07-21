@@ -9,7 +9,6 @@
 
 #include "bat/ads/internal/ads/serving/eligible_ads/pacing/pacing_random_util.h"
 #include "bat/ads/internal/creatives/notification_ads/creative_notification_ad_info.h"
-#include "bat/ads/internal/creatives/notification_ads/creative_notification_ad_info_aliases.h"
 #include "bat/ads/internal/creatives/notification_ads/creative_notification_ad_unittest_util.h"
 #include "testing/gtest/include/gtest/gtest.h"
 

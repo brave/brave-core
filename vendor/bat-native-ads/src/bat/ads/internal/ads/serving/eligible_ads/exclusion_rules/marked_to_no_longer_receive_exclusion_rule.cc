@@ -7,7 +7,7 @@
 
 #include "base/strings/stringprintf.h"
 #include "bat/ads/internal/creatives/creative_ad_info.h"
-#include "bat/ads/internal/segments/segments_util.h"
+#include "bat/ads/internal/segments/segment_util.h"
 
 namespace ads {
 

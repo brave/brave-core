@@ -17,6 +17,7 @@
 #include "content/public/common/isolated_world_ids.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "third_party/re2/src/re2/re2.h"
+#include "ui/base/page_transition_types.h"
 
 namespace playlist {
 
@@ -54,9 +55,6 @@ PlaylistDownloadRequestManager::PlaylistDownloadRequestManager(
   observed_.Observe(media_detector_component_manager_);
 
   media_detector_script_ = media_detector_component_manager_->script();
-
-  // TODO(sko) This line should be removed when the component is ready.
-  media_detector_component_manager_->SetUseLocalScriptForTesting();
 }
 
 PlaylistDownloadRequestManager::~PlaylistDownloadRequestManager() = default;
@@ -68,6 +66,7 @@ void PlaylistDownloadRequestManager::CreateWebContents() {
   // |web_contents_| is created on demand.
   content::WebContents::CreateParams create_params(context_, nullptr);
   web_contents_ = content::WebContents::Create(create_params);
+
   Observe(web_contents_.get());
 }
 

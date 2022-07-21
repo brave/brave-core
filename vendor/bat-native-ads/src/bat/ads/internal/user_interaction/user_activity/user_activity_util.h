@@ -9,9 +9,9 @@
 #include <cstdint>
 #include <string>
 
-#include "bat/ads/internal/user_interaction/user_activity/user_activity_event_info_aliases.h"
+#include "bat/ads/internal/user_interaction/user_activity/user_activity_event_info.h"
 #include "bat/ads/internal/user_interaction/user_activity/user_activity_event_types.h"
-#include "bat/ads/internal/user_interaction/user_activity/user_activity_trigger_info_aliases.h"
+#include "bat/ads/internal/user_interaction/user_activity/user_activity_trigger_info.h"
 
 namespace ads {
 

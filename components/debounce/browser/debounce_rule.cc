@@ -8,14 +8,13 @@
 #include <memory>
 #include <utility>
 #include <vector>
+
 #include "base/base64url.h"
 #include "base/json/json_reader.h"
 #include "base/strings/escape.h"
 #include "base/strings/stringprintf.h"
-
 #include "base/types/expected.h"
 #include "components/prefs/pref_service.h"
-#include "content/public/browser/browser_thread.h"
 #include "extensions/common/url_pattern.h"
 #include "net/base/url_util.h"
 #include "third_party/re2/src/re2/re2.h"

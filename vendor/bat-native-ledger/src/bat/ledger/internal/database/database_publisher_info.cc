@@ -33,7 +33,7 @@ DatabasePublisherInfo::~DatabasePublisherInfo() = default;
 
 void DatabasePublisherInfo::InsertOrUpdate(
     type::PublisherInfoPtr info,
-    ledger::ResultCallback callback) {
+    ledger::LegacyResultCallback callback) {
   if (!info || info->id.empty()) {
     BLOG(1, "Info is empty");
     callback(type::Result::LEDGER_ERROR);
@@ -256,7 +256,8 @@ void DatabasePublisherInfo::OnGetPanelRecord(
   callback(type::Result::LEDGER_OK, std::move(info));
 }
 
-void DatabasePublisherInfo::RestorePublishers(ledger::ResultCallback callback) {
+void DatabasePublisherInfo::RestorePublishers(
+    ledger::LegacyResultCallback callback) {
   auto transaction = type::DBTransaction::New();
   const std::string query = base::StringPrintf(
       "UPDATE %s SET excluded=? WHERE excluded=?",

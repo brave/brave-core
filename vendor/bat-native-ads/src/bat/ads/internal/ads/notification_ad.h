@@ -15,7 +15,7 @@
 #include "bat/ads/internal/ads/serving/notification_ad_serving_observer.h"
 #include "bat/ads/internal/browser/browser_manager_observer.h"
 #include "bat/ads/internal/prefs/pref_manager_observer.h"
-#include "bat/ads/internal/segments/segments_aliases.h"
+#include "bat/ads/internal/segments/segment_alias.h"
 #include "bat/ads/internal/user_interaction/idle_detection/idle_detection_manager_observer.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
 

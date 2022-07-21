@@ -31,9 +31,8 @@ WalletRecover::WalletRecover(LedgerImpl* ledger) :
 
 WalletRecover::~WalletRecover() = default;
 
-void WalletRecover::Start(
-    const std::string& pass_phrase,
-    ledger::ResultCallback callback) {
+void WalletRecover::Start(const std::string& pass_phrase,
+                          ledger::LegacyResultCallback callback) {
   if (pass_phrase.empty()) {
     BLOG(0, "Pass phrase is empty");
     callback(type::Result::LEDGER_ERROR);
@@ -84,12 +83,11 @@ void WalletRecover::Start(
       url_callback);
 }
 
-void WalletRecover::OnRecover(
-    const type::Result result,
-    const std::string& payment_id,
-    const bool legacy_wallet,
-    const std::vector<uint8_t>& new_seed,
-    ledger::ResultCallback callback) {
+void WalletRecover::OnRecover(type::Result result,
+                              const std::string& payment_id,
+                              bool legacy_wallet,
+                              const std::vector<uint8_t>& new_seed,
+                              ledger::LegacyResultCallback callback) {
   if (result != type::Result::LEDGER_OK) {
     callback(result);
     return;

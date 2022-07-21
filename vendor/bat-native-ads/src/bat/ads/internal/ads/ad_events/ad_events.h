@@ -34,12 +34,13 @@ void PurgeExpiredAdEvents(AdEventCallback callback);
 void PurgeOrphanedAdEvents(const mojom::AdType ad_type,
                            AdEventCallback callback);
 
-void RebuildAdEventsFromDatabase();
+void RebuildAdEventHistoryFromDatabase();
 
 void RecordAdEvent(const AdEventInfo& ad_event);
 
-std::vector<base::Time> GetAdEvents(const AdType& ad_type,
-                                    const ConfirmationType& confirmation_type);
+std::vector<base::Time> GetAdEventHistory(
+    const AdType& ad_type,
+    const ConfirmationType& confirmation_type);
 
 }  // namespace ads
 

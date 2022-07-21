@@ -108,15 +108,15 @@
 <translation id="7551864359422178684">आपकी इस ब्राउज़र विंडो में <ph name="NUMBER_OF_TABS"/> टैब खुले हुए हैं.</translation>
 <translation id="2571596981920752023"><ph name="NUMBER_OF_TABS"/> टैब</translation>
 <translation id="2272117088509540883">- Brave सर्च</translation>
-<translation id="2701279958223202597">बेहतर गोपनीयता के साथ स्वतंत्रता से सर्च करने में मदद करता है. Brave सर्च आपको, आपके सवालों या आपके क्लिक को ट्रैक नहीं करता.ौ</translation>
-<translation id="6438467592401259882">बेहतर गोपनीयता के साथ सवतंत्रता से सर्च करने में मदद करता है.</translation>
-<translation id="1688359110799098115">बेहतर गोपनीयता के साथ सवतंत्रता से सर्च करने में मदद करता है</translation>
-<translation id="8579317236683491484">Brave सर्च आपको, आपके सवालों और आपके क्लिक को ट्रैक नहीं करता.</translation>
+<translation id="2701279958223202597">बेहतर प्राइवेसी के साथ स्वतंत्र सर्च करने में मदद करता है. Brave सर्च आपको, आपके सवालों या आपके क्लिक को ट्रैक नहीं करता.</translation>
+<translation id="6438467592401259882">बेहतर प्राइवेसी के साथ स्वतंत्र सर्च करने में मदद करता है.</translation>
+<translation id="1688359110799098115">बेहतर प्राइवेसी के साथ स्वतंत्र सर्च करने में मदद करता है</translation>
+<translation id="8579317236683491484">Brave सर्च आपको, आपके सवालों या आपकी क्लिक को ट्रैक नहीं करता.</translation>
 <translation id="5240031343741051161">Brave सर्च को आज़माएँ</translation>
 <translation id="5026874946691314267">इसे फिर से न दिखाएँँ</translation>
 <translation id="5234764350956374838">खारिज करें</translation>
 <translation id="214744058941501853">"&gt;
-          Brave सर्च कंवर्शन को ख़ारिज करें, इस सलाह को हटाने के लिए एंटर दबाएँ</translation>
+          Brave सर्च में न बदलें, इस सुझाव को हटाने के लिए Enter दबाएँ</translation>
 <translation id="2515126961943087659">Bat विज्ञापन सेवा</translation>
 <translation id="7924918279836988121">Bat खाता सेवाएं</translation>
 <translation id="6040143037577758943">बंद करें</translation>
@@ -197,7 +197,7 @@
 <translation id="6817415381278637662">Brave को अपने डिफ़ॉल्ट ब्राउज़र के तौर पर सेट करें ताकि आपको सभी वेब पेज पर Brave की गोपनीयता सुरक्षा मिले.</translation>
 <translation id="8722651357687610395">Brave को डिफ़ॉल्ट के रूप में सेट करें</translation>
 <translation id="2370739752330685659">शायद बाद में</translation>
-<translation id="961012016278832836">माइक्रोसॉफ़्ट एज लेगसी</translation>
+<translation id="961012016278832836">Microsoft Edge की लेगसी</translation>
 <translation id="6436994631426134065"><ph name="BROWSER_NAME"/> से इम्पोर्ट किया गया.</translation>
 <translation id="9156965752763025780">अगली बार आपके द्वारा क्रोमियम पुन: लॉन्‍च करने पर आपके परिवर्तन प्रभावी होंगे.</translation>
 <translation id="7179921470347911571">अब पुनः प्रस्तुत करें</translation>
@@ -248,9 +248,9 @@ Binance
 <translation id="2906510232093002459">Brave डिफ़ॉल्ट इमेजिस</translation>
 <translation id="2396127686705429331">बुकमार्क आइकन दिखाएँ</translation>
 <translation id="2814998458708016836">विस्तृत एड्रेस बार का उपयोग करें</translation>
-<translation id="4109670531935487117">एड्रेस बार में ऑटोकंप्लिट सुझाव दिखाएँ</translation>
+<translation id="4109670531935487117">एड्रेस बार में ऑटोकंप्लीट के सुझाव दिखाएँ</translation>
 <translation id="2858138569776157458">मुख्य साइटें</translation>
-<translation id="65774893852758517">सुझाई गई साइट</translation>
+<translation id="65774893852758517">सुझाई गईं साइट</translation>
 <translation id="7859704718976024901">ब्राउज़िंग इतिहास</translation>
 <translation id="8820817407110198400">बुकमार्क बार</translation>
 <translation id="6333347122924254968">एड्रेस बार में  Brave Rewards आइकॉन दिखाएं</translation>
@@ -412,7 +412,7 @@ Binance
 <translation id="6285118765755298263">अन्य सर्च इंजन इंडेक्स करें</translation>
 <translation id="919715748352669592">अपने आप उन वेबसाइटों को इंडेक्स करता है जो OpenSearch निर्देशों का पालन करती हैं.</translation>
 <translation id="842628013524824194">सामान्य विंडो - एड्रेस बार में इस्तेमाल किया गया सर्च इंजन</translation>
-<translation id="5324939009884545145">गोपनीय विंडो - एड्रेस बार में इस्तेमाल किया गया सर्च इंजन</translation>
+<translation id="5324939009884545145">प्राइवेट विंडो - एड्रेस बार में इस्तेमाल किया गया सर्च इंजन</translation>
 <translation id="6864914031231797928">एक्सटेंशन के लिए Google लॉगिन की अनुमति दें</translation>
 <translation id="6554397389149987360">ब्राउज़र में स्क्रीन साझा करने और अन्य सुविधाओं के लिए हैंगऑउट के घटकों का उपयोग करें।</translation>
 <translation id="7878791177459550035">मीडिया राउटर ब्राउज़र में कास्ट फीचर इनेबल करता है.</translation>
@@ -512,7 +512,7 @@ Binance
 <translation id="616058968889448209">IPFS सर्विस लांच एरर, <ph name="BEGIN_LINK"/>diagnostic page<ph name="END_LINK"/> पर अधिक जानकारी उपलब्ध है.</translation>
 <translation id="6912148685459054619">'<ph name="KEY_NAME"/>' की इम्पोर्ट नहीं हो पाया</translation>
 <translation id="3364053282600191535">'<ph name="KEY_NAME"/>' की इम्पोर्ट नहीं हो पाया</translation>
-<translation id="5840868269342837751">ध्यान दें : हो सकता है कि नेटवर्क के अनुरोध प्रॉक्सी और DNS सेटिंग का इस्तेमाल न करें.</translation>
+<translation id="5840868269342837751">ध्यान दें : हो सकता है कि नेटवर्क के अनुरोध ब्राउज़र प्रॉक्सी और DNS सेटिंग का इस्तेमाल न करें.</translation>
 <translation id="8275038454117074363">आयात करें</translation>
 <translation id="3654980960391973513">जेनरेट करें</translation>
 <translation id="5531501313997312487">नोड चालू करें</translation>

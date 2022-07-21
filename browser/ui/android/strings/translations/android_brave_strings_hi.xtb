@@ -875,12 +875,12 @@
 <translation id="8643377320501056697">मुख्य साइटों को दिखाएँ</translation>
 <translation id="6471216025161697462"><ph name="VALUE"/> से कनेक्ट किया गया है</translation>
 <translation id="1968852757206592413">ट्रायल</translation>
-<translation id="7733890291091968191">वेब3 के नोटिफ़िकेशन दिखाएँ</translation>
-<translation id="1371627247679035769">\n\n\n\n#### Brave आपको ट्रैक नहीं करता है या ना ही ये जानता है कि आप हमारे ऐप का इस्तेमाल कैसे करते हैं, इसलिए हम नहीं जानते कि आपने वीपीएन कैसे सेट किया है. जिस समस्या का आप सामना कर रहे हैं उसके बारे में जानकारी दें और हम जल्द-से-जल्द इसे हल करने की पूरी कोशिश करेंगे. ####\n\n</translation>
-<translation id="3367162038532116157">\n\nVPN होस्ट का नाम\n <ph name="VALUE"/></translation>
+<translation id="7733890291091968191">Web3 के नोटिफ़िकेशन दिखाएँ</translation>
+<translation id="1371627247679035769">\n\n\n\n#### Brave आपको ट्रैक नहीं करता है या न ही ये जानता है कि आप हमारे ऐप का इस्तेमाल कैसे करते हैं, इसलिए हम नहीं जानते कि आपने VPN कैसे सेट किया है. जिस समस्या का आप सामना कर रहे हैं, उसके बारे में जानकारी दें और हम जल्द-से-जल्द इसे हल करने की पूरी कोशिश करेंगे. ####\n\n</translation>
+<translation id="3367162038532116157">\n\nVPN का होस्टनेम\n <ph name="VALUE"/></translation>
 <translation id="6173438324126027458">\n\nसदस्यता का प्रकार\n <ph name="VALUE"/></translation>
 <translation id="1478875290576741766">\n\nप्लेस्टोर टोकन\n <ph name="VALUE"/></translation>
-<translation id="1403057798797848522">\n\nऐप वर्ज़न\n <ph name="VALUE"/></translation>
+<translation id="1403057798797848522">\n\nऐप का वर्ज़न\n <ph name="VALUE"/></translation>
 <translation id="2282835936933247509">\n\nटाइमज़ोन\n</translation>
 <translation id="8107843365677337047">\n\nनेटवर्क का प्रकार\n</translation>
 <translation id="5334952096674914470">\n\nसेल्युलर सेवा देने वाली कंपनी\n</translation>

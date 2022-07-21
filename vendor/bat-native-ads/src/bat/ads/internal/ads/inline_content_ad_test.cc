@@ -16,9 +16,12 @@
 #include "bat/ads/internal/base/unittest/unittest_mock_util.h"
 #include "bat/ads/internal/creatives/inline_content_ads/creative_inline_content_ad_unittest_util.h"
 #include "bat/ads/internal/history/history_unittest_util.h"
+#include "bat/ads/internal/privacy/p2a/impressions/p2a_impression.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
+
+using ::testing::_;
 
 namespace ads {
 
@@ -83,6 +86,9 @@ TEST_F(BatAdsInlineContentAdIntegrationTest, TriggerServedEvent) {
 
 TEST_F(BatAdsInlineContentAdIntegrationTest, TriggerViewedEvent) {
   // Arrange
+  const std::string name =
+      privacy::p2a::GetAdImpressionNameForAdType(AdType::kInlineContentAd);
+  EXPECT_CALL(*ads_client_mock_, RecordP2AEvent(name, _));
 
   // Act
   GetAds()->TriggerInlineContentAdEvent(

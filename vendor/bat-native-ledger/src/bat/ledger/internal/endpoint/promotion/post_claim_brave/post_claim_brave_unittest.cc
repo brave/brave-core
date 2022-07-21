@@ -63,11 +63,10 @@ TEST_F(PostClaimBraveTest, ServerOK) {
             std::move(callback).Run(response);
           }));
 
-  claim_->Request(
-      "83b3b77b-e7c3-455b-adda-e476fa0656d2",
-      [](const type::Result result) {
-        EXPECT_EQ(result, type::Result::LEDGER_OK);
-      });
+  claim_->Request("83b3b77b-e7c3-455b-adda-e476fa0656d2",
+                  base::BindOnce([](type::Result result) {
+                    EXPECT_EQ(result, type::Result::LEDGER_OK);
+                  }));
 }
 
 TEST_F(PostClaimBraveTest, ServerError400) {
@@ -81,11 +80,10 @@ TEST_F(PostClaimBraveTest, ServerError400) {
             std::move(callback).Run(response);
           }));
 
-  claim_->Request(
-      "83b3b77b-e7c3-455b-adda-e476fa0656d2",
-      [](const type::Result result) {
-        EXPECT_EQ(result, type::Result::LEDGER_ERROR);
-      });
+  claim_->Request("83b3b77b-e7c3-455b-adda-e476fa0656d2",
+                  base::BindOnce([](type::Result result) {
+                    EXPECT_EQ(result, type::Result::LEDGER_ERROR);
+                  }));
 }
 
 TEST_F(PostClaimBraveTest, ServerError404) {
@@ -99,11 +97,10 @@ TEST_F(PostClaimBraveTest, ServerError404) {
             std::move(callback).Run(response);
           }));
 
-  claim_->Request(
-      "83b3b77b-e7c3-455b-adda-e476fa0656d2",
-      [](const type::Result result) {
-        EXPECT_EQ(result, type::Result::NOT_FOUND);
-      });
+  claim_->Request("83b3b77b-e7c3-455b-adda-e476fa0656d2",
+                  base::BindOnce([](type::Result result) {
+                    EXPECT_EQ(result, type::Result::NOT_FOUND);
+                  }));
 }
 
 TEST_F(PostClaimBraveTest, ServerError409) {
@@ -117,11 +114,10 @@ TEST_F(PostClaimBraveTest, ServerError409) {
             std::move(callback).Run(response);
           }));
 
-  claim_->Request(
-      "83b3b77b-e7c3-455b-adda-e476fa0656d2",
-      [](const type::Result result) {
-        EXPECT_EQ(result, type::Result::ALREADY_EXISTS);
-      });
+  claim_->Request("83b3b77b-e7c3-455b-adda-e476fa0656d2",
+                  base::BindOnce([](type::Result result) {
+                    EXPECT_EQ(result, type::Result::ALREADY_EXISTS);
+                  }));
 }
 
 TEST_F(PostClaimBraveTest, ServerError500) {
@@ -135,11 +131,10 @@ TEST_F(PostClaimBraveTest, ServerError500) {
             std::move(callback).Run(response);
           }));
 
-  claim_->Request(
-      "83b3b77b-e7c3-455b-adda-e476fa0656d2",
-      [](const type::Result result) {
-        EXPECT_EQ(result, type::Result::LEDGER_ERROR);
-      });
+  claim_->Request("83b3b77b-e7c3-455b-adda-e476fa0656d2",
+                  base::BindOnce([](type::Result result) {
+                    EXPECT_EQ(result, type::Result::LEDGER_ERROR);
+                  }));
 }
 
 TEST_F(PostClaimBraveTest, ServerErrorRandom) {
@@ -153,11 +148,10 @@ TEST_F(PostClaimBraveTest, ServerErrorRandom) {
             std::move(callback).Run(response);
           }));
 
-  claim_->Request(
-      "83b3b77b-e7c3-455b-adda-e476fa0656d2",
-      [](const type::Result result) {
-        EXPECT_EQ(result, type::Result::LEDGER_ERROR);
-      });
+  claim_->Request("83b3b77b-e7c3-455b-adda-e476fa0656d2",
+                  base::BindOnce([](type::Result result) {
+                    EXPECT_EQ(result, type::Result::LEDGER_ERROR);
+                  }));
 }
 
 }  // namespace promotion

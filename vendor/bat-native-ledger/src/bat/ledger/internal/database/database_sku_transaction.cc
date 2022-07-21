@@ -31,7 +31,7 @@ DatabaseSKUTransaction::~DatabaseSKUTransaction() = default;
 
 void DatabaseSKUTransaction::InsertOrUpdate(
     type::SKUTransactionPtr transaction,
-    ledger::ResultCallback callback) {
+    ledger::LegacyResultCallback callback) {
   if (!transaction) {
     BLOG(1, "Transcation is null");
     callback(type::Result::LEDGER_ERROR);
@@ -70,7 +70,7 @@ void DatabaseSKUTransaction::InsertOrUpdate(
 void DatabaseSKUTransaction::SaveExternalTransaction(
     const std::string& transaction_id,
     const std::string& external_transaction_id,
-    ledger::ResultCallback callback) {
+    ledger::LegacyResultCallback callback) {
   if (transaction_id.empty() || external_transaction_id.empty()) {
     BLOG(1, "Data is empty " <<
         transaction_id << "/" << external_transaction_id);

@@ -14,10 +14,10 @@ struct CatalogInfo;
 
 class CatalogObserver : public base::CheckedObserver {
  public:
-  // Invoked when the catalog has been updated
+  // Invoked when the catalog has updated.
   virtual void OnDidUpdateCatalog(const CatalogInfo& catalog) {}
 
-  // Invoked when fetching the catalog fails
+  // Invoked when the catalog failes to update.
   virtual void OnFailedToUpdateCatalog() {}
 
  protected:

@@ -6,7 +6,7 @@
 #include "bat/ads/internal/user_interaction/user_activity/user_activity_scoring.h"
 
 #include "bat/ads/internal/base/unittest/unittest_base.h"
-#include "bat/ads/internal/user_interaction/user_activity/user_activity_trigger_info_aliases.h"
+#include "bat/ads/internal/user_interaction/user_activity/user_activity_trigger_info.h"
 #include "bat/ads/internal/user_interaction/user_activity/user_activity_util.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*

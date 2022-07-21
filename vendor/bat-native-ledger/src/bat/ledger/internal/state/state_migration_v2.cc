@@ -21,7 +21,7 @@ StateMigrationV2::StateMigrationV2(LedgerImpl* ledger) :
 
 StateMigrationV2::~StateMigrationV2() = default;
 
-void StateMigrationV2::Migrate(ledger::ResultCallback callback) {
+void StateMigrationV2::Migrate(ledger::LegacyResultCallback callback) {
   legacy_state_ =
       std::make_unique<braveledger_bat_state::LegacyBatState>(ledger_);
 
@@ -33,9 +33,8 @@ void StateMigrationV2::Migrate(ledger::ResultCallback callback) {
   legacy_state_->Load(load_callback);
 }
 
-void StateMigrationV2::OnLoadState(
-    const type::Result result,
-    ledger::ResultCallback callback) {
+void StateMigrationV2::OnLoadState(type::Result result,
+                                   ledger::LegacyResultCallback callback) {
   if (result == type::Result::NO_LEDGER_STATE) {
     BLOG(1, "No ledger state");
     callback(type::Result::LEDGER_OK);

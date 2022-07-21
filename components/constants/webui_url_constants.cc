@@ -24,6 +24,8 @@ const char kBraveUIWebcompatReporterURL[] = "chrome://webcompat/";
 const char kBraveUITipURL[] = "chrome://tip/";
 const char kBraveUIWalletURL[] = "chrome://wallet/";
 const char kBraveUIWalletOnboardingURL[] = "brave://wallet/crypto/onboarding";
+const char kBraveUIWalletAccountCreationURL[] =
+    "brave://wallet/crypto/accounts/add-account/create/";
 const char kBraveUIWalletPanelURL[] = "chrome://wallet-panel.top-chrome/";
 const char kWalletPanelHost[] = "wallet-panel.top-chrome";
 const char kVPNPanelURL[] = "chrome-untrusted://vpn-panel.top-chrome/";
@@ -43,3 +45,5 @@ const char kSidebarBookmarksHost[] = "sidebar-bookmarks.top-chrome";
 const char kFederatedInternalsURL[] = "brave://federated-internals";
 const char kFederatedInternalsHost[] = "federated-internals";
 const char kContentFiltersPath[] = "shields/filters";
+const char kPlaylistHost[] = "playlist";
+const char kPlaylistURL[] = "chrome://playlist/";

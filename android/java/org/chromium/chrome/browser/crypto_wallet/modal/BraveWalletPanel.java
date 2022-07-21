@@ -24,6 +24,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.view.menu.MenuBuilder;
@@ -32,6 +33,7 @@ import androidx.lifecycle.Observer;
 import org.chromium.base.SysUtils;
 import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.AssetRatioService;
+import org.chromium.brave_wallet.mojom.BlockchainToken;
 import org.chromium.brave_wallet.mojom.BraveWalletConstants;
 import org.chromium.brave_wallet.mojom.BraveWalletService;
 import org.chromium.brave_wallet.mojom.CoinType;
@@ -98,6 +100,10 @@ public class BraveWalletPanel implements DialogInterface {
                         updateAccountInfo(accountInfo.address);
                     });
                 });
+    };
+
+    private final Observer<NetworkInfo> mDefaultNetworkObserver = networkInfo -> {
+        mBtnSelectedNetwork.setText(Utils.getShortNameOfNetwork(networkInfo.chainName));
     };
 
     public interface BraveWalletPanelServices {
@@ -231,10 +237,6 @@ public class BraveWalletPanel implements DialogInterface {
 
     public void resume() {
         setUpObservers();
-        if (isShowing()) {
-            updateState();
-            //            updateStatus();
-        }
     }
 
     public void pause() {
@@ -245,26 +247,19 @@ public class BraveWalletPanel implements DialogInterface {
         return mPopupWindow != null && mPopupWindow.isShowing();
     }
 
-    private void updateState() {
-        mBraveWalletPanelServices.getJsonRpcService().getChainId(CoinType.ETH, chainId -> {
-            mBraveWalletPanelServices.getJsonRpcService().getAllNetworks(CoinType.ETH, chains -> {
-                NetworkInfo[] customNetworks = Utils.getCustomNetworks(chains);
-                String strNetwork =
-                        Utils.getNetworkShortText(mActivity, chainId, customNetworks).toString();
-                mBtnSelectedNetwork.setText(strNetwork);
-            });
-        });
-    }
-
     private void setUpObservers() {
         cleanUpObservers();
         mWalletModel.getKeyringModel().getSelectedAccountOrAccountPerOrigin().observeForever(
                 mAccountInfoObserver);
+        mWalletModel.getCryptoModel().getNetworkModel().mDefaultNetwork.observeForever(
+                mDefaultNetworkObserver);
     }
 
     private void cleanUpObservers() {
         mWalletModel.getKeyringModel().getSelectedAccountOrAccountPerOrigin().removeObserver(
                 mAccountInfoObserver);
+        mWalletModel.getCryptoModel().getNetworkModel().mDefaultNetwork.removeObserver(
+                mDefaultNetworkObserver);
     }
 
     private void updateAccountInfo(String selectedAccount) {
@@ -302,13 +297,15 @@ public class BraveWalletPanel implements DialogInterface {
         if (selectedAccount.length == 0) {
             return;
         }
-        mBraveWalletPanelServices.getJsonRpcService().getChainId(CoinType.ETH, chainId -> {
+        mBraveWalletPanelServices.getJsonRpcService().getNetwork(CoinType.ETH, selectedNetwork -> {
             mBraveWalletPanelServices.getJsonRpcService().getAllNetworks(CoinType.ETH, chains -> {
                 SingleTokenBalanceHelper singleTokenBalanceHelper = new SingleTokenBalanceHelper(
                         mBraveWalletPanelServices.getAssetRatioService(),
                         mBraveWalletPanelServices.getJsonRpcService());
-                String chainSymbol = "ETH";
-                int chainDecimals = 18;
+                BlockchainToken nativeAsset = Utils.makeNetworkAsset(selectedNetwork);
+                final String chainId = selectedNetwork.chainId;
+                String chainSymbol = nativeAsset.symbol;
+                int chainDecimals = nativeAsset.decimals;
                 for (NetworkInfo chain : chains) {
                     if (chainId.equals(chain.chainId) && Utils.isCustomNetwork(chainId)) {
                         chainSymbol = chain.symbol;
@@ -385,8 +382,14 @@ public class BraveWalletPanel implements DialogInterface {
                 activity.startActivity(new Intent(activity, AccountSelectorActivity.class));
             }
         });
-        updateState();
+        mBtnSelectedNetwork.setOnLongClickListener(v -> {
+            NetworkInfo networkInfo =
+                    mWalletModel.getCryptoModel().getNetworkModel().mDefaultNetwork.getValue();
+            if (networkInfo != null) {
+                Toast.makeText(mActivity, networkInfo.chainName, Toast.LENGTH_SHORT).show();
+            }
+            return true;
+        });
         setUpObservers();
-        //        updateStatus();
     }
 }

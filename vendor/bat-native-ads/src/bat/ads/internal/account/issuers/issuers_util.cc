@@ -9,7 +9,6 @@
 
 #include "base/containers/flat_map.h"
 #include "bat/ads/internal/account/issuers/issuer_info.h"
-#include "bat/ads/internal/account/issuers/issuer_info_aliases.h"
 #include "bat/ads/internal/account/issuers/issuers_info.h"
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/deprecated/confirmations/confirmation_state_manager.h"

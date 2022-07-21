@@ -20,7 +20,7 @@ StateMigrationV1::StateMigrationV1(LedgerImpl* ledger) :
 
 StateMigrationV1::~StateMigrationV1() = default;
 
-void StateMigrationV1::Migrate(ledger::ResultCallback callback) {
+void StateMigrationV1::Migrate(ledger::LegacyResultCallback callback) {
   legacy_publisher_ =
       std::make_unique<publisher::LegacyPublisherState>(ledger_);
 
@@ -32,9 +32,8 @@ void StateMigrationV1::Migrate(ledger::ResultCallback callback) {
   legacy_publisher_->Load(load_callback);
 }
 
-void StateMigrationV1::OnLoadState(
-    const type::Result result,
-    ledger::ResultCallback callback) {
+void StateMigrationV1::OnLoadState(type::Result result,
+                                   ledger::LegacyResultCallback callback) {
   if (result == type::Result::NO_PUBLISHER_STATE) {
     BLOG(1, "No publisher state");
     ledger_->publisher()->CalcScoreConsts(
@@ -93,8 +92,8 @@ void StateMigrationV1::OnLoadState(
 }
 
 void StateMigrationV1::BalanceReportsSaved(
-    const type::Result result,
-    ledger::ResultCallback callback) {
+    type::Result result,
+    ledger::LegacyResultCallback callback) {
   if (result != type::Result::LEDGER_OK) {
     BLOG(0, "Balance report save failed");
     callback(result);
@@ -105,7 +104,7 @@ void StateMigrationV1::BalanceReportsSaved(
 }
 
 void StateMigrationV1::SaveProcessedPublishers(
-    ledger::ResultCallback callback) {
+    ledger::LegacyResultCallback callback) {
   auto save_callback = std::bind(&StateMigrationV1::ProcessedPublisherSaved,
     this,
     _1,
@@ -117,8 +116,8 @@ void StateMigrationV1::SaveProcessedPublishers(
 }
 
 void StateMigrationV1::ProcessedPublisherSaved(
-    const type::Result result,
-    ledger::ResultCallback callback) {
+    type::Result result,
+    ledger::LegacyResultCallback callback) {
   if (result != type::Result::LEDGER_OK) {
     BLOG(0, "Processed publisher save failed");
     callback(result);

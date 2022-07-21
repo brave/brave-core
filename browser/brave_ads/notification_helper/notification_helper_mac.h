@@ -15,10 +15,9 @@ class NotificationHelperMac
     : public NotificationHelper,
       public base::SupportsWeakPtr<NotificationHelperMac> {
  public:
-  ~NotificationHelperMac() override;
-
   NotificationHelperMac(const NotificationHelperMac&) = delete;
   NotificationHelperMac& operator=(const NotificationHelperMac&) = delete;
+  ~NotificationHelperMac() override;
 
  protected:
   friend class NotificationHelperHolder;
@@ -28,10 +27,9 @@ class NotificationHelperMac
  private:
   // NotificationHelper:
   bool CanShowNativeNotifications() override;
+  bool CanShowNativeNotificationsWhileBrowserIsBackgrounded() const override;
 
-  bool CanShowBackgroundNotifications() const override;
-
-  bool ShowMyFirstNotificationAd() override;
+  bool ShowOnboardingNotification() override;
 };
 
 }  // namespace brave_ads

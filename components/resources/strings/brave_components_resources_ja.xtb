@@ -239,7 +239,7 @@
 <translation id="1911900517212490188">入力された回復キーはもうサポートされていません。<ph name="BEGIN_LINK"/>こちら<ph name="END_LINK"/>に進んで、新しいキーを取得してください。</translation>
 <translation id="7583327070390027131">次の毎月のチップ日</translation>
 <translation id="6231182869178328516">Braveでチップを送りました！ <ph name="NAME"/> https://brave.com/ja/tips/</translation>
-<translation id="5916536234616514390"><ph name="HASHTAG"/>Braveでは、クリエイターをサポートできるので気に入っています！ちょうど今、<ph name="NAME"/>に<ph name="HASHTAG2"/>BATのチップを送信しました。<ph name="DATE"/>までに https://creators.brave.com で確認すれば、BATを手に入れることができるのです！</translation>
+<translation id="5916536234616514390"><ph name="HASHTAG"/>Brave でクリエイターをサポートできて最高です！<ph name="NAME"/>に<ph name="HASHTAG2"/>BATのチップを送信したので、<ph name="DATE"/>までに https://creators.brave.com で認証してBATを手に入れてください！</translation>
 <translation id="8404935570206006581">TipWithBrave</translation>
 <translation id="3082557070674409251">クリック済み</translation>
 <translation id="7119308337584989771">却下済み</translation>
@@ -725,7 +725,7 @@
 <translation id="4780526507945807546">BraveローカルIPFSノードを使用する</translation>
 <translation id="8148464361648742409">パブリックゲートウェイを使用</translation>
 <translation id="5123478056123923857">IPFS (惑星間ファイルシステム) はP2Pデータストレージおよびデータ配信用のパブリックネットワークです。このプロトコルはHTTP（S）とは異なる仕方でプライバシーが考慮されています。</translation>
-<translation id="1216911189668016151">お使いのコンピューターはパブリックネットワークに寄与しますが、お客様のIPアドレスと、現在リクエストまたは提供しているコンテンツが公開される可能性があります。IPFSを介してリクエストするコンテンツは提供前に検証されます。ネットワークリクエストは、ブラウザのプロキシやDNS設定を使用しない場合があります。</translation>
+<translation id="1216911189668016151">お使いのコンピューターでパブリックネットワークに貢献すると、お客様のIPアドレスと、現在リクエストまたは提供しているコンテンツが公開される可能性があります。IPFSを介してリクエストするコンテンツは配信される前に検証されます。ネットワークリクエストは、ブラウザのプロキシやDNS設定を使用しない場合があります。</translation>
 <translation id="8664689531113048642">あなたのIPアドレスとあなたがリクエストしているコンテンツを、潜在的な第三者のオブザーバーから保護しますが、パブリックゲートウェイ・オペレーターからは保護しません。ゲートウェイ・オペレーターはゲートウェイを介してあなたに提供されるコンテンツがあなたがリクエストしたコンテンツであることを確保することに責任を負います。また、あなたのコンピューターはパブリックIPFSネットワークに寄与しません。</translation>
 <translation id="3977809385703587108">以下で設定を再度変更できます:</translation>
 <translation id="3340978935015468852">設定</translation>
