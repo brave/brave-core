@@ -11,7 +11,8 @@ import {
   NewUnapprovedTxAdded,
   UnapprovedTxUpdated,
   TransactionStatusChanged,
-  DefaultWalletChanged,
+  DefaultEthereumWalletChanged,
+  DefaultSolanaWalletChanged,
   DefaultBaseCurrencyChanged,
   DefaultBaseCryptocurrencyChanged,
   SetUserAssetVisiblePayloadType,
@@ -95,7 +96,8 @@ export const approveTransaction = createAction<BraveWallet.TransactionInfo>('app
 export const rejectTransaction = createAction<BraveWallet.TransactionInfo>('rejectTransaction')
 export const rejectAllTransactions = createAction('rejectAllTransactions')
 export const setAccountTransactions = createAction<AccountTransactions>('setAccountTransactions')
-export const defaultWalletUpdated = createAction<BraveWallet.DefaultWallet>('defaultWalletUpdated')
+export const defaultEthereumWalletUpdated = createAction<BraveWallet.DefaultWallet>('defaultEthereumWalletUpdated')
+export const defaultSolanaWalletUpdated = createAction<BraveWallet.DefaultWallet>('defaultSolanaWalletUpdated')
 export const setSelectedAccount = createAction<WalletAccountType>('setSelectedAccount')
 export const activeOriginChanged = createAction<BraveWallet.OriginInfo>('activeOriginChanged')
 export const refreshGasEstimates = createAction<BraveWallet.TransactionInfo>('refreshGasEstimates')
@@ -104,7 +106,8 @@ export const setSolFeeEstimates = createAction<SolFeeEstimates>('setEstimatedSol
 export const updateUnapprovedTransactionGasFields = createAction<UpdateUnapprovedTransactionGasFieldsType>('updateUnapprovedTransactionGasFields')
 export const updateUnapprovedTransactionSpendAllowance = createAction<UpdateUnapprovedTransactionSpendAllowanceType>('updateUnapprovedTransactionSpendAllowance')
 export const updateUnapprovedTransactionNonce = createAction<UpdateUnapprovedTransactionNonceType>('updateUnapprovedTransactionNonce')
-export const defaultWalletChanged = createAction<DefaultWalletChanged>('defaultWalletChanged')
+export const defaultEthereumWalletChanged = createAction<DefaultEthereumWalletChanged>('defaultEthereumWalletChanged')
+export const defaultSolanaWalletChanged = createAction<DefaultSolanaWalletChanged>('defaultSolanaWalletChanged')
 export const defaultBaseCurrencyChanged = createAction<DefaultBaseCurrencyChanged>('defaultBaseCurrencyChanged')
 export const defaultBaseCryptocurrencyChanged = createAction<DefaultBaseCryptocurrencyChanged>('defaultBaseCryptocurrencyChanged')
 export const setSitePermissions = createAction<SitePermissionsPayloadType>('setSitePermissions')

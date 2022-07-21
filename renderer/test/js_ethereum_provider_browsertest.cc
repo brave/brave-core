@@ -102,8 +102,9 @@ class JSEthereumProviderBrowserTest : public InProcessBrowserTest {
 };
 
 IN_PROC_BROWSER_TEST_F(JSEthereumProviderBrowserTest, AttachOnReload) {
-  brave_wallet::SetDefaultWallet(browser()->profile()->GetPrefs(),
-                                 brave_wallet::mojom::DefaultWallet::None);
+  brave_wallet::SetDefaultEthereumWallet(
+      browser()->profile()->GetPrefs(),
+      brave_wallet::mojom::DefaultWallet::None);
   const GURL url = https_server_.GetURL("/simple.html");
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
 
@@ -112,7 +113,7 @@ IN_PROC_BROWSER_TEST_F(JSEthereumProviderBrowserTest, AttachOnReload) {
                   .error.find("Cannot read properties of undefined") !=
               std::string::npos);
   EXPECT_EQ(browser()->tab_strip_model()->GetTabCount(), 1);
-  brave_wallet::SetDefaultWallet(
+  brave_wallet::SetDefaultEthereumWallet(
       browser()->profile()->GetPrefs(),
       brave_wallet::mojom::DefaultWallet::BraveWallet);
   ReloadAndWaitForLoadStop();
@@ -124,7 +125,7 @@ IN_PROC_BROWSER_TEST_F(JSEthereumProviderBrowserTest, AttachOnReload) {
   std::string overwrite = "window.ethereum = ['test'];window.ethereum[0]";
   EXPECT_EQ(content::EvalJs(main_frame(), overwrite).error, "");
   ASSERT_TRUE(content::EvalJs(main_frame(), command).ExtractBool());
-  brave_wallet::SetDefaultWallet(
+  brave_wallet::SetDefaultEthereumWallet(
       browser()->profile()->GetPrefs(),
       brave_wallet::mojom::DefaultWallet::BraveWalletPreferExtension);
   ReloadAndWaitForLoadStop();
@@ -134,8 +135,9 @@ IN_PROC_BROWSER_TEST_F(JSEthereumProviderBrowserTest, AttachOnReload) {
 
 IN_PROC_BROWSER_TEST_F(JSEthereumProviderBrowserTest,
                        DoNotAttachToChromePages) {
-  brave_wallet::SetDefaultWallet(browser()->profile()->GetPrefs(),
-                                 brave_wallet::mojom::DefaultWallet::None);
+  brave_wallet::SetDefaultEthereumWallet(
+      browser()->profile()->GetPrefs(),
+      brave_wallet::mojom::DefaultWallet::None);
   ASSERT_TRUE(
       ui_test_utils::NavigateToURL(browser(), GURL("chrome://newtab/")));
 
@@ -146,7 +148,7 @@ IN_PROC_BROWSER_TEST_F(JSEthereumProviderBrowserTest,
                   .error.find("Cannot read properties of undefined") !=
               std::string::npos);
   EXPECT_EQ(browser()->tab_strip_model()->GetTabCount(), 1);
-  brave_wallet::SetDefaultWallet(
+  brave_wallet::SetDefaultEthereumWallet(
       browser()->profile()->GetPrefs(),
       brave_wallet::mojom::DefaultWallet::BraveWallet);
   ReloadAndWaitForLoadStop();
@@ -201,7 +203,7 @@ IN_PROC_BROWSER_TEST_F(JSEthereumProviderBrowserTest, IsMetaMaskWritable) {
 }
 
 IN_PROC_BROWSER_TEST_F(JSEthereumProviderBrowserTest, NonConfigurable) {
-  brave_wallet::SetDefaultWallet(
+  brave_wallet::SetDefaultEthereumWallet(
       browser()->profile()->GetPrefs(),
       brave_wallet::mojom::DefaultWallet::BraveWallet);
   const GURL url = https_server_.GetURL("/simple.html");

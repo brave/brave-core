@@ -53,7 +53,8 @@ export const Container = () => {
     isWalletBackedUp,
     hasIncorrectPassword,
     hasInitialized,
-    defaultWallet,
+    defaultEthereumWallet,
+    defaultSolanaWallet,
     isMetaMaskInstalled
   } = useSelector(({ wallet }: { wallet: WalletState }) => wallet)
 
@@ -235,7 +236,8 @@ export const Container = () => {
               onUpdateAccountName={onUpdateAccountName}
               onDoneViewingPrivateKey={onDoneViewingPrivateKey}
               onViewPrivateKey={onViewPrivateKey}
-              defaultWallet={defaultWallet}
+              defaultEthereumWallet={defaultEthereumWallet}
+              defaultSolanaWallet={defaultSolanaWallet}
               onOpenWalletSettings={onOpenWalletSettings}
               isMetaMaskInstalled={isMetaMaskInstalled}
             />

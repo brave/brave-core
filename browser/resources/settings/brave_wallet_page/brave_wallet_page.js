@@ -46,7 +46,11 @@ class SettingsBraveWalletPage extends SettingsBraveWalletPageBase {
     super.ready()
     this.browserProxy_.getWeb3ProviderList().then(list => {
       // TODO(petemill): provide wallets type
-      this.wallets_ = JSON.parse(list)
+      this.ethereum_provider_options_ = JSON.parse(list)
+    });
+    this.browserProxy_.getSolanaProviderOptions().then(list => {
+      // TODO(petemill): provide wallets type
+      this.solana_provider_options_ = list
     });
     this.browserProxy_.isNativeWalletEnabled().then(val => {
       this.isNativeWalletEnabled_ = val

@@ -114,7 +114,10 @@ IN_PROC_BROWSER_TEST_F(BraveProfilePrefsBrowserTest, MiscBravePrefs) {
   EXPECT_FALSE(chrome_test_utils::GetProfile(this)->GetPrefs()->GetBoolean(
       kERCOptedIntoCryptoWallets));
 #endif
-  EXPECT_EQ(brave_wallet::GetDefaultWallet(
+  EXPECT_EQ(brave_wallet::GetDefaultEthereumWallet(
+                chrome_test_utils::GetProfile(this)->GetPrefs()),
+            brave_wallet::mojom::DefaultWallet::BraveWalletPreferExtension);
+  EXPECT_EQ(brave_wallet::GetDefaultSolanaWallet(
                 chrome_test_utils::GetProfile(this)->GetPrefs()),
             brave_wallet::mojom::DefaultWallet::BraveWalletPreferExtension);
   EXPECT_TRUE(chrome_test_utils::GetProfile(this)->GetPrefs()->GetBoolean(

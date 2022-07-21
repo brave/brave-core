@@ -44,7 +44,9 @@ class BraveWalletP3A : public mojom::BraveWalletServiceObserver,
 
   // BraveWalletServiceObserver
   void OnActiveOriginChanged(mojom::OriginInfoPtr origin_info) override {}
-  void OnDefaultWalletChanged(
+  void OnDefaultEthereumWalletChanged(
+      brave_wallet::mojom::DefaultWallet wallet) override;
+  void OnDefaultSolanaWalletChanged(
       brave_wallet::mojom::DefaultWallet wallet) override;
   void OnDefaultBaseCurrencyChanged(const std::string& currency) override {}
   void OnDefaultBaseCryptocurrencyChanged(

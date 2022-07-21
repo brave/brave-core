@@ -1072,8 +1072,11 @@ interface BraveWalletServiceObserver {
   // Fired when the active origin is changed along with its eTLD+1
   OnActiveOriginChanged(OriginInfo origin_info);
 
-  // Fired when the default wallet setting changes
-  OnDefaultWalletChanged(DefaultWallet wallet);
+  // Fired when the default Ethereum wallet setting changes
+  OnDefaultEthereumWalletChanged(DefaultWallet wallet);
+
+  // Fired when the default Solana wallet setting changes
+  OnDefaultSolanaWalletChanged(DefaultWallet wallet);
 
   // Fired when the default base currency changes (e.g. USD -> CAD)
   OnDefaultBaseCurrencyChanged(string currency);
@@ -1172,10 +1175,12 @@ interface BraveWalletService {
     => (bool success, string? errorMessage);
 
   // Obtains the default wallet setting
-  GetDefaultWallet() => (DefaultWallet default_wallet);
+  GetDefaultEthereumWallet() => (DefaultWallet default_wallet);
+  GetDefaultSolanaWallet() => (DefaultWallet default_wallet);
 
   // Modifies the default wallet setting
-  SetDefaultWallet(DefaultWallet default_wallet);
+  SetDefaultEthereumWallet(DefaultWallet default_wallet);
+  SetDefaultSolanaWallet(DefaultWallet default_wallet);
 
   // Obtains the default base currency
   GetDefaultBaseCurrency() => (string currency);

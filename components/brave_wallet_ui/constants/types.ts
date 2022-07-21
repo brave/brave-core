@@ -224,7 +224,8 @@ export interface WalletState {
   networkList: BraveWallet.NetworkInfo[]
   transactionSpotPrices: BraveWallet.AssetPrice[]
   addUserAssetError: boolean
-  defaultWallet: BraveWallet.DefaultWallet
+  defaultEthereumWallet: BraveWallet.DefaultWallet
+  defaultSolanaWallet: BraveWallet.DefaultWallet
   activeOrigin: BraveWallet.OriginInfo
   solFeeEstimates?: SolFeeEstimates
   gasEstimates?: BraveWallet.GasEstimation1559

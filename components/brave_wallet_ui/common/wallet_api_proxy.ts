@@ -90,8 +90,11 @@ export default class WalletApiProxy {
       onActiveOriginChanged: function (originInfo) {
         store.dispatch(WalletActions.activeOriginChanged(originInfo))
       },
-      onDefaultWalletChanged: function (defaultWallet) {
-        store.dispatch(WalletActions.defaultWalletChanged({ defaultWallet }))
+      onDefaultEthereumWalletChanged: function (defaultWallet) {
+        store.dispatch(WalletActions.defaultEthereumWalletChanged({ defaultWallet }))
+      },
+      onDefaultSolanaWalletChanged: function (defaultWallet) {
+        store.dispatch(WalletActions.defaultSolanaWalletChanged({ defaultWallet }))
       },
       onDefaultBaseCurrencyChanged: function (currency) {
         store.dispatch(WalletActions.defaultBaseCurrencyChanged({ currency }))

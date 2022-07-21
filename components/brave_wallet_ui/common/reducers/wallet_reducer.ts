@@ -76,7 +76,8 @@ const defaultState: WalletState = {
   networkList: [],
   transactionSpotPrices: [],
   addUserAssetError: false,
-  defaultWallet: BraveWallet.DefaultWallet.BraveWalletPreferExtension,
+  defaultEthereumWallet: BraveWallet.DefaultWallet.BraveWalletPreferExtension,
+  defaultSolanaWallet: BraveWallet.DefaultWallet.BraveWalletPreferExtension,
   activeOrigin: {
     eTldPlusOne: '',
     originSpec: '',
@@ -376,10 +377,17 @@ export const createWalletReducer = (initialState: WalletState) => {
     }
   })
 
-  reducer.on(WalletActions.defaultWalletUpdated, (state: WalletState, payload: BraveWallet.DefaultWallet): WalletState => {
+  reducer.on(WalletActions.defaultEthereumWalletUpdated, (state: WalletState, payload: BraveWallet.DefaultWallet): WalletState => {
     return {
       ...state,
-      defaultWallet: payload
+      defaultEthereumWallet: payload
+    }
+  })
+
+  reducer.on(WalletActions.defaultSolanaWalletUpdated, (state: WalletState, payload: BraveWallet.DefaultWallet): WalletState => {
+    return {
+      ...state,
+      defaultSolanaWallet: payload
     }
   })
 

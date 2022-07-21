@@ -1057,15 +1057,29 @@ std::string GetNetworkId(PrefService* prefs,
   return id;
 }
 
-mojom::DefaultWallet GetDefaultWallet(PrefService* prefs) {
+mojom::DefaultWallet GetDefaultEthereumWallet(PrefService* prefs) {
   return static_cast<brave_wallet::mojom::DefaultWallet>(
-      prefs->GetInteger(kDefaultWallet2));
+      prefs->GetInteger(kDefaultEthereumWallet));
 }
 
-void SetDefaultWallet(PrefService* prefs, mojom::DefaultWallet default_wallet) {
+mojom::DefaultWallet GetDefaultSolanaWallet(PrefService* prefs) {
+  return static_cast<brave_wallet::mojom::DefaultWallet>(
+      prefs->GetInteger(kDefaultSolanaWallet));
+}
+
+void SetDefaultEthereumWallet(PrefService* prefs,
+                              mojom::DefaultWallet default_wallet) {
   // We should not be using this value anymore
   DCHECK(default_wallet != mojom::DefaultWallet::AskDeprecated);
-  prefs->SetInteger(kDefaultWallet2, static_cast<int>(default_wallet));
+  prefs->SetInteger(kDefaultEthereumWallet, static_cast<int>(default_wallet));
+}
+
+void SetDefaultSolanaWallet(PrefService* prefs,
+                            mojom::DefaultWallet default_wallet) {
+  // We should not be using these values anymore
+  DCHECK(default_wallet != mojom::DefaultWallet::AskDeprecated);
+  DCHECK(default_wallet != mojom::DefaultWallet::CryptoWallets);
+  prefs->SetInteger(kDefaultSolanaWallet, static_cast<int>(default_wallet));
 }
 
 void SetDefaultBaseCurrency(PrefService* prefs, const std::string& currency) {

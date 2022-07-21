@@ -173,8 +173,12 @@ BraveWalletService::BraveWalletService(
       base::BindRepeating(&BraveWalletService::OnWalletUnlockPreferenceChanged,
                           base::Unretained(this)));
   pref_change_registrar_.Add(
-      kDefaultWallet2,
-      base::BindRepeating(&BraveWalletService::OnDefaultWalletChanged,
+      kDefaultEthereumWallet,
+      base::BindRepeating(&BraveWalletService::OnDefaultEthereumWalletChanged,
+                          base::Unretained(this)));
+  pref_change_registrar_.Add(
+      kDefaultSolanaWallet,
+      base::BindRepeating(&BraveWalletService::OnDefaultSolanaWalletChanged,
                           base::Unretained(this)));
   pref_change_registrar_.Add(
       kDefaultBaseCurrency,
@@ -504,14 +508,29 @@ void BraveWalletService::ImportFromExternalWallet(
                                        IDS_BRAVE_WALLET_IMPORT_INTERNAL_ERROR));
 }
 
-void BraveWalletService::GetDefaultWallet(GetDefaultWalletCallback callback) {
-  std::move(callback).Run(::brave_wallet::GetDefaultWallet(prefs_));
+void BraveWalletService::GetDefaultEthereumWallet(
+    GetDefaultEthereumWalletCallback callback) {
+  std::move(callback).Run(::brave_wallet::GetDefaultEthereumWallet(prefs_));
 }
 
-void BraveWalletService::SetDefaultWallet(mojom::DefaultWallet default_wallet) {
-  auto old_default_wallet = ::brave_wallet::GetDefaultWallet(prefs_);
+void BraveWalletService::GetDefaultSolanaWallet(
+    GetDefaultSolanaWalletCallback callback) {
+  std::move(callback).Run(::brave_wallet::GetDefaultSolanaWallet(prefs_));
+}
+
+void BraveWalletService::SetDefaultEthereumWallet(
+    mojom::DefaultWallet default_wallet) {
+  auto old_default_wallet = ::brave_wallet::GetDefaultEthereumWallet(prefs_);
   if (old_default_wallet != default_wallet) {
-    ::brave_wallet::SetDefaultWallet(prefs_, default_wallet);
+    ::brave_wallet::SetDefaultEthereumWallet(prefs_, default_wallet);
+  }
+}
+
+void BraveWalletService::SetDefaultSolanaWallet(
+    mojom::DefaultWallet default_wallet) {
+  auto old_default_wallet = ::brave_wallet::GetDefaultSolanaWallet(prefs_);
+  if (old_default_wallet != default_wallet) {
+    ::brave_wallet::SetDefaultSolanaWallet(prefs_, default_wallet);
   }
 }
 
@@ -554,10 +573,17 @@ void BraveWalletService::SetSelectedCoin(mojom::CoinType coin) {
   ::brave_wallet::SetSelectedCoin(prefs_, coin);
 }
 
-void BraveWalletService::OnDefaultWalletChanged() {
-  auto default_wallet = ::brave_wallet::GetDefaultWallet(prefs_);
+void BraveWalletService::OnDefaultEthereumWalletChanged() {
+  auto default_wallet = ::brave_wallet::GetDefaultEthereumWallet(prefs_);
   for (const auto& observer : observers_) {
-    observer->OnDefaultWalletChanged(default_wallet);
+    observer->OnDefaultEthereumWalletChanged(default_wallet);
+  }
+}
+
+void BraveWalletService::OnDefaultSolanaWalletChanged() {
+  auto default_wallet = ::brave_wallet::GetDefaultSolanaWallet(prefs_);
+  for (const auto& observer : observers_) {
+    observer->OnDefaultSolanaWalletChanged(default_wallet);
   }
 }
 

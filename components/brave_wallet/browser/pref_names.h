@@ -6,7 +6,8 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_PREF_NAMES_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_PREF_NAMES_H_
 
-extern const char kDefaultWallet2[];
+extern const char kDefaultEthereumWallet[];
+extern const char kDefaultSolanaWallet[];
 extern const char kDefaultBaseCurrency[];
 extern const char kDefaultBaseCryptocurrency[];
 extern const char kBraveWalletTransactions[];

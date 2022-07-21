@@ -20,6 +20,7 @@
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/brave_wallet/common/value_conversion_utils.h"
+#include "brave/components/l10n/common/locale_util.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/prefs/pref_service.h"
@@ -30,10 +31,26 @@
 BraveWalletHandler::BraveWalletHandler() = default;
 BraveWalletHandler::~BraveWalletHandler() = default;
 
+namespace {
+
+base::Value MakeSelectValue(const std::u16string& name,
+                            ::brave_wallet::mojom::DefaultWallet value) {
+  base::Value item(base::Value::Type::DICTIONARY);
+  item.SetKey("value", base::Value(static_cast<int>(value)));
+  item.SetKey("name", base::Value(name));
+  return item;
+}
+
+}  // namespace
+
 void BraveWalletHandler::RegisterMessages() {
   web_ui()->RegisterMessageCallback(
       "getAutoLockMinutes",
       base::BindRepeating(&BraveWalletHandler::GetAutoLockMinutes,
+                          base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+      "getSolanaProviderOptions",
+      base::BindRepeating(&BraveWalletHandler::GetSolanaProviderOptions,
                           base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
       "removeEthereumChain",
@@ -75,6 +92,25 @@ void BraveWalletHandler::GetAutoLockMinutes(const base::Value::List& args) {
   ResolveJavascriptCallback(
       args[0],
       base::Value(GetPrefs()->GetInteger(kBraveWalletAutoLockMinutes)));
+}
+
+void BraveWalletHandler::GetSolanaProviderOptions(
+    const base::Value::List& args) {
+  base::Value list(base::Value::Type::LIST);
+  list.Append(MakeSelectValue(
+      brave_l10n::GetLocalizedResourceUTF16String(
+          IDS_BRAVE_WALLET_WEB3_PROVIDER_BRAVE_PREFER_EXTENSIONS),
+      ::brave_wallet::mojom::DefaultWallet::BraveWalletPreferExtension));
+  list.Append(
+      MakeSelectValue(brave_l10n::GetLocalizedResourceUTF16String(
+                          IDS_BRAVE_WALLET_WEB3_PROVIDER_BRAVE),
+                      ::brave_wallet::mojom::DefaultWallet::BraveWallet));
+  list.Append(MakeSelectValue(brave_l10n::GetLocalizedResourceUTF16String(
+                                  IDS_BRAVE_WALLET_WEB3_PROVIDER_NONE),
+                              ::brave_wallet::mojom::DefaultWallet::None));
+  CHECK_EQ(args.size(), 1U);
+  AllowJavascript();
+  ResolveJavascriptCallback(args[0], list);
 }
 
 void BraveWalletHandler::RemoveEthereumChain(const base::Value::List& args) {

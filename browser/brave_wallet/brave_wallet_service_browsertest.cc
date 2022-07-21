@@ -41,7 +41,10 @@ class TestBraveWalletServiceObserver
  public:
   TestBraveWalletServiceObserver() = default;
 
-  void OnDefaultWalletChanged(mojom::DefaultWallet default_wallet) override {}
+  void OnDefaultEthereumWalletChanged(
+      mojom::DefaultWallet default_wallet) override {}
+  void OnDefaultSolanaWalletChanged(
+      mojom::DefaultWallet default_wallet) override {}
   void OnDefaultBaseCurrencyChanged(const std::string& currency) override {}
   void OnDefaultBaseCryptocurrencyChanged(
       const std::string& cryptocurrency) override {}

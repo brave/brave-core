@@ -20,14 +20,25 @@ void RecordKeyringCreated(mojom::KeyringInfoPtr keyring_info) {
                         static_cast<int>(keyring_info->is_keyring_created));
 }
 
-// What is the DefaultWalletSetting?
+// What is the DefaultWalletSetting (Ethereum)?
 // 0) AskDeprecated, 1) None, 2) CryptoWallets,
 // 3) BraveWalletPreferExtension, 4) BraveWallet
-void RecordDefaultWalletSetting(PrefService* pref_service) {
+void RecordDefaultEthereumWalletSetting(PrefService* pref_service) {
   const int max_bucket =
       static_cast<int>(brave_wallet::mojom::DefaultWallet::kMaxValue);
-  auto default_wallet = pref_service->GetInteger(kDefaultWallet2);
+  auto default_wallet = pref_service->GetInteger(kDefaultEthereumWallet);
   UMA_HISTOGRAM_EXACT_LINEAR("Brave.Wallet.DefaultWalletSetting",
+                             default_wallet, max_bucket);
+}
+
+// What is the DefaultSolanaWalletSetting?
+// 0) AskDeprecated, 1) None, 2) CryptoWallets,
+// 3) BraveWalletPreferExtension, 4) BraveWallet
+void RecordDefaultSolanaWalletSetting(PrefService* pref_service) {
+  const int max_bucket =
+      static_cast<int>(brave_wallet::mojom::DefaultWallet::kMaxValue);
+  auto default_wallet = pref_service->GetInteger(kDefaultSolanaWallet);
+  UMA_HISTOGRAM_EXACT_LINEAR("Brave.Wallet.DefaultSolanaWalletSetting",
                              default_wallet, max_bucket);
 }
 
@@ -49,7 +60,8 @@ BraveWalletP3A::~BraveWalletP3A() = default;
 void BraveWalletP3A::RecordInitialBraveWalletP3AState() {
   keyring_service_->GetKeyringInfo(mojom::kDefaultKeyringId,
                                    base::BindOnce(&RecordKeyringCreated));
-  RecordDefaultWalletSetting(pref_service_);
+  RecordDefaultEthereumWalletSetting(pref_service_);
+  RecordDefaultSolanaWalletSetting(pref_service_);
 }
 
 // KeyringServiceObserver
@@ -59,9 +71,15 @@ void BraveWalletP3A::KeyringCreated(const std::string& keyring_id) {
 }
 
 // BraveWalletServiceObserver
-void BraveWalletP3A::OnDefaultWalletChanged(
+void BraveWalletP3A::OnDefaultEthereumWalletChanged(
     brave_wallet::mojom::DefaultWallet default_wallet) {
-  RecordDefaultWalletSetting(pref_service_);
+  RecordDefaultEthereumWalletSetting(pref_service_);
+}
+
+// BraveWalletServiceObserver
+void BraveWalletP3A::OnDefaultSolanaWalletChanged(
+    brave_wallet::mojom::DefaultWallet default_wallet) {
+  RecordDefaultSolanaWalletSetting(pref_service_);
 }
 
 }  // namespace brave_wallet

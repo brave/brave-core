@@ -262,7 +262,9 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
   // Brave Wallet pref
   (*s_brave_allowlist)[kBraveWalletSelectedNetworks] =
       settings_api::PrefType::PREF_TYPE_DICTIONARY;
-  (*s_brave_allowlist)[kDefaultWallet2] =
+  (*s_brave_allowlist)[kDefaultEthereumWallet] =
+      settings_api::PrefType::PREF_TYPE_NUMBER;
+  (*s_brave_allowlist)[kDefaultSolanaWallet] =
       settings_api::PrefType::PREF_TYPE_NUMBER;
   (*s_brave_allowlist)[kDefaultBaseCurrency] =
       settings_api::PrefType::PREF_TYPE_STRING;

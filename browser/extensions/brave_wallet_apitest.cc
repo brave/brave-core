@@ -83,7 +83,7 @@ IN_PROC_BROWSER_TEST_F(BraveWalletExtensionApiTest,
 
 IN_PROC_BROWSER_TEST_F(BraveWalletExtensionApiTest,
     BraveWalletWeb3ProviderCryptoWallets) {
-  brave_wallet::SetDefaultWallet(
+  brave_wallet::SetDefaultEthereumWallet(
       GetPrefs(), brave_wallet::mojom::DefaultWallet::CryptoWallets);
   ResultCatcher catcher;
   const Extension* extension =
@@ -97,7 +97,7 @@ IN_PROC_BROWSER_TEST_F(BraveWalletExtensionApiTest,
 
 IN_PROC_BROWSER_TEST_F(BraveWalletExtensionApiTest,
                        BraveWalletWeb3ProviderIsBraveWalletPreferExtension) {
-  brave_wallet::SetDefaultWallet(
+  brave_wallet::SetDefaultEthereumWallet(
       GetPrefs(),
       brave_wallet::mojom::DefaultWallet::BraveWalletPreferExtension);
   ResultCatcher catcher;
@@ -112,8 +112,8 @@ IN_PROC_BROWSER_TEST_F(BraveWalletExtensionApiTest,
 
 IN_PROC_BROWSER_TEST_F(BraveWalletExtensionApiTest,
     BraveWalletWeb3ProviderNone) {
-  brave_wallet::SetDefaultWallet(GetPrefs(),
-                                 brave_wallet::mojom::DefaultWallet::None);
+  brave_wallet::SetDefaultEthereumWallet(
+      GetPrefs(), brave_wallet::mojom::DefaultWallet::None);
   ResultCatcher catcher;
   const Extension* extension =
     LoadExtension(extension_dir_.AppendASCII("braveWallet"));
@@ -126,7 +126,7 @@ IN_PROC_BROWSER_TEST_F(BraveWalletExtensionApiTest,
 
 IN_PROC_BROWSER_TEST_F(BraveWalletExtensionApiTest,
                        BraveWalletWeb3ProviderBraveWallet) {
-  brave_wallet::SetDefaultWallet(
+  brave_wallet::SetDefaultEthereumWallet(
       GetPrefs(), brave_wallet::mojom::DefaultWallet::BraveWallet);
   ResultCatcher catcher;
   const Extension* extension =
@@ -148,8 +148,8 @@ IN_PROC_BROWSER_TEST_F(BraveWalletExtensionApiTest,
 }
 
 IN_PROC_BROWSER_TEST_F(BraveWalletExtensionApiTest,
-                       ChangeTypeCryptoWalletsToBaveWallet) {
-  brave_wallet::SetDefaultWallet(
+                       ChangeTypeCryptoWalletsToBraveWallet) {
+  brave_wallet::SetDefaultEthereumWallet(
       browser()->profile()->GetPrefs(),
       brave_wallet::mojom::DefaultWallet::CryptoWallets);
   ASSERT_TRUE(
@@ -162,7 +162,7 @@ IN_PROC_BROWSER_TEST_F(BraveWalletExtensionApiTest,
       extensions::ExtensionSystem::Get(browser()->profile())
           ->extension_service();
   ASSERT_TRUE(service->IsExtensionEnabled(ethereum_remote_client_extension_id));
-  brave_wallet::SetDefaultWallet(
+  brave_wallet::SetDefaultEthereumWallet(
       browser()->profile()->GetPrefs(),
       brave_wallet::mojom::DefaultWallet::BraveWallet);
   ASSERT_FALSE(
@@ -171,7 +171,7 @@ IN_PROC_BROWSER_TEST_F(BraveWalletExtensionApiTest,
 
 IN_PROC_BROWSER_TEST_F(BraveWalletExtensionApiTest,
                        ChangeTypeCryptoWalletsToBraveWalletPreferExtension) {
-  brave_wallet::SetDefaultWallet(
+  brave_wallet::SetDefaultEthereumWallet(
       browser()->profile()->GetPrefs(),
       brave_wallet::mojom::DefaultWallet::CryptoWallets);
   ASSERT_TRUE(
@@ -184,7 +184,7 @@ IN_PROC_BROWSER_TEST_F(BraveWalletExtensionApiTest,
       extensions::ExtensionSystem::Get(browser()->profile())
           ->extension_service();
   ASSERT_TRUE(service->IsExtensionEnabled(ethereum_remote_client_extension_id));
-  brave_wallet::SetDefaultWallet(
+  brave_wallet::SetDefaultEthereumWallet(
       browser()->profile()->GetPrefs(),
       brave_wallet::mojom::DefaultWallet::BraveWalletPreferExtension);
   ASSERT_FALSE(

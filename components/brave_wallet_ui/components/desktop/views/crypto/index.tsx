@@ -40,7 +40,8 @@ export interface Props {
   onDoneViewingPrivateKey: () => void
   onOpenWalletSettings: () => void
   needsBackup: boolean
-  defaultWallet: BraveWallet.DefaultWallet
+  defaultEthereumWallet: BraveWallet.DefaultWallet
+  defaultSolanaWallet: BraveWallet.DefaultWallet
   isMetaMaskInstalled: boolean
 }
 
@@ -50,7 +51,8 @@ const CryptoView = (props: Props) => {
     onViewPrivateKey,
     onDoneViewingPrivateKey,
     onOpenWalletSettings,
-    defaultWallet,
+    defaultEthereumWallet,
+    defaultSolanaWallet,
     needsBackup,
     isMetaMaskInstalled
   } = props
@@ -135,8 +137,8 @@ const CryptoView = (props: Props) => {
         onClickSettings={onClickSettings}
         onClickMore={onClickShowMore}
       />
-      {(defaultWallet !== BraveWallet.DefaultWallet.BraveWallet &&
-        (defaultWallet !== BraveWallet.DefaultWallet.BraveWalletPreferExtension || (defaultWallet === BraveWallet.DefaultWallet.BraveWalletPreferExtension && isMetaMaskInstalled))) &&
+      {((defaultEthereumWallet !== BraveWallet.DefaultWallet.BraveWallet || defaultSolanaWallet !== BraveWallet.DefaultWallet.BraveWallet) &&
+        (defaultEthereumWallet !== BraveWallet.DefaultWallet.BraveWalletPreferExtension || defaultSolanaWallet !== BraveWallet.DefaultWallet.BraveWalletPreferExtension || (defaultEthereumWallet === BraveWallet.DefaultWallet.BraveWalletPreferExtension && isMetaMaskInstalled))) &&
         showDefaultWalletBanner &&
         <WalletBanner
           onDismiss={onDismissDefaultWalletBanner}
@@ -158,7 +160,8 @@ const CryptoView = (props: Props) => {
     </>
   ), [
     category,
-    defaultWallet,
+    defaultEthereumWallet,
+    defaultSolanaWallet,
     isMetaMaskInstalled,
     needsBackup,
     onClickSettings,

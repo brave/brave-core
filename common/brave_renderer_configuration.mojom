@@ -7,8 +7,10 @@ module brave.mojom;
 
 // The renderer configuration parameters which can change post renderer launch.
 struct DynamicParams {
-  bool brave_use_native_wallet = false;
-  bool allow_overwrite_window_web3_provider = true;
+  bool brave_use_native_ethereum_wallet = false;
+  bool allow_overwrite_window_ethereum_provider = true;
+  bool brave_use_native_solana_wallet = false;
+  bool allow_overwrite_window_solana_provider = true;
   bool de_amp_enabled = true;
 };
 

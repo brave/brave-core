@@ -48,7 +48,11 @@ base::Value::Dict GetDefaultSelectedNetworks() {
 
 void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterIntegerPref(
-      kDefaultWallet2,
+      kDefaultEthereumWallet,
+      static_cast<int>(
+          brave_wallet::mojom::DefaultWallet::BraveWalletPreferExtension));
+  registry->RegisterIntegerPref(
+      kDefaultSolanaWallet,
       static_cast<int>(
           brave_wallet::mojom::DefaultWallet::BraveWalletPreferExtension));
   registry->RegisterStringPref(kDefaultBaseCurrency, "USD");
@@ -167,7 +171,7 @@ void MigrateObsoleteProfilePrefs(PrefService* prefs) {
         mojom::DefaultWallet::BraveWalletPreferExtension;
     if (provider == mojom::DefaultWallet::None)
       default_wallet = mojom::DefaultWallet::None;
-    prefs->SetInteger(kDefaultWallet2, static_cast<int>(default_wallet));
+    prefs->SetInteger(kDefaultEthereumWallet, static_cast<int>(default_wallet));
     prefs->ClearPref(kBraveWalletWeb3ProviderDeprecated);
   }
   if (prefs->HasPrefPath(kDefaultWalletDeprecated)) {
@@ -177,7 +181,7 @@ void MigrateObsoleteProfilePrefs(PrefService* prefs) {
         mojom::DefaultWallet::BraveWalletPreferExtension;
     if (provider == mojom::DefaultWallet::None)
       default_wallet = mojom::DefaultWallet::None;
-    prefs->SetInteger(kDefaultWallet2, static_cast<int>(default_wallet));
+    prefs->SetInteger(kDefaultEthereumWallet, static_cast<int>(default_wallet));
     prefs->ClearPref(kDefaultWalletDeprecated);
   }
 

@@ -39,11 +39,6 @@ bool BraveWalletRenderFrameObserver::CanCreateProvider() {
                .GetURL();
   if (!url_.SchemeIsHTTPOrHTTPS())
     return false;
-  auto dynamic_params = get_dynamic_params_callback_.Run();
-  if (!dynamic_params.brave_use_native_wallet) {
-    js_ethereum_provider_.reset();
-    return false;
-  }
 
   // Wallet provider objects should only be created in secure contexts
   if (!render_frame()->GetWebFrame()->GetDocument().IsSecureContext()) {
@@ -59,17 +54,22 @@ void BraveWalletRenderFrameObserver::DidCreateScriptContext(
   if (!CanCreateProvider())
     return;
 
-  bool is_main_world = world_id == content::ISOLATED_WORLD_ID_GLOBAL;
   auto dynamic_params = get_dynamic_params_callback_.Run();
+  if (!dynamic_params.brave_use_native_ethereum_wallet) {
+    js_ethereum_provider_.reset();
+    return;
+  }
+
+  bool is_main_world = world_id == content::ISOLATED_WORLD_ID_GLOBAL;
   if (render_frame()->GetWebFrame()->GetDocument().IsDOMFeaturePolicyEnabled(
           render_frame()->GetWebFrame()->MainWorldScriptContext(),
           "ethereum")) {
     if (!js_ethereum_provider_) {
       js_ethereum_provider_.reset(new JSEthereumProvider(
-          render_frame(), dynamic_params.brave_use_native_wallet));
+          render_frame(), dynamic_params.brave_use_native_ethereum_wallet));
     }
     js_ethereum_provider_->AddJavaScriptObjectToFrame(
-        context, dynamic_params.allow_overwrite_window_web3_provider,
+        context, dynamic_params.allow_overwrite_window_ethereum_provider,
         is_main_world);
     js_ethereum_provider_->ConnectEvent();
   }
@@ -84,6 +84,11 @@ void BraveWalletRenderFrameObserver::WillReleaseScriptContext(
 void BraveWalletRenderFrameObserver::DidClearWindowObject() {
   if (!CanCreateProvider())
     return;
+
+  auto dynamic_params = get_dynamic_params_callback_.Run();
+  if (!dynamic_params.brave_use_native_solana_wallet) {
+    return;
+  }
 
   v8::Isolate* isolate = blink::MainThreadIsolate();
   v8::MicrotasksScope microtasks(isolate,
@@ -101,7 +106,7 @@ void BraveWalletRenderFrameObserver::DidClearWindowObject() {
       web_frame->GetDocument().IsDOMFeaturePolicyEnabled(context, "solana")) {
     auto dynamic_params = get_dynamic_params_callback_.Run();
     JSSolanaProvider::Install(
-        dynamic_params.allow_overwrite_window_web3_provider, render_frame());
+        dynamic_params.allow_overwrite_window_solana_provider, render_frame());
   }
 }
 
