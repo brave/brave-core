@@ -34,6 +34,12 @@ void AddChromeToProfiles(std::vector<importer::SourceProfile>* profiles,
                                      profile->begin(), profile->end())),
                                  &items))
       continue;
+#if BUILDFLAG(IS_MAC)
+    // https://github.com/brave/brave-browser/issues/24130
+    if (type == importer::TYPE_OPERA && (items & importer::PASSWORDS)) {
+      items ^= importer::PASSWORDS;
+    }
+#endif
     importer::SourceProfile chrome;
     std::string importer_name(brand);
     importer_name.append(*name);
@@ -78,6 +84,21 @@ void DetectChromeProfiles(std::vector<importer::SourceProfile>* profiles) {
       GetChromeSourceProfiles(GetVivaldiUserDataFolder().Append(
           base::FilePath::StringType(FILE_PATH_LITERAL("Local State")))),
       GetVivaldiUserDataFolder(), "Vivaldi ", importer::TYPE_VIVALDI);
+
+  AddChromeToProfiles(
+      profiles,
+      GetChromeSourceProfiles(GetOperaUserDataFolder().Append(
+          base::FilePath::StringType(FILE_PATH_LITERAL("Local State")))),
+      GetOperaUserDataFolder(), "Opera ", importer::TYPE_OPERA);
+
+#if BUILDFLAG(IS_LINUX)
+  // Installed via snap Opera has different profile path.
+  AddChromeToProfiles(
+      profiles,
+      GetChromeSourceProfiles(GetOperaSnapUserDataFolder().Append(
+          base::FilePath::StringType(FILE_PATH_LITERAL("Local State")))),
+      GetOperaSnapUserDataFolder(), "Opera ", importer::TYPE_OPERA);
+#endif
 }
 
 }  // namespace

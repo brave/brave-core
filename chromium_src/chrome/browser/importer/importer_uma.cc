@@ -9,6 +9,7 @@
   TYPE_CHROME:             \
   case TYPE_EDGE_CHROMIUM: \
   case TYPE_VIVALDI:       \
+  case TYPE_OPERA:         \
   break;                   \
   case TYPE_FIREFOX
 #include "src/chrome/browser/importer/importer_uma.cc"

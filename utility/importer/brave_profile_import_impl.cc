@@ -35,6 +35,8 @@ scoped_refptr<Importer> CreateImporterByType(importer::ImporterType type) {
       return new ChromeImporter();
     case importer::TYPE_VIVALDI:
       return new ChromeImporter();
+    case importer::TYPE_OPERA:
+      return new ChromeImporter();
     default:
       NOTREACHED();
       return nullptr;

@@ -47,9 +47,9 @@ TEST(ChromeImporterUtilsTest, BasicTest) {
 }
 
 TEST(ChromeImporterUtilsTest, GetChromeUserDataFolder) {
-  EXPECT_EQ(GetChromeSourceProfiles(base::FilePath(FILE_PATH_LITERAL("fake"))),
-            base::JSONReader::Read(R"([{"id": "Default", "name": "Default" }])")
-                ->GetList());
+  EXPECT_EQ(
+      GetChromeSourceProfiles(base::FilePath(FILE_PATH_LITERAL("fake"))),
+      base::JSONReader::Read(R"([{"id": "", "name": "Default" }])")->GetList());
 
   EXPECT_EQ(GetChromeSourceProfiles(GetTestProfilePath().Append(
                 base::FilePath::StringType(FILE_PATH_LITERAL("Local State")))),
@@ -59,9 +59,9 @@ TEST(ChromeImporterUtilsTest, GetChromeUserDataFolder) {
       ])")
                 ->GetList());
 
-  EXPECT_EQ(GetChromeSourceProfiles(
-                GetTestProfilePath().Append(base::FilePath::StringType(
-                    FILE_PATH_LITERAL("No Profile Local State")))),
-            base::JSONReader::Read(R"([{"id": "Default", "name": "Default" }])")
-                ->GetList());
+  EXPECT_EQ(
+      GetChromeSourceProfiles(
+          GetTestProfilePath().Append(base::FilePath::StringType(
+              FILE_PATH_LITERAL("No Profile Local State")))),
+      base::JSONReader::Read(R"([{"id": "", "name": "Default" }])")->GetList());
 }
