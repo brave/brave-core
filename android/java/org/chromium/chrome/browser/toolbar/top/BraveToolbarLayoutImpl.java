@@ -146,7 +146,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                    BraveRewardsObserver, BraveRewardsNativeWorker.PublisherObserver {
     private static final String JAPAN_COUNTRY_CODE = "JP";
     private static final List<String> mBraveSearchEngineDefaultRegions =
-            Arrays.asList("CA", "DE", "FR", "GB", "US");
+            Arrays.asList("CA", "DE", "FR", "GB", "US", "AT", "ES", "MX");
     private static final long MB_10 = 10000000;
     private static final long MINUTES_10 = 10 * 60 * 1000;
     private static final int URL_FOCUS_TOOLBAR_BUTTONS_TRANSLATION_X_DP = 10;
