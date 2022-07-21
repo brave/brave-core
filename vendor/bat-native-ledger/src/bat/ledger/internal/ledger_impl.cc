@@ -589,8 +589,10 @@ void LedgerImpl::SetPublisherExclude(const std::string& publisher_id,
       });
 }
 
-void LedgerImpl::RestorePublishers(LegacyResultCallback callback) {
-  WhenReady([this, callback]() { database()->RestorePublishers(callback); });
+void LedgerImpl::RestorePublishers(ResultCallback callback) {
+  WhenReady([this, callback = std::move(callback)]() mutable {
+    database()->RestorePublishers(std::move(callback));
+  });
 }
 
 void LedgerImpl::GetPublisherActivityFromUrl(

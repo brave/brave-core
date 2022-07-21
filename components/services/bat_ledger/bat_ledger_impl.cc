@@ -143,23 +143,8 @@ void BatLedgerImpl::SetPublisherExclude(const std::string& publisher_key,
   ledger_->SetPublisherExclude(publisher_key, exclude, std::move(callback));
 }
 
-// static
-void BatLedgerImpl::OnRestorePublishers(
-  CallbackHolder<SetPublisherExcludeCallback>* holder,
-  const ledger::type::Result result) {
-  DCHECK(holder);
-  if (holder->is_valid()) {
-    std::move(holder->get()).Run(result);
-  }
-  delete holder;
-}
-
 void BatLedgerImpl::RestorePublishers(RestorePublishersCallback callback) {
-  // delete in OnRestorePublishers
-  auto* holder = new CallbackHolder<RestorePublishersCallback>(
-    AsWeakPtr(), std::move(callback));
-  ledger_->RestorePublishers(
-    std::bind(BatLedgerImpl::OnRestorePublishers, holder, _1));
+  ledger_->RestorePublishers(std::move(callback));
 }
 
 void BatLedgerImpl::OnFetchPromotions(

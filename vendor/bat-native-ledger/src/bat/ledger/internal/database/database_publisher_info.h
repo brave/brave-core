@@ -29,7 +29,7 @@ class DatabasePublisherInfo: public DatabaseTable {
       type::ActivityInfoFilterPtr filter,
       ledger::PublisherInfoCallback callback);
 
-  void RestorePublishers(ledger::LegacyResultCallback callback);
+  void RestorePublishers(ledger::ResultCallback callback);
 
   void GetExcludedList(ledger::PublisherInfoListCallback callback);
 
@@ -41,6 +41,9 @@ class DatabasePublisherInfo: public DatabaseTable {
   void OnGetPanelRecord(
       type::DBCommandResponsePtr response,
       ledger::PublisherInfoCallback callback);
+
+  void OnRestorePublishers(ledger::ResultCallback callback,
+                           type::DBCommandResponsePtr response);
 
   void OnGetExcludedList(
       type::DBCommandResponsePtr response,

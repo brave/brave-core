@@ -244,7 +244,7 @@ class LEDGER_EXPORT Ledger {
                                    type::PublisherExclude exclude,
                                    ResultCallback callback) = 0;
 
-  virtual void RestorePublishers(LegacyResultCallback callback) = 0;
+  virtual void RestorePublishers(ResultCallback callback) = 0;
 
   virtual void GetPublisherActivityFromUrl(
       uint64_t window_id,

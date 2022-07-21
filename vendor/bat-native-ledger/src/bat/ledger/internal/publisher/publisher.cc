@@ -496,15 +496,15 @@ void Publisher::OnSetPublisherExclude(ledger::ResultCallback callback,
 }
 
 void Publisher::OnRestorePublishers(type::Result result,
-                                    ledger::LegacyResultCallback callback) {
+                                    ledger::ResultCallback callback) {
   if (result != type::Result::LEDGER_OK) {
     BLOG(0, "Could not restore publishers.");
-    callback(result);
+    std::move(callback).Run(result);
     return;
   }
 
   SynopsisNormalizer();
-  callback(type::Result::LEDGER_OK);
+  std::move(callback).Run(type::Result::LEDGER_OK);
 }
 
 void Publisher::NormalizeContributeWinners(

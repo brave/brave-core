@@ -809,7 +809,7 @@ BATClassLedgerBridge(BOOL, isDebug, setDebug, is_debug)
 }
 
 - (void)restoreAllExcludedPublishers {
-  ledger->RestorePublishers(^(const ledger::type::Result result) {
+  ledger->RestorePublishers(base::BindOnce(^(ledger::type::Result result) {
     if (result != ledger::type::Result::LEDGER_OK) {
       return;
     }
@@ -821,7 +821,7 @@ BATClassLedgerBridge(BOOL, isDebug, setDebug, is_debug)
                                           ledger::type::PublisherExclude::ALL));
       }
     }
-  });
+  }));
 }
 
 - (void)publisherBannerForId:(NSString*)publisherId

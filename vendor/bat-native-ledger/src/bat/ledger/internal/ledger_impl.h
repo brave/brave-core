@@ -190,7 +190,7 @@ class LedgerImpl : public Ledger {
                            type::PublisherExclude exclude,
                            ResultCallback callback) override;
 
-  void RestorePublishers(LegacyResultCallback callback) override;
+  void RestorePublishers(ResultCallback callback) override;
 
   void GetPublisherActivityFromUrl(uint64_t window_id,
                                    type::VisitDataPtr visit_data,

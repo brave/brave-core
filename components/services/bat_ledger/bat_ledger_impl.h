@@ -303,10 +303,6 @@ class BatLedgerImpl :
       CallbackHolder<RecoverWalletCallback>* holder,
       ledger::type::Result result);
 
-  static void OnRestorePublishers(
-      CallbackHolder<SetPublisherExcludeCallback>* holder,
-      const ledger::type::Result result);
-
   static void OnGetPublisherBanner(
       CallbackHolder<GetPublisherBannerCallback>* holder,
       ledger::type::PublisherBannerPtr banner);

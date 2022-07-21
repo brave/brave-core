@@ -84,7 +84,7 @@ class Publisher {
       uint32_t /* next_record */);
 
   void OnRestorePublishers(type::Result result,
-                           ledger::LegacyResultCallback callback);
+                           ledger::ResultCallback callback);
 
   bool IsConnectedOrVerified(const type::PublisherStatus status);
 

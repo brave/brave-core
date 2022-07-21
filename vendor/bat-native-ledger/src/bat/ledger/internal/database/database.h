@@ -283,7 +283,7 @@ class Database {
       type::ActivityInfoFilterPtr filter,
       ledger::PublisherInfoCallback callback);
 
-  void RestorePublishers(ledger::LegacyResultCallback callback);
+  void RestorePublishers(ledger::ResultCallback callback);
 
   void GetExcludedList(ledger::PublisherInfoListCallback callback);
 
