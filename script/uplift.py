@@ -263,6 +263,8 @@ def main():
                   'Only merged requests can be uplifted.')
             return 1
 
+        execute(['git', 'fetch', 'origin', 'pull/' +
+                args.uplift_using_pr + '/head'])
         # create local branch which matches the contents of the PR
         with scoped_cwd(BRAVE_CORE_ROOT):
             # check if branch exists already
