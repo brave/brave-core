@@ -1,9 +1,9 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/app/ChromeActivity.java b/chrome/android/java/src/org/chromium/chrome/browser/app/ChromeActivity.java
-index 137c7cdb1a4d61badc80c53c3071402dc56b74d9..a42bbd6f20517935e537c5d3d22fbc7e98ded6f3 100644
+index 74353ecb4143cf901e69e242d8663e8d12e90e69..353936037b7e636ab9a3dbef0c4198edb5c368e2 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/app/ChromeActivity.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/app/ChromeActivity.java
-@@ -400,7 +400,7 @@ public abstract class ChromeActivity<C extends ChromeActivityComponent>
-     private Callback<TabModelSelector> mSelectionPopupBackPressInitCallback;
+@@ -402,7 +402,7 @@ public abstract class ChromeActivity<C extends ChromeActivityComponent>
+     private StylusWritingCoordinator mStylusWritingCoordinator;
  
      protected ChromeActivity() {
 -        mIntentHandler = new IntentHandler(this, createIntentHandlerDelegate());
