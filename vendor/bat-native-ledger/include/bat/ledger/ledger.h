@@ -49,7 +49,7 @@ using FetchPromotionCallback =
     base::OnceCallback<void(type::Result, type::PromotionList)>;
 
 using ClaimPromotionCallback =
-    std::function<void(type::Result, const std::string&)>;
+    base::OnceCallback<void(type::Result, const std::string&)>;
 
 using RewardsInternalsInfoCallback =
     std::function<void(type::RewardsInternalsInfoPtr)>;

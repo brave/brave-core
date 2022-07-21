@@ -68,10 +68,9 @@ class Promotion {
       const type::Result result,
       std::shared_ptr<type::PromotionPtr> shared_promotion);
 
-  void OnClaimPromotion(
-      type::PromotionPtr promotion,
-      const std::string& payload,
-      ledger::ClaimPromotionCallback callback);
+  void OnClaimPromotion(ledger::ClaimPromotionCallback callback,
+                        const std::string& payload,
+                        type::PromotionPtr promotion);
 
   void OnCreateWalletIfNecessary(ledger::ClaimPromotionCallback callback,
                                  const std::string& payload,

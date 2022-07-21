@@ -152,27 +152,11 @@ void BatLedgerImpl::FetchPromotions(
   ledger_->FetchPromotions(std::move(callback));
 }
 
-// static
-void BatLedgerImpl::OnClaimPromotion(
-    CallbackHolder<ClaimPromotionCallback>* holder,
-    const ledger::type::Result result,
-    const std::string& response) {
-  DCHECK(holder);
-  if (holder->is_valid())
-    std::move(holder->get()).Run(result, response);
-  delete holder;
-}
 void BatLedgerImpl::ClaimPromotion(
     const std::string& promotion_id,
     const std::string& payload,
     ClaimPromotionCallback callback) {
-  // deleted in OnClaimPromotion
-  auto* holder = new CallbackHolder<ClaimPromotionCallback>(
-      AsWeakPtr(), std::move(callback));
-  ledger_->ClaimPromotion(
-      promotion_id,
-      payload,
-      std::bind(BatLedgerImpl::OnClaimPromotion, holder, _1, _2));
+  ledger_->ClaimPromotion(promotion_id, payload, std::move(callback));
 }
 
 // static

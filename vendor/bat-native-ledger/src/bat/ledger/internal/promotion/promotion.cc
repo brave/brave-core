@@ -263,34 +263,36 @@ void Promotion::Claim(
     const std::string& promotion_id,
     const std::string& payload,
     ledger::ClaimPromotionCallback callback) {
-  auto promotion_callback = std::bind(&Promotion::OnClaimPromotion,
-      this,
-      _1,
-      payload,
-      callback);
+  auto promotion_callback =
+      base::BindOnce(&Promotion::OnClaimPromotion, base::Unretained(this),
+                     std::move(callback), payload);
 
-  ledger_->database()->GetPromotion(promotion_id, promotion_callback);
+  ledger_->database()->GetPromotion(
+      promotion_id,
+      [callback = std::make_shared<decltype(promotion_callback)>(
+           std::move(promotion_callback))](type::PromotionPtr promotion) {
+        std::move(*callback).Run(std::move(promotion));
+      });
 }
 
-void Promotion::OnClaimPromotion(
-    type::PromotionPtr promotion,
-    const std::string& payload,
-    ledger::ClaimPromotionCallback callback) {
+void Promotion::OnClaimPromotion(ledger::ClaimPromotionCallback callback,
+                                 const std::string& payload,
+                                 type::PromotionPtr promotion) {
   if (!promotion) {
     BLOG(0, "Promotion is null");
-    callback(type::Result::LEDGER_ERROR, "");
+    std::move(callback).Run(type::Result::LEDGER_ERROR, "");
     return;
   }
 
   if (promotion->status != type::PromotionStatus::ACTIVE) {
     BLOG(1, "Promotion already in progress");
-    callback(type::Result::IN_PROGRESS, "");
+    std::move(callback).Run(type::Result::IN_PROGRESS, "");
     return;
   }
 
   const auto wallet = ledger_->wallet()->GetWallet();
   if (wallet) {
-    attestation_->Start(payload, callback);
+    attestation_->Start(payload, std::move(callback));
     return;
   }
 
@@ -305,11 +307,11 @@ void Promotion::OnCreateWalletIfNecessary(
     type::Result result) {
   if (result != type::Result::WALLET_CREATED) {
     BLOG(0, "Wallet couldn't be created");
-    callback(type::Result::LEDGER_ERROR, "");
+    std::move(callback).Run(type::Result::LEDGER_ERROR, "");
     return;
   }
 
-  attestation_->Start(payload, callback);
+  attestation_->Start(payload, std::move(callback));
 }
 
 void Promotion::Attest(

@@ -13,8 +13,6 @@
 #include "bat/ledger/internal/ledger_impl.h"
 #include "net/http/http_status_code.h"
 
-using std::placeholders::_1;
-
 namespace ledger {
 namespace endpoint {
 namespace promotion {
@@ -99,22 +97,19 @@ type::Result PostCaptcha::ParseBody(
 }
 
 void PostCaptcha::Request(PostCaptchaCallback callback) {
-  auto url_callback = std::bind(&PostCaptcha::OnRequest,
-      this,
-      _1,
-      callback);
+  auto url_callback = base::BindOnce(
+      &PostCaptcha::OnRequest, base::Unretained(this), std::move(callback));
 
-    auto request = type::UrlRequest::New();
+  auto request = type::UrlRequest::New();
   request->url = GetUrl();
   request->content = GeneratePayload();
   request->content_type = "application/json; charset=utf-8";
   request->method = type::UrlMethod::POST;
-  ledger_->LoadURL(std::move(request), url_callback);
+  ledger_->LoadURL(std::move(request), std::move(url_callback));
 }
 
-void PostCaptcha::OnRequest(
-    const type::UrlResponse& response,
-    PostCaptchaCallback callback) {
+void PostCaptcha::OnRequest(PostCaptchaCallback callback,
+                            const type::UrlResponse& response) {
   ledger::LogUrlResponse(__func__, response);
 
   std::string hint;
@@ -122,12 +117,12 @@ void PostCaptcha::OnRequest(
   type::Result result = CheckStatusCode(response.status_code);
 
   if (result != type::Result::LEDGER_OK) {
-    callback(result, hint, captcha_id);
+    std::move(callback).Run(result, hint, captcha_id);
     return;
   }
 
   result = ParseBody(response.body, &hint, &captcha_id);
-  callback(result, hint, captcha_id);
+  std::move(callback).Run(result, hint, captcha_id);
 }
 
 }  // namespace promotion

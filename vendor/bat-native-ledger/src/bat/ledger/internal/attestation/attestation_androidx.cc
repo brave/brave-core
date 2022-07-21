@@ -62,25 +62,22 @@ void AttestationAndroid::ParseClaimSolution(
 void AttestationAndroid::Start(
     const std::string& payload,
     StartCallback callback) {
-  auto url_callback = std::bind(&AttestationAndroid::OnStart,
-      this,
-      _1,
-      _2,
-      callback);
-  promotion_server_->post_safetynet()->Request(url_callback);
+  auto url_callback =
+      base::BindOnce(&AttestationAndroid::OnStart, base::Unretained(this),
+                     std::move(callback));
+  promotion_server_->post_safetynet()->Request(std::move(url_callback));
 }
 
-void AttestationAndroid::OnStart(
-    const type::Result result,
-    const std::string& nonce,
-    StartCallback callback) {
+void AttestationAndroid::OnStart(StartCallback callback,
+                                 type::Result result,
+                                 const std::string& nonce) {
   if (result != type::Result::LEDGER_OK) {
     BLOG(0, "Failed to start attestation");
-    callback(type::Result::LEDGER_ERROR, "");
+    std::move(callback).Run(type::Result::LEDGER_ERROR, "");
     return;
   }
 
-  callback(type::Result::LEDGER_OK, nonce);
+  std::move(callback).Run(type::Result::LEDGER_OK, nonce);
 }
 
 void AttestationAndroid::Confirm(

@@ -68,45 +68,37 @@ type::Result AttestationDesktop::ParseClaimSolution(
 void AttestationDesktop::Start(
     const std::string& payload,
     StartCallback callback) {
-  auto url_callback = std::bind(&AttestationDesktop::DownloadCaptchaImage,
-      this,
-      _1,
-      _2,
-      _3,
-      callback);
+  auto url_callback =
+      base::BindOnce(&AttestationDesktop::DownloadCaptchaImage,
+                     base::Unretained(this), std::move(callback));
 
-  promotion_server_->post_captcha()->Request(url_callback);
+  promotion_server_->post_captcha()->Request(std::move(url_callback));
 }
 
-void AttestationDesktop::DownloadCaptchaImage(
-    const type::Result result,
-    const std::string& hint,
-    const std::string& captcha_id,
-    StartCallback callback) {
+void AttestationDesktop::DownloadCaptchaImage(StartCallback callback,
+                                              type::Result result,
+                                              const std::string& hint,
+                                              const std::string& captcha_id) {
   if (result != type::Result::LEDGER_OK) {
-    callback(type::Result::LEDGER_ERROR, "");
+    std::move(callback).Run(type::Result::LEDGER_ERROR, "");
     return;
   }
 
-  auto url_callback = std::bind(&AttestationDesktop::OnDownloadCaptchaImage,
-      this,
-      _1,
-      _2,
-      hint,
-      captcha_id,
-      callback);
+  auto url_callback = base::BindOnce(
+      &AttestationDesktop::OnDownloadCaptchaImage, base::Unretained(this),
+      std::move(callback), hint, captcha_id);
 
-  promotion_server_->get_captcha()->Request(captcha_id, url_callback);
+  promotion_server_->get_captcha()->Request(captcha_id,
+                                            std::move(url_callback));
 }
 
-void AttestationDesktop::OnDownloadCaptchaImage(
-    const type::Result result,
-    const std::string& image,
-    const std::string& hint,
-    const std::string& captcha_id,
-    StartCallback callback) {
+void AttestationDesktop::OnDownloadCaptchaImage(StartCallback callback,
+                                                const std::string& hint,
+                                                const std::string& captcha_id,
+                                                type::Result result,
+                                                const std::string& image) {
   if (result != type::Result::LEDGER_OK) {
-    callback(type::Result::LEDGER_ERROR, "");
+    std::move(callback).Run(type::Result::LEDGER_ERROR, "");
     return;
   }
 
@@ -117,7 +109,7 @@ void AttestationDesktop::OnDownloadCaptchaImage(
 
   std::string json;
   base::JSONWriter::Write(dictionary, &json);
-  callback(type::Result::LEDGER_OK, json);
+  std::move(callback).Run(type::Result::LEDGER_OK, json);
 }
 
 void AttestationDesktop::Confirm(

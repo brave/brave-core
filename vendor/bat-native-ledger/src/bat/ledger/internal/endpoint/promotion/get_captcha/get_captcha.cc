@@ -73,31 +73,28 @@ type::Result GetCaptcha::ParseBody(
 void GetCaptcha::Request(
     const std::string& captcha_id,
     GetCaptchaCallback callback) {
-  auto url_callback = std::bind(&GetCaptcha::OnRequest,
-      this,
-      _1,
-      callback);
+  auto url_callback = base::BindOnce(
+      &GetCaptcha::OnRequest, base::Unretained(this), std::move(callback));
 
   auto request = type::UrlRequest::New();
   request->url = GetUrl(captcha_id);
-  ledger_->LoadURL(std::move(request), url_callback);
+  ledger_->LoadURL(std::move(request), std::move(url_callback));
 }
 
-void GetCaptcha::OnRequest(
-    const type::UrlResponse& response,
-    GetCaptchaCallback callback) {
+void GetCaptcha::OnRequest(GetCaptchaCallback callback,
+                           const type::UrlResponse& response) {
   ledger::LogUrlResponse(__func__, response, true);
 
   std::string image;
   type::Result result = CheckStatusCode(response.status_code);
 
   if (result != type::Result::LEDGER_OK) {
-    callback(result, image);
+    std::move(callback).Run(result, image);
     return;
   }
 
   result = ParseBody(response.body, &image);
-  callback(result, image);
+  std::move(callback).Run(result, image);
 }
 
 }  // namespace promotion

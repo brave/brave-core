@@ -1039,12 +1039,12 @@ BATClassLedgerBridge(BOOL, isDebug, setDebug, is_debug)
                                                 encoding:NSUTF8StringEncoding];
   ledger->ClaimPromotion(
       base::SysNSStringToUTF8(promotionId), base::SysNSStringToUTF8(jsonString),
-      ^(const ledger::type::Result result, const std::string& nonce) {
+      base::BindOnce(^(ledger::type::Result result, const std::string& nonce) {
         const auto bridgedNonce = base::SysUTF8ToNSString(nonce);
         dispatch_async(dispatch_get_main_queue(), ^{
           completion(static_cast<LedgerResult>(result), bridgedNonce);
         });
-      });
+      }));
 }
 
 - (void)attestPromotion:(NSString*)promotionId

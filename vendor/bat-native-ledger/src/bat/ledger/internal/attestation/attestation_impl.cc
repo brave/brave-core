@@ -33,7 +33,7 @@ AttestationImpl::~AttestationImpl() = default;
 void AttestationImpl::Start(
     const std::string& payload,
     StartCallback callback) {
-  platform_instance_->Start(payload, callback);
+  platform_instance_->Start(payload, std::move(callback));
 }
 
 void AttestationImpl::Confirm(

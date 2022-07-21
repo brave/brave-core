@@ -57,10 +57,10 @@ TEST_F(PostSafetynetTest, ServerOK) {
           }));
 
   safetynet_->Request(
-      [](const type::Result result, const std::string& nonce) {
+      base::BindOnce([](type::Result result, const std::string& nonce) {
         EXPECT_EQ(result, type::Result::LEDGER_OK);
         EXPECT_EQ(nonce, "c4645786-052f-402f-8593-56af2f7a21ce");
-      });
+      }));
 }
 
 TEST_F(PostSafetynetTest, ServerError400) {
@@ -75,10 +75,10 @@ TEST_F(PostSafetynetTest, ServerError400) {
           }));
 
   safetynet_->Request(
-      [](const type::Result result, const std::string& nonce) {
+      base::BindOnce([](type::Result result, const std::string& nonce) {
         EXPECT_EQ(result, type::Result::LEDGER_ERROR);
         EXPECT_EQ(nonce, "");
-      });
+      }));
 }
 
 TEST_F(PostSafetynetTest, ServerError401) {
@@ -93,10 +93,10 @@ TEST_F(PostSafetynetTest, ServerError401) {
           }));
 
   safetynet_->Request(
-      [](const type::Result result, const std::string& nonce) {
+      base::BindOnce([](type::Result result, const std::string& nonce) {
         EXPECT_EQ(result, type::Result::LEDGER_ERROR);
         EXPECT_EQ(nonce, "");
-      });
+      }));
 }
 
 }  // namespace promotion

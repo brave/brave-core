@@ -55,13 +55,13 @@ TEST_F(GetCaptchaTest, ServerOK) {
 
   captcha_->Request(
       "d155d2d2-2627-425b-9be8-44ae9f541762",
-      [](const type::Result result, const std::string& image) {
+      base::BindOnce([](type::Result result, const std::string& image) {
         EXPECT_EQ(result, type::Result::LEDGER_OK);
         EXPECT_EQ(
             image,
             "data:image/jpeg;base64,YVdwaGFYTnFaR1p2YVdGemFtWnZjMkZwYW"
             "1admMybGhaR3BtYjJsa2MycG1idz09");
-      });
+      }));
 }
 
 TEST_F(GetCaptchaTest, ServerError400) {
@@ -77,9 +77,9 @@ TEST_F(GetCaptchaTest, ServerError400) {
 
   captcha_->Request(
       "d155d2d2-2627-425b-9be8-44ae9f541762",
-      [](const type::Result result, const std::string& image) {
+      base::BindOnce([](type::Result result, const std::string& image) {
         EXPECT_EQ(result, type::Result::LEDGER_ERROR);
-      });
+      }));
 }
 
 TEST_F(GetCaptchaTest, ServerError404) {
@@ -95,10 +95,10 @@ TEST_F(GetCaptchaTest, ServerError404) {
 
   captcha_->Request(
       "d155d2d2-2627-425b-9be8-44ae9f541762",
-      [](const type::Result result, const std::string& image) {
+      base::BindOnce([](type::Result result, const std::string& image) {
         EXPECT_EQ(result, type::Result::NOT_FOUND);
         EXPECT_EQ(image, "");
-      });
+      }));
 }
 
 TEST_F(GetCaptchaTest, ServerError500) {
@@ -114,10 +114,10 @@ TEST_F(GetCaptchaTest, ServerError500) {
 
   captcha_->Request(
       "d155d2d2-2627-425b-9be8-44ae9f541762",
-      [](const type::Result result, const std::string& image) {
+      base::BindOnce([](type::Result result, const std::string& image) {
         EXPECT_EQ(result, type::Result::LEDGER_ERROR);
         EXPECT_EQ(image, "");
-      });
+      }));
 }
 
 TEST_F(GetCaptchaTest, ServerErrorRandom) {
@@ -133,10 +133,10 @@ TEST_F(GetCaptchaTest, ServerErrorRandom) {
 
   captcha_->Request(
       "d155d2d2-2627-425b-9be8-44ae9f541762",
-      [](const type::Result result, const std::string& image) {
+      base::BindOnce([](type::Result result, const std::string& image) {
         EXPECT_EQ(result, type::Result::LEDGER_ERROR);
         EXPECT_EQ(image, "");
-      });
+      }));
 }
 
 }  // namespace promotion

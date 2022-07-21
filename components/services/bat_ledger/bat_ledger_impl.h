@@ -285,11 +285,6 @@ class BatLedgerImpl :
       const ledger::type::Result result,
       ledger::type::BalanceReportInfoPtr report_info);
 
-  static void OnClaimPromotion(
-      CallbackHolder<ClaimPromotionCallback>* holder,
-      const ledger::type::Result result,
-      const std::string& response);
-
   static void OnAttestPromotion(
       CallbackHolder<AttestPromotionCallback>* holder,
       const ledger::type::Result result,

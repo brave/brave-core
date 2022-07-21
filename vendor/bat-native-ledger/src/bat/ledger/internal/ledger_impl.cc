@@ -534,9 +534,10 @@ void LedgerImpl::FetchPromotions(FetchPromotionCallback callback) {
 void LedgerImpl::ClaimPromotion(const std::string& promotion_id,
                                 const std::string& payload,
                                 ClaimPromotionCallback callback) {
-  WhenReady([this, promotion_id, payload, callback]() {
-    promotion()->Claim(promotion_id, payload, callback);
-  });
+  WhenReady(
+      [this, promotion_id, payload, callback = std::move(callback)]() mutable {
+        promotion()->Claim(promotion_id, payload, std::move(callback));
+      });
 }
 
 void LedgerImpl::AttestPromotion(const std::string& promotion_id,

@@ -58,10 +58,10 @@ TEST_F(PostDevicecheckTest, ServerOK) {
 
   devicecheck_->Request(
       "ff50981d-47de-4210-848d-995e186901a1",
-      [](const type::Result result, const std::string& nonce) {
+      base::BindOnce([](type::Result result, const std::string& nonce) {
         EXPECT_EQ(result, type::Result::LEDGER_OK);
         EXPECT_EQ(nonce, "c4645786-052f-402f-8593-56af2f7a21ce");
-      });
+      }));
 }
 
 TEST_F(PostDevicecheckTest, ServerError400) {
@@ -77,10 +77,10 @@ TEST_F(PostDevicecheckTest, ServerError400) {
 
   devicecheck_->Request(
       "ff50981d-47de-4210-848d-995e186901a1",
-      [](const type::Result result, const std::string& nonce) {
+      base::BindOnce([](type::Result result, const std::string& nonce) {
         EXPECT_EQ(result, type::Result::LEDGER_ERROR);
         EXPECT_EQ(nonce, "");
-      });
+      }));
 }
 
 TEST_F(PostDevicecheckTest, ServerError401) {
@@ -96,10 +96,10 @@ TEST_F(PostDevicecheckTest, ServerError401) {
 
   devicecheck_->Request(
       "ff50981d-47de-4210-848d-995e186901a1",
-      [](const type::Result result, const std::string& nonce) {
+      base::BindOnce([](type::Result result, const std::string& nonce) {
         EXPECT_EQ(result, type::Result::LEDGER_ERROR);
         EXPECT_EQ(nonce, "");
-      });
+      }));
 }
 
 TEST_F(PostDevicecheckTest, ServerErrorRandom) {
@@ -115,10 +115,10 @@ TEST_F(PostDevicecheckTest, ServerErrorRandom) {
 
   devicecheck_->Request(
       "ff50981d-47de-4210-848d-995e186901a1",
-      [](const type::Result result, const std::string& nonce) {
+      base::BindOnce([](type::Result result, const std::string& nonce) {
         EXPECT_EQ(result, type::Result::LEDGER_ERROR);
         EXPECT_EQ(nonce, "");
-      });
+      }));
 }
 
 }  // namespace promotion
