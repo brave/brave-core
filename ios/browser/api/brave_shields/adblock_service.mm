@@ -39,20 +39,23 @@
       }));
 }
 
-- (void)adblockComponentDidBecomeReady:(const base::FilePath&)install_path {
-  auto component_path = install_path;
-
+- (void)adblockComponentDidBecomeReady:(base::FilePath)install_path {
   // Update shields install path (w/ KVO)
   [self willChangeValueForKey:@"shieldsInstallPath"];
   self.shieldsInstallPath = base::SysUTF8ToNSString(install_path.value());
   [self didChangeValueForKey:@"shieldsInstallPath"];
 
+  __weak auto weakSelf = self;
   // Get filter lists from catalog
   base::ThreadPool::PostTaskAndReplyWithResult(
       FROM_HERE, {base::MayBlock()},
       base::BindOnce(&brave_component_updater::GetDATFileAsString,
-                     component_path.AppendASCII("regional_catalog.json")),
-      base::BindOnce(^(const std::string json) {
+                     install_path.AppendASCII("regional_catalog.json")),
+      base::BindOnce(^(const std::string& json) {
+        auto strongSelf = weakSelf;
+        if (!strongSelf) {
+          return;
+        }
         auto catalog = brave_shields::RegionalCatalogFromJSON(json);
 
         NSMutableArray* lists = [[NSMutableArray alloc] init];
@@ -60,10 +63,10 @@
           [lists addObject:[[AdblockFilterList alloc]
                                initWithFilterList:adblock::FilterList(list)]];
         }
-        self.regionalFilterLists = lists;
+        strongSelf.regionalFilterLists = lists;
 
-        if (self.shieldsComponentReady) {
-          self.shieldsComponentReady(self.shieldsInstallPath);
+        if (strongSelf.shieldsComponentReady) {
+          strongSelf.shieldsComponentReady(strongSelf.shieldsInstallPath);
         }
       }));
 }
