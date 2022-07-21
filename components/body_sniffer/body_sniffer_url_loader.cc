@@ -249,25 +249,30 @@ void BodySnifferURLLoader::SendBufferedBodyToClient() {
   // Send the buffered data first.
   DCHECK_GT(bytes_remaining_in_buffer_, 0u);
   size_t start_position = buffered_body_.size() - bytes_remaining_in_buffer_;
+  std::cerr << "in SendBufferedBodyToClient, start_position " << start_position << "\n";
   uint32_t bytes_sent = bytes_remaining_in_buffer_;
   MojoResult result =
       body_producer_handle_->WriteData(buffered_body_.data() + start_position,
                                        &bytes_sent, MOJO_WRITE_DATA_FLAG_NONE);
   switch (result) {
     case MOJO_RESULT_OK:
+      std::cerr << "in SendBufferedBodyToClient, bytes sent successfully " << "\n";
       break;
     case MOJO_RESULT_FAILED_PRECONDITION:
       // The pipe is closed unexpectedly. |this| should be deleted once
       // URLLoaderPtr on the destination is released.
+      std::cerr << "in SendBufferedBodyToClient, FAILURE, bytes NOT sent successfully " << "\n";
       Abort();
       return;
     case MOJO_RESULT_SHOULD_WAIT:
+      std::cerr << "in SendBufferedBodyToClient, SHOULD WAIT " << "\n";
       body_producer_watcher_.ArmOrNotify();
       return;
     default:
       NOTREACHED();
       return;
   }
+  std::cerr << "in SendBufferedBodyToClient, bytes sent: " << bytes_sent << "\n";
   bytes_remaining_in_buffer_ -= bytes_sent;
   body_producer_watcher_.ArmOrNotify();
 }

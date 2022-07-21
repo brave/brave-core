@@ -65,11 +65,11 @@ DeAmpURLLoader::~DeAmpURLLoader() = default;
 void DeAmpURLLoader::OnBodyReadable(MojoResult) {
   std::cerr << "entered OnBodyReadable" << "\n";
   if (state_ == State::kSending) {
-    // This is incorrect - we should not complete loading until we've seen all bytes.
-
-    // The pipe becoming readable when kSending means all buffered body has
-    // already been sent.
-    ForwardBodyToClient();
+    if (bytes_remaining_in_buffer_ > 0) {
+      SendBufferedBodyToClient();
+    } else {
+      ForwardBodyToClient();
+    } 
     return;
   }
   if (!CheckBufferedBody(kReadBufferSize)) {
@@ -77,6 +77,9 @@ void DeAmpURLLoader::OnBodyReadable(MojoResult) {
   }
   std::cerr << "going to check de-amp check" << "\n";
   bool redirected = MaybeRedirectToCanonicalLink();
+
+  //TODO: if !redirected && found_amp, send buffered body. Hmm but I can't do that before calling CompleteLoading
+  //TODO: bool found_amp_but_not_canonical_link = !redirected && found_amp_
 
   std::cerr << "redirected: " << redirected << ", found_amp_:  " << found_amp_ << ", read_bytes: " << read_bytes_ << ", max bytes to check: " << kMaxBytesToCheck << "\n";
 
@@ -98,11 +101,12 @@ bool DeAmpURLLoader::MaybeRedirectToCanonicalLink() {
 
   //todo make sure that we're getting meaningfully different chunks every time.
 
+  // If we are not already on an AMP page, check if this chunk has the AMP HTML
   if (!found_amp_ && !CheckIfAmpPage(buffered_body_)) {
     return false;
   }
 
-  found_amp_ = true; // If we get to this point, we have an AMP page
+  found_amp_ = true; // If we get to this point, we know we have an AMP page
 
   auto canonical_link = FindCanonicalAmpUrl(buffered_body_);
   if (!canonical_link.has_value()) {

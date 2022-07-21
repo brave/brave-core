@@ -79,6 +79,7 @@ bool CheckIfAmpPage(const std::string& body) {
 }
 
 // Find canonical link in body or return error
+// NOTE: caller is responsible for making sure that we are already on an AMP page
 base::expected<std::string, std::string> FindCanonicalAmpUrl(const std::string& body) {
  
   RE2::Options opt;
