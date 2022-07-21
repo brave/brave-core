@@ -34,6 +34,12 @@ void AddChromeToProfiles(std::vector<importer::SourceProfile>* profiles,
                                      profile->begin(), profile->end())),
                                  &items))
       continue;
+#if BUILDFLAG(IS_MAC)
+    // https://github.com/brave/brave-browser/issues/24130
+    if (type == importer::TYPE_OPERA && (items & importer::PASSWORDS)) {
+      items ^= importer::PASSWORDS;
+    }
+#endif
     importer::SourceProfile chrome;
     std::string importer_name(brand);
     importer_name.append(*name);
