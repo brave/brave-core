@@ -12,6 +12,7 @@
 #include "bat/ads/internal/account/deposits/deposits_database_table.h"
 #include "bat/ads/internal/account/transactions/transactions_database_table.h"
 #include "bat/ads/internal/ads/ad_events/ad_events_database_table.h"
+#include "bat/ads/internal/processors/contextual/text_embedding/text_embedding_html_events_database_table.h"
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/base/database/database_transaction_util.h"
 #include "bat/ads/internal/conversions/conversion_queue_database_table.h"
@@ -68,6 +69,9 @@ void Migration::ToVersion(mojom::DBTransaction* transaction,
 
   table::AdEvents ad_events_database_table;
   ad_events_database_table.Migrate(transaction, to_version);
+
+  table::TextEmbeddingHTMLEvents text_embedding_html_events_database_table;
+  text_embedding_html_events_database_table.Migrate(transaction, to_version);
 
   table::Transactions transactions_database_table;
   transactions_database_table.Migrate(transaction, to_version);

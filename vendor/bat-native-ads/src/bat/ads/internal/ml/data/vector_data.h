@@ -36,12 +36,17 @@ class VectorData final : public Data {
   VectorData& operator=(const VectorData& vector_data);
   VectorData& operator=(VectorData&& vector_data) noexcept;
 
+  // Mathematical vector operations
   friend double operator*(const VectorData& lhs, const VectorData& rhs);
-
+  void VectorAddElementWise(const VectorData& v_add);
+  void VectorDivideByScalar(float scalar);
+  float VectorSumElements();
   void Normalize();
 
-  int GetDimensionCountForTesting() const;
+  int GetDimensionCount() const;
+  int GetNonZeroElementsCount();
 
+  const std::string GetVectorAsString() const;
   const std::vector<float>& GetValuesForTesting() const;
 
  private:

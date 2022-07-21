@@ -10,6 +10,7 @@
 #include <utility>
 
 #include "base/check_op.h"
+#include "base/strings/string_number_conversions.h"
 
 namespace ads {
 namespace ml {
@@ -137,6 +138,61 @@ double operator*(const VectorData& lhs, const VectorData& rhs) {
   return dot_product;
 }
 
+void VectorData::VectorAddElementWise(const VectorData& v_add) {
+  if (!storage_->dimension_count() || !v_add.storage_->dimension_count()) {
+    return;
+  }
+
+  if (storage_->dimension_count() != v_add.storage_->dimension_count()) {
+    return;
+  }
+
+  size_t v_base_index = 0;
+  size_t v_add_index = 0;
+  while (v_base_index < storage_->GetSize() &&
+         v_add_index < v_add.storage_->GetSize()) {
+    if (storage_->GetPointAt(v_base_index) ==
+        v_add.storage_->GetPointAt(v_add_index)) {
+      storage_->values()[v_base_index] += v_add.storage_->values()[v_add_index];
+      ++v_base_index;
+      ++v_add_index;
+    } else {
+      if (storage_->GetPointAt(v_base_index) <
+          v_add.storage_->GetPointAt(v_add_index)) {
+        ++v_base_index;
+      } else {
+        ++v_add_index;
+      }
+    }
+  }
+}
+
+void VectorData::VectorDivideByScalar(float scalar) {
+  if (!storage_->dimension_count()) {
+    return;
+  }
+
+  size_t v_index = 0;
+  while (v_index < storage_->GetSize()) {
+    storage_->values()[v_index] /= scalar;
+    ++v_index;
+  }
+}
+
+float VectorData::VectorSumElements() {
+  if (!storage_->dimension_count()) {
+    return 0.0;
+  }
+
+  float elements_sum = 0.0;
+  size_t v_index = 0;
+  while (v_index < storage_->GetSize()) {
+    elements_sum += storage_->values()[v_index];
+    ++v_index;
+  }
+  return elements_sum;
+}
+
 void VectorData::Normalize() {
   const auto vector_length = sqrt(
       std::accumulate(storage_->values().cbegin(), storage_->values().cend(),
@@ -150,13 +206,47 @@ void VectorData::Normalize() {
   }
 }
 
-int VectorData::GetDimensionCountForTesting() const {
+int VectorData::GetDimensionCount() const {
   return storage_->dimension_count();
+}
+
+int VectorData::GetNonZeroElementsCount() {
+  if (!storage_->dimension_count()) {
+    return 0;
+  }
+
+  int non_zero_count = 0;
+  size_t v_index = 0;
+  while (v_index < storage_->GetSize()) {
+    if (storage_->values()[v_index] != 0) {
+      non_zero_count += 1;
+    }
+    ++v_index;
+  }
+  return non_zero_count;
 }
 
 const std::vector<float>& VectorData::GetValuesForTesting() const {
   return storage_->values();
 }
+
+const std::string VectorData::GetVectorAsString() const {
+  if (!storage_->dimension_count()) {
+    return "";
+  }
+
+  std::string vctr;
+  int v_index = 0;
+  int storage_size = storage_->GetSize();
+  while (v_index < storage_size) {
+    vctr += base::NumberToString(storage_->values()[v_index]);
+    if (v_index < storage_size - 1) {
+      vctr += " ";
+    }
+    ++v_index;
+  }
+  return vctr;
+};
 
 }  // namespace ml
 }  // namespace ads

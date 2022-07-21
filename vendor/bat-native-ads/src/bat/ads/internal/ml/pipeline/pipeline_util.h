@@ -17,8 +17,10 @@ namespace ml {
 namespace pipeline {
 
 struct PipelineInfo;
+struct PipelineEmbeddingInfo;
 
 absl::optional<PipelineInfo> ParsePipelineValue(base::Value resource_value);
+absl::optional<PipelineEmbeddingInfo> ParsePipelineEmbedding(base::Value resource_value);
 
 }  // namespace pipeline
 }  // namespace ml

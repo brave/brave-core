@@ -4,6 +4,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "bat/ads/internal/ml/pipeline/pipeline_util.h"
+#include "bat/ads/internal/ml/pipeline/pipeline_embedding_info.h"
 
 #include <map>
 #include <memory>
@@ -224,6 +225,53 @@ absl::optional<PipelineInfo> ParsePipelineValue(base::Value resource_value) {
   return PipelineInfo(version, timestamp, locale,
                       std::move(transformations_optional.value()),
                       std::move(linear_model_optional.value()));
+}
+
+absl::optional<PipelineEmbeddingInfo> ParsePipelineEmbedding(base::Value resource_value) {
+  if (!resource_value.is_dict()) {
+    return absl::nullopt;
+  }
+
+  absl::optional<int> version_value = resource_value.FindIntKey("version");
+  if (!version_value.has_value()) {
+    return absl::nullopt;
+  }
+  int version = version_value.value();
+
+  std::string* timestamp_value = resource_value.FindStringKey("timestamp");
+  if (!timestamp_value) {
+    return absl::nullopt;
+  }
+  std::string timestamp = *timestamp_value;
+
+  std::string* locale_value = resource_value.FindStringKey("locale");
+  if (!locale_value) {
+    return absl::nullopt;
+  }
+  std::string locale = *locale_value;
+
+  base::Value* embeddings_value = resource_value.FindDictKey("embeddings");
+  if (!embeddings_value) {
+    return absl::nullopt;
+  }
+  int embeddings_dim = 1;
+  std::map<std::string, VectorData> embeddings;
+  for (const auto item : embeddings_value->GetDict()) {
+    const auto vector = std::move(item.second.GetList());
+    std::vector<float> embedding;
+    embedding.reserve(vector.size());
+    for (const base::Value& v_raw : vector) {
+      double v = v_raw.GetDouble();
+      embedding.push_back(v);
+    }
+    embeddings[item.first] = VectorData(std::move(embedding));
+    embeddings_dim = embeddings[item.first].GetDimensionCount();
+  }
+
+  absl::optional<PipelineEmbeddingInfo> pipeline_embedding_info =
+      PipelineEmbeddingInfo(version, timestamp, locale, embeddings_dim, embeddings);
+
+  return pipeline_embedding_info;
 }
 
 }  // namespace pipeline
