@@ -150,3 +150,18 @@ struct WeiFormatter {
       .rounded().asString(radix: outputRadix.rawValue)
   }
 }
+
+extension String {
+  // Remove trailing zeros, including the decimal separator if necessary.
+  // Example: 1.0000000000 becomes 1, 1122.33440000000 becomes 1122.3344
+  var trimmingTrailingZeros: String {
+    do {
+      let regexPattern = "\\.0*$|(\\.\\d*[1-9])0+$"
+      let regex = try NSRegularExpression(pattern: regexPattern, options: .caseInsensitive)
+      let range = NSRange(location: 0, length: count)
+      return regex.stringByReplacingMatches(in: self, options: [], range: range, withTemplate: "$1")
+    } catch {
+      return self
+    }
+  }
+}

@@ -46,4 +46,29 @@ class WeiFormatterTests: XCTestCase {
     // Hex
     XCTAssertEqual(try XCTUnwrap(formatter.weiString(from: 0.1, radix: .hex, decimals: 18)), "16345785d8a0000")
   }
+  
+  func testTrimmingTrailingZeros() {
+    typealias ValueExpected = (value: String, expected: String)
+    let testCases: [ValueExpected] = [
+      ValueExpected(value: "0", expected: "0"),
+      ValueExpected(value: "100", expected: "100"),
+      ValueExpected(value: "100001.1", expected: "100001.1"),
+      ValueExpected(value: "10001.1", expected: "10001.1"),
+      ValueExpected(value: "0.0000000000001", expected: "0.0000000000001"),
+      ValueExpected(value: "123456789.0", expected: "123456789"),
+      ValueExpected(value: "12345678.90", expected: "12345678.9"),
+      ValueExpected(value: "1234567.890", expected: "1234567.89"),
+      ValueExpected(value: "123456.7890", expected: "123456.789"),
+      ValueExpected(value: "12345.67890", expected: "12345.6789"),
+      ValueExpected(value: "0.000000000000000000", expected: "0"),
+      ValueExpected(value: "1.000000000000000000", expected: "1"),
+      ValueExpected(value: "0.112233440000000000", expected: "0.11223344"),
+      ValueExpected(value: "1122.33440000000000000", expected: "1122.3344"),
+      ValueExpected(value: "12345.112233440000000000", expected: "12345.11223344"),
+      ValueExpected(value: "12345.6789", expected: "12345.6789")
+    ]
+    testCases.forEach {
+      XCTAssertEqual($0.value.trimmingTrailingZeros, $0.expected)
+    }
+  }
 }
