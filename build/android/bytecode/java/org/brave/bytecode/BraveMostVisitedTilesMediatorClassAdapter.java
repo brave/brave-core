@@ -19,8 +19,8 @@ public class BraveMostVisitedTilesMediatorClassAdapter extends BraveClassVisitor
         redirectConstructor(
                 sMostVisitedTilesMediatorClassName, sBraveMostVisitedTilesMediatorClassName);
 
-        makePublicMethod(sMostVisitedTilesMediatorClassName, "updateTileGridPlaceholderVisibility");
+        makePublicMethod(sMostVisitedTilesMediatorClassName, "updateTilePlaceholderVisibility");
         addMethodAnnotation(sBraveMostVisitedTilesMediatorClassName,
-                "updateTileGridPlaceholderVisibility", "Ljava/lang/Override;");
+                "updateTilePlaceholderVisibility", "Ljava/lang/Override;");
     }
 }

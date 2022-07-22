@@ -11,6 +11,7 @@
 
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
+#include "base/json/values_util.h"
 #include "base/rand_util.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/stringprintf.h"
@@ -220,29 +221,29 @@ void RewardsNotificationServiceImpl::ReadRewardsNotifications(
 }
 
 void RewardsNotificationServiceImpl::StoreRewardsNotifications() {
-  base::DictionaryValue root;
+  base::Value::Dict root;
 
-  auto notifications = std::make_unique<base::ListValue>();
+  base::Value::List notifications;
   for (auto& item : rewards_notifications_) {
-    auto dict = std::make_unique<base::DictionaryValue>();
-    dict->SetString("id", item.second.id_);
-    dict->SetInteger("type", item.second.type_);
-    dict->SetInteger("timestamp", item.second.timestamp_);
-    auto args = std::make_unique<base::ListValue>();
+    base::Value::Dict dict;
+    dict.Set("id", item.second.id_);
+    dict.Set("type", item.second.type_);
+    dict.Set("timestamp", static_cast<int>(item.second.timestamp_));
+    base::Value::List args;
     for (auto& arg : item.second.args_) {
-      args->Append(arg);
+      args.Append(arg);
     }
-    dict->SetList("args", std::move(args));
-    notifications->Append(std::move(dict));
+    dict.Set("args", std::move(args));
+    notifications.Append(std::move(dict));
   }
 
-  auto displayed = std::make_unique<base::ListValue>();
+  base::Value::List displayed;
   for (auto& item : rewards_notifications_displayed_) {
-    displayed->Append(item);
+    displayed.Append(item);
   }
 
-  root.SetList("notifications", std::move(notifications));
-  root.SetList("displayed", std::move(displayed));
+  root.Set("notifications", std::move(notifications));
+  root.Set("displayed", std::move(displayed));
 
   std::string result;
   if (!base::JSONWriter::Write(root, &result)) {

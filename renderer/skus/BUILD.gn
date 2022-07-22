@@ -15,7 +15,7 @@ source_set("browser_tests") {
   deps = [
     "//brave/components/skus/common",
     "//brave/components/skus/renderer",
-    "//chrome/common:common_lib",
+    "//chrome/common",
     "//content/test:test_support",
     "//url",
   ]

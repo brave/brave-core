@@ -12,7 +12,7 @@ TEST(BraveNewTabUITest, ConstantsTest) {
   // Make sure history/ntp_tiles module has proper constants for our NTP
   // requirements.
   constexpr size_t kBraveMaxTopSitesNumber = 12;
-  constexpr size_t kTopSitesNumber = history::TopSitesImpl::kTopSitesNumber;
+  constexpr size_t kTopSitesNumber = history::kTopSitesNumber;
 
   EXPECT_EQ(kBraveMaxTopSitesNumber, kTopSitesNumber);
   EXPECT_EQ(kBraveMaxTopSitesNumber, ntp_tiles::kMaxNumCustomLinks);

@@ -64,7 +64,8 @@ void BraveShieldsDataController::OnContentSettingChanged(
     const ContentSettingsPattern& primary_pattern,
     const ContentSettingsPattern& secondary_pattern,
     ContentSettingsTypeSet content_type_set) {
-  if (content_type_set.GetType() == ContentSettingsType::BRAVE_SHIELDS &&
+  if ((content_type_set.ContainsAllTypes() ||
+       content_type_set.GetType() == ContentSettingsType::BRAVE_SHIELDS) &&
       primary_pattern.Matches(GetCurrentSiteURL())) {
     for (Observer& obs : observer_list_)
       obs.OnShieldsEnabledChanged();

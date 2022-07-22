@@ -1,12 +1,12 @@
 diff --git a/chrome/browser/ui/views/permission_bubble/permission_prompt_bubble_view.cc b/chrome/browser/ui/views/permission_bubble/permission_prompt_bubble_view.cc
-index 04cc536ec001067a51b23000050dd709158ada7d..b184db3107c83020e2b4a30172b585badee58c39 100644
+index 142d0aa2196fc858cb5968207c2b3565f9a2a39b..a3c6e80bc93232b6cc8630f953b282be50558e22 100644
 --- a/chrome/browser/ui/views/permission_bubble/permission_prompt_bubble_view.cc
 +++ b/chrome/browser/ui/views/permission_bubble/permission_prompt_bubble_view.cc
-@@ -140,6 +140,7 @@ PermissionPromptBubbleView::PermissionPromptBubbleView(
- 
-   for (permissions::PermissionRequest* request : GetVisibleRequests())
+@@ -292,6 +292,7 @@ PermissionPromptBubbleView::PermissionPromptBubbleView(
+   for (permissions::PermissionRequest* request :
+        GetVisibleRequests(*delegate.get()))
      AddRequestLine(request);
 +  BRAVE_PERMISSION_PROMPT_BUBBLE_VIEW
  
-   absl::optional<std::u16string> extra_text = GetExtraText();
+   absl::optional<std::u16string> extra_text = GetExtraText(*delegate.get());
    if (extra_text.has_value()) {

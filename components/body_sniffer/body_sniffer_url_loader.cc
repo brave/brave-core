@@ -32,7 +32,10 @@ BodySnifferURLLoader::BodySnifferURLLoader(
                              task_runner),
       body_producer_watcher_(FROM_HERE,
                              mojo::SimpleWatcher::ArmingPolicy::MANUAL,
-                             std::move(task_runner)) {}
+                             std::move(task_runner)) {
+  mojo::CreateDataPipe(nullptr, body_producer_handle_,
+                       next_body_consumer_handle_);
+}
 
 BodySnifferURLLoader::~BodySnifferURLLoader() = default;
 
@@ -45,7 +48,15 @@ void BodySnifferURLLoader::Start(
   source_url_client_receiver_.Bind(std::move(source_url_client_receiver),
                                    task_runner_);
   if (body) {
-    OnStartLoadingResponseBody(std::move(body));
+    VLOG(2) << __func__ << " " << response_url_;
+    state_ = State::kLoading;
+    body_consumer_handle_ = std::move(body);
+    body_consumer_watcher_.Watch(
+        body_consumer_handle_.get(),
+        MOJO_HANDLE_SIGNAL_READABLE | MOJO_HANDLE_SIGNAL_PEER_CLOSED,
+        base::BindRepeating(&BodySnifferURLLoader::OnBodyReadable,
+                            base::Unretained(this)));
+    body_consumer_watcher_.ArmOrNotify();
   }
 }
 
@@ -86,25 +97,12 @@ void BodySnifferURLLoader::OnTransferSizeUpdated(int32_t transfer_size_diff) {
   destination_url_loader_client_->OnTransferSizeUpdated(transfer_size_diff);
 }
 
-void BodySnifferURLLoader::OnStartLoadingResponseBody(
-    mojo::ScopedDataPipeConsumerHandle body) {
-  VLOG(2) << __func__ << " " << response_url_;
-  state_ = State::kLoading;
-  body_consumer_handle_ = std::move(body);
-  body_consumer_watcher_.Watch(
-      body_consumer_handle_.get(),
-      MOJO_HANDLE_SIGNAL_READABLE | MOJO_HANDLE_SIGNAL_PEER_CLOSED,
-      base::BindRepeating(&BodySnifferURLLoader::OnBodyReadable,
-                          base::Unretained(this)));
-  body_consumer_watcher_.ArmOrNotify();
-}
-
 void BodySnifferURLLoader::OnComplete(
     const network::URLLoaderCompletionStatus& status) {
   DCHECK(!complete_status_.has_value());
   switch (state_) {
     case State::kWaitForBody:
-      // An error occured before receiving any data.
+      // An error occurred before receiving any data.
       DCHECK_NE(net::OK, status.error_code);
       state_ = State::kCompleted;
       if (!throttle_) {
@@ -188,32 +186,20 @@ void BodySnifferURLLoader::CompleteLoading(std::string body) {
   DCHECK_EQ(State::kLoading, state_);
   state_ = State::kSending;
 
-  if (!throttle_) {
-    Abort();
-    return;
-  }
-
   buffered_body_ = std::move(body);
   bytes_remaining_in_buffer_ = buffered_body_.size();
-
-  throttle_->Resume();
-  mojo::ScopedDataPipeConsumerHandle body_to_send;
-  MojoResult result =
-      mojo::CreateDataPipe(nullptr, body_producer_handle_, body_to_send);
-  if (result != MOJO_RESULT_OK) {
+  if (!throttle_ || !body_producer_handle_) {
     Abort();
     return;
   }
+  // Send deferred message
+  throttle_->Resume();
   // Set up the watcher for the producer handle.
   body_producer_watcher_.Watch(
       body_producer_handle_.get(),
       MOJO_HANDLE_SIGNAL_WRITABLE | MOJO_HANDLE_SIGNAL_PEER_CLOSED,
       base::BindRepeating(&BodySnifferURLLoader::OnBodyWritable,
                           base::Unretained(this)));
-
-  // Send deferred message.
-  destination_url_loader_client_->OnStartLoadingResponseBody(
-      std::move(body_to_send));
 
   if (bytes_remaining_in_buffer_) {
     SendReceivedBodyToClient();

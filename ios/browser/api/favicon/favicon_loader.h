@@ -11,8 +11,8 @@
 
 @class FaviconAttributes;
 
-typedef NSInteger BraveFaviconLoaderSize NS_TYPED_ENUM
-    NS_SWIFT_NAME(FaviconLoader.Sizes);
+typedef NSInteger BraveFaviconLoaderSize
+    NS_TYPED_ENUM NS_SWIFT_NAME(FaviconLoader.Sizes);
 /// Minimal acceptable favicon size, in points.
 OBJC_EXPORT BraveFaviconLoaderSize const BraveFaviconLoaderSizeMin;
 /// Desired small favicon size, in points.

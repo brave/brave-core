@@ -1,5 +1,5 @@
 diff --git a/components/permissions/permission_manager.cc b/components/permissions/permission_manager.cc
-index 698d7a5daf3dabff32fabd74660273294fce1563..b17829597a65171bc5f2aaaf98a1b29427cb1531 100644
+index 96d7af0319c885e883669516fc05de60417fa3a1..654a6581c6a63f00c1463d194a8089528a8e7c5b 100644
 --- a/components/permissions/permission_manager.cc
 +++ b/components/permissions/permission_manager.cc
 @@ -396,6 +396,7 @@ void PermissionManager::RequestPermissionsFromCurrentDocument(
@@ -10,7 +10,7 @@ index 698d7a5daf3dabff32fabd74660273294fce1563..b17829597a65171bc5f2aaaf98a1b294
        PermissionUtil::GetLastCommittedOriginAsURL(render_frame_host);
    const GURL embedding_origin =
        GetEmbeddingOrigin(render_frame_host, requesting_origin);
-@@ -456,6 +457,7 @@ PermissionStatus PermissionManager::GetPermissionStatusForCurrentDocument(
+@@ -455,6 +456,7 @@ PermissionStatus PermissionManager::GetPermissionStatusForCurrentDocument(
        PermissionUtil::PermissionTypeToContentSetting(permission);
  
    const GURL requesting_origin =

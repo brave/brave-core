@@ -269,7 +269,7 @@ void AddFootnoteViewIfNeeded(
 #define BRAVE_PERMISSION_PROMPT_BUBBLE_VIEW                               \
   AddAdditionalWidevineViewControlsIfNeeded(this, delegate_->Requests()); \
   auto* permission_lifetime_view =                                        \
-      AddPermissionLifetimeComboboxIfNeeded(this, delegate_);             \
+      AddPermissionLifetimeComboboxIfNeeded(this, delegate_.get());       \
   AddFootnoteViewIfNeeded(this, delegate_->Requests(), browser_);         \
   if (permission_lifetime_view) {                                         \
     set_fixed_width(                                                      \
