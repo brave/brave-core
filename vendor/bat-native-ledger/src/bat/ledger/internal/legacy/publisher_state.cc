@@ -6,7 +6,7 @@
 #include <utility>
 
 #include "bat/ledger/internal/ledger_impl.h"
-#include "bat/ledger/internal/legacy/publisher_settings_state.h"
+#include "bat/ledger/internal/legacy/publisher_settings_properties.h"
 #include "bat/ledger/internal/legacy/publisher_state.h"
 
 using std::placeholders::_1;
@@ -56,8 +56,7 @@ void LegacyPublisherState::OnLoad(ledger::type::Result result,
   }
 
   ledger::PublisherSettingsProperties state;
-  const ledger::PublisherSettingsState publisher_settings_state;
-  if (!publisher_settings_state.FromJson(data.c_str(), &state)) {
+  if (!state.FromJson(data)) {
     callback(ledger::type::Result::LEDGER_ERROR);
     return;
   }

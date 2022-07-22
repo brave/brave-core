@@ -6,8 +6,6 @@
 #include "bat/ads/category_content_info.h"
 
 #include "base/values.h"
-#include "bat/ads/internal/base/logging_util.h"
-#include "bat/ads/internal/deprecated/json/json_helper.h"
 
 namespace ads {
 
@@ -29,73 +27,23 @@ bool CategoryContentInfo::operator!=(const CategoryContentInfo& rhs) const {
   return !(*this == rhs);
 }
 
-base::DictionaryValue CategoryContentInfo::ToValue() const {
-  base::DictionaryValue dictionary;
+base::Value::Dict CategoryContentInfo::ToValue() const {
+  base::Value::Dict dictionary;
 
-  dictionary.SetStringKey("category", category);
-  dictionary.SetIntKey("optAction", static_cast<int>(opt_action_type));
+  dictionary.Set("category", category);
+  dictionary.Set("optAction", static_cast<int>(opt_action_type));
 
   return dictionary;
 }
 
-bool CategoryContentInfo::FromValue(const base::Value& value) {
-  const base::DictionaryValue* dictionary = nullptr;
-  if (!(&value)->GetAsDictionary(&dictionary)) {
-    return false;
+void CategoryContentInfo::FromValue(const base::Value::Dict& root) {
+  if (const auto* value = root.FindString("category")) {
+    category = *value;
   }
 
-  const std::string* category_value = dictionary->FindStringKey("category");
-  if (category_value) {
-    category = *category_value;
+  if (const auto value = root.FindInt("opt_action")) {
+    opt_action_type = static_cast<CategoryContentOptActionType>(*value);
   }
-
-  const absl::optional<int> opt_action_type_optional =
-      dictionary->FindIntKey("optAction");
-  if (opt_action_type_optional) {
-    opt_action_type = static_cast<CategoryContentOptActionType>(
-        opt_action_type_optional.value());
-  }
-
-  return true;
-}
-
-std::string CategoryContentInfo::ToJson() const {
-  std::string json;
-  SaveToJson(*this, &json);
-  return json;
-}
-
-bool CategoryContentInfo::FromJson(const std::string& json) {
-  rapidjson::Document document;
-  document.Parse(json.c_str());
-
-  if (document.HasParseError()) {
-    BLOG(1, helper::JSON::GetLastError(&document));
-    return false;
-  }
-
-  if (document.HasMember("category")) {
-    category = document["category"].GetString();
-  }
-
-  if (document.HasMember("opt_action")) {
-    opt_action_type = static_cast<CategoryContentOptActionType>(
-        document["opt_action"].GetInt());
-  }
-
-  return true;
-}
-
-void SaveToJson(JsonWriter* writer, const CategoryContentInfo& info) {
-  writer->StartObject();
-
-  writer->String("category");
-  writer->String(info.category.c_str());
-
-  writer->String("opt_action");
-  writer->Int(static_cast<int>(info.opt_action_type));
-
-  writer->EndObject();
 }
 
 }  // namespace ads

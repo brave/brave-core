@@ -9,6 +9,8 @@
 #include <string>
 #include <vector>
 
+#include "base/values.h"
+
 namespace ads {
 
 struct FlaggedAdInfo final {
@@ -17,8 +19,8 @@ struct FlaggedAdInfo final {
   FlaggedAdInfo& operator=(const FlaggedAdInfo& info);
   ~FlaggedAdInfo();
 
-  std::string ToJson() const;
-  bool FromJson(const std::string& json);
+  base::Value::Dict ToValue() const;
+  bool FromValue(const base::Value::Dict& value);
 
   std::string creative_set_id;
 };

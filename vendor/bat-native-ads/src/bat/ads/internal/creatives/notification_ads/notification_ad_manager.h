@@ -10,13 +10,9 @@
 #include <string>
 
 #include "base/containers/circular_deque.h"
+#include "base/values.h"
 #include "bat/ads/ads_callback.h"
 #include "build/build_config.h"
-
-namespace base {
-class DictionaryValue;
-class Value;
-}  // namespace base
 
 namespace ads {
 
@@ -57,34 +53,34 @@ class NotificationAdManager final {
 
  private:
   base::circular_deque<NotificationAdInfo> GetNotificationsFromList(
-      base::Value* list) const;
+      const base::Value::List& list) const;
 
-  bool GetNotificationFromDictionary(base::DictionaryValue* dictionary,
+  bool GetNotificationFromDictionary(const base::Value::Dict& dict,
                                      NotificationAdInfo* notification_ad) const;
 
-  bool GetPlacementIdFromDictionary(base::DictionaryValue* dictionary,
+  bool GetPlacementIdFromDictionary(const base::Value::Dict& dict,
                                     std::string* value) const;
-  bool GetCreativeInstanceIdFromDictionary(base::DictionaryValue* dictionary,
+  bool GetCreativeInstanceIdFromDictionary(const base::Value::Dict& dict,
                                            std::string* value) const;
-  bool GetCreativeSetIdFromDictionary(base::DictionaryValue* dictionary,
+  bool GetCreativeSetIdFromDictionary(const base::Value::Dict& dict,
                                       std::string* value) const;
-  bool GetCampaignIdFromDictionary(base::DictionaryValue* dictionary,
+  bool GetCampaignIdFromDictionary(const base::Value::Dict& dict,
                                    std::string* value) const;
-  bool GetAdvertiserIdFromDictionary(base::DictionaryValue* dictionary,
+  bool GetAdvertiserIdFromDictionary(const base::Value::Dict& dict,
                                      std::string* value) const;
-  bool GetSegmentFromDictionary(base::DictionaryValue* dictionary,
+  bool GetSegmentFromDictionary(const base::Value::Dict& dict,
                                 std::string* value) const;
-  bool GetTitleFromDictionary(base::DictionaryValue* dictionary,
+  bool GetTitleFromDictionary(const base::Value::Dict& dict,
                               std::string* value) const;
-  bool GetBodyFromDictionary(base::DictionaryValue* dictionary,
+  bool GetBodyFromDictionary(const base::Value::Dict& dict,
                              std::string* value) const;
-  bool GetTargetUrlFromDictionary(base::DictionaryValue* dictionary,
+  bool GetTargetUrlFromDictionary(const base::Value::Dict& dict,
                                   std::string* value) const;
-  bool GetGeoTargetFromDictionary(base::DictionaryValue* dictionary,
+  bool GetGeoTargetFromDictionary(const base::Value::Dict& dict,
                                   std::string* value) const;
 
   bool GetStringFromDictionary(const std::string& key,
-                               base::DictionaryValue* dictionary,
+                               const base::Value::Dict& dict,
                                std::string* string) const;
 
   void Save();
@@ -94,10 +90,10 @@ class NotificationAdManager final {
   void OnLoaded(const bool success, const std::string& json);
 
   bool FromJson(const std::string& json);
-  bool GetNotificationsFromDictionary(base::DictionaryValue* dictionary);
+  bool GetNotificationsFromDictionary(const base::Value::Dict& dict);
 
   std::string ToJson();
-  base::Value GetAsList();
+  base::Value::List GetAsList();
 
   bool is_initialized_ = false;
 

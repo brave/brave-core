@@ -19,7 +19,7 @@ namespace {
 
 constexpr char kClientIssue23794Filename[] = "client_issue_23794.json";
 constexpr uint64_t kClientIssue23794JsonHash = 1891112954;
-constexpr uint64_t kMigratedClientIssue23794JsonHash = 588974230;
+constexpr uint64_t kMigratedClientIssue23794JsonHash = 753089489;
 
 }  // namespace
 
@@ -35,7 +35,8 @@ TEST_F(BatAdsLegacyClientMigrationIssue23794Test, Migrate) {
   AdsClientHelper::GetInstance()->SetBooleanPref(prefs::kHasMigratedClientState,
                                                  false);
 
-  CopyFileFromTestPathToTempPath(kClientIssue23794Filename, kClientFilename);
+  CopyFileFromTestPathToTempPath(kClientIssue23794Filename,
+                                 kClientStateFilename);
 
   SetHash(kClientIssue23794JsonHash);
 

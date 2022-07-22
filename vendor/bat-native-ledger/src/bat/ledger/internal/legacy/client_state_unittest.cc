@@ -6,8 +6,8 @@
 #include <limits>
 #include <map>
 
-#include "bat/ledger/internal/legacy/client_state.h"
 #include "base/base64.h"
+#include "bat/ledger/internal/legacy/client_properties.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 // npm run test -- brave_unit_tests --filter=ClientStateTest.*
@@ -79,13 +79,9 @@ TEST_F(ClientStateTest, ToJsonSerializationWithMinValues) {
   client_properties.rewards_enabled = true;
   client_properties.inline_tips = GetInlineTips(1);
 
-  // Act
-  const ClientState client_state;
-  const std::string json = client_state.ToJson(client_properties);
-
   // Assert
   ClientProperties expected_client_properties;
-  client_state.FromJson(json, &expected_client_properties);
+  expected_client_properties.FromJson(client_properties.ToJson());
   EXPECT_EQ(expected_client_properties, client_properties);
 }
 
@@ -107,8 +103,7 @@ TEST_F(ClientStateTest, FromJsonDeserializationWithMinValues) {
 
   // Act
   ClientProperties expected_client_properties;
-  const ClientState client_state;
-  client_state.FromJson(json, &expected_client_properties);
+  expected_client_properties.FromJson(json);
 
   // Assert
   EXPECT_EQ(expected_client_properties, client_properties);
@@ -128,13 +123,9 @@ TEST_F(ClientStateTest, ToJsonSerializationWithMaxValues) {
   client_properties.rewards_enabled = true;
   client_properties.inline_tips = GetInlineTips(9);
 
-  // Act
-  const ClientState client_state;
-  const std::string json = client_state.ToJson(client_properties);
-
   // Assert
   ClientProperties expected_client_properties;
-  client_state.FromJson(json, &expected_client_properties);
+  expected_client_properties.FromJson(client_properties.ToJson());
   EXPECT_EQ(expected_client_properties, client_properties);
 }
 
@@ -156,8 +147,7 @@ TEST_F(ClientStateTest, FromJsonDeserializationWithMaxValues) {
 
   // Act
   ClientProperties expected_client_properties;
-  const ClientState client_state;
-  client_state.FromJson(json, &expected_client_properties);
+  expected_client_properties.FromJson(json);
 
   // Assert
   EXPECT_EQ(expected_client_properties, client_properties);

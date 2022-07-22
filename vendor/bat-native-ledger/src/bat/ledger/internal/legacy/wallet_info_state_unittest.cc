@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "bat/ledger/internal/legacy/wallet_info_state.h"
 #include "base/base64.h"
+#include "bat/ledger/internal/legacy/wallet_info_properties.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 // npm run test -- brave_unit_tests --filter=WalletInfoStateTest.*
@@ -24,13 +24,9 @@ TEST(WalletInfoStateTest, ToJsonSerialization) {
   wallet_info_properties.key_info_seed.assign(key_info_seed.begin(),
       key_info_seed.end());
 
-  // Act
-  const WalletInfoState wallet_info_state;
-  const std::string json = wallet_info_state.ToJson(wallet_info_properties);
-
   // Assert
   WalletInfoProperties expected_wallet_info_properties;
-  wallet_info_state.FromJson(json, &expected_wallet_info_properties);
+  expected_wallet_info_properties.FromJson(wallet_info_properties.ToJson());
   EXPECT_EQ(expected_wallet_info_properties, wallet_info_properties);
 }
 
@@ -51,8 +47,7 @@ TEST(WalletInfoStateTest, FromJsonDeserialization) {
 
   // Act
   WalletInfoProperties expected_wallet_info_properties;
-  const WalletInfoState wallet_info_state;
-  wallet_info_state.FromJson(json, &expected_wallet_info_properties);
+  expected_wallet_info_properties.FromJson(json);
 
   // Assert
   EXPECT_EQ(expected_wallet_info_properties, wallet_info_properties);

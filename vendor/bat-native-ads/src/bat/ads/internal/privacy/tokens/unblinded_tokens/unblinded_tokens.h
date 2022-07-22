@@ -8,9 +8,7 @@
 
 #include "bat/ads/internal/privacy/tokens/unblinded_tokens/unblinded_token_info.h"
 
-namespace base {
-class Value;
-}  // namespace base
+#include "base/values.h"
 
 namespace ads {
 namespace privacy {
@@ -24,10 +22,10 @@ class UnblindedTokens final {
 
   UnblindedTokenInfo GetToken() const;
   UnblindedTokenList GetAllTokens() const;
-  base::Value GetTokensAsList();
+  base::Value::List GetTokensAsList();
 
   void SetTokens(const UnblindedTokenList& unblinded_tokens);
-  void SetTokensFromList(const base::Value& list);
+  void SetTokensFromList(const base::Value::List& list);
 
   void AddTokens(const UnblindedTokenList& unblinded_tokens);
 

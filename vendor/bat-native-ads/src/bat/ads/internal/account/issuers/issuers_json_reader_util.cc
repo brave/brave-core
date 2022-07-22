@@ -5,7 +5,6 @@
 
 #include "bat/ads/internal/account/issuers/issuers_json_reader_util.h"
 
-#include "base/values.h"
 #include "bat/ads/internal/account/issuers/issuers_value_util.h"
 
 namespace ads {
@@ -22,8 +21,8 @@ absl::optional<int> ParsePing(const base::Value& value) {
   return value.FindIntKey(kPingKey);
 }
 
-absl::optional<IssuerList> ParseIssuers(const base::Value& value) {
-  const base::Value* const issuers_value = value.FindListKey(kIssuersKey);
+absl::optional<IssuerList> ParseIssuers(const base::Value::Dict& value) {
+  const base::Value::List* issuers_value = value.FindList(kIssuersKey);
   if (!issuers_value) {
     return absl::nullopt;
   }

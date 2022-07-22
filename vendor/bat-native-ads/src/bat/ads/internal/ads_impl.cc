@@ -37,6 +37,7 @@
 #include "bat/ads/internal/geographic/subdivision/subdivision_targeting.h"
 #include "bat/ads/internal/history/history_manager.h"
 #include "bat/ads/internal/legacy_migration/client/legacy_client_migration.h"
+#include "bat/ads/internal/legacy_migration/confirmations/legacy_confirmation_migration.h"
 #include "bat/ads/internal/legacy_migration/conversions/legacy_conversions_migration.h"
 #include "bat/ads/internal/legacy_migration/rewards/legacy_rewards_migration.h"
 #include "bat/ads/internal/locale/locale_manager.h"
@@ -467,6 +468,17 @@ void AdsImpl::LoadClientState(InitializeCallback callback) {
   ClientStateManager::GetInstance()->Initialize([=](const bool success) {
     if (!success) {
       FailedToInitialize(callback);
+      return;
+    }
+
+    MigrateConfirmationState(callback);
+  });
+}
+
+void AdsImpl::MigrateConfirmationState(InitializeCallback callback) {
+  confirmations::Migrate([=](const bool success) {
+    if (!success) {
+      callback(/* success */ false);
       return;
     }
 

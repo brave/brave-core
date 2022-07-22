@@ -26,7 +26,8 @@ absl::optional<IssuersInfo> ReadIssuers(const std::string& json) {
   }
   const int ping = ping_optional.value();
 
-  const absl::optional<IssuerList>& issuers_optional = ParseIssuers(*value);
+  const absl::optional<IssuerList>& issuers_optional =
+      ParseIssuers(value->GetDict());
   if (!issuers_optional) {
     return absl::nullopt;
   }

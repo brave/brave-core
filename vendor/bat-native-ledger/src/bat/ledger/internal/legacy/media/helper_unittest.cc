@@ -101,13 +101,11 @@ TEST(MediaHelperTest, GetTwitchParts) {
       "lLCJwbGF5ZXIiOiJzaXRlIiwiZW5jcnlwdGVkIjpmYWxzZSwidGltZSI6MTU1NTMxNjQ0NS4"
       "0Mzd9fV0=";
 
-  const std::vector<base::flat_map<std::string, std::string>> result =
-      {{
-        {"channel", "dakotaz"},
-        {"event", "minute-watched"},
-        {"properties", ""},
-        {"time", "1555316445.437000"}
-      }};
+  const std::vector<base::flat_map<std::string, std::string>> result = {
+      {{"channel", "dakotaz"},
+       {"event", "minute-watched"},
+       {"properties", ""},
+       {"time", "1555316445.437"}}};
 
   // all ok
   braveledger_media::GetTwitchParts(post_data, &twitch_parts);

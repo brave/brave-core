@@ -12,83 +12,79 @@
 #include <algorithm>
 #include <utility>
 
-#include "base/strings/stringprintf.h"
+#include "base/json/json_reader.h"
+#include "base/strings/string_number_conversions.h"
 #include "base/strings/string_split.h"
+#include "base/strings/stringprintf.h"
+#include "base/values.h"
+#include "bat/ledger/internal/constants.h"
 #include "bat/ledger/internal/legacy/bat_helper.h"
 #include "bat/ledger/internal/logging/logging.h"
-#include "bat/ledger/internal/constants.h"
 #include "bat/ledger/ledger.h"
-#include "rapidjson/document.h"
-#include "rapidjson/error/en.h"
-#include "rapidjson/stringbuffer.h"
-#include "rapidjson/writer.h"
 #include "third_party/re2/src/re2/re2.h"
 #include "tweetnacl.h"  // NOLINT
 #include "url/gurl.h"
 
 namespace braveledger_bat_helper {
 
-using JsonWriter = rapidjson::Writer<rapidjson::StringBuffer>;
+namespace {
+constexpr char kFieldEvent[] = "event";
+constexpr char kFieldProperties[] = "properties";
+constexpr char kFieldChannel[] = "channel";
+constexpr char kFieldVod[] = "vod";
+constexpr char kFieldTime[] = "time";
+}  // namespace
 
 /////////////////////////////////////////////////////////////////////////////
 
-bool getJSONValue(const std::string& fieldName,
+bool getJSONValue(const std::string& field_name,
                   const std::string& json,
                   std::string* value) {
-  rapidjson::Document d;
-  d.Parse(json.c_str());
+  auto result =
+      base::JSONReader::Read(json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
+                                       base::JSONParserOptions::JSON_PARSE_RFC);
+  if (!result || !result->is_dict())
+    return false;
 
-  // has parser errors or wrong types
-  bool error = d.HasParseError() || (false == d.HasMember(fieldName.c_str()));
-  if (!error) {
-    *value = d[fieldName.c_str()].GetString();
+  if (auto* field = result->GetDict().FindString(field_name)) {
+    *value = *field;
+    return true;
   }
-  return !error;
+
+  return false;
 }
 
 bool getJSONTwitchProperties(
     const std::string& json,
     std::vector<base::flat_map<std::string, std::string>>* parts) {
-  rapidjson::Document d;
-  d.Parse(json.c_str());
+  auto result =
+      base::JSONReader::Read(json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
+                                       base::JSONParserOptions::JSON_PARSE_RFC);
+  if (!result || !result->is_list())
+    return false;
 
-  // has parser errors or wrong types
-  bool error = d.HasParseError();
-  if (!error) {
-    for (auto & i : d.GetArray()) {
-      const char * event_field = "event";
-      base::flat_map<std::string, std::string> eventmap;
-
-      auto obj = i.GetObject();
-      if (obj.HasMember(event_field)) {
-        eventmap[event_field] = obj[event_field].GetString();
-      }
-
-      const char * props_field = "properties";
-      if (obj.HasMember(props_field)) {
-        eventmap[props_field] = "";
-
-        const char * channel_field = "channel";
-        if (obj[props_field].HasMember(channel_field) &&
-          obj[props_field][channel_field].IsString()) {
-          eventmap[channel_field] = obj[props_field][channel_field].GetString();
-        }
-
-        const char * vod_field = "vod";
-        if (obj[props_field].HasMember(vod_field)) {
-          eventmap[vod_field] = obj[props_field][vod_field].GetString();
-        }
-
-        const char * time_field = "time";
-        if (obj[props_field].HasMember(time_field)) {
-          double d = obj[props_field][time_field].GetDouble();
-          eventmap[time_field] = std::to_string(d);
-        }
-      }
-      parts->push_back(eventmap);
+  for (auto& item : result->GetList()) {
+    auto& dict = item.GetDict();
+    base::flat_map<std::string, std::string> event_map;
+    if (auto* value = dict.FindString(kFieldEvent)) {
+      event_map[kFieldEvent] = *value;
     }
+
+    if (auto* properties = dict.FindDict(kFieldProperties)) {
+      event_map[kFieldProperties] = "";
+
+      if (auto* channel = properties->FindString(kFieldChannel))
+        event_map[kFieldChannel] = *channel;
+
+      if (auto* vod = properties->FindString(kFieldVod))
+        event_map[kFieldVod] = *vod;
+
+      if (auto time = properties->FindDouble(kFieldTime))
+        event_map[kFieldTime] = base::NumberToString(*time);
+    }
+    parts->push_back(std::move(event_map));
   }
-  return !error;
+  return true;
 }
 
 std::string getBase64(const std::vector<uint8_t>& in) {

@@ -5,9 +5,11 @@
 
 #include "bat/ads/history_info.h"
 
+#include "base/check.h"
+#include "base/json/json_reader.h"
+#include "base/json/json_writer.h"
 #include "bat/ads/history_item_info.h"
 #include "bat/ads/internal/base/logging_util.h"
-#include "bat/ads/internal/deprecated/json/json_helper.h"
 
 namespace ads {
 
@@ -19,46 +21,48 @@ HistoryInfo& HistoryInfo::operator=(const HistoryInfo& info) = default;
 
 HistoryInfo::~HistoryInfo() = default;
 
-std::string HistoryInfo::ToJson() const {
-  std::string json;
-  SaveToJson(*this, &json);
-  return json;
-}
-
-bool HistoryInfo::FromJson(const std::string& json) {
-  rapidjson::Document document;
-  document.Parse(json.c_str());
-
-  if (document.HasParseError()) {
-    BLOG(1, helper::JSON::GetLastError(&document));
-    return false;
+base::Value::Dict HistoryInfo::ToValue() const {
+  base::Value::List history;
+  for (const auto& item : items) {
+    history.Append(item.ToValue());
   }
 
-  if (document.HasMember("history")) {
-    for (const auto& item : document["history"].GetArray()) {
+  base::Value::Dict dict;
+  dict.Set("history", std::move(history));
+  return dict;
+}
+
+bool HistoryInfo::FromValue(const base::Value::Dict& root) {
+  if (const auto* value = root.FindList("history")) {
+    for (const auto& item : *value) {
+      if (!item.is_dict())
+        continue;
+
       HistoryItemInfo history_item;
-      rapidjson::StringBuffer buffer;
-      rapidjson::Writer<rapidjson::StringBuffer> writer(buffer);
-      if (item.Accept(writer) && history_item.FromJson(buffer.GetString())) {
-        items.push_back(history_item);
-      }
+      history_item.FromValue(item.GetDict());
+      items.push_back(history_item);
     }
   }
 
   return true;
 }
 
-void SaveToJson(JsonWriter* writer, const HistoryInfo& info) {
-  writer->StartObject();
+std::string HistoryInfo::ToJson() const {
+  std::string json;
+  CHECK(base::JSONWriter::Write(ToValue(), &json));
+  return json;
+}
 
-  writer->String("history");
-  writer->StartArray();
-  for (const auto& item : info.items) {
-    SaveToJson(writer, item);
+bool HistoryInfo::FromJson(const std::string& json) {
+  absl::optional<base::Value> document =
+      base::JSONReader::Read(json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
+                                       base::JSONParserOptions::JSON_PARSE_RFC);
+
+  if (!document.has_value() || !document->is_dict()) {
+    return false;
   }
-  writer->EndArray();
 
-  writer->EndObject();
+  return FromValue(document->GetDict());
 }
 
 }  // namespace ads
