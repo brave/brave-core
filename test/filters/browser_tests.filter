@@ -145,6 +145,7 @@
 -CaptureHandleBrowserTestPrerender.*
 -CertificateReportingServiceBrowserTest.*
 -CertificateTransparencyPolicyTest.CertificateTransparencyEnforcementDisabledForUrls
+-ChromeAcceptHeaderTest.Check
 -ChromeBackForwardCacheBrowserTest.*
 -ChromeBrowsingDataLifetimeManagerShutdownTest.*
 -ChromeFileSystemAccessPermissionContextPrerenderingBrowserTest.*
@@ -665,7 +666,10 @@
 -SharedClipboardBrowserTest.*
 -SharedClipboardUIFeatureDisabledBrowserTest.*
 -SharedHighlightingBrowserTest.*
+-SignedExchangePolicyBrowserTest.BlockList
 -SignedExchangePolicyTest.*
+-SignedExchangeSecurityStateTest.SecurityLevelIsSecure/*
+-SignedExchangeSecurityStateTest.SecurityLevelIsSecureAfterPrefetch/*
 -SigninInterceptFirstRunExperienceDialogBrowserTest.*
 -SigninReauthViewControllerBrowserTest.*
 -SigninReauthViewControllerFencedFrameBrowserTest.*
