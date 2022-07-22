@@ -102,8 +102,9 @@ class BraveIdentityManagerTest : public testing::Test {
         std::make_unique<FakeProfileOAuth2TokenService>(&pref_service_);
 
     auto gaia_cookie_manager_service =
-        std::make_unique<GaiaCookieManagerService>(token_service.get(),
-                                                   &signin_client_);
+        std::make_unique<GaiaCookieManagerService>(
+            account_tracker_service.get(), token_service.get(),
+            &signin_client_);
     gaia_cookie_manager_service_ = gaia_cookie_manager_service.get();
 
     auto account_fetcher_service = std::make_unique<AccountFetcherService>();

@@ -42,12 +42,12 @@
 
 -keep class org.chromium.chrome.browser.suggestions.tile.MostVisitedTilesMediator {
     public <init>(...);
-    *** updateTileGridPlaceholderVisibility(...);
+    *** updateTilePlaceholderVisibility(...);
 }
 
 -keep class org.chromium.chrome.browser.suggestions.tile.BraveMostVisitedTilesMediator {
     public <init>(...);
-    *** updateTileGridPlaceholderVisibility(...);
+    *** updateTilePlaceholderVisibility(...);
 }
 
 -keep class org.chromium.chrome.browser.ntp.NewTabPage {
@@ -57,6 +57,7 @@
     *** mFeedSurfaceProvider;
     *** mToolbarSupplier;
     *** mTabModelSelector;
+    *** mBottomSheetController;
     *** updateSearchProviderHasLogo(...);
 }
 
@@ -468,14 +469,22 @@
     public <init>(...);
 }
 
--keep class org.chromium.chrome.browser.share.send_tab_to_self.DevicePickerBottomSheetContent {
+-keep class org.chromium.chrome.browser.partnerbookmarks.PartnerBookmarksDelegateImpl {
     public <init>(...);
-    *** createManageDevicesLink(...);
 }
 
--keep class org.chromium.chrome.browser.share.send_tab_to_self.BraveDevicePickerBottomSheetContent {
+-keep class org.chromium.chrome.browser.partnerbookmarks.BravePartnerBookmarksDelegateImpl {
     public <init>(...);
-    *** createManageDevicesLink(...);
+}
+
+-keep class org.chromium.chrome.browser.share.send_tab_to_self.ManageAccountDevicesLinkView {
+    public <init>(...);
+    *** inflateIfVisible(...);
+}
+
+-keep class org.chromium.chrome.browser.share.send_tab_to_self.BraveManageAccountDevicesLinkView {
+    public <init>(...);
+    *** inflateIfVisible(...);
 }
 
 -keep class org.chromium.chrome.browser.ChromeApplicationImpl

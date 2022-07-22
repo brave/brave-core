@@ -69,14 +69,13 @@ void PermissionContextBase::PermissionDecided(
 }
 
 void PermissionContextBase::DecidePermission(
-    content::WebContents* web_contents,
     const PermissionRequestID& id,
     const GURL& requesting_origin,
     const GURL& embedding_origin,
     bool user_gesture,
     BrowserPermissionCallback callback) {
   PermissionContextBase_ChromiumImpl::DecidePermission(
-      web_contents, id, requesting_origin, embedding_origin, user_gesture,
+      id, requesting_origin, embedding_origin, user_gesture,
       std::move(callback));
 
   if (!IsGroupedPermissionType(content_settings_type()))

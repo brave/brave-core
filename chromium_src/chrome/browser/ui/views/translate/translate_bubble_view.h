@@ -8,8 +8,7 @@
 
 // The balloon can have several different states (that includes titles, icons,
 // etc) that depend on features/flags. That's why several methods are made
-// virtual and actual ctor TranslateBubbleView() is replaced to
-// MakeTranslateBubbleView(). See the descendants of TranslateBubbleView.
+// virtual. See the descendants of TranslateBubbleView.
 #define RevertOrDeclineTranslation                                         \
   RevertOrDeclineTranslation();                                            \
                                                                            \
@@ -19,9 +18,6 @@
                            BraveBeforeTranslateView);                      \
   FRIEND_TEST_ALL_PREFIXES(BraveTranslateBubbleViewTest, TranslateButton); \
   FRIEND_TEST_ALL_PREFIXES(BraveTranslateBubbleViewTest, CancelButton);    \
-                                                                           \
-  template <typename... Args>                                              \
-  static TranslateBubbleView* MakeTranslateBubbleView(Args&&... args);     \
                                                                            \
  public:                                                                   \
   virtual int GetTitleBeforeTranslateTitle();                              \

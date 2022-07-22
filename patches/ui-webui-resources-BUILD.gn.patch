@@ -1,8 +1,8 @@
 diff --git a/ui/webui/resources/BUILD.gn b/ui/webui/resources/BUILD.gn
-index ce220f689d9403408085ad659ca79d1c468bafed..dc6b3ec1e7d395bd8a41874d52fada1e2f6bca83 100644
+index 8c979f9612518787eb324a4466aac37941ecfcda..58530c64d7f1b91f1c8c01bf6b63a4b87ca98545 100644
 --- a/ui/webui/resources/BUILD.gn
 +++ b/ui/webui/resources/BUILD.gn
-@@ -372,7 +372,7 @@ ts_library("library") {
+@@ -378,7 +378,7 @@ ts_library("library") {
        "js/web_ui_listener_mixin.ts",
      ]
  

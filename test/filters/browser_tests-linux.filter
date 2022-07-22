@@ -18,6 +18,7 @@
 -PrefetchProxyWithDecoyRequestsBrowserTest.*
 -PrefetchProxyWithNSPBrowserTest.*
 -PrintBrowserTest.*
+-ProfileMainNetworkContext/NetworkContextConfigurationBrowserTest.Hsts/*
 -ProbingAndNSPEnabledPrefetchProxyBrowserTest.*
 -ProbingEnabled_CanaryOff_HTTPHead_PrefetchProxyBrowserTest.*
 -ProbingEnabled_CanaryOn_BothCanaryGood_PrefetchProxyBrowserTest.*
@@ -28,6 +29,7 @@
 -ProcessMemoryMetricsEmitterTest.*
 -PushSubscriptionWithExpirationTimeTest.*
 -SingleProcessBrowserTest.*
+-SitePerProcessWebViewTest.*
 -SpeculationNonPrivatePrefetchesPrefetchProxyTest.*
 -SpeculationPrefetchProxyTest.*
 -SpellingOptionsSubMenuObserverTest.*
@@ -38,4 +40,5 @@
 -WebAuthnCableSecondFactor.*
 -WebRtcBrowserTest.*
 -WebRtcDisableEncryptionFlagBrowserTest.*
+-WebViewTests/WebViewNewWindowTest.NewWindow_DifferentCoopStatesInRelatedWebviews/SiteIsolationForGuestsEnabled
 -ZeroCacheTimePrefetchProxyBrowserTest.*

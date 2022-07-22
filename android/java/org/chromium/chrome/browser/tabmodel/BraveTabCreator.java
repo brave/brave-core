@@ -15,7 +15,6 @@ import org.chromium.chrome.browser.ChromeTabbedActivity;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.app.ChromeActivity;
 import org.chromium.chrome.browser.compositor.CompositorViewHolder;
-import org.chromium.chrome.browser.init.StartupTabPreloader;
 import org.chromium.chrome.browser.ntp_background_images.NTPBackgroundImagesBridge;
 import org.chromium.chrome.browser.ntp_background_images.util.SponsoredImageUtil;
 import org.chromium.chrome.browser.preferences.BravePref;
@@ -30,14 +29,12 @@ import org.chromium.ui.base.WindowAndroid;
 
 public class BraveTabCreator extends ChromeTabCreator {
     public BraveTabCreator(Activity activity, WindowAndroid nativeWindow,
-            StartupTabPreloader startupTabPreloader,
             Supplier<TabDelegateFactory> tabDelegateFactory, boolean incognito,
             OverviewNTPCreator overviewNTPCreator, AsyncTabParamsManager asyncTabParamsManager,
             Supplier<TabModelSelector> tabModelSelectorSupplier,
             Supplier<CompositorViewHolder> compositorViewHolderSupplier) {
-        super(activity, nativeWindow, startupTabPreloader, tabDelegateFactory, incognito,
-                overviewNTPCreator, asyncTabParamsManager, tabModelSelectorSupplier,
-                compositorViewHolderSupplier);
+        super(activity, nativeWindow, tabDelegateFactory, incognito, overviewNTPCreator,
+                asyncTabParamsManager, tabModelSelectorSupplier, compositorViewHolderSupplier);
     }
 
     @Override

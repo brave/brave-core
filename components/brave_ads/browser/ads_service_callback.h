@@ -35,7 +35,7 @@ using TriggerSearchResultAdEventCallback =
 using PurgeOrphanedAdEventsForTypeCallback =
     base::OnceCallback<void(const bool)>;
 
-using GetHistoryCallback = base::OnceCallback<void(const base::ListValue&)>;
+using GetHistoryCallback = base::OnceCallback<void(base::Value::List)>;
 
 using ToggleAdThumbUpCallback = base::OnceCallback<void(const std::string&)>;
 using ToggleAdThumbDownCallback = base::OnceCallback<void(const std::string&)>;

@@ -1,9 +1,9 @@
 diff --git a/net/cookies/cookie_deletion_info.h b/net/cookies/cookie_deletion_info.h
-index 5158f45211c33174e46f584f401fce9a94a51bae..60ed9cbaab6e5ab5e42d7aead9a72b63db97e3b8 100644
+index c066f13f8afef91ddee91a3765e5994eae5f88ff..f697123e7b770f66487b9bca834f882fd6f0d627 100644
 --- a/net/cookies/cookie_deletion_info.h
 +++ b/net/cookies/cookie_deletion_info.h
 @@ -146,6 +146,7 @@ struct NET_EXPORT CookieDeletionInfo {
-   // partitions.
+   // all partitions.
    CookiePartitionKeyCollection cookie_partition_key_collection =
        CookiePartitionKeyCollection::ContainsAll();
 +  BRAVE_COOKIE_DELETION_INFO_H

@@ -34,7 +34,7 @@
     </if>
   <if expr="not chromeos_ash and not chromeos_lacros">
     </if>
-  <if expr="is_linux and not chromeos_ash and not chromeos_lacros">
+  <if expr="is_linux">
     </if>
   <if expr="not is_linux or chromeos_ash or chromeos_lacros or is_fuchsia">
     </if>
@@ -116,6 +116,8 @@
   <message name="IDS_SETTINGS_COOKIES_BLOCK_THIRD_PARTY_INCOGNITO_BULLET_TWO" desc="Description for the first bullet of block third party cookies in Private radio toggle">
     While in Private, sites can't use your cookies to see your browsing activity across different sites, for example, to personalize ads. Features on some sites may not work.
   </message>
+  <if expr="chromeos_lacros">
+    </if>
   <message name="IDS_SETTINGS_SITE_SETTINGS_COOKIES_BLOCK_THIRD_PARTY_INCOGNITO" desc="The sub-label for links to manage cookies when the current cookie setting is to block third party cookies in Private.">
     Third-party cookies are blocked in Private mode
   </message>

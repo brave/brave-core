@@ -52,18 +52,18 @@ ExtensionFunction::ResponseAction FtxGetFuturesDataFunction::Run() {
 }
 
 void FtxGetFuturesDataFunction::OnFuturesData(const FTXFuturesData& data) {
-  base::ListValue result;
+  base::Value::List result;
 
   for (const TokenPriceData& currency : data) {
-    auto point = std::make_unique<base::Value>(base::Value::Type::DICTIONARY);
-    point->SetStringKey("symbol", currency.symbol);
-    point->SetDoubleKey("price", currency.price);
-    point->SetDoubleKey("percentChangeDay", currency.percentChangeDay);
-    point->SetDoubleKey("volumeDay", currency.volumeDay);
+    base::Value::Dict point;
+    point.Set("symbol", currency.symbol);
+    point.Set("price", currency.price);
+    point.Set("percentChangeDay", currency.percentChangeDay);
+    point.Set("volumeDay", currency.volumeDay);
     result.Append(std::move(point));
   }
 
-  Respond(OneArgument(std::move(result)));
+  Respond(OneArgument(base::Value(std::move(result))));
 }
 
 ExtensionFunction::ResponseAction FtxGetChartDataFunction::Run() {
@@ -88,17 +88,17 @@ ExtensionFunction::ResponseAction FtxGetChartDataFunction::Run() {
 }
 
 void FtxGetChartDataFunction::OnChartData(const FTXChartData& data) {
-  base::ListValue result;
+  base::Value::List result;
 
   for (const auto& data_point : data) {
-    auto point = std::make_unique<base::Value>(base::Value::Type::DICTIONARY);
+    base::Value::Dict point;
     for (const auto& att : data_point) {
-      point->SetDoubleKey(att.first, att.second);
+      point.Set(att.first, att.second);
     }
     result.Append(std::move(point));
   }
 
-  Respond(OneArgument(std::move(result)));
+  Respond(OneArgument(base::Value(std::move(result))));
 }
 
 ExtensionFunction::ResponseAction FtxSetOauthHostFunction::Run() {
@@ -240,11 +240,11 @@ ExtensionFunction::ResponseAction FtxGetConvertQuoteInfoFunction::Run() {
 void FtxGetConvertQuoteInfoFunction::OnConvertQuoteInfo(const std::string& cost,
                                                  const std::string& price,
                                                  const std::string& proceeds) {
-  base::Value quote(base::Value::Type::DICTIONARY);
-  quote.SetStringKey("cost", cost);
-  quote.SetStringKey("price", price);
-  quote.SetStringKey("proceeds", proceeds);
-  Respond(OneArgument(std::move(quote)));
+  base::Value::Dict quote;
+  quote.Set("cost", cost);
+  quote.Set("price", price);
+  quote.Set("proceeds", proceeds);
+  Respond(OneArgument(base::Value(std::move(quote))));
 }
 
 ExtensionFunction::ResponseAction FtxExecuteConvertQuoteFunction::Run() {

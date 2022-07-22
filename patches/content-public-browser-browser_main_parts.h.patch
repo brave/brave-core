@@ -1,8 +1,8 @@
 diff --git a/content/public/browser/browser_main_parts.h b/content/public/browser/browser_main_parts.h
-index da32e76580497b04acc8faaf2b1a77ad44c3d2ea..e50bd3b82117fd25583e120eec4d9234ce44dacc 100644
+index b236b8ad3057023d990bbac6cf4c20d57a753286..78af891af25888fd253778488b6442f2c82ba338 100644
 --- a/content/public/browser/browser_main_parts.h
 +++ b/content/public/browser/browser_main_parts.h
-@@ -156,6 +156,9 @@ class CONTENT_EXPORT BrowserMainParts {
+@@ -158,6 +158,9 @@ class CONTENT_EXPORT BrowserMainParts {
    virtual void OnFirstIdle() {}
    virtual void PostMainMessageLoopRun() {}
    virtual void PostDestroyThreads() {}

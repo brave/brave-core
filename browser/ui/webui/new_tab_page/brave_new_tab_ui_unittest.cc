@@ -13,7 +13,7 @@ TEST(BraveNewTabUITest, ConstantsTest) {
   // requirements.
   constexpr size_t kBraveMaxNumMostVisited = 12;
   constexpr size_t kBraveMaxNumCustomLinks = 48;
-  constexpr size_t kTopSitesNumber = history::TopSitesImpl::kTopSitesNumber;
+  constexpr size_t kTopSitesNumber = history::kTopSitesNumber;
 
   EXPECT_EQ(kBraveMaxNumMostVisited, kTopSitesNumber);
   EXPECT_EQ(kBraveMaxNumCustomLinks, ntp_tiles::kMaxNumCustomLinks);

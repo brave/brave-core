@@ -45,8 +45,7 @@ class BraveWalletPermissionContext : public PermissionContextBase {
    * will then consume one address from the saved list and call
    * PermissionContextBase::RequestPermission with it.
    */
-  void RequestPermission(content::WebContents* web_contents,
-                         const PermissionRequestID& id,
+  void RequestPermission(const PermissionRequestID& id,
                          const GURL& requesting_frame,
                          bool user_gesture,
                          BrowserPermissionCallback callback) override;

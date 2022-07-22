@@ -15,7 +15,6 @@
 #include "base/json/json_writer.h"
 #include "base/memory/raw_ptr.h"
 #include "base/strings/utf_string_conversions.h"
-#include "base/values.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "chrome/browser/profiles/profile.h"
@@ -43,8 +42,7 @@ constexpr int kDialogMaxWidth = 1895;
 // A ui::WebDialogDelegate that specifies the tip dialog appearance.
 class TipDialogDelegate : public ui::WebDialogDelegate {
  public:
-  explicit TipDialogDelegate(WebContents* initiator,
-      std::unique_ptr<base::DictionaryValue> params);
+  explicit TipDialogDelegate(WebContents* initiator, base::Value::Dict params);
   TipDialogDelegate(const TipDialogDelegate&) = delete;
   TipDialogDelegate& operator=(const TipDialogDelegate&) = delete;
   ~TipDialogDelegate() override;
@@ -62,13 +60,12 @@ class TipDialogDelegate : public ui::WebDialogDelegate {
 
  private:
   raw_ptr<WebContents> initiator_ = nullptr;
-  std::unique_ptr<base::DictionaryValue> params_;
+  base::Value::Dict params_;
 };
 
 TipDialogDelegate::TipDialogDelegate(WebContents* initiator,
-    std::unique_ptr<base::DictionaryValue> params)
-  : initiator_(initiator), params_(std::move(params)) {
-}
+                                     base::Value::Dict params)
+    : initiator_(initiator), params_(std::move(params)) {}
 
 TipDialogDelegate::~TipDialogDelegate() {
 }
@@ -119,7 +116,7 @@ void TipDialogDelegate::GetDialogSize(gfx::Size* size) const {
 
 std::string TipDialogDelegate::GetDialogArgs() const {
   std::string json;
-  base::JSONWriter::Write(*params_, &json);
+  base::JSONWriter::Write(params_, &json);
   return json;
 }
 
@@ -140,8 +137,7 @@ bool TipDialogDelegate::ShouldShowDialogTitle() const {
 
 namespace brave_rewards {
 
-void OpenTipDialog(WebContents* initiator,
-                   std::unique_ptr<base::DictionaryValue> params) {
+void OpenTipDialog(WebContents* initiator, base::Value::Dict params) {
   auto* rewards_service = RewardsServiceFactory::GetForProfile(
       Profile::FromBrowserContext(initiator->GetBrowserContext()));
   if (rewards_service) {

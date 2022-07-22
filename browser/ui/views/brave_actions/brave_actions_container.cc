@@ -40,7 +40,6 @@
 #include "extensions/common/constants.h"
 #include "ui/base/dragdrop/drag_drop_types.h"
 #include "ui/views/layout/box_layout.h"
-#include "ui/views/layout/grid_layout.h"
 #include "ui/views/view.h"
 
 BraveActionsContainer::BraveActionInfo::BraveActionInfo()
@@ -514,9 +513,6 @@ bool BraveActionsContainer::ShowToolbarActionPopupForAPICall(
 }
 
 void BraveActionsContainer::ShowToolbarActionBubble(
-    std::unique_ptr<ToolbarActionsBarBubbleDelegate> bubble) {}
-
-void BraveActionsContainer::ShowToolbarActionBubbleAsync(
     std::unique_ptr<ToolbarActionsBarBubbleDelegate> bubble) {}
 
 void BraveActionsContainer::ToggleExtensionsMenu() {}

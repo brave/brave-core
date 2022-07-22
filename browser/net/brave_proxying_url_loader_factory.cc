@@ -27,7 +27,6 @@
 #include "net/url_request/redirect_info.h"
 #include "net/url_request/redirect_util.h"
 #include "net/url_request/url_request.h"
-#include "services/network/public/cpp/features.h"
 #include "services/network/public/cpp/parsed_headers.h"
 #include "services/network/public/mojom/early_hints.mojom.h"
 #include "url/origin.h"
@@ -260,11 +259,6 @@ void BraveProxyingURLLoaderFactory::InProgressRequest::OnTransferSizeUpdated(
   target_client_->OnTransferSizeUpdated(transfer_size_diff);
 }
 
-void BraveProxyingURLLoaderFactory::InProgressRequest::
-    OnStartLoadingResponseBody(mojo::ScopedDataPipeConsumerHandle body) {
-  target_client_->OnStartLoadingResponseBody(std::move(body));
-}
-
 void BraveProxyingURLLoaderFactory::InProgressRequest::OnComplete(
     const network::URLLoaderCompletionStatus& status) {
   UMA_HISTOGRAM_TIMES("Brave.ProxyingURLLoader.TotalRequestTime",
@@ -373,14 +367,7 @@ void BraveProxyingURLLoaderFactory::InProgressRequest::
     }
 
     // Craft the response.
-    if (base::FeatureList::IsEnabled(network::features::kCombineResponseBody)) {
-      target_client_->OnReceiveResponse(std::move(response),
-                                        std::move(consumer));
-    } else {
-      target_client_->OnReceiveResponse(std::move(response),
-                                        mojo::ScopedDataPipeConsumerHandle());
-      target_client_->OnStartLoadingResponseBody(std::move(consumer));
-    }
+    target_client_->OnReceiveResponse(std::move(response), std::move(consumer));
 
     auto write_data = std::make_unique<WriteData>();
     write_data->client = weak_factory_.GetWeakPtr();

@@ -5,7 +5,7 @@
 
 import 'chrome://resources/cr_elements/shared_vars_css.m.js';
 import '../settings_shared_css.js';
-import '../settings_vars_css.js';
+import '../settings_vars.css.js';
 import '../controls/settings_checkbox.js';
 
 import {Polymer, html} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js';

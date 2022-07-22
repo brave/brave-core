@@ -20,6 +20,7 @@
 #include "chrome/browser/translate/translate_test_utils.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
+#include "chrome/browser/ui/views/translate/translate_bubble_controller.h"
 #include "chrome/browser/ui/views/translate/translate_bubble_view.h"
 #include "chrome/common/chrome_isolated_world_ids.h"
 #include "chrome/test/base/in_process_browser_test.h"
@@ -32,6 +33,7 @@
 #include "components/translate/core/browser/translate_pref_names.h"
 #include "components/translate/core/browser/translate_script.h"
 #include "components/translate/core/common/translate_util.h"
+#include "content/public/browser/web_contents.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "content/public/test/content_mock_cert_verifier.h"
@@ -258,7 +260,9 @@ IN_PROC_BROWSER_TEST_F(BraveTranslateBrowserTest, InternalTranslation) {
 
   SetupTestScriptExpectations();
 
-  auto* bubble = TranslateBubbleView::GetCurrentBubble();
+  auto* bubble = TranslateBubbleController::FromWebContents(
+                     browser()->tab_strip_model()->GetActiveWebContents())
+                     ->GetTranslateBubble();
   ASSERT_TRUE(bubble);
 
   // Check that the we see the translation bubble (not about the extension
@@ -468,7 +472,9 @@ IN_PROC_BROWSER_TEST_F(BraveTranslateBrowserDisabledFeatureTest,
     ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
     WaitUntilLanguageDetermined();
 
-    auto* bubble = TranslateBubbleView::GetCurrentBubble();
+    auto* bubble = TranslateBubbleController::FromWebContents(
+                       browser()->tab_strip_model()->GetActiveWebContents())
+                       ->GetTranslateBubble();
     ASSERT_TRUE(bubble);
 
     // The that we see a bubble that suggests Google translate extension
@@ -488,7 +494,9 @@ IN_PROC_BROWSER_TEST_F(BraveTranslateBrowserDisabledFeatureTest,
     base::RunLoop().RunUntilIdle();
 
     // Close the bubble to avoid reusing an existing bubble.
-    TranslateBubbleView::CloseCurrentBubble();
+    TranslateBubbleController::FromWebContents(
+        browser()->tab_strip_model()->GetActiveWebContents())
+        ->CloseBubble();
 
     // Check no bad flags infobar is shown (about the different translate
     // script/origin).

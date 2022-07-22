@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVELEDGER_PUBLISHER_PREFIX_ITERATOR_H_
-#define BRAVELEDGER_PUBLISHER_PREFIX_ITERATOR_H_
+#ifndef BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_PUBLISHER_PREFIX_ITERATOR_H_
+#define BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_PUBLISHER_PREFIX_ITERATOR_H_
 
 #include <iterator>
 
@@ -13,13 +13,18 @@
 namespace ledger {
 namespace publisher {
 
-using PrefixIteratorBase =
-  std::iterator<std::random_access_iterator_tag, base::StringPiece>;
-
 // A random-access iterator over prefixes stored in an
 // uncompressed prefix list, suitable for binary search
-class PrefixIterator : public PrefixIteratorBase {
+class PrefixIterator {
  public:
+  using iterator_category = std::random_access_iterator_tag;
+  using value_type = base::StringPiece;
+  using difference_type = std::ptrdiff_t;
+  using reference = value_type&;
+  using const_reference = const value_type&;
+  using pointer = value_type*;
+  using const_pointer = const value_type*;
+
   PrefixIterator(const char* data, size_t index, size_t size)
       : data_(data), index_(index), size_(size) {}
 
@@ -65,8 +70,7 @@ class PrefixIterator : public PrefixIteratorBase {
     return PrefixIterator(data_, index_ + rhs.index_, size_);
   }
 
-  PrefixIteratorBase::difference_type operator-(
-      const PrefixIterator& rhs) const {
+  difference_type operator-(const PrefixIterator& rhs) const {
     return index_ - rhs.index_;
   }
 
@@ -111,4 +115,4 @@ class PrefixIterator : public PrefixIteratorBase {
 }  // namespace publisher
 }  // namespace ledger
 
-#endif  // BRAVELEDGER_PUBLISHER_PREFIX_ITERATOR_H_
+#endif  // BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_PUBLISHER_PREFIX_ITERATOR_H_

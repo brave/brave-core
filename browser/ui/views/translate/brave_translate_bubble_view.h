@@ -21,7 +21,8 @@ class BraveTranslateBubbleView : public TranslateBubbleView {
   BraveTranslateBubbleView(views::View* anchor_view,
                            std::unique_ptr<TranslateBubbleModel> model,
                            translate::TranslateErrors::Type error_type,
-                           content::WebContents* web_contents);
+                           content::WebContents* web_contents,
+                           base::OnceClosure on_closing);
   BraveTranslateBubbleView(const BraveTranslateBubbleView&) = delete;
   BraveTranslateBubbleView& operator=(const BraveTranslateBubbleView&) = delete;
   ~BraveTranslateBubbleView() override;
