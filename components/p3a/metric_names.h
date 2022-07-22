@@ -72,6 +72,7 @@ constexpr inline auto kCollectedHistograms =
     "Brave.Sync.Status.2",
     "Brave.Sync.ProgressTokenEverReset",
     "Brave.Uptime.BrowserOpenMinutes",
+    "Brave.Wallet.DefaultSolanaWalletSetting",
     "Brave.Wallet.DefaultWalletSetting",
     "Brave.Wallet.KeyringCreated",
     "Brave.Wallet.NewUserReturning",
