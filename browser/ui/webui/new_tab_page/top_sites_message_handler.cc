@@ -315,21 +315,25 @@ void TopSitesMessageHandler::HandleEditTopSite(const base::Value::List& args) {
 
   GURL gurl(url);
   GURL new_gurl(new_url);
+  std::u16string title16 = base::UTF8ToUTF16(title);
 
   if (most_visited_sites_->IsCustomLinksEnabled()) {
     // similar to `MostVisitedHandler::UpdateMostVisitedTile`
     most_visited_sites_->UpdateCustomLink(
-        gurl, new_gurl != gurl ? new_gurl : GURL(), base::UTF8ToUTF16(title));
+        gurl, new_gurl != gurl ? new_gurl : GURL(), title16);
   } else {
     // when user modifies current top sites, change to favorite mode.
     profile_->GetPrefs()->SetBoolean(ntp_prefs::kNtpUseMostVisitedTiles, false);
     most_visited_sites_->EnableCustomLinks(IsCustomLinksEnabled());
 
-    // When user tries to edit from frecency mode, we just try to add modified
-    // item to favorites. If modified url is already existed in favorites,
-    // nothing happened.
-    most_visited_sites_->AddCustomLink(
-        new_url.empty() ? GURL(url) : GURL(new_url), base::UTF8ToUTF16(title));
+    // When user tries to edit from frecency mode, try to edit an existing
+    // site, if one exists. If none exists, add a new custom link for the site.
+    bool updated = most_visited_sites_->UpdateCustomLink(
+        gurl, new_gurl, base::UTF8ToUTF16(title));
+    if (!updated) {
+      most_visited_sites_->AddCustomLink(new_url.empty() ? gurl : new_gurl,
+                                         title16);
+    }
   }
 }
 
