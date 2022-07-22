@@ -3,29 +3,30 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_BROWSER_BRAVE_ADS_NOTIFICATION_HELPER_NOTIFICATION_HELPER_WIN_H_
-#define BRAVE_BROWSER_BRAVE_ADS_NOTIFICATION_HELPER_NOTIFICATION_HELPER_WIN_H_
+#ifndef BRAVE_BROWSER_BRAVE_ADS_NOTIFICATION_HELPER_NOTIFICATION_HELPER_IMPL_WIN_H_
+#define BRAVE_BROWSER_BRAVE_ADS_NOTIFICATION_HELPER_NOTIFICATION_HELPER_IMPL_WIN_H_
 
 #include <windows.ui.notifications.h>
 #include <wrl/event.h>
 
 #include "base/memory/weak_ptr.h"
-#include "brave/browser/brave_ads/notification_helper/notification_helper.h"
+#include "brave/browser/brave_ads/notification_helper/notification_helper_impl.h"
 
 namespace brave_ads {
 
-class NotificationHelperWin
-    : public NotificationHelper,
-      public base::SupportsWeakPtr<NotificationHelperWin> {
+class NotificationHelperImplWin
+    : public NotificationHelperImpl,
+      public base::SupportsWeakPtr<NotificationHelperImplWin> {
  public:
-  NotificationHelperWin(const NotificationHelperWin&) = delete;
-  NotificationHelperWin& operator=(const NotificationHelperWin&) = delete;
-  ~NotificationHelperWin() override;
+  NotificationHelperImplWin(const NotificationHelperImplWin&) = delete;
+  NotificationHelperImplWin& operator=(const NotificationHelperImplWin&) =
+      delete;
+  ~NotificationHelperImplWin() override;
 
  protected:
-  friend class NotificationHelperHolder;
+  friend class NotificationHelper;
 
-  NotificationHelperWin();
+  NotificationHelperImplWin();
 
  private:
   bool IsFocusAssistEnabled() const;
@@ -43,7 +44,7 @@ class NotificationHelperWin
   Microsoft::WRL::ComPtr<ABI::Windows::UI::Notifications::IToastNotifier>
       notifier_;
 
-  // NotificationHelper:
+  // NotificationHelperImpl:
   bool CanShowNativeNotifications() override;
   bool CanShowNativeNotificationsWhileBrowserIsBackgrounded() const override;
 
@@ -52,4 +53,4 @@ class NotificationHelperWin
 
 }  // namespace brave_ads
 
-#endif  // BRAVE_BROWSER_BRAVE_ADS_NOTIFICATION_HELPER_NOTIFICATION_HELPER_WIN_H_
+#endif  // BRAVE_BROWSER_BRAVE_ADS_NOTIFICATION_HELPER_NOTIFICATION_HELPER_IMPL_WIN_H_

@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/brave_ads/notification_helper/notification_helper_win.h"
+#include "brave/browser/brave_ads/notification_helper/notification_helper_impl_win.h"
 
 #include <Windows.h>
 
@@ -58,11 +58,11 @@ enum FocusAssistResult {
 
 ///////////////////////////////////////////////////////////////////////////////
 
-NotificationHelperWin::NotificationHelperWin() = default;
+NotificationHelperImplWin::NotificationHelperImplWin() = default;
 
-NotificationHelperWin::~NotificationHelperWin() = default;
+NotificationHelperImplWin::~NotificationHelperImplWin() = default;
 
-bool NotificationHelperWin::CanShowNativeNotifications() {
+bool NotificationHelperImplWin::CanShowNativeNotifications() {
   if (!base::FeatureList::IsEnabled(::features::kNativeNotifications)) {
     LOG(WARNING) << "Native notifications feature is disabled";
     return false;
@@ -90,18 +90,18 @@ bool NotificationHelperWin::CanShowNativeNotifications() {
   return true;
 }
 
-bool NotificationHelperWin::
+bool NotificationHelperImplWin::
     CanShowNativeNotificationsWhileBrowserIsBackgrounded() const {
   return true;
 }
 
-bool NotificationHelperWin::ShowOnboardingNotification() {
+bool NotificationHelperImplWin::ShowOnboardingNotification() {
   return false;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 
-bool NotificationHelperWin::IsFocusAssistEnabled() const {
+bool NotificationHelperImplWin::IsFocusAssistEnabled() const {
   const auto nt_query_wnf_state_data_func =
       GetProcAddress(GetModuleHandle(L"ntdll"), "NtQueryWnfStateData");
 
@@ -160,7 +160,7 @@ bool NotificationHelperWin::IsFocusAssistEnabled() const {
   }
 }
 
-bool NotificationHelperWin::IsNotificationsEnabled() {
+bool NotificationHelperImplWin::IsNotificationsEnabled() {
   HRESULT hr = InitializeToastNotifier();
   auto* notifier = notifier_.Get();
   if (!notifier || FAILED(hr)) {
@@ -206,11 +206,11 @@ bool NotificationHelperWin::IsNotificationsEnabled() {
   }
 }
 
-std::wstring NotificationHelperWin::GetAppId() const {
+std::wstring NotificationHelperImplWin::GetAppId() const {
   return ShellUtil::GetBrowserModelId(InstallUtil::IsPerUserInstall());
 }
 
-HRESULT NotificationHelperWin::InitializeToastNotifier() {
+HRESULT NotificationHelperImplWin::InitializeToastNotifier() {
   Microsoft::WRL::ComPtr<
       ABI::Windows::UI::Notifications::IToastNotificationManagerStatics>
       manager;
@@ -236,7 +236,7 @@ HRESULT NotificationHelperWin::InitializeToastNotifier() {
 
 // Templated wrapper for ABI::Windows::Foundation::GetActivationFactory()
 template <unsigned int size, typename T>
-HRESULT NotificationHelperWin::CreateActivationFactory(
+HRESULT NotificationHelperImplWin::CreateActivationFactory(
     wchar_t const (&class_name)[size],
     T** object) const {
   auto ref_class_name = base::win::ScopedHString::Create(

@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/brave_ads/notification_helper/notification_helper_linux.h"
+#include "brave/browser/brave_ads/notification_helper/notification_helper_impl_linux.h"
 
 #include "base/feature_list.h"
 #include "base/logging.h"
@@ -11,11 +11,11 @@
 
 namespace brave_ads {
 
-NotificationHelperLinux::NotificationHelperLinux() = default;
+NotificationHelperImplLinux::NotificationHelperImplLinux() = default;
 
-NotificationHelperLinux::~NotificationHelperLinux() = default;
+NotificationHelperImplLinux::~NotificationHelperImplLinux() = default;
 
-bool NotificationHelperLinux::CanShowNativeNotifications() {
+bool NotificationHelperImplLinux::CanShowNativeNotifications() {
   // TODO(https://github.com/brave/brave-browser/issues/5542): Investigate how
   // to detect if notifications are enabled within the Linux operating system
 
@@ -27,12 +27,12 @@ bool NotificationHelperLinux::CanShowNativeNotifications() {
   return true;
 }
 
-bool NotificationHelperLinux::
+bool NotificationHelperImplLinux::
     CanShowNativeNotificationsWhileBrowserIsBackgrounded() const {
   return true;
 }
 
-bool NotificationHelperLinux::ShowOnboardingNotification() {
+bool NotificationHelperImplLinux::ShowOnboardingNotification() {
   return false;
 }
 

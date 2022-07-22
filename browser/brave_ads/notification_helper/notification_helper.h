@@ -1,4 +1,4 @@
-/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+/* Copyright (c) 2022 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
@@ -6,27 +6,33 @@
 #ifndef BRAVE_BROWSER_BRAVE_ADS_NOTIFICATION_HELPER_NOTIFICATION_HELPER_H_
 #define BRAVE_BROWSER_BRAVE_ADS_NOTIFICATION_HELPER_NOTIFICATION_HELPER_H_
 
+#include <memory>
+
+namespace base {
+template <typename Type>
+struct DefaultSingletonTraits;
+}  // namespace base
+
 namespace brave_ads {
 
-class NotificationHelper {
- public:
-  NotificationHelper(const NotificationHelper&) = delete;
-  NotificationHelper& operator=(const NotificationHelper&) = delete;
-  virtual ~NotificationHelper();
+class NotificationHelperImpl;
 
+class NotificationHelper final {
+ public:
   static NotificationHelper* GetInstance();
 
-  virtual bool CanShowNativeNotifications();
-  virtual bool CanShowNativeNotificationsWhileBrowserIsBackgrounded() const;
+  bool CanShowNativeNotifications();
+  bool CanShowNativeNotificationsWhileBrowserIsBackgrounded() const;
 
-  virtual bool ShowOnboardingNotification();
+  bool ShowOnboardingNotification();
 
- protected:
-  friend class NotificationHelperHolder;
+ private:
+  friend struct base::DefaultSingletonTraits<NotificationHelper>;
 
   NotificationHelper();
+  ~NotificationHelper();
 
-  static NotificationHelper* GetInstanceImpl();
+  std::unique_ptr<NotificationHelperImpl> impl_;
 };
 
 }  // namespace brave_ads
