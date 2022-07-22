@@ -61,8 +61,6 @@ export const localeStrings = {
   notificationWalletDisconnectedTitle: 'You are logged out',
   notificationWalletDisconnectedText: 'This can happen to keep your account secure. Click below to reconnect now.',
   notificationWalletDisconnectedAction: 'Reconnect',
-  notificationWalletVerifiedTitle: 'Your Brave Rewards is verified!',
-  notificationWalletVerifiedText: 'Your Brave Rewards was successfully verified with $1. ',
   notificationTokenGrantTitle: 'A token grant is available!',
   notificationAdGrantAmount: '$1 Rewards: $2',
   notificationAdGrantTitle: 'Your $1 Ad Rewards are here!',

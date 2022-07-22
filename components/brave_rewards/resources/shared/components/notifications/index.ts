@@ -13,7 +13,6 @@ import { MonthlyContributionFailed } from './monthly_contribution_failed'
 import { GrantAvailable } from './grant_available'
 import { PendingPublisherVerified } from './pending_publisher_verified'
 import { PendingTipFailed } from './pending_tip_failed'
-import { ExternalWalletVerified } from './external_wallet_verified'
 import { ExternalWalletDisconnected } from './external_wallet_disconnected'
 
 export * from './notification'
@@ -39,8 +38,6 @@ export function getNotificationView (
       return PendingPublisherVerified
     case 'pending-tip-failed':
       return PendingTipFailed
-    case 'external-wallet-verified':
-      return ExternalWalletVerified
     case 'external-wallet-disconnected':
       return ExternalWalletDisconnected
   }

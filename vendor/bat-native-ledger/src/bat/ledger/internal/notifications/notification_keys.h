@@ -10,7 +10,6 @@ namespace ledger {
 namespace notifications {
 
 const char kWalletDisconnected[] = "wallet_disconnected";
-const char kWalletNewVerified[] = "wallet_new_verified";
 
 }  // namespace notifications
 }  // namespace ledger

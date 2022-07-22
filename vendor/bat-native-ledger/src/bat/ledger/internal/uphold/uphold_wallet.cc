@@ -325,12 +325,6 @@ void UpholdWallet::OnLinkWallet(ledger::ResultCallback callback,
       log::kWalletVerified,
       constant::kWalletUphold + std::string("/") + id.substr(0, 5));
 
-  if (ShouldShowNewlyVerifiedWallet()) {
-    ledger_->ledger_client()->ShowNotification(
-        ledger::notifications::kWalletNewVerified, {"Uphold"},
-        [](type::Result) {});
-  }
-
   ledger_->promotion()->TransferTokens(
       base::BindOnce(&UpholdWallet::OnTransferTokens, base::Unretained(this),
                      std::move(callback)));

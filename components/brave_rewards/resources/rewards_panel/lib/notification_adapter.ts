@@ -14,7 +14,6 @@ import {
   GrantAvailableNotification,
   PendingPublisherVerifiedNotification,
   PendingTipFailedNotification,
-  ExternalWalletVerifiedNotification,
   ExternalWalletDisconnectedNotification
 } from '../../shared/components/notifications'
 
@@ -141,12 +140,6 @@ export function mapNotification (
             type: 'external-wallet-disconnected',
             // The provider is not currently recorded for this notification
             provider: mapProvider('')
-          })
-        case 'wallet_new_verified':
-          return create<ExternalWalletVerifiedNotification>({
-            ...baseProps,
-            type: 'external-wallet-verified',
-            provider: mapProvider(obj.args[1] || '')
           })
       }
       break

@@ -14,7 +14,6 @@ export type NotificationType =
   'backup-wallet' |
   'pending-publisher-verified' |
   'pending-tip-failed' |
-  'external-wallet-verified' |
   'external-wallet-disconnected'
 
 export interface Notification {
@@ -46,11 +45,6 @@ export interface PendingPublisherVerifiedNotification extends Notification {
 export interface PendingTipFailedNotification extends Notification {
   type: 'pending-tip-failed'
   reason: 'insufficient-funds'
-}
-
-export interface ExternalWalletVerifiedNotification extends Notification {
-  type: 'external-wallet-verified'
-  provider: ExternalWalletProvider
 }
 
 export interface ExternalWalletDisconnectedNotification extends Notification {
