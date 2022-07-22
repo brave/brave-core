@@ -13,20 +13,22 @@
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/views/tabs/tab.h"
 #include "chrome/browser/ui/views/tabs/tab_hover_card_bubble_view.h"
+#include "chrome/browser/ui/views/tabs/tab_hover_card_controller.h"
 #include "chrome/browser/ui/views/tabs/tab_slot_controller.h"
 #include "content/public/common/url_constants.h"
 #include "ui/views/controls/label.h"
 
 // In addition to the feature flag, we also enable hover card previews when
 // the tab hover mode is CARD_WITH_PREVIEW.
-#define BRAVE_TAB_HOVER_CARD_PREVIEWS    \
-  || brave_tabs::AreCardPreviewsEnabled( \
-         tab->controller()->GetBrowser()->profile()->GetPrefs())
+#define AreHoverCardImagesEnabled()       \
+  AreHoverCardImagesEnabled() ||          \
+      brave_tabs::AreCardPreviewsEnabled( \
+          tab->controller()->GetBrowser()->profile()->GetPrefs())
 
 #define TabHoverCardBubbleView TabHoverCardBubbleView_ChromiumImpl
 #include "src/chrome/browser/ui/views/tabs/tab_hover_card_bubble_view.cc"
 #undef TabHoverCardBubbleView
-#undef BRAVE_TAB_HOVER_CARD_PREVIEWS
+#undef AreHoverCardImagesEnabled
 
 void TabHoverCardBubbleView_ChromiumImpl::BraveUpdateCardContent(
     const Tab* tab) {
@@ -54,4 +56,10 @@ void TabHoverCardBubbleView::SetTargetTabImage(gfx::ImageSkia preview_image) {
   if (!has_thumbnail_view())
     return;
   TabHoverCardBubbleView_ChromiumImpl::SetTargetTabImage(preview_image);
+}
+
+void TabHoverCardBubbleView::SetPlaceholderImage() {
+  if (!has_thumbnail_view())
+    return;
+  TabHoverCardBubbleView_ChromiumImpl::SetPlaceholderImage();
 }
