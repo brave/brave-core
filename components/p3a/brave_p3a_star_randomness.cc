@@ -24,6 +24,7 @@
 #include "services/network/public/cpp/resource_request.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "services/network/public/cpp/simple_url_loader.h"
+#include "services/network/public/mojom/url_response_head.mojom.h"
 
 namespace brave {
 
@@ -114,13 +115,40 @@ void BraveP3AStarRandomness::RegisterPrefs(PrefRegistrySimple* registry) {
   registry->RegisterTimePref(kNextEpochTimePrefName, base::Time());
 }
 
-void BraveP3AStarRandomness::RequestRandomnessServerInfo() {
-  GURL attestation_url = GURL(config_->star_randomness_host + "/attestation");
-  nitro_utils::RequestAndVerifyAttestationDocument(
-      attestation_url, url_loader_factory_.get(),
-      base::BindOnce(&BraveP3AStarRandomness::HandleRandomnessAttestationResult,
-                     base::Unretained(this)));
+bool BraveP3AStarRandomness::VerifyRandomnessCert(
+    network::SimpleURLLoader* url_loader) {
+  if (config_->disable_star_attestation) {
+    VLOG(2) << "BraveP3AStarRandomness: skipping approved cert check";
+    return true;
+  }
+  const network::mojom::URLResponseHead* response_info =
+      url_loader->ResponseInfo();
+  if (approved_cert_ == nullptr) {
+    LOG(ERROR) << "BraveP3AStarRandomness: approved cert is missing";
+    AttestServer(false);
+    return false;
+  }
+  if (!response_info->ssl_info.has_value() ||
+      response_info->ssl_info->cert == nullptr) {
+    LOG(ERROR)
+        << "BraveP3AStarRandomness: ssl info is missing from response info";
+    return false;
+  }
+  if (!response_info->ssl_info->cert->EqualsIncludingChain(
+          approved_cert_.get())) {
+    LOG(ERROR) << "BraveP3AStarRandomness: approved cert mismatch, will retry "
+                  "attestation";
+    AttestServer(false);
+    return false;
+  }
+  return true;
+}
 
+void BraveP3AStarRandomness::RequestServerInfo() {
+  if (!config_->disable_star_attestation && approved_cert_ == nullptr) {
+    AttestServer(true);
+    return;
+  }
   if (rnd_server_info_ == nullptr) {
     // if rnd_server_info is null, we can assume the call is from
     // initialization, and not an update call. Using cached server info, if
@@ -134,6 +162,7 @@ void BraveP3AStarRandomness::RequestRandomnessServerInfo() {
       rnd_server_info_.reset(new RandomnessServerInfo(
           static_cast<uint8_t>(saved_epoch), saved_next_epoch_time,
           DecodeServerPublicKey(&saved_pk)));
+      VLOG(2) << "BraveP3AStarRandomness: using cached server info";
       info_callback_.Run(rnd_server_info_.get());
       return;
     }
@@ -145,23 +174,17 @@ void BraveP3AStarRandomness::RequestRandomnessServerInfo() {
 
   rnd_info_url_loader_ = network::SimpleURLLoader::Create(
       std::move(resource_request), GetRandomnessRequestAnnotation());
-
+  rnd_info_url_loader_->SetURLLoaderFactoryOptions(
+      network::mojom::kURLLoadOptionSendSSLInfoWithResponse);
   rnd_info_url_loader_->DownloadToString(
       url_loader_factory_.get(),
-      base::BindOnce(
-          &BraveP3AStarRandomness::HandleRandomnessServerInfoResponse,
-          base::Unretained(this)),
+      base::BindOnce(&BraveP3AStarRandomness::HandleServerInfoResponse,
+                     base::Unretained(this)),
       kMaxRandomnessResponseSize);
 }
 
-void BraveP3AStarRandomness::HandleRandomnessAttestationResult(
-    scoped_refptr<net::X509Certificate> approved_cert) {
-  VLOG(1) << "BraveP3AStarRandomness: approved cert? "
-          << (approved_cert != nullptr);
-}
-
 void BraveP3AStarRandomness::SendRandomnessRequest(
-    const char* histogram_name,
+    std::string histogram_name,
     uint8_t epoch,
     rust::Box<nested_star::RandomnessRequestStateWrapper>
         randomness_request_state,
@@ -191,6 +214,8 @@ void BraveP3AStarRandomness::SendRandomnessRequest(
   }
 
   rnd_url_loader_->AttachStringForUpload(payload_str, "application/json");
+  rnd_url_loader_->SetURLLoaderFactoryOptions(
+      network::mojom::kURLLoadOptionSendSSLInfoWithResponse);
 
   rnd_url_loader_->DownloadToString(
       url_loader_factory_.get(),
@@ -204,8 +229,45 @@ RandomnessServerInfo* BraveP3AStarRandomness::GetCachedRandomnessServerInfo() {
   return rnd_server_info_.get();
 }
 
+void BraveP3AStarRandomness::AttestServer(bool make_info_request_after) {
+  if (attestation_pending_) {
+    if (make_info_request_after) {
+      info_callback_.Run(nullptr);
+    }
+    return;
+  }
+  attestation_pending_ = true;
+  approved_cert_ = nullptr;
+
+  VLOG(2) << "BraveP3AStarRandomness: starting attestation";
+  GURL attestation_url = GURL(config_->star_randomness_host + "/attestation");
+  nitro_utils::RequestAndVerifyAttestationDocument(
+      attestation_url, url_loader_factory_.get(),
+      base::BindOnce(&BraveP3AStarRandomness::HandleAttestationResult,
+                     base::Unretained(this), make_info_request_after));
+}
+
+void BraveP3AStarRandomness::HandleAttestationResult(
+    bool make_info_request_after,
+    scoped_refptr<net::X509Certificate> approved_cert) {
+  if (approved_cert == nullptr) {
+    LOG(ERROR) << "BraveP3AStarRandomness: attestation failed";
+    attestation_pending_ = false;
+    if (make_info_request_after) {
+      info_callback_.Run(nullptr);
+    }
+    return;
+  }
+  approved_cert_ = approved_cert;
+  attestation_pending_ = false;
+  VLOG(2) << "BraveP3AStarRandomness: attestation succeeded";
+  if (make_info_request_after) {
+    RequestServerInfo();
+  }
+}
+
 void BraveP3AStarRandomness::HandleRandomnessResponse(
-    const char* histogram_name,
+    std::string histogram_name,
     uint8_t epoch,
     rust::Box<nested_star::RandomnessRequestStateWrapper>
         randomness_request_state,
@@ -219,6 +281,12 @@ void BraveP3AStarRandomness::HandleRandomnessResponse(
         << "net error: " << error_str;
     data_callback_.Run(histogram_name, epoch,
                        std::move(randomness_request_state), nullptr, nullptr);
+    return;
+  }
+  if (!VerifyRandomnessCert(rnd_url_loader_.get())) {
+    data_callback_.Run(histogram_name, epoch,
+                       std::move(randomness_request_state), nullptr, nullptr);
+    rnd_url_loader_.reset();
     return;
   }
   rnd_url_loader_.reset();
@@ -263,7 +331,7 @@ void BraveP3AStarRandomness::HandleRandomnessResponse(
                      std::move(points_vec), std::move(proofs_vec));
 }
 
-void BraveP3AStarRandomness::HandleRandomnessServerInfoResponse(
+void BraveP3AStarRandomness::HandleServerInfoResponse(
     std::unique_ptr<std::string> response_body) {
   if (!response_body || response_body->empty()) {
     std::string error_str =
@@ -271,6 +339,11 @@ void BraveP3AStarRandomness::HandleRandomnessServerInfoResponse(
     LOG(ERROR)
         << "BraveP3AStarRandomness: no response body for randomness server "
         << "info request, net error: " << error_str;
+    rnd_info_url_loader_.reset();
+    info_callback_.Run(nullptr);
+    return;
+  }
+  if (!VerifyRandomnessCert(rnd_info_url_loader_.get())) {
     rnd_info_url_loader_.reset();
     info_callback_.Run(nullptr);
     return;
@@ -312,6 +385,7 @@ void BraveP3AStarRandomness::HandleRandomnessServerInfoResponse(
   local_state_->SetTime(kNextEpochTimePrefName, next_epoch_time);
   rnd_server_info_.reset(new RandomnessServerInfo(
       static_cast<uint8_t>(*epoch), next_epoch_time, std::move(pk)));
+  LOG(ERROR) << "BraveP3AStarRandomness: server info retrieved";
   info_callback_.Run(rnd_server_info_.get());
 }
 

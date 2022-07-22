@@ -6,6 +6,8 @@
 #ifndef BRAVE_COMPONENTS_P3A_BRAVE_P3A_ROTATION_SCHEDULER_H_
 #define BRAVE_COMPONENTS_P3A_BRAVE_P3A_ROTATION_SCHEDULER_H_
 
+#include <memory>
+
 #include "base/callback.h"
 #include "base/containers/flat_map.h"
 #include "base/time/time.h"
