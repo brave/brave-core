@@ -75,7 +75,7 @@ class SettingsBraveTorPageElement extends SettingBraveTorPageElementBase {
         notify: true
       },
 
-      isUsingBridges_: {
+      isUsingBridgesPref_: {
         type: Object,
         value() {
           return {}
@@ -86,7 +86,7 @@ class SettingsBraveTorPageElement extends SettingBraveTorPageElementBase {
       shouldShowBridgesGroup_: {
         type: Boolean,
         value: false,
-        computed: 'computeShouldShowBridgesGroup_(isUsingBridges_.value, torEnabledPref_.value)'
+        computed: 'computeShouldShowBridgesGroup_(isUsingBridgesPref_.value, torEnabledPref_.value)'
       },
 
       requestedBridgesPlaceholder_: {
@@ -125,7 +125,7 @@ class SettingsBraveTorPageElement extends SettingBraveTorPageElementBase {
 
   static get observers() {
     return [
-      'isUsingBridgesChanged_(isUsingBridges_.value)'
+      'isUsingBridgesChanged_(isUsingBridgesPref_.value)'
     ]
   }
 
@@ -135,7 +135,7 @@ class SettingsBraveTorPageElement extends SettingBraveTorPageElementBase {
     super.ready()
     this.browserProxy_.getBridgesConfig().then((config) => {
       this.loadedConfig_ = config
-      this.isUsingBridges_ = {
+      this.isUsingBridgesPref_ = {
         key: '',
         type: chrome.settingsPrivate.PrefType.BOOLEAN,
         value: config.use_bridges != Usage.NOT_USED,
@@ -257,7 +257,7 @@ class SettingsBraveTorPageElement extends SettingBraveTorPageElementBase {
   }
 
   computeShouldShowBridgesGroup_() {
-    return this.isUsingBridges_.value && this.torEnabledPref_.value
+    return this.isUsingBridgesPref_.value && this.torEnabledPref_.value
   }
 
   builtInTypeEqual_(item, selection) {
