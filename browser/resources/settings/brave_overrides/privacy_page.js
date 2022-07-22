@@ -31,7 +31,8 @@ RegisterPolymerTemplateModifications({
             </category-default-setting>
             <category-setting-exceptions
                 category="[[contentSettingsTypesEnum_.AUTOPLAY]]"
-                block-header="${I18nBehavior.i18n('siteSettingsBlock')}">
+                block-header="${I18nBehavior.i18n('siteSettingsBlock')}"
+                allow-header="${I18nBehavior.i18n('siteSettingsAllow')}">
             </category-setting-exceptions>
           </settings-subpage>
         </template>
