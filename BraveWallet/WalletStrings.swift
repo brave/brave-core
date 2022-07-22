@@ -1331,12 +1331,12 @@ extension Strings {
       value: "Approved",
       comment: "The title shown for ERC20 approvals when the user doesn't have the visible asset added"
     )
-    public static let transactionSwapTitle = NSLocalizedString(
-      "wallet.transactionSwapTitle",
+    public static let transactionSwappedTitle = NSLocalizedString(
+      "wallet.transactionSwappedTitle",
       tableName: "BraveWallet",
       bundle: .strings,
-      value: "Swapped %@ %@ (%@)",
-      comment: "A title shown for a swap transaction. The first '%@' becomes the  amount, the second '%@' becomes the symbol for the cryptocurrency and the last '%@' becomes the fiat amount. For example: \"Swapped 0.0054 ETH ($22.44)\""
+      value: "Swapped %@ %@ to %@ %@",
+      comment: "A title shown for a swap transaction. The first '%@' becomes the from amount, the second '%@' becomes the symbol for the from currency, the third '%@' becomes the to amount, and the last '%@' becomes the to symbol. For example: \"Swapped 0.0054 ETH to 1.5 DAI\""
     )
     public static let transactionSendTitle = NSLocalizedString(
       "wallet.transactionSendTitle",
