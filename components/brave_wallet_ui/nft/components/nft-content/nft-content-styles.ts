@@ -5,20 +5,17 @@
 
 import styled from 'styled-components'
 import { LoaderIcon } from 'brave-ui/components/icons'
-import { StyleProps } from '../nft-details/nft-details-styles'
 
-interface Props {
+export const Image = styled.img<{
   customWidth?: string
   customHeight?: string
-}
-
-export const Image = styled.img<Props>`
+}>`
   border-radius: 4px;
   width: 100%;
   height: auto
 `
 
-export const LoadingOverlay = styled.div<Partial<StyleProps>>`
+export const LoadingOverlay = styled.div<{isLoading: boolean}>`
   display: ${(p) => p.isLoading ? 'flex' : 'none'};
   flex-direction: column;
   align-items: center;

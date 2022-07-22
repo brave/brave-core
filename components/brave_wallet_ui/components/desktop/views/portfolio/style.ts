@@ -4,13 +4,6 @@ import EyeOnIcon from '../../../../assets/svg-icons/eye-on-icon.svg'
 import EyeOffIcon from '../../../../assets/svg-icons/eye-off-icon.svg'
 import { AssetIconProps, AssetIconFactory, WalletButton } from '../../../shared/style'
 
-interface StyleProps {
-  isDown?: boolean
-  hideBalances?: boolean
-  visible?: boolean
-  isLoading?: boolean
-}
-
 export const StyledWrapper = styled.div`
   display: flex;
   flex-direction: column;
@@ -152,7 +145,7 @@ export const DividerText = styled.span`
   color: ${(p) => p.theme.color.text03};
 `
 
-export const PercentBubble = styled.div<Partial<StyleProps>>`
+export const PercentBubble = styled.div<{ isDown?: boolean}>`
   display: flex;
   align-items: center;
   justify-conent: center;
@@ -170,7 +163,7 @@ export const PercentText = styled.span`
   color: ${(p) => p.theme.palette.white};
 `
 
-export const ArrowIcon = styled(ArrowUpIcon) <Partial<StyleProps>>`
+export const ArrowIcon = styled(ArrowUpIcon) <{ isDown?: boolean }>`
   width: 12px;
   height: 12px;
   margin-right: 2px;
@@ -229,7 +222,7 @@ export const CoinGeckoText = styled.span`
   margin: 15px 0px;
 `
 
-export const ShowBalanceButton = styled(WalletButton) <Partial<StyleProps>>`
+export const ShowBalanceButton = styled(WalletButton) <{ hideBalances?: boolean}>`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -256,7 +249,7 @@ export const FilterTokenRow = styled.div`
   width: 100%;
 `
 
-export const NftDetails = styled.iframe<StyleProps>`
+export const NftDetails = styled.iframe<{ visible?: boolean }>`
   width: 100%;
   min-height: ${p => p.visible ? '490px' : 'hidden'};
   border: none;

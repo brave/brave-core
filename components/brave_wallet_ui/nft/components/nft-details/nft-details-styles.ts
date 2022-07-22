@@ -1,13 +1,14 @@
+// Copyright (c) 2022 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// you can obtain one at http://mozilla.org/MPL/2.0/.
+
 import styled from 'styled-components'
 import { WalletButton } from '../../../components/shared/style'
 import WebsiteIcon from '../../../assets/svg-icons/website-icon.svg'
 import TwitterIcon from '../../../assets/svg-icons/twitter-icon.svg'
 import FacebookIcon from '../../../assets/svg-icons/facebook-icon.svg'
 import { OpenNewIcon } from 'brave-ui/components/icons'
-
-export interface StyleProps {
-  isLoading: boolean
-}
 
 export const nftImageDimension = '440px'
 
@@ -21,7 +22,7 @@ export const StyledWrapper = styled.div`
   margin: 16px 0 50px 0;
 `
 
-export const NftImageWrapper = styled.div<StyleProps>`
+export const NftImageWrapper = styled.div<{ isLoading: boolean }>`
   display: flex;
   width: ${p => p.isLoading ? 0 : nftImageDimension};
   height: ${p => p.isLoading ? 0 : nftImageDimension};

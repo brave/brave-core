@@ -305,7 +305,7 @@ export const PortfolioAsset = () => {
   }, [selectedAssetFromParams])
 
   React.useEffect(() => {
-    if (nftDetailsRef && nftDetailsRef.current) {
+    if (nftDetailsRef?.current) {
       const command: UpdateLoadingMessage = {
         command: NftUiCommand.UpdateLoading,
         payload: isFetchingNFTMetadata
@@ -315,7 +315,7 @@ export const PortfolioAsset = () => {
   }, [nftDetailsRef, isFetchingNFTMetadata])
 
   React.useEffect(() => {
-    if (selectedAsset && nftDetailsRef && nftDetailsRef.current) {
+    if (selectedAsset && nftDetailsRef.current) {
       const command: UpdateSelectedAssetMessage = {
         command: NftUiCommand.UpdateSelectedAsset,
         payload: selectedAsset
@@ -332,7 +332,7 @@ export const PortfolioAsset = () => {
       sendMessageToNftUiFrame(nftDetailsRef.current.contentWindow, command)
     }
 
-    if (nftMetadata && nftDetailsRef && nftDetailsRef.current) {
+    if (nftMetadata && nftDetailsRef?.current) {
       const command: UpdateNFtMetadataMessage = {
         command: NftUiCommand.UpdateNFTMetadata,
         payload: nftMetadata
