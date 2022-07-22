@@ -25,6 +25,7 @@ namespace brave {
 namespace {
 
 const size_t kMaxEpochsToRetain = 4;
+const int kRndInfoRetryMinutes = 10;
 
 }  // namespace
 
@@ -142,7 +143,7 @@ void BraveP3AMessageManager::OnLogUploadComplete(bool is_ok,
 }
 
 void BraveP3AMessageManager::OnNewStarMessage(
-    const char* histogram_name,
+    std::string histogram_name,
     uint8_t epoch,
     std::unique_ptr<std::string> serialized_message) {
   if (!serialized_message) {
@@ -157,6 +158,11 @@ void BraveP3AMessageManager::OnNewStarMessage(
 void BraveP3AMessageManager::OnRandomnessServerInfoReady(
     RandomnessServerInfo* server_info) {
   if (server_info == nullptr) {
+    LOG(ERROR)
+        << "BraveP3AMessageManager: scheduling rnd server info request retry";
+    rnd_info_retry_timer.Start(FROM_HERE, base::Minutes(kRndInfoRetryMinutes),
+                               star_manager_.get(),
+                               &BraveP3AStar::UpdateRandomnessServerInfo);
     return;
   }
   star_send_log_store_->SetCurrentEpoch(server_info->current_epoch);

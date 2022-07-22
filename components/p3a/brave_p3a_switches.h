@@ -25,6 +25,7 @@ constexpr char kP2AJsonUploadUrl[] = "p2a-json-upload-url";
 constexpr char kP3AStarUploadUrl[] = "p3a-star-upload-url";
 constexpr char kP2AStarUploadUrl[] = "p2a-star-upload-url";
 
+constexpr char kP3ADisableStarAttestation[] = "p3a-disable-star-attestation";
 // Do not try to resent values even if a cloud returned an HTTP error, just
 // continue the normal process.
 constexpr char kP3AIgnoreServerErrors[] = "p3a-ignore-server-errors";

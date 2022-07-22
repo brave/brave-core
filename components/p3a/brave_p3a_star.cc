@@ -43,7 +43,8 @@ BraveP3AStar::BraveP3AStar(
           base::BindRepeating(&BraveP3AStar::HandleRandomnessData,
                               base::Unretained(this)),
           config),
-      message_callback_(message_callback) {
+      message_callback_(message_callback),
+      null_public_key_(nested_star::get_ppoprf_null_public_key()) {
   UpdateRandomnessServerInfo();
 }
 
@@ -54,10 +55,10 @@ void BraveP3AStar::RegisterPrefs(PrefRegistrySimple* registry) {
 }
 
 void BraveP3AStar::UpdateRandomnessServerInfo() {
-  randomness_manager_.RequestRandomnessServerInfo();
+  randomness_manager_.RequestServerInfo();
 }
 
-bool BraveP3AStar::StartMessagePreparation(const char* histogram_name,
+bool BraveP3AStar::StartMessagePreparation(std::string histogram_name,
                                            std::string serialized_log) {
   auto* rnd_server_info = randomness_manager_.GetCachedRandomnessServerInfo();
   if (rnd_server_info == nullptr) {
@@ -89,7 +90,7 @@ bool BraveP3AStar::StartMessagePreparation(const char* histogram_name,
 }
 
 void BraveP3AStar::HandleRandomnessData(
-    const char* histogram_name,
+    std::string histogram_name,
     uint8_t epoch,
     ::rust::Box<nested_star::RandomnessRequestStateWrapper>
         randomness_request_state,
@@ -126,7 +127,8 @@ bool BraveP3AStar::ConstructFinalMessage(
   DCHECK(rnd_server_info);
   auto msg_res = nested_star::construct_message(
       resp_points, resp_proofs, *randomness_request_state,
-      *rnd_server_info->public_key, {}, kP3AStarCurrentThreshold);
+      resp_proofs.empty() ? *null_public_key_ : *rnd_server_info->public_key,
+      {}, kP3AStarCurrentThreshold);
   if (!msg_res.error.empty()) {
     LOG(ERROR) << "BraveP3AStar: message construction failed: "
                << msg_res.error.c_str();

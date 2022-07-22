@@ -26,6 +26,8 @@ struct BraveP3AConfig {
   GURL p2a_star_upload_url;
   std::string star_randomness_host;
 
+  bool disable_star_attestation = false;
+
   bool ignore_server_errors = false;
 
   BraveP3AConfig();

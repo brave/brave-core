@@ -87,17 +87,21 @@ void BraveP3AConfig::LoadFromCommandLine() {
   LoadURL(cmdline, switches::kP2AStarUploadUrl, &p2a_star_upload_url);
   LoadString(cmdline, switches::kP3AStarRandomnessHost, &star_randomness_host);
 
+  LoadBool(cmdline, switches::kP3ADisableStarAttestation,
+           &disable_star_attestation);
+
   LoadBool(cmdline, switches::kP3AIgnoreServerErrors, &ignore_server_errors);
 
   VLOG(2) << "BraveP3AConfig parameters are:"
-          << ", average_upload_interval_ = " << average_upload_interval
-          << ", randomize_upload_interval_ = " << randomize_upload_interval
-          << ", p3a_json_upload_url_ = " << p3a_json_upload_url.spec()
-          << ", p2a_json_upload_url_ = " << p2a_json_upload_url.spec()
-          << ", p3a_star_upload_url_ = " << p3a_star_upload_url.spec()
-          << ", p2a_star_upload_url_ = " << p2a_star_upload_url.spec()
-          << ", star_randomness_host_ = " << star_randomness_host
-          << ", rotation_interval_ = " << rotation_interval;
+          << ", average_upload_interval = " << average_upload_interval
+          << ", randomize_upload_interval = " << randomize_upload_interval
+          << ", p3a_json_upload_url = " << p3a_json_upload_url.spec()
+          << ", p2a_json_upload_url = " << p2a_json_upload_url.spec()
+          << ", p3a_star_upload_url = " << p3a_star_upload_url.spec()
+          << ", p2a_star_upload_url = " << p2a_star_upload_url.spec()
+          << ", star_randomness_host = " << star_randomness_host
+          << ", rotation_interval = " << rotation_interval
+          << ", disable_star_attestation = " << disable_star_attestation;
 }
 
 }  // namespace brave

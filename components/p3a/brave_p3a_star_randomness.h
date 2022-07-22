@@ -48,8 +48,8 @@ class BraveP3AStarRandomness {
   using RandomnessServerInfoCallback =
       base::RepeatingCallback<void(RandomnessServerInfo* server_info)>;
   using RandomnessDataCallback = base::RepeatingCallback<void(
-      const char* histogram_name,
-      uint8_t,
+      std::string histogram_name,
+      uint8_t epoch,
       ::rust::Box<nested_star::RandomnessRequestStateWrapper>
           randomness_request_state,
       std::unique_ptr<rust::Vec<nested_star::VecU8>> resp_points,
@@ -65,10 +65,10 @@ class BraveP3AStarRandomness {
 
   static void RegisterPrefs(PrefRegistrySimple* registry);
 
-  void RequestRandomnessServerInfo();
+  void RequestServerInfo();
 
   void SendRandomnessRequest(
-      const char* histogram_name,
+      std::string histogram_name,
       uint8_t epoch,
       ::rust::Box<nested_star::RandomnessRequestStateWrapper>
           randomness_request_state,
@@ -77,17 +77,21 @@ class BraveP3AStarRandomness {
   RandomnessServerInfo* GetCachedRandomnessServerInfo();
 
  private:
+  void AttestServer(bool make_info_request_after);
+
+  bool VerifyRandomnessCert(network::SimpleURLLoader* url_loader);
+
   void HandleRandomnessResponse(
-      const char* histogram_name,
+      std::string histogram_name,
       uint8_t epoch,
       ::rust::Box<nested_star::RandomnessRequestStateWrapper>
           randomness_request_state,
       std::unique_ptr<std::string> response_body);
 
-  void HandleRandomnessServerInfoResponse(
-      std::unique_ptr<std::string> response_body);
+  void HandleServerInfoResponse(std::unique_ptr<std::string> response_body);
 
-  void HandleRandomnessAttestationResult(
+  void HandleAttestationResult(
+      bool make_info_request_after,
       scoped_refptr<net::X509Certificate> approved_cert);
 
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
@@ -102,6 +106,9 @@ class BraveP3AStarRandomness {
   std::unique_ptr<RandomnessServerInfo> rnd_server_info_;
 
   BraveP3AConfig* config_;
+
+  scoped_refptr<net::X509Certificate> approved_cert_;
+  bool attestation_pending_ = false;
 };
 
 }  // namespace brave
