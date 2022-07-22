@@ -23,7 +23,6 @@ import {
 import { Table, Cell, Header, Row } from '../shared/datatable'
 import { AssetNameAndIcon } from '../asset-name-and-icon'
 import { AssetPriceChange } from '../asset-price-change'
-import useOnScreen from '../../common/hooks/on-screen'
 import { CoinGeckoText } from '../desktop/views/portfolio/style'
 
 export interface MarketDataHeader extends Header {
@@ -33,16 +32,9 @@ export interface MarketDataHeader extends Header {
 export interface Props {
   headers: MarketDataHeader[]
   coinMarketData: BraveWallet.CoinMarket[]
-  moreDataAvailable: boolean
   showEmptyState: boolean
-  onShowMoreCoins: () => void
   onSort?: (column: MarketDataTableColumnTypes, newSortOrder: SortOrder) => void
   onSelectCoinMarket: (coinMarket: BraveWallet.CoinMarket) => void
-}
-
-const onScreenOptions = {
-  rootMargin: '0px',
-  threshold: 0
 }
 
 const renderCells = (coinMarkDataItem: BraveWallet.CoinMarket) => {
@@ -129,18 +121,13 @@ const renderCells = (coinMarkDataItem: BraveWallet.CoinMarket) => {
 }
 
 export const MarketDataTable = (props: Props) => {
-  const { headers, coinMarketData, moreDataAvailable, showEmptyState, onShowMoreCoins, onSort, onSelectCoinMarket } = props
-  const ref: any = React.useRef<HTMLDivElement>()
-  const onScreen = useOnScreen<HTMLDivElement>(ref, onScreenOptions)
-  if (!moreDataAvailable) {
-    console.log('No more data available')
-  }
-
-  React.useEffect(() => {
-    if (onScreen && moreDataAvailable) {
-      onShowMoreCoins()
-    }
-  }, [onScreen, moreDataAvailable, onShowMoreCoins])
+  const {
+    headers,
+    coinMarketData,
+    showEmptyState,
+    onSort,
+    onSelectCoinMarket
+  } = props
 
   const rows: Row[] = React.useMemo(() => {
     return coinMarketData.map((coinMarketItem: BraveWallet.CoinMarket) => {
@@ -166,7 +153,6 @@ export const MarketDataTable = (props: Props) => {
           {showEmptyState && getLocale('braveWalletMarketDataNoAssetsFound')}
         </Table>
       </TableWrapper>
-      <div ref={ref}/>
       <CoinGeckoText>{getLocale('braveWalletPoweredByCoinGecko')}</CoinGeckoText>
     </StyledWrapper>
   )

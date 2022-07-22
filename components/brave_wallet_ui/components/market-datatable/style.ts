@@ -5,10 +5,6 @@
 
 import styled from 'styled-components'
 
-export interface StyleProps {
-  alignment: 'right' | 'left' | 'center'
-}
-
 export const StyledWrapper = styled.div`
   display: flex;
   flex: 1;
@@ -37,7 +33,7 @@ export const AssetsColumnItemSpacer = styled.div`
   justify-content: center;
   margin-right: 19px;
 `
-export const TextWrapper = styled.div<StyleProps>`
+export const TextWrapper = styled.div<{ alignment: 'right' | 'left' | 'center' }>`
   display: flex;
   justify-content: ${p => {
     switch (p.alignment) {
