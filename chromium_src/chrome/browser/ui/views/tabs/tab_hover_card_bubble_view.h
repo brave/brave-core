@@ -16,7 +16,7 @@ class TabHoverCardBubbleView;
   bool has_thumbnail_view() { return thumbnail_view_; } \
                                                         \
  protected:                                             \
-  void BraveUpdateCardContent(const Tab* tab); \
+  void BraveUpdateCardContent(const Tab* tab);
 
 #define TabHoverCardBubbleView TabHoverCardBubbleView_ChromiumImpl
 #define UpdateCardContent virtual UpdateCardContent

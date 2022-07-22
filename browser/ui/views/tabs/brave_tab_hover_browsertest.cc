@@ -205,8 +205,7 @@ class BraveTabHoverTestWithChromeFlag : public BraveTabHoverTest {
 
 // See crbug.com/1050765.
 #if BUILDFLAG(IS_WIN)
-#define MAYBE_ChromeFeatureForcesPreviews \
-  DISABLED_ChromeFeatureForcesPreviews
+#define MAYBE_ChromeFeatureForcesPreviews DISABLED_ChromeFeatureForcesPreviews
 #else
 #define MAYBE_ChromeFeatureForcesPreviews ChromeFeatureForcesPreviews
 #endif
@@ -231,8 +230,8 @@ IN_PROC_BROWSER_TEST_F(BraveTabHoverTestWithChromeFlag,
   EXPECT_FALSE(widget->IsVisible());
 
   // In Preview mode, both flags are set to enable the preview.
-  browser()->profile()->GetPrefs()->SetInteger(brave_tabs::kTabHoverMode,
-                                               brave_tabs::TabHoverMode::CARD_WITH_PREVIEW);
+  browser()->profile()->GetPrefs()->SetInteger(
+      brave_tabs::kTabHoverMode, brave_tabs::TabHoverMode::CARD_WITH_PREVIEW);
   HoverOverTab(active_tab());
 
   widget = hover_card()->GetWidget();
