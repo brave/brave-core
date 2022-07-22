@@ -41,11 +41,11 @@ public class Blockies {
         }
 
         seedrand(address);
-        String color = createColor();
         createColor(); // skip dark color
+        String color = createColor();
         String spotColor = createColor(); // use 3rd vibrant color
         GradientDrawable gd = new GradientDrawable(GradientDrawable.Orientation.TOP_BOTTOM,
-                new int[] {Color.parseColor(spotColor), Color.parseColor(color)});
+                new int[] {Color.parseColor(color), Color.parseColor(spotColor)});
         gd.setCornerRadius(0f);
         return gd;
     }
@@ -53,13 +53,13 @@ public class Blockies {
     private static Bitmap createIcon(String address) {
         seedrand(address);
 
+        //skip dark color
+        createColor();
         String color = createColor();
-        String bgColor = createColor();
         String spotColor = createColor();
 
         double[] imgdata = createImageData();
-
-        return createCanvas(imgdata, color, bgColor, spotColor, SCALE);
+        return createCanvas(imgdata, spotColor, color, spotColor, SCALE);
     }
 
     private static Bitmap createCanvas(
@@ -96,7 +96,7 @@ public class Blockies {
             }
         }
 
-        return blur(getCroppedBitmap(bmp), 1f, 40);
+        return getCroppedBitmap(blur(bmp, 1f, 42));
     }
 
     private static double rand() {
