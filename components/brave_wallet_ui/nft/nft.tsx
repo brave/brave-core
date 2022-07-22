@@ -41,6 +41,8 @@ const App = () => {
   const [tokenNetwork, setTokenNetwork] = React.useState<BraveWallet.NetworkInfo>()
   const [imageUrl, setImageUrl] = React.useState<string>()
 
+  // handle postMessage from wallet ui by setting component state
+  // each message has a payload parameter containing the event data
   const onMessageEventListener = React.useCallback((event: MessageEvent<CommandMessage>) => {
     // validate message origin
     if (event.origin !== braveWalletOrigin) return
@@ -80,6 +82,7 @@ const App = () => {
   }, [])
 
   React.useEffect(() => {
+    // add event listener for postMessage from wallet ui
     window.addEventListener('message', onMessageEventListener)
     return () => window.removeEventListener('message', onMessageEventListener)
   }, [])
