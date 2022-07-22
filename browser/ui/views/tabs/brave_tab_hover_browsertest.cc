@@ -7,11 +7,14 @@
 #include <memory>
 #include <utility>
 
+#include "base/feature_list.h"
+#include "base/test/scoped_feature_list.h"
 #include "brave/browser/ui/views/tabs/brave_tab_prefs.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/tabs/tab_renderer_data.h"
 #include "chrome/browser/ui/thumbnails/thumbnail_tab_helper.h"
+#include "chrome/browser/ui/ui_features.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/tabs/tab.h"
 #include "chrome/browser/ui/views/tabs/tab_container.h"
@@ -167,6 +170,71 @@ IN_PROC_BROWSER_TEST_F(BraveTabHoverTest,
   browser()->profile()->GetPrefs()->SetInteger(
       brave_tabs::kTabHoverMode, brave_tabs::TabHoverMode::CARD_WITH_PREVIEW);
   HoverOverTab(active_tab());
+  widget = hover_card()->GetWidget();
+  ASSERT_NE(nullptr, widget);
+  views::test::WidgetVisibleWaiter(widget).Wait();
+  EXPECT_TRUE(hover_card()->has_thumbnail_view());
+  EXPECT_TRUE(widget->IsVisible());
+
+  // Clear focus, to hide the bubble.
+  HoverOverTab(nullptr);
+  EXPECT_FALSE(widget->IsVisible());
+
+  // In Tooltip mode, the widget should not be made visible.
+  browser()->profile()->GetPrefs()->SetInteger(
+      brave_tabs::kTabHoverMode, brave_tabs::TabHoverMode::TOOLTIP);
+  HoverOverTab(active_tab());
+  widget = hover_card()->GetWidget();
+  ASSERT_NE(nullptr, widget);
+  EXPECT_FALSE(widget->IsVisible());
+}
+
+IN_PROC_BROWSER_TEST_F(BraveTabHoverTest, ChromeFeatureDisabledByDefault) {
+  EXPECT_FALSE(base::FeatureList::IsEnabled(features::kTabHoverCardImages));
+}
+
+class BraveTabHoverTestWithChromeFlag : public BraveTabHoverTest {
+ public:
+  BraveTabHoverTestWithChromeFlag() {
+    features_.InitAndEnableFeature(features::kTabHoverCardImages);
+  }
+
+ private:
+  base::test::ScopedFeatureList features_;
+};
+
+// See crbug.com/1050765.
+#if BUILDFLAG(IS_WIN)
+#define MAYBE_ChromeFeatureForcesPreviews \
+  DISABLED_ChromeFeatureForcesPreviews
+#else
+#define MAYBE_ChromeFeatureForcesPreviews ChromeFeatureForcesPreviews
+#endif
+IN_PROC_BROWSER_TEST_F(BraveTabHoverTestWithChromeFlag,
+                       ChromeFeatureForcesPreviews) {
+  EXPECT_TRUE(base::FeatureList::IsEnabled(features::kTabHoverCardImages));
+
+  // In Card mode, the widget should become visible and because the
+  // |kTabHoverCardImages| feature is enabled, the preview should be created.
+  browser()->profile()->GetPrefs()->SetInteger(brave_tabs::kTabHoverMode,
+                                               brave_tabs::TabHoverMode::CARD);
+  HoverOverTab(active_tab());
+
+  Widget* widget = hover_card()->GetWidget();
+  ASSERT_NE(nullptr, widget);
+  views::test::WidgetVisibleWaiter(widget).Wait();
+  EXPECT_TRUE(hover_card()->has_thumbnail_view());
+  EXPECT_TRUE(widget->IsVisible());
+
+  // Clear focus, to hide the bubble.
+  HoverOverTab(nullptr);
+  EXPECT_FALSE(widget->IsVisible());
+
+  // In Preview mode, both flags are set to enable the preview.
+  browser()->profile()->GetPrefs()->SetInteger(brave_tabs::kTabHoverMode,
+                                               brave_tabs::TabHoverMode::CARD_WITH_PREVIEW);
+  HoverOverTab(active_tab());
+
   widget = hover_card()->GetWidget();
   ASSERT_NE(nullptr, widget);
   views::test::WidgetVisibleWaiter(widget).Wait();
