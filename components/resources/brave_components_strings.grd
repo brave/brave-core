@@ -558,7 +558,7 @@
       <message name="IDS_BRAVE_REWARDS_INTERNALS_AMOUNT" desc="Amount">Amount:</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_AUTO_REFRESH" desc="">Automatically refresh every 5 seconds</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_BALANCE_INFO" desc="">Balance info</message>
-      <message name="IDS_BRAVE_REWARDS_INTERNALS_BOOT_STAMP" desc="Wallet start time">Wallet created:</message>
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_BOOT_STAMP" desc="Wallet start time">Rewards profile created at:</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_CLEAR_BUTTON" desc="">Clear</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_CONTRIBUTED_AMOUNT" desc="Contributed Amount">Contributed amount:</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_CONTRIBUTED_CREATED_AT" desc="">Created at:</message>
@@ -587,7 +587,7 @@
       <message name="IDS_BRAVE_REWARDS_INTERNALS_CONTRIBUTION_TYPE" desc="Contribution type">Type:</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_CONTRIBUTIONS" desc="">Contributions</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_DOWNLOAD_BUTTON" desc="">Download full log</message>
-      <message name="IDS_BRAVE_REWARDS_INTERNALS_EXTERNAL_WALLET" desc="">External wallet info</message>
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_EXTERNAL_WALLET" desc="">Custodial account connection info</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_INVALID" desc="Invalid indicator">Invalid</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_KEY_INFO_SEED" desc="Key info seed">Key info seed:</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_LOG_NOTICE" desc="">We show the last [[numberOfLines]] lines of the log. If you want the whole log, you can download it above.</message>
@@ -628,10 +628,10 @@
       <message name="IDS_BRAVE_REWARDS_INTERNALS_VALID" desc="Valid indicator">Valid</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_WALLET_ADDRESS" desc="">Wallet address:</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_WALLET_HISTORY" desc="">Wallet History</message>
-      <message name="IDS_BRAVE_REWARDS_INTERNALS_WALLET_INFO" desc="">Wallet info</message>
-      <message name="IDS_BRAVE_REWARDS_INTERNALS_WALLET_NOT_CREATED" desc="">Wallet was not yet created</message>
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_WALLET_INFO" desc="">Rewards info</message>
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_WALLET_NOT_CREATED" desc="">Rewards profile not yet created</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_WALLET_PAYMENT_ID" desc="Rewards payment ID">Rewards payment ID:</message>
-      <message name="IDS_BRAVE_REWARDS_INTERNALS_WALLET_STATUS" desc="Wallet status">Wallet status:</message>
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_WALLET_STATUS" desc="Wallet status">Rewards state:</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_WALLET_STATUS_CONNECTED" desc="">Connected</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_WALLET_STATUS_NOT_CONNECTED" desc="">Not connected</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_WALLET_STATUS_VERIFIED" desc="">Verified</message>
