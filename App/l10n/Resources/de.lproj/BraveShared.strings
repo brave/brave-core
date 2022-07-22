@@ -856,8 +856,8 @@
 /* Error message if details don't have the right type or values */
 "invalidDetailsMessage" = "Ungültige Angaben in Zahlungsanforderung";
 
-/* Sync Alert */
-"InvalidSyncCodeDescription" = "Ungültiger Synchronisierungscode";
+/* Generic error message for when the sync code is invalid */
+"InvalidSyncCodeDescription" = "Ungültiger Synchronisierungscode. Bitte prüfen Sie die Eingabe und versuchen Sie es erneut.";
 
 /* History tableview section header */
 "LastMonth" = "Letzter Monat";
@@ -1003,11 +1003,14 @@
 /* The information title displayed when there is no search reault found */
 "noSearchResultsfound" = "Keine Suchergebnisse gefunden.";
 
-/* Sync Alert */
+/* Error message for when the sync code does not have the correct amount of words */
 "NotEnoughWordsDescription" = "Bitte geben Sie alle Wörter ein und versuchen Sie es erneut.";
 
-/* Sync Alert */
+/* Error title for when the sync code does not have the correct amount of words */
 "NotEnoughWordsTitle" = "Nicht genug Wörter";
+
+/* Setting title for option to automatically redirect a url to another url */
+"nprRedirectFooter" = "Leitet NPR-Links automatisch auf ihre textbasierte Version um (auf text.npr.org).";
 
 /* Bookmark title for Brave Support */
 "ntp.braveSupportFavoriteTitle" = "Brave Support";
@@ -1879,6 +1882,9 @@
 /* Recent Search suggestions title when prompting to turn on suggestions */
 "RecentSearchSuggestionsTitle" = "Suchvorschläge";
 
+/* Setting title for option to automatically redirect a url to another url */
+"redditRedirectFooter" = "Leitet Reddit-Links automatisch auf die ältere Oberfläche um (auf old.reddit.com). Um die neue Reddit-Oberfläche zu erzwingen, verwenden Sie stattdessen new.reddit.com.";
+
 /* Action button for removing sync device. */
 "RemoveDevice" = "Entfernen";
 
@@ -2743,16 +2749,16 @@
 /* Computer device button title */
 "SyncComputerDevice" = "Computer";
 
+/* Sync Error Description */
+"syncDeprecatedVersionError" = "Dieser Synchronisierungscode wurde von einer veralteten Version von Brave auf einem anderen Gerät generiert. Bitte aktualisieren Sie Brave auf allen synchronisierten Geräten und versuchen Sie es erneut.";
+
 /* Sync you browser settings across devices. */
 "SyncDevices" = "Geräte & Einstellungen";
 
-/* Sync Error Description */
-"syncExpiredError" = "Abgelaufen";
+/* Sync Error message for when the sync code is expired */
+"syncExpiredError" = "Dieser Synchronisierungscode ist abgelaufen. Bitte generieren Sie einen neuen Synchronisierungscode und versuchen Sie es erneut.";
 
-/* Sync Error Description */
-"syncFutureVersionError" = "Zu neu";
-
-/* Sync Error Description */
+/* Generic Sync Error Description */
 "syncGenericError" = "Entschuldigen Sie, es ist ein Fehler aufgetreten.";
 
 /* Folder name for where bookmarks are imported into when the root folder is not empty. */
@@ -2764,12 +2770,6 @@
 /* Title for sync initialization error alert */
 "SyncInitErrorTitle" = "Kommunikationsfehler beim Synchronisieren";
 
-/* Sync Error Description */
-"syncInsecureVersionError" = "Dieser Synchronisierungscode wurde von einer veralteten Version von Brave auf einem anderen Gerät generiert. Bitte aktualisieren Sie Brave auf allen synchronisierten Geräten und versuchen Sie es erneut.";
-
-/* Sync Error Description */
-"syncInvalidVersionError" = "Ungültiges Format";
-
 /* Default name for a device */
 "syncJoinChainCameraWarning" = "Dadurch werden Ihre Brave-Daten, darunter womöglich Ihre Passwörter, mit dem Gerät geteilt, das diesen QR-Code generiert hat. Bitte vergewissern Sie sich, dass dieser QR-Code von einem Gerät generiert worden ist, das Ihnen gehört. Möchten Sie wirklich fortfahren?";
 
@@ -2778,9 +2778,6 @@
 
 /* Title for pairing sync device */
 "syncJoinChainWarningTitle" = "Achtung";
-
-/* Sync Error Description */
-"syncNewerVersionError" = "Dieser Synchronisierungscode wurde von einer neueren Version von Brave auf einem anderen Gerät generiert. Bitte aktualisieren Sie Brave auf allen synchronisierten Geräten und versuchen Sie es erneut.";
 
 /* No internet connection alert body. */
 "SyncNoConnectionBody" = "Bitte überprüfen Sie Ihre Internetverbindung und versuchen Sie es erneut.";
@@ -2848,6 +2845,9 @@
 /* No comment provided by engineer. */
 "SyncUnsuccessful" = "Fehlgeschlagen";
 
+/* Sync Error Description */
+"syncValidForTooLongError" = "Dieser Code ist ungültig. Bitte überprüfen Sie, ob Uhrzeit und Zeitzone auf Ihrem Gerät richtig eingestellt sind.";
+
 /* Accessibility label for action denoting closing a tab in tab list (tray) */
 "TabAccessibilityCloseActionLabel" = "Schließen";
 
@@ -2901,6 +2901,9 @@
 
 /* Accessibility Label for the tab toolbar Stop button */
 "TabToolbarStopButtonAccessibilityLabel" = "Anhalten";
+
+/* Accessibility label for the lock icon, which is only present if the connection is insecure */
+"TabToolbarWarningImageAccessibilityLabel" = "Unsichere Verbindung";
 
 /* Accessibility label for the Tabs Tray view. */
 "TabTrayAccessibilityLabel" = "Tab-Übersicht";
@@ -3115,6 +3118,9 @@
 /* Accessibility label for address and search field, both words (Address, Search) are therefore nouns. */
 "URLBarViewLocationTextViewAccessibilityLabel" = "Adresse und Suche";
 
+/* Setting title for option to automatically redirect a url to another url */
+"urlRedirectsSettings" = "Website-Weiterleitungen";
+
 /* Error message if the payment workflow is canceled by the user */
 "userCancelledMessage" = "Stornierung durch Benutzer";
 
@@ -3211,14 +3217,16 @@
 /* Network Type field for customer support contact form. */
 "vpn.contactFormNetworkType" = "Netzwerkart";
 
+/* A contact form field that displays platform type: 'iOS' 'Android' or 'Desktop' */
+"vpn.contactFormPlatform" = "Plattform";
+
 /* Button name to send contact form. */
 "vpn.contactFormSendButton" = "Weiter zu E-Mail";
 
 /* Subscription Type field for customer support contact form. */
 "vpn.contactFormSubscriptionType" = "Art des Abonnements";
 
-/* A contact form field that displays platform type: 'iOS' 'Android' or 'Desktop'
-   iOS Timezone field for customer support contact form. */
+/* iOS Timezone field for customer support contact form. */
 "vpn.contactFormTimezone" = "iOS-Zeitzone";
 
 /* Title for contact form email. */

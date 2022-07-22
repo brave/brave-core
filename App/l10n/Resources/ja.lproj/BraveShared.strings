@@ -856,8 +856,8 @@
 /* Error message if details don't have the right type or values */
 "invalidDetailsMessage" = "不正な支払いリクエスト";
 
-/* Sync Alert */
-"InvalidSyncCodeDescription" = "無効な同期コード";
+/* Generic error message for when the sync code is invalid */
+"InvalidSyncCodeDescription" = "同期コードが無効ですので、確認してからやり直してください。";
 
 /* History tableview section header */
 "LastMonth" = "先月";
@@ -1003,11 +1003,14 @@
 /* The information title displayed when there is no search reault found */
 "noSearchResultsfound" = "検索結果が見つかりませんでした。";
 
-/* Sync Alert */
+/* Error message for when the sync code does not have the correct amount of words */
 "NotEnoughWordsDescription" = "すべてのワードを入力して、もう一度やり直してください。";
 
-/* Sync Alert */
+/* Error title for when the sync code does not have the correct amount of words */
 "NotEnoughWordsTitle" = "ワードが足りません";
+
+/* Setting title for option to automatically redirect a url to another url */
+"nprRedirectFooter" = "NPRのリンクをテキストベースのバージョン (text.npr.org) に自動でリダイレクトします。";
 
 /* Bookmark title for Brave Support */
 "ntp.braveSupportFavoriteTitle" = "サポート";
@@ -1879,6 +1882,9 @@
 /* Recent Search suggestions title when prompting to turn on suggestions */
 "RecentSearchSuggestionsTitle" = "検索候補";
 
+/* Setting title for option to automatically redirect a url to another url */
+"redditRedirectFooter" = "Reddit のリンクを旧式インターフェース (old.reddit.com) に自動でリダイレクトします。新しいRedditインターフェースを表示するには、new.reddit.comにアクセスしてください。";
+
 /* Action button for removing sync device. */
 "RemoveDevice" = "削除";
 
@@ -2743,16 +2749,16 @@
 /* Computer device button title */
 "SyncComputerDevice" = "コンピュータ";
 
+/* Sync Error Description */
+"syncDeprecatedVersionError" = "この同期コードは、別のデバイスで旧バージョンのBraveにより生成されています。すべての同期済みデバイスでBraveをアップデートしてからもう一度お試しください。";
+
 /* Sync you browser settings across devices. */
 "SyncDevices" = "デバイスと設定";
 
-/* Sync Error Description */
-"syncExpiredError" = "期限切れ";
+/* Sync Error message for when the sync code is expired */
+"syncExpiredError" = "同期コードが期限切れです。新しい同期コードを生成してもう一度お試しください。";
 
-/* Sync Error Description */
-"syncFutureVersionError" = "新しすぎます";
-
-/* Sync Error Description */
+/* Generic Sync Error Description */
 "syncGenericError" = "すみません。問題が発生しました";
 
 /* Folder name for where bookmarks are imported into when the root folder is not empty. */
@@ -2764,12 +2770,6 @@
 /* Title for sync initialization error alert */
 "SyncInitErrorTitle" = "Syncの接続エラー";
 
-/* Sync Error Description */
-"syncInsecureVersionError" = "この同期コードは、別のデバイスで旧バージョンのBraveにより生成されています。すべての同期済みデバイスでBraveをアップデートしてからもう一度お試しください。";
-
-/* Sync Error Description */
-"syncInvalidVersionError" = "フォーマットが正しくありません";
-
 /* Default name for a device */
 "syncJoinChainCameraWarning" = "この操作を行うと、パスワードを含むBraveのデータが、このQRコードを生成したデバイスと共有されます。このQRコードがあなたの所有するデバイスによって生成されたものであることを再確認してください。続行してよろしいですか？";
 
@@ -2778,9 +2778,6 @@
 
 /* Title for pairing sync device */
 "syncJoinChainWarningTitle" = "警告";
-
-/* Sync Error Description */
-"syncNewerVersionError" = "この同期コードは、別のデバイスで新バージョンのBraveにより生成されています。すべての同期済みデバイスでBraveをアップデートしてからもう一度お試しください。";
 
 /* No internet connection alert body. */
 "SyncNoConnectionBody" = "インターネット接続をチェックしてもう一度やり直してください。";
@@ -2848,6 +2845,9 @@
 /* No comment provided by engineer. */
 "SyncUnsuccessful" = "失敗";
 
+/* Sync Error Description */
+"syncValidForTooLongError" = "このコードは無効です。お使いの端末の時刻とタイムゾーンが正しく設定されていることをご確認ください。";
+
 /* Accessibility label for action denoting closing a tab in tab list (tray) */
 "TabAccessibilityCloseActionLabel" = "閉じる";
 
@@ -2901,6 +2901,9 @@
 
 /* Accessibility Label for the tab toolbar Stop button */
 "TabToolbarStopButtonAccessibilityLabel" = "停止";
+
+/* Accessibility label for the lock icon, which is only present if the connection is insecure */
+"TabToolbarWarningImageAccessibilityLabel" = "保護されていない接続";
 
 /* Accessibility label for the Tabs Tray view. */
 "TabTrayAccessibilityLabel" = "タブトレイ";
@@ -3115,6 +3118,9 @@
 /* Accessibility label for address and search field, both words (Address, Search) are therefore nouns. */
 "URLBarViewLocationTextViewAccessibilityLabel" = "アドレスと検索";
 
+/* Setting title for option to automatically redirect a url to another url */
+"urlRedirectsSettings" = "ウェブサイトのリダイレクト";
+
 /* Error message if the payment workflow is canceled by the user */
 "userCancelledMessage" = "ユーザが購入をキャンセルしました";
 
@@ -3211,14 +3217,16 @@
 /* Network Type field for customer support contact form. */
 "vpn.contactFormNetworkType" = "ネットワークタイプ";
 
+/* A contact form field that displays platform type: 'iOS' 'Android' or 'Desktop' */
+"vpn.contactFormPlatform" = "プラットフォーム";
+
 /* Button name to send contact form. */
 "vpn.contactFormSendButton" = "メールを送る";
 
 /* Subscription Type field for customer support contact form. */
 "vpn.contactFormSubscriptionType" = "購読タイプ";
 
-/* A contact form field that displays platform type: 'iOS' 'Android' or 'Desktop'
-   iOS Timezone field for customer support contact form. */
+/* iOS Timezone field for customer support contact form. */
 "vpn.contactFormTimezone" = "タイムゾーン";
 
 /* Title for contact form email. */

@@ -127,9 +127,6 @@
 /* The message displayed on the crypto tab if you have not yet completed the backup process */
 "wallet.backupWalletWarningMessage" = "지금 월렛을 백업하여 암호화폐 자산을 보호하고 액세스를 잃어버리지 마세요.";
 
-/* Appended to 'Wallet' so that it appears as 'Wallet (Beta)' in the app menu. Describing 'beta' software */
-"wallet.betaLabel" = "베타";
-
 /* The button title that enables the biometric unlock feature */
 "wallet.biometricsSetupEnableButtonTitle" = "활성화";
 
@@ -172,6 +169,28 @@
 /* A disclaimer that appears at the bottom of an asset detail screen which shows prices and price history. CoinGecko is a third-party product. */
 "wallet.coinGeckoDisclaimer" = "코인게코에서 가격 데이터 제공";
 
+/* A description for Ethereum coin type.
+   One of the coin types for users to create an account in Ethereum mainnet or any EVM networks. */
+"wallet.coinTypeEthereum" = "이더리움";
+
+/* One of the coin types for users to create an account to store FIL assets */
+"wallet.coinTypeFilecoin" = "파일코인";
+
+/* A description for Filecoin coin type. */
+"wallet.coinTypeFilecoinDescription" = "FIL 자산 저장";
+
+/* A header displayed above coin types selection. */
+"wallet.coinTypeSelectionHeader" = "다음 계정 유형 중 하나 선택";
+
+/* One of the coin types for users to create an account with in Solana network */
+"wallet.coinTypeSolana" = "Solana";
+
+/* A description for Solana coin type. */
+"wallet.coinTypeSolanaDescription" = "솔라나 블록체인에 SPL 호환 자산 지원";
+
+/* A placeholder for unknown coin type. */
+"wallet.coinTypeUnknown" = "알 수 없음";
+
 /* 1. A button title to confirm a transaction. It is shown below details about a given transaction. 2. A button title to confirm to grant permission of a dapp connect request. It is displayed at the bottom of last step to grant permission in new site connection screen. */
 "wallet.confirm" = "확인";
 
@@ -213,6 +232,12 @@
 
 /* A button title that when tapped will copy some data to the users clipboard */
 "wallet.copyToPasteboard" = "복사";
+
+/* The message of the alert shown when a user switches to a network they do not have an account for yet. */
+"wallet.createAccountAlertMessage" = "지금 만들까요?";
+
+/* The title of the alert shown when a user switches to a network they do not have an account for yet. '%@' will be replaced with a network name such as 'Solana' or 'Filecoin'. */
+"wallet.createAccountAlertTitle" = "%@ 계정이 없음";
 
 /* The title that will be displayed when long-pressing the back button in the navigation bar. As to make up a new password to create a wallet */
 "wallet.createWalletBackButtonTitle" = "비밀번호 만들기";
@@ -286,6 +311,9 @@
 /* The title displayed on the add custom token screen */
 "wallet.customTokenTitle" = "맞춤";
 
+/* The title of the notification which will prompt at the top of the browser when users are visiting web3 site that is not yet connected with Brave Wallet. The '%@' will be the site attempting to connect. For example: \"app.uniswap.org wants to interact with Brave Wallet\" */
+"wallet.dappsConnectionNotificationOriginTitle" = "%@이(가) Brave 월렛과 상호작용하려고 함";
+
 /* The title of the notification which will prompt at the top of the browser when users are visiting web3 site that is not yet connected with Brave Wallet. */
 "wallet.dappsConnectionNotificationTitle" = "이 페이지가 Brave 월렛과 상호작용하려고 함";
 
@@ -345,12 +373,6 @@
 
 /* A title of the view shown over a dapps website that requests the user decrypt a message. */
 "wallet.decryptRequestTitle" = "해독 요청";
-
-/* The default account name when adding a primary account and not entering a custom name. '%lld' refers to a number (for example \"Account 3\") */
-"wallet.defaultAccountName" = "계정 %lld";
-
-/* The default account name when adding a secondary account and not entering a custom name. '%lld' refers to a number (for example \"Secondary Account 3\") */
-"wallet.defaultSecondaryAccountName" = "보조 계정 %lld";
 
 /* The title of the option inside the context menu for custom asset row in edit user asset screen. Or the title of the option inside the context menu for custom network row which is not being currently selected in networks list screen. */
 "wallet.delete" = "삭제";
@@ -822,6 +844,9 @@
 
 /* A button title that will make a private key visible on the screen */
 "wallet.showPrivateKeyButtonTitle" = "비공개 키 표시";
+
+/* A label beside the toggle for showing / hiding test networks in the Networks screen of Wallet settings */
+"wallet.showTestNetworksTitle" = "테스트 네트워크 표시";
 
 /* The title of the button used to sign a message request on the signature request view. */
 "wallet.sign" = "서명";

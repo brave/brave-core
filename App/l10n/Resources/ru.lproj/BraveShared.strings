@@ -856,8 +856,8 @@
 /* Error message if details don't have the right type or values */
 "invalidDetailsMessage" = "Неверный формат платежных данных";
 
-/* Sync Alert */
-"InvalidSyncCodeDescription" = "Недействительный код синхронизации";
+/* Generic error message for when the sync code is invalid */
+"InvalidSyncCodeDescription" = "Неверный код синхронизации. Проверьте и попробуйте еще раз.";
 
 /* History tableview section header */
 "LastMonth" = "За месяц";
@@ -1003,11 +1003,14 @@
 /* The information title displayed when there is no search reault found */
 "noSearchResultsfound" = "Нет результатов";
 
-/* Sync Alert */
+/* Error message for when the sync code does not have the correct amount of words */
 "NotEnoughWordsDescription" = "Введите все слова и повторите попытку.";
 
-/* Sync Alert */
+/* Error title for when the sync code does not have the correct amount of words */
 "NotEnoughWordsTitle" = "Вы ввели не все слова";
+
+/* Setting title for option to automatically redirect a url to another url */
+"nprRedirectFooter" = "Для ссылок на NPR автоматически открывать текстовую версию сайта (text.npr.org).";
 
 /* Bookmark title for Brave Support */
 "ntp.braveSupportFavoriteTitle" = "Служба поддержки Brave";
@@ -1879,6 +1882,9 @@
 /* Recent Search suggestions title when prompting to turn on suggestions */
 "RecentSearchSuggestionsTitle" = "Подсказки при поиске";
 
+/* Setting title for option to automatically redirect a url to another url */
+"redditRedirectFooter" = "Для ссылок на Reddit автоматически открывать старую версию сайта (old.reddit.com). Новый интерфейс доступен через URL с new.reddit.com.";
+
 /* Action button for removing sync device. */
 "RemoveDevice" = "Удалить";
 
@@ -2743,16 +2749,16 @@
 /* Computer device button title */
 "SyncComputerDevice" = "Компьютер";
 
+/* Sync Error Description */
+"syncDeprecatedVersionError" = "Код синхронизации сгенерирован на устройстве с устаревшей версией браузера Brave. Обновите Brave на всех синхронизированных устройствах и повторите попытку.";
+
 /* Sync you browser settings across devices. */
 "SyncDevices" = "Устройства и настройки";
 
-/* Sync Error Description */
-"syncExpiredError" = "Срок действия закончился.";
+/* Sync Error message for when the sync code is expired */
+"syncExpiredError" = "Срок действия кода закончился. Сгенерируйте новый код синхронизации и повторите попытку.";
 
-/* Sync Error Description */
-"syncFutureVersionError" = "Новая версия не поддерживается.";
-
-/* Sync Error Description */
+/* Generic Sync Error Description */
 "syncGenericError" = "Произошла ошибка.";
 
 /* Folder name for where bookmarks are imported into when the root folder is not empty. */
@@ -2764,12 +2770,6 @@
 /* Title for sync initialization error alert */
 "SyncInitErrorTitle" = "Ошибка связи";
 
-/* Sync Error Description */
-"syncInsecureVersionError" = "Код синхронизации сгенерирован на устройстве с устаревшей версией браузера Brave. Обновите Brave на всех синхронизированных устройствах и повторите попытку.";
-
-/* Sync Error Description */
-"syncInvalidVersionError" = "Недопустимый формат.";
-
 /* Default name for a device */
 "syncJoinChainCameraWarning" = "Устройство, на котором был сгенерирован этот QR-код, получит доступ к данным браузера Brave, включая ваши пароли. Убедитесь, что оно принадлежит вам. Продолжить?";
 
@@ -2778,9 +2778,6 @@
 
 /* Title for pairing sync device */
 "syncJoinChainWarningTitle" = "Внимание!";
-
-/* Sync Error Description */
-"syncNewerVersionError" = "Код синхронизации сгенерирован на устройстве с более новой версией браузера Brave. Обновите Brave на всех синхронизированных устройствах и повторите попытку.";
 
 /* No internet connection alert body. */
 "SyncNoConnectionBody" = "Проверьте подключение к интернету и повторите попытку.";
@@ -2848,6 +2845,9 @@
 /* No comment provided by engineer. */
 "SyncUnsuccessful" = "Произошла ошибка";
 
+/* Sync Error Description */
+"syncValidForTooLongError" = "Невозможно применить код. Проверьте, правильно ли указаны время и часовой пояс на вашем устройстве.";
+
 /* Accessibility label for action denoting closing a tab in tab list (tray) */
 "TabAccessibilityCloseActionLabel" = "Закрыть";
 
@@ -2901,6 +2901,9 @@
 
 /* Accessibility Label for the tab toolbar Stop button */
 "TabToolbarStopButtonAccessibilityLabel" = "Остановить";
+
+/* Accessibility label for the lock icon, which is only present if the connection is insecure */
+"TabToolbarWarningImageAccessibilityLabel" = "Соединение не защищено";
 
 /* Accessibility label for the Tabs Tray view. */
 "TabTrayAccessibilityLabel" = "Панель вкладок";
@@ -3115,6 +3118,9 @@
 /* Accessibility label for address and search field, both words (Address, Search) are therefore nouns. */
 "URLBarViewLocationTextViewAccessibilityLabel" = "Адрес и поиск";
 
+/* Setting title for option to automatically redirect a url to another url */
+"urlRedirectsSettings" = "Переадресация";
+
 /* Error message if the payment workflow is canceled by the user */
 "userCancelledMessage" = "Отменено пользователем.";
 
@@ -3211,14 +3217,16 @@
 /* Network Type field for customer support contact form. */
 "vpn.contactFormNetworkType" = "Тип сети";
 
+/* A contact form field that displays platform type: 'iOS' 'Android' or 'Desktop' */
+"vpn.contactFormPlatform" = "Платформа";
+
 /* Button name to send contact form. */
 "vpn.contactFormSendButton" = "Отправить";
 
 /* Subscription Type field for customer support contact form. */
 "vpn.contactFormSubscriptionType" = "Тип подписки";
 
-/* A contact form field that displays platform type: 'iOS' 'Android' or 'Desktop'
-   iOS Timezone field for customer support contact form. */
+/* iOS Timezone field for customer support contact form. */
 "vpn.contactFormTimezone" = "Часовой пояс iOS";
 
 /* Title for contact form email. */

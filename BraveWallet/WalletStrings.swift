@@ -2550,7 +2550,7 @@ extension Strings {
       comment: "One of the coin types for users to create an account to store FIL assets"
     )
     public static let coinTypeEthereumDescription = NSLocalizedString(
-      "wallet.coinTypeEthereum",
+      "wallet.coinTypeEthereumDescription",
       tableName: "BraveWallet",
       bundle: .strings,
       value: "Supports EVM compatible assets on the Ethereum blockchain (ERC-20, ERC-721, ERC-1551, ERC-1155)",
