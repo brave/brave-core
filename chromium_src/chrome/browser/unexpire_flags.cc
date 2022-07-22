@@ -6,6 +6,7 @@
 #include "base/strings/string_util.h"
 #include "brave/browser/brave_features_internal_names.h"
 #include "brave/components/brave_vpn/buildflags/buildflags.h"
+#include "brave/components/playlist/buildflags/buildflags.h"
 #include "chrome/common/channel_info.h"
 #include "components/version_info/version_info.h"
 
@@ -17,12 +18,25 @@ namespace flags {
 
 bool IsFlagExpired(const flags_ui::FlagsStorage* storage,
                    const char* internal_name) {
-#if BUILDFLAG(ENABLE_BRAVE_VPN)
+#if BUILDFLAG(ENABLE_BRAVE_VPN) || BUILDFLAG(ENABLE_PLAYLIST)
   version_info::Channel channel = chrome::GetChannel();
-  // Enable VPN feature only for nightly/development.
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+  // Enable VPN feature except stable.
   if (base::EqualsCaseInsensitiveASCII(kBraveVPNFeatureInternalName,
                                        internal_name) &&
       channel == version_info::Channel::STABLE) {
+    return true;
+  }
+#endif
+
+#if BUILDFLAG(ENABLE_PLAYLIST)
+  // Enable playlist feature only for nightly/development.
+  if (base::EqualsCaseInsensitiveASCII(kPlaylistFeatureInternalName,
+                                       internal_name) &&
+      (channel == version_info::Channel::STABLE ||
+       channel == version_info::Channel::BETA)) {
     return true;
   }
 #endif
