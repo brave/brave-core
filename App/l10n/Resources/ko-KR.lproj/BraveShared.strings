@@ -856,8 +856,8 @@
 /* Error message if details don't have the right type or values */
 "invalidDetailsMessage" = "결제 요청 내 세부정보가 유효하지 않음";
 
-/* Sync Alert */
-"InvalidSyncCodeDescription" = "유효하지 않은 동기화 코드";
+/* Generic error message for when the sync code is invalid */
+"InvalidSyncCodeDescription" = "잘못된 동기화 코드입니다. 확인하고 다시 시도하세요.";
 
 /* History tableview section header */
 "LastMonth" = "지난달";
@@ -1003,11 +1003,14 @@
 /* The information title displayed when there is no search reault found */
 "noSearchResultsfound" = "검색 결과가 없습니다.";
 
-/* Sync Alert */
+/* Error message for when the sync code does not have the correct amount of words */
 "NotEnoughWordsDescription" = "모든 단어를 입력한 후 다시 시도하십시오.";
 
-/* Sync Alert */
+/* Error title for when the sync code does not have the correct amount of words */
 "NotEnoughWordsTitle" = "단어가 충분하지 않음";
+
+/* Setting title for option to automatically redirect a url to another url */
+"nprRedirectFooter" = "NPR 링크를 텍스트 기반 버전(text.npr.org)으로 자동 리디렉션합니다.";
 
 /* Bookmark title for Brave Support */
 "ntp.braveSupportFavoriteTitle" = "Brave 지원";
@@ -1879,6 +1882,9 @@
 /* Recent Search suggestions title when prompting to turn on suggestions */
 "RecentSearchSuggestionsTitle" = "추천 검색어";
 
+/* Setting title for option to automatically redirect a url to another url */
+"redditRedirectFooter" = "Reddit 링크를 기존 인터페이스(old.reddit.com)로 자동 리디렉션합니다. 무시하고 새 Reddit 인터페이스를 이용하려면 new.reddit.com 주소를 사용하세요.";
+
 /* Action button for removing sync device. */
 "RemoveDevice" = "제거";
 
@@ -2743,16 +2749,16 @@
 /* Computer device button title */
 "SyncComputerDevice" = "컴퓨터";
 
+/* Sync Error Description */
+"syncDeprecatedVersionError" = "이 동기화 코드는 다른 기기에서 구버전 Brava로 생성되었습니다. 모든 동기화된 기기에서 Brave를 업데이트하고 다시 시도하세요.";
+
 /* Sync you browser settings across devices. */
 "SyncDevices" = "기기 및 설정";
 
-/* Sync Error Description */
-"syncExpiredError" = "만료됨";
+/* Sync Error message for when the sync code is expired */
+"syncExpiredError" = "동기화 코드가 만료되었습니다. 새 코드를 생성하고 다시 시도하세요.";
 
-/* Sync Error Description */
-"syncFutureVersionError" = "버전이 더 높음";
-
-/* Sync Error Description */
+/* Generic Sync Error Description */
 "syncGenericError" = "문제가 발생했습니다.";
 
 /* Folder name for where bookmarks are imported into when the root folder is not empty. */
@@ -2764,12 +2770,6 @@
 /* Title for sync initialization error alert */
 "SyncInitErrorTitle" = "동기화 통신 오류";
 
-/* Sync Error Description */
-"syncInsecureVersionError" = "이 동기화 코드는 다른 기기에서 구버전 Brava로 생성되었습니다. 모든 동기화된 기기에서 Brave를 업데이트하고 다시 시도하세요.";
-
-/* Sync Error Description */
-"syncInvalidVersionError" = "유효하지 않은 형식";
-
 /* Default name for a device */
 "syncJoinChainCameraWarning" = "이러한 QR 코드를 생성하는 디바이스에 비밀번호 등, 귀하의 Brave 데이터가 공유됩니다. 본인이 소유한 디바이스에서 생성된 QR 코드인지 주의하여 확인하시기 바랍니다. 계속하시겠습니까?";
 
@@ -2778,9 +2778,6 @@
 
 /* Title for pairing sync device */
 "syncJoinChainWarningTitle" = "경고";
-
-/* Sync Error Description */
-"syncNewerVersionError" = "이 동기화 코드는 다른 기기에서 더 최신 버전의 Brava로 생성되었습니다. 모든 동기화된 기기에서 Brave를 업데이트하고 다시 시도하세요.";
 
 /* No internet connection alert body. */
 "SyncNoConnectionBody" = "인터넷 연결을 확인한 후 다시 시도하십시오.";
@@ -2848,6 +2845,9 @@
 /* No comment provided by engineer. */
 "SyncUnsuccessful" = "실패";
 
+/* Sync Error Description */
+"syncValidForTooLongError" = "유효하지 않은 코드입니다. 디바이스에 시간과 시간대가 제대로 설정되어 있는지 확인하세요.";
+
 /* Accessibility label for action denoting closing a tab in tab list (tray) */
 "TabAccessibilityCloseActionLabel" = "닫기";
 
@@ -2901,6 +2901,9 @@
 
 /* Accessibility Label for the tab toolbar Stop button */
 "TabToolbarStopButtonAccessibilityLabel" = "중지";
+
+/* Accessibility label for the lock icon, which is only present if the connection is insecure */
+"TabToolbarWarningImageAccessibilityLabel" = "비보안 연결";
 
 /* Accessibility label for the Tabs Tray view. */
 "TabTrayAccessibilityLabel" = "탭 트레이";
@@ -3115,6 +3118,9 @@
 /* Accessibility label for address and search field, both words (Address, Search) are therefore nouns. */
 "URLBarViewLocationTextViewAccessibilityLabel" = "주소 및 검색";
 
+/* Setting title for option to automatically redirect a url to another url */
+"urlRedirectsSettings" = "웹사이트 리디렉션";
+
 /* Error message if the payment workflow is canceled by the user */
 "userCancelledMessage" = "사용자가 취소함";
 
@@ -3211,14 +3217,16 @@
 /* Network Type field for customer support contact form. */
 "vpn.contactFormNetworkType" = "네트워크 유형";
 
+/* A contact form field that displays platform type: 'iOS' 'Android' or 'Desktop' */
+"vpn.contactFormPlatform" = "플랫폼";
+
 /* Button name to send contact form. */
 "vpn.contactFormSendButton" = "이메일로 계속";
 
 /* Subscription Type field for customer support contact form. */
 "vpn.contactFormSubscriptionType" = "구독 유형";
 
-/* A contact form field that displays platform type: 'iOS' 'Android' or 'Desktop'
-   iOS Timezone field for customer support contact form. */
+/* iOS Timezone field for customer support contact form. */
 "vpn.contactFormTimezone" = "iOS 시간대";
 
 /* Title for contact form email. */

@@ -856,8 +856,8 @@
 /* Error message if details don't have the right type or values */
 "invalidDetailsMessage" = "Butiran tidak sah dalam permintaan pembayaran";
 
-/* Sync Alert */
-"InvalidSyncCodeDescription" = "Kod Segerak Tidak Sah";
+/* Generic error message for when the sync code is invalid */
+"InvalidSyncCodeDescription" = "Kod segerakan salah, sila semak dan cuba lagi.";
 
 /* History tableview section header */
 "LastMonth" = "Bulan lepas";
@@ -1003,11 +1003,14 @@
 /* The information title displayed when there is no search reault found */
 "noSearchResultsfound" = "Hasil carian tidak ditemukan.";
 
-/* Sync Alert */
+/* Error message for when the sync code does not have the correct amount of words */
 "NotEnoughWordsDescription" = "Sila masukkan semua perkataan dan cuba lagi.";
 
-/* Sync Alert */
+/* Error title for when the sync code does not have the correct amount of words */
 "NotEnoughWordsTitle" = "Perkataan Tidak Cukup";
+
+/* Setting title for option to automatically redirect a url to another url */
+"nprRedirectFooter" = "Mengubah hala pautan NPR secara automatik kepada versi berasaskan teks mereka (di text.npr.org).";
 
 /* Bookmark title for Brave Support */
 "ntp.braveSupportFavoriteTitle" = "Sokongan Brave";
@@ -1879,6 +1882,9 @@
 /* Recent Search suggestions title when prompting to turn on suggestions */
 "RecentSearchSuggestionsTitle" = "Cadangan Carian";
 
+/* Setting title for option to automatically redirect a url to another url */
+"redditRedirectFooter" = "Mengubah hala pautan Reddit secara automatik kepada antara muka lama (di old.reddit.com). Untuk memaksa penggunaan antara muka Reddit yang baharu, gunakan new.reddit.com sebagai ganti.";
+
 /* Action button for removing sync device. */
 "RemoveDevice" = "Alih Keluar";
 
@@ -2743,16 +2749,16 @@
 /* Computer device button title */
 "SyncComputerDevice" = "Komputer";
 
+/* Sync Error Description */
+"syncDeprecatedVersionError" = "Kod segerak ini dijana oleh versi Brave yang sudah lapuk pada peranti lain. Sila kemas kini Brave pada semua peranti yang disegerakkan dan cuba lagi.";
+
 /* Sync you browser settings across devices. */
 "SyncDevices" = "Peranti & Tetapan";
 
-/* Sync Error Description */
-"syncExpiredError" = "Tamat Tempoh";
+/* Sync Error message for when the sync code is expired */
+"syncExpiredError" = "Kod segerak ini sudah tamat tempoh, sila jana kod segerak yang baharu dan cuba lagi.";
 
-/* Sync Error Description */
-"syncFutureVersionError" = "Terlalu Baru";
-
-/* Sync Error Description */
+/* Generic Sync Error Description */
 "syncGenericError" = "Maaf, ada kesilapan berlaku";
 
 /* Folder name for where bookmarks are imported into when the root folder is not empty. */
@@ -2764,12 +2770,6 @@
 /* Title for sync initialization error alert */
 "SyncInitErrorTitle" = "Ralat Komunikasi Segerak";
 
-/* Sync Error Description */
-"syncInsecureVersionError" = "Kod segerak ini dijana oleh versi Brave yang sudah lapuk pada peranti lain. Sila kemas kini Brave pada semua peranti yang disegerakkan dan cuba lagi.";
-
-/* Sync Error Description */
-"syncInvalidVersionError" = "Format Tidak Sah";
-
 /* Default name for a device */
 "syncJoinChainCameraWarning" = "Langkah ini akan mengongsikan data Brave anda, termasuk kemungkinan kata laluan anda, dengan peranti yang menjana kod QR ini. Sila semak sekali lagi sama ada kod QR ini dijana oleh peranti milik anda. Betulkah anda mahu mengambil langkah ini?";
 
@@ -2778,9 +2778,6 @@
 
 /* Title for pairing sync device */
 "syncJoinChainWarningTitle" = "Amaran";
-
-/* Sync Error Description */
-"syncNewerVersionError" = "Kod segerak ini dijana oleh versi Brave yang terkini pada peranti lain. Sila kemas kini Brave pada semua peranti yang disegerakkan dan cuba lagi.";
 
 /* No internet connection alert body. */
 "SyncNoConnectionBody" = "Semak sambungan internet anda dan cuba lagi.";
@@ -2848,6 +2845,9 @@
 /* No comment provided by engineer. */
 "SyncUnsuccessful" = "Tidak berjaya";
 
+/* Sync Error Description */
+"syncValidForTooLongError" = "Kod ini tidak sah. Sila periksa bahawa masa dan zon masa ditetapkan dengan betul pada peranti anda.";
+
 /* Accessibility label for action denoting closing a tab in tab list (tray) */
 "TabAccessibilityCloseActionLabel" = "Tutup";
 
@@ -2901,6 +2901,9 @@
 
 /* Accessibility Label for the tab toolbar Stop button */
 "TabToolbarStopButtonAccessibilityLabel" = "Berhenti";
+
+/* Accessibility label for the lock icon, which is only present if the connection is insecure */
+"TabToolbarWarningImageAccessibilityLabel" = "Sambungan tidak selamat";
 
 /* Accessibility label for the Tabs Tray view. */
 "TabTrayAccessibilityLabel" = "Talam Tab";
@@ -3115,6 +3118,9 @@
 /* Accessibility label for address and search field, both words (Address, Search) are therefore nouns. */
 "URLBarViewLocationTextViewAccessibilityLabel" = "Alamat dan Carian";
 
+/* Setting title for option to automatically redirect a url to another url */
+"urlRedirectsSettings" = "Ubah Hala Laman Web";
+
 /* Error message if the payment workflow is canceled by the user */
 "userCancelledMessage" = "Pengguna dibatalkan";
 
@@ -3211,14 +3217,16 @@
 /* Network Type field for customer support contact form. */
 "vpn.contactFormNetworkType" = "Jenis Rangkaian";
 
+/* A contact form field that displays platform type: 'iOS' 'Android' or 'Desktop' */
+"vpn.contactFormPlatform" = "Platform";
+
 /* Button name to send contact form. */
 "vpn.contactFormSendButton" = "Teruskan ke E-mel";
 
 /* Subscription Type field for customer support contact form. */
 "vpn.contactFormSubscriptionType" = "Jenis Langganan";
 
-/* A contact form field that displays platform type: 'iOS' 'Android' or 'Desktop'
-   iOS Timezone field for customer support contact form. */
+/* iOS Timezone field for customer support contact form. */
 "vpn.contactFormTimezone" = "Zon Masa iOS";
 
 /* Title for contact form email. */

@@ -856,8 +856,8 @@
 /* Error message if details don't have the right type or values */
 "invalidDetailsMessage" = "付款请求中的详细信息无效";
 
-/* Sync Alert */
-"InvalidSyncCodeDescription" = "同步代码无效";
+/* Generic error message for when the sync code is invalid */
+"InvalidSyncCodeDescription" = "同步代码无效，请检查并重试。";
 
 /* History tableview section header */
 "LastMonth" = "上个月";
@@ -1003,11 +1003,14 @@
 /* The information title displayed when there is no search reault found */
 "noSearchResultsfound" = "找不到搜索结果。";
 
-/* Sync Alert */
+/* Error message for when the sync code does not have the correct amount of words */
 "NotEnoughWordsDescription" = "输入所有文字并重试。";
 
-/* Sync Alert */
+/* Error title for when the sync code does not have the correct amount of words */
 "NotEnoughWordsTitle" = "字数不足";
+
+/* Setting title for option to automatically redirect a url to another url */
+"nprRedirectFooter" = "自动将 NPR 链接重定向到其基于文本的版本（位于 text.npr.org）。";
 
 /* Bookmark title for Brave Support */
 "ntp.braveSupportFavoriteTitle" = "Brave 支持";
@@ -1879,6 +1882,9 @@
 /* Recent Search suggestions title when prompting to turn on suggestions */
 "RecentSearchSuggestionsTitle" = "搜索建议";
 
+/* Setting title for option to automatically redirect a url to another url */
+"redditRedirectFooter" = "自动将 Reddit 链接重定向到旧界面（位于 old.reddit.com）。要强制使用新的 Reddit 界面，请改用 new.reddit.com。";
+
 /* Action button for removing sync device. */
 "RemoveDevice" = "移除";
 
@@ -2743,16 +2749,16 @@
 /* Computer device button title */
 "SyncComputerDevice" = "计算机";
 
+/* Sync Error Description */
+"syncDeprecatedVersionError" = "这是由其他设备上已过期版本的 Brave 生成的同步码。请在所有同步的设备上更新 Brave，然后重试。";
+
 /* Sync you browser settings across devices. */
 "SyncDevices" = "设备&设置";
 
-/* Sync Error Description */
-"syncExpiredError" = "已过期";
+/* Sync Error message for when the sync code is expired */
+"syncExpiredError" = "此同步码已过期，请生成一个新的同步码重试。";
 
-/* Sync Error Description */
-"syncFutureVersionError" = "太新";
-
-/* Sync Error Description */
+/* Generic Sync Error Description */
 "syncGenericError" = "抱歉，出错了";
 
 /* Folder name for where bookmarks are imported into when the root folder is not empty. */
@@ -2764,12 +2770,6 @@
 /* Title for sync initialization error alert */
 "SyncInitErrorTitle" = "同步通信错误";
 
-/* Sync Error Description */
-"syncInsecureVersionError" = "这是由其他设备上已过期版本的 Brave 生成的同步码。请在所有同步的设备上更新 Brave，然后重试。";
-
-/* Sync Error Description */
-"syncInvalidVersionError" = "无效格式";
-
 /* Default name for a device */
 "syncJoinChainCameraWarning" = "这样会与生成此二维码的设备分享您的 Brave 数据，可能包括您的密码。请再次确认此二维码是由您所拥有的设备生成的。确定要这么做吗？";
 
@@ -2778,9 +2778,6 @@
 
 /* Title for pairing sync device */
 "syncJoinChainWarningTitle" = "警告";
-
-/* Sync Error Description */
-"syncNewerVersionError" = "这是由其他设备上更新版本的 Brave 生成的同步码。请在所有同步的设备上更新 Brave，然后重试。";
 
 /* No internet connection alert body. */
 "SyncNoConnectionBody" = "检查您的网络连接并重试。";
@@ -2848,6 +2845,9 @@
 /* No comment provided by engineer. */
 "SyncUnsuccessful" = "未成功";
 
+/* Sync Error Description */
+"syncValidForTooLongError" = "此代码无效。请检查您设备上的时间和时区设置是否正确。";
+
 /* Accessibility label for action denoting closing a tab in tab list (tray) */
 "TabAccessibilityCloseActionLabel" = "关闭";
 
@@ -2901,6 +2901,9 @@
 
 /* Accessibility Label for the tab toolbar Stop button */
 "TabToolbarStopButtonAccessibilityLabel" = "停止";
+
+/* Accessibility label for the lock icon, which is only present if the connection is insecure */
+"TabToolbarWarningImageAccessibilityLabel" = "连接不安全";
 
 /* Accessibility label for the Tabs Tray view. */
 "TabTrayAccessibilityLabel" = "标签托盘";
@@ -3115,6 +3118,9 @@
 /* Accessibility label for address and search field, both words (Address, Search) are therefore nouns. */
 "URLBarViewLocationTextViewAccessibilityLabel" = "地址和搜索";
 
+/* Setting title for option to automatically redirect a url to another url */
+"urlRedirectsSettings" = "网站重定向";
+
 /* Error message if the payment workflow is canceled by the user */
 "userCancelledMessage" = "用户已取消";
 
@@ -3211,14 +3217,16 @@
 /* Network Type field for customer support contact form. */
 "vpn.contactFormNetworkType" = "网络类型";
 
+/* A contact form field that displays platform type: 'iOS' 'Android' or 'Desktop' */
+"vpn.contactFormPlatform" = "平台";
+
 /* Button name to send contact form. */
 "vpn.contactFormSendButton" = "继续发送电子邮件";
 
 /* Subscription Type field for customer support contact form. */
 "vpn.contactFormSubscriptionType" = "订阅类型";
 
-/* A contact form field that displays platform type: 'iOS' 'Android' or 'Desktop'
-   iOS Timezone field for customer support contact form. */
+/* iOS Timezone field for customer support contact form. */
 "vpn.contactFormTimezone" = "iOS 时区";
 
 /* Title for contact form email. */

@@ -856,8 +856,8 @@
 /* Error message if details don't have the right type or values */
 "invalidDetailsMessage" = "Nieprawidłowe dane w żądaniu płatności";
 
-/* Sync Alert */
-"InvalidSyncCodeDescription" = "Nieprawidłowy kod synchronizacji";
+/* Generic error message for when the sync code is invalid */
+"InvalidSyncCodeDescription" = "Kod synchronizacji jest nieprawidłowy. Sprawdź go i spróbuj ponownie.";
 
 /* History tableview section header */
 "LastMonth" = "W zeszłym miesiącu";
@@ -1003,11 +1003,14 @@
 /* The information title displayed when there is no search reault found */
 "noSearchResultsfound" = "Brak wyników wyszukiwania.";
 
-/* Sync Alert */
+/* Error message for when the sync code does not have the correct amount of words */
 "NotEnoughWordsDescription" = "Wprowadź wszystkie słowa i spróbuj ponownie";
 
-/* Sync Alert */
+/* Error title for when the sync code does not have the correct amount of words */
 "NotEnoughWordsTitle" = "Niewystarczająca liczba słów";
+
+/* Setting title for option to automatically redirect a url to another url */
+"nprRedirectFooter" = "Automatyczne przekierowanie linków NPR do ich wersji tekstowej (pod adresem text.npr.org).";
 
 /* Bookmark title for Brave Support */
 "ntp.braveSupportFavoriteTitle" = "Wsparcie Brave";
@@ -1879,6 +1882,9 @@
 /* Recent Search suggestions title when prompting to turn on suggestions */
 "RecentSearchSuggestionsTitle" = "Sugestie wyszukiwania";
 
+/* Setting title for option to automatically redirect a url to another url */
+"redditRedirectFooter" = "Automatyczne przekierowanie linków Reddit do starszego interfejsu (pod adresem old.reddit.com). Aby wymusić wyświetlenie nowego interfejsu Reddit, użyj zamiast tego new.reddit.com.";
+
 /* Action button for removing sync device. */
 "RemoveDevice" = "Usuń";
 
@@ -2743,16 +2749,16 @@
 /* Computer device button title */
 "SyncComputerDevice" = "Komputer";
 
+/* Sync Error Description */
+"syncDeprecatedVersionError" = "Ten kod synchronizacji został utworzony przez starszą wersję Brave na innym urządzeniu. Zaktualizuj swoje przeglądarki Brave na wszystkich urządzeniach i spróbuj ponownie.";
+
 /* Sync you browser settings across devices. */
 "SyncDevices" = "Urządzenia i ustawienia";
 
-/* Sync Error Description */
-"syncExpiredError" = "Wygasł";
+/* Sync Error message for when the sync code is expired */
+"syncExpiredError" = "Ten kod synchronizacji wygasł. Wygeneruj nowy kod synchronizacji i spróbuj ponownie.";
 
-/* Sync Error Description */
-"syncFutureVersionError" = "Zbyt nowe";
-
-/* Sync Error Description */
+/* Generic Sync Error Description */
 "syncGenericError" = "Przepraszamy, coś poszło nie tak";
 
 /* Folder name for where bookmarks are imported into when the root folder is not empty. */
@@ -2764,12 +2770,6 @@
 /* Title for sync initialization error alert */
 "SyncInitErrorTitle" = "Błąd komunikacji z synchronizacją";
 
-/* Sync Error Description */
-"syncInsecureVersionError" = "Ten kod synchronizacji został utworzony przez starszą wersję Brave na innym urządzeniu. Zaktualizuj swoje przeglądarki Brave na wszystkich urządzeniach i spróbuj ponownie.";
-
-/* Sync Error Description */
-"syncInvalidVersionError" = "Nieprawidłowy format";
-
 /* Default name for a device */
 "syncJoinChainCameraWarning" = "Twoje dane przeglądarki Brave, w tym hasła, zostaną udostępnione urządzeniu, które wygenerowało ten kod QR. Upewnij się, że kod QR został wygenerowany przez Twoje urządzenie. Czy na pewno chcesz kontynuować?";
 
@@ -2778,9 +2778,6 @@
 
 /* Title for pairing sync device */
 "syncJoinChainWarningTitle" = "Ostrzeżenie";
-
-/* Sync Error Description */
-"syncNewerVersionError" = "Ten kod synchronizacji został utworzony przez nowszą wersję Brave na innym urządzeniu. Zaktualizuj swoje przeglądarki Brave na wszystkich urządzeniach i spróbuj ponownie.";
 
 /* No internet connection alert body. */
 "SyncNoConnectionBody" = "Sprawdź połączenie internetowe i spróbuj ponownie.";
@@ -2848,6 +2845,9 @@
 /* No comment provided by engineer. */
 "SyncUnsuccessful" = "Nie udało się";
 
+/* Sync Error Description */
+"syncValidForTooLongError" = "Ten kod jest nieprawidłowy. Sprawdź, czy godzina i strefa czasowa są skonfigurowane prawidłowo na Twoim urządzeniu.";
+
 /* Accessibility label for action denoting closing a tab in tab list (tray) */
 "TabAccessibilityCloseActionLabel" = "Zamknij ";
 
@@ -2901,6 +2901,9 @@
 
 /* Accessibility Label for the tab toolbar Stop button */
 "TabToolbarStopButtonAccessibilityLabel" = "Zatrzymaj";
+
+/* Accessibility label for the lock icon, which is only present if the connection is insecure */
+"TabToolbarWarningImageAccessibilityLabel" = "Niezabezpieczone połączenie";
 
 /* Accessibility label for the Tabs Tray view. */
 "TabTrayAccessibilityLabel" = "Pasek kart";
@@ -3115,6 +3118,9 @@
 /* Accessibility label for address and search field, both words (Address, Search) are therefore nouns. */
 "URLBarViewLocationTextViewAccessibilityLabel" = "Adres i wyszukiwanie";
 
+/* Setting title for option to automatically redirect a url to another url */
+"urlRedirectsSettings" = "Przekierowanie strony";
+
 /* Error message if the payment workflow is canceled by the user */
 "userCancelledMessage" = "Anulowane przez użytkownika";
 
@@ -3211,14 +3217,16 @@
 /* Network Type field for customer support contact form. */
 "vpn.contactFormNetworkType" = "Typ sieci";
 
+/* A contact form field that displays platform type: 'iOS' 'Android' or 'Desktop' */
+"vpn.contactFormPlatform" = "Platforma";
+
 /* Button name to send contact form. */
 "vpn.contactFormSendButton" = "Przejdź do adresu e-mail";
 
 /* Subscription Type field for customer support contact form. */
 "vpn.contactFormSubscriptionType" = "Typ subskrypcji";
 
-/* A contact form field that displays platform type: 'iOS' 'Android' or 'Desktop'
-   iOS Timezone field for customer support contact form. */
+/* iOS Timezone field for customer support contact form. */
 "vpn.contactFormTimezone" = "Strefa czasowa iOS";
 
 /* Title for contact form email. */

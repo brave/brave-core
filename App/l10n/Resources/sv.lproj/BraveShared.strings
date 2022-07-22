@@ -856,8 +856,8 @@
 /* Error message if details don't have the right type or values */
 "invalidDetailsMessage" = "Ogiltiga uppgifter i betalningsbegäran";
 
-/* Sync Alert */
-"InvalidSyncCodeDescription" = "Ogiltig synkroniseringskod";
+/* Generic error message for when the sync code is invalid */
+"InvalidSyncCodeDescription" = "Ogiltig synkningskod, kontrollera och prova igen.";
 
 /* History tableview section header */
 "LastMonth" = "Förra månaden";
@@ -1003,11 +1003,14 @@
 /* The information title displayed when there is no search reault found */
 "noSearchResultsfound" = "Inga sökresultat.";
 
-/* Sync Alert */
+/* Error message for when the sync code does not have the correct amount of words */
 "NotEnoughWordsDescription" = "Ange alla ord och försök igen.";
 
-/* Sync Alert */
+/* Error title for when the sync code does not have the correct amount of words */
 "NotEnoughWordsTitle" = "För få ord";
+
+/* Setting title for option to automatically redirect a url to another url */
+"nprRedirectFooter" = "Omdirigerar automatiskt NPR-länkar till deras textbaserade version (på text.npr.org).";
 
 /* Bookmark title for Brave Support */
 "ntp.braveSupportFavoriteTitle" = "Brave Support";
@@ -1879,6 +1882,9 @@
 /* Recent Search suggestions title when prompting to turn on suggestions */
 "RecentSearchSuggestionsTitle" = "Sökförslag";
 
+/* Setting title for option to automatically redirect a url to another url */
+"redditRedirectFooter" = "Omdirigerar automatiskt Reddit-länkar till det äldre gränssnittet (vid old.reddit.com). För att tvinga det nya Reddit-gränssnittet, använd new.reddit.com istället.";
+
 /* Action button for removing sync device. */
 "RemoveDevice" = "Ta bort";
 
@@ -2743,16 +2749,16 @@
 /* Computer device button title */
 "SyncComputerDevice" = "Dator";
 
+/* Sync Error Description */
+"syncDeprecatedVersionError" = "Den här synkroniseringskoden genererades av en föråldrad version av Brave på en annan enhet. Uppdatera Brave på alla synkroniserade enheter och försök igen.";
+
 /* Sync you browser settings across devices. */
 "SyncDevices" = "Enheter och inställningar";
 
-/* Sync Error Description */
-"syncExpiredError" = "Utgången";
+/* Sync Error message for when the sync code is expired */
+"syncExpiredError" = "Den här synkroniseringskoden har upphört att gälla, generera en ny synkroniseringskod och försök igen.";
 
-/* Sync Error Description */
-"syncFutureVersionError" = "För ny";
-
-/* Sync Error Description */
+/* Generic Sync Error Description */
 "syncGenericError" = "Något gick fel";
 
 /* Folder name for where bookmarks are imported into when the root folder is not empty. */
@@ -2764,12 +2770,6 @@
 /* Title for sync initialization error alert */
 "SyncInitErrorTitle" = "Synkroniserings kommunikationsfel";
 
-/* Sync Error Description */
-"syncInsecureVersionError" = "Den här synkroniseringskoden genererades av en föråldrad version av Brave på en annan enhet. Uppdatera Brave på alla synkroniserade enheter och försök igen.";
-
-/* Sync Error Description */
-"syncInvalidVersionError" = "Ogiltigt format";
-
 /* Default name for a device */
 "syncJoinChainCameraWarning" = "Det här delar dina Brave-data, vilket kan innefatta dina lösenord, med enheten som genererade den här QR-koden. Kontrollera att QR-koden skapades av en enhet du äger. Är du säker på att du vill gå vidare?";
 
@@ -2778,9 +2778,6 @@
 
 /* Title for pairing sync device */
 "syncJoinChainWarningTitle" = "Varning";
-
-/* Sync Error Description */
-"syncNewerVersionError" = "Den här synkroniseringskoden genererades av en nyare version av Brave på en annan enhet. Uppdatera Brave på alla synkroniserade enheter och försök igen.";
 
 /* No internet connection alert body. */
 "SyncNoConnectionBody" = "Kontrollera din internetanslutning och försök igen.";
@@ -2848,6 +2845,9 @@
 /* No comment provided by engineer. */
 "SyncUnsuccessful" = "Det gick inte";
 
+/* Sync Error Description */
+"syncValidForTooLongError" = "Den här koden är ogiltig. Kontrollera att tid och tidszon är korrekt inställda på din enhet.";
+
 /* Accessibility label for action denoting closing a tab in tab list (tray) */
 "TabAccessibilityCloseActionLabel" = "Stäng";
 
@@ -2901,6 +2901,9 @@
 
 /* Accessibility Label for the tab toolbar Stop button */
 "TabToolbarStopButtonAccessibilityLabel" = "Stoppa";
+
+/* Accessibility label for the lock icon, which is only present if the connection is insecure */
+"TabToolbarWarningImageAccessibilityLabel" = "Osäker anslutning";
 
 /* Accessibility label for the Tabs Tray view. */
 "TabTrayAccessibilityLabel" = "Flikfack";
@@ -3115,6 +3118,9 @@
 /* Accessibility label for address and search field, both words (Address, Search) are therefore nouns. */
 "URLBarViewLocationTextViewAccessibilityLabel" = "Adress och Sök";
 
+/* Setting title for option to automatically redirect a url to another url */
+"urlRedirectsSettings" = "Omdirigering av webbplats";
+
 /* Error message if the payment workflow is canceled by the user */
 "userCancelledMessage" = "Användaren avbröt";
 
@@ -3211,14 +3217,16 @@
 /* Network Type field for customer support contact form. */
 "vpn.contactFormNetworkType" = "Nätverkstyp";
 
+/* A contact form field that displays platform type: 'iOS' 'Android' or 'Desktop' */
+"vpn.contactFormPlatform" = "Plattform";
+
 /* Button name to send contact form. */
 "vpn.contactFormSendButton" = "Fortsätt till e-post";
 
 /* Subscription Type field for customer support contact form. */
 "vpn.contactFormSubscriptionType" = "Prenumerationstyp";
 
-/* A contact form field that displays platform type: 'iOS' 'Android' or 'Desktop'
-   iOS Timezone field for customer support contact form. */
+/* iOS Timezone field for customer support contact form. */
 "vpn.contactFormTimezone" = "iOS tidszon";
 
 /* Title for contact form email. */

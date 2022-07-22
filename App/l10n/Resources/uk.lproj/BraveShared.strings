@@ -856,8 +856,8 @@
 /* Error message if details don't have the right type or values */
 "invalidDetailsMessage" = "Недійсні дані в запиті платежу";
 
-/* Sync Alert */
-"InvalidSyncCodeDescription" = "Неправильний код синхронізації";
+/* Generic error message for when the sync code is invalid */
+"InvalidSyncCodeDescription" = "Невірний код синхронізації. Будь ласка, перевірте його і спробуйте знову.";
 
 /* History tableview section header */
 "LastMonth" = "Останній місяць";
@@ -1003,11 +1003,14 @@
 /* The information title displayed when there is no search reault found */
 "noSearchResultsfound" = "Пошук не дав результатів.";
 
-/* Sync Alert */
+/* Error message for when the sync code does not have the correct amount of words */
 "NotEnoughWordsDescription" = "Введіть усі слова і спробуйте знову.";
 
-/* Sync Alert */
+/* Error title for when the sync code does not have the correct amount of words */
 "NotEnoughWordsTitle" = "Недостатньо слів";
+
+/* Setting title for option to automatically redirect a url to another url */
+"nprRedirectFooter" = "Автоматичне переспрямування посилань NPR на текстові версії (text.npr.org).";
 
 /* Bookmark title for Brave Support */
 "ntp.braveSupportFavoriteTitle" = "Служба підтримки Brave";
@@ -1879,6 +1882,9 @@
 /* Recent Search suggestions title when prompting to turn on suggestions */
 "RecentSearchSuggestionsTitle" = "Пошукові підказки";
 
+/* Setting title for option to automatically redirect a url to another url */
+"redditRedirectFooter" = "Автоматичне переспрямування посилань Reddit на старішу версію (old.reddit.com). Щоб перейти у нову версію інтерфейсу Reddit, використовуйте посилання new.reddit.com.";
+
 /* Action button for removing sync device. */
 "RemoveDevice" = "Видалити";
 
@@ -2743,16 +2749,16 @@
 /* Computer device button title */
 "SyncComputerDevice" = "Комп’ютер";
 
+/* Sync Error Description */
+"syncDeprecatedVersionError" = "Цей код синхронізації було створено в застарілій версії Brave на іншому пристрої. Оновіть Brave на всіх синхронізованих пристроях і повторіть спробу.";
+
 /* Sync you browser settings across devices. */
 "SyncDevices" = "Пристрої та налаштування";
 
-/* Sync Error Description */
-"syncExpiredError" = "Термін дії завершився";
+/* Sync Error message for when the sync code is expired */
+"syncExpiredError" = "Термін дії цього коду синхронізації минув. Згенеруйте новий код і повторіть спробу.";
 
-/* Sync Error Description */
-"syncFutureVersionError" = "Елемент зановий";
-
-/* Sync Error Description */
+/* Generic Sync Error Description */
 "syncGenericError" = "Сталася помилка";
 
 /* Folder name for where bookmarks are imported into when the root folder is not empty. */
@@ -2764,12 +2770,6 @@
 /* Title for sync initialization error alert */
 "SyncInitErrorTitle" = "Помилка зв’язку під час синхронізації";
 
-/* Sync Error Description */
-"syncInsecureVersionError" = "Цей код синхронізації було створено в застарілій версії Brave на іншому пристрої. Оновіть Brave на всіх синхронізованих пристроях і повторіть спробу.";
-
-/* Sync Error Description */
-"syncInvalidVersionError" = "Недійсний формат";
-
 /* Default name for a device */
 "syncJoinChainCameraWarning" = "Унаслідок цієї дії ваші дані Brave, зокрема паролі, стануть доступними для пристрою, на якому згенеровано QR-код. Переконайтеся, що QR-код було згенеровано саме на вашому пристрої. Дійсно виконати цю дію?";
 
@@ -2778,9 +2778,6 @@
 
 /* Title for pairing sync device */
 "syncJoinChainWarningTitle" = "Попередження";
-
-/* Sync Error Description */
-"syncNewerVersionError" = "Цей код синхронізації було створено в новішій версії Brave на іншому пристрої. Оновіть Brave на всіх синхронізованих пристроях і повторіть спробу.";
 
 /* No internet connection alert body. */
 "SyncNoConnectionBody" = "Перевірте з'єднання з інтернетом і спробуйте знову.";
@@ -2848,6 +2845,9 @@
 /* No comment provided by engineer. */
 "SyncUnsuccessful" = "Не вдалося";
 
+/* Sync Error Description */
+"syncValidForTooLongError" = "Цей код недійсний. Перевірте, чи правильно налаштовано час і часовий пояс на вашому пристрої.";
+
 /* Accessibility label for action denoting closing a tab in tab list (tray) */
 "TabAccessibilityCloseActionLabel" = "Закрити";
 
@@ -2901,6 +2901,9 @@
 
 /* Accessibility Label for the tab toolbar Stop button */
 "TabToolbarStopButtonAccessibilityLabel" = "Зупинити";
+
+/* Accessibility label for the lock icon, which is only present if the connection is insecure */
+"TabToolbarWarningImageAccessibilityLabel" = "Незахищене з’єднання";
 
 /* Accessibility label for the Tabs Tray view. */
 "TabTrayAccessibilityLabel" = "Лоток вкладок";
@@ -3115,6 +3118,9 @@
 /* Accessibility label for address and search field, both words (Address, Search) are therefore nouns. */
 "URLBarViewLocationTextViewAccessibilityLabel" = "Адреса і пошук";
 
+/* Setting title for option to automatically redirect a url to another url */
+"urlRedirectsSettings" = "Переспрямування на сторінки";
+
 /* Error message if the payment workflow is canceled by the user */
 "userCancelledMessage" = "Скасував користувач";
 
@@ -3211,14 +3217,16 @@
 /* Network Type field for customer support contact form. */
 "vpn.contactFormNetworkType" = "Тип мережі";
 
+/* A contact form field that displays platform type: 'iOS' 'Android' or 'Desktop' */
+"vpn.contactFormPlatform" = "Платформа";
+
 /* Button name to send contact form. */
 "vpn.contactFormSendButton" = "Надіслати на електронну пошту";
 
 /* Subscription Type field for customer support contact form. */
 "vpn.contactFormSubscriptionType" = "Тип підписки";
 
-/* A contact form field that displays platform type: 'iOS' 'Android' or 'Desktop'
-   iOS Timezone field for customer support contact form. */
+/* iOS Timezone field for customer support contact form. */
 "vpn.contactFormTimezone" = "Часовий пояс iOS";
 
 /* Title for contact form email. */

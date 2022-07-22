@@ -856,8 +856,8 @@
 /* Error message if details don't have the right type or values */
 "invalidDetailsMessage" = "Ödeme isteğinde geçersiz ayrıntılar";
 
-/* Sync Alert */
-"InvalidSyncCodeDescription" = "Geçersiz Eşitleme Kodu";
+/* Generic error message for when the sync code is invalid */
+"InvalidSyncCodeDescription" = "Eş zamanlama kodu geçersiz, lütfen kontrol edip tekrar deneyin.";
 
 /* History tableview section header */
 "LastMonth" = "Geçen ay";
@@ -1003,11 +1003,14 @@
 /* The information title displayed when there is no search reault found */
 "noSearchResultsfound" = "Arama sonucu bulunamadı.";
 
-/* Sync Alert */
+/* Error message for when the sync code does not have the correct amount of words */
 "NotEnoughWordsDescription" = "Lütfen tüm sözcükleri girin ve yeniden deneyin.";
 
-/* Sync Alert */
+/* Error title for when the sync code does not have the correct amount of words */
 "NotEnoughWordsTitle" = "Yeterli Sözcük Yok";
+
+/* Setting title for option to automatically redirect a url to another url */
+"nprRedirectFooter" = "NPR bağlantılarını otomatik olarak (text.npr.org adresindeki) metin tabanlı sürümlerine yönlendirir.";
 
 /* Bookmark title for Brave Support */
 "ntp.braveSupportFavoriteTitle" = "Brave Destek";
@@ -1879,6 +1882,9 @@
 /* Recent Search suggestions title when prompting to turn on suggestions */
 "RecentSearchSuggestionsTitle" = "Arama Önerileri";
 
+/* Setting title for option to automatically redirect a url to another url */
+"redditRedirectFooter" = "Reddit bağlantılarını otomatik olarak (old.reddit.com adresindeki) daha eski arayüze bağlar. Yeni Reddit arayüzünü kullanmak için, bunun yerine new.reddit.com adresini kullanın.";
+
 /* Action button for removing sync device. */
 "RemoveDevice" = "Kaldır";
 
@@ -2743,16 +2749,16 @@
 /* Computer device button title */
 "SyncComputerDevice" = "Bilgisayar";
 
+/* Sync Error Description */
+"syncDeprecatedVersionError" = "Bu senkronizasyon kodu, başka bir cihazda Brave'in eski bir sürümü tarafından oluşturuldu. Lütfen Brave'i tüm senkronize edilmiş cihazlarda güncelleyin ve tekrar deneyin.";
+
 /* Sync you browser settings across devices. */
 "SyncDevices" = "Aygıtlar ve Ayarlar";
 
-/* Sync Error Description */
-"syncExpiredError" = "Süresi Dolmuş";
+/* Sync Error message for when the sync code is expired */
+"syncExpiredError" = "Bu senkronizasyon kodunun süresi doldu, lütfen yeni bir senkronizasyon kodu oluşturup tekrar deneyin.";
 
-/* Sync Error Description */
-"syncFutureVersionError" = "Çok Yeni";
-
-/* Sync Error Description */
+/* Generic Sync Error Description */
 "syncGenericError" = "Üzgünüz, bir sorun oluştu";
 
 /* Folder name for where bookmarks are imported into when the root folder is not empty. */
@@ -2764,12 +2770,6 @@
 /* Title for sync initialization error alert */
 "SyncInitErrorTitle" = "Eşitleme iletişim hatası";
 
-/* Sync Error Description */
-"syncInsecureVersionError" = "Bu senkronizasyon kodu, başka bir cihazda Brave'in eski bir sürümü tarafından oluşturuldu. Lütfen Brave'i tüm senkronize edilmiş cihazlarda güncelleyin ve tekrar deneyin.";
-
-/* Sync Error Description */
-"syncInvalidVersionError" = "Geçersiz Biçim";
-
 /* Default name for a device */
 "syncJoinChainCameraWarning" = "Bu işlem, potansiyel olarak şifrelerinizi de içeren Brave verilerinizi bu QR kodunu oluşturmuş olan cihazla paylaşacaktır. Lütfen bu QR kodunun size ait bir cihaz tarafından oluşturulduğundan emin olun. Bunu yapmak istediğinizden emin misiniz?";
 
@@ -2778,9 +2778,6 @@
 
 /* Title for pairing sync device */
 "syncJoinChainWarningTitle" = "Uyarı";
-
-/* Sync Error Description */
-"syncNewerVersionError" = "Bu senkronizasyon kodu, başka bir cihazda Brave'in daha yeni bir sürümü tarafından oluşturuldu. Lütfen Brave'i tüm senkronize edilmiş cihazlarda güncelleyin ve tekrar deneyin.";
 
 /* No internet connection alert body. */
 "SyncNoConnectionBody" = "İnternet bağlantınızı kontrol edin ve yeniden deneyin.";
@@ -2848,6 +2845,9 @@
 /* No comment provided by engineer. */
 "SyncUnsuccessful" = "Başarısız";
 
+/* Sync Error Description */
+"syncValidForTooLongError" = "Bu kod geçersiz. Lütfen cihazınızdaki saatin ve saat diliminin doğru şekilde ayarlandığını teyit edin.";
+
 /* Accessibility label for action denoting closing a tab in tab list (tray) */
 "TabAccessibilityCloseActionLabel" = "Kapat";
 
@@ -2901,6 +2901,9 @@
 
 /* Accessibility Label for the tab toolbar Stop button */
 "TabToolbarStopButtonAccessibilityLabel" = "Dur";
+
+/* Accessibility label for the lock icon, which is only present if the connection is insecure */
+"TabToolbarWarningImageAccessibilityLabel" = "Güvensiz bağlantı";
 
 /* Accessibility label for the Tabs Tray view. */
 "TabTrayAccessibilityLabel" = "Sekme Tepsisi";
@@ -3115,6 +3118,9 @@
 /* Accessibility label for address and search field, both words (Address, Search) are therefore nouns. */
 "URLBarViewLocationTextViewAccessibilityLabel" = "Adres ve Arama";
 
+/* Setting title for option to automatically redirect a url to another url */
+"urlRedirectsSettings" = "Web Sitesi Yönlendirmeleri";
+
 /* Error message if the payment workflow is canceled by the user */
 "userCancelledMessage" = "Kullanıcı iptal etti";
 
@@ -3211,14 +3217,16 @@
 /* Network Type field for customer support contact form. */
 "vpn.contactFormNetworkType" = "Ağ Türü";
 
+/* A contact form field that displays platform type: 'iOS' 'Android' or 'Desktop' */
+"vpn.contactFormPlatform" = "Platform";
+
 /* Button name to send contact form. */
 "vpn.contactFormSendButton" = "E-postaya Devam Et";
 
 /* Subscription Type field for customer support contact form. */
 "vpn.contactFormSubscriptionType" = "Abonelik Türü";
 
-/* A contact form field that displays platform type: 'iOS' 'Android' or 'Desktop'
-   iOS Timezone field for customer support contact form. */
+/* iOS Timezone field for customer support contact form. */
 "vpn.contactFormTimezone" = "iOS Saat Dilimi";
 
 /* Title for contact form email. */

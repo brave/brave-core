@@ -127,9 +127,6 @@
 /* The message displayed on the crypto tab if you have not yet completed the backup process */
 "wallet.backupWalletWarningMessage" = "Sauvegardez votre portefeuille dès maintenant pour protéger vos crypto-actifs et vous assurer de ne jamais perdre l'accès.";
 
-/* Appended to 'Wallet' so that it appears as 'Wallet (Beta)' in the app menu. Describing 'beta' software */
-"wallet.betaLabel" = "Bêta";
-
 /* The button title that enables the biometric unlock feature */
 "wallet.biometricsSetupEnableButtonTitle" = "Activer";
 
@@ -172,6 +169,28 @@
 /* A disclaimer that appears at the bottom of an asset detail screen which shows prices and price history. CoinGecko is a third-party product. */
 "wallet.coinGeckoDisclaimer" = "Données financières fournies par CoinGecko";
 
+/* A description for Ethereum coin type.
+   One of the coin types for users to create an account in Ethereum mainnet or any EVM networks. */
+"wallet.coinTypeEthereum" = "Ethereum";
+
+/* One of the coin types for users to create an account to store FIL assets */
+"wallet.coinTypeFilecoin" = "Filecoin";
+
+/* A description for Filecoin coin type. */
+"wallet.coinTypeFilecoinDescription" = "Stocker l'actif FIL";
+
+/* A header displayed above coin types selection. */
+"wallet.coinTypeSelectionHeader" = "Sélectionnez l'un des types de comptes suivants";
+
+/* One of the coin types for users to create an account with in Solana network */
+"wallet.coinTypeSolana" = "Solana";
+
+/* A description for Solana coin type. */
+"wallet.coinTypeSolanaDescription" = "Prend en charge les actifs compatibles avec SPL sur la chaîne de blocs Solana";
+
+/* A placeholder for unknown coin type. */
+"wallet.coinTypeUnknown" = "Inconnu";
+
 /* 1. A button title to confirm a transaction. It is shown below details about a given transaction. 2. A button title to confirm to grant permission of a dapp connect request. It is displayed at the bottom of last step to grant permission in new site connection screen. */
 "wallet.confirm" = "Confirmer";
 
@@ -213,6 +232,12 @@
 
 /* A button title that when tapped will copy some data to the users clipboard */
 "wallet.copyToPasteboard" = "Copier";
+
+/* The message of the alert shown when a user switches to a network they do not have an account for yet. */
+"wallet.createAccountAlertMessage" = "En créer un maintenant ?";
+
+/* The title of the alert shown when a user switches to a network they do not have an account for yet. '%@' will be replaced with a network name such as 'Solana' or 'Filecoin'. */
+"wallet.createAccountAlertTitle" = "Vous ne possédez pas de compte %@.";
 
 /* The title that will be displayed when long-pressing the back button in the navigation bar. As to make up a new password to create a wallet */
 "wallet.createWalletBackButtonTitle" = "Créer un mot de passe";
@@ -286,6 +311,9 @@
 /* The title displayed on the add custom token screen */
 "wallet.customTokenTitle" = "Personnalisé";
 
+/* The title of the notification which will prompt at the top of the browser when users are visiting web3 site that is not yet connected with Brave Wallet. The '%@' will be the site attempting to connect. For example: \"app.uniswap.org wants to interact with Brave Wallet\" */
+"wallet.dappsConnectionNotificationOriginTitle" = "%@ souhaite interagir avec le portefeuille Brave";
+
 /* The title of the notification which will prompt at the top of the browser when users are visiting web3 site that is not yet connected with Brave Wallet. */
 "wallet.dappsConnectionNotificationTitle" = "Cette page souhaite interagir avec le Portefeuille Brave";
 
@@ -345,12 +373,6 @@
 
 /* A title of the view shown over a dapps website that requests the user decrypt a message. */
 "wallet.decryptRequestTitle" = "Décrypter la demande";
-
-/* The default account name when adding a primary account and not entering a custom name. '%lld' refers to a number (for example \"Account 3\") */
-"wallet.defaultAccountName" = "Compte %lld";
-
-/* The default account name when adding a secondary account and not entering a custom name. '%lld' refers to a number (for example \"Secondary Account 3\") */
-"wallet.defaultSecondaryAccountName" = "Compte secondaire %lld";
 
 /* The title of the option inside the context menu for custom asset row in edit user asset screen. Or the title of the option inside the context menu for custom network row which is not being currently selected in networks list screen. */
 "wallet.delete" = "Supprimer";
@@ -822,6 +844,9 @@
 
 /* A button title that will make a private key visible on the screen */
 "wallet.showPrivateKeyButtonTitle" = "Afficher la clé privée";
+
+/* A label beside the toggle for showing / hiding test networks in the Networks screen of Wallet settings */
+"wallet.showTestNetworksTitle" = "Afficher les réseaux de test";
 
 /* The title of the button used to sign a message request on the signature request view. */
 "wallet.sign" = "Signer";
