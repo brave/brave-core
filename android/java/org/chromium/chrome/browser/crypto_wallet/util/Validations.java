@@ -12,6 +12,7 @@ import org.chromium.brave_wallet.mojom.BlockchainRegistry;
 import org.chromium.brave_wallet.mojom.BlockchainToken;
 import org.chromium.brave_wallet.mojom.BraveWalletService;
 import org.chromium.brave_wallet.mojom.KeyringService;
+import org.chromium.brave_wallet.mojom.NetworkInfo;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.crypto_wallet.util.TokenUtils;
 import org.chromium.mojo.bindings.Callbacks;
@@ -27,7 +28,7 @@ public class Validations {
 
         public SendToAccountAddress() {}
 
-        public void validate(String chainId, KeyringService keyringService,
+        public void validate(NetworkInfo selectedNetwork, KeyringService keyringService,
                 BlockchainRegistry blockchainRegistry, BraveWalletService braveWalletService,
                 String senderAccountAddress, String receiverAccountAddress,
                 Callbacks.Callback2<String, Boolean> callback) {
@@ -64,11 +65,11 @@ public class Validations {
             if (mKnownContractAddresses == null) {
                 assert braveWalletService != null;
                 assert blockchainRegistry != null;
-                assert chainId != null && !chainId.isEmpty();
+                assert selectedNetwork != null;
 
-                TokenUtils.getAllTokensFiltered(braveWalletService, blockchainRegistry, chainId,
-                        TokenUtils.TokenType.ALL, (tokens) -> {
-                            tokens = Utils.fixupTokensRegistry(tokens, chainId);
+                TokenUtils.getAllTokensFiltered(braveWalletService, blockchainRegistry,
+                        selectedNetwork, selectedNetwork.coin, TokenUtils.TokenType.ALL,
+                        (tokens) -> {
                             fillKnowContracts(tokens);
                             checkForKnowContracts(receiverAccountAddressLower, callback, resources);
                         });
