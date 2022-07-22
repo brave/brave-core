@@ -315,7 +315,7 @@ export const PortfolioAsset = () => {
   }, [nftDetailsRef, isFetchingNFTMetadata])
 
   React.useEffect(() => {
-    if (selectedAsset && nftDetailsRef.current) {
+    if (selectedAsset && nftDetailsRef?.current) {
       const command: UpdateSelectedAssetMessage = {
         command: NftUiCommand.UpdateSelectedAsset,
         payload: selectedAsset
@@ -323,7 +323,7 @@ export const PortfolioAsset = () => {
       sendMessageToNftUiFrame(nftDetailsRef.current.contentWindow, command)
     }
 
-    if (selectedAsset && networkList && nftDetailsRef.current) {
+    if (selectedAsset && networkList && nftDetailsRef?.current) {
       const tokenNetwork = getTokensNetwork(networkList, selectedAsset)
       const command: UpdateTokenNetworkMessage = {
         command: NftUiCommand.UpdateTokenNetwork,
