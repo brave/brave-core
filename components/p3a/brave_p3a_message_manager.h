@@ -13,6 +13,7 @@
 #include "base/containers/flat_map.h"
 #include "base/memory/ref_counted.h"
 #include "base/strings/string_piece_forward.h"
+#include "base/timer/timer.h"
 #include "brave/components/p3a/brave_p3a_config.h"
 #include "brave/components/p3a/brave_p3a_metric_log_store.h"
 #include "brave/components/p3a/metric_log_type.h"
@@ -77,7 +78,7 @@ class BraveP3AMessageManager : public BraveP3AMetricLogStore::Delegate {
                            bool is_star,
                            MetricLogType log_type);
 
-  void OnNewStarMessage(const char* histogram_name,
+  void OnNewStarMessage(std::string histogram_name,
                         uint8_t epoch,
                         std::unique_ptr<std::string> serialized_message);
 
@@ -97,11 +98,12 @@ class BraveP3AMessageManager : public BraveP3AMetricLogStore::Delegate {
 
   PrefService* local_state_ = nullptr;
 
+  base::OneShotTimer rnd_info_retry_timer;
+
   MessageMetainfo message_meta_;
 
   BraveP3AConfig* config_;
 
-  // Components:
   base::flat_map<MetricLogType, std::unique_ptr<BraveP3AMetricLogStore>>
       json_log_stores_;
   std::unique_ptr<BraveP3AMetricLogStore> star_prep_log_store_;

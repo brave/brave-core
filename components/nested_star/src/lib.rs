@@ -122,7 +122,7 @@ pub fn construct_message(
     let rand_proofs_vec: Vec<&[u8]> = rand_proofs.iter().map(|v| v.data.as_slice()).collect();
     let res = client::construct_message(
         &rand_points_vec,
-        if rand_proofs.is_empty() { Some(&rand_proofs_vec) } else { None },
+        if !rand_proofs.is_empty() { Some(&rand_proofs_vec) } else { None },
         rrs.0.as_ref().unwrap(),
         &verification_key.0,
         aux_bytes.as_slice(),

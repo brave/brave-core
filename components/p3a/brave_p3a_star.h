@@ -31,7 +31,7 @@ struct BraveP3AConfig;
 class BraveP3AStar {
  public:
   using StarMessageCallback = base::RepeatingCallback<void(
-      const char* histogram_name,
+      std::string histogram_name,
       uint8_t epoch,
       std::unique_ptr<std::string> serialized_message)>;
 
@@ -47,12 +47,12 @@ class BraveP3AStar {
 
   void UpdateRandomnessServerInfo();
 
-  bool StartMessagePreparation(const char* histogram_name,
+  bool StartMessagePreparation(std::string histogram_name,
                                std::string serialized_log);
 
  private:
   void HandleRandomnessData(
-      const char* histogram_name,
+      std::string histogram_name,
       uint8_t epoch,
       ::rust::Box<nested_star::RandomnessRequestStateWrapper>
           randomness_request_state,
@@ -69,6 +69,8 @@ class BraveP3AStar {
   BraveP3AStarRandomness randomness_manager_;
 
   StarMessageCallback message_callback_;
+
+  ::rust::Box<nested_star::PPOPRFPublicKeyWrapper> null_public_key_;
 };
 
 }  // namespace brave
