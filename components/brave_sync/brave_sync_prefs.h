@@ -53,6 +53,9 @@ class Prefs {
   bool IsSyncMigrateNoticeDismissed() const;
   void SetDismissSyncMigrateNotice(bool is_dismissed);
 
+  bool IsFailedDecryptSeedNoticeDismissed() const;
+  void DismissFailedDecryptSeedNotice();
+
   void Clear();
 
  private:
