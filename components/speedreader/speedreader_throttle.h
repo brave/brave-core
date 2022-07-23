@@ -22,6 +22,7 @@ namespace speedreader {
 
 class SpeedreaderResultDelegate;
 class SpeedreaderRewriterService;
+class SpeedreaderService;
 
 // Launches the speedreader distillation pass over a response body, deferring
 // the load until distillation is done.
@@ -39,11 +40,13 @@ class SpeedReaderThrottle : public body_sniffer::BodySnifferThrottle {
   // IPC in SpeedReaderLoader. |task_runner| is supposed to be bound to the
   // current sequence.
   SpeedReaderThrottle(SpeedreaderRewriterService* rewriter_service,
+                      SpeedreaderService* speedreader_service,
                       base::WeakPtr<SpeedreaderResultDelegate> result_delegate,
                       scoped_refptr<base::SingleThreadTaskRunner> task_runner);
 
   static std::unique_ptr<SpeedReaderThrottle> MaybeCreateThrottleFor(
       SpeedreaderRewriterService* rewriter_service,
+      SpeedreaderService* speedreader_service,
       HostContentSettingsMap* content_settings,
       base::WeakPtr<SpeedreaderResultDelegate> result_delegate,
       const GURL& url,
@@ -58,6 +61,7 @@ class SpeedReaderThrottle : public body_sniffer::BodySnifferThrottle {
  private:
   scoped_refptr<base::SingleThreadTaskRunner> task_runner_;
   raw_ptr<SpeedreaderRewriterService> rewriter_service_ = nullptr;  // not owned
+  raw_ptr<SpeedreaderService> speedreader_service_ = nullptr;
   base::WeakPtr<SpeedreaderResultDelegate> result_delegate_;
 };
 

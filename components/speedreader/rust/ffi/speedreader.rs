@@ -1,5 +1,5 @@
 use super::*;
-use libc::c_void;
+use libc::{c_void, strlen};
 use std::panic::{self, AssertUnwindSafe};
 
 // NOTE: we use `ExternOutputSink` proxy type, for extern handler function
@@ -122,6 +122,19 @@ pub extern "C" fn rewriter_set_min_out_length(
 ) {
     let rewriter: &mut Box<dyn SpeedReaderProcessor> = leak_void_to_box!(rewriter);
     rewriter.set_min_out_length(min_out_length);
+}
+
+#[no_mangle]
+pub extern "C" fn rewriter_set_theme(
+    rewriter: *mut CRewriter,
+    theme: *const c_char,
+) {
+    let rewriter: &mut Box<dyn SpeedReaderProcessor> = leak_void_to_box!(rewriter);
+    let the_theme = unsafe {
+        let c_s = theme;
+        str::from_utf8_unchecked(slice::from_raw_parts(c_s as *const u8, strlen(c_s)))
+    };
+    rewriter.set_theme(the_theme);
 }
 
 /// Write a new chunk of data (byte array) to the rewriter instance.

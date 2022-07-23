@@ -10,8 +10,10 @@
 #include "base/bind.h"
 #include "base/feature_list.h"
 #include "base/strings/string_util.h"
+#include "base/strings/utf_string_conversions.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/speedreader/speedreader_service_factory.h"
+#include "brave/browser/themes/brave_dark_mode_utils.h"
 #include "brave/browser/ui/brave_browser_window.h"
 #include "brave/browser/ui/speedreader/speedreader_bubble_view.h"
 #include "brave/components/l10n/common/locale_util.h"
@@ -256,6 +258,50 @@ void SpeedreaderTabHelper::HideBubble() {
 void SpeedreaderTabHelper::OnShowOriginalPage() {
   show_original_page_ = distill_state_ == DistillState::kSpeedreaderMode;
   ReloadContents();
+}
+
+void SpeedreaderTabHelper::ChangeTheme(const std::string& theme) {
+  if (GetSelectedTheme() == theme)
+    return;
+
+  CHECK_EQ(std::u16string::npos, theme.find(u'\''));
+  CHECK_EQ(std::u16string::npos, theme.find(u'\\'));
+
+  constexpr const char16_t kSetTheme[] =
+      uR"js(
+    (function() {
+      const theme = '$1'
+      if (theme == 'system' || theme == '') {
+        document.documentElement.removeAttribute('theme-data')
+      } else {
+        document.documentElement.setAttribute('theme-data', theme)
+      }
+    })();
+  )js";
+
+  const auto script = base::ReplaceStringPlaceholders(
+      kSetTheme, base::UTF8ToUTF16(theme), nullptr);
+
+  web_contents()->GetMainFrame()->ExecuteJavaScriptInIsolatedWorld(
+      script, base::DoNothing(), kIsolatedWorldId);
+  SpeedreaderServiceFactory::GetForProfile(GetProfile())->SelectedTheme(theme);
+}
+
+std::string SpeedreaderTabHelper::GetSelectedTheme() {
+  return SpeedreaderServiceFactory::GetForProfile(GetProfile())
+      ->GetSelectedTheme();
+}
+
+std::string SpeedreaderTabHelper::GetSystemTheme() {
+  switch (dark_mode::GetActiveBraveDarkModeType()) {
+    case dark_mode::BraveDarkModeType::BRAVE_DARK_MODE_TYPE_DARK:
+      return "dark";
+    case dark_mode::BraveDarkModeType::BRAVE_DARK_MODE_TYPE_LIGHT:
+      return "light";
+    default:
+      break;
+  }
+  return "light";
 }
 
 void SpeedreaderTabHelper::ClearPersistedData() {

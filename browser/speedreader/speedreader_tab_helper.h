@@ -7,6 +7,7 @@
 #define BRAVE_BROWSER_SPEEDREADER_SPEEDREADER_TAB_HELPER_H_
 
 #include <memory>
+#include <string>
 
 #include "base/memory/weak_ptr.h"
 #include "brave/components/speedreader/common/speedreader.mojom.h"
@@ -86,6 +87,10 @@ class SpeedreaderTabHelper
 
   // mojom::SpeedreaderHost:
   void OnShowOriginalPage() override;
+
+  void ChangeTheme(const std::string& theme);
+  std::string GetSelectedTheme();
+  std::string GetSystemTheme();
 
  private:
   friend class content::WebContentsUserData<SpeedreaderTabHelper>;

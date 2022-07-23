@@ -29,6 +29,11 @@ p {
   line-height: 1.5em;
 }
 
+li {
+  font-size: 1.2rem;
+  line-height: 1.5rem;
+}
+
 .subhead {
   font-weight: normal;
 }
@@ -37,7 +42,7 @@ p {
   font-size: 1.5em;
   line-height: 1em;
   font-weight: normal;
-  color: rgba(27, 27, 27, 0.65);
+  color: var(--summary-text-color);
 }
 
 .metadata {
@@ -82,6 +87,7 @@ a[href] {
 #article {
   text-rendering: optimizeLegibility;
   font-family: "Georgia", "Times New Roman", Times, serif;
+  user-select: unset;
 }
 
 #article * {
@@ -93,7 +99,6 @@ a[href] {
   /* By default, images are centered on their own line. */
   margin-bottom: 0.5em;
   display: block;
-  width: 100%;
   height: auto;
 }
 
@@ -121,13 +126,19 @@ a[href] {
   line-height: 1.4em;
 }
 
-body.watch #article .leading-image, body.watch #article figure {
+body {
+  background-color: var(--article-background-color);
+  color: var(--article-text-color);
+  padding-left: 120px !important;
+}
+
+body.watch #article .leading-image,
+body.watch #article figure {
   font-size: 0.8125rem;
 }
 
 #article .leading-image :matches(.caption, .credit), #article figcaption {
   margin-top: 0.8em;
-  width: 100%;
 }
 
 #article figcaption>* {
@@ -224,10 +235,6 @@ body.watch #article .float {
   -webkit-padding-start: 0;
 }
 
-#article .list-style-type-none.code-block code {
-  white-space: pre-wrap;
-}
-
 #article div.scrollable {
   overflow-x: scroll;
   word-wrap: normal;
@@ -240,23 +247,22 @@ body.watch #article .float {
 #article-summary {
   font-size: 1.5em;
   line-height: 1.4em;
-  color: #495057;
+  color: var(--summary-text-color);
 }
 
 #article .leading-image, #article figure, #article .auxiliary:not(.pullquote) {
   font-family: Arial, Helvetica, sans-serif;
 }
 
-#article .leading-image, #article figure, #article .auxiliary, #article .pullquote {
-  color: rgba(0, 0, 0, 0.65);
+#article .leading-image,
+#article figure,
+#article .auxiliary,
+#article .pullquote {
+  color: var(--quote-text-color);
 }
 
 figure {
   margin: 0;
-}
-
-figure img {
-  width: 100%;
 }
 
 body:not(.watch) figure:not(.float) {
@@ -281,8 +287,14 @@ pre {
   line-height: 1.45em;
 }
 
-blockquote, q {
-  color: rgba(0, 0, 0, 0.65);
+pre,
+code {
+  white-space: pre-wrap;
+}
+
+blockquote,
+q {
+  color: var(--quote-text-color);
 }
 
 blockquote:not(.pullquote) {
@@ -338,7 +350,7 @@ article table td, article table th {
 }
 
 article table th {
-  background-color: rgba(0, 0, 0, 0.025);
+  background-color: var(--article-background-color);
 }
 
 article sup, article sub {
@@ -354,41 +366,47 @@ article sup, article sub {
   body {
     margin: 0;
     padding: 0;
-    -webkit-user-select: none;
     overflow-x: hidden;
     -webkit-text-size-adjust: none;
   }
+
   body.mac {
     background-color: transparent;
   }
+
   #article {
     pointer-events: auto;
-    -webkit-user-select: auto;
     overflow: visible;
   }
+
   #article:focus {
     outline: none;
   }
+
   #article {
     margin-left: auto;
     margin-right: auto;
-    padding-top: 35px;
+    padding-top: 4.5em;
     padding-bottom: 35px;
     position: relative;
     border-top: 1px solid rgba(0, 0, 0, 0.2);
   }
+
   body article {
     padding: 0 4px;
   }
+
   #article {
     margin-top: 0;
     border-top: none;
-    padding-top: 32px;
   }
+
   #article:last-of-type {
     padding-bottom: 45px;
   }
+
   article video {
+    width: 100%;
     height: auto;
     position: relative;
   }
@@ -413,6 +431,7 @@ iframe {
     max-width: 800px;
     margin: 0 auto;
   }
+
   /* Readable margins. */
   /* body #article {
     max-width: 83.2ex;
@@ -426,4 +445,41 @@ iframe {
     padding-top: 32px;
     padding-bottom: 32px;
   }
+}
+
+@media (prefers-color-scheme: dark) {
+  html:not([theme-data]) {
+    --background-color: #17171F;
+    --article-background-color: #1E2029;
+    --summary-text-color: #C2C4CF;
+    --article-text-color: #F0F2FF;
+    --quote-text-color: #C2C4CF;
+  }
+}
+
+html,
+html[theme-data='light'] {
+  --background-color: #F8F9FA;
+  --article-background-color: #FFFFFF;
+  --summary-text-color: #495057;
+  --article-text-color: #212529;
+  --quote-text-color: rgba(0, 0, 0, 0.65);
+
+  background-color: var(--background-color);
+}
+
+html[theme-data='sepia'] {
+  --background-color: #E9E0CA;
+  --article-background-color: #F2EBD9;
+  --summary-text-color: #5B4635;
+  --article-text-color: #331E05;
+  --quote-text-color: rgba(0, 0, 0, 0.65);
+}
+
+html[theme-data='dark'] {
+  --background-color: #17171F;
+  --article-background-color: #1E2029;
+  --summary-text-color: #C2C4CF;
+  --article-text-color: #F0F2FF;
+  --quote-text-color: #C2C4CF;
 }

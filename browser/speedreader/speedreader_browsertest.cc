@@ -378,3 +378,36 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, ShowOriginalPageOnUnreadable) {
                               speedreader::kIsolatedWorldId)
                   .ExtractBool());
 }
+
+IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, SetTheme) {
+  ToggleSpeedreader();
+  NavigateToPageSynchronously(kTestPageReadable);
+  auto* web_contents = ActiveWebContents();
+
+  constexpr const char kGetTheme[] =
+      R"js(
+        document.documentElement.getAttribute('theme-data')
+      )js";
+
+  EXPECT_EQ("", speedreader_service()->GetSelectedTheme());
+
+  EXPECT_EQ(nullptr, content::EvalJs(web_contents, kGetTheme,
+                                     content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
+                                     speedreader::kIsolatedWorldId));
+  auto* tab_helper =
+      speedreader::SpeedreaderTabHelper::FromWebContents(web_contents);
+  tab_helper->ChangeTheme("dark");
+
+  EXPECT_EQ("dark", content::EvalJs(web_contents, kGetTheme,
+                                    content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
+                                    speedreader::kIsolatedWorldId)
+                        .ExtractString());
+  EXPECT_EQ("dark", speedreader_service()->GetSelectedTheme());
+
+  // New page
+  NavigateToPageSynchronously(kTestPageReadable);
+  EXPECT_EQ("dark", content::EvalJs(web_contents, kGetTheme,
+                                    content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
+                                    speedreader::kIsolatedWorldId)
+                        .ExtractString());
+}

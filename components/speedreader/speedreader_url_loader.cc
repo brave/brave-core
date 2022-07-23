@@ -19,6 +19,7 @@
 #include "brave/components/speedreader/rust/ffi/speedreader.h"
 #include "brave/components/speedreader/speedreader_result_delegate.h"
 #include "brave/components/speedreader/speedreader_rewriter_service.h"
+#include "brave/components/speedreader/speedreader_service.h"
 #include "brave/components/speedreader/speedreader_throttle.h"
 #include "mojo/public/cpp/bindings/self_owned_receiver.h"
 
@@ -39,7 +40,8 @@ SpeedReaderURLLoader::CreateLoader(
     base::WeakPtr<SpeedreaderResultDelegate> delegate,
     const GURL& response_url,
     scoped_refptr<base::SingleThreadTaskRunner> task_runner,
-    SpeedreaderRewriterService* rewriter_service) {
+    SpeedreaderRewriterService* rewriter_service,
+    SpeedreaderService* speedreader_service) {
   mojo::PendingRemote<network::mojom::URLLoader> url_loader;
   mojo::PendingRemote<network::mojom::URLLoaderClient> url_loader_client;
   mojo::PendingReceiver<network::mojom::URLLoaderClient>
@@ -48,7 +50,8 @@ SpeedReaderURLLoader::CreateLoader(
 
   auto loader = base::WrapUnique(new SpeedReaderURLLoader(
       std::move(throttle), std::move(delegate), response_url,
-      std::move(url_loader_client), std::move(task_runner), rewriter_service));
+      std::move(url_loader_client), std::move(task_runner), rewriter_service,
+      speedreader_service));
   SpeedReaderURLLoader* loader_rawptr = loader.get();
   mojo::MakeSelfOwnedReceiver(std::move(loader),
                               url_loader.InitWithNewPipeAndPassReceiver());
@@ -63,14 +66,16 @@ SpeedReaderURLLoader::SpeedReaderURLLoader(
     mojo::PendingRemote<network::mojom::URLLoaderClient>
         destination_url_loader_client,
     scoped_refptr<base::SingleThreadTaskRunner> task_runner,
-    SpeedreaderRewriterService* rewriter_service)
+    SpeedreaderRewriterService* rewriter_service,
+    SpeedreaderService* speedreader_service)
     : body_sniffer::BodySnifferURLLoader(
           throttle,
           response_url,
           std::move(destination_url_loader_client),
           task_runner),
       delegate_(delegate),
-      rewriter_service_(rewriter_service) {}
+      rewriter_service_(rewriter_service),
+      speedreader_service_(speedreader_service) {}
 
 SpeedReaderURLLoader::~SpeedReaderURLLoader() = default;
 
@@ -114,7 +119,7 @@ void SpeedReaderURLLoader::CompleteLoading(std::string body) {
         FROM_HERE, {base::TaskPriority::USER_BLOCKING},
         base::BindOnce(
             [](std::string data, std::unique_ptr<Rewriter> rewriter,
-               const std::string& stylesheet) -> auto {
+               const std::string& stylesheet) -> auto{
               SCOPED_UMA_HISTOGRAM_TIMER("Brave.Speedreader.Distill");
               int written = rewriter->Write(data.c_str(), data.length());
               // Error occurred
@@ -134,7 +139,9 @@ void SpeedReaderURLLoader::CompleteLoading(std::string body) {
 
               return stylesheet + transformed;
             },
-            std::move(body), rewriter_service_->MakeRewriter(response_url_),
+            std::move(body),
+            rewriter_service_->MakeRewriter(
+                response_url_, speedreader_service_->GetSelectedTheme()),
             rewriter_service_->GetContentStylesheet()),
         base::BindOnce(
             [](base::WeakPtr<SpeedReaderURLLoader> self, std::string result) {

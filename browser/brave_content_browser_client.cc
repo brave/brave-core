@@ -70,7 +70,6 @@
 #include "brave/components/sidebar/buildflags/buildflags.h"
 #include "brave/components/skus/common/skus_sdk.mojom.h"
 #include "brave/components/speedreader/common/buildflags.h"
-#include "brave/components/speedreader/speedreader_util.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "brave/components/translate/core/common/brave_translate_switches.h"
 #include "brave/grit/brave_generated_resources.h"
@@ -151,8 +150,10 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #endif
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
+#include "brave/browser/speedreader/speedreader_service_factory.h"
 #include "brave/browser/speedreader/speedreader_tab_helper.h"
 #include "brave/components/speedreader/speedreader_throttle.h"
+#include "brave/components/speedreader/speedreader_util.h"
 #include "third_party/blink/public/mojom/loader/resource_load_info.mojom-shared.h"
 #endif
 
@@ -744,11 +745,15 @@ BraveContentBrowserClient::CreateURLLoaderThrottles(
         // Only check for disabled sites if we are in Speedreader mode
         const bool check_disabled_sites =
             state == speedreader::DistillState::kSpeedreaderModePending;
+        auto* speedreader_service =
+            speedreader::SpeedreaderServiceFactory::GetForProfile(
+                Profile::FromBrowserContext(browser_context));
         std::unique_ptr<speedreader::SpeedReaderThrottle> throttle =
             speedreader::SpeedReaderThrottle::MaybeCreateThrottleFor(
                 g_brave_browser_process->speedreader_rewriter_service(),
-                settings_map, tab_helper->GetWeakPtr(), request.url,
-                check_disabled_sites, base::ThreadTaskRunnerHandle::Get());
+                speedreader_service, settings_map, tab_helper->GetWeakPtr(),
+                request.url, check_disabled_sites,
+                base::ThreadTaskRunnerHandle::Get());
         if (throttle)
           result.push_back(std::move(throttle));
       }

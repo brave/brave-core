@@ -20,6 +20,10 @@ constexpr char kSpeedreaderPrefToggleCount[] = "brave.speedreader.toggle_count";
 // Number of times the "Enable Speedreader" button was shown automatically
 constexpr char kSpeedreaderPrefPromptCount[] = "brave.speedreader.prompt_count";
 
+// The theme selected by the user. If it has a default value then system theme
+// should be used.
+constexpr char kSpeedreaderPrefThemeName[] = "brave.speedreader.theme";
+
 }  // namespace speedreader
 
 #endif  // BRAVE_COMPONENTS_SPEEDREADER_SPEEDREADER_PREF_NAMES_H_

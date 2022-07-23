@@ -63,7 +63,7 @@ where
     let mut dom: Sink =
         parse_document(Sink::default(), Default::default()).from_utf8().read_from(input)?;
 
-    extract_dom(&mut dom, &url, None, &HashMap::new())
+    extract_dom(&mut dom, &url, None, None, &HashMap::new())
 }
 
 #[derive(Default, Debug)]
@@ -220,6 +220,7 @@ pub fn extract_dom<S: ::std::hash::BuildHasher>(
     mut dom: &mut Sink,
     url: &Url,
     min_out_length: Option<i32>,
+    theme: Option<String>,
     features: &HashMap<String, u32, S>,
 ) -> Result<Product, std::io::Error> {
     let handle = dom.document_node.clone();
@@ -281,6 +282,11 @@ pub fn extract_dom<S: ::std::hash::BuildHasher>(
         let title_blob = format!("<title>{}</title>", &meta.title);
         content = title_blob + &content;
     }
+
+    if let Some(theme) = theme {
+        content = format!("<html theme-data=\"{}\">", theme) + &content + "</html>";
+    }
+
     Ok(Product { meta, content })
 }
 
